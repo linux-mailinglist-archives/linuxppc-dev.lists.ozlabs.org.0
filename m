@@ -1,36 +1,108 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE7E93C707
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 18:13:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED8D93C7C9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Jul 2024 19:46:51 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=am5s7pHo;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WVGCB30wYz3fr2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 02:13:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WVJGx04hMz3c2K
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 03:46:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WVGBn3Jfrz3dRY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 02:13:04 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 596EC1007;
-	Thu, 25 Jul 2024 09:12:59 -0700 (PDT)
-Received: from e133380.arm.com (e133380.arm.com [10.1.197.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 257DE3F5A1;
-	Thu, 25 Jul 2024 09:12:30 -0700 (PDT)
-Date: Thu, 25 Jul 2024 17:12:27 +0100
-From: Dave Martin <Dave.Martin@arm.com>
-To: Joey Gouly <joey.gouly@arm.com>
-Subject: Re: [PATCH v4 17/29] arm64: implement PKEYS support
-Message-ID: <ZqJ5a5Iy85/XLGkr@e133380.arm.com>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-18-joey.gouly@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=am5s7pHo;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVJG90QrKz3cQM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 03:46:08 +1000 (AEST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46PFT40C007717;
+	Thu, 25 Jul 2024 17:45:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:references:content-type
+	:in-reply-to:content-transfer-encoding:mime-version; s=pp1; bh=M
+	ZdKiQHa5LXx1PNObBezoI2lqw387a+5mBLxj6pzPCE=; b=am5s7pHoN8qg0NQRK
+	pmWj7AxyC5+z1+0ycDRaYXeCADotj+YFZ9BEJJzvodMHLwciXB2t9IyhxWW3Cmml
+	emBGWYE8X/RQnKB4c99ulwBP02UvxcJyS2baKo/cOgSi7ttnQPSsVjlfdIXRxqgR
+	Poxcf4bwiaV4bdwt/sf3mU0WtkZsNT/fWVfjaThEyK2eU6L6VFsMCIjGjEfP5cGL
+	heu+Fma6qkrUX0xI4uvKkuy07obV5+SX569rfR18UbO6mTgT/C9bkyHTAf4diiKN
+	mKIw3bqLWgnFVXi6cnIZOkxUI1utA/m8x8/Ab75dmDBSUcOc4yhpR7hsfAnCFvrS
+	t9yug==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40ksct8agx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jul 2024 17:45:54 +0000 (GMT)
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46PHjrhe012342;
+	Thu, 25 Jul 2024 17:45:53 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40ksct8agu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jul 2024 17:45:53 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46PGdlWK018441;
+	Thu, 25 Jul 2024 17:45:52 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40kk3hj1mf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jul 2024 17:45:52 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46PHjkgJ48169470
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 25 Jul 2024 17:45:48 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AEBB720065;
+	Thu, 25 Jul 2024 17:45:46 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B1C5920040;
+	Thu, 25 Jul 2024 17:45:43 +0000 (GMT)
+Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.195.36.169])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 25 Jul 2024 17:45:43 +0000 (GMT)
+Date: Thu, 25 Jul 2024 23:15:39 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Lizhi Hou <lizhi.hou@amd.com>, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2] PCI: Fix crash during pci_dev hot-unplug on pseries
+ KVM guest
+Message-ID: <p6cs4fxzistpyqkc5bv2sb76inrw7fterocdcu3snnyjpqydbr@thxna6v2umrl>
+Mail-Followup-To: Lizhi Hou <lizhi.hou@amd.com>, 
+	Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org, 
+	Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, 
+	Kowshik Jois B S <kowsjois@linux.ibm.com>, Lukas Wunner <lukas@wunner.de>
+References: <20240715080726.2496198-1-amachhiw@linux.ibm.com>
+ <CAL_JsqKKkcXDJ2nz98WNCvsSFzzc3dVXVnxMCntFXsCP=MeKsA@mail.gmail.com>
+ <a6c92c73-13fb-8e9c-29de-1437654c3880@amd.com>
+ <20240723162107.GA501469-robh@kernel.org>
+ <a8d2e310-9446-6cfa-fe00-4ef83cdb6590@amd.com>
+ <CAL_JsqJjhaLFm9jiswJTfi4yZFYGKJUdC+HV662RLWEkJjxACw@mail.gmail.com>
+ <ac3aeec4-70fc-cd9e-498c-acab0b218d9b@amd.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240503130147.1154804-18-joey.gouly@arm.com>
+In-Reply-To: <ac3aeec4-70fc-cd9e-498c-acab0b218d9b@amd.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GDoVGmOGmgp8knitGbuYCsWK8dxRxh5c
+X-Proofpoint-ORIG-GUID: XKqLwETSvH1eIPln2q8-TM3vOzYRTQ25
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-25_15,2024-07-25_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1015 phishscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407250119
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,301 +114,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, Saravana Kannan <saravanak@google.com>, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lukas Wunner <lukas@wunner.de>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 03, 2024 at 02:01:35PM +0100, Joey Gouly wrote:
-> Implement the PKEYS interface, using the Permission Overlay Extension.
+Hi Lizhi, Rob,
+
+Sorry for responding late. I got busy with some other things.
+
+On 2024/07/23 02:08 PM, Lizhi Hou wrote:
 > 
-> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> ---
->  arch/arm64/include/asm/mmu.h         |   1 +
->  arch/arm64/include/asm/mmu_context.h |  51 ++++++++++++-
->  arch/arm64/include/asm/pgtable.h     |  22 +++++-
->  arch/arm64/include/asm/pkeys.h       | 110 +++++++++++++++++++++++++++
->  arch/arm64/include/asm/por.h         |  33 ++++++++
->  arch/arm64/mm/mmu.c                  |  40 ++++++++++
->  6 files changed, 255 insertions(+), 2 deletions(-)
->  create mode 100644 arch/arm64/include/asm/pkeys.h
->  create mode 100644 arch/arm64/include/asm/por.h
+> On 7/23/24 12:54, Rob Herring wrote:
+> > On Tue, Jul 23, 2024 at 12:21 PM Lizhi Hou <lizhi.hou@amd.com> wrote:
+> > > 
+> > > On 7/23/24 09:21, Rob Herring wrote:
+> > > > On Mon, Jul 15, 2024 at 01:52:30PM -0700, Lizhi Hou wrote:
+> > > > > On 7/15/24 11:55, Rob Herring wrote:
+> > > > > > On Mon, Jul 15, 2024 at 2:08 AM Amit Machhiwal <amachhiw@linux.ibm.com> wrote:
+> > > > > > > With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
+> > > > > > > of a PCI device attached to a PCI-bridge causes following kernel Oops on
+> > > > > > > a pseries KVM guest:
+> > > > > > > 
+> > > > > > >     RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
+> > > > > > >     Kernel attempted to read user page (10ec00000048) - exploit attempt? (uid: 0)
+> > > > > > >     BUG: Unable to handle kernel data access on read at 0x10ec00000048
+> > > > > > >     Faulting instruction address: 0xc0000000012d8728
+> > > > > > >     Oops: Kernel access of bad area, sig: 11 [#1]
+> > > > > > >     LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+> > > > > > > <snip>
+> > > > > > >     NIP [c0000000012d8728] __of_changeset_entry_invert+0x10/0x1ac
+> > > > > > >     LR [c0000000012da7f0] __of_changeset_revert_entries+0x98/0x180
+> > > > > > >     Call Trace:
+> > > > > > >     [c00000000bcc3970] [c0000000012daa60] of_changeset_revert+0x58/0xd8
+> > > > > > >     [c00000000bcc39c0] [c000000000d0ed78] of_pci_remove_node+0x74/0xb0
+> > > > > > >     [c00000000bcc39f0] [c000000000cdcfe0] pci_stop_bus_device+0xf4/0x138
+> > > > > > >     [c00000000bcc3a30] [c000000000cdd140] pci_stop_and_remove_bus_device_locked+0x34/0x64
+> > > > > > >     [c00000000bcc3a60] [c000000000cf3780] remove_store+0xf0/0x108
+> > > > > > >     [c00000000bcc3ab0] [c000000000e89e04] dev_attr_store+0x34/0x78
+> > > > > > >     [c00000000bcc3ad0] [c0000000007f8dd4] sysfs_kf_write+0x70/0xa4
+> > > > > > >     [c00000000bcc3af0] [c0000000007f7248] kernfs_fop_write_iter+0x1d0/0x2e0
+> > > > > > >     [c00000000bcc3b40] [c0000000006c9b08] vfs_write+0x27c/0x558
+> > > > > > >     [c00000000bcc3bf0] [c0000000006ca168] ksys_write+0x90/0x170
+> > > > > > >     [c00000000bcc3c40] [c000000000033248] system_call_exception+0xf8/0x290
+> > > > > > >     [c00000000bcc3e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+> > > > > > > <snip>
+> > > > > > > 
+> > > > > > > A git bisect pointed this regression to be introduced via [1] that added
+> > > > > > > a mechanism to create device tree nodes for parent PCI bridges when a
+> > > > > > > PCI device is hot-plugged.
+> > > > > > > 
+> > > > > > > The Oops is caused when `pci_stop_dev()` tries to remove a non-existing
+> > > > > > > device-tree node associated with the pci_dev that was earlier
+> > > > > > > hot-plugged and was attached under a pci-bridge. The PCI dev header
+> > > > > > > `dev->hdr_type` being 0, results a conditional check done with
+> > > > > > > `pci_is_bridge()` into false. Consequently, a call to
+> > > > > > > `of_pci_make_dev_node()` to create a device node is never made. When at
+> > > > > > > a later point in time, in the device node removal path, a memcpy is
+> > > > > > > attempted in `__of_changeset_entry_invert()`; since the device node was
+> > > > > > > never created, results in an Oops due to kernel read access to a bad
+> > > > > > > address.
+> > > > > > > 
+> > > > > > > To fix this issue, the patch updates `of_changeset_create_node()` to
+> > > > > > > allocate a new node only when the device node doesn't exist and init it
+> > > > > > > in case it does already. Also, introduce `of_pci_free_node()` to be
+> > > > > > > called to only revert and destroy the changeset device node that was
+> > > > > > > created via a call to `of_changeset_create_node()`.
+> > > > > > > 
+> > > > > > > [1] commit 407d1a51921e ("PCI: Create device tree node for bridge")
+> > > > > > > 
+> > > > > > > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+> > > > > > > Reported-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
+> > > > > > > Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+> > > > > > > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> > > > > > > ---
+> > > > > > > Changes since v1:
+> > > > > > >        * Included Lizhi's suggested changes on V1
+> > > > > > >        * Fixed below two warnings from Lizhi's changes and rearranged the cleanup
+> > > > > > >          part a bit in `of_pci_make_dev_node`
+> > > > > > >            drivers/pci/of.c:611:6: warning: no previous prototype for ‘of_pci_free_node’ [-Wmissing-prototypes]
+> > > > > > >              611 | void of_pci_free_node(struct device_node *np)
+> > > > > > >                  |      ^~~~~~~~~~~~~~~~
+> > > > > > >            drivers/pci/of.c: In function ‘of_pci_make_dev_node’:
+> > > > > > >            drivers/pci/of.c:696:1: warning: label ‘out_destroy_cset’ defined but not used [-Wunused-label]
+> > > > > > >              696 | out_destroy_cset:
+> > > > > > >                  | ^~~~~~~~~~~~~~~~
+> > > > > > >        * V1: https://lore.kernel.org/all/20240703141634.2974589-1-amachhiw@linux.ibm.com/
+> > > > > > > 
+> > > > > > >     drivers/of/dynamic.c  | 16 ++++++++++++----
+> > > > > > >     drivers/of/unittest.c |  2 +-
+> > > > > > >     drivers/pci/bus.c     |  3 +--
+> > > > > > >     drivers/pci/of.c      | 39 ++++++++++++++++++++++++++-------------
+> > > > > > >     drivers/pci/pci.h     |  2 ++
+> > > > > > >     include/linux/of.h    |  1 +
+> > > > > > >     6 files changed, 43 insertions(+), 20 deletions(-)
+> > > > > > > 
+> > > > > > > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> > > > > > > index dda6092e6d3a..9bba5e82a384 100644
+> > > > > > > --- a/drivers/of/dynamic.c
+> > > > > > > +++ b/drivers/of/dynamic.c
+> > > > > > > @@ -492,21 +492,29 @@ struct device_node *__of_node_dup(const struct device_node *np,
+> > > > > > >      * a given changeset.
+> > > > > > >      *
+> > > > > > >      * @ocs: Pointer to changeset
+> > > > > > > + * @np: Pointer to device node. If null, allocate a new node. If not, init an
+> > > > > > > + *     existing one.
+> > > > > > >      * @parent: Pointer to parent device node
+> > > > > > >      * @full_name: Node full name
+> > > > > > >      *
+> > > > > > >      * Return: Pointer to the created device node or NULL in case of an error.
+> > > > > > >      */
+> > > > > > >     struct device_node *of_changeset_create_node(struct of_changeset *ocs,
+> > > > > > > +                                            struct device_node *np,
+> > > > > > >                                                 struct device_node *parent,
+> > > > > > >                                                 const char *full_name)
+> > > > > > >     {
+> > > > > > > -       struct device_node *np;
+> > > > > > >            int ret;
+> > > > > > > 
+> > > > > > > -       np = __of_node_dup(NULL, full_name);
+> > > > > > > -       if (!np)
+> > > > > > > -               return NULL;
+> > > > > > > +       if (!np) {
+> > > > > > > +               np = __of_node_dup(NULL, full_name);
+> > > > > > > +               if (!np)
+> > > > > > > +                       return NULL;
+> > > > > > > +       } else {
+> > > > > > > +               of_node_set_flag(np, OF_DYNAMIC);
+> > > > > > > +               of_node_set_flag(np, OF_DETACHED);
+> > > > > > Are we going to rename the function to
+> > > > > > of_changeset_create_or_maybe_modify_node()? No. The functions here are
+> > > > > > very clear in that they allocate new objects and don't reuse what's
+> > > > > > passed in.
+> > > > > Ok. How about keeping of_changeset_create_node unchanged.
+> > > > > 
+> > > > > Instead, call kzalloc(), of_node_init() and of_changeset_attach_node()
+> > > > > 
+> > > > > in of_pci_make_dev_node() directly.
+> > > > > 
+> > > > > A similar example is dlpar_parse_cc_node().
+> > > > > 
+> > > > > 
+> > > > > Does this sound better?
+> > > > No, because really that code should be re-written using of_changeset
+> > > > API.
+> > > > 
+> > > > My suggestion is add a data pointer to struct of_changeset and then set
+> > > > that to something to know the data ptr is a changeset and is your
+> > > > changeset.
+> > > I do not fully understand the point. I think the issue is that we do not
+> > > know if a given of_node is created by of_pci_make_dev_node(), correct?
+> > Yes.
+> > 
+> > > of_node->data can point to anything. And we do not know if it points a
+> > > cset or not.
+> > Right. But instead of checking "of_node->data == of_pci_free_node",
+> > you would just be checking "*(of_node->data) == of_pci_free_node"
+> 
+> if of_node->data is a char* pointer, it would be panic. So I used
+> of_node->data == of_pci_free_node.
+> 
+> > (omitting a NULL check and cast for simplicity). I suppose in theory
+> > that could have a false match, but that could happen in this patch
+> > already.
+> 
+> I think if any other kernel code  put of_pci_free_node to of_node->data, it
+> can be fixed over there.
+> 
+> > 
+> > > Do you mean to add a flag (e.g. OF_PCI_DYNAMIC) to
+> > > indicate of_node->data points to cset?
+> > That would be another option, but OF_PCI_DYNAMIC would not be a good
+> > name because that would be a flag bit for every single caller needing
+> > similar functionality. Name it just what it indicates: of_node->data
+> > points to cset
+> > 
+> > If we have that flag, then possibly the DT core can handle more
+> > clean-up itself like calling detach and freeing the changeset.
+> > Ideally, the flags should be internal to the DT code.
+> 
+> Sure. If you prefer this option, I will propose another fix.
+> 
 
-[...]
+The crash in question is a critical issue that we would want to have a fix for
+soon. And while this is still being figured out, is it okay to go with the fix I
+proposed in the V1 of this patch?
 
-> diff --git a/arch/arm64/include/asm/pkeys.h b/arch/arm64/include/asm/pkeys.h
-> new file mode 100644
-> index 000000000000..a284508a4d02
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/pkeys.h
-> @@ -0,0 +1,110 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2023 Arm Ltd.
-> + *
-> + * Based on arch/x86/include/asm/pkeys.h
-> + */
-> +
-> +#ifndef _ASM_ARM64_PKEYS_H
-> +#define _ASM_ARM64_PKEYS_H
-> +
-> +#define ARCH_VM_PKEY_FLAGS (VM_PKEY_BIT0 | VM_PKEY_BIT1 | VM_PKEY_BIT2)
-> +
-> +#define arch_max_pkey() 7
+Thanks,
+Amit
 
-Did you mean 8 ?  I'm guessing this may be the "off by one error" you
-alluded to in your own reply to the cover letter, but just in case...
-
-(x86 and powerpc seem to have booby-trapped the name of this macro for
-the unwary...)
-
-See also mm_pkey_{is_allocated,alloc}().
-
-> +
-> +int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
-> +		unsigned long init_val);
-> +
-> +static inline bool arch_pkeys_enabled(void)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline int vma_pkey(struct vm_area_struct *vma)
-> +{
-> +	return (vma->vm_flags & ARCH_VM_PKEY_FLAGS) >> VM_PKEY_SHIFT;
-> +}
-> +
-> +static inline int arch_override_mprotect_pkey(struct vm_area_struct *vma,
-> +		int prot, int pkey)
-> +{
-> +	if (pkey != -1)
-> +		return pkey;
-> +
-> +	return vma_pkey(vma);
-> +}
-> +
-> +static inline int execute_only_pkey(struct mm_struct *mm)
-> +{
-> +	// Execute-only mappings are handled by EPAN/FEAT_PAN3.
-> +	WARN_ON_ONCE(!cpus_have_final_cap(ARM64_HAS_EPAN));
-> +
-> +	return -1;
-> +}
-> +
-> +#define mm_pkey_allocation_map(mm)	(mm->context.pkey_allocation_map)
-
-Pedantic nit: (mm)
-
-although other arches have the same nit already, and it's probably low
-risk given the scope and usage of these macros.
-
-(Also, the outer parentheses are also redundant (if harmless).)
-
-> +#define mm_set_pkey_allocated(mm, pkey) do {		\
-> +	mm_pkey_allocation_map(mm) |= (1U << pkey);	\
-> +} while (0)
-> +#define mm_set_pkey_free(mm, pkey) do {			\
-> +	mm_pkey_allocation_map(mm) &= ~(1U << pkey);	\
-> +} while (0)
-> +
-> +static inline bool mm_pkey_is_allocated(struct mm_struct *mm, int pkey)
-> +{
-> +	/*
-> +	 * "Allocated" pkeys are those that have been returned
-> +	 * from pkey_alloc() or pkey 0 which is allocated
-> +	 * implicitly when the mm is created.
-> +	 */
-> +	if (pkey < 0)
-> +		return false;
-> +	if (pkey >= arch_max_pkey())
-> +		return false;
-
-Did you mean > ?
-
-> +
-> +	return mm_pkey_allocation_map(mm) & (1U << pkey);
-> +}
-> +
-> +/*
-> + * Returns a positive, 3-bit key on success, or -1 on failure.
-> + */
-> +static inline int mm_pkey_alloc(struct mm_struct *mm)
-> +{
-> +	/*
-> +	 * Note: this is the one and only place we make sure
-> +	 * that the pkey is valid as far as the hardware is
-> +	 * concerned.  The rest of the kernel trusts that
-> +	 * only good, valid pkeys come out of here.
-> +	 */
-> +	u8 all_pkeys_mask = ((1U << arch_max_pkey()) - 1);
-
-Nit: redundant outer ().
-
-Also, GENMASK() and friends might be cleaner that spelling out this
-idiom explicitly (but no big deal).
-
-(1 << 7) - 1 is 0x7f, which doesn't feel right if pkeys 0..7 are all
-supposed to be valid.  (See arch_max_pkey() above.)
-
-
-(Also it looks mildly weird to have this before checking
-arch_pkeys_enabled(), but since this is likely to be constant-folded by
-the compiler, I guess it almost certainly makes no difference.  It's
-harmless either way.)
-
-> +	int ret;
-> +
-> +	if (!arch_pkeys_enabled())
-> +		return -1;
-> +
-> +	/*
-> +	 * Are we out of pkeys?  We must handle this specially
-> +	 * because ffz() behavior is undefined if there are no
-> +	 * zeros.
-> +	 */
-> +	if (mm_pkey_allocation_map(mm) == all_pkeys_mask)
-> +		return -1;
-> +
-> +	ret = ffz(mm_pkey_allocation_map(mm));
-> +
-> +	mm_set_pkey_allocated(mm, ret);
-> +
-> +	return ret;
-> +}
-> +
-> +static inline int mm_pkey_free(struct mm_struct *mm, int pkey)
-> +{
-> +	if (!mm_pkey_is_allocated(mm, pkey))
-> +		return -EINVAL;
-
-Does anything prevent a pkey_free(0)?
-
-I couldn't find any check related to this so far.
-
-If not, this may be a generic problem, better solved through a wrapper
-in the generic mm code.
-
-Userspace has to have at least one PKEY allocated, since the pte field
-has to be set to something...  unless we turn PKEYs on or off per mm.
-But the pkeys API doesn't seem to be designed that way (and it doesn't
-look very useful).
-
-
-> +
-> +	mm_set_pkey_free(mm, pkey);
-> +
-> +	return 0;
-> +}
-> +
-> +#endif /* _ASM_ARM64_PKEYS_H */
-> diff --git a/arch/arm64/include/asm/por.h b/arch/arm64/include/asm/por.h
-> new file mode 100644
-> index 000000000000..d6604e0c5c54
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/por.h
-> @@ -0,0 +1,33 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2023 Arm Ltd.
-> + */
-> +
-> +#ifndef _ASM_ARM64_POR_H
-> +#define _ASM_ARM64_POR_H
-> +
-> +#define POR_BITS_PER_PKEY		4
-> +#define POR_ELx_IDX(por_elx, idx)	(((por_elx) >> (idx * POR_BITS_PER_PKEY)) & 0xf)
-
-Nit: (idx)
-
-Since this is shared with other code in a header, it's probably best
-to avoid surprises.
-
-[...]
-
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 495b732d5af3..e50ccc86d150 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -25,6 +25,7 @@
->  #include <linux/vmalloc.h>
->  #include <linux/set_memory.h>
->  #include <linux/kfence.h>
-> +#include <linux/pkeys.h>
->  
->  #include <asm/barrier.h>
->  #include <asm/cputype.h>
-> @@ -1535,3 +1536,42 @@ void __cpu_replace_ttbr1(pgd_t *pgdp, bool cnp)
->  
->  	cpu_uninstall_idmap();
->  }
-> +
-> +#ifdef CONFIG_ARCH_HAS_PKEYS
-> +int arch_set_user_pkey_access(struct task_struct *tsk, int pkey, unsigned long init_val)
-> +{
-> +	u64 new_por = POE_RXW;
-> +	u64 old_por;
-> +	u64 pkey_shift;
-> +
-> +	if (!arch_pkeys_enabled())
-> +		return -ENOSPC;
-> +
-> +	/*
-> +	 * This code should only be called with valid 'pkey'
-> +	 * values originating from in-kernel users.  Complain
-> +	 * if a bad value is observed.
-> +	 */
-> +	if (WARN_ON_ONCE(pkey >= arch_max_pkey()))
-> +		return -EINVAL;
-> +
-> +	/* Set the bits we need in POR:  */
-> +	if (init_val & PKEY_DISABLE_ACCESS)
-> +		new_por = POE_X;
-> +	else if (init_val & PKEY_DISABLE_WRITE)
-> +		new_por = POE_RX;
-> +
-> +	/* Shift the bits in to the correct place in POR for pkey: */
-> +	pkey_shift = pkey * POR_BITS_PER_PKEY;
-> +	new_por <<= pkey_shift;
-> +
-> +	/* Get old POR and mask off any old bits in place: */
-> +	old_por = read_sysreg_s(SYS_POR_EL0);
-> +	old_por &= ~(POE_MASK << pkey_shift);
-> +
-> +	/* Write old part along with new part: */
-> +	write_sysreg_s(old_por | new_por, SYS_POR_EL0);
-> +
-> +	return 0;
-> +}
-> +#endif
-
-<bikeshed>
-
-Although this is part of the existing PKEYS support, it feels weird to
-have to initialise the permissions with one interface and one set of
-flags, then change the permissions using an arch-specific interface and
-a different set of flags (i.e., directly writing POR_EL0) later on.
-
-Is there any merit in defining a vDSO function for changing the flags in
-userspace?  This would allow userspace to use PKEYS in a generic way
-without a nasty per-arch volatile asm hack.  
-
-(Maybe too late for stopping user libraries rolling their own, though.)
-
-
-Since we ideally don't want to write the above flags-mungeing code
-twice, there would be the option of implementing pkey_alloc() via a
-vDSO wrapper on arm64 (though this might be more trouble than it is
-worth).
-
-Of course, this is all pointless if people thought that even the
-overhead of a vDSO call was unacceptable for flipping the permissions
-on and off.  Either way, this is a potential enhancement, orthogonal to
-this series...
-
-</bikeshed>
-
-[...]
-
-Cheers
----Dave
+> 
+> Thanks,
+> 
+> Lizhi
+> 
+> > 
+> > Rob
