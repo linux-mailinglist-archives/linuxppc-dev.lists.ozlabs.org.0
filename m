@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACD993DB7C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 01:59:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE7093DB83
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:00:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dINlwLxm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=wV6vIxwI;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4VY0GVQz3flj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 09:59:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4WJ36LDz3fpw
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:00:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dINlwLxm;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=wV6vIxwI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=32dakzgykdbmbxt62vz77z4x.v75416dg88v-wxe41bcb.7i4tub.7az@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=32takzgykdbqcyu73w08805y.w86527eh99w-xyf52cdc.8j5uvc.8b0@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4Lx6czqz3ck4
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:52:57 +1000 (AEST)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-664fc7c4e51so5579817b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:52:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4M06BfTz3dTn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:53:00 +1000 (AEST)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-dfa7a8147c3so389706276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:53:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722037976; x=1722642776; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1722037978; x=1722642778; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=fmU/HR7p0h2R7XRsIfqUXhH6E22vlxrvSMQX4VgE/mU=;
-        b=dINlwLxmw/t1H3+rupxHpa2zvHX/1AyQhSuX9csnY5t27ZPFRewVkrQKuognbUGFfj
-         2MU2RjFG7N+r4P1aEoPsSgF3tvFOfHuVkvaDdKUcvpTYKgUvzIQzZwB53biom8RjEiFQ
-         EuK9ny+KGc8qM7QTTqxRScD3Wp+D0xBRIcVlTpT3MusOtL1orPNIbH4BscC/NQ27isa4
-         dYSrgGhE7i7Eg+tsjobOVPrYxS2Bu5QOyAhAZOluhEZgBTaaJB6HLRMxrLrJ7HzANYyr
-         E3FxCU7vdI8ZZ6YtBzyT/OsVALsUapG8h2FElwa6ShNXSeABOJznnhthigRHmN1Gfrsf
-         VFPQ==
+        bh=e1uaEfwlbucR9PkkwcUB/hlZrD43F2tYkTCYXf9cR5U=;
+        b=wV6vIxwIGJeqD8ED7+U+toE/Nwt0DBIbq7TUDhY9ykbf5OmIbqr3WCSZEKKTyMMHua
+         N5TEAtHHECCF08kzWCevkEiCshqNcfe6hKZAqOiXbHohE6+bxdVGmyN23lXaQbjr4HbL
+         yePOW/EZxv9rsd67Kht2M5ST64mkWa5quAJyC/AjJFdAcKMckcQs86mOTyiqiYPInXk/
+         AyrfMUdeIUHzzWDp0mXcAy6c30ed0KWqaA9W1+dQz0nX+AgLzyENGyE88lzzicbzrIjF
+         ueJXopUM3nxksGnm46gXQdZRdze0s3piaWNxH4+E0uesD/Dvw4oOMmhVBwH1scRHwWmN
+         /Aqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722037976; x=1722642776;
+        d=1e100.net; s=20230601; t=1722037978; x=1722642778;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fmU/HR7p0h2R7XRsIfqUXhH6E22vlxrvSMQX4VgE/mU=;
-        b=MH9uAtVChJi1pq4wVVoXq/dqjSPqrGMvV3iN0Srl8neUkZ6Ey/cz+9iffR17ur83Sj
-         j1NXVKaiQANCoTeZBXDjyA20WBqyENRmM+8e8lzeega83EU7K0Tpx3MuFlg6kO8wcY+O
-         y/6VWDx5NDnYF/luz9pNxAQU2UOHhXhcBVzQ/oOMk6WXmciE/yLPva8vTcPWvMNr+JtO
-         3QBFbh/MG+Pz6wyRBcL4Ja0QDGnEaKY7svGJqKNsMLchOi03PtfdlHoCvHhp+h0UYndF
-         nN1oufBu9R7ww+1tjKNC6PU/dWLsfb6gOnajbqWQkUXrkmnV2F4KhAtLV4vRL5/MCBQ+
-         hitg==
-X-Forwarded-Encrypted: i=1; AJvYcCWXPRt+rXSYjejUdOnNLJ3+rGoZrcNrysqDQ5FaI2zF+9wo1mHLvzmGmQao34sudAjkaZjmpohopqKIIH/pjDskAdkf+zFH9AAdSzjfGw==
-X-Gm-Message-State: AOJu0YwMwXmiyPb3V7BdGU9XRUrAtaY2OMsH/zkcv8AnlE+8SXSfQz9h
-	fhyEOsGrwWCKAUQQrY1S4U3qpm2bQva3rZTVG7e/mC7EMSA4RWzs/IAQco1+PXdrpUJpT9z75DD
-	jMg==
-X-Google-Smtp-Source: AGHT+IEZeCODu/YeM5d/iOhxGxPVHISuly+z8I6+5BlUeuWOyJE5t2wqwhMJ9ApQGl0yAUOujG/KjtPFVv0=
+        bh=e1uaEfwlbucR9PkkwcUB/hlZrD43F2tYkTCYXf9cR5U=;
+        b=uKy3bLv3EOjXqSAoDG6h4QpY4lp9GoHl7ywubiw4Fr6IdXKVy0Fj+j/ApEl76o9Bb9
+         ZeFFwPWh5txZoBXE/JaOYm54/osOAkrMkU6wEjPVLzxAi++1R6jn9289/vZgWCtJDRqD
+         /AO2Txs4yJUmIZXOlGVjNxnl1MK2yO7rh/QtwuRN3Jx7y0d2/jdpsNtAS6vr01iai+Hc
+         TRGNsVIbf+WC2U6E7ai/pHqlMOWETb6xxZD7SoUyR2tMQNAoG4SjWp8kEaIKovQVZitZ
+         J6+YGque1V0crAkhH4g6dkfuXUU46XC93Uypndtd8pN0LKMM2Dc/RZKB2P21dTWUI6dt
+         wX/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXvqHzZW/wWC9kRkU2HrlIdWwRzwT26s4V/WgLAazlhIh+zjnh1eN1jCcGYrrZP7QmtOB03JIo++YXQwJ9gaztfhDoYmKwlzQNFKydvjw==
+X-Gm-Message-State: AOJu0YzqXhV6S3kwgJeX+R6UE8JuLmpSTEPT0cPyNlySm/EaeldAhCUM
+	tHQVILPTEglYzk6/J60EEfzoE11vOGI0J9gbcAedgDiOFEKfOn44P+/4VeY89pK6nAjcu7JsS0E
+	L+A==
+X-Google-Smtp-Source: AGHT+IG4XdyN3FgjZWItv/Lgg5QEKJKUQifoplgps87wy/mf6q3lv4u9rcIn8zN490p0nZ8TWmWhP2C2xyU=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:ad14:0:b0:62f:f535:f41 with SMTP id
- 00721157ae682-67a0abd4d1fmr288247b3.9.1722037976008; Fri, 26 Jul 2024
- 16:52:56 -0700 (PDT)
-Date: Fri, 26 Jul 2024 16:51:18 -0700
+ (user=seanjc job=sendgmr) by 2002:a05:6902:1081:b0:e0b:1407:e357 with SMTP id
+ 3f1490d57ef6-e0b543f0dc9mr70203276.3.1722037977844; Fri, 26 Jul 2024 16:52:57
+ -0700 (PDT)
+Date: Fri, 26 Jul 2024 16:51:19 -0700
 In-Reply-To: <20240726235234.228822-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20240726235234.228822-1-seanjc@google.com>
 X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-Message-ID: <20240726235234.228822-10-seanjc@google.com>
-Subject: [PATCH v12 09/84] KVM: x86/mmu: Don't force flush if SPTE update
- clears Accessed bit
+Message-ID: <20240726235234.228822-11-seanjc@google.com>
+Subject: [PATCH v12 10/84] KVM: x86/mmu: Use gfn_to_page_many_atomic() when
+ prefetching indirect PTEs
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -91,78 +91,50 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Don't force a TLB flush if mmu_spte_update() clears Accessed bit, as
-access tracking tolerates false negatives, as evidenced by the
-mmu_notifier hooks that explicit test and age SPTEs without doing a TLB
-flush.
+Use gfn_to_page_many_atomic() instead of gfn_to_pfn_memslot_atomic() when
+prefetching indirect PTEs (direct_pte_prefetch_many() already uses the
+"to page" APIS).  Functionally, the two are subtly equivalent, as the "to
+pfn" API short-circuits hva_to_pfn() if hva_to_pfn_fast() fails, i.e. is
+just a wrapper for get_user_page_fast_only()/get_user_pages_fast_only().
 
-In practice, this is very nearly a nop.  spte_write_protect() and
-spte_clear_dirty() never clear the Accessed bit.  make_spte() always
-sets the Accessed bit for !prefetch scenarios.  FNAME(sync_spte) only sets
-SPTE if the protection bits are changing, i.e. if a flush will be needed
-regardless of the Accessed bits.  And FNAME(pte_prefetch) sets SPTE if and
-only if the old SPTE is !PRESENT.
-
-That leaves kvm_arch_async_page_ready() as the one path that will generate
-a !ACCESSED SPTE *and* overwrite a PRESENT SPTE.  And that's very arguably
-a bug, as clobbering a valid SPTE in that case is nonsensical.
+Switching to the "to page" API will allow dropping the @atomic parameter
+from the entire hva_to_pfn() callchain.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 31 +++++++++----------------------
- 1 file changed, 9 insertions(+), 22 deletions(-)
+ arch/x86/kvm/mmu/paging_tmpl.h | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 58b70328b20c..b7642f1f993f 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -518,37 +518,24 @@ static u64 mmu_spte_update_no_track(u64 *sptep, u64 new_spte)
-  * TLBs must be flushed. Otherwise rmap_write_protect will find a read-only
-  * spte, even though the writable spte might be cached on a CPU's TLB.
-  *
-+ * Remote TLBs also need to be flushed if the Dirty bit is cleared, as false
-+ * negatives are not acceptable, e.g. if KVM is using D-bit based PML on VMX.
-+ *
-+ * Don't flush if the Accessed bit is cleared, as access tracking tolerates
-+ * false negatives, and the one path that does care about TLB flushes,
-+ * kvm_mmu_notifier_clear_flush_young(), uses mmu_spte_update_no_track().
-+ *
-  * Returns true if the TLB needs to be flushed
-  */
- static bool mmu_spte_update(u64 *sptep, u64 new_spte)
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index ef0b3b213e5b..6b215a932158 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -535,8 +535,8 @@ FNAME(prefetch_gpte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
  {
--	bool flush = false;
- 	u64 old_spte = mmu_spte_update_no_track(sptep, new_spte);
+ 	struct kvm_memory_slot *slot;
+ 	unsigned pte_access;
++	struct page *page;
+ 	gfn_t gfn;
+-	kvm_pfn_t pfn;
  
- 	if (!is_shadow_present_pte(old_spte))
+ 	if (FNAME(prefetch_invalid_gpte)(vcpu, sp, spte, gpte))
+ 		return false;
+@@ -549,12 +549,11 @@ FNAME(prefetch_gpte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+ 	if (!slot)
  		return false;
  
--	/*
--	 * For the spte updated out of mmu-lock is safe, since
--	 * we always atomically update it, see the comments in
--	 * spte_has_volatile_bits().
--	 */
--	if (is_mmu_writable_spte(old_spte) &&
--	      !is_writable_pte(new_spte))
--		flush = true;
--
--	/*
--	 * Flush TLB when accessed/dirty states are changed in the page tables,
--	 * to guarantee consistency between TLB and page tables.
--	 */
--
--	if (is_accessed_spte(old_spte) && !is_accessed_spte(new_spte))
--		flush = true;
--
--	if (is_dirty_spte(old_spte) && !is_dirty_spte(new_spte))
--		flush = true;
--
--	return flush;
-+	return (is_mmu_writable_spte(old_spte) && !is_writable_pte(new_spte)) ||
-+	       (is_dirty_spte(old_spte) && !is_dirty_spte(new_spte));
+-	pfn = gfn_to_pfn_memslot_atomic(slot, gfn);
+-	if (is_error_pfn(pfn))
++	if (gfn_to_page_many_atomic(slot, gfn, &page, 1) != 1)
+ 		return false;
+ 
+-	mmu_set_spte(vcpu, slot, spte, pte_access, gfn, pfn, NULL);
+-	kvm_release_pfn_clean(pfn);
++	mmu_set_spte(vcpu, slot, spte, pte_access, gfn, page_to_pfn(page), NULL);
++	kvm_release_page_clean(page);
+ 	return true;
  }
  
- /*
 -- 
 2.46.0.rc1.232.g9752f9e123-goog
 
