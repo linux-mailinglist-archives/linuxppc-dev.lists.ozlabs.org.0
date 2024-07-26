@@ -1,101 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3BF93CDD0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 07:50:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654AF93CF3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 10:05:40 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LkGSmevw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=ebnWqam3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WVcL80zdhz3d90
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 15:50:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WVgKt2Yszz3dBM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 18:05:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LkGSmevw;
+	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=ebnWqam3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVcKL5wsZz3cHH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 15:49:58 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46Q4USqh026158;
-	Fri, 26 Jul 2024 05:49:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=pp1; bh=/pL0JuAfruxg3LvJnxZHYB3JtXD
-	cvdoee0Ej2lHdXwk=; b=LkGSmevwhm0aRHK+a9IJNrdqPoCeWWN1eHXuDHS7waf
-	GOcy3/xFTSbTwj69u2JTvZbqSpWKw92YuNTLaFfAEFVJSBEIDFE/JFlyvHCzRfqq
-	ncpROR4EKtzZNoXx+c6+Ijir3OhAifaABsQ3ejG+2iVWZglnNmUcu3pIf23gqDyQ
-	+0S6deZMi73ur/rZ8Ep9pAoNNXF71+TabWMDqssPyEghDm9TXJJhXQ2MhXbbmq0E
-	EHK/EoQeyYQaiCqc80haNKrtJzriNYZ8ND8NxzkbOC0H9kC9eawgKlUVYEa4njtf
-	HV1wrG3F2O5clA9cJxK1vCIz6OaZyul0rOZ0nFnYosw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40m3g009m6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Jul 2024 05:49:46 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46Q5nkSE024488;
-	Fri, 26 Jul 2024 05:49:46 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40m3g009m3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Jul 2024 05:49:46 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46Q52p6l018513;
-	Fri, 26 Jul 2024 05:49:45 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40kk3hmh6q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Jul 2024 05:49:45 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46Q5ndtG50332122
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 26 Jul 2024 05:49:41 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6BDC720043;
-	Fri, 26 Jul 2024 05:49:39 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 05D0120040;
-	Fri, 26 Jul 2024 05:49:36 +0000 (GMT)
-Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.124.219.245])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 26 Jul 2024 05:49:35 +0000 (GMT)
-Date: Fri, 26 Jul 2024 11:19:31 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v2] PCI: Fix crash during pci_dev hot-unplug on pseries
- KVM guest
-Message-ID: <dx32q3sa4oopk3fnm2zyeplotuq6gq3rmnbmaw3mo4q3lgjpe7@gvpgu4rdk4f4>
-Mail-Followup-To: Bjorn Helgaas <helgaas@kernel.org>, 
-	Lizhi Hou <lizhi.hou@amd.com>, Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-ppc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
-	Saravana Kannan <saravanak@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Kowshik Jois B S <kowsjois@linux.ibm.com>, 
-	Lukas Wunner <lukas@wunner.de>
-References: <p6cs4fxzistpyqkc5bv2sb76inrw7fterocdcu3snnyjpqydbr@thxna6v2umrl>
- <20240725205537.GA858788@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240725205537.GA858788@bhelgaas>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: hrWbadeSvvg3pthFD6dbebsK6nYnlI9I
-X-Proofpoint-ORIG-GUID: TUS0qhJ3TBEy9O6kA7xiLL7ZbyW2NSJ5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-26_02,2024-07-25_03,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
- bulkscore=0 clxscore=1015 mlxlogscore=671 priorityscore=1501
- suspectscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
- malwarescore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2407260036
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVgK83lWxz3cG3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 18:04:59 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1fc5549788eso3412035ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 01:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1721981095; x=1722585895; darn=lists.ozlabs.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TYWIXrzkXVZZkZdz/QrKdM2ifv+qqqsEjLpzrowXvkE=;
+        b=ebnWqam3LmPAFBjXyFGCXBWWU/LKUtbzKfSjDq16FN0XVabFYYI3bTya4DEC4yI8zj
+         kma9vnnHUEL/b0ftth8tdCMibh+M4EecNVMlcnga/QCVIhrtC1AVL/0r+hcy8DYbRf/0
+         Tsudyea0C6KVHOj2hjf5ZO5NMViVJnLGe/kWmp0nsQvDudQvyREwtS6P45bavjRyRgHu
+         1F8aRUdKf+K49WGZqcjNFs5zjKCNaF0LzRqZsZBR1cUeVU5JQRppY0oxajv31jF0CNn9
+         fh/JnoMekZ1GGneKlZVlysSHccRWhZwIOYdB8l4VXSPYJWAASIpGUHQcMr5Qk6GVpR+j
+         GkuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721981095; x=1722585895;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TYWIXrzkXVZZkZdz/QrKdM2ifv+qqqsEjLpzrowXvkE=;
+        b=UYC1mZdeb+nPUP42BBUXts4T8PR+wHe0v++IHB2D9LLY/qpzlnY2fJU346wSUm0kDM
+         7k3rRXizFIYurN2JPl7BhdHp0j2sCJCO6qcK67/dOALn++4gCJLE2faYGREJpSwJa991
+         WfvLLJLFc4/dXg8oOwgIC+dkXueKvMA6rofD3LCc1M07TQCSkfgcARFV4iJyYRIqOYRO
+         W3ZjpglfMqQVfmlwRm14DlnxZfuaVu3ruFRBlrDpJwtebFts/JzNNSLqbviK+w+sw4xu
+         dJjk1qMayHj3FcYZywtYaQPS0JwuaJOJ6VBv9llebZsArPH4tu/oAwf/eg0X3/IRcR1z
+         +vIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkCmC0T+Aj97Mrj4cqCBmkfXjDfBd3h0ovXVMEjxkZ7TG5MR6PGrgMafYGgm+LINtwDLE6xiZkk2ho5G12fowME919k1xwKWVX6ApUPg==
+X-Gm-Message-State: AOJu0Yz8B/0+c/YZQ1V+XE9Yl12iYJDwgu8mOgm7HsnSbmHWlGjN6bvI
+	CvseSQ5dgnVrpDGjvEszDTl6f8PDyMo6CfJjRjXlLMAaDCWwkE6ME9yASKk/6Do=
+X-Google-Smtp-Source: AGHT+IEThCF8MbTWoYXIfCiu9y7Wa9LyskvBWhr5h/HfiuuzcdkiOmRFKdkB2FSE+F5WHhuVNo59Hw==
+X-Received: by 2002:a17:902:f685:b0:1fd:9fd8:1b2f with SMTP id d9443c01a7336-1fed90b8c7amr55949925ad.8.1721981094597;
+        Fri, 26 Jul 2024 01:04:54 -0700 (PDT)
+Received: from dev-mattc2.dev.purestorage.com ([208.88.159.129])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1fed7d37b9asm26186495ad.114.2024.07.26.01.04.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jul 2024 01:04:54 -0700 (PDT)
+From: Matthew W Carlis <mattc@purestorage.com>
+To: macro@orcam.me.uk
+Subject: PCI: Work around PCIe link training failures
+Date: Fri, 26 Jul 2024 02:04:46 -0600
+Message-Id: <20240726080446.12375-1-mattc@purestorage.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20240724191830.4807-1-mattc@purestorage.com>
+References: <20240724191830.4807-1-mattc@purestorage.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,32 +76,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lizhi Hou <lizhi.hou@amd.com>, Lukas Wunner <lukas@wunner.de>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org, mahesh@linux.ibm.com, edumazet@google.com, oohall@gmail.com, sr@denx.de, leon@kernel.org, linux-rdma@vger.kernel.org, christophe.leroy@csgroup.eu, kuba@kernel.org, pabeni@redhat.com, wilson@tuliptree.org, npiggin@gmail.com, alex.williamson@redhat.com, ilpo.jarvinen@linux.intel.com, bhelgaas@google.com, mika.westerberg@linux.intel.com, pali@kernel.org, david.abdurachmanov@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, lukas@wunner.de, mattc@purestorage.com, saeedm@nvidia.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Bjorn,
+On Mon, 22 Jul 2024, Maciej W. Rozycki wrote:
 
-On 2024/07/25 03:55 PM, Bjorn Helgaas wrote:
-> On Thu, Jul 25, 2024 at 11:15:39PM +0530, Amit Machhiwal wrote:
-> > ...
-> > The crash in question is a critical issue that we would want to have
-> > a fix for soon. And while this is still being figured out, is it
-> > okay to go with the fix I proposed in the V1 of this patch?
-> 
-> v6.10 has been released already, and it will be a couple months before
-> the v6.11 release.
-> 
-> It looks like the regression is 407d1a51921e, which appeared in v6.6,
-> almost a year ago, so it's fairly old.
-> 
-> What target are you thinking about for the V1 patch?  I guess if we
-> add it as a v6.11 post-merge window fix, it might get backported to
-> stable kernels before v6.11?  
+> The main reason is it is believed that it is the downstream device
+> causing the issue, and obviously you can't fetch its ID if you can't
+> negotiate link so as to talk to it in the first place.
 
-Yes, I think we can go ahead with taking V1 patch for v6.11 post-merge window to
-fix the current bug and ask Ubuntu to pick it while Lizhi's proposed patch goes
-under test and review.
+Have had some more time to look into this issue. So, I think the problem
+with this change is that it is quite strict in its assumptions about what
+it means when a device fails to train, but in an environment where hot-plug
+is exercised frequently you are essentially bound have something interrupt
+the link training. In the first case where we caught this problem our test
+automation was doing some power cycle tortures on our endpoints. If you catch
+the right timing the link will be forced down to Gen1 forever without some other
+automation to recover you unless your device is the one single device in the
+allowlist which had the hardware bug in the first place.
 
-Thanks,
-Amit
+I wonder if we can come up with some kind of alternative.
+
+- Matt
