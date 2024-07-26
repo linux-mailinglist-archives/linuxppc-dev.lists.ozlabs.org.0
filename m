@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F2493DC41
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C6293DC48
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:18:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kxXnGmg7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=K2r1ft2l;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4w22Dczz3dV6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:18:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4wp5mSfz3dWG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:18:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kxXnGmg7;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=K2r1ft2l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3dzekzgykdeo4qmzvos00sxq.o0yxuz6911o-pq7xu454.0bxmn4.03s@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::44a; helo=mail-pf1-x44a.google.com; envelope-from=3etekzgykdew6so1xqu22uzs.q20zw18b33q-rs9zw676.2dzop6.25u@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4N13Hndz3dWv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:53:53 +1000 (AEST)
-Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-2cb5ba80e77so1679762a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:53:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4N34LgPz3dWW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:53:55 +1000 (AEST)
+Received: by mail-pf1-x44a.google.com with SMTP id d2e1a72fcca58-70d1d51f3e9so1504842b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:53:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722038032; x=1722642832; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1722038034; x=1722642834; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=4+b7zhduK4lVkLFwoy0UCXuK8f7LQragdXHyxQERLss=;
-        b=kxXnGmg7vYRMysEj1N0Z/9fd3WUXEHenykYWrRIzHWArfG3yiXXVz/Qdg2MbrYzxAE
-         07J2ZxR2YjI1sqP6VwGRjHG9iyYO5ZE2tIMQJ6hC4nJK2DozPLdI+hRA5dsW1ej6O1w3
-         zRlImEn7sB8vE0mf2pGIw3qgqlZtFMCexJTPNQPEUWUACDS01R6aien+iYTW2TW6pQtp
-         gffRFljmnybEMisTl4qBX23pBl7alIYVtmsIEUXuAIKg2i8NBbmXwjKDoJXXcs3kRQPC
-         vJtMA8ZiyjxdKZgnQ2pqKTORtBT5NbmuSiTVtjcv8etqf18dpa9CrIRiKJBPOs1C2olZ
-         M15g==
+        bh=WZrNaP2gtmwMUuypG9xN5YPW8gmxxvZG3Q4zEjuRFyk=;
+        b=K2r1ft2loMpevyW7QYzqJBX1ZFqkiWtmRQQDPzj78KY0Dp5bNu0dkyof/yIwYETyzv
+         N9UebdsujwkHOxl16qez23etBSQEF0r+OhdF4UV/K/juk8S34W/GHhjvboZHt9eslzTv
+         LK4XBjkUf93uZPg5rkuukU+UwhdCFxJW08DAZXINIkCWg7L/ATh4+XCQTPlqbRKUi8c8
+         Yaprm4h6Lm6B5PZ3DA+LxDGeXcHc2kp6ZyJ1sCejLC25trIhpZZ0jggLhiJCdCWIjbXO
+         OxJUhFTUqGxSuLXaTz4IqK7uOF0Up8hFKHLj5MS4Oh4eq8V78ZGf5Pj8PsyMAsLBU+2h
+         S/cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722038032; x=1722642832;
+        d=1e100.net; s=20230601; t=1722038034; x=1722642834;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4+b7zhduK4lVkLFwoy0UCXuK8f7LQragdXHyxQERLss=;
-        b=pIPJorrdyG6H0JvJLewop5kwYW23JeEhpYngDJQzFq7paVbRp0wGkg4l881HKzVJyB
-         mTXqLaQjoRiJCMEgTqiWTthYtKCVJfJW5haeB05sFKQTHrLIKrM3RS/isTOpok3R4Jyn
-         uVxDfC2qJMvgDx/ZBQwWbjUxkcfqTp/uzWQybJwaJ1CAIpAQV9Zvjn11Ubt3NvF3WyIk
-         IJOASOTrWiOAtEZMrcGHiC/T2XKKDkNiOtA6QetEfIkMEq09B5WKs+9ra5zWd95INpSS
-         BNpVxmonvc41oebytR7OEeqWH5OT1QIWcJOjua96vLG07pGqQlWHhwqVA77TCQEoC/Ll
-         vvfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXs26Z3mTorNk8gzrVm7tDdKiFk4fQp0CEGNHWns2v7YTtfOy0+M6s42pVPywg4upyhueTmcVfiwLUW3C/ApXytkh/oICLtDrF9dJ5DZg==
-X-Gm-Message-State: AOJu0Yzt7pXuLJXquioCLjBqWC482Z2gvRVVLzWi/AFFR2F+KY6kSWg/
-	aWcQKSd+1cWlaxEjrbX4/yiwf8hhavHm7GzLmcSkXXBekZ5SZwp6d77SRWl62PplFQB8pl7stuc
-	swA==
-X-Google-Smtp-Source: AGHT+IH83fBTCbgjCdiYRsrBHzQDSmPEXzxw/dBUECcFBZL6/864S5lAdfsy5Zb31ECaUXnMa239gb1WZDE=
+        bh=WZrNaP2gtmwMUuypG9xN5YPW8gmxxvZG3Q4zEjuRFyk=;
+        b=rQEhw8jLb68VMmTFEriyDaUJPLGAiaI37DxwlHJP60Qtf7YkcTLuPIxWowMVlr57ug
+         IPOZiv2ZpDDK/cb9S28jId/nuJl7ukS+Q2fztohvaxQRGEkcBplCGizylkHRcDXe8z3n
+         BCwh2HLQZ3qYDIuKvxIsFn9FZY0b0/GerokbZgtXd0wpbgsk6zc+xPhymcn+d+d7mpYv
+         SdVwxDW3g4fXRwxnDtNGd29NhCIWQ30acpquUCeobqEiHbCZBY4DVwyCkKF4YQjhoSl+
+         /XTKVKKeTjuAn20VQ5fT9vGnStPZvfZuQnOs4obl+Yudgb3pQ5RFZ25EvmhfwHx1Mjd3
+         XjLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXLFHnvc22jhELba+z/+nddxSLAP0jB+SUpYcR4ELoX2xLmYfSvjsGeXAEo7oIfI5KfrSvQ/hd2p/FKNMSMJfocj9xwoFAWdlhZnQSugA==
+X-Gm-Message-State: AOJu0YwIiO4gO/2QuGLnULJU007ExL9K4YQ1G+7g2IYlBH7/NaHrgrhd
+	HBII0YD16BGWUtRMeG6WfhdyYIY32t8MxtRE3P1tBW2lpNXOZGDZ8PRQrTuo1i+19rQdkg+IrDJ
+	Tng==
+X-Google-Smtp-Source: AGHT+IGBlhv2aegJ385ep1cUBQA5c+rLA7WdLDI/xGSka7RxNxI5KP3IWpNdT5/lkHtS9+xMECoFkdebDOk=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90b:4f8b:b0:2c9:759f:a47d with SMTP id
- 98e67ed59e1d1-2cf7e84e558mr8570a91.4.1722038031713; Fri, 26 Jul 2024 16:53:51
- -0700 (PDT)
-Date: Fri, 26 Jul 2024 16:51:45 -0700
+ (user=seanjc job=sendgmr) by 2002:a05:6a00:1829:b0:70d:1bf2:2878 with SMTP id
+ d2e1a72fcca58-70ecee0a0ebmr24898b3a.5.1722038033787; Fri, 26 Jul 2024
+ 16:53:53 -0700 (PDT)
+Date: Fri, 26 Jul 2024 16:51:46 -0700
 In-Reply-To: <20240726235234.228822-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20240726235234.228822-1-seanjc@google.com>
 X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-Message-ID: <20240726235234.228822-37-seanjc@google.com>
-Subject: [PATCH v12 36/84] KVM: x86: Use kvm_lookup_pfn() to check if APIC
- access page was installed
+Message-ID: <20240726235234.228822-38-seanjc@google.com>
+Subject: [PATCH v12 37/84] KVM: x86/mmu: Add "mmu" prefix fault-in helpers to
+ free up generic names
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -91,55 +91,111 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use kvm_lookup_pfn() to verify that the APIC access page was allocated and
-installed as expected.  The mapping is controlled by KVM, i.e. it's
-guaranteed to be backed by struct page, the purpose of the check is purely
-to ensure the page is allocated, i.e. that KVM doesn't point the guest at
-garbage.
+Prefix x86's faultin_pfn helpers with "mmu" so that the mmu-less names can
+be used by common KVM for similar APIs.
+
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/lapic.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/x86/kvm/mmu/mmu.c          | 19 ++++++++++---------
+ arch/x86/kvm/mmu/mmu_internal.h |  2 +-
+ arch/x86/kvm/mmu/paging_tmpl.h  |  2 +-
+ 3 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 6d65b36fac29..88dc43660d23 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2612,8 +2612,8 @@ void kvm_apic_update_apicv(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index a201b56728ae..4d30920f653d 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4301,8 +4301,8 @@ static u8 kvm_max_private_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
+ 	return req_max_level;
+ }
  
- int kvm_alloc_apic_access_page(struct kvm *kvm)
+-static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
+-				   struct kvm_page_fault *fault)
++static int kvm_mmu_faultin_pfn_private(struct kvm_vcpu *vcpu,
++				       struct kvm_page_fault *fault)
  {
--	struct page *page;
- 	void __user *hva;
-+	kvm_pfn_t pfn;
- 	int ret = 0;
+ 	int max_order, r;
  
- 	mutex_lock(&kvm->slots_lock);
-@@ -2628,17 +2628,16 @@ int kvm_alloc_apic_access_page(struct kvm *kvm)
- 		goto out;
- 	}
+@@ -4325,10 +4325,11 @@ static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
+ 	return RET_PF_CONTINUE;
+ }
  
--	page = gfn_to_page(kvm, APIC_DEFAULT_PHYS_BASE >> PAGE_SHIFT);
--	if (!page) {
--		ret = -EFAULT;
--		goto out;
--	}
--
- 	/*
- 	 * Do not pin the page in memory, so that memory hot-unplug
- 	 * is able to migrate it.
- 	 */
--	put_page(page);
-+	pfn = kvm_lookup_pfn(kvm, APIC_DEFAULT_PHYS_BASE >> PAGE_SHIFT);
-+	if (is_error_noslot_pfn(pfn)) {
-+		ret = -EFAULT;
-+		goto out;
-+	}
-+
- 	kvm->arch.apic_access_memslot_enabled = true;
- out:
- 	mutex_unlock(&kvm->slots_lock);
+-static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
++static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
++				 struct kvm_page_fault *fault)
+ {
+ 	if (fault->is_private)
+-		return kvm_faultin_pfn_private(vcpu, fault);
++		return kvm_mmu_faultin_pfn_private(vcpu, fault);
+ 
+ 	fault->pfn = __gfn_to_pfn_memslot(fault->slot, fault->gfn, false, true,
+ 					  fault->write, &fault->map_writable);
+@@ -4363,8 +4364,8 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	return RET_PF_CONTINUE;
+ }
+ 
+-static int kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
+-			   unsigned int access)
++static int kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
++			       struct kvm_page_fault *fault, unsigned int access)
+ {
+ 	struct kvm_memory_slot *slot = fault->slot;
+ 	int ret;
+@@ -4447,7 +4448,7 @@ static int kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
+ 	if (mmu_invalidate_retry_gfn_unsafe(vcpu->kvm, fault->mmu_seq, fault->gfn))
+ 		return RET_PF_RETRY;
+ 
+-	ret = __kvm_faultin_pfn(vcpu, fault);
++	ret = __kvm_mmu_faultin_pfn(vcpu, fault);
+ 	if (ret != RET_PF_CONTINUE)
+ 		return ret;
+ 
+@@ -4524,7 +4525,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	if (r)
+ 		return r;
+ 
+-	r = kvm_faultin_pfn(vcpu, fault, ACC_ALL);
++	r = kvm_mmu_faultin_pfn(vcpu, fault, ACC_ALL);
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
+@@ -4617,7 +4618,7 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
+ 	if (r)
+ 		return r;
+ 
+-	r = kvm_faultin_pfn(vcpu, fault, ACC_ALL);
++	r = kvm_mmu_faultin_pfn(vcpu, fault, ACC_ALL);
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
+diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+index f67396c435df..a5113347bb12 100644
+--- a/arch/x86/kvm/mmu/mmu_internal.h
++++ b/arch/x86/kvm/mmu/mmu_internal.h
+@@ -235,7 +235,7 @@ struct kvm_page_fault {
+ 	/* The memslot containing gfn. May be NULL. */
+ 	struct kvm_memory_slot *slot;
+ 
+-	/* Outputs of kvm_faultin_pfn.  */
++	/* Outputs of kvm_mmu_faultin_pfn().  */
+ 	unsigned long mmu_seq;
+ 	kvm_pfn_t pfn;
+ 	bool map_writable;
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index bc801d454f41..b02d0abfca68 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -811,7 +811,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	if (r)
+ 		return r;
+ 
+-	r = kvm_faultin_pfn(vcpu, fault, walker.pte_access);
++	r = kvm_mmu_faultin_pfn(vcpu, fault, walker.pte_access);
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
 -- 
 2.46.0.rc1.232.g9752f9e123-goog
 
