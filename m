@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B288393DBD0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:07:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021E693DBD7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:08:27 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=C5zPkJs5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=4g6PaYv8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4h14gmjz3fp0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:07:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4hm6ZnVz3fpt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:08:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=C5zPkJs5;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=4g6PaYv8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=38dakzgykdcszlhuqjnvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=38jakzgykdc0bnjwslpxxpun.lxvurwdgyyl-mneurbcb.xiujkb.xap@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4MQ3CNmz3d8S
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:53:22 +1000 (AEST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-66619cb2d3eso5958457b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:53:22 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4MS3kBYz3dLc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:53:24 +1000 (AEST)
+Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-70d1c6b7bb4so1137265b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:53:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722038000; x=1722642800; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1722038003; x=1722642803; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=khS3+Cji6+1mvvdZyBUq0wqzq89EmN0cfXvMph1EjiU=;
-        b=C5zPkJs5BKd6hBpk6bk7pdPZIbj/uK+Ryup46C9tjtjoYPMIh8XavMiYv4bVfQiw9o
-         5Vww+DBrI8xuUNMX8wsEdzDuxyLL1nCS7XZ7dr2okI0g5NQ/mYTwKCvuIH7hgP+wNwP/
-         7b8AYV4M0ER7x0aZ2WRxQGUVk+BY7ocgGrzAZpswarDAQdJKNayfsZ1uUEN8Ku+3KL1B
-         L8Y+jxntpKdTnXey/BNYch+HmVW4ccKR4OO/AySkaQkldoAdzUcntc5y3+3aWk/6iJyd
-         2xhgeosYb+noUxpvDrICJv4cSF2AJORcnSmL1LDDhO9/HK4M73IwZsA2BMnlneUX/cDs
-         7YLw==
+        bh=nY4qfmLxHYNbNwSwtMKIrsjqMbHvtDgV5qSHM3zuSO0=;
+        b=4g6PaYv8l8K6dHSaUcJy/lgzfD1tjJoALeNVOJw8FR4OJ1PLh8+7kQnNkJmMzagMZm
+         2t9rsfzI/yGiTfa+BHimkx4Wmzk1H/+lpW2l0aK916BSvJmVYT78X3u47Bp5l8kNqf7B
+         TZikxotAmTqIyUHEwgjXCd6TvV4jOw4DU3AAFMChlRK3WNgpclsJRhWi1i9jnsZSlgu8
+         kjE/aV1f1GnvY6aPyJ6t8yAIsGV6iun6hj9jriYy0/u4oGg/Xp3NjN6im7IRLU/CI+fT
+         ru0RHUR1KV9c6AB39LvgpQjpTe5ViRGfi1xP2/BDhwbmJe8T5h6+zOsRbaYLlK/b9d3X
+         0MKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722038000; x=1722642800;
+        d=1e100.net; s=20230601; t=1722038003; x=1722642803;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=khS3+Cji6+1mvvdZyBUq0wqzq89EmN0cfXvMph1EjiU=;
-        b=MCJyCDu1HtmiXjdAKyx2gCuX1Pk+6bp3jokYAZCQWpJumqS4h/0vQSRZpS478BFwY8
-         e8+FECpRb5rUSANskBH/UAVQGtjbN1eYLnN7mZy6Pqq0rGfPzBPVcux0E2mspswVVjVo
-         xPQHRboaentcvakCXRDYHWXJxjkP2y6N8iMVZZquGMkTpEb07rdNRdCRLH/nc1TDFa6t
-         aBa7X4lBg+Bchwu4vwNXi+f638kGTjf7HfqGwgpNhIy8nJEBKhIJ9I3Z9tktoJQJoziq
-         2eJXb72NNjjiax0jwnfR8BxFkxld2tp9QAyBQT0TvQRBkjRtz5KyMZ/mNfGY0FSzuiE/
-         7oNA==
-X-Forwarded-Encrypted: i=1; AJvYcCXcDzon5gaLompstHD7XiZmUDpOT2Cwhf5esOcJYWrhCcopL/J/U+6aYWAbEY/ohJb10AY71YiGRCcxJ1KM3wk7pModM7+1u30N+NAKIw==
-X-Gm-Message-State: AOJu0YweBxRAUJHYkU/iEVbMHpWznpTQNa4TWeXaGGVu/amyPpWLlh1q
-	tsS21GK+bN9ln7RDqoFMGLWjHYcu6RiZEOdUSdCAPh3JbxXGnnFY61lIag0ekl6X7UfAkrK8NeF
-	TdA==
-X-Google-Smtp-Source: AGHT+IHn8ljNba0QNoBWKfaXu8Wx8VTGIoZ1RPeW8pDsltrF/Hl6Iy7/rU4VvDeHaG7eZvfgbbZBLlqPjFc=
+        bh=nY4qfmLxHYNbNwSwtMKIrsjqMbHvtDgV5qSHM3zuSO0=;
+        b=T5dR/7g1WOy9vn627Qk1AF+1krDiaavaz2Py1K8jh5/CZf5LZfQO9OT6JNppWZJM0A
+         mc+MrpdAOa4CSKS7W8EzSusZhX7AP2IMAaW++Mbbcpdy6tn7/szo0oTm92VgRL06o4iJ
+         S3uGhioeLC1a7Ya76XUr7w3GSEG9prC1snlfB8pXk3PYDbA54q6w5fHfteWenXcbhqBs
+         sP2IbcBzj1ROnklLhBekjc/8AyxDnTlKPegtiMuHO+sVAJ16L2he4XVgADAz9nJ0SHBK
+         cWBSFHwnTdmWakO54J/WmpDjEnMfdqPAwpSACZY6atC3XXJ85V5yfh8fXr+9Ytq6wpRD
+         VCoA==
+X-Forwarded-Encrypted: i=1; AJvYcCXm7QxGf3tCqxYOMqyt0Zuad1rB5j4dasWi6TeMPtrV93aXmvwwQ3f09NrpX87iMaxEIWVmGdbLCdt2o8h9yfyQMoSwVJ5Mp+skD4Z18g==
+X-Gm-Message-State: AOJu0Yxa2mgY1gbD4v8HDPexZzD9F5tS+Lwbl/n1WF8kNokwiK6eaMQL
+	pBK++dVEyFGirX+202wqBnmfjE7qBpoXzjr35jki4heu8HZj4WwuI7WGJbdY7BQeOb2kkycKYYX
+	JkA==
+X-Google-Smtp-Source: AGHT+IH3GR1gDSsaIiyxz/X29dplakZOpWNN6FppUWgXRDWsCZD6dFhJbJXFL2hO7f6rIpjA8QVwSQZzxjA=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:806:b0:64a:8aec:617c with SMTP id
- 00721157ae682-679fffd3e35mr362617b3.0.1722038000511; Fri, 26 Jul 2024
- 16:53:20 -0700 (PDT)
-Date: Fri, 26 Jul 2024 16:51:30 -0700
+ (user=seanjc job=sendgmr) by 2002:a05:6a00:6f1c:b0:70d:138a:bee8 with SMTP id
+ d2e1a72fcca58-70ece533146mr8919b3a.0.1722038002674; Fri, 26 Jul 2024 16:53:22
+ -0700 (PDT)
+Date: Fri, 26 Jul 2024 16:51:31 -0700
 In-Reply-To: <20240726235234.228822-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20240726235234.228822-1-seanjc@google.com>
 X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-Message-ID: <20240726235234.228822-22-seanjc@google.com>
-Subject: [PATCH v12 21/84] KVM: nVMX: Rely on kvm_vcpu_unmap() to track
- validity of eVMCS mapping
+Message-ID: <20240726235234.228822-23-seanjc@google.com>
+Subject: [PATCH v12 22/84] KVM: nVMX: Drop pointless msr_bitmap_map field from
+ struct nested_vmx
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -91,36 +91,63 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove the explicit evmptr12 validity check when deciding whether or not
-to unmap the eVMCS pointer, and instead rely on kvm_vcpu_unmap() to play
-nice with a NULL map->hva, i.e. to do nothing if the map is invalid.
-
-Note, vmx->nested.hv_evmcs_map is zero-allocated along with the rest of
-vcpu_vmx, i.e. the map starts out invalid/NULL.
+Remove vcpu_vmx.msr_bitmap_map and instead use an on-stack structure in
+the one function that uses the map, nested_vmx_prepare_msr_bitmap().
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/nested.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/x86/kvm/vmx/nested.c | 8 ++++----
+ arch/x86/kvm/vmx/vmx.h    | 2 --
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 2392a7ef254d..a34b49ea64b5 100644
+index a34b49ea64b5..372d005e09e7 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -231,11 +231,8 @@ static inline void nested_release_evmcs(struct kvm_vcpu *vcpu)
- 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+@@ -621,7 +621,7 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
+ 	int msr;
+ 	unsigned long *msr_bitmap_l1;
+ 	unsigned long *msr_bitmap_l0 = vmx->nested.vmcs02.msr_bitmap;
+-	struct kvm_host_map *map = &vmx->nested.msr_bitmap_map;
++	struct kvm_host_map msr_bitmap_map;
  
--	if (nested_vmx_is_evmptr12_valid(vmx)) {
--		kvm_vcpu_unmap(vcpu, &vmx->nested.hv_evmcs_map, true);
--		vmx->nested.hv_evmcs = NULL;
--	}
+ 	/* Nothing to do if the MSR bitmap is not in use.  */
+ 	if (!cpu_has_vmx_msr_bitmap() ||
+@@ -644,10 +644,10 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
+ 			return true;
+ 	}
+ 
+-	if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcs12->msr_bitmap), map))
++	if (kvm_vcpu_map(vcpu, gpa_to_gfn(vmcs12->msr_bitmap), &msr_bitmap_map))
+ 		return false;
+ 
+-	msr_bitmap_l1 = (unsigned long *)map->hva;
++	msr_bitmap_l1 = (unsigned long *)msr_bitmap_map.hva;
+ 
+ 	/*
+ 	 * To keep the control flow simple, pay eight 8-byte writes (sixteen
+@@ -711,7 +711,7 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
+ 	nested_vmx_set_intercept_for_msr(vmx, msr_bitmap_l1, msr_bitmap_l0,
+ 					 MSR_IA32_FLUSH_CMD, MSR_TYPE_W);
+ 
+-	kvm_vcpu_unmap(vcpu, &vmx->nested.msr_bitmap_map, false);
++	kvm_vcpu_unmap(vcpu, &msr_bitmap_map, false);
+ 
+ 	vmx->nested.force_msr_bitmap_recalc = false;
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 42498fa63abb..889c6c42ee27 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -204,8 +204,6 @@ struct nested_vmx {
+ 	struct kvm_host_map virtual_apic_map;
+ 	struct kvm_host_map pi_desc_map;
+ 
+-	struct kvm_host_map msr_bitmap_map;
 -
-+	kvm_vcpu_unmap(vcpu, &vmx->nested.hv_evmcs_map, true);
-+	vmx->nested.hv_evmcs = NULL;
- 	vmx->nested.hv_evmcs_vmptr = EVMPTR_INVALID;
- 
- 	if (hv_vcpu) {
+ 	struct pi_desc *pi_desc;
+ 	bool pi_pending;
+ 	u16 posted_intr_nv;
 -- 
 2.46.0.rc1.232.g9752f9e123-goog
 
