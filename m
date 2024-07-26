@@ -2,68 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A6693DC75
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AD893DC7B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:22:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=hPrmuEwH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zAE6kCkW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WW50n3LLCz2ypm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:22:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WW51X6gMFz2ypm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:22:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=hPrmuEwH;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=zAE6kCkW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3hdekzgykdfch3zc815dd5a3.1dba7cjmee1-23ka7hih.doaz0h.dg5@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3hjekzgykdfkj51ea37ff7c5.3fdc9elogg3-45mc9jkj.fqc12j.fi7@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4NG1kwxz3dLc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:54:06 +1000 (AEST)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-6698f11853aso5969277b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:54:05 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4NJ6hnlz3ck4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:54:08 +1000 (AEST)
+Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-7a28f78c67aso1346521a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:54:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722038044; x=1722642844; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1722038047; x=1722642847; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=66tkjZePX8REZ4BHWwuGWSSOzSubgrfSmhtIFHX3PRM=;
-        b=hPrmuEwHWSgZpyzQPhTZe7c87FTfOIpNKn1rp8umSsiupRdcy2/yobNnytIrhKY8rd
-         aWJcaIJRQb/bAwMbK4kAJYwPfozoaRAIidc7LudoefDWDE8rn8zKPvoV8qVA6J8QUhBZ
-         xNwNYdE0IYVxfaDOr6JAEzEcd1yiEx34KNot5xWUtEbQvQHhulOOf0jZIm+fNQzJrdPJ
-         kX0ECTylC7m+y16Itx3HQa/L0eC5zfs6dl9uF58K5lSIQTPxAF9y5qmEMZELY/VeR496
-         RhenL0aMgzdyxj/TS+/OasyISOufoN+TniRbmiaULPI9AbAqtcRHNLC7kXc49kOWpny7
-         jV5A==
+        bh=wxuzXAlWAmTLEMJkRQnxVQGU0NLqznOMJ0954FoR3Ro=;
+        b=zAE6kCkWPNammJ2CJZKAtrj0Xk4wamE+vA+EOuaf8h0htlMSe4CW4wt3PsovrzcPiu
+         RYpAQuQp4ozz3PdseP8Mpd8dx88Os6nYZQPGz9YSgR25iUSMFhpaKvGWqf/ioYL9Wg+q
+         cfkGRGANqVHwRxciudZ4Heh0FQpK7lWZ80pspN455t/lwpsBi34OEd588VQ1WCcs6plN
+         UNjEq4MoFU7ahxrTEPMVnD+Am/i2pNKbrv+kPnOv73S3aV6gTMTJumVth49OJykeB/6z
+         9KsdmP8eIBoao61E3iaHlyznBrg49jcG55CJFIafR0aWQLlTkwdDRd9y9hkzLqhkoe5Z
+         vR4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722038044; x=1722642844;
+        d=1e100.net; s=20230601; t=1722038047; x=1722642847;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=66tkjZePX8REZ4BHWwuGWSSOzSubgrfSmhtIFHX3PRM=;
-        b=oVQ6nFgKrGC2AGEoNfsYy43mTU2/Tnd4C+GarPpIa7Gw9nDmbrPzl+ng+X0m8rep1a
-         b1M0Y+J75KVcWIpP/vkB2WEqceYknVg9mM5YwuiG32O/7oHpP/gzPVeS2O4Ty0+pxSEu
-         /41a2sTzlv1ljB60l2iUUHTXfW0IP4KHCIZhTPhPXs+kiz2Iwgo+TsDtClCpuOl5yBq+
-         f+BkQTyjs6KIuOL8qNJTRuORIRKhV5OXQkq+iiD/+nBAwmdZYbviaYvNzxH2ZkQt/o3Z
-         pq9YLiKH/YbJ1kq4+y4nC86RW+S6n5PTNkHA4DqSFduyFcKwOUzYpevSRQdSAKsSC69g
-         Hkew==
-X-Forwarded-Encrypted: i=1; AJvYcCWe/YtBk/kn7FItevyE4uy7jHwGcahtUIEM5WCKBirbe6EGVHEN9R6dMD0n4ZCKjUtuBmpDaqZd9dNIuYa1hZSyeUNkk2k6uTCukj+l9g==
-X-Gm-Message-State: AOJu0Yyo0K6c0z8XHoa/+MAjd2ZOAkTC9a/SmioRkvOBWT18eUieff6L
-	TyOYxKHdxzc0oiJZhTy0oT5ejNwl7r/WqfcdsOpnguMu6qD3pOypMmRg911HX44dsY1kASu7gYn
-	a6A==
-X-Google-Smtp-Source: AGHT+IEXCHhy0parcxZWaUKhAkA9z5ds6aScUvbMwsWWyatCr0tT87bBO0XasR4cX5mU+wgB/x+9BeJQnC8=
+        bh=wxuzXAlWAmTLEMJkRQnxVQGU0NLqznOMJ0954FoR3Ro=;
+        b=ESIGO+FmwBn0vwKwZyss4jprAyd/sj4t2xb9+/8GO482cWCgXgKLTe49CASDjxxAH3
+         mu9F1pfEAlW9zTbBP79VjECnDzzBMPnOmeGWRBgaMjpqSl/zn5hMrTWcDLc8r1HRFtk4
+         hWSg3zD3YV+k6o7JZM8GSf67coEearwp3c7UG7zNT2K0uLtEwL1R1144hb+ZFIPCdUvF
+         ol+yt0JLZZGd29eAGqPljL56tDx621AwR6uyPA10sUtoO4/L7Fzvtj2tGht0LtUpaLp8
+         NrmF2/TNLYntevvrfoYRevw5fK/zDLWSCwb95ILQpy63vHQPFG9W8oZqYTnP42oxThEq
+         3ikg==
+X-Forwarded-Encrypted: i=1; AJvYcCWFZukN/ME5nznjQ0wwZBewfKetcvu+0ajsqJq+S7QfEGbkHCIv5zQ/zHFqZwY0axt/dRkwLcBpFLHcfAYytpIwUnyVbABXrFz0yNgWwQ==
+X-Gm-Message-State: AOJu0YzIQlNghrXXQ5dBhxCKGqHV8a3kz7Yao53+YrxXuosCC2FBomi6
+	cjB0zNBp9QrAIXla+5ziBKSKPyEcGO2HOu5kmeiTiXmCQf6DyFO+fde0yoL2JNtqNcJhcllQxOq
+	blQ==
+X-Google-Smtp-Source: AGHT+IHHkDF9jDFipyHQqfPDWUmaQYRR7lKWyDIChzQG4y5VknOXhGJqf1L9qSRAYqKwiuxxpki7u8BCvjE=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:690c:f92:b0:673:b39a:92f2 with SMTP id
- 00721157ae682-67a0a7fd778mr244297b3.7.1722038044118; Fri, 26 Jul 2024
- 16:54:04 -0700 (PDT)
-Date: Fri, 26 Jul 2024 16:51:51 -0700
+ (user=seanjc job=sendgmr) by 2002:a63:141f:0:b0:6e5:ef07:5922 with SMTP id
+ 41be03b00d2f7-7ac8d9d818bmr4158a12.1.1722038046008; Fri, 26 Jul 2024 16:54:06
+ -0700 (PDT)
+Date: Fri, 26 Jul 2024 16:51:52 -0700
 In-Reply-To: <20240726235234.228822-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20240726235234.228822-1-seanjc@google.com>
 X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-Message-ID: <20240726235234.228822-43-seanjc@google.com>
-Subject: [PATCH v12 42/84] KVM: Move declarations of memslot accessors up in kvm_host.h
+Message-ID: <20240726235234.228822-44-seanjc@google.com>
+Subject: [PATCH v12 43/84] KVM: Add kvm_faultin_pfn() to specifically service
+ guest page faults
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -90,48 +91,79 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move the memslot lookup helpers further up in kvm_host.h so that they can
-be used by inlined "to pfn" wrappers.
+Add a new dedicated API, kvm_faultin_pfn(), for servicing guest page
+faults, i.e. for getting pages/pfns that will be mapped into the guest via
+an mmu_notifier-protected KVM MMU.  Keep struct kvm_follow_pfn buried in
+internal code, as having __kvm_faultin_pfn() take "out" params is actually
+cleaner for several architectures, e.g. it allows the caller to have its
+own "page fault" structure without having to marshal data to/from
+kvm_follow_pfn.
 
-No functional change intended.
+Long term, common KVM would ideally provide a kvm_page_fault structure, a
+la x86's struct of the same name.  But all architectures need to be
+converted to a common API before that can happen.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- include/linux/kvm_host.h | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/linux/kvm_host.h | 11 +++++++++++
+ virt/kvm/kvm_main.c      | 22 ++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 5a572cef4adc..ef0277b77375 100644
+index ef0277b77375..e0548ae92659 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -1153,6 +1153,10 @@ static inline bool kvm_memslot_iter_is_valid(struct kvm_memslot_iter *iter, gfn_
- 	     kvm_memslot_iter_is_valid(iter, end);			\
- 	     kvm_memslot_iter_next(iter))
+@@ -1217,6 +1217,17 @@ void kvm_release_page_clean(struct page *page);
+ void kvm_release_page_dirty(struct page *page);
  
-+struct kvm_memory_slot *gfn_to_memslot(struct kvm *kvm, gfn_t gfn);
-+struct kvm_memslots *kvm_vcpu_memslots(struct kvm_vcpu *vcpu);
-+struct kvm_memory_slot *kvm_vcpu_gfn_to_memslot(struct kvm_vcpu *vcpu, gfn_t gfn);
+ kvm_pfn_t kvm_lookup_pfn(struct kvm *kvm, gfn_t gfn);
++kvm_pfn_t __kvm_faultin_pfn(const struct kvm_memory_slot *slot, gfn_t gfn,
++			    unsigned int foll, bool *writable,
++			    struct page **refcounted_page);
 +
- /*
-  * KVM_SET_USER_MEMORY_REGION ioctl allows the following operations:
-  * - create a new memory slot
-@@ -1290,15 +1294,13 @@ int kvm_gfn_to_hva_cache_init(struct kvm *kvm, struct gfn_to_hva_cache *ghc,
- })
++static inline kvm_pfn_t kvm_faultin_pfn(struct kvm_vcpu *vcpu, gfn_t gfn,
++					bool write, bool *writable,
++					struct page **refcounted_page)
++{
++	return __kvm_faultin_pfn(kvm_vcpu_gfn_to_memslot(vcpu, gfn), gfn,
++				 write ? FOLL_WRITE : 0, writable, refcounted_page);
++}
  
- int kvm_clear_guest(struct kvm *kvm, gpa_t gpa, unsigned long len);
--struct kvm_memory_slot *gfn_to_memslot(struct kvm *kvm, gfn_t gfn);
- bool kvm_is_visible_gfn(struct kvm *kvm, gfn_t gfn);
- bool kvm_vcpu_is_visible_gfn(struct kvm_vcpu *vcpu, gfn_t gfn);
- unsigned long kvm_host_page_size(struct kvm_vcpu *vcpu, gfn_t gfn);
- void mark_page_dirty_in_slot(struct kvm *kvm, const struct kvm_memory_slot *memslot, gfn_t gfn);
- void mark_page_dirty(struct kvm *kvm, gfn_t gfn);
+ kvm_pfn_t gfn_to_pfn(struct kvm *kvm, gfn_t gfn);
+ kvm_pfn_t gfn_to_pfn_prot(struct kvm *kvm, gfn_t gfn, bool write_fault,
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index ad84dab8c5dc..6dc448602751 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3134,6 +3134,28 @@ kvm_pfn_t kvm_lookup_pfn(struct kvm *kvm, gfn_t gfn)
+ 	return pfn;
+ }
  
--struct kvm_memslots *kvm_vcpu_memslots(struct kvm_vcpu *vcpu);
--struct kvm_memory_slot *kvm_vcpu_gfn_to_memslot(struct kvm_vcpu *vcpu, gfn_t gfn);
++kvm_pfn_t __kvm_faultin_pfn(const struct kvm_memory_slot *slot, gfn_t gfn,
++			    unsigned int foll, bool *writable,
++			    struct page **refcounted_page)
++{
++	struct kvm_follow_pfn kfp = {
++		.slot = slot,
++		.gfn = gfn,
++		.flags = foll,
++		.map_writable = writable,
++		.refcounted_page = refcounted_page,
++	};
 +
- kvm_pfn_t kvm_vcpu_gfn_to_pfn(struct kvm_vcpu *vcpu, gfn_t gfn);
- 
- int __kvm_vcpu_map(struct kvm_vcpu *vcpu, gpa_t gpa, struct kvm_host_map *map,
++	if (WARN_ON_ONCE(!writable || !refcounted_page))
++		return KVM_PFN_ERR_FAULT;
++
++	*writable = false;
++	*refcounted_page = NULL;
++
++	return kvm_follow_pfn(&kfp);
++}
++EXPORT_SYMBOL_GPL(__kvm_faultin_pfn);
++
+ int kvm_prefetch_pages(struct kvm_memory_slot *slot, gfn_t gfn,
+ 		       struct page **pages, int nr_pages)
+ {
 -- 
 2.46.0.rc1.232.g9752f9e123-goog
 
