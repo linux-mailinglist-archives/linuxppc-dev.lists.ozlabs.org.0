@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D4F93DC8A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 212C393DC8B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:27:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Zs+R/EhB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=tFE+tag8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WW55V5jF3z3fqY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:26:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WW56P0M9Tz3d8B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:27:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Zs+R/EhB;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=tFE+tag8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3kdekzgykdgmtfbokdhpphmf.dpnmjovyqqd-efwmjtut.pambct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3kjekzgykdguvhdqmfjrrjoh.frpolqxassf-ghyolvwv.rcodev.ruj@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4NV5Qkgz3dXP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:54:18 +1000 (AEST)
-Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-1fc6f3ac7beso10762495ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:54:18 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4NX2FwZz3f0P
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:54:20 +1000 (AEST)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-2cb6c5f9810so1641847a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:54:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722038057; x=1722642857; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1722038059; x=1722642859; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=l9BW/dK5c/4ryaOpC0RxFiUBYVnD4MPO1UqGokFlyv8=;
-        b=Zs+R/EhB08c7/eltADfjC6J6qnpKoxLHXD8V5jI6/OHQlWGmQYOfGlSf0GJ0ed7Jkk
-         zggqo54K3rG5EgxXxpzo9Iv50aXaC9d9Wsy3EYgwVkvIDfRbPUEVH4WLZ0TIPA/1o4nt
-         z/CXUdJ+J7nIL//4enpi7YxdGqtQgph/8812Spmn5atwsychmZfwCM4LE7NWLfYTjEMZ
-         JCZhjnyKAQDHL9yI9no8nJbnkiXQRSjV7FNpUuM3yi8wkUcAzO677wSnV4UvcQOmQuku
-         gor/anrNlxc7ofG/ZKOlFsNzwHbqmA+VgaZDHYwFri/TqXsAcqK3p5itdVvLzIdQ7ICA
-         K1fQ==
+        bh=TqUPaGEc7V7k122pX7jZuWDsKBXmCX3Y3KCoLsEzljY=;
+        b=tFE+tag86CHXAPqyyREUUNW2HW1CmV5lXeOuyZdQ/TZErDKXlN11xKCi9oAzA5l2Sr
+         oSWCDQlyU/eRrWM/Yl3dAKkpkAEQgeBIzt2Qbg/jrCPSICQnnT704pNxkOkYM5puEiGl
+         rI8pFR2cYi/BVwciF1fC4ITZFF3iKXNzcIXoG2nxc/IxPPOSSJzDhxU6xK0OsgJfFn5r
+         qyq2ot0azM5mPAKpjoCmLISwAUpBUhZRGr5zOo1vPxV0aPKClXcd2waecIjRTG22yt0f
+         4P9dZ94Ane5r0/+8vbloQD6ZGWR/CQa/MS49tPYNUNWZJzXsqQ77jF+vxbtWVHqYvYst
+         DXdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722038057; x=1722642857;
+        d=1e100.net; s=20230601; t=1722038059; x=1722642859;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l9BW/dK5c/4ryaOpC0RxFiUBYVnD4MPO1UqGokFlyv8=;
-        b=LB0Nu9DjWh3uYmybJ17Sy84t3EBoJVOFSZtOVeM9UtBc8IoTWWYwH0pjFeX9a8mfig
-         z6LTEKAbQq0ee5eBQ9EIq8QGfjxhsYLI6ZL8izsl3f9MmKyG8z4EMsSWmSj1cWqnO+C7
-         4liMSonodcj66l7i7pUUHrTn/b3A3FYwEFl5rSNFpxdH7+hT9AHYEaMAHOSMxqyA8UrK
-         QqmhZhaSeoibuRfRmKxW4GNV6EKaQW9oYSHv2LlxrIGtX9WNVF6b69MiqgmT6DokCzTa
-         Q8NtGAUKXILgTmMMKarcOvLZM+oCsQ2rOgbXQthBeJdtmgYOxxKKIoUHeA9WY3GYc7+S
-         6PiA==
-X-Forwarded-Encrypted: i=1; AJvYcCVbWuDjp2O6VTQLTeg11LBOGv/uppFv3X+Ny/cR79e+1oulBrWBtF2CTQQA26X2/l2Md5IsocpA0laxfL30cpZ43969ApdljpBElNDtcw==
-X-Gm-Message-State: AOJu0YyV1i0/7olIDShjGjPuGIkVvyHaVt/tjVuY/yD0XmTwdMWWQ+fE
-	cGXvQ/yIDQy/nEfTRai9ZhMCydz/7vOaqmelp2OEdYZGCS8HUBGC9/kbQi0sMb7CRvD19lSkADr
-	lqw==
-X-Google-Smtp-Source: AGHT+IH3COIaUp2rXSDrmiVRXNOzjzCRiof8RV2PU1lQ3pUgA2jXVKIIsmrd9aJoYDTjtMdA3IOsVNqBhcc=
+        bh=TqUPaGEc7V7k122pX7jZuWDsKBXmCX3Y3KCoLsEzljY=;
+        b=S6q1Wj0TbkCJwANJxHCbUpiUx8U+imRhBh91Y8faNHXPR80ZBMHck5cCwU3crAte/c
+         poy0fbQKfc2kwrQKQqmM9nqXKV2ZYawflOFMpGcn63a3zenTCPwhmwM6eFkvw/ATwb8y
+         i5KLvKehdPXuX930aQo250bH4h9LiYRbHpwJJRvXnEj+xH630mS4Q5MynzB5gcQWCvtY
+         qwwdqdYmwltn60zcAmRZNYe3L2V7PJurvJP00TN89WqHOJLJFMY0cy2FLwmTjox8AIBW
+         OHQZIi0bsO6ahqliRWyJ7aR1F0WPwq+5rOsT5M+uoQQp5WfJuoLrgwf+pkjjeLC5udR9
+         WaSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ8QkDbl6+Vdy+TALkfdeEv3SRKhCt4h2+C5rTgF8e7ZhbUIvKDHvvLqk97ZOJXAdLEf8h80FeZQmQLMl/HaYhnHpefd0Udg/WzK8p5Q==
+X-Gm-Message-State: AOJu0YyE8H6my66MWx7Fy8kUmtpoPtU5vNAAcpViRJx/sU39ayvQx5WK
+	vDCcHlvSn9wSKmBOVAyNwIPNlJN8PvwN5d/xxsGB8/RDLNLXpWgWxvqHTt/68ENr6IKgjBrViNG
+	D1g==
+X-Google-Smtp-Source: AGHT+IH7R2Sq6ws3raxo/M+HjUZh8HrSGcUFKZNBVKBew2cgXvpkeEwYajfUFO1jgdCm33mambqvR7vew2A=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:ea06:b0:1f9:cbe5:e422 with SMTP id
- d9443c01a7336-1ff0488dbf2mr744395ad.8.1722038056933; Fri, 26 Jul 2024
- 16:54:16 -0700 (PDT)
-Date: Fri, 26 Jul 2024 16:51:57 -0700
+ (user=seanjc job=sendgmr) by 2002:a17:90b:19c4:b0:2c8:8288:1f3c with SMTP id
+ 98e67ed59e1d1-2cf7e08defcmr21966a91.1.1722038058548; Fri, 26 Jul 2024
+ 16:54:18 -0700 (PDT)
+Date: Fri, 26 Jul 2024 16:51:58 -0700
 In-Reply-To: <20240726235234.228822-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20240726235234.228822-1-seanjc@google.com>
 X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-Message-ID: <20240726235234.228822-49-seanjc@google.com>
-Subject: [PATCH v12 48/84] KVM: Move x86's API to release a faultin page to
- common KVM
+Message-ID: <20240726235234.228822-50-seanjc@google.com>
+Subject: [PATCH v12 49/84] KVM: VMX: Hold mmu_lock until page is released when
+ updating APIC access page
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -91,89 +91,59 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move KVM x86's helper that "finishes" the faultin process to common KVM
-so that the logic can be shared across all architectures.  Note, not all
-architectures implement a fast page fault path, but the gist of the
-comment applies to all architectures.
+Hold mmu_lock across kvm_release_pfn_clean() when refreshing the APIC
+access page address to ensure that KVM doesn't mark a page/folio as
+accessed after it has been unmapped.  Practically speaking marking a folio
+accesses is benign in this scenario, as KVM does hold a reference (it's
+really just marking folios dirty that is problematic), but there's no
+reason not to be paranoid (moving the APIC access page isn't a hot path),
+and no reason to be different from other mmu_notifier-protected flows in
+KVM.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c   | 24 ++----------------------
- include/linux/kvm_host.h | 26 ++++++++++++++++++++++++++
- 2 files changed, 28 insertions(+), 22 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 95beb50748fc..2a0cfa225c8d 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4323,28 +4323,8 @@ static u8 kvm_max_private_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
- static void kvm_mmu_finish_page_fault(struct kvm_vcpu *vcpu,
- 				      struct kvm_page_fault *fault, int r)
- {
--	lockdep_assert_once(lockdep_is_held(&vcpu->kvm->mmu_lock) ||
--			    r == RET_PF_RETRY);
--
--	if (!fault->refcounted_page)
--		return;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index f18c2d8c7476..30032585f7dc 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6828,25 +6828,22 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+ 		return;
+ 
+ 	read_lock(&vcpu->kvm->mmu_lock);
+-	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn)) {
++	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn))
+ 		kvm_make_request(KVM_REQ_APIC_PAGE_RELOAD, vcpu);
+-		read_unlock(&vcpu->kvm->mmu_lock);
+-		goto out;
+-	}
++	else
++		vmcs_write64(APIC_ACCESS_ADDR, pfn_to_hpa(pfn));
+ 
+-	vmcs_write64(APIC_ACCESS_ADDR, pfn_to_hpa(pfn));
+-	read_unlock(&vcpu->kvm->mmu_lock);
 -
 -	/*
--	 * If the page that KVM got from the *primary MMU* is writable, and KVM
--	 * installed or reused a SPTE, mark the page/folio dirty.  Note, this
--	 * may mark a folio dirty even if KVM created a read-only SPTE, e.g. if
--	 * the GFN is write-protected.  Folios can't be safely marked dirty
--	 * outside of mmu_lock as doing so could race with writeback on the
--	 * folio.  As a result, KVM can't mark folios dirty in the fast page
--	 * fault handler, and so KVM must (somewhat) speculatively mark the
--	 * folio dirty if KVM could locklessly make the SPTE writable.
+-	 * No need for a manual TLB flush at this point, KVM has already done a
+-	 * flush if there were SPTEs pointing at the previous page.
 -	 */
--	if (r == RET_PF_RETRY)
--		kvm_release_page_unused(fault->refcounted_page);
--	else if (!fault->map_writable)
--		kvm_release_page_clean(fault->refcounted_page);
--	else
--		kvm_release_page_dirty(fault->refcounted_page);
-+	kvm_release_faultin_page(vcpu->kvm, fault->refcounted_page,
-+				 r == RET_PF_RETRY, fault->map_writable);
- }
- 
- static int kvm_mmu_faultin_pfn_private(struct kvm_vcpu *vcpu,
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 9d2a97eb30e4..91341cdc6562 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1216,6 +1216,32 @@ static inline void kvm_release_page_unused(struct page *page)
- void kvm_release_page_clean(struct page *page);
- void kvm_release_page_dirty(struct page *page);
- 
-+static inline void kvm_release_faultin_page(struct kvm *kvm, struct page *page,
-+					    bool unused, bool dirty)
-+{
-+	lockdep_assert_once(lockdep_is_held(&kvm->mmu_lock) || unused);
-+
-+	if (!page)
-+		return;
+-out:
+ 	/*
+ 	 * Do not pin apic access page in memory, the MMU notifier
+ 	 * will call us again if it is migrated or swapped out.
+ 	 */
+ 	kvm_release_pfn_clean(pfn);
 +
 +	/*
-+	 * If the page that KVM got from the *primary MMU* is writable, and KVM
-+	 * installed or reused a SPTE, mark the page/folio dirty.  Note, this
-+	 * may mark a folio dirty even if KVM created a read-only SPTE, e.g. if
-+	 * the GFN is write-protected.  Folios can't be safely marked dirty
-+	 * outside of mmu_lock as doing so could race with writeback on the
-+	 * folio.  As a result, KVM can't mark folios dirty in the fast page
-+	 * fault handler, and so KVM must (somewhat) speculatively mark the
-+	 * folio dirty if KVM could locklessly make the SPTE writable.
++	 * No need for a manual TLB flush at this point, KVM has already done a
++	 * flush if there were SPTEs pointing at the previous page.
 +	 */
-+	if (unused)
-+		kvm_release_page_unused(page);
-+	else if (dirty)
-+		kvm_release_page_dirty(page);
-+	else
-+		kvm_release_page_clean(page);
-+}
-+
- kvm_pfn_t kvm_lookup_pfn(struct kvm *kvm, gfn_t gfn);
- kvm_pfn_t __kvm_faultin_pfn(const struct kvm_memory_slot *slot, gfn_t gfn,
- 			    unsigned int foll, bool *writable,
++	read_unlock(&vcpu->kvm->mmu_lock);
+ }
+ 
+ void vmx_hwapic_isr_update(int max_isr)
 -- 
 2.46.0.rc1.232.g9752f9e123-goog
 
