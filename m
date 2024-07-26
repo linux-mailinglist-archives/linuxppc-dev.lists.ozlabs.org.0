@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9A593DC38
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:17:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F2493DC41
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:18:12 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0ZGdfqNM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kxXnGmg7;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4v72s97z3fp0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:17:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4w22Dczz3dV6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:18:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=0ZGdfqNM;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kxXnGmg7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::44a; helo=mail-pf1-x44a.google.com; envelope-from=3dtekzgykdeg2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com [IPv6:2607:f8b0:4864:20::44a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3dzekzgykdeo4qmzvos00sxq.o0yxuz6911o-pq7xu454.0bxmn4.03s@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4Mz32pGz3dWW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:53:51 +1000 (AEST)
-Received: by mail-pf1-x44a.google.com with SMTP id d2e1a72fcca58-70d19a4137dso1423097b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:53:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4N13Hndz3dWv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:53:53 +1000 (AEST)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-2cb5ba80e77so1679762a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:53:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722038030; x=1722642830; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1722038032; x=1722642832; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xse5B7AOfcqAOlY7bR5VB/olShqjuvoHnQg+aILML2Y=;
-        b=0ZGdfqNMc7/c0a4qPYlIn0RA4zrXDs7ZAgcYudLFh5TmOCPCr5ZBqiHkyubCaZNZwG
-         Zhq11mzQwc95aUiyZYSZDlpUGrbb+0Xj1I1KLG39TFukqz3SzU6v1eTjyrQCvz6s9QgF
-         /+ZAMwuYzJ46FlCQ27gLX7eYDBwoH6HCFR3OwRUHk38o8RTyovHdw8aW2YwBgL92EO1g
-         iiw8ndiH/2rgaMLELIUFBIKDi6EOsJCxp2kyNGJz4baQcLZmhSXGlR6r4dpc682yRXx2
-         kG+gUx6b5DZHN4o8ztQhUvM0APnAiRIoilqT+3g01MTW6stko0rcjDBKHXZl8s4JK6vM
-         54yg==
+        bh=4+b7zhduK4lVkLFwoy0UCXuK8f7LQragdXHyxQERLss=;
+        b=kxXnGmg7vYRMysEj1N0Z/9fd3WUXEHenykYWrRIzHWArfG3yiXXVz/Qdg2MbrYzxAE
+         07J2ZxR2YjI1sqP6VwGRjHG9iyYO5ZE2tIMQJ6hC4nJK2DozPLdI+hRA5dsW1ej6O1w3
+         zRlImEn7sB8vE0mf2pGIw3qgqlZtFMCexJTPNQPEUWUACDS01R6aien+iYTW2TW6pQtp
+         gffRFljmnybEMisTl4qBX23pBl7alIYVtmsIEUXuAIKg2i8NBbmXwjKDoJXXcs3kRQPC
+         vJtMA8ZiyjxdKZgnQ2pqKTORtBT5NbmuSiTVtjcv8etqf18dpa9CrIRiKJBPOs1C2olZ
+         M15g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722038030; x=1722642830;
+        d=1e100.net; s=20230601; t=1722038032; x=1722642832;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Xse5B7AOfcqAOlY7bR5VB/olShqjuvoHnQg+aILML2Y=;
-        b=kxYxojqpEKKLb/GeYnQYWMs6vKweoV2I4WJrv0Fv1GcA1Gqm6nz82S1yBOzTligbSu
-         UoN63hCX/i+qkqfi0G8KiOem+jhrVgP/H7JjucwFl6RUifLxwChxUFrkJ6hyC/7kuFg3
-         lXEuGXg6/iay7TobvOcLt4qD0ItaRQyEmg09AKKLbse4ZV1wRB7YYWivY8T4/tEWUxG3
-         HM2T2mD7zuDotHRT8wUuwjVp/EHj1aHDQ2FU1LRJj4Wur5UWwgl0fvmn+wltQC7Eqtk/
-         2Dc2TJ5kx1/gsAX4g5o7wJwnf0xwj/caiGCJyfjBnljsYud2esF9JvqfVRF0kxMuE7cR
-         G6ow==
-X-Forwarded-Encrypted: i=1; AJvYcCVW0wMedGhkv8TO8gxCQi1qk1nFQjG6KpvptFgOPhSwQz0sg8Zn4nleEwv5rkFYwjlFTNSqdyrLgdKjx8H8tt5Oj9sWXpkOCdg+IPmJzA==
-X-Gm-Message-State: AOJu0YxusEfsIEq0n/oJ2ZkoraUz0xSLKyGeaP7DYteWTJQndwRdreUS
-	4xswczWdpYAEIfgZtWRbvY63jf3PRBt+ouDqNgsDbvsZe16uFNg9FfLxIbCBArj8DtoiSI8VX6W
-	Orw==
-X-Google-Smtp-Source: AGHT+IEFcNwoZPtxzQ32cLJ1vxa7gkQJVcgltXDXIuLlGv+WV+Ss10kIc9nwtzcNKm3zIIgT6vAGf5Ndk9o=
+        bh=4+b7zhduK4lVkLFwoy0UCXuK8f7LQragdXHyxQERLss=;
+        b=pIPJorrdyG6H0JvJLewop5kwYW23JeEhpYngDJQzFq7paVbRp0wGkg4l881HKzVJyB
+         mTXqLaQjoRiJCMEgTqiWTthYtKCVJfJW5haeB05sFKQTHrLIKrM3RS/isTOpok3R4Jyn
+         uVxDfC2qJMvgDx/ZBQwWbjUxkcfqTp/uzWQybJwaJ1CAIpAQV9Zvjn11Ubt3NvF3WyIk
+         IJOASOTrWiOAtEZMrcGHiC/T2XKKDkNiOtA6QetEfIkMEq09B5WKs+9ra5zWd95INpSS
+         BNpVxmonvc41oebytR7OEeqWH5OT1QIWcJOjua96vLG07pGqQlWHhwqVA77TCQEoC/Ll
+         vvfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXs26Z3mTorNk8gzrVm7tDdKiFk4fQp0CEGNHWns2v7YTtfOy0+M6s42pVPywg4upyhueTmcVfiwLUW3C/ApXytkh/oICLtDrF9dJ5DZg==
+X-Gm-Message-State: AOJu0Yzt7pXuLJXquioCLjBqWC482Z2gvRVVLzWi/AFFR2F+KY6kSWg/
+	aWcQKSd+1cWlaxEjrbX4/yiwf8hhavHm7GzLmcSkXXBekZ5SZwp6d77SRWl62PplFQB8pl7stuc
+	swA==
+X-Google-Smtp-Source: AGHT+IH83fBTCbgjCdiYRsrBHzQDSmPEXzxw/dBUECcFBZL6/864S5lAdfsy5Zb31ECaUXnMa239gb1WZDE=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6a00:2e2a:b0:70d:9a0e:c13b with SMTP id
- d2e1a72fcca58-70ece7f0562mr55820b3a.3.1722038029490; Fri, 26 Jul 2024
- 16:53:49 -0700 (PDT)
-Date: Fri, 26 Jul 2024 16:51:44 -0700
+ (user=seanjc job=sendgmr) by 2002:a17:90b:4f8b:b0:2c9:759f:a47d with SMTP id
+ 98e67ed59e1d1-2cf7e84e558mr8570a91.4.1722038031713; Fri, 26 Jul 2024 16:53:51
+ -0700 (PDT)
+Date: Fri, 26 Jul 2024 16:51:45 -0700
 In-Reply-To: <20240726235234.228822-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20240726235234.228822-1-seanjc@google.com>
 X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-Message-ID: <20240726235234.228822-36-seanjc@google.com>
-Subject: [PATCH v12 35/84] KVM: x86: Use kvm_lookup_pfn() to check if retrying
- #PF is useful
+Message-ID: <20240726235234.228822-37-seanjc@google.com>
+Subject: [PATCH v12 36/84] KVM: x86: Use kvm_lookup_pfn() to check if APIC
+ access page was installed
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -91,66 +91,55 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use kvm_lookup_pfn() instead of an open coded equivalent when checking to
-see if KVM should exit to userspace or re-enter the guest after failed
-instruction emulation triggered by a guest page fault.
-
-Note, there is a small functional change as kvm_lookup_pfn() doesn't mark
-the page as accessed, whereas kvm_release_pfn_clean() does mark the page
-accessed (if the pfn is backed by a refcounted struct page).  Neither
-behavior is wrong per se, e.g. querying the gfn=>pfn mapping doesn't
-actually access the page, but the guest _did_ access the gfn, otherwise
-the fault wouldn't have occurred.
-
-That said, either KVM will exit to userspace and the guest will likely be
-terminated, or KVM will re-enter the guest and, barring weirdness in the
-guest, the guest will re-access the gfn, and KVM will fault-in the pfn and
-mark it accessed.
+Use kvm_lookup_pfn() to verify that the APIC access page was allocated and
+installed as expected.  The mapping is controlled by KVM, i.e. it's
+guaranteed to be backed by struct page, the purpose of the check is purely
+to ensure the page is allocated, i.e. that KVM doesn't point the guest at
+garbage.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ arch/x86/kvm/lapic.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index af6c8cf6a37a..59501ad6e7f5 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8867,7 +8867,6 @@ static bool reexecute_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 				  int emulation_type)
- {
- 	gpa_t gpa = cr2_or_gpa;
--	kvm_pfn_t pfn;
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 6d65b36fac29..88dc43660d23 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2612,8 +2612,8 @@ void kvm_apic_update_apicv(struct kvm_vcpu *vcpu)
  
- 	if (!(emulation_type & EMULTYPE_ALLOW_RETRY_PF))
- 		return false;
-@@ -8892,22 +8891,15 @@ static bool reexecute_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ int kvm_alloc_apic_access_page(struct kvm *kvm)
+ {
+-	struct page *page;
+ 	void __user *hva;
++	kvm_pfn_t pfn;
+ 	int ret = 0;
+ 
+ 	mutex_lock(&kvm->slots_lock);
+@@ -2628,17 +2628,16 @@ int kvm_alloc_apic_access_page(struct kvm *kvm)
+ 		goto out;
  	}
  
+-	page = gfn_to_page(kvm, APIC_DEFAULT_PHYS_BASE >> PAGE_SHIFT);
+-	if (!page) {
+-		ret = -EFAULT;
+-		goto out;
+-	}
+-
  	/*
--	 * Do not retry the unhandleable instruction if it faults on the
--	 * readonly host memory, otherwise it will goto a infinite loop:
-+	 * Do not retry the unhandleable instruction if emulation was triggered
-+	 * for emulated MMIO, e.g. by a readonly memslot or lack of a memslot,
-+	 * otherwise KVM will send the vCPU into an infinite loop:
- 	 * retry instruction -> write #PF -> emulation fail -> retry
- 	 * instruction -> ...
+ 	 * Do not pin the page in memory, so that memory hot-unplug
+ 	 * is able to migrate it.
  	 */
--	pfn = gfn_to_pfn(vcpu->kvm, gpa_to_gfn(gpa));
--
--	/*
--	 * If the instruction failed on the error pfn, it can not be fixed,
--	 * report the error to userspace.
--	 */
--	if (is_error_noslot_pfn(pfn))
-+	if (is_error_noslot_pfn(kvm_lookup_pfn(vcpu->kvm, gpa_to_gfn(gpa))))
- 		return false;
- 
--	kvm_release_pfn_clean(pfn);
--
- 	/*
- 	 * If emulation may have been triggered by a write to a shadowed page
- 	 * table, unprotect the gfn (zap any relevant SPTEs) and re-enter the
+-	put_page(page);
++	pfn = kvm_lookup_pfn(kvm, APIC_DEFAULT_PHYS_BASE >> PAGE_SHIFT);
++	if (is_error_noslot_pfn(pfn)) {
++		ret = -EFAULT;
++		goto out;
++	}
++
+ 	kvm->arch.apic_access_memslot_enabled = true;
+ out:
+ 	mutex_unlock(&kvm->slots_lock);
 -- 
 2.46.0.rc1.232.g9752f9e123-goog
 
