@@ -1,69 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFBF93DCB4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:45:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5007393DCB7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:45:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pBxtIxk1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LRCRb9zc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WW5W82l2Xz3fnQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:45:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WW5X31kL6z3fnf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:45:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pBxtIxk1;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LRCRb9zc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3ytekzgykdjwoa6jf8ckkcha.8kihejqtll8-9arheopo.kvh67o.knc@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3yzekzgykdj4qc8lhaemmejc.amkjglsvnna-bctjgqrq.mxj89q.mpe@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4Pb6z5Gz3dK5
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:55:15 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-e0b2fb62a07so450260276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:55:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4Pd28Ppz3f0P
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:55:17 +1000 (AEST)
+Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-1fc5e61f0bbso13367815ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:55:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722038114; x=1722642914; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1722038116; x=1722642916; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=zSysp7FPh6wn+DolRHFxx8ZAZJRhLuISfWWp3RFo0OA=;
-        b=pBxtIxk1QgxaHHl9JIWUBIOkzLvtJJj+oJcGJlgIuS347v+wBH70IlVz19IUXu+9KA
-         qTwKGZdn4/egFNUcnyLWRfuHdTeosOjgGp5PXfhSRzJkm/sczfbmJzrIO7tvUpTs4I+n
-         pmzLmG8CWQsmPTcpaBfmetTQolb7puw9WukGpWK7cJgRlEJtHPaqfuBjNpGLmnB2mYk2
-         D6mVbW+ekQq6ZxQqId84DUHW+434T5iYlKFvpQArLzNmRCUGaA5u344++3Wajdg/0q5R
-         8CP4fQUZjCwVcRYz4kyYnjovex4z44ai5r50IH8NDJuyxg+mYolFiCFOJpUkLXaId0pu
-         CHuQ==
+        bh=gSJgbeqW0EjFVjI/rvx0LQaQxVZn1dW4kzDKJHwZpGY=;
+        b=LRCRb9zchgIr0Zp/VtQorSgh/Wm/P6QWTOt6WXOio1WTlpc0KEg9dtueQJvIT9n6Aw
+         AlnFxoEBdmu8IzB6BLZjY9953OdXWfno0YJKSOGThOzHzg32jlEPSH7pquDfaqMVga6i
+         VdytKqYD9Y2ZDRtxX57er6nrzsN7SuRafF3lbj05Y5T5M3XcknLP5n0nCpI74lB9cW05
+         dCZLD4hKvRPJ2eDVsi7BWriqZ7JDhQlstmJlovoyKvBTG1V26JRsTG+PDERQh6eIOKIq
+         8huH0k2cpDuV3ePjQ9OF/Zk8FMB2Nsa02C3foHCxW/B69kcTSGgpRu0rICGPdxHyxRJa
+         dpvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722038114; x=1722642914;
+        d=1e100.net; s=20230601; t=1722038116; x=1722642916;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zSysp7FPh6wn+DolRHFxx8ZAZJRhLuISfWWp3RFo0OA=;
-        b=jyJjSnFQMIlPKROye1w2l/B8RcaYJhhS7KElgOVrckI1Sxf029YAUq2H0bLzmIVOX0
-         Aq1p78gLDGdCqliGK6+pT4JS7wf+6c6njwBa6XVKBzjUee8mCh/F/9UAZP4CujTYZvvd
-         wU34sX/o6CCjpQRmVMg82ZneZliQ8Qal9JRYJ8HvXeF9FDh+gwgJwOf7ZXfwqcIWpGwJ
-         AA/7ZkZCNqdmXElpzHez1+0lcKXXlPb2TXTIci3R6FxYGAUKDDpIDwHQomCYmjmuraUJ
-         cqYCqkMivUiZB7Jr7knVQ9jXUmzAhqfCEihEomcgefnHMqwDlYvNJqEEYELit3vwPd/Z
-         Mg9A==
-X-Forwarded-Encrypted: i=1; AJvYcCV58tEvxzZPU7HClLG58NjW9FcbvEtuWZT+CnBDEzYvjVd3lZo4v+En+JXVB0gN0Dq2wApCP6t4dja3pyJ13cVZUyopvKidiPjIwS97uA==
-X-Gm-Message-State: AOJu0Yzef5DkvElHvN6PkkRZzp0i15gut4gr+shhjTPXZdUderFfPLSV
-	VL7aSMxN6iQDK7Njpmp3cw4n+/9tkk/9P04bZQZ+4k7mgk6FKdNlE0GgKmCZt+6lW1HLBnVhJE7
-	tvA==
-X-Google-Smtp-Source: AGHT+IHtdYLzf8VxCow9ze9t5PB7b90MwNFbCURT1XZzWgwcWEIftZd8Pqph9MK+hSFYPsX4JKQKNB1AEe8=
+        bh=gSJgbeqW0EjFVjI/rvx0LQaQxVZn1dW4kzDKJHwZpGY=;
+        b=J7NKAAt/h1Up2xHFddYhVJeAMxY1QQQ2ugYYdFP5ln4dhtrMMROIZ9nI/4FUKqbThl
+         FzFvXAwF1M/tR/GEm4x2I4xdxkrgmV229Gb++eXthcuEGWHHjgWCWMn2Kh4xy/C14btR
+         xWXmMVuYXIMvpFzhdhl+aLPO1rbPD3SI0q5x6L//02zhz86IrJoRxzrxa3YhiYjbD6+x
+         I6fFOguRHSuRC4fRqKA2dh6QkSnWLX4dPXkQO9CCjbtB0+g5KUUA0yhUEYDysCa6gBF6
+         mQne8ti3+DXSpet8/DhihK7m6VSBZQtCkkO9tp4DVDEteU3y1DP41cmY+dITOyllYcRd
+         /ycA==
+X-Forwarded-Encrypted: i=1; AJvYcCVdarplvIRRQiKgy3RKPEthB0MlV6ago4vy/i1v3aaAn9+B3j7bp4lnRWTfd3qvnj5noMcsr/S30wJzNNBJXpbJv45D7xw6CkG4OEEqvw==
+X-Gm-Message-State: AOJu0YzUWVkk9hMFAACKmE1x/S7PQZJypJOGuKA9mBnfgbNoofJojVLZ
+	9off6Seq1E1oKbMmNZitVQh/cWfS6OY/9oFhCM3Y0au2fETOABIQ7sWw94cEROL+YOUuqx4tE18
+	6cg==
+X-Google-Smtp-Source: AGHT+IHxrkKUWCeUEpiaW8aWqxkJkE+eVd4nhH8cGKa9NS3y3LrlRDBQyz/B78NptpquvhhjWf0asoH4ivY=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:1889:b0:dfb:1147:cbaa with SMTP id
- 3f1490d57ef6-e0b5459b0b9mr34694276.10.1722038113838; Fri, 26 Jul 2024
- 16:55:13 -0700 (PDT)
-Date: Fri, 26 Jul 2024 16:52:24 -0700
+ (user=seanjc job=sendgmr) by 2002:a17:902:c945:b0:1fc:733d:8465 with SMTP id
+ d9443c01a7336-1ff0488cadamr599925ad.8.1722038115596; Fri, 26 Jul 2024
+ 16:55:15 -0700 (PDT)
+Date: Fri, 26 Jul 2024 16:52:25 -0700
 In-Reply-To: <20240726235234.228822-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20240726235234.228822-1-seanjc@google.com>
 X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-Message-ID: <20240726235234.228822-76-seanjc@google.com>
-Subject: [PATCH v12 75/84] KVM: Add support for read-only usage of gfn_to_page()
+Message-ID: <20240726235234.228822-77-seanjc@google.com>
+Subject: [PATCH v12 76/84] KVM: arm64: Use __gfn_to_page() when copying MTE
+ tags to/from userspace
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -90,77 +91,66 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rework gfn_to_page() to support read-only accesses so that it can be used
-by arm64 to get MTE tags out of guest memory.
-
-Opportunistically rewrite the comment to be even more stern about using
-gfn_to_page(), as there are very few scenarios where requiring a struct
-page is actually the right thing to do (though there are such scenarios).
-Add a FIXME to call out that KVM probably should be pinning pages, not
-just getting pages.
+Use __gfn_to_page() instead when copying MTE tags between guest and
+userspace.  This will eventually allow removing gfn_to_pfn_prot(),
+gfn_to_pfn(), kvm_pfn_to_refcounted_page(), and related APIs.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- include/linux/kvm_host.h |  7 ++++++-
- virt/kvm/kvm_main.c      | 15 ++++++++-------
- 2 files changed, 14 insertions(+), 8 deletions(-)
+ arch/arm64/kvm/guest.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 91341cdc6562..f2d3c3c436cc 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1198,7 +1198,12 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
- int kvm_prefetch_pages(struct kvm_memory_slot *slot, gfn_t gfn,
- 		       struct page **pages, int nr_pages);
+diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+index 962f985977c2..4cd7ffa76794 100644
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -1051,20 +1051,18 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+ 	}
  
--struct page *gfn_to_page(struct kvm *kvm, gfn_t gfn);
-+struct page *__gfn_to_page(struct kvm *kvm, gfn_t gfn, bool write);
-+static inline struct page *gfn_to_page(struct kvm *kvm, gfn_t gfn)
-+{
-+	return __gfn_to_page(kvm, gfn, true);
-+}
+ 	while (length > 0) {
+-		kvm_pfn_t pfn = gfn_to_pfn_prot(kvm, gfn, write, NULL);
++		struct page *page = __gfn_to_page(kvm, gfn, write);
+ 		void *maddr;
+ 		unsigned long num_tags;
+-		struct page *page;
+ 
+-		if (is_error_noslot_pfn(pfn)) {
+-			ret = -EFAULT;
+-			goto out;
+-		}
+-
+-		page = pfn_to_online_page(pfn);
+ 		if (!page) {
++			ret = -EFAULT;
++			goto out;
++		}
 +
- unsigned long gfn_to_hva(struct kvm *kvm, gfn_t gfn);
- unsigned long gfn_to_hva_prot(struct kvm *kvm, gfn_t gfn, bool *writable);
- unsigned long gfn_to_hva_memslot(struct kvm_memory_slot *slot, gfn_t gfn);
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index d0f55a6ecb31..16bc3ac3ff84 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3174,25 +3174,26 @@ int kvm_prefetch_pages(struct kvm_memory_slot *slot, gfn_t gfn,
- EXPORT_SYMBOL_GPL(kvm_prefetch_pages);
++		if (!pfn_to_online_page(page_to_pfn(page))) {
+ 			/* Reject ZONE_DEVICE memory */
+-			kvm_release_pfn_clean(pfn);
++			kvm_release_page_unused(page);
+ 			ret = -EFAULT;
+ 			goto out;
+ 		}
+@@ -1078,7 +1076,7 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+ 				/* No tags in memory, so write zeros */
+ 				num_tags = MTE_GRANULES_PER_PAGE -
+ 					clear_user(tags, MTE_GRANULES_PER_PAGE);
+-			kvm_release_pfn_clean(pfn);
++			kvm_release_page_clean(page);
+ 		} else {
+ 			/*
+ 			 * Only locking to serialise with a concurrent
+@@ -1093,8 +1091,7 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+ 			if (num_tags != MTE_GRANULES_PER_PAGE)
+ 				mte_clear_page_tags(maddr);
+ 			set_page_mte_tagged(page);
+-
+-			kvm_release_pfn_dirty(pfn);
++			kvm_release_page_dirty(page);
+ 		}
  
- /*
-- * Do not use this helper unless you are absolutely certain the gfn _must_ be
-- * backed by 'struct page'.  A valid example is if the backing memslot is
-- * controlled by KVM.  Note, if the returned page is valid, it's refcount has
-- * been elevated by gfn_to_pfn().
-+ * Don't use this API unless you are absolutely, positively certain that KVM
-+ * needs to get a struct page, e.g. to pin the page for firmware DMA.
-+ *
-+ * FIXME: Users of this API likely need to FOLL_PIN the page, not just elevate
-+ *	  its refcount.
-  */
--struct page *gfn_to_page(struct kvm *kvm, gfn_t gfn)
-+struct page *__gfn_to_page(struct kvm *kvm, gfn_t gfn, bool write)
- {
- 	struct page *refcounted_page = NULL;
- 	struct kvm_follow_pfn kfp = {
- 		.slot = gfn_to_memslot(kvm, gfn),
- 		.gfn = gfn,
--		.flags = FOLL_WRITE,
-+		.flags = write ? FOLL_WRITE : 0,
- 		.refcounted_page = &refcounted_page,
- 	};
- 
- 	(void)kvm_follow_pfn(&kfp);
- 	return refcounted_page;
- }
--EXPORT_SYMBOL_GPL(gfn_to_page);
-+EXPORT_SYMBOL_GPL(__gfn_to_page);
- 
- int __kvm_vcpu_map(struct kvm_vcpu *vcpu, gfn_t gfn, struct kvm_host_map *map,
- 		   bool writable)
+ 		if (num_tags != MTE_GRANULES_PER_PAGE) {
 -- 
 2.46.0.rc1.232.g9752f9e123-goog
 
