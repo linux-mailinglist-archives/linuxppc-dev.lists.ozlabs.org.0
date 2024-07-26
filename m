@@ -2,61 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADFB93D7BD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 19:40:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5938693D7D6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 19:53:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DV/Z7vEt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VAQh8Rs8;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WVw4v1rN7z3dV3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 03:40:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WVwNN1zPWz3dSl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 03:53:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DV/Z7vEt;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VAQh8Rs8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVw4C2xp8z3dHj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 03:39:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVwMh4Gxyz3dKF
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 03:53:04 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 865E86181E;
-	Fri, 26 Jul 2024 17:39:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184F0C32782;
-	Fri, 26 Jul 2024 17:39:29 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 1F95BCE183D
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 17:53:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5624EC4AF10
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 17:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722015575;
-	bh=8w1mM4hsz30RIDmoijcUZjPnnrqcKXvR4sSqM1tep/4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DV/Z7vEtOQ6fpK1XlwOsYQ7qcHj5loTqEE6QOhCsSqjvyq9NRvKlcmNtdC2g8jhY6
-	 aWv73Vf0gzmua1r6eBaKdypdddT45gnW/E0ABD3it7eli5FXDS+vnvrvDj+V5Zfuuf
-	 xJNXr3X9g2ZxiiKEMQrknbNds0YasB4VTugZ9IQSP4WKpt7pUqp9dLjKWUReroNOBk
-	 zdaLXSY7z39Eb+B855w+mW2obCbZIuBQWm6KGs+ypfSLztcWYns4CkQV6YGLM+lL6w
-	 dPuiR8OQU9eJqPpaihNfj/a0aVBCnjAMFu+cCYtlW4GgQA0xW00IYT91LmXOdgA9e2
-	 EkBh389uPh7Pg==
-Date: Fri, 26 Jul 2024 18:39:27 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Dave Martin <Dave.Martin@arm.com>
-Subject: Re: [PATCH v4 18/29] arm64: add POE signal support
-Message-ID: <a52f1762-afd4-4527-88ac-76cdd8a59d5d@sirena.org.uk>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-19-joey.gouly@arm.com>
- <229bd367-466e-4bf9-9627-24d2d0821ff4@arm.com>
- <7789da64-34e2-49db-b203-84b80e5831d5@sirena.org.uk>
- <cf7de572-420a-4d59-a8dd-effaff002e12@arm.com>
- <ZqJ2I3f2qdiD2DfP@e133380.arm.com>
- <a13c3d5e-6517-4632-b20d-49ce9f0d8e58@sirena.org.uk>
- <ZqPLSRjjE+SRoGAQ@e133380.arm.com>
+	s=k20201202; t=1722016381;
+	bh=gbriWgUniQV5sMUGUpc7uG99BGb3pVKbc+1MWsqJxl0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VAQh8Rs86BVc0bQxBQpsw7E3oB7YUvEzDioyvNYyYRWg3/YE7BJZ9Bb5yeZktWUpE
+	 1jI2lNv0JjHBTeMrqFoOx4732CF0GlVQ8ls/qKpBs5EaMagA0+TzO3hURk91b+c2nJ
+	 GYh/ZaOkeTJ/Ehvehu29zHCbM1rfeyyShv0iZfQnHzViqUZtSQh7WwhFsgBPAwKaaR
+	 nXKjVlm1GJwtqXN4zJMB6FcsT14q3jUJG4IAHR0gTYtnyeAzTexMgGLCGw3OqNya4Y
+	 gHCfIMUscJ9mctMB6SDLSpL1yVxgIEmLbOAyZax3r6DQVedli9R+6goBy+Yf/JOwlD
+	 YhO2AP739onfg==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2f01e9f53e3so21183071fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 10:53:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWD7gjTawDxLlmF2qL8pdH9OhALRsqMQTXdnKYKtjiOJ1CCpFPFzvfa2EPiskVhjZNrpJtkh3oC81OhLXwugHPTFMV3KuL6eUCEDTF3BQ==
+X-Gm-Message-State: AOJu0YxmR9PRhBTMrvHV+J+CLbvyiIZxmO0GmIte9Kagsdki2VvVvt98
+	tplHY8Nw4+h6BJSdZcA5eyJnp2TI1dEMCCMUj3oK4SiUiXY9rTlKezbY3ZLgcxxAzmVjC2WLgF/
+	PD43gI9USjPgeSi0/ERfUKOuzCg==
+X-Google-Smtp-Source: AGHT+IGIboFhjpqofVqlOelOMvR4+RrtFqzfu/57gAtHLJz3rx7lzmCVwhoRpixh1COmKEuQcel3sDSsZgJ8oYzdKa4=
+X-Received: by 2002:a05:651c:a09:b0:2ef:2d54:f590 with SMTP id
+ 38308e7fff4ca-2f12ee278bamr4650001fa.24.1722016379634; Fri, 26 Jul 2024
+ 10:52:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jKu8x7uvwJS8RqOX"
-Content-Disposition: inline
-In-Reply-To: <ZqPLSRjjE+SRoGAQ@e133380.arm.com>
-X-Cookie: It is your destiny.
+References: <20240715080726.2496198-1-amachhiw@linux.ibm.com>
+ <CAL_JsqKKkcXDJ2nz98WNCvsSFzzc3dVXVnxMCntFXsCP=MeKsA@mail.gmail.com>
+ <a6c92c73-13fb-8e9c-29de-1437654c3880@amd.com> <20240723162107.GA501469-robh@kernel.org>
+ <a8d2e310-9446-6cfa-fe00-4ef83cdb6590@amd.com> <CAL_JsqJjhaLFm9jiswJTfi4yZFYGKJUdC+HV662RLWEkJjxACw@mail.gmail.com>
+ <ac3aeec4-70fc-cd9e-498c-acab0b218d9b@amd.com> <p6cs4fxzistpyqkc5bv2sb76inrw7fterocdcu3snnyjpqydbr@thxna6v2umrl>
+ <d20b78cd-ed34-3e5a-0176-c20ee5afd0db@amd.com>
+In-Reply-To: <d20b78cd-ed34-3e5a-0176-c20ee5afd0db@amd.com>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 26 Jul 2024 12:52:46 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJAuVexFAz6gWWuTtX1Go-FnHe6vJapv0znHBERSCtv+Q@mail.gmail.com>
+Message-ID: <CAL_JsqJAuVexFAz6gWWuTtX1Go-FnHe6vJapv0znHBERSCtv+Q@mail.gmail.com>
+Subject: Re: [PATCH v2] PCI: Fix crash during pci_dev hot-unplug on pseries
+ KVM guest
+To: Lizhi Hou <lizhi.hou@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,58 +76,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, Joey Gouly <joey.gouly@arm.com>, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, Amit Daniel Kachhap <amitdaniel.kachhap@arm.com>, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, Saravana Kannan <saravanak@google.com>, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lukas Wunner <lukas@wunner.de>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Jul 25, 2024 at 6:06=E2=80=AFPM Lizhi Hou <lizhi.hou@amd.com> wrote=
+:
+>
+> Hi Amit,
+>
+>
+> I try to follow the option which add a OF flag. If Rob is ok with this,
+> I would suggest to use it instead of V1 patch
+>
+> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> index dda6092e6d3a..a401ed0463d9 100644
+> --- a/drivers/of/dynamic.c
+> +++ b/drivers/of/dynamic.c
+> @@ -382,6 +382,11 @@ void of_node_release(struct kobject *kobj)
+>                                 __func__, node);
+>          }
+>
+> +       if (of_node_check_flag(node, OF_CREATED_WITH_CSET)) {
+> +               of_changeset_revert(node->data);
+> +               of_changeset_destroy(node->data);
+> +       }
 
---jKu8x7uvwJS8RqOX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+What happens if multiple nodes are created in the changeset?
 
-On Fri, Jul 26, 2024 at 05:14:01PM +0100, Dave Martin wrote:
-> On Thu, Jul 25, 2024 at 07:11:41PM +0100, Mark Brown wrote:
+> +
+>          if (node->child)
+>                  pr_err("ERROR: %s() unexpected children for %pOF/%s\n",
+>                          __func__, node->parent, node->full_name);
+> @@ -507,6 +512,7 @@ struct device_node *of_changeset_create_node(struct
+> of_changeset *ocs,
+>          np =3D __of_node_dup(NULL, full_name);
+>          if (!np)
+>                  return NULL;
+> +       of_node_set_flag(np, OF_CREATED_WITH_CSET);
 
-> > That'd have to be a variably sized structure with pairs of sysreg
-> > ID/value items in it I think which would be a bit of a pain to implement
-> > but doable.  The per-record header is 64 bits, we'd get maximal saving
-> > by allocating a byte for the IDs.
+This should be set where the data ptr is set.
 
-> Or possibly the regs could be identified positionally, avoiding the
-> need for IDs.  Space would be at a premium, and we would have to think
-> carefully about what should and should not be allowed in there.
-
-Yes, though that would mean if we had to generate any register in there
-we'd always have to generate at least as many entries as whatever number
-it got assigned which depending on how much optionality ends up getting
-used might be unfortunate.
-
-> > It would be very unfortunate timing to start gating things on such a
-> > change though (I'm particularly worried about GCS here, at this point
-> > the kernel changes are blocking the entire ecosystem).
-
-> For GCS, I wonder whether it should be made a strictly opt-in feature:
-> i.e., if you use it then you must tolerate large sigframes, and if it
-> is turned off then its state is neither dumped nor restored.  Since GCS
-> requires an explict prctl to turn it on, the mechanism seems partly
-> there already in your series.
-
-Yeah, that's what the current code does actually.  In any case it's not
-just a single register - there's also the GCS mode in there.
-
---jKu8x7uvwJS8RqOX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmaj304ACgkQJNaLcl1U
-h9CeVAf/WJj2W/iYeqVHnIEx+p4FWw5ApJBNcEdmXOIBDVGUJEIji/s5+DIMmTsR
-GnMMoGn0PGovhD7ABJPly+Ysr1Ma/cWGs/eia+AhmGLvDh7ATNWxUWPWoQpfH4vI
-FFXbia4AkmLZ34lsI6P1BKT5wTRVWQj9QaTTCFxVdoNmBF7nYgnT0u0A4Od9O9Vm
-iX064HfEvrM/PwRID8FMKY2pXuOWTRWJrQ7X1l75V7H0wdUW1h6b5tWIyUuoZIOl
-RChlS70kcpLdwt6Y0KjNj5bblDCwZ3KNQPEVcEWq2lMChKzoxm1I1QNmc7XEAqf9
-JC4bAZwKKaKlseDDs61j4qyz/Nj1Hg==
-=DfYC
------END PGP SIGNATURE-----
-
---jKu8x7uvwJS8RqOX--
+Rob
