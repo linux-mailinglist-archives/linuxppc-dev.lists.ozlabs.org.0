@@ -2,53 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAB793D377
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 14:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8C293D3F5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 15:16:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ko+oh1yW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=ghjrTmDd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=EF47Fbnm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WVnfB0HWdz3dHj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 22:50:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WVpD33ynvz3dPs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 23:16:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ko+oh1yW;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=ghjrTmDd;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=EF47Fbnm;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.152; helo=fhigh1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVndT4wnqz3c05
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 22:49:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1721998173;
-	bh=FbjGrZAf4KleDcOMWprQnrXa/ICyg2tclBDC0d6LUpM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ko+oh1yWmHuJ28MuSfSmWMSNvw/3PNVTmZhhgZO3y/QcEE8E5mIEiGRDDVZtk5SA3
-	 DSwzeimB8ywiZbBMODXyn6E3xM1JH0JxV/aLtd1QGSvDmH0yzkKKa9bG8hiA5NgRKC
-	 xgyhcypHpdkzlJONdYHOJh1PbUY+RfLi2lOLNVXFZ2Mtu8zBkRBjE+WI0vLEP3z9P+
-	 nX0VvkHtfXlv+O+hkN8NjHNWCrXdHF7EVn8l3kuxbFtZYJJgzZUSv0ZI3+4XmjYaAj
-	 XXn1CNLfxSLNtpFcC7HVKXAo4pfHsaM5mjhG0xQrBqhT3aKb+lDVY8fI/M6cV8UPKG
-	 FtP423ZOyfizA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WVndS1hY7z4w2M;
-	Fri, 26 Jul 2024 22:49:32 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>, Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v2] PCI: Fix crash during pci_dev hot-unplug on pseries
- KVM guest
-In-Reply-To: <dx32q3sa4oopk3fnm2zyeplotuq6gq3rmnbmaw3mo4q3lgjpe7@gvpgu4rdk4f4>
-References: <p6cs4fxzistpyqkc5bv2sb76inrw7fterocdcu3snnyjpqydbr@thxna6v2umrl>
- <20240725205537.GA858788@bhelgaas>
- <dx32q3sa4oopk3fnm2zyeplotuq6gq3rmnbmaw3mo4q3lgjpe7@gvpgu4rdk4f4>
-Date: Fri, 26 Jul 2024 22:49:31 +1000
-Message-ID: <87sevwuxlw.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVpCL4hC1z3cK8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 23:15:26 +1000 (AEST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 50449114011D;
+	Fri, 26 Jul 2024 09:15:23 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute4.internal (MEProxy); Fri, 26 Jul 2024 09:15:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1721999723; x=1722086123; bh=vmerSIvbbd
+	JwhSoqOIXC2+RNPWABTiKzG+1CMpROaZc=; b=ghjrTmDdPDJjPGtsBL3GmDFdm2
+	ZSBHeCrIQTA8d5RP5V/BWeM0BoUG41sbDKwyY7tmNlEx+73N936TJ9LuA+S/bR3m
+	zrdmQFpRDJVVGosH+az8iD6LVLyRPAzkzQPBflA2nbFs1cQ57CMMAhWDK+tPz9d3
+	H6bs+8aRAkn++KkCLIdVHEbgf/BXflmJ9lh6a9AL4g12NAODKMIXyA+za0cZmHsx
+	JHQhlvTtF8wOk8SKaB6oo3bPPPI+L+HEh91YxjwonpY+6iC9uBsrpoB9AQcT9/yv
+	o8JkiMpYSZIwrdjgc5stCOFVf9qH8PazJzkATwTdV6OuDcq8qYL7M6abBf5Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1721999723; x=1722086123; bh=vmerSIvbbdJwhSoqOIXC2+RNPWAB
+	TiKzG+1CMpROaZc=; b=EF47FbnmLU+CJUubr/cPrjx4zEz1IOVRC4/g1UvlMAmq
+	ZMd2zO3DP4DrRxlX35r4KyLsNy9iKiwVBRAHXB978/jGdMGgUeMWqc/xL1b8rulH
+	Xn1W1B3IzOyf1g7fotJLffVtgt7Z64QvMH/8mpgWrn57aWAe0D1fCgBjNP74RoX2
+	fyuGgeek9KBwPq6lS7r7eYIXE2UWIk4NJQnvFBWVHPUe+WrKuHA5EmnfNqkWd9VA
+	nhjeLdwTFQUTRErtjhX9VjyrWV2831Qafhfv1qtiWw7Svw01sPYENmnozNx4Z2de
+	UPA4EkbhuqDkch2HS6moVtxi4i1vPMyDMsBjnjroCQ==
+X-ME-Sender: <xms:aqGjZncmek0d6DlX5rmfDs2Hcc7wlLiF6sd-quL8SMEpCzGM5GXXMA>
+    <xme:aqGjZtNmO6ulIS3ch5Fvozb5Oq717545zCUQKC3Nu8_K28teDcgief867jgrfaJCf
+    ZjdyQyiNMosqCejiDQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrieehgdeigecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedt
+X-ME-Proxy: <xmx:a6GjZgiykAIw5yRnIFqQsaa_mngBGf75_Xm0KqCEWbw5sZnXN4--UA>
+    <xmx:a6GjZo9p0mtK0c5J0yrdyvtgk5e7n1iW6mzNkfbTbUnNBC6xEyX3_A>
+    <xmx:a6GjZjswhYF-bomv4LRH6KedP5n9FyT3TSFva15cojTBjlSW6H6yrw>
+    <xmx:a6GjZnEnVfADJzgstmkdjBLpRwGGk-eQJ82n-kLFgbylj2GerKMNcQ>
+    <xmx:a6GjZtICG5hmWnk3HExbAcf9xtu_I0y6rsYQsTfl-dm5M_gBXD6P---B>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id D829FB6008D; Fri, 26 Jul 2024 09:15:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-582-g5a02f8850-fm-20240719.002-g5a02f885
 MIME-Version: 1.0
+Message-Id: <60581044-df82-40ad-b94c-56468007a93e@app.fastmail.com>
+In-Reply-To: <20240726123322.1165562-1-mpe@ellerman.id.au>
+References: <20240726123322.1165562-1-mpe@ellerman.id.au>
+Date: Fri, 26 Jul 2024 15:15:02 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/2] MAINTAINERS: Mark powerpc Cell as orphaned
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,39 +93,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lizhi Hou <lizhi.hou@amd.com>, Lukas Wunner <lukas@wunner.de>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Geoff Levand <geoff@infradead.org>, Jeremy Kerr <jk@ozlabs.org>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Amit Machhiwal <amachhiw@linux.ibm.com> writes:
-> Hi Bjorn,
+On Fri, Jul 26, 2024, at 14:33, Michael Ellerman wrote:
+> Arnd is no longer actively maintaining Cell, mark it as orphan.
 >
-> On 2024/07/25 03:55 PM, Bjorn Helgaas wrote:
->> On Thu, Jul 25, 2024 at 11:15:39PM +0530, Amit Machhiwal wrote:
->> > ...
->> > The crash in question is a critical issue that we would want to have
->> > a fix for soon. And while this is still being figured out, is it
->> > okay to go with the fix I proposed in the V1 of this patch?
->> 
->> v6.10 has been released already, and it will be a couple months before
->> the v6.11 release.
->> 
->> It looks like the regression is 407d1a51921e, which appeared in v6.6,
->> almost a year ago, so it's fairly old.
->> 
->> What target are you thinking about for the V1 patch?  I guess if we
->> add it as a v6.11 post-merge window fix, it might get backported to
->> stable kernels before v6.11?  
+> Also drop the dead developerworks link.
 >
-> Yes, I think we can go ahead with taking V1 patch for v6.11 post-merge window to
-> fix the current bug and ask Ubuntu to pick it while Lizhi's proposed patch goes
-> under test and review.
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Lizhi's proposed patch (v3?) looks pretty small and straight forward.
-It should be possible to get it tested and reviewed and merge it as a
-fix during the v6.11-rc series.
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-Or if the CONFIG option is completely broken as Rob suggests then it
-should just be forced off in Kconfig.
+The platform contains two separate bits, so we need to
+decide what to do with each one of them in the long run:
 
-cheers
+CONFIG_PPC_IBM_CELL_BLADE is clearly dead, they were sold
+from 2006 to 2012 and never that popular aside from a
+handful of supercomputers that were all dismantled a
+long time ago. Unless there is a user that wants to
+keep maintaining these, we can probably remove all this
+code soon, e.g. after the next LTS kernel.
+
+CONFIG_SPU_FS is shared with the PS3 platform, which is
+still used and maintained. The bit I don't know is how
+common it is to actually still use spufs on the PS3.
+Support for spu programs was removed in gcc-9.1 and
+gdb-8.3, so none of the major distros even ship old
+enough toolchains any more, but existing applications
+and older toolchains should still work for people
+that have them and want to run new kernels.
+
+Geoff, are you using spufs on ps3, and if so, should
+we move arch/powerpc/platforms/cell/spu* to the PS3
+entry in the MAINTAINERS file? I don't think there
+is any advantage in actually moving the files to
+platforms/ps3 if we delete the cell blade support.
+
+     Arnd
