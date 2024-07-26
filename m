@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6195893DBCA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B288393DBD0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 02:07:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dDIPgNRU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=C5zPkJs5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4gG2HfDz3fpk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:07:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4h14gmjz3fp0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 10:07:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dDIPgNRU;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=C5zPkJs5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=37jakzgykdckxjfsohlttlqj.htrqnszcuuh-ijaqnxyx.teqfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=38dakzgykdcszlhuqjnvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4MN37xRz3dW3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:53:20 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-e03a5534d58so416065276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:53:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4MQ3CNmz3d8S
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:53:22 +1000 (AEST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-66619cb2d3eso5958457b3.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:53:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722037998; x=1722642798; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1722038000; x=1722642800; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=F7WgJlT5NNtid7p2jwFbPV8b+lTnD+3vJbPsQDaWDdo=;
-        b=dDIPgNRUucdifYv0O9z4lEjYQh3q/QbUfmLPEQdDmk9put/sGxjVxaLwOVOaY0yy+A
-         s+NYo9Ftur6kgRTBCe9nyTIWkFdgriJ56eRJkS7LAJYtxC2XxCVsxqd1Z6mWFJnTRqyZ
-         CyWQIwDi4dr2h6+kHyHqfiNDItPktRFQ+SdRysQi1ZE99UopcfQp3IFnD/8/K9SiU31W
-         L67X2A/VrUsJREkkD5CUWhJX8iVIwKNKbyREKom3fO74X7gyTRQzP/M2dVMdWrN1LGax
-         Y+xyu0mKGcmP1bmabhOg5epICiBZ0II2/RO+V6W1Ae3ifhNpqfutYv7pIEi6b9POhGpc
-         sdsw==
+        bh=khS3+Cji6+1mvvdZyBUq0wqzq89EmN0cfXvMph1EjiU=;
+        b=C5zPkJs5BKd6hBpk6bk7pdPZIbj/uK+Ryup46C9tjtjoYPMIh8XavMiYv4bVfQiw9o
+         5Vww+DBrI8xuUNMX8wsEdzDuxyLL1nCS7XZ7dr2okI0g5NQ/mYTwKCvuIH7hgP+wNwP/
+         7b8AYV4M0ER7x0aZ2WRxQGUVk+BY7ocgGrzAZpswarDAQdJKNayfsZ1uUEN8Ku+3KL1B
+         L8Y+jxntpKdTnXey/BNYch+HmVW4ccKR4OO/AySkaQkldoAdzUcntc5y3+3aWk/6iJyd
+         2xhgeosYb+noUxpvDrICJv4cSF2AJORcnSmL1LDDhO9/HK4M73IwZsA2BMnlneUX/cDs
+         7YLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722037998; x=1722642798;
+        d=1e100.net; s=20230601; t=1722038000; x=1722642800;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=F7WgJlT5NNtid7p2jwFbPV8b+lTnD+3vJbPsQDaWDdo=;
-        b=qCN6kczqRxHCu4ELsZZsAEfovP6S2xbpV2pSs3C+omlyiKNCbRP9oczkV8PM2cLLBw
-         QmHMTXP6Y/zKn2YGhI37pNNdb5g4veyHBkZLT5Fgz73e36MKu9+zB7KfmE9mzIvKOUbc
-         DHq7r7ifoLma0eR8abF5XjoYbjCmxcu3cP/U/3Zimk2mlNE2UKakJwGfRZmAXfmi3iBK
-         rDl3MQ9RK0tyC/QMM2lwTUYPNlVk+5FpX5Clg7igVnLRlsC/sm0H63rIY3HtPwWfSnXt
-         7btFVJbnfeTUnVfcysh1MrMifYdbvjtDJPl8XjJZi4y+VXrGi4D3GRU+TdJloiteN9rG
-         IGHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWPIOuPqykGITrWuiT5Oitimdc2JBeQ67WdXB1tWjy64KaomWmzeuW2ye10WenKcnynVDAwl4vYAXY6vXZjMD7f7RX8zF6SdCIjeD3x6A==
-X-Gm-Message-State: AOJu0YxatjUNaPVnal4Iwb7h9f9tsKpt83A51m7kKAqD7JqD1JEgp+PV
-	2vXGJf6JhC8w0D/i/G3eQ50NxpMXDRvE8ILIwv+WVdsWpILPyV2Tz3pnpR0l7GaIcZ9QQVRtxGP
-	yCw==
-X-Google-Smtp-Source: AGHT+IHz6CGF/LJ/2Irg7XXoFs/UlO9MjKavvm7YGPRddocT798mRWwGF7hDBEuQel+TJyAfnYN45In/DfE=
+        bh=khS3+Cji6+1mvvdZyBUq0wqzq89EmN0cfXvMph1EjiU=;
+        b=MCJyCDu1HtmiXjdAKyx2gCuX1Pk+6bp3jokYAZCQWpJumqS4h/0vQSRZpS478BFwY8
+         e8+FECpRb5rUSANskBH/UAVQGtjbN1eYLnN7mZy6Pqq0rGfPzBPVcux0E2mspswVVjVo
+         xPQHRboaentcvakCXRDYHWXJxjkP2y6N8iMVZZquGMkTpEb07rdNRdCRLH/nc1TDFa6t
+         aBa7X4lBg+Bchwu4vwNXi+f638kGTjf7HfqGwgpNhIy8nJEBKhIJ9I3Z9tktoJQJoziq
+         2eJXb72NNjjiax0jwnfR8BxFkxld2tp9QAyBQT0TvQRBkjRtz5KyMZ/mNfGY0FSzuiE/
+         7oNA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcDzon5gaLompstHD7XiZmUDpOT2Cwhf5esOcJYWrhCcopL/J/U+6aYWAbEY/ohJb10AY71YiGRCcxJ1KM3wk7pModM7+1u30N+NAKIw==
+X-Gm-Message-State: AOJu0YweBxRAUJHYkU/iEVbMHpWznpTQNa4TWeXaGGVu/amyPpWLlh1q
+	tsS21GK+bN9ln7RDqoFMGLWjHYcu6RiZEOdUSdCAPh3JbxXGnnFY61lIag0ekl6X7UfAkrK8NeF
+	TdA==
+X-Google-Smtp-Source: AGHT+IHn8ljNba0QNoBWKfaXu8Wx8VTGIoZ1RPeW8pDsltrF/Hl6Iy7/rU4VvDeHaG7eZvfgbbZBLlqPjFc=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:120b:b0:e0b:4dd5:397e with SMTP id
- 3f1490d57ef6-e0b5455c058mr1734276.7.1722037998118; Fri, 26 Jul 2024 16:53:18
- -0700 (PDT)
-Date: Fri, 26 Jul 2024 16:51:29 -0700
+ (user=seanjc job=sendgmr) by 2002:a05:690c:806:b0:64a:8aec:617c with SMTP id
+ 00721157ae682-679fffd3e35mr362617b3.0.1722038000511; Fri, 26 Jul 2024
+ 16:53:20 -0700 (PDT)
+Date: Fri, 26 Jul 2024 16:51:30 -0700
 In-Reply-To: <20240726235234.228822-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20240726235234.228822-1-seanjc@google.com>
 X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-Message-ID: <20240726235234.228822-21-seanjc@google.com>
-Subject: [PATCH v12 20/84] KVM: Use NULL for struct page pointer to indicate
- mremapped memory
+Message-ID: <20240726235234.228822-22-seanjc@google.com>
+Subject: [PATCH v12 21/84] KVM: nVMX: Rely on kvm_vcpu_unmap() to track
+ validity of eVMCS mapping
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -91,61 +91,36 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop yet another unnecessary magic page value from KVM, as there's zero
-reason to use a poisoned pointer to indicate "no page".  If KVM uses a
-NULL page pointer, the kernel will explode just as quickly as if KVM uses
-a poisoned pointer.  Never mind the fact that such usage would be a
-blatant and egregious KVM bug.
+Remove the explicit evmptr12 validity check when deciding whether or not
+to unmap the eVMCS pointer, and instead rely on kvm_vcpu_unmap() to play
+nice with a NULL map->hva, i.e. to do nothing if the map is invalid.
+
+Note, vmx->nested.hv_evmcs_map is zero-allocated along with the rest of
+vcpu_vmx, i.e. the map starts out invalid/NULL.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- include/linux/kvm_host.h | 4 ----
- virt/kvm/kvm_main.c      | 4 ++--
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/kvm/vmx/nested.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index f42e030f69a4..a5dcb72bab00 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -273,16 +273,12 @@ enum {
- 	READING_SHADOW_PAGE_TABLES,
- };
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 2392a7ef254d..a34b49ea64b5 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -231,11 +231,8 @@ static inline void nested_release_evmcs(struct kvm_vcpu *vcpu)
+ 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
  
--#define KVM_UNMAPPED_PAGE	((void *) 0x500 + POISON_POINTER_DELTA)
+-	if (nested_vmx_is_evmptr12_valid(vmx)) {
+-		kvm_vcpu_unmap(vcpu, &vmx->nested.hv_evmcs_map, true);
+-		vmx->nested.hv_evmcs = NULL;
+-	}
 -
- struct kvm_host_map {
- 	/*
- 	 * Only valid if the 'pfn' is managed by the host kernel (i.e. There is
- 	 * a 'struct page' for it. When using mem= kernel parameter some memory
- 	 * can be used as guest memory but they are not managed by host
- 	 * kernel).
--	 * If 'pfn' is not managed by the host kernel, this field is
--	 * initialized to KVM_UNMAPPED_PAGE.
- 	 */
- 	struct page *page;
- 	void *hva;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 67a50b87bb87..3d717a131906 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3088,7 +3088,7 @@ void kvm_release_pfn(kvm_pfn_t pfn, bool dirty)
++	kvm_vcpu_unmap(vcpu, &vmx->nested.hv_evmcs_map, true);
++	vmx->nested.hv_evmcs = NULL;
+ 	vmx->nested.hv_evmcs_vmptr = EVMPTR_INVALID;
  
- int kvm_vcpu_map(struct kvm_vcpu *vcpu, gfn_t gfn, struct kvm_host_map *map)
- {
--	map->page = KVM_UNMAPPED_PAGE;
-+	map->page = NULL;
- 	map->hva = NULL;
- 	map->gfn = gfn;
- 
-@@ -3114,7 +3114,7 @@ void kvm_vcpu_unmap(struct kvm_vcpu *vcpu, struct kvm_host_map *map, bool dirty)
- 	if (!map->hva)
- 		return;
- 
--	if (map->page != KVM_UNMAPPED_PAGE)
-+	if (map->page)
- 		kunmap(map->page);
- #ifdef CONFIG_HAS_IOMEM
- 	else
+ 	if (hv_vcpu) {
 -- 
 2.46.0.rc1.232.g9752f9e123-goog
 
