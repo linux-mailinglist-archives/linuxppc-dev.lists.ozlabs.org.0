@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC6E93DB41
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 01:54:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3392D93DB4A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 01:54:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Jqqy+RRy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=nxZRQ9Ie;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4N5703Tz3d9V
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 09:53:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WW4Ns1C62z3dWF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Jul 2024 09:54:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Jqqy+RRy;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=nxZRQ9Ie;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3xzakzgykdaiugcpleiqqing.eqonkpwzrre-fgxnkuvu.q1ncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3ytakzgykdaqwierngksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4Lg0W5rz3cBH
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:52:42 +1000 (AEST)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-1fc5e61f0bbso13355115ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:52:42 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WW4Lh367yz3cBH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Jul 2024 09:52:44 +1000 (AEST)
+Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-70d26115cd5so1192574b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 16:52:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722037960; x=1722642760; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1722037962; x=1722642762; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=B44llYCZd4EZ9BiHApjJ5QQ8CK6GbkfpTxw4rYmbmqk=;
-        b=Jqqy+RRy5sb/EjEI5yx+ZDabOJh+LI5/qZbizsQmPsfMCofkE3idf5mLmporjqDUwM
-         CdjLKnEn/fRcBTjmD7R6DpnYdwto0zvbEkIgPAYl4x+SLynIPjgunXMAKS9Xd8eFsgJ+
-         J7DUnB34uCdsmqL1EriVuloGpxF550ATnXxGJx2mw5sxVdaif1EYab/jQE7UzcpZBZxS
-         dndEx5IA6KUlPoJnQvh0LEpuTt66QpQUpVut3XxCHWT4F+4c3dyZc7Vt4pA0AYHBFAGm
-         biacwtcglw7oQidxmTkNy6Rpp0yHnA4mITtpTNJlQtNo4MTl2SD0lYQtvIugJp0WLb+A
-         fB3Q==
+        bh=+ACqpXiHFW0htcnePdxx7jkBXYAkQBnbtzPYGP86yy4=;
+        b=nxZRQ9IeAP2Ia5QzHk4iapcQl4VqDucqpvO829H6UIIDT5OXqgdQOVZtgbeLAaWYoT
+         Gll83iKd3KteQzAVnn20b7QK9gWaBMIg6Hkjn14jxb+aP5ewJkQfvauf0CtVtPkmCjFv
+         Lh4GQHcTnMqKc6BsKQ9cY7nUZ8ZwU1XUGLaqA6W3b6xZqoxuiqWdGL3+BPk+WdsTBZUR
+         ePoQus1PrRv85NizLecArcaUJU4zpIFBz9nhdIAVAWflHUw3Gm4YCoQxaVjUivx/5/UJ
+         gi8S5FBj93F+LRCrGe6z+eaHP2RvB8QyAYKpMGiESI3+FhPtFHl67O/4Kk6TXzeSyMQp
+         3NKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722037960; x=1722642760;
+        d=1e100.net; s=20230601; t=1722037962; x=1722642762;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=B44llYCZd4EZ9BiHApjJ5QQ8CK6GbkfpTxw4rYmbmqk=;
-        b=NgKu5TIXB9xL1flibhVSKOgOSthrAcw8/cOYO8U9aaUMHlaswjqD1kBsbvx3SEUp0i
-         PytOxHcqlVkXzUR7jDh1AF+0FJ1ljf6xjn843Yw19y2aYyPlcKBXqbUMbz81McqSTGn9
-         nYquptVpfjfWJP3XdYLJd5KzTqRybebKfovGgYpEskidBee7/fGxFC0Vr5pD+XeKrTV3
-         1kHkrRHQXC+glnf2Al7WP0jiP7Rjnp8yb27Y3u814PrLn58c3Vk+k0QBQxTvkuW3SZ+C
-         K55g88oVZGAu9PkxEE3hqQKv+hKUMiESsDqFc+u+QIUWhhh2phIXihhzsgeHy8uId5+a
-         6s+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWbpMf6dT3bYb7rJqyUi7R72wY9WqjUmPnJAvpvfH2s5ENf1YreJdfOneJ/ALiFlD37Jdx3nLzUYvPZkjife2ZF+qC8zmYirozBAfjwHA==
-X-Gm-Message-State: AOJu0YxdF1PbF+YP1gX27SuoJZPBiyXlwtWfTpBzF+QaYyOTVJoOOLyv
-	t7rN8HPMPMVB9n1+2JKA57BHhnCMHI9NYJr1WCL/W9lzIboZmfVQsd4aEr3om/PREAejUtRPm4A
-	I8w==
-X-Google-Smtp-Source: AGHT+IEjG0ZQEVlDvyCmqtjyibvaIBPxkBHQDdDjj94pZYYC/xb/lJ2iSbTktb4rvu/gOGNYLlpIc1q2Vcw=
+        bh=+ACqpXiHFW0htcnePdxx7jkBXYAkQBnbtzPYGP86yy4=;
+        b=pY1+zskvOCUdxqYaI4coanbIzr/aHwzpriWxNVGPm6dR//qtUNT+YQ246aAIMUAuxN
+         GbNcqer6j3hGFioS6TqiPWzm71rMTtNljFeEIYhxavrbe3yTri2Q39m/iyJyD6ulb6ul
+         HcV0K8AZYa7gkd+1bwRs9sRpMRvxZnzw4JI3OmwcOugXU9csxvVVkOrhH2FFWvvS69Mc
+         ZVSa0p8qm+sAhe6xArvSrhIikDSrZri+BqFgvFU0IBFSnuo7ehz4PrlUbf9XdOqc2iVu
+         R1cMCC5Ln3o9MKd7LBsLKN47HE7cn9Y8v9yrvNGfO+L/7bTHy58EFdNpyiVxAx1r1a0d
+         ipsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqwUj18qKZ/xiL060z22sKdgi4X9iUg0d00PQn3NHxjZqpqueGVdDOa8x3c8z/gZbAmY6A17A10ckyf0TzvpYdL5CFtfaoM3pMOZYUSQ==
+X-Gm-Message-State: AOJu0YzrUJPnt2v21y7v0OGEXrXdAsyjT9yiWyIeVWu6RHBNb5JdBnGQ
+	zH2wCcS7aCOEjb51ljEOU1m7c+6IfVdBhLRe9gkf67Cm789MZxWs7hZgGlxl2H3QMpW1o+LqnxL
+	t3A==
+X-Google-Smtp-Source: AGHT+IGwCQGQqihWYa2umPunvMXl+38XfICaGVr07aRfeEr4UWXG0owvMV5oQenmn7mjdAWrLBWC2Kt2f3c=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:903:2b0e:b0:1fd:7097:af5c with SMTP id
- d9443c01a7336-1ff048d8505mr410065ad.11.1722037959655; Fri, 26 Jul 2024
- 16:52:39 -0700 (PDT)
-Date: Fri, 26 Jul 2024 16:51:10 -0700
+ (user=seanjc job=sendgmr) by 2002:a05:6a00:2d5:b0:70d:1cb3:e3bb with SMTP id
+ d2e1a72fcca58-70ecedee1c9mr17317b3a.5.1722037961972; Fri, 26 Jul 2024
+ 16:52:41 -0700 (PDT)
+Date: Fri, 26 Jul 2024 16:51:11 -0700
 In-Reply-To: <20240726235234.228822-1-seanjc@google.com>
 Mime-Version: 1.0
 References: <20240726235234.228822-1-seanjc@google.com>
 X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-Message-ID: <20240726235234.228822-2-seanjc@google.com>
-Subject: [PATCH v12 01/84] KVM: arm64: Release pfn, i.e. put page, if copying
- MTE tags hits ZONE_DEVICE
+Message-ID: <20240726235234.228822-3-seanjc@google.com>
+Subject: [PATCH v12 02/84] KVM: arm64: Disallow copying MTE to guest memory
+ while KVM is dirty logging
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -91,29 +91,35 @@ Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Put the page reference acquired by gfn_to_pfn_prot() if
-kvm_vm_ioctl_mte_copy_tags() runs into ZONE_DEVICE memory.  KVM's less-
-than-stellar heuristics for dealing with pfn-mapped memory means that KVM
-can get a page reference to ZONE_DEVICE memory.
+Disallow copying MTE tags to guest memory while KVM is dirty logging, as
+writing guest memory without marking the gfn as dirty in the memslot could
+result in userspace failing to migrate the updated page.  Ideally (maybe?),
+KVM would simply mark the gfn as dirty, but there is no vCPU to work with,
+and presumably the only use case for copy MTE tags _to_ the guest is when
+restoring state on the target.
 
 Fixes: f0376edb1ddc ("KVM: arm64: Add ioctl to fetch/store tags in a guest")
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/arm64/kvm/guest.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kvm/guest.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-index 11098eb7eb44..e1f0ff08836a 100644
+index e1f0ff08836a..962f985977c2 100644
 --- a/arch/arm64/kvm/guest.c
 +++ b/arch/arm64/kvm/guest.c
-@@ -1059,6 +1059,7 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
- 		page = pfn_to_online_page(pfn);
- 		if (!page) {
- 			/* Reject ZONE_DEVICE memory */
-+			kvm_release_pfn_clean(pfn);
- 			ret = -EFAULT;
- 			goto out;
- 		}
+@@ -1045,6 +1045,11 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+ 
+ 	mutex_lock(&kvm->slots_lock);
+ 
++	if (write && atomic_read(&kvm->nr_memslots_dirty_logging)) {
++		ret = -EBUSY;
++		goto out;
++	}
++
+ 	while (length > 0) {
+ 		kvm_pfn_t pfn = gfn_to_pfn_prot(kvm, gfn, write, NULL);
+ 		void *maddr;
 -- 
 2.46.0.rc1.232.g9752f9e123-goog
 
