@@ -2,80 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7FC93CD27
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 06:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B3BF93CDD0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 07:50:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jsBNIjim;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LkGSmevw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WVZDk30Xtz3dBh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 14:15:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WVcL80zdhz3d90
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Jul 2024 15:50:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jsBNIjim;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LkGSmevw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVZD24B09z3c05
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 14:15:13 +1000 (AEST)
-Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-7a10b293432so417049a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Jul 2024 21:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721967309; x=1722572109; darn=lists.ozlabs.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f3jDQgJjkOPkFdNASGIQMdZJ31Vgc4apYAqzb/U5CKI=;
-        b=jsBNIjimbhWaRILx9Sk+or/jb2wwQHnrtTQV8wZ2ZyIVtFeOKeHHb51+ecHUO0G1Y1
-         KVKJB7tUpGhLH3lh0LYl2/s/1YRbX/8mLxDuhHqddUmU2GTG1YiPr2tlEXP1v5NUV60Q
-         qgPKXMXE4My1XzbMtmySeOeRwAOSAQT7zcbOnEJDd2RAj/yWK1GS/D/nsfPwthKidxuv
-         sOtvbQqCd/+medztcOWAjkGZ4ke9RyIWOTLMRoU1hlourpwnEUeG5TBhePsBetNy8lrd
-         bVUYRmx40M3XbQWyysqzL0qldawYMgAh1FLtqhCE71gP4vq7DlnK07lDOnfzJe7GEQxA
-         +geg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721967309; x=1722572109;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=f3jDQgJjkOPkFdNASGIQMdZJ31Vgc4apYAqzb/U5CKI=;
-        b=aRrafqWyJ2UmVInN6CtYgNRtTQadmUyQM6VEfWpZm10GAmYPc58vbg2jxjLLN61YnT
-         gyO1RJV8ffxgbsQFnsiHrRziQDKFs66OgpxJn3mnLftbAA7+rUGkxKgSK/OuH/8gj0sa
-         XvhrVk/R+jGr2f9Tw6qaWVsSOOeBpTTSUgODSZEIGWFfyPv1DK0XmkhtaQ6ca/+jFTjU
-         FaxJ9YWa/IOusEUM64YjEzH0BwE4I1yDCPR64gV4uI65Md7f6NGDzKKvgG70r7b47xSH
-         /wh79hW3L2LsknVeJxqyUiFdTvqwaTcI/36HWsZrxTI/pyYj07Xci+X4dUykznzzB8fP
-         7jIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVgMrB1tyisul9rUtqdgA4az8WnZwt5eopEGqxbt6mD0zQP6NfSUjyyXulEB8wISlARL+iqJLW8OwT8Bpw0knreds3LWjgKF4WMdrJGaA==
-X-Gm-Message-State: AOJu0Yxlp0gGbXXWhKm/bUZzvNYYfh8O6veo9rk5O25qJgBJRzSc5cX6
-	f5uneyD2N5Eyt5LxjA6e0+dKwwXa9UMgggBCi8VBhprwYyrLGvBz
-X-Google-Smtp-Source: AGHT+IFmN17I4J5GSEbfLIh57WYix6Z4DqY06Of+f+JtOC/7oBUIVl0iyJ5AherVGcrUqk8gycWzzw==
-X-Received: by 2002:a17:90b:3e8b:b0:2c8:538d:95b7 with SMTP id 98e67ed59e1d1-2cf238ccb87mr5415523a91.32.1721967308684;
-        Thu, 25 Jul 2024 21:15:08 -0700 (PDT)
-Received: from localhost ([1.146.16.227])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cf28c9cef7sm2365286a91.29.2024.07.25.21.15.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jul 2024 21:15:08 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Jul 2024 14:15:00 +1000
-Message-Id: <D2Z6GP2VFOJ8.2KU7OB25CUXTC@gmail.com>
-Subject: Re: [kvm-unit-tests PATCH] build: retain intermediate .aux.o
- targets
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Nicholas Piggin" <npiggin@gmail.com>, "Segher Boessenkool"
- <segher@kernel.crashing.org>
-X-Mailer: aerc 0.18.0
-References: <20240612044234.212156-1-npiggin@gmail.com>
- <20240612082847.GG19790@gate.crashing.org>
- <D1ZBO021MLHV.3C7E4V3WOHO8V@gmail.com>
- <20240614010856.GK19790@gate.crashing.org>
- <D1ZLRVNGPWTV.5H76A3E8DJCV@gmail.com>
-In-Reply-To: <D1ZLRVNGPWTV.5H76A3E8DJCV@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WVcKL5wsZz3cHH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Jul 2024 15:49:58 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46Q4USqh026158;
+	Fri, 26 Jul 2024 05:49:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=pp1; bh=/pL0JuAfruxg3LvJnxZHYB3JtXD
+	cvdoee0Ej2lHdXwk=; b=LkGSmevwhm0aRHK+a9IJNrdqPoCeWWN1eHXuDHS7waf
+	GOcy3/xFTSbTwj69u2JTvZbqSpWKw92YuNTLaFfAEFVJSBEIDFE/JFlyvHCzRfqq
+	ncpROR4EKtzZNoXx+c6+Ijir3OhAifaABsQ3ejG+2iVWZglnNmUcu3pIf23gqDyQ
+	+0S6deZMi73ur/rZ8Ep9pAoNNXF71+TabWMDqssPyEghDm9TXJJhXQ2MhXbbmq0E
+	EHK/EoQeyYQaiCqc80haNKrtJzriNYZ8ND8NxzkbOC0H9kC9eawgKlUVYEa4njtf
+	HV1wrG3F2O5clA9cJxK1vCIz6OaZyul0rOZ0nFnYosw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40m3g009m6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jul 2024 05:49:46 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46Q5nkSE024488;
+	Fri, 26 Jul 2024 05:49:46 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40m3g009m3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jul 2024 05:49:46 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46Q52p6l018513;
+	Fri, 26 Jul 2024 05:49:45 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40kk3hmh6q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Jul 2024 05:49:45 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46Q5ndtG50332122
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 26 Jul 2024 05:49:41 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6BDC720043;
+	Fri, 26 Jul 2024 05:49:39 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 05D0120040;
+	Fri, 26 Jul 2024 05:49:36 +0000 (GMT)
+Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.124.219.245])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 26 Jul 2024 05:49:35 +0000 (GMT)
+Date: Fri, 26 Jul 2024 11:19:31 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v2] PCI: Fix crash during pci_dev hot-unplug on pseries
+ KVM guest
+Message-ID: <dx32q3sa4oopk3fnm2zyeplotuq6gq3rmnbmaw3mo4q3lgjpe7@gvpgu4rdk4f4>
+Mail-Followup-To: Bjorn Helgaas <helgaas@kernel.org>, 
+	Lizhi Hou <lizhi.hou@amd.com>, Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm-ppc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
+	Saravana Kannan <saravanak@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Kowshik Jois B S <kowsjois@linux.ibm.com>, 
+	Lukas Wunner <lukas@wunner.de>
+References: <p6cs4fxzistpyqkc5bv2sb76inrw7fterocdcu3snnyjpqydbr@thxna6v2umrl>
+ <20240725205537.GA858788@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240725205537.GA858788@bhelgaas>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: hrWbadeSvvg3pthFD6dbebsK6nYnlI9I
+X-Proofpoint-ORIG-GUID: TUS0qhJ3TBEy9O6kA7xiLL7ZbyW2NSJ5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-26_02,2024-07-25_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ bulkscore=0 clxscore=1015 mlxlogscore=671 priorityscore=1501
+ suspectscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
+ malwarescore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2407260036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,66 +107,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>, Marc Hartmayer <mhartmay@linux.ibm.com>, kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, devicetree@vger.kernel.org, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lizhi Hou <lizhi.hou@amd.com>, Lukas Wunner <lukas@wunner.de>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri Jun 14, 2024 at 6:38 PM AEST, Nicholas Piggin wrote:
-> On Fri Jun 14, 2024 at 11:08 AM AEST, Segher Boessenkool wrote:
-> > On Fri, Jun 14, 2024 at 10:43:39AM +1000, Nicholas Piggin wrote:
-> > > On Wed Jun 12, 2024 at 6:28 PM AEST, Segher Boessenkool wrote:
-> > > > On Wed, Jun 12, 2024 at 02:42:32PM +1000, Nicholas Piggin wrote:
-> > > > > arm, powerpc, riscv, build .aux.o targets with implicit pattern r=
-ules
-> > > > > in dependency chains that cause them to be made as intermediate f=
-iles,
-> > > > > which get removed when make finishes. This results in unnecessary
-> > > > > partial rebuilds. If make is run again, this time the .aux.o targ=
-ets
-> > > > > are not intermediate, possibly due to being made via different
-> > > > > dependencies.
-> > > > >=20
-> > > > > Adding .aux.o files to .PRECIOUS prevents them being removed and =
-solves
-> > > > > the rebuild problem.
-> > > > >=20
-> > > > > s390x does not have the problem because .SECONDARY prevents depen=
-dancies
-> > > > > from being built as intermediate. However the same change is made=
- for
-> > > > > s390x, for consistency.
-> > > >
-> > > > This is exactly what .SECONDARY is for, as its documentation says,
-> > > > even.  Wouldn't it be better to just add a .SECONDARY to the other
-> > > > targets as well?
-> > >=20
-> > > Yeah we were debating that and agreed .PRECIOUS may not be the
-> > > cleanest fix but since we already use that it's okay for a
-> > > minimal fix.
-> >
-> > But why add it to s390x then?  It is not a fix there at all!
->
-> Eh, not a big deal. I mentioned that in the changelog it doesn't seem to
-> pracicaly fix something. And I rather the makefiles converge as much as
-> possible rather than diverge more.
->
-> .SECONDARY was added independently and not to fix this problem in
-> s390x. And s390x has .SECONDARY slightly wrong AFAIKS. It mentions
-> .SECONDARY: twice in a way that looks like it was meant to depend on
-> specific targets, it actually gives it no dependencies and the
-> resulting semantics are that all intermediate files in the build are
-> treated as secondary. So somethig there should be cleaned up. If the
-> .SECONDARY was changed to only depend on the .gobj and .hdr.obj then
-> suddenly that would break .aux.o if I don't make the change.
->
-> So I'm meaning to work out what to do with all that, i.e., whether to
-> add blanket .SECONDARY for all and trim or remove the .PRECIOUS files,
-> or remove s390x's secondary, or make it more specific, or something
-> else. But it takes a while for me to do makefile work.
+Hi Bjorn,
 
-Hi Thomas,
+On 2024/07/25 03:55 PM, Bjorn Helgaas wrote:
+> On Thu, Jul 25, 2024 at 11:15:39PM +0530, Amit Machhiwal wrote:
+> > ...
+> > The crash in question is a critical issue that we would want to have
+> > a fix for soon. And while this is still being figured out, is it
+> > okay to go with the fix I proposed in the V1 of this patch?
+> 
+> v6.10 has been released already, and it will be a couple months before
+> the v6.11 release.
+> 
+> It looks like the regression is 407d1a51921e, which appeared in v6.6,
+> almost a year ago, so it's fairly old.
+> 
+> What target are you thinking about for the V1 patch?  I guess if we
+> add it as a v6.11 post-merge window fix, it might get backported to
+> stable kernels before v6.11?  
 
-Ping on this patch?
+Yes, I think we can go ahead with taking V1 patch for v6.11 post-merge window to
+fix the current bug and ask Ubuntu to pick it while Lizhi's proposed patch goes
+under test and review.
 
 Thanks,
-Nick
+Amit
