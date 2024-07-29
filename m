@@ -2,77 +2,159 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4D693EF36
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 09:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFCD893EF58
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 10:03:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=AmVmam/J;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=aRqftNqa;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WXW1L2C29z3cVS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 17:57:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WXW7b5WWJz3cZ5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 18:03:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=AmVmam/J;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=aRqftNqa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c201::; helo=am0pr83cu005.outbound.protection.outlook.com; envelope-from=iuliana.prodan@nxp.com; receiver=lists.ozlabs.org)
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazlp170100000.outbound.protection.outlook.com [IPv6:2a01:111:f403:c201::])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WXW0d2tb7z30VY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2024 17:57:04 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-70d39a836ccso71980b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2024 00:57:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1722239822; x=1722844622; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c3wfki45IHznha7QobB3MdtHXTqchjTEez4Ly6yQ4WE=;
-        b=AmVmam/J8helVdvXaS5jnkxvdRTbb2BoQZhcgJH9T8H4Agp4aTV2J+34w7zCeC3Ucz
-         RB35hCLtVgeKHVa26DCAfAtQyqs4ncbdqQix12Nwwg2OjQMJJwC4aSdyR3+btOe6mGiF
-         kBD6Zt0gG7l2x6r+w71IN6EQZNzh76tZejEpl3DUshpWTfnj7RSbyYeT5G9fAcLuJS/F
-         rb6piMkXEGK3AsvY2js1BRVPmuxF+AhY5fVNkAGytd3ri3G2B5gOCwwd0RCcghz18pGz
-         busxk5NV00AYBeeulS0DC/tbsFeqEsMnlMPKgI9mYB6PKgF/PX+/55GkDFC2V54Hi3gI
-         JUyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722239822; x=1722844622;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c3wfki45IHznha7QobB3MdtHXTqchjTEez4Ly6yQ4WE=;
-        b=gmLRb9tMscravd6kO1AodgK5cP1V5ygfXVnTCh8CXJ5XCVQJ2HXHaA7hTSBJnz2Zhu
-         +RiqgNgwIJl2XtkKF7MeXs/epETRdhIUFt/UAhkq96bIHXxjxo+AiJ37gJJehHvvjrMr
-         7qtFHPkkt5QGOJgWAL2WTa4D7QtSbjeERXxNIcWUgxVb1qIbyaGEH//xiUf3Lg1qXMGk
-         sAoDn4nerXwUVKIW7doicykfmFkK9OgmiaxwTlWMECRTpVehPPjP46DId5sGa2RvlYoU
-         +xD7W0sWmrvC3+KKbH5ezFWTYu83pI+mLDrCl64kVRkxBDVbCP5J295dmCQNnYwzZbkE
-         4m6g==
-X-Forwarded-Encrypted: i=1; AJvYcCXbilYDHtwTNGCbJTRAHN/MSkyFvznJqZ0jhozdE6wzXdnMiGiJaHpoWfK7i0Sy5jZa3QRZcb4p9gt7gMA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy3aJo5BNKGBD//07HnxEWOdAI5IWqfvuqkVWqcBkvI9KWyZlcm
-	g7WHnOMP7Ieva6ue00VYlxPtnj8cfCD4RZIzQOpHQLZ8P2kRyTaoz+JPdxcGiBg=
-X-Google-Smtp-Source: AGHT+IGe0lJSXq0Vh5OHsO4Tqomt8qIJFlqbE1F0RWa3l62BQCbxWuuvCVwPlATb9n6C8GSnyp3sLQ==
-X-Received: by 2002:a05:6a00:6f4f:b0:70d:25f1:c086 with SMTP id d2e1a72fcca58-70eac7f5ff3mr8578118b3a.0.1722239821921;
-        Mon, 29 Jul 2024 00:57:01 -0700 (PDT)
-Received: from [10.255.168.175] ([139.177.225.232])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead72b7easm6309789b3a.89.2024.07.29.00.56.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jul 2024 00:57:01 -0700 (PDT)
-Message-ID: <fe50cde6-dc9f-49b0-9a9a-0d07fb643617@bytedance.com>
-Date: Mon, 29 Jul 2024 15:56:50 +0800
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WXW6v6Cn2z30WB
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2024 18:02:30 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pibjsYGz5j/ox0XDrd3muwKMbmZl5OT7uJyDFEO03S4KCz0fM3P3HkZxc7Fx+ulmk4qC1MdU9QNq3UpSDDRYJIt4NYKKfxDFTCY92hsnw1Oz8xCZ9dgwVGUpEVjguaNAVDnSNWGylLiXmYbdVeb55eKvTcU2bR5fCkwZEbtr9n1kzzkwD9Z1vmWwwQ0MG4y2dezbSRXCV8FBCSp1OeJlFLFXwmYs78kO2cTb4St66FlrU7PWMXDGFiJr1kNjirhZj3XVjtlIH1QANrezCLHEnS68A+UuJYjWAPDLk37qvR6IqWg12FKvO9+Z0DsxoA5ii+5OgO5ynXMrqfe8PVGYzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x9EgHBcpcFqXEuY9dzz2aBw2CV1Il8GXCbDP6TmCKLM=;
+ b=RhAw2Oe/UX7EJLEOWNwI0lKN2bqki2IClEQT4mk1F5z/PNpHPVl1+Dyy2Kz/5kdHnj+d3rbfsz5rZRmpCXJYENB9aMlnkXblL700YcvtVvjhlgsHUOrZbBP2mKrCyL4V2I70h04YB4Q0+D6ejd+4gleE4fahsTXxH3xaoQzCukZskkIWXE2zpKV2gL1DAVRusgb2vdAC2xxmWWcFlHtM0P7MvEtWLiFeTZl0eLnAy68TLTLka1ymdUyKAV0WfV8SXr5KZg4Pg8rHOqi/tRXQRiMId0s6055iNBv+Osfo2gs7XvG2V90M1cCDp8i9XCS/pfrpkxXiyx7h7tUjhpt3BQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x9EgHBcpcFqXEuY9dzz2aBw2CV1Il8GXCbDP6TmCKLM=;
+ b=aRqftNqaC/3nUfG2xes+CtDhaJvjjyShHraNH8CDcUtigmEmLqTYX/ofm9izn2S6cnGE5YvYwOkQWtZyMU2rXNtThwglabGS63xtHCbkeyR4i/GdgSF8AqVBG++ZEcbiEgvdYYFHIPv6WewgTwo+srhSRnz6P87wz3Fad/04MiqW2FL8dvz387RCEHNr5TY/zfkF9BmeCaMETD6hMLk80vS7JSFr0lD3vIy/0uVzmhrzbOJXtYZ+kpPDvIlQ9H59fztAn/loIZiPyy+ijqInDpT/+xRVr521RFm5OqNdAZbxU5OE66dl+V/0jUlFWhzDIUu7EB6uashDUvgZGlDgEQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com (2603:10a6:10:2e1::21)
+ by VI0PR04MB10758.eurprd04.prod.outlook.com (2603:10a6:800:25c::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.26; Mon, 29 Jul
+ 2024 08:02:07 +0000
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1]) by DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1%3]) with mapi id 15.20.7784.020; Mon, 29 Jul 2024
+ 08:02:07 +0000
+Message-ID: <d3a4654c-7d20-4a21-8fff-fb5dc0076547@nxp.com>
+Date: Mon, 29 Jul 2024 11:02:04 +0300
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] mm: turn USE_SPLIT_PTE_PTLOCKS /
- USE_SPLIT_PTE_PTLOCKS into Kconfig options
+Subject: Re: [PATCH 0/2] ASoC: fsl_micfil: Check the difference for i.MX8 and
+ i.MX9
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, shengjiu.wang@gmail.com,
+ Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
+ lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <1721897694-6088-1-git-send-email-shengjiu.wang@nxp.com>
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>
-References: <20240726150728.3159964-1-david@redhat.com>
- <20240726150728.3159964-2-david@redhat.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <20240726150728.3159964-2-david@redhat.com>
+From: Iuliana Prodan <iuliana.prodan@nxp.com>
+In-Reply-To: <1721897694-6088-1-git-send-email-shengjiu.wang@nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR03CA0030.eurprd03.prod.outlook.com
+ (2603:10a6:208:14::43) To DU2PR04MB8774.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::21)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8774:EE_|VI0PR04MB10758:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40c828c9-6a0b-4068-c546-08dcafa4bdc2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|921020;
+X-Microsoft-Antispam-Message-Info: 	=?utf-8?B?OHZCRU5yNjhHNExuZmJOVFJiR2N6OTh5cklESFRkRXVkYkpMbzhoa0hORDRP?=
+ =?utf-8?B?MGhQemQyUGtIZTJ2NFNGNjg1aUZ0dkhHbFlNUkRLQ3RKUG8zVW81RUY3Y293?=
+ =?utf-8?B?U0FmV1UzUHR1OFlJaDcwaGJoYWhCTk83aGREdmdaVFZvVG1Sb2tmckY4WXd1?=
+ =?utf-8?B?OFN0eVJpYmQybHBSTk81dGZtZ0dIdnh0TzFXRXd6SVY2VlRsdjZuWFFDK1BF?=
+ =?utf-8?B?VlRzY3JVdlZQaEFzZldFdlF2Z21IVjFKQkh3a1NoVjJhc0ZHYWRsaXdBcnRX?=
+ =?utf-8?B?MzdJcUlBQjVlYS9tSkV0MTZ4Y25LM3dNTGViTVlJeUtqazhXYTRhM1FqUzAv?=
+ =?utf-8?B?Q2xodk90R0p1aGlBa21KRWJUZld5RHF6QlZLREEvendsSlFuenFhUW9WbytM?=
+ =?utf-8?B?V1FlSFBUM1FVR1JoTVVtYVJTVHZNVnRiUDB4b01jTXdpSTJpdSt4WDJKOGJw?=
+ =?utf-8?B?cG5aZ3IzTDg5UkptUFV2TThOSmNHRTA4aGpwYWtqZjlKczdEUXRLZExsTUdW?=
+ =?utf-8?B?cWdjdExsMysrOWtPYm9kQjZBbXpZWWw4Y29tSEIvVytSRWhCOFJJS1FBdFFz?=
+ =?utf-8?B?YUQwVEhGMFRVUHdxVnBFSlpqeEhsT1JsOURjTnFveFdoSW9YOVZUMjhySmhw?=
+ =?utf-8?B?YUZ6L0lqVkk5eXdPbkM4MFA1YURHQzVTaU05OGRCZjIycFM1MUxvaWlBMytq?=
+ =?utf-8?B?SHl6R2srWWxleEpnNVIrcTZaRVpxNjRjL01tL1ltRVp6cW9oajFqWUgxRXE4?=
+ =?utf-8?B?WGVVNVZzT3UzcGJzUTVZZlNaWVkwa3VMVGxaVlZaL2ZpcDUyMnI5WFdPZ0dR?=
+ =?utf-8?B?dmxNOFc1WUNCSzFKMVFSbDZYNk5lcnJRbUVJbyt0dkpmU3N3SGZEN0JORGpn?=
+ =?utf-8?B?ck1OV1B4TWJVNWU3RGpJc0Vvanhld2VVTkRQNVc4Q0NCbVdzcVViYW91SFhu?=
+ =?utf-8?B?NFkwNnQwaXRreFJQUzZNbHZrREJNOGtkVnY1czl2UGRFQ3ZOczV2ajIyc2hm?=
+ =?utf-8?B?NUt2b2NYWHFEbUlDSUlSN3VaeWI3TGp2ek5JYnByOVhuUG5qY0VIWHg5NTNS?=
+ =?utf-8?B?aVRTV2xwLzVFOEtYa1FJckdFdUlCODYrVGxBQ0xDNkdMOFR5NGpZaDNUVHRK?=
+ =?utf-8?B?THhYUkpMZjlZQ2d6dHJWckxuV2Jsb0lnQS9XY1ZWMTNWY0J2enhqZ1hOT29n?=
+ =?utf-8?B?bllhNDdOYzJZcWdWZGpFWDJVZWl1RmVRdFloaFMzR083RnBvQ2VMYlgxOEd3?=
+ =?utf-8?B?SkhkcG9sbXNXUzY4eHFZTUNMMWxpSmdjdjhpL1QrdHdScUMzS3VvMWo0b1BJ?=
+ =?utf-8?B?TG5DdVhUUzVHaW9CcHJ0TEl0eTkrR3FvTlRsN0dySHlOWndZTEN4SENOazZy?=
+ =?utf-8?B?a0lUTmEwMXEvcnYvZlRlblBjVnFtZURNOUc2Vk0ybTVXOWdqRndsenBtMS92?=
+ =?utf-8?B?TVkwRlRFNHIvUmlQWGQvSnpUekdib3ZjdjNHeDhsM1QwcFhhSVZzTkoxSEV2?=
+ =?utf-8?B?WCtZTndNY3FyV3U0VWtWSHdFblZtZjVJZXdZQS9maWZ3SklvcjNlNFh0aUlY?=
+ =?utf-8?B?TEljOHNYL09SZDdyZjFPUEExckIyL0lKVVg4UldzUjEvTE5RZHFPV2VyeW5L?=
+ =?utf-8?B?OFRTa0E5cTlUS1prR0hTTVhoZW5TZkZhak9GQmF1SGxJZWxuMVFnSGhsMmRN?=
+ =?utf-8?B?SXhmejREU2lVVERMWEJ4c0d3Nm9CMklxTkVMWDdRSy9jT3RJU2o5bWJSMlNQ?=
+ =?utf-8?B?enVDRElMTUdPWUFJSkMzVWlMM0VUckdTR1hzeEdZRjZCQ2toOUl6dVZndkpN?=
+ =?utf-8?B?VjdJbDBSeHRFc29RTVM3cGVxUHdYd2x2cEVSaU9MaEFqK0xhOGdhWG1YQ2di?=
+ =?utf-8?Q?vNb6W767F0asT?=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8774.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?YTlvZ0JXMzlBQXBaZ3BTYWJaUnJ4OG8rL2pOZVVxYnJGdEkxMlFwd0E2eDUz?=
+ =?utf-8?B?aHdCQ2V2eC9vT2R1czBiRVhRTDVPUnBqRlRFazZ0cGU5ME94Zit1c0I3TjZn?=
+ =?utf-8?B?aitRd3lIeUdlSHVJelNrN1RKa2RKallCWm95T3FObXV2LzJmWFJKeTJ6WjlJ?=
+ =?utf-8?B?aUljaXVtQUxRcUpuS05TTFgzVGxSV091cW1MQmVOVTdud3hQZ2VFWk00MUY4?=
+ =?utf-8?B?Q1prYjZXZUU4OWtFU2RFR1picTNZRkM5YU1Gc2dkSXZYUU1xRXE2UFJleXNo?=
+ =?utf-8?B?VFZnZ2thMEJyQlAzUURGV25rYmUyaTVSS2NmcS9BL1FhLzNNVjF1ck8wTzBS?=
+ =?utf-8?B?YnRUWWhyN1BKT0tvZGhlUm1YS1RVaCtncGtUOWpNWnlxQ3JvakZXZVMrckJn?=
+ =?utf-8?B?SlY0TUJtaEY4eUVLQXZ0ZXFaU1N2cEprV3M0V3R0MnRJdmVBT2ZtUkhmWlZ5?=
+ =?utf-8?B?cW8yL3F4YUhEcUVrWGM3cjhwTnBGSzRWaDlIeFIzaHNoaE1yMExpYkFxMnda?=
+ =?utf-8?B?T0hvWFV5cWpBOUtaZCtWbE95NzVQem8wOGpacWRncGdTL3NURyt0a1Zadkl5?=
+ =?utf-8?B?NDJGcFduNjZWYkY3S1cxSFloN2JIN2VoYXp6ZmM1bTYwNytQKzdrdndCZ2Zr?=
+ =?utf-8?B?OUtpTkhXUkhYbVIzMjNjMUIzRjJ4Mjg3SHFhQnJFWmx4MG1jdXh1bkF4N3A3?=
+ =?utf-8?B?L2Q5SUJTNDBlVG5aNEZtbVFOSjNUY0Q3SmxXTjI4UEpEQmhuOGxRQVVLKzdj?=
+ =?utf-8?B?VGViaXREMm9GV25FM0pEZWIrdzJBWXArV0pZZ0R0WTRDeXhHVFNNVmhJb0VF?=
+ =?utf-8?B?Y3VIREtOWUpKalZHaWZxMDh6bzU0SWVyK3h4M29rajZGdkZMd1FZMVVseGlI?=
+ =?utf-8?B?WjZOVldnYmVaNDJ2eUR4U0xLb2NockVuOGtYelRkSDR1U3NEU09KMjlqbFBY?=
+ =?utf-8?B?eEpVYi9FZHdqeVBLSU1vZFZZRHRMRHlXTmtUNDRSQWtTWHpSRDNuckZrS1FP?=
+ =?utf-8?B?M1dQUGRteHE5TzBUWS9Ud0tBa3RCNzR3dkE1SmR2akJyaFVzS2cyZHlZS3Q3?=
+ =?utf-8?B?YmlUaTBvQmlKOFBGNm5WM2FPazE4Q1NnS0haVTVYVGtvQ0NrOHhOK3lBQVVq?=
+ =?utf-8?B?elRrdjNiVFpQN1F4M2hQeTJTekNIY1VQQXhpWml0OWtOYWowa1V1Z05DSlZw?=
+ =?utf-8?B?cFBxU0MzWXhwWXArSExOd0dnNytJWlFXUkhoL0J0SE5WdVRObnhlTXJMUHRh?=
+ =?utf-8?B?emlHM3JnU2ZteXdZMjVRaG9aNHVPNmhieUV5eHQ2a3g5c0tQWHlpM0Njbmdm?=
+ =?utf-8?B?L29YTGJBNE5oVk5KU0ZXTmk4UHRLRXJRZ0hJYUZvZEJmdHR5UzdtSFFsYmNo?=
+ =?utf-8?B?S2ZON1hqL1BwSjY1a1J0T3c1SDJ0MzQ4RkdzSlo3enBDVmVtN1NDc0lXdDlJ?=
+ =?utf-8?B?djZFeGRtc0NqZEFmS0pVUWhiMVRGK2FUS0k2dlI2eEtwMnoxL2tFYnFLT05l?=
+ =?utf-8?B?eWY2elE5RHdqZmlOYkpERjZTWVJOWUN0U0tLaVFmU1ptSVU4N1ZsQ2c5aVVa?=
+ =?utf-8?B?WXk3TzlOZGVFTHlCdXo0VU1Rc084VHJyYUlKUUYxeXhqSmxGNVZNZVJGb3FB?=
+ =?utf-8?B?Uk00NVFEUFhEWWRXQmtVWEFlTC9qYUxBRjYyUHVxTG84Wklxei9jMFNUZTRC?=
+ =?utf-8?B?OE51eUNIZVB2N0hZM2ZickxKWUtXVTFnQk16QXlrVGJKR3dWdzlXazd3S0dq?=
+ =?utf-8?B?NENsaGhwOGd0TDlneWlJRHg4WXBYSUUvSnloT0pUd041dGMvK1NiUHJYMWsv?=
+ =?utf-8?B?SVZVYmhxMjZIZTFCNXNOVGRIZTVIUXBjbURBVmM4Z0kzTGhFRTBqbEk4VXAz?=
+ =?utf-8?B?SERPSExBL2E2NTg0NC9BVE1ieHdEOHEzN3NhbFdCTUc1UU9pM2pFZE9MSGJs?=
+ =?utf-8?B?RUMrV2Fid1lJb3VCUGlVUFJoTy9jNjlTM1lpM3k4ZUVKNC9EcVg5UTRCUUpl?=
+ =?utf-8?B?ZWdza2JuRXVudUpnZUpZdVdRSUcxMlRMWG1RWlE3SVVxZUxuMlo4ZndiWlBh?=
+ =?utf-8?B?VU4rcDYrNEkxZ2ZYV0xpY2x4dkR2UDBqSHVXenNRU1hVK2VCNkF4WXpvaGxX?=
+ =?utf-8?Q?BHBfpGGiMYipq2z2X2Vw3Rfm5?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40c828c9-6a0b-4068-c546-08dcafa4bdc2
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8774.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2024 08:02:07.4716
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fxjEnJqMhK2Hj4gySkxRy2dHTD1mhbG2vTKyHb/dAXw0mazwZERO8kGINWcB0+mGBH2780KAelTHhik7bk/IPw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10758
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,226 +166,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, "H. Peter Anvin" <hpa@zytor.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>, Ingo Molnar <mingo@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, xen-devel@lists.xenproject.org, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Oscar Salvador <osalvador@suse.de>, Juergen Gross <jgross@suse.com>, Christian Brauner <brauner@kernel.org>, Muchun Song <muchun.song@linux.dev>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 7/25/2024 11:54 AM, Shengjiu Wang wrote:
+> There are some register difference for i.MX8 and i.MX9
+> REG_MICFIL_FIFO_CTRL definition is updated.
+> REG_MICFIL_FSYNC_CTRL, REG_MICFIL_VERID, REG_MICFIL_PARAM are added from
+> i.MX9
+>
+> Shengjiu Wang (2):
+>    ASoC: fsl_micfil: Expand the range of FIFO watermark mask
+>    ASoC: fsl_micfil: Differentiate register access permission for
+>      platforms
+>
+>   sound/soc/fsl/fsl_micfil.c | 20 +++++++++++++++-----
+>   sound/soc/fsl/fsl_micfil.h |  2 +-
+>   2 files changed, 16 insertions(+), 6 deletions(-)
 
+For the series: Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
 
-On 2024/7/26 23:07, David Hildenbrand wrote:
-> Let's clean that up a bit and prepare for depending on
-> CONFIG_SPLIT_PMD_PTLOCKS in other Kconfig options.
-> 
-> More cleanups would be reasonable (like the arch-specific "depends on"
-> for CONFIG_SPLIT_PTE_PTLOCKS), but we'll leave that for another day.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->   arch/arm/mm/fault-armv.c      |  6 +++---
->   arch/x86/xen/mmu_pv.c         |  7 ++++---
->   include/linux/mm.h            |  8 ++++----
->   include/linux/mm_types.h      |  2 +-
->   include/linux/mm_types_task.h |  3 ---
->   kernel/fork.c                 |  4 ++--
->   mm/Kconfig                    | 18 +++++++++++-------
->   mm/memory.c                   |  2 +-
->   8 files changed, 26 insertions(+), 24 deletions(-)
+Thanks, Iulia
 
-That's great. Thanks!
-
-Reviewed-by: Qi Zheng <zhengqi.arch@bytedance.com>
-
-> 
-> diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
-> index 2286c2ea60ec4..831793cd6ff94 100644
-> --- a/arch/arm/mm/fault-armv.c
-> +++ b/arch/arm/mm/fault-armv.c
-> @@ -61,7 +61,7 @@ static int do_adjust_pte(struct vm_area_struct *vma, unsigned long address,
->   	return ret;
->   }
->   
-> -#if USE_SPLIT_PTE_PTLOCKS
-> +#if defined(CONFIG_SPLIT_PTE_PTLOCKS)
->   /*
->    * If we are using split PTE locks, then we need to take the page
->    * lock here.  Otherwise we are using shared mm->page_table_lock
-> @@ -80,10 +80,10 @@ static inline void do_pte_unlock(spinlock_t *ptl)
->   {
->   	spin_unlock(ptl);
->   }
-> -#else /* !USE_SPLIT_PTE_PTLOCKS */
-> +#else /* !defined(CONFIG_SPLIT_PTE_PTLOCKS) */
->   static inline void do_pte_lock(spinlock_t *ptl) {}
->   static inline void do_pte_unlock(spinlock_t *ptl) {}
-> -#endif /* USE_SPLIT_PTE_PTLOCKS */
-> +#endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
->   
->   static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
->   	unsigned long pfn)
-> diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-> index f1ce39d6d32cb..f4a316894bbb4 100644
-> --- a/arch/x86/xen/mmu_pv.c
-> +++ b/arch/x86/xen/mmu_pv.c
-> @@ -665,7 +665,7 @@ static spinlock_t *xen_pte_lock(struct page *page, struct mm_struct *mm)
->   {
->   	spinlock_t *ptl = NULL;
->   
-> -#if USE_SPLIT_PTE_PTLOCKS
-> +#if defined(CONFIG_SPLIT_PTE_PTLOCKS)
->   	ptl = ptlock_ptr(page_ptdesc(page));
->   	spin_lock_nest_lock(ptl, &mm->page_table_lock);
->   #endif
-> @@ -1553,7 +1553,8 @@ static inline void xen_alloc_ptpage(struct mm_struct *mm, unsigned long pfn,
->   
->   		__set_pfn_prot(pfn, PAGE_KERNEL_RO);
->   
-> -		if (level == PT_PTE && USE_SPLIT_PTE_PTLOCKS && !pinned)
-> +		if (level == PT_PTE && IS_ENABLED(CONFIG_SPLIT_PTE_PTLOCKS) &&
-> +		    !pinned)
->   			__pin_pagetable_pfn(MMUEXT_PIN_L1_TABLE, pfn);
->   
->   		xen_mc_issue(XEN_LAZY_MMU);
-> @@ -1581,7 +1582,7 @@ static inline void xen_release_ptpage(unsigned long pfn, unsigned level)
->   	if (pinned) {
->   		xen_mc_batch();
->   
-> -		if (level == PT_PTE && USE_SPLIT_PTE_PTLOCKS)
-> +		if (level == PT_PTE && IS_ENABLED(CONFIG_SPLIT_PTE_PTLOCKS))
->   			__pin_pagetable_pfn(MMUEXT_UNPIN_TABLE, pfn);
->   
->   		__set_pfn_prot(pfn, PAGE_KERNEL);
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0472a5090b180..dff43101572ec 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2843,7 +2843,7 @@ static inline void pagetable_free(struct ptdesc *pt)
->   	__free_pages(page, compound_order(page));
->   }
->   
-> -#if USE_SPLIT_PTE_PTLOCKS
-> +#if defined(CONFIG_SPLIT_PTE_PTLOCKS)
->   #if ALLOC_SPLIT_PTLOCKS
->   void __init ptlock_cache_init(void);
->   bool ptlock_alloc(struct ptdesc *ptdesc);
-> @@ -2895,7 +2895,7 @@ static inline bool ptlock_init(struct ptdesc *ptdesc)
->   	return true;
->   }
->   
-> -#else	/* !USE_SPLIT_PTE_PTLOCKS */
-> +#else	/* !defined(CONFIG_SPLIT_PTE_PTLOCKS) */
->   /*
->    * We use mm->page_table_lock to guard all pagetable pages of the mm.
->    */
-> @@ -2906,7 +2906,7 @@ static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pte_t *pte)
->   static inline void ptlock_cache_init(void) {}
->   static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
->   static inline void ptlock_free(struct ptdesc *ptdesc) {}
-> -#endif /* USE_SPLIT_PTE_PTLOCKS */
-> +#endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
->   
->   static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
->   {
-> @@ -2966,7 +2966,7 @@ pte_t *pte_offset_map_nolock(struct mm_struct *mm, pmd_t *pmd,
->   	((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd))? \
->   		NULL: pte_offset_kernel(pmd, address))
->   
-> -#if USE_SPLIT_PMD_PTLOCKS
-> +#if defined(CONFIG_SPLIT_PMD_PTLOCKS)
->   
->   static inline struct page *pmd_pgtable_page(pmd_t *pmd)
->   {
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 4854249792545..165c58b12ccc9 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -947,7 +947,7 @@ struct mm_struct {
->   #ifdef CONFIG_MMU_NOTIFIER
->   		struct mmu_notifier_subscriptions *notifier_subscriptions;
->   #endif
-> -#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !USE_SPLIT_PMD_PTLOCKS
-> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !defined(CONFIG_SPLIT_PMD_PTLOCKS)
->   		pgtable_t pmd_huge_pte; /* protected by page_table_lock */
->   #endif
->   #ifdef CONFIG_NUMA_BALANCING
-> diff --git a/include/linux/mm_types_task.h b/include/linux/mm_types_task.h
-> index a2f6179b672b8..bff5706b76e14 100644
-> --- a/include/linux/mm_types_task.h
-> +++ b/include/linux/mm_types_task.h
-> @@ -16,9 +16,6 @@
->   #include <asm/tlbbatch.h>
->   #endif
->   
-> -#define USE_SPLIT_PTE_PTLOCKS	(NR_CPUS >= CONFIG_SPLIT_PTLOCK_CPUS)
-> -#define USE_SPLIT_PMD_PTLOCKS	(USE_SPLIT_PTE_PTLOCKS && \
-> -		IS_ENABLED(CONFIG_ARCH_ENABLE_SPLIT_PMD_PTLOCK))
->   #define ALLOC_SPLIT_PTLOCKS	(SPINLOCK_SIZE > BITS_PER_LONG/8)
->   
->   /*
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index a8362c26ebcb0..216ce9ba4f4e6 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -832,7 +832,7 @@ static void check_mm(struct mm_struct *mm)
->   		pr_alert("BUG: non-zero pgtables_bytes on freeing mm: %ld\n",
->   				mm_pgtables_bytes(mm));
->   
-> -#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !USE_SPLIT_PMD_PTLOCKS
-> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !defined(CONFIG_SPLIT_PMD_PTLOCKS)
->   	VM_BUG_ON_MM(mm->pmd_huge_pte, mm);
->   #endif
->   }
-> @@ -1276,7 +1276,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
->   	RCU_INIT_POINTER(mm->exe_file, NULL);
->   	mmu_notifier_subscriptions_init(mm);
->   	init_tlb_flush_pending(mm);
-> -#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !USE_SPLIT_PMD_PTLOCKS
-> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && !defined(CONFIG_SPLIT_PMD_PTLOCKS)
->   	mm->pmd_huge_pte = NULL;
->   #endif
->   	mm_init_uprobes_state(mm);
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index b72e7d040f789..7b716ac802726 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -585,17 +585,21 @@ config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
->   # at the same time (e.g. copy_page_range()).
->   # DEBUG_SPINLOCK and DEBUG_LOCK_ALLOC spinlock_t also enlarge struct page.
->   #
-> -config SPLIT_PTLOCK_CPUS
-> -	int
-> -	default "999999" if !MMU
-> -	default "999999" if ARM && !CPU_CACHE_VIPT
-> -	default "999999" if PARISC && !PA20
-> -	default "999999" if SPARC32
-> -	default "4"
-> +config SPLIT_PTE_PTLOCKS
-> +	def_bool y
-> +	depends on MMU
-> +	depends on NR_CPUS >= 4
-> +	depends on !ARM || CPU_CACHE_VIPT
-> +	depends on !PARISC || PA20
-> +	depends on !SPARC32
->   
->   config ARCH_ENABLE_SPLIT_PMD_PTLOCK
->   	bool
->   
-> +config SPLIT_PMD_PTLOCKS
-> +	def_bool y
-> +	depends on SPLIT_PTE_PTLOCKS && ARCH_ENABLE_SPLIT_PMD_PTLOCK
-> +
->   #
->   # support for memory balloon
->   config MEMORY_BALLOON
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 833d2cad6eb29..714589582fe15 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -6559,7 +6559,7 @@ long copy_folio_from_user(struct folio *dst_folio,
->   }
->   #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_HUGETLBFS */
->   
-> -#if USE_SPLIT_PTE_PTLOCKS && ALLOC_SPLIT_PTLOCKS
-> +#if defined(CONFIG_SPLIT_PTE_PTLOCKS) && ALLOC_SPLIT_PTLOCKS
->   
->   static struct kmem_cache *page_ptl_cachep;
->   
