@@ -2,65 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8345193F234
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 12:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C97CF93F2AD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 12:29:45 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iHlEl7xp;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WXYwD3gNTz3cZq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 20:08:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WXZNl4qMQz3cVR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 20:29:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.173; helo=mail-yw1-f173.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iHlEl7xp;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 62 seconds by postgrey-1.37 at boromir; Mon, 29 Jul 2024 20:29:04 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WXYvr548vz3cG6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2024 20:08:07 +1000 (AEST)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6694b50a937so21589227b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2024 03:08:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722247679; x=1722852479;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jwTfVYSGl0qov4UkTwnmIUGjC6ZGnXwHCwIWbd4QwcU=;
-        b=JEQJX2eHlkjacQ7Fn//kL9kihcsKlilC01wmDy2Jh4KbuY4QIqyk6OSaPPXjaEyALf
-         qk7N5SiXCcDdCupcBEQ2cQU0oECHbfPm1FypKggQvHatUPujuKvAb1PRXjlFtiSEFkBA
-         VZ8Qy6cVWddBHTMM0jfJbzZD/eLG7QJskmRcVfQfx65ghjbvfJyM+t7Qk4qyPMaebNNx
-         vOtcaV/urGV1CbFDSXV40D+k8erQGZXQ8xc7pQh+PKU5P01h3bD1TLr7AQw57Ngh3n0p
-         HLeXx8C0eLRuBnIxpbByMQtaDqnO38BZx1+fKmwHxslFfGH6JxVqHlRGJDGf0mh4lngK
-         F6/w==
-X-Forwarded-Encrypted: i=1; AJvYcCWqZSd7JC6hGuspJck6NqBcaO3RlXjjkggT3jfR0KrKzbG4ZG3b5Y4GONaziYDJi/C1g/6amdE1PJ+7L7AmsGp2FARArckC8DsNgZc7mw==
-X-Gm-Message-State: AOJu0YxM1DiCoGDSElMe9QOp/dZ73frNchbpG/ErXtSOQv8CzqubJ1+h
-	jXt4OTrZe3xoRYWYT3hRNP7k4b0rtpoeCf0bHc2MwIamdasypUU10xlgp7oW
-X-Google-Smtp-Source: AGHT+IEUbsiQFzxyriRjb0BUP0m0/OwFPhuDD1HU1VUzOikvHpKAN+/gmt/zEbqaLwik0QLNuq787A==
-X-Received: by 2002:a81:6ec5:0:b0:650:9d94:799f with SMTP id 00721157ae682-67a07b77709mr81973987b3.26.1722247679283;
-        Mon, 29 Jul 2024 03:07:59 -0700 (PDT)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6756c44dcb2sm19620807b3.146.2024.07.29.03.07.58
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jul 2024 03:07:58 -0700 (PDT)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-66a1842b452so12816177b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2024 03:07:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUM+U+W0uo3WaqhJZzYjhYf7gcLgAYLLOCg+71O+5cfAD8OkhkVykhUqTR79hHaUAH0CC6LPryDlpBR18oyNhW87MdgoxhXyChvSYlBUA==
-X-Received: by 2002:a05:690c:6203:b0:664:7b3d:a53f with SMTP id
- 00721157ae682-67a0a7fba7cmr91084297b3.45.1722247678607; Mon, 29 Jul 2024
- 03:07:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WXZN03Wfzz3cH2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2024 20:29:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1722248945; x=1753784945;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=Bt99ge3UUZGPkVxOwjK0CeLHXnSXdbcs1gevqufOntg=;
+  b=iHlEl7xp6d6AQSadv4hf0vTpQOaP6rEHMsfPT+S7gISpZuGDfj7dCOJZ
+   Qjc/FCibSoFlibpKOVF+33KjXFoYjB0KNLa2ntXVen3Yi1l/jQ5tv8Xwk
+   cheplT5paKbF5uzOIDhh5n1IymkUM2tUw/Gz/QKQ+1EBEWiVeBVuN+ZKT
+   GyWWYwi/ZtxCIVDNEMj0ybYfsycQ//CWFKxCND39u2wLrpyKU+11R7HwX
+   A5p6J5l8gtzrNEap8ITCFiuL93Z1dUiC9N5wW8eotsDFljuFGgxqqEgDo
+   l80wMee8e9sW8+IBE/6Y2EmJSFp9lnlAd0bymlwM7Knu+msX3GueMTyt8
+   Q==;
+X-CSE-ConnectionGUID: 7fRkh4zKRCekZjbZIAQ4Nw==
+X-CSE-MsgGUID: j20KJuDyR6Cob1J3kiuy1A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11147"; a="37502574"
+X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; 
+   d="scan'208";a="37502574"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 03:27:57 -0700
+X-CSE-ConnectionGUID: Ynsp7EQmRje2W4uZXxa9yQ==
+X-CSE-MsgGUID: ZV+fiUwNQXmPYSqHZqNgKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; 
+   d="scan'208";a="77171478"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.245.151])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 03:27:48 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 29 Jul 2024 13:27:44 +0300 (EEST)
+To: Matthew W Carlis <mattc@purestorage.com>
+Subject: Re: PCI: Work around PCIe link training failures
+In-Reply-To: <20240726080446.12375-1-mattc@purestorage.com>
+Message-ID: <914b7d34-9ed5-cd99-cb76-f6f8eccb842e@linux.intel.com>
+References: <20240724191830.4807-1-mattc@purestorage.com> <20240726080446.12375-1-mattc@purestorage.com>
 MIME-Version: 1.0
-References: <CAHk-=wiyNokz0d3b=GRORij=mGvwoYHy=+bv6m2Hu_VqNdg66g@mail.gmail.com>
- <20240729092807.2235937-1-geert@linux-m68k.org> <bd4e9928-17b3-9257-8ba7-6b7f9bbb639a@linux-m68k.org>
- <502ee081-8e09-422a-a1f9-be40aeaa84fb@app.fastmail.com>
-In-Reply-To: <502ee081-8e09-422a-a1f9-be40aeaa84fb@app.fastmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 29 Jul 2024 12:07:46 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUUepTM9v7Oyakv6XQg9iw7t08ggGX=K90zRXxm4Ffpjg@mail.gmail.com>
-Message-ID: <CAMuHMdUUepTM9v7Oyakv6XQg9iw7t08ggGX=K90zRXxm4Ffpjg@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v6.11-rc1
-To: Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,53 +70,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dm-devel@lists.linux.dev, linux-sh@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, linux-hexagon@vger.kernel.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org, linux-btrfs@vger.kernel.org
+Cc: linux-pci@vger.kernel.org, mahesh@linux.ibm.com, edumazet@google.com, oohall@gmail.com, sr@denx.de, leon@kernel.org, linux-rdma@vger.kernel.org, christophe.leroy@csgroup.eu, kuba@kernel.org, pabeni@redhat.com, wilson@tuliptree.org, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, alex.williamson@redhat.com, bhelgaas@google.com, Mika Westerberg <mika.westerberg@linux.intel.com>, david.abdurachmanov@gmail.com, Netdev <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, Lukas Wunner <lukas@wunner.de>, saeedm@nvidia.com, pali@kernel.org, davem@davemloft.net, macro@orcam.me.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Arnd,
+On Fri, 26 Jul 2024, Matthew W Carlis wrote:
 
-On Mon, Jul 29, 2024 at 11:55=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrot=
-e:
-> On Mon, Jul 29, 2024, at 11:35, Geert Uytterhoeven wrote:
-> >>  + /kisskb/src/kernel/fork.c: error: #warning clone3() entry point is =
-missing, please fix [-Werror=3Dcpp]:  =3D> 3072:2
-> >
-> > sh4-gcc13/se{7619,7750}_defconfig
-> > sh4-gcc13/sh-all{mod,no,yes}config
-> > sh4-gcc13/sh-defconfig
-> > sparc64-gcc5/sparc-allnoconfig
-> > sparc64-gcc{5,13}/sparc32_defconfig
-> > sparc64-gcc{5,13}/sparc64-{allno,def}config
-> > sparc64-gcc13/sparc-all{mod,no}config
-> > sparc64-gcc13/sparc64-allmodconfig
->
-> Hexagon and NIOS2 as well, but this is expected. I really just
-> moved the warning into the actual implementation, the warning
-> is the same as before. hexagon and sh look like they should be
-> trivial, it's just that nobody seems to care. I'm sure the
-> patches were posted before and never applied.
->
-> sparc and nios2 do need some real work to write and test
-> the wrappers.
->
-> It does look like CONFIG_WERROR did not fail the build before
-> 505d66d1abfb ("clone3: drop __ARCH_WANT_SYS_CLONE3 macro")
-> as it probably was intended.
+> On Mon, 22 Jul 2024, Maciej W. Rozycki wrote:
+> 
+> > The main reason is it is believed that it is the downstream device
+> > causing the issue, and obviously you can't fetch its ID if you can't
+> > negotiate link so as to talk to it in the first place.
+> 
+> Have had some more time to look into this issue. So, I think the problem
+> with this change is that it is quite strict in its assumptions about what
+> it means when a device fails to train, but in an environment where hot-plug
+> is exercised frequently you are essentially bound have something interrupt
+> the link training. In the first case where we caught this problem our test
+> automation was doing some power cycle tortures on our endpoints. If you catch
+> the right timing the link will be forced down to Gen1 forever without some other
+> automation to recover you unless your device is the one single device in the
+> allowlist which had the hardware bug in the first place.
+> 
+> I wonder if we can come up with some kind of alternative.
 
-Indeed. The actual regression is that this turned into a fatal error
-with -Werror.
+The most obvious solution is to not leave the speed at Gen1 on failure in 
+Target Speed quirk but to restore the original Target Speed value. The 
+downside with that is if the current retraining interface (function) is 
+used, it adds delay. But the retraining functions could be reworked such 
+that the retraining is only triggered in case the Target Speed quirk 
+fails but we don't wait for its result (which will very likely fail 
+anyway).
 
-Gr{oetje,eeting}s,
+-- 
+ i.
 
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
