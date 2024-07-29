@@ -2,58 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C0893F87A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 16:42:48 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KtuVtq+Q;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 666BB93F893
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 16:47:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WXh0k0Flyz3cjt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 00:42:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WXh6G2QWPz3dLl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 00:47:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KtuVtq+Q;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::221; helo=relay1-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WXgXR4nXnz3cXw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 00:21:43 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 62277240009;
-	Mon, 29 Jul 2024 14:21:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1722262900;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mxhVI5cINOPlLM9ZHr8aejS0o32n/nWcepwPUyLTegw=;
-	b=KtuVtq+Q0c/lU5+zmBceS/FUeiqQVG+3KxqDZjwIttlPB99AWFJSVqgvZ1bIb3udjmTUnX
-	KbcEP0OcvAXMBhizqikvZszwh19iwgRFaNSIFYAXvh6MPq6wzM/CnZq74ENrA0w8FOMwvs
-	aSL9yLLd924RgSrqIV1Venh+GXIUjcO3lSerq6I01xU4TNWyjtT5kadBkFnEx3Yu3FPrXp
-	T7nCC7yRPJ43rqQl+Qj7Py+7CAvks79Pzl5MLTeFBQl3uk17g8gzBq4oqYZDZhtpQWkqTF
-	P3BHdPWVLJ7l1obiShL0NrY63XZVfaQyV6EKZHLIpEavXwhQJzUBCZtzMjVyfg==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Herve Codina <herve.codina@bootlin.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Qiang Zhao <qiang.zhao@nxp.com>,
-	Li Yang <leoyang.li@nxp.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1 36/36] MAINTAINERS: Add QE files related to the Freescale QMC controller
-Date: Mon, 29 Jul 2024 16:21:05 +0200
-Message-ID: <20240729142107.104574-37-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240729142107.104574-1-herve.codina@bootlin.com>
-References: <20240729142107.104574-1-herve.codina@bootlin.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WXggZ55qnz3cjS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 00:27:53 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 38AA21007;
+	Mon, 29 Jul 2024 07:27:46 -0700 (PDT)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CD7413F64C;
+	Mon, 29 Jul 2024 07:27:16 -0700 (PDT)
+Date: Mon, 29 Jul 2024 15:27:11 +0100
+From: Dave Martin <Dave.Martin@arm.com>
+To: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 18/29] arm64: add POE signal support
+Message-ID: <Zqemv4YUSM0gouYO@e133380.arm.com>
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+ <20240503130147.1154804-19-joey.gouly@arm.com>
+ <229bd367-466e-4bf9-9627-24d2d0821ff4@arm.com>
+ <7789da64-34e2-49db-b203-84b80e5831d5@sirena.org.uk>
+ <cf7de572-420a-4d59-a8dd-effaff002e12@arm.com>
+ <ZqJ2I3f2qdiD2DfP@e133380.arm.com>
+ <a13c3d5e-6517-4632-b20d-49ce9f0d8e58@sirena.org.uk>
+ <ZqPLSRjjE+SRoGAQ@e133380.arm.com>
+ <a52f1762-afd4-4527-88ac-76cdd8a59d5d@sirena.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a52f1762-afd4-4527-88ac-76cdd8a59d5d@sirena.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,31 +49,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, Joey Gouly <joey.gouly@arm.com>, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, Amit Daniel Kachhap <amitdaniel.kachhap@arm.com>, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, aneesh.kumar@linux.ibm.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Freescale QMC controller driver supports both QE and CPM1.
+On Fri, Jul 26, 2024 at 06:39:27PM +0100, Mark Brown wrote:
+> On Fri, Jul 26, 2024 at 05:14:01PM +0100, Dave Martin wrote:
+> > On Thu, Jul 25, 2024 at 07:11:41PM +0100, Mark Brown wrote:
+> 
+> > > That'd have to be a variably sized structure with pairs of sysreg
+> > > ID/value items in it I think which would be a bit of a pain to implement
+> > > but doable.  The per-record header is 64 bits, we'd get maximal saving
+> > > by allocating a byte for the IDs.
+> 
+> > Or possibly the regs could be identified positionally, avoiding the
+> > need for IDs.  Space would be at a premium, and we would have to think
+> > carefully about what should and should not be allowed in there.
+> 
+> Yes, though that would mean if we had to generate any register in there
+> we'd always have to generate at least as many entries as whatever number
+> it got assigned which depending on how much optionality ends up getting
+> used might be unfortunate.
 
-Add the newly introduced QE files to the existing entry.
+Ack, though it's only 150 bytes or so at most, so just zeroing it all
+(or as much as we know about) doesn't feel like a big cost.
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+It depends how determined we are to squeeze the most out of the
+remaining space.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1d32d38f2247..1331bdeb7386 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -8996,6 +8996,7 @@ M:	Herve Codina <herve.codina@bootlin.com>
- L:	linuxppc-dev@lists.ozlabs.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
-+F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ucc-qmc.yaml
- F:	drivers/soc/fsl/qe/qmc.c
- F:	include/soc/fsl/qe/qmc.h
- 
--- 
-2.45.0
 
+> > > It would be very unfortunate timing to start gating things on such a
+> > > change though (I'm particularly worried about GCS here, at this point
+> > > the kernel changes are blocking the entire ecosystem).
+> 
+> > For GCS, I wonder whether it should be made a strictly opt-in feature:
+> > i.e., if you use it then you must tolerate large sigframes, and if it
+> > is turned off then its state is neither dumped nor restored.  Since GCS
+> > requires an explict prctl to turn it on, the mechanism seems partly
+> > there already in your series.
+> 
+> Yeah, that's what the current code does actually.  In any case it's not
+> just a single register - there's also the GCS mode in there.
+
+Agreed -- I'll ping the GCS series, but this sounds like a reasonable
+starting point.
+
+Cheers
+---Dave
