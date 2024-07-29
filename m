@@ -2,63 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97CF93F2AD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 12:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F8593F34F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 12:54:34 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iHlEl7xp;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=oxb6c/Eu;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WXZNl4qMQz3cVR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 20:29:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WXZxN4BbWz3cXL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Jul 2024 20:54:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=tkos.co.il
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iHlEl7xp;
+	dkim=pass (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=oxb6c/Eu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 62 seconds by postgrey-1.37 at boromir; Mon, 29 Jul 2024 20:29:04 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tkos.co.il (client-ip=84.110.109.230; helo=mail.tkos.co.il; envelope-from=baruch@tkos.co.il; receiver=lists.ozlabs.org)
+Received: from mail.tkos.co.il (hours.tkos.co.il [84.110.109.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WXZN03Wfzz3cH2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2024 20:29:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722248945; x=1753784945;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=Bt99ge3UUZGPkVxOwjK0CeLHXnSXdbcs1gevqufOntg=;
-  b=iHlEl7xp6d6AQSadv4hf0vTpQOaP6rEHMsfPT+S7gISpZuGDfj7dCOJZ
-   Qjc/FCibSoFlibpKOVF+33KjXFoYjB0KNLa2ntXVen3Yi1l/jQ5tv8Xwk
-   cheplT5paKbF5uzOIDhh5n1IymkUM2tUw/Gz/QKQ+1EBEWiVeBVuN+ZKT
-   GyWWYwi/ZtxCIVDNEMj0ybYfsycQ//CWFKxCND39u2wLrpyKU+11R7HwX
-   A5p6J5l8gtzrNEap8ITCFiuL93Z1dUiC9N5wW8eotsDFljuFGgxqqEgDo
-   l80wMee8e9sW8+IBE/6Y2EmJSFp9lnlAd0bymlwM7Knu+msX3GueMTyt8
-   Q==;
-X-CSE-ConnectionGUID: 7fRkh4zKRCekZjbZIAQ4Nw==
-X-CSE-MsgGUID: j20KJuDyR6Cob1J3kiuy1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11147"; a="37502574"
-X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; 
-   d="scan'208";a="37502574"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 03:27:57 -0700
-X-CSE-ConnectionGUID: Ynsp7EQmRje2W4uZXxa9yQ==
-X-CSE-MsgGUID: ZV+fiUwNQXmPYSqHZqNgKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; 
-   d="scan'208";a="77171478"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.245.151])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 03:27:48 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 29 Jul 2024 13:27:44 +0300 (EEST)
-To: Matthew W Carlis <mattc@purestorage.com>
-Subject: Re: PCI: Work around PCIe link training failures
-In-Reply-To: <20240726080446.12375-1-mattc@purestorage.com>
-Message-ID: <914b7d34-9ed5-cd99-cb76-f6f8eccb842e@linux.intel.com>
-References: <20240724191830.4807-1-mattc@purestorage.com> <20240726080446.12375-1-mattc@purestorage.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WXZtL3BG4z3cH2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Jul 2024 20:51:54 +1000 (AEST)
+Received: from tarshish.tkos.co.il (unknown [10.0.8.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.tkos.co.il (Postfix) with ESMTPS id 5C85044077F;
+	Mon, 29 Jul 2024 13:50:32 +0300 (IDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tkos.co.il;
+	s=default; t=1722250232;
+	bh=fW3seKu3qSWQ63GvanpzjS9o30g/c8HO+hDOTWVeunY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=oxb6c/Eu6R3lnFbBk1ATcjrT04NEVWB9QlcbuP6HUW8mgWd+gF1a/nKIokODTXVEa
+	 OPq8XiyDhAxh7nRm91I3O5m+7MK740rLnMhBRvbhasdMcwGkbi26eNM/wG5j4zx6kg
+	 RUo7n483hb7jswtzULahoaXd3+3arO6GytgHs/6b3Sr7Pv5lBZptycGtoF2RzPY+oR
+	 hnpqgsVLqN8b3fvK4wTH0IzCg5Srw5G0QnQdFHmIbO7LBBDAHHpSTMe/xSTfjVKt/A
+	 ouC0R5aURB3/Sn2fLU2NJut7AYOriSMaeAYYf4ywM42DhNjkBh6oEknuwRbvGmBvjo
+	 30+SvOeUXew4A==
+From: Baruch Siach <baruch@tkos.co.il>
+To: Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH v3 0/3] dma: support DMA zone starting above 4GB
+Date: Mon, 29 Jul 2024 13:51:23 +0300
+Message-ID: <cover.1722249878.git.baruch@tkos.co.il>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,38 +59,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, mahesh@linux.ibm.com, edumazet@google.com, oohall@gmail.com, sr@denx.de, leon@kernel.org, linux-rdma@vger.kernel.org, christophe.leroy@csgroup.eu, kuba@kernel.org, pabeni@redhat.com, wilson@tuliptree.org, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, alex.williamson@redhat.com, bhelgaas@google.com, Mika Westerberg <mika.westerberg@linux.intel.com>, david.abdurachmanov@gmail.com, Netdev <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, Lukas Wunner <lukas@wunner.de>, saeedm@nvidia.com, pali@kernel.org, davem@davemloft.net, macro@orcam.me.uk
+Cc: linux-s390@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>, Ramon Fried <ramon@neureality.ai>, =?UTF-8?q?Petr=20Tesa=C5=99=C3=ADk?= <petr@tesarici.cz>, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 26 Jul 2024, Matthew W Carlis wrote:
+DMA zones code assumes that DMA lower limit is zero. When there is no RAM 
+below 4GB, arm64 platform code sets DMA/DMA32 zone limits to cover the entire 
+RAM[0].
 
-> On Mon, 22 Jul 2024, Maciej W. Rozycki wrote:
-> 
-> > The main reason is it is believed that it is the downstream device
-> > causing the issue, and obviously you can't fetch its ID if you can't
-> > negotiate link so as to talk to it in the first place.
-> 
-> Have had some more time to look into this issue. So, I think the problem
-> with this change is that it is quite strict in its assumptions about what
-> it means when a device fails to train, but in an environment where hot-plug
-> is exercised frequently you are essentially bound have something interrupt
-> the link training. In the first case where we caught this problem our test
-> automation was doing some power cycle tortures on our endpoints. If you catch
-> the right timing the link will be forced down to Gen1 forever without some other
-> automation to recover you unless your device is the one single device in the
-> allowlist which had the hardware bug in the first place.
-> 
-> I wonder if we can come up with some kind of alternative.
+My target platform has RAM starting at 32GB. Devices with 30-bit DMA mask are 
+mapped to 1GB at the bottom of RAM, between 32GB - 33GB. DMA zone over the 
+entire RAM breaks DMA allocation for these devices.
 
-The most obvious solution is to not leave the speed at Gen1 on failure in 
-Target Speed quirk but to restore the original Target Speed value. The 
-downside with that is if the current retraining interface (function) is 
-used, it adds delay. But the retraining functions could be reworked such 
-that the retraining is only triggered in case the Target Speed quirk 
-fails but we don't wait for its result (which will very likely fail 
-anyway).
+In response to a previous RFC hack[1] Catalin Marinas suggested to add a
+separate offset value as base address for the DMA zone, and then refined the 
+suggestion to use start of RAM[3]. This RFC series attempts to implement that 
+suggestion.
+
+With this series applied, the DMA zone covers the right RAM range for my 
+platform.
+
+v3:
+
+  * Rebase on v6.11-rc1.
+
+  * Drop zone_dma_base. Use memblock_start_of_DRAM() instead.
+
+  * Drop DT patches. Low DMA range limit no longer needed.
+
+  * Add patch to improve dma_direct_optimal_gfp_mask() heuristics as Catalin 
+    suggested.
+
+RFC v2:
+
+  * Add patch from Catalin[2] changing zone_dma_bits to zone_dma_limit to 
+    simplify subsequent patches
+
+  * Test on real hardware
+
+RFC v1: https://lore.kernel.org/all/cover.1703683642.git.baruch@tkos.co.il/
+
+[0] See commit 791ab8b2e3db ("arm64: Ignore any DMA offsets in the 
+    max_zone_phys() calculation")
+
+[1] https://lore.kernel.org/all/9af8a19c3398e7dc09cfc1fbafed98d795d9f83e.1699464622.git.baruch@tkos.co.il/
+
+[2] https://lore.kernel.org/all/ZZ2HnHJV3gdzu1Aj@arm.com/
+
+[3] https://lore.kernel.org/all/ZnH-VU2iz9Q2KLbr@arm.com/
+
+Baruch Siach (2):
+  dma-mapping: improve DMA zone selection
+  dma-direct: use RAM start to offset zone_dma_limit
+
+Catalin Marinas (1):
+  dma-mapping: replace zone_dma_bits by zone_dma_limit
+
+ arch/arm64/mm/init.c       | 34 +++++++++++++---------------------
+ arch/powerpc/mm/mem.c      |  9 ++++-----
+ arch/s390/mm/init.c        |  2 +-
+ include/linux/dma-direct.h |  2 +-
+ kernel/dma/direct.c        | 15 ++++++++-------
+ kernel/dma/pool.c          |  3 ++-
+ kernel/dma/swiotlb.c       |  4 ++--
+ 7 files changed, 31 insertions(+), 38 deletions(-)
 
 -- 
- i.
+2.43.0
 
