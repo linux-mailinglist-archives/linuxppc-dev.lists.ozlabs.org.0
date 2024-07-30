@@ -1,85 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38389941FA6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 20:35:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD4694206B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 21:16:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KtQLx3vt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MMXy2mAj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYP6g6Zy6z3d2m
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 04:35:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYQ1z5CfDz2y8d
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 05:16:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KtQLx3vt;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MMXy2mAj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=allen.lkml@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=32zupzgykddqiuqdzsweewbu.secbydknffs-tulbyiji.epbqri.ehw@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYP5x6FlSz3cH2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 04:34:44 +1000 (AEST)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-7a1843b4cdbso2827076a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 11:34:44 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYQ1H37Smz3cbC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 05:15:45 +1000 (AEST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-66a2aee82a0so84983067b3.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 12:15:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722364481; x=1722969281; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XJF28MhC2MiqvCUOHdECUHJyNP06dmnDOSRczPxFDXg=;
-        b=KtQLx3vtZZrbVG3GZdTa6VWY4spqrviiSe9wBhJ5MGWKoccoV8+1Hl2C5jSLO3gFBS
-         JNU0BK5bbdUd+4dUecAVhwdAqdK3PMQRpstiGCWA5/RXlRyk+E0vPb3i7wLALbAwAzHf
-         Yn360n2lsdBgl5Dc7IYWRAJviRFyB7oFfy1gKhDgM/J1P2NiSt42mvqjVWgWXLQq4o1Y
-         tOKAUCp0ZI4kqdWYM7jjLKPEfOEz342U1Wj1Fgmf97/owaA2jK2OjqtbkTyJ7s8TN/On
-         YCejHGxfTYBqis9LviyeqenvJDlrMZQKb4n7SwKUP7fUWPmaFLV3kKC7uS0CpS945EYL
-         pi8Q==
+        d=google.com; s=20230601; t=1722366940; x=1722971740; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8ISzuCdCQ1ApBdrb/imzREuT+CY1/CgtGbhMTtqRUAc=;
+        b=MMXy2mAjOtnHwVnwUzOvaYOXS0kymip+ZURXv2i1/IrCV20oho6LsvAfbaTT4rPp8o
+         E/aVklDT9zy4PInPq9xwabJp+j0Spp9D4IqBNXCaQ74LqJvZDMndsKD2lIqCoIs3LQsu
+         3K1zSBYtwupIkUeIKNInqmpq9l2R5xBbvU1/Rri6mYH95Qy8J/QFXGwFu+HAIVMs1q7L
+         6wsYrKzdI/CVwCd43JFlw++bEI8yDlJGVSqidm7o7WXTeh+7+X97nv6n/4euKgO+nsR+
+         usE4cIUT/GKU0WLS6vHwAGjREBaK5P0YLZaW56j1q3qa+5SXn84VR8XnsoqrWuFAhfVw
+         tBEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722364481; x=1722969281;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XJF28MhC2MiqvCUOHdECUHJyNP06dmnDOSRczPxFDXg=;
-        b=dOL8uPAlg73WjH5nhRr9Ebs5Dy8zdFcUCIjImL8sF7ikqezDF0xCSUyadHNpqvZMJl
-         65MS/DC7MT6Q6FqzFXslYZzPktCUhtW0DPL/oPMr7fHAUCPK+yUS+0+k0OOALCKWhzF9
-         p/yZCPqTQ9dfiAEVcK78/0FFcktVmUqDjs8MVKTDHAcNf0LCQGrSZ7CZczmnVzyGwjXA
-         UtAftN5iwFsjuPTiNSGfRo2s4XQIerl5q8foi1RWrdLpKKnq+b3xPMRFqsEvw84r+2+U
-         saD6kFlZinj83oktfDvjw4uVNGmUKuP1IvizbOg00UdzEkUnStq+4RwQPjUEIcUevsL1
-         LyIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVs0jq2PMpGBBfD6lzWu8Tvxos8L6C1IMRuT/UwiCGwaE5hH0igsht9l95g92cYaB8RA/Qk1Rr9fsh/EvliQObidnA7LkxgqmM77vZXwA==
-X-Gm-Message-State: AOJu0Yxx7cAcdXD3XKkWwVKA4taPqvuUMUYBT1ZBYEG720sWwe8z9eKs
-	LeLiuggvZDnuzwNgARhxBKtg6DwMh6H+o6QFpiKdPU9J27AEbYfQ
-X-Google-Smtp-Source: AGHT+IGo7lrGjbCeYJR8CgOHZdoGXq6ysooeIc5UeAEWFCJBQ9LFDG+NCFqdDOvXEN4PPr122ZUWMw==
-X-Received: by 2002:a05:6a20:7347:b0:1c2:97cd:94d8 with SMTP id adf61e73a8af0-1c4a12cbcccmr11576550637.20.1722364481320;
-        Tue, 30 Jul 2024 11:34:41 -0700 (PDT)
-Received: from apais-devbox.. ([2001:569:766d:6500:f2df:af9:e1f6:390e])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7a9f817f5a2sm7837763a12.24.2024.07.30.11.34.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jul 2024 11:34:40 -0700 (PDT)
-From: Allen Pais <allen.lkml@gmail.com>
-To: kuba@kernel.org,
-	Haren Myneni <haren@linux.ibm.com>,
-	Rick Lindsley <ricklind@linux.ibm.com>,
-	Nick Child <nnac123@linux.ibm.com>,
-	Thomas Falcon <tlfalcon@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [net-next v3 12/15] net: ibmvnic: Convert tasklet API to new bottom half workqueue mechanism
-Date: Tue, 30 Jul 2024 11:34:00 -0700
-Message-Id: <20240730183403.4176544-13-allen.lkml@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240730183403.4176544-1-allen.lkml@gmail.com>
-References: <20240730183403.4176544-1-allen.lkml@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20230601; t=1722366940; x=1722971740;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8ISzuCdCQ1ApBdrb/imzREuT+CY1/CgtGbhMTtqRUAc=;
+        b=ilFpyD3ONJZqshpH68oeuLDjjDI0mo6hWMDmZx2jJAcglb0vazPXt31MTqHtpm0UUA
+         n6SuS8b2CpY1390hn01uYsnx20NwitFeGE723V4V+GH4u+miRB2dzqmWaJ0MX1h9BjaO
+         1b8COFzppwA4UnKmkc5jaML8mZAAZ1RKUAUbuok1E1geGXINkCZCnfBo6Ws6j+alKXgK
+         mqTuTrJRLEUTlkx4NAiQRpQDMdnUYHtSXjqWwGp045Xmf/YsGpiG/tMeFWhdQ/Y+xdOB
+         HzUF5wVzW8ju8QseaosMbEEBWN3p7QXsyhp+FoazpvJelV/zXWsRvVg+2vmDTxMyZ5KZ
+         RgAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVk4GKsnLaZdADII7G8TyVIUdiPyNBn5o/TVBR76AgxJXD3FCBqY4jzM1vUsr+AzZu2aH2U0eJSlXi0rGzcrDnOyTFJveDQPsdvMfaY/g==
+X-Gm-Message-State: AOJu0Yx4gapIHl+YOk6cxd0odS1vMID6t5UtEAePbmovPZzIHFwcWeNj
+	8DqnK4ncipI+Gw1XvnLwytuCfG5EcBK0ahTatpPCDE+QGLJ0ehHfqO2Hdj7b6BTH69xHQPZyPq8
+	NhA==
+X-Google-Smtp-Source: AGHT+IG9SmfuMb4gtd0Ao4BPZkLVByP1qx5TNQuKOL4wYDlOLmXqkqaZZiuA2JFi0z3WenSC5NZXiGCdyNk=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:2b8f:b0:e03:59e2:e82 with SMTP id
+ 3f1490d57ef6-e0b545a3f3dmr19046276.10.1722366939560; Tue, 30 Jul 2024
+ 12:15:39 -0700 (PDT)
+Date: Tue, 30 Jul 2024 12:15:38 -0700
+In-Reply-To: <96df1dd5-cc31-4e84-84fd-ea75b4800be8@redhat.com>
+Mime-Version: 1.0
+References: <20240726235234.228822-1-seanjc@google.com> <20240726235234.228822-49-seanjc@google.com>
+ <96df1dd5-cc31-4e84-84fd-ea75b4800be8@redhat.com>
+Message-ID: <Zqk72jP1c8N0Pn1O@google.com>
+Subject: Re: [PATCH v12 48/84] KVM: Move x86's API to release a faultin page
+ to common KVM
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,133 +78,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: marcin.s.wojtas@gmail.com, kda@linux-powerpc.org, Allen Pais <allen.lkml@gmail.com>, linux-acenic@sunsite.dk, louis.peens@corigine.com, linux-rdma@vger.kernel.org, cooldavid@cooldavid.org, aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, mlindner@marvell.com, lorenzo@kernel.org, Mark-MC.Lee@mediatek.com, jes@trained-monkey.org, richardcochran@gmail.com, sean.wang@mediatek.com, linux-net-drivers@amd.com, cai.huoqing@linux.dev, matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, bryan.whitehead@microchip.com, dougmill@linux.ibm.com, linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com, stephen@networkplumber.org, borisp@nvidia.com, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, nbd@nbd.name
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Janosch Frank <frankja@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Migrate tasklet APIs to the new bottom half workqueue mechanism. It
-replaces all occurrences of tasklet usage with the appropriate workqueue
-APIs throughout the ibmvnic driver. This transition ensures compatibility
-with the latest design and enhances performance.
+On Tue, Jul 30, 2024, Paolo Bonzini wrote:
+> On 7/27/24 01:51, Sean Christopherson wrote:
+> > Move KVM x86's helper that "finishes" the faultin process to common KVM
+> > so that the logic can be shared across all architectures.  Note, not all
+> > architectures implement a fast page fault path, but the gist of the
+> > comment applies to all architectures.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >   arch/x86/kvm/mmu/mmu.c   | 24 ++----------------------
+> >   include/linux/kvm_host.h | 26 ++++++++++++++++++++++++++
+> >   2 files changed, 28 insertions(+), 22 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index 95beb50748fc..2a0cfa225c8d 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -4323,28 +4323,8 @@ static u8 kvm_max_private_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
+> >   static void kvm_mmu_finish_page_fault(struct kvm_vcpu *vcpu,
+> >   				      struct kvm_page_fault *fault, int r)
+> >   {
+> > -	lockdep_assert_once(lockdep_is_held(&vcpu->kvm->mmu_lock) ||
+> > -			    r == RET_PF_RETRY);
+> > -
+> > -	if (!fault->refcounted_page)
+> > -		return;
+> > -
+> > -	/*
+> > -	 * If the page that KVM got from the *primary MMU* is writable, and KVM
+> > -	 * installed or reused a SPTE, mark the page/folio dirty.  Note, this
+> > -	 * may mark a folio dirty even if KVM created a read-only SPTE, e.g. if
+> > -	 * the GFN is write-protected.  Folios can't be safely marked dirty
+> > -	 * outside of mmu_lock as doing so could race with writeback on the
+> > -	 * folio.  As a result, KVM can't mark folios dirty in the fast page
+> > -	 * fault handler, and so KVM must (somewhat) speculatively mark the
+> > -	 * folio dirty if KVM could locklessly make the SPTE writable.
+> > -	 */
+> > -	if (r == RET_PF_RETRY)
+> > -		kvm_release_page_unused(fault->refcounted_page);
+> > -	else if (!fault->map_writable)
+> > -		kvm_release_page_clean(fault->refcounted_page);
+> > -	else
+> > -		kvm_release_page_dirty(fault->refcounted_page);
+> > +	kvm_release_faultin_page(vcpu->kvm, fault->refcounted_page,
+> > +				 r == RET_PF_RETRY, fault->map_writable);
+> 
+> Does it make sense to move RET_PF_* to common code, and avoid a bool
+> argument here?
 
-Signed-off-by: Allen Pais <allen.lkml@gmail.com>
----
- drivers/net/ethernet/ibm/ibmvnic.c | 24 ++++++++++++------------
- drivers/net/ethernet/ibm/ibmvnic.h |  2 +-
- 2 files changed, 13 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 23ebeb143987..0156efeff96a 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -2737,7 +2737,7 @@ static const char *reset_reason_to_string(enum ibmvnic_reset_reason reason)
- /*
-  * Initialize the init_done completion and return code values. We
-  * can get a transport event just after registering the CRQ and the
-- * tasklet will use this to communicate the transport event. To ensure
-+ * bh work will use this to communicate the transport event. To ensure
-  * we don't miss the notification/error, initialize these _before_
-  * regisering the CRQ.
-  */
-@@ -4447,7 +4447,7 @@ static void send_request_cap(struct ibmvnic_adapter *adapter, int retry)
- 	int cap_reqs;
- 
- 	/* We send out 6 or 7 REQUEST_CAPABILITY CRQs below (depending on
--	 * the PROMISC flag). Initialize this count upfront. When the tasklet
-+	 * the PROMISC flag). Initialize this count upfront. When the bh work
- 	 * receives a response to all of these, it will send the next protocol
- 	 * message (QUERY_IP_OFFLOAD).
- 	 */
-@@ -4983,7 +4983,7 @@ static void send_query_cap(struct ibmvnic_adapter *adapter)
- 	int cap_reqs;
- 
- 	/* We send out 25 QUERY_CAPABILITY CRQs below.  Initialize this count
--	 * upfront. When the tasklet receives a response to all of these, it
-+	 * upfront. When the bh work receives a response to all of these, it
- 	 * can send out the next protocol messaage (REQUEST_CAPABILITY).
- 	 */
- 	cap_reqs = 25;
-@@ -5495,7 +5495,7 @@ static int handle_login_rsp(union ibmvnic_crq *login_rsp_crq,
- 	int i;
- 
- 	/* CHECK: Test/set of login_pending does not need to be atomic
--	 * because only ibmvnic_tasklet tests/clears this.
-+	 * because only ibmvnic_bh_work tests/clears this.
- 	 */
- 	if (!adapter->login_pending) {
- 		netdev_warn(netdev, "Ignoring unexpected login response\n");
-@@ -6081,13 +6081,13 @@ static irqreturn_t ibmvnic_interrupt(int irq, void *instance)
- {
- 	struct ibmvnic_adapter *adapter = instance;
- 
--	tasklet_schedule(&adapter->tasklet);
-+	queue_work(system_bh_wq, &adapter->bh_work);
- 	return IRQ_HANDLED;
- }
- 
--static void ibmvnic_tasklet(struct tasklet_struct *t)
-+static void ibmvnic_bh_work(struct work_struct *work)
- {
--	struct ibmvnic_adapter *adapter = from_tasklet(adapter, t, tasklet);
-+	struct ibmvnic_adapter *adapter = from_work(adapter, work, bh_work);
- 	struct ibmvnic_crq_queue *queue = &adapter->crq;
- 	union ibmvnic_crq *crq;
- 	unsigned long flags;
-@@ -6168,7 +6168,7 @@ static void release_crq_queue(struct ibmvnic_adapter *adapter)
- 
- 	netdev_dbg(adapter->netdev, "Releasing CRQ\n");
- 	free_irq(vdev->irq, adapter);
--	tasklet_kill(&adapter->tasklet);
-+	cancel_work_sync(&adapter->bh_work);
- 	do {
- 		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
- 	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
-@@ -6219,7 +6219,7 @@ static int init_crq_queue(struct ibmvnic_adapter *adapter)
- 
- 	retrc = 0;
- 
--	tasklet_setup(&adapter->tasklet, (void *)ibmvnic_tasklet);
-+	INIT_WORK(&adapter->bh_work, (void *)ibmvnic_bh_work);
- 
- 	netdev_dbg(adapter->netdev, "registering irq 0x%x\n", vdev->irq);
- 	snprintf(crq->name, sizeof(crq->name), "ibmvnic-%x",
-@@ -6241,12 +6241,12 @@ static int init_crq_queue(struct ibmvnic_adapter *adapter)
- 	spin_lock_init(&crq->lock);
- 
- 	/* process any CRQs that were queued before we enabled interrupts */
--	tasklet_schedule(&adapter->tasklet);
-+	queue_work(system_bh_wq, &adapter->bh_work);
- 
- 	return retrc;
- 
- req_irq_failed:
--	tasklet_kill(&adapter->tasklet);
-+	cancel_work_sync(&adapter->bh_work);
- 	do {
- 		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
- 	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
-@@ -6639,7 +6639,7 @@ static int ibmvnic_resume(struct device *dev)
- 	if (adapter->state != VNIC_OPEN)
- 		return 0;
- 
--	tasklet_schedule(&adapter->tasklet);
-+	queue_work(system_bh_wq, &adapter->bh_work);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
-index 94ac36b1408b..b65b210a8059 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.h
-+++ b/drivers/net/ethernet/ibm/ibmvnic.h
-@@ -1036,7 +1036,7 @@ struct ibmvnic_adapter {
- 	u32 cur_rx_buf_sz;
- 	u32 prev_rx_buf_sz;
- 
--	struct tasklet_struct tasklet;
-+	struct work_struct bh_work;
- 	enum vnic_state state;
- 	/* Used for serialization of state field. When taking both state
- 	 * and rwi locks, take state lock first.
--- 
-2.34.1
-
+After this series, probably?  Especially if/when we make "struct kvm_page_fault"
+a common structure and converge all arch code.  In this series, definitely not,
+as it would require even more patches to convert other architectures, and it's
+not clear that it would be a net win, at least not without even more massaging.
