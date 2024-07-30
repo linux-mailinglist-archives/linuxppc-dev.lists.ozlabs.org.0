@@ -1,43 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5C2940F5A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 12:31:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D34940F61
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 12:31:53 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J/Njo24p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mfAajOsY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYBMz1zNyz3cYr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 20:31:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYBNl0wQJz3cyg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 20:31:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J/Njo24p;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mfAajOsY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=alexs@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=alexs@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WY5LJ18njz3cZ9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 16:44:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WY5LY4sBlz3cZR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 16:44:37 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5F6ED61DB0;
+	by sin.source.kernel.org (Postfix) with ESMTP id 3F38ACE0E51;
+	Tue, 30 Jul 2024 06:44:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939DCC4AF09;
 	Tue, 30 Jul 2024 06:44:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20371C4AF09;
-	Tue, 30 Jul 2024 06:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722321862;
-	bh=G//eVJ9Nw8aOOKl2d7JUp/+QzzL5npEnufgRCiBDKNQ=;
+	s=k20201202; t=1722321875;
+	bh=ccXL2chU8a/94eL1T1pI+a3Q5/w60GPmzE5TdAMCqlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/Njo24pZ085kd/eT/gy5nmywtW77TTpW3xwRWYKhIkRHK+lzJdbLggDAN6TpyGvN
-	 rW07M9G7E1rNbOiK/BYavaoAKy5hQTRctqPFFo3zD8RaDkoOT734VNnkfzYGuRTgPr
-	 7lKhNURsW3JqfLiFVe6G4I5vB1kH5jyn1aLmIMd7FJoJlqMApaFJRvyhUsEwo7ZIpN
-	 7RM5QFW8/cV4jRPKXNJ+uwP9fbxQTUYzoz9IEwP+GKQXDzHKvni3jbtRsnh4VwsG8Q
-	 iDZw7zJUhoXwEXAb/FQFLoYiOb7hjhzSksX+Dz2XjNV5rBm5sV5pprZ9SrmxaTGPRh
-	 KrVL8p90HnjKQ==
+	b=mfAajOsY0bas1KjIZ7zbi0ly7eR8srfqY9/dGjSCEZBhCcX9YS6VakfWING1fsGF9
+	 W0YCBavaz4bKXWCT+t6Yhfu/nqQvhZRU8uQ4308gV21op4ifIO73UuI1kTRWXnNtuQ
+	 s5Z/K60Rw4yOKEM2lNhxjV21z9g0mIa7otDskKJSUtzhlDHiE0nSamwvKeBMBIax9v
+	 uECArXHvXKdVLqGvan7uo4dKgcLJgys3j/9lFLYcEfUC1FUurphSmLjUuWStQ30LeH
+	 mcqLnZdVd1vSIjm4Q5ofH7j6+1Ir6OhcZ/gLzfEGTM1DHna6l6J8fJTKaOJDBS/8EQ
+	 RPhVDl0tGnBTA==
 From: alexs@kernel.org
 To: Will Deacon <will@kernel.org>,
 	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
@@ -86,9 +86,9 @@ To: Will Deacon <will@kernel.org>,
 	Peter Xu <peterx@redhat.com>,
 	Barry Song <baohua@kernel.org>,
 	linux-s390@vger.kernel.org
-Subject: [RFC PATCH 07/18] mm/thp: use ptdesc in copy_huge_pmd
-Date: Tue, 30 Jul 2024 14:47:01 +0800
-Message-ID: <20240730064712.3714387-8-alexs@kernel.org>
+Subject: [RFC PATCH 08/18] mm/memory: use ptdesc in __pte_alloc
+Date: Tue, 30 Jul 2024 14:47:02 +0800
+Message-ID: <20240730064712.3714387-9-alexs@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240730064712.3714387-1-alexs@kernel.org>
 References: <20240730064712.3714387-1-alexs@kernel.org>
@@ -112,77 +112,40 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Alex Shi <alexs@kernel.org>
 
-Since we have ptdesc struct now, better to use replace pgtable_t, aka
-'struct page *'. It's alaos a preparation for return ptdesc pointer
-in pte_alloc_one series function.
+Replace pgtable_t by ptdesc in function __pte_alloc.
+We will remove pgtable_t from all place.
 
 Signed-off-by: Alex Shi <alexs@kernel.org>
 Cc: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/huge_memory.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ mm/memory.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index a331d4504d52..236e1582d97e 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1369,15 +1369,15 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	struct page *src_page;
- 	struct folio *src_folio;
- 	pmd_t pmd;
--	pgtable_t pgtable = NULL;
-+	struct ptdesc *ptdesc = NULL;
- 	int ret = -ENOMEM;
+diff --git a/mm/memory.c b/mm/memory.c
+index b9f5cc0db3eb..5b01d94a0b5f 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -445,13 +445,13 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte)
  
- 	/* Skip if can be re-fill on fault */
- 	if (!vma_is_anonymous(dst_vma))
- 		return 0;
+ int __pte_alloc(struct mm_struct *mm, pmd_t *pmd)
+ {
+-	pgtable_t new = pte_alloc_one(mm);
+-	if (!new)
++	struct ptdesc *ptdesc = page_ptdesc(pte_alloc_one(mm));
++	if (!ptdesc)
+ 		return -ENOMEM;
  
--	pgtable = pte_alloc_one(dst_mm);
--	if (unlikely(!pgtable))
-+	ptdesc = page_ptdesc(pte_alloc_one(dst_mm));
-+	if (unlikely(!ptdesc))
- 		goto out;
+-	pmd_install(mm, pmd, &new);
+-	if (new)
+-		pte_free(mm, new);
++	pmd_install(mm, pmd, (pgtable_t *)&ptdesc);
++	if (ptdesc)
++		pte_free(mm, ptdesc_page(ptdesc));
+ 	return 0;
+ }
  
- 	dst_ptl = pmd_lock(dst_mm, dst_pmd);
-@@ -1404,7 +1404,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		}
- 		add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- 		mm_inc_nr_ptes(dst_mm);
--		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-+		pgtable_trans_huge_deposit(dst_mm, dst_pmd, ptdesc_page(ptdesc));
- 		if (!userfaultfd_wp(dst_vma))
- 			pmd = pmd_swp_clear_uffd_wp(pmd);
- 		set_pmd_at(dst_mm, addr, dst_pmd, pmd);
-@@ -1414,7 +1414,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- #endif
- 
- 	if (unlikely(!pmd_trans_huge(pmd))) {
--		pte_free(dst_mm, pgtable);
-+		pte_free(dst_mm, ptdesc_page(ptdesc));
- 		goto out_unlock;
- 	}
- 	/*
-@@ -1440,7 +1440,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	if (unlikely(folio_try_dup_anon_rmap_pmd(src_folio, src_page, src_vma))) {
- 		/* Page maybe pinned: split and retry the fault on PTEs. */
- 		folio_put(src_folio);
--		pte_free(dst_mm, pgtable);
-+		pte_free(dst_mm, ptdesc_page(ptdesc));
- 		spin_unlock(src_ptl);
- 		spin_unlock(dst_ptl);
- 		__split_huge_pmd(src_vma, src_pmd, addr, false, NULL);
-@@ -1449,7 +1449,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
- out_zero_page:
- 	mm_inc_nr_ptes(dst_mm);
--	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
-+	pgtable_trans_huge_deposit(dst_mm, dst_pmd, ptdesc_page(ptdesc));
- 	pmdp_set_wrprotect(src_mm, addr, src_pmd);
- 	if (!userfaultfd_wp(dst_vma))
- 		pmd = pmd_clear_uffd_wp(pmd);
 -- 
 2.43.0
 
