@@ -2,58 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4EF94057E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 04:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B559405AD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 05:12:45 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eL1WFdzm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=m3wOm8rM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WY05t5s7mz3cZ5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 12:48:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WY0f3425dz3ccL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 13:12:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eL1WFdzm;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=m3wOm8rM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WY05857G7z3cT8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 12:47:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WY0dK1g38z3cT8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 13:11:48 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722307661; x=1753843661;
+  t=1722309126; x=1753845126;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Ua8ABAlBdaz+fPYZynUWSDCTK92pYZqE92LoOz5qxyU=;
-  b=eL1WFdzmQCJwl0trjVs4xaM1Q5/CmghYFZIs0mDBLLkazmvtNs4R8vtG
-   DaAAayD3dzxqpnydO1CCvT+OtXuXfN/UraWXxmpDc1ztgJaOFRLOfjJJP
-   jw7b0TeLqWMU9bcnl0tRH0MlUl8fcNFOL8E4G79EsKNpG1QTc6BD0a2h9
-   vKBBHUviP5wTTcvBSvr7SdhglWKWNgqAmDWkk2vRGO+bQMTK3CLWNqVml
-   rGycPJej4/jXUXgQKmT9JvkQwRVJQY/E7DBpTJBR2y1CmJdf2KctifyMS
-   oKi4r7/b58xaSBbAQr85cq6yHmAvqQnVFrtofYb3yHKkv5K7MRh4f1+XH
+  bh=yWuPHpd5wzMhwNUcpnURixCcHhTrI6bkp3+P6v7Ehgc=;
+  b=m3wOm8rM4mez93OG1mB8A7rMeJdYGIKGpl93dEvQl6wOMDo0T0fw+nq9
+   uYrDKRrO/sSEhNWES55MybnHzIoIeFK2ot0qmc9Kg64buzYH9ZmNBgCMJ
+   CSZpt0MmhVuBq9SypEJZKCos6UcuG/rr2df2wmwkrl+cwfFhXWl/ONYFt
+   4m9wnqhdHjgKicCLegJgh9Doae6FZhWkeTuTRDWsUMQmHenE4z8mhjN38
+   XYGiwDRUiaoW2JUl6oDm01HAmaazo8bh8gzaFrPelWyrgPzPBWfJwlGdu
+   6tNaCPhuZyu/cu0U3E4JpqWf1sq9wUiofheFLGFFAnSdNvkT+EjpAFpFi
    A==;
-X-CSE-ConnectionGUID: pW4FZQz9TZ65RwYqjTvqwA==
-X-CSE-MsgGUID: fB8gBXygR8myePEKUO4LIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="30729834"
+X-CSE-ConnectionGUID: Do1GblRAT8OxANjEtOomgA==
+X-CSE-MsgGUID: AGklegfYSGanjiD6NZlevA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="20050024"
 X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; 
-   d="scan'208";a="30729834"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 19:47:21 -0700
-X-CSE-ConnectionGUID: s1Sv3a57TVqMtsYZZJFHKg==
-X-CSE-MsgGUID: vp3oUUF+QwCkYjYBk7DHtg==
+   d="scan'208";a="20050024"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 20:11:23 -0700
+X-CSE-ConnectionGUID: ENmaCYy5T1OsMD3tYIK+Bg==
+X-CSE-MsgGUID: DLWVxsHaR6S+zwNdVSyfWw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; 
-   d="scan'208";a="54099244"
+   d="scan'208";a="54152975"
 Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 29 Jul 2024 19:47:18 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 29 Jul 2024 20:11:18 -0700
 Received: from kbuild by 68891e0c336b with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sYctP-000sOU-23;
-	Tue, 30 Jul 2024 02:47:15 +0000
-Date: Tue, 30 Jul 2024 10:46:19 +0800
+	id 1sYdGe-000sPQ-0I;
+	Tue, 30 Jul 2024 03:11:16 +0000
+Date: Tue, 30 Jul 2024 11:10:36 +0800
 From: kernel test robot <lkp@intel.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -63,7 +63,7 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Li Yang <leoyang.li@nxp.com>, Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH v1 32/36] soc: fsl: qe: Add resource-managed muram
  allocators
-Message-ID: <202407301027.RZ0iwoYW-lkp@intel.com>
+Message-ID: <202407301032.M27FlsV4-lkp@intel.com>
 References: <20240729142107.104574-33-herve.codina@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -80,16 +80,16 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Hi Herve,
 
-kernel test robot noticed the following build warnings:
+kernel test robot noticed the following build errors:
 
-[auto build test WARNING on robh/for-next]
-[also build test WARNING on linus/master v6.11-rc1 next-20240729]
+[auto build test ERROR on robh/for-next]
+[also build test ERROR on linus/master v6.11-rc1 next-20240729]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
 https://git-scm.com/docs/git-format-patch#_base_tree_information]
@@ -98,39 +98,49 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Herve-Codina/soc-fsl-cpm1
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
 patch link:    https://lore.kernel.org/r/20240729142107.104574-33-herve.codina%40bootlin.com
 patch subject: [PATCH v1 32/36] soc: fsl: qe: Add resource-managed muram allocators
-config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20240730/202407301027.RZ0iwoYW-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240730/202407301027.RZ0iwoYW-lkp@intel.com/reproduce)
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20240730/202407301032.M27FlsV4-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240730/202407301032.M27FlsV4-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407301027.RZ0iwoYW-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407301032.M27FlsV4-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
-   drivers/soc/fsl/qe/qe_common.c: In function 'devm_cpm_muram_alloc':
-   drivers/soc/fsl/qe/qe_common.c:217:14: error: implicit declaration of function 'devres_alloc'; did you mean 'kvrealloc'? [-Werror=implicit-function-declaration]
+>> drivers/soc/fsl/qe/qe_common.c:217:7: error: call to undeclared function 'devres_alloc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
      217 |         dr = devres_alloc(devm_cpm_muram_release, sizeof(*dr), GFP_KERNEL);
-         |              ^~~~~~~~~~~~
-         |              kvrealloc
->> drivers/soc/fsl/qe/qe_common.c:217:12: warning: assignment to 's32 *' {aka 'int *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]
+         |              ^
+   drivers/soc/fsl/qe/qe_common.c:217:7: note: did you mean 'msrs_alloc'?
+   arch/x86/include/asm/msr.h:328:22: note: 'msrs_alloc' declared here
+     328 | struct msr __percpu *msrs_alloc(void);
+         |                      ^
+>> drivers/soc/fsl/qe/qe_common.c:217:5: error: incompatible integer to pointer conversion assigning to 's32 *' (aka 'int *') from 'int' [-Wint-conversion]
      217 |         dr = devres_alloc(devm_cpm_muram_release, sizeof(*dr), GFP_KERNEL);
-         |            ^
-   drivers/soc/fsl/qe/qe_common.c:224:17: error: implicit declaration of function 'devres_add' [-Werror=implicit-function-declaration]
+         |            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/soc/fsl/qe/qe_common.c:224:3: error: call to undeclared function 'devres_add'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
      224 |                 devres_add(dev, dr);
-         |                 ^~~~~~~~~~
-   drivers/soc/fsl/qe/qe_common.c:226:17: error: implicit declaration of function 'devres_free' [-Werror=implicit-function-declaration]
+         |                 ^
+>> drivers/soc/fsl/qe/qe_common.c:226:3: error: call to undeclared function 'devres_free'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
      226 |                 devres_free(dr);
-         |                 ^~~~~~~~~~~
-   drivers/soc/fsl/qe/qe_common.c: In function 'devm_cpm_muram_alloc_fixed':
-   drivers/soc/fsl/qe/qe_common.c:277:12: warning: assignment to 's32 *' {aka 'int *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]
+         |                 ^
+   drivers/soc/fsl/qe/qe_common.c:277:7: error: call to undeclared function 'devres_alloc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
      277 |         dr = devres_alloc(devm_cpm_muram_release, sizeof(*dr), GFP_KERNEL);
-         |            ^
-   cc1: some warnings being treated as errors
+         |              ^
+   drivers/soc/fsl/qe/qe_common.c:277:5: error: incompatible integer to pointer conversion assigning to 's32 *' (aka 'int *') from 'int' [-Wint-conversion]
+     277 |         dr = devres_alloc(devm_cpm_muram_release, sizeof(*dr), GFP_KERNEL);
+         |            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/soc/fsl/qe/qe_common.c:284:3: error: call to undeclared function 'devres_add'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     284 |                 devres_add(dev, dr);
+         |                 ^
+   drivers/soc/fsl/qe/qe_common.c:286:3: error: call to undeclared function 'devres_free'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     286 |                 devres_free(dr);
+         |                 ^
+   8 errors generated.
 
 
-vim +217 drivers/soc/fsl/qe/qe_common.c
+vim +/devres_alloc +217 drivers/soc/fsl/qe/qe_common.c
 
    196	
    197	/**
@@ -160,9 +170,9 @@ vim +217 drivers/soc/fsl/qe/qe_common.c
    221		info = cpm_muram_alloc(size, align);
    222		if (info >= 0) {
    223			*dr = info;
-   224			devres_add(dev, dr);
+ > 224			devres_add(dev, dr);
    225		} else {
-   226			devres_free(dr);
+ > 226			devres_free(dr);
    227		}
    228	
    229		return info;
