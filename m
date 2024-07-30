@@ -1,82 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD25F940D6D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 11:26:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5E9940F0A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 12:26:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=CbWJN3ji;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=odNyHSwO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WY8xc4t0Pz3ck2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 19:26:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYBGX5W01z3d2d
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 20:26:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=CbWJN3ji;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=odNyHSwO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.15.3; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=alexs@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WY8ws6STTz3chL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 19:26:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1722331528; x=1722936328; i=markus.elfring@web.de;
-	bh=UuXPUKpAxDUJSU7l9ijEWWWr13YM4cXuW3gjBPRNm0A=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=CbWJN3jib0JHsUqML0cfbUsCpoVIXwrEAp4um1p1ZXrQnbPsLAdzmjtLCjzHoGyA
-	 RX4lCwa8DEKaSIDXORdG9MVXZKZJ7Pfd8rxaECmwt43AFpQ63umvVIt0yGgohBVYu
-	 PYmD1PIAjlQwaSNHXCTPYQYQFZKObRKggSzYG1y09BjVkXydAl2PqNHUUDUnKuHzS
-	 LjinVc9VJqK909fcj/tjFcBgBB2ZCCHfjVdzO7n918mHdOuUd0no2WgOsN862Y7r3
-	 pGTY5S/Wg3Z1Ekwr+igGsHwVkEtOagg2IohZh+b9Rz4yjE1LM3YStZkEm2zOwLGQS
-	 /ZwJpKonFm/8KlDDCQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.90.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MLzmv-1sqfV30ZZx-00W9SH; Tue, 30
- Jul 2024 11:25:28 +0200
-Message-ID: <7ed0f4dc-9865-4139-bd88-7ca270b9a466@web.de>
-Date: Tue, 30 Jul 2024 11:25:23 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WY5JT20h6z30VR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 16:42:49 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 42FDACE0B2F;
+	Tue, 30 Jul 2024 06:42:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B562C32782;
+	Tue, 30 Jul 2024 06:42:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722321766;
+	bh=9fMo0SqZ7mOf+MpuDKzR6wBE4n9v1usaMOUOV+GRiz8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=odNyHSwOlBtV2oqVtExlin1GDO7kYlIOx8pVUXrIJUKZbGYwA4WqDas0/GxrcEr55
+	 U96WNS8VFoK93eKlrMoYeKy3Hx5hYk7u0MHfPCvnoc4pMqeCyLihL2sOgCRB2BK0LQ
+	 L8992A0T1NOO7inaUSioa2w4g0sAStq/hkXExqTSsAXodpT6mGb0xRWKuDd+nH2N+A
+	 BTsDqxMoTTjSETReBcCKjEeWWC7pCscYpqZJszwilu2vcMmxr/pCQlNwRRubPXHBaB
+	 JADt14YJLrGWRmg/Gsmy3mjRBjVlp6DBpI92v1G7zStat5RwD14Iv/xZapDPo4c7xq
+	 lwWpWj2GOPung==
+From: alexs@kernel.org
+To: Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Brian Cain <bcain@quicinc.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Peter Xu <peterx@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	linux-s390@vger.kernel.org
+Subject: [RFC PATCH 00/18] use struct ptdesc to replace pgtable_t 
+Date: Tue, 30 Jul 2024 14:46:54 +0800
+Message-ID: <20240730064712.3714387-1-alexs@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Herve Codina <herve.codina@bootlin.com>, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Li Yang <leoyang.li@nxp.com>,
- Mark Brown <broonie@kernel.org>, Qiang Zhao <qiang.zhao@nxp.com>,
- Rob Herring <robh@kernel.org>
-References: <20240729142107.104574-15-herve.codina@bootlin.com>
-Subject: Re: [PATCH 14/36] soc: fsl: cpm1: tsa: Add support for QUICC Engine
- (QE) implementation
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240729142107.104574-15-herve.codina@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Enr+kaZULtHao8xj1MEf/uKFDf7xcXnvnwHaPuDxNtdiZHuvaY1
- faTKq0TSqBUp5PnbVfJHtSKkWkSvb14oZqqMrmafdm9no2GWN+cFWhjHN15JJxYtMz9Y+u+
- rlbcI5vrBr9iXxgxveDoHTs1RKZ9xgqvf3m/bg2joG0pnQwCi/b1i14gAI/SZySsyF82FFS
- 2x8gGxTr1kypTc+y1/2nQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:m0k7Pq+00cY=;zaWDnDXkBAX0V6Qm/QR6xTJQWOt
- lAzDsi9PqBK3FR60RDK/jWhujt8nktX2uQqP+P1rZpIjM6bcrcbu7XF4jxeK7o5Dt223usX35
- BBqN7NnPy3zRkbJ9sSQHLljufz3JvkdfSn112I6X0ooGDqUSYtQl9PTh6KkkFhWiUOETGeFgW
- XIZ5qSKnxOU76/JX5GRyBBVCvQGWTRPzbjJ66wkoKI4p8mGV26r2lJ3Q/8JLKvO0KUIg+EM12
- uUeYj+q40/yNl2shqnpXHYqjZttEdqgsi7MFjoP0YJMcrqCVAgGLZtPdtQOeXMj8ak/5ejWRd
- ylynbfeCMHWELfdbyuewGClmsxHONIG0Esg1PAX4WOtCuX5bh42F0wREKEXMe5E287j822sHu
- 5i5XVkYFSbw9BGJkwDEb9GJaklRvCTM5JbRjCdiiH2QwW62Q0Ak9jalIolsECfVWMMQVqC01z
- Vcpolul3yrBMxSt7jqfO0jFdU+UBgZCIZ4L0NU5qfDtFvgJYGFasD4zivPogv1ONbg+qjTXPf
- 7UtYgTmnkEm86b7xm0BjmK72gKSCdUYlZxM3ThVuKcsYLn6mn7s5T1jyTEcXsVDZK5lCS7oM0
- Sbx20VAB2q99Vx5shGWmbnNcbOIhaaefhqvszRRfSCy9FMxLTy6cZ1mkMFM4L+QlA7ghXjRdX
- +aGhCK0qr99HW+SvCxyFearKhmz5L16uGS53BatAUNTk4M05+aUJgjwvZHzKHQFRmAcuc0dLz
- E52BPCsWSgYAbpm4Dvr+4xqEgos82xxwSC/EsjogHDCNv26J98AWK8HRD8YwoHvSnpAC8v54f
- N2mHin7mhcn4fXhNJ1jmq+Bg==
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Tue, 30 Jul 2024 20:25:54 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,26 +104,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, Alex Shi <alexs@kernel.org>, David Hildenbrand <david@redhat.com>, Anup Patel <anup@brainfault.org>, Hugh Dickins <hughd@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Samuel Holland <samuel.holland@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Matthew Wilcox <willy@infradead.org>, Jisheng Zhang <jszhang@kernel.org>, Breno Leitao <leitao@debian.org>, Guo Ren <guoren@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-=E2=80=A6
-> +++ b/drivers/soc/fsl/qe/tsa.c
-=E2=80=A6
-> +static int tsa_qe_serial_connect(struct tsa_serial *tsa_serial, bool co=
-nnect)
-> +{
-=E2=80=A6
-> +	spin_lock_irqsave(&tsa->lock, flags);
-> +	ret =3D ucc_set_qe_mux_tsa(ucc_num, connect);
-> +	spin_unlock_irqrestore(&tsa->lock, flags);
-=E2=80=A6
+From: Alex Shi <alexs@kernel.org>
 
-Under which circumstances would you become interested to apply a statement
-like =E2=80=9Cguard(spinlock_irqsave)(&tsa->lock);=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.11-rc1/source/include/linux/spinlock.h=
-#L572
+We have struct ptdesc for page table descriptor a year ago, but it
+has no much usages in kernel, while pgtable_t is used widely.
 
-Regards,
-Markus
+The pgtable_t is typedefed as 'pte_t *' in sparc, s390, powerpc and m68k
+except SUN3, others archs are all same as 'struct page *'.
+
+These blocks the conception and code update for page table descriptor to
+struct ptdesc.
+
+So, the simple idea to push the ptdesc conception forward is to update
+all pgtable_t by ptdesc or pte_t pointer. But this needs widely
+knowledges for most all of different archs. Common code change is easy
+for include/ and mm/ directory, but it's hard in all archs.
+
+Thanks for intel LKP framework, I fixed most all of build issues except
+a bug on powerpc which reports a "struct ptdesc *" incompatible with 
+struct ptdesc *' pointer issue...
+
+Another trouble is pmd_pgtable() conversion in the last patch.
+Maybe some of arch need define theirself own pmd_ptdesc()?
+
+This patchset is immature, even except above 2 issues, I just tested
+virutal machine booting and kselftest mm on x86 and arm64.
+
+Anyway any input are appreciated!
+
+Thanks
+Alex
+
+Alex Shi (18):
+  mm/pgtable: use ptdesc in pte_free_now/pte_free_defer
+  mm/pgtable: convert ptdesc.pmd_huge_pte to ptdesc pointer
+  fs/dax: use ptdesc in dax_pmd_load_hole
+  mm/thp: use ptdesc pointer in __do_huge_pmd_anonymous_page
+  mm/thp: use ptdesc in do_huge_pmd_anonymous_page
+  mm/thp: convert insert_pfn_pmd and its caller to use ptdesc
+  mm/thp: use ptdesc in copy_huge_pmd
+  mm/memory: use ptdesc in __pte_alloc
+  mm/pgtable: fully use ptdesc in pte_alloc_one series functions
+  mm/pgtable: pass ptdesc to pte_free()
+  mm/pgtable: introduce ptdesc_pfn and use ptdesc in free_pte_range()
+  mm/thp: pass ptdesc to set_huge_zero_folio function
+  mm/pgtable: return ptdesc pointer in pgtable_trans_huge_withdraw
+  mm/pgtable: use ptdesc in pgtable_trans_huge_deposit
+  mm/pgtable: pass ptdesc to pmd_populate
+  mm/pgtable: pass ptdesc to pmd_install
+  mm: convert vmf.prealloc_pte to struct ptdesc pointer
+  mm/pgtable: pass ptdesc in pte_free_defer
+
+ arch/alpha/include/asm/pgalloc.h              |   4 +-
+ arch/arc/include/asm/pgalloc.h                |   4 +-
+ arch/arm/include/asm/pgalloc.h                |  13 +--
+ arch/arm/include/asm/tlb.h                    |   4 +-
+ arch/arm/mm/pgd.c                             |   2 +-
+ arch/arm64/include/asm/pgalloc.h              |   4 +-
+ arch/arm64/include/asm/tlb.h                  |   4 +-
+ arch/csky/include/asm/pgalloc.h               |   4 +-
+ arch/hexagon/include/asm/pgalloc.h            |   8 +-
+ arch/loongarch/include/asm/pgalloc.h          |   8 +-
+ arch/m68k/include/asm/motorola_pgalloc.h      |  12 +-
+ arch/m68k/include/asm/sun3_pgalloc.h          |   4 +-
+ arch/microblaze/include/asm/pgalloc.h         |   2 +-
+ arch/mips/include/asm/pgalloc.h               |   4 +-
+ arch/nios2/include/asm/pgalloc.h              |   4 +-
+ arch/openrisc/include/asm/pgalloc.h           |   8 +-
+ arch/parisc/include/asm/pgalloc.h             |   2 +-
+ arch/powerpc/include/asm/book3s/32/pgalloc.h  |   4 +-
+ arch/powerpc/include/asm/book3s/64/hash-4k.h  |   4 +-
+ arch/powerpc/include/asm/book3s/64/hash-64k.h |   4 +-
+ arch/powerpc/include/asm/book3s/64/pgalloc.h  |   4 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |   8 +-
+ arch/powerpc/include/asm/book3s/64/radix.h    |   4 +-
+ arch/powerpc/include/asm/pgalloc.h            |   8 +-
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |  10 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  10 +-
+ arch/riscv/include/asm/pgalloc.h              |   8 +-
+ arch/s390/include/asm/pgalloc.h               |   4 +-
+ arch/s390/include/asm/pgtable.h               |   4 +-
+ arch/s390/mm/pgalloc.c                        |   2 +-
+ arch/s390/mm/pgtable.c                        |  14 +--
+ arch/sh/include/asm/pgalloc.h                 |   4 +-
+ arch/sparc/include/asm/pgalloc_32.h           |   6 +-
+ arch/sparc/include/asm/pgalloc_64.h           |   2 +-
+ arch/sparc/include/asm/pgtable_64.h           |   4 +-
+ arch/sparc/mm/init_64.c                       |   2 +-
+ arch/sparc/mm/srmmu.c                         |   6 +-
+ arch/sparc/mm/tlb.c                           |  14 +--
+ arch/x86/include/asm/pgalloc.h                |  10 +-
+ arch/x86/mm/pgtable.c                         |   8 +-
+ arch/xtensa/include/asm/pgalloc.h             |  12 +-
+ fs/dax.c                                      |  14 +--
+ include/asm-generic/pgalloc.h                 |  10 +-
+ include/linux/mm.h                            |  16 ++-
+ include/linux/mm_types.h                      |   4 +-
+ include/linux/pgtable.h                       |   6 +-
+ mm/debug_vm_pgtable.c                         |   6 +-
+ mm/huge_memory.c                              | 103 +++++++++---------
+ mm/internal.h                                 |   2 +-
+ mm/khugepaged.c                               |  14 +--
+ mm/memory.c                                   |  15 +--
+ mm/mremap.c                                   |   2 +-
+ mm/pgtable-generic.c                          |  37 +++----
+ 53 files changed, 240 insertions(+), 236 deletions(-)
+
+-- 
+2.43.0
+
