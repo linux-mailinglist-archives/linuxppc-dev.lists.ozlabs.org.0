@@ -2,95 +2,116 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D5F9413B0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 15:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5A69414B8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 16:48:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ctPJ8ghQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=p6s9VYHn;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYGtx3MrFz3d40
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 23:54:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYJ4H6vCCz3d32
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 00:47:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ctPJ8ghQ;
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=p6s9VYHn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org)
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYGtC5dJ6z3cgd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 23:54:10 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46UDSraG026065;
-	Tue, 30 Jul 2024 13:54:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=g
-	ZHSpDNLW7/ic3xX2uCFv3XHxzx42EWTKrK3ivaCBuE=; b=ctPJ8ghQS5lD8fJx2
-	WMHJktvyFz0pl/PEdNpWFqqIDcRvPIeLunmFGIstZC9kVm8/TnmDX/q5fON/vF3s
-	Ca2k8du/89mK1WUt8AdVOZ3dyddU5x0sVKA2XSp1T6Tupv7FsutMzsOgKn1AU0Kj
-	Nj0GXSRHbWAjQL3VP9aoS35+zCgg7PzFGR4Og5RyApExpBMT/PyOlNnT8RCWTE1J
-	weWJxPNS+MNZnJcU2K7hsTRtRudSnJtEOt//Sub5Pwb2eFJ06WlKMaBlyaiSM2f/
-	qNgXv433VCCb9c8kMSNaRLk/BprhKBjvIpY7WFkXqnDkn19BUn63YjPyrzgzTWnm
-	yrrUw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40q13a81s3-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYJ0c1B3Fz3d3Q;
+	Wed, 31 Jul 2024 00:44:47 +1000 (AEST)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46U8oTu8030643;
+	Tue, 30 Jul 2024 14:43:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=VTmK3GjGI/TBE6OcQTcx58
+	PFaZ9r/Rx2aijf6ZEGqEI=; b=p6s9VYHn9TETG5axfmxtd5gqA2n5j1jQPNwlGx
+	8Zua/2vQqxHiQpf68K7BoczHsZ8MFWoLOVbWeqKxvGnLFGcP9pE40T2vxhFGNo2k
+	StZ2wTlDUtLzh8JzUA0l+ZJgZg4gmNDcgtNehGXyErG4x1zthlAcQZwUB/MqN44j
+	hDFINNM9FfM0XjkI9L5WqF/wbuyZGtHQT1H6ox+mujEAmVu/1cvQkzxKiqVDbbRj
+	Qff8U8WSJMn8nRbY1/ShLdVI+5b5/Njh/mw5/gR7R/zg7KuRRXqTgNozC7LCm6s5
+	OyPagNcZJWN+vAmKg4034J0TvDndsF1CTgsItM9TQT8UUlog==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40ms96qw3b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 13:54:04 +0000 (GMT)
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46UDs3HF004250;
-	Tue, 30 Jul 2024 13:54:03 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40q13a81s2-1
+	Tue, 30 Jul 2024 14:43:24 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46UEhMXS024190
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 13:54:03 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46UAmJQV018928;
-	Tue, 30 Jul 2024 13:54:02 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40nc7pmxtv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 13:54:02 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46UDrvuj54919622
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jul 2024 13:53:59 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EA8B520043;
-	Tue, 30 Jul 2024 13:53:56 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 083FD20040;
-	Tue, 30 Jul 2024 13:53:54 +0000 (GMT)
-Received: from [9.179.1.74] (unknown [9.179.1.74])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Jul 2024 13:53:53 +0000 (GMT)
-Message-ID: <6a737273-3ab5-44eb-8aea-55cd66ea33b4@linux.ibm.com>
-Date: Tue, 30 Jul 2024 19:23:53 +0530
+	Tue, 30 Jul 2024 14:43:22 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 30 Jul
+ 2024 07:43:22 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: [PATCH 0/5] treewide: add missing MODULE_DESCRIPTION() macros
+Date: Tue, 30 Jul 2024 07:43:17 -0700
+Message-ID: <20240730-module_description_orphans-v1-0-7094088076c8@quicinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] perf vendor events power10: Update JSON/events
-To: Disha Goel <disgoel@linux.ibm.com>, acme@kernel.org, irogers@google.com,
-        namhyung@kernel.org
-References: <20240723052154.96202-1-kjain@linux.ibm.com>
- <7ccf31b5-7eaf-4b42-bf9c-b48d1fa5c2cf@linux.ibm.com>
-Content-Language: en-US
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <7ccf31b5-7eaf-4b42-bf9c-b48d1fa5c2cf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 1kJSINnPJJRAZRR0tBEsGNIe3nHlVOPv
-X-Proofpoint-GUID: pMJ6nwo3dMBm0N3x2aaS2CW7aYkDA1zQ
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAX8qGYC/x3M3QqDMAxA4VeRXK9Q3epgrzKG9CfOgLYl0SGI7
+ 75slx8czgGCTCjwaA5g/JBQyYr20kCcfH6joaSGznY3e79as5S0zTgklMhUV82HwlVTMTE47Ny
+ Ibe960EFlHGn/z58vdfCCJrDPcfotZ8rbbhYvKzKc5xewh/gziwAAAA==
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>, Russell King
+	<linux@armlinux.org.uk>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        "Masami
+ Hiramatsu" <mhiramat@kernel.org>,
+        Karol Herbst <karolherbst@gmail.com>,
+        "Pekka Paalanen" <ppaalanen@gmail.com>,
+        Dave Hansen
+	<dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter
+ Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        "Alexandre Torgue"
+	<alexandre.torgue@foss.st.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Michael Ellerman
+	<mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy
+	<christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, Jeremy Kerr
+	<jk@ozlabs.org>,
+        Joel Stanley <joel@jms.id.au>, Alistar Popple
+	<alistair@popple.id.au>,
+        Eddie James <eajames@linux.ibm.com>,
+        Andrew Jeffery
+	<andrew@codeconstruct.com.au>,
+        Will Deacon <will@kernel.org>, Waiman Long
+	<longman@redhat.com>,
+        Boqun Feng <boqun.feng@gmail.com>
+X-Mailer: b4 0.14.0
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: KtDrELCmddYI6T-uWPbmkiTEYMVdwz7x
+X-Proofpoint-GUID: KtDrELCmddYI6T-uWPbmkiTEYMVdwz7x
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-30_11,2024-07-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- adultscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 mlxscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407300095
+ definitions=2024-07-30_12,2024-07-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 mlxlogscore=738 bulkscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 clxscore=1011 lowpriorityscore=0 spamscore=0
+ adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407300100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,228 +123,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, linux-kernel@vger.kernel.org, akanksha@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
+Cc: linux-aspeed@lists.ozlabs.org, linux-pm@vger.kernel.org, nouveau@lists.freedesktop.org, linux-kernel@vger.kernel.org, Jeff Johnson <quic_jjohnson@quicinc.com>, linuxppc-dev@lists.ozlabs.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-fsi@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Since commit 1fffe7a34c89 ("script: modpost: emit a warning when the
+description is missing"), a module without a MODULE_DESCRIPTION() will
+result in a warning when built with make W=1.
 
+Recently, multiple developers have been eradicating these warnings
+treewide, and I personally submitted almost 300 patches over the past
+few months. Almost all of my patches landed by 6.11-rc1, either by
+being merged in a 6.10-rc or by being merged in the 6.11 merge
+window. However, a few of my patches did not land.
 
-On 7/23/24 12:35, Disha Goel wrote:
-> On 23/07/24 10:51 am, Kajol Jain wrote:
-> 
->> Update JSON/events for power10 platform with additional events.
->> Also move PM_VECTOR_LD_CMPL event from others.json to
->> frontend.json file.
->>
->> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> 
-> I have tested the patch on power10 machine. Looks good to me.
-> 
+In some cases I see them in linux-next, but they did not land during
+the merge window. I'm still monitoring those.
 
-Hi Disha,
-   Thanks for testing this patch.
+In a few cases I have not had any feedback that the patches have been
+accepted into a maintainer's tree. At the advice of Greg KH I've
+consolidated those patches into this single series with the hope these
+can still land before 6.11-final.
+https://lore.kernel.org/all/2024071518-ridden-election-8118@gregkh/
 
-Thanks,
-Kajol Jain
+Links to the original individual patches:
 
-> Tested-by: Disha Goel <disgoel@linux.ibm.com>
-> 
->> ---
->>   .../arch/powerpc/power10/frontend.json        |   5 +
->>   .../arch/powerpc/power10/others.json          | 100 +++++++++++++++++-
->>   2 files changed, 100 insertions(+), 5 deletions(-)
->>
->> diff --git a/tools/perf/pmu-events/arch/powerpc/power10/frontend.json
->> b/tools/perf/pmu-events/arch/powerpc/power10/frontend.json
->> index 5977f5e64212..53660c279286 100644
->> --- a/tools/perf/pmu-events/arch/powerpc/power10/frontend.json
->> +++ b/tools/perf/pmu-events/arch/powerpc/power10/frontend.json
->> @@ -74,6 +74,11 @@
->>       "EventName": "PM_ISSUE_KILL",
->>       "BriefDescription": "Cycles in which an instruction or group of
->> instructions were cancelled after being issued. This event increments
->> once per occurrence, regardless of how many instructions are included
->> in the issue group."
->>     },
->> +  {
->> +    "EventCode": "0x44054",
->> +    "EventName": "PM_VECTOR_LD_CMPL",
->> +    "BriefDescription": "Vector load instruction completed."
->> +  },
->>     {
->>       "EventCode": "0x44056",
->>       "EventName": "PM_VECTOR_ST_CMPL",
->> diff --git a/tools/perf/pmu-events/arch/powerpc/power10/others.json
->> b/tools/perf/pmu-events/arch/powerpc/power10/others.json
->> index fcf8a8ebe7bd..53ca610152fa 100644
->> --- a/tools/perf/pmu-events/arch/powerpc/power10/others.json
->> +++ b/tools/perf/pmu-events/arch/powerpc/power10/others.json
->> @@ -94,11 +94,6 @@
->>       "EventName": "PM_L1_ICACHE_RELOADED_ALL",
->>       "BriefDescription": "Counts all instruction cache reloads
->> includes demand, prefetch, prefetch turned into demand and demand
->> turned into prefetch."
->>     },
->> -  {
->> -    "EventCode": "0x44054",
->> -    "EventName": "PM_VECTOR_LD_CMPL",
->> -    "BriefDescription": "Vector load instruction completed."
->> -  },
->>     {
->>       "EventCode": "0x4D05E",
->>       "EventName": "PM_BR_CMPL",
->> @@ -108,5 +103,100 @@
->>       "EventCode": "0x400F0",
->>       "EventName": "PM_LD_DEMAND_MISS_L1_FIN",
->>       "BriefDescription": "Load missed L1, counted at finish time."
->> +  },
->> +  {
->> +    "EventCode": "0x00000038BC",
->> +    "EventName": "PM_ISYNC_CMPL",
->> +    "BriefDescription": "Isync completion count per thread."
->> +  },
->> +  {
->> +    "EventCode": "0x000000C088",
->> +    "EventName": "PM_LD0_32B_FIN",
->> +    "BriefDescription": "256-bit load finished in the LD0 load
->> execution unit."
->> +  },
->> +  {
->> +    "EventCode": "0x000000C888",
->> +    "EventName": "PM_LD1_32B_FIN",
->> +    "BriefDescription": "256-bit load finished in the LD1 load
->> execution unit."
->> +  },
->> +  {
->> +    "EventCode": "0x000000C090",
->> +    "EventName": "PM_LD0_UNALIGNED_FIN",
->> +    "BriefDescription": "Load instructions in LD0 port that are
->> either unaligned, or treated as unaligned and require an additional
->> recycle through the pipeline using the load gather buffer. This
->> typically adds about 10 cycles to the latency of the instruction. This
->> includes loads that cross the 128 byte boundary, octword loads that
->> are not aligned, and a special forward progress case of a load that
->> does not hit in the L1 and crosses the 32 byte boundary and is
->> launched NTC. Counted at finish time."
->> +  },
->> +  {
->> +    "EventCode": "0x000000C890",
->> +    "EventName": "PM_LD1_UNALIGNED_FIN",
->> +    "BriefDescription": "Load instructions in LD1 port that are
->> either unaligned, or treated as unaligned and require an additional
->> recycle through the pipeline using the load gather buffer. This
->> typically adds about 10 cycles to the latency of the instruction. This
->> includes loads that cross the 128 byte boundary, octword loads that
->> are not aligned, and a special forward progress case of a load that
->> does not hit in the L1 and crosses the 32 byte boundary and is
->> launched NTC. Counted at finish time."
->> +  },
->> +  {
->> +    "EventCode": "0x000000C0A4",
->> +    "EventName": "PM_ST0_UNALIGNED_FIN",
->> +    "BriefDescription": "Store instructions in ST0 port that are
->> either unaligned, or treated as unaligned and require an additional
->> recycle through the pipeline. This typically adds about 10 cycles to
->> the latency of the instruction. This only includes stores that cross
->> the 128 byte boundary. Counted at finish time."
->> +  },
->> +  {
->> +    "EventCode": "0x000000C8A4",
->> +    "EventName": "PM_ST1_UNALIGNED_FIN",
->> +    "BriefDescription": "Store instructions in ST1 port that are
->> either unaligned, or treated as unaligned and require an additional
->> recycle through the pipeline. This typically adds about 10 cycles to
->> the latency of the instruction. This only includes stores that cross
->> the 128 byte boundary. Counted at finish time."
->> +  },
->> +  {
->> +    "EventCode": "0x000000C8B8",
->> +    "EventName": "PM_STCX_SUCCESS_CMPL",
->> +    "BriefDescription": "STCX instructions that completed
->> successfully. Specifically, counts only when a pass status is returned
->> from the nest."
->> +  },
->> +  {
->> +    "EventCode": "0x000000D0B4",
->> +    "EventName": "PM_DC_PREF_STRIDED_CONF",
->> +    "BriefDescription": "A demand load referenced a line in an active
->> strided prefetch stream. The stream could have been allocated through
->> the hardware prefetch mechanism or through software."
->> +  },
->> +  {
->> +    "EventCode": "0x000000F880",
->> +    "EventName": "PM_SNOOP_TLBIE_CYC",
->> +    "BriefDescription": "Cycles in which TLBIE snoops are executed in
->> the LSU."
->> +  },
->> +  {
->> +    "EventCode": "0x000000F084",
->> +    "EventName": "PM_SNOOP_TLBIE_CACHE_WALK_CYC",
->> +    "BriefDescription": "TLBIE snoop cycles in which the data cache
->> is being walked."
->> +  },
->> +  {
->> +    "EventCode": "0x000000F884",
->> +    "EventName": "PM_SNOOP_TLBIE_WAIT_ST_CYC",
->> +    "BriefDescription": "TLBIE snoop cycles in which older stores are
->> still draining."
->> +  },
->> +  {
->> +    "EventCode": "0x000000F088",
->> +    "EventName": "PM_SNOOP_TLBIE_WAIT_LD_CYC",
->> +    "BriefDescription": "TLBIE snoop cycles in which older loads are
->> still draining."
->> +  },
->> +  {
->> +    "EventCode": "0x000000F08C",
->> +    "EventName": "PM_SNOOP_TLBIE_WAIT_MMU_CYC",
->> +    "BriefDescription": "TLBIE snoop cycles in which the Load-Store
->> unit is waiting for the MMU to finish invalidation."
->> +  },
->> +  {
->> +    "EventCode": "0x0000004884",
->> +    "EventName": "PM_NO_FETCH_IBUF_FULL_CYC",
->> +    "BriefDescription": "Cycles in which no instructions are fetched
->> because there is no room in the instruction buffers."
->> +  },
->> +  {
->> +    "EventCode": "0x00000048B4",
->> +    "EventName": "PM_BR_TKN_UNCOND_FIN",
->> +    "BriefDescription": "An unconditional branch finished. All
->> unconditional branches are taken."
->> +  },
->> +  {
->> +    "EventCode": "0x0B0000016080",
->> +    "EventName": "PM_L2_TLBIE_SLBIE_START",
->> +    "BriefDescription": "NCU Master received a TLBIE/SLBIEG/SLBIAG
->> operation from the core. Event count should be multiplied by 2 since
->> the data is coming from a 2:1 clock domain and the data is time sliced
->> across all 4 threads."
->> +  },
->> +  {
->> +    "EventCode": "0x0B0000016880",
->> +    "EventName": "PM_L2_TLBIE_SLBIE_DELAY",
->> +    "BriefDescription": "Cycles when a TLBIE/SLBIEG/SLBIAG command
->> was held in a hottemp condition by the NCU Master. Multiply this count
->> by 1000 to obtain the total number of cycles. This can be divided by
->> PM_L2_TLBIE_SLBIE_SENT to obtain the average time a
->> TLBIE/SLBIEG/SLBIAG command was held. Event count should be multiplied
->> by 2 since the data is coming from a 2:1 clock domain and the data is
->> time sliced across all 4 threads."
->> +  },
->> +  {
->> +    "EventCode": "0x0B0000026880",
->> +    "EventName": "PM_L2_SNP_TLBIE_SLBIE_DELAY",
->> +    "BriefDescription": "Cycles when a TLBIE/SLBIEG/SLBIAG that
->> targets this thread's LPAR was in flight while in a hottemp condition.
->> Multiply this count by 1000 to obtain the total number of cycles. This
->> can be divided by PM_L2_SNP_TLBIE_SLBIE_START to obtain the overall
->> efficiency. Note: ’inflight’ means SnpTLB has been sent to core(ie
->> doesn’t include when SnpTLB is in NCU waiting to be launched serially
->> behind different SnpTLB). The NCU Snooper gets in a ’hottemp’ delay
->> window when it detects it is above its TLBIE/SLBIE threshold for
->> process SnpTLBIE/SLBIE with this core. Event count should be
->> multiplied by 2 since the data is coming from a 2:1 clock domain and
->> the data is time sliced across all 4 threads."
->>     }
->>   ]
+crypto: arm/xor - add missing MODULE_DESCRIPTION() macro
+https://lore.kernel.org/all/20240711-md-arm-arch-arm-lib-v2-1-ab08653dc106@quicinc.com/
+
+x86/mm: add testmmiotrace MODULE_DESCRIPTION()
+https://lore.kernel.org/all/20240515-testmmiotrace-md-v1-1-10919a8b2842@quicinc.com/
+
+cpufreq: powerpc: add missing MODULE_DESCRIPTION() macros
+https://lore.kernel.org/all/20240722-md-powerpc-drivers-cpufreq-v2-1-bb84d715eb3d@quicinc.com/
+
+fsi: add missing MODULE_DESCRIPTION() macros
+https://lore.kernel.org/all/20240605-md-drivers-fsi-v1-1-fefc82d81b12@quicinc.com/
+
+locking/ww_mutex/test: add MODULE_DESCRIPTION()
+https://lore.kernel.org/all/20240528-md-test-ww_mutex-v2-1-a2a19e920b12@quicinc.com/
+
+---
+Jeff Johnson (5):
+      crypto: arm/xor - add missing MODULE_DESCRIPTION() macro
+      x86/mm: add testmmiotrace MODULE_DESCRIPTION()
+      cpufreq: powerpc: add missing MODULE_DESCRIPTION() macros
+      fsi: add missing MODULE_DESCRIPTION() macros
+      locking/ww_mutex/test: add MODULE_DESCRIPTION()
+
+ arch/arm/lib/xor-neon.c           | 1 +
+ arch/x86/mm/testmmiotrace.c       | 1 +
+ drivers/cpufreq/maple-cpufreq.c   | 1 +
+ drivers/cpufreq/pasemi-cpufreq.c  | 1 +
+ drivers/cpufreq/pmac64-cpufreq.c  | 1 +
+ drivers/cpufreq/powernv-cpufreq.c | 1 +
+ drivers/cpufreq/ppc_cbe_cpufreq.c | 1 +
+ drivers/fsi/fsi-core.c            | 1 +
+ drivers/fsi/fsi-master-aspeed.c   | 1 +
+ drivers/fsi/fsi-master-ast-cf.c   | 3 ++-
+ drivers/fsi/fsi-master-gpio.c     | 1 +
+ drivers/fsi/fsi-master-hub.c      | 1 +
+ drivers/fsi/fsi-scom.c            | 1 +
+ kernel/locking/test-ww_mutex.c    | 1 +
+ 14 files changed, 15 insertions(+), 1 deletion(-)
+---
+base-commit: 94ede2a3e9135764736221c080ac7c0ad993dc2d
+change-id: 20240730-module_description_orphans-cb5e25fe1656
+
