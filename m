@@ -1,53 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BFC9417C9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 18:15:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38389941FA6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Jul 2024 20:35:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=SBHQlpfe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KtQLx3vt;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYL1n1nYcz3d40
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 02:15:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYP6g6Zy6z3d2m
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 04:35:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=SBHQlpfe;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KtQLx3vt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=allen.lkml@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYL153KQtz3cfm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 02:15:20 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7E77161EE7;
-	Tue, 30 Jul 2024 16:15:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DC4C32782;
-	Tue, 30 Jul 2024 16:15:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356118;
-	bh=Yc0i+YNDdSzDYuM3ZOr6qks0c9Mv4Z2i82DMrfdTSjw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBHQlpfenaQm1LioZNT+agGBfAPz5sL8+MSCDYFTVkHrkKLsb1B0J+CVhDC2JF4r0
-	 0u79u39V6X9dqj+n2QpXryZ4ReTB8gH9vEUzzjaZvvUwhC1KV0GYEup8CF1fNqvgmr
-	 mRQ/tPcqtwpOjc7M4Jpta9sneKo2TZlVOTl++mkE=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Subject: [PATCH 6.1 157/440] perf tests arm_callgraph_fp: Address shellcheck warnings about signal names and adding double quotes for expression
-Date: Tue, 30 Jul 2024 17:46:30 +0200
-Message-ID: <20240730151622.009115670@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYP5x6FlSz3cH2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 04:34:44 +1000 (AEST)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-7a1843b4cdbso2827076a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Jul 2024 11:34:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722364481; x=1722969281; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XJF28MhC2MiqvCUOHdECUHJyNP06dmnDOSRczPxFDXg=;
+        b=KtQLx3vtZZrbVG3GZdTa6VWY4spqrviiSe9wBhJ5MGWKoccoV8+1Hl2C5jSLO3gFBS
+         JNU0BK5bbdUd+4dUecAVhwdAqdK3PMQRpstiGCWA5/RXlRyk+E0vPb3i7wLALbAwAzHf
+         Yn360n2lsdBgl5Dc7IYWRAJviRFyB7oFfy1gKhDgM/J1P2NiSt42mvqjVWgWXLQq4o1Y
+         tOKAUCp0ZI4kqdWYM7jjLKPEfOEz342U1Wj1Fgmf97/owaA2jK2OjqtbkTyJ7s8TN/On
+         YCejHGxfTYBqis9LviyeqenvJDlrMZQKb4n7SwKUP7fUWPmaFLV3kKC7uS0CpS945EYL
+         pi8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722364481; x=1722969281;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XJF28MhC2MiqvCUOHdECUHJyNP06dmnDOSRczPxFDXg=;
+        b=dOL8uPAlg73WjH5nhRr9Ebs5Dy8zdFcUCIjImL8sF7ikqezDF0xCSUyadHNpqvZMJl
+         65MS/DC7MT6Q6FqzFXslYZzPktCUhtW0DPL/oPMr7fHAUCPK+yUS+0+k0OOALCKWhzF9
+         p/yZCPqTQ9dfiAEVcK78/0FFcktVmUqDjs8MVKTDHAcNf0LCQGrSZ7CZczmnVzyGwjXA
+         UtAftN5iwFsjuPTiNSGfRo2s4XQIerl5q8foi1RWrdLpKKnq+b3xPMRFqsEvw84r+2+U
+         saD6kFlZinj83oktfDvjw4uVNGmUKuP1IvizbOg00UdzEkUnStq+4RwQPjUEIcUevsL1
+         LyIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVs0jq2PMpGBBfD6lzWu8Tvxos8L6C1IMRuT/UwiCGwaE5hH0igsht9l95g92cYaB8RA/Qk1Rr9fsh/EvliQObidnA7LkxgqmM77vZXwA==
+X-Gm-Message-State: AOJu0Yxx7cAcdXD3XKkWwVKA4taPqvuUMUYBT1ZBYEG720sWwe8z9eKs
+	LeLiuggvZDnuzwNgARhxBKtg6DwMh6H+o6QFpiKdPU9J27AEbYfQ
+X-Google-Smtp-Source: AGHT+IGo7lrGjbCeYJR8CgOHZdoGXq6ysooeIc5UeAEWFCJBQ9LFDG+NCFqdDOvXEN4PPr122ZUWMw==
+X-Received: by 2002:a05:6a20:7347:b0:1c2:97cd:94d8 with SMTP id adf61e73a8af0-1c4a12cbcccmr11576550637.20.1722364481320;
+        Tue, 30 Jul 2024 11:34:41 -0700 (PDT)
+Received: from apais-devbox.. ([2001:569:766d:6500:f2df:af9:e1f6:390e])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7a9f817f5a2sm7837763a12.24.2024.07.30.11.34.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jul 2024 11:34:40 -0700 (PDT)
+From: Allen Pais <allen.lkml@gmail.com>
+To: kuba@kernel.org,
+	Haren Myneni <haren@linux.ibm.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Thomas Falcon <tlfalcon@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [net-next v3 12/15] net: ibmvnic: Convert tasklet API to new bottom half workqueue mechanism
+Date: Tue, 30 Jul 2024 11:34:00 -0700
+Message-Id: <20240730183403.4176544-13-allen.lkml@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240730183403.4176544-1-allen.lkml@gmail.com>
+References: <20240730183403.4176544-1-allen.lkml@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,78 +91,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, John Garry <john.g.garry@oracle.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ravi Bangoria <ravi.bangoria@amd.com>, patches@lists.linux.dev, Spoorthy S <spoorts2@in.ibm.com>, Arnaldo Carvalho de Melo <acme@redhat.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>, Namhyung Kim <namhyung@kernel.org>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: marcin.s.wojtas@gmail.com, kda@linux-powerpc.org, Allen Pais <allen.lkml@gmail.com>, linux-acenic@sunsite.dk, louis.peens@corigine.com, linux-rdma@vger.kernel.org, cooldavid@cooldavid.org, aneesh.kumar@kernel.org, naveen.n.rao@linux.ibm.com, mlindner@marvell.com, lorenzo@kernel.org, Mark-MC.Lee@mediatek.com, jes@trained-monkey.org, richardcochran@gmail.com, sean.wang@mediatek.com, linux-net-drivers@amd.com, cai.huoqing@linux.dev, matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, bryan.whitehead@microchip.com, dougmill@linux.ibm.com, linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com, stephen@networkplumber.org, borisp@nvidia.com, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, nbd@nbd.name
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+Migrate tasklet APIs to the new bottom half workqueue mechanism. It
+replaces all occurrences of tasklet usage with the appropriate workqueue
+APIs throughout the ibmvnic driver. This transition ensures compatibility
+with the latest design and enhances performance.
 
-------------------
-
-From: Spoorthy S <spoorts2@in.ibm.com>
-
-[ Upstream commit 1bb17b4c6c91ad4d9468247cf5f5464fa6440668 ]
-
-Running shellcheck -S on test_arm_calligraph_fp throws warnings SC2086 and SC3049,
-
-      $shellcheck -S warning tests/shell/test_arm_callgraph_fp.sh
-         rm -f $PERF_DATA
-            : Double quote to prevent globbing and word splitting.
-         trap cleanup_files exit term int
-                     : In POSIX sh, using lower/mixed case for signal names is undefined.
-
-After fixing the warnings,
-
-      $shellcheck tests/shell/test_arm_callgraph_fp.sh
-      $ echo $?
-      0
-
-To address the POSIX shell warnings added changes to convert Lowercase
-signal names to uppercase in the script and double quoted the
-command substitutions($fix to "$fix") to solve Globbing warnings.
-
-Signed-off-by: Spoorthy S<spoorts2@in.ibm.com>
-Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20230613164145.50488-4-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: ff16aeb9b834 ("perf test: Make test_arm_callgraph_fp.sh more robust")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Allen Pais <allen.lkml@gmail.com>
 ---
- tools/perf/tests/shell/test_arm_callgraph_fp.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 24 ++++++++++++------------
+ drivers/net/ethernet/ibm/ibmvnic.h |  2 +-
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/tools/perf/tests/shell/test_arm_callgraph_fp.sh b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-index e61d8deaa0c41..1380e0d12dce3 100755
---- a/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-+++ b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-@@ -9,13 +9,13 @@ TEST_PROGRAM="perf test -w leafloop"
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 23ebeb143987..0156efeff96a 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -2737,7 +2737,7 @@ static const char *reset_reason_to_string(enum ibmvnic_reset_reason reason)
+ /*
+  * Initialize the init_done completion and return code values. We
+  * can get a transport event just after registering the CRQ and the
+- * tasklet will use this to communicate the transport event. To ensure
++ * bh work will use this to communicate the transport event. To ensure
+  * we don't miss the notification/error, initialize these _before_
+  * regisering the CRQ.
+  */
+@@ -4447,7 +4447,7 @@ static void send_request_cap(struct ibmvnic_adapter *adapter, int retry)
+ 	int cap_reqs;
  
- cleanup_files()
+ 	/* We send out 6 or 7 REQUEST_CAPABILITY CRQs below (depending on
+-	 * the PROMISC flag). Initialize this count upfront. When the tasklet
++	 * the PROMISC flag). Initialize this count upfront. When the bh work
+ 	 * receives a response to all of these, it will send the next protocol
+ 	 * message (QUERY_IP_OFFLOAD).
+ 	 */
+@@ -4983,7 +4983,7 @@ static void send_query_cap(struct ibmvnic_adapter *adapter)
+ 	int cap_reqs;
+ 
+ 	/* We send out 25 QUERY_CAPABILITY CRQs below.  Initialize this count
+-	 * upfront. When the tasklet receives a response to all of these, it
++	 * upfront. When the bh work receives a response to all of these, it
+ 	 * can send out the next protocol messaage (REQUEST_CAPABILITY).
+ 	 */
+ 	cap_reqs = 25;
+@@ -5495,7 +5495,7 @@ static int handle_login_rsp(union ibmvnic_crq *login_rsp_crq,
+ 	int i;
+ 
+ 	/* CHECK: Test/set of login_pending does not need to be atomic
+-	 * because only ibmvnic_tasklet tests/clears this.
++	 * because only ibmvnic_bh_work tests/clears this.
+ 	 */
+ 	if (!adapter->login_pending) {
+ 		netdev_warn(netdev, "Ignoring unexpected login response\n");
+@@ -6081,13 +6081,13 @@ static irqreturn_t ibmvnic_interrupt(int irq, void *instance)
  {
--	rm -f $PERF_DATA
-+	rm -f "$PERF_DATA"
+ 	struct ibmvnic_adapter *adapter = instance;
+ 
+-	tasklet_schedule(&adapter->tasklet);
++	queue_work(system_bh_wq, &adapter->bh_work);
+ 	return IRQ_HANDLED;
  }
  
--trap cleanup_files exit term int
-+trap cleanup_files EXIT TERM INT
+-static void ibmvnic_tasklet(struct tasklet_struct *t)
++static void ibmvnic_bh_work(struct work_struct *work)
+ {
+-	struct ibmvnic_adapter *adapter = from_tasklet(adapter, t, tasklet);
++	struct ibmvnic_adapter *adapter = from_work(adapter, work, bh_work);
+ 	struct ibmvnic_crq_queue *queue = &adapter->crq;
+ 	union ibmvnic_crq *crq;
+ 	unsigned long flags;
+@@ -6168,7 +6168,7 @@ static void release_crq_queue(struct ibmvnic_adapter *adapter)
  
- # Add a 1 second delay to skip samples that are not in the leaf() function
--perf record -o $PERF_DATA --call-graph fp -e cycles//u -D 1000 --user-callchains -- $TEST_PROGRAM 2> /dev/null &
-+perf record -o "$PERF_DATA" --call-graph fp -e cycles//u -D 1000 --user-callchains -- "$TEST_PROGRAM" 2> /dev/null &
- PID=$!
+ 	netdev_dbg(adapter->netdev, "Releasing CRQ\n");
+ 	free_irq(vdev->irq, adapter);
+-	tasklet_kill(&adapter->tasklet);
++	cancel_work_sync(&adapter->bh_work);
+ 	do {
+ 		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
+ 	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
+@@ -6219,7 +6219,7 @@ static int init_crq_queue(struct ibmvnic_adapter *adapter)
  
- echo " + Recording (PID=$PID)..."
+ 	retrc = 0;
+ 
+-	tasklet_setup(&adapter->tasklet, (void *)ibmvnic_tasklet);
++	INIT_WORK(&adapter->bh_work, (void *)ibmvnic_bh_work);
+ 
+ 	netdev_dbg(adapter->netdev, "registering irq 0x%x\n", vdev->irq);
+ 	snprintf(crq->name, sizeof(crq->name), "ibmvnic-%x",
+@@ -6241,12 +6241,12 @@ static int init_crq_queue(struct ibmvnic_adapter *adapter)
+ 	spin_lock_init(&crq->lock);
+ 
+ 	/* process any CRQs that were queued before we enabled interrupts */
+-	tasklet_schedule(&adapter->tasklet);
++	queue_work(system_bh_wq, &adapter->bh_work);
+ 
+ 	return retrc;
+ 
+ req_irq_failed:
+-	tasklet_kill(&adapter->tasklet);
++	cancel_work_sync(&adapter->bh_work);
+ 	do {
+ 		rc = plpar_hcall_norets(H_FREE_CRQ, vdev->unit_address);
+ 	} while (rc == H_BUSY || H_IS_LONG_BUSY(rc));
+@@ -6639,7 +6639,7 @@ static int ibmvnic_resume(struct device *dev)
+ 	if (adapter->state != VNIC_OPEN)
+ 		return 0;
+ 
+-	tasklet_schedule(&adapter->tasklet);
++	queue_work(system_bh_wq, &adapter->bh_work);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
+index 94ac36b1408b..b65b210a8059 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.h
++++ b/drivers/net/ethernet/ibm/ibmvnic.h
+@@ -1036,7 +1036,7 @@ struct ibmvnic_adapter {
+ 	u32 cur_rx_buf_sz;
+ 	u32 prev_rx_buf_sz;
+ 
+-	struct tasklet_struct tasklet;
++	struct work_struct bh_work;
+ 	enum vnic_state state;
+ 	/* Used for serialization of state field. When taking both state
+ 	 * and rwi locks, take state lock first.
 -- 
-2.43.0
-
-
+2.34.1
 
