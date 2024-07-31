@@ -2,74 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958D99428F4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 10:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3662594291F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 10:26:51 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=iUDqCcP9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=oWe/5CCi;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYlGd3fmhz3cjX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 18:13:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYlZ10kd8z3dF9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 18:26:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=timesys.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=iUDqCcP9;
+	dkim=pass (2048-bit key; unprotected) header.d=timesys-com.20230601.gappssmtp.com header.i=@timesys-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=oWe/5CCi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=ajones@ventanamicro.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=timesys.com (client-ip=2607:f8b0:4864:20::e2f; helo=mail-vs1-xe2f.google.com; envelope-from=piotr.wojtaszczyk@timesys.com; receiver=lists.ozlabs.org)
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYlFc0m6fz3dBq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 18:12:35 +1000 (AEST)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-5a2ffc34431so4295206a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 01:12:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYlYF1ctnz3c7K
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 18:26:05 +1000 (AEST)
+Received: by mail-vs1-xe2f.google.com with SMTP id ada2fe7eead31-492aae5fd78so1431531137.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 01:26:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1722413552; x=1723018352; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bPhqvXPcxjB8hmfad49hCHGbmNQ9dpteVou05ijuxXo=;
-        b=iUDqCcP9x8XbDLBLPQAtHMlzO92pd9XpH7JaxGLf3MsrKv2RewHjL5Wd1X3CwcdISk
-         m6T1dFzeqsX3+pL5jyVEJc6wRe8VxTJ/Vjoiac2rK4f5/rY7VDgBPD8H+MAmylXmMv2l
-         LbJc9Q+ubln0xAmgMjryCM9Jx5UpdoNLWxSc90zr14j8DF10OFkJVf/dvXqZZxLDPr1F
-         BqwVvdXbW8dcmogHs4RarL9aD/FHTAb1TMZmj3fapGsIq0fIpoBl8+vgamSS8Bzg4bbN
-         IJazosqRi8jVDQu6tbqYwN3AsBlrnHQlavj5m6R9Q7xaCmz1JqNcKas84zCAvvm0fIts
-         eepQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722413552; x=1723018352;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=timesys-com.20230601.gappssmtp.com; s=20230601; t=1722414362; x=1723019162; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bPhqvXPcxjB8hmfad49hCHGbmNQ9dpteVou05ijuxXo=;
-        b=As8ohSjqclqvk184nGSytZ4S6LOtqmeEAB3JkVbt8D1Jx9pLFl6hSYuetbrh7YIzuZ
-         WOampVLOQYTuCDxOG40bXJrEsZ8FTpkWwtsdgHj8KWJYkXLjxDL1RIl8+CeIVQIMfWGs
-         dltgRGdXK0S4aNIzbg2fnu535j3j2RXFTy7rOnR5Z4VooOq+LptMDVbjy9g7iPXRtt+h
-         fOR0hmEYrOQWWf2l0zC6m458VrmXq+vel4bkSSVDNk0PEy6IXs4o1wMv4YjOMNBTFLPM
-         NfnIRO75TTeJ7yc3NSm32jrMwiCPjTUaYu6e0MR5R1hG7zrK0ZegF6YQcuVOO4yJ1S/5
-         jSFw==
-X-Forwarded-Encrypted: i=1; AJvYcCWH+83VWBe3vIeOF1pl82NZigtwcqRLHizc1d42QJh5ICP8XNGo/Ae1lsJ8S01QjXaeRm1C+sGU36FOFpsew5x2Ns5jap+2CiGIV9B2+A==
-X-Gm-Message-State: AOJu0YwK2ASOQO4QjDBDcmKaizc5kV/iXTIfvmCxJ0bS43hgqp7G78IF
-	bJtSNT1lJrnJVf71hbNI6tFg/EGaJTsxkGxoD0tfV3SDCFbww/wCekD/ivrVfbA=
-X-Google-Smtp-Source: AGHT+IGxlRCnb+W6DiXG7nTnr6lyiGJnx0i1YWV+5ADomMCnBj37OyG82iPSl5g4jXJI8y3klQMjSg==
-X-Received: by 2002:a50:d7c1:0:b0:57d:3df:f881 with SMTP id 4fb4d7f45d1cf-5b021190495mr11744615a12.3.1722413552263;
-        Wed, 31 Jul 2024 01:12:32 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ac60918cb4sm8394451a12.0.2024.07.31.01.12.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 01:12:31 -0700 (PDT)
-Date: Wed, 31 Jul 2024 10:12:31 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v12 57/84] KVM: RISC-V: Mark "struct page" pfns accessed
- before dropping mmu_lock
-Message-ID: <20240731-f034f3516f0fffede877c68d@orel>
-References: <20240726235234.228822-1-seanjc@google.com>
- <20240726235234.228822-58-seanjc@google.com>
+        bh=DFjJ7n63paZS6uSG42PXEZWs1JHtvlpu1J7pCHV1MaA=;
+        b=oWe/5CCiKIoG5PS8YF+9NzYnaq/dwfRrGMfuXwVF0mMcf1cGAkxE+fzB0mJa9at4np
+         ww6F16mrZNF5ZVTOK6K55CUSrSBXHeQZqITCD4q0aGeyQjnju2W2lffQBlJQQztSR4pr
+         /fValay95puQXQb8ic/JCAGA1MexcYuNvWWqiVv/Pb5ifY3s3RHzNTCuUc6iaU3ubuVm
+         5l0AaGkQBIsyuV5g6Q0Idlrz21aQQy5Sg6i6YIL4JCCSxzipUIzKfgoJM+c390oJ+clC
+         GS6AwbnodE3QsjQZgxgKuMs0RoZ61AbOhQLT8JnYnxZcnmLenI9/+Q0Jr7zXV9rYkMgu
+         4IbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722414362; x=1723019162;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DFjJ7n63paZS6uSG42PXEZWs1JHtvlpu1J7pCHV1MaA=;
+        b=s2mAhHIo/2m8Xjif4bvwMLhIFgBcRXDPb0WsXSc75chMX748bFGOXOQoe0GT/Ez3w7
+         K20qRhSCDyyvcVbYxnsZqBHqEAHBY2Xg0c6l6mxxF7KCFGExtuQH2H42O0Kya02Dbo+H
+         Cv+XL4d/kS+DVTvqJW2D331RbZvBNvUKv5EEdbjVzPb7Xz8lQYGM3xwiCNGWjNrdYY0C
+         bBIDCC73waDCYGkUUIFwsbSEPL+Pekj83MYk8VnXPoTVljiRWPYjEb7jdn1wuFiam0oT
+         BOzfUZUenPUJ7FCEv7eDSa+8THRsuAGrTBYGeixJpKp6AEKGLOtbxHXUbBtmsWgpYNxW
+         hprg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKA3vRMrOk549v0P8Axs/117CfXuuwcyOtSnpVZaQu2kGO3/MzcmIPvMCdCEycheBvwKFs7f3BmcCELqAHYA66P7K2tVrD7OeQwDAsew==
+X-Gm-Message-State: AOJu0YwsX1/lqVgZJVyEpS81/qqFmnGs5+Q55olbgt3K9u1FfWlDFFum
+	kZsJks2fvaKuDXgK/MmprzLXOE2XCFtCROzZMLgyQYdqxB8ArYLE5s5ukMgCmDXdX643cQ/gmMw
+	wEWrXATkUxzL2pHMlRK4O/61Vww4IyG3GawhwFw==
+X-Google-Smtp-Source: AGHT+IEZQxKOD7qrEVQxXh0yoroOagYvbnV14lRkkP0QqCJaL1USQW1bT0weUmb2OMtTj4zK11JciNIw6TA8x5ATMzI=
+X-Received: by 2002:a05:6102:390b:b0:492:a7e5:df9 with SMTP id
+ ada2fe7eead31-493faa417bfmr15098391137.17.1722414362030; Wed, 31 Jul 2024
+ 01:26:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240726235234.228822-58-seanjc@google.com>
+References: <20240731022949.135016-1-yuehaibing@huawei.com>
+In-Reply-To: <20240731022949.135016-1-yuehaibing@huawei.com>
+From: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>
+Date: Wed, 31 Jul 2024 10:25:51 +0200
+Message-ID: <CAG+cZ05LGBsNODyAaApS1uoPXPh7Cchp8utm_AAWoM09HZzOzw@mail.gmail.com>
+Subject: Re: [PATCH -next] ASoC: fsl: lpc3xxx-i2s: Remove set but not used
+ variable 'savedbitclkrate'
+To: Yue Haibing <yuehaibing@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,41 +79,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, linux-kernel@vger.kernel.org, tiwai@suse.com, jonathan.downing@nautel.com, perex@perex.cz, broonie@kernel.org, linux-sound@vger.kernel.org, vz@mleia.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 26, 2024 at 04:52:06PM GMT, Sean Christopherson wrote:
-> Mark pages accessed before dropping mmu_lock when faulting in guest memory
-> so that RISC-V can convert to kvm_release_faultin_page() without tripping
-> its lockdep assertion on mmu_lock being held.  Marking pages accessed
-> outside of mmu_lock is ok (not great, but safe), but marking pages _dirty_
-> outside of mmu_lock can make filesystems unhappy.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Wed, Jul 31, 2024 at 4:39=E2=80=AFAM Yue Haibing <yuehaibing@huawei.com>=
+ wrote:
+>
+> The variable savedbitclkrate is assigned and never used, so can be remove=
+d.
+>
+> sound/soc/fsl/lpc3xxx-i2s.c:42:13: warning: variable =E2=80=98savedbitclk=
+rate=E2=80=99 set but not used [-Wunused-but-set-variable]
+>
+> Fixes: 0959de657a10 ("ASoC: fsl: Add i2s and pcm drivers for LPC32xx CPUs=
+")
+> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
 > ---
->  arch/riscv/kvm/mmu.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 06aa5a0d056d..806f68e70642 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -683,10 +683,10 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
->  out_unlock:
->  	if ((!ret || ret == -EEXIST) && writable)
->  		kvm_set_pfn_dirty(hfn);
-> +	else
-> +		kvm_release_pfn_clean(hfn);
->  
->  	spin_unlock(&kvm->mmu_lock);
-> -	kvm_set_pfn_accessed(hfn);
-> -	kvm_release_pfn_clean(hfn);
->  	return ret;
->  }
->  
-> -- 
-> 2.46.0.rc1.232.g9752f9e123-goog
+>  sound/soc/fsl/lpc3xxx-i2s.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/sound/soc/fsl/lpc3xxx-i2s.c b/sound/soc/fsl/lpc3xxx-i2s.c
+> index af995ca081a3..62ef624d6dd4 100644
+> --- a/sound/soc/fsl/lpc3xxx-i2s.c
+> +++ b/sound/soc/fsl/lpc3xxx-i2s.c
+> @@ -39,7 +39,7 @@ static void __lpc3xxx_find_clkdiv(u32 *clkx, u32 *clky,=
+ int freq, int xbytes, u3
+>  {
+>         u32 i2srate;
+>         u32 idxx, idyy;
+> -       u32 savedbitclkrate, diff, trate, baseclk;
+> +       u32 diff, trate, baseclk;
+>
+>         /* Adjust rate for sample size (bits) and 2 channels and offset f=
+or
+>          * divider in clock output
+> @@ -53,14 +53,12 @@ static void __lpc3xxx_find_clkdiv(u32 *clkx, u32 *clk=
+y, int freq, int xbytes, u3
+>
+>         /* Find the best divider */
+>         *clkx =3D *clky =3D 0;
+> -       savedbitclkrate =3D 0;
+>         diff =3D ~0;
+>         for (idxx =3D 1; idxx < 0xFF; idxx++) {
+>                 for (idyy =3D 1; idyy < 0xFF; idyy++) {
+>                         trate =3D (baseclk * idxx) / idyy;
+>                         if (abs(trate - i2srate) < diff) {
+>                                 diff =3D abs(trate - i2srate);
+> -                               savedbitclkrate =3D trate;
+>                                 *clkx =3D idxx;
+>                                 *clky =3D idyy;
+>                         }
+> --
+> 2.34.1
 >
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Looks good, thanks.
+
+--=20
+Piotr Wojtaszczyk
+Timesys
