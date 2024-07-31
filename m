@@ -1,54 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F13942978
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 10:46:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 125ED942A5A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 11:24:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=amiMPkOX;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=BA2isd2h;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYm0p4yTrz3cmk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 18:46:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYmrt0BHcz3dC1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 19:24:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=amiMPkOX;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=BA2isd2h;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.17.11; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYm0621Qlz30TZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 18:45:58 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 878B8621D9;
-	Wed, 31 Jul 2024 08:45:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B59C4AF10;
-	Wed, 31 Jul 2024 08:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722415556;
-	bh=2XLxAIc6IiUvdSzD2ExFN0aiYA4Po6apdRHywpfIuJY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=amiMPkOXaIEqDy8nSDola/nQWxqE60JDoCHCdcxkNowuGUEkYpe0F2flZzG0dG1ce
-	 mD+E8nbaJxDzqx3ItGMLfsxAU4EvEWIFBZEgq/O3snn7fd4RHs/wfVZOdj9DRfinZ6
-	 HoSWe+Tv/Z8LaaG9F7ZOtG8WhwJ0co+I8ASTG22nm+LzcyZrY6/uydTDOVc58LNN7d
-	 rJwPOxvAeQwia32HtjQ0RPMxMEMUajWzONBo86Uhc0DNrwMrxSB2jY82wIe/lMrkWw
-	 spFnmVZLjidrfQzkbkfsCuppSgO2L83TxQU1jB06psKADEB/P5ti4AniVd32gwtgn/
-	 97fB0PlUDQREQ==
-Date: Wed, 31 Jul 2024 09:45:51 +0100
-From: Simon Horman <horms@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Subject: Re: [PATCH net v1] net: wan: fsl_qmc_hdlc: Convert carrier_lock
- spinlock to a mutex
-Message-ID: <20240731084551.GM1967603@kernel.org>
-References: <20240730063104.179553-1-herve.codina@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYmr85Qjgz3cTl
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 19:24:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1722417784; x=1723022584; i=markus.elfring@web.de;
+	bh=0YmNy+yZCoJdyxtRmqU9DnXpRRd2Yx16nCVHhrQoPMI=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=BA2isd2hoBTUGxqViXo1jxACTMcqCndC1NusIza1e4/+646x6+82yMjc+DYI0iFM
+	 t6I0w4OBKEl42YHUvYPFR3IQ9Zvd17WNXj+UNbMeMqpMG2OmlypOhEvU9Jj9cwJj2
+	 Oqunx/+pZekAg8rtKLdN4iZ10zxnUt7i8zHnHMoH8MWqP2eShKfX2GR6LTElvS8il
+	 CaIiWej3y71IZQTaiYlpNRT2OsSeX3sXiIwdYJczriiomSMoRcXVQ0npqkECuA23b
+	 59Ohm1+3uQQQfCD97hlzJ6hgiTu7bWQiBEOFuNRCgKCqnrwIn7mKcCYdRrZKY5pFg
+	 dmnHcG2KoLQVeFN4Uw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.88.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1M1rTG-1sWtge05Wq-001lGJ; Wed, 31
+ Jul 2024 11:23:04 +0200
+Message-ID: <6c6d2e8e-1392-4c1b-aa39-46149ff2956c@web.de>
+Date: Wed, 31 Jul 2024 11:23:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+To: Herve Codina <herve.codina@bootlin.com>, netdev@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20240730063104.179553-1-herve.codina@bootlin.com>
+Subject: Re: [PATCH net] net: wan: fsl_qmc_hdlc: Convert carrier_lock spinlock
+ to a mutex
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
 In-Reply-To: <20240730063104.179553-1-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ptvWP2JpA+KQ0oIRv9Hv1yCYM6e8ZIPJX3xm8Jrs46Z0EYQIqAO
+ GTmbcWD4zNO8atDH8Qk5/8G2dLdADEYw64kLSUwUQhW7HcDvzjgdREg5AtiwDq3XbAXIYIU
+ PIrsil/Woseyo+psqQdJ3UtIttMstZsiaY3amt2lW0HetwPxLfkmZg7ZYHBgb5RevM6GwZT
+ uyR8HNRV2dQUiouIRmyfg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:wduvmi2tmRY=;ycowwX4dgWkZRr2SN8rxOYtybyH
+ BsaNdh8FrLq0bxUnmtcLmTxQM9V26OJv9OswClzpFUO9VmaQ8561jja/JquD0WKSKsQHATLJ4
+ Ja243VQjxtTJADdVtP51Q5wCB5PNhpbeEdkz1AQJN22Nou1WBfXYtbfVJAloQAURq7sJcZS+3
+ AeOeIyhZeLlMc4vSXF5Mfi0Pn8bwDh3+GERNPnN0esQANY0vwqw9XXs+owhTuzzBraAU3AfrK
+ 2O2vmkt5roG3iugmdoNtzDk1jzfOJh7Lj7Bqh3vOxEKqg76aMj5DDG31tXBaGxv0W2z3htfLr
+ 5qcIExaulObRJKhjzX74bTLzfTyXR7cYz4GcWM0K1sMJnCt+Hu4e1P7yfd5uRmhLD3Tt+5gNG
+ tlLzMBE83gI7gbiY79guOPG8BEsTWjzKoe+NkCNtBVAxGqHzlaL51lFLyI2zQ6kCwIymGIDfJ
+ cXtOI7OROfs33qe5VetOItaake1ysbnnt0WAU5xPlDpJB39XjHh4IRwcpP1y1ukMhNzAi6EkU
+ jXLjsI45MoY0ZYrInQ4iukNtMnONXMA9FxK3PEg5s20GpKbt1wCYZx3jk3MtpFW1HpxstyrLu
+ uT3ZJUUHcqzl2m/e9gJMHZU1Rwh5Mqb0W+jxvVQ61hctcvF44z91uZsrfzFTUP2uUFx1Y/zwG
+ mWbQx1cGIvvqFA/fNn4ZbNOV9ID84MpUcxvrKs26ar/Zfn0J17CV+fjokSc5mma/lFKPLU4md
+ vXHCU9oXFyjemUTCPnvV1gtUE/Zn2IUQWLbVafJxd4XnlrzTJ5HC/+vdROjvsxhT6F0HA35hw
+ vHmGqNXj/CeEFX6d5XVbua0g==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,30 +87,15 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Simon Horman <horms@kernel.org>, LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 30, 2024 at 08:31:04AM +0200, Herve Codina wrote:
-> The carrier_lock spinlock protects the carrier detection. While it is
+=E2=80=A6
 > hold, framer_get_status() is called witch in turn takes a mutex.
-> This is not correct and can lead to a deadlock.
-> 
-> A run with PROVE_LOCKING enabled detected the issue:
->   [ BUG: Invalid wait context ]
->   ...
->   c204ddbc (&framer->mutex){+.+.}-{3:3}, at: framer_get_status+0x40/0x78
->   other info that might help us debug this:
->   context-{4:4}
->   2 locks held by ifconfig/146:
->   #0: c0926a38 (rtnl_mutex){+.+.}-{3:3}, at: devinet_ioctl+0x12c/0x664
->   #1: c2006a40 (&qmc_hdlc->carrier_lock){....}-{2:2}, at: qmc_hdlc_framer_set_carrier+0x30/0x98
-> 
-> Avoid the spinlock usage and convert carrier_lock to a mutex.
-> 
-> Fixes: 54762918ca85 ("net: wan: fsl_qmc_hdlc: Add framer support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+=E2=80=A6
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+                                      which?
 
+Regards,
+Markus
