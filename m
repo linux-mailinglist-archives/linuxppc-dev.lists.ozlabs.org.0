@@ -2,93 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA4F942BC3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 12:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CEE942BD4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 12:19:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a1jaH9Rx;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a1jaH9Rx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VUuZdw6/;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VUuZdw6/;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYnx028KCz3d4H
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 20:13:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYp3X0vKJz3d2S
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 20:19:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a1jaH9Rx;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a1jaH9Rx;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VUuZdw6/;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VUuZdw6/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYnwJ28lRz30W0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 20:12:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYp2r13hsz30W0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 20:18:27 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722420764;
+	s=mimecast20190719; t=1722421104;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Bn9tfbIdSVCZqAMkxg8q5HTQiaczDdPE94ihy0l7iSo=;
-	b=a1jaH9RxMNrI7VHWbwKacQeKLkr21zik7TLOeIeavQZIU1Vzb7wv2bHowYiB6sYgerT6w7
-	I+67+q1f0C+mFtdOszTCOi/zs7eUdun3cNoL+FKhqWGq9cB0RhLNdYR4WooQyegl7aEQMZ
-	MJYdGolvpoTUqO5FsU5tNaHs1yZOJOc=
+	bh=+NI98OckWfv6J2NFyowBM8d76asTvKwKn+KYX73y9eY=;
+	b=VUuZdw6/Y93ZwOMch8ZN7EfJ5GSBCZGC212Ac4zvv/knKXqpky7Lyf2c//b2P5ppoRoPQA
+	1FeVotoOckWMnOxyfrmHaOVnfOskMSWjxMHGKNR+k94VB+31e5Cug0BIUQsw9QCD4LSTvN
+	qaTiGZ/EcaAY4T/dZ8RHRLb47mwoAGw=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722420764;
+	s=mimecast20190719; t=1722421104;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Bn9tfbIdSVCZqAMkxg8q5HTQiaczDdPE94ihy0l7iSo=;
-	b=a1jaH9RxMNrI7VHWbwKacQeKLkr21zik7TLOeIeavQZIU1Vzb7wv2bHowYiB6sYgerT6w7
-	I+67+q1f0C+mFtdOszTCOi/zs7eUdun3cNoL+FKhqWGq9cB0RhLNdYR4WooQyegl7aEQMZ
-	MJYdGolvpoTUqO5FsU5tNaHs1yZOJOc=
+	bh=+NI98OckWfv6J2NFyowBM8d76asTvKwKn+KYX73y9eY=;
+	b=VUuZdw6/Y93ZwOMch8ZN7EfJ5GSBCZGC212Ac4zvv/knKXqpky7Lyf2c//b2P5ppoRoPQA
+	1FeVotoOckWMnOxyfrmHaOVnfOskMSWjxMHGKNR+k94VB+31e5Cug0BIUQsw9QCD4LSTvN
+	qaTiGZ/EcaAY4T/dZ8RHRLb47mwoAGw=
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
  [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-sevnHiHQNRS9ytP1rUHBLQ-1; Wed, 31 Jul 2024 06:12:41 -0400
-X-MC-Unique: sevnHiHQNRS9ytP1rUHBLQ-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a7a979cae97so485066066b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 03:12:41 -0700 (PDT)
+ us-mta-177-8TqCS9G6PP6L-P68b-L3Pw-1; Wed, 31 Jul 2024 06:18:22 -0400
+X-MC-Unique: 8TqCS9G6PP6L-P68b-L3Pw-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a7aa26f342cso496429966b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 03:18:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722420760; x=1723025560;
+        d=1e100.net; s=20230601; t=1722421101; x=1723025901;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Bn9tfbIdSVCZqAMkxg8q5HTQiaczDdPE94ihy0l7iSo=;
-        b=M91Wq7bexa5/IFt39Xk8FR0WmAPhfcKJw9nEY3oboqcuD2NAFaui9MsgYwy+JI7ueN
-         WJ68MPVnX924mahdQjWkPMzYnsW6LpYdRVgAC+0d1Gpr2T+MkqKKpnpvOUGlSkzhYiBu
-         Z2diWVcG50GdQ0suKes7rSTR2QvxOTOe4Jpr1VUaF+ZO4iz/QnkUQYw7iCvP0uAH2m2l
-         ojKTvYLbeoRtPTioKobe4LxxFTW3hrtHbMAqua3T9lyO3NObzWFXIkIweTX54ldUNu/Q
-         kJ0aL/JMU05a90uGOf8zC01/BZtbSqnVydBG8ZN3LlwEzgziEYhi3OxuUYLAMrK5E1vb
-         qwOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRFwdekkG2Xvp8MHpjoiIrQ4lO9hLIpPxwE45EvyADro2SzxD0uSjANBKTN5ljzr4nMHG3rcjnvfQ3oa3kwGcpG17BXB626lLhCJ1hKA==
-X-Gm-Message-State: AOJu0YwIquxQedUpOmyToopya9Kaxe6rVAZdqs5SUmPzNCGNX9OCzTVQ
-	uEjSjOlc2ACIO3Hj7O4JLqXsg5aMeRgftKr0oDbgf1EPminBoohterWSxOTmWSkdZYmIcA+LJt2
-	2IDIxYLidC1hAry6xNIMQJ9MhuLpNN0Ucr6onRBOxoU8ckjadOo0qOTT51bUqXCc=
-X-Received: by 2002:a17:906:d26a:b0:a7a:c256:3c5 with SMTP id a640c23a62f3a-a7d40161c68mr868865566b.46.1722420759947;
-        Wed, 31 Jul 2024 03:12:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG5PK2N6SVlp21V74v51wpDQW38LtkY7BoBaQqhGgHQsZ4igHg8AC/1gwfVPPR89SMfLALrEQ==
-X-Received: by 2002:a17:906:d26a:b0:a7a:c256:3c5 with SMTP id a640c23a62f3a-a7d40161c68mr868863766b.46.1722420759395;
-        Wed, 31 Jul 2024 03:12:39 -0700 (PDT)
+        bh=+NI98OckWfv6J2NFyowBM8d76asTvKwKn+KYX73y9eY=;
+        b=mvIvr9xSnhQoYrOthDrqvqjH4rR8LNRXiiyCNflqPPAnfg0nm6OPWv3xh9kHDHairJ
+         r76rBPD6hca96+IiuptIuO1BmxOyY31j6/yCfYuWLJkTNuZZ35HuhaX76PVtBciiX5NV
+         qXU3GHhqdLn5pfAQXTDq2lFc0+zUqB8rnoWkVp1cvrT98Whm36gQAFfrFKKriqfb4uCj
+         hPwYuigUpQzJU+Qtuv1VJemh+LrzQIb+yVDFh6QIuecq0sGCiTtY/dP3MmL9Blo2p6xm
+         yK27dVLuxud3Oinph+1uZHa6KtHiYhIUE8GaLIHIGsgGyOYw9PugZGWJYqyJFbAbU9/U
+         qFEA==
+X-Forwarded-Encrypted: i=1; AJvYcCUx4OTFXxubPxoAqz+Qqvlo3NofItsYob6S38kdSm6Q5zx6X3Gh7QzcBm80hF4Vxbu7C7UMvBZlz2swnW9O/S2Z4dSTOsRYeALZL5RTvQ==
+X-Gm-Message-State: AOJu0YxP4LzoHOZ4f2MiXUuvYAVTnjaOxPlM5kDYIGfO3vc1+PhU08XQ
+	UZINscnzRsPc0iUPK/XIWojLyGf9oufc0z9S7VRToKL8htMnFOGEW5Gk2JpHTJXdNu0g1eNuylb
+	X8+4mixGF+50n7/vMeNISSVUQnIUambmDGU7fqZHuM7YlAoNcMAM5FWyNzAAUbr4=
+X-Received: by 2002:a17:907:3faa:b0:a7a:9f0f:ab2c with SMTP id a640c23a62f3a-a7d40087cdamr1036563766b.29.1722421100734;
+        Wed, 31 Jul 2024 03:18:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFbiyRYwcc7mzxbNr2j9CKiWLwtYHnw4iXERZ6Q+gmmNAwBwkH3zd03419QU5BCHgaYtt01lw==
+X-Received: by 2002:a17:907:3faa:b0:a7a:9f0f:ab2c with SMTP id a640c23a62f3a-a7d40087cdamr1036561866b.29.1722421100197;
+        Wed, 31 Jul 2024 03:18:20 -0700 (PDT)
 Received: from [192.168.10.81] ([151.95.101.29])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a7acad41164sm746659566b.102.2024.07.31.03.12.37
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a7acab52d51sm750409766b.79.2024.07.31.03.18.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jul 2024 03:12:38 -0700 (PDT)
-Message-ID: <10429875-b9a1-4454-b54a-1c3be5630771@redhat.com>
-Date: Wed, 31 Jul 2024 12:12:37 +0200
+        Wed, 31 Jul 2024 03:18:19 -0700 (PDT)
+Message-ID: <a76a83de-5dfd-495b-904a-878e1483e5f6@redhat.com>
+Date: Wed, 31 Jul 2024 12:18:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 45/84] KVM: guest_memfd: Provide "struct page" as
- output from kvm_gmem_get_pfn()
+Subject: Re: [PATCH v12 48/84] KVM: Move x86's API to release a faultin page
+ to common KVM
 To: Sean Christopherson <seanjc@google.com>
 References: <20240726235234.228822-1-seanjc@google.com>
- <20240726235234.228822-46-seanjc@google.com>
- <2da6b57e-d5c2-4016-b89b-d51700eeb845@redhat.com>
- <ZqlGcaESdxw5vzl8@google.com>
+ <20240726235234.228822-49-seanjc@google.com>
+ <96df1dd5-cc31-4e84-84fd-ea75b4800be8@redhat.com>
+ <Zqk72jP1c8N0Pn1O@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -125,7 +125,7 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <ZqlGcaESdxw5vzl8@google.com>
+In-Reply-To: <Zqk72jP1c8N0Pn1O@google.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -146,18 +146,17 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@g
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/30/24 22:00, Sean Christopherson wrote:
-> The probability of guest_memfd not having struct page for mapped pfns is likely
-> very low, but at the same time, providing a pfn+page pair doesn't cost us much.
-> And if it turns out that not having struct page is nonsensical, deferring the
-> kvm_gmem_get_pfn() => kvm_gmem_get_page() conversion could be annoying, but highly
-> unlikely to be painful since it should be 100% mechanical.  Whereas reverting back
-> to kvm_gmem_get_pfn() if we make the wrong decision now could mean doing surgery
-> on a pile of arch code.
+On 7/30/24 21:15, Sean Christopherson wrote:
+>> Does it make sense to move RET_PF_* to common code, and avoid a bool
+>> argument here?
+> After this series, probably?  Especially if/when we make "struct kvm_page_fault"
+> a common structure and converge all arch code.  In this series, definitely not,
+> as it would require even more patches to convert other architectures, and it's
+> not clear that it would be a net win, at least not without even more massaging.
 
-Ok, fair enough.  The conflict resolution is trivial either way (I also 
-checked the TDX series and miraculously it has only one conflict which 
-is also trivial).
+It does not seem to be hard, but I agree that all the other 
+architectures right now use 0/-errno in the callers of 
+kvm_release_faultin_page().
 
 Paolo
 
