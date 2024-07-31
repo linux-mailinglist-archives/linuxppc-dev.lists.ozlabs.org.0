@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284FB94288D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 10:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62235942892
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 10:02:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=L+rgMB4w;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WJscwdTW;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYl0f0j4Jz3dD2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 18:01:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYl1R3jnqz3d8G
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 18:02:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=L+rgMB4w;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WJscwdTW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d32; helo=mail-io1-xd32.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYkwM1kT1z3dBZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 17:57:39 +1000 (AEST)
-Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-81fb80d3887so77456039f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 00:57:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYkwW37F1z3d2S
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 17:57:47 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-70d2b921cdfso4772672b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 00:57:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722412655; x=1723017455; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1722412665; x=1723017465; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oOl+VUtIQmTRaKfzajaG2TO9gNGalFY7Fmi1+sFRLoU=;
-        b=L+rgMB4wvl3/bejj4FQakJ7NezXLJLZA5vkBUL+6xgiE/xD4eVRZ3p+4wiz2rqBnjm
-         Nqwx/1QZ7AUrGQTLXqSo1zg8Jj1NrKdHZsxQsQJTLr9srV7i6bGx/wU3sTj+WLi8AK+f
-         0mFh0Um8LcWIrJQjdCKw/9s/Jz7Wvx8vjTWfLDeykJmzYAcrJQomTBNd5WkCTPSFHYlF
-         wStdAlWskfl3cDTMRLUlQmYu/l/ZqCfpoTacosasRrxQ5mg/zfilHo8dM+aQlwDJaST5
-         fdTWGlbJk71krabWg9+aA6tfdqs+i2HBEsETlKKhijXrh7t/sCYJdYMfGtCMtTYkp0zq
-         UYng==
+        bh=UbALxTqSqlEVKnoz62IgytvWvcETkWPldZLYnVFh9W4=;
+        b=WJscwdTWHcTNW9NVoq386sdgb2rW5o4UgXusccq6CdmOO1Pn53DuWhGZDMkoButWy2
+         cgTbj6+lh7KYuK4J5onQe7hGuYlIvByHVoQJbv7Td4QMxJVCkr0O0jUlYLZyJiHPLshc
+         c2y2sP7h0WC4q+AsRyy1Z3JC/p9t4N4Xd30PC/RE57FvrXCTepyVWf+2I9d2ih8kdTpZ
+         X7k0U3zct0BOrk/u+3V4xkfXmhpXOzh6vsyo6aPt0tVUM4Q/HOCbfNYFvpOaKhJeMHTB
+         8Kz8AlbRuX3s9tPXwTfhRkrANnWQVPagisd1i8GDQLmUIZBJpkzNb3wjUSNN4NH5Au3w
+         Y3Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722412655; x=1723017455;
+        d=1e100.net; s=20230601; t=1722412665; x=1723017465;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oOl+VUtIQmTRaKfzajaG2TO9gNGalFY7Fmi1+sFRLoU=;
-        b=pxP1Et+OxaCBY09iDKOOJi7tFWsqw1cewHiViInP0dAI0opPIuGVRLOh0FY1ZIJDME
-         D/qRDgTSqeTF7ci8fXMGzlwl07f5kidvTh6KtNROW+CF9iEM5VHm/hh+33VLlK6Jz/qA
-         Ubc0cPntTeXFgodLk0X3MoqRsXMEcKOrIQ9tw/Dz7+XE2QS59QSUUB1McqFAPOMX/8mq
-         GMeue/AbMp1/usqXqNUBuecgKKRK/Io2lUBUtqhMFPt1ApUe7gMk2KRBf6C9/DpUNud6
-         Qdqf3uoJ1zK/nDlkE8fUDWBYet9T3cXA/YEIODJpxODc65V4L2+P+ZHrYhXyFChLuZ9I
-         TlBg==
-X-Gm-Message-State: AOJu0Ywbdo/mjU46s4oJxcZ+wRCwNH1QupF3ibgycW0titJEI571YuH1
-	Ivyek2D80Ik8ZN/8uM+OJq1D6mAwE+3N3Pn0vy1cZZLeSLgPniXXuuJKog==
-X-Google-Smtp-Source: AGHT+IHj48im2wqaa993Km8z6CrobozyyRPr6j+K3RhCHQnjEj4mh/WFGCzHySu88zW6R7HdGn9lQg==
-X-Received: by 2002:a05:6e02:1908:b0:395:ee4b:333 with SMTP id e9e14a558f8ab-39aec41ab77mr157029505ab.28.1722412655080;
-        Wed, 31 Jul 2024 00:57:35 -0700 (PDT)
+        bh=UbALxTqSqlEVKnoz62IgytvWvcETkWPldZLYnVFh9W4=;
+        b=lpu9AzYKeDUe6oBrOZuF4jHVOtd+iO/dGVKizOSbFiv75RylAL7479kDHCg549X9Ai
+         adtccykt0SHHAoN/KkK1c0vz7mWJ2H+iLcYKa2T+OZotrJvybKAYcNnya34B6PaRkbaA
+         BLy/LZUGLQOxgNj4rWPkCzIByIucs8ef4hFZmez/Ot2FrjbIPFC6AfPmgGWWs9NfElQj
+         NHhBM/Eej9kYEnIUKCnzzfukNMza2b1WKXFQ/LYzHhNqXcrKAuzwul7ocnkb4IO3eVgY
+         McZaEl9gsW6tUo1tVxPUy8yiC0G179ZGpFyKD/wIKDLV5aKsgNmLIDms+soKHavHmCJl
+         ALEA==
+X-Gm-Message-State: AOJu0YxLoHOl9QvBr+E7VVWhNqZHMSTDh3dhE+h45SjLXWlKVrSFscIl
+	iX7LtkI2P81LwReKwkFIwXG/YvIJGELDFNyio6FjCygi1IxwlzihpsIJHA==
+X-Google-Smtp-Source: AGHT+IEzxyRVOeCaCY954crrhmdRysIFEVHaRyW4RQuGke8M+TLewXN4ywzl7YIlQvNN50l5nIQxvA==
+X-Received: by 2002:a05:6a00:138e:b0:705:6a0a:de14 with SMTP id d2e1a72fcca58-70ece9ebba7mr16338761b3a.1.1722412664651;
+        Wed, 31 Jul 2024 00:57:44 -0700 (PDT)
 Received: from dw-tp.ibmuc.com ([171.76.83.154])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead6e16fbsm9788372b3a.19.2024.07.31.00.57.24
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead6e16fbsm9788372b3a.19.2024.07.31.00.57.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 00:57:34 -0700 (PDT)
+        Wed, 31 Jul 2024 00:57:44 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: [RFC v1 06/10] book3s64/hash: Make kernel_map_linear_page() generic
-Date: Wed, 31 Jul 2024 13:26:10 +0530
-Message-ID: <25bfe0937e58855e354b307466eff809bbd40609.1722408881.git.ritesh.list@gmail.com>
+Subject: [RFC v1 07/10] book3s64/hash: Disable debug_pagealloc if it requires more memory
+Date: Wed, 31 Jul 2024 13:26:11 +0530
+Message-ID: <771cddcc8298575d27cde85e0dc6b85755f9dd9e.1722408881.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1722408881.git.ritesh.list@gmail.com>
 References: <cover.1722408881.git.ritesh.list@gmail.com>
@@ -83,116 +83,58 @@ Cc: Donet Tom <donettom@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ib
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently kernel_map_linear_page() function assumes to be working on
-linear_map_hash_slots array. But since in later patches we need a
-separate linear map array for kfence, hence make
-kernel_map_linear_page() take a linear map array and lock in it's
-function argument.
-
-This is needed to separate out kfence from debug_pagealloc
-infrastructure.
+Make size of the linear map to be allocated in RMA region to be of
+ppc64_rma_size / 4. If debug_pagealloc requires more memory than that
+then do not allocate any memory and disable debug_pagealloc.
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c | 47 ++++++++++++++-------------
- 1 file changed, 25 insertions(+), 22 deletions(-)
+ arch/powerpc/mm/book3s64/hash_utils.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index b96bbb0025fb..3f3eaf0a254b 100644
+index 3f3eaf0a254b..906cd167180a 100644
 --- a/arch/powerpc/mm/book3s64/hash_utils.c
 +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -272,11 +272,8 @@ void hash__tlbiel_all(unsigned int action)
- }
- 
- #if defined(CONFIG_DEBUG_PAGEALLOC)
--static u8 *linear_map_hash_slots;
--static unsigned long linear_map_hash_count;
--static DEFINE_RAW_SPINLOCK(linear_map_hash_lock);
--
--static void kernel_map_linear_page(unsigned long vaddr, unsigned long lmi)
-+static void kernel_map_linear_page(unsigned long vaddr, unsigned long idx,
-+				   u8 *slots, raw_spinlock_t *lock)
- {
- 	unsigned long hash;
- 	unsigned long vsid = get_kernel_vsid(vaddr, mmu_kernel_ssize);
-@@ -290,7 +287,7 @@ static void kernel_map_linear_page(unsigned long vaddr, unsigned long lmi)
- 	if (!vsid)
- 		return;
- 
--	if (linear_map_hash_slots[lmi] & 0x80)
-+	if (slots[idx] & 0x80)
- 		return;
- 
- 	ret = hpte_insert_repeating(hash, vpn, __pa(vaddr), mode,
-@@ -298,36 +295,40 @@ static void kernel_map_linear_page(unsigned long vaddr, unsigned long lmi)
- 				    mmu_linear_psize, mmu_kernel_ssize);
- 
- 	BUG_ON (ret < 0);
--	raw_spin_lock(&linear_map_hash_lock);
--	BUG_ON(linear_map_hash_slots[lmi] & 0x80);
--	linear_map_hash_slots[lmi] = ret | 0x80;
--	raw_spin_unlock(&linear_map_hash_lock);
-+	raw_spin_lock(lock);
-+	BUG_ON(slots[idx] & 0x80);
-+	slots[idx] = ret | 0x80;
-+	raw_spin_unlock(lock);
- }
- 
--static void kernel_unmap_linear_page(unsigned long vaddr, unsigned long lmi)
-+static void kernel_unmap_linear_page(unsigned long vaddr, unsigned long idx,
-+				     u8 *slots, raw_spinlock_t *lock)
- {
--	unsigned long hash, hidx, slot;
-+	unsigned long hash, hslot, slot;
- 	unsigned long vsid = get_kernel_vsid(vaddr, mmu_kernel_ssize);
- 	unsigned long vpn = hpt_vpn(vaddr, vsid, mmu_kernel_ssize);
- 
- 	hash = hpt_hash(vpn, PAGE_SHIFT, mmu_kernel_ssize);
--	raw_spin_lock(&linear_map_hash_lock);
--	if (!(linear_map_hash_slots[lmi] & 0x80)) {
--		raw_spin_unlock(&linear_map_hash_lock);
-+	raw_spin_lock(lock);
-+	if (!(slots[idx] & 0x80)) {
-+		raw_spin_unlock(lock);
- 		return;
- 	}
--	hidx = linear_map_hash_slots[lmi] & 0x7f;
--	linear_map_hash_slots[lmi] = 0;
--	raw_spin_unlock(&linear_map_hash_lock);
--	if (hidx & _PTEIDX_SECONDARY)
-+	hslot = slots[idx] & 0x7f;
-+	slots[idx] = 0;
-+	raw_spin_unlock(lock);
-+	if (hslot & _PTEIDX_SECONDARY)
- 		hash = ~hash;
- 	slot = (hash & htab_hash_mask) * HPTES_PER_GROUP;
--	slot += hidx & _PTEIDX_GROUP_IX;
-+	slot += hslot & _PTEIDX_GROUP_IX;
- 	mmu_hash_ops.hpte_invalidate(slot, vpn, mmu_linear_psize,
- 				     mmu_linear_psize,
- 				     mmu_kernel_ssize, 0);
- }
- 
-+static u8 *linear_map_hash_slots;
-+static unsigned long linear_map_hash_count;
-+static DEFINE_RAW_SPINLOCK(linear_map_hash_lock);
+@@ -331,9 +331,19 @@ static unsigned long linear_map_hash_count;
+ static DEFINE_RAW_SPINLOCK(linear_map_hash_lock);
  static inline void hash_debug_pagealloc_alloc_slots(void)
  {
++	unsigned long max_hash_count = (ppc64_rma_size / 4) >> PAGE_SHIFT;
++
  	if (!debug_pagealloc_enabled())
-@@ -362,9 +363,11 @@ static int hash_debug_pagealloc_map_pages(struct page *page, int numpages,
- 		if (lmi >= linear_map_hash_count)
- 			continue;
- 		if (enable)
--			kernel_map_linear_page(vaddr, lmi);
-+			kernel_map_linear_page(vaddr, lmi,
-+				linear_map_hash_slots, &linear_map_hash_lock);
- 		else
--			kernel_unmap_linear_page(vaddr, lmi);
-+			kernel_unmap_linear_page(vaddr, lmi,
-+				linear_map_hash_slots, &linear_map_hash_lock);
- 	}
- 	local_irq_restore(flags);
- 	return 0;
+ 		return;
+ 	linear_map_hash_count = memblock_end_of_DRAM() >> PAGE_SHIFT;
++	if (unlikely(linear_map_hash_count > max_hash_count)) {
++		pr_info("linear map size (%llu) greater than 4 times RMA region (%llu). Disabling debug_pagealloc\n",
++			((u64)linear_map_hash_count << PAGE_SHIFT),
++			ppc64_rma_size);
++		linear_map_hash_count = 0;
++		return;
++	}
++
+ 	linear_map_hash_slots = memblock_alloc_try_nid(
+ 			linear_map_hash_count, 1, MEMBLOCK_LOW_LIMIT,
+ 			ppc64_rma_size,	NUMA_NO_NODE);
+@@ -344,7 +354,7 @@ static inline void hash_debug_pagealloc_alloc_slots(void)
+ 
+ static inline void hash_debug_pagealloc_add_slot(phys_addr_t paddr, int slot)
+ {
+-	if (!debug_pagealloc_enabled())
++	if (!debug_pagealloc_enabled() || !linear_map_hash_count)
+ 		return;
+ 	if ((paddr >> PAGE_SHIFT) < linear_map_hash_count)
+ 		linear_map_hash_slots[paddr >> PAGE_SHIFT] = slot | 0x80;
+@@ -356,6 +366,9 @@ static int hash_debug_pagealloc_map_pages(struct page *page, int numpages,
+ 	unsigned long flags, vaddr, lmi;
+ 	int i;
+ 
++	if (!debug_pagealloc_enabled() || !linear_map_hash_count)
++		return 0;
++
+ 	local_irq_save(flags);
+ 	for (i = 0; i < numpages; i++, page++) {
+ 		vaddr = (unsigned long)page_address(page);
 -- 
 2.45.2
 
