@@ -2,37 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065BF943510
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 19:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EDAF94361B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 21:14:14 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=assU+0D1;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYzjw70Q8z3dWl
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 03:34:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZ1x029ykz3dD2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 05:14:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=assU+0D1;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYzjX1G2Pz30VY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 03:34:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZ1wK3GKzz3cY5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 05:13:37 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 07178CE16CA;
-	Wed, 31 Jul 2024 17:34:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79E6C116B1;
-	Wed, 31 Jul 2024 17:34:00 +0000 (UTC)
-Date: Wed, 31 Jul 2024 18:33:58 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Baruch Siach <baruch@tkos.co.il>
-Subject: Re: [PATCH v3 3/3] dma-direct: use RAM start to offset zone_dma_limit
-Message-ID: <Zqp1hvYSmM58IITx@arm.com>
-References: <cover.1722249878.git.baruch@tkos.co.il>
- <629b184354fa22cb32a90bd1fa0e1dc258251f81.1722249878.git.baruch@tkos.co.il>
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2FB8662395;
+	Wed, 31 Jul 2024 19:13:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A3BC116B1;
+	Wed, 31 Jul 2024 19:13:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722453214;
+	bh=sXfKPdSvD2xim8678B03Zbrmf3C5NmYf7KYIuKYHsoA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=assU+0D1YghzXsD+joyjA3vi6CzirGdiekQCGVFCwHkLtRIYEffmPn0VE9pkTLcIf
+	 nGenEgRMNufXPB3RChqIQ14LmpOjfpNdeqnXPegXMIi+3q5cxTjBcGhxpF1/RMRpBn
+	 kWr4HA3112qA6xrchcDYw13HLGcuF5V4f/bpaqatUVN08wHoY0j0LIzoSvXeJG0pOT
+	 Te5mUnjsSF8WhBhx5FHwemCb/2Toeh3ciUXfpeMw2DZg4rtjufftUGiBYK05JlOfz8
+	 vzVOMURc2wrTJSxxVV8Kmv2wn1cV3cCvb7taxlts4AL9SVew0DGzC1aeHhRGETpDPV
+	 QuzoGThOJ9hkw==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Yangtao Li <tiny.windzz@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>
+Subject: [PATCH] cpufreq: Use of_property_present()
+Date: Wed, 31 Jul 2024 13:12:40 -0600
+Message-ID: <20240731191312.1710417-2-robh@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <629b184354fa22cb32a90bd1fa0e1dc258251f81.1722249878.git.baruch@tkos.co.il>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,41 +67,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Ramon Fried <ramon@neureality.ai>, Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>, Will Deacon <will@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-sunxi@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 29, 2024 at 01:51:26PM +0300, Baruch Siach wrote:
-> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-> index 410a7b40e496..ded3d841c88c 100644
-> --- a/kernel/dma/pool.c
-> +++ b/kernel/dma/pool.c
-> @@ -12,6 +12,7 @@
->  #include <linux/set_memory.h>
->  #include <linux/slab.h>
->  #include <linux/workqueue.h>
-> +#include <linux/memblock.h>
->  
->  static struct gen_pool *atomic_pool_dma __ro_after_init;
->  static unsigned long pool_size_dma;
-> @@ -70,7 +71,7 @@ static bool cma_in_zone(gfp_t gfp)
->  	/* CMA can't cross zone boundaries, see cma_activate_area() */
->  	end = cma_get_base(cma) + size - 1;
->  	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp & GFP_DMA))
-> -		return end <= zone_dma_limit;
-> +		return end <= memblock_start_of_DRAM() + zone_dma_limit;
+Use of_property_present() to test for property presence rather than
+of_(find|get)_property(). This is part of a larger effort to remove
+callers of of_find_property() and similar functions. of_find_property()
+leaks the DT struct property and data pointers which is a problem for
+dynamically allocated nodes which may be freed.
 
-I think this patch is entirely wrong. After the previous patch,
-zone_dma_limit is already a physical/CPU address, not some offset or
-range - of_dma_get_max_cpu_address() returns the absolute physical
-address. Adding memblock_start_of_DRAM() to it does not make any sense.
-It made sense when we had zone_dma_bits but since we are trying to move
-away from bitmasks to absolute CPU addresses, zone_dma_limit already
-includes the start of DRAM.
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ drivers/cpufreq/cpufreq-dt.c           | 11 +++--------
+ drivers/cpufreq/pmac64-cpufreq.c       |  2 +-
+ drivers/cpufreq/sti-cpufreq.c          |  2 +-
+ drivers/cpufreq/sun50i-cpufreq-nvmem.c |  2 +-
+ 4 files changed, 6 insertions(+), 11 deletions(-)
 
-What problems do you see without this patch? Is it because
-DMA_BIT_MASK(32) can be lower than zone_dma_limit as I mentioned on the
-previous patch?
-
+diff --git a/drivers/cpufreq/cpufreq-dt.c b/drivers/cpufreq/cpufreq-dt.c
+index 6532c4d71338..983443396f8f 100644
+--- a/drivers/cpufreq/cpufreq-dt.c
++++ b/drivers/cpufreq/cpufreq-dt.c
+@@ -69,7 +69,6 @@ static int set_target(struct cpufreq_policy *policy, unsigned int index)
+ static const char *find_supply_name(struct device *dev)
+ {
+ 	struct device_node *np __free(device_node) = of_node_get(dev->of_node);
+-	struct property *pp;
+ 	int cpu = dev->id;
+ 
+ 	/* This must be valid for sure */
+@@ -77,14 +76,10 @@ static const char *find_supply_name(struct device *dev)
+ 		return NULL;
+ 
+ 	/* Try "cpu0" for older DTs */
+-	if (!cpu) {
+-		pp = of_find_property(np, "cpu0-supply", NULL);
+-		if (pp)
+-			return "cpu0";
+-	}
++	if (!cpu && of_property_present(np, "cpu0-supply"))
++		return "cpu0";
+ 
+-	pp = of_find_property(np, "cpu-supply", NULL);
+-	if (pp)
++	if (of_property_present(np, "cpu-supply"))
+ 		return "cpu";
+ 
+ 	dev_dbg(dev, "no regulator for cpu%d\n", cpu);
+diff --git a/drivers/cpufreq/pmac64-cpufreq.c b/drivers/cpufreq/pmac64-cpufreq.c
+index 2cd2b06849a2..c87cd6e0b638 100644
+--- a/drivers/cpufreq/pmac64-cpufreq.c
++++ b/drivers/cpufreq/pmac64-cpufreq.c
+@@ -505,7 +505,7 @@ static int __init g5_pm72_cpufreq_init(struct device_node *cpunode)
+ 			continue;
+ 		if (strcmp(loc, "CPU CLOCK"))
+ 			continue;
+-		if (!of_get_property(hwclock, "platform-get-frequency", NULL))
++		if (!of_property_present(hwclock, "platform-get-frequency"))
+ 			continue;
+ 		break;
+ 	}
+diff --git a/drivers/cpufreq/sti-cpufreq.c b/drivers/cpufreq/sti-cpufreq.c
+index 8e2e703c3865..b15b3142b5fe 100644
+--- a/drivers/cpufreq/sti-cpufreq.c
++++ b/drivers/cpufreq/sti-cpufreq.c
+@@ -267,7 +267,7 @@ static int __init sti_cpufreq_init(void)
+ 		goto skip_voltage_scaling;
+ 	}
+ 
+-	if (!of_get_property(ddata.cpu->of_node, "operating-points-v2", NULL)) {
++	if (!of_property_present(ddata.cpu->of_node, "operating-points-v2")) {
+ 		dev_err(ddata.cpu, "OPP-v2 not supported\n");
+ 		goto skip_voltage_scaling;
+ 	}
+diff --git a/drivers/cpufreq/sun50i-cpufreq-nvmem.c b/drivers/cpufreq/sun50i-cpufreq-nvmem.c
+index 95ac8d46c156..293921acec93 100644
+--- a/drivers/cpufreq/sun50i-cpufreq-nvmem.c
++++ b/drivers/cpufreq/sun50i-cpufreq-nvmem.c
+@@ -146,7 +146,7 @@ static bool dt_has_supported_hw(void)
+ 		return false;
+ 
+ 	for_each_child_of_node_scoped(np, opp) {
+-		if (of_find_property(opp, "opp-supported-hw", NULL)) {
++		if (of_property_present(opp, "opp-supported-hw")) {
+ 			has_opp_supported_hw = true;
+ 			break;
+ 		}
 -- 
-Catalin
+2.43.0
+
