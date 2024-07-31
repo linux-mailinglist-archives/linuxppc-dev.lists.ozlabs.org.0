@@ -2,72 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260F29428A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 10:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FA49428EA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 10:12:02 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KS+PdhBi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=kO/Pf8Gj;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYl3x0VYBz3dSZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 18:04:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYlDw4lF5z3cnc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 18:12:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KS+PdhBi;
+	dkim=pass (2048-bit key; unprotected) header.d=ventanamicro.com header.i=@ventanamicro.com header.a=rsa-sha256 header.s=google header.b=kO/Pf8Gj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::34; helo=mail-oa1-x34.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ventanamicro.com (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=ajones@ventanamicro.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYkxC3qtZz3cnc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 17:58:23 +1000 (AEST)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-260f94067bcso3715516fac.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 00:58:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYlDC2CtPz2yPq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 18:11:22 +1000 (AEST)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-a7aa086b077so475462166b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 01:11:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722412695; x=1723017495; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4sjNoON398ZsIx0bmEQJty2zbqjlCUYWeF9pzoiIutU=;
-        b=KS+PdhBi2Kra1Hv0eSi8mn9096NY34PPznqE7ZjmBqazBPEz7BdWbPHjKM+UYPWiBo
-         0LoTARQRF4/+ErvgMyyNIwLgItkQNy22fRIlpcTCBctdf1Nv7YQdT28Baxb4VTC/e5uk
-         fCrTRWz3T36U12/F+Kf+rsxfA0QDyeNROZuKfRUzXlRncP0bzGsC0h3/Yle24eWP5605
-         Kmn4agRbIzVsO4DmKkg68Sc3GO9CUJrU8NsfoWoJYOiR6HaJfu3fLHtPAkbh6mDCnzBX
-         9ubeTJhPp/zVxnjKPKtOj3+zw36b6SzesoMl5ADbW6x9N3VAqU5sRW6hdZfIKFHS1LuJ
-         jtzQ==
+        d=ventanamicro.com; s=google; t=1722413476; x=1723018276; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/6o5eOKMgYVhFfCfAX4KZTyTvIb4CeiZ7EcRemTMKgE=;
+        b=kO/Pf8GjnhCW/QvBkiUmiptawc+IUaqdT3wAG5G8FypiDKldr8jWBFrUGarmtP2oY+
+         F/BVBhdPyh3haNQ02NBxx7uVqCeL+qasz7XZQhEkF6LK0CrvdOddc6r2mVHmoaMr/EbR
+         8JyMk34hK+eZW3BID/N5W/6614JcZXZqLC8aDdapZVdyl3k+z+/49ZO5dN15ekehhxVt
+         9k+P2Q3KwRN1tdeBjN5buJQ28LnyLlz9vbYVyvtwfOb+xKNgp8NX6VXTo8Ad2MC04xow
+         8GC2U96pJJYuvz/rrAFCeRk0PTIxsR5qudCuHgf720jmNU22Vn+1eSqSFe/xcQdVecH7
+         MbpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722412695; x=1723017495;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4sjNoON398ZsIx0bmEQJty2zbqjlCUYWeF9pzoiIutU=;
-        b=WlISPER8/IW7IIBtbAviPjslnKeJBlGXCkAd5HWevd7DJgTZQOGGRxqIkyH0l9NAc7
-         5WuBKL8PpIYM45GtHT8RrlkSRzN96fP6pbE80SkKWkSmJyOCd77Lb9of1o6DD73AGCy6
-         Hrr5BG++DgXyQJuO49UYl5DWRitavu5Wc/1+ZBY+QjQ2yByen5Q5y1XkPb4rpFnkZ2JQ
-         0Jm1dTTmXWR2NBEbNYY27J7/4lsgzXhQFmC6X4CyavoV174v/WYu7sCmDOJ3gg1jhLZC
-         DvGB4zZMephLQCyFmVyue8fXykaKCjjUGzVtJrg9JgUhc2A67xAYcyqXJZ0dHIqABDSa
-         I6GQ==
-X-Gm-Message-State: AOJu0YzAA+fW9HDEQTlwIwGuUuEjf9i2T18ckFiYdWsLuNiTFQXR7+y+
-	E+dEXF2COSdKJI2JXaFUdB673M3iU7diMQf4mPy5R/2J/JLNCn+ToCJD7A==
-X-Google-Smtp-Source: AGHT+IGW4hGBbauSzQ7W8AKrqOHSQ/x7Lo+FNQaq84PeyRJgK4W33/QqxduNJ9zsws/o/hDmiPXKkw==
-X-Received: by 2002:a05:6870:1605:b0:261:10b2:7bc1 with SMTP id 586e51a60fabf-267d4f21b01mr17781102fac.31.1722412694597;
-        Wed, 31 Jul 2024 00:58:14 -0700 (PDT)
-Received: from dw-tp.ibmuc.com ([171.76.83.154])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead6e16fbsm9788372b3a.19.2024.07.31.00.58.05
+        d=1e100.net; s=20230601; t=1722413476; x=1723018276;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/6o5eOKMgYVhFfCfAX4KZTyTvIb4CeiZ7EcRemTMKgE=;
+        b=ffK2ffSopgQVpozVfg6WHgktF6GDmNetSp8wxmrRhnhbxrMHUGtYX/TuhhXKsEhCZ9
+         5y1PMkzETeDN9bbaotFwFOP8H6YPT8SrmrgR0Jk7WYBYpiKnrZLUsQcsdTXr9cVM1ob3
+         08Ic2C+Iz/uUXf9u42UtrZmx+9SNYhfAl20i2KmpciLpMuHWfQfcU9VyhH7iK+SmFguW
+         vGzxQeyfntC/GRaaSf6EQPlC1MeDnF05WlAtWAseaMhybAXpWHN4lCM+jgD0bSawxQtj
+         dLOkLEO7WZru6XtjhQATHmxDc20G5pnUWZ1YCNtMfVXvYoWwkEfEBdsg6AvAiJDQfkUj
+         wTXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbzF6Pux9BiQ2deRyvJKPh8/MVdldTx2XIavUjetiXdU846PSRJvBd/EJ+bGZMS5qu+atOh2Or4QrT6o/U0nYVY9KHsyBEGcycx43lWA==
+X-Gm-Message-State: AOJu0YwM8rboVN6P6hslk0aKJtJAeDzGgjGPRSzWYUZSaYkrfvUH7Yup
+	T72tTowOpqlZi0In3OY5tRxq5pIMj9HG1kmQCsqs3pXgpEsfaoAvd5vWz/Goloo=
+X-Google-Smtp-Source: AGHT+IF8KtMuBT/lx87J71F/lRrgIXThKYLKm0Q9zh/TR0QeaI4sQXL1DHSiINUT/9ZA+lMCzDpL5Q==
+X-Received: by 2002:a17:907:1b26:b0:a7a:af5d:f312 with SMTP id a640c23a62f3a-a7d4011442emr913154866b.46.1722413475678;
+        Wed, 31 Jul 2024 01:11:15 -0700 (PDT)
+Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acad414e2sm738525466b.127.2024.07.31.01.11.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 00:58:14 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: [RFC v1 10/10] book3s64/hash: Disable kfence if not early init
-Date: Wed, 31 Jul 2024 13:26:14 +0530
-Message-ID: <fd77730375a0ab6ae0a89f934385750b239d3113.1722408881.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1722408881.git.ritesh.list@gmail.com>
-References: <cover.1722408881.git.ritesh.list@gmail.com>
+        Wed, 31 Jul 2024 01:11:15 -0700 (PDT)
+Date: Wed, 31 Jul 2024 10:11:14 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v12 58/84] KVM: RISC-V: Use kvm_faultin_pfn() when
+ mapping pfns into the guest
+Message-ID: <20240731-a5f8928d385945f049e5f96e@orel>
+References: <20240726235234.228822-1-seanjc@google.com>
+ <20240726235234.228822-59-seanjc@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240726235234.228822-59-seanjc@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,53 +81,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Donet Tom <donettom@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, "Ritesh Harjani \(IBM\)" <ritesh.list@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Pavithra Prakash <pavrampu@linux.vnet.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Enable kfence on book3s64 hash only when early init is enabled.
-This is because, kfence could cause the kernel linear map to be mapped
-at PAGE_SIZE level instead of 16M (which I guess we don't want).
+On Fri, Jul 26, 2024 at 04:52:07PM GMT, Sean Christopherson wrote:
+> Convert RISC-V to __kvm_faultin_pfn()+kvm_release_faultin_page(), which
+> are new APIs to consolidate arch code and provide consistent behavior
+> across all KVM architectures.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/riscv/kvm/mmu.c | 11 ++++-------
+>  1 file changed, 4 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 806f68e70642..f73d6a79a78c 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -601,6 +601,7 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+>  	bool logging = (memslot->dirty_bitmap &&
+>  			!(memslot->flags & KVM_MEM_READONLY)) ? true : false;
+>  	unsigned long vma_pagesize, mmu_seq;
+> +	struct page *page;
+>  
+>  	/* We need minimum second+third level pages */
+>  	ret = kvm_mmu_topup_memory_cache(pcache, gstage_pgd_levels);
+> @@ -631,7 +632,7 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+>  
+>  	/*
+>  	 * Read mmu_invalidate_seq so that KVM can detect if the results of
+> -	 * vma_lookup() or gfn_to_pfn_prot() become stale priort to acquiring
+> +	 * vma_lookup() or __kvm_faultin_pfn() become stale priort to acquiring
+                                                            ^ while here
+						could fix this typo
 
-Also currently there is no way to -
-1. Make multiple page size entries for the SLB used for kernel linear
-   map.
-2. No easy way of getting the hash slot details after the page table
-   mapping for kernel linear setup. So even if kfence allocate the
-   pool in late init, we won't be able to get the hash slot details in
-   kfence linear map.
+>  	 * kvm->mmu_lock.
+>  	 *
+>  	 * Rely on mmap_read_unlock() for an implicit smp_rmb(), which pairs
+> @@ -647,7 +648,7 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+>  		return -EFAULT;
+>  	}
+>  
+> -	hfn = gfn_to_pfn_prot(kvm, gfn, is_write, &writable);
+> +	hfn = kvm_faultin_pfn(vcpu, gfn, is_write, &writable, &page);
+>  	if (hfn == KVM_PFN_ERR_HWPOISON) {
+>  		send_sig_mceerr(BUS_MCEERR_AR, (void __user *)hva,
+>  				vma_pageshift, current);
+> @@ -681,11 +682,7 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
+>  		kvm_err("Failed to map in G-stage\n");
+>  
+>  out_unlock:
+> -	if ((!ret || ret == -EEXIST) && writable)
+> -		kvm_set_pfn_dirty(hfn);
+> -	else
+> -		kvm_release_pfn_clean(hfn);
+> -
+> +	kvm_release_faultin_page(kvm, page, ret && ret != -EEXIST, writable);
+>  	spin_unlock(&kvm->mmu_lock);
+>  	return ret;
+>  }
+> -- 
+> 2.46.0.rc1.232.g9752f9e123-goog
+> 
+>
 
-Thus this patch disables kfence on hash if kfence early init is not
-enabled.
-
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- arch/powerpc/mm/book3s64/hash_utils.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index c66b9921fc7d..759dbcbf1483 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -410,6 +410,8 @@ static phys_addr_t kfence_pool;
-
- static inline void hash_kfence_alloc_pool(void)
- {
-+	if (!kfence_early_init)
-+		goto err;
-
- 	// allocate linear map for kfence within RMA region
- 	linear_map_kf_hash_count = KFENCE_POOL_SIZE >> PAGE_SHIFT;
-@@ -1074,7 +1076,8 @@ static void __init htab_init_page_sizes(void)
- 	bool aligned = true;
- 	init_hpte_page_sizes();
-
--	if (!debug_pagealloc_enabled_or_kfence()) {
-+	if (!debug_pagealloc_enabled() &&
-+	    !(IS_ENABLED(CONFIG_KFENCE) && kfence_early_init)) {
- 		/*
- 		 * Pick a size for the linear mapping. Currently, we only
- 		 * support 16M, 1M and 4K which is the default
---
-2.45.2
-
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
