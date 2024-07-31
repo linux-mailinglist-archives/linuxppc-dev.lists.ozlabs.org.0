@@ -1,81 +1,136 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125ED942A5A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 11:24:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7C2942B3C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 11:51:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=BA2isd2h;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dn9sN+xK;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dn9sN+xK;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WYmrt0BHcz3dC1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 19:24:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WYnRg4pFqz3d8M
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 31 Jul 2024 19:51:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=BA2isd2h;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dn9sN+xK;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dn9sN+xK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.17.11; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYmr85Qjgz3cTl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 19:24:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1722417784; x=1723022584; i=markus.elfring@web.de;
-	bh=0YmNy+yZCoJdyxtRmqU9DnXpRRd2Yx16nCVHhrQoPMI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=BA2isd2hoBTUGxqViXo1jxACTMcqCndC1NusIza1e4/+646x6+82yMjc+DYI0iFM
-	 t6I0w4OBKEl42YHUvYPFR3IQ9Zvd17WNXj+UNbMeMqpMG2OmlypOhEvU9Jj9cwJj2
-	 Oqunx/+pZekAg8rtKLdN4iZ10zxnUt7i8zHnHMoH8MWqP2eShKfX2GR6LTElvS8il
-	 CaIiWej3y71IZQTaiYlpNRT2OsSeX3sXiIwdYJczriiomSMoRcXVQ0npqkECuA23b
-	 59Ohm1+3uQQQfCD97hlzJ6hgiTu7bWQiBEOFuNRCgKCqnrwIn7mKcCYdRrZKY5pFg
-	 dmnHcG2KoLQVeFN4Uw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.88.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1M1rTG-1sWtge05Wq-001lGJ; Wed, 31
- Jul 2024 11:23:04 +0200
-Message-ID: <6c6d2e8e-1392-4c1b-aa39-46149ff2956c@web.de>
-Date: Wed, 31 Jul 2024 11:23:01 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WYnQz4Sw5z3cnt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 19:50:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722419445;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kF8YsGqLWNT4+a8R4w4P9MUEGEAYWYiYSABna27uXpU=;
+	b=Dn9sN+xK/9kb1KlEyll9wIL7D8CDK+qVdUmD7CDfGK1eS01n5lGZRKIuKeXkBzNiP50FEF
+	B1ZvTRWefeVdCaNexmXIIq33F2K5fG0Teg1MK+QZHdxCUtA/YddJmZhR/RPB07l0on8Lf/
+	prR2eTGPSJyxOlmo7xNoWa6L2gw1aI0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722419445;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kF8YsGqLWNT4+a8R4w4P9MUEGEAYWYiYSABna27uXpU=;
+	b=Dn9sN+xK/9kb1KlEyll9wIL7D8CDK+qVdUmD7CDfGK1eS01n5lGZRKIuKeXkBzNiP50FEF
+	B1ZvTRWefeVdCaNexmXIIq33F2K5fG0Teg1MK+QZHdxCUtA/YddJmZhR/RPB07l0on8Lf/
+	prR2eTGPSJyxOlmo7xNoWa6L2gw1aI0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-29-BZcErFsCMAGHOeUzbsFIIQ-1; Wed, 31 Jul 2024 05:50:41 -0400
+X-MC-Unique: BZcErFsCMAGHOeUzbsFIIQ-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a7ab81eea72so477816466b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 02:50:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722419440; x=1723024240;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kF8YsGqLWNT4+a8R4w4P9MUEGEAYWYiYSABna27uXpU=;
+        b=tzFiYsAk/SBr6MNsryyjrn4m8AwfQk2r8Qsmkp39M6AkAc/J/35Mh+Kr8lUWn30Ib+
+         dEe0tZttNr+rquiuI4IBp5w3VQUm4oYFKrNmgCTCHyiFCWkt2ZszvG5eSNroNTuvWfAC
+         EoK34t+ZMt3+18b/eu5SmLKLvsN3yMoWLkoY66f49wgW7qbMIt0l7Bno4TxD3BmYsyS3
+         pWcvZL4kDXmqupORG3zN0Aj9tA8SPj1LiT/KuYMjMx9TuJD+/itdd4EKwyXOtEd0Jfwb
+         hZajYIgfv11ljEarZ2iz7KcbRQHvokVnvEQoQ14HnQOeDpBkTSRKuTDvNjXLkEaAoz2o
+         FESw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0YkZcVjzLuQoMX0IWrRjQETk/EzdHAJZse2vCzPeGG9io2055Ou5/mKvRbeCOqPWsJ9orv5laC/yX6GdHdbxXejBj+z0DtOIaX58AYg==
+X-Gm-Message-State: AOJu0YwOah3f1eL82hL3EtAaBeQVWXV4eEd/7xDYceCFYTafBFErP8pu
+	Ob6pMJOoLgysZhJE8pg/iLKCbiIs/DGy6602iYGcZNl6yOYvzdUaQI3SbguRHYAlWO/U4ZWmdRs
+	P+JIJTAqAqnjL7YN6Y8hTJL4z21kiCpMeJ27nuIVKJGAam32yzgvHLHSTa2yO/bg=
+X-Received: by 2002:a17:907:94cb:b0:a7a:bece:6223 with SMTP id a640c23a62f3a-a7d3ff7b8e4mr1064730266b.6.1722419440605;
+        Wed, 31 Jul 2024 02:50:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHm0sw2f7Q/hSxPLtTI3KYQw5uCrmW/NKDuI5rQ7HlgfsjazxGbnWK3KS2H8Xhx5SNKvtVQug==
+X-Received: by 2002:a17:907:94cb:b0:a7a:bece:6223 with SMTP id a640c23a62f3a-a7d3ff7b8e4mr1064728266b.6.1722419440130;
+        Wed, 31 Jul 2024 02:50:40 -0700 (PDT)
+Received: from [192.168.10.81] ([151.95.101.29])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a7acad93105sm746255566b.167.2024.07.31.02.50.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Jul 2024 02:50:39 -0700 (PDT)
+Message-ID: <57ba7e1d-0121-4d71-89b8-c61c476ca724@redhat.com>
+Date: Wed, 31 Jul 2024 11:50:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Herve Codina <herve.codina@bootlin.com>, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20240730063104.179553-1-herve.codina@bootlin.com>
-Subject: Re: [PATCH net] net: wan: fsl_qmc_hdlc: Convert carrier_lock spinlock
- to a mutex
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240730063104.179553-1-herve.codina@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ptvWP2JpA+KQ0oIRv9Hv1yCYM6e8ZIPJX3xm8Jrs46Z0EYQIqAO
- GTmbcWD4zNO8atDH8Qk5/8G2dLdADEYw64kLSUwUQhW7HcDvzjgdREg5AtiwDq3XbAXIYIU
- PIrsil/Woseyo+psqQdJ3UtIttMstZsiaY3amt2lW0HetwPxLfkmZg7ZYHBgb5RevM6GwZT
- uyR8HNRV2dQUiouIRmyfg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:wduvmi2tmRY=;ycowwX4dgWkZRr2SN8rxOYtybyH
- BsaNdh8FrLq0bxUnmtcLmTxQM9V26OJv9OswClzpFUO9VmaQ8561jja/JquD0WKSKsQHATLJ4
- Ja243VQjxtTJADdVtP51Q5wCB5PNhpbeEdkz1AQJN22Nou1WBfXYtbfVJAloQAURq7sJcZS+3
- AeOeIyhZeLlMc4vSXF5Mfi0Pn8bwDh3+GERNPnN0esQANY0vwqw9XXs+owhTuzzBraAU3AfrK
- 2O2vmkt5roG3iugmdoNtzDk1jzfOJh7Lj7Bqh3vOxEKqg76aMj5DDG31tXBaGxv0W2z3htfLr
- 5qcIExaulObRJKhjzX74bTLzfTyXR7cYz4GcWM0K1sMJnCt+Hu4e1P7yfd5uRmhLD3Tt+5gNG
- tlLzMBE83gI7gbiY79guOPG8BEsTWjzKoe+NkCNtBVAxGqHzlaL51lFLyI2zQ6kCwIymGIDfJ
- cXtOI7OROfs33qe5VetOItaake1ysbnnt0WAU5xPlDpJB39XjHh4IRwcpP1y1ukMhNzAi6EkU
- jXLjsI45MoY0ZYrInQ4iukNtMnONXMA9FxK3PEg5s20GpKbt1wCYZx3jk3MtpFW1HpxstyrLu
- uT3ZJUUHcqzl2m/e9gJMHZU1Rwh5Mqb0W+jxvVQ61hctcvF44z91uZsrfzFTUP2uUFx1Y/zwG
- mWbQx1cGIvvqFA/fNn4ZbNOV9ID84MpUcxvrKs26ar/Zfn0J17CV+fjokSc5mma/lFKPLU4md
- vXHCU9oXFyjemUTCPnvV1gtUE/Zn2IUQWLbVafJxd4XnlrzTJ5HC/+vdROjvsxhT6F0HA35hw
- vHmGqNXj/CeEFX6d5XVbua0g==
+Subject: Re: [PATCH v12 84/84] KVM: Don't grab reference on VM_MIXEDMAP pfns
+ that have a "struct page"
+To: Sean Christopherson <seanjc@google.com>
+References: <20240726235234.228822-1-seanjc@google.com>
+ <20240726235234.228822-85-seanjc@google.com>
+ <992c4a07-fb84-42d8-93b3-96fb3a12c8e0@redhat.com>
+ <ZqlLWl0R1p41CS0O@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <ZqlLWl0R1p41CS0O@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,15 +142,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Simon Horman <horms@kernel.org>, LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Janosch Frank <frankja@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-=E2=80=A6
-> hold, framer_get_status() is called witch in turn takes a mutex.
-=E2=80=A6
+On 7/30/24 22:21, Sean Christopherson wrote:
+> On Tue, Jul 30, 2024, Paolo Bonzini wrote:
+>> On 7/27/24 01:52, Sean Christopherson wrote:
+>>> Now that KVM no longer relies on an ugly heuristic to find its struct page
+>>> references, i.e. now that KVM can't get false positives on VM_MIXEDMAP
+>>> pfns, remove KVM's hack to elevate the refcount for pfns that happen to
+>>> have a valid struct page.  In addition to removing a long-standing wart
+>>> in KVM, this allows KVM to map non-refcounted struct page memory into the
+>>> guest, e.g. for exposing GPU TTM buffers to KVM guests.
+>>
+>> Feel free to leave it to me for later, but there are more cleanups that
+>> can be made, given how simple kvm_resolve_pfn() is now:
+> 
+> I'll revisit kvm_resolve_pfn(), Maxim also wasn't a fan of a similar helper that
+> existed in v11.
 
-                                      which?
+FWIW kvm_resolve_pfn() is totally fine as an intermediate step.  Just 
+food for thought for possible follow-ups.
 
-Regards,
-Markus
+>> Also, check_user_page_hwpoison() should not be needed anymore, probably
+>> not since commit 234b239bea39 ("kvm: Faults which trigger IO release the
+>> mmap_sem", 2014-09-24) removed get_user_pages_fast() from hva_to_pfn_slow().
+> 
+> Ha, I *knew* this sounded familiar.  Past me apparently came to the same
+> conclusion[*], though I wrongly suspected a memory leak and promptly forgot to
+> ever send a patch.  I'll tack one on this time around.
+
+As you prefer.
+
+Paolo
+
