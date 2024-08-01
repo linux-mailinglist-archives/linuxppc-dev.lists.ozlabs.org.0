@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4117A9451B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 19:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F149451BF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 19:45:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZbvF1rmTz3dVq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 03:44:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZbvx4yn0z3fpX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 03:45:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
@@ -14,27 +14,27 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZbtq6cJJz3dRP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 03:44:17 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WZbqf2c9cz6K6MB;
-	Fri,  2 Aug 2024 01:41:34 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZbvY4bKGz3dRP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 03:44:57 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WZbrV0TrPz67WPF;
+	Fri,  2 Aug 2024 01:42:18 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6C75C1400F4;
-	Fri,  2 Aug 2024 01:44:10 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 22E93140B55;
+	Fri,  2 Aug 2024 01:44:54 +0800 (CST)
 Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 1 Aug
- 2024 18:44:09 +0100
-Date: Thu, 1 Aug 2024 18:44:08 +0100
+ 2024 18:44:53 +0100
+Date: Thu, 1 Aug 2024 18:44:52 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 02/26] MIPS: sgi-ip27: make NODE_DATA() the same as
- on all other architectures
-Message-ID: <20240801184408.00002e8b@Huawei.com>
-In-Reply-To: <20240801060826.559858-3-rppt@kernel.org>
+Subject: Re: [PATCH v3 03/26] MIPS: sgi-ip27: ensure node_possible_map only
+ contains valid nodes
+Message-ID: <20240801184452.00007d30@Huawei.com>
+In-Reply-To: <20240801060826.559858-4-rppt@kernel.org>
 References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-3-rppt@kernel.org>
+	<20240801060826.559858-4-rppt@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -61,87 +61,40 @@ Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2024 09:08:02 +0300
+On Thu,  1 Aug 2024 09:08:03 +0300
 Mike Rapoport <rppt@kernel.org> wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> sgi-ip27 is the only system that defines NODE_DATA() differently than
-> the rest of NUMA machines.
+> For SGI IP27 machines node_possible_map is statically set to
+> NODE_MASK_ALL and it is not updated during NUMA initialization.
 > 
-> Add node_data array of struct pglist pointers that will point to
-> __node_data[node]->pglist and redefine NODE_DATA() to use node_data
-> array.
-> 
-> This will allow pulling declaration of node_data to the generic mm code
-> in the next commit.
+> Ensure that it only contains nodes present in the system.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-After staring for a while at the use made of the other part
-of the __node_data I think what you have in this an the next
-two patches is fine.
-
-I'm far from convinced it was correct before though as
-arch_refresh_node_data() called on offline nodes in free_area_init()
-would have replaced __node_data with an allocation of
-size pg_data_t but the hub_data(), visible below, is after that.
-Maybe hub_data() as never called for offline nodes, but
-I couldn't establish that.
-
-After these patches the arch_refresh_node_data() generic
-version will only be replacing the pointer in node_data
-leaving the hub_data where it was in the first place and
-thus is fine.
-
-So with that in mind (and it could be completely wrong ;)
 
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-
-
 > ---
->  arch/mips/include/asm/mach-ip27/mmzone.h | 5 ++++-
->  arch/mips/sgi-ip27/ip27-memory.c         | 5 ++++-
->  2 files changed, 8 insertions(+), 2 deletions(-)
+>  arch/mips/sgi-ip27/ip27-smp.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/arch/mips/include/asm/mach-ip27/mmzone.h b/arch/mips/include/asm/mach-ip27/mmzone.h
-> index 08c36e50a860..629c3f290203 100644
-> --- a/arch/mips/include/asm/mach-ip27/mmzone.h
-> +++ b/arch/mips/include/asm/mach-ip27/mmzone.h
-> @@ -22,7 +22,10 @@ struct node_data {
+> diff --git a/arch/mips/sgi-ip27/ip27-smp.c b/arch/mips/sgi-ip27/ip27-smp.c
+> index 5d2652a1d35a..62733e049570 100644
+> --- a/arch/mips/sgi-ip27/ip27-smp.c
+> +++ b/arch/mips/sgi-ip27/ip27-smp.c
+> @@ -70,11 +70,13 @@ void cpu_node_probe(void)
+>  	gda_t *gdap = GDA;
 >  
->  extern struct node_data *__node_data[];
+>  	nodes_clear(node_online_map);
+> +	nodes_clear(node_possible_map);
+>  	for (i = 0; i < MAX_NUMNODES; i++) {
+>  		nasid_t nasid = gdap->g_nasidtable[i];
+>  		if (nasid == INVALID_NASID)
+>  			break;
+>  		node_set_online(nasid);
+> +		node_set(nasid, node_possible_map);
+>  		highest = node_scan_cpus(nasid, highest);
+>  	}
 >  
-> -#define NODE_DATA(n)		(&__node_data[(n)]->pglist)
->  #define hub_data(n)		(&__node_data[(n)]->hub)
->  
-> +extern struct pglist_data *node_data[];
-> +
-> +#define NODE_DATA(nid)		(node_data[nid])
-> +
->  #endif /* _ASM_MACH_MMZONE_H */
-> diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-> index b8ca94cfb4fe..c30ef6958b97 100644
-> --- a/arch/mips/sgi-ip27/ip27-memory.c
-> +++ b/arch/mips/sgi-ip27/ip27-memory.c
-> @@ -34,8 +34,10 @@
->  #define SLOT_PFNSHIFT		(SLOT_SHIFT - PAGE_SHIFT)
->  #define PFN_NASIDSHFT		(NASID_SHFT - PAGE_SHIFT)
->  
-> -struct node_data *__node_data[MAX_NUMNODES];
-> +struct pglist_data *node_data[MAX_NUMNODES];
-> +EXPORT_SYMBOL(node_data);
->  
-> +struct node_data *__node_data[MAX_NUMNODES];
->  EXPORT_SYMBOL(__node_data);
->  
->  static u64 gen_region_mask(void)
-> @@ -361,6 +363,7 @@ static void __init node_mem_init(nasid_t node)
->  	 */
->  	__node_data[node] = __va(slot_freepfn << PAGE_SHIFT);
->  	memset(__node_data[node], 0, PAGE_SIZE);
-> +	node_data[node] = &__node_data[node]->pglist;
->  
->  	NODE_DATA(node)->node_start_pfn = start_pfn;
->  	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
 
