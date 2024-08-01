@@ -1,57 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A4C943EA8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 03:25:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0DB944140
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 04:34:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XVZIR7ZC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FVItAq7M;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZB8w2Ml8z3bvP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 11:25:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZCjS5pvxz3cXH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 12:34:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XVZIR7ZC;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FVItAq7M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZB8F2Sl3z2xck
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 11:24:29 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id C1F11CE17FD;
-	Thu,  1 Aug 2024 01:24:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD22C116B1;
-	Thu,  1 Aug 2024 01:24:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722475467;
-	bh=Pgpqo4RtxVJ1ue8DwjL2l0l2UL9ejI31ZTKHWsBrk4Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XVZIR7ZCGTG0w41hQSmLUNL6cZMuc0xp588STEletZW6rGg2Zw5ATIgyJNDcnVReb
-	 B3EfWzjWskItTFqdGEFqKaNkyGttT9TLBlQWyu/w8Tuxs0k3bHkwZd0cu+hd+HJiBM
-	 TLWeLNnPzjvU1idP/yzgeefl8ZzJqv2fdNIoFW2QL9yRXpPiUWdGcYIxH9/tq99yFQ
-	 xlNDkZrz9RPWiLvSDiSFXG1SG7k6RBe2KkK8hixvDn+6BA8ozx+ajPaXfsgWLA8nel
-	 7BEThuYora+MdjBceQZNxXOF5muIGxkG3oYUZNn0HCWNcoz+pncWSlk+9RsOGJ4U29
-	 oEus3plyggpmg==
-Date: Wed, 31 Jul 2024 18:24:24 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v3 2/3] dma-mapping: replace zone_dma_bits by
- zone_dma_limit
-Message-ID: <20240801012424.GA1640480@thelio-3990X>
-References: <053fa4806a2c63efcde80caca473a8b670a2701c.1722249878.git.baruch@tkos.co.il>
- <202407300338.oaUo6jtB-lkp@intel.com>
- <20240730021208.GA8272@thelio-3990X>
- <20240730153450.GA30021@lst.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZChk3nxrz30VY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 12:34:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1722479650;
+	bh=Gu2oyGDEAOsWLaCjYmOjBBoAxVuypoP0T7mtfNUrOe0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=FVItAq7My3D+6l6w5F3oHYc0k/3sDN59MWvfcvkBTPwR3I7RuQEHaarKI6eeQi6BU
+	 VNgqhNcym8wNRNd+j+ELofxI5vnpmW2pKeizWjBFbsfeUP+BnA3tFNV3eV2O50QgJb
+	 sJCABPs3XXemxvf13dvkurBg7v+bRc2Rsl5cbEAVbOKSnlf3E0N26IoLkcJJLyuTsR
+	 le81sMw7Boden5CLaQwdCc/Z0zbRoArk69fLqP5YH420VQyngkAi6BgoTHE6Io31/g
+	 iTE6qiEV+almyOg7vxWGzOudUSS1u33Kt+KlLnlz3YU9V9qNAi6VmiQaee+bNcowiG
+	 ym2XE9POb+QIg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WZChf4Bkyz4x6r;
+	Thu,  1 Aug 2024 12:34:10 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, bhe@redhat.com
+Subject: Re: [PATCH] kexec/crash: no crash update when kexec in progress
+In-Reply-To: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
+References: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
+Date: Thu, 01 Aug 2024 12:34:10 +1000
+Message-ID: <87v80lnf8d.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240730153450.GA30021@lst.de>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,48 +58,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>, linuxppc-dev@lists.ozlabs.org, Ramon Fried <ramon@neureality.ai>, kernel test robot <lkp@intel.com>, Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>, Catalin Marinas <catalin.marinas@arm.com>, llvm@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, oe-kbuild-all@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>, Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 30, 2024 at 05:34:50PM +0200, Christoph Hellwig wrote:
-> On Mon, Jul 29, 2024 at 07:12:08PM -0700, Nathan Chancellor wrote:
-> > >          |             ~~~~~~~~~~~~~~                   ^~~~~~~~~~~~~~~~
-> > >    include/linux/dma-mapping.h:77:40: note: expanded from macro 'DMA_BIT_MASK'
-> > >       77 | #define DMA_BIT_MASK(n) (((n) == 64) ? ~0ULL : ((1ULL<<(n))-1))
-> > >          |                                        ^~~~~
-> > >    2 warnings generated.
-> > 
-> > FWIW, this is likely a false positive due to an issue in Clang with the
-> > control flow graph for global variables:
-> > 
-> > https://github.com/ClangBuiltLinux/linux/issues/92
-> > 
-> > DMA_BIT_MASK() has been the biggest offender :/ If there is any way to
-> > refactor this code to avoid this, that would be great (as that has been
-> > one of our longest outstanding issues and getting it fixed in the
-> > compiler does not seem super easy at this point).
-> 
-> I have no idea what you'd want changed here, but I'll happily take
-> patches.
+Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+> The following errors are observed when kexec is done with SMT=off on
+> powerpc.
+>
+> [  358.458385] Removing IBM Power 842 compression device
+> [  374.795734] kexec_core: Starting new kernel
+> [  374.795748] kexec: Waking offline cpu 1.
+> [  374.875695] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+> [  374.935833] kexec: Waking offline cpu 2.
+> [  375.015664] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+> snip..
+> [  375.515823] kexec: Waking offline cpu 6.
+> [  375.635667] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+> [  375.695836] kexec: Waking offline cpu 7.
 
-Unfortunately, I am not sure either... I do not see anything obviously,
-so perhaps it could just be avoided with the __diag() infrastructure?
+Are they actually errors though? Do they block the actual kexec from
+happening? Or are they just warnings in dmesg?
 
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 3dbc0b89d6fb..b58e7eb9c8f1 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -20,7 +20,12 @@
-  * it for entirely different regions. In that case the arch code needs to
-  * override the variable below for dma-direct to work properly.
-  */
-+__diag_push();
-+__diag_ignore(clang, 13, "-Wconstant-conversion",
-+	      "Clang incorrectly thinks the n == 64 case in DMA_BIT_MASK() can happen here,"
-+	      "which would truncate with a 32-bit phys_addr_t");
- phys_addr_t zone_dma_limit __ro_after_init = DMA_BIT_MASK(24);
-+__diag_pop();
- 
- static inline dma_addr_t phys_to_dma_direct(struct device *dev,
- 		phys_addr_t phys)
+Because the fix looks like it could be racy.
+
+cheers
+
+> During kexec, the offline CPUs are brought online, which triggers the
+> crash hotplug handler `crash_handle_hotplug_event()` to update the kdump
+> image. Given that the system is on the kexec path and the kexec lock is
+> taken, the `crash_handle_hotplug_event()` function fails to take the
+> same lock to update the kdump image, resulting in the above error
+> messages.
+>
+> To fix this, let's return from `crash_handle_hotplug_event()` if kexec
+> is in progress.
+>
+> The same applies to the `crash_check_hotplug_support()` function.
+> Return 0 if kexec is in progress.
+>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: kexec@lists.infradead.org
+> Cc: linuxppc-dev@ozlabs.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: x86@kernel.org
+> Reported-by: Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> ---
+>  kernel/crash_core.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+> index 63cf89393c6e..d37a16d5c3a1 100644
+> --- a/kernel/crash_core.c
+> +++ b/kernel/crash_core.c
+> @@ -502,6 +502,9 @@ int crash_check_hotplug_support(void)
+>  {
+>  	int rc = 0;
+>  
+> +	if (kexec_in_progress)
+> +		return 0;
+> +
+>  	crash_hotplug_lock();
+>  	/* Obtain lock while reading crash information */
+>  	if (!kexec_trylock()) {
+> @@ -537,6 +540,9 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
+>  {
+>  	struct kimage *image;
+>  
+> +	if (kexec_in_progress)
+> +		return;
+> +
+>  	crash_hotplug_lock();
+>  	/* Obtain lock while changing crash information */
+>  	if (!kexec_trylock()) {
+> -- 
+> 2.45.2
+>
+>
+> _______________________________________________
+> kexec mailing list
+> kexec@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/kexec
