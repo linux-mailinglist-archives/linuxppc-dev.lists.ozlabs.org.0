@@ -1,39 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7129450A5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 18:32:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4117A9451B3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 19:44:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZZJG6SVZz3dV9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 02:32:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZbvF1rmTz3dVq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 03:44:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZZHw0KTPz3dL8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 02:32:27 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3D6FC1007;
-	Thu,  1 Aug 2024 09:32:21 -0700 (PDT)
-Received: from e133380.arm.com (e133380.arm.com [10.1.197.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97D4A3F5A1;
-	Thu,  1 Aug 2024 09:31:52 -0700 (PDT)
-Date: Thu, 1 Aug 2024 17:31:50 +0100
-From: Dave Martin <Dave.Martin@arm.com>
-To: Joey Gouly <joey.gouly@arm.com>
-Subject: Re: [PATCH v4 10/29] arm64: enable the Permission Overlay Extension
- for EL0
-Message-ID: <Zqu4dgB4RSW9MNs1@e133380.arm.com>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-11-joey.gouly@arm.com>
- <ZqJz9EoqJE95Oe7g@e133380.arm.com>
- <20240801160403.GD841837@e124191.cambridge.arm.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZbtq6cJJz3dRP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 03:44:17 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WZbqf2c9cz6K6MB;
+	Fri,  2 Aug 2024 01:41:34 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6C75C1400F4;
+	Fri,  2 Aug 2024 01:44:10 +0800 (CST)
+Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 1 Aug
+ 2024 18:44:09 +0100
+Date: Thu, 1 Aug 2024 18:44:08 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v3 02/26] MIPS: sgi-ip27: make NODE_DATA() the same as
+ on all other architectures
+Message-ID: <20240801184408.00002e8b@Huawei.com>
+In-Reply-To: <20240801060826.559858-3-rppt@kernel.org>
+References: <20240801060826.559858-1-rppt@kernel.org>
+	<20240801060826.559858-3-rppt@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240801160403.GD841837@e124191.cambridge.arm.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,49 +54,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav
+ Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul
+ Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 01, 2024 at 05:04:03PM +0100, Joey Gouly wrote:
-> On Thu, Jul 25, 2024 at 04:49:08PM +0100, Dave Martin wrote:
-> > On Fri, May 03, 2024 at 02:01:28PM +0100, Joey Gouly wrote:
-> > > Expose a HWCAP and ID_AA64MMFR3_EL1_S1POE to userspace, so they can be used to
-> > > check if the CPU supports the feature.
-> > > 
-> > > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> > > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > > Cc: Will Deacon <will@kernel.org>
-> > > ---
-> > > 
-> > > This takes the last bit of HWCAP2, is this fine? What can we do about more features in the future?
-> > > 
-> > > 
-> > >  Documentation/arch/arm64/elf_hwcaps.rst |  2 ++
-> > >  arch/arm64/include/asm/hwcap.h          |  1 +
-> > >  arch/arm64/include/uapi/asm/hwcap.h     |  1 +
-> > >  arch/arm64/kernel/cpufeature.c          | 14 ++++++++++++++
-> > >  arch/arm64/kernel/cpuinfo.c             |  1 +
-> > >  5 files changed, 19 insertions(+)
-> > > 
-> > > diff --git a/Documentation/arch/arm64/elf_hwcaps.rst b/Documentation/arch/arm64/elf_hwcaps.rst
-> > > index 448c1664879b..694f67fa07d1 100644
-> > > --- a/Documentation/arch/arm64/elf_hwcaps.rst
-> > > +++ b/Documentation/arch/arm64/elf_hwcaps.rst
-> > > @@ -365,6 +365,8 @@ HWCAP2_SME_SF8DP2
-> > >  HWCAP2_SME_SF8DP4
-> > >      Functionality implied by ID_AA64SMFR0_EL1.SF8DP4 == 0b1.
-> > >  
-> > > +HWCAP2_POE
-> > > +    Functionality implied by ID_AA64MMFR3_EL1.S1POE == 0b0001.
-> > 
-> > Nit: unintentionally dropped blank line before the section heading?
+On Thu,  1 Aug 2024 09:08:02 +0300
+Mike Rapoport <rppt@kernel.org> wrote:
+
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Now there's only one blank line, I think
-> c1932cac7902a8b0f7355515917dedc5412eb15d unintentionally added 2 blank lines,
-> before that it was always 1!
+> sgi-ip27 is the only system that defines NODE_DATA() differently than
+> the rest of NUMA machines.
+> 
+> Add node_data array of struct pglist pointers that will point to
+> __node_data[node]->pglist and redefine NODE_DATA() to use node_data
+> array.
+> 
+> This will allow pulling declaration of node_data to the generic mm code
+> in the next commit.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+After staring for a while at the use made of the other part
+of the __node_data I think what you have in this an the next
+two patches is fine.
 
-Hmmm, true.  Not a big deal, I guess.
+I'm far from convinced it was correct before though as
+arch_refresh_node_data() called on offline nodes in free_area_init()
+would have replaced __node_data with an allocation of
+size pg_data_t but the hub_data(), visible below, is after that.
+Maybe hub_data() as never called for offline nodes, but
+I couldn't establish that.
 
-Cheers
----Dave
+After these patches the arch_refresh_node_data() generic
+version will only be replacing the pointer in node_data
+leaving the hub_data where it was in the first place and
+thus is fine.
+
+So with that in mind (and it could be completely wrong ;)
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+
+
+> ---
+>  arch/mips/include/asm/mach-ip27/mmzone.h | 5 ++++-
+>  arch/mips/sgi-ip27/ip27-memory.c         | 5 ++++-
+>  2 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/mach-ip27/mmzone.h b/arch/mips/include/asm/mach-ip27/mmzone.h
+> index 08c36e50a860..629c3f290203 100644
+> --- a/arch/mips/include/asm/mach-ip27/mmzone.h
+> +++ b/arch/mips/include/asm/mach-ip27/mmzone.h
+> @@ -22,7 +22,10 @@ struct node_data {
+>  
+>  extern struct node_data *__node_data[];
+>  
+> -#define NODE_DATA(n)		(&__node_data[(n)]->pglist)
+>  #define hub_data(n)		(&__node_data[(n)]->hub)
+>  
+> +extern struct pglist_data *node_data[];
+> +
+> +#define NODE_DATA(nid)		(node_data[nid])
+> +
+>  #endif /* _ASM_MACH_MMZONE_H */
+> diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+> index b8ca94cfb4fe..c30ef6958b97 100644
+> --- a/arch/mips/sgi-ip27/ip27-memory.c
+> +++ b/arch/mips/sgi-ip27/ip27-memory.c
+> @@ -34,8 +34,10 @@
+>  #define SLOT_PFNSHIFT		(SLOT_SHIFT - PAGE_SHIFT)
+>  #define PFN_NASIDSHFT		(NASID_SHFT - PAGE_SHIFT)
+>  
+> -struct node_data *__node_data[MAX_NUMNODES];
+> +struct pglist_data *node_data[MAX_NUMNODES];
+> +EXPORT_SYMBOL(node_data);
+>  
+> +struct node_data *__node_data[MAX_NUMNODES];
+>  EXPORT_SYMBOL(__node_data);
+>  
+>  static u64 gen_region_mask(void)
+> @@ -361,6 +363,7 @@ static void __init node_mem_init(nasid_t node)
+>  	 */
+>  	__node_data[node] = __va(slot_freepfn << PAGE_SHIFT);
+>  	memset(__node_data[node], 0, PAGE_SIZE);
+> +	node_data[node] = &__node_data[node]->pglist;
+>  
+>  	NODE_DATA(node)->node_start_pfn = start_pfn;
+>  	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
+
