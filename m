@@ -1,70 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44907944586
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 09:35:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D61C944636
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 10:07:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hm6lqGrn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eQHR7tPx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZLNR1Q0gz3cND
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 17:35:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZM5V3bzYz3dJk
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 18:07:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hm6lqGrn;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eQHR7tPx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZLMn0tL6z30T1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 17:35:01 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id B8D90CE11E0;
-	Thu,  1 Aug 2024 07:34:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C540CC4AF0A;
-	Thu,  1 Aug 2024 07:34:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722497697;
-	bh=4fAL4cODCnjl0NV8qGw/Qqudnit/5hoHCsZrciMhbUs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=hm6lqGrnGLdGUt29ZxrQ9cGwGC5e/My8adr9xG8pGwOWvxzaIy2wVVZecHcsaS7MD
-	 2vhxDp5qw6P6jWSVDdYpSlndt26lYMY/9L3hrdQVP6XL1jiOwA3de3PchwMF07I1N4
-	 2YEHskiwTzLI1+iwXeDgxTjbuc9HN0GjQyrYNiG+t6NhVrrxrlXYCf8VJMbSS/9yNs
-	 oHiP/3JEHHEyg0SbxiUkt+heXZ9wY3Uvo6jOHCc4TGv31tTJIER/7SKgCRJbrwGHtk
-	 ninurOs1MqcQM+fogPcJEhZWkju/RfarTKElxrf4Eq/YQ9RcoW3WZjBJcrAerVNRjv
-	 rukvhfzurLf/A==
-X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Anup Patel <anup@brainfault.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v12 02/84] KVM: arm64: Disallow copying MTE to guest
- memory while KVM is dirty logging
-In-Reply-To: <20240726235234.228822-3-seanjc@google.com>
-References: <20240726235234.228822-1-seanjc@google.com>
- <20240726235234.228822-3-seanjc@google.com>
-Date: Thu, 01 Aug 2024 13:04:43 +0530
-Message-ID: <yq5aikwku25o.fsf@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZM4p4v1Kz2ysc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 18:07:06 +1000 (AEST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4716TZk5025652;
+	Thu, 1 Aug 2024 08:06:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=z
+	EJ35kZA6S/kXGZD/9MxIB1NcUqP6U4ESYSerPwyfa8=; b=eQHR7tPxPlEQPCGue
+	pFavgZHzwVk+OcKBpTMeB0eoO7sQpIwFz04kVwAqFZRtrSbEpdYMmhyNrdxvAbMu
+	kge5VxgXc/shTm76iOAgRNCY6hJe/1cJSgXXv2fuZbjrkv5/wZj0VZ1qiYrXbita
+	ZLvrbYAWA+VT9w/tjN9iqGFf0TUzVccacyadWbUuIVMN7O9mkAjrdpw9CMOWtPTK
+	pu3kfQkZHsFgtnnyj7dTsswLkMC4FXS220tNml3kY9bcQwY3BAqxmXrtzTU8XY57
+	KhSzlh+S+EVmg+hPrWh/uJPS35VO/1wG26ieTCz9jb5xO0t1T8N4YU6aMpgFEjsk
+	8rwsg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40r54u06ne-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Aug 2024 08:06:55 +0000 (GMT)
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47186sN9030950;
+	Thu, 1 Aug 2024 08:06:54 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40r54u06nc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Aug 2024 08:06:54 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 47183b9n018969;
+	Thu, 1 Aug 2024 08:06:54 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40nc7q0m6j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 01 Aug 2024 08:06:53 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47186oka57344276
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 1 Aug 2024 08:06:52 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 06F2120040;
+	Thu,  1 Aug 2024 08:06:50 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D22F20043;
+	Thu,  1 Aug 2024 08:06:47 +0000 (GMT)
+Received: from [9.43.79.112] (unknown [9.43.79.112])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  1 Aug 2024 08:06:47 +0000 (GMT)
+Message-ID: <b7a52f5b-df93-476b-a9b1-931fad1474e0@linux.ibm.com>
+Date: Thu, 1 Aug 2024 13:36:46 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kexec/crash: no crash update when kexec in progress
+To: Baoquan He <bhe@redhat.com>
+References: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
+ <Zqs8veRya7v/pXEt@MiWiFi-R3L-srv>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <Zqs8veRya7v/pXEt@MiWiFi-R3L-srv>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: EmUxLjMbJNMxGW1YDEzR98PdsVJe6uf0
+X-Proofpoint-ORIG-GUID: qj94FuyCbc8v7B-LkClrnY6NYyMkaLDR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-01_04,2024-07-31_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 adultscore=0 clxscore=1015 suspectscore=0 bulkscore=0
+ mlxlogscore=864 phishscore=0 impostorscore=0 lowpriorityscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408010042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,46 +101,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, David Stevens <stevensd@chromium.org>, loongarch@lists.linux.dev, kvmarm@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+Hello Baoquan,
 
-> Disallow copying MTE tags to guest memory while KVM is dirty logging, as
-> writing guest memory without marking the gfn as dirty in the memslot could
-> result in userspace failing to migrate the updated page.  Ideally (maybe?),
-> KVM would simply mark the gfn as dirty, but there is no vCPU to work with,
-> and presumably the only use case for copy MTE tags _to_ the guest is when
-> restoring state on the target.
->
-> Fixes: f0376edb1ddc ("KVM: arm64: Add ioctl to fetch/store tags in a guest")
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/arm64/kvm/guest.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> index e1f0ff08836a..962f985977c2 100644
-> --- a/arch/arm64/kvm/guest.c
-> +++ b/arch/arm64/kvm/guest.c
-> @@ -1045,6 +1045,11 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
->  
->  	mutex_lock(&kvm->slots_lock);
->  
-> +	if (write && atomic_read(&kvm->nr_memslots_dirty_logging)) {
-> +		ret = -EBUSY;
-> +		goto out;
-> +	}
-> +
->
+On 01/08/24 13:13, Baoquan He wrote:
+> On 07/31/24 at 08:57pm, Sourabh Jain wrote:
+>> The following errors are observed when kexec is done with SMT=off on
+>> powerpc.
+>>
+>> [  358.458385] Removing IBM Power 842 compression device
+>> [  374.795734] kexec_core: Starting new kernel
+>> [  374.795748] kexec: Waking offline cpu 1.
+>> [  374.875695] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+>> [  374.935833] kexec: Waking offline cpu 2.
+>> [  375.015664] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+>> snip..
+>> [  375.515823] kexec: Waking offline cpu 6.
+>> [  375.635667] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+>> [  375.695836] kexec: Waking offline cpu 7.
+>>
+>> During kexec, the offline CPUs are brought online, which triggers the
+> Is this a generic action or specific on ppc about the offline CPUs being
+> brought line during kexec?
 
-is this equivalent to kvm_follow_pfn() with kfp->pin = 1 ? Should all
-those pin request fail if kvm->nr_memslots_dirty_logging != 0? 
+I think it is powerpc specific.
+Patch that introduced this on powerpc: e8e5c2155b003 ("powerpc/kexec: 
+Fix orphaned offline CPUs across kexec")
 
+- Sourabh Jain
 
->  	while (length > 0) {
->  		kvm_pfn_t pfn = gfn_to_pfn_prot(kvm, gfn, write, NULL);
->  		void *maddr;
-> -- 
-> 2.46.0.rc1.232.g9752f9e123-goog
