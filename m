@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A58943C40
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 02:36:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B38943C86
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 02:39:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XYQx16om;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B2zoYwkc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZ94R4CMFz3clL
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 10:36:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZ98712V5z3cQM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 10:39:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XYQx16om;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B2zoYwkc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZ93m34Qcz2y8m
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 10:35:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZ97S6Pzmz2y8d
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 10:38:44 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8334962551;
-	Thu,  1 Aug 2024 00:35:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0963FC4AF0E;
-	Thu,  1 Aug 2024 00:35:28 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id E6D576246A;
+	Thu,  1 Aug 2024 00:38:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E4BC4AF0C;
+	Thu,  1 Aug 2024 00:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472530;
-	bh=Lp/CkH9sWC8WcDgHAMzi3z91a5u20XsSX+ogEhcdnHo=;
+	s=k20201202; t=1722472722;
+	bh=kL/XT7JAuxnxELhKNZfCLWr6WyRu/dxm9/mD3/aKmzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYQx16omu0xWhRkPSGksPfM8jtB2E8IUFsZE2b++hn7UMuiHis4yCUWuYbIsyeCPm
-	 5477vrmXqTwCnW+p14amOx45OMfkcamNJBnNOEHRcdnb221g4VDVbcSLNA/Y4i7qyX
-	 sh5SuYQCT7RtSIhsmn8Pjp5kHyRiJ3piBT2ZvtDZPbrgQVPJYF1ebC6qbK1oFg31J3
-	 YFrK+/uhxnitfqhamf0UoQPDvveEg0EoVXZDRXo5mpe0fjCWYF/u+XQAbd6LadckmK
-	 Y0q85Aw7drHNvEZQ8pSFpX+wsko6M7HX43LWLwhDJZlQJ4RDPXj+kyhLSsgKZAG8gu
-	 1m3MDC2F+xAHQ==
+	b=B2zoYwkc4lZdSBFuhbV7el3KZaFHxBEHk0xs8+wX1+MotKUMzxVN3MOGV3b/T1WSG
+	 qxC7IRs6sdcbeSav0YPxDcsXuTnMDuWad5ot0FMApiVfkBZnixTburIKUR2EDUK0ZM
+	 adRga49ldiUky9cuO0yL4qUPP4g//5StjEX6ezKKJ/vmJHI/EpAvftQA5CfFvP6AlN
+	 t7Jxf7z2Xy1Qw5lF+fjUHg43oJ4QNIwNxhiIhS+zzEFvmBXaLSiQyIfgucGg1DlqFg
+	 1aa0+M6bpzYVZ4ANkvuBsNRN794oaZnTL69BlqSv+s+hHmWCJJU1kNMhSd4yw4yVq9
+	 +c/F5ZyFGM55w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 42/47] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
-Date: Wed, 31 Jul 2024 20:31:32 -0400
-Message-ID: <20240801003256.3937416-42-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 34/38] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
+Date: Wed, 31 Jul 2024 20:35:40 -0400
+Message-ID: <20240801003643.3938534-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240801003256.3937416-1-sashal@kernel.org>
-References: <20240801003256.3937416-1-sashal@kernel.org>
+In-Reply-To: <20240801003643.3938534-1-sashal@kernel.org>
+References: <20240801003643.3938534-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.164
+X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -97,7 +97,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index f4c2e6e01be04..e233f8402e8cc 100644
+index 04565162a4495..cf9c0e75f0be4 100644
 --- a/drivers/pci/hotplug/pnv_php.c
 +++ b/drivers/pci/hotplug/pnv_php.c
 @@ -38,7 +38,6 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
