@@ -2,51 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0DB944140
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 04:34:54 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FVItAq7M;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id C39FE9441FA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 05:41:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZCjS5pvxz3cXH
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 12:34:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZFBk4jplz3dTw
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 13:41:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FVItAq7M;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=csie.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.181; helo=mail-lj1-f181.google.com; envelope-from=wens213@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZChk3nxrz30VY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 12:34:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1722479650;
-	bh=Gu2oyGDEAOsWLaCjYmOjBBoAxVuypoP0T7mtfNUrOe0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FVItAq7My3D+6l6w5F3oHYc0k/3sDN59MWvfcvkBTPwR3I7RuQEHaarKI6eeQi6BU
-	 VNgqhNcym8wNRNd+j+ELofxI5vnpmW2pKeizWjBFbsfeUP+BnA3tFNV3eV2O50QgJb
-	 sJCABPs3XXemxvf13dvkurBg7v+bRc2Rsl5cbEAVbOKSnlf3E0N26IoLkcJJLyuTsR
-	 le81sMw7Boden5CLaQwdCc/Z0zbRoArk69fLqP5YH420VQyngkAi6BgoTHE6Io31/g
-	 iTE6qiEV+almyOg7vxWGzOudUSS1u33Kt+KlLnlz3YU9V9qNAi6VmiQaee+bNcowiG
-	 ym2XE9POb+QIg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WZChf4Bkyz4x6r;
-	Thu,  1 Aug 2024 12:34:10 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, bhe@redhat.com
-Subject: Re: [PATCH] kexec/crash: no crash update when kexec in progress
-In-Reply-To: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
-References: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
-Date: Thu, 01 Aug 2024 12:34:10 +1000
-Message-ID: <87v80lnf8d.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZFBL32gTz2xWX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 13:41:28 +1000 (AEST)
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ef2c56da6cso74435471fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 20:41:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722483680; x=1723088480;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rpFbA20aLHJ+Am8YxkTg4RUa3XKubG9hiY6Kx7P8xtw=;
+        b=U/1MxFvldWf4G1bTiYAsmzCFiQAZv8ja6aI0a7e5sby58hpa7uz/I6eZhbcD2V42G8
+         iZb37XM4NwMR+xw9KHXc1ddsQItwVSitirzMv8R42cZRzu52q6BNLBqgWdxcMO4vJgTU
+         NXzQF7VNAohvI8VvgNBUmIkLKvrXFpB/sv0pZl6unj8djKgcssggdoL1vh07qTUCz+yb
+         WQvAXJoGRx0KNkrA292OhFihdop+tUtv6OoOiTsikYKgNecbxlpHmaJZBpjiPR4lX65K
+         A540DOD53jTegn6TsAoohB5zQGyvl2hK1vi0KC/ZpyfPOvj5DMx4+OPIFh9W48RVU0Fr
+         NGQA==
+X-Forwarded-Encrypted: i=1; AJvYcCW9WsC5kiZslNDHXyD9a2eT8F2Md7Js3VSviJGopjiXb2Dea3TTRNfjZKZW5XKDCgHBc+QajvhyBgHhgmgsjcdIn9CY/0Tx4HQH+T0i5g==
+X-Gm-Message-State: AOJu0Yy7hBNrtPilDz8XFRRYi7sWZSRIV1P1atmrCuXLjSdf3LfrTT9O
+	x5fN5SVEmqdlFZYU3qjdOvPXAzmShcPuO2xV+tsXWib1m3CAcpXwPP6btv2m
+X-Google-Smtp-Source: AGHT+IH91F1bdm2aVoT9rZegOeInRRLxYD8phus/EFsl+EuJ9trxcaKDbfTkrKRhkB14fGeq0FKvyA==
+X-Received: by 2002:a2e:8296:0:b0:2ef:2c0f:283e with SMTP id 38308e7fff4ca-2f1530e8cafmr6743741fa.12.1722483679336;
+        Wed, 31 Jul 2024 20:41:19 -0700 (PDT)
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f03d0773a9sm21767051fa.127.2024.07.31.20.41.17
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Jul 2024 20:41:18 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2eeb1ba0481so101779171fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 31 Jul 2024 20:41:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXAFgiRTumAahgF0HPxT4CJLxNRQCHj/3RQfMKHsNX2ZJoXtOGz8XHO20sV3PoUAo7WK/6sGWEqRs6Zgx89mdAswGfzuu8LBveCBCpZ1w==
+X-Received: by 2002:a2e:84d6:0:b0:2ee:7a71:6e3b with SMTP id
+ 38308e7fff4ca-2f15310167cmr6804891fa.27.1722483677641; Wed, 31 Jul 2024
+ 20:41:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240731191312.1710417-2-robh@kernel.org>
+In-Reply-To: <20240731191312.1710417-2-robh@kernel.org>
+From: Chen-Yu Tsai <wens@csie.org>
+Date: Thu, 1 Aug 2024 11:41:04 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65GvkyMS3kZWEADGWKvZ818w5uvJASkEMrox535c4Ba_Q@mail.gmail.com>
+Message-ID: <CAGb2v65GvkyMS3kZWEADGWKvZ818w5uvJASkEMrox535c4Ba_Q@mail.gmail.com>
+Subject: Re: [PATCH] cpufreq: Use of_property_present()
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,86 +70,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Sourabh Jain <sourabhjain@linux.ibm.com>, Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
+Reply-To: wens@csie.org
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Yangtao Li <tiny.windzz@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org, Samuel Holland <samuel@sholland.org>, Naveen N Rao <naveen@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kernel@vger.kernel.org, linux-sunxi@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, Patrice Chotard <patrice.chotard@foss.st.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sourabh Jain <sourabhjain@linux.ibm.com> writes:
-> The following errors are observed when kexec is done with SMT=off on
-> powerpc.
+On Thu, Aug 1, 2024 at 3:13=E2=80=AFAM Rob Herring (Arm) <robh@kernel.org> =
+wrote:
 >
-> [  358.458385] Removing IBM Power 842 compression device
-> [  374.795734] kexec_core: Starting new kernel
-> [  374.795748] kexec: Waking offline cpu 1.
-> [  374.875695] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
-> [  374.935833] kexec: Waking offline cpu 2.
-> [  375.015664] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
-> snip..
-> [  375.515823] kexec: Waking offline cpu 6.
-> [  375.635667] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
-> [  375.695836] kexec: Waking offline cpu 7.
-
-Are they actually errors though? Do they block the actual kexec from
-happening? Or are they just warnings in dmesg?
-
-Because the fix looks like it could be racy.
-
-cheers
-
-> During kexec, the offline CPUs are brought online, which triggers the
-> crash hotplug handler `crash_handle_hotplug_event()` to update the kdump
-> image. Given that the system is on the kexec path and the kexec lock is
-> taken, the `crash_handle_hotplug_event()` function fails to take the
-> same lock to update the kdump image, resulting in the above error
-> messages.
+> Use of_property_present() to test for property presence rather than
+> of_(find|get)_property(). This is part of a larger effort to remove
+> callers of of_find_property() and similar functions. of_find_property()
+> leaks the DT struct property and data pointers which is a problem for
+> dynamically allocated nodes which may be freed.
 >
-> To fix this, let's return from `crash_handle_hotplug_event()` if kexec
-> is in progress.
->
-> The same applies to the `crash_check_hotplug_support()` function.
-> Return 0 if kexec is in progress.
->
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: kexec@lists.infradead.org
-> Cc: linuxppc-dev@ozlabs.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: x86@kernel.org
-> Reported-by: Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 > ---
->  kernel/crash_core.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-> index 63cf89393c6e..d37a16d5c3a1 100644
-> --- a/kernel/crash_core.c
-> +++ b/kernel/crash_core.c
-> @@ -502,6 +502,9 @@ int crash_check_hotplug_support(void)
->  {
->  	int rc = 0;
->  
-> +	if (kexec_in_progress)
-> +		return 0;
-> +
->  	crash_hotplug_lock();
->  	/* Obtain lock while reading crash information */
->  	if (!kexec_trylock()) {
-> @@ -537,6 +540,9 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
->  {
->  	struct kimage *image;
->  
-> +	if (kexec_in_progress)
-> +		return;
-> +
->  	crash_hotplug_lock();
->  	/* Obtain lock while changing crash information */
->  	if (!kexec_trylock()) {
-> -- 
-> 2.45.2
->
->
-> _______________________________________________
-> kexec mailing list
-> kexec@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/kexec
+>  drivers/cpufreq/cpufreq-dt.c           | 11 +++--------
+>  drivers/cpufreq/pmac64-cpufreq.c       |  2 +-
+>  drivers/cpufreq/sti-cpufreq.c          |  2 +-
+
+>  drivers/cpufreq/sun50i-cpufreq-nvmem.c |  2 +-
+
+Acked-by: Chen-Yu Tsai <wens@csie.org>
