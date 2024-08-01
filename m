@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF4D944421
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 08:19:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9361994442F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 08:20:37 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cc4WvpYS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GkLWQm1Q;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZJj70n9Hz3dKH
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 16:19:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZJjv3l37z3dBs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 16:20:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cc4WvpYS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GkLWQm1Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZJWh64jQz3d8S
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 16:11:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZJWw4lrmz3cZd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 16:11:56 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 18C616263A;
+	by sin.source.kernel.org (Postfix) with ESMTP id 46118CE1802;
+	Thu,  1 Aug 2024 06:11:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529C4C4AF09;
 	Thu,  1 Aug 2024 06:11:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83720C4AF09;
-	Thu,  1 Aug 2024 06:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722492702;
-	bh=a5wWvXp5sZfTjfQzLNJ+a5bJ5ZJPXICMVCqsCnclVEE=;
+	s=k20201202; t=1722492714;
+	bh=tUveSvpmOKw9bqMG5RQ6nMnK0ZuTV9etYelIhziTeKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cc4WvpYSk2IgT7M8f19PtLCANZs9ejYsgNz/cO/n9jZN8qc0EaFo0hFRtACL2ndu9
-	 6mQNevH4Cv97QgSeWny58SoJTelXG7+q/yupDHNjypMc9KfJSvH9dJkMYoPTVHXTFt
-	 qOV8qLNBVKP+KQ0TDEb4IxRQJnulZa3OTDwTCKv2ZaDrPMf/7n9eMwLrQ+9DBTKaQ2
-	 CscX8zJ0BsTHTjThMBHjRi6ejLjZ0Khv97xgxfXs5HKaUT5vo9NA59YW7rniE33hCD
-	 LqVJKeLyrOjDdwbfYs2UANWDOREYQ7kpVO/8B3QyCKE+mrBu4NqR3hacT/uObjnyRS
-	 Fd/de2lMyOA4Q==
+	b=GkLWQm1Q39ABfZyuhL6Q3SBO4x8iIO1aOYcDhmjxdECKBtds6RIO3AsP0dLgQUStG
+	 QtW9mrfuZenyPBlVOdTI6i/S7REgDYRiKN1CA/IZhqIQyTIcJ90XkexFNG60he+YcW
+	 nwrOGB28RY2W+r/fDE7isGmLMQjlQEUqNl+lxkKeFvYHRXETpNfOonPK6ZTeFWShkT
+	 jzJ1lBRW55/u4dxl3cz/0+RXH32Yt5toq8GS93/M5oq7C7KyDwt05M6VQW3pWbSuRL
+	 AZSqAJyclCGUpW1mJRDt2v/lV8TLLPtVR/5UoF3gKYIFZwKuaKKOEqL3YLG7fkgpyx
+	 /3cmatQc1Tbwg==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 15/26] x86/numa_emu: use a helper function to get MAX_DMA32_PFN
-Date: Thu,  1 Aug 2024 09:08:15 +0300
-Message-ID: <20240801060826.559858-16-rppt@kernel.org>
+Subject: [PATCH v3 16/26] x86/numa: numa_{add,remove}_cpu: make cpu parameter unsigned
+Date: Thu,  1 Aug 2024 09:08:16 +0300
+Message-ID: <20240801060826.559858-17-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801060826.559858-1-rppt@kernel.org>
 References: <20240801060826.559858-1-rppt@kernel.org>
@@ -65,68 +65,140 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-This is required to make numa emulation code architecture independent so
-that it can be moved to generic code in following commits.
+CPU id cannot be negative.
+
+Making it unsigned also aligns with declarations in
+include/asm-generic/numa.h used by arm64 and riscv and allows sharing
+numa emulation code with these architectures.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
 ---
- arch/x86/include/asm/numa.h  | 1 +
- arch/x86/mm/numa.c           | 5 +++++
- arch/x86/mm/numa_emulation.c | 4 ++--
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/numa.h  | 10 +++++-----
+ arch/x86/mm/numa.c           | 10 +++++-----
+ arch/x86/mm/numa_emulation.c | 10 +++++-----
+ 3 files changed, 15 insertions(+), 15 deletions(-)
 
 diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
-index 7017d540894a..b22c85c1ef18 100644
+index b22c85c1ef18..6fa5ea925aac 100644
 --- a/arch/x86/include/asm/numa.h
 +++ b/arch/x86/include/asm/numa.h
-@@ -74,6 +74,7 @@ void debug_cpumask_set_cpu(int cpu, int node, bool enable);
- int numa_emu_cmdline(char *str);
- void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
- 					unsigned int nr_emu_nids);
-+u64 __init numa_emu_dma_end(void);
- #else /* CONFIG_NUMA_EMU */
- static inline int numa_emu_cmdline(char *str)
- {
+@@ -54,20 +54,20 @@ static inline int numa_cpu_node(int cpu)
+ extern void numa_set_node(int cpu, int node);
+ extern void numa_clear_node(int cpu);
+ extern void __init init_cpu_to_node(void);
+-extern void numa_add_cpu(int cpu);
+-extern void numa_remove_cpu(int cpu);
++extern void numa_add_cpu(unsigned int cpu);
++extern void numa_remove_cpu(unsigned int cpu);
+ extern void init_gi_nodes(void);
+ #else	/* CONFIG_NUMA */
+ static inline void numa_set_node(int cpu, int node)	{ }
+ static inline void numa_clear_node(int cpu)		{ }
+ static inline void init_cpu_to_node(void)		{ }
+-static inline void numa_add_cpu(int cpu)		{ }
+-static inline void numa_remove_cpu(int cpu)		{ }
++static inline void numa_add_cpu(unsigned int cpu)	{ }
++static inline void numa_remove_cpu(unsigned int cpu)	{ }
+ static inline void init_gi_nodes(void)			{ }
+ #endif	/* CONFIG_NUMA */
+ 
+ #ifdef CONFIG_DEBUG_PER_CPU_MAPS
+-void debug_cpumask_set_cpu(int cpu, int node, bool enable);
++void debug_cpumask_set_cpu(unsigned int cpu, int node, bool enable);
+ #endif
+ 
+ #ifdef CONFIG_NUMA_EMU
 diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 9180d524cfe4..8b7c6580d268 100644
+index 8b7c6580d268..cf7b95125d2a 100644
 --- a/arch/x86/mm/numa.c
 +++ b/arch/x86/mm/numa.c
-@@ -868,6 +868,11 @@ void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
- 		__apicid_to_node[i] = j < nr_emu_nids ? j : 0;
- 	}
- }
-+
-+u64 __init numa_emu_dma_end(void)
-+{
-+	return PFN_PHYS(MAX_DMA32_PFN);
-+}
- #endif /* CONFIG_NUMA_EMU */
+@@ -737,12 +737,12 @@ void __init init_cpu_to_node(void)
+ #ifndef CONFIG_DEBUG_PER_CPU_MAPS
  
- #ifdef CONFIG_NUMA_KEEP_MEMINFO
+ # ifndef CONFIG_NUMA_EMU
+-void numa_add_cpu(int cpu)
++void numa_add_cpu(unsigned int cpu)
+ {
+ 	cpumask_set_cpu(cpu, node_to_cpumask_map[early_cpu_to_node(cpu)]);
+ }
+ 
+-void numa_remove_cpu(int cpu)
++void numa_remove_cpu(unsigned int cpu)
+ {
+ 	cpumask_clear_cpu(cpu, node_to_cpumask_map[early_cpu_to_node(cpu)]);
+ }
+@@ -780,7 +780,7 @@ int early_cpu_to_node(int cpu)
+ 	return per_cpu(x86_cpu_to_node_map, cpu);
+ }
+ 
+-void debug_cpumask_set_cpu(int cpu, int node, bool enable)
++void debug_cpumask_set_cpu(unsigned int cpu, int node, bool enable)
+ {
+ 	struct cpumask *mask;
+ 
+@@ -812,12 +812,12 @@ static void numa_set_cpumask(int cpu, bool enable)
+ 	debug_cpumask_set_cpu(cpu, early_cpu_to_node(cpu), enable);
+ }
+ 
+-void numa_add_cpu(int cpu)
++void numa_add_cpu(unsigned int cpu)
+ {
+ 	numa_set_cpumask(cpu, true);
+ }
+ 
+-void numa_remove_cpu(int cpu)
++void numa_remove_cpu(unsigned int cpu)
+ {
+ 	numa_set_cpumask(cpu, false);
+ }
 diff --git a/arch/x86/mm/numa_emulation.c b/arch/x86/mm/numa_emulation.c
-index f2746e52ab93..fb4814497446 100644
+index fb4814497446..235f8a4eb2fa 100644
 --- a/arch/x86/mm/numa_emulation.c
 +++ b/arch/x86/mm/numa_emulation.c
-@@ -128,7 +128,7 @@ static int __init split_nodes_interleave(struct numa_meminfo *ei,
- 	 */
- 	while (!nodes_empty(physnode_mask)) {
- 		for_each_node_mask(i, physnode_mask) {
--			u64 dma32_end = PFN_PHYS(MAX_DMA32_PFN);
-+			u64 dma32_end = numa_emu_dma_end();
- 			u64 start, limit, end;
- 			int phys_blk;
+@@ -514,7 +514,7 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
+ }
  
-@@ -275,7 +275,7 @@ static int __init split_nodes_size_interleave_uniform(struct numa_meminfo *ei,
- 	 */
- 	while (!nodes_empty(physnode_mask)) {
- 		for_each_node_mask(i, physnode_mask) {
--			u64 dma32_end = PFN_PHYS(MAX_DMA32_PFN);
-+			u64 dma32_end = numa_emu_dma_end();
- 			u64 start, limit, end;
- 			int phys_blk;
+ #ifndef CONFIG_DEBUG_PER_CPU_MAPS
+-void numa_add_cpu(int cpu)
++void numa_add_cpu(unsigned int cpu)
+ {
+ 	int physnid, nid;
  
+@@ -532,7 +532,7 @@ void numa_add_cpu(int cpu)
+ 			cpumask_set_cpu(cpu, node_to_cpumask_map[nid]);
+ }
+ 
+-void numa_remove_cpu(int cpu)
++void numa_remove_cpu(unsigned int cpu)
+ {
+ 	int i;
+ 
+@@ -540,7 +540,7 @@ void numa_remove_cpu(int cpu)
+ 		cpumask_clear_cpu(cpu, node_to_cpumask_map[i]);
+ }
+ #else	/* !CONFIG_DEBUG_PER_CPU_MAPS */
+-static void numa_set_cpumask(int cpu, bool enable)
++static void numa_set_cpumask(unsigned int cpu, bool enable)
+ {
+ 	int nid, physnid;
+ 
+@@ -560,12 +560,12 @@ static void numa_set_cpumask(int cpu, bool enable)
+ 	}
+ }
+ 
+-void numa_add_cpu(int cpu)
++void numa_add_cpu(unsigned int cpu)
+ {
+ 	numa_set_cpumask(cpu, true);
+ }
+ 
+-void numa_remove_cpu(int cpu)
++void numa_remove_cpu(unsigned int cpu)
+ {
+ 	numa_set_cpumask(cpu, false);
+ }
 -- 
 2.43.0
 
