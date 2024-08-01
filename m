@@ -2,76 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A336944807
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 11:21:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF2F94486F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 11:32:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=p2d2Dwj0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=z0WpuAOQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZNkz1TPGz2y8n
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 19:21:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZNzL6RJ3z3dVC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 19:32:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=p2d2Dwj0;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=z0WpuAOQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=alex.bennee@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=alex.bennee@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZNkD0R3cz2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 19:21:07 +1000 (AEST)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-5a15692b6f6so10312750a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Aug 2024 02:21:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZNyg0PyDz306x
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 19:31:53 +1000 (AEST)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-a7aa4ca9d72so848308566b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Aug 2024 02:31:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722504063; x=1723108863; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1722504709; x=1723109509; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:message-id:date:references
          :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GQVA9z2jkUPxM3dqZI0KDPVXgKoffaizeXmufcNkJbk=;
-        b=p2d2Dwj09G9RdfxypcG3YvvuYMeEDwcnpmAbBos5zvsviyzYImuXDHXF6C1e5bY/vv
-         60vIuwFtcY6GqfII79JlLBQ1LroaK3zphp6RJExpkrif623kZlfirpOAYp2Ty/iYXW1q
-         Ln9SU6VUBvwJmxBb73xHpcQNuJVsWCwy5LXNWwlMNBfEpxt4eHwtiXG+RbphIJT5agl/
-         +52OgO/dDby7lqjReN8nCAIwtTEO7hkFNdbg2V877m6Te4ffVDXvCgFfG6v7J+b++lYS
-         PzZmWnsi8qhP425XfbHEMHoH0m1hfyLUBtdiCtQR2o8F3r5OSVvMCHjXrgyYwnk3o/rE
-         QQcg==
+        bh=Rijpxav22ULBZ/jbonQFBSqZGbACHb2Ltfu5GqR29ew=;
+        b=z0WpuAOQlCKIlHcIBMOITYx07R9swEK1gvjJUcfOhqGs+VGAAl4k4SnsQM6GLp1Wy1
+         dGRqP6t+vHxPIl7/sk/Mhr/jaCozl5fVXa4HkTSLpfpIHMKmW7W1Rz3asVL2m/kr06z7
+         yF15tKQiPtBPkL3UhOVz0ssxt/+VhUxsCiPSvE5IBK3HNrk2E4PCcrJWqWQ9keON7QQW
+         7/sS+J0N7arl+8i5REmdNrqUJh7OJ+V/cCDooNuNikfLDj+mB8efBbJMTk8Sf2XxeBEx
+         ZmXwj/vdI5YnciS8NoPFg4rWvbkmNoC31cKDLEBSluWJ6p5wAyrK88TJ0wX7E+kNorLZ
+         WauA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722504063; x=1723108863;
+        d=1e100.net; s=20230601; t=1722504709; x=1723109509;
         h=content-transfer-encoding:mime-version:message-id:date:references
          :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GQVA9z2jkUPxM3dqZI0KDPVXgKoffaizeXmufcNkJbk=;
-        b=mm9PhcL15DJwG+G1ZFXoFlafuEaBnDhpbZkfDekQDjhJVwhj0CmfFhWdL7llYPckOm
-         cuxcGZTYSeL6OLvNOW2YAEYVuECsBHOmYCDFwRuzuYfAvm1OTwyQd+nNLDTfYOvzCg82
-         gtM5KxF+bd1E9X4WHnfi100oQFMWSLmclsjuwm1gDUdYE915LSHUie4+YAgQQ3dRdxTe
-         2nB9ARaqVAkbVFUGUgTxM6oK3Yl0XumhAX05eg7p57G5EO3AGN80fXkko0nXriY0Vsxn
-         zbbSEaM9LIq6hc/7hacNSEuTlyi/5/V2GHxPKPm5ai5gd1SWsw52bubwpUwO1GEaR5/w
-         xBVw==
-X-Forwarded-Encrypted: i=1; AJvYcCVVn2REyQu0AW8gzaT+xl6uOMpLbbbtxh0axR3Mxl3LxEePMR17c5qiujZDZuP2x9tUpIADTGVPLpuRtFgU9FwuexVpB4svKMBMXhdmGg==
-X-Gm-Message-State: AOJu0YwrmpEOjN0Ta2Efpe6lmiXxKxV24VEs9qWS3TUcoqBq8644pG8T
-	ckaDNLotU5b9I/eCf6INUfAp9O7Xx7FetjQcXN4/LSQb77j41LXBNnJgO7TKk14=
-X-Google-Smtp-Source: AGHT+IG4an2mFFKr4wz3Z9DFgeOmmND21A8Rbh3YvwoLKrs/2dCx443xl5h3j8lRXM2FS1yhxPSg2w==
-X-Received: by 2002:a50:ee82:0:b0:5a3:3062:36d6 with SMTP id 4fb4d7f45d1cf-5b6fe72ddc6mr1090738a12.1.1722504062925;
-        Thu, 01 Aug 2024 02:21:02 -0700 (PDT)
+        bh=Rijpxav22ULBZ/jbonQFBSqZGbACHb2Ltfu5GqR29ew=;
+        b=N+H5Kxj0uNuLDsqt8c4y4T6kifSARy0Wu5HhqRmXNShQYACC823kFrJz5tau4xPMgz
+         8nIHEllzIORt3Hs5XqgWuxEapsN6p7HMhFH1K1N9kV6RijBUBtvWzhNxVa/6uOUBL+1z
+         sUp9qAEenbq/iFVV8KzbinVQt5QLEoR110Uf4jdnWljS3jXhIYIVr1Lgu/HL0xa5CMP9
+         IeGJolBBwCR6BZW7n2qk1EHFwL1H/EklmwFfuJOBa0k4grzjlLb52gdS9aNkQ8lasVYa
+         EQ2QuQ2/ZQbPqGXJXVcW0vLaqKBBMGw55aGiw2pat9eHHzg2jNcEVKo1bOqbtyfX1YQm
+         jzrw==
+X-Forwarded-Encrypted: i=1; AJvYcCXd/Z6rgArr1XfqK0A3uvYysYe4kR0wCWsF8C1jDtWtXgK5VmHSjYRY6vYonm5/erLmoYwOa1eRcFFNWiHo6dfgPKyRhhJwLCGWJaYMqA==
+X-Gm-Message-State: AOJu0YzNslY5VwoKLJ7NhBHNe3TymJN/9KWoUHZOegk56aS1VBM8z3fO
+	9F8bvBp9fQ8P1CWFpXKnQpzxNgO/JPSRE1fJjbIanhez/ww849myr19wj1/fzas=
+X-Google-Smtp-Source: AGHT+IG5iXbqJIGCb3pyknIex0iMsjWXZk5BqBH1pB4+wqA2VBzM+EI5zwQ/R0bb0H5+cKiu5+pmpA==
+X-Received: by 2002:a17:907:968b:b0:a77:cdaa:88ab with SMTP id a640c23a62f3a-a7daf544a4fmr161420366b.15.1722504708836;
+        Thu, 01 Aug 2024 02:31:48 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b017787967sm7857844a12.9.2024.08.01.02.21.00
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acadb8313sm876290366b.211.2024.08.01.02.31.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Aug 2024 02:21:01 -0700 (PDT)
+        Thu, 01 Aug 2024 02:31:47 -0700 (PDT)
 Received: from draig (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 51C785F80C;
-	Thu,  1 Aug 2024 10:20:59 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id 5DD7F5F80C;
+	Thu,  1 Aug 2024 10:31:46 +0100 (BST)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v12 05/84] KVM: Add kvm_release_page_unused() API to put
- pages that KVM never consumes
-In-Reply-To: <20240726235234.228822-6-seanjc@google.com> (Sean
-	Christopherson's message of "Fri, 26 Jul 2024 16:51:14 -0700")
+Subject: Re: [PATCH v12 12/84] KVM: Drop @atomic param from gfn=>pfn and
+ hva=>pfn APIs
+In-Reply-To: <20240726235234.228822-13-seanjc@google.com> (Sean
+	Christopherson's message of "Fri, 26 Jul 2024 16:51:21 -0700")
 References: <20240726235234.228822-1-seanjc@google.com>
-	<20240726235234.228822-6-seanjc@google.com>
-Date: Thu, 01 Aug 2024 10:20:59 +0100
-Message-ID: <87wml0egzo.fsf@draig.linaro.org>
+	<20240726235234.228822-13-seanjc@google.com>
+Date: Thu, 01 Aug 2024 10:31:46 +0100
+Message-ID: <87plqseghp.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -92,43 +92,12 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Sean Christopherson <seanjc@google.com> writes:
 
-> Add an API to release an unused page, i.e. to put a page without marking
-> it accessed or dirty.  The API will be used when KVM faults-in a page but
-> bails before installing the guest mapping (and other similar flows).
+> Drop @atomic from the myriad "to_pfn" APIs now that all callers pass
+> "false".
+>
+> No functional change intended.
 >
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  include/linux/kvm_host.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 3d9617d1de41..c5d39a337aa3 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -1201,6 +1201,15 @@ unsigned long gfn_to_hva_prot(struct kvm *kvm, gfn=
-_t gfn, bool *writable);
->  unsigned long gfn_to_hva_memslot(struct kvm_memory_slot *slot, gfn_t gfn=
-);
->  unsigned long gfn_to_hva_memslot_prot(struct kvm_memory_slot *slot, gfn_=
-t gfn,
->  				      bool *writable);
-> +
-> +static inline void kvm_release_page_unused(struct page *page)
-> +{
-> +	if (!page)
-> +		return;
-> +
-> +	put_page(page);
-> +}
-
-I guess it's unfamiliarity with the mm layout but I was trying to find
-where the get_pages come from to see the full pattern of allocate and
-return. I guess somewhere in the depths of hva_to_pfn() from
-hva_to_pfn_retry()? I think the indirection of the page walking confuses
-me ;-)
-
-Anyway the API seems reasonable enough given the other kvm_release_
-functions.
 
 Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
