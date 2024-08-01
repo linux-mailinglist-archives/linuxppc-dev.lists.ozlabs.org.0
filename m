@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F149451BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 19:45:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26C29451CC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 19:46:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZbvx4yn0z3fpX
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 03:45:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZbwy6DPpz3dWw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 03:46:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
@@ -14,27 +14,27 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZbvY4bKGz3dRP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 03:44:57 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WZbrV0TrPz67WPF;
-	Fri,  2 Aug 2024 01:42:18 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZbwb2wVVz3dKH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 03:45:51 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WZbsX1GyPz6K6Y1;
+	Fri,  2 Aug 2024 01:43:12 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 22E93140B55;
-	Fri,  2 Aug 2024 01:44:54 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 41BE0140A86;
+	Fri,  2 Aug 2024 01:45:48 +0800 (CST)
 Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 1 Aug
- 2024 18:44:53 +0100
-Date: Thu, 1 Aug 2024 18:44:52 +0100
+ 2024 18:45:46 +0100
+Date: Thu, 1 Aug 2024 18:45:46 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 03/26] MIPS: sgi-ip27: ensure node_possible_map only
- contains valid nodes
-Message-ID: <20240801184452.00007d30@Huawei.com>
-In-Reply-To: <20240801060826.559858-4-rppt@kernel.org>
+Subject: Re: [PATCH v3 04/26] MIPS: sgi-ip27: drop
+ HAVE_ARCH_NODEDATA_EXTENSION
+Message-ID: <20240801184546.00000ba6@Huawei.com>
+In-Reply-To: <20240801060826.559858-5-rppt@kernel.org>
 References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-4-rppt@kernel.org>
+	<20240801060826.559858-5-rppt@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -61,40 +61,58 @@ Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2024 09:08:03 +0300
+On Thu,  1 Aug 2024 09:08:04 +0300
 Mike Rapoport <rppt@kernel.org> wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> For SGI IP27 machines node_possible_map is statically set to
-> NODE_MASK_ALL and it is not updated during NUMA initialization.
+> Commit f8f9f21c7848 ("MIPS: Fix build error for loongson64 and
+> sgi-ip27") added HAVE_ARCH_NODEDATA_EXTENSION to sgi-ip27 to silence a
+> compilation error that happened because sgi-ip27 didn't define array of
+> pg_data_t as node_data like most other architectures did.
 > 
-> Ensure that it only contains nodes present in the system.
+> After addition of node_data array that matches other architectures and
+> after ensuring that offline nodes do not appear on node_possible_map, it
+> is safe to drop arch_alloc_nodedata() and HAVE_ARCH_NODEDATA_EXTENSION
+> from sgi-ip27.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 > ---
->  arch/mips/sgi-ip27/ip27-smp.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  arch/mips/Kconfig                |  1 -
+>  arch/mips/sgi-ip27/ip27-memory.c | 10 ----------
+>  2 files changed, 11 deletions(-)
 > 
-> diff --git a/arch/mips/sgi-ip27/ip27-smp.c b/arch/mips/sgi-ip27/ip27-smp.c
-> index 5d2652a1d35a..62733e049570 100644
-> --- a/arch/mips/sgi-ip27/ip27-smp.c
-> +++ b/arch/mips/sgi-ip27/ip27-smp.c
-> @@ -70,11 +70,13 @@ void cpu_node_probe(void)
->  	gda_t *gdap = GDA;
->  
->  	nodes_clear(node_online_map);
-> +	nodes_clear(node_possible_map);
->  	for (i = 0; i < MAX_NUMNODES; i++) {
->  		nasid_t nasid = gdap->g_nasidtable[i];
->  		if (nasid == INVALID_NASID)
->  			break;
->  		node_set_online(nasid);
-> +		node_set(nasid, node_possible_map);
->  		highest = node_scan_cpus(nasid, highest);
->  	}
->  
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 60077e576935..ea5f3c3c31f6 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -735,7 +735,6 @@ config SGI_IP27
+>  	select WAR_R10000_LLSC
+>  	select MIPS_L1_CACHE_SHIFT_7
+>  	select NUMA
+> -	select HAVE_ARCH_NODEDATA_EXTENSION
+>  	help
+>  	  This are the SGI Origin 200, Origin 2000 and Onyx 2 Graphics
+>  	  workstations.  To compile a Linux kernel that runs on these, say Y
+> diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+> index c30ef6958b97..eb6d2fa41a8a 100644
+> --- a/arch/mips/sgi-ip27/ip27-memory.c
+> +++ b/arch/mips/sgi-ip27/ip27-memory.c
+> @@ -426,13 +426,3 @@ void __init mem_init(void)
+>  	memblock_free_all();
+>  	setup_zero_pages();	/* This comes from node 0 */
+>  }
+> -
+> -pg_data_t * __init arch_alloc_nodedata(int nid)
+> -{
+> -	return memblock_alloc(sizeof(pg_data_t), SMP_CACHE_BYTES);
+> -}
+> -
+> -void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
+> -{
+> -	__node_data[nid] = (struct node_data *)pgdat;
+> -}
 
