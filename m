@@ -1,77 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF2F94486F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 11:32:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45529448DB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 11:54:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=z0WpuAOQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=A39K2ghm;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZNzL6RJ3z3dVC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 19:32:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZPSk5TGXz3dLM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 19:54:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=z0WpuAOQ;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=A39K2ghm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=alex.bennee@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::52c; helo=mail-ed1-x52c.google.com; envelope-from=alex.bennee@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZNyg0PyDz306x
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 19:31:53 +1000 (AEST)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-a7aa4ca9d72so848308566b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Aug 2024 02:31:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZPS24Zlgz30TQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 19:53:52 +1000 (AEST)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-5a2ffc34722so3551482a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 Aug 2024 02:53:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722504709; x=1723109509; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1722506028; x=1723110828; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:message-id:date:references
          :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Rijpxav22ULBZ/jbonQFBSqZGbACHb2Ltfu5GqR29ew=;
-        b=z0WpuAOQlCKIlHcIBMOITYx07R9swEK1gvjJUcfOhqGs+VGAAl4k4SnsQM6GLp1Wy1
-         dGRqP6t+vHxPIl7/sk/Mhr/jaCozl5fVXa4HkTSLpfpIHMKmW7W1Rz3asVL2m/kr06z7
-         yF15tKQiPtBPkL3UhOVz0ssxt/+VhUxsCiPSvE5IBK3HNrk2E4PCcrJWqWQ9keON7QQW
-         7/sS+J0N7arl+8i5REmdNrqUJh7OJ+V/cCDooNuNikfLDj+mB8efBbJMTk8Sf2XxeBEx
-         ZmXwj/vdI5YnciS8NoPFg4rWvbkmNoC31cKDLEBSluWJ6p5wAyrK88TJ0wX7E+kNorLZ
-         WauA==
+        bh=8MGDW2w0EUrwnI4S//nT3S+vOipXyZxOwDlAdIY1JMk=;
+        b=A39K2ghmnIbPg7/P02p377vDaTlIkFEQwldrf3MLdmHYbZWvCOMVNQDCUn1Hx+20Wn
+         Kwys838pvWbYpn8PyZeyIfgqTwyt0nLJcDxGeZOmoiZ+dR2ISZp1RrEKCV+moJEVjfwx
+         FPIc/Tv2zXeyAmTZL27T+SHWGOFOCeMbaNAN37l0OuY6fWpxJsJ4mccmBLPNwtxVWsNl
+         tU27ZgL4Cx8IQwr97uTSw2XVN6q4C02bHO5MTOkKHebq5JLc7HbH1FojtVF5f0ONiBD2
+         XAurUdzGqo26Z3JNtlNdpAvxsWgxPwWsFjzpVAueMJzdyvYFuheIer1zawC4faepjtau
+         7f2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722504709; x=1723109509;
+        d=1e100.net; s=20230601; t=1722506028; x=1723110828;
         h=content-transfer-encoding:mime-version:message-id:date:references
          :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Rijpxav22ULBZ/jbonQFBSqZGbACHb2Ltfu5GqR29ew=;
-        b=N+H5Kxj0uNuLDsqt8c4y4T6kifSARy0Wu5HhqRmXNShQYACC823kFrJz5tau4xPMgz
-         8nIHEllzIORt3Hs5XqgWuxEapsN6p7HMhFH1K1N9kV6RijBUBtvWzhNxVa/6uOUBL+1z
-         sUp9qAEenbq/iFVV8KzbinVQt5QLEoR110Uf4jdnWljS3jXhIYIVr1Lgu/HL0xa5CMP9
-         IeGJolBBwCR6BZW7n2qk1EHFwL1H/EklmwFfuJOBa0k4grzjlLb52gdS9aNkQ8lasVYa
-         EQ2QuQ2/ZQbPqGXJXVcW0vLaqKBBMGw55aGiw2pat9eHHzg2jNcEVKo1bOqbtyfX1YQm
-         jzrw==
-X-Forwarded-Encrypted: i=1; AJvYcCXd/Z6rgArr1XfqK0A3uvYysYe4kR0wCWsF8C1jDtWtXgK5VmHSjYRY6vYonm5/erLmoYwOa1eRcFFNWiHo6dfgPKyRhhJwLCGWJaYMqA==
-X-Gm-Message-State: AOJu0YzNslY5VwoKLJ7NhBHNe3TymJN/9KWoUHZOegk56aS1VBM8z3fO
-	9F8bvBp9fQ8P1CWFpXKnQpzxNgO/JPSRE1fJjbIanhez/ww849myr19wj1/fzas=
-X-Google-Smtp-Source: AGHT+IG5iXbqJIGCb3pyknIex0iMsjWXZk5BqBH1pB4+wqA2VBzM+EI5zwQ/R0bb0H5+cKiu5+pmpA==
-X-Received: by 2002:a17:907:968b:b0:a77:cdaa:88ab with SMTP id a640c23a62f3a-a7daf544a4fmr161420366b.15.1722504708836;
-        Thu, 01 Aug 2024 02:31:48 -0700 (PDT)
+        bh=8MGDW2w0EUrwnI4S//nT3S+vOipXyZxOwDlAdIY1JMk=;
+        b=VS0bwZhNGneUy/bRK81D8u9IZuK9zPMPnITxbSTF5KPTNx+CUuYyVhDi6f6kTJzI0N
+         PCoNwtpPNdOQpe1QzOAQe0dXap9CBXWsh3SAhmMHwSNP0CBNqDjPU4Q6QvWraCLItQpD
+         VKjrrn3x98Kkww1NvXJZKrKXBcUrVCqOhtALenQH8CqMlBnd/nmXvZQjruSxO9Qa3R/D
+         6+oPIpA5kP3hKGJ4zt2NIvJWf74R8tdM54tclMGBx9urmKBTJjzgK4u94Y7XPBjR1yTP
+         rLVrcgGhwR5YpeVrg28Ugut9oaIjNP0V47QX6/GOHF5JjotvgoSj+cIGnhiaVPPqkZMz
+         f5mQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOzRcIy5kpVOyc/GYc4gdPbvxV5vQZW7mZPYTetNph5/qMS0A9PoZ9IjeP40e764Z8edHn4BgLe1Y/nQJKQMrCJ6F94RLfcHo2khjwdQ==
+X-Gm-Message-State: AOJu0YyQVGJaIPmQ5Bh2T5/RAGL+gJoh6+IsC3HVseJUeE631NdUytl2
+	tGb+P1d1D9PrPYQS2lRo272RKO92ZTIRIrsNGNk73vaj8MQn2ayDodC8sxpAU/k=
+X-Google-Smtp-Source: AGHT+IHNrw29WKyolinu6cyXHFfq+0WsM6WXcBxZ1/oFvQaGEtI1aOWo6VY84S/JlZwJgkWdM0qlVw==
+X-Received: by 2002:a05:6402:440d:b0:57d:5442:a709 with SMTP id 4fb4d7f45d1cf-5b778dc53f8mr879162a12.0.1722506028149;
+        Thu, 01 Aug 2024 02:53:48 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acadb8313sm876290366b.211.2024.08.01.02.31.47
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b5257f39adsm2866327a12.96.2024.08.01.02.53.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Aug 2024 02:31:47 -0700 (PDT)
+        Thu, 01 Aug 2024 02:53:41 -0700 (PDT)
 Received: from draig (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 5DD7F5F80C;
-	Thu,  1 Aug 2024 10:31:46 +0100 (BST)
+	by draig.lan (Postfix) with ESMTP id CC0595F80C;
+	Thu,  1 Aug 2024 10:53:39 +0100 (BST)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v12 12/84] KVM: Drop @atomic param from gfn=>pfn and
- hva=>pfn APIs
-In-Reply-To: <20240726235234.228822-13-seanjc@google.com> (Sean
-	Christopherson's message of "Fri, 26 Jul 2024 16:51:21 -0700")
+Subject: Re: [PATCH v12 24/84] KVM: Use plain "struct page" pointer instead
+ of single-entry array
+In-Reply-To: <20240726235234.228822-25-seanjc@google.com> (Sean
+	Christopherson's message of "Fri, 26 Jul 2024 16:51:33 -0700")
 References: <20240726235234.228822-1-seanjc@google.com>
-	<20240726235234.228822-13-seanjc@google.com>
-Date: Thu, 01 Aug 2024 10:31:46 +0100
-Message-ID: <87plqseghp.fsf@draig.linaro.org>
+	<20240726235234.228822-25-seanjc@google.com>
+Date: Thu, 01 Aug 2024 10:53:39 +0100
+Message-ID: <87le1gefh8.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -92,8 +92,9 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 Sean Christopherson <seanjc@google.com> writes:
 
-> Drop @atomic from the myriad "to_pfn" APIs now that all callers pass
-> "false".
+> Use a single pointer instead of a single-entry array for the struct page
+> pointer in hva_to_pfn_fast().  Using an array makes the code unnecessarily
+> annoying to read and update.
 >
 > No functional change intended.
 >
