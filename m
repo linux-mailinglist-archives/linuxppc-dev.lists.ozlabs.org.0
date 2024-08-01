@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 926AE94440B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 08:19:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF4D944421
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 08:19:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sggkX9UX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cc4WvpYS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZJhM3mN8z3cdy
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 16:19:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZJj70n9Hz3dKH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 16:19:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sggkX9UX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cc4WvpYS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZJWT18KTz2xdh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 16:11:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZJWh64jQz3d8S
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 16:11:44 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4A73A6140C;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 18C616263A;
+	Thu,  1 Aug 2024 06:11:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83720C4AF09;
 	Thu,  1 Aug 2024 06:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7173C4AF0C;
-	Thu,  1 Aug 2024 06:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722492691;
-	bh=Hwkl2fYIk7TOliTb70qL/9b9HRfQD7yZz25kkbJxzwg=;
+	s=k20201202; t=1722492702;
+	bh=a5wWvXp5sZfTjfQzLNJ+a5bJ5ZJPXICMVCqsCnclVEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sggkX9UXhxZlNsIU8Cl5aBh0kTbihmyOr+rKh8PUi6HpNbM0T6FIQKsN6mrcRHsf+
-	 /SHE74zS057DN4assx4nJNhHkYwGmMqA+89c3GAN3GWW1EkySpM/jKp7djIHsHmlQ5
-	 J+Rv/xUy1WL2p4zN9YP1XUUreurEUzXm4yz/xIU+P7O+cVStnX8B/b0U7trY1kXI3V
-	 hD82NTGJiywRlimIOVt1MLB+ZyReKPZdsG0bD+xetL7gw2D1t4eztwZAnWKJPPnk54
-	 vnKaRI5ocC0Nw9z/8HV7kFU7UWYinD8YhScEarF8oyOHxHwNgCdMiLoia/TVqvYCnm
-	 Y30JzCKYd6e+A==
+	b=cc4WvpYSk2IgT7M8f19PtLCANZs9ejYsgNz/cO/n9jZN8qc0EaFo0hFRtACL2ndu9
+	 6mQNevH4Cv97QgSeWny58SoJTelXG7+q/yupDHNjypMc9KfJSvH9dJkMYoPTVHXTFt
+	 qOV8qLNBVKP+KQ0TDEb4IxRQJnulZa3OTDwTCKv2ZaDrPMf/7n9eMwLrQ+9DBTKaQ2
+	 CscX8zJ0BsTHTjThMBHjRi6ejLjZ0Khv97xgxfXs5HKaUT5vo9NA59YW7rniE33hCD
+	 LqVJKeLyrOjDdwbfYs2UANWDOREYQ7kpVO/8B3QyCKE+mrBu4NqR3hacT/uObjnyRS
+	 Fd/de2lMyOA4Q==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 14/26] x86/numa_emu: split __apicid_to_node update to a helper function
-Date: Thu,  1 Aug 2024 09:08:14 +0300
-Message-ID: <20240801060826.559858-15-rppt@kernel.org>
+Subject: [PATCH v3 15/26] x86/numa_emu: use a helper function to get MAX_DMA32_PFN
+Date: Thu,  1 Aug 2024 09:08:15 +0300
+Message-ID: <20240801060826.559858-16-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801060826.559858-1-rppt@kernel.org>
 References: <20240801060826.559858-1-rppt@kernel.org>
@@ -72,82 +72,61 @@ Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
 ---
- arch/x86/include/asm/numa.h  |  2 ++
- arch/x86/mm/numa.c           | 22 ++++++++++++++++++++++
- arch/x86/mm/numa_emulation.c | 14 +-------------
- 3 files changed, 25 insertions(+), 13 deletions(-)
+ arch/x86/include/asm/numa.h  | 1 +
+ arch/x86/mm/numa.c           | 5 +++++
+ arch/x86/mm/numa_emulation.c | 4 ++--
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
-index 2dab1ada96cf..7017d540894a 100644
+index 7017d540894a..b22c85c1ef18 100644
 --- a/arch/x86/include/asm/numa.h
 +++ b/arch/x86/include/asm/numa.h
-@@ -72,6 +72,8 @@ void debug_cpumask_set_cpu(int cpu, int node, bool enable);
- 
- #ifdef CONFIG_NUMA_EMU
+@@ -74,6 +74,7 @@ void debug_cpumask_set_cpu(int cpu, int node, bool enable);
  int numa_emu_cmdline(char *str);
-+void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
-+					unsigned int nr_emu_nids);
+ void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
+ 					unsigned int nr_emu_nids);
++u64 __init numa_emu_dma_end(void);
  #else /* CONFIG_NUMA_EMU */
  static inline int numa_emu_cmdline(char *str)
  {
 diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index cfe7e5477cf8..9180d524cfe4 100644
+index 9180d524cfe4..8b7c6580d268 100644
 --- a/arch/x86/mm/numa.c
 +++ b/arch/x86/mm/numa.c
-@@ -848,6 +848,28 @@ EXPORT_SYMBOL(cpumask_of_node);
- 
- #endif	/* !CONFIG_DEBUG_PER_CPU_MAPS */
- 
-+#ifdef CONFIG_NUMA_EMU
-+void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
-+					unsigned int nr_emu_nids)
+@@ -868,6 +868,11 @@ void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
+ 		__apicid_to_node[i] = j < nr_emu_nids ? j : 0;
+ 	}
+ }
++
++u64 __init numa_emu_dma_end(void)
 +{
-+	int i, j;
-+
-+	/*
-+	 * Transform __apicid_to_node table to use emulated nids by
-+	 * reverse-mapping phys_nid.  The maps should always exist but fall
-+	 * back to zero just in case.
-+	 */
-+	for (i = 0; i < ARRAY_SIZE(__apicid_to_node); i++) {
-+		if (__apicid_to_node[i] == NUMA_NO_NODE)
-+			continue;
-+		for (j = 0; j < nr_emu_nids; j++)
-+			if (__apicid_to_node[i] == emu_nid_to_phys[j])
-+				break;
-+		__apicid_to_node[i] = j < nr_emu_nids ? j : 0;
-+	}
++	return PFN_PHYS(MAX_DMA32_PFN);
 +}
-+#endif /* CONFIG_NUMA_EMU */
-+
+ #endif /* CONFIG_NUMA_EMU */
+ 
  #ifdef CONFIG_NUMA_KEEP_MEMINFO
- static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
- {
 diff --git a/arch/x86/mm/numa_emulation.c b/arch/x86/mm/numa_emulation.c
-index 439804e21962..f2746e52ab93 100644
+index f2746e52ab93..fb4814497446 100644
 --- a/arch/x86/mm/numa_emulation.c
 +++ b/arch/x86/mm/numa_emulation.c
-@@ -476,19 +476,7 @@ void __init numa_emulation(struct numa_meminfo *numa_meminfo, int numa_dist_cnt)
- 		    ei.blk[i].nid != NUMA_NO_NODE)
- 			node_set(ei.blk[i].nid, numa_nodes_parsed);
+@@ -128,7 +128,7 @@ static int __init split_nodes_interleave(struct numa_meminfo *ei,
+ 	 */
+ 	while (!nodes_empty(physnode_mask)) {
+ 		for_each_node_mask(i, physnode_mask) {
+-			u64 dma32_end = PFN_PHYS(MAX_DMA32_PFN);
++			u64 dma32_end = numa_emu_dma_end();
+ 			u64 start, limit, end;
+ 			int phys_blk;
  
--	/*
--	 * Transform __apicid_to_node table to use emulated nids by
--	 * reverse-mapping phys_nid.  The maps should always exist but fall
--	 * back to zero just in case.
--	 */
--	for (i = 0; i < ARRAY_SIZE(__apicid_to_node); i++) {
--		if (__apicid_to_node[i] == NUMA_NO_NODE)
--			continue;
--		for (j = 0; j < ARRAY_SIZE(emu_nid_to_phys); j++)
--			if (__apicid_to_node[i] == emu_nid_to_phys[j])
--				break;
--		__apicid_to_node[i] = j < ARRAY_SIZE(emu_nid_to_phys) ? j : 0;
--	}
-+	numa_emu_update_cpu_to_node(emu_nid_to_phys, ARRAY_SIZE(emu_nid_to_phys));
+@@ -275,7 +275,7 @@ static int __init split_nodes_size_interleave_uniform(struct numa_meminfo *ei,
+ 	 */
+ 	while (!nodes_empty(physnode_mask)) {
+ 		for_each_node_mask(i, physnode_mask) {
+-			u64 dma32_end = PFN_PHYS(MAX_DMA32_PFN);
++			u64 dma32_end = numa_emu_dma_end();
+ 			u64 start, limit, end;
+ 			int phys_blk;
  
- 	/* make sure all emulated nodes are mapped to a physical node */
- 	for (i = 0; i < ARRAY_SIZE(emu_nid_to_phys); i++)
 -- 
 2.43.0
 
