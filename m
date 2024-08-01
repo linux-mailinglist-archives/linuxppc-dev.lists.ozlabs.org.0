@@ -1,37 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6245944FB5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 17:55:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E24E944FD8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 18:02:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZYTT4YR1z3dVC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 01:55:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZYcw0hr6z3dWP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 02:02:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZYT52xYTz3dKH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 01:55:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZYcW58fXz2y71
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 02:01:46 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EB88115A1;
-	Thu,  1 Aug 2024 08:55:11 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC5A81007;
+	Thu,  1 Aug 2024 09:01:40 -0700 (PDT)
 Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 33D933F5A1;
-	Thu,  1 Aug 2024 08:54:43 -0700 (PDT)
-Date: Thu, 1 Aug 2024 16:54:41 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 312AE3F5A1;
+	Thu,  1 Aug 2024 09:01:12 -0700 (PDT)
+Date: Thu, 1 Aug 2024 17:01:10 +0100
 From: Joey Gouly <joey.gouly@arm.com>
 To: Dave Martin <Dave.Martin@arm.com>
-Subject: Re: [PATCH v4 18/29] arm64: add POE signal support
-Message-ID: <20240801155441.GB841837@e124191.cambridge.arm.com>
+Subject: Re: [PATCH v4 15/29] arm64: handle PKEY/POE faults
+Message-ID: <20240801160110.GC841837@e124191.cambridge.arm.com>
 References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-19-joey.gouly@arm.com>
- <ZqJ2knGETfS4nfEA@e133380.arm.com>
+ <20240503130147.1154804-16-joey.gouly@arm.com>
+ <ZqJ11TqIJq9oB+pt@e133380.arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZqJ2knGETfS4nfEA@e133380.arm.com>
+In-Reply-To: <ZqJ11TqIJq9oB+pt@e133380.arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,80 +47,112 @@ Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 25, 2024 at 05:00:18PM +0100, Dave Martin wrote:
-> Hi,
-> 
-> On Fri, May 03, 2024 at 02:01:36PM +0100, Joey Gouly wrote:
-> > Add PKEY support to signals, by saving and restoring POR_EL0 from the stackframe.
+On Thu, Jul 25, 2024 at 04:57:09PM +0100, Dave Martin wrote:
+> On Fri, May 03, 2024 at 02:01:33PM +0100, Joey Gouly wrote:
+> > If a memory fault occurs that is due to an overlay/pkey fault, report that to
+> > userspace with a SEGV_PKUERR.
 > > 
 > > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
 > > Cc: Catalin Marinas <catalin.marinas@arm.com>
 > > Cc: Will Deacon <will@kernel.org>
-> > Reviewed-by: Mark Brown <broonie@kernel.org>
-> > Acked-by: Szabolcs Nagy <szabolcs.nagy@arm.com>
 > > ---
-> >  arch/arm64/include/uapi/asm/sigcontext.h |  7 ++++
-> >  arch/arm64/kernel/signal.c               | 52 ++++++++++++++++++++++++
-> >  2 files changed, 59 insertions(+)
+> >  arch/arm64/include/asm/traps.h |  1 +
+> >  arch/arm64/kernel/traps.c      | 12 ++++++--
+> >  arch/arm64/mm/fault.c          | 56 ++++++++++++++++++++++++++++++++--
+> >  3 files changed, 64 insertions(+), 5 deletions(-)
 > > 
-> > diff --git a/arch/arm64/include/uapi/asm/sigcontext.h b/arch/arm64/include/uapi/asm/sigcontext.h
-> > index 8a45b7a411e0..e4cba8a6c9a2 100644
-> > --- a/arch/arm64/include/uapi/asm/sigcontext.h
-> > +++ b/arch/arm64/include/uapi/asm/sigcontext.h
-> 
-> [...]
-> 
-> > @@ -980,6 +1013,13 @@ static int setup_sigframe_layout(struct rt_sigframe_user_layout *user,
-> >  			return err;
-> >  	}
+> > diff --git a/arch/arm64/include/asm/traps.h b/arch/arm64/include/asm/traps.h
+> > index eefe766d6161..f6f6f2cb7f10 100644
+> > --- a/arch/arm64/include/asm/traps.h
+> > +++ b/arch/arm64/include/asm/traps.h
+> > @@ -25,6 +25,7 @@ try_emulate_armv8_deprecated(struct pt_regs *regs, u32 insn)
+> >  void force_signal_inject(int signal, int code, unsigned long address, unsigned long err);
+> >  void arm64_notify_segfault(unsigned long addr);
+> >  void arm64_force_sig_fault(int signo, int code, unsigned long far, const char *str);
+> > +void arm64_force_sig_fault_pkey(int signo, int code, unsigned long far, const char *str, int pkey);
+> >  void arm64_force_sig_mceerr(int code, unsigned long far, short lsb, const char *str);
+> >  void arm64_force_sig_ptrace_errno_trap(int errno, unsigned long far, const char *str);
 > >  
-> > +	if (system_supports_poe()) {
-> > +		err = sigframe_alloc(user, &user->poe_offset,
-> > +				     sizeof(struct poe_context));
-> > +		if (err)
-> > +			return err;
-> > +	}
-> > +
-> >  	return sigframe_alloc_end(user);
+> > diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+> > index 215e6d7f2df8..1bac6c84d3f5 100644
+> > --- a/arch/arm64/kernel/traps.c
+> > +++ b/arch/arm64/kernel/traps.c
+> > @@ -263,16 +263,24 @@ static void arm64_show_signal(int signo, const char *str)
+> >  	__show_regs(regs);
 > >  }
 > >  
-> > @@ -1020,6 +1060,15 @@ static int setup_sigframe(struct rt_sigframe_user_layout *user,
-> >  		__put_user_error(current->thread.fault_code, &esr_ctx->esr, err);
-> >  	}
+> > -void arm64_force_sig_fault(int signo, int code, unsigned long far,
+> > -			   const char *str)
+> > +void arm64_force_sig_fault_pkey(int signo, int code, unsigned long far,
+> > +			   const char *str, int pkey)
+> >  {
+> >  	arm64_show_signal(signo, str);
+> >  	if (signo == SIGKILL)
+> >  		force_sig(SIGKILL);
+> > +	else if (code == SEGV_PKUERR)
+> > +		force_sig_pkuerr((void __user *)far, pkey);
+> 
+> Is signo definitely SIGSEGV here?  It looks to me like we can get in
+> here for SIGBUS, SIGTRAP etc.
+> 
+> si_codes are not unique between different signo here, so I'm wondering
+> whether this should this be:
+> 
+> 	else if (signo == SIGSEGV && code == SEGV_PKUERR)
+> 
+> ...?
+> 
+> 
+> >  	else
+> >  		force_sig_fault(signo, code, (void __user *)far);
+> >  }
 > >  
-> > +	if (system_supports_poe() && err == 0 && user->poe_offset) {
-> > +		struct poe_context __user *poe_ctx =
-> > +			apply_user_offset(user, user->poe_offset);
-> > +
-> > +		__put_user_error(POE_MAGIC, &poe_ctx->head.magic, err);
-> > +		__put_user_error(sizeof(*poe_ctx), &poe_ctx->head.size, err);
-> > +		__put_user_error(read_sysreg_s(SYS_POR_EL0), &poe_ctx->por_el0, err);
-> > +	}
-> > +
+> > +void arm64_force_sig_fault(int signo, int code, unsigned long far,
+> > +			   const char *str)
+> > +{
+> > +	arm64_force_sig_fault_pkey(signo, code, far, str, 0);
 > 
-> Does the AArch64 procedure call standard say anything about whether
-> POR_EL0 is caller-saved?
+> Is there a reason not to follow the same convention as elsewhere, where
+> -1 is passed for "no pkey"?
+> 
+> If we think this should never be called with signo == SIGSEGV &&
+> code == SEGV_PKUERR and no valid pkey but if it's messy to prove, then
+> maybe a WARN_ON_ONCE() would be worth it here?
+> 
 
-I asked about this, and it doesn't say anything and they don't plan on it,
-since it's very application specific.
+Anshuman suggested to separate them out, which I did like below, I think that
+addresses your comments too?
 
-> 
-> <bikeshed>
-> 
-> In theory we could skip saving this register if it is already
-> POR_EL0_INIT (which it often will be), and if the signal handler is not
-> supposed to modify and leave the modified value in the register when
-> returning.
-> 
-> The complexity of the additional check my be a bit pointless though,
-> and the the handler might theoretically want to change the interrupted
-> code's POR_EL0 explicitly, which would be complicated if POE_MAGIC is
-> sometimes there and sometimes not.
-> 
-> </bikeshed>
-> 
-I think trying to skip/optimise something here would be more effort than any
-possible benefits!
+diff --git arch/arm64/kernel/traps.c arch/arm64/kernel/traps.c
+index 215e6d7f2df8..49bac9ae04c0 100644
+--- arch/arm64/kernel/traps.c
++++ arch/arm64/kernel/traps.c
+@@ -273,6 +273,13 @@ void arm64_force_sig_fault(int signo, int code, unsigned long far,
+                force_sig_fault(signo, code, (void __user *)far);
+ }
+ 
++void arm64_force_sig_fault_pkey(int signo, int code, unsigned long far,
++                          const char *str, int pkey)
++{
++       arm64_show_signal(signo, str);
++       force_sig_pkuerr((void __user *)far, pkey);
++}
++
+ void arm64_force_sig_mceerr(int code, unsigned long far, short lsb,
+                            const char *str)
+ {
+
+diff --git arch/arm64/mm/fault.c arch/arm64/mm/fault.c
+index 451ba7cbd5ad..1ddd46b97f88 100644
+--- arch/arm64/mm/fault.c
++++ arch/arm64/mm/fault.c
+
+-               arm64_force_sig_fault(SIGSEGV, si_code, far, inf->name);
++               if (si_code == SEGV_PKUERR)
++                       arm64_force_sig_fault_pkey(SIGSEGV, si_code, far, inf->name, pkey);
++               else
++                       arm64_force_sig_fault(SIGSEGV, si_code, far, inf->name);
+
 
 Thanks,
 Joey
