@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62ED7944383
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 08:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D7C944394
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 08:14:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jS8CwM2H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MFAG9F3f;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZJYs2NMMz3dK7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 16:13:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZJZf1V1kz3cZd
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 16:14:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jS8CwM2H;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MFAG9F3f;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZJTg2RRyz3cmk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 16:09:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZJTv005Cz3d2m
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 16:10:10 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A149B61B43;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 39F6E62502;
+	Thu,  1 Aug 2024 06:10:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB07C4AF11;
 	Thu,  1 Aug 2024 06:09:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FA4C4AF0D;
-	Thu,  1 Aug 2024 06:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722492597;
-	bh=r+zUcEDoxtqvT8BU/VmlycxtHktOTZUPU96MGvM/m8c=;
+	s=k20201202; t=1722492608;
+	bh=+b1cOkZzBkabktp5Vtr0BxOA2OwItOU3swcoPl+STrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jS8CwM2HVacHd88SFDPtwS0+oYW3iYC3FGtk8UqItF2w5da1ERg0blF0k9sJIq5gO
-	 j+49LhbnKA5MHqV4Fgt2ytbHPvmsT/0zZqHsz/HcWK7tqRzK7FnDQWR65QvIGxzpV6
-	 IgOZkkRBg6DhUMfwbNJ/Kpf+yEo/Uq9WJtCbSDiQBMnlyq0A8Zzjp1qrR3NlDQfr++
-	 AKmQzG7nVd2IbIbt/+lnbQ9V4sB35D21NuC4UdRz8suodH6nNMsYTL+jbG3gGXHsfj
-	 1TulkgepHvXzaSOM7uuBbCwqnItrZwuJ2WR603WAEBN9R5dOB6tCA2yzZTE3wfWcrf
-	 jOWVtDodBbVmw==
+	b=MFAG9F3fUnIEGckALXUsgPgJNDOGxKIktrZWhCPRrwe1l/PA4t95t0glD4Bw67Wwj
+	 56IqcN7KC3zzeCXB3c8CrI5bl5iDUVSKZrsLqr43Ecm7gRjqRFCAR9bIDA59V6hoqm
+	 Xly5FwnM79IMgwgHQI+TPINCsSXXhleTBgnO0f80JBYd2cMfyLGz32VP93mcQrjqJA
+	 Ne73hzkU/Y8f6hDf1oBGnhpCmZoHktUlCUaZ+WLWYPT98uUNEZFkSQTU50QEbSbj1J
+	 0OJkDgvPRbuCaVMusjazFYkXiGRxn2uK7gxV2/FyMUUmWwS+NFGAia450ymPPe8PXm
+	 gEBtBz7iXoOvw==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 06/26] MIPS: loongson64: drop HAVE_ARCH_NODEDATA_EXTENSION
-Date: Thu,  1 Aug 2024 09:08:06 +0300
-Message-ID: <20240801060826.559858-7-rppt@kernel.org>
+Subject: [PATCH v3 07/26] mm: drop CONFIG_HAVE_ARCH_NODEDATA_EXTENSION
+Date: Thu,  1 Aug 2024 09:08:07 +0300
+Message-ID: <20240801060826.559858-8-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801060826.559858-1-rppt@kernel.org>
 References: <20240801060826.559858-1-rppt@kernel.org>
@@ -65,63 +65,97 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Commit f8f9f21c7848 ("MIPS: Fix build error for loongson64 and
-sgi-ip27") added HAVE_ARCH_NODEDATA_EXTENSION to loongson64 to silence a
-compilation error that happened because loongson64 didn't define array
-of pg_data_t as node_data like most other architectures did.
+There are no users of HAVE_ARCH_NODEDATA_EXTENSION left, so
+arch_alloc_nodedata() and arch_refresh_nodedata() are not needed
+anymore.
 
-After rename of __node_data to node_data arch_alloc_nodedata() and
-HAVE_ARCH_NODEDATA_EXTENSION can be dropped from loongson64.
-
-Since it was the only user of HAVE_ARCH_NODEDATA_EXTENSION config option
-also remove this option from arch/mips/Kconfig.
+Replace the call to arch_alloc_nodedata() in free_area_init() with
+memblock_alloc(), remove arch_refresh_nodedata() and cleanup
+include/linux/memory_hotplug.h from the associated ifdefery.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
 ---
- arch/mips/Kconfig           |  4 ----
- arch/mips/loongson64/numa.c | 10 ----------
- 2 files changed, 14 deletions(-)
+ include/linux/memory_hotplug.h | 48 ----------------------------------
+ mm/mm_init.c                   |  3 +--
+ 2 files changed, 1 insertion(+), 50 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index ea5f3c3c31f6..43da6d596e2b 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -502,7 +502,6 @@ config MACH_LOONGSON64
- 	select USE_OF
- 	select BUILTIN_DTB
- 	select PCI_HOST_GENERIC
--	select HAVE_ARCH_NODEDATA_EXTENSION if NUMA
- 	help
- 	  This enables the support of Loongson-2/3 family of machines.
+diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+index ebe876930e78..b27ddce5d324 100644
+--- a/include/linux/memory_hotplug.h
++++ b/include/linux/memory_hotplug.h
+@@ -16,54 +16,6 @@ struct resource;
+ struct vmem_altmap;
+ struct dev_pagemap;
  
-@@ -2612,9 +2611,6 @@ config NUMA
- config SYS_SUPPORTS_NUMA
- 	bool
- 
--config HAVE_ARCH_NODEDATA_EXTENSION
--	bool
+-#ifdef CONFIG_HAVE_ARCH_NODEDATA_EXTENSION
+-/*
+- * For supporting node-hotadd, we have to allocate a new pgdat.
+- *
+- * If an arch has generic style NODE_DATA(),
+- * node_data[nid] = kzalloc() works well. But it depends on the architecture.
+- *
+- * In general, generic_alloc_nodedata() is used.
+- *
+- */
+-extern pg_data_t *arch_alloc_nodedata(int nid);
+-extern void arch_refresh_nodedata(int nid, pg_data_t *pgdat);
 -
- config RELOCATABLE
- 	bool "Relocatable kernel"
- 	depends on SYS_SUPPORTS_RELOCATABLE
-diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
-index b50ce28d2741..64fcfaa885b6 100644
---- a/arch/mips/loongson64/numa.c
-+++ b/arch/mips/loongson64/numa.c
-@@ -198,13 +198,3 @@ void __init prom_init_numa_memory(void)
- 	pr_info("CP0_PageGrain: CP0 5.1 (0x%x)\n", read_c0_pagegrain());
- 	prom_meminit();
- }
+-#else /* CONFIG_HAVE_ARCH_NODEDATA_EXTENSION */
 -
--pg_data_t * __init arch_alloc_nodedata(int nid)
--{
--	return memblock_alloc(sizeof(pg_data_t), SMP_CACHE_BYTES);
--}
+-#define arch_alloc_nodedata(nid)	generic_alloc_nodedata(nid)
 -
--void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
+-#ifdef CONFIG_NUMA
+-/*
+- * XXX: node aware allocation can't work well to get new node's memory at this time.
+- *	Because, pgdat for the new node is not allocated/initialized yet itself.
+- *	To use new node's memory, more consideration will be necessary.
+- */
+-#define generic_alloc_nodedata(nid)				\
+-({								\
+-	memblock_alloc(sizeof(*pgdat), SMP_CACHE_BYTES);	\
+-})
+-
+-extern pg_data_t *node_data[];
+-static inline void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
 -{
 -	node_data[nid] = pgdat;
 -}
+-
+-#else /* !CONFIG_NUMA */
+-
+-/* never called */
+-static inline pg_data_t *generic_alloc_nodedata(int nid)
+-{
+-	BUG();
+-	return NULL;
+-}
+-static inline void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
+-{
+-}
+-#endif /* CONFIG_NUMA */
+-#endif /* CONFIG_HAVE_ARCH_NODEDATA_EXTENSION */
+-
+ #ifdef CONFIG_MEMORY_HOTPLUG
+ struct page *pfn_to_online_page(unsigned long pfn);
+ 
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 75c3bd42799b..bcc2f2dd8021 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1838,11 +1838,10 @@ void __init free_area_init(unsigned long *max_zone_pfn)
+ 
+ 		if (!node_online(nid)) {
+ 			/* Allocator not initialized yet */
+-			pgdat = arch_alloc_nodedata(nid);
++			pgdat = memblock_alloc(sizeof(*pgdat), SMP_CACHE_BYTES);
+ 			if (!pgdat)
+ 				panic("Cannot allocate %zuB for node %d.\n",
+ 				       sizeof(*pgdat), nid);
+-			arch_refresh_nodedata(nid, pgdat);
+ 		}
+ 
+ 		pgdat = NODE_DATA(nid);
 -- 
 2.43.0
 
