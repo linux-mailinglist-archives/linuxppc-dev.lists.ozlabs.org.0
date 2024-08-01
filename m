@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1B2943AB4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 02:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A61F3943ABD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 02:19:09 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TXhmQTJ8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eEiFKdei;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WZ8h42dRQz3cVR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 10:18:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WZ8hq4FTsz3dDp
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 Aug 2024 10:19:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TXhmQTJ8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eEiFKdei;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZ8gN5lgTz2y8k
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 10:17:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WZ8gs41Z9z3clL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 Aug 2024 10:18:17 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id C46CB62551;
-	Thu,  1 Aug 2024 00:17:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E514C116B1;
-	Thu,  1 Aug 2024 00:17:48 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTP id 2208BCE1877;
+	Thu,  1 Aug 2024 00:18:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B362C4AF0E;
+	Thu,  1 Aug 2024 00:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471469;
-	bh=Hw6ITTl3y/NjjKIWH7saNeWj85HAD6+zCV157PNEz6w=;
+	s=k20201202; t=1722471494;
+	bh=4160GExj0wgeppapztw9p7IVeLghN3l05FdbMUrMn5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TXhmQTJ82kZm0jxwdWHTagu2MfxWPuaFSAsrrVVSzQN/aCiFM4EClkVfa+tYyXFtw
-	 XUvDBN/89x12fwcuSHKtMw9oQULQHPqTnPaILPRRw2hgHSZvhGZkzLQTEFHTj1G4k5
-	 t6yueq1Ct531QtixaZCO+1Zd7hPl8o4guYs7B8mJpLKyAKepHLjpDEk6Obgm3x1p/U
-	 xh0Y7WLcvbo5WFyHuHvn96BDOn1QP4H5pyURNN+oZcpvzpp6MGtTHDQl4L1J9OYdVW
-	 UQPW+/DSoTw4Ea3HJMqr9pK56qdJbjKC+kQIbbDeOsvNarA3xD88Jj38ezkh4sqq/m
-	 ykPkW1sEFZxNQ==
+	b=eEiFKdeiwKkosewML0atYvdQstphXHWjVAF6TSfZf3Yfq0Hh0KE/vPt8vQFJx5c6S
+	 n1jI/k+4ZT72Xoq8mWgAtz2pqtLpTpQUa7dpFS5c8GEG5Sqh5BC/SSddjyM6bNO5UP
+	 QGt6eZ3uEHnjp/TpqaTYR9N4umq6tlRNb6SbFEW4dBrfzuyTbK7y5oXbTSChyMvImE
+	 an8BbkM7Kxp1rpA/6KysaGPwRF328xQTeEXqXscRid3cOaBhGzOnzar3Dpii8gLMgO
+	 0Na9pbR3lzjj9n9fD5h1F2C4WesaRozO83E53Fv7VZnGWSWnSZvLWgoSiX9LScoXET
+	 lCTXeThx8bCjg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 102/121] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
-Date: Wed, 31 Jul 2024 20:00:40 -0400
-Message-ID: <20240801000834.3930818-102-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 110/121] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
+Date: Wed, 31 Jul 2024 20:00:48 -0400
+Message-ID: <20240801000834.3930818-110-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -63,58 +63,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Sasha Levin <sashal@kernel.org>, mahesh@linux.ibm.com, aneesh.kumar@kernel.org, Breno Leitao <leitao@debian.org>, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
+Cc: Sasha Levin <sashal@kernel.org>, Shawn Anastasio <sanastasio@raptorengineering.com>, Bjorn Helgaas <bhelgaas@google.com>, Timothy Pearson <tpearson@raptorengineering.com>, linux-pci@vger.kernel.org, Krishna Kumar <krishnak@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Krishna Kumar <krishnak@linux.ibm.com>
 
-[ Upstream commit 0974d03eb479384466d828d65637814bee6b26d7 ]
+[ Upstream commit 335e35b748527f0c06ded9eebb65387f60647fda ]
 
-Smatch warns:
+The hotplug driver for powerpc (pci/hotplug/pnv_php.c) causes a kernel
+crash when we try to hot-unplug/disable the PCIe switch/bridge from
+the PHB.
 
-  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
-  spectre issue 'args.args' [r] (local cap)
+The crash occurs because although the MSI data structure has been
+released during disable/hot-unplug path and it has been assigned
+with NULL, still during unregistration the code was again trying to
+explicitly disable the MSI which causes the NULL pointer dereference and
+kernel crash.
 
-The 'nargs' and 'nret' locals come directly from a user-supplied
-buffer and are used as indexes into a small stack-based array and as
-inputs to copy_to_user() after they are subject to bounds checks.
+The patch fixes the check during unregistration path to prevent invoking
+pci_disable_msi/msix() since its data structure is already freed.
 
-Use array_index_nospec() after the bounds checks to clamp these values
-for speculative execution.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
+Closes: https://lore.kernel.org/all/1981605666.2142272.1703742465927.JavaMail.zimbra@raptorengineeringinc.com/
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
+Link: https://msgid.link/20240701074513.94873-2-krishnak@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/hotplug/pnv_php.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 8064d9c3de862..f7e86e09c49fa 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -19,6 +19,7 @@
- #include <linux/lockdep.h>
- #include <linux/memblock.h>
- #include <linux/mutex.h>
-+#include <linux/nospec.h>
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/reboot.h>
-@@ -1916,6 +1917,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 	    || nargs + nret > ARRAY_SIZE(args.args))
- 		return -EINVAL;
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 694349be9d0aa..573a41869c153 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -40,7 +40,6 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 				bool disable_device)
+ {
+ 	struct pci_dev *pdev = php_slot->pdev;
+-	int irq = php_slot->irq;
+ 	u16 ctrl;
  
-+	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
-+	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
-+
- 	/* Copy in args. */
- 	if (copy_from_user(args.args, uargs->args,
- 			   nargs * sizeof(rtas_arg_t)) != 0)
+ 	if (php_slot->irq > 0) {
+@@ -59,7 +58,7 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 		php_slot->wq = NULL;
+ 	}
+ 
+-	if (disable_device || irq > 0) {
++	if (disable_device) {
+ 		if (pdev->msix_enabled)
+ 			pci_disable_msix(pdev);
+ 		else if (pdev->msi_enabled)
 -- 
 2.43.0
 
