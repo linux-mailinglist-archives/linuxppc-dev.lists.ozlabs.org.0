@@ -1,48 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC44945FF9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 17:10:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1CE945FFF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 17:11:18 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=l1AgEe6A;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb8Qn13bbz3dvs
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2024 01:10:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb8Rm5FCzz3fRV
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2024 01:11:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=l1AgEe6A;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::32b; helo=mail-ot1-x32b.google.com; envelope-from=dan.carpenter@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb8QK2Dkrz3cjX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Aug 2024 01:10:01 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb8MC74Tkz6K8xd;
-	Fri,  2 Aug 2024 23:07:19 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 91613140A86;
-	Fri,  2 Aug 2024 23:09:57 +0800 (CST)
-Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
- 2024 16:09:56 +0100
-Date: Fri, 2 Aug 2024 16:09:55 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 26/26] docs: move numa=fake description to
- kernel-parameters.txt
-Message-ID: <20240802160955.00001093@Huawei.com>
-In-Reply-To: <20240801060826.559858-27-rppt@kernel.org>
-References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-27-rppt@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb8R24HG1z3cjX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Aug 2024 01:10:37 +1000 (AEST)
+Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-709339c91f9so3493108a34.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2024 08:10:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722611435; x=1723216235; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=w18rli39zrBz+z69vr4j7Cv9UgiGlYDlbgAiJhn3mtc=;
+        b=l1AgEe6Ase4f2Aq6KACtbD6k/znJIsvUWLHWBFntRYMCk5aTkLyYyBbpIWXCxrEFOp
+         ZrZ5uPm/AvkIA04bzUVkxWyB4aQV5xLcoV7BmRGspbOTfCwELtFLIixfB5+iwev9h6+8
+         Kuuot+e85vlIUCEPPvnLV3TgeKwdBieRpVA3Iy10400FyOenrCHBiR6hMbecHN5IS9xD
+         6tBZfAlaRWb/tYmpAS8PLAA/GOeR1AiMna+i+cDluWVRPpLZlM9K79iW7TsfkJB8pJb8
+         tPlNsNa6xgWk1ywna9foUDAYg7DMWhGiRUr5e3zbw7HmXIefqSYthakWpcjkj3HXUX/G
+         DshQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722611435; x=1723216235;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w18rli39zrBz+z69vr4j7Cv9UgiGlYDlbgAiJhn3mtc=;
+        b=iyWzbxU2qgzzDju+l6P9CnZheAEzOTSKyimZ+Ps/60AY6BYpwcPZ+IUrQ/xcEH8Mxz
+         0VOsdyGvbqAl2VcI4VumVNeqsoOOucfEXM421secMm87EtcRfunQF6FZbfZfBYHuqFPy
+         9ZXrlMGRLm8sswBJQFEyDTsX/PvaHjADtv37BYmwS1mM9cMgacjxJBjavR9u2+rA31AE
+         SeU2WkqTw+ixmLztnfyC4hV+7/oBveqpGoa2/0ksW0H72j1STMvswzSOn9G9mshrIBfa
+         4ZfBv0hnUJ7jvVtLdk+/axIY3kzUtkkkVZf95OnZOd9Z4CQ5IDcOMm5P3VroZada+oIW
+         OsMA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvT+srLYaAk7XLMhlmZnI0SzeeOmGK+nH99cqBbTe8hcZnlbQSnL9Tk0e8TLQ/IzZc2lu57w070pJ8UvQVHXPSvIIud6LPjwrR8QPLuw==
+X-Gm-Message-State: AOJu0Ywk9F1klz5U3pI6rjUrAMCMDpKMRjIq+d/KV/oKv6ot+Jxjwv8J
+	tk8Gle2FmDQuJlvWn/YopBnvZRdDd6BQW7KPl6EETVPOug4FdQBAyUoBHp4n27k=
+X-Google-Smtp-Source: AGHT+IEXh16YlP37pNnz5n5eqHLMvKkfu8xPB7W6l/8KbQXft81x0EHBKA3Iyswcj6jlByZidCHXSA==
+X-Received: by 2002:a05:6830:2656:b0:703:6845:ed89 with SMTP id 46e09a7af769-709ad85200bmr5072675a34.5.1722611434763;
+        Fri, 02 Aug 2024 08:10:34 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700::17c0])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70a31ec1f73sm536258a34.42.2024.08.02.08.10.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Aug 2024 08:10:34 -0700 (PDT)
+Date: Fri, 2 Aug 2024 10:10:31 -0500
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: Re: [PATCH] crypto: ppc/curve25519 - add missing
+ MODULE_DESCRIPTION() macro
+Message-ID: <ee8c4cc2-c266-4a46-a8be-7c189f14bd10@suswa.mountain>
+References: <20240718-md-powerpc-arch-powerpc-crypto-v1-1-b23a1989248e@quicinc.com>
+ <ZqzcApbJomFTnc30@gondor.apana.org.au>
+ <75a526e3-3101-4319-b42f-4482ba188abc@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <75a526e3-3101-4319-b42f-4482ba188abc@quicinc.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,25 +82,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav
- Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Arnd Bergmann <arnd@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Greg KH <gregkh@linuxfoundation.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, Danny Tsen <dtsen@linux.ibm.com>, linux-crypto@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2024 09:08:26 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+On Fri, Aug 02, 2024 at 07:27:09AM -0700, Jeff Johnson wrote:
+> On 8/2/2024 6:15 AM, Herbert Xu wrote:
+> > On Thu, Jul 18, 2024 at 06:14:18PM -0700, Jeff Johnson wrote:
+> >> Since commit 1fffe7a34c89 ("script: modpost: emit a warning when the
+> >> description is missing"), a module without a MODULE_DESCRIPTION() will
+> >> result in a warning with make W=1. The following warning is being
+> >> observed when building ppc64le with CRYPTO_CURVE25519_PPC64=m:
+> >>
+> >> WARNING: modpost: missing MODULE_DESCRIPTION() in arch/powerpc/crypto/curve25519-ppc64le.o
+> >>
+> >> Add the missing invocation of the MODULE_DESCRIPTION() macro.
+> >>
+> >> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> >> ---
+> >>  arch/powerpc/crypto/curve25519-ppc64le-core.c | 1 +
+> >>  1 file changed, 1 insertion(+)
+> > 
+> > Patch applied.  Thanks.
+> 
+> Great, that was the last of my MODULE_DESCRIPTION patches!!!
+> 
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> NUMA emulation can be now enabled on arm64 and riscv in addition to x86.
-> 
-> Move description of numa=fake parameters from x86 documentation of
-> admin-guide/kernel-parameters.txt
-> 
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Horray!  Congratulations.  :)
 
+regards,
+dan carpenter
 
