@@ -1,112 +1,142 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3148F946228
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 18:56:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D2594624D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 19:12:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nCCi7EHI;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=GXBWB3Tc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WbBnX0kPjz3fRv
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2024 02:56:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WbC7W4QwGz3dWl
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2024 03:12:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nCCi7EHI;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=GXBWB3Tc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2606::61a; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2061a.outbound.protection.outlook.com [IPv6:2a01:111:f403:2606::61a])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WbBmq0m2kz3cjX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Aug 2024 02:56:10 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 472CwJqo029777;
-	Fri, 2 Aug 2024 16:55:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:references:content-type
-	:in-reply-to:content-transfer-encoding:mime-version; s=pp1; bh=Y
-	28a3L6vADlvJH1BEr59e2dm1tDVmqn3tiBO2DrV7Ww=; b=nCCi7EHIBQ2JrKtIn
-	OCvgzFjbX+dfj5gE2cVMBDh9WogF8Eqgofk8B6T9JFQsB+yOBXhl3Vxza+WyZSUm
-	iNq4LO/x12cbgubjpwF/5JpgSPXGvi0IYY2QAAIzhyMAwW+Vurhm+vtR8VLwhBDi
-	MVPN1sVBwwET/9Enx4zALraumiuGq9SI++OTxeTuFhUyepwUo7sxBxouJlInIf3J
-	hGVmPq09bRt3fE7JampAIigIuBKIURgQYBcg9bVQEZB5kJWZsYad8E3nc5/f6Scj
-	DvdJPD9yaE2oHwYzg0uw/q7t4n7HWmG0H22pArXtk+g6VTK5du7gChV6YZtxw2VU
-	XRKNg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40ryx6rh5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Aug 2024 16:55:57 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 472Gtu5Z016021;
-	Fri, 2 Aug 2024 16:55:57 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40ryx6rh5g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Aug 2024 16:55:56 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 472F0FZl011133;
-	Fri, 2 Aug 2024 16:55:55 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40ncqn84e5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Aug 2024 16:55:55 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 472Gtni550266466
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 Aug 2024 16:55:51 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9DA6820043;
-	Fri,  2 Aug 2024 16:55:49 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D0B7420040;
-	Fri,  2 Aug 2024 16:55:45 +0000 (GMT)
-Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.195.47.40])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  2 Aug 2024 16:55:45 +0000 (GMT)
-Date: Fri, 2 Aug 2024 22:25:41 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Stefan Bader <stefan.bader@canonical.com>
-Subject: Re: [PATCH v2] PCI: Fix crash during pci_dev hot-unplug on pseries
- KVM guest
-Message-ID: <20240802222307.c1b9c07c-d8-amachhiw@linux.ibm.com>
-Mail-Followup-To: Stefan Bader <stefan.bader@canonical.com>, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org, kernel-team@lists.ubuntu.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, 
-	Kowshik Jois B S <kowsjois@linux.ibm.com>, Lukas Wunner <lukas@wunner.de>, Rob Herring <robh@kernel.org>, 
-	Lizhi Hou <lizhi.hou@amd.com>
-References: <20240715080726.2496198-1-amachhiw@linux.ibm.com>
- <CAL_JsqKKkcXDJ2nz98WNCvsSFzzc3dVXVnxMCntFXsCP=MeKsA@mail.gmail.com>
- <a6c92c73-13fb-8e9c-29de-1437654c3880@amd.com>
- <20240723162107.GA501469-robh@kernel.org>
- <a8d2e310-9446-6cfa-fe00-4ef83cdb6590@amd.com>
- <CAL_JsqJjhaLFm9jiswJTfi4yZFYGKJUdC+HV662RLWEkJjxACw@mail.gmail.com>
- <ac3aeec4-70fc-cd9e-498c-acab0b218d9b@amd.com>
- <p6cs4fxzistpyqkc5bv2sb76inrw7fterocdcu3snnyjpqydbr@thxna6v2umrl>
- <20240726113713.GA974992-robh@kernel.org>
- <76ade019-ee95-4ff9-aaff-37d49a6be195@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <76ade019-ee95-4ff9-aaff-37d49a6be195@canonical.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kkQBpBy283HtTKy490WpKh-tbwhnHlo-
-X-Proofpoint-ORIG-GUID: pedFgCOfaW_fkmtxUJfaUlvhBSgK_HsA
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WbC6n2ggnz30VY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Aug 2024 03:11:43 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hJbb/apeqA6CqqidqSvXdN66aRk3ARWwk54Rq+VLeoAJQMBzDMXrN1jFAT+3uniuQajh2p/aW5qZXOFRPOswqUvIsuLhrFWwmg+fRCmNKTkEZX8NOvDQ08pCe94leXUXrFWPn5vgkJXqIlyI/q2kzXies9lsnYqsOM3Yos8zUB+pDJxG6DAwHXd/sktcVkGgpbjDv0QkEn+z7frwpocMKFtZnQDujMqtYPaqP5XD/+tzIvvsq7EtklbjIxM6TXWnwbjzr5nPyaEwfHqrqY1GCf4xl7cMi8QIEFBqP1cRfPtrh75ovfRWV/hHhGuyzFNbtKXFKAoMlMy3G9+DMJFo0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DJ7E2NYVhMhWMr28cvw4010zJ5+HKIs6GHz7SNTP3NI=;
+ b=u7OE2U9Mff3JDkeoZTdxQbBF+ai6iv5AE8cmqr94J/tWgLV9KKIty3nm+zIcpqBXPsB7g4IQcPrV1GLK1fK/YIaA58h3PP6iaucJBD8p1Oi7D/EJz26MjZ82lhlHhGsQer6N16tpUZzaKIIeSLnk/e4y3FH0UV5/gL+nSUysITkPOaWUGOdlW1dApXH0d888qplHkcJ+WfYapAbwuJ+A/UVV29PY6AsSEunR2djZjE2MkeOoiTxhHB0GuhubGPTp3D/Ilix2jm4oQFQ+yv5mCld9QJrNxZGgXkvOY+EP5vOwv3xOrqRyl6J3UNYpTtTouqSJ9rUNXTVQwr2p5K5RFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DJ7E2NYVhMhWMr28cvw4010zJ5+HKIs6GHz7SNTP3NI=;
+ b=GXBWB3Tc6lDt9Ct3rUmqi2+v6lp/aDIFirP97TKZeQDTZVBT6ZbDiUqazlKG53vzvWgJXng17zrSY2XUpdT6jT6F6r6O8jE2K81d/sIZp7yn/ytMmkH3WJZnroVq137oijRxQ7E1zMUuaH1vuAdSCxRgth+cHjc/skE+WpXUy1jpM+N310mKXy03Tsqko5oyhHFONOUrTN+ptPAiU9LCp2pHmHDV3yTSUOTfUSYaiwdtmdk29utk9y4yENGoe5Vayuq3Oz1BS5UPtyZZHvk1m6osOKEUDaVckCv8yPUdNBfvP9WjXRKT3IiHGI8zwDsB7dzcG8D439kr9abZLU27Gw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU0PR04MB9297.eurprd04.prod.outlook.com (2603:10a6:10:354::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.23; Fri, 2 Aug
+ 2024 17:11:17 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7828.021; Fri, 2 Aug 2024
+ 17:11:17 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:FREESCALE SOC DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH 1/1] dt-bindings: soc: fsl: add missed compatible string fsl,ls*-isc
+Date: Fri,  2 Aug 2024 13:11:02 -0400
+Message-Id: <20240802171102.2812687-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Content-Type: text/plain
+X-ClientProxiedBy: SA0PR11CA0083.namprd11.prod.outlook.com
+ (2603:10b6:806:d2::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-02_12,2024-08-02_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound score=100 phishscore=0
- impostorscore=0 mlxscore=100 malwarescore=0 mlxlogscore=-999 spamscore=100
- priorityscore=1501 suspectscore=0 adultscore=0 clxscore=1011
- lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2408020117
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU0PR04MB9297:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4e9132e-fedd-486f-44c0-08dcb3161f1d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 	BCL:0;ARA:13230040|376014|366016|7416014|1800799024|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?hQNKAM3Dfqa9DzQRha6CdxGZpP8tRRFpfyV9Io4jN5tvs//wQn9M3fBg1WQj?=
+ =?us-ascii?Q?niINe8CMPPvGmWtcHg5vs9rZpDRJMNTNyarRUPAsO9yaBYMmeEyFoU4WEuUg?=
+ =?us-ascii?Q?HDXyOlN4rRR3jLO2nNDYfYBumDh7GfEtvJruBUy3Sf39PCy3s6fay6TH6HWr?=
+ =?us-ascii?Q?8ivVKEyWK2YDDKDOFTPYSb4zWd7H9h7BSkkfipnsvXz4HBpsjyGC63aOJbPX?=
+ =?us-ascii?Q?DD7n9vkvFdLBOiTskr99Go64gS/tnWg8/6E3lYToPrdFT9vsHimusvY3C1in?=
+ =?us-ascii?Q?ntdjBq3VQSFThydjvG6TAPWBy2HXEL/bRufUuQaGcRfboM5pou6I67aIg6Zs?=
+ =?us-ascii?Q?IjhsI37EsVT93R7QAiBANHXykwRjk8jkkWIOCEDfnAEoYoAzR/1uKj0zu6h6?=
+ =?us-ascii?Q?duZO9scS+Zjtbd5arfstdLhovLyJG6ih9cSaWGolYPFuECjIj6egq9xk4H0v?=
+ =?us-ascii?Q?COq1BG+E3rwPQusVIMbdvrUCH5zauoG+6KTRRpV0/des5te6YGaMw3bcXHKU?=
+ =?us-ascii?Q?HMCkKPF/TV8rBcQxaYMxyzXnkie4+nKJ20KZDpxK7diGuTU+TjtS3V3ZQyfZ?=
+ =?us-ascii?Q?EzF28rw2kBPr9FFr9RtTNheb/3FdMdIYNN3xDYmuDB3cC6+WhvMfqNsfGk2g?=
+ =?us-ascii?Q?FudejBo5jHrVUI1k3to/mRAQLRn0AlMhSp7L0xmWWgsUOlRQBv6c3wRln4y0?=
+ =?us-ascii?Q?B8i5eUfZqMILvzfQVucx+XwPwfR2T1CxWs8uhrl5i2PujbOab5ZKquTBDa5y?=
+ =?us-ascii?Q?ANCXRsngUF+Hbf6H/DShJRIsmnMWwQzLzFg60nL2qcknRqz7OqepXU7hvBFr?=
+ =?us-ascii?Q?oLKCivz1vjr/Zi7ejN/40kJyr/Uu+m4tgUg3iM6SsxpdaIR9BTOeueIQS87G?=
+ =?us-ascii?Q?GTz7kMT+ah4syqFskA8zZwGOiFrmcewSPLXNWk4zf2Q5LHrBjQBlXZTlKTEN?=
+ =?us-ascii?Q?hV42zDDlZaqjx78mvoJPvjv5dmdL/WKe0vmu4rA1w0Ym0DFGhZUM2Fo32+Dk?=
+ =?us-ascii?Q?s1uWLO/Lfs8Iyv4S6ET6leBs1mh3ypR4vW+dljN/4rEP2btj1CxtjjBxPF7f?=
+ =?us-ascii?Q?z9E3GdAvWXuu3vVGKVyrLinh7wfuCKHMg3rNNniELt5FxZIghPm0tqiKCnTU?=
+ =?us-ascii?Q?wru3fI67jIrr283wM1sv/T5Kp0b6FaKVGifbsLRMsRng7qC8AaXK0PGhcdul?=
+ =?us-ascii?Q?pBn1+IXbEzDej9pBPJufKqdiRANFmuV21BEsvB6lBQGQOz/Ri6+GTazH7d2q?=
+ =?us-ascii?Q?2Dua7smJk4iIC25+zJc63pv7So8/2AOuET9X6xWyeQYc5oAFxvIL84B+8/ij?=
+ =?us-ascii?Q?zNpIVND/Z762XsUMBivla7zoQENgkiiV/68yeQ72NjR0tQ2nQLATAIywwg/5?=
+ =?us-ascii?Q?GWwM6/rWUvkv19/HOT9BNe5MP848NToQ9S5qnpyIQ/p+tWt5CA=3D=3D?=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?/oUwBYeuA0r3kKMAW/DSlGbJTzRzC+gZgqXYLy/7U4ntZriJm5ms0VpOiyTG?=
+ =?us-ascii?Q?TobJiPqPpo7EuCBd3NrWETYBgXJdoceXZStXUT2QW4wxd7iqOaQHvNBcQvvR?=
+ =?us-ascii?Q?2vskY9iEFB5uJjY1S0GgkaHFceFfwqha0g2Sx+FrfZ9GmEqjifJb0Z4Vvb11?=
+ =?us-ascii?Q?Q5JQ6izsBg8jA0mfzs6O34ykQioIn+Bz6SUXN9ov7u66Btt6IB8Ola1QRCkM?=
+ =?us-ascii?Q?IBTUkLFC9uxrloLc2jsqNltNjR2nXse+1i0Hm7SNs0VyabWt1zSFXACG2v85?=
+ =?us-ascii?Q?CXXWDIXa0HBG3VjyKvMuEG0yltNcjjtqJzRHONswzzniUPYkaKSucKwgXUBa?=
+ =?us-ascii?Q?sy4ZiHNNDrzfIbFmQayJWjtdGA7Hjafh2O1Vi/a31cSWDnaSpNlQwQVN+9XN?=
+ =?us-ascii?Q?UrI2+WoYAZ7arfnIFRGhqwZQjM3QZqHdQc98uzGyM+YyUCPxktHCNcdTXWar?=
+ =?us-ascii?Q?4o0tEgqarUEwwpdKnnf2JeQjtPqledAR9lmCGlCrNyyrRWZr0aArFyvjo1VW?=
+ =?us-ascii?Q?Lu3gXXlUpnyAOQEOLc8QEQlZcQ42dWHRHIuKqjjoTfM/o2zetKhLa2CgK6e5?=
+ =?us-ascii?Q?dsgCmjZlPBTN09MJaQzM1B4VHn3tOpasMLWxtlSRz03LtQH66QPfZPln+wCr?=
+ =?us-ascii?Q?eqjLfCvV6zWzqc6Ux5GWLtTFAE2FaTmE0xq2ptohiPcXgQ1+buhioF+3lD2Z?=
+ =?us-ascii?Q?T+YNy6byFWs8LI5Dhg8Y0nMQjpxJzq+GMoF5giIt+BpLLneoQzeEhKx+Oku8?=
+ =?us-ascii?Q?d6Rsqwatm9Qpqzi1xOP84b8UC8NMc081eW2ik2EVcfTR20dpJOCFa7B6y6tQ?=
+ =?us-ascii?Q?pjwooug/WCmb5pwg10qXQhAoC+fzo9nUKZGtZY2d456Q+0Em60UJzi0dmc9X?=
+ =?us-ascii?Q?AdgiLJ2uY60T944FsAvyvlNtmr7LOxPp6U8krnFU6u/Wyoh8P8sQgt9GoQoP?=
+ =?us-ascii?Q?aoV19iL2r92jjIUTf54ysKlyRG3w8om3xDm/R7sR0Qwj9LdHNGWrDFHjWN4n?=
+ =?us-ascii?Q?zVrXixcsYHyI4SCL5xEFPECAA8zt3/tO4N1MgFyK4DVmxKu0wfiTIlb4LO6x?=
+ =?us-ascii?Q?FxQ9BMpS7eaBZ7Gnp+9p7v4SCLAMsli9jfabC5DLD5PhhhLBq4r9L+FEB4yZ?=
+ =?us-ascii?Q?6KgWYjzK0wHP9I07rI5fehmBVgrXcK8NTMUkC9jLnb1oT6EmM9E91nc/2n4q?=
+ =?us-ascii?Q?tOkItZibKwdP9EsreMakLQ/D1zFTBk+4eoV7PVxJqV88FPTnqRlyS3a/vxkS?=
+ =?us-ascii?Q?TYfe8af2MLWHnO1IP1yV2CwUSiTbspvcqDpMdeOUR1bHuj8sZ9dKoMLgmcLy?=
+ =?us-ascii?Q?3b15Yk+XWrhc0bh525tZYfJjsUqQWHIjEFOebO8kdEXFjLyCr6sicAx4yPJN?=
+ =?us-ascii?Q?oVDCGnqZX2/ur/YuBAw+DQ4jX815ahlID617H8WlYa98+/IT5GZeWCSDn5Id?=
+ =?us-ascii?Q?lllFwxBXux6C/awgiaycu8eRNKWpPcvkA0oAMFKy7lRFoNuiuvWVUgCfdwcn?=
+ =?us-ascii?Q?vbi8IpPIIq4ZxDoqz53nVMNP2dgHiQCzbSanpd7fYq72GRb3RkOZkZG39KPI?=
+ =?us-ascii?Q?kB9Q21Ct9LbJDgP3unTGhB810Tr/GAopypL5T0Ne?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4e9132e-fedd-486f-44c0-08dcb3161f1d
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2024 17:11:17.4941
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dkwY0H+LEVXtaql+Ow3k53nrG5knk9RAXCStsgs/bQtzC+YlPbi4OEZj3Xl5E1GdsqztVU9Pgpi0S4f+lNJbOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9297
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,225 +148,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Saravana Kannan <saravanak@google.com>, Rob Herring <robh@kernel.org>, Kowshik Jois B S <kowsjois@linux.ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Lizhi Hou <lizhi.hou@amd.com>, kernel-team@lists.ubuntu.com, Lukas Wunner <lukas@wunner.de>, Nicholas Piggin <npiggin@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: imx@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Stefan,
+Add compatible string, fsl,ls1088a-isc, fsl,ls2080a-isc, fsl,lx2160a-isc.
+Fix the below warning:
+arch/arm64/boot/dts/freescale/fsl-ls2080a-qds.dtb: /soc/syscon@1f70000: failed to match any schema with compatible: ['fsl,ls2080a-isc', 'syscon']
 
-On 2024/07/29 03:27 PM, Stefan Bader wrote:
-> On 26.07.24 13:37, Rob Herring wrote:
-> > + Ubuntu kernel list, again
-> > 
-> > On Thu, Jul 25, 2024 at 11:15:39PM +0530, Amit Machhiwal wrote:
-> > > Hi Lizhi, Rob,
-> > > 
-> > > Sorry for responding late. I got busy with some other things.
-> > > 
-> > > On 2024/07/23 02:08 PM, Lizhi Hou wrote:
-> > > > 
-> > > > On 7/23/24 12:54, Rob Herring wrote:
-> > > > > On Tue, Jul 23, 2024 at 12:21 PM Lizhi Hou <lizhi.hou@amd.com> wrote:
-> > > > > > 
-> > > > > > On 7/23/24 09:21, Rob Herring wrote:
-> > > > > > > On Mon, Jul 15, 2024 at 01:52:30PM -0700, Lizhi Hou wrote:
-> > > > > > > > On 7/15/24 11:55, Rob Herring wrote:
-> > > > > > > > > On Mon, Jul 15, 2024 at 2:08 AM Amit Machhiwal <amachhiw@linux.ibm.com> wrote:
-> > > > > > > > > > With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
-> > > > > > > > > > of a PCI device attached to a PCI-bridge causes following kernel Oops on
-> > > > > > > > > > a pseries KVM guest:
-> > > > > > > > > > 
-> > > > > > > > > >      RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
-> > > > > > > > > >      Kernel attempted to read user page (10ec00000048) - exploit attempt? (uid: 0)
-> > > > > > > > > >      BUG: Unable to handle kernel data access on read at 0x10ec00000048
-> > > > > > > > > >      Faulting instruction address: 0xc0000000012d8728
-> > > > > > > > > >      Oops: Kernel access of bad area, sig: 11 [#1]
-> > > > > > > > > >      LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-> > > > > > > > > > <snip>
-> > > > > > > > > >      NIP [c0000000012d8728] __of_changeset_entry_invert+0x10/0x1ac
-> > > > > > > > > >      LR [c0000000012da7f0] __of_changeset_revert_entries+0x98/0x180
-> > > > > > > > > >      Call Trace:
-> > > > > > > > > >      [c00000000bcc3970] [c0000000012daa60] of_changeset_revert+0x58/0xd8
-> > > > > > > > > >      [c00000000bcc39c0] [c000000000d0ed78] of_pci_remove_node+0x74/0xb0
-> > > > > > > > > >      [c00000000bcc39f0] [c000000000cdcfe0] pci_stop_bus_device+0xf4/0x138
-> > > > > > > > > >      [c00000000bcc3a30] [c000000000cdd140] pci_stop_and_remove_bus_device_locked+0x34/0x64
-> > > > > > > > > >      [c00000000bcc3a60] [c000000000cf3780] remove_store+0xf0/0x108
-> > > > > > > > > >      [c00000000bcc3ab0] [c000000000e89e04] dev_attr_store+0x34/0x78
-> > > > > > > > > >      [c00000000bcc3ad0] [c0000000007f8dd4] sysfs_kf_write+0x70/0xa4
-> > > > > > > > > >      [c00000000bcc3af0] [c0000000007f7248] kernfs_fop_write_iter+0x1d0/0x2e0
-> > > > > > > > > >      [c00000000bcc3b40] [c0000000006c9b08] vfs_write+0x27c/0x558
-> > > > > > > > > >      [c00000000bcc3bf0] [c0000000006ca168] ksys_write+0x90/0x170
-> > > > > > > > > >      [c00000000bcc3c40] [c000000000033248] system_call_exception+0xf8/0x290
-> > > > > > > > > >      [c00000000bcc3e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
-> > > > > > > > > > <snip>
-> > > > > > > > > > 
-> > > > > > > > > > A git bisect pointed this regression to be introduced via [1] that added
-> > > > > > > > > > a mechanism to create device tree nodes for parent PCI bridges when a
-> > > > > > > > > > PCI device is hot-plugged.
-> > > > > > > > > > 
-> > > > > > > > > > The Oops is caused when `pci_stop_dev()` tries to remove a non-existing
-> > > > > > > > > > device-tree node associated with the pci_dev that was earlier
-> > > > > > > > > > hot-plugged and was attached under a pci-bridge. The PCI dev header
-> > > > > > > > > > `dev->hdr_type` being 0, results a conditional check done with
-> > > > > > > > > > `pci_is_bridge()` into false. Consequently, a call to
-> > > > > > > > > > `of_pci_make_dev_node()` to create a device node is never made. When at
-> > > > > > > > > > a later point in time, in the device node removal path, a memcpy is
-> > > > > > > > > > attempted in `__of_changeset_entry_invert()`; since the device node was
-> > > > > > > > > > never created, results in an Oops due to kernel read access to a bad
-> > > > > > > > > > address.
-> > > > > > > > > > 
-> > > > > > > > > > To fix this issue, the patch updates `of_changeset_create_node()` to
-> > > > > > > > > > allocate a new node only when the device node doesn't exist and init it
-> > > > > > > > > > in case it does already. Also, introduce `of_pci_free_node()` to be
-> > > > > > > > > > called to only revert and destroy the changeset device node that was
-> > > > > > > > > > created via a call to `of_changeset_create_node()`.
-> > > > > > > > > > 
-> > > > > > > > > > [1] commit 407d1a51921e ("PCI: Create device tree node for bridge")
-> > > > > > > > > > 
-> > > > > > > > > > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-> > > > > > > > > > Reported-by: Kowshik Jois B S <kowsjois@linux.ibm.com>
-> > > > > > > > > > Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-> > > > > > > > > > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> > > > > > > > > > ---
-> > > > > > > > > > Changes since v1:
-> > > > > > > > > >         * Included Lizhi's suggested changes on V1
-> > > > > > > > > >         * Fixed below two warnings from Lizhi's changes and rearranged the cleanup
-> > > > > > > > > >           part a bit in `of_pci_make_dev_node`
-> > > > > > > > > >             drivers/pci/of.c:611:6: warning: no previous prototype for ‘of_pci_free_node’ [-Wmissing-prototypes]
-> > > > > > > > > >               611 | void of_pci_free_node(struct device_node *np)
-> > > > > > > > > >                   |      ^~~~~~~~~~~~~~~~
-> > > > > > > > > >             drivers/pci/of.c: In function ‘of_pci_make_dev_node’:
-> > > > > > > > > >             drivers/pci/of.c:696:1: warning: label ‘out_destroy_cset’ defined but not used [-Wunused-label]
-> > > > > > > > > >               696 | out_destroy_cset:
-> > > > > > > > > >                   | ^~~~~~~~~~~~~~~~
-> > > > > > > > > >         * V1: https://lore.kernel.org/all/20240703141634.2974589-1-amachhiw@linux.ibm.com/
-> > > > > > > > > > 
-> > > > > > > > > >      drivers/of/dynamic.c  | 16 ++++++++++++----
-> > > > > > > > > >      drivers/of/unittest.c |  2 +-
-> > > > > > > > > >      drivers/pci/bus.c     |  3 +--
-> > > > > > > > > >      drivers/pci/of.c      | 39 ++++++++++++++++++++++++++-------------
-> > > > > > > > > >      drivers/pci/pci.h     |  2 ++
-> > > > > > > > > >      include/linux/of.h    |  1 +
-> > > > > > > > > >      6 files changed, 43 insertions(+), 20 deletions(-)
-> > > > > > > > > > 
-> > > > > > > > > > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-> > > > > > > > > > index dda6092e6d3a..9bba5e82a384 100644
-> > > > > > > > > > --- a/drivers/of/dynamic.c
-> > > > > > > > > > +++ b/drivers/of/dynamic.c
-> > > > > > > > > > @@ -492,21 +492,29 @@ struct device_node *__of_node_dup(const struct device_node *np,
-> > > > > > > > > >       * a given changeset.
-> > > > > > > > > >       *
-> > > > > > > > > >       * @ocs: Pointer to changeset
-> > > > > > > > > > + * @np: Pointer to device node. If null, allocate a new node. If not, init an
-> > > > > > > > > > + *     existing one.
-> > > > > > > > > >       * @parent: Pointer to parent device node
-> > > > > > > > > >       * @full_name: Node full name
-> > > > > > > > > >       *
-> > > > > > > > > >       * Return: Pointer to the created device node or NULL in case of an error.
-> > > > > > > > > >       */
-> > > > > > > > > >      struct device_node *of_changeset_create_node(struct of_changeset *ocs,
-> > > > > > > > > > +                                            struct device_node *np,
-> > > > > > > > > >                                                  struct device_node *parent,
-> > > > > > > > > >                                                  const char *full_name)
-> > > > > > > > > >      {
-> > > > > > > > > > -       struct device_node *np;
-> > > > > > > > > >             int ret;
-> > > > > > > > > > 
-> > > > > > > > > > -       np = __of_node_dup(NULL, full_name);
-> > > > > > > > > > -       if (!np)
-> > > > > > > > > > -               return NULL;
-> > > > > > > > > > +       if (!np) {
-> > > > > > > > > > +               np = __of_node_dup(NULL, full_name);
-> > > > > > > > > > +               if (!np)
-> > > > > > > > > > +                       return NULL;
-> > > > > > > > > > +       } else {
-> > > > > > > > > > +               of_node_set_flag(np, OF_DYNAMIC);
-> > > > > > > > > > +               of_node_set_flag(np, OF_DETACHED);
-> > > > > > > > > Are we going to rename the function to
-> > > > > > > > > of_changeset_create_or_maybe_modify_node()? No. The functions here are
-> > > > > > > > > very clear in that they allocate new objects and don't reuse what's
-> > > > > > > > > passed in.
-> > > > > > > > Ok. How about keeping of_changeset_create_node unchanged.
-> > > > > > > > 
-> > > > > > > > Instead, call kzalloc(), of_node_init() and of_changeset_attach_node()
-> > > > > > > > 
-> > > > > > > > in of_pci_make_dev_node() directly.
-> > > > > > > > 
-> > > > > > > > A similar example is dlpar_parse_cc_node().
-> > > > > > > > 
-> > > > > > > > 
-> > > > > > > > Does this sound better?
-> > > > > > > No, because really that code should be re-written using of_changeset
-> > > > > > > API.
-> > > > > > > 
-> > > > > > > My suggestion is add a data pointer to struct of_changeset and then set
-> > > > > > > that to something to know the data ptr is a changeset and is your
-> > > > > > > changeset.
-> > > > > > I do not fully understand the point. I think the issue is that we do not
-> > > > > > know if a given of_node is created by of_pci_make_dev_node(), correct?
-> > > > > Yes.
-> > > > > 
-> > > > > > of_node->data can point to anything. And we do not know if it points a
-> > > > > > cset or not.
-> > > > > Right. But instead of checking "of_node->data == of_pci_free_node",
-> > > > > you would just be checking "*(of_node->data) == of_pci_free_node"
-> > > > 
-> > > > if of_node->data is a char* pointer, it would be panic. So I used
-> > > > of_node->data == of_pci_free_node.
-> > > > 
-> > > > > (omitting a NULL check and cast for simplicity). I suppose in theory
-> > > > > that could have a false match, but that could happen in this patch
-> > > > > already.
-> > > > 
-> > > > I think if any other kernel code  put of_pci_free_node to of_node->data, it
-> > > > can be fixed over there.
-> > > > 
-> > > > > 
-> > > > > > Do you mean to add a flag (e.g. OF_PCI_DYNAMIC) to
-> > > > > > indicate of_node->data points to cset?
-> > > > > That would be another option, but OF_PCI_DYNAMIC would not be a good
-> > > > > name because that would be a flag bit for every single caller needing
-> > > > > similar functionality. Name it just what it indicates: of_node->data
-> > > > > points to cset
-> > > > > 
-> > > > > If we have that flag, then possibly the DT core can handle more
-> > > > > clean-up itself like calling detach and freeing the changeset.
-> > > > > Ideally, the flags should be internal to the DT code.
-> > > > 
-> > > > Sure. If you prefer this option, I will propose another fix.
-> > > > 
-> > > 
-> > > The crash in question is a critical issue that we would want to have a fix for
-> > > soon. And while this is still being figured out, is it okay to go with the fix I
-> > > proposed in the V1 of this patch?
-> > 
-> > No, sorry but this is not critical. This config option should be off.
-> > Fix the distro. They turned it on. If hiding it behind CONFIG_EXPERT or
-> > something would work, that would be fine for upstream. But I suspect
-> > Ubuntu turns that on because they turn on everything...
-> 
-> Likely that was the case. Noted and we will turn it off in one of the next
-> updates.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml       | 3 +++
+ 1 file changed, 3 insertions(+)
 
-We have mirrored the internal bugzilla here:
-
-https://bugs.launchpad.net/ubuntu/+bug/2075721
-
-Thanks,
-Amit
-
-> Thanks,
-> 
-> Stefan
-> > 
-> > Rob
-> > 
-> 
-> -- 
-> - Stefan
-> 
-
-
-
-
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
+index 2a456c8af992e..cff59d6453cec 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
+@@ -23,6 +23,9 @@ properties:
+           - fsl,ls1028a-scfg
+           - fsl,ls1043a-scfg
+           - fsl,ls1046a-scfg
++          - fsl,ls1088a-isc
++          - fsl,ls2080a-isc
++          - fsl,lx2046a-isc
+       - const: syscon
+ 
+   reg:
+-- 
+2.34.1
 
