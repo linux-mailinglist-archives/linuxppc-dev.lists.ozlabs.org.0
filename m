@@ -1,47 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C984F945D27
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 13:20:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBDA7945E16
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 14:47:43 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HOPuNjPv;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb3KX5C0Jz3fT0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 21:20:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb5G44z70z3fRK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 22:47:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HOPuNjPv;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb3K86KQqz3cQH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 21:20:11 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb3Ft71Q0z6K6GR;
-	Fri,  2 Aug 2024 19:17:22 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 653A91400D9;
-	Fri,  2 Aug 2024 19:20:01 +0800 (CST)
-Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
- 2024 12:20:00 +0100
-Date: Fri, 2 Aug 2024 12:19:59 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 19/26] mm: introduce numa_emulation
-Message-ID: <20240802121959.00003c18@Huawei.com>
-In-Reply-To: <20240801060826.559858-20-rppt@kernel.org>
-References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-20-rppt@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb5FN1mqyz3dV9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 22:47:04 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 49861CE19B4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 12:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79403C4AF0A
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 12:47:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722602820;
+	bh=1QgdOFHc5UJ7JLTaVxoYYVwQrMYFGF8fQ1SbQIxZkhc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HOPuNjPvTZZBsjB3tap/xqosF5SQqQYpnAfbYzS12d+zdYkiM8SP/fcVGUBeqc3HC
+	 lMinvM1uFnU4HZra2cN5wfQlihPihtSBfTfDViH3rmj7nQhlY6S7WA3QZqoWhGTK1d
+	 tq+btNcsaMnEszrxEHUYcedP9A5FKqoLRU7J2bkS5FJk38Op8v/vD+BPaqBs66udDs
+	 HnTHjIQCM/iUXUNA3U8wNWM49K0nW5Mt5AnXisVBfznEoiNeCqudJfa49jbHwyrOz/
+	 h2kMC8TAuykWtLdIkBV6vjeVmkM31QuC9wJiPOO8ftEYrwSXC7XVAeZ5Iejvb3RsSM
+	 RDGqnl3DweuEw==
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3db111a08c3so695754b6e.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 Aug 2024 05:47:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWlXicWOavbwxzNBxJFBVJr+qAWRDjCU3qL6UsHcbT0Io3vcK5LZAVT/CwQs7d8xBA7nyITQXiJ+frPSfjI5T7Bo053PSTXF8YwR8BPCg==
+X-Gm-Message-State: AOJu0YzJJ91vWLuNfG9VxVk0WQELEqLTkjDKv/8O8XNmawAciYAk55Mx
+	6VbF2FdJXeS1cBgvmAN7K3HAeoLgysytLNfLQECG9MJSZtH/UT4XrnxDBfk30eR+uYmZNBFaMW+
+	m2o1b7Ooq9s9KAIpe/R2Ls1KZYes=
+X-Google-Smtp-Source: AGHT+IFEVv8eZDY5b3H89JJWLVBnt5m9XtSne/AH0CAwtm0pD7to6WgcNrLrHJUClqgyEggleITIiM5TGHtAKB4tRuk=
+X-Received: by 2002:a05:6870:56ab:b0:260:23bb:1087 with SMTP id
+ 586e51a60fabf-26891732bc5mr2122828fac.0.1722602819834; Fri, 02 Aug 2024
+ 05:46:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+References: <20240722-md-powerpc-drivers-cpufreq-v2-1-bb84d715eb3d@quicinc.com>
+ <20240724043941.5wpa5di7ta4fjyl5@vireshk-i7>
+In-Reply-To: <20240724043941.5wpa5di7ta4fjyl5@vireshk-i7>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 2 Aug 2024 14:46:48 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iYDDQkPpnHsuJ_7du7Efg4zuLuhj2RHobJ6UiciuhphQ@mail.gmail.com>
+Message-ID: <CAJZ5v0iYDDQkPpnHsuJ_7du7Efg4zuLuhj2RHobJ6UiciuhphQ@mail.gmail.com>
+Subject: Re: [PATCH v2] cpufreq: powerpc: add missing MODULE_DESCRIPTION() macros
+To: Viresh Kumar <viresh.kumar@linaro.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,29 +71,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav
- Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-pm@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2024 09:08:19 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+On Wed, Jul 24, 2024 at 6:39=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
+>
+> On 22-07-24, 10:14, Jeff Johnson wrote:
+> > With ARCH=3Dpowerpc, make allmodconfig && make W=3D1 C=3D1 reports:
+> > WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/cpufreq/ppc-c=
+be-cpufreq.o
+> > WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/cpufreq/power=
+nv-cpufreq.o
+> >
+> > Add the missing invocation of the MODULE_DESCRIPTION() macro to all
+> > files which have a MODULE_LICENSE().
+> >
+> > This includes three additional files which, although they did not
+> > produce a warning with the powerpc allmodconfig configuration, may
+> > cause this warning with specific options enabled in the kernel
+> > configuration.
+> >
+> > Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> > ---
+> > Changes in v2:
+> > - Per Michael Ellerman updated maple-cpufreq.c and powernv-cpufreq.c
+> >   descriptions
+> > - Did not carry forward Viresh Kumar's Acked-by due to this change
+> > - Link to v1: https://lore.kernel.org/r/20240614-md-powerpc-drivers-cpu=
+freq-v1-1-de4034d87fd2@quicinc.com
+>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Move numa_emulation codfrom arch/x86 to mm/numa_emulation.c
-> 
-> This code will be later reused by arch_numa.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
-I ran some basic tests on ARM with this. Seems to do the job.
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Works on both ACPI and dsdt boots.
-
+Applied as 6.12 material, thanks!
