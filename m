@@ -2,47 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2C9945F13
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 16:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D698F945F76
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 16:33:17 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=TWXbk7re;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb6w74wBZz3fSC
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2024 00:02:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb7bv5lqcz3dXW
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 Aug 2024 00:33:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=quicinc.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=TWXbk7re;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org)
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb6vj3Gqyz3cW3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Aug 2024 00:01:50 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb6rS3QPSz6K6ln;
-	Fri,  2 Aug 2024 21:59:04 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 429D2140A86;
-	Fri,  2 Aug 2024 22:01:43 +0800 (CST)
-Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
- 2024 15:01:42 +0100
-Date: Fri, 2 Aug 2024 15:01:41 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 23/26] of, numa: return -EINVAL when no numa-node-id
- is found
-Message-ID: <20240802150141.00002143@Huawei.com>
-In-Reply-To: <20240801060826.559858-24-rppt@kernel.org>
-References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-24-rppt@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb7b76jJLz3dTD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 Aug 2024 00:32:34 +1000 (AEST)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 471LaPm5030335;
+	Fri, 2 Aug 2024 14:27:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	9jGJgJ9V12KPKJ2H/b+srBOfxdv/A3plkP+vj24OtQc=; b=TWXbk7rexId82YxK
+	SxJaXiSGHaf43SsiaRamGdGUpaMeyaDUNkDBAaJO6Fak+0W6qgmx5iqgLNMjPKiw
+	DL5zpMMY5v9ze7Mq9vlMPZj9aIgYnnfhfsODBbzll3WZ8/4qs2dsRWkZy0j+3gl0
+	XemcUmRqMRA5TVclTPchZEdKZEZD3DU/0uFKcUmXd7yneZxyPrsdll51m2AgQdSD
+	FGPTOT+R4F45wtRX2KWQYiUwh7pCyEA2/pTHE5Aczyy4Cv8OfgPZ+tovu9D/VDmQ
+	k5AacKOUt0StqP5j0Hmgga4R1dUgr7DxuVHjBF9Qm+zXeDLctb+DeeWGt94ZhSDM
+	bGBliQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40rje39vwd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Aug 2024 14:27:12 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 472ERBgL015419
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 2 Aug 2024 14:27:11 GMT
+Received: from [10.111.177.74] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 2 Aug 2024
+ 07:27:10 -0700
+Message-ID: <75a526e3-3101-4319-b42f-4482ba188abc@quicinc.com>
+Date: Fri, 2 Aug 2024 07:27:09 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] crypto: ppc/curve25519 - add missing MODULE_DESCRIPTION()
+ macro
+Content-Language: en-US
+To: Herbert Xu <herbert@gondor.apana.org.au>
+References: <20240718-md-powerpc-arch-powerpc-crypto-v1-1-b23a1989248e@quicinc.com>
+ <ZqzcApbJomFTnc30@gondor.apana.org.au>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <ZqzcApbJomFTnc30@gondor.apana.org.au>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: dJM_C4AoOg1Arky9t5lMDOo5b6Ezokk_
+X-Proofpoint-GUID: dJM_C4AoOg1Arky9t5lMDOo5b6Ezokk_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-02_10,2024-08-02_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ lowpriorityscore=0 clxscore=1011 phishscore=0 impostorscore=0
+ suspectscore=0 mlxscore=0 priorityscore=1501 malwarescore=0 adultscore=0
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408020099
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,31 +87,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav
- Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Arnd Bergmann <arnd@kernel.org>, kernel-janitors@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, Danny Tsen <dtsen@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Greg KH <gregkh@linuxfoundation.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>, linux-crypto@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2024 09:08:23 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+On 8/2/2024 6:15 AM, Herbert Xu wrote:
+> On Thu, Jul 18, 2024 at 06:14:18PM -0700, Jeff Johnson wrote:
+>> Since commit 1fffe7a34c89 ("script: modpost: emit a warning when the
+>> description is missing"), a module without a MODULE_DESCRIPTION() will
+>> result in a warning with make W=1. The following warning is being
+>> observed when building ppc64le with CRYPTO_CURVE25519_PPC64=m:
+>>
+>> WARNING: modpost: missing MODULE_DESCRIPTION() in arch/powerpc/crypto/curve25519-ppc64le.o
+>>
+>> Add the missing invocation of the MODULE_DESCRIPTION() macro.
+>>
+>> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>> ---
+>>  arch/powerpc/crypto/curve25519-ppc64le-core.c | 1 +
+>>  1 file changed, 1 insertion(+)
+> 
+> Patch applied.  Thanks.
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Currently of_numa_parse_memory_nodes() returns 0 if no "memory" node in
-> device tree contains "numa-node-id" property. This makes of_numa_init()
-> to return "success" despite no NUMA nodes were actually parsed and set
-> up.
-> 
-> arch_numa workarounds this by returning an error if numa_nodes_parsed is
-> empty.
-> 
-> numa_memblks however would WARN() in such case and since it will be used
-> by arch_numa shortly, such warning is not desirable.
-> 
-> Make sure of_numa_init() returns -EINVAL when no NUMA node information
-> was found in the device tree.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Great, that was the last of my MODULE_DESCRIPTION patches!!!
+
+There are a few more instances of the warning that Arnd has patches for,
+covering issues that appear in randconfigs that I didn't test.
+
+/jeff
