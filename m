@@ -1,38 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF6B945B29
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 11:38:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CAE1945B74
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 11:49:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb13L5Tfqz3dhR
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 19:38:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb1Jx1rhqz3fnj
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 19:49:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb12x6xVQz3cVR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 19:37:45 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id F0D3561446;
-	Fri,  2 Aug 2024 09:37:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C709C32782;
-	Fri,  2 Aug 2024 09:37:41 +0000 (UTC)
-Date: Fri, 2 Aug 2024 10:37:38 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Baruch Siach <baruch@tkos.co.il>
-Subject: Re: [PATCH v5 2/3] dma: replace zone_dma_bits by zone_dma_limit
-Message-ID: <Zqyo4qjPRHUeUfS5@arm.com>
-References: <cover.1722578375.git.baruch@tkos.co.il>
- <5821a1b2eb82847ccbac0945da040518d6f6f16b.1722578375.git.baruch@tkos.co.il>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb1JX25fjz3d96
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 19:49:29 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb1G048mKz6K610;
+	Fri,  2 Aug 2024 17:47:20 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 129BE140A08;
+	Fri,  2 Aug 2024 17:49:24 +0800 (CST)
+Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
+ 2024 10:49:23 +0100
+Date: Fri, 2 Aug 2024 10:49:22 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v3 07/26] mm: drop CONFIG_HAVE_ARCH_NODEDATA_EXTENSION
+Message-ID: <20240802104922.000051a0@Huawei.com>
+In-Reply-To: <20240801060826.559858-8-rppt@kernel.org>
+References: <20240801060826.559858-1-rppt@kernel.org>
+	<20240801060826.559858-8-rppt@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5821a1b2eb82847ccbac0945da040518d6f6f16b.1722578375.git.baruch@tkos.co.il>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,64 +53,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Ramon Fried <ramon@neureality.ai>, Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>, Will Deacon <will@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav
+ Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul
+ Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 02, 2024 at 09:03:47AM +0300, Baruch Siach wrote:
-> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> index 3b4be4ca3b08..62b36fda44c9 100644
-> --- a/kernel/dma/direct.c
-> +++ b/kernel/dma/direct.c
-> @@ -20,7 +20,7 @@
->   * it for entirely different regions. In that case the arch code needs to
->   * override the variable below for dma-direct to work properly.
->   */
-> -unsigned int zone_dma_bits __ro_after_init = 24;
-> +u64 zone_dma_limit __ro_after_init = DMA_BIT_MASK(24);
+On Thu,  1 Aug 2024 09:08:07 +0300
+Mike Rapoport <rppt@kernel.org> wrote:
 
-u64 here makes sense even if it may be larger than phys_addr_t. It
-matches the phys_limit type in the swiotlb code. The compilers should no
-longer complain.
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> There are no users of HAVE_ARCH_NODEDATA_EXTENSION left, so
+> arch_alloc_nodedata() and arch_refresh_nodedata() are not needed
+> anymore.
+> 
+> Replace the call to arch_alloc_nodedata() in free_area_init() with
+> memblock_alloc(), remove arch_refresh_nodedata() and cleanup
+> include/linux/memory_hotplug.h from the associated ifdefery.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
 
-> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-> index d10613eb0f63..7b04f7575796 100644
-> --- a/kernel/dma/pool.c
-> +++ b/kernel/dma/pool.c
-> @@ -70,9 +70,9 @@ static bool cma_in_zone(gfp_t gfp)
->  	/* CMA can't cross zone boundaries, see cma_activate_area() */
->  	end = cma_get_base(cma) + size - 1;
->  	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp & GFP_DMA))
-> -		return end <= DMA_BIT_MASK(zone_dma_bits);
-> +		return end <= zone_dma_limit;
->  	if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp & GFP_DMA32))
-> -		return end <= DMA_BIT_MASK(32);
-> +		return end <= max(DMA_BIT_MASK(32), zone_dma_limit);
->  	return true;
->  }
+Hi Mike, 
+
+This has an accidental (I assume) functional change and if
+you have an initially offline node it all goes wrong.
+
+
+> ---
+>  include/linux/memory_hotplug.h | 48 ----------------------------------
+>  mm/mm_init.c                   |  3 +--
+>  2 files changed, 1 insertion(+), 50 deletions(-)
+> 
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index ebe876930e78..b27ddce5d324 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -16,54 +16,6 @@ struct resource;
+>  struct vmem_altmap;
+>  struct dev_pagemap;
 >  
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index 043b0ecd3e8d..bb51bd5335ad 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -450,9 +450,9 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
->  	if (!remap)
->  		io_tlb_default_mem.can_grow = true;
->  	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp_mask & __GFP_DMA))
-> -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(zone_dma_bits);
-> +		io_tlb_default_mem.phys_limit = zone_dma_limit;
->  	else if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp_mask & __GFP_DMA32))
-> -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(32);
-> +		io_tlb_default_mem.phys_limit = max(DMA_BIT_MASK(32), zone_dma_limit);
->  	else
->  		io_tlb_default_mem.phys_limit = virt_to_phys(high_memory - 1);
->  #endif
+> -#ifdef CONFIG_HAVE_ARCH_NODEDATA_EXTENSION
+> -/*
+> - * For supporting node-hotadd, we have to allocate a new pgdat.
+> - *
+> - * If an arch has generic style NODE_DATA(),
+> - * node_data[nid] = kzalloc() works well. But it depends on the architecture.
+> - *
+> - * In general, generic_alloc_nodedata() is used.
+> - *
+> - */
+> -extern pg_data_t *arch_alloc_nodedata(int nid);
+> -extern void arch_refresh_nodedata(int nid, pg_data_t *pgdat);
+> -
+> -#else /* CONFIG_HAVE_ARCH_NODEDATA_EXTENSION */
+> -
+> -#define arch_alloc_nodedata(nid)	generic_alloc_nodedata(nid)
+> -
+> -#ifdef CONFIG_NUMA
+> -/*
+> - * XXX: node aware allocation can't work well to get new node's memory at this time.
+> - *	Because, pgdat for the new node is not allocated/initialized yet itself.
+> - *	To use new node's memory, more consideration will be necessary.
+> - */
+> -#define generic_alloc_nodedata(nid)				\
+> -({								\
+> -	memblock_alloc(sizeof(*pgdat), SMP_CACHE_BYTES);	\
+> -})
+> -
+> -extern pg_data_t *node_data[];
+> -static inline void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
+> -{
+> -	node_data[nid] = pgdat;
+> -}
+> -
+> -#else /* !CONFIG_NUMA */
+> -
+> -/* never called */
+> -static inline pg_data_t *generic_alloc_nodedata(int nid)
+> -{
+> -	BUG();
+> -	return NULL;
+> -}
+> -static inline void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
+> -{
+> -}
+> -#endif /* CONFIG_NUMA */
+> -#endif /* CONFIG_HAVE_ARCH_NODEDATA_EXTENSION */
+> -
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+>  struct page *pfn_to_online_page(unsigned long pfn);
+>  
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 75c3bd42799b..bcc2f2dd8021 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1838,11 +1838,10 @@ void __init free_area_init(unsigned long *max_zone_pfn)
+>  
+>  		if (!node_online(nid)) {
+>  			/* Allocator not initialized yet */
+> -			pgdat = arch_alloc_nodedata(nid);
+> +			pgdat = memblock_alloc(sizeof(*pgdat), SMP_CACHE_BYTES);
+>  			if (!pgdat)
+>  				panic("Cannot allocate %zuB for node %d.\n",
+>  				       sizeof(*pgdat), nid);
+> -			arch_refresh_nodedata(nid, pgdat);
 
-These two look correct to me now and it's the least intrusive (the
-alternative would have been a zone_dma32_limit). The arch code, however,
-needs to ensure that zone_dma_limit can always support 32-bit devices
-even if it is above 4GB (with the relevant dma offsets in place for such
-devices).
+This allocates pgdat but never sets node_data[nid] to it
+and promptly leaks it on the line below. 
 
--- 
-Catalin
+Just to sanity check this I spun up a qemu machine with no memory
+initially present on some nodes and it went boom as you'd expect.
+
+I tested with addition of
+			NODE_DATA(nid) = pgdat;
+and it all seems to work as expected.
+
+Jonathan
+
+
+
+>  		}
+>  
+>  		pgdat = NODE_DATA(nid);
+
+
