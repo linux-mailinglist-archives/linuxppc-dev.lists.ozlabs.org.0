@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 415B1945CF1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 13:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A230C945D03
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 13:13:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb36D1Yr7z3fT0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 21:10:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb38z4LY1z3dXj
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 21:13:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
@@ -14,27 +14,27 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb35r4DzJz3dLS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 21:10:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb38Q00vMz3dLS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 21:12:37 +1000 (AEST)
 Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb32l3LPdz6K9BV;
-	Fri,  2 Aug 2024 19:07:43 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb35J7183z6K9Db;
+	Fri,  2 Aug 2024 19:09:56 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id CF3FF140A08;
-	Fri,  2 Aug 2024 19:10:20 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 5BD1D140A08;
+	Fri,  2 Aug 2024 19:12:34 +0800 (CST)
 Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
- 2024 12:10:13 +0100
-Date: Fri, 2 Aug 2024 12:10:10 +0100
+ 2024 12:12:33 +0100
+Date: Fri, 2 Aug 2024 12:12:32 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 21/26] mm: numa_memblks: make several functions and
- variables static
-Message-ID: <20240802121010.00000113@Huawei.com>
-In-Reply-To: <20240801060826.559858-22-rppt@kernel.org>
+Subject: Re: [PATCH v3 22/26] mm: numa_memblks: use
+ memblock_{start,end}_of_DRAM() when sanitizing meminfo
+Message-ID: <20240802121232.00005b2c@Huawei.com>
+In-Reply-To: <20240801060826.559858-23-rppt@kernel.org>
 References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-22-rppt@kernel.org>
+	<20240801060826.559858-23-rppt@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -61,20 +61,40 @@ Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2024 09:08:21 +0300
+On Thu,  1 Aug 2024 09:08:22 +0300
 Mike Rapoport <rppt@kernel.org> wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Make functions and variables that are exclusively used by numa_memblks
-> static.
+> numa_cleanup_meminfo() moves blocks outside system RAM to
+> numa_reserved_meminfo and it uses 0 and PFN_PHYS(max_pfn) to determine
+> the memory boundaries.
 > 
-> Move numa_nodemask_from_meminfo() before its callers to avoid forward
-> declaration.
+> Replace the memory range boundaries with more portable
+> memblock_start_of_DRAM() and memblock_end_of_DRAM().
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
-Good. I was wondering why some of this internal detail was in the header.
-Much nicer after this.
-
+Makes sense
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> ---
+>  mm/numa_memblks.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+> index e97665a5e8ce..e4358ad92233 100644
+> --- a/mm/numa_memblks.c
+> +++ b/mm/numa_memblks.c
+> @@ -212,8 +212,8 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
+>   */
+>  int __init numa_cleanup_meminfo(struct numa_meminfo *mi)
+>  {
+> -	const u64 low = 0;
+> -	const u64 high = PFN_PHYS(max_pfn);
+> +	const u64 low = memblock_start_of_DRAM();
+> +	const u64 high = memblock_end_of_DRAM();
+>  	int i, j, k;
+>  
+>  	/* first, trim all entries */
+
