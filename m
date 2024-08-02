@@ -1,47 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED654945BA3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 11:57:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF883945BDC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 12:13:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb1TW6ldCz3fnf
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 19:57:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb1rW4pd1z3fpK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 20:13:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=yuehaibing@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb1T75YDRz3d96
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 19:56:59 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb1Q24SDxz6K975;
-	Fri,  2 Aug 2024 17:54:18 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id E41C6140A08;
-	Fri,  2 Aug 2024 17:56:55 +0800 (CST)
-Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
- 2024 10:56:54 +0100
-Date: Fri, 2 Aug 2024 10:56:54 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 10/26] x86/numa: simplify numa_distance allocation
-Message-ID: <20240802105654.00004752@Huawei.com>
-In-Reply-To: <20240801060826.559858-11-rppt@kernel.org>
-References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-11-rppt@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb1r62pjzz3cRs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 20:13:20 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Wb1q23pTwzxVrb;
+	Fri,  2 Aug 2024 18:12:30 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id B5F0618005F;
+	Fri,  2 Aug 2024 18:12:44 +0800 (CST)
+Received: from huawei.com (10.175.101.6) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 2 Aug
+ 2024 18:12:44 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <jonathan.downing@nautel.com>, <piotr.wojtaszczyk@timesys.com>,
+	<vz@mleia.com>, <lgirdwood@gmail.com>, <broonie@kernel.org>,
+	<perex@perex.cz>, <tiwai@suse.com>, <yuehaibing@huawei.com>
+Subject: [PATCH -next] ASoC: fsl: lpc3xxx: Make some symbols static
+Date: Fri, 2 Aug 2024 18:10:44 +0800
+Message-ID: <20240802101044.3302251-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.101.6]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,30 +51,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav
- Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2024 09:08:10 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+These symbols are not used outside of the files, make them static to fix
+sparse warnings:
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Allocation of numa_distance uses memblock_phys_alloc_range() to limit
-> allocation to be below the last mapped page.
-> 
-> But NUMA initializaition runs after the direct map is populated and
-> there is also code in setup_arch() that adjusts memblock limit to
-> reflect how much memory is already mapped in the direct map.
-> 
-> Simplify the allocation of numa_distance and use plain memblock_alloc().
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
-Seems sensible. FWIW (which might just be me not bothering to
-read this one again ;) 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+sound/soc/fsl/lpc3xxx-i2s.c:261:30: warning: symbol 'lpc3xxx_i2s_dai_ops' was not declared. Should it be static?
+sound/soc/fsl/lpc3xxx-i2s.c:271:27: warning: symbol 'lpc3xxx_i2s_dai_driver' was not declared. Should it be static?
+sound/soc/fsl/lpc3xxx-pcm.c:55:39: warning: symbol 'lpc3xxx_soc_platform_driver' was not declared. Should it be static?
+
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ sound/soc/fsl/lpc3xxx-i2s.c | 4 ++--
+ sound/soc/fsl/lpc3xxx-pcm.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/sound/soc/fsl/lpc3xxx-i2s.c b/sound/soc/fsl/lpc3xxx-i2s.c
+index 62ef624d6dd4..bdb320bb3719 100644
+--- a/sound/soc/fsl/lpc3xxx-i2s.c
++++ b/sound/soc/fsl/lpc3xxx-i2s.c
+@@ -258,7 +258,7 @@ static int lpc3xxx_i2s_dai_probe(struct snd_soc_dai *dai)
+ 	return 0;
+ }
  
+-const struct snd_soc_dai_ops lpc3xxx_i2s_dai_ops = {
++static const struct snd_soc_dai_ops lpc3xxx_i2s_dai_ops = {
+ 	.probe	= lpc3xxx_i2s_dai_probe,
+ 	.startup = lpc3xxx_i2s_startup,
+ 	.shutdown = lpc3xxx_i2s_shutdown,
+@@ -268,7 +268,7 @@ const struct snd_soc_dai_ops lpc3xxx_i2s_dai_ops = {
+ 	.set_fmt = lpc3xxx_i2s_set_dai_fmt,
+ };
+ 
+-struct snd_soc_dai_driver lpc3xxx_i2s_dai_driver = {
++static struct snd_soc_dai_driver lpc3xxx_i2s_dai_driver = {
+ 	.playback = {
+ 		.channels_min = 1,
+ 		.channels_max = 2,
+diff --git a/sound/soc/fsl/lpc3xxx-pcm.c b/sound/soc/fsl/lpc3xxx-pcm.c
+index c0d499b9b8ba..e6abaf63895a 100644
+--- a/sound/soc/fsl/lpc3xxx-pcm.c
++++ b/sound/soc/fsl/lpc3xxx-pcm.c
+@@ -52,7 +52,7 @@ static const struct snd_dmaengine_pcm_config lpc3xxx_dmaengine_pcm_config = {
+ 	.prealloc_buffer_size = 128 * 1024,
+ };
+ 
+-const struct snd_soc_component_driver lpc3xxx_soc_platform_driver = {
++static const struct snd_soc_component_driver lpc3xxx_soc_platform_driver = {
+ 	.name = "lpc32xx-pcm",
+ };
+ 
+-- 
+2.34.1
+
