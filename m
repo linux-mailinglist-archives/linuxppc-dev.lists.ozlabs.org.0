@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004E4945C73
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 12:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB61945C80
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 12:52:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb2f66vfQz3dvs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 20:49:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb2jB1Mc4z3fp3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 20:52:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
@@ -14,26 +14,27 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb2dk3yk6z3dTV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 20:49:27 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb2bB1lx3z6K61Q;
-	Fri,  2 Aug 2024 18:47:18 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb2hn2qzqz3dLS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 20:52:09 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb2df5M0xz6K606;
+	Fri,  2 Aug 2024 18:49:26 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id D2B89140B3C;
-	Fri,  2 Aug 2024 18:49:21 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1DD6D1400D9;
+	Fri,  2 Aug 2024 18:52:05 +0800 (CST)
 Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
- 2024 11:49:20 +0100
-Date: Fri, 2 Aug 2024 11:49:20 +0100
+ 2024 11:52:04 +0100
+Date: Fri, 2 Aug 2024 11:52:03 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 17/26] mm: introduce numa_memblks
-Message-ID: <20240802114920.00006dc1@Huawei.com>
-In-Reply-To: <20240801060826.559858-18-rppt@kernel.org>
+Subject: Re: [PATCH v3 18/26] mm: move numa_distance and related code from
+ x86 to numa_memblks
+Message-ID: <20240802115203.0000062a@Huawei.com>
+In-Reply-To: <20240801060826.559858-19-rppt@kernel.org>
 References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-18-rppt@kernel.org>
+	<20240801060826.559858-19-rppt@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -60,13 +61,13 @@ Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2024 09:08:17 +0300
+On Thu,  1 Aug 2024 09:08:18 +0300
 Mike Rapoport <rppt@kernel.org> wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Move code dealing with numa_memblks from arch/x86 to mm/ and add Kconfig
-> options to let x86 select it in its Kconfig.
+> Move code dealing with numa_distance array from arch/x86 to
+> mm/numa_memblks.c
 > 
 > This code will be later reused by arch_numa.
 > 
@@ -74,6 +75,9 @@ Mike Rapoport <rppt@kernel.org> wrote:
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
+
+As you say, simple code move and I'll cope with the confusion
+of stuff that isn't numa_memblk in that file given the
+convenience.
+
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-
