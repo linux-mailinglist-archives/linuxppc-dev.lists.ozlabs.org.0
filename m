@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A336945C2D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 12:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 004E4945C73
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 12:49:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb2MJ4Hhqz3fnn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 20:37:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wb2f66vfQz3dvs
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 Aug 2024 20:49:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
@@ -14,34 +14,33 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb2Lw6YzWz3dL2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 20:36:37 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb2JN02Stz6K5nV;
-	Fri,  2 Aug 2024 18:34:28 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wb2dk3yk6z3dTV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 Aug 2024 20:49:27 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb2bB1lx3z6K61Q;
+	Fri,  2 Aug 2024 18:47:18 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 90EC81400D9;
-	Fri,  2 Aug 2024 18:36:31 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id D2B89140B3C;
+	Fri,  2 Aug 2024 18:49:21 +0800 (CST)
 Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
- 2024 11:36:30 +0100
-Date: Fri, 2 Aug 2024 11:36:29 +0100
+ 2024 11:49:20 +0100
+Date: Fri, 2 Aug 2024 11:49:20 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 11/26] x86/numa: use get_pfn_range_for_nid to verify
- that node spans memory
-Message-ID: <20240802113629.00003069@Huawei.com>
-In-Reply-To: <20240801060826.559858-12-rppt@kernel.org>
+Subject: Re: [PATCH v3 17/26] mm: introduce numa_memblks
+Message-ID: <20240802114920.00006dc1@Huawei.com>
+In-Reply-To: <20240801060826.559858-18-rppt@kernel.org>
 References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-12-rppt@kernel.org>
+	<20240801060826.559858-18-rppt@kernel.org>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,52 +60,20 @@ Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  1 Aug 2024 09:08:11 +0300
+On Thu,  1 Aug 2024 09:08:17 +0300
 Mike Rapoport <rppt@kernel.org> wrote:
 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Instead of looping over numa_meminfo array to detect node's start and
-> end addresses use get_pfn_range_for_init().
+> Move code dealing with numa_memblks from arch/x86 to mm/ and add Kconfig
+> options to let x86 select it in its Kconfig.
 > 
-> This is shorter and make it easier to lift numa_memblks to generic code.
+> This code will be later reused by arch_numa.
+> 
+> No functional changes.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
-
-Fair enough given code a few lines up has set the node
-for all the memblocks so this should I think give the same
-effective result.
-
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> ---
->  arch/x86/mm/numa.c | 13 +++----------
->  1 file changed, 3 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-> index edfc38803779..cfe7e5477cf8 100644
-> --- a/arch/x86/mm/numa.c
-> +++ b/arch/x86/mm/numa.c
-> @@ -521,17 +521,10 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
->  
->  	/* Finally register nodes. */
->  	for_each_node_mask(nid, node_possible_map) {
-> -		u64 start = PFN_PHYS(max_pfn);
-> -		u64 end = 0;
-> +		unsigned long start_pfn, end_pfn;
->  
-> -		for (i = 0; i < mi->nr_blks; i++) {
-> -			if (nid != mi->blk[i].nid)
-> -				continue;
-> -			start = min(mi->blk[i].start, start);
-> -			end = max(mi->blk[i].end, end);
-> -		}
-> -
-> -		if (start >= end)
-> +		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
-> +		if (start_pfn >= end_pfn)
->  			continue;
->  
->  		alloc_node_data(nid);
 
