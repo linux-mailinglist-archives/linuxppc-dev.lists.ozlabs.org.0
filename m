@@ -1,56 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E465F946D11
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Aug 2024 09:27:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D4C946E62
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Aug 2024 13:21:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KIU8LoVO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=mXpJniDY;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WcB3P67PBz3cW7
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Aug 2024 17:27:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WcHFr0V32z3c4h
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Aug 2024 21:21:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KIU8LoVO;
+	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=mXpJniDY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WcB2h23fMz3c54
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Aug 2024 17:26:36 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8829660BD3;
-	Sun,  4 Aug 2024 07:26:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD611C32786;
-	Sun,  4 Aug 2024 07:26:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722756393;
-	bh=rx2UdBu3Jn4YvMBlkSpIvWfaZAHG3g5eVDYxreRC0w8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KIU8LoVOwFPBw/i+e9r4MNw3lCZ9Vibx6Dii6JlG87646MCH9g5WB4uLhl1sgD8XY
-	 fdhDH8dGci/plC04bp2qqqFN5dQbJHMWc6fWKJYivJ+bk5+GubVSlg3B3t+HSNIfir
-	 JTwRTaCcEoGzTNU1jYvwPfIqnBAdwUe1xFf3HqAX19LfaXMjWdmtrEyuqIK93JEmBz
-	 EFHb56nL5u7GvI90DNZwVtfaVmCpUg9fU4iOezzHPPuQFpcF1invnI5Iw9ThB6TUT4
-	 ADe9mcgPXLgojRwwccp6Y65CANZWgRQC4iHBhVf31YxxkVq1gi+zDus1lvqFhKf27J
-	 Jc+qx/YNiH/Gg==
-Date: Sun, 4 Aug 2024 10:24:15 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v3 07/26] mm: drop CONFIG_HAVE_ARCH_NODEDATA_EXTENSION
-Message-ID: <Zq8sn5iD1iOmYrss@kernel.org>
-References: <20240801060826.559858-1-rppt@kernel.org>
- <20240801060826.559858-8-rppt@kernel.org>
- <20240802104922.000051a0@Huawei.com>
- <20240803115813.809f808f1afbe9f9feaae129@linux-foundation.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WcHF650xsz30Vh
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Aug 2024 21:20:55 +1000 (AEST)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-52efd855adbso13185546e87.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Aug 2024 04:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722770448; x=1723375248; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=naFt/2TPrEyespmkdK+r5W6mEbQja09GmX+F0G7slfE=;
+        b=mXpJniDYJwPuycUw0mfiy9a3bn6RZWRUHSFCiLCqFOy20Vh6I2WVpqZzDNY7U68VUH
+         ZrGFooNR84P+WEiK1YVn9cth7Zrr3ZNldi0TWZm7e6R5CBnygGE43Fl4QlUvMy3JGzpB
+         RN9UaPtwmw/RKn9ypwcx3NMwge2PF8rnG501gMpTsMMMRady2lFIC7gxmtRAA/IJlvAm
+         r9V5Ut/xF0s3kzfgkpRQCfUVHrmYWqGeVdIZfaOjtU8c7VEYJBpVkJMNQuLEiOpwC3CJ
+         LErbJXcz8H80mXr3Y2y2UUf7+OKvjcip0PVh6KBhUAkXYwGJzrr4AxdfBNGENhx5NQH/
+         s1WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722770448; x=1723375248;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=naFt/2TPrEyespmkdK+r5W6mEbQja09GmX+F0G7slfE=;
+        b=ZUtwruXgh8bwPT0E51VCu0qouT0a7db9U0IPz6N+mrazfVRn6z08lGxB089bbEVrS9
+         hmCIgtvrk0CHLT8ITY0WKskzQBDNvKJLjHW0EyKlNjipzw6pJ6MMN+q65My6MxwGGj3y
+         5VfUeSfC6IgkWWscNOp2WZ3aTuwPIdgOUrAmPcwTuog4wNr32pU+4QufDehW+8b/XhM+
+         8xWDuMLg4P4F0r6JOl5EYjy0m3nz0Sjx5SkLeyFmaEUt1I8Gv0Vi+9rv9mb2RPu64QqM
+         gs45bHExDk1o7pLk9FcycqVsOd87bxa3SM/7qJGHnWt6+biqxh7qYp2bR+jqiGlzTkOi
+         m/oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVbY0P4sllP3p4E1k3c9lf079S0YzHx0mOAF63m0J5HtrDIhqYO5k4s/Ljr+tdewUJb+qtqaK6tHphoWsNOXDfPV0LC3YguonRz49P2Pg==
+X-Gm-Message-State: AOJu0Yz3X3ByYg3uwplo2Y7b66okKY0pMnhDrOIHZJo4FQP9cqGngEYN
+	NoOBNcYp/ZRMEg+JuaYeKX4+6/cOIO2DU/QExyQGWiQbcjzI2iJ024H6yFjxvkU=
+X-Google-Smtp-Source: AGHT+IEHe/6seqXfqn42WjLsKMvex/gmkgM/thAq3H7Adr078nULgpEFm5oaDNI8wXsWquQ9nKsg4Q==
+X-Received: by 2002:a05:6512:2208:b0:52e:8475:7c2a with SMTP id 2adb3069b0e04-530bb36f8e8mr5290950e87.15.1722770447925;
+        Sun, 04 Aug 2024 04:20:47 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9e849a0sm319025566b.186.2024.08.04.04.20.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Aug 2024 04:20:47 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/476: Drop explicit initialization of struct i2c_device_id::driver_data to 0
+Date: Sun,  4 Aug 2024 13:20:31 +0200
+Message-ID: <20240804112032.3628645-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240803115813.809f808f1afbe9f9feaae129@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=919; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=HFIQE70Wsli1FhtMIKGsruMMilKtz27VZKS1nHQOi1k=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmr2QA70BnoUcgjSR4pSyiyiKTK8LGX8/ACljrX WlEcsd8mxSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZq9kAAAKCRCPgPtYfRL+ TgnJCACP5UjthvLxSwCPBVuIuwfAcD4D0w6AL0QOqQj4aUWy+Jml8CPemsceoXCDiGWcGX9pJyA yV4FIcKyj9cVa+/55NvG3us9WbwXGnVkE6ca/YH4/Za8N7aD2kQ7Y7tzs4/ye94sbkIqGLTGRbs oCGgWsAhF7372FALA0BeH0IhGTMcMtXh58lsQzA09j06W2FrE9vvz+p9sUiy4Luv03f7EMi3g5M 7u8gsnPjLIQtby2AQQjTlWE1qodMAdkXvtrDhUXIRbZGgc1r2WURI+xR5/25+JJ/URm4gV2qeSg 9zWVHUpvbdy7YfkqKxiAZUPbp8Fbz2FfYaIfL9Jr4Jprt8Sk
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,138 +80,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org, Rob Herring <robh@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Vasily Gorbik <gor@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Aug 03, 2024 at 11:58:13AM -0700, Andrew Morton wrote:
-> On Fri, 2 Aug 2024 10:49:22 +0100 Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-> 
-> > > --- a/mm/mm_init.c
-> > > +++ b/mm/mm_init.c
-> > > @@ -1838,11 +1838,10 @@ void __init free_area_init(unsigned long *max_zone_pfn)
-> > >  
-> > >  		if (!node_online(nid)) {
-> > >  			/* Allocator not initialized yet */
-> > > -			pgdat = arch_alloc_nodedata(nid);
-> > > +			pgdat = memblock_alloc(sizeof(*pgdat), SMP_CACHE_BYTES);
-> > >  			if (!pgdat)
-> > >  				panic("Cannot allocate %zuB for node %d.\n",
-> > >  				       sizeof(*pgdat), nid);
-> > > -			arch_refresh_nodedata(nid, pgdat);
-> > 
-> > This allocates pgdat but never sets node_data[nid] to it
-> > and promptly leaks it on the line below. 
-> > 
-> > Just to sanity check this I spun up a qemu machine with no memory
-> > initially present on some nodes and it went boom as you'd expect.
-> > 
-> > I tested with addition of
-> > 			NODE_DATA(nid) = pgdat;
-> > and it all seems to work as expected.
-> 
-> Thanks, I added that.  It blew up on x86_64 allnoconfig because
-> node_data[] (and hence NODE_DATA()) isn't an lvalue when CONFIG_NUMA=n.
-> 
-> I'll put some #ifdef CONFIG_NUMAs in there for now but
-> 
-> a) NODE_DATA() is upper-case. Implies "constant".  Shouldn't be assigned to.
-> 
-> b) NODE_DATA() should be non-lvalue when CONFIG_NUMA=y also.  But no,
->    we insist on implementing things in cpp instead of in C.
+This driver doesn't use the driver_data member of struct i2c_device_id,
+so don't explicitly initialize this member.
 
-This looks like a candidate for a separate tree-wide cleanup.
- 
-> c) In fact assigning to anything which ends in "()" is nuts.  Please
->    clean up my tempfix.
-> 
-> c) Mike, generally I'm wondering if there's a bunch of code here
->    which isn't needed on CONFIG_NUMA=n.  Please check all of this for
->    unneeded bloatiness.
+This prepares putting driver_data in an anonymous union which requires
+either no initialization or named designators. But it's also a nice
+cleanup on its own.
 
-I believe the patch addresses your concerns, just with this the commit log
-needs update. Instead of 
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+ arch/powerpc/platforms/44x/ppc476.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-    Replace the call to arch_alloc_nodedata() in free_area_init() with
-    memblock_alloc(), remove arch_refresh_nodedata() and cleanup
-    include/linux/memory_hotplug.h from the associated ifdefery.
-
-it should be
-
-    Replace the call to arch_alloc_nodedata() in free_area_init() with a
-    new helper alloc_offline_node_data(), remove arch_refresh_nodedata()
-    and cleanup include/linux/memory_hotplug.h from the associated
-    ifdefery.
-
-I can send an updated patch if you prefer.
-
-diff --git a/include/linux/numa.h b/include/linux/numa.h
-index 3b12d8ca0afd..5a749fd67f39 100644
---- a/include/linux/numa.h
-+++ b/include/linux/numa.h
-@@ -34,6 +34,7 @@ extern struct pglist_data *node_data[];
- #define NODE_DATA(nid)	(node_data[nid])
- 
- void __init alloc_node_data(int nid);
-+void __init alloc_offline_node_data(int nit);
- 
- /* Generic implementation available */
- int numa_nearest_node(int node, unsigned int state);
-@@ -62,6 +63,8 @@ static inline int phys_to_target_node(u64 start)
- {
- 	return 0;
- }
-+
-+static inline void alloc_offline_node_data(int nit) {}
- #endif
- 
- #define numa_map_to_online_node(node) numa_nearest_node(node, N_ONLINE)
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index bcc2f2dd8021..2785be04e7bb 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1836,13 +1836,8 @@ void __init free_area_init(unsigned long *max_zone_pfn)
- 	for_each_node(nid) {
- 		pg_data_t *pgdat;
- 
--		if (!node_online(nid)) {
--			/* Allocator not initialized yet */
--			pgdat = memblock_alloc(sizeof(*pgdat), SMP_CACHE_BYTES);
--			if (!pgdat)
--				panic("Cannot allocate %zuB for node %d.\n",
--				       sizeof(*pgdat), nid);
--		}
-+		if (!node_online(nid))
-+			alloc_offline_node_data(nid);
- 
- 		pgdat = NODE_DATA(nid);
- 		free_area_init_node(nid);
-diff --git a/mm/numa.c b/mm/numa.c
-index da27eb151dc5..07e486a977c7 100644
---- a/mm/numa.c
-+++ b/mm/numa.c
-@@ -34,6 +34,18 @@ void __init alloc_node_data(int nid)
- 	memset(NODE_DATA(nid), 0, sizeof(pg_data_t));
+diff --git a/arch/powerpc/platforms/44x/ppc476.c b/arch/powerpc/platforms/44x/ppc476.c
+index 164cbcd4588e..e7b7bdaad341 100644
+--- a/arch/powerpc/platforms/44x/ppc476.c
++++ b/arch/powerpc/platforms/44x/ppc476.c
+@@ -95,7 +95,7 @@ static int avr_probe(struct i2c_client *client)
  }
  
-+void __init alloc_offline_node_data(int nit)
-+{
-+	pg_data_t *pgdat;
-+
-+	pgdat = memblock_alloc(sizeof(*pgdat), SMP_CACHE_BYTES);
-+	if (!pgdat)
-+		panic("Cannot allocate %zuB for node %d.\n",
-+		      sizeof(*pgdat), nid);
-+
-+	node_data[nid] = pgdat;
-+}
-+
- /* Stub functions: */
- 
- #ifndef memory_add_physaddr_to_nid
-
+ static const struct i2c_device_id avr_id[] = {
+-	{ "akebono-avr", 0 },
++	{ "akebono-avr" },
+ 	{ }
+ };
  
 
+base-commit: f524a5e4dfb75b277c9a5ad819ca5f035f490f14
 -- 
-Sincerely yours,
-Mike.
+2.45.2
+
