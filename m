@@ -2,73 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D4C946E62
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Aug 2024 13:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6C0946F7B
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Aug 2024 17:07:52 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=mXpJniDY;
+	dkim=pass (1024-bit key; unprotected) header.d=yeah.net header.i=@yeah.net header.a=rsa-sha256 header.s=s110527 header.b=R4AuMlJc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WcHFr0V32z3c4h
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  4 Aug 2024 21:21:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WcNGt2zFGz3c3l
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 01:07:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=mXpJniDY;
+	dkim=pass (1024-bit key; unprotected) header.d=yeah.net header.i=@yeah.net header.a=rsa-sha256 header.s=s110527 header.b=R4AuMlJc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WcHF650xsz30Vh
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  4 Aug 2024 21:20:55 +1000 (AEST)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-52efd855adbso13185546e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 04 Aug 2024 04:20:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1722770448; x=1723375248; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=naFt/2TPrEyespmkdK+r5W6mEbQja09GmX+F0G7slfE=;
-        b=mXpJniDYJwPuycUw0mfiy9a3bn6RZWRUHSFCiLCqFOy20Vh6I2WVpqZzDNY7U68VUH
-         ZrGFooNR84P+WEiK1YVn9cth7Zrr3ZNldi0TWZm7e6R5CBnygGE43Fl4QlUvMy3JGzpB
-         RN9UaPtwmw/RKn9ypwcx3NMwge2PF8rnG501gMpTsMMMRady2lFIC7gxmtRAA/IJlvAm
-         r9V5Ut/xF0s3kzfgkpRQCfUVHrmYWqGeVdIZfaOjtU8c7VEYJBpVkJMNQuLEiOpwC3CJ
-         LErbJXcz8H80mXr3Y2y2UUf7+OKvjcip0PVh6KBhUAkXYwGJzrr4AxdfBNGENhx5NQH/
-         s1WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722770448; x=1723375248;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=naFt/2TPrEyespmkdK+r5W6mEbQja09GmX+F0G7slfE=;
-        b=ZUtwruXgh8bwPT0E51VCu0qouT0a7db9U0IPz6N+mrazfVRn6z08lGxB089bbEVrS9
-         hmCIgtvrk0CHLT8ITY0WKskzQBDNvKJLjHW0EyKlNjipzw6pJ6MMN+q65My6MxwGGj3y
-         5VfUeSfC6IgkWWscNOp2WZ3aTuwPIdgOUrAmPcwTuog4wNr32pU+4QufDehW+8b/XhM+
-         8xWDuMLg4P4F0r6JOl5EYjy0m3nz0Sjx5SkLeyFmaEUt1I8Gv0Vi+9rv9mb2RPu64QqM
-         gs45bHExDk1o7pLk9FcycqVsOd87bxa3SM/7qJGHnWt6+biqxh7qYp2bR+jqiGlzTkOi
-         m/oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVbY0P4sllP3p4E1k3c9lf079S0YzHx0mOAF63m0J5HtrDIhqYO5k4s/Ljr+tdewUJb+qtqaK6tHphoWsNOXDfPV0LC3YguonRz49P2Pg==
-X-Gm-Message-State: AOJu0Yz3X3ByYg3uwplo2Y7b66okKY0pMnhDrOIHZJo4FQP9cqGngEYN
-	NoOBNcYp/ZRMEg+JuaYeKX4+6/cOIO2DU/QExyQGWiQbcjzI2iJ024H6yFjxvkU=
-X-Google-Smtp-Source: AGHT+IEHe/6seqXfqn42WjLsKMvex/gmkgM/thAq3H7Adr078nULgpEFm5oaDNI8wXsWquQ9nKsg4Q==
-X-Received: by 2002:a05:6512:2208:b0:52e:8475:7c2a with SMTP id 2adb3069b0e04-530bb36f8e8mr5290950e87.15.1722770447925;
-        Sun, 04 Aug 2024 04:20:47 -0700 (PDT)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9e849a0sm319025566b.186.2024.08.04.04.20.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Aug 2024 04:20:47 -0700 (PDT)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/476: Drop explicit initialization of struct i2c_device_id::driver_data to 0
-Date: Sun,  4 Aug 2024 13:20:31 +0200
-Message-ID: <20240804112032.3628645-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.45.2
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=yeah.net (client-ip=220.197.32.18; helo=mail-m16.yeah.net; envelope-from=shawnguo2@yeah.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1254 seconds by postgrey-1.37 at boromir; Mon, 05 Aug 2024 01:07:10 AEST
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WcNG65KXvz30TF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2024 01:07:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=2Q94fzLl3lSmFdIfJpIE1h4MlKx0ywkHDPte+ksg2FI=;
+	b=R4AuMlJcBZ8UfBtIXyM2Bw2P0p6SKG9SiSYXTbCUoAx4Uznm/YB7hXx/T54ncj
+	kPeOmH53nbbkTVc2XStCCqnT40Ba0qEr0p8NOeTIhknnLGj4w6n08yXI/DULNBgy
+	PEiVC+3Izg70MuT4/Raqr6jpQHlb0UiBjyv5uUvjfdW1k=
+Received: from dragon (unknown [117.62.10.86])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCXnyCvkK9mrxa9AQ--.57464S3;
+	Sun, 04 Aug 2024 22:31:13 +0800 (CST)
+Date: Sun, 4 Aug 2024 22:31:11 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+Subject: Re: [PATCH v6 6/7] arm64: dts: imx8m: update spdif sound card node
+ properties
+Message-ID: <Zq+QrxKFb3U1IEv/@dragon>
+References: <20240627083104.123357-1-elinor.montmasson@savoirfairelinux.com>
+ <20240627083104.123357-7-elinor.montmasson@savoirfairelinux.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=919; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=HFIQE70Wsli1FhtMIKGsruMMilKtz27VZKS1nHQOi1k=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmr2QA70BnoUcgjSR4pSyiyiKTK8LGX8/ACljrX WlEcsd8mxSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZq9kAAAKCRCPgPtYfRL+ TgnJCACP5UjthvLxSwCPBVuIuwfAcD4D0w6AL0QOqQj4aUWy+Jml8CPemsceoXCDiGWcGX9pJyA yV4FIcKyj9cVa+/55NvG3us9WbwXGnVkE6ca/YH4/Za8N7aD2kQ7Y7tzs4/ye94sbkIqGLTGRbs oCGgWsAhF7372FALA0BeH0IhGTMcMtXh58lsQzA09j06W2FrE9vvz+p9sUiy4Luv03f7EMi3g5M 7u8gsnPjLIQtby2AQQjTlWE1qodMAdkXvtrDhUXIRbZGgc1r2WURI+xR5/25+JJ/URm4gV2qeSg 9zWVHUpvbdy7YfkqKxiAZUPbp8Fbz2FfYaIfL9Jr4Jprt8Sk
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240627083104.123357-7-elinor.montmasson@savoirfairelinux.com>
+X-CM-TRANSID: Mc8vCgCXnyCvkK9mrxa9AQ--.57464S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuryfAryfAFW7Wr45XFW8WFg_yoW7JF47pa
+	1vkFZ7Zr1xG3WIy345XF40v3s3Aa4rGFs09r17try8trs8Zry8twn7Krn5ur4UZr1Sqw4S
+	gF1DZFy8Wrn0qaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbrcfUUUUU=
+X-Originating-IP: [117.62.10.86]
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQoxZWavY9tYNAAAsS
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,37 +60,162 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>
+Cc: imx@lists.linux.dev, alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, linux-kernel@vger.kernel.org, Philip-Dylan <philip-dylan.gleonec@savoirfairelinux.com>, Shengjiu Wang <shengjiu.wang@gmail.com>, Rob Herring <robh@kernel.org>, Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-sound@vger.kernel.org, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>, Jaroslav Kysela <perex@perex.cz>, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, Takashi Iwai <tiwai@suse.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This driver doesn't use the driver_data member of struct i2c_device_id,
-so don't explicitly initialize this member.
+On Thu, Jun 27, 2024 at 10:31:03AM +0200, Elinor Montmasson wrote:
+> The merge of imx-spdif driver into fsl-asoc-card brought
+> new DT properties that can be used with the "fsl,imx-audio-spdif"
+> compatible:
+> * The "spdif-controller" property from imx-spdif is named "audio-cpu"
+>   in fsl-asoc-card.
+> * fsl-asoc-card uses codecs explicitly declared in DT
+>   with "audio-codec".
+>   With an S/PDIF, codec drivers spdif_transmitter and
+>   spdif_receiver should be used.
+>   Driver imx-spdif used instead the dummy codec and a pair of
+>   boolean properties, "spdif-in" and "spdif-out".
+> 
+> While backward compatibility is kept to support properties
+> "spdif-controller", "spdif-in" and "spdif-out", using new properties has
+> several benefits:
+> * "audio-cpu" and "audio-codec" are more generic names reflecting
+>   that the fsl-asoc-card driver supports multiple hardware.
+>   They are properties already used by devices using the
+>   fsl-asoc-card driver.
+>   They are also similar to properties of simple-card: "cpu" and "codec".
+> * "spdif-in" and "spdif-out" imply the use of the dummy codec in the
+>   driver. However, there are already two codec drivers for the S/PDIF,
+>   spdif_transmitter and spdif_receiver.
+>   It is better to declare S/PDIF Tx and Rx devices in a DT, and then
+>   reference them with "audio-codec" than using the dummy codec.
+> 
+> For those reasons, this commit updates in-tree DTs to use the new
+> properties:
+> * Rename "spdif-controller" property to "audio-cpu".
+> * Declare S/PDIF transmitter and/or receiver devices, and use them with
+>   the "audio-codec" property instead of "spdif-out" and/or "spdif-in".
+> 
+> These modifications were tested only on an imx8mn-evk board.
+> 
+> Note that out-of-tree and old DTs are still supported.
+> 
+> Signed-off-by: Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi | 15 +++++++++---
+>  arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi | 15 +++++++++---
+>  arch/arm64/boot/dts/freescale/imx8mq-evk.dts  | 24 +++++++++++++++----
+>  3 files changed, 43 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
+> index 90d1901df2b1..348855a41852 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
+> @@ -180,12 +180,21 @@ cpu {
+>  		};
+>  	};
+>  
+> +	spdif_out: spdif-out {
+> +		#sound-dai-cells = <0>;
+> +		compatible = "linux,spdif-dit";
 
-This prepares putting driver_data in an anonymous union which requires
-either no initialization or named designators. But it's also a nice
-cleanup on its own.
+It's recommended that the property list begins with 'compatible'.  Could
+you flip them?
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
- arch/powerpc/platforms/44x/ppc476.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Shawn
 
-diff --git a/arch/powerpc/platforms/44x/ppc476.c b/arch/powerpc/platforms/44x/ppc476.c
-index 164cbcd4588e..e7b7bdaad341 100644
---- a/arch/powerpc/platforms/44x/ppc476.c
-+++ b/arch/powerpc/platforms/44x/ppc476.c
-@@ -95,7 +95,7 @@ static int avr_probe(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id avr_id[] = {
--	{ "akebono-avr", 0 },
-+	{ "akebono-avr" },
- 	{ }
- };
- 
-
-base-commit: f524a5e4dfb75b277c9a5ad819ca5f035f490f14
--- 
-2.45.2
+> +	};
+> +
+> +	spdif_in: spdif-in {
+> +		#sound-dai-cells = <0>;
+> +		compatible = "linux,spdif-dir";
+> +	};
+> +
+>  	sound-spdif {
+>  		compatible = "fsl,imx-audio-spdif";
+>  		model = "imx-spdif";
+> -		spdif-controller = <&spdif1>;
+> -		spdif-out;
+> -		spdif-in;
+> +		audio-cpu = <&spdif1>;
+> +		audio-codec = <&spdif_out>, <&spdif_in>;
+>  	};
+>  };
+>  
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
+> index 9e0259ddf4bc..6a47e09703a7 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi
+> @@ -124,12 +124,21 @@ sound-wm8524 {
+>  			"Line Out Jack", "LINEVOUTR";
+>  	};
+>  
+> +	spdif_out: spdif-out {
+> +		#sound-dai-cells = <0>;
+> +		compatible = "linux,spdif-dit";
+> +	};
+> +
+> +	spdif_in: spdif-in {
+> +		#sound-dai-cells = <0>;
+> +		compatible = "linux,spdif-dir";
+> +	};
+> +
+>  	sound-spdif {
+>  		compatible = "fsl,imx-audio-spdif";
+>  		model = "imx-spdif";
+> -		spdif-controller = <&spdif1>;
+> -		spdif-out;
+> -		spdif-in;
+> +		audio-cpu = <&spdif1>;
+> +		audio-codec = <&spdif_out>, <&spdif_in>;
+>  	};
+>  
+>  	sound-micfil {
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
+> index 7507548cdb16..b953865f0b46 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8mq-evk.dts
+> @@ -125,19 +125,33 @@ link_codec: simple-audio-card,codec {
+>  		};
+>  	};
+>  
+> +	spdif_out: spdif-out {
+> +		#sound-dai-cells = <0>;
+> +		compatible = "linux,spdif-dit";
+> +	};
+> +
+> +	spdif_in: spdif-in {
+> +		#sound-dai-cells = <0>;
+> +		compatible = "linux,spdif-dir";
+> +	};
+> +
+>  	sound-spdif {
+>  		compatible = "fsl,imx-audio-spdif";
+>  		model = "imx-spdif";
+> -		spdif-controller = <&spdif1>;
+> -		spdif-out;
+> -		spdif-in;
+> +		audio-cpu = <&spdif1>;
+> +		audio-codec = <&spdif_out>, <&spdif_in>;
+> +	};
+> +
+> +	hdmi_arc_in: hdmi-arc-in {
+> +		#sound-dai-cells = <0>;
+> +		compatible = "linux,spdif-dir";
+>  	};
+>  
+>  	sound-hdmi-arc {
+>  		compatible = "fsl,imx-audio-spdif";
+>  		model = "imx-hdmi-arc";
+> -		spdif-controller = <&spdif2>;
+> -		spdif-in;
+> +		audio-cpu = <&spdif2>;
+> +		audio-codec = <&hdmi_arc_in>;
+>  	};
+>  };
+>  
+> -- 
+> 2.34.1
+> 
 
