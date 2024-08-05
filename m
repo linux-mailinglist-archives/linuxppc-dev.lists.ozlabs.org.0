@@ -1,56 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5169D94766F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 09:58:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE1E947755
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 10:31:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UBQwR8Dv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ojXCZUqa;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wcphf1zBtz3cYb
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 17:58:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WcqQs6m0cz3cgP
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 18:31:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UBQwR8Dv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ojXCZUqa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=aneesh.kumar@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wcpgz0QwZz3bnt
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2024 17:57:34 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 74B89CE0018;
-	Mon,  5 Aug 2024 07:57:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59266C32782;
-	Mon,  5 Aug 2024 07:57:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722844650;
-	bh=Geket5xHj+rV/lTGgYhI+mobx7QxgrRmSJGYSEDRkpk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UBQwR8Dv5k7JtkeG4laWC2Xs0oOnozRLy+3hVYnDYQn2Ed5eCrDNKiqSjdoXT4acx
-	 1hPdTL4JDstUhQJJ7lCM7YYqnV4Qh1m6C+CK460q8siGoQwJJKzkWsjMOX4qcfmelz
-	 A6Yt57Xlk92ABmDDhigDShW3vM0pnXKBZJdZWOrnwttmRyqlw3hP4oeUm/b5LanIcX
-	 fVlLRwpf9c9nuW6b7SobjiC6lu0VN8iuGUvVZHCooHxsAnFt7ePn4zwuEV1kg+BLX4
-	 tQQRPbEFjC/HMt7oQ6FPHcOxgz1D3ofgxyEIT69W/KjqEASCYIB1LwhYcesfg0NZf1
-	 asOwN60f4YLIQ==
-X-Mailer: emacs 31.0.50 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v12 02/84] KVM: arm64: Disallow copying MTE to guest
- memory while KVM is dirty logging
-In-Reply-To: <ZqvNekQAjs-SN-se@google.com>
-References: <20240726235234.228822-1-seanjc@google.com>
- <20240726235234.228822-3-seanjc@google.com> <yq5aikwku25o.fsf@kernel.org>
- <ZqvNekQAjs-SN-se@google.com>
-Date: Mon, 05 Aug 2024 13:27:18 +0530
-Message-ID: <yq5a5xsftna9.fsf@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WcqQ92NJCz3c2K
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2024 18:30:40 +1000 (AEST)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4757QvH0019471;
+	Mon, 5 Aug 2024 08:30:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pp1; bh=aU1juYkRWLxHWYuhJnl41ZEMkN
+	6C7AcnKWhOslnC960=; b=ojXCZUqaHb16zvJyMYZAwiSJ71d22TKVCig7Kr5JR0
+	PRO9q0780GmvRzXrrmwlXK9TKYi8DnMK4xLmXbhWhNc0kWuk8lV9DhW+Q0YBTWQg
+	6ASr7TEt12ywKoqEk3oEZn3Ev1ZliPyKLgdLkHWlVFX/9mm0KfVi4HRrkPkNSsJE
+	bYHekVl2F4RGfoSCjlvyJUU/mW+eKFThhdwbqEfhOsHg5a8VSaesD0K5RJi20ebA
+	8VKg4cmOx4LP5iW88jX8AUBSec3gNbZtUyzSX2uYwxpFL6SKLMKkW/2SqrphiT0P
+	TfPmvMkHzUfWU5N0SYhq/asJomg3iDRxOvt1jp6gNqZA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40tqr6rebw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Aug 2024 08:30:27 +0000 (GMT)
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4758URQa027719;
+	Mon, 5 Aug 2024 08:30:27 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40tqr6rebt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Aug 2024 08:30:27 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 47571VfY024333;
+	Mon, 5 Aug 2024 08:30:26 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40sy90dmj1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Aug 2024 08:30:26 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4758UMmo34406930
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Aug 2024 08:30:24 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A08BB20063;
+	Mon,  5 Aug 2024 08:30:22 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 31C4F2004E;
+	Mon,  5 Aug 2024 08:30:20 +0000 (GMT)
+Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.50.105])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Aug 2024 08:30:19 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        shuah@kernel.org
+Subject: [PATCH] selftest/powerpc/benchmark: remove requirement libc-dev
+Date: Mon,  5 Aug 2024 14:00:08 +0530
+Message-ID: <20240805083008.1300853-1-maddy@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: UcCnTbyK5E7krc1rj4KnJDBa9WzhoXKR
+X-Proofpoint-ORIG-GUID: InY13efj-2sAbO-N9ep6oEVo7VPdG_GP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-04_14,2024-08-02_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ spamscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0 clxscore=1011
+ suspectscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408050059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,56 +96,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sean Christopherson <seanjc@google.com> writes:
+Currently exec-target.c file is linked as static and this
+post a requirement to install libc dev package to build.
+Without it, build-breaks when compiling selftest/powerpc/benchmark.
 
-> On Thu, Aug 01, 2024, Aneesh Kumar K.V wrote:
->> Sean Christopherson <seanjc@google.com> writes:
->> 
->> > Disallow copying MTE tags to guest memory while KVM is dirty logging, as
->> > writing guest memory without marking the gfn as dirty in the memslot could
->> > result in userspace failing to migrate the updated page.  Ideally (maybe?),
->> > KVM would simply mark the gfn as dirty, but there is no vCPU to work with,
->> > and presumably the only use case for copy MTE tags _to_ the guest is when
->> > restoring state on the target.
->> >
->> > Fixes: f0376edb1ddc ("KVM: arm64: Add ioctl to fetch/store tags in a guest")
->> > Signed-off-by: Sean Christopherson <seanjc@google.com>
->> > ---
->> >  arch/arm64/kvm/guest.c | 5 +++++
->> >  1 file changed, 5 insertions(+)
->> >
->> > diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
->> > index e1f0ff08836a..962f985977c2 100644
->> > --- a/arch/arm64/kvm/guest.c
->> > +++ b/arch/arm64/kvm/guest.c
->> > @@ -1045,6 +1045,11 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
->> >  
->> >  	mutex_lock(&kvm->slots_lock);
->> >  
->> > +	if (write && atomic_read(&kvm->nr_memslots_dirty_logging)) {
->> > +		ret = -EBUSY;
->> > +		goto out;
->> > +	}
->> > +
->> >
->> 
->> is this equivalent to kvm_follow_pfn() with kfp->pin = 1 ?
->
-> No, gfn_to_pfn_prot() == FOLL_GET, kfp->pin == FOLL_PIN.  But that's not really
-> relevant.
->
+  CC       exec_target
+/usr/bin/ld: cannot find -lc: No such file or directory
+collect2: error: ld returned 1 exit status
 
+exec_target.c is using "syscall" library function which
+could be replaced with a inline assembly and the same is
+proposed as a fix here.
 
-What I meant was, should we consider mte_copy_tags_from_user() as one
-that update the page contents (even though it is updating tags) and
-use kvm_follow_pfn() with kfp->pin = 1 instead?
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+---
+ tools/testing/selftests/powerpc/benchmarks/Makefile    |  2 +-
+ .../testing/selftests/powerpc/benchmarks/exec_target.c | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-Is my understanding correct in that, if we want to look up a pfn/page
-from gfn with the intent of updating the page contents, we should use
-kfp->pin == 1? 
+diff --git a/tools/testing/selftests/powerpc/benchmarks/Makefile b/tools/testing/selftests/powerpc/benchmarks/Makefile
+index 1321922038d0..ca4483c238b9 100644
+--- a/tools/testing/selftests/powerpc/benchmarks/Makefile
++++ b/tools/testing/selftests/powerpc/benchmarks/Makefile
+@@ -18,4 +18,4 @@ $(OUTPUT)/context_switch: LDLIBS += -lpthread
+ 
+ $(OUTPUT)/fork: LDLIBS += -lpthread
+ 
+-$(OUTPUT)/exec_target: CFLAGS += -static -nostartfiles
++$(OUTPUT)/exec_target: CFLAGS += -nostartfiles
+diff --git a/tools/testing/selftests/powerpc/benchmarks/exec_target.c b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
+index c14b0fc1edde..20027a23b594 100644
+--- a/tools/testing/selftests/powerpc/benchmarks/exec_target.c
++++ b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
+@@ -7,10 +7,16 @@
+  */
+ 
+ #define _GNU_SOURCE
+-#include <unistd.h>
+ #include <sys/syscall.h>
+ 
+ void _start(void)
+ {
+-	syscall(SYS_exit, 0);
++	asm volatile (
++		"li %%r0, %[sys_exit];"
++		"li %%r3, 0;"
++		"sc;"
++		:
++		: [sys_exit] "i" (SYS_exit)
++		: "r0", "r3"
++	);
+ }
+-- 
+2.45.2
 
--aneesh
