@@ -1,56 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C23C948399
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 22:36:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 773A79483A7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 22:38:22 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g0ifEE+/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bF0xgt41;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wd7Wt05Tlz3cgk
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 06:36:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wd7Ym2yv6z3cgM
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 06:38:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g0ifEE+/;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bF0xgt41;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wd7W66l4Kz30Sv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 06:36:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wd7Y44kbqz3cRF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 06:37:44 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id CBB4BCE0B42;
-	Mon,  5 Aug 2024 20:35:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51B2C32782;
-	Mon,  5 Aug 2024 20:35:43 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id AD1AD60DD2;
+	Mon,  5 Aug 2024 20:37:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087EBC4AF0E;
+	Mon,  5 Aug 2024 20:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722890158;
-	bh=wRagKm6MS39NDYLBbcdNfb/zxQJOwJqmtNN36cxhWNE=;
+	s=k20201202; t=1722890261;
+	bh=qdRuOti9XNlLltkR78ltAp8iub7ZiaEGkve5ZQKgRXs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g0ifEE+/fQd9VQyFJiGF6eqG5LkKWn0QoytIRLG6RGNO3Qz+ixAqBqBhJXWXYzJE8
-	 0lFaNo21LgP2mbO565lm6BtVRnS7fXNHEJVy8zEtHsy8Uw8u/a5v19B4OkrZVUS3fx
-	 ix+vSxthkk0vtjORnJgV3NWtYxBAy3BhlS8nwLVfIFfPyq5ww4vSd2FHKgUzoj06Iv
-	 Vb4ByzZFa5e2puJlKIa3k2+AazNy3wMipT1Qok9eH8nBZ24hNYG5OjUnktHHi7xdO4
-	 HdW3CuSUf4iLi1uAYROJiEHzYtewSLvIDZn8z4DY92o6CWtrXY1hYgkOWg3WUTpR8E
-	 O3fqMHFNWnE8A==
-Date: Mon, 5 Aug 2024 23:33:39 +0300
+	b=bF0xgt419GbxyCGFRj0fNjByi1OtMInAxUy0fO7kuEExoo6r6jeZMXGjN5ikPGLYH
+	 /M1nzHizackmgautp/VnDSLRxQXCurMyrYVEwg5Yf+PdgGkwhSt7ZiA1a6tEsPe3+w
+	 oJPfE55fHB91q50vVv1vV9hAXYemhAyhr6OpNgWOOvXUx9/9Vw4S7evidbf87YcNj+
+	 pEPIiDW05PYUn8lRlujrJ1DKbY3WIHytjXuNelSTWpy7nXBiYR1lO2v9ZQh4g3aHrR
+	 PgFXkbijAdUJ0BywpuS1YJGB4AvPiLFgG1t0OrXdtLJEh5IFQJb88z75ZKH8cfv8oU
+	 ALk7ATW/rOneA==
+Date: Mon, 5 Aug 2024 23:35:22 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v3 22/26] mm: numa_memblks: use
- memblock_{start,end}_of_DRAM() when sanitizing meminfo
-Message-ID: <ZrE3I6qCdfHPa3FB@kernel.org>
+Subject: Re: [PATCH v3 11/26] x86/numa: use get_pfn_range_for_nid to verify
+ that node spans memory
+Message-ID: <ZrE3ijXA3efepKcH@kernel.org>
 References: <20240801060826.559858-1-rppt@kernel.org>
- <20240801060826.559858-23-rppt@kernel.org>
- <66b1342e8af7f_c1448294af@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240801060826.559858-12-rppt@kernel.org>
+ <66b1302ce5fd3_c1448294d3@dwillia2-xfh.jf.intel.com.notmuch>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <66b1342e8af7f_c1448294af@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <66b1302ce5fd3_c1448294d3@dwillia2-xfh.jf.intel.com.notmuch>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,23 +66,54 @@ Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Aug 05, 2024 at 01:21:02PM -0700, Dan Williams wrote:
+On Mon, Aug 05, 2024 at 01:03:56PM -0700, Dan Williams wrote:
 > Mike Rapoport wrote:
 > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > > 
-> > numa_cleanup_meminfo() moves blocks outside system RAM to
-> > numa_reserved_meminfo and it uses 0 and PFN_PHYS(max_pfn) to determine
-> > the memory boundaries.
+> > Instead of looping over numa_meminfo array to detect node's start and
+> > end addresses use get_pfn_range_for_init().
 > > 
-> > Replace the memory range boundaries with more portable
-> > memblock_start_of_DRAM() and memblock_end_of_DRAM().
+> > This is shorter and make it easier to lift numa_memblks to generic code.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
+> > ---
+> >  arch/x86/mm/numa.c | 13 +++----------
+> >  1 file changed, 3 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> > index edfc38803779..cfe7e5477cf8 100644
+> > --- a/arch/x86/mm/numa.c
+> > +++ b/arch/x86/mm/numa.c
+> > @@ -521,17 +521,10 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
+> >  
+> >  	/* Finally register nodes. */
+> >  	for_each_node_mask(nid, node_possible_map) {
+> > -		u64 start = PFN_PHYS(max_pfn);
+> > -		u64 end = 0;
+> > +		unsigned long start_pfn, end_pfn;
+> >  
+> > -		for (i = 0; i < mi->nr_blks; i++) {
+> > -			if (nid != mi->blk[i].nid)
+> > -				continue;
+> > -			start = min(mi->blk[i].start, start);
+> > -			end = max(mi->blk[i].end, end);
+> > -		}
+> > -
+> > -		if (start >= end)
+> > +		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
+> > +		if (start_pfn >= end_pfn)
 > 
-> Can you say a bit more about why this is more portable? Is there any
-> scenario for which (0, max_pfn) does the wrong thing?
+> Assuming I understand why this works, would it be worth a comment like:
+> 
+> "Note, get_pfn_range_for_nid() depends on memblock_set_node() having
+>  already happened"
 
-arm64 may have DRAM starting at addresses other than 0.
-And max_pfn seems to me a redundant global variable that I'd love to see
-gone.
+Will add a comment, sure.
+ 
+> ...at least that context was not part of the diff so took me second to
+> figure out how this works.
+> 
 
 -- 
 Sincerely yours,
