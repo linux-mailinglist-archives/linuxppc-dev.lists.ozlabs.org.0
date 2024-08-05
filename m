@@ -2,83 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE229478CB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 11:56:52 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I9BMxN0z;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id BA57D947ADC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 14:05:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WcsKZ10rMz3cYq
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 19:56:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WcwBY5HJFz3cmg
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 22:05:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I9BMxN0z;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1032 seconds by postgrey-1.37 at boromir; Mon, 05 Aug 2024 22:05:32 AEST
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WcsJ80ghVz3cG6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2024 19:55:35 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4759T7pZ009220;
-	Mon, 5 Aug 2024 09:55:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=pp1; bh=RTfjcOdrYmt4L
-	tVQgHRg/H+uF4RPmiz4VvrPCm0qigQ=; b=I9BMxN0zexnumtwWVbilOyvHCYn7A
-	GStvuutyxhsheqjyuDQKGIWKDmBHvbRA2XcnHycufl+jK4CSgC9kLtUwnQuJNA82
-	q+ObR3lKZmkkicocBZYjpAjhR5O/gcY3n+ulrRsxYiwIk1Ov4HUCLyds9w6JwNOE
-	Ez7Bv35ccfFFUXYlB8Ldzv4SeeOyafg2aWNlJz/RXZ+nYQBxJQGccBu8rD+XJT87
-	wbBvoqekTyCdf4fwCczvcWObGy5661Y5VpNBqXUnl9hRkARv0/ftHNs/tj/gYw6C
-	/ZMCxZuQqeVeTse36OUfsTjv0z3ykTK6iJSOF0efKPUT/AVyc+/kfCVrA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40tv4s81ft-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Aug 2024 09:55:30 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4757oewo018034;
-	Mon, 5 Aug 2024 09:55:29 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40t0cmdnde-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Aug 2024 09:55:29 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4759tMED46268678
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Aug 2024 09:55:25 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D7D092004B;
-	Mon,  5 Aug 2024 09:55:22 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 135D020040;
-	Mon,  5 Aug 2024 09:55:20 +0000 (GMT)
-Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com (unknown [9.171.50.194])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Aug 2024 09:55:19 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [RFC 2/2] docs: ABI: sysfs-bus-event_source-devices-vpa-dtl: Document sysfs event format entries for vpa_dtl pmu
-Date: Mon,  5 Aug 2024 15:25:00 +0530
-Message-Id: <20240805095500.15844-2-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240805095500.15844-1-kjain@linux.ibm.com>
-References: <20240805095500.15844-1-kjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WcwB46phRz30Tk
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2024 22:05:26 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Wcvnb0b1wz1L9sm;
+	Mon,  5 Aug 2024 19:47:47 +0800 (CST)
+Received: from kwepemi100008.china.huawei.com (unknown [7.221.188.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id F2133140109;
+	Mon,  5 Aug 2024 19:48:04 +0800 (CST)
+Received: from huawei.com (10.67.174.55) by kwepemi100008.china.huawei.com
+ (7.221.188.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 5 Aug
+ 2024 19:48:04 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <dennis@kernel.org>, <tj@kernel.org>, <cl@linux.com>,
+	<mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+	<christophe.leroy@csgroup.eu>, <mahesh@linux.ibm.com>,
+	<gregkh@linuxfoundation.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH v5.10] powerpc: Avoid nmi_enter/nmi_exit in real mode interrupt.
+Date: Mon, 5 Aug 2024 11:45:44 +0000
+Message-ID: <20240805114544.1552341-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RWzHgPShT1xOI8dh4XcDk6M3fMTJXqw2
-X-Proofpoint-ORIG-GUID: RWzHgPShT1xOI8dh4XcDk6M3fMTJXqw2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-04_14,2024-08-02_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- suspectscore=0 adultscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
- bulkscore=0 phishscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408050070
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.55]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemi100008.china.huawei.com (7.221.188.57)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,50 +54,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, adubey@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
+Cc: ruanjinjie@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Details are added for the vpa_dtl pmu event and format
-attributes in the ABI documentation.
+From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
+crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
+interrupt handler) if percpu allocation comes from vmalloc area.
+
+Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
+wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
+percpu allocation is from the embedded first chunk. However with
+CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
+allocation can come from the vmalloc area.
+
+With kernel command line "percpu_alloc=page" we can force percpu allocation
+to come from vmalloc area and can see kernel crash in machine_check_early:
+
+[    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
+[    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
+[    1.215719] --- interrupt: 200
+[    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
+[    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
+[    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
+
+Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
+first chunk is not embedded.
+
+CVE-2024-42126
+Cc: stable@vger.kernel.org
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
+Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
+[ Conflicts in arch/powerpc/include/asm/interrupt.h
+  because machine_check_early() has been refactored. ]
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- .../sysfs-bus-event_source-devices-vpa-dtl    | 25 +++++++++++++++++++
- 1 file changed, 25 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-event_source-devices-vpa-dtl
+ arch/powerpc/include/asm/percpu.h | 10 ++++++++++
+ arch/powerpc/kernel/mce.c         | 14 +++++++++++---
+ arch/powerpc/kernel/setup_64.c    |  2 ++
+ 3 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-vpa-dtl b/Documentation/ABI/testing/sysfs-bus-event_source-devices-vpa-dtl
-new file mode 100644
-index 000000000000..a07638aa250e
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-vpa-dtl
-@@ -0,0 +1,25 @@
-+What:           /sys/bus/event_source/devices/vpa_dtl/format
-+Date:           August 2024
-+Contact:        Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
-+Description:    Read-only. Attribute group to describe the magic bits
-+                that go into perf_event_attr.config for a particular pmu.
-+                (See ABI/testing/sysfs-bus-event_source-devices-format).
+diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
+index 8e5b7d0b851c..634970ce13c6 100644
+--- a/arch/powerpc/include/asm/percpu.h
++++ b/arch/powerpc/include/asm/percpu.h
+@@ -15,6 +15,16 @@
+ #endif /* CONFIG_SMP */
+ #endif /* __powerpc64__ */
+ 
++#if defined(CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK) && defined(CONFIG_SMP)
++#include <linux/jump_label.h>
++DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
 +
-+                Each attribute under this group defines a bit range of the
-+                perf_event_attr.config. Supported attribute are listed
-+                below::
++#define percpu_first_chunk_is_paged	\
++		(static_key_enabled(&__percpu_first_chunk_is_paged.key))
++#else
++#define percpu_first_chunk_is_paged	false
++#endif /* CONFIG_PPC64 && CONFIG_SMP */
 +
-+				event  = "config:0-7"  - event ID
-+
-+		For example::
-+
-+		  dtl_cede = "event=0x1"
-+
-+What:           /sys/bus/event_source/devices/vpa_dtl/events
-+Date:           August 2024
-+Contact:        Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
-+Description:	(RO) Attribute group to describe performance monitoring events
-+                for the Virtual Processor Dispatch Trace Log. Each attribute in
-+		this group describes a single performance monitoring event
-+		supported by vpa_dtl pmu.  The name of the file is the name of
-+		the event (See ABI/testing/sysfs-bus-event_source-devices-events).
+ #include <asm-generic/percpu.h>
+ 
+ #include <asm/paca.h>
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index 63702c0badb9..259343040e1b 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -594,8 +594,15 @@ long notrace machine_check_early(struct pt_regs *regs)
+ 	u8 ftrace_enabled = this_cpu_get_ftrace_enabled();
+ 
+ 	this_cpu_set_ftrace_enabled(0);
+-	/* Do not use nmi_enter/exit for pseries hpte guest */
+-	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
++	/*
++	 * Do not use nmi_enter/exit for pseries hpte guest
++	 *
++	 * Likewise, do not use it in real mode if percpu first chunk is not
++	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
++	 * are chances where percpu allocation can come from vmalloc area.
++	 */
++	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
++	    !percpu_first_chunk_is_paged)
+ 		nmi_enter();
+ 
+ 	hv_nmi_check_nonrecoverable(regs);
+@@ -606,7 +613,8 @@ long notrace machine_check_early(struct pt_regs *regs)
+ 	if (ppc_md.machine_check_early)
+ 		handled = ppc_md.machine_check_early(regs);
+ 
+-	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
++	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
++	    !percpu_first_chunk_is_paged)
+ 		nmi_exit();
+ 
+ 	this_cpu_set_ftrace_enabled(ftrace_enabled);
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index 3f8426bccd16..899d87de0165 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -824,6 +824,7 @@ static int pcpu_cpu_distance(unsigned int from, unsigned int to)
+ 
+ unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
+ EXPORT_SYMBOL(__per_cpu_offset);
++DEFINE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
+ 
+ static void __init pcpu_populate_pte(unsigned long addr)
+ {
+@@ -903,6 +904,7 @@ void __init setup_per_cpu_areas(void)
+ 	if (rc < 0)
+ 		panic("cannot initialize percpu area (err=%d)", rc);
+ 
++	static_key_enable(&__percpu_first_chunk_is_paged.key);
+ 	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
+ 	for_each_possible_cpu(cpu) {
+                 __per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
 -- 
-2.39.3
+2.34.1
 
