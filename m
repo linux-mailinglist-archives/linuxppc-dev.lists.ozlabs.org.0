@@ -1,90 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE1E947755
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 10:31:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C109478C9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 11:56:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ojXCZUqa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rduyn13r;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WcqQs6m0cz3cgP
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 18:31:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WcsJn65jCz3cfT
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 Aug 2024 19:56:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ojXCZUqa;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rduyn13r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WcqQ92NJCz3c2K
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2024 18:30:40 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4757QvH0019471;
-	Mon, 5 Aug 2024 08:30:28 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WcsJ56ns7z3cDN
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 Aug 2024 19:55:33 +1000 (AEST)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4754UY9P008603;
+	Mon, 5 Aug 2024 09:55:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
 	:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=pp1; bh=aU1juYkRWLxHWYuhJnl41ZEMkN
-	6C7AcnKWhOslnC960=; b=ojXCZUqaHb16zvJyMYZAwiSJ71d22TKVCig7Kr5JR0
-	PRO9q0780GmvRzXrrmwlXK9TKYi8DnMK4xLmXbhWhNc0kWuk8lV9DhW+Q0YBTWQg
-	6ASr7TEt12ywKoqEk3oEZn3Ev1ZliPyKLgdLkHWlVFX/9mm0KfVi4HRrkPkNSsJE
-	bYHekVl2F4RGfoSCjlvyJUU/mW+eKFThhdwbqEfhOsHg5a8VSaesD0K5RJi20ebA
-	8VKg4cmOx4LP5iW88jX8AUBSec3gNbZtUyzSX2uYwxpFL6SKLMKkW/2SqrphiT0P
-	TfPmvMkHzUfWU5N0SYhq/asJomg3iDRxOvt1jp6gNqZA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40tqr6rebw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Aug 2024 08:30:27 +0000 (GMT)
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4758URQa027719;
-	Mon, 5 Aug 2024 08:30:27 GMT
+	:content-transfer-encoding; s=pp1; bh=9YeyPH+Nzwb3qMOdCQjMECZk3F
+	JlbgdnKdpea13lw3k=; b=rduyn13rytS6XXw0wM1ZZIWXP7sDUXWYKP54+AyUcy
+	hFpnldZ4s6Gc9OX5q5LITPXy6/XNxf2HyFWeH2kkF6jEq8h2GqXzqTlyuaoxEZtW
+	0PcpQMUxjXAm5QML17MqStu7bYNYzLG/Xd9LmtQDPioNF2ewwoMWL1vuZa1SjV4k
+	dTdduZX1XpYmdC2m9lBDKnYAzdpapWsgRJB4or+txN4f51iAak3YWorNM0uDIivA
+	I3mkCdW5nffOtVIDMZBjoY8d6BdzW8Gq2/8AmGH1MzuTo4IA1vNF7c8RPRr9khXm
+	QJj4yOt8k3j2e01RqYXzmopteBugkaUe7YUarjujZe7Q==
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40tqr6rebt-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40tqa30npb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Aug 2024 08:30:27 +0000 (GMT)
+	Mon, 05 Aug 2024 09:55:27 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 47571VfY024333;
-	Mon, 5 Aug 2024 08:30:26 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40sy90dmj1-1
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4756jMox024334;
+	Mon, 5 Aug 2024 09:55:25 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40sy90dwn8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Aug 2024 08:30:26 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4758UMmo34406930
+	Mon, 05 Aug 2024 09:55:25 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4759tJrp56361442
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Aug 2024 08:30:24 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A08BB20063;
-	Mon,  5 Aug 2024 08:30:22 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 31C4F2004E;
-	Mon,  5 Aug 2024 08:30:20 +0000 (GMT)
-Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.50.105])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Aug 2024 08:30:19 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        shuah@kernel.org
-Subject: [PATCH] selftest/powerpc/benchmark: remove requirement libc-dev
-Date: Mon,  5 Aug 2024 14:00:08 +0530
-Message-ID: <20240805083008.1300853-1-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.45.2
+	Mon, 5 Aug 2024 09:55:21 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 977AF20043;
+	Mon,  5 Aug 2024 09:55:19 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 822DD20040;
+	Mon,  5 Aug 2024 09:55:16 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com (unknown [9.171.50.194])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Aug 2024 09:55:16 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [RFC 1/2] powerpc/vpa_pmu: Add interface to expose vpa counters via perf
+Date: Mon,  5 Aug 2024 15:24:59 +0530
+Message-Id: <20240805095500.15844-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UcCnTbyK5E7krc1rj4KnJDBa9WzhoXKR
-X-Proofpoint-ORIG-GUID: InY13efj-2sAbO-N9ep6oEVo7VPdG_GP
+X-Proofpoint-GUID: BudO4nm7GL8byTI17iKHmkGIeKUKzwcI
+X-Proofpoint-ORIG-GUID: BudO4nm7GL8byTI17iKHmkGIeKUKzwcI
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-08-04_14,2024-08-02_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- spamscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0 clxscore=1011
- suspectscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408050059
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 malwarescore=0 clxscore=1015
+ suspectscore=0 bulkscore=0 mlxlogscore=999 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408050070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,62 +88,565 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, linux-kernel@vger.kernel.org, adubey@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently exec-target.c file is linked as static and this
-post a requirement to install libc dev package to build.
-Without it, build-breaks when compiling selftest/powerpc/benchmark.
+The pseries Shared Processor Logical Partition(SPLPAR) machines
+can retrieve a log of dispatch and preempt events from the
+hypervisor using data from Disptach Trace Log(DTL) buffer.
+With this information, user can retrieve when and why each dispatch &
+preempt has occurred. Added an interface to expose the Virtual Processor
+Area(VPA) DTL counters via perf.
 
-  CC       exec_target
-/usr/bin/ld: cannot find -lc: No such file or directory
-collect2: error: ld returned 1 exit status
+The following events are available and exposed in sysfs:
 
-exec_target.c is using "syscall" library function which
-could be replaced with a inline assembly and the same is
-proposed as a fix here.
+ vpa_dtl/dtl_cede/ - Trace voluntary (OS initiated) virtual processor waits
+ vpa_dtl/dtl_preempt/ - Trace time slice preempts
+ vpa_dtl/dtl_fault/ - Trace virtual partition memory page faults.
+ vpa_dtl/dtl_all/ - Trace all (dtl_cede/dtl_preempt/dtl_fault)
 
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Added interface defines supported event list, config fields for the
+event attributes and their corresponding bit values which are exported
+via sysfs. User could use the standard perf tool to access perf events
+exposed via vpa-dtl pmu.
+
+The VPA DTL PMU counters do not interrupt on overflow or generate any
+PMI interrupts. Therefore, the kernel needs to poll the counters, added
+hrtimer code to do that. The timer interval can be provided by user via
+sample_period field in nano seconds.
+
+Result on power10 SPLPAR system with 656 cpu threads.
+In the below perf record command with vpa_dtl pmu, -c option is used
+to provide sample_period whch corresponding to 1000000000ns i.e; 1sec
+and the workload time is also 1 second, hence we are getting 656 samples:
+
+[command] perf record -a -R -e vpa_dtl/dtl_all/ -c 1000000000 sleep 1
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.828 MB perf.data (656 samples) ]
+
+There is one hrtimer added per vpa-dtl pmu thread. Code added to handle
+addition of dtl buffer data in the raw sample. Since DTL does not provide
+IP address for a sample and it just have traces on reason of
+dispatch/preempt, we directly saving DTL buffer data to perf.data file as
+raw sample. For each hrtimer restart call, interface will dump all the
+new dtl entries added to dtl buffer as a raw sample.
+
+To ensure there are no other conflicting dtl users (example: debugfs dtl
+or /proc/powerpc/vcpudispatch_stats), interface added code to use
+"write_trylock" call to take the dtl_access_lock. The dtl_access_lock
+is defined in dtl.h file. Also added global reference count variable called
+"dtl_global_refc", to ensure dtl data can be captured per-cpu. Code also
+added global lock called "dtl_global_lock" to avoid race condition.
+
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- tools/testing/selftests/powerpc/benchmarks/Makefile    |  2 +-
- .../testing/selftests/powerpc/benchmarks/exec_target.c | 10 ++++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ arch/powerpc/perf/Makefile  |   2 +-
+ arch/powerpc/perf/vpa-pmu.c | 469 ++++++++++++++++++++++++++++++++++++
+ include/linux/cpuhotplug.h  |   1 +
+ 3 files changed, 471 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/perf/vpa-pmu.c
 
-diff --git a/tools/testing/selftests/powerpc/benchmarks/Makefile b/tools/testing/selftests/powerpc/benchmarks/Makefile
-index 1321922038d0..ca4483c238b9 100644
---- a/tools/testing/selftests/powerpc/benchmarks/Makefile
-+++ b/tools/testing/selftests/powerpc/benchmarks/Makefile
-@@ -18,4 +18,4 @@ $(OUTPUT)/context_switch: LDLIBS += -lpthread
+diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
+index 4f53d0b97539..7118b5c0c641 100644
+--- a/arch/powerpc/perf/Makefile
++++ b/arch/powerpc/perf/Makefile
+@@ -14,7 +14,7 @@ obj-$(CONFIG_PPC_POWERNV)	+= imc-pmu.o
+ obj-$(CONFIG_FSL_EMB_PERF_EVENT) += core-fsl-emb.o
+ obj-$(CONFIG_FSL_EMB_PERF_EVENT_E500) += e500-pmu.o e6500-pmu.o
  
- $(OUTPUT)/fork: LDLIBS += -lpthread
+-obj-$(CONFIG_HV_PERF_CTRS) += hv-24x7.o hv-gpci.o hv-common.o
++obj-$(CONFIG_HV_PERF_CTRS) += hv-24x7.o hv-gpci.o hv-common.o vpa-pmu.o
  
--$(OUTPUT)/exec_target: CFLAGS += -static -nostartfiles
-+$(OUTPUT)/exec_target: CFLAGS += -nostartfiles
-diff --git a/tools/testing/selftests/powerpc/benchmarks/exec_target.c b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
-index c14b0fc1edde..20027a23b594 100644
---- a/tools/testing/selftests/powerpc/benchmarks/exec_target.c
-+++ b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
-@@ -7,10 +7,16 @@
-  */
+ obj-$(CONFIG_PPC_8xx) += 8xx-pmu.o
  
- #define _GNU_SOURCE
--#include <unistd.h>
- #include <sys/syscall.h>
- 
- void _start(void)
- {
--	syscall(SYS_exit, 0);
-+	asm volatile (
-+		"li %%r0, %[sys_exit];"
-+		"li %%r3, 0;"
-+		"sc;"
-+		:
-+		: [sys_exit] "i" (SYS_exit)
-+		: "r0", "r3"
-+	);
- }
+diff --git a/arch/powerpc/perf/vpa-pmu.c b/arch/powerpc/perf/vpa-pmu.c
+new file mode 100644
+index 000000000000..7fe4c8ff83ed
+--- /dev/null
++++ b/arch/powerpc/perf/vpa-pmu.c
+@@ -0,0 +1,469 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Perf interface to expose Virtual Processor counters.
++ *
++ * Copyright (C) 2024 Kajol Jain, IBM Corporation
++ */
++
++#define pr_fmt(fmt) "vpa-pmu: " fmt
++
++#include <asm/dtl.h>
++#include <linux/perf_event.h>
++#include <asm/plpar_wrappers.h>
++
++#define EVENT(_name, _code)     enum{_name = _code}
++
++/*
++ * Based on Power Architecture Platform Reference(PAPR) documentation,
++ * Table 14.14. Per Virtual Processor Area, below Dispatch Trace Log(DTL)
++ * Enable Mask used to get corresponding virtual processor dispatch
++ * to preempt traces:
++ *   DTL_CEDE(0x1): Trace voluntary (OS initiated) virtual
++ *   processor waits
++ *   DTL_PREEMPT(0x2): Trace time slice preempts
++ *   DTLFAULT(0x4): Trace virtual partition memory page
++ faults.
++ *   DTL_ALL(0x7): Trace all (DTL_CEDE | DTL_PREEMPT | DTL_FAULT)
++ *
++ * Event codes based on Dispatch Trace Log Enable Mask.
++ */
++EVENT(DTL_CEDE,         0x1);
++EVENT(DTL_PREEMPT,      0x2);
++EVENT(DTL_FAULT,        0x4);
++EVENT(DTL_ALL,          0x7);
++
++GENERIC_EVENT_ATTR(dtl_cede, DTL_CEDE);
++GENERIC_EVENT_ATTR(dtl_preempt, DTL_PREEMPT);
++GENERIC_EVENT_ATTR(dtl_fault, DTL_FAULT);
++GENERIC_EVENT_ATTR(dtl_all, DTL_ALL);
++
++PMU_FORMAT_ATTR(event, "config:0-7");
++
++static struct attribute *events_attr[] = {
++	GENERIC_EVENT_PTR(DTL_CEDE),
++	GENERIC_EVENT_PTR(DTL_PREEMPT),
++	GENERIC_EVENT_PTR(DTL_FAULT),
++	GENERIC_EVENT_PTR(DTL_ALL),
++	NULL
++};
++
++static struct attribute_group event_group = {
++	.name = "events",
++	.attrs = events_attr,
++};
++
++static struct attribute *format_attrs[] = {
++	&format_attr_event.attr,
++	NULL,
++};
++
++static const struct attribute_group format_group = {
++	.name = "format",
++	.attrs = format_attrs,
++};
++
++static const struct attribute_group *attr_groups[] = {
++	&format_group,
++	&event_group,
++	NULL,
++};
++
++struct vpa_dtl {
++	struct dtl_entry	*buf;
++	u64			last_idx;
++	bool			active_lock;
++};
++
++static DEFINE_PER_CPU(struct vpa_dtl, vpa_cpu_dtl);
++
++/* variable to capture reference count for the active dtl threads */
++static int dtl_global_refc;
++static spinlock_t dtl_global_lock = __SPIN_LOCK_UNLOCKED(dtl_global_lock);
++
++/*
++ * Function to dump the dispatch trace log buffer data to the
++ * perf raw sample.
++ */
++static void vpa_dtl_dump_sample_data(struct perf_event *event)
++{
++	struct perf_sample_data data;
++	struct perf_raw_record raw;
++	struct pt_regs regs;
++	u64 cur_idx, last_idx, i;
++	char *buf;
++
++	/* actual number of entries read */
++	long n_read = 0, read_size = 0;
++
++	/* number of entries added to dtl buffer */
++	long n_req;
++
++	struct vpa_dtl *dtl = &per_cpu(vpa_cpu_dtl, event->cpu);
++	int version = 1;
++
++	/* Setup perf sample */
++	perf_sample_data_init(&data, 0, event->hw.last_period);
++	memset(&regs, 0, sizeof(regs));
++	memset(&raw, 0, sizeof(raw));
++
++	cur_idx = be64_to_cpu(lppaca_of(event->cpu).dtl_idx);
++	last_idx = dtl->last_idx;
++
++	if (last_idx + N_DISPATCH_LOG <= cur_idx)
++		last_idx = cur_idx - N_DISPATCH_LOG + 1;
++
++	n_req = cur_idx - last_idx;
++
++	/* no new entry added to the buffer, return */
++	if (n_req <= 0)
++		return;
++
++	dtl->last_idx = last_idx + n_req;
++
++	buf = kzalloc((n_req * sizeof(struct dtl_entry)) + sizeof(version) +
++			sizeof(tb_ticks_per_sec) + sizeof(n_req), GFP_KERNEL);
++	if (!buf) {
++		pr_warn("buffer alloc failed for perf raw data for cpu%d\n",
++				event->cpu);
++		return;
++	}
++	raw.frag.data = buf;
++
++	/* Save current version of dtl sampling support */
++	memcpy(buf, &version, sizeof(version));
++	buf += sizeof(version);
++
++	/* Save tb_ticks_per_sec to convert timebase to sec */
++	memcpy(buf, &tb_ticks_per_sec, sizeof(tb_ticks_per_sec));
++	buf += sizeof(tb_ticks_per_sec);
++
++	/* Save total number of dtl entries added to the dtl buffer */
++	memcpy(buf, &n_req, sizeof(n_req));
++	buf += sizeof(n_req);
++
++	i = last_idx % N_DISPATCH_LOG;
++
++	/* read the tail of the buffer if we've wrapped */
++	if (i + n_req > N_DISPATCH_LOG) {
++		read_size = N_DISPATCH_LOG - i;
++		memcpy(buf, &dtl->buf[i], read_size * sizeof(struct dtl_entry));
++		i = 0;
++		n_req -= read_size;
++		n_read += read_size;
++		buf += read_size * sizeof(struct dtl_entry);
++	}
++
++	/* .. and now the head */
++	memcpy(buf, &dtl->buf[i], n_req * sizeof(struct dtl_entry));
++	n_read += n_req;
++
++	raw.frag.size = n_read * sizeof(struct dtl_entry) + sizeof(version) +
++		sizeof(tb_ticks_per_sec) + sizeof(n_req);
++
++	perf_sample_save_raw_data(&data, &raw);
++	perf_event_overflow(event, &data, &regs);
++}
++
++/*
++ * The VPA Dispatch Trace log counters do not interrupt on overflow.
++ * Therefore, the kernel needs to poll the counters to avoid missing
++ * an overflow using hrtimer. The timer interval is based on sample_period
++ * count provided by user, and minimum interval is 1 millisecond.
++ */
++static enum hrtimer_restart vpa_dtl_hrtimer_handle(struct hrtimer *hrtimer)
++{
++	struct perf_event *event;
++	u64 period;
++
++	event = container_of(hrtimer, struct perf_event, hw.hrtimer);
++
++	if (event->state != PERF_EVENT_STATE_ACTIVE)
++		return HRTIMER_NORESTART;
++
++	vpa_dtl_dump_sample_data(event);
++	period = max_t(u64, 1000000, event->hw.sample_period);
++	hrtimer_forward_now(hrtimer, ns_to_ktime(period));
++
++	return HRTIMER_RESTART;
++}
++
++static void vpa_dtl_start_hrtimer(struct perf_event *event)
++{
++	u64 period;
++	struct hw_perf_event *hwc = &event->hw;
++
++	period = max_t(u64, 1000000, hwc->sample_period);
++	hrtimer_start(&hwc->hrtimer, ns_to_ktime(period), HRTIMER_MODE_REL_PINNED);
++}
++
++static void vpa_dtl_stop_hrtimer(struct perf_event *event)
++{
++	struct hw_perf_event *hwc = &event->hw;
++
++	hrtimer_cancel(&hwc->hrtimer);
++}
++
++static void vpa_dtl_reset_global_refc(struct perf_event *event)
++{
++	spin_lock(&dtl_global_lock);
++	dtl_global_refc--;
++	if (dtl_global_refc <= 0) {
++		dtl_global_refc = 0;
++		write_unlock(&dtl_access_lock);
++	}
++	spin_unlock(&dtl_global_lock);
++}
++
++static int vpa_dtl_event_init(struct perf_event *event)
++{
++	struct hw_perf_event *hwc = &event->hw;
++	struct vpa_dtl *dtl = &per_cpu(vpa_cpu_dtl, event->cpu);
++
++	/* test the event attr type for PMU enumeration */
++	if (event->attr.type != event->pmu->type)
++		return -ENOENT;
++
++	if (!perfmon_capable())
++		return -EACCES;
++
++	/* Return if this is a counting event */
++	if (!is_sampling_event(event))
++		return -EOPNOTSUPP;
++
++	if (!(event->attr.sample_type & PERF_SAMPLE_RAW)) {
++		pr_debug("To enable perf sampling, run with -R/raw-samples option");
++		return -EOPNOTSUPP;
++	}
++
++	/* Invalid eventcode */
++	switch (event->attr.config) {
++	case DTL_LOG_CEDE:
++	case DTL_LOG_PREEMPT:
++	case DTL_LOG_FAULT:
++	case DTL_LOG_ALL:
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	spin_lock(&dtl_global_lock);
++
++	/*
++	 * To ensure there are no other conflicting dtl users
++	 * (example: /proc/powerpc/vcpudispatch_stats or debugfs dtl),
++	 * below code try to take the dtl_access_lock.
++	 * The dtl_access_lock is a rwlock defined in dtl.h, which is used
++	 * to unsure there is no conflicting dtl users.
++	 * Based on below code, vpa_dtl pmu tries to take write access lock
++	 * and also checks for dtl_global_refc, to make sure that the
++	 * dtl_access_lock is taken by vpa_dtl pmu interface.
++	 */
++	if (dtl_global_refc == 0 && !write_trylock(&dtl_access_lock)) {
++		spin_unlock(&dtl_global_lock);
++		return -EBUSY;
++	}
++
++	/*
++	 * Increment the number of active vpa_dtl pmu threads. The
++	 * dtl_global_refc is used to keep count of cpu threads that
++	 * currently capturing dtl data using vpa_dtl pmu interface.
++	 */
++	dtl_global_refc++;
++
++	/*
++	 * active_lock is a per cpu variable which is set if
++	 * current cpu is running vpa_pmu perf record session.
++	 */
++	dtl->active_lock = true;
++	spin_unlock(&dtl_global_lock);
++
++	hrtimer_init(&hwc->hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
++	hwc->hrtimer.function = vpa_dtl_hrtimer_handle;
++
++	/*
++	 * Since hrtimers have a fixed rate, we can do a static freq->period
++	 * mapping and avoid the whole period adjust feedback stuff.
++	 */
++	if (event->attr.freq) {
++		long freq = event->attr.sample_freq;
++
++		event->attr.sample_period = NSEC_PER_SEC / freq;
++		hwc->sample_period = event->attr.sample_period;
++		local64_set(&hwc->period_left, hwc->sample_period);
++		hwc->last_period = hwc->sample_period;
++		event->attr.freq = 0;
++	}
++
++	event->destroy = vpa_dtl_reset_global_refc;
++	return 0;
++}
++
++static int vpa_dtl_event_add(struct perf_event *event, int flags)
++{
++	int ret, hwcpu;
++	unsigned long addr;
++	struct vpa_dtl *dtl = &per_cpu(vpa_cpu_dtl, event->cpu);
++
++	/*
++	 * Register our dtl buffer with the hypervisor. The
++	 * HV expects the buffer size to be passed in the second
++	 * word of the buffer. Refer section '14.11.3.2. H_REGISTER_VPA'
++	 * from PAPR for more information.
++	 */
++	((u32 *)dtl->buf)[1] = cpu_to_be32(DISPATCH_LOG_BYTES);
++	dtl->last_idx = 0;
++
++	hwcpu = get_hard_smp_processor_id(event->cpu);
++	addr = __pa(dtl->buf);
++
++	ret = register_dtl(hwcpu, addr);
++	if (ret) {
++		pr_warn("DTL registration for cpu %d (hw %d) failed with %d\n",
++			event->cpu, hwcpu, ret);
++		return ret;
++	}
++
++	/* set our initial buffer indices */
++	lppaca_of(event->cpu).dtl_idx = 0;
++
++	/*
++	 * Ensure that our updates to the lppaca fields have
++	 * occurred before we actually enable the logging
++	 */
++	smp_wmb();
++
++	/* enable event logging */
++	lppaca_of(event->cpu).dtl_enable_mask = event->attr.config;
++
++	vpa_dtl_start_hrtimer(event);
++
++	return 0;
++}
++
++static void vpa_dtl_event_del(struct perf_event *event, int flags)
++{
++	int hwcpu = get_hard_smp_processor_id(event->cpu);
++	struct vpa_dtl *dtl = &per_cpu(vpa_cpu_dtl, event->cpu);
++
++	vpa_dtl_dump_sample_data(event);
++	vpa_dtl_stop_hrtimer(event);
++	unregister_dtl(hwcpu);
++	lppaca_of(event->cpu).dtl_enable_mask = 0x0;
++	dtl->active_lock = false;
++}
++
++static void vpa_dtl_event_read(struct perf_event *event)
++{
++	/*
++	 * This function defination is empty as vpa_dtl_dump_sample_data
++	 * is used to parse and dump the dispatch trace log data,
++	 * to perf raw sample.
++	 */
++}
++
++/* Allocate dtl buffer memory for given cpu. */
++static int vpa_dtl_mem_alloc(int cpu)
++{
++	struct vpa_dtl *dtl = &per_cpu(vpa_cpu_dtl, cpu);
++	struct dtl_entry *buf = NULL;
++
++	if (dtl->buf)
++		return 0;
++	dtl->active_lock = false;
++
++	/* Check for dispatch trace log buffer cache */
++	if (!dtl_cache)
++		return -ENOMEM;
++
++	buf = kmem_cache_alloc_node(dtl_cache, GFP_KERNEL, cpu_to_node(cpu));
++	if (!buf) {
++		pr_warn("buffer allocation failed for cpu %d\n", cpu);
++		return -ENOMEM;
++	}
++	dtl->buf = buf;
++	return 0;
++}
++
++static int vpa_dtl_cpu_online(unsigned int cpu)
++{
++	return vpa_dtl_mem_alloc(cpu);
++}
++
++static int vpa_dtl_cpu_offline(unsigned int cpu)
++{
++	struct vpa_dtl *dtl = &per_cpu(vpa_cpu_dtl, cpu);
++
++	/* Reduce the ref count if dtl event running on this cpu */
++	spin_lock(&dtl_global_lock);
++	if (dtl_global_refc && dtl->active_lock)
++		dtl_global_refc--;
++	if (dtl_global_refc <= 0) {
++		dtl_global_refc = 0;
++		write_unlock(&dtl_access_lock);
++	}
++	spin_unlock(&dtl_global_lock);
++	return 0;
++}
++
++static int vpa_dtl_cpu_hotplug_init(void)
++{
++	return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_VPA_DTL_ONLINE,
++			  "perf/powerpc/vpa_pmu:online",
++			  vpa_dtl_cpu_online,
++			  vpa_dtl_cpu_offline);
++}
++
++static void vpa_dtl_clear_memory(void)
++{
++	int i;
++
++	for_each_online_cpu(i) {
++		struct vpa_dtl *dtl = &per_cpu(vpa_cpu_dtl, i);
++
++		kmem_cache_free(dtl_cache, dtl->buf);
++		dtl->buf = NULL;
++	}
++}
++
++static struct pmu vpa_dtl_pmu = {
++	.task_ctx_nr = perf_invalid_context,
++
++	.name = "vpa_dtl",
++	.attr_groups = attr_groups,
++	.event_init  = vpa_dtl_event_init,
++	.add         = vpa_dtl_event_add,
++	.del         = vpa_dtl_event_del,
++	.read        = vpa_dtl_event_read,
++	.capabilities = PERF_PMU_CAP_NO_EXCLUDE | PERF_PMU_CAP_EXCLUSIVE,
++};
++
++static int vpa_pmu_init(void)
++{
++	int r;
++
++	if (!firmware_has_feature(FW_FEATURE_SPLPAR)) {
++		pr_debug("not a shared virtualized system, not enabling\n");
++		return -ENODEV;
++	}
++
++	/* This driver is intended only for L1 host */
++	if (is_kvm_guest()) {
++		pr_debug("Only supported for L1 host system\n");
++		return -ENODEV;
++	}
++
++	/* init cpuhotplug */
++	r = vpa_dtl_cpu_hotplug_init();
++	if (r) {
++		vpa_dtl_clear_memory();
++		return r;
++	}
++
++	r = perf_pmu_register(&vpa_dtl_pmu, vpa_dtl_pmu.name, -1);
++	if (r)
++		return r;
++
++	return 0;
++}
++
++device_initcall(vpa_pmu_init);
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index 9316c39260e0..749feee5fab5 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -234,6 +234,7 @@ enum cpuhp_state {
+ 	CPUHP_AP_PERF_POWERPC_TRACE_IMC_ONLINE,
+ 	CPUHP_AP_PERF_POWERPC_HV_24x7_ONLINE,
+ 	CPUHP_AP_PERF_POWERPC_HV_GPCI_ONLINE,
++	CPUHP_AP_PERF_POWERPC_VPA_DTL_ONLINE,
+ 	CPUHP_AP_PERF_CSKY_ONLINE,
+ 	CPUHP_AP_TMIGR_ONLINE,
+ 	CPUHP_AP_WATCHDOG_ONLINE,
 -- 
-2.45.2
+2.39.3
 
