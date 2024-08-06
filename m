@@ -1,91 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5576E94906A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 15:11:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 056DF949070
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 15:12:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jGizRdQT;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jGizRdQT;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TTymrjld;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TTymrjld;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdYbt1lt5z3d8R
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 23:11:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WdYcd6bblz3dDM
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 23:12:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jGizRdQT;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jGizRdQT;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TTymrjld;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TTymrjld;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdYb22T8Fz3d4H
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 23:10:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdYbj2G2Yz3d2c
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 23:11:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722949851;
+	s=mimecast20190719; t=1722949886;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kKfhuw0mmi3GGMg/l+8v2Ox0vbzOY8peZg1zYjmYH3U=;
-	b=jGizRdQTErEEwYWhyd49zH6FqsChf/EdwoPWdxyW7/ywx2++g2vKc9U3KzfAShJZYSdrGV
-	jxP9wlduprR9T+vQRAsRFlBNTIfIBMXgBPXKDDv0RjHYW1Y03zt4LrGn/W6CaCx6H5/2y6
-	XRy/9A85Cc2vKyvM9I9CTfQwwX39VYk=
+	bh=HQlV1QTf5yrmSKj2WaUkEDHzu01jAFbQU1zxro8N7ZY=;
+	b=TTymrjld+XCpxbTQekRcPGk1wPSb/071k/nd/vImbCZqew+4sSBPXjVzJALeq83YN2g034
+	+vxBhy/TDZX4a4uEDSlPamI8tVrnhMiamYuRnPD5IJOW+jYTW9s1zfFpGlWyYwNr4fwOrv
+	sZ7Y7VG2ddaEU5yankaAIP+4gS3maQI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722949851;
+	s=mimecast20190719; t=1722949886;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kKfhuw0mmi3GGMg/l+8v2Ox0vbzOY8peZg1zYjmYH3U=;
-	b=jGizRdQTErEEwYWhyd49zH6FqsChf/EdwoPWdxyW7/ywx2++g2vKc9U3KzfAShJZYSdrGV
-	jxP9wlduprR9T+vQRAsRFlBNTIfIBMXgBPXKDDv0RjHYW1Y03zt4LrGn/W6CaCx6H5/2y6
-	XRy/9A85Cc2vKyvM9I9CTfQwwX39VYk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=HQlV1QTf5yrmSKj2WaUkEDHzu01jAFbQU1zxro8N7ZY=;
+	b=TTymrjld+XCpxbTQekRcPGk1wPSb/071k/nd/vImbCZqew+4sSBPXjVzJALeq83YN2g034
+	+vxBhy/TDZX4a4uEDSlPamI8tVrnhMiamYuRnPD5IJOW+jYTW9s1zfFpGlWyYwNr4fwOrv
+	sZ7Y7VG2ddaEU5yankaAIP+4gS3maQI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-344-7riKiySpPbe8bAkA0X_Zwg-1; Tue, 06 Aug 2024 09:10:47 -0400
-X-MC-Unique: 7riKiySpPbe8bAkA0X_Zwg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-42671a6fb9dso3709645e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2024 06:10:47 -0700 (PDT)
+ us-mta-435--mIPWEN6MQOczXxDSBsw8w-1; Tue, 06 Aug 2024 09:11:22 -0400
+X-MC-Unique: -mIPWEN6MQOczXxDSBsw8w-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-36bb2047c21so401467f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2024 06:11:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722949846; x=1723554646;
+        d=1e100.net; s=20230601; t=1722949881; x=1723554681;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=kKfhuw0mmi3GGMg/l+8v2Ox0vbzOY8peZg1zYjmYH3U=;
-        b=n8ODLN1vivsZeLtRHfvq/QJDM18pEnODz1B993q9+lUFksNIyZiqNSH0YGr5BYiGLi
-         wh61RxRWkjLpTlzbeKIpl7fBuDU+XEJ2IIu7EFaeO0pSOUux/jpYTgZFrNBKkIwywOmD
-         ZzX1IjiLQ+eqK4HSmSteI/467WaDYANyKyG5aXrxwcM2K2NVGD227C9h2mDDLj75Yi35
-         BuhTlR6a+LVwfjKCgVZtAOilzhC7Bt3yudqIe0keRVbGjbfVEX4FHiNRKYPqHAzHhMkd
-         abagKiu4r+qGU9Osrogshwkom97QBLgGd5jWAwLu9TtrTB58PpxSTlcasOGqoiosEtS2
-         9eUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWiz6ZFkz0dww7a3W2eHwDMorqEwb+L6IdifmHVieJJbuclecBfwKTmaad1FqctgOWs3ivEOZZCwgHgg19kr+bC3XUsHLy2Nv9u9C1J4w==
-X-Gm-Message-State: AOJu0YyMmu9aXQRsgkhPi9iSdvpzzYFQQ+o79qH5JNwahMdb7NnNTAA1
-	GgS1BREyvhOY1u5fc6n5wPrVSwRaWtQ5tdJ8Fftc4HT+uzcCzprojK8a+3fXrWtGp3QdjiARDCD
-	RbRhxVr6eEJPd6dycsIArB9gnYZvenNCgM9tNqgyDfrABaIrQy4VRjfJ07goX6U4=
-X-Received: by 2002:a05:600c:2211:b0:427:d713:a5d3 with SMTP id 5b1f17b1804b1-428e6af81f9mr97868425e9.11.1722949846552;
-        Tue, 06 Aug 2024 06:10:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGleH7c0DR1VqnVw0r2AW7qu7fZ7wxkqVc0S+UNT+14H+QbPeE2XEd6xRN3HTRdiTCcf27YNw==
-X-Received: by 2002:a05:600c:2211:b0:427:d713:a5d3 with SMTP id 5b1f17b1804b1-428e6af81f9mr97867845e9.11.1722949846057;
-        Tue, 06 Aug 2024 06:10:46 -0700 (PDT)
+        bh=HQlV1QTf5yrmSKj2WaUkEDHzu01jAFbQU1zxro8N7ZY=;
+        b=B3nAcGSqCI9g5J8eP2xtOPIL3qzhcl+eGsFvofmTPTdT3Idee7z4piXu+TmJUphSbW
+         OopMTZ8ojuIO81/FmNTax8EgouYIaG/1fKhOsA8k4PvN4LQR4Tm2Eor2j+ofZP5TStm2
+         e1ydxNaJidcOCEPFC06qlYVTOo/FdZ5O3Ng8q0it4Bsai48aUWTlRcoHsAI0mfaRqekC
+         Z+e15NsF5bSKHxfrG/mrerqQNE74PbiIaOE+L4CDAzDRDW3U4Uo5Hv/XcEhfp0pa9FRX
+         AZSdkadKw7U+VOQoFspjG98b6VA5aK0o2hWsCpHlwQHAyZ53mRcR929TvziZ+daGkgAi
+         C9YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXFexPXHRfojJVpKNFC82tYwBeNKaCLBWBr48EhVj3Lgat9IpjeEk1gl/JpP3O7mD41BL1xAKvil1kmRUOaeh20LJuU52Y5gUIjR88eAg==
+X-Gm-Message-State: AOJu0YzLanK6f3NGJmfP5B2+ph+cQjUYoDCgM4yVi2W0e35RSfpYqutF
+	fAtiZzSMYhcg7JWwl+fTU2sCwQI58IHd/DLJUcy0R0q9gW/8TLH8515uuaf/6W98coPOYIkGAz9
+	yO1iRcqqLUyoxiu0wv1zNxmfn70k57Ef8n4skdLcn+vBt96T1Jx1FF4oYXrAvJxY=
+X-Received: by 2002:adf:f482:0:b0:368:6598:131e with SMTP id ffacd0b85a97d-36bbc1631c4mr11376669f8f.38.1722949881456;
+        Tue, 06 Aug 2024 06:11:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFxv7PfX6r9ym7vZjMNbk5OBHV40+BS3nlSSsfhTt07rE2DCWR/R+xABgAqwcg21wgHPlgV4Q==
+X-Received: by 2002:adf:f482:0:b0:368:6598:131e with SMTP id ffacd0b85a97d-36bbc1631c4mr11376625f8f.38.1722949880940;
+        Tue, 06 Aug 2024 06:11:20 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c73f:8500:f83c:3602:5300:88af? (p200300cbc73f8500f83c3602530088af.dip0.t-ipconnect.de. [2003:cb:c73f:8500:f83c:3602:5300:88af])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd059e44sm13047467f8f.70.2024.08.06.06.10.43
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-428ead4118fsm175803245e9.32.2024.08.06.06.11.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 06:10:45 -0700 (PDT)
-Message-ID: <5d1a6f58-2f6a-4214-975d-dfc937689792@redhat.com>
-Date: Tue, 6 Aug 2024 15:10:43 +0200
+        Tue, 06 Aug 2024 06:11:20 -0700 (PDT)
+Message-ID: <82d4f4d6-eed0-4332-9302-98c24f6cabad@redhat.com>
+Date: Tue, 6 Aug 2024 15:11:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/26] x86/numa: move FAKE_NODE_* defines to numa_emu
+Subject: Re: [PATCH v3 13/26] x86/numa_emu: simplify allocation of phys_dist
 To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
 References: <20240801060826.559858-1-rppt@kernel.org>
- <20240801060826.559858-13-rppt@kernel.org>
+ <20240801060826.559858-14-rppt@kernel.org>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -132,7 +132,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240801060826.559858-13-rppt@kernel.org>
+In-Reply-To: <20240801060826.559858-14-rppt@kernel.org>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -156,9 +156,11 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On 01.08.24 08:08, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> The definitions of FAKE_NODE_MIN_SIZE and FAKE_NODE_MIN_HASH_MASK are
-> only used by numa emulation code, make them local to
-> arch/x86/mm/numa_emulation.c
+> By the time numa_emulation() is called, all physical memory is already
+> mapped in the direct map and there is no need to define limits for
+> memblock allocation.
+> 
+> Replace memblock_phys_alloc_range() with memblock_alloc().
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
