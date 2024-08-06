@@ -1,39 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBD5948CE9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 12:37:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F21948DA1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 13:27:28 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J8bTB2KS;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdV9p4MgXz3cfm
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 20:37:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WdWHf3nqHz3dBd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 21:27:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdV9P4zTjz3bhD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 20:36:56 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE013FEC;
-	Tue,  6 Aug 2024 03:36:51 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7792B3F6A8;
-	Tue,  6 Aug 2024 03:36:22 -0700 (PDT)
-Date: Tue, 6 Aug 2024 11:35:32 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Dave Martin <Dave.Martin@arm.com>
-Subject: Re: [PATCH v4 18/29] arm64: add POE signal support
-Message-ID: <20240806103532.GA1986436@e124191.cambridge.arm.com>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-19-joey.gouly@arm.com>
- <ZqJ2knGETfS4nfEA@e133380.arm.com>
- <20240801155441.GB841837@e124191.cambridge.arm.com>
- <Zqu2VYELikM5LFY/@e133380.arm.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J8bTB2KS;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=pierre-louis.bossart@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Tue, 06 Aug 2024 21:26:47 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdWGv6mJHz2ysg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 21:26:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1722943608; x=1754479608;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=XeP8qMVW9duWHN2BUl9XidmCMVmrVkb5XZ55nX3RpWU=;
+  b=J8bTB2KS5oisSmEMoo5G3CUDDfZy0zlCHTM7db7TeOrxhqh5D28vzprB
+   HKnhgjJPkHzSs8lno4A7tfzmQeWv1fzhUuvHsrBxAU5tfUYegD+/9c6u3
+   UuIwvmfGw32H57C/x5+hifP2T2sLrF5PYfcbbDkWb/p8YGsKw1wTQA+M+
+   YrYRLYMCMufthCsUjGEOZzN5gyrAYrfuoxc6W1NbaUlGAg9d5KDW+QipE
+   D6fQT/CNu7S7BaEim2KaajqyV/AaL35Pn5LSmabXz0yTRLX7P73IjbIra
+   FTt33h3U3qgZtK2TCDwJ2XDuJ1DiokndZxEW+qM980f/OuGF/RtueiesH
+   g==;
+X-CSE-ConnectionGUID: h/ycR0UTTbulPwMeq7Tikg==
+X-CSE-MsgGUID: 2ZMr2r0RQCiCTp05WRkE7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="20804839"
+X-IronPort-AV: E=Sophos;i="6.09,267,1716274800"; 
+   d="scan'208";a="20804839"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2024 04:25:37 -0700
+X-CSE-ConnectionGUID: uVVs95WMQuuVeX2XlWhaPA==
+X-CSE-MsgGUID: 4wC1AypiTUqIxnJYqoPfTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,267,1716274800"; 
+   d="scan'208";a="56399162"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO [10.245.246.248]) ([10.245.246.248])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2024 04:25:34 -0700
+Message-ID: <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
+Date: Tue, 6 Aug 2024 13:16:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zqu2VYELikM5LFY/@e133380.arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec
+ support
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, perex@perex.cz,
+ tiwai@suse.com, alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, nicoleotsuka@gmail.com, lgirdwood@gmail.com,
+ broonie@kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
+ <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com>
+Content-Language: en-US
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,119 +79,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 01, 2024 at 05:22:45PM +0100, Dave Martin wrote:
-> On Thu, Aug 01, 2024 at 04:54:41PM +0100, Joey Gouly wrote:
-> > On Thu, Jul 25, 2024 at 05:00:18PM +0100, Dave Martin wrote:
-> > > Hi,
-> > > 
-> > > On Fri, May 03, 2024 at 02:01:36PM +0100, Joey Gouly wrote:
-> > > > Add PKEY support to signals, by saving and restoring POR_EL0 from the stackframe.
-> > > > 
-> > > > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> > > > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > > > Cc: Will Deacon <will@kernel.org>
-> > > > Reviewed-by: Mark Brown <broonie@kernel.org>
-> > > > Acked-by: Szabolcs Nagy <szabolcs.nagy@arm.com>
-> > > > ---
-> > > >  arch/arm64/include/uapi/asm/sigcontext.h |  7 ++++
-> > > >  arch/arm64/kernel/signal.c               | 52 ++++++++++++++++++++++++
-> > > >  2 files changed, 59 insertions(+)
-> > > > 
-> > > > diff --git a/arch/arm64/include/uapi/asm/sigcontext.h b/arch/arm64/include/uapi/asm/sigcontext.h
-> > > > index 8a45b7a411e0..e4cba8a6c9a2 100644
-> > > > --- a/arch/arm64/include/uapi/asm/sigcontext.h
-> > > > +++ b/arch/arm64/include/uapi/asm/sigcontext.h
-> > > 
-> > > [...]
-> > > 
-> > > > @@ -980,6 +1013,13 @@ static int setup_sigframe_layout(struct rt_sigframe_user_layout *user,
-> > > >  			return err;
-> > > >  	}
-> > > >  
-> > > > +	if (system_supports_poe()) {
-> > > > +		err = sigframe_alloc(user, &user->poe_offset,
-> > > > +				     sizeof(struct poe_context));
-> > > > +		if (err)
-> > > > +			return err;
-> > > > +	}
-> > > > +
-> > > >  	return sigframe_alloc_end(user);
-> > > >  }
-> > > >  
-> > > > @@ -1020,6 +1060,15 @@ static int setup_sigframe(struct rt_sigframe_user_layout *user,
-> > > >  		__put_user_error(current->thread.fault_code, &esr_ctx->esr, err);
-> > > >  	}
-> > > >  
-> > > > +	if (system_supports_poe() && err == 0 && user->poe_offset) {
-> > > > +		struct poe_context __user *poe_ctx =
-> > > > +			apply_user_offset(user, user->poe_offset);
-> > > > +
-> > > > +		__put_user_error(POE_MAGIC, &poe_ctx->head.magic, err);
-> > > > +		__put_user_error(sizeof(*poe_ctx), &poe_ctx->head.size, err);
-> > > > +		__put_user_error(read_sysreg_s(SYS_POR_EL0), &poe_ctx->por_el0, err);
-> > > > +	}
-> > > > +
-> > > 
-> > > Does the AArch64 procedure call standard say anything about whether
-> > > POR_EL0 is caller-saved?
-> > 
-> > I asked about this, and it doesn't say anything and they don't plan on it,
-> > since it's very application specific.
-> 
-> Right.  I think that confirms that we don't absolutely need to preserve
-> POR_EL0, because if compiler-generated code was allowed to fiddle with
-> this and not clean up after itself, the PCS would have to document this.
-> 
-> > > 
-> > > <bikeshed>
-> > > 
-> > > In theory we could skip saving this register if it is already
-> > > POR_EL0_INIT (which it often will be), and if the signal handler is not
-> > > supposed to modify and leave the modified value in the register when
-> > > returning.
-> > > 
-> > > The complexity of the additional check my be a bit pointless though,
-> > > and the the handler might theoretically want to change the interrupted
-> > > code's POR_EL0 explicitly, which would be complicated if POE_MAGIC is
-> > > sometimes there and sometimes not.
-> > > 
-> > > </bikeshed>
-> > > 
-> > I think trying to skip/optimise something here would be more effort than any
-> > possible benefits!
-> 
-> Actually, having thought about this some more I think that only dumping
-> this register if != POR_EL0_INIT may be right right thing to do.
-> 
-> This would mean that old binary would stacks never see poe_context in
-> the signal frame, and so will never experience unexpected stack
-> overruns (at least, not due solely to the presence of this feature).
 
-They can already see things they don't expect, like FPMR that was added
-recently.
 
+On 8/6/24 12:26, Shengjiu Wang wrote:
+> Add Sample Rate Converter(SRC) codec support, define the output
+> format and rate for SRC.
 > 
-> POE-aware signal handlers have to do something fiddly and nonportable
-> to obtain the original value of POR_EL0 regardless, so requiring them
-> do handle both cases (present in sigframe and absent) doesn't seem too
-> onerous to me.
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  include/uapi/sound/compress_offload.h | 2 ++
+>  include/uapi/sound/compress_params.h  | 9 ++++++++-
+>  2 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/uapi/sound/compress_offload.h b/include/uapi/sound/compress_offload.h
+> index 98772b0cbcb7..8b2b72f94e26 100644
+> --- a/include/uapi/sound/compress_offload.h
+> +++ b/include/uapi/sound/compress_offload.h
+> @@ -112,10 +112,12 @@ struct snd_compr_codec_caps {
+>   * end of the track
+>   * @SNDRV_COMPRESS_ENCODER_DELAY: no of samples inserted by the encoder at the
+>   * beginning of the track
+> + * @SNDRV_COMPRESS_SRC_RATIO_MOD: Resampling Ratio Modifier for sample rate converter
+>   */
+>  enum sndrv_compress_encoder {
+>  	SNDRV_COMPRESS_ENCODER_PADDING = 1,
+>  	SNDRV_COMPRESS_ENCODER_DELAY = 2,
+> +	SNDRV_COMPRESS_SRC_RATIO_MOD = 3,
+>  };
 
-If the signal handler wanted to modify the value, from the default, wouldn't it
-need to mess around with the sig context stuff, to allocate some space for
-POR_EL0, such that the kernel would restore it properly? (If that's even
-possible).
+this sounds wrong to me. The sample rate converter is not an "encoder",
+and the properties for padding/delay are totally specific to an encoder
+function.
 
-> 
-> 
-> Do you think this approach would break any known use cases?
+The other point is that I am not sure how standard this ratio_mod
+parameter is. This could be totally specific to a specific
+implementation, and another ASRC might have different parameters.
 
-Not sure.
+>  
+>  /**
+> diff --git a/include/uapi/sound/compress_params.h b/include/uapi/sound/compress_params.h
+> index ddc77322d571..0843773ea6b4 100644
+> --- a/include/uapi/sound/compress_params.h
+> +++ b/include/uapi/sound/compress_params.h
+> @@ -43,7 +43,8 @@
+>  #define SND_AUDIOCODEC_BESPOKE               ((__u32) 0x0000000E)
+>  #define SND_AUDIOCODEC_ALAC                  ((__u32) 0x0000000F)
+>  #define SND_AUDIOCODEC_APE                   ((__u32) 0x00000010)
+> -#define SND_AUDIOCODEC_MAX                   SND_AUDIOCODEC_APE
+> +#define SND_AUDIOCODEC_SRC                   ((__u32) 0x00000011)
+> +#define SND_AUDIOCODEC_MAX                   SND_AUDIOCODEC_SRC
 
-> 
-> Cheers
-> ---Dave
-> 
+I am not sure this is wise to change such definitions?
+>  
+>  /*
+>   * Profile and modes are listed with bit masks. This allows for a
+> @@ -324,6 +325,11 @@ struct snd_dec_ape {
+>  	__u32 seek_table_present;
+>  } __attribute__((packed, aligned(4)));
+>  
+> +struct snd_dec_src {
+> +	__u32 format_out;
+> +	__u32 rate_out;
+> +} __attribute__((packed, aligned(4)));
+
+Again I am not sure how standard those parameters are, and even if they
+were if their representation is reusable.
+
+And the compressed API has a good split between encoders and decoders, I
+am not sure how an SRC can be classified as either.
+
+>  union snd_codec_options {
+>  	struct snd_enc_wma wma;
+>  	struct snd_enc_vorbis vorbis;
+> @@ -334,6 +340,7 @@ union snd_codec_options {
+>  	struct snd_dec_wma wma_d;
+>  	struct snd_dec_alac alac_d;
+>  	struct snd_dec_ape ape_d;
+> +	struct snd_dec_src src;
+>  } __attribute__((packed, aligned(4)));
+>  
+>  /** struct snd_codec_desc - description of codec capabilities
+
