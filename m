@@ -1,92 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AD0949161
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 15:27:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FF5949171
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 15:29:48 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cjm9HCNX;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cjm9HCNX;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z5fYncrw;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z5fYncrw;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdYyZ2k6Fz3d87
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 23:27:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WdZ0p64Plz3d4D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 23:29:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cjm9HCNX;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cjm9HCNX;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z5fYncrw;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z5fYncrw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdYxt3RXWz2xps
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 23:27:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdZ07177wz2y8f
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 23:29:09 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722950831;
+	s=mimecast20190719; t=1722950947;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SSnsJGK5e/RD7WKVJpFp0oyVHCZW2szWv3z2EdgZ6mE=;
-	b=cjm9HCNXx/sey9+TWFy+oP/ULS8W68RbSlTE13UbxEQLR74aAg3J737K6IXyjNnSNdv9Nj
-	UUSUv5/UEZn54/7z1y4U4oBcw69KiDfGviab2kYCman04ALiPiZINkI4S0EgTHoQp+JNL7
-	fdPY3SDZwVcKixDv1iaeOA7RIZ/WYp4=
+	bh=mg8j1NdkC4QyJoy5NjpxqHT8Z7jh1Oox1ZezxJBmykE=;
+	b=Z5fYncrwkAsSrhhbWdR+kTcekdsxK0cAyVW/MPlg8TzhrT2ufVnC09j8JfYhFP0OsivcMe
+	KmVfWNT+O9EsS/JUW9uOy0gY2xdO20rPfMstZ39nBjlMSL2PEtSfOm3OsL0gXz9goT+Z5t
+	8e9RAwrdEh0dL9bXAuHnmpNDz/zr7cA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722950831;
+	s=mimecast20190719; t=1722950947;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SSnsJGK5e/RD7WKVJpFp0oyVHCZW2szWv3z2EdgZ6mE=;
-	b=cjm9HCNXx/sey9+TWFy+oP/ULS8W68RbSlTE13UbxEQLR74aAg3J737K6IXyjNnSNdv9Nj
-	UUSUv5/UEZn54/7z1y4U4oBcw69KiDfGviab2kYCman04ALiPiZINkI4S0EgTHoQp+JNL7
-	fdPY3SDZwVcKixDv1iaeOA7RIZ/WYp4=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mg8j1NdkC4QyJoy5NjpxqHT8Z7jh1Oox1ZezxJBmykE=;
+	b=Z5fYncrwkAsSrhhbWdR+kTcekdsxK0cAyVW/MPlg8TzhrT2ufVnC09j8JfYhFP0OsivcMe
+	KmVfWNT+O9EsS/JUW9uOy0gY2xdO20rPfMstZ39nBjlMSL2PEtSfOm3OsL0gXz9goT+Z5t
+	8e9RAwrdEh0dL9bXAuHnmpNDz/zr7cA=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-QuCeYfgmN4mvoaoDxEx4Xw-1; Tue, 06 Aug 2024 09:27:10 -0400
-X-MC-Unique: QuCeYfgmN4mvoaoDxEx4Xw-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5b122f40f64so543292a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2024 06:27:10 -0700 (PDT)
+ us-mta-41-Z_6Ov_YANniFVXB7h8QLBA-1; Tue, 06 Aug 2024 09:29:04 -0400
+X-MC-Unique: Z_6Ov_YANniFVXB7h8QLBA-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2f01b9ae749so6990491fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2024 06:29:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722950829; x=1723555629;
+        d=1e100.net; s=20230601; t=1722950943; x=1723555743;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=SSnsJGK5e/RD7WKVJpFp0oyVHCZW2szWv3z2EdgZ6mE=;
-        b=MrJTtEEXbydtxNqV9JEPop94elzhQDiWXIIOxClWtYoDDM61ZrHGRYKQ6dxFknOVu7
-         n+lO9VMY4vBzl4lNWVhL+uy3o5WO5SBzGFTG1ERkS3grrnxOKcfhIYR/AWl6b9Zwyt4d
-         4OME5WCwWZHZJld2K/Yd/DqI5IMq16Q0lLKGJuP4Pr2DOC9IyEtvRganoSWtcaKzC48E
-         56vGrGCNKNzL19xgts1cfnMU4ncLtchUnYylnMYBO+9YUuVNnOukeRh1wUoDXoAlK18j
-         gxMRnvGK2f0cnfIIuGi88Pun/NpNZ0BwxS2x630/Cn6Qyh7+Qe5WISpIe/V2kpYFenPA
-         Gxlg==
-X-Forwarded-Encrypted: i=1; AJvYcCV7R2KFAAi3FvckN9UASSofQckoa9h5VJTK6OREloP2mkmXCUS4pbrvwdf7BhTebbtpQRNgh1OnsWQfm3T56yrPkAt7lGtIOPHw2PGncQ==
-X-Gm-Message-State: AOJu0Yyk1LvcLgw/5dfstZbbxFBSfIZSOsCMoTMa94xwUPmdtNgcHfJ4
-	IzBxeqRD93p50RHfgTHSH+W+FLCzam/8MJAv44c8TRFDzoEtX9o7GPloclCJZknQ2SHtt9B6ikI
-	0vvuiLo9b9kURsfe9miQz/KW91DEpizeBHmzroxwsInWuHEaxGlF5ItUPQEKWxCo=
-X-Received: by 2002:a17:907:7ea8:b0:a7a:83f8:cfd2 with SMTP id a640c23a62f3a-a7dc4de30e9mr1049748066b.17.1722950828998;
-        Tue, 06 Aug 2024 06:27:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3mwjGBol8sKlqJB4dXFJMJMmwCDD4JjZwmSrFe2PdXUT5bpKAB3DIQEgrH8Nj33vJR1tztw==
-X-Received: by 2002:a17:907:7ea8:b0:a7a:83f8:cfd2 with SMTP id a640c23a62f3a-a7dc4de30e9mr1049741066b.17.1722950828351;
-        Tue, 06 Aug 2024 06:27:08 -0700 (PDT)
+        bh=mg8j1NdkC4QyJoy5NjpxqHT8Z7jh1Oox1ZezxJBmykE=;
+        b=GjuqaKod5GoKp1I4lywhEhIZ5FW8iULAz1MErtPHf6q/86Yl5BlPCZnzM1BGTbsaMJ
+         4K7y/Kc0FFLYB2OJ673jwWZ093BaL2y179his/Q0+moKguBEMfk8T83hWaUfe0r79yyF
+         4yzHc3APeJwU9akRR37RiLVNIrvlW1J+MCyDj/pQZX0K0UZwsLkB73vWtoRgMfzfB4zB
+         9zVXgS230V8GP7NAujd0KKb69B+1O6YWBMC0Wdra17vpJFwLcNXvQiUp5zwfX4/oSL1y
+         70NsBWYfwYrnI0F3DZ1RtNvbCpFdjE0RVP4UFXqOg7+mXRKaAPE2aOEc6KHEcQ2X4BPX
+         1DfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUm4ogYFQSa69cdR9kRp7NkaDEu+/fglDtAYZtwtH3mDIE7HQar+RciWNSIFoNRw+nXwU1FslzS25XTHRoQY4VPQgCDola1DbnbL39zsA==
+X-Gm-Message-State: AOJu0Yx3boAV6coVcBQys2nFhFHKLeF2vHNvLCTgXJgjApSe9FXhMs1T
+	vuSs7VIaeGJ5eRU+iOwEFFhAekItkh6uzd29CLSKBKstJnaP30ocsHx18OfSYi1Fq4qGXO/2u/g
+	QBQ6vAsRdWv1E8jJ18Vw3unQLQq1TehqTY447aKpT7G0d08jN0Qf7+QPJYvvrb0A=
+X-Received: by 2002:a2e:8696:0:b0:2ef:228a:1b86 with SMTP id 38308e7fff4ca-2f15aabd05fmr96389001fa.21.1722950943100;
+        Tue, 06 Aug 2024 06:29:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUAkkY1eODz2H49AhHbcgbZMYiCb05Jg7YJ0JX+yoRtVdCbp9tatU0EHzUBQRP+lyJ7u1OEA==
+X-Received: by 2002:a2e:8696:0:b0:2ef:228a:1b86 with SMTP id 38308e7fff4ca-2f15aabd05fmr96388601fa.21.1722950942503;
+        Tue, 06 Aug 2024 06:29:02 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c73f:8500:f83c:3602:5300:88af? (p200300cbc73f8500f83c3602530088af.dip0.t-ipconnect.de. [2003:cb:c73f:8500:f83c:3602:5300:88af])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9d88650sm544288366b.152.2024.08.06.06.27.05
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-428e6e9cd4esm180274335e9.44.2024.08.06.06.29.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 06:27:07 -0700 (PDT)
-Message-ID: <82f0afba-7c0e-4a02-8be1-66c8b9d56a5c@redhat.com>
-Date: Tue, 6 Aug 2024 15:27:04 +0200
+        Tue, 06 Aug 2024 06:29:02 -0700 (PDT)
+Message-ID: <87ca4550-ed4d-4373-8d4c-3f89ac03df91@redhat.com>
+Date: Tue, 6 Aug 2024 15:28:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 25/26] mm: make range-to-target_node lookup facility a
- part of numa_memblks
+Subject: Re: [PATCH v3 24/26] arch_numa: switch over to numa_memblks
 To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
 References: <20240801060826.559858-1-rppt@kernel.org>
- <20240801060826.559858-26-rppt@kernel.org>
+ <20240801060826.559858-25-rppt@kernel.org>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -133,7 +132,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240801060826.559858-26-rppt@kernel.org>
+In-Reply-To: <20240801060826.559858-25-rppt@kernel.org>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -157,20 +156,21 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On 01.08.24 08:08, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> The x86 implementation of range-to-target_node lookup (i.e.
-> phys_to_target_node() and memory_add_physaddr_to_nid()) relies on
-> numa_memblks.
+> Until now arch_numa was directly translating firmware NUMA information
+> to memblock.
 > 
-> Since numa_memblks are now part of the generic code, move these
-> functions from x86 to mm/numa_memblks.c and select
-> CONFIG_NUMA_KEEP_MEMINFO when CONFIG_NUMA_MEMBLKS=y for dax and cxl.
+> Using numa_memblks as an intermediate step has a few advantages:
+> * alignment with more battle tested x86 implementation
+> * availability of NUMA emulation
+> * maintaining node information for not yet populated memory
+> 
+> Replace current functionality related to numa_add_memblk() and
+> __node_distance() with the implementation based on numa_memblks and add
+> functions required by numa_emulation.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
 > ---
-
-Nice
 
 Acked-by: David Hildenbrand <david@redhat.com>
 
