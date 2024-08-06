@@ -2,36 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70251948C91
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 12:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35475948D17
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 12:48:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdTSp38Msz3cbF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 20:05:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WdVQX1DQqz3dBd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 20:48:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdTSQ03cqz30Tk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 20:04:50 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 82D53DA7;
-	Tue,  6 Aug 2024 03:04:44 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C837F3F6A8;
-	Tue,  6 Aug 2024 03:04:15 -0700 (PDT)
-Date: Tue, 6 Aug 2024 11:04:13 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Dave Martin <Dave.Martin@arm.com>
-Subject: Re: [PATCH v4 04/29] arm64: disable trapping of POR_EL0 to EL2
-Message-ID: <20240806100413.GE841837@e124191.cambridge.arm.com>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-5-joey.gouly@arm.com>
- <ZqJyzZB8Y8GLzYIA@e133380.arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZqJyzZB8Y8GLzYIA@e133380.arm.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdVPk5wy4z3bhD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 20:47:37 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C7017200691;
+	Tue,  6 Aug 2024 12:47:33 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 8D918200E65;
+	Tue,  6 Aug 2024 12:47:33 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id D12E4183487B;
+	Tue,  6 Aug 2024 18:47:31 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: vkoul@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH 0/6] ASoC: fsl: add memory to memory function for ASRC
+Date: Tue,  6 Aug 2024 18:26:37 +0800
+Message-Id: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,79 +55,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: szabolcs.nagy@arm.com, catalin.marinas@arm.com, dave.hansen@linux.intel.com, linux-mm@kvack.org, hpa@zytor.com, shuah@kernel.org, maz@kernel.org, x86@kernel.org, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, mingo@redhat.com, naveen.n.rao@linux.ibm.com, will@kernel.org, npiggin@gmail.com, broonie@kernel.org, bp@alien8.de, kvmarm@lists.linux.dev, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, oliver.upton@linux.dev, aneesh.kumar@linux.ibm.com, linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 25, 2024 at 04:44:13PM +0100, Dave Martin wrote:
-> Hi,
-> 
-> On Fri, May 03, 2024 at 02:01:22PM +0100, Joey Gouly wrote:
-> > Allow EL0 or EL1 to access POR_EL0 without being trapped to EL2.
-> > 
-> > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Will Deacon <will@kernel.org>
-> > Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> > ---
-> >  arch/arm64/include/asm/el2_setup.h | 10 +++++++++-
-> >  1 file changed, 9 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm64/include/asm/el2_setup.h b/arch/arm64/include/asm/el2_setup.h
-> > index b7afaa026842..df5614be4b70 100644
-> > --- a/arch/arm64/include/asm/el2_setup.h
-> > +++ b/arch/arm64/include/asm/el2_setup.h
-> > @@ -184,12 +184,20 @@
-> >  .Lset_pie_fgt_\@:
-> >  	mrs_s	x1, SYS_ID_AA64MMFR3_EL1
-> >  	ubfx	x1, x1, #ID_AA64MMFR3_EL1_S1PIE_SHIFT, #4
-> > -	cbz	x1, .Lset_fgt_\@
-> > +	cbz	x1, .Lset_poe_fgt_\@
-> >  
-> >  	/* Disable trapping of PIR_EL1 / PIRE0_EL1 */
-> >  	orr	x0, x0, #HFGxTR_EL2_nPIR_EL1
-> >  	orr	x0, x0, #HFGxTR_EL2_nPIRE0_EL1
-> >  
-> > +.Lset_poe_fgt_\@:
-> > +	mrs_s	x1, SYS_ID_AA64MMFR3_EL1
-> > +	ubfx	x1, x1, #ID_AA64MMFR3_EL1_S1POE_SHIFT, #4
-> > +	cbz	x1, .Lset_fgt_\@
-> > +
-> > +	/* Disable trapping of POR_EL0 */
-> > +	orr	x0, x0, #HFGxTR_EL2_nPOR_EL0
-> 
-> Do I understand correctly that this is just to allow the host to access
-> its own POR_EL0, before (or unless) KVM starts up?
+This function is base on the accelerator implementation
+for compress API:
+https://patchwork.kernel.org/project/alsa-devel/patch/20240731083843.59911-1-perex@perex.cz/
 
-Yup.
+Audio signal processing also has the requirement for memory to
+memory similar as Video.
 
-> 
-> KVM always overrides all the EL2 trap controls while running a guest,
-> right?  We don't want this bit still set when running in a guest just
-> because KVM doesn't know about POE yet.
+This asrc memory to memory (memory ->asrc->memory) case is a non
+real time use case.
 
-KVM currently unconditionally traps POE regs currently, this series makes that
-conditional.
+User fills the input buffer to the asrc module, after conversion, then asrc
+sends back the output buffer to user. So it is not a traditional ALSA playback
+and capture case.
 
-> 
-> (Hopefully this follows naturally from the way the KVM code works, but
-> my KVM-fu is a bit rusty.)
-> 
-> Also, what about POR_EL1?  Do we have to reset that to something sane
-> (and so untrap it here), or it is sufficient if we never turn on POE
-> support in the host, via TCR2_EL1.POE?
+Because we had implemented the "memory -> asrc ->i2s device-> codec"
+use case in ALSA.  Now the "memory->asrc->memory" needs
+to reuse the code in asrc driver, so the patch 1 and patch 2 is for refining
+the code to make it can be shared by the "memory->asrc->memory"
+driver.
 
-Since the host isn't using it, we don't need to reset it. It will be reset to an unknown value for guests.
+Other change is to add memory to memory support for two kinds of i.MX ASRC
+modules.
 
-In patch 7:
+Shengjiu Wang (6):
+  ALSA: compress: add Sample Rate Converter codec support
+  ASoC: fsl_asrc: define functions for memory to memory usage
+  ASoC: fsl_easrc: define functions for memory to memory usage
+  ASoC: fsl_asrc_m2m: Add memory to memory function
+  ASoC: fsl_asrc: register m2m platform device
+  ASoC: fsl_easrc: register m2m platform device
 
-+	{ SYS_DESC(SYS_POR_EL1), NULL, reset_unknown, POR_EL1 },
+ include/uapi/sound/compress_offload.h |   2 +
+ include/uapi/sound/compress_params.h  |   9 +-
+ sound/soc/fsl/Kconfig                 |   1 +
+ sound/soc/fsl/Makefile                |   2 +-
+ sound/soc/fsl/fsl_asrc.c              | 176 +++++-
+ sound/soc/fsl/fsl_asrc.h              |   2 +
+ sound/soc/fsl/fsl_asrc_common.h       |  68 +++
+ sound/soc/fsl/fsl_asrc_m2m.c          | 769 ++++++++++++++++++++++++++
+ sound/soc/fsl/fsl_easrc.c             | 259 ++++++++-
+ sound/soc/fsl/fsl_easrc.h             |   4 +
+ 10 files changed, 1284 insertions(+), 8 deletions(-)
+ create mode 100644 sound/soc/fsl/fsl_asrc_m2m.c
 
-> 
-> [...]
-> 
-> Cheers
-> ---Dave
+-- 
+2.34.1
 
-Thanks,
-Joey
