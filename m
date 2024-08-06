@@ -2,56 +2,106 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BBA9488DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 07:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A4694891F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 07:57:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fc4qoSfQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C4x0Z5Lz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdM265Q68z3cYq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 15:15:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WdMzJ3PQgz3cYb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 15:57:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fc4qoSfQ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=C4x0Z5Lz;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdM1L2MJfz3cND
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 15:14:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1722921266;
-	bh=T6UJVWrjoJeU8RGTDOBLq9vBy/sFp4d69GgI9WtuFkA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Fc4qoSfQWyq4BM51Y4pDrfnr3s5l0ddnYG8FaahUyoFFU/7i2JjwvDx5AV/wTnVZk
-	 HXWDMF1Hg5CWSj096LaeY4HCEwG4J3qKHRrrNBU/EzNkZEq8xYUUJEKizUELUeO2Ah
-	 IqDgl7mlqPOA4DzA7UkY5YyWprtN4Xity3wuHpFxj6nOjkrFydwFl1F3qxJMRZ7FXu
-	 VtiiPwh4eyNHFYxoOjecr38zogQZABJNbmp+pOB5RvmVG/EWVTKOwvgnpteO0XT7eo
-	 33s9x9vERxtxGjtg+wxCqxgjz1eUylT9jiopI1Vge4dY+vPv0HjWzoeiovsbUNBCdP
-	 K059UL/xlrYcg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WdM1D4g3kz4wbp;
-	Tue,  6 Aug 2024 15:14:22 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jinjie Ruan <ruanjinjie@huawei.com>, dennis@kernel.org, tj@kernel.org,
- cl@linux.com, benh@kernel.crashing.org, paulus@samba.org,
- christophe.leroy@csgroup.eu, mahesh@linux.ibm.com,
- gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5.10] powerpc: Avoid nmi_enter/nmi_exit in real mode
- interrupt.
-In-Reply-To: <20240805114544.1552341-1-ruanjinjie@huawei.com>
-References: <20240805114544.1552341-1-ruanjinjie@huawei.com>
-Date: Tue, 06 Aug 2024 15:14:21 +1000
-Message-ID: <87frrii66q.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdMyc1r8Xz3cG5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 15:57:12 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 4EC68CE0CF2;
+	Tue,  6 Aug 2024 05:57:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D72C4AF09;
+	Tue,  6 Aug 2024 05:57:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722923828;
+	bh=Ru8Shg8lIwniuY8wKameyr5sDLRzIhyoJA3vrjy1zMI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=C4x0Z5LzJzhvZwqgXBB4OZ0POwM8SDhV2CjWAXR3Y+vWMBbD93Auz9suPAdtoFHns
+	 bSctw36U+bOeD8QqTk2VCXG0+rJXusyyyGf9yleosVMcQYbheYI0Z3uzMs4XNgYpi4
+	 fUWvFflqrWul0s+sX0md0x2gHeKcXsWHAr+aSsHUUmwMW+bRRaGyURKDRaCtS5ad/S
+	 4V5k9m3xuIPEGTGd2SoFM4NRLgtUDvlfDyKy9tiPJFts10xdA9uPNEsGTa6LcaM2Sb
+	 oE5CSaQ1HCy82zVRRT28ycCI9ufZ+nk4aOVf/nGo9XoI6GtLvSIuCqd8BEB0aLTUA0
+	 USqcuhmFWAetg==
+Message-ID: <77e65be3-a4d3-4b6a-991f-10dfb2db5f95@kernel.org>
+Date: Tue, 6 Aug 2024 07:57:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] dt-bindings: soc: fsl: add missed compatible string
+ fsl,ls*-isc
+To: Frank Li <Frank.Li@nxp.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ "open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>,
+ "moderated list:FREESCALE SOC DRIVERS"
+ <linux-arm-kernel@lists.infradead.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+References: <20240802171102.2812687-1-Frank.Li@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240802171102.2812687-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,139 +113,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ruanjinjie@huawei.com
+Cc: imx@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jinjie Ruan,
+On 02/08/2024 19:11, Frank Li wrote:
+> Add compatible string, fsl,ls1088a-isc, fsl,ls2080a-isc, fsl,lx2160a-isc.
 
-If you want to submit this as a stable backport you need to send it
-To: stable@vger.kernel.org.
+git grep on fsl,lx2046a-isc gives me 0.
 
-Jinjie Ruan <ruanjinjie@huawei.com> writes:
-> From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> Fix the below warning:
+> arch/arm64/boot/dts/freescale/fsl-ls2080a-qds.dtb: /soc/syscon@1f70000: failed to match any schema with compatible: ['fsl,ls2080a-isc', 'syscon']
+> 
 
-Although it's somewhat modified, this is still a backport of an upstream
-commit, so it should include the following line:
+Best regards,
+Krzysztof
 
-  [ Upstream commit 0db880fc865ffb522141ced4bfa66c12ab1fbb70 ]
-
-> nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
-> crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
-> interrupt handler) if percpu allocation comes from vmalloc area.
->
-> Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
-> wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
-> percpu allocation is from the embedded first chunk. However with
-> CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
-> allocation can come from the vmalloc area.
->
-> With kernel command line "percpu_alloc=page" we can force percpu allocation
-> to come from vmalloc area and can see kernel crash in machine_check_early:
->
-> [    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
-> [    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
-> [    1.215719] --- interrupt: 200
-> [    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
-> [    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
-> [    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
->
-> Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
-> first chunk is not embedded.
->
-> CVE-2024-42126
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
-> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
-> [ Conflicts in arch/powerpc/include/asm/interrupt.h
->   because machine_check_early() has been refactored. ]
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> ---
->  arch/powerpc/include/asm/percpu.h | 10 ++++++++++
->  arch/powerpc/kernel/mce.c         | 14 +++++++++++---
->  arch/powerpc/kernel/setup_64.c    |  2 ++
->  3 files changed, 23 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
-> index 8e5b7d0b851c..634970ce13c6 100644
-> --- a/arch/powerpc/include/asm/percpu.h
-> +++ b/arch/powerpc/include/asm/percpu.h
-> @@ -15,6 +15,16 @@
->  #endif /* CONFIG_SMP */
->  #endif /* __powerpc64__ */
->  
-> +#if defined(CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK) && defined(CONFIG_SMP)
-> +#include <linux/jump_label.h>
-> +DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
-> +
-> +#define percpu_first_chunk_is_paged	\
-> +		(static_key_enabled(&__percpu_first_chunk_is_paged.key))
-> +#else
-> +#define percpu_first_chunk_is_paged	false
-> +#endif /* CONFIG_PPC64 && CONFIG_SMP */
-> +
->  #include <asm-generic/percpu.h>
->  
->  #include <asm/paca.h>
-> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-> index 63702c0badb9..259343040e1b 100644
-> --- a/arch/powerpc/kernel/mce.c
-> +++ b/arch/powerpc/kernel/mce.c
-> @@ -594,8 +594,15 @@ long notrace machine_check_early(struct pt_regs *regs)
->  	u8 ftrace_enabled = this_cpu_get_ftrace_enabled();
->  
->  	this_cpu_set_ftrace_enabled(0);
-> -	/* Do not use nmi_enter/exit for pseries hpte guest */
-> -	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
-> +	/*
-> +	 * Do not use nmi_enter/exit for pseries hpte guest
-> +	 *
-> +	 * Likewise, do not use it in real mode if percpu first chunk is not
-> +	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
-> +	 * are chances where percpu allocation can come from vmalloc area.
-> +	 */
-> +	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
-> +	    !percpu_first_chunk_is_paged)
->  		nmi_enter();
->  
->  	hv_nmi_check_nonrecoverable(regs);
-> @@ -606,7 +613,8 @@ long notrace machine_check_early(struct pt_regs *regs)
->  	if (ppc_md.machine_check_early)
->  		handled = ppc_md.machine_check_early(regs);
->  
-> -	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
-> +	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
-> +	    !percpu_first_chunk_is_paged)
->  		nmi_exit();
->  
->  	this_cpu_set_ftrace_enabled(ftrace_enabled);
-> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-> index 3f8426bccd16..899d87de0165 100644
-> --- a/arch/powerpc/kernel/setup_64.c
-> +++ b/arch/powerpc/kernel/setup_64.c
-> @@ -824,6 +824,7 @@ static int pcpu_cpu_distance(unsigned int from, unsigned int to)
->  
->  unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
->  EXPORT_SYMBOL(__per_cpu_offset);
-> +DEFINE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
->  
->  static void __init pcpu_populate_pte(unsigned long addr)
->  {
-> @@ -903,6 +904,7 @@ void __init setup_per_cpu_areas(void)
->  	if (rc < 0)
->  		panic("cannot initialize percpu area (err=%d)", rc);
->  
-> +	static_key_enable(&__percpu_first_chunk_is_paged.key);
->  	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
->  	for_each_possible_cpu(cpu) {
->                  __per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
-
-This looks reasonable to me, though I haven't tested it, I assume you
-have done so.
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
