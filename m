@@ -2,72 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F21948DA1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 13:27:28 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J8bTB2KS;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C4D948D88
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 13:18:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdWHf3nqHz3dBd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 21:27:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WdW4x02SVz3d2c
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 21:18:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J8bTB2KS;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=pierre-louis.bossart@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Tue, 06 Aug 2024 21:26:47 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdWGv6mJHz2ysg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 21:26:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722943608; x=1754479608;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=XeP8qMVW9duWHN2BUl9XidmCMVmrVkb5XZ55nX3RpWU=;
-  b=J8bTB2KS5oisSmEMoo5G3CUDDfZy0zlCHTM7db7TeOrxhqh5D28vzprB
-   HKnhgjJPkHzSs8lno4A7tfzmQeWv1fzhUuvHsrBxAU5tfUYegD+/9c6u3
-   UuIwvmfGw32H57C/x5+hifP2T2sLrF5PYfcbbDkWb/p8YGsKw1wTQA+M+
-   YrYRLYMCMufthCsUjGEOZzN5gyrAYrfuoxc6W1NbaUlGAg9d5KDW+QipE
-   D6fQT/CNu7S7BaEim2KaajqyV/AaL35Pn5LSmabXz0yTRLX7P73IjbIra
-   FTt33h3U3qgZtK2TCDwJ2XDuJ1DiokndZxEW+qM980f/OuGF/RtueiesH
-   g==;
-X-CSE-ConnectionGUID: h/ycR0UTTbulPwMeq7Tikg==
-X-CSE-MsgGUID: 2ZMr2r0RQCiCTp05WRkE7w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="20804839"
-X-IronPort-AV: E=Sophos;i="6.09,267,1716274800"; 
-   d="scan'208";a="20804839"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2024 04:25:37 -0700
-X-CSE-ConnectionGUID: uVVs95WMQuuVeX2XlWhaPA==
-X-CSE-MsgGUID: 4wC1AypiTUqIxnJYqoPfTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,267,1716274800"; 
-   d="scan'208";a="56399162"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO [10.245.246.248]) ([10.245.246.248])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2024 04:25:34 -0700
-Message-ID: <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
-Date: Tue, 6 Aug 2024 13:16:38 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdW4V5W7zz30T6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 21:17:40 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WdVz60vbwzQnTf;
+	Tue,  6 Aug 2024 19:13:06 +0800 (CST)
+Received: from kwepemi100008.china.huawei.com (unknown [7.221.188.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id B5258180AE3;
+	Tue,  6 Aug 2024 19:17:31 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemi100008.china.huawei.com
+ (7.221.188.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 6 Aug
+ 2024 19:17:31 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <dennis@kernel.org>, <tj@kernel.org>, <cl@linux.com>,
+	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
+	<naveen@kernel.org>, <linux-mm@kvack.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH -next] powerpc: Fix a config comment typo in asm/percpu.h
+Date: Tue, 6 Aug 2024 19:23:45 +0800
+Message-ID: <20240806112345.2387969-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec
- support
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, perex@perex.cz,
- tiwai@suse.com, alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, nicoleotsuka@gmail.com, lgirdwood@gmail.com,
- broonie@kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
- <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com>
-Content-Language: en-US
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemi100008.china.huawei.com (7.221.188.57)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,87 +52,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: ruanjinjie@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+commit 0db880fc865f ("powerpc: Avoid nmi_enter/nmi_exit in real mode
+interrupt.") has a config comment typo, fix it.
 
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+---
+ arch/powerpc/include/asm/percpu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 8/6/24 12:26, Shengjiu Wang wrote:
-> Add Sample Rate Converter(SRC) codec support, define the output
-> format and rate for SRC.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  include/uapi/sound/compress_offload.h | 2 ++
->  include/uapi/sound/compress_params.h  | 9 ++++++++-
->  2 files changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/uapi/sound/compress_offload.h b/include/uapi/sound/compress_offload.h
-> index 98772b0cbcb7..8b2b72f94e26 100644
-> --- a/include/uapi/sound/compress_offload.h
-> +++ b/include/uapi/sound/compress_offload.h
-> @@ -112,10 +112,12 @@ struct snd_compr_codec_caps {
->   * end of the track
->   * @SNDRV_COMPRESS_ENCODER_DELAY: no of samples inserted by the encoder at the
->   * beginning of the track
-> + * @SNDRV_COMPRESS_SRC_RATIO_MOD: Resampling Ratio Modifier for sample rate converter
->   */
->  enum sndrv_compress_encoder {
->  	SNDRV_COMPRESS_ENCODER_PADDING = 1,
->  	SNDRV_COMPRESS_ENCODER_DELAY = 2,
-> +	SNDRV_COMPRESS_SRC_RATIO_MOD = 3,
->  };
-
-this sounds wrong to me. The sample rate converter is not an "encoder",
-and the properties for padding/delay are totally specific to an encoder
-function.
-
-The other point is that I am not sure how standard this ratio_mod
-parameter is. This could be totally specific to a specific
-implementation, and another ASRC might have different parameters.
-
->  
->  /**
-> diff --git a/include/uapi/sound/compress_params.h b/include/uapi/sound/compress_params.h
-> index ddc77322d571..0843773ea6b4 100644
-> --- a/include/uapi/sound/compress_params.h
-> +++ b/include/uapi/sound/compress_params.h
-> @@ -43,7 +43,8 @@
->  #define SND_AUDIOCODEC_BESPOKE               ((__u32) 0x0000000E)
->  #define SND_AUDIOCODEC_ALAC                  ((__u32) 0x0000000F)
->  #define SND_AUDIOCODEC_APE                   ((__u32) 0x00000010)
-> -#define SND_AUDIOCODEC_MAX                   SND_AUDIOCODEC_APE
-> +#define SND_AUDIOCODEC_SRC                   ((__u32) 0x00000011)
-> +#define SND_AUDIOCODEC_MAX                   SND_AUDIOCODEC_SRC
-
-I am not sure this is wise to change such definitions?
->  
->  /*
->   * Profile and modes are listed with bit masks. This allows for a
-> @@ -324,6 +325,11 @@ struct snd_dec_ape {
->  	__u32 seek_table_present;
->  } __attribute__((packed, aligned(4)));
->  
-> +struct snd_dec_src {
-> +	__u32 format_out;
-> +	__u32 rate_out;
-> +} __attribute__((packed, aligned(4)));
-
-Again I am not sure how standard those parameters are, and even if they
-were if their representation is reusable.
-
-And the compressed API has a good split between encoders and decoders, I
-am not sure how an SRC can be classified as either.
-
->  union snd_codec_options {
->  	struct snd_enc_wma wma;
->  	struct snd_enc_vorbis vorbis;
-> @@ -334,6 +340,7 @@ union snd_codec_options {
->  	struct snd_dec_wma wma_d;
->  	struct snd_dec_alac alac_d;
->  	struct snd_dec_ape ape_d;
-> +	struct snd_dec_src src;
->  } __attribute__((packed, aligned(4)));
->  
->  /** struct snd_codec_desc - description of codec capabilities
+diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
+index 634970ce13c6..c836b16ce30d 100644
+--- a/arch/powerpc/include/asm/percpu.h
++++ b/arch/powerpc/include/asm/percpu.h
+@@ -23,7 +23,7 @@ DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
+ 		(static_key_enabled(&__percpu_first_chunk_is_paged.key))
+ #else
+ #define percpu_first_chunk_is_paged	false
+-#endif /* CONFIG_PPC64 && CONFIG_SMP */
++#endif /* CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK && CONFIG_SMP */
+ 
+ #include <asm-generic/percpu.h>
+ 
+-- 
+2.34.1
 
