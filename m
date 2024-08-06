@@ -2,71 +2,141 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DBA94945C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 17:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1F9949573
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 18:22:42 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Di4rrBHM;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WCcZIIvu;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdcSC1LdJz3ck2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 01:20:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WddrJ1KBTz3d2S
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 02:22:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Di4rrBHM;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=WCcZIIvu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3az-yzgykdiy2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::3; helo=du2pr03cu002.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazlp170120003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdcRW3JZtz3bVG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 01:19:34 +1000 (AEST)
-Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-1fc47634e3dso6913865ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2024 08:19:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722957572; x=1723562372; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zfDlFqosrXLKfrNosA2JBe6CUch6c/VqYqOk4CYX594=;
-        b=Di4rrBHMyo0lJe+Wmi/obarekVo6VmKKejaxPVtlKmu22PjJbWYbL6hLIYZ27sxIVn
-         gPeIFnS+bVvUMxj/8f69aB2TEY5gNMbGvoIAPBABLflQu3IgATTAX2ku0bw8lS05m2oU
-         Ls/lBTLDN9y+kkWn0V7Gq+LBLkxrWSvBWvGtKlfyGf+qSr6K0dG7PcJodpOtKFYfqdSf
-         95JXFpTiioPEb6SMlI1Nq5JGDXThfl3RDsaSeGMczWOZicIcgZhlteG2st8gDyJ2gdsP
-         R1ccDQIJFweyytknwJ/6Gt7XFnEYzRf8bIakqtYn/Lvc80YhvyOUmEKQDKgEHVNu3b25
-         NTng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722957572; x=1723562372;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zfDlFqosrXLKfrNosA2JBe6CUch6c/VqYqOk4CYX594=;
-        b=pTgAQXmpsFuhB1YGlwYpjidimww7Cz0t9qiuB7o9c+UN7NFuR9ZzmWg3W8TOUCbyTQ
-         nb9BnCbCg9czKAK/DZKpIIFXoZRlfUxXT0l499oILmQ6FeNytqGMGDW9qJVg7U2Q+8Io
-         abhj0WS9tg+NL02yjUC/VNvVzCXd1o/Fx1lGXR3jnZkHiaUDdvzyrGHQF6KsafzLL56Z
-         0asQNfqzNZrQ5IS6MKYPCFQIt2uqlHyyGTGRpKac31VRzM96WYL1YPdGl1cURo7udLLA
-         cz36Kctb5+aFFuESMKnV0ToPbR1VXQoJchFM7+lA7l/x19sy91pTXeDntBsYMr3BZTrH
-         Zsxw==
-X-Forwarded-Encrypted: i=1; AJvYcCWggrV4BMCo6XBX43oK8WkGsnGVrwDftrulVDcI3fje4kCVIhWXOLp7HtSomBKfLrOpEVDGl/jaIFALHVBH7zRlrhm83QvqYHo6EJ90LA==
-X-Gm-Message-State: AOJu0Yzx6HMY4I78zCjNHlfhzL7HpJiahgP9XClBExGzTgIbDprSpnIk
-	9luCLwnhxXX+inz5qGoSuqwFLJR6r1xKQNSGuC5G5enajZ6hqHfyqc/UqM22PtWc6tnAyIRe7Wc
-	SQg==
-X-Google-Smtp-Source: AGHT+IG+kq4xSCmsszhC87T6ezpGfclhL8SLo9v6dzemvAwTfI9EBqVt37Vs+G2GK8dBxj5hzSimY+F6XI8=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:e743:b0:1fb:54d9:ebb3 with SMTP id
- d9443c01a7336-1ff57309939mr9499665ad.6.1722957571476; Tue, 06 Aug 2024
- 08:19:31 -0700 (PDT)
-Date: Tue, 6 Aug 2024 08:19:29 -0700
-In-Reply-To: <86ikwe2fph.wl-maz@kernel.org>
-Mime-Version: 1.0
-References: <20240726235234.228822-1-seanjc@google.com> <20240726235234.228822-55-seanjc@google.com>
- <ZrFfgzRbiqT-Zi2O@linux.dev> <ZrFfvjy_-Tyx4xUV@linux.dev> <86ikwe2fph.wl-maz@kernel.org>
-Message-ID: <ZrI_AdLhWZqNKC4z@google.com>
-Subject: Re: [PATCH v12 54/84] KVM: arm64: Mark "struct page" pfns
- accessed/dirty before dropping mmu_lock
-From: Sean Christopherson <seanjc@google.com>
-To: Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wddqc47P3z3bnL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 02:22:02 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g7vhVIb1c75OFfrs+FY1Nkh8lS6fSDbP6Eh/cvxK0uV0294nn6s61xUYqUS+FR5UR5+D1gHLdm3JzYhr6ueldZ86y7RaWAf1q1WIWyZE0n6jwm4DwAAU8eNcnfCHf0u8heEkBdZFFYC4b/gJN4UUj5WpePLac0+PuumivGrr7nDG8n6HjVig3D1I1Cfzbp+9OQvsK1BvEmFsZfIYLU84iiLGsNH+6KE7BkPgfcPmpJwWftZQxbuLPxJAQPtsgUOH4K1kBdqVOCacEHxozzaFNe/8aK95NybcthfcfVyAwzJKnTuYIGIN5+SlzZqSz26wa13M0Xv4Rw8BdB22pLI5vQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bh/jRr6XPk7fEXSh4cPu9bRDHeMBoKS+Zru6h4bY8xA=;
+ b=iuZNRQy+Plh3rqaGdueLRM0/MHo1kwTaDhnm6c8+UYHZC+BUQhUCrj8pDs5zHStVeeMC/o116tqUXQEaigSWjP9xmIhcm/bAlwJH4gjyFVnj0Twy7N5bliPgII1I1ra3pL7uZpb24Rh3eDdTwzdV5u3q3gOZju1RlOhjbXO1vRLclQvK+wGpFCT76QKBIHPBMuTwici4QQz8tFqLy+ue6YLxSRm0iLTtQnPkWdeEuvjITDQ7DBL97W/UiC2QGWS0TGzjJrkskABy5gurJPqYC66InesY/U6X7ji+699re7PXg0WniTl1ErmOdrbbw8b1r0/iQmggWqtoeQlcvwTe+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bh/jRr6XPk7fEXSh4cPu9bRDHeMBoKS+Zru6h4bY8xA=;
+ b=WCcZIIvu4IsfjsyvBrfhYKLUbQyyTwIOBupkiEM72SRiOTSulWa7Rrz2HJ2PpgMAlCu6GoOPGRcQwSb3PxDUAL1x8vfjT+WVa3+JTuSs4OzLFjk2fCRhysL6HWU2Mk6GYHT/F/Aes1T/2SZYlDyJ/pk8MEYfUKld3mCfGYyb95o76mgIQqLheQMy6syXdlXJ2AoBg31bplxg5E2aokP0vV+LHl8VsmNQ087CSUEb79lkJQTKd3xv9AylHtL4OZ9jFoDvz44OQgR8/NHFrQ4B8/uLn9Gx3sutazPOoE6DlZZYAn1mTUQgOzZG/WcgbupTtH7lO7IiJQQ539SQvPlf8A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU0PR04MB9465.eurprd04.prod.outlook.com (2603:10a6:10:359::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26; Tue, 6 Aug
+ 2024 16:21:37 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.7828.023; Tue, 6 Aug 2024
+ 16:21:37 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:FREESCALE SOC DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2 1/1] dt-bindings: soc: fsl: add missed compatible string fsl,ls*-isc
+Date: Tue,  6 Aug 2024 12:21:21 -0400
+Message-Id: <20240806162121.2996442-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR11CA0105.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::46) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU0PR04MB9465:EE_
+X-MS-Office365-Filtering-Correlation-Id: 10240a6a-9a2a-4184-58d3-08dcb633d8ab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?0OqEWAJxF7nBvu1D92uUXZqq//j1xGfgVgJtVxBOFJLD4qqRsdGEvRGt52jD?=
+ =?us-ascii?Q?mvPY+HujDsaCvJOoao4y1OCLm376zSep50YYyZCNbHIHEXlMItYbzjgFERYh?=
+ =?us-ascii?Q?kIaZermjEGBDGKvyOjQFKGwZ++znQPae/FsGCM2g5qVIAjYpNBmfnX4Iytpq?=
+ =?us-ascii?Q?oD6ZzAISoZQTyBwrVxzOCkgnb69iNbsJgUpPPDITAwzRwykEZfTisf0HKuDt?=
+ =?us-ascii?Q?WXDyOiW24jXZ2YvxvljIBdhuDdWgWjqXYs4qEADYkd1v508tMkmkRe92DIk+?=
+ =?us-ascii?Q?BsSoxEwjOA+8vXqT+DQh/DnlBVsKm0FcTKjV89t91W7sbzk9VjYQiMn4TPzk?=
+ =?us-ascii?Q?byTEmuOIk3kJ2vkArimeD3SDaM+JSkSydSFmi8gAa1wmAJx+jnNAwXf8BXsU?=
+ =?us-ascii?Q?J4wAK1OFjSJLgQ3YTcNw96XHmWFyiBoxk/m3ZxY4SZARFs97ilIKqS/bJifZ?=
+ =?us-ascii?Q?jEQPqBnzR5S/VD3QkXaHj/uoJXr/B22EE3Thcb1YsLoYVp1yP6yOTWSACBtj?=
+ =?us-ascii?Q?m6QpCDfJHJZChvoEjnVMhgMwNuchhFpBHvKuO+ZQYteaiJnZvZskECu1iLAF?=
+ =?us-ascii?Q?o4IKZ+DOC1uVg4sOC7td9odKg3lngsWSosqI/+XH/NbbKt9uOZHGf9Cm2lHc?=
+ =?us-ascii?Q?BoVqo3x48RDQY65FcCdXFpvT8GY/uBSawF7T1zr0pP5hhVGvWrhb0VZVdB7W?=
+ =?us-ascii?Q?tA7ponrTMERiR3m4Mj9RFFP/soP8vwkHkRuHtEsD5ts6L3dDSQr/QaVVe5ny?=
+ =?us-ascii?Q?W2qBcQWXbGtkxukQH+Kc2vclrS4j4b/C1j2O2q7yfWE7HobunoAS0iJy0P60?=
+ =?us-ascii?Q?rSL+t2SD9LJQgj81Avtciog68vOfjbAhHGUq8r52GFYsUsVjM/jFrp6e+diJ?=
+ =?us-ascii?Q?Tf4nYTTQ6h2ptJ/x/bty0OsBWMFgQYd+fFzMqrwOeezpHVvMyn5nTVlBvCYa?=
+ =?us-ascii?Q?/W7Q17Q3mZRXToFHRwcJhGPL6s++Z2FCI515k5bRJXXAh2WmUSnTiGYfsbnE?=
+ =?us-ascii?Q?R17uFfkdbQAVi88GmF8aVeNxN7RR8r6iRn1NXok+8zRFvTnjKrghn09Lh2FU?=
+ =?us-ascii?Q?w9Vd4H45O1btyRltBFuXHDkw4X1eLPOjvJtKr5YIgB+BuVtIcVL+3PYFRoAe?=
+ =?us-ascii?Q?WGgALjU7qfeJpSLG9h8nMrwwyPc/KLpNVMsI5c8vjcE3fnu+2HOW8q9OYXj7?=
+ =?us-ascii?Q?D1cIf3LCwrYbvKhCHaKySsL1VfK1NfIfGUd9KnfDSv0ptx+13Ftf9BYUZy0E?=
+ =?us-ascii?Q?mHZH3j2j09lUVudOY42kBzs2wV9cZS7Bja1RxYUoNS8lAcy3euestDexai/8?=
+ =?us-ascii?Q?oq/G4R2tvohwwrGOQTTGHsjngwMjoJL/T7JFj619zmUfHmT13l9PDdjFdE1a?=
+ =?us-ascii?Q?Hw3DO1YLos+um7FsimXNHxh0R/nNVXRR/DMdePadGDWFsef7+Q=3D=3D?=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?jUEmK/jCTzTa/HqMB0q3KftzV7BGwAfsdshiqnCc7BgDIjP2vOmcYl09aMyC?=
+ =?us-ascii?Q?mjSsBdhs9NuFRcsQyZ+YxaGjDjx0p1vS5+C7f98DX6CSxmeIyyUw2cCDA7/V?=
+ =?us-ascii?Q?wibjs8kKpoUlKfVm1AOH+2jxmDFQy8GDKENi3c812vd54zU5FjyUSzmru131?=
+ =?us-ascii?Q?NalkA0Dd4DtMFrO/5adPymHwm5oi8BpEQUQkgtpGAC2sgQfF3Y824FPDVzPY?=
+ =?us-ascii?Q?7n2cDVUnSnzIYy4yVW1Xil90A/X74oUCa1XfQCuA8/Ao0e6ytXvdVT+PFYfz?=
+ =?us-ascii?Q?h8WhdkF+uFxyhKtmv5OtEwVAQBZYjGjkD4GNTazMnV8F/K4OLeF3yS84z4A7?=
+ =?us-ascii?Q?07YOSGuus0BAhYNmYSUvS6gbB1nYg/NciaVNydnN2SW75YDH0FH50ZAZELUt?=
+ =?us-ascii?Q?gn/7NjQcUxFlvEt4uEL2N2g6/A6Wsna1lBZOAoMqdyaPMwo4Z7O3mv0gMoqI?=
+ =?us-ascii?Q?d6o8B1/V1eQyr1WMPnZze5wZORgWccMqgSkUzh6FMmYx8G4wUfmFcElSBqcX?=
+ =?us-ascii?Q?xa5QDzUj+wXraN+MphwLGnTPhzEU7xhntJk7e/Vx1Tyx0glWj6HJNlsyvdDj?=
+ =?us-ascii?Q?VdphUeUdsawNWYBBgINP8PTPELYG8FbTTso/y6lKFpKiiwi+HG1fVSCbbMPK?=
+ =?us-ascii?Q?Q0FWxj6K8kfZcmEziH/F2kAKpQVB1zfRXKAHDoiG8V/7WZNYVpz1r1dWlyR6?=
+ =?us-ascii?Q?xxq+nWrUv5sAUQkH+FYN0VrfvsQpLN98pUxuIdPokBxx7eHi3lrtEWTjfTQK?=
+ =?us-ascii?Q?f0l7Ju4RNss4BQSmYZ87rfprlPYL7bT37ULBpDvGZXQl3pvHyY05vVQqJJAZ?=
+ =?us-ascii?Q?vwleZfr5f9SIY4QHxZmf2WGE721U8ebRQ3ISz6r6vkdhap4t6nqSVkMQQj9R?=
+ =?us-ascii?Q?jQmV1irERcs9eyiskLit1TJfUZbB8xgqoSG8yaOJpg5EtKPxW8QD9rjpOuMs?=
+ =?us-ascii?Q?hh1Ipqe9vCqQfyO/WpmOllJoxUL2DJRWyqAlI/ioYgcfyv8jurgvm3VytPwI?=
+ =?us-ascii?Q?PeBtBSH0fCsVbMlEK/rkK7k+IRqdPGquuHDW/3sQ+u9+RvO9S920sl3ZX5vn?=
+ =?us-ascii?Q?+dzCcVXc75GB4j4la0hNVjnqgG3drhU/stDhGyDMU2gHg15Mx6il+gJvP1G+?=
+ =?us-ascii?Q?3UURRGIRyi6dGXpftUzJowMpdpeCjpHg33hRYUEP7O5jA2HAGuMSG4L5JyF/?=
+ =?us-ascii?Q?VwtqRN9Z9n7XG2LVQhmN15+sutsr6CgVrR1ZNy+iqfm7MwpbCfyaWWcE+lOu?=
+ =?us-ascii?Q?dVYrEzQss05F/Ea3F7HY235NlFTCI2gJx2c0JunvvjkO/zVPOGJzriyyahHI?=
+ =?us-ascii?Q?nROIwoFR+KfgSdapO9xwATr8YJ4WZ1fh5NlwNLTnaN6a/9IwpURsYlweNhOf?=
+ =?us-ascii?Q?F2gWG6Ailh01Y3ap/9idUcCZglrAU3vVGmmYDMj3r5ZURMu4FuVe5bLXABPQ?=
+ =?us-ascii?Q?EtgS0Mnq8z2s9a/2VWh6UonN0i0Unet9z3nMkH+OcX7vDlNIIQCooxiwpOQK?=
+ =?us-ascii?Q?RVKkSCi3p7YAqqx1Mjna+QAFiu4w+/IJ5BMk0Ze8gPzj8NDdhGSsfdUvciOy?=
+ =?us-ascii?Q?DjO7Ob2amhLtF1AO90/Sx4I53Cp9ToEugqa1Qj2v?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10240a6a-9a2a-4184-58d3-08dcb633d8ab
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2024 16:21:37.7005
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SQki0XKjC9bSuOeu4a1cMbAevIM1zxn3pd7XSBfon31WzsUn26yf+mDs3S0uGH4n8jottJeBt7lFAkpcnBEOQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9465
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,65 +148,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Fuad Tabba <tabba@google.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: imx@lists.linux.dev
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Aug 06, 2024, Marc Zyngier wrote:
-> On Tue, 06 Aug 2024 00:26:54 +0100,
-> Oliver Upton <oliver.upton@linux.dev> wrote:
-> > 
-> > On Mon, Aug 05, 2024 at 11:26:03PM +0000, Oliver Upton wrote:
-> > > [+cc Fuad]
-> > 
-> > Take 2!
-> > 
-> > > Fuad, you mentioned in commit 9c30fc615daa ("KVM: arm64: Move setting
-> > > the page as dirty out of the critical section") that restructuring
-> > > around the MMU lock was helpful for reuse (presumably for pKVM), but I
-> > > lack the context there.
-> > > 
-> > > On Fri, Jul 26, 2024 at 04:52:03PM -0700, Sean Christopherson wrote:
-> > > > Mark pages/folios accessed+dirty prior to dropping mmu_lock, as marking a
-> > > > page/folio dirty after it has been written back can make some filesystems
-> > > > unhappy (backing KVM guests will such filesystem files is uncommon, and
-> > > 
-> > > typo: s/will/with/
-> > > 
-> > > > the race is minuscule, hence the lack of complaints).  See the link below
-> > > > for details.
-> 
-> Should we consider reverting 9c30fc615daa then?
+Add compatible string, fsl,ls1088a-isc, fsl,ls2080a-isc, fsl,lx2160a-isc.
+Fix the below warning:
+arch/arm64/boot/dts/freescale/fsl-ls2080a-qds.dtb: /soc/syscon@1f70000: failed to match any schema with compatible: ['fsl,ls2080a-isc', 'syscon']
 
-Aha!  After thinking through things more, I don't think a revert is necessary.
-I _think_ the worst case scenario is that KVM would trigger this WARN in
-filemap_unaccount_folio():
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change from v1 to v2
+- fixed typo lx2046a with lx2160a
+---
+ .../devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml       | 3 +++
+ 1 file changed, 3 insertions(+)
 
-	/*
-	 * At this point folio must be either written or cleaned by
-	 * truncate.  Dirty folio here signals a bug and loss of
-	 * unwritten data - on ordinary filesystems.
-	 *
-	 * But it's harmless on in-memory filesystems like tmpfs; and can
-	 * occur when a driver which did get_user_pages() sets page dirty
-	 * before putting it, while the inode is being finally evicted.
-	 *
-	 * Below fixes dirty accounting after removing the folio entirely
-	 * but leaves the dirty flag set: it has no effect for truncated
-	 * folio and anyway will be cleared before returning folio to
-	 * buddy allocator.
-	 */
-	if (WARN_ON_ONCE(folio_test_dirty(folio) &&
-			 mapping_can_writeback(mapping)))
-		folio_account_cleaned(folio, inode_to_wb(mapping->host));
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
+index 2a456c8af992e..2958ef45b3e9b 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
+@@ -23,6 +23,9 @@ properties:
+           - fsl,ls1028a-scfg
+           - fsl,ls1043a-scfg
+           - fsl,ls1046a-scfg
++          - fsl,ls1088a-isc
++          - fsl,ls2080a-isc
++          - fsl,lx2160a-isc
+       - const: syscon
+ 
+   reg:
+-- 
+2.34.1
 
-KVM won't actually write memory because the stage-2 mappings are protected by the
-mmu_notifier, i.e. there is no risk of loss of data, even if the VM were backed
-by memory that needs writeback.
-
-And FWIW, given that multiple other KVM architectures mark folios dirty outside
-of mmu_notifier protection and have never tripped over this, I think it's highly
-unlikely the WARN will ever be triggered by a sane virtualization setup.
-
-I can add something to that effect to the changelog, e.g. to document that this
-isn't super urgent.  
