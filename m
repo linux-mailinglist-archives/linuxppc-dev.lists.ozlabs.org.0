@@ -2,51 +2,124 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3060949A37
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 23:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28977949B2F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 00:15:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gZQKUccB;
+	dkim=pass (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=v/mkeimx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdmjB4yrcz3d8t
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 07:31:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wdngb0NZjz3cS0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 08:15:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=soleen.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gZQKUccB;
+	dkim=pass (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=v/mkeimx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=soleen.com (client-ip=2607:f8b0:4864:20::f32; helo=mail-qv1-xf32.google.com; envelope-from=pasha.tatashin@soleen.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdmhX0mddz3cR3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 07:31:24 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 12B3860F02;
-	Tue,  6 Aug 2024 21:31:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F69EC32786;
-	Tue,  6 Aug 2024 21:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722979881;
-	bh=VXxnYAXbd0tH8wNBXyr5xoQiqrp06Fe5NipXt7zMffg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=gZQKUccBftAz4FMArWnleyNoM4GvWjaFRRteMBtBaZdXEPS8nK/E0Zo6S1m8GfSFY
-	 ZXyTU62WJ1wPJe2qbjGfMw4GCHQXgYHhR78nu90h3jIANHnDG8Nanu1LyaAEjLg0e2
-	 Cotomg9CDKJXsNc4AASSPqxINhh5QdXgTSeHHiOAC0xzV1IsHhLAtDuaSZB2LGJdVs
-	 otiUHmW3bmOlWsi8uiH/oiVQN4JBrUPcrdEqqFkE8ZQpW3eYldD9ZQp4tcF21wAjAg
-	 Gy9CSTb2NZGcMz8FDh4fC9YWfRYz7OSgFZO32uRwAPetmTmrCq5I4JjMoo29FQt2fH
-	 0Kkc1szLgYw5Q==
-Date: Tue, 6 Aug 2024 16:31:18 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Subject: Re: [PATCH 2/2] ACPI: extlog: Trace CPER PCI Express Error Section
-Message-ID: <20240806213118.GA78822@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wdnft69Yvz30T8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 08:15:01 +1000 (AEST)
+Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-6b78c980981so6076066d6.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2024 15:15:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1722982498; x=1723587298; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DpwrGsGSvnHFdGVf1tlm4Wyo1L4IUT4bE3I4p9OVTOM=;
+        b=v/mkeimxZsjyD7uD5m8Un1S4kdi9LTA1BIJybiU7je+JPuIwBncP1NZBQ3dWDhLLcq
+         5IWv7QIYoOy1n7vC/TsKK39/ZjVsMYs6oB05r8H9AL8Lq6Ub4PqcDNAWqewlnWibkSNe
+         1usOxJ2/7rgbK7WSPAmvF73xn3Sb0XX+GqblysgUNRpP9cyRQi3bLRiYnPGJtKJnOQNr
+         zeNCkyeGBtITucvULF2jHroUzTuXYjHKZarMHAFrhmqYG8JH4scTSv758KRFOq/7Ikf3
+         e/6FwTH0GpcxDMdBYhTX0hZZTDu8X3WjGvpJOm8YJTVvtiBJJjJToXyCNoELjJ311or+
+         Vrag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722982498; x=1723587298;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DpwrGsGSvnHFdGVf1tlm4Wyo1L4IUT4bE3I4p9OVTOM=;
+        b=UNLJiQYEv8R5tKpGzyeW8XF+CyQi6cJXOoAJupgM27dEcR66H22crUobG/ecI1Uzhv
+         +3o2PCkfVc1rf3SN1uWN+Q2JCLuhctKOBATacmU5saAmXtEZc9vVNPkqvRs2yBdufE1f
+         WtRXJm59hNBgsaSFFheNnHCwdBzyqJ3F1ED+k/uSvFjmRyjDs7y0kOzPUozSblS+Dil6
+         Grhn2sXucYbRHgkOt4ZpKuq3Uu6CyghK+82PrYXY1iZeyUjuvhi5ElA2sG8VYpCnXGyC
+         aOTo+xuRzEV4HpMJIi54AlQN65VltKyEPj3oWwEuDIe+5vhL/BztiRhNnPr0E32ogVvW
+         C6vg==
+X-Forwarded-Encrypted: i=1; AJvYcCUiknqEywyxsobeHoCL0uTuNqW/r1HPmTuitV9OVE7DBEbZD9goVbilz8/lHTwBpp1yxZnBM0jahiCtnAutV2/w5esKiCR5KLp/mjmUCQ==
+X-Gm-Message-State: AOJu0YwFXGiQJ/c123q5OOM8LtllGJzX1tU9T398oa6+8c/l254PpJ3x
+	obtdUVseOm9zfgQdHU2ApMWOM12zAPB4IKsVh17dCW2YWWs/RBCrNTRBT3dXgxc=
+X-Google-Smtp-Source: AGHT+IGvHhFLKBv+CzG3kEzbceETNjAkvAWmYHLIEUsuY6FkehJnB//a5YH4EciwSMoOH9WpYcIhcQ==
+X-Received: by 2002:a05:6214:5990:b0:6b0:86f9:64ad with SMTP id 6a1803df08f44-6bb98493eb3mr259732626d6.52.1722982497815;
+        Tue, 06 Aug 2024 15:14:57 -0700 (PDT)
+Received: from soleen.c.googlers.com.com (118.239.150.34.bc.googleusercontent.com. [34.150.239.118])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb9c8778e1sm50584506d6.128.2024.08.06.15.14.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Aug 2024 15:14:57 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: agordeev@linux.ibm.com,
+	akpm@linux-foundation.org,
+	alexghiti@rivosinc.com,
+	aou@eecs.berkeley.edu,
+	ardb@kernel.org,
+	arnd@arndb.de,
+	bhe@redhat.com,
+	bjorn@rivosinc.com,
+	borntraeger@linux.ibm.com,
+	bp@alien8.de,
+	catalin.marinas@arm.com,
+	chenhuacai@kernel.org,
+	chenjiahao16@huawei.com,
+	christophe.leroy@csgroup.eu,
+	dave.hansen@linux.intel.com,
+	david@redhat.com,
+	dawei.li@shingroup.cn,
+	gerald.schaefer@linux.ibm.com,
+	gor@linux.ibm.com,
+	hca@linux.ibm.com,
+	hpa@zytor.com,
+	kent.overstreet@linux.dev,
+	kernel@xen0n.name,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	luto@kernel.org,
+	maobibo@loongson.cn,
+	mark.rutland@arm.com,
+	mcgrof@kernel.org,
+	mingo@redhat.com,
+	mpe@ellerman.id.au,
+	muchun.song@linux.dev,
+	namcao@linutronix.de,
+	naveen@kernel.org,
+	npiggin@gmail.com,
+	osalvador@suse.de,
+	palmer@dabbelt.com,
+	pasha.tatashin@soleen.com,
+	paul.walmsley@sifive.com,
+	peterz@infradead.org,
+	philmd@linaro.org,
+	rdunlap@infradead.org,
+	rientjes@google.com,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	souravpanda@google.com,
+	svens@linux.ibm.com,
+	tglx@linutronix.de,
+	tzimmermann@suse.de,
+	will@kernel.org,
+	x86@kernel.org
+Subject: [PATCH 1/2] mm: update the memmap stat before page is freed
+Date: Tue,  6 Aug 2024 22:14:53 +0000
+Message-ID: <20240806221454.1971755-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.46.0.76.ge559c4bf1a-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240527144356.246220-3-fabio.m.de.francesco@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,180 +131,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-acpi@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org, Len Brown <lenb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 27, 2024 at 04:43:41PM +0200, Fabio M. De Francesco wrote:
-> Currently, extlog_print() (ELOG) only reports CPER PCIe section (UEFI
-> v2.10, Appendix N.2.7) to the kernel log via print_extlog_rcd(). Instead,
-> the similar ghes_do_proc() (GHES) prints to kernel log and calls
-> pci_print_aer() to report via the ftrace infrastructure.
-> 
-> Add support to report the CPER PCIe Error section also via the ftrace
-> infrastructure by calling pci_print_aer() to make ELOG act consistently
-> with GHES.
-> 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
-> ---
->  drivers/acpi/acpi_extlog.c | 30 ++++++++++++++++++++++++++++++
->  drivers/pci/pcie/aer.c     |  2 +-
->  include/linux/aer.h        | 13 +++++++++++--
->  3 files changed, 42 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index e025ae390737..007ce96f8672 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -131,6 +131,32 @@ static int print_extlog_rcd(const char *pfx,
->  	return 1;
->  }
->  
-> +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
-> +			      int severity)
-> +{
-> +	struct aer_capability_regs *aer;
-> +	struct pci_dev *pdev;
-> +	unsigned int devfn;
-> +	unsigned int bus;
-> +	int aer_severity;
-> +	int domain;
-> +
-> +	if (pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID &&
-> +	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
-> +		aer_severity = cper_severity_to_aer(severity);
-> +		aer = (struct aer_capability_regs *)pcie_err->aer_info;
-> +		domain = pcie_err->device_id.segment;
-> +		bus = pcie_err->device_id.bus;
-> +		devfn = PCI_DEVFN(pcie_err->device_id.device,
-> +				  pcie_err->device_id.function);
-> +		pdev = pci_get_domain_bus_and_slot(domain, bus, devfn);
-> +		if (!pdev)
-> +			return;
-> +		pci_print_aer(pdev, aer_severity, aer);
-> +		pci_dev_put(pdev);
-> +	}
+It is more logical to update the stat before the page is freed, to avoid
+use after free scenarios.
 
-I'm 100% in favor of making error reporting work and look the same
-across GHES and ELOG.  But I do have to gripe a bit...
+Fixes: 15995a352474 ("mm: report per-page metadata information")
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+ mm/hugetlb_vmemmap.c | 4 ++--
+ mm/page_ext.c        | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-It's already unfortunate that GHES and the native AER handling are
-separate paths that lead to the same place (__aer_print_error()).
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index 829112b0a914..fa83a7b38199 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -185,11 +185,11 @@ static int vmemmap_remap_range(unsigned long start, unsigned long end,
+ static inline void free_vmemmap_page(struct page *page)
+ {
+ 	if (PageReserved(page)) {
+-		free_bootmem_page(page);
+ 		mod_node_page_state(page_pgdat(page), NR_MEMMAP_BOOT, -1);
++		free_bootmem_page(page);
+ 	} else {
+-		__free_page(page);
+ 		mod_node_page_state(page_pgdat(page), NR_MEMMAP, -1);
++		__free_page(page);
+ 	}
+ }
+ 
+diff --git a/mm/page_ext.c b/mm/page_ext.c
+index c191e490c401..962d45eee1f8 100644
+--- a/mm/page_ext.c
++++ b/mm/page_ext.c
+@@ -330,18 +330,18 @@ static void free_page_ext(void *addr)
+ 	if (is_vmalloc_addr(addr)) {
+ 		page = vmalloc_to_page(addr);
+ 		pgdat = page_pgdat(page);
++		mod_node_page_state(pgdat, NR_MEMMAP,
++				    -1L * (DIV_ROUND_UP(table_size, PAGE_SIZE)));
+ 		vfree(addr);
+ 	} else {
+ 		page = virt_to_page(addr);
+ 		pgdat = page_pgdat(page);
++		mod_node_page_state(pgdat, NR_MEMMAP,
++				    -1L * (DIV_ROUND_UP(table_size, PAGE_SIZE)));
+ 		BUG_ON(PageReserved(page));
+ 		kmemleak_free(addr);
+ 		free_pages_exact(addr, table_size);
+ 	}
+-
+-	mod_node_page_state(pgdat, NR_MEMMAP,
+-			    -1L * (DIV_ROUND_UP(table_size, PAGE_SIZE)));
+-
+ }
+ 
+ static void __free_page_ext(unsigned long pfn)
+-- 
+2.46.0.76.ge559c4bf1a-goog
 
-I'm sorry that we need to add a third path that again does
-fundamentally the same thing.  The fact that they're separate means
-all the design, reviewing, testing, and maintenance effort is diluted,
-and error handling always gets too little love in the first place.
-I think this is a recipe for confusion.
-
-  ghes_do_proc                                        # GHES
-    apei_estatus_for_each_section
-      ...
-      if (guid_equal(sec_type, &CPER_SEC_PCIE))
-        ghes_handle_aer
-          cper_severity_to_aer
-          aer_recover_queue
-            kfifo_in_spinlocked(&aer_recover_ring)    # add to queue
-          aer_recover_work_func                       # another thread
-            kfifo_get(&aer_recover_ring)              # remove from queue
-            pci_print_aer
-              __aer_print_error         <---
-
-  aer_irq                                             # native AER
-    kfifo_put(&aer_fifo)                              # add to queue
-  aer_isr                                             # another thread
-    kfifo_get(&aer_fifo)                              # remove from queue
-    ...
-    aer_isr_one_error
-      aer_process_err_devices
-        aer_print_error
-          __aer_print_error             <---
-
-  extlog_print                                        # extlog (x86 only)
-    apei_estatus_for_each_section
-      ...
-      if (guid_equal(sec_type, &CPER_SEC_PCIE))
-        extlog_print_pcie
-          cper_severity_to_aer
-          pci_get_domain_bus_and_slot
-          pci_print_aer
-            __aer_print_error           <---
-
-And we also have CXL paths that lead to __aer_print_error(), although
-it seems like they at least start in the native AER (and maybe GHES?)
-path and branch out somewhere.  My head is spinning.
-
-Do I *object* to this patch?  No, not really; it's a trivial change in
-drivers/pci/, and Rafael can add my
-
-  Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-
-as needed.  But I am afraid we're making ourselves a maintenance
-headache.
-
-> +}
-> +
->  static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			void *data)
->  {
-> @@ -179,6 +205,10 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			if (gdata->error_data_length >= sizeof(*mem))
->  				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
->  						       (u8)gdata->error_severity);
-> +		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
-> +			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
-> +
-> +			extlog_print_pcie(pcie_err, gdata->error_severity);
->  		} else {
->  			void *err = acpi_hest_get_payload(gdata);
->  
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index ac6293c24976..794aa15527ba 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -801,7 +801,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
->  	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
->  			aer_severity, tlp_header_valid, &aer->header_log);
->  }
-> -EXPORT_SYMBOL_NS_GPL(pci_print_aer, CXL);
-> +EXPORT_SYMBOL_GPL(pci_print_aer);
->  
->  /**
->   * add_error_device - list device to be handled
-> diff --git a/include/linux/aer.h b/include/linux/aer.h
-> index 4b97f38f3fcf..fbc82206045c 100644
-> --- a/include/linux/aer.h
-> +++ b/include/linux/aer.h
-> @@ -42,17 +42,26 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, struct pcie_tlp_log *log);
->  #if defined(CONFIG_PCIEAER)
->  int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
->  int pcie_aer_is_native(struct pci_dev *dev);
-> +void pci_print_aer(struct pci_dev *dev, int aer_severity,
-> +		   struct aer_capability_regs *aer);
->  #else
->  static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
->  {
->  	return -EINVAL;
->  }
-> +
->  static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
-> +static inline void pci_print_aer(struct pci_dev *dev, int aer_severity,
-> +				 struct aer_capability_regs *aer)
-> +{ }
->  #endif
->  
-> -void pci_print_aer(struct pci_dev *dev, int aer_severity,
-> -		    struct aer_capability_regs *aer);
-> +#if defined(CONFIG_ACPI_APEI_PCIEAER)
->  int cper_severity_to_aer(int cper_severity);
-> +#else
-> +static inline int cper_severity_to_aer(int cper_severity) { return 0; }
-> +#endif
-> +
->  void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
->  		       int severity, struct aer_capability_regs *aer_regs);
->  #endif //_AER_H_
-> -- 
-> 2.45.1
-> 
