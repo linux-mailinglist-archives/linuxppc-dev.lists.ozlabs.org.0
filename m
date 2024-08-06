@@ -1,47 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95B4948E0C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 13:46:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 436BF948F7C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 14:50:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdWjD4p7Tz3fpr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 21:46:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WdY7T1sC7z3d2S
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 22:50:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=signalogic.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=signalogic.com (client-ip=209.150.126.178; helo=hosting3.qishost.com; envelope-from=jbrower@signalogic.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 365 seconds by postgrey-1.37 at boromir; Tue, 06 Aug 2024 21:45:48 AEST
-Received: from hosting3.qishost.com (signalogic.com [209.150.126.178])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdWhr6FPXz3dV9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 21:45:48 +1000 (AEST)
-Received: from hosting3.qishost.com (localhost [IPv6:::1])
-	by hosting3.qishost.com (Postfix) with ESMTPSA id 7702F45A59;
-	Tue,  6 Aug 2024 07:39:36 -0400 (EDT)
-Authentication-Results: hosting3.qishost.com;
-        spf=pass (sender IP is ::1) smtp.mailfrom=jbrower@signalogic.com smtp.helo=hosting3.qishost.com
-Received-SPF: pass (hosting3.qishost.com: connection is authenticated)
-Received: from c-76-132-49-220.hsd1.ca.comcast.net
- (c-76-132-49-220.hsd1.ca.comcast.net [76.132.49.220]) by
- webmail.signalogic.com (Horde Framework) with HTTP; Tue, 06 Aug 2024
- 11:39:36 +0000
-Date: Tue, 06 Aug 2024 11:39:36 +0000
-Message-ID: <20240806113936.Horde.vcDWoEx08a51SUfvt56nQ2p@webmail.signalogic.com>
-From: Jeff Brower <jbrower@signalogic.com>
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec
- support
-References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
- <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com>
- <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
-In-Reply-To: <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
-User-Agent: Horde Application Framework 5
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdY745bGcz3ck2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 22:50:05 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WdY6x2Z41z9sRr;
+	Tue,  6 Aug 2024 14:50:01 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id HkUBW5cEupxE; Tue,  6 Aug 2024 14:50:01 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WdY6x1lgbz9sRk;
+	Tue,  6 Aug 2024 14:50:01 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 28F8C8B76C;
+	Tue,  6 Aug 2024 14:50:01 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id Ha8emGShSbFq; Tue,  6 Aug 2024 14:50:01 +0200 (CEST)
+Received: from [192.168.234.84] (unknown [192.168.234.84])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A6C258B763;
+	Tue,  6 Aug 2024 14:50:00 +0200 (CEST)
+Message-ID: <135289c2-78bc-4a14-ad43-6d45750af293@csgroup.eu>
+Date: Tue, 6 Aug 2024 14:50:00 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next] powerpc: Fix a config comment typo in asm/percpu.h
+To: Jinjie Ruan <ruanjinjie@huawei.com>, dennis@kernel.org, tj@kernel.org,
+ cl@linux.com, mpe@ellerman.id.au, npiggin@gmail.com, naveen@kernel.org,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20240806112345.2387969-1-ruanjinjie@huawei.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20240806112345.2387969-1-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,106 +63,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, linux-sound@vger.kernel.org, perex@perex.cz, nicoleotsuka@gmail.com, vkoul@kernel.org, broonie@kernel.org, festevam@gmail.com, shengjiu.wang@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All-
-
-"The sample rate converter is not an encoder ..."
-
-Indeed, an encoder creates a compressed bitstream from audio data  
-(typically linear PCM samples), normally for transmission of some  
-type. A sample rate converter generates audio data from audio data,  
-and is normally applied prior to an encoder because it can only accept  
-a limited range of sample rates.
-
--Jeff
-
-Quoting Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>:
-
-> On 8/6/24 12:26, Shengjiu Wang wrote:
->> Add Sample Rate Converter(SRC) codec support, define the output
->> format and rate for SRC.
->>
->> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
->> ---
->>  include/uapi/sound/compress_offload.h | 2 ++
->>  include/uapi/sound/compress_params.h  | 9 ++++++++-
->>  2 files changed, 10 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/uapi/sound/compress_offload.h  
->> b/include/uapi/sound/compress_offload.h
->> index 98772b0cbcb7..8b2b72f94e26 100644
->> --- a/include/uapi/sound/compress_offload.h
->> +++ b/include/uapi/sound/compress_offload.h
->> @@ -112,10 +112,12 @@ struct snd_compr_codec_caps {
->>   * end of the track
->>   * @SNDRV_COMPRESS_ENCODER_DELAY: no of samples inserted by the  
->> encoder at the
->>   * beginning of the track
->> + * @SNDRV_COMPRESS_SRC_RATIO_MOD: Resampling Ratio Modifier for  
->> sample rate converter
->>   */
->>  enum sndrv_compress_encoder {
->>  	SNDRV_COMPRESS_ENCODER_PADDING = 1,
->>  	SNDRV_COMPRESS_ENCODER_DELAY = 2,
->> +	SNDRV_COMPRESS_SRC_RATIO_MOD = 3,
->>  };
->
-> this sounds wrong to me. The sample rate converter is not an "encoder",
-> and the properties for padding/delay are totally specific to an encoder
-> function.
->
-> The other point is that I am not sure how standard this ratio_mod
-> parameter is. This could be totally specific to a specific
-> implementation, and another ASRC might have different parameters.
->
->>
->>  /**
->> diff --git a/include/uapi/sound/compress_params.h  
->> b/include/uapi/sound/compress_params.h
->> index ddc77322d571..0843773ea6b4 100644
->> --- a/include/uapi/sound/compress_params.h
->> +++ b/include/uapi/sound/compress_params.h
->> @@ -43,7 +43,8 @@
->>  #define SND_AUDIOCODEC_BESPOKE               ((__u32) 0x0000000E)
->>  #define SND_AUDIOCODEC_ALAC                  ((__u32) 0x0000000F)
->>  #define SND_AUDIOCODEC_APE                   ((__u32) 0x00000010)
->> -#define SND_AUDIOCODEC_MAX                   SND_AUDIOCODEC_APE
->> +#define SND_AUDIOCODEC_SRC                   ((__u32) 0x00000011)
->> +#define SND_AUDIOCODEC_MAX                   SND_AUDIOCODEC_SRC
->
-> I am not sure this is wise to change such definitions?
->>
->>  /*
->>   * Profile and modes are listed with bit masks. This allows for a
->> @@ -324,6 +325,11 @@ struct snd_dec_ape {
->>  	__u32 seek_table_present;
->>  } __attribute__((packed, aligned(4)));
->>
->> +struct snd_dec_src {
->> +	__u32 format_out;
->> +	__u32 rate_out;
->> +} __attribute__((packed, aligned(4)));
->
-> Again I am not sure how standard those parameters are, and even if they
-> were if their representation is reusable.
->
-> And the compressed API has a good split between encoders and decoders, I
-> am not sure how an SRC can be classified as either.
->
->>  union snd_codec_options {
->>  	struct snd_enc_wma wma;
->>  	struct snd_enc_vorbis vorbis;
->> @@ -334,6 +340,7 @@ union snd_codec_options {
->>  	struct snd_dec_wma wma_d;
->>  	struct snd_dec_alac alac_d;
->>  	struct snd_dec_ape ape_d;
->> +	struct snd_dec_src src;
->>  } __attribute__((packed, aligned(4)));
->>
->>  /** struct snd_codec_desc - description of codec capabilities
 
 
+Le 06/08/2024 à 13:23, Jinjie Ruan a écrit :
+> [Vous ne recevez pas souvent de courriers de ruanjinjie@huawei.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> commit 0db880fc865f ("powerpc: Avoid nmi_enter/nmi_exit in real mode
+> interrupt.") has a config comment typo, fix it.
+> 
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>   arch/powerpc/include/asm/percpu.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
+> index 634970ce13c6..c836b16ce30d 100644
+> --- a/arch/powerpc/include/asm/percpu.h
+> +++ b/arch/powerpc/include/asm/percpu.h
+> @@ -23,7 +23,7 @@ DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
+>                  (static_key_enabled(&__percpu_first_chunk_is_paged.key))
+>   #else
+>   #define percpu_first_chunk_is_paged    false
+> -#endif /* CONFIG_PPC64 && CONFIG_SMP */
+> +#endif /* CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK && CONFIG_SMP */
 
+The #if/#else/#endif section is small and doesn't nest additional 
+#ifdefs so the comment is useless and should be removed completely.
+
+Christophe
