@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED05894941F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 17:04:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FB7949427
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 17:05:35 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Q9oB3Qlm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=t2589gOr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wdc6W6CwHz3bVG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 01:04:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wdc7J01RRz3cyg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 01:05:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Q9oB3Qlm;
+	dkim=pass (2048-bit key; unprotected) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=t2589gOr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::d2e; helo=mail-io1-xd2e.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=brainfault.org (client-ip=2607:f8b0:4864:20::12e; helo=mail-il1-x12e.google.com; envelope-from=anup@brainfault.org; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wdc5p2902z2ysc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 01:04:13 +1000 (AEST)
-Received: by mail-io1-xd2e.google.com with SMTP id ca18e2360f4ac-81fd9251d99so28540039f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2024 08:04:13 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wdc5z2372z3c44
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 01:04:23 +1000 (AEST)
+Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-39728bbf949so3418255ab.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 06 Aug 2024 08:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1722956651; x=1723561451; darn=lists.ozlabs.org;
+        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1722956660; x=1723561460; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5nqpVJEa3gF+vLMgvdD8twTbWevyBd39Y3ES27W51MM=;
-        b=Q9oB3QlmapmJ14oaSYjXyjcjVpRLVxy5WfbGE2n5DxDjtUrzHZGQ5rZWVCN4vxeizk
-         OzksJK3ayEGA0a1SmTdgLqnBenI6BDct6s1Ycmlr3fN4ZM3JL7gJw5lpny864rRUskDs
-         j3ZJRhKm6cE9I3r5S6Pjnwz0791ioE1s+mUdqZNz+71qMlfklgWnACxWq8xgjVyX9cTd
-         U/OQsddvOOs95k6uUGawZ995ENoSju5OIdJtRtms2/1wj1BhS2fSf1SiesdymBgM2bEn
-         FUD4RT8ScdEaKCC0VB+k8J9Xxd9yzFRRTPR+nq207Avp+wIOV3/dyFg2Q6DpgM344b7A
-         GBeg==
+        bh=sLks5Q0iPBrgmJrvgcvS8LOwX/9jLhdRfGiAtwiNPmc=;
+        b=t2589gOroQnVsxcMPjQODenueADEzZRLEv8Jji/LIAFw9lnH3N6bJ8kTVrQ0k/V0an
+         CsaS1ZSveEz5/atEB3g9tBkDTj9QA4EMFHmVLq8Pzh+JqJ2KOoFSNeCchaqGTXX9v1wN
+         Kz1XEeV5OaDUJAgVW0Wi1c6YURVohSnFqyp5SbyML+j5Skdce6qbAmCFJSAWYtfsYxlb
+         M7BEP2bUkNUvBJKgJm0M02Vuw0a14CTrWZF2TrIag8hyaCwz0ZSKvB187iUSZLgAmfla
+         eCD6wj9O8weNBvCvmVSFtdpAQoq7OOoPsblckTKszj4iRUllvGcPiLfgjhioMpMzIYZq
+         Uozg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722956651; x=1723561451;
+        d=1e100.net; s=20230601; t=1722956660; x=1723561460;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5nqpVJEa3gF+vLMgvdD8twTbWevyBd39Y3ES27W51MM=;
-        b=Rsy0/WOsMnf5J4JAu9PRh68hGh5zaczl8oIYP0FyReYAAlqM5tG1h/sCQGYokOxirW
-         RTHjMQ3zgJeXso5U23eDS8VD34R+CsjPWUyNbKQ4h41XDy3F5LG4mWeUNJb/ymlxn+Wd
-         Zr2KDtOcwQSj4GQ4y3MHU7s0uJLtzn+gA3NF8Tj8VRhbW0Iu5DnEQJR/3VSoZ+/qIQND
-         /L7UKYV/C956OL3zifGsGQMokZ7HK/hZkmRqvQxowH6bsv0l8ZVhdTuOdhNzGbsRpg1S
-         0FVg6+E1A/yY9+j/TUyk0rseo6mrbuuefjDQWdVBSJo53Zhobi9F++rTNZMelEkaiqya
-         MSVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXl/gFlNL50R2hyeS5Lrn7AEPuReBG3RhKzkJKXCQbA4V7+XXJoFhn6VVi3Zho0d5iRFgaIBouoYy+9YMWZEOTtozLa4w6P+zW6eLAThg==
-X-Gm-Message-State: AOJu0YxNbD1oiyfnsTwnBb6MfPKp0HICmCB7EeBRL7pObpSldEK4mf6Y
-	fiBcq3K9sVLkxRssP0VU+eIjr1khQBGf6PVyUOTDW2VwAjwATkcqDsGrI39agQMKb4E6zI9g5Z1
-	P8kcdEIXeqzqTkZ0oQh7agvaZpiuYbQO8B8lqvA==
-X-Google-Smtp-Source: AGHT+IE5dkU8O3hsRzTzR3mqE211YMexCU92LD+ZH2mO65SVdE7w+UZ8Equ/sKTPvXFYaRtJg+9DX/UprpD7ulXsS18=
-X-Received: by 2002:a92:d64d:0:b0:397:d9a9:8769 with SMTP id
- e9e14a558f8ab-39b1fc37fe5mr152610645ab.24.1722956650868; Tue, 06 Aug 2024
- 08:04:10 -0700 (PDT)
+        bh=sLks5Q0iPBrgmJrvgcvS8LOwX/9jLhdRfGiAtwiNPmc=;
+        b=VIHYJQeqLLbIGd+IaCaLvPOwvHM+xMfZ0cYUFhEiykpVNs6pJbTBG75iVIsSWE7n8P
+         4LQnp+I2liDfHe3neyhyGSIqkiDZRAHGr+8Qk3W1n0k2qrN8iIIm1BiIpnFkNBA3bd7/
+         bHp+qks60oTahx3iM76Xgn85Z8G3/nAEaeRzt5REpL+QKrDevZR+68N+H7dSRhdxmVOk
+         QcukMrofH63HdWMmTXOutLbehkwVhV/OX4dq8MILdxCKVUj6uNMm5EBler8LPk0FdULT
+         yrMEm9wTwpnHVwcM3a4Tk8jxGn3wTWU13vKA78yuBZ/tJF7NEei8QALj2391xs3RT0gt
+         oxVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXuPE3czC8+PQDB3NxlnfSCny80xTM3xI3Cmd9CTENaEpxYBV/vpiP3aH8BNy/rk1Bm4/q8XlOYcORbSi1LuvGvZVmaFS1t2Teth2PyJQ==
+X-Gm-Message-State: AOJu0YzXsnzcY4xns5rD6142OiDTp56ThuwX2RLEVDSurGuhR+GT0sBA
+	blhTu0Uq0PMBaJPcjF+cpVc/isJa7SM5oaw++uMhKqCGnyd5a1V1BuKSdK2jjhk+D+uFKgMpKxB
+	1Nwtz3BCHbtmH+rcaGBW6bGc9odxuBOxwTUxnSw==
+X-Google-Smtp-Source: AGHT+IGyDNkeg1CkpECSQ0akll4U0MAQSWPOL8L25sxstJveeDCZd19K8yTTFoue56gvit0ch8aH+2CGmbmtibK8NQ8=
+X-Received: by 2002:a92:c0d1:0:b0:374:9c67:1df6 with SMTP id
+ e9e14a558f8ab-39b1fc23546mr155430195ab.22.1722956659564; Tue, 06 Aug 2024
+ 08:04:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240726235234.228822-1-seanjc@google.com> <20240726235234.228822-57-seanjc@google.com>
-In-Reply-To: <20240726235234.228822-57-seanjc@google.com>
+References: <20240726235234.228822-1-seanjc@google.com> <20240726235234.228822-58-seanjc@google.com>
+In-Reply-To: <20240726235234.228822-58-seanjc@google.com>
 From: Anup Patel <anup@brainfault.org>
-Date: Tue, 6 Aug 2024 20:33:59 +0530
-Message-ID: <CAAhSdy1DvkU_C2jmtA1SBNfjp1gxu_6RhFKbf-hkhSNQeTXwwA@mail.gmail.com>
-Subject: Re: [PATCH v12 56/84] KVM: RISC-V: Mark "struct page" pfns dirty iff
- a stage-2 PTE is installed
+Date: Tue, 6 Aug 2024 20:34:08 +0530
+Message-ID: <CAAhSdy2rvPCuN7ROU4k9pAuyCZUnyDf2DhHjfSa_pA5SG6Q5DA@mail.gmail.com>
+Subject: Re: [PATCH v12 57/84] KVM: RISC-V: Mark "struct page" pfns accessed
+ before dropping mmu_lock
 To: Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -86,13 +86,13 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 On Sat, Jul 27, 2024 at 5:24=E2=80=AFAM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> Don't mark pages dirty if KVM bails from the page fault handler without
-> installing a stage-2 mapping, i.e. if the page is guaranteed to not be
-> written by the guest.
->
-> In addition to being a (very) minor fix, this paves the way for convertin=
-g
-> RISC-V to use kvm_release_faultin_page().
+> Mark pages accessed before dropping mmu_lock when faulting in guest memor=
+y
+> so that RISC-V can convert to kvm_release_faultin_page() without tripping
+> its lockdep assertion on mmu_lock being held.  Marking pages accessed
+> outside of mmu_lock is ok (not great, but safe), but marking pages _dirty=
+_
+> outside of mmu_lock can make filesystems unhappy.
 >
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
@@ -104,32 +104,26 @@ Anup
 
 
 > ---
->  arch/riscv/kvm/mmu.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  arch/riscv/kvm/mmu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
 > diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index b63650f9b966..06aa5a0d056d 100644
+> index 06aa5a0d056d..806f68e70642 100644
 > --- a/arch/riscv/kvm/mmu.c
 > +++ b/arch/riscv/kvm/mmu.c
-> @@ -669,7 +669,6 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
->                 goto out_unlock;
->
->         if (writable) {
-> -               kvm_set_pfn_dirty(hfn);
->                 mark_page_dirty(kvm, gfn);
->                 ret =3D gstage_map_page(kvm, pcache, gpa, hfn << PAGE_SHI=
-FT,
->                                       vma_pagesize, false, true);
-> @@ -682,6 +681,9 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
->                 kvm_err("Failed to map in G-stage\n");
->
+> @@ -683,10 +683,10 @@ int kvm_riscv_gstage_map(struct kvm_vcpu *vcpu,
 >  out_unlock:
-> +       if ((!ret || ret =3D=3D -EEXIST) && writable)
-> +               kvm_set_pfn_dirty(hfn);
-> +
+>         if ((!ret || ret =3D=3D -EEXIST) && writable)
+>                 kvm_set_pfn_dirty(hfn);
+> +       else
+> +               kvm_release_pfn_clean(hfn);
+>
 >         spin_unlock(&kvm->mmu_lock);
->         kvm_set_pfn_accessed(hfn);
->         kvm_release_pfn_clean(hfn);
+> -       kvm_set_pfn_accessed(hfn);
+> -       kvm_release_pfn_clean(hfn);
+>         return ret;
+>  }
+>
 > --
 > 2.46.0.rc1.232.g9752f9e123-goog
 >
