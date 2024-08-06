@@ -1,63 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C9D9486F2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 03:17:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BBA9488DC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 07:15:13 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fc4qoSfQ;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdFlV6TRxz3cWd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 11:17:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WdM265Q68z3cYq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 Aug 2024 15:15:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=mail.loongson.cn; envelope-from=maobibo@loongson.cn; receiver=lists.ozlabs.org)
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WdFl54fyyz2xQH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 11:16:47 +1000 (AEST)
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8DxSup1ebFm4lkIAA--.28159S3;
-	Tue, 06 Aug 2024 09:16:37 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowMAxVOBvebFm_VgFAA--.28281S3;
-	Tue, 06 Aug 2024 09:16:33 +0800 (CST)
-Subject: Re: [PATCH v12 64/84] KVM: LoongArch: Mark "struct page" pfns dirty
- only in "slow" page fault path
-To: Sean Christopherson <seanjc@google.com>
-References: <20240726235234.228822-1-seanjc@google.com>
- <20240726235234.228822-65-seanjc@google.com>
- <a039b758-d4e3-3798-806f-25bceb2f33a5@loongson.cn>
- <Zq00OYowF5kc9QFE@google.com>
- <345d89c1-4f31-6b49-2cd4-a0696210fa7c@loongson.cn>
- <ZrFezgVbCI3DRQH3@google.com>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <d673ec04-5445-6233-81e2-49863d044bf0@loongson.cn>
-Date: Tue, 6 Aug 2024 09:16:30 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fc4qoSfQ;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WdM1L2MJfz3cND
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 Aug 2024 15:14:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1722921266;
+	bh=T6UJVWrjoJeU8RGTDOBLq9vBy/sFp4d69GgI9WtuFkA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Fc4qoSfQWyq4BM51Y4pDrfnr3s5l0ddnYG8FaahUyoFFU/7i2JjwvDx5AV/wTnVZk
+	 HXWDMF1Hg5CWSj096LaeY4HCEwG4J3qKHRrrNBU/EzNkZEq8xYUUJEKizUELUeO2Ah
+	 IqDgl7mlqPOA4DzA7UkY5YyWprtN4Xity3wuHpFxj6nOjkrFydwFl1F3qxJMRZ7FXu
+	 VtiiPwh4eyNHFYxoOjecr38zogQZABJNbmp+pOB5RvmVG/EWVTKOwvgnpteO0XT7eo
+	 33s9x9vERxtxGjtg+wxCqxgjz1eUylT9jiopI1Vge4dY+vPv0HjWzoeiovsbUNBCdP
+	 K059UL/xlrYcg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WdM1D4g3kz4wbp;
+	Tue,  6 Aug 2024 15:14:22 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jinjie Ruan <ruanjinjie@huawei.com>, dennis@kernel.org, tj@kernel.org,
+ cl@linux.com, benh@kernel.crashing.org, paulus@samba.org,
+ christophe.leroy@csgroup.eu, mahesh@linux.ibm.com,
+ gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5.10] powerpc: Avoid nmi_enter/nmi_exit in real mode
+ interrupt.
+In-Reply-To: <20240805114544.1552341-1-ruanjinjie@huawei.com>
+References: <20240805114544.1552341-1-ruanjinjie@huawei.com>
+Date: Tue, 06 Aug 2024 15:14:21 +1000
+Message-ID: <87frrii66q.fsf@mail.lhotse>
 MIME-Version: 1.0
-In-Reply-To: <ZrFezgVbCI3DRQH3@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMAxVOBvebFm_VgFAA--.28281S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3WryUCFyxZw4kJrWxJr4kXwc_yoW7WF1rpF
-	W8CFWqkrs8Jr1Fyr9rtwsIvryYk39rKr4xXa47J34Yk3Wqvr12qF18W3yfWFyUA3yfC3WS
-	qr4UtF9xuFW5AwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUd529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l
-	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUShiSDUUUU
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,113 +63,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Janosch Frank <frankja@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: ruanjinjie@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Jinjie Ruan,
 
+If you want to submit this as a stable backport you need to send it
+To: stable@vger.kernel.org.
 
-On 2024/8/6 上午7:22, Sean Christopherson wrote:
-> On Sat, Aug 03, 2024, maobibo wrote:
->> On 2024/8/3 上午3:32, Sean Christopherson wrote:
->>> On Fri, Aug 02, 2024, maobibo wrote:
->>>> On 2024/7/27 上午7:52, Sean Christopherson wrote:
->>>>> Mark pages/folios dirty only the slow page fault path, i.e. only when
->>>>> mmu_lock is held and the operation is mmu_notifier-protected, as marking a
->>>>> page/folio dirty after it has been written back can make some filesystems
->>>>> unhappy (backing KVM guests will such filesystem files is uncommon, and
->>>>> the race is minuscule, hence the lack of complaints).
->>>>>
->>>>> See the link below for details.
->>>>>
->>>>> Link: https://lore.kernel.org/all/cover.1683044162.git.lstoakes@gmail.com
->>>>> Signed-off-by: Sean Christopherson <seanjc@google.com>
->>>>> ---
->>>>>     arch/loongarch/kvm/mmu.c | 18 ++++++++++--------
->>>>>     1 file changed, 10 insertions(+), 8 deletions(-)
->>>>>
->>>>> diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
->>>>> index 2634a9e8d82c..364dd35e0557 100644
->>>>> --- a/arch/loongarch/kvm/mmu.c
->>>>> +++ b/arch/loongarch/kvm/mmu.c
->>>>> @@ -608,13 +608,13 @@ static int kvm_map_page_fast(struct kvm_vcpu *vcpu, unsigned long gpa, bool writ
->>>>>     		if (kvm_pte_young(changed))
->>>>>     			kvm_set_pfn_accessed(pfn);
->>>>> -		if (kvm_pte_dirty(changed)) {
->>>>> -			mark_page_dirty(kvm, gfn);
->>>>> -			kvm_set_pfn_dirty(pfn);
->>>>> -		}
->>>>>     		if (page)
->>>>>     			put_page(page);
->>>>>     	}
->>>>> +
->>>>> +	if (kvm_pte_dirty(changed))
->>>>> +		mark_page_dirty(kvm, gfn);
->>>>> +
->>>>>     	return ret;
->>>>>     out:
->>>>>     	spin_unlock(&kvm->mmu_lock);
->>>>> @@ -915,12 +915,14 @@ static int kvm_map_page(struct kvm_vcpu *vcpu, unsigned long gpa, bool write)
->>>>>     	else
->>>>>     		++kvm->stat.pages;
->>>>>     	kvm_set_pte(ptep, new_pte);
->>>>> -	spin_unlock(&kvm->mmu_lock);
->>>>> -	if (prot_bits & _PAGE_DIRTY) {
->>>>> -		mark_page_dirty_in_slot(kvm, memslot, gfn);
->>>>> +	if (writeable)
->>>> Is it better to use write or (prot_bits & _PAGE_DIRTY) here?  writable is
->>>> pte permission from function hva_to_pfn_slow(), write is fault action.
->>>
->>> Marking folios dirty in the slow/full path basically necessitates marking the
->>> folio dirty if KVM creates a writable SPTE, as KVM won't mark the folio dirty
->>> if/when _PAGE_DIRTY is set.
->>>
->>> Practically speaking, I'm 99.9% certain it doesn't matter.  The folio is marked
->>> dirty by core MM when the folio is made writable, and cleaning the folio triggers
->>> an mmu_notifier invalidation.  I.e. if the page is mapped writable in KVM's
->> yes, it is. Thanks for the explanation. kvm_set_pfn_dirty() can be put only
->> in slow page fault path. I only concern with fault type, read fault type can
->> set pte entry writable however not _PAGE_DIRTY at stage-2 mmu table.
->>
->>> stage-2 PTEs, then its folio has already been marked dirty.
->> Considering one condition although I do not know whether it exists actually.
->> user mode VMM writes the folio with hva address firstly, then VCPU thread
->> *reads* the folio. With primary mmu table, pte entry is writable and
->> _PAGE_DIRTY is set, with secondary mmu table(state-2 PTE table), it is
->> pte_none since the filio is accessed at first time, so there will be slow
->> page fault path for stage-2 mmu page table filling.
->>
->> Since it is read fault, stage-2 PTE will be created with _PAGE_WRITE(coming
->> from function hva_to_pfn_slow()), however _PAGE_DIRTY is not set. Do we need
->> call kvm_set_pfn_dirty() at this situation?
-> 
-> If KVM doesn't mark the folio dirty when the stage-2 _PAGE_DIRTY flag is set,
-> i.e. as proposed in this series, then yes, KVM needs to call kvm_set_pfn_dirty()
-> even though the VM hasn't (yet) written to the memory.  In practice, KVM calling
-> kvm_set_pfn_dirty() is redundant the majority of the time, as the stage-1 PTE
-> will have _PAGE_DIRTY set, and that will get propagated to the folio when the
-> primary MMU does anything relevant with the PTE.  And for file systems that care
-> about writeback, odds are very good that the folio was marked dirty even earlier,
-> when MM invoked vm_operations_struct.page_mkwrite().
-> 
-> The reason I am pushing to have all architectures mark pages/folios dirty in the
-> slow page fault path is that a false positive (marking a folio dirty without the
-> folio ever being written in _any_ context since the last pte_mkclean()) is rare,
-> and at worst results an unnecessary writeback.  On the other hand, marking folios
-It does not influence the result. At worst there is one unnecessary 
-kvm_set_pfn_dirty() before the last pte_mkclean(). That is ok for me, 
-and thanks for your detailed explanation.
+Jinjie Ruan <ruanjinjie@huawei.com> writes:
+> From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
-> dirty in fast page fault handlers (or anywhere else that isn't protected by
-> mmu_notifiers) is technically unsafe.
-yeap, moving marking folios dirty to slow fault handler makes logic 
-clear and simple here, and technically safer.
+Although it's somewhat modified, this is still a backport of an upstream
+commit, so it should include the following line:
 
-Regards
-Bibo Mao
-> 
-> In other words, the intent is to sacrifice accuracy to improve stability/robustness,
-> because the vast majority of time the loss in accuracy has no effect, and the worst
-> case scenario is that the kernel does I/O that wasn't necessary.
-> 
+  [ Upstream commit 0db880fc865ffb522141ced4bfa66c12ab1fbb70 ]
 
+> nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
+> crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
+> interrupt handler) if percpu allocation comes from vmalloc area.
+>
+> Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
+> wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
+> percpu allocation is from the embedded first chunk. However with
+> CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
+> allocation can come from the vmalloc area.
+>
+> With kernel command line "percpu_alloc=page" we can force percpu allocation
+> to come from vmalloc area and can see kernel crash in machine_check_early:
+>
+> [    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
+> [    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
+> [    1.215719] --- interrupt: 200
+> [    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
+> [    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
+> [    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
+>
+> Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
+> first chunk is not embedded.
+>
+> CVE-2024-42126
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
+> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
+> [ Conflicts in arch/powerpc/include/asm/interrupt.h
+>   because machine_check_early() has been refactored. ]
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>  arch/powerpc/include/asm/percpu.h | 10 ++++++++++
+>  arch/powerpc/kernel/mce.c         | 14 +++++++++++---
+>  arch/powerpc/kernel/setup_64.c    |  2 ++
+>  3 files changed, 23 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
+> index 8e5b7d0b851c..634970ce13c6 100644
+> --- a/arch/powerpc/include/asm/percpu.h
+> +++ b/arch/powerpc/include/asm/percpu.h
+> @@ -15,6 +15,16 @@
+>  #endif /* CONFIG_SMP */
+>  #endif /* __powerpc64__ */
+>  
+> +#if defined(CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK) && defined(CONFIG_SMP)
+> +#include <linux/jump_label.h>
+> +DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
+> +
+> +#define percpu_first_chunk_is_paged	\
+> +		(static_key_enabled(&__percpu_first_chunk_is_paged.key))
+> +#else
+> +#define percpu_first_chunk_is_paged	false
+> +#endif /* CONFIG_PPC64 && CONFIG_SMP */
+> +
+>  #include <asm-generic/percpu.h>
+>  
+>  #include <asm/paca.h>
+> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+> index 63702c0badb9..259343040e1b 100644
+> --- a/arch/powerpc/kernel/mce.c
+> +++ b/arch/powerpc/kernel/mce.c
+> @@ -594,8 +594,15 @@ long notrace machine_check_early(struct pt_regs *regs)
+>  	u8 ftrace_enabled = this_cpu_get_ftrace_enabled();
+>  
+>  	this_cpu_set_ftrace_enabled(0);
+> -	/* Do not use nmi_enter/exit for pseries hpte guest */
+> -	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
+> +	/*
+> +	 * Do not use nmi_enter/exit for pseries hpte guest
+> +	 *
+> +	 * Likewise, do not use it in real mode if percpu first chunk is not
+> +	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
+> +	 * are chances where percpu allocation can come from vmalloc area.
+> +	 */
+> +	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
+> +	    !percpu_first_chunk_is_paged)
+>  		nmi_enter();
+>  
+>  	hv_nmi_check_nonrecoverable(regs);
+> @@ -606,7 +613,8 @@ long notrace machine_check_early(struct pt_regs *regs)
+>  	if (ppc_md.machine_check_early)
+>  		handled = ppc_md.machine_check_early(regs);
+>  
+> -	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
+> +	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
+> +	    !percpu_first_chunk_is_paged)
+>  		nmi_exit();
+>  
+>  	this_cpu_set_ftrace_enabled(ftrace_enabled);
+> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+> index 3f8426bccd16..899d87de0165 100644
+> --- a/arch/powerpc/kernel/setup_64.c
+> +++ b/arch/powerpc/kernel/setup_64.c
+> @@ -824,6 +824,7 @@ static int pcpu_cpu_distance(unsigned int from, unsigned int to)
+>  
+>  unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
+>  EXPORT_SYMBOL(__per_cpu_offset);
+> +DEFINE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
+>  
+>  static void __init pcpu_populate_pte(unsigned long addr)
+>  {
+> @@ -903,6 +904,7 @@ void __init setup_per_cpu_areas(void)
+>  	if (rc < 0)
+>  		panic("cannot initialize percpu area (err=%d)", rc);
+>  
+> +	static_key_enable(&__percpu_first_chunk_is_paged.key);
+>  	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
+>  	for_each_possible_cpu(cpu) {
+>                  __per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
+
+This looks reasonable to me, though I haven't tested it, I assume you
+have done so.
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+cheers
