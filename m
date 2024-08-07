@@ -2,87 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC00D94A6F2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 13:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B94DD94A6FE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 13:33:01 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AozdfuwD;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AozdfuwD;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AfR7DqUV;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AfR7DqUV;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf7CH5P2sz3dHL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 21:25:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf7Mb4jZJz3cy9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 21:32:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AozdfuwD;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AozdfuwD;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AfR7DqUV;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AfR7DqUV;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf7Bb0VJpz3cmV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 21:25:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf7Lv0VJ8z3cnv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 21:32:22 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723029904;
+	s=mimecast20190719; t=1723030339;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kUmg6m+rX0ZdRF47MclkDhoxeaVkz+iC7VCa9/iV6Vw=;
-	b=AozdfuwDf3+x/z+D5lfpe/CeLWfH6PPBVvZIiIGvnd709b0A3rDel5RDbnX6UX/+8mBB8P
-	1zFnCIukhqyx5cppoAhVQOoOsRZSbg/nnBXr8Z1ZvhAoUNPrTBfvbsI1VwxMZVCcDwywOj
-	gAs6l+kXdvv5fsYuZK9dM6Pn6qQnc80=
+	bh=jDtjVWRsh7/n0SIJeFNSj2lV4WndfzmDA4DXhXY2n/Q=;
+	b=AfR7DqUVg3lVQJdzmCdNIWuQUtePK65LvN3uMRjx7UxaiIjD9mhp3vzCdOj9r103l88B8f
+	LxYG2suDmCe/OWn2JYbIlZ4aiCO9BxfKVuvTi7a5UWo6Xcr63btWrAY1A8GehEc3g6pufk
+	sfyO3ueXurxZPBxDvdb4vrHPKn1cBM0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723029904;
+	s=mimecast20190719; t=1723030339;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kUmg6m+rX0ZdRF47MclkDhoxeaVkz+iC7VCa9/iV6Vw=;
-	b=AozdfuwDf3+x/z+D5lfpe/CeLWfH6PPBVvZIiIGvnd709b0A3rDel5RDbnX6UX/+8mBB8P
-	1zFnCIukhqyx5cppoAhVQOoOsRZSbg/nnBXr8Z1ZvhAoUNPrTBfvbsI1VwxMZVCcDwywOj
-	gAs6l+kXdvv5fsYuZK9dM6Pn6qQnc80=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=jDtjVWRsh7/n0SIJeFNSj2lV4WndfzmDA4DXhXY2n/Q=;
+	b=AfR7DqUVg3lVQJdzmCdNIWuQUtePK65LvN3uMRjx7UxaiIjD9mhp3vzCdOj9r103l88B8f
+	LxYG2suDmCe/OWn2JYbIlZ4aiCO9BxfKVuvTi7a5UWo6Xcr63btWrAY1A8GehEc3g6pufk
+	sfyO3ueXurxZPBxDvdb4vrHPKn1cBM0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-328-p2ziYcPdMHuDbNCtdZRsTw-1; Wed, 07 Aug 2024 07:25:02 -0400
-X-MC-Unique: p2ziYcPdMHuDbNCtdZRsTw-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4282164fcbcso12232145e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 04:25:02 -0700 (PDT)
+ us-mta-272-mL6AgFItO0S0v92uteZrNQ-1; Wed, 07 Aug 2024 07:32:17 -0400
+X-MC-Unique: mL6AgFItO0S0v92uteZrNQ-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-369bf135b49so472053f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 04:32:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723029901; x=1723634701;
+        d=1e100.net; s=20230601; t=1723030336; x=1723635136;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kUmg6m+rX0ZdRF47MclkDhoxeaVkz+iC7VCa9/iV6Vw=;
-        b=IL8j8b5Cr/pZou8pSRduBTurFsIua4gYF0w3BEC/t4aoLgG2o2MpHe3SUS44saH9jz
-         WQr4d/jT6ClpJVPfHwuXcGwMFJADJfsStL7ewyKyhTkDPXd0RFGdHb9aJTPL19TYQfsk
-         l8Idva0mESG0TBc4DlOEALnFSf4w2BREbNqlfBf5/faWzUNa2BPunDjTXkfSUe/wc7yd
-         U/UbnVUsIQBjPjpBAIAXxvN4h6SyEagNaQfj0iihIBkoKx6UwbPMGbODmZ8adN+s7lEh
-         mvU0G4cNYr1z1TKBJw+ys4ukRU02bXB2rOoCI6B29IE5YNh8BUwS8cAcOBuaW4TnZAxQ
-         2AIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUw5Wj2DFaRN+bwjN00BSTZclS+kzi4URzXhNx0+p8LT2gI8TghqefXoAijvy49Cfkd7Zge2Z9U9UFuODlGdVhCkLaOvk+Vcy26aEDhMw==
-X-Gm-Message-State: AOJu0YziNBr2QEe92JBTjmXGxGOm8PO66Ol1I9j8J5dsH+seYf8csoXC
-	SDDhoCO01xf+4cCqvL7GMZGXEDgu7pL/k62R2YOcZT/lolZQMllageJ0sd4AW8rfwK+9m0hTYZI
-	vhVfWb5x8Xik8uwSa5de4ySJ1UgM5oWLYygrsP7QxMN5hBnftjE94MDfG9RKAzzM=
-X-Received: by 2002:a05:6000:2a6:b0:368:31c7:19d9 with SMTP id ffacd0b85a97d-36bbc0c54eamr16661096f8f.12.1723029901520;
-        Wed, 07 Aug 2024 04:25:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSeCKCmaFkgVQy7NTVGMO35DBiIizaJ1GZqRtDIurBEJSTZSCwcCs/VepdNDXoauGMk9Tgsg==
-X-Received: by 2002:a05:6000:2a6:b0:368:31c7:19d9 with SMTP id ffacd0b85a97d-36bbc0c54eamr16661039f8f.12.1723029900802;
-        Wed, 07 Aug 2024 04:25:00 -0700 (PDT)
+        bh=jDtjVWRsh7/n0SIJeFNSj2lV4WndfzmDA4DXhXY2n/Q=;
+        b=u9JF/k/MXMSB+4DV0/6KswVUAI2UNozMlao51Ww0EnRXkH59xSlIYcVNG9S9KWokC1
+         sVjcGEbr4CqI/nnfzlHPCnoa58YRa9imQ+LaVT3omECgXiBcpuvOxrz4+yqM0uAoUPik
+         C2qBd1qv95ODXj0ELGQid8EFb2IkQxObir2f8v3SOAt21aCXenKgGpvLoKIRKbfcpj/6
+         WADT0crfDTynlwOgIoPgP7EoZvAy0un+TjUuhi4JJQN8TKKVdCshC9Z3A3i6+ZTeXG5O
+         EWZJ5pnhlBW3em9QXaBPRpD1rjGyaC6zeOM1zl4Uzj3V4kG4F4KqnkEMMy20F4HMJZ5Z
+         rJQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXpOPLxlowGZUKgbhwbLgV8C6MF+LxK+gnuEMUJsCy9AtyKSO5bBMCBf8W80K/Yc8PR8yYQOHPJiwpDIG0t7AQ9LSLY9NY/nPWqyhQXxA==
+X-Gm-Message-State: AOJu0YyotxencpajhKKopBwBzY1O8r8nYhwao20pgGOP5X7Mz540ZTaj
+	tstUH9F1iGFGv2LjZrBBi+r5FV0iZDQ3FiOCaDizq/YrBlAJ4LWPMWAQ920iWww3lTkPR0Q9dNJ
+	IvDa1GgXw5acg8A80qCwdFmwXDbvG77XbFEjJ9Qh/nbKX1+fB4A2ZMZN1bp+QKzs=
+X-Received: by 2002:a5d:6c6c:0:b0:36b:ea2d:fd5a with SMTP id ffacd0b85a97d-36bf0f556c1mr1639225f8f.22.1723030336467;
+        Wed, 07 Aug 2024 04:32:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAM7A125QeMf5DZrBLbfuWdjAeEucgoOQKBiW/KsSfhuG/JzdmAgebuhBwXtPb+AJVEph3Aw==
+X-Received: by 2002:a5d:6c6c:0:b0:36b:ea2d:fd5a with SMTP id ffacd0b85a97d-36bf0f556c1mr1639175f8f.22.1723030335857;
+        Wed, 07 Aug 2024 04:32:15 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c708:1a00:df86:93fe:6505:d096? (p200300cbc7081a00df8693fe6505d096.dip0.t-ipconnect.de. [2003:cb:c708:1a00:df86:93fe:6505:d096])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd059e44sm15739210f8f.70.2024.08.07.04.24.58
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd06e0f5sm15647077f8f.104.2024.08.07.04.32.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Aug 2024 04:25:00 -0700 (PDT)
-Message-ID: <8da4b0dc-6522-40ff-ba61-ea41fb3437b0@redhat.com>
-Date: Wed, 7 Aug 2024 13:24:57 +0200
+        Wed, 07 Aug 2024 04:32:15 -0700 (PDT)
+Message-ID: <345ba221-e094-47e8-9481-562faf4acd85@redhat.com>
+Date: Wed, 7 Aug 2024 13:32:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: update the memmap stat before page is freed
+Subject: Re: [PATCH 2/2] mm: keep nid around during hot-remove
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, agordeev@linux.ibm.com,
  akpm@linux-foundation.org, alexghiti@rivosinc.com, aou@eecs.berkeley.edu,
  ardb@kernel.org, arnd@arndb.de, bhe@redhat.com, bjorn@rivosinc.com,
@@ -103,6 +103,7 @@ To: Pasha Tatashin <pasha.tatashin@soleen.com>, agordeev@linux.ibm.com,
  ryan.roberts@arm.com, souravpanda@google.com, svens@linux.ibm.com,
  tglx@linutronix.de, tzimmermann@suse.de, will@kernel.org, x86@kernel.org
 References: <20240806221454.1971755-1-pasha.tatashin@soleen.com>
+ <20240806221454.1971755-2-pasha.tatashin@soleen.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -149,7 +150,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240806221454.1971755-1-pasha.tatashin@soleen.com>
+In-Reply-To: <20240806221454.1971755-2-pasha.tatashin@soleen.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -170,14 +171,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 07.08.24 00:14, Pasha Tatashin wrote:
-> It is more logical to update the stat before the page is freed, to avoid
-> use after free scenarios.
+> nid is needed during memory hot-remove in order to account the
+> information about the memmap overhead that is being removed.
 > 
-> Fixes: 15995a352474 ("mm: report per-page metadata information")
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
+> In addition, we cannot use page_pgdat(pfn_to_page(pfn)) during
+> hotremove after remove_pfn_range_from_zone().
+> 
+> We also cannot determine nid from walking through memblocks after
+> remove_memory_block_devices() is called.
+> 
+> Therefore, pass nid down from the beginning of hotremove to where
+> it is used for the accounting purposes.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+I was happy to finally remove that nid parameter for good in:
+
+commit 65a2aa5f482ed0c1b5afb9e6b0b9e0b16bb8b616
+Author: David Hildenbrand <david@redhat.com>
+Date:   Tue Sep 7 19:55:04 2021 -0700
+
+     mm/memory_hotplug: remove nid parameter from arch_remove_memory()
+
+To ask the real question: Do we really need this counter per-nid at all?
+
+Seems to over-complicate things.
 
 -- 
 Cheers,
