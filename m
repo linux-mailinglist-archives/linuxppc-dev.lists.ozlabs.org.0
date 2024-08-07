@@ -1,39 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5E594ADF3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 18:22:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A773494AE4A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 18:41:51 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SA2Au33N;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfFnD3x9lz3dLM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 02:22:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfGCx4W3nz3dDy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 02:41:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SA2Au33N;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfFmf36Pqz3cdn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 02:21:38 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 88FCBCE0C56;
-	Wed,  7 Aug 2024 16:21:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D649C32781;
-	Wed,  7 Aug 2024 16:21:29 +0000 (UTC)
-Date: Wed, 7 Aug 2024 17:21:27 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v12 02/84] KVM: arm64: Disallow copying MTE to guest
- memory while KVM is dirty logging
-Message-ID: <ZrOfB8bOdSJVcWFr@arm.com>
-References: <20240726235234.228822-1-seanjc@google.com>
- <20240726235234.228822-3-seanjc@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfGCD59Qqz2ydQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 02:41:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723048873; x=1754584873;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4h5RvzUHfWFOedWWLMmqE+khKK848X9NVyUEjTPnYMo=;
+  b=SA2Au33NvytrvOPOWQb7YOijaJ4KfXndoTV7caVi3ObnrihGj/J41qJf
+   x/SYcmV/IqPIXT0oN6plef5G39wyuN8rZNWKE6SPpQ0wPg9UhL+qXCum3
+   8FNxhB3AM9RtYFSlEuf5Sm8lYXsTMPRQEad7i8odjCsieAldeBWyuU9Lm
+   PpPks5V5v9FeQrWNoDmSOBnA9z4FyfZLp44/yVVojah6AB1yRIf1IMXY3
+   E5lPJRrFaqk4YmelE5fk0dboaEBNvjp60Nqf2fDuiVpD108nSteDW61Z3
+   adUF1KzPu+VM06H3BstIfNMyXfbIBemt1pBDW5FdxHjGFIBEMUQ4XVJNn
+   g==;
+X-CSE-ConnectionGUID: 33uxCZkFTDy8Y7m2vHdkMQ==
+X-CSE-MsgGUID: lA29fO39R3OmE9w/gG3I+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="32534696"
+X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; 
+   d="scan'208";a="32534696"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2024 09:41:07 -0700
+X-CSE-ConnectionGUID: oje+9h1LQQ6ES8HD5dwD4g==
+X-CSE-MsgGUID: 8xgeh91mSDq9bHZDnaf5+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,270,1716274800"; 
+   d="scan'208";a="56581731"
+Received: from unknown (HELO b6bf6c95bbab) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 07 Aug 2024 09:41:04 -0700
+Received: from kbuild by b6bf6c95bbab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sbjif-0005Ye-2d;
+	Wed, 07 Aug 2024 16:41:01 +0000
+Date: Thu, 8 Aug 2024 00:40:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Baruch Siach <baruch@tkos.co.il>, Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v5 1/3] dma: improve DMA zone selection
+Message-ID: <202408080035.rXXbb5Yc-lkp@intel.com>
+References: <5200f289af1a9b80dfd329b6ed3d54e1d4a02876.1722578375.git.baruch@tkos.co.il>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240726235234.228822-3-seanjc@google.com>
+In-Reply-To: <5200f289af1a9b80dfd329b6ed3d54e1d4a02876.1722578375.git.baruch@tkos.co.il>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,39 +77,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>, Ramon Fried <ramon@neureality.ai>, Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, oe-kbuild-all@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 26, 2024 at 04:51:11PM -0700, Sean Christopherson wrote:
-> Disallow copying MTE tags to guest memory while KVM is dirty logging, as
-> writing guest memory without marking the gfn as dirty in the memslot could
-> result in userspace failing to migrate the updated page.  Ideally (maybe?),
-> KVM would simply mark the gfn as dirty, but there is no vCPU to work with,
-> and presumably the only use case for copy MTE tags _to_ the guest is when
-> restoring state on the target.
-> 
-> Fixes: f0376edb1ddc ("KVM: arm64: Add ioctl to fetch/store tags in a guest")
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/arm64/kvm/guest.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> index e1f0ff08836a..962f985977c2 100644
-> --- a/arch/arm64/kvm/guest.c
-> +++ b/arch/arm64/kvm/guest.c
-> @@ -1045,6 +1045,11 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
->  
->  	mutex_lock(&kvm->slots_lock);
->  
-> +	if (write && atomic_read(&kvm->nr_memslots_dirty_logging)) {
-> +		ret = -EBUSY;
-> +		goto out;
-> +	}
+Hi Baruch,
 
-There are ways to actually log the page dirtying but I don't think
-it's worth it. AFAICT, reading the tags still works and that's what's
-used during migration (on the VM where dirty tracking takes place).
+kernel test robot noticed the following build warnings:
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+[auto build test WARNING on 8400291e289ee6b2bf9779ff1c83a291501f017b]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Baruch-Siach/dma-improve-DMA-zone-selection/20240803-074651
+base:   8400291e289ee6b2bf9779ff1c83a291501f017b
+patch link:    https://lore.kernel.org/r/5200f289af1a9b80dfd329b6ed3d54e1d4a02876.1722578375.git.baruch%40tkos.co.il
+patch subject: [PATCH v5 1/3] dma: improve DMA zone selection
+config: csky-randconfig-001-20240807 (https://download.01.org/0day-ci/archive/20240808/202408080035.rXXbb5Yc-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240808/202408080035.rXXbb5Yc-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408080035.rXXbb5Yc-lkp@intel.com/
+
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
+
+WARNING: modpost: vmlinux: section mismatch in reference: dma_direct_optimal_gfp_mask+0x46 (section: .text) -> memblock_end_of_DRAM (section: .init.text)
+>> WARNING: modpost: vmlinux: section mismatch in reference: sg_page.isra.0+0x1c (section: .text) -> memblock_end_of_DRAM (section: .init.text)
+WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/locking/test-ww_mutex.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/imx/clk-imxrt1050.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/devfreq/governor_performance.o
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
