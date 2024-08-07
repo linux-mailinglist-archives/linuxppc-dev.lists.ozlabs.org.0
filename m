@@ -1,39 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580EA94A93A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 15:59:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0FA94A9C5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:16:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfBcN1WlDz3ddX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 23:59:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfC0L25bcz3dFy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 00:16:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfBc056CQz2y8X
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 23:58:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfBzx6ZHJz2y8r
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 00:16:13 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0E6D161007;
-	Wed,  7 Aug 2024 13:58:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555DAC32781;
-	Wed,  7 Aug 2024 13:58:51 +0000 (UTC)
-Date: Wed, 7 Aug 2024 14:58:49 +0100
+	by dfw.source.kernel.org (Postfix) with ESMTP id E687E612CC;
+	Wed,  7 Aug 2024 14:15:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C09C4AF0B;
+	Wed,  7 Aug 2024 14:15:33 +0000 (UTC)
+Date: Wed, 7 Aug 2024 15:15:31 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Subject: Re: [PATCH v5 1/3] dma: improve DMA zone selection
-Message-ID: <ZrN9mRoQj2lTo6L5@arm.com>
-References: <cover.1722578375.git.baruch@tkos.co.il>
- <5200f289af1a9b80dfd329b6ed3d54e1d4a02876.1722578375.git.baruch@tkos.co.il>
- <8230985e-1581-411f-895c-b49065234520@arm.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v12 01/84] KVM: arm64: Release pfn, i.e. put page, if
+ copying MTE tags hits ZONE_DEVICE
+Message-ID: <ZrOBg70pCnv7PHyK@arm.com>
+References: <20240726235234.228822-1-seanjc@google.com>
+ <20240726235234.228822-2-seanjc@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8230985e-1581-411f-895c-b49065234520@arm.com>
+In-Reply-To: <20240726235234.228822-2-seanjc@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,39 +45,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>, Ramon Fried <ramon@neureality.ai>, Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Steven Price <steven.price@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks Robin for having a look.
-
-On Wed, Aug 07, 2024 at 02:13:06PM +0100, Robin Murphy wrote:
-> On 2024-08-02 7:03 am, Baruch Siach wrote:
-> > When device DMA limit does not fit in DMA32 zone it should use DMA zone,
-> > even when DMA zone is stricter than needed.
-> > 
-> > Same goes for devices that can't allocate from the entire normal zone.
-> > Limit to DMA32 in that case.
+On Fri, Jul 26, 2024 at 04:51:10PM -0700, Sean Christopherson wrote:
+> Put the page reference acquired by gfn_to_pfn_prot() if
+> kvm_vm_ioctl_mte_copy_tags() runs into ZONE_DEVICE memory.  KVM's less-
+> than-stellar heuristics for dealing with pfn-mapped memory means that KVM
+> can get a page reference to ZONE_DEVICE memory.
 > 
-> Per the bot report this only works for CONFIG_ARCH_KEEP_MEMBLOCK,
+> Fixes: f0376edb1ddc ("KVM: arm64: Add ioctl to fetch/store tags in a guest")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/arm64/kvm/guest.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> index 11098eb7eb44..e1f0ff08836a 100644
+> --- a/arch/arm64/kvm/guest.c
+> +++ b/arch/arm64/kvm/guest.c
+> @@ -1059,6 +1059,7 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+>  		page = pfn_to_online_page(pfn);
+>  		if (!page) {
+>  			/* Reject ZONE_DEVICE memory */
+> +			kvm_release_pfn_clean(pfn);
+>  			ret = -EFAULT;
+>  			goto out;
+>  		}
 
-Yeah, I just noticed.
+This patch makes sense irrespective of whether the above pfn is a
+ZONE_DEVICE or not. gfn_to_pfn_prot() increased the page refcount via
+GUP, so it must be released before bailing out of this loop.
 
-> however
-> the whole concept looks wrong anyway. The logic here is that we're only
-> forcing a particular zone if there's *no* chance of the higher zone being
-> usable. For example, ignoring offsets for simplicity, if we have a 40-bit
-> DMA mask then we *do* want to initially try allocating from ZONE_NORMAL even
-> if max_pfn is above 40 bits, since we still might get a usable allocation
-> from between 32 and 40 bits, and if we don't, then we'll fall back to
-> retrying from the DMA zone(s) anyway.
-
-Ah, I did not read the code further down in __dma_direct_alloc_pages(),
-it does fall back to a GFP_DMA allocation if !dma_coherent_ok().
-Similarly with swiotlb_alloc_tlb(), it keeps retrying until the
-allocation fails.
-
-So yes, this patch can be dropped.
-
--- 
-Catalin
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
