@@ -2,52 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33E294A7FC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 14:43:55 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Sg2C5rmU;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A02394A86A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 15:14:08 +0200 (CEST)
 Received: from lists.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf8xP4Zj7z3dSX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 22:43:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf9cG2FTFz3dLn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 23:14:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Sg2C5rmU;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf8tQ4lfKz3ckk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 22:41:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1723034478;
-	bh=1aE2cbYKmjRRZKMb9FZa+Csx+YG7mtBDoiTvd1y2/SU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sg2C5rmUsrFsqB+/CRJzTHnIP6xmWqhy/9TubY/RNKmKWWeTjgP+vaVt67AVzTZPf
-	 iklksF8ozO1/pUEUnPh6yFOQ4I327udvpjuydImzJBygfquHjGxbehs4uMchmZHUFm
-	 0A9i79ZQEyuCRkIwT5WeWMAzz03crWZEzk16n0H60TH6qjJrY5K15pdSvTt+F5/eSt
-	 fgUAcvAO+iARo6Uob3f7RgSar6DyTvksewkHZlS4FkNuFQbMKDMRLhE9EBtKH1pqzy
-	 Rx530mNH5cy0e7Ie65ib9m58MUjUmJ+UtOPA1ZtZU7aZ4hpc3sM4Gl4wURb8d+1XoK
-	 5kyXGW/QLTpDg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wf8tQ3Cp8z4x3J;
-	Wed,  7 Aug 2024 22:41:18 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linux-mm@kvack.org>
-Subject: [PATCH 4/4] powerpc/vdso: Refactor error handling
-Date: Wed,  7 Aug 2024 22:41:03 +1000
-Message-ID: <20240807124103.85644-4-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240807124103.85644-1-mpe@ellerman.id.au>
-References: <20240807124103.85644-1-mpe@ellerman.id.au>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf9bt5spsz3c3g
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 23:13:44 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 69630FEC;
+	Wed,  7 Aug 2024 06:13:36 -0700 (PDT)
+Received: from [10.57.48.153] (unknown [10.57.48.153])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BCDBE3F5A1;
+	Wed,  7 Aug 2024 06:13:08 -0700 (PDT)
+Message-ID: <8230985e-1581-411f-895c-b49065234520@arm.com>
+Date: Wed, 7 Aug 2024 14:13:06 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/3] dma: improve DMA zone selection
+To: Baruch Siach <baruch@tkos.co.il>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+References: <cover.1722578375.git.baruch@tkos.co.il>
+ <5200f289af1a9b80dfd329b6ed3d54e1d4a02876.1722578375.git.baruch@tkos.co.il>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <5200f289af1a9b80dfd329b6ed3d54e1d4a02876.1722578375.git.baruch@tkos.co.il>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,75 +46,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu, jeffxu@google.com, jeffxu@chromium.org, oliver.sang@intel.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, torvalds@linux-foundation.org, pedro.falcato@gmail.com
+Cc: linux-s390@vger.kernel.org, Ramon Fried <ramon@neureality.ai>, =?UTF-8?B?UGV0ciBUZXNhxZnDrWs=?= <petr@tesarici.cz>, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Linus noticed that the error handling in __arch_setup_additional_pages()
-fails to clear the mm VDSO pointer if _install_special_mapping()
-fails. In practice there should be no actual bug, because if there's an
-error the VDSO pointer is cleared later in arch_setup_additional_pages().
+On 2024-08-02 7:03 am, Baruch Siach wrote:
+> When device DMA limit does not fit in DMA32 zone it should use DMA zone,
+> even when DMA zone is stricter than needed.
+> 
+> Same goes for devices that can't allocate from the entire normal zone.
+> Limit to DMA32 in that case.
 
-However it's no longer necessary to set the pointer before installing
-the mapping. Commit c1bab64360e6 ("powerpc/vdso: Move to
-_install_special_mapping() and remove arch_vma_name()") reworked the
-code so that the VMA name comes from the vm_special_mapping.name, rather
-than relying on arch_vma_name().
+Per the bot report this only works for CONFIG_ARCH_KEEP_MEMBLOCK, 
+however the whole concept looks wrong anyway. The logic here is that 
+we're only forcing a particular zone if there's *no* chance of the 
+higher zone being usable. For example, ignoring offsets for simplicity, 
+if we have a 40-bit DMA mask then we *do* want to initially try 
+allocating from ZONE_NORMAL even if max_pfn is above 40 bits, since we 
+still might get a usable allocation from between 32 and 40 bits, and if 
+we don't, then we'll fall back to retrying from the DMA zone(s) anyway.
 
-So rework the code to only set the VDSO pointer once the mappings have
-been installed correctly, and remove the stale comment.
+I'm not sure if the rest of the series functionally depends on this 
+change, but I think it would be too needlessly restrictive in the 
+general case to be justified.
 
-Depends-on: c1bab64360e6 ("powerpc/vdso: Move to _install_special_mapping() and remove arch_vma_name()")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kernel/vdso.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+Thanks,
+Robin.
 
-diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
-index 220a76cae7c1..ee4b9d676cff 100644
---- a/arch/powerpc/kernel/vdso.c
-+++ b/arch/powerpc/kernel/vdso.c
-@@ -214,13 +214,6 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
- 	/* Add required alignment. */
- 	vdso_base = ALIGN(vdso_base, VDSO_ALIGNMENT);
- 
--	/*
--	 * Put vDSO base into mm struct. We need to do this before calling
--	 * install_special_mapping or the perf counter mmap tracking code
--	 * will fail to recognise it as a vDSO.
--	 */
--	mm->context.vdso = (void __user *)vdso_base + vvar_size;
--
- 	vma = _install_special_mapping(mm, vdso_base, vvar_size,
- 				       VM_READ | VM_MAYREAD | VM_IO |
- 				       VM_DONTDUMP | VM_PFNMAP, &vvar_spec);
-@@ -240,10 +233,15 @@ static int __arch_setup_additional_pages(struct linux_binprm *bprm, int uses_int
- 	vma = _install_special_mapping(mm, vdso_base + vvar_size, vdso_size,
- 				       VM_READ | VM_EXEC | VM_MAYREAD |
- 				       VM_MAYWRITE | VM_MAYEXEC, vdso_spec);
--	if (IS_ERR(vma))
-+	if (IS_ERR(vma)) {
- 		do_munmap(mm, vdso_base, vvar_size, NULL);
-+		return PTR_ERR(vma);
-+	}
- 
--	return PTR_ERR_OR_ZERO(vma);
-+	// Now that the mappings are in place, set the mm VDSO pointer
-+	mm->context.vdso = (void __user *)vdso_base + vvar_size;
-+
-+	return 0;
- }
- 
- int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
-@@ -257,8 +255,6 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- 		return -EINTR;
- 
- 	rc = __arch_setup_additional_pages(bprm, uses_interp);
--	if (rc)
--		mm->context.vdso = NULL;
- 
- 	mmap_write_unlock(mm);
- 	return rc;
--- 
-2.45.2
-
+> Reported-by: Catalin Marinas <catalin.marinas@arm.com>
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> ---
+>   kernel/dma/direct.c  | 6 +++---
+>   kernel/dma/swiotlb.c | 4 ++--
+>   2 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index 4480a3cd92e0..3b4be4ca3b08 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -4,7 +4,7 @@
+>    *
+>    * DMA operations that map physical memory directly without using an IOMMU.
+>    */
+> -#include <linux/memblock.h> /* for max_pfn */
+> +#include <linux/memblock.h>
+>   #include <linux/export.h>
+>   #include <linux/mm.h>
+>   #include <linux/dma-map-ops.h>
+> @@ -59,9 +59,9 @@ static gfp_t dma_direct_optimal_gfp_mask(struct device *dev, u64 *phys_limit)
+>   	 * zones.
+>   	 */
+>   	*phys_limit = dma_to_phys(dev, dma_limit);
+> -	if (*phys_limit <= DMA_BIT_MASK(zone_dma_bits))
+> +	if (*phys_limit < DMA_BIT_MASK(32))
+>   		return GFP_DMA;
+> -	if (*phys_limit <= DMA_BIT_MASK(32))
+> +	if (*phys_limit < memblock_end_of_DRAM())
+>   		return GFP_DMA32;
+>   	return 0;
+>   }
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index df68d29740a0..043b0ecd3e8d 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -629,9 +629,9 @@ static struct page *swiotlb_alloc_tlb(struct device *dev, size_t bytes,
+>   	}
+>   
+>   	gfp &= ~GFP_ZONEMASK;
+> -	if (phys_limit <= DMA_BIT_MASK(zone_dma_bits))
+> +	if (phys_limit < DMA_BIT_MASK(32))
+>   		gfp |= __GFP_DMA;
+> -	else if (phys_limit <= DMA_BIT_MASK(32))
+> +	else if (phys_limit < memblock_end_of_DRAM())
+>   		gfp |= __GFP_DMA32;
+>   
+>   	while (IS_ERR(page = alloc_dma_pages(gfp, bytes, phys_limit))) {
