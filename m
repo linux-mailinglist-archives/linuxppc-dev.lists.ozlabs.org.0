@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C52F94A135
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 08:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F1094A136
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 08:58:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XM950jeC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TpOTM67A;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf1G36q1Fz3dBt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:57:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf1Gq6BM7z2ysc
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:58:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XM950jeC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TpOTM67A;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf10N6nxSz3d89
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 16:45:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf10c5fQkz3ck2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 16:46:08 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 39CCD6068B;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1CF54610A7;
+	Wed,  7 Aug 2024 06:46:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71308C32782;
 	Wed,  7 Aug 2024 06:45:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A373C4AF0B;
-	Wed,  7 Aug 2024 06:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723013154;
-	bh=OCx7lfgFGjAEeUiwtElmSuqIbdvnm7k92anqfUYoh0s=;
+	s=k20201202; t=1723013166;
+	bh=xtyp1aK60EfICyd3Io+QgKdHfXGFeq+Z56Dgry0dtM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XM950jeCpSdlu41MPZc1y/9dEq7us9fAO8r71hCEF8iq2a6Uu/JfK6Z/WSllE7rY3
-	 FRHRdygvzb0cZTkjbyWJIVnsnTpO/Pdhal4lTxhffbAEa3S+gzZRAIHULPBbMB/LqF
-	 rO5vCvkh+DXCCGEIC0aWbMtJndHze4w74zRDtZgd4SAZuCfqTWNRagoFjgSe4DM8U6
-	 xTqln8Tha0P1NvvOE1slC2/4bxzh+S/fEiaepYzDVATy6YZnje13MioKLCKJ9V/+dE
-	 lhsywFbgxkFBg1/K+/0LFx8WTBgZrXzM5yk3w97PQ6GIiwbgTWOREdkCaZ0pqJsdg7
-	 t+Y9qPjzQ4OSg==
+	b=TpOTM67AOTzvj7jGvqTTRV42/hYfB216T8cxTT6eXWBJxxh7VMeO/KAdg2yE6YN8B
+	 5T0zSRxo1Vq5VQfE4rYBoZyHw6RpHAebolAkGFMob0FiaAmFMHmzesF4Fyw4Ze2hga
+	 Ig8VwKMmaE3QO39fEe5Mn5sfzQD5jFeMrtdd1dBT1E3Yj78/et7lzPPyG2Y7Yygd3Z
+	 oQyABhMKKqvXz2CYuQaywqjGjY9QtjuO+wVSwUFyPL2qhpPc74SfEERLyfkSbQ5qzz
+	 fIRkz32UsqwDqrZ27zJ5m7GVr3WmdkA5djl1Ok0FaGxYFslB7iQcuMiVbEg4cEUPVe
+	 o5lI5qZyQrQ3A==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v4 22/26] mm: numa_memblks: use memblock_{start,end}_of_DRAM() when sanitizing meminfo
-Date: Wed,  7 Aug 2024 09:41:06 +0300
-Message-ID: <20240807064110.1003856-23-rppt@kernel.org>
+Subject: [PATCH v4 23/26] of, numa: return -EINVAL when no numa-node-id is found
+Date: Wed,  7 Aug 2024 09:41:07 +0300
+Message-ID: <20240807064110.1003856-24-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240807064110.1003856-1-rppt@kernel.org>
 References: <20240807064110.1003856-1-rppt@kernel.org>
@@ -65,38 +65,51 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-numa_cleanup_meminfo() moves blocks outside system RAM to
-numa_reserved_meminfo and it uses 0 and PFN_PHYS(max_pfn) to determine
-the memory boundaries.
+Currently of_numa_parse_memory_nodes() returns 0 if no "memory" node in
+device tree contains "numa-node-id" property. This makes of_numa_init()
+to return "success" despite no NUMA nodes were actually parsed and set
+up.
 
-Replace the memory range boundaries with more portable
-memblock_start_of_DRAM() and memblock_end_of_DRAM().
+arch_numa workarounds this by returning an error if numa_nodes_parsed is
+empty.
+
+numa_memblks however would WARN() in such case and since it will be used
+by arch_numa shortly, such warning is not desirable.
+
+Make sure of_numa_init() returns -EINVAL when no NUMA node information
+was found in the device tree.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> [arm64 + CXL via QEMU]
 Acked-by: Dan Williams <dan.j.williams@intel.com>
 Acked-by: David Hildenbrand <david@redhat.com>
 ---
- mm/numa_memblks.c | 4 ++--
+ drivers/of/of_numa.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index e97665a5e8ce..e4358ad92233 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -212,8 +212,8 @@ int __init numa_add_memblk(int nid, u64 start, u64 end)
-  */
- int __init numa_cleanup_meminfo(struct numa_meminfo *mi)
- {
--	const u64 low = 0;
--	const u64 high = PFN_PHYS(max_pfn);
-+	const u64 low = memblock_start_of_DRAM();
-+	const u64 high = memblock_end_of_DRAM();
- 	int i, j, k;
+diff --git a/drivers/of/of_numa.c b/drivers/of/of_numa.c
+index 838747e319a2..2ec20886d176 100644
+--- a/drivers/of/of_numa.c
++++ b/drivers/of/of_numa.c
+@@ -45,7 +45,7 @@ static int __init of_numa_parse_memory_nodes(void)
+ 	struct device_node *np = NULL;
+ 	struct resource rsrc;
+ 	u32 nid;
+-	int i, r;
++	int i, r = -EINVAL;
  
- 	/* first, trim all entries */
+ 	for_each_node_by_type(np, "memory") {
+ 		r = of_property_read_u32(np, "numa-node-id", &nid);
+@@ -72,7 +72,7 @@ static int __init of_numa_parse_memory_nodes(void)
+ 		}
+ 	}
+ 
+-	return 0;
++	return r;
+ }
+ 
+ static int __init of_numa_parse_distance_map_v1(struct device_node *map)
 -- 
 2.43.0
 
