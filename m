@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4507E94A045
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 08:45:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D560094A057
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 08:46:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MbbLigKJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rog+aUVA;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf1081PFMz3cnR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:45:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf10w5Tjgz3dCV
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:46:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MbbLigKJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rog+aUVA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf0wW0PS7z3cl3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 16:42:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf0wk4x7Tz3cl3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 16:42:46 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 7FAC9CE0FBB;
+	by dfw.source.kernel.org (Postfix) with ESMTP id DBF0F61053;
+	Wed,  7 Aug 2024 06:42:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAE5C4AF14;
 	Wed,  7 Aug 2024 06:42:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A02C32782;
-	Wed,  7 Aug 2024 06:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723012952;
-	bh=hJu59tJbLI3PlCz/cGNoW6fe2qTLoCKnwD220y569KE=;
+	s=k20201202; t=1723012964;
+	bh=kJZJfhu5nor6HOX0azj8voc5RTepeR8//6fd4ZIyi1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbbLigKJKRRf8ddBJHhFFFrkKUsZo2nEhdlE5oY4SSZyO6I2qK671zc77oWJILbXy
-	 0c5sXpcAi+4L1uKATX1LeGPTN4QpOgO/9m8wuzkLEJIrSB10mqAH+7oJJvOuAL+h6F
-	 xq1azMrqrN5HPkhNiJry8Z6MvAG8sgIzjZ/JpmdKBg5MH0734xjFruaS0dU7oUgvT3
-	 ImmmgQW9j9kkIk13RI3KmECAwqPl7/hV1JbLrLUVFAwscH3fSf8zBpCgZRLh1MgP0a
-	 RQki6mbaFlYoiNyRwjPMjquLHgmLbqrq5ftQP6Pkr+DIIsRG+EZQAhs2N4BJv+whb8
-	 ug9/aB6qsdrVw==
+	b=Rog+aUVAyug778VDrB9/Oq2AwEvuWRbs5jb4+bSQp/DEWop+GMEckTmCSRFIoycfx
+	 DMhE4Ga+iUFapLeyEqADham2k/DVLfJeQbLHi8/sjHkPkpXEocc6ukquUxut1JzX2x
+	 74Q9UAsgL8FhIRZPpPI6WpdC3CilhDNZd71tEMoP0/vX3K8uwfMfe9z6lfEcy1AmnR
+	 K5BE3tc1oOJh08t8sou3tFPT5aAqbWlymO2/UNw0NBb0qcA+NWG/PcKOqDshjEnsO4
+	 tPHQ4N/pr9kW7KLMlCOsnarQ7aFfHOtdNG8Vj3iPXmuCjmd0FrR6s5UD9S5kMFxUKq
+	 hZ8AO8dPcvfhg==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v4 05/26] MIPS: loongson64: rename __node_data to node_data
-Date: Wed,  7 Aug 2024 09:40:49 +0300
-Message-ID: <20240807064110.1003856-6-rppt@kernel.org>
+Subject: [PATCH v4 06/26] MIPS: loongson64: drop HAVE_ARCH_NODEDATA_EXTENSION
+Date: Wed,  7 Aug 2024 09:40:50 +0300
+Message-ID: <20240807064110.1003856-7-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240807064110.1003856-1-rppt@kernel.org>
 References: <20240807064110.1003856-1-rppt@kernel.org>
@@ -65,68 +65,67 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Make definition of node_data match other architectures.
-This will allow pulling declaration of node_data to the generic mm code in
-the following commit.
+Commit f8f9f21c7848 ("MIPS: Fix build error for loongson64 and
+sgi-ip27") added HAVE_ARCH_NODEDATA_EXTENSION to loongson64 to silence a
+compilation error that happened because loongson64 didn't define array
+of pg_data_t as node_data like most other architectures did.
+
+After rename of __node_data to node_data arch_alloc_nodedata() and
+HAVE_ARCH_NODEDATA_EXTENSION can be dropped from loongson64.
+
+Since it was the only user of HAVE_ARCH_NODEDATA_EXTENSION config option
+also remove this option from arch/mips/Kconfig.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> [arm64 + CXL via QEMU]
 Acked-by: Dan Williams <dan.j.williams@intel.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 ---
- arch/mips/include/asm/mach-loongson64/mmzone.h | 4 ++--
- arch/mips/loongson64/numa.c                    | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/mips/Kconfig           |  4 ----
+ arch/mips/loongson64/numa.c | 10 ----------
+ 2 files changed, 14 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-loongson64/mmzone.h b/arch/mips/include/asm/mach-loongson64/mmzone.h
-index a3d65d37b8b5..2effd5f8ed62 100644
---- a/arch/mips/include/asm/mach-loongson64/mmzone.h
-+++ b/arch/mips/include/asm/mach-loongson64/mmzone.h
-@@ -14,9 +14,9 @@
- #define pa_to_nid(addr)  (((addr) & 0xf00000000000) >> NODE_ADDRSPACE_SHIFT)
- #define nid_to_addrbase(nid) ((unsigned long)(nid) << NODE_ADDRSPACE_SHIFT)
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index ea5f3c3c31f6..43da6d596e2b 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -502,7 +502,6 @@ config MACH_LOONGSON64
+ 	select USE_OF
+ 	select BUILTIN_DTB
+ 	select PCI_HOST_GENERIC
+-	select HAVE_ARCH_NODEDATA_EXTENSION if NUMA
+ 	help
+ 	  This enables the support of Loongson-2/3 family of machines.
  
--extern struct pglist_data *__node_data[];
-+extern struct pglist_data *node_data[];
+@@ -2612,9 +2611,6 @@ config NUMA
+ config SYS_SUPPORTS_NUMA
+ 	bool
  
--#define NODE_DATA(n)		(__node_data[n])
-+#define NODE_DATA(n)		(node_data[n])
- 
- extern void __init prom_init_numa_memory(void);
- 
+-config HAVE_ARCH_NODEDATA_EXTENSION
+-	bool
+-
+ config RELOCATABLE
+ 	bool "Relocatable kernel"
+ 	depends on SYS_SUPPORTS_RELOCATABLE
 diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
-index 68dafd6d3e25..b50ce28d2741 100644
+index b50ce28d2741..64fcfaa885b6 100644
 --- a/arch/mips/loongson64/numa.c
 +++ b/arch/mips/loongson64/numa.c
-@@ -29,8 +29,8 @@
- 
- unsigned char __node_distances[MAX_NUMNODES][MAX_NUMNODES];
- EXPORT_SYMBOL(__node_distances);
--struct pglist_data *__node_data[MAX_NUMNODES];
--EXPORT_SYMBOL(__node_data);
-+struct pglist_data *node_data[MAX_NUMNODES];
-+EXPORT_SYMBOL(node_data);
- 
- cpumask_t __node_cpumask[MAX_NUMNODES];
- EXPORT_SYMBOL(__node_cpumask);
-@@ -107,7 +107,7 @@ static void __init node_mem_init(unsigned int node)
- 	tnid = early_pfn_to_nid(nd_pa >> PAGE_SHIFT);
- 	if (tnid != node)
- 		pr_info("NODE_DATA(%d) on node %d\n", node, tnid);
--	__node_data[node] = nd;
-+	node_data[node] = nd;
- 	NODE_DATA(node)->node_start_pfn = start_pfn;
- 	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
- 
-@@ -206,5 +206,5 @@ pg_data_t * __init arch_alloc_nodedata(int nid)
- 
- void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
- {
--	__node_data[nid] = pgdat;
-+	node_data[nid] = pgdat;
+@@ -198,13 +198,3 @@ void __init prom_init_numa_memory(void)
+ 	pr_info("CP0_PageGrain: CP0 5.1 (0x%x)\n", read_c0_pagegrain());
+ 	prom_meminit();
  }
+-
+-pg_data_t * __init arch_alloc_nodedata(int nid)
+-{
+-	return memblock_alloc(sizeof(pg_data_t), SMP_CACHE_BYTES);
+-}
+-
+-void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
+-{
+-	node_data[nid] = pgdat;
+-}
 -- 
 2.43.0
 
