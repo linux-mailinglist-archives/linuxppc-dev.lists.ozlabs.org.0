@@ -1,88 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A0494B0A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 21:49:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AF494B0AB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 21:51:07 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XGAWFOvG;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PODobSHL;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Eq8hOgk3;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZvlrfpGu;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfLNg3w0fz3d8K
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 05:49:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfLQK2kBSz3dHV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 05:51:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XGAWFOvG;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PODobSHL;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Eq8hOgk3;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZvlrfpGu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfLMD4XFGz3d8K
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 05:48:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfLMG673zz3dFL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 05:48:26 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723060101;
+	s=mimecast20190719; t=1723060103;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6aC2RF+//p0GJfjgH/iZrlW9ATLJl4mVfe8Rdc4jHgk=;
-	b=XGAWFOvG4zuw1lxUHs7LeSvHNCITA/C2mNJZXN9EGvTUgcye0ReTxjX7whZ71KtY/Usvhz
-	NnogIvD+pOob5/EbH9RUIJFIl38Lsd3Ml01rQmDuaJhpiDvQbZsQizJ75e1oj1Hw4ZZR93
-	hXkSMymI5PhkkM15GGtLleUIE7AYeyk=
+	bh=DPSgdrK+/9txvlBVeWURx0wHDXuvLt3nB8aMlUhEkV8=;
+	b=Eq8hOgk3eeaZwWxSy7wISbkn0rD4pV0TMF5t2z5CgEyjm2siE+ntbXQ7Lq6vdX70spKXaK
+	fCVOrS54DGe6L9CTz1GzQ/+hUy0kHtAVjfaG4gdTVI9KsUy/pCiKtmbjgCPjnRsPfqJ5W6
+	DjW5g+nkKgqvD6EgsrlGw5sf+2rJkPc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723060102;
+	s=mimecast20190719; t=1723060104;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6aC2RF+//p0GJfjgH/iZrlW9ATLJl4mVfe8Rdc4jHgk=;
-	b=PODobSHL9U/z+Itf4YhoZ/dBLtHitahnMQqNSlrQuYMJxxQV3svaChA4tUsbR5shpZUGVl
-	V61dGf9mgUtQqPvg6kd/LCQFGjlhuORrmTmG2mvaL4D4SHvWKPUHuKL5S7uSqt1Uqri63b
-	dhHB9kUdGkK16gkybykW/tZtX60DTmk=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=DPSgdrK+/9txvlBVeWURx0wHDXuvLt3nB8aMlUhEkV8=;
+	b=ZvlrfpGunAYik7lEe5hIbJxFhcW+bWZfQdbDPutfp6Vj01XLL+0Ja8GP2aplk8F8i82Uep
+	wP/eDoKYEqsurGaK3rNPkJwQxWGuOLi5OUNeGc6lovXdncsOzLyOi4bY/k6Q3RQH7gJ2D0
+	6Lgw6MBtKmE795T8pxFdLwJKi/F1IbE=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-GvuIPZ8xNsSd5UoA1UA4vQ-1; Wed, 07 Aug 2024 15:48:20 -0400
-X-MC-Unique: GvuIPZ8xNsSd5UoA1UA4vQ-1
-Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-8257c3b4904so17715241.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 12:48:20 -0700 (PDT)
+ us-mta-518-rPDZ2hX3Mb6e7lwu638kiA-1; Wed, 07 Aug 2024 15:48:22 -0400
+X-MC-Unique: rPDZ2hX3Mb6e7lwu638kiA-1
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-3db16c5eabeso58298b6e.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 12:48:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723060099; x=1723664899;
+        d=1e100.net; s=20230601; t=1723060101; x=1723664901;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6aC2RF+//p0GJfjgH/iZrlW9ATLJl4mVfe8Rdc4jHgk=;
-        b=na51piB9kETl2Rh+9qiu9wUVORoHiyt7wA0fdmqWXBR8rKZEFxzccJt5PpoMjhys+D
-         dM4CFvfWkRvVWfyTXPnj4BXUIqI6hiMvRL42cbeHMjwk+cvhsf0ORH3yO+83eYgylmlC
-         MU9UM9owzNjYFAtXcb0xm0xU+aQjOczYKQdKqsz+hN4qhEkoLfBUKKdxDPiOu1ZMRVXD
-         /KPvZ4CYiCPYlAA59TJmh/z15AQjK42gI+pzaX9sdCXay8zpBGye7v6irbw7wHyu3BRh
-         Hjzlb/XPuJU3JccDLe/nfuWQ73oxvIgEreYxhG/KUK5d9m1PFM9u+rcFnvZ1KWpZFXfw
-         O+sQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVk2CL+FRuPCngkxtgDvsjiJOl5uQWia8Hic8/LrE8g/ja9h3XQoT3ryfQXS5Ys+mkvV9Xm4r7ggUvlxr8o8F4U9bUrKJhOwXszIjfH4Q==
-X-Gm-Message-State: AOJu0YwbbPHsflkz5lNlOFDxYIH96bSX7GX+kzLUvDqHYs3D+OuyJl97
-	PqdABk21t1MAT8cZvdx8enHAII6ujQoDZWuafVE3Ffn4r9D8ULH6aLmyb4p8GXUHh6l3VnAhWOu
-	DU2E35WU0h74oZt4YD2kLFtsEEYuqPci9xDj0X52i/Noo6LUqpRmDz4Fl4phIrYU=
-X-Received: by 2002:a67:f445:0:b0:493:c75f:4c71 with SMTP id ada2fe7eead31-4945bf7f9bemr10182699137.4.1723060099540;
-        Wed, 07 Aug 2024 12:48:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExnSrOtwcHXkdqrS3UwyseZPMUb/72Vd4NIKyn9I98RgoSLE2TM2KVGSHUSlSxMHs5MS4l7Q==
-X-Received: by 2002:a67:f445:0:b0:493:c75f:4c71 with SMTP id ada2fe7eead31-4945bf7f9bemr10182670137.4.1723060099151;
-        Wed, 07 Aug 2024 12:48:19 -0700 (PDT)
+        bh=DPSgdrK+/9txvlBVeWURx0wHDXuvLt3nB8aMlUhEkV8=;
+        b=RYD1VHNVib3laOv6keaxVYNf3WxxpTEN8sYPoicXi053WZbsWUplGYduyMSIUeB+LD
+         M7EtQsCc4Z/DKjpcN0uNWUX5ZS9YXIZNKM47Ic47hpZyPv46ElQgdHU4247IOyPJnTBw
+         KRDwR73yUj3+OYWPVgTEat893QTBODV4OgujmajYGE+SQRZ5LuewbDjpGljCWBfY76He
+         P9Q1f3k8wM2jhHHMKD/hHAlIei5BjxKJr6MrI88cfH7tkeLHEMauBbdb41qv5MABBFsD
+         O2rjsO9kkJGVAG4s7EFDaM5Gfi6zQTamVE3SkmnZ3ZA6gF0cDAHfySMi0P8fZWJnzJB4
+         W8Hw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtrpMyQo2BhY/LLe1CSds1tWVzhpwT3VKitNzHCciDRwHW1VAd1zFKHjXYSwFY+uIcKpHURSsYLhHfUs+UysqIGOi2UVFE8Ezie+mAMw==
+X-Gm-Message-State: AOJu0YxIY0dMIto4XccAvunS2+F1KQSoDv0KKGfausy25dvJeIQQ3OxN
+	3nwPzjIrkXklCtdQPGNLJCjxBu39Qe3xP4FV+8UQ8ATMdnGRqhGvlR0fJRysTtkEFYaCz/0PS/h
+	I524palRHUh4CBGO+dKkmhxno9hw2t/hBaoCbJoVZO5sA3EKyNVsdgxdfHSnHcEc=
+X-Received: by 2002:a05:6358:a096:b0:1aa:c73d:5a95 with SMTP id e5c5f4694b2df-1af3b89cddemr1270642555d.0.1723060101665;
+        Wed, 07 Aug 2024 12:48:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH//9GjXWmqzA+Y0OZdeiBZvOf2mh0xJt9rLdJnCDcBWQbkH3n97H6Shuw3uIhtGYCg2pjapA==
+X-Received: by 2002:a05:6358:a096:b0:1aa:c73d:5a95 with SMTP id e5c5f4694b2df-1af3b89cddemr1270641255d.0.1723060101168;
+        Wed, 07 Aug 2024 12:48:21 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb9c78ae4asm59853256d6.33.2024.08.07.12.48.17
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb9c78ae4asm59853256d6.33.2024.08.07.12.48.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 12:48:18 -0700 (PDT)
+        Wed, 07 Aug 2024 12:48:20 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 2/7] mm/mprotect: Push mmu notifier to PUDs
-Date: Wed,  7 Aug 2024 15:48:06 -0400
-Message-ID: <20240807194812.819412-3-peterx@redhat.com>
+Subject: [PATCH v4 3/7] mm/powerpc: Add missing pud helpers
+Date: Wed,  7 Aug 2024 15:48:07 -0400
+Message-ID: <20240807194812.819412-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240807194812.819412-1-peterx@redhat.com>
 References: <20240807194812.819412-1-peterx@redhat.com>
@@ -102,141 +102,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, peterx@redhat.com, Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>, David Rientjes <rientjes@google.com>, Dave Jiang <dave.jiang@intel.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Sean Christopherson <seanjc@google.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
+Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, peterx@redhat.com, Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-mprotect() does mmu notifiers in PMD levels.  It's there since 2014 of
-commit a5338093bfb4 ("mm: move mmu notifier call from change_protection to
-change_pmd_range").
+These new helpers will be needed for pud entry updates soon.  Introduce
+them by referencing the pmd ones.  Namely:
 
-At that time, the issue was that NUMA balancing can be applied on a huge
-range of VM memory, even if nothing was populated.  The notification can be
-avoided in this case if no valid pmd detected, which includes either THP or
-a PTE pgtable page.
+- pudp_invalidate()
+- pud_modify()
 
-Now to pave way for PUD handling, this isn't enough.  We need to generate
-mmu notifications even on PUD entries properly.  mprotect() is currently
-broken on PUD (e.g., one can easily trigger kernel error with dax 1G
-mappings already), this is the start to fix it.
-
-To fix that, this patch proposes to push such notifications to the PUD
-layers.
-
-There is risk on regressing the problem Rik wanted to resolve before, but I
-think it shouldn't really happen, and I still chose this solution because
-of a few reasons:
-
-  1) Consider a large VM that should definitely contain more than GBs of
-  memory, it's highly likely that PUDs are also none.  In this case there
-  will have no regression.
-
-  2) KVM has evolved a lot over the years to get rid of rmap walks, which
-  might be the major cause of the previous soft-lockup.  At least TDP MMU
-  already got rid of rmap as long as not nested (which should be the major
-  use case, IIUC), then the TDP MMU pgtable walker will simply see empty VM
-  pgtable (e.g. EPT on x86), the invalidation of a full empty region in
-  most cases could be pretty fast now, comparing to 2014.
-
-  3) KVM has explicit code paths now to even give way for mmu notifiers
-  just like this one, e.g. in commit d02c357e5bfa ("KVM: x86/mmu: Retry
-  fault before acquiring mmu_lock if mapping is changing").  It'll also
-  avoid contentions that may also contribute to a soft-lockup.
-
-  4) Stick with PMD layer simply don't work when PUD is there...  We need
-  one way or another to fix PUD mappings on mprotect().
-
-Pushing it to PUD should be the safest approach as of now, e.g. there's yet
-no sign of huge P4D coming on any known archs.
-
-Cc: kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Rik van Riel <riel@surriel.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- mm/mprotect.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  3 +++
+ arch/powerpc/mm/book3s64/pgtable.c           | 20 ++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 37cf8d249405..d423080e6509 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -363,9 +363,6 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
- 	unsigned long next;
- 	long pages = 0;
- 	unsigned long nr_huge_updates = 0;
--	struct mmu_notifier_range range;
--
--	range.start = 0;
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 519b1743a0f4..5da92ba68a45 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -1124,6 +1124,7 @@ extern pmd_t pfn_pmd(unsigned long pfn, pgprot_t pgprot);
+ extern pud_t pfn_pud(unsigned long pfn, pgprot_t pgprot);
+ extern pmd_t mk_pmd(struct page *page, pgprot_t pgprot);
+ extern pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot);
++extern pud_t pud_modify(pud_t pud, pgprot_t newprot);
+ extern void set_pmd_at(struct mm_struct *mm, unsigned long addr,
+ 		       pmd_t *pmdp, pmd_t pmd);
+ extern void set_pud_at(struct mm_struct *mm, unsigned long addr,
+@@ -1384,6 +1385,8 @@ static inline pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm,
+ #define __HAVE_ARCH_PMDP_INVALIDATE
+ extern pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ 			     pmd_t *pmdp);
++extern pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
++			     pud_t *pudp);
  
- 	pmd = pmd_offset(pud, addr);
- 	do {
-@@ -383,14 +380,6 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
- 		if (pmd_none(*pmd))
- 			goto next;
- 
--		/* invoke the mmu notifier if the pmd is populated */
--		if (!range.start) {
--			mmu_notifier_range_init(&range,
--				MMU_NOTIFY_PROTECTION_VMA, 0,
--				vma->vm_mm, addr, end);
--			mmu_notifier_invalidate_range_start(&range);
--		}
--
- 		_pmd = pmdp_get_lockless(pmd);
- 		if (is_swap_pmd(_pmd) || pmd_trans_huge(_pmd) || pmd_devmap(_pmd)) {
- 			if ((next - addr != HPAGE_PMD_SIZE) ||
-@@ -431,9 +420,6 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
- 		cond_resched();
- 	} while (pmd++, addr = next, addr != end);
- 
--	if (range.start)
--		mmu_notifier_invalidate_range_end(&range);
--
- 	if (nr_huge_updates)
- 		count_vm_numa_events(NUMA_HUGE_PTE_UPDATES, nr_huge_updates);
- 	return pages;
-@@ -443,22 +429,36 @@ static inline long change_pud_range(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma, p4d_t *p4d, unsigned long addr,
- 		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
- {
-+	struct mmu_notifier_range range;
- 	pud_t *pud;
- 	unsigned long next;
- 	long pages = 0, ret;
- 
-+	range.start = 0;
-+
- 	pud = pud_offset(p4d, addr);
- 	do {
- 		next = pud_addr_end(addr, end);
- 		ret = change_prepare(vma, pud, pmd, addr, cp_flags);
--		if (ret)
--			return ret;
-+		if (ret) {
-+			pages = ret;
-+			break;
-+		}
- 		if (pud_none_or_clear_bad(pud))
- 			continue;
-+		if (!range.start) {
-+			mmu_notifier_range_init(&range,
-+						MMU_NOTIFY_PROTECTION_VMA, 0,
-+						vma->vm_mm, addr, end);
-+			mmu_notifier_invalidate_range_start(&range);
-+		}
- 		pages += change_pmd_range(tlb, vma, pud, addr, next, newprot,
- 					  cp_flags);
- 	} while (pud++, addr = next, addr != end);
- 
-+	if (range.start)
-+		mmu_notifier_invalidate_range_end(&range);
-+
- 	return pages;
+ #define pmd_move_must_withdraw pmd_move_must_withdraw
+ struct spinlock;
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index f4d8d3c40e5c..5a4a75369043 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -176,6 +176,17 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ 	return __pmd(old_pmd);
  }
  
++pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
++		      pud_t *pudp)
++{
++	unsigned long old_pud;
++
++	VM_WARN_ON_ONCE(!pud_present(*pudp));
++	old_pud = pud_hugepage_update(vma->vm_mm, address, pudp, _PAGE_PRESENT, _PAGE_INVALID);
++	flush_pud_tlb_range(vma, address, address + HPAGE_PUD_SIZE);
++	return __pud(old_pud);
++}
++
+ pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
+ 				   unsigned long addr, pmd_t *pmdp, int full)
+ {
+@@ -259,6 +270,15 @@ pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
+ 	pmdv &= _HPAGE_CHG_MASK;
+ 	return pmd_set_protbits(__pmd(pmdv), newprot);
+ }
++
++pud_t pud_modify(pud_t pud, pgprot_t newprot)
++{
++	unsigned long pudv;
++
++	pudv = pud_val(pud);
++	pudv &= _HPAGE_CHG_MASK;
++	return pud_set_protbits(__pud(pudv), newprot);
++}
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ /* For use by kexec, called with MMU off */
 -- 
 2.45.0
 
