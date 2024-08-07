@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC32094A0AD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 08:49:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA57C94A0C1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 08:49:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MwQbjBVK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hDRdDA/l;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf14B4W6Cz3d9t
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:49:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf14z518Tz30Vl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:49:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MwQbjBVK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hDRdDA/l;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf0xd6vRcz3cCh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 16:43:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf0xs60trz3cyd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 16:43:45 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3975061175;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1DE9961053;
+	Wed,  7 Aug 2024 06:43:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F386C4AF11;
 	Wed,  7 Aug 2024 06:43:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90229C32782;
-	Wed,  7 Aug 2024 06:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723013011;
-	bh=oI0PgIj2KycFldDjpn7t4up1B9CyY8k+mV9pmYYqhIc=;
+	s=k20201202; t=1723013023;
+	bh=z1tvzLwVQupdd5YP18LBkr+zFWp2hYL/iiPQUBBfufQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwQbjBVKjQqb4wvlUKk+TvUzuSfMVWniCHu/HcU7BSTWqSXo3UJM+bVzPh8FcFdBv
-	 DeWCt2T4+0qdL3hz9ZqqW0dE9SlBcxOVVmyabru0iOG0hiJtyM79loZFzgQu3qtlbF
-	 KZym6bNAkjulkyU4p59qFVDEB+pr4p26qJiPpd4RrPwnjO81rPE1gcFUvs52RA7xwX
-	 cAR47FIRG3ACzj84LkbB2Pg0I15b0pRDvImCww1cL/G+YFJmmgyNLKFRPtoHZ1OsRg
-	 Xkr1cXHPofbicNDYDN0/AGjV8FFB0naD0WJzlbdduxBKy3u7qdN/nSDGtG3ua8xHE8
-	 azsdImVG7Eu1g==
+	b=hDRdDA/lxS8VfK8wC5yb3tmPmjl50wFcKmVgBjGxgDk8HQLmwl3SGvoUvu+EM/Tpp
+	 XjgG/j3wZA4DBURcT5ewqCF84ynMGOEVNLo6TxlzqK8oXnuSwYW16iv9GzfnNqadL3
+	 +DCvuXfy/Byf+dUmwQR49oIDqfouiICjdE+T3uT/kExCSmPnx7zfCIW72pVCLB2Of3
+	 /JCB4fvmP/jngYxGhKNDzi0s3hShAvTAqgd4TJftIewmUIDhXFRbTD+I5i1B/Eiixu
+	 ZC9+RBPsYGbT3VNXgXZzFawEZu/9YdgGypGIXfno6EQ11MOITsFb/HtNhBzW6kQWnL
+	 13te2YZcY92nQ==
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v4 10/26] x86/numa: simplify numa_distance allocation
-Date: Wed,  7 Aug 2024 09:40:54 +0300
-Message-ID: <20240807064110.1003856-11-rppt@kernel.org>
+Subject: [PATCH v4 11/26] x86/numa: use get_pfn_range_for_nid to verify that node spans memory
+Date: Wed,  7 Aug 2024 09:40:55 +0300
+Message-ID: <20240807064110.1003856-12-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240807064110.1003856-1-rppt@kernel.org>
 References: <20240807064110.1003856-1-rppt@kernel.org>
@@ -65,14 +65,10 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Allocation of numa_distance uses memblock_phys_alloc_range() to limit
-allocation to be below the last mapped page.
+Instead of looping over numa_meminfo array to detect node's start and
+end addresses use get_pfn_range_for_init().
 
-But NUMA initializaition runs after the direct map is populated and
-there is also code in setup_arch() that adjusts memblock limit to
-reflect how much memory is already mapped in the direct map.
-
-Simplify the allocation of numa_distance and use plain memblock_alloc().
+This is shorter and make it easier to lift numa_memblks to generic code.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
@@ -81,40 +77,38 @@ Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> [arm64 + CXL via QEMU]
 Acked-by: Dan Williams <dan.j.williams@intel.com>
 Acked-by: David Hildenbrand <david@redhat.com>
 ---
- arch/x86/mm/numa.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/x86/mm/numa.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 5e1dde26674b..edfc38803779 100644
+index edfc38803779..30b0ec801b02 100644
 --- a/arch/x86/mm/numa.c
 +++ b/arch/x86/mm/numa.c
-@@ -331,7 +331,6 @@ static int __init numa_alloc_distance(void)
- 	nodemask_t nodes_parsed;
- 	size_t size;
- 	int i, j, cnt = 0;
--	u64 phys;
+@@ -521,17 +521,14 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
  
- 	/* size the new table and allocate it */
- 	nodes_parsed = numa_nodes_parsed;
-@@ -342,16 +341,14 @@ static int __init numa_alloc_distance(void)
- 	cnt++;
- 	size = cnt * cnt * sizeof(numa_distance[0]);
+ 	/* Finally register nodes. */
+ 	for_each_node_mask(nid, node_possible_map) {
+-		u64 start = PFN_PHYS(max_pfn);
+-		u64 end = 0;
++		unsigned long start_pfn, end_pfn;
  
--	phys = memblock_phys_alloc_range(size, PAGE_SIZE, 0,
--					 PFN_PHYS(max_pfn_mapped));
--	if (!phys) {
-+	numa_distance = memblock_alloc(size, PAGE_SIZE);
-+	if (!numa_distance) {
- 		pr_warn("Warning: can't allocate distance table!\n");
- 		/* don't retry until explicitly reset */
- 		numa_distance = (void *)1LU;
- 		return -ENOMEM;
- 	}
+-		for (i = 0; i < mi->nr_blks; i++) {
+-			if (nid != mi->blk[i].nid)
+-				continue;
+-			start = min(mi->blk[i].start, start);
+-			end = max(mi->blk[i].end, end);
+-		}
+-
+-		if (start >= end)
++		/*
++		 * Note, get_pfn_range_for_nid() depends on
++		 * memblock_set_node() having already happened
++		 */
++		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
++		if (start_pfn >= end_pfn)
+ 			continue;
  
--	numa_distance = __va(phys);
- 	numa_distance_cnt = cnt;
- 
- 	/* fill with the default distances */
+ 		alloc_node_data(nid);
 -- 
 2.43.0
 
