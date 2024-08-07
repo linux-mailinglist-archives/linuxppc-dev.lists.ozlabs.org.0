@@ -1,90 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 892F294A148
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 09:01:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A89F494A31F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 10:44:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=kPhH75tf;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=DJX1D3Qs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=aFmvoyEc;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf1L23Jwkz3d8F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 17:01:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wf3dM666rz3d9T
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 18:44:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=kPhH75tf;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=DJX1D3Qs;
+	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=aFmvoyEc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.143; helo=flow8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from flow8-smtp.messagingengine.com (flow8-smtp.messagingengine.com [103.168.172.143])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::331; helo=mail-ot1-x331.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf1J00gTcz3dC5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 16:59:26 +1000 (AEST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 52279201084;
-	Wed,  7 Aug 2024 02:59:23 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute4.internal (MEProxy); Wed, 07 Aug 2024 02:59:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1723013963;
-	 x=1723021163; bh=FeNTTWWA5ehqGUK/ykoVQRn5aOHJYvmKcULV7Bb3w+o=; b=
-	kPhH75tfZYNQZZn5b4ZTyTUJkEwDswZvtVxsA4I1kYYHJT9hm6Y1VWq1tWoRdBr2
-	5gcBvejk5u6w6xKKbpBKwnhLRlsLhO9eQUqJWCA+btbwX9ngh+x0EMbsvrrTdurE
-	xpzX7LS9Lhl1ZeTCcGI88lLtBUG3WdAQOw0MkNqzmyryl38Rfs0Hxm5tgzSKr4jP
-	FndM/8x4bIHcTFdnwjdTaScHkNMTMQT6UWqmZgTXDn+FulQ3eTrzHm2J2m2zT0hd
-	lWadi0s/oUZYjUbYUYH3dBNHYNH5Hgd9tJnC9YxtPeG49Jb50z1u1bvmjUjO5Rw1
-	0pmH62zjtpVTK4nq8eJMFA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723013963; x=
-	1723021163; bh=FeNTTWWA5ehqGUK/ykoVQRn5aOHJYvmKcULV7Bb3w+o=; b=D
-	JX1D3Qss3Ge1TnNidK/zkvKY/8JNrKtEIApToVgGiC42kGtqI8ow6AGVUOAMbazW
-	itBUjWk7aqA8yzNfj892AZR3IHGTb9zwLEgUzS+hIBK5Li2OvlE3ONpYl/0zE/5z
-	h3soTk1czdmBNxcV5RI4Do6avSG2cQvjSpC45gT6FmO3Qj+xS+dn/cKTfw+I2rct
-	z4jv6Eo5QqHEbksHHHuWMRpE/t4bFAn3fb2+Ygv0oUrdld/RpBq9urHfN3Vqc9tJ
-	gfZUDZDJt0uvrtjpGSdhW8XAeAu6OeyUi0Jj4EJz55jsk1Of/gddMR0clliKyyiD
-	Dz/tJMxY0o+kqe5Jqh2CQ==
-X-ME-Sender: <xms:SRuzZpFLEGrL01CvOzZ7NicPwEvIcv3ZOSAEwfT0KIc13xEWibFx_g>
-    <xme:SRuzZuWOdnwVN62CY7TMMAVOQnMMo0UnpkJQhkqGvrgUGWhp1vAWaBOYOG7_0rIRv
-    GBMBRlfs0GZCyqUvYc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeelgdduudekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefh
-    vdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtoheptd
-X-ME-Proxy: <xmx:SRuzZrLtWMsNgz7w87FJP8TbwXCRbvNB3tiVt8c9qWjaR5ujVwWSEg>
-    <xmx:SRuzZvGMZjtlTl2iioVuNelCvksPQt_NUQQ8oxahwjUInjv5odRUjA>
-    <xmx:SRuzZvVMupVgHTmvlEfTDZFTFuqoKesigKTc9co5c2CZoJ90OcfE1g>
-    <xmx:SRuzZqN-OQqNrinlJf78x4O8VL12d16J4HsptuQe5s0rO9OiA3XUXg>
-    <xmx:SxuzZpwYl7eOyL1UyDIm9UU-ZJT7YdfL_32mlOGPjpZKCsOuYKvqpDmx>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 97D26B6008D; Wed,  7 Aug 2024 02:59:21 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-MIME-Version: 1.0
-Date: Wed, 07 Aug 2024 08:58:37 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Mike Rapoport" <rppt@kernel.org>, linux-kernel@vger.kernel.org
-Message-Id: <1befc540-8904-4c23-b0e6-e2c556fe22b9@app.fastmail.com>
-In-Reply-To: <20240807064110.1003856-25-rppt@kernel.org>
-References: <20240807064110.1003856-1-rppt@kernel.org>
- <20240807064110.1003856-25-rppt@kernel.org>
-Subject: Re: [PATCH v4 24/26] arch_numa: switch over to numa_memblks
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wf3cf1w3cz3cWc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 Aug 2024 18:43:59 +1000 (AEST)
+Received: by mail-ot1-x331.google.com with SMTP id 46e09a7af769-709485aca4bso692340a34.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 01:43:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1723020237; x=1723625037; darn=lists.ozlabs.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Iw7Tv+YETDv5W6d9wVYOGpd/7bHckBYfrgRk1yNks+I=;
+        b=aFmvoyEcFHO16EQQ1NX/CdNgPp0H99AzcOaS+pzifCqD3ool0b9GB/8m3lut1a9n8C
+         2y+l/C//cj8IYTrPNwxjY70Lw2+gE+DE81mz8FDczlY6FDPpcI5OHDI1aXq0Xt2cUKrH
+         pOK7WfnwR19n9F90cmiw9fT61O1+VAAZku5STP1uCDtf3+dvPTGmmZ/gzUFCRBXN5yTo
+         Q3ThQgd4froyeS4y5zxEJmCCq3A0Wd7e1wo0YU5pv1+gUAIp1QT+CPe6EE1F6InKY8kz
+         +WmuLBSIvjqUHJ6ZAefBPiRD7uEs21FSAvlwa0EbKmJyzxoRu4hHzCzBQkvfhrBdF4oQ
+         yxFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723020237; x=1723625037;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iw7Tv+YETDv5W6d9wVYOGpd/7bHckBYfrgRk1yNks+I=;
+        b=JHgjjZyL005UWLXEka1XAhXMPV8RA2jttZW4mkB1/IH74HU/XMbue710Zw+ahklizm
+         kV3pKwT14/MK0OyW2A07NGRW9aHu1lZLHb0X3vEQiNrsY7sXOyOKqnhIsdmYbOUBHJL4
+         9YLpj61lEQp4EF0qGywPA0CeK5dMvtz878HJlcZ7FRIvL3lP19s1lP6hcUX/3tW6crUh
+         oZ3ZlFfZfU4h2SrD6b+fE7z2Q52snyqoyyTdil2gdg78HRSMiyT1hc2DVxiHaJ2ThBbK
+         LR8+/M8K28AP5vQJpJeR60iSYX2xESts6QkMmn/is7eOWPxO/fzV799XkQAMHLOYgE77
+         ICIA==
+X-Forwarded-Encrypted: i=1; AJvYcCWFzEikbACIcLbO537Grl1XLksiBe5TqGDPNghk07OyS5ZD0fUtF6LaqVbDAD/3sOYhZfR279g2DNEFmaLIt/fnCLyO5HNx9byJexrx1Q==
+X-Gm-Message-State: AOJu0YyHJHwSMiZDtecR6I8W+rQMGdRQWacA/vSNE0fq1wBNeG8P0hO+
+	zgQ7ERwLzgoQzRKiSMPPnkPD5ifgp8iEpBP/vaFF7mS1o2unMcJlztravtmNgcQ=
+X-Google-Smtp-Source: AGHT+IHGDJwgvu27ZoxkF/Iz1RMQROmHIKs8TmuQAxLdh09B6CWq3+c9Jjh5o5EFESeTZQUuMmrUsQ==
+X-Received: by 2002:a05:6358:418f:b0:1ac:660a:8a69 with SMTP id e5c5f4694b2df-1af3baf62a6mr2337848555d.18.1723020236454;
+        Wed, 07 Aug 2024 01:43:56 -0700 (PDT)
+Received: from dev-mattc2.dev.purestorage.com ([208.88.159.128])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-7b7654bf852sm6742435a12.90.2024.08.07.01.43.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Aug 2024 01:43:55 -0700 (PDT)
+From: Matthew W Carlis <mattc@purestorage.com>
+To: helgaas@kernel.org
+Subject: PCI: Work around PCIe link training failures
+Date: Wed,  7 Aug 2024 02:43:48 -0600
+Message-Id: <20240807084348.12304-1-mattc@purestorage.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20240806193622.GA74589@bhelgaas>
+References: <20240806193622.GA74589@bhelgaas>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,52 +76,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, x86@kernel.org, Andreas Larsson <andreas@gaisler.com>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mm@kvack.org, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Linux-Arch <linux-arch@vger.kernel.org>, Rob Herring <robh@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Zi Yan <ziy@nvidia.com>, devicetree@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, linux-cxl@vger.kernel.org, loongarch@lists.linux.dev, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, linux-mips@vger.kernel.org, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: linux-pci@vger.kernel.org, mahesh@linux.ibm.com, edumazet@google.com, oohall@gmail.com, sr@denx.de, leon@kernel.org, linux-rdma@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com, wilson@tuliptree.org, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, alex.williamson@redhat.com, bhelgaas@google.com, mika.westerberg@linux.intel.com, david.abdurachmanov@gmail.com, saeedm@nvidia.com, linux-kernel@vger.kernel.org, lukas@wunner.de, netdev@vger.kernel.org, mattc@purestorage.com, pali@kernel.org, davem@davemloft.net, macro@orcam.me.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 7, 2024, at 08:41, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Until now arch_numa was directly translating firmware NUMA information
-> to memblock.
+On Tues, 06 Aug 2024 Bjorn Helgaas wrote:
+> it does seem like this series made wASMedia ASM2824 work better but
+> caused regressions elsewhere, so maybe we just need to accept that
+> ASM2824 is slightly broken and doesn't work as well as it should.
 
-I get a link time warning from this:
+One of my colleagues challenged me to provide a more concrete example
+where the change will cause problems. One such configuration would be not
+implementing the Power Controller Control in the Slot Capabilities Register.
+Then, Powering off the slot via out-of-band interfaces would result in the
+kernel forcing the DSP to Gen1 100% of the time as far as I can tell. 
+The aspect of this force to Gen1 that is the most concerning to my team is
+that it isn't cleaned up even if we replaced the EP with some other EP.
 
-    WARNING: modpost: vmlinux: section mismatch in reference: numa_set_cpumask+0x24 (section: .text.unlikely) -> early_cpu_to_node (section: .init.text)
+I was curious about the PCIe devices mentioned in the commit because I
+look at crazy malfunctioning devices too often so I pasted the following:
+"Delock Riser Card PCI Expres 41433" into Google. 
+I'm not really a physical layer guy, but is it possible that the reported
+issue be due to signal integrity? I'm not sure if sending PCIe over a USB
+cable is "reliable".
 
-> @@ -142,7 +144,7 @@ void __init early_map_cpu_to_node(unsigned int cpu, int nid)
->  unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
->  EXPORT_SYMBOL(__per_cpu_offset);
-> 
-> -int __init early_cpu_to_node(int cpu)
-> +int early_cpu_to_node(int cpu)
->  {
->  	return cpu_to_node_map[cpu];
->  }
+I've never worked with an ASMedia switch and don't have a reliable way to
+reproduce anything like the interaction between the two device at hand. As
+much as I hate to make the request my thinking is that the patch should be
+reverted until there is a solution that doesn't leave the link forced to
+Gen1 forever for every EP thereafter.
 
-early_cpu_to_node() can no longer be __init here
-
-> +#endif /* CONFIG_NUMA_EMU */
-> diff --git a/include/asm-generic/numa.h b/include/asm-generic/numa.h
-> index c32e0cf23c90..c2b046d1fd82 100644
-> --- a/include/asm-generic/numa.h
-> +++ b/include/asm-generic/numa.h
-> @@ -32,8 +32,6 @@ static inline const struct cpumask *cpumask_of_node(int node)
-> 
->  void __init arch_numa_init(void);
->  int __init numa_add_memblk(int nodeid, u64 start, u64 end);
-> -void __init numa_set_distance(int from, int to, int distance);
-> -void __init numa_free_distance(void);
->  void __init early_map_cpu_to_node(unsigned int cpu, int nid);
->  int __init early_cpu_to_node(int cpu);
->  void numa_store_cpu_info(unsigned int cpu);
-
-but is still declared as __init in the header, so it is
-still put in that section and discarded after boot.
-
-I was confused by this at first, since the 'early' name
-seems to imply that you shouldn't call it once the system
-is up, but now you do.
-
-     Arnd
+- Matt
