@@ -2,52 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2586B94AD89
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 18:03:38 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hxgdW86V;
-	dkim-atps=neutral
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5E594ADF3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 18:22:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfFMr0PFJz3d96
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 02:03:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfFnD3x9lz3dLM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 02:22:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hxgdW86V;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfFM80hXGz3cSN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 02:02:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfFmf36Pqz3cdn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 02:21:38 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 48B45611E7;
-	Wed,  7 Aug 2024 16:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77541C4AF0D;
-	Wed,  7 Aug 2024 16:02:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723046577;
-	bh=KUPM3WCD3VyrnlEzvVZNfdnolRYrDWJJnT+Gw+3b/Oo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxgdW86VQjHpSGHUf98BWxrZRkD06R6Ccu0cv6cOX9CckYr5DL6WgCHyUJPITgw1u
-	 GOMp68XGvI7fa0AuF88644G5HoAo+GwSKJcZk7fSrHsuuIbc6P2c4iVx/DAmdajH8M
-	 usbOEnUEt/Kns2x6r3YPU5krR83VwF4izoG6zusRFlvlIZUZQYhGFmtVJHHSeauKWr
-	 ORcjrgt8H/gBJmRX1776nfNMVHWqyrwVMqVZdpAf51nkrhB3e7oGlPIZutgYstmY0n
-	 nU3uBXr0XgyGJCWkXNs+qgL+yUYFjWfl+t1ACXpOJU7P+M3PGYiYpxk6nvplPijJZQ
-	 NFd/CUyO3Ic+w==
-From: Frederic Weisbecker <frederic@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH 07/19] soc/qman: test: Use kthread_run_on_cpu()
-Date: Wed,  7 Aug 2024 18:02:13 +0200
-Message-ID: <20240807160228.26206-8-frederic@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240807160228.26206-1-frederic@kernel.org>
-References: <20240807160228.26206-1-frederic@kernel.org>
+	by sin.source.kernel.org (Postfix) with ESMTP id 88FCBCE0C56;
+	Wed,  7 Aug 2024 16:21:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D649C32781;
+	Wed,  7 Aug 2024 16:21:29 +0000 (UTC)
+Date: Wed, 7 Aug 2024 17:21:27 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v12 02/84] KVM: arm64: Disallow copying MTE to guest
+ memory while KVM is dirty logging
+Message-ID: <ZrOfB8bOdSJVcWFr@arm.com>
+References: <20240726235234.228822-1-seanjc@google.com>
+ <20240726235234.228822-3-seanjc@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240726235234.228822-3-seanjc@google.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,41 +45,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>, linux-arm-kernel@lists.infradead.org
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the proper API instead of open coding it.
+On Fri, Jul 26, 2024 at 04:51:11PM -0700, Sean Christopherson wrote:
+> Disallow copying MTE tags to guest memory while KVM is dirty logging, as
+> writing guest memory without marking the gfn as dirty in the memslot could
+> result in userspace failing to migrate the updated page.  Ideally (maybe?),
+> KVM would simply mark the gfn as dirty, but there is no vCPU to work with,
+> and presumably the only use case for copy MTE tags _to_ the guest is when
+> restoring state on the target.
+> 
+> Fixes: f0376edb1ddc ("KVM: arm64: Add ioctl to fetch/store tags in a guest")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/arm64/kvm/guest.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> index e1f0ff08836a..962f985977c2 100644
+> --- a/arch/arm64/kvm/guest.c
+> +++ b/arch/arm64/kvm/guest.c
+> @@ -1045,6 +1045,11 @@ int kvm_vm_ioctl_mte_copy_tags(struct kvm *kvm,
+>  
+>  	mutex_lock(&kvm->slots_lock);
+>  
+> +	if (write && atomic_read(&kvm->nr_memslots_dirty_logging)) {
+> +		ret = -EBUSY;
+> +		goto out;
+> +	}
 
-However it looks like kthreads here could be replaced by the use of a
-per-cpu workqueue instead.
+There are ways to actually log the page dirtying but I don't think
+it's worth it. AFAICT, reading the tags still works and that's what's
+used during migration (on the VM where dirty tracking takes place).
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
----
- drivers/soc/fsl/qbman/qman_test_stash.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/soc/fsl/qbman/qman_test_stash.c b/drivers/soc/fsl/qbman/qman_test_stash.c
-index b7e8e5ec884c..f4d3c2146f4f 100644
---- a/drivers/soc/fsl/qbman/qman_test_stash.c
-+++ b/drivers/soc/fsl/qbman/qman_test_stash.c
-@@ -108,14 +108,12 @@ static int on_all_cpus(int (*fn)(void))
- 			.fn = fn,
- 			.started = ATOMIC_INIT(0)
- 		};
--		struct task_struct *k = kthread_create(bstrap_fn, &bstrap,
--			"hotpotato%d", cpu);
-+		struct task_struct *k = kthread_run_on_cpu(bstrap_fn, &bstrap,
-+							   cpu, "hotpotato%d");
- 		int ret;
- 
- 		if (IS_ERR(k))
- 			return -ENOMEM;
--		kthread_bind(k, cpu);
--		wake_up_process(k);
- 		/*
- 		 * If we call kthread_stop() before the "wake up" has had an
- 		 * effect, then the thread may exit with -EINTR without ever
--- 
-2.45.2
-
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
