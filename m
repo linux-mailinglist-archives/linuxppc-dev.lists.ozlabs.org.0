@@ -1,94 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFE094ACC6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 17:24:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F5294ACF1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 17:33:01 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rlhb40in;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rlhb40in;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JleHgJ5e;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JleHgJ5e;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfDVq3SMlz3dHR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 01:24:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfDhW5z0Dz3cdn
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 01:32:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rlhb40in;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rlhb40in;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JleHgJ5e;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JleHgJ5e;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfDV72R83z2ydQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 01:23:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfDgp3mL6z30Sv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 01:32:21 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723044234;
+	s=mimecast20190719; t=1723044738;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aAgxFInvvWwKV0z4+0KCeJqRg0kMvcuUocrtSkGNRkQ=;
-	b=Rlhb40inEG7c570BG4Fa18tUgMoU5ygC9njcVaUKYEQVK2cCHDQj5I6IjAQFJgoM+7liPP
-	WekqC9X1j1aUEDuogL+oUvGPyHlAUK49XcAEagSH7H/L+buVneBaDmMWjTDRi9iWHVA9JC
-	R5lxovBMaQ7OZSf6GDddhXXiitSWlng=
+	bh=Sq5YuaqDwPgWwWgWl1dZQMpc9N72YWJDiW5Q5wpx46w=;
+	b=JleHgJ5eBKs6Y4OjzAbjjLUGuQUd0lN/BxAvddra2KlPEbV9UMmhORC/IfGcJn7EYUqO1H
+	lz2jFfLExLMO8RLa5kJLgkIbWXEFL8BEcvMuEzdtnAtW3ovP/TW4lcveaWQSmZhbpdjD5v
+	uZDIqINDRTJjUOmR467wMCkv2dfNuVk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723044234;
+	s=mimecast20190719; t=1723044738;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aAgxFInvvWwKV0z4+0KCeJqRg0kMvcuUocrtSkGNRkQ=;
-	b=Rlhb40inEG7c570BG4Fa18tUgMoU5ygC9njcVaUKYEQVK2cCHDQj5I6IjAQFJgoM+7liPP
-	WekqC9X1j1aUEDuogL+oUvGPyHlAUK49XcAEagSH7H/L+buVneBaDmMWjTDRi9iWHVA9JC
-	R5lxovBMaQ7OZSf6GDddhXXiitSWlng=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Sq5YuaqDwPgWwWgWl1dZQMpc9N72YWJDiW5Q5wpx46w=;
+	b=JleHgJ5eBKs6Y4OjzAbjjLUGuQUd0lN/BxAvddra2KlPEbV9UMmhORC/IfGcJn7EYUqO1H
+	lz2jFfLExLMO8RLa5kJLgkIbWXEFL8BEcvMuEzdtnAtW3ovP/TW4lcveaWQSmZhbpdjD5v
+	uZDIqINDRTJjUOmR467wMCkv2dfNuVk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-njt5YcVEMM26qeUxLVrimw-1; Wed, 07 Aug 2024 11:23:53 -0400
-X-MC-Unique: njt5YcVEMM26qeUxLVrimw-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-428ea5b1479so34785e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 08:23:52 -0700 (PDT)
+ us-mta-425-BQHkrYElOHuuH4a0AxLNdQ-1; Wed, 07 Aug 2024 11:32:16 -0400
+X-MC-Unique: BQHkrYElOHuuH4a0AxLNdQ-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3688010b3bfso1468232f8f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 08:32:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723044232; x=1723649032;
+        d=1e100.net; s=20230601; t=1723044735; x=1723649535;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=aAgxFInvvWwKV0z4+0KCeJqRg0kMvcuUocrtSkGNRkQ=;
-        b=V49gSj6Cu8RxI0o7iIEuWDKqjxwWdMgwfekoWix61orbcQF69GDptviUmnEeGeEXHG
-         YVnJFhOKoL+d0GmPbVC9ukKufC5IKw4F17XEQyNWctm+mxm2Mtexb1Y+zLIa/xFscLdd
-         xSq3cMgq8me9AzPFq1XjEyYpwCIpJcbsDLSxL9uSK+HOjVw2x5yAEC8LxidC2yAP4Fbx
-         YI0sxisQTkvUNMkHMa3uzYB9z96+HsAvR6iHgUCDlrfJviaPPSt1nYcN7hiVFjyd7xRO
-         Kdld87xI1E0zb6z566+H0ngQiQ8j6HrUKKZyRSfIoSjro1Xta0/oFUEVwaZLfNrlKhYm
-         trbg==
-X-Forwarded-Encrypted: i=1; AJvYcCXxoWkq+sUFfiEIATXBQJxOP0QzbFYwwLlXPWPjsu16eRXRH8ta4wlLyAcGMcDvvNuZwv7np3F37xuZOpSbdlT8zgpOQevJFKQTpCfUbw==
-X-Gm-Message-State: AOJu0YxfrfOtZGUJF0eMNSGF2vXeu/EG94+ZSUpC5eBig2VFQVWWg9IO
-	+UXKs5ltg6XeX5YiIPx1gQpmNL8O/giicN4nXjBFKblPQX3aY7cC5gwFYWyHwtq5V+k+vbGlxnT
-	L7CD4LA20J/2chfhBjgsHXQtyuW7N0QFpfrJU+VkUZq3gxwqN3ZwFLaQ+zaKDB0I=
-X-Received: by 2002:a05:600c:4fc9:b0:426:6f27:379a with SMTP id 5b1f17b1804b1-428e6b08fc5mr123411095e9.13.1723044231721;
-        Wed, 07 Aug 2024 08:23:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEa1u7xsFpjJO/UW4dKCxZ81wLwqoTylnMlnIcAzev3Z83n1ZIinArOgcYN+yAGW9Rj8jfltw==
-X-Received: by 2002:a05:600c:4fc9:b0:426:6f27:379a with SMTP id 5b1f17b1804b1-428e6b08fc5mr123410535e9.13.1723044231149;
-        Wed, 07 Aug 2024 08:23:51 -0700 (PDT)
+        bh=Sq5YuaqDwPgWwWgWl1dZQMpc9N72YWJDiW5Q5wpx46w=;
+        b=CMQ0uXOOrSt8yowr+IChYHhxWV+u6bQhYhNsO9gBVD2xZ/LJnZGXTOy/9C4ej4JBVd
+         S7OPzLrWWlaTxFoJ8XAKJtttHo3JmFxtmQZWh65pEccGtzUp9GHEH/phwxBHsocKOaLe
+         JPcrQpn00A9ehfUaTrTi+9NhYX1DAEkoXjiU9nrFi9cQwU+mCMR4uLWeXlZEoXSOmssY
+         lWWWC+rpIdz+L0++d7hFSQLdAOktqw7loNNFqyRA72WJD4QFKExu2krra1vHIBynTK7v
+         8tycluxA6fzaV71PcwZ7+p08Yk24wVeMyBEBzQuykPSW5KPMrMS5utRzw9P1XllTeOb4
+         a6GA==
+X-Gm-Message-State: AOJu0YwrAcEyd5W1bvG49j7IrW0m3zABjKGOZ93hc7+n7T5Zm8+iHB+L
+	HYBTx/4k3X38+6CdsBPyCNqvy5n+jcTFUE9Ljfc+WxvboYLbd6GyqclHn4S75HUNcTOKRyUiVgC
+	5+qKDg4ZhwP8tRamvBsfDX9sCTDpv3WaSojDHSgA/B7sP2ZNvDDsXp7PNpIddXw8=
+X-Received: by 2002:a05:6000:402b:b0:368:6633:e23f with SMTP id ffacd0b85a97d-36bbc1a6749mr20316053f8f.38.1723044735254;
+        Wed, 07 Aug 2024 08:32:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFB9wUohEToqk0eFBraRwm9P/2alU1eR63wSGxUjjwYuWy2SzxEeeFaSalEjRxSpsWOwGvekA==
+X-Received: by 2002:a05:6000:402b:b0:368:6633:e23f with SMTP id ffacd0b85a97d-36bbc1a6749mr20315995f8f.38.1723044734674;
+        Wed, 07 Aug 2024 08:32:14 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c708:1a00:df86:93fe:6505:d096? (p200300cbc7081a00df8693fe6505d096.dip0.t-ipconnect.de. [2003:cb:c708:1a00:df86:93fe:6505:d096])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42905971ad7sm35137405e9.17.2024.08.07.08.23.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42905796974sm36299085e9.6.2024.08.07.08.32.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Aug 2024 08:23:50 -0700 (PDT)
-Message-ID: <936f8adf-a8a5-45eb-b5a3-297773918f7c@redhat.com>
-Date: Wed, 7 Aug 2024 17:23:48 +0200
+        Wed, 07 Aug 2024 08:32:14 -0700 (PDT)
+Message-ID: <1b0e07fb-33fb-4397-b03e-65698601bc70@redhat.com>
+Date: Wed, 7 Aug 2024 17:32:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm: keep nid around during hot-remove
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-References: <20240806221454.1971755-1-pasha.tatashin@soleen.com>
- <20240806221454.1971755-2-pasha.tatashin@soleen.com>
- <345ba221-e094-47e8-9481-562faf4acd85@redhat.com>
- <e780e9af-e23d-44ff-ae0f-a8f4ee098a1c@redhat.com>
- <CA+CK2bBuDu-3XeeAsy4zggOrxTrp84bcZp9p6mQipzc3NqpcSg@mail.gmail.com>
+Subject: Re: [PATCH 1/4] mm: Add optional close() to struct vm_special_mapping
+To: Michael Ellerman <mpe@ellerman.id.au>, linux-mm@kvack.org
+References: <20240807124103.85644-1-mpe@ellerman.id.au>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -135,12 +130,12 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <CA+CK2bBuDu-3XeeAsy4zggOrxTrp84bcZp9p6mQipzc3NqpcSg@mail.gmail.com>
+In-Reply-To: <20240807124103.85644-1-mpe@ellerman.id.au>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -152,66 +147,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, muchun.song@linux.dev, luto@kernel.org, peterz@infradead.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, bjorn@rivosinc.com, linux-mm@kvack.org, souravpanda@google.com, rdunlap@infradead.org, hpa@zytor.com, kernel@xen0n.name, will@kernel.org, agordeev@linux.ibm.com, namcao@linutronix.de, linux-s390@vger.kernel.org, arnd@arndb.de, bhe@redhat.com, chenhuacai@kernel.org, christophe.leroy@csgroup.eu, ardb@kernel.org, mingo@redhat.com, rientjes@google.com, gerald.schaefer@linux.ibm.com, borntraeger@linux.ibm.com, aou@eecs.berkeley.edu, ryan.roberts@arm.com, alexghiti@rivosinc.com, gor@linux.ibm.com, hca@linux.ibm.com, dawei.li@shingroup.cn, naveen@kernel.org, maobibo@loongson.cn, chenjiahao16@huawei.com, bp@alien8.de, npiggin@gmail.com, loongarch@lists.linux.dev, paul.walmsley@sifive.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, osalvador@suse.de, x86@kernel.org, philmd@linaro.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, mcgrof@kernel.org, linux-riscv@lists.infradead.org, palmer@dabbelt.com, svens@linux.ibm.com, tzimmermann@suse.de, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, rppt@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu, jeffxu@google.com, jeffxu@chromium.org, oliver.sang@intel.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, torvalds@linux-foundation.org, pedro.falcato@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 07.08.24 16:40, Pasha Tatashin wrote:
-> On Wed, Aug 7, 2024 at 7:50 AM David Hildenbrand <david@redhat.com> wrote:
->>
->> On 07.08.24 13:32, David Hildenbrand wrote:
->>> On 07.08.24 00:14, Pasha Tatashin wrote:
->>>> nid is needed during memory hot-remove in order to account the
->>>> information about the memmap overhead that is being removed.
->>>>
->>>> In addition, we cannot use page_pgdat(pfn_to_page(pfn)) during
->>>> hotremove after remove_pfn_range_from_zone().
->>>>
->>>> We also cannot determine nid from walking through memblocks after
->>>> remove_memory_block_devices() is called.
->>>>
->>>> Therefore, pass nid down from the beginning of hotremove to where
->>>> it is used for the accounting purposes.
->>>
->>> I was happy to finally remove that nid parameter for good in:
->>>
->>> commit 65a2aa5f482ed0c1b5afb9e6b0b9e0b16bb8b616
->>> Author: David Hildenbrand <david@redhat.com>
->>> Date:   Tue Sep 7 19:55:04 2021 -0700
->>>
->>>        mm/memory_hotplug: remove nid parameter from arch_remove_memory()
->>>
->>> To ask the real question: Do we really need this counter per-nid at all?
->>>
->>> Seems to over-complicate things.
->>
->> Case in point: I think the handling is wrong?
->>
->> Just because some memory belongs to a nid doesn't mean that the vmemmap
->> was allocated from that nid?
+On 07.08.24 14:41, Michael Ellerman wrote:
+> Add an optional close() callback to struct vm_special_mapping. It will
+> be used, by powerpc at least, to handle unmapping of the VDSO.
 > 
-> I believe when we hot-add we use nid for the memory that is being
-> added to account vmemmap, and when we do hot-remove we also use nid of
-> the memory that is being removed. But, you are correct, this does not
-> guarantee that the actual vmemmap memory is being allocated or removed
-> from the given nid.
-
-Right. For boot memory that we might want to unplug later it might be 
-different. I recall that with "movable_node", we might end up allocating 
-the vmemmap from remote nodes, such that all memory of a node stays 
-movable. That's why __earlyonly_bootmem_alloc() ends up calling 
-memblock_alloc_try_nid_raw(), to fallback to other nodes if required.
-
+> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>   include/linux/mm_types.h | 2 ++
+>   mm/mmap.c                | 3 +++
+>   2 files changed, 5 insertions(+)
 > 
->> Wouldn't we want to look at the actual nid the vmemmap page belongs to
->> that we are removing?
-> 
-> I am now looking into converting this counter to be system wide, i.e.
-> vm_event, it is all done under hotplug lock, so there is no
-> contention.
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 485424979254..ef32d87a3adc 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1313,6 +1313,8 @@ struct vm_special_mapping {
+>   
+>   	int (*mremap)(const struct vm_special_mapping *sm,
+>   		     struct vm_area_struct *new_vma);
+> +	void (*close)(const struct vm_special_mapping *sm,
+> +		      struct vm_area_struct *vma);
+>   };
+>   
+>   enum tlb_flush_reason {
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index d0dfc85b209b..24bd6aa9155c 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -3624,6 +3624,9 @@ static vm_fault_t special_mapping_fault(struct vm_fault *vmf);
+>    */
+>   static void special_mapping_close(struct vm_area_struct *vma)
+>   {
+> +	const struct vm_special_mapping *sm = vma->vm_private_data;
 
-That would be easiest, assuming per-node information is not strictly 
-required for now.
+I'm old-fashioned, I enjoy an empty line here ;)
+
+> +	if (sm->close)
+> +		sm->close(sm, vma);
+
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
