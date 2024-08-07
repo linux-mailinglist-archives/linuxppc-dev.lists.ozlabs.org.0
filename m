@@ -1,54 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C919894B1A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 22:54:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A335394B1A9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 22:56:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=tesarici.cz header.i=@tesarici.cz header.a=rsa-sha256 header.s=mail header.b=i65GwrEa;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=tesarici.cz header.i=@tesarici.cz header.a=rsa-sha256 header.s=mail header.b=K1dxIE0F;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfMr05TJ1z3dKb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 06:54:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfMsW3tPvz3dK3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 06:56:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=tesarici.cz header.i=@tesarici.cz header.a=rsa-sha256 header.s=mail header.b=i65GwrEa;
+	dkim=pass (2048-bit key; secure) header.d=tesarici.cz header.i=@tesarici.cz header.a=rsa-sha256 header.s=mail header.b=K1dxIE0F;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tesarici.cz (client-ip=37.205.15.56; helo=bee.tesarici.cz; envelope-from=petr@tesarici.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 400 seconds by postgrey-1.37 at boromir; Thu, 08 Aug 2024 00:19:46 AEST
 Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfC420yqYz30TQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 00:19:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfCJL5R1dz2y8r
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 00:30:26 +1000 (AEST)
 Received: from mordecai.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by bee.tesarici.cz (Postfix) with ESMTPSA id 581DA1D4827;
-	Wed,  7 Aug 2024 16:19:43 +0200 (CEST)
+	by bee.tesarici.cz (Postfix) with ESMTPSA id F2E101D075D;
+	Wed,  7 Aug 2024 16:30:23 +0200 (CEST)
 Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
-	t=1723040383; bh=XLWRMbtGcTsuduq8sYIgOj2Fv5+dhfpUSVkhtNTwEKs=;
+	t=1723041024; bh=XAUy83SIsEkQWYxz3O+tVWcw2Qdh3or1+I8QyhdW1Ag=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i65GwrEaWJJSMm99frEtR7SuRGEX3gN1vzFXh2M8PBIgW+RsOaMIeqQVp9+tWaGD8
-	 /YNoeYcOzMnMmVYXGfa4/im2fp+jFdGFBjLaB6/wg4YlBgNs87dbzwtqDoB3iboUMQ
-	 uknhZZbif8Mx36WsiJPi/ciX025KxDJDtfHQvCaScDK7UjvtnQ+wcvWLFasyNPbiXx
-	 4nf7jgzre9eFkJWXAo3rcRvI2k6Pdic8/+K6elXZgoJ8rXB6Zykhp5b9yMcQvENf/9
-	 rr/4NtWBGu7ADNh76DtVGevak4OOLyst1aitj0NfgEMtoYlN8XmKbm7/MrBkRa1vW4
-	 1fOsAT735pwMQ==
-Date: Wed, 7 Aug 2024 16:19:38 +0200
+	b=K1dxIE0FMMd+6gq7o8Dd512aiISXSgpu78zkPa7RXq8GCuFL7cwj17FMXIMD5ohSD
+	 iZpudqWW352ZAXTIxcuHOq73sa8nkQLd54b/qRwqMXOkGn+R867ChpSLkky2fCKSXm
+	 GPk9eMk7rPSZ+vqPUzzfB0Llgf/366Y1n80SLTdjCdpdBSjcw5sY44f0qhv9LTOnWY
+	 lDBFgNaWYmEO2LKBpHllA7AHNYNnkAnYBcvLQxBFX1T4xB3uPxR1gaxjkLYWKIYG6O
+	 qi80YmPalbqthWACc4tyrrpRtEDAm/jDmR5JXZzSz3/IxBFa6TDpOCiB7jayThH7Ux
+	 pA8NNipy0wowA==
+Date: Wed, 7 Aug 2024 16:30:19 +0200
 From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To: Catalin Marinas <catalin.marinas@arm.com>
+To: Baruch Siach <baruch@tkos.co.il>
 Subject: Re: [PATCH v5 2/3] dma: replace zone_dma_bits by zone_dma_limit
-Message-ID: <20240807161938.5729b656@mordecai.tesarici.cz>
-In-Reply-To: <Zqyo4qjPRHUeUfS5@arm.com>
+Message-ID: <20240807163019.3dddd2ad@mordecai.tesarici.cz>
+In-Reply-To: <5821a1b2eb82847ccbac0945da040518d6f6f16b.1722578375.git.baruch@tkos.co.il>
 References: <cover.1722578375.git.baruch@tkos.co.il>
 	<5821a1b2eb82847ccbac0945da040518d6f6f16b.1722578375.git.baruch@tkos.co.il>
-	<Zqyo4qjPRHUeUfS5@arm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -65,73 +63,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>, Ramon Fried <ramon@neureality.ai>, Will Deacon <will@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-s390@vger.kernel.org, Ramon Fried <ramon@neureality.ai>, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2 Aug 2024 10:37:38 +0100
-Catalin Marinas <catalin.marinas@arm.com> wrote:
+On Fri,  2 Aug 2024 09:03:47 +0300
+Baruch Siach <baruch@tkos.co.il> wrote:
 
-> On Fri, Aug 02, 2024 at 09:03:47AM +0300, Baruch Siach wrote:
-> > diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> > index 3b4be4ca3b08..62b36fda44c9 100644
-> > --- a/kernel/dma/direct.c
-> > +++ b/kernel/dma/direct.c
-> > @@ -20,7 +20,7 @@
-> >   * it for entirely different regions. In that case the arch code needs to
-> >   * override the variable below for dma-direct to work properly.
-> >   */
-> > -unsigned int zone_dma_bits __ro_after_init = 24;
-> > +u64 zone_dma_limit __ro_after_init = DMA_BIT_MASK(24);  
+> From: Catalin Marinas <catalin.marinas@arm.com>
 > 
-> u64 here makes sense even if it may be larger than phys_addr_t. It
-> matches the phys_limit type in the swiotlb code. The compilers should no
-> longer complain.
-
-FTR I have never quite understood why phys_limit is u64, but u64 was
-already used all around the place when I first looked into swiotlb.
-
-> > diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-> > index d10613eb0f63..7b04f7575796 100644
-> > --- a/kernel/dma/pool.c
-> > +++ b/kernel/dma/pool.c
-> > @@ -70,9 +70,9 @@ static bool cma_in_zone(gfp_t gfp)
-> >  	/* CMA can't cross zone boundaries, see cma_activate_area() */
-> >  	end = cma_get_base(cma) + size - 1;
-> >  	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp & GFP_DMA))
-> > -		return end <= DMA_BIT_MASK(zone_dma_bits);
-> > +		return end <= zone_dma_limit;
-> >  	if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp & GFP_DMA32))
-> > -		return end <= DMA_BIT_MASK(32);
-> > +		return end <= max(DMA_BIT_MASK(32), zone_dma_limit);
-> >  	return true;
-> >  }
-> >  
-> > diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> > index 043b0ecd3e8d..bb51bd5335ad 100644
-> > --- a/kernel/dma/swiotlb.c
-> > +++ b/kernel/dma/swiotlb.c
-> > @@ -450,9 +450,9 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
-> >  	if (!remap)
-> >  		io_tlb_default_mem.can_grow = true;
-> >  	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp_mask & __GFP_DMA))
-> > -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(zone_dma_bits);
-> > +		io_tlb_default_mem.phys_limit = zone_dma_limit;
-> >  	else if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp_mask & __GFP_DMA32))
-> > -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(32);
-> > +		io_tlb_default_mem.phys_limit = max(DMA_BIT_MASK(32), zone_dma_limit);
-> >  	else
-> >  		io_tlb_default_mem.phys_limit = virt_to_phys(high_memory - 1);
-> >  #endif  
+> Hardware DMA limit might not be power of 2. When RAM range starts above
+> 0, say 4GB, DMA limit of 30 bits should end at 5GB. A single high bit
+> can not encode this limit.
 > 
-> These two look correct to me now and it's the least intrusive (the
-> alternative would have been a zone_dma32_limit). The arch code, however,
-> needs to ensure that zone_dma_limit can always support 32-bit devices
-> even if it is above 4GB (with the relevant dma offsets in place for such
-> devices).
+> Use plain address for DMA zone limit.
+> 
+> Since DMA zone can now potentially span beyond 4GB physical limit of
+> DMA32, make sure to use DMA zone for GFP_DMA32 allocations in that case.
+> 
+> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> Co-developed-by: Baruch Siach <baruch@tkos.co.il>
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> ---
+>  arch/arm64/mm/init.c       | 30 +++++++++++++++---------------
+>  arch/powerpc/mm/mem.c      |  9 ++++-----
+>  arch/s390/mm/init.c        |  2 +-
+>  include/linux/dma-direct.h |  2 +-
+>  kernel/dma/direct.c        |  4 ++--
+>  kernel/dma/pool.c          |  4 ++--
+>  kernel/dma/swiotlb.c       |  4 ++--
+>  7 files changed, 27 insertions(+), 28 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 9b5ab6818f7f..c45e2152ca9e 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -115,35 +115,35 @@ static void __init arch_reserve_crashkernel(void)
+>  }
+>  
+>  /*
+> - * Return the maximum physical address for a zone accessible by the given bits
+> - * limit. If DRAM starts above 32-bit, expand the zone to the maximum
+> + * Return the maximum physical address for a zone given its limit.
+> + * If DRAM starts above 32-bit, expand the zone to the maximum
+>   * available memory, otherwise cap it at 32-bit.
+>   */
+> -static phys_addr_t __init max_zone_phys(unsigned int zone_bits)
+> +static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
+>  {
+> -	phys_addr_t zone_mask = DMA_BIT_MASK(zone_bits);
+>  	phys_addr_t phys_start = memblock_start_of_DRAM();
+>  
+>  	if (phys_start > U32_MAX)
+> -		zone_mask = PHYS_ADDR_MAX;
+> -	else if (phys_start > zone_mask)
+> -		zone_mask = U32_MAX;
+> +		zone_limit = PHYS_ADDR_MAX;
+> +	else if (phys_start > zone_limit)
+> +		zone_limit = U32_MAX;
+>  
+> -	return min(zone_mask, memblock_end_of_DRAM() - 1) + 1;
+> +	return min(zone_limit, memblock_end_of_DRAM() - 1) + 1;
+>  }
+>  
+>  static void __init zone_sizes_init(void)
+>  {
+>  	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
+> -	unsigned int __maybe_unused acpi_zone_dma_bits;
+> -	unsigned int __maybe_unused dt_zone_dma_bits;
+> -	phys_addr_t __maybe_unused dma32_phys_limit = max_zone_phys(32);
+> +	phys_addr_t __maybe_unused acpi_zone_dma_limit;
+> +	phys_addr_t __maybe_unused dt_zone_dma_limit;
+> +	phys_addr_t __maybe_unused dma32_phys_limit =
+> +		max_zone_phys(DMA_BIT_MASK(32));
+>  
+>  #ifdef CONFIG_ZONE_DMA
+> -	acpi_zone_dma_bits = fls64(acpi_iort_dma_get_max_cpu_address());
+> -	dt_zone_dma_bits = fls64(of_dma_get_max_cpu_address(NULL));
+> -	zone_dma_bits = min3(32U, dt_zone_dma_bits, acpi_zone_dma_bits);
+> -	arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
+> +	acpi_zone_dma_limit = acpi_iort_dma_get_max_cpu_address();
+> +	dt_zone_dma_limit = of_dma_get_max_cpu_address(NULL);
+> +	zone_dma_limit = min(dt_zone_dma_limit, acpi_zone_dma_limit);
+> +	arm64_dma_phys_limit = max_zone_phys(zone_dma_limit);
+>  	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
+>  #endif
+>  #ifdef CONFIG_ZONE_DMA32
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index d325217ab201..342c006cc1b8 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -216,7 +216,7 @@ static int __init mark_nonram_nosave(void)
+>   * everything else. GFP_DMA32 page allocations automatically fall back to
+>   * ZONE_DMA.
+>   *
+> - * By using 31-bit unconditionally, we can exploit zone_dma_bits to inform the
+> + * By using 31-bit unconditionally, we can exploit zone_dma_limit to inform the
+>   * generic DMA mapping code.  32-bit only devices (if not handled by an IOMMU
+>   * anyway) will take a first dip into ZONE_NORMAL and get otherwise served by
+>   * ZONE_DMA.
+> @@ -252,13 +252,12 @@ void __init paging_init(void)
+>  	 * powerbooks.
+>  	 */
+>  	if (IS_ENABLED(CONFIG_PPC32))
+> -		zone_dma_bits = 30;
+> +		zone_dma_limit = DMA_BIT_MASK(30);
+>  	else
+> -		zone_dma_bits = 31;
+> +		zone_dma_limit = DMA_BIT_MASK(31);
+>  
+>  #ifdef CONFIG_ZONE_DMA
+> -	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
+> -				      1UL << (zone_dma_bits - PAGE_SHIFT));
+> +	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn, zone_dma_limit >> PAGE_SHIFT);
 
-Just to make sure, the DMA zone (if present) must map to at most 32-bit
-bus address space (possibly behind a bridge). Is that what you're
-saying?
+No big deal, but this is off by one. DMA_BIT_MASK() returns the highest
+address that can be represented with the given number of bits, whereas
+max_zone_pfns[] contains the lowest PFN that is NOT contained in the
+zone.
+
+Rest of the patch looks perfect.
 
 Petr T
