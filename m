@@ -2,125 +2,129 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B6394AAA4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 355BE94AC98
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 17:18:33 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WNBNagA1;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=GZzd3jQO;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfCnC2sGkz3d90
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 00:51:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfDMq18cLz3d9B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 01:18:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WNBNagA1;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=GZzd3jQO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:200a::624; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=stewart.hildebrand@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20624.outbound.protection.outlook.com [IPv6:2a01:111:f403:200a::624])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfCmV1SF3z3cS0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 00:51:20 +1000 (AEST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1fd65aaac27so7194235ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 07:51:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723042278; x=1723647078; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=BDY7J9/W8/VU13G8TqO3gSsNHmFTzvPA7EjNyvdNsjA=;
-        b=WNBNagA1y8NYgA8KrCp5MC5bq0obbkVyvmgXcdPqS4ePsGpnxMGoNyyFAG+9wEMCVA
-         CLHFANk8ETMISpKYdblumg7JIkeY1UhXy+g2v0ftOFsR0zVXHMRmTtWWBsm2rWLUPfxc
-         Cur5WNddQ5td9ef4uE3KjJZxIIQylAYQ38RaYMcWlG5qYBZYHSagHdZHiRUaVVHHjJEy
-         9xse6mjykaLDqcaAGFZwHFEEmi0wInzvi7rLj6DfcP5g6Mgz8FKzrlpJ132mvkYIqwfl
-         8Qu5x0Vso/k4oGF6pbl5Lked/MFFxEuNqv5exMru3fYN8cC8BXiKq25jGZ8j0Df+sr8V
-         XApw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723042278; x=1723647078;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BDY7J9/W8/VU13G8TqO3gSsNHmFTzvPA7EjNyvdNsjA=;
-        b=LSCDtFuTzrZw1oX5FfyhCJ7PR4XK47zvPKJjiiQjCqm0Ng7G9pJcll5VECEYq6xQ+i
-         M+izcVe8QmoG3cCTOexSCXodbgKqKDEvP9j4oCJsVWi3H3Ow15WCKvzFCHZwxoT9WBah
-         5P9H5sUbo1UAoJf6wTxuQadfxrJVGkjoDw4BOOsi2TVpHodSVJxT422/m2XK+BHpCsG/
-         OG1JicbEc7+Ido/RCblwzhlJzKVYRwtzE+3ixLuOwyoQdSwYgwAtJfDA4BV3AoTu6S7u
-         Xuw0eozT3qKzGQNFJpkwkgb3EaY586L0gI0w/q04kKsnvcv2cqAT0MqXgTP9LztVzwfA
-         qbUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWY4IbaRGFjx6Lof++KvDOFdtJsXhcDD/GLHVjZJxGZd46oqHyi2ModNVeaS7BwpnSD7JRpQhFk9rjU3P8BHb1zbKvo/O2qqNNIUBnILg==
-X-Gm-Message-State: AOJu0YyqVDDNk+qRQea4GIcQ0eyB2xtxW0khWx9+j3raL1r8N40xDraF
-	XTJZtSp2ltcTLaLgcbLxiwgZdwvvLsJSRI3DG5LZEseGh9TynKzh
-X-Google-Smtp-Source: AGHT+IE2NV4rr0g1/11a1aKAvLCV87PMjl+pIpr+3Z4hPKHGfZAvPqsdzuPXdheQ2SyYk7IR/MwzcQ==
-X-Received: by 2002:a17:902:e541:b0:1fb:4f57:6a65 with SMTP id d9443c01a7336-2008555ec6emr36244045ad.30.1723042278039;
-        Wed, 07 Aug 2024 07:51:18 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff592b3643sm107035815ad.290.2024.08.07.07.51.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Aug 2024 07:51:16 -0700 (PDT)
-Message-ID: <5cc43ed9-b4f8-49f5-99ee-b411bb144085@roeck-us.net>
-Date: Wed, 7 Aug 2024 07:51:15 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfDM54JRRz3cdn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 01:17:49 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=glEDpMLVARs6ReRh8NaR1ph1C2y70ahgyJT9Ll3FMla8QHeot/g+N0TNPObZkEAvDeIbYODBpz3XpPqNlpzb05N3HKeAlGcXyvWWar5N9/4uCXLZebgZZjbaybuX/LN4Vn8gkhGl8tie8sgUzSQmWtXN/r7cd+WFO3YcI9A8Mz97cCWWxtSVpUn0LKuIWoBhlH5X1JN5L1xvEgInNpn8Jt2/nIqjuV3eTRxnuojaLWlfmzgqBB2PZpl78LPpFZFGIhC+ny4xHEaMgcyJ76qdBGuVXJzP2tnh1qX2lpVsPwNoEf4ZWxNdZi39z0fm/E1gyfL1RAnGIrLgX1vR8KqxBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mqD0UQKzYaC/AbvBnKgM1Q9wq6jLCtY55rqZEdKt6ZI=;
+ b=BfKQM566tON56SPmCBBw1FS8MlJu7zy1YKPhbgPPOsS1yRqfSxkFqa1Q2QId71cbmB3KhDSf+vv8S9nSY7skyCbKTxRnlJr95H+3OazzJU07uGTj5eXdKnPgZUOoM3A2QgsnRrTnmVw5wgg4LsNJvbVFCi9lm7ARRZy7OKWJAOzEZp7GbNe5l3TwF+ayVnpYY2NAOVch93qzxXBA5keNQin2qpZBW6I9EEOLJG3LukecXS3shLtN42Lk0PFqiqO+2XIusSOP24sa71oSoWWnihIc3J2VyjtusDrXm4BMKShMGJbZyeaGocKnUZk3l9KFOF8ejVb9AQZtYcfElEtsmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mqD0UQKzYaC/AbvBnKgM1Q9wq6jLCtY55rqZEdKt6ZI=;
+ b=GZzd3jQO011Lxc9J1udRQuLJD/Bc4SU7MUMihNkRd0UFT4zkXRMdkNfkO9+2B8YdoQa9dTW2gHn1vIalVlvS1pop9j9xMk/hUPW0yoMBOoQAIiHuhH0ubMy5wncSb5GLePv3ltDOe+eILqKkxnr+T/xPXJJ8K8AUgX2paC3gs/4=
+Received: from BN0PR02CA0046.namprd02.prod.outlook.com (2603:10b6:408:e5::21)
+ by DM4PR12MB8523.namprd12.prod.outlook.com (2603:10b6:8:18e::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Wed, 7 Aug
+ 2024 15:17:27 +0000
+Received: from BL6PEPF00020E65.namprd04.prod.outlook.com
+ (2603:10b6:408:e5:cafe::a9) by BN0PR02CA0046.outlook.office365.com
+ (2603:10b6:408:e5::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.28 via Frontend
+ Transport; Wed, 7 Aug 2024 15:17:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL6PEPF00020E65.mail.protection.outlook.com (10.167.249.26) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7849.8 via Frontend Transport; Wed, 7 Aug 2024 15:17:27 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 7 Aug
+ 2024 10:17:26 -0500
+Received: from ubuntu.mshome.net (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Wed, 7 Aug 2024 10:17:24 -0500
+From: Stewart Hildebrand <stewart.hildebrand@amd.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, "Michael
+ Ellerman" <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N. Rao"
+	<naveen.n.rao@linux.ibm.com>, Thomas Zimmermann <tzimmermann@suse.de>, "Arnd
+ Bergmann" <arnd@arndb.de>, Sam Ravnborg <sam@ravnborg.org>, Yongji Xie
+	<elohimes@gmail.com>, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?=
+	<ilpo.jarvinen@linux.intel.com>, Philipp Stanner <pstanner@redhat.com>
+Subject: [PATCH v3 0/8] PCI: Align small BARs
+Date: Wed, 7 Aug 2024 11:17:09 -0400
+Message-ID: <20240807151723.613742-1-stewart.hildebrand@amd.com>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 16/23] powerpc/e500: Switch to 64 bits PGD on 85xx (32
- bits)
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <cover.1719928057.git.christophe.leroy@csgroup.eu>
- <ca85397df02564e5edc3a3c27b55cf43af3e4ef3.1719928057.git.christophe.leroy@csgroup.eu>
- <2c7adbc9-609d-41a9-8a3b-a63d59e21a1f@roeck-us.net>
- <AM0PR07MB496234BE973D5458C53517F29BB12@AM0PR07MB4962.eurprd07.prod.outlook.com>
- <4f46d614-0fbb-452b-a778-b7b3a7f6da8b@roeck-us.net>
- <b73e991e-5f66-455e-a271-e10511ebeaef@csgroup.eu>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
- nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
- hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
- c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
- 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
- GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
- sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
- Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
- HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
- BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
- l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
- J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
- cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
- wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
- hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
- nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
- QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
- trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
- WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
- HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <b73e991e-5f66-455e-a271-e10511ebeaef@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: stewart.hildebrand@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E65:EE_|DM4PR12MB8523:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2586882c-a4fe-4973-d731-08dcb6f40c58
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|82310400026|921020;
+X-Microsoft-Antispam-Message-Info: 	=?us-ascii?Q?MvetW+L7jH8+Spr+g6axWt3hPcykMqFaCb8vhnp5ZLZ/f8IIB0dvZG8belKy?=
+ =?us-ascii?Q?NiMyjgZProDYeeuuqzedI3JTo9Dt+nCvty0zkPE9s3c0lEk6s90nArwf0H8d?=
+ =?us-ascii?Q?6b8WZJNZpQPv0598pXN3RvuwFSMQMxkMFIDX8fs+JeWBUAD/hDL+juol50Bz?=
+ =?us-ascii?Q?06GLGH3HsVfh7g4Jg8/wTHg++Y5wSl8Y7ybcS6F3zDhw+60hdMFHDlXZ3QOt?=
+ =?us-ascii?Q?bXpuKz+d/u6szgW6zt2bKALzHlytZqncwUZh+0blFzbEEgsAR+F4cQBKoQuZ?=
+ =?us-ascii?Q?AMaeDqvOH8NmeF+II2jUHWl9jqQ5fzwkpW/WzhtddrJwJE1fp8m7uS/BJRPv?=
+ =?us-ascii?Q?E+HViipOySxRMb2W7kvkuqdaSCUNkWh64u31mwuNl17pmJcpZb9gYNcu2inN?=
+ =?us-ascii?Q?gNWe7LC01tUgu5X5Sq8ohRY4+E02WylgmSAPMF+KfgEPlV8i+BL4Cv9a1QN1?=
+ =?us-ascii?Q?vm4mbrEKBMRWcLXA6uaeAJEsqotznr9+f3XdJnOQcL5EUb8aKjDr2w/rkxqz?=
+ =?us-ascii?Q?pIHo4OIGr3i6oNp+XoNtpKrBEGcXOi2tPbSp2PAzexV3xsOpR6PZZO932p+o?=
+ =?us-ascii?Q?BP7+pXy/yoL9EqxLnFCfttck+fAxiRD8/ARDUUOUIYQgrFl/BR44Bs457A8J?=
+ =?us-ascii?Q?s2xzk+OsjSY/mGtCuJF5ZBgjq5UG4cZGQrBqNt6tyUPo3vvausnpsifOG86y?=
+ =?us-ascii?Q?9eohuwggyJG70szfMbPoZ+zJBw9Ml167RT9GNkIT5grihoKNnlQJnDxCVW2Y?=
+ =?us-ascii?Q?g0FG4uAySB0SWncueRPJjgi5FwN7+bPauLFOVY6uKXj2arEFTlUal1qSFZTy?=
+ =?us-ascii?Q?5Qd5ElNItXl/X6MKwMb9cwGy0kbzeIHuyuVYgcMbHY1p0OQd3ZvvJDxVbqpm?=
+ =?us-ascii?Q?Bt0y3r62SFn6Ek5zhv35HJHymoNKR9jSdyy2GV03XedISUboGiPfS6kw5iJf?=
+ =?us-ascii?Q?YlBUQIPTnxBE1zZ6/LsB88bl/V15HEzcT0vsglBYJ/pyivXIRh/JWZg5xMEE?=
+ =?us-ascii?Q?IEnX9mLGyDrFV2lCZh0/rXhsXo+xds6HIcvacT8sscsU9cOMEEyPYf/PkK4I?=
+ =?us-ascii?Q?kxIOSjjuXESzaAsb6OVD4N8yydPkS2vcwsZ6bke8Q+FhcJxEsgLpT1K/qsGY?=
+ =?us-ascii?Q?qEz9hZLe6xdgZTJjfSx76ylgp1YO6ctNLLdE/nMlcC0/COVyA5WhVg9DWVV3?=
+ =?us-ascii?Q?lhEBbFJc65RRwivLRJjrgR8O1x+Haq0Ydbk1PI6i+VnSwNo98jndROpIz6Uz?=
+ =?us-ascii?Q?n4Mc1PTtZMFLyegJLkrbXbNtbwN91oX88tI9icUldQIzFS94+9NOgpK+aLaY?=
+ =?us-ascii?Q?Y4G9OvY4+57sanHghZ+ELafvnZlaaf+/qqPonD14T2H1Blum/XImGZLn5hYS?=
+ =?us-ascii?Q?Wvjqg2tnCyfdpcjdBIgG0HvNxdnKplLfX2GzQ1kUyLPPIuGulA=3D=3D?=
+X-Forefront-Antispam-Report: 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(82310400026)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 15:17:27.4567
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2586882c-a4fe-4973-d731-08dcb6f40c58
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: 	BL6PEPF00020E65.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8523
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,31 +136,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Nicholas Piggin <npiggin@gmail.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Oscar Salvador <osalvador@suse.de>
+Cc: linux-pci@vger.kernel.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Stewart Hildebrand <stewart.hildebrand@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/7/24 03:11, Christophe Leroy wrote:
-> Hi,
-> 
-> Le 31/07/2024 à 18:35, Guenter Roeck a écrit :
->> On 7/31/24 08:36, LEROY Christophe wrote:
->>>
->>> Hi Guenter,
->>> Thanks for this report. I'm afk this week, i"ll have a look at it in more détails next week.
->>> But to be sûre, does that Oops match the bisected commit ? Because pmd_leaf()  for e500 doesn't exist yet so pmd_write() shouldnt be called.
->>> I did validate all my changes with mpc8544 on qemu when i implemented this séries, using map_hugetlb mm selftest. What test tool are you using ?
->>
->> Nothing special; it is just a qemu boot test with various module test and debug options enabled,
->> using a root file system generated with buildroot.
-> 
-> I still don't get anything with mpc85xx_defconfig.
-> 
-> Can you tell with debug options you use and which module tests ?
-> 
+In this context, "small" is defined as max(SZ_4K, PAGE_SIZE).
 
-Please see http://server.roeck-us.net/qemu/ppc-v6.11-rc2/.
+This series sets the default minimum resource alignment to
+max(SZ_4K, PAGE_SIZE) for memory BARs. In preparation, it makes an
+optimization and addresses some corner cases observed when reallocating
+BARs. I consider the prepapatory patches to be prerequisites to changing
+the default BAR alignment.
 
-Thanks,
-Guenter
+I considered introducing checks for the specific scenarios described,
+but chose not to pursue this. A check such as "if (xen_domain())" may be
+pretty simple, but that doesn't account for other hypervisors. If other
+hypervisors are to be considered, or if we try to dynamically reallocate
+BARs for devices being marked for passthrough, such a check may quickly
+grow unwieldy. Further, checking for the MSI-X tables residing in a
+small (<4k) BAR is unlikely to be a one-liner. Making 4k alignment the
+default seems more robust. Lastly, when using IORESOURCE_STARTALIGN, all
+resources in the system need to be aligned.
+
+I considered alternatively adding new functionality to the
+pci=resource_alignment= option, but that approach was already attempted
+and decided against [1].
+
+[1] https://lore.kernel.org/linux-pci/1473757234-5284-4-git-send-email-xyjxie@linux.vnet.ibm.com/
+
+v2->v3:
+* clarify 4k vs PAGE_SIZE
+* rename ("x86/PCI: Move some logic to new function") to
+  ("x86/PCI: Improve code readability")
+* rename ("PCI: Align small (<4k) BARs") to
+  ("PCI: Align small BARs")
+
+v1->v2:
+* rename ("PCI: don't clear already cleared bit") to
+  ("PCI: Don't unnecessarily disable memory decoding")
+* new patch: ("x86/PCI: Move some logic to new function")
+* new patch: ("powerpc/pci: Preserve IORESOURCE_STARTALIGN alignment")
+
+Stewart Hildebrand (8):
+  x86/PCI: Improve code readability
+  PCI: Don't unnecessarily disable memory decoding
+  PCI: Restore resource alignment
+  PCI: Restore memory decoding after reallocation
+  x86/PCI: Preserve IORESOURCE_STARTALIGN alignment
+  powerpc/pci: Preserve IORESOURCE_STARTALIGN alignment
+  PCI: Don't reassign resources that are already aligned
+  PCI: Align small BARs
+
+ arch/powerpc/kernel/pci-common.c |  6 +++--
+ arch/x86/pci/i386.c              | 38 +++++++++++++++------------
+ drivers/pci/pci.c                | 43 +++++++++++++++++++++++--------
+ drivers/pci/setup-bus.c          | 44 ++++++++++++++++++++++++++++++++
+ include/linux/pci.h              |  2 ++
+ 5 files changed, 103 insertions(+), 30 deletions(-)
+
+-- 
+2.46.0
 
