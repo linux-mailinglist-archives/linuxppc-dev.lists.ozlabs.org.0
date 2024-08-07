@@ -1,89 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F5294ACF1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 17:33:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C8B94ACF5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 17:34:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JleHgJ5e;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JleHgJ5e;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TIwWwiQy;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TIwWwiQy;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfDhW5z0Dz3cdn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 01:32:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfDk33lg7z3d8F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 01:34:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JleHgJ5e;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JleHgJ5e;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TIwWwiQy;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TIwWwiQy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfDgp3mL6z30Sv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 01:32:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfDjM2Hz6z30Sv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 01:33:42 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723044738;
+	s=mimecast20190719; t=1723044820;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Sq5YuaqDwPgWwWgWl1dZQMpc9N72YWJDiW5Q5wpx46w=;
-	b=JleHgJ5eBKs6Y4OjzAbjjLUGuQUd0lN/BxAvddra2KlPEbV9UMmhORC/IfGcJn7EYUqO1H
-	lz2jFfLExLMO8RLa5kJLgkIbWXEFL8BEcvMuEzdtnAtW3ovP/TW4lcveaWQSmZhbpdjD5v
-	uZDIqINDRTJjUOmR467wMCkv2dfNuVk=
+	bh=W8Fg8Pv+3HchKikqnrzk8gQaiejBKWgDRh2fN7cA4nk=;
+	b=TIwWwiQyXpwxrjctTqJzLFYGwVajsygeq06bpyyGylBAQsFkc/KNOzXmuxnxx7dybNcVqk
+	KxzifrgMUY8MmJ9rX89snRVayGe5Fio566CmnQjLSyG7JdFd40S4kngq6NRAVAs1AbLkxv
+	gBAIVSxLOeJRawriQ3M0uRLLUudogM8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723044738;
+	s=mimecast20190719; t=1723044820;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Sq5YuaqDwPgWwWgWl1dZQMpc9N72YWJDiW5Q5wpx46w=;
-	b=JleHgJ5eBKs6Y4OjzAbjjLUGuQUd0lN/BxAvddra2KlPEbV9UMmhORC/IfGcJn7EYUqO1H
-	lz2jFfLExLMO8RLa5kJLgkIbWXEFL8BEcvMuEzdtnAtW3ovP/TW4lcveaWQSmZhbpdjD5v
-	uZDIqINDRTJjUOmR467wMCkv2dfNuVk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=W8Fg8Pv+3HchKikqnrzk8gQaiejBKWgDRh2fN7cA4nk=;
+	b=TIwWwiQyXpwxrjctTqJzLFYGwVajsygeq06bpyyGylBAQsFkc/KNOzXmuxnxx7dybNcVqk
+	KxzifrgMUY8MmJ9rX89snRVayGe5Fio566CmnQjLSyG7JdFd40S4kngq6NRAVAs1AbLkxv
+	gBAIVSxLOeJRawriQ3M0uRLLUudogM8=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-425-BQHkrYElOHuuH4a0AxLNdQ-1; Wed, 07 Aug 2024 11:32:16 -0400
-X-MC-Unique: BQHkrYElOHuuH4a0AxLNdQ-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3688010b3bfso1468232f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 08:32:16 -0700 (PDT)
+ us-mta-694-_rOsiKzIOMeutfNj9Gz4jw-1; Wed, 07 Aug 2024 11:33:38 -0400
+X-MC-Unique: _rOsiKzIOMeutfNj9Gz4jw-1
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2ef2d0509a2so20905541fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 08:33:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723044735; x=1723649535;
+        d=1e100.net; s=20230601; t=1723044817; x=1723649617;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Sq5YuaqDwPgWwWgWl1dZQMpc9N72YWJDiW5Q5wpx46w=;
-        b=CMQ0uXOOrSt8yowr+IChYHhxWV+u6bQhYhNsO9gBVD2xZ/LJnZGXTOy/9C4ej4JBVd
-         S7OPzLrWWlaTxFoJ8XAKJtttHo3JmFxtmQZWh65pEccGtzUp9GHEH/phwxBHsocKOaLe
-         JPcrQpn00A9ehfUaTrTi+9NhYX1DAEkoXjiU9nrFi9cQwU+mCMR4uLWeXlZEoXSOmssY
-         lWWWC+rpIdz+L0++d7hFSQLdAOktqw7loNNFqyRA72WJD4QFKExu2krra1vHIBynTK7v
-         8tycluxA6fzaV71PcwZ7+p08Yk24wVeMyBEBzQuykPSW5KPMrMS5utRzw9P1XllTeOb4
-         a6GA==
-X-Gm-Message-State: AOJu0YwrAcEyd5W1bvG49j7IrW0m3zABjKGOZ93hc7+n7T5Zm8+iHB+L
-	HYBTx/4k3X38+6CdsBPyCNqvy5n+jcTFUE9Ljfc+WxvboYLbd6GyqclHn4S75HUNcTOKRyUiVgC
-	5+qKDg4ZhwP8tRamvBsfDX9sCTDpv3WaSojDHSgA/B7sP2ZNvDDsXp7PNpIddXw8=
-X-Received: by 2002:a05:6000:402b:b0:368:6633:e23f with SMTP id ffacd0b85a97d-36bbc1a6749mr20316053f8f.38.1723044735254;
-        Wed, 07 Aug 2024 08:32:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFB9wUohEToqk0eFBraRwm9P/2alU1eR63wSGxUjjwYuWy2SzxEeeFaSalEjRxSpsWOwGvekA==
-X-Received: by 2002:a05:6000:402b:b0:368:6633:e23f with SMTP id ffacd0b85a97d-36bbc1a6749mr20315995f8f.38.1723044734674;
-        Wed, 07 Aug 2024 08:32:14 -0700 (PDT)
+        bh=W8Fg8Pv+3HchKikqnrzk8gQaiejBKWgDRh2fN7cA4nk=;
+        b=Ha1XqLcKAcdZnFR+kE41/2eBUkCpLx2ebyMQJf9+k9FaMhpDl3xgHI3Gf6Zd/QaITY
+         CnIcIxnrmEBs6MVpp3z4x6FcYzOwdIpH+KhC07qW9r3tvBPvt0wjoOdvQ1helOkIKAQK
+         gI4ysQ0RZsrfRKC9so5aqKV8gMmDgRS12vBqhCg4hkvp/E/A4zDwZCuPi0LQwpC0KEDk
+         1DjdCTT7g/Thr2C9ePsFphY302fgpmjpGkcS0fOOjS1j6IqnFm82l5O0eMOJmENONcI9
+         TmfFzn00SwzaO5Lm7sbe/JCOCbMvYzhbpY5RxjIbxYCTCV2vPdem/2QuJyUFnxfo1vx1
+         lDWw==
+X-Gm-Message-State: AOJu0YwjtFuTiSxUEXOv0PqmaC809NURMJLI5wDAVQRa7Z18FA+XCk0B
+	PzsBUzkk+DI22iB4er+I37XIlg1nvvwVlRyWmnK8I6Olmp1n5OU2VpuWCI2tCsTgmpkda6nZAsl
+	mFA/7YSg1UePz3QMlSa9XM8HbO3FXT3Sql3sM9kzp4DHqo+7a5xCQ9GqOeUxBcW0=
+X-Received: by 2002:a2e:3505:0:b0:2ef:2e8b:1802 with SMTP id 38308e7fff4ca-2f15ab0bcd1mr130996341fa.31.1723044816913;
+        Wed, 07 Aug 2024 08:33:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEk8y5+FegzpZO/Fru7AN0xnfLT7UbdZEsxslpVwmH2aOUZDQagKfggY/VwKamE3uObs5lFuw==
+X-Received: by 2002:a2e:3505:0:b0:2ef:2e8b:1802 with SMTP id 38308e7fff4ca-2f15ab0bcd1mr130995931fa.31.1723044816259;
+        Wed, 07 Aug 2024 08:33:36 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c708:1a00:df86:93fe:6505:d096? (p200300cbc7081a00df8693fe6505d096.dip0.t-ipconnect.de. [2003:cb:c708:1a00:df86:93fe:6505:d096])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42905796974sm36299085e9.6.2024.08.07.08.32.13
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429059714d5sm35409145e9.13.2024.08.07.08.33.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Aug 2024 08:32:14 -0700 (PDT)
-Message-ID: <1b0e07fb-33fb-4397-b03e-65698601bc70@redhat.com>
-Date: Wed, 7 Aug 2024 17:32:12 +0200
+        Wed, 07 Aug 2024 08:33:35 -0700 (PDT)
+Message-ID: <ed2e3668-c6d3-4669-a340-06fb156d3369@redhat.com>
+Date: Wed, 7 Aug 2024 17:33:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] mm: Add optional close() to struct vm_special_mapping
+Subject: Re: [PATCH 2/4] powerpc/mm: Handle VDSO unmapping via close() rather
+ than arch_unmap()
 To: Michael Ellerman <mpe@ellerman.id.au>, linux-mm@kvack.org
 References: <20240807124103.85644-1-mpe@ellerman.id.au>
+ <20240807124103.85644-2-mpe@ellerman.id.au>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -130,7 +132,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240807124103.85644-1-mpe@ellerman.id.au>
+In-Reply-To: <20240807124103.85644-2-mpe@ellerman.id.au>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -152,43 +154,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 07.08.24 14:41, Michael Ellerman wrote:
-> Add an optional close() callback to struct vm_special_mapping. It will
-> be used, by powerpc at least, to handle unmapping of the VDSO.
+> Add a close() callback to the VDSO special mapping to handle unmapping
+> of the VDSO. That will make it possible to remove the arch_unmap() hook
+> entirely in a subsequent patch.
 > 
 > Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 > ---
->   include/linux/mm_types.h | 2 ++
->   mm/mmap.c                | 3 +++
->   2 files changed, 5 insertions(+)
-> 
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 485424979254..ef32d87a3adc 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -1313,6 +1313,8 @@ struct vm_special_mapping {
->   
->   	int (*mremap)(const struct vm_special_mapping *sm,
->   		     struct vm_area_struct *new_vma);
-> +	void (*close)(const struct vm_special_mapping *sm,
-> +		      struct vm_area_struct *vma);
->   };
->   
->   enum tlb_flush_reason {
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index d0dfc85b209b..24bd6aa9155c 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -3624,6 +3624,9 @@ static vm_fault_t special_mapping_fault(struct vm_fault *vmf);
->    */
->   static void special_mapping_close(struct vm_area_struct *vma)
->   {
-> +	const struct vm_special_mapping *sm = vma->vm_private_data;
-
-I'm old-fashioned, I enjoy an empty line here ;)
-
-> +	if (sm->close)
-> +		sm->close(sm, vma);
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
 
