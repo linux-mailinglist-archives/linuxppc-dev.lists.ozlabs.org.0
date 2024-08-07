@@ -1,74 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BA694AA7B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:41:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B6394AAA4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 Aug 2024 16:52:01 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ry0Dv9mC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WNBNagA1;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfCYL34NGz3d88
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 00:41:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfCnC2sGkz3d90
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 00:51:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=soleen.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=soleen-com.20230601.gappssmtp.com header.i=@soleen-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ry0Dv9mC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WNBNagA1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=soleen.com (client-ip=2607:f8b0:4864:20::235; helo=mail-oi1-x235.google.com; envelope-from=pasha.tatashin@soleen.com; receiver=lists.ozlabs.org)
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfCXY0P89z3cTl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 00:40:59 +1000 (AEST)
-Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3dc16d00ba6so1084222b6e.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 07:40:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfCmV1SF3z3cS0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 00:51:20 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1fd65aaac27so7194235ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 07:51:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen-com.20230601.gappssmtp.com; s=20230601; t=1723041655; x=1723646455; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3FCSeVm0zgIRrRlVAZ6M3ezYAgjYCe4IP6mmA4qsAbw=;
-        b=ry0Dv9mCStyzxuLrjdW3BdvZd7BVtq2lsOvaNBxy0N5bCciL3IziL3QfG6RyvDdF7M
-         RuvSFK6Ha7g3UWDuKGId0FGY/5F3s4dvZ4so2LC29KAeWb00zNl1GhUeYsgtkRZ4Ebnt
-         +csF0594+LdShN0I1GDyvyLaQGV1i2rnmYP2nXkOIzwq06NQvuWcFzZrNNpuoGRagR0o
-         gTxpqQzjw8C7J2k1oBKNTQn8rf6WxGxafi9P3fH9LgDdcPwSVLr7eZOgbv5wp16jvbb0
-         iDaiRws7QEnOLahtt+QIpndjTQcYiyA1uOv22+dmzS9tOL6S0IEKJA8a5uLgRHn9ZqC9
-         BskA==
+        d=gmail.com; s=20230601; t=1723042278; x=1723647078; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=BDY7J9/W8/VU13G8TqO3gSsNHmFTzvPA7EjNyvdNsjA=;
+        b=WNBNagA1y8NYgA8KrCp5MC5bq0obbkVyvmgXcdPqS4ePsGpnxMGoNyyFAG+9wEMCVA
+         CLHFANk8ETMISpKYdblumg7JIkeY1UhXy+g2v0ftOFsR0zVXHMRmTtWWBsm2rWLUPfxc
+         Cur5WNddQ5td9ef4uE3KjJZxIIQylAYQ38RaYMcWlG5qYBZYHSagHdZHiRUaVVHHjJEy
+         9xse6mjykaLDqcaAGFZwHFEEmi0wInzvi7rLj6DfcP5g6Mgz8FKzrlpJ132mvkYIqwfl
+         8Qu5x0Vso/k4oGF6pbl5Lked/MFFxEuNqv5exMru3fYN8cC8BXiKq25jGZ8j0Df+sr8V
+         XApw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723041655; x=1723646455;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3FCSeVm0zgIRrRlVAZ6M3ezYAgjYCe4IP6mmA4qsAbw=;
-        b=p3zpYiH6CTDqBQ8AYEUCXptPZKzNT02iug56LutY+X5nuQypo8eJtqCSavrLYufjXU
-         /VTLUfqaC6//zXn0Fu3SBYoSVeDQkgBCweKwT4Cu7+lUAc5xjcAXc/ombuxxxWg7wxOy
-         5HTvKVVifZ/Bum33rl7i18A7utUGt4VL8BiHZE6W7/62JaIvZKCCfMZFmypQ9GwLjUNv
-         NzoSxnt97syjol7lPBQNoYedLVJGhnjey3qRN5v4JOo+IKf8foL7zGJ/KSbGwoHEeYHH
-         o2JtX288WLgnznMTLBunrCR8jkwj3MeRKGahtLQDU8zqJuLEFU2V9MV3LAm+Exodx9GC
-         DdnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWAt/IETlVEbh/c0dEzajm2//JYoga59q6RrvRL6uQIFru9tM4kkpKq9SoK8SapYnKvd++XzhFcCZ2eEnEW3hF2QO29e9/GVai+B8TzTw==
-X-Gm-Message-State: AOJu0YzroPAXNNxRR3Q06+oFNbN/VxU8Xu5JKbik/34QoKgtWw9L0tru
-	I0WZAfrTOWOXBg8JooN+4qLG/r2wA+lmMhwhIcy0pwwZhcd713zOekQhub+0CowPScl0ccCyV3d
-	DU/RkvkKIhxSgNUCw4zE1h2lWVnFu6UavNhe6zA==
-X-Google-Smtp-Source: AGHT+IGOXQAzEiXp6xdPGUMTTnKI09YBOs1Vk6kj0LXvCI51MvBrgaaI5JzS3LcBWq8pGTljqab9RWCOjdJxV6Tr6zo=
-X-Received: by 2002:a05:6808:130f:b0:3db:251b:c16 with SMTP id
- 5614622812f47-3db558397b9mr20918330b6e.42.1723041654777; Wed, 07 Aug 2024
- 07:40:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723042278; x=1723647078;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BDY7J9/W8/VU13G8TqO3gSsNHmFTzvPA7EjNyvdNsjA=;
+        b=LSCDtFuTzrZw1oX5FfyhCJ7PR4XK47zvPKJjiiQjCqm0Ng7G9pJcll5VECEYq6xQ+i
+         M+izcVe8QmoG3cCTOexSCXodbgKqKDEvP9j4oCJsVWi3H3Ow15WCKvzFCHZwxoT9WBah
+         5P9H5sUbo1UAoJf6wTxuQadfxrJVGkjoDw4BOOsi2TVpHodSVJxT422/m2XK+BHpCsG/
+         OG1JicbEc7+Ido/RCblwzhlJzKVYRwtzE+3ixLuOwyoQdSwYgwAtJfDA4BV3AoTu6S7u
+         Xuw0eozT3qKzGQNFJpkwkgb3EaY586L0gI0w/q04kKsnvcv2cqAT0MqXgTP9LztVzwfA
+         qbUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWY4IbaRGFjx6Lof++KvDOFdtJsXhcDD/GLHVjZJxGZd46oqHyi2ModNVeaS7BwpnSD7JRpQhFk9rjU3P8BHb1zbKvo/O2qqNNIUBnILg==
+X-Gm-Message-State: AOJu0YyqVDDNk+qRQea4GIcQ0eyB2xtxW0khWx9+j3raL1r8N40xDraF
+	XTJZtSp2ltcTLaLgcbLxiwgZdwvvLsJSRI3DG5LZEseGh9TynKzh
+X-Google-Smtp-Source: AGHT+IE2NV4rr0g1/11a1aKAvLCV87PMjl+pIpr+3Z4hPKHGfZAvPqsdzuPXdheQ2SyYk7IR/MwzcQ==
+X-Received: by 2002:a17:902:e541:b0:1fb:4f57:6a65 with SMTP id d9443c01a7336-2008555ec6emr36244045ad.30.1723042278039;
+        Wed, 07 Aug 2024 07:51:18 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff592b3643sm107035815ad.290.2024.08.07.07.51.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Aug 2024 07:51:16 -0700 (PDT)
+Message-ID: <5cc43ed9-b4f8-49f5-99ee-b411bb144085@roeck-us.net>
+Date: Wed, 7 Aug 2024 07:51:15 -0700
 MIME-Version: 1.0
-References: <20240806221454.1971755-1-pasha.tatashin@soleen.com>
- <20240806221454.1971755-2-pasha.tatashin@soleen.com> <345ba221-e094-47e8-9481-562faf4acd85@redhat.com>
- <e780e9af-e23d-44ff-ae0f-a8f4ee098a1c@redhat.com>
-In-Reply-To: <e780e9af-e23d-44ff-ae0f-a8f4ee098a1c@redhat.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 7 Aug 2024 10:40:17 -0400
-Message-ID: <CA+CK2bBuDu-3XeeAsy4zggOrxTrp84bcZp9p6mQipzc3NqpcSg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm: keep nid around during hot-remove
-To: David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 16/23] powerpc/e500: Switch to 64 bits PGD on 85xx (32
+ bits)
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <cover.1719928057.git.christophe.leroy@csgroup.eu>
+ <ca85397df02564e5edc3a3c27b55cf43af3e4ef3.1719928057.git.christophe.leroy@csgroup.eu>
+ <2c7adbc9-609d-41a9-8a3b-a63d59e21a1f@roeck-us.net>
+ <AM0PR07MB496234BE973D5458C53517F29BB12@AM0PR07MB4962.eurprd07.prod.outlook.com>
+ <4f46d614-0fbb-452b-a778-b7b3a7f6da8b@roeck-us.net>
+ <b73e991e-5f66-455e-a271-e10511ebeaef@csgroup.eu>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <b73e991e-5f66-455e-a271-e10511ebeaef@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,56 +132,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, muchun.song@linux.dev, luto@kernel.org, peterz@infradead.org, catalin.marinas@arm.com, dave.hansen@linux.intel.com, bjorn@rivosinc.com, linux-mm@kvack.org, souravpanda@google.com, rdunlap@infradead.org, hpa@zytor.com, kernel@xen0n.name, will@kernel.org, agordeev@linux.ibm.com, namcao@linutronix.de, linux-s390@vger.kernel.org, arnd@arndb.de, bhe@redhat.com, chenhuacai@kernel.org, christophe.leroy@csgroup.eu, ardb@kernel.org, mingo@redhat.com, rientjes@google.com, gerald.schaefer@linux.ibm.com, borntraeger@linux.ibm.com, aou@eecs.berkeley.edu, ryan.roberts@arm.com, alexghiti@rivosinc.com, gor@linux.ibm.com, hca@linux.ibm.com, dawei.li@shingroup.cn, naveen@kernel.org, maobibo@loongson.cn, chenjiahao16@huawei.com, bp@alien8.de, npiggin@gmail.com, loongarch@lists.linux.dev, paul.walmsley@sifive.com, tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, osalvador@suse.de, x86@kernel.org, philmd@linaro.org, kent.overstreet@linux.dev, linux-kernel@vger.kernel.org, mcgrof@kernel.org, linux-riscv@lists.infradead.org, palmer@dabbelt.com, svens@linux.ibm.com, tzimmermann@suse.de, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, rppt@kernel.org
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Nicholas Piggin <npiggin@gmail.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 7, 2024 at 7:50=E2=80=AFAM David Hildenbrand <david@redhat.com>=
- wrote:
->
-> On 07.08.24 13:32, David Hildenbrand wrote:
-> > On 07.08.24 00:14, Pasha Tatashin wrote:
-> >> nid is needed during memory hot-remove in order to account the
-> >> information about the memmap overhead that is being removed.
-> >>
-> >> In addition, we cannot use page_pgdat(pfn_to_page(pfn)) during
-> >> hotremove after remove_pfn_range_from_zone().
-> >>
-> >> We also cannot determine nid from walking through memblocks after
-> >> remove_memory_block_devices() is called.
-> >>
-> >> Therefore, pass nid down from the beginning of hotremove to where
-> >> it is used for the accounting purposes.
-> >
-> > I was happy to finally remove that nid parameter for good in:
-> >
-> > commit 65a2aa5f482ed0c1b5afb9e6b0b9e0b16bb8b616
-> > Author: David Hildenbrand <david@redhat.com>
-> > Date:   Tue Sep 7 19:55:04 2021 -0700
-> >
-> >       mm/memory_hotplug: remove nid parameter from arch_remove_memory()
-> >
-> > To ask the real question: Do we really need this counter per-nid at all=
-?
-> >
-> > Seems to over-complicate things.
->
-> Case in point: I think the handling is wrong?
->
-> Just because some memory belongs to a nid doesn't mean that the vmemmap
-> was allocated from that nid?
+On 8/7/24 03:11, Christophe Leroy wrote:
+> Hi,
+> 
+> Le 31/07/2024 à 18:35, Guenter Roeck a écrit :
+>> On 7/31/24 08:36, LEROY Christophe wrote:
+>>>
+>>> Hi Guenter,
+>>> Thanks for this report. I'm afk this week, i"ll have a look at it in more détails next week.
+>>> But to be sûre, does that Oops match the bisected commit ? Because pmd_leaf()  for e500 doesn't exist yet so pmd_write() shouldnt be called.
+>>> I did validate all my changes with mpc8544 on qemu when i implemented this séries, using map_hugetlb mm selftest. What test tool are you using ?
+>>
+>> Nothing special; it is just a qemu boot test with various module test and debug options enabled,
+>> using a root file system generated with buildroot.
+> 
+> I still don't get anything with mpc85xx_defconfig.
+> 
+> Can you tell with debug options you use and which module tests ?
+> 
 
-I believe when we hot-add we use nid for the memory that is being
-added to account vmemmap, and when we do hot-remove we also use nid of
-the memory that is being removed. But, you are correct, this does not
-guarantee that the actual vmemmap memory is being allocated or removed
-from the given nid.
+Please see http://server.roeck-us.net/qemu/ppc-v6.11-rc2/.
 
-> Wouldn't we want to look at the actual nid the vmemmap page belongs to
-> that we are removing?
+Thanks,
+Guenter
 
-I am now looking into converting this counter to be system wide, i.e.
-vm_event, it is all done under hotplug lock, so there is no
-contention.
-
-Pasha
