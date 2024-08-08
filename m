@@ -2,40 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2897294BA6A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 12:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F5F94BC10
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 13:16:27 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dtbgfN1i;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfjK30sQXz2y92
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 20:02:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wfky06MHgz2y64
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 21:16:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfjJf4M7Cz2xWc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 20:02:25 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8944F139F;
-	Thu,  8 Aug 2024 03:02:20 -0700 (PDT)
-Received: from [10.57.48.153] (unknown [10.57.48.153])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 340AF3F6A8;
-	Thu,  8 Aug 2024 03:01:50 -0700 (PDT)
-Message-ID: <18166885-127d-492d-8b9f-cc70a7ad2562@arm.com>
-Date: Thu, 8 Aug 2024 11:01:45 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] dma: replace zone_dma_bits by zone_dma_limit
-To: =?UTF-8?B?UGV0ciBUZXNhxZnDrWs=?= <petr@tesarici.cz>,
- Catalin Marinas <catalin.marinas@arm.com>
-References: <cover.1722578375.git.baruch@tkos.co.il>
- <5821a1b2eb82847ccbac0945da040518d6f6f16b.1722578375.git.baruch@tkos.co.il>
- <Zqyo4qjPRHUeUfS5@arm.com> <20240807161938.5729b656@mordecai.tesarici.cz>
- <ZrO5okGUljTc9E7N@arm.com> <20240808113501.4fde4cb0@mordecai.tesarici.cz>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20240808113501.4fde4cb0@mordecai.tesarici.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dtbgfN1i;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfkxH3pJkz2xWt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 21:15:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723115748; x=1754651748;
+  h=date:from:to:cc:subject:message-id;
+  bh=xVRHR5qlgK132iiNRkAFlmTCO84zEJ6OtjP/VXy+CSU=;
+  b=dtbgfN1ikJnVb+GLTsya9gd/i/da2+mLag5+YbBounqWU4ckfYjl8jAd
+   JRRSq3JCdqlQAdr1luaADKTBWb6chkQsTi8Kv6f/Ftce2wQ1YMbyXTRhE
+   eAbg6nebXYR6jOARq+dUTAeBiP94HYwpzn5clH2LK2rTwMRYXsg3z8C1I
+   FnO0/aH1qc038Vj/qmfn9zvOahtgDKRHbLx+m5QspXQ6N2VAmwet8Jr0X
+   /Gf6VPNh1B57TqYiVNTE5RodMhMBP5zOnLI+3dIShwBVhSVbNUFcgwIIo
+   xYk11IzaC0xuuUk55401rlflQaoU3Z0CnUrRaa3NI2vA1jT8aAXwDwbKI
+   w==;
+X-CSE-ConnectionGUID: K4zsFohbRNSNNvuAQ0cL8A==
+X-CSE-MsgGUID: bKsJT1ouRNyXKIBZycBYTw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="38740815"
+X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
+   d="scan'208";a="38740815"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 04:15:42 -0700
+X-CSE-ConnectionGUID: xHrHXwIfRMyjrs0OjJL5hw==
+X-CSE-MsgGUID: MMkYyjvMQhWUe56XafqG/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
+   d="scan'208";a="94731384"
+Received: from unknown (HELO b6bf6c95bbab) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 08 Aug 2024 04:15:40 -0700
+Received: from kbuild by b6bf6c95bbab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sc17J-00068Y-2t;
+	Thu, 08 Aug 2024 11:15:37 +0000
+Date: Thu, 08 Aug 2024 19:15:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS
+ fa740ca82277b476a49fee83c6fdb023656ef779
+Message-ID: <202408081921.z7X4koAW-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,136 +70,205 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>, Ramon Fried <ramon@neureality.ai>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2024-08-08 10:35 am, Petr Tesařík wrote:
-> On Wed, 7 Aug 2024 19:14:58 +0100
-> Catalin Marinas <catalin.marinas@arm.com> wrote:
-> 
->> On Wed, Aug 07, 2024 at 04:19:38PM +0200, Petr Tesařík wrote:
->>> On Fri, 2 Aug 2024 10:37:38 +0100
->>> Catalin Marinas <catalin.marinas@arm.com> wrote:
->>>> On Fri, Aug 02, 2024 at 09:03:47AM +0300, Baruch Siach wrote:
->>>>> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
->>>>> index 3b4be4ca3b08..62b36fda44c9 100644
->>>>> --- a/kernel/dma/direct.c
->>>>> +++ b/kernel/dma/direct.c
->>>>> @@ -20,7 +20,7 @@
->>>>>    * it for entirely different regions. In that case the arch code needs to
->>>>>    * override the variable below for dma-direct to work properly.
->>>>>    */
->>>>> -unsigned int zone_dma_bits __ro_after_init = 24;
->>>>> +u64 zone_dma_limit __ro_after_init = DMA_BIT_MASK(24);
->>>>
->>>> u64 here makes sense even if it may be larger than phys_addr_t. It
->>>> matches the phys_limit type in the swiotlb code. The compilers should no
->>>> longer complain.
->>>
->>> FTR I have never quite understood why phys_limit is u64, but u64 was
->>> already used all around the place when I first looked into swiotlb.
->>>    
->>>>> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
->>>>> index d10613eb0f63..7b04f7575796 100644
->>>>> --- a/kernel/dma/pool.c
->>>>> +++ b/kernel/dma/pool.c
->>>>> @@ -70,9 +70,9 @@ static bool cma_in_zone(gfp_t gfp)
->>>>>   	/* CMA can't cross zone boundaries, see cma_activate_area() */
->>>>>   	end = cma_get_base(cma) + size - 1;
->>>>>   	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp & GFP_DMA))
->>>>> -		return end <= DMA_BIT_MASK(zone_dma_bits);
->>>>> +		return end <= zone_dma_limit;
->>>>>   	if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp & GFP_DMA32))
->>>>> -		return end <= DMA_BIT_MASK(32);
->>>>> +		return end <= max(DMA_BIT_MASK(32), zone_dma_limit);
->>>>>   	return true;
->>>>>   }
->>>>>   
->>>>> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
->>>>> index 043b0ecd3e8d..bb51bd5335ad 100644
->>>>> --- a/kernel/dma/swiotlb.c
->>>>> +++ b/kernel/dma/swiotlb.c
->>>>> @@ -450,9 +450,9 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
->>>>>   	if (!remap)
->>>>>   		io_tlb_default_mem.can_grow = true;
->>>>>   	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp_mhttps://lpc.events/event/18/contributions/1776/ask & __GFP_DMA))
->>>>> -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(zone_dma_bits);
->>>>> +		io_tlb_default_mem.phys_limit = zone_dma_limit;
->>>>>   	else if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp_mask & __GFP_DMA32))
->>>>> -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(32);
->>>>> +		io_tlb_default_mem.phys_limit = max(DMA_BIT_MASK(32), zone_dma_limit);
->>>>>   	else
->>>>>   		io_tlb_default_mem.phys_limit = virt_to_phys(high_memory - 1);
->>>>>   #endif
->>>>
->>>> These two look correct to me now and it's the least intrusive (the
->>>> alternative would have been a zone_dma32_limit). The arch code, however,
->>>> needs to ensure that zone_dma_limit can always support 32-bit devices
->>>> even if it is above 4GB (with the relevant dma offsets in place for such
->>>> devices).
->>>
->>> Just to make sure, the DMA zone (if present) must map to at most 32-bit
->>> bus address space (possibly behind a bridge). Is that what you're
->>> saying?
->>
->> No exactly. What I'm trying to say is that on arm64 zone_dma_limit can
->> go beyond DMA_BIT_MASK(32) when the latter is treated as a CPU address.
->> In such cases, ZONE_DMA32 is empty.
->>
->> TBH, this code is confusing and not entirely suitable for a system where
->> the CPU address offsets are not 0. The device::dma_coherent_mask is
->> about the bus address range and phys_limit is calculated correctly in
->> functions like dma_direct_optimal_gfp_mask(). But that's about it w.r.t.
->> DMA bit masks because zone_dma_bits and DMA_BIT_MASK(32) are assumed to
->> be about the CPU address ranges in some cases (in other cases
->> DMA_BIT_MASK() is used to initialise dma_coherent_mask, so more of a bus
->> address).
-> 
-> Yes, I know.
-> 
->> On the platform Baruch is trying to fix, RAM starts at 32GB and ZONE_DMA
->> should end at 33GB. That's 30-bit mask in bus address terms but
->> something not a power of two for the CPU address, hence the
->> zone_dma_limit introduced here.
-> 
-> Yes, I was watching the discussion.
-> 
->> With ZONE_DMA32, since all the DMA code assumes that ZONE_DMA32 ends at
->> 4GB CPU address, it doesn't really work for such platforms. If there are
->> 32-bit devices with a corresponding CPU address offset, ZONE_DMA32
->> should end at 36GB on Baruch's platform. But to simplify things, we just
->> ignore this on arm64 and make ZONE_DMA32 empty.
-> 
-> Ah. That makes sense. It also seems to support my theory that Linux
-> memory zones are an obsolete concept and should be replaced by a
-> different mechanism.
-> 
->> In some cases where we have the device structure we could instead do a
->> dma_to_phys(DMA_BIT_MASK(32)) but not in the two cases above. I guess if
->> we really want to address this properly, we'd need to introduce a
->> zone_dma32_limit that's initialised by the arch code. For arm64, I'm
->> happy with just having an empty ZONE_DMA32 on such platforms.
-> 
-> The obvious caveat is that zone boundaries are system-wide, but the
-> mapping between bus addresses and CPU addresses depends on the device
-> structure. After all, that's why dma_to_phys takes the device as a
-> parameter... In fact, a system may have multiple busses behind
-> different bridges with a different offset applied by each.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: fa740ca82277b476a49fee83c6fdb023656ef779  powerpc: Remove useless config comment in asm/percpu.h
 
-Right, that's why the *_dma_get_max_cpu_address() functions already walk 
-all known bus translations backwards to find the lowest common 
-denominator in the CPU address space. In principle we could also 
-calculate the lowest translated 32-bit DMA address from every >32-bit 
-range in the same way, however that represents enough extra complexity 
-that it doesn't seem worth trying to implement unless and until someone 
-actually has a clear need for it.
+elapsed time: 1311m
 
-Thanks,
-Robin.
+configs tested: 182
+configs skipped: 10
 
-> 
-> FYI I want to make more people aware of these issues at this year's
-> Plumbers, see https://lpc.events/event/18/contributions/1776/
-> 
-> Petr T
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc-13.2.0
+alpha                            allyesconfig   gcc-13.3.0
+alpha                               defconfig   gcc-13.2.0
+arc                              allmodconfig   gcc-13.2.0
+arc                               allnoconfig   gcc-13.2.0
+arc                              allyesconfig   gcc-13.2.0
+arc                          axs101_defconfig   gcc-13.2.0
+arc                                 defconfig   gcc-13.2.0
+arc                   randconfig-001-20240808   gcc-13.2.0
+arc                   randconfig-002-20240808   gcc-13.2.0
+arm                              allmodconfig   gcc-13.2.0
+arm                              allmodconfig   gcc-14.1.0
+arm                               allnoconfig   gcc-13.2.0
+arm                              allyesconfig   gcc-13.2.0
+arm                              allyesconfig   gcc-14.1.0
+arm                                 defconfig   gcc-13.2.0
+arm                          moxart_defconfig   gcc-14.1.0
+arm                        neponset_defconfig   gcc-13.2.0
+arm                   randconfig-001-20240808   gcc-13.2.0
+arm                   randconfig-002-20240808   gcc-13.2.0
+arm                   randconfig-003-20240808   gcc-13.2.0
+arm                   randconfig-004-20240808   gcc-13.2.0
+arm                             rpc_defconfig   gcc-13.2.0
+arm                         s3c6400_defconfig   gcc-13.2.0
+arm                           stm32_defconfig   gcc-13.2.0
+arm64                            allmodconfig   clang-20
+arm64                            allmodconfig   gcc-13.2.0
+arm64                             allnoconfig   gcc-13.2.0
+arm64                               defconfig   gcc-13.2.0
+arm64                 randconfig-001-20240808   gcc-13.2.0
+arm64                 randconfig-002-20240808   gcc-13.2.0
+arm64                 randconfig-003-20240808   gcc-13.2.0
+arm64                 randconfig-004-20240808   gcc-13.2.0
+csky                              allnoconfig   gcc-13.2.0
+csky                                defconfig   gcc-13.2.0
+csky                                defconfig   gcc-14.1.0
+csky                  randconfig-001-20240808   gcc-13.2.0
+csky                  randconfig-002-20240808   gcc-13.2.0
+hexagon                          allyesconfig   clang-20
+i386                             alldefconfig   gcc-14.1.0
+i386                             allmodconfig   clang-18
+i386                              allnoconfig   clang-18
+i386                             allyesconfig   clang-18
+i386         buildonly-randconfig-001-20240808   clang-18
+i386         buildonly-randconfig-002-20240808   clang-18
+i386         buildonly-randconfig-003-20240808   clang-18
+i386         buildonly-randconfig-004-20240808   clang-18
+i386         buildonly-randconfig-005-20240808   clang-18
+i386         buildonly-randconfig-006-20240808   clang-18
+i386                                defconfig   clang-18
+i386                  randconfig-001-20240808   clang-18
+i386                  randconfig-002-20240808   clang-18
+i386                  randconfig-003-20240808   clang-18
+i386                  randconfig-004-20240808   clang-18
+i386                  randconfig-005-20240808   clang-18
+i386                  randconfig-006-20240808   clang-18
+i386                  randconfig-011-20240808   clang-18
+i386                  randconfig-012-20240808   clang-18
+i386                  randconfig-013-20240808   clang-18
+i386                  randconfig-014-20240808   clang-18
+i386                  randconfig-015-20240808   clang-18
+i386                  randconfig-016-20240808   clang-18
+loongarch                        allmodconfig   gcc-14.1.0
+loongarch                         allnoconfig   gcc-13.2.0
+loongarch                           defconfig   gcc-13.2.0
+loongarch             randconfig-001-20240808   gcc-13.2.0
+loongarch             randconfig-002-20240808   gcc-13.2.0
+m68k                             allmodconfig   gcc-14.1.0
+m68k                              allnoconfig   gcc-13.2.0
+m68k                             allyesconfig   gcc-14.1.0
+m68k                         apollo_defconfig   gcc-14.1.0
+m68k                                defconfig   gcc-13.2.0
+m68k                       m5275evb_defconfig   gcc-14.1.0
+m68k                       m5475evb_defconfig   gcc-13.2.0
+m68k                        mvme16x_defconfig   gcc-14.1.0
+microblaze                       allmodconfig   gcc-14.1.0
+microblaze                        allnoconfig   gcc-13.2.0
+microblaze                       allyesconfig   gcc-14.1.0
+microblaze                          defconfig   gcc-13.2.0
+mips                              allnoconfig   gcc-13.2.0
+mips                        bcm47xx_defconfig   gcc-13.2.0
+mips                         db1xxx_defconfig   gcc-14.1.0
+mips                     decstation_defconfig   gcc-14.1.0
+mips                     loongson1b_defconfig   gcc-14.1.0
+mips                         rt305x_defconfig   gcc-14.1.0
+mips                   sb1250_swarm_defconfig   gcc-13.2.0
+nios2                             allnoconfig   gcc-13.2.0
+nios2                               defconfig   gcc-13.2.0
+nios2                 randconfig-001-20240808   gcc-13.2.0
+nios2                 randconfig-002-20240808   gcc-13.2.0
+openrisc                          allnoconfig   gcc-14.1.0
+openrisc                         allyesconfig   gcc-14.1.0
+openrisc                            defconfig   gcc-14.1.0
+openrisc                       virt_defconfig   gcc-14.1.0
+parisc                           allmodconfig   gcc-14.1.0
+parisc                            allnoconfig   gcc-14.1.0
+parisc                           allyesconfig   gcc-14.1.0
+parisc                              defconfig   gcc-14.1.0
+parisc                generic-32bit_defconfig   gcc-13.2.0
+parisc                randconfig-001-20240808   gcc-13.2.0
+parisc                randconfig-002-20240808   gcc-13.2.0
+parisc64                            defconfig   gcc-13.2.0
+powerpc                          allmodconfig   gcc-14.1.0
+powerpc                           allnoconfig   gcc-14.1.0
+powerpc                          allyesconfig   gcc-14.1.0
+powerpc                      chrp32_defconfig   gcc-14.1.0
+powerpc               randconfig-001-20240808   gcc-13.2.0
+powerpc               randconfig-002-20240808   gcc-13.2.0
+powerpc                     skiroot_defconfig   gcc-13.2.0
+powerpc64             randconfig-001-20240808   gcc-13.2.0
+powerpc64             randconfig-002-20240808   gcc-13.2.0
+riscv                            allmodconfig   gcc-14.1.0
+riscv                             allnoconfig   gcc-14.1.0
+riscv                            allyesconfig   gcc-14.1.0
+riscv                               defconfig   gcc-14.1.0
+riscv                    nommu_virt_defconfig   gcc-14.1.0
+riscv                 randconfig-001-20240808   gcc-13.2.0
+riscv                 randconfig-002-20240808   gcc-13.2.0
+s390                             allmodconfig   clang-20
+s390                              allnoconfig   clang-20
+s390                              allnoconfig   gcc-14.1.0
+s390                             allyesconfig   clang-20
+s390                             allyesconfig   gcc-14.1.0
+s390                                defconfig   gcc-14.1.0
+s390                  randconfig-001-20240808   gcc-13.2.0
+s390                  randconfig-002-20240808   gcc-13.2.0
+sh                               allmodconfig   gcc-14.1.0
+sh                                allnoconfig   gcc-13.2.0
+sh                               allyesconfig   gcc-14.1.0
+sh                                  defconfig   gcc-14.1.0
+sh                    randconfig-001-20240808   gcc-13.2.0
+sh                    randconfig-002-20240808   gcc-13.2.0
+sh                      rts7751r2d1_defconfig   gcc-14.1.0
+sh                           se7705_defconfig   gcc-14.1.0
+sh                           se7721_defconfig   gcc-13.2.0
+sh                        sh7757lcr_defconfig   gcc-14.1.0
+sparc                            allmodconfig   gcc-14.1.0
+sparc64                             defconfig   gcc-14.1.0
+sparc64               randconfig-001-20240808   gcc-13.2.0
+sparc64               randconfig-002-20240808   gcc-13.2.0
+um                               allmodconfig   clang-20
+um                               allmodconfig   gcc-13.3.0
+um                                allnoconfig   clang-17
+um                                allnoconfig   gcc-14.1.0
+um                               allyesconfig   gcc-12
+um                               allyesconfig   gcc-13.3.0
+um                                  defconfig   gcc-14.1.0
+um                             i386_defconfig   gcc-14.1.0
+um                    randconfig-001-20240808   gcc-13.2.0
+um                    randconfig-002-20240808   gcc-13.2.0
+um                           x86_64_defconfig   gcc-14.1.0
+x86_64                            allnoconfig   clang-18
+x86_64                           allyesconfig   clang-18
+x86_64       buildonly-randconfig-001-20240808   gcc-12
+x86_64       buildonly-randconfig-002-20240808   gcc-12
+x86_64       buildonly-randconfig-003-20240808   gcc-12
+x86_64       buildonly-randconfig-004-20240808   gcc-12
+x86_64       buildonly-randconfig-005-20240808   gcc-12
+x86_64       buildonly-randconfig-006-20240808   gcc-12
+x86_64                              defconfig   clang-18
+x86_64                randconfig-001-20240808   gcc-12
+x86_64                randconfig-002-20240808   gcc-12
+x86_64                randconfig-003-20240808   gcc-12
+x86_64                randconfig-004-20240808   gcc-12
+x86_64                randconfig-005-20240808   gcc-12
+x86_64                randconfig-006-20240808   gcc-12
+x86_64                randconfig-011-20240808   gcc-12
+x86_64                randconfig-012-20240808   gcc-12
+x86_64                randconfig-013-20240808   gcc-12
+x86_64                randconfig-014-20240808   gcc-12
+x86_64                randconfig-015-20240808   gcc-12
+x86_64                randconfig-016-20240808   gcc-12
+x86_64                randconfig-071-20240808   gcc-12
+x86_64                randconfig-072-20240808   gcc-12
+x86_64                randconfig-073-20240808   gcc-12
+x86_64                randconfig-074-20240808   gcc-12
+x86_64                randconfig-075-20240808   gcc-12
+x86_64                randconfig-076-20240808   gcc-12
+x86_64                          rhel-8.3-rust   clang-18
+xtensa                            allnoconfig   gcc-13.2.0
+xtensa                randconfig-001-20240808   gcc-13.2.0
+xtensa                randconfig-002-20240808   gcc-13.2.0
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
