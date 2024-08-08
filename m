@@ -1,56 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4022C94C6C9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 00:09:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A181B94C716
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 00:46:32 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gbF7DaBH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fC9ThsyC;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wg1Rv1Q54z2xmV
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 08:09:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wg2GG2NGCz2ydQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 08:46:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gbF7DaBH;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fC9ThsyC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=gustavoars@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3nkq1zgykdeuzlhuqjnvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wg1RF0Pyqz2xZK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 08:09:12 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 73642CE1319;
-	Thu,  8 Aug 2024 22:09:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87FAC32782;
-	Thu,  8 Aug 2024 22:09:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723154949;
-	bh=icIcJ39Tay+d9YIQF/Wf7xniASP333IDPZk/wyxr3w0=;
-	h=Date:From:To:Cc:Subject:From;
-	b=gbF7DaBHX2vVnNjwHq5hxp4z+6zAPDIYbuGZuqrawkCbEt31pM+iQ5+zlo5nht8GF
-	 AFNHdcQsoP8fWZpd4hNykFJYGPXHkDSSWLaJ4PLzyZahnIK/lysgUvRB5LH5EHC+Y/
-	 CxEbspM0RYcUZ09tTN79MpEH+JAh+o6O5D6t7KmYSQGsECeL6N2lJXH0rn9BbeC1NM
-	 mBENIKwlHOzjhj2+nsxxDJvDax1iEpwRZPwg316LO+FkwN2WxIJF+cTknEHIopnaw/
-	 4TGbcgH5MGRXsPSdGw/jD1ZdYUGQ+qjqudKhDsq0OUB+XDsl0hxSZGpksPXdP5nNfi
-	 0/rN7rMr1jZuw==
-Date: Thu, 8 Aug 2024 16:09:06 -0600
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Haren Myneni <haren@us.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH][next] crypto: nx - Use static_assert() to check struct sizes
-Message-ID: <ZrVCAqGrl+5prW1Y@cute>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wg2FZ58Pcz2yGd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 08:45:53 +1000 (AEST)
+Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-7a2d4261a48so1282551a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 15:45:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723157151; x=1723761951; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zNoZqlzt9ZBl78Ypw3YUgXOuKREj1jjRu4BYW9vQ8bI=;
+        b=fC9ThsyCpJSCgLIALLzg6B21npxmVjFqvRUKcDgBddr2JD2vcTNUzwFqM0HYyhYBzn
+         18GWqdVX+ZUGSg6c1M40Pw4jLb5ospcSMWaC1PfeVFL7ZHIteqYBwofLYYqNoZzxtU+f
+         rv+PJHwfMQrqiPcD2Vdr5ycrto2RZzBA1L+DMQTX//TW93Aewq2Ydq9OjHSeQJ1C9TkI
+         p+qcoSbIs8qpe8228Qu8Pbabah7IpQbmsqwIz0jVQl/qSEBecVEpqr5AMRgh5zsLO83j
+         lemdTksgIdoD7qOw50jHjo5sHIWuZMAkMbfEdKZfqQkZVrY8jrRLMCwQUdSk7M85l5L0
+         w4Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723157151; x=1723761951;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zNoZqlzt9ZBl78Ypw3YUgXOuKREj1jjRu4BYW9vQ8bI=;
+        b=BK9vi94pTIXEHEMGkrIOu4HbSe6IGezXMXGM/zdNEN2peWYvJhip38qDl3hzJh4JzN
+         g5ejZP40e47fStYz/Jo/86gUxzfz/wyVvtYTPg2c11rOmEGmqtT03SjPfbzCpB0aXdCw
+         iv2R+1TKKy1+qphrNxIAU+fFeApcnd4EGlUSnYBhcHa+Lokdj86srEhjD+UHMTOHmSiD
+         06vb3GwMHNT5GU6J6ocFQHpTLEo3QtBLiO9vZk1TuopeIUDGDMZNbpOBtG8a4bFlSLhl
+         6d0/9BEKu0YTpMHWTI66K8kzDVzhXWmi0dDNDgcWSw8MFAL7oopKeiuDc490UZzKvKgp
+         Kqvw==
+X-Forwarded-Encrypted: i=1; AJvYcCXxhe/k6jLXReNdYDe3fbhvOYFSk3S2qjGe6C16EJ+gfoWGua+HNATWQPMRX0HUl7keEG6h1voPLAqQglKTBXek4xKxi9I1d47alJdJOg==
+X-Gm-Message-State: AOJu0YwYtzUXyc/22wACM7e856oO9u9t7ARmuA2ncs4MDiClnv+3ydPq
+	8yT9PDOuFceEea1FV1Xk1kw76lXdP8GGg/rFTda2iULSKHi7bfXD7qTKLZYk+DxSxB39V6Enz0c
+	QXg==
+X-Google-Smtp-Source: AGHT+IEPJ08ELA+TzWWFCZw07FCvVi/TuALPCbLFSyKyDr+wDhcDE59d0hzyaFMhbl9jQNfxVlpU+d7vYMQ=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a63:b242:0:b0:6e7:95d3:b35c with SMTP id
+ 41be03b00d2f7-7c2684072femr6690a12.5.1723157150809; Thu, 08 Aug 2024 15:45:50
+ -0700 (PDT)
+Date: Thu, 8 Aug 2024 15:45:49 -0700
+In-Reply-To: <ZrU9AJi7-pHT_UWS@x1n>
+Mime-Version: 1.0
+References: <20240807194812.819412-1-peterx@redhat.com> <20240807194812.819412-3-peterx@redhat.com>
+ <ZrTlZ4vZ74sK8Ydd@google.com> <ZrU20AqADICwwmCy@x1n> <ZrU5JyjIa1CwZ_KD@google.com>
+ <ZrU9AJi7-pHT_UWS@x1n>
+Message-ID: <ZrVKndceu5gZT-j5@google.com>
+Subject: Re: [PATCH v4 2/7] mm/mprotect: Push mmu notifier to PUDs
+From: Sean Christopherson <seanjc@google.com>
+To: Peter Xu <peterx@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,45 +78,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hardening@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: James Houghton <jthoughton@google.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, David Rientjes <rientjes@google.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 1e6b251ce175 ("crypto: nx - Avoid -Wflex-array-member-not-at-end
-warning") introduced tagged `struct nx842_crypto_header_hdr`. We want
-to ensure that when new members need to be added to the flexible
-structure, they are always included within this tagged struct.
+On Thu, Aug 08, 2024, Peter Xu wrote:
+> On Thu, Aug 08, 2024 at 02:31:19PM -0700, Sean Christopherson wrote:
+> > On Thu, Aug 08, 2024, Peter Xu wrote:
+> > > Hi, Sean,
+> > > 
+> > > On Thu, Aug 08, 2024 at 08:33:59AM -0700, Sean Christopherson wrote:
+> > > > On Wed, Aug 07, 2024, Peter Xu wrote:
+> > > > > mprotect() does mmu notifiers in PMD levels.  It's there since 2014 of
+> > > > > commit a5338093bfb4 ("mm: move mmu notifier call from change_protection to
+> > > > > change_pmd_range").
+> > > > > 
+> > > > > At that time, the issue was that NUMA balancing can be applied on a huge
+> > > > > range of VM memory, even if nothing was populated.  The notification can be
+> > > > > avoided in this case if no valid pmd detected, which includes either THP or
+> > > > > a PTE pgtable page.
+> > > > > 
+> > > > > Now to pave way for PUD handling, this isn't enough.  We need to generate
+> > > > > mmu notifications even on PUD entries properly.  mprotect() is currently
+> > > > > broken on PUD (e.g., one can easily trigger kernel error with dax 1G
+> > > > > mappings already), this is the start to fix it.
+> > > > > 
+> > > > > To fix that, this patch proposes to push such notifications to the PUD
+> > > > > layers.
+> > > > > 
+> > > > > There is risk on regressing the problem Rik wanted to resolve before, but I
+> > > > > think it shouldn't really happen, and I still chose this solution because
+> > > > > of a few reasons:
+> > > > > 
+> > > > >   1) Consider a large VM that should definitely contain more than GBs of
+> > > > >   memory, it's highly likely that PUDs are also none.  In this case there
+> > > > 
+> > > > I don't follow this.  Did you mean to say it's highly likely that PUDs are *NOT*
+> > > > none?
+> > > 
+> > > I did mean the original wordings.
+> > > 
+> > > Note that in the previous case Rik worked on, it's about a mostly empty VM
+> > > got NUMA hint applied.  So I did mean "PUDs are also none" here, with the
+> > > hope that when the numa hint applies on any part of the unpopulated guest
+> > > memory, it'll find nothing in PUDs. Here it's mostly not about a huge PUD
+> > > mapping as long as the guest memory is not backed by DAX (since only DAX
+> > > supports 1G huge pud so far, while hugetlb has its own path here in
+> > > mprotect, so it must be things like anon or shmem), but a PUD entry that
+> > > contains pmd pgtables.  For that part, I was trying to justify "no pmd
+> > > pgtable installed" with the fact that "a large VM that should definitely
+> > > contain more than GBs of memory", it means the PUD range should hopefully
+> > > never been accessed, so even the pmd pgtable entry should be missing.
+> > 
+> > Ah, now I get what you were saying.
+> > 
+> > Problem is, walking the rmaps for the shadow MMU doesn't benefit (much) from
+> > empty PUDs, because KVM needs to blindly walk the rmaps for every gfn covered by
+> > the PUD to see if there are any SPTEs in any shadow MMUs mapping that gfn.  And
+> > that walk is done without ever yielding, which I suspect is the source of the
+> > soft lockups of yore.
+> > 
+> > And there's no way around that conundrum (walking rmaps), at least not without a
+> > major rewrite in KVM.  In a nested TDP scenario, KVM's stage-2 page tables (for
+> > L2) key off of L2 gfns, not L1 gfns, and so the only way to find mappings is
+> > through the rmaps.
+> 
+> I think the hope here is when the whole PUDs being hinted are empty without
+> pgtable installed, there'll be no mmu notifier to be kicked off at all.
+> 
+> To be explicit, I meant after this patch applied, the pud loop for numa
+> hints look like this:
+> 
+>         FOR_EACH_PUD() {
+>                 ...
+>                 if (pud_none(pud))
+>                         continue;
+> 
+>                 if (!range.start) {
+>                         mmu_notifier_range_init(&range,
+>                                                 MMU_NOTIFY_PROTECTION_VMA, 0,
+>                                                 vma->vm_mm, addr, end);
+>                         mmu_notifier_invalidate_range_start(&range);
+>                 }
+>                 ...
+>         }
+> 
+> So the hope is that pud_none() is always true for the hinted area (just
+> like it used to be when pmd_none() can be hopefully true always), then we
+> skip the mmu notifier as a whole (including KVM's)!
 
-So, we use `static_assert()` to ensure that the memory layout for
-both the flexible structure and the tagged struct is the same after
-any changes.
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/crypto/nx/nx-842.h | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/crypto/nx/nx-842.h b/drivers/crypto/nx/nx-842.h
-index 25fa70b2112c..887d4ce3cb49 100644
---- a/drivers/crypto/nx/nx-842.h
-+++ b/drivers/crypto/nx/nx-842.h
-@@ -157,6 +157,7 @@ struct nx842_crypto_header_group {
- } __packed;
- 
- struct nx842_crypto_header {
-+	/* New members MUST be added within the struct_group() macro below. */
- 	struct_group_tagged(nx842_crypto_header_hdr, hdr,
- 		__be16 magic;		/* NX842_CRYPTO_MAGIC */
- 		__be16 ignore;		/* decompressed end bytes to ignore */
-@@ -164,6 +165,8 @@ struct nx842_crypto_header {
- 	);
- 	struct nx842_crypto_header_group group[];
- } __packed;
-+static_assert(offsetof(struct nx842_crypto_header, group) == sizeof(struct nx842_crypto_header_hdr),
-+	      "struct member likely outside of struct_group_tagged()");
- 
- #define NX842_CRYPTO_GROUP_MAX	(0x20)
- 
--- 
-2.34.1
-
+Gotcha, that makes sense.  Too many page tables flying around :-)
