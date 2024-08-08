@@ -1,41 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22C594B73D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 09:13:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F7194B782
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 09:18:57 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=gN0Uk/uq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MgYGFE6m;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfdY94Xdmz3dWS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:13:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wfdgz5Rmyz3dKb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:18:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=gN0Uk/uq;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=MgYGFE6m;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.198; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::226; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfdWk38KFz3dBt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 17:11:43 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 90A4EC0009;
-	Thu,  8 Aug 2024 07:11:38 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfdWm4fjcz3dKJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 17:11:48 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 5FD27C0008;
+	Thu,  8 Aug 2024 07:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1723101099;
+	t=1723101100;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=O1sNai9Jq2u7qPOllWQVrRFQ040G46WCUggP4JjIwzw=;
-	b=gN0Uk/uqPGnTJ6esXWrtABtNBxnV4yIYif8QxXp/26PxdMvJIF8+ln3j2iWbJExBMXWwdv
-	EUqX566FoQ7JYaGSTsUc5q27vmLFMqURO6dDWKjtXv1zvTU+pib0UncbHMXpb/Wy9ypA2D
-	f2Eifo/uWZpMOoPIv9BLZhmnE8WfYsMKDl9UbpP8kc4UEbNADAkqgJ2kUEEn0uesVDXuFt
-	LJKyvkZBpBuhY06XT8xKLgiTkVM9M44jHsPecZRtP9bdUQfnfJ9REoo4PayPcbuuudW3z7
-	tuW79gJL2vSc7kJx9JNDWKyupzpwyZdOTgjeSd+1BWH5NyfwmddTH1a2gOOMkA==
+	bh=0UTWDzz2CSi9594bsioUgKxsyX0iygtz1joM8J6wTqE=;
+	b=MgYGFE6m2CQqivcWTNt8e8kbYA8hNR/WOja6lnwocpT2hOVYbYTzcKlQgAR1P1cYUNv+yC
+	antjbKsTPj150V5VYjIl3e86cQMcNRW82fUnuw5qrEqaju7u4yQ3fHGL/RmghN+Wf7Gk8W
+	oEPB0SBkQ/O1jTQ0oZtJKEIY3SH2p1HWf8zJFbYLbP+O4lUqmDbvkMA1w6kXVCuN5ZJz1E
+	EOLYUEW6rfYG7dlGe0CPY79aXW+X1K1atAt5Ds1uRIAHF/pbZp2+rJpsI7q/V3FaLPDv9Y
+	e/AeSPEV56hAohDGbLw38f+cxBf5GamRCQlD0kRMhg57fpFiDHIJO5IT07aHbQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -45,9 +45,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Qiang Zhao <qiang.zhao@nxp.com>,
 	Li Yang <leoyang.li@nxp.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 01/36] soc: fsl: cpm1: qmc: Update TRNSYNC only in transparent mode
-Date: Thu,  8 Aug 2024 09:10:54 +0200
-Message-ID: <20240808071132.149251-2-herve.codina@bootlin.com>
+Subject: [PATCH v2 02/36] soc: fsl: cpm1: qmc: Enable TRNSYNC only when needed
+Date: Thu,  8 Aug 2024 09:10:55 +0200
+Message-ID: <20240808071132.149251-3-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240808071132.149251-1-herve.codina@bootlin.com>
 References: <20240808071132.149251-1-herve.codina@bootlin.com>
@@ -65,70 +65,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The TRNSYNC feature is available (and enabled) only in transparent mode.
+The TRNSYNC feature is enabled whatever the number of time-slots used.
+The feature is needed only when more than one time-slot is used.
 
-Since commit 7cc9bda9c163 ("soc: fsl: cpm1: qmc: Handle timeslot entries
-at channel start() and stop()") TRNSYNC register is updated in
-transparent and hdlc mode. In hdlc mode, the address of the TRNSYNC
-register is used by the QMC for other internal purpose. Even if no weird
-results were observed in hdlc mode, touching this register in this mode
-is wrong.
+Improve the driver enabling TRNSYNC only when it is needed.
 
-Update TRNSYNC only in transparent mode.
-
-Fixes: 7cc9bda9c163 ("soc: fsl: cpm1: qmc: Handle timeslot entries at channel start() and stop()")
-Cc: stable@vger.kernel.org
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/soc/fsl/qe/qmc.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 76bb496305a0..bacabf731dcb 100644
+index bacabf731dcb..916395745850 100644
 --- a/drivers/soc/fsl/qe/qmc.c
 +++ b/drivers/soc/fsl/qe/qmc.c
-@@ -940,11 +940,13 @@ static int qmc_chan_start_rx(struct qmc_chan *chan)
- 		goto end;
- 	}
+@@ -889,6 +889,7 @@ EXPORT_SYMBOL(qmc_chan_stop);
+ static int qmc_setup_chan_trnsync(struct qmc *qmc, struct qmc_chan *chan)
+ {
+ 	struct tsa_serial_info info;
++	unsigned int w_rx, w_tx;
+ 	u16 first_rx, last_tx;
+ 	u16 trnsync;
+ 	int ret;
+@@ -898,6 +899,14 @@ static int qmc_setup_chan_trnsync(struct qmc *qmc, struct qmc_chan *chan)
+ 	if (ret)
+ 		return ret;
  
--	ret = qmc_setup_chan_trnsync(chan->qmc, chan);
--	if (ret) {
--		dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
--			chan->id, ret);
--		goto end;
-+	if (chan->mode == QMC_TRANSPARENT) {
-+		ret = qmc_setup_chan_trnsync(chan->qmc, chan);
-+		if (ret) {
-+			dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
-+				chan->id, ret);
-+			goto end;
-+		}
- 	}
++	w_rx = hweight64(chan->rx_ts_mask);
++	w_tx = hweight64(chan->tx_ts_mask);
++	if (w_rx <= 1 && w_tx <= 1) {
++		dev_dbg(qmc->dev, "only one or zero ts -> disable trnsync\n");
++		qmc_clrbits16(chan->s_param + QMC_SPE_CHAMR, QMC_SPE_CHAMR_TRANSP_SYNC);
++		return 0;
++	}
++
+ 	/* Find the first Rx TS allocated to the channel */
+ 	first_rx = chan->rx_ts_mask ? __ffs64(chan->rx_ts_mask) + 1 : 0;
  
- 	/* Restart the receiver */
-@@ -982,11 +984,13 @@ static int qmc_chan_start_tx(struct qmc_chan *chan)
- 		goto end;
- 	}
+@@ -911,6 +920,7 @@ static int qmc_setup_chan_trnsync(struct qmc *qmc, struct qmc_chan *chan)
+ 		trnsync |= QMC_SPE_TRNSYNC_TX((last_tx % info.nb_tx_ts) * 2);
  
--	ret = qmc_setup_chan_trnsync(chan->qmc, chan);
--	if (ret) {
--		dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
--			chan->id, ret);
--		goto end;
-+	if (chan->mode == QMC_TRANSPARENT) {
-+		ret = qmc_setup_chan_trnsync(chan->qmc, chan);
-+		if (ret) {
-+			dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
-+				chan->id, ret);
-+			goto end;
-+		}
- 	}
+ 	qmc_write16(chan->s_param + QMC_SPE_TRNSYNC, trnsync);
++	qmc_setbits16(chan->s_param + QMC_SPE_CHAMR, QMC_SPE_CHAMR_TRANSP_SYNC);
  
- 	/*
+ 	dev_dbg(qmc->dev, "chan %u: trnsync=0x%04x, rx %u/%u 0x%llx, tx %u/%u 0x%llx\n",
+ 		chan->id, trnsync,
+@@ -1378,7 +1388,7 @@ static int qmc_setup_chan(struct qmc *qmc, struct qmc_chan *chan)
+ 	if (chan->mode == QMC_TRANSPARENT) {
+ 		qmc_write32(chan->s_param + QMC_SPE_ZDSTATE, 0x18000080);
+ 		qmc_write16(chan->s_param + QMC_SPE_TMRBLR, 60);
+-		val = QMC_SPE_CHAMR_MODE_TRANSP | QMC_SPE_CHAMR_TRANSP_SYNC;
++		val = QMC_SPE_CHAMR_MODE_TRANSP;
+ 		if (chan->is_reverse_data)
+ 			val |= QMC_SPE_CHAMR_TRANSP_RD;
+ 		qmc_write16(chan->s_param + QMC_SPE_CHAMR, val);
 -- 
 2.45.0
 
