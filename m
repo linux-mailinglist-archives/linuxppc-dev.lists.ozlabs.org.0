@@ -2,40 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4287A94B7F2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 09:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA0F94B7F8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 09:36:41 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=jmr0MYli;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=YXV9Ky2G;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wff2p1CN9z2ysD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:35:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wff4R6JbPz3dRk
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:36:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=jmr0MYli;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=YXV9Ky2G;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::226; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.198; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfdX81cdgz3dVZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 17:12:07 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id E7346C000C;
-	Thu,  8 Aug 2024 07:12:04 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfdXC6hpbz3dW2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 17:12:11 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id A8986C0013;
+	Thu,  8 Aug 2024 07:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1723101125;
+	t=1723101126;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qhTeQjFFrgyyEBB/vjj0ndtfSFCTyBhsv6uo4yMAh0Y=;
-	b=jmr0MYli9sbNQDvQYczkA/Hd3gJsK1Hd3Raafmpgh3CQ+OGJqEsqtjY2c96ZMhkOkD/Fal
-	A0TVWJPuH9Gx6cYdBawhndvygWDdC4bJKXBQvboyboZ5TLewxYGO3Tw0p8DXqd+oXhr+pZ
-	J6j3gQS38wZltqiFYLxS9HTHpIPozTTjpmFpBUsY40Scml7gPm2I7qtu1/jaVM6ZyUvHQY
-	006VoipCz9bvNgpVF/Sw/vnSTjpRdwlZte8W/iyiz9DhY6da8cmiztjkONNVT7xwINKlWX
-	o7nY10inn7ULuB+sIq0VhKkYSGzGBrzCrJVQyvl/ly+kWWMvbd7pfX413hQfGQ==
+	bh=mxhVI5cINOPlLM9ZHr8aejS0o32n/nWcepwPUyLTegw=;
+	b=YXV9Ky2Gyww2NMCQI07ysxQ5mmIF9Ws8qRDdaJu32NJ7e66r4CjEgO2zbcBLfjTg78pLXr
+	2R7yX9YRYuq9plVEcXz3/NuxbRbvhNQYd97DyfqWkiBYdnaXOglrjVG45oS9zl/Z1we2jO
+	W2XF5Y4v2gQMzSoUPvbvOFZnwVEZmn2LOPp2828DrJ7mcx0qzxEFXOeGfJoufaQLeu0LJ/
+	9e40sBf9Uxr74genQSnrvGBGfWilkUiXF3Z4kXKyAMHFzQcayU3lZ/RXPbhFc+f83/MnoA
+	2GhKOh3iIejJ8fNPUtWF7N+4U3v5sG+bYUJGxawP78CrDrML5hSgqUIzPbEDGQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -45,9 +45,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Qiang Zhao <qiang.zhao@nxp.com>,
 	Li Yang <leoyang.li@nxp.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 35/36] soc: fsl: cpm1: qmc: Handle QUICC Engine (QE) soft-qmc firmware
-Date: Thu,  8 Aug 2024 09:11:28 +0200
-Message-ID: <20240808071132.149251-36-herve.codina@bootlin.com>
+Subject: [PATCH v2 36/36] MAINTAINERS: Add QE files related to the Freescale QMC controller
+Date: Thu,  8 Aug 2024 09:11:29 +0200
+Message-ID: <20240808071132.149251-37-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240808071132.149251-1-herve.codina@bootlin.com>
 References: <20240808071132.149251-1-herve.codina@bootlin.com>
@@ -69,108 +69,27 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, devicetree@vger.kernel.org,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The QUICC Engine (QE) QMC can use a firmware to have the QMC working in
-'soft-qmc' mode.
+The Freescale QMC controller driver supports both QE and CPM1.
 
-Handle this optional 'soft-qmc' firmware.
+Add the newly introduced QE files to the existing entry.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/soc/fsl/qe/qmc.c | 67 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index b3a9534441ee..3dffebb48b0d 100644
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -10,6 +10,7 @@
- #include <soc/fsl/qe/qmc.h>
- #include <linux/bitfield.h>
- #include <linux/dma-mapping.h>
-+#include <linux/firmware.h>
- #include <linux/hdlc.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-@@ -1649,6 +1650,66 @@ static irqreturn_t qmc_irq_handler(int irq, void *priv)
- 	return IRQ_HANDLED;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1d32d38f2247..1331bdeb7386 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -8996,6 +8996,7 @@ M:	Herve Codina <herve.codina@bootlin.com>
+ L:	linuxppc-dev@lists.ozlabs.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-scc-qmc.yaml
++F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ucc-qmc.yaml
+ F:	drivers/soc/fsl/qe/qmc.c
+ F:	include/soc/fsl/qe/qmc.h
  
-+static int qmc_qe_soft_qmc_init(struct qmc *qmc, struct device_node *np)
-+{
-+	struct qe_firmware_info *qe_fw_info;
-+	const struct qe_firmware *qe_fw;
-+	const struct firmware *fw;
-+	const char *filename;
-+	int ret;
-+
-+	ret = of_property_read_string(np, "fsl,soft-qmc", &filename);
-+	switch (ret) {
-+	case 0:
-+		break;
-+	case -EINVAL:
-+		/* fsl,soft-qmc property not set -> Simply do nothing */
-+		return 0;
-+	default:
-+		dev_err(qmc->dev, "%pOF: failed to read fsl,soft-qmc\n",
-+			np);
-+		return ret;
-+	}
-+
-+	qe_fw_info = qe_get_firmware_info();
-+	if (qe_fw_info) {
-+		if (!strstr(qe_fw_info->id, "Soft-QMC")) {
-+			dev_err(qmc->dev, "Another Firmware is already loaded\n");
-+			return -EALREADY;
-+		}
-+		dev_info(qmc->dev, "Firmware already loaded\n");
-+		return 0;
-+	}
-+
-+	dev_info(qmc->dev, "Using firmware %s\n", filename);
-+
-+	ret = request_firmware(&fw, filename, qmc->dev);
-+	if (ret) {
-+		dev_err(qmc->dev, "Failed to request firmware %s\n", filename);
-+		return ret;
-+	}
-+
-+	qe_fw = (const struct qe_firmware *)fw->data;
-+
-+	if (fw->size < sizeof(qe_fw->header) ||
-+	    be32_to_cpu(qe_fw->header.length) != fw->size) {
-+		dev_err(qmc->dev, "Invalid firmware %s\n", filename);
-+		ret = -EINVAL;
-+		goto end;
-+	}
-+
-+	ret = qe_upload_firmware(qe_fw);
-+	if (ret) {
-+		dev_err(qmc->dev, "Failed to load firmware %s\n", filename);
-+		goto end;
-+	}
-+
-+	ret = 0;
-+end:
-+	release_firmware(fw);
-+	return ret;
-+}
-+
- static int qmc_cpm1_init_resources(struct qmc *qmc, struct platform_device *pdev)
- {
- 	struct resource *res;
-@@ -1855,6 +1916,12 @@ static int qmc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	if (qmc_is_qe(qmc)) {
-+		ret = qmc_qe_soft_qmc_init(qmc, np);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* Parse channels informationss */
- 	ret = qmc_of_parse_chans(qmc, np);
- 	if (ret)
 -- 
 2.45.0
 
