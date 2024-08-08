@@ -1,41 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F264694B7BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 09:23:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17EEC94B7CA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 09:24:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=g9ATk1Bs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=J5m91NDS;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfdnN690sz3dWP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:23:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfdpH02lwz3bnL
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:24:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=g9ATk1Bs;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=J5m91NDS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::226; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.198; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfdWr5thjz3dVZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 17:11:52 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 7BBCEC0005;
-	Thu,  8 Aug 2024 07:11:49 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfdWs34pnz3dWP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 17:11:53 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 49D7EC0015;
+	Thu,  8 Aug 2024 07:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1723101110;
+	t=1723101111;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iaXjEZNpUJnLB3rQBWEOUhhIwVLHy+ulcMNJJs5r5ug=;
-	b=g9ATk1Bs2ojL25FopiaM3g7t9TI2JwBUFa+NxdUaLGSfjtYYTjRsCGvIBl7RN0rA+ljzVX
-	OjyWp7YNEB4d9BP5RY6fXB2l8AsCAPEd9UwH78kLvhlzaoc4ZMLgNd5aN4CPFSJe8Ad4cJ
-	wmnjn8WGtEPqC0rERCquPHCoDsL49LrR+/L0uK0LFA/yu72Vog7Zj5aw5JAX+f07cxcbs/
-	T1XZxs0QlxefuZcqos86CWmFGSM7XQd472pF89C1m6XZkAVdRdmV914aRNmoobq0tN3RPu
-	5u/Q8pNX1SGzVjOpdzvRpGzKpR3GGKZ9LwRASnv2QbEU0Y3S0Qj/aVsetw1Hcw==
+	bh=VDkbjpdwehTbuqGwy1A5u6/MWoALzTXa6kx6sAsjxTM=;
+	b=J5m91NDS6uxe9OXJ7dhzneA38q0LATdq5KeIgX6yMgd65tfHFx3OpZDBETqRdt9QR1Ghrt
+	noNMpb7t0LUIdsiTnXw+CJpWGLeH7hF6kpTy8VrcPWS8Y5KKZhfHZduFzlbcV0iQl3n2sd
+	kqsfu9IMVB2HE2KHl89jgbn9+7iqBfisa5/a5etX76Bm/E1KotSbTnflJWdph+BQDlwtqM
+	17/mVR0di7w5fY6WODhp5lzZV2vZV4UyqJlhgCanEaoVWfSMz8Q1Xws4ktFqAZY7BK4a3Q
+	0GjZ5T2qeHniP0M74Z376XeW2hFBNManPimP//mjZzAzq5h8bVioXkt/3gmrBg==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -45,9 +45,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Qiang Zhao <qiang.zhao@nxp.com>,
 	Li Yang <leoyang.li@nxp.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 15/36] MAINTAINERS: Add QE files related to the Freescale TSA controller
-Date: Thu,  8 Aug 2024 09:11:08 +0200
-Message-ID: <20240808071132.149251-16-herve.codina@bootlin.com>
+Subject: [PATCH v2 16/36] soc: fsl: cpm1: tsa: Introduce tsa_serial_get_num()
+Date: Thu,  8 Aug 2024 09:11:09 +0200
+Message-ID: <20240808071132.149251-17-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240808071132.149251-1-herve.codina@bootlin.com>
 References: <20240808071132.149251-1-herve.codina@bootlin.com>
@@ -69,31 +69,105 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, devicetree@vger.kernel.org,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The Freescale TSA controller driver supports both QE and CPM1.
+TSA consumers in CPM1 implementation don't need to know about the serial
+device number used by the TSA component. In QUICC Engine implementation,
+this information is needed.
 
-Add the newly introduced QE files to the existing entry.
+Improve the TSA API with tsa_serial_get_num() in order to provide this
+information.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/fsl/qe/tsa.c | 56 ++++++++++++++++++++++++++--------------
+ drivers/soc/fsl/qe/tsa.h |  3 +++
+ 2 files changed, 39 insertions(+), 20 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 42decde38320..1d32d38f2247 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9011,9 +9011,11 @@ M:	Herve Codina <herve.codina@bootlin.com>
- L:	linuxppc-dev@lists.ozlabs.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,cpm1-tsa.yaml
-+F:	Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-tsa.yaml
- F:	drivers/soc/fsl/qe/tsa.c
- F:	drivers/soc/fsl/qe/tsa.h
- F:	include/dt-bindings/soc/cpm1-fsl,tsa.h
-+F:	include/dt-bindings/soc/qe-fsl,tsa.h
+diff --git a/drivers/soc/fsl/qe/tsa.c b/drivers/soc/fsl/qe/tsa.c
+index c540cf9144c0..f0889b3fcaf2 100644
+--- a/drivers/soc/fsl/qe/tsa.c
++++ b/drivers/soc/fsl/qe/tsa.c
+@@ -231,6 +231,39 @@ static bool tsa_is_qe(const struct tsa *tsa)
+ 	return IS_ENABLED(CONFIG_QUICC_ENGINE);
+ }
  
- FREESCALE QUICC ENGINE UCC ETHERNET DRIVER
- L:	netdev@vger.kernel.org
++static int tsa_qe_serial_get_num(struct tsa_serial *tsa_serial)
++{
++	struct tsa *tsa = tsa_serial_get_tsa(tsa_serial);
++
++	switch (tsa_serial->id) {
++	case FSL_QE_TSA_UCC1: return 0;
++	case FSL_QE_TSA_UCC2: return 1;
++	case FSL_QE_TSA_UCC3: return 2;
++	case FSL_QE_TSA_UCC4: return 3;
++	case FSL_QE_TSA_UCC5: return 4;
++	default:
++		break;
++	}
++
++	dev_err(tsa->dev, "Unsupported serial id %u\n", tsa_serial->id);
++	return -EINVAL;
++}
++
++int tsa_serial_get_num(struct tsa_serial *tsa_serial)
++{
++	struct tsa *tsa = tsa_serial_get_tsa(tsa_serial);
++
++	/*
++	 * There is no need to get the serial num out of the TSA driver in the
++	 * CPM case.
++	 * Further more, in CPM, we can have 2 types of serial SCCs and FCCs.
++	 * What kind of numbering to use that can be global to both SCCs and
++	 * FCCs ?
++	 */
++	return tsa_is_qe(tsa) ? tsa_qe_serial_get_num(tsa_serial) : -EOPNOTSUPP;
++}
++EXPORT_SYMBOL(tsa_serial_get_num);
++
+ static int tsa_cpm1_serial_connect(struct tsa_serial *tsa_serial, bool connect)
+ {
+ 	struct tsa *tsa = tsa_serial_get_tsa(tsa_serial);
+@@ -271,26 +304,9 @@ static int tsa_qe_serial_connect(struct tsa_serial *tsa_serial, bool connect)
+ 	int ucc_num;
+ 	int ret;
+ 
+-	switch (tsa_serial->id) {
+-	case FSL_QE_TSA_UCC1:
+-		ucc_num = 0;
+-		break;
+-	case FSL_QE_TSA_UCC2:
+-		ucc_num = 1;
+-		break;
+-	case FSL_QE_TSA_UCC3:
+-		ucc_num = 2;
+-		break;
+-	case FSL_QE_TSA_UCC4:
+-		ucc_num = 3;
+-		break;
+-	case FSL_QE_TSA_UCC5:
+-		ucc_num = 4;
+-		break;
+-	default:
+-		dev_err(tsa->dev, "Unsupported serial id %u\n", tsa_serial->id);
+-		return -EINVAL;
+-	}
++	ucc_num = tsa_qe_serial_get_num(tsa_serial);
++	if (ucc_num < 0)
++		return ucc_num;
+ 
+ 	spin_lock_irqsave(&tsa->lock, flags);
+ 	ret = ucc_set_qe_mux_tsa(ucc_num, connect);
+diff --git a/drivers/soc/fsl/qe/tsa.h b/drivers/soc/fsl/qe/tsa.h
+index d9df89b6da3e..da137bc0f49b 100644
+--- a/drivers/soc/fsl/qe/tsa.h
++++ b/drivers/soc/fsl/qe/tsa.h
+@@ -39,4 +39,7 @@ struct tsa_serial_info {
+ /* Get information */
+ int tsa_serial_get_info(struct tsa_serial *tsa_serial, struct tsa_serial_info *info);
+ 
++/* Get serial number */
++int tsa_serial_get_num(struct tsa_serial *tsa_serial);
++
+ #endif /* __SOC_FSL_TSA_H__ */
 -- 
 2.45.0
 
