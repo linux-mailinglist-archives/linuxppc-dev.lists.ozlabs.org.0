@@ -2,71 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A181B94C716
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 00:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F7D94C742
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 01:14:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fC9ThsyC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=MlAQATzT;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wg2GG2NGCz2ydQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 08:46:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wg2tn6TJ9z2yZ6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 09:14:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fC9ThsyC;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=MlAQATzT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3nkq1zgykdeuzlhuqjnvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=oohall@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wg2FZ58Pcz2yGd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 08:45:53 +1000 (AEST)
-Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-7a2d4261a48so1282551a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 15:45:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wg2t61PYjz2yHD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 09:14:05 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1fd66cddd4dso15067675ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 16:14:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723157151; x=1723761951; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zNoZqlzt9ZBl78Ypw3YUgXOuKREj1jjRu4BYW9vQ8bI=;
-        b=fC9ThsyCpJSCgLIALLzg6B21npxmVjFqvRUKcDgBddr2JD2vcTNUzwFqM0HYyhYBzn
-         18GWqdVX+ZUGSg6c1M40Pw4jLb5ospcSMWaC1PfeVFL7ZHIteqYBwofLYYqNoZzxtU+f
-         rv+PJHwfMQrqiPcD2Vdr5ycrto2RZzBA1L+DMQTX//TW93Aewq2Ydq9OjHSeQJ1C9TkI
-         p+qcoSbIs8qpe8228Qu8Pbabah7IpQbmsqwIz0jVQl/qSEBecVEpqr5AMRgh5zsLO83j
-         lemdTksgIdoD7qOw50jHjo5sHIWuZMAkMbfEdKZfqQkZVrY8jrRLMCwQUdSk7M85l5L0
-         w4Ow==
+        d=gmail.com; s=20230601; t=1723158844; x=1723763644; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SzxAnNd+2P5RagrV70uSTDmukSTtgzZlqgxHDGW9DCk=;
+        b=MlAQATzTom370RRHJjubV1X9Kr+EacHdjlaHonqGR3LOU1xbDcaZbBM0bjtYQT1k46
+         ce6w2H0jr6VJ/TmZ1XYIwkgaw4c2qEHfaqPfIxcWrygfxura0n159S2XRXLxesct5JUu
+         BJJ6g/YX5vNUzdfhgHdoi9qmZivCUc4bR2QijrUokkz210aVrGNIq6ZK6LP29Ti4yGyE
+         xTs03v0X9YT3PBYCVKcZHrwZIy5GJFVsaTm9j/bB9lAe3Qe3ZsLsl9idguVO08kdqUAj
+         vZkX8mWt0/0F5QCM1wBYVnmn9kFGq1isVNKdN8RioYFk083Z5ejMJ5ExFhkNSs6vze0j
+         ys9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723157151; x=1723761951;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zNoZqlzt9ZBl78Ypw3YUgXOuKREj1jjRu4BYW9vQ8bI=;
-        b=BK9vi94pTIXEHEMGkrIOu4HbSe6IGezXMXGM/zdNEN2peWYvJhip38qDl3hzJh4JzN
-         g5ejZP40e47fStYz/Jo/86gUxzfz/wyVvtYTPg2c11rOmEGmqtT03SjPfbzCpB0aXdCw
-         iv2R+1TKKy1+qphrNxIAU+fFeApcnd4EGlUSnYBhcHa+Lokdj86srEhjD+UHMTOHmSiD
-         06vb3GwMHNT5GU6J6ocFQHpTLEo3QtBLiO9vZk1TuopeIUDGDMZNbpOBtG8a4bFlSLhl
-         6d0/9BEKu0YTpMHWTI66K8kzDVzhXWmi0dDNDgcWSw8MFAL7oopKeiuDc490UZzKvKgp
-         Kqvw==
-X-Forwarded-Encrypted: i=1; AJvYcCXxhe/k6jLXReNdYDe3fbhvOYFSk3S2qjGe6C16EJ+gfoWGua+HNATWQPMRX0HUl7keEG6h1voPLAqQglKTBXek4xKxi9I1d47alJdJOg==
-X-Gm-Message-State: AOJu0YwYtzUXyc/22wACM7e856oO9u9t7ARmuA2ncs4MDiClnv+3ydPq
-	8yT9PDOuFceEea1FV1Xk1kw76lXdP8GGg/rFTda2iULSKHi7bfXD7qTKLZYk+DxSxB39V6Enz0c
-	QXg==
-X-Google-Smtp-Source: AGHT+IEPJ08ELA+TzWWFCZw07FCvVi/TuALPCbLFSyKyDr+wDhcDE59d0hzyaFMhbl9jQNfxVlpU+d7vYMQ=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a63:b242:0:b0:6e7:95d3:b35c with SMTP id
- 41be03b00d2f7-7c2684072femr6690a12.5.1723157150809; Thu, 08 Aug 2024 15:45:50
- -0700 (PDT)
-Date: Thu, 8 Aug 2024 15:45:49 -0700
-In-Reply-To: <ZrU9AJi7-pHT_UWS@x1n>
-Mime-Version: 1.0
-References: <20240807194812.819412-1-peterx@redhat.com> <20240807194812.819412-3-peterx@redhat.com>
- <ZrTlZ4vZ74sK8Ydd@google.com> <ZrU20AqADICwwmCy@x1n> <ZrU5JyjIa1CwZ_KD@google.com>
- <ZrU9AJi7-pHT_UWS@x1n>
-Message-ID: <ZrVKndceu5gZT-j5@google.com>
-Subject: Re: [PATCH v4 2/7] mm/mprotect: Push mmu notifier to PUDs
-From: Sean Christopherson <seanjc@google.com>
-To: Peter Xu <peterx@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+        d=1e100.net; s=20230601; t=1723158844; x=1723763644;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzxAnNd+2P5RagrV70uSTDmukSTtgzZlqgxHDGW9DCk=;
+        b=hZX+jy9OQHFWoIeIBaHkitxNwQe+409vGOpFYvA7oGcFiLNmYkMV41E1PWH/lcP9aM
+         JnBUEzuVEUkUbqwjysbQgFqvhgd/ql58QOCJBAgolFVmgCiz+EbxDG+xXgsm5yrlet01
+         zSluc4yQSbEb6n1u3Q85ijHN/GualRIYj0Uslz7XDjkC8P1iPu/LLPhrdIIhQh6QrrBq
+         hYwJ4aNTVsX7gETdLK13F6pH5QJqaBHcQFeFCcG75lRgx+Z4gkdxBbwyyWNyLf8/wQ4K
+         fV6eH2e0Y08y5I2FYt2i3uimftZ9w4uj8gtd4cedCfCsqID4tChNS3im28fmVEQRt79h
+         0mKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWqegLCXzkohDTIY0ODHw7Wv57DYWVIKPrP/6qRyIIPGoX85c+cwN38Le427XVE0JwbdgymDV5fonQBbva/s2XZQTKzRGf3PPyWasiLew==
+X-Gm-Message-State: AOJu0YwXQf3MnW/AyecteyBEgWbSFNWza1kl55ChUrwl6BRpEGTT4KSN
+	fsEX1iAHqBNqa91XS8Ff1FSFMqU/Z8vu1Ugh/CJ8hM10N9pYzOud78Zls97cehLyyb9a85j4wgI
+	NaEMeVPwVbzVTi3errV4RW4h1qHY=
+X-Google-Smtp-Source: AGHT+IG1/DdoAKFjvHg9EVP5I2kaAQyATplTDXAqOEcpfBC4JM11ab36k7mIWy41WyBWVbFkeNIGORA/STIiVejkIG8=
+X-Received: by 2002:a17:902:d503:b0:1fb:5b83:48d9 with SMTP id
+ d9443c01a7336-200952a285cmr45534635ad.37.1723158844196; Thu, 08 Aug 2024
+ 16:14:04 -0700 (PDT)
+MIME-Version: 1.0
+References: <alpine.DEB.2.21.2408071241160.61955@angie.orcam.me.uk> <20240808020753.16282-1-mattc@purestorage.com>
+In-Reply-To: <20240808020753.16282-1-mattc@purestorage.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 9 Aug 2024 09:13:52 +1000
+Message-ID: <CAOSf1CEcUgVg3bj4s-zRM0RUCkLq-udiyA7QGOy66=Bam8PDFw@mail.gmail.com>
+Subject: Re: PCI: Work around PCIe link training failures
+To: Matthew W Carlis <mattc@purestorage.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,93 +78,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, kvm@vger.kernel.org, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, David Rientjes <rientjes@google.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
+Cc: linux-pci@vger.kernel.org, mahesh@linux.ibm.com, edumazet@google.com, sr@denx.de, leon@kernel.org, linux-rdma@vger.kernel.org, helgaas@kernel.org, kuba@kernel.org, pabeni@redhat.com, wilson@tuliptree.org, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, alex.williamson@redhat.com, bhelgaas@google.com, mika.westerberg@linux.intel.com, david.abdurachmanov@gmail.com, saeedm@nvidia.com, linux-kernel@vger.kernel.org, lukas@wunner.de, netdev@vger.kernel.org, pali@kernel.org, davem@davemloft.net, macro@orcam.me.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 08, 2024, Peter Xu wrote:
-> On Thu, Aug 08, 2024 at 02:31:19PM -0700, Sean Christopherson wrote:
-> > On Thu, Aug 08, 2024, Peter Xu wrote:
-> > > Hi, Sean,
-> > > 
-> > > On Thu, Aug 08, 2024 at 08:33:59AM -0700, Sean Christopherson wrote:
-> > > > On Wed, Aug 07, 2024, Peter Xu wrote:
-> > > > > mprotect() does mmu notifiers in PMD levels.  It's there since 2014 of
-> > > > > commit a5338093bfb4 ("mm: move mmu notifier call from change_protection to
-> > > > > change_pmd_range").
-> > > > > 
-> > > > > At that time, the issue was that NUMA balancing can be applied on a huge
-> > > > > range of VM memory, even if nothing was populated.  The notification can be
-> > > > > avoided in this case if no valid pmd detected, which includes either THP or
-> > > > > a PTE pgtable page.
-> > > > > 
-> > > > > Now to pave way for PUD handling, this isn't enough.  We need to generate
-> > > > > mmu notifications even on PUD entries properly.  mprotect() is currently
-> > > > > broken on PUD (e.g., one can easily trigger kernel error with dax 1G
-> > > > > mappings already), this is the start to fix it.
-> > > > > 
-> > > > > To fix that, this patch proposes to push such notifications to the PUD
-> > > > > layers.
-> > > > > 
-> > > > > There is risk on regressing the problem Rik wanted to resolve before, but I
-> > > > > think it shouldn't really happen, and I still chose this solution because
-> > > > > of a few reasons:
-> > > > > 
-> > > > >   1) Consider a large VM that should definitely contain more than GBs of
-> > > > >   memory, it's highly likely that PUDs are also none.  In this case there
-> > > > 
-> > > > I don't follow this.  Did you mean to say it's highly likely that PUDs are *NOT*
-> > > > none?
-> > > 
-> > > I did mean the original wordings.
-> > > 
-> > > Note that in the previous case Rik worked on, it's about a mostly empty VM
-> > > got NUMA hint applied.  So I did mean "PUDs are also none" here, with the
-> > > hope that when the numa hint applies on any part of the unpopulated guest
-> > > memory, it'll find nothing in PUDs. Here it's mostly not about a huge PUD
-> > > mapping as long as the guest memory is not backed by DAX (since only DAX
-> > > supports 1G huge pud so far, while hugetlb has its own path here in
-> > > mprotect, so it must be things like anon or shmem), but a PUD entry that
-> > > contains pmd pgtables.  For that part, I was trying to justify "no pmd
-> > > pgtable installed" with the fact that "a large VM that should definitely
-> > > contain more than GBs of memory", it means the PUD range should hopefully
-> > > never been accessed, so even the pmd pgtable entry should be missing.
-> > 
-> > Ah, now I get what you were saying.
-> > 
-> > Problem is, walking the rmaps for the shadow MMU doesn't benefit (much) from
-> > empty PUDs, because KVM needs to blindly walk the rmaps for every gfn covered by
-> > the PUD to see if there are any SPTEs in any shadow MMUs mapping that gfn.  And
-> > that walk is done without ever yielding, which I suspect is the source of the
-> > soft lockups of yore.
-> > 
-> > And there's no way around that conundrum (walking rmaps), at least not without a
-> > major rewrite in KVM.  In a nested TDP scenario, KVM's stage-2 page tables (for
-> > L2) key off of L2 gfns, not L1 gfns, and so the only way to find mappings is
-> > through the rmaps.
-> 
-> I think the hope here is when the whole PUDs being hinted are empty without
-> pgtable installed, there'll be no mmu notifier to be kicked off at all.
-> 
-> To be explicit, I meant after this patch applied, the pud loop for numa
-> hints look like this:
-> 
->         FOR_EACH_PUD() {
->                 ...
->                 if (pud_none(pud))
->                         continue;
-> 
->                 if (!range.start) {
->                         mmu_notifier_range_init(&range,
->                                                 MMU_NOTIFY_PROTECTION_VMA, 0,
->                                                 vma->vm_mm, addr, end);
->                         mmu_notifier_invalidate_range_start(&range);
->                 }
->                 ...
->         }
-> 
-> So the hope is that pud_none() is always true for the hinted area (just
-> like it used to be when pmd_none() can be hopefully true always), then we
-> skip the mmu notifier as a whole (including KVM's)!
+On Thu, Aug 8, 2024 at 12:08=E2=80=AFPM Matthew W Carlis <mattc@purestorage=
+.com> wrote:
+>
+> On Wed, 7 Aug 2024 22:29:35 +1000 Oliver O'Halloran Wrote
+> > My read was that Matt is essentially doing a surprise hot-unplug by
+> > removing power to the card without notifying the OS. I thought the
+> > LBMS bit wouldn't be set in that case since the link goes down rather
+> > than changes speed, but the spec is a little vague and that appears to
+> > be happening in Matt's testing. It might be worth disabling the
+> > workaround if the port has the surprise hotplug capability bit set.
+>
+> Most of the systems I have are using downstream port containment which do=
+es
+> not recommend setting the Hot-Plug Surprise in Slot Capabilities & theref=
+ore
+> we do not. The first time we noticed an issue with this patch was in test
+> automation which was power cycling the endpoints & injecting uncorrectabl=
+e
+> errors to ensure our hosts are robust in the face of PCIe chaos & that th=
+ey
+> will recover. Later we started to see other teams on other products
+> encountering the same bug in simpler cases where humans turn on and off
+> EP power for development purposes.
 
-Gotcha, that makes sense.  Too many page tables flying around :-)
+Ok? If we have to check for DPC being enabled in addition to checking
+the surprise bit in the slot capabilities then that's fine, we can do
+that. The question to be answered here is: how should this feature
+work on ports where it's normal for a device to be removed without any
+notice?
