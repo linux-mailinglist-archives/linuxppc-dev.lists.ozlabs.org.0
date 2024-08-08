@@ -2,54 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CDD94B480
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 03:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8629594B4DD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 04:08:47 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nGYB0TYo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=If9smF9Y;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfTXf4s0gz3dLq
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 11:12:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfVp53XlJz3cjX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 12:08:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nGYB0TYo;
+	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=If9smF9Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::435; helo=mail-pf1-x435.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfTWy4jX8z3cjf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 11:11:26 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 795AECE12BF;
-	Thu,  8 Aug 2024 01:11:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E037C32781;
-	Thu,  8 Aug 2024 01:11:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723079482;
-	bh=9cwcJwD2oFV3GuhOKOZnwg10DfpgHVH065g5lC627eQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nGYB0TYobLTgZx1Wq2FRNVa3VDlbvtXC04RbIYk9iWFGDDkdgF/q/bWv6WjPnaFk5
-	 SACL172kz5LTd6R153Mbh8c0qAC/llSV5sKFNMRaEH3Y9TX05jQpexPX4GW1/Omz1p
-	 +4rSU7vN2MVgf+XFzugWsj0WYJwe4hwGkxWpiNF1WeInM6WV9L/QeEeZcQHmnAPw5P
-	 qkx0cB2O2ZGKaiDARQZdTXHRF25YlOgQBzWChujPnB4Q7o60ZnkNC516Z29cpX9gE+
-	 pBg2aAwgKAhTrKzI5LZ7ku4eoqahr+rp/rve0xrdHqqjevfNnOe1ATA5fCJjfagvc8
-	 GoOCiUV/3/dMA==
-Date: Wed, 7 Aug 2024 22:11:18 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Namhyung Kim <namhyung@kernel.org>
-Subject: Re: [PATCHSET 00/10] perf tools: Sync tools and kernel headers for
- v6.11
-Message-ID: <ZrQbNtK3LSpyXpMu@x1>
-References: <20240806225013.126130-1-namhyung@kernel.org>
- <ZrO5HR9x2xyPKttx@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZrO5HR9x2xyPKttx@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfVnP2YQ5z3cjm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 12:08:07 +1000 (AEST)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-70d25b5b6b0so410971b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 19:08:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1723082883; x=1723687683; darn=lists.ozlabs.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=l9YwhAKHI/Hi3XQCTqsr2QfZizhIngyNc507Z4rw21M=;
+        b=If9smF9YLHBhS1+3TnGI78fiGHJEKgaB4aD+MMTLei6MLi9uHOztLvlD9fiAUosf44
+         mnQD5VcgSiRbkYjqwjOYY7kJjUNAY5yVHopdzVH9PcO5dtmad1VVkr7h+iXU7uW8s0rw
+         I7OVvYRWKnqRHPIGt3pDx4W7YKLqDUqoPR8ZTtjHvNj6aF9Kbwy7JXAnphN2z59LeZOY
+         D3SvITuSkgvCgN5xDlRzmRQmTt6+yOxujMTAHEa73/YX05z8ddwphQoPDKe12gi8WC8y
+         8VvfeyC6PPkQyC7266v/oh2lXj/eBuQbaLogDh8zGV35e3Y69wIZNOHZLGsEa1ABwEVE
+         yMeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723082883; x=1723687683;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l9YwhAKHI/Hi3XQCTqsr2QfZizhIngyNc507Z4rw21M=;
+        b=agJdjZq8ev13q5blxlSQkHtxuFqBCIMUt+wOvi6A/F0CwJiiN8jspMvB30+owYM6OA
+         P76YqoD00Xwdqw4UM0BdTuG0lhdFP8Hald1tgYCNErnFWxQbF1M+gwAGxqwws5PmOaTF
+         L4pIgifz35xgyhkdwKdNOuCJqlVVJljwroWDYWEqvdpzmtsSWIa9gUiVIO0Zbvk5g9vV
+         G+acjidqIouwtrxMsHKaXAY88COZgUH6C3eWB0x2hT2jGzC/biz3NFQY3px6GWoPCMR4
+         O4cpKNt/ICw6oGxVz1Fs93ZVDxVuKIa8VPor9O264vIF2n93kBIobC0lOnV1a1anczjD
+         bkVg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZHHUHEqJF668y8XsL4KpQJUNXZ0/yAhyQugdilJPhjZfEqMad0GxiU+WF9qWjPNSkgaUsqfaFJQOzFu+VJLscK6sC8ElspfT5r4z+eQ==
+X-Gm-Message-State: AOJu0YxMC+js/OgmqfHiO+eWzc67/tgfr2jAwap1rfnZ6PYqh1tz08dW
+	Fy+EMkSzBcKKdQY/w0zzogBCans0ITc7pBftSE1sK/7Smjluwv27EioXTw9YOao=
+X-Google-Smtp-Source: AGHT+IHrHVJyd5GUPNY5EbdWEh8M+WDzur8o6xEuv0h5JmUwie9vm1fBjf/yn0ON4rdG2GZrCOmcYA==
+X-Received: by 2002:a05:6a00:2e1c:b0:706:742a:1c3b with SMTP id d2e1a72fcca58-710cad8df81mr620125b3a.8.1723082882674;
+        Wed, 07 Aug 2024 19:08:02 -0700 (PDT)
+Received: from dev-mattc2.dev.purestorage.com ([208.88.159.129])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-710cb2e56e0sm161141b3a.153.2024.08.07.19.08.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Aug 2024 19:08:02 -0700 (PDT)
+From: Matthew W Carlis <mattc@purestorage.com>
+To: macro@orcam.me.uk
+Subject: PCI: Work around PCIe link training failures
+Date: Wed,  7 Aug 2024 20:07:53 -0600
+Message-Id: <20240808020753.16282-1-mattc@purestorage.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <alpine.DEB.2.21.2408071241160.61955@angie.orcam.me.uk>
+References: <alpine.DEB.2.21.2408071241160.61955@angie.orcam.me.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,166 +76,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Kajol Jain <kjain@linux.ibm.com>, James Clark <james.clark@linaro.org>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@arm.com>, Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: linux-pci@vger.kernel.org, mahesh@linux.ibm.com, edumazet@google.com, oohall@gmail.com, sr@denx.de, leon@kernel.org, linux-rdma@vger.kernel.org, helgaas@kernel.org, kuba@kernel.org, pabeni@redhat.com, wilson@tuliptree.org, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, alex.williamson@redhat.com, bhelgaas@google.com, mika.westerberg@linux.intel.com, david.abdurachmanov@gmail.com, saeedm@nvidia.com, linux-kernel@vger.kernel.org, lukas@wunner.de, netdev@vger.kernel.org, mattc@purestorage.com, pali@kernel.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 07, 2024 at 11:12:45AM -0700, Namhyung Kim wrote:
-> On Tue, Aug 06, 2024 at 03:50:03PM -0700, Namhyung Kim wrote:
-> > This is the usual sync up in header files we keep in tools directory.
-> > I put a file to give the reason of this work and not to repeat it in
-> > every commit message.  The changes will be carried in the perf-tools
-> > tree.
+On Wed, 7 Aug 2024 22:29:35 +1000 Oliver O'Halloran Wrote
+> My read was that Matt is essentially doing a surprise hot-unplug by
+> removing power to the card without notifying the OS. I thought the
+> LBMS bit wouldn't be set in that case since the link goes down rather
+> than changes speed, but the spec is a little vague and that appears to
+> be happening in Matt's testing. It might be worth disabling the
+> workaround if the port has the surprise hotplug capability bit set.
 
-> Could you please double check what's in the tmp.perf-tools branch at the
-> perf-tools tree so I don't break build and perf trace for arm64, powerpc
-> and s390?  It has this patchset + arm64 unistd header revert (according
-> to the discussion on patch 6/10) on top of v6.11-rc2.
+Most of the systems I have are using downstream port containment which does
+not recommend setting the Hot-Plug Surprise in Slot Capabilities & therefore
+we do not. The first time we noticed an issue with this patch was in test
+automation which was power cycling the endpoints & injecting uncorrectable
+errors to ensure our hosts are robust in the face of PCIe chaos & that they
+will recover. Later we started to see other teams on other products
+encountering the same bug in simpler cases where humans turn on and off
+EP power for development purposes. Although we are not using Hot-Plug Surprise
+we are often triggering DPC on the Surprise Down Uncorrectable Error when
+we hit this Gen1 issue.
 
-On arm64:
+On Wed, 7 Aug 2024 12:14:13 +0100 Maciej W. Rozycki Wrote
+> For the quirk to trigger, the link has to be down and there has to be the
+> LBMS Link Status bit set from link management events as per the PCIe spec
+> while the link was previously up, and then both of that while rescanning
+> the PCIe device in question, so there's a lot of conditions to meet.
 
-acme@roc-rk3399-pc:~/git/perf-tools$ git log --oneline -10
-d5b854893d27 (HEAD -> perf-tools, perf-tools/tmp.perf-tools) tools/include: Sync arm64 headers with the kernel sources
-f6d9883f8e68 tools/include: Sync x86 headers with the kernel sources
-845295f4004c tools/include: Sync filesystem headers with the kernel sources
-ed86525f1f4b tools/include: Sync network socket headers with the kernel sources
-568901e709d7 tools/include: Sync uapi/asm-generic/unistd.h with the kernel sources
-b97350067626 tools/include: Sync uapi/sound/asound.h with the kernel sources
-8ec9497d3ef3 tools/include: Sync uapi/linux/perf.h with the kernel sources
-a625df3995c3 tools/include: Sync uapi/linux/kvm.h with the kernel sources
-aef21f6b6a4a tools/include: Sync uapi/drm/i915_drm.h with the kernel sources
-fbc05142ccdd perf tools: Add tools/include/uapi/README
-acme@roc-rk3399-pc:~/git/perf-tools$
-acme@roc-rk3399-pc:~/git/perf-tools$ sudo su -
-[sudo] password for acme: 
-root@roc-rk3399-pc:~# perf -vv
-perf version 6.11.rc2.gd5b854893d27
-                 dwarf: [ on  ]  # HAVE_DWARF_SUPPORT
-    dwarf_getlocations: [ on  ]  # HAVE_DWARF_GETLOCATIONS_SUPPORT
-         syscall_table: [ on  ]  # HAVE_SYSCALL_TABLE_SUPPORT
-                libbfd: [ OFF ]  # HAVE_LIBBFD_SUPPORT
-            debuginfod: [ OFF ]  # HAVE_DEBUGINFOD_SUPPORT
-                libelf: [ on  ]  # HAVE_LIBELF_SUPPORT
-               libnuma: [ on  ]  # HAVE_LIBNUMA_SUPPORT
-numa_num_possible_cpus: [ on  ]  # HAVE_LIBNUMA_SUPPORT
-               libperl: [ on  ]  # HAVE_LIBPERL_SUPPORT
-             libpython: [ on  ]  # HAVE_LIBPYTHON_SUPPORT
-              libslang: [ on  ]  # HAVE_SLANG_SUPPORT
-             libcrypto: [ on  ]  # HAVE_LIBCRYPTO_SUPPORT
-             libunwind: [ on  ]  # HAVE_LIBUNWIND_SUPPORT
-    libdw-dwarf-unwind: [ on  ]  # HAVE_DWARF_SUPPORT
-           libcapstone: [ OFF ]  # HAVE_LIBCAPSTONE_SUPPORT
-                  zlib: [ on  ]  # HAVE_ZLIB_SUPPORT
-                  lzma: [ on  ]  # HAVE_LZMA_SUPPORT
-             get_cpuid: [ on  ]  # HAVE_AUXTRACE_SUPPORT
-                   bpf: [ on  ]  # HAVE_LIBBPF_SUPPORT
-                   aio: [ on  ]  # HAVE_AIO_SUPPORT
-                  zstd: [ on  ]  # HAVE_ZSTD_SUPPORT
-               libpfm4: [ on  ]  # HAVE_LIBPFM
-         libtraceevent: [ on  ]  # HAVE_LIBTRACEEVENT
-         bpf_skeletons: [ on  ]  # HAVE_BPF_SKEL
-  dwarf-unwind-support: [ on  ]  # HAVE_DWARF_UNWIND_SUPPORT
-            libopencsd: [ on  ]  # HAVE_CSTRACE_SUPPORT
-root@roc-rk3399-pc:~# perf trace -e *sleep sleep 1.2345678
-     0.000 (1235.340 ms): sleep/8628 clock_nanosleep(rqtp: { .tv_sec: 1, .tv_nsec: 234567800 }, rmtp: 0xfffff4ae40d8) = 0
-root@roc-rk3399-pc:~# strace -e bpf perf trace -e *sleep sleep 1.2345678 |& head
-bpf(0x24 /* BPF_??? */, 0xffffc86fb670, 8) = -1 EINVAL (Invalid argument)
-bpf(BPF_PROG_LOAD, {prog_type=BPF_PROG_TYPE_SOCKET_FILTER, insn_cnt=2, insns=0xffffc86fb420, license="GPL", log_level=0, log_size=0, log_buf=NULL, kern_version=KERNEL_VERSION(0, 0, 0), prog_flags=0, prog_name="", prog_ifindex=0, expected_attach_type=BPF_CGROUP_INET_INGRESS, prog_btf_fd=0, func_info_rec_size=0, func_info=NULL, func_info_cnt=0, line_info_rec_size=0, line_info=NULL, line_info_cnt=0, attach_btf_id=0, attach_prog_fd=0, fd_array=NULL}, 148) = 8
-bpf(BPF_PROG_LOAD, {prog_type=BPF_PROG_TYPE_SOCKET_FILTER, insn_cnt=2, insns=0xffffc86fb6b8, license="GPL", log_level=0, log_size=0, log_buf=NULL, kern_version=KERNEL_VERSION(0, 0, 0), prog_flags=0, prog_name="", prog_ifindex=0, expected_attach_type=BPF_CGROUP_INET_INGRESS, prog_btf_fd=0, func_info_rec_size=0, func_info=NULL, func_info_cnt=0, line_info_rec_size=0, line_info=NULL, line_info_cnt=0, attach_btf_id=0, attach_prog_fd=0, fd_array=NULL}, 148) = 8
-bpf(BPF_BTF_LOAD, {btf="\237\353\1\0\30\0\0\0\0\0\0\0000\0\0\0000\0\0\0\t\0\0\0\1\0\0\0\0\0\0\1"..., btf_log_buf=NULL, btf_size=81, btf_log_size=0, btf_log_level=0}, 40) = 8
-bpf(BPF_BTF_LOAD, {btf="\237\353\1\0\30\0\0\0\0\0\0\0000\0\0\0000\0\0\0\5\0\0\0\0\0\0\0\0\0\0\1"..., btf_log_buf=NULL, btf_size=77, btf_log_size=0, btf_log_level=0}, 40) = 8
-bpf(BPF_BTF_LOAD, {btf="\237\353\1\0\30\0\0\0\0\0\0\0l\0\0\0l\0\0\0\16\0\0\0\1\0\0\0\0\0\0\1"..., btf_log_buf=NULL, btf_size=146, btf_log_size=0, btf_log_level=0}, 40) = 8
-bpf(BPF_PROG_LOAD, {prog_type=BPF_PROG_TYPE_SOCKET_FILTER, insn_cnt=2, insns=0xffffc86fb150, license="GPL", log_level=0, log_size=0, log_buf=NULL, kern_version=KERNEL_VERSION(0, 0, 0), prog_flags=0, prog_name="libbpf_nametest", prog_ifindex=0, expected_attach_type=BPF_CGROUP_INET_INGRESS, prog_btf_fd=0, func_info_rec_size=0, func_info=NULL, func_info_cnt=0, line_info_rec_size=0, line_info=NULL, line_info_cnt=0, attach_btf_id=0, attach_prog_fd=0, fd_array=NULL}, 148) = 9
-bpf(BPF_PROG_LOAD, {prog_type=BPF_PROG_TYPE_KPROBE, insn_cnt=4, insns=0xffffc86fb4f8, license="GPL", log_level=0, log_size=0, log_buf=NULL, kern_version=KERNEL_VERSION(0, 0, 0), prog_flags=0, prog_name="det_arg_ctx", prog_ifindex=0, expected_attach_type=BPF_CGROUP_INET_INGRESS, prog_btf_fd=8, func_info_rec_size=8, func_info=0xffffc86fb4e8, func_info_cnt=2, line_info_rec_size=0, line_info=NULL, line_info_cnt=0, attach_btf_id=0, attach_prog_fd=0, fd_array=NULL}, 148) = -1 EINVAL (Invalid argument)
-bpf(BPF_BTF_LOAD, {btf="\237\353\1\0\30\0\0\0\0\0\0\0\20\0\0\0\20\0\0\0\5\0\0\0\1\0\0\0\0\0\0\1"..., btf_log_buf=NULL, btf_size=45, btf_log_size=0, btf_log_level=0}, 40) = 8
-bpf(BPF_BTF_LOAD, {btf="\237\353\1\0\30\0\0\0\0\0\0\0000\0\0\0000\0\0\0\t\0\0\0\1\0\0\0\0\0\0\1"..., btf_log_buf=NULL, btf_size=81, btf_log_size=0, btf_log_level=0}, 40) = 8
-root@roc-rk3399-pc:~# perf trace -e open* sleep 1
-     0.000 ( 0.078 ms): sleep/8635 openat(dfd: CWD, filename: "/etc/ld.so.cache", flags: RDONLY|CLOEXEC) = 3
-     0.162 ( 0.031 ms): sleep/8635 openat(dfd: CWD, filename: "/lib/aarch64-linux-gnu/libc.so.6", flags: RDONLY|CLOEXEC) = 3
-     1.279 ( 0.043 ms): sleep/8635 openat(dfd: CWD, filename: "", flags: RDONLY|CLOEXEC)                 = -1 ENOENT (No such file or directory)
-     1.371 ( 0.031 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/share/locale/locale.alias", flags: RDONLY|CLOEXEC) = 3
-     1.542 ( 0.020 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_IDENTIFICATION", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     1.573 ( 0.024 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_IDENTIFICATION", flags: RDONLY|CLOEXEC) = 3
-     1.664 ( 0.025 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/aarch64-linux-gnu/gconv/gconv-modules.cache") = 3
-     1.782 ( 0.020 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_MEASUREMENT", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     1.821 ( 0.021 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_MEASUREMENT", flags: RDONLY|CLOEXEC) = 3
-     1.909 ( 0.018 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_TELEPHONE", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     1.938 ( 0.019 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_TELEPHONE", flags: RDONLY|CLOEXEC) = 3
-     2.023 ( 0.024 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_ADDRESS", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     2.059 ( 0.020 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_ADDRESS", flags: RDONLY|CLOEXEC) = 3
-     2.151 ( 0.019 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_NAME", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     2.180 ( 0.020 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_NAME", flags: RDONLY|CLOEXEC) = 3
-     2.279 ( 0.017 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_PAPER", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     2.311 ( 0.023 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_PAPER", flags: RDONLY|CLOEXEC) = 3
-     2.420 ( 0.027 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_MESSAGES", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     2.460 ( 0.025 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_MESSAGES", flags: RDONLY|CLOEXEC) = 3
-     2.514 ( 0.021 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_MESSAGES/SYS_LC_MESSAGES", flags: RDONLY|CLOEXEC) = 3
-     2.609 ( 0.025 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_MONETARY", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     2.646 ( 0.022 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_MONETARY", flags: RDONLY|CLOEXEC) = 3
-     2.741 ( 0.024 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_COLLATE", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     2.778 ( 0.020 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_COLLATE", flags: RDONLY|CLOEXEC) = 3
-     2.881 ( 0.024 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_TIME", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     2.917 ( 0.020 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_TIME", flags: RDONLY|CLOEXEC) = 3
-     3.013 ( 0.025 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_NUMERIC", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     3.050 ( 0.021 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_NUMERIC", flags: RDONLY|CLOEXEC) = 3
-     3.138 ( 0.024 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.UTF-8/LC_CTYPE", flags: RDONLY|CLOEXEC) = -1 ENOENT (No such file or directory)
-     3.174 ( 0.021 ms): sleep/8635 openat(dfd: CWD, filename: "/usr/lib/locale/C.utf8/LC_CTYPE", flags: RDONLY|CLOEXEC) = 3
-root@roc-rk3399-pc:~#
+If there is nothing clearing the bit then why is there any expectation that
+it wouldn't be set? We have 20/30/40 endpoints in a host that can be hot-removed,
+hot-added at any point in time in any combination & its often the case that
+the system uptime be hundreds of days. Eventually the bit will just become set
+as a result of time and scale.
 
-The only problem that is outstanding is that one I need to send a patch
-for, 32-bit build is broken due to some trivial stuff:
+On Wed, 7 Aug 2024 12:14:13 +0100 Maciej W. Rozycki Wrote
+> The reason for this is safety: it's better to have a link run at 2.5GT/s
+> than not at all, and from the nature of the issue there is no guarantee
+> that if you remove the speed clamp, then the link won't go back into the
+> infinite retraining loop that the workaround is supposed to break.
 
-  18    79.36 debian:experimental           : Ok   gcc (Debian 14.1.0-5) 14.1.0 , Debian clang version 16.0.6 (27+b1) flex 2.6.4
-  19     3.96 debian:experimental-x-arm64   : FAIL gcc version 14.1.0 (Debian 14.1.0-5) 
-                     from libbpf.c:36:
-    /git/perf-6.11.0-rc2/tools/include/uapi/asm/bpf_perf_event.h:2:10: fatal error: ../../arch/arm64/include/uapi/asm/bpf_perf_event.h: No such file or directory
-        2 | #include "../../arch/arm64/include/uapi/asm/bpf_perf_event.h"
-          |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    compilation terminated.
-      CC      /tmp/build/perf/libbpf/staticobjs/btf_iter.o
-      CC      /tmp/build/perf/libbpf/staticobjs/btf_relocate.o
-      LD      /tmp/build/perf/libapi/fs/libapi-in.o
-      LD      /tmp/build/perf/libapi/libapi-in.o
-    In file included from /git/perf-6.11.0-rc2/tools/include/uapi/linux/bpf_perf_event.h:11,
-                     from libbpf.c:36:
-    /git/perf-6.11.0-rc2/tools/include/uapi/asm/bpf_perf_event.h:2:10: fatal error: ../../arch/arm64/include/uapi/asm/bpf_perf_event.h: No such file or directory
-        2 | #include "../../arch/arm64/include/uapi/asm/bpf_perf_event.h"
-          |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    compilation terminated.
-      LD      /tmp/build/perf/libperf/libperf-in.o
-    make[4]: *** [/git/perf-6.11.0-rc2/tools/build/Makefile.build:105: /tmp/build/perf/libbpf/staticobjs/libbpf.o] Error 1
-    make[4]: *** Waiting for unfinished jobs....
-      AR      /tmp/build/perf/libperf/libperf.a
-      AR      /tmp/build/perf/libapi/libapi.a
+I guess I don't really understand why it wouldn't be safe for every device
+other than the ASMedia since they aren't the device that had the issue in the
+first place. The main problem in my mind is the system doesn't actually have to
+be retraining at all, it can occur the first time you replace a device or
+power cycle the device or the first time the device goes into DPC & comes back.
+If the quirk simply returned without doing anything when the ASMedia is not in the
+allow-list it would make me more at ease. I can also imagine some other implementations
+that would work well, but it doesn't seem correct that we could only give a single
+opportunity to a device before forcing it to live at Gen1. Perhaps it should be
+aware of the rate or a count or something...
 
-Also works on x86_64:
-
-root@number:~# perf -v
-perf version 6.11.rc2.gd5b854893d27
-root@number:~# 
-root@number:~# 
-root@number:~# perf trace -e *sleep sleep 1.92837465
-     0.000 (1928.436 ms): sleep/158555 clock_nanosleep(rqtp: { .tv_sec: 1, .tv_nsec: 928374651 }, rmtp: 0x7ffd188426d0) = 0
-root@number:~# perf trace -e *mmsg --max-events 5
-     0.000 ( 0.017 ms): NetworkManager/1322 recvmmsg(fd: 22, mmsg: 0x7ffe36cb6380, vlen: 8)                       = 1
-     0.048 ( 0.010 ms): NetworkManager/1322 recvmmsg(fd: 26, mmsg: 0x7ffe36cb6380, vlen: 8)                       = 1
-  1012.269 ( 0.018 ms): NetworkManager/1322 recvmmsg(fd: 22, mmsg: 0x7ffe36cb6380, vlen: 8)                       = 1
-  1012.321 ( 0.005 ms): NetworkManager/1322 recvmmsg(fd: 26, mmsg: 0x7ffe36cb6380, vlen: 8)                       = 1
-  2393.486 ( 0.029 ms): dbus-broker/2438 sendmmsg(fd: 31, mmsg: 0x7ffca4625ba0, vlen: 1, flags: DONTWAIT|NOSIGNAL) = 1
-root@number:~# perf trace -e *nnect* --max-events 5
-     0.000 ( 0.047 ms): pool/3064 connect(fd: 7, uservaddr: { .family: LOCAL, path: /var/run/.heim_org.h5l.kcm-socket }, addrlen: 110) = 0
-  2694.480 ( 0.021 ms): DNS Res~ver #4/2450896 connect(fd: 242, uservaddr: { .family: LOCAL, path: /run/systemd/resolve/io.systemd.Resolve }, addrlen: 42) = 0
-  2694.906 ( 0.015 ms): systemd-resolv/1185 connect(fd: 25, uservaddr: { .family: INET6, port: 53, addr: fe80::1ae8:29ff:fe4c:90b0, scope_id: 3 }, addrlen: 28) = 0
-  2694.969 ( 0.005 ms): systemd-resolv/1185 connect(fd: 26, uservaddr: { .family: INET6, port: 53, addr: fe80::1ae8:29ff:fe4c:90b0, scope_id: 6 }, addrlen: 28) = 0
-  2696.329 ( 0.014 ms): DNS Res~ver #4/2450896 connect(fd: 242, uservaddr: { .family: INET6, port: 0, addr: 2800:3f0:4004:803::200e }, addrlen: 28) = 0
-root@number:~# uname -a
-Linux number 6.9.10-200.fc40.x86_64 #1 SMP PREEMPT_DYNAMIC Thu Jul 18 21:39:30 UTC 2024 x86_64 GNU/Linux
-root@number:~#
-
-All the other container builds didn't regress.
-
-Thanks,
-
-- Arnaldo
-
+I can only assume that there will be more systems that start to run into issues
+with the patch as they strive to keep up with LTS & they exercise the hot-plug
+path.
 
