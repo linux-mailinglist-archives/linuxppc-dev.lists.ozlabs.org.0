@@ -1,69 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE55494BC81
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 13:49:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F2E94BCC5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 14:01:00 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=FmSN8Pcm;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WflhX5Q9Zz2yfm
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 21:49:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WflxP5JZBz2yN3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 22:00:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=mail.loongson.cn; envelope-from=maobibo@loongson.cn; receiver=lists.ozlabs.org)
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wflh6444Jz2xbF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 21:49:23 +1000 (AEST)
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8DxPJtpsLRmA8YLAA--.9051S3;
-	Thu, 08 Aug 2024 19:47:53 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowMDx0uFmsLRmn7IJAA--.48554S3;
-	Thu, 08 Aug 2024 19:47:52 +0800 (CST)
-Subject: Re: [PATCH v12 66/84] KVM: LoongArch: Mark "struct page" pfn accessed
- before dropping mmu_lock
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao
- <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=FmSN8Pcm;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=alex.bennee@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WflwW0P0Vz2xg9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 22:00:09 +1000 (AEST)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-369cb9f086aso502644f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 05:00:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723118403; x=1723723203; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l8fBZbfSfQMp8/8SurSvfBz+MaimrqNdI2CubOLP3Ew=;
+        b=FmSN8PcmC9y+b/5Vab5vn8xiFLeujhtIBYbIVTRP/sND3VZyUPPIKoH6piKjmWK0Pd
+         DjGKhgtQs61L+rqFD/ykQuPbBzU7uGIQDM+3bovhKob9CT9ubM/AxtJnpKr4KYBejAr0
+         IYvjQRWVU1ktnb04wmrF+weN4igu6cy3USATGE4sZJAOdyGPL6FAZV4aFlxCGTwCxrFL
+         L+WdjTPGjgnCUUNB720/l9XdPdeLmEFVykgk3NbzI6LF5O0CjvYYUXmGPSPOlykc6Y+M
+         eXGcFg1zqU3bJtsvATsi72SLBU5lZXPHKCo3SCqGKSmXx4b4eKXqlenR5JKkV7jC3tnK
+         DZ2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723118403; x=1723723203;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l8fBZbfSfQMp8/8SurSvfBz+MaimrqNdI2CubOLP3Ew=;
+        b=c2RdDj4sI3iWeCSzKAb6QA1vCkLK/+Ebm5HNmGktNXMKhR1IenQn5Fh5Tar3mO+53E
+         4+769fpEmDNd4fXdnbd26PDy8ab6z03K3fc76jTNRmVtLTRrBkNYw+LfqW4OX15LVlWn
+         8QgfJMGSKjpKdCFsTRJy6oRDcBlXFrhKqS15BUitb6ufmzqsjhkt7/IK6Hcxx2fwgov0
+         E29ZWToxWLccJ7juz/YXaDYh7YCtJZIoFgIgsJGBOgYSRISTCyPnP6syi9et9IYjsWcg
+         kJEQBD0X4e6peNGC1lu1CUYVP8QXPzGw+j8qHWVP+FvUuVsnlk2Gpn221XA2H5YzxGjM
+         C+Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2zLDWnw1Js2CvT2M6hArRqDC5glaFjHS4HmXIdmKCWIpqhEyXEF8T1g2bFKalARwiOFZKSZWocBXiZGr8+HW8AAQEkI4Q7VOeyJcR2g==
+X-Gm-Message-State: AOJu0YxgO9TrBLIW7QBgfj2CkWECeyv7hYwOg2ne+RgYcylR4TSSTmFQ
+	5g28tXx825bKYfN4LtCKqwxAphQX2ttuNOi0YWvl6LkVeAi6EHmX/RlFl+BXOmc=
+X-Google-Smtp-Source: AGHT+IHHX2fBYyF3bzrkIN6FI+lRc2WcNWD9HizbtFbwpwdbf6zDJoYFHOfDyhNaZKL5sM+Jijm6XQ==
+X-Received: by 2002:a5d:698f:0:b0:367:8fee:443b with SMTP id ffacd0b85a97d-36d27561461mr1129489f8f.41.1723118402280;
+        Thu, 08 Aug 2024 05:00:02 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36d27156c8asm1700288f8f.24.2024.08.08.05.00.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Aug 2024 05:00:01 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id 751635F769;
+	Thu,  8 Aug 2024 13:00:00 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v12 13/84] KVM: Annotate that all paths in hva_to_pfn()
+ might sleep
+In-Reply-To: <20240726235234.228822-14-seanjc@google.com> (Sean
+	Christopherson's message of "Fri, 26 Jul 2024 16:51:22 -0700")
 References: <20240726235234.228822-1-seanjc@google.com>
- <20240726235234.228822-67-seanjc@google.com>
-From: maobibo <maobibo@loongson.cn>
-Message-ID: <9492f63e-8257-d911-1c67-33c9c7498c50@loongson.cn>
-Date: Thu, 8 Aug 2024 19:47:48 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	<20240726235234.228822-14-seanjc@google.com>
+Date: Thu, 08 Aug 2024 13:00:00 +0100
+Message-ID: <87bk23ql6n.fsf@draig.linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <20240726235234.228822-67-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qMiowMDx0uFmsLRmn7IJAA--.48554S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrKry8Wr17XrWkXF4Utw1DurX_yoWkXFb_uF
-	4Ikw1DGrWkJa90q3WDt3WrJr4Fgay8JFs0vFyDZrWxAa4qy390yFsaga1fAa4jqrWq9FW5
-	ArWqyas0krZYqosvyTuYvTs0mTUanT9S1TB71UUUUbJqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbqAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	WxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUShiSDU
-	UUU
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,41 +86,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, David Stevens <stevensd@chromium.org>, loongarch@lists.linux.dev, kvmarm@lists.linux.dev, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Sean Christopherson <seanjc@google.com> writes:
 
+> Now that hva_to_pfn() no longer supports being called in atomic context,
+> move the might_sleep() annotation from hva_to_pfn_slow() to
+> hva_to_pfn().
 
-On 2024/7/27 上午7:52, Sean Christopherson wrote:
-> Mark pages accessed before dropping mmu_lock when faulting in guest memory
-> so that LoongArch can convert to kvm_release_faultin_page() without
-> tripping its lockdep assertion on mmu_lock being held.
-> 
+The commentary for hva_to_pfn_fast disagrees.
+
+  /*
+   * The fast path to get the writable pfn which will be stored in @pfn,
+   * true indicates success, otherwise false is returned.  It's also the
+   * only part that runs if we can in atomic context.
+   */
+  static bool hva_to_pfn_fast(struct kvm_follow_pfn *kfp, kvm_pfn_t *pfn)
+
+At which point did it loose the ability to run in the atomic context? I
+couldn't work it out from the commits.
+
+>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->   arch/loongarch/kvm/mmu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
-> index 52b5c16cf250..230cafa178d7 100644
-> --- a/arch/loongarch/kvm/mmu.c
-> +++ b/arch/loongarch/kvm/mmu.cBibo Mao <maobibo@loongson.cn>
-> @@ -902,13 +902,13 @@ static int kvm_map_page(struct kvm_vcpu *vcpu, unsigned long gpa, bool write)
->   
->   	if (writeable)
->   		kvm_set_pfn_dirty(pfn);
-> +	kvm_release_pfn_clean(pfn);
->   
->   	spin_unlock(&kvm->mmu_lock);
->   
->   	if (prot_bits & _PAGE_DIRTY)
->   		mark_page_dirty_in_slot(kvm, memslot, gfn);
->   
-> -	kvm_release_pfn_clean(pfn);
->   out:
->   	srcu_read_unlock(&kvm->srcu, srcu_idx);
->   	return err;
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+>  virt/kvm/kvm_main.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 84c73b4fc804..03af1a0090b1 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2807,8 +2807,6 @@ static int hva_to_pfn_slow(unsigned long addr, bool=
+ *async, bool write_fault,
+>  	struct page *page;
+>  	int npages;
+>=20=20
+> -	might_sleep();
+> -
+>  	if (writable)
+>  		*writable =3D write_fault;
+>=20=20
+> @@ -2947,6 +2945,8 @@ kvm_pfn_t hva_to_pfn(unsigned long addr, bool inter=
+ruptible, bool *async,
+>  	kvm_pfn_t pfn;
+>  	int npages, r;
+>=20=20
+> +	might_sleep();
+> +
+>  	if (hva_to_pfn_fast(addr, write_fault, writable, &pfn))
+>  		return pfn;
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
