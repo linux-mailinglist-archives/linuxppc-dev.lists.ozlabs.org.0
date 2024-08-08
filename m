@@ -1,91 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B810894BFB7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 16:34:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E550A94C050
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 16:55:14 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jEQgiL4q;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N/B5u2Oe;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NU2iJXKX;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R5Nd8xoo;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfqM24gwFz2yQl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 00:34:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfqpN6gtRz2yNP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 00:55:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jEQgiL4q;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N/B5u2Oe;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NU2iJXKX;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R5Nd8xoo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfqLL5XSNz2xtK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 00:34:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wfqnh72zHz2xjK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 00:54:30 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723127650;
+	s=mimecast20190719; t=1723128865;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kNGFee3br1hjECiovXqSOfAESUmkPD9eLr9HZ2AG11Y=;
-	b=jEQgiL4qx0CPgSaHT3tTmlV48jxGwyG+0n7s+hy5Lmht8TBNR2aBM9jqOFXV5cTeueIj3B
-	zyL4jYL4jdaJmTKQfD8LF1HfEvk+M2r73DvbUQKL25C5F4Qfe50Md+C+5sjniGlzwr9Qgg
-	oG8Ws856gKgaEhveZcpH5rgb1t5WETs=
+	bh=0YfHjxzOoIJLo5MdFMHzLs+Cgg2yZMeP3Ex80OFBemw=;
+	b=NU2iJXKXYV2drVStquDANv8BsIjM4cR/b+TvIDp42io7u/XIVTen8lUaQJKPY5pKVOihgY
+	OaLwrowbzC2tQqUI0DogUD5j7iZ4RBn9a3GZur42LPSlbuz4sBddpWHVjSU9x/QmuEqEN9
+	PXV79rMdsDkBjS3qdRdLehvwbQl0QFQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723127651;
+	s=mimecast20190719; t=1723128866;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kNGFee3br1hjECiovXqSOfAESUmkPD9eLr9HZ2AG11Y=;
-	b=N/B5u2OeXdItb/iYVvlVm1qw0+yf97b/QogbH5JYvkMI90r9DF+ijPFpu8YSepareYaErQ
-	jd7WnMwpthn9HnB5jy6d9JQKV7EP5LkgdWLt1KXAiybrZHWnSa2lUUT7uXhmrTqF1zoGoq
-	UGz1Xo70ZZtYi7VO5BGqbUySQV76EbA=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=0YfHjxzOoIJLo5MdFMHzLs+Cgg2yZMeP3Ex80OFBemw=;
+	b=R5Nd8xoo6LLO4FeGX3ZqRWUbBl9lHkH3wzw1/cbG1PS3oooFe9N/0Kb/d838vZmZwcp0FI
+	Kq7dUxqR0Fwqhf08EQTkm/8CiJjsUeZq2wwSBwfABKKudvEhO2Uv5ntEQNNI7igzB4qhPX
+	hDW3DDKx3uCKe4eb/aZfFgBamLyGh6o=
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
+ [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-157-cpsBj3N3OJOYXM2pzvSs9Q-1; Thu, 08 Aug 2024 10:34:09 -0400
-X-MC-Unique: cpsBj3N3OJOYXM2pzvSs9Q-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7a1d5ee7762so780285a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 07:34:09 -0700 (PDT)
+ us-mta-62-FZ7QCKO6MpibCYS7y0V75A-1; Thu, 08 Aug 2024 10:54:24 -0400
+X-MC-Unique: FZ7QCKO6MpibCYS7y0V75A-1
+Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-26440d4a6f9so98756fac.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 07:54:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723127648; x=1723732448;
+        d=1e100.net; s=20230601; t=1723128863; x=1723733663;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kNGFee3br1hjECiovXqSOfAESUmkPD9eLr9HZ2AG11Y=;
-        b=VuKa8k7dRVGHw0OGAoRCtxStPFctFRumDWX1sb5mDLydfu4bn6oFlbw219U30GcKhK
-         IIbf+x9MifJ8BKYJgHKS2wmto1D9Ypo43UPEkDFmCtDPHVk9E08rJLuYh3hyRXTi27pH
-         SufldraTu0Qa519EqHRAoDWQ7lsviMyimnIsRsAy6uZtgMx/aEsqNc9vkPhAmca3u//D
-         jNK8U+L20A1NKpw93CRLV8pyAcYJdI0RjLo3PKh1ByCuqbtZbBJiDnzvvymAnCHOFMvt
-         bVpzopNC3dxACvX55jzZKDbMk80eGdxKNtWBQjRR6UsohgS+jBjLnsoGjtpI4uybvMj/
-         DpaA==
-X-Forwarded-Encrypted: i=1; AJvYcCXBhzphnqyRETyC4qb8LVFszW54FUSA4fuKAqn4mitZJQAuTR2wFsnWmZscNsAfW6hSjP03q48c7lgkuMw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz6TaSEXm4fkD4HPcyNIv5eFxGR1DmsTDAuIYraS1nBeI5y4o2t
-	uJvFM0cVqyR4EY7qK+2SXC5cnlIJ8+3GtPpuPAe+lQ7TIls4njWLAT/u7kRpBQg4sQPcc0r709v
-	h5RN/t5UVwYVApYw+UMgYXkb2BcTz7qYNVqh/e/yk3wnI5YMj8FUHgbwCqLK4Yv0=
-X-Received: by 2002:a05:620a:192a:b0:79d:595b:d4ea with SMTP id af79cd13be357-7a3817ee628mr147831685a.2.1723127648622;
-        Thu, 08 Aug 2024 07:34:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkrMT/qf2Z1Zwec6CCoJX/CvM7BpTtL4mQOwgoVFYQ8j/2utHXaaQU95bCId/QVjyX8fpcMA==
-X-Received: by 2002:a05:620a:192a:b0:79d:595b:d4ea with SMTP id af79cd13be357-7a3817ee628mr147830185a.2.1723127648196;
-        Thu, 08 Aug 2024 07:34:08 -0700 (PDT)
+        bh=0YfHjxzOoIJLo5MdFMHzLs+Cgg2yZMeP3Ex80OFBemw=;
+        b=hjGVQ06q1oAKqcMsDVPPmsdLw7CbH/loGvPblXbn8hf0NpRxAEnkCtlWd/TaHaEks4
+         xub38gmwKJXNH5tyo3800ghPNv82SyfejE0jwMmDWCF3awTbuq2Gaji2OVg7n0vrRPfW
+         1yeS+C4rk7GUPyAE3mMc/SwsL0qmisczh8eYe1WJWn6IjT8hYiv6+/RZZAI79Xo6caPp
+         ZRCsHl7ay06j3yaQU6pPjbcpOktWnoBQpOjud0ZiNkWXXJcHucCym+yvQ9SL2tX+4MqK
+         wDP4Tixxq/79wjlqBQ9PUpXgJTwOPNtYeeiK/qrkYZyD8twc6D8LjpA1fNW5yGNA4/tb
+         o/xg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwkHEvg77Rs3hRVbbwvkG17FrFcxp2OGq6gcYGT4I0YQouGSY0xiJlQGE0LHqeMtAa7k1ir+Cd3shUl1w=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzac2sHjdjkAPvn7+NHSmPzVDUBnTK5IsZDj4+8wR6x1sawEQ+F
+	6cgb6M+YadzfsyLGOtoUXE74W7GZe1e73lMjfslRgszV08r8TyQyYewchhOOTRVezRt/nFa0rx2
+	UYkk8xAW3cG0Yerk3kDpGLSUM+E96mj9NfNwVv8F9dDVp7lixkSjUUstfSuPo440=
+X-Received: by 2002:a05:6808:1490:b0:3da:ac08:b74a with SMTP id 5614622812f47-3dc3b4623aamr1357594b6e.7.1723128863371;
+        Thu, 08 Aug 2024 07:54:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiqsl7u491+dk16BCdQXSlY2KYF+kMbWvb93MQDcyt8BmOo92tc6HC335u2mF8sk01BC1ZNg==
+X-Received: by 2002:a05:6808:1490:b0:3da:ac08:b74a with SMTP id 5614622812f47-3dc3b4623aamr1357566b6e.7.1723128862987;
+        Thu, 08 Aug 2024 07:54:22 -0700 (PDT)
 Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a378693d23sm164459085a.87.2024.08.08.07.34.06
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a3785d0d1asm167486185a.25.2024.08.08.07.54.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 07:34:07 -0700 (PDT)
-Date: Thu, 8 Aug 2024 10:34:04 -0400
+        Thu, 08 Aug 2024 07:54:22 -0700 (PDT)
+Date: Thu, 8 Aug 2024 10:54:19 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v4 0/7] mm/mprotect: Fix dax puds
-Message-ID: <ZrTXXJ8r_WpPgcU4@x1n>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v4 4/7] mm/x86: Make pud_leaf() only care about PSE bit
+Message-ID: <ZrTcGxANpcvwp1qt@x1n>
 References: <20240807194812.819412-1-peterx@redhat.com>
- <20240807141703.d641001ee14177ccf80a31d8@linux-foundation.org>
- <ZrPoUgISLqlF-iEQ@x1n>
- <20240807144454.15a9668c23d05141ae777696@linux-foundation.org>
+ <20240807194812.819412-5-peterx@redhat.com>
+ <87bk240y8h.ffs@tglx>
 MIME-Version: 1.0
-In-Reply-To: <20240807144454.15a9668c23d05141ae777696@linux-foundation.org>
+In-Reply-To: <87bk240y8h.ffs@tglx>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
@@ -101,37 +100,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Thomas Gleixner <tglx@linutronix.de>, Dave Jiang <dave.jiang@intel.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
+Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Jiang <dave.jiang@intel.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Aug 07, 2024 at 02:44:54PM -0700, Andrew Morton wrote:
-> On Wed, 7 Aug 2024 17:34:10 -0400 Peter Xu <peterx@redhat.com> wrote:
+On Thu, Aug 08, 2024 at 12:22:38AM +0200, Thomas Gleixner wrote:
+> On Wed, Aug 07 2024 at 15:48, Peter Xu wrote:
+> > An entry should be reported as PUD leaf even if it's PROT_NONE, in which
+> > case PRESENT bit isn't there. I hit bad pud without this when testing dax
+> > 1G on zapping a PROT_NONE PUD.
 > 
-> > The problem is mprotect() will skip the dax 1G PUD while it shouldn't;
-> > meanwhile it'll dump some bad PUD in dmesg.  Both of them look like (corner
-> > case) bugs to me.. where:
-> > 
-> >   - skipping the 1G pud means mprotect() will succeed even if the pud won't
-> >     be updated with the correct permission specified. Logically that can
-> >     cause e.g. in mprotect(RO) then write the page can cause data corrupt,
-> >     as the pud page will still be writable.
-> > 
-> >   - the bad pud will generate a pr_err() into dmesg, with no limit so far I
-> >     can see.  So I think it means an userspace can DoS the kernel log if it
-> >     wants.. simply by creating the PUD and keep mprotect-ing it
-> > 
+> That does not qualify as a change log. What you hit is irrelevant unless
+> you explain the actual underlying problem. See Documentation/process/
+> including the TIP documentation.
+
+Firstly, thanks a lot for the reviews.
+
+I thought the commit message explained exactly what is the underlying
+problem, no?
+
+The problem is even if PROT_NONE, as long as the PSE bit is set on the PUD
+it should be treated as a PUD leaf.  Currently, the code will return
+pud_leaf()==false for those PROT_NONE PUD entries, and IMHO that is wrong.
+This patch wants to make it right.  I still think that's mostly what I put
+there in the commit message..
+
+Would you please suggest something so I can try to make it better,
+otherwise?  Or it'll be helpful too if you could point out which part of
+the two documentations I should reference.
+
 > 
-> I edited this important info into the [0/n] text, thanks.
+> > diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+> > index e39311a89bf4..a2a3bd4c1bda 100644
+> > --- a/arch/x86/include/asm/pgtable.h
+> > +++ b/arch/x86/include/asm/pgtable.h
+> > @@ -1078,8 +1078,7 @@ static inline pmd_t *pud_pgtable(pud_t pud)
+> >  #define pud_leaf pud_leaf
+> >  static inline bool pud_leaf(pud_t pud)
+> >  {
+> > -	return (pud_val(pud) & (_PAGE_PSE | _PAGE_PRESENT)) ==
+> > -		(_PAGE_PSE | _PAGE_PRESENT);
+> > +	return pud_val(pud) & _PAGE_PSE;
+> >  }
 > 
-> So current kernels can be made to spew into the kernel logs?  That's
+> And the changelog does not explain why this change is not affecting any
+> existing user of pud_leaf().
 
-I suppose yes to this one.
+That's what I want to do: I want to affect them..
 
-> considered serious.  Can unprivileged userspace code do this?
-
-AFAIU, /dev/dax* require root privilege by default, so looks not.  But
-anyone more familiar with real life dax usages please correct me otherwise.
+And IMHO it's mostly fine before because mprotect() is broken with 1g
+anyway, and I guess nobody managed to populate any pud entry with PROT_NONE
+on dax 1g before, and that's what this whole series is trying to fix.
 
 Thanks,
 
