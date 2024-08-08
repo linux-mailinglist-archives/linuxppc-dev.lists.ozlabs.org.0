@@ -2,54 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA27694BC3C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 13:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA56994BC48
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 13:29:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=tesarici.cz header.i=@tesarici.cz header.a=rsa-sha256 header.s=mail header.b=u575P61E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mn90FOHQ;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wfl816329z2y8X
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 21:25:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WflDt5DDlz2xjL
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 21:29:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=tesarici.cz header.i=@tesarici.cz header.a=rsa-sha256 header.s=mail header.b=u575P61E;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mn90FOHQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tesarici.cz (client-ip=37.205.15.56; helo=bee.tesarici.cz; envelope-from=petr@tesarici.cz; receiver=lists.ozlabs.org)
-Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=pierre-louis.bossart@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Thu, 08 Aug 2024 21:28:42 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wfl7L14kqz2xYr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 21:24:29 +1000 (AEST)
-Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by bee.tesarici.cz (Postfix) with ESMTPSA id 477831D4DE1;
-	Thu,  8 Aug 2024 13:24:24 +0200 (CEST)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
-	t=1723116264; bh=oxYbYN2Mz8ixrMDkxJac4yjjhQ3W1I56nPlRCKBOi98=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=u575P61E87M/BWliYygQAQzNdqCpWX5mQfndINSrY9sqCM6Ih+NlOCPeUzzJ7LY9D
-	 Guxqb0VT3HvrWgzxbA2zWw9CZ4UxMjVhJZII6HiRDG6DiTukh4FmZqTzGPtBMfrPCG
-	 a5nkkuFSFNrSxmHgfKxA7PQJECNgHHin2ViNz/lIbhVmQZ7U+Jfc60tnQPzbzidTS4
-	 DwQelkG0R9+71o6d4RuCUwFWLenWl+MOuHV7QiUV3SvbmH7zd/u8gcvEDPLYDtYpjR
-	 w2lg8pOVlgsFNqOXDS8PF6mXg0itfu8eae9hVqFa6w1rraU9c8wS3jyhneU4NbRQ6a
-	 Jnn1H/Cw4qzag==
-Date: Thu, 8 Aug 2024 13:24:23 +0200
-From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Subject: Re: [PATCH] Document/kexec: Generalize crash hotplug description
-Message-ID: <20240808132423.0f313ffe@meshulam.tesarici.cz>
-In-Reply-To: <20240805050829.297171-1-sourabhjain@linux.ibm.com>
-References: <20240805050829.297171-1-sourabhjain@linux.ibm.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WflDB6X7yz2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 21:28:42 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723116523; x=1754652523;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=VmB/6QS1FQ+RUMXWz253lu/uSyqhXxIJWMc4iBtGTIA=;
+  b=mn90FOHQRsXVGesi0fsMZqbkeKfB6m3srDcsHCWpPI97SUCmS9cBM6wS
+   xnSAdbHUZJZpBPwrDqON/tUWyV9o5GkF6GQ8S7LFQ2hlmn759AOQ/6+8T
+   /TEa88cX6YTt+ZlVblINPWTwEF7wQKSTy/3SJQxtRdhq7krxcnDakNRtx
+   nCndG7ylWkjYkbRQDnesrtxhQEt1m2MH5lqgd/lE6EmS2/Xzgfg3Xkkfw
+   X5MwgqN1q2P023wQRxz30j71CNOrYRpVNBTjZNxnJRCLO2wZ0yOD+LO3B
+   MRQJnEhOaP8paNs9qd3GwXDIgw2/N5t9q4lOMVQp7ExzHbsvc/gVzWmOk
+   Q==;
+X-CSE-ConnectionGUID: 6jJ7e0cbRlapAERFa2tvFA==
+X-CSE-MsgGUID: mKze557tRdOq7xFUgMpxKw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="38742182"
+X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
+   d="scan'208";a="38742182"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 04:27:36 -0700
+X-CSE-ConnectionGUID: CU7zVrCdQxe/FdISjC4yqQ==
+X-CSE-MsgGUID: oN5J9gC0QvOy35eh/N/PBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
+   d="scan'208";a="61575228"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO [10.245.246.169]) ([10.245.246.169])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 04:27:32 -0700
+Message-ID: <ffa85004-8d86-4168-b278-afd24d79f9d8@linux.intel.com>
+Date: Thu, 8 Aug 2024 13:27:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec
+ support
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
+ <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com>
+ <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
+ <CAA+D8AN9JXJr-BZf8aY7d4rB6M60pXS_DG=qv=P6=2r1A18ATA@mail.gmail.com>
+Content-Language: en-US
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <CAA+D8AN9JXJr-BZf8aY7d4rB6M60pXS_DG=qv=P6=2r1A18ATA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,82 +77,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bhe@redhat.com, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
+Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, linux-sound@vger.kernel.org, perex@perex.cz, nicoleotsuka@gmail.com, vkoul@kernel.org, broonie@kernel.org, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sourabh,
 
-sorry for late reply, was on vacation and then catching up...
 
-On Mon,  5 Aug 2024 10:38:29 +0530
-Sourabh Jain <sourabhjain@linux.ibm.com> wrote:
-
-> Commit 79365026f869 ("crash: add a new kexec flag for hotplug support")
-> generalizes the crash hotplug support to allow architectures to update
-> multiple kexec segments on CPU/Memory hotplug and not just elfcorehdr.
-> Therefore, update the relevant kernel documentation to reflect the same.
+On 8/8/24 11:17, Shengjiu Wang wrote:
+> On Tue, Aug 6, 2024 at 7:25 PM Pierre-Louis Bossart
+> <pierre-louis.bossart@linux.intel.com> wrote:
+>>
+>>
+>>
+>> On 8/6/24 12:26, Shengjiu Wang wrote:
+>>> Add Sample Rate Converter(SRC) codec support, define the output
+>>> format and rate for SRC.
+>>>
+>>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>>> ---
+>>>  include/uapi/sound/compress_offload.h | 2 ++
+>>>  include/uapi/sound/compress_params.h  | 9 ++++++++-
+>>>  2 files changed, 10 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/include/uapi/sound/compress_offload.h b/include/uapi/sound/compress_offload.h
+>>> index 98772b0cbcb7..8b2b72f94e26 100644
+>>> --- a/include/uapi/sound/compress_offload.h
+>>> +++ b/include/uapi/sound/compress_offload.h
+>>> @@ -112,10 +112,12 @@ struct snd_compr_codec_caps {
+>>>   * end of the track
+>>>   * @SNDRV_COMPRESS_ENCODER_DELAY: no of samples inserted by the encoder at the
+>>>   * beginning of the track
+>>> + * @SNDRV_COMPRESS_SRC_RATIO_MOD: Resampling Ratio Modifier for sample rate converter
+>>>   */
+>>>  enum sndrv_compress_encoder {
+>>>       SNDRV_COMPRESS_ENCODER_PADDING = 1,
+>>>       SNDRV_COMPRESS_ENCODER_DELAY = 2,
+>>> +     SNDRV_COMPRESS_SRC_RATIO_MOD = 3,
+>>>  };
+>>
+>> this sounds wrong to me. The sample rate converter is not an "encoder",
+>> and the properties for padding/delay are totally specific to an encoder
+>> function.
 > 
-> No functional change.
-> 
-> Cc: Petr Tesarik <petr@tesarici.cz>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: kexec@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: x86@kernel.org
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> ---
-> 
-> Discussion about the documentation update:
-> https://lore.kernel.org/all/68d0328d-531a-4a2b-ab26-c97fd8a12e8b@linux.ibm.com/
-> 
-> ---
->  .../ABI/testing/sysfs-devices-memory          |  6 ++--
->  .../ABI/testing/sysfs-devices-system-cpu      |  6 ++--
->  .../admin-guide/mm/memory-hotplug.rst         |  5 ++--
->  Documentation/core-api/cpu_hotplug.rst        | 10 ++++---
->  kernel/crash_core.c                           | 29 ++++++++++++-------
->  5 files changed, 33 insertions(+), 23 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-devices-memory b/Documentation/ABI/testing/sysfs-devices-memory
-> index a95e0f17c35a..421acc8e2c6b 100644
-> --- a/Documentation/ABI/testing/sysfs-devices-memory
-> +++ b/Documentation/ABI/testing/sysfs-devices-memory
-> @@ -115,6 +115,6 @@ What:		/sys/devices/system/memory/crash_hotplug
->  Date:		Aug 2023
->  Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
->  Description:
-> -		(RO) indicates whether or not the kernel directly supports
-> -		modifying the crash elfcorehdr for memory hot un/plug and/or
-> -		on/offline changes.
-> +		(RO) indicates whether or not the kernel update of kexec
-> +		segments on memory hot un/plug and/or on/offline events,
-> +		avoiding the need to reload kdump kernel.
+> There is only decoder and encoder definition for compress,  I know
+> it is difficult to add SRC to encoder or decoder classification,
+> SRC is a Post Processing.  I hope you can have a recommandation
 
-This sentence somehow lacks a verb. My suggestion:
+I don't. I think we're blurring layers in a really odd way.
 
-  (RO) indicates whether or not the kernel updates relevant kexec
-  segments on memory hot un/plug and/or on/offline events, avoiding the
-  need to reload kdump kernel.
+The main reason why the compress API was added is to remove the
+byte-to-time conversions. But that's clearly not useful for a
+post-processing of PCM data, where the bitrate is constant. It really
+feels like we're adding this memory-to-memory API to the compress
+framework because we don't have anything else available, not because it
+makes sense to do so.
 
-> diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-> index 325873385b71..f4ada1cd2f96 100644
-> --- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-> +++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-> @@ -703,9 +703,9 @@ What:		/sys/devices/system/cpu/crash_hotplug
->  Date:		Aug 2023
->  Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
->  Description:
-> -		(RO) indicates whether or not the kernel directly supports
-> -		modifying the crash elfcorehdr for CPU hot un/plug and/or
-> -		on/offline changes.
-> +		(RO) indicates whether or not the kernel update of kexec
-> +		segments on CPU hot un/plug and/or on/offline events,
-> +		avoiding the need to reload kdump kernel.
+Then there's the issue of parameters, we chose to only add parameters
+for standard encoders/decoders. Post-processing is highly specific and
+the parameter definitions varies from one implementation to another -
+and usually parameters are handled in an opaque way with binary
+controls. This is best handled with a UUID that needs to be known only
+to applications and low-level firmware/hardware, the kernel code should
+not have to be modified for each and every processing and to add new
+parameters. It just does not scale and it's unmaintainable.
 
-Same as above.
-
-Otherwise LGTM.
-
-Petr T
+At the very least if you really want to use this compress API, extend it
+to use a non-descript "UUID-defined" type and an opaque set of
+parameters with this UUID passed in a header.
