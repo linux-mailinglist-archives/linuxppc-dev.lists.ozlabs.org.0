@@ -2,93 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E550A94C050
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 16:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B076594C0D6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:19:04 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NU2iJXKX;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R5Nd8xoo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wovqsNrz;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfqpN6gtRz2yNP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 00:55:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfrKy4RDdz2yXd
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 01:19:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NU2iJXKX;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R5Nd8xoo;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wovqsNrz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=alex.bennee@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wfqnh72zHz2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 00:54:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723128865;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0YfHjxzOoIJLo5MdFMHzLs+Cgg2yZMeP3Ex80OFBemw=;
-	b=NU2iJXKXYV2drVStquDANv8BsIjM4cR/b+TvIDp42io7u/XIVTen8lUaQJKPY5pKVOihgY
-	OaLwrowbzC2tQqUI0DogUD5j7iZ4RBn9a3GZur42LPSlbuz4sBddpWHVjSU9x/QmuEqEN9
-	PXV79rMdsDkBjS3qdRdLehvwbQl0QFQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723128866;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0YfHjxzOoIJLo5MdFMHzLs+Cgg2yZMeP3Ex80OFBemw=;
-	b=R5Nd8xoo6LLO4FeGX3ZqRWUbBl9lHkH3wzw1/cbG1PS3oooFe9N/0Kb/d838vZmZwcp0FI
-	Kq7dUxqR0Fwqhf08EQTkm/8CiJjsUeZq2wwSBwfABKKudvEhO2Uv5ntEQNNI7igzB4qhPX
-	hDW3DDKx3uCKe4eb/aZfFgBamLyGh6o=
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
- [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-62-FZ7QCKO6MpibCYS7y0V75A-1; Thu, 08 Aug 2024 10:54:24 -0400
-X-MC-Unique: FZ7QCKO6MpibCYS7y0V75A-1
-Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-26440d4a6f9so98756fac.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 07:54:24 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfrKF5qDWz2y0K
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 01:18:23 +1000 (AEST)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-428085a3ad1so8235105e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 08:18:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723130300; x=1723735100; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tobJ9z30Evl1jF8OZuU4Lc5uAJoWjkGhLZnI88VCnqo=;
+        b=wovqsNrzt1kWe5v/KPe9sy0ZDiVvaPK7k001xLTqru2BDpJMz/M2CQztc1AbMqRxuB
+         ogEUdb1GIu1BRxGdQhDdroLRZZ7HniGTW7QBCo5dJXa3MvAvVEK9Z1tf38ZDFxVE6gp3
+         PFSMDGLU2TTrBfQ/WDsw494KbU+9NVqEmOdfkZDxuqnWeORM2KtERC6is0NJV5VAu1Wi
+         wLT7rtpMYoPVwYSnJKbZK+KJgpuSbPLjYYbbsxEzlsC1v0ETNFnanNCmuGRSOZUzNBZp
+         251RqeFXTJY/Be6jBnB552cU9s9UJfS0dbHprlMAI3g1CybXWfYKUZ3EW572EFud26Ab
+         CMBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723128863; x=1723733663;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0YfHjxzOoIJLo5MdFMHzLs+Cgg2yZMeP3Ex80OFBemw=;
-        b=hjGVQ06q1oAKqcMsDVPPmsdLw7CbH/loGvPblXbn8hf0NpRxAEnkCtlWd/TaHaEks4
-         xub38gmwKJXNH5tyo3800ghPNv82SyfejE0jwMmDWCF3awTbuq2Gaji2OVg7n0vrRPfW
-         1yeS+C4rk7GUPyAE3mMc/SwsL0qmisczh8eYe1WJWn6IjT8hYiv6+/RZZAI79Xo6caPp
-         ZRCsHl7ay06j3yaQU6pPjbcpOktWnoBQpOjud0ZiNkWXXJcHucCym+yvQ9SL2tX+4MqK
-         wDP4Tixxq/79wjlqBQ9PUpXgJTwOPNtYeeiK/qrkYZyD8twc6D8LjpA1fNW5yGNA4/tb
-         o/xg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwkHEvg77Rs3hRVbbwvkG17FrFcxp2OGq6gcYGT4I0YQouGSY0xiJlQGE0LHqeMtAa7k1ir+Cd3shUl1w=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzac2sHjdjkAPvn7+NHSmPzVDUBnTK5IsZDj4+8wR6x1sawEQ+F
-	6cgb6M+YadzfsyLGOtoUXE74W7GZe1e73lMjfslRgszV08r8TyQyYewchhOOTRVezRt/nFa0rx2
-	UYkk8xAW3cG0Yerk3kDpGLSUM+E96mj9NfNwVv8F9dDVp7lixkSjUUstfSuPo440=
-X-Received: by 2002:a05:6808:1490:b0:3da:ac08:b74a with SMTP id 5614622812f47-3dc3b4623aamr1357594b6e.7.1723128863371;
-        Thu, 08 Aug 2024 07:54:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHiqsl7u491+dk16BCdQXSlY2KYF+kMbWvb93MQDcyt8BmOo92tc6HC335u2mF8sk01BC1ZNg==
-X-Received: by 2002:a05:6808:1490:b0:3da:ac08:b74a with SMTP id 5614622812f47-3dc3b4623aamr1357566b6e.7.1723128862987;
-        Thu, 08 Aug 2024 07:54:22 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a3785d0d1asm167486185a.25.2024.08.08.07.54.20
+        d=1e100.net; s=20230601; t=1723130300; x=1723735100;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tobJ9z30Evl1jF8OZuU4Lc5uAJoWjkGhLZnI88VCnqo=;
+        b=SnDD1lLRuRbbv3iei0MWXCCj+Khp8QpoAX/17xnVB9TyyO40wChfNs7q0UgyQeh1zv
+         huHW42ldYgX/ixxk1L1oRaBzM574gux9C3O833MMQ8E7S6WyoH4ZmjoICuOkbVAo8mTg
+         A3TH9m0Gl5wKEYjUVuTOWJg696ZCFfZgdCbvyKCyUBHRf7ixwjR3tN1/1IqJrVrf3SqM
+         ECb3yoOf3p6WdKAQnSp1V89Cgg98zf3gOp1MDjTiU4p9M5BwSbCBIFoDzzz4v7K1mzL9
+         07dLsRDn7zAzMOk+8eFIAOd2m9PQ2YQA9KvlKPmRULGh1rS9NPdlzxSaa/7poCUwgKui
+         WOhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWq0Rk/pjnKUhhVrnwsjA2pYrfOmf1rkrpUx2xEi9xkoIMTtZxtxkXFG5DkaoaUIvyZC8wsR51xVOZ6ZN4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz8n1EVSlG2GFk9a6LJOW39ZV1D9a3fIMXw1ipI+SHkwD9wJIcm
+	u4ezRw652CznogFWsClfOj/Gh1/tfPKPTuu0Rpv7UZkEBR1Ny5RODMNSPxFgwxA=
+X-Google-Smtp-Source: AGHT+IGvryFhFZyruwyY4esgEivQLYITNxgcfgoPAmbjFk+Vzw8kMU8OO4VMz6KIvqZ2Rys90VZ6yQ==
+X-Received: by 2002:a05:600c:1914:b0:426:4f47:6037 with SMTP id 5b1f17b1804b1-4290af13367mr16171145e9.19.1723130299428;
+        Thu, 08 Aug 2024 08:18:19 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429059a5dbbsm78703665e9.36.2024.08.08.08.18.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 07:54:22 -0700 (PDT)
-Date: Thu, 8 Aug 2024 10:54:19 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v4 4/7] mm/x86: Make pud_leaf() only care about PSE bit
-Message-ID: <ZrTcGxANpcvwp1qt@x1n>
-References: <20240807194812.819412-1-peterx@redhat.com>
- <20240807194812.819412-5-peterx@redhat.com>
- <87bk240y8h.ffs@tglx>
+        Thu, 08 Aug 2024 08:18:18 -0700 (PDT)
+Received: from draig (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id BF0C45F769;
+	Thu,  8 Aug 2024 16:18:17 +0100 (BST)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v12 13/84] KVM: Annotate that all paths in hva_to_pfn()
+ might sleep
+In-Reply-To: <ZrTFPhy0e1fFb9vA@google.com> (Sean Christopherson's message of
+	"Thu, 8 Aug 2024 06:16:46 -0700")
+References: <20240726235234.228822-1-seanjc@google.com>
+	<20240726235234.228822-14-seanjc@google.com>
+	<87bk23ql6n.fsf@draig.linaro.org> <ZrTFPhy0e1fFb9vA@google.com>
+Date: Thu, 08 Aug 2024 16:18:17 +0100
+Message-ID: <877ccrqc06.fsf@draig.linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <87bk240y8h.ffs@tglx>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,60 +87,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Jiang <dave.jiang@intel.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 08, 2024 at 12:22:38AM +0200, Thomas Gleixner wrote:
-> On Wed, Aug 07 2024 at 15:48, Peter Xu wrote:
-> > An entry should be reported as PUD leaf even if it's PROT_NONE, in which
-> > case PRESENT bit isn't there. I hit bad pud without this when testing dax
-> > 1G on zapping a PROT_NONE PUD.
-> 
-> That does not qualify as a change log. What you hit is irrelevant unless
-> you explain the actual underlying problem. See Documentation/process/
-> including the TIP documentation.
+Sean Christopherson <seanjc@google.com> writes:
 
-Firstly, thanks a lot for the reviews.
+> On Thu, Aug 08, 2024, Alex Benn=C3=A9e wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
+>>=20
+>> > Now that hva_to_pfn() no longer supports being called in atomic contex=
+t,
+>> > move the might_sleep() annotation from hva_to_pfn_slow() to
+>> > hva_to_pfn().
+>>=20
+>> The commentary for hva_to_pfn_fast disagrees.
+>>=20
+>>   /*
+>>    * The fast path to get the writable pfn which will be stored in @pfn,
+>>    * true indicates success, otherwise false is returned.  It's also the
+>>    * only part that runs if we can in atomic context.
+>>    */
+>>   static bool hva_to_pfn_fast(struct kvm_follow_pfn *kfp, kvm_pfn_t *pfn)
+>>=20
+>> At which point did it loose the ability to run in the atomic context? I
+>> couldn't work it out from the commits.
+>
+> It didn't lose the ability per se (calling hva_to_pfn_fast() in atomic co=
+ntext
+> would still be functionally ok), rather the previous patch
+>
+>   KVM: Drop @atomic param from gfn=3D>pfn and hva=3D>pfn APIs
+>
+> removed support for doing so in order to simplify hva_to_pfn() as a whole.
 
-I thought the commit message explained exactly what is the underlying
-problem, no?
+It still sticks out given the only caller no longer enforces this.=20
 
-The problem is even if PROT_NONE, as long as the PSE bit is set on the PUD
-it should be treated as a PUD leaf.  Currently, the code will return
-pud_leaf()==false for those PROT_NONE PUD entries, and IMHO that is wrong.
-This patch wants to make it right.  I still think that's mostly what I put
-there in the commit message..
+How about:
 
-Would you please suggest something so I can try to make it better,
-otherwise?  Or it'll be helpful too if you could point out which part of
-the two documentations I should reference.
+    * true indicates success, otherwise false is returned.  It's also the
+    * only part that could run in an atomic context if we wanted to
+    * (although no callers expect it to).
 
-> 
-> > diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-> > index e39311a89bf4..a2a3bd4c1bda 100644
-> > --- a/arch/x86/include/asm/pgtable.h
-> > +++ b/arch/x86/include/asm/pgtable.h
-> > @@ -1078,8 +1078,7 @@ static inline pmd_t *pud_pgtable(pud_t pud)
-> >  #define pud_leaf pud_leaf
-> >  static inline bool pud_leaf(pud_t pud)
-> >  {
-> > -	return (pud_val(pud) & (_PAGE_PSE | _PAGE_PRESENT)) ==
-> > -		(_PAGE_PSE | _PAGE_PRESENT);
-> > +	return pud_val(pud) & _PAGE_PSE;
-> >  }
-> 
-> And the changelog does not explain why this change is not affecting any
-> existing user of pud_leaf().
+?
 
-That's what I want to do: I want to affect them..
-
-And IMHO it's mostly fine before because mprotect() is broken with 1g
-anyway, and I guess nobody managed to populate any pud entry with PROT_NONE
-on dax 1g before, and that's what this whole series is trying to fix.
-
-Thanks,
-
--- 
-Peter Xu
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
