@@ -1,75 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143CB94BE69
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 15:17:34 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=VIT0UWKf;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFA694BEC0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 15:47:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wfndm07JFz2yMb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 23:17:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfpJC4RW8z2yt0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 23:47:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=VIT0UWKf;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3p8w0zgykdngm84hd6aiiaf8.6igfchorjj6-78pfcmnm.itf45m.ila@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wfnd171Whz2xrC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 23:16:52 +1000 (AEST)
-Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-70d1d51f3e9so1230308b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 06:16:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723123008; x=1723727808; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ep+xfrS41+80V4sejFNz0q3mTB6TQE8jTTfF1Jh5lTI=;
-        b=VIT0UWKf1MHjFrlEZuTWukJaV6C4ddo30p0AKG8gtShRnoHIEa+Yhb4IHKVNptu9M1
-         moMG1kRwK9Pkl5/ihtMcKK31h4voJWXIXvQ1wTVYNhBN0B6kQe5LrppPs2meqVBE/Dqg
-         IAhchb9l7qysuSfq2MGLl3MfY8hhbxLJYoku/GpcYX3JK43EYNnBju8TBRp4WkFAUogy
-         WSpOzpuujY8BhcM0Sc3VTAI5DMy6KZudHrYpMkkGTiEg+wtNm/kw0ibm89WcSlUsvU80
-         O0y1vKVMxp3QpWs0rruxO9J+K2MXNwESVqiyWuzzqCdJSb7eapcuQwaQjm5SYToQ8SdG
-         Zv0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723123008; x=1723727808;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ep+xfrS41+80V4sejFNz0q3mTB6TQE8jTTfF1Jh5lTI=;
-        b=mSzQjX7WsUXbmLCZV0NXWq0408pvo2F0OD+oyEz1AYOb4ShpPpGQXqDDnmvwG+wg1y
-         +kRbzjuDvZtE0f8khwvAJp+PoBaEljr4DXXQrmW4carQ/RYjycRAgqVN+IAOM4mrrnJf
-         NOZvXP3BfrUhzs35i62xGUmiAPw/AMW12JffgteIy+c3lCVSaUvM9H+/AXlYuqnadq/A
-         RdvLbEivuyIXT5ar71kiPG0ZULmrYiMsCEjN8SM896eBLLo8a38oyuVh+QTWMK6WmdmC
-         HmArBdt5HAHHCdRYJSgxxSpjjeDTuNvcdsK9PBc4rFCoTtCYr6WLH7AjVwDkQSrU4Ssb
-         1reA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/vBX50eVTsyTDU2KWut0Sa5iWrblXDkOzHgvsLqDxElGSN7Xas7+fwC1OwIe38tKu9XThFCvrZQlvieE0juEcMpyIEBK+gbPNfwo96w==
-X-Gm-Message-State: AOJu0Yz8fv9kSe5MY+fa0Twcs6G1dkGACAsQSAe9j1V7DtZnpGrScwVy
-	sn5MSftFqoYlBTDMZDgDV4WS9J+KwiV4V/tv4wNEP+I59PJUKHfrTZbXmu0gemjQ3U5+bElA4SD
-	JGw==
-X-Google-Smtp-Source: AGHT+IHJBsGw5UgR/iugxzmSr+QeSrp5dZN/v/XODES4sTP0wn0G9d+/VHKS2R50We/GZxKaCQexvWJSP70=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6a00:2d8c:b0:70d:2a24:245d with SMTP id
- d2e1a72fcca58-710cae763e9mr108614b3a.3.1723123007877; Thu, 08 Aug 2024
- 06:16:47 -0700 (PDT)
-Date: Thu, 8 Aug 2024 06:16:46 -0700
-In-Reply-To: <87bk23ql6n.fsf@draig.linaro.org>
-Mime-Version: 1.0
-References: <20240726235234.228822-1-seanjc@google.com> <20240726235234.228822-14-seanjc@google.com>
- <87bk23ql6n.fsf@draig.linaro.org>
-Message-ID: <ZrTFPhy0e1fFb9vA@google.com>
-Subject: Re: [PATCH v12 13/84] KVM: Annotate that all paths in hva_to_pfn()
- might sleep
-From: Sean Christopherson <seanjc@google.com>
-To: "Alex =?utf-8?Q?Benn=C3=A9e?=" <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfpHp1mGhz2xFr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 23:47:02 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 669C461528;
+	Thu,  8 Aug 2024 13:46:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA35C32782;
+	Thu,  8 Aug 2024 13:46:56 +0000 (UTC)
+Date: Thu, 8 Aug 2024 14:46:54 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
+Subject: Re: [PATCH v5 2/3] dma: replace zone_dma_bits by zone_dma_limit
+Message-ID: <ZrTMTrjTwpuHDgnU@arm.com>
+References: <cover.1722578375.git.baruch@tkos.co.il>
+ <5821a1b2eb82847ccbac0945da040518d6f6f16b.1722578375.git.baruch@tkos.co.il>
+ <Zqyo4qjPRHUeUfS5@arm.com>
+ <20240807161938.5729b656@mordecai.tesarici.cz>
+ <ZrO5okGUljTc9E7N@arm.com>
+ <20240808113501.4fde4cb0@mordecai.tesarici.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240808113501.4fde4cb0@mordecai.tesarici.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,34 +49,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, David Matlack <dmatlack@google.com>, linux-riscv@lists.infradead.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Marc Zyngier <maz@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Albert Ou <aou@eecs.berkeley.edu>, Bibo Mao <maobibo@loongson.cn>, loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, David Stevens <stevensd@chromium.org>, kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>, Ramon Fried <ramon@neureality.ai>, Will Deacon <will@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 08, 2024, Alex Benn=C3=A9e wrote:
-> Sean Christopherson <seanjc@google.com> writes:
->=20
-> > Now that hva_to_pfn() no longer supports being called in atomic context=
-,
-> > move the might_sleep() annotation from hva_to_pfn_slow() to
-> > hva_to_pfn().
->=20
-> The commentary for hva_to_pfn_fast disagrees.
->=20
->   /*
->    * The fast path to get the writable pfn which will be stored in @pfn,
->    * true indicates success, otherwise false is returned.  It's also the
->    * only part that runs if we can in atomic context.
->    */
->   static bool hva_to_pfn_fast(struct kvm_follow_pfn *kfp, kvm_pfn_t *pfn)
->=20
-> At which point did it loose the ability to run in the atomic context? I
-> couldn't work it out from the commits.
+On Thu, Aug 08, 2024 at 11:35:01AM +0200, Petr Tesařík wrote:
+> On Wed, 7 Aug 2024 19:14:58 +0100
+> Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > With ZONE_DMA32, since all the DMA code assumes that ZONE_DMA32 ends at
+> > 4GB CPU address, it doesn't really work for such platforms. If there are
+> > 32-bit devices with a corresponding CPU address offset, ZONE_DMA32
+> > should end at 36GB on Baruch's platform. But to simplify things, we just
+> > ignore this on arm64 and make ZONE_DMA32 empty.
+> 
+> Ah. That makes sense. It also seems to support my theory that Linux
+> memory zones are an obsolete concept and should be replaced by a
+> different mechanism.
 
-It didn't lose the ability per se (calling hva_to_pfn_fast() in atomic cont=
-ext
-would still be functionally ok), rather the previous patch
+I agree, they are too coarse-grained. From an API perspective, what we
+need is an alloc_pages() that takes a DMA mask or phys address limit,
+maybe something similar to memblock_alloc_range_nid(). OTOH, an
+advantage of the zones is that by default you keep the lower memory free
+by using ZONE_NORMAL as default, you have free lists per zone. Maybe
+with some alternative data structures we could efficiently search free
+pages based on phys ranges or bitmasks and get rid of the zones but I
+haven't put any thoughts into it.
 
-  KVM: Drop @atomic param from gfn=3D>pfn and hva=3D>pfn APIs
+We'd still need some boundaries like *_dma_get_max_cpu_address() to at
+least allocate an swiotlb buffer that's suitable for all devices.
 
-removed support for doing so in order to simplify hva_to_pfn() as a whole.
+> > In some cases where we have the device structure we could instead do a
+> > dma_to_phys(DMA_BIT_MASK(32)) but not in the two cases above. I guess if
+> > we really want to address this properly, we'd need to introduce a
+> > zone_dma32_limit that's initialised by the arch code. For arm64, I'm
+> > happy with just having an empty ZONE_DMA32 on such platforms.
+> 
+> The obvious caveat is that zone boundaries are system-wide, but the
+> mapping between bus addresses and CPU addresses depends on the device
+> structure. After all, that's why dma_to_phys takes the device as a
+> parameter... In fact, a system may have multiple busses behind
+> different bridges with a different offset applied by each.
+
+Indeed, and as Robin mentioned, the ACPI/DT code already handle this.
+
+> FYI I want to make more people aware of these issues at this year's
+> Plumbers, see https://lpc.events/event/18/contributions/1776/
+
+Looking forward to this. I'll dial in, unfortunately can't make Plumbers
+in person this year.
+
+In the meantime, I think this series is a good compromise ;).
+
+-- 
+Catalin
