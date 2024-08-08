@@ -2,72 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E36394C0E2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B55894C0EC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:22:26 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=K8VOwfBK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=j+fiFtcX;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfrNP0RVqz2yMJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 01:21:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WfrPq6nPwz2ydQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 01:22:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=K8VOwfBK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=j+fiFtcX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfrMj1VqKz2xZr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 01:20:32 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1fd78c165eeso9197505ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 08:20:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfrP86G0fz2xSN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 01:21:48 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1fb3b7d0d56so7448545ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 08:21:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723130430; x=1723735230; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1723130506; x=1723735306; darn=lists.ozlabs.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=SiZq70LSf/bCrrIvFZliDXUYPXu4ym37OR0vAgA3uYk=;
-        b=K8VOwfBKYT46uEnOkFM6lOD+K0K4a9Jn01i9lugqA42/Pm7LM9xj0ni0OaA24KSmm6
-         7MEcaInBYHSelsMHa1IAUPD0tKVCnVnECENOjWoosS3hetTOSNtBM2/ghqH2lBfPhbEk
-         AsNbRCVJrXl2rxGckK6+tlfzT6vqUqcDWwFGIHGt3aKi/5XGKeL8p3tCxCed+LOZKpiN
-         xjLLBOeRA1wxKCq80sa6GC0tmwlIdsYYeS4xJOlknl6Cj4AShA48rd7XV4cHyGpEaB8F
-         4Mj4BZA3/edgm7CjIr9efqrCMkQES3SF9pYgxphrvFtZ4TA73Wt+8Cf5wJ2ceJCf+3sH
-         mjMw==
+        bh=ECZuBMqNALSfPXfP6lwUr9I4uhBcMrsy5RRDfjTSSRE=;
+        b=j+fiFtcXhcg3bF6CF+0xyl9ZajdaJ6p8l+/AtW3UZ0WVTU4jG2VSz+jjP1aH5XXy2N
+         kQQF48eB8WWn+X+ndPg1kbKgO7hD0Kl9aT2/NjEWhkl0oYCEe+ykzNLLkQOs2W6HmCVn
+         nJ5k8pe1UYSbkt0Q9szlegDh9q70NR/HJMrgyQLS8jtNT6FSiAp5pOV663gUbdKdKcsB
+         6D3B1tE7ZJLdrvXJLmAh5T6GecYRpvnFTMAgUGr7J0FSAR2vILfK/vpsqtUM2x8AbagE
+         zpDnfZfPsbFSQLxCxLMj8+aOerSxNH6ZsnPIWmvnmo61+S4r1do217QGS+ipatn1rs8e
+         wG1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723130430; x=1723735230;
+        d=1e100.net; s=20230601; t=1723130506; x=1723735306;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SiZq70LSf/bCrrIvFZliDXUYPXu4ym37OR0vAgA3uYk=;
-        b=Qq0+32xXra3i/kl0rhP60UDk6na0yz/xF16EL5n/CDCLDf1vOqLRFg7O+rEnui0qyk
-         FXnpc/IsNns3Rtp1lEc1YeugF8L+R7Mqj9ho2R26Gktk9EXsBFn2zdS2yRpeA2UFjv4s
-         BrNrlFzyIMUIfFUqPrHoHjQOdLI3KDvwJ8seg8djuHqq0blXimSGI0gu29pJDg3D3daw
-         8ovbRUbnsMRf3odLCfkr/36wAO/9RIn5ibOUj3PWhqV2RdRCodQOAQCjFOGSiRPHtgOD
-         FBbftLj0aJQd25VLRUOyPs+ofsr+bMmpgF0GMyIH2PA5/m/teyXwO21kFV6nfw/uS9th
-         9X1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWC8qJ4epZE+JuTwMzexuPajjIWlwGAYGfF8XVjnkZc5Mi3ZivCd30okILkEaJJvd5PraXofMLYqO81QoUNd/yjP1BKqFjv/2WPlWVtoQ==
-X-Gm-Message-State: AOJu0YwI0IXa/5oQmOeueLCdCOuXXCG5OWtpQO5uA/QLYs0qtiryXMzT
-	qSenSz72baCn8kGO7SuQhbeAc8PZ5wbRyghcxvFaFkn7xhtjpFzc
-X-Google-Smtp-Source: AGHT+IE8816vdK61O2xaKdqeewiL3CLyGiq118QlvJdPwT9G6srmiOZdavzDEeaCFuHZvoihZEnIrA==
-X-Received: by 2002:a17:903:41ce:b0:1fc:6901:9c2b with SMTP id d9443c01a7336-2009524a701mr30855585ad.23.1723130430254;
-        Thu, 08 Aug 2024 08:20:30 -0700 (PDT)
+        bh=ECZuBMqNALSfPXfP6lwUr9I4uhBcMrsy5RRDfjTSSRE=;
+        b=Jh1JPaBNs597F9XAfqCbysvqgNRDGjDWuRwyjnFar7W4qrmJtKguW8r4yCjwefEToh
+         2yOWTrRLMFIaTD/AmawUhsOSt61FomjvSWdAwC3AmSmdOyPCDsWHJQj4W1DgbvNd0llZ
+         CmHI3ZdJxkJQCyQTnotbZfig/zQfK8ug3zD3AwtyKzJ0YW0DsfRdE3IHyQTEARxSwdz4
+         lp6E8nxh2/yvWOTYqItvDbhBc32e2LNn1eR2XWAzh1BpEproNFOCZv1L7VHeGsD5fnhp
+         nTNNGHkdZXVvusMlHa7iU1+nGIVqKQXLwRgC9yWTKVsKk3dkqEkQahLJ1Y0GDaIAtaae
+         JIJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUiaFv0IGLkEfTYi6LwrGVVsv5U+YcHlXu0p24a5OtAd8OXHpaVLiU7t8RgWwuIBaZNpn3T2n2SPRhbBey5Mg1oJEdhJT3dxn6gybZmjQ==
+X-Gm-Message-State: AOJu0YzflA8QzpubElV5XgNo0e13c41ydQZLExLeg4W3yE2ZtAqjViic
+	LLZVGp/RbUv0Fty3o0mpiWBR1D2/UsxtPzria/GauS4z6CQSjPJ1
+X-Google-Smtp-Source: AGHT+IEaTDbHEmHyY6PkpkaK+rB1odgrnlhUQ2wPTFl2t9qUOypCDST48hHI3VkOA3uRfaZ0OgsN6A==
+X-Received: by 2002:a17:902:f710:b0:1fb:9b47:b642 with SMTP id d9443c01a7336-20095263175mr21287495ad.31.1723130506013;
+        Thu, 08 Aug 2024 08:21:46 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff5928ee8dsm125869725ad.230.2024.08.08.08.20.29
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff58f19ca6sm126481525ad.49.2024.08.08.08.21.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Aug 2024 08:20:29 -0700 (PDT)
-Message-ID: <5e7c59c6-ec88-4ee3-8a5c-93a16e5f444e@roeck-us.net>
-Date: Thu, 8 Aug 2024 08:20:28 -0700
+        Thu, 08 Aug 2024 08:21:45 -0700 (PDT)
+Message-ID: <e4d6e891-8d93-4539-875f-802a2c1834ae@roeck-us.net>
+Date: Thu, 8 Aug 2024 08:21:44 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/mm: Fix size of allocated PGDIR
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Andrew Morton <akpm@linux-foundation.org>
-References: <1cdaacb391cbd3e0240f0e0faf691202874e9422.1723109462.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v7 16/23] powerpc/e500: Switch to 64 bits PGD on 85xx (32
+ bits)
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <cover.1719928057.git.christophe.leroy@csgroup.eu>
+ <ca85397df02564e5edc3a3c27b55cf43af3e4ef3.1719928057.git.christophe.leroy@csgroup.eu>
+ <2c7adbc9-609d-41a9-8a3b-a63d59e21a1f@roeck-us.net>
+ <AM0PR07MB496234BE973D5458C53517F29BB12@AM0PR07MB4962.eurprd07.prod.outlook.com>
+ <4f46d614-0fbb-452b-a778-b7b3a7f6da8b@roeck-us.net>
+ <b73e991e-5f66-455e-a271-e10511ebeaef@csgroup.eu>
+ <5cc43ed9-b4f8-49f5-99ee-b411bb144085@roeck-us.net>
+ <17eed040-969e-4d2c-b20b-ecfd93450901@csgroup.eu>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -113,9 +120,9 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <1cdaacb391cbd3e0240f0e0faf691202874e9422.1723109462.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <17eed040-969e-4d2c-b20b-ecfd93450901@csgroup.eu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -127,48 +134,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Peter Xu <peterx@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Nicholas Piggin <npiggin@gmail.com>, Jason Gunthorpe <jgg@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 8/8/24 02:32, Christophe Leroy wrote:
-> Commit 6b0e82791bd0 ("powerpc/e500: switch to 64 bits PGD on 85xx
-> (32 bits)") increased the size of PGD entries but failed to increase
-> the PGD directory.
+On 8/8/24 02:36, Christophe Leroy wrote:
 > 
-> Use the size of pgd_t instead of the size of pointers to calculate
-> the allocated size.
 > 
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Fixes: 6b0e82791bd0 ("powerpc/e500: switch to 64 bits PGD on 85xx (32 bits)")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Le 07/08/2024 à 16:51, Guenter Roeck a écrit :
+>> On 8/7/24 03:11, Christophe Leroy wrote:
+>>> Hi,
+>>>
+>>> Le 31/07/2024 à 18:35, Guenter Roeck a écrit :
+>>>> On 7/31/24 08:36, LEROY Christophe wrote:
+>>>>>
+>>>>> Hi Guenter,
+>>>>> Thanks for this report. I'm afk this week, i"ll have a look at it in more détails next week.
+>>>>> But to be sûre, does that Oops match the bisected commit ? Because pmd_leaf()  for e500 doesn't exist yet so pmd_write() shouldnt be called.
+>>>>> I did validate all my changes with mpc8544 on qemu when i implemented this séries, using map_hugetlb mm selftest. What test tool are you using ?
+>>>>
+>>>> Nothing special; it is just a qemu boot test with various module test and debug options enabled,
+>>>> using a root file system generated with buildroot.
+>>>
+>>> I still don't get anything with mpc85xx_defconfig.
+>>>
+>>> Can you tell with debug options you use and which module tests ?
+>>>
+>>
+>> Please see https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fserver.roeck-us.net%2Fqemu%2Fppc-v6.11-rc2%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cfd337af1375448bcda1508dcb6f06644%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638586390853555531%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=7kihrxw5%2FrCI6TzmxGM56tEmghc1Bj7b1czXuM0%2BVrk%3D&reserved=0.
+>>
+> 
+> Thanks,
+> 
+> CONFIG_SLUB_DEBUG_ON is what exhibits the problem.
+> 
+> I sent out a patch: https://patchwork.ozlabs.org/project/linuxppc-dev/patch/1cdaacb391cbd3e0240f0e0faf691202874e9422.1723109462.git.christophe.leroy@csgroup.eu/
+> 
+> With that patch I can successfully boot your config.
+> 
+> Can you give it a test ?
+> 
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Done; the patch fixes the problem for me.
 
-> ---
->   arch/powerpc/mm/init-common.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-> index 9b4a675eb8f8..2978fcbe307e 100644
-> --- a/arch/powerpc/mm/init-common.c
-> +++ b/arch/powerpc/mm/init-common.c
-> @@ -73,7 +73,7 @@ void setup_kup(void)
->   
->   #define CTOR(shift) static void ctor_##shift(void *addr) \
->   {							\
-> -	memset(addr, 0, sizeof(void *) << (shift));	\
-> +	memset(addr, 0, sizeof(pgd_t) << (shift));	\
->   }
->   
->   CTOR(0); CTOR(1); CTOR(2); CTOR(3); CTOR(4); CTOR(5); CTOR(6); CTOR(7);
-> @@ -117,7 +117,7 @@ EXPORT_SYMBOL_GPL(pgtable_cache);	/* used by kvm_hv module */
->   void pgtable_cache_add(unsigned int shift)
->   {
->   	char *name;
-> -	unsigned long table_size = sizeof(void *) << shift;
-> +	unsigned long table_size = sizeof(pgd_t) << shift;
->   	unsigned long align = table_size;
->   
->   	/* When batching pgtable pointers for RCU freeing, we store
+Thanks!
+Guenter
+
 
