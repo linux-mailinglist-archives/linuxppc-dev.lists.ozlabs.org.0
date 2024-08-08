@@ -1,76 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0311094B6DC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 08:40:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFB194B6E6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 08:45:44 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=djVVfhZ/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qtmsmih4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wfcq10RvMz3dKJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 16:39:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wfcxf4DyXz3cmV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 16:45:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=djVVfhZ/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qtmsmih4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfcpJ0J6cz3cjm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 16:39:16 +1000 (AEST)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-5a156556fb4so685164a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 Aug 2024 23:39:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1723099151; x=1723703951; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XzREIHv7djAsRlQoZ0lEYM3ck8TqSPELhLYhb00UwBA=;
-        b=djVVfhZ/DgwDrv1U1JgloDn1uY+ZXiHK9R8tw2IJaqwfGi7GFfZyOHEpvMt7ICDzup
-         tffjHDtXVOD9fwvg42edFBR+Zyht13hylCNfvjtNMZFjQNhZ9iJ6TE+zF2z6e6nJlMV/
-         pVQVJOVR8kEi1IR8IQovh4MJjKCfRPoz94ljT6dJLiPsRROWhNPTdSQKxZnPVAkZjgX0
-         DbkTRmoDuMzq79EBDt2bSkBWMAt/tqI7JSwwlVo+ltzc1fnN6niPDBzkhi79rigzKBlD
-         9Jm8Gz0IrALL7mA9VwmRZr0KSjK3zNj1y3GtdKmD0r0QuGuvwR2sYr5/VIOaQNz7lEHY
-         EQuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723099151; x=1723703951;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XzREIHv7djAsRlQoZ0lEYM3ck8TqSPELhLYhb00UwBA=;
-        b=U6NrqW8UQnAOpl5cavmWE1Cg3uzt2tr0PrhQEb6jvWHH/FYW8RYfCjc/V9Pskla10O
-         8Q3xLSk3d8JJzHgkPOo1r1m4HY36WLxIdx0QGCBnBpH8YJD0jviSl391C08HyXRXYGvy
-         YkDJ33KktKn0RzNl4IBpLtjBgua4q7AIFoTjYFVz47weGx6/31GV5zmdmCmNvcdK7D/6
-         D6G17MImrOFSEcuza8R7B8E4ay6e0RjEFPbUxC7ZF/nCDYhKyWV8IcXBzWOzGBCvWEBK
-         p+sKK4OHP8sXUHbwKATRzKoRViQPpoYtrhCUzJnw13MNPrJ/cyfIDTgg0cNpQKM8hFCF
-         vHMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfaYKSCt9PmsCqnwWz8Dwv/oPAzQUfF7sxF+WosGymiASUlWmMtikQ3pDFqsNiBwUuKJEkiO/H7ioJ3X1zgrqMphNQwJnbDte6jpAz6w==
-X-Gm-Message-State: AOJu0Yyfv0g0vOzKB1Cj4BKekniz2X+1LBakXZcLGKMK8cPqD3xijei6
-	N/piGzlYVudWmpb12UL0ZmcmAR4QEMNRduOqGUCtNv8Pjzh6VDIK43ccL+on8os=
-X-Google-Smtp-Source: AGHT+IFYE++R4zQ6oP4dTWiBQKqnLH3w5nmZ4KrvmlIp/crnjaHkWi+F5OEeYOkYO/k4WvFt2B3j1g==
-X-Received: by 2002:a05:6402:270d:b0:5a2:37e0:1e88 with SMTP id 4fb4d7f45d1cf-5bbb21a29d7mr708798a12.9.1723099150973;
-        Wed, 07 Aug 2024 23:39:10 -0700 (PDT)
-Received: from localhost (p50915eb1.dip0.t-ipconnect.de. [80.145.94.177])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bbb2bf85fbsm315986a12.16.2024.08.07.23.39.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 23:39:10 -0700 (PDT)
-Date: Thu, 8 Aug 2024 08:39:08 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/476: Drop explicit initialization of struct
- i2c_device_id::driver_data to 0
-Message-ID: <l6mnn7ritcdnvz4mmf25vom2l2mltvvhvhby23mvzb7wfiurl5@6ytmgge3i4pm>
-References: <20240804112032.3628645-2-u.kleine-koenig@baylibre.com>
- <9321c44b-f25c-4cb2-8a7a-a32c4692c865@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wfcwy1wgVz3cRK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 16:45:05 +1000 (AEST)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4783raWW005829;
+	Thu, 8 Aug 2024 06:44:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-type:subject:from:in-reply-to:date:cc:message-id
+	:references:to:content-transfer-encoding:mime-version; s=pp1;
+	 bh=LEg29M2yqo1wvbO42uopFKk9Gjuc//TOv0IVcWZHbGs=; b=qtmsmih4vFCJ
+	/ybdMAs6kxwQyUQloCJHt72JMN7XatXBrUwkpN5O0KO4XLMPlT5hvKJQEPFXtWCR
+	9ELo5jnjuTv9F4zDvMNTlm1uEiUKJKw/jCSCsLROciagbP250ZIgIGSuMpMIaAuM
+	tIAOmQW3SbygHUa7YBaXwIk+CW79IoVaSxuIBOFejFOvv0klBYjB/HB1/gbAzLCy
+	W2fpo0g6GttEI0nxXZkHKifB7Cpn5P4mDpdftglpEybVTy2vS6NirTM0+oNDxuI4
+	+LHL/468xJiL71hM1WVjb7Pm079uGCMgKvD8VUpVDEGpd/i5SJCnlGzKf4StMtvf
+	NNZA54IjMw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40urpuby7p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Aug 2024 06:44:43 +0000 (GMT)
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4786igWp030241;
+	Thu, 8 Aug 2024 06:44:42 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40urpuby7m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Aug 2024 06:44:42 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4783xS2T018004;
+	Thu, 8 Aug 2024 06:44:41 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40t0cmvtkq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Aug 2024 06:44:41 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4786iZHZ57737710
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 8 Aug 2024 06:44:38 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DCDE620043;
+	Thu,  8 Aug 2024 06:44:35 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EC93920040;
+	Thu,  8 Aug 2024 06:44:26 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.113.139])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  8 Aug 2024 06:44:26 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Subject: Re: [PATCHSET 00/10] perf tools: Sync tools and kernel headers for
+ v6.11
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <ZrO5HR9x2xyPKttx@google.com>
+Date: Thu, 8 Aug 2024 12:14:12 +0530
+Message-Id: <F3C6DE61-8E10-4814-A6C0-C7569B3FD613@linux.vnet.ibm.com>
+References: <20240806225013.126130-1-namhyung@kernel.org>
+ <ZrO5HR9x2xyPKttx@google.com>
+To: Namhyung Kim <namhyung@kernel.org>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: L2gBmFoGup1EK_PG9EwlwP3G5Ww1ljlb
+X-Proofpoint-GUID: tvb4B9ZyOUHFlc5FqnowrES5Pbrzd0es
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="53j2fz2a5u2kgmfw"
-Content-Disposition: inline
-In-Reply-To: <9321c44b-f25c-4cb2-8a7a-a32c4692c865@csgroup.eu>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-08_06,2024-08-07_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 priorityscore=1501
+ suspectscore=0 clxscore=1011 phishscore=0 bulkscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408080046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,63 +103,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Ian Rogers <irogers@google.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Kajol Jain <kjain@linux.ibm.com>, James Clark <james.clark@linaro.org>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@arm.com>, Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---53j2fz2a5u2kgmfw
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hello,
-
-On Wed, Aug 07, 2024 at 07:50:26AM +0200, Christophe Leroy wrote:
-> Le 04/08/2024 =E0 13:20, Uwe Kleine-K=F6nig a =E9crit=A0:
-> > This driver doesn't use the driver_data member of struct i2c_device_id,
-> > so don't explicitly initialize this member.
+> On 7 Aug 2024, at 11:42=E2=80=AFPM, Namhyung Kim <namhyung@kernel.org> wr=
+ote:
 >=20
-> Well, even if the member was used, a 0 init is useless because as soon as
-> you initialise one field of the struct, the compiler initialise everything
-> else with 0.
+> Hello folks,
+>=20
+> On Tue, Aug 06, 2024 at 03:50:03PM -0700, Namhyung Kim wrote:
+>> Hello,
+>>=20
+>> This is the usual sync up in header files we keep in tools directory.
+>> I put a file to give the reason of this work and not to repeat it in
+>> every commit message.  The changes will be carried in the perf-tools
+>> tree.
+>=20
+> Could you please double check what's in the tmp.perf-tools branch at the
+> perf-tools tree so I don't break build and perf trace for arm64, powerpc
+> and s390?  It has this patchset + arm64 unistd header revert (according
+> to the discussion on patch 6/10) on top of v6.11-rc2.
+>=20
+> Thanks,
+> Namhyung
+Hi Namhyung,
 
-Yeah, there are different shades of "useless". I'd say that if the
-driver_data member is used, e.g. like:
-
-	static const struct i2c_device_id avr_id[] =3D {
-		{
-			.name =3D "akebono-avr",
-			.driver_data =3D 0,
-		}, {
-			.name =3D "akebono-arduino",
-			.driver_data =3D 1,
-		}, {
-		}
-	};
-
-the assignment to driver_data in the first entry is useless as it
-doesn't make a difference for the compiler, but still has a benefit for
-the human reader of the code. So I would keep that one.
-
-> Reviewed-by: Christophe Leroy <christophe leroy@csgroup.eu>
+Can you please point to the tree. I checked in https://git.kernel.org/pub/s=
+cm/linux/kernel/git/acme/linux.git as well as https://git.kernel.org/pub/sc=
+m/linux/kernel/git/perf/perf-tools-next.git , but didn=E2=80=99t find the c=
+hanges. May be I am missing something. I am trying to check the build in po=
+werpc.
 
 Thanks
-Uwe
+Athira
 
---53j2fz2a5u2kgmfw
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+>=20
+>>=20
+>> Namhyung Kim (10):
+>>  perf tools: Add tools/include/uapi/README
+>>  tools/include: Sync uapi/drm/i915_drm.h with the kernel sources
+>>  tools/include: Sync uapi/linux/kvm.h with the kernel sources
+>>  tools/include: Sync uapi/linux/perf.h with the kernel sources
+>>  tools/include: Sync uapi/sound/asound.h with the kernel sources
+>>  tools/include: Sync uapi/asm-generic/unistd.h with the kernel sources
+>>  tools/include: Sync network socket headers with the kernel sources
+>>  tools/include: Sync filesystem headers with the kernel sources
+>>  tools/include: Sync x86 headers with the kernel sources
+>>  tools/include: Sync arm64 headers with the kernel sources
+>>=20
+>> tools/arch/arm64/include/asm/cputype.h        |  10 +
+>> tools/arch/arm64/include/uapi/asm/unistd.h    |  24 +-
+>> tools/arch/powerpc/include/uapi/asm/kvm.h     |   3 +
+>> tools/arch/x86/include/asm/cpufeatures.h      | 803 +++++++++---------
+>> tools/arch/x86/include/asm/msr-index.h        |  11 +
+>> tools/arch/x86/include/uapi/asm/kvm.h         |  49 ++
+>> tools/arch/x86/include/uapi/asm/svm.h         |   1 +
+>> tools/include/uapi/README                     |  73 ++
+>> tools/include/uapi/asm-generic/unistd.h       |   2 +-
+>> tools/include/uapi/drm/i915_drm.h             |  27 +
+>> tools/include/uapi/linux/in.h                 |   2 +
+>> tools/include/uapi/linux/kvm.h                |  17 +-
+>> tools/include/uapi/linux/perf_event.h         |   6 +-
+>> tools/include/uapi/linux/stat.h               |  12 +-
+>> .../arch/powerpc/entry/syscalls/syscall.tbl   |   6 +-
+>> .../perf/arch/s390/entry/syscalls/syscall.tbl |   2 +-
+>> .../arch/x86/entry/syscalls/syscall_64.tbl    |   8 +-
+>> .../perf/trace/beauty/include/linux/socket.h  |   5 +-
+>> .../perf/trace/beauty/include/uapi/linux/fs.h | 163 +++-
+>> .../trace/beauty/include/uapi/linux/mount.h   |  10 +-
+>> .../trace/beauty/include/uapi/linux/stat.h    |  12 +-
+>> .../trace/beauty/include/uapi/sound/asound.h  |   9 +-
+>> 22 files changed, 810 insertions(+), 445 deletions(-)
+>> create mode 100644 tools/include/uapi/README
+>>=20
+>> --=20
+>> 2.46.0.rc2.264.g509ed76dc8-goog
+>>=20
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAma0aAoACgkQj4D7WH0S
-/k7VKwgArCMO3hiO36dweJjZo3GJJdEgnB9Nu9MU0Ue5bVA/+tSGhWbjhaR3lfvW
-Jt1Vdr/pTcBgk/PYdu6JYAoKt2hLfQdXrVOAIywP6w1ce5YtRwEwVA3tMFFFZsll
-P4CIo9faM3fgpKvZGrEqn6RYVMItUNxXEed5EKcETF9kt/q7XHZFg96p2znNFnip
-gBZuz2a3KSDiIJAljVuPCBoGXbEG1zuIoM6qGBd7IpHAShRScTHmJu8CRXWBFVBx
-4XPO8ws2xgTA98lKC2B6PyLtmkbEE9gk2zL8Voo74H7Rd29kaRWIglewoKiOziah
-MsGKzWhyZ/EoBbEIzfnle9kdz0ltCA==
-=IdmB
------END PGP SIGNATURE-----
-
---53j2fz2a5u2kgmfw--
