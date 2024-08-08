@@ -2,93 +2,107 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB7994C1E5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0935D94C1FD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:52:36 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vae04t7d;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vae04t7d;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=perex.cz header.i=@perex.cz header.a=rsa-sha256 header.s=default header.b=mlxzOe8M;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wfs265yZpz2yHD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 01:50:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wfs4d6nGjz2yWn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 01:52:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=perex.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vae04t7d;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Vae04t7d;
+	dkim=pass (1024-bit key; secure) header.d=perex.cz header.i=@perex.cz header.a=rsa-sha256 header.s=default header.b=mlxzOe8M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=perex.cz (client-ip=77.48.224.245; helo=mail1.perex.cz; envelope-from=perex@perex.cz; receiver=lists.ozlabs.org)
+Received: from mail1.perex.cz (mail1.perex.cz [77.48.224.245])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wfs1R1w95z2yGF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 01:49:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723132182;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c69S7nSyvekSR7azb7NgbUlVdfdg4AICMxtsy48mxj8=;
-	b=Vae04t7d78qvb9KHjvMvuypinrIqb0ofTEZVvurErtEpd7I1s2E/curEL4pREdpTDE1Y64
-	NwepxXFeJC4yZRtePdYvYTR4//lz+fzB0fP7SSszgApt8Gl3VDbXTwwOZX5K1+kXtRQvRS
-	Me8Q6MN8DYqn4mYNamTnjSdLaYGJI6c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723132182;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c69S7nSyvekSR7azb7NgbUlVdfdg4AICMxtsy48mxj8=;
-	b=Vae04t7d78qvb9KHjvMvuypinrIqb0ofTEZVvurErtEpd7I1s2E/curEL4pREdpTDE1Y64
-	NwepxXFeJC4yZRtePdYvYTR4//lz+fzB0fP7SSszgApt8Gl3VDbXTwwOZX5K1+kXtRQvRS
-	Me8Q6MN8DYqn4mYNamTnjSdLaYGJI6c=
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
- [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-154-dPYkTNgyN0q52xrgM2q68g-1; Thu, 08 Aug 2024 11:49:41 -0400
-X-MC-Unique: dPYkTNgyN0q52xrgM2q68g-1
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-70939f4bb1aso63368a34.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 Aug 2024 08:49:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723132180; x=1723736980;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c69S7nSyvekSR7azb7NgbUlVdfdg4AICMxtsy48mxj8=;
-        b=PChJcH2gsTn80YRr4Yx3UHFMfqXLW6yTtKFFefQ1re01yj81lyNWhYTfwYePJ2Ydtb
-         xAwaD9L7AxGcXCBV36UEqW0V+5q5K8Ng+w0WhNpN1wmtnx47TtJNzJ6Kt5wQh55W0VDV
-         BeHaOEXS2tjo7DyWuFsAp9sDc74CuVVIWed9aGyiN8n2+QdOtpTUF5dSihppGDvMqFjS
-         MJlYLRuCh99EoRpO3dys73pF0pUKYyX1r0MKJ3UHcudcRyg7MUK6kYfHYSwPTM4izn8u
-         6qh++kOGw1TLOUOF8nHh32iNJg9rWmRdDZ2FhLP0BdPtIVyp/vDhXeLQgYmQFod5FZYQ
-         YyPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTda5hS9UB8zU8HryPxK9Wgequol/DaJJFKlip8q1fkGAAM1Dfly6KVKYKfHNNhGj61ljJC4dESXxfZBY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwqWUOunOPeSL+XlPuYajZrUoYDnmW/5+meJrQ4yqOR1C+y/BAM
-	ytv65Xsbwf6FwaIU2VU7PTvzrjNltBKk6Q5JjUzM70VB9yJVDjS8iupGyvJ5VaNBhwJflA7/X2j
-	QC8PAT8ibc+imMEc4S/r1bK1vhh6GWQBy8GL3+GnPobt7QRWhO5Pz+Wba7QAQ8LU=
-X-Received: by 2002:a05:6870:51c7:b0:260:ccfd:b270 with SMTP id 586e51a60fabf-26c58abb4bbmr2308fac.7.1723132180123;
-        Thu, 08 Aug 2024 08:49:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2v/RUodTRobMhQbY3FEHNXh4Gs9MwrhEqdXluF8KQ8hMZ3OnAtry4aRQGnOXF4AoW7eM3Og==
-X-Received: by 2002:a05:6870:51c7:b0:260:ccfd:b270 with SMTP id 586e51a60fabf-26c58abb4bbmr2291fac.7.1723132179728;
-        Thu, 08 Aug 2024 08:49:39 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a3785d0b3fsm171313085a.19.2024.08.08.08.49.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 08:49:39 -0700 (PDT)
-Date: Thu, 8 Aug 2024 11:49:35 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v4 5/7] mm/x86: arch_check_zapped_pud()
-Message-ID: <ZrTpD0XOUsNMM9tP@x1n>
-References: <20240807194812.819412-1-peterx@redhat.com>
- <20240807194812.819412-6-peterx@redhat.com>
- <878qx80xy8.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wfs3w20Gwz2xSN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 01:51:55 +1000 (AEST)
+Received: from mail1.perex.cz (localhost [127.0.0.1])
+	by smtp1.perex.cz (Perex's E-mail Delivery System) with ESMTP id 1AA0E3626A;
+	Thu,  8 Aug 2024 17:51:51 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.perex.cz 1AA0E3626A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=perex.cz; s=default;
+	t=1723132311; bh=DbY2seQjiWeUCvfuBu0kNHGDdd2h/Q0xoRALsf1TuLo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mlxzOe8M4oDQjwqZBtJvU8BroSIkYakUnmDNrbRaINNDcoj3dmkHx8lFBc7QcirfI
+	 7qmIK/sGIsE6oV3dIpdfWL6t5RbrLOeLyH6UuOZO4E1UrJsZ+tGK48hied60E3YOh0
+	 zxBrvSJH+iKBDoWXPqnNehSPrftOLDSZk/rOkmdY=
+Received: from [192.168.100.98] (unknown [192.168.100.98])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: perex)
+	by mail1.perex.cz (Perex's E-mail Delivery System) with ESMTPSA;
+	Thu,  8 Aug 2024 17:51:37 +0200 (CEST)
+Message-ID: <c9039808-cd04-452d-9f6c-f91811088456@perex.cz>
+Date: Thu, 8 Aug 2024 17:51:36 +0200
 MIME-Version: 1.0
-In-Reply-To: <878qx80xy8.ffs@tglx>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec
+ support
+To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>
+References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
+ <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com>
+ <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
+ <CAA+D8AN9JXJr-BZf8aY7d4rB6M60pXS_DG=qv=P6=2r1A18ATA@mail.gmail.com>
+ <ffa85004-8d86-4168-b278-afd24d79f9d8@linux.intel.com>
+ <116041ee-7139-4b77-89be-3a68f699c01b@perex.cz>
+ <930bb152-860a-4ec5-9ef0-1c96f554f365@linux.intel.com>
+From: Jaroslav Kysela <perex@perex.cz>
+Content-Language: en-US
+Autocrypt: addr=perex@perex.cz; keydata=
+ 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
+In-Reply-To: <930bb152-860a-4ec5-9ef0-1c96f554f365@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,93 +114,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: James Houghton <jthoughton@google.com>, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Jiang <dave.jiang@intel.com>, x86@kernel.org, Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>, Huang Ying <ying.huang@intel.com>, Rik van Riel <riel@surriel.com>, Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>, "Kirill A . Shutemov" <kirill@shutemov.name>, Dan Williams <dan.j.williams@intel.com>, Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, Mel Gorman <mgorman@techsingularity.net>
+Cc: alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, lgirdwood@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, vkoul@kernel.org, broonie@kernel.org, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Aug 08, 2024 at 12:28:47AM +0200, Thomas Gleixner wrote:
-> On Wed, Aug 07 2024 at 15:48, Peter Xu wrote:
+On 08. 08. 24 14:19, Pierre-Louis Bossart wrote:
+>   files changed, 10 insertions(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/include/uapi/sound/compress_offload.h b/include/uapi/
+>>>>>> sound/compress_offload.h
+>>>>>> index 98772b0cbcb7..8b2b72f94e26 100644
+>>>>>> --- a/include/uapi/sound/compress_offload.h
+>>>>>> +++ b/include/uapi/sound/compress_offload.h
+>>>>>> @@ -112,10 +112,12 @@ struct snd_compr_codec_caps {
+>>>>>>     * end of the track
+>>>>>>     * @SNDRV_COMPRESS_ENCODER_DELAY: no of samples inserted by the
+>>>>>> encoder at the
+>>>>>>     * beginning of the track
+>>>>>> + * @SNDRV_COMPRESS_SRC_RATIO_MOD: Resampling Ratio Modifier for
+>>>>>> sample rate converter
+>>>>>>     */
+>>>>>>    enum sndrv_compress_encoder {
+>>>>>>         SNDRV_COMPRESS_ENCODER_PADDING = 1,
+>>>>>>         SNDRV_COMPRESS_ENCODER_DELAY = 2,
+>>>>>> +     SNDRV_COMPRESS_SRC_RATIO_MOD = 3,
+>>>>>>    };
+>>>>>
+>>>>> this sounds wrong to me. The sample rate converter is not an "encoder",
+>>>>> and the properties for padding/delay are totally specific to an encoder
+>>>>> function.
+>>>>
+>>>> There is only decoder and encoder definition for compress,  I know
+>>>> it is difficult to add SRC to encoder or decoder classification,
+>>>> SRC is a Post Processing.  I hope you can have a recommandation
+>>>
+>>> I don't. I think we're blurring layers in a really odd way.
+>>>
+>>> The main reason why the compress API was added is to remove the
+>>> byte-to-time conversions. But that's clearly not useful for a
+>>> post-processing of PCM data, where the bitrate is constant. It really
+>>> feels like we're adding this memory-to-memory API to the compress
+>>> framework because we don't have anything else available, not because it
+>>> makes sense to do so.
+>>
+>> It makes sense to offload decoder/encoder tasks as batch processing for
+>> standard compress stream and return back result (PCM stream or encoded
+>> stream) to user space. So it makes sense to use the compress interface
+>> (parameters handshake) for it. Let's talk about the proper SRC extension.
+>>
+>> For SRC and dynamic rate modification. I would just create an ALSA
+>> control for this. We are already using the "PCM Rate Shift 100000"
+>> control in the sound/drivers/aloop.c for this purpose (something like
+>> pitch in MIDI) for example. There is no requirement to add this function
+>> through metadata ioctls. As bonus, this control can be monitored with
+>> multiple tasks.
 > 
-> > Subject: mm/x86: arch_check_zapped_pud()
-> 
-> Is not a proper subject line. It clearly lacks a verb.
-> 
->   Subject: mm/x86: Implement arch_check_zapped_pud()
+> this wouldn't work when the rate is estimated in firmware/hardware,
+> which is precisely what the 'asynchronous' part of ASRC does.
 > 
 > 
-> > Introduce arch_check_zapped_pud() to sanity check shadow stack on PUD zaps.
-> > It has the same logic of the PMD helper.
+>>> Then there's the issue of parameters, we chose to only add parameters
+>>> for standard encoders/decoders. Post-processing is highly specific and
+>>> the parameter definitions varies from one implementation to another -
+>>> and usually parameters are handled in an opaque way with binary
+>>> controls. This is best handled with a UUID that needs to be known only
+>>> to applications and low-level firmware/hardware, the kernel code should
+>>> not have to be modified for each and every processing and to add new
+>>> parameters. It just does not scale and it's unmaintainable.
+>>>
+>>> At the very least if you really want to use this compress API, extend it
+>>> to use a non-descript "UUID-defined" type and an opaque set of
+>>> parameters with this UUID passed in a header.
+>>
+>> We don't need to use UUID-defined scheme for simple (A)SRC
+>> implementation. As I noted, the specific runtime controls may use
+>> existing ALSA control API.
 > 
-> s/of/as/
+> "Simple (A)SRC" is an oxymoron. There are multiple ways to define the
+> performance, and how the drift estimator is handled. There's nothing
+> simple if you look under the hood. The SOF implementation has for
+> example those parameters:
+> 
+> uint32_t source_rate;           /**< Define fixed source rate or */
+> 				/**< use 0 to indicate need to get */
+> 				/**< the rate from stream */
+> uint32_t sink_rate;             /**< Define fixed sink rate or */
+> 				/**< use 0 to indicate need to get */
+> 				/**< the rate from stream */
+> uint32_t asynchronous_mode;     /**< synchronous 0, asynchronous 1 */
+> 				/**< When 1 the ASRC tracks and */
+> 				/**< compensates for drift. */
+> uint32_t operation_mode;        /**< push 0, pull 1, In push mode the */
+> 				/**< ASRC consumes a defined number */
+> 				/**< of frames at input, with varying */
+> 				/**< number of frames at output. */
+> 				/**< In pull mode the ASRC outputs */
+> 				/**< a defined number of frames while */
+> 				/**< number of input frames varies. */
+> 
+> They are clearly different from what is suggested above with a 'ratio-mod'.
 
-Will fix above two.
+I don't think so. The proposed (A)SRC for compress-accel is just one case for 
+the above configs where the input is known and output is controlled by the 
+requested rate. The I/O mechanism is abstracted enough in this case and the 
+driver/hardware/firmware must follow it.
 
+> Same if you have a 'simple EQ'. there are dozens of ways to implement
+> the functionality with FIR, IIR or a combination of the two, and
+> multiple bands.
 > 
-> > +
-> > +void arch_check_zapped_pud(struct vm_area_struct *vma, pud_t pud)
-> > +{
-> > +	/* See note in arch_check_zapped_pte() */
-> > +	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_SHADOW_STACK) &&
-> > +			pud_shstk(pud));
+> The point is that you have to think upfront about a generic way to pass
+> parameters. We didn't have to do it for encoders/decoders because we
+> only catered to well-documented standard solutions only. By choosing to
+> support PCM processing, a new can of worms is now open.
 > 
-> Please get rid of the line break. You have 100 characters.
+> I repeat: please do not make the mistake of listing all processing with
+> an enum and a new structure for parameters every time someone needs a
+> specific transform in their pipeline. We made that mistake with SOF and
+> had to backtrack rather quickly. The only way to scale is an identifier
+> that is NOT included in the kernel code but is known to higher and
+> lower-levels only.
 
-Coding-style.rst still tells me 80 here:
+There are two ways - black box (UUID - as you suggested) - or well defined 
+purpose (abstraction). For your example 'simple EQ', the parameters should be 
+the band (frequency range) volume values. It's abstract and the real filters 
+(resp. implementation) used behind may depend on the hardware/driver capabilities.
 
-        The preferred limit on the length of a single line is 80 columns.
+ From my view, the really special cases may be handled as black box, but 
+others like (A)SRC should follow some well-defined abstraction IMHO to not 
+force user space to handle all special cases.
 
-        Statements longer than 80 columns should be broken into sensible chunks,
-        unless exceeding 80 columns significantly increases readability and does
-        not hide information.
-
-Maybe this just changed very recently so even not in mm-unstable?
-
-I'll fix the two line-wrap in this patch anyway, as I figured these two
-cases even didn't hit 80..  probably because I used fill-column=75 locally..
-
-But still I'll probably need to figure it out for other spots.  Please help
-me to justify.
-
-> 
-> > +}
-> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> > index 2a6a3cccfc36..2289e9f7aa1b 100644
-> > --- a/include/linux/pgtable.h
-> > +++ b/include/linux/pgtable.h
-> > @@ -447,6 +447,13 @@ static inline void arch_check_zapped_pmd(struct vm_area_struct *vma,
-> >  }
-> >  #endif
-> >  
-> > +#ifndef arch_check_zapped_pud
-> > +static inline void arch_check_zapped_pud(struct vm_area_struct *vma,
-> > +					 pud_t pud)
-> > +{
-> 
-> Ditto..
-> 
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 0024266dea0a..81c5da0708ed 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> 
-> Why is a mm change burried in a patch which is named mm/x86?
-> 
-> It's clearly documented that core changes with the generic fallback come
-> in one patch and the architecture override in a separate one afterwards.
-> 
-> Do we write documentation just for the sake of writing it?
-
-Hmm if that's the rule, in practise I bet many patches are violating that
-rule that we merged and whatever patches I used to read.. but I see now,
-I'll break this patch into two.
-
-Personally I'd really still prefer it to be one patch especially when it's
-only implemented in x86, then I copy x86+mm maintainers all here and it
-explains why it's there.  So please let me know if you think it may still
-make sense to keep this patch as-is, or I'll split by default.
-
-Thanks,
+						Jaroslav
 
 -- 
-Peter Xu
+Jaroslav Kysela <perex@perex.cz>
+Linux Sound Maintainer; ALSA Project; Red Hat, Inc.
 
