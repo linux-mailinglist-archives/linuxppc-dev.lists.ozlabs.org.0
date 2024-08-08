@@ -2,40 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30AE94B7DF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 09:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5F194B7F3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 09:35:55 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=YKGEBMq8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=JicI+5bd;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WfdxM4WK2z3dVK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:30:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wff3Y5jCxz3dWn
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 Aug 2024 17:35:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=YKGEBMq8;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=JicI+5bd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::226; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.198; helo=relay6-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfdX12H16z3dFS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 17:12:01 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 09703C0004;
-	Thu,  8 Aug 2024 07:11:57 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WfdX918Pxz3dWk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 Aug 2024 17:12:08 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id C163AC0009;
+	Thu,  8 Aug 2024 07:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1723101118;
+	t=1723101119;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WRWRYsao//QuuKGXh5Qe/5pgiQSleHHmlQQU/Eyhza0=;
-	b=YKGEBMq8oR9pt28x8GLB1+n7+4maaPD4Cnnq4K0yuYiuw6W1bbQOlPLPVEJRCmwC5u9pjx
-	ff1Iiq6J+s1gKcHOdfvAMzIP705AOxyXyb53JJ60tVKLZB+OFyBreTBnJGgq9m/K/Z3dTs
-	6Vn7aoevKH0sysLJbqYMAAPUV49+vv+F/cODBlWYmBkIIeRrmjPDHfoFwFQMdu2ETS6WMY
-	QBYL2WdDSGj87MyJtdgCPTsDQSNwJCcuxny9JogncMA/r854zXYBcZOkY0Ck9CBOH8feYj
-	3YGl53hXZL0Yhgl9fcCmENvthBqYx2zY/nRn58yAg4MY1nbATDBFXrK21uY2ew==
+	bh=q0ALEqS0/8Af8b8qGfb/mhvY12MduAyn1Em0H/DF/dY=;
+	b=JicI+5bdD7ifuOqelm49xP3TdT/oZe1Emn6j28/9NHUlcq3BLH+MYNR0xXJ27DQwelxuEp
+	0yMnlQIIMG+Grtq8Y6Px2T5jtDhM23tkSYZtswGcOXVF7lxTXddfGM2KWsvf97i9Ju589E
+	Uk02yq4vGn7xoG5GMnvOI+rQEt/+Kzb+Qryw6pi/y3LwSa+gsK7Ne1h7Kc7AzrGl41OUCd
+	timNcaCv5uUQSGabNVzbHc5hqfsTAtor86iS3Cj87syv0ScFca/AvMszJcnxWN/GOdrn+M
+	dPPRNXmNmerO/EgzJ0wGiFYYH5/Afb7fjrE0uZNa+nG/5kXWkEWXogfpR4lL+w==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Herve Codina <herve.codina@bootlin.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -45,9 +45,9 @@ To: Herve Codina <herve.codina@bootlin.com>,
 	Qiang Zhao <qiang.zhao@nxp.com>,
 	Li Yang <leoyang.li@nxp.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v2 26/36] soc: fsl: cpm1: qmc: Introduce qmc_init_resource() and its CPM1 version
-Date: Thu,  8 Aug 2024 09:11:19 +0200
-Message-ID: <20240808071132.149251-27-herve.codina@bootlin.com>
+Subject: [PATCH v2 27/36] soc: fsl: cpm1: qmc: Introduce qmc_{init,exit}_xcc() and their CPM1 version
+Date: Thu,  8 Aug 2024 09:11:20 +0200
+Message-ID: <20240808071132.149251-28-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240808071132.149251-1-herve.codina@bootlin.com>
 References: <20240808071132.149251-1-herve.codina@bootlin.com>
@@ -69,90 +69,129 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, devicetree@vger.kernel.org,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Current code handles the CPM1 version of QMC. Resources initialisations
-(i.e. retrieving base addresses and offsets of different parts) will
-be slightly different in the QUICC Engine (QE) version. Indeed, in QE
-version, some resources need to be allocated and are no more "staticaly"
-defined.
+Current code handles the CPM1 version of QMC and initialize the QMC used
+SCC. The QUICC Engine (QE) version uses an UCC (Unified Communication
+Controllers) instead of the SCC (Serial Communication Controllers) used
+in the CPM1 version. These controllers serve the same purpose and are
+used in the same way but their inializations are slightly different.
 
-In order to prepare the support for QE version, introduce
-qmc_init_resource() to initialize those resources and isolate the CPM1
-specific operations in a specific function.
+In order to prepare the support for QE version of QMC, introduce
+qmc_init_xcc() to initialize theses controllers (UCC in QE and SCC in
+CPM1) and isolate the CPM1 specific SCC initialization in a specific
+function.
+
+Also introduce qmc_exit_xcc() for consistency to revert operations done
+in qmc_init_xcc().
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/soc/fsl/qe/qmc.c | 47 ++++++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 16 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 66 +++++++++++++++++++++++++++-------------
+ 1 file changed, 45 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 8dd0f8fc7b08..eacc7dd2be53 100644
+index eacc7dd2be53..b95227378f97 100644
 --- a/drivers/soc/fsl/qe/qmc.c
 +++ b/drivers/soc/fsl/qe/qmc.c
-@@ -1593,11 +1593,38 @@ static irqreturn_t qmc_irq_handler(int irq, void *priv)
- 	return IRQ_HANDLED;
+@@ -1621,6 +1621,41 @@ static int qmc_init_resources(struct qmc *qmc, struct platform_device *pdev)
+ 	return qmc_cpm1_init_resources(qmc, pdev);
  }
  
-+static int qmc_cpm1_init_resources(struct qmc *qmc, struct platform_device *pdev)
++static int qmc_cpm1_init_scc(struct qmc *qmc)
 +{
-+	struct resource *res;
++	u32 val;
++	int ret;
 +
-+	qmc->scc_regs = devm_platform_ioremap_resource_byname(pdev, "scc_regs");
-+	if (IS_ERR(qmc->scc_regs))
-+		return PTR_ERR(qmc->scc_regs);
++	/* Connect the serial (SCC) to TSA */
++	ret = tsa_serial_connect(qmc->tsa_serial);
++	if (ret)
++		return dev_err_probe(qmc->dev, ret, "Failed to connect TSA serial\n");
 +
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "scc_pram");
-+	if (!res)
-+		return -EINVAL;
-+	qmc->scc_pram_offset = res->start - get_immrbase();
-+	qmc->scc_pram = devm_ioremap_resource(qmc->dev, res);
-+	if (IS_ERR(qmc->scc_pram))
-+		return PTR_ERR(qmc->scc_pram);
++	/* Init GMSR_H and GMSR_L registers */
++	val = SCC_GSMRH_CDS | SCC_GSMRH_CTSS | SCC_GSMRH_CDP | SCC_GSMRH_CTSP;
++	qmc_write32(qmc->scc_regs + SCC_GSMRH, val);
 +
-+	qmc->dpram  = devm_platform_ioremap_resource_byname(pdev, "dpram");
-+	if (IS_ERR(qmc->dpram))
-+		return PTR_ERR(qmc->dpram);
++	/* enable QMC mode */
++	qmc_write32(qmc->scc_regs + SCC_GSMRL, SCC_GSMRL_MODE_QMC);
++
++	/* Disable and clear interrupts */
++	qmc_write16(qmc->scc_regs + SCC_SCCM, 0x0000);
++	qmc_write16(qmc->scc_regs + SCC_SCCE, 0x000F);
 +
 +	return 0;
 +}
 +
-+static int qmc_init_resources(struct qmc *qmc, struct platform_device *pdev)
++static int qmc_init_xcc(struct qmc *qmc)
 +{
-+	return qmc_cpm1_init_resources(qmc, pdev);
++	return qmc_cpm1_init_scc(qmc);
++}
++
++static void qmc_exit_xcc(struct qmc *qmc)
++{
++	/* Disconnect the serial from TSA */
++	tsa_serial_disconnect(qmc->tsa_serial);
 +}
 +
  static int qmc_probe(struct platform_device *pdev)
  {
  	struct device_node *np = pdev->dev.of_node;
- 	unsigned int nb_chans;
--	struct resource *res;
- 	struct qmc *qmc;
- 	int irq;
- 	int ret;
-@@ -1620,21 +1647,9 @@ static int qmc_probe(struct platform_device *pdev)
- 				     "Failed to get TSA serial\n");
- 	}
+@@ -1711,29 +1746,18 @@ static int qmc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
--	qmc->scc_regs = devm_platform_ioremap_resource_byname(pdev, "scc_regs");
--	if (IS_ERR(qmc->scc_regs))
--		return PTR_ERR(qmc->scc_regs);
--
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "scc_pram");
--	if (!res)
--		return -EINVAL;
--	qmc->scc_pram_offset = res->start - get_immrbase();
--	qmc->scc_pram = devm_ioremap_resource(qmc->dev, res);
--	if (IS_ERR(qmc->scc_pram))
--		return PTR_ERR(qmc->scc_pram);
--
--	qmc->dpram  = devm_platform_ioremap_resource_byname(pdev, "dpram");
--	if (IS_ERR(qmc->dpram))
--		return PTR_ERR(qmc->dpram);
-+	ret = qmc_init_resources(qmc, pdev);
+-	/* Connect the serial (SCC) to TSA */
+-	ret = tsa_serial_connect(qmc->tsa_serial);
+-	if (ret) {
+-		dev_err(qmc->dev, "Failed to connect TSA serial\n");
++	/* Init SCC */
++	ret = qmc_init_xcc(qmc);
 +	if (ret)
-+		return ret;
+ 		return ret;
+-	}
  
- 	/* Parse channels informationss */
- 	ret = qmc_of_parse_chans(qmc, np);
+-	/* Init GMSR_H and GMSR_L registers */
+-	qmc_write32(qmc->scc_regs + SCC_GSMRH,
+-		    SCC_GSMRH_CDS | SCC_GSMRH_CTSS | SCC_GSMRH_CDP | SCC_GSMRH_CTSP);
+-
+-	/* enable QMC mode */
+-	qmc_write32(qmc->scc_regs + SCC_GSMRL, SCC_GSMRL_MODE_QMC);
+-
+-	/* Disable and clear interrupts,  set the irq handler */
+-	qmc_write16(qmc->scc_regs + SCC_SCCM, 0x0000);
+-	qmc_write16(qmc->scc_regs + SCC_SCCE, 0x000F);
++	/* Set the irq handler */
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+-		goto err_tsa_serial_disconnect;
++		goto err_exit_xcc;
+ 	ret = devm_request_irq(qmc->dev, irq, qmc_irq_handler, 0, "qmc", qmc);
+ 	if (ret < 0)
+-		goto err_tsa_serial_disconnect;
++		goto err_exit_xcc;
+ 
+ 	/* Enable interrupts */
+ 	qmc_write16(qmc->scc_regs + SCC_SCCM,
+@@ -1761,8 +1785,8 @@ static int qmc_probe(struct platform_device *pdev)
+ err_disable_intr:
+ 	qmc_write16(qmc->scc_regs + SCC_SCCM, 0);
+ 
+-err_tsa_serial_disconnect:
+-	tsa_serial_disconnect(qmc->tsa_serial);
++err_exit_xcc:
++	qmc_exit_xcc(qmc);
+ 	return ret;
+ }
+ 
+@@ -1776,8 +1800,8 @@ static void qmc_remove(struct platform_device *pdev)
+ 	/* Disable interrupts */
+ 	qmc_write16(qmc->scc_regs + SCC_SCCM, 0);
+ 
+-	/* Disconnect the serial from TSA */
+-	tsa_serial_disconnect(qmc->tsa_serial);
++	/* Exit SCC */
++	qmc_exit_xcc(qmc);
+ }
+ 
+ static const struct qmc_data qmc_data_cpm1 = {
 -- 
 2.45.0
 
