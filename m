@@ -2,76 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C0394CE63
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 12:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E57E94CF2C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 13:04:21 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f4QlNIvr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SAz2rH4j;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WgKY93dKjz2ysb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 20:15:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WgLdb2MBXz3023
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 21:04:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f4QlNIvr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SAz2rH4j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::131; helo=mail-il1-x131.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WgKXS5bgCz2yYy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 20:14:47 +1000 (AEST)
-Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-39b51ba15dbso7089815ab.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Aug 2024 03:14:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723198484; x=1723803284; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hfsf46z9wf1GW1rvhufmjrriglyClBeG24vWvW2wbYg=;
-        b=f4QlNIvrwAxGAgTO8QnReCLln1zDKjoKuU6bZKYb+hw1d+HE168bWcciQcluVt7AIJ
-         4/WVSRgZecI8BjvFziO0LdkjPEWredBoLRRiKC1WVPYpxgGNAS9/HzBt19CcUBCSt1xb
-         YC/KoX+7nIPjQHMcMnzC8+ujEZs661hoZSTAFy/ehWfFQ8KJ3ooV6wYWlkLgqPUI1SYs
-         7+8RCGM4WoE2P5HhFb4JbTgm9aJ9qKRkX2HpMwws50fD9WBx9Y6ITJINEqmp3IIYCpOT
-         rnK+G+F5I/ajB2d9vT3budZ74zq422rKKQqbPoRx/1M3dA4eu7kKRNq7p8oEapySN/fu
-         VSkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723198484; x=1723803284;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hfsf46z9wf1GW1rvhufmjrriglyClBeG24vWvW2wbYg=;
-        b=m9n4uYWxP15M4p3UD3ARIRwPXPkaapj/+SbBbkIrR3BCDZM3/K9AzewijLHlNli6A+
-         ZI5bAQ/gV/4u5QqEMz6kggyET0Ujg1u3lU/8Rw/LWbHHGeFmXpeyN8QsN4V5N3xSXuxT
-         d8hjBog1gkYyVInfP9RDWChQYtOWISgNqJ/vjLnjx9yo0D9lshdz26i8o4ftpyXBGB43
-         Qhblo/QOmQ3Fh4sCb4e/GaCjrO0wHymzEW3qMmpBIhTahONKDg39MQ3Er68WJpwtKKNX
-         BV63puC8tcrmhtEKZzZpNECw2gBtyQK5MiPzsPq2qRgklmoRCrdD2ef80Q8AyduB4t//
-         j3Kw==
-X-Forwarded-Encrypted: i=1; AJvYcCVm4MnKPEzuqqTpsloSG1cdUF+b41WHOIcDV7z4hnjYYbaZDhMje/IlrNK6A4AvmyktEhWi41yPy6X33l5qMJmlSTwiXk3gVsY/w2Kzpg==
-X-Gm-Message-State: AOJu0Yy1j3wrjoQL5nZPAzPwGXD9LcVYFUq5by2z3l6TtLMH/zgm4VI9
-	UyIK4OxZioH4ccqXwn4KGIJJ3oyveCdpwWvliNbx4q8k3CnBv+Ihy6mbpamVBNuremlcrxIm9i1
-	5s2GjYGPFQMV3N1WIhP97JtEeI3I=
-X-Google-Smtp-Source: AGHT+IFFfg/JrZPkYtkwOZLbKVpyn11ErpaZHgtBuGGv7zwTVNOInIB98snU98XMHtncdjjRq9qFib8e3L29raeRvWE=
-X-Received: by 2002:a05:6e02:156d:b0:375:c394:568b with SMTP id
- e9e14a558f8ab-39b7a472925mr11954185ab.21.1723198483575; Fri, 09 Aug 2024
- 03:14:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WgLcv6gt6z2yNf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 21:03:43 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4793o1gb016037;
+	Fri, 9 Aug 2024 11:03:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	nJqdIO0p9YPVRh8ZpNHZjkYc5An8vfwCyjwbvPnd+W8=; b=SAz2rH4jD+cwHj5b
+	D4UfBmBnCVX6aVVKXwgUDW2l3PJOI3q8hiavJK2WyaXuCrZSSeajqqHAQWIs6mqT
+	EibNjY8NEsPRzG6Z6CIwMJ7jyfMzUobYg4lBzhYkENKte1tXEwFU2A4eJHwN44Kh
+	v8xVNSNKvXF9vES6e5TYvITVQTCjfBKLroAJ0nViF0vsoSpDCVSsKxYhfDAZv82h
+	lGSaPeTCf0hRGxptzUseuGGwjhrUbwSB3sysNMkXZkLBZovBTOZd8/cJJtqBpQcu
+	OvMtACoyqtQQrPUQpwQcGKV+o58CdBhyWTcTiFTz0B9GlfCxITjQ4Ml0qSLWjXvM
+	t8zFFQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40vwkd2m8r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Aug 2024 11:03:31 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 479B3Vkh029468;
+	Fri, 9 Aug 2024 11:03:31 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40vwkd2m8n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Aug 2024 11:03:31 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4799XVRF030246;
+	Fri, 9 Aug 2024 11:03:30 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 40t1k3jtfm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Aug 2024 11:03:30 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 479B3QQi52167120
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Aug 2024 11:03:29 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D9B7B20043;
+	Fri,  9 Aug 2024 11:03:26 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A8B3B20040;
+	Fri,  9 Aug 2024 11:03:14 +0000 (GMT)
+Received: from [9.43.4.15] (unknown [9.43.4.15])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  9 Aug 2024 11:03:12 +0000 (GMT)
+Message-ID: <10624524-a078-404e-a5ba-c250de81c36f@linux.ibm.com>
+Date: Fri, 9 Aug 2024 16:33:10 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Document/kexec: Generalize crash hotplug description
+To: Baoquan He <bhe@redhat.com>, Petr Tesarik <petr@tesarici.cz>
+References: <20240805050829.297171-1-sourabhjain@linux.ibm.com>
+ <ZrV1V4QzDShYJSsI@MiWiFi-R3L-srv>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <ZrV1V4QzDShYJSsI@MiWiFi-R3L-srv>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: G3dNSs9_K1sjeYx6XFYqMwIVVVXLlSAp
+X-Proofpoint-ORIG-GUID: HeiXgEUdtAaoaB5J6mr7b5erk5Y9HC1i
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
- <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com> <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
- <CAA+D8AN9JXJr-BZf8aY7d4rB6M60pXS_DG=qv=P6=2r1A18ATA@mail.gmail.com>
- <ffa85004-8d86-4168-b278-afd24d79f9d8@linux.intel.com> <116041ee-7139-4b77-89be-3a68f699c01b@perex.cz>
- <930bb152-860a-4ec5-9ef0-1c96f554f365@linux.intel.com> <c9039808-cd04-452d-9f6c-f91811088456@perex.cz>
- <ed1192e0-00e7-4739-a687-c96dc2d62898@linux.intel.com>
-In-Reply-To: <ed1192e0-00e7-4739-a687-c96dc2d62898@linux.intel.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 9 Aug 2024 18:14:32 +0800
-Message-ID: <CAA+D8AMOh=G7W5-dYw_=Xx-s0PqEu2suKYorscoWku86Rn-=+A@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec support
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-09_07,2024-08-07_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 impostorscore=0 clxscore=1015 mlxscore=0 suspectscore=0
+ priorityscore=1501 phishscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408090077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,143 +102,169 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>, linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, linux-sound@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, nicoleotsuka@gmail.com, vkoul@kernel.org, broonie@kernel.org, festevam@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Aug 9, 2024 at 3:25=E2=80=AFPM Pierre-Louis Bossart
-<pierre-louis.bossart@linux.intel.com> wrote:
->
->
-> >>>> Then there's the issue of parameters, we chose to only add parameter=
-s
-> >>>> for standard encoders/decoders. Post-processing is highly specific a=
-nd
-> >>>> the parameter definitions varies from one implementation to another =
--
-> >>>> and usually parameters are handled in an opaque way with binary
-> >>>> controls. This is best handled with a UUID that needs to be known on=
-ly
-> >>>> to applications and low-level firmware/hardware, the kernel code sho=
-uld
-> >>>> not have to be modified for each and every processing and to add new
-> >>>> parameters. It just does not scale and it's unmaintainable.
-> >>>>
-> >>>> At the very least if you really want to use this compress API,
-> >>>> extend it
-> >>>> to use a non-descript "UUID-defined" type and an opaque set of
-> >>>> parameters with this UUID passed in a header.
-> >>>
-> >>> We don't need to use UUID-defined scheme for simple (A)SRC
-> >>> implementation. As I noted, the specific runtime controls may use
-> >>> existing ALSA control API.
-> >>
-> >> "Simple (A)SRC" is an oxymoron. There are multiple ways to define the
-> >> performance, and how the drift estimator is handled. There's nothing
-> >> simple if you look under the hood. The SOF implementation has for
-> >> example those parameters:
-> >>
-> >> uint32_t source_rate;           /**< Define fixed source rate or */
-> >>                 /**< use 0 to indicate need to get */
-> >>                 /**< the rate from stream */
-> >> uint32_t sink_rate;             /**< Define fixed sink rate or */
-> >>                 /**< use 0 to indicate need to get */
-> >>                 /**< the rate from stream */
-> >> uint32_t asynchronous_mode;     /**< synchronous 0, asynchronous 1 */
-> >>                 /**< When 1 the ASRC tracks and */
-> >>                 /**< compensates for drift. */
-> >> uint32_t operation_mode;        /**< push 0, pull 1, In push mode the =
-*/
-> >>                 /**< ASRC consumes a defined number */
-> >>                 /**< of frames at input, with varying */
-> >>                 /**< number of frames at output. */
-> >>                 /**< In pull mode the ASRC outputs */
-> >>                 /**< a defined number of frames while */
-> >>                 /**< number of input frames varies. */
-> >>
-> >> They are clearly different from what is suggested above with a 'ratio-
-> >> mod'.
-> >
-> > I don't think so. The proposed (A)SRC for compress-accel is just one
-> > case for the above configs where the input is known and output is
-> > controlled by the requested rate. The I/O mechanism is abstracted enoug=
-h
-> > in this case and the driver/hardware/firmware must follow it.
->
-> ASRC is usually added when the nominal rates are known but the clock
-> sources differ and the drift needs to be estimated at run-time and the
-> coefficients or interpolation modified dynamically
->
-> If the ratio is known exactly and there's no clock drift, then it's a
-> different problem where the filter coefficients are constant.
->
-> >> Same if you have a 'simple EQ'. there are dozens of ways to implement
-> >> the functionality with FIR, IIR or a combination of the two, and
-> >> multiple bands.
-> >>
-> >> The point is that you have to think upfront about a generic way to pas=
-s
-> >> parameters. We didn't have to do it for encoders/decoders because we
-> >> only catered to well-documented standard solutions only. By choosing t=
-o
-> >> support PCM processing, a new can of worms is now open.
-> >>
-> >> I repeat: please do not make the mistake of listing all processing wit=
-h
-> >> an enum and a new structure for parameters every time someone needs a
-> >> specific transform in their pipeline. We made that mistake with SOF an=
-d
-> >> had to backtrack rather quickly. The only way to scale is an identifie=
-r
-> >> that is NOT included in the kernel code but is known to higher and
-> >> lower-levels only.
-> >
-> > There are two ways - black box (UUID - as you suggested) - or well
-> > defined purpose (abstraction). For your example 'simple EQ', the
-> > parameters should be the band (frequency range) volume values. It's
-> > abstract and the real filters (resp. implementation) used behind may
-> > depend on the hardware/driver capabilities.
->
-> Indeed there is a possibility that the parameters are high-level, but
-> that would require firmware or hardware to be able to generate actual
-> coefficients from those parameters. That usually requires some advanced
-> math which isn't necessarily obvious to implement with fixed-point hardwa=
-re.
->
-> > From my view, the really special cases may be handled as black box, but
-> > others like (A)SRC should follow some well-defined abstraction IMHO to
-> > not force user space to handle all special cases.
->
-> I am not against the high-level abstractions, e.g. along the lines of
-> what Android defined:
-> https://developer.android.com/reference/android/media/audiofx/AudioEffect
->
-> That's not sufficient however, we also need to make sure there's an
-> ability to provide pre-computed coefficients in an opaque manner for
-> processing that doesn't fit in the well-defined cases. In practice there
-> are very few 3rd party IP that fits in well-defined cases, everyone has
-> secret-sauce parameters and options.
+Hello Baoquan,
 
-Appreciate the discussion.
+On 09/08/24 07:18, Baoquan He wrote:
+> On 08/05/24 at 10:38am, Sourabh Jain wrote:
+>> Commit 79365026f869 ("crash: add a new kexec flag for hotplug support")
+>> generalizes the crash hotplug support to allow architectures to update
+>> multiple kexec segments on CPU/Memory hotplug and not just elfcorehdr.
+>> Therefore, update the relevant kernel documentation to reflect the same.
+>>
+>> No functional change.
+>>
+>> Cc: Petr Tesarik <petr@tesarici.cz>
+>> Cc: Hari Bathini <hbathini@linux.ibm.com>
+>> Cc: kexec@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: x86@kernel.org
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> ---
+>>
+>> Discussion about the documentation update:
+>> https://lore.kernel.org/all/68d0328d-531a-4a2b-ab26-c97fd8a12e8b@linux.ibm.com/
+>>
+>> ---
+>>   .../ABI/testing/sysfs-devices-memory          |  6 ++--
+>>   .../ABI/testing/sysfs-devices-system-cpu      |  6 ++--
+>>   .../admin-guide/mm/memory-hotplug.rst         |  5 ++--
+>>   Documentation/core-api/cpu_hotplug.rst        | 10 ++++---
+>>   kernel/crash_core.c                           | 29 ++++++++++++-------
+>>   5 files changed, 33 insertions(+), 23 deletions(-)
+> The overall looks good to me, except of concern from Petr. Thanks.
 
-Let me explain the reason for the change:
+Thanks for the review. I will make the suggested changes in v2.
 
-Why I use the metadata ioctl is because the ALSA controls are binding
-to the sound card.  What I want is the controls can be bound to
-snd_compr_stream, because the ASRC compress sound card can
-support multi instances ( the ASRC can support multi conversion in
-parallel).   The ALSA controls can't be used for this case,  the only
-choice in current compress API is metadata ioctl. And metadata
-ioctl can be called many times which can meet the ratio modifier
-requirement (ratio may be drift on the fly)
+Additionally I will also generalize the error message
+"kexec_trylock() failed, elfcorehdr may be inaccurate " from
+functions crash_handle_hotplug_event() and crash_check_hotplug_support()
+to "kexec_trylock() failed, kdump image may be inaccurate"
 
-And compress API uses codec as the unit for capability query and
-parameter setting,  So I think need to define "SND_AUDIOCODEC_SRC'
-and 'struct snd_dec_src',  for the 'snd_dec_src' just defined output
-format and output rate, channels definition just reuse the snd_codec.ch_in.
+- Sourabh Jain
 
-I understand your concern, but there seems no better option.
-If you have, please guide me. Thanks.
+>
+>> diff --git a/Documentation/ABI/testing/sysfs-devices-memory b/Documentation/ABI/testing/sysfs-devices-memory
+>> index a95e0f17c35a..421acc8e2c6b 100644
+>> --- a/Documentation/ABI/testing/sysfs-devices-memory
+>> +++ b/Documentation/ABI/testing/sysfs-devices-memory
+>> @@ -115,6 +115,6 @@ What:		/sys/devices/system/memory/crash_hotplug
+>>   Date:		Aug 2023
+>>   Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
+>>   Description:
+>> -		(RO) indicates whether or not the kernel directly supports
+>> -		modifying the crash elfcorehdr for memory hot un/plug and/or
+>> -		on/offline changes.
+>> +		(RO) indicates whether or not the kernel update of kexec
+>> +		segments on memory hot un/plug and/or on/offline events,
+>> +		avoiding the need to reload kdump kernel.
+>> diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+>> index 325873385b71..f4ada1cd2f96 100644
+>> --- a/Documentation/ABI/testing/sysfs-devices-system-cpu
+>> +++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+>> @@ -703,9 +703,9 @@ What:		/sys/devices/system/cpu/crash_hotplug
+>>   Date:		Aug 2023
+>>   Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
+>>   Description:
+>> -		(RO) indicates whether or not the kernel directly supports
+>> -		modifying the crash elfcorehdr for CPU hot un/plug and/or
+>> -		on/offline changes.
+>> +		(RO) indicates whether or not the kernel update of kexec
+>> +		segments on CPU hot un/plug and/or on/offline events,
+>> +		avoiding the need to reload kdump kernel.
+>>   
+>>   What:		/sys/devices/system/cpu/enabled
+>>   Date:		Nov 2022
+>> diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
+>> index 098f14d83e99..cb2c080f400c 100644
+>> --- a/Documentation/admin-guide/mm/memory-hotplug.rst
+>> +++ b/Documentation/admin-guide/mm/memory-hotplug.rst
+>> @@ -294,8 +294,9 @@ The following files are currently defined:
+>>   ``crash_hotplug``      read-only: when changes to the system memory map
+>>   		       occur due to hot un/plug of memory, this file contains
+>>   		       '1' if the kernel updates the kdump capture kernel memory
+>> -		       map itself (via elfcorehdr), or '0' if userspace must update
+>> -		       the kdump capture kernel memory map.
+>> +		       map itself (via elfcorehdr and other relevant kexec
+>> +		       segments), or '0' if userspace must update the kdump
+>> +		       capture kernel memory map.
+>>   
+>>   		       Availability depends on the CONFIG_MEMORY_HOTPLUG kernel
+>>   		       configuration option.
+>> diff --git a/Documentation/core-api/cpu_hotplug.rst b/Documentation/core-api/cpu_hotplug.rst
+>> index dcb0e379e5e8..a21dbf261be7 100644
+>> --- a/Documentation/core-api/cpu_hotplug.rst
+>> +++ b/Documentation/core-api/cpu_hotplug.rst
+>> @@ -737,8 +737,9 @@ can process the event further.
+>>   
+>>   When changes to the CPUs in the system occur, the sysfs file
+>>   /sys/devices/system/cpu/crash_hotplug contains '1' if the kernel
+>> -updates the kdump capture kernel list of CPUs itself (via elfcorehdr),
+>> -or '0' if userspace must update the kdump capture kernel list of CPUs.
+>> +updates the kdump capture kernel list of CPUs itself (via elfcorehdr and
+>> +other relevant kexec segment), or '0' if userspace must update the kdump
+>> +capture kernel list of CPUs.
+>>   
+>>   The availability depends on the CONFIG_HOTPLUG_CPU kernel configuration
+>>   option.
+>> @@ -750,8 +751,9 @@ file can be used in a udev rule as follows:
+>>    SUBSYSTEM=="cpu", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
+>>   
+>>   For a CPU hot un/plug event, if the architecture supports kernel updates
+>> -of the elfcorehdr (which contains the list of CPUs), then the rule skips
+>> -the unload-then-reload of the kdump capture kernel.
+>> +of the elfcorehdr (which contains the list of CPUs) and other relevant
+>> +kexec segments, then the rule skips the unload-then-reload of the kdump
+>> +capture kernel.
+>>   
+>>   Kernel Inline Documentations Reference
+>>   ======================================
+>> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+>> index 63cf89393c6e..64dad01e260b 100644
+>> --- a/kernel/crash_core.c
+>> +++ b/kernel/crash_core.c
+>> @@ -520,18 +520,25 @@ int crash_check_hotplug_support(void)
+>>   }
+>>   
+>>   /*
+>> - * To accurately reflect hot un/plug changes of cpu and memory resources
+>> - * (including onling and offlining of those resources), the elfcorehdr
+>> - * (which is passed to the crash kernel via the elfcorehdr= parameter)
+>> - * must be updated with the new list of CPUs and memories.
+>> + * To accurately reflect hot un/plug changes of CPU and Memory resources
+>> + * (including onling and offlining of those resources), the relevant
+>> + * kexec segments must be updated with latest CPU and Memory resources.
+>>    *
+>> - * In order to make changes to elfcorehdr, two conditions are needed:
+>> - * First, the segment containing the elfcorehdr must be large enough
+>> - * to permit a growing number of resources; the elfcorehdr memory size
+>> - * is based on NR_CPUS_DEFAULT and CRASH_MAX_MEMORY_RANGES.
+>> - * Second, purgatory must explicitly exclude the elfcorehdr from the
+>> - * list of segments it checks (since the elfcorehdr changes and thus
+>> - * would require an update to purgatory itself to update the digest).
+>> + * Architectures must ensure two things for all segments that need
+>> + * updating during hotplug events:
+>> + *
+>> + * 1. Segments must be large enough to accommodate a growing number of
+>> + *    resources.
+>> + * 2. Exclude the segments from SHA verification.
+>> + *
+>> + * For example, on most architectures, the elfcorehdr (which is passed
+>> + * to the crash kernel via the elfcorehdr= parameter) must include the
+>> + * new list of CPUs and memory. To make changes to the elfcorehdr, it
+>> + * should be large enough to permit a growing number of CPU and Memory
+>> + * resources. One can estimate the elfcorehdr memory size based on
+>> + * NR_CPUS_DEFAULT and CRASH_MAX_MEMORY_RANGES. The elfcorehdr is
+>> + * excluded from SHA verification by default if the architecture
+>> + * supports crash hotplug.
+>>    */
+>>   static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu, void *arg)
+>>   {
+>> -- 
+>> 2.45.2
+>>
 
-Best regards
-Shengjiu Wang
