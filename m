@@ -1,96 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C252C94C955
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 06:26:25 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jmCMhCHx;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67B194C96F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 06:54:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wg9pR50c6z2yXd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 14:26:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WgBR83v4Gz305T
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 14:54:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jmCMhCHx;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wg9nm2fK0z2yRZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 14:25:47 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4793TF4n004951;
-	Fri, 9 Aug 2024 04:25:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=2
-	TvO/bORdMC4F+KaX/DIlZsEQvbNDC0m43Xnrul7KR4=; b=jmCMhCHxRP2/jr6rV
-	YXqTaR541MmO3orUWA4MRYP3j95o6eAv+UyyYteBu6Z9GyfsgwjtWwreDNubw/sY
-	bDPjH9j3ZdWuXTTQYQD72c2NvRoyh8lhRkfAwZwWPn0ELuKlLT0cmbEtYihZCGlm
-	bEf2V1flMKE/GdMNsjp4taf9nIkkFsD0zJzXh0l6FmYcXI50yA5kwSMYPiSC23yx
-	5sPutTs9isqPUP7VrgZpN+QYXj27cIZwcTICLZPHv2gNUGWhcOMi/QomuKpImL+7
-	6/GQommPlM3Z3yfL53UGZOcOzS3O97zAN6nRkdK/WNS/unYD5rmCGtTteiYlX4xO
-	P23Pw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40vwkbsycd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Aug 2024 04:25:35 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4794PZAX003132;
-	Fri, 9 Aug 2024 04:25:35 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40vwkbsycb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Aug 2024 04:25:34 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4791W7fh018628;
-	Fri, 9 Aug 2024 04:25:34 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 40sxvuj261-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Aug 2024 04:25:34 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4794PV5P32899778
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 Aug 2024 04:25:33 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 53B6F5803F;
-	Fri,  9 Aug 2024 04:25:31 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 156155804E;
-	Fri,  9 Aug 2024 04:25:29 +0000 (GMT)
-Received: from [9.204.206.229] (unknown [9.204.206.229])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  9 Aug 2024 04:25:28 +0000 (GMT)
-Message-ID: <6e26fec3-0c27-45da-bd3b-69d3b7e0e493@linux.ibm.com>
-Date: Fri, 9 Aug 2024 09:55:27 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WgBQm10fBz2xnW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 Aug 2024 14:54:21 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WgBQf4JN9z9sPd;
+	Fri,  9 Aug 2024 06:54:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id miJVm8R5-rkm; Fri,  9 Aug 2024 06:54:18 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WgBQf3MB7z9rvV;
+	Fri,  9 Aug 2024 06:54:18 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6103E8B76C;
+	Fri,  9 Aug 2024 06:54:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id pI3wWWHAvrH0; Fri,  9 Aug 2024 06:54:18 +0200 (CEST)
+Received: from [192.168.234.192] (unknown [192.168.234.192])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E93F78B763;
+	Fri,  9 Aug 2024 06:54:17 +0200 (CEST)
+Message-ID: <493e1a40-6847-4be8-8978-ed71e7b8bf8c@csgroup.eu>
+Date: Fri, 9 Aug 2024 06:54:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] selftest/powerpc/benchmark: remove requirement libc-dev
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, mpe@ellerman.id.au,
-        npiggin@gmail.com, shuah@kernel.org
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au,
+ npiggin@gmail.com, shuah@kernel.org
 References: <20240805083008.1300853-1-maddy@linux.ibm.com>
  <f4ae0d9e-5d1f-4b5e-92b9-aabb513e3097@csgroup.eu>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <f4ae0d9e-5d1f-4b5e-92b9-aabb513e3097@csgroup.eu>
+ <6e26fec3-0c27-45da-bd3b-69d3b7e0e493@linux.ibm.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <6e26fec3-0c27-45da-bd3b-69d3b7e0e493@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 46KJ_b-RWo2yD7eC9fXzA88MXMK9w9uK
-X-Proofpoint-ORIG-GUID: 7Ou9u6bo2wQT-00gijvv5m_QTfR1PBMs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-09_01,2024-08-07_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- mlxscore=0 impostorscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999
- suspectscore=0 spamscore=0 adultscore=0 clxscore=1015 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408090029
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,77 +68,83 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-On 8/6/24 12:24 PM, Christophe Leroy wrote:
->
->
-> Le 05/08/2024 à 10:30, Madhavan Srinivasan a écrit :
->> Currently exec-target.c file is linked as static and this
->> post a requirement to install libc dev package to build.
->> Without it, build-breaks when compiling selftest/powerpc/benchmark.
+
+Le 09/08/2024 à 06:25, Madhavan Srinivasan a écrit :
+> 
+> On 8/6/24 12:24 PM, Christophe Leroy wrote:
 >>
->>    CC       exec_target
->> /usr/bin/ld: cannot find -lc: No such file or directory
->> collect2: error: ld returned 1 exit status
 >>
->> exec_target.c is using "syscall" library function which
->> could be replaced with a inline assembly and the same is
->> proposed as a fix here.
+>> Le 05/08/2024 à 10:30, Madhavan Srinivasan a écrit :
+>>> Currently exec-target.c file is linked as static and this
+>>> post a requirement to install libc dev package to build.
+>>> Without it, build-breaks when compiling selftest/powerpc/benchmark.
+>>>
+>>>    CC       exec_target
+>>> /usr/bin/ld: cannot find -lc: No such file or directory
+>>> collect2: error: ld returned 1 exit status
+>>>
+>>> exec_target.c is using "syscall" library function which
+>>> could be replaced with a inline assembly and the same is
+>>> proposed as a fix here.
+>>>
+>>> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+>>> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>>> ---
+>>>   tools/testing/selftests/powerpc/benchmarks/Makefile    |  2 +-
+>>>   .../testing/selftests/powerpc/benchmarks/exec_target.c | 10 ++++++++--
+>>>   2 files changed, 9 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/tools/testing/selftests/powerpc/benchmarks/Makefile 
+>>> b/tools/testing/selftests/powerpc/benchmarks/Makefile
+>>> index 1321922038d0..ca4483c238b9 100644
+>>> --- a/tools/testing/selftests/powerpc/benchmarks/Makefile
+>>> +++ b/tools/testing/selftests/powerpc/benchmarks/Makefile
+>>> @@ -18,4 +18,4 @@ $(OUTPUT)/context_switch: LDLIBS += -lpthread
+>>>     $(OUTPUT)/fork: LDLIBS += -lpthread
+>>>   -$(OUTPUT)/exec_target: CFLAGS += -static -nostartfiles
+>>> +$(OUTPUT)/exec_target: CFLAGS += -nostartfiles
+>>> diff --git a/tools/testing/selftests/powerpc/benchmarks/exec_target.c 
+>>> b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
+>>> index c14b0fc1edde..20027a23b594 100644
+>>> --- a/tools/testing/selftests/powerpc/benchmarks/exec_target.c
+>>> +++ b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
+>>> @@ -7,10 +7,16 @@
+>>>    */
+>>>     #define _GNU_SOURCE
+>>> -#include <unistd.h>
+>>>   #include <sys/syscall.h>
+>>>     void _start(void)
+>>>   {
+>>> -    syscall(SYS_exit, 0);
+>>> +    asm volatile (
+>>> +        "li %%r0, %[sys_exit];"
+>>> +        "li %%r3, 0;"
+>>> +        "sc;"
+>>> +        :
+>>> +        : [sys_exit] "i" (SYS_exit)
+>>> +        : "r0", "r3"
+>>> +    );
 >>
->> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
->> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->> ---
->>   tools/testing/selftests/powerpc/benchmarks/Makefile    |  2 +-
->>   .../testing/selftests/powerpc/benchmarks/exec_target.c | 10 ++++++++--
->>   2 files changed, 9 insertions(+), 3 deletions(-)
+>> That looks ok because SYS_exit() is not supposed to return, but in the 
+>> general case you should take a lot more precautions regarding which 
+>> registers get clobbered when using sc.
 >>
->> diff --git a/tools/testing/selftests/powerpc/benchmarks/Makefile 
->> b/tools/testing/selftests/powerpc/benchmarks/Makefile
->> index 1321922038d0..ca4483c238b9 100644
->> --- a/tools/testing/selftests/powerpc/benchmarks/Makefile
->> +++ b/tools/testing/selftests/powerpc/benchmarks/Makefile
->> @@ -18,4 +18,4 @@ $(OUTPUT)/context_switch: LDLIBS += -lpthread
->>     $(OUTPUT)/fork: LDLIBS += -lpthread
->>   -$(OUTPUT)/exec_target: CFLAGS += -static -nostartfiles
->> +$(OUTPUT)/exec_target: CFLAGS += -nostartfiles
->> diff --git a/tools/testing/selftests/powerpc/benchmarks/exec_target.c 
->> b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
->> index c14b0fc1edde..20027a23b594 100644
->> --- a/tools/testing/selftests/powerpc/benchmarks/exec_target.c
->> +++ b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
->> @@ -7,10 +7,16 @@
->>    */
->>     #define _GNU_SOURCE
->> -#include <unistd.h>
->>   #include <sys/syscall.h>
->>     void _start(void)
->>   {
->> -    syscall(SYS_exit, 0);
->> +    asm volatile (
->> +        "li %%r0, %[sys_exit];"
->> +        "li %%r3, 0;"
->> +        "sc;"
->> +        :
->> +        : [sys_exit] "i" (SYS_exit)
->> +        : "r0", "r3"
->> +    );
->
-> That looks ok because SYS_exit() is not supposed to return, but in the 
-> general case you should take a lot more precautions regarding which 
-> registers get clobbered when using sc.
->
-> Maybe it is worth a comment.
+>> Maybe it is worth a comment.
+> 
+> 
+> ok sure and something like this will help?
+> 
+> 
+> +        : "r0", "r3" //clobber registers, r0 - syscall number, r3 - 
+> exit value
+> 
 
+Not really.
 
-ok sure and something like this will help?
+sc will clobber r0 and r3-r12, also SO bit in CR.
 
+Here the reason why you have no problem with that is that SYS_exit never 
+returns. At the end, even your "r0" and "r3" clobber are unnecessary 
+because of that.
 
-+        : "r0", "r3" //clobber registers, r0 - syscall number, r3 - 
-exit value
-
-Maddy
-
-
->
-> Christophe
->
->>   }
+Christophe
