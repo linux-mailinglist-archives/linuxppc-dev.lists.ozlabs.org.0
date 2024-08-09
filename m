@@ -1,78 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD3A94D724
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 21:21:34 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BY82d7Gx;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B705194D799
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 Aug 2024 21:46:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WgYgF0t8bz2ykf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2024 05:21:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WgZDQ5HfXz305c
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 Aug 2024 05:46:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BY82d7Gx;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=pierre-louis.bossart@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.215.176; helo=mail-pg1-f176.google.com; envelope-from=namhyung@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WgYfV5mQDz2yP8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2024 05:20:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723231251; x=1754767251;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EjHqHHKYoRZX3HoUBZAvpzA3I2pO6ift5GDZ3LPhRnc=;
-  b=BY82d7Gx1Q4HrVajP7IkWbWt7hCaA7HbJSWOduwUEIo8n/CwurPrA2kH
-   3wW8Tmx1a//Z588h8MMgeW1AM1+CkrRm+FOUT61/gjp5+Fwe727PZHqHM
-   s28jWOpjNwMoCxWLiOSNEZvff8NvHRnEkf/HnkLPV3bIsq9EyL/mdWglx
-   xBjzXJf+fq8X+sjmsKJkCL8KNnxR006vqFXc5orx+bYr1aoaGcHxpfEGM
-   yOtxvQn4rweZO2eNW7wcFFp40TjgrczeWsD4UZEK9pjtOGp/+40B4HaA/
-   bqWkenvmTICECpdcaHTbrVq9mrKrCzs7FWpQouSGW7QKfmrDLN1hCT2o2
-   A==;
-X-CSE-ConnectionGUID: adwI/vSJTletOpCMdJrmsw==
-X-CSE-MsgGUID: e976BYc/TqGDPs5aduKGhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11159"; a="25285241"
-X-IronPort-AV: E=Sophos;i="6.09,277,1716274800"; 
-   d="scan'208";a="25285241"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 12:20:45 -0700
-X-CSE-ConnectionGUID: WCOiZLDZT+WOhIWdX/i3CQ==
-X-CSE-MsgGUID: UZY+OjWrRDqm300lv/H98g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,277,1716274800"; 
-   d="scan'208";a="61793214"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO [10.245.246.249]) ([10.245.246.249])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 12:20:41 -0700
-Message-ID: <a41029df-a1a3-4540-b28d-55fbfc3dcf1c@linux.intel.com>
-Date: Fri, 9 Aug 2024 21:20:39 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WgZD30G1wz2yPR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 Aug 2024 05:46:25 +1000 (AEST)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7a130ae7126so1716166a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 Aug 2024 12:46:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723232783; x=1723837583;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zqbAJAIrn+pMqAdKgl2l3QmF9/bwlYdotJYVuqNwgjc=;
+        b=EggOgFDGHfes0qsjCdyTqrQxOrw5K8vKIT+i6u7f10qUk4UXW63JnjSW17sOzlTzm9
+         GVe/wh6QSBKPYv6ue3lORNZJknl94IAUQM/hpUhgG3RwX1VP04S5HJCQW1bLpKfjcE30
+         YpGou5HvT94aV1vSAjMg1ZIgzAUPnDE3I7RP6uCETQFqLhbgMzR7AyQWMZLGSUYZyAYH
+         w4t0kQdbR9ViQ3sWfI7IlqhFjDf7pErliasUEIc6WioDHvcA7sd+a3jfACtlqc4lOPN+
+         i6/ORs77k4d/0jdmllDHBahaS18h5IiTLcZMkRPkcVYZNllGW6kO99wRwYc/kehe7LLg
+         WlBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVtcLWjedXcMx6xazJ7tcTukdudyjnRMY2qrmkPZudgvp5Fm3LQLw6SNZe9gYFOx9H5QmtFnbykxQYCY0AOS12hPym0F7VZMR0Wxe2LHw==
+X-Gm-Message-State: AOJu0YxnHBjPmMtD/H4fspT5WKmTIOlWfdEYuTfxsd5MA+Tb7xY+OWit
+	SyM88P0U2kh5fHGP78D627WU+ao8N13Qal+E+1tl/483chQXKJSpv/OeGk24l/gutvT7Hm/u985
+	O448P0Hvz1kFI5lITC3OybB+b+V0=
+X-Google-Smtp-Source: AGHT+IGt8uePCJBxT0xWwJtwoNYeffh75W4vVoECy88I+CFcKDV41N3GU4beyjUcCmxO+1WYu5Rw/yh0rvC5AJP3gCY=
+X-Received: by 2002:a17:90b:2390:b0:2ca:d1dc:47e2 with SMTP id
+ 98e67ed59e1d1-2d1e804a8famr2857954a91.33.1723232782867; Fri, 09 Aug 2024
+ 12:46:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec
- support
-To: Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>
-References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
- <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com>
- <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
- <CAA+D8AN9JXJr-BZf8aY7d4rB6M60pXS_DG=qv=P6=2r1A18ATA@mail.gmail.com>
- <ffa85004-8d86-4168-b278-afd24d79f9d8@linux.intel.com>
- <116041ee-7139-4b77-89be-3a68f699c01b@perex.cz>
- <930bb152-860a-4ec5-9ef0-1c96f554f365@linux.intel.com>
- <c9039808-cd04-452d-9f6c-f91811088456@perex.cz>
- <ed1192e0-00e7-4739-a687-c96dc2d62898@linux.intel.com>
- <CAA+D8AMOh=G7W5-dYw_=Xx-s0PqEu2suKYorscoWku86Rn-=+A@mail.gmail.com>
- <542d47c5-7ce3-4c17-8c0a-3a2b2a9e6c6a@linux.intel.com>
- <c3b8f7b8-fc5e-4285-bee8-7edd448a405d@perex.cz>
-Content-Language: en-US
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <c3b8f7b8-fc5e-4285-bee8-7edd448a405d@perex.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240806225013.126130-1-namhyung@kernel.org> <ZrO5HR9x2xyPKttx@google.com>
+ <F3C6DE61-8E10-4814-A6C0-C7569B3FD613@linux.vnet.ibm.com> <ZrUSCFLWDg9iJ_23@google.com>
+ <56008678-7B06-4E54-8447-1C0DCBC15521@linux.vnet.ibm.com>
+In-Reply-To: <56008678-7B06-4E54-8447-1C0DCBC15521@linux.vnet.ibm.com>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Fri, 9 Aug 2024 12:46:11 -0700
+Message-ID: <CAM9d7ch5U1SvgEKiDB4djR70eps_zhaBSWa2guW9NJj6T4ehog@mail.gmail.com>
+Subject: Re: [PATCHSET 00/10] perf tools: Sync tools and kernel headers for v6.11
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,49 +62,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, lgirdwood@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, vkoul@kernel.org, broonie@kernel.org, festevam@gmail.com
+Cc: Ian Rogers <irogers@google.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Arnd Bergmann <arnd@arndb.de>, linux-s390@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Kajol Jain <kjain@linux.ibm.com>, James Clark <james.clark@linaro.org>, Thomas Richter <tmricht@linux.ibm.com>, Adrian Hunter <adrian.hunter@intel.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, LKML <linux-kernel@vger.kernel.org>, linux-perf-users <linux-perf-users@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@arm.com>, Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Aug 9, 2024 at 8:39=E2=80=AFAM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
+>
+>
+>
+> > On 9 Aug 2024, at 12:14=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> =
+wrote:
+> >
+> > Hello,
+> >
+> > On Thu, Aug 08, 2024 at 12:14:12PM +0530, Athira Rajeev wrote:
+> >>
+> >>
+> >>> On 7 Aug 2024, at 11:42=E2=80=AFPM, Namhyung Kim <namhyung@kernel.org=
+> wrote:
+> >>>
+> >>> Hello folks,
+> >>>
+> >>> On Tue, Aug 06, 2024 at 03:50:03PM -0700, Namhyung Kim wrote:
+> >>>> Hello,
+> >>>>
+> >>>> This is the usual sync up in header files we keep in tools directory=
+.
+> >>>> I put a file to give the reason of this work and not to repeat it in
+> >>>> every commit message.  The changes will be carried in the perf-tools
+> >>>> tree.
+> >>>
+> >>> Could you please double check what's in the tmp.perf-tools branch at =
+the
+> >>> perf-tools tree so I don't break build and perf trace for arm64, powe=
+rpc
+> >>> and s390?  It has this patchset + arm64 unistd header revert (accordi=
+ng
+> >>> to the discussion on patch 6/10) on top of v6.11-rc2.
+> >>>
+> >>> Thanks,
+> >>> Namhyung
+> >> Hi Namhyung,
+> >>
+> >> Can you please point to the tree. I checked in https://git.kernel.org/=
+pub/scm/linux/kernel/git/acme/linux.git as well as https://git.kernel.org/p=
+ub/scm/linux/kernel/git/perf/perf-tools-next.git , but didn=E2=80=99t find =
+the changes. May be I am missing something. I am trying to check the build =
+in powerpc.
+> >
+> > Oh, sorry about that.  It's in:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools.git
+> >
+> > (no -next at the end)
+>
+> Hi,
+>
+> I did compile test on powerpc and results are good.
+>
+> Tested-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-
->>> And metadata
->>> ioctl can be called many times which can meet the ratio modifier
->>> requirement (ratio may be drift on the fly)
->>
->> Interesting, that's yet another way of handling the drift with userspace
->> modifying the ratio dynamically. That's different to what I've seen
->> before.
-> 
-> Note that the "timing" is managed by the user space with this scheme.
-> 
->>> And compress API uses codec as the unit for capability query and
->>> parameter setting,  So I think need to define "SND_AUDIOCODEC_SRC'
->>> and 'struct snd_dec_src',  for the 'snd_dec_src' just defined output
->>> format and output rate, channels definition just reuse the
->>> snd_codec.ch_in.
->>
->> The capability query is an interesting point as well, it's not clear how
->> to expose to userspace what this specific implementation can do, while
->> at the same time *requiring* userpace to update the ratio dynamically.
->> For something like this to work, userspace needs to have pre-existing
->> information on how the SRC works.
-> 
-> Yes, it's about abstraction. The user space wants to push data, read
-> data back converted to the target rate and eventually modify the drift
-> using a control managing clocks using own way. We can eventually assume,
-> that if this control does not exist, the drift cannot be controlled.
-> Also, nice thing is that the control has min and max values (range), so
-> driver can specify the drift range, too.
-
-This mode of operation would be fine, but if you add the SRC as part of
-the processing allowed in a compressed stream, it might be used in a
-'regular' real-time pipeline and the arguments  and implementation could
-be very different.
-
-In other words, this SRC support looks like an extension of the compress
-API for a very narrow usage restricted to the memory-to-memory case
-only. I worry a bit about the next steps... Are there going to be other
-types of PCM processing like this, and if yes, how would we know if they
-are intended to be used for the 'regular' compress API or for the
-memory-to-memory scheme?
+Thanks for doing this!
+Namhyung
