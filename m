@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC0A94E047
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2024 08:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DACCD94E05A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2024 09:10:29 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=PfNbj/sX;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=u9t9D4D4;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WhSNB6m44z2xYs
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2024 16:26:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WhTLp0ltwz2yMD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2024 17:10:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=tkos.co.il
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=PfNbj/sX;
+	dkim=pass (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=u9t9D4D4;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tkos.co.il (client-ip=84.110.109.230; helo=mail.tkos.co.il; envelope-from=baruch@tkos.co.il; receiver=lists.ozlabs.org)
-Received: from mail.tkos.co.il (guitar.tkos.co.il [84.110.109.230])
+Received: from mail.tkos.co.il (hours.tkos.co.il [84.110.109.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WhSMR6jl2z2xMQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Aug 2024 16:25:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WhTL41KCrz2xYh
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Aug 2024 17:09:48 +1000 (AEST)
 Received: from tarshish.tkos.co.il (unknown [10.0.8.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.tkos.co.il (Postfix) with ESMTPS id B2F3D440F36;
-	Sun, 11 Aug 2024 09:24:16 +0300 (IDT)
+	by mail.tkos.co.il (Postfix) with ESMTPS id AC632440F36;
+	Sun, 11 Aug 2024 10:08:13 +0300 (IDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tkos.co.il;
-	s=default; t=1723357456;
-	bh=pBuS/H7+odet/nPa5tfwLx8uhXkgW9g6Vrhua5wFMuU=;
+	s=default; t=1723360094;
+	bh=nf/MkqeBwiD3TKhf52jrg5yDi7MiKiiAJynae1NoHxY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=PfNbj/sXq8c5ebZNSC3HNka6aYpupsv8+Df6xqGEC2T97lXp6QlHy6zMjudvbbxFW
-	 yR1gSASK6c3Pune5qpUoYJxmkpKQ7KQ4/GKI+I8nbnx0rdb4G0F3TUe2qhm1C7LSI6
-	 yMt9e2AbgrFTmO/xw9zXTnOAGuf7Ihhk0xF9DAK4cWr95mlI71tpEOYelZ+rxMJz62
-	 4RkPYc8dhQQqDkoKVo5BvZVaImmyxC+KwLxT49oBpQvsvhzu3rIb/i+NlsWiuMJRWt
-	 tLYihkWv9oNS6uRlhXqbqOzmupn3UBF61fBTeFdUK1BOn0NPiPXqX8Bdi6YdTM3H4o
-	 Cz0yrvSxxGC1Q==
+	b=u9t9D4D4GOVGPdIf3j4rCxiYr4On/te/G7ibLcCPJd1L3xwINzoEOnQObJFuTX579
+	 Jps5mdQfaS1pDDDpDr4we09WWJ3Z1c3mXIL2KgjqyBT/MRAVg8BaESBpfO3hauuxSb
+	 tBftApeC1T5mj/hC7zPK/ux9AG/Nbrbw3aFtxfvhXiNVb3XbkluI8U2J2fvdPPDxP3
+	 vEc757+0bvOeip9isMvhTi3zHGt5vqSN2WT/AzeRR4S+xyu0bWhWcM1cR9WGVsoZJm
+	 6yjlgw27UOu2t7BolltOtgvs1Ws4PsybaMjcirEk+nQCCR+dHv1Cc3jSHx9pcdaph6
+	 fQDCCPoFH0q/g==
 From: Baruch Siach <baruch@tkos.co.il>
 To: Christoph Hellwig <hch@lst.de>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH v6 0/2] dma: support DMA zone starting above 4GB
-Date: Sun, 11 Aug 2024 09:25:38 +0300
-Message-ID: <cover.1723357023.git.baruchs-c@neureality.ai>
+Subject: [PATCH v6 RESED 0/2] dma: support DMA zone starting above 4GB
+Date: Sun, 11 Aug 2024 10:09:34 +0300
+Message-ID: <cover.1723359916.git.baruch@tkos.co.il>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -59,11 +59,11 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Baruch Siach <baruchs-c@neureality.ai>, Ramon Fried <ramon@neureality.ai>, =?UTF-8?q?Petr=20Tesa=C5=99=C3=ADk?= <petr@tesarici.cz>, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-s390@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>, Ramon Fried <ramon@neureality.ai>, =?UTF-8?q?Petr=20Tesa=C5=99=C3=ADk?= <petr@tesarici.cz>, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Baruch Siach <baruchs-c@neureality.ai>
+[ Resend series with correct Cc list. Sorry for the spam. ]
 
 DMA zones code assumes that DMA lower limit is zero. When there is no RAM 
 below 4GB, arm64 platform code sets DMA/DMA32 zone limits to cover the entire 
