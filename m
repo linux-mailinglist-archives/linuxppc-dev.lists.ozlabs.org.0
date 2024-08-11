@@ -2,50 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DACCD94E05A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2024 09:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E6194E05B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2024 09:11:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=u9t9D4D4;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=bv1aSHUM;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WhTLp0ltwz2yMD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2024 17:10:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WhTMZ0NZMz2yK8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 11 Aug 2024 17:11:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=tkos.co.il
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=u9t9D4D4;
+	dkim=pass (2048-bit key; secure) header.d=tkos.co.il header.i=@tkos.co.il header.a=rsa-sha256 header.s=default header.b=bv1aSHUM;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tkos.co.il (client-ip=84.110.109.230; helo=mail.tkos.co.il; envelope-from=baruch@tkos.co.il; receiver=lists.ozlabs.org)
-Received: from mail.tkos.co.il (hours.tkos.co.il [84.110.109.230])
+Received: from mail.tkos.co.il (golan.tkos.co.il [84.110.109.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WhTL41KCrz2xYh
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WhTL44wTHz2xYs
 	for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Aug 2024 17:09:48 +1000 (AEST)
 Received: from tarshish.tkos.co.il (unknown [10.0.8.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.tkos.co.il (Postfix) with ESMTPS id AC632440F36;
-	Sun, 11 Aug 2024 10:08:13 +0300 (IDT)
+	by mail.tkos.co.il (Postfix) with ESMTPS id 2CE08440F39;
+	Sun, 11 Aug 2024 10:08:14 +0300 (IDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tkos.co.il;
 	s=default; t=1723360094;
-	bh=nf/MkqeBwiD3TKhf52jrg5yDi7MiKiiAJynae1NoHxY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=u9t9D4D4GOVGPdIf3j4rCxiYr4On/te/G7ibLcCPJd1L3xwINzoEOnQObJFuTX579
-	 Jps5mdQfaS1pDDDpDr4we09WWJ3Z1c3mXIL2KgjqyBT/MRAVg8BaESBpfO3hauuxSb
-	 tBftApeC1T5mj/hC7zPK/ux9AG/Nbrbw3aFtxfvhXiNVb3XbkluI8U2J2fvdPPDxP3
-	 vEc757+0bvOeip9isMvhTi3zHGt5vqSN2WT/AzeRR4S+xyu0bWhWcM1cR9WGVsoZJm
-	 6yjlgw27UOu2t7BolltOtgvs1Ws4PsybaMjcirEk+nQCCR+dHv1Cc3jSHx9pcdaph6
-	 fQDCCPoFH0q/g==
+	bh=ETswJ2dtFPfh+twflGVXRxa/k2k5q2bbYBtQX7oOOy8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bv1aSHUMhcuFAy62jUNbvY0HSVjL/m7iMhqnCNkWi6qxb/0yj3hsKoNG0RMB7i1RC
+	 f4+khwiPlBUSLhyCzYUwJRtuHrHAQ3Yu2MGlSvgi8pwaAK2s8Asm8/KluB5XKgTL36
+	 wHKL+17LVALgiaPOdm2UUJQpByVW1vMonecsZbtZpFcR60S5/sX1UnU9xLzASCZedh
+	 eYuJ0ENw4ihfv8edVfFsqWohhm1hLy6HrCi2gAOeva7K+PTZHHw/II+UqNUnpgMHJ9
+	 npCYT15v78mTKCFFBz41HZdYhhnIeQvrnmONwmLnAoe6AEGZvDlES88bvugXdG9CIL
+	 2jeOmKk4BTTpw==
 From: Baruch Siach <baruch@tkos.co.il>
 To: Christoph Hellwig <hch@lst.de>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH v6 RESED 0/2] dma: support DMA zone starting above 4GB
-Date: Sun, 11 Aug 2024 10:09:34 +0300
-Message-ID: <cover.1723359916.git.baruch@tkos.co.il>
+Subject: [PATCH v6 RESED 1/2] dma: replace zone_dma_bits by zone_dma_limit
+Date: Sun, 11 Aug 2024 10:09:35 +0300
+Message-ID: <17c067618b93e5d71f19c37826d54db4299621a3.1723359916.git.baruch@tkos.co.il>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1723359916.git.baruch@tkos.co.il>
+References: <cover.1723359916.git.baruch@tkos.co.il>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -63,96 +65,213 @@ Cc: linux-s390@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>, Ramon Fried <r
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[ Resend series with correct Cc list. Sorry for the spam. ]
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-DMA zones code assumes that DMA lower limit is zero. When there is no RAM 
-below 4GB, arm64 platform code sets DMA/DMA32 zone limits to cover the entire 
-RAM[0].
+Hardware DMA limit might not be power of 2. When RAM range starts above
+0, say 4GB, DMA limit of 30 bits should end at 5GB. A single high bit
+can not encode this limit.
 
-My target platform has RAM starting at 32GB. Devices with 30-bit DMA mask are 
-mapped to 1GB at the bottom of RAM, between 32GB - 33GB. DMA zone over the 
-entire RAM breaks DMA allocation for these devices.
+Use plain address for DMA zone limit.
 
-In response to a previous RFC hack[1] Catalin Marinas suggested to add a
-separate offset value as base address for the DMA zone, and then refined the 
-suggestion to use start of RAM[3]. This series attempts to implement that 
-suggestion.
+Since DMA zone can now potentially span beyond 4GB physical limit of
+DMA32, make sure to use DMA zone for GFP_DMA32 allocations in that case.
 
-With this series applied, the DMA zone covers the right RAM range for my 
-platform.
-
-v6:
-
-  * Drop the first patch; existing logic is just fine
-
-  * Modify powerpc code to avoid off by one issue
-
-v5:
-
-  * Test the correct kernel
-
-  * Add missing patch that actually makes DMA zone work
-
-  * Extend the treatment of zone_dma_limit > DMA_BIT_MASK(32)
-
-  * Use max() to make the code somewhat more readable
-
-  * Change zone_dma_limit type to u64 to match DMA_BIT_MASK()
-
-v4:
-
-  * Drop last patch. zone_dma_limit includes RAM base address.
-
-  * Adjust DMA zone selection in swiotlb as well.
-
-  * Don't change max_zone_phys() behaviour
-
-  * Update code to fallback to DMA zone when zone_dma_limit > DMA_BIT_MASK(32)
-
-v3:
-
-  * Rebase on v6.11-rc1.
-
-  * Drop zone_dma_base. Use memblock_start_of_DRAM() instead.
-
-  * Drop DT patches. Low DMA range limit no longer needed.
-
-  * Add patch to improve dma_direct_optimal_gfp_mask() heuristics as Catalin 
-    suggested.
-
-RFC v2:
-
-  * Add patch from Catalin[2] changing zone_dma_bits to zone_dma_limit to 
-    simplify subsequent patches
-
-  * Test on real hardware
-
-RFC v1: https://lore.kernel.org/all/cover.1703683642.git.baruch@tkos.co.il/
-
-[0] See commit 791ab8b2e3db ("arm64: Ignore any DMA offsets in the 
-    max_zone_phys() calculation")
-
-[1] https://lore.kernel.org/all/9af8a19c3398e7dc09cfc1fbafed98d795d9f83e.1699464622.git.baruch@tkos.co.il/
-
-[2] https://lore.kernel.org/all/ZZ2HnHJV3gdzu1Aj@arm.com/
-
-[3] https://lore.kernel.org/all/ZnH-VU2iz9Q2KLbr@arm.com/
-
-Catalin Marinas (2):
-  dma: replace zone_dma_bits by zone_dma_limit
-  arm64: support DMA zone above 4GB
-
- arch/arm64/mm/init.c       | 32 ++++++++++----------------------
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Co-developed-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ arch/arm64/mm/init.c       | 30 +++++++++++++++---------------
  arch/powerpc/mm/mem.c      |  5 ++++-
  arch/s390/mm/init.c        |  2 +-
  include/linux/dma-direct.h |  2 +-
  kernel/dma/direct.c        |  6 +++---
  kernel/dma/pool.c          |  4 ++--
  kernel/dma/swiotlb.c       |  6 +++---
- 7 files changed, 24 insertions(+), 33 deletions(-)
+ 7 files changed, 29 insertions(+), 26 deletions(-)
 
-
-base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index 9b5ab6818f7f..c45e2152ca9e 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -115,35 +115,35 @@ static void __init arch_reserve_crashkernel(void)
+ }
+ 
+ /*
+- * Return the maximum physical address for a zone accessible by the given bits
+- * limit. If DRAM starts above 32-bit, expand the zone to the maximum
++ * Return the maximum physical address for a zone given its limit.
++ * If DRAM starts above 32-bit, expand the zone to the maximum
+  * available memory, otherwise cap it at 32-bit.
+  */
+-static phys_addr_t __init max_zone_phys(unsigned int zone_bits)
++static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
+ {
+-	phys_addr_t zone_mask = DMA_BIT_MASK(zone_bits);
+ 	phys_addr_t phys_start = memblock_start_of_DRAM();
+ 
+ 	if (phys_start > U32_MAX)
+-		zone_mask = PHYS_ADDR_MAX;
+-	else if (phys_start > zone_mask)
+-		zone_mask = U32_MAX;
++		zone_limit = PHYS_ADDR_MAX;
++	else if (phys_start > zone_limit)
++		zone_limit = U32_MAX;
+ 
+-	return min(zone_mask, memblock_end_of_DRAM() - 1) + 1;
++	return min(zone_limit, memblock_end_of_DRAM() - 1) + 1;
+ }
+ 
+ static void __init zone_sizes_init(void)
+ {
+ 	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
+-	unsigned int __maybe_unused acpi_zone_dma_bits;
+-	unsigned int __maybe_unused dt_zone_dma_bits;
+-	phys_addr_t __maybe_unused dma32_phys_limit = max_zone_phys(32);
++	phys_addr_t __maybe_unused acpi_zone_dma_limit;
++	phys_addr_t __maybe_unused dt_zone_dma_limit;
++	phys_addr_t __maybe_unused dma32_phys_limit =
++		max_zone_phys(DMA_BIT_MASK(32));
+ 
+ #ifdef CONFIG_ZONE_DMA
+-	acpi_zone_dma_bits = fls64(acpi_iort_dma_get_max_cpu_address());
+-	dt_zone_dma_bits = fls64(of_dma_get_max_cpu_address(NULL));
+-	zone_dma_bits = min3(32U, dt_zone_dma_bits, acpi_zone_dma_bits);
+-	arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
++	acpi_zone_dma_limit = acpi_iort_dma_get_max_cpu_address();
++	dt_zone_dma_limit = of_dma_get_max_cpu_address(NULL);
++	zone_dma_limit = min(dt_zone_dma_limit, acpi_zone_dma_limit);
++	arm64_dma_phys_limit = max_zone_phys(zone_dma_limit);
+ 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
+ #endif
+ #ifdef CONFIG_ZONE_DMA32
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index d325217ab201..05b7f702b3f7 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -216,7 +216,7 @@ static int __init mark_nonram_nosave(void)
+  * everything else. GFP_DMA32 page allocations automatically fall back to
+  * ZONE_DMA.
+  *
+- * By using 31-bit unconditionally, we can exploit zone_dma_bits to inform the
++ * By using 31-bit unconditionally, we can exploit zone_dma_limit to inform the
+  * generic DMA mapping code.  32-bit only devices (if not handled by an IOMMU
+  * anyway) will take a first dip into ZONE_NORMAL and get otherwise served by
+  * ZONE_DMA.
+@@ -230,6 +230,7 @@ void __init paging_init(void)
+ {
+ 	unsigned long long total_ram = memblock_phys_mem_size();
+ 	phys_addr_t top_of_ram = memblock_end_of_DRAM();
++	int zone_dma_bits;
+ 
+ #ifdef CONFIG_HIGHMEM
+ 	unsigned long v = __fix_to_virt(FIX_KMAP_END);
+@@ -256,6 +257,8 @@ void __init paging_init(void)
+ 	else
+ 		zone_dma_bits = 31;
+ 
++	zone_dma_limit = DMA_BIT_MASK(zone_dma_bits);
++
+ #ifdef CONFIG_ZONE_DMA
+ 	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
+ 				      1UL << (zone_dma_bits - PAGE_SHIFT));
+diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+index ddcd39ef4346..91fc2b91adfc 100644
+--- a/arch/s390/mm/init.c
++++ b/arch/s390/mm/init.c
+@@ -97,7 +97,7 @@ void __init paging_init(void)
+ 
+ 	vmem_map_init();
+ 	sparse_init();
+-	zone_dma_bits = 31;
++	zone_dma_limit = DMA_BIT_MASK(31);
+ 	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+ 	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
+ 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+index edbe13d00776..d7e30d4f7503 100644
+--- a/include/linux/dma-direct.h
++++ b/include/linux/dma-direct.h
+@@ -12,7 +12,7 @@
+ #include <linux/mem_encrypt.h>
+ #include <linux/swiotlb.h>
+ 
+-extern unsigned int zone_dma_bits;
++extern u64 zone_dma_limit;
+ 
+ /*
+  * Record the mapping of CPU physical to DMA addresses for a given region.
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 4480a3cd92e0..f2ba074a6a54 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -20,7 +20,7 @@
+  * it for entirely different regions. In that case the arch code needs to
+  * override the variable below for dma-direct to work properly.
+  */
+-unsigned int zone_dma_bits __ro_after_init = 24;
++u64 zone_dma_limit __ro_after_init = DMA_BIT_MASK(24);
+ 
+ static inline dma_addr_t phys_to_dma_direct(struct device *dev,
+ 		phys_addr_t phys)
+@@ -59,7 +59,7 @@ static gfp_t dma_direct_optimal_gfp_mask(struct device *dev, u64 *phys_limit)
+ 	 * zones.
+ 	 */
+ 	*phys_limit = dma_to_phys(dev, dma_limit);
+-	if (*phys_limit <= DMA_BIT_MASK(zone_dma_bits))
++	if (*phys_limit <= zone_dma_limit)
+ 		return GFP_DMA;
+ 	if (*phys_limit <= DMA_BIT_MASK(32))
+ 		return GFP_DMA32;
+@@ -580,7 +580,7 @@ int dma_direct_supported(struct device *dev, u64 mask)
+ 	 * part of the check.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_ZONE_DMA))
+-		min_mask = min_t(u64, min_mask, DMA_BIT_MASK(zone_dma_bits));
++		min_mask = min_t(u64, min_mask, zone_dma_limit);
+ 	return mask >= phys_to_dma_unencrypted(dev, min_mask);
+ }
+ 
+diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+index d10613eb0f63..7b04f7575796 100644
+--- a/kernel/dma/pool.c
++++ b/kernel/dma/pool.c
+@@ -70,9 +70,9 @@ static bool cma_in_zone(gfp_t gfp)
+ 	/* CMA can't cross zone boundaries, see cma_activate_area() */
+ 	end = cma_get_base(cma) + size - 1;
+ 	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp & GFP_DMA))
+-		return end <= DMA_BIT_MASK(zone_dma_bits);
++		return end <= zone_dma_limit;
+ 	if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp & GFP_DMA32))
+-		return end <= DMA_BIT_MASK(32);
++		return end <= max(DMA_BIT_MASK(32), zone_dma_limit);
+ 	return true;
+ }
+ 
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index df68d29740a0..abcf3fa63a56 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -450,9 +450,9 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
+ 	if (!remap)
+ 		io_tlb_default_mem.can_grow = true;
+ 	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp_mask & __GFP_DMA))
+-		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(zone_dma_bits);
++		io_tlb_default_mem.phys_limit = zone_dma_limit;
+ 	else if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp_mask & __GFP_DMA32))
+-		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(32);
++		io_tlb_default_mem.phys_limit = max(DMA_BIT_MASK(32), zone_dma_limit);
+ 	else
+ 		io_tlb_default_mem.phys_limit = virt_to_phys(high_memory - 1);
+ #endif
+@@ -629,7 +629,7 @@ static struct page *swiotlb_alloc_tlb(struct device *dev, size_t bytes,
+ 	}
+ 
+ 	gfp &= ~GFP_ZONEMASK;
+-	if (phys_limit <= DMA_BIT_MASK(zone_dma_bits))
++	if (phys_limit <= zone_dma_limit)
+ 		gfp |= __GFP_DMA;
+ 	else if (phys_limit <= DMA_BIT_MASK(32))
+ 		gfp |= __GFP_DMA32;
 -- 
 2.43.0
 
