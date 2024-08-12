@@ -1,78 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-11-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B8494EA1E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 11:42:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80FB94EB40
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 12:35:17 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G8nE2qNm;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=btJLpJh0;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wj8gm0mGzz2xQK;
-	Mon, 12 Aug 2024 19:42:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wj9rg1nQfz2xH9;
+	Mon, 12 Aug 2024 20:35:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G8nE2qNm;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=btJLpJh0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::136; helo=mail-il1-x136.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wj8gl3YS7z2xJX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 19:42:27 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47C4akWi025491;
-	Mon, 12 Aug 2024 09:42:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=pp1; bh=jMyQHgS/ARMULcqGzPivRhrrVb
-	x/CVj4cEmhJf7UgdE=; b=G8nE2qNmqlD7ty4ryYdX9Fgm1W8UGwKK4kuU/WUsDE
-	giKWUTooOv3G/jXfsXYm7H6K+QocaVylPx1pBPpVspQ992Sk7TrFkv3cKCSFMA6P
-	Atq+x1bkTMy00v55a2/LMG0+Xnpz29gy74LKfCQ4E2A1yS6xPPt/2S6UIDDGen3P
-	H66RBKoAjnWX3c7GbR75kKybp0ZC3BoeM43opEyBCWjUSMl6LRusXewYFQFVkIIC
-	i+qAy1xOB7UdEFiMqcjE2jjht1PaWATx5nuKyxxaO0Wh9L5S3AlJoOsXpCGqzZvt
-	0bYvSaP3GxMBKpIEb3PjS5OOECd/nEfcPTt/VT49sI2w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40wyq8mgav-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Aug 2024 09:42:14 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47C9gEb9032437;
-	Mon, 12 Aug 2024 09:42:14 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40wyq8mgat-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Aug 2024 09:42:14 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 47C7eD0b015571;
-	Mon, 12 Aug 2024 09:42:12 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40xm1mdpry-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Aug 2024 09:42:12 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47C9g8jB54854080
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Aug 2024 09:42:10 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C70A92004B;
-	Mon, 12 Aug 2024 09:42:08 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C48920040;
-	Mon, 12 Aug 2024 09:42:06 +0000 (GMT)
-Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.61.128])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 12 Aug 2024 09:42:05 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        shuah@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH v2] selftest/powerpc/benchmark: remove requirement libc-dev
-Date: Mon, 12 Aug 2024 15:11:52 +0530
-Message-ID: <20240812094152.418586-1-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.45.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wj9cG1171z2xPZ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 20:24:28 +1000 (AEST)
+Received: by mail-il1-x136.google.com with SMTP id e9e14a558f8ab-39aeccc6377so15473775ab.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 03:24:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723458263; x=1724063063; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mPC3vtsqYn5XJUeqo67iJn2rVnzxW9E5GvxuWYZUQ5I=;
+        b=btJLpJh0vCHi05/ZDacGv63FsRVEeOYK1TtsPXDaP3VIZNXgXfHcB12x5x1V6Jqjrw
+         kn13WuNAiJy8eqacLxQqVpgfGTqgS1uAN2vADbsmFqg3Jb0qltH4tD+DjOXZ5YqmG0wB
+         p80VKMzCW79uNVXXHZnKjKDMhKJ4+pcmic72E3iiZWdRAqGnha/8/eR7Z2yaS4ilfFWl
+         Zn6nCY2I0u7EqPvQjo629zfiaOlfE5aSkNnCUdlpujDJS0PenksobNaYf3LEOEwRC4wh
+         sJ+kyXf7nC9vWGYOu9CbEzAYPGFuJ1HSU6POn3pDGXqrQySTJPunXPxkW03S31EskM89
+         TUIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723458263; x=1724063063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mPC3vtsqYn5XJUeqo67iJn2rVnzxW9E5GvxuWYZUQ5I=;
+        b=G0i6g0ctJeNIxJpjPfHQcMewzC/liq/MStIwL3EohOL3ca2bzDFyXJvcVs4vuo/V47
+         IftRkuEKeOAt1Ck2Ll2zcvpS/aKdrZ+TDfdgB/ZRPOuWU6F/uNmpKmA4Bia8r3zDropu
+         O9ick4mr5f7tzeh3eKVHWhshjEmWcme48/lJp3wKPuWlp28k762qlAboTi+xYkLwaqws
+         bNU4wbvZ4gr+0BsTefbiCzlUb/LZNrRykjkEVgFF6vdNQmnvF71bMrIzeJIqFY6Vwr1e
+         Jl6BF5RNzSsxPsTF5H3wVlv8XSMYOekvnFetZV4zyLV1rz3lWxI/w5DkIlfrZEpCdL2V
+         w1uw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDbMWzY+hEFG0Y1uNF/1F5wUTMjAvfUK0fM7a29GTjeIFvOb5rRUic+DvbnMsK3uEnT659/JSMwADZIKh/larUiKLkghahQHOiRXtilw==
+X-Gm-Message-State: AOJu0YwI5iti2aZ5JdVCl9z8hxcRwl0iY9QhNljsbuRZQmFostXEFPOV
+	EHGYUW7C4QoT4jh99oss1TxBOTkrd6s5wirwfFPWJN7sWbW7CJ/MlnvWSGDQFJ3Y9VWJt66oFyq
+	c6sNu28nvMKP7+DN8JX1KjBp7Z38=
+X-Google-Smtp-Source: AGHT+IHdQ3RNrczHyEp+b16RjNhnMCOeSegrx7nTq50uxdHKAwi7ql6H7scu59mGUC+Dyrjh2BuMJ/sg9salc/H/EqI=
+X-Received: by 2002:a05:6e02:1a04:b0:397:2dcd:80e5 with SMTP id
+ e9e14a558f8ab-39b7a463914mr85661235ab.27.1723458263144; Mon, 12 Aug 2024
+ 03:24:23 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,83 +65,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: afWA52iJvVeHVwNyq0Zacm3cd2C6rY-H
-X-Proofpoint-ORIG-GUID: 643BMJGiJqfGfOOJMBRWiiyTzJ5sdWLt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-12_01,2024-08-07_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- suspectscore=0 mlxlogscore=999 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 mlxscore=0 malwarescore=0 clxscore=1015 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408120072
+References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
+ <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com> <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
+ <CAA+D8AN9JXJr-BZf8aY7d4rB6M60pXS_DG=qv=P6=2r1A18ATA@mail.gmail.com>
+ <ffa85004-8d86-4168-b278-afd24d79f9d8@linux.intel.com> <116041ee-7139-4b77-89be-3a68f699c01b@perex.cz>
+ <930bb152-860a-4ec5-9ef0-1c96f554f365@linux.intel.com> <c9039808-cd04-452d-9f6c-f91811088456@perex.cz>
+ <ed1192e0-00e7-4739-a687-c96dc2d62898@linux.intel.com> <CAA+D8AMOh=G7W5-dYw_=Xx-s0PqEu2suKYorscoWku86Rn-=+A@mail.gmail.com>
+ <542d47c5-7ce3-4c17-8c0a-3a2b2a9e6c6a@linux.intel.com> <c3b8f7b8-fc5e-4285-bee8-7edd448a405d@perex.cz>
+In-Reply-To: <c3b8f7b8-fc5e-4285-bee8-7edd448a405d@perex.cz>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Mon, 12 Aug 2024 18:24:11 +0800
+Message-ID: <CAA+D8ANg7C7vuxU44mAG8EnmcZjB_te5N_=4M4v_-Q9ZyPZ49g@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec support
+To: Jaroslav Kysela <perex@perex.cz>
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>, 
+	Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, tiwai@suse.com, 
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
+	linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently exec-target.c file is linked as static and this
-post a requirement to install libc dev package to build.
-Without it, build-break when compiling selftest/powerpc/benchmark.
+On Fri, Aug 9, 2024 at 10:01=E2=80=AFPM Jaroslav Kysela <perex@perex.cz> wr=
+ote:
+>
+> On 09. 08. 24 14:52, Pierre-Louis Bossart wrote:
+>
+> >> And metadata
+> >> ioctl can be called many times which can meet the ratio modifier
+> >> requirement (ratio may be drift on the fly)
+> >
+> > Interesting, that's yet another way of handling the drift with userspac=
+e
+> > modifying the ratio dynamically. That's different to what I've seen bef=
+ore.
+>
+> Note that the "timing" is managed by the user space with this scheme.
+>
+> >> And compress API uses codec as the unit for capability query and
+> >> parameter setting,  So I think need to define "SND_AUDIOCODEC_SRC'
+> >> and 'struct snd_dec_src',  for the 'snd_dec_src' just defined output
+> >> format and output rate, channels definition just reuse the snd_codec.c=
+h_in.
+> >
+> > The capability query is an interesting point as well, it's not clear ho=
+w
+> > to expose to userspace what this specific implementation can do, while
+> > at the same time *requiring* userpace to update the ratio dynamically.
+> > For something like this to work, userspace needs to have pre-existing
+> > information on how the SRC works.
+>
+> Yes, it's about abstraction. The user space wants to push data, read data=
+ back
+> converted to the target rate and eventually modify the drift using a cont=
+rol
+> managing clocks using own way. We can eventually assume, that if this con=
+trol
+> does not exist, the drift cannot be controlled. Also, nice thing is that =
+the
+> control has min and max values (range), so driver can specify the drift r=
+ange,
+> too.
+>
+> And again, look to "PCM Rate Shift 100000" control implementation in
+> sound/drivers/aloop.c. It would be nice to have the base offset for the
+> shift/drift/pitch value standardized.
 
-  CC       exec_target
-/usr/bin/ld: cannot find -lc: No such file or directory
-collect2: error: ld returned 1 exit status
+Thanks.
 
-exec_target.c is using "syscall" library function which
-could be replaced with a inline assembly and the same is
-proposed as a fix here.
+But the ASRC driver I implemented is different, I just register one sound
+card, one device/subdevice.  but the ASRC hardware support 4 instances
+together, so user can open the card device 4 times to create 4 instances
+then the controls can only bind with compress streams.
 
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
-Chnagelog v1:
-- Add comment for clobber register and proper list of
-  clobber registers as suggested by Michael Ellerman and
-  Christophe Leroy
+I think I can remove the 'SNDRV_COMPRESS_SRC_RATIO_MOD',
+Only define a private type for driver,  which means only the ASRC driver
+and its user application know the type.
 
- .../selftests/powerpc/benchmarks/Makefile        |  2 +-
- .../selftests/powerpc/benchmarks/exec_target.c   | 16 ++++++++++++++--
- 2 files changed, 15 insertions(+), 3 deletions(-)
+For the change in 'include/uapi/sound/compress_params.h",  should I
+keep them,  is there any other suggestion for them?
 
-diff --git a/tools/testing/selftests/powerpc/benchmarks/Makefile b/tools/testing/selftests/powerpc/benchmarks/Makefile
-index 1321922038d0..ca4483c238b9 100644
---- a/tools/testing/selftests/powerpc/benchmarks/Makefile
-+++ b/tools/testing/selftests/powerpc/benchmarks/Makefile
-@@ -18,4 +18,4 @@ $(OUTPUT)/context_switch: LDLIBS += -lpthread
- 
- $(OUTPUT)/fork: LDLIBS += -lpthread
- 
--$(OUTPUT)/exec_target: CFLAGS += -static -nostartfiles
-+$(OUTPUT)/exec_target: CFLAGS += -nostartfiles
-diff --git a/tools/testing/selftests/powerpc/benchmarks/exec_target.c b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
-index c14b0fc1edde..a6408d3f26cd 100644
---- a/tools/testing/selftests/powerpc/benchmarks/exec_target.c
-+++ b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
-@@ -7,10 +7,22 @@
-  */
- 
- #define _GNU_SOURCE
--#include <unistd.h>
- #include <sys/syscall.h>
- 
- void _start(void)
- {
--	syscall(SYS_exit, 0);
-+	asm volatile (
-+		"li %%r0, %[sys_exit];"
-+		"li %%r3, 0;"
-+		"sc;"
-+		:
-+		: [sys_exit] "i" (SYS_exit)
-+		/*
-+		 * "sc" will clobber r0, r3-r13, cr0, ctr, xer and memory.
-+		 * Even though sys_exit never returns, handle clobber
-+		 * registers.
-+		 */
-+		: "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10",
-+		  "r11", "r12", "r13", "cr0", "ctr", "xer", "memory"
-+	);
- }
--- 
-2.45.2
+Best regards
+Shengjiu Wang
 
+>
+>                                         Jaroslav
+>
+> --
+> Jaroslav Kysela <perex@perex.cz>
+> Linux Sound Maintainer; ALSA Project; Red Hat, Inc.
+>
 
