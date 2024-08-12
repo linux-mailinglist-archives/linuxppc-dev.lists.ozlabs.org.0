@@ -1,81 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-31-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-32-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA6C94F96E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2024 00:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A23594F96F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2024 00:13:43 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jnn7w6n0;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jnn7w6n0;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HrdcbFz5;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HrdcbFz5;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WjTLJ2Q84z2xdL;
-	Tue, 13 Aug 2024 08:13:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WjTLY3QThz2yHD;
+	Tue, 13 Aug 2024 08:13:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jnn7w6n0;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jnn7w6n0;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HrdcbFz5;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HrdcbFz5;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WjN0X5SzQz2xQG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2024 04:12:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WjN0Y34kPz2xQG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2024 04:12:45 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723486361;
+	s=mimecast20190719; t=1723486362;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=51AsM4wPs8z1MhF0DnEEQJIHR/NiBzvmhfDXZZK2UA8=;
-	b=Jnn7w6n0gwtjJfI2DZ8EB0wjG/1sqPNoKtV3FWMJBvINwdiupXN9WDMrfk37pxCBGCF/wf
-	hWQJILdqi8jzaQxDY2lPygYHsPbfh4OPj9ob3aqYdmK3doRD3eNtzPmvI905lSkHVFDLHL
-	XbeVrMvl7Qx5N+/qtl2XQt/65bs9x7A=
+	bh=vL+nA7AT6HH2fptU3fDtubaziCDql6jx+j3l3b3Xtg8=;
+	b=HrdcbFz5jFpt/yYXSGKZe5rmi+iGeFEMJVo3dDEfJKep6jVSEdzIb5tNFwkt7dTU71kW0s
+	m6yYBhWzeaZGKPOVDT6804XPO8Y1zWh+ntaYBo+Hg6qiemxMeUX7Wlxvh3VRfcd9JuhzF3
+	VkXCzs3E34KZIG+reTHOjyiY3vPWuRQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723486361;
+	s=mimecast20190719; t=1723486362;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=51AsM4wPs8z1MhF0DnEEQJIHR/NiBzvmhfDXZZK2UA8=;
-	b=Jnn7w6n0gwtjJfI2DZ8EB0wjG/1sqPNoKtV3FWMJBvINwdiupXN9WDMrfk37pxCBGCF/wf
-	hWQJILdqi8jzaQxDY2lPygYHsPbfh4OPj9ob3aqYdmK3doRD3eNtzPmvI905lSkHVFDLHL
-	XbeVrMvl7Qx5N+/qtl2XQt/65bs9x7A=
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
- [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=vL+nA7AT6HH2fptU3fDtubaziCDql6jx+j3l3b3Xtg8=;
+	b=HrdcbFz5jFpt/yYXSGKZe5rmi+iGeFEMJVo3dDEfJKep6jVSEdzIb5tNFwkt7dTU71kW0s
+	m6yYBhWzeaZGKPOVDT6804XPO8Y1zWh+ntaYBo+Hg6qiemxMeUX7Wlxvh3VRfcd9JuhzF3
+	VkXCzs3E34KZIG+reTHOjyiY3vPWuRQ=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-193-unuaNwi6NYqeGF3_E83jug-1; Mon, 12 Aug 2024 14:12:38 -0400
-X-MC-Unique: unuaNwi6NYqeGF3_E83jug-1
-Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-4929d50431bso219672137.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 11:12:38 -0700 (PDT)
+ us-mta-61-qtTaRGwHP76IjrB2PLKNdQ-1; Mon, 12 Aug 2024 14:12:40 -0400
+X-MC-Unique: qtTaRGwHP76IjrB2PLKNdQ-1
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7a1e1828321so15941385a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 11:12:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723486358; x=1724091158;
+        d=1e100.net; s=20230601; t=1723486360; x=1724091160;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=51AsM4wPs8z1MhF0DnEEQJIHR/NiBzvmhfDXZZK2UA8=;
-        b=pAqXATdXNxWINgbgn6slyRkoZ4Luv1a0iYy1tcvtTTuCRflK5FilIpC4Z2QQJKxaal
-         g7lArcYFM5TvrtSWMNhoF0NGffTSSQlTIH68M+8F/zkWSo9Fbw+OdTApAeQULWNQaoCY
-         LRNrCFUgskOHDTtAo//usahEAEjPpAQJvFz6EriEukoCMX1cPnS/u8KjKSrH7ebt03wa
-         JdVuPpde8ntRYneD7ufP5Oy2YUR+CpTgJECqDGZLPNxJ7gv/X5lenD5qpDnJ20AewQX8
-         kMNiljG3eVmCXuwWdbJIRdsbx3lvmcpNZWpm1zLhfVY2k/oK4phazMjRsqh/+B4TS7sT
-         9q1w==
-X-Forwarded-Encrypted: i=1; AJvYcCXwKyXDY/Yo/c9LejhqSmxBUdYiUU2zVhmiWfZZskam0o9Vt1vAD7xLfBdghnN61scFzbq4j6h4+vHiY48=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy+6Q4uwb9QBEqiL9tHRvmeFzgZJiy407eMGa3qnKwzDCgF/qhA
-	Xkjao9kNuGTFXhNLr9cZ092SP3MJX2sAhFVJClMR1rcx0vmalEosXrz3jU6H8GjncA77LfqnKNk
-	9g8HZahIXQxonYDRArHPNvkg/FCIJINAjEf3IiSF/zU7YQ9R298rjI6jcQkxom4U=
-X-Received: by 2002:a05:6102:3ecb:b0:48f:1db0:e268 with SMTP id ada2fe7eead31-49743b3bcadmr808469137.3.1723486358028;
-        Mon, 12 Aug 2024 11:12:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHqoB9/0mESDqYSEBNTj9AtHyzcMfWYv34FSY6okF36kkcu051ygwC1i1HRAV7+0kWzcEuDbQ==
-X-Received: by 2002:a05:6102:3ecb:b0:48f:1db0:e268 with SMTP id ada2fe7eead31-49743b3bcadmr808432137.3.1723486357628;
-        Mon, 12 Aug 2024 11:12:37 -0700 (PDT)
+        bh=vL+nA7AT6HH2fptU3fDtubaziCDql6jx+j3l3b3Xtg8=;
+        b=cGKVvXe2ng9AHKmSMlqm781DXJ42SlfgzRCGd9VcRDWh1WC1hSpfhRJRhuRlP8fxvZ
+         XhDF3iFITtnxMTYjbTSvOUxVeTagTTx8F5OfdtruRaj0wW39PMqbUUZyQAt0V+F/gAEM
+         rr6/wdJgQZ12yX2An9bFIv5EJPK/Xy9IRKzPPhlotFstmvvDDIGZNkaOJsK7bnxHyz4S
+         Nx3fTb6xtCPoqjQlXiHrx3lW2bgY2EjowOgDv4NNn3b/0XzKtTSDj+SV9Dv7HLM6JaIq
+         pYq4xCQoQQp9VqHoGiyOv60exTG1w8EErjmPhPe8e0tQ21BSHyH3PHb6l1zb6ct4IJ1s
+         JpXg==
+X-Forwarded-Encrypted: i=1; AJvYcCX43fdTnkLZ8rWfV0vFlEs0XfLmHsJ0ufvg6STA17eEobptYL/zae+OmrCbLPE1+va3jIMe1Tt59MhlHhSpdyG3bfiB1uLXcKQufRqUcw==
+X-Gm-Message-State: AOJu0YxmrUzBc+2SYYEjwAVbeRXWPfr46VUilPF+tRXos+9lsOMXDdQL
+	UqxgcihxkfvOP8qBakkSkm6ITJDILGdXJ/7j/BMKUF0oXDgdtw+gK5P2V4q4XR4ShsUW4KBJ5Gh
+	HhdppE5FHHqwl6A8YyZ/wMUB/9CCkHfgFohFHZfoEAarYKIbYHyoiiGHQeaCH7kA=
+X-Received: by 2002:a05:620a:d95:b0:7a1:5683:b04b with SMTP id af79cd13be357-7a4e1625378mr68904385a.9.1723486360178;
+        Mon, 12 Aug 2024 11:12:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHermK5CePcyhPQZfo7QtCxftIfNR9zVAKZznJ8AtnLMjyZZZpq0Zdfjnp4iDQgBs3zunmzLQ==
+X-Received: by 2002:a05:620a:d95:b0:7a1:5683:b04b with SMTP id af79cd13be357-7a4e1625378mr68901885a.9.1723486359781;
+        Mon, 12 Aug 2024 11:12:39 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4c7dee013sm268663985a.84.2024.08.12.11.12.35
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4c7dee013sm268663985a.84.2024.08.12.11.12.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Aug 2024 11:12:37 -0700 (PDT)
+        Mon, 12 Aug 2024 11:12:39 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
@@ -104,9 +104,9 @@ Cc: "Kirill A . Shutemov" <kirill@shutemov.name>,
 	Dave Jiang <dave.jiang@intel.com>,
 	Oscar Salvador <osalvador@suse.de>,
 	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH v5 4/7] mm/x86: Make pud_leaf() only care about PSE bit
-Date: Mon, 12 Aug 2024 14:12:22 -0400
-Message-ID: <20240812181225.1360970-5-peterx@redhat.com>
+Subject: [PATCH v5 5/7] mm/x86: Implement arch_check_zapped_pud()
+Date: Mon, 12 Aug 2024 14:12:23 -0400
+Message-ID: <20240812181225.1360970-6-peterx@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240812181225.1360970-1-peterx@redhat.com>
 References: <20240812181225.1360970-1-peterx@redhat.com>
@@ -124,43 +124,109 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-When working on mprotect() on 1G dax entries, I hit an zap bad pud
-error when zapping a huge pud that is with PROT_NONE permission.
+Introduce arch_check_zapped_pud() to sanity check shadow stack on PUD zaps.
+It has the same logic as the PMD helper.
 
-Here the problem is x86's pud_leaf() requires both PRESENT and PSE bits
-set to report a pud entry as a leaf, but that doesn't look right, as
-it's not following the pXd_leaf() definition that we stick with so far,
-where PROT_NONE entries should be reported as leaves.
+One thing to mention is, it might be a good idea to use page_table_check in
+the future for trapping wrong setups of shadow stack pgtable entries [1].
+That is left for the future as a separate effort.
 
-To fix it, change x86's pud_leaf() implementation to only check against
-PSE bit to report a leaf, irrelevant of whether PRESENT bit is set.
+[1] https://lore.kernel.org/all/59d518698f664e07c036a5098833d7b56b953305.camel@intel.com
 
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Borislav Petkov <bp@alien8.de>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: x86@kernel.org
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- arch/x86/include/asm/pgtable.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/include/asm/pgtable.h | 10 ++++++++++
+ arch/x86/mm/pgtable.c          |  6 ++++++
+ include/linux/pgtable.h        |  6 ++++++
+ mm/huge_memory.c               |  4 +++-
+ 4 files changed, 25 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index e39311a89bf4..a2a3bd4c1bda 100644
+index a2a3bd4c1bda..fdb8ac9e7030 100644
 --- a/arch/x86/include/asm/pgtable.h
 +++ b/arch/x86/include/asm/pgtable.h
-@@ -1078,8 +1078,7 @@ static inline pmd_t *pud_pgtable(pud_t pud)
- #define pud_leaf pud_leaf
- static inline bool pud_leaf(pud_t pud)
- {
--	return (pud_val(pud) & (_PAGE_PSE | _PAGE_PRESENT)) ==
--		(_PAGE_PSE | _PAGE_PRESENT);
-+	return pud_val(pud) & _PAGE_PSE;
+@@ -174,6 +174,13 @@ static inline int pud_young(pud_t pud)
+ 	return pud_flags(pud) & _PAGE_ACCESSED;
  }
  
- static inline int pud_bad(pud_t pud)
++static inline bool pud_shstk(pud_t pud)
++{
++	return cpu_feature_enabled(X86_FEATURE_SHSTK) &&
++	       (pud_flags(pud) & (_PAGE_RW | _PAGE_DIRTY | _PAGE_PSE)) ==
++	       (_PAGE_DIRTY | _PAGE_PSE);
++}
++
+ static inline int pte_write(pte_t pte)
+ {
+ 	/*
+@@ -1667,6 +1674,9 @@ void arch_check_zapped_pte(struct vm_area_struct *vma, pte_t pte);
+ #define arch_check_zapped_pmd arch_check_zapped_pmd
+ void arch_check_zapped_pmd(struct vm_area_struct *vma, pmd_t pmd);
+ 
++#define arch_check_zapped_pud arch_check_zapped_pud
++void arch_check_zapped_pud(struct vm_area_struct *vma, pud_t pud);
++
+ #ifdef CONFIG_XEN_PV
+ #define arch_has_hw_nonleaf_pmd_young arch_has_hw_nonleaf_pmd_young
+ static inline bool arch_has_hw_nonleaf_pmd_young(void)
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index f5931499c2d6..36e7139a61d9 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -926,3 +926,9 @@ void arch_check_zapped_pmd(struct vm_area_struct *vma, pmd_t pmd)
+ 	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_SHADOW_STACK) &&
+ 			pmd_shstk(pmd));
+ }
++
++void arch_check_zapped_pud(struct vm_area_struct *vma, pud_t pud)
++{
++	/* See note in arch_check_zapped_pte() */
++	VM_WARN_ON_ONCE(!(vma->vm_flags & VM_SHADOW_STACK) && pud_shstk(pud));
++}
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 2a6a3cccfc36..780f3b439d98 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -447,6 +447,12 @@ static inline void arch_check_zapped_pmd(struct vm_area_struct *vma,
+ }
+ #endif
+ 
++#ifndef arch_check_zapped_pud
++static inline void arch_check_zapped_pud(struct vm_area_struct *vma, pud_t pud)
++{
++}
++#endif
++
+ #ifndef __HAVE_ARCH_PTEP_GET_AND_CLEAR
+ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+ 				       unsigned long address,
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 0024266dea0a..81c5da0708ed 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2293,12 +2293,14 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		 pud_t *pud, unsigned long addr)
+ {
+ 	spinlock_t *ptl;
++	pud_t orig_pud;
+ 
+ 	ptl = __pud_trans_huge_lock(pud, vma);
+ 	if (!ptl)
+ 		return 0;
+ 
+-	pudp_huge_get_and_clear_full(vma, addr, pud, tlb->fullmm);
++	orig_pud = pudp_huge_get_and_clear_full(vma, addr, pud, tlb->fullmm);
++	arch_check_zapped_pud(vma, orig_pud);
+ 	tlb_remove_pud_tlb_entry(tlb, pud, addr);
+ 	if (vma_is_special_huge(vma)) {
+ 		spin_unlock(ptl);
 -- 
 2.45.0
 
