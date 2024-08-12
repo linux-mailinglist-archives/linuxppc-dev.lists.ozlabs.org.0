@@ -1,42 +1,34 @@
-Return-Path: <linuxppc-dev+bounces-13-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-16-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981E494EC10
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 13:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1AC894ECD5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 14:22:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WjCTQ3dlvz2xWc;
-	Mon, 12 Aug 2024 21:48:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WjDDX4W9Kz2y65;
+	Mon, 12 Aug 2024 22:22:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WjBtx70lKz2xT9
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 21:22:17 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A3A7B60C17;
-	Mon, 12 Aug 2024 11:22:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0886CC32782;
-	Mon, 12 Aug 2024 11:22:12 +0000 (UTC)
-Date: Mon, 12 Aug 2024 12:22:10 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Baruch Siach <baruch@tkos.co.il>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>,
-	Ramon Fried <ramon@neureality.ai>,
-	Elad Nachman <enachman@marvell.com>
-Subject: Re: [PATCH v6 RESED 1/2] dma: replace zone_dma_bits by zone_dma_limit
-Message-ID: <ZrnwYrZiHJ11xrlr@arm.com>
-References: <cover.1723359916.git.baruch@tkos.co.il>
- <17c067618b93e5d71f19c37826d54db4299621a3.1723359916.git.baruch@tkos.co.il>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WjCl61mLLz2xXV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 22:00:34 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WjCl42fKCz4x9G;
+	Mon, 12 Aug 2024 22:00:32 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: sean.anderson@linux.dev, camelia.groza@nxp.com, linux@treblig.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240528231123.136664-1-linux@treblig.org>
+References: <20240528231123.136664-1-linux@treblig.org>
+Subject: Re: [PATCH] soc/fsl/qbman: remove unused struct 'cgr_comp'
+Message-Id: <172346398138.772106.1480775033029305821.b4-ty@ellerman.id.au>
+Date: Mon, 12 Aug 2024 21:59:41 +1000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -46,28 +38,23 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17c067618b93e5d71f19c37826d54db4299621a3.1723359916.git.baruch@tkos.co.il>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Sun, Aug 11, 2024 at 10:09:35AM +0300, Baruch Siach wrote:
-> From: Catalin Marinas <catalin.marinas@arm.com>
+On Wed, 29 May 2024 00:11:23 +0100, linux@treblig.org wrote:
+> 'cgr_comp' has been unused since
+> commit 96f413f47677 ("soc/fsl/qbman: fix issue in
+> qman_delete_cgr_safe()").
 > 
-> Hardware DMA limit might not be power of 2. When RAM range starts above
-> 0, say 4GB, DMA limit of 30 bits should end at 5GB. A single high bit
-> can not encode this limit.
+> Remove it.
 > 
-> Use plain address for DMA zone limit.
 > 
-> Since DMA zone can now potentially span beyond 4GB physical limit of
-> DMA32, make sure to use DMA zone for GFP_DMA32 allocations in that case.
-> 
-> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> Co-developed-by: Baruch Siach <baruch@tkos.co.il>
-> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> [...]
 
-You might want to say that no functional change is expected with this
-patch. The patch looks fine.
+Applied to powerpc/fixes.
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+[1/1] soc/fsl/qbman: remove unused struct 'cgr_comp'
+      https://git.kernel.org/powerpc/c/06ce0af34177a110d6a5cf71f924965b9b230691
+
+cheers
 
