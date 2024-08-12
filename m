@@ -1,52 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-23-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-24-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7461C94F962
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2024 00:09:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE0594F964
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2024 00:11:30 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=fUK47EIF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NUXUll5c;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WjTFv6791z2xKx;
-	Tue, 13 Aug 2024 08:09:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WjTHs5VyHz2xKT;
+	Tue, 13 Aug 2024 08:11:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=fUK47EIF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NUXUll5c;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=konstantin@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WjGFp3DDMz2xPZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 23:53:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WjKDM6nZ8z2xKT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2024 02:07:47 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id D9ED8CE0E93;
-	Mon, 12 Aug 2024 13:53:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7C0C4AF0D;
-	Mon, 12 Aug 2024 13:53:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723470824;
-	bh=7L8fZ1BGtRAgR4RzO+a31sQ+afb8IZTXJAALlxkrVLQ=;
+	by sin.source.kernel.org (Postfix) with ESMTP id 3176FCE0FCA;
+	Mon, 12 Aug 2024 16:07:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1471C32782;
+	Mon, 12 Aug 2024 16:07:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723478862;
+	bh=xtGm+PnqS9zMeh65xDDKfq7qKoHUSOzcfLhggZPCYKA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fUK47EIFhvumRM1+SJJVYmB/P7bkg87zoykcoQWpL+FFH7IHiPr5rzmt3AezvJBsY
-	 Cuwo/SvTp0zstxLwL7cZ1SdYFv8HRdtWl5pbTkKWcOP/kBwHNBYab6OpkOAM/HVPgr
-	 TovZoVC6B0Uc58Y8NGxeYYFmokbM7oAW3Tl8G4cA=
-Date: Mon, 12 Aug 2024 09:53:43 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: ppc-dev <linuxppc-dev@lists.ozlabs.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: List change - munging for From addresses
-Message-ID: <20240812-big-truthful-boar-cbfbb1@lemur>
-References: <20240802130347.383a1b49@canb.auug.org.au>
- <20240802-agile-manipulative-dog-df4487@lemur>
- <20240805124204.49ed65df@canb.auug.org.au>
- <20240805-honored-weightless-kangaroo-71e79e@lemur>
- <20240812155427.14dc2281@canb.auug.org.au>
- <20240812161913.082cd5ca@canb.auug.org.au>
+	b=NUXUll5c/CSjhblh1/IJtpDqNS+BdK0g6MDSMDmOZBfMT0u4Ff6Qjn+pSIYtSiaw1
+	 Z686FVneDVc+oBB18x42O9O0GsjcsC1rZ2FEF+awWtzu0vcL8aA7RIdkN8Ob1/4X7f
+	 fR/NBqM9NYh+v6tWGrTS91NvQSyceg7zsXHBtAJuc8vHyvfqH/lUk950AKQt7szFae
+	 j+CR7Xy4RWKcxQg7Fch9CqEJibgeTbK9LtNhzmeatrggmID42rwIwMREKhDJNVNO7V
+	 jXTItXbWpwVPVdAbtxySLNqevoLFZ4NHZD7kVrET1VbprDgK0NRW0DCqQNcsBKfTSS
+	 hFdxEDGrt6pUQ==
+Date: Mon, 12 Aug 2024 17:07:38 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: fsl: fsl,rcpm: fix unevaluated
+ fsl,rcpm-wakeup property
+Message-ID: <20240812-shrapnel-treason-03ed1d6b49c9@spud>
+References: <20240811153507.126512-1-krzysztof.kozlowski@linaro.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,23 +59,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="qepN/n4K0ZLCBrZr"
 Content-Disposition: inline
-In-Reply-To: <20240812161913.082cd5ca@canb.auug.org.au>
+In-Reply-To: <20240811153507.126512-1-krzysztof.kozlowski@linaro.org>
 
-On Mon, Aug 12, 2024 at 04:19:13PM GMT, Stephen Rothwell wrote:
-> > For the subscribers, to see how to manage you subscription, you will be
-> > able to end an email to <linuxppc-dev+help@lists.ozlabs.org> for
-> > instructions.  Hopefully you all won't find it too restrictive.
-> > 
-> > Please report any problems with the list after the change to me.
-> 
-> The switch has happened, let's see how we go (starting wit this mail
-> :-)).
 
-Headers look good! One thing you'll also want to set up is OpenARC to add
-ARC signatures, which are now required by Google once your mail server reaches
-certain thresholds. OpenARC isn't too hard to set up.
+--qepN/n4K0ZLCBrZr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--K
+On Sun, Aug 11, 2024 at 05:35:07PM +0200, Krzysztof Kozlowski wrote:
+> Drop the RCPM consumer example from the binding (LPUART device node),
+> because:
+> 1. Using phandles is typical syntax, thus explaining it is not needed in
+>    the provider binding,
+> 2. It has 'fsl,rcpm-wakeup' property which is not allowed by LPUART
+>    binding so it causes dt_binding_check warning:
+>=20
+>    fsl,rcpm.example.dtb: serial@2950000: Unevaluated properties are not a=
+llowed ('fsl,rcpm-wakeup' was unexpected)
+>      from schema $id: http://devicetree.org/schemas/serial/fsl-lpuart.yam=
+l#
+>=20
+> Alternatively, this property could be added to LPUART binding
+> (fsl-lpuart.yaml), but it looks like none of in-tree DTS use it.
+>=20
+> Fixes: ad21e3840a88 ("dt-bindings: soc: fsl: Convert rcpm to yaml format")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+--qepN/n4K0ZLCBrZr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZrozSgAKCRB4tDGHoIJi
+0n99AP4k+jo0HIAm3yUe34ZbYrr+lBZIK5GnzwPCmxrJygD2CgEA/9T8i4JsN8yG
+WAetWYv+5wxC3MTm8AeHkGrG3HeydAo=
+=RSNA
+-----END PGP SIGNATURE-----
+
+--qepN/n4K0ZLCBrZr--
 
