@@ -1,96 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A66194E63B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 07:46:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BB294E654
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 07:59:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MlX+eeQb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Mn/3E8Fx;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wj3RQ0nWtz2yGQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 15:46:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wj3kG1zRLz2yGq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 15:59:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MlX+eeQb;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Mn/3E8Fx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::531; helo=mail-ed1-x531.google.com; envelope-from=ptesarik@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wj3Qj1Z3tz2xX4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 15:45:48 +1000 (AEST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47C3SPcM004225;
-	Mon, 12 Aug 2024 05:45:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:subject:to:cc:references:from:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
-	dk45BxEtrcNh/cVkwB3JSlqu9Bo25I7aCPMvBHhgY+4=; b=MlX+eeQbzdw/joO8
-	WzDCt19bKaPxn0yDniLZWxJ5H2KEwxOTp6rJ8xfQ31MS7qv7nmEjsafFCNq5sqjp
-	Yki7jnio1qm2seEkICBC3fvwTsiCXARGnS9WdXCJ70eJpPLkCDNYhTBWZtDWad2G
-	x/RUCEYbrU6gXPBgNewCJyQNkTywIytaxsdPq0aZGxTzBvMblqysWILS+NlsywIj
-	8p0zbDmX+jlI+osUREu3V9242beB0Jo1T3baRhXptu1qrxuc7zQqRWJbSERMkJwF
-	P5UzCBE306f5SBQqhFWlbxwo1un6y4QPo/PkiuMmswYGWHVSafSyYnrmcpZULVDF
-	z15AVw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40wy0rkvyk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Aug 2024 05:45:34 +0000 (GMT)
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47C5jY5H030966;
-	Mon, 12 Aug 2024 05:45:34 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40wy0rkvyh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Aug 2024 05:45:34 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 47C3UaQC029698;
-	Mon, 12 Aug 2024 05:45:33 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 40xmrm4rpt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Aug 2024 05:45:33 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47C5jTCO38732280
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Aug 2024 05:45:31 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CBB2820086;
-	Mon, 12 Aug 2024 05:45:29 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 42A4E2008A;
-	Mon, 12 Aug 2024 05:45:27 +0000 (GMT)
-Received: from [9.43.69.208] (unknown [9.43.69.208])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 12 Aug 2024 05:45:26 +0000 (GMT)
-Message-ID: <01d935c2-bdb9-4117-841c-3e90f3c3dade@linux.ibm.com>
-Date: Mon, 12 Aug 2024 11:15:25 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Document/kexec: Generalize crash hotplug description
-To: Petr Tesarik <ptesarik@suse.com>
-References: <20240812041651.703156-1-sourabhjain@linux.ibm.com>
- <20240812074152.321febe5@mordecai.tesarici.cz>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20240812074152.321febe5@mordecai.tesarici.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mXkdh4Rh3UDIawpTg5ElUdF1Wa8NuH2C
-X-Proofpoint-GUID: 8_Kxw9uN09fZzBi3SGBhExBZ-ZvTNpFc
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wj3ZW61Y1z2xbY
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 15:52:34 +1000 (AEST)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-5bd13ea7604so1939751a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 11 Aug 2024 22:52:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1723441951; x=1724046751; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xLZ35+IU8yTpW/0qUhS27F2h1YLsbUiAnfQoXC1WVeQ=;
+        b=Mn/3E8FxdCwXSsGtQ2cLNbWyE05HXkN/p+K+lgjcji8VUsqL3ezbCzAQ9Dvv1kqzmo
+         K/MeqF38vFKVSX2X8pN5IpM/HW3mbAnbyj0G1VFn0wEFXIpxjdm6B84LFtk+G9HH4FQp
+         eItBYeBHng1YbrseLJtl3C5mdyBmwCoLRDYXsMTdSnXMcVac+hQrd2fyAPx/ULGHb6dy
+         causXNuAMFCoPhFGJpH8kV3RFqd62rkgWpon9dSy4vtjs5ZCBfcpWQOdk15062MjrZhq
+         sCzSHwl9FlwL9eg2C4uw9G2nk+aVVx2iN2ny61gW5438L0Xes0iZvNyWlPRlanprOSZh
+         IU+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723441951; x=1724046751;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xLZ35+IU8yTpW/0qUhS27F2h1YLsbUiAnfQoXC1WVeQ=;
+        b=QIJR2k6PyGS6Hy43K1Un+8dxt/uPP8+gq2cjhJTF43c00jaPfbkL0GqPZSuoCZoKdg
+         1dHrBVqu1Ae4dic2mhO7Nl0K830YEIugIlIKJeTtySrWjOXc1A41feov4/C1vfQESJsv
+         itytX/fqOG1Cj3PCqK8D6d5I3uPveP9Q0KyZEHHT+wMVc9mWx0AIk8PrvZjF5TUQALQN
+         7K88s7qi3sGbDESUrrjr0rhVC/FtPhAVJjpmZ3Lnyh6NjP8gy4Rn5cOlAd3mBXavIMb1
+         qYdqoTJVAAHsSZDp8vOAZ5vej2HPsVVE99R43gLblIQZQBdGTUm7VgZyW4Rbt9xk0Tfj
+         uywQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVd0KcPZd21D8a2CvfIAL5IyQVXX8OuMe4S//CV2J8dC+Nwp1hWBwBXuhQdeLZAfNT2O/jpIkZ+g4HuOfWjJtX5vtGXZ5ebi3Mgrv5G9A==
+X-Gm-Message-State: AOJu0YwYWPvjBDXxF/AGuqlA3CzyqLj3g7CIwpqGo2z8EdajOV8/SU2h
+	83y9sllW5ebRT551o785ucgCF5zM21+8uwlBpCYAF31HefTUSw+Ve5Bdzars2Lk=
+X-Google-Smtp-Source: AGHT+IFMvEB3G12c8wLUv6Tbdwb0/ALbjS7/MCfQmLzvHgcVkX7XPyPkeillfb+dwuofuhmb3Ikxng==
+X-Received: by 2002:a17:907:846:b0:a7a:bae8:f29e with SMTP id a640c23a62f3a-a80aa5dae5bmr689141666b.29.1723441951081;
+        Sun, 11 Aug 2024 22:52:31 -0700 (PDT)
+Received: from mordecai.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz. [2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80bb11c75asm200467366b.97.2024.08.11.22.52.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Aug 2024 22:52:30 -0700 (PDT)
+Date: Mon, 12 Aug 2024 07:52:29 +0200
+From: Petr Tesarik <ptesarik@suse.com>
+To: Baruch Siach <baruch@tkos.co.il>
+Subject: Re: [PATCH v6 RESED 1/2] dma: replace zone_dma_bits by
+ zone_dma_limit
+Message-ID: <20240812075229.7caf7bab@mordecai.tesarici.cz>
+In-Reply-To: <17c067618b93e5d71f19c37826d54db4299621a3.1723359916.git.baruch@tkos.co.il>
+References: <cover.1723359916.git.baruch@tkos.co.il>
+	<17c067618b93e5d71f19c37826d54db4299621a3.1723359916.git.baruch@tkos.co.il>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-11_25,2024-08-07_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 mlxlogscore=999 adultscore=0 malwarescore=0 spamscore=0
- suspectscore=0 priorityscore=1501 phishscore=0 mlxscore=0 bulkscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408120033
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Mon, 12 Aug 2024 15:58:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,191 +84,225 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bhe@redhat.com, =?UTF-8?B?UGV0ciBUZXNhxZnDrWs=?= <petr@tesarici.cz>, x86@kernel.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, Ramon Fried <ramon@neureality.ai>, Will Deacon <will@kernel.org>, Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, Elad Nachman <enachman@marvell.com>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, linux-arm-kernel@lists.infradead.org, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sun, 11 Aug 2024 10:09:35 +0300
+Baruch Siach <baruch@tkos.co.il> wrote:
 
+> From: Catalin Marinas <catalin.marinas@arm.com>
+> 
+> Hardware DMA limit might not be power of 2. When RAM range starts above
+> 0, say 4GB, DMA limit of 30 bits should end at 5GB. A single high bit
+> can not encode this limit.
+> 
+> Use plain address for DMA zone limit.
+> 
+> Since DMA zone can now potentially span beyond 4GB physical limit of
+> DMA32, make sure to use DMA zone for GFP_DMA32 allocations in that case.
+> 
+> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> Co-developed-by: Baruch Siach <baruch@tkos.co.il>
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 
-On 12/08/24 11:11, Petr Tesarik wrote:
-> On Mon, 12 Aug 2024 09:46:51 +0530
-> Sourabh Jain <sourabhjain@linux.ibm.com> wrote:
->
->> Commit 79365026f869 ("crash: add a new kexec flag for hotplug support")
->> generalizes the crash hotplug support to allow architectures to update
->> multiple kexec segments on CPU/Memory hotplug and not just elfcorehdr.
->> Therefore, update the relevant kernel documentation to reflect the same.
->>
->> No functional change.
->>
->> Cc: Petr Tesarik <petr@tesarici.cz>
->> Cc: Hari Bathini <hbathini@linux.ibm.com>
->> Cc: kexec@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: x86@kernel.org
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> It's perfect now.
->
-> Reviewed-by: Petr Tesarik <ptesarik@suse.com>
+LGTM.
 
+Reviewed-by: Petr Tesarik <ptesarik@suse.com>
 
-Thank you the review, Petr.
+Petr T
 
-- Sourabh Jain
-
-
-> Petr T
->
->> ---
->>
->> Changelog:
->>
->> Since v1: https://lore.kernel.org/all/20240805050829.297171-1-sourabhjain@linux.ibm.com/
->>    - Update crash_hotplug sysfs document as suggested by Petr T
->>    - Update an error message in crash_handle_hotplug_event and
->>      crash_check_hotplug_support function.
->>
->> ---
->>   .../ABI/testing/sysfs-devices-memory          |  6 ++--
->>   .../ABI/testing/sysfs-devices-system-cpu      |  6 ++--
->>   .../admin-guide/mm/memory-hotplug.rst         |  5 +--
->>   Documentation/core-api/cpu_hotplug.rst        | 10 +++---
->>   kernel/crash_core.c                           | 33 +++++++++++--------
->>   5 files changed, 35 insertions(+), 25 deletions(-)
->>
->> diff --git a/Documentation/ABI/testing/sysfs-devices-memory b/Documentation/ABI/testing/sysfs-devices-memory
->> index a95e0f17c35a..cec65827e602 100644
->> --- a/Documentation/ABI/testing/sysfs-devices-memory
->> +++ b/Documentation/ABI/testing/sysfs-devices-memory
->> @@ -115,6 +115,6 @@ What:		/sys/devices/system/memory/crash_hotplug
->>   Date:		Aug 2023
->>   Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
->>   Description:
->> -		(RO) indicates whether or not the kernel directly supports
->> -		modifying the crash elfcorehdr for memory hot un/plug and/or
->> -		on/offline changes.
->> +		(RO) indicates whether or not the kernel updates relevant kexec
->> +		segments on memory hot un/plug and/or on/offline events, avoiding the
->> +		need to reload kdump kernel.
->> diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
->> index 325873385b71..1a31b7c71676 100644
->> --- a/Documentation/ABI/testing/sysfs-devices-system-cpu
->> +++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
->> @@ -703,9 +703,9 @@ What:		/sys/devices/system/cpu/crash_hotplug
->>   Date:		Aug 2023
->>   Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
->>   Description:
->> -		(RO) indicates whether or not the kernel directly supports
->> -		modifying the crash elfcorehdr for CPU hot un/plug and/or
->> -		on/offline changes.
->> +		(RO) indicates whether or not the kernel updates relevant kexec
->> +		segments on memory hot un/plug and/or on/offline events, avoiding the
->> +		need to reload kdump kernel.
->>   
->>   What:		/sys/devices/system/cpu/enabled
->>   Date:		Nov 2022
->> diff --git a/Documentation/admin-guide/mm/memory-hotplug.rst b/Documentation/admin-guide/mm/memory-hotplug.rst
->> index 098f14d83e99..cb2c080f400c 100644
->> --- a/Documentation/admin-guide/mm/memory-hotplug.rst
->> +++ b/Documentation/admin-guide/mm/memory-hotplug.rst
->> @@ -294,8 +294,9 @@ The following files are currently defined:
->>   ``crash_hotplug``      read-only: when changes to the system memory map
->>   		       occur due to hot un/plug of memory, this file contains
->>   		       '1' if the kernel updates the kdump capture kernel memory
->> -		       map itself (via elfcorehdr), or '0' if userspace must update
->> -		       the kdump capture kernel memory map.
->> +		       map itself (via elfcorehdr and other relevant kexec
->> +		       segments), or '0' if userspace must update the kdump
->> +		       capture kernel memory map.
->>   
->>   		       Availability depends on the CONFIG_MEMORY_HOTPLUG kernel
->>   		       configuration option.
->> diff --git a/Documentation/core-api/cpu_hotplug.rst b/Documentation/core-api/cpu_hotplug.rst
->> index dcb0e379e5e8..a21dbf261be7 100644
->> --- a/Documentation/core-api/cpu_hotplug.rst
->> +++ b/Documentation/core-api/cpu_hotplug.rst
->> @@ -737,8 +737,9 @@ can process the event further.
->>   
->>   When changes to the CPUs in the system occur, the sysfs file
->>   /sys/devices/system/cpu/crash_hotplug contains '1' if the kernel
->> -updates the kdump capture kernel list of CPUs itself (via elfcorehdr),
->> -or '0' if userspace must update the kdump capture kernel list of CPUs.
->> +updates the kdump capture kernel list of CPUs itself (via elfcorehdr and
->> +other relevant kexec segment), or '0' if userspace must update the kdump
->> +capture kernel list of CPUs.
->>   
->>   The availability depends on the CONFIG_HOTPLUG_CPU kernel configuration
->>   option.
->> @@ -750,8 +751,9 @@ file can be used in a udev rule as follows:
->>    SUBSYSTEM=="cpu", ATTRS{crash_hotplug}=="1", GOTO="kdump_reload_end"
->>   
->>   For a CPU hot un/plug event, if the architecture supports kernel updates
->> -of the elfcorehdr (which contains the list of CPUs), then the rule skips
->> -the unload-then-reload of the kdump capture kernel.
->> +of the elfcorehdr (which contains the list of CPUs) and other relevant
->> +kexec segments, then the rule skips the unload-then-reload of the kdump
->> +capture kernel.
->>   
->>   Kernel Inline Documentations Reference
->>   ======================================
->> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
->> index 63cf89393c6e..c1048893f4b6 100644
->> --- a/kernel/crash_core.c
->> +++ b/kernel/crash_core.c
->> @@ -505,7 +505,7 @@ int crash_check_hotplug_support(void)
->>   	crash_hotplug_lock();
->>   	/* Obtain lock while reading crash information */
->>   	if (!kexec_trylock()) {
->> -		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
->> +		pr_info("kexec_trylock() failed, kdump image may be inaccurate\n");
->>   		crash_hotplug_unlock();
->>   		return 0;
->>   	}
->> @@ -520,18 +520,25 @@ int crash_check_hotplug_support(void)
->>   }
->>   
->>   /*
->> - * To accurately reflect hot un/plug changes of cpu and memory resources
->> - * (including onling and offlining of those resources), the elfcorehdr
->> - * (which is passed to the crash kernel via the elfcorehdr= parameter)
->> - * must be updated with the new list of CPUs and memories.
->> + * To accurately reflect hot un/plug changes of CPU and Memory resources
->> + * (including onling and offlining of those resources), the relevant
->> + * kexec segments must be updated with latest CPU and Memory resources.
->>    *
->> - * In order to make changes to elfcorehdr, two conditions are needed:
->> - * First, the segment containing the elfcorehdr must be large enough
->> - * to permit a growing number of resources; the elfcorehdr memory size
->> - * is based on NR_CPUS_DEFAULT and CRASH_MAX_MEMORY_RANGES.
->> - * Second, purgatory must explicitly exclude the elfcorehdr from the
->> - * list of segments it checks (since the elfcorehdr changes and thus
->> - * would require an update to purgatory itself to update the digest).
->> + * Architectures must ensure two things for all segments that need
->> + * updating during hotplug events:
->> + *
->> + * 1. Segments must be large enough to accommodate a growing number of
->> + *    resources.
->> + * 2. Exclude the segments from SHA verification.
->> + *
->> + * For example, on most architectures, the elfcorehdr (which is passed
->> + * to the crash kernel via the elfcorehdr= parameter) must include the
->> + * new list of CPUs and memory. To make changes to the elfcorehdr, it
->> + * should be large enough to permit a growing number of CPU and Memory
->> + * resources. One can estimate the elfcorehdr memory size based on
->> + * NR_CPUS_DEFAULT and CRASH_MAX_MEMORY_RANGES. The elfcorehdr is
->> + * excluded from SHA verification by default if the architecture
->> + * supports crash hotplug.
->>    */
->>   static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu, void *arg)
->>   {
->> @@ -540,7 +547,7 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
->>   	crash_hotplug_lock();
->>   	/* Obtain lock while changing crash information */
->>   	if (!kexec_trylock()) {
->> -		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
->> +		pr_info("kexec_trylock() failed, kdump image may be inaccurate\n");
->>   		crash_hotplug_unlock();
->>   		return;
->>   	}
+> ---
+>  arch/arm64/mm/init.c       | 30 +++++++++++++++---------------
+>  arch/powerpc/mm/mem.c      |  5 ++++-
+>  arch/s390/mm/init.c        |  2 +-
+>  include/linux/dma-direct.h |  2 +-
+>  kernel/dma/direct.c        |  6 +++---
+>  kernel/dma/pool.c          |  4 ++--
+>  kernel/dma/swiotlb.c       |  6 +++---
+>  7 files changed, 29 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 9b5ab6818f7f..c45e2152ca9e 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -115,35 +115,35 @@ static void __init arch_reserve_crashkernel(void)
+>  }
+>  
+>  /*
+> - * Return the maximum physical address for a zone accessible by the given bits
+> - * limit. If DRAM starts above 32-bit, expand the zone to the maximum
+> + * Return the maximum physical address for a zone given its limit.
+> + * If DRAM starts above 32-bit, expand the zone to the maximum
+>   * available memory, otherwise cap it at 32-bit.
+>   */
+> -static phys_addr_t __init max_zone_phys(unsigned int zone_bits)
+> +static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
+>  {
+> -	phys_addr_t zone_mask = DMA_BIT_MASK(zone_bits);
+>  	phys_addr_t phys_start = memblock_start_of_DRAM();
+>  
+>  	if (phys_start > U32_MAX)
+> -		zone_mask = PHYS_ADDR_MAX;
+> -	else if (phys_start > zone_mask)
+> -		zone_mask = U32_MAX;
+> +		zone_limit = PHYS_ADDR_MAX;
+> +	else if (phys_start > zone_limit)
+> +		zone_limit = U32_MAX;
+>  
+> -	return min(zone_mask, memblock_end_of_DRAM() - 1) + 1;
+> +	return min(zone_limit, memblock_end_of_DRAM() - 1) + 1;
+>  }
+>  
+>  static void __init zone_sizes_init(void)
+>  {
+>  	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
+> -	unsigned int __maybe_unused acpi_zone_dma_bits;
+> -	unsigned int __maybe_unused dt_zone_dma_bits;
+> -	phys_addr_t __maybe_unused dma32_phys_limit = max_zone_phys(32);
+> +	phys_addr_t __maybe_unused acpi_zone_dma_limit;
+> +	phys_addr_t __maybe_unused dt_zone_dma_limit;
+> +	phys_addr_t __maybe_unused dma32_phys_limit =
+> +		max_zone_phys(DMA_BIT_MASK(32));
+>  
+>  #ifdef CONFIG_ZONE_DMA
+> -	acpi_zone_dma_bits = fls64(acpi_iort_dma_get_max_cpu_address());
+> -	dt_zone_dma_bits = fls64(of_dma_get_max_cpu_address(NULL));
+> -	zone_dma_bits = min3(32U, dt_zone_dma_bits, acpi_zone_dma_bits);
+> -	arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
+> +	acpi_zone_dma_limit = acpi_iort_dma_get_max_cpu_address();
+> +	dt_zone_dma_limit = of_dma_get_max_cpu_address(NULL);
+> +	zone_dma_limit = min(dt_zone_dma_limit, acpi_zone_dma_limit);
+> +	arm64_dma_phys_limit = max_zone_phys(zone_dma_limit);
+>  	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
+>  #endif
+>  #ifdef CONFIG_ZONE_DMA32
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index d325217ab201..05b7f702b3f7 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -216,7 +216,7 @@ static int __init mark_nonram_nosave(void)
+>   * everything else. GFP_DMA32 page allocations automatically fall back to
+>   * ZONE_DMA.
+>   *
+> - * By using 31-bit unconditionally, we can exploit zone_dma_bits to inform the
+> + * By using 31-bit unconditionally, we can exploit zone_dma_limit to inform the
+>   * generic DMA mapping code.  32-bit only devices (if not handled by an IOMMU
+>   * anyway) will take a first dip into ZONE_NORMAL and get otherwise served by
+>   * ZONE_DMA.
+> @@ -230,6 +230,7 @@ void __init paging_init(void)
+>  {
+>  	unsigned long long total_ram = memblock_phys_mem_size();
+>  	phys_addr_t top_of_ram = memblock_end_of_DRAM();
+> +	int zone_dma_bits;
+>  
+>  #ifdef CONFIG_HIGHMEM
+>  	unsigned long v = __fix_to_virt(FIX_KMAP_END);
+> @@ -256,6 +257,8 @@ void __init paging_init(void)
+>  	else
+>  		zone_dma_bits = 31;
+>  
+> +	zone_dma_limit = DMA_BIT_MASK(zone_dma_bits);
+> +
+>  #ifdef CONFIG_ZONE_DMA
+>  	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
+>  				      1UL << (zone_dma_bits - PAGE_SHIFT));
+> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+> index ddcd39ef4346..91fc2b91adfc 100644
+> --- a/arch/s390/mm/init.c
+> +++ b/arch/s390/mm/init.c
+> @@ -97,7 +97,7 @@ void __init paging_init(void)
+>  
+>  	vmem_map_init();
+>  	sparse_init();
+> -	zone_dma_bits = 31;
+> +	zone_dma_limit = DMA_BIT_MASK(31);
+>  	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+>  	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
+>  	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+> diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+> index edbe13d00776..d7e30d4f7503 100644
+> --- a/include/linux/dma-direct.h
+> +++ b/include/linux/dma-direct.h
+> @@ -12,7 +12,7 @@
+>  #include <linux/mem_encrypt.h>
+>  #include <linux/swiotlb.h>
+>  
+> -extern unsigned int zone_dma_bits;
+> +extern u64 zone_dma_limit;
+>  
+>  /*
+>   * Record the mapping of CPU physical to DMA addresses for a given region.
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index 4480a3cd92e0..f2ba074a6a54 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -20,7 +20,7 @@
+>   * it for entirely different regions. In that case the arch code needs to
+>   * override the variable below for dma-direct to work properly.
+>   */
+> -unsigned int zone_dma_bits __ro_after_init = 24;
+> +u64 zone_dma_limit __ro_after_init = DMA_BIT_MASK(24);
+>  
+>  static inline dma_addr_t phys_to_dma_direct(struct device *dev,
+>  		phys_addr_t phys)
+> @@ -59,7 +59,7 @@ static gfp_t dma_direct_optimal_gfp_mask(struct device *dev, u64 *phys_limit)
+>  	 * zones.
+>  	 */
+>  	*phys_limit = dma_to_phys(dev, dma_limit);
+> -	if (*phys_limit <= DMA_BIT_MASK(zone_dma_bits))
+> +	if (*phys_limit <= zone_dma_limit)
+>  		return GFP_DMA;
+>  	if (*phys_limit <= DMA_BIT_MASK(32))
+>  		return GFP_DMA32;
+> @@ -580,7 +580,7 @@ int dma_direct_supported(struct device *dev, u64 mask)
+>  	 * part of the check.
+>  	 */
+>  	if (IS_ENABLED(CONFIG_ZONE_DMA))
+> -		min_mask = min_t(u64, min_mask, DMA_BIT_MASK(zone_dma_bits));
+> +		min_mask = min_t(u64, min_mask, zone_dma_limit);
+>  	return mask >= phys_to_dma_unencrypted(dev, min_mask);
+>  }
+>  
+> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+> index d10613eb0f63..7b04f7575796 100644
+> --- a/kernel/dma/pool.c
+> +++ b/kernel/dma/pool.c
+> @@ -70,9 +70,9 @@ static bool cma_in_zone(gfp_t gfp)
+>  	/* CMA can't cross zone boundaries, see cma_activate_area() */
+>  	end = cma_get_base(cma) + size - 1;
+>  	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp & GFP_DMA))
+> -		return end <= DMA_BIT_MASK(zone_dma_bits);
+> +		return end <= zone_dma_limit;
+>  	if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp & GFP_DMA32))
+> -		return end <= DMA_BIT_MASK(32);
+> +		return end <= max(DMA_BIT_MASK(32), zone_dma_limit);
+>  	return true;
+>  }
+>  
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index df68d29740a0..abcf3fa63a56 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -450,9 +450,9 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
+>  	if (!remap)
+>  		io_tlb_default_mem.can_grow = true;
+>  	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp_mask & __GFP_DMA))
+> -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(zone_dma_bits);
+> +		io_tlb_default_mem.phys_limit = zone_dma_limit;
+>  	else if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp_mask & __GFP_DMA32))
+> -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(32);
+> +		io_tlb_default_mem.phys_limit = max(DMA_BIT_MASK(32), zone_dma_limit);
+>  	else
+>  		io_tlb_default_mem.phys_limit = virt_to_phys(high_memory - 1);
+>  #endif
+> @@ -629,7 +629,7 @@ static struct page *swiotlb_alloc_tlb(struct device *dev, size_t bytes,
+>  	}
+>  
+>  	gfp &= ~GFP_ZONEMASK;
+> -	if (phys_limit <= DMA_BIT_MASK(zone_dma_bits))
+> +	if (phys_limit <= zone_dma_limit)
+>  		gfp |= __GFP_DMA;
+>  	else if (phys_limit <= DMA_BIT_MASK(32))
+>  		gfp |= __GFP_DMA32;
 
