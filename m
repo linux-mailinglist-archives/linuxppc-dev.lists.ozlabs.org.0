@@ -2,67 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475D494E3D0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 01:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E7D94E3F2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 02:21:59 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ufal.mff.cuni.cz header.i=@ufal.mff.cuni.cz header.a=rsa-sha256 header.s=9D3691E2-3533-11E9-988E-D2516E4D0B60 header.b=v6mJ7amC;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=F6Uj8DQ6;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WhtxM1lkmz2yK8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 09:23:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WhwF13p61z2xcX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 10:21:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ufal.mff.cuni.cz
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ufal.mff.cuni.cz header.i=@ufal.mff.cuni.cz header.a=rsa-sha256 header.s=9D3691E2-3533-11E9-988E-D2516E4D0B60 header.b=v6mJ7amC;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=F6Uj8DQ6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Unknown mechanism found: ipv4:195.113.16.19) smtp.mailfrom=ufal.mff.cuni.cz (client-ip=195.113.20.158; helo=ufal-mail.mff.cuni.cz; envelope-from=vidra@ufal.mff.cuni.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 459 seconds by postgrey-1.37 at boromir; Mon, 12 Aug 2024 03:00:18 AEST
-Received: from ufal-mail.mff.cuni.cz (ufal-mail.mff.cuni.cz [195.113.20.158])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WhkRQ5hVKz2xTq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 03:00:18 +1000 (AEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by ufal-mail.mff.cuni.cz (Postfix) with ESMTP id EBEAC4F2B69;
-	Sun, 11 Aug 2024 18:52:30 +0200 (CEST)
-Received: from ufal-mail.mff.cuni.cz ([127.0.0.1])
- by localhost (ufal-mail.mff.cuni.cz [127.0.0.1]) (amavis, port 10032)
- with ESMTP id DhOUQqr-HnCG; Sun, 11 Aug 2024 18:52:30 +0200 (CEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by ufal-mail.mff.cuni.cz (Postfix) with ESMTP id BD4844F3831;
-	Sun, 11 Aug 2024 18:52:30 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 ufal-mail.mff.cuni.cz BD4844F3831
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ufal.mff.cuni.cz;
-	s=9D3691E2-3533-11E9-988E-D2516E4D0B60; t=1723395150;
-	bh=0KjhO2xt++CVNuvKu9eIW/EKcmpGMJULps5rYcCKbok=;
-	h=From:To:MIME-Version:Message-Id:Date;
-	b=v6mJ7amCoSiQkBsOzh6SUTpoPx3MYFzIVyW4B8dKa0Awl/jDt+yPWP0hMrrGF30k2
-	 p1W3zf/YsfFthPap2o2DT4zrNuqh+HUKr2uaVVPy5dhZ88JINRSnkvbtYcjVmClL1L
-	 YcPB290DV4D0VCvP0tyAWKfNEvdLRWC7TWSt/0fs3mMoePAyxkwRnKqn1ChBQVGY1h
-	 lceFGgKNNywYIhUuzJQHue/pzKFuqhLxShGeDFytB/trbJYUWUKyBmBEei59xbauHK
-	 flme1EQIXOcjmPXii3yyL0XPS14tMcc9T+PKbFWlSXvqoSuie3IhtsNXFTnEPM18wa
-	 ebtUZ3NgSUeXw==
-X-Virus-Scanned: amavis at ufal.mff.cuni.cz
-Received: from ufal-mail.mff.cuni.cz ([127.0.0.1])
- by localhost (ufal-mail.mff.cuni.cz [127.0.0.1]) (amavis, port 10026)
- with ESMTP id Sucev-Xru4Rx; Sun, 11 Aug 2024 18:52:30 +0200 (CEST)
-Received: from freki.localdomain (freki.ms.mff.cuni.cz [195.113.18.207])
-	by ufal-mail.mff.cuni.cz (Postfix) with ESMTP id 98B344F3830;
-	Sun, 11 Aug 2024 18:52:30 +0200 (CEST)
-Received: by freki.localdomain (Postfix, from userid 6172)
-	id 91DCFA0660; Sun, 11 Aug 2024 18:52:30 +0200 (CEST)
-From: Jonas Vidra <vidra@ufal.mff.cuni.cz>
-To: erhard_f@mailbox.org
-Subject: Re: BUG: Bad page map in process init pte:c0ab684c pmd:01182000 (on a PowerMac G4 DP)
-In-Reply-To: <20240620004237.2338f82b@yea>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WhwDJ6Pdfz2xVW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 10:21:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1723422080;
+	bh=rj+A1Eq8T+83bsU/83gJ88QOdkQtzM0CeShwXFFsH0s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=F6Uj8DQ6XLvSPVkyZ9ass8HVvOQJGCTVOKJ0SCkJnk+8Sy2YJtwM+QKkcwivBLtru
+	 65eBXL70cNeZeykdcUcjzRql9/YweQTSLwG3NPADzOI0IFoVy3x0b8TubtjEE6JICl
+	 3B9WWJk7YKH24xtMhLG4YnmEOG3BURpteXw7emGQOzn5d91NYWMjxOU72BKajw/maA
+	 8ca8YnnWX2UwUBHZxyOZb0eA897Bzo1D3sdIrX0G2oUdRIgRZYuT5W9tYEHyWowh9r
+	 uljao9VXexlO9Bam23cg4pfPtgmVd37PknJMArDkTUnGSnZOgR1Xjpb/dRGuaQYMbr
+	 R7m+o16tbiIlw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WhwDJ4phDz4wbR;
+	Mon, 12 Aug 2024 10:21:20 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, npiggin@gmail.com, shuah@kernel.org
+Subject: Re: [PATCH] selftest/powerpc/benchmark: remove requirement libc-dev
+In-Reply-To: <f4ae0d9e-5d1f-4b5e-92b9-aabb513e3097@csgroup.eu>
+References: <20240805083008.1300853-1-maddy@linux.ibm.com>
+ <f4ae0d9e-5d1f-4b5e-92b9-aabb513e3097@csgroup.eu>
+Date: Mon, 12 Aug 2024 10:21:19 +1000
+Message-ID: <87seva8ubk.fsf@mail.lhotse>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Message-Id: <20240811165230.91DCFA0660@freki.localdomain>
-Date: Sun, 11 Aug 2024 18:52:30 +0200 (CEST)
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Mon, 12 Aug 2024 09:22:44 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,87 +61,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, rmclure@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, christophe.leroy@csgroup.eu
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 20 Jun 2024 00:42:37 +0200, Erhard Furtner wrote:
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 05/08/2024 =C3=A0 10:30, Madhavan Srinivasan a =C3=A9crit=C2=A0:
+>> Currently exec-target.c file is linked as static and this
+>> post a requirement to install libc dev package to build.
+>> Without it, build-breaks when compiling selftest/powerpc/benchmark.
+>>=20
+>>    CC       exec_target
+>> /usr/bin/ld: cannot find -lc: No such file or directory
+>> collect2: error: ld returned 1 exit status
+>>=20
+>> exec_target.c is using "syscall" library function which
+>> could be replaced with a inline assembly and the same is
+>> proposed as a fix here.
+>>=20
+>> Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+>> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> ---
+>>   tools/testing/selftests/powerpc/benchmarks/Makefile    |  2 +-
+>>   .../testing/selftests/powerpc/benchmarks/exec_target.c | 10 ++++++++--
+>>   2 files changed, 9 insertions(+), 3 deletions(-)
+>>=20
+>> diff --git a/tools/testing/selftests/powerpc/benchmarks/exec_target.c b/=
+tools/testing/selftests/powerpc/benchmarks/exec_target.c
+>> index c14b0fc1edde..20027a23b594 100644
+>> --- a/tools/testing/selftests/powerpc/benchmarks/exec_target.c
+>> +++ b/tools/testing/selftests/powerpc/benchmarks/exec_target.c
+>> @@ -7,10 +7,16 @@
+>>    */
+>>=20=20=20
+>>   #define _GNU_SOURCE
+>> -#include <unistd.h>
+>>   #include <sys/syscall.h>
+>>=20=20=20
+>>   void _start(void)
+>>   {
+>> -	syscall(SYS_exit, 0);
+>> +	asm volatile (
+>> +		"li %%r0, %[sys_exit];"
+>> +		"li %%r3, 0;"
+>> +		"sc;"
+>> +		:
+>> +		: [sys_exit] "i" (SYS_exit)
+>> +		: "r0", "r3"
+>> +	);
+>
+> That looks ok because SYS_exit() is not supposed to return, but in the=20
+> general case you should take a lot more precautions regarding which=20
+> registers get clobbered when using sc.
 
->> Le 29/02/2024 =C3=A0 02:09, Erhard Furtner a =C3=A9crit :
->> >=20
->> > Revisited the issue on kernel v6.8-rc6 and I can still reproduce it.
->> >=20
->> > Short summary as my last post was over a year ago:
->> >   (x) I get this memory corruption only when CONFIG_VMAP_STACK=3Dy a=
-nd CONFIG_SMP=3Dy is enabled.
->> >   (x) I don't get this memory corruption when only one of the above =
-is enabled. ^^
->> >   (x) memtester says the 2 GiB RAM in my G4 DP are fine.
->> >   (x) I don't get this issue on my G5 11,2 or Talos II.
->> >   (x) "stress -m 2 --vm-bytes 965M" provokes the issue in < 10 secs.=
- (https://salsa.debian.org/debian/stress)
->> >=20
-> The "pagealloc: memory corruption" remains however as of kernel v6.10-r=
-c4.
+That's my fault for just blurting out that diff on slack without
+thinking about it too hard.
 
-I've reproduced the bug on similar hardware, also a dual-processor Power
-Mac G4 with 2 GiB RAM.
+We should probably just add the proper clobbers, in case anyone copies
+it in future. Which should be:
 
-With the 6.6.30 kernel without extra debugging options, the system was
-stable and could e.g. compile GCC or the kernel without an issue. That
-doesn't mean there wasn't silent corruption going on, of course. :-)
-Running the `stress` program as listed above did, however, cause the
-system to get into an unstable state where heavier workloads, such as
-compiling the kernel, would randomly fail.
+	asm volatile (
+		"li %%r0, %[sys_exit];"
+		"li %%r3, 0;"
+		"sc;"
+		:
+		: [sys_exit] "i" (SYS_exit)
+		: "r0", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10",
+		  "r11", "r12", "r13", "cr0", "ctr", "xer", "memory"
+	);
 
-I updated the kernel to 6.10.3, enabled SLUB_DEBUG, PAGE_POISONING and
-DEBUG_PAGEALLOC and turned them on at boot-time with slub_debug=3DFZ
-page_poison=3Don debug_pagealloc=3Don.
-
-The updated kernel exhibits the same symptoms as described by Erhard,
-running `stress -m 2 --vm-bytes 965M` almost immediately causes a memory
-corruption with the following messages in dmesg:
-
-```
-pagealloc: memory corruption
-fffcfff0: 00 00 00 00                                      ....
-CPU: 1 PID: 1845 Comm: stress Tainted: G                T  6.10.3-gentoo =
-#1
-Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
-Call Trace:
-[f2d05ca0] [c08ff18c] dump_stack_lvl+0x60/0xbc (unreliable)
-[f2d05cc0] [c01db7e0] __kernel_unpoison_pages+0x128/0x1f0
-[f2d05d10] [c01bc6c4] get_page_from_freelist+0xeb0/0xf6c
-[f2d05db0] [c01bcf7c] __alloc_pages_noprof+0x160/0xdf0
-[f2d05e70] [c01be388] __folio_alloc_noprof+0x14/0x44
-[f2d05e80] [c0199690] handle_mm_fault+0x99c/0xdac
-[f2d05f00] [c00218c8] do_page_fault+0x264/0x73c
-[f2d05f30] [c000433c] DataAccess_virt+0x124/0x17c
---- interrupt: 300 at 0x7c2db0
-NIP:  007c2db0 LR: 007c2d90 CTR: 00000000
-REGS: f2d05f40 TRAP: 0300   Tainted: G                T   (6.10.3-gentoo)
-MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 20882004  XER: 00000000
-DAR: 8fe18020 DSISR: 42000000
-GPR00: 007c2d90 afb6a160 a7a00100 6b416020 ffffffa0 00000000 a7916ffc 000=
-00000
-GPR08: 24a03000 24a02000 00000000 404347fa 404344c7 00000000 00000000 000=
-0005a
-GPR16: 6b416020 00000002 00000000 00000000 ffffffff 00000000 40882002 007=
-e0004
-GPR24: 00000001 ffffffff ffffffff 3c500000 00000000 66b7cd68 007e7cf8 000=
-01000
-NIP [007c2db0] 0x7c2db0
-LR [007c2d90] 0x7c2d90
---- interrupt: 300
-page: refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x31069
-flags: 0x80000000(zone=3D2)
-raw: 80000000 00000100 00000122 00000000 00000000 00000000 ffffffff 00000=
-001
-page dumped because: pagealloc: corrupted page details
-```
-
-Other activity can also trigger it, compilation of larger programs with
-`make -j2` does it within an hour, typically resulting in an ICE.
-
-When booted with the `maxcpus=3D0` kernel parameter, the corruptions do
-not occur.
+cheers
