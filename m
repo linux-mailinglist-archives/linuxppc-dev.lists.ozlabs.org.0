@@ -1,42 +1,42 @@
-Return-Path: <linuxppc-dev+bounces-7-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C89294E880
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 10:26:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFC794E881
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 12 Aug 2024 10:26:19 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fhxsz34w;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fFPHXE1d;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wj6zl2hxCz2xjJ;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wj6zl66Xcz2y8V;
 	Mon, 12 Aug 2024 18:26:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fhxsz34w;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fFPHXE1d;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wj6zl1zD7z2xfR
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wj6zl59RDz2xrv
 	for <linuxppc-dev@lists.ozlabs.org>; Mon, 12 Aug 2024 18:26:11 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
 	s=201909; t=1723451171;
-	bh=VDTeFKG0tWsaWgY5r4pEV0pX09s9ysckDeAKLLaIFRs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fhxsz34wOUUSnbdDDauItzNL8KbrPOk7aPwcBLdQypYkobErRlI50imsAL30scp4Z
-	 eXKETdiRr+U+E3qiwMLaSxlWuSJnrNmrmKLNCTA/G2NJ8867qYNafCfX9VWbnZZCnL
-	 uPOtIF7r8dFU2DF48vSD8LhCKd3cqpi6Jkg8gIQIXnXkrpkXF3Msyqsu1VO+DKOgD/
-	 tQ1jxVLo0FWhKB1XV4icEInoLMAkmCr33AojWOhDDEtuQwrvFO0s0DjemBcYFg1Xce
-	 5qVFHDIj1hYHLlHTIwAg5HBTIhtv9w+LTNZKa4gPH8+QUvKzS/5Myj08LAvTEMjTrx
-	 5Xk7bT1INhDYA==
+	bh=90PGWBEPImYbqdKWstTCR2/CnGQLSesaZNbFieveKuE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fFPHXE1dOvj+bKatKB56csNqaldo10qmfdXwB1reponcEmik+TvrSRPKhatzXSHSx
+	 wSbXA5pkgkbvxhDr6zSSvFQvnSDu+1oJErPK+JPOsOUZur2lv/ndnIqPxMc8HyxMjH
+	 XN95VVCbSnJRNpFyLmuBWBUzmwADAyxkNtqaWmYpunfu4p5z7Zg0u5fPeMVuH5Hok/
+	 mFcKZgybv4Zx8Q8guL83cj7gAwLZmUwBrL9ZzgTi64YSYhfhdZdn+TRgNvBMhtEpRn
+	 oUYqRjmf0fWRjTlu2BtTD5vHgOShzNnppXzHKFJvbRd7ZradwBPOHQNgO/ABDbGAKX
+	 nKLrIq6sdYBhQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wj6zk6yjDz4x8Q;
-	Mon, 12 Aug 2024 18:26:10 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wj6zl3y2Sz4x8w;
+	Mon, 12 Aug 2024 18:26:11 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linux-mm@kvack.org>
 Cc: <linuxppc-dev@lists.ozlabs.org>,
@@ -49,10 +49,12 @@ Cc: <linuxppc-dev@lists.ozlabs.org>,
 	npiggin@gmail.com,
 	oliver.sang@intel.com,
 	pedro.falcato@gmail.com
-Subject: [PATCH v2 1/4] mm: Add optional close() to struct vm_special_mapping
-Date: Mon, 12 Aug 2024 18:26:02 +1000
-Message-ID: <20240812082605.743814-1-mpe@ellerman.id.au>
+Subject: [PATCH v2 2/4] powerpc/mm: Handle VDSO unmapping via close() rather than arch_unmap()
+Date: Mon, 12 Aug 2024 18:26:03 +1000
+Message-ID: <20240812082605.743814-2-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240812082605.743814-1-mpe@ellerman.id.au>
+References: <20240812082605.743814-1-mpe@ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,87 +66,75 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add an optional close() callback to struct vm_special_mapping. It will
-be used, by powerpc at least, to handle unmapping of the VDSO.
-
-Although support for unmapping the VDSO was initially added
-for CRIU[1], it is not desirable to guard that support behind
-CONFIG_CHECKPOINT_RESTORE.
-
-There are other known users of unmapping the VDSO which are not related
-to CRIU, eg. Valgrind [2] and void-ship [3].
-
-The powerpc arch_unmap() hook has been in place for ~9 years, with no
-ifdef, so there may be other unknown users that have come to rely on
-unmapping the VDSO. Even if the code was behind an ifdef, major distros
-enable CHECKPOINT_RESTORE so users may not realise unmapping the VDSO
-depends on that configuration option.
-
-It's also undesirable to have such core mm behaviour behind a relatively
-obscure CONFIG option.
-
-Longer term the unmap behaviour should be standardised across
-architectures, however that is complicated by the fact the VDSO pointer
-is stored differently across architectures. There was a previous attempt
-to unify that handling [4], which could be revived.
-
-See [5] for further discussion.
-
-[1]: commit 83d3f0e90c6c ("powerpc/mm: tracking vDSO remap")
-[2]: https://sourceware.org/git/?p=valgrind.git;a=commit;h=3a004915a2cbdcdebafc1612427576bf3321eef5
-[3]: https://github.com/insanitybit/void-ship
-[4]: https://lore.kernel.org/lkml/20210611180242.711399-17-dima@arista.com/
-[5]: https://lore.kernel.org/linuxppc-dev/shiq5v3jrmyi6ncwke7wgl76ojysgbhrchsk32q4lbx2hadqqc@kzyy2igem256
+Add a close() callback to the VDSO special mapping to handle unmapping
+of the VDSO. That will make it possible to remove the arch_unmap() hook
+entirely in a subsequent patch.
 
 Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Reviewed-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/mm_types.h | 3 +++
- mm/mmap.c                | 6 ++++++
- 2 files changed, 9 insertions(+)
+ arch/powerpc/include/asm/mmu_context.h |  4 ----
+ arch/powerpc/kernel/vdso.c             | 17 +++++++++++++++++
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-v2:
-- Add some blank lines as requested.
-- Expand special_mapping_close() comment.
-- Add David's reviewed-by.
-- Expand change log to capture review discussion.
+v2: Unchanged except for collecting tags.
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 485424979254..78bdfc59abe5 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1313,6 +1313,9 @@ struct vm_special_mapping {
- 
- 	int (*mremap)(const struct vm_special_mapping *sm,
- 		     struct vm_area_struct *new_vma);
-+
-+	void (*close)(const struct vm_special_mapping *sm,
-+		      struct vm_area_struct *vma);
- };
- 
- enum tlb_flush_reason {
-diff --git a/mm/mmap.c b/mm/mmap.c
-index d0dfc85b209b..af4dbf0d3bd4 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -3620,10 +3620,16 @@ void vm_stat_account(struct mm_struct *mm, vm_flags_t flags, long npages)
- static vm_fault_t special_mapping_fault(struct vm_fault *vmf);
- 
- /*
-+ * Close hook, called for unmap() and on the old vma for mremap().
-+ *
-  * Having a close hook prevents vma merging regardless of flags.
-  */
- static void special_mapping_close(struct vm_area_struct *vma)
+diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+index 37bffa0f7918..9b8c1555744e 100644
+--- a/arch/powerpc/include/asm/mmu_context.h
++++ b/arch/powerpc/include/asm/mmu_context.h
+@@ -263,10 +263,6 @@ extern void arch_exit_mmap(struct mm_struct *mm);
+ static inline void arch_unmap(struct mm_struct *mm,
+ 			      unsigned long start, unsigned long end)
  {
-+	const struct vm_special_mapping *sm = vma->vm_private_data;
-+
-+	if (sm->close)
-+		sm->close(sm, vma);
+-	unsigned long vdso_base = (unsigned long)mm->context.vdso;
+-
+-	if (start <= vdso_base && vdso_base < end)
+-		mm->context.vdso = NULL;
  }
  
- static const char *special_mapping_name(struct vm_area_struct *vma)
+ #ifdef CONFIG_PPC_MEM_KEYS
+diff --git a/arch/powerpc/kernel/vdso.c b/arch/powerpc/kernel/vdso.c
+index 7a2ff9010f17..220a76cae7c1 100644
+--- a/arch/powerpc/kernel/vdso.c
++++ b/arch/powerpc/kernel/vdso.c
+@@ -81,6 +81,21 @@ static int vdso64_mremap(const struct vm_special_mapping *sm, struct vm_area_str
+ 	return vdso_mremap(sm, new_vma, &vdso64_end - &vdso64_start);
+ }
+ 
++static void vdso_close(const struct vm_special_mapping *sm, struct vm_area_struct *vma)
++{
++	struct mm_struct *mm = vma->vm_mm;
++
++	/*
++	 * close() is called for munmap() but also for mremap(). In the mremap()
++	 * case the vdso pointer has already been updated by the mremap() hook
++	 * above, so it must not be set to NULL here.
++	 */
++	if (vma->vm_start != (unsigned long)mm->context.vdso)
++		return;
++
++	mm->context.vdso = NULL;
++}
++
+ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+ 			     struct vm_area_struct *vma, struct vm_fault *vmf);
+ 
+@@ -92,11 +107,13 @@ static struct vm_special_mapping vvar_spec __ro_after_init = {
+ static struct vm_special_mapping vdso32_spec __ro_after_init = {
+ 	.name = "[vdso]",
+ 	.mremap = vdso32_mremap,
++	.close = vdso_close,
+ };
+ 
+ static struct vm_special_mapping vdso64_spec __ro_after_init = {
+ 	.name = "[vdso]",
+ 	.mremap = vdso64_mremap,
++	.close = vdso_close,
+ };
+ 
+ #ifdef CONFIG_TIME_NS
 -- 
 2.45.2
 
