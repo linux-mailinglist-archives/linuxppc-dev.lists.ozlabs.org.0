@@ -1,63 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-40-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-41-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F70E94FAEB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2024 03:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D780C94FAEC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2024 03:05:08 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V7bKXIBC;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IC/QQyyD;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WjY883p29z2yGF;
-	Tue, 13 Aug 2024 11:04:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WjY8L51L2z2yK7;
+	Tue, 13 Aug 2024 11:05:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V7bKXIBC;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IC/QQyyD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WjY8652Xvz2xJF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2024 11:04:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WjY8K69mDz2xJF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2024 11:05:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723511095; x=1755047095;
+  t=1723511106; x=1755047106;
   h=date:from:to:cc:subject:message-id;
-  bh=+ubQTTTW1BiiiG50hLsvCDzb+yoDFhRjX3mqRTPfa6U=;
-  b=V7bKXIBCRzyQdhSeKzRXj8nuj7Ly2oqLKgOXTU2+gg5bG8pFaMkElUxk
-   X/I6E89dh+MFGi63+S+LhrAW8T9NR41osKFZYvRFjN2zR13B/x4m56UhH
-   liO+Uf8sKUOCsLPtgySl6Pg7fz7NLEBmBkDsqEVy8+B9yl3nJRLOqXrnp
-   NMdXSwyUeZT41dj9pzjtqcat3Nh9vrJyXQQp4V3InxHbKslyhO3KlTq0K
-   7xpNt3S/e0g4pyCrgtxelqc6NDcQ8OjpSDb/xDnhQQo5FQ3OTOlVNQ+8U
-   YibY5+IEapksbJRJ9xaryRf8lzbYmwEe+xMuF7rAauqU+5VOlh2rUvwuJ
-   g==;
-X-CSE-ConnectionGUID: qfAQeQ/gSnO1vq5OzlMHbw==
-X-CSE-MsgGUID: EE7ORGUOR4WA21cBhEN/4Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21461666"
+  bh=ITmJuP5btYDq3pS0c760dhyRZKwQwXQU2XD44eXGlvs=;
+  b=IC/QQyyD39wfhVJ5Nq1LdFSsh365nQGRHhYw8V2vDfVtMRSXicjh+PTV
+   9axhLgwdgo37fcuhtYHvoJK+RNM1T69qiwKEVxKu6g7RwlGIwXLze7qui
+   CC0xqFLqglYJpoCPw603dG9D4jP3dMPqVtrTB41/VK1RYk/REdv69SgCV
+   Rm2BpBOgEXDJ6gkAZByDrd+AMF6YvnaMzak+d3ZIVqxvPay5uSb5hk4HY
+   O955E9Z4AbAiYvcGdhT7c8RBU6LdGkV523HElcHG1H5Rd1BcM7M/S2H5A
+   YCgY89vnTNnXBoUT7qujqX4ZtUlTiFQ2W3B5Gk1UdIpPHEhQi+wj800wm
+   Q==;
+X-CSE-ConnectionGUID: Z2sOFuf8TROXeg8xDG3azw==
+X-CSE-MsgGUID: 4x3+4ar+Qzm3+a3PlTrvpA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21623496"
 X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; 
-   d="scan'208";a="21461666"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 18:04:47 -0700
-X-CSE-ConnectionGUID: wfwQmcNUSUCrrxMqE9gOGA==
-X-CSE-MsgGUID: JLLBjduQRI2DjcGkLX9AiQ==
+   d="scan'208";a="21623496"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 18:04:47 -0700
+X-CSE-ConnectionGUID: Tf+ZRGD5TsKxXZk0Hfw5yg==
+X-CSE-MsgGUID: z4Ta9CewTSSWKSk5+z72oQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; 
-   d="scan'208";a="62891668"
+   d="scan'208";a="89313409"
 Received: from unknown (HELO b6bf6c95bbab) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 12 Aug 2024 18:04:45 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 12 Aug 2024 18:04:45 -0700
 Received: from kbuild by b6bf6c95bbab with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sdfxq-000CHn-34;
-	Tue, 13 Aug 2024 01:04:42 +0000
-Date: Tue, 13 Aug 2024 09:04:17 +0800
+	id 1sdfxr-000CHq-04;
+	Tue, 13 Aug 2024 01:04:43 +0000
+Date: Tue, 13 Aug 2024 09:04:32 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
 Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- e7e846dc6c73fbc94ae8b4ec20d05627646416f2
-Message-ID: <202408130914.EnqbU8GU-lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS
+ ddf9a4c1797f6a35c8bc241a08fe00cb18f3a674
+Message-ID: <202408130929.eGNBx70e-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -68,13 +68,13 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: e7e846dc6c73fbc94ae8b4ec20d05627646416f2  powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: ddf9a4c1797f6a35c8bc241a08fe00cb18f3a674  Automatic merge of 'master' into merge (2024-08-05 20:24)
 
 elapsed time: 728m
 
-configs tested: 208
-configs skipped: 6
+configs tested: 209
+configs skipped: 5
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -197,7 +197,6 @@ powerpc                          allmodconfig   gcc-14.1.0
 powerpc                           allnoconfig   gcc-14.1.0
 powerpc                          allyesconfig   clang-20
 powerpc                          allyesconfig   gcc-14.1.0
-powerpc               randconfig-001-20240813   clang-20
 powerpc               randconfig-002-20240813   gcc-14.1.0
 powerpc               randconfig-003-20240813   gcc-14.1.0
 powerpc64             randconfig-001-20240813   gcc-14.1.0
@@ -209,12 +208,16 @@ riscv                             allnoconfig   gcc-14.1.0
 riscv                            allyesconfig   clang-20
 riscv                            allyesconfig   gcc-14.1.0
 riscv                               defconfig   clang-20
+riscv                               defconfig   gcc-14.1.0
 riscv                 randconfig-001-20240813   gcc-14.1.0
 riscv                 randconfig-002-20240813   gcc-14.1.0
 s390                             allmodconfig   clang-20
 s390                              allnoconfig   clang-20
+s390                              allnoconfig   gcc-14.1.0
+s390                             allyesconfig   clang-20
 s390                             allyesconfig   gcc-14.1.0
 s390                                defconfig   clang-20
+s390                                defconfig   gcc-14.1.0
 s390                  randconfig-001-20240813   clang-20
 s390                  randconfig-002-20240813   gcc-14.1.0
 sh                               allmodconfig   gcc-14.1.0
@@ -231,13 +234,17 @@ sparc64               randconfig-002-20240813   gcc-14.1.0
 um                               allmodconfig   clang-20
 um                               allmodconfig   gcc-13.3.0
 um                                allnoconfig   clang-17
+um                                allnoconfig   gcc-14.1.0
 um                               allyesconfig   gcc-12
 um                               allyesconfig   gcc-13.3.0
 um                                  defconfig   clang-20
+um                                  defconfig   gcc-14.1.0
 um                             i386_defconfig   gcc-12
+um                             i386_defconfig   gcc-14.1.0
 um                    randconfig-001-20240813   gcc-12
 um                    randconfig-002-20240813   clang-14
 um                           x86_64_defconfig   clang-15
+um                           x86_64_defconfig   gcc-14.1.0
 x86_64                            allnoconfig   clang-18
 x86_64                           allyesconfig   clang-18
 x86_64       buildonly-randconfig-001-20240813   clang-18
@@ -269,19 +276,13 @@ x86_64                randconfig-012-20240813   gcc-12
 x86_64                randconfig-013-20240813   clang-18
 x86_64                randconfig-013-20240813   gcc-12
 x86_64                randconfig-014-20240813   clang-18
-x86_64                randconfig-014-20240813   gcc-11
 x86_64                randconfig-015-20240813   clang-18
-x86_64                randconfig-015-20240813   gcc-11
 x86_64                randconfig-016-20240813   clang-18
-x86_64                randconfig-016-20240813   gcc-12
 x86_64                randconfig-071-20240813   clang-18
 x86_64                randconfig-072-20240813   clang-18
 x86_64                randconfig-073-20240813   clang-18
-x86_64                randconfig-073-20240813   gcc-11
 x86_64                randconfig-074-20240813   clang-18
-x86_64                randconfig-074-20240813   gcc-12
 x86_64                randconfig-075-20240813   clang-18
-x86_64                randconfig-075-20240813   gcc-12
 x86_64                randconfig-076-20240813   clang-18
 x86_64                          rhel-8.3-rust   clang-18
 xtensa                            allnoconfig   gcc-13.2.0
