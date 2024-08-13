@@ -1,30 +1,30 @@
-Return-Path: <linuxppc-dev+bounces-54-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-55-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4E59504AD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2024 14:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C509504B3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 Aug 2024 14:15:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wjr156dqCz2xxm;
-	Tue, 13 Aug 2024 22:14:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wjr1z4Mhkz2xtt;
+	Tue, 13 Aug 2024 22:15:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wjq791fx4z2xjL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2024 21:34:53 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Wjq5K1dTpzncwD;
-	Tue, 13 Aug 2024 19:33:25 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wjq8V3gtJz2xjL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2024 21:36:10 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Wjq3706sKz20l7k;
+	Tue, 13 Aug 2024 19:31:31 +0800 (CST)
 Received: from kwepemi100008.china.huawei.com (unknown [7.221.188.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7C418140135;
-	Tue, 13 Aug 2024 19:34:44 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id DF7A8140134;
+	Tue, 13 Aug 2024 19:36:03 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi100008.china.huawei.com
  (7.221.188.57) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 13 Aug
- 2024 19:34:43 +0800
+ 2024 19:36:03 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <dennis@kernel.org>, <tj@kernel.org>, <cl@linux.com>,
 	<mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
@@ -32,9 +32,9 @@ To: <dennis@kernel.org>, <tj@kernel.org>, <cl@linux.com>,
 	<gregkh@linuxfoundation.org>, <linuxppc-dev@lists.ozlabs.org>,
 	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v5.15] powerpc: Avoid nmi_enter/nmi_exit in real mode interrupt.
-Date: Tue, 13 Aug 2024 11:32:20 +0000
-Message-ID: <20240813113220.1837464-1-ruanjinjie@huawei.com>
+Subject: [PATCH v5.10 v2 RESEND] powerpc: Avoid nmi_enter/nmi_exit in real mode interrupt.
+Date: Tue, 13 Aug 2024 11:33:44 +0000
+Message-ID: <20240813113344.1837556-1-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -48,10 +48,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemi100008.china.huawei.com (7.221.188.57)
 
 From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+
+[ Upstream commit 0db880fc865ffb522141ced4bfa66c12ab1fbb70 ]
 
 nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
 crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
@@ -77,7 +79,7 @@ Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
 first chunk is not embedded.
 
 CVE-2024-42126
-Cc: stable@vger.kernel.org#5.15.x
+Cc: stable@vger.kernel.org#5.10.x
 Cc: gregkh@linuxfoundation.org
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
@@ -85,48 +87,21 @@ Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
 [ Conflicts in arch/powerpc/include/asm/interrupt.h
-  because interrupt_nmi_enter_prepare() and interrupt_nmi_exit_prepare()
+  because machine_check_early() and machine_check_exception()
   has been refactored. ]
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- arch/powerpc/include/asm/interrupt.h | 14 ++++++++++----
- arch/powerpc/include/asm/percpu.h    | 10 ++++++++++
- arch/powerpc/kernel/setup_64.c       |  2 ++
- 3 files changed, 22 insertions(+), 4 deletions(-)
+v2:
+- Also fix for CONFIG_PPC_BOOK3S_64 not enabled.
+- Add Upstream.
+- Cc stable@vger.kernel.org.
+---
+ arch/powerpc/include/asm/percpu.h | 10 ++++++++++
+ arch/powerpc/kernel/mce.c         | 14 +++++++++++---
+ arch/powerpc/kernel/setup_64.c    |  2 ++
+ arch/powerpc/kernel/traps.c       |  8 +++++++-
+ 4 files changed, 30 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index e592e65e7665..49285b147afe 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -285,18 +285,24 @@ static inline void interrupt_nmi_enter_prepare(struct pt_regs *regs, struct inte
- 	/*
- 	 * Do not use nmi_enter() for pseries hash guest taking a real-mode
- 	 * NMI because not everything it touches is within the RMA limit.
-+	 *
-+	 * Likewise, do not use it in real mode if percpu first chunk is not
-+	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
-+	 * are chances where percpu allocation can come from vmalloc area.
- 	 */
--	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
-+	if ((!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
- 			!firmware_has_feature(FW_FEATURE_LPAR) ||
--			radix_enabled() || (mfmsr() & MSR_DR))
-+			radix_enabled() || (mfmsr() & MSR_DR)) &&
-+			!percpu_first_chunk_is_paged)
- 		nmi_enter();
- }
- 
- static inline void interrupt_nmi_exit_prepare(struct pt_regs *regs, struct interrupt_nmi_state *state)
- {
--	if (!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
-+	if ((!IS_ENABLED(CONFIG_PPC_BOOK3S_64) ||
- 			!firmware_has_feature(FW_FEATURE_LPAR) ||
--			radix_enabled() || (mfmsr() & MSR_DR))
-+			radix_enabled() || (mfmsr() & MSR_DR)) &&
-+			!percpu_first_chunk_is_paged)
- 		nmi_exit();
- 
- 	/*
 diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
 index 8e5b7d0b851c..634970ce13c6 100644
 --- a/arch/powerpc/include/asm/percpu.h
@@ -148,11 +123,43 @@ index 8e5b7d0b851c..634970ce13c6 100644
  #include <asm-generic/percpu.h>
  
  #include <asm/paca.h>
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index 63702c0badb9..259343040e1b 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -594,8 +594,15 @@ long notrace machine_check_early(struct pt_regs *regs)
+ 	u8 ftrace_enabled = this_cpu_get_ftrace_enabled();
+ 
+ 	this_cpu_set_ftrace_enabled(0);
+-	/* Do not use nmi_enter/exit for pseries hpte guest */
+-	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
++	/*
++	 * Do not use nmi_enter/exit for pseries hpte guest
++	 *
++	 * Likewise, do not use it in real mode if percpu first chunk is not
++	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
++	 * are chances where percpu allocation can come from vmalloc area.
++	 */
++	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
++	    !percpu_first_chunk_is_paged)
+ 		nmi_enter();
+ 
+ 	hv_nmi_check_nonrecoverable(regs);
+@@ -606,7 +613,8 @@ long notrace machine_check_early(struct pt_regs *regs)
+ 	if (ppc_md.machine_check_early)
+ 		handled = ppc_md.machine_check_early(regs);
+ 
+-	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
++	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
++	    !percpu_first_chunk_is_paged)
+ 		nmi_exit();
+ 
+ 	this_cpu_set_ftrace_enabled(ftrace_enabled);
 diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index eaa79a0996d1..37d5683ab298 100644
+index 3f8426bccd16..899d87de0165 100644
 --- a/arch/powerpc/kernel/setup_64.c
 +++ b/arch/powerpc/kernel/setup_64.c
-@@ -825,6 +825,7 @@ static int pcpu_cpu_distance(unsigned int from, unsigned int to)
+@@ -824,6 +824,7 @@ static int pcpu_cpu_distance(unsigned int from, unsigned int to)
  
  unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
  EXPORT_SYMBOL(__per_cpu_offset);
@@ -160,7 +167,7 @@ index eaa79a0996d1..37d5683ab298 100644
  
  static void __init pcpu_populate_pte(unsigned long addr)
  {
-@@ -904,6 +905,7 @@ void __init setup_per_cpu_areas(void)
+@@ -903,6 +904,7 @@ void __init setup_per_cpu_areas(void)
  	if (rc < 0)
  		panic("cannot initialize percpu area (err=%d)", rc);
  
@@ -168,6 +175,26 @@ index eaa79a0996d1..37d5683ab298 100644
  	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
  	for_each_possible_cpu(cpu) {
                  __per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index b0e87dce2b9a..b4d108bef814 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -835,8 +835,14 @@ void machine_check_exception(struct pt_regs *regs)
+ 	 * This is silly. The BOOK3S_64 should just call a different function
+ 	 * rather than expecting semantics to magically change. Something
+ 	 * like 'non_nmi_machine_check_exception()', perhaps?
++	 *
++	 * Do not use nmi_enter/exit in real mode if percpu first chunk is
++	 * not embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled
++	 * there are chances where percpu allocation can come from
++	 * vmalloc area.
+ 	 */
+-	const bool nmi = !IS_ENABLED(CONFIG_PPC_BOOK3S_64);
++	const bool nmi = !IS_ENABLED(CONFIG_PPC_BOOK3S_64) &&
++			 !percpu_first_chunk_is_paged;
+ 
+ 	if (nmi) nmi_enter();
+ 
 -- 
 2.34.1
 
