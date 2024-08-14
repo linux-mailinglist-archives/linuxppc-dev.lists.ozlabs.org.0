@@ -1,72 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-76-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-77-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F08D9512B3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2024 04:50:22 +0200 (CEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ROEzEnYc;
-	dkim-atps=neutral
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC2B951664
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2024 10:16:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WkCRJ0vfhz2yMJ;
-	Wed, 14 Aug 2024 12:50:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WkLgz6cCJz2xjw;
+	Wed, 14 Aug 2024 18:16:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ROEzEnYc;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 384 seconds by postgrey-1.37 at boromir; Wed, 14 Aug 2024 17:42:39 AEST
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WkCRH4jL2z2xg3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 12:50:19 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47E11AsX027164
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 02:50:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-type:content-transfer-encoding; s=pp1; bh=
-	cT9bAuyQhj64lwPsANzh3It+9SS/uyRNAg/fy9grIyk=; b=ROEzEnYc8DFG2X8L
-	k3i7FG9f5U4Dgwe1GlO0HO7aXR53x6zlUZB0b3kRS0KIfRK71QH7YaPlCxz78rbi
-	vCxfC9DYaWk2txCaJlLcIub4qcrJvIBXI3rJ8gr8j/MC2vAxHfeR+0LeTkm+jCKj
-	0FLgerhBGqnTPASy+vbpK6YMI8pn/ekJEh3qQG/a5kL/6kv22vQiKXG3luS+S7BZ
-	Bdg8QGqbShuXKZb6piBLr0ZYTBuIx/GwjkHaNudmq6dQ6ADuxrbXpfm9lGWP/kw8
-	NYNGrr3GhQCC49jVV+KWmTfBLL6MhzYxGJ+AxRzETI+bK7FhKi7PXhTpZtbcXV0K
-	5Qjsrg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 410jj3gc06-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 02:50:17 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 47E1Y2W5010095
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 02:50:16 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40xjx0q8hd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 02:50:16 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47E2oAbQ19857986
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 Aug 2024 02:50:12 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 20BE95884E;
-	Wed, 14 Aug 2024 02:50:10 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 984AB5882A;
-	Wed, 14 Aug 2024 02:49:59 +0000 (GMT)
-Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.0.230])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 14 Aug 2024 02:49:59 +0000 (GMT)
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: hbabu@us.ibm.com, Haren Myneni <haren@linux.ibm.com>
-Subject: [PATCH 2/2] powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add
-Date: Tue, 13 Aug 2024 19:49:54 -0700
-Message-ID: <20240814024954.85764-2-haren@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20240814024954.85764-1-haren@linux.ibm.com>
-References: <20240814024954.85764-1-haren@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WkKwb1T8zz2yGm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 17:42:38 +1000 (AEST)
+X-QQ-GoodBg: 2
+X-BAN-DOWNLOAD: 1
+X-BAN-SHARE: 1
+X-QQ-SSF: 0040000000000060
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-XMAILINFO: N2SgH8K5gGcG3VPiQSaVIqKmUZekJQOSm7yFoOoBJ/rN8aOGu2Q0ZXhd
+	8Xvqdlvrv50yQ8Wd42+K+KlIsHeTQob4BBwlp5opG4FLy25XObGBwiAaOQc59a8GzDi7QAP
+	56rl1b2G/kME26bUxsRULEempKW1gvzQv0gKOkHgPoffzVtFT59Ryz4wCgKPXUpN089PL6C
+	3Yj2ERWCV1W1n21Dky6aDs9IPahm/nDQyIsGPjNMHfUgD5OKhxaA9+WlQhhRHoNqW7r8vEs
+	D9W6OHeR22V1GnPHV30fgAXFGV+uDrhQU5a98kY2HjFFIRqMd+J51PSzoNeTGW9OUkTFt1a
+	kKiItkcX6o+z8dsX8bfShpjzhruY/HVK7zwjPSdmFmBVufDP3kUgEYeEvJYHIWIGvklQNrH
+	H1p+71+IkVNlPu6Y31lECKfAkuL6OTfg76pH8vso9T5zXKamM0f2j2+W6trPXC5SgklBE1z
+	Oii+PzYmn8lcYvHK63JWLRO+AQiwEVHYnh3LTRW+6RYvnsmKxhkjetCnT4mSAGUpPDyPeKj
+	CjOY18jsAOzGAzEi/Bk0PdWPItlDwRFDmr4D6IcjJpF54N/gA+Sg03JqVdlbYc1LKndVIvn
+	4x561mBkyzge9Ge9g09oE94VUsvMao0D1/rfavBjMF+Dt54lygNgLmZvhzI73hzwLpjAtvV
+	pqGUHkdn25UUGI9CuneBSLrvltoVSdcGFd9ggLpz0KPLZ88MHsL/cxbi60oaZPn4Ei/m2zy
+	XwXnd0sYx1fCDFW9ZQ1Akcjp/p88sq7z5A21ao3UKUGrvG1r834rkk3MiDsTuflLg+UQFyG
+	CdonF6EYzjFAkyULQuYpVbeo9rJa/Y2cYLtDxaqFwhjETmiuJ9CMx20GY7DO142Bto4Ps+c
+	WX/ZGjunI5Fm2WF4Sate5BpSHPGtxhNSdl+MyKBNDYqlp44YF3wM+w==
+X-QQ-FEAT: D4aqtcRDiqQpBpTnjIJt3/f21w9WO3enREO5ZSgO7MU=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: 4bHUgX9eat0b2FhxuKxGJVsTZb5xfOAxhn+JbHXudgs=
+X-Originating-IP: 58.34.222.244
+X-QQ-STYLE: 
+X-QQ-mid: t6gz5a-0t1723620864t9758776
+From: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>
+To: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>, "=?utf-8?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bXBl?=" <mpe@ellerman.id.au>, "=?utf-8?B?bnBpZ2dpbg==?=" <npiggin@gmail.com>, "=?utf-8?B?Y2hyaXN0b3BoZS5sZXJveQ==?=" <christophe.leroy@csgroup.eu>
+Cc: "=?utf-8?B?bHVtaW5nLnl1?=" <luming.yu@gmail.com>, "=?utf-8?B?c2hlbmdodWkucXU=?=" <shenghui.qu@shingroup.cn>, "=?utf-8?B?5p2o5L2z6b6Z?=" <jialong.yang@shingroup.cn>
+Subject: Re:[PATCH v1] powerpc/powernv/pci: fix PE in re-used pci_dn for pnv_pci_enable_device_hook
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,211 +53,104 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jfC1RGSreosY7hBYg-mnFQQrSxrUH_jN
-X-Proofpoint-ORIG-GUID: jfC1RGSreosY7hBYg-mnFQQrSxrUH_jN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-14_01,2024-08-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 spamscore=0 adultscore=0 clxscore=1015 bulkscore=0
- lowpriorityscore=0 phishscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408140014
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Wed, 14 Aug 2024 15:34:23 +0800
+X-Priority: 3
+Message-ID: <tencent_67BBC4A3751146667FF14C21@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <7E99D8C8296BB626+20231128064339.5038-1-luming.yu@shingroup.cn>
+In-Reply-To: <7E99D8C8296BB626+20231128064339.5038-1-luming.yu@shingroup.cn>
+X-QQ-ReplyHash: 2127103431
+X-BIZMAIL-ID: 9014993837306775672
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Wed, 14 Aug 2024 15:34:24 +0800 (CST)
+Feedback-ID: t:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
 
-For the DLPAR IO ADD, the corresponding device tree nodes and
-properties will be added to the device tree after enable the
-device. The user space (drmgr tool) uses configure_connector
-RTAS call with the DRC index to retrieve the corresponding
-device nodes but this RTAS call needs /dev/mem access. Also
-updates the device tree by writing to /proc/ppc64/ofdt.
-Under system lockdown, /dev/mem access is restricted which means
-the user space can not issue configure_connector RTAS call and
-also can not access to /proc/ppc64/ofdt.
-
-This patch extends the /sys/kernel/dlpar interface and provides
-‘dt add index <drc_index>’ to the user space. The drmgr tool uses
-this interface to update the device tree whenever the device is
-added. This interface retrieves device tree nodes for the
-corresponding DRC index using configure_connector RTAS call and
-adds new device nodes / properties to the device tree.
-
-Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/dlpar.c | 134 +++++++++++++++++++++++++
- 1 file changed, 134 insertions(+)
-
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index 993fd3e8f6ea..fb34d5859da8 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -23,6 +23,7 @@
- #include <linux/uaccess.h>
- #include <asm/rtas.h>
- #include <asm/rtas-work-area.h>
-+#include <asm/prom.h>
- 
- static struct workqueue_struct *pseries_hp_wq;
- 
-@@ -264,6 +265,22 @@ int dlpar_detach_node(struct device_node *dn)
- 
- 	return 0;
- }
-+static int dlpar_changeset_attach_cc_nodes(struct of_changeset *ocs,
-+					struct device_node *dn)
-+{
-+	int rc;
-+
-+	pr_info("%s: %pOF\n", __func__, dn);
-+
-+	rc = of_changeset_attach_node(ocs, dn);
-+
-+	if (!rc && dn->child)
-+		rc = dlpar_changeset_attach_cc_nodes(ocs, dn->child);
-+	if (!rc && dn->sibling)
-+		rc = dlpar_changeset_attach_cc_nodes(ocs, dn->sibling);
-+
-+	return rc;
-+}
- 
- #define DR_ENTITY_SENSE		9003
- #define DR_ENTITY_PRESENT	1
-@@ -330,6 +347,120 @@ int dlpar_unisolate_drc(u32 drc_index)
- 	return 0;
- }
- 
-+static struct device_node *
-+get_device_node_with_drc_index(u32 index)
-+{
-+	struct device_node *np = NULL;
-+	u32 node_index;
-+	int rc;
-+
-+	for_each_node_with_property(np, "ibm,my-drc-index") {
-+		rc = of_property_read_u32(np, "ibm,my-drc-index",
-+					     &node_index);
-+		if (rc) {
-+			pr_err("%s: %pOF: of_property_read_u32 %s: %d\n",
-+			       __func__, np, "ibm,my-drc-index", rc);
-+			of_node_put(np);
-+			return NULL;
-+		}
-+
-+		if (index == node_index)
-+			break;
-+	}
-+
-+	return np;
-+}
-+
-+static struct device_node *
-+get_device_node_with_drc_info(u32 index)
-+{
-+	struct device_node *np = NULL;
-+	struct of_drc_info drc;
-+	struct property *info;
-+	const __be32 *value;
-+	u32 node_index;
-+	int i, j, count;
-+
-+	for_each_node_with_property(np, "ibm,drc-info") {
-+		info = of_find_property(np, "ibm,drc-info", NULL);
-+		if (info == NULL) {
-+			/* XXX can this happen? */
-+			of_node_put(np);
-+			return NULL;
-+		}
-+		value = of_prop_next_u32(info, NULL, &count);
-+		if (value == NULL)
-+			continue;
-+		value++;
-+		for (i = 0; i < count; i++) {
-+			if (of_read_drc_info_cell(&info, &value, &drc))
-+				break;
-+			if (index > drc.last_drc_index)
-+				continue;
-+			node_index = drc.drc_index_start;
-+			for (j = 0; j < drc.num_sequential_elems; j++) {
-+				if (index == node_index)
-+					return np;
-+				node_index += drc.sequential_inc;
-+			}
-+		}
-+	}
-+
-+	return NULL;
-+}
-+
-+static int dlpar_hp_dt_add(u32 index)
-+{
-+	struct device_node *np, *nodes;
-+	struct of_changeset ocs;
-+	int rc;
-+
-+	/*
-+	 * Do not add device node(s) if already exists in the
-+	 * device tree.
-+	 */
-+	np = get_device_node_with_drc_index(index);
-+	if (np) {
-+		pr_err("%s: Adding device node for index (%d), but "
-+				"already exists in the device tree\n",
-+				__func__, index);
-+		rc = -EINVAL;
-+		goto out;
-+	}
-+
-+	np = get_device_node_with_drc_info(index);
-+
-+	if (!np)
-+		return -EIO;
-+
-+	pr_info("%s: %pOF\n", __func__, np);
-+
-+	/* Next, configure the connector. */
-+	nodes = dlpar_configure_connector(cpu_to_be32(index), np);
-+	if (!nodes) {
-+		rc = -EIO;
-+		goto out;
-+	}
-+
-+	/*
-+	 * Add the new nodes from dlpar_configure_connector() onto
-+	 * the device-tree.
-+	 */
-+	of_changeset_init(&ocs);
-+	rc = dlpar_changeset_attach_cc_nodes(&ocs, nodes);
-+
-+	if (!rc)
-+		rc = of_changeset_apply(&ocs);
-+	else
-+		dlpar_free_cc_nodes(nodes);
-+
-+	of_changeset_destroy(&ocs);
-+
-+out:
-+	of_node_put(np);
-+	return rc;
-+}
-+
- static int changeset_detach_node_recursive(struct of_changeset *ocs,
- 					struct device_node *node)
- {
-@@ -396,6 +527,9 @@ static int dlpar_hp_dt(struct pseries_hp_errorlog *phpe)
- 	lock_device_hotplug();
- 
- 	switch (phpe->action) {
-+	case PSERIES_HP_ELOG_ACTION_ADD:
-+		rc = dlpar_hp_dt_add(phpe->_drc_u.drc_index);
-+		break;
- 	case PSERIES_HP_ELOG_ACTION_REMOVE:
- 		rc = dlpar_hp_dt_remove(phpe->_drc_u.drc_index);
- 		break;
--- 
-2.43.5
+SGksDQoNCkxvb2tzIGxpa2UgdGhlIGxhdGVzdCB1cHN0cmVhbSBrZXJuZWwgaGFzIHNvdmxl
+ZCB0aGUgcHJvYmxlbToNCmVjaG8gMSA+ICAvc3lzL2J1cy9wY2kvZGV2aWNlcy8wMDAxOjBk
+OjAwLjAvcmVtb3ZlDQogZWNobyAxID4gIC9zeXMvYnVzL3BjaS9yZXNjYW4NCg0KWyAgMjMw
+LjM5OTk2OV0gcGNpX2J1cyAwMDAxOjBkOiBDb25maWd1cmluZyBQRSBmb3IgYnVzDQpbICAy
+MzAuMzk5OTc0XSBwY2kgMDAwMTowZCAgICAgOiBbUEUjIGZiXSBTZWNvbmRhcnkgYnVzIDB4
+MDAwMDAwMDAwMDAwMDAwZCBhc3NvY2lhdGVkIHdpdGggUEUjZmINClsgIDIzMC40MDAwODRd
+IHBjaSAwMDAxOjBkOjAwLjA6IENvbmZpZ3VyZWQgUEUjZmINClsgIDIzMC40MDAwODZdIHBj
+aSAwMDAxOjBkICAgICA6IFtQRSMgZmJdIFNldHRpbmcgdXAgMzItYml0IFRDRSB0YWJsZSBh
+dCAwLi44MDAwMDAwMA0KWyAgMjMwLjQwMDY5OF0gcGNpIDAwMDE6MGQgICAgIDogW1BFIyBm
+Yl0gU2V0dGluZyB1cCB3aW5kb3cjMCAwLi4zZmZmZmZmZmZmIHBnPTEwMDAwDQpbICAyMzAu
+NDAwNzAzXSBwY2kgMDAwMTowZCAgICAgOiBbUEUjIGZiXSBFbmFibGluZyA2NC1iaXQgRE1B
+IGJ5cGFzcw0KWyAgMjMwLjQwMDcxNl0gcGNpIDAwMDE6MGQ6MDAuMDogQWRkaW5nIHRvIGlv
+bW11IGdyb3VwIDENClsgIDIzMC40MDA5MTddIG1taW90cmFjZTogaW9yZW1hcF8qKDB4M2Zl
+MDgwODAwMDAwLCAweDIwMDApID0gMDAwMDAwMDBlY2Y1M2ZhMQ0KWyAgMjMwLjQwMTA4OF0g
+bnZtZSBudm1lMDogcGNpIGZ1bmN0aW9uIDAwMDE6MGQ6MDAuMA0KWyAgMjMwLjQwMTA5OF0g
+bnZtZSAwMDAxOjBkOjAwLjA6IGVuYWJsaW5nIGRldmljZSAoMDE0MCAtPiAwMTQyKQ0KWyAg
+MjMwLjQwMTE0Nl0gbW1pb3RyYWNlOiBpb3JlbWFwXyooMHgzZmUwODA4MDQwMDAsIDB4NDAw
+KSA9IDAwMDAwMDAwM2U2YjJlNWINClsgIDIzMC40Mjk2MDBdIG52bWUgbnZtZTA6IEQzIGVu
+dHJ5IGxhdGVuY3kgc2V0IHRvIDEwIHNlY29uZHMNClsgIDIzMC40Mjk4OTZdIG1taW90cmFj
+ZTogaW9yZW1hcF8qKDB4M2ZlMDgwODA0MDAwLCAweDQwMCkgPSAwMDAwMDAwMDZmM2ZkOTJk
+DQpbICAyMzAuNDM5MTM4XSBudm1lIG52bWUwOiA2My8wLzAgZGVmYXVsdC9yZWFkL3BvbGwg
+cXVldWVzDQoNCnRoZSBvcmlnaW5hbCBwcm9ibGVtIGluIHBjaSByZXNjYW4gcGF0aCBhZnRl
+ciBob3QgcmVtb3ZlIGxpa2UgYmVsb3cgaXMgZ29uZSENCnBjaSAwMDIwOjBlOjAwLjA6IEJB
+UiAwOiBhc3NpZ25lZCBbbWVtIDB4M2ZlODAxODIwMDAwLTB4M2ZlODAxODJmZmZmIDY0Yml0
+XQ0KICAgIG52bWUgbnZtZTE6IHBjaSBmdW5jdGlvbiAwMDIwOjBlOjAwLjANCiAgICBudm1l
+IDAwMjA6MGU6MDAuMCBwY2lfZW5hYmxlX2RldmljZSgpIGJsb2NrZWQsIG5vIFBFIGFzc2ln
+bmVkLg0KDQpQcm9iYWJseSBmaXhlZCBieSB0aGUgY29tbWl0Og0KNWFjMTI5Y2RiNTBiNGVm
+ZGE1OWVlNWVhN2M3MTE5OTZhMzYzN2IzNA0KQXV0aG9yOiBKb2VsIFN0YW5sZXkgPGpvZWxA
+am1zLmlkLmF1Pg0KRGF0ZTogICBUdWUgSnVuIDEzIDE0OjIyOjAwIDIwMjMgKzA5MzANCnBv
+d2VycGMvcG93ZXJudi9wY2k6IFJlbW92ZSBpb2RhMSBzdXBwb3J0DQoNCnRoYXQgd2FzIG1l
+cmdlZCBtYWlubGluZSBsYXRlciB0aGFuIHRoZSB1cHN0cmVhbSBrZXJuZWwgSSBzYXcgdGhl
+IHByb2JsZW0gbGFzdCB0aW1lIEkgY2FtZQ0KdXAgd2l0aCB0aGUgcGF0Y2guDQoNCkdpdmVu
+IHRoZSBmYWN0cyBjaGFuZ2VkLCAgdGhlIHBhdGNoIHByb3Bvc2FsIGJlY2FtZSBldmVuIG1v
+cmUgdHJpdmlhbCBub3cuDQpJIHdvbid0IHB1c2ggaXQgZm9yIHVwc3RyZWFtIGluY2x1c2lv
+biBub3cuIEluc3RlYWQsIEkgd2lsbCBrZWVwIGl0IGluIG15IGxvY2FsIHRlc3QgcXVldWUg
+Zm9yIGEgd2hpbGUuICAgDQoNCkNoZWVycyENCkx1bWluZw0KDQotLS0tLS0tLS0tLS0tLS0t
+LS0gT3JpZ2luYWwgLS0tLS0tLS0tLS0tLS0tLS0tDQpGcm9tOiAgIuiZnumZhumTrSI8bHVt
+aW5nLnl1QHNoaW5ncm91cC5jbj47DQpEYXRlOiAgVHVlLCBOb3YgMjgsIDIwMjMgMDI6NDMg
+UE0NClRvOiAgImxpbnV4cHBjLWRldiI8bGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmc+
+OyAibGludXgta2VybmVsIjxsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnPjsgIm1wZSI8
+bXBlQGVsbGVybWFuLmlkLmF1PjsgIm5waWdnaW4iPG5waWdnaW5AZ21haWwuY29tPjsgImNo
+cmlzdG9waGUubGVyb3kiPGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldT47IA0KQ2M6ICAi
+bHVtaW5nLnl1IjxsdW1pbmcueXVAZ21haWwuY29tPjsgImtlLnpoYW8iPGtlLnpoYW9Ac2hp
+bmdyb3VwLmNuPjsgImRhd2VpLmxpIjxkYXdlaS5saUBzaGluZ3JvdXAuY24+OyAic2hlbmdo
+dWkucXUiPHNoZW5naHVpLnF1QHNoaW5ncm91cC5jbj47ICLomZ7pmYbpk60iPGx1bWluZy55
+dUBzaGluZ3JvdXAuY24+OyANClN1YmplY3Q6ICBbUEFUQ0ggdjFdIHBvd2VycGMvcG93ZXJu
+di9wY2k6IGZpeCBQRSBpbiByZS11c2VkIHBjaV9kbiBmb3IgcG52X3BjaV9lbmFibGVfZGV2
+aWNlX2hvb2sNCg0KIA0KDQphZnRlciBob3QgcmVtb3ZlIGEgcGNpZSBkZWl2Y2Ugd2l0aCBw
+Y2lfZG4gaGF2aW5nIHBucF9waHAgZHJpdmVyIGF0dGFjaGVkLA0KcGNpIHJlc2NhbiB3aXRo
+IGVjaG8gMSA+IC9zeXMvYnVzL3BjaS9yZXNjYW4gY291bGQgZmFpbCB3aXRoIGVycm9yDQpt
+ZXNzYWdlIGxpa2U6DQpwY2kgMDAyMDowZTowMC4wOiBCQVIgMDogYXNzaWduZWQgW21lbSAw
+eDNmZTgwMTgyMDAwMC0weDNmZTgwMTgyZmZmZg0KNjRiaXRdDQpudm1lIG52bWUxOiBwY2kg
+ZnVuY3Rpb24gMDAyMDowZTowMC4wDQpudm1lIDAwMjA6MGU6MDAuMCBwY2lfZW5hYmxlX2Rl
+dmljZSgpIGJsb2NrZWQsIG5vIFBFIGFzc2lnbmVkLg0KDQpJdCBhcHBlYXJzIHRoYXQgdGhl
+IHBjaV9kbiBvYmplY3QgaXMgcmV1c2VkIHdpdGggb25seSBwZV9udW1iZXINCmNsb2JiZXJl
+ZCBpbiB0aGUgY2FzZS4gQW5kIGEgc2ltcGxlIGNhbGwgdG8gcG52X2lvZGFfc2V0dXBfZGV2
+X1BFIHNob3VsZA0KZ2V0IFBFIG51bWJlciBiYWNrIGFuZCBzb2x2ZSB0aGUgcHJvYmxlbS4N
+Cg0KU2lnbmVkLW9mZi1ieTogTHVtaW5nIFl1IDxsdW1pbmcueXVAc2hpbmdyb3VwLmNuPg0K
+LS0tDQp2MCAtPiB2MToNCi1jbGVhbiB1cCBnYXJiYWdlIGxlYWtlZCBpbiBnaXQgZm9ybWF0
+IHBhdGNoIHRoYXQgc3RlbXMgZnJvbSBnaXQgY2xvbmUgYW5kIGNoZWNrb3V0IA0KLWNvbmZs
+aWN0cyBvZiBmaWxlcyBpbiBsb2NhbCB3aW5kb3dzIGZpbGVzeXN0ZW0gd2l0aCB3ZWlyZCBj
+YXNlcyBhbmQgbmFtZXMgcXVyaWtzLg0KLS0tDQogYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9w
+b3dlcm52L3BjaS1pb2RhLmMgICAgIHwgIDExICstDQogMSBmaWxlcyBjaGFuZ2VkLCA5IGlu
+c2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9hcmNoL3Bvd2Vy
+cGMvcGxhdGZvcm1zL3Bvd2VybnYvcGNpLWlvZGEuYyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9y
+bXMvcG93ZXJudi9wY2ktaW9kYS5jDQppbmRleCAyOGZhYzQ3NzAwNzMuLjlkN2FkZDc5ZWUz
+ZCAxMDA2NDQNCi0tLSBhL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9wY2ktaW9k
+YS5jDQorKysgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcGNpLWlvZGEuYw0K
+QEAgLTIzMjUsMTEgKzIzMjUsMTggQEAgc3RhdGljIHJlc291cmNlX3NpemVfdCBwbnZfcGNp
+X2RlZmF1bHRfYWxpZ25tZW50KHZvaWQpDQogc3RhdGljIGJvb2wgcG52X3BjaV9lbmFibGVf
+ZGV2aWNlX2hvb2soc3RydWN0IHBjaV9kZXYgKmRldikNCiB7DQogCXN0cnVjdCBwY2lfZG4g
+KnBkbjsNCisJc3RydWN0IHBudl9pb2RhX3BlICpwZTsNCiANCiAJcGRuID0gcGNpX2dldF9w
+ZG4oZGV2KTsNCi0JaWYgKCFwZG4gfHwgcGRuLT5wZV9udW1iZXIgPT0gSU9EQV9JTlZBTElE
+X1BFKSB7DQotCQlwY2lfZXJyKGRldiwgInBjaV9lbmFibGVfZGV2aWNlKCkgYmxvY2tlZCwg
+bm8gUEUgYXNzaWduZWQuXG4iKTsNCisJaWYgKCFwZG4pDQogCQlyZXR1cm4gZmFsc2U7DQor
+DQorCWlmIChwZG4tPnBlX251bWJlciA9PSBJT0RBX0lOVkFMSURfUEUpIHsNCisJCXBlID0g
+cG52X2lvZGFfc2V0dXBfZGV2X1BFKGRldik7DQorCQlpZiAoIXBlKSB7DQorCQkJcGNpX2Vy
+cihkZXYsICJwY2lfZW5hYmxlX2RldmljZSgpIGJsb2NrZWQsIG5vIFBFIGFzc2lnbmVkLlxu
+Iik7DQorCQkJcmV0dXJuIGZhbHNlOw0KKwkJfQ0KIAl9DQogDQogCXJldHVybiB0cnVlOw==
 
 
