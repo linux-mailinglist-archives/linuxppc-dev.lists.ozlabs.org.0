@@ -1,55 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-83-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-84-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0C2A951A78
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2024 13:58:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A6B951AB9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2024 14:21:05 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CkcQPkFs;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XXdkkJCP;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WkRbw2Ssgz2yMP;
-	Wed, 14 Aug 2024 21:58:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WkS5p0s5Mz2yRM;
+	Wed, 14 Aug 2024 22:21:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CkcQPkFs;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XXdkkJCP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=pierre-louis.bossart@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WkRbs6M3Cz2yJL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 21:58:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723636714; x=1755172714;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pT803Kq6Wz6RBK3l5cGSiRM04ieGhjqvtUpKHRYq2bU=;
-  b=CkcQPkFs9mLRN9GH5zDswLbTpJCEuPZpedoDgQheFiG/xSUCrC+hcj9r
-   MMZKM38MUUpVfq4kaF0v5hgwo6+80SqHcA0/9aGUnv9gtX/pIGxmFuTsn
-   Pv1YdX7H2K4HGsmFr1rrCqFFtwwC+98fQhfz6uiXOqtw0Hytd6RuRRKah
-   VW/OZq4h1oE2P7IGfIbz3BRqCkjBhE+O4jvHSt/xe1Z927LnzCkcosVVU
-   C4ERdvMy0qiJ9DPQCVWT5IWQJUKOuL1nnC9gqhUD7Jbk/cI0kG3P28mb3
-   gzlHXmOUbr4oFNpSoKs/DcVo53Z4SjqOGYr/pZrfOIa2MXMDNPiUgLmUQ
-   A==;
-X-CSE-ConnectionGUID: IdVP1N0qSWGFiBigI393Yg==
-X-CSE-MsgGUID: playq00RRVuYv1wc8YGtxQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="32470837"
-X-IronPort-AV: E=Sophos;i="6.09,145,1716274800"; 
-   d="scan'208";a="32470837"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 04:58:28 -0700
-X-CSE-ConnectionGUID: NpMJ2d0JRAuj66NXJE42xw==
-X-CSE-MsgGUID: p7bfGS0/Tvae6Eglw6n09Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,145,1716274800"; 
-   d="scan'208";a="58956636"
-Received: from slindbla-desk.ger.corp.intel.com (HELO [10.245.246.67]) ([10.245.246.67])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 04:58:24 -0700
-Message-ID: <55a82ba3-1c33-4d1b-9f5f-8af33d76222f@linux.intel.com>
-Date: Wed, 14 Aug 2024 13:58:21 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WkS5m69G7z2yJL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 22:21:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1723638060;
+	bh=fgOthRZ2ayNuF/r5WTO+8XOA5hDEqUuFX5e2Mv7rhns=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=XXdkkJCPrfQySwAt6IcRZyZNn0zm601vzMnopXepexwOJSI6Qj3WNb8zqlaeyNPkc
+	 1SMBxJFkYwgsCUkauoiz3l4sYH8+QT/pdrK8JWHMNFKV0EWh5WWHa24edTF2AOPn87
+	 cZULR9uXIGYk7dRVIZ9Gv4c75n+QbeBI0sNTCA3cMaV7spsSUBBaz+kY54bPTCVDq7
+	 6nKWXjOZCQ1oyv1iU/wxxY71X13WldwHWCxUm1Ld8ibMt795hhCGcCTzdjjAdSAQqO
+	 Bg5nBoVB3hEXO95hHTzRidVo32TOIwCcU7ee0nm5JO05ye3jrWZhYZz/1GbaqS05K3
+	 IbxdM5XCB8u7w==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WkS5j4V1yz4x1V;
+	Wed, 14 Aug 2024 22:20:57 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: =?utf-8?Q?Kolbj=C3=B8rn?= Barmen <linux-ppc@kolla.no>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, =?utf-8?B?Sm9u?=
+ =?utf-8?B?w6HFoQ==?= Vidra
+ <vidra@ufal.mff.cuni.cz>, Christoph Hellwig <hch@lst.de>,
+ linux@roeck-us.net
+Subject: Re: Since 6.10 - kernel oops/panics on G4 macmini due to change in
+ drivers/ata/pata_macio.c
+In-Reply-To: <Zrt028rSVT5hVPbU@ryzen.lan>
+References: <62d248bb-e97a-25d2-bcf2-9160c518cae5@kolla.no>
+ <3b6441b8-06e6-45da-9e55-f92f2c86933e@ufal.mff.cuni.cz>
+ <Zrstcei9WN9sRfdX@x1-carbon.wireless.wdc> <87sev81u3f.fsf@mail.lhotse>
+ <Zrt028rSVT5hVPbU@ryzen.lan>
+Date: Wed, 14 Aug 2024 22:20:55 +1000
+Message-ID: <87jzgj1ejc.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,96 +63,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec
- support
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- vkoul@kernel.org, tiwai@suse.com, alsa-devel@alsa-project.org,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
- Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
- lgirdwood@gmail.com, broonie@kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
- <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
- <CAA+D8AN9JXJr-BZf8aY7d4rB6M60pXS_DG=qv=P6=2r1A18ATA@mail.gmail.com>
- <ffa85004-8d86-4168-b278-afd24d79f9d8@linux.intel.com>
- <116041ee-7139-4b77-89be-3a68f699c01b@perex.cz>
- <930bb152-860a-4ec5-9ef0-1c96f554f365@linux.intel.com>
- <c9039808-cd04-452d-9f6c-f91811088456@perex.cz>
- <ed1192e0-00e7-4739-a687-c96dc2d62898@linux.intel.com>
- <CAA+D8AMOh=G7W5-dYw_=Xx-s0PqEu2suKYorscoWku86Rn-=+A@mail.gmail.com>
- <542d47c5-7ce3-4c17-8c0a-3a2b2a9e6c6a@linux.intel.com>
- <c3b8f7b8-fc5e-4285-bee8-7edd448a405d@perex.cz>
- <CAA+D8ANg7C7vuxU44mAG8EnmcZjB_te5N_=4M4v_-Q9ZyPZ49g@mail.gmail.com>
- <2be4303e-58e1-4ad7-92cf-f06fa6fa0f08@perex.cz>
- <7dc039db-ecce-4650-8eb7-96d0cfde09a2@linux.intel.com>
- <CAA+D8AMv=tHV3b-Rfo9Pjqs0bX5SVschD=WD06qxjJOk5zQmiQ@mail.gmail.com>
- <3cdb2041-59d4-4d43-ac4d-39d7f9640cef@linux.intel.com>
- <CAA+D8APSrH_pum6Cm0YxDzWMs4Roi=h1hkBjPMfXocXt7z4oVA@mail.gmail.com>
-Content-Language: en-US
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <CAA+D8APSrH_pum6Cm0YxDzWMs4Roi=h1hkBjPMfXocXt7z4oVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Niklas Cassel <cassel@kernel.org> writes:
+> On Tue, Aug 13, 2024 at 10:32:36PM +1000, Michael Ellerman wrote:
+>> Niklas Cassel <cassel@kernel.org> writes:
+>> > On Tue, Aug 13, 2024 at 07:49:34AM +0200, Jon=C3=A1=C5=A1 Vidra wrote:
+...
+>> >> ------------[ cut here ]------------
+>> >> kernel BUG at drivers/ata/pata_macio.c:544!
+>> >
+>> > https://github.com/torvalds/linux/blob/v6.11-rc3/drivers/ata/pata_maci=
+o.c#L544
+>> >
+>> > It seems that the
+>> > while (sg_len) loop does not play nice with the new .max_segment_size.
+>>=20
+>> Right, but only for 4KB kernels for some reason. Is there some limit
+>> elsewhere that prevents the bug tripping on 64KB kernels, or is it just
+>> luck that no one has hit it?
+>
+> Have your tried running fio (flexible I/O tester), with reads with a very
+> large block sizes?
+>
+> I would be surprised if it isn't possible to trigger the same bug with
+> 64K page size.
+>
+> max segment size =3D 64K
+> MAX_DCMDS =3D 256
+> 256 * 64K =3D 16 MiB
+> What happens if you run fio with a 16 MiB blocksize?
+>
+> Something like:
+> $ sudo fio --name=3Dtest --filename=3D/dev/sdX --direct=3D1 --runtime=3D6=
+0 --ioengine=3Dio_uring --rw=3Dread --iodepth=3D4 --bs=3D16M
+
+Nothing interesting happens, fio succeeds.
+
+The largest request that comes into pata_macio_qc_prep() is 1280KB,
+which results in 40 DMA list entries.
+
+I tried with a larger block size but it doesn't change anything. I guess
+there's some limit somewhere else in the stack?
+
+That was testing on qemu, but I don't think it should matter?
+
+I guess there's no way to run the fio test against a file, ie. without a
+raw partition? My real G5 doesn't have any spare disks/partitions in it.
+
+cheers
 
 
+fio-3.37
+Starting 1 process
 
-On 8/14/24 13:12, Shengjiu Wang wrote:
-> On Wed, Aug 14, 2024 at 5:40 PM Pierre-Louis Bossart
-> <pierre-louis.bossart@linux.intel.com> wrote:
->>
->>
->>> Yes, to go further, I think we can use SND_AUDIOCODEC_PCM, then
->>> the SRC type will be dropped.
->>
->> sounds good.
->>
->>> But my understanding of the control means the .set_metadata() API, right?
->>> As I said, the output rate, output format, and ratio modifier are applied to
->>> the instances of ASRC,  which is the snd_compr_stream in driver.
->>> so only the .set_metadata() API can be used for these purposes.
->>
->> Humm, this is more controversial.
->>
->> The term 'metadata' really referred to known information present in
->> headers or additional ID3 tags and not in the compressed file itself.
->> The .set_metadata was assumed to be called ONCE before decoding.
->>
->> But here you have a need to update the ratio modifier on a regular basis
->> to compensate for the drift. This isn't what this specific callback was
->> designed for. We could change and allow this callback to be used
->> multiple times, but then this could create problems for existing
->> implementations which cannot deal with modified metadata on the fly.
-> 
-> .set_metadata can be called multi times now, no need to change currently.
+test: (groupid=3D0, jobs=3D1): err=3D 0: pid=3D257: Wed Aug 14 22:18:59 2024
+  read: IOPS=3D6, BW=3D195MiB/s (204MB/s)(96.0MiB/493msec)
+    slat (usec): min=3D32973, max=3D35222, avg=3D33836.35, stdev=3D1212.51
+    clat (msec): min=3D378, max=3D448, avg=3D413.35, stdev=3D34.99
+     lat (msec): min=3D413, max=3D481, avg=3D447.19, stdev=3D33.87
+    clat percentiles (msec):
+     |  1.00th=3D[  380],  5.00th=3D[  380], 10.00th=3D[  380], 20.00th=3D[=
+  380],
+     | 30.00th=3D[  380], 40.00th=3D[  414], 50.00th=3D[  414], 60.00th=3D[=
+  414],
+     | 70.00th=3D[  447], 80.00th=3D[  447], 90.00th=3D[  447], 95.00th=3D[=
+  447],
+     | 99.00th=3D[  447], 99.50th=3D[  447], 99.90th=3D[  447], 99.95th=3D[=
+  447],
+     | 99.99th=3D[  447]
+   bw (  KiB/s): min=3D195047, max=3D195047, per=3D97.82%, avg=3D195047.00,=
+ stdev=3D 0.00, samples=3D1
+   iops        : min=3D    5, max=3D    5, avg=3D 5.00, stdev=3D 0.00, samp=
+les=3D1
+  lat (msec)   : 500=3D100.00%
+  cpu          : usr=3D1.62%, sys=3D11.97%, ctx=3D22, majf=3D0, minf=3D1540
+  IO depths    : 1=3D33.3%, 2=3D66.7%, 4=3D0.0%, 8=3D0.0%, 16=3D0.0%, 32=3D=
+0.0%, >=3D64=3D0.0%
+     submit    : 0=3D0.0%, 4=3D100.0%, 8=3D0.0%, 16=3D0.0%, 32=3D0.0%, 64=
+=3D0.0%, >=3D64=3D0.0%
+     complete  : 0=3D0.0%, 4=3D100.0%, 8=3D0.0%, 16=3D0.0%, 32=3D0.0%, 64=
+=3D0.0%, >=3D64=3D0.0%
+     issued rwts: total=3D3,0,0,0 short=3D0,0,0,0 dropped=3D0,0,0,0
+     latency   : target=3D0, window=3D0, percentile=3D100.00%, depth=3D4
 
-Not really, this set_metadata() callback is used only for gapless
-transitions between tracks, see fcplay.c in tinycompress.
+Run status group 0 (all jobs):
+   READ: bw=3D195MiB/s (204MB/s), 195MiB/s-195MiB/s (204MB/s-204MB/s), io=
+=3D96.0MiB (101MB), run=3D493-493msec
 
-And now I am really confused because tinycompress uses an IOCTL directly:
-
-	metadata.key = SNDRV_COMPRESS_ENCODER_PADDING;
-	metadata.value[0] = mdata->encoder_padding;
-	if (ioctl(compress->fd, SNDRV_COMPRESS_SET_METADATA, &metadata))
-
-Whereas you want to use the ops callback directly from the control layer?
-
-What would present a userspace program from using the ioctl directly
-then? In that case, why do we need the control? I must be missing something.
-
-
->> And then there's the problem of defining a 'key' for the metadata. the
->> definition of the key is a u32, so there's plenty of space for different
->> implementations, but a collision is possible. We'd need an agreement on
->> how to allocate keys to different solutions without changing the header
->> file for every implementation.
-> 
-> Can we define a private space for each case?   For example the key larger
-> than 0x80000000 is private, each driver can define it by themself?
-
-that would be a possibility indeed - provided that the opens above are
-straightened out.
-
->> It sounds like we'd need a 'runtime params' callback - unless there's a
->> better trick to tie the control and compress layers?
+Disk stats (read/write):
+  sda: ios=3D78/0, sectors=3D196608/0, merge=3D0/0, ticks=3D745/0, in_queue=
+=3D745, util=3D66.89%
 
