@@ -1,50 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-77-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-78-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC2B951664
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2024 10:16:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A989517E0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2024 11:40:35 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=D94MTtSL;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WkLgz6cCJz2xjw;
-	Wed, 14 Aug 2024 18:16:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WkNXd2YCWz2xg3;
+	Wed, 14 Aug 2024 19:40:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 384 seconds by postgrey-1.37 at boromir; Wed, 14 Aug 2024 17:42:39 AEST
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=D94MTtSL;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=pierre-louis.bossart@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WkKwb1T8zz2yGm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 17:42:38 +1000 (AEST)
-X-QQ-GoodBg: 2
-X-BAN-DOWNLOAD: 1
-X-BAN-SHARE: 1
-X-QQ-SSF: 0040000000000060
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-X-QQ-XMAILINFO: N2SgH8K5gGcG3VPiQSaVIqKmUZekJQOSm7yFoOoBJ/rN8aOGu2Q0ZXhd
-	8Xvqdlvrv50yQ8Wd42+K+KlIsHeTQob4BBwlp5opG4FLy25XObGBwiAaOQc59a8GzDi7QAP
-	56rl1b2G/kME26bUxsRULEempKW1gvzQv0gKOkHgPoffzVtFT59Ryz4wCgKPXUpN089PL6C
-	3Yj2ERWCV1W1n21Dky6aDs9IPahm/nDQyIsGPjNMHfUgD5OKhxaA9+WlQhhRHoNqW7r8vEs
-	D9W6OHeR22V1GnPHV30fgAXFGV+uDrhQU5a98kY2HjFFIRqMd+J51PSzoNeTGW9OUkTFt1a
-	kKiItkcX6o+z8dsX8bfShpjzhruY/HVK7zwjPSdmFmBVufDP3kUgEYeEvJYHIWIGvklQNrH
-	H1p+71+IkVNlPu6Y31lECKfAkuL6OTfg76pH8vso9T5zXKamM0f2j2+W6trPXC5SgklBE1z
-	Oii+PzYmn8lcYvHK63JWLRO+AQiwEVHYnh3LTRW+6RYvnsmKxhkjetCnT4mSAGUpPDyPeKj
-	CjOY18jsAOzGAzEi/Bk0PdWPItlDwRFDmr4D6IcjJpF54N/gA+Sg03JqVdlbYc1LKndVIvn
-	4x561mBkyzge9Ge9g09oE94VUsvMao0D1/rfavBjMF+Dt54lygNgLmZvhzI73hzwLpjAtvV
-	pqGUHkdn25UUGI9CuneBSLrvltoVSdcGFd9ggLpz0KPLZ88MHsL/cxbi60oaZPn4Ei/m2zy
-	XwXnd0sYx1fCDFW9ZQ1Akcjp/p88sq7z5A21ao3UKUGrvG1r834rkk3MiDsTuflLg+UQFyG
-	CdonF6EYzjFAkyULQuYpVbeo9rJa/Y2cYLtDxaqFwhjETmiuJ9CMx20GY7DO142Bto4Ps+c
-	WX/ZGjunI5Fm2WF4Sate5BpSHPGtxhNSdl+MyKBNDYqlp44YF3wM+w==
-X-QQ-FEAT: D4aqtcRDiqQpBpTnjIJt3/f21w9WO3enREO5ZSgO7MU=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: 4bHUgX9eat0b2FhxuKxGJVsTZb5xfOAxhn+JbHXudgs=
-X-Originating-IP: 58.34.222.244
-X-QQ-STYLE: 
-X-QQ-mid: t6gz5a-0t1723620864t9758776
-From: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>
-To: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>, "=?utf-8?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bXBl?=" <mpe@ellerman.id.au>, "=?utf-8?B?bnBpZ2dpbg==?=" <npiggin@gmail.com>, "=?utf-8?B?Y2hyaXN0b3BoZS5sZXJveQ==?=" <christophe.leroy@csgroup.eu>
-Cc: "=?utf-8?B?bHVtaW5nLnl1?=" <luming.yu@gmail.com>, "=?utf-8?B?c2hlbmdodWkucXU=?=" <shenghui.qu@shingroup.cn>, "=?utf-8?B?5p2o5L2z6b6Z?=" <jialong.yang@shingroup.cn>
-Subject: Re:[PATCH v1] powerpc/powernv/pci: fix PE in re-used pci_dn for pnv_pci_enable_device_hook
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WkNXZ4y7gz2xbd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 19:40:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723628431; x=1755164431;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Oqk/yZOBqPAJ0OhO/1w+U3YacKqLDREg7ya+gkJZJJY=;
+  b=D94MTtSLeM1C5jC4StgsKElZB0PJ7MjShF3LsFMWtcIHBBc3RKrjud0f
+   30akgFKmOeWF8eibfAtVacWG1dFf84msAvhLdno2+A7So28dgBYqQgYFV
+   WEjoI4sCgzV2912I+lkQQUPVCPT3WVyW8QFQ3j+4pIjBrOSnDVyni07jI
+   KF/FZKqledMPV1aw3u+Tsou/AuZxcm5KbKZMihaPAJgwoQhAM3s6HqPNO
+   YbDRXO3au2pSwpiRFDEEwRCaYXpJdKYEUgwTJxpTzOZ2InIXgjgCx30aG
+   JReDkpU/wLZ/JkZS2hKrTPVjA2a90UMwtJtq2Y3osOG6uxlPcRRwCF6zZ
+   w==;
+X-CSE-ConnectionGUID: /zDQO/UYR8uk1yvgmmYmGw==
+X-CSE-MsgGUID: FSB03SsyQkm18evMw4bU6g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25635383"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; 
+   d="scan'208";a="25635383"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 02:40:25 -0700
+X-CSE-ConnectionGUID: QoDtG2jcQa6/Jw1/h4JPTA==
+X-CSE-MsgGUID: 8/qT9Z0oRlGlDA7pwKz4LQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; 
+   d="scan'208";a="58918758"
+Received: from slindbla-desk.ger.corp.intel.com (HELO [10.245.246.67]) ([10.245.246.67])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2024 02:40:20 -0700
+Message-ID: <3cdb2041-59d4-4d43-ac4d-39d7f9640cef@linux.intel.com>
+Date: Wed, 14 Aug 2024 11:40:18 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,104 +58,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Wed, 14 Aug 2024 15:34:23 +0800
-X-Priority: 3
-Message-ID: <tencent_67BBC4A3751146667FF14C21@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <7E99D8C8296BB626+20231128064339.5038-1-luming.yu@shingroup.cn>
-In-Reply-To: <7E99D8C8296BB626+20231128064339.5038-1-luming.yu@shingroup.cn>
-X-QQ-ReplyHash: 2127103431
-X-BIZMAIL-ID: 9014993837306775672
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Wed, 14 Aug 2024 15:34:24 +0800 (CST)
-Feedback-ID: t:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec
+ support
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Cc: Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ vkoul@kernel.org, tiwai@suse.com, alsa-devel@alsa-project.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
+ lgirdwood@gmail.com, broonie@kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
+ <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com>
+ <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
+ <CAA+D8AN9JXJr-BZf8aY7d4rB6M60pXS_DG=qv=P6=2r1A18ATA@mail.gmail.com>
+ <ffa85004-8d86-4168-b278-afd24d79f9d8@linux.intel.com>
+ <116041ee-7139-4b77-89be-3a68f699c01b@perex.cz>
+ <930bb152-860a-4ec5-9ef0-1c96f554f365@linux.intel.com>
+ <c9039808-cd04-452d-9f6c-f91811088456@perex.cz>
+ <ed1192e0-00e7-4739-a687-c96dc2d62898@linux.intel.com>
+ <CAA+D8AMOh=G7W5-dYw_=Xx-s0PqEu2suKYorscoWku86Rn-=+A@mail.gmail.com>
+ <542d47c5-7ce3-4c17-8c0a-3a2b2a9e6c6a@linux.intel.com>
+ <c3b8f7b8-fc5e-4285-bee8-7edd448a405d@perex.cz>
+ <CAA+D8ANg7C7vuxU44mAG8EnmcZjB_te5N_=4M4v_-Q9ZyPZ49g@mail.gmail.com>
+ <2be4303e-58e1-4ad7-92cf-f06fa6fa0f08@perex.cz>
+ <7dc039db-ecce-4650-8eb7-96d0cfde09a2@linux.intel.com>
+ <CAA+D8AMv=tHV3b-Rfo9Pjqs0bX5SVschD=WD06qxjJOk5zQmiQ@mail.gmail.com>
+Content-Language: en-US
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <CAA+D8AMv=tHV3b-Rfo9Pjqs0bX5SVschD=WD06qxjJOk5zQmiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-SGksDQoNCkxvb2tzIGxpa2UgdGhlIGxhdGVzdCB1cHN0cmVhbSBrZXJuZWwgaGFzIHNvdmxl
-ZCB0aGUgcHJvYmxlbToNCmVjaG8gMSA+ICAvc3lzL2J1cy9wY2kvZGV2aWNlcy8wMDAxOjBk
-OjAwLjAvcmVtb3ZlDQogZWNobyAxID4gIC9zeXMvYnVzL3BjaS9yZXNjYW4NCg0KWyAgMjMw
-LjM5OTk2OV0gcGNpX2J1cyAwMDAxOjBkOiBDb25maWd1cmluZyBQRSBmb3IgYnVzDQpbICAy
-MzAuMzk5OTc0XSBwY2kgMDAwMTowZCAgICAgOiBbUEUjIGZiXSBTZWNvbmRhcnkgYnVzIDB4
-MDAwMDAwMDAwMDAwMDAwZCBhc3NvY2lhdGVkIHdpdGggUEUjZmINClsgIDIzMC40MDAwODRd
-IHBjaSAwMDAxOjBkOjAwLjA6IENvbmZpZ3VyZWQgUEUjZmINClsgIDIzMC40MDAwODZdIHBj
-aSAwMDAxOjBkICAgICA6IFtQRSMgZmJdIFNldHRpbmcgdXAgMzItYml0IFRDRSB0YWJsZSBh
-dCAwLi44MDAwMDAwMA0KWyAgMjMwLjQwMDY5OF0gcGNpIDAwMDE6MGQgICAgIDogW1BFIyBm
-Yl0gU2V0dGluZyB1cCB3aW5kb3cjMCAwLi4zZmZmZmZmZmZmIHBnPTEwMDAwDQpbICAyMzAu
-NDAwNzAzXSBwY2kgMDAwMTowZCAgICAgOiBbUEUjIGZiXSBFbmFibGluZyA2NC1iaXQgRE1B
-IGJ5cGFzcw0KWyAgMjMwLjQwMDcxNl0gcGNpIDAwMDE6MGQ6MDAuMDogQWRkaW5nIHRvIGlv
-bW11IGdyb3VwIDENClsgIDIzMC40MDA5MTddIG1taW90cmFjZTogaW9yZW1hcF8qKDB4M2Zl
-MDgwODAwMDAwLCAweDIwMDApID0gMDAwMDAwMDBlY2Y1M2ZhMQ0KWyAgMjMwLjQwMTA4OF0g
-bnZtZSBudm1lMDogcGNpIGZ1bmN0aW9uIDAwMDE6MGQ6MDAuMA0KWyAgMjMwLjQwMTA5OF0g
-bnZtZSAwMDAxOjBkOjAwLjA6IGVuYWJsaW5nIGRldmljZSAoMDE0MCAtPiAwMTQyKQ0KWyAg
-MjMwLjQwMTE0Nl0gbW1pb3RyYWNlOiBpb3JlbWFwXyooMHgzZmUwODA4MDQwMDAsIDB4NDAw
-KSA9IDAwMDAwMDAwM2U2YjJlNWINClsgIDIzMC40Mjk2MDBdIG52bWUgbnZtZTA6IEQzIGVu
-dHJ5IGxhdGVuY3kgc2V0IHRvIDEwIHNlY29uZHMNClsgIDIzMC40Mjk4OTZdIG1taW90cmFj
-ZTogaW9yZW1hcF8qKDB4M2ZlMDgwODA0MDAwLCAweDQwMCkgPSAwMDAwMDAwMDZmM2ZkOTJk
-DQpbICAyMzAuNDM5MTM4XSBudm1lIG52bWUwOiA2My8wLzAgZGVmYXVsdC9yZWFkL3BvbGwg
-cXVldWVzDQoNCnRoZSBvcmlnaW5hbCBwcm9ibGVtIGluIHBjaSByZXNjYW4gcGF0aCBhZnRl
-ciBob3QgcmVtb3ZlIGxpa2UgYmVsb3cgaXMgZ29uZSENCnBjaSAwMDIwOjBlOjAwLjA6IEJB
-UiAwOiBhc3NpZ25lZCBbbWVtIDB4M2ZlODAxODIwMDAwLTB4M2ZlODAxODJmZmZmIDY0Yml0
-XQ0KICAgIG52bWUgbnZtZTE6IHBjaSBmdW5jdGlvbiAwMDIwOjBlOjAwLjANCiAgICBudm1l
-IDAwMjA6MGU6MDAuMCBwY2lfZW5hYmxlX2RldmljZSgpIGJsb2NrZWQsIG5vIFBFIGFzc2ln
-bmVkLg0KDQpQcm9iYWJseSBmaXhlZCBieSB0aGUgY29tbWl0Og0KNWFjMTI5Y2RiNTBiNGVm
-ZGE1OWVlNWVhN2M3MTE5OTZhMzYzN2IzNA0KQXV0aG9yOiBKb2VsIFN0YW5sZXkgPGpvZWxA
-am1zLmlkLmF1Pg0KRGF0ZTogICBUdWUgSnVuIDEzIDE0OjIyOjAwIDIwMjMgKzA5MzANCnBv
-d2VycGMvcG93ZXJudi9wY2k6IFJlbW92ZSBpb2RhMSBzdXBwb3J0DQoNCnRoYXQgd2FzIG1l
-cmdlZCBtYWlubGluZSBsYXRlciB0aGFuIHRoZSB1cHN0cmVhbSBrZXJuZWwgSSBzYXcgdGhl
-IHByb2JsZW0gbGFzdCB0aW1lIEkgY2FtZQ0KdXAgd2l0aCB0aGUgcGF0Y2guDQoNCkdpdmVu
-IHRoZSBmYWN0cyBjaGFuZ2VkLCAgdGhlIHBhdGNoIHByb3Bvc2FsIGJlY2FtZSBldmVuIG1v
-cmUgdHJpdmlhbCBub3cuDQpJIHdvbid0IHB1c2ggaXQgZm9yIHVwc3RyZWFtIGluY2x1c2lv
-biBub3cuIEluc3RlYWQsIEkgd2lsbCBrZWVwIGl0IGluIG15IGxvY2FsIHRlc3QgcXVldWUg
-Zm9yIGEgd2hpbGUuICAgDQoNCkNoZWVycyENCkx1bWluZw0KDQotLS0tLS0tLS0tLS0tLS0t
-LS0gT3JpZ2luYWwgLS0tLS0tLS0tLS0tLS0tLS0tDQpGcm9tOiAgIuiZnumZhumTrSI8bHVt
-aW5nLnl1QHNoaW5ncm91cC5jbj47DQpEYXRlOiAgVHVlLCBOb3YgMjgsIDIwMjMgMDI6NDMg
-UE0NClRvOiAgImxpbnV4cHBjLWRldiI8bGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmc+
-OyAibGludXgta2VybmVsIjxsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnPjsgIm1wZSI8
-bXBlQGVsbGVybWFuLmlkLmF1PjsgIm5waWdnaW4iPG5waWdnaW5AZ21haWwuY29tPjsgImNo
-cmlzdG9waGUubGVyb3kiPGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldT47IA0KQ2M6ICAi
-bHVtaW5nLnl1IjxsdW1pbmcueXVAZ21haWwuY29tPjsgImtlLnpoYW8iPGtlLnpoYW9Ac2hp
-bmdyb3VwLmNuPjsgImRhd2VpLmxpIjxkYXdlaS5saUBzaGluZ3JvdXAuY24+OyAic2hlbmdo
-dWkucXUiPHNoZW5naHVpLnF1QHNoaW5ncm91cC5jbj47ICLomZ7pmYbpk60iPGx1bWluZy55
-dUBzaGluZ3JvdXAuY24+OyANClN1YmplY3Q6ICBbUEFUQ0ggdjFdIHBvd2VycGMvcG93ZXJu
-di9wY2k6IGZpeCBQRSBpbiByZS11c2VkIHBjaV9kbiBmb3IgcG52X3BjaV9lbmFibGVfZGV2
-aWNlX2hvb2sNCg0KIA0KDQphZnRlciBob3QgcmVtb3ZlIGEgcGNpZSBkZWl2Y2Ugd2l0aCBw
-Y2lfZG4gaGF2aW5nIHBucF9waHAgZHJpdmVyIGF0dGFjaGVkLA0KcGNpIHJlc2NhbiB3aXRo
-IGVjaG8gMSA+IC9zeXMvYnVzL3BjaS9yZXNjYW4gY291bGQgZmFpbCB3aXRoIGVycm9yDQpt
-ZXNzYWdlIGxpa2U6DQpwY2kgMDAyMDowZTowMC4wOiBCQVIgMDogYXNzaWduZWQgW21lbSAw
-eDNmZTgwMTgyMDAwMC0weDNmZTgwMTgyZmZmZg0KNjRiaXRdDQpudm1lIG52bWUxOiBwY2kg
-ZnVuY3Rpb24gMDAyMDowZTowMC4wDQpudm1lIDAwMjA6MGU6MDAuMCBwY2lfZW5hYmxlX2Rl
-dmljZSgpIGJsb2NrZWQsIG5vIFBFIGFzc2lnbmVkLg0KDQpJdCBhcHBlYXJzIHRoYXQgdGhl
-IHBjaV9kbiBvYmplY3QgaXMgcmV1c2VkIHdpdGggb25seSBwZV9udW1iZXINCmNsb2JiZXJl
-ZCBpbiB0aGUgY2FzZS4gQW5kIGEgc2ltcGxlIGNhbGwgdG8gcG52X2lvZGFfc2V0dXBfZGV2
-X1BFIHNob3VsZA0KZ2V0IFBFIG51bWJlciBiYWNrIGFuZCBzb2x2ZSB0aGUgcHJvYmxlbS4N
-Cg0KU2lnbmVkLW9mZi1ieTogTHVtaW5nIFl1IDxsdW1pbmcueXVAc2hpbmdyb3VwLmNuPg0K
-LS0tDQp2MCAtPiB2MToNCi1jbGVhbiB1cCBnYXJiYWdlIGxlYWtlZCBpbiBnaXQgZm9ybWF0
-IHBhdGNoIHRoYXQgc3RlbXMgZnJvbSBnaXQgY2xvbmUgYW5kIGNoZWNrb3V0IA0KLWNvbmZs
-aWN0cyBvZiBmaWxlcyBpbiBsb2NhbCB3aW5kb3dzIGZpbGVzeXN0ZW0gd2l0aCB3ZWlyZCBj
-YXNlcyBhbmQgbmFtZXMgcXVyaWtzLg0KLS0tDQogYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9w
-b3dlcm52L3BjaS1pb2RhLmMgICAgIHwgIDExICstDQogMSBmaWxlcyBjaGFuZ2VkLCA5IGlu
-c2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9hcmNoL3Bvd2Vy
-cGMvcGxhdGZvcm1zL3Bvd2VybnYvcGNpLWlvZGEuYyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9y
-bXMvcG93ZXJudi9wY2ktaW9kYS5jDQppbmRleCAyOGZhYzQ3NzAwNzMuLjlkN2FkZDc5ZWUz
-ZCAxMDA2NDQNCi0tLSBhL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9wY2ktaW9k
-YS5jDQorKysgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcGNpLWlvZGEuYw0K
-QEAgLTIzMjUsMTEgKzIzMjUsMTggQEAgc3RhdGljIHJlc291cmNlX3NpemVfdCBwbnZfcGNp
-X2RlZmF1bHRfYWxpZ25tZW50KHZvaWQpDQogc3RhdGljIGJvb2wgcG52X3BjaV9lbmFibGVf
-ZGV2aWNlX2hvb2soc3RydWN0IHBjaV9kZXYgKmRldikNCiB7DQogCXN0cnVjdCBwY2lfZG4g
-KnBkbjsNCisJc3RydWN0IHBudl9pb2RhX3BlICpwZTsNCiANCiAJcGRuID0gcGNpX2dldF9w
-ZG4oZGV2KTsNCi0JaWYgKCFwZG4gfHwgcGRuLT5wZV9udW1iZXIgPT0gSU9EQV9JTlZBTElE
-X1BFKSB7DQotCQlwY2lfZXJyKGRldiwgInBjaV9lbmFibGVfZGV2aWNlKCkgYmxvY2tlZCwg
-bm8gUEUgYXNzaWduZWQuXG4iKTsNCisJaWYgKCFwZG4pDQogCQlyZXR1cm4gZmFsc2U7DQor
-DQorCWlmIChwZG4tPnBlX251bWJlciA9PSBJT0RBX0lOVkFMSURfUEUpIHsNCisJCXBlID0g
-cG52X2lvZGFfc2V0dXBfZGV2X1BFKGRldik7DQorCQlpZiAoIXBlKSB7DQorCQkJcGNpX2Vy
-cihkZXYsICJwY2lfZW5hYmxlX2RldmljZSgpIGJsb2NrZWQsIG5vIFBFIGFzc2lnbmVkLlxu
-Iik7DQorCQkJcmV0dXJuIGZhbHNlOw0KKwkJfQ0KIAl9DQogDQogCXJldHVybiB0cnVlOw==
+
+> Yes, to go further, I think we can use SND_AUDIOCODEC_PCM, then
+> the SRC type will be dropped.
+
+sounds good.
+
+> But my understanding of the control means the .set_metadata() API, right?
+> As I said, the output rate, output format, and ratio modifier are applied to
+> the instances of ASRC,  which is the snd_compr_stream in driver.
+> so only the .set_metadata() API can be used for these purposes.
+
+Humm, this is more controversial.
+
+The term 'metadata' really referred to known information present in
+headers or additional ID3 tags and not in the compressed file itself.
+The .set_metadata was assumed to be called ONCE before decoding.
+
+But here you have a need to update the ratio modifier on a regular basis
+to compensate for the drift. This isn't what this specific callback was
+designed for. We could change and allow this callback to be used
+multiple times, but then this could create problems for existing
+implementations which cannot deal with modified metadata on the fly.
+
+And then there's the problem of defining a 'key' for the metadata. the
+definition of the key is a u32, so there's plenty of space for different
+implementations, but a collision is possible. We'd need an agreement on
+how to allocate keys to different solutions without changing the header
+file for every implementation.
+
+It sounds like we'd need a 'runtime params' callback - unless there's a
+better trick to tie the control and compress layers?
 
 
