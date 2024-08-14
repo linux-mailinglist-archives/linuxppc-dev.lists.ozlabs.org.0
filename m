@@ -1,61 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-73-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-74-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1435951243
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2024 04:22:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AF9951298
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 Aug 2024 04:38:20 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KD0s5qGS;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NF67yjJ9;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WkBqc4tF3z2y1l;
-	Wed, 14 Aug 2024 12:22:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WkC9P6sxfz2xjv;
+	Wed, 14 Aug 2024 12:38:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KD0s5qGS;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NF67yjJ9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12c; helo=mail-il1-x12c.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WkBqc0tXSz2xbd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 12:22:50 +1000 (AEST)
-Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-39b3ffc570bso28498275ab.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 Aug 2024 19:22:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723602167; x=1724206967; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=89JHmaWrb++n3w64WkT++R6JNihPGry7EvRTcS8lWyw=;
-        b=KD0s5qGSWSeGWJ8WS2tyiuHDC1mTJ6/8N2jU4FDaAQub7xTlXriQ2k23n/f0hipN3g
-         VMLYGmw7RHQ+UbXRv/mL0ZO+7LvOIqX3pNvx9t1bu9k7Hx9bB/7ldTJayCU2ya7XK5De
-         NwczmJ0S0y8VR8ly3qTnxlqCq84c6NCZoI96Fkn5j7p8AFMfEvQEk/xjmuPhRvdTtUc/
-         B4muY+UpWzXiITOGxQzqvVJyvWVvZfmpf+FyxnDwRbbT+uLuGSwlvdFVNOy4z8pjKasm
-         PRnv7p1HGQzoNIMkuxnHUVzKd4HDqPbXpKhMx7AprW5fJOdyI/Ts6Q7s0/58OvV9fpH9
-         VGZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723602167; x=1724206967;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=89JHmaWrb++n3w64WkT++R6JNihPGry7EvRTcS8lWyw=;
-        b=cU3SUS/y0Xa9+hleVE1UJ35m67HcgpMOzmllZ5PezdLWiO8bmSXolrh/nHCGNnaA6m
-         tm/E6xcuUByUrN3IigNlIi+mBQnPKUWTed0aWSjKJMDgClNklzmNHyEhpZRbUWWE/a3g
-         wOINERJ3uqJfEENrHI+cJV/yPp4zgciIstaVNYumSg01vsaNKR8iwkSZSgVMt3dm3uVN
-         y5oc9kSLept7ipYe2Xf/KyQWMgQTERErpVprp1kAozoe55X5cQeJGyriVLGNBOv8QR9L
-         D//m7ueBRZGpU9Ypu0yfuN1KwQOiWsgXkEMe4147aAu3NMGZnt+laWAJsuKNEWK5ZCZZ
-         VptQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUFssB0yoXz9uzBLTz9YCPq+mhFKqwZ7sqR+4U/rG7jGB+lypOk42Z6iSn4CMb0y/RhhhAWZNQIijX6Fu5Ppnp349GsnScxsO0uNGQCXA==
-X-Gm-Message-State: AOJu0YyQ4siZS+hpRfrMvLYEyzXMbtB2zOFsLo/6yJwLtied2e84vL9+
-	49IBkGJraHRe/3GE324LOIz5m3NFHHdRGZNO6iU2M3Jfc853DLFhoTEHIWZdJubZQiRQDmDFFPj
-	W5+qWZAE/vLgo/whfE3owlUyHUNs=
-X-Google-Smtp-Source: AGHT+IFPVUkZK6h4SS7dzEMo826uVZIEi+fljxMmUw43807CP8vAA2UHQF5gxQfwfaTavdVKDSVhT479wlqQfJ6aRnI=
-X-Received: by 2002:a05:6e02:1d9d:b0:397:c5da:dc02 with SMTP id
- e9e14a558f8ab-39d12484a08mr20645625ab.4.1723602167332; Tue, 13 Aug 2024
- 19:22:47 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WkC9N0fkfz2xg3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 Aug 2024 12:38:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723603096; x=1755139096;
+  h=date:from:to:cc:subject:message-id;
+  bh=4e7V+cQQDePJ5TPSIfiHrZk/dPdU/hO8JQqVJENI4bQ=;
+  b=NF67yjJ96k45dGqRy7E/PzOR+EAc7agtR+qbtiyijBp/IwbXoUO1H5GE
+   cB61qhyl2cf4jOdN6dAKsBTBrWR63pUuZLr8hGTIRl7Y2hX+n20r8nrJj
+   Tf+ophLSlcb1b/P1IWee8avItw2LaLSzo/HxUkX7pX1ZD1iiEfH7Nambu
+   EK6mL9w9saB6WFXfEHimmhSRQ8zuC2/iKtIRDArExoLCICXnXGyMGjGqG
+   1CWLw1+XE31tBel6qlH+J0yk3TWHBh/o2Ky5WwyuTpXYWUJqbKXJEK51b
+   yOssN5E+nlErM9mHW64xnhweV8PEoVkBrcCno1FiH/jMQ23w5kVIOfHHn
+   w==;
+X-CSE-ConnectionGUID: WjMlkMpJRhGDaxeqFdS6yQ==
+X-CSE-MsgGUID: lcSg2jGGTaWkGtJW9xmS9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="21931252"
+X-IronPort-AV: E=Sophos;i="6.09,287,1716274800"; 
+   d="scan'208";a="21931252"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2024 19:38:09 -0700
+X-CSE-ConnectionGUID: qwyGOF23Rt+p/VObAbcDyw==
+X-CSE-MsgGUID: V/0Ar34hQc2A2+FsoEZFvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,287,1716274800"; 
+   d="scan'208";a="58816510"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 13 Aug 2024 19:38:08 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1se3tk-00010i-1N;
+	Wed, 14 Aug 2024 02:38:04 +0000
+Date: Wed, 14 Aug 2024 10:37:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 227bbaabe64b6f9cd98aa051454c1d4a194a8c6a
+Message-ID: <202408141041.yKkSr2Lx-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,137 +67,212 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-References: <1722940003-20126-1-git-send-email-shengjiu.wang@nxp.com>
- <1722940003-20126-2-git-send-email-shengjiu.wang@nxp.com> <e89a56bf-c377-43d8-bba8-6a09e571ed64@linux.intel.com>
- <CAA+D8AN9JXJr-BZf8aY7d4rB6M60pXS_DG=qv=P6=2r1A18ATA@mail.gmail.com>
- <ffa85004-8d86-4168-b278-afd24d79f9d8@linux.intel.com> <116041ee-7139-4b77-89be-3a68f699c01b@perex.cz>
- <930bb152-860a-4ec5-9ef0-1c96f554f365@linux.intel.com> <c9039808-cd04-452d-9f6c-f91811088456@perex.cz>
- <ed1192e0-00e7-4739-a687-c96dc2d62898@linux.intel.com> <CAA+D8AMOh=G7W5-dYw_=Xx-s0PqEu2suKYorscoWku86Rn-=+A@mail.gmail.com>
- <542d47c5-7ce3-4c17-8c0a-3a2b2a9e6c6a@linux.intel.com> <c3b8f7b8-fc5e-4285-bee8-7edd448a405d@perex.cz>
- <CAA+D8ANg7C7vuxU44mAG8EnmcZjB_te5N_=4M4v_-Q9ZyPZ49g@mail.gmail.com>
- <2be4303e-58e1-4ad7-92cf-f06fa6fa0f08@perex.cz> <7dc039db-ecce-4650-8eb7-96d0cfde09a2@linux.intel.com>
-In-Reply-To: <7dc039db-ecce-4650-8eb7-96d0cfde09a2@linux.intel.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 14 Aug 2024 10:22:35 +0800
-Message-ID: <CAA+D8AMv=tHV3b-Rfo9Pjqs0bX5SVschD=WD06qxjJOk5zQmiQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/6] ALSA: compress: add Sample Rate Converter codec support
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc: Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, 
-	tiwai@suse.com, alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 12, 2024 at 9:44=E2=80=AFPM Pierre-Louis Bossart
-<pierre-louis.bossart@linux.intel.com> wrote:
->
->
->
-> On 8/12/24 15:31, Jaroslav Kysela wrote:
-> > On 12. 08. 24 12:24, Shengjiu Wang wrote:
-> >> On Fri, Aug 9, 2024 at 10:01=E2=80=AFPM Jaroslav Kysela <perex@perex.c=
-z> wrote:
-> >>>
-> >>> On 09. 08. 24 14:52, Pierre-Louis Bossart wrote:
-> >>>
-> >>>>> And metadata
-> >>>>> ioctl can be called many times which can meet the ratio modifier
-> >>>>> requirement (ratio may be drift on the fly)
-> >>>>
-> >>>> Interesting, that's yet another way of handling the drift with
-> >>>> userspace
-> >>>> modifying the ratio dynamically. That's different to what I've seen
-> >>>> before.
-> >>>
-> >>> Note that the "timing" is managed by the user space with this scheme.
-> >>>
-> >>>>> And compress API uses codec as the unit for capability query and
-> >>>>> parameter setting,  So I think need to define "SND_AUDIOCODEC_SRC'
-> >>>>> and 'struct snd_dec_src',  for the 'snd_dec_src' just defined outpu=
-t
-> >>>>> format and output rate, channels definition just reuse the
-> >>>>> snd_codec.ch_in.
-> >>>>
-> >>>> The capability query is an interesting point as well, it's not clear
-> >>>> how
-> >>>> to expose to userspace what this specific implementation can do, whi=
-le
-> >>>> at the same time *requiring* userpace to update the ratio dynamicall=
-y.
-> >>>> For something like this to work, userspace needs to have pre-existin=
-g
-> >>>> information on how the SRC works.
-> >>>
-> >>> Yes, it's about abstraction. The user space wants to push data, read
-> >>> data back
-> >>> converted to the target rate and eventually modify the drift using a
-> >>> control
-> >>> managing clocks using own way. We can eventually assume, that if this
-> >>> control
-> >>> does not exist, the drift cannot be controlled. Also, nice thing is
-> >>> that the
-> >>> control has min and max values (range), so driver can specify the
-> >>> drift range,
-> >>> too.
-> >>>
-> >>> And again, look to "PCM Rate Shift 100000" control implementation in
-> >>> sound/drivers/aloop.c. It would be nice to have the base offset for t=
-he
-> >>> shift/drift/pitch value standardized.
-> >>
-> >> Thanks.
-> >>
-> >> But the ASRC driver I implemented is different, I just register one so=
-und
-> >> card, one device/subdevice.  but the ASRC hardware support 4 instances
-> >> together, so user can open the card device 4 times to create 4 instanc=
-es
-> >> then the controls can only bind with compress streams.
-> >
-> > It's just a reason to add the subdevice code for the compress offload
-> > layer like we have in other APIs for overall consistency. I'll try to
-> > work on this.
->
-> I thought this was supported already? I remember there was a request to
-> enable more than one compressed stream for enhanced cross-fade support
-> with different formats? That isn't supported with the single-device +
-> PARTIAL_DRAIN method.
->
-> Vinod?
->
-> >> I think I can remove the 'SNDRV_COMPRESS_SRC_RATIO_MOD',
-> >
-> > Yes.
-> >
-> >> Only define a private type for driver,  which means only the ASRC driv=
-er
-> >> and its user application know the type.
-> >
-> > The control API should be used for this IMHO.
->
-> Agree, this would be a 'clean' split where the compress API is used for
-> the data parts and the control parts used otherwise to alter the ratio
-> or whatever else is needed.
->
-> >> For the change in 'include/uapi/sound/compress_params.h",  should I
-> >> keep them,  is there any other suggestion for them?
->
-> You can add the SRC type but if you use a control for the parameters you
-> don't need to add anything for the encoder options, do you?
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 227bbaabe64b6f9cd98aa051454c1d4a194a8c6a  powerpc/topology: Check if a core is online
 
-Yes, to go further, I think we can use SND_AUDIOCODEC_PCM, then
-the SRC type will be dropped.
+elapsed time: 810m
 
-But my understanding of the control means the .set_metadata() API, right?
-As I said, the output rate, output format, and ratio modifier are applied t=
-o
-the instances of ASRC,  which is the snd_compr_stream in driver.
-so only the .set_metadata() API can be used for these purposes.
+configs tested: 191
+configs skipped: 7
 
-Best regards
-Shengjiu Wang
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig   gcc-13.3.0
+alpha                            allyesconfig   gcc-13.3.0
+alpha                               defconfig   gcc-13.2.0
+arc                              allmodconfig   gcc-13.2.0
+arc                               allnoconfig   gcc-13.2.0
+arc                              allyesconfig   gcc-13.2.0
+arc                                 defconfig   gcc-13.2.0
+arc                   randconfig-001-20240814   gcc-13.2.0
+arc                   randconfig-002-20240814   gcc-13.2.0
+arc                           tb10x_defconfig   gcc-13.2.0
+arm                              allmodconfig   gcc-13.2.0
+arm                              allmodconfig   gcc-14.1.0
+arm                               allnoconfig   clang-20
+arm                              allyesconfig   gcc-13.2.0
+arm                              allyesconfig   gcc-14.1.0
+arm                         assabet_defconfig   gcc-13.2.0
+arm                                 defconfig   gcc-13.2.0
+arm                       omap2plus_defconfig   gcc-13.2.0
+arm                   randconfig-001-20240814   clang-20
+arm                   randconfig-002-20240814   clang-20
+arm                   randconfig-003-20240814   clang-20
+arm                   randconfig-004-20240814   clang-20
+arm                           sunxi_defconfig   gcc-13.2.0
+arm64                            allmodconfig   clang-20
+arm64                            allmodconfig   gcc-13.2.0
+arm64                             allnoconfig   gcc-14.1.0
+arm64                               defconfig   gcc-13.2.0
+arm64                 randconfig-001-20240814   clang-20
+arm64                 randconfig-002-20240814   gcc-14.1.0
+arm64                 randconfig-003-20240814   gcc-14.1.0
+arm64                 randconfig-004-20240814   clang-20
+csky                              allnoconfig   gcc-14.1.0
+csky                                defconfig   gcc-13.2.0
+csky                  randconfig-001-20240814   gcc-14.1.0
+csky                  randconfig-002-20240814   gcc-14.1.0
+hexagon                          allmodconfig   clang-20
+hexagon                           allnoconfig   clang-20
+hexagon                          allyesconfig   clang-20
+hexagon               randconfig-001-20240814   clang-16
+hexagon               randconfig-002-20240814   clang-14
+i386                             allmodconfig   clang-18
+i386                             allmodconfig   gcc-12
+i386                              allnoconfig   clang-18
+i386                              allnoconfig   gcc-12
+i386                             allyesconfig   clang-18
+i386                             allyesconfig   gcc-12
+i386         buildonly-randconfig-001-20240814   clang-18
+i386         buildonly-randconfig-002-20240814   clang-18
+i386         buildonly-randconfig-003-20240814   clang-18
+i386         buildonly-randconfig-004-20240814   clang-18
+i386         buildonly-randconfig-005-20240814   clang-18
+i386         buildonly-randconfig-005-20240814   gcc-12
+i386         buildonly-randconfig-006-20240814   clang-18
+i386         buildonly-randconfig-006-20240814   gcc-12
+i386                                defconfig   clang-18
+i386                  randconfig-001-20240814   clang-18
+i386                  randconfig-002-20240814   clang-18
+i386                  randconfig-002-20240814   gcc-12
+i386                  randconfig-003-20240814   clang-18
+i386                  randconfig-003-20240814   gcc-12
+i386                  randconfig-004-20240814   clang-18
+i386                  randconfig-005-20240814   clang-18
+i386                  randconfig-006-20240814   clang-18
+i386                  randconfig-011-20240814   clang-18
+i386                  randconfig-011-20240814   gcc-12
+i386                  randconfig-012-20240814   clang-18
+i386                  randconfig-012-20240814   gcc-12
+i386                  randconfig-013-20240814   clang-18
+i386                  randconfig-014-20240814   clang-18
+i386                  randconfig-014-20240814   gcc-11
+i386                  randconfig-015-20240814   clang-18
+i386                  randconfig-015-20240814   gcc-12
+i386                  randconfig-016-20240814   clang-18
+i386                  randconfig-016-20240814   gcc-12
+loongarch                        allmodconfig   gcc-14.1.0
+loongarch                         allnoconfig   gcc-14.1.0
+loongarch                           defconfig   gcc-13.2.0
+loongarch             randconfig-001-20240814   gcc-14.1.0
+loongarch             randconfig-002-20240814   gcc-14.1.0
+m68k                             allmodconfig   gcc-14.1.0
+m68k                              allnoconfig   gcc-14.1.0
+m68k                             allyesconfig   gcc-14.1.0
+m68k                                defconfig   gcc-13.2.0
+microblaze                       allmodconfig   gcc-14.1.0
+microblaze                        allnoconfig   gcc-14.1.0
+microblaze                       allyesconfig   gcc-14.1.0
+microblaze                          defconfig   gcc-13.2.0
+mips                              allnoconfig   gcc-14.1.0
+mips                       bmips_be_defconfig   gcc-13.2.0
+mips                         rt305x_defconfig   gcc-13.2.0
+nios2                             allnoconfig   gcc-14.1.0
+nios2                               defconfig   gcc-13.2.0
+nios2                 randconfig-001-20240814   gcc-14.1.0
+nios2                 randconfig-002-20240814   gcc-14.1.0
+openrisc                          allnoconfig   gcc-14.1.0
+openrisc                         allyesconfig   gcc-14.1.0
+openrisc                            defconfig   gcc-14.1.0
+parisc                           allmodconfig   gcc-14.1.0
+parisc                            allnoconfig   gcc-14.1.0
+parisc                           allyesconfig   gcc-14.1.0
+parisc                              defconfig   gcc-14.1.0
+parisc                randconfig-001-20240814   gcc-14.1.0
+parisc                randconfig-002-20240814   gcc-14.1.0
+parisc64                            defconfig   gcc-13.2.0
+powerpc                          allmodconfig   gcc-14.1.0
+powerpc                           allnoconfig   gcc-14.1.0
+powerpc                          allyesconfig   clang-20
+powerpc                          allyesconfig   gcc-14.1.0
+powerpc                      katmai_defconfig   gcc-13.2.0
+powerpc                 mpc837x_rdb_defconfig   gcc-13.2.0
+powerpc                      ppc44x_defconfig   gcc-13.2.0
+powerpc               randconfig-001-20240814   gcc-14.1.0
+powerpc               randconfig-002-20240814   clang-20
+powerpc               randconfig-003-20240814   gcc-14.1.0
+powerpc                 xes_mpc85xx_defconfig   gcc-13.2.0
+powerpc64             randconfig-001-20240814   clang-20
+powerpc64             randconfig-002-20240814   clang-15
+powerpc64             randconfig-003-20240814   clang-20
+riscv                            allmodconfig   clang-20
+riscv                            allmodconfig   gcc-14.1.0
+riscv                             allnoconfig   gcc-14.1.0
+riscv                            allyesconfig   clang-20
+riscv                            allyesconfig   gcc-14.1.0
+riscv                               defconfig   gcc-14.1.0
+riscv                 randconfig-001-20240814   gcc-14.1.0
+riscv                 randconfig-002-20240814   clang-20
+s390                             allmodconfig   clang-20
+s390                              allnoconfig   clang-20
+s390                              allnoconfig   gcc-14.1.0
+s390                             allyesconfig   clang-20
+s390                             allyesconfig   gcc-14.1.0
+s390                                defconfig   gcc-13.2.0
+s390                                defconfig   gcc-14.1.0
+s390                  randconfig-001-20240814   gcc-14.1.0
+s390                  randconfig-002-20240814   gcc-14.1.0
+sh                               allmodconfig   gcc-14.1.0
+sh                                allnoconfig   gcc-14.1.0
+sh                               allyesconfig   gcc-14.1.0
+sh                                  defconfig   gcc-14.1.0
+sh                          landisk_defconfig   gcc-13.2.0
+sh                    randconfig-001-20240814   gcc-14.1.0
+sh                    randconfig-002-20240814   gcc-14.1.0
+sh                          rsk7269_defconfig   gcc-13.2.0
+sh                          sdk7780_defconfig   gcc-13.2.0
+sparc                            allmodconfig   gcc-14.1.0
+sparc64                             defconfig   gcc-14.1.0
+sparc64               randconfig-001-20240814   gcc-14.1.0
+sparc64               randconfig-002-20240814   gcc-14.1.0
+um                               allmodconfig   clang-20
+um                               allmodconfig   gcc-13.3.0
+um                                allnoconfig   clang-17
+um                                allnoconfig   gcc-14.1.0
+um                               allyesconfig   gcc-12
+um                               allyesconfig   gcc-13.3.0
+um                                  defconfig   gcc-14.1.0
+um                             i386_defconfig   gcc-14.1.0
+um                    randconfig-001-20240814   clang-20
+um                    randconfig-002-20240814   clang-20
+um                           x86_64_defconfig   gcc-14.1.0
+x86_64                            allnoconfig   clang-18
+x86_64                           allyesconfig   clang-18
+x86_64       buildonly-randconfig-001-20240814   clang-18
+x86_64       buildonly-randconfig-002-20240814   gcc-12
+x86_64       buildonly-randconfig-003-20240814   clang-18
+x86_64       buildonly-randconfig-004-20240814   clang-18
+x86_64       buildonly-randconfig-005-20240814   gcc-12
+x86_64       buildonly-randconfig-006-20240814   clang-18
+x86_64                              defconfig   clang-18
+x86_64                              defconfig   gcc-11
+x86_64                randconfig-001-20240814   clang-18
+x86_64                randconfig-002-20240814   gcc-12
+x86_64                randconfig-003-20240814   gcc-11
+x86_64                randconfig-004-20240814   gcc-12
+x86_64                randconfig-005-20240814   gcc-12
+x86_64                randconfig-006-20240814   gcc-12
+x86_64                randconfig-011-20240814   clang-18
+x86_64                randconfig-012-20240814   clang-18
+x86_64                randconfig-013-20240814   gcc-11
+x86_64                randconfig-014-20240814   clang-18
+x86_64                randconfig-015-20240814   gcc-12
+x86_64                randconfig-016-20240814   clang-18
+x86_64                randconfig-071-20240814   clang-18
+x86_64                randconfig-072-20240814   clang-18
+x86_64                randconfig-073-20240814   clang-18
+x86_64                randconfig-074-20240814   clang-18
+x86_64                randconfig-075-20240814   gcc-12
+x86_64                randconfig-076-20240814   clang-18
+x86_64                          rhel-8.3-rust   clang-18
+xtensa                            allnoconfig   gcc-14.1.0
+xtensa                randconfig-001-20240814   gcc-14.1.0
+xtensa                randconfig-002-20240814   gcc-14.1.0
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
