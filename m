@@ -1,95 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-111-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-112-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC849953D60
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 00:42:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FCC953D61
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 00:42:58 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=CXAFBcZ+;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=px/HGB1A;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WlKr508rcz2xfb;
-	Fri, 16 Aug 2024 08:42:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WlKrv3y8cz2xjK;
+	Fri, 16 Aug 2024 08:42:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::434"
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::e36"
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=CXAFBcZ+;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=px/HGB1A;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::e36; helo=mail-vs1-xe36.google.com; envelope-from=samitolvanen@google.com; receiver=lists.ozlabs.org)
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WlFqF0NjZz2yZd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2024 05:41:11 +1000 (AEST)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-710ec581999so1128042b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2024 12:41:11 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WlH055zDSz2y8k
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2024 06:33:56 +1000 (AEST)
+Received: by mail-vs1-xe36.google.com with SMTP id ada2fe7eead31-4928b5531caso471470137.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2024 13:33:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1723750866; x=1724355666; darn=lists.ozlabs.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=u1VWISu56wcliniL1RPNMTZcS4mUkuTA+1qK0QABl0U=;
-        b=CXAFBcZ+oa0Kqfv7avnRuw6oYsbSTjjAjyVpH177YRUnp1dNT6KMe/9euFbix/34G2
-         opcINKmQek+qH5FR7/ZYYLECePfemDAOe9uB99S/DmWdfaN9QDuSwMFxW6F9MYhPaYbF
-         AYXkWdopSBug4Xs8V/GDHQueZjYuN+xSk0xlB3ckTNPctYuRnFK6SDkXwVX8S/Jt1YAi
-         cpSK2yOBn1HoR8c8oGN0bP2xkMuEHN8hLrBZmdzLVxO5VH6SDxUSH4ozXOA4pFeuTUy3
-         ifLAmceIzm0kajNneAIn5wfF38twt5hQhQNdKKk7Jq8MuqB+5L+GIlw43RMFtNR8S1XU
-         HQhA==
+        d=google.com; s=20230601; t=1723754034; x=1724358834; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wUB5DtqEXasUqeTn5ggBGYiSPHH9LQLM5I6fa/JbtdA=;
+        b=px/HGB1A4jqC/IbvFDPMO29rj4ysOHjaplskqoLYbvmQYqPAUkI1SwBfj+rkS+fomZ
+         sDGGCF3euV2J7Nj+j835VA8l+cglLcQa3RPruzdXHBeSZC4EP2wD/wnk96ABaf7OyRR5
+         oUchK86AZ6UkqUaeHVPpzv7QFl9Q3ogIAsp0mU1Df1AG0q0PlzfrgfpoT9b/mx38Ad+K
+         /BaOrENZ+aQHLdppy+7FvoZP2PCLV+KMqRmwQZiro++GOcf67p0Y+ivmCMqyVWWh9rsI
+         e1kHCf265+RgVW4J1zAlcSI+bSfiwi5Ygi0i7Vo1aPe4LpTKKTP52f0OMhfVaA17trAO
+         9+XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723750866; x=1724355666;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u1VWISu56wcliniL1RPNMTZcS4mUkuTA+1qK0QABl0U=;
-        b=UWX/erRfaviAGZDQEledL3reNBSg6vVQgfUN0TWeY3wVyAY+0+kRR/9MU6/F8lW/5R
-         5Th8h3U3BrKGpt+fNr/fYzefdByPb6owaVfKB1FzqrB2mbtCWrR30eY39v/31EXWYFD2
-         LcC4Bon7CQx8RXHkMQDvLaPbj3R3yWsFYJ0LJu3L8ArsgHwqTFFlc90+4/ui1QOy0NiJ
-         NBu/QcjvaH9BMuASt4t46Yx9G4LUizQ7AP/2dmc2PO1eyoNwOXZjgawsEGR3G9PNuAjZ
-         68wB7wKBTqgH93cWiAt8TA0Euoi/h7epRjJ8kdlwde+n03yBq/04AloJyd5RlYVSw8IN
-         UO+g==
-X-Forwarded-Encrypted: i=1; AJvYcCW/wi8eJev9BPkqE9a9Yt4fzKid2UEs0cAEmuFQqNraWNe0Eh34tlMunWv5r3vY4oyL75x1NIHRDThe/aqNQMqfH5dbrrVHLPw0MX4GCA==
-X-Gm-Message-State: AOJu0YwZ4so9OhoMgSGvZxrUQPCWz6n6AaJrUm549bRkj16BjIbbw1Lx
-	AZAqstOL7wvUhHxfMFl6WfZzGW4krfIi1LtY9EBVoQt1YIzeucx5iwfgJdbfWzo=
-X-Google-Smtp-Source: AGHT+IGBeVra0eMWvYeLqHCk/DezHt9EnEpabZ2WKu9TSxo5+eSv9Ov+1Xc7qtkvdvQlB0z9sH91RA==
-X-Received: by 2002:a05:6a00:66cb:b0:710:bdef:5e15 with SMTP id d2e1a72fcca58-713c4e71508mr894035b3a.18.1723750866152;
-        Thu, 15 Aug 2024 12:41:06 -0700 (PDT)
-Received: from dev-mattc2.dev.purestorage.com ([208.88.159.128])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7127aef410esm1342447b3a.113.2024.08.15.12.41.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Aug 2024 12:41:05 -0700 (PDT)
-From: Matthew W Carlis <mattc@purestorage.com>
-To: macro@orcam.me.uk
-Cc: alex.williamson@redhat.com,
-	bhelgaas@google.com,
-	davem@davemloft.net,
-	david.abdurachmanov@gmail.com,
-	edumazet@google.com,
-	helgaas@kernel.org,
-	kuba@kernel.org,
-	leon@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	lukas@wunner.de,
-	mahesh@linux.ibm.com,
-	mattc@purestorage.com,
-	mika.westerberg@linux.intel.com,
-	netdev@vger.kernel.org,
-	npiggin@gmail.com,
-	oohall@gmail.com,
-	pabeni@redhat.com,
-	pali@kernel.org,
-	saeedm@nvidia.com,
-	sr@denx.de,
-	wilson@tuliptree.org
-Subject: PCI: Work around PCIe link training failures
-Date: Thu, 15 Aug 2024 13:40:59 -0600
-Message-Id: <20240815194059.28798-1-mattc@purestorage.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <alpine.DEB.2.21.2408091356190.61955@angie.orcam.me.uk>
-References: <alpine.DEB.2.21.2408091356190.61955@angie.orcam.me.uk>
+        d=1e100.net; s=20230601; t=1723754034; x=1724358834;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wUB5DtqEXasUqeTn5ggBGYiSPHH9LQLM5I6fa/JbtdA=;
+        b=u149M94Jntxp28yHoLpLpwUfk3vHJTvbV+hbrSVxi/Yjv/V6lDUesDyUEVpfAndgXY
+         IpaKhjUz9iZ9A0bmWBweugyQXFsOvJLujmUptqv7jE+in/898OQtwXn76oMXu4YNVr1j
+         cfVtmU/L+zapr/bwNEsX8cOqWeR+x/yfUVZUu1l0/tZrG/xq8ppPxW9ae+HNVHckfdhp
+         ssDo+m37SobiKdep92T7dkyBmWbSxoqnADTgt1QcZC0y7sFbDT47Dn2wI/qSnjAy4y3I
+         6WDx6nyE5QlOgkNwvAm/tJ2a36qCwp7DGyDYWQHMTtFgFIZEeosWkewajSHukeh7faoh
+         +UqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnTSQ1Tcz94OgsWWHePW1lB7RVVdRUJHTp0AijD3sNahKp7Io/fVK6eFRMsqBlLvK6D7PqF0oN+ESw4+DLDM2OY4aW806uMxkgsq+m1A==
+X-Gm-Message-State: AOJu0YyYTWDrcWp2VlBlL87rpZSTPiS6GSMntOf4qrO0MTq+m05+6dnZ
+	bHHVDoAhDBfSbMgpNGPSuytoHVnd0UvBETe5KdHo/4ki8LOOcbYS9q9WGKS2xItxIs90V0D8z5c
+	BLF+BzcFIqM9WWbX4r+IlpLN4trx8foSqf1qZ
+X-Google-Smtp-Source: AGHT+IGfmuESjcg91WnDqUqkDtn8UIkv+97xiwN4+ScLJKsVEkWIs/4dVOABxE4IIaU7W5co17m4OAQqJ19lGvWOC8s=
+X-Received: by 2002:a05:6102:41aa:b0:493:d41a:1185 with SMTP id
+ ada2fe7eead31-497798dc938mr1347334137.17.1723754033614; Thu, 15 Aug 2024
+ 13:33:53 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,43 +66,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+References: <20240806212106.617164-1-mmaurer@google.com> <20240806212106.617164-15-mmaurer@google.com>
+In-Reply-To: <20240806212106.617164-15-mmaurer@google.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Thu, 15 Aug 2024 20:33:15 +0000
+Message-ID: <CABCJKufJK0WO92wnW09VTLqZk0ODxhuKQG=HbKE-va0urJU1Vg@mail.gmail.com>
+Subject: Re: [PATCH v3 14/16] modules: Support extended MODVERSIONS info
+To: Matthew Maurer <mmaurer@google.com>
+Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
+	gary@garyguo.net, mcgrof@kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st, j@jannau.net, 
+	asahi@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linuxppc-dev@lists.ozlabs.org, 
+	linux-modules@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Sorry for the delay in my responses here I had some things get in my way.
+Hi Matt,
 
-On Fri, 9 Aug 2024 09:13:52 Oliver O'Halloran <oohall@gmail.com> wrote:
+On Tue, Aug 6, 2024 at 9:25=E2=80=AFPM Matthew Maurer <mmaurer@google.com> =
+wrote:
+>
+[...]
+> +void modversion_ext_start(const struct load_info *info,
+> +                         struct modversion_info_ext *start)
+> +{
+> +       unsigned int crc_idx =3D info->index.vers_ext_crc;
+> +       unsigned int name_idx =3D info->index.vers_ext_name;
+> +       Elf_Shdr *sechdrs =3D info->sechdrs;
+> +
+> +       /*
+> +        * Both of these fields are needed for this to be useful
+> +        * Any future fields should be initialized to NULL if absent.
+> +        */
+> +       if ((crc_idx =3D=3D 0) || (name_idx =3D=3D 0))
 
-> Ok? If we have to check for DPC being enabled in addition to checking
-> the surprise bit in the slot capabilities then that's fine, we can do
-> that. The question to be answered here is: how should this feature
-> work on ports where it's normal for a device to be removed without any
-> notice?
+nit: The extra parentheses are not necessary.
 
-I'm not sure if its the correct thing to check however. I assumed that ports
-using the pciehp driver would usually consider it "normal" for a device to
-be removed actually, but maybe I have the idea of hp reversed.
+> +               start->remaining =3D 0;
+> +
+> +       start->crc =3D (const s32 *)sechdrs[crc_idx].sh_addr;
+> +       start->name =3D (const char *)sechdrs[name_idx].sh_addr;
+> +       start->remaining =3D sechdrs[crc_idx].sh_size / sizeof(*start->cr=
+c);
+> +}
 
-On Fri, 9 Aug 2024 14:34:04 Maciej W. Rozycki <macro@orcam.me.uk> wrote:
+Is this missing an else condition or a return? Why set
+start->remaining to zero and then proceed to assign a possibly invalid
+value to it anyway?
 
-> Well, in principle in a setup with reliable links the LBMS bit may never 
-> be set, e.g. this system of mine has been in 24/7 operation since the last 
-> reboot 410 days ago and for the devices that support Link Active reporting 
-> it shows:
-> ...
-> so out of 11 devices 6 have the LBMS bit clear.  But then 5 have it set, 
-> perhaps worryingly, so of course you're right, that it will get set in the 
-> field, though it's not enough by itself for your problem to trigger.
-
-The way I look at it is that its essentially a probability distribution with time,
-but I try to avoid learning too much about the physical layer because I would find
-myself debugging more hardware issues lol. I also don't think LBMS/LABS being set
-by itself is very interesting without knowing the rate at which it is being set.
-FWIW I have seen some devices in the past going into recovery state many times a
-second & still never downtrain, but at the same time they were setting the
-LBMS/LABS bits which maybe not quite spec compliant.
-
-I would like to help test these changes, but I would like to avoid having to test
-each mentioned change individually. Does anyone have any preferences in how I batch
-the patches for testing? Would it be ok if I just pulled them all together on one go?
-
-- Matt
+Sami
 
