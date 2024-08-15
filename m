@@ -1,50 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-101-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-102-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9859952B0C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2024 11:06:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B028952BE4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 Aug 2024 12:22:22 +0200 (CEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=r9W0oxFI;
+	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WkzlD5zT6z2yYn;
-	Thu, 15 Aug 2024 19:06:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wl1QM4mKbz2xm5;
+	Thu, 15 Aug 2024 20:22:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.124.171; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 91450 seconds by postgrey-1.37 at boromir; Thu, 15 Aug 2024 19:06:46 AEST
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.124.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=r9W0oxFI;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WkzlB0g7Kz2yRZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2024 19:06:44 +1000 (AEST)
-X-QQ-GoodBg: 2
-X-BAN-DOWNLOAD: 1
-X-BAN-SHARE: 1
-X-QQ-SSF: 0040000000000060
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-X-QQ-XMAILINFO: NDtUtlvFer7vj5R3nzcc/gmww5EXp7HZjxd92AkKdI4W5c7Ag2hyCzMQ
-	sfw6xwjZJWdOjvWoINO22ddzHdHyItKKDL/gPwJcEaeTnfuLpV0lRu/tLmlI7hh24vj1VII
-	5KZb9NrgjeBl4vD6owrOITqudD0v/LhahsoffBXenNCOYUdIQKfHABPf2GtsWke/N+gOfJL
-	1UNOrgzOSec/1dj+4eP1Xdv4Y2qPubzXpYNX44N0BwuHGG1dQqK8PZ/l57/GO3WJ0q4dDBl
-	Goamrh3Scew9vIFSBN4/I/kBDQaWsZ1+Nf78M2gCYJM85nl9O0Q/UYoWHr7M2L9KO0QpPrj
-	JUVB3UQclTPWnfoRWavA6KQ3VAsvqRjOsMEvIi8F3Zv8HzEs4R4J00CTPb9jcOi8551M+3c
-	XrSVBymKMY+8NOub1OkOHecTxekgGnFegu7P27+LwKImgFnyEmaJ2OYn2dyahzg9eX2Gj/z
-	Ai7oSgrF9vS5rJjRXkJhu0ZbCb2VvaTACx5dFfvvWR6J4vZgVoyKPmTKBkVHIoVrEf19tN0
-	6l9WEQ4K17ZHIN4njOHxkNST3nx8QXWpZmq5svutKb35atqJrMOjdAYmrAIht5N479Oq6Ky
-	kWRlFme0aC4e70IYQzdInzGfygRsLhi2kwH0QXBTqPvcdLtIGSY25iwlRQmwH/L+5Qbqehh
-	uJeNzwqgWUQnjdoSGV5UZq7phtv/yObp3CqmHxwpWoP7PZduTomt4AC4H4H8tUCq7I2Su3V
-	hFbwBGkjCgJ2Jyoo0Ef90XIEoTi/wNnSF6t4ApMPNu5QvDxVlFYJTflEfuwbL4pDIGeef8y
-	cGIXklrQcJ+PTx071DXriNM/pCFfXP0aMDAV+Qh2YDu3za8gilSWWrUTVcGP2ygXiMbkhCR
-	Fz8dgwj78wUbzGP2lEGqX9e8xAh3I2oRUQ3NPTg4czU=
-X-QQ-FEAT: D4aqtcRDiqQpBpTnjIJt3/f21w9WO3enREO5ZSgO7MU=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: k3WaxIoXFxcNhKxdcLegAHMD65bG0o/5i9gOCI74Uhk=
-X-Originating-IP: 58.34.222.244
-X-QQ-STYLE: 
-X-QQ-mid: t6gz5a-0t1723712700t896640
-From: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>
-To: "=?utf-8?B?bXBl?=" <mpe@ellerman.id.au>
-Cc: "=?utf-8?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bnBpZ2dpbg==?=" <npiggin@gmail.com>, "=?utf-8?B?Y2hyaXN0b3BoZS5sZXJveQ==?=" <christophe.leroy@csgroup.eu>, "=?utf-8?B?bHVtaW5nLnl1?=" <luming.yu@gmail.com>, "=?utf-8?B?5p2o5L2z6b6Z?=" <jialong.yang@shingroup.cn>, "=?utf-8?B?c2hlbmdodWkucXU=?=" <shenghui.qu@shingroup.cn>
-Subject: Re: [PATCH 1/2] powerpc/locking: implement this_cpu_cmpxchg local API
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wl1QK48myz2xfb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2024 20:22:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1723717337;
+	bh=EWxKiICgYw457W0OxIAbS4ICNjCgsrxlUPJj1DSYvMA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=r9W0oxFI3PMSbGzqzdAAZOWA+0y5W+GtaV7IId3LEmP9+lPytcuqu0YwsROHNaaAy
+	 p5y9KSp0ll1m/379CbaySg0yzpTV2PtlhfSvheyKkMD+UQijvfglaiJttpfDUYLCaD
+	 P6GJPUy5/kZOpUhr6o9sJMIhac6xVLPSO0in4uDBJ3ugjTzCP9YiiYOdE6+7++ON5j
+	 n5kvFN5VvaxMMrqQo2oLQohGdkc1KSz7BLmUV/bxPvUXNBOetWOU+dt+D45teEPXjL
+	 YCAueunI1hokOjOjsO/EvCji/xWzq6BJA+ibEE1TfwetYjsB/CtCA9ZaN92ekmRGTS
+	 f/4o6JwYZ8mwA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wl1QJ4WHZz4wp0;
+	Thu, 15 Aug 2024 20:22:16 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Ryan Sullivan <rysulliv@redhat.com>, live-patching@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+Cc: rysulliv@redhat.com, joe.lawrence@redhat.com, pmladek@suse.com,
+ mbenes@suse.cz, jikos@kernel.org, jpoimboe@kernel.org,
+ naveen.n.rao@linux.ibm.com, christophe.leroy@csgroup.eu, npiggin@gmail.com
+Subject: Re: [PATCH] powerpc/ftrace: restore r2 to caller's stack on
+ livepatch sibling call
+In-Reply-To: <20240729150246.8939-1-rysulliv@redhat.com>
+References: <878qxkp9jl.fsf@mail.lhotse>
+ <20240729150246.8939-1-rysulliv@redhat.com>
+Date: Thu, 15 Aug 2024 20:22:15 +1000
+Message-ID: <87ed6q13xk.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,166 +58,28 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Thu, 15 Aug 2024 17:04:59 +0800
-X-Priority: 3
-Message-ID: <tencent_557D12BC225E6BB1038444ED@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <0EFBD0242622180B+20231204022303.528-1-luming.yu@shingroup.cn>
-	<87jzpldl1l.fsf@mail.lhotse>
-	<6A256ED30D339626+ZXwTQL1lMXhQ_inW@HX09040029.powercore.com.cn>
-In-Reply-To: <6A256ED30D339626+ZXwTQL1lMXhQ_inW@HX09040029.powercore.com.cn>
-X-QQ-ReplyHash: 3381554083
-X-BIZMAIL-ID: 3717986667113412693
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Thu, 15 Aug 2024 17:05:01 +0800 (CST)
-Feedback-ID: t:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
+MIME-Version: 1.0
+Content-Type: text/plain
 
-SGksDQoNCkkganVzdCBnZXQgYmFuZHdpZHRoIHRvIGRvIHNvbWUgcGVyZiB0ZXN0IHdpdGgg
-dGhlIHBhdGNoIHByb3Bvc2FsIG9uIGEgYmFyZW1ldGFsIHA4IHBvd2VybnYgcGxhdGZvcm0u
-DQpJdCBhcHBlYXJzICB0aGVyZSBpcyArNSUgcGVyZm9ybWFuY2UgZ2FpbiBpbiB1bml4YmVu
-Y2gsIHdoaWNoIGxvb2tzciBlbmNvdXJhZ2luZy4gOiAtKQ0KCSAgICAgICAgU3lzdGVtIEJl
-bmNobWFya3MgSW5kZXggU2NvcmUgICAgICAJMQ0Kd2l0aCBwYXRjaAlTeXN0ZW0gQmVuY2ht
-YXJrcyBJbmRleCBTY29yZSAgCTEuMDUNCgkJcmF0aW86IDEuMDV4DQoNCiBJIGtub3cgcGVy
-Zm9ybWFuY2UgaXMgdHJpY2t5LiBJIHdpbGwgdHJ5IHRvIHRha2UgbW9yZSByZXNvdXJjZSB0
-byBkZWVwIGRpdmUgd2l0aCBjcGkgYnJlYWtkb3duIGFuZCBvdGhlciBwZXJmIHRvb2xzDQog
-dG8gbWFrZSBzdXJlIHRoZSBwZXJmIGRpZmYgaXMgcmVhbGx5IG5vdCBmcm9tIG90aGVyIHJh
-bmRvbSB2YXJpYWJsZXMgaXJyZWxldmFudCB0byB0aGUgcGF0Y2ggcHJvcG9zYWwuDQoNClN0
-YXkgdHVubmVkLg0KDQpCUg0KTHVtaW5nIA0KIA0KLS0tLS0tLS0tLS0tLS0tLS0tIE9yaWdp
-bmFsIC0tLS0tLS0tLS0tLS0tLS0tLQ0KRnJvbTogICLomZ7pmYbpk60iPGx1bWluZy55dUBz
-aGluZ3JvdXAuY24+Ow0KRGF0ZTogIEZyaSwgRGVjIDE1LCAyMDIzIDA0OjUwIFBNDQpUbzog
-ICJtcGUiPG1wZUBlbGxlcm1hbi5pZC5hdT47IA0KQ2M6ICAibGludXhwcGMtZGV2IjxsaW51
-eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZz47ICJsaW51eC1rZXJuZWwiPGxpbnV4LWtlcm5l
-bEB2Z2VyLmtlcm5lbC5vcmc+OyAibnBpZ2dpbiI8bnBpZ2dpbkBnbWFpbC5jb20+OyAiY2hy
-aXN0b3BoZS5sZXJveSI8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PjsgImx1bWluZy55
-dSI8bHVtaW5nLnl1QGdtYWlsLmNvbT47ICJrZS56aGFvIjxrZS56aGFvQHNoaW5ncm91cC5j
-bj47ICJkYXdlaS5saSI8ZGF3ZWkubGlAc2hpbmdyb3VwLmNuPjsgInNoZW5naHVpLnF1Ijxz
-aGVuZ2h1aS5xdUBzaGluZ3JvdXAuY24+OyANClN1YmplY3Q6ICBSZTogW1BBVENIIDEvMl0g
-cG93ZXJwYy9sb2NraW5nOiBpbXBsZW1lbnQgdGhpc19jcHVfY21weGNoZyBsb2NhbCBBUEkN
-Cg0KIA0KDQpPbiBNb24sIERlYyAxMSwgMjAyMyBhdCAxMDo0MDozOFBNICsxMTAwLCBNaWNo
-YWVsIEVsbGVybWFuIHdyb3RlOg0KPiBIaSBMdW1pbmcgWXUsDQo+IA0KPiBMdW1pbmcgWXUg
-PGx1bWluZy55dUBzaGluZ3JvdXAuY24+IHdyaXRlczoNCj4gPiBwcGMgYXBwZWFycyB0byBo
-YXZlIGFscmVhZHkgc3VwcG9ydGVkIGNtcHhjaGctbG9jYWwgYXRvbWljIHNlbWFudGljcw0K
-PiA+IHRoYXQgaXMgZGVmaW5lZCBieSB0aGUga2VybmVsIGNvbnZlbnRpb24gb2YgdGhlIGZl
-YXR1cmUuDQo+ID4gQWRkIHRoaXNfY3B1X2NtcHhjaGcgcHBjIGxvY2FsIGZvciB0aGUgcGVy
-Zm9ybWFuY2UgYmVuZWZpdCBvZiBhcmNoDQo+ID4gc2VwY2lmaWMgaW1wbGVtZW50YXRpb24g
-dGhhbiBhc20tZ2VuZXJpYyBjIHZlcmlzb24gb2YgdGhlIGxvY2tpbmcgQVBJLg0KPiANCj4g
-SW1wbGVtZW50aW5nIHRoaXMgaGFzIGJlZW4gc3VnZ2VzdGVkIGJlZm9yZSBidXQgaXQgd2Fz
-bid0IGNsZWFyIHRoYXQgaXQNCj4gd2FzIGFjdHVhbGx5IGdvaW5nIHRvIHBlcmZvcm0gYmV0
-dGVyIHRoYW4gdGhlIGdlbmVyaWMgdmVyc2lvbi4NClRoYW5rcyBmb3IgdGhlIGluZm8uIFRv
-IG1lLCBpdCBpcyBhIG5ld3MuIDogLSkNCkkgd2lsbCBjaGVjayBpZiBhbnkgd2ViIHNlYXJj
-aCBlbmdpbmUgY291bGQgc2VydmUgbWUgd2VsbCB0byBmaW5kIGl0IG91dC4gDQo+IA0KPiBP
-biA2NC1iaXQgd2UgaGF2ZSBpbnRlcnJ1cHQgc29mdCBtYXNraW5nLCBzbyBkaXNhYmxpbmcg
-aW50ZXJydXB0cyBpcw0KPiByZWxhdGl2ZWx5IGNoZWFwLiBTbyB0aGUgZ2VuZXJpYyB0aGlz
-X2NwdV9jbXB4aGcgdXNpbmcgaXJxIGRpc2FibGUganVzdA0KPiBiZWNvbWVzIGEgZmV3IGxv
-YWRzICYgc3RvcmVzLCBubyBhdG9taWMgb3BzIHJlcXVpcmVkLg0KDQpzb21ldGhpbmcgbGlr
-ZSB0aGlzIGp1c3QgcG9wcGVkIHVwIGluIG15IGZpcnN0IHRyeSB3aXRoIGEgcDggdGVzdCBr
-dm0gb24NCmEgYzEwMDAgcG93ZXJudjggcGxhdGZvcm0/DQoNCkknbSBub3Qgc3VyZSB0aGUg
-c29mdCBsb2NrdXAgaXMgcmVsZXZhbnQgdG8gdGhlIGludGVycnVwdCBzb2Z0IG1hc2tpbmcs
-DQpidXQgSSB3aWxsIGZpbmQgaXQgb3V0IGZvciBzdXJlLiA6IC0pDQoNClsgIDQ2MC4yMTc2
-NjldIHdhdGNoZG9nOiBCVUc6IHNvZnQgbG9ja3VwIC0gQ1BVIzAgc3R1Y2sgZm9yIDIycyEg
-W3N3YXBwZXIvMDoxXQ0KWyAgNDYwLjIxNzc0Ml0gTW9kdWxlcyBsaW5rZWQgaW46DQpbICA0
-NjAuMjE3ODI4XSBDUFU6IDAgUElEOiAxIENvbW06IHN3YXBwZXIvMCBUYWludGVkOiBHICAg
-ICAgICBXICAgIEwgICBOIDYuNy4wLXJjNSsgIzUNClsgIDQ2MC4yMTc5MTVdIEhhcmR3YXJl
-IG5hbWU6IElCTSBwU2VyaWVzIChlbXVsYXRlZCBieSBxZW11KSBQT1dFUjkgKHJhdykgMHg0
-ZTEyMDAgMHhmMDAwMDA1IG9mOlNMT0YsZ2l0LTZiNmMxNiBwU2VyaWVzDQpbICA0NjAuMjE3
-OTk5XSBOSVA6ICBjMDAwMDAwMDAwMDNlMGVjIExSOiBjMDAwMDAwMDAwMDNlNDE0IENUUjog
-MDAwMDAwMDAwMDAwMDAwMA0KWyAgNDYwLjIxODA3NF0gUkVHUzogYzAwMDAwMDAwNDc5Nzc4
-OCBUUkFQOiAwOTAwICAgVGFpbnRlZDogRyAgICAgICAgVyAgICBMICAgTiAgKDYuNy4wLXJj
-NSspDQpbICA0NjAuMjE4MTUxXSBNU1I6ICA4MDAwMDAwMDAyMDA5MDMzIDxTRixWRUMsRUUs
-TUUsSVIsRFIsUkksTEU+ICBDUjogMjQwNDI0NDIgIFhFUjogMDAwMDAwMDANClsgIDQ2MC4y
-MTgzNDJdIENGQVI6IDAwMDAwMDAwMDAwMDAwMDAgSVJRTUFTSzogMA0KWyAgNDYwLjIxODM0
-Ml0gR1BSMDA6IGMwMDAwMDAwMDAwM2U0MTQgYzAwMDAwMDAwNDc5Nzc2MCBjMDAwMDAwMDAx
-NTgzYjAwIGMwMDAwMDAwMDQ3OTc3NTgNClsgIDQ2MC4yMTgzNDJdIEdQUjA0OiAwMDAwMDAw
-MDAwMDAwMDAwIDAwMDAwMDAwMDAwMDAwMDQgYzAwMDAwMDAwNGNjZjUxYyBjMDAwMDAwMDAy
-MjRlNTEwDQpbICA0NjAuMjE4MzQyXSBHUFIwODogNDAwMDAwMDAwMDAwMDAwMiAwMDAwMDAw
-MDAwMDAwMDQ5IGMwMDAwMDAwMDQ1N2IyODAgMDAxNTAwMGIwMDE3MDAzOA0KWyAgNDYwLjIx
-ODM0Ml0gR1BSMTI6IDAwMzQwMDMwMDAzYTAwMTAgYzAwMDAwMDAwMmY0MDAwMCAwMDAwMDAw
-MDAwMDAwMDA4IGMwMDAwMDAwMDRjY2Y0ZmMNClsgIDQ2MC4yMTgzNDJdIEdQUjE2OiAwMDAw
-MDAwMDAwMDA3NTg2IGMwMDAwMDAwMDQwZjQ1YzAgYzAwMDAwMDAwNGRkZDA4MCBjMDAwMDAw
-MDA0MGY0NWMwDQpbICA0NjAuMjE4MzQyXSBHUFIyMDogMDAwMDAwMDAwMDAwMDAwOCAwMDAw
-MDAwMDAwMDAwMDI0IDAwMDAwMDAwMDAwMDAwMDQgYzAwMDAwMDAwNGNjZjRmYw0KWyAgNDYw
-LjIxODM0Ml0gR1BSMjQ6IDAwMDAwMDAwMDAwMDAwM2YgMDAwMDAwMDAwMDAwMDAwMSAwMDAw
-MDAwMDAwMDAwMDAxIGMwMDAwMDAwMDRjYzZlN2UNClsgIDQ2MC4yMTgzNDJdIEdQUjI4OiBm
-Y2ZmZmZmZmZmZmZmZmZmIDAwMDAwMDAwMDAwMDAwMDIgZmNmZmZmZmZmZmZmZmZmZiAwMDAw
-MDAwMDAwMDAwMDAzDQpbICA0NjAuMjE5MTg3XSBOSVAgW2MwMDAwMDAwMDAwM2UwZWNdIF9f
-cmVwbGF5X3NvZnRfaW50ZXJydXB0cysweDNjLzB4MTYwDQpbICA0NjAuMjE5Mjg2XSBMUiBb
-YzAwMDAwMDAwMDAzZTQxNF0gYXJjaF9sb2NhbF9pcnFfcmVzdG9yZSsweDE3NC8weDFhMA0K
-WyAgNDYwLjIxOTM2NV0gQ2FsbCBUcmFjZToNClsgIDQ2MC4yMTk0MDBdIFtjMDAwMDAwMDA0
-Nzk3NzYwXSBbYzAwMDAwMDAwMDAzZTE1MF0gX19yZXBsYXlfc29mdF9pbnRlcnJ1cHRzKzB4
-YTAvMHgxNjAgKHVucmVsaWFibGUpDQpbICA0NjAuMjE5NTE1XSBbYzAwMDAwMDAwNDc5Nzkx
-MF0gW2MwMDAwMDAwMDAwM2U0MTRdIGFyY2hfbG9jYWxfaXJxX3Jlc3RvcmUrMHgxNzQvMHgx
-YTANClsgIDQ2MC4yMTk2MTJdIFtjMDAwMDAwMDA0Nzk3OTUwXSBbYzAwMDAwMDAwMGExNTVj
-NF0gZ2V0X3JhbmRvbV91MzIrMHhiNC8weDE0MA0KWyAgNDYwLjIxOTY5OV0gW2MwMDAwMDAw
-MDQ3OTc5YTBdIFtjMDAwMDAwMDAwOGIxYWUwXSBnZXRfcmN3X3dlKzB4MTM4LzB4Mjc0DQpb
-ICA0NjAuMjE5NzgxXSBbYzAwMDAwMDAwNDc5N2EzMF0gW2MwMDAwMDAwMDIwOGQ0YmNdIHRl
-c3RfcnNsaWJfaW5pdCsweDhiOC8weGI3MA0KWyAgNDYwLjIxOTg3N10gW2MwMDAwMDAwMDQ3
-OTdjNDBdIFtjMDAwMDAwMDAwMDBmYjgwXSBkb19vbmVfaW5pdGNhbGwrMHg2MC8weDM5MA0K
-WyAgNDYwLjIxOTk2NV0gW2MwMDAwMDAwMDQ3OTdkMTBdIFtjMDAwMDAwMDAyMDA0YTE4XSBr
-ZXJuZWxfaW5pdF9mcmVlYWJsZSsweDMyYy8weDNkYw0KWyAgNDYwLjIyMDA1OV0gW2MwMDAw
-MDAwMDQ3OTdkZTBdIFtjMDAwMDAwMDAwMDEwMmE0XSBrZXJuZWxfaW5pdCsweDM0LzB4MWIw
-DQpbICA0NjAuMjIwMTQxXSBbYzAwMDAwMDAwNDc5N2U1MF0gW2MwMDAwMDAwMDAwMGNmMTRd
-IHJldF9mcm9tX2tlcm5lbF91c2VyX3RocmVhZCsweDE0LzB4MWMNClsgIDQ2MC4yMjAyMjld
-IC0tLSBpbnRlcnJ1cHQ6IDAgYXQgMHgwDQpbICA0NjAuMjIwMjkxXSBDb2RlOiA2MDAwMDAw
-MCA3YzA4MDJhNiBmODAxMDAxMCBmODIxZmU1MSBlOTJkMGM3OCBmOTIxMDFhOCAzOTIwMDAw
-MCAzODYxMDAyOCA4OTJkMDkzMyA2MTI5MDA0MCA5OTJkMDkzMyA0ODA0M2EzZCA8NjAwMDAw
-MDA+IDM5MjAwMDAwIGU5NDEwMTMwIGY5MjEwMTYwDQpbICA0NjAuOTU1MzY5XSBUZXN0aW5n
-ICgyMywxNSlfNjQgY29kZS4uLg0KDQo+IA0KPiBJbiBjb250cmFzdCBpbXBsZW1lbnRpbmcg
-aXQgdXNpbmcgX19jbXB4Y2hnX2xvY2FsKCkgd2lsbCB1c2UNCj4gbGRhcngvc3RkY3ggZXRj
-LiB3aGljaCB3aWxsIGJlIG1vcmUgZXhwZW5zaXZlLg0KPiANCj4gSGF2ZSB5b3UgZG9uZSBh
-bnkgcGVyZm9ybWFuY2UgbWVhc3VyZW1lbnRzPw0KWWVzLCBJJ20gbG9va2luZyBmb3IgcmVz
-b3VyY2UgdG8gdHJhY2sgdGhlIHBlcmYgY2hhbmdlcyAocG9zaXRpdmUgb3IgbmVnYXRpdmUp
-DQppbiB0aGlzIGNvcm5lciBmb3IgdGhpcyBwYXRjaCBzZXQgYmVpbmcgcHJvcG9zZWQgYWdh
-aW4uDQoNCj4gDQo+IEl0IHByb2JhYmx5IGlzIGEgYml0IGZpc2h5IHRoYXQgd2UgZG9uJ3Qg
-bWFzayBQTVUgaW50ZXJydXB0cyB2cw0KPiB0aGlzX2NwdV9jbXB4Y2hnKCkgZXRjLiwgYnV0
-IEkgZG9uJ3QgdGhpbmsgaXQncyBhY3R1YWxseSBhIGJ1ZyBnaXZlbiB0aGUNCj4gZmV3IHBs
-YWNlcyB1c2luZyB0aGlzX2NwdV9jbXB4Y2hnKCkuIFRob3VnaCBJIGNvdWxkIGJlIHdyb25n
-IGFib3V0IHRoYXQuDQpJIHdpbGwgdHJ5IHRvIHVuZGVyc3RhbmQgdGhlIGNvbmNlcm4gYW5k
-IHdpbGwgdHJ5IHRvIGNvbWUgdXAgd2l0aCBhIHBhdGNoIHVwZGF0ZSwNCmlmZiB0aGUgcGVy
-Zm9ybWFuY2UgbnVtYmVyIGZyb20gdGhlIGNoYW5nZSBjb3VsZCBsb29rIHJlYXNvbmFibGUg
-YW5kIHByb21pc2luZy4NCj4gDQo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9pbmNs
-dWRlL2FzbS9wZXJjcHUuaCBiL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9wZXJjcHUuaA0K
-PiA+IGluZGV4IDhlNWI3ZDBiODUxYy4uY2VhYjVkZjZlN2FiIDEwMDY0NA0KPiA+IC0tLSBh
-L2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9wZXJjcHUuaA0KPiA+ICsrKyBiL2FyY2gvcG93
-ZXJwYy9pbmNsdWRlL2FzbS9wZXJjcHUuaA0KPiA+IEBAIC0xOCw1ICsxOCwyMiBAQA0KPiA+
-ICAjaW5jbHVkZSA8YXNtLWdlbmVyaWMvcGVyY3B1Lmg+DQo+ID4gIA0KPiA+ICAjaW5jbHVk
-ZSA8YXNtL3BhY2EuaD4NCj4gPiArI2luY2x1ZGUgPGFzbS9jbXB4Y2hnLmg+DQo+ID4gKyNp
-ZmRlZiB0aGlzX2NwdV9jbXB4Y2hnXzENCj4gPiArI3VuZGVmIHRoaXNfY3B1X2NtcHhjaGdf
-MQ0KPiAgDQo+IElmIHdlIG5lZWQgdG8gdW5kZWYgdGhlbiBJIHRoaW5rIHNvbWV0aGluZyBo
-YXMgZ29uZSB3cm9uZyB3aXRoIHRoZQ0KPiBoZWFkZXIgaW5jbHVzaW9uIG9yZGVyLCB0aGUg
-bW9kZWwgc2hvdWxkIGJlIHRoYXQgdGhlIGFyY2ggZGVmaW5lcyB3aGF0DQo+IGl0IGhhcyBh
-bmQgdGhlIGdlbmVyaWMgY29kZSBwcm92aWRlcyBmYWxsYmFja3MgaWYgdGhlIGFyY2ggZGlk
-bid0IGRlZmluZQ0KPiBhbnl0aGluZy4NCj4gDQo+ID4gKyNkZWZpbmUgdGhpc19jcHVfY21w
-eGNoZ18xKHBjcCwgb3ZhbCwgbnZhbCkJX19jbXB4Y2hnX2xvY2FsKHJhd19jcHVfcHRyKCYo
-cGNwKSksIG92YWwsIG52YWwsIDEpDQo+IA0KPiBJIHRoaW5rIHRoaXMgaXMgdW5zYWZlIHZz
-IHByZWVtcHRpb24uIFRoZSByYXdfY3B1X3B0cigpIGNhbiBnZW5lcmF0ZSB0aGUNCj4gcGVy
-LWNwdSBhZGRyZXNzLCBidXQgdGhlbiB0aGUgdGFzayBjYW4gYmUgcHJlZW1wdGVkIGFuZCBt
-b3ZlZCB0byBhDQo+IGRpZmZlcmVudCBDUFUgYmVmb3JlIHRoZSBsZGFyeC9zdGRjeCBkbyB0
-aGUgY21weGNoZy4NCj4gDQo+IFRoZSBhcm02NCBpbXBsZW1lbnRhdGlvbiBoYWQgdGhlIHNh
-bWUgYnVnIHVudGlsIHRoZXkgZml4ZWQgaXQuDQpUaGFua3MgZm9yIHRoZSByZXZpZXcsIEkg
-d2lsbCBsb29rIGRlZXBlciBpbnRvIHRoaXMgc3BvdC4gSSBzdXBwb3NlLCBmb3IgcGVyIGNw
-dSBhcGkgZG93biB0byB0aGlzIGxldmVsLA0KaXQgaXMgc2FmZSB0byBhc3N1bWUgaXQncyBz
-YWZlIGluIHRlcm1zIG9mIGJlaW5nIHByZWVtcHRpb24tZGlzYWJsZWQuIEJ1dCwgdGhpbmdz
-IGNvdWxkIGJlIG1pcy11bmRlcnN0b29kDQphbmQgSSBjYW4gYmUgd3JvbmcgYXMgd2VsbCBh
-cyBsaW51eCBrZXJuZWwgaGFzIGJlZW4gcmFwaWRseSBjaGFuZ2luZyBzbyBtdWNoLjotKA0K
-PiANCj4gPiArI2VuZGlmIA0KPiA+ICsjaWZkZWYgdGhpc19jcHVfY21weGNoZ18yDQo+ID4g
-KyN1bmRlZiB0aGlzX2NwdV9jbXB4Y2hnXzINCj4gPiArI2RlZmluZSB0aGlzX2NwdV9jbXB4
-Y2hnXzIocGNwLCBvdmFsLCBudmFsKQlfX2NtcHhjaGdfbG9jYWwocmF3X2NwdV9wdHIoJihw
-Y3ApKSwgb3ZhbCwgbnZhbCwgMikNCj4gPiArI2VuZGlmDQo+ID4gKyNpZmRlZiB0aGlzX2Nw
-dV9jbXB4Y2hnXzQNCj4gPiArI3VuZGVmIHRoaXNfY3B1X2NtcHhjaGdfNA0KPiA+ICsjZGVm
-aW5lIHRoaXNfY3B1X2NtcHhjaGdfNChwY3AsIG92YWwsIG52YWwpCV9fY21weGNoZ19sb2Nh
-bChyYXdfY3B1X3B0cigmKHBjcCkpLCBvdmFsLCBudmFsLCA0KQ0KPiA+ICsjZW5kaWYNCj4g
-PiArI2lmZGVmIHRoaXNfY3B1X2NtcHhjaGdfOA0KPiA+ICsjdW5kZWYgdGhpc19jcHVfY21w
-eGNoZ184DQo+ID4gKyNkZWZpbmUgdGhpc19jcHVfY21weGNoZ184KHBjcCwgb3ZhbCwgbnZh
-bCkJX19jbXB4Y2hnX2xvY2FsKHJhd19jcHVfcHRyKCYocGNwKSksIG92YWwsIG52YWwsIDgp
-DQo+ID4gKyNlbmRpZg0KPiA+ICANCj4gPiAgI2VuZGlmIC8qIF9BU01fUE9XRVJQQ19QRVJD
-UFVfSF8gKi8NCj4gDQo+IGNoZWVycw0KPiANCmJlc3QgcmVnYXJkcw==
+Ryan Sullivan <rysulliv@redhat.com> writes:
+> Hello Michael,
+>
+> In the case of no sibling call within the livepatch then the store is
+> only "restoring" the r2 value that was already there as it is stored
+> and retrieved from the livepatch stack.
 
+But what guarantee do we have that it's the value that was already
+there?
+
+Notice that the current livepatch_handler doesn't store to the (normal)
+stack at all, because it doesn't know the context it's called in.
+
+Does kpatch do anything special to induce the sibling call? Is it doing
+objcopy or anything else weird?
+
+I tried writing a selftest (in tools/testing/selftests/livepatch) to
+trigger this case but couldn't get it to work. The compiler never
+generates a sibling call across modules.
+
+cheers
 
