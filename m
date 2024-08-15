@@ -1,70 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-108-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-109-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D85953D1E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 00:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D1C953D21
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 00:05:11 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pqZS310e;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQSIdf4S;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQSIdf4S;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WlJyZ1Hw1z2xHT;
-	Fri, 16 Aug 2024 08:02:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WlK1K2srfz2xVq;
+	Fri, 16 Aug 2024 08:05:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:40e1:4800::1"
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pqZS310e;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQSIdf4S;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dQSIdf4S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=rysulliv@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wl87D3Gmyz2ygG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2024 01:24:40 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id CDD85CE19DA;
-	Thu, 15 Aug 2024 15:24:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4344C32786;
-	Thu, 15 Aug 2024 15:24:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723735475;
-	bh=ICZgpaAfwuMR3pqfoKaQI6huKtAIlk7+AL/YQW7wSzk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pqZS310enYO3SuTKgqFBE1ONxMk5uQHkWyqjqlJm7oPicN+OhBG2QVNkgmtU9si4v
-	 aO84Mpuvhc8OggeDVc6lsPuTWi2ARPg6YGyOOmMlwJYMRmLwLr/7ekvT13PDEXtO8N
-	 MSvzPnFp9jNfRk9F3oYMnRCeY0litDzNrwFbgRBiZvsx/RDgK0iLmolLBSgsy3UmLK
-	 dgD52B7taQ7VBGBKL1KBfJGTbFJIgXgSkGJtuvIdGoYCqOGELbep0OGePItQqw1IRY
-	 j5lEJUPcwlLaVh4yh2kJUdHIoR+DNVCESBUvxThvwEc584Vx/fPL3TtrlnPnONN75K
-	 fo2FvpN95wYlQ==
-Date: Thu, 15 Aug 2024 16:24:27 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Dave Martin <Dave.Martin@arm.com>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org, akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org, aneesh.kumar@linux.ibm.com, bp@alien8.de,
-	christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
-	hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
-	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
-	oliver.upton@linux.dev, shuah@kernel.org, szabolcs.nagy@arm.com,
-	tglx@linutronix.de, will@kernel.org, x86@kernel.org,
-	kvmarm@lists.linux.dev
-Subject: Re: [PATCH v4 18/29] arm64: add POE signal support
-Message-ID: <a3b72007-e0f6-4a81-a23a-6c5bb5df8cf0@sirena.org.uk>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-19-joey.gouly@arm.com>
- <ZqJ2knGETfS4nfEA@e133380.arm.com>
- <20240801155441.GB841837@e124191.cambridge.arm.com>
- <Zqu2VYELikM5LFY/@e133380.arm.com>
- <20240806103532.GA1986436@e124191.cambridge.arm.com>
- <20240806143103.GB2017741@e124191.cambridge.arm.com>
- <ZrzHU9et8L_0Tv_B@arm.com>
- <20240815131815.GA3657684@e124191.cambridge.arm.com>
- <Zr4aJqc/ifRXJQAd@e133380.arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wl9564QFBz2ydG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2024 02:07:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723738068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sTHy0VTZhp+zpCxqk4Vm43LA+qs7m6Yc40H41bHyaao=;
+	b=dQSIdf4Sh9ZI/aHuq21+dFqKE0+YQiFZVj9Iyp+8e20f55uY3KDgTso/Q6wAbcJNJxd/By
+	pSnUvak2vPH4RSdxz4584izpy36u56ThNtdq9p+3Pk7q7jC16mRBi2+yanPxKypJpIqmJb
+	u9yTrZXFJyfWNqTl/uCr+Lac+vOBGYg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723738068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sTHy0VTZhp+zpCxqk4Vm43LA+qs7m6Yc40H41bHyaao=;
+	b=dQSIdf4Sh9ZI/aHuq21+dFqKE0+YQiFZVj9Iyp+8e20f55uY3KDgTso/Q6wAbcJNJxd/By
+	pSnUvak2vPH4RSdxz4584izpy36u56ThNtdq9p+3Pk7q7jC16mRBi2+yanPxKypJpIqmJb
+	u9yTrZXFJyfWNqTl/uCr+Lac+vOBGYg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-473-CJq-W_2tPkO0yu1adDEvNg-1; Thu,
+ 15 Aug 2024 12:07:44 -0400
+X-MC-Unique: CJq-W_2tPkO0yu1adDEvNg-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA2C71955D48;
+	Thu, 15 Aug 2024 16:07:41 +0000 (UTC)
+Received: from sullivan-work.redhat.com (unknown [10.22.32.144])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 360CE1955F66;
+	Thu, 15 Aug 2024 16:07:38 +0000 (UTC)
+From: Ryan Sullivan <rysulliv@redhat.com>
+To: live-patching@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: rysulliv@redhat.com,
+	joe.lawrence@redhat.com,
+	pmladek@suse.com,
+	mbenes@suse.cz,
+	jikos@kernel.org,
+	jpoimboe@kernel.org,
+	naveen.n.rao@linux.ibm.com,
+	christophe.leroy@csgroup.eu,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com
+Subject: Re: [PATCH] powerpc/ftrace: restore r2 to caller's stack on livepatch sibling call
+Date: Thu, 15 Aug 2024 12:07:07 -0400
+Message-ID: <20240815160712.4689-1-rysulliv@redhat.com>
+In-Reply-To: <87ed6q13xk.fsf@mail.lhotse>
+References: <87ed6q13xk.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,44 +88,26 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wqb8liXWozkhAkEw"
-Content-Disposition: inline
-In-Reply-To: <Zr4aJqc/ifRXJQAd@e133380.arm.com>
-X-Cookie: -- Owen Meredith
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
+Hi Michael,
 
---wqb8liXWozkhAkEw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The r2 value is stored to the livepatch stack prior to entering into 
+the livepatched code, so accessing it will gurantee the previous value
+is restored.
 
-On Thu, Aug 15, 2024 at 04:09:26PM +0100, Dave Martin wrote:
+Also, yes, this bug is caused by tooling that "scoops out" pre-compiled
+code and places it into the livepatch handler (e.g. kpatch). However, 
+since the large majority of customers interact with the livepatch 
+subsystem through tooling, and this fix would not pose any serious risk
+to either usability or security (other than those already present in 
+livepatching), plus it would solve a large problem for these tools with
+a simple fix, I feel as though this would be a useful update to 
+livepatch.
 
-> I'm coming round to the view that trying to provide absolute guarantees
-> about the signal frame size is unsustainable.  x86 didn't, and got away
-> with it for some time...  Maybe we should just get rid of the relevant
-> comments in headers, and water down guarantees in the SVE/SME
-> documentation to recommendations with no promise attached?
+Thanks,
 
-I tend to agree, especially given that even within the fixed size our
-layout is variable.  It creates contortions and realistically the big
-issue is the vector extensions rather than anything else.  There we're
-kind of constrained in what we can do.
+Ryan
 
---wqb8liXWozkhAkEw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAma+HasACgkQJNaLcl1U
-h9Aj1Qf/YNaa1FCiSI68LMMwxwE6eenm9OEl456cdnlqFBO9AkqUcrDmxhLHSH03
-GXCM+GkBVn8BYFt9QFvMe7j1isn+eJhuaPVQV7bj6JGZb/5hw8Q2au78WGQDcfXK
-7aAATdyMJlyl5xbWpzB5EP71BIpQ08XuxMbh1B1zcMjfJGlDdR7izJxhAWJekzr6
-/FYhxfXLIINvWKD/QJw2mO3D61zS0CB3K0yZGKz811qViXyaoP9GrtRiLtglFkjU
-TSoEwNVwVI/TNLQ1owKssDBw76Lxj9jaoLoFLl+K+vfrEwS3PD71MB3MabBrdqNG
-kU8UB4OXrCNYhMJ+5rqw15bTFY+0sQ==
-=L2pp
------END PGP SIGNATURE-----
-
---wqb8liXWozkhAkEw--
 
