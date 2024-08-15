@@ -1,85 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-110-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-111-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69621953D22
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 00:05:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC849953D60
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 00:42:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P7DM8izQ;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZWyXpXXZ;
+	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=CXAFBcZ+;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WlK1r1xkWz2xYY;
-	Fri, 16 Aug 2024 08:05:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WlKr508rcz2xfb;
+	Fri, 16 Aug 2024 08:42:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::434"
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P7DM8izQ;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZWyXpXXZ;
+	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=CXAFBcZ+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wl9St6R63z2ydG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2024 02:24:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723739095;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G5gZYokzgkCL4xQW4GJraQSqmDBgypT9DDRopqeH444=;
-	b=P7DM8izQeaIkf7TB2XHfRBSqDI0Ki4C9vh4OebcOZc5m/uGcfvyABR/rXToPHbjw+iv+wd
-	ZD4SxrO4LupaWQC0Lz+i3BDq53AWJc7+/+gCW6sSiCSHavEeSMxgWb4F7E2Dlxykee+rc8
-	l8CZ/sAbgqDK2H4jDVcMc7HRbvjUlG8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723739096;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G5gZYokzgkCL4xQW4GJraQSqmDBgypT9DDRopqeH444=;
-	b=ZWyXpXXZDEI0WgZr4t57OsVeJo29VWAftwVAbKYf8CiSm79sR4Le6tAprDkasBSHwlZs4j
-	jaWkqHQXhPn1e7VyZzSRx1XQHp+vVpXBMskA2IMe7wRG8ujScJwCURG8j3IJaB2JT6bLoU
-	WQTAPghjVKtGSmOtH5M0GWqpFloDzDo=
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
- [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-194-uOAKcJiEMOS4Iqlr4dlEqg-1; Thu, 15 Aug 2024 12:24:51 -0400
-X-MC-Unique: uOAKcJiEMOS4Iqlr4dlEqg-1
-Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-5d601a9376fso1016883eaf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2024 09:24:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WlFqF0NjZz2yZd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2024 05:41:11 +1000 (AEST)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-710ec581999so1128042b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 Aug 2024 12:41:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1723750866; x=1724355666; darn=lists.ozlabs.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=u1VWISu56wcliniL1RPNMTZcS4mUkuTA+1qK0QABl0U=;
+        b=CXAFBcZ+oa0Kqfv7avnRuw6oYsbSTjjAjyVpH177YRUnp1dNT6KMe/9euFbix/34G2
+         opcINKmQek+qH5FR7/ZYYLECePfemDAOe9uB99S/DmWdfaN9QDuSwMFxW6F9MYhPaYbF
+         AYXkWdopSBug4Xs8V/GDHQueZjYuN+xSk0xlB3ckTNPctYuRnFK6SDkXwVX8S/Jt1YAi
+         cpSK2yOBn1HoR8c8oGN0bP2xkMuEHN8hLrBZmdzLVxO5VH6SDxUSH4ozXOA4pFeuTUy3
+         ifLAmceIzm0kajNneAIn5wfF38twt5hQhQNdKKk7Jq8MuqB+5L+GIlw43RMFtNR8S1XU
+         HQhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723739090; x=1724343890;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1723750866; x=1724355666;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G5gZYokzgkCL4xQW4GJraQSqmDBgypT9DDRopqeH444=;
-        b=CCaIb67jjSvFcqRpXsOLp5zbyzTVmv307jDNUTOIFPipgJJck0m2c9hUXVPUnWK/LL
-         ZmzO3VyUXyPHqVTs2cJCQDp7h+1fgRda3DTGVOaU+BWUoD943CcnrrOjqDulby2NDP7x
-         nXy7xzW4QQN6JKfikKJGnGHevUU6OOd/mhH6d8aINurTxMPuPxBVIYTdadNeLnN5btv4
-         k1eP3OPggMYfGPybiivxIm+gDhRd9KisVzTTZvTtKNVX8I9KoQNDfdDeKAsAmN0YP1UI
-         I78ha7rEgr6R1UEgPOuacfGufRf23HZA1del0p3f/0TKiIeekSdkfdc6Yi73IUYg4Vrg
-         8O8A==
-X-Forwarded-Encrypted: i=1; AJvYcCWbFM1uyoERjDAOQq7iKb7yZmYjrk+je58h4qOg9rUcGdBwTivyyV1xMpXYoLKllUEP2ZjjOK5uR/d48BKDKFuiuDq1x4t1vgneNgnOlg==
-X-Gm-Message-State: AOJu0YySpHGA0/iLyisfexaj5/CSLW1l5ji9u2/vtJbzNa2aSylQFRVR
-	f5P8PIg8bgbX62LXOBdDkj5EAEGyoc2nbUxwW39BxxiD+GGizCXHJC/h4qcS7AZ0AL+o5IpfB+R
-	ZtwCW+Z0v5ld8DQRH8jk1+cUI1jti/NfDrL6fFnW4w2DC3fuhs6fXL/huWMaUB6s=
-X-Received: by 2002:a05:6358:478e:b0:1ac:ef2e:5316 with SMTP id e5c5f4694b2df-1b393312da8mr41348855d.26.1723739089825;
-        Thu, 15 Aug 2024 09:24:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEhKEdpbUHkvG8Pr8ui0Xr7jkKYyc52uKUNdYvCcErevOSvpeAWflh+MfknPQLEAegEmwlNRg==
-X-Received: by 2002:a05:6358:478e:b0:1ac:ef2e:5316 with SMTP id e5c5f4694b2df-1b393312da8mr41345555d.26.1723739089410;
-        Thu, 15 Aug 2024 09:24:49 -0700 (PDT)
-Received: from [192.168.1.9] (pool-68-160-135-240.bstnma.fios.verizon.net. [68.160.135.240])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4ff0e5b09sm76027885a.73.2024.08.15.09.24.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Aug 2024 09:24:48 -0700 (PDT)
-Message-ID: <9ec85e72-85dd-e9bc-6531-996413014629@redhat.com>
-Date: Thu, 15 Aug 2024 12:24:47 -0400
+        bh=u1VWISu56wcliniL1RPNMTZcS4mUkuTA+1qK0QABl0U=;
+        b=UWX/erRfaviAGZDQEledL3reNBSg6vVQgfUN0TWeY3wVyAY+0+kRR/9MU6/F8lW/5R
+         5Th8h3U3BrKGpt+fNr/fYzefdByPb6owaVfKB1FzqrB2mbtCWrR30eY39v/31EXWYFD2
+         LcC4Bon7CQx8RXHkMQDvLaPbj3R3yWsFYJ0LJu3L8ArsgHwqTFFlc90+4/ui1QOy0NiJ
+         NBu/QcjvaH9BMuASt4t46Yx9G4LUizQ7AP/2dmc2PO1eyoNwOXZjgawsEGR3G9PNuAjZ
+         68wB7wKBTqgH93cWiAt8TA0Euoi/h7epRjJ8kdlwde+n03yBq/04AloJyd5RlYVSw8IN
+         UO+g==
+X-Forwarded-Encrypted: i=1; AJvYcCW/wi8eJev9BPkqE9a9Yt4fzKid2UEs0cAEmuFQqNraWNe0Eh34tlMunWv5r3vY4oyL75x1NIHRDThe/aqNQMqfH5dbrrVHLPw0MX4GCA==
+X-Gm-Message-State: AOJu0YwZ4so9OhoMgSGvZxrUQPCWz6n6AaJrUm549bRkj16BjIbbw1Lx
+	AZAqstOL7wvUhHxfMFl6WfZzGW4krfIi1LtY9EBVoQt1YIzeucx5iwfgJdbfWzo=
+X-Google-Smtp-Source: AGHT+IGBeVra0eMWvYeLqHCk/DezHt9EnEpabZ2WKu9TSxo5+eSv9Ov+1Xc7qtkvdvQlB0z9sH91RA==
+X-Received: by 2002:a05:6a00:66cb:b0:710:bdef:5e15 with SMTP id d2e1a72fcca58-713c4e71508mr894035b3a.18.1723750866152;
+        Thu, 15 Aug 2024 12:41:06 -0700 (PDT)
+Received: from dev-mattc2.dev.purestorage.com ([208.88.159.128])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7127aef410esm1342447b3a.113.2024.08.15.12.41.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Aug 2024 12:41:05 -0700 (PDT)
+From: Matthew W Carlis <mattc@purestorage.com>
+To: macro@orcam.me.uk
+Cc: alex.williamson@redhat.com,
+	bhelgaas@google.com,
+	davem@davemloft.net,
+	david.abdurachmanov@gmail.com,
+	edumazet@google.com,
+	helgaas@kernel.org,
+	kuba@kernel.org,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lukas@wunner.de,
+	mahesh@linux.ibm.com,
+	mattc@purestorage.com,
+	mika.westerberg@linux.intel.com,
+	netdev@vger.kernel.org,
+	npiggin@gmail.com,
+	oohall@gmail.com,
+	pabeni@redhat.com,
+	pali@kernel.org,
+	saeedm@nvidia.com,
+	sr@denx.de,
+	wilson@tuliptree.org
+Subject: PCI: Work around PCIe link training failures
+Date: Thu, 15 Aug 2024 13:40:59 -0600
+Message-Id: <20240815194059.28798-1-mattc@purestorage.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <alpine.DEB.2.21.2408091356190.61955@angie.orcam.me.uk>
+References: <alpine.DEB.2.21.2408091356190.61955@angie.orcam.me.uk>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,58 +98,43 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-To: Ryan Sullivan <rysulliv@redhat.com>, live-patching@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Cc: pmladek@suse.com, mbenes@suse.cz, jikos@kernel.org, jpoimboe@kernel.org,
- naveen.n.rao@linux.ibm.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
- npiggin@gmail.com
-References: <87ed6q13xk.fsf@mail.lhotse>
- <20240815160712.4689-1-rysulliv@redhat.com>
-From: Joe Lawrence <joe.lawrence@redhat.com>
-Subject: Re: [PATCH] powerpc/ftrace: restore r2 to caller's stack on livepatch
- sibling call
-In-Reply-To: <20240815160712.4689-1-rysulliv@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 8/15/24 12:07, Ryan Sullivan wrote:
-> Hi Michael,
-> 
-> The r2 value is stored to the livepatch stack prior to entering into 
-> the livepatched code, so accessing it will gurantee the previous value
-> is restored.
-> 
-> Also, yes, this bug is caused by tooling that "scoops out" pre-compiled
-> code and places it into the livepatch handler (e.g. kpatch). However, 
-> since the large majority of customers interact with the livepatch 
-> subsystem through tooling, and this fix would not pose any serious risk
-> to either usability or security (other than those already present in 
-> livepatching), plus it would solve a large problem for these tools with
-> a simple fix, I feel as though this would be a useful update to 
-> livepatch.
-> 
+Sorry for the delay in my responses here I had some things get in my way.
 
-Right, for kpatch-build binary-diff livepatch creation, the tooling
-scans modified code for a sibling call pattern and errors out with a
-report to the user:
+On Fri, 9 Aug 2024 09:13:52 Oliver O'Halloran <oohall@gmail.com> wrote:
 
-https://github.com/dynup/kpatch/blob/master/kpatch-build/create-diff-object.c#L3886
+> Ok? If we have to check for DPC being enabled in addition to checking
+> the surprise bit in the slot capabilities then that's fine, we can do
+> that. The question to be answered here is: how should this feature
+> work on ports where it's normal for a device to be removed without any
+> notice?
 
-and we advise users to manually turn sibling calls off as needed:
+I'm not sure if its the correct thing to check however. I assumed that ports
+using the pciehp driver would usually consider it "normal" for a device to
+be removed actually, but maybe I have the idea of hp reversed.
 
-https://github.com/dynup/kpatch/blob/master/doc/patch-author-guide.md#sibling-calls
+On Fri, 9 Aug 2024 14:34:04 Maciej W. Rozycki <macro@orcam.me.uk> wrote:
 
-If I understand Ryan's patch, it would remove this restriction from
-kpatch creation -- assuming that it is safe and sane for the kernel's
-ftrace handler to do so.
+> Well, in principle in a setup with reliable links the LBMS bit may never 
+> be set, e.g. this system of mine has been in 24/7 operation since the last 
+> reboot 410 days ago and for the devices that support Link Active reporting 
+> it shows:
+> ...
+> so out of 11 devices 6 have the LBMS bit clear.  But then 5 have it set, 
+> perhaps worryingly, so of course you're right, that it will get set in the 
+> field, though it's not enough by itself for your problem to trigger.
 
--- 
-Joe
+The way I look at it is that its essentially a probability distribution with time,
+but I try to avoid learning too much about the physical layer because I would find
+myself debugging more hardware issues lol. I also don't think LBMS/LABS being set
+by itself is very interesting without knowing the rate at which it is being set.
+FWIW I have seen some devices in the past going into recovery state many times a
+second & still never downtrain, but at the same time they were setting the
+LBMS/LABS bits which maybe not quite spec compliant.
 
+I would like to help test these changes, but I would like to avoid having to test
+each mentioned change individually. Does anyone have any preferences in how I batch
+the patches for testing? Would it be ok if I just pulled them all together on one go?
+
+- Matt
 
