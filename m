@@ -1,66 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-150-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-136-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9579553EA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2024 01:48:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8642195538D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2024 00:59:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Vx6udTu1;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AmsXAnYr;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WlzGK1Ttgz2yNf;
-	Sat, 17 Aug 2024 09:48:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wly9M3ml2z2xnc;
+	Sat, 17 Aug 2024 08:59:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Vx6udTu1;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AmsXAnYr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=duvf=pp=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wlx5p0nZGz2xT9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 08:11:10 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BDAC2622CE;
-	Fri, 16 Aug 2024 22:11:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9112DC32782;
-	Fri, 16 Aug 2024 22:11:05 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Vx6udTu1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1723846264;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nvXQQW5h0YhuEWfavkvTqchHGfd4wLDh0p1IgH0TPF0=;
-	b=Vx6udTu1kdOom/Ify2C6I2Nocu8Ylvr4Bn4kVfZ/HlGh6p0Yz55yApnf6XOAIvVppg00Hx
-	9ILLygbPqJlGxpxobQtIFjBl01lAWoeBA95uhw226C6t1PhtvghVLK3tKExPDwuHApACv9
-	tyBQ5Jp5XQ8y5VxUuBA6usDPNg2s6j0=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5126d285 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 16 Aug 2024 22:11:03 +0000 (UTC)
-Date: Fri, 16 Aug 2024 22:10:56 +0000
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Theodore Ts'o <tytso@mit.edu>,
-	Andy Lutomirski <luto@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH 0/9] Wire up getrandom() vDSO implementation on powerpc
-Message-ID: <Zr_OcF0Da9fgfKtS@zx2c4.com>
-References: <cover.1723817900.git.christophe.leroy@csgroup.eu>
- <Zr_LUQzb6KB6I448@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wly9L01Kkz2xn3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 08:59:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1723849156;
+	bh=roYcbEwUkCK44wHMpRdhuKBnVEwlCVBSQUtDw2Hz8SQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=AmsXAnYrY7hw3WpwHZSqkOCASktJ+k24PxqopHBvkPLi7tL4eqiMGX1vl5Q89z9wP
+	 8tIbivB12uj9UCXGgQtlB41h3EwVZcgoiI/jZTU7cshhYc+tISuLvHlK4M9HkHU0Zg
+	 4i7stxOCnT0f8dxqG0Pzpcb9wlfbRYRiDTMo0U2iUw1RMIrkUflE5zGcIzOhIacfYp
+	 Uk2k/gT7vOuHZieR3s8j4N8v7KmFKFaxCoN4gC64XvSN145UbGNntsdA25H5DQEtyr
+	 jsp9ZnCSVk30IwL5Wp6RZF40Iwak19xzJB+P40Pkhmvvvj99sqDcsAQfGjI2flpb+s
+	 segbiMtOphFnA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wly9G30LYz4wb0;
+	Sat, 17 Aug 2024 08:59:14 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Rob Herring <robh@kernel.org>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kvm-ppc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, Lizhi Hou
+ <lizhi.hou@amd.com>, Saravana Kannan <saravanak@google.com>, Vaibhav Jain
+ <vaibhav@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Vaidyanathan
+ Srinivasan <svaidy@linux.ibm.com>, Kowshik Jois B S
+ <kowsjois@linux.ibm.com>, Lukas Wunner <lukas@wunner.de>,
+ kernel-team@lists.ubuntu.com, Stefan Bader <stefan.bader@canonical.com>
+Subject: Re: [PATCH v3] PCI: Fix crash during pci_dev hot-unplug on pseries
+ KVM guest
+In-Reply-To: <20240816180441.81f4d694-3b-amachhiw@linux.ibm.com>
+References: <20240806200059.GA74866@bhelgaas> <87h6bm1ngo.fsf@mail.lhotse>
+ <20240816180441.81f4d694-3b-amachhiw@linux.ibm.com>
+Date: Sat, 17 Aug 2024 08:59:13 +1000
+Message-ID: <87o75s2hxa.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,12 +66,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Zr_LUQzb6KB6I448@zx2c4.com>
+Content-Type: text/plain
 
-On Fri, Aug 16, 2024 at 09:57:37PM +0000, Jason A. Donenfeld wrote:
-> On first glance, patch number 7 isn't okay. If you want this to work on
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+> On 2024/08/15 01:20 PM, Michael Ellerman wrote:
+>> Bjorn Helgaas <helgaas@kernel.org> writes:
+>> > On Sat, Aug 03, 2024 at 12:03:25AM +0530, Amit Machhiwal wrote:
+>> >> With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
+>> >> of a PCI device attached to a PCI-bridge causes following kernel Oops on
+>> >> a pseries KVM guest:
+>> >
+>> > What is unique about pseries here?  There's nothing specific to
+>> > pseries in the patch, so I would expect this to be a generic problem
+>> > on any arch.
+>> >
+>> >>  RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
+>> >>  Kernel attempted to read user page (10ec00000048) - exploit attempt? (uid: 0)
+>> >>  BUG: Unable to handle kernel data access on read at 0x10ec00000048
+>> >
+>> > Weird address.  I would expect NULL or something.  Where did this
+>> > non-NULL pointer come from?
+>> 
+>> It originally comes from np->data, which is supposed to be an
+>> of_changeset.
+>> 
+>> The powerpc code also uses np->data for the struct pci_dn pointer, see
+>> pci_add_device_node_info().
+>> 
+>> I wonder if that's why it's non-NULL?
+>
+> I'm also looking into the code to figure out where's that value coming from. I
+> will update as soon as I get there.
 
-Sorry, I meant 6.
+Thanks.
+ 
+>> Amit, do we have exact steps to reproduce this? I poked around a bit but
+>> couldn't get it to trigger.
+>
+> Sure, below are the steps:
+>
+> 1. Set CONFIG_PCI_DYNAMIC_OF_NODES=y in the kernel config and compile (Fedora
+>    has it disabled in it's distro config, Ubuntu has it enabled but will have it
+>    disabled in the next update)
+>
+> 2. If you are using Fedora cloud images, make sure you've these packages
+>    installed:
+>     $ rpm -qa | grep -e 'ppc64-diag\|powerpc-utils'
+>     powerpc-utils-core-1.3.11-6.fc40.ppc64le
+>     powerpc-utils-1.3.11-6.fc40.ppc64le
+>     ppc64-diag-rtas-2.7.9-6.fc40.ppc64le
+>     ppc64-diag-2.7.9-6.fc40.ppc64le
+>
+> 3. Hotplug a pci device as follows:
+>     virsh attach-interface <domain_name> bridge --source virbr0
+
+I don't use virsh :)
+
+Any idea how to do it with just qemu monitor commands?
+
+cheers
 
