@@ -1,13 +1,13 @@
-Return-Path: <linuxppc-dev+bounces-131-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-133-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5272F954C81
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 16:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5E0954C85
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 16:38:03 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wll2f1S3Sz2ysd;
-	Sat, 17 Aug 2024 00:37:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wll2x5HtDz2ymc;
+	Sat, 17 Aug 2024 00:38:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
@@ -16,27 +16,27 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wll2d6QC6z2ymc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 00:37:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wll2x1bYVz2yvk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 00:38:01 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Wll1n29jtz9sSN;
-	Fri, 16 Aug 2024 16:37:01 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4Wll1p2rL0z9sSZ;
+	Fri, 16 Aug 2024 16:37:02 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id g9vYESeDoJdb; Fri, 16 Aug 2024 16:37:01 +0200 (CEST)
+	with ESMTP id 0FGio_3SM76h; Fri, 16 Aug 2024 16:37:02 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wll1m0gSmz9sSK;
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wll1m655vz9rvV;
 	Fri, 16 Aug 2024 16:37:00 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 066E18B775;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BD9988B764;
 	Fri, 16 Aug 2024 16:37:00 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id PPQ3DFzlm0IO; Fri, 16 Aug 2024 16:36:59 +0200 (CEST)
+	with ESMTP id aeg8OhdT1BTv; Fri, 16 Aug 2024 16:37:00 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.232.147])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4246D8B764;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 080968B776;
 	Fri, 16 Aug 2024 16:36:59 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>,
@@ -57,9 +57,9 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH 6/9] vdso: Only use MAP_DROPPABLE when VM_DROPPABLE exists
-Date: Fri, 16 Aug 2024 16:36:53 +0200
-Message-ID: <712424314ffe0bd65b603925ca1283e7d2a3745f.1723817900.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH 7/9] powerpc: Add little endian variants of LHZX_BE and friends
+Date: Fri, 16 Aug 2024 16:36:54 +0200
+Message-ID: <a3d5db51c2e0f115e271b507c89e5af96bfeb015.1723817900.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1723817900.git.christophe.leroy@csgroup.eu>
 References: <cover.1723817900.git.christophe.leroy@csgroup.eu>
@@ -72,37 +72,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723819011; l=1039; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=a4FUUwepBwN5mNCP2XZj9T9GcESiUNu7cFEKFwi5oe0=; b=JTJKpvHJwPkKX/A+Rhg4IQmN4zJeE5RYjU1IFBVGLChXuZCKHQwfcskeTnmjMTTUiAcBGCgFY jGuGavvt1atDe6zhW0cyeXNinoFDn4NBjXUUgrTBNg11X7Rj03nTfEk
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723819011; l=2150; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=ZRZ74nUfhlj//3k0SFeHq4s60ExiEQUmJYVI6+7VWwQ=; b=kOKzSdAaDCocEGjcwOOPnE+zyg2ugOITM5x4/kDd+DSi3Cnis0XztcJ0bnyXg3azflp+Ah2lp f1aaVakKCwqCagp9h8RMNaoyAhus0oxNEiHBcWf0t94NrqIHTc9X41i
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 
-Commit 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always
-lazily freeable mappings") only adds MAP_DROPPABLE for 64 bits
-architectures, so don't use it on 32 bits as it leads to ENOTSUPP
-on mmap().
+To support getrandom in VDSO which is based on little endian storage,
+add macros equivalent to LHZX_BE for little endian accesses.
+
+And move it outside of __powerpc64__ #ifdef so that it can also be
+used for PPC32.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- lib/vdso/getrandom.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/asm-compat.h | 40 +++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/lib/vdso/getrandom.c b/lib/vdso/getrandom.c
-index 425a422651de..11ba6dbf3b5e 100644
---- a/lib/vdso/getrandom.c
-+++ b/lib/vdso/getrandom.c
-@@ -78,7 +78,11 @@ __cvdso_getrandom_data(const struct vdso_rng_data *rng_info, void *buffer, size_
+diff --git a/arch/powerpc/include/asm/asm-compat.h b/arch/powerpc/include/asm/asm-compat.h
+index 2bc53c646ccd..ef8e79ae669a 100644
+--- a/arch/powerpc/include/asm/asm-compat.h
++++ b/arch/powerpc/include/asm/asm-compat.h
+@@ -25,20 +25,6 @@
+ #define PPC_LR_STKOFF	16
+ #define PPC_MIN_STKFRM	112
  
- 		params->size_of_opaque_state = sizeof(*state);
- 		params->mmap_prot = PROT_READ | PROT_WRITE;
--		params->mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS;
-+		if (IS_ENABLED(CONFIG_64BIT))
-+			params->mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS;
-+		else
-+			params->mmap_flags = MAP_PRIVATE | MAP_ANONYMOUS;
+-#ifdef __BIG_ENDIAN__
+-#define LHZX_BE	stringify_in_c(lhzx)
+-#define LWZX_BE	stringify_in_c(lwzx)
+-#define LDX_BE	stringify_in_c(ldx)
+-#define STWX_BE	stringify_in_c(stwx)
+-#define STDX_BE	stringify_in_c(stdx)
+-#else
+-#define LHZX_BE	stringify_in_c(lhbrx)
+-#define LWZX_BE	stringify_in_c(lwbrx)
+-#define LDX_BE	stringify_in_c(ldbrx)
+-#define STWX_BE	stringify_in_c(stwbrx)
+-#define STDX_BE	stringify_in_c(stdbrx)
+-#endif
+-
+ #else /* 32-bit */
+ 
+ /* operations for longs and pointers */
+@@ -61,4 +47,30 @@
+ 
+ #endif
+ 
++#ifdef __BIG_ENDIAN__
++#define LHZX_BE	stringify_in_c(lhzx)
++#define LWZX_BE	stringify_in_c(lwzx)
++#define LDX_BE	stringify_in_c(ldx)
++#define STWX_BE	stringify_in_c(stwx)
++#define STDX_BE	stringify_in_c(stdx)
 +
- 		for (i = 0; i < ARRAY_SIZE(params->reserved); i++)
- 			params->reserved[i] = 0;
- 
++#define LHZX_LE	stringify_in_c(lhbrx)
++#define LWZX_LE	stringify_in_c(lwbrx)
++#define LDX_LE	stringify_in_c(ldbrx)
++#define STWX_LE	stringify_in_c(stwbrx)
++#define STDX_LE	stringify_in_c(stdbrx)
++#else
++#define LHZX_BE	stringify_in_c(lhbrx)
++#define LWZX_BE	stringify_in_c(lwbrx)
++#define LDX_BE	stringify_in_c(ldbrx)
++#define STWX_BE	stringify_in_c(stwbrx)
++#define STDX_BE	stringify_in_c(stdbrx)
++
++#define LHZX_LE	stringify_in_c(lhzx)
++#define LWZX_LE	stringify_in_c(lwzx)
++#define LDX_LE	stringify_in_c(ldx)
++#define STWX_LE	stringify_in_c(stwx)
++#define STDX_LE	stringify_in_c(stdx)
++#endif
++
+ #endif /* _ASM_POWERPC_ASM_COMPAT_H */
 -- 
 2.44.0
 
