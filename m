@@ -1,68 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-134-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-135-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDCD954C87
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 16:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E613954D62
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 17:13:50 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wll314qc5z2ywM;
-	Sat, 17 Aug 2024 00:38:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WllrD3czrz2yqB;
+	Sat, 17 Aug 2024 01:13:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wll312fqmz2yvk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 00:38:05 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Wll1r2rNSz9sSK;
-	Fri, 16 Aug 2024 16:37:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id CWmBAs4xDq_e; Fri, 16 Aug 2024 16:37:04 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wll1p434yz9rvV;
-	Fri, 16 Aug 2024 16:37:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 77EF58B764;
-	Fri, 16 Aug 2024 16:37:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id H7XpVLTItS-Q; Fri, 16 Aug 2024 16:37:02 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.232.147])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A71118B776;
-	Fri, 16 Aug 2024 16:37:01 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arch@vger.kernel.org
-Subject: [PATCH 9/9] selftests: [NOT TO BE MERGED] Modifications for testing VDSO getrandom implementation on PPC32
-Date: Fri, 16 Aug 2024 16:36:56 +0200
-Message-ID: <376843e024ffa73793e8ed99b72d299c6b239799.1723817900.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1723817900.git.christophe.leroy@csgroup.eu>
-References: <cover.1723817900.git.christophe.leroy@csgroup.eu>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WllrC3m7Fz2ypx
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 01:13:44 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA36213D5;
+	Fri, 16 Aug 2024 08:13:35 -0700 (PDT)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5E4FF3F6A8;
+	Fri, 16 Aug 2024 08:13:06 -0700 (PDT)
+Date: Fri, 16 Aug 2024 16:13:01 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, akpm@linux-foundation.org,
+	aneesh.kumar@kernel.org, aneesh.kumar@linux.ibm.com, bp@alien8.de,
+	broonie@kernel.org, catalin.marinas@arm.com,
+	christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
+	hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, mpe@ellerman.id.au,
+	naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
+	oliver.upton@linux.dev, shuah@kernel.org, szabolcs.nagy@arm.com,
+	tglx@linutronix.de, will@kernel.org, x86@kernel.org,
+	kvmarm@lists.linux.dev
+Subject: Re: [PATCH v4 07/29] KVM: arm64: Save/restore POE registers
+Message-ID: <20240816151301.GA138302@e124191.cambridge.arm.com>
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+ <20240503130147.1154804-8-joey.gouly@arm.com>
+ <86ed6ozfe8.wl-maz@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,100 +48,188 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723819012; l=4941; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=Byt1zoXBB7tbRE1Z7pCXViKFciqFPibE+/C8OmNKnow=; b=0TkkqDKBkMMgL0ugpEAIOflzNK0D+cMm8lg8Wj+L/em3AddbhyydfpVg0Uc1yaCGhlbwMZx9z ux/X3n02YZGAOdDI+RT4hyUEpPrGZEF6i58grcim8hG8jyssOxRE0TY
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86ed6ozfe8.wl-maz@kernel.org>
 
-arch/.../entry/vdso/ is specific to x86. Every architecture has a
-different path. On powerpc it is in arch/.../kernel/vdso/
+On Fri, Aug 16, 2024 at 03:55:11PM +0100, Marc Zyngier wrote:
+> On Fri, 03 May 2024 14:01:25 +0100,
+> Joey Gouly <joey.gouly@arm.com> wrote:
+> > 
+> > Define the new system registers that POE introduces and context switch them.
+> > 
+> > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> > Cc: Marc Zyngier <maz@kernel.org>
+> > Cc: Oliver Upton <oliver.upton@linux.dev>
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > ---
+> >  arch/arm64/include/asm/kvm_host.h          |  4 +++
+> >  arch/arm64/include/asm/vncr_mapping.h      |  1 +
+> >  arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h | 29 ++++++++++++++++++++++
+> >  arch/arm64/kvm/sys_regs.c                  |  8 ++++--
+> >  4 files changed, 40 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> > index 9e8a496fb284..28042da0befd 100644
+> > --- a/arch/arm64/include/asm/kvm_host.h
+> > +++ b/arch/arm64/include/asm/kvm_host.h
+> > @@ -419,6 +419,8 @@ enum vcpu_sysreg {
+> >  	GCR_EL1,	/* Tag Control Register */
+> >  	TFSRE0_EL1,	/* Tag Fault Status Register (EL0) */
+> >  
+> > +	POR_EL0,	/* Permission Overlay Register 0 (EL0) */
+> > +
+> >  	/* 32bit specific registers. */
+> >  	DACR32_EL2,	/* Domain Access Control Register */
+> >  	IFSR32_EL2,	/* Instruction Fault Status Register */
+> > @@ -489,6 +491,8 @@ enum vcpu_sysreg {
+> >  	VNCR(PIR_EL1),	 /* Permission Indirection Register 1 (EL1) */
+> >  	VNCR(PIRE0_EL1), /*  Permission Indirection Register 0 (EL1) */
+> >  
+> > +	VNCR(POR_EL1),	/* Permission Overlay Register 1 (EL1) */
+> > +
+> >  	VNCR(HFGRTR_EL2),
+> >  	VNCR(HFGWTR_EL2),
+> >  	VNCR(HFGITR_EL2),
+> > diff --git a/arch/arm64/include/asm/vncr_mapping.h b/arch/arm64/include/asm/vncr_mapping.h
+> > index df2c47c55972..06f8ec0906a6 100644
+> > --- a/arch/arm64/include/asm/vncr_mapping.h
+> > +++ b/arch/arm64/include/asm/vncr_mapping.h
+> > @@ -52,6 +52,7 @@
+> >  #define VNCR_PIRE0_EL1		0x290
+> >  #define VNCR_PIRE0_EL2		0x298
+> >  #define VNCR_PIR_EL1		0x2A0
+> > +#define VNCR_POR_EL1		0x2A8
+> >  #define VNCR_ICH_LR0_EL2        0x400
+> >  #define VNCR_ICH_LR1_EL2        0x408
+> >  #define VNCR_ICH_LR2_EL2        0x410
+> > diff --git a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> > index 4be6a7fa0070..1c9536557bae 100644
+> > --- a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> > +++ b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> > @@ -16,9 +16,15 @@
+> >  #include <asm/kvm_hyp.h>
+> >  #include <asm/kvm_mmu.h>
+> >  
+> > +static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt);
+> > +
+> >  static inline void __sysreg_save_common_state(struct kvm_cpu_context *ctxt)
+> >  {
+> >  	ctxt_sys_reg(ctxt, MDSCR_EL1)	= read_sysreg(mdscr_el1);
+> > +
+> > +	// POR_EL0 can affect uaccess, so must be saved/restored early.
+> > +	if (ctxt_has_s1poe(ctxt))
+> > +		ctxt_sys_reg(ctxt, POR_EL0)	= read_sysreg_s(SYS_POR_EL0);
+> >  }
+> >  
+> >  static inline void __sysreg_save_user_state(struct kvm_cpu_context *ctxt)
+> > @@ -55,6 +61,17 @@ static inline bool ctxt_has_s1pie(struct kvm_cpu_context *ctxt)
+> >  	return kvm_has_feat(kern_hyp_va(vcpu->kvm), ID_AA64MMFR3_EL1, S1PIE, IMP);
+> >  }
+> >  
+> > +static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt)
+> > +{
+> > +	struct kvm_vcpu *vcpu;
+> > +
+> > +	if (!system_supports_poe())
+> > +		return false;
+> > +
+> > +	vcpu = ctxt_to_vcpu(ctxt);
+> > +	return kvm_has_feat(kern_hyp_va(vcpu->kvm), ID_AA64MMFR3_EL1, S1POE, IMP);
+> > +}
+> > +
+> >  static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
+> >  {
+> >  	ctxt_sys_reg(ctxt, SCTLR_EL1)	= read_sysreg_el1(SYS_SCTLR);
+> > @@ -77,6 +94,10 @@ static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
+> >  		ctxt_sys_reg(ctxt, PIR_EL1)	= read_sysreg_el1(SYS_PIR);
+> >  		ctxt_sys_reg(ctxt, PIRE0_EL1)	= read_sysreg_el1(SYS_PIRE0);
+> >  	}
+> > +
+> > +	if (ctxt_has_s1poe(ctxt))
+> > +		ctxt_sys_reg(ctxt, POR_EL1)	= read_sysreg_el1(SYS_POR);
+> > +
+> >  	ctxt_sys_reg(ctxt, PAR_EL1)	= read_sysreg_par();
+> >  	ctxt_sys_reg(ctxt, TPIDR_EL1)	= read_sysreg(tpidr_el1);
+> >  
+> > @@ -107,6 +128,10 @@ static inline void __sysreg_save_el2_return_state(struct kvm_cpu_context *ctxt)
+> >  static inline void __sysreg_restore_common_state(struct kvm_cpu_context *ctxt)
+> >  {
+> >  	write_sysreg(ctxt_sys_reg(ctxt, MDSCR_EL1),  mdscr_el1);
+> > +
+> > +	// POR_EL0 can affect uaccess, so must be saved/restored early.
+> > +	if (ctxt_has_s1poe(ctxt))
+> > +		write_sysreg_s(ctxt_sys_reg(ctxt, POR_EL0),	SYS_POR_EL0);
+> >  }
+> >  
+> >  static inline void __sysreg_restore_user_state(struct kvm_cpu_context *ctxt)
+> > @@ -153,6 +178,10 @@ static inline void __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt)
+> >  		write_sysreg_el1(ctxt_sys_reg(ctxt, PIR_EL1),	SYS_PIR);
+> >  		write_sysreg_el1(ctxt_sys_reg(ctxt, PIRE0_EL1),	SYS_PIRE0);
+> >  	}
+> > +
+> > +	if (ctxt_has_s1poe(ctxt))
+> > +		write_sysreg_el1(ctxt_sys_reg(ctxt, POR_EL1),	SYS_POR);
+> > +
+> >  	write_sysreg(ctxt_sys_reg(ctxt, PAR_EL1),	par_el1);
+> >  	write_sysreg(ctxt_sys_reg(ctxt, TPIDR_EL1),	tpidr_el1);
+> >  
+> > diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> > index c9f4f387155f..be04fae35afb 100644
+> > --- a/arch/arm64/kvm/sys_regs.c
+> > +++ b/arch/arm64/kvm/sys_regs.c
+> > @@ -2423,6 +2423,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+> >  	{ SYS_DESC(SYS_MAIR_EL1), access_vm_reg, reset_unknown, MAIR_EL1 },
+> >  	{ SYS_DESC(SYS_PIRE0_EL1), NULL, reset_unknown, PIRE0_EL1 },
+> >  	{ SYS_DESC(SYS_PIR_EL1), NULL, reset_unknown, PIR_EL1 },
+> > +	{ SYS_DESC(SYS_POR_EL1), NULL, reset_unknown, POR_EL1 },
+> >  	{ SYS_DESC(SYS_AMAIR_EL1), access_vm_reg, reset_amair_el1, AMAIR_EL1 },
+> >  
+> >  	{ SYS_DESC(SYS_LORSA_EL1), trap_loregion },
+> > @@ -2506,6 +2507,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+> >  	  .access = access_pmovs, .reg = PMOVSSET_EL0,
+> >  	  .get_user = get_pmreg, .set_user = set_pmreg },
+> >  
+> > +	{ SYS_DESC(SYS_POR_EL0), NULL, reset_unknown, POR_EL0 },
+> >  	{ SYS_DESC(SYS_TPIDR_EL0), NULL, reset_unknown, TPIDR_EL0 },
+> >  	{ SYS_DESC(SYS_TPIDRRO_EL0), NULL, reset_unknown, TPIDRRO_EL0 },
+> >  	{ SYS_DESC(SYS_TPIDR2_EL0), undef_access },
+> > @@ -4057,8 +4059,6 @@ void kvm_init_sysreg(struct kvm_vcpu *vcpu)
+> >  	kvm->arch.fgu[HFGxTR_GROUP] = (HFGxTR_EL2_nAMAIR2_EL1		|
+> >  				       HFGxTR_EL2_nMAIR2_EL1		|
+> >  				       HFGxTR_EL2_nS2POR_EL1		|
+> > -				       HFGxTR_EL2_nPOR_EL1		|
+> > -				       HFGxTR_EL2_nPOR_EL0		|
+> >  				       HFGxTR_EL2_nACCDATA_EL1		|
+> >  				       HFGxTR_EL2_nSMPRI_EL1_MASK	|
+> >  				       HFGxTR_EL2_nTPIDR2_EL0_MASK);
+> > @@ -4093,6 +4093,10 @@ void kvm_init_sysreg(struct kvm_vcpu *vcpu)
+> >  		kvm->arch.fgu[HFGxTR_GROUP] |= (HFGxTR_EL2_nPIRE0_EL1 |
+> >  						HFGxTR_EL2_nPIR_EL1);
+> >  
+> > +	if (!kvm_has_feat(kvm, ID_AA64MMFR3_EL1, S1POE, IMP))
+> > +		kvm->arch.fgu[HFGxTR_GROUP] |= (HFGxTR_EL2_nPOR_EL1 |
+> > +						HFGxTR_EL2_nPOR_EL0);
+> > +
+> 
+> As Broonie pointed out in a separate thread, this cannot work, short
+> of making ID_AA64MMFR3_EL1 writable.
+> 
+> This can be done in a separate patch, but it needs doing as it
+> otherwise breaks migration.
+> 
+> Thanks,
+> 
+> 	M.
+> 
 
-vdso_test_getrandom is a bit too long with 25000000.
+Looks like it's wrong for PIE currently too, but your patch here fixes that:
+	https://lore.kernel.org/kvmarm/20240813144738.2048302-11-maz@kernel.org/
 
-Something is wrong with macros INT_MAX ... :
+If I basically apply that patch, but only for POE, the conflict can be resolved
+later, or a rebase will fix it up, depending on what goes through first.
 
-In file included from /home/chleroy/linux-powerpc/include/linux/limits.h:7,
-                 from /opt/powerpc64-e5500--glibc--stable-2024.02-1/powerpc64-buildroot-linux-gnu/sysroot/usr/include/bits/local_lim.h:38,
-                 from /opt/powerpc64-e5500--glibc--stable-2024.02-1/powerpc64-buildroot-linux-gnu/sysroot/usr/include/bits/posix1_lim.h:161,
-                 from /opt/powerpc64-e5500--glibc--stable-2024.02-1/powerpc64-buildroot-linux-gnu/sysroot/usr/include/limits.h:195,
-                 from /opt/powerpc64-e5500--glibc--stable-2024.02-1/lib/gcc/powerpc64-buildroot-linux-gnu/12.3.0/include-fixed/limits.h:203,
-                 from /opt/powerpc64-e5500--glibc--stable-2024.02-1/lib/gcc/powerpc64-buildroot-linux-gnu/12.3.0/include-fixed/syslimits.h:7,
-                 from /opt/powerpc64-e5500--glibc--stable-2024.02-1/lib/gcc/powerpc64-buildroot-linux-gnu/12.3.0/include-fixed/limits.h:34,
-                 from /tmp/sodium/usr/local/include/sodium/export.h:7,
-                 from /tmp/sodium/usr/local/include/sodium/crypto_stream_chacha20.h:14,
-                 from vdso_test_chacha.c:6:
-/opt/powerpc64-e5500--glibc--stable-2024.02-1/powerpc64-buildroot-linux-gnu/sysroot/usr/include/bits/xopen_lim.h:99:6: error: missing binary operator before token "("
-   99 | # if INT_MAX == 32767
-      |      ^~~~~~~
-/opt/powerpc64-e5500--glibc--stable-2024.02-1/powerpc64-buildroot-linux-gnu/sysroot/usr/include/bits/xopen_lim.h:102:7: error: missing binary operator before token "("
-  102 | #  if INT_MAX == 2147483647
-      |       ^~~~~~~
-/opt/powerpc64-e5500--glibc--stable-2024.02-1/powerpc64-buildroot-linux-gnu/sysroot/usr/include/bits/xopen_lim.h:126:6: error: missing binary operator before token "("
-  126 | # if LONG_MAX == 2147483647
-      |      ^~~~~~~~
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- include/vdso/limits.h                              | 4 ++--
- tools/testing/selftests/vDSO/Makefile              | 2 +-
- tools/testing/selftests/vDSO/vdso_test_getrandom.c | 6 +++---
- 3 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/include/vdso/limits.h b/include/vdso/limits.h
-index 0197888ad0e0..b0459332e45f 100644
---- a/include/vdso/limits.h
-+++ b/include/vdso/limits.h
-@@ -5,10 +5,10 @@
- #define USHRT_MAX	((unsigned short)~0U)
- #define SHRT_MAX	((short)(USHRT_MAX >> 1))
- #define SHRT_MIN	((short)(-SHRT_MAX - 1))
--#define INT_MAX		((int)(~0U >> 1))
-+#define INT_MAX		2147483647
- #define INT_MIN		(-INT_MAX - 1)
- #define UINT_MAX	(~0U)
--#define LONG_MAX	((long)(~0UL >> 1))
-+#define LONG_MAX	2147483647
- #define LONG_MIN	(-LONG_MAX - 1)
- #define ULONG_MAX	(~0UL)
- #define LLONG_MAX	((long long)(~0ULL >> 1))
-diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/vDSO/Makefile
-index 3de8e7e052ae..8010e7be66c6 100644
---- a/tools/testing/selftests/vDSO/Makefile
-+++ b/tools/testing/selftests/vDSO/Makefile
-@@ -40,7 +40,7 @@ $(OUTPUT)/vdso_test_getrandom: parse_vdso.c
- $(OUTPUT)/vdso_test_getrandom: CFLAGS += -isystem $(top_srcdir)/tools/include \
-                                          -isystem $(top_srcdir)/include/uapi
- 
--$(OUTPUT)/vdso_test_chacha: $(top_srcdir)/arch/$(ARCH)/entry/vdso/vgetrandom-chacha.S
-+$(OUTPUT)/vdso_test_chacha: $(top_srcdir)/arch/$(ARCH)/kernel/vdso/vgetrandom-chacha.S
- $(OUTPUT)/vdso_test_chacha: CFLAGS += -idirafter $(top_srcdir)/tools/include \
-                                       -isystem $(top_srcdir)/arch/$(ARCH)/include \
-                                       -isystem $(top_srcdir)/include \
-diff --git a/tools/testing/selftests/vDSO/vdso_test_getrandom.c b/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-index 05122425a873..f25301c9d46b 100644
---- a/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-+++ b/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-@@ -115,9 +115,9 @@ static void vgetrandom_init(void)
- 		exit(KSFT_SKIP);
- 	}
- 	vdso_init_from_sysinfo_ehdr(sysinfo_ehdr);
--	grnd_ctx.fn = (__typeof__(grnd_ctx.fn))vdso_sym("LINUX_2.6", "__vdso_getrandom");
-+	grnd_ctx.fn = (__typeof__(grnd_ctx.fn))vdso_sym("LINUX_2.6.15", "__kernel_getrandom");
- 	if (!grnd_ctx.fn) {
--		printf("__vdso_getrandom is missing!\n");
-+		printf("__kernel_getrandom is missing!\n");
- 		exit(KSFT_FAIL);
- 	}
- 	if (grnd_ctx.fn(NULL, 0, 0, &grnd_ctx.params, ~0UL) != 0) {
-@@ -146,7 +146,7 @@ static ssize_t vgetrandom(void *buf, size_t len, unsigned long flags)
- 	return grnd_ctx.fn(buf, len, flags, state, grnd_ctx.params.size_of_opaque_state);
- }
- 
--enum { TRIALS = 25000000, THREADS = 256 };
-+enum { TRIALS = 2500000, THREADS = 256 };
- 
- static void *test_vdso_getrandom(void *)
- {
--- 
-2.44.0
-
+Thanks,
+Joey
 
