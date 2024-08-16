@@ -1,13 +1,13 @@
-Return-Path: <linuxppc-dev+bounces-126-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-127-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827CF954C76
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 16:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADA5954C78
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 16:37:18 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wll1s6H57z2ynr;
-	Sat, 17 Aug 2024 00:37:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wll1x3bKNz2ypj;
+	Sat, 17 Aug 2024 00:37:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
@@ -16,28 +16,28 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wll1s48Ncz2ymc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 00:37:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wll1x1SZTz2ymc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 00:37:09 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Wll1h3NLbz9sS7;
-	Fri, 16 Aug 2024 16:36:56 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4Wll1j1tVVz9sS8;
+	Fri, 16 Aug 2024 16:36:57 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id KOqG54dVypJt; Fri, 16 Aug 2024 16:36:56 +0200 (CEST)
+	with ESMTP id j0dj-jWml6uV; Fri, 16 Aug 2024 16:36:57 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wll1h2X2Qz9rvV;
-	Fri, 16 Aug 2024 16:36:56 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wll1j10wDz9rvV;
+	Fri, 16 Aug 2024 16:36:57 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 43F2A8B776;
-	Fri, 16 Aug 2024 16:36:56 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0EB088B776;
+	Fri, 16 Aug 2024 16:36:57 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Z6kyv2FpVyLW; Fri, 16 Aug 2024 16:36:56 +0200 (CEST)
+	with ESMTP id 9GCrhH04VNha; Fri, 16 Aug 2024 16:36:56 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.232.147])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A3C08B775;
-	Fri, 16 Aug 2024 16:36:55 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 431B48B764;
+	Fri, 16 Aug 2024 16:36:56 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -57,9 +57,9 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH 1/9] powerpc/vdso: Don't discard rela sections
-Date: Fri, 16 Aug 2024 16:36:48 +0200
-Message-ID: <93652438073547f350feea0daca91464336024b2.1723817900.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH 2/9] powerpc/vdso32: Add crtsavres
+Date: Fri, 16 Aug 2024 16:36:49 +0200
+Message-ID: <1c3ff5733a04f2b8001c5e01b7979ede060e131a.1723817900.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1723817900.git.christophe.leroy@csgroup.eu>
 References: <cover.1723817900.git.christophe.leroy@csgroup.eu>
@@ -72,68 +72,74 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723819011; l=1900; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=K++segjJQr8QF64fs4Z+bGhGMQj57/fKQI86HMCyRto=; b=is2TYmfppFjvvakpgBHCsGYWlGaf4/CT2PO7c1dZ5PW6hB2pSeIlflfQNa1SyamqARpJZsuGV 0xczDv0ttdtAuPZwXoeq1vhCP0xsOMTY62EFySZcbZYirXZpMouyAcA
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723819011; l=2796; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=utdv6V/SvZxVA50hOk7t/lkGWDvSE1q/kJYchx6i5SU=; b=1LvWYgK0Ua12qLRceENYeUtOHkTWZVzF3evpTFlhRCHJNYxtTHuwBXeYa7P1s8mbrCVbiUF7s KwOD94uSh7+CP8Jcgzosm3mKRbz3h9LeJaXkDvyKhUhNYcse9+mdwiR
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 
-After building the VDSO, there is a verification that it contains
-no dynamic relocation, see commit aff69273af61 ("vdso: Improve
-cmd_vdso_check to check all dynamic relocations").
+Commit 08c18b63d965 ("powerpc/vdso32: Add missing _restgpr_31_x to fix
+build failure") added _restgpr_31_x to the vdso for gettimeofday, but
+the work on getrandom shows that we will need more of those functions.
 
-This verification uses readelf -r and doesn't work if rela sections
-are discarded.
+Remove _restgpr_31_x and link in crtsavres.o so that we get all
+save/restore functions when optimising the kernel for size.
 
-Fixes: 8ad57add77d3 ("powerpc/build: vdso linker warning for orphan sections")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/vdso/vdso32.lds.S | 4 +++-
- arch/powerpc/kernel/vdso/vdso64.lds.S | 4 ++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/vdso/Makefile       |  5 ++++-
+ arch/powerpc/kernel/vdso/gettimeofday.S | 13 -------------
+ 2 files changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vdso/vdso32.lds.S b/arch/powerpc/kernel/vdso/vdso32.lds.S
-index 426e1ccc6971..8f57107000a2 100644
---- a/arch/powerpc/kernel/vdso/vdso32.lds.S
-+++ b/arch/powerpc/kernel/vdso/vdso32.lds.S
-@@ -74,6 +74,8 @@ SECTIONS
- 	.got		: { *(.got) }			:text
- 	.plt		: { *(.plt) }
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index 1425b6edc66b..c07a425b8f78 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -43,6 +43,7 @@ else
+ endif
  
-+	.rela.dyn	: { *(.rela .rela*) }
-+
- 	_end = .;
- 	__end = .;
- 	PROVIDE(end = .);
-@@ -87,7 +89,7 @@ SECTIONS
- 		*(.branch_lt)
- 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
- 		*(.bss .sbss .dynbss .dynsbss)
--		*(.got1 .glink .iplt .rela*)
-+		*(.got1 .glink .iplt)
- 	}
- }
+ targets := $(obj-vdso32) vdso32.so.dbg vgettimeofday-32.o
++targets += crtsavres-32.o
+ obj-vdso32 := $(addprefix $(obj)/, $(obj-vdso32))
+ targets += $(obj-vdso64) vdso64.so.dbg vgettimeofday-64.o
+ obj-vdso64 := $(addprefix $(obj)/, $(obj-vdso64))
+@@ -68,7 +69,7 @@ targets += vdso64.lds
+ CPPFLAGS_vdso64.lds += -P -C
  
-diff --git a/arch/powerpc/kernel/vdso/vdso64.lds.S b/arch/powerpc/kernel/vdso/vdso64.lds.S
-index bda6c8cdd459..400819258c06 100644
---- a/arch/powerpc/kernel/vdso/vdso64.lds.S
-+++ b/arch/powerpc/kernel/vdso/vdso64.lds.S
-@@ -69,7 +69,7 @@ SECTIONS
- 	.eh_frame_hdr	: { *(.eh_frame_hdr) }		:text	:eh_frame_hdr
- 	.eh_frame	: { KEEP (*(.eh_frame)) }	:text
- 	.gcc_except_table : { *(.gcc_except_table) }
--	.rela.dyn ALIGN(8) : { *(.rela.dyn) }
-+	.rela.dyn ALIGN(8) : { *(.rela .rela*) }
- 
- 	.got ALIGN(8)	: { *(.got .toc) }
- 
-@@ -86,7 +86,7 @@ SECTIONS
- 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
- 		*(.bss .sbss .dynbss .dynsbss)
- 		*(.opd)
--		*(.glink .iplt .plt .rela*)
-+		*(.glink .iplt .plt)
- 	}
- }
- 
+ # link rule for the .so file, .lds has to be first
+-$(obj)/vdso32.so.dbg: $(obj)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday-32.o FORCE
++$(obj)/vdso32.so.dbg: $(obj)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday-32.o $(obj)/crtsavres-32.o FORCE
+ 	$(call if_changed,vdso32ld_and_check)
+ $(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o FORCE
+ 	$(call if_changed,vdso64ld_and_check)
+@@ -76,6 +77,8 @@ $(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o
+ # assembly rules for the .S files
+ $(obj-vdso32): %-32.o: %.S FORCE
+ 	$(call if_changed_dep,vdso32as)
++$(obj)/crtsavres-32.o: %-32.o: $(srctree)/arch/powerpc/lib/crtsavres.S FORCE
++	$(call if_changed_dep,vdso32as)
+ $(obj)/vgettimeofday-32.o: %-32.o: %.c FORCE
+ 	$(call if_changed_dep,vdso32cc)
+ $(obj-vdso64): %-64.o: %.S FORCE
+diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vdso/gettimeofday.S
+index 48fc6658053a..67254ac9c8bb 100644
+--- a/arch/powerpc/kernel/vdso/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso/gettimeofday.S
+@@ -118,16 +118,3 @@ V_FUNCTION_END(__kernel_clock_getres)
+ V_FUNCTION_BEGIN(__kernel_time)
+ 	cvdso_call __c_kernel_time call_time=1
+ V_FUNCTION_END(__kernel_time)
+-
+-/* Routines for restoring integer registers, called by the compiler.  */
+-/* Called with r11 pointing to the stack header word of the caller of the */
+-/* function, just beyond the end of the integer restore area.  */
+-#ifndef __powerpc64__
+-_GLOBAL(_restgpr_31_x)
+-_GLOBAL(_rest32gpr_31_x)
+-	lwz	r0,4(r11)
+-	lwz	r31,-4(r11)
+-	mtlr	r0
+-	mr	r1,r11
+-	blr
+-#endif
 -- 
 2.44.0
 
