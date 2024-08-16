@@ -1,57 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-114-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-116-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 715EA95464A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 11:56:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E034954808
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 13:26:13 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aXlIJ5Or;
-	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wlcnq0khqz2yLg;
-	Fri, 16 Aug 2024 19:56:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WlfnZ6VYdz2yk7;
+	Fri, 16 Aug 2024 21:26:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aXlIJ5Or;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=alexs@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.13
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wlc9L2Nzjz2xst
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2024 19:28:06 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5F64E62128;
-	Fri, 16 Aug 2024 09:28:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04744C32782;
-	Fri, 16 Aug 2024 09:27:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723800482;
-	bh=wSUG6N0b072xD6DUFsCdzV84E/s31xj3kcg6qaEVlJk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=aXlIJ5OrC84qslmThKj7xICdmqYSO20BsMqjM5iD/2rYV7QECLQVrqjo6Rl8ImC6P
-	 OXGhi8nDwUhBSh0DqqgZVIGedy1053Nn1p8KDRl1Z3GG9AL+6A4CZo31fwo6eMLgY6
-	 F8SMXlNokEo8p0Xgpo4Eiirgw7LmPq/WycQIy5dkTbbZyxdCWqyDtAxOH6pjN0d+9B
-	 P/Btx23deA/QEDgbyscr0jU+DCoTs0ApXYrH8Pn40zl6Wvu4eL4oj90dOdGeywiJ3w
-	 +Lwvt+uQEFasExrXQsa+OFPcKKyuPa0BZcPVnlFzoFSOsvQ5dHCflwdgz0LBgNXwc7
-	 33HD+WNcrbyEw==
-From: alexs@kernel.org
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org (open list)
-Cc: Alex Shi <alexs@kernel.org>
-Subject: [PATCH] KVM: PPC: remove unused varible
-Date: Fri, 16 Aug 2024 17:33:12 +0800
-Message-ID: <20240816093313.327268-1-alexs@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WlfH82JTwz2yR5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2024 21:03:15 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7EFBF1A0DCE;
+	Fri, 16 Aug 2024 13:03:12 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 319411A1529;
+	Fri, 16 Aug 2024 13:03:12 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 4B1DF1800318;
+	Fri, 16 Aug 2024 19:03:10 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: vkoul@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v2 0/6] ASoC: fsl: add memory to memory function for ASRC
+Date: Fri, 16 Aug 2024 18:42:33 +0800
+Message-Id: <1723804959-31921-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,50 +53,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Alex Shi <alexs@kernel.org>
+This function is base on the accelerator implementation
+for compress API:
+https://patchwork.kernel.org/project/alsa-devel/patch/20240731083843.59911-1-perex@perex.cz/
 
-During build testing, we found a error:
-/arch/powerpc/kvm/book3s_hv.c:4052:17: error: variable 'loops' set but not used [-Werror,-Wunused-but-set-variable]
-                unsigned long loops = 0;
-1 error generated.
+Audio signal processing also has the requirement for memory to
+memory similar as Video.
 
-Remove the unused variable could fix this.
+This asrc memory to memory (memory ->asrc->memory) case is a non
+real time use case.
 
-Signed-off-by: Alex Shi <alexs@kernel.org>
-Cc: kvm@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kvm/book3s_hv.c | 2 --
- 1 file changed, 2 deletions(-)
+User fills the input buffer to the asrc module, after conversion, then asrc
+sends back the output buffer to user. So it is not a traditional ALSA playback
+and capture case.
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 8f7d7e37bc8c..ac27ca4385e4 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4049,7 +4049,6 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
- 	/* Return to whole-core mode if we split the core earlier */
- 	if (cmd_bit) {
- 		unsigned long hid0 = mfspr(SPRN_HID0);
--		unsigned long loops = 0;
- 
- 		hid0 &= ~HID0_POWER8_DYNLPARDIS;
- 		stat_bit = HID0_POWER8_2LPARMODE | HID0_POWER8_4LPARMODE;
-@@ -4061,7 +4060,6 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
- 			if (!(hid0 & stat_bit))
- 				break;
- 			cpu_relax();
--			++loops;
- 		}
- 		split_info.do_nap = 0;
- 	}
+Because we had implemented the "memory -> asrc ->i2s device-> codec"
+use case in ALSA.  Now the "memory->asrc->memory" needs
+to reuse the code in asrc driver, so the patch 1 and patch 2 is for refining
+the code to make it can be shared by the "memory->asrc->memory"
+driver.
+
+Other change is to add memory to memory support for two kinds of i.MX ASRC
+modules.
+
+changes in v2:
+- Remove the changes in compress API
+- drop the SNDRV_COMPRESS_SRC_RATIO_MOD
+- drop the SND_AUDIOCODEC_SRC and struct snd_dec_src
+- define private metadata key value
+  ASRC_OUTPUT_FORMAT/ASRC_OUTPUT_RATE/ASRC_RATIO_MOD
+
+Shengjiu Wang (6):
+  ALSA: compress: reserve space in snd_compr_metadata.key for private
+    usage
+  ASoC: fsl_asrc: define functions for memory to memory usage
+  ASoC: fsl_easrc: define functions for memory to memory usage
+  ASoC: fsl_asrc_m2m: Add memory to memory function
+  ASoC: fsl_asrc: register m2m platform device
+  ASoC: fsl_easrc: register m2m platform device
+
+ include/uapi/sound/compress_offload.h |   2 +-
+ sound/soc/fsl/Kconfig                 |   1 +
+ sound/soc/fsl/Makefile                |   2 +-
+ sound/soc/fsl/fsl_asrc.c              | 176 +++++-
+ sound/soc/fsl/fsl_asrc.h              |   2 +
+ sound/soc/fsl/fsl_asrc_common.h       |  68 +++
+ sound/soc/fsl/fsl_asrc_m2m.c          | 791 ++++++++++++++++++++++++++
+ sound/soc/fsl/fsl_easrc.c             | 259 ++++++++-
+ sound/soc/fsl/fsl_easrc.h             |   4 +
+ 9 files changed, 1297 insertions(+), 8 deletions(-)
+ create mode 100644 sound/soc/fsl/fsl_asrc_m2m.c
+
 -- 
-2.43.0
+2.34.1
 
 
