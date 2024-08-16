@@ -1,87 +1,28 @@
-Return-Path: <linuxppc-dev+bounces-142-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-143-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6851A9553D7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2024 01:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 769DB9553DF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2024 01:43:39 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tPVlavzi;
-	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wlz781w8Yz2ysD;
-	Sat, 17 Aug 2024 09:42:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wlz8T2b4Sz2ysb;
+	Sat, 17 Aug 2024 09:43:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tPVlavzi;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WlmFm5DNpz2ypx
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 01:32:28 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BD4BF62229;
-	Fri, 16 Aug 2024 15:32:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E49C4AF0B;
-	Fri, 16 Aug 2024 15:32:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723822346;
-	bh=2/SyteaEDgLjslhjK5Qrg9vsTkx+4CL4Pn+Rur8QC18=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tPVlavzii20FYM/2odXn3dc4J0pC/bFkESC3D+bRAYJ60xDKKbQDYU7wLO92oko/9
-	 I0igy24KZcT6i753jJI9WxsYUU6D68lkfP9VPCfYKB9F5uUoX7c1EdnvFBs6qCWc+4
-	 D+ly54JIrs5pIPKeHAVaFMTESgVSdKBPQBvD45Le70/UO5fD86Y5/6p19KuZnkt8px
-	 XF07CnZ9evf7RwPPBLQ4UKPDxTwFwVLHTmmhV5OByZ8TaO3m2MEuHcoHcj7oCGaAHK
-	 OqmY+UmluMV9KFtA93H1zXF/fAIGQQwntdR7E/Kym2bSphGLZxNh0c6eYNBAdDv/5U
-	 Nq6MGN86ZajLw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1seywB-004K1i-3k;
-	Fri, 16 Aug 2024 16:32:23 +0100
-Date: Fri, 16 Aug 2024 16:32:22 +0100
-Message-ID: <86cym8zdo9.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Joey Gouly <joey.gouly@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com,
-	bp@alien8.de,
-	broonie@kernel.org,
-	catalin.marinas@arm.com,
-	christophe.leroy@csgroup.eu,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	mingo@redhat.com,
-	mpe@ellerman.id.au,
-	naveen.n.rao@linux.ibm.com,
-	npiggin@gmail.com,
-	oliver.upton@linux.dev,
-	shuah@kernel.org,
-	szabolcs.nagy@arm.com,
-	tglx@linutronix.de,
-	will@kernel.org,
-	x86@kernel.org,
-	kvmarm@lists.linux.dev
-Subject: Re: [PATCH v4 07/29] KVM: arm64: Save/restore POE registers
-In-Reply-To: <20240816151301.GA138302@e124191.cambridge.arm.com>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
-	<20240503130147.1154804-8-joey.gouly@arm.com>
-	<86ed6ozfe8.wl-maz@kernel.org>
-	<20240816151301.GA138302@e124191.cambridge.arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dietmar.eggemann@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WlmmC0GX1z2xXV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 01:55:22 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 06F1613D5;
+	Fri, 16 Aug 2024 08:55:17 -0700 (PDT)
+Received: from [192.168.181.244] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 931F53F58B;
+	Fri, 16 Aug 2024 08:54:46 -0700 (PDT)
+Message-ID: <9c46d5f0-f4ff-461b-b483-840fab6dfecc@arm.com>
+Date: Fri, 16 Aug 2024 17:54:39 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,59 +31,43 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: joey.gouly@arm.com, linux-arm-kernel@lists.infradead.org, akpm@linux-foundation.org, aneesh.kumar@kernel.org, aneesh.kumar@linux.ibm.com, bp@alien8.de, broonie@kernel.org, catalin.marinas@arm.com, christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com, hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com, oliver.upton@linux.dev, shuah@kernel.org, szabolcs.nagy@arm.com, tglx@linutronix.de, will@kernel.org, x86@kernel.org, kvmarm@lists.linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] cpu/SMT: Provide a default
+ topology_is_primary_thread()
+To: Yicong Yang <yangyicong@huawei.com>, catalin.marinas@arm.com,
+ will@kernel.org, sudeep.holla@arm.com, tglx@linutronix.de,
+ peterz@infradead.org, mpe@ellerman.id.au,
+ linux-arm-kernel@lists.infradead.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com
+Cc: linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org,
+ jonathan.cameron@huawei.com, prime.zeng@hisilicon.com, linuxarm@huawei.com,
+ yangyicong@hisilicon.com, xuwei5@huawei.com, guohanjun@huawei.com
+References: <20240806085320.63514-1-yangyicong@huawei.com>
+ <20240806085320.63514-2-yangyicong@huawei.com>
+From: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Content-Language: en-US
+In-Reply-To: <20240806085320.63514-2-yangyicong@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Aug 2024 16:13:01 +0100,
-Joey Gouly <joey.gouly@arm.com> wrote:
+On 06/08/2024 10:53, Yicong Yang wrote:
+> From: Yicong Yang <yangyicong@hisilicon.com>
 > 
-> On Fri, Aug 16, 2024 at 03:55:11PM +0100, Marc Zyngier wrote:
-> > On Fri, 03 May 2024 14:01:25 +0100,
-> > Joey Gouly <joey.gouly@arm.com> wrote:
-> > > 
-> > > +	if (!kvm_has_feat(kvm, ID_AA64MMFR3_EL1, S1POE, IMP))
-> > > +		kvm->arch.fgu[HFGxTR_GROUP] |= (HFGxTR_EL2_nPOR_EL1 |
-> > > +						HFGxTR_EL2_nPOR_EL0);
-> > > +
-> > 
-> > As Broonie pointed out in a separate thread, this cannot work, short
-> > of making ID_AA64MMFR3_EL1 writable.
-> > 
-> > This can be done in a separate patch, but it needs doing as it
-> > otherwise breaks migration.
-> > 
-> > Thanks,
-> > 
-> > 	M.
-> > 
-> 
-> Looks like it's wrong for PIE currently too, but your patch here fixes that:
-> 	https://lore.kernel.org/kvmarm/20240813144738.2048302-11-maz@kernel.org/
-> 
-> If I basically apply that patch, but only for POE, the conflict can be resolved
-> later, or a rebase will fix it up, depending on what goes through first.
+> Currently if architectures want to support HOTPLUG_SMT they need to
+> provide a topology_is_primary_thread() telling the framework which
+> thread in the SMT cannot offline. However arm64 doesn't have a
+> restriction on which thread in the SMT cannot offline, a simplest
+> choice is that just make 1st thread as the "primary" thread. So
+> just make this as the default implementation in the framework and
+> let architectures like x86 that have special primary thread to
+> override this function.
 
-If I trust my feature dependency decoder, you need to make both
-TCRX and POE writable:
+IMHO, ARM64 (/ARM), RISCV and PARISC (SMP) use GENERIC_ARCH_TOPOLOGY
+(and drivers/base/arch_topology.c) so they could share
+topology_is_primary_thread() also there?
 
-(FEAT_S1POE --> v8Ap8)
-(FEAT_S1POE --> FEAT_TCR2)
-(FEAT_S1POE --> FEAT_ATS1A)
-(FEAT_S1POE --> FEAT_HPDS)
-(FEAT_S1POE <-> (AArch64 ID_AA64MMFR3_EL1.S1POE >= 1))
-(FEAT_TCR2 --> v8Ap0)
-(v8Ap9 --> FEAT_TCR2)
-((FEAT_TCR2 && FEAT_AA64EL2) --> FEAT_HCX)
-(FEAT_TCR2 <-> (AArch64 ID_AA64MMFR3_EL1.TCRX >= 1))
+[...]
 
-Feel free to lift part of that patch as you see fit.
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
 
