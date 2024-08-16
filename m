@@ -1,99 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-124-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-125-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0BA954902
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 14:44:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69F3954C73
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 Aug 2024 16:37:06 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dn77U71m;
-	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WlhWh3VYcz2yhr;
-	Fri, 16 Aug 2024 22:44:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wll1p36Wnz2yn1;
+	Sat, 17 Aug 2024 00:37:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dn77U71m;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WlhWg5fNlz2y8W
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 Aug 2024 22:44:14 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47GCJUIX011993;
-	Fri, 16 Aug 2024 12:44:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=pp1; bh=FxG5AO0a05E65VCYddzaEdcy3rX
-	c9OnstfLvnE4yiAA=; b=dn77U71m4WAYrJk3pY3P+Cny23MgaPO5XsRB94tZafY
-	pQnZN9aAxhrqxJnt+aqlQtQIbsRV4KMVWECNqfGfPDq7+yYuRVN+HDv53/JIAGxL
-	r9kVL/5IHw6DRnDFc7D3dIi7Ffw8XJzJGDp/VGQynDKvmvVlVyy3xQAXtycFkyTJ
-	5ExeNbcTD0Nn9hsegil/8mTxbP8y5+W/Ikdt4QtLLW9IjGYYWtHJF5Bq0Ebh0eF2
-	abrnBizk/qgm3Pw7qv1bs9cQue+mpRCFAdxmafzMgOe7EmcA/+HImoXD4AjMXPhm
-	hP13NfHDF9TueeSuHwicMh2LbcQGyzR7fvduptLiu7Q==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4111d6gkdp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Aug 2024 12:44:02 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47GCi1i5003772;
-	Fri, 16 Aug 2024 12:44:01 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4111d6gkdg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Aug 2024 12:44:01 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 47G9mPvi010088;
-	Fri, 16 Aug 2024 12:43:59 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40xjx13t8k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Aug 2024 12:43:59 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47GChrkj35193230
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Aug 2024 12:43:56 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DAEA320043;
-	Fri, 16 Aug 2024 12:43:53 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C383C20040;
-	Fri, 16 Aug 2024 12:43:49 +0000 (GMT)
-Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.124.218.83])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 16 Aug 2024 12:43:49 +0000 (GMT)
-Date: Fri, 16 Aug 2024 18:13:40 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Rob Herring <robh@kernel.org>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kvm-ppc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Lizhi Hou <lizhi.hou@amd.com>, Saravana Kannan <saravanak@google.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Vaidyanathan Srinivasan <svaidy@linux.ibm.com>,
-        Kowshik Jois B S <kowsjois@linux.ibm.com>,
-        Lukas Wunner <lukas@wunner.de>, kernel-team@lists.ubuntu.com,
-        Stefan Bader <stefan.bader@canonical.com>
-Subject: Re: [PATCH v3] PCI: Fix crash during pci_dev hot-unplug on pseries
- KVM guest
-Message-ID: <20240816180441.81f4d694-3b-amachhiw@linux.ibm.com>
-Mail-Followup-To: Michael Ellerman <mpe@ellerman.id.au>, 
-	Bjorn Helgaas <helgaas@kernel.org>, Rob Herring <robh@kernel.org>, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-ppc@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, 
-	Lizhi Hou <lizhi.hou@amd.com>, Saravana Kannan <saravanak@google.com>, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, Kowshik Jois B S <kowsjois@linux.ibm.com>, 
-	Lukas Wunner <lukas@wunner.de>, kernel-team@lists.ubuntu.com, 
-	Stefan Bader <stefan.bader@canonical.com>
-References: <20240806200059.GA74866@bhelgaas>
- <87h6bm1ngo.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wll1p0f6Vz2ymc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 00:37:00 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Wll1g5jm1z9sRy;
+	Fri, 16 Aug 2024 16:36:55 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id PzKSDkpQnSSq; Fri, 16 Aug 2024 16:36:55 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wll1g4YZfz9rvV;
+	Fri, 16 Aug 2024 16:36:55 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8307B8B776;
+	Fri, 16 Aug 2024 16:36:55 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id qQzJ0ozjsD1b; Fri, 16 Aug 2024 16:36:55 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.232.147])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B0AC48B764;
+	Fri, 16 Aug 2024 16:36:54 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Theodore Ts'o" <tytso@mit.edu>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arch@vger.kernel.org
+Subject: [PATCH 0/9] Wire up getrandom() vDSO implementation on powerpc
+Date: Fri, 16 Aug 2024 16:36:47 +0200
+Message-ID: <cover.1723817900.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.44.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,81 +70,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87h6bm1ngo.fsf@mail.lhotse>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fjxpXS4-C-n-T_sJtPF7tEjSYLYcNVMQ
-X-Proofpoint-ORIG-GUID: iFlwX-ZVYmO-todBMlQrqiZ-aMe-_LZD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-16_03,2024-08-16_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound score=100 mlxlogscore=-999
- phishscore=0 spamscore=100 malwarescore=0 priorityscore=1501
- impostorscore=0 adultscore=0 bulkscore=0 mlxscore=100 lowpriorityscore=0
- suspectscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2408160091
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723819011; l=3302; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=sKtjeAqi1sSwChW9svSY9e7JUq5+4EaKfUSF5IEL7S0=; b=oAKuQsByZk+DQGDF9eWOZqGWH6N/EL/Waw6a6aPOMy6Zch7RRTcFX4ztdqp3z8v7s8vR5Ypmv aOwXJM29RTzDI3lAhX+BQQSNYlalWsdNYTAzaOaEIxVzlqNy9+vUWRT
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 
-Hi Michael,
+This series wires up getrandom() vDSO implementation on powerpc.
 
-On 2024/08/15 01:20 PM, Michael Ellerman wrote:
-> Bjorn Helgaas <helgaas@kernel.org> writes:
-> > On Sat, Aug 03, 2024 at 12:03:25AM +0530, Amit Machhiwal wrote:
-> >> With CONFIG_PCI_DYNAMIC_OF_NODES [1], a hot-plug and hot-unplug sequence
-> >> of a PCI device attached to a PCI-bridge causes following kernel Oops on
-> >> a pseries KVM guest:
-> >
-> > What is unique about pseries here?  There's nothing specific to
-> > pseries in the patch, so I would expect this to be a generic problem
-> > on any arch.
-> >
-> >>  RTAS: event: 2, Type: Hotplug Event (229), Severity: 1
-> >>  Kernel attempted to read user page (10ec00000048) - exploit attempt? (uid: 0)
-> >>  BUG: Unable to handle kernel data access on read at 0x10ec00000048
-> >
-> > Weird address.  I would expect NULL or something.  Where did this
-> > non-NULL pointer come from?
-> 
-> It originally comes from np->data, which is supposed to be an
-> of_changeset.
-> 
-> The powerpc code also uses np->data for the struct pci_dn pointer, see
-> pci_add_device_node_info().
-> 
-> I wonder if that's why it's non-NULL?
+Tested on PPC32.
 
-I'm also looking into the code to figure out where's that value coming from. I
-will update as soon as I get there.
+Performance on powerpc 885 (using kernel selftest):
+	~# ./vdso_test_getrandom bench-single
+	   vdso: 2500000 times in 7.897495392 seconds
+	   libc: 2500000 times in 56.091632232 seconds
+	syscall: 2500000 times in 55.704851989 seconds
 
-> 
-> Amit, do we have exact steps to reproduce this? I poked around a bit but
-> couldn't get it to trigger.
+Performance on powerpc 8321 (using kernel selftest):
+	~# ./vdso_test_getrandom bench-single
+	   vdso: 2500000 times in 2.017183250 seconds
+	   libc: 2500000 times in 13.088533630 seconds
+	syscall: 2500000 times in 12.952458068 seconds
 
-Sure, below are the steps:
+Only build tested on PPC64.
 
-1. Set CONFIG_PCI_DYNAMIC_OF_NODES=y in the kernel config and compile (Fedora
-   has it disabled in it's distro config, Ubuntu has it enabled but will have it
-   disabled in the next update)
+It doesn't build with CONFIG_COMPAT. This is because unlike
+gettimeofday.c, getrandom.c includes a lot of headers from outside
+of include/vdso/ . The same work as done by
+commit 8c59ab839f52 ("lib/vdso: Enable common headers") needs to
+be done on lib/vdso/getrandom.c
 
-2. If you are using Fedora cloud images, make sure you've these packages
-   installed:
-    $ rpm -qa | grep -e 'ppc64-diag\|powerpc-utils'
-    powerpc-utils-core-1.3.11-6.fc40.ppc64le
-    powerpc-utils-1.3.11-6.fc40.ppc64le
-    ppc64-diag-rtas-2.7.9-6.fc40.ppc64le
-    ppc64-diag-2.7.9-6.fc40.ppc64le
+Among the few strange things to be clarified, there is the format
+on the key passed to __arch_chacha20_blocks_nostack(). In
+struct vgetrandom_state it is declared as a table of u32, but in
+reality it seems it is a flat storage that needs to be loaded in
+reversed byte order, so it should either be defined as a table of
+bytes, or as a table of __le32 but not a table of u32.
 
-3. Hotplug a pci device as follows:
-    virsh attach-interface <domain_name> bridge --source virbr0
+Christophe Leroy (9):
+  powerpc/vdso: Don't discard rela sections
+  powerpc/vdso32: Add crtsavres
+  vdso: Add __arch_get_k_vdso_rng_data()
+  vdso: Add missing c-getrandom-y in Makefile
+  vdso: Avoid call to memset() by getrandom
+  vdso: Only use MAP_DROPPABLE when VM_DROPPABLE exists
+  powerpc: Add little endian variants of LHZX_BE and friends
+  powerpc/vdso: Wire up getrandom() vDSO implementation
+  selftests: [NOT TO BE MERGED] Modifications for testing VDSO getrandom
+    implementation on PPC32
 
-4. Check if the pci device was added by running `ip a s`
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/include/asm/asm-compat.h         |  40 ++-
+ arch/powerpc/include/asm/vdso/getrandom.h     |  61 ++++
+ arch/powerpc/include/asm/vdso/vsyscall.h      |   7 +
+ arch/powerpc/include/asm/vdso_datapage.h      |   2 +
+ arch/powerpc/kernel/asm-offsets.c             |   1 +
+ arch/powerpc/kernel/vdso/Makefile             |  44 ++-
+ arch/powerpc/kernel/vdso/getrandom.S          |  62 ++++
+ arch/powerpc/kernel/vdso/gettimeofday.S       |  13 -
+ arch/powerpc/kernel/vdso/vdso32.lds.S         |   5 +-
+ arch/powerpc/kernel/vdso/vdso64.lds.S         |   5 +-
+ arch/powerpc/kernel/vdso/vgetrandom-chacha.S  | 297 ++++++++++++++++++
+ arch/powerpc/kernel/vdso/vgetrandom.c         |  12 +
+ arch/x86/include/asm/vdso/vsyscall.h          |   7 +
+ drivers/char/random.c                         |   5 +-
+ include/asm-generic/vdso/vsyscall.h           |   7 +
+ include/vdso/limits.h                         |   4 +-
+ lib/vdso/Makefile                             |   1 +
+ lib/vdso/getrandom.c                          |  18 +-
+ tools/testing/selftests/vDSO/Makefile         |   2 +-
+ .../selftests/vDSO/vdso_test_getrandom.c      |   6 +-
+ 21 files changed, 553 insertions(+), 47 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/vdso/getrandom.h
+ create mode 100644 arch/powerpc/kernel/vdso/getrandom.S
+ create mode 100644 arch/powerpc/kernel/vdso/vgetrandom-chacha.S
+ create mode 100644 arch/powerpc/kernel/vdso/vgetrandom.c
 
-5. Try hot-unplug of that device by supplying the MAC, which should trigger the
-   Oops
-    virsh detach-interface <domain_name> bridge <mac_addr>
+-- 
+2.44.0
 
-Thanks,
-Amit
-
-> cheers
 
