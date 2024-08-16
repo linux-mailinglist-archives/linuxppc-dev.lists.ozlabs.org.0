@@ -1,63 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-140-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-141-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE929553CF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2024 01:40:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9599553D2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2024 01:41:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=tesarici.cz header.i=@tesarici.cz header.a=rsa-sha256 header.s=mail header.b=0CuhUKid;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JyEiBPl3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wlz4b2pRgz2xxx;
-	Sat, 17 Aug 2024 09:40:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wlz5h6Nvpz2ynL;
+	Sat, 17 Aug 2024 09:41:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:3b40:fe:2d4::1"
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=tesarici.cz header.i=@tesarici.cz header.a=rsa-sha256 header.s=mail header.b=0CuhUKid;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JyEiBPl3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=tesarici.cz (client-ip=2a03:3b40:fe:2d4::1; helo=bee.tesarici.cz; envelope-from=petr@tesarici.cz; receiver=lists.ozlabs.org)
-Received: from bee.tesarici.cz (bee.tesarici.cz [IPv6:2a03:3b40:fe:2d4::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wll2v57CKz2ymc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 00:37:58 +1000 (AEST)
-Received: from mordecai.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by bee.tesarici.cz (Postfix) with ESMTPSA id B57A21E37A1;
-	Fri, 16 Aug 2024 16:37:48 +0200 (CEST)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
-	t=1723819068; bh=YTsjo9xdLYhs/JNEPkM0QFjPK5lYJCTAZFLJJQCw3FU=;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WllQt4zmlz2yxM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 00:55:18 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 48DCE621F9;
+	Fri, 16 Aug 2024 14:55:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C954BC32782;
+	Fri, 16 Aug 2024 14:55:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723820116;
+	bh=bYtlUyfEW4UQCA052w/rCM0SWf2EWY5Q9Ki9PbroHxE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=0CuhUKidl4+XHrz9gNPtjDuzk4+GJznh4ZajAJYkkbkaai6FjEG05RWi5joRvMBnO
-	 SAxoRmfGHhXqGGAkVlaHgfo3F6Mb5gfntXIwmAXHFvCKKYLP5rL0kXNH5ih7NPGjG+
-	 p9H0lHBrjCXd3RrzPRDfFb5cqT00vgdtwO/3YHQR+24ZP8erEXTrerbpapKZgw8SgK
-	 cngJSDf1OEDWEw4kHFQj1c9Hlj40xeiKFOM0xv6EEq+RxXpHLTahgsUHDxa3oJdzDu
-	 GC4wCcJ5Yu/NxHoAGUXCOfrsFtjxrECGQpyakRb4NBv/5KGoqrrnsfCKpzMkXUdefO
-	 OEv46M2PYXh9g==
-Date: Fri, 16 Aug 2024 16:37:43 +0200
-From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To: Will Deacon <will@kernel.org>
-Cc: Baruch Siach <baruch@tkos.co.il>, Christoph Hellwig <hch@lst.de>, Marek
- Szyprowski <m.szyprowski@samsung.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Robin Murphy <robin.murphy@arm.com>,
- iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, Ramon Fried <ramon@neureality.ai>, Elad Nachman
- <enachman@marvell.com>
-Subject: Re: [PATCH v6 RESED 1/2] dma: replace zone_dma_bits by
- zone_dma_limit
-Message-ID: <20240816163743.16028508@mordecai.tesarici.cz>
-In-Reply-To: <20240816115246.GA24137@willie-the-truck>
-References: <cover.1723359916.git.baruch@tkos.co.il>
-	<17c067618b93e5d71f19c37826d54db4299621a3.1723359916.git.baruch@tkos.co.il>
-	<20240816115246.GA24137@willie-the-truck>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-suse-linux-gnu)
+	b=JyEiBPl3rzQ1CsXkhZb1NtQc33N+/6CcwX1zhxLPCl6Oz2HWKQb7Rn1YDKdiE5YTr
+	 MZlLryH7YBV08sQCoon3k+/Rm1ZYyLkHJIHaBSlbez/ZhxQ/FapXTOQIWaxvDonbpT
+	 54wbSd9ggMkaVWYXZEEf1cvKygxGCMNRhIwmlDkPwoDsszSjfiqtF7bvJOBLc0lPwA
+	 PLiVkhUSe9uqIdftlQBa++sYzz51bknJNoevIDwSS5w9glmzdTAE2RaOSZyia9QhEV
+	 w3lR0Rs5XCPshZ6vm2InA7F5JfsDieuFs8pEIz4Aj6ZITPkxODhNaA5NbM/4bkoayG
+	 q9jYjIWv8gSGA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1seyMC-004JGf-Be;
+	Fri, 16 Aug 2024 15:55:13 +0100
+Date: Fri, 16 Aug 2024 15:55:11 +0100
+Message-ID: <86ed6ozfe8.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	akpm@linux-foundation.org,
+	aneesh.kumar@kernel.org,
+	aneesh.kumar@linux.ibm.com,
+	bp@alien8.de,
+	broonie@kernel.org,
+	catalin.marinas@arm.com,
+	christophe.leroy@csgroup.eu,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	mingo@redhat.com,
+	mpe@ellerman.id.au,
+	naveen.n.rao@linux.ibm.com,
+	npiggin@gmail.com,
+	oliver.upton@linux.dev,
+	shuah@kernel.org,
+	szabolcs.nagy@arm.com,
+	tglx@linutronix.de,
+	will@kernel.org,
+	x86@kernel.org,
+	kvmarm@lists.linux.dev
+Subject: Re: [PATCH v4 07/29] KVM: arm64: Save/restore POE registers
+In-Reply-To: <20240503130147.1154804-8-joey.gouly@arm.com>
+References: <20240503130147.1154804-1-joey.gouly@arm.com>
+	<20240503130147.1154804-8-joey.gouly@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,90 +88,183 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: joey.gouly@arm.com, linux-arm-kernel@lists.infradead.org, akpm@linux-foundation.org, aneesh.kumar@kernel.org, aneesh.kumar@linux.ibm.com, bp@alien8.de, broonie@kernel.org, catalin.marinas@arm.com, christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com, hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com, oliver.upton@linux.dev, shuah@kernel.org, szabolcs.nagy@arm.com, tglx@linutronix.de, will@kernel.org, x86@kernel.org, kvmarm@lists.linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, 16 Aug 2024 12:52:47 +0100
-Will Deacon <will@kernel.org> wrote:
-
-> On Sun, Aug 11, 2024 at 10:09:35AM +0300, Baruch Siach wrote:
-> > From: Catalin Marinas <catalin.marinas@arm.com>
-> > 
-> > Hardware DMA limit might not be power of 2. When RAM range starts above
-> > 0, say 4GB, DMA limit of 30 bits should end at 5GB. A single high bit
-> > can not encode this limit.
-> > 
-> > Use plain address for DMA zone limit.
-> > 
-> > Since DMA zone can now potentially span beyond 4GB physical limit of
-> > DMA32, make sure to use DMA zone for GFP_DMA32 allocations in that case.
-> > 
-> > Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> > Co-developed-by: Baruch Siach <baruch@tkos.co.il>
-> > Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> > ---
-> >  arch/arm64/mm/init.c       | 30 +++++++++++++++---------------
-> >  arch/powerpc/mm/mem.c      |  5 ++++-
-> >  arch/s390/mm/init.c        |  2 +-
-> >  include/linux/dma-direct.h |  2 +-
-> >  kernel/dma/direct.c        |  6 +++---
-> >  kernel/dma/pool.c          |  4 ++--
-> >  kernel/dma/swiotlb.c       |  6 +++---
-> >  7 files changed, 29 insertions(+), 26 deletions(-)
-> > 
-> > diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> > index 9b5ab6818f7f..c45e2152ca9e 100644
-> > --- a/arch/arm64/mm/init.c
-> > +++ b/arch/arm64/mm/init.c
-> > @@ -115,35 +115,35 @@ static void __init arch_reserve_crashkernel(void)
-> >  }
-> >  
-> >  /*
-> > - * Return the maximum physical address for a zone accessible by the given bits
-> > - * limit. If DRAM starts above 32-bit, expand the zone to the maximum
-> > + * Return the maximum physical address for a zone given its limit.
-> > + * If DRAM starts above 32-bit, expand the zone to the maximum
-> >   * available memory, otherwise cap it at 32-bit.
-> >   */
-> > -static phys_addr_t __init max_zone_phys(unsigned int zone_bits)
-> > +static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
-> >  {
-> > -	phys_addr_t zone_mask = DMA_BIT_MASK(zone_bits);
-> >  	phys_addr_t phys_start = memblock_start_of_DRAM();
-> >  
-> >  	if (phys_start > U32_MAX)
-> > -		zone_mask = PHYS_ADDR_MAX;
-> > -	else if (phys_start > zone_mask)
-> > -		zone_mask = U32_MAX;
-> > +		zone_limit = PHYS_ADDR_MAX;
-> > +	else if (phys_start > zone_limit)
-> > +		zone_limit = U32_MAX;
-> >  
-> > -	return min(zone_mask, memblock_end_of_DRAM() - 1) + 1;
-> > +	return min(zone_limit, memblock_end_of_DRAM() - 1) + 1;  
+On Fri, 03 May 2024 14:01:25 +0100,
+Joey Gouly <joey.gouly@arm.com> wrote:
 > 
-> Why do we need to adjust +-1 now that we're no longer using a mask?
+> Define the new system registers that POE introduces and context switch them.
+> 
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Oliver Upton <oliver.upton@linux.dev>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> ---
+>  arch/arm64/include/asm/kvm_host.h          |  4 +++
+>  arch/arm64/include/asm/vncr_mapping.h      |  1 +
+>  arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h | 29 ++++++++++++++++++++++
+>  arch/arm64/kvm/sys_regs.c                  |  8 ++++--
+>  4 files changed, 40 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index 9e8a496fb284..28042da0befd 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -419,6 +419,8 @@ enum vcpu_sysreg {
+>  	GCR_EL1,	/* Tag Control Register */
+>  	TFSRE0_EL1,	/* Tag Fault Status Register (EL0) */
+>  
+> +	POR_EL0,	/* Permission Overlay Register 0 (EL0) */
+> +
+>  	/* 32bit specific registers. */
+>  	DACR32_EL2,	/* Domain Access Control Register */
+>  	IFSR32_EL2,	/* Instruction Fault Status Register */
+> @@ -489,6 +491,8 @@ enum vcpu_sysreg {
+>  	VNCR(PIR_EL1),	 /* Permission Indirection Register 1 (EL1) */
+>  	VNCR(PIRE0_EL1), /*  Permission Indirection Register 0 (EL1) */
+>  
+> +	VNCR(POR_EL1),	/* Permission Overlay Register 1 (EL1) */
+> +
+>  	VNCR(HFGRTR_EL2),
+>  	VNCR(HFGWTR_EL2),
+>  	VNCR(HFGITR_EL2),
+> diff --git a/arch/arm64/include/asm/vncr_mapping.h b/arch/arm64/include/asm/vncr_mapping.h
+> index df2c47c55972..06f8ec0906a6 100644
+> --- a/arch/arm64/include/asm/vncr_mapping.h
+> +++ b/arch/arm64/include/asm/vncr_mapping.h
+> @@ -52,6 +52,7 @@
+>  #define VNCR_PIRE0_EL1		0x290
+>  #define VNCR_PIRE0_EL2		0x298
+>  #define VNCR_PIR_EL1		0x2A0
+> +#define VNCR_POR_EL1		0x2A8
+>  #define VNCR_ICH_LR0_EL2        0x400
+>  #define VNCR_ICH_LR1_EL2        0x408
+>  #define VNCR_ICH_LR2_EL2        0x410
+> diff --git a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> index 4be6a7fa0070..1c9536557bae 100644
+> --- a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> +++ b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
+> @@ -16,9 +16,15 @@
+>  #include <asm/kvm_hyp.h>
+>  #include <asm/kvm_mmu.h>
+>  
+> +static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt);
+> +
+>  static inline void __sysreg_save_common_state(struct kvm_cpu_context *ctxt)
+>  {
+>  	ctxt_sys_reg(ctxt, MDSCR_EL1)	= read_sysreg(mdscr_el1);
+> +
+> +	// POR_EL0 can affect uaccess, so must be saved/restored early.
+> +	if (ctxt_has_s1poe(ctxt))
+> +		ctxt_sys_reg(ctxt, POR_EL0)	= read_sysreg_s(SYS_POR_EL0);
+>  }
+>  
+>  static inline void __sysreg_save_user_state(struct kvm_cpu_context *ctxt)
+> @@ -55,6 +61,17 @@ static inline bool ctxt_has_s1pie(struct kvm_cpu_context *ctxt)
+>  	return kvm_has_feat(kern_hyp_va(vcpu->kvm), ID_AA64MMFR3_EL1, S1PIE, IMP);
+>  }
+>  
+> +static inline bool ctxt_has_s1poe(struct kvm_cpu_context *ctxt)
+> +{
+> +	struct kvm_vcpu *vcpu;
+> +
+> +	if (!system_supports_poe())
+> +		return false;
+> +
+> +	vcpu = ctxt_to_vcpu(ctxt);
+> +	return kvm_has_feat(kern_hyp_va(vcpu->kvm), ID_AA64MMFR3_EL1, S1POE, IMP);
+> +}
+> +
+>  static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
+>  {
+>  	ctxt_sys_reg(ctxt, SCTLR_EL1)	= read_sysreg_el1(SYS_SCTLR);
+> @@ -77,6 +94,10 @@ static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
+>  		ctxt_sys_reg(ctxt, PIR_EL1)	= read_sysreg_el1(SYS_PIR);
+>  		ctxt_sys_reg(ctxt, PIRE0_EL1)	= read_sysreg_el1(SYS_PIRE0);
+>  	}
+> +
+> +	if (ctxt_has_s1poe(ctxt))
+> +		ctxt_sys_reg(ctxt, POR_EL1)	= read_sysreg_el1(SYS_POR);
+> +
+>  	ctxt_sys_reg(ctxt, PAR_EL1)	= read_sysreg_par();
+>  	ctxt_sys_reg(ctxt, TPIDR_EL1)	= read_sysreg(tpidr_el1);
+>  
+> @@ -107,6 +128,10 @@ static inline void __sysreg_save_el2_return_state(struct kvm_cpu_context *ctxt)
+>  static inline void __sysreg_restore_common_state(struct kvm_cpu_context *ctxt)
+>  {
+>  	write_sysreg(ctxt_sys_reg(ctxt, MDSCR_EL1),  mdscr_el1);
+> +
+> +	// POR_EL0 can affect uaccess, so must be saved/restored early.
+> +	if (ctxt_has_s1poe(ctxt))
+> +		write_sysreg_s(ctxt_sys_reg(ctxt, POR_EL0),	SYS_POR_EL0);
+>  }
+>  
+>  static inline void __sysreg_restore_user_state(struct kvm_cpu_context *ctxt)
+> @@ -153,6 +178,10 @@ static inline void __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt)
+>  		write_sysreg_el1(ctxt_sys_reg(ctxt, PIR_EL1),	SYS_PIR);
+>  		write_sysreg_el1(ctxt_sys_reg(ctxt, PIRE0_EL1),	SYS_PIRE0);
+>  	}
+> +
+> +	if (ctxt_has_s1poe(ctxt))
+> +		write_sysreg_el1(ctxt_sys_reg(ctxt, POR_EL1),	SYS_POR);
+> +
+>  	write_sysreg(ctxt_sys_reg(ctxt, PAR_EL1),	par_el1);
+>  	write_sysreg(ctxt_sys_reg(ctxt, TPIDR_EL1),	tpidr_el1);
+>  
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index c9f4f387155f..be04fae35afb 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -2423,6 +2423,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+>  	{ SYS_DESC(SYS_MAIR_EL1), access_vm_reg, reset_unknown, MAIR_EL1 },
+>  	{ SYS_DESC(SYS_PIRE0_EL1), NULL, reset_unknown, PIRE0_EL1 },
+>  	{ SYS_DESC(SYS_PIR_EL1), NULL, reset_unknown, PIR_EL1 },
+> +	{ SYS_DESC(SYS_POR_EL1), NULL, reset_unknown, POR_EL1 },
+>  	{ SYS_DESC(SYS_AMAIR_EL1), access_vm_reg, reset_amair_el1, AMAIR_EL1 },
+>  
+>  	{ SYS_DESC(SYS_LORSA_EL1), trap_loregion },
+> @@ -2506,6 +2507,7 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+>  	  .access = access_pmovs, .reg = PMOVSSET_EL0,
+>  	  .get_user = get_pmreg, .set_user = set_pmreg },
+>  
+> +	{ SYS_DESC(SYS_POR_EL0), NULL, reset_unknown, POR_EL0 },
+>  	{ SYS_DESC(SYS_TPIDR_EL0), NULL, reset_unknown, TPIDR_EL0 },
+>  	{ SYS_DESC(SYS_TPIDRRO_EL0), NULL, reset_unknown, TPIDRRO_EL0 },
+>  	{ SYS_DESC(SYS_TPIDR2_EL0), undef_access },
+> @@ -4057,8 +4059,6 @@ void kvm_init_sysreg(struct kvm_vcpu *vcpu)
+>  	kvm->arch.fgu[HFGxTR_GROUP] = (HFGxTR_EL2_nAMAIR2_EL1		|
+>  				       HFGxTR_EL2_nMAIR2_EL1		|
+>  				       HFGxTR_EL2_nS2POR_EL1		|
+> -				       HFGxTR_EL2_nPOR_EL1		|
+> -				       HFGxTR_EL2_nPOR_EL0		|
+>  				       HFGxTR_EL2_nACCDATA_EL1		|
+>  				       HFGxTR_EL2_nSMPRI_EL1_MASK	|
+>  				       HFGxTR_EL2_nTPIDR2_EL0_MASK);
+> @@ -4093,6 +4093,10 @@ void kvm_init_sysreg(struct kvm_vcpu *vcpu)
+>  		kvm->arch.fgu[HFGxTR_GROUP] |= (HFGxTR_EL2_nPIRE0_EL1 |
+>  						HFGxTR_EL2_nPIR_EL1);
+>  
+> +	if (!kvm_has_feat(kvm, ID_AA64MMFR3_EL1, S1POE, IMP))
+> +		kvm->arch.fgu[HFGxTR_GROUP] |= (HFGxTR_EL2_nPOR_EL1 |
+> +						HFGxTR_EL2_nPOR_EL0);
+> +
 
-Subtracting 1 is needed to get the highest valid DRAM address so it can
-be compared to the highest address in the zone (zone_limit). Adding 1
-is necessary to get the lowest address beyond the zone.
+As Broonie pointed out in a separate thread, this cannot work, short
+of making ID_AA64MMFR3_EL1 writable.
 
-AFAICT this is the right thing here:
+This can be done in a separate patch, but it needs doing as it
+otherwise breaks migration.
 
-	arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
-	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
+Thanks,
 
-max_zone_pfns[] max values are exclusive, i.e. the lowest PFN which is
-_not_ within the zone.
+	M.
 
-It is also the right thing when arm64_dma_phys_limit is passed to
-dma_contiguous_reserve().
-
-It would be subtly broken if phys_addr_t could be a 32-bit integer, but
-that's not possible on arm64.
-
-In short, LGTM.
-
-Petr T
+-- 
+Without deviation from the norm, progress is not possible.
 
