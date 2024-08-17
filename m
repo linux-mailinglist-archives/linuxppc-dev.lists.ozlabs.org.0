@@ -1,62 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-147-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-152-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9D89553E4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2024 01:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F21D955545
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2024 05:56:38 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qvaoaxNg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Cqtb0bab;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WlzCv2hS6z2ysf;
-	Sat, 17 Aug 2024 09:46:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wm4mN0sG5z2yp9;
+	Sat, 17 Aug 2024 13:56:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qvaoaxNg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Cqtb0bab;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WlzCv0h9dz2xFq
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 09:46:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1723851995;
-	bh=ZMZbIojl7FpylGqV64BXYP8kTFTEQ6oAfPllyZLp8pc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qvaoaxNgnv80fP+qTi+04woa7oNYPquPEU+WRub/c0MGgl9zPp1W+4OFzEggYu46V
-	 ANnVvM8wRX3epbmhWOYHYH8l04YQmQI9HOi/O0oIj9i42OWzizVB1WVR/6PiQNd1wY
-	 p4L0JYcFEhFhUy8DB24+siBSOREdJ9G9wUI6XMPm/K9tRxWTFSU/PTwTqa9lChz6SE
-	 0hUiT+r1J0aSZ6bVsxrSkIOO1nB12ziOq5cN+Ic+SdtCJfrbeFZqQzl2Csrcyi2AK9
-	 SfDx/+GzR04Weu7clsaXqnlzqPEe/WTRqIMwyDCK/qZetxgWBT2ClXjltE9qct0SkP
-	 E30jx5sVURs0A==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WlzCq3ZT0z4wbv;
-	Sat, 17 Aug 2024 09:46:31 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: =?utf-8?Q?Kolbj=C3=B8rn?= Barmen <linux-ppc@kolla.no>,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, =?utf-8?B?Sm9u?=
- =?utf-8?B?w6HFoQ==?= Vidra
- <vidra@ufal.mff.cuni.cz>, Christoph Hellwig <hch@lst.de>,
- linux@roeck-us.net
-Subject: Re: Since 6.10 - kernel oops/panics on G4 macmini due to change in
- drivers/ata/pata_macio.c
-In-Reply-To: <Zry58qB80V80uS38@ryzen.lan>
-References: <62d248bb-e97a-25d2-bcf2-9160c518cae5@kolla.no>
- <3b6441b8-06e6-45da-9e55-f92f2c86933e@ufal.mff.cuni.cz>
- <Zrstcei9WN9sRfdX@x1-carbon.wireless.wdc> <87sev81u3f.fsf@mail.lhotse>
- <Zrt028rSVT5hVPbU@ryzen.lan> <87jzgj1ejc.fsf@mail.lhotse>
- <Zry58qB80V80uS38@ryzen.lan>
-Date: Sat, 17 Aug 2024 09:46:31 +1000
-Message-ID: <87jzgg2fqg.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wm4mM4pTpz2xyB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 Aug 2024 13:56:35 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47H3rGM4031875;
+	Sat, 17 Aug 2024 03:56:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; s=pp1; bh=E9o/BvDRU832rMDCxRkDqet5K/
+	3nGty2mgLNiryQUqk=; b=Cqtb0babMddCU/jjizpBFYOf/2ovEPgi0mBjGRD6rL
+	p4lu68VLpOKb1b55EzmmoducQA3bOaXEdKpPzeZg5obrq3GGWUwfbWbRAPzrEE3d
+	euT8nZ6GNGlzIJbe1Fch3SOxwNytxB0C1gWp+Q+TpzCOVnPaE5Meje9SHzFtxh3S
+	Z+v9SE0pqkFB8RlAw9C6k6WGUuEZ0YcG6ix168JK4GWQEGDMfbq2ZNxlPPZtmktO
+	gmQ+NAR/6X3pZYX13LDWEWiZxV60obdQPCeZbWb/Wms/iZn3GII8nrt/bXXk7bJa
+	BQcabW2aACsqnJDWM/1GVcFOOcM97yjZqkqE6zvtBooQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412mbfg055-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 17 Aug 2024 03:56:30 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47H3uTle003919;
+	Sat, 17 Aug 2024 03:56:29 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412mbfg051-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 17 Aug 2024 03:56:29 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 47H3JP8U018207;
+	Sat, 17 Aug 2024 03:54:11 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40xkhq6rap-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 17 Aug 2024 03:54:11 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47H3s5AE23266010
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 17 Aug 2024 03:54:07 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 63D175805B;
+	Sat, 17 Aug 2024 03:54:05 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 79BF358058;
+	Sat, 17 Aug 2024 03:54:04 +0000 (GMT)
+Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.75.9])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 17 Aug 2024 03:54:04 +0000 (GMT)
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: mpe@ellerman.id.au, npiggin@gmail.com, tyreld@linux.ibm.com,
+        brking@linux.ibm.com, hbabu@us.ibm.com, haren@linux.ibm.com
+Subject: [PATCH v2 1/2] powerpc/pseries/dlpar: Remove device tree node for DLPAR IO remove
+Date: Fri, 16 Aug 2024 20:54:00 -0700
+Message-ID: <20240817035401.125833-1-haren@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,184 +83,180 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: lIkHSrs6LIHNOWpCbV1iyysZKfi5tfqo
+X-Proofpoint-ORIG-GUID: wNpAblJqvRJLRk0ImYNBHRqr8JKse3W_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-16_18,2024-08-16_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 bulkscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ phishscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408170022
 
-Niklas Cassel <cassel@kernel.org> writes:
-> On Wed, Aug 14, 2024 at 10:20:55PM +1000, Michael Ellerman wrote:
->> Niklas Cassel <cassel@kernel.org> writes:
->> > On Tue, Aug 13, 2024 at 10:32:36PM +1000, Michael Ellerman wrote:
->> >> Niklas Cassel <cassel@kernel.org> writes:
->> >> > On Tue, Aug 13, 2024 at 07:49:34AM +0200, Jon=C3=A1=C5=A1 Vidra wro=
-te:
->> ...
->> >> >> ------------[ cut here ]------------
->> >> >> kernel BUG at drivers/ata/pata_macio.c:544!
->> >> >
->> >> > https://github.com/torvalds/linux/blob/v6.11-rc3/drivers/ata/pata_m=
-acio.c#L544
->> >> >
->> >> > It seems that the
->> >> > while (sg_len) loop does not play nice with the new .max_segment_si=
-ze.
->> >>=20
->> >> Right, but only for 4KB kernels for some reason. Is there some limit
->> >> elsewhere that prevents the bug tripping on 64KB kernels, or is it ju=
-st
->> >> luck that no one has hit it?
->> >
->> > Have your tried running fio (flexible I/O tester), with reads with a v=
-ery
->> > large block sizes?
->> >
->> > I would be surprised if it isn't possible to trigger the same bug with
->> > 64K page size.
->> >
->> > max segment size =3D 64K
->> > MAX_DCMDS =3D 256
->> > 256 * 64K =3D 16 MiB
->> > What happens if you run fio with a 16 MiB blocksize?
->> >
->> > Something like:
->> > $ sudo fio --name=3Dtest --filename=3D/dev/sdX --direct=3D1 --runtime=
-=3D60 --ioengine=3Dio_uring --rw=3Dread --iodepth=3D4 --bs=3D16M
->>=20
->> Nothing interesting happens, fio succeeds.
->>=20
->> The largest request that comes into pata_macio_qc_prep() is 1280KB,
->> which results in 40 DMA list entries.
->>=20
->> I tried with a larger block size but it doesn't change anything. I guess
->> there's some limit somewhere else in the stack?
->>=20
->> That was testing on qemu, but I don't think it should matter?
->>=20
->> I guess there's no way to run the fio test against a file, ie. without a
->> raw partition? My real G5 doesn't have any spare disks/partitions in it.
->
->
-> You can definitely run fio against a file.
->
-> e.g.
-> $ dd if=3D/dev/random of=3D/tmp/my_file bs=3D1M count=3D1024
->
-> $ sudo fio --name=3Dtest --filename=3D/tmp/my_file --direct=3D1 --runtime=
-=3D60 --ioengine=3Dio_uring --rw=3Dread --iodepth=3D4 --bs=3D16M
->
->
-> Perhaps try with 32M block size, so that it is larger than
-> max segment size =3D 64K
-> MAX_DCMDS =3D 256
-> 256 * 64K =3D 16 MiB
->
-> Perhaps also try with and without --direct.
-> It could be interesting to use the page cache if you do --rw=3Dreadwrite
-> that might possibly result in larger bios.
+In the powerpc-pseries specific implementation, the IO hotplug
+event is handled in the user space (drmgr tool). But update the
+device tree and /dev/mem access to allocate buffers for some
+RTAS calls are restricted when the kernel lockdown feature is
+enabled. For the DLPAR IO REMOVE, the corresponding device tree
+nodes and properties have to be removed from the device tree
+after the device disable. The user space removes the device tree
+nodes by updating /proc/ppc64/ofdt which is not allowed  under
+system lockdown is enabled. This restriction can be resolved
+by moving the complete IO hotplug handling in the kernel. But
+the pseries implementation need user interaction to power off
+and to remove device from the slot during hotplug event handling.
 
-Changing the fio settings didn't help.
+To overcome the /proc/ppc64/ofdt restriction, this patch extends
+the /sys/kernel/dlpar interface and provides
+‘dt remove index <drc_index>’ to the user space so that drmgr
+tool can remove the corresponding device tree nodes based on DRC
+index from the device tree.
 
-I did some tracing and noticed it was always splitting the bio in
-__bio_split_to_limits() based on get_max_io_size().
+Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 
-That eventually lead me to max_sectors_kb in sysfs, which is by default
-(on my system at least) 1280 (KB) - which is exactly the size I see in
-pata-macio.
+v2:
+- Remove pr_info() and TODO comments
+- Update more information in the commit logs
+---
+ arch/powerpc/include/asm/rtas.h        |  1 +
+ arch/powerpc/platforms/pseries/dlpar.c | 85 +++++++++++++++++++++++++-
+ 2 files changed, 85 insertions(+), 1 deletion(-)
 
-Increasing max_sectors_kb with:
+diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+index 065ffd1b2f8a..04406162fc5a 100644
+--- a/arch/powerpc/include/asm/rtas.h
++++ b/arch/powerpc/include/asm/rtas.h
+@@ -397,6 +397,7 @@ inline uint16_t pseries_errorlog_length(struct pseries_errorlog *sect)
+ #define PSERIES_HP_ELOG_RESOURCE_SLOT	3
+ #define PSERIES_HP_ELOG_RESOURCE_PHB	4
+ #define PSERIES_HP_ELOG_RESOURCE_PMEM   6
++#define PSERIES_HP_ELOG_RESOURCE_DT	7
+ 
+ #define PSERIES_HP_ELOG_ACTION_ADD	1
+ #define PSERIES_HP_ELOG_ACTION_REMOVE	2
+diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
+index 47f8eabd1bee..59f2a8961946 100644
+--- a/arch/powerpc/platforms/pseries/dlpar.c
++++ b/arch/powerpc/platforms/pseries/dlpar.c
+@@ -330,6 +330,84 @@ int dlpar_unisolate_drc(u32 drc_index)
+ 	return 0;
+ }
+ 
++static int changeset_detach_node_recursive(struct of_changeset *ocs,
++					struct device_node *node)
++{
++	struct device_node *child;
++	int rc;
++
++	for_each_child_of_node(node, child) {
++		rc = changeset_detach_node_recursive(ocs, child);
++		if (rc) {
++			of_node_put(child);
++			return rc;
++		}
++	}
++
++	return of_changeset_detach_node(ocs, node);
++}
++
++static int dlpar_hp_dt_remove(u32 drc_index)
++{
++	struct device_node *np;
++	struct of_changeset ocs;
++	u32 index;
++	int rc = 0;
++
++	/*
++	 * Prune all nodes with a matching index.
++	 */
++	of_changeset_init(&ocs);
++
++	for_each_node_with_property(np, "ibm,my-drc-index") {
++		rc = of_property_read_u32(np, "ibm,my-drc-index", &index);
++		if (rc) {
++			pr_err("%s: %pOF: of_property_read_u32 %s: %d\n",
++				__func__, np, "ibm,my-drc-index", rc);
++			of_node_put(np);
++			goto out;
++		}
++
++		if (index == drc_index) {
++			rc = changeset_detach_node_recursive(&ocs, np);
++			if (rc) {
++				of_node_put(np);
++				goto out;
++			}
++		}
++	}
++
++	rc = of_changeset_apply(&ocs);
++
++out:
++	of_changeset_destroy(&ocs);
++	return rc;
++}
++
++static int dlpar_hp_dt(struct pseries_hp_errorlog *phpe)
++{
++	int rc;
++
++	if (phpe->id_type != PSERIES_HP_ELOG_ID_DRC_INDEX)
++		return -EINVAL;
++
++	lock_device_hotplug();
++
++	switch (phpe->action) {
++	case PSERIES_HP_ELOG_ACTION_REMOVE:
++		rc = dlpar_hp_dt_remove(phpe->_drc_u.drc_index);
++		break;
++	default:
++		pr_err("Invalid action (%d) specified\n", phpe->action);
++		rc = -EINVAL;
++		break;
++	}
++
++	unlock_device_hotplug();
++
++	return rc;
++}
++
+ int handle_dlpar_errorlog(struct pseries_hp_errorlog *hp_elog)
+ {
+ 	int rc;
+@@ -361,6 +439,9 @@ int handle_dlpar_errorlog(struct pseries_hp_errorlog *hp_elog)
+ 	case PSERIES_HP_ELOG_RESOURCE_PMEM:
+ 		rc = dlpar_hp_pmem(hp_elog);
+ 		break;
++	case PSERIES_HP_ELOG_RESOURCE_DT:
++		rc = dlpar_hp_dt(hp_elog);
++		break;
+ 
+ 	default:
+ 		pr_warn_ratelimited("Invalid resource (%d) specified\n",
+@@ -413,6 +494,8 @@ static int dlpar_parse_resource(char **cmd, struct pseries_hp_errorlog *hp_elog)
+ 		hp_elog->resource = PSERIES_HP_ELOG_RESOURCE_MEM;
+ 	} else if (sysfs_streq(arg, "cpu")) {
+ 		hp_elog->resource = PSERIES_HP_ELOG_RESOURCE_CPU;
++	} else if (sysfs_streq(arg, "dt")) {
++		hp_elog->resource = PSERIES_HP_ELOG_RESOURCE_DT;
+ 	} else {
+ 		pr_err("Invalid resource specified.\n");
+ 		return -EINVAL;
+@@ -554,7 +637,7 @@ static ssize_t dlpar_store(const struct class *class, const struct class_attribu
+ static ssize_t dlpar_show(const struct class *class, const struct class_attribute *attr,
+ 			  char *buf)
+ {
+-	return sprintf(buf, "%s\n", "memory,cpu");
++	return sprintf(buf, "%s\n", "memory,cpu,dt");
+ }
+ 
+ static CLASS_ATTR_RW(dlpar);
+-- 
+2.43.5
 
-  # echo 16384 > /sys/devices/pci0000:f0/0000:f0:0c.0/0.80000000:mac-io/0.0=
-0020000:ata-3/ata1/host0/target0:0:0/0:0:0:0/block/sda/queue/max_sectors_kb
-
-Allows me to trip the bug (I turned it into a WARN to keep the system alive=
-):
-
-  [ 1804.988552] ------------[ cut here ]------------
-  [ 1804.988963] DMA table overflow!
-  [ 1804.989781] WARNING: CPU: 0 PID: 299 at drivers/ata/pata_macio.c:546 p=
-ata_macio_qc_prep+0x27c/0x2a4
-  [ 1804.991157] Modules linked in:
-  [ 1804.991945] CPU: 0 PID: 299 Comm: iou-wrk-298 Not tainted 6.10.4-dirty=
- #242
-  [ 1804.992688] Hardware name: PowerMac3,1 PPC970FX 0x3c0301 PowerMac
-  [ 1804.993512] NIP:  c0000000008bcfb4 LR: c0000000008bcfb0 CTR: 000000000=
-0000000
-  [ 1804.994244] REGS: c0000000052d6fb0 TRAP: 0700   Not tainted  (6.10.4-d=
-irty)
-  [ 1804.994998] MSR:  800000000202b032 <SF,VEC,EE,FP,ME,IR,DR,RI>  CR: 444=
-84240  XER: 00000000
-  [ 1804.996178] IRQMASK: 1
-  [ 1804.996178] GPR00: c0000000008bcfb0 c0000000052d7250 c000000000f50b00 =
-0000000000000013
-  [ 1804.996178] GPR04: 0000000100000282 c0000000014806c0 fffffffffffec230 =
-000000003ed10000
-  [ 1804.996178] GPR08: 0000000000000027 c00000003fe02410 0000000000000001 =
-0000000044484240
-  [ 1804.996178] GPR12: c0000000014806a8 c0000000017b0000 c0000000006c9488 =
-c000000005026b40
-  [ 1804.996178] GPR16: 0000000000000000 0000000002000000 c000000000cecaa8 =
-c000000000e44ac8
-  [ 1804.996178] GPR20: 0000000000800000 0000000000000080 000000000000ff00 =
-c000000000d12730
-  [ 1804.996178] GPR24: c000000000e20788 c00000000330eae8 0000000000000000 =
-0000000000000020
-  [ 1804.996178] GPR28: c0000000036c8130 0000000000000100 0000000000000000 =
-c000000003fb1000
-  [ 1805.003085] NIP [c0000000008bcfb4] pata_macio_qc_prep+0x27c/0x2a4
-  [ 1805.003715] LR [c0000000008bcfb0] pata_macio_qc_prep+0x278/0x2a4
-  [ 1805.004564] Call Trace:
-  [ 1805.004963] [c0000000052d7250] [c0000000008bcfb0] pata_macio_qc_prep+0=
-x278/0x2a4 (unreliable)
-  [ 1805.005974] [c0000000052d7310] [c00000000089840c] ata_qc_issue+0x170/0=
-x390
-  [ 1805.006719] [c0000000052d7390] [c0000000008a5160] __ata_scsi_queuecmd+=
-0x220/0x7d4
-  [ 1805.007472] [c0000000052d7410] [c000000000 8a5778] ata_scsi_queuecmd+0=
-x64/0xe8
-  [ 1805.008194] [c0000000052d7450] [c00000000085b450] scsi_queue_rq+0x408/=
-0xd74
-  [ 1805.008904] [c0000000052d7500] [c00000000067bfc8] blk_mq_dispatch_rq_l=
-ist+0x160/0x914
-  [ 1805.009696] [c0000000052d75b0] [c000000000683d50] __blk_mq_sched_dispa=
-tch_requests+0x5fc/0x77c
-  [ 1805.010551] [c0000000052d7680] [c000000000683f68] blk_mq_sched_dispatc=
-h_requests+0x44/0x90
-  [ 1805.011371] [c0000000052d76b0] [c000000000677328] blk_mq_run_hw_queue+=
-0x220/0x240
-  [ 1805.012138] [c0000000052d76f0] [c00000000067b084] blk_mq_flush_plug_li=
-st.part.0+0x214/0x75c
-  [ 1805.012975] [c0000000052d77a0] [c00000000067b664] blk_add_rq_to_plug+0=
-x98/0x1f0
-  [ 1805.013717] [c0000000052d77e0] [c00000000067cd4c] blk_mq_submit_bio+0x=
-5b0/0x888
-  [ 1805.014457] [c0000000052d7890] [c000000000667bf0] __submit_bio+0xa4/0x=
-2e4
-  [ 1805.015149] [c0000000052d7910] [c0000000006680bc] submit_bio_noacct_no=
-check+0x28c/0x404
-  [ 1805.015952] [c0000000052d7980] [c00000000065bf68] blkdev_direct_IO+0x6=
-3c/0x824
-  [ 1805.016688] [c0000000052d7aa0] [c00000000065c614] blkdev_read_iter+0x1=
-0c/0x1c8
-  [ 1805.017423] [c0000000052d7af0] [c0000000006b2cdc] __io_read+0xe0/0x5a0
-  [ 1805.018091] [c0000000052d7b50] [c0000000006b3a70] io_read+0x30/0x74
-  [ 1805.018733] [c0000000052d7b80] [c0000000006a9040] io_issue_sqe+0x8c/0x=
-768
-  [ 1805.019419] [c0000000052d7c00] [c0000000006a9850] io_wq_submit_work+0x=
-118/0x518
-  [ 1805.020153] [c0000000052d7c60] [c0000000006c8ebc] io_worker_handle_wor=
-k+0x23c/0x800
-  [ 1805.020923] [c0000000052d7d00] [c0000000006c95f8] io_wq_worker+0x178/0=
-x51c
-  [ 1805.021621] [c0000000052d7e50] [c00000000000bd94] ret_from_kernel_user=
-_thread+0x14/0x1c
-=20=20
-
-Same behaviour on a kernel with PAGE_SIZE =3D 4KB.
-
-I don't know why max_sectors_kb starts out with a different value on my
-system, but anyway the bug is lurking there, even if it doesn't trip by
-default in some configurations.
-
-I'll clean up and send my patch from earlier in the thread.
-
-cheers
 
