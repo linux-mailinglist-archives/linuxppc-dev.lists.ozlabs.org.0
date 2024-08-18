@@ -1,52 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-158-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-159-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C35955A70
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Aug 2024 02:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D10955AC3
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Aug 2024 06:24:23 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n14UcT6m;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HDmBO2v3;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WmbXm24wTz2xT8;
-	Sun, 18 Aug 2024 10:03:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WmjKw2f1xz2xTR;
+	Sun, 18 Aug 2024 14:24:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=145.40.73.55
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n14UcT6m;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HDmBO2v3;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WmbXh0KRmz2xQC
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Aug 2024 10:03:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1723939395;
-	bh=2UFLq6dlA8/JQmL3/dwSoFNJuKq4nWc6UNq2PkM3vB4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=n14UcT6mT+io6/zpYQyiWlLaaijLJ43pu8MK9NkZ4m8euQtcr18HdyZPtWFrcwFa9
-	 AwMpQl7gF46Zwq1LImMJPHBtnJk/xg3lWFgcyVfBdC4+uDrkB5g2shdLmrceKM133v
-	 G6uw6qXfluoKbFUGFvQ+StxmxztLprbvO1fXLhM0jWGNcEBuDC6Osr25xhKE1rbe4W
-	 Q12r764uAvX4ifGAqrV6rvJBpPy1ID8NJ2RSZ+o6h7dKdLdO1QdcJ1he9C3GfrRWzS
-	 F8LVnBmgdnkVyMJ6kP3cvwCwKDTQQBHFHNaZJA3TOmm8cS20R3RxP/o8IpqggcygIe
-	 z7ioXmP/hLkxQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WmbXd3cFgz4w2F;
-	Sun, 18 Aug 2024 10:03:13 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org,
- linux@treblig.org, linuxppc-dev@lists.ozlabs.org, nysal@linux.ibm.com,
- Thomas Gleixner <tglx@linutronix.de>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.11-2 tag
-Date: Sun, 18 Aug 2024 10:03:11 +1000
-Message-ID: <87r0ampuio.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WmgB638jPz2xQF
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Aug 2024 12:47:26 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 1683BCE028E;
+	Sun, 18 Aug 2024 02:47:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235F7C116B1;
+	Sun, 18 Aug 2024 02:47:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723949241;
+	bh=jLTUGh268GyPRXzru3Ic+w9Nl3CoqBEkyfUJNj3PR64=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=HDmBO2v3IupITa3sfqS7FKiJLMamgc+4u86tytbEqqeUhxmdV+xZS/zMOk3+mY/6b
+	 3Dcy0YT0DtnDnzus9jlVpzxCDPpCyQOlb7qWEXMp/2F7h+WYbmmSU855i93IGENqn6
+	 KuoO/+BZ/cETW98C34LwnuNEdXFRpchwciw2HnUqtKO/Sdx6jPydTJE/hk4BXu5YTP
+	 7XDvOvblA3T2fiR2J6PfVoC4TnBUwcWPqO1i8OFtJgFkwcYgsNXOj5bPV+LsnFvS0Y
+	 L1dvC3kCKSGFWEj6x5aIJhizHUyxi6zP4lFFaPmVXrNyTZmtJ0LcXYeBkFgnc3STSg
+	 QWTAVLRrP1THw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE32F38231F8;
+	Sun, 18 Aug 2024 02:47:21 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.11-2 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <87r0ampuio.fsf@mail.lhotse>
+References: <87r0ampuio.fsf@mail.lhotse>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <87r0ampuio.fsf@mail.lhotse>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.11-2
+X-PR-Tracked-Commit-Id: 227bbaabe64b6f9cd98aa051454c1d4a194a8c6a
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 810996a36309a56a39b406d9ad2903115714228f
+Message-Id: <172394924028.3858125.12681191271050391175.pr-tracker-bot@kernel.org>
+Date: Sun, 18 Aug 2024 02:47:20 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, linux@treblig.org, linuxppc-dev@lists.ozlabs.org, nysal@linux.ibm.com, Thomas Gleixner <tglx@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -55,76 +65,17 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+The pull request you sent on Sun, 18 Aug 2024 10:03:11 +1000:
 
-Hi Linus,
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.11-2
 
-Please pull some powerpc fixes for 6.11:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/810996a36309a56a39b406d9ad2903115714228f
 
-The following changes since commit de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed:
+Thank you!
 
-  Linux 6.11-rc2 (2024-08-04 13:50:53 -0700)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.11-2
-
-for you to fetch changes up to 227bbaabe64b6f9cd98aa051454c1d4a194a8c6a:
-
-  powerpc/topology: Check if a core is online (2024-08-13 10:32:17 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.11 #2
-
- - Fix crashes on 85xx with some configs since the recent hugepd rework.
-
- - Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL on some platforms.
-
- - Don't enable offline cores when changing SMT modes, to match existing
-   userspace behaviour.
-
-Thanks to: Christophe Leroy, Dr. David Alan Gilbert, Guenter Roeck, Nysal Jan
-K.A, Shrikanth Hegde, Thomas Gleixner, Tyrel Datwyler.
-
-- ------------------------------------------------------------------
-Christophe Leroy (2):
-      powerpc/mm: Fix size of allocated PGDIR
-      powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
-
-Dr. David Alan Gilbert (1):
-      soc: fsl: qbman: remove unused struct 'cgr_comp'
-
-Nysal Jan K.A (2):
-      cpu/SMT: Enable SMT only if a core is online
-      powerpc/topology: Check if a core is online
-
-
- Documentation/ABI/testing/sysfs-devices-system-cpu |  3 ++-
- arch/powerpc/include/asm/topology.h                | 13 +++++++++++++
- arch/powerpc/kernel/setup-common.c                 |  1 +
- arch/powerpc/mm/init-common.c                      |  4 ++--
- arch/powerpc/mm/mem.c                              |  2 --
- drivers/soc/fsl/qbman/qman.c                       |  5 -----
- kernel/cpu.c                                       | 12 +++++++++++-
- 7 files changed, 29 insertions(+), 11 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmbBOPQACgkQUevqPMjh
-pYBHbRAAiC+nw/uRkmegLC601p+iVz80/GpzE3MwapPEZG1y38fTbFZBllRl9qsF
-aZBsM6h8prUbMli00DjZo30nqxQQ0aHQo9Vl5Oo4MAu5Bhk4VwbwA6GkyVtrAjXF
-aYeTrMsCAKngoHevyFn/7SLSfx8G+y3MK8VOtF3jA0KgW5JDNscBU3tDvt/A4iop
-b5OUOv04C0CgZ1Hv90VxC2NOtMScqRn9PE9frSTGIO5nI5ZV7ufpjwrYWUBZVuPV
-LWsR7AmK4hIqrd5wOxhVXyOqsf0swKZtF4/eQ5jA32Yh77cGi7tTuJjqS8vduhNx
-9zaODA+EzjpnO/2Vgjf6FyOZeyh5x/DRXsBHzzCpCFdiCI4oYMVfutaCDKCAb1I4
-9CRhQ+TXXFAziBkHiFZ+GcQyFxdjtNsnlf0dzm3fhVMYbz1apeLBVOYtuY6npLA0
-l9udAlsdaxLrJs5VVT8ot85XKl8Hq2XTfBbtcqAO3TAz0JZJzLjK1V7+x3t5xOck
-dYLDAl88Y7aOwfK7+eGTbJ9nEKS7jkln5YF6mLfy1tEJaa3j8fNXpiKm0e6s8qAl
-1hsQH7FRQYqZ6vxfDuSqC6OTw1yY6UrJGrrEQY9W3d09agcAMMJwOSGvYQ4K32ja
-uC1k3UgNq5L1HwbfD/I2iN4/9eGbGaTMYAvu8UkRaMnSek7pO60=
-=2P31
------END PGP SIGNATURE-----
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
