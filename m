@@ -1,81 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-157-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-158-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E733895593D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 17 Aug 2024 20:08:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C35955A70
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Aug 2024 02:03:25 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=127.0.0.1
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HVuyCezx;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n14UcT6m;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WmRfq174Tz2xf2;
-	Sun, 18 Aug 2024 04:08:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WmbXm24wTz2xT8;
+	Sun, 18 Aug 2024 10:03:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.9
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HVuyCezx;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n14UcT6m;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WmRfn156sz2xch
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Aug 2024 04:07:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723918082; x=1755454082;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Zh55/aHTFzFdC9YDeM4w2rjg1Nsri0R2Wv/Y3M/FWQ4=;
-  b=HVuyCezxL12n18BgU7LjE6Ih1ttw2Jg2vdcjJbd7javFuG4Ka7XIeOVp
-   phZlVUwlcD9BscRyJM8qzRkXJ9jFA5STKtZiBDxZedZ/nOZxOIgfXG/UZ
-   bmQMZb/IMryp15Z8P5ByjUiKcW+FpHyMuyIffmX2Flp+uyYHDUCCIJYnm
-   /c+gLez3LeHN3aoQOSlijCOpgxqOS0fbJ2YNWkeX/00jUBW9oPQ9XaM5J
-   xKHCUKbfbd2fOwww2Ru+Os9WbuE3YWaRpLhr1P1fpXvkVIZ56cSkwN4iH
-   nnZV3fWavDxcGmhW2bzaoSGzgswtb2iXXjUv6HuyiwJwJuFoK4Tgiy35d
-   Q==;
-X-CSE-ConnectionGUID: FC66ZoVdRROMwASfPx8T+g==
-X-CSE-MsgGUID: dkr1MxFKQTa11BcQxQ74Lg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11167"; a="44717723"
-X-IronPort-AV: E=Sophos;i="6.10,155,1719903600"; 
-   d="scan'208";a="44717723"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2024 11:07:53 -0700
-X-CSE-ConnectionGUID: oJQxy6IfT9GuFe5nH9Mf+Q==
-X-CSE-MsgGUID: 6Q5k/NVOQ4i19saRocygOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,155,1719903600"; 
-   d="scan'208";a="83176055"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 17 Aug 2024 11:07:49 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sfNq6-0007iU-2F;
-	Sat, 17 Aug 2024 18:07:46 +0000
-Date: Sun, 18 Aug 2024 02:07:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Theodore Ts'o <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arch@vger.kernel.org
-Subject: Re: [PATCH 9/9] selftests: [NOT TO BE MERGED] Modifications for
- testing VDSO getrandom implementation on PPC32
-Message-ID: <202408180121.HB9iN2PQ-lkp@intel.com>
-References: <376843e024ffa73793e8ed99b72d299c6b239799.1723817900.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WmbXh0KRmz2xQC
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 Aug 2024 10:03:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1723939395;
+	bh=2UFLq6dlA8/JQmL3/dwSoFNJuKq4nWc6UNq2PkM3vB4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=n14UcT6mT+io6/zpYQyiWlLaaijLJ43pu8MK9NkZ4m8euQtcr18HdyZPtWFrcwFa9
+	 AwMpQl7gF46Zwq1LImMJPHBtnJk/xg3lWFgcyVfBdC4+uDrkB5g2shdLmrceKM133v
+	 G6uw6qXfluoKbFUGFvQ+StxmxztLprbvO1fXLhM0jWGNcEBuDC6Osr25xhKE1rbe4W
+	 Q12r764uAvX4ifGAqrV6rvJBpPy1ID8NJ2RSZ+o6h7dKdLdO1QdcJ1he9C3GfrRWzS
+	 F8LVnBmgdnkVyMJ6kP3cvwCwKDTQQBHFHNaZJA3TOmm8cS20R3RxP/o8IpqggcygIe
+	 z7ioXmP/hLkxQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WmbXd3cFgz4w2F;
+	Sun, 18 Aug 2024 10:03:13 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org,
+ linux@treblig.org, linuxppc-dev@lists.ozlabs.org, nysal@linux.ibm.com,
+ Thomas Gleixner <tglx@linutronix.de>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.11-2 tag
+Date: Sun, 18 Aug 2024 10:03:11 +1000
+Message-ID: <87r0ampuio.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,75 +56,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <376843e024ffa73793e8ed99b72d299c6b239799.1723817900.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain
 
-Hi Christophe,
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-kernel test robot noticed the following build warnings:
+Hi Linus,
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes shuah-kselftest/next shuah-kselftest/fixes linus/master v6.11-rc3]
-[cannot apply to crng-random/master next-20240816]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Please pull some powerpc fixes for 6.11:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christophe-Leroy/powerpc-vdso-Don-t-discard-rela-sections/20240816-223917
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/376843e024ffa73793e8ed99b72d299c6b239799.1723817900.git.christophe.leroy%40csgroup.eu
-patch subject: [PATCH 9/9] selftests: [NOT TO BE MERGED] Modifications for testing VDSO getrandom implementation on PPC32
-config: x86_64-randconfig-161-20240817 (https://download.01.org/0day-ci/archive/20240818/202408180121.HB9iN2PQ-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+The following changes since commit de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408180121.HB9iN2PQ-lkp@intel.com/
+  Linux 6.11-rc2 (2024-08-04 13:50:53 -0700)
 
-smatch warnings:
-kernel/time/time.c:622 timespec64_to_jiffies() warn: always true condition '(sec >= ((((((((2147483647 >> 1) - 1) >> (32 - 10)) * ((1000000000 + 1000 / 2) / 1000)) / (1000000000)) << (1)) + (((((((2147483647 >> 1) - 1) >> (32 - 10)) * ((1000000000 + 1000 / 2) / 1000)) % (1000000000)) << (1)) + (1000000000) / 2) / (1000000000)) - 1)) => (0-u64max >= 0)'
+are available in the git repository at:
 
-vim +622 kernel/time/time.c
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.11-2
 
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  595  
-67b3f564cb1e769 kernel/time/time.c Randy Dunlap  2023-07-03  596  /**
-67b3f564cb1e769 kernel/time/time.c Randy Dunlap  2023-07-03  597   * timespec64_to_jiffies - convert a timespec64 value to jiffies
-67b3f564cb1e769 kernel/time/time.c Randy Dunlap  2023-07-03  598   * @value: pointer to &struct timespec64
-67b3f564cb1e769 kernel/time/time.c Randy Dunlap  2023-07-03  599   *
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  600   * The TICK_NSEC - 1 rounds up the value to the next resolution.  Note
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  601   * that a remainder subtract here would not do the right thing as the
-4bf07f6562a01a4 kernel/time/time.c Ingo Molnar   2021-03-22  602   * resolution values don't fall on second boundaries.  I.e. the line:
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  603   * nsec -= nsec % TICK_NSEC; is NOT a correct resolution rounding.
-d78c9300c51d6ce kernel/time/time.c Andrew Hunter 2014-09-04  604   * Note that due to the small error in the multiplier here, this
-d78c9300c51d6ce kernel/time/time.c Andrew Hunter 2014-09-04  605   * rounding is incorrect for sufficiently large values of tv_nsec, but
-d78c9300c51d6ce kernel/time/time.c Andrew Hunter 2014-09-04  606   * well formed timespecs should have tv_nsec < NSEC_PER_SEC, so we're
-d78c9300c51d6ce kernel/time/time.c Andrew Hunter 2014-09-04  607   * OK.
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  608   *
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  609   * Rather, we just shift the bits off the right.
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  610   *
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  611   * The >> (NSEC_JIFFIE_SC - SEC_JIFFIE_SC) converts the scaled nsec
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  612   * value to a scaled second value.
-67b3f564cb1e769 kernel/time/time.c Randy Dunlap  2023-07-03  613   *
-67b3f564cb1e769 kernel/time/time.c Randy Dunlap  2023-07-03  614   * Return: jiffies value
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  615   */
-751addac78b6f20 kernel/time/time.c Arnd Bergmann 2019-10-24  616  unsigned long
-751addac78b6f20 kernel/time/time.c Arnd Bergmann 2019-10-24  617  timespec64_to_jiffies(const struct timespec64 *value)
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  618  {
-751addac78b6f20 kernel/time/time.c Arnd Bergmann 2019-10-24  619  	u64 sec = value->tv_sec;
-751addac78b6f20 kernel/time/time.c Arnd Bergmann 2019-10-24  620  	long nsec = value->tv_nsec + TICK_NSEC - 1;
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  621  
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16 @622  	if (sec >= MAX_SEC_IN_JIFFIES){
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  623  		sec = MAX_SEC_IN_JIFFIES;
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  624  		nsec = 0;
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  625  	}
-9ca308506062fc4 kernel/time/time.c Baolin Wang   2015-07-29  626  	return ((sec * SEC_CONVERSION) +
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  627  		(((u64)nsec * NSEC_CONVERSION) >>
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  628  		 (NSEC_JIFFIE_SC - SEC_JIFFIE_SC))) >> SEC_JIFFIE_SC;
-8b9365d753d9870 kernel/time.c      Ingo Molnar   2007-02-16  629  
+for you to fetch changes up to 227bbaabe64b6f9cd98aa051454c1d4a194a8c6a:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+  powerpc/topology: Check if a core is online (2024-08-13 10:32:17 +1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 6.11 #2
+
+ - Fix crashes on 85xx with some configs since the recent hugepd rework.
+
+ - Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL on some platforms.
+
+ - Don't enable offline cores when changing SMT modes, to match existing
+   userspace behaviour.
+
+Thanks to: Christophe Leroy, Dr. David Alan Gilbert, Guenter Roeck, Nysal Jan
+K.A, Shrikanth Hegde, Thomas Gleixner, Tyrel Datwyler.
+
+- ------------------------------------------------------------------
+Christophe Leroy (2):
+      powerpc/mm: Fix size of allocated PGDIR
+      powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
+
+Dr. David Alan Gilbert (1):
+      soc: fsl: qbman: remove unused struct 'cgr_comp'
+
+Nysal Jan K.A (2):
+      cpu/SMT: Enable SMT only if a core is online
+      powerpc/topology: Check if a core is online
+
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu |  3 ++-
+ arch/powerpc/include/asm/topology.h                | 13 +++++++++++++
+ arch/powerpc/kernel/setup-common.c                 |  1 +
+ arch/powerpc/mm/init-common.c                      |  4 ++--
+ arch/powerpc/mm/mem.c                              |  2 --
+ drivers/soc/fsl/qbman/qman.c                       |  5 -----
+ kernel/cpu.c                                       | 12 +++++++++++-
+ 7 files changed, 29 insertions(+), 11 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmbBOPQACgkQUevqPMjh
+pYBHbRAAiC+nw/uRkmegLC601p+iVz80/GpzE3MwapPEZG1y38fTbFZBllRl9qsF
+aZBsM6h8prUbMli00DjZo30nqxQQ0aHQo9Vl5Oo4MAu5Bhk4VwbwA6GkyVtrAjXF
+aYeTrMsCAKngoHevyFn/7SLSfx8G+y3MK8VOtF3jA0KgW5JDNscBU3tDvt/A4iop
+b5OUOv04C0CgZ1Hv90VxC2NOtMScqRn9PE9frSTGIO5nI5ZV7ufpjwrYWUBZVuPV
+LWsR7AmK4hIqrd5wOxhVXyOqsf0swKZtF4/eQ5jA32Yh77cGi7tTuJjqS8vduhNx
+9zaODA+EzjpnO/2Vgjf6FyOZeyh5x/DRXsBHzzCpCFdiCI4oYMVfutaCDKCAb1I4
+9CRhQ+TXXFAziBkHiFZ+GcQyFxdjtNsnlf0dzm3fhVMYbz1apeLBVOYtuY6npLA0
+l9udAlsdaxLrJs5VVT8ot85XKl8Hq2XTfBbtcqAO3TAz0JZJzLjK1V7+x3t5xOck
+dYLDAl88Y7aOwfK7+eGTbJ9nEKS7jkln5YF6mLfy1tEJaa3j8fNXpiKm0e6s8qAl
+1hsQH7FRQYqZ6vxfDuSqC6OTw1yY6UrJGrrEQY9W3d09agcAMMJwOSGvYQ4K32ja
+uC1k3UgNq5L1HwbfD/I2iN4/9eGbGaTMYAvu8UkRaMnSek7pO60=
+=2P31
+-----END PGP SIGNATURE-----
 
