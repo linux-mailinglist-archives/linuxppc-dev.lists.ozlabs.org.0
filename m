@@ -1,54 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-184-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-185-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349909576CE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2024 23:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4FFC9576DB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2024 23:51:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WnmTy6m33z2xbC;
-	Tue, 20 Aug 2024 07:49:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WnmWQ4KK0z2y71;
+	Tue, 20 Aug 2024 07:51:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wnfk26vZqz2xY6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 03:30:00 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 69BF2339;
-	Mon, 19 Aug 2024 10:29:54 -0700 (PDT)
-Received: from J2N7QTR9R3.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 729813F58B;
-	Mon, 19 Aug 2024 10:29:24 -0700 (PDT)
-Date: Mon, 19 Aug 2024 18:29:21 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Tong Tiangen <tongtiangen@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Morse <james.morse@arm.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	wangkefeng.wang@huawei.com, Guohanjun <guohanjun@huawei.com>
-Subject: Re: [PATCH v12 2/6] arm64: add support for ARCH_HAS_COPY_MC
-Message-ID: <ZsOA8WD_5Sp0DJhS@J2N7QTR9R3.cambridge.arm.com>
-References: <20240528085915.1955987-1-tongtiangen@huawei.com>
- <20240528085915.1955987-3-tongtiangen@huawei.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=145.40.73.55
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bo2X9Cdr;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnhYl4HzBz2y33
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 04:52:59 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 9EF8FCE009F;
+	Mon, 19 Aug 2024 18:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9DCC32782;
+	Mon, 19 Aug 2024 18:52:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724093575;
+	bh=Wp8P3EgsiNnwHsyvJQy1pa44F8Ift7l2TbO0fFNdX+w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bo2X9Cdr8YfBof0Y+21pidQ9bPz8/eUiG8SHtFIpgb4EiOd5Ok3g8Wppp6R5mRP2Q
+	 e7yVdHKDwlRmEWj+l713ykXFTH21hteVqrCg0oOMdOHJxC7ITQLFA+6RPcrM+ilNeD
+	 91ABWUteHwZPfYZe7YlpwxdvK7jZ34rIjNCwwLW299GHqw/BrkRWhOdxnX5263QrkY
+	 QGichqXoQWR5JvRxaw3CMRKPg6NmDEZyiyTOYXZgnqSBuWhLKUUvLncaPbww8s+cR5
+	 nROe5YC5iZTtiU6GzbkWaw45SSBvnQQg7UZCV6HiNmhmypTkjO7FNtCLSWyvkQ8QMj
+	 yu5DpggJJ8zhA==
+Date: Mon, 19 Aug 2024 11:52:53 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	christophe.leroy@csgroup.eu, jeffxu@google.com,
+	Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
+	npiggin@gmail.com, oliver.sang@intel.com, pedro.falcato@gmail.com,
+	linux-um@lists.infradead.org
+Subject: Re: [PATCH v2 1/4] mm: Add optional close() to struct
+ vm_special_mapping
+Message-ID: <20240819185253.GA2333884@thelio-3990X>
+References: <20240812082605.743814-1-mpe@ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,304 +59,195 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240528085915.1955987-3-tongtiangen@huawei.com>
+In-Reply-To: <20240812082605.743814-1-mpe@ellerman.id.au>
 
-Hi Tong,
+Hi Michael,
 
-On Tue, May 28, 2024 at 04:59:11PM +0800, Tong Tiangen wrote:
-> For the arm64 kernel, when it processes hardware memory errors for
-> synchronize notifications(do_sea()), if the errors is consumed within the
-> kernel, the current processing is panic. However, it is not optimal.
+On Mon, Aug 12, 2024 at 06:26:02PM +1000, Michael Ellerman wrote:
+> Add an optional close() callback to struct vm_special_mapping. It will
+> be used, by powerpc at least, to handle unmapping of the VDSO.
 > 
-> Take copy_from/to_user for example, If ld* triggers a memory error, even in
-> kernel mode, only the associated process is affected. Killing the user
-> process and isolating the corrupt page is a better choice.
+> Although support for unmapping the VDSO was initially added
+> for CRIU[1], it is not desirable to guard that support behind
+> CONFIG_CHECKPOINT_RESTORE.
 > 
-> New fixup type EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE is added to identify insn
-> that can recover from memory errors triggered by access to kernel memory.
+> There are other known users of unmapping the VDSO which are not related
+> to CRIU, eg. Valgrind [2] and void-ship [3].
 > 
-> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
-
-Generally this looks ok, but I have a couple of comments below.
-
+> The powerpc arch_unmap() hook has been in place for ~9 years, with no
+> ifdef, so there may be other unknown users that have come to rely on
+> unmapping the VDSO. Even if the code was behind an ifdef, major distros
+> enable CHECKPOINT_RESTORE so users may not realise unmapping the VDSO
+> depends on that configuration option.
+> 
+> It's also undesirable to have such core mm behaviour behind a relatively
+> obscure CONFIG option.
+> 
+> Longer term the unmap behaviour should be standardised across
+> architectures, however that is complicated by the fact the VDSO pointer
+> is stored differently across architectures. There was a previous attempt
+> to unify that handling [4], which could be revived.
+> 
+> See [5] for further discussion.
+> 
+> [1]: commit 83d3f0e90c6c ("powerpc/mm: tracking vDSO remap")
+> [2]: https://sourceware.org/git/?p=valgrind.git;a=commit;h=3a004915a2cbdcdebafc1612427576bf3321eef5
+> [3]: https://github.com/insanitybit/void-ship
+> [4]: https://lore.kernel.org/lkml/20210611180242.711399-17-dima@arista.com/
+> [5]: https://lore.kernel.org/linuxppc-dev/shiq5v3jrmyi6ncwke7wgl76ojysgbhrchsk32q4lbx2hadqqc@kzyy2igem256
+> 
+> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
 > ---
->  arch/arm64/Kconfig                   |  1 +
->  arch/arm64/include/asm/asm-extable.h | 31 +++++++++++++++++++++++-----
->  arch/arm64/include/asm/asm-uaccess.h |  4 ++++
->  arch/arm64/include/asm/extable.h     |  1 +
->  arch/arm64/lib/copy_to_user.S        | 10 ++++-----
->  arch/arm64/mm/extable.c              | 19 +++++++++++++++++
->  arch/arm64/mm/fault.c                | 27 +++++++++++++++++-------
->  7 files changed, 75 insertions(+), 18 deletions(-)
+>  include/linux/mm_types.h | 3 +++
+>  mm/mmap.c                | 6 ++++++
+>  2 files changed, 9 insertions(+)
 > 
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 5d91259ee7b5..13ca06ddf3dd 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -20,6 +20,7 @@ config ARM64
->  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
->  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
->  	select ARCH_HAS_CACHE_LINE_SIZE
-> +	select ARCH_HAS_COPY_MC if ACPI_APEI_GHES
->  	select ARCH_HAS_CURRENT_STACK_POINTER
->  	select ARCH_HAS_DEBUG_VIRTUAL
->  	select ARCH_HAS_DEBUG_VM_PGTABLE
-> diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
-> index 980d1dd8e1a3..9c0664fe1eb1 100644
-> --- a/arch/arm64/include/asm/asm-extable.h
-> +++ b/arch/arm64/include/asm/asm-extable.h
-> @@ -5,11 +5,13 @@
->  #include <linux/bits.h>
->  #include <asm/gpr-num.h>
+> v2:
+> - Add some blank lines as requested.
+> - Expand special_mapping_close() comment.
+> - Add David's reviewed-by.
+> - Expand change log to capture review discussion.
+> 
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 485424979254..78bdfc59abe5 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1313,6 +1313,9 @@ struct vm_special_mapping {
 >  
-> -#define EX_TYPE_NONE			0
-> -#define EX_TYPE_BPF			1
-> -#define EX_TYPE_UACCESS_ERR_ZERO	2
-> -#define EX_TYPE_KACCESS_ERR_ZERO	3
-> -#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	4
-> +#define EX_TYPE_NONE				0
-> +#define EX_TYPE_BPF				1
-> +#define EX_TYPE_UACCESS_ERR_ZERO		2
-> +#define EX_TYPE_KACCESS_ERR_ZERO		3
-> +#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD		4
-> +/* kernel access memory error safe */
-> +#define EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE	5
-
-Could we please use 'MEM_ERR', and likewise for the macros below? That's
-more obvious than 'ME_SAFE', and we wouldn't need the comment here.
-Likewise elsewhere in this patch and the series.
-
-To Jonathan's comment, I do prefer these numbers are aligned, so aside
-from the naming, the diff above looks good.
-
->  
->  /* Data fields for EX_TYPE_UACCESS_ERR_ZERO */
->  #define EX_DATA_REG_ERR_SHIFT	0
-> @@ -51,6 +53,17 @@
->  #define _ASM_EXTABLE_UACCESS(insn, fixup)				\
->  	_ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, wzr, wzr)
->  
-> +#define _ASM_EXTABLE_KACCESS_ERR_ZERO_ME_SAFE(insn, fixup, err, zero)	\
-> +	__ASM_EXTABLE_RAW(insn, fixup, 					\
-> +			  EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE,		\
-> +			  (						\
-> +			    EX_DATA_REG(ERR, err) |			\
-> +			    EX_DATA_REG(ZERO, zero)			\
-> +			  ))
+>  	int (*mremap)(const struct vm_special_mapping *sm,
+>  		     struct vm_area_struct *new_vma);
 > +
-> +#define _ASM_EXTABLE_KACCESS_ME_SAFE(insn, fixup)			\
-> +	_ASM_EXTABLE_KACCESS_ERR_ZERO_ME_SAFE(insn, fixup, wzr, wzr)
-> +
+> +	void (*close)(const struct vm_special_mapping *sm,
+> +		      struct vm_area_struct *vma);
+>  };
+>  
+>  enum tlb_flush_reason {
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index d0dfc85b209b..af4dbf0d3bd4 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -3620,10 +3620,16 @@ void vm_stat_account(struct mm_struct *mm, vm_flags_t flags, long npages)
+>  static vm_fault_t special_mapping_fault(struct vm_fault *vmf);
+>  
 >  /*
->   * Create an exception table entry for uaccess `insn`, which will branch to `fixup`
->   * when an unhandled fault is taken.
-> @@ -69,6 +82,14 @@
->  	.endif
->  	.endm
->  
-> +/*
-> + * Create an exception table entry for kaccess me(memory error) safe `insn`, which
-> + * will branch to `fixup` when an unhandled fault is taken.
-> + */
-> +	.macro          _asm_extable_kaccess_me_safe, insn, fixup
-> +	_ASM_EXTABLE_KACCESS_ME_SAFE(\insn, \fixup)
-> +	.endm
-> +
-
-With the naming above, I think this can be:
-
-| /*
-|  * Create an exception table entry for kaccess `insn`, which will branch to
-|  * `fixup` when a memory error is taken
-|  */
-| 	.macro		_asm_extable_kaccess_mem_err, insn, fixup
-| 	_ASM_EXTABLE_KACCESS_MEM_ERR(\insn, \fixup)
-| 	.endm
-
->  #else /* __ASSEMBLY__ */
->  
->  #include <linux/stringify.h>
-> diff --git a/arch/arm64/include/asm/asm-uaccess.h b/arch/arm64/include/asm/asm-uaccess.h
-> index 5b6efe8abeeb..7bbebfa5b710 100644
-> --- a/arch/arm64/include/asm/asm-uaccess.h
-> +++ b/arch/arm64/include/asm/asm-uaccess.h
-> @@ -57,6 +57,10 @@ alternative_else_nop_endif
->  	.endm
->  #endif
->  
-> +#define KERNEL_ME_SAFE(l, x...)			\
-> +9999:	x;					\
-> +	_asm_extable_kaccess_me_safe	9999b, l
-> +
->  #define USER(l, x...)				\
->  9999:	x;					\
->  	_asm_extable_uaccess	9999b, l
-> diff --git a/arch/arm64/include/asm/extable.h b/arch/arm64/include/asm/extable.h
-> index 72b0e71cc3de..bc49443bc502 100644
-> --- a/arch/arm64/include/asm/extable.h
-> +++ b/arch/arm64/include/asm/extable.h
-> @@ -46,4 +46,5 @@ bool ex_handler_bpf(const struct exception_table_entry *ex,
->  #endif /* !CONFIG_BPF_JIT */
->  
->  bool fixup_exception(struct pt_regs *regs);
-> +bool fixup_exception_me(struct pt_regs *regs);
->  #endif
-> diff --git a/arch/arm64/lib/copy_to_user.S b/arch/arm64/lib/copy_to_user.S
-> index 802231772608..2ac716c0d6d8 100644
-> --- a/arch/arm64/lib/copy_to_user.S
-> +++ b/arch/arm64/lib/copy_to_user.S
-> @@ -20,7 +20,7 @@
->   *	x0 - bytes not copied
+> + * Close hook, called for unmap() and on the old vma for mremap().
+> + *
+>   * Having a close hook prevents vma merging regardless of flags.
 >   */
->  	.macro ldrb1 reg, ptr, val
-> -	ldrb  \reg, [\ptr], \val
-> +	KERNEL_ME_SAFE(9998f, ldrb  \reg, [\ptr], \val)
->  	.endm
->  
->  	.macro strb1 reg, ptr, val
-> @@ -28,7 +28,7 @@
->  	.endm
->  
->  	.macro ldrh1 reg, ptr, val
-> -	ldrh  \reg, [\ptr], \val
-> +	KERNEL_ME_SAFE(9998f, ldrh  \reg, [\ptr], \val)
->  	.endm
->  
->  	.macro strh1 reg, ptr, val
-> @@ -36,7 +36,7 @@
->  	.endm
->  
->  	.macro ldr1 reg, ptr, val
-> -	ldr \reg, [\ptr], \val
-> +	KERNEL_ME_SAFE(9998f, ldr \reg, [\ptr], \val)
->  	.endm
->  
->  	.macro str1 reg, ptr, val
-> @@ -44,7 +44,7 @@
->  	.endm
->  
->  	.macro ldp1 reg1, reg2, ptr, val
-> -	ldp \reg1, \reg2, [\ptr], \val
-> +	KERNEL_ME_SAFE(9998f, ldp \reg1, \reg2, [\ptr], \val)
->  	.endm
->  
->  	.macro stp1 reg1, reg2, ptr, val
-
-These changes mean that regular copy_to_user() will handle kernel memory
-errors, rather than only doing that in copy_mc_to_user(). If that's
-intentional, please call that out explicitly in the commit message.
-
-> @@ -64,7 +64,7 @@ SYM_FUNC_START(__arch_copy_to_user)
->  9997:	cmp	dst, dstin
->  	b.ne	9998f
->  	// Before being absolutely sure we couldn't copy anything, try harder
-> -	ldrb	tmp1w, [srcin]
-> +KERNEL_ME_SAFE(9998f, ldrb	tmp1w, [srcin])
->  USER(9998f, sttrb tmp1w, [dst])
->  	add	dst, dst, #1
->  9998:	sub	x0, end, dst			// bytes not copied
-
-Same comment as above.
-
-> diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
-> index 228d681a8715..8c690ae61944 100644
-> --- a/arch/arm64/mm/extable.c
-> +++ b/arch/arm64/mm/extable.c
-> @@ -72,7 +72,26 @@ bool fixup_exception(struct pt_regs *regs)
->  		return ex_handler_uaccess_err_zero(ex, regs);
->  	case EX_TYPE_LOAD_UNALIGNED_ZEROPAD:
->  		return ex_handler_load_unaligned_zeropad(ex, regs);
-> +	case EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE:
-> +		return false;
->  	}
->  
->  	BUG();
->  }
-> +
-> +bool fixup_exception_me(struct pt_regs *regs)
-> +{
-> +	const struct exception_table_entry *ex;
-> +
-> +	ex = search_exception_tables(instruction_pointer(regs));
-> +	if (!ex)
-> +		return false;
-> +
-> +	switch (ex->type) {
-> +	case EX_TYPE_UACCESS_ERR_ZERO:
-> +	case EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE:
-> +		return ex_handler_uaccess_err_zero(ex, regs);
-> +	}
-> +
-> +	return false;
-> +}
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index 451ba7cbd5ad..2dc65f99d389 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -708,21 +708,32 @@ static int do_bad(unsigned long far, unsigned long esr, struct pt_regs *regs)
->  	return 1; /* "fault" */
->  }
->  
-> +/*
-> + * APEI claimed this as a firmware-first notification.
-> + * Some processing deferred to task_work before ret_to_user().
-> + */
-> +static bool do_apei_claim_sea(struct pt_regs *regs)
-> +{
-> +	if (user_mode(regs)) {
-> +		if (!apei_claim_sea(regs))
-> +			return true;
-> +	} else if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC)) {
-> +		if (fixup_exception_me(regs) && !apei_claim_sea(regs))
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-
-Hmm... that'll fixup the exception even if we don't manage to claim a
-the SEA. I suspect this should probably be:
-
-static bool do_apei_claim_sea(struct pt_regs *regs)
-{
-	if (apei_claim_sea(regs))
-		return false;
-	if (user_mode(regs))
-		return true;
-	if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC))
-		return !fixup_excepton_mem_err(regs);
-	
-	return false;
-}
-
-... unless we *don't* want to claim the SEA in the case we don't have a
-fixup?
-
-Mark.
-
-> +
->  static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>  static void special_mapping_close(struct vm_area_struct *vma)
 >  {
->  	const struct fault_info *inf;
->  	unsigned long siaddr;
+> +	const struct vm_special_mapping *sm = vma->vm_private_data;
+> +
+> +	if (sm->close)
+> +		sm->close(sm, vma);
+>  }
 >  
-> -	inf = esr_to_fault_info(esr);
-> -
-> -	if (user_mode(regs) && apei_claim_sea(regs) == 0) {
-> -		/*
-> -		 * APEI claimed this as a firmware-first notification.
-> -		 * Some processing deferred to task_work before ret_to_user().
-> -		 */
-> +	if (do_apei_claim_sea(regs))
->  		return 0;
-> -	}
->  
-> +	inf = esr_to_fault_info(esr);
->  	if (esr & ESR_ELx_FnV) {
->  		siaddr = 0;
->  	} else {
+>  static const char *special_mapping_name(struct vm_area_struct *vma)
 > -- 
-> 2.25.1
+> 2.45.2
 > 
-> 
+
+This change is now in -next and I bisected a crash that our CI sees with
+ARCH=um to it:
+
+$ make -skj"$(nproc)" ARCH=um CROSS_COMPILE=x86_64-linux- defconfig linux
+
+$ ./linux ubd0=$PWD/rootfs.ext4
+...
+Linux version 6.11.0-rc4-next-20240819 (nathan@thelio-3990X) (x86_64-linux-gcc (GCC) 14.2.0, GNU ld (GNU Binutils) 2.42) #1 Mon Aug 19 11:42:20 MST 2024
+...
+Run /sbin/init as init process
+
+Modules linked in:
+Pid: 24, comm: mount Not tainted 6.11.0-rc4-next-20240819
+RIP: 0033:0x68006f6c
+RSP: 000000006c8bfc68  EFLAGS: 00010206
+RAX: 0000000068006f6c RBX: 0000000068a0aa18 RCX: 00000000600d8b09
+RDX: 0000000000000000 RSI: 0000000068a0aa18 RDI: 0000000068805120
+RBP: 000000006c8bfc70 R08: 0000000000000001 R09: 0000000068ae0308
+R10: 000000000000000e R11: ffffffffffffffff R12: 0000000000000001
+R13: 0000000068a0aa18 R14: 0000000000000015 R15: 0000000068944a88
+Kernel panic - not syncing: Segfault with no mm
+CPU: 0 UID: 0 PID: 24 Comm: mount Not tainted 6.11.0-rc4-next-20240819 #1
+Stack:
+ 600caeff 6c8bfc90 600d8b2a 68944a80
+ 00000047 6c8bfda0 600cbfd9 6c8bfd50
+ 68944ad0 68944a88 7f7ffff000 7f7fffffff
+Call Trace:
+ [<600caeff>] ? special_mapping_close+0x16/0x19
+ [<600d8b2a>] remove_vma+0x21/0x59
+ [<600cbfd9>] exit_mmap+0x1f3/0x2bc
+ [<60032a0c>] ? unblock_signals+0x0/0xbd
+ [<600329fd>] ? block_signals+0x0/0xf
+ [<6003831c>] __mmput+0x24/0x94
+ [<60067262>] ? up_read+0x0/0x2c
+ [<600383a1>] mmput+0x15/0x18
+ [<6003ce97>] do_exit+0x381/0x9b8
+ [<600e4b8d>] ? kfree+0x107/0x11b
+ [<6003d752>] sys_exit_group+0x0/0x16
+ [<6003d768>] pid_child_should_wake+0x0/0x42
+ [<60022e7a>] handle_syscall+0x79/0xa7
+ [<600358de>] userspace+0x4d3/0x505
+ [<60020927>] fork_handler+0x84/0x8b
+
+Passing this through scripts/decode_stacktrace.sh results in
+
+? special_mapping_close (mm/mmap.c:2056)
+remove_vma (mm/vma.c:144)
+exit_mmap (include/linux/sched.h:2049 mm/mmap.c:1947)
+? unblock_signals (arch/um/os-Linux/signal.c:296)
+? block_signals (arch/um/os-Linux/signal.c:282)
+__mmput (kernel/fork.c:1349)
+? up_read (arch/x86/include/asm/atomic64_64.h:79 (discriminator 5) include/linux/atomic/atomic-arch-fallback.h:2749 (discriminator 5) include/linux/atomic/atomic-long.h:184 (discriminator 5) include/linux/atomic/atomic-instrumented.h:3317 (discriminator 5) kernel/locking/rwsem.c:1347 (discriminator 5) kernel/locking/rwsem.c:1622 (discriminator 5))
+mmput (kernel/fork.c:1370)
+do_exit (arch/um/include/asm/thread_info.h:46 kernel/exit.c:572 kernel/exit.c:926)
+? kfree (mm/slub.c:4482 (discriminator 2) mm/slub.c:4522 (discriminator 2) mm/slub.c:4669 (discriminator 2))
+sys_exit_group (kernel/exit.c:1099 kernel/exit.c:1097)
+pid_child_should_wake (kernel/exit.c:1106 kernel/exit.c:1565)
+handle_syscall (arch/um/kernel/skas/syscall.c:45 (discriminator 1))
+userspace (arch/um/os-Linux/skas/process.c:466)
+fork_handler (arch/um/kernel/process.c:137)
+
+This change seems pretty innocuous but the bisect log does not lie :) I
+am guessing UML is just special here somehow?
+
+# bad: [367b5c3d53e57d51a5878816804652963da90950] Add linux-next specific files for 20240816
+# good: [e724918b3786252b985b0c2764c16a57d1937707] Merge tag 'hardening-v6.11-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
+git bisect start '367b5c3d53e57d51a5878816804652963da90950' 'e724918b3786252b985b0c2764c16a57d1937707'
+# bad: [b12bdbe2615f5426953ae1e64d74176674618edb] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+git bisect bad b12bdbe2615f5426953ae1e64d74176674618edb
+# bad: [9ad9c8d6eea9063fe7309cdc8e76bd12377cd613] Merge branch 'for-next' of https://github.com/sophgo/linux.git
+git bisect bad 9ad9c8d6eea9063fe7309cdc8e76bd12377cd613
+# bad: [57c53c832b28ca79eddca47c5b599036be10d347] Merge branch 'perf-tools-next' of git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git
+git bisect bad 57c53c832b28ca79eddca47c5b599036be10d347
+# bad: [cbaf19e941bcd83cf50f569b3888f7db6dcaccfc] foo
+git bisect bad cbaf19e941bcd83cf50f569b3888f7db6dcaccfc
+# good: [cdb0e8eb648858f37bbe1d6245c3a3c49f265c1c] fixup! selftests/mm: Add mseal test for no-discard madvise
+git bisect good cdb0e8eb648858f37bbe1d6245c3a3c49f265c1c
+# bad: [4fdacc9ec44f04a9edc4ddd0c782ab698cd15257] mm: shmem: support large folio allocation for shmem_replace_folio()
+git bisect bad 4fdacc9ec44f04a9edc4ddd0c782ab698cd15257
+# good: [90f91965eee8256ffad811a6da097bc13b66aa2e] mm: reduce deferred struct page init ifdeffery
+git bisect good 90f91965eee8256ffad811a6da097bc13b66aa2e
+# good: [5ae759160c5df466f4ae7cb89c05cd963e91cc3c] mm: introduce a pageflag for partially mapped folios
+git bisect good 5ae759160c5df466f4ae7cb89c05cd963e91cc3c
+# good: [03683572685d2f8febfc022b758fdb4bddf8d783] maple_tree: fix comment typo with corresponding maple_status
+git bisect good 03683572685d2f8febfc022b758fdb4bddf8d783
+# bad: [74ef5018120b2a441428400a5f92891307d41b82] powerpc/vdso: refactor error handling
+git bisect bad 74ef5018120b2a441428400a5f92891307d41b82
+# bad: [5077f828c08424b81279341813a18b8923ebd42e] mm: add optional close() to struct vm_special_mapping
+git bisect bad 5077f828c08424b81279341813a18b8923ebd42e
+# good: [0ebac8817b5dce7b3a1afd6ff7197a75829d50ad] kfence: save freeing stack trace at calling time instead of freeing time
+git bisect good 0ebac8817b5dce7b3a1afd6ff7197a75829d50ad
+# first bad commit: [5077f828c08424b81279341813a18b8923ebd42e] mm: add optional close() to struct vm_special_mapping
+
+The rootfs is available from [1] in case it matters
+(x86_64-rootfs.ext4.zst, decompress it with zstd first); it just shuts
+down the machine on boot.
+
+Cheers,
+Nathan
+
+[1]: https://github.com/ClangBuiltLinux/boot-utils/releases/latest
 
