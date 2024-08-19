@@ -1,52 +1,34 @@
-Return-Path: <linuxppc-dev+bounces-182-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-183-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480CB957196
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2024 19:09:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 000F39576C4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2024 23:46:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WnfG62R7mz2y64;
-	Tue, 20 Aug 2024 03:09:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WnmPV0jTSz2xKL;
+	Tue, 20 Aug 2024 07:46:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1158 seconds by postgrey-1.37 at boromir; Mon, 19 Aug 2024 23:31:25 AEST
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnfG5406Dz2xtb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 03:09:17 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id C2DDD60A3C;
-	Mon, 19 Aug 2024 17:09:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31FABC4AF0E;
-	Mon, 19 Aug 2024 17:09:09 +0000 (UTC)
-Date: Mon, 19 Aug 2024 18:09:06 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Dave Martin <Dave.Martin@arm.com>
-Cc: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org,
-	akpm@linux-foundation.org, aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com, bp@alien8.de, broonie@kernel.org,
-	christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
-	hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
-	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
-	oliver.upton@linux.dev, shuah@kernel.org, szabolcs.nagy@arm.com,
-	tglx@linutronix.de, will@kernel.org, x86@kernel.org,
-	kvmarm@lists.linux.dev
-Subject: Re: [PATCH v4 18/29] arm64: add POE signal support
-Message-ID: <ZsN8MnSqIWEMh7Ma@arm.com>
-References: <20240503130147.1154804-1-joey.gouly@arm.com>
- <20240503130147.1154804-19-joey.gouly@arm.com>
- <ZqJ2knGETfS4nfEA@e133380.arm.com>
- <20240801155441.GB841837@e124191.cambridge.arm.com>
- <Zqu2VYELikM5LFY/@e133380.arm.com>
- <20240806103532.GA1986436@e124191.cambridge.arm.com>
- <20240806143103.GB2017741@e124191.cambridge.arm.com>
- <ZrzHU9et8L_0Tv_B@arm.com>
- <20240815131815.GA3657684@e124191.cambridge.arm.com>
- <Zr4aJqc/ifRXJQAd@e133380.arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnYQj4s2gz2xtb
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2024 23:31:21 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4WnXyw0xzszyQDd;
+	Mon, 19 Aug 2024 21:10:48 +0800 (CST)
+Received: from kwepemm600017.china.huawei.com (unknown [7.193.23.234])
+	by mail.maildlp.com (Postfix) with ESMTPS id D292C140159;
+	Mon, 19 Aug 2024 21:11:24 +0800 (CST)
+Received: from [10.174.179.234] (10.174.179.234) by
+ kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 19 Aug 2024 21:11:22 +0800
+Message-ID: <b3705724-0d5c-a08a-8703-acbcee3e7861@huawei.com>
+Date: Mon, 19 Aug 2024 21:11:21 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,35 +38,120 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zr4aJqc/ifRXJQAd@e133380.arm.com>
-X-TUID: jP0NMMmVUuyc
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v12 1/6] uaccess: add generic fallback version of
+ copy_mc_to_user()
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+CC: Mark Rutland <mark.rutland@arm.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
+	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
+	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
+ Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
+	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mm@kvack.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>, <wangkefeng.wang@huawei.com>, Guohanjun
+	<guohanjun@huawei.com>
+References: <20240528085915.1955987-1-tongtiangen@huawei.com>
+ <20240528085915.1955987-2-tongtiangen@huawei.com>
+ <20240819105750.00001269@Huawei.com>
+From: Tong Tiangen <tongtiangen@huawei.com>
+In-Reply-To: <20240819105750.00001269@Huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.234]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemm600017.china.huawei.com (7.193.23.234)
 
-On Thu, Aug 15, 2024 at 04:09:26PM +0100, Dave P Martin wrote:
-> On Thu, Aug 15, 2024 at 02:18:15PM +0100, Joey Gouly wrote:
-> > That's a lot of words to say, or ask, do you agree with the approach of only
-> > saving POR_EL0 in the signal frame if num_allocated_pkeys() > 1?
-> > 
-> > Thanks,
-> > Joey
+
+
+在 2024/8/19 17:57, Jonathan Cameron 写道:
+> On Tue, 28 May 2024 16:59:10 +0800
+> Tong Tiangen <tongtiangen@huawei.com> wrote:
 > 
-> ...So..., given all the above, it is perhaps best to go back to
-> dumping POR_EL0 unconditionally after all, unless we have a mechanism
-> to determine whether pkeys are in use at all.
+>> x86/powerpc has it's implementation of copy_mc_to_user(), we add generic
+>> fallback in include/linux/uaccess.h prepare for other architechures to
+>> enable CONFIG_ARCH_HAS_COPY_MC.
+>>
+>> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+>> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+> Seems like a sensible approach to me given existing fallbacks in x86
+> if the relevant features are disabled.
+> 
+> It may be worth exploring at some point if some of the special casing
+> in the callers of this function can also be remove now there
+> is a default version. There are some small differences but I've
+> not analyzed if they matter or not.
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Ah, I can see why checking for POR_EL0_INIT is useful. Only checking for
-the allocated keys gets confusing with pkey 0.
+copy_mc_to_user() and copy_to_user() have the same logic of copying the 
+memory. The main difference is that the MC version can handle the 
+hardware error.
 
-Not sure what the deal is with pkey 0. Is it considered allocated by
-default or unallocatable? If the former, it implies that pkeys are
-already in use (hence the additional check for POR_EL0_INIT). In
-principle the hardware allows us to use permissions where the pkeys do
-not apply but we'd run out of indices and PTE bits to encode them, so I
-think by default we should assume that pkey 0 is pre-allocated.
+The implementation of MC version is related to the architecture. 
+Therefore, when the architecture does not implement the MC version, it 
+is logically correct to roll back to the no MC version.
 
-So I agree that it's probably best to save it unconditionally.
+Thanks :)
 
--- 
-Catalin
+> 
+>> ---
+>>   arch/powerpc/include/asm/uaccess.h | 1 +
+>>   arch/x86/include/asm/uaccess.h     | 1 +
+>>   include/linux/uaccess.h            | 8 ++++++++
+>>   3 files changed, 10 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+>> index de10437fd206..df42e6ad647f 100644
+>> --- a/arch/powerpc/include/asm/uaccess.h
+>> +++ b/arch/powerpc/include/asm/uaccess.h
+>> @@ -381,6 +381,7 @@ copy_mc_to_user(void __user *to, const void *from, unsigned long n)
+>>   
+>>   	return n;
+>>   }
+>> +#define copy_mc_to_user copy_mc_to_user
+>>   #endif
+>>   
+>>   extern long __copy_from_user_flushcache(void *dst, const void __user *src,
+>> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+>> index 0f9bab92a43d..309f2439327e 100644
+>> --- a/arch/x86/include/asm/uaccess.h
+>> +++ b/arch/x86/include/asm/uaccess.h
+>> @@ -497,6 +497,7 @@ copy_mc_to_kernel(void *to, const void *from, unsigned len);
+>>   
+>>   unsigned long __must_check
+>>   copy_mc_to_user(void __user *to, const void *from, unsigned len);
+>> +#define copy_mc_to_user copy_mc_to_user
+>>   #endif
+>>   
+>>   /*
+>> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+>> index 3064314f4832..0dfa9241b6ee 100644
+>> --- a/include/linux/uaccess.h
+>> +++ b/include/linux/uaccess.h
+>> @@ -205,6 +205,14 @@ copy_mc_to_kernel(void *dst, const void *src, size_t cnt)
+>>   }
+>>   #endif
+>>   
+>> +#ifndef copy_mc_to_user
+>> +static inline unsigned long __must_check
+>> +copy_mc_to_user(void *dst, const void *src, size_t cnt)
+>> +{
+>> +	return copy_to_user(dst, src, cnt);
+>> +}
+>> +#endif
+>> +
+>>   static __always_inline void pagefault_disabled_inc(void)
+>>   {
+>>   	current->pagefault_disabled++;
+> 
+> .
 
