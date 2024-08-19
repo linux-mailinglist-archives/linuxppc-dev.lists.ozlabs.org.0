@@ -1,34 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-183-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-184-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000F39576C4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2024 23:46:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 349909576CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2024 23:50:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WnmPV0jTSz2xKL;
-	Tue, 20 Aug 2024 07:46:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WnmTy6m33z2xbC;
+	Tue, 20 Aug 2024 07:49:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1158 seconds by postgrey-1.37 at boromir; Mon, 19 Aug 2024 23:31:25 AEST
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnYQj4s2gz2xtb
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2024 23:31:21 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4WnXyw0xzszyQDd;
-	Mon, 19 Aug 2024 21:10:48 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (unknown [7.193.23.234])
-	by mail.maildlp.com (Postfix) with ESMTPS id D292C140159;
-	Mon, 19 Aug 2024 21:11:24 +0800 (CST)
-Received: from [10.174.179.234] (10.174.179.234) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 19 Aug 2024 21:11:22 +0800
-Message-ID: <b3705724-0d5c-a08a-8703-acbcee3e7861@huawei.com>
-Date: Mon, 19 Aug 2024 21:11:21 +0800
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wnfk26vZqz2xY6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 03:30:00 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 69BF2339;
+	Mon, 19 Aug 2024 10:29:54 -0700 (PDT)
+Received: from J2N7QTR9R3.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 729813F58B;
+	Mon, 19 Aug 2024 10:29:24 -0700 (PDT)
+Date: Mon, 19 Aug 2024 18:29:21 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Tong Tiangen <tongtiangen@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Morse <james.morse@arm.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	wangkefeng.wang@huawei.com, Guohanjun <guohanjun@huawei.com>
+Subject: Re: [PATCH v12 2/6] arm64: add support for ARCH_HAS_COPY_MC
+Message-ID: <ZsOA8WD_5Sp0DJhS@J2N7QTR9R3.cambridge.arm.com>
+References: <20240528085915.1955987-1-tongtiangen@huawei.com>
+ <20240528085915.1955987-3-tongtiangen@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -38,120 +58,306 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v12 1/6] uaccess: add generic fallback version of
- copy_mc_to_user()
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC: Mark Rutland <mark.rutland@arm.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
-	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
- Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
-	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
- Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
-	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mm@kvack.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-kernel@vger.kernel.org>, <wangkefeng.wang@huawei.com>, Guohanjun
-	<guohanjun@huawei.com>
-References: <20240528085915.1955987-1-tongtiangen@huawei.com>
- <20240528085915.1955987-2-tongtiangen@huawei.com>
- <20240819105750.00001269@Huawei.com>
-From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <20240819105750.00001269@Huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemm600017.china.huawei.com (7.193.23.234)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240528085915.1955987-3-tongtiangen@huawei.com>
 
+Hi Tong,
 
-
-在 2024/8/19 17:57, Jonathan Cameron 写道:
-> On Tue, 28 May 2024 16:59:10 +0800
-> Tong Tiangen <tongtiangen@huawei.com> wrote:
+On Tue, May 28, 2024 at 04:59:11PM +0800, Tong Tiangen wrote:
+> For the arm64 kernel, when it processes hardware memory errors for
+> synchronize notifications(do_sea()), if the errors is consumed within the
+> kernel, the current processing is panic. However, it is not optimal.
 > 
->> x86/powerpc has it's implementation of copy_mc_to_user(), we add generic
->> fallback in include/linux/uaccess.h prepare for other architechures to
->> enable CONFIG_ARCH_HAS_COPY_MC.
->>
->> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
->> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-> Seems like a sensible approach to me given existing fallbacks in x86
-> if the relevant features are disabled.
+> Take copy_from/to_user for example, If ld* triggers a memory error, even in
+> kernel mode, only the associated process is affected. Killing the user
+> process and isolating the corrupt page is a better choice.
 > 
-> It may be worth exploring at some point if some of the special casing
-> in the callers of this function can also be remove now there
-> is a default version. There are some small differences but I've
-> not analyzed if they matter or not.
+> New fixup type EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE is added to identify insn
+> that can recover from memory errors triggered by access to kernel memory.
 > 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
 
-copy_mc_to_user() and copy_to_user() have the same logic of copying the 
-memory. The main difference is that the MC version can handle the 
-hardware error.
+Generally this looks ok, but I have a couple of comments below.
 
-The implementation of MC version is related to the architecture. 
-Therefore, when the architecture does not implement the MC version, it 
-is logically correct to roll back to the no MC version.
-
-Thanks :)
-
+> ---
+>  arch/arm64/Kconfig                   |  1 +
+>  arch/arm64/include/asm/asm-extable.h | 31 +++++++++++++++++++++++-----
+>  arch/arm64/include/asm/asm-uaccess.h |  4 ++++
+>  arch/arm64/include/asm/extable.h     |  1 +
+>  arch/arm64/lib/copy_to_user.S        | 10 ++++-----
+>  arch/arm64/mm/extable.c              | 19 +++++++++++++++++
+>  arch/arm64/mm/fault.c                | 27 +++++++++++++++++-------
+>  7 files changed, 75 insertions(+), 18 deletions(-)
 > 
->> ---
->>   arch/powerpc/include/asm/uaccess.h | 1 +
->>   arch/x86/include/asm/uaccess.h     | 1 +
->>   include/linux/uaccess.h            | 8 ++++++++
->>   3 files changed, 10 insertions(+)
->>
->> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
->> index de10437fd206..df42e6ad647f 100644
->> --- a/arch/powerpc/include/asm/uaccess.h
->> +++ b/arch/powerpc/include/asm/uaccess.h
->> @@ -381,6 +381,7 @@ copy_mc_to_user(void __user *to, const void *from, unsigned long n)
->>   
->>   	return n;
->>   }
->> +#define copy_mc_to_user copy_mc_to_user
->>   #endif
->>   
->>   extern long __copy_from_user_flushcache(void *dst, const void __user *src,
->> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
->> index 0f9bab92a43d..309f2439327e 100644
->> --- a/arch/x86/include/asm/uaccess.h
->> +++ b/arch/x86/include/asm/uaccess.h
->> @@ -497,6 +497,7 @@ copy_mc_to_kernel(void *to, const void *from, unsigned len);
->>   
->>   unsigned long __must_check
->>   copy_mc_to_user(void __user *to, const void *from, unsigned len);
->> +#define copy_mc_to_user copy_mc_to_user
->>   #endif
->>   
->>   /*
->> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
->> index 3064314f4832..0dfa9241b6ee 100644
->> --- a/include/linux/uaccess.h
->> +++ b/include/linux/uaccess.h
->> @@ -205,6 +205,14 @@ copy_mc_to_kernel(void *dst, const void *src, size_t cnt)
->>   }
->>   #endif
->>   
->> +#ifndef copy_mc_to_user
->> +static inline unsigned long __must_check
->> +copy_mc_to_user(void *dst, const void *src, size_t cnt)
->> +{
->> +	return copy_to_user(dst, src, cnt);
->> +}
->> +#endif
->> +
->>   static __always_inline void pagefault_disabled_inc(void)
->>   {
->>   	current->pagefault_disabled++;
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 5d91259ee7b5..13ca06ddf3dd 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -20,6 +20,7 @@ config ARM64
+>  	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+>  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+>  	select ARCH_HAS_CACHE_LINE_SIZE
+> +	select ARCH_HAS_COPY_MC if ACPI_APEI_GHES
+>  	select ARCH_HAS_CURRENT_STACK_POINTER
+>  	select ARCH_HAS_DEBUG_VIRTUAL
+>  	select ARCH_HAS_DEBUG_VM_PGTABLE
+> diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
+> index 980d1dd8e1a3..9c0664fe1eb1 100644
+> --- a/arch/arm64/include/asm/asm-extable.h
+> +++ b/arch/arm64/include/asm/asm-extable.h
+> @@ -5,11 +5,13 @@
+>  #include <linux/bits.h>
+>  #include <asm/gpr-num.h>
+>  
+> -#define EX_TYPE_NONE			0
+> -#define EX_TYPE_BPF			1
+> -#define EX_TYPE_UACCESS_ERR_ZERO	2
+> -#define EX_TYPE_KACCESS_ERR_ZERO	3
+> -#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	4
+> +#define EX_TYPE_NONE				0
+> +#define EX_TYPE_BPF				1
+> +#define EX_TYPE_UACCESS_ERR_ZERO		2
+> +#define EX_TYPE_KACCESS_ERR_ZERO		3
+> +#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD		4
+> +/* kernel access memory error safe */
+> +#define EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE	5
+
+Could we please use 'MEM_ERR', and likewise for the macros below? That's
+more obvious than 'ME_SAFE', and we wouldn't need the comment here.
+Likewise elsewhere in this patch and the series.
+
+To Jonathan's comment, I do prefer these numbers are aligned, so aside
+from the naming, the diff above looks good.
+
+>  
+>  /* Data fields for EX_TYPE_UACCESS_ERR_ZERO */
+>  #define EX_DATA_REG_ERR_SHIFT	0
+> @@ -51,6 +53,17 @@
+>  #define _ASM_EXTABLE_UACCESS(insn, fixup)				\
+>  	_ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, wzr, wzr)
+>  
+> +#define _ASM_EXTABLE_KACCESS_ERR_ZERO_ME_SAFE(insn, fixup, err, zero)	\
+> +	__ASM_EXTABLE_RAW(insn, fixup, 					\
+> +			  EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE,		\
+> +			  (						\
+> +			    EX_DATA_REG(ERR, err) |			\
+> +			    EX_DATA_REG(ZERO, zero)			\
+> +			  ))
+> +
+> +#define _ASM_EXTABLE_KACCESS_ME_SAFE(insn, fixup)			\
+> +	_ASM_EXTABLE_KACCESS_ERR_ZERO_ME_SAFE(insn, fixup, wzr, wzr)
+> +
+>  /*
+>   * Create an exception table entry for uaccess `insn`, which will branch to `fixup`
+>   * when an unhandled fault is taken.
+> @@ -69,6 +82,14 @@
+>  	.endif
+>  	.endm
+>  
+> +/*
+> + * Create an exception table entry for kaccess me(memory error) safe `insn`, which
+> + * will branch to `fixup` when an unhandled fault is taken.
+> + */
+> +	.macro          _asm_extable_kaccess_me_safe, insn, fixup
+> +	_ASM_EXTABLE_KACCESS_ME_SAFE(\insn, \fixup)
+> +	.endm
+> +
+
+With the naming above, I think this can be:
+
+| /*
+|  * Create an exception table entry for kaccess `insn`, which will branch to
+|  * `fixup` when a memory error is taken
+|  */
+| 	.macro		_asm_extable_kaccess_mem_err, insn, fixup
+| 	_ASM_EXTABLE_KACCESS_MEM_ERR(\insn, \fixup)
+| 	.endm
+
+>  #else /* __ASSEMBLY__ */
+>  
+>  #include <linux/stringify.h>
+> diff --git a/arch/arm64/include/asm/asm-uaccess.h b/arch/arm64/include/asm/asm-uaccess.h
+> index 5b6efe8abeeb..7bbebfa5b710 100644
+> --- a/arch/arm64/include/asm/asm-uaccess.h
+> +++ b/arch/arm64/include/asm/asm-uaccess.h
+> @@ -57,6 +57,10 @@ alternative_else_nop_endif
+>  	.endm
+>  #endif
+>  
+> +#define KERNEL_ME_SAFE(l, x...)			\
+> +9999:	x;					\
+> +	_asm_extable_kaccess_me_safe	9999b, l
+> +
+>  #define USER(l, x...)				\
+>  9999:	x;					\
+>  	_asm_extable_uaccess	9999b, l
+> diff --git a/arch/arm64/include/asm/extable.h b/arch/arm64/include/asm/extable.h
+> index 72b0e71cc3de..bc49443bc502 100644
+> --- a/arch/arm64/include/asm/extable.h
+> +++ b/arch/arm64/include/asm/extable.h
+> @@ -46,4 +46,5 @@ bool ex_handler_bpf(const struct exception_table_entry *ex,
+>  #endif /* !CONFIG_BPF_JIT */
+>  
+>  bool fixup_exception(struct pt_regs *regs);
+> +bool fixup_exception_me(struct pt_regs *regs);
+>  #endif
+> diff --git a/arch/arm64/lib/copy_to_user.S b/arch/arm64/lib/copy_to_user.S
+> index 802231772608..2ac716c0d6d8 100644
+> --- a/arch/arm64/lib/copy_to_user.S
+> +++ b/arch/arm64/lib/copy_to_user.S
+> @@ -20,7 +20,7 @@
+>   *	x0 - bytes not copied
+>   */
+>  	.macro ldrb1 reg, ptr, val
+> -	ldrb  \reg, [\ptr], \val
+> +	KERNEL_ME_SAFE(9998f, ldrb  \reg, [\ptr], \val)
+>  	.endm
+>  
+>  	.macro strb1 reg, ptr, val
+> @@ -28,7 +28,7 @@
+>  	.endm
+>  
+>  	.macro ldrh1 reg, ptr, val
+> -	ldrh  \reg, [\ptr], \val
+> +	KERNEL_ME_SAFE(9998f, ldrh  \reg, [\ptr], \val)
+>  	.endm
+>  
+>  	.macro strh1 reg, ptr, val
+> @@ -36,7 +36,7 @@
+>  	.endm
+>  
+>  	.macro ldr1 reg, ptr, val
+> -	ldr \reg, [\ptr], \val
+> +	KERNEL_ME_SAFE(9998f, ldr \reg, [\ptr], \val)
+>  	.endm
+>  
+>  	.macro str1 reg, ptr, val
+> @@ -44,7 +44,7 @@
+>  	.endm
+>  
+>  	.macro ldp1 reg1, reg2, ptr, val
+> -	ldp \reg1, \reg2, [\ptr], \val
+> +	KERNEL_ME_SAFE(9998f, ldp \reg1, \reg2, [\ptr], \val)
+>  	.endm
+>  
+>  	.macro stp1 reg1, reg2, ptr, val
+
+These changes mean that regular copy_to_user() will handle kernel memory
+errors, rather than only doing that in copy_mc_to_user(). If that's
+intentional, please call that out explicitly in the commit message.
+
+> @@ -64,7 +64,7 @@ SYM_FUNC_START(__arch_copy_to_user)
+>  9997:	cmp	dst, dstin
+>  	b.ne	9998f
+>  	// Before being absolutely sure we couldn't copy anything, try harder
+> -	ldrb	tmp1w, [srcin]
+> +KERNEL_ME_SAFE(9998f, ldrb	tmp1w, [srcin])
+>  USER(9998f, sttrb tmp1w, [dst])
+>  	add	dst, dst, #1
+>  9998:	sub	x0, end, dst			// bytes not copied
+
+Same comment as above.
+
+> diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+> index 228d681a8715..8c690ae61944 100644
+> --- a/arch/arm64/mm/extable.c
+> +++ b/arch/arm64/mm/extable.c
+> @@ -72,7 +72,26 @@ bool fixup_exception(struct pt_regs *regs)
+>  		return ex_handler_uaccess_err_zero(ex, regs);
+>  	case EX_TYPE_LOAD_UNALIGNED_ZEROPAD:
+>  		return ex_handler_load_unaligned_zeropad(ex, regs);
+> +	case EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE:
+> +		return false;
+>  	}
+>  
+>  	BUG();
+>  }
+> +
+> +bool fixup_exception_me(struct pt_regs *regs)
+> +{
+> +	const struct exception_table_entry *ex;
+> +
+> +	ex = search_exception_tables(instruction_pointer(regs));
+> +	if (!ex)
+> +		return false;
+> +
+> +	switch (ex->type) {
+> +	case EX_TYPE_UACCESS_ERR_ZERO:
+> +	case EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE:
+> +		return ex_handler_uaccess_err_zero(ex, regs);
+> +	}
+> +
+> +	return false;
+> +}
+> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> index 451ba7cbd5ad..2dc65f99d389 100644
+> --- a/arch/arm64/mm/fault.c
+> +++ b/arch/arm64/mm/fault.c
+> @@ -708,21 +708,32 @@ static int do_bad(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>  	return 1; /* "fault" */
+>  }
+>  
+> +/*
+> + * APEI claimed this as a firmware-first notification.
+> + * Some processing deferred to task_work before ret_to_user().
+> + */
+> +static bool do_apei_claim_sea(struct pt_regs *regs)
+> +{
+> +	if (user_mode(regs)) {
+> +		if (!apei_claim_sea(regs))
+> +			return true;
+> +	} else if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC)) {
+> +		if (fixup_exception_me(regs) && !apei_claim_sea(regs))
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+
+Hmm... that'll fixup the exception even if we don't manage to claim a
+the SEA. I suspect this should probably be:
+
+static bool do_apei_claim_sea(struct pt_regs *regs)
+{
+	if (apei_claim_sea(regs))
+		return false;
+	if (user_mode(regs))
+		return true;
+	if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC))
+		return !fixup_excepton_mem_err(regs);
+	
+	return false;
+}
+
+... unless we *don't* want to claim the SEA in the case we don't have a
+fixup?
+
+Mark.
+
+> +
+>  static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>  {
+>  	const struct fault_info *inf;
+>  	unsigned long siaddr;
+>  
+> -	inf = esr_to_fault_info(esr);
+> -
+> -	if (user_mode(regs) && apei_claim_sea(regs) == 0) {
+> -		/*
+> -		 * APEI claimed this as a firmware-first notification.
+> -		 * Some processing deferred to task_work before ret_to_user().
+> -		 */
+> +	if (do_apei_claim_sea(regs))
+>  		return 0;
+> -	}
+>  
+> +	inf = esr_to_fault_info(esr);
+>  	if (esr & ESR_ELx_FnV) {
+>  		siaddr = 0;
+>  	} else {
+> -- 
+> 2.25.1
 > 
-> .
+> 
 
