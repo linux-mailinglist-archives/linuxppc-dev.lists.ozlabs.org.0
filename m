@@ -1,65 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-161-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-162-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54083955D3D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 Aug 2024 17:40:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B420956259
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 Aug 2024 06:11:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wn0Ky5x4Lz2xPW;
-	Mon, 19 Aug 2024 01:40:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WnK0q48fSz2xdg;
+	Mon, 19 Aug 2024 14:11:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fdbnt6JK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aPbz4mzN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wn0Kx0KKlz2xJT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2024 01:40:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723995622; x=1755531622;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0A6/MoT54hALZa+uD7XcyT5G4xJ6QbohQoqw15Fk0v8=;
-  b=fdbnt6JKK+2pdMFmUMyD4GB2TnsN1EmTsLq+mcWeTIo8iEpkYP2uO5sz
-   qwo61kg9O0HeIGIL3ggzQuWmnuqKe+ih6GUaCKPM6PwizwX33g5XI8TL+
-   Gqt0xr1X216+nx9vT4xozoVLVVo0lLHX3/QGHPh834U8FnkO5vnEjv/NN
-   hLP+ksZKaHwJnrJHUOqXE0Dy2AF3HQ6lk4WwMk0B8EYC7SV6qP5Z1j+GI
-   Hhg2cnWlIHQ2DwsYRo92RBRhQUTZ+bI8VXVytiBNP2kR8JglfQAysB53g
-   D/flPFLcY2bL0iQsK5VTwSlWkfDhLJf6LLyE5mRECqABnK3uwgjPtyLVG
-   A==;
-X-CSE-ConnectionGUID: BZzuW4kkSgK9L31YSNVyuQ==
-X-CSE-MsgGUID: g5vn7doUSralqGCuLHWGAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11168"; a="25991338"
-X-IronPort-AV: E=Sophos;i="6.10,157,1719903600"; 
-   d="scan'208";a="25991338"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2024 08:40:13 -0700
-X-CSE-ConnectionGUID: ePUVWcffTdqUF+2b+owtAA==
-X-CSE-MsgGUID: 4UX1xVSZTsq5Givi8FO7EQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,157,1719903600"; 
-   d="scan'208";a="90881145"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 18 Aug 2024 08:40:10 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sfi0m-0008IY-0D;
-	Sun, 18 Aug 2024 15:40:08 +0000
-Date: Sun, 18 Aug 2024 23:39:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: oe-kbuild-all@lists.linux.dev, mpe@ellerman.id.au, npiggin@gmail.com,
-	tyreld@linux.ibm.com, brking@linux.ibm.com, hbabu@us.ibm.com,
-	haren@linux.ibm.com
-Subject: Re: [PATCH v2 2/2] powerpc/pseries/dlpar: Add device tree nodes for
- DLPAR IO add
-Message-ID: <202408182302.o7QRO45S-lkp@intel.com>
-References: <20240817035401.125833-2-haren@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnK0p4Mj2z2xYl
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2024 14:11:37 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47ICm39h018330;
+	Mon, 19 Aug 2024 04:11:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	zZpHUbtmdCQ21jw42lnEbiH0aZQvYbYMhmI9183h0vM=; b=aPbz4mzNbR284GX+
+	9YrjJmtRmJtwjGU6D7kvreedd4Lvzhh/KC0mvm8sH/0j2tzMgLSvRqB18UbinYXs
+	J6pmkgl/a94Hs9yQrkPMoPtx3P8qT/ndODl8YUGj7zbsVjqAFXm2F78Kt46DMctx
+	y3ckGshiLiEP1IYblm7AXupolWPvCnQ35TjJeOBELoa1w3JsqT2ZOVwnSxOo96lh
+	7eW0Se7YDotsNDW5ebL5JS4GEXPcQUS89hw4QgfxA18nJ3pKarAIGfbNFLBRxhDH
+	rWYV9w8JXv7fmC3+nQm1/8Zzv6q+z2dqWabd7h+0OYfIP6Gq2+R+XJ218shmP/aL
+	FivYDg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412mb5ev5x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Aug 2024 04:11:23 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47J4BMO8022970;
+	Mon, 19 Aug 2024 04:11:22 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412mb5ev5u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Aug 2024 04:11:22 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47J43sm9014255;
+	Mon, 19 Aug 2024 04:11:21 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4137pmmdn3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Aug 2024 04:11:21 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47J4BHCQ52625872
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Aug 2024 04:11:19 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 476ED2004B;
+	Mon, 19 Aug 2024 04:11:17 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DAC0720040;
+	Mon, 19 Aug 2024 04:11:15 +0000 (GMT)
+Received: from [9.109.204.94] (unknown [9.109.204.94])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 19 Aug 2024 04:11:15 +0000 (GMT)
+Message-ID: <c40d12df-fdb6-4597-8936-69c4af602609@linux.ibm.com>
+Date: Mon, 19 Aug 2024 09:41:14 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Document/kexec: Generalize crash hotplug description
+To: Baoquan He <bhe@redhat.com>
+Cc: Petr Tesarik <petr@tesarici.cz>, Hari Bathini <hbathini@linux.ibm.com>,
+        kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+References: <20240812041651.703156-1-sourabhjain@linux.ibm.com>
+ <Zrrpcn7cnCigNfWd@MiWiFi-R3L-srv>
+ <4cbbf314-5134-4a1a-8a4d-f6f8c09104d3@linux.ibm.com>
+ <ZrskkDuMlQu+uBN4@MiWiFi-R3L-srv>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <ZrskkDuMlQu+uBN4@MiWiFi-R3L-srv>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: YLGmYYRi3md8Qfpu6OTFM9-jvqRWn3OJ
+X-Proofpoint-GUID: SH_clnL326R_tgyr8QE1gL5szyrk7FWR
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,85 +93,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240817035401.125833-2-haren@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-19_01,2024-08-16_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 impostorscore=0 malwarescore=0
+ mlxlogscore=893 phishscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408190029
 
-Hi Haren,
+Hello Baoquan,
 
-kernel test robot noticed the following build warnings:
+On 13/08/24 14:47, Baoquan He wrote:
+> On 08/13/24 at 10:58am, Sourabh Jain wrote:
+>> Hello Baoquan,
+>>
+>> On 13/08/24 10:34, Baoquan He wrote:
+>>> On 08/12/24 at 09:46am, Sourabh Jain wrote:
+>>> ......
+>>>> ---
+>>>>
+>>>> Changelog:
+>>>>
+>>>> Since v1: https://lore.kernel.org/all/20240805050829.297171-1-sourabhjain@linux.ibm.com/
+>>>>     - Update crash_hotplug sysfs document as suggested by Petr T
+>>>>     - Update an error message in crash_handle_hotplug_event and
+>>>>       crash_check_hotplug_support function.
+>>>>
+>>>> ---
+>>> ......
+>>>> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+>>>> index 63cf89393c6e..c1048893f4b6 100644
+>>>> --- a/kernel/crash_core.c
+>>>> +++ b/kernel/crash_core.c
+>>>> @@ -505,7 +505,7 @@ int crash_check_hotplug_support(void)
+>>>>    	crash_hotplug_lock();
+>>>>    	/* Obtain lock while reading crash information */
+>>>>    	if (!kexec_trylock()) {
+>>>> -		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
+>>>> +		pr_info("kexec_trylock() failed, kdump image may be inaccurate\n");
+>>> Wondering why this need be updated.
+>> In some architectures, additional kexec segments become obsolete during a
+>> hotplug event,
+>> so simply calling out the `elfcorehdr may be inaccurate` may not be
+>> sufficient.
+>> Therefore, it has been generalized with the kdump image.
+> OK, I forgot the case in ppc, makes sense to me, thx.
+>
+> Acked-by: Baoquan He <bhe@redhat.com>
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes linus/master v6.11-rc3 next-20240816]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Do we know who will be applying this patch and how it will be merged 
+into Linus’s tree?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Haren-Myneni/powerpc-pseries-dlpar-Add-device-tree-nodes-for-DLPAR-IO-add/20240817-115833
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20240817035401.125833-2-haren%40linux.ibm.com
-patch subject: [PATCH v2 2/2] powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add
-config: powerpc64-randconfig-r121-20240818 (https://download.01.org/0day-ci/archive/20240818/202408182302.o7QRO45S-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 26670e7fa4f032a019d23d56c6a02926e854e8af)
-reproduce: (https://download.01.org/0day-ci/archive/20240818/202408182302.o7QRO45S-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408182302.o7QRO45S-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> arch/powerpc/platforms/pseries/dlpar.c:525:50: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int [usertype] index @@     got restricted __be32 [usertype] drc_index @@
-   arch/powerpc/platforms/pseries/dlpar.c:525:50: sparse:     expected unsigned int [usertype] index
-   arch/powerpc/platforms/pseries/dlpar.c:525:50: sparse:     got restricted __be32 [usertype] drc_index
-   arch/powerpc/platforms/pseries/dlpar.c:528:53: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int [usertype] drc_index @@     got restricted __be32 [usertype] drc_index @@
-   arch/powerpc/platforms/pseries/dlpar.c:528:53: sparse:     expected unsigned int [usertype] drc_index
-   arch/powerpc/platforms/pseries/dlpar.c:528:53: sparse:     got restricted __be32 [usertype] drc_index
-   arch/powerpc/platforms/pseries/dlpar.c:548:43: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be32 [usertype] drc_count @@     got unsigned int [usertype] @@
-   arch/powerpc/platforms/pseries/dlpar.c:548:43: sparse:     expected restricted __be32 [usertype] drc_count
-   arch/powerpc/platforms/pseries/dlpar.c:548:43: sparse:     got unsigned int [usertype]
-   arch/powerpc/platforms/pseries/dlpar.c:552:43: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be32 [usertype] drc_index @@     got unsigned int [usertype] @@
-   arch/powerpc/platforms/pseries/dlpar.c:552:43: sparse:     expected restricted __be32 [usertype] drc_index
-   arch/powerpc/platforms/pseries/dlpar.c:552:43: sparse:     got unsigned int [usertype]
-   arch/powerpc/platforms/pseries/dlpar.c:556:42: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be32 [usertype] count @@     got unsigned int [usertype] @@
-   arch/powerpc/platforms/pseries/dlpar.c:556:42: sparse:     expected restricted __be32 [usertype] count
-   arch/powerpc/platforms/pseries/dlpar.c:556:42: sparse:     got unsigned int [usertype]
-   arch/powerpc/platforms/pseries/dlpar.c:558:42: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be32 [usertype] index @@     got unsigned int [usertype] @@
-   arch/powerpc/platforms/pseries/dlpar.c:558:42: sparse:     expected restricted __be32 [usertype] index
-   arch/powerpc/platforms/pseries/dlpar.c:558:42: sparse:     got unsigned int [usertype]
-
-vim +525 arch/powerpc/platforms/pseries/dlpar.c
-
-   513	
-   514	static int dlpar_hp_dt(struct pseries_hp_errorlog *phpe)
-   515	{
-   516		int rc;
-   517	
-   518		if (phpe->id_type != PSERIES_HP_ELOG_ID_DRC_INDEX)
-   519			return -EINVAL;
-   520	
-   521		lock_device_hotplug();
-   522	
-   523		switch (phpe->action) {
-   524		case PSERIES_HP_ELOG_ACTION_ADD:
- > 525			rc = dlpar_hp_dt_add(phpe->_drc_u.drc_index);
-   526			break;
-   527		case PSERIES_HP_ELOG_ACTION_REMOVE:
-   528			rc = dlpar_hp_dt_remove(phpe->_drc_u.drc_index);
-   529			break;
-   530		default:
-   531			pr_err("Invalid action (%d) specified\n", phpe->action);
-   532			rc = -EINVAL;
-   533			break;
-   534		}
-   535	
-   536		unlock_device_hotplug();
-   537	
-   538		return rc;
-   539	}
-   540	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Sourabh Jain
 
