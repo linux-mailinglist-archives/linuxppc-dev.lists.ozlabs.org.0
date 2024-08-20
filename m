@@ -1,59 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-190-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-191-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726A29578C5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 01:46:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B5E957ABA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 03:05:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wnq4x01Tqz2xxm;
-	Tue, 20 Aug 2024 09:46:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wnrr2259Fz2yDg;
+	Tue, 20 Aug 2024 11:05:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52f"
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=145.40.73.55
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dPW1dgd2;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Ohr8uPnM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=mmaurer@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wnpyz3S8Kz3bZK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 09:41:45 +1000 (AEST)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-5bebb241fddso1687a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2024 16:41:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724110901; x=1724715701; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VyJ7DwTEeQRwF2J9itqF7qF9lyR7ouza0PHAuQm+FtY=;
-        b=dPW1dgd2tsFboPF7NzkPEM6WjiKhEhK7Q7JwrmGewarMx9j7/Uh1RPKVH/Ckvi/DNZ
-         DmB/wc36RHx7MZIolv1AH+FwicsYb6N8r69IJhXgTXoMcJT0w1f49Tw9CH4kE1ackPJG
-         xn/sf0LULcnzNbVR3Pr+nszTpJCWj5oPY0VaGV2tWrZhUcX7+9mmyqD5CmxmJ+eD3H+2
-         Ra/5FhMtaHOQ7kkO/lpgARA2GIKjdilqWCf06p01DoMXi+wbLO73oOsGb8KwqWz6EslX
-         sHS8s2NaquaJXVdEqVqnfCjR9lbTAfZCRH0SyEctJYKW+YJl9cXgKxwkl6RO2QAntBzq
-         higw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724110901; x=1724715701;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VyJ7DwTEeQRwF2J9itqF7qF9lyR7ouza0PHAuQm+FtY=;
-        b=EQMaAmxgGQ4H+0v3RkQxrMSbBa/G6GijynFd+fKwy3UqO7hqhiG15xZ0v+JzhmY26u
-         mfM8EvWf3vJai97D0yixZMNaAfLsVGj6fAB9qmALwtBoVRKtpK7LTO//20yNz67A+Fx5
-         uvz9h3ZF7l3NQJAj8nZ/TxxCtIlAE0bbChmid4Un7jQ9/NNhJuTk4WdxVI14Zq2wZZon
-         T8lAANxkbQGLBfjSHhqQdEjXoKJ9MZx4nBiMZuX4GuIrySsCZRMy0vQ1Cm1Z45Vr2c1O
-         AYrtWLPHpHnlvCQ1FD2vFkPbb3GrWpdMufObknJYgb2reCRrSZ4vbyM+B3geClWzBMLX
-         6ZKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBXtkMgHDQCBX7wGSespM4rQzNbjFiDCr/v9eVe7LBJCc3MNg+9qvlWy/zrts1CZa2Gm1G2CmWYTrPuNIqdWuaoMjArVU0rTk+M+JMug==
-X-Gm-Message-State: AOJu0YxgXdOrabrKMeqmwVNGtCzroT8hau11rseVBDAbCO1lZUpm1G66
-	T12yeCXRCWNZ+Uo/PGOu5cOLYyoreXMgjfwEiD+MmNl9VZtRLMBlP1qDrETw8tJk4QbweFK2Zg+
-	hNOOSXQMMVbwK2ppqj0R0sIZdKOduSLi1jOSg
-X-Google-Smtp-Source: AGHT+IEFf0La4uREmgZmbe880Nnbs8CZTxbPC4ox9daCMh8bMB0DPDlb/vwxR0dv4G47Vf1sgvElegvu9c36SV8SoxM=
-X-Received: by 2002:a05:6402:3546:b0:59f:9f59:9b07 with SMTP id
- 4fb4d7f45d1cf-5bf0c262b15mr42504a12.4.1724110900976; Mon, 19 Aug 2024
- 16:41:40 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wnrr15nYdz2xt7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 11:05:52 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 772B6CE09EA;
+	Tue, 20 Aug 2024 01:05:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA95FC32782;
+	Tue, 20 Aug 2024 01:05:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1724115949;
+	bh=0U7jOid/uP8Y+iIqM7ITqWrx8b2Snwx2qFv6PcPMlns=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ohr8uPnMeT9PqbC27FNE2NUgwBSpD2Am8ljUhb2MkNtpvuqCxRgINXdfU+7Z5Ok4Q
+	 oLhpzo7qQb2Jy/L9reXhcowB+4RKVOZlFzvsJaEDLoJ4G/pXRebjYmXlqoj8xddMJJ
+	 umSfjfzu/bhamoXfiWzuJ1aWiSlwUJ4EuI/WZtuw=
+Date: Mon, 19 Aug 2024 18:05:48 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Guo Ren <guoren@kernel.org>,
+ Brian Cain <bcain@quicinc.com>, Dinh Nguyen <dinguyen@kernel.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Richard
+ Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Michael Ellerman <mpe@ellerman.id.au>,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ christophe.leroy@csgroup.eu, jeffxu@google.com, Liam.Howlett@oracle.com,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com, oliver.sang@intel.com,
+ pedro.falcato@gmail.com, linux-um@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon <linux-hexagon@vger.kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>
+Subject: Re: [PATCH v2 1/4] mm: Add optional close() to struct
+ vm_special_mapping
+Message-Id: <20240819180548.9f5dac3ac0bd09a26c0d0948@linux-foundation.org>
+In-Reply-To: <CAHk-=wjzYKrwSDK3PFMC1C2x37aKzEuC7dVxg0kGt8h+vjZfjQ@mail.gmail.com>
+References: <20240812082605.743814-1-mpe@ellerman.id.au>
+	<20240819185253.GA2333884@thelio-3990X>
+	<CAHk-=wj9QPhG4CjiX8YLRC1wHj_Qs-T8wJi0WEhkfp0cszvB9w@mail.gmail.com>
+	<20240819195120.GA1113263@thelio-3990X>
+	<CAHk-=wgsDJ+sA1T01YT-z5TXs3zxJ54f0VDApkZ1pgcr8T=myQ@mail.gmail.com>
+	<CAHk-=wjzYKrwSDK3PFMC1C2x37aKzEuC7dVxg0kGt8h+vjZfjQ@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,52 +67,22 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-References: <20240806212106.617164-1-mmaurer@google.com> <20240806212106.617164-15-mmaurer@google.com>
- <87le0w2hop.fsf@mail.lhotse>
-In-Reply-To: <87le0w2hop.fsf@mail.lhotse>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Mon, 19 Aug 2024 16:41:29 -0700
-Message-ID: <CAGSQo02r3NhWnpBF--5nB2RJ=1Hh97VshtiZmasDfknnL+UjmA@mail.gmail.com>
-Subject: Re: [PATCH v3 14/16] modules: Support extended MODVERSIONS info
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
-	gary@garyguo.net, mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, neal@gompa.dev, 
-	marcan@marcan.st, j@jannau.net, asahi@lists.linux.dev, 
-	Nicholas Piggin <npiggin@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 16, 2024 at 4:04=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.a=
-u> wrote:
->
-> Matthew Maurer <mmaurer@google.com> writes:
-> > Adds a new format for MODVERSIONS which stores each field in a separate
-> > ELF section. This initially adds support for variable length names, but
-> > could later be used to add additional fields to MODVERSIONS in a
-> > backwards compatible way if needed. Any new fields will be ignored by
-> > old user tooling, unlike the current format where user tooling cannot
-> > tolerate adjustments to the format (for example making the name field
-> > longer).
+On Mon, 19 Aug 2024 13:16:32 -0700 Linus Torvalds <torvalds@linux-foundation.org> wrote:
+
+> On Mon, 19 Aug 2024 at 13:15, Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
 > >
-> > Since PPC munges its version records to strip leading dots, we reproduc=
-e
-> > the munging for the new format.
->
-> AFAICS the existing code only strips a single leading dot, not all
-> leading dots?
+> > Ok, I did a quick hack-job to remove that disgusting
+> > install_special_mapping() legacy case.
+> >
+> > With this [..]
+> 
+> I forgot to actually attach that "this". Here it is. For real, this time.
 
-You appear to be correct, I'll update that in the next version, but
-want to wait for more feedback on the rest of the patchset before
-sending up another full series.
-
->
-> cheers
+Thanks.  Do you think your one-liner remains desirable with this fix in
+place?
 
