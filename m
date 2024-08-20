@@ -1,59 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-198-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-199-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1702957BAD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 04:53:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A18957BB6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 05:02:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WnvD571j3z2xy3;
-	Tue, 20 Aug 2024 12:53:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WnvQK3LM2z2xdX;
+	Tue, 20 Aug 2024 13:02:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::12c"
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GmOS1CGJ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12c; helo=mail-il1-x12c.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.188
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnvD52dFlz2xdR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 12:53:24 +1000 (AEST)
-Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-39d3cd4fa49so7023365ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 Aug 2024 19:53:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724122401; x=1724727201; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fT6vSqFxRxEeg2TyE8vAmieBZnT3qlYo8e/6USKHH/E=;
-        b=GmOS1CGJBDN5GXUued3osk2D0gmv4W8QsgGezqPtM5G4L6u9o+eNSzausG4I/rUYyc
-         HAYX35Ykcniovd5VghPrYMzq4ecjX15i317ekWnQxOzhoRC3gw6xdfk4vJMFBiII7Q44
-         TOS8/77aCl6o1/rWcKarC5P3TTz8aTklOQenmjn3z1HGFH9gGWNT62VCO/rIvR2ItT+R
-         IRfaVaihOf6iL2wGPb2LHTaVlaj518wCgVHMRcksRSYbTg1BSLkYPuonX+Pptd01gKZ9
-         aseGmq7k0ngoPeUhYOQP35JhbRKp8HL20kSjg5MUa9F6jSnffv9Yf27XURwS68J1tqJ+
-         Hmrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724122401; x=1724727201;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fT6vSqFxRxEeg2TyE8vAmieBZnT3qlYo8e/6USKHH/E=;
-        b=Q0YANdWK8Vv38vyVS19ow4qGyTTZz40lanPSP5QNAPyOwTXc0oWrj9Mk8LSBYkQPTn
-         MMsXSJFTmuTq/5C9WVsoCdQ2G+piylCkpypyLux4cTl+jpi/QDj8vBzaH6eAWQPpm5mQ
-         lWVDg4BZMg97yeWWcb7OpcdekmE1p6sjqrjPmJeamyMF485YTfqykOCjuPk3nKTnJ3W7
-         jcEOCnYR8dR2aKc2LRicz122TfY723VK39GbpM0HA8dXQKBY+/pRMaZ2SXUAg7ztNC+d
-         KXGheVNXlrbcXer20JEkIVrBZ78CIC3HvfyGviMhd1PnGQH+kIkT22xaS2AhVabXDPIy
-         U0Kg==
-X-Forwarded-Encrypted: i=1; AJvYcCUuEcOiCwDLL/mw2858jbXHfojRAAi6Hvoq5VIiioRbuTfKP2t3q6K8pcThTD11Z6zBXi7lSClyPlkj5I0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyRBLVpYDAQFhGFEuLWGjQYl10ZEiODL4D79VE8JXXOlvwx7QAZ
-	ErRWDcRGz4gpNElhpXmmbAcvvxIrY31tlH11XPo5l6OnL4rj1H+T52DDbbx/ztHf/wGknXxmYhn
-	s7M9M3KzbF0NIoRZ19LHE3IcOIoI=
-X-Google-Smtp-Source: AGHT+IGl4gRPN5RAOxKXugMK43Dh6VHASCDS5Twf9YsdPNqPWrRzvf3PhVgc7lqQMpYhRDm7MWOvnuVY3lUtLNY/Lo4=
-X-Received: by 2002:a05:6e02:20cb:b0:39d:4d2d:d0de with SMTP id
- e9e14a558f8ab-39d56dd773emr21812545ab.3.1724122401038; Mon, 19 Aug 2024
- 19:53:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnvQJ0J0Zz2xdR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 13:02:15 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WnvMr41ryzfbXX;
+	Tue, 20 Aug 2024 11:00:08 +0800 (CST)
+Received: from kwepemm600017.china.huawei.com (unknown [7.193.23.234])
+	by mail.maildlp.com (Postfix) with ESMTPS id 77715140138;
+	Tue, 20 Aug 2024 11:02:08 +0800 (CST)
+Received: from [10.174.179.234] (10.174.179.234) by
+ kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 20 Aug 2024 11:02:06 +0800
+Message-ID: <8257d76b-c700-89a6-0e29-f194d2e1cd61@huawei.com>
+Date: Tue, 20 Aug 2024 11:02:05 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,174 +37,159 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <1723804959-31921-1-git-send-email-shengjiu.wang@nxp.com>
- <1723804959-31921-5-git-send-email-shengjiu.wang@nxp.com> <6d83cd58-5f02-414b-b627-a0022e071052@linux.intel.com>
-In-Reply-To: <6d83cd58-5f02-414b-b627-a0022e071052@linux.intel.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 20 Aug 2024 10:53:10 +0800
-Message-ID: <CAA+D8ANDAxS42=9zOLQY_h_ihvJCmaXzE+_iZyxbSuikqt1CBw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 4/6] ASoC: fsl_asrc_m2m: Add memory to memory function
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, perex@perex.cz, tiwai@suse.com, 
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Aug 19, 2024 at 3:42=E2=80=AFPM Pierre-Louis Bossart
-<pierre-louis.bossart@linux.intel.com> wrote:
->
->
->
-> On 8/16/24 12:42, Shengjiu Wang wrote:
-> > Implement the ASRC memory to memory function using
-> > the compress framework, user can use this function with
-> > compress ioctl interface.
-> >
-> > Define below private metadata key value for output
-> > format, output rate and ratio modifier configuration.
-> > ASRC_OUTPUT_FORMAT 0x80000001
-> > ASRC_OUTPUT_RATE   0x80000002
-> > ASRC_RATIO_MOD     0x80000003
->
-> Can the output format/rate change at run-time?
-
-Seldom I think.
-
->
-> If no, then these parameters should be moved somewhere else - e.g.
-> hw_params or something.
-
-This means I will do some changes in compress_params.h, add
-output format and output rate definition, follow Jaroslav's example
-right?
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v12 4/6] arm64: support copy_mc_[user]_highpage()
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+CC: Mark Rutland <mark.rutland@arm.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
+	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
+	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
+ Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
+	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mm@kvack.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>, <wangkefeng.wang@huawei.com>, Guohanjun
+	<guohanjun@huawei.com>
+References: <20240528085915.1955987-1-tongtiangen@huawei.com>
+ <20240528085915.1955987-5-tongtiangen@huawei.com>
+ <20240819125601.0000687b@Huawei.com>
+From: Tong Tiangen <tongtiangen@huawei.com>
+In-Reply-To: <20240819125601.0000687b@Huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.234]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemm600017.china.huawei.com (7.193.23.234)
 
 
->
-> I am still not very clear on the expanding the SET_METADATA ioctl to
-> deal with the ratio changes. This isn't linked to the control layer as
-> suggested before, and there's no precedent of calling it multiple times
-> during streaming.
 
-Which control layer? if you means the snd_kcontrol_new?  it is bound
-with sound card,  but in my case,  I need to the control bind with
-the snd_compr_stream to support multi streams/instances.
+在 2024/8/19 19:56, Jonathan Cameron 写道:
+> On Tue, 28 May 2024 16:59:13 +0800
+> Tong Tiangen <tongtiangen@huawei.com> wrote:
+> 
+>> Currently, many scenarios that can tolerate memory errors when copying page
+>> have been supported in the kernel[1~5], all of which are implemented by
+>> copy_mc_[user]_highpage(). arm64 should also support this mechanism.
+>>
+>> Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
+>> architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
+>> __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
+>>
+>> Add new helper copy_mc_page() which provide a page copy implementation with
+>> hardware memory error safe. The code logic of copy_mc_page() is the same as
+>> copy_page(), the main difference is that the ldp insn of copy_mc_page()
+>> contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE, therefore, the
+>> main logic is extracted to copy_page_template.S.
+>>
+>> [1] commit d302c2398ba2 ("mm, hwpoison: when copy-on-write hits poison, take page offline")
+>> [2] commit 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+>> [3] commit 6b970599e807 ("mm: hwpoison: support recovery from ksm_might_need_to_copy()")
+>> [4] commit 98c76c9f1ef7 ("mm/khugepaged: recover from poisoned anonymous memory")
+>> [5] commit 12904d953364 ("mm/khugepaged: recover from poisoned file-backed memory")
+>>
+>> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+> Trivial stuff inline.
+> 
+> Jonathan
 
->
-> I also wonder how it was tested since tinycompress does not support this?
+I'm sorry, I may not have understood what you meant. Where is the better
+place to do inline? :)
 
-I wrote a unit test to test these ASRC M2M functions.
+Thanks,
+Tong.
 
->
->
-> > +static int fsl_asrc_m2m_fill_codec_caps(struct fsl_asrc *asrc,
-> > +                                     struct snd_compr_codec_caps *code=
-c)
-> > +{
-> > +     struct fsl_asrc_m2m_cap cap;
-> > +     __u32 rates[MAX_NUM_BITRATES];
-> > +     snd_pcm_format_t k;
-> > +     int i =3D 0, j =3D 0;
-> > +     int ret;
-> > +
-> > +     ret =3D asrc->m2m_get_cap(&cap);
-> > +     if (ret)
-> > +             return -EINVAL;
-> > +
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_5512)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_55=
-12);
->
-> this doesn't sound compatible with the patch2 definitions?
->
-> cap->rate_in =3D SNDRV_PCM_RATE_8000_768000;
+> 
+> 
+>> diff --git a/arch/arm64/lib/mte.S b/arch/arm64/lib/mte.S
+>> index 5018ac03b6bf..50ef24318281 100644
+>> --- a/arch/arm64/lib/mte.S
+>> +++ b/arch/arm64/lib/mte.S
+>> @@ -80,6 +80,35 @@ SYM_FUNC_START(mte_copy_page_tags)
+>>   	ret
+>>   SYM_FUNC_END(mte_copy_page_tags)
+>>   
+>> +#ifdef CONFIG_ARCH_HAS_COPY_MC
+>> +/*
+>> + * Copy the tags from the source page to the destination one wiht machine check safe
+> Spell check.
+> with >
+> Also, maybe reword given machine check doesn't make sense on arm64.
 
-This ASRC M2M driver is designed for two kinds of hw ASRC modules.
+OK.
 
-one cap is : cap->rate_in =3D SNDRV_PCM_RATE_8000_192000 | SNDRV_PCM_RATE_5=
-512;
-another is : cap->rate_in =3D SNDRV_PCM_RATE_8000_768000;
-they are in patch2 and patch3
+> 
+> 
+>> + *   x0 - address of the destination page
+>> + *   x1 - address of the source page
+>> + * Returns:
+>> + *   x0 - Return 0 if copy success, or
+>> + *        -EFAULT if anything goes wrong while copying.
+>> + */
+>> +SYM_FUNC_START(mte_copy_mc_page_tags)
+>> +	mov	x2, x0
+>> +	mov	x3, x1
+>> +	multitag_transfer_size x5, x6
+>> +1:
+>> +KERNEL_ME_SAFE(2f, ldgm	x4, [x3])
+>> +	stgm	x4, [x2]
+>> +	add	x2, x2, x5
+>> +	add	x3, x3, x5
+>> +	tst	x2, #(PAGE_SIZE - 1)
+>> +	b.ne	1b
+>> +
+>> +	mov x0, #0
+>> +	ret
+>> +
+>> +2:	mov x0, #-EFAULT
+>> +	ret
+>> +SYM_FUNC_END(mte_copy_mc_page_tags)
+>> +#endif
+>> +
+>>   /*
+>>    * Read tags from a user buffer (one tag per byte) and set the corresponding
+>>    * tags at the given kernel address. Used by PTRACE_POKEMTETAGS.
+>> diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
+>> index a7bb20055ce0..ff0d9ceea2a4 100644
+>> --- a/arch/arm64/mm/copypage.c
+>> +++ b/arch/arm64/mm/copypage.c
+>> @@ -40,3 +40,48 @@ void copy_user_highpage(struct page *to, struct page *from,
+> 
+>> +
+>> +int copy_mc_user_highpage(struct page *to, struct page *from,
+>> +			unsigned long vaddr, struct vm_area_struct *vma)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = copy_mc_highpage(to, from);
+>> +	if (!ret)
+>> +		flush_dcache_page(to);
+> Personally I'd always keep the error out of line as it tends to be
+> more readable when reviewing a lot of code.
+> 	if (ret)
+> 		return ret;
+> 
+> 	flush_dcache_page(to);
+> 
+> 	return 0;
 
+This is more reasonable, and it is more readable to eliminate errors in
+time.
 
->
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_8000)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_80=
-00);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_11025)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_11=
-025);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_16000)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_16=
-000);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_22050)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_22=
-050);
->
-> missing 24 kHz
+Thanks,
+Tong.
 
-There is no SNDRV_PCM_RATE_24000 in ALSA.
-
->
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_32000)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_32=
-000);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_44100)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_44=
-100);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_48000)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_48=
-000);
->
-> missing 64kHz
-
-Yes, will add it.
-
-Best regards
-Shengjiu Wang
-
->
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_88200)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_88=
-200);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_96000)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_96=
-000);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_176400)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_17=
-6400);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_192000)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_19=
-2000);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_352800)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_35=
-2800);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_384000)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_38=
-4000);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_705600)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_70=
-5600);
-> > +     if (cap.rate_in & SNDRV_PCM_RATE_768000)
-> > +             rates[i++] =3D snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_76=
-8000);
-> > +
-> > +     pcm_for_each_format(k) {
-> > +             if (pcm_format_to_bits(k) & cap.fmt_in) {
-> > +                     codec->descriptor[j].max_ch =3D cap.chan_max;
-> > +                     memcpy(codec->descriptor[j].sample_rates, rates, =
-i * sizeof(__u32));
-> > +                     codec->descriptor[j].num_sample_rates =3D i;
-> > +                     codec->descriptor[j].formats =3D k;
-> > +                     j++;
-> > +             }
-> > +     }
-> > +
-> > +     codec->codec =3D SND_AUDIOCODEC_PCM;
-> > +     codec->num_descriptors =3D j;
-> > +     return 0;
->
->
+>> +
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_GPL(copy_mc_user_highpage);
+>> +#endif
+> 
+> .
 
