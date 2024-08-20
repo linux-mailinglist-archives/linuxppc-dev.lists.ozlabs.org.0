@@ -1,33 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-199-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-200-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A18957BB6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 05:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF78F957BB8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 05:04:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WnvQK3LM2z2xdX;
-	Tue, 20 Aug 2024 13:02:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WnvSK5PQsz2y34;
+	Tue, 20 Aug 2024 13:04:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.188
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=njMO9TNU;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnvQJ0J0Zz2xdR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 13:02:15 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WnvMr41ryzfbXX;
-	Tue, 20 Aug 2024 11:00:08 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (unknown [7.193.23.234])
-	by mail.maildlp.com (Postfix) with ESMTPS id 77715140138;
-	Tue, 20 Aug 2024 11:02:08 +0800 (CST)
-Received: from [10.174.179.234] (10.174.179.234) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 20 Aug 2024 11:02:06 +0800
-Message-ID: <8257d76b-c700-89a6-0e29-f194d2e1cd61@huawei.com>
-Date: Tue, 20 Aug 2024 11:02:05 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnvSK507zz2y2B
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 13:04:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1724123041;
+	bh=zOJXN3PPcGbNvywa22BP3hA8HhqWXwzidaOciMyqTGg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=njMO9TNUd8w07bVzEmCHfZBWYSHFjyDQ2Eh/HuPH3RNxwcPshGk1qDY4/FdJYJ2Di
+	 opc/M6BpX7Fjei0n1tUmLTA3yLAO2ChcYzonDX0byT6ostYCB+HDhBISTj+k13mcG0
+	 CIRNXv7/9MXxKMMJWUniI9jyX4zY2y48LannEJ0iYgO+IO6wnJzwXb0BJbOxf8bAEU
+	 1EjJOAY/9m5ew2WmEKgWYw10/1DfygMN0UymGJUMmTzj9NSxaWpEVvKq3zwMh5VAoe
+	 0JHKpadeR06QeaQ016L1Lton0Bx1AdktGOi1e1+nlXzYdwtLi9iExqJ4JP4D66QLsr
+	 qopox6JhliG1A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WnvSK3h96z4w2F;
+	Tue, 20 Aug 2024 13:04:01 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: cassel@kernel.org
+Cc: dlemoal@kernel.org,
+	linux-ide@vger.kernel.org,
+	<linux-kernel@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>,
+	<hch@lst.de>,
+	linux-ppc@kolla.no,
+	vidra@ufal.mff.cuni.cz
+Subject: [PATCH v2] ata: pata_macio: Fix DMA table overflow
+Date: Tue, 20 Aug 2024 13:03:58 +1000
+Message-ID: <20240820030358.627711-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -37,159 +57,116 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v12 4/6] arm64: support copy_mc_[user]_highpage()
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC: Mark Rutland <mark.rutland@arm.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
-	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
- Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
-	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
- Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
-	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mm@kvack.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-kernel@vger.kernel.org>, <wangkefeng.wang@huawei.com>, Guohanjun
-	<guohanjun@huawei.com>
-References: <20240528085915.1955987-1-tongtiangen@huawei.com>
- <20240528085915.1955987-5-tongtiangen@huawei.com>
- <20240819125601.0000687b@Huawei.com>
-From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <20240819125601.0000687b@Huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemm600017.china.huawei.com (7.193.23.234)
 
+Kolbjørn and Jonáš reported that their 32-bit PowerMacs were crashing
+in pata-macio since commit 09fe2bfa6b83 ("ata: pata_macio: Fix
+max_segment_size with PAGE_SIZE == 64K").
 
+For example:
 
-在 2024/8/19 19:56, Jonathan Cameron 写道:
-> On Tue, 28 May 2024 16:59:13 +0800
-> Tong Tiangen <tongtiangen@huawei.com> wrote:
-> 
->> Currently, many scenarios that can tolerate memory errors when copying page
->> have been supported in the kernel[1~5], all of which are implemented by
->> copy_mc_[user]_highpage(). arm64 should also support this mechanism.
->>
->> Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
->> architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
->> __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
->>
->> Add new helper copy_mc_page() which provide a page copy implementation with
->> hardware memory error safe. The code logic of copy_mc_page() is the same as
->> copy_page(), the main difference is that the ldp insn of copy_mc_page()
->> contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE, therefore, the
->> main logic is extracted to copy_page_template.S.
->>
->> [1] commit d302c2398ba2 ("mm, hwpoison: when copy-on-write hits poison, take page offline")
->> [2] commit 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
->> [3] commit 6b970599e807 ("mm: hwpoison: support recovery from ksm_might_need_to_copy()")
->> [4] commit 98c76c9f1ef7 ("mm/khugepaged: recover from poisoned anonymous memory")
->> [5] commit 12904d953364 ("mm/khugepaged: recover from poisoned file-backed memory")
->>
->> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
-> Trivial stuff inline.
-> 
-> Jonathan
+  kernel BUG at drivers/ata/pata_macio.c:544!
+  Oops: Exception in kernel mode, sig: 5 [#1]
+  BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 DEBUG_PAGEALLOC PowerMac
+  ...
+  NIP pata_macio_qc_prep+0xf4/0x190
+  LR  pata_macio_qc_prep+0xfc/0x190
+  Call Trace:
+    0xc1421660 (unreliable)
+    ata_qc_issue+0x14c/0x2d4
+    __ata_scsi_queuecmd+0x200/0x53c
+    ata_scsi_queuecmd+0x50/0xe0
+    scsi_queue_rq+0x788/0xb1c
+    __blk_mq_issue_directly+0x58/0xf4
+    blk_mq_plug_issue_direct+0x8c/0x1b4
+    blk_mq_flush_plug_list.part.0+0x584/0x5e0
+    __blk_flush_plug+0xf8/0x194
+    __submit_bio+0x1b8/0x2e0
+    submit_bio_noacct_nocheck+0x230/0x304
+    btrfs_work_helper+0x200/0x338
+    process_one_work+0x1a8/0x338
+    worker_thread+0x364/0x4c0
+    kthread+0x100/0x104
+    start_kernel_thread+0x10/0x14
 
-I'm sorry, I may not have understood what you meant. Where is the better
-place to do inline? :)
+That commit increased max_segment_size to 64KB, with the justification
+that the SCSI core was already using that size when PAGE_SIZE == 64KB,
+and that there was existing logic to split over-sized requests.
 
-Thanks,
-Tong.
+However with a sufficiently large request, the splitting logic causes
+each sg to be split into two commands in the DMA table, leading to
+overflow of the DMA table, triggering the BUG_ON().
 
-> 
-> 
->> diff --git a/arch/arm64/lib/mte.S b/arch/arm64/lib/mte.S
->> index 5018ac03b6bf..50ef24318281 100644
->> --- a/arch/arm64/lib/mte.S
->> +++ b/arch/arm64/lib/mte.S
->> @@ -80,6 +80,35 @@ SYM_FUNC_START(mte_copy_page_tags)
->>   	ret
->>   SYM_FUNC_END(mte_copy_page_tags)
->>   
->> +#ifdef CONFIG_ARCH_HAS_COPY_MC
->> +/*
->> + * Copy the tags from the source page to the destination one wiht machine check safe
-> Spell check.
-> with >
-> Also, maybe reword given machine check doesn't make sense on arm64.
+With default settings the bug doesn't trigger, because the request size
+is limited by max_sectors_kb == 1280, however max_sectors_kb can be
+increased, and apparently some distros do that by default using udev
+rules.
 
-OK.
+Fix the bug for 4KB kernels by reverting to the old max_segment_size.
 
-> 
-> 
->> + *   x0 - address of the destination page
->> + *   x1 - address of the source page
->> + * Returns:
->> + *   x0 - Return 0 if copy success, or
->> + *        -EFAULT if anything goes wrong while copying.
->> + */
->> +SYM_FUNC_START(mte_copy_mc_page_tags)
->> +	mov	x2, x0
->> +	mov	x3, x1
->> +	multitag_transfer_size x5, x6
->> +1:
->> +KERNEL_ME_SAFE(2f, ldgm	x4, [x3])
->> +	stgm	x4, [x2]
->> +	add	x2, x2, x5
->> +	add	x3, x3, x5
->> +	tst	x2, #(PAGE_SIZE - 1)
->> +	b.ne	1b
->> +
->> +	mov x0, #0
->> +	ret
->> +
->> +2:	mov x0, #-EFAULT
->> +	ret
->> +SYM_FUNC_END(mte_copy_mc_page_tags)
->> +#endif
->> +
->>   /*
->>    * Read tags from a user buffer (one tag per byte) and set the corresponding
->>    * tags at the given kernel address. Used by PTRACE_POKEMTETAGS.
->> diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
->> index a7bb20055ce0..ff0d9ceea2a4 100644
->> --- a/arch/arm64/mm/copypage.c
->> +++ b/arch/arm64/mm/copypage.c
->> @@ -40,3 +40,48 @@ void copy_user_highpage(struct page *to, struct page *from,
-> 
->> +
->> +int copy_mc_user_highpage(struct page *to, struct page *from,
->> +			unsigned long vaddr, struct vm_area_struct *vma)
->> +{
->> +	int ret;
->> +
->> +	ret = copy_mc_highpage(to, from);
->> +	if (!ret)
->> +		flush_dcache_page(to);
-> Personally I'd always keep the error out of line as it tends to be
-> more readable when reviewing a lot of code.
-> 	if (ret)
-> 		return ret;
-> 
-> 	flush_dcache_page(to);
-> 
-> 	return 0;
+For 64KB kernels the sg_tablesize needs to be halved, to allow for the
+possibility that each sg will be split into two.
 
-This is more reasonable, and it is more readable to eliminate errors in
-time.
+Fixes: 09fe2bfa6b83 ("ata: pata_macio: Fix max_segment_size with PAGE_SIZE == 64K")
+Cc: stable@vger.kernel.org # v6.10+
+Reported-by: Kolbjørn Barmen <linux-ppc@kolla.no>
+Closes: https://lore.kernel.org/all/62d248bb-e97a-25d2-bcf2-9160c518cae5@kolla.no/
+Reported-by: Jonáš Vidra <vidra@ufal.mff.cuni.cz>
+Closes: https://lore.kernel.org/all/3b6441b8-06e6-45da-9e55-f92f2c86933e@ufal.mff.cuni.cz/
+Tested-by: Kolbjørn Barmen <linux-ppc@kolla.no>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ drivers/ata/pata_macio.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-Thanks,
-Tong.
+v2: Namespace the defines as requested by Damien.
+    Tab align the defines.
 
->> +
->> +	return ret;
->> +}
->> +EXPORT_SYMBOL_GPL(copy_mc_user_highpage);
->> +#endif
-> 
-> .
+diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
+index 1b85e8bf4ef9..1cb8d24b088f 100644
+--- a/drivers/ata/pata_macio.c
++++ b/drivers/ata/pata_macio.c
+@@ -208,6 +208,19 @@ static const char* macio_ata_names[] = {
+ /* Don't let a DMA segment go all the way to 64K */
+ #define MAX_DBDMA_SEG		0xff00
+ 
++#ifdef CONFIG_PAGE_SIZE_64KB
++/*
++ * The SCSI core requires the segment size to cover at least a page, so
++ * for 64K page size kernels it must be at least 64K. However the
++ * hardware can't handle 64K, so pata_macio_qc_prep() will split large
++ * requests. To handle the split requests the tablesize must be halved.
++ */
++#define PATA_MACIO_MAX_SEGMENT_SIZE	SZ_64K
++#define PATA_MACIO_SG_TABLESIZE		(MAX_DCMDS / 2)
++#else
++#define PATA_MACIO_MAX_SEGMENT_SIZE	MAX_DBDMA_SEG
++#define PATA_MACIO_SG_TABLESIZE		MAX_DCMDS
++#endif
+ 
+ /*
+  * Wait 1s for disk to answer on IDE bus after a hard reset
+@@ -912,16 +925,10 @@ static int pata_macio_do_resume(struct pata_macio_priv *priv)
+ 
+ static const struct scsi_host_template pata_macio_sht = {
+ 	__ATA_BASE_SHT(DRV_NAME),
+-	.sg_tablesize		= MAX_DCMDS,
++	.sg_tablesize		= PATA_MACIO_SG_TABLESIZE,
+ 	/* We may not need that strict one */
+ 	.dma_boundary		= ATA_DMA_BOUNDARY,
+-	/*
+-	 * The SCSI core requires the segment size to cover at least a page, so
+-	 * for 64K page size kernels this must be at least 64K. However the
+-	 * hardware can't handle 64K, so pata_macio_qc_prep() will split large
+-	 * requests.
+-	 */
+-	.max_segment_size	= SZ_64K,
++	.max_segment_size	= PATA_MACIO_MAX_SEGMENT_SIZE,
+ 	.device_configure	= pata_macio_device_configure,
+ 	.sdev_groups		= ata_common_sdev_groups,
+ 	.can_queue		= ATA_DEF_QUEUE,
+-- 
+2.46.0
+
 
