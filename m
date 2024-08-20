@@ -1,12 +1,12 @@
-Return-Path: <linuxppc-dev+bounces-234-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-235-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEFC958D2F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 19:24:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC8D8958D31
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 19:24:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WpGYH29T5z2yF0;
-	Wed, 21 Aug 2024 03:24:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WpGYM6DQ3z2yFB;
+	Wed, 21 Aug 2024 03:24:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
@@ -15,27 +15,27 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WpGYH039Zz2xPL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 03:24:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WpGYM44q6z2xPL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 03:24:39 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WpGY62GD2z9sSN;
-	Tue, 20 Aug 2024 19:24:26 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4WpGY71bx2z9sSS;
+	Tue, 20 Aug 2024 19:24:27 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 8zCLHuRAKaCm; Tue, 20 Aug 2024 19:24:26 +0200 (CEST)
+	with ESMTP id tu6TzD-x1c7n; Tue, 20 Aug 2024 19:24:27 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WpGY55Xh8z9sSH;
-	Tue, 20 Aug 2024 19:24:25 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WpGY61HdGz9sSL;
+	Tue, 20 Aug 2024 19:24:26 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id AF5518B763;
-	Tue, 20 Aug 2024 19:24:25 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1A3468B763;
+	Tue, 20 Aug 2024 19:24:26 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id vu3ggRc7gXuk; Tue, 20 Aug 2024 19:24:25 +0200 (CEST)
+	with ESMTP id jmdP45moOtYi; Tue, 20 Aug 2024 19:24:26 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.232.72])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 51E698B778;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B04D88B779;
 	Tue, 20 Aug 2024 19:24:25 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: CASAUBON Jean Michel <jean-michel.casaubon@cs-soprasteria.com>,
@@ -45,9 +45,9 @@ To: CASAUBON Jean Michel <jean-michel.casaubon@cs-soprasteria.com>,
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 01/14] powerpc/8xx: Fix initial memory mapping
-Date: Tue, 20 Aug 2024 19:23:45 +0200
-Message-ID: <dac7a828d8497c4548c91840575a706657baa4f1.1724173828.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH 02/14] powerpc/8xx: Fix kernel vs user address comparison
+Date: Tue, 20 Aug 2024 19:23:46 +0200
+Message-ID: <3f574c9845ff0a023b46cb4f38d2c45aecd769bd.1724173828.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1724173828.git.christophe.leroy@csgroup.eu>
 References: <cover.1724173828.git.christophe.leroy@csgroup.eu>
@@ -60,42 +60,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724174647; l=1398; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=YSS0Z4TGY3GQo2hL9A1Rle4r3NsVDHe7D8HjYIEEHmg=; b=rJ+apkNytYuXWzZwrfzOPTHVel4446L8ztZ7RhbAawbvzWEAc9RqW4zTbHnviVla09/fj+Jun ZLC4A5NVQ13B5cqhq7Nc+1oaQqhvrMO6Dp7SKfdIrJUdSxWU56ZLA8N
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1724174647; l=1815; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=GdZ+0VQYJDu3Gg8OoQMg+XlUwHLS8ZqfF6MvJ1YHJUg=; b=8/VkCocG4o4yiXefQHWprZLN3lCfBtjDLldXwx0HPUQNWlHNjOdL5sTc6L4qBGXlaEt3V1w0k 2Aclqr+2B3LBmWPR4OvAaKUeFjkaOMEx6hJrEA0jo+3oXAH6qN+zgDq
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 
-Commit cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
-introduced an initial mapping of kernel TEXT using PAGE_KERNEL_TEXT,
-but the pages that contain kernel TEXT may also contain kernel RODATA,
-and depending on selected debug options PAGE_KERNEL_TEXT may be either
-RWX or ROX. RODATA must be writable during init because it also
-contains ro_after_init data.
+Since commit 9132a2e82adc ("powerpc/8xx: Define a MODULE area below
+kernel text"), module exec space is below PAGE_OFFSET so not only
+space above PAGE_OFFSET, but space above TASK_SIZE need to be seen
+as kernel space.
 
-So use PAGE_KERNEL_X instead to be sure it is RWX.
+Until now the problem went undetected because by default TASK_SIZE
+is 0x8000000 which means address space is determined by just
+checking upper address bit. But when TASK_SIZE is over 0x80000000,
+PAGE_OFFSET is used for comparison, leading to thinking module
+addresses are part of user space.
 
-Fixes: cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
+Fix it by using TASK_SIZE instead of PAGE_OFFSET for address
+comparison.
+
+Fixes: 9132a2e82adc ("powerpc/8xx: Define a MODULE area below kernel text")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/mm/nohash/8xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/head_8xx.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index 388bba0ab3e7..15d918dce27d 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -150,11 +150,11 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index ac74321b1192..c955a8196d55 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -41,12 +41,12 @@
+ #include "head_32.h"
  
- 	mmu_mapin_immr();
+ .macro compare_to_kernel_boundary scratch, addr
+-#if CONFIG_TASK_SIZE <= 0x80000000 && CONFIG_PAGE_OFFSET >= 0x80000000
++#if CONFIG_TASK_SIZE <= 0x80000000 && MODULES_VADDR >= 0x80000000
+ /* By simply checking Address >= 0x80000000, we know if its a kernel address */
+ 	not.	\scratch, \addr
+ #else
+ 	rlwinm	\scratch, \addr, 16, 0xfff8
+-	cmpli	cr0, \scratch, PAGE_OFFSET@h
++	cmpli	cr0, \scratch, TASK_SIZE@h
+ #endif
+ .endm
  
--	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_TEXT, true);
-+	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_X, true);
- 	if (debug_pagealloc_enabled_or_kfence()) {
- 		top = boundary;
- 	} else {
--		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_TEXT, true);
-+		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_X, true);
- 		mmu_mapin_ram_chunk(einittext8, top, PAGE_KERNEL, true);
- 	}
+@@ -404,7 +404,7 @@ FixupDAR:/* Entry point for dcbx workaround. */
+ 	mfspr	r10, SPRN_SRR0
+ 	mtspr	SPRN_MD_EPN, r10
+ 	rlwinm	r11, r10, 16, 0xfff8
+-	cmpli	cr1, r11, PAGE_OFFSET@h
++	cmpli	cr1, r11, TASK_SIZE@h
+ 	mfspr	r11, SPRN_M_TWB	/* Get level 1 table */
+ 	blt+	cr1, 3f
  
 -- 
 2.44.0
