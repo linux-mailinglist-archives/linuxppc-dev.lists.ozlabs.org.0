@@ -1,53 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-201-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-202-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79AD5957BBA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 05:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C066B957BFB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 05:46:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WnvSW2qByz2y7M;
-	Tue, 20 Aug 2024 13:04:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WnwNx6skvz2xSM;
+	Tue, 20 Aug 2024 13:46:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TJnLdl5U;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.35
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnvSW2fTjz2y7K
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 13:04:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1724123051;
-	bh=j18FxuxXXJMOWMGzYuy1XXaguXnu+CDqwsfolFW8yPw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=TJnLdl5UcrCgjvU63ZVQXCF1ofCK3w9mJviG/rZVuwaAKtp1bgOeSjdJuPFgUvgzd
-	 kemIcAHqMrerA8ismK8KmApQPIkw2nxB7cDrEHYsyGZTE7vsrrD4IiM8lEbWvSozDD
-	 tnNAwFAJyI3BzEtmBHy7U2wM1ABArdT+dpNj9s2vhxvNgbI3ZVU/PODux6ARuLkv1j
-	 3AiiO8CpBpsUo4O9btT75QT5k4oUD2+znRMOGncZOk8ijD/VO7dEva199QK8+VnfSo
-	 f9Jyt2CLYmoYMoXBY2c44T+oEvOJoh07i820ESWYCF9BCG1cwr2wnnS9UadvyY046p
-	 jq+DTGWWTamIw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WnvSW1SKXz4wd6;
-	Tue, 20 Aug 2024 13:04:11 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: cassel@kernel.org
-Cc: dlemoal@kernel.org,
-	linux-ide@vger.kernel.org,
-	<linux-kernel@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>,
-	<hch@lst.de>,
-	linux-ppc@kolla.no,
-	vidra@ufal.mff.cuni.cz
-Subject: [PATCH v2] ata: pata_macio: Use WARN instead of BUG
-Date: Tue, 20 Aug 2024 13:04:07 +1000
-Message-ID: <20240820030407.627785-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.46.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WnwNw2ySHz2xQH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 13:46:02 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4WnwGt5vK8z1S8KR;
+	Tue, 20 Aug 2024 11:40:54 +0800 (CST)
+Received: from kwepemm600017.china.huawei.com (unknown [7.193.23.234])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7B09814035E;
+	Tue, 20 Aug 2024 11:45:54 +0800 (CST)
+Received: from [10.174.179.234] (10.174.179.234) by
+ kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 20 Aug 2024 11:45:52 +0800
+Message-ID: <9e27aeee-0e2d-7034-5afc-42f2f14eb02b@huawei.com>
+Date: Tue, 20 Aug 2024 11:45:51 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,50 +37,70 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v12 6/6] arm64: send SIGBUS to user process for SEA
+ exception
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+CC: Mark Rutland <mark.rutland@arm.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
+	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
+	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
+ Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
+	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mm@kvack.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>, <wangkefeng.wang@huawei.com>, Guohanjun
+	<guohanjun@huawei.com>
+References: <20240528085915.1955987-1-tongtiangen@huawei.com>
+ <20240528085915.1955987-7-tongtiangen@huawei.com>
+ <20240819130809.0000731c@Huawei.com>
+From: Tong Tiangen <tongtiangen@huawei.com>
+In-Reply-To: <20240819130809.0000731c@Huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.179.234]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemm600017.china.huawei.com (7.193.23.234)
 
-The overflow/underflow conditions in pata_macio_qc_prep() should never
-happen. But if they do there's no need to kill the system entirely, a
-WARN and failing the IO request should be sufficient and might allow the
-system to keep running.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- drivers/ata/pata_macio.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
 
-v2: Use AC_ERR_SYSTEM as suggested by Damien.
+在 2024/8/19 20:08, Jonathan Cameron 写道:
+> On Tue, 28 May 2024 16:59:15 +0800
+> Tong Tiangen <tongtiangen@huawei.com> wrote:
+> 
+>> For SEA exception, kernel require take some action to recover from memory
+>> error, such as isolate poison page adn kill failure thread, which are done
+>> in memory_failure().
+>>
+>> During our test, the failure thread cannot be killed due to this issue[1],
+>> Here, I temporarily workaround this issue by sending signals to user
+>> processes in do_sea(). After [1] is merged, this patch can be rolled back
+>> or the SIGBUS will be sent repeated.
+>>
+>> [1]https://lore.kernel.org/lkml/20240204080144.7977-1-xueshuai@linux.alibaba.com/
+> What's the status of that one?  Seems better to help get that in than
+> carry this.
+> 
+> Jonathan
+> .
 
-diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-index 1cb8d24b088f..f2f36e55a1f4 100644
---- a/drivers/ata/pata_macio.c
-+++ b/drivers/ata/pata_macio.c
-@@ -554,7 +554,8 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
- 
- 		while (sg_len) {
- 			/* table overflow should never happen */
--			BUG_ON (pi++ >= MAX_DCMDS);
-+			if (WARN_ON_ONCE(pi >= MAX_DCMDS))
-+				return AC_ERR_SYSTEM;
- 
- 			len = (sg_len < MAX_DBDMA_SEG) ? sg_len : MAX_DBDMA_SEG;
- 			table->command = cpu_to_le16(write ? OUTPUT_MORE: INPUT_MORE);
-@@ -566,11 +567,13 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
- 			addr += len;
- 			sg_len -= len;
- 			++table;
-+			++pi;
- 		}
- 	}
- 
- 	/* Should never happen according to Tejun */
--	BUG_ON(!pi);
-+	if (WARN_ON_ONCE(!pi))
-+		return AC_ERR_SYSTEM;
- 
- 	/* Convert the last command to an input/output */
- 	table--;
--- 
-2.46.0
+That patch set has not been incorporated yet. The latest one is still
+v11.
+
+The consideration here was to ensure the functional integrity of
+this feature. Considering that this may cause confusion, it is not
+appropriate to make this temporary modification here. Otherwise, this
+patch will not be included.  Related impacts are described in patch 0.
+
+Thanks,
+Tong.
+
 
 
