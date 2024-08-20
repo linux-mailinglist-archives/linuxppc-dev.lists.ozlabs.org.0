@@ -1,12 +1,12 @@
-Return-Path: <linuxppc-dev+bounces-242-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-243-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99FFE958D3E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 19:25:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1EF958D41
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 19:25:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WpGYv0nxqz2yLC;
-	Wed, 21 Aug 2024 03:25:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WpGYz26G6z2yMB;
+	Wed, 21 Aug 2024 03:25:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
@@ -15,27 +15,27 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WpGYt5pvWz2yF7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 03:25:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WpGYy72Pnz2yF7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 03:25:10 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WpGYH10g7z9sST;
-	Tue, 20 Aug 2024 19:24:35 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4WpGYJ5wD8z9sSN;
+	Tue, 20 Aug 2024 19:24:36 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id R--vwrYBHKFw; Tue, 20 Aug 2024 19:24:35 +0200 (CEST)
+	with ESMTP id jYC3KazUz0SB; Tue, 20 Aug 2024 19:24:36 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WpGY90Wn0z9sSX;
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WpGY93PQSz9sSR;
 	Tue, 20 Aug 2024 19:24:29 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id F2F158B779;
-	Tue, 20 Aug 2024 19:24:28 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5F28B8B779;
+	Tue, 20 Aug 2024 19:24:29 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id SgMwWgLloowk; Tue, 20 Aug 2024 19:24:28 +0200 (CEST)
+	with ESMTP id Vlae5TXNcBvg; Tue, 20 Aug 2024 19:24:29 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.232.72])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8AFD18B778;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id ED6048B763;
 	Tue, 20 Aug 2024 19:24:28 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: CASAUBON Jean Michel <jean-michel.casaubon@cs-soprasteria.com>,
@@ -45,9 +45,9 @@ To: CASAUBON Jean Michel <jean-michel.casaubon@cs-soprasteria.com>,
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 09/14] powerpc/8xx: Inconditionally use task PGDIR in DTLB misses
-Date: Tue, 20 Aug 2024 19:23:53 +0200
-Message-ID: <7a76a923d2a111f1d843d8b20b4df0c65d2f4a7b.1724173828.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH 10/14] powerpc/32s: Reduce default size of module/execmem area
+Date: Tue, 20 Aug 2024 19:23:54 +0200
+Message-ID: <c1f6a4e47f177d919561c6e97d31af5564923cf6.1724173828.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1724173828.git.christophe.leroy@csgroup.eu>
 References: <cover.1724173828.git.christophe.leroy@csgroup.eu>
@@ -60,134 +60,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724174648; l=4030; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=r7hgp5a1WbmT5mtWsfG22jTzXMvaQbiUDa0bT4sYRAY=; b=9cw+ytRAHbp5kWvJTpij8S81pfY0dVYt82UU1oClVTMrjDPYSayaMH+aFGOknPNIF4O+UnmU9 1f1wnW9ZPsDCe7phDD5XXUKIangM75jNG6+lTbkDuYwtOnYI1PYryw9
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1724174648; l=2777; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=xWISBC+HZWeT+7sbGlnxkJbaWSL3lIRYp+GxGM24Vcg=; b=kl41C2bw6SknVBYORtjtyT4TK5guk8amlM2kC6nD+cBMDdY5JPuMyrMx6uW/X1VTbQHkdYJqD MElanox8PKuBTBOwm2J9AAeiZQGs4MpOB9eRDFl+xikZxgGIAlThajr
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 
-At the time being, DATA TLB miss handlers use task PGDIR for user
-addresses and swapper_pg_dir for kernel addresses.
+book3s/32 platforms have usually more memory than 8xx, but it is still
+not worth reserving a full segment (256 Mbytes) for module text.
+64Mbytes should be far enough.
 
-Now that kernel part of swapper_pg_dir is copied into task PGDIR
-at PGD allocation, it is possible to avoid the above logic and
-always use task PGDIR.
-
-But new kernel PGD entries can still be created after init, in
-which case those PGD entries may miss in task PGDIR. This can be
-handled in DATA TLB error handler.
-
-However, it needs to be done in real mode because the missing
-entry might be related to the stack.
-
-So implement copy of missing PGD entry in the prolog of DATA TLB
-ERROR handler just after the fixup of DAR.
-
-Note that this is feasible because 8xx doesn't implement vmap or
-ioremap with 8Mbytes pages but only 512kbytes pages which are at
-PTE level.
+Also fix TASK_SIZE when EXECMEM is not selected, and add a build
+verification for overlap of module execmem space with user segments.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/head_8xx.S | 57 ++++++++++++++++++++--------------
- 1 file changed, 34 insertions(+), 23 deletions(-)
+ arch/powerpc/Kconfig                         | 7 ++++---
+ arch/powerpc/include/asm/book3s/32/pgtable.h | 3 ++-
+ arch/powerpc/mm/book3s32/mmu.c               | 2 ++
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index f9a05648a522..811a7130505c 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -40,16 +40,6 @@
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index f050a37aa857..b9f11c262582 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -1269,23 +1269,24 @@ config TASK_SIZE_BOOL
+ config TASK_SIZE
+ 	hex "Size of user task space" if TASK_SIZE_BOOL
+ 	default "0x80000000" if PPC_8xx
+-	default "0xb0000000" if PPC_BOOK3S_32
++	default "0xb0000000" if PPC_BOOK3S_32 && EXECMEM
+ 	default "0xc0000000"
  
- #include "head_32.h"
+ config MODULES_SIZE_BOOL
+ 	bool "Set custom size for modules/execmem area"
+ 	depends on EXECMEM && ADVANCED_OPTIONS
+-	depends on PPC_8xx
+ 	help
+ 	  This option allows you to set the size of kernel virtual address
+ 	  space dedicated for modules/execmem.
+-	  For the time being it is only for 8xx.
++	  For the time being it is only for 8xx and book3s/32. Other
++	  platform share it with vmalloc space.
  
--.macro compare_to_kernel_boundary scratch, addr
--#if CONFIG_TASK_SIZE <= 0x80000000 && MODULES_VADDR >= 0x80000000
--/* By simply checking Address >= 0x80000000, we know if its a kernel address */
--	not.	\scratch, \addr
--#else
--	rlwinm	\scratch, \addr, 16, 0xfff8
--	cmpli	cr0, \scratch, TASK_SIZE@h
--#endif
--.endm
--
- #define PAGE_SHIFT_512K		19
- #define PAGE_SHIFT_8M		23
+ 	  Say N here unless you know what you are doing.
  
-@@ -237,19 +227,12 @@ instruction_counter:
- 	START_EXCEPTION(INTERRUPT_DATA_TLB_MISS_8xx, DataStoreTLBMiss)
- 	mtspr	SPRN_SPRG_SCRATCH2, r10
- 	mtspr	SPRN_M_TW, r11
--	mfcr	r11
+ config MODULES_SIZE
+ 	int "Size of modules/execmem area (In Mbytes)" if MODULES_SIZE_BOOL
+ 	range 1 256 if EXECMEM
++	default 64 if EXECMEM && PPC_BOOK3S_32
+ 	default 32 if EXECMEM && PPC_8xx
+ 	default 0
  
- 	/* If we are faulting a kernel address, we have to use the
- 	 * kernel page tables.
- 	 */
- 	mfspr	r10, SPRN_MD_EPN
--	compare_to_kernel_boundary r10, r10
- 	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
--	blt+	3f
--	rlwinm	r10, r10, 0, 20, 31
--	oris	r10, r10, (swapper_pg_dir - PAGE_OFFSET)@ha
--3:
--	mtcr	r11
- 	lwz	r11, (swapper_pg_dir-PAGE_OFFSET)@l(r10)	/* Get level 1 entry */
+diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
+index 52971ee30717..42c3af90d1f0 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+@@ -196,7 +196,8 @@ void unmap_kernel_page(unsigned long va);
+ #endif
  
- 	mtspr	SPRN_MD_TWC, r11
-@@ -321,15 +304,19 @@ instruction_counter:
- 	cmpwi	cr1, r11, RPN_PATTERN
- 	beq-	cr1, FixupDAR	/* must be a buggy dcbX, icbi insn. */
- DARFixed:/* Return from dcbx instruction bug workaround */
-+	mfspr	r11, SPRN_DSISR
-+	rlwinm	r11, r11, 0, DSISR_NOHPTE
-+	cmpwi	cr1, r11, 0
-+	beq+	cr1, .Ldtlbie
-+	mfspr	r11, SPRN_DAR
-+	tlbie	r11
-+	rlwinm	r11, r11, 16, 0xffff
-+	cmplwi	cr1, r11, TASK_SIZE@h
-+	bge-	cr1, FixupPGD
-+.Ldtlbie:
- 	EXCEPTION_PROLOG_1
- 	/* 0x300 is DataAccess exception, needed by bad_page_fault() */
- 	EXCEPTION_PROLOG_2 INTERRUPT_DATA_STORAGE DataTLBError handle_dar_dsisr=1
--	lwz	r4, _DAR(r11)
--	lwz	r5, _DSISR(r11)
--	andis.	r10,r5,DSISR_NOHPTE@h
--	beq+	.Ldtlbie
--	tlbie	r4
--.Ldtlbie:
- 	prepare_transfer_to_handler
- 	bl	do_page_fault
- 	b	interrupt_return
-@@ -383,6 +370,30 @@ DARFixed:/* Return from dcbx instruction bug workaround */
- 	__HEAD
- 	. = 0x2000
+ #define MODULES_END	ALIGN_DOWN(PAGE_OFFSET, SZ_256M)
+-#define MODULES_VADDR	(MODULES_END - SZ_256M)
++#define MODULES_SIZE	(CONFIG_MODULES_SIZE * SZ_1M)
++#define MODULES_VADDR	(MODULES_END - MODULES_SIZE)
  
-+FixupPGD:
-+	mtspr	SPRN_M_TW, r10
-+	mfspr	r10, SPRN_DAR
-+	mtspr	SPRN_MD_EPN, r10
-+	mfspr	r11, SPRN_M_TWB	/* Get level 1 table */
-+	lwz	r10, (swapper_pg_dir - PAGE_OFFSET)@l(r11)	/* Get the level 1 entry */
-+	cmpwi	cr1, r10, 0
-+	bne	cr1, 1f
+ #ifndef __ASSEMBLY__
+ #include <linux/sched.h>
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+index 625fe7d08e06..2db167f4233f 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -223,6 +223,8 @@ int mmu_mark_initmem_nx(void)
+ 
+ 	update_bats();
+ 
++	BUILD_BUG_ON(ALIGN_DOWN(MODULES_VADDR, SZ_256M) < TASK_SIZE);
 +
-+	rlwinm	r10, r11, 0, 20, 31
-+	oris	r10, r10, (swapper_pg_dir - PAGE_OFFSET)@ha
-+	lwz	r10, (swapper_pg_dir - PAGE_OFFSET)@l(r10)	/* Get the level 1 entry */
-+	cmpwi	cr1, r10, 0
-+	beq	cr1, 1f
-+	stw	r10, (swapper_pg_dir - PAGE_OFFSET)@l(r11)	/* Set the level 1 entry */
-+	mfspr	r10, SPRN_M_TW
-+	mtcr	r10
-+	mfspr	r10, SPRN_SPRG_SCRATCH0
-+	mfspr	r11, SPRN_SPRG_SCRATCH1
-+	rfi
-+1:
-+	mfspr	r10, SPRN_M_TW
-+	b	.Ldtlbie
-+
- /* This is the procedure to calculate the data EA for buggy dcbx,dcbi instructions
-  * by decoding the registers used by the dcbx instruction and adding them.
-  * DAR is set to the calculated address.
+ 	for (i = TASK_SIZE >> 28; i < 16; i++) {
+ 		/* Do not set NX on VM space for modules */
+ 		if (is_module_segment(i << 28))
 -- 
 2.44.0
 
