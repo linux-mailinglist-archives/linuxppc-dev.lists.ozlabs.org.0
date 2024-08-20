@@ -1,53 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-206-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-207-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9132957ED4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 08:59:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10694957EDE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 08:59:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wp0gm4W6Rz2xtb;
-	Tue, 20 Aug 2024 16:59:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wp0hJ6rJVz2y65;
+	Tue, 20 Aug 2024 16:59:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.13
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Oux/u/lB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JMSYU355;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=pierre-louis.bossart@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wp0gk35r0z2xZK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 16:59:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724137154; x=1755673154;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=NcREdHOzn6eEuhanW6i690bjb9VwRs6u8txLft1j9/Q=;
-  b=Oux/u/lBjQnh5oAc1VC0NCM3VuAkF2ieTccgpYuOnkUpfYnEv3DnmJGK
-   lQFtjwCUX9bFC0Gh7G/cvnsicl+dRRMAvnKA0OShtGYoJTTboDpXP7Jm3
-   jox5/I5hFtjkMsthQKBSkhtuuFnhgv7KOnM9/GSs/zOOppX+mqEVkyaVd
-   7vP7zDefASQ0B3t1SV3uhqSv3D1fD4vGqM/ZEiLG5VbA7qZGv854/S6kX
-   cLHFYwoCpvnVe9tOacVCFip6hmUvOGtX3WC1Mnin6RmoWz6to+sb08sno
-   /1Xw3d+jfMvE3cSEP06b/6YG7EDgZlQSJyoMeaEz9MaY3m6UztcAyACUw
-   g==;
-X-CSE-ConnectionGUID: sRQEufISRbWvUoLOxpoTeg==
-X-CSE-MsgGUID: buF/zzBTQRGwD8xri6XOrQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="25317857"
-X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
-   d="scan'208";a="25317857"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 23:59:10 -0700
-X-CSE-ConnectionGUID: HkwFrFwHTIadBOLDMsLoOQ==
-X-CSE-MsgGUID: kQY+sT18QaiAKg8czy5lKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
-   d="scan'208";a="61179403"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO [10.245.246.176]) ([10.245.246.176])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 23:59:07 -0700
-Message-ID: <ceb54a27-144b-40ed-8de5-482f2b0664a0@linux.intel.com>
-Date: Tue, 20 Aug 2024 08:59:04 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wp0hJ3l4Mz2xZK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 16:59:44 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47K5CZAn005691;
+	Tue, 20 Aug 2024 06:59:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	WmlonqLv35QFxoAoTCyfWWZsPXxTWOZRBIQWAVtB2eM=; b=JMSYU355BB61dWVa
+	jrhqSjan58zMNJ+rEXDi/PdUtT/01ShVUm8PkTV1rVATTnLoEAgtQ80Zq+4hAUG+
+	Sux26IQjN0AL+Fd0Mq4f3qdLqm45kMnoBP13onJUnLRJQcdTxhZpMa6cQhtVaqmg
+	8SOFV30YjvD8IJth9ugseVC/CLhRt+cKeyhyITDXYURVjKPLDaMjTnG8EiHNFfP8
+	BGLi2B+1xGfuc/+g/FVV7N/pqlQv60EdrZknfs4NPCkDwVoS7N+YQPix4J//8b0N
+	2QHFI5WMmjBcT+5buiVoFREG4hJwWFkcVvGUDu4K3i5XWDsvCKxljNsoX5IAeH38
+	qm3X6A==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412mc4kx8m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Aug 2024 06:59:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47K3S6Xf029225;
+	Tue, 20 Aug 2024 06:59:39 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4138dm9fgp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Aug 2024 06:59:38 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47K6xXuO54002016
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Aug 2024 06:59:35 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6FCC92004B;
+	Tue, 20 Aug 2024 06:59:33 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A787420040;
+	Tue, 20 Aug 2024 06:59:32 +0000 (GMT)
+Received: from [9.203.115.143] (unknown [9.203.115.143])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Aug 2024 06:59:32 +0000 (GMT)
+Message-ID: <7298fbe0-5f1d-4933-b766-a4bd0fc05735@linux.ibm.com>
+Date: Tue, 20 Aug 2024 12:29:31 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/5] powerpc/64: Convert patch_instruction() to
+ patch_u32()
+To: Benjamin Gray <bgray@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Naveen N Rao <naveen@kernel.org>
+References: <20240515024445.236364-1-bgray@linux.ibm.com>
+ <20240515024445.236364-4-bgray@linux.ibm.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <20240515024445.236364-4-bgray@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -6ZmMqwQVbUgQ2yvgx_c1xwbH-taoEp8
+X-Proofpoint-GUID: -6ZmMqwQVbUgQ2yvgx_c1xwbH-taoEp8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,151 +83,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 4/6] ASoC: fsl_asrc_m2m: Add memory to memory
- function
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, perex@perex.cz,
- tiwai@suse.com, alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com,
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <1723804959-31921-1-git-send-email-shengjiu.wang@nxp.com>
- <1723804959-31921-5-git-send-email-shengjiu.wang@nxp.com>
- <6d83cd58-5f02-414b-b627-a0022e071052@linux.intel.com>
- <CAA+D8ANDAxS42=9zOLQY_h_ihvJCmaXzE+_iZyxbSuikqt1CBw@mail.gmail.com>
-Content-Language: en-US
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <CAA+D8ANDAxS42=9zOLQY_h_ihvJCmaXzE+_iZyxbSuikqt1CBw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-19_16,2024-08-19_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ clxscore=1011 priorityscore=1501 mlxlogscore=999 adultscore=0 phishscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408200048
 
 
 
-On 8/20/24 04:53, Shengjiu Wang wrote:
-> On Mon, Aug 19, 2024 at 3:42 PM Pierre-Louis Bossart
-> <pierre-louis.bossart@linux.intel.com> wrote:
->>
->>
->>
->> On 8/16/24 12:42, Shengjiu Wang wrote:
->>> Implement the ASRC memory to memory function using
->>> the compress framework, user can use this function with
->>> compress ioctl interface.
->>>
->>> Define below private metadata key value for output
->>> format, output rate and ratio modifier configuration.
->>> ASRC_OUTPUT_FORMAT 0x80000001
->>> ASRC_OUTPUT_RATE   0x80000002
->>> ASRC_RATIO_MOD     0x80000003
->>
->> Can the output format/rate change at run-time?
+On 15/05/24 8:14 am, Benjamin Gray wrote:
+> This use of patch_instruction() is working on 32 bit data, and can fail
+> if the data looks like a prefixed instruction and the extra write
+> crosses a page boundary. Use patch_u32() to fix the write size.
 > 
-> Seldom I think.
+> Fixes: 8734b41b3efe ("powerpc/module_64: Fix livepatching for RO modules")
+> Link: https://lore.kernel.org/all/20230203004649.1f59dbd4@yea/
+> Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+
+Tested-by: Hari Bathini <hbathini@linux.ibm.com>
+
 > 
->>
->> If no, then these parameters should be moved somewhere else - e.g.
->> hw_params or something.
+> ---
 > 
-> This means I will do some changes in compress_params.h, add
-> output format and output rate definition, follow Jaroslav's example
-> right?
-
-yes, having parameters for the PCM case would make sense.
-
->> I am still not very clear on the expanding the SET_METADATA ioctl to
->> deal with the ratio changes. This isn't linked to the control layer as
->> suggested before, and there's no precedent of calling it multiple times
->> during streaming.
+> v2: * Added the fixes tag, it seems appropriate even if the subject does
+>        mention a more robust solution being required.
 > 
-> Which control layer? if you means the snd_kcontrol_new?  it is bound
-> with sound card,  but in my case,  I need to the control bind with
-> the snd_compr_stream to support multi streams/instances.
-
-I can only quote Jaroslav's previous answer:
-
-"
-This argument is not valid. The controls are bound to the card, but the
-element identifiers have already iface (interface), device and subdevice
-numbers. We are using controls for PCM devices for example. The binding
-is straight.
-
-Just add SNDRV_CTL_ELEM_IFACE_COMPRESS define and specify the compress
-device number in the 'struct snd_ctl_elem_id'.
-"
-
->> I also wonder how it was tested since tinycompress does not support this?
+> patch_u64() should be more efficient, but judging from the bug report
+> it doesn't seem like the data is doubleword aligned.
+> ---
+>   arch/powerpc/kernel/module_64.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> I wrote a unit test to test these ASRC M2M functions.
-
-This should be shared IMHO, usually when we add/extend a new interface
-it's best to have a userspace test program that can be used by others.
-
->>> +static int fsl_asrc_m2m_fill_codec_caps(struct fsl_asrc *asrc,
->>> +                                     struct snd_compr_codec_caps *codec)
->>> +{
->>> +     struct fsl_asrc_m2m_cap cap;
->>> +     __u32 rates[MAX_NUM_BITRATES];
->>> +     snd_pcm_format_t k;
->>> +     int i = 0, j = 0;
->>> +     int ret;
->>> +
->>> +     ret = asrc->m2m_get_cap(&cap);
->>> +     if (ret)
->>> +             return -EINVAL;
->>> +
->>> +     if (cap.rate_in & SNDRV_PCM_RATE_5512)
->>> +             rates[i++] = snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_5512);
->>
->> this doesn't sound compatible with the patch2 definitions?
->>
->> cap->rate_in = SNDRV_PCM_RATE_8000_768000;
-> 
-> This ASRC M2M driver is designed for two kinds of hw ASRC modules.
-> 
-> one cap is : cap->rate_in = SNDRV_PCM_RATE_8000_192000 | SNDRV_PCM_RATE_5512;
-> another is : cap->rate_in = SNDRV_PCM_RATE_8000_768000;
-> they are in patch2 and patch3
-> 
-> 
->>
->>> +     if (cap.rate_in & SNDRV_PCM_RATE_8000)
->>> +             rates[i++] = snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_8000);
->>> +     if (cap.rate_in & SNDRV_PCM_RATE_11025)
->>> +             rates[i++] = snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_11025);
->>> +     if (cap.rate_in & SNDRV_PCM_RATE_16000)
->>> +             rates[i++] = snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_16000);
->>> +     if (cap.rate_in & SNDRV_PCM_RATE_22050)
->>> +             rates[i++] = snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_22050);
->>
->> missing 24 kHz
-> 
-> There is no SNDRV_PCM_RATE_24000 in ALSA.
-
-Right, but that doesn't mean 24kHz cannot be supported. We use
-constraints in those cases. see quote from Takashi found with a 2s
-Google search
-
-https://mailman.alsa-project.org/pipermail/alsa-devel/2013-November/069356.html
-
-"
-CONTINUOUS means that any rate between the specified min and max is
-fine, if no min or max is specified any rate is fine. KNOT means there
-are rates supported other than the standard rates defines by ALSA, but
-the other rates are enumerable. You'd typically specify them by
-explicitly listing them all and use a list constraint or you'd use one
-of the ratio constraints.
-"
-
->>> +     if (cap.rate_in & SNDRV_PCM_RATE_32000)
->>> +             rates[i++] = snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_32000);
->>> +     if (cap.rate_in & SNDRV_PCM_RATE_44100)
->>> +             rates[i++] = snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_44100);
->>> +     if (cap.rate_in & SNDRV_PCM_RATE_48000)
->>> +             rates[i++] = snd_pcm_rate_bit_to_rate(SNDRV_PCM_RATE_48000);
->>
->> missing 64kHz
-> 
-> Yes, will add it.
-
+> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+> index 7112adc597a8..e9bab599d0c2 100644
+> --- a/arch/powerpc/kernel/module_64.c
+> +++ b/arch/powerpc/kernel/module_64.c
+> @@ -651,12 +651,11 @@ static inline int create_stub(const Elf64_Shdr *sechdrs,
+>   	// func_desc_t is 8 bytes if ABIv2, else 16 bytes
+>   	desc = func_desc(addr);
+>   	for (i = 0; i < sizeof(func_desc_t) / sizeof(u32); i++) {
+> -		if (patch_instruction(((u32 *)&entry->funcdata) + i,
+> -				      ppc_inst(((u32 *)(&desc))[i])))
+> +		if (patch_u32(((u32 *)&entry->funcdata) + i, ((u32 *)&desc)[i]))
+>   			return 0;
+>   	}
+>   
+> -	if (patch_instruction(&entry->magic, ppc_inst(STUB_MAGIC)))
+> +	if (patch_u32(&entry->magic, STUB_MAGIC))
+>   		return 0;
+>   
+>   	return 1;
 
