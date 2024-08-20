@@ -1,50 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-218-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38653958128
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 10:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 462709581BE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 11:13:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wp2wz24qtz2y8t;
-	Tue, 20 Aug 2024 18:40:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wp3fl6Jf0z2y8d;
+	Tue, 20 Aug 2024 19:13:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=43.154.197.177
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wp2wy22FDz2xTP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 18:40:49 +1000 (AEST)
-X-QQ-GoodBg: 2
-X-BAN-DOWNLOAD: 1
-X-BAN-SHARE: 1
-X-QQ-SSF: 0040000000000060
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-X-QQ-XMAILINFO: M182XWJxg1fqkeCHXcFuU09frtMUULZ0MaqM3XcvWglL/SNCIn4X4C5i
-	afgSXHLU6qHGNABawMPU0vMJqgX4LO/8Iyu2JiXXPh/Pyba/nXdfwIf5EwGyMMquGaWyKGK
-	CmWbrpPRkOrVRHoRaxl5tRqK+knenxQcgbjU8o8ANs3yuPc/UmkTsPL474UqxwveOMjKUfv
-	8OOE57iOpclhbqAM+Vt0fyBG7WeaUD/6zG98UBpP8/wQNMa98hV7rDjpjh/Oh85jKgvxg9o
-	BJmthFEf+xtx7GYt+vu+km3ISjMRxY+llVfnE0Abx3lEyNS7ptSivZd2HaNimIStZKg8e+F
-	wDtPCoiayR5yC3EC9ZJUL2LVrci/ZHwlfG374Emm/qWbAtfGfpVZXvv1IUJq0ZxkUtnkq3U
-	jupOWY17mztW7SUd0ZaUpW68lKcN6MnQ7JsRBrccftk5KyiJQ4VTS+eYZF1cY1b8/pSAkJ7
-	YwjJ641QkaHZEJy54S4ozuqFXffGmV5vxFPLUWtRA7ofyi/MgmmJdHLHacCkWJd1hguE64T
-	AQh1hXHoPLiB7QoOGVVi3jLA2Tysr6WNBKj6F2KPYbgYshaWqCI8xgsPbhsJ3YY4oiVH74N
-	uxQ+FJLilVhsfb+0VJ2DdOjWgti4ApOONSR3VdVDgsmo3qDWQPE+J4wG97GOEhamHwz6TCs
-	uek1UYSLp3XZUb4/WJjgdk4S/0wJ3EzJUcwF5SDOAbGub8TwvBRUMUcf55y1DfAqcFDWEdw
-	glG+k5yqCLFyzHKq2UUsmYopVxHUj1O3UMrYXPKukX97dsxMvxHeeHCqIdxdICLm5EMnOT8
-	FCKdu3JMMX8mktRXI53lL/UhJmTmnGnHsxYbMLSA/sIjBzu5IhPT9fZ8VBzNNqQA2dM3DZF
-	9szukHnL9vJ68iHyVafdw2Sz/Tby/C6mbgEwfdgae78=
-X-QQ-FEAT: D4aqtcRDiqQpBpTnjIJt3/f21w9WO3enREO5ZSgO7MU=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: lFkxqPXh3S/0Pf4K1iJmFxnSPRb+lBb9yTctK+cG1sg=
-X-Originating-IP: 58.34.222.244
-X-QQ-STYLE: 
-X-QQ-mid: t6gz5a-0t1724142757t2557965
-From: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>
-To: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>, "=?utf-8?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bXBl?=" <mpe@ellerman.id.au>, "=?utf-8?B?bnBpZ2dpbg==?=" <npiggin@gmail.com>, "=?utf-8?B?Y2hyaXN0b3BoZS5sZXJveQ==?=" <christophe.leroy@csgroup.eu>
-Cc: "=?utf-8?B?bHVtaW5nLnl1?=" <luming.yu@gmail.com>, "=?utf-8?B?c2hlbmdodWkucXU=?=" <shenghui.qu@shingroup.cn>, "=?utf-8?B?5p2o5L2z6b6Z?=" <jialong.yang@shingroup.cn>
-Subject: Re:[PATCH v1] powerpc/powernv/pci: fix PE in re-used pci_dn for pnv_pci_enable_device_hook
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wp3fl0Bd0z2y33
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 19:13:32 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB16ADA7;
+	Tue, 20 Aug 2024 02:13:25 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3BA6B3F66E;
+	Tue, 20 Aug 2024 02:12:55 -0700 (PDT)
+Date: Tue, 20 Aug 2024 10:12:47 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Tong Tiangen <tongtiangen@huawei.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Morse <james.morse@arm.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	wangkefeng.wang@huawei.com, Guohanjun <guohanjun@huawei.com>
+Subject: Re: [PATCH v12 2/6] arm64: add support for ARCH_HAS_COPY_MC
+Message-ID: <ZsReD722byCipuNm@J2N7QTR9R3>
+References: <20240528085915.1955987-1-tongtiangen@huawei.com>
+ <20240528085915.1955987-3-tongtiangen@huawei.com>
+ <ZsOA8WD_5Sp0DJhS@J2N7QTR9R3.cambridge.arm.com>
+ <4436d172-c474-8ecd-b5e4-4c21088baf49@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,144 +59,169 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Tue, 20 Aug 2024 16:32:37 +0800
-X-Priority: 3
-Message-ID: <tencent_397B5F5A0D70DCAC310E5AD3@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <7E99D8C8296BB626+20231128064339.5038-1-luming.yu@shingroup.cn>
-	<tencent_67BBC4A3751146667FF14C21@qq.com>
-In-Reply-To: <tencent_67BBC4A3751146667FF14C21@qq.com>
-X-QQ-ReplyHash: 969353314
-X-BIZMAIL-ID: 17487695443149666663
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Tue, 20 Aug 2024 16:32:38 +0800 (CST)
-Feedback-ID: t:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4436d172-c474-8ecd-b5e4-4c21088baf49@huawei.com>
 
-Pkxvb2tzIGxpa2UgdGhlIGxhdGVzdCB1cHN0cmVhbSBrZXJuZWwgaGFzIHNvdmxlZCB0aGUg
-cHJvYmxlbToNCj5lY2hvIDEgPiAgL3N5cy9idXMvcGNpL2RldmljZXMvMDAwMTowZDowMC4w
-L3JlbW92ZQ0KPiBlY2hvIDEgPiAgL3N5cy9idXMvcGNpL3Jlc2Nhbg0KPg0KPlsgIDIzMC4z
-OTk5NjldIHBjaV9idXMgMDAwMTowZDogQ29uZmlndXJpbmcgUEUgZm9yIGJ1cw0KPlsgIDIz
-MC4zOTk5NzRdIHBjaSAwMDAxOjBkICAgICA6IFtQRSMgZmJdIFNlY29uZGFyeSBidXMgMHgw
-MDAwMDAwMDAwMDAwMDBkIGFzc29jaWF0ZWQgd2l0aCBQRSNmYg0KPlsgIDIzMC40MDAwODRd
-IHBjaSAwMDAxOjBkOjAwLjA6IENvbmZpZ3VyZWQgUEUjZmINCj5bICAyMzAuNDAwMDg2XSBw
-Y2kgMDAwMTowZCAgICAgOiBbUEUjIGZiXSBTZXR0aW5nIHVwIDMyLWJpdCBUQ0UgdGFibGUg
-YXQgMC4uODAwMDAwMDANCj5bICAyMzAuNDAwNjk4XSBwY2kgMDAwMTowZCAgICAgOiBbUEUj
-IGZiXSBTZXR0aW5nIHVwIHdpbmRvdyMwIDAuLjNmZmZmZmZmZmYgcGc9MTAwMDANCj5bICAy
-MzAuNDAwNzAzXSBwY2kgMDAwMTowZCAgICAgOiBbUEUjIGZiXSBFbmFibGluZyA2NC1iaXQg
-RE1BIGJ5cGFzcw0KPlsgIDIzMC40MDA3MTZdIHBjaSAwMDAxOjBkOjAwLjA6IEFkZGluZyB0
-byBpb21tdSBncm91cCAxDQo+WyAgMjMwLjQwMDkxN10gbW1pb3RyYWNlOiBpb3JlbWFwXyoo
-MHgzZmUwODA4MDAwMDAsIDB4MjAwMCkgPSAwMDAwMDAwMGVjZjUzZmExDQo+WyAgMjMwLjQw
-MTA4OF0gbnZtZSBudm1lMDogcGNpIGZ1bmN0aW9uIDAwMDE6MGQ6MDAuMA0KPlsgIDIzMC40
-MDEwOThdIG52bWUgMDAwMTowZDowMC4wOiBlbmFibGluZyBkZXZpY2UgKDAxNDAgLT4gMDE0
-MikNCj5bICAyMzAuNDAxMTQ2XSBtbWlvdHJhY2U6IGlvcmVtYXBfKigweDNmZTA4MDgwNDAw
-MCwgMHg0MDApID0gMDAwMDAwMDAzZTZiMmU1Yg0KPlsgIDIzMC40Mjk2MDBdIG52bWUgbnZt
-ZTA6IEQzIGVudHJ5IGxhdGVuY3kgc2V0IHRvIDEwIHNlY29uZHMNCj5bICAyMzAuNDI5ODk2
-XSBtbWlvdHJhY2U6IGlvcmVtYXBfKigweDNmZTA4MDgwNDAwMCwgMHg0MDApID0gMDAwMDAw
-MDA2ZjNmZDkyZA0KPlsgIDIzMC40MzkxMzhdIG52bWUgbnZtZTA6IDYzLzAvMCBkZWZhdWx0
-L3JlYWQvcG9sbCBxdWV1ZXMNCj4NCj50aGUgb3JpZ2luYWwgcHJvYmxlbSBpbiBwY2kgcmVz
-Y2FuIHBhdGggYWZ0ZXIgaG90IHJlbW92ZSBsaWtlIGJlbG93IGlzIGdvbmUhDQo+cGNpIDAw
-MjA6MGU6MDAuMDogQkFSIDA6IGFzc2lnbmVkIFttZW0gMHgzZmU4MDE4MjAwMDAtMHgzZmU4
-MDE4MmZmZmYgNjRiaXRdDQo+ICAgIG52bWUgbnZtZTE6IHBjaSBmdW5jdGlvbiAwMDIwOjBl
-OjAwLjANCj4gICAgbnZtZSAwMDIwOjBlOjAwLjAgcGNpX2VuYWJsZV9kZXZpY2UoKSBibG9j
-a2VkLCBubyBQRSBhc3NpZ25lZC4NCj4NCj5Qcm9iYWJseSBmaXhlZCBieSB0aGUgY29tbWl0
-Og0KPjVhYzEyOWNkYjUwYjRlZmRhNTllZTVlYTdjNzExOTk2YTM2MzdiMzQNCj5BdXRob3I6
-IEpvZWwgU3RhbmxleSA8am9lbEBqbXMuaWQuYXU+DQo+RGF0ZTogICBUdWUgSnVuIDEzIDE0
-OjIyOjAwIDIwMjMgKzA5MzANCj5wb3dlcnBjL3Bvd2VybnYvcGNpOiBSZW1vdmUgaW9kYTEg
-c3VwcG9ydA0KPg0KPnRoYXQgd2FzIG1lcmdlZCBtYWlubGluZSBsYXRlciB0aGFuIHRoZSB1
-cHN0cmVhbSBrZXJuZWwgSSBzYXcgdGhlIHByb2JsZW0gbGFzdCB0aW1lIEkgY2FtZQ0KPnVw
-IHdpdGggdGhlIHBhdGNoLg0KPg0KPkdpdmVuIHRoZSBmYWN0cyBjaGFuZ2VkLCAgdGhlIHBh
-dGNoIHByb3Bvc2FsIGJlY2FtZSBldmVuIG1vcmUgdHJpdmlhbCBub3cuDQo+SSB3b24ndCBw
-dXNoIGl0IGZvciB1cHN0cmVhbSBpbmNsdXNpb24gbm93LiBJbnN0ZWFkLCBJIHdpbGwga2Vl
-cCBpdCBpbiBteSBsb2NhbCB0ZXN0IHF1ZXVlIGZvciBhIHdoaWxlLiAgIA0KRm9yIHVzZXJz
-IHN0aWNraW5nIHRvICBhIDQuMTggYmFzZWQgcHJvZHVjdGlvbiBrZXJuZWwgdGhhdCBpcyBp
-bmZlYXNhYmxlIHRvIGRvIGEgbWFzc2l2ZSBiYWNrIHBvcnQgb2YgdGhlIHVwc3RyZWFtIGNv
-ZGUNCmZvciB0aGUgc21hbGwgcHJvYmxlbSwNCg0KIEkganVzdCB0ZXN0ZWQgdGhlIHBhdGNo
-ICwgSXQgd29ya3MgYXMgZXhwZWN0ZWQgOg0KDQpbICAxMjIuMTE2OTEzXSBwY2kgMDAwMTox
-NDowZS4wOiBQQ0kgYnJpZGdlIHRvIFtidXMgMWFdDQpbICAxMjIuMTE3MzU5XSBudm1lIG52
-bWUwOiBwY2kgZnVuY3Rpb24gMDAwMTowZDowMC4wDQpbICAxMjIuMTE3Mzc3XSBwY2kgMDAw
-MTowZDowMC4wOiBbUEUjIGZkXSBBc3NvY2lhdGVkIGRldmljZSB0byBQRQ0KWyAgMTIyLjEx
-NzQ4OV0gbnZtZSAwMDAxOjBkOjAwLjA6IGVuYWJsaW5nIGRldmljZSAoMDE0MCAtPiAwMTQy
-KQ0KDQp0aGUgZGV2aWNlIHNvZnR3YXJlIG9mZmxpbmVkIGlzIGluZGVlZCBiYWNrICwgZHVl
-IHRvIHRoZSBwYXRjaC4NCnRocm91Z2ggdGhlcmUgaXMgYSB3YXJuaW5nIGxpa2UgYmVsb3cg
-bmVlZCB0byBiZSBzb3ZsZWQgDQpbICAxMjIuMTE3NDk3XSBudm1lIDAwMDE6MGQ6MDAuMDog
-V2FybmluZzogSU9NTVUgZG1hIG5vdCBzdXBwb3J0ZWQ6IG1hc2sgMHhmZmZmZmZmZmZmZmZm
-ZmZmLCB0YWJsZSB1bmF2YWlsYWJsZQ0KWyAgMTIyLjExNzUwMl0gbnZtZSBudm1lMDogUmVt
-b3ZpbmcgYWZ0ZXIgcHJvYmUgZmFpbHVyZSBzdGF0dXM6IC0xMg0KW3Jvb3RAbG9jYWxob3N0
-IH5dIyBsc3BjaSAtdiAtcyAwMDAxOjBkOjAwLjANCjAwMDE6MGQ6MDAuMCBOb24tVm9sYXRp
-bGUgbWVtb3J5IGNvbnRyb2xsZXI6IFNhbXN1bmcgRWxlY3Ryb25pY3MgQ28gTHRkIE5WTWUg
-U1NEIENvbnRyb2xsZXIgUE0xNzNYIChwcm9nLWlmIDAyIFtOVk0gRXhwcmVzc10pDQogICAg
-ICAgIFN1YnN5c3RlbTogU2Ftc3VuZyBFbGVjdHJvbmljcyBDbyBMdGQgRGV2aWNlIGE4MTMN
-CiAgICAgICAgUGh5c2ljYWwgU2xvdDogUENJRSMzDQogICAgICAgIERldmljZSB0cmVlIG5v
-ZGU6IC9zeXMvZmlybXdhcmUvZGV2aWNldHJlZS9iYXNlL3BjaWV4QDNmZmZlNDAxMDAwMDAv
-cGNpQDAvcGNpQDAvcGNpQDkvbWFzcy1zdG9yYWdlQDANCiAgICAgICAgRmxhZ3M6IGZhc3Qg
-ZGV2c2VsLCBJUlEgNDk0LCBOVU1BIG5vZGUgMA0KICAgICAgICBNZW1vcnkgYXQgM2ZlMDgw
-ODAwMDAwICg2NC1iaXQsIG5vbi1wcmVmZXRjaGFibGUpIFtzaXplPTMyS10NCiAgICAgICAg
-RXhwYW5zaW9uIFJPTSBhdCAzZmUwODA4MTAwMDAgW3ZpcnR1YWxdIFtkaXNhYmxlZF0gW3Np
-emU9NjRLXQ0KICAgICAgICBDYXBhYmlsaXRpZXM6IFs0MF0gUG93ZXIgTWFuYWdlbWVudCB2
-ZXJzaW9uIDMNCiAgICAgICAgQ2FwYWJpbGl0aWVzOiBbNzBdIEV4cHJlc3MgRW5kcG9pbnQs
-IE1TSSAwMA0KICAgICAgICBDYXBhYmlsaXRpZXM6IFtiMF0gTVNJLVg6IEVuYWJsZS0gQ291
-bnQ9NjQgTWFza2VkLQ0KICAgICAgICBDYXBhYmlsaXRpZXM6IFsxMDBdIEFkdmFuY2VkIEVy
-cm9yIFJlcG9ydGluZw0KICAgICAgICBDYXBhYmlsaXRpZXM6IFsxNDhdIERldmljZSBTZXJp
-YWwgTnVtYmVyIDY0LTQwLTUwLTExLTlhLTM4LTI1LTAwDQogICAgICAgIENhcGFiaWxpdGll
-czogWzE2OF0gQWx0ZXJuYXRpdmUgUm91dGluZy1JRCBJbnRlcnByZXRhdGlvbiAoQVJJKQ0K
-ICAgICAgICBDYXBhYmlsaXRpZXM6IFsxNzhdIFNlY29uZGFyeSBQQ0kgRXhwcmVzcw0KICAg
-ICAgICBDYXBhYmlsaXRpZXM6IFsxOThdIFBoeXNpY2FsIExheWVyIDE2LjAgR1QvcyA8Pz4N
-CiAgICAgICAgQ2FwYWJpbGl0aWVzOiBbMWMwXSBMYW5lIE1hcmdpbmluZyBhdCB0aGUgUmVj
-ZWl2ZXIgPD8+DQogICAgICAgIENhcGFiaWxpdGllczogWzFlOF0gU2luZ2xlIFJvb3QgSS9P
-IFZpcnR1YWxpemF0aW9uIChTUi1JT1YpDQogICAgICAgIENhcGFiaWxpdGllczogWzNhNF0g
-RGF0YSBMaW5rIEZlYXR1cmUgPD8+DQogICAgICAgIEtlcm5lbCBtb2R1bGVzOiBudm1lDQoN
-CnNvLCBpdCBzb3VuZHMgbGlrZSBhIGdvb2QgcGF0Y2ggdG8gbWUuIDogLSkNCg0KPkNoZWVy
-cyENCj5MdW1pbmcNCg0KLS0tLS0tLS0tLS0tLS0tLS0tIE9yaWdpbmFsIC0tLS0tLS0tLS0t
-LS0tLS0tLQ0KRnJvbTogICLomZ7pmYbpk60iPGx1bWluZy55dUBzaGluZ3JvdXAuY24+Ow0K
-RGF0ZTogIFR1ZSwgTm92IDI4LCAyMDIzIDAyOjQzIFBNDQpUbzogICJsaW51eHBwYy1kZXYi
-PGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3JnPjsgImxpbnV4LWtlcm5lbCI8bGludXgt
-a2VybmVsQHZnZXIua2VybmVsLm9yZz47ICJtcGUiPG1wZUBlbGxlcm1hbi5pZC5hdT47ICJu
-cGlnZ2luIjxucGlnZ2luQGdtYWlsLmNvbT47ICJjaHJpc3RvcGhlLmxlcm95IjxjaHJpc3Rv
-cGhlLmxlcm95QGNzZ3JvdXAuZXU+OyANCkNjOiAgImx1bWluZy55dSI8bHVtaW5nLnl1QGdt
-YWlsLmNvbT47ICJrZS56aGFvIjxrZS56aGFvQHNoaW5ncm91cC5jbj47ICJkYXdlaS5saSI8
-ZGF3ZWkubGlAc2hpbmdyb3VwLmNuPjsgInNoZW5naHVpLnF1IjxzaGVuZ2h1aS5xdUBzaGlu
-Z3JvdXAuY24+OyAi6Jme6ZmG6ZOtIjxsdW1pbmcueXVAc2hpbmdyb3VwLmNuPjsgDQpTdWJq
-ZWN0OiAgW1BBVENIIHYxXSBwb3dlcnBjL3Bvd2VybnYvcGNpOiBmaXggUEUgaW4gcmUtdXNl
-ZCBwY2lfZG4gZm9yIHBudl9wY2lfZW5hYmxlX2RldmljZV9ob29rDQoNCiANCg0KYWZ0ZXIg
-aG90IHJlbW92ZSBhIHBjaWUgZGVpdmNlIHdpdGggcGNpX2RuIGhhdmluZyBwbnBfcGhwIGRy
-aXZlciBhdHRhY2hlZCwNCnBjaSByZXNjYW4gd2l0aCBlY2hvIDEgPiAvc3lzL2J1cy9wY2kv
-cmVzY2FuIGNvdWxkIGZhaWwgd2l0aCBlcnJvcg0KbWVzc2FnZSBsaWtlOg0KcGNpIDAwMjA6
-MGU6MDAuMDogQkFSIDA6IGFzc2lnbmVkIFttZW0gMHgzZmU4MDE4MjAwMDAtMHgzZmU4MDE4
-MmZmZmYNCjY0Yml0XQ0KbnZtZSBudm1lMTogcGNpIGZ1bmN0aW9uIDAwMjA6MGU6MDAuMA0K
-bnZtZSAwMDIwOjBlOjAwLjAgcGNpX2VuYWJsZV9kZXZpY2UoKSBibG9ja2VkLCBubyBQRSBh
-c3NpZ25lZC4NCg0KSXQgYXBwZWFycyB0aGF0IHRoZSBwY2lfZG4gb2JqZWN0IGlzIHJldXNl
-ZCB3aXRoIG9ubHkgcGVfbnVtYmVyDQpjbG9iYmVyZWQgaW4gdGhlIGNhc2UuIEFuZCBhIHNp
-bXBsZSBjYWxsIHRvIHBudl9pb2RhX3NldHVwX2Rldl9QRSBzaG91bGQNCmdldCBQRSBudW1i
-ZXIgYmFjayBhbmQgc29sdmUgdGhlIHByb2JsZW0uDQoNClNpZ25lZC1vZmYtYnk6IEx1bWlu
-ZyBZdSA8bHVtaW5nLnl1QHNoaW5ncm91cC5jbj4NCi0tLQ0KdjAgLT4gdjE6DQotY2xlYW4g
-dXAgZ2FyYmFnZSBsZWFrZWQgaW4gZ2l0IGZvcm1hdCBwYXRjaCB0aGF0IHN0ZW1zIGZyb20g
-Z2l0IGNsb25lIGFuZCBjaGVja291dCANCi1jb25mbGljdHMgb2YgZmlsZXMgaW4gbG9jYWwg
-d2luZG93cyBmaWxlc3lzdGVtIHdpdGggd2VpcmQgY2FzZXMgYW5kIG5hbWVzIHF1cmlrcy4N
-Ci0tLQ0KIGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9wY2ktaW9kYS5jICAgICB8
-ICAxMSArLQ0KIDEgZmlsZXMgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
-cygtKQ0KDQpkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52L3Bj
-aS1pb2RhLmMgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcGNpLWlvZGEuYw0K
-aW5kZXggMjhmYWM0NzcwMDczLi45ZDdhZGQ3OWVlM2QgMTAwNjQ0DQotLS0gYS9hcmNoL3Bv
-d2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcGNpLWlvZGEuYw0KKysrIGIvYXJjaC9wb3dlcnBj
-L3BsYXRmb3Jtcy9wb3dlcm52L3BjaS1pb2RhLmMNCkBAIC0yMzI1LDExICsyMzI1LDE4IEBA
-IHN0YXRpYyByZXNvdXJjZV9zaXplX3QgcG52X3BjaV9kZWZhdWx0X2FsaWdubWVudCh2b2lk
-KQ0KIHN0YXRpYyBib29sIHBudl9wY2lfZW5hYmxlX2RldmljZV9ob29rKHN0cnVjdCBwY2lf
-ZGV2ICpkZXYpDQogew0KIAlzdHJ1Y3QgcGNpX2RuICpwZG47DQorCXN0cnVjdCBwbnZfaW9k
-YV9wZSAqcGU7DQogDQogCXBkbiA9IHBjaV9nZXRfcGRuKGRldik7DQotCWlmICghcGRuIHx8
-IHBkbi0+cGVfbnVtYmVyID09IElPREFfSU5WQUxJRF9QRSkgew0KLQkJcGNpX2VycihkZXYs
-ICJwY2lfZW5hYmxlX2RldmljZSgpIGJsb2NrZWQsIG5vIFBFIGFzc2lnbmVkLlxuIik7DQor
-CWlmICghcGRuKQ0KIAkJcmV0dXJuIGZhbHNlOw0KKw0KKwlpZiAocGRuLT5wZV9udW1iZXIg
-PT0gSU9EQV9JTlZBTElEX1BFKSB7DQorCQlwZSA9IHBudl9pb2RhX3NldHVwX2Rldl9QRShk
-ZXYpOw0KKwkJaWYgKCFwZSkgew0KKwkJCXBjaV9lcnIoZGV2LCAicGNpX2VuYWJsZV9kZXZp
-Y2UoKSBibG9ja2VkLCBubyBQRSBhc3NpZ25lZC5cbiIpOw0KKwkJCXJldHVybiBmYWxzZTsN
-CisJCX0NCiAJfQ0KIA0KIAlyZXR1cm4gdHJ1ZTs=
+On Tue, Aug 20, 2024 at 10:11:45AM +0800, Tong Tiangen wrote:
+> 在 2024/8/20 1:29, Mark Rutland 写道:
+> > Hi Tong,
+> > 
+> > On Tue, May 28, 2024 at 04:59:11PM +0800, Tong Tiangen wrote:
+> > > For the arm64 kernel, when it processes hardware memory errors for
+> > > synchronize notifications(do_sea()), if the errors is consumed within the
+> > > kernel, the current processing is panic. However, it is not optimal.
+> > > 
+> > > Take copy_from/to_user for example, If ld* triggers a memory error, even in
+> > > kernel mode, only the associated process is affected. Killing the user
+> > > process and isolating the corrupt page is a better choice.
+> > > 
+> > > New fixup type EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE is added to identify insn
+> > > that can recover from memory errors triggered by access to kernel memory.
+> > > 
+> > > Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
 
+[...]
+
+> > > diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
+> > > index 980d1dd8e1a3..9c0664fe1eb1 100644
+> > > --- a/arch/arm64/include/asm/asm-extable.h
+> > > +++ b/arch/arm64/include/asm/asm-extable.h
+> > > @@ -5,11 +5,13 @@
+> > >   #include <linux/bits.h>
+> > >   #include <asm/gpr-num.h>
+> > > -#define EX_TYPE_NONE			0
+> > > -#define EX_TYPE_BPF			1
+> > > -#define EX_TYPE_UACCESS_ERR_ZERO	2
+> > > -#define EX_TYPE_KACCESS_ERR_ZERO	3
+> > > -#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	4
+> > > +#define EX_TYPE_NONE				0
+> > > +#define EX_TYPE_BPF				1
+> > > +#define EX_TYPE_UACCESS_ERR_ZERO		2
+> > > +#define EX_TYPE_KACCESS_ERR_ZERO		3
+> > > +#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD		4
+> > > +/* kernel access memory error safe */
+> > > +#define EX_TYPE_KACCESS_ERR_ZERO_ME_SAFE	5
+> > 
+> > Could we please use 'MEM_ERR', and likewise for the macros below? That's
+> > more obvious than 'ME_SAFE', and we wouldn't need the comment here.
+> > Likewise elsewhere in this patch and the series.
+> > 
+> > To Jonathan's comment, I do prefer these numbers are aligned, so aside
+> > from the naming, the diff above looks good.
+> 
+> OK, I also modified other locations to use 'MEM_ERR'.
+
+Thanks!
+
+[...]
+
+> > > diff --git a/arch/arm64/lib/copy_to_user.S b/arch/arm64/lib/copy_to_user.S
+> > > index 802231772608..2ac716c0d6d8 100644
+> > > --- a/arch/arm64/lib/copy_to_user.S
+> > > +++ b/arch/arm64/lib/copy_to_user.S
+> > > @@ -20,7 +20,7 @@
+> > >    *	x0 - bytes not copied
+> > >    */
+> > >   	.macro ldrb1 reg, ptr, val
+> > > -	ldrb  \reg, [\ptr], \val
+> > > +	KERNEL_ME_SAFE(9998f, ldrb  \reg, [\ptr], \val)
+> > >   	.endm
+> > >   	.macro strb1 reg, ptr, val
+> > > @@ -28,7 +28,7 @@
+> > >   	.endm
+> > >   	.macro ldrh1 reg, ptr, val
+> > > -	ldrh  \reg, [\ptr], \val
+> > > +	KERNEL_ME_SAFE(9998f, ldrh  \reg, [\ptr], \val)
+> > >   	.endm
+> > >   	.macro strh1 reg, ptr, val
+> > > @@ -36,7 +36,7 @@
+> > >   	.endm
+> > >   	.macro ldr1 reg, ptr, val
+> > > -	ldr \reg, [\ptr], \val
+> > > +	KERNEL_ME_SAFE(9998f, ldr \reg, [\ptr], \val)
+> > >   	.endm
+> > >   	.macro str1 reg, ptr, val
+> > > @@ -44,7 +44,7 @@
+> > >   	.endm
+> > >   	.macro ldp1 reg1, reg2, ptr, val
+> > > -	ldp \reg1, \reg2, [\ptr], \val
+> > > +	KERNEL_ME_SAFE(9998f, ldp \reg1, \reg2, [\ptr], \val)
+> > >   	.endm
+> > >   	.macro stp1 reg1, reg2, ptr, val
+> > 
+> > These changes mean that regular copy_to_user() will handle kernel memory
+> > errors, rather than only doing that in copy_mc_to_user(). If that's
+> > intentional, please call that out explicitly in the commit message.
+> 
+> Yes. This is the purpose of the modification. If the copy_to_user()
+> function encounters a memory error, this uaccess affects only the
+> current process. and only need to kill the current process instead of
+> the entire kernel panic. Do not add copy_mc_to_user() so that
+> copy_to_user() can process memory errors.
+> 
+> I'll add a description in the commit msg next version.
+
+Ok; why do powerpc and x86 have separate copy_mc_to_user()
+implementations, then?
+
+[...]
+
+> > > +/*
+> > > + * APEI claimed this as a firmware-first notification.
+> > > + * Some processing deferred to task_work before ret_to_user().
+> > > + */
+> > > +static bool do_apei_claim_sea(struct pt_regs *regs)
+> > > +{
+> > > +	if (user_mode(regs)) {
+> > > +		if (!apei_claim_sea(regs))
+> > > +			return true;
+> > > +	} else if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC)) {
+> > > +		if (fixup_exception_me(regs) && !apei_claim_sea(regs))
+> > > +			return true;
+> > > +	}
+> > > +
+> > > +	return false;
+> > > +}
+> > 
+> > Hmm... that'll fixup the exception even if we don't manage to claim a
+> > the SEA. I suspect this should probably be:
+> > 
+> > static bool do_apei_claim_sea(struct pt_regs *regs)
+> > {
+> > 	if (apei_claim_sea(regs))
+> > 		return false;
+> > 	if (user_mode(regs))
+> > 		return true;
+> > 	if (IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC))
+> > 		return !fixup_excepton_mem_err(regs);
+> > 	
+> > 	return false;
+> > }
+> > 
+> > ... unless we *don't* want to claim the SEA in the case we don't have a
+> > fixup?
+> > 
+> > Mark.
+> > 
+> 
+> Yes. My original meaning here is that if not have fixup, panic is
+> performed in do_sea() according to the original logic, and claim sea is
+> not required.
+
+AFAICT my suggestion doesn't change that; if we don't have a fixup the
+proprosed do_apei_claim_sea() would return false, and so do_sea() would
+caryy on to arm64_notify_die(...).
+
+I'm specifically asking if we need to avoid calling apei_claim_sea()
+when we don't have a fixup handler, or if calling that would be fine.
+
+One important thing is that if apei_claim_sea() fails to claim the SEA,
+we'd like to panic(), and in that case it'd be good to have not applied
+the fixup handler, so that the pt_regs::pc shows where the fault was
+taken from.
+
+Mark.
 
