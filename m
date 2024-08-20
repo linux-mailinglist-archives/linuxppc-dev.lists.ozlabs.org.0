@@ -1,53 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-217-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-218-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15EF958105
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 10:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38653958128
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 Aug 2024 10:41:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wp2jv38sZz2y8W;
-	Tue, 20 Aug 2024 18:31:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wp2wz24qtz2y8t;
+	Tue, 20 Aug 2024 18:40:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lNxcYCAn;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=pierre-louis.bossart@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=43.154.197.177
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wp2js1Q7tz2y33
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 18:31:11 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724142673; x=1755678673;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SxmH7pCBUCC/+QtkYdWoPaRpX3/WrQ/u9Dt4Kgg2sL8=;
-  b=lNxcYCAnVAgZNShfF3lPAGaXa3RKU9DWI0GjT6uWLREpoRof072cb+hs
-   IZNHtdFPekHucGmJx02jTKQcyIPkvqarA1YTKzwt7KfXzCC2YvwdT+wOf
-   pgdmO/mlIcLz1sP5SvWcTMqiITafvUI7u6gQoNN2gHn0QYXVKdsme4RaO
-   TfVBeoUAUUmegJcSKhrnd70vBzW/Bi2Cvxc4xauLiT1g1BlAUF3GUf5Bx
-   9a9zybGXX12b6ayy77/nEZ361YEWb7WBlhZk77cexiM8PUbPVe1NqF9P6
-   wE0XAl+McPxYy9v3fhFMqQNaa0EtPCnogZdWdb5IAijS1NummTkBEP+pl
-   A==;
-X-CSE-ConnectionGUID: GwnStFAkQbCsG2hQ0msQbA==
-X-CSE-MsgGUID: kMCqh/FORzum/fie0gTw1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="26293746"
-X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
-   d="scan'208";a="26293746"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 01:30:31 -0700
-X-CSE-ConnectionGUID: 6z9L+SnLRMOV5s7hbb1iIg==
-X-CSE-MsgGUID: MjGIrylhS/StVmcl8sSHaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
-   d="scan'208";a="64838542"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO [10.245.246.176]) ([10.245.246.176])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 01:30:27 -0700
-Message-ID: <0cd6ed17-0bbd-4a72-884a-632c7de3977f@linux.intel.com>
-Date: Tue, 20 Aug 2024 10:30:24 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wp2wy22FDz2xTP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 Aug 2024 18:40:49 +1000 (AEST)
+X-QQ-GoodBg: 2
+X-BAN-DOWNLOAD: 1
+X-BAN-SHARE: 1
+X-QQ-SSF: 0040000000000060
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+X-QQ-XMAILINFO: M182XWJxg1fqkeCHXcFuU09frtMUULZ0MaqM3XcvWglL/SNCIn4X4C5i
+	afgSXHLU6qHGNABawMPU0vMJqgX4LO/8Iyu2JiXXPh/Pyba/nXdfwIf5EwGyMMquGaWyKGK
+	CmWbrpPRkOrVRHoRaxl5tRqK+knenxQcgbjU8o8ANs3yuPc/UmkTsPL474UqxwveOMjKUfv
+	8OOE57iOpclhbqAM+Vt0fyBG7WeaUD/6zG98UBpP8/wQNMa98hV7rDjpjh/Oh85jKgvxg9o
+	BJmthFEf+xtx7GYt+vu+km3ISjMRxY+llVfnE0Abx3lEyNS7ptSivZd2HaNimIStZKg8e+F
+	wDtPCoiayR5yC3EC9ZJUL2LVrci/ZHwlfG374Emm/qWbAtfGfpVZXvv1IUJq0ZxkUtnkq3U
+	jupOWY17mztW7SUd0ZaUpW68lKcN6MnQ7JsRBrccftk5KyiJQ4VTS+eYZF1cY1b8/pSAkJ7
+	YwjJ641QkaHZEJy54S4ozuqFXffGmV5vxFPLUWtRA7ofyi/MgmmJdHLHacCkWJd1hguE64T
+	AQh1hXHoPLiB7QoOGVVi3jLA2Tysr6WNBKj6F2KPYbgYshaWqCI8xgsPbhsJ3YY4oiVH74N
+	uxQ+FJLilVhsfb+0VJ2DdOjWgti4ApOONSR3VdVDgsmo3qDWQPE+J4wG97GOEhamHwz6TCs
+	uek1UYSLp3XZUb4/WJjgdk4S/0wJ3EzJUcwF5SDOAbGub8TwvBRUMUcf55y1DfAqcFDWEdw
+	glG+k5yqCLFyzHKq2UUsmYopVxHUj1O3UMrYXPKukX97dsxMvxHeeHCqIdxdICLm5EMnOT8
+	FCKdu3JMMX8mktRXI53lL/UhJmTmnGnHsxYbMLSA/sIjBzu5IhPT9fZ8VBzNNqQA2dM3DZF
+	9szukHnL9vJ68iHyVafdw2Sz/Tby/C6mbgEwfdgae78=
+X-QQ-FEAT: D4aqtcRDiqQpBpTnjIJt3/f21w9WO3enREO5ZSgO7MU=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: lFkxqPXh3S/0Pf4K1iJmFxnSPRb+lBb9yTctK+cG1sg=
+X-Originating-IP: 58.34.222.244
+X-QQ-STYLE: 
+X-QQ-mid: t6gz5a-0t1724142757t2557965
+From: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>
+To: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>, "=?utf-8?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bXBl?=" <mpe@ellerman.id.au>, "=?utf-8?B?bnBpZ2dpbg==?=" <npiggin@gmail.com>, "=?utf-8?B?Y2hyaXN0b3BoZS5sZXJveQ==?=" <christophe.leroy@csgroup.eu>
+Cc: "=?utf-8?B?bHVtaW5nLnl1?=" <luming.yu@gmail.com>, "=?utf-8?B?c2hlbmdodWkucXU=?=" <shenghui.qu@shingroup.cn>, "=?utf-8?B?5p2o5L2z6b6Z?=" <jialong.yang@shingroup.cn>
+Subject: Re:[PATCH v1] powerpc/powernv/pci: fix PE in re-used pci_dn for pnv_pci_enable_device_hook
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,105 +53,144 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 4/6] ASoC: fsl_asrc_m2m: Add memory to memory
- function
-To: Jaroslav Kysela <perex@perex.cz>, Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, tiwai@suse.com,
- alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com,
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <1723804959-31921-1-git-send-email-shengjiu.wang@nxp.com>
- <1723804959-31921-5-git-send-email-shengjiu.wang@nxp.com>
- <6d83cd58-5f02-414b-b627-a0022e071052@linux.intel.com>
- <CAA+D8ANDAxS42=9zOLQY_h_ihvJCmaXzE+_iZyxbSuikqt1CBw@mail.gmail.com>
- <ceb54a27-144b-40ed-8de5-482f2b0664a0@linux.intel.com>
- <CAA+D8ANqb89UavAXTiHvcHyv9uMt8_MYR9hfBaxEJDPNy5C=-g@mail.gmail.com>
- <eceafeef-2dba-48aa-b8b3-198b9bb39fb6@perex.cz>
-Content-Language: en-US
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <eceafeef-2dba-48aa-b8b3-198b9bb39fb6@perex.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Tue, 20 Aug 2024 16:32:37 +0800
+X-Priority: 3
+Message-ID: <tencent_397B5F5A0D70DCAC310E5AD3@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <7E99D8C8296BB626+20231128064339.5038-1-luming.yu@shingroup.cn>
+	<tencent_67BBC4A3751146667FF14C21@qq.com>
+In-Reply-To: <tencent_67BBC4A3751146667FF14C21@qq.com>
+X-QQ-ReplyHash: 969353314
+X-BIZMAIL-ID: 17487695443149666663
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Tue, 20 Aug 2024 16:32:38 +0800 (CST)
+Feedback-ID: t:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
 
-
-
-On 8/20/24 09:42, Jaroslav Kysela wrote:
-> On 20. 08. 24 9:37, Shengjiu Wang wrote:
->> On Tue, Aug 20, 2024 at 2:59 PM Pierre-Louis Bossart
->> <pierre-louis.bossart@linux.intel.com> wrote:
->>>
->>>
->>>
->>> On 8/20/24 04:53, Shengjiu Wang wrote:
->>>> On Mon, Aug 19, 2024 at 3:42 PM Pierre-Louis Bossart
->>>> <pierre-louis.bossart@linux.intel.com> wrote:
->>>>>
->>>>>
->>>>>
->>>>> On 8/16/24 12:42, Shengjiu Wang wrote:
->>>>>> Implement the ASRC memory to memory function using
->>>>>> the compress framework, user can use this function with
->>>>>> compress ioctl interface.
->>>>>>
->>>>>> Define below private metadata key value for output
->>>>>> format, output rate and ratio modifier configuration.
->>>>>> ASRC_OUTPUT_FORMAT 0x80000001
->>>>>> ASRC_OUTPUT_RATE   0x80000002
->>>>>> ASRC_RATIO_MOD     0x80000003
->>>>>
->>>>> Can the output format/rate change at run-time?
->>>>
->>>> Seldom I think.
->>>>
->>>>>
->>>>> If no, then these parameters should be moved somewhere else - e.g.
->>>>> hw_params or something.
->>>>
->>>> This means I will do some changes in compress_params.h, add
->>>> output format and output rate definition, follow Jaroslav's example
->>>> right?
->>>
->>> yes, having parameters for the PCM case would make sense.
->>>
->>>>> I am still not very clear on the expanding the SET_METADATA ioctl to
->>>>> deal with the ratio changes. This isn't linked to the control layer as
->>>>> suggested before, and there's no precedent of calling it multiple
->>>>> times
->>>>> during streaming.
->>>>
->>>> Which control layer? if you means the snd_kcontrol_new?  it is bound
->>>> with sound card,  but in my case,  I need to the control bind with
->>>> the snd_compr_stream to support multi streams/instances.
->>>
->>> I can only quote Jaroslav's previous answer:
->>>
->>> "
->>> This argument is not valid. The controls are bound to the card, but the
->>> element identifiers have already iface (interface), device and subdevice
->>> numbers. We are using controls for PCM devices for example. The binding
->>> is straight.
->>>
->>> Just add SNDRV_CTL_ELEM_IFACE_COMPRESS define and specify the compress
->>> device number in the 'struct snd_ctl_elem_id'.
->>> "
->>
->> I don't think it is doable,  or at least I don't know how to do it.
->>
->> My case is just one card/one device/one subdevice.  can't use it to
->> distinguish multi streams.
-> 
-> I already wrote that the compress core code should be extended to
-> support subdevices like other ALSA APIs. I'll work on it. For now, just
-> add support for one converter.
-
-I am not sure I get the benefits of subdevices in this context.
-
-Can we not use different devices already, one per hardware ASRC instance?
-
-Put differently, what would be the difference between a card with N
-compressed devices or a card with 1 compressed device and N subdevices?
+Pkxvb2tzIGxpa2UgdGhlIGxhdGVzdCB1cHN0cmVhbSBrZXJuZWwgaGFzIHNvdmxlZCB0aGUg
+cHJvYmxlbToNCj5lY2hvIDEgPiAgL3N5cy9idXMvcGNpL2RldmljZXMvMDAwMTowZDowMC4w
+L3JlbW92ZQ0KPiBlY2hvIDEgPiAgL3N5cy9idXMvcGNpL3Jlc2Nhbg0KPg0KPlsgIDIzMC4z
+OTk5NjldIHBjaV9idXMgMDAwMTowZDogQ29uZmlndXJpbmcgUEUgZm9yIGJ1cw0KPlsgIDIz
+MC4zOTk5NzRdIHBjaSAwMDAxOjBkICAgICA6IFtQRSMgZmJdIFNlY29uZGFyeSBidXMgMHgw
+MDAwMDAwMDAwMDAwMDBkIGFzc29jaWF0ZWQgd2l0aCBQRSNmYg0KPlsgIDIzMC40MDAwODRd
+IHBjaSAwMDAxOjBkOjAwLjA6IENvbmZpZ3VyZWQgUEUjZmINCj5bICAyMzAuNDAwMDg2XSBw
+Y2kgMDAwMTowZCAgICAgOiBbUEUjIGZiXSBTZXR0aW5nIHVwIDMyLWJpdCBUQ0UgdGFibGUg
+YXQgMC4uODAwMDAwMDANCj5bICAyMzAuNDAwNjk4XSBwY2kgMDAwMTowZCAgICAgOiBbUEUj
+IGZiXSBTZXR0aW5nIHVwIHdpbmRvdyMwIDAuLjNmZmZmZmZmZmYgcGc9MTAwMDANCj5bICAy
+MzAuNDAwNzAzXSBwY2kgMDAwMTowZCAgICAgOiBbUEUjIGZiXSBFbmFibGluZyA2NC1iaXQg
+RE1BIGJ5cGFzcw0KPlsgIDIzMC40MDA3MTZdIHBjaSAwMDAxOjBkOjAwLjA6IEFkZGluZyB0
+byBpb21tdSBncm91cCAxDQo+WyAgMjMwLjQwMDkxN10gbW1pb3RyYWNlOiBpb3JlbWFwXyoo
+MHgzZmUwODA4MDAwMDAsIDB4MjAwMCkgPSAwMDAwMDAwMGVjZjUzZmExDQo+WyAgMjMwLjQw
+MTA4OF0gbnZtZSBudm1lMDogcGNpIGZ1bmN0aW9uIDAwMDE6MGQ6MDAuMA0KPlsgIDIzMC40
+MDEwOThdIG52bWUgMDAwMTowZDowMC4wOiBlbmFibGluZyBkZXZpY2UgKDAxNDAgLT4gMDE0
+MikNCj5bICAyMzAuNDAxMTQ2XSBtbWlvdHJhY2U6IGlvcmVtYXBfKigweDNmZTA4MDgwNDAw
+MCwgMHg0MDApID0gMDAwMDAwMDAzZTZiMmU1Yg0KPlsgIDIzMC40Mjk2MDBdIG52bWUgbnZt
+ZTA6IEQzIGVudHJ5IGxhdGVuY3kgc2V0IHRvIDEwIHNlY29uZHMNCj5bICAyMzAuNDI5ODk2
+XSBtbWlvdHJhY2U6IGlvcmVtYXBfKigweDNmZTA4MDgwNDAwMCwgMHg0MDApID0gMDAwMDAw
+MDA2ZjNmZDkyZA0KPlsgIDIzMC40MzkxMzhdIG52bWUgbnZtZTA6IDYzLzAvMCBkZWZhdWx0
+L3JlYWQvcG9sbCBxdWV1ZXMNCj4NCj50aGUgb3JpZ2luYWwgcHJvYmxlbSBpbiBwY2kgcmVz
+Y2FuIHBhdGggYWZ0ZXIgaG90IHJlbW92ZSBsaWtlIGJlbG93IGlzIGdvbmUhDQo+cGNpIDAw
+MjA6MGU6MDAuMDogQkFSIDA6IGFzc2lnbmVkIFttZW0gMHgzZmU4MDE4MjAwMDAtMHgzZmU4
+MDE4MmZmZmYgNjRiaXRdDQo+ICAgIG52bWUgbnZtZTE6IHBjaSBmdW5jdGlvbiAwMDIwOjBl
+OjAwLjANCj4gICAgbnZtZSAwMDIwOjBlOjAwLjAgcGNpX2VuYWJsZV9kZXZpY2UoKSBibG9j
+a2VkLCBubyBQRSBhc3NpZ25lZC4NCj4NCj5Qcm9iYWJseSBmaXhlZCBieSB0aGUgY29tbWl0
+Og0KPjVhYzEyOWNkYjUwYjRlZmRhNTllZTVlYTdjNzExOTk2YTM2MzdiMzQNCj5BdXRob3I6
+IEpvZWwgU3RhbmxleSA8am9lbEBqbXMuaWQuYXU+DQo+RGF0ZTogICBUdWUgSnVuIDEzIDE0
+OjIyOjAwIDIwMjMgKzA5MzANCj5wb3dlcnBjL3Bvd2VybnYvcGNpOiBSZW1vdmUgaW9kYTEg
+c3VwcG9ydA0KPg0KPnRoYXQgd2FzIG1lcmdlZCBtYWlubGluZSBsYXRlciB0aGFuIHRoZSB1
+cHN0cmVhbSBrZXJuZWwgSSBzYXcgdGhlIHByb2JsZW0gbGFzdCB0aW1lIEkgY2FtZQ0KPnVw
+IHdpdGggdGhlIHBhdGNoLg0KPg0KPkdpdmVuIHRoZSBmYWN0cyBjaGFuZ2VkLCAgdGhlIHBh
+dGNoIHByb3Bvc2FsIGJlY2FtZSBldmVuIG1vcmUgdHJpdmlhbCBub3cuDQo+SSB3b24ndCBw
+dXNoIGl0IGZvciB1cHN0cmVhbSBpbmNsdXNpb24gbm93LiBJbnN0ZWFkLCBJIHdpbGwga2Vl
+cCBpdCBpbiBteSBsb2NhbCB0ZXN0IHF1ZXVlIGZvciBhIHdoaWxlLiAgIA0KRm9yIHVzZXJz
+IHN0aWNraW5nIHRvICBhIDQuMTggYmFzZWQgcHJvZHVjdGlvbiBrZXJuZWwgdGhhdCBpcyBp
+bmZlYXNhYmxlIHRvIGRvIGEgbWFzc2l2ZSBiYWNrIHBvcnQgb2YgdGhlIHVwc3RyZWFtIGNv
+ZGUNCmZvciB0aGUgc21hbGwgcHJvYmxlbSwNCg0KIEkganVzdCB0ZXN0ZWQgdGhlIHBhdGNo
+ICwgSXQgd29ya3MgYXMgZXhwZWN0ZWQgOg0KDQpbICAxMjIuMTE2OTEzXSBwY2kgMDAwMTox
+NDowZS4wOiBQQ0kgYnJpZGdlIHRvIFtidXMgMWFdDQpbICAxMjIuMTE3MzU5XSBudm1lIG52
+bWUwOiBwY2kgZnVuY3Rpb24gMDAwMTowZDowMC4wDQpbICAxMjIuMTE3Mzc3XSBwY2kgMDAw
+MTowZDowMC4wOiBbUEUjIGZkXSBBc3NvY2lhdGVkIGRldmljZSB0byBQRQ0KWyAgMTIyLjEx
+NzQ4OV0gbnZtZSAwMDAxOjBkOjAwLjA6IGVuYWJsaW5nIGRldmljZSAoMDE0MCAtPiAwMTQy
+KQ0KDQp0aGUgZGV2aWNlIHNvZnR3YXJlIG9mZmxpbmVkIGlzIGluZGVlZCBiYWNrICwgZHVl
+IHRvIHRoZSBwYXRjaC4NCnRocm91Z2ggdGhlcmUgaXMgYSB3YXJuaW5nIGxpa2UgYmVsb3cg
+bmVlZCB0byBiZSBzb3ZsZWQgDQpbICAxMjIuMTE3NDk3XSBudm1lIDAwMDE6MGQ6MDAuMDog
+V2FybmluZzogSU9NTVUgZG1hIG5vdCBzdXBwb3J0ZWQ6IG1hc2sgMHhmZmZmZmZmZmZmZmZm
+ZmZmLCB0YWJsZSB1bmF2YWlsYWJsZQ0KWyAgMTIyLjExNzUwMl0gbnZtZSBudm1lMDogUmVt
+b3ZpbmcgYWZ0ZXIgcHJvYmUgZmFpbHVyZSBzdGF0dXM6IC0xMg0KW3Jvb3RAbG9jYWxob3N0
+IH5dIyBsc3BjaSAtdiAtcyAwMDAxOjBkOjAwLjANCjAwMDE6MGQ6MDAuMCBOb24tVm9sYXRp
+bGUgbWVtb3J5IGNvbnRyb2xsZXI6IFNhbXN1bmcgRWxlY3Ryb25pY3MgQ28gTHRkIE5WTWUg
+U1NEIENvbnRyb2xsZXIgUE0xNzNYIChwcm9nLWlmIDAyIFtOVk0gRXhwcmVzc10pDQogICAg
+ICAgIFN1YnN5c3RlbTogU2Ftc3VuZyBFbGVjdHJvbmljcyBDbyBMdGQgRGV2aWNlIGE4MTMN
+CiAgICAgICAgUGh5c2ljYWwgU2xvdDogUENJRSMzDQogICAgICAgIERldmljZSB0cmVlIG5v
+ZGU6IC9zeXMvZmlybXdhcmUvZGV2aWNldHJlZS9iYXNlL3BjaWV4QDNmZmZlNDAxMDAwMDAv
+cGNpQDAvcGNpQDAvcGNpQDkvbWFzcy1zdG9yYWdlQDANCiAgICAgICAgRmxhZ3M6IGZhc3Qg
+ZGV2c2VsLCBJUlEgNDk0LCBOVU1BIG5vZGUgMA0KICAgICAgICBNZW1vcnkgYXQgM2ZlMDgw
+ODAwMDAwICg2NC1iaXQsIG5vbi1wcmVmZXRjaGFibGUpIFtzaXplPTMyS10NCiAgICAgICAg
+RXhwYW5zaW9uIFJPTSBhdCAzZmUwODA4MTAwMDAgW3ZpcnR1YWxdIFtkaXNhYmxlZF0gW3Np
+emU9NjRLXQ0KICAgICAgICBDYXBhYmlsaXRpZXM6IFs0MF0gUG93ZXIgTWFuYWdlbWVudCB2
+ZXJzaW9uIDMNCiAgICAgICAgQ2FwYWJpbGl0aWVzOiBbNzBdIEV4cHJlc3MgRW5kcG9pbnQs
+IE1TSSAwMA0KICAgICAgICBDYXBhYmlsaXRpZXM6IFtiMF0gTVNJLVg6IEVuYWJsZS0gQ291
+bnQ9NjQgTWFza2VkLQ0KICAgICAgICBDYXBhYmlsaXRpZXM6IFsxMDBdIEFkdmFuY2VkIEVy
+cm9yIFJlcG9ydGluZw0KICAgICAgICBDYXBhYmlsaXRpZXM6IFsxNDhdIERldmljZSBTZXJp
+YWwgTnVtYmVyIDY0LTQwLTUwLTExLTlhLTM4LTI1LTAwDQogICAgICAgIENhcGFiaWxpdGll
+czogWzE2OF0gQWx0ZXJuYXRpdmUgUm91dGluZy1JRCBJbnRlcnByZXRhdGlvbiAoQVJJKQ0K
+ICAgICAgICBDYXBhYmlsaXRpZXM6IFsxNzhdIFNlY29uZGFyeSBQQ0kgRXhwcmVzcw0KICAg
+ICAgICBDYXBhYmlsaXRpZXM6IFsxOThdIFBoeXNpY2FsIExheWVyIDE2LjAgR1QvcyA8Pz4N
+CiAgICAgICAgQ2FwYWJpbGl0aWVzOiBbMWMwXSBMYW5lIE1hcmdpbmluZyBhdCB0aGUgUmVj
+ZWl2ZXIgPD8+DQogICAgICAgIENhcGFiaWxpdGllczogWzFlOF0gU2luZ2xlIFJvb3QgSS9P
+IFZpcnR1YWxpemF0aW9uIChTUi1JT1YpDQogICAgICAgIENhcGFiaWxpdGllczogWzNhNF0g
+RGF0YSBMaW5rIEZlYXR1cmUgPD8+DQogICAgICAgIEtlcm5lbCBtb2R1bGVzOiBudm1lDQoN
+CnNvLCBpdCBzb3VuZHMgbGlrZSBhIGdvb2QgcGF0Y2ggdG8gbWUuIDogLSkNCg0KPkNoZWVy
+cyENCj5MdW1pbmcNCg0KLS0tLS0tLS0tLS0tLS0tLS0tIE9yaWdpbmFsIC0tLS0tLS0tLS0t
+LS0tLS0tLQ0KRnJvbTogICLomZ7pmYbpk60iPGx1bWluZy55dUBzaGluZ3JvdXAuY24+Ow0K
+RGF0ZTogIFR1ZSwgTm92IDI4LCAyMDIzIDAyOjQzIFBNDQpUbzogICJsaW51eHBwYy1kZXYi
+PGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3JnPjsgImxpbnV4LWtlcm5lbCI8bGludXgt
+a2VybmVsQHZnZXIua2VybmVsLm9yZz47ICJtcGUiPG1wZUBlbGxlcm1hbi5pZC5hdT47ICJu
+cGlnZ2luIjxucGlnZ2luQGdtYWlsLmNvbT47ICJjaHJpc3RvcGhlLmxlcm95IjxjaHJpc3Rv
+cGhlLmxlcm95QGNzZ3JvdXAuZXU+OyANCkNjOiAgImx1bWluZy55dSI8bHVtaW5nLnl1QGdt
+YWlsLmNvbT47ICJrZS56aGFvIjxrZS56aGFvQHNoaW5ncm91cC5jbj47ICJkYXdlaS5saSI8
+ZGF3ZWkubGlAc2hpbmdyb3VwLmNuPjsgInNoZW5naHVpLnF1IjxzaGVuZ2h1aS5xdUBzaGlu
+Z3JvdXAuY24+OyAi6Jme6ZmG6ZOtIjxsdW1pbmcueXVAc2hpbmdyb3VwLmNuPjsgDQpTdWJq
+ZWN0OiAgW1BBVENIIHYxXSBwb3dlcnBjL3Bvd2VybnYvcGNpOiBmaXggUEUgaW4gcmUtdXNl
+ZCBwY2lfZG4gZm9yIHBudl9wY2lfZW5hYmxlX2RldmljZV9ob29rDQoNCiANCg0KYWZ0ZXIg
+aG90IHJlbW92ZSBhIHBjaWUgZGVpdmNlIHdpdGggcGNpX2RuIGhhdmluZyBwbnBfcGhwIGRy
+aXZlciBhdHRhY2hlZCwNCnBjaSByZXNjYW4gd2l0aCBlY2hvIDEgPiAvc3lzL2J1cy9wY2kv
+cmVzY2FuIGNvdWxkIGZhaWwgd2l0aCBlcnJvcg0KbWVzc2FnZSBsaWtlOg0KcGNpIDAwMjA6
+MGU6MDAuMDogQkFSIDA6IGFzc2lnbmVkIFttZW0gMHgzZmU4MDE4MjAwMDAtMHgzZmU4MDE4
+MmZmZmYNCjY0Yml0XQ0KbnZtZSBudm1lMTogcGNpIGZ1bmN0aW9uIDAwMjA6MGU6MDAuMA0K
+bnZtZSAwMDIwOjBlOjAwLjAgcGNpX2VuYWJsZV9kZXZpY2UoKSBibG9ja2VkLCBubyBQRSBh
+c3NpZ25lZC4NCg0KSXQgYXBwZWFycyB0aGF0IHRoZSBwY2lfZG4gb2JqZWN0IGlzIHJldXNl
+ZCB3aXRoIG9ubHkgcGVfbnVtYmVyDQpjbG9iYmVyZWQgaW4gdGhlIGNhc2UuIEFuZCBhIHNp
+bXBsZSBjYWxsIHRvIHBudl9pb2RhX3NldHVwX2Rldl9QRSBzaG91bGQNCmdldCBQRSBudW1i
+ZXIgYmFjayBhbmQgc29sdmUgdGhlIHByb2JsZW0uDQoNClNpZ25lZC1vZmYtYnk6IEx1bWlu
+ZyBZdSA8bHVtaW5nLnl1QHNoaW5ncm91cC5jbj4NCi0tLQ0KdjAgLT4gdjE6DQotY2xlYW4g
+dXAgZ2FyYmFnZSBsZWFrZWQgaW4gZ2l0IGZvcm1hdCBwYXRjaCB0aGF0IHN0ZW1zIGZyb20g
+Z2l0IGNsb25lIGFuZCBjaGVja291dCANCi1jb25mbGljdHMgb2YgZmlsZXMgaW4gbG9jYWwg
+d2luZG93cyBmaWxlc3lzdGVtIHdpdGggd2VpcmQgY2FzZXMgYW5kIG5hbWVzIHF1cmlrcy4N
+Ci0tLQ0KIGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9wY2ktaW9kYS5jICAgICB8
+ICAxMSArLQ0KIDEgZmlsZXMgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
+cygtKQ0KDQpkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52L3Bj
+aS1pb2RhLmMgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcGNpLWlvZGEuYw0K
+aW5kZXggMjhmYWM0NzcwMDczLi45ZDdhZGQ3OWVlM2QgMTAwNjQ0DQotLS0gYS9hcmNoL3Bv
+d2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcGNpLWlvZGEuYw0KKysrIGIvYXJjaC9wb3dlcnBj
+L3BsYXRmb3Jtcy9wb3dlcm52L3BjaS1pb2RhLmMNCkBAIC0yMzI1LDExICsyMzI1LDE4IEBA
+IHN0YXRpYyByZXNvdXJjZV9zaXplX3QgcG52X3BjaV9kZWZhdWx0X2FsaWdubWVudCh2b2lk
+KQ0KIHN0YXRpYyBib29sIHBudl9wY2lfZW5hYmxlX2RldmljZV9ob29rKHN0cnVjdCBwY2lf
+ZGV2ICpkZXYpDQogew0KIAlzdHJ1Y3QgcGNpX2RuICpwZG47DQorCXN0cnVjdCBwbnZfaW9k
+YV9wZSAqcGU7DQogDQogCXBkbiA9IHBjaV9nZXRfcGRuKGRldik7DQotCWlmICghcGRuIHx8
+IHBkbi0+cGVfbnVtYmVyID09IElPREFfSU5WQUxJRF9QRSkgew0KLQkJcGNpX2VycihkZXYs
+ICJwY2lfZW5hYmxlX2RldmljZSgpIGJsb2NrZWQsIG5vIFBFIGFzc2lnbmVkLlxuIik7DQor
+CWlmICghcGRuKQ0KIAkJcmV0dXJuIGZhbHNlOw0KKw0KKwlpZiAocGRuLT5wZV9udW1iZXIg
+PT0gSU9EQV9JTlZBTElEX1BFKSB7DQorCQlwZSA9IHBudl9pb2RhX3NldHVwX2Rldl9QRShk
+ZXYpOw0KKwkJaWYgKCFwZSkgew0KKwkJCXBjaV9lcnIoZGV2LCAicGNpX2VuYWJsZV9kZXZp
+Y2UoKSBibG9ja2VkLCBubyBQRSBhc3NpZ25lZC5cbiIpOw0KKwkJCXJldHVybiBmYWxzZTsN
+CisJCX0NCiAJfQ0KIA0KIAlyZXR1cm4gdHJ1ZTs=
 
 
