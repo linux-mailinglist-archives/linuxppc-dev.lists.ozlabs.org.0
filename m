@@ -1,69 +1,42 @@
-Return-Path: <linuxppc-dev+bounces-252-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-253-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB2195921E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2024 03:18:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEEAC95941E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2024 07:36:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WpT4Q13TCz2xZr;
-	Wed, 21 Aug 2024 11:18:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WpZp50rNfz2xfP;
+	Wed, 21 Aug 2024 15:36:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:40e1:4800::1"
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=J7HW4rBx;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zz10EpcH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WpT4P3ss8z2xX3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 11:18:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WpZp44xlkz2xfK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 15:36:44 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sin.source.kernel.org (Postfix) with ESMTP id 4C2BDCE0599;
-	Wed, 21 Aug 2024 01:18:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2772C4AF1C;
-	Wed, 21 Aug 2024 01:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1724203118;
-	bh=bqLgu5rCY6FwxrHMn3oG9AZSGc/vl8klIaH3jFWN1QY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=J7HW4rBxhF/HrPEjaCJdLiVU49cBPm7VSaD9bLo71rgfjuow5pC1T829ekAR5qhbt
-	 y0AJp1Dye1XHvNgijTcPSn/K+3aFMY0KrpEYB4Jf2LPy+9du5uUB+wosLhZdsiMS2H
-	 3sOrZ4VDg694Av7PSihHm8BXGsBxnjelk958OsxQ=
-Date: Tue, 20 Aug 2024 18:18:37 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Rob Landley <rob@landley.net>, Michael Ellerman <mpe@ellerman.id.au>,
- Nathan Chancellor <nathan@kernel.org>, Guo Ren <guoren@kernel.org>, Brian
- Cain <bcain@quicinc.com>, Dinh Nguyen <dinguyen@kernel.org>, Yoshinori Sato
- <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Richard Weinberger
- <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes
- Berg <johannes@sipsolutions.net>, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu,
- jeffxu@google.com, Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, oliver.sang@intel.com, pedro.falcato@gmail.com,
- linux-um@lists.infradead.org, linux-csky@vger.kernel.org, linux-hexagon
- <linux-hexagon@vger.kernel.org>, Linux-sh list <linux-sh@vger.kernel.org>
-Subject: Re: [PATCH v2 1/4] mm: Add optional close() to struct
- vm_special_mapping
-Message-Id: <20240820181837.4d470b8837db618827b7bef7@linux-foundation.org>
-In-Reply-To: <CAHk-=whvR+z=0=0gzgdfUiK70JTa-=+9vxD-4T=3BagXR6dciA@mail.gmail.com>
-References: <20240812082605.743814-1-mpe@ellerman.id.au>
-	<20240819185253.GA2333884@thelio-3990X>
-	<CAHk-=wj9QPhG4CjiX8YLRC1wHj_Qs-T8wJi0WEhkfp0cszvB9w@mail.gmail.com>
-	<20240819195120.GA1113263@thelio-3990X>
-	<CAHk-=wgsDJ+sA1T01YT-z5TXs3zxJ54f0VDApkZ1pgcr8T=myQ@mail.gmail.com>
-	<CAHk-=wjzYKrwSDK3PFMC1C2x37aKzEuC7dVxg0kGt8h+vjZfjQ@mail.gmail.com>
-	<87y14rso9o.fsf@mail.lhotse>
-	<CAHk-=wiS7PMtL6oR6acNgWZr0NN4Ax4PQD_CYJKCiKS0mT=Z7A@mail.gmail.com>
-	<dff57198-7955-ec09-8909-671982834673@landley.net>
-	<CAHk-=wj78UV2ep6i5JZ-1qhLPZPHV4eUOtjWqqh_3zcqJ7pK-Q@mail.gmail.com>
-	<67108df9-7374-a64e-ca82-8c46d67fb55b@landley.net>
-	<CAHk-=whvR+z=0=0gzgdfUiK70JTa-=+9vxD-4T=3BagXR6dciA@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7D78160FB3;
+	Wed, 21 Aug 2024 05:36:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2994BC32786;
+	Wed, 21 Aug 2024 05:36:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724218602;
+	bh=R23aIBz2yqL9qGSiJVxvnOGYZ7dS2UbIctnrc6vIiEA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Zz10EpcHidYx6bZwfmixlBpj7nXI/6mVY5uX/wWWR7394hI3us5nLUrXfFEuAze9E
+	 rlctTDymoJtcPwPX+RjYIodox0Dd6yezhrF6AuC4Qtws3ieGcPFqQBYtcUBwpnFSGq
+	 DFmCc351rsZ6k9cL4ANfvupgGkewEa36ZXUK/wcaw3tNEHYQvaFpTHlTwziYhrbBoP
+	 2tkYh34tOVYFi/Z2Db5pVKmvX7ZX5rKrJ0YEFT9GEtiilCdifSivludm7PqCNOXB2e
+	 aJlA2zY/W5BjMvheWEfIbAoDQ8RSH64wfMigZAc0UEfjv65mInfI6EcKGcTPx7gH7d
+	 dhWkoK2apRPYw==
+Message-ID: <f1fffaac-bea2-43d0-a003-f701694f5bb9@kernel.org>
+Date: Wed, 21 Aug 2024 14:36:39 +0900
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,15 +45,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ata: pata_macio: Fix DMA table overflow
+To: Michael Ellerman <mpe@ellerman.id.au>, cassel@kernel.org
+Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, hch@lst.de, linux-ppc@kolla.no,
+ vidra@ufal.mff.cuni.cz
+References: <20240820030358.627711-1-mpe@ellerman.id.au>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20240820030358.627711-1-mpe@ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 20 Aug 2024 16:14:29 -0700 Linus Torvalds <torvalds@linux-foundation.org> wrote:
+On 8/20/24 12:03 PM, Michael Ellerman wrote:
+> Kolbjørn and Jonáš reported that their 32-bit PowerMacs were crashing
+> in pata-macio since commit 09fe2bfa6b83 ("ata: pata_macio: Fix
+> max_segment_size with PAGE_SIZE == 64K").
+> 
+> For example:
+> 
+>   kernel BUG at drivers/ata/pata_macio.c:544!
+>   Oops: Exception in kernel mode, sig: 5 [#1]
+>   BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 DEBUG_PAGEALLOC PowerMac
+>   ...
+>   NIP pata_macio_qc_prep+0xf4/0x190
+>   LR  pata_macio_qc_prep+0xfc/0x190
+>   Call Trace:
+>     0xc1421660 (unreliable)
+>     ata_qc_issue+0x14c/0x2d4
+>     __ata_scsi_queuecmd+0x200/0x53c
+>     ata_scsi_queuecmd+0x50/0xe0
+>     scsi_queue_rq+0x788/0xb1c
+>     __blk_mq_issue_directly+0x58/0xf4
+>     blk_mq_plug_issue_direct+0x8c/0x1b4
+>     blk_mq_flush_plug_list.part.0+0x584/0x5e0
+>     __blk_flush_plug+0xf8/0x194
+>     __submit_bio+0x1b8/0x2e0
+>     submit_bio_noacct_nocheck+0x230/0x304
+>     btrfs_work_helper+0x200/0x338
+>     process_one_work+0x1a8/0x338
+>     worker_thread+0x364/0x4c0
+>     kthread+0x100/0x104
+>     start_kernel_thread+0x10/0x14
+> 
+> That commit increased max_segment_size to 64KB, with the justification
+> that the SCSI core was already using that size when PAGE_SIZE == 64KB,
+> and that there was existing logic to split over-sized requests.
+> 
+> However with a sufficiently large request, the splitting logic causes
+> each sg to be split into two commands in the DMA table, leading to
+> overflow of the DMA table, triggering the BUG_ON().
+> 
+> With default settings the bug doesn't trigger, because the request size
+> is limited by max_sectors_kb == 1280, however max_sectors_kb can be
+> increased, and apparently some distros do that by default using udev
+> rules.
+> 
+> Fix the bug for 4KB kernels by reverting to the old max_segment_size.
+> 
+> For 64KB kernels the sg_tablesize needs to be halved, to allow for the
+> possibility that each sg will be split into two.
+> 
+> Fixes: 09fe2bfa6b83 ("ata: pata_macio: Fix max_segment_size with PAGE_SIZE == 64K")
+> Cc: stable@vger.kernel.org # v6.10+
+> Reported-by: Kolbjørn Barmen <linux-ppc@kolla.no>
+> Closes: https://lore.kernel.org/all/62d248bb-e97a-25d2-bcf2-9160c518cae5@kolla.no/
+> Reported-by: Jonáš Vidra <vidra@ufal.mff.cuni.cz>
+> Closes: https://lore.kernel.org/all/3b6441b8-06e6-45da-9e55-f92f2c86933e@ufal.mff.cuni.cz/
+> Tested-by: Kolbjørn Barmen <linux-ppc@kolla.no>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-> Andrew - I think this is good, but there may be other issues lurking.
-> Do with it as you see fit,
+Applied to for-6.11-fixes. Thanks !
 
-Hey you know me, I'll merge any old thing if I think it'll help nurture
-newbies.
+-- 
+Damien Le Moal
+Western Digital Research
+
 
