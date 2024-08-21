@@ -1,57 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-282-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-283-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9272695983B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2024 12:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CC6959842
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2024 12:48:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wpjj73pCQz2yfm;
-	Wed, 21 Aug 2024 20:47:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wpjjm0j14z2yhD;
+	Wed, 21 Aug 2024 20:48:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::730"
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42d"
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=mZzHT7C5;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=QB7qDML0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::730; helo=mail-qk1-x730.google.com; envelope-from=arnaldo.melo@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wphjk2fnQz2y1l
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 20:03:21 +1000 (AEST)
-Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-7a1dac7f0b7so485561985a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 03:03:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wphk66gBBz2y1l
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 20:03:39 +1000 (AEST)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-713dc00cf67so3680963b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 03:03:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724234598; x=1724839398; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ofmeIKXNrrzxVEmPf1KWq6KkWjH0as8kAgvleVtt0G8=;
-        b=mZzHT7C5T5tdoTZZxnAXqN20nIz+hQHChznvLbXZSSZ09Y1OExxK0q6fNBPSetR1LU
-         5Ouo4g/4wfRiKStEkMxBF+5IpVsy1JX4PBMYZsQ8yg/81wu4B+4aLLAQJQ1vCsLd1gSW
-         QTcy5bIbWr5oG28sviGUOz8rh1OEpWSfhdNg1SwbdQmNa5C0mmlzgNsunhd/O+9sGUVA
-         n/2xf7EhkKYA4AO6lpw/NltzOuDpLbZrjBqGfav4pZxF9bcmkDQDD42X92uPwW/MXC74
-         IwCFrHnREODMiIQW4MiQBQxzmp1F8h0OXKfv+q//96x/N/gM1PFTqexFZ813x/vKqKmt
-         BSIA==
+        d=bytedance.com; s=google; t=1724234617; x=1724839417; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Hc9KXq9HiCmVA6sa8jp61udoxCJLWx+IYCHX8J3fcJQ=;
+        b=QB7qDML0C5N89hHXq0JMmOx0C0yMMRdT0ppAnnV9NIoWpwnAm0H4Foq+R5NnDjCWcD
+         6sc7FBPlnJHOJb/uAE7MLdqqZDFFBUq6rcJ/O/c/9ghN3BvPC09okWX0EYNn8f0nzBh5
+         yHJNlrQILhctG2iuedBgVqiZMJvlkKQD7K95bATGrjPoEZaWP/WyEoNbxuelRsU8n4O2
+         +j11QyOPlDl8fKfyoNG9ON58jGP/zC5EcR/Tp0TTxxmUIvpgJipGpZHgUbi13QzlZLWH
+         amNJBN0ZtKwkh+0UOtroS6yCLAupX+Et0YMlnqcHGj5/1sCfWY5MFHRwc2tgK39B/HGP
+         Y5Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724234598; x=1724839398;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ofmeIKXNrrzxVEmPf1KWq6KkWjH0as8kAgvleVtt0G8=;
-        b=eOp9SrP4oXQDMXVlN0qTWutLKuTtjSxp8rYPo3sOhhhleBorhElWNvJNlOTn+MNGPf
-         CX8HGG5ulVumBz2SSKt1UPWYtSgLAWwEs64WE5+T/hRd95f522K1juMAHb6Yl1oVTxWZ
-         PDWJjd+EIvnGM/x8cDb+rc6PQ/hS+Sf/D5oKvdl4+N7Mi/H31tZsL8ZR+rDOEySEMnlk
-         vkJBqa3KJImcdLyQ5IiixklV4B9+1yNzlzuU9950rPY3ZNrH6g8Aj+yP2TxWM2ZETtA7
-         geH1hLNchIZFVGNQaeHajzuQdiyjfTFpLqumbbNSx24bz2CYek5ZqOtZyJQaV4DXRYI5
-         Yu0g==
-X-Gm-Message-State: AOJu0YzD+BSjEuvPLLoHLblavFzIpXu+qE2El/41S6xWdwVRpH3wzx/g
-	td3XLSWRcRSYplxpCe+IH+uQvbgLUDcqwfoaLFH0qvpsxDnryHQEpjOEZQh79qegPgLYEG8mLYa
-	tc0FA66zLeAm+Eao9qfDULBESTDA=
-X-Google-Smtp-Source: AGHT+IEr0DtUlLXSRkIMcKDUZRNuiv+f9TCR8rUu/iehyAsskofhehmzNG/oeXRlQ/7peu1WpIJIKhgqyz9i/o284us=
-X-Received: by 2002:a05:6214:3110:b0:6bf:7bbd:d2bf with SMTP id
- 6a1803df08f44-6c1567b4ec1mr17865106d6.5.1724234598357; Wed, 21 Aug 2024
- 03:03:18 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724234617; x=1724839417;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hc9KXq9HiCmVA6sa8jp61udoxCJLWx+IYCHX8J3fcJQ=;
+        b=uZPC9TRhwqv2CJWITheNX2mY/2Cu2BBDI9/7/xjGQzMViSjvL1lK2mo/jDAchOa1F3
+         LwPxrJ0O7/TRhpevmekCRvckWBfQ5qHGxRqsBk86nKKQso6TE1Jjudb/Ju0N+5tcXPVd
+         XcDm51Rjf7gnAc4u6wYKpN0J9Ds3tbkHJGlzjU0X6PP9X8ysogvbA8j+0iGQQ9IfqCAq
+         agVnJ5g15dV884y7FFjlgIi162rjxcZrHU+kF35swLddvZrNG5FW6sWlJBOHOCywjrIn
+         r//ZI6DCZkjvUCefaU5bbGkO55Agzj/acnprdjd+LU5mXSthMHb4GR5UCnp2Gij/J1PP
+         yL1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCURzWnNwzRqpL6UjSTSoj/t+W/VrTXfRndqBwVegzdxoTz+fHTSvDtVSDBB/fMMS8xNR+4Z9j4MBWgV9MI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyJwaDltVFJwdn0tJ00dUl9BCehaI4HJJE3saDewzhB0Tw64T8y
+	bOrEOaHGR1JsuTZjDE5+7VLmjECkYoXz0EixibBR6GkeCVrbf6EQpdO3IYOnU0c=
+X-Google-Smtp-Source: AGHT+IHzEyIAn5BZKdsgEF+tkgsjaGhBmdzJxEgxGtA7eOAAo7NB0TYXIZ9VX90RiBa6VatggNPMRg==
+X-Received: by 2002:a05:6a20:9f4e:b0:1c4:a531:bafd with SMTP id adf61e73a8af0-1cad7f8b77dmr2391092637.18.1724234617078;
+        Wed, 21 Aug 2024 03:03:37 -0700 (PDT)
+Received: from [10.84.144.49] ([203.208.167.150])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7127aef610esm9588632b3a.129.2024.08.21.03.03.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Aug 2024 03:03:36 -0700 (PDT)
+Message-ID: <83142dc8-edcf-4e47-8215-8b359a2b7156@bytedance.com>
+Date: Wed, 21 Aug 2024 18:03:30 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,218 +67,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <83384a02-60f9-489b-8e58-a5f3b65992b8@cs-soprasteria.com>
-In-Reply-To: <83384a02-60f9-489b-8e58-a5f3b65992b8@cs-soprasteria.com>
-From: Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>
-Date: Wed, 21 Aug 2024 07:03:06 -0300
-Message-ID: <CA+JHD92KFi5HMBAenm7cv8V2_z0ZnQmg5eenZ48zFs=DoWPoEA@mail.gmail.com>
-Subject: Re: perf build failure with v6.11-rc4 (commit 4bbe60029319 ("perf
- daemon: Fix the build on 32-bit architectures"))
-To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: multipart/alternative; boundary="000000000000bea54e06202ea613"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/14] mm: handle_pte_fault() use
+ pte_offset_map_maywrite_nolock()
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>
+Cc: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>,
+ "hughd@google.com" <hughd@google.com>,
+ "willy@infradead.org" <willy@infradead.org>,
+ "muchun.song@linux.dev" <muchun.song@linux.dev>,
+ "vbabka@kernel.org" <vbabka@kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "rppt@kernel.org" <rppt@kernel.org>,
+ "vishal.moola@gmail.com" <vishal.moola@gmail.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <cover.1724226076.git.zhengqi.arch@bytedance.com>
+ <239432a0bc56464e58a6baf3622fdc72526c8d57.1724226076.git.zhengqi.arch@bytedance.com>
+ <6a586524-5116-4eaf-b4f3-c1aea290d7c1@cs-soprasteria.com>
+ <b4bf605a-d31a-40ad-8cee-fe505e45dc64@bytedance.com>
+ <4b867535-8481-4fa1-bed1-ad25a76682f0@redhat.com>
+ <ef40c2ef-e4a4-4b02-85b8-a930285a3d0e@bytedance.com>
+ <61c05197-0baa-4680-ad24-5965ba37dc35@redhat.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <61c05197-0baa-4680-ad24-5965ba37dc35@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---000000000000bea54e06202ea613
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 21, 2024, 6:06=E2=80=AFAM LEROY Christophe <
-christophe.leroy2@cs-soprasteria.com> wrote:
 
-> Got the following build failure on v6.11-rc4, see
-> https://github.com/chleroy/linux/actions/runs/10485680041/job/29042302519
->
->
->
->
-> Can you try with
-https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/co=
-mmit/?h=3Dperf-tools-next&id=3D6236ebe07131a7746d870f1d8eb3637a8df13e70
+On 2024/8/21 17:53, David Hildenbrand wrote:
+> On 21.08.24 11:51, Qi Zheng wrote:
+>>
+>>
+>> On 2024/8/21 17:41, David Hildenbrand wrote:
+>>> On 21.08.24 11:24, Qi Zheng wrote:
+>>>>
+>>>>
+>>>> On 2024/8/21 17:17, LEROY Christophe wrote:
+>>>>>
+>>>>>
+>>>>> Le 21/08/2024 à 10:18, Qi Zheng a écrit :
+>>>>>> In handle_pte_fault(), we may modify the vmf->pte after acquiring the
+>>>>>> vmf->ptl, so convert it to using pte_offset_map_maywrite_nolock(). 
+>>>>>> But
+>>>>>> since we already do the pte_same() check, so there is no need to get
+>>>>>> pmdval to do pmd_same() check, just pass NULL to pmdvalp parameter.
+>>>>>>
+>>>>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>>> ---
+>>>>>>      mm/memory.c | 9 +++++++--
+>>>>>>      1 file changed, 7 insertions(+), 2 deletions(-)
+>>>>>>
+>>>>>> diff --git a/mm/memory.c b/mm/memory.c
+>>>>>> index 93c0c25433d02..d3378e98faf13 100644
+>>>>>> --- a/mm/memory.c
+>>>>>> +++ b/mm/memory.c
+>>>>>> @@ -5504,9 +5504,14 @@ static vm_fault_t handle_pte_fault(struct
+>>>>>> vm_fault *vmf)
+>>>>>>               * pmd by anon khugepaged, since that takes mmap_lock in
+>>>>>> write
+>>>>>>               * mode; but shmem or file collapse to THP could still
+>>>>>> morph
+>>>>>>               * it into a huge pmd: just retry later if so.
+>>>>>> +         *
+>>>>>> +         * Use the maywrite version to indicate that vmf->pte 
+>>>>>> will be
+>>>>>> +         * modified, but since we will use pte_same() to detect the
+>>>>>> +         * change of the pte entry, there is no need to get pmdval.
+>>>>>>               */
+>>>>>> -        vmf->pte = pte_offset_map_nolock(vmf->vma->vm_mm, vmf->pmd,
+>>>>>> -                         vmf->address, &vmf->ptl);
+>>>>>> +        vmf->pte = pte_offset_map_maywrite_nolock(vmf->vma->vm_mm,
+>>>>>> +                              vmf->pmd, vmf->address,
+>>>>>> +                              NULL, &vmf->ptl);
+>>>
+>>> I think we discussed that passing NULL should be forbidden for that
+>>> function.
+>>
+>> Yes, but for some maywrite case, there is no need to get pmdval to
+>> do pmd_same() check. So I passed NULL and added a comment to
+>> explain this.
+> 
+> I wonder if it's better to pass a dummy variable instead. One has to 
+> think harder why that is required compared to blindly passing "NULL" :)
 
-?
+You are afraid that subsequent caller will abuse this function, right?
+My initial concern was that this would add a useless local vaiable, but
+perhaps that is not a big deal.
 
-- Arnaldo
+Both are fine for me. ;)
 
-builtin-daemon.c: In function 'cmd_session_list':
-> Error: builtin-daemon.c:692:16: error: format '%llu' expects argument of
-> type 'long long unsigned int', but argument 4 has type 'long int'
-> [-Werror=3Dformat=3D]
->    692 |   fprintf(out, "%c%" PRIu64,
->        |                ^~~~~
->    693 |    /* session up time */
->    694 |    csv_sep, (curr - daemon->start) / 60);
->        |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~
->        |                                    |
->        |                                    long int
-> In file included from builtin-daemon.c:3:
-> /usr/powerpc-linux-gnu/include/inttypes.h:105:34: note: format string is
-> defined here
->    105 | # define PRIu64  __PRI64_PREFIX "u"
-> Error: builtin-daemon.c:704:17: error: format '%llu' expects argument of
-> type 'long long unsigned int', but argument 3 has type 'long int'
-> [-Werror=3Dformat=3D]
->    704 |    fprintf(out, "  up:      %" PRIu64 " minutes\n",
->        |                 ^~~~~~~~~~~~~~
->    705 |     (curr - daemon->start) / 60);
->        |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
->        |                            |
->        |                            long int
-> In file included from builtin-daemon.c:3:
-> /usr/powerpc-linux-gnu/include/inttypes.h:105:34: note: format string is
-> defined here
->    105 | # define PRIu64  __PRI64_PREFIX "u"
-> Error: builtin-daemon.c:731:17: error: format '%llu' expects argument of
-> type 'long long unsigned int', but argument 4 has type 'long int'
-> [-Werror=3Dformat=3D]
->    731 |    fprintf(out, "%c%" PRIu64,
->        |                 ^~~~~
->    732 |     /* session up time */
->    733 |     csv_sep, (curr - session->start) / 60);
->        |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->        |                                      |
->        |                                      long int
-> In file included from builtin-daemon.c:3:
-> /usr/powerpc-linux-gnu/include/inttypes.h:105:34: note: format string is
-> defined here
->    105 | # define PRIu64  __PRI64_PREFIX "u"
-> Error: builtin-daemon.c:749:17: error: format '%llu' expects argument of
-> type 'long long unsigned int', but argument 3 has type 'long int'
-> [-Werror=3Dformat=3D]
->    749 |    fprintf(out, "  up:      %" PRIu64 " minutes\n",
->        |                 ^~~~~~~~~~~~~~
->    750 |     (curr - session->start) / 60);
->        |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->        |                             |
->        |                             long int
-> In file included from builtin-daemon.c:3:
-> /usr/powerpc-linux-gnu/include/inttypes.h:105:34: note: format string is
-> defined here
->    105 | # define PRIu64  __PRI64_PREFIX "u"
->
->
-> Christophe
->
-
---000000000000bea54e06202ea613
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Wed, Aug 21, 2024, 6:06=E2=80=AFAM LEROY Christophe=
- &lt;<a href=3D"mailto:christophe.leroy2@cs-soprasteria.com">christophe.ler=
-oy2@cs-soprasteria.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_q=
-uote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,2=
-04);padding-left:1ex">Got the following build failure on v6.11-rc4, see <br=
->
-<a href=3D"https://github.com/chleroy/linux/actions/runs/10485680041/job/29=
-042302519" rel=3D"noreferrer noreferrer" target=3D"_blank">https://github.c=
-om/chleroy/linux/actions/runs/10485680041/job/29042302519</a><br>
-<br><br><br><br></blockquote></div></div><div dir=3D"auto">Can you try with=
-=C2=A0<a href=3D"https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-=
-tools-next.git/commit/?h=3Dperf-tools-next&amp;id=3D6236ebe07131a7746d870f1=
-d8eb3637a8df13e70">https://git.kernel.org/pub/scm/linux/kernel/git/perf/per=
-f-tools-next.git/commit/?h=3Dperf-tools-next&amp;id=3D6236ebe07131a7746d870=
-f1d8eb3637a8df13e70</a></div><div dir=3D"auto"><br></div><div dir=3D"auto">=
-?</div><div dir=3D"auto"><br></div><div dir=3D"auto">- Arnaldo=C2=A0</div><=
-div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><bl=
-ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
-t:1px solid rgb(204,204,204);padding-left:1ex">
-builtin-daemon.c: In function &#39;cmd_session_list&#39;:<br>
-Error: builtin-daemon.c:692:16: error: format &#39;%llu&#39; expects argume=
-nt of <br>
-type &#39;long long unsigned int&#39;, but argument 4 has type &#39;long in=
-t&#39; <br>
-[-Werror=3Dformat=3D]<br>
-=C2=A0 =C2=A0692 |=C2=A0 =C2=A0fprintf(out, &quot;%c%&quot; PRIu64,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 ^~~~~<br>
-=C2=A0 =C2=A0693 |=C2=A0 =C2=A0 /* session up time */<br>
-=C2=A0 =C2=A0694 |=C2=A0 =C2=A0 csv_sep, (curr - daemon-&gt;start) / 60);<b=
-r>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 |<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 long int<br>
-In file included from builtin-daemon.c:3:<br>
-/usr/powerpc-linux-gnu/include/inttypes.h:105:34: note: format string is <b=
-r>
-defined here<br>
-=C2=A0 =C2=A0105 | # define PRIu64=C2=A0 __PRI64_PREFIX &quot;u&quot;<br>
-Error: builtin-daemon.c:704:17: error: format &#39;%llu&#39; expects argume=
-nt of <br>
-type &#39;long long unsigned int&#39;, but argument 3 has type &#39;long in=
-t&#39; <br>
-[-Werror=3Dformat=3D]<br>
-=C2=A0 =C2=A0704 |=C2=A0 =C2=A0 fprintf(out, &quot;=C2=A0 up:=C2=A0 =C2=A0 =
-=C2=A0 %&quot; PRIu64 &quot; minutes\n&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0^~~~~~~~~~~~~~<br>
-=C2=A0 =C2=A0705 |=C2=A0 =C2=A0 =C2=A0(curr - daemon-&gt;start) / 60);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 long int<br>
-In file included from builtin-daemon.c:3:<br>
-/usr/powerpc-linux-gnu/include/inttypes.h:105:34: note: format string is <b=
-r>
-defined here<br>
-=C2=A0 =C2=A0105 | # define PRIu64=C2=A0 __PRI64_PREFIX &quot;u&quot;<br>
-Error: builtin-daemon.c:731:17: error: format &#39;%llu&#39; expects argume=
-nt of <br>
-type &#39;long long unsigned int&#39;, but argument 4 has type &#39;long in=
-t&#39; <br>
-[-Werror=3Dformat=3D]<br>
-=C2=A0 =C2=A0731 |=C2=A0 =C2=A0 fprintf(out, &quot;%c%&quot; PRIu64,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0^~~~~<br>
-=C2=A0 =C2=A0732 |=C2=A0 =C2=A0 =C2=A0/* session up time */<br>
-=C2=A0 =C2=A0733 |=C2=A0 =C2=A0 =C2=A0csv_sep, (curr - session-&gt;start) /=
- 60);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 |<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 long int<br>
-In file included from builtin-daemon.c:3:<br>
-/usr/powerpc-linux-gnu/include/inttypes.h:105:34: note: format string is <b=
-r>
-defined here<br>
-=C2=A0 =C2=A0105 | # define PRIu64=C2=A0 __PRI64_PREFIX &quot;u&quot;<br>
-Error: builtin-daemon.c:749:17: error: format &#39;%llu&#39; expects argume=
-nt of <br>
-type &#39;long long unsigned int&#39;, but argument 3 has type &#39;long in=
-t&#39; <br>
-[-Werror=3Dformat=3D]<br>
-=C2=A0 =C2=A0749 |=C2=A0 =C2=A0 fprintf(out, &quot;=C2=A0 up:=C2=A0 =C2=A0 =
-=C2=A0 %&quot; PRIu64 &quot; minutes\n&quot;,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0^~~~~~~~~~~~~~<br>
-=C2=A0 =C2=A0750 |=C2=A0 =C2=A0 =C2=A0(curr - session-&gt;start) / 60);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0long int<br>
-In file included from builtin-daemon.c:3:<br>
-/usr/powerpc-linux-gnu/include/inttypes.h:105:34: note: format string is <b=
-r>
-defined here<br>
-=C2=A0 =C2=A0105 | # define PRIu64=C2=A0 __PRI64_PREFIX &quot;u&quot;<br>
-<br>
-<br>
-Christophe<br>
-</blockquote></div></div></div>
-
---000000000000bea54e06202ea613--
+> 
 
