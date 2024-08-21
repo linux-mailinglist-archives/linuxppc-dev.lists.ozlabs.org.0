@@ -1,53 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-256-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-257-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0CA9594F7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2024 08:47:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD26C959647
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2024 10:07:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WpcND2w8Cz2xWT;
-	Wed, 21 Aug 2024 16:47:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wpf850LQpz2yDY;
+	Wed, 21 Aug 2024 18:07:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=k/7+NJwV;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WpcND0Ycsz2xTP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 16:47:54 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WpcN82Jcxz9sSL;
-	Wed, 21 Aug 2024 08:47:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Qc2-O7sfsnYc; Wed, 21 Aug 2024 08:47:52 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WpcN81cTSz9sSK;
-	Wed, 21 Aug 2024 08:47:52 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 28BBC8B778;
-	Wed, 21 Aug 2024 08:47:52 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Jv9pzxhi_2wt; Wed, 21 Aug 2024 08:47:52 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 07DC78B763;
-	Wed, 21 Aug 2024 08:47:52 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Remove LHZX_BE macro
-Date: Wed, 21 Aug 2024 08:47:51 +0200
-Message-ID: <fd332b01c47bb9cb6c3af1696a2e109be655f5b5.1724222856.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.44.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wpf834Hv2z2xjH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 18:07:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1724227651;
+	bh=zVRgMMkOjeYB6QQ0JHVolBsbGEZiqbKdBpjm06nsx8A=;
+	h=From:To:Subject:Date:From;
+	b=k/7+NJwVPaa/m2P0L5KP1mwo2KeLImVdYeMM9AtSDRmKCLkpw/ZM0YpwBXYBbuMpC
+	 dsBt3ZGGnOzon2CjIa5pjy0gIlMOTZqMdDyTkmm2a5lb9WG+gefilzrEGRlJ2dbD8n
+	 gUC/cOBLoEmszPmjTZt83cVz+2cSRzkmb5jIuA8PsL38Z7rN8Aa8PE75zfbtPGEaMB
+	 y+pgTd4zt+p7bgqJchT/NEkEIOCFEunnY14WM1I2jTm1xe/JDxFBXmgIGTL2xdwr/i
+	 2rj1xZNYTWdxvKfeq/XCCtMcPw43CK1AI5YPXge3orrwhJysXgVodWsOSPcFTCcWAf
+	 ent4BhVTvt+5A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wpf832yt3z4x89;
+	Wed, 21 Aug 2024 18:07:31 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/64s/mm: Move __real_pte stubs into hash-4k.h
+Date: Wed, 21 Aug 2024 18:07:29 +1000
+Message-ID: <20240821080729.872034-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,39 +50,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724222871; l=929; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=QzA1iwpdIWaUpbbbRXkE+PetQ+6HUMW3FsrcPJprMhM=; b=8iRP43m8ZL0jcO70Bsi7+2lojNQMCS/Vvqf4b5qQeMWKdybzhsOeHxKfIbRd4ZDb8LAB4R3Zc aOHtIj+eQ5XC4J0kCEAxtxPc1eZTCDAXz8LIcC/h/ewVzeenJp/sVGm
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 
-LHZX_BE has been unused since commit dbf44daf7c88 ("bpf, ppc64: remove
-ld_abs/ld_ind")
+The stub versions of __real_pte() etc are only used with HPT & 4K pages,
+so move them into the hash-4k.h header.
 
-Remove it.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/include/asm/asm-compat.h | 2 --
- 1 file changed, 2 deletions(-)
+ arch/powerpc/include/asm/book3s/64/hash-4k.h | 20 +++++++++++++++
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 26 --------------------
+ 2 files changed, 20 insertions(+), 26 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/asm-compat.h b/arch/powerpc/include/asm/asm-compat.h
-index 2bc53c646ccd..b0b209c1df50 100644
---- a/arch/powerpc/include/asm/asm-compat.h
-+++ b/arch/powerpc/include/asm/asm-compat.h
-@@ -26,13 +26,11 @@
- #define PPC_MIN_STKFRM	112
+diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+index 6472b08fa1b0..57ebbacf1709 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
++++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+@@ -89,6 +89,26 @@ static inline int hash__hugepd_ok(hugepd_t hpd)
+ }
+ #endif
  
- #ifdef __BIG_ENDIAN__
--#define LHZX_BE	stringify_in_c(lhzx)
- #define LWZX_BE	stringify_in_c(lwzx)
- #define LDX_BE	stringify_in_c(ldx)
- #define STWX_BE	stringify_in_c(stwx)
- #define STDX_BE	stringify_in_c(stdx)
- #else
--#define LHZX_BE	stringify_in_c(lhbrx)
- #define LWZX_BE	stringify_in_c(lwbrx)
- #define LDX_BE	stringify_in_c(ldbrx)
- #define STWX_BE	stringify_in_c(stwbrx)
++/*
++ * With 4K page size the real_pte machinery is all nops.
++ */
++#define __real_pte(e, p, o)		((real_pte_t){(e)})
++#define __rpte_to_pte(r)	((r).pte)
++#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
++
++#define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
++	do {							         \
++		index = 0;					         \
++		shift = mmu_psize_defs[psize].shift;		         \
++
++#define pte_iterate_hashed_end() } while(0)
++
++/*
++ * We expect this to be called only for user addresses or kernel virtual
++ * addresses other than the linear mapping.
++ */
++#define pte_pagesize_index(mm, addr, pte)	MMU_PAGE_4K
++
+ /*
+  * 4K PTE format is different from 64K PTE format. Saving the hash_slot is just
+  * a matter of returning the PTE bits that need to be modified. On 64K PTE,
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 8f9432e3855a..014632161edb 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -314,32 +314,6 @@ static inline bool pud_leaf(pud_t pud)
+ 
+ #ifndef __ASSEMBLY__
+ 
+-/*
+- * This is the default implementation of various PTE accessors, it's
+- * used in all cases except Book3S with 64K pages where we have a
+- * concept of sub-pages
+- */
+-#ifndef __real_pte
+-
+-#define __real_pte(e, p, o)		((real_pte_t){(e)})
+-#define __rpte_to_pte(r)	((r).pte)
+-#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
+-
+-#define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
+-	do {							         \
+-		index = 0;					         \
+-		shift = mmu_psize_defs[psize].shift;		         \
+-
+-#define pte_iterate_hashed_end() } while(0)
+-
+-/*
+- * We expect this to be called only for user addresses or kernel virtual
+- * addresses other than the linear mapping.
+- */
+-#define pte_pagesize_index(mm, addr, pte)	MMU_PAGE_4K
+-
+-#endif /* __real_pte */
+-
+ static inline unsigned long pte_update(struct mm_struct *mm, unsigned long addr,
+ 				       pte_t *ptep, unsigned long clr,
+ 				       unsigned long set, int huge)
 -- 
-2.44.0
+2.46.0
 
 
