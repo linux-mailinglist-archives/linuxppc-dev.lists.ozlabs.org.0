@@ -1,83 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-277-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-278-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0FA9597FB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2024 12:43:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F3295981C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 Aug 2024 12:46:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WpjcH3Fs5z2yVd;
-	Wed, 21 Aug 2024 20:43:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wpjg86flqz2yY1;
+	Wed, 21 Aug 2024 20:46:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102b"
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1033"
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Wous8dAw;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=iUumjJX7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WpfRg4lKTz2y1l
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 18:21:03 +1000 (AEST)
-Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-2d3d662631aso4423363a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 01:21:03 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WpgrZ2t3cz2y1l
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 19:24:12 +1000 (AEST)
+Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-2d3c071d276so4512556a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 Aug 2024 02:24:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1724228461; x=1724833261; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9nMMKQBovMbpHaGn8Lvg/undANxxFw84odzUdkp5IAc=;
-        b=Wous8dAwZv+RRMRhtj0Knl7jfXJKexDcvcVrS7SapK065lDoqy9fuqT2VAprPgnqhd
-         18XyWwR55H1uHVCMOExYbqoEj4F83YaQ/tJ1dZg/+nLrZuzILEsgKUBDOcfzCaOFLc7I
-         jpUfavj1hJfl7qKiBd1wCtJfY106Ch/N661O6TSMQUX5qyr4UYCwrL9/UxsfEEbA9Mw2
-         Mu+AsOxmBn11A9SrZPVWcQrEffX5eY0pOL32/eVzb5SbGL8DYBkEOaOJ6+Z+XyuW1xdV
-         zovHVGrsEyo5q0ZYA5jOcY51Xso8oduRa5/J0S1hSoWv5xX9MVKN2L0RCHXcwug7MSRn
-         GpHw==
+        d=bytedance.com; s=google; t=1724232249; x=1724837049; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wSX2UW/W8B7Ffz8kkQMnXKOYBxRf7RK7/SpflK+Hcb8=;
+        b=iUumjJX71CVRCao48j33SmxHyXrUJ6zIQ8CVv/E0wS6l6LsBravdOWt4wwp2cLzsKG
+         G6jVVATJeIML47elax5I4YwtJEBVj2Ez73c83d1+QH95RSs4PO6bggv0sEPmqog/FMcT
+         dfPLpaljtzTfKLq8eETSxy77hZrwuBSDh47EqrJ/O5hDLsU9VdBfsH/86rMS1U8q0tBp
+         mVhA9nKcvc6164G/SU2soVFr26rye+8m/LoD+vymWQ2vTCPysyewIRFYVWez7sAB7v2M
+         91SljThc0BF2EDJzmCSnaFy2UL34p/uwH89eVlo70IgeBUpkw99y9OiyVV4sH2Jz3LAK
+         L1eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724228461; x=1724833261;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9nMMKQBovMbpHaGn8Lvg/undANxxFw84odzUdkp5IAc=;
-        b=iAwph/ObdgfAjKblCtwrelyqFLkdzEjnA+4ZTzJkt+m+u02YcjpXnf6o8bV1iSnL5W
-         LlBKsGwhDdoRIlyaaegbXgcZUQwJp8skEEwfiCzL1B7S4wZc6WazPLRNlXQlsSP36YU0
-         yRzC/0wCkDcYSvt/ClqXS9yz8vPs6YhuRzjp68ax5BMofGHN0vb2UdMzwkHy4kPGd2+Z
-         JIU+nIqfWasS3vqO0YRzLMblawfV/oX58rv+6YVWDInNRANzsNFmpMES+/etsL6ohw0j
-         ELr2HRCzwZdr4OXOnX6llvR1vc9Fp2N8450zeUv+FMqUiCQkeRQDJy8GhxTu66TUm/Wd
-         ycKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXiP5gQfjXA6esY+S9T+oysw84aBNfqc6rWScbOwYQfM4UBo4aZ00pFqswXKOkLvhLr2qcjPn2bs8jVjog=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzik5FthZ1qqE0p5kOJzfwm3YT67Q7Y8/WtpJs9QYLrz60Yu8Sr
-	GR06a9T+2vu/Azf+SjqWVoln2p89ng+VxE8+KPkBJ3deZPDr52VIX/OIIi4Twak=
-X-Google-Smtp-Source: AGHT+IGVCW7LuSOfGhGGSqonUfZfQEf1Y51LpMxCXHDPBrQX3ltYUdmnoycYhvy3ErzvacrcFVYd1w==
-X-Received: by 2002:a17:90b:3851:b0:2d3:d239:24c2 with SMTP id 98e67ed59e1d1-2d5e9b99f57mr1469884a91.19.1724228461120;
-        Wed, 21 Aug 2024 01:21:01 -0700 (PDT)
-Received: from C02DW0BEMD6R.bytedance.net ([203.208.167.150])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d5eb9049b0sm1091453a91.17.2024.08.21.01.20.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 01:21:00 -0700 (PDT)
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-To: david@redhat.com,
-	hughd@google.com,
-	willy@infradead.org,
-	muchun.song@linux.dev,
-	vbabka@kernel.org,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	vishal.moola@gmail.com,
-	peterx@redhat.com,
-	ryan.roberts@arm.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH 14/14] mm: khugepaged: retract_page_tables() use pte_offset_map_maywrite_nolock()
-Date: Wed, 21 Aug 2024 16:18:57 +0800
-Message-Id: <c72aab4401c890a2b348eae119ec395e30a2f805.1724226076.git.zhengqi.arch@bytedance.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
-In-Reply-To: <cover.1724226076.git.zhengqi.arch@bytedance.com>
-References: <cover.1724226076.git.zhengqi.arch@bytedance.com>
+        d=1e100.net; s=20230601; t=1724232249; x=1724837049;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wSX2UW/W8B7Ffz8kkQMnXKOYBxRf7RK7/SpflK+Hcb8=;
+        b=oFHW9sjKhtOpJqd9ulW6jeaUeaVly8QG+Z7WVE/rENWyxS4YBUC/LyW/tZDbmNHRNX
+         B8YXBBewqv/x2gQ1TSYCAQi5c+e1UZ6RDlIniNTsUtQ1SlxfN3JHmHLdGWSB9vBiHx1G
+         cOYidaKpesfd4dUmIrXAodNGJTqpKBDz0e8xa0WzoHFK5bziXXIcYDtaACKlnvlo9uZe
+         /+MeKsd9yiuzqQ50LQWwLR95jxQ2Dr6lYAGUsy6Lzk6bdQwl+2UPwwQt6CR80TGV05xT
+         3fdL9WbaJNdnufgDBdnLNupqmMZ6kHFECMQ5plq78kuhfD3NxIZ132ykdcEBhLNypUt3
+         n/wg==
+X-Forwarded-Encrypted: i=1; AJvYcCUilXOLM0LAu5uFjEWvDeKWJOTkN+coNK0/aQfCJo2JCg0Q++wAKUbqvjK3JiwLF8s4o76e2CCCMAUkki4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx20mLHby9aHaWBq1ZbbtgKtZX2U57/g3gbzTcHzjdE/vp0kqqa
+	xRHQKf0uLr2PO9w5Gq6sbRjI08z1PePvYPoybOF+hfcefayuoM3gFu89c5utCqs=
+X-Google-Smtp-Source: AGHT+IEgVXX8+VxDvZcoW1SKZwBL11MhagLS8dAsfWdFenURBSvzCDIeLTwfbkrSYGW7mFvGjU6V4w==
+X-Received: by 2002:a17:90a:7893:b0:2c9:635b:7271 with SMTP id 98e67ed59e1d1-2d5e9a24ea2mr1735850a91.21.1724232249566;
+        Wed, 21 Aug 2024 02:24:09 -0700 (PDT)
+Received: from [10.84.144.49] ([203.208.167.150])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d5ebb69487sm1232288a91.45.2024.08.21.02.24.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Aug 2024 02:24:09 -0700 (PDT)
+Message-ID: <b4bf605a-d31a-40ad-8cee-fe505e45dc64@bytedance.com>
+Date: Wed, 21 Aug 2024 17:24:01 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,57 +67,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/14] mm: handle_pte_fault() use
+ pte_offset_map_maywrite_nolock()
+Content-Language: en-US
+To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
+Cc: "david@redhat.com" <david@redhat.com>, "hughd@google.com"
+ <hughd@google.com>, "willy@infradead.org" <willy@infradead.org>,
+ "muchun.song@linux.dev" <muchun.song@linux.dev>,
+ "vbabka@kernel.org" <vbabka@kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "rppt@kernel.org" <rppt@kernel.org>,
+ "vishal.moola@gmail.com" <vishal.moola@gmail.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <cover.1724226076.git.zhengqi.arch@bytedance.com>
+ <239432a0bc56464e58a6baf3622fdc72526c8d57.1724226076.git.zhengqi.arch@bytedance.com>
+ <6a586524-5116-4eaf-b4f3-c1aea290d7c1@cs-soprasteria.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <6a586524-5116-4eaf-b4f3-c1aea290d7c1@cs-soprasteria.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-In retract_page_tables(), we may modify the pmd entry after acquiring the
-pml and ptl, so we should also check whether the pmd entry is stable.
-Using pte_offset_map_maywrite_nolock() + pmd_same() to do it.
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
----
- mm/khugepaged.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 8fcad0b368a08..821c840b5b593 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1721,6 +1721,7 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
- 		spinlock_t *pml;
- 		spinlock_t *ptl;
- 		bool skipped_uffd = false;
-+		pte_t *pte;
- 
- 		/*
- 		 * Check vma->anon_vma to exclude MAP_PRIVATE mappings that
-@@ -1756,11 +1757,25 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
- 					addr, addr + HPAGE_PMD_SIZE);
- 		mmu_notifier_invalidate_range_start(&range);
- 
-+		pte = pte_offset_map_maywrite_nolock(mm, pmd, addr, &pgt_pmd, &ptl);
-+		if (!pte) {
-+			mmu_notifier_invalidate_range_end(&range);
-+			continue;
-+		}
-+
- 		pml = pmd_lock(mm, pmd);
--		ptl = pte_lockptr(mm, pmd);
- 		if (ptl != pml)
- 			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
- 
-+		if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd)))) {
-+			pte_unmap_unlock(pte, ptl);
-+			if (ptl != pml)
-+				spin_unlock(pml);
-+			mmu_notifier_invalidate_range_end(&range);
-+			continue;
-+		}
-+		pte_unmap(pte);
-+
- 		/*
- 		 * Huge page lock is still held, so normally the page table
- 		 * must remain empty; and we have already skipped anon_vma
--- 
-2.20.1
+On 2024/8/21 17:17, LEROY Christophe wrote:
+> 
+> 
+> Le 21/08/2024 à 10:18, Qi Zheng a écrit :
+>> In handle_pte_fault(), we may modify the vmf->pte after acquiring the
+>> vmf->ptl, so convert it to using pte_offset_map_maywrite_nolock(). But
+>> since we already do the pte_same() check, so there is no need to get
+>> pmdval to do pmd_same() check, just pass NULL to pmdvalp parameter.
+>>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>    mm/memory.c | 9 +++++++--
+>>    1 file changed, 7 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index 93c0c25433d02..d3378e98faf13 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -5504,9 +5504,14 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+>>    		 * pmd by anon khugepaged, since that takes mmap_lock in write
+>>    		 * mode; but shmem or file collapse to THP could still morph
+>>    		 * it into a huge pmd: just retry later if so.
+>> +		 *
+>> +		 * Use the maywrite version to indicate that vmf->pte will be
+>> +		 * modified, but since we will use pte_same() to detect the
+>> +		 * change of the pte entry, there is no need to get pmdval.
+>>    		 */
+>> -		vmf->pte = pte_offset_map_nolock(vmf->vma->vm_mm, vmf->pmd,
+>> -						 vmf->address, &vmf->ptl);
+>> +		vmf->pte = pte_offset_map_maywrite_nolock(vmf->vma->vm_mm,
+>> +							  vmf->pmd, vmf->address,
+>> +							  NULL, &vmf->ptl);
+> 
+> This might be the demonstration that the function name is becoming too long.
+> 
+> Can you find shorter names ?
 
+Maybe use abbreviations?
+
+pte_offset_map_ro_nolock()
+pte_offset_map_rw_nolock()
+
+> 
+>>    		if (unlikely(!vmf->pte))
+>>    			return 0;
+>>    		vmf->orig_pte = ptep_get_lockless(vmf->pte);
 
