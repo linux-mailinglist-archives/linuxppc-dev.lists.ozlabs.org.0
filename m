@@ -1,118 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-397-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-399-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2BAC95BEBC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 21:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8318095C070
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 23:52:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WqXyD6Gpkz2ydN;
-	Fri, 23 Aug 2024 05:17:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WqcPX0yYXz2yYn;
+	Fri, 23 Aug 2024 07:52:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724354228;
-	cv=none; b=UvEI7x/6bgGLi0YcYIqMnTqKRdShS9WyjmATGQOtEjaMy9TMDY2DRNjy94bStKXBvp2C67nDFVrz+P1adodKhZa3dC/IiqlVcVM0CWe6cbeivB1c0AZPFY0cRs3Fj+x3zKMqDJNXKQSKfvLjjMAVh7P2++VvzFbA3qAYmqg3vhbyMtV3g8Xg8QfZRJpmYFdk3aHUm5Qlfwg+Cm23dzaSe78/dsXXr+HjtdHJp1pXkxqiFo3ckJNUv6NQR19hLrQVgo5FbRieWc+Dwx4FMiCAZXTbEV6q31HqD9eQ6yhadSOnUKEIDNHWwoUIfMvZig1Gwl15h4+mHt5vwHEARmC5hA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::832"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724349883;
+	cv=none; b=fcK+LeJWbKAcrwqtk4mHm04HUj3td3aGoz3fHaegF8s1Po+3jZwOk6RfcmSDwHj9LqCx1S8UDGdTZBXc+DwepkcoLLe3Jd5F0x/XK9GKbX4/B030VL6JBKa3wT7M8SuXfVSIpKxsQVhoM/UX1+tjsvVbTP0JMWhEU5LXM47U0yATplhuB6Y46dBNDmnrabETE+GIh5PaDFMw9+8GeFTDhu60D6Ich+NN77bHivQv9o6FRJVsiHL9ueOcFzNixvKKofzGqCN98CYIhUiz9PTldv9+p4qAMadm8fiExnO/5zQQETUXCgPr4wr9lEccuq04MVAPCN2DOwHp2CTVBGpsfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724354228; c=relaxed/relaxed;
-	bh=8YIGGOCAzyFLMegU+7vlNDExeBWij0GRi4vYqrn2fMA=;
-	h=DKIM-Signature:DKIM-Signature:Received:X-MC-Unique:Received:
-	 X-Google-DKIM-Signature:X-Forwarded-Encrypted:X-Gm-Message-State:
-	 X-Received:X-Google-Smtp-Source:X-Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:In-Reply-To:
-	 X-Mimecast-Spam-Score:X-Mimecast-Originator:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding; b=N21ZC2N0bF0ddrIlQ6Fso80xCSCSXXfq1zxKA3dTg+VAsOqYMH+JdCxZeoXjhfbkAFxi6jTEFPNQex2y+e136A+JwA9x9V8bCfJ5HfdimNMvLF8oyTzyeCnnqTmyx2Omnep3p82VuXvNKmeRgt4qNxdzn1k95lauBJJ15pF4Z6ybGsKZaqzwMeETnEyCtzIEogE/I0dWELZaxUeSG06BHw4EO7MCilzAEUnkVjVNzwnX3YxEgrt2cDAgGUC4rx9r9Wjr6phQm0ImjIyXU7H8lapmHHPPveecgnu0a+jJi5dmXxVknvdEentnvILEIT7KcJB8uJqrPB2UHp1oNwyarw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bsE7Juvx; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NKTUqdVB; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1724349883; c=relaxed/relaxed;
+	bh=fgakG6Vf5aO7Xmw9qVJPPNl+pSYJRKW/HFF09/qYve0=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	b=SqAm26qzBaGe8b71yDJzVSA7GiVBm2pIBQbt3MLFWj+icbHhnmOy3LSyvXDQYesd5YubP6TVMGmWw0RyzxhPB2hYg6CzzsiWuIYDuFVZ8cumPB2f895KIhByee0XOc1CFMgIIiAWRy0ZPakLoR38um177Ta6CjRj8eBsV9VD9Pt64YYfPdNX3AZ1+gn/oMfYWgO/5OU/bkU8VF2iaMjGKHAt3lp2mVmvE7e84R+c3Zeu0z5WsjeHBs2GQqMV2xr8mXc5u1fWwztbPoAlvJzVR9e0Gsd2MqSRG71wGX3d8Nxr/k5tp30HHGgh7Swn3+0WYe45BNlcHz+8d7Zp5ss0ig==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JUgnETme; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::832; helo=mail-qt1-x832.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bsE7Juvx;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NKTUqdVB;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JUgnETme;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::832; helo=mail-qt1-x832.google.com; envelope-from=surenb@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqXyD2Z2qz2yZd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 05:17:05 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724354221;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8YIGGOCAzyFLMegU+7vlNDExeBWij0GRi4vYqrn2fMA=;
-	b=bsE7Juvxqdfr7b385vESNRNAv5wUuV2nAXdUwxP/BZZYnpQqLicGAzH/1H/NKiGqcTbKdk
-	uAK+Q8PjiHlT4/4UXgTArrKv/dgcIixQINGkSLEk+85lR/kd6lpZX6Epy2ydh97orvqyXA
-	Z5CSHk/HkOEZUiBvVeStdB9iNdrOux4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724354222;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8YIGGOCAzyFLMegU+7vlNDExeBWij0GRi4vYqrn2fMA=;
-	b=NKTUqdVBEy94QjgK50nKhbIuC61tcxe0wn6IJVsEfsShE0QopBQZyUxbb4bJJKE0B/w5Tg
-	JWaRmd4SyqB5wjzwpAc5VHO1i/TTpdtXuH2LkbfVtCgHErUnAavLUesBQzKaESLwGjlb1x
-	6yxsZDW/Xk6C8KjvgtZ6bLZlrj8CYKA=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-9XQxqXotPFG3uGrwyB93yA-1; Thu, 22 Aug 2024 15:17:00 -0400
-X-MC-Unique: 9XQxqXotPFG3uGrwyB93yA-1
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6bf9514fdc4so11187986d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 12:17:00 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqWLf4fHLz2yhP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 04:04:41 +1000 (AEST)
+Received: by mail-qt1-x832.google.com with SMTP id d75a77b69052e-454b1e08393so37731cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 11:04:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1724349877; x=1724954677; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fgakG6Vf5aO7Xmw9qVJPPNl+pSYJRKW/HFF09/qYve0=;
+        b=JUgnETmeb9TUDmXPecyKPceU3BYahYQJciPQqv9eic4Ern0CK7tmZ3Z/jHeHm7uopf
+         VF5+U/lUMZkmsQVrzFLm8I4DC28MeFLGuE6dspxcaJkE2bGVbpC8Pw1WhoKYA2xc1X7y
+         7MDcQWUe3VY6MHIOTUzpSRARvCWzG+nnc/zRc1TUu9GyuVvf43So383UtM79GbqmTDeh
+         35SbBNjmdE45xqwz5AlmHLJ2KqDRhqxVmREhYNdjMUXVMxLUgDaltlXqbPtrMDEwwmhm
+         MuR/5b2jw9qucw0RI3dFkU+9jbLhczuoIkT9TFbLrbaHlVxBMFDpXEWQ+R5z/cAte5si
+         AtbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724354219; x=1724959019;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8YIGGOCAzyFLMegU+7vlNDExeBWij0GRi4vYqrn2fMA=;
-        b=jyRY78JHjcFTQK/hMTcP6n1NFnTF5SEkv8+UGgnrFHXejqZGLy3LbtDWn0Vm40TMFK
-         shOaSC44mS/S8eygI0+XgheSp/nlLJHs1C5/EzPaPgbmREa2zkY1n3rDZoqE2sTJUXgI
-         wENzqdghyQDoi6WAHfZtPepYDYkUcrMePj7ce5c5DzDJIyOEnLvT7atgISZYSxu/7opS
-         Df8ypo9VEyIgOWsJqvUkHJQe4W9RkckOP/S1qUJd2TiirSeDblhKLHKwdo1IoiglOBaP
-         5BbLw+bwtkCLARTuqKHMVs+JQL1PFDtIQHorowJWLKr5TKgz8nhjWLyoFXuzZiz43OpB
-         ccfw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdwM958oUFr29gpEV2lFbntKXt8le20bDnOqvzyR/kHdg/No+DGxt8YjHLIExqoPmgCbYUYkNS2WGATK0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzMPDYPR5O70hUM1dCP3kzfuQGIjSCXj5JIeKXtpsDJYOMcvj6P
-	TWOdUjHmnI1MZZXB529lmGhKkWzCvUmkM4uZ9uGgaHAEWI9+nd1uNjxdXFcPbyZ1r+IMHclrhCF
-	28d2q2L9xROa1w+3Efe6nd09e2JE+DKOV9oRn9cScFh1FByqPj4iz9VuOu2h5scg=
-X-Received: by 2002:a05:6214:5d0b:b0:6bf:77d2:bd1b with SMTP id 6a1803df08f44-6c155d50b2cmr98300336d6.1.1724354219440;
-        Thu, 22 Aug 2024 12:16:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFYSGXCSjeDYuhWfImPH5iwMXkcbcR5SnsnH9Y1R2sqbG+oUFa29LZaEVT2+yBaXWcgJ2DTA==
-X-Received: by 2002:a05:6214:5d0b:b0:6bf:77d2:bd1b with SMTP id 6a1803df08f44-6c155d50b2cmr98299806d6.1.1724354219032;
-        Thu, 22 Aug 2024 12:16:59 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c162db0986sm10643056d6.97.2024.08.22.12.16.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2024 12:16:58 -0700 (PDT)
-Date: Thu, 22 Aug 2024 15:16:55 -0400
-From: Peter Xu <peterx@redhat.com>
-To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, "x86@kernel.org" <x86@kernel.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Hugh Dickins <hughd@google.com>,
-	Axel Rasmussen <axelrasmussen@google.com>
-Subject: Re: [PATCH RFC 2/6] mm: PGTABLE_HAS_P[MU]D_LEAVES config options
-Message-ID: <ZseOp7M9AmZtW4jw@x1n>
-References: <20240717220219.3743374-1-peterx@redhat.com>
- <20240717220219.3743374-3-peterx@redhat.com>
- <dcdde9fc-7e7c-45a8-8dc7-7f7ed13b81ec@cs-soprasteria.com>
+        d=1e100.net; s=20230601; t=1724349877; x=1724954677;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fgakG6Vf5aO7Xmw9qVJPPNl+pSYJRKW/HFF09/qYve0=;
+        b=vb0CAw2u3qgUagbS0XQkrE9p7cEhp0bBKgc/LS6sXzcpWyUsGpzFuJhf8YrVGbKeRR
+         m/af9TY2ejmh/YLOo0gUKbZw+JX22zfAoNfM8q72GiWaHgkpgrAgwqKw+UIQO4QoO8QT
+         mBd9mJnpTpx4MFupFDDN3VJ5eX1c1hFKUBq2S7l899HnGvK38Bq4qOTqaTw+ehS6HO+6
+         JdBvYGliulFmx1mz/V1FbGNNTFBc/+R2ZmXCkbBX8hchm5CQquSjUZ4c5SeY9lCZs2Qh
+         N5I3lMP1l8mpbSMroHvhHtpyMRO9Ukc06vALIkzmr6HtPWdesH7SJeHM+I5k7AusI84y
+         qFMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUkSzLXU96MOrG9l7YBWI4bX8P1o5Hf6CCRY6vuQeiOS2NgnFzDaWKLxrBXBANmZF4y1OrFfNZCrjbysm0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwpM5kJQcJbDI1isZiWLyNPe4iBcsgIKqoLkhRDbOjWBgeFCCV7
+	e1tlHFh1Whp0g/uiKxpcmC/Jrer9vGK+UtzSG3myfx3u3ZLJu/oWI7/a5x8EFVVuPunAJgNA/8i
+	I7tgurvFesjTbP8uGheOZznsIhV0DE/X9qd6q
+X-Google-Smtp-Source: AGHT+IEXJr25zlT2/Or5jyoEG/qxGlU0q4T86mW4zw4Fy3ho9UHUUSDfdVUJceCuGyGcOczXXANaLsG7KyVrMz2kH8o=
+X-Received: by 2002:a05:622a:548b:b0:453:5961:b880 with SMTP id
+ d75a77b69052e-455080f464amr257731cf.10.1724349876431; Thu, 22 Aug 2024
+ 11:04:36 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -122,95 +74,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <dcdde9fc-7e7c-45a8-8dc7-7f7ed13b81ec@cs-soprasteria.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20240629153128.4660755c@yea> <20240721010926.60efacc3@yea> <b5ae7797-7676-4abf-82be-e2ce4d9238a1@cs-soprasteria.com>
+In-Reply-To: <b5ae7797-7676-4abf-82be-e2ce4d9238a1@cs-soprasteria.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 22 Aug 2024 11:04:22 -0700
+Message-ID: <CAJuCfpH9e0zvrBK8A_TEHO=maHqijjPcC21=To7VU-mmp0ZYBQ@mail.gmail.com>
+Subject: Re: Kernel build failure with MEM_ALLOC_PROFILING=y set (Talos II, v6.10-rc5)
+To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
+Cc: Erhard Furtner <erhard_f@mailbox.org>, 
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 22, 2024 at 05:22:03PM +0000, LEROY Christophe wrote:
-> 
-> 
-> Le 18/07/2024 à 00:02, Peter Xu a écrit :
-> > Introduce two more sub-options for PGTABLE_HAS_HUGE_LEAVES:
-> > 
-> >    - PGTABLE_HAS_PMD_LEAVES: set when there can be PMD mappings
-> >    - PGTABLE_HAS_PUD_LEAVES: set when there can be PUD mappings
-> > 
-> > It will help to identify whether the current build may only want PMD
-> > helpers but not PUD ones, as these sub-options will also check against the
-> > arch support over HAVE_ARCH_TRANSPARENT_HUGEPAGE[_PUD].
-> > 
-> > Note that having them depend on HAVE_ARCH_TRANSPARENT_HUGEPAGE[_PUD] is
-> > still some intermediate step.  The best way is to have an option say
-> > "whether arch XXX supports PMD/PUD mappings" and so on.  However let's
-> > leave that for later as that's the easy part.  So far, we use these options
-> > to stably detect per-arch huge mapping support.
-> > 
-> > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > ---
-> >   include/linux/huge_mm.h | 10 +++++++---
-> >   mm/Kconfig              |  6 ++++++
-> >   2 files changed, 13 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> > index 711632df7edf..37482c8445d1 100644
-> > --- a/include/linux/huge_mm.h
-> > +++ b/include/linux/huge_mm.h
-> > @@ -96,14 +96,18 @@ extern struct kobj_attribute thpsize_shmem_enabled_attr;
-> >   #define thp_vma_allowable_order(vma, vm_flags, tva_flags, order) \
-> >   	(!!thp_vma_allowable_orders(vma, vm_flags, tva_flags, BIT(order)))
-> >   
-> > -#ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
-> > -#define HPAGE_PMD_SHIFT PMD_SHIFT
-> > +#ifdef CONFIG_PGTABLE_HAS_PUD_LEAVES
-> >   #define HPAGE_PUD_SHIFT PUD_SHIFT
-> >   #else
-> > -#define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
-> >   #define HPAGE_PUD_SHIFT ({ BUILD_BUG(); 0; })
-> >   #endif
-> >   
-> > +#ifdef CONFIG_PGTABLE_HAS_PMD_LEAVES
-> > +#define HPAGE_PMD_SHIFT PMD_SHIFT
-> > +#else
-> > +#define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
-> > +#endif
-> > +
-> >   #define HPAGE_PMD_ORDER (HPAGE_PMD_SHIFT-PAGE_SHIFT)
-> >   #define HPAGE_PMD_NR (1<<HPAGE_PMD_ORDER)
-> >   #define HPAGE_PMD_MASK	(~(HPAGE_PMD_SIZE - 1))
-> > diff --git a/mm/Kconfig b/mm/Kconfig
-> > index 60796402850e..2dbdc088dee8 100644
-> > --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -860,6 +860,12 @@ endif # TRANSPARENT_HUGEPAGE
-> >   config PGTABLE_HAS_HUGE_LEAVES
-> >   	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
-> >   
-> > +config PGTABLE_HAS_PMD_LEAVES
-> > +	def_bool HAVE_ARCH_TRANSPARENT_HUGEPAGE && PGTABLE_HAS_HUGE_LEAVES
-> > +
-> > +config PGTABLE_HAS_PUD_LEAVES
-> > +	def_bool HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD && PGTABLE_HAS_HUGE_LEAVES
-> > +
-> 
-> What if an architecture has hugepages at PMD and/or PUD level and 
-> doesn't support THP ?
+On Thu, Aug 22, 2024 at 10:18=E2=80=AFAM LEROY Christophe
+<christophe.leroy2@cs-soprasteria.com> wrote:
+>
+>
+>
+> Le 21/07/2024 =C3=A0 01:09, Erhard Furtner a =C3=A9crit :
+> > [Vous ne recevez pas souvent de courriers de erhard_f@mailbox.org. D?co=
+uvrez pourquoi ceci est important ? https://aka.ms/LearnAboutSenderIdentifi=
+cation ]
+> >
+> > On Sat, 29 Jun 2024 15:31:28 +0200
+> > Erhard Furtner <erhard_f@mailbox.org> wrote:
+> >
+> >> I get a build failure on v6.10-rc5 on my Talos II when MEM_ALLOC_PROFI=
+LING=3Dy is enabled:
+> >>
+> >> [...]
+> >>    LD [M]  fs/xfs/xfs.o
+> >>    LD [M]  fs/bcachefs/bcachefs.o
+> >>    AR      built-in.a
+> >>    AR      vmlinux.a
+> >>    LD      vmlinux.o
+> >>    OBJCOPY modules.builtin.modinfo
+> >>    GEN     modules.builtin
+> >>    GEN     .vmlinux.objs
+> >>    MODPOST Module.symvers
+> >> ERROR: modpost: "page_ext_get" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+> >> ERROR: modpost: "mem_alloc_profiling_key" [arch/powerpc/kvm/kvm-hv.ko]=
+ undefined!
+> >> ERROR: modpost: "page_ext_put" [arch/powerpc/kvm/kvm-hv.ko] undefined!
+> >> make[2]: *** [scripts/Makefile.modpost:145: Module.symvers] Fehler 1
+> >> make[1]: *** [/usr/src/linux-stable/Makefile:1886: modpost] Fehler 2
+> >> make: *** [Makefile:240: __sub-make] Fehler 2
+> >>
+> >> Same .config builds fine without MEM_ALLOC_PROFILING set. Kernel .conf=
+ig attached.
+> >
+> > Build problem still there on now released v6.10 with MEM_ALLOC_PROFILIN=
+G=3Dy.
+> >
+> > Can't bisect as build with MEM_ALLOC_PROFILING fails since it's introdu=
+ction in v6.10-rc1.
+> >
+>
+> I guess those three functions are missing EXPORT_SYMBOL_GPL() tagging.
 
-What's the arch to be discussed here?
+The issue should have been fixed by
+https://lore.kernel.org/all/20240717181239.2510054-1-surenb@google.com/
+patchset. I probably forgot to CC stable@ for these changes. Let me
+check and follow up.
+Thanks,
+Suren.
 
-The whole purpose of this series so far is trying to make some pmd/pud
-helpers that only defined with CONFIG_THP=on to be available even if not.
-It means this series alone (or any future plan) shouldn't affect any arch
-that has CONFIG_THP=off always.
-
-But logically I think we should need some config option just to say "this
-arch supports pmd mappings" indeed, even if CONFIG_THP=off.  When that's
-there, we should perhaps add that option into this equation so
-PGTABLE_HAS_*_LEAVES will also be selected in that case.
-
--- 
-Peter Xu
-
+>
+> Christophe
 
