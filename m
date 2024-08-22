@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-382-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-383-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0346795B9C1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 17:14:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE50495B9C5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 17:14:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WqRY21bGxz2yhT;
-	Fri, 23 Aug 2024 01:13:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WqRY66pd9z3026;
+	Fri, 23 Aug 2024 01:13:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724339606;
-	cv=none; b=fLdzPFGz++Bix9fZIB3CCjP1dWvgun6K2eRa1S4tKynIfyLVj5net6UWahJ10ehtF1JC4IuxW41JqOZIos2tCs33UcCDoTDH8O9sa1yFDQ4IcsV06azGWsXfa1YbruJHlx6fQlmPstfhHNB2BySJHEBq2ZY+1ybcjiDBxiTdNadNMfYY60hW2gnIdOmMrE9/m2m8xRONMq7JMLDvovF1NRhfj0qOAm0R2/3hibvj9ClbSBIZZy5tpNl1TbekXAs4b9RUsG/6EIYjpIFEBI4C4NmEM6silQdbT7ABs7nSzXG5BeoDr1chKAP2P7XzkVTVvqj5r872AIejvKBt1Ca++w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724339610;
+	cv=none; b=E/INGnOcdlc/LxyUPe2yG9EqdMrw8qClcWpqkQDw2QJJFG1Zdi01qpd3QwrJcTwiDMvioZ2TykyzYu3sTE8++iCCXREkOhV1gRmcJv/i96jux9OMCOFQSk+kJBzeHR+eoMPo4WrdeguNniSmhVxQTh1YETohQvpTJ5wXPswnVb/zIvoPV4Mtx/in8+GdE5hmQougzZHd+SwG0UgjhX53yqKNjd3JZ6WYqtTEkSIsEvlFBrCkBUyDZjVyiQv3c5NnFKfzmLztort+H1/xZgpVw4iPvHjM7QBX6KHe0KtnxrCmjG4itED19yPGIxlAvIj0gKGYzKcBHeVt5kJDtRWUuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724339606; c=relaxed/relaxed;
-	bh=YpUVqN2yD82ZzjqMsW13TV0m9gqSc3sr7jdaCm+yJjE=;
+	t=1724339610; c=relaxed/relaxed;
+	bh=bb7ZCtifyjmJorc1ZP8+hQKeVmZklK/Lz7jM+D30Hqo=;
 	h=Received:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding; b=kz03nvsIO6aC2c1fB3bv3iRuSI3QkiyXs75yFpD63jbJuOjST8PE6cHwNI3EoPaWzrx9B30evFQFmqTpadhR3qXNv1ctSnQ+UgaVf7vIA6XDhDOrXg70BNXauJaChwqYrTtXVaJ0cPsIk9HcNMB7Ib0FD435ky3IFIuK7Z8E4NKD8X3BmAZZxsDWZJVU8ZmIjz7adjFjDMpcrwCJxxAskozfgO4n3ZWttJxgqP2x6v4OP6q0g+W8xB/HH0BoBlWe9mQSsYOTm26BmmB9dPQn8GQTdhKeqNaaLcRatpCWWDxYwFx8De6v3h+pp1a2n8eJ7uIow6RGoek7qnST83X/Ww==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding; b=HVwIcMxDATf57+kfMBASEkTPudRUmJl1gk+/y3pTLlUBMvIcdt3PEnD6KbYm0tuoopxuFm37ahrwGJcEpExWNoyRCXg8rao3wK8nzxZt4WxGk6LqfiFowsrURIjmS18OoJyitb5b/VQDEdEfFeQP8In4x71cnhVqR/8pCnAMz2BsZomrXqGYEWP64q6OBJiriPJEdhTC/UdEl7QUnvYPOYd4174scHkcjFDXV/mQEEBAflkrrSSaoKsf9qhdt75KKmtDMJz7Sda7l5AfcLKSKFVcySu3fxoA0ydgjE5y3p8gJHiRjG7/tbW0k7Ddf9z+zOf3+cJLwlcoNZ6V+oAA9A==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WqRY204Bsz2ygX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 01:13:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WqRY64qfjz2ygX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 01:13:30 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AF6E1596;
-	Thu, 22 Aug 2024 08:13:21 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 893C615BF;
+	Thu, 22 Aug 2024 08:13:25 -0700 (PDT)
 Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1CD163F58B;
-	Thu, 22 Aug 2024 08:12:50 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6ADCB3F58B;
+	Thu, 22 Aug 2024 08:12:55 -0700 (PDT)
 From: Joey Gouly <joey.gouly@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: nd@arm.com,
@@ -59,9 +59,9 @@ Cc: nd@arm.com,
 	x86@kernel.org,
 	kvmarm@lists.linux.dev,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v5 21/30] arm64: enable POE and PIE to coexist
-Date: Thu, 22 Aug 2024 16:11:04 +0100
-Message-Id: <20240822151113.1479789-22-joey.gouly@arm.com>
+Subject: [PATCH v5 22/30] arm64: enable PKEY support for CPUs with S1POE
+Date: Thu, 22 Aug 2024 16:11:05 +0100
+Message-Id: <20240822151113.1479789-23-joey.gouly@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240822151113.1479789-1-joey.gouly@arm.com>
 References: <20240822151113.1479789-1-joey.gouly@arm.com>
@@ -76,51 +76,31 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Permission Indirection Extension and Permission Overlay Extension can be
-enabled independently.
-
-When PIE is disabled and POE is enabled, the permissions set by POR_EL0 will be
-applied on top of the permissions set in the PTE.
-
-When both PIE and POE are enabled, the permissions set by POR_EL0 will be
-applied on top of the permissions set by the PIRE0_EL1 register.
-However PIRE0_EL1 has encodings that specifically enable and disable the
-overlay from applying.
-
-For example:
-	0001	Read, Overlay applied.
-	1000	Read, Overlay not applied.
-
-Switch to using the 'Overlay applied' encodings in PIRE0_EL1, so that PIE and
-POE can coexist.
+Now that PKEYs support has been implemented, enable it for CPUs that
+support S1POE.
 
 Signed-off-by: Joey Gouly <joey.gouly@arm.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/arm64/include/asm/pgtable-prot.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/pkeys.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git arch/arm64/include/asm/pgtable-prot.h arch/arm64/include/asm/pgtable-prot.h
-index b11cfb9fdd37..2a11d0c10760 100644
---- arch/arm64/include/asm/pgtable-prot.h
-+++ arch/arm64/include/asm/pgtable-prot.h
-@@ -154,10 +154,10 @@ static inline bool __pure lpa2_is_enabled(void)
+diff --git arch/arm64/include/asm/pkeys.h arch/arm64/include/asm/pkeys.h
+index 32c352bb36b9..19eb1b12b7fc 100644
+--- arch/arm64/include/asm/pkeys.h
++++ arch/arm64/include/asm/pkeys.h
+@@ -17,7 +17,7 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
  
- #define PIE_E0	( \
- 	PIRx_ELx_PERM(pte_pi_index(_PAGE_EXECONLY),      PIE_X_O) | \
--	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY_EXEC), PIE_RX)  | \
--	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED_EXEC),   PIE_RWX) | \
--	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY),      PIE_R)   | \
--	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED),        PIE_RW))
-+	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY_EXEC), PIE_RX_O)  | \
-+	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED_EXEC),   PIE_RWX_O) | \
-+	PIRx_ELx_PERM(pte_pi_index(_PAGE_READONLY),      PIE_R_O)   | \
-+	PIRx_ELx_PERM(pte_pi_index(_PAGE_SHARED),        PIE_RW_O))
+ static inline bool arch_pkeys_enabled(void)
+ {
+-	return false;
++	return system_supports_poe();
+ }
  
- #define PIE_E1	( \
- 	PIRx_ELx_PERM(pte_pi_index(_PAGE_EXECONLY),      PIE_NONE_O) | \
+ static inline int vma_pkey(struct vm_area_struct *vma)
 -- 
 2.25.1
 
