@@ -1,37 +1,37 @@
-Return-Path: <linuxppc-dev+bounces-355-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-352-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B159F95B7AD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 15:57:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B0495B79A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 15:56:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WqPsP4zDQz2yVt;
-	Thu, 22 Aug 2024 23:57:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WqPqt3XKZz2yV6;
+	Thu, 22 Aug 2024 23:56:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.32
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724331993;
-	cv=none; b=F5Dc9l0w558h2uovYhpalykRrs3IIorneD3UXcnpYvwYfZVBonl9+wNPQ712WP7TjuSrw6lPZP8ja3cImNKYPlB4H5hKUYRgMCLXouAvvTTLL+QCDu4lsbvqPnwpWUBgCkoOCFKpBKQKfiWSLAg2EDcEno5r8WeinECpJSzrxskQ/y5Xojzff167lg4BBWD5/LptwwvURDkexU4DWZhHiy/I7FYOInwu6/3hsVapAONM69NntCkkTTY81gIRTJnZ8j1Nmi6uqFI+gKzQO7Qc6pAU/gzFLpU208ZGRQGGdNxtvbtnx8LWI8cdXM0NJq9TGaPtu6btS80gNg8444xmJg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.190
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724331984;
+	cv=none; b=OSNbYIdkZoQUZ/i0uRtnwTLu7EAKeThCU/OC/D+IGj1VppmOFKyaNDTnOOy102xKdm5Icb6sBKtLFRTfav5Jvm5RcDjVTVVmRi7ej+CePctMxdFqI0l7VMY4z9H1ZY76RymT5yuq8Q274f9xKWJEc4dikcMlBec7F+itK579A9Owm0Ry4mrSeaEktufVgsyah2eSJQaLHwZ+YD/pnLkMaon/foTJ1EMskPK21BPGFWcA7bcjURXbRduFQLHPzqh044ymr1pJwo1dsqVhdpUHavC7kUEi+4jgCo/U4h4CwQtwP/7obRSlrtJj87/k0O0NvAa5elmUBOKLB4s0B8AGsw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724331993; c=relaxed/relaxed;
-	bh=8qYevs4zeTkjTfpEhQtmJiHqDtFyobpTT9z2QpZVinc=;
+	t=1724331984; c=relaxed/relaxed;
+	bh=Eeu7F1aKwiNxKPtUl2jqa9/CJTF1mcFydpEFAvmHVuI=;
 	h=Received:Received:Received:From:To:CC:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy; b=LtyyCkzSbxMlBI+jlmg2j1E4vlPYmAqW0KpBArjVLxzVthSLBySl5mZhofNPYAE+fSyZuEeadjmsrytR+bCVsihEUPMG3R8RIYvk/wT5gdUsFMcYQtlhQyDmSrCkFharvb8IiJYYQ1smIdBcit4zda4HGiWxJJE3T87kGomS8lYifaq7hfCQKS5DERf7Mv2AatH+HTcK0sgawlVB36pvWuRJ70g2TkP01BvoSK4/9mbcjyVWHGcnHxMFxHQ2NebfEcDhUeAo3BrSZCcbasQ2sVV/ZF0Fc/lLaYuxQ05MD62cWit/Mu9f8R3euCuzfaQndk9iJKVKtQ2oz6iwkWq/PQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; spf=pass (client-ip=45.249.212.32; helo=szxga06-in.huawei.com; envelope-from=cuigaosheng1@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=szxga06-in.huawei.com; envelope-from=cuigaosheng1@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	 X-ClientProxiedBy; b=LBzuc065kPRPJSfQpuqI2Mj92VH2p3ByShH/APwWtt3IXK5YfFoGxjjDYJEnL3qmD/cc/6uIDOJMuPQN2GCHeAPrJXo4+wWLPa7Kvkd59luYpwCHMO4h/Cdh1M169j0Nwh08uTc+0l1WU2hnnk27jB2rEddBM1A+hhm636FrNKONgyYFMbHuwZJBorRX8WjIVeVZKPeYFTAOompvioXnnVXOhD9rL0GAWCQXbsPioIHMb99wCrIulrZYRhJqy/c3yZCo2N58IldLCblxxWYF4me/k6OFt/NNvehUkbyDzQZWlHAiXgbPT/uibCxghQbJ3SNlybRj/nEWgnM9iT2m/w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; spf=pass (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=cuigaosheng1@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=cuigaosheng1@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqNkd0kx6z2yN1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 23:06:33 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4WqNh70f6Rz1xvnJ;
-	Thu, 22 Aug 2024 21:04:23 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqNkS1BJvz2yN1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 23:06:23 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4WqNcs19KBz20mDD;
+	Thu, 22 Aug 2024 21:01:33 +0800 (CST)
 Received: from kwepemd200011.china.huawei.com (unknown [7.221.188.251])
-	by mail.maildlp.com (Postfix) with ESMTPS id C0F491A0170;
-	Thu, 22 Aug 2024 21:06:12 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 50D941401F1;
+	Thu, 22 Aug 2024 21:06:13 +0800 (CST)
 Received: from cgs.huawei.com (10.244.148.83) by
  kwepemd200011.china.huawei.com (7.221.188.251) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -42,9 +42,9 @@ To: <mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
 	<Liam.Howlett@oracle.com>, <tglx@linutronix.de>, <cuigaosheng1@huawei.com>,
 	<bgray@linux.ibm.com>, <joel@jms.id.au>, <bhelgaas@google.com>
 CC: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH -next 3/4] powerpc: Remove obsoleted declaration for pas_pci_irq_fixup
-Date: Thu, 22 Aug 2024 21:06:08 +0800
-Message-ID: <20240822130609.786431-4-cuigaosheng1@huawei.com>
+Subject: [PATCH -next 4/4] powerpc: Remove obsoleted declarations for use_cop and drop_cop
+Date: Thu, 22 Aug 2024 21:06:09 +0800
+Message-ID: <20240822130609.786431-5-cuigaosheng1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240822130609.786431-1-cuigaosheng1@huawei.com>
 References: <20240822130609.786431-1-cuigaosheng1@huawei.com>
@@ -63,27 +63,29 @@ X-Originating-IP: [10.244.148.83]
 X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
  kwepemd200011.china.huawei.com (7.221.188.251)
 
-The pas_pci_irq_fixup() have been removed since
-commit 771f7404a9de ("pasemi_mac: Move the IRQ mapping from the
-PCI layer to the driver"), and now it is useless, so remove it.
+The use_cop() and drop_cop() have been removed since
+commit 6ff4d3e96652 ("powerpc: Remove old unused icswx based
+coprocessor support"), now they are useless, so remove them.
 
 Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
 ---
- arch/powerpc/platforms/pasemi/pasemi.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/include/asm/mmu_context.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pasemi/pasemi.h b/arch/powerpc/platforms/pasemi/pasemi.h
-index 018c30665e1b..6f6743b8e48d 100644
---- a/arch/powerpc/platforms/pasemi/pasemi.h
-+++ b/arch/powerpc/platforms/pasemi/pasemi.h
-@@ -5,7 +5,6 @@
- extern time64_t pas_get_boot_time(void);
- extern void pas_pci_init(void);
- struct pci_dev;
--extern void pas_pci_irq_fixup(struct pci_dev *dev);
- extern void pas_pci_dma_dev_setup(struct pci_dev *dev);
+diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+index a334a1368848..a157ab513347 100644
+--- a/arch/powerpc/include/asm/mmu_context.h
++++ b/arch/powerpc/include/asm/mmu_context.h
+@@ -116,9 +116,6 @@ static inline bool need_extra_context(struct mm_struct *mm, unsigned long ea)
+ }
+ #endif
  
- void __iomem *__init pasemi_pci_getcfgaddr(struct pci_dev *dev, int offset);
+-extern int use_cop(unsigned long acop, struct mm_struct *mm);
+-extern void drop_cop(unsigned long acop, struct mm_struct *mm);
+-
+ #ifdef CONFIG_PPC_BOOK3S_64
+ static inline void inc_mm_active_cpus(struct mm_struct *mm)
+ {
 -- 
 2.25.1
 
