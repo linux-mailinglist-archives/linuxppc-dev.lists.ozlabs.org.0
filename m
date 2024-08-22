@@ -1,70 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-334-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-335-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5FA395AFB4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 09:55:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4A895AFC0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 09:58:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WqFqP5TWpz2yR1;
-	Thu, 22 Aug 2024 17:55:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WqFvW01NFz2yks;
+	Thu, 22 Aug 2024 17:58:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=130.133.4.66
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=JU2D6tn/;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqFMD6y1rz2yLP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 17:34:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=nsNs6OoEVbcw2LLEgSbDKi7BEPoPfsioIF+I1dRzjSQ=; t=1724312057; x=1724916857; 
-	b=JU2D6tn/raqUU41g7ckcqpfs0mD+a2MhcKvqgXS5QRUsOVEF9QCvgcuwvukc4Iuiio1vBdiJdjq
-	7wbn8JbtbFnDpC5++oxbkz4IcgbMpN39LsYkA2tE5tTyI2Nsk5EMUHtpfZwi9jPow+j0TGJBF31f7
-	sinQaSLN9Ruqf220fhfoPYWtttVcX1HVQH0jiN/EmKlI6WrWtn7H7/2F8o/NqFppoxz9zPQJxRmzZ
-	aGFGVT2iK6MyjQKFzn5DUSr0S1xNSG8athJbYmNMtcs/SJITlBbJri/lXVIw9la4rWpjgGU4IZwof
-	rlnWJlJWfDuP8OaEEWXuqsXG5WPQpfoUUFig==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1sh2KT-000000008j9-3CbJ; Thu, 22 Aug 2024 09:33:57 +0200
-Received: from p5b13a2bf.dip0.t-ipconnect.de ([91.19.162.191] helo=[192.168.178.20])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1sh2KT-00000002vTy-29Tp; Thu, 22 Aug 2024 09:33:57 +0200
-Message-ID: <a9d9ecd1ed8d62eae47ec26257093495e6cbd44a.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH linux-next v3 05/14] crash: clean up kdump related
- config items
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Dave Vasilevsky <dave@vasilevsky.ca>, Michael Ellerman
- <mpe@ellerman.id.au>,  kexec@lists.infradead.org,
- debian-powerpc@lists.debian.org, x86@kernel.org, 
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org,  linux-riscv@lists.infradead.org,
- loongarch@lists.linux.dev,  akpm@linux-foundation.org,
- ebiederm@xmission.com, hbathini@linux.ibm.com,  piliu@redhat.com,
- viro@zeniv.linux.org.uk, Sam James <sam@gentoo.org>
-Date: Thu, 22 Aug 2024 09:33:56 +0200
-In-Reply-To: <20240124051254.67105-6-bhe@redhat.com>
-References: <20240124051254.67105-1-bhe@redhat.com>
-	 <20240124051254.67105-6-bhe@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqFvV4kSdz2ykn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 17:58:46 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WqFvR3X7Yz9sSK;
+	Thu, 22 Aug 2024 09:58:43 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id NlYp6PfhUgnd; Thu, 22 Aug 2024 09:58:43 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WqFvR2NW0z9sSH;
+	Thu, 22 Aug 2024 09:58:43 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 40C628B77D;
+	Thu, 22 Aug 2024 09:58:43 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 2HbrGellHzJ0; Thu, 22 Aug 2024 09:58:43 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (PO16920.IDSI0.si.c-s.fr [192.168.232.181])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E12898B763;
+	Thu, 22 Aug 2024 09:58:42 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc/mm: Fix return type of pgd_val()
+Date: Thu, 22 Aug 2024 09:58:42 +0200
+Message-ID: <45f8fdf298ec3df7573b66d21b03a5cda92e2cb1.1724313510.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.44.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,93 +57,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.162.191
-X-ZEDAT-Hint: PO
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1724313522; l=2891; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=JVqiB4HY2Y491GrobmVbch4xQAY4hzCA5VcgYB4HTrA=; b=hD17Uy0LwJi8VLADyyur24FjIkg6yV8fFc4Cr9B7HXs8MxCTDoNx4jIieQX1i6j4K91CL2OmE A4Y9nqhccpLACv1qIC2wC1OoMusPAJf2yBtH/bGQalYqrwYl513/ZQp
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 
-Hi Baoquan,
+Commit 6b0e82791bd0 ("powerpc/e500: switch to 64 bits PGD on 85xx
+(32 bits)") switched PGD entries to 64 bits, but pgd_val() returns
+an unsigned long which is 32 bits on PPC32. This is not a problem
+for regular PMD entries because the upper part is always NULL, but
+when PMD entries are leaf they contain 64 bits values, so pgd_val()
+must return an unsigned long long instead of an unsigned long.
 
-On Wed, 2024-01-24 at 13:12 +0800, Baoquan He wrote:
-> By splitting CRASH_RESERVE and VMCORE_INFO out from CRASH_CORE, cleaning
-> up the dependency of FA_DMUMP on CRASH_DUMP, and moving crash codes from
-> kexec_core.c to crash_core.c, now we can rearrange CRASH_DUMP to
-> depend on KEXEC_CORE, and make CRASH_DUMP select CRASH_RESERVE and
-> VMCORE_INFO.
->=20
-> KEXEC_CORE won't select CRASH_RESERVE and VMCORE_INFO any more because
-> KEXEC_CORE enables codes which allocate control pages, copy
-> kexec/kdump segments, and prepare for switching. These codes are shared
-> by both kexec reboot and crash dumping.
->=20
-> Doing this makes codes and the corresponding config items more
-> logical (the right item depends on or is selected by the left item).
->=20
-> PROC_KCORE -----------> VMCORE_INFO
->=20
->            |----------> VMCORE_INFO
-> FA_DUMP----|
->            |----------> CRASH_RESERVE
->=20
->                                                 ---->VMCORE_INFO
->                                                /
->                                                |---->CRASH_RESERVE
-> KEXEC      --|                                /|
->              |--> KEXEC_CORE--> CRASH_DUMP-->/-|---->PROC_VMCORE
-> KEXEC_FILE --|                               \ |
->                                                \---->CRASH_HOTPLUG
->=20
-> KEXEC      --|
->              |--> KEXEC_CORE--> kexec reboot
-> KEXEC_FILE --|
->=20
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> ---
->  kernel/Kconfig.kexec | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->=20
-> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-> index 8faf27043432..6c34e63c88ff 100644
-> --- a/kernel/Kconfig.kexec
-> +++ b/kernel/Kconfig.kexec
-> @@ -9,8 +9,6 @@ config VMCORE_INFO
->  	bool
-> =20
->  config KEXEC_CORE
-> -	select VMCORE_INFO
-> -	select CRASH_RESERVE
->  	bool
-> =20
->  config KEXEC_ELF
-> @@ -99,8 +97,11 @@ config KEXEC_JUMP
-> =20
->  config CRASH_DUMP
->  	bool "kernel crash dumps"
-> +	default y
->  	depends on ARCH_SUPPORTS_CRASH_DUMP
-> -	select KEXEC_CORE
-> +	depends on KEXEC_CORE
-> +	select VMCORE_INFO
-> +	select CRASH_RESERVE
->  	help
->  	  Generate crash dump after being started by kexec.
->  	  This should be normally only set in special crash dump kernels
+Also change the condition to CONFIG_PPC_85xx instead of CONFIG_PPC_E500
+as the change was meant for 32 bits only. Allthough this should be
+harmless on PPC64, it generates a warning with pgd_ERROR print.
 
-The change to enable CONFIG_CRASH_DUMP by default apparently broke the boot
-on 32-bit Power Macintosh systems which fail after GRUB with:
+Fixes: 6b0e82791bd0 ("powerpc/e500: switch to 64 bits PGD on 85xx (32 bits)")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v2: Limit it to CONFIG_PPC_85xx and use a cast instead of duplicating pgd_ERROR
+---
+ arch/powerpc/include/asm/nohash/32/pgtable.h |  4 ++--
+ arch/powerpc/include/asm/pgtable-types.h     | 12 +++++++++---
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-	"Error: You can't boot a kdump kernel from OF!"
+diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
+index 9508399dd036..b481738c4bb5 100644
+--- a/arch/powerpc/include/asm/nohash/32/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+@@ -52,7 +52,7 @@
+ #define USER_PTRS_PER_PGD	(TASK_SIZE / PGDIR_SIZE)
+ 
+ #define pgd_ERROR(e) \
+-	pr_err("%s:%d: bad pgd %08lx.\n", __FILE__, __LINE__, pgd_val(e))
++	pr_err("%s:%d: bad pgd %08llx.\n", __FILE__, __LINE__, (unsigned long long)pgd_val(e))
+ 
+ /*
+  * This is the bottom of the PKMAP area with HIGHMEM or an arbitrary
+@@ -170,7 +170,7 @@ static inline void pmd_clear(pmd_t *pmdp)
+ #define pmd_pfn(pmd)		(pmd_val(pmd) >> PAGE_SHIFT)
+ #else
+ #define pmd_page_vaddr(pmd)	\
+-	((const void *)(pmd_val(pmd) & ~(PTE_TABLE_SIZE - 1)))
++	((const void *)((unsigned long)pmd_val(pmd) & ~(PTE_TABLE_SIZE - 1)))
+ #define pmd_pfn(pmd)		(__pa(pmd_val(pmd)) >> PAGE_SHIFT)
+ #endif
+ 
+diff --git a/arch/powerpc/include/asm/pgtable-types.h b/arch/powerpc/include/asm/pgtable-types.h
+index 7b3d4c592a10..f3086e39e7d2 100644
+--- a/arch/powerpc/include/asm/pgtable-types.h
++++ b/arch/powerpc/include/asm/pgtable-types.h
+@@ -49,16 +49,22 @@ static inline unsigned long pud_val(pud_t x)
+ #endif /* CONFIG_PPC64 */
+ 
+ /* PGD level */
+-#if defined(CONFIG_PPC_E500) && defined(CONFIG_PTE_64BIT)
++#if defined(CONFIG_PPC_85xx) && defined(CONFIG_PTE_64BIT)
+ typedef struct { unsigned long long pgd; } pgd_t;
++
++static inline unsigned long long pgd_val(pgd_t x)
++{
++	return x.pgd;
++}
+ #else
+ typedef struct { unsigned long pgd; } pgd_t;
+-#endif
+-#define __pgd(x)	((pgd_t) { (x) })
++
+ static inline unsigned long pgd_val(pgd_t x)
+ {
+ 	return x.pgd;
+ }
++#endif
++#define __pgd(x)	((pgd_t) { (x) })
+ 
+ /* Page protection bits */
+ typedef struct { unsigned long pgprot; } pgprot_t;
+-- 
+2.44.0
 
-We may have to turn this off for 32-bit Power Macintosh systems.
-
-See this thread on debian-powerpc ML: https://lists.debian.org/debian-power=
-pc/2024/07/msg00001.html
-
-Thanks,
-Adrian
-
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
