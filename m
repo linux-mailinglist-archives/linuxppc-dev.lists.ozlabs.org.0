@@ -1,51 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-338-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-339-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF2495B070
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 10:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2392B95B14D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 11:18:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WqGfM4Pr6z2yYY;
-	Thu, 22 Aug 2024 18:32:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WqHfz0TDTz2yNR;
+	Thu, 22 Aug 2024 19:18:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=114.132.58.6
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.58.6; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 248 seconds by postgrey-1.37 at boromir; Thu, 22 Aug 2024 18:32:25 AEST
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.58.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g0hGY2b4;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=g0hGY2b4;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqGfK2VM8z2yXs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 18:32:24 +1000 (AEST)
-X-QQ-GoodBg: 2
-X-BAN-DOWNLOAD: 1
-X-BAN-SHARE: 1
-X-QQ-SSF: 0040000000000060
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-XMAILINFO: Mdc3TkmnJyI/E0RSfrBBIP4muIbyVWN5snoef4lWtHM0mYve4V6P7+0k
-	DYgRKFQowurUG9Gz6Kl0qkqr5hN1q2DtBn6IQKMfq1wFqtlLMgMAVp3VOY2K1/JWgLSsxSb
-	dN4ZycsDGkNu8tK1OpExx0dsWocJ3Dr7rCPcMKexYKbCrfTBiEPLKSzROSjjrgtcwo8CWtu
-	dC/KeDv+5OD6yBqb4Lz/B5ATy8MmqfCB/VyQ1m5OuQiUCxXAeHzkTuqBUnLLYJbm3bzs1Kz
-	tyCtY3POSa0tUHorTvyZwMRFRUnQI6jayifpnOTCgtkFmLD4I4aE1jwBaJfgm2UomhjtBrY
-	rjbQuWjjnmQh3lcbh6OZ/iQQDchtQ9bOLdfkp3aUrhwtJpG0q++jKqEXupNGpa8uWUAJ0xE
-	j55em2FQQdO/vTs8+/gZv4d39VVXrVfjOir+5ah8SnvNE3bJ2RjLVxKDNa25IxPGM3+i5JA
-	YmxbZJvqBXM1l6BqNNINpoPjzGPnqSllfFdq8FRbxv7E4fHgfbQ4sUIYvlKMTDEBSD4N/IP
-	qcv1CC32M/bp9mYTKr5PQPavcQPX8EJEGA6DHGj+SKP2MRj/g+w2aNynlnlCuMWf8N5xAoZ
-	QLnqK49Vo2Vs72xpwlDycc6bFrYaFqoF0uAUovGlPhgdbSQXOa/HgbqeGDorwvZ6ij8tCPN
-	3GiH0aUFNvqfurz9t6SOs8/jTP5qvrNdUWSqCnupFyG3AMGyJZoivZNUlEFNNA3F26wzZb4
-	3Nf1473/YGkai3+cB3CzpZTTmkMKHFELNB1WiGVw9ll0jtHapBMY7FFSJ9e6xoFQAZTr3Ud
-	DCFrCCuM7y4w/F9gSiG4J7P0luO9J3LRUZgPa/DaEEAbAHj+YB1dIuGWAE8QOj003EX33xq
-	IsRs+t2/eKiAP6YApjP8kaUpOCvKAGsH4R6c3R3HYBpWD/7OLgrg4pj4LZZ7DVzD+gLmzpO
-	ExO8=
-X-QQ-FEAT: D4aqtcRDiqQpBpTnjIJt3/f21w9WO3enREO5ZSgO7MU=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: 6XqUZ+koIUXooq3oJUsZpur6U54N8nOnO72U/v1+q5s=
-X-Originating-IP: 58.34.222.244
-X-QQ-STYLE: 
-X-QQ-mid: t6gz5a-0t1724315469t6516429
-From: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>
-To: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>, "=?utf-8?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bXBl?=" <mpe@ellerman.id.au>, "=?utf-8?B?bnBpZ2dpbg==?=" <npiggin@gmail.com>, "=?utf-8?B?Y2hyaXN0b3BoZS5sZXJveQ==?=" <christophe.leroy@csgroup.eu>
-Subject: Re:[PATCH 2/2] powerpc/locking: enable HAVE_CMPXCHG_LOCAL in kconfig
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqHfy3qDBz2yGf
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 19:18:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724318275;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQYE68vcEgjS0sSHwEvda+5305YgNqXrXPbN5IkBuaU=;
+	b=g0hGY2b4TQCMhnKAYsjNWAPZcewc3OwOGLyV5f0tHw8zViUY8ek364zjiPaHNZy6QSrcpg
+	vHTsr1Ty4RtVU64Lyrap6sUOoqHpt0HMJW30ULi6gITicbWesZICciH0gzJkeJZXqKCTjp
+	fYleKCJZE5hhlHHNrvs44ax579xgUA4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724318275;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQYE68vcEgjS0sSHwEvda+5305YgNqXrXPbN5IkBuaU=;
+	b=g0hGY2b4TQCMhnKAYsjNWAPZcewc3OwOGLyV5f0tHw8zViUY8ek364zjiPaHNZy6QSrcpg
+	vHTsr1Ty4RtVU64Lyrap6sUOoqHpt0HMJW30ULi6gITicbWesZICciH0gzJkeJZXqKCTjp
+	fYleKCJZE5hhlHHNrvs44ax579xgUA4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-L0turdIFM4OQX6QvsCLAsw-1; Thu,
+ 22 Aug 2024 05:17:49 -0400
+X-MC-Unique: L0turdIFM4OQX6QvsCLAsw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B3C3B1955EB3;
+	Thu, 22 Aug 2024 09:17:44 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.51])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A174E1956053;
+	Thu, 22 Aug 2024 09:17:41 +0000 (UTC)
+Date: Thu, 22 Aug 2024 17:17:36 +0800
+From: Baoquan He <bhe@redhat.com>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: linux-kernel@vger.kernel.org, Dave Vasilevsky <dave@vasilevsky.ca>,
+	Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
+	debian-powerpc@lists.debian.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+	loongarch@lists.linux.dev, akpm@linux-foundation.org,
+	ebiederm@xmission.com, hbathini@linux.ibm.com, piliu@redhat.com,
+	viro@zeniv.linux.org.uk, Sam James <sam@gentoo.org>
+Subject: Re: [PATCH linux-next v3 05/14] crash: clean up kdump related config
+ items
+Message-ID: <ZscCMLfNbj2MDiaB@MiWiFi-R3L-srv>
+References: <20240124051254.67105-1-bhe@redhat.com>
+ <20240124051254.67105-6-bhe@redhat.com>
+ <a9d9ecd1ed8d62eae47ec26257093495e6cbd44a.camel@physik.fu-berlin.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,65 +80,107 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Thu, 22 Aug 2024 16:31:09 +0800
-X-Priority: 3
-Message-ID: <tencent_0161BE863378EC161A2CF685@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <20231204022303.528-1-luming.yu@shingroup.cn>
-	<4250629DA95C6D4F+20231204022303.528-2-luming.yu@shingroup.cn>
-In-Reply-To: <4250629DA95C6D4F+20231204022303.528-2-luming.yu@shingroup.cn>
-X-QQ-ReplyHash: 1814028533
-X-BIZMAIL-ID: 2076273090053773482
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Thu, 22 Aug 2024 16:31:10 +0800 (CST)
-Feedback-ID: t:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a9d9ecd1ed8d62eae47ec26257093495e6cbd44a.camel@physik.fu-berlin.de>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-KGluIHRleHQpDQoNCkhpLA0KDQpzcGVjaWZpYyBmb3IgbG9jYWwgY21weGNoZyBlbmFibGVk
-IG9uIHA4IHBvd2VybnYgcGxhdGZvcm0gb24gd2hpY2ggdGhlIHBhdGNoIGVuYWJsZWQgdm1f
-c3RhdGUgdXBkYXRlIHBhdGgsDQpmdHJhY2UgZGF0YSBiZWxvdyBpbmRpY2F0ZXMgaXQgaXMg
-IGF0IHRoZSBsZXZlbCAgb2ZhYm91dCA0dXMgb3IgNXVzIGxhdGVuY3ksICBmb3Igc3VjaCBh
-IGJpZyBjYWNoZSBjb2xkIG9wZXJhdGlvbnMuDQogICAgICAgICAgPC4uLj4tMjc3Nzg3ICBb
-MDA4XSAuLi4uLiA4ODM2Ni4yMzM2NDM6IHJlZnJlc2hfY3B1X3ZtX3N0YXRzIDwtdm1zdGF0
-X3VwZGF0ZQ0KICAgICAgICAgIDxpZGxlPi0wICAgICAgIFswMDhdIGQuLi4uIDg4MzY2LjIz
-MzY0ODogdGlja19ub2h6X2lkbGVfc3RvcF90aWNrIDwtZG9faWRsZQ0KDQpJIGhhdmUgbm8g
-ZGlmZiBkYXRhIGFnYWluc3QgdGhlIGxhdGVuY3kgd2l0aG91dCB0aGUgcGF0Y2guIEJ1dCBi
-YXNlZCBvbiB0aGUgZXN0aW1hdGlvbiBvZiB0aGUgcGlwZWxpbmUgb3ZlcmhlYWQgZm9yDQpz
-dWNoIGEgYmlnIG9wZXJhdGlvbiBpbmN1cnJlZCBieSB0aGUgdm0gc3RhdHMgdXBkYXRlLCBp
-dCBsb29rcyBub3QgYmFkLg0KIEkgd2lsbCBkbyBtb3JlIHRlc3RpbmcgYW5kIGNvbGxlY3Qg
-bW9yZSBoaXN0b2dyYW0gZm9yIGRpZmZlcmVudCBzY2VuYXJpb3MgdG8gZW5zdXJlIHRoYXQN
-CnRoZSBsYXRlbmN5IGxldmVsIG9mIHVuZGVyc3RhbmRpbmcgaXMgc29tZXRoaW5nIHN0YXRp
-c3RpY2FsbHkgbWFrZSBzZW5zZS4NCg0KSnVzdCBmb3IgdGhlIHJlY29yZCB0aGF0IHRoZSBz
-bWFsbCBwYXRjaCB3b3JrcyBhcyBleHBlY3RlZC4gOi0pDQoNCkJSDQpMdW1pbmcNCiANCiAN
-Ci0tLS0tLS0tLS0tLS0tLS0tLSBPcmlnaW5hbCAtLS0tLS0tLS0tLS0tLS0tLS0NCkZyb206
-ICAi6Jme6ZmG6ZOtIjxsdW1pbmcueXVAc2hpbmdyb3VwLmNuPjsNCkRhdGU6ICBNb24sIERl
-YyA0LCAyMDIzIDEwOjIzIEFNDQpUbzogICJsaW51eHBwYy1kZXYiPGxpbnV4cHBjLWRldkBs
-aXN0cy5vemxhYnMub3JnPjsgImxpbnV4LWtlcm5lbCI8bGludXgta2VybmVsQHZnZXIua2Vy
-bmVsLm9yZz47ICJtcGUiPG1wZUBlbGxlcm1hbi5pZC5hdT47ICJucGlnZ2luIjxucGlnZ2lu
-QGdtYWlsLmNvbT47ICJjaHJpc3RvcGhlLmxlcm95IjxjaHJpc3RvcGhlLmxlcm95QGNzZ3Jv
-dXAuZXU+OyANCkNjOiAgImx1bWluZy55dSI8bHVtaW5nLnl1QGdtYWlsLmNvbT47ICJrZS56
-aGFvIjxrZS56aGFvQHNoaW5ncm91cC5jbj47ICJkYXdlaS5saSI8ZGF3ZWkubGlAc2hpbmdy
-b3VwLmNuPjsgInNoZW5naHVpLnF1IjxzaGVuZ2h1aS5xdUBzaGluZ3JvdXAuY24+OyAi6Jme
-6ZmG6ZOtIjxsdW1pbmcueXVAc2hpbmdyb3VwLmNuPjsgDQpTdWJqZWN0OiAgW1BBVENIIDIv
-Ml0gcG93ZXJwYy9sb2NraW5nOiBlbmFibGUgSEFWRV9DTVBYQ0hHX0xPQ0FMIGluIGtjb25m
-aWcNCg0KIA0KDQplbmFibGUgYXJjaCBmZWF0dXJlIEhBVkVfQ01QWENIR19MT0NBTCBmb3Ig
-cHBjIGJ5IGRlZmF1bHQNCg0KU2lnbmVkLW9mZi1ieTogTHVtaW5nIFl1IDxsdW1pbmcueXVA
-c2hpbmdyb3VwLmNuPg0KLS0tDQogYXJjaC9wb3dlcnBjL0tjb25maWcgfCAxICsNCiAxIGZp
-bGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykNCg0KZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJw
-Yy9LY29uZmlnIGIvYXJjaC9wb3dlcnBjL0tjb25maWcNCmluZGV4IDZmMTA1ZWU0ZjNjZi4u
-YzEwMjI5YzAyNDNjIDEwMDY0NA0KLS0tIGEvYXJjaC9wb3dlcnBjL0tjb25maWcNCisrKyBi
-L2FyY2gvcG93ZXJwYy9LY29uZmlnDQpAQCAtMjI2LDYgKzIyNiw3IEBAIGNvbmZpZyBQUEMN
-CiAJc2VsZWN0IEhBVkVfQVJDSF9TRUNDT01QX0ZJTFRFUg0KIAlzZWxlY3QgSEFWRV9BUkNI
-X1RSQUNFSE9PSw0KIAlzZWxlY3QgSEFWRV9BU01fTU9EVkVSU0lPTlMNCisJc2VsZWN0IEhB
-VkVfQ01QWENIR19MT0NBTA0KIAlzZWxlY3QgSEFWRV9DT05URVhUX1RSQUNLSU5HX1VTRVIN
-CiAJc2VsZWN0IEhBVkVfQ19SRUNPUkRNQ09VTlQNCiAJc2VsZWN0IEhBVkVfREVCVUdfS01F
-TUxFQUsNCi0tIA0KMi40Mi4wLndpbmRvd3MuMg==
+On 08/22/24 at 09:33am, John Paul Adrian Glaubitz wrote:
+> Hi Baoquan,
+> 
+> On Wed, 2024-01-24 at 13:12 +0800, Baoquan He wrote:
+> > By splitting CRASH_RESERVE and VMCORE_INFO out from CRASH_CORE, cleaning
+> > up the dependency of FA_DMUMP on CRASH_DUMP, and moving crash codes from
+> > kexec_core.c to crash_core.c, now we can rearrange CRASH_DUMP to
+> > depend on KEXEC_CORE, and make CRASH_DUMP select CRASH_RESERVE and
+> > VMCORE_INFO.
+> > 
+> > KEXEC_CORE won't select CRASH_RESERVE and VMCORE_INFO any more because
+> > KEXEC_CORE enables codes which allocate control pages, copy
+> > kexec/kdump segments, and prepare for switching. These codes are shared
+> > by both kexec reboot and crash dumping.
+> > 
+> > Doing this makes codes and the corresponding config items more
+> > logical (the right item depends on or is selected by the left item).
+> > 
+> > PROC_KCORE -----------> VMCORE_INFO
+> > 
+> >            |----------> VMCORE_INFO
+> > FA_DUMP----|
+> >            |----------> CRASH_RESERVE
+> > 
+> >                                                 ---->VMCORE_INFO
+> >                                                /
+> >                                                |---->CRASH_RESERVE
+> > KEXEC      --|                                /|
+> >              |--> KEXEC_CORE--> CRASH_DUMP-->/-|---->PROC_VMCORE
+> > KEXEC_FILE --|                               \ |
+> >                                                \---->CRASH_HOTPLUG
+> > 
+> > KEXEC      --|
+> >              |--> KEXEC_CORE--> kexec reboot
+> > KEXEC_FILE --|
+> > 
+> > Signed-off-by: Baoquan He <bhe@redhat.com>
+> > ---
+> >  kernel/Kconfig.kexec | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+> > index 8faf27043432..6c34e63c88ff 100644
+> > --- a/kernel/Kconfig.kexec
+> > +++ b/kernel/Kconfig.kexec
+> > @@ -9,8 +9,6 @@ config VMCORE_INFO
+> >  	bool
+> >  
+> >  config KEXEC_CORE
+> > -	select VMCORE_INFO
+> > -	select CRASH_RESERVE
+> >  	bool
+> >  
+> >  config KEXEC_ELF
+> > @@ -99,8 +97,11 @@ config KEXEC_JUMP
+> >  
+> >  config CRASH_DUMP
+> >  	bool "kernel crash dumps"
+> > +	default y
+> >  	depends on ARCH_SUPPORTS_CRASH_DUMP
+> > -	select KEXEC_CORE
+> > +	depends on KEXEC_CORE
+> > +	select VMCORE_INFO
+> > +	select CRASH_RESERVE
+> >  	help
+> >  	  Generate crash dump after being started by kexec.
+> >  	  This should be normally only set in special crash dump kernels
+> 
+> The change to enable CONFIG_CRASH_DUMP by default apparently broke the boot
+> on 32-bit Power Macintosh systems which fail after GRUB with:
+> 
+> 	"Error: You can't boot a kdump kernel from OF!"
+> 
+> We may have to turn this off for 32-bit Power Macintosh systems.
+> 
+> See this thread on debian-powerpc ML: https://lists.debian.org/debian-powerpc/2024/07/msg00001.html
+
+If so, fix need be made.
+
+We may need change in ARCH_SUPPORTS_CRASH_DUMP of ppc, can you or anyone
+post a patch? I don't know how to identify 32-bit Power Macintosh.
+
+arch/powerpc/Kconfig:
+===
+config ARCH_SUPPORTS_CRASH_DUMP
+        def_bool PPC64 || PPC_BOOK3S_32 || PPC_85xx || (44x && !SMP)
+        
+config ARCH_SELECTS_CRASH_DUMP
+        def_bool y
+        depends on CRASH_DUMP
+        select RELOCATABLE if PPC64 || 44x || PPC_85xx
+......
+config PHYSICAL_START
+        hex "Physical address where the kernel is loaded" if PHYSICAL_START_BOOL
+        default "0x02000000" if PPC_BOOK3S && CRASH_DUMP && !NONSTATIC_KERNEL
+        default "0x00000000"
 
 
