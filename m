@@ -1,76 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-318-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-313-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8184295AEA5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 09:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63BE895AE98
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 Aug 2024 09:15:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WqDwY3bHPz2ynL;
-	Thu, 22 Aug 2024 17:14:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WqDwL55ctz2yjV;
+	Thu, 22 Aug 2024 17:14:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::433"
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=OciNZDeO;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqDwX727yz2yks
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 17:14:36 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WqDvN3xV2z9sT0;
-	Thu, 22 Aug 2024 09:13:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id x1TLfFxSNw26; Thu, 22 Aug 2024 09:13:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WqDvN33L7z9sSy;
-	Thu, 22 Aug 2024 09:13:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 581FF8B77E;
-	Thu, 22 Aug 2024 09:13:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 7wUGeZI3I6WA; Thu, 22 Aug 2024 09:13:36 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (PO16920.IDSI0.si.c-s.fr [192.168.232.181])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4FFC78B77D;
-	Thu, 22 Aug 2024 09:13:35 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqDwL1XCYz2yLT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 17:14:26 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-71430e7eaf8so391984b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 Aug 2024 00:14:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1724310863; x=1724915663; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YTJMrM+GLhYLeZwUuiK6dImcBAbTGjqYt196yQPATUA=;
+        b=OciNZDeORUbI63yazH0oDkuhSMpppsE20FtTPXLv4w/liCgRyP1LfAGtiZRfJM77rA
+         S4pZ6n0WBycwWw1EJKiPfgK4DTxbwNk7EEZ2mYgqMqFVV0+JBW//52Q2K/MKhYcJNjyw
+         rVeStUvE6knAeP6ZVTwDknL8iIa/YTpbb0KZ/GTM00QYf9bPxZJ6fWSSlDofU2iogPOr
+         Be1gWKWnjEJvysQL1qgD2L3PDbl/kpdLR27BDRrX0Ldm3JG5SWHTMATSTx6Bl/dENZXb
+         PZIGgZW+8URMzNEtlUxOWxVryrSlXJUK05nB6h2PonwW5ke0EMXuU7R1VLKWHch0jmq+
+         JclQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724310863; x=1724915663;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YTJMrM+GLhYLeZwUuiK6dImcBAbTGjqYt196yQPATUA=;
+        b=ppRfz6rMVwdgeqOgo0yOP+2Xi2tU2rcxZNMvI4ZHhB1H00SvXvQBOKOWO3956YuFkh
+         n4M2Kw6sAP7wdPFDHXbfWRW2hEBqmsPkzOFspAMmGisnMGbhHBR4QfLvDoipRQc8gS1p
+         oKhgLhaatpMX82NPiGxn+Bl73NqKcBEMno8r/+q457ypmgrDdf8phcIZUrjRckz+XThN
+         eJMLM6ISLlTz48NB1QmesDwqj/HTl5+9wmcW6A8z5lf/weXq97e4YE6HkDyQblZIZD9q
+         ujshILdaYVZASGSEsKVcsfCLwDdl7uU2CYc1zVobQ0pM5hy7PS0XUtUJnmm7a37qVEzg
+         PoPw==
+X-Forwarded-Encrypted: i=1; AJvYcCVBdIPR0nJcQ2Xj8A0SUOZ4ZUZ0JW4VtUn4psjOTieUGZCwxtZNgRiYwmbmctG9xi4h7wRT+5XE83tWNWQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwVVuBXfiNYwc0OpGsWARiTlw1XoQC2vk789qLyI1JYmuklvzrL
+	EgLiFVahAUAjuWUVK4XYWHfbdSHtysGLdJI0DdkKcTwqIxmcV+pYQqG7RY79zkM=
+X-Google-Smtp-Source: AGHT+IEJaUpX6CQIEutPHebqIOZXfyMaKxdLW1UElMR3gb10gY3PgzFG7UEaK+UwdtskMN8KUpfIGw==
+X-Received: by 2002:a05:6a00:cd4:b0:714:1bce:913a with SMTP id d2e1a72fcca58-7142356e960mr5852557b3a.21.1724310862916;
+        Thu, 22 Aug 2024 00:14:22 -0700 (PDT)
+Received: from C02DW0BEMD6R.bytedance.net ([240e:473:c90:f96:d029:ea8a:4e6d:d272])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ac994a3sm695095a12.16.2024.08.22.00.14.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Aug 2024 00:14:22 -0700 (PDT)
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+To: david@redhat.com,
+	hughd@google.com,
+	willy@infradead.org,
+	muchun.song@linux.dev,
+	vbabka@kernel.org,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	vishal.moola@gmail.com,
+	peterx@redhat.com,
+	ryan.roberts@arm.com,
+	christophe.leroy2@cs-soprasteria.com
+Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v2 13/17] selftests: vdso: Don't hard-code location of vDSO sources
-Date: Thu, 22 Aug 2024 09:13:21 +0200
-Message-ID: <a40d859dba5654239650eec44d75ab45c98221f4.1724309198.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1724309198.git.christophe.leroy@csgroup.eu>
-References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 06/14] mm: handle_pte_fault() use pte_offset_map_rw_nolock()
+Date: Thu, 22 Aug 2024 15:13:21 +0800
+Message-Id: <5acabedfae7ded01b075960b4a91f2e15b4d76b5.1724310149.git.zhengqi.arch@bytedance.com>
+X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+In-Reply-To: <cover.1724310149.git.zhengqi.arch@bytedance.com>
+References: <cover.1724310149.git.zhengqi.arch@bytedance.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,55 +88,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724310794; l=1792; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=5h3KLlzEytDPiSde0fgrOqrQ+VHGwL8x+UTMWMemKqA=; b=52c+474v8h2re77BqeSjmwGjfxeWNjA9JNg5DuQ62lSQwt3zIwXGDzTZYrzUEJRgw6cHNO+Iw rQyliGCUE71CPHt6eiUIZGbf2GQ3Zpk6iL8sVydNdOYcLKgGcfx+LkJ
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 
-Architectures use different location for vDSO sources:
-	arch/mips/vdso
-	arch/sparc/vdso
-	arch/arm64/kernel/vdso
-	arch/riscv/kernel/vdso
-	arch/csky/kernel/vdso
-	arch/x86/um/vdso
-	arch/x86/entry/vdso
-	arch/powerpc/kernel/vdso
-	arch/arm/vdso
-	arch/loongarch/vdso
+In handle_pte_fault(), we may modify the vmf->pte after acquiring the
+vmf->ptl, so convert it to using pte_offset_map_rw_nolock(). But since we
+will do the pte_same() check, so there is no need to get pmdval to do
+pmd_same() check, just pass a dummy variable to it.
 
-Don't hard-code vdso sources location in selftest Makefile,
-instead create a vdso/ symbolic link in tools/arch/$arch/ and
-update Makefile accordingly.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- tools/arch/x86/vdso                   | 1 +
- tools/testing/selftests/vDSO/Makefile | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
- create mode 120000 tools/arch/x86/vdso
+ mm/memory.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tools/arch/x86/vdso b/tools/arch/x86/vdso
-new file mode 120000
-index 000000000000..7eb962fd3454
---- /dev/null
-+++ b/tools/arch/x86/vdso
-@@ -0,0 +1 @@
-+../../../arch/x86/entry/vdso/
-\ No newline at end of file
-diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/vDSO/Makefile
-index 3de8e7e052ae..c9a819cacbf2 100644
---- a/tools/testing/selftests/vDSO/Makefile
-+++ b/tools/testing/selftests/vDSO/Makefile
-@@ -40,7 +40,7 @@ $(OUTPUT)/vdso_test_getrandom: parse_vdso.c
- $(OUTPUT)/vdso_test_getrandom: CFLAGS += -isystem $(top_srcdir)/tools/include \
-                                          -isystem $(top_srcdir)/include/uapi
- 
--$(OUTPUT)/vdso_test_chacha: $(top_srcdir)/arch/$(ARCH)/entry/vdso/vgetrandom-chacha.S
-+$(OUTPUT)/vdso_test_chacha: $(top_srcdir)/tools/arch/$(ARCH)/vdso/vgetrandom-chacha.S
- $(OUTPUT)/vdso_test_chacha: CFLAGS += -idirafter $(top_srcdir)/tools/include \
-                                       -isystem $(top_srcdir)/arch/$(ARCH)/include \
-                                       -isystem $(top_srcdir)/include \
+diff --git a/mm/memory.c b/mm/memory.c
+index 93c0c25433d02..7b6071a0e21e2 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5499,14 +5499,22 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+ 		vmf->pte = NULL;
+ 		vmf->flags &= ~FAULT_FLAG_ORIG_PTE_VALID;
+ 	} else {
++		pmd_t dummy_pmdval;
++
+ 		/*
+ 		 * A regular pmd is established and it can't morph into a huge
+ 		 * pmd by anon khugepaged, since that takes mmap_lock in write
+ 		 * mode; but shmem or file collapse to THP could still morph
+ 		 * it into a huge pmd: just retry later if so.
++		 *
++		 * Use the maywrite version to indicate that vmf->pte will be
++		 * modified, but since we will use pte_same() to detect the
++		 * change of the pte entry, there is no need to get pmdval, so
++		 * just pass a dummy variable to it.
+ 		 */
+-		vmf->pte = pte_offset_map_nolock(vmf->vma->vm_mm, vmf->pmd,
+-						 vmf->address, &vmf->ptl);
++		vmf->pte = pte_offset_map_rw_nolock(vmf->vma->vm_mm, vmf->pmd,
++						    vmf->address, &dummy_pmdval,
++						    &vmf->ptl);
+ 		if (unlikely(!vmf->pte))
+ 			return 0;
+ 		vmf->orig_pte = ptep_get_lockless(vmf->pte);
 -- 
-2.44.0
+2.20.1
 
 
