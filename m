@@ -1,88 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-452-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-453-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFF995CBB8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2024 13:52:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A949795CBD5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2024 13:59:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wqz3759Xmz2ytJ;
-	Fri, 23 Aug 2024 21:52:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WqzBH1v7Dz2ytp;
+	Fri, 23 Aug 2024 21:59:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724413971;
-	cv=none; b=Ko+DzEXNhNymyWIfEpGdnf6m3vd08nltoMA3Ah7jOEYVcK3tiJR7BY27GDTCHP5eKuRXbFLrQfOWxDOE1yv1ofiSzzTEbRs1IzTyA5ieZeV51sJWeqs1AHyQ63lo6Vy6bkglUE4hxDsdVvOs+caoG3cn1N7aqeqJhaIGhqpFmvjWJPY90PIi4gAipbf8Dne5osGOo7CEKU8vwpISwuTIrudI1ByYTcFQ2VtJM84OHwMv2gssMT9yAlzb9D0t8/cc5XbrLVYpDJ9xUG6Tf1y4QPTuLEfXA7qSAWbF+FV/qj4UyrOfkJGXxahzUzjAw2gdug47WHUbA/8cxCjyOuYYCQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.217.50
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724414343;
+	cv=none; b=b6fu7n+ZvZ1IpTqxjgHpPQX3txJEvfL9WD9opzMYcI+zGGlNoqBqRPjdWTXjXyH+MEcJVlR4m0knhybSidE8pY/rMbbA7etWOYegQLYDhDuNjktehWCc3HrlFOXwUqZ1q9jaczaU8D6KC1ItOSRaz3+2gC7l9XDBw8+e1ZS35/i6F1ZoA+IYQQ+hQibShNDeCwCNkF7SVDjgDPVwFz4ypTTQiZBhjT9y0zF2NoEcrgaAwVecF/p+SlUQhpsBkATF2oIhaApCljGu42L20lD3OMVaKHtMrUB18cbbxltFClYU7fzmNPdwRlDvGdgXJu2d5fBfjoB40Bq6Wkms5ziuJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724413971; c=relaxed/relaxed;
-	bh=vTkBDv5ceaxAf2c7bC/ZTr2ksX6JSrRgLGjmVWqKHZ0=;
-	h=Received:DKIM-Signature:Received:Received:Received:Received:
-	 Received:Received:Received:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details; b=KOOvZ1jWu2cV4XVP0sFLgYw5yYoKgnZqiIJLMiGEoCX1Gpmm6WUalZnx9x19uzkseK5cY8IXK6GCcerXJl7z866OBv8gM68+Vfr+5bFfprYz847zRll+1O8Snq2ajRhBS9XpMPwb+fBDcfK+nQOpbP9EADQnZUSQ+bkwuH1dQL62XshLmsWBtO5q93zRL7aai/6MDnQ5FEIT5CYmFzwtufVkpmKIilVPA78WBk2nPST9SGeAL5URGktDJcVSi8Jtc8v8S/1jAQkky4iUSnqz7FHp390E3lqnwzNix1TbLS8HBZ8zB+2RIOskk2Kawm8rj1dC/yTfzwVcuDdzbzPW3A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gDQSys6n; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gDQSys6n;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1724414343; c=relaxed/relaxed;
+	bh=gOuGLLp2dNTeHW8uT+dUzwnOGJ7gbf7VhrhQyr4Xe6I=;
+	h=Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding; b=RxKrNK3pXJmeZRS0LRg6mqCd/sngHCP6b+JBPmDE0uMpenaGb3aDTI/AY7o7nsJ9EcEYgKPpDvwAxZmbusDuIVNyYL0Zt3wfGbBYnodikQG3uUl7YgE7aEJH42UhGEHFVM3jVVuGY8vIIkYy/ZpukVaDK8jRHZKjHumzu3G5D68ugPHYO2L1R5ey9PfC++q+IBkYFIyPOBA95Bu/rSSIR1QRnDyuryvhdhOiHGYWCvPGEgyAQEvk8cBfZHM6ck8SBtWj2KuGLd+sktQndBUOJvJhJ9o+Fv5/S4HxHDQLz2bd2xgb3PJGwWaPsYD38WDKfcGQpHF4c2f9jcoBdCKqUw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca; spf=pass (client-ip=209.85.217.50; helo=mail-vs1-f50.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.217.50; helo=mail-vs1-f50.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wqz3656xCz2ysb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 21:52:49 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47N6SW2w011158;
-	Fri, 23 Aug 2024 11:52:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=pp1; bh=vTkBDv5ceaxAf2c7bC/ZTr2ksX
-	6JSrRgLGjmVWqKHZ0=; b=gDQSys6nsZiJjfDrxlUc4XaM3oMoLb3yRZ2oO5hxDM
-	cp86L7E0SxOjdzSWyT8hAoT4wKVlq4dscgTWVWGuTPbzccTAk0Vjo+elPDxJ1iDy
-	YZdzUDt34LokwtbggVUiqEmPdIhsHnyOr5stTsLmi+LWFbFv5kQRA9PmawKmarIY
-	56t6MTBULYYv8r7iiOK9JbaoaplzTtFrgP8+9CnDweEZafNlqm11TJ7CucBKRw8Q
-	Ah9tb8k1pMh2ls1rVgQ/oiW5kyn/xe2UMz66MND+7z7vUpyFYS3p/nRdZFVa+tLU
-	VPuaYJZ0S8U/P1qbeP17mAghbHmVyFcmJvUqK1TbKA7Q==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412mc53tqs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Aug 2024 11:52:38 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47NBqbp3020368;
-	Fri, 23 Aug 2024 11:52:37 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412mc53tqp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Aug 2024 11:52:37 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47N7nT0x029443;
-	Fri, 23 Aug 2024 11:52:36 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4138dmsf3d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 23 Aug 2024 11:52:36 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47NBqVwL55509296
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Aug 2024 11:52:33 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 082B82004B;
-	Fri, 23 Aug 2024 11:52:31 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 73B6A20040;
-	Fri, 23 Aug 2024 11:52:28 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.120.212])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 23 Aug 2024 11:52:28 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: bhe@redhat.com
-Cc: Hari Bathini <hbathini@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>, kexec@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org
-Subject: [PATCH] [RFC] crash: Lock-free crash hotplug support reporting
-Date: Fri, 23 Aug 2024 17:22:26 +0530
-Message-ID: <20240823115226.835865-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.46.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqzBG2yKNz2ysb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 21:59:01 +1000 (AEST)
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-498e40756baso669404137.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 04:59:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724414338; x=1725019138;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gOuGLLp2dNTeHW8uT+dUzwnOGJ7gbf7VhrhQyr4Xe6I=;
+        b=R5jnjaSpnt6ERACy266+1AbIuUASo5wxeSEeui3jLSmH0AtQ0M/Kr69r+9Q13lbFfm
+         MX0ahvS2c9oUR6eNKRLS+mA3eggv0Z9YUJlvWMHNPPQLw0jyXcxONGHE0yz1efCsVpTv
+         zMHASbEEIeHJY4ALIN5unhMr7ClV9nN0MDNUEDhVwEFnEvrtyxZ5olbMwZL8IWAKkI2W
+         kg9qoAaggqyRQF2LlyG6EV6/LfNhni1hCGi1eduddSw1EeOTgXfHCWIR475J8c3kekyu
+         DSHxNe4UnwmsdIDvz43QAuw0CO2WjaqfGV/D9l27emEcbvuO9AcWKMXU8eyRgyJRpvyY
+         /8EA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0er+CAFD+gxWhrxrScoySVQeGCA8lDn440p7INXmVzWaGd2ttJfxP9QFHF2gsh/Tef18+paHyr4HsSkc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx4Nze/jD3DbZ6gcJVqqzU0lQ7jimwOvWrOz4yY/tNsGTkDXTdP
+	4T0aXoHZjXsSeTEp/ZPTkBHL/2NQ/RZvytUDSnQogASNy/ZZ5BPp
+X-Google-Smtp-Source: AGHT+IGTnsj+vzaB6DUYSRe4ILJB8y8mubsJfwnJ5TjC90dt1P9FzBdqUNam7n18s/aSRrNdBhBpzA==
+X-Received: by 2002:a05:6102:26ca:b0:48f:40c1:3cd0 with SMTP id ada2fe7eead31-498f4633bafmr2258426137.12.1724414338017;
+        Fri, 23 Aug 2024 04:58:58 -0700 (PDT)
+Received: from [192.168.2.219] ([65.93.184.127])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c162d6db58sm17621556d6.65.2024.08.23.04.58.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Aug 2024 04:58:57 -0700 (PDT)
+Message-ID: <dc4a1941-6671-4e89-90c2-3a1c19fd3e1c@vasilevsky.ca>
+Date: Fri, 23 Aug 2024 07:58:44 -0400
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,187 +63,37 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 8hfry96WB_4XfsoQF-PgNWc7OgRd_3At
-X-Proofpoint-GUID: _QnM_hpx8XMPIJVMiYp6BS7xmF0q5KAm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-23_08,2024-08-22_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- clxscore=1015 priorityscore=1501 mlxlogscore=999 adultscore=0 phishscore=0
- impostorscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408230085
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH linux-next v3 05/14] crash: clean up kdump related config
+ items
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Baoquan He <bhe@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ kexec@lists.infradead.org, debian-powerpc@lists.debian.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+ loongarch@lists.linux.dev, akpm@linux-foundation.org, ebiederm@xmission.com,
+ hbathini@linux.ibm.com, piliu@redhat.com, viro@zeniv.linux.org.uk,
+ Sam James <sam@gentoo.org>
+References: <20240124051254.67105-1-bhe@redhat.com>
+ <20240124051254.67105-6-bhe@redhat.com>
+ <a9d9ecd1ed8d62eae47ec26257093495e6cbd44a.camel@physik.fu-berlin.de>
+ <ZscCMLfNbj2MDiaB@MiWiFi-R3L-srv>
+ <c5e9996e4d2ba2a0849d65f68e3dce94fffc5828.camel@physik.fu-berlin.de>
+ <ZsfR9rdMt8yn1+Bz@MiWiFi-R3L-srv>
+ <768dfe3e-c437-40cc-96a5-6c5b34b2d19d@vasilevsky.ca>
+ <c74e24213fd98b252a2a1ff02a107005e50f4f7b.camel@physik.fu-berlin.de>
+Content-Language: en-US
+From: Dave Vasilevsky <dave@vasilevsky.ca>
+In-Reply-To: <c74e24213fd98b252a2a1ff02a107005e50f4f7b.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On a CPU/Memory hotplug event, the kexec lock is taken to update the
-kdump image. At the same time, this lock is also required to report
-the support for crash hotplug to user-space via the
-/sys/devices/system/[cpu|memory]/crash_hotplug sysfs interface, to
-avoid kdump reload.
+On 2024-08-23 03:16, John Paul Adrian Glaubitz wrote:
+> It should be disabled on m68k and sh by default as well.
 
-The kexec lock is needed to report crash hotplug support because the
-crash_hotplug variable, which tracks crash hotplug support, is part of
-the kdump image, and the kdump image needs to be updated during a
-hotplug event.
+Sure, I can change that. What's the reasoning, so I can explain in my commit message?
 
-Given that only one kdump image can be loaded at any given time, the
-crash_hotplug variable can be placed outside the kdump image and set or
-reset during kdump image load and unload. This allows crash hotplug
-support to be reported without taking the kexec lock.
-
-This would help in situation where CPU/Memory resource are hotplug from
-system in bulk.
-
-Commit e2a8f20dd8e9 ("Crash: add lock to serialize crash hotplug
-handling") introduced to serialize the kexec lock during bulk CPU/Memory
-hotplug events. However, with these changes, the kexec lock for crash
-hotplug support reporting can be avoided altogether.
-
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: kexec@lists.infradead.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org
-Cc: x86@kernel.org
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- include/linux/kexec.h | 11 ++++-------
- kernel/crash_core.c   | 27 +++++++++------------------
- kernel/kexec.c        |  5 ++++-
- kernel/kexec_file.c   |  7 ++++++-
- 4 files changed, 23 insertions(+), 27 deletions(-)
-
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index f0e9f8eda7a3..bd755ba6bac4 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -318,13 +318,6 @@ struct kimage {
- 	unsigned int preserve_context : 1;
- 	/* If set, we are using file mode kexec syscall */
- 	unsigned int file_mode:1;
--#ifdef CONFIG_CRASH_HOTPLUG
--	/* If set, it is safe to update kexec segments that are
--	 * excluded from SHA calculation.
--	 */
--	unsigned int hotplug_support:1;
--#endif
--
- #ifdef ARCH_HAS_KIMAGE_ARCH
- 	struct kimage_arch arch;
- #endif
-@@ -370,6 +363,10 @@ struct kimage {
- 	unsigned long elf_load_addr;
- };
- 
-+#ifdef CONFIG_CRASH_HOTPLUG
-+extern unsigned int crash_hotplug_support;
-+#endif
-+
- /* kexec interface functions */
- extern void machine_kexec(struct kimage *image);
- extern int machine_kexec_prepare(struct kimage *image);
-diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-index 63cf89393c6e..3428deba0070 100644
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -30,6 +30,13 @@
- #include "kallsyms_internal.h"
- #include "kexec_internal.h"
- 
-+#ifdef CONFIG_CRASH_HOTPLUG
-+/* if set, it is safe to update kexec segments that are
-+ * excluded from sha calculation.
-+ */
-+unsigned int crash_hotplug_support;
-+#endif
-+
- /* Per cpu memory for storing cpu states in case of system crash. */
- note_buf_t __percpu *crash_notes;
- 
-@@ -500,23 +507,7 @@ static DEFINE_MUTEX(__crash_hotplug_lock);
-  */
- int crash_check_hotplug_support(void)
- {
--	int rc = 0;
--
--	crash_hotplug_lock();
--	/* Obtain lock while reading crash information */
--	if (!kexec_trylock()) {
--		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
--		crash_hotplug_unlock();
--		return 0;
--	}
--	if (kexec_crash_image) {
--		rc = kexec_crash_image->hotplug_support;
--	}
--	/* Release lock now that update complete */
--	kexec_unlock();
--	crash_hotplug_unlock();
--
--	return rc;
-+	return crash_hotplug_support;
- }
- 
- /*
-@@ -552,7 +543,7 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
- 	image = kexec_crash_image;
- 
- 	/* Check that kexec segments update is permitted */
--	if (!image->hotplug_support)
-+	if (!crash_hotplug_support)
- 		goto out;
- 
- 	if (hp_action == KEXEC_CRASH_HP_ADD_CPU ||
-diff --git a/kernel/kexec.c b/kernel/kexec.c
-index a6b3f96bb50c..d5c6b51eaa8b 100644
---- a/kernel/kexec.c
-+++ b/kernel/kexec.c
-@@ -116,6 +116,9 @@ static int do_kexec_load(unsigned long entry, unsigned long nr_segments,
- 		/* Uninstall image */
- 		kimage_free(xchg(dest_image, NULL));
- 		ret = 0;
-+#ifdef CONFIG_CRASH_HOTPLUG
-+		crash_hotplug_support = 0;
-+#endif
- 		goto out_unlock;
- 	}
- 	if (flags & KEXEC_ON_CRASH) {
-@@ -136,7 +139,7 @@ static int do_kexec_load(unsigned long entry, unsigned long nr_segments,
- 
- #ifdef CONFIG_CRASH_HOTPLUG
- 	if ((flags & KEXEC_ON_CRASH) && arch_crash_hotplug_support(image, flags))
--		image->hotplug_support = 1;
-+		crash_hotplug_support = 1;
- #endif
- 
- 	ret = machine_kexec_prepare(image);
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 3d64290d24c9..b326edb90fd7 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -378,7 +378,7 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, int, initrd_fd,
- 
- #ifdef CONFIG_CRASH_HOTPLUG
- 	if ((flags & KEXEC_FILE_ON_CRASH) && arch_crash_hotplug_support(image, flags))
--		image->hotplug_support = 1;
-+		crash_hotplug_support = 1;
- #endif
- 
- 	ret = machine_kexec_prepare(image);
-@@ -432,6 +432,11 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, int, initrd_fd,
- 		arch_kexec_protect_crashkres();
- #endif
- 
-+#ifdef CONFIG_CRASH_HOTPLUG
-+	if (flags & KEXEC_FILE_UNLOAD)
-+		crash_hotplug_support = 0;
-+#endif
-+
- 	kexec_unlock();
- 	kimage_free(image);
- 	return ret;
--- 
-2.46.0
-
+-Dave
 
