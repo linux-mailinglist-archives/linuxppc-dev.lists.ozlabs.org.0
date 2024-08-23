@@ -1,64 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-476-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB0995DE8F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Aug 2024 16:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6F095DE90
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Aug 2024 16:52:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WrfyC4bF4z2xxy;
-	Sun, 25 Aug 2024 00:50:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wrg035XBkz2xy0;
+	Sun, 25 Aug 2024 00:52:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.219.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724418840;
-	cv=none; b=ltgNafJJv8kDm3bOpnVluFsWd0Rs8uUCEP7f2+v2wSE+xdTxnSy7s6TIQmSo7Slv5e6jNrG1zrMeyxjZrc8iowBBeqIrnleT51plGLo5bSU/zd2l739WYer3zPRcKA6fslwdh/rAquNTaBWMQMgiv/URBT9L+a2xqsql9CrCPVQXdJBAh5p+SMH9JZ8l5rYHXTf0koWd67lk1LdHWH8bQGMTTjYLDBiv5zLWp1fbfKEYJ9b5GFexvaSx1Z7d8QLuvtP57g/5F0Fxor6NRgRc9jGbWIb7xvh1pQjU1Jwx6D5gl5I31Z8qIxT75nQHvbC913SuQ674zokBDt3NIxwv1w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724421732;
+	cv=none; b=iaNNGQ+WIcd9EdvKoIEFFG2NsnTO4TNbC3IxePS48kLxMIor8uyNNDE+MtfF6Nvgr84nsD4dPoWDExCmz+jgx/Ax6OkwtJ0AhoyLF3kXDP1x8XQdvlurMC7jD9jzhXzNY/2TwBvX4hQgiFND3d10P1Gsj/Y4UpKn7ZkWjCF5Amm/8VHSbSfznkz9LQtbAdX9F3vXtoWInGngaAmvy0l1ZZZdhvZ6X9hiOfNdpMuJBSbczFuRE1M+MBphJunavUPMA2ZGC3dlPJpCLSXRLIQMuWsbRM5Ivt2ncCj1cCkoVBadsbC097wAMopPRQqXlyi7gQFd+opEZ454LXlhHrIFFQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724418840; c=relaxed/relaxed;
-	bh=VRXshE5FXx/w57L6jYhRTv5oTpv9rEAiuwveGGFv1n8=;
-	h=Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Received:X-Forwarded-Encrypted:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding; b=jFLTbbe1x30nedqSH96hTbbhAxEQ7GwHDNrYzruuyuUxAVdKqAeIGJZZL1SEKiIELM/LZO9H9ybQA7J4f4Xplp5NzJsnaITQ/C3Ly+09XUyotm3tDmomV7WXazKgNc8qqarpP4NKlzaWGWkjfDBDI9M8LUCX/0FyX4TQasApg80ybAE3nYRMAJjJ3KOYBYYHJr7sn/T0mLP6GAYnSOUcUvM6RaSpHBhrvOJXFZyoEVPcu7HH/roSvo5EoWopOU3AjVH6aDrjntmOplKFuC4rEmEhflGvazlj5ZPJlCwk6SdFtJVWFEIIipAg4rhgff2Jk6KgsXokTWLWGTuuFFsoKA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.219.182; helo=mail-yb1-f182.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.182; helo=mail-yb1-f182.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	t=1724421732; c=relaxed/relaxed;
+	bh=GkUKOg4XFGcn0tGLZB0Lp50cKBjIVz+rCKOhaGnR3vM=;
+	h=Received:Received:DKIM-Signature:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=nCRAh6horxbdlLlSdAGe02W/y5SWxA0Pm1OWqO67v/u/7gct2WBrKtbLQ1u5g23vv+1RDpm6nPVKzifmZOvK9PxQuNARwJQ3Pl+stX0xYDOZj0uDdbqx4ZuqkcQXWoRQAaGKNelFm/zKgkw/doyOLYnYAvIxzq6EzqA1XOnWBc5kH0mDWe/HkLiTR0zahhZ/D2fJ4KIu47wrGxDCL5+j6B9JXI3RimuP0mHp1HDAUMLMIMdWdCrvLbDCls++vqxaNQUdcmOfgBx+EKIrEH/ED9jxhuvngPDCdhxGil9NsUCZ7DEbmVERMhsWwjPJjxDlPrri2iCkvmc5D0y6YWIpAQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kN8hg0RE; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kN8hg0RE;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wr0rl5STHz2yvj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 23:13:58 +1000 (AEST)
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e11693fbebaso2083587276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 06:13:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724418835; x=1725023635;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VRXshE5FXx/w57L6jYhRTv5oTpv9rEAiuwveGGFv1n8=;
-        b=tghP158/XiJoKRe8617M/O9FXltUvvxuMw/dLwUZRJ5I2UkM/TjIYVXgP6iC/0o0Xr
-         6RV+wvDfc4T/TwS9MzPt+F8a3EI4xZ2wB2F4DZ7c8jcmiPQFLkWJCLTh8k8v63RhW1SY
-         A2noc5JaUrUs74nYw5thm3f8cJ2Z4GO737MoyqQmDnJJPkMS3RxmSba6qSa/gPWmcqkn
-         luPAmAOw0hbdY0Wge0N6GQVbIOmzPymGVhJ1Zd7vcOsJw+mI6vC6+xXcNpr+DEcvYOUi
-         g0OVISB2zYyJBn8BUmXrrvSGfWA/EejPF/4J3Hw0Uq8rhehbWajLg2PxbZU6mcMY0TLO
-         eKWg==
-X-Forwarded-Encrypted: i=1; AJvYcCWT6gTuNvZlD15IACd3jxvhkO5yFGrU5iBW0Pp9VrHwdKT+Mrp7wUNn/TbmPaLVaQqiTi1aUTHXwH/TVnk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxvKRiBC45wKsZaIYFbenw22AwZaSwxLs+VcXY5HTTdhALGKaqR
-	FOEfG+Fjfl2DSOx2drHXfyj4+Hc5Wy97thUWz+KtFJlv9bivCnPsb+ckUbZ3
-X-Google-Smtp-Source: AGHT+IEHzioscVGQ+niCOK2i69eX6x+JkoQbBojprQTuP4Qx8g/aTtPeyJB9/Zckt9FaSFT7FMfj6A==
-X-Received: by 2002:a05:6902:2488:b0:e16:4dc7:aad3 with SMTP id 3f1490d57ef6-e17a83e2745mr2281021276.27.1724418834866;
-        Fri, 23 Aug 2024 06:13:54 -0700 (PDT)
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com. [209.85.128.175])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e178e43fdabsm675117276.3.2024.08.23.06.13.54
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Aug 2024 06:13:54 -0700 (PDT)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6c3f1939d12so15082887b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 06:13:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWeabnwALFMaUx/J9CpdeQcl0wmnvsme+IWGWjwwE/7YcpuRjnx190a/BBENVX3WvoPdonJsNmzQF+/67s=@lists.ozlabs.org
-X-Received: by 2002:a05:690c:4d04:b0:6b1:3bf8:c161 with SMTP id
- 00721157ae682-6c62538d076mr24871437b3.13.1724418833900; Fri, 23 Aug 2024
- 06:13:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wr1wM6NH2z2yw3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Aug 2024 00:02:11 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id EA60B6134A;
+	Fri, 23 Aug 2024 14:02:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140A1C32786;
+	Fri, 23 Aug 2024 14:02:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724421729;
+	bh=s6ootnqXPe3/tfsEU981f0MlYubezBe3jzUesghAFzc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kN8hg0RED23Tuyp65C5DjwjuszgGjpCyXUM919/ERSlJ/ZYEkz3NtqyI3BKh3Q3vL
+	 UdsbOO/5qFQt0h0zocyKYRlrHmTpYVN0X8ZI5UCc10+WDluFd4/OAfu3N1QE70yhB1
+	 j8eG+G1tJtaa1AlKECnYKkBUxm/Qe16bMoa7XRwOW4l8PWzOTgHX78gC1/1auMvfcp
+	 eSFc6XiXBK11aNMmHRrlhlNQ/7/3C8FZpHgTRZAi5qfrSo7jCYZG4vYTQaU2SxRn+3
+	 /tsBnKiD2xJ2L0NgrBNTRCxo+bUtMZ7Jt7dWCoJs/XjDdxsippk2r5Dx0S4IVBcMM1
+	 b0Eejzwqt/sJQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>,
+	hbathini@linux.ibm.com,
+	bhe@redhat.com,
+	javierm@redhat.com,
+	thorsten.blum@toblux.com,
+	willy@infradead.org,
+	arnd@arndb.de,
+	tzimmermann@suse.de,
+	mcgrof@kernel.org,
+	rppt@kernel.org,
+	kent.overstreet@linux.dev,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.10 15/24] powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
+Date: Fri, 23 Aug 2024 10:00:37 -0400
+Message-ID: <20240823140121.1974012-15-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240823140121.1974012-1-sashal@kernel.org>
+References: <20240823140121.1974012-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,89 +76,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20240823125156.104775-1-dave@vasilevsky.ca>
-In-Reply-To: <20240823125156.104775-1-dave@vasilevsky.ca>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 23 Aug 2024 15:13:42 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVYNhFJ+qBDP3_fi9oeHsgOL0vqPe1YqE18+M8n1onssw@mail.gmail.com>
-Message-ID: <CAMuHMdVYNhFJ+qBDP3_fi9oeHsgOL0vqPe1YqE18+M8n1onssw@mail.gmail.com>
-Subject: Re: [PATCH] crash: Default to CRASH_DUMP=n when support for it is unlikely
-To: Dave Vasilevsky <dave@vasilevsky.ca>
-Cc: glaubitz@physik.fu-berlin.de, bhe@redhat.com, 
-	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, mpe@ellerman.id.au, 
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	=?UTF-8?Q?Reimar_D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.10.6
+Content-Transfer-Encoding: 8bit
 
-Hi Dave,
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-On Fri, Aug 23, 2024 at 2:54=E2=80=AFPM Dave Vasilevsky <dave@vasilevsky.ca=
-> wrote:
-> Fixes boot failures on 6.9 on PPC_BOOK3S_32 machines using
-> Open Firmware. On these machines, the kernel refuses to boot
-> from non-zero PHYSICAL_START, which occurs when CRASH_DUMP is on.
->
-> Since most PPC_BOOK3S_32 machines boot via Open Firmware, it should
-> default to off for them. Users booting via some other mechanism
-> can still turn it on explicitly.
->
-> Also defaults to CRASH_DUMP=3Dn on sh.
->
-> Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
-> Reported-by: Reimar D=C3=B6ffinger <Reimar.Doeffinger@gmx.de>
-> Closes: https://lists.debian.org/debian-powerpc/2024/07/msg00001.html
-> Fixes: 75bc255a7444 ("crash: clean up kdump related config items")
+[ Upstream commit e7e846dc6c73fbc94ae8b4ec20d05627646416f2 ]
 
-Thanks for your patch!
+Booting with CONFIG_DEBUG_VIRTUAL leads to following warning when
+passing hugepage reservation on command line:
 
-> --- a/kernel/Kconfig.kexec
-> +++ b/kernel/Kconfig.kexec
-> @@ -97,7 +97,7 @@ config KEXEC_JUMP
->
->  config CRASH_DUMP
->         bool "kernel crash dumps"
-> -       default y
-> +       default ARCH_DEFAULT_CRASH_DUMP
->         depends on ARCH_SUPPORTS_CRASH_DUMP
->         depends on KEXEC_CORE
->         select VMCORE_INFO
+  Kernel command line: hugepagesz=1g hugepages=1 hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1 noreboot
+  HugeTLB: allocating 1 of page size 1.00 GiB failed.  Only allocated 0 hugepages.
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 0 at arch/powerpc/include/asm/io.h:948 __alloc_bootmem_huge_page+0xd4/0x284
+  Modules linked in:
+  CPU: 0 PID: 0 Comm: swapper Not tainted 6.10.0-rc6-00396-g6b0e82791bd0-dirty #936
+  Hardware name: MPC8544DS e500v2 0x80210030 MPC8544 DS
+  NIP:  c1020240 LR: c10201d0 CTR: 00000000
+  REGS: c13fdd30 TRAP: 0700   Not tainted  (6.10.0-rc6-00396-g6b0e82791bd0-dirty)
+  MSR:  00021000 <CE,ME>  CR: 44084288  XER: 20000000
 
-IMHO CRASH_DUMP should just default to n, like most kernel options, as
-it enables non-trivial extra functionality: the kernel source tree has
-more than 100 locations that check if CONFIG_CRASH_DUMP is enabled.
+  GPR00: c10201d0 c13fde20 c130b560 e8000000 e8001000 00000000 00000000 c1420000
+  GPR08: 00000000 00028001 00000000 00000004 44084282 01066ac0 c0eb7c9c efffe149
+  GPR16: c0fc4228 0000005f ffffffff c0eb7d0c c0eb7cc0 c0eb7ce0 ffffffff 00000000
+  GPR24: c1441cec efffe153 e8001000 c14240c0 00000000 c1441d64 00000000 e8000000
+  NIP [c1020240] __alloc_bootmem_huge_page+0xd4/0x284
+  LR [c10201d0] __alloc_bootmem_huge_page+0x64/0x284
+  Call Trace:
+  [c13fde20] [c10201d0] __alloc_bootmem_huge_page+0x64/0x284 (unreliable)
+  [c13fde50] [c10207b8] hugetlb_hstate_alloc_pages+0x8c/0x3e8
+  [c13fdeb0] [c1021384] hugepages_setup+0x240/0x2cc
+  [c13fdef0] [c1000574] unknown_bootoption+0xfc/0x280
+  [c13fdf30] [c0078904] parse_args+0x200/0x4c4
+  [c13fdfa0] [c1000d9c] start_kernel+0x238/0x7d0
+  [c13fdff0] [c0000434] set_ivor+0x12c/0x168
+  Code: 554aa33e 7c042840 3ce0c142 80a7427c 5109a016 50caa016 7c9a2378 7fdcf378 4180000c 7c052040 41810160 7c095040 <0fe00000> 38c00000 40800108 3c60c0eb
+  ---[ end trace 0000000000000000 ]---
 
-Letting it default to enabled also conflicts with the spirit of the
-help text for the symbol:
+This is due to virt_addr_valid() using high_memory before it is set.
 
-          Generate crash dump after being started by kexec.
-          This should be normally only set in special crash dump kernels
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-          which are loaded in the main kernel with kexec-tools into
-          a specially reserved region and then later executed after
-          a crash by kdump/kexec. The crash dump kernel must be compiled
-          to a memory address not used by the main kernel or BIOS using
-          PHYSICAL_START, or it must be built as a relocatable image
-          (CONFIG_RELOCATABLE=3Dy).
-          For more details see Documentation/admin-guide/kdump/kdump.rst
+high_memory is set in mem_init() using max_low_pfn, but max_low_pfn
+is available long before, it is set in mem_topology_setup(). So just
+like commit daa9ada2093e ("powerpc/mm: Fix boot crash with FLATMEM")
+moved the setting of max_mapnr immediately after the call to
+mem_topology_setup(), the same can be done for high_memory.
 
-          For s390, this option also enables zfcpdump.
-          See also <file:Documentation/arch/s390/zfcpdump.rst>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/62b69c4baad067093f39e7e60df0fe27a86b8d2a.1723100702.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/kernel/setup-common.c | 1 +
+ arch/powerpc/mm/mem.c              | 2 --
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-What is so special about CRASH_DUMP, that it should be enabled by
-default?
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 4bd2f87616baa..943430077375a 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -959,6 +959,7 @@ void __init setup_arch(char **cmdline_p)
+ 	mem_topology_setup();
+ 	/* Set max_mapnr before paging_init() */
+ 	set_max_mapnr(max_pfn);
++	high_memory = (void *)__va(max_low_pfn * PAGE_SIZE);
+ 
+ 	/*
+ 	 * Release secondary cpus out of their spinloops at 0x60 now that
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index d325217ab2012..da21cb018984e 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -290,8 +290,6 @@ void __init mem_init(void)
+ 	swiotlb_init(ppc_swiotlb_enable, ppc_swiotlb_flags);
+ #endif
+ 
+-	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
+-
+ 	kasan_late_init();
+ 
+ 	memblock_free_all();
+-- 
+2.43.0
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
 
