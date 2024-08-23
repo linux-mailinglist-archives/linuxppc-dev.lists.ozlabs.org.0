@@ -1,49 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-481-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6F095DE90
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Aug 2024 16:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39EF495DE94
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 24 Aug 2024 16:53:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wrg035XBkz2xy0;
-	Sun, 25 Aug 2024 00:52:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wrg1Q1VQjz2y06;
+	Sun, 25 Aug 2024 00:53:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724421732;
-	cv=none; b=iaNNGQ+WIcd9EdvKoIEFFG2NsnTO4TNbC3IxePS48kLxMIor8uyNNDE+MtfF6Nvgr84nsD4dPoWDExCmz+jgx/Ax6OkwtJ0AhoyLF3kXDP1x8XQdvlurMC7jD9jzhXzNY/2TwBvX4hQgiFND3d10P1Gsj/Y4UpKn7ZkWjCF5Amm/8VHSbSfznkz9LQtbAdX9F3vXtoWInGngaAmvy0l1ZZZdhvZ6X9hiOfNdpMuJBSbczFuRE1M+MBphJunavUPMA2ZGC3dlPJpCLSXRLIQMuWsbRM5Ivt2ncCj1cCkoVBadsbC097wAMopPRQqXlyi7gQFd+opEZ454LXlhHrIFFQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724422305;
+	cv=none; b=aJ6MYmPw+5Sx6OkSts69OdjSP9MA8z7tDP4mOLd2jc6NsHvbc8YRg37mfkLpIhvwFazEPOUGmw7ciFD3lGgD10rTCk1Y5kd04oyjz7Gtra3SR+AGWha0ZwckSe3M6g3IHU5eOV9XuGRHtaPaRySdfpcS5RBUXcwncxVTZFLqIBJhE3d8cXnS7qUIMS8aorsTSZas5gYVZJiI/8pg4GoQD5flwY/kicLMc2f6qrnzTiCtEQx49JVdQKnO0EfzagUZ2xDejJQKET8KiwlVIGKLtX8To9632GCkUcF8ZJOK6comswUE1hK/5yyz4b/r64Q36xwXigW0uDOa4cel6igFyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724421732; c=relaxed/relaxed;
-	bh=GkUKOg4XFGcn0tGLZB0Lp50cKBjIVz+rCKOhaGnR3vM=;
-	h=Received:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=nCRAh6horxbdlLlSdAGe02W/y5SWxA0Pm1OWqO67v/u/7gct2WBrKtbLQ1u5g23vv+1RDpm6nPVKzifmZOvK9PxQuNARwJQ3Pl+stX0xYDOZj0uDdbqx4ZuqkcQXWoRQAaGKNelFm/zKgkw/doyOLYnYAvIxzq6EzqA1XOnWBc5kH0mDWe/HkLiTR0zahhZ/D2fJ4KIu47wrGxDCL5+j6B9JXI3RimuP0mHp1HDAUMLMIMdWdCrvLbDCls++vqxaNQUdcmOfgBx+EKIrEH/ED9jxhuvngPDCdhxGil9NsUCZ7DEbmVERMhsWwjPJjxDlPrri2iCkvmc5D0y6YWIpAQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kN8hg0RE; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1724422305; c=relaxed/relaxed;
+	bh=xTzVSI839AyH5SaDHizehgMouNRyS5B7xpiKr2jzx20=;
+	h=X-Greylist:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 X-stable:X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding;
+	b=Zbz/VJJw2bktHk/WKVxvdGCFLGrfywmmXtphygsJF3aDHUKGzRUNlsv5lSDRY0+S5LVQy07oRLsrL70G315EInP8kNFQXMpZmuEAx+RZzTulXWADUVhdFIleEAMtIDfloa2Vax/d4yJTwo7dMoP/+EUVKMRTaYHpdniJVZ5MlUEhQgDgMQSkw/QO28BXYH8owyS0bl0ZwHjeSjugvmtIh9Wsrxa/oN8CBvDQ43FBzLdwwVAG15daWiZ5c1cd03L94kXnMARsGZCK2c4LcIeYsc4bxyEvPKgO1FPNqHA0gepv3dCElDLVPte2vpg/6iqbUPk8ded/2mJpJqYIapyqvA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VCdMj/+d; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kN8hg0RE;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VCdMj/+d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 472 seconds by postgrey-1.37 at boromir; Sat, 24 Aug 2024 00:11:45 AEST
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wr1wM6NH2z2yw3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Aug 2024 00:02:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wr27P2K4wz2ynj
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Aug 2024 00:11:45 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id EA60B6134A;
-	Fri, 23 Aug 2024 14:02:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140A1C32786;
-	Fri, 23 Aug 2024 14:02:07 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id BF253A40435;
+	Fri, 23 Aug 2024 14:03:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CB2C4AF09;
+	Fri, 23 Aug 2024 14:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724421729;
-	bh=s6ootnqXPe3/tfsEU981f0MlYubezBe3jzUesghAFzc=;
+	s=k20201202; t=1724421828;
+	bh=Pf5doyZj52sYU4ZkPBSvPV+8vO0qg1sLFS+ArTntM9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kN8hg0RED23Tuyp65C5DjwjuszgGjpCyXUM919/ERSlJ/ZYEkz3NtqyI3BKh3Q3vL
-	 UdsbOO/5qFQt0h0zocyKYRlrHmTpYVN0X8ZI5UCc10+WDluFd4/OAfu3N1QE70yhB1
-	 j8eG+G1tJtaa1AlKECnYKkBUxm/Qe16bMoa7XRwOW4l8PWzOTgHX78gC1/1auMvfcp
-	 eSFc6XiXBK11aNMmHRrlhlNQ/7/3C8FZpHgTRZAi5qfrSo7jCYZG4vYTQaU2SxRn+3
-	 /tsBnKiD2xJ2L0NgrBNTRCxo+bUtMZ7Jt7dWCoJs/XjDdxsippk2r5Dx0S4IVBcMM1
-	 b0Eejzwqt/sJQ==
+	b=VCdMj/+dpinNjVQRIjaF8ETG5e28uQsJj1yLZQbZC10aXoBNzKa7Tmji4ayvbiEZn
+	 JFwig4yCBefVY4aIhfEgtkTjVxGt0pg3L/kp/RBIWLIbDS8tzhfh0NoqyUuR/ncHbm
+	 kge0U6Gd5nsEiGEmjm9ZBWlTzgdEmiyJ55abf14hNCFJR8GS9qdC3c9zP51tkicNKz
+	 gAJ4kxpdhJwjpAqQZBqsNcjx/0yCA7M4NXdwtBogudeAxhUUxa8j4yf0II9AlsKb1a
+	 TYvnhDO8D3d9CCE86CVU6cPZe1GXxLwgWBID129bFv8rEVz88H//7XBfx15q47L9eb
+	 o4zDg4t0+hFGg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,22 +53,21 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>,
 	hbathini@linux.ibm.com,
-	bhe@redhat.com,
-	javierm@redhat.com,
 	thorsten.blum@toblux.com,
-	willy@infradead.org,
+	rostedt@goodmis.org,
+	bhe@redhat.com,
 	arnd@arndb.de,
-	tzimmermann@suse.de,
-	mcgrof@kernel.org,
+	philmd@linaro.org,
 	rppt@kernel.org,
 	kent.overstreet@linux.dev,
+	tzimmermann@suse.de,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.10 15/24] powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
-Date: Fri, 23 Aug 2024 10:00:37 -0400
-Message-ID: <20240823140121.1974012-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 14/20] powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
+Date: Fri, 23 Aug 2024 10:02:28 -0400
+Message-ID: <20240823140309.1974696-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240823140121.1974012-1-sashal@kernel.org>
-References: <20240823140121.1974012-1-sashal@kernel.org>
+In-Reply-To: <20240823140309.1974696-1-sashal@kernel.org>
+References: <20240823140309.1974696-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,7 +79,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.10.6
+X-stable-base: Linux 6.6.47
 Content-Transfer-Encoding: 8bit
 
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
@@ -134,10 +135,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 4bd2f87616baa..943430077375a 100644
+index 20f72cd1d8138..03eaad5949f14 100644
 --- a/arch/powerpc/kernel/setup-common.c
 +++ b/arch/powerpc/kernel/setup-common.c
-@@ -959,6 +959,7 @@ void __init setup_arch(char **cmdline_p)
+@@ -950,6 +950,7 @@ void __init setup_arch(char **cmdline_p)
  	mem_topology_setup();
  	/* Set max_mapnr before paging_init() */
  	set_max_mapnr(max_pfn);
@@ -146,10 +147,10 @@ index 4bd2f87616baa..943430077375a 100644
  	/*
  	 * Release secondary cpus out of their spinloops at 0x60 now that
 diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index d325217ab2012..da21cb018984e 100644
+index 07e8f4f1e07f8..9dbef559af4cb 100644
 --- a/arch/powerpc/mm/mem.c
 +++ b/arch/powerpc/mm/mem.c
-@@ -290,8 +290,6 @@ void __init mem_init(void)
+@@ -287,8 +287,6 @@ void __init mem_init(void)
  	swiotlb_init(ppc_swiotlb_enable, ppc_swiotlb_flags);
  #endif
  
