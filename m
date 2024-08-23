@@ -1,56 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-470-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-471-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4434B95D560
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2024 20:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A14395D611
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2024 21:29:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wr867088lz301N;
-	Sat, 24 Aug 2024 04:41:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wr99x2gP5z2xJ8;
+	Sat, 24 Aug 2024 05:29:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724438462;
-	cv=none; b=Bw6MmFHWavm3MABKeBzec8vDVpO1HPeXtZ6yF3xKp9PMlFpmZmP3s2p29yXqApKTna/8AY7IKvPoMj0ucEXjpI7j3FdJI2Ax/+cuBJMi2kklPbLGME9FvTYd71sxCENwhQw3Rn2qDM4zZ7rnGiPGWILaNsYlbr9PIfKh5ZMcamDhdvipU3WWoRXomZH+XDOExDhGGCmtlxJDL7TZTjF9syHhLsNyFH3LM8KWnmOvsFMNvWGKPEYIM38lPxtXRH6XN2kXIc+MRqSUmtSrvU46pHQ1k6AblUpdxbTLiTQDGCchlHNR+RMIZS9Texd5hAsHlO7M+Nc+iuNbwGtVPlC1Hw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724441365;
+	cv=none; b=awZtsGqVy6hVkMkl5TCdImRWz5Sp9rNrIkLufmM4BSeAY/G97cJkHzaODFnII5UVjVZfdCyexosz5+AAeRmc5YXcvjQ5Ui0vL9q3xDdTwslhycPJa0PMBAEBFrU3VXlPulsdTsX03EYa8ttzLhXXp3L93PDYUB3ST1bjnXVQdCIBZ8s25Ri6LUn96OtflzlGm38OQAtDj/NRxpvft4T8lCYGPKGPqA3xW3H6ox23TXkl5R5gJ1lXF2zW1Wlp70rYAggey0dQhXvcyiEHadfKvatW81PprlxNzRSvxG6Dhi1JLbOsR2STp6F4PC8wql8rmWo52i6hEzoVKPRKgxuyQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724438462; c=relaxed/relaxed;
-	bh=C3enDMuInf9LLnRgN1buD4CnoI1cx3jwYJ4LWhfhZX0=;
-	h=Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=Z1HChJLWdJjUdo839r4vPaf71Q8RHJ6W/2q/VqJQL9nfHK0CtHqsPfxk/NG1YQ4LtnSbYO0n5NXEK6nlYpSwQphEbI07+BfC35t9CRL28Xvvn8g0oyfvETiPbqqQmIUDX9olQ/vDx8aQ7kzIbwlkq3WroFu/lVGbeSljj1qBG8y8sSHGfEVWro/Go44ov6WGd4+5A9vEObx9qVfhXQcbSDMswwS/o2YbSF+g116pDIrIGCpjrsYF3wbl+g7Fy6r5H7Y5mgsBdjr4EdMnHjENnftGwC70dKfMFbLHJMMweK9BzAsQTmPNYqedA/74zjoTj53Llm4OOfgc5ueq/7sQ3w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wr86618syz300B
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Aug 2024 04:41:02 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 01FE161343;
-	Fri, 23 Aug 2024 18:41:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84C5C32786;
-	Fri, 23 Aug 2024 18:40:54 +0000 (UTC)
-Date: Fri, 23 Aug 2024 19:40:52 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Will Deacon <will@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org,
-	nd@arm.com, akpm@linux-foundation.org, aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
-	broonie@kernel.org, christophe.leroy@csgroup.eu,
-	dave.hansen@linux.intel.com, hpa@zytor.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
-	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
-	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
-	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
-	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 06/30] arm64: context switch POR_EL0 register
-Message-ID: <ZsjXtE7Kg0LQwNAL@arm.com>
-References: <20240822151113.1479789-1-joey.gouly@arm.com>
- <20240822151113.1479789-7-joey.gouly@arm.com>
- <20240823144531.GH32156@willie-the-truck>
- <Zsi7ovLOfuFdfuuz@arm.com>
- <20240823170835.GA1181@willie-the-truck>
+	t=1724441365; c=relaxed/relaxed;
+	bh=od3lokxeMX+WKExbK/APVwv2OpJN5yKgKuK0D542c6U=;
+	h=Received:Received:X-Authentication-Warning:Date:From:To:Cc:
+	 Subject:Message-ID:References:Mime-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:User-Agent; b=G/lbuzjtgMtrSmgMzLMtSqEde0O1du+VAxi/ttyzUCaJkRxksoGPPHlq/0KGBGXJoGATsgm1zBa7Y5tyJ2Svv1tUV6Q7ftpBUCXmb/oM/tHh1wpyJsUy1iGF/2C+rg6FfK44iX8bq515wFFgN4xepeyhchZ/mZrKGUPM2fhhbgQUERgu6llv919Q5Vi0oQTCTiwE9lczbyDfb1QOZ6oEulQheR+KsLwr20sOP9UUKA8eTpEahpZQ3jcSfxNnZ60oxufuLhNZRRpeAI5Co0lQpLhK3W5pzk5h2MIFHYh0sliF0aZ4gZhyEP1oC/ntuvyQN/k7n1uAlnoNMnAbC6964w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wr99v6jYqz2xF0
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 Aug 2024 05:29:22 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 47NJLSlM032341;
+	Fri, 23 Aug 2024 14:21:49 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 47NJJp0F032203;
+	Fri, 23 Aug 2024 14:19:51 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Fri, 23 Aug 2024 14:19:24 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>,
+        Christian Lamparter <christian.lamparter@isd.uni-stuttgart.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        Stan Johnson <userm57@yahoo.com>, Finn Thain <fthain@linux-m68k.org>
+Subject: Re: [PATCH v2] powerpc: warn on emulation of dcbz instruction in kernel mode
+Message-ID: <20240823191924.GK28254@gate.crashing.org>
+References: <2e3acfe63d289c6fba366e16973c9ab8369e8b75.1631803922.git.christophe.leroy@csgroup.eu> <17fa6450-6613-4c34-804b-e47246e7b39c@isd.uni-stuttgart.de> <9dbf73fe-a459-4956-8dbc-e919d9728f5e@cs-soprasteria.com> <20240822053238.GA2028@lst.de> <e6acf664-5ebd-4273-9330-cbec283ede23@cs-soprasteria.com> <20240823130600.GI28254@gate.crashing.org> <20240823135459.GA28487@lst.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,53 +52,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240823170835.GA1181@willie-the-truck>
+In-Reply-To: <20240823135459.GA28487@lst.de>
+User-Agent: Mutt/1.4.2.3i
 
-On Fri, Aug 23, 2024 at 06:08:36PM +0100, Will Deacon wrote:
-> On Fri, Aug 23, 2024 at 05:41:06PM +0100, Catalin Marinas wrote:
-> > On Fri, Aug 23, 2024 at 03:45:32PM +0100, Will Deacon wrote:
-> > > On Thu, Aug 22, 2024 at 04:10:49PM +0100, Joey Gouly wrote:
-> > > > +static void permission_overlay_switch(struct task_struct *next)
-> > > > +{
-> > > > +	if (!system_supports_poe())
-> > > > +		return;
-> > > > +
-> > > > +	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-> > > > +	if (current->thread.por_el0 != next->thread.por_el0) {
-> > > > +		write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
-> > > > +		/* ISB required for kernel uaccess routines when chaning POR_EL0 */
-> > > 
-> > > nit: typo "chaning".
-> > > 
-> > > But more substantially, is this just to prevent spurious faults in the
-> > > context of a new thread using a stale value for POR_EL0?
-> > 
-> > Not just prevent faults but enforce the permissions from the new
-> > thread's POR_EL0. The kernel may continue with a uaccess routine from
-> > here, we can't tell.
+Hi!
+
+On Fri, Aug 23, 2024 at 03:54:59PM +0200, Christoph Hellwig wrote:
+> On Fri, Aug 23, 2024 at 08:06:00AM -0500, Segher Boessenkool wrote:
+> > What does "uncached memory" even mean here?  Literally it would be
+> > I=1 memory (uncachEABLE memory), but more likely you want M=0 memory
+> > here ("non-memory memory", "not well-behaved memory", MMIO often).
 > 
-> Hmm, I wondered if that was the case. It's a bit weird though, because:
+> Regular kernel memory vmapped with pgprot_noncached().
+
+So, I=1 (and G=1).  Caching inhibited and guarded.  But M=1 (memory
+coherence required) as with any other real memory :-)
+
+> > If memset() is expected to be used with M=0, you cannot do any serious
+> > optimisations to it at all.  If memset() is expected to be used with I=1
+> > it should use a separate code path for it, probably the caller should
+> > make the distinction.
 > 
->   - There's a window between switch_mm() and switch_to() where you might
->     reasonably expect to be able to execute uaccess routines
+> DMA coherent memory which uses uncached memory for platforms that
+> do not provide hardware dma coherence can end up just about anywhere
+> in the kernel.  We could use special routines for a few places in
+> the DMA subsystem, but there might be plenty of others.
 
-I don't think we can have any uaccess between these two switches (a
-uaccess could fault, that's a pretty weird state between these two).
+Yeah.  It will just be plenty slow, as we see here, that's what the
+warning is for; but it works just fine :-)
 
->   - kthread_use_mm() doesn't/can't look at this at all
+The memset() code itself could chech for the storage attributes, but
+that is probably more expensive than just assuming the happy case.
+Maybe someone could try it out though!
 
-No, but a kthread would have it's own, most permissive, POR_EL0.
 
->   - GUP obviously doesn't care
-> 
-> So what do we actually gain by having the uaccess routines honour this?
-
-I guess where it matters is more like not accidentally faulting because
-the previous thread had more restrictive permissions.
-
--- 
-Catalin
+Segher
 
