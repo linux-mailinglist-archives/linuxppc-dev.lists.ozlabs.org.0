@@ -1,59 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-454-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-455-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF38F95CC01
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2024 14:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2B795CCE4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2024 14:52:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WqzLJ2yFHz2yhZ;
-	Fri, 23 Aug 2024 22:06:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wr0Mm6fcSz2ysd;
+	Fri, 23 Aug 2024 22:52:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.160.170
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724414760;
-	cv=none; b=eIY84Auv5gXtA67UAyZFy0N6OJ4GamVPOUyNANrDGOmBn+3KYGgDXbqx3xlf3vJ1e+6jVtvepnEWQnx928Sultc21Cj0dtVSS+vVznqNKVpHSL/Kd0Z5A456slaC+o0DXDqmCOKv6VX2uIXyAB07fWG69XGaMbGQivdmf0VHKS1i5mWinyEF587d2t/hdH7Sq+fGiNLSLH3FQKMadH36I1RYy4/xXTFVIZi9oeBvyySfrH/kC/k+vOGu6rxo2w8SiMdqcrVyrq/Z1hSj4/73YrD8IN/Dz7mr41vWPc3cEDycj1vdH1DmNR5KbJJxWJnC9i9U1w2sBJqX6X0WHGKR6w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.222.181
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724417540;
+	cv=none; b=TMgXfuXAK6lNm1iXO3B2QKzprchURPUm/JKd336DkvRbLB5ole2fUn+hoeL4X7RIK16yQPUYEkV+2wzlFmGrl650BtA/1+fOwhIWnIeuiJ7i3+UDL1cJL3Z1/Tt5ZYHelx0lJ5wTFOAuoR7Uv16ww1iAHs6TVjZk1qNsdeYk6+Vvi8Oonba3KiMXDYqYBq3MufgAnF2hjrGvxxBdCjW2Ad/6Z4T6Qz5AN2lVw3PBhaIYAfbwVDTJUuhpNChD2r2SZdBNtLY1QOsLFuoLaFDMnemB+tHZ2o63g7GOUPpSHEr9L2vSp5rvqBzFWcLVErQmnhtVYFS8ui1StJF44pmfFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724414760; c=relaxed/relaxed;
-	bh=NGZF0AvlZej7rqgff9jJof3mfOBatM8jwICNkXKrrqk=;
+	t=1724417540; c=relaxed/relaxed;
+	bh=S9E6XTkrddueeZOivGiIofK2AhGee/oAp8YjyBl5PzE=;
 	h=Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:From:To:Cc:
-	 References:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=iOP8apUBPc9PKYVWAy+Vzz386WgydXs+YeeDp9+imzCWypUHFlP2aLH1/pb9LmR0qQ0d/gMi2/scEkSs5e/Ymv21/SpDB3Bs+VAiAcXQ0zJLP9G8zuyajN1aQa7DO6I65m60I7mJMERjNlmE1ayGnGSyACbRBFlpnJWaYJbVBpQwBoKJqsQlUWFqv8k66zQ7F59bvf8XoupE+LgWE9hJCFJSyrYT20RW4rmh7z83HH0SO9XS2HwjIBy+a4bKrCvvClz/z7MuhrWrlkZ4O3dptEi167Q69UdxdVUMst4Ci3PqbaFPUrlrgmTbpf/SzID638vd15a7uyBzxm/ebnX9MA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca; spf=pass (client-ip=209.85.160.170; helo=mail-qt1-f170.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=YluGoppG4EZTtYOgTPrjNcQh63qqqlhDKA9wmMH2wqw5Ti6XYRek+TbpbbBp9p6At1jIaW/rOZqAZu6iNcjFeoKYv6ttn+26IWO16U6VM+fla/ePNmDh6TvVVaAJvxFSeCO+7Z49YBqwu3rCGEoUBHqFcEKDD2mTTbHeAbFAjN9nocpLzKTNvKjTFESa6O+O7riOAHGm7XeXAuT+LNJ+BL8RU3BCbPpSiReyWqRltpziHw/jqKNUDp6n7Ja74VoDto5fTeiBcR9F+U5PrANyGWmFNzwghinDQpd6oI3xnYAJFi338jaa4ed30GxG6UE+bpmiKnpRi7sUqgXuKD8dqg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca; spf=pass (client-ip=209.85.222.181; helo=mail-qk1-f181.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.170; helo=mail-qt1-f170.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.181; helo=mail-qk1-f181.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WqzLH70mwz2xjP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 22:05:59 +1000 (AEST)
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-44ff99fcd42so10714521cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 05:05:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wr0Mm3PjNz2yl1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 22:52:19 +1000 (AEST)
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7a4df9dc885so122453285a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 05:52:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724414756; x=1725019556;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NGZF0AvlZej7rqgff9jJof3mfOBatM8jwICNkXKrrqk=;
-        b=ibYf0Z/JBw+G+JTFd9hzy1jhRA1NTYjwUMCihcnu1Md7SxHbq0datxPsZPqLvxPSzd
-         4pGrpoKNWvKbdKPGa0iME34uK7B0mO+KIeoRPHcO0YF90OJGNICQqesney8MR5JHPLzb
-         Uhl+YlAokTp21Ijql2iW2VFMpDsfmuoDpPY2d1OR5WkfsGt41HyUKcpT0Wktr+Doe1ey
-         dDn8/sObr5O7IyNhzPBYCKxghCGFBctGoXkWFWukuZDCD/BFSlX/oA2PBQPVmM5bwPgC
-         vOgB+rrPJNhYUMzQ7S793oGcpASPZ3SP14uTzFWso+BDQzjIQ4eBZKCPGWrcM9gTrhby
-         xDtg==
-X-Forwarded-Encrypted: i=1; AJvYcCXMlMpZRONjxXsjeAhL4dxqSztt3CEpeO9R8IDCNVfdHF5Kft2V9Aojx1/GjwVOch2EtOV6IuXF6+8CQUI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzFpgXxCQ/3kuK1a5sZlXY+X5oWajKTUqSvW763mNnIP19G7DqZ
-	9CGoCWAVjh2lSOC29aT3tVdIfcKDnLsgR8f/XqMQbt60RMF2gGK7
-X-Google-Smtp-Source: AGHT+IHUiEQ2UHjFnBpHefvI6CBVfER5s973r4J8f4wJcBtlNN4Eyl+cyb4eanEq6/83M/3CpkPpMA==
-X-Received: by 2002:a05:622a:1f06:b0:447:f41a:aac5 with SMTP id d75a77b69052e-4550964738amr23293121cf.25.1724414756229;
-        Fri, 23 Aug 2024 05:05:56 -0700 (PDT)
-Received: from [192.168.2.219] ([65.93.184.127])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-454fe196d10sm16584871cf.71.2024.08.23.05.05.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Aug 2024 05:05:54 -0700 (PDT)
-Message-ID: <e7629e1e-ab41-4400-85c4-e3b39cf5be2f@vasilevsky.ca>
-Date: Fri, 23 Aug 2024 08:05:43 -0400
+        d=1e100.net; s=20230601; t=1724417538; x=1725022338;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S9E6XTkrddueeZOivGiIofK2AhGee/oAp8YjyBl5PzE=;
+        b=pCLLqvWXtGVlxSV05wW5mKOD8zKqKqZbwl8sxM6fVs/KTj9l61jXYjZUIYtLoNjK8E
+         BOT09Tmf5GEOMA3QvSoyF5hWxvU5KrqEOyCmr0UWTQ+3cyVwevn5oGqLDjUxM//5pnmS
+         cq/7MPCdNfMIpqrEJ1G3zYZUPglvjQN5HBEjkgk44+V93QfVQ7iOiD+k2dltZg6k/krS
+         dbPPvViPnB3jY29ISvwyNt502EkPaRng9fVpT7u3SDH90MnAxwJ+/wKIr+7dBg64CtTn
+         sv4Mv80ZJIsDeHLKsJ4I2HRPMB1jZChHmMQuYQOYNWPsbcWkkf3lolSX87Rn9pXdJ0ag
+         AJug==
+X-Forwarded-Encrypted: i=1; AJvYcCVQRaF4/J8raRxS02aXA3xD01sMAM2LS91v//h9IiWCaGhBGKMKAJaJSQWX9a+nG1I9L7lipnU8SolyOvE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzjvTQWv0oabBGnxfri3TfgmJobD/UUu38hw4Fx0UqYyXF562UJ
+	Q1dKld/EG48/P0Czba7xRivT0C7bt3n64dId8iW4C65iHyuq+LDe
+X-Google-Smtp-Source: AGHT+IF3mA/YQvpHZgkDzEa+/SMAZxpXC7oi2zf6N4sk58c/EQ2mjae+vOE2n5jzZqc4FH/k7dNcfw==
+X-Received: by 2002:a05:620a:258f:b0:79f:12e9:1e51 with SMTP id af79cd13be357-7a688d09607mr398432085a.5.1724417537529;
+        Fri, 23 Aug 2024 05:52:17 -0700 (PDT)
+Received: from dogali.home (bras-base-mtrlpq3141w-grc-05-65-93-184-127.dsl.bell.ca. [65.93.184.127])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a67f41f249sm174739185a.126.2024.08.23.05.52.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Aug 2024 05:52:16 -0700 (PDT)
+From: Dave Vasilevsky <dave@vasilevsky.ca>
+To: glaubitz@physik.fu-berlin.de,
+	bhe@redhat.com,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sh@vger.kernel.org,
+	mpe@ellerman.id.au,
+	kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Dave Vasilevsky <dave@vasilevsky.ca>,
+	=?UTF-8?q?Reimar=20D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
+Subject: [PATCH] crash: Default to CRASH_DUMP=n when support for it is unlikely
+Date: Fri, 23 Aug 2024 08:51:56 -0400
+Message-Id: <20240823125156.104775-1-dave@vasilevsky.ca>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,41 +74,177 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH linux-next v3 05/14] crash: clean up kdump related config
- items
-From: Dave Vasilevsky <dave@vasilevsky.ca>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Baoquan He <bhe@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
- kexec@lists.infradead.org, debian-powerpc@lists.debian.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
- loongarch@lists.linux.dev, akpm@linux-foundation.org, ebiederm@xmission.com,
- hbathini@linux.ibm.com, piliu@redhat.com, viro@zeniv.linux.org.uk,
- Sam James <sam@gentoo.org>
-References: <20240124051254.67105-1-bhe@redhat.com>
- <20240124051254.67105-6-bhe@redhat.com>
- <a9d9ecd1ed8d62eae47ec26257093495e6cbd44a.camel@physik.fu-berlin.de>
- <ZscCMLfNbj2MDiaB@MiWiFi-R3L-srv>
- <c5e9996e4d2ba2a0849d65f68e3dce94fffc5828.camel@physik.fu-berlin.de>
- <ZsfR9rdMt8yn1+Bz@MiWiFi-R3L-srv>
- <768dfe3e-c437-40cc-96a5-6c5b34b2d19d@vasilevsky.ca>
- <c74e24213fd98b252a2a1ff02a107005e50f4f7b.camel@physik.fu-berlin.de>
- <dc4a1941-6671-4e89-90c2-3a1c19fd3e1c@vasilevsky.ca>
-Content-Language: en-US
-In-Reply-To: <dc4a1941-6671-4e89-90c2-3a1c19fd3e1c@vasilevsky.ca>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2024-08-23 07:58, Dave Vasilevsky wrote:
-> On 2024-08-23 03:16, John Paul Adrian Glaubitz wrote:
->> It should be disabled on m68k and sh by default as well.
-> 
-> Sure, I can change that. What's the reasoning, so I can explain in my commit message?
+Fixes boot failures on 6.9 on PPC_BOOK3S_32 machines using
+Open Firmware. On these machines, the kernel refuses to boot
+from non-zero PHYSICAL_START, which occurs when CRASH_DUMP is on.
 
-Oh I don't think m68k even has ARCH_SUPPORTS_CRASH_DUMP, so it will always be off. My question still stands for sh though.
+Since most PPC_BOOK3S_32 machines boot via Open Firmware, it should
+default to off for them. Users booting via some other mechanism
+can still turn it on explicitly.
 
--Dave 
+Also defaults to CRASH_DUMP=n on sh.
+
+Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
+Reported-by: Reimar Döffinger <Reimar.Doeffinger@gmx.de>
+Closes: https://lists.debian.org/debian-powerpc/2024/07/msg00001.html
+Fixes: 75bc255a7444 ("crash: clean up kdump related config items")
+---
+ arch/arm/Kconfig       | 3 +++
+ arch/arm64/Kconfig     | 3 +++
+ arch/loongarch/Kconfig | 3 +++
+ arch/mips/Kconfig      | 3 +++
+ arch/powerpc/Kconfig   | 4 ++++
+ arch/riscv/Kconfig     | 3 +++
+ arch/s390/Kconfig      | 3 +++
+ arch/sh/Kconfig        | 3 +++
+ arch/x86/Kconfig       | 3 +++
+ kernel/Kconfig.kexec   | 2 +-
+ 10 files changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 54b2bb817a7f..200995052690 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1597,6 +1597,9 @@ config ATAGS_PROC
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config AUTO_ZRELADDR
+ 	bool "Auto calculation of the decompressed kernel image address" if !ARCH_MULTIPLATFORM
+ 	default !(ARCH_FOOTBRIDGE || ARCH_RPC || ARCH_SA1100)
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index a2f8ff354ca6..43e08cc8204f 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1558,6 +1558,9 @@ config ARCH_DEFAULT_KEXEC_IMAGE_VERIFY_SIG
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
+ 	def_bool CRASH_RESERVE
+ 
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index 70f169210b52..ce232ddcd27d 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -599,6 +599,9 @@ config ARCH_SUPPORTS_KEXEC
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config ARCH_SELECTS_CRASH_DUMP
+ 	def_bool y
+ 	depends on CRASH_DUMP
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 60077e576935..b547f4304d0c 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2881,6 +2881,9 @@ config ARCH_SUPPORTS_KEXEC
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config PHYSICAL_START
+ 	hex "Physical address where the kernel is loaded"
+ 	default "0xffffffff84000000"
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index d7b09b064a8a..0f3c1f958eac 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -682,6 +682,10 @@ config RELOCATABLE_TEST
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool PPC64 || PPC_BOOK3S_32 || PPC_85xx || (44x && !SMP)
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	bool
++	default y if !PPC_BOOK3S_32
++
+ config ARCH_SELECTS_CRASH_DUMP
+ 	def_bool y
+ 	depends on CRASH_DUMP
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 0f3cd7c3a436..eb247b5ee569 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -880,6 +880,9 @@ config ARCH_SUPPORTS_KEXEC_PURGATORY
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool y
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
+ 	def_bool CRASH_RESERVE
+ 
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index a822f952f64a..05a1fb408471 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -275,6 +275,9 @@ config ARCH_SUPPORTS_CRASH_DUMP
+ 	  This option also enables s390 zfcpdump.
+ 	  See also <file:Documentation/arch/s390/zfcpdump.rst>
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ menu "Processor type and features"
+ 
+ config HAVE_MARCH_Z10_FEATURES
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index 1aa3c4a0c5b2..b04cfa23378c 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -549,6 +549,9 @@ config ARCH_SUPPORTS_KEXEC
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool BROKEN_ON_SMP
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool n
++
+ config ARCH_SUPPORTS_KEXEC_JUMP
+ 	def_bool y
+ 
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 007bab9f2a0e..aa4666bb9e9c 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2087,6 +2087,9 @@ config ARCH_SUPPORTS_KEXEC_JUMP
+ config ARCH_SUPPORTS_CRASH_DUMP
+ 	def_bool X86_64 || (X86_32 && HIGHMEM)
+ 
++config ARCH_DEFAULT_CRASH_DUMP
++	def_bool y
++
+ config ARCH_SUPPORTS_CRASH_HOTPLUG
+ 	def_bool y
+ 
+diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+index 6c34e63c88ff..4d111f871951 100644
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -97,7 +97,7 @@ config KEXEC_JUMP
+ 
+ config CRASH_DUMP
+ 	bool "kernel crash dumps"
+-	default y
++	default ARCH_DEFAULT_CRASH_DUMP
+ 	depends on ARCH_SUPPORTS_CRASH_DUMP
+ 	depends on KEXEC_CORE
+ 	select VMCORE_INFO
+-- 
+2.34.1
+
 
