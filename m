@@ -1,57 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-409-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-410-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0438F95C5E9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2024 08:58:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5973395C632
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 Aug 2024 09:08:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WqrWN4YCyz2yk3;
-	Fri, 23 Aug 2024 16:58:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wqrl60PCZz2yk6;
+	Fri, 23 Aug 2024 17:08:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.184
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724394771;
-	cv=none; b=dz8SDFlpg4ga1tadOQLmPuJaWxS/t9ZLoPJfjn5JkVLy3PupqE5e+OcE5OaQQdzAv6yybIzfcR4yvtJfwehGBO7faq5cILohMgBazRyVP/RNefJFw9rVBjFd9mqovnsH7uz3K2B5rfDEB+V0B4urHG7tynRWDqhktghX08DOsH4ow4jEY0Hlnz4ZqxQsLTFM7c/32i08mlNPAzOTEqV8o2hvmalFGpCOfugPT230Z7xobjtz7fly8+ms4089TJ/DZwZCWbq9SI+lmLX+3T+tYG7dtPgGFynuq2sBJF1PWAZV3hlRTIVmpY78gn+gOenJQP+hhaBhhFPGVBSGvgqNlQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724396914;
+	cv=none; b=WWTTPkUtla1cyCwidgYxylpEEAf10wHnoOhWR5WpQKH0XjSKf0gIu+quyTzryHWxTn0e0O2I5C5HxDZ9gc0b2edWRn3lpvll5SPKLHbnQSgjf2h+4BXf0NJ2GvLvXV8ggb7D3t4GMNxRihnB4K3x6YaOHnTAfWEhJgWsPRAzV1RemB4xwDiOv/YWJRWYFfA+vCK+9rWbjAnvW5uS7ZKYfWQ96nz13m3MBluCJ3rEcoQ009eKH1AD285uNATpji48/Eo93sCu2s+soh6c2Hy1pxv4zthD3P9i9HpysgGQjaRRTBaDM4OG0fK90dK8MrKYNzIPJTz/UTA6Iwwqi+nA5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724394771; c=relaxed/relaxed;
-	bh=UPXD9Xz1BaTvCyjpi0+oHDqdxADzbC7LmDSjyBTL2ZU=;
-	h=X-Greylist:X-Report-Abuse:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Migadu-Flow;
-	b=HDL37J/AJPo+fdE9UGifViwuwzXV2qd1qcFHZSQ3/orky3aO+fsiBChSm+fSvb9JFJExsVYZ5fNJ8r7pCllvmlzPWCQKZSWhLUqAK5iHHyukdIYc1Zeyqlp1U4o8bbUmKcj+94ZCw3qBBbgGSl7qaKavgBZ+0gAO2V8chKEN6PWyCXGznk357nqRZcpLzbv2luVfQyXEsVg5YKxpPt7rS3I5r2e1EPB5EcakNuAy7fcl1bit9rgEk5nLmPtja0vYxqVVRVViWQHR6/IF5QRTaXzcFODkHwkBRFm04xIdqwQDJOXKOYp1gA+QLcy7nbQUx9va2j8oWodWYpe1hrxC4w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Js1f5327; dkim-atps=neutral; spf=pass (client-ip=95.215.58.184; helo=out-184.mta1.migadu.com; envelope-from=kunwu.chan@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+	t=1724396914; c=relaxed/relaxed;
+	bh=Mdz1wNBVMMvw/wPWii+B8wqVBmKGqeN8oZTSUvyoBm8=;
+	h=DKIM-Signature:Received:From:To:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding; b=os6aoJEJ0lhd2PTxMFJPRNKAKnST6Zm3QUZgQOxeCxNkAI6rhqirk0QZrTh7agTul2sTuareGPzlhk16JcwoaHnl9etFVBbAVJ4ikjs6CUfAPi5eaJb9L/+1E2vfqEVByuNjArjAKA8qayXY/wmj+Gi5S5bO3jbfJv+aSXUW35xm0JQRlIFcTygxilWFS6P8XbKZxRZcqO7qHNggjGgqQUVoeBpEf22bozcGYTJWwf6N0/4y8FIBM8cmmpTrG+O9APxXiiYXu+WvI+jtxCXh/I3V2kqVBI32wuIJtEDEF7JO7a2I/nZ87uMqkmyQF4SnTXkkMKy3VIqkLT0n7pzW8g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=q4JBoqTb; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Js1f5327;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=q4JBoqTb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.184; helo=out-184.mta1.migadu.com; envelope-from=kunwu.chan@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 449 seconds by postgrey-1.37 at boromir; Fri, 23 Aug 2024 16:32:48 AEST
-Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [95.215.58.184])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wqqxr6GMzz2yhP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 16:32:48 +1000 (AEST)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1724394296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UPXD9Xz1BaTvCyjpi0+oHDqdxADzbC7LmDSjyBTL2ZU=;
-	b=Js1f5327/2ReHDnybS21HsuIFYM0PkcasXCRxJRio3ru4dIOMSBGsXhBUPe1TBMtspMCB0
-	hjWe50lK4406LL4sC12TSHpUoFH6wTnv+33uQ9GfWs9rF7TzuZasRMyGlRmNzF74LpU/v6
-	SWMuF1qj1dTRKJIpTL9aTFW6jmTMAt0=
-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: stuyoder@gmail.com,
-	laurentiu.tudor@nxp.com,
-	christophe.leroy@csgroup.eu
-Cc: linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH] bus: fsl-mc: make fsl_mc_bus_type const
-Date: Fri, 23 Aug 2024 14:24:40 +0800
-Message-ID: <20240823062440.113628-1-kunwu.chan@linux.dev>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wqrl41s1Rz2yWK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 Aug 2024 17:08:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1724396911;
+	bh=Mdz1wNBVMMvw/wPWii+B8wqVBmKGqeN8oZTSUvyoBm8=;
+	h=From:To:Subject:Date:From;
+	b=q4JBoqTbCSLw/UgpbIIkzy7882UZVjemdB9oeDCDWaIKtUsHuULh6PF7MC+N+7M04
+	 zWOfyExPiRJXmTR4HQJ58KqKFWUnQBLAJbR56Rc1AjrwkIcUUyF1jUK0skw8WVLrxE
+	 o1NEqTjY5zggHaNXfvWCwFK+CMP6bqlpzIIpX/MW5UoDDz/fssP2W+GJcCD27+X7uI
+	 DUmUwgebusQxSWjUuvOsQ9jBiUlfIgHov1+wMxvv4pem6o3C0wcX3n0xAFSQJZL9VI
+	 EEHDaIU+dGUW9EcbUWC6IBMn1mg/+8YjcPHDmKMFL+UN2snTPI57b69U6UJ/3iD/YV
+	 hYFJmI4HjMxXA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wqrl369WRz4x8R;
+	Fri, 23 Aug 2024 17:08:31 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/64s: Remove the "fast endian switch" syscall
+Date: Fri, 23 Aug 2024 17:08:30 +1000
+Message-ID: <20240823070830.1269033-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,51 +59,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-From: Kunwu Chan <chentao@kylinos.cn>
+The non-standard "fast endian switch" syscall was added in 2008[1],
+but was never widely used. It was disabled by default in 2017[2], and
+there's no evidence it's ever been used since.
 
-Since commit d492cc2573a0 ("driver core: device.h: make struct
-bus_type a const *"), the driver core can properly handle constant
-struct bus_type, move the fsl_mc_bus_type variable to be a constant
-structure as well, placing it into read-only memory which can not be
-modified at runtime.
+Remove it entirely.
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+A normal endian switch syscall was added in 2015[3].
+
+[1]: 745a14cc264b ("[POWERPC] Add fast little-endian switch system call")
+[2]: 529d235a0e19 ("powerpc: Add a proper syscall for switching endianness")
+[3]: 727f13616c45 ("powerpc: Disable the fast-endian switch syscall by default")
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 2 +-
- include/linux/fsl/mc.h          | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/Kconfig.debug           |  6 ------
+ arch/powerpc/kernel/exceptions-64s.S | 17 -----------------
+ 2 files changed, 23 deletions(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index dd68b8191a0a..930d8a3ba722 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -309,7 +309,7 @@ static struct attribute *fsl_mc_bus_attrs[] = {
+diff --git a/arch/powerpc/Kconfig.debug b/arch/powerpc/Kconfig.debug
+index 3799ceceb04a..0bbec4afc0d5 100644
+--- a/arch/powerpc/Kconfig.debug
++++ b/arch/powerpc/Kconfig.debug
+@@ -379,12 +379,6 @@ config FAIL_IOMMU
  
- ATTRIBUTE_GROUPS(fsl_mc_bus);
+ 	  If you are unsure, say N.
  
--struct bus_type fsl_mc_bus_type = {
-+const struct bus_type fsl_mc_bus_type = {
- 	.name = "fsl-mc",
- 	.match = fsl_mc_bus_match,
- 	.uevent = fsl_mc_bus_uevent,
-diff --git a/include/linux/fsl/mc.h b/include/linux/fsl/mc.h
-index 083c860fd28e..c90ec889bfc2 100644
---- a/include/linux/fsl/mc.h
-+++ b/include/linux/fsl/mc.h
-@@ -436,7 +436,7 @@ void fsl_mc_free_irqs(struct fsl_mc_device *mc_dev);
- struct fsl_mc_device *fsl_mc_get_endpoint(struct fsl_mc_device *mc_dev,
- 					  u16 if_id);
+-config PPC_FAST_ENDIAN_SWITCH
+-	bool "Deprecated fast endian-switch syscall"
+-	depends on DEBUG_KERNEL && PPC_BOOK3S_64
+-	help
+-	  If you're unsure what this is, say N.
+-
+ config KASAN_SHADOW_OFFSET
+ 	hex
+ 	depends on KASAN
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index eaf2f167c342..195b075d116c 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -1989,13 +1989,6 @@ INT_DEFINE_END(system_call)
+ 	INTERRUPT_TO_KERNEL
+ #endif
  
--extern struct bus_type fsl_mc_bus_type;
-+extern const struct bus_type fsl_mc_bus_type;
+-#ifdef CONFIG_PPC_FAST_ENDIAN_SWITCH
+-BEGIN_FTR_SECTION
+-	cmpdi	r0,0x1ebe
+-	beq-	1f
+-END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
+-#endif
+-
+ 	/* We reach here with PACA in r13, r13 in r9. */
+ 	mfspr	r11,SPRN_SRR0
+ 	mfspr	r12,SPRN_SRR1
+@@ -2015,16 +2008,6 @@ END_FTR_SECTION_IFSET(CPU_FTR_REAL_LE)
+ 	b	system_call_common
+ #endif
+ 	.endif
+-
+-#ifdef CONFIG_PPC_FAST_ENDIAN_SWITCH
+-	/* Fast LE/BE switch system call */
+-1:	mfspr	r12,SPRN_SRR1
+-	xori	r12,r12,MSR_LE
+-	mtspr	SPRN_SRR1,r12
+-	mr	r13,r9
+-	RFI_TO_USER	/* return to userspace */
+-	b	.	/* prevent speculative execution */
+-#endif
+ .endm
  
- extern struct device_type fsl_mc_bus_dprc_type;
- extern struct device_type fsl_mc_bus_dpni_type;
+ EXC_REAL_BEGIN(system_call, 0xc00, 0x100)
 -- 
-2.43.0
+2.46.0
 
 
