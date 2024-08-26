@@ -1,82 +1,118 @@
-Return-Path: <linuxppc-dev+bounces-536-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-538-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5315895F2DA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 15:25:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABC495F3F2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 16:34:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wsry829DGz2yJL;
-	Mon, 26 Aug 2024 23:25:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WstVh0YzNz2yGT;
+	Tue, 27 Aug 2024 00:34:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724678704;
-	cv=none; b=Ie15OwUh02nJm1W8bi5BId2vhKnAQtoXagH1KKx99+G92TWj9sTd4syk7DB18unfBDDAZKQzJZissSQSORAl0pwpzgcqC2TI/cIXv5z06I3jZ1tt0HuhwJrubFySXgWzUMdgcKAFSVKA7zLzLh61nXsut454qLsn51RT9rjd4iEHoU/zaJyjX6qSdmua2IzckDLBvYZBQkN3uA1ys8TabUZofcMDRFy7ZXnRE1lqA9fOWF2UjE32/Ye7M11JvpOPedDeLHtqUdkp5620LEagwiXKwqjYngdDNduh3LtM+VXdC3JSiDno71/0hzoevhtK4qhu1yGR7frvdYxURqCCmw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724682892;
+	cv=none; b=ZFd6SuIerNhq7wuUd3h1tZvHARQZRQ/aepogf8OKEoKAANksfZQONYgKRnSxH7MX2fI9eVR2JVXk+Pw5nrCAXK56SzjImWNguiKND9RYrr3XjSElx5wE1rrexFIoo5swtQBkZZguPtN3cCUdotXMCGeGGiRMw5qCDmlm45ESCk/ATTbkjZMBR44S9nRqBy+WwdFcHakP/l20EuK62kTD+poJet/UzN7GJxDQmgW28QBVi/gBUyr924Llq31A4G2H247mh7i+u7Ge7To2fBK5GxaQXd2/rjWR+FnbHJOuj70A2hTmGkax2RiY9EyOnaKYK0BJByWaJ9atJn4TEtGeBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724678704; c=relaxed/relaxed;
-	bh=JtERtJKi/CA36m/GEM8qvROm+v91KuIncw1OX4BkHbo=;
-	h=From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=A8nVusMt4K2id+nguXRO5ic04Aacfbfa7mhE8XP5gAJkj2SGrlmXB3JI6VWHM3YJY1+7FB3cJ7awQnKzrpGYxjBpVPZdIBlrVkZPy+TodZCdod14KNuQn5ZiONFrDJTR2A3ICuNE9ahkBrAfiuPhFWv9blowuYZfUuoxcVe3ziCrh+frwLGDmvOsSNkzmzVbyR0JmUaPjemkqqrnnDEBM2nQemaU5cudmN+EyagolQbeKo+qyS7EVQYT01l7gTvyaHwMXg3D/nLozntFLrvTzOh3rGTVXizEP+P/o7tIhIWDTR7TpjGvxKqZyf3xpSGoBY3i236gUPWBDBbhKdklpA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zp1vNc4D; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=MVBUGdIS; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1724682892; c=relaxed/relaxed;
+	bh=VW+HIHEhMAo3/O8qS6yn7a/M9Jq5ewUkNW1oEWQ5L3A=;
+	h=DKIM-Signature:DKIM-Signature:Received:X-MC-Unique:Received:
+	 X-Google-DKIM-Signature:X-Forwarded-Encrypted:X-Gm-Message-State:
+	 X-Received:X-Google-Smtp-Source:X-Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:In-Reply-To:
+	 X-Mimecast-Spam-Score:X-Mimecast-Originator:Content-Type:
+	 Content-Disposition; b=KU2C+BevDa+ECj8pcHLBauJfilISnu/Dr4tDxUOVXOa76gPs24OLXgBDDYSaELX/4EUqFuXZMRLgxGZvQdD3ww16qO8vavwCzI+BvlFa2pnED+9un1p4ch1JO+C9SraaoMD7FuWa6OF/onnj+Y2f+M84S+16Xg73S/oDid++8cBSpQQHWk9YlngZuCWiM2Y6etmezFFQ/fmf0Lc1BSnk2TYxkxzEFdlrDDRzTM9mRbqBgbbAVLlPXWcySlCs3BIoTsIhBZi7dho0GVELVdqJv/NaMAEPO+v4Tlb+rmA/8X2gqrYAu1bkTXHWrN1zK3ukgg7FFEh6zURWMIjJFN/sTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ASjHTVpI; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ASjHTVpI; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zp1vNc4D;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=MVBUGdIS;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ASjHTVpI;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ASjHTVpI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wsry75W6qz2yHL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 23:25:03 +1000 (AEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1724678693;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WstVg3wjZz2yDj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 00:34:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724682885;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JtERtJKi/CA36m/GEM8qvROm+v91KuIncw1OX4BkHbo=;
-	b=zp1vNc4DuEN5YGFJn0TnAQLg0tqSuVcJT1LF7fJXWGjIq9boLoE67t0jweEecdUb7sF4GH
-	GCQYB9HU/g83IdP8iePIB0ST+nfgjNktYKMIjUz3LlV/WiJcdqrTixPcGf8q5uk9fA4AJk
-	w6fD2O1Yn3O5X0dRndrBmcvUrBU9IQbcMRg2frAPJ2wSc4l2YQ1FFd73rJq1/y6Vj/xxgH
-	0esO02GAS3JjVqcgZix9NqNsLH/qRLm4AhSWJl3hwYmpMbN4YgqIT9Dr7UFLXgC7zxx7qp
-	lBn8E0DLeyhkRVJ4UXNT+sBw3oZUwmdUgkhGWPGAQ6TSpslNcaibuIH3xKyBgw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1724678693;
+	bh=VW+HIHEhMAo3/O8qS6yn7a/M9Jq5ewUkNW1oEWQ5L3A=;
+	b=ASjHTVpIeCTSeGgid4jlaNZjwZpjL+AIUsYYQe5rFo8Ccg1aVGo926oYYaCdf0NLoixEKc
+	7nJW68+t/lfkrJ5qwRyVujGWSaIuHl4rVe2qa18knxDIAmm3VlpJ6JdyDhxFpxtI6sOPAw
+	Tk7UNpy+kRTmOh1n7vfE+og5BBon4fE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724682885;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JtERtJKi/CA36m/GEM8qvROm+v91KuIncw1OX4BkHbo=;
-	b=MVBUGdIS3uO0WmN8EGfXIZc+hb2K87xkQVti0VUBQTGVjM7a9DhmIGZGaQAw3NK+w8pyab
-	59i8js1pWL3G7UAg==
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, "Jason A. Donenfeld"
- <Jason@zx2c4.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Andy Lutomirski
- <luto@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Theodore Ts'o <tytso@mit.edu>, Arnd
- Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Shuah Khan
- <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 02/17] vdso: Clean header inclusion in getrandom
-In-Reply-To: <51adbe91-3c3a-4baa-bb39-29df98a6eea5@csgroup.eu>
-References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
- <2a081f1fff5e40f496153f8e0162fc7ec5adab2e.1724309198.git.christophe.leroy@csgroup.eu>
- <Zsw3xMoX2EI5UUs1@zx2c4.com>
- <7e519ba2-0293-4320-84bf-44f930fc286d@csgroup.eu>
- <ZsxDssNPbLkcPetJ@zx2c4.com>
- <51adbe91-3c3a-4baa-bb39-29df98a6eea5@csgroup.eu>
-Date: Mon, 26 Aug 2024 15:24:52 +0200
-Message-ID: <87plpvct7f.ffs@tglx>
+	bh=VW+HIHEhMAo3/O8qS6yn7a/M9Jq5ewUkNW1oEWQ5L3A=;
+	b=ASjHTVpIeCTSeGgid4jlaNZjwZpjL+AIUsYYQe5rFo8Ccg1aVGo926oYYaCdf0NLoixEKc
+	7nJW68+t/lfkrJ5qwRyVujGWSaIuHl4rVe2qa18knxDIAmm3VlpJ6JdyDhxFpxtI6sOPAw
+	Tk7UNpy+kRTmOh1n7vfE+og5BBon4fE=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-32-GYMIqmHkN5WoXQbn4jJuJw-1; Mon, 26 Aug 2024 10:34:44 -0400
+X-MC-Unique: GYMIqmHkN5WoXQbn4jJuJw-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6c181e15e90so17578296d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 07:34:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724682884; x=1725287684;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VW+HIHEhMAo3/O8qS6yn7a/M9Jq5ewUkNW1oEWQ5L3A=;
+        b=RPBtezY6+GBbrF/qqwDwmGIcavfB/ymGyZvXeh0TxZGSfMMwiLc9GSNFEr/PogGdqj
+         N73vPTnzfhskSWkXoviIvwehl1XeQRaYXVEZtWb87j6t+TVPF6Wo51yqKOl7EkW9xMX2
+         16vbnafxaJTCaym0450XffRMmRCvlqHuqmvk8XbY7U/A/c9BKZO81K5qNFWkQWV9/jOy
+         MXENSPOiqbbnWSXqLDmVSgghBWwaaUAtraSlDzqZx0dcpyeCufoLTDG+VNO2btcB6lIs
+         7EIMi837D6QhUcZxI4dPhk9r3yZGfilxXqVyXQcVXZ1hl/U71GVoL8rB5TGBx22FYeba
+         E9Xg==
+X-Forwarded-Encrypted: i=1; AJvYcCVluhyswDtsdULrhvZqmqfmDgnz2WYD3HfCE52vvyOzIwB4mON+QG7zdnEAcB8JBac9j0iKAVHwoL8DUYI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz6yibtABPWjnHxP0NqC2j3/7wJNRwcg48ytgzLQkgb/mLXDIM1
+	3CYblOMlHdwmQFiYPXqL6eKDtADg5DSlUMStqnX/Pyg2+kopRcPC7CzxFc7l4lAscYm0EGwgArZ
+	6BdjToATp6+EcqNaygQU0w4k34qIqk+vKRr3AV2uOtdFdbmzMTqEfoV/G81oph78=
+X-Received: by 2002:a05:6214:4304:b0:6bb:a16d:279f with SMTP id 6a1803df08f44-6c16dcb7b2amr123089046d6.38.1724682883708;
+        Mon, 26 Aug 2024 07:34:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGJyXhGmqDSVXXp1D+XITrKt9Uq9T5JuT4lUbtmj8ua5Df7FPqa8sCBxKyCSdGvctdo+BxBQQ==
+X-Received: by 2002:a05:6214:4304:b0:6bb:a16d:279f with SMTP id 6a1803df08f44-6c16dcb7b2amr123088766d6.38.1724682883376;
+        Mon, 26 Aug 2024 07:34:43 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c184ce9034sm10939096d6.73.2024.08.26.07.34.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Aug 2024 07:34:42 -0700 (PDT)
+Date: Mon, 26 Aug 2024 10:34:39 -0400
+From: Peter Xu <peterx@redhat.com>
+To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, "x86@kernel.org" <x86@kernel.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Axel Rasmussen <axelrasmussen@google.com>
+Subject: Re: [PATCH RFC 2/6] mm: PGTABLE_HAS_P[MU]D_LEAVES config options
+Message-ID: <ZsySf2F9djR5YVOr@x1n>
+References: <20240717220219.3743374-1-peterx@redhat.com>
+ <20240717220219.3743374-3-peterx@redhat.com>
+ <dcdde9fc-7e7c-45a8-8dc7-7f7ed13b81ec@cs-soprasteria.com>
+ <ZseOp7M9AmZtW4jw@x1n>
+ <d3e4256f-253a-4a61-a83b-93f50ebabed8@cs-soprasteria.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,52 +122,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+In-Reply-To: <d3e4256f-253a-4a61-a83b-93f50ebabed8@cs-soprasteria.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
-On Mon, Aug 26 2024 at 12:45, Christophe Leroy wrote:
-> Le 26/08/2024 =C3=A0 10:58, Jason A. Donenfeld a =C3=A9crit=C2=A0:
->> On Mon, Aug 26, 2024 at 10:37:49AM +0200, Christophe Leroy wrote:
->>>
->>>
->>> Le 26/08/2024 =C3=A0 10:07, Jason A. Donenfeld a =C3=A9crit=C2=A0:
->>>> On Thu, Aug 22, 2024 at 09:13:10AM +0200, Christophe Leroy wrote:
->>>>>=20=20=20=20
->>>>> +#define _PAGE_SIZE (1UL << CONFIG_PAGE_SHIFT)
->>>>> +#define _PAGE_MASK (~(_PAGE_SIZE - 1))
->>>>
->>>> If PAGE_SIZE isn't defined at this point, why not just call it PAGE_SI=
-ZE
->>>> instead of _PAGE_SIZE? But if that's the case, why not put the vdso
->>>> definition of PAGE_SIZE into some vdso header included by this file?
->>>
->>> It was working ok on powerpc but on x86 I got:
->>=20
->> Seems like there might be some more fiddling to do, then? Or did you
->> conclude it's impossible?
->
-> Maybe someone who knows x86 in details could helps but after a first=20
-> look I gave up because it looks very x86 specific, indeed that's=20
-> x86/asm/vdso/gettimeofday.h that pulls several x86/asm/ headers , and=20
-> the same type of issue might arise for any new architecture coming in.
+On Fri, Aug 23, 2024 at 06:19:52AM +0000, LEROY Christophe wrote:
+> Why is an option needed for that ? If pmd_leaf() returns always false, 
+> it means the arch doesn't support pmd mappings and if properly used all 
+> related code should fold away without a config option, shouldn't it ?
 
-Of course :)
+It's not always easy to leverage an "if" clause there, IIUC.  Take the case
+of when a driver wants to inject a pmd pfnmap, we may want something like:
 
-> For me it looked cleaner to just do as commit cffaefd15a8f ("vdso: Use=20
-> CONFIG_PAGE_SHIFT in vdso/datapage.h") and not use PAGE_SIZE at all. But=
-=20
-> I didn't want to directly use (1UL << CONFIG_PAGE_SHIFT) and (~(1UL <<=20
-> (CONFIG_PAGE_SHIFT - 1))) in the code directly hence the new macros with=
-=20
-> a leading underscore to avoid any conflict with existing macros.
+  if (pmd_leaf_supported())
+      inject_pmd_leaf(&pmd);
 
-#ifndef PAGE_SIZE
-# define
-#endif
-
-Perhaps?
+We don't have a pmd entry to reference at the point of pmd_leaf_supported()
+when making the decision.
 
 Thanks,
 
-        tglx
+-- 
+Peter Xu
+
 
