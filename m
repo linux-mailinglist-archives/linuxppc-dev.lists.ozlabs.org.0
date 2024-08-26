@@ -1,94 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-539-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-540-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D34E95F4E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 17:21:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E806A95F4FF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 17:27:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WsvXl71nLz2xwc;
-	Tue, 27 Aug 2024 01:21:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wsvfy4pMzz2y7J;
+	Tue, 27 Aug 2024 01:27:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724685703;
-	cv=none; b=jfkGzq61+xhlHbz+tW157Rgn6aIrea5jZ8haaftZosPNEtAHVi9VsP+lTE99r6SZVwGvQW8mgF6DQYm+W3OwztdiqQlcGqg7SGULLNOEuZiQq2XCE0s9GdLEkyA34Q974bE+c4869iz71Tziygvt4H3qkznaYZr08nnWDBUQR7idpg0/9CuYUrjJBkCc6J2/rvejLl5absdkhyS7qwQHEDLRm1hZ1jgwA0V6fQkK9spRsK2WsJRksX19xwo7Efjz2qFzOPocv6AdZkowwb2GO3cEHfx0Iqi7mXMvTU+XRYihVdi2JQiDfXYrEcKXgEaBkDqU3g3ALb++a1vO+WdumA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724686026;
+	cv=none; b=ZnyyazXXGHI9YZkwzxVoyOnFs8Tb1iQv8k3Nf5Qzz9Wp9BZC5yo3dzan5vFSKMv3WqU5CTIOi1vQ04av7IBhzLRZYz0HNObcxgGhckgqxW1x/Fm3eD2CXWvE9QBnQ72xIuCjRMJThxxW2t14p4t0g0GZtaNvNCJl+Vz9nDK4qW8q6cCE8UTzFwnPLe0uxp3iPcMFBDyyCKTGhaLKFJ3MP/yZGinruu74IqD/CYTZ4EMEBdCS5TENyflb7LS65HrN+fT4pTOBDPu/WzjPyolIRTkmEWQt0cJyQRsotjPQu9YxOXcpWTKUM2/XqMPhyCZMRzRyhvdCxvKmXh1CHAFMuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724685703; c=relaxed/relaxed;
-	bh=xVfhKRaKDm7iJJwFGB1UlcUKzw1fwN0vnWpe4TV7n4c=;
+	t=1724686026; c=relaxed/relaxed;
+	bh=hR+Akr9YWsoJTBZs851mAQJ1H/l3mr5q9WxzD4AcF4s=;
 	h=DKIM-Signature:DKIM-Signature:Received:X-MC-Unique:Received:
 	 X-Google-DKIM-Signature:X-Forwarded-Encrypted:X-Gm-Message-State:
 	 X-Received:X-Google-Smtp-Source:X-Received:Received:Message-ID:
 	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
 	 Autocrypt:Organization:In-Reply-To:X-Mimecast-Spam-Score:
 	 X-Mimecast-Originator:Content-Language:Content-Type:
-	 Content-Transfer-Encoding; b=MPVn23idX6eABWqm0OMOhdSt3elwLCwZ3nR0G1RjPTZD8QTQViLiWEUGz5eiNXeP5Wwr+UEC5auwHEbEYm/wzCQ9fK6Hq2J5U9qVZmKTm0W20MiobaEMVhvIhwK1bJdPPW1ExnQcsd7bTVDtxfTWnFXY6Q8BJsuqe8wiuXcV+TtMrri1nfpSLx6xWL/BkRaYMc9psDi47VeuXapt1x5ywdaW4ujFLKxGwJGFH+wwrYd/ZS8g9sWmZWO/G0XpFwg4UkU3gBEn9+oDnjBcyELwXM6/tWI3P2hsQ3HNzTg2uo6khNhcU25NTuNQsGeTE/gpPSp2NgFyc3K2aXPMRGbIQg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OUeVifWh; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OUeVifWh; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 Content-Transfer-Encoding; b=WzGGK920r67swMqmO5jaueYjFAPCouXIO27zyolSnTs9QDraxR7KU5Pd2qEvOGbikOgGhFs6XSuHOKeLqBskkgBmdBMJqcmFuBHeYDUEoNPsrK0wPu1I9FnKiQZS3FVZ1egoYppgzZaBoq17jZq8uk0mN2V4fJP5t+zzltOGAG4Tlqrl6OQ46WaNuUSXgKBt1OyUIOZ80YZET8VC4T8/VNdyCeM6r25jxslrE/IfWiXovbIEoEB0Zgi5NLarxPKMvO4G2sFGpHAVUc1nZvDVAeD5hu8HSxwG4UosFpGBdcduPjUzJPIPHV4qCWYAmdIEWHIGMs6stO9mejy3WZVRdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ENhEXh2l; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ENhEXh2l; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OUeVifWh;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OUeVifWh;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ENhEXh2l;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ENhEXh2l;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WsvXl3fcwz2xfK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:21:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wsvfy1KRgz2xxw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:27:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724685699;
+	s=mimecast20190719; t=1724686022;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xVfhKRaKDm7iJJwFGB1UlcUKzw1fwN0vnWpe4TV7n4c=;
-	b=OUeVifWhxorJ9KXrDH8ObPCYLCUr6GStC0NibWeZkEqTn1itmawvfAH2cJkMqQ6mWm1ydS
-	P7TMGmqNp1PFOpv7v0hjSefa8wXm32FaGhS54AXAu3qRNDE1125P51PSJgytUt+mEv7OQM
-	xXI4wdbTSxri5T9VaM/cTYaUNCRlEpc=
+	bh=hR+Akr9YWsoJTBZs851mAQJ1H/l3mr5q9WxzD4AcF4s=;
+	b=ENhEXh2lbMcFICmSkLLxxOKOOy8mv5e8HI8JBivZU6NI1JjT2HEODCo9Nca4YzdCDIVx5w
+	U9jBG19gkK8oAxI+OOhgGxnyg74oCDepocLSLrvopN8KhhmRJjXdVwr68+11butP93PHIx
+	VFYwnRQbLGVmO8TOQYSw6r4KlDaesBQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724685699;
+	s=mimecast20190719; t=1724686022;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xVfhKRaKDm7iJJwFGB1UlcUKzw1fwN0vnWpe4TV7n4c=;
-	b=OUeVifWhxorJ9KXrDH8ObPCYLCUr6GStC0NibWeZkEqTn1itmawvfAH2cJkMqQ6mWm1ydS
-	P7TMGmqNp1PFOpv7v0hjSefa8wXm32FaGhS54AXAu3qRNDE1125P51PSJgytUt+mEv7OQM
-	xXI4wdbTSxri5T9VaM/cTYaUNCRlEpc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=hR+Akr9YWsoJTBZs851mAQJ1H/l3mr5q9WxzD4AcF4s=;
+	b=ENhEXh2lbMcFICmSkLLxxOKOOy8mv5e8HI8JBivZU6NI1JjT2HEODCo9Nca4YzdCDIVx5w
+	U9jBG19gkK8oAxI+OOhgGxnyg74oCDepocLSLrvopN8KhhmRJjXdVwr68+11butP93PHIx
+	VFYwnRQbLGVmO8TOQYSw6r4KlDaesBQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-544-hYL57ELPMU2q2HIe-XdYHg-1; Mon, 26 Aug 2024 11:21:38 -0400
-X-MC-Unique: hYL57ELPMU2q2HIe-XdYHg-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-371881b6de3so2763250f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 08:21:37 -0700 (PDT)
+ us-mta-50-N56CxuAzMU66zdmUzu35QA-1; Mon, 26 Aug 2024 11:27:00 -0400
+X-MC-Unique: N56CxuAzMU66zdmUzu35QA-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4280f233115so41854985e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 08:26:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724685697; x=1725290497;
+        d=1e100.net; s=20230601; t=1724686019; x=1725290819;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=xVfhKRaKDm7iJJwFGB1UlcUKzw1fwN0vnWpe4TV7n4c=;
-        b=Ca/yQO1DsqEDC7uJkALer96+HaJKFvT3LBLElHm1vj9oAfX+3P65qL33SFyTsWrx/X
-         nphefbZCpb9W/VuhPTUA2H8ooNLz3EamwJ2oDPAAfhV/heK19oE9mm04LIyCMEiC9aBh
-         dyBFQf3S9nSV/d1bKVqg1/pzni0pHRVxTQVO232MGAsT1ESVjAqRuffCDdIv0lX2F7X4
-         +Ybai6iuDPX/oIjaGSM2y+UfLX1KcSmbJNhgwtWKNaQEXafi8qnrPLw0OAu6HyRFjqZB
-         w9AuizbCYJLyKib3AAqH6hGOWaUmAKRD2qeAm/gnLO0RG2Hy13iE+XtgMk65fhbNvgcm
-         FOGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGqA4rvX8cJ/W/fmR/0ca6gPIZsjV3+ToBWjfED5Ed2oHFA8xhEaLexdhOelkSUsjfHEXFMtA0MQNNOtM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwUHF/PnlilsWqD/2s7aY82YS/TKersf5zTfkLz3oLxh/3AGuer
-	lHXgvsVDjZ2L2xGt8jsdYnFrKvwMWjpT+MI/aa9+mcr6OMpThDxumy3wL9JqUO+unYz6ip/SpsE
-	csau+0AGoNDUsi+4KepL7MCde4Ls75fa/tinR5avmZT2K3If1sgs2SjcGCDjHb9c=
-X-Received: by 2002:adf:a419:0:b0:371:8a8e:bf34 with SMTP id ffacd0b85a97d-373118fbbe1mr5277983f8f.62.1724685696619;
-        Mon, 26 Aug 2024 08:21:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGqu679kC3Scr/Ra6Rb2UAlKN2NPsv8B8ucTOfLynfazsHuojuRcC2LVUpZliNcZRCUyAXJew==
-X-Received: by 2002:adf:a419:0:b0:371:8a8e:bf34 with SMTP id ffacd0b85a97d-373118fbbe1mr5277934f8f.62.1724685695655;
-        Mon, 26 Aug 2024 08:21:35 -0700 (PDT)
+        bh=hR+Akr9YWsoJTBZs851mAQJ1H/l3mr5q9WxzD4AcF4s=;
+        b=haXXt4qAu5zMMpT29y8mof1hokMB3OGXy1v7RD+bykde9sYzhCrfd2U7JlQI9Ko1LI
+         0zLvs/HhEVJ6LKfsIOyEewlAo1cqzVhkgG0mM8d3nvrU6AUE3q6rYZnRB6mt9PVeXPSY
+         XjNs3qd3xwTWE6Ri3b0A0An+GnuExs2z8kr7gtQaVgOw6MJZUyWAm9bdp+J67gz+UBJM
+         6ocKQ1KrFybJZPgCkxJIUre0LXJyDnoa1O1LWfxHJdjBxTZlVq4gJTZaX+KDZiW7Ub2k
+         7CFajmbOD8QYT/VhqQ2+d8EdUdKW+94S206nXWD11hA0C85mvz8Z1ZYaMdKLnKke3ua7
+         /vqA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYSuZaMlrMTdDfb9RDFmjzyH+026TPy8oOdlHpen3YvQG+ZhGyik7cNGFaMTrYADowMndgTtTdmnJMqvM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwAAQoT0xZ2hP/CmWzffCXAbiZvNJilHq8bYtIKCWQnf6hGeUhR
+	p2Gt5nXxr9MI+GPWjiGjlBjQJ81Hl69AFdJIB+UnQNGAEs6oEFwQWouL41U2gBOheOuk8ZYIoPP
+	uh2enwDo0Nl9QjoIGtXe0mQnUBSDZeE6CG76sBpkrnfgsTEsIRyqfK2M+qfwOYvI=
+X-Received: by 2002:a05:600c:a01:b0:426:6f0e:a60 with SMTP id 5b1f17b1804b1-42acd57b683mr71398205e9.17.1724686018758;
+        Mon, 26 Aug 2024 08:26:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFL26zEvaE9x4Y8E/1fGQyz00aSNDZBMSxihsSd1bwRQ2Nt/7nonJyiEDJ8zLCLCIUUJU6hNA==
+X-Received: by 2002:a05:600c:a01:b0:426:6f0e:a60 with SMTP id 5b1f17b1804b1-42acd57b683mr71397925e9.17.1724686017969;
+        Mon, 26 Aug 2024 08:26:57 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c737:1900:16b0:8dc:77e:31af? (p200300cbc737190016b008dc077e31af.dip0.t-ipconnect.de. [2003:cb:c737:1900:16b0:8dc:77e:31af])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3730815b7e3sm10986513f8f.53.2024.08.26.08.21.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ac624bb23sm156716575e9.32.2024.08.26.08.26.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Aug 2024 08:21:34 -0700 (PDT)
-Message-ID: <f318f65d-4198-481c-98a0-00415664614c@redhat.com>
-Date: Mon, 26 Aug 2024 17:21:32 +0200
+        Mon, 26 Aug 2024 08:26:57 -0700 (PDT)
+Message-ID: <77f3f5ce-dd12-4ca2-90cd-0f2226fe26ba@redhat.com>
+Date: Mon, 26 Aug 2024 17:26:55 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,8 +99,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/14] mm: pgtable: introduce
- pte_offset_map_{ro|rw}_nolock()
+Subject: Re: [PATCH v2 02/14] arm: adjust_pte() use pte_offset_map_rw_nolock()
 To: Qi Zheng <zhengqi.arch@bytedance.com>, hughd@google.com,
  willy@infradead.org, muchun.song@linux.dev, vbabka@kernel.org,
  akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
@@ -108,7 +107,7 @@ To: Qi Zheng <zhengqi.arch@bytedance.com>, hughd@google.com,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 References: <cover.1724310149.git.zhengqi.arch@bytedance.com>
- <e866151ccd257ca14a9361ba59f8c3086aa76e4f.1724310149.git.zhengqi.arch@bytedance.com>
+ <7915acf5887e7bf0c5cc71ff30ad2fe8447d005d.1724310149.git.zhengqi.arch@bytedance.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -155,7 +154,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <e866151ccd257ca14a9361ba59f8c3086aa76e4f.1724310149.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <7915acf5887e7bf0c5cc71ff30ad2fe8447d005d.1724310149.git.zhengqi.arch@bytedance.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -163,123 +162,60 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 22.08.24 09:13, Qi Zheng wrote:
-> Currently, the usage of pte_offset_map_nolock() can be divided into the
-> following two cases:
-> 
-> 1) After acquiring PTL, only read-only operations are performed on the PTE
->     page. In this case, the RCU lock in pte_offset_map_nolock() will ensure
->     that the PTE page will not be freed, and there is no need to worry
->     about whether the pmd entry is modified.
-
-There is also the usage where we don't grab the PTL at all, and only do 
-a racy (read-only) lookup.
-
-> 
-> 2) After acquiring PTL, the pte or pmd entries may be modified. At this
->     time, we need to ensure that the pmd entry has not been modified
->     concurrently.
-> 
-> To more clearing distinguish between these two cases, this commit
-> introduces two new helper functions to replace pte_offset_map_nolock().
-> For 1), just rename it to pte_offset_map_ro_nolock(). For 2), in addition
-> to changing the name to pte_offset_map_rw_nolock(), it also outputs the
-> pmdval when successful. This can help the caller recheck *pmd once the PTL
-> is taken. In some cases, that is, either the mmap_lock for write, or
-> pte_same() check on contents, is also enough to ensure that the pmd entry
-> is stable. But in order to prevent the interface from being abused, we
-> choose to pass in a dummy local variable instead of NULL.
-> 
-> Subsequent commits will convert pte_offset_map_nolock() into the above
-> two functions one by one, and finally completely delete it.
+> In do_adjust_pte(), we may modify the pte entry. At this time, the write
+> lock of mmap_lock is not held, and the pte_same() check is not performed
+> after the PTL held. The corresponding pmd entry may have been modified
+> concurrently. Therefore, in order to ensure the stability if pmd entry,
+> use pte_offset_map_rw_nolock() to replace pte_offset_map_nolock(), and do
+> pmd_same() check after holding the PTL.
 > 
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > ---
->   Documentation/mm/split_page_table_lock.rst |  7 ++++
->   include/linux/mm.h                         |  5 +++
->   mm/pgtable-generic.c                       | 43 ++++++++++++++++++++++
->   3 files changed, 55 insertions(+)
+>   arch/arm/mm/fault-armv.c | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
-> index e4f6972eb6c04..08d0e706a32db 100644
-> --- a/Documentation/mm/split_page_table_lock.rst
-> +++ b/Documentation/mm/split_page_table_lock.rst
-> @@ -19,6 +19,13 @@ There are helpers to lock/unlock a table and other accessor functions:
->    - pte_offset_map_nolock()
->   	maps PTE, returns pointer to PTE with pointer to its PTE table
->   	lock (not taken), or returns NULL if no PTE table;
-
-What will happen to pte_offset_map_nolock() after this series? Does it 
-still exist or will it become an internal helper?
-
-> + - pte_offset_map_ro_nolock()
-> +	maps PTE, returns pointer to PTE with pointer to its PTE table
-> +	lock (not taken), or returns NULL if no PTE table;
-> + - pte_offset_map_rw_nolock()
-> +	maps PTE, returns pointer to PTE with pointer to its PTE table
-> +	lock (not taken) and the value of its pmd entry, or returns NULL
-> +	if no PTE table;
-
-[...]
-
-> +pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
-> +				unsigned long addr, pmd_t *pmdvalp,
-> +				spinlock_t **ptlp)
-> +{
+> diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
+> index 831793cd6ff94..de6c7d8a2ddfc 100644
+> --- a/arch/arm/mm/fault-armv.c
+> +++ b/arch/arm/mm/fault-armv.c
+> @@ -94,6 +94,7 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   	pud_t *pud;
+>   	pmd_t *pmd;
+>   	pte_t *pte;
 > +	pmd_t pmdval;
-> +	pte_t *pte;
-> +
-> +	BUG_ON(!pmdvalp);
+>   	int ret;
+>   
+>   	pgd = pgd_offset(vma->vm_mm, address);
+> @@ -112,16 +113,22 @@ static int adjust_pte(struct vm_area_struct *vma, unsigned long address,
+>   	if (pmd_none_or_clear_bad(pmd))
+>   		return 0;
+>   
+> +again:
+>   	/*
+>   	 * This is called while another page table is mapped, so we
+>   	 * must use the nested version.  This also means we need to
+>   	 * open-code the spin-locking.
+>   	 */
+> -	pte = pte_offset_map_nolock(vma->vm_mm, pmd, address, &ptl);
+> +	pte = pte_offset_map_rw_nolock(vma->vm_mm, pmd, address, &pmdval, &ptl);
+>   	if (!pte)
+>   		return 0;
+>   
+>   	do_pte_lock(ptl);
+> +	if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+> +		do_pte_unlock(ptl);
+> +		pte_unmap(pte);
+> +		goto again;
+> +	}
+>   
+>   	ret = do_adjust_pte(vma, address, pfn, pte);
+>   
 
-As raised, no BUG_ON please. VM_WARN_ON_ONCE() is helpful during early 
-testing and should catch these kind of things.
+Looks correct to me, but I wonder why the missing pmd_same check is not 
+an issue so far ... any experts? THP on __LINUX_ARM_ARCH__ < 6 is not 
+really used/possible?
 
-If someone thinks not requiring a non-NULL pointer is better, please 
-speak up, I'm not married to that idea :)
-
-> +	pte = __pte_offset_map(pmd, addr, &pmdval);
-> +	if (likely(pte))
-> +		*ptlp = pte_lockptr(mm, &pmdval);
-> +	*pmdvalp = pmdval;
-> +	return pte;
-> +}
-> +
->   /*
->    * pte_offset_map_lock(mm, pmd, addr, ptlp), and its internal implementation
->    * __pte_offset_map_lock() below, is usually called with the pmd pointer for
-> @@ -356,6 +383,22 @@ pte_t *pte_offset_map_nolock(struct mm_struct *mm, pmd_t *pmd,
->    * recheck *pmd once the lock is taken; in practice, no callsite needs that -
->    * either the mmap_lock for write, or pte_same() check on contents, is enough.
->    *
-> + * pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like
-> + * pte_offset_map(); but when successful, it also outputs a pointer to the
-> + * spinlock in ptlp - as pte_offset_map_lock() does, but in this case without
-> + * locking it.  This helps the caller to avoid a later pte_lockptr(mm, *pmd),
-> + * which might by that time act on a changed *pmd: pte_offset_map_ro_nolock()
-> + * provides the correct spinlock pointer for the page table that it returns.
-> + * For readonly case, the caller does not need to recheck *pmd after the lock is
-> + * taken, because the RCU lock will ensure that the PTE page will not be freed. > + *
-> + * pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is like
-> + * pte_offset_map_ro_nolock(); but when successful, it also outputs the
-> + * pdmval. For cases where pte or pmd entries may be modified, that is, maywrite
-> + * case, this can help the caller recheck *pmd once the lock is taken. In some
-> + * cases, that is, either the mmap_lock for write, or pte_same() check on
-> + * contents, is also enough to ensure that the pmd entry is stable.
-> + *
->    * Note that free_pgtables(), used after unmapping detached vmas, or when
->    * exiting the whole mm, does not take page table lock before freeing a page
->    * table, and may not use RCU at all: "outsiders" like khugepaged should avoid
-
-In general to me a step into the right direction. Likely the 
-documentation could be further clarified in some aspects:
-
-Like that the use of pte_offset_map_ro_nolock() does not allow to easily 
-identify if the page table was replaced in the meantime. Even after 
-grabbing the PTL, we might be looking either at a page table that is 
-still mapped or one that was unmapped and is about to get freed. But for 
-R/O access this is usually sufficient AFAIUK.
-
-Or that "RO" / "RW" expresses the intended semantics, not that the 
-*kmap* will be RO/RW protected.
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
