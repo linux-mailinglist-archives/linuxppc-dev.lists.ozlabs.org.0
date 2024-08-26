@@ -1,94 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-541-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-542-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4766D95F507
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 17:28:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA5895F510
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 17:29:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wsvhg1rswz2yDr;
-	Tue, 27 Aug 2024 01:28:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wsvjc2HY4z2yGL;
+	Tue, 27 Aug 2024 01:29:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724686115;
-	cv=none; b=l2r5vJbk8nDlMILn0KXMx7d9YihBrSSh/vcbkt1/keoABo++jZmEIdNMO80+yyxOYp5K+lFJIHkDQ5ex7NzZEkOE9ayp1wJsFu4FDWd2dOU0mN40a1/csBTXUpijvNQ8t8SJd3D45+wPYPcDbKouctOq3vzDtOKxkIFXrocg/sMaTjBd60/r132rjz2Etta64IWJK+iCCRMQZcMYzEmhtqfNyBNThwT2sxwCwOaWBMjO0l6oGRiJ+zT92jJPHMz23naHYfPY9W9roO4KLqjhWjpKqNITSZ4nrJOFXF0n1ZvZfXLG1A6tZhky6IVvhDMxbAJL7rDeeSD7L00F2LJrSA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724686164;
+	cv=none; b=OwKx+7m/DkdIsk34hwuWlWjm175e5e88Dj2IMdj/9fZeEZBnn463rsNTvVdzuKk4L1wDAUB6nSl5vl8l5puDRr/MqmYuTmWoaJOvakQ6dOfa6w1Faq0kaoftpAbRccugftOwyztRSAVC15sqoaoFgjF7/WBANyg4W6d9p0/lWAVXurq0lK2yoU1aGVxNExhjwpsWUp80wJFlRIlgR4ceOdOvJcfmZgfNeefGn92jYqv6MPU7nHa6r91ULx56mLWRaUFOLTn6LQJKfHz/mSxj8sdHaTcnsYJLV+VhYtqLvrm7bDc58iPxrgWPpH+D7T/rIuqD+FqVQ71K9gCT47twhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724686115; c=relaxed/relaxed;
-	bh=/0/D/mqx8S/GSlZdjVOSgTAjgr7RwUJb4ayF8dILTNw=;
+	t=1724686164; c=relaxed/relaxed;
+	bh=3yeyrur9JchRS4G+E40jDxueZEFy5Y+L0lctOP/TD28=;
 	h=DKIM-Signature:DKIM-Signature:Received:X-MC-Unique:Received:
 	 X-Google-DKIM-Signature:X-Forwarded-Encrypted:X-Gm-Message-State:
 	 X-Received:X-Google-Smtp-Source:X-Received:Received:Message-ID:
 	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
 	 Autocrypt:Organization:In-Reply-To:X-Mimecast-Spam-Score:
 	 X-Mimecast-Originator:Content-Language:Content-Type:
-	 Content-Transfer-Encoding; b=FiiLBC+TCJbvb31Y/HSCapHneeYsbX75Rc4HQnIW4QIGD9SJ+O6Z4QsiFyTB2OqDqIuehGdS/PQYsA3YwBGp3rH2r+w0bPRMty7v4+BH9jThLVQprhdGS+qOiSbk3C4YmTmXt4JuQli6XE+ecphpLeAmoKEnyzxViqYhIUrvm+IVLWZXwh8Ln3tP9fYRIcXnavH5cMuKzCaK/hrNV+vYF+9rK5YxJ5SIcMokshFQBT5GZEd79u2Hm8IUevcRq1wraaakDgBhsJAcRmiLYykoeZsIABf5tvdfmITHAGw9mDbhb+AoBUR5khaug3toD77q2fK1gtVdUBdEjiKVER1Lmg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VwkRvTp+; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VwkRvTp+; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 Content-Transfer-Encoding; b=a8/ns9qc2DtD0lMNveWwg0drcsPHgAfHW1MEHeNyn03R9RISinF3ACxpjMg1zsh6FXpjUSHbp74rBWr3oGPFTT5FLMjz2f5sbHZ8hnc4ezrMuY1bUtdwnXZ0nFfE3xcuKaARjwlXuX57KWVxjsIoX3FVZVwaQ3RgXRdlZkNtkw5l4ZUKLqdrqbzkbW+ZLHHWwvIGzln2TLPeXb8Had7Yr8wuKwXryk1ADLVLD89Dk5iDGwekLQTZXbFILrQ1JwfB+EdvrzXjUvpQnOsebmEzx97SsT+/bMjTq0zf9JFzswNjJSVtrcVeieKSd+mdx0ZJZVNenA/gGhIoUU8k2Ra28Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T6uNE0H2; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T6uNE0H2; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VwkRvTp+;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VwkRvTp+;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T6uNE0H2;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T6uNE0H2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wsvhf5SNVz2xxw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:28:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wsvjb5q3Gz2y7M
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:29:23 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724686111;
+	s=mimecast20190719; t=1724686160;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/0/D/mqx8S/GSlZdjVOSgTAjgr7RwUJb4ayF8dILTNw=;
-	b=VwkRvTp+t6Q9CD4JlaY3urzV8meUhd4UWQM0+Bo52FnFLyCgMUgqxfvx6Vc5f9oGwLA8x1
-	f12HLy2mEPSEizdamglXKfhUmR+Ly2JJ+3k/4dxSoCnEPcxYlw2zkz5KPOwFatXjZWLuhn
-	nHCfZYlFJywbsSWpInIInIF68UgqCnc=
+	bh=3yeyrur9JchRS4G+E40jDxueZEFy5Y+L0lctOP/TD28=;
+	b=T6uNE0H2b73nUt+9mquqlvkTBEcTvp2yUThG2CFOkmpNTv4BXyVAE6gkpCOUWFJKqsW0Kf
+	GySUTHll+qmx3eeJWconIr2GUwMpchux7RHf/aUGyDGpMZFK/0S2f6fy4HDxU7Ibtm8n2U
+	HWkAManNw8dK3z/ZmjxeL9avIPfFgjQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724686111;
+	s=mimecast20190719; t=1724686160;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/0/D/mqx8S/GSlZdjVOSgTAjgr7RwUJb4ayF8dILTNw=;
-	b=VwkRvTp+t6Q9CD4JlaY3urzV8meUhd4UWQM0+Bo52FnFLyCgMUgqxfvx6Vc5f9oGwLA8x1
-	f12HLy2mEPSEizdamglXKfhUmR+Ly2JJ+3k/4dxSoCnEPcxYlw2zkz5KPOwFatXjZWLuhn
-	nHCfZYlFJywbsSWpInIInIF68UgqCnc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3yeyrur9JchRS4G+E40jDxueZEFy5Y+L0lctOP/TD28=;
+	b=T6uNE0H2b73nUt+9mquqlvkTBEcTvp2yUThG2CFOkmpNTv4BXyVAE6gkpCOUWFJKqsW0Kf
+	GySUTHll+qmx3eeJWconIr2GUwMpchux7RHf/aUGyDGpMZFK/0S2f6fy4HDxU7Ibtm8n2U
+	HWkAManNw8dK3z/ZmjxeL9avIPfFgjQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-oPYVob1lOOmX2KNKf-1vPw-1; Mon, 26 Aug 2024 11:28:30 -0400
-X-MC-Unique: oPYVob1lOOmX2KNKf-1vPw-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-367990b4beeso2293481f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 08:28:29 -0700 (PDT)
+ us-mta-656-sIerJX8TMpGu2EoPc6gj2Q-1; Mon, 26 Aug 2024 11:29:18 -0400
+X-MC-Unique: sIerJX8TMpGu2EoPc6gj2Q-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4280b119a74so38051905e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 08:29:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724686109; x=1725290909;
+        d=1e100.net; s=20230601; t=1724686158; x=1725290958;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=/0/D/mqx8S/GSlZdjVOSgTAjgr7RwUJb4ayF8dILTNw=;
-        b=M4wVDU+dfzusAXxjiZpZ0HA79evbhkL2SvylqDMdJ/FiXp1bUd2S0kK+WF5YO3a8tv
-         UqSC8BEt16tGWNAd7B2N0rs7R3rVX6rm9A6itMeITiy5GsouT0YOh8+cUviPbj08fEgR
-         HJFkmDWIZFPpeHDMqsvu/WzL3K0IBvvxO3p8FeFurJJTvMl90unOySqEdMNB4oMK2jbW
-         hzM54RDinfT/bLRndE54vL2yrLDa0kxqcbTAw8BtuXz/NlMC1pMEdAjXRcZIohi5ae7L
-         15o/j2BYWhGD2gMC4+R/IRdohFUlVeFYepYMe+t/o+BM7deCSJ2NM9A73R6ZMu2OsDr7
-         +ydA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnLFmfZ3oRKWiY9xuxnaLPAkNV7bs3Xc5+LbrLzyv7A8wph6yidZv4Infw0PagV81aLcFpSdk9lRacAB4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw5wEBIm8J+mZeKhZvF15dM4oIRQNEPf+aP4LYUC76BQVsVTcHJ
-	ujNpo3IzBlANpIW0xReGcAr+G1QvcO66fKQDpV8rebrbUR+dxAkX/l++kIyRKrcXhM6lYj3/cWW
-	WqLg3Hx6S9mhQFgDjRm8xP7CICg6HFF0pO66/SKAlbQqbMbs/CEjCbI7vNQHOAsc=
-X-Received: by 2002:adf:e512:0:b0:371:8682:467e with SMTP id ffacd0b85a97d-373118d0bd7mr6501069f8f.46.1724686108900;
-        Mon, 26 Aug 2024 08:28:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGuJF3qiUb+lUyCxaaobbsWcSjJJvrd35TRHfa7m+0xI9NSwN4+kDr5E4Gf+YbVT31YWsDeqw==
-X-Received: by 2002:adf:e512:0:b0:371:8682:467e with SMTP id ffacd0b85a97d-373118d0bd7mr6501036f8f.46.1724686108008;
-        Mon, 26 Aug 2024 08:28:28 -0700 (PDT)
+        bh=3yeyrur9JchRS4G+E40jDxueZEFy5Y+L0lctOP/TD28=;
+        b=nMTCbAtvQlK7lZYCfMgHCR7olbjtumiMMJkjlx/KLmpRqZIkot11z0dY1TdPVqUW0g
+         dHO51wDnvkNL3ocm6/2U/PUv2iR81KXymbvLR/oCh4HP4wDCiMBIv2dNnBZ2gYwomT8A
+         qMBmZPJM0M9CpBwpN256kWvjk6kHR2SMbE4flOzECu/3gi5+9PvSwDyeBDtefVhBRhaR
+         Hd0ArTiIGWT7C36HrBaKJpCM19Yvtuho1Mf5Loc3nzbKgSG2NLf+tXt1gWrOMbxGHubS
+         gEILJrCTYmAauAAEfKxHC7n9RSaj7Pp/Jb6yyNkiKPX6R2g+dxUGvR9GKUR934Umj5ol
+         GZrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSvw1Ti68Q9shJGkDa35zzK2rLsfLzyqjtpkZixQoLUU6zu8jYiRhBH0r2vG09+lwTmV3Zms8pLpj1Fnw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxbMgyCyhAyfLpuFPp+t1yBT8+Xpjbd+wpsoPTmoeA3t7GWK5aR
+	lduDHjeg8k803GaSbtE6kzZoTjV1jMFdRIn7t505kDIXxjL7c0lNYtyZseH77DLr4D2OURWd45I
+	ltzN5agQ909+KrzJnipipdkSpX3xTfidWswXCW7yL1KLn/qiccAPSrk5kyAtKDsI=
+X-Received: by 2002:a05:600c:5008:b0:426:6326:4cec with SMTP id 5b1f17b1804b1-42acd5d9eb4mr79002655e9.29.1724686157679;
+        Mon, 26 Aug 2024 08:29:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHTKCP0p2qioREnhkg5F6czIUKGVk/jVDXVVBB+cR6pmwpQ5yr8ooT3Ysi1Ih5xbzSoM5g55w==
+X-Received: by 2002:a05:600c:5008:b0:426:6326:4cec with SMTP id 5b1f17b1804b1-42acd5d9eb4mr79002145e9.29.1724686156681;
+        Mon, 26 Aug 2024 08:29:16 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c737:1900:16b0:8dc:77e:31af? (p200300cbc737190016b008dc077e31af.dip0.t-ipconnect.de. [2003:cb:c737:1900:16b0:8dc:77e:31af])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abed8b6a8sm197305465e9.2.2024.08.26.08.28.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abef81a5esm192721155e9.28.2024.08.26.08.29.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Aug 2024 08:28:27 -0700 (PDT)
-Message-ID: <0cc7b49c-8e6a-459a-8541-eea6d15f8e5b@redhat.com>
-Date: Mon, 26 Aug 2024 17:28:25 +0200
+        Mon, 26 Aug 2024 08:29:15 -0700 (PDT)
+Message-ID: <2f7ce228-0b7d-4b59-82b0-5d14e884bba5@redhat.com>
+Date: Mon, 26 Aug 2024 17:29:14 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,8 +99,8 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/14] powerpc: assert_pte_locked() use
- pte_offset_map_ro_nolock()
+Subject: Re: [PATCH v2 04/14] mm: filemap: filemap_fault_recheck_pte_none()
+ use pte_offset_map_ro_nolock()
 To: Qi Zheng <zhengqi.arch@bytedance.com>, hughd@google.com,
  willy@infradead.org, muchun.song@linux.dev, vbabka@kernel.org,
  akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
@@ -108,7 +108,7 @@ To: Qi Zheng <zhengqi.arch@bytedance.com>, hughd@google.com,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 References: <cover.1724310149.git.zhengqi.arch@bytedance.com>
- <89ae94f722996b4ee7ef20d44cd7f5e2f0495c47.1724310149.git.zhengqi.arch@bytedance.com>
+ <d5d4744c87c759a53b5e115a0d59326232696f61.1724310149.git.zhengqi.arch@bytedance.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -155,7 +155,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <89ae94f722996b4ee7ef20d44cd7f5e2f0495c47.1724310149.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <d5d4744c87c759a53b5e115a0d59326232696f61.1724310149.git.zhengqi.arch@bytedance.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -163,27 +163,29 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 22.08.24 09:13, Qi Zheng wrote:
-> In assert_pte_locked(), we just get the ptl and assert if it was already
-> held, so convert it to using pte_offset_map_ro_nolock().
+> In filemap_fault_recheck_pte_none(), we just do pte_none() check, so
+> convert it to using pte_offset_map_ro_nolock().
 > 
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > ---
->   arch/powerpc/mm/pgtable.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   mm/filemap.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-> index 7316396e452d8..61df5aed79894 100644
-> --- a/arch/powerpc/mm/pgtable.c
-> +++ b/arch/powerpc/mm/pgtable.c
-> @@ -398,7 +398,7 @@ void assert_pte_locked(struct mm_struct *mm, unsigned long addr)
->   	 */
->   	if (pmd_none(*pmd))
->   		return;
-> -	pte = pte_offset_map_nolock(mm, pmd, addr, &ptl);
-> +	pte = pte_offset_map_ro_nolock(mm, pmd, addr, &ptl);
->   	BUG_ON(!pte);
->   	assert_spin_locked(ptl);
->   	pte_unmap(pte);
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 0f13126b43b08..c98da9af6b9bd 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3234,8 +3234,8 @@ static vm_fault_t filemap_fault_recheck_pte_none(struct vm_fault *vmf)
+>   	if (!(vmf->flags & FAULT_FLAG_ORIG_PTE_VALID))
+>   		return 0;
+>   
+> -	ptep = pte_offset_map_nolock(vma->vm_mm, vmf->pmd, vmf->address,
+> -				     &vmf->ptl);
+> +	ptep = pte_offset_map_ro_nolock(vma->vm_mm, vmf->pmd, vmf->address,
+> +					&vmf->ptl);
+>   	if (unlikely(!ptep))
+>   		return VM_FAULT_NOPAGE;
+>   
 
 Acked-by: David Hildenbrand <david@redhat.com>
 
