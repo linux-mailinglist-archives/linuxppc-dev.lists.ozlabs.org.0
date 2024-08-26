@@ -1,185 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-552-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-553-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D55195FBF3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 23:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A445E95FBFB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 23:46:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wt43j2lfqz2yDM;
-	Tue, 27 Aug 2024 07:45:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wt44v47mtz2yDY;
+	Tue, 27 Aug 2024 07:46:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2418::62e" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724696273;
-	cv=pass; b=YNSo+rMPqAdq9Bs2kHIbrn1amVg/Nf2d1+RKYi/lfLPhtkPflMD3p9Vt6VGNruqCrBzYg605DyASidktRDkOZ5lMLqSBiuSv5HCUWQEMIo0lXIA2n6MKVSOhDKVhnmmuoGAMzi/v7xhFLxih3jAvy3uumqp6PxNz82l/VTHU3l2x0GB3gpVmCAfBY6QGS8rQyAN04SRe312eXWcHWlkfrn5i+YVnVU5yitJ1eeV97dB63pdBxV6qI+WdeizNN2FYmieGraoQREmpb5Ql66MnaPxTcHdsm7KgEmE11ZPDxqjNRNArtHQK+VVkLeAMy4DwBTF8cTbIWW6m7A6t/jhZ/w==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724696273; c=relaxed/relaxed;
-	bh=VM8HSFmdHRw+Kj/DB+BjLklFurgWXdhNeGXSyXH/nTw=;
-	h=ARC-Message-Signature:ARC-Authentication-Results:DKIM-Signature:
-	 Received:Received:From:To:CC:Subject:Thread-Topic:Thread-Index:
-	 Date:Message-ID:Accept-Language:Content-Language:X-MS-Has-Attach:
-	 X-MS-TNEF-Correlator:x-ms-publictraffictype:
-	 x-ms-traffictypediagnostic:x-ms-office365-filtering-correlation-id:
-	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
-	 x-microsoft-antispam:x-microsoft-antispam-message-info:
-	 x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:MIME-Version:
-	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jgxrlTkn; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2418::62e; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=bfaccini@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=210.118.77.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724700940;
+	cv=none; b=k4m4PiyjmB4FPSbdJ8QtiREChg4qvwr0uahbw/vYuVluQFBALojOCu5jPSwIXTVh4B+WopguzibJY8e1wcmy6pajgDcyVYOoq1wDoxfeFFPpM96t9GOXvsD4b6q2PsQHKC5zk0ToqUo+Bh3bz8Qhh5iifraZG95Xug9+BU5mSqVzpGgnBXz31bNMrqnHgAqWLsV/d0UerIShK6wV7c8DpVYU5dMue+0zOw+dlwcgGouI2MKtAomLPn4fCEeq+5hI175Jp9xHBvw2VUtAyUNvqklhO7Ln1OXq650OieuQowAZrNid8QhRpYDUMZLVAoROVZlgSxcgB2RbC2jbAwkoBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1724700940; c=relaxed/relaxed;
+	bh=ZX+wrqfx1bzDDtL6WbN39xilUXlPHJNgSjW3OMn0Guo=;
+	h=X-Greylist:Received:DKIM-Filter:DKIM-Signature:Received:Received:
+	 Received:Received:X-AuditID:Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:Content-Language:From:
+	 In-Reply-To:Content-Transfer-Encoding:X-Brightmail-Tracker:
+	 X-Brightmail-Tracker:X-CMS-MailID:X-Msg-Generator:Content-Type:
+	 X-RootMTR:X-EPHeader:CMS-TYPE:X-CMS-RootMailID:References; b=LNiZz0sW2lxR2TPgol6hrRehzhROy01EAc3FZokzoTM2K4KWtFcCYKR33Eg6dAdmI421CS06Lw3eRJ50T9L4Fl7xLn1ZuhGnlHwL1JgGwxfIGmf1cS/PpJAeVEc9Tir1p7ksesA5P6PHGJ0YHs3pWcSiKi2CsjAAlWKwPL+JC+TWYkqzZ6M+DgmXGX+TF+23aMLCjhYqs20wiua8PRJLO9DQaI8uxT8VYGWyHXk6yX8q9fJNDuWHTh8j+DETxylKlOfE37TBQsIWdtizp319QYoxhjSVHZESJvV2w2xVpxsUF53fv5YXeMMLNhWrQtAms27WihLSPT/zQ+pCi96IuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com; dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=th6AuyQW; dkim-atps=neutral; spf=pass (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org) smtp.mailfrom=samsung.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jgxrlTkn;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=th6AuyQW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2418::62e; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=bfaccini@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2062e.outbound.protection.outlook.com [IPv6:2a01:111:f403:2418::62e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 410 seconds by postgrey-1.37 at boromir; Tue, 27 Aug 2024 05:35:38 AEST
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WszS04qFXz2yDj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 04:17:50 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rEySrexGko8YVVzC6WCTldB5xgQLS14M7MYpAjU5k8ngBCeN1DTExL7WiMAcJR/d2vXrcsK5E+szvr47zYXytv7x9zIOJB0mCYGAHJNK+DoUQYugUwiDPrGmyH9c9Ntu6J7NRIGCLHEhHccKMVP08fY17B37LrkN4mxpI7NJwsRLeJ0xHM0noc2CPDnRcBWow3vttMf31O2vfbtOyHIm1nGtTgoCk5oQgv3YwzkGj0T87LAEjlfCiqtDwGrcPDQczmxHyH2/ZsOytffc9e1zTL4JCBNGLRGvCtxPXllBLd3LaCcdQWSqu5Ib7KT1/kJcjYgEb6KPZK0O1M7nXP+btw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VM8HSFmdHRw+Kj/DB+BjLklFurgWXdhNeGXSyXH/nTw=;
- b=tCsnzaxXmsm++zRfrEYq4r/MR07TLDkVUz68vkn3plYtQ0S9PReQxop+JJ2MPptuYBCYYWkMXuKhkxylRh3xZsw02yXrsWaP4jFXwVBi15TPWl2TWy7rY1CKGb7yry/qn35WTPQZr3YyKSWhCiy88leFDqj7iP8k9WeqTObJVpKLWG1G6xKJHUcfGKK7CjQYV4e/n1evbK2P9uFpoWouKxxCpQopPCLcw4J/2zkLVMmeYMKqqJVhEm+6mBkSOMrdLAF3k4mBcAv4R2pKVi75c0pTAsDGKz0aDQG800nGcNIvU5RLCjjlz72FMcH4kOtk0HGgiOXknr3mqop+JSXUsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VM8HSFmdHRw+Kj/DB+BjLklFurgWXdhNeGXSyXH/nTw=;
- b=jgxrlTknuTGzV28VUbbIWTaUTjGAIAXOQQgJm8I3lwe2+ZkyD14iF3pKUyewH84HbkIhdbQX3zEwlEeiZrtp8ZLLjaPcRZ33+X212fczN1+JeSl7nmVmMCuxoMbggH6Q+b02io4SraH5fjWMoJamDNWUJFf4s/sO3K7Hgd9mD8LUVgJvJBr7SCpxvY9KqjnYp+/PnPh8CFofvxTAJU4b6DgVCXiZJtDr6j9qAtQ3Vj3iGlifJ6gydzhzQ9y1Co1ZvMW7dT5jS0TlMXJTaXR00YRJ69nIh/mOO4pyKvVwHpVUVHanmINpXHAqSMCtt40GfZf3B3PHdb6QPM7wg/3blQ==
-Received: from MW4PR12MB7261.namprd12.prod.outlook.com (2603:10b6:303:229::22)
- by LV8PR12MB9272.namprd12.prod.outlook.com (2603:10b6:408:201::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.24; Mon, 26 Aug
- 2024 18:17:28 +0000
-Received: from MW4PR12MB7261.namprd12.prod.outlook.com
- ([fe80::d231:4655:2e3d:af1b]) by MW4PR12MB7261.namprd12.prod.outlook.com
- ([fe80::d231:4655:2e3d:af1b%3]) with mapi id 15.20.7897.021; Mon, 26 Aug 2024
- 18:17:28 +0000
-From: Bruno Faccini <bfaccini@nvidia.com>
-To: Mike Rapoport <rppt@kernel.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Alexander
- Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
-	Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams
-	<dan.j.williams@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, David
- Hildenbrand <david@redhat.com>, "David S. Miller" <davem@davemloft.net>,
-	Davidlohr Bueso <dave@stgolabs.net>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Heiko Carstens <hca@linux.ibm.com>, Huacai Chen
-	<chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, Jiaxun Yang
-	<jiaxun.yang@flygoat.com>, John Paul Adrian Glaubitz
-	<glaubitz@physik.fu-berlin.de>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Jonathan Corbet <corbet@lwn.net>, Michael
- Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt <palmer@dabbelt.com>, "Rafael
- J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>, Samuel
- Holland <samuel.holland@sifive.com>, Thomas Bogendoerfer
-	<tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, Vasily
- Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-mips@vger.kernel.org"
-	<linux-mips@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-	"nvdimm@lists.linux.dev" <nvdimm@lists.linux.dev>,
-	"sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "x86@kernel.org"
-	<x86@kernel.org>, Zi Yan <ziy@nvidia.com>, Bruno Faccini
-	<bfaccini@nvidia.com>
-Subject: Re: [PATCH v4 24/26] arch_numa: switch over to numa_memblks
-Thread-Topic: [PATCH v4 24/26] arch_numa: switch over to numa_memblks
-Thread-Index: AQHa9+PnbbKOeq9MZUCqeSdNNiH7eQ==
-Date: Mon, 26 Aug 2024 18:17:22 +0000
-Message-ID:
- <MW4PR12MB72616723E1A090E315681FF6A38B2@MW4PR12MB7261.namprd12.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-GB
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR12MB7261:EE_|LV8PR12MB9272:EE_
-x-ms-office365-filtering-correlation-id: 0a953250-4b78-45a2-5f4c-08dcc5fb57fd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?WCCi6zb54X3YnWFFAst3EJov2lI7PgFVtNaPzBbWHbwWMQJC3DPzPyE4lxrf?=
- =?us-ascii?Q?IdYw0PJULtH9/7uzeydseXWsQS0/KK1R6YY9lHwaKu1suAvJhVojMYrSA/54?=
- =?us-ascii?Q?ZduqS0xqQSlEsYdRdjwdrGpDU2ppWwjoXpXbtfDgWrDDSOltFyvqdd4tt3MP?=
- =?us-ascii?Q?upExSbsI+a57Yw6XvCuUBGgooZKSytgbEB3gjeTpIcVx9lbv4uyPZ/NMn/v1?=
- =?us-ascii?Q?1FFjoaMBzLxVS5ij1U1tuZF9d8CFSNmzqTtkSZz8iDLXLLmp/ShyBRhnYGXE?=
- =?us-ascii?Q?WtH2HnPQb7FKxZi+KVUVyGWg2eEH+JZ3F2L4oqgZb7RbshOcsO7ddeD6rgIS?=
- =?us-ascii?Q?XkZ8PdcOb8TAvEmAOBJNGi4H80TxPfTzcpVE+iozn+czdJZjqLpomCcL+iei?=
- =?us-ascii?Q?8rQOE4lHf6Ql9dgkYUZ0N6UTpLhCXTRsjvW+ms7EDeZ3hOXIWr7Qi263ooKJ?=
- =?us-ascii?Q?iQWZhXUVXjGhGkMejrRedkBh7sO6kKpQ99k3mKlJlFztYP7hc1uumrv4WUQz?=
- =?us-ascii?Q?jfCAtw+6xelopJ9hihYq9qthWC198bbryyZF0X0cEYUmC+dL1JYAYrZ+8Go9?=
- =?us-ascii?Q?U1nqiSq7Y/MTJuvi9ncODNMwSGVvfTuy+zp3LUrECPLoM0Mmyti9ouyR34Lh?=
- =?us-ascii?Q?w6we/wPp79hcb8cc6VfUGW4D4Xff9PVI1+8Tu4XKMJURlfzMeZZelI2JzvNY?=
- =?us-ascii?Q?+Pg+GbFXRDmGYlt7Lqytswku7bTVaAIvabGpBi8dI3z1KLFv5gDY4Nye8zp8?=
- =?us-ascii?Q?o9P7+u99sr9pEhTysOa0Rof9Nl2AuvMNpnFZRSxKT9IE6Qk3HgyJqiO2n0Ox?=
- =?us-ascii?Q?pqmM7TQbCWnTQtPLssw2rbQxnX74tjO2Yt2a12aLnJW+gmRzxssGKVptK0GI?=
- =?us-ascii?Q?C+Xj7Y+hYzokGV+pijQ7GNqBVaRgUR36J2XBIgCQ7nSoNvZXNdZ66QZ5kBap?=
- =?us-ascii?Q?Gvc1eC0R7rKbBbo8SZRYL/9MWdg6MK6maph+c9WJvq2K966bdchetf4Ntf7o?=
- =?us-ascii?Q?hw7LBAyaT8SoXiM9HqKJpmeQld28ZOdx+3jl+pmUdy4BKQLv23t15QylzNkv?=
- =?us-ascii?Q?S5h61DGzJJxSAh8D95s0u9DBuImXllY3fZ6Tq5KWdbCEeXsWbI0iM0ol43h5?=
- =?us-ascii?Q?dUiPoOkF5pLbojn/0S165mu+VxVkan7+m+HyOlzeTYBw2qDDQkRfIW69JmvR?=
- =?us-ascii?Q?G8zwE2mE5BsFbogFpr/PTADAZFaLALmVmCrsQJGrSrkFJYkcIePLsHBsJC2h?=
- =?us-ascii?Q?wYyY9yJDO7l11WykzM/FQQBJNydIvy37ex9bj+zi7ew0zfY+OTBaaiq2vlBy?=
- =?us-ascii?Q?Cw8c6hNPPRFNVuXCxPWMCwF/FZmXTqa/Sf22/S1YfGOzHY91CBNzxE1oJGbR?=
- =?us-ascii?Q?ba5Fk579pns/2310LrjA7PsEJzX1o1Zw/K0q74//ZJp6mMMnZQ=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB7261.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Y2+GQAowM/iaIDHLHb9dWAAoOrSMJzqkOGTCLBs3AObEdDG0VN1uUET0+1ug?=
- =?us-ascii?Q?6q27pKnkrCt8BQog4LX/1ziXooDNUss1hIiiJVRC50Jv8E16EUxAiOYhOrM8?=
- =?us-ascii?Q?/eEJ8V24UeJbRsmWhrA9UgGJu6fhFnaopWaP4R3+T/Uapl/CVMhkcy3zAC2u?=
- =?us-ascii?Q?LePMGJG+QwaT3con+8GyT3ilQLMyD5/yy7jg+mFjXmadJca5mQlK+r3RXJEh?=
- =?us-ascii?Q?AZpt34T3iEMDSDsnt8ODjLf3NkPGvopGs8zgnpU8hdmTBXOcwYshy23LHF44?=
- =?us-ascii?Q?0MFmF+CoXrewji6mlPC74qEzOC9lUJZ5fVDR8l+Gc2j+LB27wiQ3zJopUO4v?=
- =?us-ascii?Q?Q0FiWS5kHCQv5lKhiFTdv2h72R28S8MLHQhC6fSwSGHzZLBHaJfcfrZ/9QfN?=
- =?us-ascii?Q?tIgdmJZDnKmgT4CxhKMcbBVMsLAoaF9SRgstT0w9TA2Exf6fye+oQ9mDYcw3?=
- =?us-ascii?Q?jyOtEjSJxgDXIFvtIDj9ftLUjgZTYEzZaTksZJrdbDVYITUkRHtNpujGJ+iQ?=
- =?us-ascii?Q?eBQUI3X1sfYra5HEN9qVa1IaoIVVuHK+/I8WIKlbPoF1cDuqiwuzBPGB8eX3?=
- =?us-ascii?Q?rrr0iiG/wfprxLcogXlOIIiKe0l+bPtfZq6KcSfoSfNIc1ciPEYBWQhtVtYJ?=
- =?us-ascii?Q?KfwuaCmjzLB+dJExRJ9RFqrvfu6pM2dmxsYLxz5RQ05rBnK1jRFn/U/jqTHm?=
- =?us-ascii?Q?pIrog2EVSQz2qe2G1gwhSKIGpQo3rJP6p1/h7pYKQQUzx8MTMKvcp/PR5Rlu?=
- =?us-ascii?Q?dX19FeGV0pENh2XXuIvJPhPGOt2Lc4YrqNSpTdSmCJerx7c0gGRJ5AKnEqYD?=
- =?us-ascii?Q?21kihEmceNXgo2TQXJl/7+pLYc9ijejdEmcqLEcq9d14eWnZ/GbFfpRwiKAt?=
- =?us-ascii?Q?cjF8erSSuRnYrychKXcMD+rmK00DpmmKDvfrBl/b9Bwm6CcaO2tqpZqdMgHR?=
- =?us-ascii?Q?v0YfTaBLKcF8LH4qc1hx7L9xmLdTC88pifUyUscDuQxJS2PkY/af8T3buCAO?=
- =?us-ascii?Q?qKbdF4YeEQ1eB/KB+lZSV/ij3Ht6C07FvciUYxnV447mqx3gjTmuHexKMY8J?=
- =?us-ascii?Q?sadflXHBtC6xfXfu1hogdihdyoRQKiLFQDGL9peqvvH0Xd2+H/eONc363G0Z?=
- =?us-ascii?Q?M/XxDJQWPoW6KfjFdWrTw3T4lYt5ZcBjoRZUToMzQgKrszExAlF0lkeifkNN?=
- =?us-ascii?Q?V4RR/59eZXY+dWCUaUlygfYwxANQw4LpCnKT6QXbp+UnaqZzOfaORhG1Hqkl?=
- =?us-ascii?Q?dMLRph/DMo2fUYIHXPMi+IpNFDnhiDjujoAl/C0DPkRoTXdGXDos5nMBpHgq?=
- =?us-ascii?Q?0p0E1E+v+/ZPV6Blsy9EsnzTok7wKXrgPDo+xqWGaUccEk54jco2r7R2QkwW?=
- =?us-ascii?Q?7fevh6qpGbx0hFkOU5koJNI9l5nqgvYhaXwqCT9uzD8woPm/f1LgznWJHggf?=
- =?us-ascii?Q?1Tffj4rXk7xqG0RqeJGdRdhkjSADzy226G+ZTHtjrBzakuYByTtKYbclu8tR?=
- =?us-ascii?Q?BhDoipaSES+WuUv4My5Lq4l98K/VdmHuBbpVldpHSuqB6cYMlv+o96VPhKf0?=
- =?us-ascii?Q?b9EtxnRZFLKVj6cbI6VFThkO4aHhqazo9m1yUxCX?=
-Content-Type: multipart/alternative;
-	boundary="_000_MW4PR12MB72616723E1A090E315681FF6A38B2MW4PR12MB7261namp_"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wt19k6hDVz2yHL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 05:35:37 +1000 (AEST)
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20240826192832euoutp010d51a7b5fbfccdeec0578d9e327b2514~vXfp3vkev3120831208euoutp01V
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 19:28:32 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20240826192832euoutp010d51a7b5fbfccdeec0578d9e327b2514~vXfp3vkev3120831208euoutp01V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1724700512;
+	bh=ZX+wrqfx1bzDDtL6WbN39xilUXlPHJNgSjW3OMn0Guo=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=th6AuyQWr1fYa7HUSk81KZKq4R2Z2MQf4ByQ6Ri5br/sYvWUrZYY2Sg9qVhdhw99b
+	 oR1KJ/Z0nh/E7wSfU4LJALmC9Z8oMjLUO4/rYpqCp+yeGdV/6tSzt5cxP5RjohQZLV
+	 ewQi7nDSh2ZH9nWaItgN6IfoP30P1E8Q1Y1yBWUo=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20240826192832eucas1p24e055ed94bde75c3e1c5a0d167e379da~vXfpfIxUq1201112011eucas1p21;
+	Mon, 26 Aug 2024 19:28:32 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+	eusmges2new.samsung.com (EUCPMTA) with SMTP id F3.4B.09875.F57DCC66; Mon, 26
+	Aug 2024 20:28:32 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20240826192831eucas1p1f2dcbd72c0096370e721d2e9e87dbace~vXfpCSEeu3001030010eucas1p13;
+	Mon, 26 Aug 2024 19:28:31 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240826192831eusmtrp19a19c57f4ef810d69982206730b58566~vXfpBnGk53088530885eusmtrp15;
+	Mon, 26 Aug 2024 19:28:31 +0000 (GMT)
+X-AuditID: cbfec7f4-11bff70000002693-95-66ccd75fb9d5
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id 08.8A.08810.F57DCC66; Mon, 26
+	Aug 2024 20:28:31 +0100 (BST)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20240826192830eusmtip2eca04abb977e7da2df11d0adc5016ea8~vXfn5OPwj0269802698eusmtip2I;
+	Mon, 26 Aug 2024 19:28:30 +0000 (GMT)
+Message-ID: <53d988b1-bdce-422a-ae4e-158f305ad703@samsung.com>
+Date: Mon, 26 Aug 2024 21:28:29 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -189,283 +77,347 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB7261.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a953250-4b78-45a2-5f4c-08dcc5fb57fd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2024 18:17:28.3296
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: P7Kf4GKF2/bAvxUeuwvm+Le8ngFSQMRIft+pDj3c8hDJhzCB3vVIWm0DubdhnoYEoJBTjVDaE/7i2s7T4+uwjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9272
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 RESED 1/2] dma: replace zone_dma_bits by
+ zone_dma_limit
+To: Baruch Siach <baruch@tkos.co.il>, Christoph Hellwig <hch@lst.de>,
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	=?UTF-8?B?UGV0ciBUZXNhxZnDrWs=?= <petr@tesarici.cz>, Ramon Fried
+	<ramon@neureality.ai>, Elad Nachman <enachman@marvell.com>,
+	linux-rockchip@lists.infradead.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <17c067618b93e5d71f19c37826d54db4299621a3.1723359916.git.baruch@tkos.co.il>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrDKsWRmVeSWpSXmKPExsWy7djP87oJ18+kGSw9ymix4tobFov3y3oY
+	LR4v2sZusXL1USaLX18sLDY9vsZqcXnXHDaLTw/+M1tMWNjMbPH7+z9Wi4VznrNa9L1cw2px
+	8MMTVouWO6YOfB5r5q1h9Ni0qpPNY/OSeo8Xm2cyepyfsZDRY/fNBjaPyQsvMnvM+vmPxWPv
+	3u2MHnMbbjF5fN4kF8AdxWWTkpqTWZZapG+XwJVx/PI99oKOiIp522azNjAe8ehi5OSQEDCR
+	WLd0KnMXIxeHkMAKRompLfPYIJwvjBJnd7WwQDifGSUenjjGCNOyd/cqJhBbSGA5o8TlHj+I
+	oo+MEvs6N7CBJHgF7CS+fNvAAmKzCKhKHPx+nBUiLihxcuYTsLiogLzE/Vsz2EFsYYEAiSnP
+	NoH1ighMYJT4vFQNZCizwAsmiZ1THoFtYxYQl7j1ZD6YzSZgKNH1tgusgVMgQuLF7U0sEDXy
+	Es1bZ4M9JCGwnVNi2qm7QA4HkOMi0XFNEOIDYYlXx7ewQ9gyEqcn97BA1LczSiz4fZ8JwgG6
+	ouH5LaifrSXunPvFBjKIWUBTYv0ufYiwo8TyuS+YIObzSdx4KwhxA5/EpG3TodbySnS0CUFU
+	q0nMOr4Obu3BC5eYJzAqzUIKlllIvpyF5JtZCHsXMLKsYhRPLS3OTU8tNspLLdcrTswtLs1L
+	10vOz93ECEyAp/8d/7KDcfmrj3qHGJk4GA8xSnAwK4nwyl0+mSbEm5JYWZValB9fVJqTWnyI
+	UZqDRUmcVzVFPlVIID2xJDU7NbUgtQgmy8TBKdXA1Hd48uVDd5vYv7VPjFApmiH68MrD5ReF
+	t/Nc9+lazmNXf6M9J2LnmvTzHHcmHNBPKWBezq/AYvNMSqbh8jt7IeX9vr9yUld7zD9yqM+L
+	pf3r22gjjlfZLDcXvVELujbrcJZGx5xWBX7HtqlLcx/EqYV/Yb/sOmO+cIOwodWdIzUPzj8r
+	OdDiyrfqSsprXY3SHzMvnXYrOFT3/Ldkf59q4OP5kc2PRVZa9XALsH+KuX1g1+5btmdnMBxk
+	tTQ25GR98P7itZ8Pu/YLRk9+w5ura2cg87Tt5tZHPqK/dig9CuR+IMjzWkfo6ZvSav+vbupv
+	7B0qVITW1Z/srJ3sXnT61vG4NY8S1TeHFa7/M2P1fyWW4oxEQy3mouJEAPIUsmXvAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrAIsWRmVeSWpSXmKPExsVy+t/xe7rx18+kGbxqlLVYce0Ni8X7ZT2M
+	Fo8XbWO3WLn6KJPFry8WFpseX2O1uLxrDpvFpwf/mS0mLGxmtvj9/R+rxcI5z1kt+l6uYbU4
+	+OEJq0XLHVMHPo8189Ywemxa1cnmsXlJvceLzTMZPc7PWMjosftmA5vH5IUXmT1m/fzH4rF3
+	73ZGj7kNt5g8Pm+SC+CO0rMpyi8tSVXIyC8usVWKNrQw0jO0tNAzMrHUMzQ2j7UyMlXSt7NJ
+	Sc3JLEst0rdL0Ms4fvkee0FHRMW8bbNZGxiPeHQxcnJICJhI7N29iqmLkYtDSGApo8SzaxOZ
+	IBIyEienNbBC2MISf651sUEUvWeU+D/zACNIglfATuLLtw0sIDaLgKrEwe/HWSHighInZz4B
+	i4sKyEvcvzWDHcQWFvCTuP92K9ggEYEJjBLLfv1nBkkwC7xgklh3pBxiwzVGiY+nO5kgEuIS
+	t57MB7PZBAwlut6CnMHJwSkQIfHi9iYWiBozia6tXYwQtrxE89bZzBMYhWYhOWQWklGzkLTM
+	QtKygJFlFaNIamlxbnpusaFecWJucWleul5yfu4mRmDUbzv2c/MOxnmvPuodYmTiYDzEKMHB
+	rCTCK3f5ZJoQb0piZVVqUX58UWlOavEhRlNgaExklhJNzgemnbySeEMzA1NDEzNLA1NLM2Ml
+	cV7Pgo5EIYH0xJLU7NTUgtQimD4mDk6pBqZjV9xe1gbmRV2omCS3NmAHi8SaxQdsm3emaRlL
+	JQjsOPvr6bnSHNXXHdMafjqHi0VPCnvmk+XQ/L7SdoOfenTxx1tfI/9vC7M4qLOybMltZ6b4
+	dkbj+ReqlESEtE0fVs37H9rb+eRQ3MqFbN5c7nLRSz5ou15eG3NKNmrlKZ/rn7yKuvh7uk6r
+	t+9RP8D+IFOTI7u7bTmL3YU9O7Tf7iv06kldI/R45/KGhkrfOKe7pSXvdNtWuWftucWj+7T1
+	+7rFUzJig7deO3hSIkvATvyNvZB4eI2WrrvVytvLv1RZ2r+asf14dYLdPtXJnTMtNJUiDt4/
+	eq66RWHN7uf9laf+5rWk7hTRdjze4MGYrMRSnJFoqMVcVJwIADS951qDAwAA
+X-CMS-MailID: 20240826192831eucas1p1f2dcbd72c0096370e721d2e9e87dbace
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20240811070951eucas1p1dc5315e0d710db13ce28fa0a977c7bc1
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240811070951eucas1p1dc5315e0d710db13ce28fa0a977c7bc1
+References: <cover.1723359916.git.baruch@tkos.co.il>
+	<CGME20240811070951eucas1p1dc5315e0d710db13ce28fa0a977c7bc1@eucas1p1.samsung.com>
+	<17c067618b93e5d71f19c37826d54db4299621a3.1723359916.git.baruch@tkos.co.il>
 
---_000_MW4PR12MB72616723E1A090E315681FF6A38B2MW4PR12MB7261namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Dear All,
 
-On 7 Aug 2024, at 2:41, Mike Rapoport wrote:
-
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org<mailto:rppt@kernel.org>>
-
-Until now arch_numa was directly translating firmware NUMA information
-to memblock.
-
-Using numa_memblks as an intermediate step has a few advantages:
-* alignment with more battle tested x86 implementation
-* availability of NUMA emulation
-* maintaining node information for not yet populated memory
-
-Adjust a few places in numa_memblks to compile with 32-bit phys_addr_t
-and replace current functionality related to numa_add_memblk() and
-__node_distance() in arch_numa with the implementation based on
-numa_memblks and add functions required by numa_emulation.
-
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org<mailto:rppt@kerne=
-l.org>>
-Tested-by: Zi Yan <ziy@nvidia.com<mailto:ziy@nvidia.com>> # for x86_64 and =
-arm64
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com<mailto:Jonathan.=
-Cameron@huawei.com>>
-Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com<mailto:Jonathan.Ca=
-meron@huawei.com>> [arm64 + CXL via QEMU]
-Acked-by: Dan Williams <dan.j.williams@intel.com<mailto:dan.j.williams@inte=
-l.com>>
-Acked-by: David Hildenbrand <david@redhat.com<mailto:david@redhat.com>>
----
-  drivers/base/Kconfig       |   1 +
-  drivers/base/arch_numa.c   | 201 +++++++++++--------------------------
-  include/asm-generic/numa.h |   6 +-
-  mm/numa_memblks.c          |  17 ++--
-  4 files changed, 75 insertions(+), 150 deletions(-)
-
-
-<snip>
-
-+
-+u64 __init numa_emu_dma_end(void)
-+{
-+             return PFN_PHYS(memblock_start_of_DRAM() + SZ_4G);
-+}
-+
-
-PFN_PHYS() translation is unnecessary here, as
-memblock_start_of_DRAM() + SZ_4G is already a
-memory size.
-
-This should fix it:
-
-diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
-index 8d49893c0e94..e18701676426 100644
---- a/drivers/base/arch_numa.c
-+++ b/drivers/base/arch_numa.c
-@@ -346,7 +346,7 @@ void __init numa_emu_update_cpu_to_node(int *emu_nid_to=
-_phys,
-
-u64 __init numa_emu_dma_end(void)
-{
--              return PFN_PHYS(memblock_start_of_DRAM() + SZ_4G);
-+             return memblock_start_of_DRAM() + SZ_4G;
-}
-
-void debug_cpumask_set_cpu(unsigned int cpu, int node, bool enable)
-
-
-
---_000_MW4PR12MB72616723E1A090E315681FF6A38B2MW4PR12MB7261namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
-hemas-microsoft-com:office:word" xmlns:m=3D"http://schemas.microsoft.com/of=
-fice/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+On 11.08.2024 09:09, Baruch Siach wrote:
+> From: Catalin Marinas <catalin.marinas@arm.com>
 >
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Aptos;
-	panose-1:2 11 0 4 2 2 2 2 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	font-size:11.0pt;
-	font-family:"Aptos",sans-serif;
-	mso-ligatures:standardcontextual;
-	mso-fareast-language:EN-US;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:#467886;
-	text-decoration:underline;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Aptos",sans-serif;
-	color:windowtext;}
-span.apple-tab-span
-	{mso-style-name:apple-tab-span;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-size:11.0pt;
-	mso-fareast-language:EN-US;}
-@page WordSection1
-	{size:612.0pt 792.0pt;
-	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
-div.WordSection1
-	{page:WordSection1;}
---></style>
-</head>
-<body lang=3D"en-FR" link=3D"#467886" vlink=3D"#96607D" style=3D"word-wrap:=
-break-word">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal"><span style=3D"color:black">On 7 Aug 2024, at 2:41, =
-Mike Rapoport wrote:<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">From: &quot;Mike Rapopor=
-t (Microsoft)&quot; &lt;<a href=3D"mailto:rppt@kernel.org" title=3D"mailto:=
-rppt@kernel.org"><span style=3D"color:#0086F0">rppt@kernel.org</span></a>&g=
-t;<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">Until now arch_numa was =
-directly translating firmware NUMA information<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">to memblock.<o:p></o:p><=
-/span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">Using numa_memblks as an=
- intermediate step has a few advantages:<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">* alignment with more ba=
-ttle tested x86 implementation<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">* availability of NUMA e=
-mulation<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">* maintaining node infor=
-mation for not yet populated memory<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">Adjust a few places in n=
-uma_memblks to compile with 32-bit phys_addr_t<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">and replace current func=
-tionality related to numa_add_memblk() and<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">__node_distance() in arc=
-h_numa with the implementation based on<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">numa_memblks and add fun=
-ctions required by numa_emulation.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">Signed-off-by: Mike Rapo=
-port (Microsoft) &lt;<a href=3D"mailto:rppt@kernel.org" title=3D"mailto:rpp=
-t@kernel.org"><span style=3D"color:#0086F0">rppt@kernel.org</span></a>&gt;<=
-o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">Tested-by: Zi Yan &lt;<a=
- href=3D"mailto:ziy@nvidia.com" title=3D"mailto:ziy@nvidia.com"><span style=
-=3D"color:#0086F0">ziy@nvidia.com</span></a>&gt; # for x86_64 and arm64<o:p=
-></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">Reviewed-by: Jonathan Ca=
-meron &lt;<a href=3D"mailto:Jonathan.Cameron@huawei.com" title=3D"mailto:Jo=
-nathan.Cameron@huawei.com"><span style=3D"color:#0086F0">Jonathan.Cameron@h=
-uawei.com</span></a>&gt;<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">Tested-by: Jonathan Came=
-ron &lt;<a href=3D"mailto:Jonathan.Cameron@huawei.com" title=3D"mailto:Jona=
-than.Cameron@huawei.com"><span style=3D"color:#0086F0">Jonathan.Cameron@hua=
-wei.com</span></a>&gt; [arm64 + CXL via QEMU]<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">Acked-by: Dan Williams &=
-lt;<a href=3D"mailto:dan.j.williams@intel.com" title=3D"mailto:dan.j.willia=
-ms@intel.com"><span style=3D"color:#0086F0">dan.j.williams@intel.com</span>=
-</a>&gt;<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">Acked-by: David Hildenbr=
-and &lt;<a href=3D"mailto:david@redhat.com" title=3D"mailto:david@redhat.co=
-m"><span style=3D"color:#0086F0">david@redhat.com</span></a>&gt;<o:p></o:p>=
-</span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">---<o:p></o:p></span></p=
+> Hardware DMA limit might not be power of 2. When RAM range starts above
+> 0, say 4GB, DMA limit of 30 bits should end at 5GB. A single high bit
+> can not encode this limit.
 >
-<p class=3D"MsoNormal"><span style=3D"color:black">&nbsp;&nbsp;drivers/base=
-/Kconfig&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; 1 +<o:p></o:p></=
-span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">&nbsp;&nbsp;drivers/base=
-/arch_numa.c&nbsp;&nbsp; | 201 +++++++++++--------------------------<o:p></=
-o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">&nbsp;&nbsp;include/asm-=
-generic/numa.h |&nbsp;&nbsp; 6 +-<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">&nbsp;&nbsp;mm/numa_memb=
-lks.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nb=
-sp;17 ++--<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">&nbsp;&nbsp;4 files chan=
-ged, 75 insertions(+), 150 deletions(-)<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">&lt;snip&gt;<o:p></o:p><=
-/span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">+<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">+u64 __init numa_emu_dma=
-_end(void)<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">+{<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">+<span class=3D"apple-ta=
-b-span">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;
-</span>return PFN_PHYS(memblock_start_of_DRAM() + SZ_4G);<o:p></o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">+}<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">+<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">PFN_PHYS() translation i=
-s unnecessary here, as<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">memblock_start_of_DRAM()=
- + SZ_4G is already a<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">memory size.<o:p></o:p><=
-/span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">This should fix it:<o:p>=
-</o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">diff --git a/drivers/bas=
-e/arch_numa.c b/drivers/base/arch_numa.c<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">index 8d49893c0e94..e187=
-01676426 100644<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">--- a/drivers/base/arch_=
-numa.c<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">+++ b/drivers/base/arch_=
-numa.c<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">@@ -346,7 +346,7 @@ void=
- __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,<o:p></o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">u64 __init numa_emu_dma_=
-end(void)<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">{<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">-<span class=3D"apple-ta=
-b-span">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp;
-</span>return PFN_PHYS(memblock_start_of_DRAM() + SZ_4G);<o:p></o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">+<span class=3D"apple-ta=
-b-span">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;
-</span>return memblock_start_of_DRAM() + SZ_4G;<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black">}<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"color:black"><o:p>&nbsp;</o:p></span>=
-</p>
-<p class=3D"MsoNormal"><span style=3D"color:black">void debug_cpumask_set_c=
-pu(unsigned int cpu, int node, bool enable)<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
-</div>
-</body>
-</html>
+> Use plain address for DMA zone limit.
+>
+> Since DMA zone can now potentially span beyond 4GB physical limit of
+> DMA32, make sure to use DMA zone for GFP_DMA32 allocations in that case.
+>
+> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> Co-developed-by: Baruch Siach <baruch@tkos.co.il>
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> ---
 
---_000_MW4PR12MB72616723E1A090E315681FF6A38B2MW4PR12MB7261namp_--
+This patch landed recently in linux-next as commit ba0fb44aed47 
+("dma-mapping: replace zone_dma_bits by zone_dma_limit"). During my 
+tests I found that it introduces the following warning on ARM64/Rockchip 
+based Odroid M1 board (arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts):
+
+------------[ cut here ]------------
+dwmmc_rockchip fe2b0000.mmc: swiotlb addr 0x00000001faf00000+4096 
+overflow (mask ffffffff, bus limit 0).
+WARNING: CPU: 3 PID: 1 at kernel/dma/swiotlb.c:1594 swiotlb_map+0x2f0/0x308
+Modules linked in:
+CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-rc4+ #15278
+Hardware name: Hardkernel ODROID-M1 (DT)
+pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : swiotlb_map+0x2f0/0x308
+lr : swiotlb_map+0x2f0/0x308
+...
+Call trace:
+  swiotlb_map+0x2f0/0x308
+  dma_direct_map_sg+0x9c/0x2e4
+  __dma_map_sg_attrs+0x28/0x94
+  dma_map_sg_attrs+0x10/0x24
+  dw_mci_pre_dma_transfer+0xb8/0xf4
+  dw_mci_pre_req+0x50/0x68
+  mmc_blk_mq_issue_rq+0x3e0/0x964
+  mmc_mq_queue_rq+0x118/0x2b4
+  blk_mq_dispatch_rq_list+0x21c/0x714
+  __blk_mq_sched_dispatch_requests+0x490/0x58c
+  blk_mq_sched_dispatch_requests+0x30/0x6c
+  blk_mq_run_hw_queue+0x284/0x40c
+  blk_mq_flush_plug_list.part.0+0x190/0x974
+  blk_mq_flush_plug_list+0x1c/0x2c
+  __blk_flush_plug+0xe4/0x140
+  blk_finish_plug+0x38/0x4c
+  __ext4_get_inode_loc+0x22c/0x654
+  __ext4_get_inode_loc_noinmem+0x40/0xa8
+  __ext4_iget+0x154/0xcc0
+  ext4_get_journal_inode+0x30/0x110
+  ext4_load_and_init_journal+0x9c/0xaf0
+  ext4_fill_super+0x1fec/0x2d90
+  get_tree_bdev+0x140/0x1d8
+  ext4_get_tree+0x18/0x24
+  vfs_get_tree+0x28/0xe8
+  path_mount+0x3e8/0xb7c
+  init_mount+0x68/0xac
+  do_mount_root+0x108/0x1dc
+  mount_root_generic+0x100/0x330
+  mount_root+0x160/0x2d0
+  initrd_load+0x1f0/0x2a0
+  prepare_namespace+0x4c/0x29c
+  kernel_init_freeable+0x4b4/0x50c
+  kernel_init+0x20/0x1d8
+  ret_from_fork+0x10/0x20
+irq event stamp: 1305682
+hardirqs last  enabled at (1305681): [<ffff8000800e332c>] 
+console_unlock+0x124/0x130
+hardirqs last disabled at (1305682): [<ffff80008124e684>] el1_dbg+0x24/0x8c
+softirqs last  enabled at (1305678): [<ffff80008005be1c>] 
+handle_softirqs+0x4cc/0x4e4
+softirqs last disabled at (1305665): [<ffff8000800105b0>] 
+__do_softirq+0x14/0x20
+---[ end trace 0000000000000000 ]---
+
+This "bus limit 0" seems to be a bit suspicious to me as well as the 
+fact that swiotlb is used for the MMC DMA. I will investigate this 
+further tomorrow. The board boots fine though.
+
+
+>   arch/arm64/mm/init.c       | 30 +++++++++++++++---------------
+>   arch/powerpc/mm/mem.c      |  5 ++++-
+>   arch/s390/mm/init.c        |  2 +-
+>   include/linux/dma-direct.h |  2 +-
+>   kernel/dma/direct.c        |  6 +++---
+>   kernel/dma/pool.c          |  4 ++--
+>   kernel/dma/swiotlb.c       |  6 +++---
+>   7 files changed, 29 insertions(+), 26 deletions(-)
+>
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 9b5ab6818f7f..c45e2152ca9e 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -115,35 +115,35 @@ static void __init arch_reserve_crashkernel(void)
+>   }
+>   
+>   /*
+> - * Return the maximum physical address for a zone accessible by the given bits
+> - * limit. If DRAM starts above 32-bit, expand the zone to the maximum
+> + * Return the maximum physical address for a zone given its limit.
+> + * If DRAM starts above 32-bit, expand the zone to the maximum
+>    * available memory, otherwise cap it at 32-bit.
+>    */
+> -static phys_addr_t __init max_zone_phys(unsigned int zone_bits)
+> +static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
+>   {
+> -	phys_addr_t zone_mask = DMA_BIT_MASK(zone_bits);
+>   	phys_addr_t phys_start = memblock_start_of_DRAM();
+>   
+>   	if (phys_start > U32_MAX)
+> -		zone_mask = PHYS_ADDR_MAX;
+> -	else if (phys_start > zone_mask)
+> -		zone_mask = U32_MAX;
+> +		zone_limit = PHYS_ADDR_MAX;
+> +	else if (phys_start > zone_limit)
+> +		zone_limit = U32_MAX;
+>   
+> -	return min(zone_mask, memblock_end_of_DRAM() - 1) + 1;
+> +	return min(zone_limit, memblock_end_of_DRAM() - 1) + 1;
+>   }
+>   
+>   static void __init zone_sizes_init(void)
+>   {
+>   	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
+> -	unsigned int __maybe_unused acpi_zone_dma_bits;
+> -	unsigned int __maybe_unused dt_zone_dma_bits;
+> -	phys_addr_t __maybe_unused dma32_phys_limit = max_zone_phys(32);
+> +	phys_addr_t __maybe_unused acpi_zone_dma_limit;
+> +	phys_addr_t __maybe_unused dt_zone_dma_limit;
+> +	phys_addr_t __maybe_unused dma32_phys_limit =
+> +		max_zone_phys(DMA_BIT_MASK(32));
+>   
+>   #ifdef CONFIG_ZONE_DMA
+> -	acpi_zone_dma_bits = fls64(acpi_iort_dma_get_max_cpu_address());
+> -	dt_zone_dma_bits = fls64(of_dma_get_max_cpu_address(NULL));
+> -	zone_dma_bits = min3(32U, dt_zone_dma_bits, acpi_zone_dma_bits);
+> -	arm64_dma_phys_limit = max_zone_phys(zone_dma_bits);
+> +	acpi_zone_dma_limit = acpi_iort_dma_get_max_cpu_address();
+> +	dt_zone_dma_limit = of_dma_get_max_cpu_address(NULL);
+> +	zone_dma_limit = min(dt_zone_dma_limit, acpi_zone_dma_limit);
+> +	arm64_dma_phys_limit = max_zone_phys(zone_dma_limit);
+>   	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
+>   #endif
+>   #ifdef CONFIG_ZONE_DMA32
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index d325217ab201..05b7f702b3f7 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -216,7 +216,7 @@ static int __init mark_nonram_nosave(void)
+>    * everything else. GFP_DMA32 page allocations automatically fall back to
+>    * ZONE_DMA.
+>    *
+> - * By using 31-bit unconditionally, we can exploit zone_dma_bits to inform the
+> + * By using 31-bit unconditionally, we can exploit zone_dma_limit to inform the
+>    * generic DMA mapping code.  32-bit only devices (if not handled by an IOMMU
+>    * anyway) will take a first dip into ZONE_NORMAL and get otherwise served by
+>    * ZONE_DMA.
+> @@ -230,6 +230,7 @@ void __init paging_init(void)
+>   {
+>   	unsigned long long total_ram = memblock_phys_mem_size();
+>   	phys_addr_t top_of_ram = memblock_end_of_DRAM();
+> +	int zone_dma_bits;
+>   
+>   #ifdef CONFIG_HIGHMEM
+>   	unsigned long v = __fix_to_virt(FIX_KMAP_END);
+> @@ -256,6 +257,8 @@ void __init paging_init(void)
+>   	else
+>   		zone_dma_bits = 31;
+>   
+> +	zone_dma_limit = DMA_BIT_MASK(zone_dma_bits);
+> +
+>   #ifdef CONFIG_ZONE_DMA
+>   	max_zone_pfns[ZONE_DMA]	= min(max_low_pfn,
+>   				      1UL << (zone_dma_bits - PAGE_SHIFT));
+> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+> index ddcd39ef4346..91fc2b91adfc 100644
+> --- a/arch/s390/mm/init.c
+> +++ b/arch/s390/mm/init.c
+> @@ -97,7 +97,7 @@ void __init paging_init(void)
+>   
+>   	vmem_map_init();
+>   	sparse_init();
+> -	zone_dma_bits = 31;
+> +	zone_dma_limit = DMA_BIT_MASK(31);
+>   	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+>   	max_zone_pfns[ZONE_DMA] = virt_to_pfn(MAX_DMA_ADDRESS);
+>   	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
+> diff --git a/include/linux/dma-direct.h b/include/linux/dma-direct.h
+> index edbe13d00776..d7e30d4f7503 100644
+> --- a/include/linux/dma-direct.h
+> +++ b/include/linux/dma-direct.h
+> @@ -12,7 +12,7 @@
+>   #include <linux/mem_encrypt.h>
+>   #include <linux/swiotlb.h>
+>   
+> -extern unsigned int zone_dma_bits;
+> +extern u64 zone_dma_limit;
+>   
+>   /*
+>    * Record the mapping of CPU physical to DMA addresses for a given region.
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index 4480a3cd92e0..f2ba074a6a54 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -20,7 +20,7 @@
+>    * it for entirely different regions. In that case the arch code needs to
+>    * override the variable below for dma-direct to work properly.
+>    */
+> -unsigned int zone_dma_bits __ro_after_init = 24;
+> +u64 zone_dma_limit __ro_after_init = DMA_BIT_MASK(24);
+>   
+>   static inline dma_addr_t phys_to_dma_direct(struct device *dev,
+>   		phys_addr_t phys)
+> @@ -59,7 +59,7 @@ static gfp_t dma_direct_optimal_gfp_mask(struct device *dev, u64 *phys_limit)
+>   	 * zones.
+>   	 */
+>   	*phys_limit = dma_to_phys(dev, dma_limit);
+> -	if (*phys_limit <= DMA_BIT_MASK(zone_dma_bits))
+> +	if (*phys_limit <= zone_dma_limit)
+>   		return GFP_DMA;
+>   	if (*phys_limit <= DMA_BIT_MASK(32))
+>   		return GFP_DMA32;
+> @@ -580,7 +580,7 @@ int dma_direct_supported(struct device *dev, u64 mask)
+>   	 * part of the check.
+>   	 */
+>   	if (IS_ENABLED(CONFIG_ZONE_DMA))
+> -		min_mask = min_t(u64, min_mask, DMA_BIT_MASK(zone_dma_bits));
+> +		min_mask = min_t(u64, min_mask, zone_dma_limit);
+>   	return mask >= phys_to_dma_unencrypted(dev, min_mask);
+>   }
+>   
+> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+> index d10613eb0f63..7b04f7575796 100644
+> --- a/kernel/dma/pool.c
+> +++ b/kernel/dma/pool.c
+> @@ -70,9 +70,9 @@ static bool cma_in_zone(gfp_t gfp)
+>   	/* CMA can't cross zone boundaries, see cma_activate_area() */
+>   	end = cma_get_base(cma) + size - 1;
+>   	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp & GFP_DMA))
+> -		return end <= DMA_BIT_MASK(zone_dma_bits);
+> +		return end <= zone_dma_limit;
+>   	if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp & GFP_DMA32))
+> -		return end <= DMA_BIT_MASK(32);
+> +		return end <= max(DMA_BIT_MASK(32), zone_dma_limit);
+>   	return true;
+>   }
+>   
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index df68d29740a0..abcf3fa63a56 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -450,9 +450,9 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
+>   	if (!remap)
+>   		io_tlb_default_mem.can_grow = true;
+>   	if (IS_ENABLED(CONFIG_ZONE_DMA) && (gfp_mask & __GFP_DMA))
+> -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(zone_dma_bits);
+> +		io_tlb_default_mem.phys_limit = zone_dma_limit;
+>   	else if (IS_ENABLED(CONFIG_ZONE_DMA32) && (gfp_mask & __GFP_DMA32))
+> -		io_tlb_default_mem.phys_limit = DMA_BIT_MASK(32);
+> +		io_tlb_default_mem.phys_limit = max(DMA_BIT_MASK(32), zone_dma_limit);
+>   	else
+>   		io_tlb_default_mem.phys_limit = virt_to_phys(high_memory - 1);
+>   #endif
+> @@ -629,7 +629,7 @@ static struct page *swiotlb_alloc_tlb(struct device *dev, size_t bytes,
+>   	}
+>   
+>   	gfp &= ~GFP_ZONEMASK;
+> -	if (phys_limit <= DMA_BIT_MASK(zone_dma_bits))
+> +	if (phys_limit <= zone_dma_limit)
+>   		gfp |= __GFP_DMA;
+>   	else if (phys_limit <= DMA_BIT_MASK(32))
+>   		gfp |= __GFP_DMA32;
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
