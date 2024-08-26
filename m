@@ -1,77 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-522-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-521-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7F495EB95
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 10:17:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBA495EB86
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 10:13:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wsk7K3Mgvz2y8n;
-	Mon, 26 Aug 2024 18:17:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wsk386FN6z2y8p;
+	Mon, 26 Aug 2024 18:13:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724660253;
-	cv=none; b=nA9xeWrOLwxf8w9JwkaJljFDF/VJnZRe3MckwY4yV6VYdsE4rnk+v5SKeCO+nUk8bp+VjyL+rSd6WtzGg2UKEEwV0a/ChfeVY55nrWs2aLdxThq0p9bpVec4eotkg1AcRLXvrHOBGjq9zDFJai5rveqPIjGE8AIesD+hYoc8sg/r37cY4L/+cK0UqWsh8+SW38o/3lBeOwquPb63yZK6Gsy/8h1IAdVvhC637IXHd5V+Hk6vYBexZ+nHaFFAVYfvrJYJHOLp13uEVQpf3PEom0+HcZjHFLAs9h23XtJl7xsJK+d44BI3CK58vy/KKr9+45ASvIhIT3RO0o2dHHFg/A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724660036;
+	cv=none; b=UlN2lZP1XiE5rOKmODYsOrPJ41BvbExAgDZMBqMZtPvhIRHMZZdikd8LYZ6DZWnKtX3GXtgk31Xuomykx+AUowVe6mKduaJucAzJRs0Q6bk/z/6lfcO1iI4+y4bP5RUP8HrGQbYJGa/2E6q3CMIaLTnqgqZXXJ740RKbaWqYprCWK5WJK+yJCeEu1ZKKIWwEPpxkqhZmQosFVU9qDslZZGW9NAErI8pQp9nni7DFFNWtYA6VQtwF3T15MsPsEHGCImQPoGofzxUCeQ0TSCR7vWDx6T3STWj/0nGbDJewHqevJYHUDMziGq9BFmY/Ow+HLDfCVRvXLPjf4b807gCPZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724660253; c=relaxed/relaxed;
-	bh=UaxHDzyeQARFqyBuo6p6nbdr7RFX49mOAxwSudvJyzo=;
-	h=Received:Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KKYt9QsE0YpR30WqF7zqGA7Bg9CpWQ9u+eUqH3NxgqUAyOBvQ4mPLqsCZfICDLDO5TOjYUP1AufxHQklumsmrCjjng31HxOcLDI4rJkdU8wG7HaHxbqHbAjnr77zzjmwkY34KjSJRqoPDSCoy+IyBKbaWCmfULfjSTNmBo77pC87JAFzEbKpDp1pfOEXnXGgLqc3mHg/ZevRfTFqdPIfF374ovKIIe7WUWE68zhlUJRm5fjPKrInEquhmOhQKCMST24m9KHQJWh084bxjCg2K/9WxNRF3nSd+a/HE2nu0kfxzesbfgJ5IjhXY3lZ0k1jKsk9t1MwXgVoGPljv9f/XA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=StHVCOh4; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=kq7x=pz=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+	t=1724660036; c=relaxed/relaxed;
+	bh=O1iQLz2pYTyt9Kii5Zr1p4XfYFhxs1hC8sEBcVkRC0Y=;
+	h=Received:DKIM-Signature:Received:Received:Received:Received:
+	 Received:Received:Received:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details; b=Juv+heR2mlKRxsu8S29pfEmF8IvEm6aF7oxhamDn3NjTqqbhokU+BMVFLpCt39Q7A/i6109Vd3C5MXMYHaFHZr5zTUk5ZPh2C3D7YG6b+YolthF0W0a+KxmqpFq6Fnn+I9R61lv8sJpzgs3CFhXrZlEQX99QL7et4dyNvzp/C8MziwDsdHCR9VNbdqtAeEX3oDOD/uFywmhU83wHBLewWqrYGmZ63cs96G9ja3b5Za4/M2lG6vygys7pDSBlAamy3DHmPkbIEk7nApHlDbQ0LVEEL2C481D55hX6x2ymiAy3QTOST81PjO4FvMBFmQPlc+FG+pvMKw8MDBv1Hd1N0Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hWWCWAFk; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=StHVCOh4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hWWCWAFk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=kq7x=pz=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wsk7K01WWz2y69
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 18:17:32 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D2C65A41DC9;
-	Mon, 26 Aug 2024 08:17:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8E8C8CDD6;
-	Mon, 26 Aug 2024 08:07:43 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="StHVCOh4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1724659661;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UaxHDzyeQARFqyBuo6p6nbdr7RFX49mOAxwSudvJyzo=;
-	b=StHVCOh4KNNCyFXRLYUoNCdTcNxSS6Z3asRmnJ9ATPyiIOC/xbFWmEWaSFpaObsfsoO+X3
-	qqjWV+mwTMIgJyMwkuMkqXw1CrHepM96JxAR4p2UKjZOsZsDhunIzVT2qZzKIWCwWJ7sje
-	lqmadHbYXdoCfy5fWd5XhoCzWQm9vhQ=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id a6c12a3f (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Mon, 26 Aug 2024 08:07:41 +0000 (UTC)
-Date: Mon, 26 Aug 2024 10:07:32 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Theodore Ts'o <tytso@mit.edu>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Shuah Khan <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 02/17] vdso: Clean header inclusion in getrandom
-Message-ID: <Zsw3xMoX2EI5UUs1@zx2c4.com>
-References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
- <2a081f1fff5e40f496153f8e0162fc7ec5adab2e.1724309198.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wsk3836hPz2y69
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 18:13:55 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47PELtoj009250;
+	Mon, 26 Aug 2024 08:13:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; s=pp1; bh=O1iQLz2pYTyt9Kii5Zr1p4XfYF
+	hxs1hC8sEBcVkRC0Y=; b=hWWCWAFk1ItNm1CGWcRdWoGdB56hqm30/Yho19l/9s
+	KjU1TYfYi0EBRjTgc1DRhuwbtznX1lKwR5RTJUjy5a45uA5pl+SStvzeds9dpgtc
+	bCytALS8wuSxMxfvoThdZ2yZoCUwhDW53Dcjc1yMDoCruaUEwjBWhLyAIZIf30pq
+	TUz3Ph7eSsTRikNlX7ZGN44tkdYw2KVHM1yjgomhO7OtX7n7l7hMngIpxAvNIU17
+	KoG/eJUOIkewaxIXlmZRhfrI8TAkfMZ6f8vIl5ftpB7k0A0LPT6cinTxFb/XTL+I
+	MoelrTfj7p/QanIDwMLdxNS6BaCN6e5i6UOO+kyCzGKw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 417gr35s7w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Aug 2024 08:13:37 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47Q8DaXX000646;
+	Mon, 26 Aug 2024 08:13:37 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 417gr35s7u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Aug 2024 08:13:36 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47Q4rdV9027960;
+	Mon, 26 Aug 2024 08:13:35 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 417ubmw1ve-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Aug 2024 08:13:35 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47Q8DPFk54460918
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 Aug 2024 08:13:27 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 75CAE2004D;
+	Mon, 26 Aug 2024 08:13:25 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CC0C520040;
+	Mon, 26 Aug 2024 08:13:22 +0000 (GMT)
+Received: from li-80eaad4c-2afd-11b2-a85c-af8123d033e3.in.ibm.com (unknown [9.199.156.78])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 26 Aug 2024 08:13:22 +0000 (GMT)
+From: "Nysal Jan K.A." <nysal@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>, stable@vger.kernel.org,
+        Geetika Moolchandani <geetika@linux.ibm.com>,
+        Vaishnavi Bhat <vaish123@in.ibm.com>,
+        Jijo Varghese <vargjijo@in.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/qspinlock: Fix deadlock in MCS queue
+Date: Mon, 26 Aug 2024 13:42:48 +0530
+Message-ID: <20240826081251.744325-1-nysal@linux.ibm.com>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,62 +96,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2a081f1fff5e40f496153f8e0162fc7ec5adab2e.1724309198.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Qs9CwdLn9GG5joS3jClLeOfaG9fV77_K
+X-Proofpoint-ORIG-GUID: rOefFmJFp5CCftxSjp0akaSOkCDmx2t-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-26_05,2024-08-23_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
+ bulkscore=0 mlxscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0
+ impostorscore=0 priorityscore=1501 mlxlogscore=534 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408260064
 
-On Thu, Aug 22, 2024 at 09:13:10AM +0200, Christophe Leroy wrote:
-> diff --git a/arch/x86/include/asm/pvclock.h b/arch/x86/include/asm/pvclock.h
-> index 0c92db84469d..6e4f8fae3ce9 100644
-> --- a/arch/x86/include/asm/pvclock.h
-> +++ b/arch/x86/include/asm/pvclock.h
-> @@ -5,6 +5,7 @@
->  #include <asm/clocksource.h>
->  #include <asm/pvclock-abi.h>
->  
-> +struct timespec64;
->  /* some helper functions for xen and kvm pv clock sources */
->  u64 pvclock_clocksource_read(struct pvclock_vcpu_time_info *src);
->  u64 pvclock_clocksource_read_nowd(struct pvclock_vcpu_time_info *src);
+If an interrupt occurs in queued_spin_lock_slowpath() after we increment
+qnodesp->count and before node->lock is initialized, another CPU might
+see stale lock values in get_tail_qnode(). If the stale lock value happens
+to match the lock on that CPU, then we write to the "next" pointer of
+the wrong qnode. This causes a deadlock as the former CPU, once it becomes
+the head of the MCS queue, will spin indefinitely until it's "next" pointer
+is set by its successor in the queue. This results in lockups similar to
+the following.
 
-This change isn't mentioned in the commit message and could probably
-benefit from doing so.
+   watchdog: CPU 15 Hard LOCKUP
+   ......
+   NIP [c0000000000b78f4] queued_spin_lock_slowpath+0x1184/0x1490
+   LR [c000000001037c5c] _raw_spin_lock+0x6c/0x90
+   Call Trace:
+    0xc000002cfffa3bf0 (unreliable)
+    _raw_spin_lock+0x6c/0x90
+    raw_spin_rq_lock_nested.part.135+0x4c/0xd0
+    sched_ttwu_pending+0x60/0x1f0
+    __flush_smp_call_function_queue+0x1dc/0x670
+    smp_ipi_demux_relaxed+0xa4/0x100
+    xive_muxed_ipi_action+0x20/0x40
+    __handle_irq_event_percpu+0x80/0x240
+    handle_irq_event_percpu+0x2c/0x80
+    handle_percpu_irq+0x84/0xd0
+    generic_handle_irq+0x54/0x80
+    __do_irq+0xac/0x210
+    __do_IRQ+0x74/0xd0
+    0x0
+    do_IRQ+0x8c/0x170
+    hardware_interrupt_common_virt+0x29c/0x2a0
+   --- interrupt: 500 at queued_spin_lock_slowpath+0x4b8/0x1490
+   ......
+   NIP [c0000000000b6c28] queued_spin_lock_slowpath+0x4b8/0x1490
+   LR [c000000001037c5c] _raw_spin_lock+0x6c/0x90
+   --- interrupt: 500
+    0xc0000029c1a41d00 (unreliable)
+    _raw_spin_lock+0x6c/0x90
+    futex_wake+0x100/0x260
+    do_futex+0x21c/0x2a0
+    sys_futex+0x98/0x270
+    system_call_exception+0x14c/0x2f0
+    system_call_vectored_common+0x15c/0x2ec
 
-> diff --git a/lib/vdso/getrandom.c b/lib/vdso/getrandom.c
-> index b230f0b10832..cab153c5f9be 100644
-> --- a/lib/vdso/getrandom.c
-> +++ b/lib/vdso/getrandom.c
-> @@ -3,15 +3,13 @@
->   * Copyright (C) 2022-2024 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
->   */
->  
-> -#include <linux/cache.h>
-> -#include <linux/kernel.h>
-> -#include <linux/time64.h>
-> +#include <linux/minmax.h>
->  #include <vdso/datapage.h>
->  #include <vdso/getrandom.h>
-> +#include <vdso/unaligned.h>
+The following code flow illustrates how the deadlock occurs:
 
-Ah, that's where you do it. Ignore my comment on the previous commit,
-then.
+        CPU0                                   CPU1
+        ----                                   ----
+  spin_lock_irqsave(A)                          |
+  spin_unlock_irqrestore(A)                     |
+    spin_lock(B)                                |
+         |                                      |
+         ▼                                      |
+   id = qnodesp->count++;                       |
+  (Note that nodes[0].lock == A)                |
+         |                                      |
+         ▼                                      |
+      Interrupt                                 |
+  (happens before "nodes[0].lock = B")          |
+         |                                      |
+         ▼                                      |
+  spin_lock_irqsave(A)                          |
+         |                                      |
+         ▼                                      |
+   id = qnodesp->count++                        |
+   nodes[1].lock = A                            |
+         |                                      |
+         ▼                                      |
+  Tail of MCS queue                             |
+         |                             spin_lock_irqsave(A)
+         ▼                                      |
+  Head of MCS queue                             ▼
+         |                             CPU0 is previous tail
+         ▼                                      |
+   Spin indefinitely                            ▼
+  (until "nodes[1].next != NULL")      prev = get_tail_qnode(A, CPU0)
+                                                |
+                                                ▼
+                                       prev == &qnodes[CPU0].nodes[0]
+                                     (as qnodes[CPU0].nodes[0].lock == A)
+                                                |
+                                                ▼
+                                       WRITE_ONCE(prev->next, node)
+                                                |
+                                                ▼
+                                        Spin indefinitely
+                                     (until nodes[0].locked == 1)
 
->  #include <asm/vdso/getrandom.h>
-> -#include <asm/vdso/vsyscall.h>
-> -#include <asm/unaligned.h>
->  #include <uapi/linux/mman.h>
-> +#include <uapi/linux/random.h>
->  
->  #define MEMCPY_AND_ZERO_SRC(type, dst, src, len) do {				\
->  	while (len >= sizeof(type)) {						\
-> @@ -23,6 +21,9 @@
->  	}									\
->  } while (0)
->  
-> +#define _PAGE_SIZE (1UL << CONFIG_PAGE_SHIFT)
-> +#define _PAGE_MASK (~(_PAGE_SIZE - 1))
+Thanks to Saket Kumar Bhaskar for help with recreating the issue
 
-If PAGE_SIZE isn't defined at this point, why not just call it PAGE_SIZE
-instead of _PAGE_SIZE? But if that's the case, why not put the vdso
-definition of PAGE_SIZE into some vdso header included by this file?
+Fixes: 84990b169557 ("powerpc/qspinlock: add mcs queueing for contended waiters")
+Cc: stable@vger.kernel.org # v6.2+
+Reported-by: Geetika Moolchandani <geetika@linux.ibm.com>
+Reported-by: Vaishnavi Bhat <vaish123@in.ibm.com>
+Reported-by: Jijo Varghese <vargjijo@in.ibm.com>
+Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+---
+ arch/powerpc/lib/qspinlock.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
+index 5de4dd549f6e..59861c665cef 100644
+--- a/arch/powerpc/lib/qspinlock.c
++++ b/arch/powerpc/lib/qspinlock.c
+@@ -697,6 +697,12 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
+ 	}
+ 
+ release:
++	/*
++	 * Clear the lock, as another CPU might see stale values if an
++	 * interrupt occurs after we increment qnodesp->count but before
++	 * node->lock is initialized
++	 */
++	node->lock = NULL;
+ 	qnodesp->count--; /* release the node */
+ }
+ 
+-- 
+2.46.0
+
 
