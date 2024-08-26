@@ -1,35 +1,37 @@
-Return-Path: <linuxppc-dev+bounces-549-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-547-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733F495FBE2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 23:42:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9326695FBDD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 23:40:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wt3zb3DVhz2yQ9;
-	Tue, 27 Aug 2024 07:42:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wt3y92Htyz2y8W;
+	Tue, 27 Aug 2024 07:40:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724685676;
-	cv=none; b=gcguZQQjjrYu3GQTuCp62kr7E21EcZGTT1/DgTAup294QNPqVEUsYbsg4InaR8dfJXQGbtxo57fwuyYKE6nqqHukOMfXsTVnBBureDXS7ECSCPa2bGU4p+om6FV4nZJBbuz8oGjqVku7ZhnBUiDEuUD5RXOVvrM1enWtVu0HOyrsbXAgt1GRGFdQV9yqLS0L+9al3gHIpNr1TTQt5AaRTvbst66YE/5fegcniTqD2OMKKCJ8b4UYeJ1voEoneBS5UX1b7zTPx0MaqtDQ0KcicZ1WCLTdqcPnvbXdm4Sc+3OlOvBKB8niRtSyvjIhfKIG1pMtcpwh7kEQpO0DQfvLUw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.255
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724685621;
+	cv=none; b=PmSW/rJcpla8p1pPnT5hq0uoJiqsT93BtQfXsXc24jm1aCNxK+YCt9BSDT3Jn90beJvEBA/ibaTLx6wqMP5w0QWWEz2QZ6fvXrZ26+2lQsV/9yVMaRv1H0BNH/Eh7z4D/TgyUPGiSBx9SZJzoBWhcyascCoJ/uIoLWY9I+lT2RQToslL3PkYNv655/wTTcj5Tv1nePUA4LR6d2Swf0DF/0xE4PQ28QZtCDfVjGSF04IBpwRQYyQ8Lww73Loe2UB6IxseOk6AY5omxQWSja0cBrR4pMpzm31gFE2AdlsyGmHjj+tlqvuCjpKbpWjAcOeVtpVaf/ekzvzVhfJqiOdp5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724685676; c=relaxed/relaxed;
-	bh=PAF4mbMxPEsnfEO4VxPgsMoDKKG5UA4k2fq2FWnQNFc=;
-	h=Received:Received:Received:From:To:CC:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-Originating-IP:X-ClientProxiedBy; b=fFoVvHO6tm4Ge074DYMyv3/RGsUo4VXFD6AwMPhx/h7cIHq4X7Jgdn9C6V/27j0l4yery2pVkAEhiBJAI0lQYWpVQAvy6Ot3UOvf+vfVKBEBCe/vEcSSOnu1ZY/LbQyOP5K6a+U6s9OIntQpLxHghXDke3I16wQZ54aP2Yl776y3vOD9PgiW7E/BO2xDD+dJxVIRCSlwQQEkQkuf4eX3Mw+2I36y5vQEIMBwObXbYl6OYMlyYQivsCN8+VCIVDdnlvhC+H6/ikV03p/Iw2drAamQW54pdK4L8snBJhm7aRo+t5SG2rNN5NKEAfkzr2pVzQUaM1Mq4LGTY58IyOMl+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=huangxiaojia2@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+	t=1724685621; c=relaxed/relaxed;
+	bh=a7lprmUU0TqJPbcK41GiWiLzgfDo/mGb+mtxGIXHIBM=;
+	h=X-Greylist:Received:Received:Received:From:To:CC:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
+	 X-ClientProxiedBy; b=CR/rmAXWTfpvYRyMyHehOLKc668la/sD8wmnpc+byGIrkmqKuGxWC8eJigA2OVExnG5y9tmB1edJnde/rgGKkJhI6H1EjS632x7CUAdlGjLZMHLTm5JRrE7drrsLgh3pdZ575zry5pkLHhfb8I7nROQkA+b635FIdGaVmgkWZR80eHEnkz0/95uT+jo/EsUQhWqbLq2QrSktA+pnYH+Oh+Pf0JFq39DtaVVsYeyXZLcP8UdNl2CW0aMm+fmR4ViF+rNy3/kPjSpajknO4VSR65y6V/9ZX0jPqxWAWAwdmcrxNgHEvoFGD5H8khzFs9mki4ZQMrzJELBVGEYYodw9JA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=huangxiaojia2@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=huangxiaojia2@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=huangxiaojia2@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1086 seconds by postgrey-1.37 at boromir; Tue, 27 Aug 2024 01:20:21 AEST
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WsvXC4SzBz2xfK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:21:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WsvW9073tz2xfK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:20:17 +1000 (AEST)
 Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Wsv5S09j6zyRCG;
-	Mon, 26 Aug 2024 23:01:32 +0800 (CST)
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Wsv564GTBz14JcT;
+	Mon, 26 Aug 2024 23:01:14 +0800 (CST)
 Received: from dggpemm500021.china.huawei.com (unknown [7.185.36.109])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5715E1800D0;
+	by mail.maildlp.com (Postfix) with ESMTPS id 5D504180101;
 	Mon, 26 Aug 2024 23:02:00 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by dggpemm500021.china.huawei.com
  (7.185.36.109) with Microsoft SMTP Server (version=TLS1_2,
@@ -39,10 +41,12 @@ From: Huang Xiaojia <huangxiaojia2@huawei.com>
 To: <mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
 	<naveen@kernel.org>, <yuehaibing@huawei.com>
 CC: <linuxppc-dev@lists.ozlabs.org>, <huangxiaojia2@huawei.com>
-Subject: [PATCH -next 1/3] powerpc: Constify struct kobj_type
-Date: Mon, 26 Aug 2024 23:09:55 +0800
-Message-ID: <20240826150957.3500237-1-huangxiaojia2@huawei.com>
+Subject: [PATCH -next 2/3] powerpc: powernv: Constify struct kobj_type
+Date: Mon, 26 Aug 2024 23:09:56 +0800
+Message-ID: <20240826150957.3500237-2-huangxiaojia2@huawei.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240826150957.3500237-1-huangxiaojia2@huawei.com>
+References: <20240826150957.3500237-1-huangxiaojia2@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,9 +62,8 @@ X-Originating-IP: [10.90.53.73]
 X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  dggpemm500021.china.huawei.com (7.185.36.109)
 
-'struct kobj_type' is not modified. It is only used in
-kobject_init_and_add()/kobject_init() which takes
-a 'const struct kobj_type *ktype' parameter.
+'struct kobj_type' is not modified. It is only used in kobject_init()
+which takes a 'const struct kobj_type *ktype' parameter.
 
 Constifying this structure moves some data to a read-only section,
 so increase over all security.
@@ -69,47 +72,47 @@ On a x86_64, compiled with ppc64 defconfig:
 Before:
 ======
    text	   data	    bss	    dec	    hex	filename
-   7145	    606	      0	   7751	   1e47	arch/powerpc/kernel/cacheinfo.o
-   3663	    384	     16	   4063	    fdf	arch/powerpc/kernel/secvar-sysfs.o
+   3775	    256	      8	   4039	    fc7	arch/powerpc/platforms/powernv/opal-dump.o
+   2679	    260	      8	   2947	    b83	arch/powerpc/platforms/powernv/opal-elog.o
 
 After:
 ======
-   text    data     bss     dec     hex filename
-   7193	    558	      0	   7751	   1e47	arch/powerpc/kernel/cacheinfo.o
-   3663	    384	     16	   4063	    fdf	arch/powerpc/kernel/secvar-sysfs.o
+   text	   data	    bss	    dec	    hex	filename
+   3823	    208	      8	   4039	    fc7	arch/powerpc/platforms/powernv/opal-dump.o
+   2727	    212	      8	   2947	    b83	arch/powerpc/platforms/powernv/opal-elog.o
 
 Signed-off-by: Huang Xiaojia <huangxiaojia2@huawei.com>
 ---
- arch/powerpc/kernel/cacheinfo.c    | 2 +-
- arch/powerpc/kernel/secvar-sysfs.c | 2 +-
+ arch/powerpc/platforms/powernv/opal-dump.c | 2 +-
+ arch/powerpc/platforms/powernv/opal-elog.c | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/cacheinfo.c b/arch/powerpc/kernel/cacheinfo.c
-index f502337dd37d..0fcc463b02e2 100644
---- a/arch/powerpc/kernel/cacheinfo.c
-+++ b/arch/powerpc/kernel/cacheinfo.c
-@@ -735,7 +735,7 @@ static const struct sysfs_ops cache_index_ops = {
- 	.show = cache_index_show,
+diff --git a/arch/powerpc/platforms/powernv/opal-dump.c b/arch/powerpc/platforms/powernv/opal-dump.c
+index 16c5860f1372..608e4b68c5ea 100644
+--- a/arch/powerpc/platforms/powernv/opal-dump.c
++++ b/arch/powerpc/platforms/powernv/opal-dump.c
+@@ -210,7 +210,7 @@ static struct attribute *dump_default_attrs[] = {
  };
+ ATTRIBUTE_GROUPS(dump_default);
  
--static struct kobj_type cache_index_type = {
-+static const struct kobj_type cache_index_type = {
- 	.release = cache_index_release,
- 	.sysfs_ops = &cache_index_ops,
- 	.default_groups = cache_index_default_groups,
-diff --git a/arch/powerpc/kernel/secvar-sysfs.c b/arch/powerpc/kernel/secvar-sysfs.c
-index eb3c053f323f..fbeb1cbac01b 100644
---- a/arch/powerpc/kernel/secvar-sysfs.c
-+++ b/arch/powerpc/kernel/secvar-sysfs.c
-@@ -125,7 +125,7 @@ static const struct attribute_group secvar_attr_group = {
+-static struct kobj_type dump_ktype = {
++static const struct kobj_type dump_ktype = {
+ 	.sysfs_ops = &dump_sysfs_ops,
+ 	.release = &dump_release,
+ 	.default_groups = dump_default_groups,
+diff --git a/arch/powerpc/platforms/powernv/opal-elog.c b/arch/powerpc/platforms/powernv/opal-elog.c
+index 554fdd7f88b8..5db1e733143b 100644
+--- a/arch/powerpc/platforms/powernv/opal-elog.c
++++ b/arch/powerpc/platforms/powernv/opal-elog.c
+@@ -146,7 +146,7 @@ static struct attribute *elog_default_attrs[] = {
  };
- __ATTRIBUTE_GROUPS(secvar_attr);
+ ATTRIBUTE_GROUPS(elog_default);
  
--static struct kobj_type secvar_ktype = {
-+static const struct kobj_type secvar_ktype = {
- 	.sysfs_ops	= &kobj_sysfs_ops,
- 	.default_groups = secvar_attr_groups,
- };
+-static struct kobj_type elog_ktype = {
++static const struct kobj_type elog_ktype = {
+ 	.sysfs_ops = &elog_sysfs_ops,
+ 	.release = &elog_release,
+ 	.default_groups = elog_default_groups,
 -- 
 2.34.1
 
