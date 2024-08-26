@@ -1,65 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-550-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-551-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1A295FBE8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 23:43:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDA995FBF0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 23:44:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wt41J2Vtyz2yNs;
-	Tue, 27 Aug 2024 07:43:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wt42g1TC3z2xb9;
+	Tue, 27 Aug 2024 07:44:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.241.56.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724687800;
-	cv=none; b=mfsbONA3F57x+bIP3JpH6b3+QgYei2qUoa3jzCOZ3aOeaHkxysoiPD1lsujIGpc0RBvsihf8og8iMVRmC+l4cu8uDzzyoyxZcv1T+YCgHlu3zrflXiTXPfxBYwow9TGDyMGj6KEJf5bYtBNjZymqimLZB2oEq3uxQj00g8Mbyx2jwYGOzFKMig/RHuES5x9NROr7QjkVHslAN1SSTasf1Vn42gL7tFUNDnY4fGNTxGoigsErNX4vaA8hqtV/Om4pILSkgo3GIiGz8dQUxGg04sfNfv7+lelTylVz5Kyytjw3+N6N4CK5TOKTrYBNoT/uVklaqCjt98FVA+PybuaMyg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724693321;
+	cv=none; b=kBAwuTAFuPxKv5FlBW/pBd4/YiPP5W5WcEAyYj8u5n/FDwScf474sPjdRqr6qHM0bUxaFWXrUfPlTjZ9eTelxSg4r0FW4HpIMmFESGptvDPx7kjvCrS1gvinknb9Pd8jnsjVfAlYNrYlop8tBGVkcjoUqg7iFKqsWqI1VHU9Wy0NAwhYL1245hxX4VSqpHcTvKLElWLV1pO+oLyjBQmlM7kuDrxOWoJ7htiWr5xY7/OFx+mGY8N7mQZgzBNArhdYciioirkuBlTCuiSyd7zTt5UplYgl1Yac8rsf1Ph2Zxl9iLi8NXz3TmQCDnKp4o8TIU5T++9xEq7jeTjuhkxybg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724687800; c=relaxed/relaxed;
-	bh=eRydv55gNXaJ5A8ZeAWT2zJk1Y3fP0tRUqT2W8LViaQ=;
-	h=X-Greylist:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=QmHhf/LECZII82sJ7E0acg1s5fi3Tc+qbNrQriZsdErkmAD1IpkxewR7aZ7Hu83vZ4FUtheJRiSDnFWhLmkAdhz64wHt4rIWOPdSzTsUjsztFr01PBIv4bTeRLiDTJ5Q/DgafDOfn4xYcp4ZybPbECQZAU2qyiKsCYcswHFEeUzePNBaoyXTULaGoXSIKMCMI+AJKS7+W50jb0zfHJN8TUwt/VE/vuKJ+ok8Zwu+KIewK5iJNfrBeFq3xVG0ss6ROcpy+ViRz/Sj7ihlfYE/SDZnyG3YlaNZ7R9p46ERfg0fZGdwVbW0aQtCM73v47tOxLI7+zr6mqzv2JgifADDBg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com; dkim=pass (2048-bit key; unprotected) header.d=pankajraghav.com header.i=@pankajraghav.com header.a=rsa-sha256 header.s=MBO0001 header.b=rgBQImOf; dkim-atps=neutral; spf=pass (client-ip=80.241.56.172; helo=mout-p-202.mailbox.org; envelope-from=kernel@pankajraghav.com; receiver=lists.ozlabs.org) smtp.mailfrom=pankajraghav.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=pankajraghav.com header.i=@pankajraghav.com header.a=rsa-sha256 header.s=MBO0001 header.b=rgBQImOf;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pankajraghav.com (client-ip=80.241.56.172; helo=mout-p-202.mailbox.org; envelope-from=kernel@pankajraghav.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 488 seconds by postgrey-1.37 at boromir; Tue, 27 Aug 2024 01:56:40 AEST
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	t=1724693321; c=relaxed/relaxed;
+	bh=4ZWLg5+gQ2MC14u4w9y/ExKKPt6x5L9tkEAX3YeiJo0=;
+	h=Received:Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
+	 References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=Jq/Vtb4jtnGKe2oI1AoUnQeAERDDTN8JwPI4ngvTRev/z00Q/7ZKMDVnkrQ8OFsYU90oba7uh583SRENwodRIaL0kPUqNtYoK3koEMiW2BA5WusOZYwcqaXNI5QtULxj89gXq/A9yFA4Inof9IjZUPNoTJd34RRvdtCgkmirhzK1fp5cl7Srzje8LLO6JQPoShLXF1aHKC87Yg182NUdZECkO1SFOaqVrPnL886+dBKFqYNyatN4HlaH9yGFPcK3E18ElsyDOXSy3FfULjDKm50yUIK95sIK73YiIr6t3CYJBHtWu7aOhtRpET68dr8Zy0+jI/uAAXMAD7whIYt+cw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=3pkx=pz=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=3pkx=pz=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WswK40m1Jz2yFJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:56:39 +1000 (AEST)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4Wsw7T529Sz9sGf;
-	Mon, 26 Aug 2024 17:48:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
-	s=MBO0001; t=1724687301;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eRydv55gNXaJ5A8ZeAWT2zJk1Y3fP0tRUqT2W8LViaQ=;
-	b=rgBQImOf5dPh+IqVFwGUy/Fy+wyfsnvuDcxC2DsTW9GyK4gN24SVBdHRVFxPL/jGLJfqUU
-	tcwEtQ0oHfegOUFWzbGhtarvaE2iAjcnExlQIo9xMCwM0yZYk1VAi/j2bDGoBT5qA6uxQB
-	t3FxMM+Yd+g8ztHqidEBk1O3Xh2w21fAYi1r6Mk6Rt++euWDs0q+mT8mmkiYtoB7qDFCaG
-	gyHVUub6eB2MIvbCflrOpmeDeTC923hg//FDmAIvoqLbxn4Phdzlyon9YEv2diTpLYGk60
-	JutJBd+r02CK7OlgeCgo1FHk0Lo3p3Iei5lwdSpqo7bkp/ZHV2WPk2juA2ZcNA==
-Date: Mon, 26 Aug 2024 15:48:18 +0000
-From: "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	djwong@kernel.org, ritesh.list@gmail.com,
-	linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu
-Subject: Re: linux-next: boot warning after merge of the vfs-brauner tree
-Message-ID: <20240826154818.hzqnvofdmaxvuwrh@quentin>
-References: <20240826175931.1989f99e@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WsyMD3xGlz2yHL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 03:28:40 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id B3469A40480;
+	Mon, 26 Aug 2024 17:28:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E6AC8B7B5;
+	Mon, 26 Aug 2024 17:28:29 +0000 (UTC)
+Date: Mon, 26 Aug 2024 13:29:09 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andreas Larsson
+ <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann
+ <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Brian Cain
+ <bcain@quicinc.com>, Catalin Marinas <catalin.marinas@arm.com>, Christoph
+ Hellwig <hch@infradead.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Dinh Nguyen <dinguyen@kernel.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Helge Deller
+ <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, John Paul
+ Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Kent Overstreet
+ <kent.overstreet@linux.dev>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>,
+ Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
+ Song Liu <song@kernel.org>, Stafford Horne <shorne@gmail.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner
+ <tglx@linutronix.de>, Uladzislau Rezki <urezki@gmail.com>, Vineet Gupta
+ <vgupta@kernel.org>, Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, linux-modules@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
+ linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v2 5/8] ftrace: Add swap_func to ftrace_process_locs()
+Message-ID: <20240826132909.306b08fc@gandalf.local.home>
+In-Reply-To: <20240826065532.2618273-6-rppt@kernel.org>
+References: <20240826065532.2618273-1-rppt@kernel.org>
+	<20240826065532.2618273-6-rppt@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,109 +81,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240826175931.1989f99e@canb.auug.org.au>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 26, 2024 at 05:59:31PM +1000, Stephen Rothwell wrote:
-> Hi all,
+On Mon, 26 Aug 2024 09:55:29 +0300
+Mike Rapoport <rppt@kernel.org> wrote:
+
+> From: Song Liu <song@kernel.org>
 > 
-> After merging the vfs-brauner tree, today's linux-next boot test (powerpc
-> pseries_le_defconfig) produced this warning:
+> ftrace_process_locs sorts module mcount, which is inside RO memory. Add a
+> ftrace_swap_func so that archs can use RO-memory-poke function to do the
+> sorting.
 
-iomap dio calls set_memory_ro() on the page that is used for sub block
-zeroing.
+Can you add the above as a comment above the ftrace_swap_func() function?
 
-But looking at powerpc code, they don't support set_memory_ro() for
-memory region that belongs to the kernel(LINEAR_MAP_REGION_ID).
+Thanks,
 
-/*
- * On hash, the linear mapping is not in the Linux page table so
- * apply_to_existing_page_range() will have no effect. If in the future
- * the set_memory_* functions are used on the linear map this will need
- * to be updated.
- */
-if (!radix_enabled()) {
-        int region = get_region_id(addr);
-
-        if (WARN_ON_ONCE(region != VMALLOC_REGION_ID && region != IO_REGION_ID))
-                return -EINVAL;
-}
-
-We call set_memory_ro() on the zero page as a extra security measure.
-I don't know much about powerpc, but looking at the comment, is it just
-adding the following to support it in powerpc:
-
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-index ac22bf28086fa..e6e0b40ba6db4 100644
---- a/arch/powerpc/mm/pageattr.c
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -94,7 +94,9 @@ int change_memory_attr(unsigned long addr, int numpages, long action)
-        if (!radix_enabled()) {
-                int region = get_region_id(addr);
- 
--               if (WARN_ON_ONCE(region != VMALLOC_REGION_ID && region != IO_REGION_ID))
-+               if (WARN_ON_ONCE(region != VMALLOC_REGION_ID &&
-+                                region != IO_REGION_ID &&
-+                                region != LINEAR_MAP_REGION_ID))
-                        return -EINVAL;
-        }
- #endif
-
- If it involves changing more things and this feature will be added to
- powerpc in the future, we could drop the set_memory_ro() call from
- iomap.
-
- CC: Darrick(as he suggested set_memory_ro() on zero page), Leroy,
- Ritesh, ppc list
+-- Steve
 
 > 
-> ------------[ cut here ]------------
-> WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/pageattr.c:97 change_memory_attr+0xbc/0x150
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-rc5-06731-g66e0882fba22 #1
-> Hardware name: IBM pSeries (emulated by qemu) POWER8 (architected) 0x4d0200 0xf000004 of:SLOF,HEAD pSeries
-> NIP:  c00000000008a1ac LR: c00000000008a14c CTR: 0000000000000000
-> REGS: c0000000049b7930 TRAP: 0700   Not tainted  (6.11.0-rc5-06731-g66e0882fba22)
-> MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 84000482  XER: 00000000
-> CFAR: c00000000008a218 IRQMASK: 0 
-> GPR00: c00000000008a14c c0000000049b7bd0 c00000000167b100 0000000000000000 
-> GPR04: 0000000000000001 0000000000000000 0000000000000200 c000000002b10878 
-> GPR08: 000000007da60000 c007ffffffffffff ffffffffffffffff 0000000084000482 
-> GPR12: 0000000000000180 c000000002b90000 c00000000001110c 0000000000000000 
-> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> GPR20: 0000000000000000 0000000000000000 0000000000000000 c000000001562288 
-> GPR24: c000000002003e6c c000000001632418 000000000000018c c0000000020c1058 
-> GPR28: 0000000000000000 0000000000000000 c000000006330000 0000000000000001 
-> NIP [c00000000008a1ac] change_memory_attr+0xbc/0x150
-> LR [c00000000008a14c] change_memory_attr+0x5c/0x150
-> Call Trace:
-> [c0000000049b7bd0] [000000000000018c] 0x18c (unreliable)
-> [c0000000049b7c10] [c00000000206bf70] iomap_dio_init+0x64/0x88
-> [c0000000049b7c30] [c000000000010d98] do_one_initcall+0x80/0x2f8
-> [c0000000049b7d00] [c000000002005c9c] kernel_init_freeable+0x32c/0x520
-> [c0000000049b7de0] [c000000000011138] kernel_init+0x34/0x26c
-> [c0000000049b7e50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
-> --- interrupt: 0 at 0x0
-> Code: 60000000 e8010050 eba10028 7c6307b4 ebc10030 38210040 ebe1fff8 7c0803a6 4e800020 7bc92720 2c29000c 41820058 <0fe00000> 4800002c 60000000 60000000 
-> ---[ end trace 0000000000000000 ]---
+> Signed-off-by: Song Liu <song@kernel.org>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  include/linux/ftrace.h |  2 ++
+>  kernel/trace/ftrace.c  | 13 ++++++++++++-
+>  2 files changed, 14 insertions(+), 1 deletion(-)
 > 
-> Bisected to commit
-> 
->   d940b3b7b76b ("iomap: fix iomap_dio_zero() for fs bs > system page size")
-> 
-> I have reverted commit
-> 
->   9b0ebbc72358 ("Merge patch series "enable bs > ps in XFS"")
-> 
-> for today.
-> 
-> -- 
-> Cheers,
-> Stephen Rothwell
+> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+> index fd5e84d0ec47..b794dcb7cae8 100644
+> --- a/include/linux/ftrace.h
+> +++ b/include/linux/ftrace.h
+> @@ -1188,4 +1188,6 @@ unsigned long arch_syscall_addr(int nr);
+>  
+>  #endif /* CONFIG_FTRACE_SYSCALLS */
+>  
+> +void ftrace_swap_func(void *a, void *b, int n);
+> +
+>  #endif /* _LINUX_FTRACE_H */
+> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+> index 4c28dd177ca6..9829979f3a46 100644
+> --- a/kernel/trace/ftrace.c
+> +++ b/kernel/trace/ftrace.c
+> @@ -6989,6 +6989,17 @@ static void test_is_sorted(unsigned long *start,
+> unsigned long count) }
+>  #endif
+>  
+> +void __weak ftrace_swap_func(void *a, void *b, int n)
+> +{
+> +	unsigned long t;
+> +
+> +	WARN_ON_ONCE(n != sizeof(t));
+> +
+> +	t = *((unsigned long *)a);
+> +	*(unsigned long *)a = *(unsigned long *)b;
+> +	*(unsigned long *)b = t;
+> +}
+> +
+>  static int ftrace_process_locs(struct module *mod,
+>  			       unsigned long *start,
+>  			       unsigned long *end)
+> @@ -7016,7 +7027,7 @@ static int ftrace_process_locs(struct module *mod,
+>  	 */
+>  	if (!IS_ENABLED(CONFIG_BUILDTIME_MCOUNT_SORT) || mod) {
+>  		sort(start, count, sizeof(*start),
+> -		     ftrace_cmp_ips, NULL);
+> +		     ftrace_cmp_ips, ftrace_swap_func);
+>  	} else {
+>  		test_is_sorted(start, count);
+>  	}
 
-
-
--- 
-Pankaj Raghav
 
