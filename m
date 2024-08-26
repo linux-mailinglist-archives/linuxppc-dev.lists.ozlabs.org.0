@@ -1,76 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-490-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-491-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59C095E7F9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 07:39:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 195D295E835
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 08:03:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WsfcY2Mnzz2y33;
-	Mon, 26 Aug 2024 15:39:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wsg935hx2z2xfP;
+	Mon, 26 Aug 2024 16:03:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=130.133.4.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724650749;
-	cv=none; b=hRBpQHKFPHvg7Q6xED8q8bicn8GBBLqTrFQ3LpxSC2z02n9BzcB1n6RZJbqMSGA6BPlHM0MBPBtsOkuygvXVQX91hxUXsZEzuG1kkqGmDurx7VMEJmOd0b7AQQ72ygPKTWh1wVsRI/HsBn5vwbiQEUjDPqyIJIVi7A7zgR4q80/ggLxxhlCh1woxAwYoJ8JkZnEOMfD5MrSeteHctLyPFs19mkz+0pBoxySundHsGuG+fQqcLQfvR55Hwo+MEMbJTgMAf41rOCaO0uRvWO7P5ZN3yAnpKVVS+3WK5iAdFkqSkTcTxKbShcwUthhwBtkuYKt8bRldzGWedkxLVlCiwQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.222.179
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724652231;
+	cv=none; b=BZcl/pz1GaDGPBz07qmrwvI3bqFBWquJcmVgT9qWKEUUV2PJVZ7u6Ae06xkPAFu5oshpAC0YIhRRx0yyziq6A5nGta9qBy/TJmLbXBnUiVKzocw8Sm+mTDobfEvjHtimOkozgq1ZcKrfR2Wrhh7q8WwFU6YgrC7F72iu4uWEob5a42QNrmQBV7Y+6fSqfIzCkBQEaW65OhInmkix2mR5OHd2bClJwLf4IUvDQ6D/JHNNPERCqEvDkqLEDz8NmAE5z2rOJaFUL8WLbo3GZCifzqFJCg0Nzf5CBhPqA6/6VCNSDKV+6eQrGeVzg+D/Hs3zXnnsaMgTfdhQh39WCmhpWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724650749; c=relaxed/relaxed;
-	bh=LfT86w0DD1Bxg2yTlCdTPH77SKbVGJZWodC7UbCGiEE=;
-	h=DKIM-Signature:Received:Received:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-Original-Sender:X-Originating-IP:
-	 X-ZEDAT-Hint; b=gkliDXEZ86JPckQTLaQcFffM4L6lqYGUxXPR2ADXHVFgX9iFwK0CDFlck2C/cbRzuVSJrObwC71gBrxr8mrdslHoBZqeeI22U3ws79+2w1yZbTX/h8zsKBA7SjIGZsNqFVKr/J67XKcehn7brJdPDdrIcNbyOfVsxGzNGmsdvO5k3TVjFQM/HWDRx5zqAP2I0M+bPR5y3m7Mv6ZAW/dnYS6upwBwdXUi3IlDxcBEyJfCWc0RwyMgRuhfY9NHoXi0PoSrZb8dtJ7+9jnnQXTBhgiJ831BWGmdYq19xOcJGpR41hdsG/GixapubogXs+PeOcoTmnJzLPG3jaWrwm284Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=evkiIvcn; dkim-atps=neutral; spf=pass (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org) smtp.mailfrom=zedat.fu-berlin.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=evkiIvcn;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	t=1724652231; c=relaxed/relaxed;
+	bh=ZKXjBrfmroCoc+jNcJVKdc7dB1QcJh0d700AGCluMS4=;
+	h=Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding; b=DS8XQmlQLDlM3u8pHuFUF1alYd2uAY6XvczcYzqHZdPQzH+o/aU99T0aQEgr/eqX/WG4JQP3pT4a8BNDDCqtVzP0d6paMakMslogiE/jWTR/RyejKLS3Y2CqOSlnDjOS4l+MdNe/3J8RmpYr4di61aNQqbElWM04upJwisfDM7YC2ENxBXxg9mQZzaN/4oq/3NlY/dIRdE43GmJ3xKPbgtppxm2TGIct1POmTeG6EKjnm07mfputTogeVqdal2mBwoeefmkOThMi3pf2iyve0Sx6WO8hvgMByRXeV0lyQ1zNqE9dUnBnF1e8mtGgxn7rAkoHc6THC/VQ8P8nyxfZ8A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca; spf=pass (client-ip=209.85.222.179; helo=mail-qk1-f179.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.179; helo=mail-qk1-f179.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WsfcV33g6z2xy8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 15:39:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=LfT86w0DD1Bxg2yTlCdTPH77SKbVGJZWodC7UbCGiEE=; t=1724650746; x=1725255546; 
-	b=evkiIvcngY+Xd8Sw/8xB8rhEgVoBvr7nWftF5oUMWMwuBWPXmypFkMzstQeh0l2uLX2wgNYUo0M
-	bextPGTefds5ctonew2nD5Wn4eKXVVid8CbGpdpr8t2BWtyEPl7gUkFaEj+bnOKEO9aodCq5ztqkd
-	X3QIJjDXkVMPMgjTOyCUyS35S7jKIR2wQ9wxdGa2vzDCROlqDeZ880BO94nnYw8etBADgpQP0q7Cl
-	7cifaBi5rAGqIDOYT0im0qC1c2SQ81tqwqU6sNH6c91e362q2+3DMeW1XVDArNEhLPEvFytp+VcwL
-	nMYzEjofO7w9mCZHxwxBhhmO8KDgFKLltl9A==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1siSRK-00000003X59-0z93; Mon, 26 Aug 2024 07:38:54 +0200
-Received: from p5b13a2bf.dip0.t-ipconnect.de ([91.19.162.191] helo=[192.168.178.20])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1siSRJ-00000002r7f-46hv; Mon, 26 Aug 2024 07:38:54 +0200
-Message-ID: <c1fd73a3941c54e58420d7555524cd6baeebfb96.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH] crash: Default to CRASH_DUMP=n when support for it is
- unlikely
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Michael Ellerman <mpe@ellerman.id.au>, Geert Uytterhoeven
-	 <geert@linux-m68k.org>, Dave Vasilevsky <dave@vasilevsky.ca>
-Cc: bhe@redhat.com, linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-  kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Reimar
- =?ISO-8859-1?Q?D=F6ffinger?= <Reimar.Doeffinger@gmx.de>
-Date: Mon, 26 Aug 2024 07:38:53 +0200
-In-Reply-To: <87frqsghws.fsf@mail.lhotse>
-References: <20240823125156.104775-1-dave@vasilevsky.ca>
-	 <CAMuHMdVYNhFJ+qBDP3_fi9oeHsgOL0vqPe1YqE18+M8n1onssw@mail.gmail.com>
-	 <87frqsghws.fsf@mail.lhotse>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wsg926gsWz2xYq
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 16:03:50 +1000 (AEST)
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7a1d3874c1eso222037385a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 25 Aug 2024 23:03:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724652227; x=1725257027;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZKXjBrfmroCoc+jNcJVKdc7dB1QcJh0d700AGCluMS4=;
+        b=YqQg2tB+mbvbyITFXm/fMxCsB79l/ztfYK6rQZeArOjYex4UKoAQJebuHsPMJS+1iw
+         gU8Z2TZ4OjXx2b1zQzrCzVlC2/d5Yr+GhG5p9R51nAJ5jAbomteSd15O6lOJwMN86gp4
+         J5Z8+wOJtNvCMPooDVd8gllAhfwVt8ZQuYpgX3JjL0xWB31VcFfxtNCNJly8VMt/hiia
+         32k4x6kyl1FfUpF0+PakFDLjIZ0pAhDiRbOyNdaXa0SEz8U7ciUOPgwffZYkW0RKGVY1
+         GaZHYOdgtnm8bvVcbAr+sI1TYhjzL8q7jvL3GU2pWTc77KOruV/UJbrZrP5tHJ2A//cJ
+         Km5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU4SW/e7o1QA9O4uZLFiL4Wuw4Aa6YZyYOHbRBDBCEmLoB/sogFd80M5ZBfu+TYQh2eKDLavB8UiqYWNhY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzXUhODAD/zcISf4mzKaxYI3IS0jq41d2qgN90Eb4lCDXeAgU6j
+	+XED6jH9CS8Fja1fPSqbvHCNK597BGvsvMpTrE5t2QcVHipdz/Nu
+X-Google-Smtp-Source: AGHT+IGSGyPTkUxMgB/i4Zy4QLzMECErNv2aanCJjyDmWf6JxbREWcMAfmUgTeNndDbjPNgn8lnisA==
+X-Received: by 2002:a05:6214:3d98:b0:6b0:7f36:8ae3 with SMTP id 6a1803df08f44-6c16dc93d89mr90352156d6.32.1724652226893;
+        Sun, 25 Aug 2024 23:03:46 -0700 (PDT)
+Received: from [192.168.2.219] (bras-base-mtrlpq3141w-grc-05-65-93-184-127.dsl.bell.ca. [65.93.184.127])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c162db0991sm43641976d6.91.2024.08.25.23.03.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Aug 2024 23:03:46 -0700 (PDT)
+Message-ID: <94540d05-12ab-49b8-9e37-04a29f5cdf77@vasilevsky.ca>
+Date: Mon, 26 Aug 2024 02:03:44 -0400
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,30 +63,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.162.191
-X-ZEDAT-Hint: PO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] crash: Default to CRASH_DUMP=n when support for it is
+ unlikely
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: bhe@redhat.com, linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ =?UTF-8?Q?Reimar_D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
+References: <20240823125156.104775-1-dave@vasilevsky.ca>
+ <CAMuHMdVYNhFJ+qBDP3_fi9oeHsgOL0vqPe1YqE18+M8n1onssw@mail.gmail.com>
+ <87frqsghws.fsf@mail.lhotse>
+ <c1fd73a3941c54e58420d7555524cd6baeebfb96.camel@physik.fu-berlin.de>
+Content-Language: en-US
+From: Dave Vasilevsky <dave@vasilevsky.ca>
+In-Reply-To: <c1fd73a3941c54e58420d7555524cd6baeebfb96.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Michael,
+On 2024-08-26 01:38, John Paul Adrian Glaubitz wrote:
+> On Mon, 2024-08-26 at 12:02 +1000, Michael Ellerman wrote:
+>> So IMHO having it enabled by default in upstream does make sense,
+>> because it more closely matches what distros/users actually run.
+> 
+> Well, at least Debian did not enable it by default as otherwise we wouldn't
+> have noticed this change downstream.
 
-On Mon, 2024-08-26 at 12:02 +1000, Michael Ellerman wrote:
-> > What is so special about CRASH_DUMP, that it should be enabled by
-> > default?
-> =20
-> The reality is that essentially all distros enable it. Because they
-> don't want to manage separate kernel / crash-kernel packages.
->=20
-> So IMHO having it enabled by default in upstream does make sense,
-> because it more closely matches what distros/users actually run.
+Debian does enable it explicitly on some supported architectures, but not all: https://salsa.debian.org/search?group_id=2107&nav_source=navbar&project_id=18670&repository_ref=master&scope=blobs&search=path%3Aconfig+CRASH_DUMP&search_code=true
 
-Well, at least Debian did not enable it by default as otherwise we wouldn't
-have noticed this change downstream.
+By my count, 6.9's new default affected mips, powerpc (32-bit), riscv, and sh in Debian.
 
-Adrian
-
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+-Dave
 
