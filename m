@@ -1,95 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-543-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-544-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F8095F535
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 17:33:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F5B95F53A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 17:36:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WsvpY0y0Dz2yN1;
-	Tue, 27 Aug 2024 01:33:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WsvsS225pz2yGY;
+	Tue, 27 Aug 2024 01:36:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724686421;
-	cv=none; b=UZyRIrhXk/T54ysGpvJcbf20fbFJPWEeROu84HZcMkfCzFojSLExoG+EFdPIJ0CzfvUQ1xcJa/DPpCAqy24lnYKaLi+Gic4zzYYplBshEqHfc/qhPhmMwCp9u2mLDT1XGw90KvfSTC4PdCgh+ITfanmOvWJb7291nEVjmJazrcvzd4rA6X895YjohBgzdYlKEtw2wEjVk74ISCOYdf0dMQgS9mYsfRB01FC/HP9+novlvtaGz7yUMtbV5feAS5rouV2SGqXe44oSOCwtiMPWh9rk1+nO069EXHLXJAEQtXT4Qw/je4LSX7wkVsMgIDvhj/IUpIEifOXVeME2j2vd4w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724686572;
+	cv=none; b=Jh79/keRCW8MMcJGP/4HtJLNLyVfOj2ks8JrvwQhtKHFy/V6/9os6BqE7/jT0B0M9oTwWYi45+CP/A9foigvvCgMay2pczzh2unONWFCA2IWt5/Ui3vEI+vPGB1WiDFxKVZ6bNtOyHIkVp/15DMY0cvVyrNFXVmC6xsvLILhThYX3tx8ma6kwcXzwt/ovqAsJLPHyCR7y9xy2VwE7G33p8ZB0zQenHvL6jFjXiLhK47v9HXmO4QzL90Fqcse0W3MqghMu3vaQ/8rF2Mj9LbWZVpSZJD/nZzqlOvgAVa1XyctAGctqZg3w1Po65k5ph+ZKk9dMTPtNAMfSk+vajOfuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724686421; c=relaxed/relaxed;
-	bh=fLHVmwuLAYPsFURDKjEb+NeYe5prtzLVT02SsD4UDUM=;
+	t=1724686572; c=relaxed/relaxed;
+	bh=cESSHXskD+sJaZuUdSBNbOIwRU9Ta6x+vqFCdK1xES8=;
 	h=DKIM-Signature:DKIM-Signature:Received:X-MC-Unique:Received:
 	 X-Google-DKIM-Signature:X-Forwarded-Encrypted:X-Gm-Message-State:
 	 X-Received:X-Google-Smtp-Source:X-Received:Received:Message-ID:
 	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
 	 Autocrypt:Organization:In-Reply-To:X-Mimecast-Spam-Score:
 	 X-Mimecast-Originator:Content-Language:Content-Type:
-	 Content-Transfer-Encoding; b=bFrHuaGCyV6VQIl5s//n5TDubMB8p0Pw42Vs+DgzGgXgPSjqkURHHmUU6LwO5J4s2aBazAjjOXFoo5H5R4RnytBO46lwDzixj9B5eRqj9nFMSfzACOgrsn1jndAfAUiVVGCkjgNd3zQFnc+g19LKxmmNpx15FaZTRKKxem/ZOfcoyJDRWajlDcbqyY1ucPDGxvO+1RJkNvexTzpObVwImlzwH9VAG6Lzxo0GSF0jifjnxrRVdtPx2V5W5Zw6YAixGqXEgchQjuajgTO80JKWdkHeO5oQwNpPLk7rb7VFAqL/kpOdngTL7KY8BbYYQpULL08L9NPNMZn7R3rHqgLoVw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iIpaVVW1; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cH1i0d7V; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 Content-Transfer-Encoding; b=DOU/0vFdMgsUoD4nVGjG2BilObACVdpwKVFauxNca3f6B5G9d8KnvuoDYF4NDQj8r53flwAhCEw2TkNdD+UuLbpS+FTyoUGkLh4/sHAWvMBAUIJOm9ndXeDZCs/f69L8MWqFlDPQoiskxkO59cTMqO9VQle+Ds20PWuBXjn0g/rbCnoK9SBDj1G37y5dygCjvJwtHvo8Wu4ueV1T1qAEBgtSz44eq0xPggjVuxj8VpZuOTkcanc02zkTh2LBQ6x0emIl9b/aZVa9rsdNihlDcRLcBIIfTfm3bQlI0FHBpTUDV5x3bBLNWRO7s3HzYKxLZJEVnYpvTViALf3yORkqmA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TKVKhWXH; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NgdkAvOt; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iIpaVVW1;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cH1i0d7V;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TKVKhWXH;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NgdkAvOt;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WsvpX4ZsRz2yGY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:33:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WsvsR5XBnz2xWc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:36:10 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724686416;
+	s=mimecast20190719; t=1724686567;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fLHVmwuLAYPsFURDKjEb+NeYe5prtzLVT02SsD4UDUM=;
-	b=iIpaVVW1QoRRejYaoGzUEmMFv+1wSzE3S3nVR1EqrNm2vEIN40y+ohu7IzvP5AM1i8Nv/Z
-	NYs3Ao0FqgaGBhxAb7DT/g/owddF8V/XO5kYMWP9m2ruurcMewwO3VjV8m3/CFkT946psX
-	yBRJz2rbW0GwWhRcDVlxYG2hb1mAVF8=
+	bh=cESSHXskD+sJaZuUdSBNbOIwRU9Ta6x+vqFCdK1xES8=;
+	b=TKVKhWXHz0sQK+VMuJ7S14Wnp+MYR4sez8jRsth5Pk7ORLbl8YU4eb51S2lSwrKQq7tab8
+	VNjQo1J0Sl3Qgvqy3RCAAZrL6xiJadd0eY9t/aeoD49x5cLYjW4igZaXE6rLwkg9qx+x+R
+	LGmN8inwHLi7hT/A6f6Rm0uSa2Z7Dxg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724686417;
+	s=mimecast20190719; t=1724686568;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fLHVmwuLAYPsFURDKjEb+NeYe5prtzLVT02SsD4UDUM=;
-	b=cH1i0d7Vsl6ePGvGVramWTlG0rCHcS6RwPDv+MOceklieeAk/2zP95EzqtHTLTUweDaJrY
-	2Ek/5jKvVQ8zueGx1AFSkRuaCYjKocL06AVGfhxP03hZQ/+j6P78/La6q1/kpiDoe2tWOF
-	6wWypMrwQk8pp2i3Hluy9YI1kzH7MYo=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=cESSHXskD+sJaZuUdSBNbOIwRU9Ta6x+vqFCdK1xES8=;
+	b=NgdkAvOtzIhKC4/nbRpOPHOEnCMkad8DN5CS2qf5jVBGqS4XIcFl/SoDxZfiBt5wJ6HPR2
+	m5D9qFTtvvhOV+oGgVPRYBCR6E6mZHv/VN2iZPLxNEhie/5HBkOcRX+/d0pJgxUjQUVTBK
+	NdmkfmTeKka0u1/uvE2ncXgGdz24zR4=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-m-oe7nTeOSOOeIStcntCBw-1; Mon, 26 Aug 2024 11:33:36 -0400
-X-MC-Unique: m-oe7nTeOSOOeIStcntCBw-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-371afcaab22so2946911f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 08:33:35 -0700 (PDT)
+ us-mta-373-mNNvDP_mNsmpwV49Q1GG0w-1; Mon, 26 Aug 2024 11:36:06 -0400
+X-MC-Unique: mNNvDP_mNsmpwV49Q1GG0w-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-53350003ef9so4340496e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 08:36:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724686415; x=1725291215;
+        d=1e100.net; s=20230601; t=1724686565; x=1725291365;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=fLHVmwuLAYPsFURDKjEb+NeYe5prtzLVT02SsD4UDUM=;
-        b=Yzw5bZneifCxGlkf1NLZEr1v9qn0ZgnDOVYo0Y+1GRCXr5a32RVoOifJ5h3674Vauu
-         NKm9mqNVP9IMe6djRCZUPabG7lpjEPbKivVX6BTulPHSf1e13ev0z1xNMbBTdF/FvxdU
-         6ki8ayKYTgWQG/Lk+GcKnSYqxIgR7hlyA+nCGqK5toLVBZuPkAOTvoW3aCWk3s1EnbpS
-         0R+UHMd5UxJKGZwgmCBtk3WLQrLV2ibWQNQbzHoEUZ19M7mnESwBrozGVsPGDQQXoorR
-         so/j8suK4kymPAzNg8zDldnJXgYNd8CrSkjKIuzkPaJsGJDasty1aQIwYRK5HPiP5U8B
-         mPpA==
-X-Forwarded-Encrypted: i=1; AJvYcCV1ellCAQnhkxoixDQdb//QPI0sLzftsSozluElrkTtqNTyp0ITbsJMGkKcg8l2vDtdqYLj8MdbpmoTxAo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwIQPjJd8HpyZZMAS7TsFYuUTImn5x6QT9LxVX2fv4fZT0YLIW5
-	8/KxYbpV+L1kbN0IuN3Iwr3JZXI+FitDwd3ItedYuGV75Pun11N1KEgo5n2EZfyCNx3UHKT9M4S
-	wY3IgrCHbJal7geX/xkhZN1JweIus5I8cW8huCaxB1YTCSnlV0rsEz/wUKjAsCWsvjcJOQUUj0w
-	==
-X-Received: by 2002:a5d:58fb:0:b0:371:7dda:d7d9 with SMTP id ffacd0b85a97d-373118400c7mr7060076f8f.9.1724686414513;
-        Mon, 26 Aug 2024 08:33:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHytmu9SRRnL82xMRuRcaexgdIVoLY9mV2pWJmUW8w6VZNMmeRxH8CESB56unxuK81kkNwCqA==
-X-Received: by 2002:a5d:58fb:0:b0:371:7dda:d7d9 with SMTP id ffacd0b85a97d-373118400c7mr7060032f8f.9.1724686413712;
-        Mon, 26 Aug 2024 08:33:33 -0700 (PDT)
-Received: from [192.168.3.141] (p4ff23ced.dip0.t-ipconnect.de. [79.242.60.237])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37308110436sm11025885f8f.11.2024.08.26.08.33.32
+        bh=cESSHXskD+sJaZuUdSBNbOIwRU9Ta6x+vqFCdK1xES8=;
+        b=MfMXE0t4TAJR2o+sD31ayI3RkXr9w3KugZK6zjA6MnRPj8PyedVz32HatbqaEP2b8m
+         GH3QTi2jqE0W8WGB9AEnmT3m4+05z8n5/DiMmQ9Jx7kPaZX9NBC7DM/DselQ3T6phbHL
+         Wq2zDPWv4TXLDVJOaUPlOI6SROJL1HYyzJkhGNaK1ELYCqcHj0d2C/UtjAcPf4KnqOjf
+         BMd7UUkBEB9J8io1XGKYyrL9wVF2K7RhkRr983XuWIEosS4AplmMw4oFSGOELKCOOvg8
+         OqRAbq/MGa+iBFfGOe6xjou/0wWGRTO71bJMGIlh8FIRojial7Ci7ZUR69VY8S5XDHkc
+         qGPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXifGEBi3BUsjVL3r15LY3miyQO0auBextjbk5uXDw1dW58EbkCEuGfkrzmtOFStl2qPjxVZzZ3vWAKQNo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy1cHNjQ2sHBvxXOaoZpVQJ5NX1MSmp6DPjbDCYHT3KHyZ5CZ1S
+	iSt2E1k+FS5pUBldJIU2QGOFJPIavLTy5x3+Za1kG3jLskwqoKHbsmO8ydmqVQvWgQvldoYOBrj
+	WOoQ4b65kgE8PvyxrDVldWdb+0J+9rffa/8gQ0qR0gF1CMNUHqybOTTpHsWQetb0=
+X-Received: by 2002:a05:6512:10d6:b0:533:44e7:1b1a with SMTP id 2adb3069b0e04-5343877a8d9mr6634914e87.17.1724686564874;
+        Mon, 26 Aug 2024 08:36:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHLKIdG1QGRZKHQzLqypoACO2tglz779OzDLGfOoDxl4cCYZ/EqNiXufYNBYiqr6Gj/OyhEXw==
+X-Received: by 2002:a05:6512:10d6:b0:533:44e7:1b1a with SMTP id 2adb3069b0e04-5343877a8d9mr6634868e87.17.1724686563811;
+        Mon, 26 Aug 2024 08:36:03 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c737:1900:16b0:8dc:77e:31af? (p200300cbc737190016b008dc077e31af.dip0.t-ipconnect.de. [2003:cb:c737:1900:16b0:8dc:77e:31af])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5334ea360a9sm1500768e87.63.2024.08.26.08.36.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Aug 2024 08:33:33 -0700 (PDT)
-Message-ID: <0b7ca0c2-7a64-4d0e-aa18-2fc4257c199e@redhat.com>
-Date: Mon, 26 Aug 2024 17:33:23 +0200
+        Mon, 26 Aug 2024 08:36:03 -0700 (PDT)
+Message-ID: <ea518cf0-890d-4292-b775-dd3880c85bc6@redhat.com>
+Date: Mon, 26 Aug 2024 17:36:00 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,8 +99,8 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/14] mm: khugepaged: __collapse_huge_page_swapin()
- use pte_offset_map_ro_nolock()
+Subject: Re: [PATCH v2 06/14] mm: handle_pte_fault() use
+ pte_offset_map_rw_nolock()
 To: Qi Zheng <zhengqi.arch@bytedance.com>, hughd@google.com,
  willy@infradead.org, muchun.song@linux.dev, vbabka@kernel.org,
  akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
@@ -109,7 +108,7 @@ To: Qi Zheng <zhengqi.arch@bytedance.com>, hughd@google.com,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 References: <cover.1724310149.git.zhengqi.arch@bytedance.com>
- <2b7dceaa12da273c6decf92e3bf2ebc4f4e85ec5.1724310149.git.zhengqi.arch@bytedance.com>
+ <5acabedfae7ded01b075960b4a91f2e15b4d76b5.1724310149.git.zhengqi.arch@bytedance.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -156,7 +155,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <2b7dceaa12da273c6decf92e3bf2ebc4f4e85ec5.1724310149.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <5acabedfae7ded01b075960b4a91f2e15b4d76b5.1724310149.git.zhengqi.arch@bytedance.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
@@ -164,36 +163,52 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 22.08.24 09:13, Qi Zheng wrote:
-> In __collapse_huge_page_swapin(), we just use the ptl for pte_same() check
-> in do_swap_page(). In other places, we directly use pte_offset_map_lock(),
-> so convert it to using pte_offset_map_ro_nolock().
+> In handle_pte_fault(), we may modify the vmf->pte after acquiring the
+> vmf->ptl, so convert it to using pte_offset_map_rw_nolock(). But since we
+> will do the pte_same() check, so there is no need to get pmdval to do
+> pmd_same() check, just pass a dummy variable to it.
 > 
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 > ---
->   mm/khugepaged.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
+>   mm/memory.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
 > 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 4a83c40d90538..53bfa7f4b7f82 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1011,7 +1011,11 @@ static int __collapse_huge_page_swapin(struct mm_struct *mm,
->   		};
->   
->   		if (!pte++) {
-> -			pte = pte_offset_map_nolock(mm, pmd, address, &ptl);
-> +			/*
-> +			 * Here the ptl is only used to check pte_same() in
-> +			 * do_swap_page(), so readonly version is enough.
-> +			 */
-> +			pte = pte_offset_map_ro_nolock(mm, pmd, address, &ptl);
->   			if (!pte) {
->   				mmap_read_unlock(mm);
->   				result = SCAN_PMD_NULL;
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 93c0c25433d02..7b6071a0e21e2 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5499,14 +5499,22 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+>   		vmf->pte = NULL;
+>   		vmf->flags &= ~FAULT_FLAG_ORIG_PTE_VALID;
+>   	} else {
+> +		pmd_t dummy_pmdval;
+> +
+>   		/*
+>   		 * A regular pmd is established and it can't morph into a huge
+>   		 * pmd by anon khugepaged, since that takes mmap_lock in write
+>   		 * mode; but shmem or file collapse to THP could still morph
+>   		 * it into a huge pmd: just retry later if so.
+> +		 *
+> +		 * Use the maywrite version to indicate that vmf->pte will be
+> +		 * modified, but since we will use pte_same() to detect the
+> +		 * change of the pte entry, there is no need to get pmdval, so
+> +		 * just pass a dummy variable to it.
+>   		 */
+> -		vmf->pte = pte_offset_map_nolock(vmf->vma->vm_mm, vmf->pmd,
+> -						 vmf->address, &vmf->ptl);
+> +		vmf->pte = pte_offset_map_rw_nolock(vmf->vma->vm_mm, vmf->pmd,
+> +						    vmf->address, &dummy_pmdval,
+> +						    &vmf->ptl);
+>   		if (unlikely(!vmf->pte))
+>   			return 0;
+>   		vmf->orig_pte = ptep_get_lockless(vmf->pte);
 
-Suboptimal that the pteval comparison + unmap is buried in 
-do_swap_page(). Moving that to the caller is also not significantly 
-better ...
+No I understand why we don't need the PMD val in these cases ... the PTE 
+would also be pte_none() at the point the page table is freed, so we 
+would detect the change as well.
+
+I do enjoy documenting why we use a dummy value, though. Likely without 
+that, new users will just pass NULL and call it a day.
 
 Acked-by: David Hildenbrand <david@redhat.com>
 
