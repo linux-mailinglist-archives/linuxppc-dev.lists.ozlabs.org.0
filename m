@@ -1,37 +1,36 @@
-Return-Path: <linuxppc-dev+bounces-547-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-548-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9326695FBDD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 23:40:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F1095FBE1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 23:41:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wt3y92Htyz2y8W;
-	Tue, 27 Aug 2024 07:40:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wt3zH3j22z2yMh;
+	Tue, 27 Aug 2024 07:41:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.255
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724685621;
-	cv=none; b=PmSW/rJcpla8p1pPnT5hq0uoJiqsT93BtQfXsXc24jm1aCNxK+YCt9BSDT3Jn90beJvEBA/ibaTLx6wqMP5w0QWWEz2QZ6fvXrZ26+2lQsV/9yVMaRv1H0BNH/Eh7z4D/TgyUPGiSBx9SZJzoBWhcyascCoJ/uIoLWY9I+lT2RQToslL3PkYNv655/wTTcj5Tv1nePUA4LR6d2Swf0DF/0xE4PQ28QZtCDfVjGSF04IBpwRQYyQ8Lww73Loe2UB6IxseOk6AY5omxQWSja0cBrR4pMpzm31gFE2AdlsyGmHjj+tlqvuCjpKbpWjAcOeVtpVaf/ekzvzVhfJqiOdp5A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.35
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724685622;
+	cv=none; b=SADMLRmqt3bQnDeSijcxl/UaQiPoKjo0uXS/UmHk4y7Bg3Lwkw/eVKmo0CEAWwdfx48XBsS+bkgRrIva/Nj4AUAgDqZXzcIW1V0DtDWvTnkwY+LEVG/4vxBksnkENth872cCQbG2aJErpQ4mg+laj/o1Hlyp2W9zwr+gmJGr/ECjYGZtWxCzktncO/7ACRI1Y0+65ca1r2KjmhRXR0CbgVXSz0gLtr7uOCOXcOShACS123mCagM3vs5awidUpXZ6HLVhMGfS4rWmU6L1D+UJRO0MOpR05oUmwXWeGJTarZq7spYLKZeJ5/nKXtm47rWRgbwJdMo5LUDxGyc3+iRohQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724685621; c=relaxed/relaxed;
-	bh=a7lprmUU0TqJPbcK41GiWiLzgfDo/mGb+mtxGIXHIBM=;
-	h=X-Greylist:Received:Received:Received:From:To:CC:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	t=1724685622; c=relaxed/relaxed;
+	bh=5OBcE1bBS1fURtoMUF7ZhYU8f5DJqDUkB/ypiBUjPc0=;
+	h=Received:Received:Received:From:To:CC:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy; b=CR/rmAXWTfpvYRyMyHehOLKc668la/sD8wmnpc+byGIrkmqKuGxWC8eJigA2OVExnG5y9tmB1edJnde/rgGKkJhI6H1EjS632x7CUAdlGjLZMHLTm5JRrE7drrsLgh3pdZ575zry5pkLHhfb8I7nROQkA+b635FIdGaVmgkWZR80eHEnkz0/95uT+jo/EsUQhWqbLq2QrSktA+pnYH+Oh+Pf0JFq39DtaVVsYeyXZLcP8UdNl2CW0aMm+fmR4ViF+rNy3/kPjSpajknO4VSR65y6V/9ZX0jPqxWAWAwdmcrxNgHEvoFGD5H8khzFs9mki4ZQMrzJELBVGEYYodw9JA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=huangxiaojia2@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+	 X-ClientProxiedBy; b=cfwM5c0r9J7+YjfGLp6OWM7NB/IzvrTixP8H/S+6QSYPVBDJOAHQ/JrDdJ8meUDfqoOywBNddjO35zKwQZa8MSEzNwX5+U4faOJDgVeYCDVzk2U9AROmrjdrBOFosjN7gxqIENcHTJmQYdsMk03CMo8aiGm1woSNDUb9XE577StOFvghsh2S5Ftuv7GFMDyFCWighlnu2AbJjGum9jYxvdEB23wFSBp75a3QUxlvgGvGI8oGTq9c3o/amGzd2sDIYa9q9FC5ZzsOhRDSuljZkuMxULwyn5wbTBJ9iv1ugKXeJJI4L6fIyGPL0TKx0YLR0tRMsJxE3NmY8IVrWChf+Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=huangxiaojia2@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=huangxiaojia2@huawei.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1086 seconds by postgrey-1.37 at boromir; Tue, 27 Aug 2024 01:20:21 AEST
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=huangxiaojia2@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WsvW9073tz2xfK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:20:17 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Wsv564GTBz14JcT;
-	Mon, 26 Aug 2024 23:01:14 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WsvW90XwQz2xwc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 01:20:18 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Wsv5q010qz1S90G;
+	Mon, 26 Aug 2024 23:01:50 +0800 (CST)
 Received: from dggpemm500021.china.huawei.com (unknown [7.185.36.109])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5D504180101;
+	by mail.maildlp.com (Postfix) with ESMTPS id 8ADFC1402E1;
 	Mon, 26 Aug 2024 23:02:00 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by dggpemm500021.china.huawei.com
  (7.185.36.109) with Microsoft SMTP Server (version=TLS1_2,
@@ -41,9 +40,9 @@ From: Huang Xiaojia <huangxiaojia2@huawei.com>
 To: <mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
 	<naveen@kernel.org>, <yuehaibing@huawei.com>
 CC: <linuxppc-dev@lists.ozlabs.org>, <huangxiaojia2@huawei.com>
-Subject: [PATCH -next 2/3] powerpc: powernv: Constify struct kobj_type
-Date: Mon, 26 Aug 2024 23:09:56 +0800
-Message-ID: <20240826150957.3500237-2-huangxiaojia2@huawei.com>
+Subject: [PATCH -next 3/3] powerpc: pseries: Constify struct kobj_type
+Date: Mon, 26 Aug 2024 23:09:57 +0800
+Message-ID: <20240826150957.3500237-3-huangxiaojia2@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240826150957.3500237-1-huangxiaojia2@huawei.com>
 References: <20240826150957.3500237-1-huangxiaojia2@huawei.com>
@@ -72,47 +71,38 @@ On a x86_64, compiled with ppc64 defconfig:
 Before:
 ======
    text	   data	    bss	    dec	    hex	filename
-   3775	    256	      8	   4039	    fc7	arch/powerpc/platforms/powernv/opal-dump.o
-   2679	    260	      8	   2947	    b83	arch/powerpc/platforms/powernv/opal-elog.o
+   1885	    368	     16	   2269	    8dd	arch/powerpc/platforms/pseries/vas-sysfs.o
 
 After:
 ======
    text	   data	    bss	    dec	    hex	filename
-   3823	    208	      8	   4039	    fc7	arch/powerpc/platforms/powernv/opal-dump.o
-   2727	    212	      8	   2947	    b83	arch/powerpc/platforms/powernv/opal-elog.o
+   1981	    272	     16	   2269	    8dd	arch/powerpc/platforms/pseries/vas-sysfs.o
 
 Signed-off-by: Huang Xiaojia <huangxiaojia2@huawei.com>
 ---
- arch/powerpc/platforms/powernv/opal-dump.c | 2 +-
- arch/powerpc/platforms/powernv/opal-elog.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/pseries/vas-sysfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-dump.c b/arch/powerpc/platforms/powernv/opal-dump.c
-index 16c5860f1372..608e4b68c5ea 100644
---- a/arch/powerpc/platforms/powernv/opal-dump.c
-+++ b/arch/powerpc/platforms/powernv/opal-dump.c
-@@ -210,7 +210,7 @@ static struct attribute *dump_default_attrs[] = {
+diff --git a/arch/powerpc/platforms/pseries/vas-sysfs.c b/arch/powerpc/platforms/pseries/vas-sysfs.c
+index f9f682724e77..9e05a0e99cad 100644
+--- a/arch/powerpc/platforms/pseries/vas-sysfs.c
++++ b/arch/powerpc/platforms/pseries/vas-sysfs.c
+@@ -162,13 +162,13 @@ static const struct sysfs_ops vas_sysfs_ops = {
+ 	.store	=	vas_type_store,
  };
- ATTRIBUTE_GROUPS(dump_default);
  
--static struct kobj_type dump_ktype = {
-+static const struct kobj_type dump_ktype = {
- 	.sysfs_ops = &dump_sysfs_ops,
- 	.release = &dump_release,
- 	.default_groups = dump_default_groups,
-diff --git a/arch/powerpc/platforms/powernv/opal-elog.c b/arch/powerpc/platforms/powernv/opal-elog.c
-index 554fdd7f88b8..5db1e733143b 100644
---- a/arch/powerpc/platforms/powernv/opal-elog.c
-+++ b/arch/powerpc/platforms/powernv/opal-elog.c
-@@ -146,7 +146,7 @@ static struct attribute *elog_default_attrs[] = {
+-static struct kobj_type vas_def_attr_type = {
++static const struct kobj_type vas_def_attr_type = {
+ 		.release	=	vas_type_release,
+ 		.sysfs_ops      =       &vas_sysfs_ops,
+ 		.default_groups	=	vas_def_capab_groups,
  };
- ATTRIBUTE_GROUPS(elog_default);
  
--static struct kobj_type elog_ktype = {
-+static const struct kobj_type elog_ktype = {
- 	.sysfs_ops = &elog_sysfs_ops,
- 	.release = &elog_release,
- 	.default_groups = elog_default_groups,
+-static struct kobj_type vas_qos_attr_type = {
++static const struct kobj_type vas_qos_attr_type = {
+ 		.release	=	vas_type_release,
+ 		.sysfs_ops	=	&vas_sysfs_ops,
+ 		.default_groups	=	vas_qos_capab_groups,
 -- 
 2.34.1
 
