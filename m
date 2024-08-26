@@ -1,55 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-524-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-523-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EECB95EBDB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 10:27:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D643295EBC2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 Aug 2024 10:23:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WskLr6rl9z2yFK;
-	Mon, 26 Aug 2024 18:27:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WskGJ4Jm9z2yGM;
+	Mon, 26 Aug 2024 18:23:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724660852;
-	cv=none; b=VY3O14IA/CEwf1fmjDK8WqJDoooQlnYJBPC07XqCMTpMsxUQ9cAT6T6uH8y/pFwtzsA0BEZHClFKcsG1L5p94e7yCFqsdR6JOxI7RIaaZWdDKTtqttKVobCMqmOPI9GxQACrEKtbbeGJG6EjlEu5oM3WWNIA5PHBRLUWmv1H7YDlL5fzVnOgvIwc92Xj8+H+QxdZ/fKm7l3Q/QJ5Jq4IdomZ1sS67HQEtoAXnkWvkLurR2GaxQo3oP3WoO7a1d9veZ7lLCR5MgzCXopZ76+PPc6HcRum4SRlPEp8CmVivUpCz4WTioY8w56/TuJ9ea5ga2HuydOMBtnGj8I+N6yZ1A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724660616;
+	cv=none; b=kiEkC1GuP71dYdfHt038fo9y4WF/qVchgM/G+7uk7q8psbi4OXlUImpHm+fUQk7OtjVJF8Qy0+yA92ocZGfMQ82cF9NHHdyJD+gZR0H+DjvKr70+7kkWNrk5OKW2K56wsPtpH/bhdVzO6XLfni0A2ecdtGxkkwcRohvXgy2+97UoaJ91Znz7niWhpVOrSKf6DsmadsKUyawM/ytL2NCwGLZCc80OZbnfv6B5mqRMfD+35vSIYRPGkHJKWOMQQxsMY0x6qm6UhWV3sEYTjeQu9RRpW5CyFgv2lWKAXTt9wxeDogT+42XHDZdnBYe8BrzTWAGmwS5M1HFNWo4rhQQkuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724660852; c=relaxed/relaxed;
-	bh=HBUmQTDhGzpRlPPsawchQxtsrEP7CCWrGrVX0xuqkFU=;
+	t=1724660616; c=relaxed/relaxed;
+	bh=qkFrjwbdGTStl7OVlIXz1n12hbxUuy9LwHmcEdC3iMI=;
 	h=Received:Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To; b=eNBVHA4gmGHTx6IkOdW+COqW0Cj+0jrve4xzr3fp4gLdzzjpoWhb8irP/N5Hr6aVNrjH66sJQ5jWBWm8D5OJaHckjr/SSTRYNrkBRAIf/1P82Ln+RUStbbD2X9lZTPwNDJnMjiyI9VJQu/K8kEIny4HC1bdW0hQQEE7IaTwuLE917J8P4u30iJbtL8ec61OwZX0xlq+U+Dj0+yuUAQUNYuKTxgIRpcIkf1FaUhHJTbFiDBxURTaJ9hGntMhr7CZz+20IUI+IA4hhBqOKZUuv1imWXhmVimjcVKzMTq7mno/L8270y+BPXkdx7ndD2mrif4k5vSlt2g98FT8Ie5PwUQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=G+es6dtJ; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=kq7x=pz=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Disposition:In-Reply-To; b=Zddw1wyKSiFKqeYiOj2GtuYN6GrejomFj5/+49KrBnv5o5xzPxlxu+RQ8ftH34KI7oQRZ2kPC/KNTLA6wX/q63cqVhvg7R778DTKwwDTe8NjKXTpU6hpdiUFKt8Ogox3Umz/KhmDTA8IJ6Lldqcpk+wE76mhFCvcgfq1FWlUlbTg/Bjb11B4eX5Rwo8+G1LVG6X5QC53a2YSSoRRqK5GbQ3tdfbg1Mq7qRVTbU8gJXBD4t5V5nqtM/h9gdQ/62wmpd2tk4/7I96F1s7eP5Z5yygMR5K7RmkgNcNP4y8pyaMfTg1O/IV/10RVcPGyuVbIoVbLh7m38TKF0kXSGRipBw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=otTIgrC+; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=kq7x=pz=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=G+es6dtJ;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=otTIgrC+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=kq7x=pz=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=kq7x=pz=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WskLp60Ylz2yDY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 18:27:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WskGJ2ZB1z2yFK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 18:23:36 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D178EA42008;
-	Mon, 26 Aug 2024 08:27:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1164C8CDD3;
-	Mon, 26 Aug 2024 08:17:04 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 5D256A41FA0;
+	Mon, 26 Aug 2024 08:23:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4163C8CDC1;
+	Mon, 26 Aug 2024 08:23:31 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="G+es6dtJ"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="otTIgrC+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1724660223;
+	t=1724660610;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HBUmQTDhGzpRlPPsawchQxtsrEP7CCWrGrVX0xuqkFU=;
-	b=G+es6dtJI+WdfXP/RQZRpJVmw+L7y4//5XG1cNyFbgtT4lVYwh1zPdS8zRYE7pYEOQOEki
-	TsL3YKWBg+PZmKHNR6I88paWRAUxfSXKDLMR4TfUocs2r4RP+Vb9eYYFuZRfwZEIQam7j3
-	UacCwC9xjKUV4ZgUbKdPU2VtnWlD9kk=
+	bh=qkFrjwbdGTStl7OVlIXz1n12hbxUuy9LwHmcEdC3iMI=;
+	b=otTIgrC+soX/VqUWzpk/m1mnp5EFDbirwfJwWcvktux0MKC8gvCukjU40UHEqN77mMAbLr
+	7OSc7RG8dxenJKS4pZoRfAhfRbt3mFK0RlApFAN8AAbeWZlsVTEjG7PeL6jPUY08oeTk5F
+	/KFMChRXYVZaKTmepPvIcM3dCYTkmvc=
 Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id cf114949 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Mon, 26 Aug 2024 08:17:02 +0000 (UTC)
-Date: Mon, 26 Aug 2024 10:16:54 +0200
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 7287b5b0 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Mon, 26 Aug 2024 08:23:30 +0000 (UTC)
+Date: Mon, 26 Aug 2024 10:23:20 +0200
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Michael Ellerman <mpe@ellerman.id.au>,
@@ -69,13 +68,11 @@ Cc: Michael Ellerman <mpe@ellerman.id.au>,
 	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
 	linux-arch@vger.kernel.org, linux-mm@kvack.org,
 	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 06/17] vdso: Change getrandom's generation to unsigned
- long
-Message-ID: <Zsw59hqqbixw3A66@zx2c4.com>
+Subject: Re: [PATCH v2 00/17] Wire up getrandom() vDSO implementation on
+ powerpc
+Message-ID: <Zsw7eP_X_Vw4FOm3@zx2c4.com>
 References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
- <525b48eb79978ddba2d1b8ee23b27bd6c5b0b4ee.1724309198.git.christophe.leroy@csgroup.eu>
- <Zswzu1l3xO99KN3I@zx2c4.com>
- <7d58be73-a8e5-4ec7-bbdc-238b0c25c77b@csgroup.eu>
+ <Zswsennpw6fvigVh@zx2c4.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,73 +84,31 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7d58be73-a8e5-4ec7-bbdc-238b0c25c77b@csgroup.eu>
+In-Reply-To: <Zswsennpw6fvigVh@zx2c4.com>
 
-On Mon, Aug 26, 2024 at 10:01:17AM +0200, Christophe Leroy wrote:
+On Mon, Aug 26, 2024 at 09:19:22AM +0200, Jason A. Donenfeld wrote:
+> Hi Christophe,
 > 
+> Thanks for this series. There are quite a few preliminary patches in it,
+> before you get to the PPC part, which fix up general build system or test
+> harness correctness issues. Since some of those affect all architectures
+> that are adding vDSO getrandom() support for 6.12, I'm going to take
+> those into my random.git tree as a fix for 6.11 now, in hopes that the
+> new archs can mostly go into arch trees without too many tree
+> interdependencies.
 > 
-> Le 26/08/2024 à 09:50, Jason A. Donenfeld a écrit :
-> > On Thu, Aug 22, 2024 at 09:13:14AM +0200, Christophe Leroy wrote:
-> >> Performing SMP atomic operations on u64 fails on powerpc32.
-> >>
-> >> Random driver generation is handled as unsigned long not u64,
-> >> see for instance base_cnrg or struct crng.
-> >>
-> >> Use the same type for vDSO's getrandom as it gets copied
-> >> from the above. This is also in line with the local
-> >> current_generation which is already an unsigned long.
-> > 
-> > This isn't going to work when 32-bit userspace tries to access a 64-bit
-> > kernel.
-> > 
-> > I had "fixed" this with a vdso_kernel_ulong type way back in an earlier
-> > version: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flkml%2F20240528122352.2485958-5-Jason%40zx2c4.com%2F%23Z31include%3Avdso%3Atypes.h&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C41747dd989164267c1cc08dcc5a3c424%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638602554376441761%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=Tf9ShSN6aOOFZ1HymAmHhj0xhQ6BUtHJX95t50gsp9k%3D&reserved=0
-> > 
-> > But tglx pointed out in that thread that this actually isn't necessary:
-> > 
-> > | All of this is pointless because if a 32-bit application runs on a
-> > | 64-bit kernel it has to use the 64-bit 'generation'. So why on earth do
-> > | we need magic here for a 32-bit kernel?
-> > |
-> > | Just use u64 for both and spare all this voodoo. We're seriously not
-> > | "optimizing" for 32-bit kernels.
-> > |
-> > | All what happens on a 32-bit kernel is that the RNG will store the
-> > | unsigned long (32bit) generation into a 64bit variable:
-> > |
-> > | 	smp_store_release(&_vdso_rng_data.generation, next_gen + 1);
-> > |
-> > | As the upper 32bit are always zero, there is no issue vs. load store
-> > | tearing at all. So there is zero benefit for this aside of slightly
-> > | "better" user space code when running on a 32-bit kernel. Who cares?
-> > 
-> > So I just got rid of it and used a u64 as he suggested.
-> > 
-> > However, there's also an additional reason why it's not worth churning
-> > further over this - because VM_DROPPABLE is 64-bit only (due to flags in
-> > vma bits), likely so is vDSO getrandom() for the time being. So I think
-> > it makes more sense to retool this series to be ppc64, and then if you
-> > really really want 32-bit and can convince folks it matters, then all of
-> > these parts (for example, here, the fact that the smp helper doesn't
-> > want to tear) can be fixed up in a separate series.
-> 
-> So yes I really really want it on ppc32 because this is the only type of 
-> boards I have and this is really were we need getrandom() to be 
-> optimised, indeed ppc64 was sherry-on-the-cake in my series, I just 
-> added it because it was easy to do after doing ppc32.
+> So I'll reply to individual patches for that, mentioning which ones I
+> extract.
 
-I saw that you did in fact find a bit on ppc32 for VM_DROPPABLE. So it
-looks at least possible. Because of this generation counter business, I
-still think it might make sense to do in two steps, though, first doing
-64-bit, and then doing 32-bit after.
+I've committed a bunch of these to:
 
-As for the generation counter error you're seeing, I guess what we want
-is smp_store_release memory ordering semantics, but letting tearing
-happen (since the upper 32-bits will be zero anyway). I'm not sure the
-best way to do this, whether it's a new helper, or doing a WRITE_ONCE
-together with an smp barrier, or what. But I imagine it's something like
-that.
+    https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/log/
+
+For a v3, if you rebase on there, that'd make things easier for me to
+keep picking patches that I intend to send out for 6.11-rc6 later this
+week. And then hopefully your 6.12 ppc implementation can just go in via
+the ppc tree with my eventual ack on the crypto part, without needing
+these interdependencies.
 
 Jason
 
