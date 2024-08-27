@@ -1,85 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-595-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-596-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EC9960510
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 11:02:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235239605F0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 11:42:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtM4Z1ylsz2yV3;
-	Tue, 27 Aug 2024 19:02:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtMys4hYhz2yR5;
+	Tue, 27 Aug 2024 19:42:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724749342;
-	cv=none; b=cP3/zXL4N2v2oZTMJzUiPzDbX4wOseEXm3OI/9HkBLYT9fHbwfcXXzukOF6iqRKsOiVdStsQsw/GqwYmzvvGny6EXPASQLeHyKn4MLGy1KwsKXuZjSkCn/5s4bKzfQqqdg+TI+Ldlv+R/xEcEIarLmOx1gs8nGqrfFh2h7eXEBX8lXfh3iBhzibp+FLAk7Jq56NasKSWZSVbZ5ufDvSzj29xVKhhPu5gQqRAvkquNlomiEFB/KW05iivKBQH4/4BlYzQJLVflY0uUpQ0Pta16Mthmso+edh9LZfiuML8DxCjdZ0+1T2c6vOEx+durpusUCCQ8aIYZhkORgJukYzYtw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724751749;
+	cv=none; b=ELiCJAaDUObLNjAZDV+ZvZzLkLL4Sy9bprcN+28yifBpomavu9NDCU+9U3qpZDNROGrcIt8YyWMlmngjru4wtXbdw1z67i3oINNA+U8VufK/4ChHmkEj4eYkHICjKtG/4CFxkf4jT1EnPPLCNkvayMirvW1jkm+N2rm9HbVjCsRxylFHTHU2gFMf5baeH9/IstMQ/Tc0MiHY8OzxBiUdnTcA/ahpSszmw4bDlwAEgvV/VfHIUI3dWB/p5hmgTLX0wxHXBhwxontbibWn/LUFiSp9yaPMROMdgno8zW9bOz0YIybHD7TU+BNyZLhdRfrzaCmsC+4Z5Z4xWFMmYImipA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724749342; c=relaxed/relaxed;
-	bh=outpxqXc6KM2Oo4/0nqD4smTGWGwDj3DOJrNewpgErA=;
-	h=DKIM-Signature:DKIM-Signature:Received:X-MC-Unique:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Scanned-By; b=cd8Et8x0i4ER1uvte5S04hWACDi9dhjza4V9vo7NQTb9+K/4k1wLwSYyuj9w4hwN/pz5+XGKpfHPDtAYwQJ5uxLUynS5e/nZEQmQD35jf9A2NpBRrdAWx2ObVEpQt1wA/AaOYhEWvivdemwDtqLFBOS2DxzouG5iQQjfP30yjGYJxc9wEgPA39RsfXcZj+4xgVnzGdKKhyUnbry9NMMlOhl68ZhXKRxgmNfTts+C50VcVyXCaI9dni+xHtG0Hr5aRRoM+b5d09p04oI3G45sgCFRsxRHdwCVPVn9VfqeVCewxNR2lHSBaOQV9A4xK/IvA+tMwXKhF3zzN647NV9dwA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N1Wkvdzz; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WLtO8reA; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1724751749; c=relaxed/relaxed;
+	bh=JdIowXx5hArmXp0irpZ89oIJDLeZuVLuZPGcLtq5hgU=;
+	h=Received:Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=PZDLMxuVi0Pff40u4hPrKDP86sGGGrnqCuLgYP2OSlJ23TL05foHcTQke8RtrPSJyI7vza0L0GFdgYIB9aIGdjMYw6HU+ByYHE0nVB5+bkk3BXo19HL2fF16v7P0RIFKst4RmlOB+AcUM/I/FZXOCDyTXhQaIu6MDgE27hIL7Jh3YnIs5moE4twK3HelGpiu0/d6708IBFS9KyKVtLg+yTGyI+i695c2GB9SS1CzgQNWE/Dg0fS7KvJrtDcq9OvleSVtrk5QzSDm5lZlsgAXvwo37SG6+hzA0vtkhFMTnuar1+t36sRHS3BfHmfn20Tjr9ZT1QLlPBxVyWoezBNOWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=DxHa9hxJ; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=xpq3=p2=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=N1Wkvdzz;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WLtO8reA;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=DxHa9hxJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=xpq3=p2=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtM4Y5QsRz2yTy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 19:02:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724749333;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtMyq4rk0z2yR1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 19:42:27 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 2DB45A41790;
+	Tue, 27 Aug 2024 09:42:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94408C8B7CD;
+	Tue, 27 Aug 2024 09:31:54 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="DxHa9hxJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1724751112;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=outpxqXc6KM2Oo4/0nqD4smTGWGwDj3DOJrNewpgErA=;
-	b=N1WkvdzzDZOd8IDkWCvREPDSBaLOj59fzHV5vSPtoY9WDifl8tFHdmq8DDRnqE0d+khI1Z
-	NWXAwpTCTMgtGgKf3CrkTjIMFYT/rqfGYhDgTi5Qt4/0P5s29TBJPvVvq2HuRgD/EhrJcp
-	8/owWw3xyzI5VwFEpwRSzCikIwTAVno=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724749334;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=outpxqXc6KM2Oo4/0nqD4smTGWGwDj3DOJrNewpgErA=;
-	b=WLtO8reAD9dI6vjKb8G/CJYbIty+JwlRynkohZgoD1AjZV89wKlPryQLXYN+U+uhvelRFr
-	a1f8rICZ3pVBHr4WMqiTlbZrL2yazim1i3dp1jziUOUaJ5Ie3eB3zf0D80oFW63oNbJF7K
-	+qiOzlqkVnGh0ay8CDtr3wWtJV50fzk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-468-rv4ABExJM5egEclpNPuyLA-1; Tue,
- 27 Aug 2024 05:02:08 -0400
-X-MC-Unique: rv4ABExJM5egEclpNPuyLA-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7B6471955BFE;
-	Tue, 27 Aug 2024 09:02:05 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.42])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 416C019560AA;
-	Tue, 27 Aug 2024 09:02:02 +0000 (UTC)
-Date: Tue, 27 Aug 2024 17:01:58 +0800
-From: Baoquan He <bhe@redhat.com>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Dave Vasilevsky <dave@vasilevsky.ca>, linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org, mpe@ellerman.id.au,
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Reimar =?iso-8859-1?Q?D=F6ffinger?= <Reimar.Doeffinger@gmx.de>
-Subject: Re: [PATCH] crash: Default to CRASH_DUMP=n when support for it is
- unlikely
-Message-ID: <Zs2WBgtADYxzVMyt@MiWiFi-R3L-srv>
-References: <20240823125156.104775-1-dave@vasilevsky.ca>
- <CAMuHMdVYNhFJ+qBDP3_fi9oeHsgOL0vqPe1YqE18+M8n1onssw@mail.gmail.com>
- <09c29a3c4879d4ce5d8b97fd60d8ba5e38bed979.camel@physik.fu-berlin.de>
- <Zs1wpHxfTcwKr517@MiWiFi-R3L-srv>
- <f355e26eead641f5f281372aadf9dee7de19a4c7.camel@physik.fu-berlin.de>
+	bh=JdIowXx5hArmXp0irpZ89oIJDLeZuVLuZPGcLtq5hgU=;
+	b=DxHa9hxJdBbjx/iowG23VxSZyG/CGmRspd62YsjFHqw0za1fqkq/Nd7+a80kDZL2Tm7peD
+	o/We6F+5fwEzQZMoosma4XFBPFOH2qWxrLQ/P73o66d8kChstBj6lF3d8wi2fZxcpqCXkw
+	uIFnWdSd9qKW1JqXm2PC/smuCa0IZ5c=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ecb5f7c9 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 27 Aug 2024 09:31:50 +0000 (UTC)
+Date: Tue, 27 Aug 2024 11:31:43 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Xi Ruoyao <xry111@xry111.site>,
+	Jinyang He <hejinyang@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Theodore Ts'o <tytso@mit.edu>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev
+Subject: getrandom() vDSO archs (arm64, ppc, loongarch) for 6.12 [Was: Re:
+ [PATCH v2 00/17] Wire up getrandom() vDSO implementation on powerpc]
+Message-ID: <Zs2c_9Z6sFMNJs1O@zx2c4.com>
+References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
+ <Zswsennpw6fvigVh@zx2c4.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,36 +81,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f355e26eead641f5f281372aadf9dee7de19a4c7.camel@physik.fu-berlin.de>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+In-Reply-To: <Zswsennpw6fvigVh@zx2c4.com>
 
-On 08/27/24 at 08:37am, John Paul Adrian Glaubitz wrote:
-> On Tue, 2024-08-27 at 14:22 +0800, Baoquan He wrote:
-> > About why it's enabled by default, as Michael has explained in another
-> > thread, distros usualy needs to enable it by default because vmcore
-> > dumping is a very important feature on servers, even guest instances. 
-> > Even though kdump codes are enabled to built in, not providing
-> > crashkernel= value won't make vmcore dumping take effect, it won't cost
-> > system resources in that case.
+Hey again,
+
+On Mon, Aug 26, 2024 at 09:19:22AM +0200, Jason A. Donenfeld wrote:
+> Thanks for this series. There are quite a few preliminary patches in it,
+> before you get to the PPC part, which fix up general build system or test
+> harness correctness issues. Since some of those affect all architectures
+> that are adding vDSO getrandom() support for 6.12, I'm going to take
+> those into my random.git tree as a fix for 6.11 now, in hopes that the
+> new archs can mostly go into arch trees without too many tree
+> interdependencies.
 > 
-> OK, thanks for the explanation. But as we have found out in the mean time,
-> the assumption was wrong to enable it by default for all architectures as
-> some architectures cannot boot a crash dump kernel with their default bootloader
-> but only through kexec.
-> 
-> Can we have a follow-up patch to disable crash dump kernels where they're
-> not needed? I mean, not every platform supported by Linux is obviously a
-> x86-based or POWER-based server.
+> So I'll reply to individual patches for that, mentioning which ones I
+> extract.
 
-Yes, while isn't Dave's patch a good one to fix it? In Dave's patch, the
-default enabling of CRASH_DUMP has been taken off, change to rely on
-ARCH_DEFAULT_CRASH_DUMP provided by each arch.
+Seeing the volume of these and the amount of ground they touch, I'm now
+having second thoughts about rushing this into 6.11. Particularly with
+the header changes, I think it might be smart to let it cook in
+linux-next for a bit before sending it to Linus.
 
- config CRASH_DUMP
-        bool "kernel crash dumps"
--       default y
-+       default ARCH_DEFAULT_CRASH_DUMP
+  $ git --no-pager diff --name-only linus/master
+  arch/x86/entry/vdso/vma.c
+  arch/x86/include/asm/pvclock.h
+  arch/x86/include/asm/vdso/vsyscall.h
+  drivers/char/random.c
+  include/asm-generic/unaligned.h
+  include/vdso/helpers.h
+  include/vdso/unaligned.h
+  lib/vdso/Makefile
+  lib/vdso/getrandom.c
+  tools/arch/x86/vdso
+  tools/include/linux/linkage.h
+  tools/testing/selftests/vDSO/Makefile
+  tools/testing/selftests/vDSO/vdso_config.h
+  tools/testing/selftests/vDSO/vdso_test_getrandom.c
 
+So I think what I'll do is, for 6.11-rc6, send in the real bug fixes,
+which right now amount to:
+
+  - random: vDSO: reject unknown getrandom() flags
+  - random: vDSO: don't use 64-bit atomics on 32-bit architectures
+
+  $ git --no-pager diff --name-only linus/master..a90592ab7cad
+  drivers/char/random.c
+  lib/vdso/getrandom.c
+
+And then for the pending aarm64, ppc64(/32?), and loongarch enablement
+patches for 6.12, I'll just take those through my random.git tree, which
+have all of these build-system preliminaries. And then we'll obviously
+require acks from the maintainers of the archs for each of those arch
+enablement patches.
+
+If that sounds like an acceptable plan, you might want to mention in the
+cover letter that you're basing your arch-specific patches on
+https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/ and
+want an ack from the arch maintainer, etc.
+
+Jason
 
