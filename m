@@ -1,54 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-592-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-589-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546B19604E1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 10:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A19960455
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 10:24:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtLpR1GJhz2yS0;
-	Tue, 27 Aug 2024 18:50:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtLDL3KZLz2xT8;
+	Tue, 27 Aug 2024 18:24:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724748607;
-	cv=none; b=B+PWy+oGgbC+4uU0jQTdeRPRniJ61kQwCFe0OVE6MjlYm4NjXQ25cM8veU0K3ndSkzm7R2/P3l3cbzYKJVMQ6v4LN5xmBdN02s9e2X1SzNmtx6eQkUe1O8Fm8IbuIZ/gH5+5vDNO6PKDTIUT29MkZfb4EMMetlFfrip8MPjp6BWV/R1aYZFgMRI+VDaJZmqr5HQgUI0Tdnf+/26AMLxtIPJBSJlK53A/nOPkUhG/Qd3CuSwq+53yrFSIEKeWRfCROLl0wWQvF22UXjm01Uja4p1iwVMEX1AsmD0dBzvNzTnC4XGJej2qHzholFHn6QedFxDlngt+YMPl50KkmoAjXw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724747042;
+	cv=none; b=n+Cxu7zJD8vH4IeNbxJzDtcbPKN13NAUKdRmsuZD7ip325RYuEDQViMN3sHfsvGQXVRpi+et4ioJKEVobg+Q1FfdTt2AR71CepvsMhIEZR2AJ4Rt7QXoDHI6G7vqQdicq14KVKVzDmr6UjB0LaKLoONQHLiNfkD+7E7ctESmfQlRGKivE6F/6mEd8rsqnDD0rA7kV+v5XrM/AKTTsfM1Sy/F0Ikm2NvGbeRmztps1HTb9RcNVGhXsWzubPXlcM92xbpUF4HOjBHVjpagkJ7vsWTRx65BaOOOsgJv13hB/xbruK7KMswFxwtSDOIMKO/JEaVOCdpwdBTJE5ZGNTlq9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724748607; c=relaxed/relaxed;
-	bh=Z44NrRIFjIvMOiwZi/d/I4Tv8shrT6h3mF70sIWGs6A=;
-	h=Received:X-Virus-Scanned:Received:Received:Received:
-	 X-Virus-Scanned:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding; b=BqY/Q8Qz3UpME/hcPQfTKG6xNz9Wq8IHDm0c30uzV2Mhxrx7FTl4JG0QBWewBtYBSY5ZeBmrzbWo1MZh+Q/Y7e/9JQK4uBoQuL80Mm36ovuZZUKWBgOGWok+biXPYfcPGF4APsoS7X1ctrH8y8O8MfRuQJm99WmTsGCX+1TlufUBZLXa05uzl2Nq3mUS4Hwqap6mGRkc83+bCvcAQkhSj6bGkT5+phKEsfT2lX/xpV4FUb5sY86GJ8Pr33Dc4mSG6rwWaDdb7D8y/2uYt9UScwk1JKDCKUvzShXOILy/bpZmfIdCljNvt5dJIjbdsQqHUgNtY1hsLZ7kPxgqBCearA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1724747042; c=relaxed/relaxed;
+	bh=WmuK606DFi2DMVMI66hSRWyNshgp94GdeNA0AaiDqDE=;
+	h=Received:Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=KTDgQe3yRC2qUM9OnbF7pvO+YJDu3HDqvGOf6YdW67W3OwvScMiYrm5HHOzd5nW0Ub1++kk7cRXG0nhowVo1u6SCL5YiNYUySVowPO9RQi5YzWTyIXEuZ7MTBHiKq8dVjpG274o8zkdafMyBFLNJQk6bc/fz/Bmhixd97oyyDYTmGBlC7Tk/4pwJdScNg/Bg4bnYQ4IdHrA4NUDyDbBcyct7kb6jQNZNMLUdU/46uIYE+sUmXV7mweRKJLIdgna+A6GWOPMQkaRjBlSnmWuDv2q2BHarkEvGSmPz/sBN//AQ5qycZ4oM6w7qsiF3Mfg85jmXfv5PV2mSieWEhQeqKg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=eJrITo3p; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=xpq3=p2=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=eJrITo3p;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=xpq3=p2=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtLpQ5rwfz2xtt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 18:50:05 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WtL3V5NkGz9sRy;
-	Tue, 27 Aug 2024 10:16:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id qOUXLlQcHZNN; Tue, 27 Aug 2024 10:16:22 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WtL3R6BsYz9rvV;
-	Tue, 27 Aug 2024 10:16:19 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C3B4D8B77B;
-	Tue, 27 Aug 2024 10:16:19 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id nz5gQiZQEV5x; Tue, 27 Aug 2024 10:16:19 +0200 (CEST)
-Received: from [192.168.233.149] (PO19727.IDSI0.si.c-s.fr [192.168.233.149])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 270028B763;
-	Tue, 27 Aug 2024 10:16:19 +0200 (CEST)
-Message-ID: <55a7d3ba-b384-4fb0-8fbb-e05ddf0d1fb8@csgroup.eu>
-Date: Tue, 27 Aug 2024 10:16:18 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtLDL1ZZxz2xHW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 18:24:02 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 3AE71A41674;
+	Tue, 27 Aug 2024 08:23:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB19C8B7A1;
+	Tue, 27 Aug 2024 08:23:58 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="eJrITo3p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1724747037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WmuK606DFi2DMVMI66hSRWyNshgp94GdeNA0AaiDqDE=;
+	b=eJrITo3pS1iTlmVRqXA4ossHQBCcqlsHt8xrxE0R9KhNEW05nlyFHJ7Q5ejNuECbDi0JQL
+	dyZtB2nZ/WNhieoOU8GA6Sh0CZEvlKXGqRVYQTGP9gO5q25pQSZWNFCM1tqp8r5qUzm5kj
+	tdyLngda2WPJXrCNlqQ+6kee5gX21+s=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 865e0cd7 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 27 Aug 2024 08:23:57 +0000 (UTC)
+Date: Tue, 27 Aug 2024 10:23:50 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Theodore Ts'o <tytso@mit.edu>, Arnd Bergmann <arnd@arndb.de>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH 2/4] random: vDSO: Don't use PAGE_SIZE and PAGE_MASK
+Message-ID: <Zs2NFjfBKKjfoI2d@zx2c4.com>
+References: <cover.1724743492.git.christophe.leroy@csgroup.eu>
+ <b8f8fb6d1d10386c74f2d8826b737a74c60b76b2.1724743492.git.christophe.leroy@csgroup.eu>
+ <Zs2FJku2hM2bp4ik@zx2c4.com>
+ <55a7d3ba-b384-4fb0-8fbb-e05ddf0d1fb8@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,54 +74,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] random: vDSO: Don't use PAGE_SIZE and PAGE_MASK
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Theodore Ts'o <tytso@mit.edu>, Arnd Bergmann <arnd@arndb.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org
-References: <cover.1724743492.git.christophe.leroy@csgroup.eu>
- <b8f8fb6d1d10386c74f2d8826b737a74c60b76b2.1724743492.git.christophe.leroy@csgroup.eu>
- <Zs2FJku2hM2bp4ik@zx2c4.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <Zs2FJku2hM2bp4ik@zx2c4.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <55a7d3ba-b384-4fb0-8fbb-e05ddf0d1fb8@csgroup.eu>
 
+On Tue, Aug 27, 2024 at 10:16:18AM +0200, Christophe Leroy wrote:
+> tglx or yourself suggested to put in a one of the vdso headers instead 
+> of directly in getrandom.c. This is too fragile because PAGE_SIZE might 
+> be absent in that header but arrive in getrandom.c through another header.
 
+Oh jeeze, yea.
 
-Le 27/08/2024 à 09:49, Jason A. Donenfeld a écrit :
-> On Tue, Aug 27, 2024 at 09:31:48AM +0200, Christophe Leroy wrote:
->> -	ssize_t ret = min_t(size_t, INT_MAX & PAGE_MASK /* = MAX_RW_COUNT */, len);
->> +	const unsigned long page_size = 1UL << CONFIG_PAGE_SHIFT;
->> +	const unsigned long page_mask = ~(page_size - 1);
->> +	ssize_t ret = min_t(size_t, INT_MAX & page_mask /* = MAX_RW_COUNT */, len);
+FYI, _PAGE_SIZE is defined on s390, so that might not be such a good
+idea (from the previous version).
+
+> The best would be to have an asm-generic definition of
+> PAGE_SIZE and PAGE_MASK that all architectures use, but that's another
+> level of work.
+
+Yea that seems far too large of an operation to do here.
+
+> > I'm really not a fan of making the code less idiomatic...
 > 
-> I'm really not a fan of making the code less idiomatic...
+> Ok, I have another idea, let's give it a try.
 
-Ok, I have another idea, let's give it a try.
-
-> 
->> An easy solution would be to define PAGE_SIZE and PAGE_MASK in vDSO
->> when they do not exist already, but this can be misleading.
-> 
-> Why would what tglx and I suggested be misleading? That seems pretty
-> normal... Are you worried they might mismatch somehow? (If so, why?)
-
-All architectures have their own definition, they are all based on 
-CONFIG_PAGE_SHIFT and should give the same value but with some 
-subtleties. The best would be to have an asm-generic definition of 
-PAGE_SIZE and PAGE_MASK that all architectures use, but that's another 
-level of work.
-
-tglx or yourself suggested to put in a one of the vdso headers instead 
-of directly in getrandom.c. This is too fragile because PAGE_SIZE might 
-be absent in that header but arrive in getrandom.c through another header.
-
-Christophe
+What's the other idea?
 
