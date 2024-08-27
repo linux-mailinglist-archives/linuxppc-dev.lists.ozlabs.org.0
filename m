@@ -1,54 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-598-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-608-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3F79607CF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 12:49:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5FF960978
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 14:02:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtPSZ0c85z2yNR;
-	Tue, 27 Aug 2024 20:49:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtR4Q6LqPz2yTy;
+	Tue, 27 Aug 2024 22:02:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724755790;
-	cv=none; b=RddqvouRrbPLHD7gzJ6m4d57c0XPXpEP4fg51DIOqoFyOiZXJkHlsekzouThSxrr/jkv1UJxGhd2B0W8ZFJh/dzbkqqd3Ye0J0AaXV4TDyj9CRXoP5YdpFM4JrGcmlf7xDWhZyaY+byW2uO77DdFdNG4aavZjYKTga3RrHcwVuqUoo+3XVw1qUnLDAryZ1r/oIqeaZvOCBOWCHGq0bMHHJrC2uQE6eDvRu+4DtLou8A5vDqcAMUdlH4HOfutEHpVMR2C852vcxsIbI2IYcT7aGbgNuTBHXCnUq4BaxAS4KdiSOprxWtG2esEs6ZjpGth7m/TiV8WN2Z+xYzUDpCIdQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724760150;
+	cv=none; b=fPeUbBXQVMuOFAtSf4H3ygVysc7ovirKY3UgPo5f1DFn97y1sNRk31kF6SoIPty+Jc0ICm3R3Tnrr+jmcPz5J5XGK7yxa94QiLjH+gKf3Rjragn/6d7hw5zgEHW3ljwLHl0AC4COVuUqjMBGCUl5gYzzA3LJWo9biiHyoeI5KQXmxHdynom6HI+g8xxkBWCKfSPlTU02UfKIfbsWsmDCQHVJZMTIwGsLnypSP0Xot1J7B90mJyN3JDw3a2xFEjGXJVgSlaGPLQWkDOQjdQFJ95nRAZsl8TlRIeuOG0elnVdvlRu9oa8aLrurvyHJ9xArVfMIxxM2WxmdOZmNQuPTgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724755790; c=relaxed/relaxed;
-	bh=LgP/1Ba6rEKCpv+qpwIeejazPrRuJZHMqPyuonehE4I=;
-	h=Received:X-Virus-Scanned:Received:Received:Received:
-	 X-Virus-Scanned:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding; b=TAchtLrxiRxwHxSHb7dX1MFUrNQdBrR4o4hsAN0onakze4pe9sKrGW0pFZhS9HbGH+IUz8Wb270I1vv0HLA5UvaI7eA0McX+xP+oTyxmcP59qz8CfCY2dFmbaNo+E8zaLKzqTZbnJNhqVKYCIYVqwl6pEc++6udYCCiCzcHiyXrETtyMPREXlz6uAKA7KUDFoWcDwvXUhuAy08VPc+S5K0rOmzB0RGe06Vp5nFLRmD9DBFPkgrMlA7k3bxOFUiIv6ON1OP23Wy/bw49l835Mre3Wb8lhtv9W2+hcQ5WZBQGRa+/NcHPuC7cG1KBwIHccT6V4gyrKYCWjIE6LguOA3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1724760150; c=relaxed/relaxed;
+	bh=/MLTjT4x0wpquiwumNovnGAf81Tdfup2rLk7uUNGOds=;
+	h=Received:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:User-Agent; b=HJr4ImSlTbq/chwW/+m7DyyNY4z6gictyr3Y1ZEAT8k/iiKeX0Cb3Iat+rVGaroz9gfG1SpdWYDgc1/7lojrN9PPPHf2Dg3UO9CDwM0HAIpTv81SauAbeB3wHzH7Zbc8cgqFTOeoBQEPCcNq/9uM+o0xebIAXlxr9jQugE5es7Mph9VUAINOyCndPeQWvzAZIz76xUtWkqjNZy1hr3Ftoe64gHyDNGP3wJzoyXZ+/IDi3RmvhAL6A+kqnSu7VUmU7hWXZ5BDZGWxHLkHO6iIRb3Ggy1OsKUZVikZxaF4T+m6QTavH2BtB+GF5PEHGlYi/tdszuynJ9KbrL0JnIhFYQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Gpf8ddOX; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Gpf8ddOX;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtPSY5Gvfz2yLY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 20:49:47 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WtPSS2j9wz9sPd;
-	Tue, 27 Aug 2024 12:49:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id t6VbwRGJyrl0; Tue, 27 Aug 2024 12:49:44 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WtPSS1j1pz9rvV;
-	Tue, 27 Aug 2024 12:49:44 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 277298B783;
-	Tue, 27 Aug 2024 12:49:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id upuflTr8zwv6; Tue, 27 Aug 2024 12:49:44 +0200 (CEST)
-Received: from [192.168.233.149] (unknown [192.168.233.149])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6C5778B77C;
-	Tue, 27 Aug 2024 12:49:43 +0200 (CEST)
-Message-ID: <0f9255f1-5860-408c-8eaa-ccb4dd3747fa@csgroup.eu>
-Date: Tue, 27 Aug 2024 12:49:43 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtR4Q1tYXz2yQL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 22:02:30 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id B81A1A41943;
+	Tue, 27 Aug 2024 12:02:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A82C582AB;
+	Tue, 27 Aug 2024 11:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724758692;
+	bh=2+A2bF7Lj9wuQUwEpvgzmZKK3imkhu2KCOi7wnoixak=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gpf8ddOXDK2vLQMMp3FzmG/a/m/kr0GXzqv0V69de1kGXjsWZZVM5il9nZ3rJgJ/C
+	 HhCk9FpXwrs24xGKZufPQ6AVtvbP5tMYwDBYGmyjXUFSAs0/qqunKiRjR5cHaGfdBj
+	 NELnVGfuXrKZce7YLlJBXHfzEBMziXjXhbc2oCx/U/canba16aHthF+qGabnfRBtoM
+	 BP6yHu6nKpM6xKRbubnCGD2Di4NReNtwAwTcMpZZI8xnW+1KjwLJ14ftgHU2j0y4CR
+	 5qpdVZJYRS0/PkwK6KW2GK7c8ijyUvbxdWydqc2U6Yg0gjukfhNJnDfFkqe+yURXpL
+	 dMagJjNp/hQXA==
+Date: Tue, 27 Aug 2024 12:38:04 +0100
+From: Will Deacon <will@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org,
+	nd@arm.com, akpm@linux-foundation.org, aneesh.kumar@kernel.org,
+	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
+	broonie@kernel.org, christophe.leroy@csgroup.eu,
+	dave.hansen@linux.intel.com, hpa@zytor.com,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
+	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
+	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
+	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
+	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v5 06/30] arm64: context switch POR_EL0 register
+Message-ID: <20240827113803.GB4318@willie-the-truck>
+References: <20240822151113.1479789-1-joey.gouly@arm.com>
+ <20240822151113.1479789-7-joey.gouly@arm.com>
+ <20240823144531.GH32156@willie-the-truck>
+ <Zsi7ovLOfuFdfuuz@arm.com>
+ <20240823170835.GA1181@willie-the-truck>
+ <ZsjXtE7Kg0LQwNAL@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,154 +75,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] random: vDSO: Redefine PAGE_SIZE and PAGE_MASK
-To: Arnd Bergmann <arnd@arndb.de>, "Jason A . Donenfeld" <Jason@zx2c4.com>
-Cc: Theodore Ts'o <tytso@mit.edu>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Linux-Arch <linux-arch@vger.kernel.org>
-References: <b8f8fb6d1d10386c74f2d8826b737a74c60b76b2.1724743492.git.christophe.leroy@csgroup.eu>
- <defab86b7fb897c88a05a33b62ccf38467dda884.1724747058.git.christophe.leroy@csgroup.eu>
- <Zs2RCfMgfNu_2vos@zx2c4.com>
- <cb66b582-ba63-4a5a-9df8-b07288f1f66d@app.fastmail.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <cb66b582-ba63-4a5a-9df8-b07288f1f66d@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZsjXtE7Kg0LQwNAL@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-
-
-Le 27/08/2024 à 11:59, Arnd Bergmann a écrit :
-> On Tue, Aug 27, 2024, at 10:40, Jason A. Donenfeld wrote:
->> I don't love this, but it might be the lesser of evils, so sure, let's
->> do it.
->>
->> I think I'll combine these header fixups so that the whole operation is
->> a bit more clear. The commit is still pretty small. Something like
->> below:
->>
->>  From 0d9a3d68cd6222395a605abd0ac625c41d4cabfa Mon Sep 17 00:00:00 2001
->> From: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Date: Tue, 27 Aug 2024 09:31:47 +0200
->> Subject: [PATCH] random: vDSO: clean header inclusion in getrandom
->>
->> Depending on the architecture, building a 32-bit vDSO on a 64-bit kernel
->> is problematic when some system headers are included.
->>
->> Minimise the amount of headers by moving needed items, such as
->> __{get,put}_unaligned_t, into dedicated common headers and in general
->> use more specific headers, similar to what was done in commit
->> 8165b57bca21 ("linux/const.h: Extract common header for vDSO") and
->> commit 8c59ab839f52 ("lib/vdso: Enable common headers").
->>
->> On some architectures this results in missing PAGE_SIZE, as was
->> described by commit 8b3843ae3634 ("vdso/datapage: Quick fix - use
->> asm/page-def.h for ARM64"), so define this if necessary, in the same way
->> as done prior by commit cffaefd15a8f ("vdso: Use CONFIG_PAGE_SHIFT in
->> vdso/datapage.h").
->>
->> Removing linux/time64.h leads to missing 'struct timespec64' in
->> x86's asm/pvclock.h. Add a forward declaration of that struct in
->> that file.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+On Fri, Aug 23, 2024 at 07:40:52PM +0100, Catalin Marinas wrote:
+> On Fri, Aug 23, 2024 at 06:08:36PM +0100, Will Deacon wrote:
+> > On Fri, Aug 23, 2024 at 05:41:06PM +0100, Catalin Marinas wrote:
+> > > On Fri, Aug 23, 2024 at 03:45:32PM +0100, Will Deacon wrote:
+> > > > On Thu, Aug 22, 2024 at 04:10:49PM +0100, Joey Gouly wrote:
+> > > > > +static void permission_overlay_switch(struct task_struct *next)
+> > > > > +{
+> > > > > +	if (!system_supports_poe())
+> > > > > +		return;
+> > > > > +
+> > > > > +	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> > > > > +	if (current->thread.por_el0 != next->thread.por_el0) {
+> > > > > +		write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
+> > > > > +		/* ISB required for kernel uaccess routines when chaning POR_EL0 */
+> > > > 
+> > > > nit: typo "chaning".
+> > > > 
+> > > > But more substantially, is this just to prevent spurious faults in the
+> > > > context of a new thread using a stale value for POR_EL0?
+> > > 
+> > > Not just prevent faults but enforce the permissions from the new
+> > > thread's POR_EL0. The kernel may continue with a uaccess routine from
+> > > here, we can't tell.
+> > 
+> > Hmm, I wondered if that was the case. It's a bit weird though, because:
+> > 
+> >   - There's a window between switch_mm() and switch_to() where you might
+> >     reasonably expect to be able to execute uaccess routines
 > 
-> This is clearly better, but there are still a couple of inaccuracies
-> that may end up biting us again later. Not sure whether it's worth
-> trying to fix it all at once or if we want to address them when that
-> happens:
+> I don't think we can have any uaccess between these two switches (a
+> uaccess could fault, that's a pretty weird state between these two).
 > 
->>   #include <linux/array_size.h>
->> -#include <linux/cache.h>
->> -#include <linux/kernel.h>
->> -#include <linux/time64.h>
->> +#include <linux/minmax.h>
+> >   - kthread_use_mm() doesn't/can't look at this at all
 > 
-> These are still two headers outside of the vdso/ namespace. For arm64
-> we had concluded that this is never safe, and any vdso header should
-> only include other vdso headers so we never pull in anything that
-> e.g. depends on memory management headers that are in turn broken
-> for the compat vdso.
+> No, but a kthread would have it's own, most permissive, POR_EL0.
 > 
-> The array_size.h header is really small, so that one could
-> probably just be moved into the vdso/ namespace. The minmax.h
-> header is already rather complex, so it may be better to just
-> open-code the usage of MIN/MAX where needed?
-
-It is used at two places only so yes can to that.
-
-Same for ARRAY_SIZE(->reserved) by the way, easy to do opencode, we also 
-have it only once
-
-
+> >   - GUP obviously doesn't care
+> > 
+> > So what do we actually gain by having the uaccess routines honour this?
 > 
->>   #include <vdso/datapage.h>
->>   #include <vdso/getrandom.h>
->> +#include <vdso/unaligned.h>
->>   #include <asm/vdso/getrandom.h>
->> -#include <asm/vdso/vsyscall.h>
->> -#include <asm/unaligned.h>
->>   #include <uapi/linux/mman.h>
->> +#include <uapi/linux/random.h>
->> +
->> +#undef PAGE_SIZE
->> +#undef PAGE_MASK
->> +#define PAGE_SIZE (1UL << CONFIG_PAGE_SHIFT)
->> +#define PAGE_MASK (~(PAGE_SIZE - 1))
-> 
-> Since these are now the same across all architectures, maybe we
-> can just have the PAGE_SIZE definitions a vdso header instead
-> and include that from asm/page.h.
+> I guess where it matters is more like not accidentally faulting because
+> the previous thread had more restrictive permissions.
 
-I gave it a quick look yesterday, there are still some subtleties 
-between architectures.
+That's what I wondered initially, but won't the fault handler retry in
+that case?
 
-For instance, most architectures use 1UL for the shift but powerpc use 1 
-and has the following comment:
-
-/*
-  * Subtle: (1 << PAGE_SHIFT) is an int, not an unsigned long. So if we
-  * assign PAGE_MASK to a larger type it gets extended the way we want
-  * (i.e. with 1s in the high bits)
-  */
-
-So we'll have to look at all this carefully when we want something 
-common, or am I missing something ?
-
-> 
-> Including uapi/linux/mman.h may still be problematic on
-> some architectures if they change it in a way that is
-> incompatible with compat vdso, but at least that can't
-> accidentally rely on CONFIG_64BIT or something else that
-> would be wrong there.
-
-Yes that one is tricky. Because uapi/linux/mman.h includes asm/mman.h 
-with the intention to include uapi/asm/mman.h but when built from the 
-kernel in reality you get arch/powerpc/include/asm/mman.h and I had to 
-add some ifdefery to kick-out kernel oddities it contains that pull 
-additional kernel headers.
-
-diff --git a/arch/powerpc/include/asm/mman.h 
-b/arch/powerpc/include/asm/mman.h
-index 17a77d47ed6d..42a51a993d94 100644
---- a/arch/powerpc/include/asm/mman.h
-+++ b/arch/powerpc/include/asm/mman.h
-@@ -6,7 +6,7 @@
-
-  #include <uapi/asm/mman.h>
-
--#ifdef CONFIG_PPC64
-+#if defined(CONFIG_PPC64) && !defined(BUILD_VDSO)
-
-  #include <asm/cputable.h>
-  #include <linux/mm.h>
-
-
-Christophe
+Will
 
