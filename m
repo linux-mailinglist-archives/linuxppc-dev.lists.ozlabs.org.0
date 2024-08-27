@@ -1,77 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-596-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-597-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 235239605F0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 11:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 806B2960682
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 11:59:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtMys4hYhz2yR5;
-	Tue, 27 Aug 2024 19:42:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtNLz2SFNz2y66;
+	Tue, 27 Aug 2024 19:59:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724751749;
-	cv=none; b=ELiCJAaDUObLNjAZDV+ZvZzLkLL4Sy9bprcN+28yifBpomavu9NDCU+9U3qpZDNROGrcIt8YyWMlmngjru4wtXbdw1z67i3oINNA+U8VufK/4ChHmkEj4eYkHICjKtG/4CFxkf4jT1EnPPLCNkvayMirvW1jkm+N2rm9HbVjCsRxylFHTHU2gFMf5baeH9/IstMQ/Tc0MiHY8OzxBiUdnTcA/ahpSszmw4bDlwAEgvV/VfHIUI3dWB/p5hmgTLX0wxHXBhwxontbibWn/LUFiSp9yaPMROMdgno8zW9bOz0YIybHD7TU+BNyZLhdRfrzaCmsC+4Z5Z4xWFMmYImipA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.146
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724752795;
+	cv=none; b=eYz+botYAebbNLCKVENo4oqgT0wKvjxVkfr2X4l77ymAvqynbhsNlb1WegVBx9++NoxPWrQOwRB6m4Z7pC2kUgTtFO7NsNinCY1wxTLUrDsmcjmw0Mo7JJ+c7gp1Q4Ja//hIVMztYytCNQlOjmC+fhKBabz+VfQdJhUfcBtzuOTteInF6sQcNQ7oVfjT9R2R0VjymtgyUSeJxeQ39vQ7Rkb7/dTXvxjn7hkwQFqTF+nbJJPh8OcPPazLqqjJHaNZSRp8EDTnSQwA15jh5jAzpz3EDU1NJQzaiiOIMwJp9hHI00bwlU7Ch274P9grx1AUVsUfe8Z8CdKXDyY6fLgWBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724751749; c=relaxed/relaxed;
-	bh=JdIowXx5hArmXp0irpZ89oIJDLeZuVLuZPGcLtq5hgU=;
-	h=Received:Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=PZDLMxuVi0Pff40u4hPrKDP86sGGGrnqCuLgYP2OSlJ23TL05foHcTQke8RtrPSJyI7vza0L0GFdgYIB9aIGdjMYw6HU+ByYHE0nVB5+bkk3BXo19HL2fF16v7P0RIFKst4RmlOB+AcUM/I/FZXOCDyTXhQaIu6MDgE27hIL7Jh3YnIs5moE4twK3HelGpiu0/d6708IBFS9KyKVtLg+yTGyI+i695c2GB9SS1CzgQNWE/Dg0fS7KvJrtDcq9OvleSVtrk5QzSDm5lZlsgAXvwo37SG6+hzA0vtkhFMTnuar1+t36sRHS3BfHmfn20Tjr9ZT1QLlPBxVyWoezBNOWQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=DxHa9hxJ; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=xpq3=p2=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+	t=1724752795; c=relaxed/relaxed;
+	bh=5+ahPqz+wUqbchfcJRTGxUBq/MCrVrzFJecPrVS+88Q=;
+	h=Received:Received:DKIM-Signature:DKIM-Signature:X-ME-Sender:
+	 X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type:Content-Transfer-Encoding; b=ZHwNlNSKuXD7Hc+Cj7Yae8RWBKVz7x/iw/ORUCj1jsjXtSObnmNeV48KX4NO+kjFuKtFyXkvjouxUzEMq6DgDlH/oq7TKd+A1/2nc7F2yIBrabwauMa9TnejtaqDtbAfzRgEXVcbaKR++64SmbHqdEQHwg+KwBLauwmxdWof6+ua8mNcLoAg3NXsQwe7cJ+PMmumhxL35rgAdjzUGHNjrpg/bN+j7Hn11hbkDeV4Z5ZJktSjQczBwWClxBt90FmSY7Fp1d9vzBO23OKAZ6c5L5dNf2ZvRxIRgMOMm1fanRyUyCfUAaVWVGt+sXx/L0VsIFhzCra3CmSqXzA9NNrUpQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=KmI89gKn; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=dolzJs3+; dkim-atps=neutral; spf=pass (client-ip=103.168.172.146; helo=fout3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=DxHa9hxJ;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=KmI89gKn;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=dolzJs3+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=xpq3=p2=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.146; helo=fout3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout3-smtp.messagingengine.com (fout3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtMyq4rk0z2yR1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 19:42:27 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 2DB45A41790;
-	Tue, 27 Aug 2024 09:42:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94408C8B7CD;
-	Tue, 27 Aug 2024 09:31:54 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="DxHa9hxJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1724751112;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JdIowXx5hArmXp0irpZ89oIJDLeZuVLuZPGcLtq5hgU=;
-	b=DxHa9hxJdBbjx/iowG23VxSZyG/CGmRspd62YsjFHqw0za1fqkq/Nd7+a80kDZL2Tm7peD
-	o/We6F+5fwEzQZMoosma4XFBPFOH2qWxrLQ/P73o66d8kChstBj6lF3d8wi2fZxcpqCXkw
-	uIFnWdSd9qKW1JqXm2PC/smuCa0IZ5c=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ecb5f7c9 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 27 Aug 2024 09:31:50 +0000 (UTC)
-Date: Tue, 27 Aug 2024 11:31:43 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Xi Ruoyao <xry111@xry111.site>,
-	Jinyang He <hejinyang@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Theodore Ts'o <tytso@mit.edu>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev
-Subject: getrandom() vDSO archs (arm64, ppc, loongarch) for 6.12 [Was: Re:
- [PATCH v2 00/17] Wire up getrandom() vDSO implementation on powerpc]
-Message-ID: <Zs2c_9Z6sFMNJs1O@zx2c4.com>
-References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
- <Zswsennpw6fvigVh@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtNLv3QBMz2xrk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 19:59:49 +1000 (AEST)
+Received: from phl-compute-04.internal (phl-compute-04.nyi.internal [10.202.2.44])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 779D8138F115;
+	Tue, 27 Aug 2024 05:59:46 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-04.internal (MEProxy); Tue, 27 Aug 2024 05:59:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1724752786;
+	 x=1724839186; bh=5+ahPqz+wUqbchfcJRTGxUBq/MCrVrzFJecPrVS+88Q=; b=
+	KmI89gKntQkahciViBufBQ4WzAtQN/aF+d95+6TFPYmOMeqUNUJW1TsSGLJvfn6c
+	kbv0CZT3Rd8sUBNVGxo6fKVhHRR9jYLLD9icMIqii+t1MSigsQnoB3eXhQnFKlec
+	zlGLwyyFXA6Nqk2jUPwL3FZFah8kXXfddtVd7SRWUaiLgtOhdPtDBA3bSIGShEo6
+	BRsq1s3L+HRO/WDAgjYVEXaiOINQ4PDprEj1PpIu1449Ir41OOC5XRjH9WJq4Qzc
+	ynHXBsEGGUXYFQCffLBNl9U/xXXtcCP7YJ9mZGtbeldaHHxurZGaPNp2euiIiVOw
+	nmF2seofWxaxTCZUwgLyRQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1724752786; x=
+	1724839186; bh=5+ahPqz+wUqbchfcJRTGxUBq/MCrVrzFJecPrVS+88Q=; b=d
+	olzJs3+CtSItImG0V2R2GV7dnVjPwKFq0tB9Oqj0QHdiseJnJz/hbjRnfqzK59TQ
+	4OEguW8eddonLXp/V6CdygKNXEyVlKU+uA615eI2ldkGC19fh6g9TNGVlRQvAn5/
+	pc0gwnPYAUiFvjsrX0iF1P3aEC/0CB52TY7hpYH2O13QHB/fkHp29fxu4TwHKasZ
+	XOwh10djCwqhXZe2OiZnJlElONRxvLPYe9s/Iji1A0KoLyanNEU1jlu+nRAXqiKr
+	PClEh0owH+B1Qx+P37Qs5C0fMxF9c/jH4ophiLQXXAjklmFuxYAC8f7L466w/STP
+	g6+msN/rshiWkZeJMKb1w==
+X-ME-Sender: <xms:kaPNZnxaoi8GRNjPUmD-oT_dBtAdLXT1QzzZD4sVI7hMUFpTtTIxJw>
+    <xme:kaPNZvQKsl_-mQQdrKL5rzhaQR1xHpqdsvjESFb_Nlu05uGPYM9sDrI49NafYafTB
+    Q2J0TF8adk7tV8MsxQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudeftddgvddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudeg
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprh
+    gtphhtthhopehvihhntggvnhiiohdrfhhrrghstghinhhosegrrhhmrdgtohhmpdhrtghp
+    thhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtph
+    htthhopehluhhtoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekieeskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtg
+    hpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgt
+    phhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpd
+    hrtghpthhtohepthihthhsohesmhhithdrvgguuh
+X-ME-Proxy: <xmx:kaPNZhU69lzcxUhSfacmpZp7nfIUu-P7-meYsy9xFT1mFU5U8_Hbow>
+    <xmx:kaPNZhgFRdOKbLJ6FHKyj-81WbN-KONGrDqIc499j0liw-VpW25Ldg>
+    <xmx:kaPNZpB_WrWZ8OYAkaACQjECKZxYxGJoTqUjS9fbUD9Hh98ucYyh_g>
+    <xmx:kaPNZqJMyn_RxonKjNSIC_IUqHH2_tULeMDUxTH-bvHi3OcTR3NGhQ>
+    <xmx:kqPNZhxUL02RTIgdMAntEKQbrMDQoOxizRrf2TZ6lMpklbuTz06Gkhj->
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 651AE222006F; Tue, 27 Aug 2024 05:59:45 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,65 +97,107 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Zswsennpw6fvigVh@zx2c4.com>
+Date: Tue, 27 Aug 2024 11:59:25 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Jason A . Donenfeld" <Jason@zx2c4.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>
+Cc: "Theodore Ts'o" <tytso@mit.edu>, "Andy Lutomirski" <luto@kernel.org>,
+ "Thomas Gleixner" <tglx@linutronix.de>,
+ "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
+ "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Linux-Arch <linux-arch@vger.kernel.org>
+Message-Id: <cb66b582-ba63-4a5a-9df8-b07288f1f66d@app.fastmail.com>
+In-Reply-To: <Zs2RCfMgfNu_2vos@zx2c4.com>
+References: 
+ <b8f8fb6d1d10386c74f2d8826b737a74c60b76b2.1724743492.git.christophe.leroy@csgroup.eu>
+ <defab86b7fb897c88a05a33b62ccf38467dda884.1724747058.git.christophe.leroy@csgroup.eu>
+ <Zs2RCfMgfNu_2vos@zx2c4.com>
+Subject: Re: [PATCH] random: vDSO: Redefine PAGE_SIZE and PAGE_MASK
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Hey again,
+On Tue, Aug 27, 2024, at 10:40, Jason A. Donenfeld wrote:
+> I don't love this, but it might be the lesser of evils, so sure, let's
+> do it.
+>
+> I think I'll combine these header fixups so that the whole operation is
+> a bit more clear. The commit is still pretty small. Something like
+> below:
+>
+> From 0d9a3d68cd6222395a605abd0ac625c41d4cabfa Mon Sep 17 00:00:00 2001
+> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Date: Tue, 27 Aug 2024 09:31:47 +0200
+> Subject: [PATCH] random: vDSO: clean header inclusion in getrandom
+>
+> Depending on the architecture, building a 32-bit vDSO on a 64-bit kernel
+> is problematic when some system headers are included.
+>
+> Minimise the amount of headers by moving needed items, such as
+> __{get,put}_unaligned_t, into dedicated common headers and in general
+> use more specific headers, similar to what was done in commit
+> 8165b57bca21 ("linux/const.h: Extract common header for vDSO") and
+> commit 8c59ab839f52 ("lib/vdso: Enable common headers").
+>
+> On some architectures this results in missing PAGE_SIZE, as was
+> described by commit 8b3843ae3634 ("vdso/datapage: Quick fix - use
+> asm/page-def.h for ARM64"), so define this if necessary, in the same way
+> as done prior by commit cffaefd15a8f ("vdso: Use CONFIG_PAGE_SHIFT in
+> vdso/datapage.h").
+>
+> Removing linux/time64.h leads to missing 'struct timespec64' in
+> x86's asm/pvclock.h. Add a forward declaration of that struct in
+> that file.
+>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-On Mon, Aug 26, 2024 at 09:19:22AM +0200, Jason A. Donenfeld wrote:
-> Thanks for this series. There are quite a few preliminary patches in it,
-> before you get to the PPC part, which fix up general build system or test
-> harness correctness issues. Since some of those affect all architectures
-> that are adding vDSO getrandom() support for 6.12, I'm going to take
-> those into my random.git tree as a fix for 6.11 now, in hopes that the
-> new archs can mostly go into arch trees without too many tree
-> interdependencies.
-> 
-> So I'll reply to individual patches for that, mentioning which ones I
-> extract.
+This is clearly better, but there are still a couple of inaccuracies
+that may end up biting us again later. Not sure whether it's worth
+trying to fix it all at once or if we want to address them when that
+happens:
 
-Seeing the volume of these and the amount of ground they touch, I'm now
-having second thoughts about rushing this into 6.11. Particularly with
-the header changes, I think it might be smart to let it cook in
-linux-next for a bit before sending it to Linus.
+>  #include <linux/array_size.h>
+> -#include <linux/cache.h>
+> -#include <linux/kernel.h>
+> -#include <linux/time64.h>
+> +#include <linux/minmax.h>
 
-  $ git --no-pager diff --name-only linus/master
-  arch/x86/entry/vdso/vma.c
-  arch/x86/include/asm/pvclock.h
-  arch/x86/include/asm/vdso/vsyscall.h
-  drivers/char/random.c
-  include/asm-generic/unaligned.h
-  include/vdso/helpers.h
-  include/vdso/unaligned.h
-  lib/vdso/Makefile
-  lib/vdso/getrandom.c
-  tools/arch/x86/vdso
-  tools/include/linux/linkage.h
-  tools/testing/selftests/vDSO/Makefile
-  tools/testing/selftests/vDSO/vdso_config.h
-  tools/testing/selftests/vDSO/vdso_test_getrandom.c
+These are still two headers outside of the vdso/ namespace. For arm64
+we had concluded that this is never safe, and any vdso header should
+only include other vdso headers so we never pull in anything that
+e.g. depends on memory management headers that are in turn broken
+for the compat vdso.
 
-So I think what I'll do is, for 6.11-rc6, send in the real bug fixes,
-which right now amount to:
+The array_size.h header is really small, so that one could
+probably just be moved into the vdso/ namespace. The minmax.h
+header is already rather complex, so it may be better to just
+open-code the usage of MIN/MAX where needed?
 
-  - random: vDSO: reject unknown getrandom() flags
-  - random: vDSO: don't use 64-bit atomics on 32-bit architectures
+>  #include <vdso/datapage.h>
+>  #include <vdso/getrandom.h>
+> +#include <vdso/unaligned.h>
+>  #include <asm/vdso/getrandom.h>
+> -#include <asm/vdso/vsyscall.h>
+> -#include <asm/unaligned.h>
+>  #include <uapi/linux/mman.h>
+> +#include <uapi/linux/random.h>
+> +
+> +#undef PAGE_SIZE
+> +#undef PAGE_MASK
+> +#define PAGE_SIZE (1UL << CONFIG_PAGE_SHIFT)
+> +#define PAGE_MASK (~(PAGE_SIZE - 1))
 
-  $ git --no-pager diff --name-only linus/master..a90592ab7cad
-  drivers/char/random.c
-  lib/vdso/getrandom.c
+Since these are now the same across all architectures, maybe we
+can just have the PAGE_SIZE definitions a vdso header instead
+and include that from asm/page.h.
 
-And then for the pending aarm64, ppc64(/32?), and loongarch enablement
-patches for 6.12, I'll just take those through my random.git tree, which
-have all of these build-system preliminaries. And then we'll obviously
-require acks from the maintainers of the archs for each of those arch
-enablement patches.
+Including uapi/linux/mman.h may still be problematic on
+some architectures if they change it in a way that is
+incompatible with compat vdso, but at least that can't
+accidentally rely on CONFIG_64BIT or something else that
+would be wrong there.
 
-If that sounds like an acceptable plan, you might want to mention in the
-cover letter that you're basing your arch-specific patches on
-https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/ and
-want an ack from the arch maintainer, etc.
-
-Jason
+     Arnd
 
