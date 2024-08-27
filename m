@@ -1,69 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-625-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-626-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2962961A15
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 00:40:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA67961A16
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 00:41:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtjDj41Gfz2y65;
-	Wed, 28 Aug 2024 08:40:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtjFy57Vlz2y8B;
+	Wed, 28 Aug 2024 08:41:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=173.37.86.75
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724778228;
-	cv=none; b=lfL+/K594yrtTD/bpj9Jwr2SvEFOSjLnf+u+BLn2yQq4GLN8iB7qYRTiYOYDAqJGtDSrGpamoNgg6bzbGxe5IHpEfS0eYqM8h/EjdDiz3FlK5r//46+1RFjqeEG2HMFBOBcs04ybegN0zAfCmNxZsGWSUep6OWwuGmkB78ewvAbi/nlupTWTI/eVPl1Ty9Adozn6kEZabxpybv0kqa/+ptrOHCLJbBG0sVkW+SeEiMj/pWUH2ISOPK2gxrJgSWrfERnoRHLgKsk8Ax8EXp5RxUq4L1qRqzjlA4dPLSqVEPTHBiDTru7vesf6mV+ooaP+Ai8BNkF1ti4bwVuv9uqGvA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=145.40.73.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724782647;
+	cv=none; b=KbEb+1weTMDmyXPdgP/pZWjZVBgyEzl73zV5ZihEMireA1eTL1krRAP442IEfPIaB/TkIwlufSfJGCVbMERfSMGo66encLSpGRgsWclS+ykuT8yJKnn6HuXLTT4jqdotwm9z8Ctgz2647znWi5JgYCFoyEdqR9dFkaogz8whmt+GkFGVt7ExkjKf8vusp3DBpB16JxYhttwBaMmx0jsIBb45b0S39L2CHSANLqwzIG5k6PfGwOJG0CjcwnKnW5lNzG2oo+qLiR0yGSqMi4E8AuTvPL5EajAvAJv+L3PldMac26nomyEAH3syZg3nhzR6bEhIRuSR98iT71mI8EBkWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724778228; c=relaxed/relaxed;
-	bh=RfG56hGqjnMogAQ1kemhMsBw/PeTnTehLen/hEWIk60=;
-	h=X-Greylist:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:Received:Received:From:To:Subject:Date:Message-Id:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-Auto-Response-Suppress:X-Outbound-SMTP-Client:X-Outbound-Node;
-	b=RJK27hLLUXPfa/R07cGEhmMHrPVlDM5nPgoXzx2eHTASTsSPlCyU92SG0hTttnnGT/UeYXPGlmp6GiVBnPJCHHSS5WtWOVKLNr5hkZee4M+fDAb3mYJHAY/3GJLexcfUJfCIkx6eqdHu8mHtQfmOg1TIjIwDuNTXz9sC9TGamVPZbjMHonNCD0eVVdBewznCHLzsssMIY/HvDn6O6H9NsUY0l3DhVlpuHqUauXYiXZZUXVBhn0PQW0ObfCWZNRay+QSpvRZFdkVmw64hpy3o5Ym5jSZ3mLgfONLnEtIeE9qq5QRpGQ3qNlDM1O8WMBJXGIVOcO5FBAMYr8X9XZDXig==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=JWQMskvV; dkim-atps=neutral; spf=pass (client-ip=173.37.86.75; helo=rcdn-iport-4.cisco.com; envelope-from=oocheret@cisco.com; receiver=lists.ozlabs.org) smtp.mailfrom=cisco.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+	t=1724782647; c=relaxed/relaxed;
+	bh=HxRN8IVRxXWkwsi5oS0C98gDT/DBYSFNVRgdUtUg1Lw=;
+	h=Received:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=DfoZyEWFFHo03kcFr4wywcrHl+JygrJfuO7oyPcwoA8eGavHuOAxv/tGqmQ68OqH6p2TewSBnrHxa09Jfhc01GdKmDV+Gn21hQR8xTpHc0ZGZ66vl3tAbfsmyPTc4O88wBE4kXKV6Rbw265A3r+WMEPxF9gDVrMMPzEQRSV1yLoy9AD5McoSK+RY4XqRm++eGcSpzFbiYqgeBHz8fVOwrdO8DhCeIE5SOkRJqKSDheNvlvxfA+q8LlIDBKYFQxNF1KE7CS7MxcjHmdKrRa7fpBaN+abat4YRR1+GlGlF3u1iU7lVL5PvsjVS9erxm0M44do10tJCWfjXLbJBD0+olQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bgh7QaJ9; dkim-atps=neutral; spf=pass (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport header.b=JWQMskvV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bgh7QaJ9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cisco.com (client-ip=173.37.86.75; helo=rcdn-iport-4.cisco.com; envelope-from=oocheret@cisco.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 123 seconds by postgrey-1.37 at boromir; Wed, 28 Aug 2024 03:03:43 AEST
-Received: from rcdn-iport-4.cisco.com (rcdn-iport-4.cisco.com [173.37.86.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtYlz0ZGNz2xwH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 03:03:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=1897; q=dns/txt; s=iport;
-  t=1724778223; x=1725987823;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RfG56hGqjnMogAQ1kemhMsBw/PeTnTehLen/hEWIk60=;
-  b=JWQMskvV1f/X+PmL7rGSCLIxyuHf8JMFI05H96wktpghyb92Hmhijf/z
-   vRXMEajpoVshNvdW4DakQtRJpmwbMGgDA9GyAzQ8mBFf28O0ODkmQdyYI
-   QjUC2T+P6G0PoOdymedrqRX+mpgkEMVU0AZbVZL5KzFwuOwWOc3qWlP6n
-   w=;
-X-CSE-ConnectionGUID: oo54NwhnS2aKVTzum9nITQ==
-X-CSE-MsgGUID: /f30QSFiQTGLLcRexs+ZgA==
-X-IronPort-AV: E=Sophos;i="6.10,180,1719878400"; 
-   d="scan'208";a="251946415"
-Received: from rcdn-core-10.cisco.com ([173.37.93.146])
-  by rcdn-iport-4.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2024 17:00:22 +0000
-Received: from sjc-ads-3421.cisco.com (sjc-ads-3421.cisco.com [171.68.249.119])
-	by rcdn-core-10.cisco.com (8.15.2/8.15.2) with ESMTP id 47RH0LmO008603;
-	Tue, 27 Aug 2024 17:00:21 GMT
-From: Oleksandr Ocheretnyi <oocheret@cisco.com>
-To: xe-linux-external@cisco.com, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Oleksandr Ocheretnyi <oocheret@cisco.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1] powerpc/pci: restore LSI mappings on card present state change
-Date: Tue, 27 Aug 2024 09:57:35 -0700
-Message-Id: <20240827165738.1083422-1-oocheret@cisco.com>
-X-Mailer: git-send-email 2.35.6
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtbP31LNzz2xtt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 04:17:27 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sin.source.kernel.org (Postfix) with ESMTP id 0876DCE13CD;
+	Tue, 27 Aug 2024 18:17:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370C8C4AF10;
+	Tue, 27 Aug 2024 18:08:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724782102;
+	bh=6hBH/a+6Kb1AQJN1JkfkjXJwDxg0hGfZVyT/Iju2lR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bgh7QaJ9At5jwNoKRhsGjGTLpqH2NoHSb2onT69lZKBrg6CFCpd9gW90r+2SgwoH1
+	 0GNU4qRapNNxdtmhiz3gWa+ujq1IlqUkuBPyYN3ra/qXrZ51OrQfDbuWTOriF3MI3u
+	 D/yRZfDOKHd3jb7eCXPIUIavEbn8irtpxQkNslY60M5/ftSYmc8YqwalTCS07pFCI3
+	 hj06bAOcQeuQyIFdQ/UkeCFRVRQdnqRPRyQII4nQgYX/4hCQ0YgW5DKAY2h7ICJxTi
+	 hD0WPmdZfDXifp12pn1RQcW0W7HncOytAz6KIA0c9HrIIszfZzaAXECJrebhNctsMW
+	 /jqTscusJynDA==
+Date: Tue, 27 Aug 2024 11:08:19 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Theodore Ts'o <tytso@mit.edu>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Shuah Khan <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 05/17] vdso: Avoid call to memset() by getrandom
+Message-ID: <20240827180819.GB2049@sol.localdomain>
+References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
+ <5deb67090b214f0e6eae96b7c406546d1a16f89b.1724309198.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,74 +78,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Auto-Response-Suppress: DR, OOF, AutoReply
-X-Outbound-SMTP-Client: 171.68.249.119, sjc-ads-3421.cisco.com
-X-Outbound-Node: rcdn-core-10.cisco.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5deb67090b214f0e6eae96b7c406546d1a16f89b.1724309198.git.christophe.leroy@csgroup.eu>
 
-Commit 450be4960a0f ("powerpc/pci: Remove LSI mappings on device
-teardown") frees irq descriptors on PCIe hotplug link change event
-(Link Down), but the disposed mappings are not restored back on PCIe
-hotplug link change event (Card present).
+On Thu, Aug 22, 2024 at 09:13:13AM +0200, Christophe Leroy wrote:
+> With the current implementation, __cvdso_getrandom_data() calls
+> memset(), which is unexpected in the VDSO.
+> 
+> Rewrite opaque data initialisation to avoid memset().
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  lib/vdso/getrandom.c | 15 ++++++++++-----
+>  1 file changed, 10 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/vdso/getrandom.c b/lib/vdso/getrandom.c
+> index cab153c5f9be..4a56f45141b4 100644
+> --- a/lib/vdso/getrandom.c
+> +++ b/lib/vdso/getrandom.c
+> @@ -4,6 +4,7 @@
+>   */
+>  
+>  #include <linux/minmax.h>
+> +#include <linux/array_size.h>
+>  #include <vdso/datapage.h>
+>  #include <vdso/getrandom.h>
+>  #include <vdso/unaligned.h>
+> @@ -74,11 +75,15 @@ __cvdso_getrandom_data(const struct vdso_rng_data *rng_info, void *buffer, size_
+>  	u32 counter[2] = { 0 };
+>  
+>  	if (unlikely(opaque_len == ~0UL && !buffer && !len && !flags)) {
+> -		*(struct vgetrandom_opaque_params *)opaque_state = (struct vgetrandom_opaque_params) {
+> -			.size_of_opaque_state = sizeof(*state),
+> -			.mmap_prot = PROT_READ | PROT_WRITE,
+> -			.mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS
+> -		};
+> +		struct vgetrandom_opaque_params *params = opaque_state;
+> +		int i;
+> +
+> +		params->size_of_opaque_state = sizeof(*state);
+> +		params->mmap_prot = PROT_READ | PROT_WRITE;
+> +		params->mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS;
+> +		for (i = 0; i < ARRAY_SIZE(params->reserved); i++)
+> +			params->reserved[i] = 0;
+> +
+>  		return 0;
+>  	}
 
-This change restores IRQ mappings disposed earlier when pcieport
-link's gone down. So, the call pci_read_irq_line is invoked again
-on pcieport's state change (Card present).
+Is there a compiler flag that could be used to disable the generation of calls
+to memset?
 
-Fixes 450be4960a0f ("powerpc/pci: Remove LSI mappings on device teardown")
-Signed-off-by: Oleksandr Ocheretnyi <oocheret@cisco.com>
----
- arch/powerpc/kernel/pci-common.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
-
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index eac84d687b53..a0e7cab2baa7 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -390,22 +390,32 @@ static void ppc_pci_intx_release(struct kref *kref)
- 	kfree(vi);
- }
- 
-+static int pci_read_irq_line(struct pci_dev *pci_dev);
-+
- static int ppc_pci_unmap_irq_line(struct notifier_block *nb,
- 			       unsigned long action, void *data)
- {
- 	struct pci_dev *pdev = to_pci_dev(data);
- 
--	if (action == BUS_NOTIFY_DEL_DEVICE) {
--		struct pci_intx_virq *vi;
--
--		mutex_lock(&intx_mutex);
--		list_for_each_entry(vi, &intx_list, list_node) {
--			if (vi->virq == pdev->irq) {
--				kref_put(&vi->kref, ppc_pci_intx_release);
--				break;
-+	switch (action) {
-+		case BUS_NOTIFY_DEL_DEVICE:
-+			{
-+				struct pci_intx_virq *vi;
-+
-+				mutex_lock(&intx_mutex);
-+				list_for_each_entry(vi, &intx_list, list_node) {
-+					if (vi->virq == pdev->irq) {
-+						kref_put(&vi->kref, ppc_pci_intx_release);
-+						break;
-+					}
-+				}
-+				mutex_unlock(&intx_mutex);
- 			}
--		}
--		mutex_unlock(&intx_mutex);
-+			break;
-+
-+		case BUS_NOTIFY_ADD_DEVICE:
-+			pci_read_irq_line(pdev);
-+			break;
- 	}
- 
- 	return NOTIFY_DONE;
--- 
-2.39.3
-
+- Eric
 
