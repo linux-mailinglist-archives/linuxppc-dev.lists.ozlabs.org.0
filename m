@@ -1,78 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-610-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-611-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B32960C86
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 15:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC8A960C8B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 15:51:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtTTs5VSkz2yV8;
-	Tue, 27 Aug 2024 23:51:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtTVg5GhYz2yVG;
+	Tue, 27 Aug 2024 23:51:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::32b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724749945;
-	cv=none; b=I+agCvT3lXKWmOLW0JFccfs/evoj6T2aDmD/g9o2MsZmFFnssqMSlbxJYGXN955tDQvsnaciADEx4N1UaScguUHFPkrbi5121DNNS4pjjBYQa8Y7hbTL09mSd+ODiznhg10U9R9rcalQ+9cEu0cgYVqyGYUIOpDuAqmasRTbhMSpvPaR14XtzL70dISWeffawvIh+Q2+9fP9Qh5lR4SIF5kYpMtirDJGNqHwPCYcfLJqTM5vcCImSXAlMdjrHt0Sl/U3U6QOq6RzrkwAYdmjqJ7AcLM066avoggv7Eli75Zzv15Zr31/RZHWmCf2xey+dHPWrRwfEO7PUIEhRABmvA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724749983;
+	cv=none; b=VxCUcHNDo5vZF2CLMrpnd1r/uDE6DAILVz/TqgVFSg8yStEgHLDDyHViPHIm03d1xbM8+5xOs5RTD+GY+MQCEzZXUjmHCJAgyxToGfuaPVbrl5/TIvytB+jI4eU/bkIL3B52TIE/wXbeNHt8/bhXyRh8mYuxFnBh3Q2Hm3uivxMu9ZW7d89DfnuSal8KiDUScXD6HkWdFAVbfIs4N2Mw/nvnQI4xVBJyzzyhEJzXth2Z+LRVRFNevs0U9gMaN2URahESAdPuXG6QP88lVwTmECLYVQZmSkT95xQieze8QO8w2ii5Mwpim1VLMKc+djLNsJ/rbClPExjtp1vebRzWaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724749945; c=relaxed/relaxed;
-	bh=5k3/8qSNos56A86IMpzBShMFvQxlC2q9OGMugpqaxkg=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding; b=mo5vQt632OmCkLEKeYkSE0P4tOozQPoEktdU+CqMKA+eByTL0EVO5leGyBcbZiDKBeWZVQS+iQjLa7kyC5We5i+7YUaVOrqHZ5FOVlI+JzmG7DzrdeCTTAt9b3QDqpJMax6y+2jbvs5orfiK67Mf8qgkx0Tm9W7WX5YxqJRDxp0cSTzykQ2YzZmkjrHtdGxx+NkO2arTtoWfrEhftr0S1+AyAZrNoWh+jl/+iG4GxxsIcyyn0umfZI1K9QB4zlL0zQ6eCpuyZwpXmr/0mUGdYy24fbGDt8YXOG5k96jN1+wiUi+C4ypMlcBn7ZbUVX0eUd8tGCABwF0HSMWuC4pRoA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=neATqp3M; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::32b; helo=mail-ot1-x32b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1724749983; c=relaxed/relaxed;
+	bh=NuhLoQecOq0Z//Uf9Etm5nsf1UiggoC41NXx4EtmKFI=;
+	h=Received:Received:DKIM-Signature:Received:X-Gm-Message-State:
+	 X-Google-Smtp-Source:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding; b=Q8+Y14XOeiVrG1p/lWaBl/yav+zgfnp7NOmZmbgCZhH8Yl3PVXpv42DtehJ00tqBW0Cuv5tbPc7IIQLZ7QELWa97wmZdY59NNKt7pmz16iNizB+qQ1zmdJT2KJUSSZt3/MInDCGHRSXqfycdZJqC+G2ll1PQW26j84S0rsEJB32I7fzgdRqrXQ3bf5fIPrHLNESRWyYH849Qh1DqjX4Y8OVYSjMytNd2PYys48E4a6S9uczPZYhYlwuXFKD3SzdkSe0Flb3wnz542FuE3N9ZUKWVs+3fIOCyjUawlmZwoc1z9B0szxZ/QB9qygsTg6SqV8QHqrJKjEFDCr5T7OOg9Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PrA01tKR; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=neATqp3M;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PrA01tKR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32b; helo=mail-ot1-x32b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtMJ85hg7z2yTy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 19:12:24 +1000 (AEST)
-Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-70942ebcc29so4833930a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 02:12:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724749939; x=1725354739; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5k3/8qSNos56A86IMpzBShMFvQxlC2q9OGMugpqaxkg=;
-        b=neATqp3Mk4VO5Y48ghkX2Gfrlga9+j8II6Zo6QljQcwTgnchX7ETmcs38E9CY/R89n
-         4KACwBEOQhUwjiuTBjxTEj0tYcuk0X/nk4YO5IVp6uVaaylIdr8q32mRuEk2+XVfeu8a
-         /PlpZKcUxUREsUrOqN3VNO+tqrBzDT6Nk8L7Qy5qotTn1F4jZnSsna3hx8GQCU/+JQna
-         uzBQc+zadRf5Qxw2tDud3aLKMPIx2pCWoSyUJRw9MfDQulM7pSaiUHHhRMSH4pV0GQKk
-         kWWwqwjlcYVw/9PuP/ItBbI3rT/Ul7cm+jHAlVK9adpJQClMGAwdcCRynJKJu0sENwl5
-         KbTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724749939; x=1725354739;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5k3/8qSNos56A86IMpzBShMFvQxlC2q9OGMugpqaxkg=;
-        b=gPobIXYz4R/j03SrzZoVzfWD2viuWyNBLcPNyPkc14v/Wz6RVBaUL2ZcGp3jTDbVTX
-         DKb3Jeh2s8N2/8mP/Ey2Tx0GNx4paoZAlvxs3OL7sDiLLCCkXMKQG48pdeoPtRktPgJ1
-         SbG0zH+n2f3wY8gk40jjmEuljSZBRREiLhAuWPhNgiXXIur302bQBJP3qHFQuWutnonD
-         3uhXloW20/SszNo+EmVbDAQgLhIJGZ8Susr2GKA51AtyLADy0n2wZRPamp4W38iObO6r
-         uulmnBQJjRNayU2FmJtOk8PDz64UvG3ePhEGlQrxwcoFgxDpjJ4j1ZO6zXm7BRng0hD0
-         XUEw==
-X-Gm-Message-State: AOJu0YxbEtcNrX3TqBSPIIJi15JjMpMDBpnadQEKdbuAmbpfJ0jw1VYN
-	P1Js8M7ykK3IK8OyjOtbY58KuJiH1q8laQLd+qo87JsYWLmqsLpCAkd2Xg==
-X-Google-Smtp-Source: AGHT+IGT6abTRgmak5aqPkCAEFXe66pf7YHsBgFuczkbM9kxPNZFR/gzJTpwE27xO2O9FS2cUrrsgA==
-X-Received: by 2002:a05:6830:3989:b0:70b:39f4:a90a with SMTP id 46e09a7af769-70e0ebd02camr14386304a34.25.1724749939305;
-        Tue, 27 Aug 2024 02:12:19 -0700 (PDT)
-Received: from dw-tp.. ([49.205.218.89])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71434af1856sm8113341b3a.68.2024.08.27.02.12.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Aug 2024 02:12:18 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH] powerpc: Use printk instead of WARN in change_memory_attr
-Date: Tue, 27 Aug 2024 14:42:11 +0530
-Message-ID: <e2fcabe78795552264f045bd224f83609903708f.1724749026.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtMJv1GKBz2yTy
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 19:13:03 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 08001A416D8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 09:12:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A61C8B7A4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 09:13:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724749980;
+	bh=JxBQoVGyG+qnPOwGjG78VRBfznoWP5yyUz2/W3rfI0s=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PrA01tKRAv67667BhlYHwLAguaIpMvgYRwoz9RHhkkU4fdYgs3z1puwLLFt4z1yBy
+	 upl6LRUGvlrtoGBB5IcTtB1SIWyk4uf34i3TaDnu7ViPYAmhlkvfoGspCTH3Kkt1OZ
+	 /O1QYNB/5dewc14K70kKCELmMILYtHplTFZysZa8OvWZ9Et+lGPSOmRBAUbQ+RDXjS
+	 5BCOahxLoEdHRh+qcvbmct22T/FUwQfssUtUREWQhhj7F8TTtmUpQmPOogWPiBWftb
+	 mzQhUYovXDdNpWHvgNcGM7uqCprn3YOGPUuoQ0i32h9aS6WJAuIGs9lrdIi8fgVO5T
+	 IlFDEbRg2r/zw==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5343d2af735so3736215e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 02:13:00 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yz0LGevYM3HDqFAHxlKXduFm35QkV6Db6Noln7i6u9VwmWOOxqh
+	6iHPbK31U77DzobdGmiWyyRWc2mo+MNk6zJquycCem9SuBeBUbI6ZfdT9DaBMa9/wF/L72k4pME
+	0taPI/vGVcfFxovYTFIqRSq8/Su0=
+X-Google-Smtp-Source: AGHT+IFpCvVGtqFkt0e1lRXvFIGTnLGle1JtCtNw8SoAQ03bNvZsLp6/AZo8+h9NMyIwcFL6WJlC0PGYw5oMpoctElo=
+X-Received: by 2002:a05:6512:2c8a:b0:52c:e0e1:9ae3 with SMTP id
+ 2adb3069b0e04-5344e500a1fmr1501367e87.57.1724749979251; Tue, 27 Aug 2024
+ 02:12:59 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,36 +63,246 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1720942106.git.naveen@kernel.org> <9cf2cdddba74ec167ae1af5ec189bba8f704fb51.1720942106.git.naveen@kernel.org>
+In-Reply-To: <9cf2cdddba74ec167ae1af5ec189bba8f704fb51.1720942106.git.naveen@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 27 Aug 2024 18:12:22 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQV+B=Jx1o3j3YkVL6CuTz5uPUnS+340KGA7aKs2eLxXw@mail.gmail.com>
+Message-ID: <CAK7LNAQV+B=Jx1o3j3YkVL6CuTz5uPUnS+340KGA7aKs2eLxXw@mail.gmail.com>
+Subject: Re: [RFC PATCH v4 12/17] powerpc64/ftrace: Move ftrace sequence out
+ of line
+To: Naveen N Rao <naveen@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Hari Bathini <hbathini@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, 
+	Vishal Chourasia <vishalc@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use pr_warn_once instead of WARN_ON_ONCE as discussed here [1]
-for printing possible use of set_memory_* on linear map on Hash.
+On Sun, Jul 14, 2024 at 5:29=E2=80=AFPM Naveen N Rao <naveen@kernel.org> wr=
+ote:
+>
+> Function profile sequence on powerpc includes two instructions at the
+> beginning of each function:
+>         mflr    r0
+>         bl      ftrace_caller
+>
+> The call to ftrace_caller() gets nop'ed out during kernel boot and is
+> patched in when ftrace is enabled.
+>
+> Given the sequence, we cannot return from ftrace_caller with 'blr' as we
+> need to keep LR and r0 intact. This results in link stack (return
+> address predictor) imbalance when ftrace is enabled. To address that, we
+> would like to use a three instruction sequence:
+>         mflr    r0
+>         bl      ftrace_caller
+>         mtlr    r0
+>
+> Further more, to support DYNAMIC_FTRACE_WITH_CALL_OPS, we need to
+> reserve two instruction slots before the function. This results in a
+> total of five instruction slots to be reserved for ftrace use on each
+> function that is traced.
+>
+> Move the function profile sequence out-of-line to minimize its impact.
+> To do this, we reserve a single nop at function entry using
+> -fpatchable-function-entry=3D1 and add a pass on vmlinux.o to determine
+> the total number of functions that can be traced. This is then used to
+> generate a .S file reserving the appropriate amount of space for use as
+> ftrace stubs, which is built and linked into vmlinux.
+>
+> On bootup, the stub space is split into separate stubs per function and
+> populated with the proper instruction sequence. A pointer to the
+> associated stub is maintained in dyn_arch_ftrace.
+>
+> For modules, space for ftrace stubs is reserved from the generic module
+> stub space.
+>
+> This is restricted to and enabled by default only on 64-bit powerpc,
+> though there are some changes to accommodate 32-bit powerpc. This is
+> done so that 32-bit powerpc could choose to opt into this based on
+> further tests and benchmarks.
+>
+> As an example, after this patch, kernel functions will have a single nop
+> at function entry:
+> <kernel_clone>:
+>         addis   r2,r12,467
+>         addi    r2,r2,-16028
+>         nop
+>         mfocrf  r11,8
+>         ...
+>
+> When ftrace is enabled, the nop is converted to an unconditional branch
+> to the stub associated with that function:
+> <kernel_clone>:
+>         addis   r2,r12,467
+>         addi    r2,r2,-16028
+>         b       ftrace_ool_stub_text_end+0x11b28
+>         mfocrf  r11,8
+>         ...
+>
+> The associated stub:
+> <ftrace_ool_stub_text_end+0x11b28>:
+>         mflr    r0
+>         bl      ftrace_caller
+>         mtlr    r0
+>         b       kernel_clone+0xc
+>         ...
+>
+> Signed-off-by: Naveen N Rao <naveen@kernel.org>
 
-[1]: https://lore.kernel.org/all/877cc2fpi2.fsf@mail.lhotse/#t
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- arch/powerpc/mm/pageattr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-index ac22bf28086f..c8c2d664c6f3 100644
---- a/arch/powerpc/mm/pageattr.c
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -94,8 +94,11 @@ int change_memory_attr(unsigned long addr, int numpages, long action)
- 	if (!radix_enabled()) {
- 		int region = get_region_id(addr);
+> diff --git a/arch/powerpc/tools/Makefile b/arch/powerpc/tools/Makefile
+> new file mode 100644
+> index 000000000000..31dd3151c272
+> --- /dev/null
+> +++ b/arch/powerpc/tools/Makefile
+> @@ -0,0 +1,10 @@
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +quiet_cmd_gen_ftrace_ool_stubs =3D FTRACE  $@
 
--		if (WARN_ON_ONCE(region != VMALLOC_REGION_ID && region != IO_REGION_ID))
-+		if (region != VMALLOC_REGION_ID && region != IO_REGION_ID) {
-+			pr_warn_once("%s: possible use of set_memory_* on linear map on Hash from (%ps)\n",
-+					__func__, __builtin_return_address(0));
- 			return -EINVAL;
-+		}
- 	}
- #endif
+
+This is not "FTRACE".
+
+"GEN" or something like that.
+
+
+
+> +      cmd_gen_ftrace_ool_stubs =3D $< $(objtree)/vmlinux.o $@
+> +
+> +targets +=3D .arch.vmlinux.o
+> +.arch.vmlinux.o: $(srctree)/arch/powerpc/tools/ftrace-gen-ool-stubs.sh $=
+(objtree)/vmlinux.o FORCE
+> +       $(call if_changed,gen_ftrace_ool_stubs)
+> +
+> +clean-files +=3D $(objtree)/.arch.vmlinux.S $(objtree)/.arch.vmlinux.o
+
+
+
+This is wrong. $(objtree) is always '.'
+
+It will attempt to clean up:
+
+arch/powerpc/tools/.arch.vmlinux.S
+arch/powerpc/tools/.arch.vmlinux.o
+
+
+
+You must not create the intermediate file,
+.arch.vmlinux.S at the top directory because
+this build step is pretty much PowerPC-specific.
+
+
+Rather, I'd recommend to create *.S and *.o in
+arch/powerpc/tools/:
+
+arch/powerpc/tools/vmlinux.S
+arch/powerpc/tools/vmlinux.o
+
+
+
+
+When you submit the next version, please run 'make clean'
+and confirm that any powerpc-specific build artifacts
+not being left-over.
+
+
+
+
+
+
+> diff --git a/arch/powerpc/tools/ftrace-gen-ool-stubs.sh b/arch/powerpc/to=
+ols/ftrace-gen-ool-stubs.sh
+> new file mode 100755
+> index 000000000000..0b85cd5262ff
+> --- /dev/null
+> +++ b/arch/powerpc/tools/ftrace-gen-ool-stubs.sh
+> @@ -0,0 +1,48 @@
+> +#!/bin/sh
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +
+> +# Error out on error
+> +set -e
+> +
+> +is_enabled() {
+> +       grep -q "^$1=3Dy" include/config/auto.conf
+> +}
+> +
+> +vmlinux_o=3D${1}
+> +arch_vmlinux_o=3D${2}
+> +arch_vmlinux_S=3D$(dirname ${arch_vmlinux_o})/$(basename ${arch_vmlinux_=
+o} .o).S
+> +
+> +RELOCATION=3DR_PPC64_ADDR64
+> +if is_enabled CONFIG_PPC32; then
+> +       RELOCATION=3DR_PPC_ADDR32
+> +fi
+> +
+> +num_ool_stubs_text=3D$(${CROSS_COMPILE}objdump -r -j __patchable_functio=
+n_entries ${vmlinux_o} |
+> +                    grep -v ".init.text" | grep "${RELOCATION}" | wc -l)
+> +num_ool_stubs_inittext=3D$(${CROSS_COMPILE}objdump -r -j __patchable_fun=
+ction_entries ${vmlinux_o} |
+> +                        grep ".init.text" | grep "${RELOCATION}" | wc -l=
+)
+> +
+> +cat > ${arch_vmlinux_S} <<EOF
+> +#include <asm/asm-offsets.h>
+> +#include <linux/linkage.h>
+> +
+> +.pushsection .tramp.ftrace.text,"aw"
+> +SYM_DATA(ftrace_ool_stub_text_end_count, .long ${num_ool_stubs_text})
+> +
+> +SYM_CODE_START(ftrace_ool_stub_text_end)
+> +       .space ${num_ool_stubs_text} * FTRACE_OOL_STUB_SIZE
+> +SYM_CODE_END(ftrace_ool_stub_text_end)
+> +.popsection
+> +
+> +.pushsection .tramp.ftrace.init,"aw"
+> +SYM_DATA(ftrace_ool_stub_inittext_count, .long ${num_ool_stubs_inittext}=
+)
+> +
+> +SYM_CODE_START(ftrace_ool_stub_inittext)
+> +       .space ${num_ool_stubs_inittext} * FTRACE_OOL_STUB_SIZE
+> +SYM_CODE_END(ftrace_ool_stub_inittext)
+> +.popsection
+> +EOF
+> +
+> +${CC} ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS} \
+> +      ${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL} \
+> +      -c -o ${arch_vmlinux_o} ${arch_vmlinux_S}
+
+
+Please do not compile this within a shell script.
+
+scripts/Makefile.build provides rule_as_o_S to do this.
+
+
+
+
+[1] vmlinux.o --> arch/powerpc/tools/vmlinux.S
+
+[2] arch/powerpc/tools/vmlinux.S --> arch/powerpc/tools/vmlinux.o
+
+
+Please split these in separate build rules.
+
+
+
+
+
+> --
+> 2.45.2
+>
+
 
 --
-2.39.2
-
+Best Regards
+Masahiro Yamada
 
