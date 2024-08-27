@@ -1,36 +1,37 @@
-Return-Path: <linuxppc-dev+bounces-623-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-624-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E48961A11
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 00:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 736F8961A12
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 00:39:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtjCL3dMkz2xtN;
-	Wed, 28 Aug 2024 08:39:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtjCv2gWDz2xvR;
+	Wed, 28 Aug 2024 08:39:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724773291;
-	cv=none; b=Prfeep58U1fsDU2LG+Ne4bi1cT33lmAoa5pDKxp7FUbgpAYh00E1n5CAtdGk9OO/HrWDL8+BfflY+ynrixeg4BZM5W5Isq2+1rU3lsOt0KMkDRzxTDPrstOEv1oLgxbJFzG8mduT2O4RU7g/AUNAHsKxOCNhRWY4bL9azvzwCSQnNZhYt41f8+c6EGtWyWslOVGMcVKByCkGF1yO2hgXFxjxuozgi16F/4ZZkc3l6GWJAs4urQFeUZ55Q5MVN6UY09Ap6FmdEO/CBbFjxFrCVqopCQGq/B/iwMwMgposC/+yq7wVNlKlUZ9SqM6s5d7q8kRmMm7/tQtyMnmUW+Y/2Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724774737;
+	cv=none; b=L0bKbFFr1I6vUn3qXIYr76NcU8VTLUnXGYz0tW+9H4lZb4KXFexkoIYiFhWH0NO+0sdK5QhB5er/mrgaZ46m3UHSKXa5RJ00swolNQFssek8d+fSOiRGyM44gdGFlNYNkHGsLhREj3Al4lptcOEa9rcHOxjFPmb5pGjJpesez3gg69CX7YN8MHYGfLxzzi3gEaI5ETKbS5oqokI3Ls/J/vczVEblhhWjc7oqoQoVEG2g2YLCcyzJDcAbTkdFuHd9v3vOcDtrRP0XXNVKYFuaLjNBSSC37UiVM3WbCyXJYlP7UxcwjCp/wnhxi99RQYtedwH21/E6HASvfs0Nd4wzqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724773291; c=relaxed/relaxed;
-	bh=1IRJgYcRKC7M8qAJVr9HlBXHBfkmklV4uNdlPn4gP5Y=;
-	h=Received:Received:Message-ID:Date:MIME-Version:User-Agent:From:
-	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=cvd84Q8M3VIqk17DP2RQlcnXyKWMCs2cESNeIXRp9/Up9ty5/Vg22QryWXZlCa49FgZQ/xlA+xEBL1JEwoF/g+wyP/kjdXK1JQ8iddDUABirX8yDqHvfpxrMcEW/5CNSEddxbRhoKJ7ZSHbdoiXohvl7+eISCZDpXowKSDDz3C+zvFzTRcZIeGNFTA9iF7vlgLoXgvBrtWHLehSXMaB7uysZjy4hfphD1dFc6EGznA2qM8h5rXa/5n9370aOBSFRxuMXm1ftFGkEq7RiGMnIhGngy/WSK82Xtwpj1g+nwU8uZsbHQzbj/11ELHivnVaDow23Vwxf7a/r8gzZKC6Z3A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+	t=1724774737; c=relaxed/relaxed;
+	bh=iGh7SBfSG44G9aJ+yu6Fi9q+iRAj4+/q3HAMMLpWRMU=;
+	h=Received:Received:Content-Type:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:
+	 In-Reply-To; b=XPgfood7EhGi39DAd9r/eiZ+B+ZT0VxIjBNIt/e2kDXc4C7vo+SQtii3gnHfWEEx5I1vkv78zAj4X2yAHAY+wZgPe01Z6rC1SIRrfZvb57JKXPpH6g4DybDkR7WFEKQ9XfWWZdwIE6NdG4ABH6ADXLEvh4MKj/2UmME4MDvpGuP3uo0gyctifwfAcFZoTeSpX7N7b7UbQLtopC7Y9BuDYiTpu004gapvS5XCYQ1CT28PMco80L88XrMBwX8VWHGBetXFptZq8jEhYno9bheSuXwFCQTf19mSrq+ca5EzY5m5CLZzXrcl34LfMZrcqzHB4e+boddOA4hON00stR1rWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=vincenzo.frascino@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=vincenzo.frascino@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtWx70VYZz2xX4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 01:41:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtXSw6jb5z2xfR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 02:05:36 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4C2811FB;
-	Tue, 27 Aug 2024 08:41:25 -0700 (PDT)
-Received: from [10.34.129.45] (e126645.nice.arm.com [10.34.129.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E41763F762;
-	Tue, 27 Aug 2024 08:40:54 -0700 (PDT)
-Message-ID: <a998c723-7451-439a-9c88-7c8b5c1b890b@arm.com>
-Date: Tue, 27 Aug 2024 17:40:54 +0200
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2608DDA7;
+	Tue, 27 Aug 2024 09:05:31 -0700 (PDT)
+Received: from [10.1.196.72] (e119884-lin.cambridge.arm.com [10.1.196.72])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DFE4F3F762;
+	Tue, 27 Aug 2024 09:05:02 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------QEwA5gt7zV1lGdR6NrQpIERR"
+Message-ID: <17437f43-9d1f-4263-888e-573a355cb0b5@arm.com>
+Date: Tue, 27 Aug 2024 17:05:01 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -41,133 +42,229 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Pierre Gondois <pierre.gondois@arm.com>
-Subject: Re: [PATCH v5 3/4] arm64: topology: Support SMT control on ACPI based
- system
-To: Yicong Yang <yangyicong@huawei.com>
-Cc: linuxppc-dev@lists.ozlabs.org, bp@alien8.de, dave.hansen@linux.intel.com,
- mingo@redhat.com, linux-arm-kernel@lists.infradead.org, mpe@ellerman.id.au,
- peterz@infradead.org, tglx@linutronix.de, sudeep.holla@arm.com,
- will@kernel.org, catalin.marinas@arm.com, x86@kernel.org,
- linux-kernel@vger.kernel.org, dietmar.eggemann@arm.com,
- gregkh@linuxfoundation.org, rafael@kernel.org, jonathan.cameron@huawei.com,
- prime.zeng@hisilicon.com, linuxarm@huawei.com, yangyicong@hisilicon.com,
- xuwei5@huawei.com, guohanjun@huawei.com
-References: <20240806085320.63514-1-yangyicong@huawei.com>
- <20240806085320.63514-4-yangyicong@huawei.com>
+Subject: Re: [PATCH] random: vDSO: Redefine PAGE_SIZE and PAGE_MASK
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Arnd Bergmann <arnd@arndb.de>, "Jason A . Donenfeld" <Jason@zx2c4.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Linux-Arch <linux-arch@vger.kernel.org>
+References: <b8f8fb6d1d10386c74f2d8826b737a74c60b76b2.1724743492.git.christophe.leroy@csgroup.eu>
+ <defab86b7fb897c88a05a33b62ccf38467dda884.1724747058.git.christophe.leroy@csgroup.eu>
+ <Zs2RCfMgfNu_2vos@zx2c4.com>
+ <cb66b582-ba63-4a5a-9df8-b07288f1f66d@app.fastmail.com>
+ <0f9255f1-5860-408c-8eaa-ccb4dd3747fa@csgroup.eu>
 Content-Language: en-US
-In-Reply-To: <20240806085320.63514-4-yangyicong@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Vincenzo Frascino <vincenzo.frascino@arm.com>
+In-Reply-To: <0f9255f1-5860-408c-8eaa-ccb4dd3747fa@csgroup.eu>
 
-Hello Yicong,
-IIUC we are looking for the maximum number of threads a CPU can have
-in the platform. But is is actually possible to have a platform with
-CPUs not having the same number of threads ?
+This is a multi-part message in MIME format.
+--------------QEwA5gt7zV1lGdR6NrQpIERR
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-For instance kernel/cpu.c::cpu_smt_num_threads_valid() will check
-that the number of threads is either 1 or cpu_smt_max_threads (as
-CONFIG_SMT_NUM_THREADS_DYNAMIC is not enabled for arm64). However
-a (hypothetical) platform with:
-- CPU0: 2 threads
-- CPU1: 4 threads
-should not be able to set the number of threads to 2, as
-1 < 2 < cpu_smt_max_threads (cf. cpu_smt_num_threads_valid()).
+Hi Christophe,
 
-So if there is an assumption that all the CPUs have the same number of
-threads, it should be sufficient to count the number of threads for one
-CPU right ?
+On 27/08/2024 11:49, Christophe Leroy wrote:
 
-In the other (unlikely) case (i.e. CPUs can have various number of threads),
-I think we should either:
-- use your method and check that all the CPUs have the same number of threads
-- get the number of threads for one CPU and check that all the CPUs are
-    identical using the ACPI_PPTT_ACPI_IDENTICAL tag
-- have a per-cpu cpu_smt_max_threads value ?
+...
 
-Same comment for the DT patch. If there is an assumption that all CPUs have
-the same number of threads, then update_smt_num_threads() could only be called
-once I suppose,
 
+>>
+>> These are still two headers outside of the vdso/ namespace. For arm64
+>> we had concluded that this is never safe, and any vdso header should
+>> only include other vdso headers so we never pull in anything that
+>> e.g. depends on memory management headers that are in turn broken
+>> for the compat vdso.
+>>
+>> The array_size.h header is really small, so that one could
+>> probably just be moved into the vdso/ namespace. The minmax.h
+>> header is already rather complex, so it may be better to just
+>> open-code the usage of MIN/MAX where needed?
+> 
+> It is used at two places only so yes can to that.
+>
+
+Could you please clarify where minmax is needed? I tried to build Jason's master
+tree for x86, commenting the header and it seems building fine. I might be
+missing something.
+
+> Same for ARRAY_SIZE(->reserved) by the way, easy to do opencode, we also have it
+> only once
+> 
+
+I have a similar issue to figure out why linux/array_size.h and
+uapi/linux/random.h are needed. It seems that I can build the object without
+them. Could you please explain?
+
+In general, the philosophy adopted to split the headers is to extract the set of
+functions used by vDSOs from the linux headers and place them in the vdso headers.
+Consequently the linux header includes to vdso one. E.g.: linux/time64.h
+includes vdso/time64.h.
+
+IMHO we should follow the same approach, if at all for consistency, unless there
+is a valid reason.
+
+...
+
+>>
+>> Including uapi/linux/mman.h may still be problematic on
+>> some architectures if they change it in a way that is
+>> incompatible with compat vdso, but at least that can't
+>> accidentally rely on CONFIG_64BIT or something else that
+>> would be wrong there.
+> 
+> Yes that one is tricky. Because uapi/linux/mman.h includes asm/mman.h with the
+> intention to include uapi/asm/mman.h but when built from the kernel in reality
+> you get arch/powerpc/include/asm/mman.h and I had to add some ifdefery to
+> kick-out kernel oddities it contains that pull additional kernel headers.
+> 
+> diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
+> index 17a77d47ed6d..42a51a993d94 100644
+> --- a/arch/powerpc/include/asm/mman.h
+> +++ b/arch/powerpc/include/asm/mman.h
+> @@ -6,7 +6,7 @@
+> 
+>  #include <uapi/asm/mman.h>
+> 
+> -#ifdef CONFIG_PPC64
+> +#if defined(CONFIG_PPC64) && !defined(BUILD_VDSO)
+> 
+>  #include <asm/cputable.h>
+>  #include <linux/mm.h>
+> 
+
+I agree with Arnd here. uapi/linux/mman.h can cause us problems in the long run.
+
+I am attaching a patch to provide my view on how to minimize the headers
+included and use only the vdso/ namespace. Please, before using the code,
+consider that I conducted very limited testing.
+
+Note: It should apply clean on Jason's tree.
+
+Let me know your thoughts.
+
+> 
+> Christophe
+
+-- 
 Regards,
-Pierre
+Vincenzo
+--------------QEwA5gt7zV1lGdR6NrQpIERR
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-random-VDSO-Use-only-headers-from-the-vdso-namespace.patch"
+Content-Disposition: attachment;
+ filename*0="0001-random-VDSO-Use-only-headers-from-the-vdso-namespace.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
 
+RnJvbSAxOTMzMDI4ZWFlZWJjNWMwNTMzMDkzNzljNDNkZGVhNWI0NjBjMjVlIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBWaW5jZW56byBGcmFzY2lubyA8dmluY2Vuem8uZnJh
+c2Npbm9AYXJtLmNvbT4KRGF0ZTogVHVlLCAyNyBBdWcgMjAyNCAxNjo0NDozMiArMDEwMApT
+dWJqZWN0OiBbUEFUQ0hdIHJhbmRvbTogVkRTTzogVXNlIG9ubHkgaGVhZGVycyBmcm9tIHRo
+ZSB2ZHNvLyBuYW1lc3BhY2UKClRoZSBWRFNPIGltcGxlbWVudGF0aW9uIGluY2x1ZGVzIGhl
+YWRlcnMgZnJvbSBvdXRzaWRlIG9mIHRoZQp2ZHNvLyBuYW1lc3BhY2UuCgpSZWZhY3RvciB0
+aGUgY29kZSB0byBtYWtlIHN1cmUgdGhhdCB0aGUgZ2VuZXJpYyBsaWJyYXJ5IHVzZXMgb25s
+eSB0aGUKYWxsb3dlZCBuYW1lc3BhY2UuCgpTaWduZWQtb2ZmLWJ5OiBWaW5jZW56byBGcmFz
+Y2lubyA8dmluY2Vuem8uZnJhc2Npbm9AYXJtLmNvbT4KLS0tCiBhcmNoL3g4Ni9pbmNsdWRl
+L2FzbS92ZHNvL2dldHJhbmRvbS5oIHwgIDIgKysKIGFyY2gveDg2L2luY2x1ZGUvYXNtL3Zk
+c28vbW1hbi5oICAgICAgfCAxNSArKysrKysrKysrKysrKysKIGFyY2gveDg2L2luY2x1ZGUv
+YXNtL3Zkc28vcGFnZS5oICAgICAgfCAxNSArKysrKysrKysrKysrKysKIGluY2x1ZGUvdmRz
+by9nZXRyYW5kb20uaCAgICAgICAgICAgICAgfCAgMSArCiBpbmNsdWRlL3Zkc28vbW1hbi5o
+ICAgICAgICAgICAgICAgICAgIHwgIDcgKysrKysrKwogaW5jbHVkZS92ZHNvL3BhZ2UuaCAg
+ICAgICAgICAgICAgICAgICB8ICA3ICsrKysrKysKIGxpYi92ZHNvL2dldHJhbmRvbS5jICAg
+ICAgICAgICAgICAgICAgfCAyMCArKysrKystLS0tLS0tLS0tLS0tLQogNyBmaWxlcyBjaGFu
+Z2VkLCA1MyBpbnNlcnRpb25zKCspLCAxNCBkZWxldGlvbnMoLSkKIGNyZWF0ZSBtb2RlIDEw
+MDY0NCBhcmNoL3g4Ni9pbmNsdWRlL2FzbS92ZHNvL21tYW4uaAogY3JlYXRlIG1vZGUgMTAw
+NjQ0IGFyY2gveDg2L2luY2x1ZGUvYXNtL3Zkc28vcGFnZS5oCiBjcmVhdGUgbW9kZSAxMDA2
+NDQgaW5jbHVkZS92ZHNvL21tYW4uaAogY3JlYXRlIG1vZGUgMTAwNjQ0IGluY2x1ZGUvdmRz
+by9wYWdlLmgKCmRpZmYgLS1naXQgYS9hcmNoL3g4Ni9pbmNsdWRlL2FzbS92ZHNvL2dldHJh
+bmRvbS5oIGIvYXJjaC94ODYvaW5jbHVkZS9hc20vdmRzby9nZXRyYW5kb20uaAppbmRleCBi
+OTZlNjc0Y2FmZGUuLjQ1N2YyMzdiZDYwMiAxMDA2NDQKLS0tIGEvYXJjaC94ODYvaW5jbHVk
+ZS9hc20vdmRzby9nZXRyYW5kb20uaAorKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS92ZHNv
+L2dldHJhbmRvbS5oCkBAIC03LDYgKzcsOCBAQAogCiAjaWZuZGVmIF9fQVNTRU1CTFlfXwog
+CisjaW5jbHVkZSA8dmRzby9kYXRhcGFnZS5oPgorCiAjaW5jbHVkZSA8YXNtL3VuaXN0ZC5o
+PgogI2luY2x1ZGUgPGFzbS92dmFyLmg+CiAKZGlmZiAtLWdpdCBhL2FyY2gveDg2L2luY2x1
+ZGUvYXNtL3Zkc28vbW1hbi5oIGIvYXJjaC94ODYvaW5jbHVkZS9hc20vdmRzby9tbWFuLmgK
+bmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi40YzkzNmM5ZDExYWIK
+LS0tIC9kZXYvbnVsbAorKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS92ZHNvL21tYW4uaApA
+QCAtMCwwICsxLDE1IEBACisKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4w
+ICovCisjaWZuZGVmIF9fQVNNX1ZEU09fTU1BTl9ICisjZGVmaW5lIF9fQVNNX1ZEU09fTU1B
+Tl9ICisKKyNpZm5kZWYgX19BU1NFTUJMWV9fCisKKyNpbmNsdWRlIDx1YXBpL2xpbnV4L21t
+YW4uaD4KKworI2RlZmluZSBWRFNPX01NQVBfUFJPVAlQUk9UX1JFQUQgfCBQUk9UX1dSSVRF
+CisjZGVmaW5lIFZEU09fTU1BUF9GTEFHUwlNQVBfRFJPUFBBQkxFIHwgTUFQX0FOT05ZTU9V
+UworCisjZW5kaWYgLyogIV9fQVNTRU1CTFlfXyAqLworCisjZW5kaWYgLyogX19BU01fVkRT
+T19NTUFOX0ggKi8KZGlmZiAtLWdpdCBhL2FyY2gveDg2L2luY2x1ZGUvYXNtL3Zkc28vcGFn
+ZS5oIGIvYXJjaC94ODYvaW5jbHVkZS9hc20vdmRzby9wYWdlLmgKbmV3IGZpbGUgbW9kZSAx
+MDA2NDQKaW5kZXggMDAwMDAwMDAwMDAwLi5iMGFmOGZiZWYyN2MKLS0tIC9kZXYvbnVsbAor
+KysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS92ZHNvL3BhZ2UuaApAQCAtMCwwICsxLDE1IEBA
+CisKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wICovCisjaWZuZGVmIF9f
+QVNNX1ZEU09fUEFHRV9ICisjZGVmaW5lIF9fQVNNX1ZEU09fUEFHRV9ICisKKyNpZm5kZWYg
+X19BU1NFTUJMWV9fCisKKyNpbmNsdWRlIDxhc20vcGFnZV90eXBlcy5oPgorCisjZGVmaW5l
+IFZEU09fUEFHRV9NQVNLCVBBR0VfTUFTSworI2RlZmluZSBWRFNPX1BBR0VfU0laRQlQQUdF
+X1NJWkUKKworI2VuZGlmIC8qICFfX0FTU0VNQkxZX18gKi8KKworI2VuZGlmIC8qIF9fQVNN
+X1ZEU09fUEFHRV9IICovCmRpZmYgLS1naXQgYS9pbmNsdWRlL3Zkc28vZ2V0cmFuZG9tLmgg
+Yi9pbmNsdWRlL3Zkc28vZ2V0cmFuZG9tLmgKaW5kZXggYThiN2MxNGIwYWUwLi45Y2Y2NTI1
+MmVlODggMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvdmRzby9nZXRyYW5kb20uaAorKysgYi9pbmNs
+dWRlL3Zkc28vZ2V0cmFuZG9tLmgKQEAgLTcsNiArNyw3IEBACiAjZGVmaW5lIF9WRFNPX0dF
+VFJBTkRPTV9ICiAKICNpbmNsdWRlIDxsaW51eC90eXBlcy5oPgorI2luY2x1ZGUgPGFzbS92
+ZHNvL2dldHJhbmRvbS5oPgogCiAjZGVmaW5lIENIQUNIQV9LRVlfU0laRSAgICAgICAgIDMy
+CiAjZGVmaW5lIENIQUNIQV9CTE9DS19TSVpFICAgICAgIDY0CmRpZmYgLS1naXQgYS9pbmNs
+dWRlL3Zkc28vbW1hbi5oIGIvaW5jbHVkZS92ZHNvL21tYW4uaApuZXcgZmlsZSBtb2RlIDEw
+MDY0NAppbmRleCAwMDAwMDAwMDAwMDAuLjk1ZTNkYTcxNGM2NAotLS0gL2Rldi9udWxsCisr
+KyBiL2luY2x1ZGUvdmRzby9tbWFuLmgKQEAgLTAsMCArMSw3IEBACisvKiBTUERYLUxpY2Vu
+c2UtSWRlbnRpZmllcjogR1BMLTIuMCAqLworI2lmbmRlZiBfX1ZEU09fTU1BTl9ICisjZGVm
+aW5lIF9fVkRTT19NTUFOX0gKKworI2luY2x1ZGUgPGFzbS92ZHNvL21tYW4uaD4KKworI2Vu
+ZGlmCS8qIF9fVkRTT19NTUFOX0ggKi8KZGlmZiAtLWdpdCBhL2luY2x1ZGUvdmRzby9wYWdl
+LmggYi9pbmNsdWRlL3Zkc28vcGFnZS5oCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAw
+MDAwMDAwMDAwMC4uZjE4ZTMwNDk0MWNiCi0tLSAvZGV2L251bGwKKysrIGIvaW5jbHVkZS92
+ZHNvL3BhZ2UuaApAQCAtMCwwICsxLDcgQEAKKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVy
+OiBHUEwtMi4wICovCisjaWZuZGVmIF9fVkRTT19QQUdFX0gKKyNkZWZpbmUgX19WRFNPX1BB
+R0VfSAorCisjaW5jbHVkZSA8YXNtL3Zkc28vcGFnZS5oPgorCisjZW5kaWYJLyogX19WRFNP
+X1BBR0VfSCAqLwpkaWZmIC0tZ2l0IGEvbGliL3Zkc28vZ2V0cmFuZG9tLmMgYi9saWIvdmRz
+by9nZXRyYW5kb20uYwppbmRleCA5MzhjYTUzOWFhYTYuLjA5MzZmZDFjYTZjZSAxMDA2NDQK
+LS0tIGEvbGliL3Zkc28vZ2V0cmFuZG9tLmMKKysrIGIvbGliL3Zkc28vZ2V0cmFuZG9tLmMK
+QEAgLTMsMTkgKzMsMTEgQEAKICAqIENvcHlyaWdodCAoQykgMjAyMi0yMDI0IEphc29uIEEu
+IERvbmVuZmVsZCA8SmFzb25AengyYzQuY29tPi4gQWxsIFJpZ2h0cyBSZXNlcnZlZC4KICAq
+LwogCi0jaW5jbHVkZSA8bGludXgvYXJyYXlfc2l6ZS5oPgotI2luY2x1ZGUgPGxpbnV4L21p
+bm1heC5oPgogI2luY2x1ZGUgPHZkc28vZGF0YXBhZ2UuaD4KICNpbmNsdWRlIDx2ZHNvL2dl
+dHJhbmRvbS5oPgogI2luY2x1ZGUgPHZkc28vdW5hbGlnbmVkLmg+Ci0jaW5jbHVkZSA8YXNt
+L3Zkc28vZ2V0cmFuZG9tLmg+Ci0jaW5jbHVkZSA8dWFwaS9saW51eC9tbWFuLmg+Ci0jaW5j
+bHVkZSA8dWFwaS9saW51eC9yYW5kb20uaD4KLQotI3VuZGVmIFBBR0VfU0laRQotI3VuZGVm
+IFBBR0VfTUFTSwotI2RlZmluZSBQQUdFX1NJWkUgKDFVTCA8PCBDT05GSUdfUEFHRV9TSElG
+VCkKLSNkZWZpbmUgUEFHRV9NQVNLICh+KFBBR0VfU0laRSAtIDEpKQorI2luY2x1ZGUgPHZk
+c28vbW1hbi5oPgorI2luY2x1ZGUgPHZkc28vcGFnZS5oPgogCiAjZGVmaW5lIE1FTUNQWV9B
+TkRfWkVST19TUkModHlwZSwgZHN0LCBzcmMsIGxlbikgZG8gewkJCQlcCiAJd2hpbGUgKGxl
+biA+PSBzaXplb2YodHlwZSkpIHsJCQkJCQlcCkBAIC02OCw3ICs2MCw3IEBAIHN0YXRpYyBf
+X2Fsd2F5c19pbmxpbmUgc3NpemVfdAogX19jdmRzb19nZXRyYW5kb21fZGF0YShjb25zdCBz
+dHJ1Y3QgdmRzb19ybmdfZGF0YSAqcm5nX2luZm8sIHZvaWQgKmJ1ZmZlciwgc2l6ZV90IGxl
+biwKIAkJICAgICAgIHVuc2lnbmVkIGludCBmbGFncywgdm9pZCAqb3BhcXVlX3N0YXRlLCBz
+aXplX3Qgb3BhcXVlX2xlbikKIHsKLQlzc2l6ZV90IHJldCA9IG1pbl90KHNpemVfdCwgSU5U
+X01BWCAmIFBBR0VfTUFTSyAvKiA9IE1BWF9SV19DT1VOVCAqLywgbGVuKTsKKwlzc2l6ZV90
+IHJldCA9IG1pbl90KHNpemVfdCwgSU5UX01BWCAmIFZEU09fUEFHRV9NQVNLIC8qID0gTUFY
+X1JXX0NPVU5UICovLCBsZW4pOwogCXN0cnVjdCB2Z2V0cmFuZG9tX3N0YXRlICpzdGF0ZSA9
+IG9wYXF1ZV9zdGF0ZTsKIAlzaXplX3QgYmF0Y2hfbGVuLCBuYmxvY2tzLCBvcmlnX2xlbiA9
+IGxlbjsKIAlib29sIGluX3VzZSwgaGF2ZV9yZXRyaWVkID0gZmFsc2U7CkBAIC03OSwxNSAr
+NzEsMTUgQEAgX19jdmRzb19nZXRyYW5kb21fZGF0YShjb25zdCBzdHJ1Y3QgdmRzb19ybmdf
+ZGF0YSAqcm5nX2luZm8sIHZvaWQgKmJ1ZmZlciwgc2l6ZV8KIAlpZiAodW5saWtlbHkob3Bh
+cXVlX2xlbiA9PSB+MFVMICYmICFidWZmZXIgJiYgIWxlbiAmJiAhZmxhZ3MpKSB7CiAJCXN0
+cnVjdCB2Z2V0cmFuZG9tX29wYXF1ZV9wYXJhbXMgKnBhcmFtcyA9IG9wYXF1ZV9zdGF0ZTsK
+IAkJcGFyYW1zLT5zaXplX29mX29wYXF1ZV9zdGF0ZSA9IHNpemVvZigqc3RhdGUpOwotCQlw
+YXJhbXMtPm1tYXBfcHJvdCA9IFBST1RfUkVBRCB8IFBST1RfV1JJVEU7Ci0JCXBhcmFtcy0+
+bW1hcF9mbGFncyA9IE1BUF9EUk9QUEFCTEUgfCBNQVBfQU5PTllNT1VTOworCQlwYXJhbXMt
+Pm1tYXBfcHJvdCA9IFZEU09fTU1BUF9QUk9UOworCQlwYXJhbXMtPm1tYXBfZmxhZ3MgPSBW
+RFNPX01NQVBfRkxBR1M7CiAJCWZvciAoc2l6ZV90IGkgPSAwOyBpIDwgQVJSQVlfU0laRShw
+YXJhbXMtPnJlc2VydmVkKTsgKytpKQogCQkJcGFyYW1zLT5yZXNlcnZlZFtpXSA9IDA7CiAJ
+CXJldHVybiAwOwogCX0KIAogCS8qIFRoZSBzdGF0ZSBtdXN0IG5vdCBzdHJhZGRsZSBhIHBh
+Z2UsIHNpbmNlIHBhZ2VzIGNhbiBiZSB6ZXJvZWQgYXQgYW55IHRpbWUuICovCi0JaWYgKHVu
+bGlrZWx5KCgodW5zaWduZWQgbG9uZylvcGFxdWVfc3RhdGUgJiB+UEFHRV9NQVNLKSArIHNp
+emVvZigqc3RhdGUpID4gUEFHRV9TSVpFKSkKKwlpZiAodW5saWtlbHkoKCh1bnNpZ25lZCBs
+b25nKW9wYXF1ZV9zdGF0ZSAmIH5WRFNPX1BBR0VfTUFTSykgKyBzaXplb2YoKnN0YXRlKSA+
+IFZEU09fUEFHRV9TSVpFKSkKIAkJcmV0dXJuIC1FRkFVTFQ7CiAKIAkvKiBIYW5kbGUgdW5l
+eHBlY3RlZCBmbGFncyBieSBmYWxsaW5nIGJhY2sgdG8gdGhlIGtlcm5lbC4gKi8KLS0gCjIu
+MzQuMQoK
 
-On 8/6/24 10:53, Yicong Yang wrote:
-> From: Yicong Yang <yangyicong@hisilicon.com>
-> 
-> For ACPI we'll build the topology from PPTT and we cannot directly
-> get the SMT number of each core. Instead using a temporary xarray
-> to record the SMT number of each core when building the topology
-> and we can know the largest SMT number in the system. Then we can
-> enable the support of SMT control.
-> 
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> ---
->   arch/arm64/kernel/topology.c | 24 ++++++++++++++++++++++++
->   1 file changed, 24 insertions(+)
-> 
-> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> index 1a2c72f3e7f8..f72e1e55b05e 100644
-> --- a/arch/arm64/kernel/topology.c
-> +++ b/arch/arm64/kernel/topology.c
-> @@ -15,8 +15,10 @@
->   #include <linux/arch_topology.h>
->   #include <linux/cacheinfo.h>
->   #include <linux/cpufreq.h>
-> +#include <linux/cpu_smt.h>
->   #include <linux/init.h>
->   #include <linux/percpu.h>
-> +#include <linux/xarray.h>
->   
->   #include <asm/cpu.h>
->   #include <asm/cputype.h>
-> @@ -43,11 +45,16 @@ static bool __init acpi_cpu_is_threaded(int cpu)
->    */
->   int __init parse_acpi_topology(void)
->   {
-> +	int thread_num, max_smt_thread_num = 1;
-> +	struct xarray core_threads;
->   	int cpu, topology_id;
-> +	void *entry;
->   
->   	if (acpi_disabled)
->   		return 0;
->   
-> +	xa_init(&core_threads);
-> +
->   	for_each_possible_cpu(cpu) {
->   		topology_id = find_acpi_cpu_topology(cpu, 0);
->   		if (topology_id < 0)
-> @@ -57,6 +64,20 @@ int __init parse_acpi_topology(void)
->   			cpu_topology[cpu].thread_id = topology_id;
->   			topology_id = find_acpi_cpu_topology(cpu, 1);
->   			cpu_topology[cpu].core_id   = topology_id;
-> +
-> +			entry = xa_load(&core_threads, topology_id);
-> +			if (!entry) {
-> +				xa_store(&core_threads, topology_id,
-> +					 xa_mk_value(1), GFP_KERNEL);
-> +			} else {
-> +				thread_num = xa_to_value(entry);
-> +				thread_num++;
-> +				xa_store(&core_threads, topology_id,
-> +					 xa_mk_value(thread_num), GFP_KERNEL);
-> +
-> +				if (thread_num > max_smt_thread_num)
-> +					max_smt_thread_num = thread_num;
-> +			}
->   		} else {
->   			cpu_topology[cpu].thread_id  = -1;
->   			cpu_topology[cpu].core_id    = topology_id;
-> @@ -67,6 +88,9 @@ int __init parse_acpi_topology(void)
->   		cpu_topology[cpu].package_id = topology_id;
->   	}
->   
-> +	cpu_smt_set_num_threads(max_smt_thread_num, max_smt_thread_num);
-> +
-> +	xa_destroy(&core_threads);
->   	return 0;
->   }
->   #endif
+--------------QEwA5gt7zV1lGdR6NrQpIERR--
 
