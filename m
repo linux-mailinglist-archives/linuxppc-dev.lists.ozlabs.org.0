@@ -1,80 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-620-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-621-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD8A9616DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 20:23:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CEF961A0F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 00:37:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtbWV2Ysrz2yDS;
-	Wed, 28 Aug 2024 04:23:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wtj9V4d9kz2xrk;
+	Wed, 28 Aug 2024 08:37:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724782982;
-	cv=none; b=cerPjTPdYWn0oTHBjWl3wdj7HLhHcJRCiotIVTZxBuS/1BEFenDzlvhyq9GxTBYBriAirikzyEyckjTlPpNu1VAz7Ji7MKczV440m0ODmQjEmZVqKpxTtaFb5aV82b7aDFveAX3yx1W76Kd55DSSVTS77AjTC4qWSdVCIqA3cvss3DUYzfO+DWlSxmElxhwV5SrQrd6YPvXvuSmv5lrx5w8F3/lwQChBGMynjzQXXcGJ/KaWY8v+H2algsaKK2L7v1zuZ1N8cmab5W9DFMHWNDWPxcdVKaNtE++mqKTbfUbo1mwjQQhjZFS945alLSTEjGzBsWXtIVI0vRYf1AE8lw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::635"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724772626;
+	cv=none; b=Ckf7bRSbLxEsO8xP0sb5OZQsPYC8uDx7O3qutSKA6+fh6Pg3yTs8b70PVy67i8wklwaLseU0nRNgxqWag9UpDPzLcuSNRmddwy6jNBMtut8qSY0/m6rjmzQ4jfMYI+VbF61aEUEAGEsCrUAaUiNmxggvAaSc9S1IUFapK8NxffSPRvTrBKX/cBPPLHAQqww2lJ+lpcguM8aGHrANyOIxBCP/g397U/t6Cd7N04+DYt+76fRLsXthb9aRmomLrvSgyFl5xzQJsXgaqsDTZMJmU1kYFWq9VANdOpxirAfAaswDE5NR410DhTDW2hUmwX/kvCo7DrFU7bBNyiimmPpTpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724782982; c=relaxed/relaxed;
-	bh=6IIlC4dKeX0MR+87wiXBKWBHYPvMuntBVfDv8HHvaKU=;
-	h=X-Greylist:Received:Received:DKIM-Signature:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=CKY66PTxO37DH/hECsrU09cuh58DueBIApmIqTv0cOg1nluGIKgtM1Kh3jT42YzovtML3Qy2pw1WiDAgIYWFtpWsNDSof0schAfAXsiYpHc6lU94J69cXHhDZe/lLaEpwJsFLsNxOsLaCRzakYnUnoZ7OuyvdjKhTG0wYPrJBxp7QfA+ujlD8XfwKyMcbmBxBj+TKcF8HLh5kwivZn8uwSrQiKVsltMOcwljvlzXOVucPmGJ2+Qcu07RtgzwPm5LnD7H4T1dDIsQxrYckYue0WnfzBppvOcVyPlHYAFSpQgVs1675KI7Y7kxGB19oa/Njt/j3Vb1R6e5m3b4uwOl6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=aRXc2LCc; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=xpq3=p2=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+	t=1724772626; c=relaxed/relaxed;
+	bh=52lDzClgWIfDwjLe7orO5wLRybHMcHJGueg5E+ukdi8=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	b=Cj7Mf07fTziNDfdR+Iiknk4AHpwiYSCWWlpnKpbPPX2yyG8iRlkN9F66SGB+JIAkCp8edJ8EIbp7m1TL20Sg8gj7RXpgS7p4aBo9C3of96dd4G/WSbbYq2jB/O285XgZ6meFyaaAv7tBRVeFlqYrcq0GBHkyMI+ehTLAAkVGm0Ay9KjKf1bn5XYTmuRYKkt/VHefnctFnElEMvfGLm2G/LgEBeLI1SUzad27R/C1cNycWMDhCFdMuGVpcJbtt6rF/khG+os1N58V9/BC4PsfcT6d6Tg3figPtqQeSKHehGrvdc+gtB3XK+/8bKYelkN849XhcwUDZDg3hTq2ryOFbA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kbZ8h17Y; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=aRXc2LCc;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kbZ8h17Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=xpq3=p2=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 37967 seconds by postgrey-1.37 at boromir; Wed, 28 Aug 2024 04:23:00 AEST
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtbWS0QW5z2xtt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 04:22:59 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 85FFAA404F4;
-	Tue, 27 Aug 2024 18:22:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2858C4AF09;
-	Tue, 27 Aug 2024 18:22:52 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="aRXc2LCc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1724782970;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6IIlC4dKeX0MR+87wiXBKWBHYPvMuntBVfDv8HHvaKU=;
-	b=aRXc2LCcclXS0jZM2Er3xb+9/MC6tyTrnANQKQqiX8JchcC5Hct3PDriYN6bmQyyvpVrZu
-	SoRTJ7lKlZu8bysVWJFpmMCUsDdL0JJSqO5l7LQ2QGh4MGWrRpFxxzDVBg/4dd6rTXgykh
-	bzknrtr7GCDH1d4bP7p3h1ixzFFzzvI=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 82078a25 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 27 Aug 2024 18:22:50 +0000 (UTC)
-Date: Tue, 27 Aug 2024 20:22:44 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Theodore Ts'o <tytso@mit.edu>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Shuah Khan <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 05/17] vdso: Avoid call to memset() by getrandom
-Message-ID: <Zs4ZdAtnm2UEr5cd@zx2c4.com>
-References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
- <5deb67090b214f0e6eae96b7c406546d1a16f89b.1724309198.git.christophe.leroy@csgroup.eu>
- <20240827180819.GB2049@sol.localdomain>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtWhK4M2Vz2xHl
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 01:30:24 +1000 (AEST)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-20260346ca1so239285ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 08:30:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1724772622; x=1725377422; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=52lDzClgWIfDwjLe7orO5wLRybHMcHJGueg5E+ukdi8=;
+        b=kbZ8h17YzFGZ2nXjd823tUT/xgY3WSXLBV2Fd5q36M8egMj7QUyG+K8ijrmN0I2B/D
+         lfRzvUoa77tJZRx23hCB1ZrAoDX85VlZRUqCuvhNmVZOUNKHyhzEbJ88oPBg0tNkjQvo
+         1Fc+2O3lyk4E9cIxsUOscB1NsDs/YJabE0QccnWIHMTdp7+t+EI8ebkObIEKeZQvz/l5
+         /iMUXtqAf6LPKLkK8Dy4ou4nvNMW+h513MCWHuUsP9QGVNzqykWCLyaCpTUjR/GVoOqr
+         nI8LS9PiuNNintPa3EWqFiNr/UBJ039VkRJP5cod1hG6bV+7LOeJFE9eWQqrv5bURW7C
+         VNLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724772622; x=1725377422;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=52lDzClgWIfDwjLe7orO5wLRybHMcHJGueg5E+ukdi8=;
+        b=OYkc65fB/7FQ27SZcn/SiB+welTKyQns7hj2J6EowCFREbs1HJQpNFYqh2d1GTECfS
+         0PfMqnPWZmAHkLQFJTU4OCGs0kuKE5KcOhBZFzFgtyUttrmJyOXRspp+JpN9WtyQs8kr
+         vLlIrDYGDLn/7R3G2abXKx+BCWFBUnhz0jGx+J0XzC6TQtmlGBIEUlrsxKfjOOEDByBs
+         c/KDrScOsM4GUTG5E7j/rmvOXniCO65Ueyp+zSN0OQAUmb3DMO+NYgQdrxW90lSaALbT
+         zO4SHI+uryAOuzdRsl5BYOubKOwLXYNPwGecDVIKJbUl+DSCnKYmebbymZacVVcO5IRC
+         WAxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6zyr/TjgxF//bWpekdLY4+o1TODvZYGIv8yswYNCknM80TxK78FLjYGzgyKP1pDaax1HL0Zeb5LnxjDg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxUr6cggOnhISB3jkBfchXhYfD57w/gHshtMN3dY0qCdP5OkDuY
+	RRkI9DcYLXyVWFwgVJH+hzLaN4y8MLCGTRQeEg0X6nZ1cgvQGwXci/7d2MLmUwzLGTJqiylrIOK
+	wAghYgMJPr/pkfxj2FCLDSjHnN++buc+dxk2z
+X-Google-Smtp-Source: AGHT+IGaDewL8Pg/Wjw0RU5NHRtlyKO6nhTpAU3Lg4rCcydL7fHaObnOyrHHsW4jK9kJ8V5hhAMz5j4P9PyZyYtN7Hc=
+X-Received: by 2002:a17:903:247:b0:201:e2db:7be3 with SMTP id
+ d9443c01a7336-204e50afb13mr2895225ad.21.1724772621940; Tue, 27 Aug 2024
+ 08:30:21 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,61 +74,139 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240827180819.GB2049@sol.localdomain>
+References: <20240827053206.538814-1-kjain@linux.ibm.com>
+In-Reply-To: <20240827053206.538814-1-kjain@linux.ibm.com>
+From: Ian Rogers <irogers@google.com>
+Date: Tue, 27 Aug 2024 08:30:09 -0700
+Message-ID: <CAP-5=fWBjt3pypEwEsbKsuNTqX+ZA7v9WbNJCUgc09xxF=pt1A@mail.gmail.com>
+Subject: Re: [PATCH 1/3] perf vendor events power10: Update JSON/events
+To: Kajol Jain <kjain@linux.ibm.com>
+Cc: acme@kernel.org, namhyung@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	maddy@linux.ibm.com, atrajeev@linux.vnet.ibm.com, hbathini@linux.ibm.com, 
+	disgoel@linux.vnet.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 27, 2024 at 11:08:19AM -0700, Eric Biggers wrote:
-> On Thu, Aug 22, 2024 at 09:13:13AM +0200, Christophe Leroy wrote:
-> > With the current implementation, __cvdso_getrandom_data() calls
-> > memset(), which is unexpected in the VDSO.
-> > 
-> > Rewrite opaque data initialisation to avoid memset().
-> > 
-> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > ---
-> >  lib/vdso/getrandom.c | 15 ++++++++++-----
-> >  1 file changed, 10 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/lib/vdso/getrandom.c b/lib/vdso/getrandom.c
-> > index cab153c5f9be..4a56f45141b4 100644
-> > --- a/lib/vdso/getrandom.c
-> > +++ b/lib/vdso/getrandom.c
-> > @@ -4,6 +4,7 @@
-> >   */
-> >  
-> >  #include <linux/minmax.h>
-> > +#include <linux/array_size.h>
-> >  #include <vdso/datapage.h>
-> >  #include <vdso/getrandom.h>
-> >  #include <vdso/unaligned.h>
-> > @@ -74,11 +75,15 @@ __cvdso_getrandom_data(const struct vdso_rng_data *rng_info, void *buffer, size_
-> >  	u32 counter[2] = { 0 };
-> >  
-> >  	if (unlikely(opaque_len == ~0UL && !buffer && !len && !flags)) {
-> > -		*(struct vgetrandom_opaque_params *)opaque_state = (struct vgetrandom_opaque_params) {
-> > -			.size_of_opaque_state = sizeof(*state),
-> > -			.mmap_prot = PROT_READ | PROT_WRITE,
-> > -			.mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS
-> > -		};
-> > +		struct vgetrandom_opaque_params *params = opaque_state;
-> > +		int i;
-> > +
-> > +		params->size_of_opaque_state = sizeof(*state);
-> > +		params->mmap_prot = PROT_READ | PROT_WRITE;
-> > +		params->mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS;
-> > +		for (i = 0; i < ARRAY_SIZE(params->reserved); i++)
-> > +			params->reserved[i] = 0;
-> > +
-> >  		return 0;
-> >  	}
-> 
-> Is there a compiler flag that could be used to disable the generation of calls
-> to memset?
+On Mon, Aug 26, 2024 at 10:33=E2=80=AFPM Kajol Jain <kjain@linux.ibm.com> w=
+rote:
+>
+> Update JSON/events for power10 platform with additional events.
+>
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 
-Apparently not: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90701
+For the series:
+Reviewed-by: Ian Rogers <irogers@google.com>
 
--ffreestanding disables the most but still can generate calls to memcpy
-and memset, and the bug was closed as "RESOLVED INVALID". Surprising,
-but maybe it's one of those "functions are part of language" things.
+Just to note, the moving of events in patches 2 and 3 is necessary as
+the filename sets the "topic" in perf list. I'm not sure the whole
+"topic" thing makes total sense and we may want to revisit it at some
+date. For example, AMD generally put the topic into the event name,
+the PMU gives a strong hint of "topic", etc.
+
+Thanks,
+Ian
+
+> ---
+>  .../arch/powerpc/power10/datasource.json      | 25 +++++++++++++++++++
+>  .../arch/powerpc/power10/frontend.json        | 10 ++++++++
+>  .../pmu-events/arch/powerpc/power10/pmc.json  |  5 ++++
+>  3 files changed, 40 insertions(+)
+>
+> diff --git a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json b=
+/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
+> index 0eeaaf1a95b8..283284745d9c 100644
+> --- a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
+> +++ b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
+> @@ -14,6 +14,31 @@
+>      "EventName": "PM_DATA_FROM_MEMORY",
+>      "BriefDescription": "The processor's data cache was reloaded from lo=
+cal, remote, or distant memory due to a demand miss."
+>    },
+> +  {
+> +    "EventCode": "0x0000004080",
+> +    "EventName": "PM_INST_FROM_L1",
+> +    "BriefDescription": "An instruction fetch hit in the L1. Each fetch =
+group contains 8 instructions. The same line can hit 4 times if 32 sequenti=
+al instructions are fetched."
+> +  },
+> +  {
+> +    "EventCode": "0x000000026080",
+> +    "EventName": "PM_L2_LD_MISS",
+> +    "BriefDescription": "All successful D-Side Load dispatches for this =
+thread that missed in the L2. Since the event happens in a 2:1 clock domain=
+ and is time-sliced across all 4 threads, the event count should be multipl=
+ied by 2."
+> +  },
+> +  {
+> +    "EventCode": "0x000000026880",
+> +    "EventName": "PM_L2_ST_MISS",
+> +    "BriefDescription": "All successful D-Side Store dispatches for this=
+ thread that missed in the L2. Since the event happens in a 2:1 clock domai=
+n and is time-sliced across all 4 threads, the event count should be multip=
+lied by 2."
+> +  },
+> +  {
+> +    "EventCode": "0x010000046880",
+> +    "EventName": "PM_L2_ST_HIT",
+> +    "BriefDescription": "All successful D-side store dispatches for this=
+ thread that were L2 hits. Since the event happens in a 2:1 clock domain an=
+d is time-sliced across all 4 threads, the event count should be multiplied=
+ by 2."
+> +  },
+> +  {
+> +    "EventCode": "0x000000036880",
+> +    "EventName": "PM_L2_INST_MISS",
+> +    "BriefDescription": "All successful instruction (demand and prefetch=
+) dispatches for this thread that missed in the L2. Since the event happens=
+ in a 2:1 clock domain and is time-sliced across all 4 threads, the event c=
+ount should be multiplied by 2."
+> +  },
+>    {
+>      "EventCode": "0x000300000000C040",
+>      "EventName": "PM_INST_FROM_L2",
+> diff --git a/tools/perf/pmu-events/arch/powerpc/power10/frontend.json b/t=
+ools/perf/pmu-events/arch/powerpc/power10/frontend.json
+> index 53660c279286..456971f60814 100644
+> --- a/tools/perf/pmu-events/arch/powerpc/power10/frontend.json
+> +++ b/tools/perf/pmu-events/arch/powerpc/power10/frontend.json
+> @@ -93,5 +93,15 @@
+>      "EventCode": "0x400FC",
+>      "EventName": "PM_ITLB_MISS",
+>      "BriefDescription": "Instruction TLB reload (after a miss), all page=
+ sizes. Includes only demand misses."
+> +  },
+> +  {
+> +    "EventCode": "0x00000040B8",
+> +    "EventName": "PM_PRED_BR_TKN_COND_DIR",
+> +    "BriefDescription": "A conditional branch finished with correctly pr=
+edicted direction. Resolved taken."
+> +  },
+> +  {
+> +    "EventCode": "0x00000048B8",
+> +    "EventName": "PM_PRED_BR_NTKN_COND_DIR",
+> +    "BriefDescription": "A conditional branch finished with correctly pr=
+edicted direction. Resolved not taken."
+>    }
+>  ]
+> diff --git a/tools/perf/pmu-events/arch/powerpc/power10/pmc.json b/tools/=
+perf/pmu-events/arch/powerpc/power10/pmc.json
+> index 0e0253d0e757..04732698d9b2 100644
+> --- a/tools/perf/pmu-events/arch/powerpc/power10/pmc.json
+> +++ b/tools/perf/pmu-events/arch/powerpc/power10/pmc.json
+> @@ -104,6 +104,11 @@
+>      "EventName": "PM_RUN_CYC",
+>      "BriefDescription": "Processor cycles gated by the run latch."
+>    },
+> +  {
+> +    "EventCode": "0x200F8",
+> +    "EventName": "PM_EXT_INT",
+> +    "BriefDescription": "Cycles an external interrupt was active."
+> +  },
+>    {
+>      "EventCode": "0x30010",
+>      "EventName": "PM_PMC2_OVERFLOW",
+> --
+> 2.43.5
+>
 
