@@ -1,96 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-560-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-565-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3ED9600C1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 07:04:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F264B96011D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 07:36:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtFnW428rz2yGd;
-	Tue, 27 Aug 2024 15:03:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtGW56dt9z2yPD;
+	Tue, 27 Aug 2024 15:36:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724735039;
-	cv=none; b=DGDOAV0a7SBxuYDoIZibs5OsGRbgLwzIkHIrRKYnlxlM7IYrWCPrsovMjALdC30bpgVcmwOh2Q0OyurXRzLzWbiXzs1UTW7aOxy3amp1iyR2Ee3nn9R+njq7scb03Xkp7V3/HDUfw9zxDOhvbiNG8l1vfEeiLPem8ULL2JAXqMHN+J+MIsbfsJAvZQpZvxIXKwxOWReJPLx9vOlmOLusw9qwrK6dnYko8l31yNi+1Yp4Rnr5Sv5XZ0Okdz7NwxyLu5vpico70+Ye4so5KHeMR28S6T/C2bl7ZDA6CMcrHQOOt4CXjf/rLyCN/ATHvjrwYFMuSv5QhdFoziJz7FDXoA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b34"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724736449;
+	cv=none; b=W+lCo+FuOUJ6IDWOupo7alZXKmpEwTv9e6UOJ+1j5Zd56GqaI+nmr/JL/JOEDTkSdA5VXqdnPcFP/L63oWO4nDcZNLAtjnzvM//ZtDu14Godwo/S6aKdwxMKH+LK3Ts/uvrV96shzNB7zf24B3FRAcjw5SonXRYKrCR1GLxWxy//M5rw2hFxc2/m6559jolOTHxYGO12okwjoYGwvRtONP/gJcx9E0rqs+DEmuHZ03L1YAc6WUsi6/x9VOBG8KZxh7krP5YDBD/EWK09B3pKBlSeSHq9sPfWsAFASHoLe+J+6aT5ptMMNP2y8EwUms7SuY+FdLmpfMROgNhSxA0ZCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724735039; c=relaxed/relaxed;
-	bh=xAJzky6VlIH1RnuZZ+v8zK2DMOHKt74QQUCJakQdb5Y=;
-	h=Received:DKIM-Signature:Received:Received:Received:Received:
-	 Received:Received:Received:Received:Received:Received:From:To:Cc:
-	 Subject:In-Reply-To:References:Date:Message-ID:Content-Type:
-	 X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-UnRewURL:MIME-Version:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details; b=WrHE9D2uZMQngvw4UR+OElB00L1tHXypw2orfr+VyzZR2m5x4uyOxkmp7uu/esbOkPv0UeZBQ62CRJnjCOTUbLIFFK6YztoJiot5deHZUSI0eBD8fBNqLiCGz2ttUmh/6QU9buWnF/t8kaxNXdwg9OqgEnOWII4txxycqqWNWmFZMRFxMeTM7wHwPcYTIiLBDg3wmaeKLpgt05BHmoZxJAUWuJZ1or9H22DXbtW5DOsuI/T0EryFrHfJFGKHyJ1x9I8NR+szaCtxPs1ugZDv+3TKhr+xh71hkBEchWutBRqP/iCDDiGDZ5z1uvB7tPRfTgjPg4oRiyvGz9rv1reyUw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C6K7KLFN; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1724736449; c=relaxed/relaxed;
+	bh=8TM272CqmQHBAPuQBx3v3EUsJXwKFvKHbfQWNUBbbHk=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:Received:From:To:Cc:Subject:In-Reply-To:Date:Message-ID:
+	 References:MIME-version:Content-type:Content-Transfer-Encoding; b=N/pP7vFO9dUMqKub8zDfw+iBwdW3q0fAreVlIjysxPR9MbpsqhiCuXeYkEp+jjr4yelaps8msJ1cvEJ1uh1lS3vKA2fT5v935KiqWD0pt0ONZHP0ljPc1VMDMjY232o64aV42FPlvkt0AcetKlI6Xvfn/OjHrba7hTW7bWzc2Xv50iKuaclVUIGDtUAi2ObXTHyun3qcP65nq2oCtVsaYnVRhBJX63qAnyK9YbmuWhnjkPOZol8L9fTlR2GFMjVR2A6KGR0S1Tkums6KA213CDBDLAXZE3fmkjC834pQKXhLBbjuEsdQtBBJKI27Kd1J4hhAJbXKtSiIYxitgvuOYg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=l3wmVj45; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C6K7KLFN;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=l3wmVj45;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtFnV3cwdz2yDS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 15:03:58 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47R1xInM014691;
-	Tue, 27 Aug 2024 05:03:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:in-reply-to:references:date:message-id
-	:content-type:mime-version; s=pp1; bh=xAJzky6VlIH1RnuZZ+v8zK2DMO
-	HKt74QQUCJakQdb5Y=; b=C6K7KLFNOTuJ9htRHzHKbjaHt+E7CNpx7t0cHQ5R6U
-	aHyr/LiKc6yKJxnUaRDmNHxe+I/7J+xQGOge10hC6jmKbA1wwqEeR52yr2f7sZCs
-	1O8ePMce2EggtPPQxbCImk8yTRfYstvkva7WRv2LBj5W9zlE40bcON1zK23KZQTx
-	C+6VPDiZhvYkBIxaAOtCUW4IKYwIQu7oFo9HW0fZ4G2WhiHL0R+9rIPoBeXrd3nl
-	UavbArx0YGqEjDRz53gPDHjSEYM4CT6lrM6MsJQd94uFkL5Swbyn1kprQ3p7CR4g
-	dbidj2mDi8na6B4VLXp4cvtW5ZMf/tIW3RZ+DxiiO44w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 417g51hyj7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Aug 2024 05:03:45 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47R4xDON021942;
-	Tue, 27 Aug 2024 05:03:44 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 417g51hyj1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Aug 2024 05:03:44 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47R15VWq021741;
-	Tue, 27 Aug 2024 05:03:43 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 417suu9grg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Aug 2024 05:03:43 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47R53dk943319728
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 Aug 2024 05:03:39 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C3D7F2004B;
-	Tue, 27 Aug 2024 05:03:39 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C272820049;
-	Tue, 27 Aug 2024 05:03:36 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.171.52.227])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue, 27 Aug 2024 05:03:36 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Tue, 27 Aug 2024 10:33:35 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Narayana Murty N <nnmlinux@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        mpe@ellerman.id.au, linux-kernel@vger.kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, naveen@kernel.org, ganeshgr@linux.ibm.com,
-        sbhat@linux.ibm.com
-Subject: Re: [PATCH v2] powerpc/pseries/eeh: Fix pseries_eeh_err_inject
-In-Reply-To: <20240823151158.92602-1-nnmlinux@linux.ibm.com>
-References: <20240823151158.92602-1-nnmlinux@linux.ibm.com>
-Date: Tue, 27 Aug 2024 10:33:35 +0530
-Message-ID: <87mskyy2u0.fsf@vajain21.in.ibm.com>
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: EBJ-5CNmJ00Fq8A7LUKkvr-9dGVWlGVj
-X-Proofpoint-GUID: 91vrVtlJbTAMZB9e6bld7jglgBs4r2UB
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtGJd1wLKz2xs4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 15:27:28 +1000 (AEST)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-e116a5c3922so4886441276.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 22:27:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724736445; x=1725341245; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8TM272CqmQHBAPuQBx3v3EUsJXwKFvKHbfQWNUBbbHk=;
+        b=l3wmVj45+etALYJU5R3IubvInAXynEhCULeuyB5psMvrMiqWhh4iuqvwXbqN++Ujjl
+         rM1SZ7JhRZuW6D2xxlklo8Ud/+TYiy3Vvv1WcJ8FpNolRK5S6hDAcewYG2dwCoN1X0zs
+         vWpFNXvG12x+nFhyhEgmFFzOFC0TfDlh6pYAarx/kwH/dSvEAGDN4sMN74TmYnnqGQ6b
+         MtqG2HvPTkALQXW3cwyPlPlW+pUXBnRiasT+g4/jZIZ2l/+Cx1xBKQ6WVN88HN0WEif6
+         5FbfLnI399jGRQBwp5h5jd5WeWvoLwN/flaH8Vl6Z8wG5OXi6N9JeDUdkmeD3yDTp+Pd
+         B6Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724736445; x=1725341245;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8TM272CqmQHBAPuQBx3v3EUsJXwKFvKHbfQWNUBbbHk=;
+        b=ARHLAPs/ARRg1J5649v8JkLygve9ivNbR6wvHv6xBDNR/R/iVH1nZD2a2AbjYCIeZj
+         Lv0SWefGsqi20aiFh5GD+i9orNI8QzzF7f9W/zKWVZ03ctsQX26xdapT9e/wrr6IQhzi
+         HAnAq9brmHlO9HQZ0TNgpL6Qe1WqIl/hf8ZUSeqxAHuWAeG2xLGwNVwYerECBAXXaWAo
+         cAkcC+4gGM5HJpwdJkcvUHbzgAXY0jP8zMVPHIOPeuyjKpXnxqqZhcTR2F2s928y4evD
+         vqVmKmflxNfZkJXoagyzSlS5VkH0SbtgZRYHJ+Ltyh5lVA/6akdUryFZR/mCglw+JHJH
+         T9Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCU2sIxDRdaDedZT0JvLmNrYRIOUasOUAewwu9LuBcG7XNhzdvhqAZkV5+w5HXXTtiSrqHFuuAnTG0c7Ljc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxtwBPjlDdLL4G9THgiTNvhnH813GMjyn8CSIkRmfMzNZWAnRLw
+	Hb1uj0vzs80mcXzGRh4XQSSSgck4/Cgiq/R/ajWWWpA+JFz4fGzZZYzPkg==
+X-Google-Smtp-Source: AGHT+IE/x+eNQiL+f3L5I5I1E4tl4eROm28xpp8EC3DBQBTRt4QoRF4Tk78dVd65ZwKwWwpCjGy/pw==
+X-Received: by 2002:a05:6902:a86:b0:e16:5177:758e with SMTP id 3f1490d57ef6-e17a83d4bafmr12881575276.7.1724736445148;
+        Mon, 26 Aug 2024 22:27:25 -0700 (PDT)
+Received: from dw-tp ([49.205.218.89])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71434335e77sm7788442b3a.202.2024.08.26.22.27.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Aug 2024 22:27:24 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Luis Chamberlain <mcgrof@kernel.org>, "Darrick J. Wong" <djwong@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, Mike Rapoport <rppt@kernel.org>, Song Liu <song@kernel.org>, Arnd Bergmann <arnd@arndb.de>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Stephen Rothwell <sfr@canb.auug.org.au>, Christian Brauner <brauner@kernel.org>, Pankaj Raghav <p.raghav@samsung.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: linux-next: boot warning after merge of the vfs-brauner tree
+In-Reply-To: <Zsz2gGgORfeVkVfG@bombadil.infradead.org>
+Date: Tue, 27 Aug 2024 10:56:12 +0530
+Message-ID: <878qwisfij.fsf@gmail.com>
+References: <20240826175931.1989f99e@canb.auug.org.au> <20240826154818.hzqnvofdmaxvuwrh@quentin> <b0fe75b4-c1bb-47f7-a7c3-2534b31c1780@csgroup.eu> <ZszrJkFOpiy5rCma@bombadil.infradead.org> <20240826211049.GC6082@frogsfrogsfrogs> <Zsz2gGgORfeVkVfG@bombadil.infradead.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,177 +82,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-27_03,2024-08-26_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- lowpriorityscore=0 impostorscore=0 adultscore=0 spamscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 clxscore=1011
- phishscore=0 bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2408270035
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-Hi Narayana,
+Luis Chamberlain <mcgrof@kernel.org> writes:
 
-Thanks for the patch.
+> On Mon, Aug 26, 2024 at 02:10:49PM -0700, Darrick J. Wong wrote:
+>> On Mon, Aug 26, 2024 at 01:52:54PM -0700, Luis Chamberlain wrote:
+>> > On Mon, Aug 26, 2024 at 07:43:20PM +0200, Christophe Leroy wrote:
+>> > > 
+>> > > 
+>> > > Le 26/08/2024 à 17:48, Pankaj Raghav (Samsung) a écrit :
+>> > > > On Mon, Aug 26, 2024 at 05:59:31PM +1000, Stephen Rothwell wrote:
+>> > > > > Hi all,
+>> > > > > 
+>> > > > > After merging the vfs-brauner tree, today's linux-next boot test (powerpc
+>> > > > > pseries_le_defconfig) produced this warning:
+>> > > > 
+>> > > > iomap dio calls set_memory_ro() on the page that is used for sub block
+>> > > > zeroing.
+>> > > > 
+>> > > > But looking at powerpc code, they don't support set_memory_ro() for
+>> > > > memory region that belongs to the kernel(LINEAR_MAP_REGION_ID).
+>> > > > 
+>> > > > /*
+>> > > >   * On hash, the linear mapping is not in the Linux page table so
+>> > > >   * apply_to_existing_page_range() will have no effect. If in the future
+>> > > >   * the set_memory_* functions are used on the linear map this will need
+>> > > >   * to be updated.
+>> > > >   */
+>> > > > if (!radix_enabled()) {
+>> > > >          int region = get_region_id(addr);
+>> > > > 
+>> > > >          if (WARN_ON_ONCE(region != VMALLOC_REGION_ID && region != IO_REGION_ID))
+>> > > >                  return -EINVAL;
+>> > > > }
+>> > > > 
+>> > > > We call set_memory_ro() on the zero page as a extra security measure.
+>> > > > I don't know much about powerpc, but looking at the comment, is it just
+>> > > > adding the following to support it in powerpc:
+>> > > > 
+>> > > > diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+>> > > > index ac22bf28086fa..e6e0b40ba6db4 100644
+>> > > > --- a/arch/powerpc/mm/pageattr.c
+>> > > > +++ b/arch/powerpc/mm/pageattr.c
+>> > > > @@ -94,7 +94,9 @@ int change_memory_attr(unsigned long addr, int numpages, long action)
+>> > > >          if (!radix_enabled()) {
+>> > > >                  int region = get_region_id(addr);
+>> > > > -               if (WARN_ON_ONCE(region != VMALLOC_REGION_ID && region != IO_REGION_ID))
+>> > > > +               if (WARN_ON_ONCE(region != VMALLOC_REGION_ID &&
+>> > > > +                                region != IO_REGION_ID &&
+>> > > > +                                region != LINEAR_MAP_REGION_ID))
+>> > > >                          return -EINVAL;
+>> > > >          }
+>> > > >   #endif
+>> > > 
+>> > > By doing this you will just hide the fact that it didn't work.
+>> > > 
+>> > > See commit 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines") for
+>> > > details. The linear memory region is not mapped using page tables so
+>> > > set_memory_ro() will have no effect on it.
+>> > > 
+>> > > You can either use vmalloc'ed pages, or do a const static allocation at
+>> > > buildtime so that it will be allocated in the kernel static rodata area.
+>> > > 
+>> > > By the way, your code should check the value returned by set_memory_ro(),
+>> > > there is some work in progress to make it mandatory, see
+>> > > https://github.com/KSPP/linux/issues/7
+>> > 
+>> > Our users expect contiguous memory [0] and so we use alloc_pages() here,
+>> > so if we're architecture limitted by this I'd rather we just remove the
+>> > set_memory_ro() only for PPC, I don't see why other have to skip this.
 
-Narayana Murty N <nnmlinux@linux.ibm.com> writes:
+Looks like not a standard thing to do for kernel linear memory map
+region then and maybe few other archs could be ignoring too?
 
-> VFIO_EEH_PE_INJECT_ERR ioctl is currently failing on pseries
-> due to missing implementation of err_inject eeh_ops for pseries.
-> This patch implements pseries_eeh_err_inject in eeh_ops/pseries
-> eeh_ops. Implements support for injecting MMIO load/store error
-> for testing from user space.
+>> 
+>> Just drop it, then.
 >
-> The check on PCI error type code is moved to platform code, since
-> the eeh_pe_inject_err can be allowed to more error types depending
-> on platform requirement.
->
-> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-
-Code changes LGTM, hence
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-
-> ---
->
-> Testing:
-> ========
-> vfio-test [1] by Alex Willamson, was forked and updated to add
-> support inject error on pSeries guest and used to test this
-> patch[2].
->
-> References:
-> ===========
-> [1] https://github.com/awilliam/tests
-> [2] https://github.com/nnmwebmin/vfio-ppc-tests/tree/vfio-ppc-ex
->
-> ================
-> Changelog:
-> V1:https://lore.kernel.org/all/20240822082713.529982-1-nnmlinux@linux.ibm.com/
-> - Resolved build issues for ppc64|le_defconfig by moving the
-> pseries_eeh_err_inject() definition outside of the CONFIG_PCI_IOV
-> code block.
-> - New eeh_pe_inject_mmio_error wrapper function added to avoid
-> CONFIG_EEH is not set.
-> ---
->  arch/powerpc/include/asm/eeh.h               |  6 ++-
->  arch/powerpc/kernel/eeh.c                    |  9 +++--
->  arch/powerpc/platforms/pseries/eeh_pseries.c | 39 +++++++++++++++++++-
->  3 files changed, 48 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
-> index 91a9fd53254f..8da6b047a4fe 100644
-> --- a/arch/powerpc/include/asm/eeh.h
-> +++ b/arch/powerpc/include/asm/eeh.h
-> @@ -308,7 +308,7 @@ int eeh_pe_reset(struct eeh_pe *pe, int option, bool include_passed);
->  int eeh_pe_configure(struct eeh_pe *pe);
->  int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->  		      unsigned long addr, unsigned long mask);
-> -
-> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev);
->  /**
->   * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.
->   *
-> @@ -338,6 +338,10 @@ static inline int eeh_check_failure(const volatile void __iomem *token)
->  	return 0;
->  }
->  
-> +static inline int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
-> +{
-> +	return -ENXIO;
-> +}
->  #define eeh_dev_check_failure(x) (0)
->  
->  static inline void eeh_addr_cache_init(void) { }
-> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> index d03f17987fca..49ab11a287a3 100644
-> --- a/arch/powerpc/kernel/eeh.c
-> +++ b/arch/powerpc/kernel/eeh.c
-> @@ -1537,10 +1537,6 @@ int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->  	if (!eeh_ops || !eeh_ops->err_inject)
->  		return -ENOENT;
->  
-> -	/* Check on PCI error type */
-> -	if (type != EEH_ERR_TYPE_32 && type != EEH_ERR_TYPE_64)
-> -		return -EINVAL;
-> -
->  	/* Check on PCI error function */
->  	if (func < EEH_ERR_FUNC_MIN || func > EEH_ERR_FUNC_MAX)
->  		return -EINVAL;
-> @@ -1851,6 +1847,11 @@ static const struct file_operations eeh_dev_break_fops = {
->  	.read   = eeh_debugfs_dev_usage,
->  };
->  
-> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
-> +{
-> +	return eeh_debugfs_break_device(pdev);
-> +}
-> +
->  static ssize_t eeh_dev_can_recover(struct file *filp,
->  				   const char __user *user_buf,
->  				   size_t count, loff_t *ppos)
-> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> index b1ae0c0d1187..1893f66371fa 100644
-> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> @@ -784,6 +784,43 @@ static int pseries_notify_resume(struct eeh_dev *edev)
->  }
->  #endif
->  
-> +/**
-> + * pseries_eeh_err_inject - Inject specified error to the indicated PE
-> + * @pe: the indicated PE
-> + * @type: error type
-> + * @func: specific error type
-> + * @addr: address
-> + * @mask: address mask
-> + * The routine is called to inject specified error, which is
-> + * determined by @type and @func, to the indicated PE
-> + */
-> +static int pseries_eeh_err_inject(struct eeh_pe *pe, int type, int func,
-> +				  unsigned long addr, unsigned long mask)
-> +{
-> +	struct	eeh_dev	*pdev;
-> +
-> +	/* Check on PCI error type */
-> +	if (type != EEH_ERR_TYPE_32 && type != EEH_ERR_TYPE_64)
-> +		return -EINVAL;
-> +
-> +	switch (func) {
-> +	case EEH_ERR_FUNC_LD_MEM_ADDR:
-> +	case EEH_ERR_FUNC_LD_MEM_DATA:
-> +	case EEH_ERR_FUNC_ST_MEM_ADDR:
-> +	case EEH_ERR_FUNC_ST_MEM_DATA:
-> +		/* injects a MMIO error for all pdev's belonging to PE */
-> +		pci_lock_rescan_remove();
-> +		list_for_each_entry(pdev, &pe->edevs, entry)
-> +			eeh_pe_inject_mmio_error(pdev->pdev);
-> +		pci_unlock_rescan_remove();
-> +		break;
-> +	default:
-> +		return -ERANGE;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static struct eeh_ops pseries_eeh_ops = {
->  	.name			= "pseries",
->  	.probe			= pseries_eeh_probe,
-> @@ -792,7 +829,7 @@ static struct eeh_ops pseries_eeh_ops = {
->  	.reset			= pseries_eeh_reset,
->  	.get_log		= pseries_eeh_get_log,
->  	.configure_bridge       = pseries_eeh_configure_bridge,
-> -	.err_inject		= NULL,
-> +	.err_inject		= pseries_eeh_err_inject,
->  	.read_config		= pseries_eeh_read_config,
->  	.write_config		= pseries_eeh_write_config,
->  	.next_error		= NULL,
-> -- 
-> 2.45.2
+> OK sent a patch for that.
 >
 
--- 
-Cheers
-~ Vaibhav
+Thanks for fixing it!
+
+-ritesh
 
