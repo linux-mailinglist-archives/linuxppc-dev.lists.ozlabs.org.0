@@ -1,71 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-608-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-606-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5FF960978
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 14:02:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6289608F9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 13:39:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtR4Q6LqPz2yTy;
-	Tue, 27 Aug 2024 22:02:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtQY34M73z2yhR;
+	Tue, 27 Aug 2024 21:38:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724760150;
-	cv=none; b=fPeUbBXQVMuOFAtSf4H3ygVysc7ovirKY3UgPo5f1DFn97y1sNRk31kF6SoIPty+Jc0ICm3R3Tnrr+jmcPz5J5XGK7yxa94QiLjH+gKf3Rjragn/6d7hw5zgEHW3ljwLHl0AC4COVuUqjMBGCUl5gYzzA3LJWo9biiHyoeI5KQXmxHdynom6HI+g8xxkBWCKfSPlTU02UfKIfbsWsmDCQHVJZMTIwGsLnypSP0Xot1J7B90mJyN3JDw3a2xFEjGXJVgSlaGPLQWkDOQjdQFJ95nRAZsl8TlRIeuOG0elnVdvlRu9oa8aLrurvyHJ9xArVfMIxxM2WxmdOZmNQuPTgw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724758727;
+	cv=none; b=C3FiC/0BNHAF+qKQ7B4+MjOkuDLjNrxErVlTlRGM6rJCadDdLlIt+1r44+zuXdUf7cEVxzAeatgS+MQHv/fkavRBZW8PsI2lZWXlMIMHe7Kgq8UmQIZwNg86O9vc4jW3gSKoZZPaPs38W/cWopKrd5II4mRgfdbDY+Qn4ZJg3ELmZiIS4wpqZlZ9BRUpgwoGK4JmuJqrouEo8qAGEFx/S768vlLgZN9L++mJfSmwK8pTp9WWXmkJcKwDtg1RngWgNpSjdDhFKk7eVT4xZCzMth1gjc+YLsNSdMUn3FYC8Fr7TRbCXh9+dIl/OclyR9RoMoBnnWV8iaX3ICLPIwinoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724760150; c=relaxed/relaxed;
-	bh=/MLTjT4x0wpquiwumNovnGAf81Tdfup2rLk7uUNGOds=;
-	h=Received:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:User-Agent; b=HJr4ImSlTbq/chwW/+m7DyyNY4z6gictyr3Y1ZEAT8k/iiKeX0Cb3Iat+rVGaroz9gfG1SpdWYDgc1/7lojrN9PPPHf2Dg3UO9CDwM0HAIpTv81SauAbeB3wHzH7Zbc8cgqFTOeoBQEPCcNq/9uM+o0xebIAXlxr9jQugE5es7Mph9VUAINOyCndPeQWvzAZIz76xUtWkqjNZy1hr3Ftoe64gHyDNGP3wJzoyXZ+/IDi3RmvhAL6A+kqnSu7VUmU7hWXZ5BDZGWxHLkHO6iIRb3Ggy1OsKUZVikZxaF4T+m6QTavH2BtB+GF5PEHGlYi/tdszuynJ9KbrL0JnIhFYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Gpf8ddOX; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Gpf8ddOX;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1724758727; c=relaxed/relaxed;
+	bh=RmI/Xg1AFnxD4Yy5w5fyH9m06SUAmvD8eY0ep/60C7c=;
+	h=Received:Received:Received:From:To:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-Originating-IP:X-ClientProxiedBy; b=CS7ILxZkiSuRatMRSqRn+c3zJ1s0x92unOgo4L2zJjMHgvflWIc3ixTNViMadeS3JrTQX51Qnt5MgsqCBsa20raxQJWzgkEwcm/c5Lnx+sKgMoBfspNm3gyc+FWtmeoNkzhx1FBzj68hJwLxH+Ts4KAS7bMuzdJjuEnsweyEFMJXWan32yswNNsjsMtwuaP0JpUoXKwXH6DEw6d6XTdwTpF2+baZ3NbH4WI51aDXkz7BEzmo1l9xEylGOoaI76mlGFjJ92IybZtXFv896xMqBE8xq+hP6LkuBCwOQ8Jj9t5AwG+BlnDGEQHCi8PFUwKI/F0+U55XWpyJPTh3M2VAQQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtR4Q1tYXz2yQL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 22:02:30 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id B81A1A41943;
-	Tue, 27 Aug 2024 12:02:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A82C582AB;
-	Tue, 27 Aug 2024 11:38:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724758692;
-	bh=2+A2bF7Lj9wuQUwEpvgzmZKK3imkhu2KCOi7wnoixak=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gpf8ddOXDK2vLQMMp3FzmG/a/m/kr0GXzqv0V69de1kGXjsWZZVM5il9nZ3rJgJ/C
-	 HhCk9FpXwrs24xGKZufPQ6AVtvbP5tMYwDBYGmyjXUFSAs0/qqunKiRjR5cHaGfdBj
-	 NELnVGfuXrKZce7YLlJBXHfzEBMziXjXhbc2oCx/U/canba16aHthF+qGabnfRBtoM
-	 BP6yHu6nKpM6xKRbubnCGD2Di4NReNtwAwTcMpZZI8xnW+1KjwLJ14ftgHU2j0y4CR
-	 5qpdVZJYRS0/PkwK6KW2GK7c8ijyUvbxdWydqc2U6Yg0gjukfhNJnDfFkqe+yURXpL
-	 dMagJjNp/hQXA==
-Date: Tue, 27 Aug 2024 12:38:04 +0100
-From: Will Deacon <will@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org,
-	nd@arm.com, akpm@linux-foundation.org, aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
-	broonie@kernel.org, christophe.leroy@csgroup.eu,
-	dave.hansen@linux.intel.com, hpa@zytor.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
-	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
-	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
-	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
-	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 06/30] arm64: context switch POR_EL0 register
-Message-ID: <20240827113803.GB4318@willie-the-truck>
-References: <20240822151113.1479789-1-joey.gouly@arm.com>
- <20240822151113.1479789-7-joey.gouly@arm.com>
- <20240823144531.GH32156@willie-the-truck>
- <Zsi7ovLOfuFdfuuz@arm.com>
- <20240823170835.GA1181@willie-the-truck>
- <ZsjXtE7Kg0LQwNAL@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtQY31GJyz2yYJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 21:38:47 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4WtQWS6HGQzyQYJ;
+	Tue, 27 Aug 2024 19:37:24 +0800 (CST)
+Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0FFB6140137;
+	Tue, 27 Aug 2024 19:38:12 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
+ (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 27 Aug
+ 2024 19:38:11 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <andrew@lunn.ch>, <sebastian.hesselbarth@gmail.com>,
+	<gregory.clement@bootlin.com>, <herve.codina@bootlin.com>,
+	<qiang.zhao@nxp.com>, <christophe.leroy@csgroup.eu>,
+	<thierry.reding@gmail.com>, <jonathanh@nvidia.com>, <nm@ti.com>,
+	<ssantosh@kernel.org>, <petlozup@nvidia.com>, <pshete@nvidia.com>,
+	<ruanjinjie@huawei.com>, <christophe.jaillet@wanadoo.fr>,
+	<ulf.hansson@linaro.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-tegra@vger.kernel.org>, <krzk@kernel.org>, <jic23@kernel.org>
+Subject: [PATCH -next 0/8] soc: Simplify with scoped for each OF child loop and dev_err_probe()
+Date: Tue, 27 Aug 2024 19:45:59 +0800
+Message-ID: <20240827114607.4019972-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,56 +58,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZsjXtE7Kg0LQwNAL@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemh500013.china.huawei.com (7.202.181.146)
 
-On Fri, Aug 23, 2024 at 07:40:52PM +0100, Catalin Marinas wrote:
-> On Fri, Aug 23, 2024 at 06:08:36PM +0100, Will Deacon wrote:
-> > On Fri, Aug 23, 2024 at 05:41:06PM +0100, Catalin Marinas wrote:
-> > > On Fri, Aug 23, 2024 at 03:45:32PM +0100, Will Deacon wrote:
-> > > > On Thu, Aug 22, 2024 at 04:10:49PM +0100, Joey Gouly wrote:
-> > > > > +static void permission_overlay_switch(struct task_struct *next)
-> > > > > +{
-> > > > > +	if (!system_supports_poe())
-> > > > > +		return;
-> > > > > +
-> > > > > +	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-> > > > > +	if (current->thread.por_el0 != next->thread.por_el0) {
-> > > > > +		write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
-> > > > > +		/* ISB required for kernel uaccess routines when chaning POR_EL0 */
-> > > > 
-> > > > nit: typo "chaning".
-> > > > 
-> > > > But more substantially, is this just to prevent spurious faults in the
-> > > > context of a new thread using a stale value for POR_EL0?
-> > > 
-> > > Not just prevent faults but enforce the permissions from the new
-> > > thread's POR_EL0. The kernel may continue with a uaccess routine from
-> > > here, we can't tell.
-> > 
-> > Hmm, I wondered if that was the case. It's a bit weird though, because:
-> > 
-> >   - There's a window between switch_mm() and switch_to() where you might
-> >     reasonably expect to be able to execute uaccess routines
-> 
-> I don't think we can have any uaccess between these two switches (a
-> uaccess could fault, that's a pretty weird state between these two).
-> 
-> >   - kthread_use_mm() doesn't/can't look at this at all
-> 
-> No, but a kthread would have it's own, most permissive, POR_EL0.
-> 
-> >   - GUP obviously doesn't care
-> > 
-> > So what do we actually gain by having the uaccess routines honour this?
-> 
-> I guess where it matters is more like not accidentally faulting because
-> the previous thread had more restrictive permissions.
+Use for_each_child_of_node_scoped() to simplify code.
 
-That's what I wondered initially, but won't the fault handler retry in
-that case?
+Jinjie Ruan (8):
+  soc: fsl: cpm1: Simplify with scoped for each OF child loop
+  soc: fsl: cpm1: Simplify with dev_err_probe()
+  soc: fsl: cpm1: qmc: Simplify with scoped for each OF child
+  soc: fsl: cpm1: qmc: Simplify with dev_err_probe()
+  soc/tegra: pmc: Simplify with scoped for each OF child loop
+  soc: dove: Simplify with scoped for each OF child loop
+  soc: ti: knav_dma: Simplify with scoped for each OF child loop
+  soc: ti: knav_qmss_queue: Simplify with scoped for each OF child loop
 
-Will
+ drivers/soc/dove/pmu.c           |  9 ++--
+ drivers/soc/fsl/qe/qmc.c         | 66 ++++++++---------------
+ drivers/soc/fsl/qe/tsa.c         | 90 ++++++++++----------------------
+ drivers/soc/tegra/pmc.c          | 12 ++---
+ drivers/soc/ti/knav_dma.c        | 16 ++----
+ drivers/soc/ti/knav_qmss_queue.c | 57 +++++++-------------
+ 6 files changed, 80 insertions(+), 170 deletions(-)
+
+-- 
+2.34.1
+
 
