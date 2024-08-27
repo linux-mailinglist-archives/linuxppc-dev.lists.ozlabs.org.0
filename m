@@ -1,49 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-579-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-580-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAA496030F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 09:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BF8960319
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 09:32:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtK1t4bxwz2xXW;
-	Tue, 27 Aug 2024 17:29:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtK4T1BWFz2xYl;
+	Tue, 27 Aug 2024 17:32:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=213.95.11.211
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724743794;
-	cv=none; b=Ipn6/obgivoaGixMeacPs/TEm6cpLJG1teInV2yY3QZQVLLwBnnWH8a5LEcpyjTGDa3mh1KUWsjPZhsn95fTXAvyPE7Oh7NJ7o54S+O+To1h7rlwpUIVUVwL5SrmQVMgXadzdj0E5kWmD+xa83Qmx+Za1Ew2osV18RAqeeQfFTwZBfpAsEk9RaEXB/fEkeOTzkAQt7mjfaTtTz21lll2aeDRCNOgJu2K/O20xtTDcvTPo+V6x/rC7EkeJH8NeskCGXp1MsLD7AtzMj2C8g6gJtSkD5Xk0hYsBZZXae80DcU7AwLQJGnAt4lUYGqcqloHV9Y6Pu/S5TNkK8AkoSsK1Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724743929;
+	cv=none; b=GVAQN+9WY8RiYqFw0/5NvF+u9kn+4fbcJwWQGGai2iH1Zo+o7IXzedHR3FVzHwqhA2QhDC+JEAs4ciyM2W5FCfsmP7mb6uFVJvFpiryS5QBj7urfLlPT2jajKzZAna5U+qGqq31x+HeRVfLHd9Y3KyxyZ2G4s3bBFo+CCCIGvZdrhqNQEN7ryV5shTBPUZXk1HDIyka8ZAyR0jBCqzup/orD5NCeGGSLwQpK1MiPPU8/2zNwKBulqIqFZNjQClz37vk13wKqNtk7naa58YRnsQcARL5LkVBcZ9IHgiI7pTLFoVERZxdHioC78PSM2NzehOC7wSHMpqQEjLescHdqWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724743794; c=relaxed/relaxed;
-	bh=ZFpQqqYtZm9wjsN8m0IkwajQEX9Y5SlRHrnKBRCU4mg=;
-	h=Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 User-Agent; b=GpKIwdKh11GwGaPrcfVCXoZlFf1qi0jKWy5jqSiswixmyJPtS4uuHdIeq0U14L38dBTLuYmXPc098SMx/bDIJYyFgBWaJT7icnkQeqxsMSkxcw/jaP7/XQQJ7+KTVOyZxVSniddUuBHjQgHlOvU53eVLGoRyf8vfDRsYux8WbGCmcJXr6IZNpoGLLqLqpuRRS07zgnoSR6ZYMMY4OtX8rOQ3pwoTK1qGpxQhCH/wiPwKz7df1JGxc++8/gxRWU5cp4YsRJW98zCKkwkyeE71Wz1mquweG/YRW/T/W01vnciUDSL/OKVndqao0S0HSwK9Z63Ek1RnT6AXaVtv5LK34A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=lists.ozlabs.org) smtp.mailfrom=lst.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lst.de (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de; receiver=lists.ozlabs.org)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1724743929; c=relaxed/relaxed;
+	bh=MeIR5KdYJPIluwzc9ZbYvZrXLI0L00OKtXv/UTKaEa4=;
+	h=Received:X-Virus-Scanned:Received:Received:Received:
+	 X-Virus-Scanned:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:X-Developer-Signature:
+	 X-Developer-Key:Content-Transfer-Encoding; b=mIzmluFjmYq1iR5iUKU+XJEFi0QLoXP8YcjfLxGE/PZM6mzkK6LXc/X3IuoJre1DdpkJEwZzkiH11h2oQmxUBMCCA+lmlCe07nbwqdAOtd9GJcpqr4oG4oPWueqALji9o0fUwG1HyQpm+zFIhFLJzOgndp3IXcBDyOE9VVW8YfP1rjT0SRfJ52t8wACwcAX/0nP1gWp569G2EMvo3l/xwcGhH3bP5DE87WMzfjXCzX/xPLjvHaC6WQpGA6ElA85hI7PZ02gk048TgsjxaW+qNHdxw+DiU9jq8m1/ds3S1tKo0+QwZEkInASVMskxZPabYkFUCUa+WSvIf3PWsAU9vQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtK1s5yKWz2xTq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 17:29:52 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id CC3AE68BEB; Tue, 27 Aug 2024 09:29:46 +0200 (CEST)
-Date: Tue, 27 Aug 2024 09:29:46 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Lamparter <christian.lamparter@isd.uni-stuttgart.de>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	Stan Johnson <userm57@yahoo.com>,
-	Finn Thain <fthain@linux-m68k.org>
-Subject: Re: [PATCH v2] powerpc: warn on emulation of dcbz instruction in
- kernel mode
-Message-ID: <20240827072946.GB13080@lst.de>
-References: <2e3acfe63d289c6fba366e16973c9ab8369e8b75.1631803922.git.christophe.leroy@csgroup.eu> <17fa6450-6613-4c34-804b-e47246e7b39c@isd.uni-stuttgart.de> <9dbf73fe-a459-4956-8dbc-e919d9728f5e@cs-soprasteria.com> <20240822053238.GA2028@lst.de> <e6acf664-5ebd-4273-9330-cbec283ede23@cs-soprasteria.com> <20240823130600.GI28254@gate.crashing.org> <20240823135459.GA28487@lst.de> <20240823191924.GK28254@gate.crashing.org> <c8127b03-245b-4eaa-98f5-6e14df094669@cs-soprasteria.com> <20240824171757.GL28254@gate.crashing.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtK4S5rRMz2xTq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 17:32:08 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WtK4N4xQ2z9sPd;
+	Tue, 27 Aug 2024 09:32:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id mjwE0QcQuI4l; Tue, 27 Aug 2024 09:32:04 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WtK4N469Zz9rvV;
+	Tue, 27 Aug 2024 09:32:04 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 708458B77B;
+	Tue, 27 Aug 2024 09:32:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 6FfdSprD4Gq4; Tue, 27 Aug 2024 09:32:04 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (PO19727.IDSI0.si.c-s.fr [192.168.233.149])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BCBAA8B763;
+	Tue, 27 Aug 2024 09:32:03 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "Theodore Ts'o" <tytso@mit.edu>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arch@vger.kernel.org
+Subject: [PATCH 0/4] Fixups for random vDSO
+Date: Tue, 27 Aug 2024 09:31:46 +0200
+Message-ID: <cover.1724743492.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.44.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,23 +76,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240824171757.GL28254@gate.crashing.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1724743907; l=1053; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=DlsazXpgUZ+Rtf+gb3LjakzOdGFeaxRc9UblP4KWKkc=; b=sdhBscEZA9sEt9ACfOkHid5Wfi17/wl5Iazag5dtcitKymflhseYNsbZYejQ9fMxtytfSgFyH pX/OHgL9JrkDr4wlbpnFZqxdwB157PBRrLw0bDx7LlggB506rgXG0pm
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 24, 2024 at 12:17:57PM -0500, Segher Boessenkool wrote:
-> > Are these functions also used on DMA coherent memory ?
-> 
-> Most won't show up high on most profiles, heh.  Which you already
-> can see from the problem not being attacked yet: if it was so obviously
-> a problem, some people would have wanted to do something about it :-)
+This small series is an extract of fixups for generic part of random vDSO in
+preparation of implementing vDSO getrandom for powerpc.
 
-Most drivers try to avoid coherent allocations in the fast path if
-they can.  Another good option for Christians problem would be
-to switch the the dmaengine driver to use dma_alloc_pages - it doesn't
-actually need uncached memory as far as I can, dma_alloc_coherent is
-just the only API we had to allocate guaranteed DMAable memory for most
-of Linux's existence.
+See last version of full series at:
+https://patchwork.ozlabs.org/project/linuxppc-dev/cover/cover.1724309198.git.christophe.leroy@csgroup.eu/
+
+This series is based on top of:
+https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git master
+
+Christophe Leroy (4):
+  asm-generic/unaligned.h: Extract common header for vDSO
+  random: vDSO: Don't use PAGE_SIZE and PAGE_MASK
+  random: vDSO: Clean header inclusion in getrandom
+  random: vDSO: don't use 64 bits atomics on 32 bits architectures
+
+ arch/x86/include/asm/pvclock.h  |  1 +
+ drivers/char/random.c           |  9 ++++++++-
+ include/asm-generic/unaligned.h | 11 +----------
+ include/vdso/helpers.h          |  1 +
+ include/vdso/unaligned.h        | 15 +++++++++++++++
+ lib/vdso/getrandom.c            | 16 ++++++++--------
+ 6 files changed, 34 insertions(+), 19 deletions(-)
+ create mode 100644 include/vdso/unaligned.h
+
+-- 
+2.44.0
 
 
