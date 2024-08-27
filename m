@@ -1,203 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-557-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-558-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6815495FD34
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 00:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F8D960056
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 Aug 2024 06:34:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wt5QP1WKfz2xxm;
-	Tue, 27 Aug 2024 08:46:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtF725Lz5z2xvF;
+	Tue, 27 Aug 2024 14:34:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2414::62b" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724712413;
-	cv=pass; b=EmtmtdbMRvO+GTZZ293ZMNHPRC8UDGcOeNdhXlV8XyLapMhxN5MkowoJfXVjfGHNOpv8WOFtJLIa5UHqN4eJ6w1YkYkwR0rLW/ebWp5zzhE69iUPzTvlPY3n2hKXIe3fTkJQVY//xPA6M8JW8ldR43jU1Z+LpNjkH44j0mRNnWSyTMZ2E9hpWotXCQr6m0pe7l71AS9zUiK3RtdLU1/HhIFaOSGxLiP+OR5hOJGLtOC/Agt2/l5yR17ZbXdUdiKMFwm/Kyog7QXMCXmtiAo7jqwY3rVzOwXzu9cV49FjNY17WYIMjHkRi/K1gwJBto2IDAMGSItfFVaZK9qCSnhNlQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724712413; c=relaxed/relaxed;
-	bh=CvsnoZOnhatFHpsGg4jpXg2L/nnzElWsi8E41Qc7GNA=;
-	h=ARC-Message-Signature:ARC-Authentication-Results:DKIM-Signature:
-	 Received:Received:From:To:CC:Subject:Thread-Topic:Thread-Index:
-	 Date:Message-ID:Accept-Language:Content-Language:X-MS-Has-Attach:
-	 X-MS-TNEF-Correlator:x-ms-publictraffictype:
-	 x-ms-traffictypediagnostic:x-ms-office365-filtering-correlation-id:
-	 x-ms-exchange-senderadcheck:x-ms-exchange-antispam-relay:
-	 x-microsoft-antispam:x-microsoft-antispam-message-info:
-	 x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:Content-ID:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=YcAh79LX; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2414::62b; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=bfaccini@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724733246;
+	cv=none; b=F+FQk0wzL4oFFZyNVBUip2V01tn4EQvqoW9vdmOMVkeulguG0cb3d5sM1MjrGrDcorJtcJIjIfPhB+QkujnAOS8x4Kf/EMSR9LVtGlB8CG5BCtt76iZQhsOAGD7G/EGCfVCxbIMTeEAIFfgLUO7kDGS1ZfXcvupNODn0W8l28O9lfPTV3DqM8L2dl5QblMG4SRh2GgDzWLAIJh41OVb0fZp2Ff5o/Bq9PaD1UuWsagOsaoCUWNlhLEy7xWfijWrnDFA6sqSB2dsempipRYVqOE7Hlb88UMZD/fiXBa7VrhdLIWKT1pwNJ/H+aE8cVnCVJkWvaL82wdKP7vvBJVM0eA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1724733246; c=relaxed/relaxed;
+	bh=Bq87ZON6ZNMLSUnrDlDs3pHFeMkFR+bTi97+RCtdjic=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding; b=Roaqi4UDEQiOJ9YKgBcSQxDQR3fyv4a2hVsQc4CI5cDzDNye5Jf6SeF6gn0KM9A1L0piEj22Bj/NuVo74dyVHtk1AerI99/q/xi7ZalJPp+8F+Hbmm5z2EIKUmQBoVKZkf6zypduAh8RMCJ7yJZJD14SMcFZEcSL0129zqFiMC3vVKvLBK1iFKlG9nk/NtGUcd3O7FVDTeIL2AoM6+YpReiQWO+HfQgGm7lVJW4HjqozV+UTct4sGgSmo9kmqJxMTB7BLFUDGFGbQ+OGQBLYx8SXOYNXsOFmaOFRVVqBKJL/A/dOF4WChlLfLpykC/MbfDCScrzBx2eQra64gbz6Kw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=RZoDAQhM; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=YcAh79LX;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=RZoDAQhM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2414::62b; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=bfaccini@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2062b.outbound.protection.outlook.com [IPv6:2a01:111:f403:2414::62b])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wt5QN4KZvz2xjh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 08:46:50 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bTrIedz8XmWUyD90/Pqe6EtM/pIbSyt32coRCHdR8Td6sqE6OMWSyZ/gUp6+llzBjyn/iL8Da4q3nBpu0KuSdNxbaLDDG9rJ94BzjtFsD6EnnZOLDham2pU5X7/rqA1m/zytBqa8XiZwWoX+cbcxNvstOg2SX9MS/rE02aZSuhDYhm/qVJ/iOHz7lI1l7/RbAWJLHCCulxrzc+64wSnioMCvX5TRvPNPQSDxr97Z07nHgsMzO3d2mvjPmp2u4lDOMtAwI2BVvg//++nl34A5kpZfiJbQitUsezQSsIW40TkO/waARTw413csfXR1knYJc4oJxOk3hz9ZH2anBWaU2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CvsnoZOnhatFHpsGg4jpXg2L/nnzElWsi8E41Qc7GNA=;
- b=ksV0y2Bvp59QHlY/tazyCcUGKPoLi+1SvibpSYbxpSC5xU8JyhX9IoFTPoRmTM7bmtlPf4kampX+rA6OApnovb9vQF9wrqi0Y0E36Voo/hVY9+wlJmh3QnwhxlZ7vRp18kRePjANpvfE7lwKU2v8Bbxw4UE7HoaUWk7j28HV4Ax3qgk+5eVHYDj8+dMcbjRmVqMsQjxtynP0Gwo/ElBiTuQ2/H4aH/rHcyib93HFMALHGDFzHqtqkC7CQPS/fyr5lznuYaUJQAs6r5WvQj03D2Zalpox40Z90FfRuw66aEfynXABraYSCg4oOj12M1oGj1yo3kxfulMq66vzYkM2zA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CvsnoZOnhatFHpsGg4jpXg2L/nnzElWsi8E41Qc7GNA=;
- b=YcAh79LXVztSVyfxDirKpGYkP2NNuouSaM1DBKZ2WEP0p7M5pQAqZPW6Q/j0oPfF3jIKy5wgl3/qBc5Yx6L9jhdDC96P4lnmJj9KJbWFGok+XJUWSVjGeEHMrrS/h2SkLTYHYZymu9pajqTg0Gy0tkrOIVqKJopruhBFFuDX92x+H00ZWtiVcYUHHe2xgXFyDfySxTcuqdn/aX3tjsaf1DJK/RbbJfloJ0DTPXHCj4nfbSfF1lS7kLajHz5+WCDQGsf/zn6cZ8NDXsyElCRyViUFHnC5q/uj4sQUj1T0r7eB2Bt4PRUXjcE4wyxTYiUKEsB6HT5GeDfZYOBxOOwXDQ==
-Received: from MW4PR12MB7261.namprd12.prod.outlook.com (2603:10b6:303:229::22)
- by BL1PR12MB5898.namprd12.prod.outlook.com (2603:10b6:208:396::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.25; Mon, 26 Aug
- 2024 22:46:26 +0000
-Received: from MW4PR12MB7261.namprd12.prod.outlook.com
- ([fe80::d231:4655:2e3d:af1b]) by MW4PR12MB7261.namprd12.prod.outlook.com
- ([fe80::d231:4655:2e3d:af1b%3]) with mapi id 15.20.7897.021; Mon, 26 Aug 2024
- 22:46:25 +0000
-From: Bruno Faccini <bfaccini@nvidia.com>
-To: Mike Rapoport <rppt@kernel.org>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Alexander
- Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
-	Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Dan Williams
-	<dan.j.williams@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, David
- Hildenbrand <david@redhat.com>, "David S. Miller" <davem@davemloft.net>,
-	Davidlohr Bueso <dave@stgolabs.net>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Heiko Carstens <hca@linux.ibm.com>, Huacai Chen
-	<chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, Jiaxun Yang
-	<jiaxun.yang@flygoat.com>, John Paul Adrian Glaubitz
-	<glaubitz@physik.fu-berlin.de>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Jonathan Corbet <corbet@lwn.net>, Michael
- Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt <palmer@dabbelt.com>, "Rafael
- J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>, Samuel
- Holland <samuel.holland@sifive.com>, Thomas Bogendoerfer
-	<tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, Vasily
- Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "linux-mips@vger.kernel.org"
-	<linux-mips@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-	"nvdimm@lists.linux.dev" <nvdimm@lists.linux.dev>,
-	"sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "x86@kernel.org"
-	<x86@kernel.org>, Zi Yan <ziy@nvidia.com>, Bruno Faccini
-	<bfaccini@nvidia.com>
-Subject: Re: [PATCH v4 24/26] arch_numa: switch over to numa_memblks
-Thread-Topic: [PATCH v4 24/26] arch_numa: switch over to numa_memblks
-Thread-Index: AQHa+AnIRBd2eSXrZ0i2X6o1hDRrJQ==
-Date: Mon, 26 Aug 2024 22:46:25 +0000
-Message-ID: <1DDED2FB-35F4-4159-B46B-0F3846DCF98E@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-GB
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR12MB7261:EE_|BL1PR12MB5898:EE_
-x-ms-office365-filtering-correlation-id: b75fd6d2-6a02-4a56-8fdb-08dcc620eabf
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?ZjRQeGFoQWdlckUvUERuV3dPMWJjNW1VU0JFc3dVR0ZNVFdUaWF5Y3ZkenJr?=
- =?utf-8?B?R2drcnhMZUpCeWhIekNJcXdQNUJwanFvbGJlV3lnQVpoRFZvV3ZhOHBDMnhB?=
- =?utf-8?B?UlBDVVhKYUZ2RUwyd0M5TTZmY2htYUpnaXhvbCs2R251blA3YnNRUWpjV3o3?=
- =?utf-8?B?MnhiR2wxOW9WbU1zdndwdGtSVmVxaGNiU1R0alZDZzczYXpMVWNYOU50aEdO?=
- =?utf-8?B?bmNtTGMveHkwaWNOZnZLemF5b1pQWUJrRHN0V2l1QTRMRVVwK0YyS1E2czlR?=
- =?utf-8?B?Z1E4Tlh5OWVzMjRiVExZcHhxbWh5VUM1ZkQva3h3OTlzL1Q2OWs5YVQwYmVp?=
- =?utf-8?B?cjBUY1BMMnpqcVhEaUtZUTZvN3NwaG5wVGRvNHF5R0lnOWJnTWJweVN0OWlD?=
- =?utf-8?B?Rms3TC9WRm9ZWlcxR1YvSnpYZWwxdW4yZGRHMytEaW8yamo4SGRPVXp3Qldk?=
- =?utf-8?B?Slk5L1JORmhKMG9wL3Q5M3luaHNPQ3hKbURQbTV3dWhneWhXZVg5L1A1S1A0?=
- =?utf-8?B?SG1JQThxamJKNWJUbUIzMlEwbU5pUjhGaUZiRGRkdnJvZURCdzMwL3VZbHJF?=
- =?utf-8?B?eFYrUnhFRUtvUFY5OUtJWXdJbFFVV1NlSE5wVHFxTUlWTG03eDdpa3V5R0hX?=
- =?utf-8?B?TUhPeHNXTVpVVlRPMXFyTUVjd0hSM1R0TmRqcE9xMWJ2MW5nd0N4WWZ5L2J2?=
- =?utf-8?B?YU5xMVk0WTRYdHdjVTl1YzZ0a2NwOWM2UlhybSsrMEFIU3p2eTBUaHRxKyta?=
- =?utf-8?B?UmUrZ3Y3bE1YMU96RmU2cmxIdllhWnFid3gxNWMzMXVxZHh1RCswSGFHVEIv?=
- =?utf-8?B?VTRBdUJoaHlZSzN6bUtxQnFEb1dLNGprSlc0ckMyUmNCYXFFaUFFSmQyeDhv?=
- =?utf-8?B?elI5YUd2bUpWSFNPQVhlVmxYWmxNYXVRZSszelpnamVGMm55TEpVb3llVlZa?=
- =?utf-8?B?R29ybG9XR2wybVkvdHNRMlhTS08vNUk1SHcxck96MFFEK3ZlZW5lZ1V0a1Fy?=
- =?utf-8?B?OU1iZFh1clF5czMzaXF4djdXMnMwdGNtSGZheGxYSlJabm5BM1FXSXhQc1dh?=
- =?utf-8?B?ckg0a1NEZzZFb2kvdVdOdW9DRHViUTR6TzJaaUdBSUY0dklPbk85dWxlMGFu?=
- =?utf-8?B?bDA1MWdEbGVhMGlrbXA3YVlsVmFqWXpJaE1ZTEFpMGpJSjJ4NDcrSE9FWEgv?=
- =?utf-8?B?aW1TRGs5bDA2ZTlxbXdnWStMKzdUQUN0Qm1WcVVuTHNtN1dZdEIxM04yajZN?=
- =?utf-8?B?S3NlN0k4OUduZHFBVEhScFI4T21MTlczNGdRNndOWEM3Ri9aa2wrcTNZQklo?=
- =?utf-8?B?dG02NTB1aEcwQ0I1SEZWbFA3VHYxaGdlUVpIQkl5ajA1M3UxVlZNazdBaFll?=
- =?utf-8?B?R05jR2dJVkhmVUJmSkhLeVRpdmlGMUhJdldjWUUyUWFmM3NTNTFybU9yTitE?=
- =?utf-8?B?NUFXNUQ2MEsxdkFuaUpVV3hUSjlxR1ZPMTIxcEowcE5uTGp6NVR5b2R5Z0Fx?=
- =?utf-8?B?djA0Y0laWlgyakJaK2t2NGRqelBlNkJQdlJ0VDAzUUxyT3Y3NXhPUEl2ZUV5?=
- =?utf-8?B?a0ExbTNHWDk5QjRETGtOdVN3dnVTYXcxTzZmOTYzVk1sb3NUcWFiZTRFcFZ4?=
- =?utf-8?B?VmNJZjZQNVc5Rm80RkVEQXE2YmduOS9uMzdSU1l5VWVUWThBdWR4ckRoYnRx?=
- =?utf-8?B?N2IrZmw0cmM2RnJIVktoUnBwTnRJOUhVYWN1OEpMVk82NklCODBmTnVBUThF?=
- =?utf-8?B?QXpmajR1M3Q1UVlFMTJ0OHBSV2F6YndrWmRqRktkUTJENW1tRmpPRWszZnNm?=
- =?utf-8?B?UGlXY3JqVDI0bmpLVWlQd3N6bEV5Nm0zZHp4ZVNkYmtMeXFaMlF1QU90SUh2?=
- =?utf-8?B?aW00M3VrRXlSZHpxVmlwUmZaeG45STg4U2pMeURTUFhFUFE9PQ==?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB7261.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NlVnaWFuakxjOE5OTk5rb0ZTRkhIS3NJVVNNdForOGYrK1NSSTJacEdvZmE0?=
- =?utf-8?B?aTBwbUZtVGh4OHp6ZStERUlCM0NVLzF4KzZMSklOR3FsUjEwdUcxb2YzYnl5?=
- =?utf-8?B?TFByWkJqbnV1YXBsbDI3Tjd0TDU5VGZqU2lPdjZNK2ZENGVKUlovTlJmVGgw?=
- =?utf-8?B?ZVRWUEpjeVl1KzhieTNjb2VSa0ZxTENGNURoUmI2Z3N3bmhETVdEcnRWNzBX?=
- =?utf-8?B?bDBhMkw4ZDZQZmF3Wk5IWHdiWmdIS3h6ck5BUTMvaTB0WXZOSGVyTkE1c0FD?=
- =?utf-8?B?eEQreXhnZTZ2TUxwREpleGt6czU1OFZrQlN4cXFCUDR4RHdtc3MxVVl5KzBh?=
- =?utf-8?B?TWVGa0I1MEdrUUlXK1NkV3pHaE5IZUoxak9HSDczMWVtWkV3aWtISk9wWFRP?=
- =?utf-8?B?WU0xN0ZpbEZBN24rbjR4SUZYY3V1cmhmd3ZzM0JoRXVuR280SzljRFBVTVd5?=
- =?utf-8?B?NGRxZHI1UnhhZHpobVUwREluQVNqSUtQbUwwVTZNeHgrcy9NZXdFRXcrczgv?=
- =?utf-8?B?YkJBcGVtRWZ1N1owRC9vc2MvTHNvTWdMUVpsNHhCZVlncDFpcURHZHRBTlVQ?=
- =?utf-8?B?TGE1L3I1anlHd2paWmM0SWZhaXVvajJsUk5SeUJGRU1ZVytzTmkyOFJoaUE5?=
- =?utf-8?B?MHJ5NkR3bllwSHhkSVk0UkxqMWt3R25CajFPYVIxSExtaTIzbDVodVIvTFRM?=
- =?utf-8?B?RXlhSFZkWnJpenZpS21tQVJPamppcnF4UEtzZDNQc1BxYXlCVWNtUSttZ3Qz?=
- =?utf-8?B?c0pzYTFGZ21uSVJOSk5sYXM0ZkVpQVFrb09FbDhHSzAyVlN6MHNDMk9TVkNa?=
- =?utf-8?B?VEh6T1FUWFlOZ0IrT0xtdzUyR3NCOU1TZ0NwVUNKc0xuU1NvazlJaDludHQ2?=
- =?utf-8?B?K1UzOVJnQXpnMHFRYThkNEpMM1d1cFVyQzZUb1RHWUVUSGU4ZHV4R2Rtb3dz?=
- =?utf-8?B?UVlUYnl1SUFsTDZIempHWDJDSGhBU0U3cG52U0t6SSt5QktnTTluOGwzSEJP?=
- =?utf-8?B?dERBMHZ0NzdlMkdXUFM1NmthWUx1LzEzVW5URVZiamQ1cU5xN3FuMnNGYmxK?=
- =?utf-8?B?Z1Q0VDNMVDU1cUw0Qk92blVxOHluVzF3RGFQTjYxT29KTWd0U1lWYkxUdzNL?=
- =?utf-8?B?cFpxbTVXMWZYanJ5MDF6MmZkdTBCQWptQ3RSdjc2UHZmYkV0ZnVSTG8zSjFC?=
- =?utf-8?B?cHZ6OWZjVGVBdXQ1OHM5MTQzcVRDb2hMV1pYNlU4T25yQnFQeUpvT1dUKytp?=
- =?utf-8?B?dUIyMU5GTVNwRy9yeU5aOWFnaExvN1hZUzFoQks5NlNtd1VvbmpLK3ZINGhW?=
- =?utf-8?B?bDlPYTB0RG9pMHp4QkQ5dUNtZjdoVHVzN1hHbXJmaE5Ed2RNbElRTWUrdUoz?=
- =?utf-8?B?WUo2akxUNzk0WFp3TXY5WlFEbVpHdDlxd3lpeGFXNWQycTAxRGxIcnVNcGdq?=
- =?utf-8?B?L04wWEh2ME1xK2p4WnJhb1UvYzlQTEV5RHdFUmh3V0dJQTNXWFRFNGxKNmNo?=
- =?utf-8?B?WjlBNmFYMS9xSjlGbnZDcmNxcFAvNDd3QmV6dGU4dmVoeGRISVhYOEFrcXNL?=
- =?utf-8?B?ckRISDdKVi9LN1MyTUtZOEpLMmdJQnBaOVdTYWpYamtaSW9ZZDhKYmhwaDA5?=
- =?utf-8?B?cW5Oc0FNaHBvK25lc1F2Q0JnS1JQMVc2MmZFQnpPeWxlZXNwSnFMakhuZTls?=
- =?utf-8?B?dDRGYVVaczJhM3hCZ09kZ1lvYktFZjBNRmFSUDUxdDJmdk4wNzFSejc5UGVD?=
- =?utf-8?B?MXhHTGJBSWhjdFU2bDhDc0tHR3BFNEpXNzIrUTQyMWN0N0xZRU45N20xdjBu?=
- =?utf-8?B?U3ZRd1FPNWVzcEppZzBRWFN0WXc1cWZCaGc5WjlGVEpsWlBpRnFsSGoxWDFk?=
- =?utf-8?B?ZnNnZnkxZTVURnlTM0dyMi9pSmFYYjdvWGlUMG8xWllEUHZFUXVLV25tbkhD?=
- =?utf-8?B?WGwyNjZieE1rdGtuN0VQRWFvaVpGZDN2QnprbUo3RE9oODIrQmhhTUllTklU?=
- =?utf-8?B?SlBOWFlZWGFiTG9LaWJ2SXl5WEpXTVNMbjBlS0c1cndDL0s4TFhPMi9EU0hT?=
- =?utf-8?B?TmZjZmxRN1o3MW9rQjdYS1c2L1J5WnVLMm9DeGF6M1cwUWZscW9KQVgrai80?=
- =?utf-8?B?ZjlvQkgzZm9sTDlxd1dENldWRy85bEtmL2taUnlCVEVpeHEyMjRjeDE3aHBB?=
- =?utf-8?B?Snc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2F4492824914CA4FA50DC0267F51BB56@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtF714kXfz2xCC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 14:34:04 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1fee6435a34so33200645ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 26 Aug 2024 21:34:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1724733241; x=1725338041; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Bq87ZON6ZNMLSUnrDlDs3pHFeMkFR+bTi97+RCtdjic=;
+        b=RZoDAQhMjWtae1361JP9ROxBsj2ogUEFJaryyEfQGwQFIqNRFK+u//QNcEPZrFwfj3
+         eQ75gL/QTxf7sys2FlzdDmLA8+KTb7jl9dIX94BLmuvhFRbX1N6lPkk4O274cAPrIguE
+         4FVIsSk6O0DrOXK/ObqOHmA8lKUvyHhIgdqZvwYf8TVABqezX4da24PQ+II3OYMhAAPD
+         XZf3ntPwv642+zLLSAbQIZB2g7M0S4qMPvTQoNG51rNk/PYo/c2ad78gK1n5oVfteUNB
+         dljLSR7yQDc3eiYTsYoK9jdMoMKAdwWGmFAP3uLTaZSUfmmvv5u/SoQxOuUaOGkyN5hy
+         ouAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724733241; x=1725338041;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bq87ZON6ZNMLSUnrDlDs3pHFeMkFR+bTi97+RCtdjic=;
+        b=YZSb4x5zpbC+4dkgS3MVKZs6uLkNbi+VGRzC9ae3EMkPBHCYLfPoXkn4ZNkNcYvG6H
+         /EoHZ2XLS7FLQwPWHZ3F51aUCGZNnqOxz2ddJu76/jAkxrT3CDWBzkZOXzhfXHaDPSfF
+         0pTy0WpPkUsaGV7PcIbbBAzLZGuaDTa/rdzNcIYRUs5In3qKD3R6VRqgeADw50rdrUDR
+         bgjAuuvlxlcVJiWf6/1jMFrChgsSodARwEHwITaz3EvnhDLRW+8ZpKlZlqgrR/V98LI0
+         ho1kyZnO1wFCkDUHN9hPuDkutTGIpu4hnhxGEQGoYYNWTeZRfvoUtdA+ZFxB+jRxvLTW
+         ytjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqOvvw29CQILvVQ9jx2lUksBaqPeJ3tQMGUZxouUJO8K07cPJW4D4ha6fuJn1UWs2XR/8SLIF6XcLHmpU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz/A8MSIA59HphE8Uxin7CX/yj6kGkOcDOH1TDd45eQ7t92VIN0
+	rShoD18eqx6eNtNvW6OFZqRoGotAuMiZl1fpT3oIlVG5P7vFbSD4hYtHd7KZDSo=
+X-Google-Smtp-Source: AGHT+IGrjg/3DusjsTQ/CyMwBnOzZDq+gba6Du2dXt4+TdxTJQagehvc1DJvTP0xEmtvYDB7oJxjZw==
+X-Received: by 2002:a17:902:db0d:b0:201:df0b:2b5d with SMTP id d9443c01a7336-2039e52da6cmr106666295ad.64.1724733241304;
+        Mon, 26 Aug 2024 21:34:01 -0700 (PDT)
+Received: from [10.4.59.158] ([139.177.225.242])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203855df793sm75232815ad.155.2024.08.26.21.33.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Aug 2024 21:34:00 -0700 (PDT)
+Message-ID: <4481a0e4-a7a5-4223-a8ab-d1215d7c6352@bytedance.com>
+Date: Tue, 27 Aug 2024 12:33:53 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -207,57 +78,210 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB7261.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b75fd6d2-6a02-4a56-8fdb-08dcc620eabf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2024 22:46:25.9148
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Wi0Dfi/63jsXvLarc8o7ASUEHowwfoiQMYoZLqlu59h29J6rQnEETTrBrEKSHueUDnyk13A+f+gnM8UJgLFBIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5898
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/14] mm: pgtable: introduce
+ pte_offset_map_{ro|rw}_nolock()
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>
+Cc: hughd@google.com, willy@infradead.org, muchun.song@linux.dev,
+ vbabka@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+ vishal.moola@gmail.com, peterx@redhat.com, ryan.roberts@arm.com,
+ christophe.leroy2@cs-soprasteria.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <cover.1724310149.git.zhengqi.arch@bytedance.com>
+ <e866151ccd257ca14a9361ba59f8c3086aa76e4f.1724310149.git.zhengqi.arch@bytedance.com>
+ <f318f65d-4198-481c-98a0-00415664614c@redhat.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <f318f65d-4198-481c-98a0-00415664614c@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-T24gNyBBdWcgMjAyNCwgYXQgMjo0MSwgTWlrZSBSYXBvcG9ydCB3cm90ZToNCg0KRnJvbTogIk1p
-a2UgUmFwb3BvcnQgKE1pY3Jvc29mdCkiIDxycHB0QGtlcm5lbC5vcmc+DQoNClVudGlsIG5vdyBh
-cmNoX251bWEgd2FzIGRpcmVjdGx5IHRyYW5zbGF0aW5nIGZpcm13YXJlIE5VTUEgaW5mb3JtYXRp
-b24NCnRvIG1lbWJsb2NrLg0KDQpVc2luZyBudW1hX21lbWJsa3MgYXMgYW4gaW50ZXJtZWRpYXRl
-IHN0ZXAgaGFzIGEgZmV3IGFkdmFudGFnZXM6DQoqIGFsaWdubWVudCB3aXRoIG1vcmUgYmF0dGxl
-IHRlc3RlZCB4ODYgaW1wbGVtZW50YXRpb24NCiogYXZhaWxhYmlsaXR5IG9mIE5VTUEgZW11bGF0
-aW9uDQoqIG1haW50YWluaW5nIG5vZGUgaW5mb3JtYXRpb24gZm9yIG5vdCB5ZXQgcG9wdWxhdGVk
-IG1lbW9yeQ0KDQpBZGp1c3QgYSBmZXcgcGxhY2VzIGluIG51bWFfbWVtYmxrcyB0byBjb21waWxl
-IHdpdGggMzItYml0IHBoeXNfYWRkcl90DQphbmQgcmVwbGFjZSBjdXJyZW50IGZ1bmN0aW9uYWxp
-dHkgcmVsYXRlZCB0byBudW1hX2FkZF9tZW1ibGsoKSBhbmQNCl9fbm9kZV9kaXN0YW5jZSgpIGlu
-IGFyY2hfbnVtYSB3aXRoIHRoZSBpbXBsZW1lbnRhdGlvbiBiYXNlZCBvbg0KbnVtYV9tZW1ibGtz
-IGFuZCBhZGQgZnVuY3Rpb25zIHJlcXVpcmVkIGJ5IG51bWFfZW11bGF0aW9uLg0KDQpTaWduZWQt
-b2ZmLWJ5OiBNaWtlIFJhcG9wb3J0IChNaWNyb3NvZnQpIDxycHB0QGtlcm5lbC5vcmc+DQpUZXN0
-ZWQtYnk6IFppIFlhbiA8eml5QG52aWRpYS5jb20+ICMgZm9yIHg4Nl82NCBhbmQgYXJtNjQNClJl
-dmlld2VkLWJ5OiBKb25hdGhhbiBDYW1lcm9uIDxKb25hdGhhbi5DYW1lcm9uQGh1YXdlaS5jb20+
-DQpUZXN0ZWQtYnk6IEpvbmF0aGFuIENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNv
-bT4gW2FybTY0ICsgQ1hMIHZpYSBRRU1VXQ0KQWNrZWQtYnk6IERhbiBXaWxsaWFtcyA8ZGFuLmou
-d2lsbGlhbXNAaW50ZWwuY29tPg0KQWNrZWQtYnk6IERhdmlkIEhpbGRlbmJyYW5kIDxkYXZpZEBy
-ZWRoYXQuY29tPg0KLS0tDQogIGRyaXZlcnMvYmFzZS9LY29uZmlnICAgICAgIHwgICAxICsNCiAg
-ZHJpdmVycy9iYXNlL2FyY2hfbnVtYS5jICAgfCAyMDEgKysrKysrKysrKystLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQ0KICBpbmNsdWRlL2FzbS1nZW5lcmljL251bWEuaCB8ICAgNiArLQ0KICBt
-bS9udW1hX21lbWJsa3MuYyAgICAgICAgICB8ICAxNyArKy0tDQogIDQgZmlsZXMgY2hhbmdlZCwg
-NzUgaW5zZXJ0aW9ucygrKSwgMTUwIGRlbGV0aW9ucygtKQ0KDQoNCjxzbmlwPg0KDQorDQordTY0
-IF9faW5pdCBudW1hX2VtdV9kbWFfZW5kKHZvaWQpDQorew0KKyAgICAgICAgICAgICByZXR1cm4g
-UEZOX1BIWVMobWVtYmxvY2tfc3RhcnRfb2ZfRFJBTSgpICsgU1pfNEcpOw0KK30NCisNCg0KUEZO
-X1BIWVMoKSB0cmFuc2xhdGlvbiBpcyB1bm5lY2Vzc2FyeSBoZXJlLCBhcw0KbWVtYmxvY2tfc3Rh
-cnRfb2ZfRFJBTSgpICsgU1pfNEcgaXMgYWxyZWFkeSBhDQptZW1vcnkgc2l6ZS4NCg0KVGhpcyBz
-aG91bGQgZml4IGl0Og0KPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PQ0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvYmFzZS9hcmNoX251bWEuYyBiL2RyaXZl
-cnMvYmFzZS9hcmNoX251bWEuYw0KaW5kZXggOGQ0OTg5M2MwZTk0Li5lMTg3MDE2NzY0MjYgMTAw
-NjQ0DQotLS0gYS9kcml2ZXJzL2Jhc2UvYXJjaF9udW1hLmMNCisrKyBiL2RyaXZlcnMvYmFzZS9h
-cmNoX251bWEuYw0KQEAgLTM0Niw3ICszNDYsNyBAQCB2b2lkIF9faW5pdCBudW1hX2VtdV91cGRh
-dGVfY3B1X3RvX25vZGUoaW50ICplbXVfbmlkX3RvX3BoeXMsDQoNCnU2NCBfX2luaXQgbnVtYV9l
-bXVfZG1hX2VuZCh2b2lkKQ0Kew0KLSAgICAgICAgICAgICAgcmV0dXJuIFBGTl9QSFlTKG1lbWJs
-b2NrX3N0YXJ0X29mX0RSQU0oKSArIFNaXzRHKTsNCisgICAgICAgICAgICAgcmV0dXJuIG1lbWJs
-b2NrX3N0YXJ0X29mX0RSQU0oKSArIFNaXzRHOw0KfQ0KDQp2b2lkIGRlYnVnX2NwdW1hc2tfc2V0
-X2NwdSh1bnNpZ25lZCBpbnQgY3B1LCBpbnQgbm9kZSwgYm9vbCBlbmFibGUpDQo9PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQoNCg0KDQohISEgSSBo
-YWQgYSBsb3Qgb2YgdHJvdWJsZSB0byBzZW5kIGluIHBsYWluIHRleHQgZnJvbSBPdXRsb29rIG9u
-IG15IE1hYywgc29ycnkgZm9yIHRoZSBub2lzZSBhbmQgdGhlIGR1cGxpY2F0ZSBjb3BpZXMgISEh
-DQoNCg0KDQo=
+Hi David,
+
+On 2024/8/26 23:21, David Hildenbrand wrote:
+> On 22.08.24 09:13, Qi Zheng wrote:
+>> Currently, the usage of pte_offset_map_nolock() can be divided into the
+>> following two cases:
+>>
+>> 1) After acquiring PTL, only read-only operations are performed on the 
+>> PTE
+>>     page. In this case, the RCU lock in pte_offset_map_nolock() will 
+>> ensure
+>>     that the PTE page will not be freed, and there is no need to worry
+>>     about whether the pmd entry is modified.
+> 
+> There is also the usage where we don't grab the PTL at all, and only do 
+> a racy (read-only) lookup.
+
+IIUC, pte_offset_map() should be used instead of pte_offset_map_nolock()
+in this case.
+
+> 
+>>
+>> 2) After acquiring PTL, the pte or pmd entries may be modified. At this
+>>     time, we need to ensure that the pmd entry has not been modified
+>>     concurrently.
+>>
+>> To more clearing distinguish between these two cases, this commit
+>> introduces two new helper functions to replace pte_offset_map_nolock().
+>> For 1), just rename it to pte_offset_map_ro_nolock(). For 2), in addition
+>> to changing the name to pte_offset_map_rw_nolock(), it also outputs the
+>> pmdval when successful. This can help the caller recheck *pmd once the 
+>> PTL
+>> is taken. In some cases, that is, either the mmap_lock for write, or
+>> pte_same() check on contents, is also enough to ensure that the pmd entry
+>> is stable. But in order to prevent the interface from being abused, we
+>> choose to pass in a dummy local variable instead of NULL.
+>>
+>> Subsequent commits will convert pte_offset_map_nolock() into the above
+>> two functions one by one, and finally completely delete it.
+>>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   Documentation/mm/split_page_table_lock.rst |  7 ++++
+>>   include/linux/mm.h                         |  5 +++
+>>   mm/pgtable-generic.c                       | 43 ++++++++++++++++++++++
+>>   3 files changed, 55 insertions(+)
+>>
+>> diff --git a/Documentation/mm/split_page_table_lock.rst 
+>> b/Documentation/mm/split_page_table_lock.rst
+>> index e4f6972eb6c04..08d0e706a32db 100644
+>> --- a/Documentation/mm/split_page_table_lock.rst
+>> +++ b/Documentation/mm/split_page_table_lock.rst
+>> @@ -19,6 +19,13 @@ There are helpers to lock/unlock a table and other 
+>> accessor functions:
+>>    - pte_offset_map_nolock()
+>>       maps PTE, returns pointer to PTE with pointer to its PTE table
+>>       lock (not taken), or returns NULL if no PTE table;
+> 
+> What will happen to pte_offset_map_nolock() after this series? Does it 
+> still exist or will it become an internal helper?
+
+I choose to remove it completely in [PATCH v2 13/14].
+
+> 
+>> + - pte_offset_map_ro_nolock()
+>> +    maps PTE, returns pointer to PTE with pointer to its PTE table
+>> +    lock (not taken), or returns NULL if no PTE table;
+>> + - pte_offset_map_rw_nolock()
+>> +    maps PTE, returns pointer to PTE with pointer to its PTE table
+>> +    lock (not taken) and the value of its pmd entry, or returns NULL
+>> +    if no PTE table;
+> 
+> [...]
+> 
+>> +pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
+>> +                unsigned long addr, pmd_t *pmdvalp,
+>> +                spinlock_t **ptlp)
+>> +{
+>> +    pmd_t pmdval;
+>> +    pte_t *pte;
+>> +
+>> +    BUG_ON(!pmdvalp);
+> 
+> As raised, no BUG_ON please. VM_WARN_ON_ONCE() is helpful during early 
+> testing and should catch these kind of things.
+
+OK, this patch was sent before you pointed out this, will use
+VM_WARN_ON_ONCE() instead of BUG_ON() in v3.
+
+> 
+> If someone thinks not requiring a non-NULL pointer is better, please 
+> speak up, I'm not married to that idea :)
+> 
+>> +    pte = __pte_offset_map(pmd, addr, &pmdval);
+>> +    if (likely(pte))
+>> +        *ptlp = pte_lockptr(mm, &pmdval);
+>> +    *pmdvalp = pmdval;
+>> +    return pte;
+>> +}
+>> +
+>>   /*
+>>    * pte_offset_map_lock(mm, pmd, addr, ptlp), and its internal 
+>> implementation
+>>    * __pte_offset_map_lock() below, is usually called with the pmd 
+>> pointer for
+>> @@ -356,6 +383,22 @@ pte_t *pte_offset_map_nolock(struct mm_struct 
+>> *mm, pmd_t *pmd,
+>>    * recheck *pmd once the lock is taken; in practice, no callsite 
+>> needs that -
+>>    * either the mmap_lock for write, or pte_same() check on contents, 
+>> is enough.
+>>    *
+>> + * pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like
+>> + * pte_offset_map(); but when successful, it also outputs a pointer 
+>> to the
+>> + * spinlock in ptlp - as pte_offset_map_lock() does, but in this case 
+>> without
+>> + * locking it.  This helps the caller to avoid a later 
+>> pte_lockptr(mm, *pmd),
+>> + * which might by that time act on a changed *pmd: 
+>> pte_offset_map_ro_nolock()
+>> + * provides the correct spinlock pointer for the page table that it 
+>> returns.
+>> + * For readonly case, the caller does not need to recheck *pmd after 
+>> the lock is
+>> + * taken, because the RCU lock will ensure that the PTE page will not 
+>> be freed. > + *
+>> + * pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is 
+>> like
+>> + * pte_offset_map_ro_nolock(); but when successful, it also outputs the
+>> + * pdmval. For cases where pte or pmd entries may be modified, that 
+>> is, maywrite
+>> + * case, this can help the caller recheck *pmd once the lock is 
+>> taken. In some
+>> + * cases, that is, either the mmap_lock for write, or pte_same() 
+>> check on
+>> + * contents, is also enough to ensure that the pmd entry is stable.
+>> + *
+>>    * Note that free_pgtables(), used after unmapping detached vmas, or 
+>> when
+>>    * exiting the whole mm, does not take page table lock before 
+>> freeing a page
+>>    * table, and may not use RCU at all: "outsiders" like khugepaged 
+>> should avoid
+> 
+> In general to me a step into the right direction. Likely the 
+> documentation could be further clarified in some aspects:
+> 
+> Like that the use of pte_offset_map_ro_nolock() does not allow to easily 
+> identify if the page table was replaced in the meantime. Even after 
+> grabbing the PTL, we might be looking either at a page table that is 
+> still mapped or one that was unmapped and is about to get freed. But for 
+> R/O access this is usually sufficient AFAIUK.
+> 
+> Or that "RO" / "RW" expresses the intended semantics, not that the 
+> *kmap* will be RO/RW protected.
+
+How about the following:
+
+pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like
+pte_offset_map(); but when successful, it also outputs a pointer to the
+spinlock in ptlp - as pte_offset_map_lock() does, but in this case
+without locking it.  This helps the caller to avoid a later
+pte_lockptr(mm, *pmd), which might by that time act on a changed *pmd:
+pte_offset_map_ro_nolock() provides the correct spinlock pointer for the
+page table that it returns. Even after grabbing the spinlock, we might
+be looking either at a page table that is still mapped or one that was 
+unmapped and is about to get freed. But for R/O access this is usually
+sufficient AFAIUK.
+
+pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is like
+pte_offset_map_ro_nolock(); but when successful, it also outputs the
+pdmval. For R/W access, the callers can not accept that the page table
+it sees has been unmapped and is about to get freed. The pmdval can help
+callers to recheck pmd_same() to identify this case once the spinlock is
+taken. For some cases where exclusivity is already guaranteed, such as
+holding the write lock of mmap_lock, or in cases where checking is
+sufficient, such as a !pte_none() pte will be rechecked after the
+spinlock is taken, there is no need to recheck pdmval.
+
+Note: "RO" / "RW" expresses the intended semantics, not that the *kmap*
+will be RO/RW protected.
+
+Thanks,
+Qi
+
+> 
 
