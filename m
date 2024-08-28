@@ -1,54 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-681-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-682-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6529624E4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 12:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 524349624F1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 12:30:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wv0wf244Hz2yZS;
-	Wed, 28 Aug 2024 20:27:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wv0zj1gSTz2y8l;
+	Wed, 28 Aug 2024 20:30:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724840866;
-	cv=none; b=EdNR2krrDwX7bmqTDdAJaEK0vAaOoizCfIJCKRpMWYXqPuQe4R/emcdA3uEFPFj9uC6IItleAgG3nwDqrDm0YioaOjvrIFK0O6Gvn6umniJrLR1uiP6OZJYVMdeFzz8Ynt/FyH5hyG40u7scX0kSkgF5Cf/zH5WMqMD01ZG8XrSbWYMcJh4fAajvxV9CSTu6YxmmMhMlCAbkW8aXv8Sxjr0OmtHTARHbBGl2dmBtbxtJQMzFltLADZ8H7JiZXHb3YMg9oOVLfIqGXLcBjqegu4QRbuwN7VejZVxCKv/T1XGCrNNh98eJZN4CC2imlrqcgWJRh7xjPjmzS0jTtNQIjg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724841025;
+	cv=none; b=iM7Y0F72wnjZzW20CthE5q6/je0bUMahFdJqTyqGld9Aa9U7Tf9HV/QUnrWGBW251R2eWvFECpd7Mi9jFa1+djumrEb2UMsby5zAUYduOeMwOLJ/lCHWJD164priVoHfuKvkpM0dPVTB/cbDHtk5JWJzWN8NoS8UbwrYh5KhaBRXxJY/Xspnep+DzvMxMFST1giCO2A+DBqci6kigqe/4ESUudSI4vAmaNpw6nx7OQK8eFwfaf33Eet+tAhBMOZ3rLsOGdKD6Gfm36RZuO8yLIEJw90TxA25ewydkvSzN7BXOB1u6L51E+J6wAbIOZkPEheDovS/6EoNxc5izsqVVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724840866; c=relaxed/relaxed;
-	bh=fEnEn5hzgBzl0GTPauhMV5Pr0gYQLV6CNqq0JmVprdQ=;
-	h=Received:X-Virus-Scanned:Received:Received:Received:
-	 X-Virus-Scanned:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding; b=Cj/GWM9/luPVHbI+rI5PeCMDssgJvNqoBcUXvRd16vnyEtW4Ar6qYMUP6G/8ybwQVthwUW1oddYSHg1EnbgS/wnf7m8HB8aR7mDxkoAA1a9icfIo082jOLPe3IHYxvT6qkblNoUmotnXL831OowDJYkhdA+/z2cGoGtQaQs4egNucOBpWMJk3anlLY9F3gfn3mDrfkC70MTaEVUiX7SLfF4ecxarOFyI0ozTjn5HCdYEO1kbauMdbO4nq8Feztz5y1vl/Fp/hJIofYeQD9tsZTnZKPltCU7k5aOd2SfzuR+/+5d0JmcBaXnSIaSFixKfdVWUFZupJxxZugcR//fAsw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	t=1724841025; c=relaxed/relaxed;
+	bh=SoQibYPLfKyv0jK3I/Mcs9L7GvYgtvTrP2tDplrwF1E=;
+	h=Received:Received:Received:From:To:CC:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-Originating-IP:X-ClientProxiedBy; b=GkXQteFCEHS3oFr8v2PmTOaVtHiXUeNbtyC+oUalYk4+bAZop3ZToFepGm1r8JC5oIlMSahAlz0e2sWk2N0u0SqWrruyLWY2kkjomYFTdLwpMWuwTqku2fI2F7HokNU1ZKnhxFkDWCm5UrvhLLNVCJqCsE4KPF2Dj7RkBG0QmQomWrqWt4EcG84hFDrvgDnPlrCheOmhpG6KqkOW0INX9NT/rBhpuIrywZmyD2Ysa8oktqfVxwB79CENrFxSMUb9bwnhgGHy1NbZLed8wOx2Zcd3O85Zjhvd1M3LhBvKLxiCVYnSxuf8VRAHf7vL3e7cw5izB7YMDoKDUQOYTl5zUA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wv0wd71CTz2yK7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 20:27:45 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Wv0wb19Lrz9sRy;
-	Wed, 28 Aug 2024 12:27:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id atgXkts7Rrq7; Wed, 28 Aug 2024 12:27:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wv0wb0BKxz9sRs;
-	Wed, 28 Aug 2024 12:27:43 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E6DFF8B78F;
-	Wed, 28 Aug 2024 12:27:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id kG13dQI6O_yt; Wed, 28 Aug 2024 12:27:42 +0200 (CEST)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id AA2E98B764;
-	Wed, 28 Aug 2024 12:27:42 +0200 (CEST)
-Message-ID: <7d62064e-c303-4d74-b213-a29ce16dbb39@csgroup.eu>
-Date: Wed, 28 Aug 2024 12:27:42 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wv0zh1lkHz2xps
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 20:30:20 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Wv0zB45Dcz1j7cl;
+	Wed, 28 Aug 2024 18:29:58 +0800 (CST)
+Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
+	by mail.maildlp.com (Postfix) with ESMTPS id AA80A1A016C;
+	Wed, 28 Aug 2024 18:30:09 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
+ (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 28 Aug
+ 2024 18:30:09 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <fbarrat@linux.ibm.com>, <ajd@linux.ibm.com>, <arnd@arndb.de>,
+	<gregkh@linuxfoundation.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [PATCH -next] cxl: Remove unused cxl_pci_to_cfg_record()
+Date: Wed, 28 Aug 2024 18:38:07 +0800
+Message-ID: <20240828103807.3683308-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,89 +53,71 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 5/6] net: ethernet: fs_enet: fcc: use macros for
- speed and duplex values
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net,
- Pantelis Antoniou <pantelis.antoniou@gmail.com>, Andrew Lunn
- <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Florian Fainelli
- <f.fainelli@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Herve Codina <herve.codina@bootlin.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <20240828095103.132625-1-maxime.chevallier@bootlin.com>
- <20240828095103.132625-6-maxime.chevallier@bootlin.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20240828095103.132625-6-maxime.chevallier@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemh500013.china.huawei.com (7.202.181.146)
 
+cxl_pci_to_cfg_record() is not used anywhere, and its function can be
+replacd with PCI_DEVID(), so remove it.
 
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+---
+ drivers/misc/cxl/vphb.c | 12 +-----------
+ include/misc/cxl.h      |  4 ----
+ 2 files changed, 1 insertion(+), 15 deletions(-)
 
-Le 28/08/2024 à 11:51, Maxime Chevallier a écrit :
-> The PHY speed and duplex should be manipulated using the SPEED_XXX and
-> DUPLEX_XXX macros available. Use it in the fcc, fec and scc MAC for fs_enet.
-> 
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+diff --git a/drivers/misc/cxl/vphb.c b/drivers/misc/cxl/vphb.c
+index 6332db8044bd..1cf614bf104d 100644
+--- a/drivers/misc/cxl/vphb.c
++++ b/drivers/misc/cxl/vphb.c
+@@ -72,11 +72,6 @@ static void cxl_pci_reset_secondary_bus(struct pci_dev *dev)
+ 	/* Should we do an AFU reset here ? */
+ }
+ 
+-static int cxl_pcie_cfg_record(u8 bus, u8 devfn)
+-{
+-	return (bus << 8) + devfn;
+-}
+-
+ static inline struct cxl_afu *pci_bus_to_afu(struct pci_bus *bus)
+ {
+ 	struct pci_controller *phb = bus ? pci_bus_to_host(bus) : NULL;
+@@ -99,7 +94,7 @@ static inline int cxl_pcie_config_info(struct pci_bus *bus, unsigned int devfn,
+ {
+ 	int record;
+ 
+-	record = cxl_pcie_cfg_record(bus->number, devfn);
++	record = PCI_DEVID(bus->number, devfn);
+ 	if (record > afu->crs_num)
+ 		return PCIBIOS_DEVICE_NOT_FOUND;
+ 
+@@ -302,8 +297,3 @@ struct cxl_afu *cxl_pci_to_afu(struct pci_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(cxl_pci_to_afu);
+ 
+-unsigned int cxl_pci_to_cfg_record(struct pci_dev *dev)
+-{
+-	return cxl_pcie_cfg_record(dev->bus->number, dev->devfn);
+-}
+-EXPORT_SYMBOL_GPL(cxl_pci_to_cfg_record);
+diff --git a/include/misc/cxl.h b/include/misc/cxl.h
+index d8044299d654..5ffa6e02bb07 100644
+--- a/include/misc/cxl.h
++++ b/include/misc/cxl.h
+@@ -23,10 +23,6 @@
+ /* Get the AFU associated with a pci_dev */
+ struct cxl_afu *cxl_pci_to_afu(struct pci_dev *dev);
+ 
+-/* Get the AFU conf record number associated with a pci_dev */
+-unsigned int cxl_pci_to_cfg_record(struct pci_dev *dev);
+-
+-
+ /*
+  * Context lifetime overview:
+  *
+-- 
+2.34.1
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-
-> ---
->   drivers/net/ethernet/freescale/fs_enet/mac-fcc.c | 4 ++--
->   drivers/net/ethernet/freescale/fs_enet/mac-fec.c | 2 +-
->   drivers/net/ethernet/freescale/fs_enet/mac-scc.c | 2 +-
->   3 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c b/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-> index add062928d99..056909156b4f 100644
-> --- a/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-> +++ b/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-> @@ -361,7 +361,7 @@ static void restart(struct net_device *dev)
->   
->   	/* adjust to speed (for RMII mode) */
->   	if (fpi->use_rmii) {
-> -		if (dev->phydev->speed == 100)
-> +		if (dev->phydev->speed == SPEED_100)
->   			C8(fcccp, fcc_gfemr, 0x20);
->   		else
->   			S8(fcccp, fcc_gfemr, 0x20);
-> @@ -387,7 +387,7 @@ static void restart(struct net_device *dev)
->   		S32(fccp, fcc_fpsmr, FCC_PSMR_RMII);
->   
->   	/* adjust to duplex mode */
-> -	if (dev->phydev->duplex)
-> +	if (dev->phydev->duplex == DUPLEX_FULL)
->   		S32(fccp, fcc_fpsmr, FCC_PSMR_FDE | FCC_PSMR_LPB);
->   	else
->   		C32(fccp, fcc_fpsmr, FCC_PSMR_FDE | FCC_PSMR_LPB);
-> diff --git a/drivers/net/ethernet/freescale/fs_enet/mac-fec.c b/drivers/net/ethernet/freescale/fs_enet/mac-fec.c
-> index f75acb3b358f..855ee9e3f042 100644
-> --- a/drivers/net/ethernet/freescale/fs_enet/mac-fec.c
-> +++ b/drivers/net/ethernet/freescale/fs_enet/mac-fec.c
-> @@ -309,7 +309,7 @@ static void restart(struct net_device *dev)
->   	/*
->   	 * adjust to duplex mode
->   	 */
-> -	if (dev->phydev->duplex) {
-> +	if (dev->phydev->duplex == DUPLEX_FULL) {
->   		FC(fecp, r_cntrl, FEC_RCNTRL_DRT);
->   		FS(fecp, x_cntrl, FEC_TCNTRL_FDEN);	/* FD enable */
->   	} else {
-> diff --git a/drivers/net/ethernet/freescale/fs_enet/mac-scc.c b/drivers/net/ethernet/freescale/fs_enet/mac-scc.c
-> index 29ba0048396b..9e5e29312c27 100644
-> --- a/drivers/net/ethernet/freescale/fs_enet/mac-scc.c
-> +++ b/drivers/net/ethernet/freescale/fs_enet/mac-scc.c
-> @@ -338,7 +338,7 @@ static void restart(struct net_device *dev)
->   	W16(sccp, scc_psmr, SCC_PSMR_ENCRC | SCC_PSMR_NIB22);
->   
->   	/* Set full duplex mode if needed */
-> -	if (dev->phydev->duplex)
-> +	if (dev->phydev->duplex == DUPLEX_FULL)
->   		S16(sccp, scc_psmr, SCC_PSMR_LPB | SCC_PSMR_FDE);
->   
->   	/* Restore multicast and promiscuous settings */
 
