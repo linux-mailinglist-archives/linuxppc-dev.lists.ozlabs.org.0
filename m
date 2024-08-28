@@ -1,68 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-696-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-697-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A11962A46
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 16:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC69962D9C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 18:27:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wv6LY4tQ6z2yYy;
-	Thu, 29 Aug 2024 00:32:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wv8vV3F7lz2yY0;
+	Thu, 29 Aug 2024 02:27:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8::222"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724855525;
-	cv=none; b=LxftZVY2py840fNk1BwnHJIjcghCRAzYKs/AETuxgukZLRAviHPtsU5rfGVabiRPZoA5AjyravbJBi/ixAEcT1uabDif7ODM3CidnyuY6T/ENBjQaueB3K4rIaptUpMk9BF06bEzMunInpmKlHziPszJcvTfkumUlZLcjp7BGyVMC+AawTM6pLPS58QOw6yrJ0App8U8Q207fmOJtEcyjETbC+ZBYi4ACiCVVHsRwnKs6e1VRDbPytAAfUkxxqpHTTkxMhTSvVFz7yPmqE7I82O+A2RdhNLe65w81fqBX3S8/p/5tE6aK/16LaHOUnL3TikLUJRvOC32GahQyKoyMw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724862438;
+	cv=none; b=ZsbKTEsFW/PNLctP5NCR3SIHwOqpPeIevsMtWBwRG6JSk2R7eMte5Z6UPDUE1gRn+2Z73MKo+dRY1h79P+hTuJm20vsw01L9Nn02i79AJdcKweMGZNPoeLbrix57F11aTL0HkeC/iVPiNLhar1hm7M9+ZTyHy4CKC5PYiDZaE9udlFuBlEzDYmiAze/tdbMsj3M0h43UZ7WPqJd4kPKzoOY7VNSd6ISpF90EGcsgOxvlJIZFEXMtaezC3q+QKc1I7JgQKp7jfooxttTm3pNNKnwk21+DLOeSgfbTA31ZHyFysrWM1TmWMFqIVkVKQ+vfUcUG3VYPwyxQfmz6qapoDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724855525; c=relaxed/relaxed;
-	bh=zBp11t92VbRmerW/yNZLIw8ZxxUVRQYze0GfI/bV7yg=;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-GND-Sasl; b=I2MeXgSLSlZ8zEYzYFR0t6E1l5mfvZdCZU3Gq0GqLi+lOmAIA9Wp568EsoCAx/BsJmnHujD/9JOi8aUr7Y5hH0w8lqH9ccK2nJMks8OA5zxT1fwBqRHDakjkJWBOqh9/AwzkWVt4BxoxytXfput5STQwzVEMEfgngdwSlKSOodbvRVOWIcdLqlTVRn0tXzTFQLXOR4jJ+PreAvoxQtxZ3BTm6nTUAGOaRCa8oDM7u8of8/qzTD6lNf1nHIHwuebVNXSkc8qhkdzj7eL7mXgp43LB9a6usGbyS9rOQiVXSgzwvlIgEuboxRa14bj4jnMrfI9NufvRebe/Oetotn1yzQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=RLLj6mIJ; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::222; helo=relay2-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=RLLj6mIJ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::222; helo=relay2-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wv6LX3rFVz2yY0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 00:32:01 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D26BE40003;
-	Wed, 28 Aug 2024 14:31:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1724855514;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBp11t92VbRmerW/yNZLIw8ZxxUVRQYze0GfI/bV7yg=;
-	b=RLLj6mIJwOxD4F4Ih3EczWnuu0JhM2qh58gi/MD1Sa3Lta75YgjMDUJ8+uO4MQSDz4FYY6
-	m8q3NAJDXBcl6KQ3rey/8CZFJRZkJwZRvIyJXJFN6zOPmzKGitwfvLSAenmXterpgvmyoc
-	+WKxz/AXSepM4tFICNISb9sq6b7YdrfNa90wu9NgaXtxY/RAW9ygw77MjHquEFC2q4JoOS
-	fXuh1jHZy+dp/9swBngkuOou+yOZDndmZbb494c5+1QUkUYMxcLb+c/DChDr61ycP/sV9L
-	VJneaxmD6ees3e5lFbVyaLPED7bcNJ8JPsGdfeeQJWHxgKoc+aJvQrW+LWP5YQ==
-Date: Wed, 28 Aug 2024 16:31:51 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: davem@davemloft.net, Pantelis Antoniou <pantelis.antoniou@gmail.com>,
- Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Florian Fainelli
- <f.fainelli@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Herve Codina <herve.codina@bootlin.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next 6/6] net: ethernet: fs_enet: phylink conversion
-Message-ID: <20240828163151.485b2907@device-28.home>
-In-Reply-To: <Zs8sMUxX7mnWZQnA@shell.armlinux.org.uk>
-References: <20240828095103.132625-1-maxime.chevallier@bootlin.com>
-	<20240828095103.132625-7-maxime.chevallier@bootlin.com>
-	<Zs7+J5JWpfvSQ8/T@shell.armlinux.org.uk>
-	<20240828134413.3da6f336@device-28.home>
-	<Zs8sMUxX7mnWZQnA@shell.armlinux.org.uk>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	t=1724862438; c=relaxed/relaxed;
+	bh=DHfvUMFhpYQy9mAn0IMqRDOSXQkdCSygfrSJESi6GUw=;
+	h=Received:Received:X-Authentication-Warning:Date:From:To:Cc:
+	 Subject:Message-ID:References:Mime-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:User-Agent; b=P8NBm1tgkWBKzcdV3wJeQjHycL8tLDGFBlGqMZ1Oif7MyiYp1hxxvKTgobyWr84/wCx3V3Ud4RQL3UjXfTHt7pfmfscnraVTj+uGF0rxHl12eAMIOsSHRa+ZdGCgVOULa2kzOP0rVPrAwg6jGmv+lA6yUZCKFGWDcyaRYGdt3mt+wJVsoXFb/ryAzsCtaYvsi3/sc8dhM16Xcdeve5cTEMRYwv1ZZl59vV3N6XybeTy8bR5YQ92pbb0JiDb/hRBR3ouKzkN3TOBggNU1hf1MakABKYyxuBF0br+s/3swW2rHbcNo4aGagIBd+eN8nu3NSQ8hSwfkPmHLk571n/UQyA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wv8vT0cRWz2yGD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 02:27:15 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 47SGKT1D008844;
+	Wed, 28 Aug 2024 11:20:29 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 47SGKPkx008843;
+	Wed, 28 Aug 2024 11:20:25 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Wed, 28 Aug 2024 11:20:25 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, "Jason A . Donenfeld" <Jason@zx2c4.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, "Theodore Ts'o" <tytso@mit.edu>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        shuah <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Linux-Arch <linux-arch@vger.kernel.org>, linux-mm@kvack.org,
+        linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 05/17] vdso: Avoid call to memset() by getrandom
+Message-ID: <20240828162025.GG29862@gate.crashing.org>
+References: <cover.1724309198.git.christophe.leroy@csgroup.eu> <5deb67090b214f0e6eae96b7c406546d1a16f89b.1724309198.git.christophe.leroy@csgroup.eu> <20240827180819.GB2049@sol.localdomain> <20240827225330.GC29862@gate.crashing.org> <Zs8HirKLk-SrwTIu@zx2c4.com> <fc19bf63-d519-46e2-be70-80202c85ff92@app.fastmail.com> <20240828124519.GE29862@gate.crashing.org> <CAMj1kXGmDmxy75eP=rf_fzKmg0g_FeKV43jk2G_gibnKZBtVww@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,86 +63,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGmDmxy75eP=rf_fzKmg0g_FeKV43jk2G_gibnKZBtVww@mail.gmail.com>
+User-Agent: Mutt/1.4.2.3i
 
-Hello Russell,
+Hi!
 
-On Wed, 28 Aug 2024 14:54:57 +0100
-"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
-
-> On Wed, Aug 28, 2024 at 01:44:13PM +0200, Maxime Chevallier wrote:
-> > Hi Russell,
-> > 
-> > On Wed, 28 Aug 2024 11:38:31 +0100
-> > "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
-> >   
-> > > On Wed, Aug 28, 2024 at 11:51:02AM +0200, Maxime Chevallier wrote:  
-> > > > +static int fs_eth_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
-> > > > +{
-> > > > +	struct fs_enet_private *fep = netdev_priv(dev);
-> > > > +
-> > > > +	if (!netif_running(dev))
-> > > > +		return -EINVAL;    
-> > > 
-> > > Why do you need this check?
-> > >   
-> > 
-> > I included it as the original ioctl was phy_do_ioctl_running(), which
-> > includes that check.
-> > 
-> > Is this check irrelevant with phylink ? I could only find macb and
-> > xilinx_axienet that do the same check in their ioctl.
-> > 
-> > I can't tell you why that check is there in the first place in that
-> > driver, a quick grep search leads back from a major driver rework in
-> > 2011, at which point the check was already there...  
+On Wed, Aug 28, 2024 at 05:40:23PM +0200, Ard Biesheuvel wrote:
+> On Wed, 28 Aug 2024 at 14:57, Segher Boessenkool
+> <segher@kernel.crashing.org> wrote:
+> >
+> > On Wed, Aug 28, 2024 at 12:24:12PM +0000, Arnd Bergmann wrote:
+> > > On Wed, Aug 28, 2024, at 11:18, Jason A. Donenfeld wrote:
+> > > > On Tue, Aug 27, 2024 at 05:53:30PM -0500, Segher Boessenkool wrote:
+> > > >> On Tue, Aug 27, 2024 at 11:08:19AM -0700, Eric Biggers wrote:
+> > > >> >
+> > > >> > Is there a compiler flag that could be used to disable the generation of calls
+> > > >> > to memset?
+> > > >>
+> > > >> -fno-tree-loop-distribute-patterns .  But, as always, read up on it, see
+> > > >> what it actually does (and how it avoids your problem, and mostly: learn
+> > > >> what the actual problem *was*!)
+> > > >
+> > > > This might help with various loops, but it doesn't help with the matter
+> > > > that this patch fixes, which is struct initialization. I just tried it
+> > > > with the arm64 patch to no avail.
+> > >
+> > > Maybe -ffreestanding can help here? That should cause the vdso to be built
+> > > with the assumption that there is no libc, so it would neither add nor
+> > > remove standard library calls. Not sure if that causes other problems,
+> > > e.g. if the calling conventions are different.
+> >
+> > "GCC requires the freestanding
+> > environment provide 'memcpy', 'memmove', 'memset' and 'memcmp'."
+> >
+> > This is precisely to implement things like struct initialisation.  Maybe
+> > we should have a "-ffreeerstanding" or "-ffreefloating" or think of
+> > something funnier still environment as well, this problem has been there
+> > since the -ffreestanding flag has existed, but the problem is as old as
+> > the night.
+> >
+> > -fno-builtin might help a bit more, but just attack the problem at
+> > its root, like I suggested?
+> >
 > 
-> int phylink_mii_ioctl(struct phylink *pl, struct ifreq *ifr, int cmd)
-> {
-> 	if (pl->phydev) {
-> 		... do PHY based access / pass on to phylib ...
-> 	} else {
-> 		... for reads:
-> 		...  return emulated fixed-phy state if in fixed mode
-> 		...  return emulated inband state if in inband mode
-> 		... for writes:
-> 		...  ignore writes in fixed and inband modes
-> 		... otherwise return -EOPNOTSUPP
-> 	}
-> }
+> In my experience, this is likely to do the opposite: it causes the
+> compiler to 'forget' the semantics of memcpy() and memset(), so that
+> explicit trivial calls will no longer be elided and replaced with
+> plain loads and stores (as it can no longer guarantee the equivalence)
+
+No, the compiler will never forget those semantics.  But if you tell it
+your function named memset() is not the actual standard memset -- via
+-fno-builtin-memset for example -- the compiler won't optimise things
+involving it quite as much.  You told it so eh?
+
+You can also tell it not to have a __builtin_memset function, but in
+this particular case that won;t quite work, since the compiler does need
+to have that builtin available to do struct and array initialisations
+and the like.
+
+> > (This isn't a new problem, originally it showed up as "GCC replaces
+> > (part of) my memcpy() implementation by a (recursive) call to memcpy()"
+> > and, well, that doesn't quite work!)
+> >
 > 
-> So, if a driver decides to connect the PHY during probe, the PHY will
-> always be accessible.
-> 
-> If a driver decides to connect the PHY during .ndo_open, the PHY will
-> only be accessible while the netdev is open, otherwise -EOPNOTSUPP
-> will be returned.
+> This needs to be fixed for Clang as well, so throwing GCC specific
+> flags at it will at best be a partial solution.
 
-That makes sense, so there's no point keeping that check then.
+clang says it is a 100% plug-in replacement for GCC, so they will have
+to accept all GCC flags.  And in many cases they do.  Cases where they
+don't are bugs.
 
-I'll update the patch, thanks for this clarification.
+> It is not a complete solution, unfortunately, and I guess there may be
+> other situations (compiler/arch combinations) where this might pop up
+> again.
 
-[...]
+Why do mem* not work in VDSOs?  Fix that, and all these problems
+disappear, and you do not need workrarounds :-)
 
-> At this point... this email has eaten up a substantial amount of time,
-> and I can't spend anymore time in front of the screen today so that's
-> the end of my contributions for today. Sorry.
 
-I've been in the same rabbit-hole today debating in my head whether or
-not to add this check, I'm sorry that I dragged you in there... With
-what you stressed-out, I have a good enough justification to drop the
-check in the current patch.
-
-As for the current situation with the ioctl return codes, there indeed
-room for lots of improvements. For drivers that simply forward the
-ioctl to phylib/phylink, I think we could pretty easily add some
-consistency on the return code, provided we agree on the proper one to
-return.
-
-Thanks for your time,
-
-Maxime 
+Segher
 
