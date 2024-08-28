@@ -1,49 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-682-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-687-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524349624F1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 12:30:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA54C962647
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 13:45:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wv0zj1gSTz2y8l;
-	Wed, 28 Aug 2024 20:30:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wv2fs5XJPz2xTR;
+	Wed, 28 Aug 2024 21:45:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724841025;
-	cv=none; b=iM7Y0F72wnjZzW20CthE5q6/je0bUMahFdJqTyqGld9Aa9U7Tf9HV/QUnrWGBW251R2eWvFECpd7Mi9jFa1+djumrEb2UMsby5zAUYduOeMwOLJ/lCHWJD164priVoHfuKvkpM0dPVTB/cbDHtk5JWJzWN8NoS8UbwrYh5KhaBRXxJY/Xspnep+DzvMxMFST1giCO2A+DBqci6kigqe/4ESUudSI4vAmaNpw6nx7OQK8eFwfaf33Eet+tAhBMOZ3rLsOGdKD6Gfm36RZuO8yLIEJw90TxA25ewydkvSzN7BXOB1u6L51E+J6wAbIOZkPEheDovS/6EoNxc5izsqVVQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4d48:ad52:32c8:5054:ff:fe00:142"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724841540;
+	cv=none; b=TfzgeUyZylKazUMlbF/jS3VqopkfCxNyltE8u8makm/D08LGHOBmJIEm7D49OP+SmctqbwixrxavuDXdABaHk9d6sYwWHUgTnJxsqNOh3KT6FEillnX8OsrmbxQBsD1y/q7l12FCHoXtWkLctDfy0JxCsWM4HRR5SYSv66lO14dIQk7CMqZb986+pXIJ/ib2mO0oxwAYP6j2uvb1H6jN63ktvSB+RXqemsI97kijoiXVsJthTlLY/jM4BVRvXN3IF4uTXFkm3me73obJxVdKf+HTMZCkjXvgS12gw8uaah+I+GtcvjB+tOuBsr5ic+UWbveKKjLGvkSUzqJTy4oFPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724841025; c=relaxed/relaxed;
-	bh=SoQibYPLfKyv0jK3I/Mcs9L7GvYgtvTrP2tDplrwF1E=;
-	h=Received:Received:Received:From:To:CC:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-Originating-IP:X-ClientProxiedBy; b=GkXQteFCEHS3oFr8v2PmTOaVtHiXUeNbtyC+oUalYk4+bAZop3ZToFepGm1r8JC5oIlMSahAlz0e2sWk2N0u0SqWrruyLWY2kkjomYFTdLwpMWuwTqku2fI2F7HokNU1ZKnhxFkDWCm5UrvhLLNVCJqCsE4KPF2Dj7RkBG0QmQomWrqWt4EcG84hFDrvgDnPlrCheOmhpG6KqkOW0INX9NT/rBhpuIrywZmyD2Ysa8oktqfVxwB79CENrFxSMUb9bwnhgGHy1NbZLed8wOx2Zcd3O85Zjhvd1M3LhBvKLxiCVYnSxuf8VRAHf7vL3e7cw5izB7YMDoKDUQOYTl5zUA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1724841540; c=relaxed/relaxed;
+	bh=HiHXsrU1uxoz44DKaTX7gem1HpGF3cKfHBXLo1xRc0I=;
+	h=DKIM-Signature:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Sender; b=ac5ntJv4Dba2eRy5kkFsL2pJ/yKeYJhL97Y/NGgTbyoUZQLBQBvM3tzKfKvPw95nZtN8/hkqJOxyHtewJ8Q9m6Clc5uffwwZ3Vfn2hb5VLCR/M/UHxwBUAxTjbytI088iO1uH4ydMcOaQ0omBg1t9JPU/cvvYe76OIZ8DZJKsSZAuShN8uAsIjvfU33k+3J/OylM73Yah+7V1z8xex2M3ZeOxAYwzeSJehXhB48yfFXqqOrsILZ2S7EYnMo9W8fuFQbiopYwTWnI7OzrZuUKBa8AK0wEhSxvk7mNzKfL+znepZat+IwzbVinIaQkRaKQFttenb1WTa1AKPd//gNL6A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=koD4xEJo; dkim-atps=neutral; spf=none (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=armlinux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=koD4xEJo;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=lists.ozlabs.org)
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wv0zh1lkHz2xps
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 20:30:20 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Wv0zB45Dcz1j7cl;
-	Wed, 28 Aug 2024 18:29:58 +0800 (CST)
-Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id AA80A1A016C;
-	Wed, 28 Aug 2024 18:30:09 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
- (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 28 Aug
- 2024 18:30:09 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <fbarrat@linux.ibm.com>, <ajd@linux.ibm.com>, <arnd@arndb.de>,
-	<gregkh@linuxfoundation.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH -next] cxl: Remove unused cxl_pci_to_cfg_record()
-Date: Wed, 28 Aug 2024 18:38:07 +0800
-Message-ID: <20240828103807.3683308-1-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wv19Z3YCQz2xtt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 20:38:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=HiHXsrU1uxoz44DKaTX7gem1HpGF3cKfHBXLo1xRc0I=; b=koD4xEJolxR4rrnjzgYuXUwenr
+	G7d/pX6vMbb+NMG/3KQa5ayqwKAWfdlTSOn0VvdzB+og4f+7CbUUHD+ZXYy5xLsC8N7Bz4RS/8Tnk
+	HKF1ajkZTxo8euK2Tq7mtjC/AQ3UsMaR7Jp3VbFTCRNNpyUvswfyYHK9hyaIHqzkwhPgisRd41HXx
+	ReF4DzwxixULXa4yCDZt9/iTYUNgGhg3GCRuGyGfbhxpTVpc72KnGPT7o/Jv5lMwWMmzo0SvalvnR
+	cJOLTq9pLwKbEfyxnmrx9ZwSvtU/djScjAiF3rL1SmYBqsMLrFtbciDpIiRZD4p2BtaexpsnXZCmt
+	oMKW86kA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39482)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1sjG4S-0008Ug-0G;
+	Wed, 28 Aug 2024 11:38:35 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1sjG4N-0004PU-1l;
+	Wed, 28 Aug 2024 11:38:31 +0100
+Date: Wed, 28 Aug 2024 11:38:31 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Herve Codina <herve.codina@bootlin.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next 6/6] net: ethernet: fs_enet: phylink conversion
+Message-ID: <Zs7+J5JWpfvSQ8/T@shell.armlinux.org.uk>
+References: <20240828095103.132625-1-maxime.chevallier@bootlin.com>
+ <20240828095103.132625-7-maxime.chevallier@bootlin.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,71 +76,26 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemh500013.china.huawei.com (7.202.181.146)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240828095103.132625-7-maxime.chevallier@bootlin.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-cxl_pci_to_cfg_record() is not used anywhere, and its function can be
-replacd with PCI_DEVID(), so remove it.
+On Wed, Aug 28, 2024 at 11:51:02AM +0200, Maxime Chevallier wrote:
+> +static int fs_eth_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+> +{
+> +	struct fs_enet_private *fep = netdev_priv(dev);
+> +
+> +	if (!netif_running(dev))
+> +		return -EINVAL;
 
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
- drivers/misc/cxl/vphb.c | 12 +-----------
- include/misc/cxl.h      |  4 ----
- 2 files changed, 1 insertion(+), 15 deletions(-)
+Why do you need this check?
 
-diff --git a/drivers/misc/cxl/vphb.c b/drivers/misc/cxl/vphb.c
-index 6332db8044bd..1cf614bf104d 100644
---- a/drivers/misc/cxl/vphb.c
-+++ b/drivers/misc/cxl/vphb.c
-@@ -72,11 +72,6 @@ static void cxl_pci_reset_secondary_bus(struct pci_dev *dev)
- 	/* Should we do an AFU reset here ? */
- }
- 
--static int cxl_pcie_cfg_record(u8 bus, u8 devfn)
--{
--	return (bus << 8) + devfn;
--}
--
- static inline struct cxl_afu *pci_bus_to_afu(struct pci_bus *bus)
- {
- 	struct pci_controller *phb = bus ? pci_bus_to_host(bus) : NULL;
-@@ -99,7 +94,7 @@ static inline int cxl_pcie_config_info(struct pci_bus *bus, unsigned int devfn,
- {
- 	int record;
- 
--	record = cxl_pcie_cfg_record(bus->number, devfn);
-+	record = PCI_DEVID(bus->number, devfn);
- 	if (record > afu->crs_num)
- 		return PCIBIOS_DEVICE_NOT_FOUND;
- 
-@@ -302,8 +297,3 @@ struct cxl_afu *cxl_pci_to_afu(struct pci_dev *dev)
- }
- EXPORT_SYMBOL_GPL(cxl_pci_to_afu);
- 
--unsigned int cxl_pci_to_cfg_record(struct pci_dev *dev)
--{
--	return cxl_pcie_cfg_record(dev->bus->number, dev->devfn);
--}
--EXPORT_SYMBOL_GPL(cxl_pci_to_cfg_record);
-diff --git a/include/misc/cxl.h b/include/misc/cxl.h
-index d8044299d654..5ffa6e02bb07 100644
---- a/include/misc/cxl.h
-+++ b/include/misc/cxl.h
-@@ -23,10 +23,6 @@
- /* Get the AFU associated with a pci_dev */
- struct cxl_afu *cxl_pci_to_afu(struct pci_dev *dev);
- 
--/* Get the AFU conf record number associated with a pci_dev */
--unsigned int cxl_pci_to_cfg_record(struct pci_dev *dev);
--
--
- /*
-  * Context lifetime overview:
-  *
 -- 
-2.34.1
+*** please note that I probably will only be occasionally responsive
+*** for an unknown period of time due to recent eye surgery making
+*** reading quite difficult.
 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
