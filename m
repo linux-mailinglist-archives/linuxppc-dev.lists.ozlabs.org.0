@@ -1,59 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-627-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-628-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFA8961A30
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 01:00:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3166F961BA5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 03:58:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wtjgp1BCgz2yQj;
-	Wed, 28 Aug 2024 09:00:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtndL4LwQz2y7M;
+	Wed, 28 Aug 2024 11:58:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724799638;
-	cv=none; b=lw6QnIn/RIOJxGyT6xI0hXQWXgCiH3S6X2tNRT/H5JYnhoX4f+fuXCP86sEZSGn9TSixoWwHzDixYJpgcl8y1hAtjFxPX576IFm2aW5xa483qK+JugKaZQ0CnGZFpenrQJA+q68WhrSub2uraF/NsZ/uK6hLlnmLLzJCh6QkN+HXRv6HYT+rndasQiHXZkrjRgL1es4fLkwahA8wA2pqRnjgE4QT6R1x4HuHWcSVinxWb28+rYDcqpcaAD/+gV3MIxdVKDJmtIzuw1hp7zZHJm256HVCe4F8QoO6wIEdmexs8YXaZlDv9enxvmHT/LRInl0gHHpCRnHh43Y8pI8i0Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.32
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724810326;
+	cv=none; b=iZPzBq7AkJsVbSRpaScVaqHUMSMif7W3qoh3n6EKhALqgVaI2G17F9zK4hxwMs0Dh9ZApUo/hKqON+5+4U+4f2HyXW5k3iWbCKAxiGYryGA9Jqnc/itiG5KdFcdF9ijaVYMIVY81MSr/ab/VoCItxlGXs2Hzi/m56BoyBeX7MMYO463cPLLiqcByg/zYLfWNy3wcLvRnPcsfbpqrtKmoLKBym/4k1wKOVL5zkPfkPUMRZg7mDJ+jPxIk1Eq8VnE0lnN/vVSSAA+hXUrs0z/Adfi5aFWd8t5nLBlnvOI2buSHg2a30LxVJf5r+r1oTWFuJfgEYjWe1wfl1vPiFZr+Tg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724799638; c=relaxed/relaxed;
-	bh=Z72GF+4m8o7arXZKerpWLPf9I3/Jl2YWddN3COzPwAE=;
-	h=Received:Received:X-Authentication-Warning:Date:From:To:Cc:
-	 Subject:Message-ID:References:Mime-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:User-Agent; b=KSmQkZB/8XvV+E/GwVNa+fsEquKxNc7DpxNCnzm9eXfsXchEXgNKJi85j1Rt1fcQ0m+UTtKRq4rHOzxYHXmnSVb8EUSET4fE4WjcxSwAZ5Qh6VDgMu7voKTIL1Jbx45n8ZvolqoS4J6LF9Dz2gJjC1W+xB1ZAZ4BtbsLh/oRibTnia6iysW4ZnVgJwZDi+V4l8uF6HVcB8XwYfrqtwCxLJk03EZy82A3xHltL8wl6eKvU13Bl7ERhnA/9J505Uyd2KYCmHdyH37w1P8JxVzPls6rW4reyOPaWfcERhHxzqRJeiWKJF/WpnvyM0rfQ8Hh1auNGgNwicLlDkxiJXQ59A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wtjgm1HMjz2xxt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 09:00:35 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 47RMrWeM032045;
-	Tue, 27 Aug 2024 17:53:32 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 47RMrUKh032044;
-	Tue, 27 Aug 2024 17:53:30 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Tue, 27 Aug 2024 17:53:30 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, "Theodore Ts'o" <tytso@mit.edu>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>, Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Shuah Khan <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 05/17] vdso: Avoid call to memset() by getrandom
-Message-ID: <20240827225330.GC29862@gate.crashing.org>
-References: <cover.1724309198.git.christophe.leroy@csgroup.eu> <5deb67090b214f0e6eae96b7c406546d1a16f89b.1724309198.git.christophe.leroy@csgroup.eu> <20240827180819.GB2049@sol.localdomain>
+	t=1724810326; c=relaxed/relaxed;
+	bh=5sc6J3Ui5qWEXcQEzNbj36Es+HY8dKW4MEYb+d4FCh4=;
+	h=Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy; b=DIi/s4WRUIALj7FDtaa5R1QOKZvze8XrLBbjiUGibz7dOxS2jIgtMrelcoJcmYjfXdf2qf3FiOo6J0ljAIN/w/Kwv92XdGQjkTXr2vjJnszBbMfVEC0+tjndUrqGer4oXrW/RJdf5ufj+Ro8CPxN7Av27wmwvo1fWviL5BnlAwHTAXuQLntsVmVJprDgzREyUZlKw4iYr+uQGVhbeN//ZmpuVCEeyoV+a3GGPN8dHTUYpfaTnRdoidYBolH+Tjbp7zDXvjkT5/Uqh8MBtqdPRGGw4zTgmWaColazEbk7lGD43Fh6gbPwrnpFJ59UXawQ8MUIOahIQpaoX4oL81btvQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.32; helo=szxga06-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=szxga06-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WtndK1FH6z2xHR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 11:58:40 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4WtnZq5xBbz1xty0;
+	Wed, 28 Aug 2024 09:56:35 +0800 (CST)
+Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4E261140135;
+	Wed, 28 Aug 2024 09:58:33 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemh500013.china.huawei.com (7.202.181.146) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 28 Aug 2024 09:58:32 +0800
+Message-ID: <97ff8c02-1a97-7974-06fa-edb35437707d@huawei.com>
+Date: Wed, 28 Aug 2024 09:58:13 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,66 +46,160 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240827180819.GB2049@sol.localdomain>
-User-Agent: Mutt/1.4.2.3i
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH -next 2/8] soc: fsl: cpm1: Simplify with dev_err_probe()
+To: Krzysztof Kozlowski <krzk@kernel.org>, <andrew@lunn.ch>,
+	<sebastian.hesselbarth@gmail.com>, <gregory.clement@bootlin.com>,
+	<herve.codina@bootlin.com>, <qiang.zhao@nxp.com>,
+	<christophe.leroy@csgroup.eu>, <thierry.reding@gmail.com>,
+	<jonathanh@nvidia.com>, <nm@ti.com>, <ssantosh@kernel.org>,
+	<petlozup@nvidia.com>, <pshete@nvidia.com>, <christophe.jaillet@wanadoo.fr>,
+	<ulf.hansson@linaro.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-tegra@vger.kernel.org>, <jic23@kernel.org>
+References: <20240827114607.4019972-1-ruanjinjie@huawei.com>
+ <20240827114607.4019972-3-ruanjinjie@huawei.com>
+ <87abe3f1-3cf2-4331-8dde-a422716dd94a@kernel.org>
+Content-Language: en-US
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <87abe3f1-3cf2-4331-8dde-a422716dd94a@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemh500013.china.huawei.com (7.202.181.146)
 
-On Tue, Aug 27, 2024 at 11:08:19AM -0700, Eric Biggers wrote:
-> On Thu, Aug 22, 2024 at 09:13:13AM +0200, Christophe Leroy wrote:
-> > With the current implementation, __cvdso_getrandom_data() calls
-> > memset(), which is unexpected in the VDSO.
-> > 
-> > Rewrite opaque data initialisation to avoid memset().
-> > 
-> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > ---
-> >  lib/vdso/getrandom.c | 15 ++++++++++-----
-> >  1 file changed, 10 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/lib/vdso/getrandom.c b/lib/vdso/getrandom.c
-> > index cab153c5f9be..4a56f45141b4 100644
-> > --- a/lib/vdso/getrandom.c
-> > +++ b/lib/vdso/getrandom.c
-> > @@ -4,6 +4,7 @@
-> >   */
-> >  
-> >  #include <linux/minmax.h>
-> > +#include <linux/array_size.h>
-> >  #include <vdso/datapage.h>
-> >  #include <vdso/getrandom.h>
-> >  #include <vdso/unaligned.h>
-> > @@ -74,11 +75,15 @@ __cvdso_getrandom_data(const struct vdso_rng_data *rng_info, void *buffer, size_
-> >  	u32 counter[2] = { 0 };
-> >  
-> >  	if (unlikely(opaque_len == ~0UL && !buffer && !len && !flags)) {
-> > -		*(struct vgetrandom_opaque_params *)opaque_state = (struct vgetrandom_opaque_params) {
-> > -			.size_of_opaque_state = sizeof(*state),
-> > -			.mmap_prot = PROT_READ | PROT_WRITE,
-> > -			.mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS
-> > -		};
-> > +		struct vgetrandom_opaque_params *params = opaque_state;
-> > +		int i;
-> > +
-> > +		params->size_of_opaque_state = sizeof(*state);
-> > +		params->mmap_prot = PROT_READ | PROT_WRITE;
-> > +		params->mmap_flags = MAP_DROPPABLE | MAP_ANONYMOUS;
-> > +		for (i = 0; i < ARRAY_SIZE(params->reserved); i++)
-> > +			params->reserved[i] = 0;
-> > +
-> >  		return 0;
-> >  	}
+
+
+On 2024/8/27 21:50, Krzysztof Kozlowski wrote:
+> On 27/08/2024 13:46, Jinjie Ruan wrote:
+>> Use the dev_err_probe() helper to simplify error handling during probe.
+>> This also handle scenario, when EDEFER is returned and useless error
+>> is printed.
 > 
-> Is there a compiler flag that could be used to disable the generation of calls
-> to memset?
+> ? Sorry, this cannot happen. Please point to below code which can defer.
+> 
 
--fno-tree-loop-distribute-patterns .  But, as always, read up on it, see
-what it actually does (and how it avoids your problem, and mostly: learn
-what the actual problem *was*!)
+Thank you!
 
-Have fun,
+This is not referring to a specific one, but rather the benefits it
+offers，simplify code is the main purpose, if necessary, it will be
+removed in next version.
 
-
-Segher
+>>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> ---
+>>  drivers/soc/fsl/qe/tsa.c | 62 +++++++++++++++-------------------------
+>>  1 file changed, 23 insertions(+), 39 deletions(-)
+>>
+>> diff --git a/drivers/soc/fsl/qe/tsa.c b/drivers/soc/fsl/qe/tsa.c
+>> index 7fa399b7a47c..fc37d23b746d 100644
+>> --- a/drivers/soc/fsl/qe/tsa.c
+>> +++ b/drivers/soc/fsl/qe/tsa.c
+>> @@ -453,10 +453,8 @@ static int tsa_of_parse_tdms(struct tsa *tsa, struct device_node *np)
+>>  
+>>  	for_each_available_child_of_node_scoped(np, tdm_np) {
+>>  		ret = of_property_read_u32(tdm_np, "reg", &tdm_id);
+>> -		if (ret) {
+>> -			dev_err(tsa->dev, "%pOF: failed to read reg\n", tdm_np);
+>> -			return ret;
+>> -		}
+>> +		if (ret)
+>> +			return dev_err_probe(tsa->dev, ret, "%pOF: failed to read reg\n", tdm_np);
+>>  		switch (tdm_id) {
+>>  		case 0:
+>>  			tsa->tdms |= BIT(TSA_TDMA);
+>> @@ -465,18 +463,15 @@ static int tsa_of_parse_tdms(struct tsa *tsa, struct device_node *np)
+>>  			tsa->tdms |= BIT(TSA_TDMB);
+>>  			break;
+>>  		default:
+>> -			dev_err(tsa->dev, "%pOF: Invalid tdm_id (%u)\n", tdm_np,
+>> -				tdm_id);
+>> -			return -EINVAL;
+>> +			return dev_err_probe(tsa->dev, -EINVAL, "%pOF: Invalid tdm_id (%u)\n",
+>> +					     tdm_np, tdm_id);
+>>  		}
+>>  	}
+>>  
+>>  	for_each_available_child_of_node_scoped(np, tdm_np) {
+>>  		ret = of_property_read_u32(tdm_np, "reg", &tdm_id);
+>> -		if (ret) {
+>> -			dev_err(tsa->dev, "%pOF: failed to read reg\n", tdm_np);
+>> -			return ret;
+>> -		}
+>> +		if (ret)
+>> +			return dev_err_probe(tsa->dev, ret, "%pOF: failed to read reg\n", tdm_np);
+>>  
+>>  		tdm = &tsa->tdm[tdm_id];
+>>  		tdm->simode_tdm = TSA_SIMODE_TDM_SDM_NORM;
+>> @@ -484,35 +479,26 @@ static int tsa_of_parse_tdms(struct tsa *tsa, struct device_node *np)
+>>  		val = 0;
+>>  		ret = of_property_read_u32(tdm_np, "fsl,rx-frame-sync-delay-bits",
+>>  					   &val);
+>> -		if (ret && ret != -EINVAL) {
+>> -			dev_err(tsa->dev,
+>> -				"%pOF: failed to read fsl,rx-frame-sync-delay-bits\n",
+>> -				tdm_np);
+>> -			return ret;
+>> -		}
+>> -		if (val > 3) {
+>> -			dev_err(tsa->dev,
+>> -				"%pOF: Invalid fsl,rx-frame-sync-delay-bits (%u)\n",
+>> -				tdm_np, val);
+>> -			return -EINVAL;
+>> -		}
+>> +		if (ret && ret != -EINVAL)
+>> +			return dev_err_probe(tsa->dev, ret,
+>> +					     "%pOF: failed to read fsl,rx-frame-sync-delay-bits\n",
+>> +					     tdm_np);
+>> +		if (val > 3)
+>> +			return dev_err_probe(tsa->dev, -EINVAL,
+>> +					     "%pOF: Invalid fsl,rx-frame-sync-delay-bits (%u)\n",
+>> +					     tdm_np, val);
+>>  		tdm->simode_tdm |= TSA_SIMODE_TDM_RFSD(val);
+>>  
+>>  		val = 0;
+>>  		ret = of_property_read_u32(tdm_np, "fsl,tx-frame-sync-delay-bits",
+>>  					   &val);
+>> -		if (ret && ret != -EINVAL) {
+>> -			dev_err(tsa->dev,
+>> -				"%pOF: failed to read fsl,tx-frame-sync-delay-bits\n",
+>> -				tdm_np);
+>> -			return ret;
+>> -		}
+>> -		if (val > 3) {
+>> -			dev_err(tsa->dev,
+>> -				"%pOF: Invalid fsl,tx-frame-sync-delay-bits (%u)\n",
+>> -				tdm_np, val);
+>> -			return -EINVAL;
+>> -		}
+>> +		if (ret && ret != -EINVAL)
+>> +			return dev_err_probe(tsa->dev, ret,
+>> +				"%pOF: failed to read fsl,tx-frame-sync-delay-bits\n", tdm_np);
+>> +		if (val > 3)
+>> +			return dev_err_probe(tsa->dev, -EINVAL,
+>> +					     "%pOF: Invalid fsl,tx-frame-sync-delay-bits (%u)\n",
+>> +					     tdm_np, val);
+>>  		tdm->simode_tdm |= TSA_SIMODE_TDM_TFSD(val);
+>>  
+>>  		if (of_property_read_bool(tdm_np, "fsl,common-rxtx-pins"))
+>> @@ -645,10 +631,8 @@ static int tsa_probe(struct platform_device *pdev)
+>>  		return PTR_ERR(tsa->si_regs);
+>>  
+>>  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "si_ram");
+>> -	if (!res) {
+>> -		dev_err(tsa->dev, "si_ram resource missing\n");
+>> -		return -EINVAL;
+>> -	}
+>> +	if (!res)
+>> +		return dev_err_probe(tsa->dev, -EINVAL, "si_ram resource missing\n");
+>>  	tsa->si_ram_sz = resource_size(res);
+>>  	tsa->si_ram = devm_ioremap_resource(&pdev->dev, res);
+>>  	if (IS_ERR(tsa->si_ram))
+> 
+> Best regards,
+> Krzysztof
+> 
 
