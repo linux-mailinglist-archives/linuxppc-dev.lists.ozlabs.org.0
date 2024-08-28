@@ -1,54 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-659-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-660-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC7B9620FF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 09:27:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143FC962211
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 10:12:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wtwwc4vnSz2ykc;
-	Wed, 28 Aug 2024 17:27:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wtxx22VVbz2yn4;
+	Wed, 28 Aug 2024 18:12:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724830048;
-	cv=none; b=f1vn17fvZb1LM7y5k7TXoz7RGAujXlMXAC9gmmdoNBAgtP/8Y5jDsOhl/w3UTNZK6NiGjGVGTkPDdSMH/cnieu42d5KkdLT8hZFD04iObyeJjNkc8UZo9JdyUFHZtV9NFWjg5a/UfcpesN24VvM04SVe8PXBWdXcLMSnEwPmZ2kMVEC0TXtiBI/4gJXTZUxxdmANff4TOqx+3saY6W+vAwMrIi8SEZ2UuGpyWW5+94mOvoccGOzoGkfsTw+363d6QLI4RAswYLJAlshH5gODsfCswC/42sHgPed+8PVNbsg/8suNQK5D0Mw9c7z9VdTOu5O80HIwygXBu7N/oetl7g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724832774;
+	cv=none; b=E0JPCFlOrS8cwmiy+KWGUDYwJYNcDyaPtV7txfEpiNUujTEIsJZ0DvWpxuPLOEtnZWwZSFADPDkMJi6CoYxqGmGuLnACCaiODeVS2PYmaA3nSxDEyuvz1bswUyQ5RRUfPJyybZ36biHotoHMqrwzMafVbAK+Mx1nvVC34r0MYUocw+VzfIztXKHfxr3h45qHfUWwy8xGcExkfw638B7l2ZOTQ8bxPGG+HKopv6keEVZYOlwqaqn2gra5Rb/zhYO3wd1c9ovAtaj9R8fYXGPdCVL2X3PHAZO5sD2HvBnpDb84KRsl1hs4Shhlz2LKZ08q2RULrzCk/HITv1sPlYcboQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724830048; c=relaxed/relaxed;
-	bh=12p07206Nuk8cKKLrj9om9in1MZoVP/eSbXLTVcGPkE=;
-	h=Received:X-Virus-Scanned:Received:Received:Received:
-	 X-Virus-Scanned:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding; b=R6rcb9sAwdF42BdJw4L3tjr2zdIK03biif+MScXihMx6bbI5SwVM/2nrbt/AXajqpTx8y61w+UD0E7qE241E52WRrTaqXcnA8JJVmgevmKLXIeU6o7XW67RH9oqopzdXLX/axEGVHCdwhIZu+WOLabOFt9TVX04Bgldb0zWkG+Sk8ruryT9LncLPOkWwYlHb4k770eimjOR67s3X8umkgWAy0pkhUUQlXfM1bRYDLZDSDk1sK4jb7BWPf975cNq8SaEUjCRcbKZD7kWvtkcrIH7Ye0g4ZqwiRFaSPgvLsv4qtf65BwZNgoj2vrc47UsLBLXTEm2Njfc9aK01wEaLlw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1724832774; c=relaxed/relaxed;
+	bh=kmQr4ellws8beE4JVgm7kNDUxBVr1XmVR39q2Lg/4Lw=;
+	h=DKIM-Signature:Received:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=MUWC2mz7pm/MwPjolIF9D3EkKO0nemc61NOmm4gzrDO42RjnsG0OOyCjM5TFYN1me15EODSGGdZ1kZrXrRwXWZ0YionDoCxHUgD6BnSg60TnC6gKQIyTszbT64sSn2Q/Mwv87wwcZywYOKvkEuJLndKG8mgb94ZLAjJ2gUfshcEQ7YHY0YMLRvWyETGYzL7AvvUfbVDs5Uo03NGqIUZzlmiYdQf2xDaqtIopJBrkXiA7h69iEKLXj0Efvrajf0Go5lbEoGvA9WxjBhaE0TXlW4VVcHe2pyzQaMo1VhnSJ34nLfuRlH13n/gZf16ZeO+Lu5i+C8U2WJkz4Kzq9SUZkQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=epqbAQSi; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=epqbAQSi;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wtwwc2V79z2yk6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 17:27:27 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WtwwX2MSgz9sRy;
-	Wed, 28 Aug 2024 09:27:24 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id osLUnOEKVhtf; Wed, 28 Aug 2024 09:27:24 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WtwwX1S0jz9sRs;
-	Wed, 28 Aug 2024 09:27:24 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 213588B77D;
-	Wed, 28 Aug 2024 09:27:24 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id zSyAyn1xnuEH; Wed, 28 Aug 2024 09:27:24 +0200 (CEST)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id ECE9D8B764;
-	Wed, 28 Aug 2024 09:27:23 +0200 (CEST)
-Message-ID: <3fbdc957-2db4-4148-b325-263384f9a196@csgroup.eu>
-Date: Wed, 28 Aug 2024 09:27:23 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wtxx15SxJz2yjJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 18:12:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1724832773;
+	bh=kmQr4ellws8beE4JVgm7kNDUxBVr1XmVR39q2Lg/4Lw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=epqbAQSiG59seDTOPvXH4tPs8rPN2AEGKJFHEmVsiLtp0aCqIcM7DqQhVNHZzrivh
+	 OQtsnCk7o1yOxWGD/lpKKzX6Q4IJvwkiBLwCXc/lvnjG/5PqPzztdBjaETgwhKsVnL
+	 6yzAfrWJTxNWpDx3UNwm0VLvVyD3t7ouT/jhompEG7PgPL4CpfcAVDufWfJXndZ1S8
+	 ZOhccXs14txBtZqWhQUrZRCAXj6PUBMotzMZQ5mUMH3CPX8fG/zlraXZC+GRzM9j9z
+	 VayCHcc0ZPBOEcUHE53+eqlUrtODWjJHHzF9SZvMc3P/8M8+5sIIcKFNJNV+ynSMU8
+	 E6zmbxb2zBgcA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wtxx13d7jz4wxJ;
+	Wed, 28 Aug 2024 18:12:53 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: npiggin@gmail.com, tyreld@linux.ibm.com, brking@linux.ibm.com,
+ hbabu@us.ibm.com, haren@linux.ibm.com
+Subject: Re: [PATCH v3 3/3] powerpc/pseries/dlpar: Add device tree nodes for
+ DLPAR IO add
+In-Reply-To: <20240822025028.938332-3-haren@linux.ibm.com>
+References: <20240822025028.938332-1-haren@linux.ibm.com>
+ <20240822025028.938332-3-haren@linux.ibm.com>
+Date: Wed, 28 Aug 2024 18:12:52 +1000
+Message-ID: <87y14hdq0r.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,65 +64,141 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] powerpc/debug: hook to user return notifier
- infrastructure
-To: Luming Yu <luming.yu@shingroup.cn>
-Cc: "shenghui.qu@shingroup.cn" <shenghui.qu@shingroup.cn>,
- npiggin <npiggin@gmail.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- mpe <mpe@ellerman.id.au>, "luming.yu" <luming.yu@gmail.com>,
- =?UTF-8?B?5p2o5L2z6b6Z?= <jialong.yang@shingroup.cn>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-kernel <linux-kernel@vger.kernel.org>
-References: <B375A36C9C4D73FF+20231218031338.2084-1-luming.yu@shingroup.cn>
- <8734vzsw0q.fsf@kernel.org> <8734vyn1ky.fsf@mail.lhotse>
- <2acd6623-952b-4659-bc26-c632e94560a8@csgroup.eu>
- <0638f0a2-782b-411f-9937-c62d99e9562b@csgroup.eu>
- <tencent_4F2B3C0025D5A1722470D582@qq.com>
- <bd4908d2-cea9-406b-902f-618626e74c88@csgroup.eu>
- <B6A4506E3DD1F93F+Zs7Iq_EF799NyWHK@HX09040029.powercore.com.cn>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <B6A4506E3DD1F93F+Zs7Iq_EF799NyWHK@HX09040029.powercore.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+Hi Haren,
 
+One query below about the of_node refcounting.
 
-Le 28/08/2024 à 08:50, Luming Yu a écrit :
-> On Wed, Aug 28, 2024 at 07:46:52AM +0200, Christophe Leroy wrote:
->> Hi,
->>
->> Le 28/08/2024 à 05:17, 虞陆铭 a écrit :
->>> Hi,
->>>
->>> it appears the little feature might require a little bit more work to find its value of the patch.
->>>
->>> Using the following debug module ,  some debugging shows the TIF_USER_RETURN_NOTIFY
->>> bit is propagated in __switch_to among tasks , but USER_RETURN_NOTIFY call back seems to
->>> be dropped somewhere on somone who carries the bit return to user space.
->>> side notes:
->>> there is an issue that the module symbols is not appended to /sys/kernel/debug/tracing/available_filter_functions
->>> which should be sovled first to make it easier for further debuggig.
->>
->> As far as I can see, user return notifier infrastructure was implemented in
->> 2009 for KVM on x86, see
->> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F1253105134-8862-1-git-send-email-avi%40redhat.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C260e5ecf10764312459c08dcc72dc2f5%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638604246584044745%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3hjAzcVu3xOq0QNK5WINQ8trLd9Xp7XCiQjw2htabpQ%3D&reserved=0
->>
->> Can you explain what is your usage of that infrastructure with your patch ?
->> You are talking about debug, what's the added value, what is it used for ?
-> one example: I was thinking to live patch kernel at the moment that all cpus are
-> either returning to user space or going into idle. But I'm not sure if it is truly
-> valuable. secondly, it can help us get more accurate user/system time
-> accounting via tracing rather than through sampling technique.
-> The third: it could have similar usages in kvm for ppc as x86 for tsc_aux.
-> etc :-)
+Haren Myneni <haren@linux.ibm.com> writes:
+> In the powerpc-pseries specific implementation, the IO hotplug
+> event is handled in the user space (drmgr tool). For the DLPAR
+> IO ADD, the corresponding device tree nodes and properties will
+> be added to the device tree after the device enable. The user
+> space (drmgr tool) uses configure_connector RTAS call with the
+> DRC index to retrieve the device nodes and updates the device
+> tree by writing to /proc/ppc64/ofdt. Under system lockdown,
+> /dev/mem access to allocate buffers for configure_connector RTAS
+> call is restricted which means the user space can not issue this
+> RTAS call and also can not access to /proc/ppc64/ofdt. The
+> pseries implementation need user interaction to power-on and add
+> device to the slot during the ADD event handling. So adds
+> complexity if the complete hotplug ADD event handling moved to
+> the kernel.
+>
+> To overcome /dev/mem access restriction, this patch extends the
+> /sys/kernel/dlpar interface and provides =E2=80=98dt add index <drc_index=
+>=E2=80=99
+> to the user space. The drmgr tool uses this interface to update
+> the device tree whenever the device is added. This interface
+> retrieves device tree nodes for the corresponding DRC index using
+> the configure_connector RTAS call and adds new device nodes /
+> properties to the device tree.
+>
+> Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/dlpar.c | 130 +++++++++++++++++++++++++
+>  1 file changed, 130 insertions(+)
+>
+> diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platfo=
+rms/pseries/dlpar.c
+> index 1b49b47c4a4f..6f0bc3ddbf85 100644
+> --- a/arch/powerpc/platforms/pseries/dlpar.c
+> +++ b/arch/powerpc/platforms/pseries/dlpar.c
+...
+> @@ -330,6 +345,118 @@ int dlpar_unisolate_drc(u32 drc_index)
+>  	return 0;
+>  }
+>=20=20
+> +static struct device_node *
+> +get_device_node_with_drc_index(u32 index)
+> +{
+> +	struct device_node *np =3D NULL;
+> +	u32 node_index;
+> +	int rc;
+> +
+> +	for_each_node_with_property(np, "ibm,my-drc-index") {
+> +		rc =3D of_property_read_u32(np, "ibm,my-drc-index",
+> +					     &node_index);
+> +		if (rc) {
+> +			pr_err("%s: %pOF: of_property_read_u32 %s: %d\n",
+> +			       __func__, np, "ibm,my-drc-index", rc);
+> +			of_node_put(np);
+> +			return NULL;
+> +		}
+> +
+> +		if (index =3D=3D node_index)
+> +			break;
 
-Thanks.
+Here we return with np's refcount elevated.
 
-Don't we already have a very accurate user/system time accounting with 
-CONFIG_VIRT_CPU_ACCOUNTING_NATIVE ?
+> +	}
+> +
+> +	return np;
+> +}
+...
+> +
+> +static int dlpar_hp_dt_add(u32 index)
+> +{
+> +	struct device_node *np, *nodes;
+> +	struct of_changeset ocs;
+> +	int rc;
+> +
+> +	/*
+> +	 * Do not add device node(s) if already exists in the
+> +	 * device tree.
+> +	 */
+> +	np =3D get_device_node_with_drc_index(index);
+> +	if (np) {
+> +		pr_err("%s: Adding device node for index (%d), but "
+> +				"already exists in the device tree\n",
+> +				__func__, index);
+> +		rc =3D -EINVAL;
+> +		goto out;
+=20
+In the error case you drop the reference on np (at out).
 
-Christophe
+> +	}
 
+> +	np =3D get_device_node_with_drc_info(index);
+>=20
+But in the success case np is reassigned, so the refcount is leaked.
+I think that's unintentional, but I'm not 100% sure.
+
+> +	if (!np)
+> +		return -EIO;
+> +
+> +	/* Next, configure the connector. */
+> +	nodes =3D dlpar_configure_connector(cpu_to_be32(index), np);
+> +	if (!nodes) {
+> +		rc =3D -EIO;
+> +		goto out;
+> +	}
+> +
+> +	/*
+> +	 * Add the new nodes from dlpar_configure_connector() onto
+> +	 * the device-tree.
+> +	 */
+> +	of_changeset_init(&ocs);
+> +	rc =3D dlpar_changeset_attach_cc_nodes(&ocs, nodes);
+> +
+> +	if (!rc)
+> +		rc =3D of_changeset_apply(&ocs);
+> +	else
+> +		dlpar_free_cc_nodes(nodes);
+> +
+> +	of_changeset_destroy(&ocs);
+> +
+> +out:
+> +	of_node_put(np);
+> +	return rc;
+> +}
+> +
+>  static int changeset_detach_node_recursive(struct of_changeset *ocs,
+>  					struct device_node *node)
+>  {
+
+cheers
 
