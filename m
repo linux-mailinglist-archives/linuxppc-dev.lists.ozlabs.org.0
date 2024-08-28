@@ -1,122 +1,144 @@
-Return-Path: <linuxppc-dev+bounces-704-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-710-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADB4963405
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 23:40:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3850D963469
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 00:07:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvHrN2737z2yZZ;
-	Thu, 29 Aug 2024 07:40:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvJSS1MS7z2yGD;
+	Thu, 29 Aug 2024 08:07:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724881204;
-	cv=none; b=gUnWYJl10UDxhpkB8BwJ2BWZZdc/kfLPmXM1v7v2QQSq9qW7cciJBcr1asTOSeukRt5x1b3WqDT6KQ/YZwXgyriMcwu/iGz6ZN1LBSAAHyAYnL0YAhEYdA4Z7nJF7r2ZDlvX3qWTPpzbRQ5dlS7KfIfE49/WnFfQ5CFFhNrJcOUaAtWh4EgC12b1jWNd2FJQgzpFfnQCGB5nSvVTHhy5lU/OvEaTPxot/gpZbN8Xlbm+EQ+h4FkJ0JaLWoEaFHEarHmhr1Ux5vb1yob/QiGFDhuRrW9QVhHazLMBXn91oJzL+sf38G5/5GdFSCnyvraae/2woN3zXIuZgvAHajAZOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724881204; c=relaxed/relaxed;
-	bh=XeNJBfO0ja/8g6kzTOhNFElQs2waKVPJgdUV/DsW4nc=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=INhwKvbgyEGKMU6pD6UuYKqzO/pNJjfqTLFD5FUtU98Kz4M5yOAmLvx3Cz6NQx6Hl30xkE+8YYFZPEWMPYgmdO10Bi3/Eg8sCyG2PazHYsGebipJQtX3z6cQrQXExf1WUO30S+3sQ/kblkdxx4qKghS5srQz2IDkpTEMm9hbiBxu+gmSd2V0p5GSGdGNwazLqxHy1OdXSZ6t6MSZKZGqqnyb1iD6t5PD6BS5k8RLCC6S/+7ZbVxAs4rnFR54I/+nyJhzKKHb0M0b6d0uZ2eYxy/kWbvR9yy7lJ/ZC/TerCXlXMopn5oTuqiPflRVfg/67Nre3Y9wv+JKIFGxc42NOQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=r8uhcOtI; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.165.32 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724871729;
+	cv=pass; b=Cr6DlcxC10FINRm4gtgU88IXcMBrWxhuEiC+0fh8ERpDpG6EUbFd7ctntCnZ/DO6H7QDzJXKJ5z1+gdHAPGZu1wNA6ixypaxEb6u5omgBd3qouLi2KL7bDdCllhVoTbMhCCcEfE16flBNZP0/Eta2F2NrykegNUmSeDaldwgIt7/c1vete2dXbr1+qWZ5Tba3+DIglz1xENvEQUf/XXXHJBNQuxGudbUhOBM2/lp96UygudhlYPJ/Z57Q37vCpPTDnjMCViQV+0TkzOIfU4YPkX7zyGSNgRnhrEP533NtfaAovlrtIsei2Z+QDSCKm/oE0RbeLe8YhULZUzfxwzGdQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1724871729; c=relaxed/relaxed;
+	bh=jPD5ldR86T2j/WfdbSeTg1sO/e6xkTCdjrJDK7zzUfU=;
+	h=X-Greylist:Received:DKIM-Signature:Received:Received:Received:
+	 ARC-Message-Signature:ARC-Authentication-Results:DKIM-Signature:
+	 Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 Content-Type:Content-Disposition:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTen
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=O8ONZoXf; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=Yh+sSEPh; dkim-atps=neutral; spf=pass (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=r8uhcOtI;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=O8ONZoXf;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=Yh+sSEPh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 4315 seconds by postgrey-1.37 at boromir; Thu, 29 Aug 2024 05:02:09 AEST
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvHrM3Lmrz2yVv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 07:40:02 +1000 (AEST)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-7142a93ea9cso5301455b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 14:40:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvDL945L8z2yhT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 05:02:08 +1000 (AEST)
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47SHfYxw031689;
+	Wed, 28 Aug 2024 17:48:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	date:from:to:cc:subject:message-id:references:content-type
+	:in-reply-to:mime-version; s=corp-2023-11-20; bh=jPD5ldR86T2j/Wf
+	dbSeTg1sO/e6xkTCdjrJDK7zzUfU=; b=O8ONZoXfA5lDXH9fMNwNOdxAlS1sMF+
+	kmohtjiDuqlDCqjyEvUf66E3LilPSlzKpvby3f34r+eb4ljbPBZ2AifOERsqGJzw
+	hghR2pxev/SqQ5aK2oj4V8+mVUsW6P9rcO1pd/IWNoAsbYboxWKv0GtV56cTiamm
+	l0FeqXoPOL7d5DapD0z0EYTHHZn1K6X+26o6BOlnDXIFIRDtWfKPG8A8y0L+ZCL6
+	kN2Ts9A4zNr6C0E3WQ2ibdwkBVf4dCByRfQxnn+QGKxW3xEP51tm9p8ugwEYZ4k5
+	SwjCOpygArTUFttR9NuOL3QnIZMRmzUPAOS4VEKGjPFdyYtDxCRKZTw==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 419pur9xea-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 28 Aug 2024 17:48:43 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 47SG4GM9036474;
+	Wed, 28 Aug 2024 17:48:41 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2175.outbound.protection.outlook.com [104.47.57.175])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4189jm599a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 28 Aug 2024 17:48:41 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kF9i3ijmNb1rz1BaEASY5QA2puRFaZea+OdOVAluw1rt7ItjRjshtdGauq3QgB0sY2lD7rXnBOgkRmcVfy6lLI4yjj86YAXI+E6Uil4JUjZlp7KJCE8KGqt96SRb4dcmNoxXIo6wHWO1msvu9VvJDX10ZQqgPdGBAQ3jbn0vh9lpg+aYMhE7t0GZph0Pzd0ktGoXX6+StouIfDhSX0bku9leFAoIM9K/4j8ED4Y+wC3dUpmdFq0uEdGwKAJ6Ssyc+oYFUqRUb/yHfn9ORe+lHmpYWEXkvdGE87mc+kYz78XBSGraLu6aJADtzHZzHMKvwIZDZzkWBf7wxnfeYabtSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jPD5ldR86T2j/WfdbSeTg1sO/e6xkTCdjrJDK7zzUfU=;
+ b=AWRkbPeUiFWkJWLW3WyqC5ixcPkUGeqTTq1S0qOiFK9yCHhTvtSX1oyCtt4PnXIT761GvBtgxzS80cZGDvRMNs+TFG2ev7vAuFQqfhY0QnAT4WACQMTcAN5OtUaYJnk9NAZx6wOBnuJCvXTeZ7JmYKAX3ilI8tHZigcmrq3FjwnYP3Ag151ni6mdPPd99+Py3r7ChwC7UmDeDXV3TqBaIA2fKLWchwHk9fi9htSZR7mciZyUv51QGkaAyCm3wpfpgu5u8o36LjYh+t69/W+UQ2mcPrbMLG/XSF7Kr/y1IF8VkUc6gRRxFEFYSs0W/4661SHV8e0gLkxBdP3XZf3Jyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724881200; x=1725486000; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XeNJBfO0ja/8g6kzTOhNFElQs2waKVPJgdUV/DsW4nc=;
-        b=r8uhcOtIWvUKL5ZDsIa7l1oqLx2uTH9QunYWDlSidMZF6wO6LD3huILvuFPr76WveB
-         ligWF+kfZxWWwMNKjXb67A7PJcXMBXSuD9o0wyTkYPWtetZSWEuZf2BediK0ZlEoCfQz
-         zCItG6Z+gH8rjcdB64m1YoRrDkvP9MvdWwjaa8fkBAd+Rrcb6TE85kZZlW7jb2748a3e
-         1YfvlOWk/7c07Ogk6zA3upBF3W+dKi9fyXX9CCe3C3WqCSLKiJnMlkVX0mihwbS6YQma
-         t5aS2NYE69g29T57KMb9KVpz19Arq+kj8IBzOb/mmrC0ChD8D6AY+cinRiGTpPB3zIBQ
-         hkXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724881200; x=1725486000;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XeNJBfO0ja/8g6kzTOhNFElQs2waKVPJgdUV/DsW4nc=;
-        b=cFoD0Madvxrc/wi3dL1ZHCluk2usCx30mNCiqsyJgS2M7mqNckuL2xPMQKRVCpN5ex
-         79JJwOrvXIZ2pdOfbgqOfKItlt71MMwVZqRcVMtbxU2CQzmn4yN0qPpsrpcMnjWdkmYd
-         ePv3wHTzLDSWI7B5F63vU47jWC4GfgtqzmVCa5KUv+Q9Z74xEv9H3XbTmB/A58uoJUlp
-         zMZJr2QJ3lzoJg/Nqpdmgpb/+xAj/6FjwLiN5fKUWAhXjMwxLivdkgqBYUtr9sLf6wd2
-         qlsQJnQMzysV6CuhC13zbTXnMVh1CpPZgx9ZGYWrU7uK3Fk6u/TWGYnszzsqpGYhiS7f
-         nuQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUASOPAAVPOm0DCg1ibVSO7MlXZ/5l1YuTctFPJCDHrCH5BbvhGiwYjfvdtUz7/QUTr8dQ2BxhDQvi6XF0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzoiMwFNGmIr21zhzX7AJn6dejCo51P7cK+SD/J0TRujhCTdtHZ
-	aAiWj+HmM+5tSTBURN+O0mOXeOuFCkFdd/UmEHAh72CWi18acg6V5NObM6UXkrw=
-X-Google-Smtp-Source: AGHT+IFaC7yLAKucAQ+jfC2ojeS1SzrNuL0Qf0TeCvZ+3dsJBG9fozmVtsZvCPOeq6REFPvrFRD1LQ==
-X-Received: by 2002:a05:6a00:2e87:b0:714:2ba6:e5c9 with SMTP id d2e1a72fcca58-715dfaf1fddmr1045535b3a.7.1724881200137;
-        Wed, 28 Aug 2024 14:40:00 -0700 (PDT)
-Received: from ghost ([50.145.13.30])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ac98286sm9939173a12.5.2024.08.28.14.39.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 14:39:59 -0700 (PDT)
-Date: Wed, 28 Aug 2024 14:39:55 -0700
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jPD5ldR86T2j/WfdbSeTg1sO/e6xkTCdjrJDK7zzUfU=;
+ b=Yh+sSEPhUvzaiiJofsQOPOEnC1buZ0KkAaPosiOhUkOPtTDcAlc/NSbDDm54hylZ4JIsttckpqz7HgrJbnaOGb4B0g/m1gVAiL6vQrkUqkXmNh8QqUylGfZn+WxmatwojBy30h4Ux8ZegWsnHPfgMBit+0pfVYncKCRjabDO2WI=
+Received: from SJ0PR10MB5613.namprd10.prod.outlook.com (2603:10b6:a03:3d0::5)
+ by MN6PR10MB7443.namprd10.prod.outlook.com (2603:10b6:208:46f::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.14; Wed, 28 Aug
+ 2024 17:48:38 +0000
+Received: from SJ0PR10MB5613.namprd10.prod.outlook.com
+ ([fe80::4239:cf6f:9caa:940e]) by SJ0PR10MB5613.namprd10.prod.outlook.com
+ ([fe80::4239:cf6f:9caa:940e%5]) with mapi id 15.20.7918.017; Wed, 28 Aug 2024
+ 17:48:38 +0000
+Date: Wed, 28 Aug 2024 18:48:33 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Charlie Jenkins <charlie@rivosinc.com>
 Cc: Arnd Bergmann <arnd@arndb.de>, Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Russell King <linux@armlinux.org.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-mm@kvack.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 00/16] mm: Introduce MAP_BELOW_HINT
-Message-ID: <Zs+ZK6Q2U9dm19yR@ghost>
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>, Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>, Shuah Khan <shuah@kernel.org>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>,
+        linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 16/16] selftests/mm: Create MAP_BELOW_HINT test
+Message-ID: <71528354-4884-41e4-a4a9-318e26187f86@lucifer.local>
 References: <20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com>
- <dbqqojpvqodfxavt4fxugoj3a2ppk5b4b3sp77qsmbg33sc2em@fhjccbxaihrh>
- <Zs+Ppk0ANaUah7p9@ghost>
+ <20240827-patches-below_hint_mmap-v1-16-46ff2eb9022d@rivosinc.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240827-patches-below_hint_mmap-v1-16-46ff2eb9022d@rivosinc.com>
+X-ClientProxiedBy: LO4P123CA0079.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:190::12) To SJ0PR10MB5613.namprd10.prod.outlook.com
+ (2603:10b6:a03:3d0::5)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -126,253 +148,174 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zs+Ppk0ANaUah7p9@ghost>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR10MB5613:EE_|MN6PR10MB7443:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2c91bd3-3436-44b7-d731-08dcc789a569
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5qB7dXrGtOohFAs2PmlYdYsCVZUNPzS3ePN53jPnSYcXSaHy5vHWrPl7tlBU?=
+ =?us-ascii?Q?RPkNsfIq1uU7KFWHj+htbdWLx/67oWaBE6Ep225sM/AQzxWUmQ/lLQsNnSkA?=
+ =?us-ascii?Q?m/26s1Kqwi8AWaePI+5cLzH0tocRH4nFCh1jKa7JBo5hUeCFn/TdtXoSx9Yk?=
+ =?us-ascii?Q?CdLHR8glV9UZ20XEZq0Ipv4WfgenO9A5ko5x54o3cOIGqgxwiaHb/8oCFEX0?=
+ =?us-ascii?Q?hmUlxovV3l6uRHLsvj/gTyRT4OXpe1ULjwesQW1Oe35cOe0wBgNsX/Ghfqik?=
+ =?us-ascii?Q?R+aU1EDolRfH28SoH5fJlXjHmrWKb1npaeAQGrB2uTuByTjpYjO6jlesSoJu?=
+ =?us-ascii?Q?6FCggzJJWG0PBg5o4osPdqyxG2nLyihwJz3VOkvE/bsPdfUDAXDmyQGKicLI?=
+ =?us-ascii?Q?xfgimxnIkktuXqHVfWcACtJ91kYeUg5PMIhpVO91ltkmvxtnqeIEwvaglMXg?=
+ =?us-ascii?Q?09yKlqlze5dPjiobVIrEVfMFmu9VpgZYK8XO5g6OIpDbVD4Cx9Y4WRc+M2SH?=
+ =?us-ascii?Q?USM4j0eFrDlvcCw1Z9TEuBjCyqXQvRKZ1JeyUEDCSkBxRfMhy1rlYuZ7gv2f?=
+ =?us-ascii?Q?9uU/jDqSCh/s++hG04N+fI1TjKNemZQbU4M4H31O6zb9n3b5zvd1hlMVMp3I?=
+ =?us-ascii?Q?ViZeqCVH1W4wCVbUOaGz++hh7/jT8sc9jsj4+bv9BjWxiTw9pGp8SCGfRlhL?=
+ =?us-ascii?Q?2/XEnJm3yaFt9m8umxH3LlojBNsXGmbrClrYQWW2q8Bl2HU2HVQFeT2eNos0?=
+ =?us-ascii?Q?9y9BBQ7v9pEvBy5w163lTXfdbqm46AZKA3+JSKJExvDzMzn8VoK2ieCTmpRy?=
+ =?us-ascii?Q?Jx20xss9/WbX2DyoerDpfdkvjWOpJUKPsckOnjpQqQopAZviW0+ZsM4s0R1p?=
+ =?us-ascii?Q?GLNTgTbdOx2j3fEDFJh0EQR80LKZLZuO7OBH572+t2U0dTqm3TTVWsXi6ebA?=
+ =?us-ascii?Q?YBsddRZPU9w2poJ0wP8HjZ1ajEHD3AqxMORREYVbBw3rruhCo8VnUsiXrDr3?=
+ =?us-ascii?Q?b4vCOGOLnklfDzzkcaWV9aegbcJJLdWK28OmAWen9ZBzE2pCElWBmdVgm0sA?=
+ =?us-ascii?Q?YN8liSeUNeuS0OehrshtEPK5FH2rMYQI6T66uEr3x2Eg6lHIDgUbH535Q8iY?=
+ =?us-ascii?Q?OpPggKrRZchbUm7WDas3Ddl6RI63D51MfZNohxBxQWwOsYhIrsrphUhcW6Sb?=
+ =?us-ascii?Q?Yg/KY/30X6qHDAmRhBXow5pFGQXFcpyIRvcEhN3TUxM1NdrU3qr0xKjwmfoO?=
+ =?us-ascii?Q?aJxwNbATEhLzsiaVXPeJh8MVi8j2PnUQ6XkjZJf4Lb/2M/JGVBuHxehc7tI5?=
+ =?us-ascii?Q?apCwofi5oguCjuCn0CvwTQUgVXcrczxrhzCj4TywYyYHAQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR10MB5613.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dEtmyiRAHwMdmP2cPtID2M9+0VQVuVLn+Su8rvLgYEbNAoS0EJa2qPROu8Mc?=
+ =?us-ascii?Q?uGck05u4K0j1Kipi38/3LgQYgdVp+6Z5vLivYh4x4+EYZC167SNVh4O5yr19?=
+ =?us-ascii?Q?fJRBvSYsj/hfD/SSug4pCSFoWB1LZJk2L9qQqbjbST+Xm1zJuZQSLqhuHaaZ?=
+ =?us-ascii?Q?Nz3YZ9IqwsSQBRYQdBgnNCrwpTvSkm+VzdaPobhBf7fh+czebWQsQVABrIch?=
+ =?us-ascii?Q?gdcR/GcUTiuGZFNb/sfzbwVvZrsk2k4NhVL2pDu4MZ80x/mDTLh7X32SaETD?=
+ =?us-ascii?Q?2lmwUV+9dRWAnpLYvH5oeYSlhCzDibtOZP6X9Et/pUEgY10kbVpgGNA+wUZT?=
+ =?us-ascii?Q?nKZSSQY5yxE0+O3ZWT8vNJ+OKXCtAQGHZ+ITtCn1sWQ8KftRwRztb1BjxOou?=
+ =?us-ascii?Q?llL90leHNGjVnI4JRtPczeZxP3ikP1vsrnB72DE+X1n2sy30IomSGVIXUDBg?=
+ =?us-ascii?Q?NzMR7VZtVcn1S3wyIwe7FiDIOOwZRcP38Ocyhq2m1z2ktSWXZ0CJvvT5+lsZ?=
+ =?us-ascii?Q?G/GU6bdgtsuEKo2zlwjb4GhnDmguiCGHVQzv3TBFJyoyOYL8gIgkOwM0G+tu?=
+ =?us-ascii?Q?2DBlmca7HPgmXYL2xi9HIPmb/xl30ud8ZF5WVZTpvGiW8d6tr2R59PjKg07d?=
+ =?us-ascii?Q?Lh13/2a62DuO71lJhaoBA1AqwUT2h9FN045FykPGjPdjoHScRKI4P95T2QK9?=
+ =?us-ascii?Q?7pdaCaD0JoGYxaDNQg7kj5hiVxGelonZqaiQvyuysL+jB+14BAp+4tHBSdUJ?=
+ =?us-ascii?Q?LIfLSwicDRd+6QajTJTV7uqYDZ4F/8QLYnp5FauhAtCOBRuq/QsmP+BIPOGY?=
+ =?us-ascii?Q?7kq24HgcyHOdljxLqovw8n09nbWZG8EwzsLV/pPw8eKEmBgEpZLG3H62Avqg?=
+ =?us-ascii?Q?790ctjxUs0AV+Qoi7Lr+HoweWxMyXmsugMQLYOyYEgYT5vI9u9EhWxfAhmjn?=
+ =?us-ascii?Q?dqD85EXUMguE2okC1Je8OKdPe4v5TbfbqV8/yzazklD+zBzfsc95VeZxGAvD?=
+ =?us-ascii?Q?hUZUjYFowPj60xI3MCli73AFcNi15bjTtPwyro03b9Gp+LqxOEzqEwXfpOzb?=
+ =?us-ascii?Q?Rb5my+CouQbNjukhw2Qa1eUUIRyFvCBa159ZlWm2QQUXeD7CymQro7IjXM+8?=
+ =?us-ascii?Q?ApK53BtR/607alu+GW8cVtGtWVzW6ABCJeFJRbF1K5w5rHWqUd6XbnioSMYB?=
+ =?us-ascii?Q?faoRzVqR0uhxTndriHpBrDi5FYoNYFNoGQfJktSPIU+3fdPnDzinKV1oHPGV?=
+ =?us-ascii?Q?jvUUd5Lef/TWL/KKYtWRFaN7LDI+oMkpAEFgRjDuyPNaVqeMbGiN464Qg0Nc?=
+ =?us-ascii?Q?fHBOCwPTX+1JF1/rQQRwUyhLlylxMaDN9cQtQ/eyfK/zTdwiiLfa0+/yxfPD?=
+ =?us-ascii?Q?LJWp2qOIX6bHL7EppC/m0lA7W5HxadQWXMOJ9sqgR2XIN467SkQ2KtawJz0I?=
+ =?us-ascii?Q?2kQUhYioVaUXpIWYbfgFROivKkTHsQPRO+j1TsjmZdNnNv6HiufzuSLFtySu?=
+ =?us-ascii?Q?BH8uBExybN3Ty+xi2G2P2Ojqr4Dd6SUPtlJpIUXYmBmFBUyMOJROR5Qe8gOU?=
+ =?us-ascii?Q?HIQZ0T4ed0ncj9c4SToZBlM8QMacblWqFVUZye+OKOb4vFHKO8338GMHhxZr?=
+ =?us-ascii?Q?Ig=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	zzfimRHknnoXHJjUfQ4B39vRUPV5SDgXkpKJjYvlH8kSVxSOTTbO+bWFT/8cTl6YUx3I3FWipFFM1JgT3FtpvxD83YVQg3VjF5aZRtVfsE2v+4D9bbXHz/6c8nyv+bKy77MQqbSRUxZvJ1zA2A6LqWyB6PFLTiI/AhWNIG4H0a5v7uiZw0r78e0sQshve+3IepeIwZYHdNa57BvPOj4V317rmC0/k4oMjA2poTlPFKbmjLZsu2PALn28Pa4xkVpLs3Dmuy8Fkpm1l+qY4tCY34CwG0dwXCR/w36l0wAf6jBNvbLD3zXVTdDrlA5LSRN8QiGonB9xlbZ8idlCkrel8Ush2cLCExU0T8Nv7RW+80JnvPkyXq/I7XfGb4Wr/7ATN81ESTVLVjkaJflV2CEwS6rsyCBTEh1smKucRhZ6vOh8zC/N2fF+0KYNaI9Ar6RwBM4Tvb0ULhV5TtQ0DwIACrWRm8NYEhjmb2T9VA2y6MfpXLzjWL76v9Em165mtTHcWcgH3hyoxCkEcRQDLzZ/U4HjMKNnptAmXljLrU0voar5ky0K79lKQb2X2jXnUnT2NAFMByX8208CahK3dHny6mahZ6C+uaZlNacUzXaZIHE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2c91bd3-3436-44b7-d731-08dcc789a569
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR10MB5613.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2024 17:48:38.1127
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SubI1FC1LlPy7yx1J3Jz8QmSV9Jxs7tC6sBaXloQFHq4+ogjbZjENIYXEPo4v2/YLR0tEkRjMhvL9cfrOYNIQVX7mErGIFsoJmk1F6LKtms=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR10MB7443
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-28_08,2024-08-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
+ phishscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
+ definitions=main-2408280129
+X-Proofpoint-ORIG-GUID: 3JUvpC-_E5lWYtJJaCVys7J802EE5rAv
+X-Proofpoint-GUID: 3JUvpC-_E5lWYtJJaCVys7J802EE5rAv
 
-On Wed, Aug 28, 2024 at 01:59:18PM -0700, Charlie Jenkins wrote:
-> On Wed, Aug 28, 2024 at 02:31:42PM -0400, Liam R. Howlett wrote:
-> > * Charlie Jenkins <charlie@rivosinc.com> [240828 01:49]:
-> > > Some applications rely on placing data in free bits addresses allocated
-> > > by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
-> > > address returned by mmap to be less than the maximum address space,
-> > > unless the hint address is greater than this value.
-> > 
-> > Wait, what arch(s) allows for greater than the max?  The passed hint
-> > should be where we start searching, but we go to the lower limit then
-> > start at the hint and search up (or vice-versa on the directions).
-> > 
-> 
-> I worded this awkwardly. On arm64 there is a page-table boundary at 48
-> bits and at 52 bits. On x86 the boundaries are at 48 bits and 57 bits.
-> The max value mmap is able to return on arm64 is 48 bits if the hint
-> address uses 48 bits or less, even if the architecture supports 5-level
-> paging and thus addresses can be 52 bits. Applications can opt-in to
-> using up to 52-bits in an address by using a hint address greater than
-> 48 bits. x86 has the same behavior but with 57 bits instead of 52.
-> 
-> This reason this exists is because some applications arbitrarily replace
-> bits in virtual addresses with data with an assumption that the address
-> will not be using any of the bits above bit 48 in the virtual address.
-> As hardware with larger address spaces was released, x86 decided to
-> build safety guards into the kernel to allow the applications that made
-> these assumptions to continue to work on this different hardware.
-> 
-> This causes all application that use a hint address to silently be
-> restricted to 48-bit addresses. The goal of this flag is to have a way
-> for applications to explicitly request how many bits they want mmap to
-> use.
-> 
-> > I don't understand how unmapping works on a higher address; we would
-> > fail to free it on termination of the application.
-> > 
-> > Also, there are archs that map outside of the VMAs, which are freed by
-> > freeing from the prev->vm_end to next->vm_start, so I don't understand
-> > what that looks like in this reality as well.
-> > 
-> > > 
-> > > On arm64 this barrier is at 52 bits and on x86 it is at 56 bits. This
-> > > flag allows applications a way to specify exactly how many bits they
-> > > want to be left unused by mmap. This eliminates the need for
-> > > applications to know the page table hierarchy of the system to be able
-> > > to reason which addresses mmap will be allowed to return.
-> > 
-> > But, why do they need to know today?  We have a limit for this don't we?
-> 
-> The limit is different for different architectures. On x86 the limit is
-> 57 bits, and on arm64 it is 52 bits. So in the theoretical case that an
-> application requires 10 bits free in a virtual address, the application
-> would always work on arm64 regardless of the hint address, but on x86 if
-> the hint address is greater than 48 bits then the application will not
-> work.
-> 
-> The goal of this flag is to have consistent and tunable behavior of
-> mmap() when it is desired to ensure that mmap() only returns addresses
-> that use some number of bits.
-> 
-> > 
-> > Also, these upper limits are how some archs use the upper bits that you
-> > are trying to use.
-> > 
-> 
-> It does not eliminate the existing behavior of the architectures to
-> place this upper limits, it instead provides a way to have consistent
-> behavior across all architectures.
-> 
-> > > 
-> > > ---
-> > > riscv made this feature of mmap returning addresses less than the hint
-> > > address the default behavior. This was in contrast to the implementation
-> > > of x86/arm64 that have a single boundary at the 5-level page table
-> > > region. However this restriction proved too great -- the reduced
-> > > address space when using a hint address was too small.
-> > 
-> > Yes, the hint is used to group things close together so it would
-> > literally be random chance on if you have enough room or not (aslr and
-> > all).
-> > 
-> > > 
-> > > A patch for riscv [1] reverts the behavior that broke userspace. This
-> > > series serves to make this feature available to all architectures.
-> > 
-> > I don't fully understand this statement, you say it broke userspace so
-> > now you are porting it to everyone?  This reads as if you are braking
-> > the userspace on all architectures :)
-> 
-> It was the default for mmap on riscv. The difference here is that it is now
-> enabled by a flag instead. Instead of making the flag specific to riscv,
-> I figured that other architectures might find it useful as well.
-> 
-> > 
-> > If you fail to find room below, then your application fails as there is
-> > no way to get the upper bits you need.  It would be better to fix this
-> > in userspace - if your application is returned too high an address, then
-> > free it and exit because it's going to fail anyways.
-> > 
-> 
-> This flag is trying to define an API that is more robust than the
-> current behavior on that x86 and arm64 which implicitly restricts mmap()
-> addresses to 48 bits. A solution could be to just write in the docs that
-> mmap() will always exhaust all addresses below the hint address before
-> returning an address that is above the hint address. However a flag that
-> defines this behavior seems more intuitive.
-> 
-> > > 
-> > > I have only tested on riscv and x86.
-> > 
-> > This should be an RFC then.
-> 
-> Fair enough.
-> 
-> > 
-> > > There is a tremendous amount of
-> > > duplicated code in mmap so the implementations across architectures I
-> > > believe should be mostly consistent. I added this feature to all
-> > > architectures that implement either
-> > > arch_get_mmap_end()/arch_get_mmap_base() or
-> > > arch_get_unmapped_area_topdown()/arch_get_unmapped_area(). I also added
-> > > it to the default behavior for arch_get_mmap_end()/arch_get_mmap_base().
-> > 
-> > Way too much duplicate code.  We should be figuring out how to make this
-> > all work with the same code.
-> > 
-> > This is going to make the cloned code problem worse.
-> 
-> That would require standardizing every architecture with the generic
-> mmap() framework that arm64 has developed. That is far outside the scope
-> of this patch, but would be a great area to research for each of the
-> architectures that do not use the generic framework.
+On Tue, Aug 27, 2024 at 10:49:22PM GMT, Charlie Jenkins wrote:
+> Add a selftest for MAP_BELOW_HINT that maps until it runs out of space
+> below the hint address.
+>
+> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+> ---
+>  tools/testing/selftests/mm/Makefile         |  1 +
+>  tools/testing/selftests/mm/map_below_hint.c | 29 +++++++++++++++++++++++++++++
+>  2 files changed, 30 insertions(+)
+>
+> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+> index cfad627e8d94..4e2de85267b5 100644
+> --- a/tools/testing/selftests/mm/Makefile
+> +++ b/tools/testing/selftests/mm/Makefile
+> @@ -50,6 +50,7 @@ TEST_GEN_FILES += hugepage-shm
+>  TEST_GEN_FILES += hugepage-vmemmap
+>  TEST_GEN_FILES += khugepaged
+>  TEST_GEN_FILES += madv_populate
+> +TEST_GEN_FILES += map_below_hint
+>  TEST_GEN_FILES += map_fixed_noreplace
+>  TEST_GEN_FILES += map_hugetlb
+>  TEST_GEN_FILES += map_populate
+> diff --git a/tools/testing/selftests/mm/map_below_hint.c b/tools/testing/selftests/mm/map_below_hint.c
+> new file mode 100644
+> index 000000000000..305274c5af49
+> --- /dev/null
+> +++ b/tools/testing/selftests/mm/map_below_hint.c
+> @@ -0,0 +1,29 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Test the MAP_BELOW_HINT mmap flag.
+> + */
+> +#include <sys/mman.h>
+> +#include "../kselftest.h"
+> +
+> +#define ADDR 0x1000000UL
+> +#define LENGTH (ADDR / 100)
+> +
+> +#define MAP_BELOW_HINT	  0x8000000	/* Not defined in all libc */
+> +
+> +/*
+> + * Map memory with MAP_BELOW_HINT until no memory left. Ensure that all returned
+> + * addresses are below the hint.
+> + */
+> +int main(int argc, char **argv)
+> +{
+> +	void *addr;
+> +
+> +	do {
+> +		addr = mmap((void *)ADDR, LENGTH, MAP_ANONYMOUS, MAP_BELOW_HINT, -1, 0);
 
-Thinking about this again, I could drop support for all architectures
-that do not implement arch_get_mmap_base()/arch_get_mmap_end().
+How can this be correct? mmap() has parameters:
 
-> 
-> - Charlie
-> 
-> > 
-> > > 
-> > > Link: https://lore.kernel.org/lkml/20240826-riscv_mmap-v1-2-cd8962afe47f@rivosinc.com/T/ [1]
-> > > 
-> > > To: Arnd Bergmann <arnd@arndb.de>
-> > > To: Paul Walmsley <paul.walmsley@sifive.com>
-> > > To: Palmer Dabbelt <palmer@dabbelt.com>
-> > > To: Albert Ou <aou@eecs.berkeley.edu>
-> > > To: Catalin Marinas <catalin.marinas@arm.com>
-> > > To: Will Deacon <will@kernel.org>
-> > > To: Michael Ellerman <mpe@ellerman.id.au>
-> > > To: Nicholas Piggin <npiggin@gmail.com>
-> > > To: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > > To: Naveen N Rao <naveen@kernel.org>
-> > > To: Muchun Song <muchun.song@linux.dev>
-> > > To: Andrew Morton <akpm@linux-foundation.org>
-> > > To: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > > To: Vlastimil Babka <vbabka@suse.cz>
-> > > To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > > To: Thomas Gleixner <tglx@linutronix.de>
-> > > To: Ingo Molnar <mingo@redhat.com>
-> > > To: Borislav Petkov <bp@alien8.de>
-> > > To: Dave Hansen <dave.hansen@linux.intel.com>
-> > > To: x86@kernel.org
-> > > To: H. Peter Anvin <hpa@zytor.com>
-> > > To: Huacai Chen <chenhuacai@kernel.org>
-> > > To: WANG Xuerui <kernel@xen0n.name>
-> > > To: Russell King <linux@armlinux.org.uk>
-> > > To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> > > To: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-> > > To: Helge Deller <deller@gmx.de>
-> > > To: Alexander Gordeev <agordeev@linux.ibm.com>
-> > > To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-> > > To: Heiko Carstens <hca@linux.ibm.com>
-> > > To: Vasily Gorbik <gor@linux.ibm.com>
-> > > To: Christian Borntraeger <borntraeger@linux.ibm.com>
-> > > To: Sven Schnelle <svens@linux.ibm.com>
-> > > To: Yoshinori Sato <ysato@users.sourceforge.jp>
-> > > To: Rich Felker <dalias@libc.org>
-> > > To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> > > To: David S. Miller <davem@davemloft.net>
-> > > To: Andreas Larsson <andreas@gaisler.com>
-> > > To: Shuah Khan <shuah@kernel.org>
-> > > To: Alexandre Ghiti <alexghiti@rivosinc.com>
-> > > Cc: linux-arch@vger.kernel.org
-> > > Cc: linux-kernel@vger.kernel.org
-> > > Cc: Palmer Dabbelt <palmer@rivosinc.com>
-> > > Cc: linux-riscv@lists.infradead.org
-> > > Cc: linux-arm-kernel@lists.infradead.org
-> > > Cc: linuxppc-dev@lists.ozlabs.org
-> > > Cc: linux-mm@kvack.org
-> > > Cc: loongarch@lists.linux.dev
-> > > Cc: linux-mips@vger.kernel.org
-> > > Cc: linux-parisc@vger.kernel.org
-> > > Cc: linux-s390@vger.kernel.org
-> > > Cc: linux-sh@vger.kernel.org
-> > > Cc: sparclinux@vger.kernel.org
-> > > Cc: linux-kselftest@vger.kernel.org
-> > > Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-> > > 
-> > > ---
-> > > Charlie Jenkins (16):
-> > >       mm: Add MAP_BELOW_HINT
-> > >       riscv: mm: Do not restrict mmap address based on hint
-> > >       mm: Add flag and len param to arch_get_mmap_base()
-> > >       mm: Add generic MAP_BELOW_HINT
-> > >       riscv: mm: Support MAP_BELOW_HINT
-> > >       arm64: mm: Support MAP_BELOW_HINT
-> > >       powerpc: mm: Support MAP_BELOW_HINT
-> > >       x86: mm: Support MAP_BELOW_HINT
-> > >       loongarch: mm: Support MAP_BELOW_HINT
-> > >       arm: mm: Support MAP_BELOW_HINT
-> > >       mips: mm: Support MAP_BELOW_HINT
-> > >       parisc: mm: Support MAP_BELOW_HINT
-> > >       s390: mm: Support MAP_BELOW_HINT
-> > >       sh: mm: Support MAP_BELOW_HINT
-> > >       sparc: mm: Support MAP_BELOW_HINT
-> > >       selftests/mm: Create MAP_BELOW_HINT test
-> > > 
-> > >  arch/arm/mm/mmap.c                           | 10 ++++++++
-> > >  arch/arm64/include/asm/processor.h           | 34 ++++++++++++++++++++++----
-> > >  arch/loongarch/mm/mmap.c                     | 11 +++++++++
-> > >  arch/mips/mm/mmap.c                          |  9 +++++++
-> > >  arch/parisc/include/uapi/asm/mman.h          |  1 +
-> > >  arch/parisc/kernel/sys_parisc.c              |  9 +++++++
-> > >  arch/powerpc/include/asm/task_size_64.h      | 36 +++++++++++++++++++++++-----
-> > >  arch/riscv/include/asm/processor.h           | 32 -------------------------
-> > >  arch/s390/mm/mmap.c                          | 10 ++++++++
-> > >  arch/sh/mm/mmap.c                            | 10 ++++++++
-> > >  arch/sparc/kernel/sys_sparc_64.c             |  8 +++++++
-> > >  arch/x86/kernel/sys_x86_64.c                 | 25 ++++++++++++++++---
-> > >  fs/hugetlbfs/inode.c                         |  2 +-
-> > >  include/linux/sched/mm.h                     | 34 ++++++++++++++++++++++++--
-> > >  include/uapi/asm-generic/mman-common.h       |  1 +
-> > >  mm/mmap.c                                    |  2 +-
-> > >  tools/arch/parisc/include/uapi/asm/mman.h    |  1 +
-> > >  tools/include/uapi/asm-generic/mman-common.h |  1 +
-> > >  tools/testing/selftests/mm/Makefile          |  1 +
-> > >  tools/testing/selftests/mm/map_below_hint.c  | 29 ++++++++++++++++++++++
-> > >  20 files changed, 216 insertions(+), 50 deletions(-)
-> > > ---
-> > > base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
-> > > change-id: 20240827-patches-below_hint_mmap-b13d79ae1c55
-> > > -- 
-> > > - Charlie
-> > > 
+       void *mmap(void addr[.length], size_t length, int prot, int flags,
+                  int fd, off_t offset);
+
+You'r setting prot = MAP_ANONYMOUS, flags = MAP_BELOW_HINT...
+
+This surely should be:
+
+mmap(..., PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE | MAP_BELOW_HINT, -1, 0);
+
+> +	} while (addr == MAP_FAILED && (unsigned long)addr <= ADDR);
+
+How can addr == MAP_FAILED (i.e. ~0) and addr <= ADDR? This will just loop
+through once...
+
+If you want to make sure you're getting mappings only below the hint until
+you start getting MAP_FAILED's you'll need to handle this more robustly.
+
+> +
+> +	if (addr != MAP_FAILED && (unsigned long)addr > ADDR)
+> +		ksft_exit_fail_msg("mmap returned address above hint with MAP_BELOW_HINT\n");
+
+This is just going to fail because your flags are wrong then wrongly claim
+to have passed...
+
+> +
+> +	ksft_test_result_pass("MAP_BELOW_HINT works\n");
+> +}
+>
+> --
+> 2.45.0
+>
 
