@@ -1,60 +1,122 @@
-Return-Path: <linuxppc-dev+bounces-707-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-702-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7390963464
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 00:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B7D963189
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 22:15:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvJPf5f9Rz2xb8;
-	Thu, 29 Aug 2024 08:05:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvFz01TMcz2yZd;
+	Thu, 29 Aug 2024 06:15:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724865193;
-	cv=none; b=RN/yS89mZYMzUdBtZafJzXfjlti0jgbBKlJhuy27kbwQO/l/AdoEegqkLerXBEThHtX3GyCy/WUAV6ilQ25GImazioWt+2c1Sk0I/QNzBN2hdq95sWZw3Fur1ZCxSd/ZE2+Wxz1NvPNfSrBUIIz0P/LijibW5qCzGAWBDuWGWLE80KTrEmXXIGi0+45aFtOz87xbzpYmKrd7Roz/Oct891+2VzyXrT31BJNNzL9S0xKN4zcAqQm4AKwVb5jC6tvGTtSbqvSCalO70DFq1IKXdiGJoA+xrpoXYT3L3XAXhezmnNQg+MgnKwBzLumOC23rcUA2eu8fHmzbhUTylSkmXQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724876140;
+	cv=none; b=B3sIzLX33U6+thUG2eAvxqa4atb3+wEYOtNVSfS9CgOvHH4uZ6byGpQnc/KJvl8hEPN3qfhQBtVvBpcFdapXHita9Dt4AKsK62AoIGZb1ck5wwfHP6H3chvWg0vcawRvOmsVF0aVc2Hv0DBrgLIBbemnnzwsPzM6ACR0N2KKfat4atXpGwl5p5aIQw4EI/Rs6SMgHgfsr/cwpurIPtFE4ViYEyi+Gj7Y7+CtfN/Oz6gAYZm2pjog3ReD49mI56MlO5F83RkegaWMv9IWbSENv6e4fd6yGsW1jK31MspXqdiSDj11Owe3CTtcAsf94KNJWooDSMhGau5yK9NOlArEzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724865193; c=relaxed/relaxed;
-	bh=AxP5p6vD8WoRT4fDcBhmPqf4pYQ9KeCD5eFFIS2JcQM=;
-	h=Received:Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:X-Gmail-Original-Message-ID:
-	 Message-ID:Subject:To:Cc:Content-Type; b=ZsGkypQrc4YhjmHrtP3hidP6g1gxHrjv79IIZkgwfdW4nPTcCu6R958oVeGWSLnFHzpwntE/dwzLP3qz52ucTj4wA70nIWayAoBaUYTijeVHZHRjo71tKPg72QqksZRqKa2C17lWjXzgyDY5upvHlDixeK+jp1O6Rb67DzF/V+CTnvcDDrnRDlPQcZNg6S84BHSrs5cPuqmxhRFId2AQXukL8WYZemOfaAiCe9k5+drnYO7RZLQlUil6Bv3SBCBS3wmYBqjZMOfjkStKuUrgErsjbJlq53o/zuY3Mu9KBewwx2mqdpVuj4Wy2DKWI3VJQUfqBqE9XdVkC9CCUU8gYA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SFar5KJc; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1724876140; c=relaxed/relaxed;
+	bh=DYouNjU8LVMpXKc1rxZ9hcDgJ8HQG0MfeaXtb0VLyGI=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=c6vh9y9HWk4uy8HwfDBM5cFxnIol70zu9+GytwLkwVwgfxuumULFhzs+OZmRXqA5OLAzAwOchdRGT/FBLULdzk8TcCCVGcWss35X3ttH8C0VoRzR1rXhU7j1Ie35YY6zcteMkdQucIJfQ23xfDRFVIiOwIXbXjMt8qA7TbQRwh3Gk5xOS6yB6TbtuXfO+NWyV7KkgR1RIiwkXLGs3mNy/RF5/RUS1eLxFUrgze0AfMKC1YslswcwTF1sifykZ8n6e3EKL8lTd2dOkdlNY30Ilg0rGmCuXJJeLNIFU/6S5d61LGWuxspuqkhbNtHUmnWY1b1o4MCPvwPRAygPtQ6LvA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=RoWEdHAA; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SFar5KJc;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=RoWEdHAA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wv9wT04Jzz2xck
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 03:13:12 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 9E185A426EA
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 17:13:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE6EC4CEC5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 17:13:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724865188;
-	bh=wTRLnPlAZutCpvLR9R0pglZtR1qgqcPfis4YRXDGlYs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SFar5KJcyOOqLxwhcaGjzk/s+2JLgrGwjQyRUqMnq6qFBlWFPPLW87QI6cfGTmo/s
-	 kTVZAokZ2cisPjdcnUa3o49tV1Mw1SpGBGSGUcYilXuMO9Efm1NJJ5zCWyc1Tt2Hzm
-	 lNCW48SmTnuXeiI0kQ7hshKa57+I34WmOj4Hs7S81TVeAqFWJ+xVjZqUuI0mSAO995
-	 Iq9KaCwlEo1MddLN2KZngqRFwoh2+BZIWdXuoIxh32ggUPof8YLd8aatTgjH5SX1m+
-	 77gnG1IU3Jm1Xrpe8VgMpb4xQNmxAy8A/Nn9dhjj9hgXea2lYFDEJuJm/71JAeV9HL
-	 rP2cvKtthC9KQ==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2f50966c478so39420151fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 10:13:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVV63Hk/859U3phJSVf1rbGzSK5Qb/vJ4POxOAozdRPVo7wZcZ0W6paenj/HOVz7NLPQolC4auTc+QLxI0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzlTHECzRppRXMYvvuWWN8O0Zkr3fc8w9087kktyQH8emSHAQXf
-	vn4UK2J7T8e1/9XFXSbgZOxHvnKe3uQQJDkM0YcdAvI3whGoy6tf0M9FjM7LQaPVmpwtbzTFGhY
-	Wyj+TTuT164QsTTM/sX3EEDuHeSU=
-X-Google-Smtp-Source: AGHT+IGT9a5qWQBtajQWghZ5b1FsgrYGjXl26AJMqNqo5EHBiRSmkhizffOxvoPuUqVl91lIQUxQnoyI/1L7KXA3rkA=
-X-Received: by 2002:a05:6512:131e:b0:533:4689:9750 with SMTP id
- 2adb3069b0e04-5346c626565mr2097762e87.26.1724865187012; Wed, 28 Aug 2024
- 10:13:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvFyz3gFPz2xsN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 06:15:37 +1000 (AEST)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-7141b04e7a3so5886334b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 13:15:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724876135; x=1725480935; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DYouNjU8LVMpXKc1rxZ9hcDgJ8HQG0MfeaXtb0VLyGI=;
+        b=RoWEdHAAJmmT5nNLx/R8C5MHyatipRuf3D6TLcsO6Llr2nXtYR83dnFN4BJ1F4tyju
+         Zekyw+fZjc/tR3GWn4vHz0aWd0trIR1H9vKJr1RaZJ/W/IwWvQ+Cu0WoTYi5LilYbvje
+         facuOCNUm+SBrSHaQ8GDVnjdhoEnu0jcVV8Q4NiqG8vM18ejaZ9hc3CuRVxXpv5ghn1w
+         6dgg2eTIowXVR7qoT990xGJdbGy2pjC4pXQ3XS1PZQ+vYgAQikKyRMeWhVrDMHjR+uDU
+         SBGeMkRm1iTbvGykMfOwJvn8EVEoPFiLsC0mVy4NINv1xrOkwzQ9I/+YocwudjXLS5b7
+         QsfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724876135; x=1725480935;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DYouNjU8LVMpXKc1rxZ9hcDgJ8HQG0MfeaXtb0VLyGI=;
+        b=gRLv5jWzWmadTzzu4ksOUiqzJMixBVDYh2vmFfwvGRGMPI+WJPwsGucadTn//+wQoE
+         KNwjZusAzsS/Oi98DoFwc7kYZQ9mCU+ndEfVacDixYSnk+R4062YM2NZlV4q179ngFBD
+         r7cnatl+fCQ8KnWZPcpWxceIbel+wsYZNnrclSALsmVOYXpE/YadKM6ikUSrgrE7LEar
+         gWC1X5uboCOJ75b7nv28miGQ8J+5UIOODnJL4T6PFjEZSvAkJGaJ7j3jr4WS5jc168+L
+         nms5MJBE7z7xtAbR9bgnwp002DHHqe5RTH2wNvcZM6fIrhNfLnWu5fHgAX4j8LxOX4RV
+         oEiA==
+X-Forwarded-Encrypted: i=1; AJvYcCWAAoNFi4/nBRZOTT6qhDxKWIp3gat+TbayN5V69rYMURIZ+LFLsys36oDwXGxgsk7L3UdEzHnc6RoTmMA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YySxg7eOalEcO2zAkEhxDhiEYkLFLWbfrhyDr6SQCJmlXlAd8JI
+	XfC+0qddktdGD4J4jIAkIDfmQrwU628V6JvhUWw6YWewovxfj1jvSPJCK6rr2TQ=
+X-Google-Smtp-Source: AGHT+IHnVszzxRV7qQ07aFqnxjDB7ZJDRj+3FpzGhCxnl0U0Ndnw3gA3qfk5sipB0cB/w/7yeJxxIA==
+X-Received: by 2002:aa7:88cf:0:b0:714:15ff:a2a4 with SMTP id d2e1a72fcca58-715dfc042a7mr734410b3a.13.1724876134994;
+        Wed, 28 Aug 2024 13:15:34 -0700 (PDT)
+Received: from ghost ([50.145.13.30])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-714343097fasm10850305b3a.173.2024.08.28.13.15.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Aug 2024 13:15:34 -0700 (PDT)
+Date: Wed, 28 Aug 2024 13:15:29 -0700
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Russell King <linux@armlinux.org.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-mm@kvack.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 00/16] mm: Introduce MAP_BELOW_HINT
+Message-ID: <Zs+FYbII0ewwdisg@ghost>
+References: <20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com>
+ <fd1b8016-e73d-4535-9c67-579ab994351f@intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,120 +126,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
- <5deb67090b214f0e6eae96b7c406546d1a16f89b.1724309198.git.christophe.leroy@csgroup.eu>
- <20240827180819.GB2049@sol.localdomain> <20240827225330.GC29862@gate.crashing.org>
- <Zs8HirKLk-SrwTIu@zx2c4.com> <fc19bf63-d519-46e2-be70-80202c85ff92@app.fastmail.com>
- <20240828124519.GE29862@gate.crashing.org> <CAMj1kXGmDmxy75eP=rf_fzKmg0g_FeKV43jk2G_gibnKZBtVww@mail.gmail.com>
- <20240828162025.GG29862@gate.crashing.org>
-In-Reply-To: <20240828162025.GG29862@gate.crashing.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 28 Aug 2024 19:12:55 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHZPfr2Sz78UrgsdX-2uBp0D1sCnznQnz5ZyMdiJq6rAA@mail.gmail.com>
-Message-ID: <CAMj1kXHZPfr2Sz78UrgsdX-2uBp0D1sCnznQnz5ZyMdiJq6rAA@mail.gmail.com>
-Subject: Re: [PATCH v2 05/17] vdso: Avoid call to memset() by getrandom
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, "Jason A . Donenfeld" <Jason@zx2c4.com>, Eric Biggers <ebiggers@kernel.org>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Theodore Ts'o" <tytso@mit.edu>, Andrew Morton <akpm@linux-foundation.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, shuah <shuah@kernel.org>, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fd1b8016-e73d-4535-9c67-579ab994351f@intel.com>
 
-On Wed, 28 Aug 2024 at 18:24, Segher Boessenkool
-<segher@kernel.crashing.org> wrote:
->
-> Hi!
->
-> On Wed, Aug 28, 2024 at 05:40:23PM +0200, Ard Biesheuvel wrote:
-> > On Wed, 28 Aug 2024 at 14:57, Segher Boessenkool
-> > <segher@kernel.crashing.org> wrote:
-> > >
-> > > On Wed, Aug 28, 2024 at 12:24:12PM +0000, Arnd Bergmann wrote:
-> > > > On Wed, Aug 28, 2024, at 11:18, Jason A. Donenfeld wrote:
-> > > > > On Tue, Aug 27, 2024 at 05:53:30PM -0500, Segher Boessenkool wrote:
-> > > > >> On Tue, Aug 27, 2024 at 11:08:19AM -0700, Eric Biggers wrote:
-> > > > >> >
-> > > > >> > Is there a compiler flag that could be used to disable the generation of calls
-> > > > >> > to memset?
-> > > > >>
-> > > > >> -fno-tree-loop-distribute-patterns .  But, as always, read up on it, see
-> > > > >> what it actually does (and how it avoids your problem, and mostly: learn
-> > > > >> what the actual problem *was*!)
-> > > > >
-> > > > > This might help with various loops, but it doesn't help with the matter
-> > > > > that this patch fixes, which is struct initialization. I just tried it
-> > > > > with the arm64 patch to no avail.
-> > > >
-> > > > Maybe -ffreestanding can help here? That should cause the vdso to be built
-> > > > with the assumption that there is no libc, so it would neither add nor
-> > > > remove standard library calls. Not sure if that causes other problems,
-> > > > e.g. if the calling conventions are different.
-> > >
-> > > "GCC requires the freestanding
-> > > environment provide 'memcpy', 'memmove', 'memset' and 'memcmp'."
-> > >
-> > > This is precisely to implement things like struct initialisation.  Maybe
-> > > we should have a "-ffreeerstanding" or "-ffreefloating" or think of
-> > > something funnier still environment as well, this problem has been there
-> > > since the -ffreestanding flag has existed, but the problem is as old as
-> > > the night.
-> > >
-> > > -fno-builtin might help a bit more, but just attack the problem at
-> > > its root, like I suggested?
-> > >
-> >
-> > In my experience, this is likely to do the opposite: it causes the
-> > compiler to 'forget' the semantics of memcpy() and memset(), so that
-> > explicit trivial calls will no longer be elided and replaced with
-> > plain loads and stores (as it can no longer guarantee the equivalence)
->
-> No, the compiler will never forget those semantics.  But if you tell it
-> your function named memset() is not the actual standard memset -- via
-> -fno-builtin-memset for example -- the compiler won't optimise things
-> involving it quite as much.  You told it so eh?
->
+On Wed, Aug 28, 2024 at 11:29:56AM -0700, Dave Hansen wrote:
+> On 8/27/24 22:49, Charlie Jenkins wrote:
+> > Some applications rely on placing data in free bits addresses allocated
+> > by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
+> > address returned by mmap to be less than the maximum address space,
+> > unless the hint address is greater than this value.
+> 
+> Which applications are these, btw?
 
-That is exactly the point I am making. So how would this help in this case?
+Java and Go require this feature. These applications store flags that
+represent the type of data a pointer holds in the upper bits of the
+pointer itself.
 
-> You can also tell it not to have a __builtin_memset function, but in
-> this particular case that won;t quite work, since the compiler does need
-> to have that builtin available to do struct and array initialisations
-> and the like.
->
-> > > (This isn't a new problem, originally it showed up as "GCC replaces
-> > > (part of) my memcpy() implementation by a (recursive) call to memcpy()"
-> > > and, well, that doesn't quite work!)
-> > >
-> >
-> > This needs to be fixed for Clang as well, so throwing GCC specific
-> > flags at it will at best be a partial solution.
->
-> clang says it is a 100% plug-in replacement for GCC, so they will have
-> to accept all GCC flags.  And in many cases they do.  Cases where they
-> don't are bugs.
->
+> 
+> Is this the same crowd as the folks who are using the address tagging
+> features like X86_FEATURE_LAM?
 
-Even if this were true, we support Clang versions today that do not
-support -fno-tree-loop-distribute-patterns so my point stands.
+Yes it is. LAM helps to mask the bits out on x86, and this feature could
+be used to ensure that mmap() doesn't return an address with bits that
+would be masked out. I chose not to tie this feature to x86 LAM which
+only has masking boundaries at 57 and 48 bits to allow it to be
+independent of architecture specific address masking.
 
-> > It is not a complete solution, unfortunately, and I guess there may be
-> > other situations (compiler/arch combinations) where this might pop up
-> > again.
->
-> Why do mem* not work in VDSOs?  Fix that, and all these problems
-> disappear, and you do not need workrarounds :-)
->
+> 
+> Even if they are different, I also wonder if a per-mmap() thing
+> MAP_BELOW_HINT is really what we want.  Or should the applications
+> you're trying to service here use a similar mechanism to how LAM affects
+> the *whole* address space as opposed to an individual mmap().
 
-Good point. We should just import memcpy and memset in the VDSO ELF metadata.
+LAM is required to be enabled for entire address spaces because the
+hardware needs to be configured to mask out the bits. It is not possible
+to influence the granularity of LAM in the current implementation.
+However mmap() does not require any of this hardware configuration so it
+is possible to have finer granularity.
 
-Not sure about static binaries, though: do those even use the VDSO?
+A way to restrict mmap() to return LAM compliant addresses in an entire
+address space also doesn't have to be mutually exclusive with this flag.
+This flag allows for the greatest degree of control from applications.
+I don't believe there is additionally performance saving that could be
+achieved by having this be on a per address space basis.
+
+Link: https://cdrdv2.intel.com/v1/dl/getContent/671368 [1]
+
+- Charlie
+
 
