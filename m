@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-644-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-645-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF7B96207C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 09:16:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A13496207D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 09:16:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WtwhG3pqLz2yhM;
-	Wed, 28 Aug 2024 17:16:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WtwhQ6DNqz2yjN;
+	Wed, 28 Aug 2024 17:16:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::632"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724824179;
-	cv=none; b=UtT4DKz4ygweQOnJPpz6KDzTgC83TertPUE6rf9hfmlAPykRBheflFVvRfcEVWUdtJLo860Q/PscFyMht2XMOnE2bA6Yi7UkerGjZ46Ph9Je+SDG96V8Awdni3+TEVaY1mQhsr9GDe1ydx2O24EuD1E+Fr18MuORVdY766kux1b5JRCB8+S2bh60PgE6gqcoS57RvPK8otx5FDtqcG8pq+b+wBpLM/Ty2VroAwCmHpzCyp4wrQm4df8qRxKfdx2llT/M0KQpP3W7JelL9ASXcgi8GYpTxbWzoTK/9fgfIpjdRKdU4zSXv+fCqbN9YLYzrJBM92koiPyLc+qA6tfbXw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724824182;
+	cv=none; b=dSTduHTctyosH4NpPZbknqQjJBbhQ1VrWowYLPtQKqR0re1SQ4wA2CuV43tHYIinMZl6y73nDuBpxR3WbfOoCxDr9pBX+SfvT+KmzOkKcZPTwQJ4fErq/6cbeEsv0N/Mvj47mM6oUlmTFMaF8hxfl9O2VU75oSjpFsTTpfWAYFyV1kwgukN8Ul3o0ckFy5ytsuJtOcb7Dsg56sd7e59Xp/pa818Keuufc49ySlScSBC/ADnVVwSt2mJ6npOWt/+CkcJQ94uQtX11G7QYpuWbCh6ZeSsFHuANd1AkLfaovZu18O0USoIwKQxdZnb8GildE9x6bh6UqLAauXOJuHysCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724824179; c=relaxed/relaxed;
-	bh=TGbwsGUaSgh3SYkS7pHaMfmAZns1s9a6v7xPbD2XVAI=;
+	t=1724824182; c=relaxed/relaxed;
+	bh=g+f5iieqZfHqFwlVhHOpYZvOeyZcJe//7AT/XT4juc0=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
 	 X-Received:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key; b=Alx3EKs+I2X3aBOUWtP47zzCSrVxhacKKHEgaIgpybvXkXVzWhWQ2Unv7xyMlGHkxqdVTunCaOIPjaWUZGjw0JxBgjnDG6cY2KlE1NK1aiL0Jyhd+sdcFfuOFDEFeSiw3LXIADTN1VoidwDalfngUnSSrPBRGWo04sJsuT0HkarFdtYqHvAtJcKw8GhEhOjpWi/VIgK7UKkgSWBpBNmCHhj52ve6O1tKtRnO0plm6Z1ggUFeE4P+WmRvJMtpCdIVcEo+yfsR0YELUtI36X0Rh4XaixKyBwyer/B0j/PlqJPJVdaOK1nrQhliVecooAgq0RJEE2OiL2gpvOEoL+jNDQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=AdtJeYP/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
+	 X-Mailer:X-Developer-Signature:X-Developer-Key; b=m+j520i6e6MA+gmSlGwxKqKSO6XnlStdlY325bkBZxJszUb70v1A9DThzrSeevw/uqnXLeCOsXK3Mz5a6ydYzrMyj0obSpOL4/3reyOKJNTysdJ6YIXuD25VJxKjaFWesH4spT0t0t3D3xcECKfLFci/HKBx+jyj3v0SQ7lDy/zqLTG+M0ouVy3OfigvTrM0rOHzZaRdBCdZxGw6uud+tYbb2fvxOAPAyHq0CH5qFIBgVSdWIndTi1GbKifiSsWfuu+h70PUIt1FQ1E3j3rEm12I19AsU6NCtDceCtlv3K68tz7amYaDAwEezdrFpFGKfvLgQnM9TtkEhkfw1vCYIA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=U4oVX8q7; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=AdtJeYP/;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=U4oVX8q7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wttll1wQkz2y8l
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 15:49:39 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-201fbd0d7c2so52361185ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 22:49:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wttln5Wd4z2y8l
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 15:49:41 +1000 (AEST)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-7142e4dddbfso4925902b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 Aug 2024 22:49:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724824177; x=1725428977; darn=lists.ozlabs.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724824180; x=1725428980; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TGbwsGUaSgh3SYkS7pHaMfmAZns1s9a6v7xPbD2XVAI=;
-        b=AdtJeYP/YxH261zBuONAG+izWdza4W9O1gft4TqV569VeN552GoPluOu/QxO9Cl88o
-         og11hL8AzQA84+S8OoRhMDJGO4ZP6TZv04tj1sO+oAxD8npl3siFhXnZIAR6vyY1iQBA
-         jMfrAg1Uz0D/PO6UPk6Y10h6iW4kxQm/JXoilqfAw8JAYy2Z+q6ak6v1dbiecscg2my+
-         mCzQdC0aAOEKo0InHj7RAZhPeZ/OsiuJRIaijxVYpYZrzfHuGsGjYBbBr6ZWV4eceFSR
-         nioZ+Mpu8SAN/P4A1ch9nYvGteE4uMSVBhRGfjCwtxCkFiSla12D//UEzWYEiAsGR0Bl
-         0sEg==
+        bh=g+f5iieqZfHqFwlVhHOpYZvOeyZcJe//7AT/XT4juc0=;
+        b=U4oVX8q7FvntVMetDpXnGOjqPI2IVwoC+hhXwg2PuFjbF2vDftK0kqpdAssKR3/gQX
+         qBd9Yij4g7tpF0tsa6SD0VZsSULlHHDCZ71VEZcKjmMJDeavGQfYwS1n68amX081bV5c
+         Qi0jyvjQBqEQWofp44N+AU2gg6EVSCYGTHXPZnwTu9HrPdH5nHeYICfZTSTzelUvXKii
+         IDSCprnFFTgPU9UINlhs8C+GOOx1zq3Y4lhoJBm53l9+UIFwLNwMSqaV8nWxATHfsnKD
+         qJohUySuuoxCUnB/1kBTzDBDTrlzZfhKskFsRmTPgfTtVY/Yr7j9C7hJ2f2WnBZo6Y2a
+         6/ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724824177; x=1725428977;
+        d=1e100.net; s=20230601; t=1724824180; x=1725428980;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TGbwsGUaSgh3SYkS7pHaMfmAZns1s9a6v7xPbD2XVAI=;
-        b=RYy6XSnCpcIaAnOp+0uMLgO0M3xh8saJB4aArguacYOWWCKyIpEOwT/S8XeluI2d2m
-         kGDVuL42mgPU3liohcXR5cFQoWxjvcRncZ+dZg2umNVa7s1TtHMLaEO+cZIpstzhAH+u
-         8+pKMvnL0SLX+V/AbuyNOuhtQ59u9vrFDwwfYqh53Q83SjIuU0qB3lj/4oQABPiLOBiG
-         m9MfGnl3PXuFO5rzUUsnO9b5TZ3CSGgm+nEUTXyKjl+gSk9EK8WveoVLv7eIRRNdQBWv
-         hxN3nEYZue37GUwP+eltdAbE3/DIBAskvZzHMDlaqpcCODLg7swnuGTKf5fBvT0d0skH
-         GewA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFj2iFgLHPWXnXfebCy5dcDJDAq96eREJMKrMMfHtbwZ0Ogt9UJbQv/+ukF45uZRJqwyDeeES4OZB0TG0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz3Ia93xLCAbij3ZEPStjr3UKfUcCZY3TqCrzVebsRZ1LJWOrQP
-	sSJlFVWk9DScCvGzBI/YYl7TzuRXh0uXKLu7R69YbN+yg8hplE1hJyw1G2iN6PE=
-X-Google-Smtp-Source: AGHT+IETeUynSugovs7+A+AN20czg30Ola2aofBrInbwTCbD60I4EWjQ5oF17Pp044tfVMlW9N70GQ==
-X-Received: by 2002:a17:902:f946:b0:1fb:6ea1:6a with SMTP id d9443c01a7336-204f9bf6b4fmr8673095ad.42.1724824176426;
-        Tue, 27 Aug 2024 22:49:36 -0700 (PDT)
+        bh=g+f5iieqZfHqFwlVhHOpYZvOeyZcJe//7AT/XT4juc0=;
+        b=I2Jge4zAWDY0QS8SYd6CggaVziPY5fx2pnt5a70tFnn1wslg4Rg1e0W6o0ZIKaovq2
+         dCPqw8XE3UfKlknwmRK1bU3gLIebTzevqcyOfzBgrUGmY1uiUbomTY2/L5QD8mze8oZY
+         iRnmLl2UvIXm14igdgf3Y8cpxl7DBQ9xDwaCuODvn68pR9E7t/RqGOMua+3KYEjAplkE
+         UX7VPPmze+4YFz2RMmNCcfNmFcG0H+kA/Rzds/jZBT89/y2Lj2BhMkugZ/euUPuId7wB
+         48qBRyKsy27yvUwNF4SvCHGbEFAkU7OnBzSjCxs+52+7FnHpjAhGKBvSxwhrRNWiwUbD
+         bIRw==
+X-Forwarded-Encrypted: i=1; AJvYcCWdLiig3CGW8B0p78N+Yy8IsbVpf3gm1Qpi0ZXodyNqg3OknZcVlichtpRWU4I6nWdhpjzho/+c3zmqUAM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzyjgmXLH33KPivkFci9FGdNgBSdDlSa8U7cVmW9JcBeS/ZRRnK
+	vZF3E47MOrAL3v+qlV/JBkUC21p/UzaqM4cFmH9rEhP6Q59oKmbj6OjBTi9IknE=
+X-Google-Smtp-Source: AGHT+IGKYEbmAbccdwLglj8Rtz7Ncms8BNc+Vjhrih2XUvI/cV2bfefpghFryVXCiPvCQUUiKdRNjQ==
+X-Received: by 2002:a05:6a21:3401:b0:1c6:a777:4cfa with SMTP id adf61e73a8af0-1cc8b475035mr13030363637.13.1724824179851;
+        Tue, 27 Aug 2024 22:49:39 -0700 (PDT)
 Received: from charlie.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203855df0c4sm92092495ad.157.2024.08.27.22.49.32
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203855df0c4sm92092495ad.157.2024.08.27.22.49.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Aug 2024 22:49:35 -0700 (PDT)
+        Tue, 27 Aug 2024 22:49:39 -0700 (PDT)
 From: Charlie Jenkins <charlie@rivosinc.com>
-Date: Tue, 27 Aug 2024 22:49:09 -0700
-Subject: [PATCH 03/16] mm: Add flag and len param to arch_get_mmap_base()
+Date: Tue, 27 Aug 2024 22:49:10 -0700
+Subject: [PATCH 04/16] mm: Add generic MAP_BELOW_HINT
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,7 +81,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240827-patches-below_hint_mmap-v1-3-46ff2eb9022d@rivosinc.com>
+Message-Id: <20240827-patches-below_hint_mmap-v1-4-46ff2eb9022d@rivosinc.com>
 References: <20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com>
 In-Reply-To: <20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com>
 To: Arnd Bergmann <arnd@arndb.de>, Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -119,106 +119,78 @@ Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Charlie Jenkins <charlie@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3681; i=charlie@rivosinc.com;
- h=from:subject:message-id; bh=deEFSUhsRdIX0bdzxWoQYKSiKJBAsZhcTOjbVXT5+ls=;
- b=owGbwMvMwCHWx5hUnlvL8Y3xtFoSQ9q5XbEKPQVKN+QOfCnd/vQAx7Mm0aicnIfvMk/aT/p2R
- eLJrUMHOkpZGMQ4GGTFFFl4rjUwt97RLzsqWjYBZg4rE8gQBi5OAZiI/GeGP5ySTrLnNmwQmXLz
- 8w+bnE++e2VFjGTvdAadNPbzvHntw1tGhs53DbPX/utm9fCf+JHzi+Xvmwkm0w5eV/OMyrFcaSf
- ykBcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2165; i=charlie@rivosinc.com;
+ h=from:subject:message-id; bh=+G9/grHdHxL6H0Lnh65S6ISh5epJb2mrAov/AP0hs9c=;
+ b=owGbwMvMwCHWx5hUnlvL8Y3xtFoSQ9q5XXGZXkeVtgeold2b3dqjkt+vEXMu6H6oc1bJNYtbJ
+ 3aetlzTUcrCIMbBICumyMJzrYG59Y5+2VHRsgkwc1iZQIYwcHEKwERWFTEyNKap9S5rOHHkFBPT
+ SkUp8yq1Cd/4ljyftDBFnmW663I5b4Z/RluSpK/6drw7JD8vOuPN75znwc73OQp/v/2R9GK2Tfl
+ mPgA=
 X-Developer-Key: i=charlie@rivosinc.com; a=openpgp;
  fpr=7D834FF11B1D8387E61C776FFB10D1F27D6B1354
 
-The flag and len param is required in arch_get_mmap_base() to implement
-MAP_BELOW_HINT.
+Make the generic implementation of arch_get_mmap_base() and
+arch_get_mmap_end() support MAP_BELOW_HINT.
 
 Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
 ---
- arch/arm64/include/asm/processor.h      | 2 +-
- arch/powerpc/include/asm/task_size_64.h | 2 +-
- arch/riscv/include/asm/processor.h      | 2 +-
- fs/hugetlbfs/inode.c                    | 2 +-
- include/linux/sched/mm.h                | 2 +-
- mm/mmap.c                               | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ include/linux/sched/mm.h | 34 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
-index f77371232d8c..a67ca119bb91 100644
---- a/arch/arm64/include/asm/processor.h
-+++ b/arch/arm64/include/asm/processor.h
-@@ -95,7 +95,7 @@
- #define arch_get_mmap_end(addr, len, flags) \
- 		(((addr) > DEFAULT_MAP_WINDOW) ? TASK_SIZE : DEFAULT_MAP_WINDOW)
- 
--#define arch_get_mmap_base(addr, base) ((addr > DEFAULT_MAP_WINDOW) ? \
-+#define arch_get_mmap_base(addr, len, base, flags) ((addr > DEFAULT_MAP_WINDOW) ? \
- 					base + TASK_SIZE - DEFAULT_MAP_WINDOW :\
- 					base)
- #endif /* CONFIG_ARM64_FORCE_52BIT */
-diff --git a/arch/powerpc/include/asm/task_size_64.h b/arch/powerpc/include/asm/task_size_64.h
-index 5a709951c901..239b363841aa 100644
---- a/arch/powerpc/include/asm/task_size_64.h
-+++ b/arch/powerpc/include/asm/task_size_64.h
-@@ -72,7 +72,7 @@
- #define STACK_TOP_MAX TASK_SIZE_USER64
- #define STACK_TOP (is_32bit_task() ? STACK_TOP_USER32 : STACK_TOP_USER64)
- 
--#define arch_get_mmap_base(addr, base) \
-+#define arch_get_mmap_base(addr, len, base, flags) \
- 	(((addr) > DEFAULT_MAP_WINDOW) ? (base) + TASK_SIZE - DEFAULT_MAP_WINDOW : (base))
- 
- #define arch_get_mmap_end(addr, len, flags) \
-diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
-index 1015f2a49917..7ff559bf46f2 100644
---- a/arch/riscv/include/asm/processor.h
-+++ b/arch/riscv/include/asm/processor.h
-@@ -19,7 +19,7 @@
- 	STACK_TOP_MAX;						\
- })
- 
--#define arch_get_mmap_base(addr, base, flags)			\
-+#define arch_get_mmap_base(addr, len, base, flags)		\
- ({								\
- 	base;							\
- })
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 9f6cff356796..05a52f85dba9 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -195,7 +195,7 @@ hugetlb_get_unmapped_area_topdown(struct file *file, unsigned long addr,
- 	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
- 	info.length = len;
- 	info.low_limit = PAGE_SIZE;
--	info.high_limit = arch_get_mmap_base(addr, current->mm->mmap_base);
-+	info.high_limit = arch_get_mmap_base(addr, len, current->mm->mmap_base, flags);
- 	info.align_mask = PAGE_MASK & ~huge_page_mask(h);
- 	addr = vm_unmapped_area(&info);
- 
 diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-index 91546493c43d..265b43855d0b 100644
+index 265b43855d0b..c350bb5ac0a2 100644
 --- a/include/linux/sched/mm.h
 +++ b/include/linux/sched/mm.h
-@@ -174,7 +174,7 @@ static inline void mm_update_next_owner(struct mm_struct *mm)
+@@ -9,6 +9,7 @@
+ #include <linux/gfp.h>
+ #include <linux/sync_core.h>
+ #include <linux/sched/coredump.h>
++#include <uapi/asm/mman.h>
+ 
+ /*
+  * Routines for handling mm_structs
+@@ -170,11 +171,40 @@ static inline void mm_update_next_owner(struct mm_struct *mm)
+ 
+ #ifdef CONFIG_MMU
+ #ifndef arch_get_mmap_end
+-#define arch_get_mmap_end(addr, len, flags)	(TASK_SIZE)
++#define arch_get_mmap_end(addr, len, flags)							\
++({												\
++	unsigned long mmap_end;									\
++	typeof(flags) _flags = (flags);								\
++	typeof(addr) _addr = (addr);								\
++	typeof(len) _len = (len);								\
++	mmap_end = TASK_SIZE;									\
++	if (_flags & MAP_BELOW_HINT && _addr != 0)						\
++		mmap_end = MIN(mmap_end, _addr + _len);						\
++	mmap_end;										\
++})
  #endif
  
  #ifndef arch_get_mmap_base
--#define arch_get_mmap_base(addr, base) (base)
-+#define arch_get_mmap_base(addr, len, base, flags) (base)
+-#define arch_get_mmap_base(addr, len, base, flags) (base)
++/*
++ * rnd_gap is defined to be (STACK_TOP - _base) due to the definition of
++ * mmap_base in mm/util.c
++ *
++ * Assumes ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT, which all architectures that
++ * implement generic mmap use
++ */
++#define arch_get_mmap_base(addr, len, base, flags)						\
++({												\
++	unsigned long mmap_base;								\
++	typeof(flags) _flags = (flags);								\
++	typeof(addr) _addr = (addr);								\
++	typeof(base) _base = (base);								\
++	typeof(len) _len = (len);								\
++	unsigned long rnd_gap = STACK_TOP - _base;						\
++	mmap_base = _base;									\
++	if (_flags & MAP_BELOW_HINT && _addr != 0)						\
++		mmap_base = MIN(mmap_base, (_addr + _len) - rnd_gap);				\
++	mmap_base;										\
++})
  #endif
  
  extern void arch_pick_mmap_layout(struct mm_struct *mm,
-diff --git a/mm/mmap.c b/mm/mmap.c
-index d0dfc85b209b..27a7f2be3f68 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1861,7 +1861,7 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
- 	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
- 	info.length = len;
- 	info.low_limit = PAGE_SIZE;
--	info.high_limit = arch_get_mmap_base(addr, mm->mmap_base);
-+	info.high_limit = arch_get_mmap_base(addr, len, mm->mmap_base, flags);
- 	addr = vm_unmapped_area(&info);
- 
- 	/*
 
 -- 
 2.45.0
