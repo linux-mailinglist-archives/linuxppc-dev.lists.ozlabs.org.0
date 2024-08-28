@@ -1,60 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-705-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298FA963434
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 Aug 2024 23:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B62963457
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 00:04:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvJGv413rz2yhg;
-	Thu, 29 Aug 2024 07:59:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvJNQ0G81z2xHw;
+	Thu, 29 Aug 2024 08:04:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724859642;
-	cv=none; b=BMBhTftYyWKetvKG9v3vsrfRmkpo9eRU6ABjo2JS2Q/5zOSbX3UP+ICZNMPOK+yPdDVG0pqelLEH65RaVOhke8u1neZN1lAO880jVCVFDWLT4LRi11pts1azc1tuOucIXH/53yNmSGwHQrZROlKL4h2MRsBp4zzTwpOBlMEjtkcnPVPa1UREZjtP7oNz5EaFUjD2eV5c+sU95sWbwkrQ8PnMFc1pfAZDUVf/tyOOHLgq75pB4uoXGnanWf9aTittyNmtUEGZnVPLhIC3Anl51NhrdoofXrEYo0mvY6tK+aSczIpuaKc2v3YPDaiTGBWZDdJhH5mpSOl1SbFDMKoUiA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724863950;
+	cv=none; b=H/MzM4E5OsmPjujUdHkMI+kNR9HxKxpWzBGlAloreIy2Ad+K+T5phj1VelZrcFWKg/t9O01z4AOGIVu5ku8v+45lGIbsTlYMhv23wwf8abi/OOvyX6y8G3wE/EnqdSTT9Q4nuGPKJ1dk3gd+1EdqKmnOePgQxfihegutRG85vF2cYInILQ90B2ZUxWj3iGZJ5FGYXssnPKVFgQusThgGFVi6piqBu3Y8dZEkJarlsIsh5gf8AMBAvf0RexA3/yuvKGg7cev9R5z7kbBiw3qIydXtMfDXVyjmX6//cyYSQfCmpOfvzGgM6vfS3BjHavk4x2dHFtznkdeaEeCn9xfSSg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724859642; c=relaxed/relaxed;
-	bh=klIv7pWG9BE2EusGcZ3vs44rN7czUHKrTo3cjwQ3jKs=;
-	h=Received:Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:X-Gmail-Original-Message-ID:
-	 Message-ID:Subject:To:Cc:Content-Type; b=nBl72NbyPgl7RydPZpwwqSJ30qnfwudC0h0D7EiSyCWyGaLcGMlud48Q2BLYAyftqHQkufkKvQheQghCBixn5bMiPNp6ijFhfJn/Uk8UefTjiMM02onlvj5uqUwfHqbm10PpgYN7AfChH3lBuKGAJLtlWY4tt7PDq8QnHPvkskil4GCMcrImDDp+NVWmPTJyIQbmbfGWl0nPOuqWAtdyDBmvIWfubPGr06RZKAzSixU/qhkea6VaJziFdmrVFYmNm4CRyz7AAo9eL3SOPHEvb2n8DqMf5OK88QUqtQ+86mTHWLYcEMjbpTmBdYmv0VuSmB44TMWayBFtzPD0/U4b/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hDdad5/I; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1724863950; c=relaxed/relaxed;
+	bh=U8t1b1VLPlwy0y+Etl/WukA+64dZqdNkgFU9fWAqUlc=;
+	h=Received:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=G/4zX4DVnYvu9wgPK+qfEH3vcQ8YCv+fgNs+nI6Hh+4AvonUfUYR9+xLvMSCaCJ4MiUYe0vXHp7HI0vvMqy3/FEA6z7lTebr79ye5p9sEO/ZqyW+ygSkCm+1SCK0sLFqKEOwfl5E/UYC05EUMZ/HWYvWi+a8WhBk8fEHfHcjW06szkVT0AyzjZ+2iRtLhFKzKmyLjxlR21Kc5t/o3AcYtjqzRsV7Tk5pA/gJUvE0HWIF1My4miz9MWIII/+W+KYj0Vxxz0Xp69HIvjqZD9KE8ZHs+Z9+RieQzMPlYjtlsIm4v41Q3Wf0CLe/nbGQkSOyC+JjEs5kxxAv6RCC61LbIA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pR5/59CT; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hDdad5/I;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pR5/59CT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wv7sj6hd0z2xdY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 01:40:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wv9SZ1yvpz2yZ3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 02:52:30 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 9EF75A41AC8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 15:40:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83488C4CECC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 15:40:37 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id ED13CA42707;
+	Wed, 28 Aug 2024 16:52:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433E5C515B4;
+	Wed, 28 Aug 2024 16:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724859637;
-	bh=+z7/VLAc5zAKqxwt9kQI0vxm8x7sulgvUDeMTRfB+wo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hDdad5/IY68zkrft/92YWfFtjDz6TFndSmnpp5pqAtaDdhgaQHXnMYujF2CwZtAvo
-	 s1dVBctohqByWUo15KsHC1yXOsb3CsxrVYgXiTlMrxSNBqKSRHb2u/dgFnWDlyP45P
-	 kmzBzCQlLYmgzPMvmTlIEcYXhkLufuTJDpchreYUAd0yoHp8hJGCENnAbHqZR1NUMB
-	 63ZyNil+E22vWl4w+ZhugE7V8Y5RiBnHkIJ248WfFc80AZtPJMZpvtsLhvJEQmQQ7b
-	 rjS4mie2g2VPxttgup163SLxFXlpDbWSy4ple6kkn/VZnDNkSEFpYi5cJmSqRwT5Qa
-	 F/BVlj/jrU5iw==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2f4f24263acso91142451fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 08:40:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXY0O1Pkpm+EIWljfSnnJPMdxZLjuIrGL+llOw8BsPIuOxn8lPe93YtMQi+Tk9+9VnGAPt/0P4sdeKTpN0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywi2eJj+TmK5UoKS5QqHND5xLy6jSkr473x4qr+H64uMuy4wBhA
-	o+eeDKdKg2VEyt+LEo6ooCo4O2y5fwyrek+efn543qVHf9TZf8sYX6le+kxe/7skTUGTvpysqiT
-	mor22rJqwB5XScUhdDMtDEnKnCk0=
-X-Google-Smtp-Source: AGHT+IHIXIHDcxvkoioWarqDfEAwvoOHHvvDveL69dLtIdivksLO7ybL0XqtoFeExKbS+796rHsbT/SXItR1tBLUGxI=
-X-Received: by 2002:a2e:461a:0:b0:2f3:f182:49f3 with SMTP id
- 38308e7fff4ca-2f6106e36e6mr594741fa.22.1724859635743; Wed, 28 Aug 2024
- 08:40:35 -0700 (PDT)
+	s=k20201202; t=1724862749;
+	bh=IcOpHz8GgohndUTMyAYMIG+hCu7kJbe6e1APBKfYgPY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pR5/59CTcmE9y0TjuQtpRRU3O8DmJUlgFo4Y3OfmCeqIgIPRE4+iuwlxl+bC5IsIE
+	 gOXLu02v+azXCkwZ0eRQPL5UavCwaAq5b9aMsznsCN1YvMX9YFvIiX07ApHGdRN9Er
+	 pCEJo7LHnlfTP/Jf5UKH3EukXS7kRH1Igoi71h4PRA+PLaLfuyggj6/FYeNUS5RfzR
+	 48neoiCmzP/+8UggeZ5ic1cAanCrHwwYo5exk6A++87m0f1fb/qG2b6cX4YBKKlUuj
+	 60Z25CRgS416qfMPZlbg2HmXe1Y0MshwxeUoMlSIL9uTD1rMqLZE05g4LvQoDqujex
+	 f4aeE+c9aSomQ==
+Date: Wed, 28 Aug 2024 17:32:24 +0100
+From: Simon Horman <horms@kernel.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Herve Codina <herve.codina@bootlin.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next 6/6] net: ethernet: fs_enet: phylink conversion
+Message-ID: <20240828163224.GT1368797@kernel.org>
+References: <20240828095103.132625-1-maxime.chevallier@bootlin.com>
+ <20240828095103.132625-7-maxime.chevallier@bootlin.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,89 +70,104 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <cover.1724309198.git.christophe.leroy@csgroup.eu>
- <5deb67090b214f0e6eae96b7c406546d1a16f89b.1724309198.git.christophe.leroy@csgroup.eu>
- <20240827180819.GB2049@sol.localdomain> <20240827225330.GC29862@gate.crashing.org>
- <Zs8HirKLk-SrwTIu@zx2c4.com> <fc19bf63-d519-46e2-be70-80202c85ff92@app.fastmail.com>
- <20240828124519.GE29862@gate.crashing.org>
-In-Reply-To: <20240828124519.GE29862@gate.crashing.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 28 Aug 2024 17:40:23 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGmDmxy75eP=rf_fzKmg0g_FeKV43jk2G_gibnKZBtVww@mail.gmail.com>
-Message-ID: <CAMj1kXGmDmxy75eP=rf_fzKmg0g_FeKV43jk2G_gibnKZBtVww@mail.gmail.com>
-Subject: Re: [PATCH v2 05/17] vdso: Avoid call to memset() by getrandom
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, "Jason A . Donenfeld" <Jason@zx2c4.com>, Eric Biggers <ebiggers@kernel.org>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Theodore Ts'o" <tytso@mit.edu>, Andrew Morton <akpm@linux-foundation.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, shuah <shuah@kernel.org>, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240828095103.132625-7-maxime.chevallier@bootlin.com>
 
-On Wed, 28 Aug 2024 at 14:57, Segher Boessenkool
-<segher@kernel.crashing.org> wrote:
->
-> On Wed, Aug 28, 2024 at 12:24:12PM +0000, Arnd Bergmann wrote:
-> > On Wed, Aug 28, 2024, at 11:18, Jason A. Donenfeld wrote:
-> > > On Tue, Aug 27, 2024 at 05:53:30PM -0500, Segher Boessenkool wrote:
-> > >> On Tue, Aug 27, 2024 at 11:08:19AM -0700, Eric Biggers wrote:
-> > >> >
-> > >> > Is there a compiler flag that could be used to disable the generation of calls
-> > >> > to memset?
-> > >>
-> > >> -fno-tree-loop-distribute-patterns .  But, as always, read up on it, see
-> > >> what it actually does (and how it avoids your problem, and mostly: learn
-> > >> what the actual problem *was*!)
-> > >
-> > > This might help with various loops, but it doesn't help with the matter
-> > > that this patch fixes, which is struct initialization. I just tried it
-> > > with the arm64 patch to no avail.
-> >
-> > Maybe -ffreestanding can help here? That should cause the vdso to be built
-> > with the assumption that there is no libc, so it would neither add nor
-> > remove standard library calls. Not sure if that causes other problems,
-> > e.g. if the calling conventions are different.
->
-> "GCC requires the freestanding
-> environment provide 'memcpy', 'memmove', 'memset' and 'memcmp'."
->
-> This is precisely to implement things like struct initialisation.  Maybe
-> we should have a "-ffreeerstanding" or "-ffreefloating" or think of
-> something funnier still environment as well, this problem has been there
-> since the -ffreestanding flag has existed, but the problem is as old as
-> the night.
->
-> -fno-builtin might help a bit more, but just attack the problem at
-> its root, like I suggested?
->
+On Wed, Aug 28, 2024 at 11:51:02AM +0200, Maxime Chevallier wrote:
+> fs_enet is a quite old but still used Ethernet driver found on some NXP
+> devices. It has support for 10/100 Mbps ethernet, with half and full
+> duplex. Some variants of it can use RMII, while other integrations are
+> MII-only.
+> 
+> Add phylink support, thus removing custom fixed-link hanldling.
+> 
+> This also allows removing some internal flags such as the use_rmii flag.
+> 
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-In my experience, this is likely to do the opposite: it causes the
-compiler to 'forget' the semantics of memcpy() and memset(), so that
-explicit trivial calls will no longer be elided and replaced with
-plain loads and stores (as it can no longer guarantee the equivalence)
+Hi Maxime,
 
-> (This isn't a new problem, originally it showed up as "GCC replaces
-> (part of) my memcpy() implementation by a (recursive) call to memcpy()"
-> and, well, that doesn't quite work!)
->
+Some minor issues from my side: not a full review by any stretch of
+the imagination.
 
-This needs to be fixed for Clang as well, so throwing GCC specific
-flags at it will at best be a partial solution.
+...
 
-Omitting the struct assignment is a reasonable way to reduce the
-likelihood that a memset() will be emitted, so for this patch
+> @@ -911,7 +894,7 @@ static int fs_enet_probe(struct platform_device *ofdev)
+>  	if (!IS_ERR(clk)) {
+>  		ret = clk_prepare_enable(clk);
+>  		if (ret)
+> -			goto out_deregister_fixed_link;
+> +			goto out_phylink;
+>  
+>  		fpi->clk_per = clk;
+>  	}
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+This goto will result in a dereference of fep.
+But fep is not initialised until the following line,
+which appears a little below this hunk.
 
-It is not a complete solution, unfortunately, and I guess there may be
-other situations (compiler/arch combinations) where this might pop up
-again.
+	fep = netdev_priv(ndev);
+
+This goto will also result in the function returning without
+releasing clk.
+
+Both flagged by Smatch.
+
+> @@ -936,6 +919,26 @@ static int fs_enet_probe(struct platform_device *ofdev)
+>  	fep->fpi = fpi;
+>  	fep->ops = ops;
+>  
+> +	fep->phylink_config.dev = &ndev->dev;
+> +	fep->phylink_config.type = PHYLINK_NETDEV;
+> +	fep->phylink_config.mac_capabilities = MAC_10 | MAC_100;
+> +
+> +	__set_bit(PHY_INTERFACE_MODE_MII,
+> +		  fep->phylink_config.supported_interfaces);
+> +
+> +	if (of_device_is_compatible(ofdev->dev.of_node, "fsl,mpc5125-fec"))
+> +		__set_bit(PHY_INTERFACE_MODE_RMII,
+> +			  fep->phylink_config.supported_interfaces);
+> +
+> +	phylink = phylink_create(&fep->phylink_config, dev_fwnode(fep->dev),
+> +				 phy_mode, &fs_enet_phylink_mac_ops);
+> +	if (IS_ERR(phylink)) {
+> +		ret = PTR_ERR(phylink);
+> +		goto out_free_fpi;
+
+This also appears to leak clk, as well as ndev.
+
+I didn't look for other cases.
+
+> +	}
+> +
+> +	fep->phylink = phylink;
+> +
+>  	ret = fep->ops->setup_data(ndev);
+>  	if (ret)
+>  		goto out_free_dev;
+> @@ -968,8 +971,6 @@ static int fs_enet_probe(struct platform_device *ofdev)
+>  
+>  	ndev->ethtool_ops = &fs_ethtool_ops;
+>  
+> -	netif_carrier_off(ndev);
+> -
+>  	ndev->features |= NETIF_F_SG;
+>  
+>  	ret = register_netdev(ndev);
+> @@ -988,10 +989,8 @@ static int fs_enet_probe(struct platform_device *ofdev)
+>  	free_netdev(ndev);
+>  out_put:
+>  	clk_disable_unprepare(fpi->clk_per);
+> -out_deregister_fixed_link:
+> -	of_node_put(fpi->phy_node);
+> -	if (of_phy_is_fixed_link(ofdev->dev.of_node))
+> -		of_phy_deregister_fixed_link(ofdev->dev.of_node);
+> +out_phylink:
+> +	phylink_destroy(fep->phylink);
+>  out_free_fpi:
+>  	kfree(fpi);
+>  	return ret;
+
+...
 
