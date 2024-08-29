@@ -1,96 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-740-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-739-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893EB964002
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 11:28:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04EB5963F82
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 11:07:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvbYY35V7z2ytQ;
-	Thu, 29 Aug 2024 19:28:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wvb5Y56F7z2ytd;
+	Thu, 29 Aug 2024 19:07:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724923049;
-	cv=none; b=H8rpJ4apxH61Id8qMSHuxM4EeSb37WsJZl3uT8W09OrdJ/sHCNusCsVg/xSb+QyPXf3r+LSgA6mIRVWMU15ly7vRTWAvGglz9LYKHTphc2fYVAhUClA8HTEVFdZAp6+J/zlIe2+Td6IySYdPgp5dmKUYtA33ZbhNgUQQc8s6Zf+R467/ZfOmIeHciRlOKOCBMt3KgRHj5n9ToJ+bDIk1/reuQGXH7XmL4gqXo+wccDbCU51jCJw5/J3wJg2S6CvO1c+40CyXmp7kmucpKjajRuW12+ddOI59zs4DXp/yIoAqMWjkD03WX2XVwxmXub1vbsCEvTc1pPZAdpr8hkP54Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724922449;
+	cv=none; b=PhfOd4TGIjtpxgovnxNLDa7Cqmlr7BvZvtdX1dD7VWfc+u/XG6Lv3LK5x1RHDe7fkv+OHqZv64rt2He4VT9Z7+PL6rDPx3VfLlcTjp7qXK7/n5WhoqZ6bodZkb7XGQgX+KNRaSxiObFh2qjT+zBkHtNNf3pv6qPYpCT7W8VZ1mPfNfOY9Dx6oh7d4BzXwjMcKCyuRCcCKJx556Y5wGeUdZOaappv1hkTQ3t70C4Ge/mYBpwBbfoT5IvBgXGEDVVgOQyQG5zs+ToVTwIDwFI74xJjBZh+pBWwU0tTdvcyrRLOVOQ7tU1mHT3xCmihjCT5oFYu25NXDMQBKam33yv1zA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724923049; c=relaxed/relaxed;
-	bh=qGViwP23ObbKUecAfbLC12lGbl8zobuPc/NL1UrL+Vw=;
-	h=X-Greylist:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:Content-Language:To:Cc:References:From:
-	 Autocrypt:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Spam-Level:X-Spamd-Result:X-Spam-Score:X-Spam-Flag; b=VZ6UUWs8IOC8ez/jOoOpXWgziewYwCThQsVb+oBD65JI1XW7pL7NTgBRgBnixrPa68jCGp2meQ0yekYKcE0ZMFf93rRQgHH6JwB+lhPeRAHkvq9bCUgFHYo39EpL3g5qjKB7Wgp9PhCM9eGrgnMuiFmaPaPK9qLLlX9USgQPrVMWAI2CByvzTGgXYM36gHvZmPjpiUqgZ131a5xYswI01JX8qkEPXcOi2Z0vhIopKdO3AXpLAEdqW46+OpJPGWpI6rM1jP6kw2TiO6Vfd2MqntQo0vH5g+iIYIXCyXZUZmmH6q3+v7axtkzyjnRueUJUqojoHLL52E2A56dNftk6RQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=08o6vjFM; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=x8S35769; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=08o6vjFM; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=x8S35769; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+	t=1724922449; c=relaxed/relaxed;
+	bh=jEima/U9FKakYBr/4b8z/cWQ828mok13pTdAAncPLoI=;
+	h=Received:DKIM-Signature:Received:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Subject:From:To:
+	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version:X-TM-AS-GCONF:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details; b=BiDVDEKwMDP6Zfgr9qq+a7BO5E5ghnHRM8XlNj4Qdw6AUB2S1jlG/hig7xYevO7nKZxk3pvmPrvs2CEVhBBMsck9bpFgDXhJYjf9Oo8Pd/l2fV+yORX58xfN2gPgmDhE7z/W5QC3zjauu7WCRnIPx1LCEwxHUCjZgPfVqLURa0T0zKOR3/KrbOTHjZCNdwWX5x1pAdxYQkVg6lhC9OOUtIke58l6409W1jG8wb9Ou6EdVb105MWeq74CbJMBflIbpIWXHOJC3Kr2POiRSVrfBB5YKXocIBG8h833n13Wn/a1lqCtcwj73q/PU+4zVYuNzuVoY3+KRcPFv9mYqQ6RLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bdBssbNL; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=08o6vjFM;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=x8S35769;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=08o6vjFM;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=x8S35769;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bdBssbNL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 882 seconds by postgrey-1.37 at boromir; Thu, 29 Aug 2024 19:17:28 AEST
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvbK46l1Nz2yt0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 19:17:28 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wvb5Y00xdz2ysD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 19:07:28 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47SN9IqW011867;
+	Thu, 29 Aug 2024 09:07:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:subject:from:to:date:in-reply-to:references
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	jEima/U9FKakYBr/4b8z/cWQ828mok13pTdAAncPLoI=; b=bdBssbNLuYFZeUIG
+	bxRsVpDxpRYDAzsPI1ww//3X+C68zJvGYmIJ6zjrVrMcmwJQ14PuJdGZq39Lor0C
+	gnMJ0u4ut7+yMxWHazIo8DAqP4h0ZKyMjwMZVScDS+GSvlqmyKTGCyLl6PJpteJy
+	2uUErjNKy+d6wRAzexQ3pgglp151LmP4nXRE96P0rD/ti/PO9Y/tkhVVRA/HKFMJ
+	OBdGNm5A4ztqe4WNUwFptAjYvqoLS+Ylue/4wAcv7tXbYRiRCtUd2l5p3de7tEtj
+	AnFU5x2TPUAVr+c5p8odJ3TqhZnKtEcyWDjDc19NuclLMk5YSU9adT7m7qcBaYPq
+	dap/jg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8nyck4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 09:07:13 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47T82XNe024673;
+	Thu, 29 Aug 2024 09:07:13 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 417vj3kmcf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 09:07:12 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47T97B9149021354
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 29 Aug 2024 09:07:11 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 56C8620043;
+	Thu, 29 Aug 2024 09:07:11 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DCE7520040;
+	Thu, 29 Aug 2024 09:07:10 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.63.197.14])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 29 Aug 2024 09:07:10 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.63.198.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1E9471FD0E;
-	Thu, 29 Aug 2024 09:02:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1724922156; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qGViwP23ObbKUecAfbLC12lGbl8zobuPc/NL1UrL+Vw=;
-	b=08o6vjFMOyn83uJt+ceYwRoypdqqFkD3CBEFR8dq4No/evwNdvzauItY8j2MbxX3BxJ90g
-	0IkvY/Voz54huPdXgd0MqfouObxBjNFZVdYRKaZ53qzNPzDO3vAIFvm78l9wFyS4N0hZK3
-	Kz+coF2mJc5Ep8/F7OMln6s7/N6opaM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1724922156;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qGViwP23ObbKUecAfbLC12lGbl8zobuPc/NL1UrL+Vw=;
-	b=x8S35769Y6QRML+DnMOa7HbBisEFdHVOh3RBia5/I/pk2laA1HLcXDyCl1IFgYpK5DEo8N
-	Y9XeQZt6yQSqDfCA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1724922156; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qGViwP23ObbKUecAfbLC12lGbl8zobuPc/NL1UrL+Vw=;
-	b=08o6vjFMOyn83uJt+ceYwRoypdqqFkD3CBEFR8dq4No/evwNdvzauItY8j2MbxX3BxJ90g
-	0IkvY/Voz54huPdXgd0MqfouObxBjNFZVdYRKaZ53qzNPzDO3vAIFvm78l9wFyS4N0hZK3
-	Kz+coF2mJc5Ep8/F7OMln6s7/N6opaM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1724922156;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qGViwP23ObbKUecAfbLC12lGbl8zobuPc/NL1UrL+Vw=;
-	b=x8S35769Y6QRML+DnMOa7HbBisEFdHVOh3RBia5/I/pk2laA1HLcXDyCl1IFgYpK5DEo8N
-	Y9XeQZt6yQSqDfCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9616A13408;
-	Thu, 29 Aug 2024 09:02:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +r5PJCs50GZ4agAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 29 Aug 2024 09:02:35 +0000
-Message-ID: <a048515e-f6e4-4d77-920b-6742529f3ca4@suse.cz>
-Date: Thu, 29 Aug 2024 11:02:34 +0200
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 22794602F3;
+	Thu, 29 Aug 2024 19:07:07 +1000 (AEST)
+Message-ID: <c2b6eb9e9a1477d73ed7b5835e61d0f4eb53afd8.camel@linux.ibm.com>
+Subject: Re: [PATCH -next] cxl: Remove unused cxl_pci_to_cfg_record()
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Jinjie Ruan <ruanjinjie@huawei.com>, fbarrat@linux.ibm.com, arnd@arndb.de,
+        gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Date: Thu, 29 Aug 2024 19:07:06 +1000
+In-Reply-To: <20240828103807.3683308-1-ruanjinjie@huawei.com>
+References: <20240828103807.3683308-1-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,259 +94,92 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 0/4] mm: Introduce MAP_BELOW_HINT
-Content-Language: en-US
-To: Charlie Jenkins <charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Shuah Khan <shuah@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, Linux API <linux-api@vger.kernel.org>
-References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-8.30 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_TO(0.00)[rivosinc.com,arndb.de,linaro.org,jurassic.park.msu.ru,gmail.com,kernel.org,armlinux.org.uk,xen0n.name,alpha.franken.de,HansenPartnership.com,gmx.de,ellerman.id.au,csgroup.eu,linux.ibm.com,users.sourceforge.jp,libc.org,physik.fu-berlin.de,davemloft.net,gaisler.com,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,infradead.org,linux.dev,linux-foundation.org,oracle.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RL81e5qggtdx371s8ik49ru6xr)];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[58];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -8.30
-X-Spam-Flag: NO
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: pM5YN0VfgxiuouhrKkx3MJ6A6pe2fyx4
+X-Proofpoint-ORIG-GUID: pM5YN0VfgxiuouhrKkx3MJ6A6pe2fyx4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-29_02,2024-08-29_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 impostorscore=0 phishscore=0 suspectscore=0 mlxlogscore=793
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408290066
 
-Such a large recipient list and no linux-api. CC'd, please include it on
-future postings.
+On Wed, 2024-08-28 at 18:38 +0800, Jinjie Ruan wrote:
+> cxl_pci_to_cfg_record() is not used anywhere, and its function can be
+> replacd with PCI_DEVID(), so remove it.
+>=20
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 
-On 8/29/24 09:15, Charlie Jenkins wrote:
-> Some applications rely on placing data in free bits addresses allocated
-> by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
-> address returned by mmap to be less than the 48-bit address space,
-> unless the hint address uses more than 47 bits (the 48th bit is reserved
-> for the kernel address space).
-> 
-> The riscv architecture needs a way to similarly restrict the virtual
-> address space. On the riscv port of OpenJDK an error is thrown if
-> attempted to run on the 57-bit address space, called sv57 [1].  golang
-> has a comment that sv57 support is not complete, but there are some
-> workarounds to get it to mostly work [2].
-> 
-> These applications work on x86 because x86 does an implicit 47-bit
-> restriction of mmap() address that contain a hint address that is less
-> than 48 bits.
-> 
-> Instead of implicitly restricting the address space on riscv (or any
-> current/future architecture), a flag would allow users to opt-in to this
-> behavior rather than opt-out as is done on other architectures. This is
-> desirable because it is a small class of applications that do pointer
-> masking.
+This description is inaccurate - this removes both
+cxl_pci_to_cfg_record() (which is unused), and replaces
+cxl_pcie_cfg_record() with PCI_DEVID().
 
-I doubt it's desirable to have different behavior depending on architecture.
-Also you could say it's a small class of applications that need more than 47
-bits.
+The patch itself looks fine.
 
-> This flag will also allow seemless compatibility between all
-> architectures, so applications like Go and OpenJDK that use bits in a
-> virtual address can request the exact number of bits they need in a
-> generic way. The flag can be checked inside of vm_unmapped_area() so
-> that this flag does not have to be handled individually by each
-> architecture. 
-> 
-> Link:
-> https://github.com/openjdk/jdk/blob/f080b4bb8a75284db1b6037f8c00ef3b1ef1add1/src/hotspot/cpu/riscv/vm_version_riscv.cpp#L79
-> [1]
-> Link:
-> https://github.com/golang/go/blob/9e8ea567c838574a0f14538c0bbbd83c3215aa55/src/runtime/tagptr_64bit.go#L47
-> [2]
-> 
-> To: Arnd Bergmann <arnd@arndb.de>
-> To: Richard Henderson <richard.henderson@linaro.org>
-> To: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-> To: Matt Turner <mattst88@gmail.com>
-> To: Vineet Gupta <vgupta@kernel.org>
-> To: Russell King <linux@armlinux.org.uk>
-> To: Guo Ren <guoren@kernel.org>
-> To: Huacai Chen <chenhuacai@kernel.org>
-> To: WANG Xuerui <kernel@xen0n.name>
-> To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> To: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-> To: Helge Deller <deller@gmx.de>
-> To: Michael Ellerman <mpe@ellerman.id.au>
-> To: Nicholas Piggin <npiggin@gmail.com>
-> To: Christophe Leroy <christophe.leroy@csgroup.eu>
-> To: Naveen N Rao <naveen@kernel.org>
-> To: Alexander Gordeev <agordeev@linux.ibm.com>
-> To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-> To: Heiko Carstens <hca@linux.ibm.com>
-> To: Vasily Gorbik <gor@linux.ibm.com>
-> To: Christian Borntraeger <borntraeger@linux.ibm.com>
-> To: Sven Schnelle <svens@linux.ibm.com>
-> To: Yoshinori Sato <ysato@users.sourceforge.jp>
-> To: Rich Felker <dalias@libc.org>
-> To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> To: David S. Miller <davem@davemloft.net>
-> To: Andreas Larsson <andreas@gaisler.com>
-> To: Thomas Gleixner <tglx@linutronix.de>
-> To: Ingo Molnar <mingo@redhat.com>
-> To: Borislav Petkov <bp@alien8.de>
-> To: Dave Hansen <dave.hansen@linux.intel.com>
-> To: x86@kernel.org
-> To: H. Peter Anvin <hpa@zytor.com>
-> To: Andy Lutomirski <luto@kernel.org>
-> To: Peter Zijlstra <peterz@infradead.org>
-> To: Muchun Song <muchun.song@linux.dev>
-> To: Andrew Morton <akpm@linux-foundation.org>
-> To: Liam R. Howlett <Liam.Howlett@oracle.com>
-> To: Vlastimil Babka <vbabka@suse.cz>
-> To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> To: Shuah Khan <shuah@kernel.org>
-> Cc: linux-arch@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-csky@vger.kernel.org
-> Cc: loongarch@lists.linux.dev
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kselftest@vger.kernel.org
-> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-> 
-> Changes in v2:
-> - Added much greater detail to cover letter
-> - Removed all code that touched architecture specific code and was able
->   to factor this out into all generic functions, except for flags that
->   needed to be added to vm_unmapped_area_info
-> - Made this an RFC since I have only tested it on riscv and x86
-> - Link to v1: https://lore.kernel.org/r/20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com
-> 
+Note that I am planning to remove this driver soon anyway.
+
 > ---
-> Charlie Jenkins (4):
->       mm: Add MAP_BELOW_HINT
->       mm: Add hint and mmap_flags to struct vm_unmapped_area_info
->       mm: Support MAP_BELOW_HINT in vm_unmapped_area()
->       selftests/mm: Create MAP_BELOW_HINT test
-> 
->  arch/alpha/kernel/osf_sys.c                  |  2 ++
->  arch/arc/mm/mmap.c                           |  3 +++
->  arch/arm/mm/mmap.c                           |  7 ++++++
->  arch/csky/abiv1/mmap.c                       |  3 +++
->  arch/loongarch/mm/mmap.c                     |  3 +++
->  arch/mips/mm/mmap.c                          |  3 +++
->  arch/parisc/kernel/sys_parisc.c              |  3 +++
->  arch/powerpc/mm/book3s64/slice.c             |  7 ++++++
->  arch/s390/mm/hugetlbpage.c                   |  4 ++++
->  arch/s390/mm/mmap.c                          |  6 ++++++
->  arch/sh/mm/mmap.c                            |  6 ++++++
->  arch/sparc/kernel/sys_sparc_32.c             |  3 +++
->  arch/sparc/kernel/sys_sparc_64.c             |  6 ++++++
->  arch/sparc/mm/hugetlbpage.c                  |  4 ++++
->  arch/x86/kernel/sys_x86_64.c                 |  6 ++++++
->  arch/x86/mm/hugetlbpage.c                    |  4 ++++
->  fs/hugetlbfs/inode.c                         |  4 ++++
->  include/linux/mm.h                           |  2 ++
->  include/uapi/asm-generic/mman-common.h       |  1 +
->  mm/mmap.c                                    |  9 ++++++++
->  tools/include/uapi/asm-generic/mman-common.h |  1 +
->  tools/testing/selftests/mm/Makefile          |  1 +
->  tools/testing/selftests/mm/map_below_hint.c  | 32 ++++++++++++++++++++++++++++
->  23 files changed, 120 insertions(+)
-> ---
-> base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
-> change-id: 20240827-patches-below_hint_mmap-b13d79ae1c55
+> =C2=A0drivers/misc/cxl/vphb.c | 12 +-----------
+> =C2=A0include/misc/cxl.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4 ----
+> =C2=A02 files changed, 1 insertion(+), 15 deletions(-)
+>=20
+> diff --git a/drivers/misc/cxl/vphb.c b/drivers/misc/cxl/vphb.c
+> index 6332db8044bd..1cf614bf104d 100644
+> --- a/drivers/misc/cxl/vphb.c
+> +++ b/drivers/misc/cxl/vphb.c
+> @@ -72,11 +72,6 @@ static void cxl_pci_reset_secondary_bus(struct
+> pci_dev *dev)
+> =C2=A0	/* Should we do an AFU reset here ? */
+> =C2=A0}
+> =C2=A0
+> -static int cxl_pcie_cfg_record(u8 bus, u8 devfn)
+> -{
+> -	return (bus << 8) + devfn;
+> -}
+> -
+> =C2=A0static inline struct cxl_afu *pci_bus_to_afu(struct pci_bus *bus)
+> =C2=A0{
+> =C2=A0	struct pci_controller *phb =3D bus ? pci_bus_to_host(bus) :
+> NULL;
+> @@ -99,7 +94,7 @@ static inline int cxl_pcie_config_info(struct
+> pci_bus *bus, unsigned int devfn,
+> =C2=A0{
+> =C2=A0	int record;
+> =C2=A0
+> -	record =3D cxl_pcie_cfg_record(bus->number, devfn);
+> +	record =3D PCI_DEVID(bus->number, devfn);
+> =C2=A0	if (record > afu->crs_num)
+> =C2=A0		return PCIBIOS_DEVICE_NOT_FOUND;
+> =C2=A0
+> @@ -302,8 +297,3 @@ struct cxl_afu *cxl_pci_to_afu(struct pci_dev
+> *dev)
+> =C2=A0}
+> =C2=A0EXPORT_SYMBOL_GPL(cxl_pci_to_afu);
+> =C2=A0
+> -unsigned int cxl_pci_to_cfg_record(struct pci_dev *dev)
+> -{
+> -	return cxl_pcie_cfg_record(dev->bus->number, dev->devfn);
+> -}
+> -EXPORT_SYMBOL_GPL(cxl_pci_to_cfg_record);
+> diff --git a/include/misc/cxl.h b/include/misc/cxl.h
+> index d8044299d654..5ffa6e02bb07 100644
+> --- a/include/misc/cxl.h
+> +++ b/include/misc/cxl.h
+> @@ -23,10 +23,6 @@
+> =C2=A0/* Get the AFU associated with a pci_dev */
+> =C2=A0struct cxl_afu *cxl_pci_to_afu(struct pci_dev *dev);
+> =C2=A0
+> -/* Get the AFU conf record number associated with a pci_dev */
+> -unsigned int cxl_pci_to_cfg_record(struct pci_dev *dev);
+> -
+> -
+> =C2=A0/*
+> =C2=A0 * Context lifetime overview:
+> =C2=A0 *
 
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
