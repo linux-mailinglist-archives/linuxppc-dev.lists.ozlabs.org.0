@@ -1,74 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-715-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B519638CC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 05:28:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D27AC9638F4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 05:48:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvRYt49N2z2yn9;
-	Thu, 29 Aug 2024 13:28:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvS1x4HhCz2ynn;
+	Thu, 29 Aug 2024 13:48:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4860:4864:20::36"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724902082;
-	cv=none; b=Scgq2PXUX7G0TZVDcDBgEA8YwOimWkpSCJTWLdzsZohqxSqKVVRnNEStjwIzkEp4lQJ2shP2DHSWJSytspH7tihl9338TZQhSl2EzGPqZwm426MN7ULcdOVvt+nV+RgHauR+eNKZVscKEa/03jsK9jyKSahwZepsYVhxf1AXmyPVSljSq3UexYRgfF8NM1q0KrD00n6RtJDU8iN1pCHo4q4uwbtCgrxgizVQaSumIP4n3fE3vU4YWDqrjluPXH05xcu0DcIWvmXXAwxcNtE/ryeTfGJHjghqVLn3SNJck8qXupZfWxQj91AYxwm5iTN2LMhmpKyhVR+L7I0fLDIMFg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:1004:224b::b7"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724903333;
+	cv=none; b=GkAsgWiqCtNFFdcsI9Oslv3GU8wRR1rM6eVe7pW/0ZzO4l/6jzhk50QAelUPtd2tyuDuRB9NTSwC3/2kumIio9/JLvU2uBGViDyard083FyMIZ9Y00g4xP8sqM22+N0zjTJpMbMVM89V3vAa37ZE2rLQHYN3fVFVIaokgCFsol1WI1SgWTlr17BzBuRrrbhbEE0yERBbSNStdbyDyg3kpzvOuJEt9EoZs0vehkPzCGRTA00MrEj1o1rTxDuKEwG8+kHduPyptvl0FKpDNZpcLIvMqgaAJafahDRyHGJ0b/SM+VpuyMzl7tIDayojD2kquHnEeWPPG/wUnAAZnMuo0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724902082; c=relaxed/relaxed;
-	bh=KUSlIPY0I0p/J1gM+q6b9ZwgCjkUVZv6zdCV16DJSmE=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding; b=le1BlwwdxrI9teQIPiPXpzAhf9tbfcIM30zdCNwzMkaTiBLXXanbcNVpIp2iBuzERRezGN5m0h74JABRuZl/1bPhYo42CfIp+fAijSEEu6UnQxH/GisAN5w5s1MJE+tasRnoU9v0DIzfDOd5tdZYdu7zDbSXiBfkB1l8eg6AiIOOreyQNzGsfZXLUKZHWPkcVA2hY8AZlUZQzImF3fo7yajKB+vxezaCxuUlD+7MkC9E29zs+1Fcci4xomkdILS5wBHHqwNM3/iKPP5yk1dhopxenwe/wpBQQ1leNOM5U8pUsTlMF66Krk1ms7twRI5uFts1yYjcVbb7zoIYVgN5zA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=KuNZ+K7w; dkim-atps=neutral; spf=pass (client-ip=2001:4860:4864:20::36; helo=mail-oa1-x36.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+	t=1724903333; c=relaxed/relaxed;
+	bh=n+Lh2vHxUB+86yeUS0d5uwMJVWzCawU4cjiNowF9hs4=;
+	h=X-Greylist:Message-ID:DKIM-Signature:Date:MIME-Version:Subject:To:
+	 Cc:References:X-Report-Abuse:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Migadu-Flow; b=bj5qcC+PqOgLykYQbu0g8JDSeNCa75CaFWAo8rQmue1kYofECcKtscox4+ZwoW37nblZJFz2P6v2s4mbOU3p9VpUN9h26Iz1BQzUgAU5cVwIPsO0xOf1MuhWPOABoWv3zFJWsYRm1RjVXlXoJCO+cqqcqYJM6HOFOHg04X8RCpfW9q+bGq+lJz+IyYMakP0nymPuEAGmzBpbYnfMZSkJgIvFUMOtFA/jKvTbVJVmaxUM6Tj4a/ckRV+r4NYnh/kSds1lex0KYqBR0CNKbCVFtNhUEkC3uI4/KFwABPC2t+V4H4oha3RlU2MUy/9FI07AU63rcn//h+1djKBPiNSKOA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RKYCS/bs; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:1004:224b::b7; helo=out-183.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=KuNZ+K7w;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RKYCS/bs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2001:4860:4864:20::36; helo=mail-oa1-x36.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::b7; helo=out-183.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 545 seconds by postgrey-1.37 at boromir; Thu, 29 Aug 2024 13:48:51 AEST
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [IPv6:2001:41d0:1004:224b::b7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvRYs3KK7z2y8d
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 13:27:59 +1000 (AEST)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-27026393c12so119829fac.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 20:27:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1724902076; x=1725506876; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KUSlIPY0I0p/J1gM+q6b9ZwgCjkUVZv6zdCV16DJSmE=;
-        b=KuNZ+K7wF+VEkRtwBcUBAWk+KNe7KRSOSRndRTlQ3g+ltq+QrrekpNE1fIRsfLwinS
-         3TyREReFOPL467HeY2k+jVxJciiok2N5dIhN2x1T1m/2YhCuJnMZlFtJF5NsD5XoqLMv
-         fWj8ewoycWANxQTBx75VH/UwlInkpg7WfjpL/cvx/H/8+ozyAauZvrrg0++Nqsk0BVYp
-         fhgqujVXJx3e43MEQft05vKbEGUCj5Oq02p+hC8iXs3xOMP7yVZsF7JfKseZI+/jJX+/
-         a1myDMJ5RNqCSRh85RijTnLtuytGfvlTI4ZObd19B9NHweDmq/BAY6qUbudIx/nge1dd
-         kaKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724902076; x=1725506876;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KUSlIPY0I0p/J1gM+q6b9ZwgCjkUVZv6zdCV16DJSmE=;
-        b=fjDlzZsdXB2lejNotuhJtE+xwmWUlXUhmFswdOhCyt//u510gseMvNdbi2s3byzWW0
-         Gaj7q07KxFlQQSlxncGUAthJMw5PbeVy6e0VfGCBRJBGYC3TPr/Os9FI/IQ6wjz9XQqN
-         HG5irszazuQ6NCjZdJU/enOfLJr2hII3kht94o4ZKEkVQYKoK9IXnjtG6/k5GkN00yFU
-         4EPzX3LI5Foe8Bf0MkXxeapMV9jz/HCYKeJZucT9hoA/EBT+cE8XWL2roOKzsAyXiAwH
-         O75GlKrKSBdBpp5eXn66A2fWrrsngwAmfKtPSRbM6lHd/o6kzlStu+iZ7lGdKKl0FwIR
-         182w==
-X-Forwarded-Encrypted: i=1; AJvYcCWYs1CqzuXUTJH5fQghUzXqsDMIAXpfvpmVulU+GPpaEjRrYAG8cYSz49eVVlS6+KdUg40lcSIUdkrBFjw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw+0oDzjxBC2dZlKB8NAFgOmA7bFG0DmdFVCsBw6INZQSE91Bj8
-	a+ENRz12iyttTeuA+Xa7ke7oRQioOm9NG2n9r2Vqhlp9BDhBET+8hUkfcxiTjvY=
-X-Google-Smtp-Source: AGHT+IGZPCEcwowFRJHQOC2QH+v2+Ysm2wJ5TBLKGyXexoQWGql8ItSqdv/XlmWonkjQbasTqI0R6g==
-X-Received: by 2002:a05:6870:2011:b0:25e:1c9d:f180 with SMTP id 586e51a60fabf-277903675a4mr1814959fac.50.1724902075836;
-        Wed, 28 Aug 2024 20:27:55 -0700 (PDT)
-Received: from [10.4.59.158] ([139.177.225.242])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-715e55a4548sm203799b3a.59.2024.08.28.20.27.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Aug 2024 20:27:55 -0700 (PDT)
-Message-ID: <469e0ab5-af2c-4996-bfd4-fe7ab6a7bc8c@bytedance.com>
-Date: Thu, 29 Aug 2024 11:27:46 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvS1v1mLDz2yng
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 13:48:50 +1000 (AEST)
+Message-ID: <7c2237bd-c1eb-4cf6-9135-420a321ebd3b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1724902758;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n+Lh2vHxUB+86yeUS0d5uwMJVWzCawU4cjiNowF9hs4=;
+	b=RKYCS/bs9Fuf2a0LIc6oZEc0Qxnsqv4A/6jg2vqw9A1X/vYr6M0gINoQ8cYiZo68t/9AW/
+	7hTk0h0Q3vTIPdKJW1u/PDgjvwFtRiTbiKd6SkCPS50ico497y8yK/zh+jlcuEuMRbqZOL
+	GN5HEvWBmr2PiMol50Z18Xh9PnBmcMA=
+Date: Thu, 29 Aug 2024 11:39:09 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,217 +51,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/14] mm: pgtable: introduce
- pte_offset_map_{ro|rw}_nolock()
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, muchun.song@linux.dev
-Cc: hughd@google.com, willy@infradead.org, vbabka@kernel.org,
+Subject: Re: [PATCH v2 02/14] arm: adjust_pte() use pte_offset_map_rw_nolock()
+To: David Hildenbrand <david@redhat.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ hughd@google.com, willy@infradead.org, vbabka@kernel.org,
  akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
- peterx@redhat.com, ryan.roberts@arm.com,
- christophe.leroy2@cs-soprasteria.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org
+ peterx@redhat.com, ryan.roberts@arm.com, christophe.leroy2@cs-soprasteria.com
 References: <cover.1724310149.git.zhengqi.arch@bytedance.com>
- <e866151ccd257ca14a9361ba59f8c3086aa76e4f.1724310149.git.zhengqi.arch@bytedance.com>
- <f318f65d-4198-481c-98a0-00415664614c@redhat.com>
- <4481a0e4-a7a5-4223-a8ab-d1215d7c6352@bytedance.com>
- <42aba316-2b01-4fdb-9aff-9e670aac4c6e@redhat.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <42aba316-2b01-4fdb-9aff-9e670aac4c6e@redhat.com>
+ <7915acf5887e7bf0c5cc71ff30ad2fe8447d005d.1724310149.git.zhengqi.arch@bytedance.com>
+ <77f3f5ce-dd12-4ca2-90cd-0f2226fe26ba@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <77f3f5ce-dd12-4ca2-90cd-0f2226fe26ba@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
 
 
-On 2024/8/28 18:48, David Hildenbrand wrote:
-> On 27.08.24 06:33, Qi Zheng wrote:
->> Hi David,
+On 2024/8/26 23:26, David Hildenbrand wrote:
+> On 22.08.24 09:13, Qi Zheng wrote:
+>> In do_adjust_pte(), we may modify the pte entry. At this time, the write
+>> lock of mmap_lock is not held, and the pte_same() check is not performed
+>> after the PTL held. The corresponding pmd entry may have been modified
+>> concurrently. Therefore, in order to ensure the stability if pmd entry,
+>> use pte_offset_map_rw_nolock() to replace pte_offset_map_nolock(), 
+>> and do
+>> pmd_same() check after holding the PTL.
 >>
->> On 2024/8/26 23:21, David Hildenbrand wrote:
->>> On 22.08.24 09:13, Qi Zheng wrote:
->>>> Currently, the usage of pte_offset_map_nolock() can be divided into the
->>>> following two cases:
->>>>
->>>> 1) After acquiring PTL, only read-only operations are performed on the
->>>> PTE
->>>>      page. In this case, the RCU lock in pte_offset_map_nolock() will
->>>> ensure
->>>>      that the PTE page will not be freed, and there is no need to worry
->>>>      about whether the pmd entry is modified.
->>>
->>> There is also the usage where we don't grab the PTL at all, and only do
->>> a racy (read-only) lookup.
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+
+>> ---
+>>   arch/arm/mm/fault-armv.c | 9 ++++++++-
+>>   1 file changed, 8 insertions(+), 1 deletion(-)
 >>
->> IIUC, pte_offset_map() should be used instead of pte_offset_map_nolock()
->> in this case.
-> 
-> Yes, but the filemap.c thingy conditionally wants to lock later. But I 
-> agree that pte_offset_map() is better when not even wanting to lock.
-> 
-> [...]
-> 
->>>> accessor functions:
->>>>     - pte_offset_map_nolock()
->>>>        maps PTE, returns pointer to PTE with pointer to its PTE table
->>>>        lock (not taken), or returns NULL if no PTE table;
->>>
->>> What will happen to pte_offset_map_nolock() after this series? Does it
->>> still exist or will it become an internal helper?
->>
->> I choose to remove it completely in [PATCH v2 13/14].
->>
-> 
-> Ah, great.
-> 
-> [...]
-> 
->>> If someone thinks not requiring a non-NULL pointer is better, please
->>> speak up, I'm not married to that idea :)
->>>
->>>> +    pte = __pte_offset_map(pmd, addr, &pmdval);
->>>> +    if (likely(pte))
->>>> +        *ptlp = pte_lockptr(mm, &pmdval);
->>>> +    *pmdvalp = pmdval;
->>>> +    return pte;
->>>> +}
->>>> +
->>>>    /*
->>>>     * pte_offset_map_lock(mm, pmd, addr, ptlp), and its internal
->>>> implementation
->>>>     * __pte_offset_map_lock() below, is usually called with the pmd
->>>> pointer for
->>>> @@ -356,6 +383,22 @@ pte_t *pte_offset_map_nolock(struct mm_struct
->>>> *mm, pmd_t *pmd,
->>>>     * recheck *pmd once the lock is taken; in practice, no callsite
->>>> needs that -
->>>>     * either the mmap_lock for write, or pte_same() check on contents,
->>>> is enough.
->>>>     *
->>>> + * pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like
->>>> + * pte_offset_map(); but when successful, it also outputs a pointer
->>>> to the
->>>> + * spinlock in ptlp - as pte_offset_map_lock() does, but in this case
->>>> without
->>>> + * locking it.  This helps the caller to avoid a later
->>>> pte_lockptr(mm, *pmd),
->>>> + * which might by that time act on a changed *pmd:
->>>> pte_offset_map_ro_nolock()
->>>> + * provides the correct spinlock pointer for the page table that it
->>>> returns.
->>>> + * For readonly case, the caller does not need to recheck *pmd after
->>>> the lock is
->>>> + * taken, because the RCU lock will ensure that the PTE page will not
->>>> be freed. > + *
->>>> + * pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is
->>>> like
->>>> + * pte_offset_map_ro_nolock(); but when successful, it also outputs 
->>>> the
->>>> + * pdmval. For cases where pte or pmd entries may be modified, that
->>>> is, maywrite
->>>> + * case, this can help the caller recheck *pmd once the lock is
->>>> taken. In some
->>>> + * cases, that is, either the mmap_lock for write, or pte_same()
->>>> check on
->>>> + * contents, is also enough to ensure that the pmd entry is stable.
->>>> + *
->>>>     * Note that free_pgtables(), used after unmapping detached vmas, or
->>>> when
->>>>     * exiting the whole mm, does not take page table lock before
->>>> freeing a page
->>>>     * table, and may not use RCU at all: "outsiders" like khugepaged
->>>> should avoid
->>>
->>> In general to me a step into the right direction. Likely the
->>> documentation could be further clarified in some aspects:
->>>
->>> Like that the use of pte_offset_map_ro_nolock() does not allow to easily
->>> identify if the page table was replaced in the meantime. Even after
->>> grabbing the PTL, we might be looking either at a page table that is
->>> still mapped or one that was unmapped and is about to get freed. But for
->>> R/O access this is usually sufficient AFAIUK.
->>>
->>> Or that "RO" / "RW" expresses the intended semantics, not that the
->>> *kmap* will be RO/RW protected.
->>
->> How about the following:
->>
->> pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like
->> pte_offset_map(); but when successful, it also outputs a pointer to the
->> spinlock in ptlp - as pte_offset_map_lock() does, but in this case
->> without locking it.  This helps the caller to avoid a later
->> pte_lockptr(mm, *pmd), which might by that time act on a changed *pmd:
->> pte_offset_map_ro_nolock() provides the correct spinlock pointer for the
->> page table that it returns. Even after grabbing the spinlock, we might
->> be looking either at a page table that is still mapped or one that was
->> unmapped and is about to get freed. But for R/O access this is usually
->> sufficient AFAIUK.
-> 
-> Drop the "AFAIUK" :)
-> 
-> "For R/O access this is sufficient."
+>> diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
+>> index 831793cd6ff94..de6c7d8a2ddfc 100644
+>> --- a/arch/arm/mm/fault-armv.c
+>> +++ b/arch/arm/mm/fault-armv.c
+>> @@ -94,6 +94,7 @@ static int adjust_pte(struct vm_area_struct *vma, 
+>> unsigned long address,
+>>       pud_t *pud;
+>>       pmd_t *pmd;
+>>       pte_t *pte;
+>> +    pmd_t pmdval;
+>>       int ret;
+>>         pgd = pgd_offset(vma->vm_mm, address);
+>> @@ -112,16 +113,22 @@ static int adjust_pte(struct vm_area_struct 
+>> *vma, unsigned long address,
+>>       if (pmd_none_or_clear_bad(pmd))
+>>           return 0;
+>>   +again:
+>>       /*
+>>        * This is called while another page table is mapped, so we
+>>        * must use the nested version.  This also means we need to
+>>        * open-code the spin-locking.
+>>        */
+>> -    pte = pte_offset_map_nolock(vma->vm_mm, pmd, address, &ptl);
+>> +    pte = pte_offset_map_rw_nolock(vma->vm_mm, pmd, address, 
+>> &pmdval, &ptl);
+>>       if (!pte)
+>>           return 0;
+>>         do_pte_lock(ptl);
+>> +    if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+>> +        do_pte_unlock(ptl);
+>> +        pte_unmap(pte);
+>> +        goto again;
+>> +    }
+>>         ret = do_adjust_pte(vma, address, pfn, pte);
+>
+> Looks correct to me, but I wonder why the missing pmd_same check is 
+> not an issue so far ... any experts? THP on __LINUX_ARM_ARCH__ < 6 is 
+> not really used/possible?
 
-OK.
+I think it is because it does not support THP.
 
-> 
->>
->> pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is like
->> pte_offset_map_ro_nolock(); but when successful, it also outputs the
->> pdmval. For R/W access, the callers can not accept that the page table
->> it sees has been unmapped and is about to get freed. The pmdval can help
->> callers to recheck pmd_same() to identify this case once the spinlock is
->> taken. For some cases where exclusivity is already guaranteed, such as
->> holding the write lock of mmap_lock, or in cases where checking is
->> sufficient, such as a !pte_none() pte will be rechecked after the
->> spinlock is taken, there is no need to recheck pdmval.
-> 
-> Right, using pte_same() one can achieve a similar result, assuming that 
-> the freed page table gets all ptes set to pte_none().
-> 
-> page_table_check_pte_clear_range() before pte_free_defer() in 
-> retract_page_tables/collapse_pte_mapped_thp() sanity checks that I think.
-> 
-> In collapse_huge_page() that is not the case. But here, we also 
-> currently grab all heavily locks, to prevent any concurrent page table 
-> walker.
+TRANSPARENT_HUGEPAGE depends on HAVE_ARCH_TRANSPARENT_HUGEPAGE which
+depends on ARM_LPAE. However, the Kconfig says ARM_LPAE is only
+supported on ARMv7 processor.
 
-Yes.
+config ARM_LPAE
+          bool "Support for the Large Physical Address Extension"
+          depends on MMU && CPU_32v7 && !CPU_32v6 && !CPU_32v5 && \
+                  !CPU_32v4 && !CPU_32v3
+          select PHYS_ADDR_T_64BIT
+          select SWIOTLB
+          help
+            Say Y if you have an ARMv7 processor supporting the LPAE page
+            table format and you would like to access memory beyond the
+            4GB limit. The resulting kernel image will not run on
+            processors without the LPA extension.
 
-> 
->>
->> Note: "RO" / "RW" expresses the intended semantics, not that the *kmap*
->> will be RO/RW protected.
-> 
-> 
-> Good. Please also incorporate the feedback from Muchun.
+            If unsure, say N.
 
-OK, I will change it in v3 to the following:
+Thanks.
+>
+> Acked-by: David Hildenbrand <david@redhat.com>
+>
 
-pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like
-pte_offset_map(); but when successful, it also outputs a pointer to the
-spinlock in ptlp - as pte_offset_map_lock() does, but in this case
-without locking it.  This helps the caller to avoid a later
-pte_lockptr(mm, *pmd), which might by that time act on a changed *pmd:
-pte_offset_map_ro_nolock() provides the correct spinlock pointer for the
-page table that it returns. Even after grabbing the spinlock, we might
-be looking either at a page table that is still mapped or one that was 
-unmapped and is about to get freed. But for R/O access this is
-sufficient. So it is only applicable for read-only cases where any 
-modification operations to the page table are not allowed even if
-the corresponding spinlock is held afterwards.
-
-pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is like
-pte_offset_map_ro_nolock(); but when successful, it also outputs the
-pdmval. It is applicable for may-write cases where any modification
-operations to the page table may happen after the corresponding spinlock
-is held afterwards. But the users should make sure the page table is
-stable like holding mmap_lock for write or checking pte_same() or
-checking pmd_same() by using the output pmdval before performing the
-write operations.
-
-Note: "RO" / "RW" expresses the intended semantics, not that the *kmap*
-will be read-only/read-write protected.
-
-
-> 
 
