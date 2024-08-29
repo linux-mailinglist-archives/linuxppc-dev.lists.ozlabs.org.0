@@ -1,66 +1,120 @@
-Return-Path: <linuxppc-dev+bounces-763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6EB964C36
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 18:55:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1B3964CE1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 19:33:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvnTj5NnNz2yvs;
-	Fri, 30 Aug 2024 02:55:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvpKT3qbnz2ywh;
+	Fri, 30 Aug 2024 03:33:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724950537;
-	cv=none; b=FEIDaZOL50QLj29fkH+XisIcb2mzmWVqByAnDNtd6mWSZAl1fnBwng4l/23wSlGgnugIvfCMZ7pYLO96KbjMFBZXd92VpA5BNmlf9UND4iQFr2ZqWDXdZxey6r+9B3YXzb/SmwEyT4sMyl7P6rzsrl97ouQZ7GH1k2ZhsLunyFaa9oE+U7hqqh+NL6L1ZkURJAvb2+leuvcaDKTdF/7aHTyt8fVQhxranLc155EuFb7XwndfV5afPmizwkvjKp6fE+rEfjrhbBTQkGXLTJ9pX7ruSgiK7yAqA567AMrAqolY+BSdyTkZT/lOsz02PnxWbwDW0wXNVumTLrIq9tHBhw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724952813;
+	cv=none; b=QtcRLqR2OTUbpQcOBHmKmJW9JBRgfgru3Rz4kXDrQwA/xtjKYSV3c0/vqhZDZ+hkkLRzyvgwLl2FwreAPvvYv1qjJku07wvS7F9Od3g9UB03MOoYsulB/VE9DSZjcSrJvykOUoNvHAO7efgUmiw4MQr4p5fXtTVRdXAn3be6f3y1CASv2pVctn75jspMPH0XGL3W3AupWpnXtowN8kiTEnvm0TMGaaT7jtTP+klPcgzKtFYH1NlyQKQLfsvw1n+cQ9AcNsiIduOFSLD/l0JWP2nR2YOOPBLCX3jaJhwQ/c76/imxrGgKkEnVnIqmtQN2TtxXDoW0QQ2OWP086NNmQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724950537; c=relaxed/relaxed;
-	bh=p44OA7JFsgyeTtyzt/nlN43h3c/yeUSNVzwlj+9qeIo=;
-	h=X-Greylist:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=Sclwf1m5114H1dCI340gkXPb08jswee0DdZmaKLIMR6WADgSMq7pELqsi9jfGwht+RhpVs//nkFxPfPq95fvCgdRAF/YyeT8G90k9xtcKrJ9e8HGgNYDqgMLak7ZrYR/CEkiZ2hFjmA3mVJVmvo5Ub6tk2nKngPEUwUh2gB4ze5ACwqUNN0gBzA2K8zLlU2LiismXzxmn5RKmytS0qAPS1v/sMlVxxJZgbxVQKRE3MEeEsykLJNjgW+RK/1wexTKB0p4rqcnsiFwlSLgd3hy8wMuKgErYOy8WGfok0VBh5/9LucMb4cKNORriGu2um5NSfMP8lMZi8/UVS7vBCrnWg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EWILAO8y; dkim-atps=neutral; spf=pass (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1724952813; c=relaxed/relaxed;
+	bh=ShOV+xhv6/I7AhDzzz24YoQnvepxBGugrDU9V6pmXjY=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=ApVIYzga4OqWgpO4dMalxDoXAFJRzGHIUXkXQAdC11kMJWcmHj6SE09OPkdkB8r2rXWrOgFS7fW5ff6Wx40TqMg6Z63aBU7hoehKUX+QkycoPU/xnIvjMFPcrAiMdXa0ui1+X6V04Jmj2/h459vWx4sAftQuvLPL1H6pF0ibDjVy0SlqtVFgLYwf8ztWuMwWpVm9uimh72hlckf3e6B5ZtLHKljx414mKjIeAYMNviKhhF10n9W+rRrZ5qrb8Rs67H/rciv2d3bblGh/5/Bbu869UUKgiMWQe6zN1ZS5gid2EStC/s+B/u6BfAOotk7TGT5EO7g1uevhqZDy5sm+kA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Dwx+gtDZ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EWILAO8y;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Dwx+gtDZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Fri, 30 Aug 2024 02:55:36 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvnTh1GRJz2ytJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 02:55:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724950537; x=1756486537;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ECTcIF0xxb8SZM8YCfmHs42MeG76z8YoRXRULe0ZOL0=;
-  b=EWILAO8y0ivPqlEQUh7e9IGQMsu9WP024f9G+wG1oFOYMOGOZ/iv2G9R
-   E+N1fw8iifDM52r4eBz6sS4AwLRyEHQzOyWXiMVZ/sWkHmxDJ3oacsSQ8
-   3DvlRysK2m2RGYHIKlhGyc6OrjP0BPlR0x9+ecYuwE38fBAFDbbWRu8jr
-   8fC5/blgvSrTsTDihBXvZPUE6UglIfKBI8vBV8DcMF/sif+Srcg5il+/D
-   E18wHNhSCTZnbDwJ7gmPs18vGNX6hgYv5TDMTGfzaI50CwVDPgF6kM+Wd
-   yHSf0UcVCyraxir2ACsLkM4m/YGooivDZI6LDOxV03dPnrc9AY9HfDt9r
-   Q==;
-X-CSE-ConnectionGUID: 4zrWEGLoTfKTpH1k3u2RrQ==
-X-CSE-MsgGUID: SwgP8Zu2Qw+dPAN1Vh/ssA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="34724899"
-X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; 
-   d="scan'208";a="34724899"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 09:54:26 -0700
-X-CSE-ConnectionGUID: P97BROI6SnmMUbj7R/2YUg==
-X-CSE-MsgGUID: Ykbtf9D6Se20V7CYNg9rEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; 
-   d="scan'208";a="68308084"
-Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.124.220.59]) ([10.124.220.59])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 09:54:23 -0700
-Message-ID: <4219f619-4b32-40bc-85b8-cb11d76fde98@intel.com>
-Date: Thu, 29 Aug 2024 09:54:08 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvpKS6mrhz2yt0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 03:33:31 +1000 (AEST)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-7ae3d7222d4so627500a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 10:33:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724952809; x=1725557609; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ShOV+xhv6/I7AhDzzz24YoQnvepxBGugrDU9V6pmXjY=;
+        b=Dwx+gtDZcyicqsWEYzhor7ZIlvh6DPZ+ndaSr28vphQnpzrbUaX5b7Nat+G6YjA5ys
+         CXKpBxbuAdda1T0/5EsaNWyqDmcAz0AlyXOb5p3ULAdi5xGux7fKIckfU2sYzaf+0Og1
+         Hs5TsaXwv3lnnugpDLh7+iIBgCcDuEHGjN1b8KW9iE65OwCZUBIkUFviPsrhR19vBZkW
+         Jaj41rr0axLSi3RRJMc15hnt4S8ZmZVdcNDaURyaBlJ+KQ+L69fOMCBlMHIr1S/G1auF
+         jq/7/TBlfpJTFJUKlVXCw6zxftS9fr+XP6IlusviOD4AvJRl+fhzZot9owEGaLf7WUk5
+         r42A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724952809; x=1725557609;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ShOV+xhv6/I7AhDzzz24YoQnvepxBGugrDU9V6pmXjY=;
+        b=cgXC+qoYlpL6aAgK79BRjX3jrjXJQ+x2zaoW5It6tikBJ9jqYHXsee7FNjhjehRFKM
+         7fQP+QLQvID0fUuXxqZAM9ate5tZ7OPPUbC5Le+vtNX5HVYOR/fsph28Cp7fRcfaQj1Y
+         Z2tu6HaNYOoZoIjVnqk2uRoceIbScPp4KSx5vY+J8YQuOwWKIk/0CUJ1fAF2cTSraqwx
+         qw/2NWA8MpSxC6wvRDYEpve7XoFd3ahP8pPuJQDmSi5N3X7WzNqcnK4bElFHfXGHt+lW
+         NlOzwFfYvzNt2Rme4KJwOVx+Q5e1+l88FfN/jK/sLzU+pC/f/0/7u9HqPrBD7FAcHQ4F
+         UxAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmPMaYyWazF/4NUgKAt7suiEmwhRnoWrLDvScKLZbJvj8QofoDHWl67C19JH084ZuNrGdk4ta/hEFEPjs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxt7Hin72af87MSfG5Fzb3RkUwd3IvzzRv/ukKYaJCxTTjFjYLK
+	mulpdnZQod2ksWnAjd3rUv1eVmfZwcDUPU7dR1W2EW2hc8HqjZelh4D0G0CQNSw=
+X-Google-Smtp-Source: AGHT+IEMMPSZiUHtBfNuQb92KkzHdlzWvSIVDrDVVbnqmIDING28StXdegl4Q9VHUGwvTGBDq12VFQ==
+X-Received: by 2002:a17:90b:524a:b0:2d3:90e1:41c7 with SMTP id 98e67ed59e1d1-2d85638414emr3575500a91.31.1724952808963;
+        Thu, 29 Aug 2024 10:33:28 -0700 (PDT)
+Received: from ghost ([2601:647:6700:64d0:c81:fe51:78cb:fc02])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d85b0fdf44sm1949050a91.6.2024.08.29.10.33.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Aug 2024 10:33:28 -0700 (PDT)
+Date: Thu, 29 Aug 2024 10:33:22 -0700
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC v2 0/4] mm: Introduce MAP_BELOW_HINT
+Message-ID: <ZtCw4vgonbJzV1xs@ghost>
+References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
+ <ZtAxwJFH_hAh1BPG@tiehlicka>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,109 +124,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/16] mm: Introduce MAP_BELOW_HINT
-To: Charlie Jenkins <charlie@rivosinc.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Russell King <linux@armlinux.org.uk>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Shuah Khan <shuah@kernel.org>,
- Alexandre Ghiti <alexghiti@rivosinc.com>, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com>
- <fd1b8016-e73d-4535-9c67-579ab994351f@intel.com> <Zs+FYbII0ewwdisg@ghost>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <Zs+FYbII0ewwdisg@ghost>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZtAxwJFH_hAh1BPG@tiehlicka>
 
-On 8/28/24 13:15, Charlie Jenkins wrote:
-> A way to restrict mmap() to return LAM compliant addresses in an entire
-> address space also doesn't have to be mutually exclusive with this flag.
-> This flag allows for the greatest degree of control from applications.
-> I don't believe there is additionally performance saving that could be
-> achieved by having this be on a per address space basis.
+On Thu, Aug 29, 2024 at 10:30:56AM +0200, Michal Hocko wrote:
+> On Thu 29-08-24 00:15:57, Charlie Jenkins wrote:
+> > Some applications rely on placing data in free bits addresses allocated
+> > by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
+> > address returned by mmap to be less than the 48-bit address space,
+> > unless the hint address uses more than 47 bits (the 48th bit is reserved
+> > for the kernel address space).
+> > 
+> > The riscv architecture needs a way to similarly restrict the virtual
+> > address space. On the riscv port of OpenJDK an error is thrown if
+> > attempted to run on the 57-bit address space, called sv57 [1].  golang
+> > has a comment that sv57 support is not complete, but there are some
+> > workarounds to get it to mostly work [2].
+> > 
+> > These applications work on x86 because x86 does an implicit 47-bit
+> > restriction of mmap() address that contain a hint address that is less
+> > than 48 bits.
+> > 
+> > Instead of implicitly restricting the address space on riscv (or any
+> > current/future architecture), a flag would allow users to opt-in to this
+> > behavior rather than opt-out as is done on other architectures. This is
+> > desirable because it is a small class of applications that do pointer
+> > masking.
+> 
+> IIRC this has been discussed at length when 5-level page tables support
+> has been proposed for x86. Sorry I do not have a link handy but lore
+> should help you. Linus was not really convinced and in the end vetoed it
+> and prefer that those few applications that benefit from greater address
+> space would do that explicitly than other way around.
 
-I agree with you in general.  The MAP_BELOW_HINT _is_ the most flexible.
- But it's also rather complicated.
+I believe I found the conversation you were referring to. Ingo Molnar
+recommended a flag similar to what I have proposed [1]. Catalin
+recommended to make 52-bit opt-in on arm64 [2]. Dave Hansen brought up
+MPX [3].
 
-My _hope_ would be that a per-address-space property could share at
-least some infrastructure with what x86/LAM and arm/TBI do to the
-address space.  Basically put the restrictions in place for purely
-software reasons instead of the mostly hardware reasons for LAM/TBI.
+However these conversations are tangential to what I am proposing. arm64
+and x86 decided to have the default address space be 48 bits. However
+this was done on a per-architecture basis with no way for applications
+to have guarantees between architectures. Even this behavior to restrict
+to 48 bits does not even appear in the man pages, so would require
+reading the kernel source code to understand that this feature is
+available. Then to opt-in to larger address spaces, applications have to
+know to provide a hint address that is greater than 47 bits, mmap() will
+then return an address that contains up to 56 bits on x86 and 52 bits on
+arm64. This difference of 4 bits causes inconsistency and is part of the
+problem I am trying to solve with this flag.
 
-Lorenzo also raised some very valid points about a having a generic
-address-restriction ABI.  I'm certainly not discounting those concerns.
-It's not something that can be done lightly.
+I am not proposing to change x86 and arm64 away from using their opt-out
+feature, I am instead proposing a standard ABI for applications that
+need some guarantees of the bits used in pointers.
+
+- Charlie
+
+Link: https://lore.kernel.org/lkml/20161209050130.GC2595@gmail.com/ [1]
+Link: https://lore.kernel.org/lkml/20161209105120.GA3705@e104818-lin.cambridge.arm.com/
+[2]
+Link:
+https://lore.kernel.org/lkml/a2f86495-b55f-fda0-40d2-242c45d3c1f3@intel.com/
+[3]
+
+> 
+> -- 
+> Michal Hocko
+> SUSE Labs
 
