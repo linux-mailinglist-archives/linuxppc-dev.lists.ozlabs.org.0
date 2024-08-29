@@ -1,76 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-724-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-725-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33AB963C74
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 09:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4ED963C79
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 09:16:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvXdR394pz2ysh;
-	Thu, 29 Aug 2024 17:16:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvXdT0MK5z2ytR;
+	Thu, 29 Aug 2024 17:16:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::433"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724915787;
-	cv=none; b=nkEN/QOLMs3+8+cYnl9QRAFUseWvETeXRL7KN8jRLBzYObY1rB0la6T/aQYl7yCMpdAKhji8NDG+AXBJHlGLbmHAUUR5Z8tUS4Mo8EFUJHT0DJ04ZnA5JeJo1GmIADS24vLACfABv6hovXJNbmeRqMuS/Z3ci51arsAqZ3Jm0N6kw9fyKbV9MWedOEB6obuO7ncYVkbrXquckprrIJHrLSKSYeYD3NLErCplT5VGIm9ZeGaClZgSEWE1uHz5Vg7Hb3YVBRRwvGgrvEX5cdWFtqwH5k6lSFhlUtMhxjeYN1V/xECc/UDcuu8PG6JIsfOr3dKbffn+pw4bHTDJgG6X8w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724915789;
+	cv=none; b=hEiJpYjM3Kaz+oem1+G3JRl9AydkoHJG6cbBbjcGfWBtAXvJHuvIU0OWaTCfbIThra2jooU9Ppsv+4VXGCwLFG3K/PQa4H/3DlRl2uZCPqlePzrWKpuesayuNO5+9nHnNa3qgMnALrvw/aw35NFJtTc9kylI/DhwPR9iGX5wr4ddwol3CNYj5NdmCVjnFxczZif9vz170FFaC1WLbRGyv6nn82Ac/+gkiZL6tiWkm9j25vlX3Gp7J/qGE0LiVImXijLySH5D+xYN18tzuVL4G8pvvK94YYE4BTa/8nnAetIHr/dut9kM9LRtsJ22UACs9YoJwOI0c5Y9fP5yuSq8Lg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724915787; c=relaxed/relaxed;
-	bh=eRZz0v4roamBPZuEY8lRo6reatKDFS+11+O4EIK+5eU=;
+	t=1724915789; c=relaxed/relaxed;
+	bh=9klKwS2bfsiGNUk5X0TeI2il7xQjjU59nEcVHrUHGMg=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
 	 X-Received:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key; b=aANleNjL5F2l23xh2QF/306ajB+Y0VNycnDIepsl9Xl40RjwN44kJXKpn4LkatUeV4sLpUKte0X7gG8IVBy5Q8mw206MuAKL0gWwO2+LhfRkwsgIo5abHrcWrghTBC3xHehQ6GOwcd79QevGbZx6c2snOtbvdaKQ8LiAAS1sKLvA27Lb5dqDGuWNb/ShHom8E3vRQFgxt2CR+QmzWpQVGBBJ56MdD8ZIUQGQrBypq3sLCJ/4OxjWYArlHuo+VtumELQma7119plj+d7/V62W2K61uZ4gt915UyMh/5HHpXP7aFdwsp9JE7+DVrPDzcBu6JxWscRxciHwryE5BHOsKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=WKJ9GDrV; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
+	 X-Mailer:X-Developer-Signature:X-Developer-Key; b=Ki0V8X/8KbJWUW3gx6r5HHP610lZhdW3YFt93Pd7E2N0671fl25ANa/yA9TGlUM1fyeWWcZERjaotnH9laLT+74d2wk2Dq58EC+bQj0MZkqVLa/NVB63GqyywY/bMcuNFdGyu2OY7pNrqodlkAXQl43yPSReQyZzeKV4yOmxW6qiXTGkMwi1TJTafZiYbPf3d8ypM8spGg2aoChH2sr8VYjZ701SQKpNmJU4gJMAO6TYqOz4oP4/ey1HPePvJwPYLqKOSIGvYkvfSPCfVI4ViE8o3pf+QXR/Oa+NCe4+OOFYxcs7g3NplJ0dGXhl+S921ullrETOT7VG5Lrvcyyk5g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ar5n1fvH; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=WKJ9GDrV;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ar5n1fvH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvXdQ4s0Hz2xLR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 17:16:26 +1000 (AEST)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-71423704ef3so259604b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 00:16:26 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvXdS5g5Sz2xLR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 17:16:28 +1000 (AEST)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-715c160e231so304497b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 00:16:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724915783; x=1725520583; darn=lists.ozlabs.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724915787; x=1725520587; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=eRZz0v4roamBPZuEY8lRo6reatKDFS+11+O4EIK+5eU=;
-        b=WKJ9GDrVvIJa8A7GtByJz2VgYL57aMXxAkE1BIjCxwqqpeI5TZZPOhWbQ/Za0vScLq
-         O3NlGudOYOJ24Xq2MYR3/xFHfRbIwoFUIb8aJAD1rR2wF2X+q+DLX9aUNMvVNdSN2GBW
-         WwX884ACkNXz9w0sdleIZUos20yeuzaTBU7Dmm8inxhYCpOj7nfeEYuB8Z73xj/lUpEM
-         6PS/lQyyU6nTa+2vCMioZHRWEnWS3zL1Hq2WidLf8i/m0sHPgiHyqa2fcgSyurKVc2+t
-         c/AVvuG4eRERS1Tw2tdp9is6qK14/XBe+S6p4Fz48wdBuS+VPoPGnfzFihDUty18PK1T
-         pnVg==
+        bh=9klKwS2bfsiGNUk5X0TeI2il7xQjjU59nEcVHrUHGMg=;
+        b=ar5n1fvHS9l3lknEJXSrEFDKOg9hdJaHFgF/aLAojsk+T+/Z0qxiwB6fGmej4tSoZX
+         8DtzDmoh7LAGDyoAjMrzPvTuUz0ZpXWI7U9pl75Hl0QLxMp2vjgR2iLC7XMMjzWcHyqL
+         B/HIaZ2fvf3V42mzTsBD/1vhf+2r6T04W2AuThgixLA9B8+3rjdCpCh2Cn677b7QoYKY
+         I0tVlTfFVmFuuHMlWeXF7X4A0k+ZqdFWBRGo+ir15atxsKT83vF2UjwxIkZTFnv1JYZo
+         coM8tHdmiRFRpXWLxCnHbf9JdlwEH7qRYjXDh3ujdwsed+K6Y7CtoZfN2+1DKzL5M7PK
+         zaOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724915783; x=1725520583;
+        d=1e100.net; s=20230601; t=1724915787; x=1725520587;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eRZz0v4roamBPZuEY8lRo6reatKDFS+11+O4EIK+5eU=;
-        b=oFrsVNSfrd0I5F+Jq7i73zP/X+KWhCtJppgfunxk6AIucXd/6LhA1UUdWr0VLhvhkX
-         O/pdT9rH/d1maBiawIHW6lCytTjcb2beWqcD1VMi2tEpLbqKKs9brpHAUrvrVyO2sYW4
-         dpiwp4pxvl54uE8cej/6efQ+uB+zFs+5nt0CRpkBIXIgcJCx4lnO+rQ9tRb6Gb9OkG1s
-         mvS15oNmEua/74xFj7x1a4BsdZK0zGX+iP1lt9ewpHgtcDXc+rOfu4nrVP5hJ7ZLE3sW
-         hRIXAgGp9CAocTG7PqEsD+oka99BYoel5AKJaj4TwZHskI+S98rnld3szRzXj47vKQF7
-         c+dg==
-X-Forwarded-Encrypted: i=1; AJvYcCUzOclJGvPDuWCzU7dYr1LjtZCOGz+JoK5lZWd3WqVdg2pZuA0d1TkFEEqCh7n6o9rJaj5HnD2wM4DCiy0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzmBs8msAT30jXPMnDpc88zIXfc2MgeliGXS3sFYjzaAnm6AUAC
-	LSP5mIHyUzci8aOEfzbSRe0a5H4z94jMW1DuqveY4Bfbf97oE3vDNmEAqBqfLsk=
-X-Google-Smtp-Source: AGHT+IESlo3+HNMz8Vyf9gnK2kr34iORO0t8ZckMgQQJOrmm4rJ0EngcQswLax6rU2xQbGZPh7/0eg==
-X-Received: by 2002:a05:6a20:6f88:b0:1c4:7dbc:d21a with SMTP id adf61e73a8af0-1cce104dce4mr1887803637.32.1724915783368;
-        Thu, 29 Aug 2024 00:16:23 -0700 (PDT)
+        bh=9klKwS2bfsiGNUk5X0TeI2il7xQjjU59nEcVHrUHGMg=;
+        b=evfxblSm91lZ8cuwq4LcZUFoe0TOaFPNQRFFFVcbDJOswd5BxmQHA1qpVky57+uN94
+         KB+HTJdx8lp2fDUNeSL+0IYO4HZkEmhFCrRy4KMi5DF69mr6A78BkZRpyv+b4STmgNjq
+         SdBlOZ2QhmIjwpTIywjuGB4T7aYsuEjxXrEIlyBoQsVzR/xvrUhRN3+LIFUjxPWwcstX
+         XfgefIpLweT7OQNhLa86YCOhAErNy/kXYtY7k6/LRyFddCbjuHilLP2gH8gPAQKdZTi2
+         EfOAttfKCutFOCNsgpAj70IrI9LhKdBwBpfbGpkLssSv1evNhzVOF839r2hKR70LMDxp
+         URuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxAuEBWN43kw+q9IZb0yMkWzfBdKWVYky0rnA8YFFudWjv+jopCWaL53T+TOwRbE1OJk1DOC75oXqRZl0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw6nciJpVc6C9BSd/L9eZmkhjkV72/vdKgPPTXKhy4uOFXV7npE
+	C4lRxwgba24L57h1n30l6WwkqdyHSxVgh5HVqv6xpKwX/hJ81AihLshhzYVsuqU=
+X-Google-Smtp-Source: AGHT+IF3t2cjexZNLvhhEG5lVGM8VXbW+pDj1JAzDu87zeFwskGcSX3PJG32Vb5o0zHIzYY5Gmbt2A==
+X-Received: by 2002:a05:6a20:e196:b0:1be:c4bb:6f31 with SMTP id adf61e73a8af0-1cce1011dd6mr2308343637.18.1724915786799;
+        Thu, 29 Aug 2024 00:16:26 -0700 (PDT)
 Received: from charlie.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d22e9bef08sm581976a12.58.2024.08.29.00.16.20
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d22e9bef08sm581976a12.58.2024.08.29.00.16.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Aug 2024 00:16:22 -0700 (PDT)
+        Thu, 29 Aug 2024 00:16:26 -0700 (PDT)
 From: Charlie Jenkins <charlie@rivosinc.com>
-Date: Thu, 29 Aug 2024 00:16:00 -0700
-Subject: [PATCH RFC v2 3/4] mm: Support MAP_BELOW_HINT in
- vm_unmapped_area()
+Date: Thu, 29 Aug 2024 00:16:01 -0700
+Subject: [PATCH RFC v2 4/4] selftests/mm: Create MAP_BELOW_HINT test
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,7 +81,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240829-patches-below_hint_mmap-v2-3-638a28d9eae0@rivosinc.com>
+Message-Id: <20240829-patches-below_hint_mmap-v2-4-638a28d9eae0@rivosinc.com>
 References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
 In-Reply-To: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
 To: Arnd Bergmann <arnd@arndb.de>, 
@@ -123,41 +122,74 @@ Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
  sparclinux@vger.kernel.org, linux-mm@kvack.org, 
  linux-kselftest@vger.kernel.org, Charlie Jenkins <charlie@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=991; i=charlie@rivosinc.com;
- h=from:subject:message-id; bh=awlA0FQ8vwXq3Nn6i3BedGsUxTSd4n1W8+rk6Ti/shY=;
- b=owGbwMvMwCHWx5hUnlvL8Y3xtFoSQ9oFBUtNRaX7W4IPbnI+Ms3hivNnCcHEiLSn/wN2Mfr8Y
- bUwSP3TUcrCIMbBICumyMJzrYG59Y5+2VHRsgkwc1iZQIYwcHEKwES8tjMyvNn0V3yhfGTAnNVL
- rI6JakxSy1zhtaNTK7Nm7eOzb9jnWDIy3NjktX5Wn9/XRXLVu44d2/Xri3n+zz1GZcf0P1w88Pv
- nEX4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1995; i=charlie@rivosinc.com;
+ h=from:subject:message-id; bh=s/V5Z34t4dT0xkb/r9QmO4zmTWyR+OmvwZt8Wf5I9yo=;
+ b=owGbwMvMwCHWx5hUnlvL8Y3xtFoSQ9oFBcsP6+L/Tm5SuNTuoL5vd1CHFePmle9+1/Le0d5Yp
+ 3hVY8XNjlIWBjEOBlkxRRaeaw3MrXf0y46Klk2AmcPKBDKEgYtTACYikcjwz6bDSmrzHWPjp6+e
+ zUhZGF3tGZgzRbFMebrXzej5O9YXpDH8j7Z7ceLNKc+79Xs9s7LbGbZefbF4gvgksf23zjP3/b/
+ +jhkA
 X-Developer-Key: i=charlie@rivosinc.com; a=openpgp;
  fpr=7D834FF11B1D8387E61C776FFB10D1F27D6B1354
 
-To ensure that all memory allocations comply with the new MAP_BELOW_HINT
-flag, set the high_limit in vm_unmapped_area() to the hint address +
-length at most. All callers to this function set the high_limit to
-something reasonable, usually with space for a random offset and a gap
-for the stack. To respect the provided high_limit, take the minimum of
-hint+length and the given high_limit.
+Add a selftest for MAP_BELOW_HINT that maps until it runs out of space
+below the hint address.
 
 Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
 ---
- mm/mmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/mm/Makefile         |  1 +
+ tools/testing/selftests/mm/map_below_hint.c | 32 +++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 34ba0db23678..459ad380c673 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1766,6 +1766,9 @@ unsigned long vm_unmapped_area(struct vm_unmapped_area_info *info)
- {
- 	unsigned long addr;
- 
-+	if (info->hint != 0 && info->mmap_flags & MAP_BELOW_HINT)
-+		info->high_limit = MIN(info->high_limit, info->hint + info->length);
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index cfad627e8d94..4e2de85267b5 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -50,6 +50,7 @@ TEST_GEN_FILES += hugepage-shm
+ TEST_GEN_FILES += hugepage-vmemmap
+ TEST_GEN_FILES += khugepaged
+ TEST_GEN_FILES += madv_populate
++TEST_GEN_FILES += map_below_hint
+ TEST_GEN_FILES += map_fixed_noreplace
+ TEST_GEN_FILES += map_hugetlb
+ TEST_GEN_FILES += map_populate
+diff --git a/tools/testing/selftests/mm/map_below_hint.c b/tools/testing/selftests/mm/map_below_hint.c
+new file mode 100644
+index 000000000000..55d6cbf90645
+--- /dev/null
++++ b/tools/testing/selftests/mm/map_below_hint.c
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Test the MAP_BELOW_HINT mmap flag.
++ */
++#include <sys/mman.h>
++#include <errno.h>
++#include "../kselftest.h"
 +
- 	if (info->flags & VM_UNMAPPED_AREA_TOPDOWN)
- 		addr = unmapped_area_topdown(info);
- 	else
++#define ADDR (1 << 20)
++#define LENGTH (ADDR / 10000)
++
++#define MAP_BELOW_HINT	  0x8000000	/* Not defined in all libc */
++
++/*
++ * Map memory with MAP_BELOW_HINT until no memory left. Ensure that all returned
++ * addresses are below the hint.
++ */
++int main(int argc, char **argv)
++{
++	void *addr;
++
++	do {
++		addr = mmap((void *)ADDR, LENGTH, PROT_READ | PROT_WRITE,
++			    MAP_PRIVATE | MAP_ANONYMOUS | MAP_BELOW_HINT, -1, 0);
++	} while (addr != MAP_FAILED && (unsigned long)addr <= ADDR);
++
++	if (errno == ENOMEM)
++		ksft_test_result_pass("MAP_BELOW_HINT works\n");
++	else
++		ksft_test_result_fail("mmap returned address above hint with MAP_BELOW_HINT with error: %s\n",
++				      strerror(errno));
++}
 
 -- 
 2.45.0
