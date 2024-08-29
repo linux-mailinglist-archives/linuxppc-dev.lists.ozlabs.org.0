@@ -1,62 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-711-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-712-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53A296346A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 00:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF8196382B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 04:26:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvJV15wxyz2yj3;
-	Thu, 29 Aug 2024 08:09:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvQBS33XPz2yK9;
+	Thu, 29 Aug 2024 12:26:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4601:e00::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724879748;
-	cv=none; b=keLaMZ/IgzJIeKQBnyH3kY89fXgakm8bn4uc6pNcxg3x4EGYutchQ/tB8vC3IvgatxcwHetWNOmeGT+m5E/86R2Xjlru7cJFndbwshZ1+L5L2eshgETEVAEsNy+UX8S3z70qKroVsh64r8YKod7mTnC+DgfT2uGtWuc9TOOH0MJ/IHoyZQJOQl+jT5+sFZ+9LAhMk0CgI1jyjywhSWp5f74Vj05uabHIyoC/L6sIyooZgHnEgUOSD0PKNcyROv8Zh5ER6hceuUQXUIwOVCBCPLAuTV9Oo7vju9uHrgm0XTqi8ewrpp7PQ5LpN5uJUW8fNC1gqyHRqHRdsyBrE5qHbg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.189
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724898368;
+	cv=none; b=hGOjaEaiOIdZzz2bmXJQr5zklT33e9m/wnyvzaVKnq3IsAkaKYXTL34ksJvpAvJx8LNU9E8fVLhAF16umS5HAH5+egS/JvcNcIewURLd4y5KBCcXTx51lGZsBTJEp1f4MMwh7TR3cEDmZ1LJXivaIJBLOUGPR0yZzORknrtIXytmSw1SC75IJaetqt4v/1OK2VY9w/RjCSieLNrlVXKj+RJk1CbxL8BLLCiwu5E6NyKJ8kmPici1O30m/jsd3g/z5uXux278hpoFMg40yUF987b3dI/fdk+E9qeZNf1t57Fs4H9QG4LVRfg31K78aQUFaF4ghNIzXMOxeiN07cRxVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724879748; c=relaxed/relaxed;
-	bh=HfpBneikX9RJyFQo32o5GIseA53Lif0bJqEeHzkvaKo=;
-	h=X-Greylist:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To; b=WvyOFcCtI1dQk8BW2xsS7YklnI7hCgvalLEA5qITggY+mNQzATSplnNce53ELC9+ao1YghUNpa3F264RE0Q2GEmWtt0NhQe4Hw4gKwUPAELYVB8tNp12o+WI51xPXohp9ZuMtrc3OX48bf8iP1tZYvexZ0qij+1urapLX1G1XnpUuqZjeHpeggFB2BCk8xju2FEc14Tcey0fbebelL4Ajz87hWcPBHdvJtydRCQ0TJyEJCs6yxLyMBaDNHtGDh5haqAK5SUKxftixr8YLpu83duBsBPX5Fc3bkeVXahfurELVDksQHAZU5E4TlbSOSsKjHdRYEt8+0MAYTQOZldTPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gkHXU4/m; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gkHXU4/m;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 305 seconds by postgrey-1.37 at boromir; Thu, 29 Aug 2024 07:15:48 AEST
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	t=1724898368; c=relaxed/relaxed;
+	bh=CEACD0d4Jp1McKomMo/UqFp89P6UQ3eCV24nUtC4TPc=;
+	h=Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:Content-Language:To:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy; b=bMZvqKR38eFN+KbuNYLOdw4sE0fE+HZM3SCdyzmR9rykQaxtcykWXAlJ4LAmqiC3PM4qd6OeZYAW8ZUsQzAlFw1Vm58gaMaW2oUsxufa6VBUjVo/TVXsThS/aSw4Ow2XWANpkwp9M+Ok6zGHQZ50WGqRx8rA2v0M2MVc+XO1po+Skupww46CrdeJgaCtcbl4wrfmB8tpCOghPDe/S8hbuOGwjfa/aZuAWt6NalCYNvF6JTMvePqVveMSAkwcCmPMja/87JzC0XQNvsL8ncHTeqQgGbC5JJtpcgG1+Uj5HRu6j7mkdIVOENm0BL8Jc2AN6+k/nAK8Gks8oDIEY11nrg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvHJN25Ygz2yGD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 07:15:48 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by ams.source.kernel.org (Postfix) with ESMTP id B230AAE3859;
-	Wed, 28 Aug 2024 21:10:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09130C4CEC0;
-	Wed, 28 Aug 2024 21:10:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724879440;
-	bh=p7pNbtxW2a8q0ayOQwRd9oMMXqnYD6TO03sBwc1nZZo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gkHXU4/mnxuurnnJUmhRyiORY5Y1BXSiiThdeFODqa0j3U8tXayOWR/Dd8Zg4LzIs
-	 h/3sdJTz+aEnpOjJVrgVa9QQah8AWEDkxhnuEX06k8j+52JOo/db0F5nEhKPtSTC3q
-	 wdmN/Os93DR1l2iZdZm0XUvO7XfO3pPhTITZu6WZasod90h25eyZa1SLHL9IK7XL3W
-	 c17flJA+uNhxgRKynmiHKUKnFGKKqJqhPwjQbt7VhI8S+WHUQPrGtNJMzAGVJqQx1p
-	 hNiq7w8IXHjHD+SqkuT3oIGcnd1wR6PhUXYUc9Vvwb5XYvz8gS7uiTG5f/EnBU/Jey
-	 gYsocIaLu1giQ==
-Date: Wed, 28 Aug 2024 18:10:37 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Ian Rogers <irogers@google.com>
-Cc: Kajol Jain <kjain@linux.ibm.com>, namhyung@kernel.org,
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-	atrajeev@linux.vnet.ibm.com, hbathini@linux.ibm.com,
-	disgoel@linux.vnet.ibm.com
-Subject: Re: [PATCH 1/3] perf vendor events power10: Update JSON/events
-Message-ID: <Zs-STZ3mQLjfBcjT@x1>
-References: <20240827053206.538814-1-kjain@linux.ibm.com>
- <CAP-5=fWBjt3pypEwEsbKsuNTqX+ZA7v9WbNJCUgc09xxF=pt1A@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvQBR2yKXz2yF1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 12:26:01 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WvQ4c4D8YzQr2n;
+	Thu, 29 Aug 2024 10:21:04 +0800 (CST)
+Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1966D1400FF;
+	Thu, 29 Aug 2024 10:25:55 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemh500013.china.huawei.com (7.202.181.146) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 29 Aug 2024 10:25:54 +0800
+Message-ID: <195dd9e0-ef42-bcf8-b71a-d9d548af014a@huawei.com>
+Date: Thu, 29 Aug 2024 10:25:53 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,22 +47,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH -next 2/8] soc: fsl: cpm1: Simplify with dev_err_probe()
+Content-Language: en-US
+To: Krzysztof Kozlowski <krzk@kernel.org>, <andrew@lunn.ch>,
+	<sebastian.hesselbarth@gmail.com>, <gregory.clement@bootlin.com>,
+	<herve.codina@bootlin.com>, <qiang.zhao@nxp.com>,
+	<christophe.leroy@csgroup.eu>, <thierry.reding@gmail.com>,
+	<jonathanh@nvidia.com>, <nm@ti.com>, <ssantosh@kernel.org>,
+	<petlozup@nvidia.com>, <pshete@nvidia.com>, <christophe.jaillet@wanadoo.fr>,
+	<ulf.hansson@linaro.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-tegra@vger.kernel.org>, <jic23@kernel.org>
+References: <20240827114607.4019972-1-ruanjinjie@huawei.com>
+ <20240827114607.4019972-3-ruanjinjie@huawei.com>
+ <87abe3f1-3cf2-4331-8dde-a422716dd94a@kernel.org>
+ <97ff8c02-1a97-7974-06fa-edb35437707d@huawei.com>
+ <32e8ef50-ae45-4001-92b6-1e9e0608b402@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <32e8ef50-ae45-4001-92b6-1e9e0608b402@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAP-5=fWBjt3pypEwEsbKsuNTqX+ZA7v9WbNJCUgc09xxF=pt1A@mail.gmail.com>
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemh500013.china.huawei.com (7.202.181.146)
 
-On Tue, Aug 27, 2024 at 08:30:09AM -0700, Ian Rogers wrote:
-> On Mon, Aug 26, 2024 at 10:33 PM Kajol Jain <kjain@linux.ibm.com> wrote:
-> >
-> > Update JSON/events for power10 platform with additional events.
-> >
-> > Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+
+
+On 2024/8/28 21:08, Krzysztof Kozlowski wrote:
+> On 28/08/2024 03:58, Jinjie Ruan wrote:
+>>
+>>
+>> On 2024/8/27 21:50, Krzysztof Kozlowski wrote:
+>>> On 27/08/2024 13:46, Jinjie Ruan wrote:
+>>>> Use the dev_err_probe() helper to simplify error handling during probe.
+>>>> This also handle scenario, when EDEFER is returned and useless error
+>>>> is printed.
+>>>
+>>> ? Sorry, this cannot happen. Please point to below code which can defer.
+>>>
+>>
+>> Thank you!
+>>
+>> This is not referring to a specific one, but rather the benefits it
+>> offers，simplify code is the main purpose, if necessary, it will be
+>> removed in next version.
 > 
-> For the series:
-> Reviewed-by: Ian Rogers <irogers@google.com>
+> It just feels like you are doing these in machine way without actually
+> knowing concepts behind dev_err_probe().
 
-Thanks, applied to perf-tools-next,
+Just try my best to make the code as clean as possible and do it by the way.
 
-- Arnaldo
+> 
+> Best regards,
+> Krzysztof
+> 
 
