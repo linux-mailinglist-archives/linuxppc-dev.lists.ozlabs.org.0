@@ -1,92 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-714-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-715-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A79696382E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 04:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B519638CC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 05:28:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvQG766t1z2ykx;
-	Thu, 29 Aug 2024 12:29:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvRYt49N2z2yn9;
+	Thu, 29 Aug 2024 13:28:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724898559;
-	cv=none; b=QnvPeFYKo8ru+vK6M0nmzBsPcy8TM2KHiPLNfny41Y/oZlyRJpyxsHU3wNBve5i4nh0l9Jht5u07e5ge7KNx+h8L1dN1ovTfYqt0XX6NMmIpuMPmC6aUGTnTIaWB6LSBvBtSBsLFxEiz9jszUPsFrQYxBPHghzTkjomFCky4kTLvWKnxdRSxfhcKxG9lGsbcxE2yaR1nYMTlODkZeNqOvxKSacouWU6xCiOiwQTtlpJt3DCCcrCT4fwq+mhgzCjkO0OsBR/IpahWvIGNt8+VhobwRHKWsmD4rpYHTQi92DVrF79fc+IZP0vybiTFNjUr7WR2j+gh4K6zsKknrukB2g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4860:4864:20::36"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724902082;
+	cv=none; b=Scgq2PXUX7G0TZVDcDBgEA8YwOimWkpSCJTWLdzsZohqxSqKVVRnNEStjwIzkEp4lQJ2shP2DHSWJSytspH7tihl9338TZQhSl2EzGPqZwm426MN7ULcdOVvt+nV+RgHauR+eNKZVscKEa/03jsK9jyKSahwZepsYVhxf1AXmyPVSljSq3UexYRgfF8NM1q0KrD00n6RtJDU8iN1pCHo4q4uwbtCgrxgizVQaSumIP4n3fE3vU4YWDqrjluPXH05xcu0DcIWvmXXAwxcNtE/ryeTfGJHjghqVLn3SNJck8qXupZfWxQj91AYxwm5iTN2LMhmpKyhVR+L7I0fLDIMFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724898559; c=relaxed/relaxed;
-	bh=6n95hAvz6iiMynvYEV6Mx6SzgQOb+o8pNUa8Cuw/YgA=;
-	h=Received:DKIM-Signature:Received:Received:Received:Received:
-	 Received:Received:Received:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details; b=EjlR6KMiX6rkzckjRwSFVS/v//jI3AQnfl0bCpZ6s77/i1pGNlWVy9alj91F2IgsyN+E4wwCpVnwDAVOFOADvLzEYjBRVPKQd4eUieu+EnCUAsra9kZgoYXndrpGpncBOyML5lVHdJnOGr/X236T8qI2bzrfrk5RlhpZA7PGY7XXEMqVWR+uuWdxKnLwDEcdDi7e+X66rQfjfsCY1P8OYa942/B6lxkpQFD3b4wvv2RXbYA9t/AIEqB4FBzSLUH8iPw1EM8S4bK+zn5r05CFcv91d9jWnA/dmHFSlzpuxiZAPWTReJqV16Nr58o+bQs1Y/Y2aZhJSCo8MpomMlXhbQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Be8a61Jg; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1724902082; c=relaxed/relaxed;
+	bh=KUSlIPY0I0p/J1gM+q6b9ZwgCjkUVZv6zdCV16DJSmE=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding; b=le1BlwwdxrI9teQIPiPXpzAhf9tbfcIM30zdCNwzMkaTiBLXXanbcNVpIp2iBuzERRezGN5m0h74JABRuZl/1bPhYo42CfIp+fAijSEEu6UnQxH/GisAN5w5s1MJE+tasRnoU9v0DIzfDOd5tdZYdu7zDbSXiBfkB1l8eg6AiIOOreyQNzGsfZXLUKZHWPkcVA2hY8AZlUZQzImF3fo7yajKB+vxezaCxuUlD+7MkC9E29zs+1Fcci4xomkdILS5wBHHqwNM3/iKPP5yk1dhopxenwe/wpBQQ1leNOM5U8pUsTlMF66Krk1ms7twRI5uFts1yYjcVbb7zoIYVgN5zA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=KuNZ+K7w; dkim-atps=neutral; spf=pass (client-ip=2001:4860:4864:20::36; helo=mail-oa1-x36.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Be8a61Jg;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=KuNZ+K7w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2001:4860:4864:20::36; helo=mail-oa1-x36.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvQG73Wvtz2yF1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 12:29:19 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47SNemrC011659;
-	Thu, 29 Aug 2024 02:29:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:mime-version:content-type
-	:content-transfer-encoding; s=pp1; bh=6n95hAvz6iiMynvYEV6Mx6SzgQ
-	Ob+o8pNUa8Cuw/YgA=; b=Be8a61JgWka5xaxs6C7dNK2x3R7ElRlhnJwAxElUVJ
-	u8Qe+O3nFELwli7A13Cu0n9yGcHeUG4Z1bM1n/qb+mU8Q3TYVrr/C1oiLC0URJUi
-	rPLdHW+qO/aQ33lnaeBZrBvKj8tJcAfRLow7BM994VBeDadhssDpSQkhYlXZp/i8
-	z/lAwUjriPpSTObD+E4cFQNP8Wz02CQZ8XW6XGdyuySWH27K52QC5J8jpZ2/vOm2
-	sbnPw0E9NxwdysevHo3OJbOOrxzgR68T68fX6845J8ipL4ndcDqg4KNjddW4plkU
-	gEKdbLPud8h4Lq8nrw/Vw/0No4w6dbfx3iNGtutJXcMw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8nx0bu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Aug 2024 02:29:08 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47T2T806009060;
-	Thu, 29 Aug 2024 02:29:08 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8nx0bq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Aug 2024 02:29:08 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47SMivcs024692;
-	Thu, 29 Aug 2024 02:29:07 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 417vj3j97c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Aug 2024 02:29:07 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47T2Sx4x40108528
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Aug 2024 02:29:00 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D32F620049;
-	Thu, 29 Aug 2024 02:28:59 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2FF3C20040;
-	Thu, 29 Aug 2024 02:28:57 +0000 (GMT)
-Received: from li-80eaad4c-2afd-11b2-a85c-af8123d033e3.ibm.com.com (unknown [9.43.117.101])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 29 Aug 2024 02:28:56 +0000 (GMT)
-From: "Nysal Jan K.A." <nysal@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>, stable@vger.kernel.org,
-        Geetika Moolchandani <geetika@linux.ibm.com>,
-        Vaishnavi Bhat <vaish123@in.ibm.com>,
-        Jijo Varghese <vargjijo@in.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] powerpc/qspinlock: Fix deadlock in MCS queue
-Date: Thu, 29 Aug 2024 07:58:27 +0530
-Message-ID: <20240829022830.1164355-1-nysal@linux.ibm.com>
-X-Mailer: git-send-email 2.46.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvRYs3KK7z2y8d
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 13:27:59 +1000 (AEST)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-27026393c12so119829fac.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 Aug 2024 20:27:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1724902076; x=1725506876; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KUSlIPY0I0p/J1gM+q6b9ZwgCjkUVZv6zdCV16DJSmE=;
+        b=KuNZ+K7wF+VEkRtwBcUBAWk+KNe7KRSOSRndRTlQ3g+ltq+QrrekpNE1fIRsfLwinS
+         3TyREReFOPL467HeY2k+jVxJciiok2N5dIhN2x1T1m/2YhCuJnMZlFtJF5NsD5XoqLMv
+         fWj8ewoycWANxQTBx75VH/UwlInkpg7WfjpL/cvx/H/8+ozyAauZvrrg0++Nqsk0BVYp
+         fhgqujVXJx3e43MEQft05vKbEGUCj5Oq02p+hC8iXs3xOMP7yVZsF7JfKseZI+/jJX+/
+         a1myDMJ5RNqCSRh85RijTnLtuytGfvlTI4ZObd19B9NHweDmq/BAY6qUbudIx/nge1dd
+         kaKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724902076; x=1725506876;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KUSlIPY0I0p/J1gM+q6b9ZwgCjkUVZv6zdCV16DJSmE=;
+        b=fjDlzZsdXB2lejNotuhJtE+xwmWUlXUhmFswdOhCyt//u510gseMvNdbi2s3byzWW0
+         Gaj7q07KxFlQQSlxncGUAthJMw5PbeVy6e0VfGCBRJBGYC3TPr/Os9FI/IQ6wjz9XQqN
+         HG5irszazuQ6NCjZdJU/enOfLJr2hII3kht94o4ZKEkVQYKoK9IXnjtG6/k5GkN00yFU
+         4EPzX3LI5Foe8Bf0MkXxeapMV9jz/HCYKeJZucT9hoA/EBT+cE8XWL2roOKzsAyXiAwH
+         O75GlKrKSBdBpp5eXn66A2fWrrsngwAmfKtPSRbM6lHd/o6kzlStu+iZ7lGdKKl0FwIR
+         182w==
+X-Forwarded-Encrypted: i=1; AJvYcCWYs1CqzuXUTJH5fQghUzXqsDMIAXpfvpmVulU+GPpaEjRrYAG8cYSz49eVVlS6+KdUg40lcSIUdkrBFjw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw+0oDzjxBC2dZlKB8NAFgOmA7bFG0DmdFVCsBw6INZQSE91Bj8
+	a+ENRz12iyttTeuA+Xa7ke7oRQioOm9NG2n9r2Vqhlp9BDhBET+8hUkfcxiTjvY=
+X-Google-Smtp-Source: AGHT+IGZPCEcwowFRJHQOC2QH+v2+Ysm2wJ5TBLKGyXexoQWGql8ItSqdv/XlmWonkjQbasTqI0R6g==
+X-Received: by 2002:a05:6870:2011:b0:25e:1c9d:f180 with SMTP id 586e51a60fabf-277903675a4mr1814959fac.50.1724902075836;
+        Wed, 28 Aug 2024 20:27:55 -0700 (PDT)
+Received: from [10.4.59.158] ([139.177.225.242])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-715e55a4548sm203799b3a.59.2024.08.28.20.27.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Aug 2024 20:27:55 -0700 (PDT)
+Message-ID: <469e0ab5-af2c-4996-bfd4-fe7ab6a7bc8c@bytedance.com>
+Date: Thu, 29 Aug 2024 11:27:46 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,150 +78,217 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/14] mm: pgtable: introduce
+ pte_offset_map_{ro|rw}_nolock()
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>, muchun.song@linux.dev
+Cc: hughd@google.com, willy@infradead.org, vbabka@kernel.org,
+ akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
+ peterx@redhat.com, ryan.roberts@arm.com,
+ christophe.leroy2@cs-soprasteria.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <cover.1724310149.git.zhengqi.arch@bytedance.com>
+ <e866151ccd257ca14a9361ba59f8c3086aa76e4f.1724310149.git.zhengqi.arch@bytedance.com>
+ <f318f65d-4198-481c-98a0-00415664614c@redhat.com>
+ <4481a0e4-a7a5-4223-a8ab-d1215d7c6352@bytedance.com>
+ <42aba316-2b01-4fdb-9aff-9e670aac4c6e@redhat.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <42aba316-2b01-4fdb-9aff-9e670aac4c6e@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PfGf8JzG5euzKAaQ2aSkjh1ZeiBxjRS8
-X-Proofpoint-ORIG-GUID: kTE9yy9dl5V4mGTgDHJF4hxYC2Xm3XZh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-29_01,2024-08-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 clxscore=1015
- spamscore=0 impostorscore=0 phishscore=0 suspectscore=0 mlxlogscore=982
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408290014
 
-If an interrupt occurs in queued_spin_lock_slowpath() after we increment
-qnodesp->count and before node->lock is initialized, another CPU might
-see stale lock values in get_tail_qnode(). If the stale lock value happens
-to match the lock on that CPU, then we write to the "next" pointer of
-the wrong qnode. This causes a deadlock as the former CPU, once it becomes
-the head of the MCS queue, will spin indefinitely until it's "next" pointer
-is set by its successor in the queue.
 
-Running stress-ng on a 16 core (16EC/16VP) shared LPAR, results in
-occasional lockups similar to the following:
 
-   $ stress-ng --all 128 --vm-bytes 80% --aggressive \
-               --maximize --oomable --verify  --syslog \
-               --metrics  --times  --timeout 5m
+On 2024/8/28 18:48, David Hildenbrand wrote:
+> On 27.08.24 06:33, Qi Zheng wrote:
+>> Hi David,
+>>
+>> On 2024/8/26 23:21, David Hildenbrand wrote:
+>>> On 22.08.24 09:13, Qi Zheng wrote:
+>>>> Currently, the usage of pte_offset_map_nolock() can be divided into the
+>>>> following two cases:
+>>>>
+>>>> 1) After acquiring PTL, only read-only operations are performed on the
+>>>> PTE
+>>>>      page. In this case, the RCU lock in pte_offset_map_nolock() will
+>>>> ensure
+>>>>      that the PTE page will not be freed, and there is no need to worry
+>>>>      about whether the pmd entry is modified.
+>>>
+>>> There is also the usage where we don't grab the PTL at all, and only do
+>>> a racy (read-only) lookup.
+>>
+>> IIUC, pte_offset_map() should be used instead of pte_offset_map_nolock()
+>> in this case.
+> 
+> Yes, but the filemap.c thingy conditionally wants to lock later. But I 
+> agree that pte_offset_map() is better when not even wanting to lock.
+> 
+> [...]
+> 
+>>>> accessor functions:
+>>>>     - pte_offset_map_nolock()
+>>>>        maps PTE, returns pointer to PTE with pointer to its PTE table
+>>>>        lock (not taken), or returns NULL if no PTE table;
+>>>
+>>> What will happen to pte_offset_map_nolock() after this series? Does it
+>>> still exist or will it become an internal helper?
+>>
+>> I choose to remove it completely in [PATCH v2 13/14].
+>>
+> 
+> Ah, great.
+> 
+> [...]
+> 
+>>> If someone thinks not requiring a non-NULL pointer is better, please
+>>> speak up, I'm not married to that idea :)
+>>>
+>>>> +    pte = __pte_offset_map(pmd, addr, &pmdval);
+>>>> +    if (likely(pte))
+>>>> +        *ptlp = pte_lockptr(mm, &pmdval);
+>>>> +    *pmdvalp = pmdval;
+>>>> +    return pte;
+>>>> +}
+>>>> +
+>>>>    /*
+>>>>     * pte_offset_map_lock(mm, pmd, addr, ptlp), and its internal
+>>>> implementation
+>>>>     * __pte_offset_map_lock() below, is usually called with the pmd
+>>>> pointer for
+>>>> @@ -356,6 +383,22 @@ pte_t *pte_offset_map_nolock(struct mm_struct
+>>>> *mm, pmd_t *pmd,
+>>>>     * recheck *pmd once the lock is taken; in practice, no callsite
+>>>> needs that -
+>>>>     * either the mmap_lock for write, or pte_same() check on contents,
+>>>> is enough.
+>>>>     *
+>>>> + * pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like
+>>>> + * pte_offset_map(); but when successful, it also outputs a pointer
+>>>> to the
+>>>> + * spinlock in ptlp - as pte_offset_map_lock() does, but in this case
+>>>> without
+>>>> + * locking it.  This helps the caller to avoid a later
+>>>> pte_lockptr(mm, *pmd),
+>>>> + * which might by that time act on a changed *pmd:
+>>>> pte_offset_map_ro_nolock()
+>>>> + * provides the correct spinlock pointer for the page table that it
+>>>> returns.
+>>>> + * For readonly case, the caller does not need to recheck *pmd after
+>>>> the lock is
+>>>> + * taken, because the RCU lock will ensure that the PTE page will not
+>>>> be freed. > + *
+>>>> + * pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is
+>>>> like
+>>>> + * pte_offset_map_ro_nolock(); but when successful, it also outputs 
+>>>> the
+>>>> + * pdmval. For cases where pte or pmd entries may be modified, that
+>>>> is, maywrite
+>>>> + * case, this can help the caller recheck *pmd once the lock is
+>>>> taken. In some
+>>>> + * cases, that is, either the mmap_lock for write, or pte_same()
+>>>> check on
+>>>> + * contents, is also enough to ensure that the pmd entry is stable.
+>>>> + *
+>>>>     * Note that free_pgtables(), used after unmapping detached vmas, or
+>>>> when
+>>>>     * exiting the whole mm, does not take page table lock before
+>>>> freeing a page
+>>>>     * table, and may not use RCU at all: "outsiders" like khugepaged
+>>>> should avoid
+>>>
+>>> In general to me a step into the right direction. Likely the
+>>> documentation could be further clarified in some aspects:
+>>>
+>>> Like that the use of pte_offset_map_ro_nolock() does not allow to easily
+>>> identify if the page table was replaced in the meantime. Even after
+>>> grabbing the PTL, we might be looking either at a page table that is
+>>> still mapped or one that was unmapped and is about to get freed. But for
+>>> R/O access this is usually sufficient AFAIUK.
+>>>
+>>> Or that "RO" / "RW" expresses the intended semantics, not that the
+>>> *kmap* will be RO/RW protected.
+>>
+>> How about the following:
+>>
+>> pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like
+>> pte_offset_map(); but when successful, it also outputs a pointer to the
+>> spinlock in ptlp - as pte_offset_map_lock() does, but in this case
+>> without locking it.  This helps the caller to avoid a later
+>> pte_lockptr(mm, *pmd), which might by that time act on a changed *pmd:
+>> pte_offset_map_ro_nolock() provides the correct spinlock pointer for the
+>> page table that it returns. Even after grabbing the spinlock, we might
+>> be looking either at a page table that is still mapped or one that was
+>> unmapped and is about to get freed. But for R/O access this is usually
+>> sufficient AFAIUK.
+> 
+> Drop the "AFAIUK" :)
+> 
+> "For R/O access this is sufficient."
 
-   watchdog: CPU 15 Hard LOCKUP
-   ......
-   NIP [c0000000000b78f4] queued_spin_lock_slowpath+0x1184/0x1490
-   LR [c000000001037c5c] _raw_spin_lock+0x6c/0x90
-   Call Trace:
-    0xc000002cfffa3bf0 (unreliable)
-    _raw_spin_lock+0x6c/0x90
-    raw_spin_rq_lock_nested.part.135+0x4c/0xd0
-    sched_ttwu_pending+0x60/0x1f0
-    __flush_smp_call_function_queue+0x1dc/0x670
-    smp_ipi_demux_relaxed+0xa4/0x100
-    xive_muxed_ipi_action+0x20/0x40
-    __handle_irq_event_percpu+0x80/0x240
-    handle_irq_event_percpu+0x2c/0x80
-    handle_percpu_irq+0x84/0xd0
-    generic_handle_irq+0x54/0x80
-    __do_irq+0xac/0x210
-    __do_IRQ+0x74/0xd0
-    0x0
-    do_IRQ+0x8c/0x170
-    hardware_interrupt_common_virt+0x29c/0x2a0
-   --- interrupt: 500 at queued_spin_lock_slowpath+0x4b8/0x1490
-   ......
-   NIP [c0000000000b6c28] queued_spin_lock_slowpath+0x4b8/0x1490
-   LR [c000000001037c5c] _raw_spin_lock+0x6c/0x90
-   --- interrupt: 500
-    0xc0000029c1a41d00 (unreliable)
-    _raw_spin_lock+0x6c/0x90
-    futex_wake+0x100/0x260
-    do_futex+0x21c/0x2a0
-    sys_futex+0x98/0x270
-    system_call_exception+0x14c/0x2f0
-    system_call_vectored_common+0x15c/0x2ec
+OK.
 
-The following code flow illustrates how the deadlock occurs.
-For the sake of brevity, assume that both locks (A and B) are
-contended and we call the queued_spin_lock_slowpath() function.
+> 
+>>
+>> pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is like
+>> pte_offset_map_ro_nolock(); but when successful, it also outputs the
+>> pdmval. For R/W access, the callers can not accept that the page table
+>> it sees has been unmapped and is about to get freed. The pmdval can help
+>> callers to recheck pmd_same() to identify this case once the spinlock is
+>> taken. For some cases where exclusivity is already guaranteed, such as
+>> holding the write lock of mmap_lock, or in cases where checking is
+>> sufficient, such as a !pte_none() pte will be rechecked after the
+>> spinlock is taken, there is no need to recheck pdmval.
+> 
+> Right, using pte_same() one can achieve a similar result, assuming that 
+> the freed page table gets all ptes set to pte_none().
+> 
+> page_table_check_pte_clear_range() before pte_free_defer() in 
+> retract_page_tables/collapse_pte_mapped_thp() sanity checks that I think.
+> 
+> In collapse_huge_page() that is not the case. But here, we also 
+> currently grab all heavily locks, to prevent any concurrent page table 
+> walker.
 
-        CPU0                                   CPU1
-        ----                                   ----
-  spin_lock_irqsave(A)                          |
-  spin_unlock_irqrestore(A)                     |
-    spin_lock(B)                                |
-         |                                      |
-         ▼                                      |
-   id = qnodesp->count++;                       |
-  (Note that nodes[0].lock == A)                |
-         |                                      |
-         ▼                                      |
-      Interrupt                                 |
-  (happens before "nodes[0].lock = B")          |
-         |                                      |
-         ▼                                      |
-  spin_lock_irqsave(A)                          |
-         |                                      |
-         ▼                                      |
-   id = qnodesp->count++                        |
-   nodes[1].lock = A                            |
-         |                                      |
-         ▼                                      |
-  Tail of MCS queue                             |
-         |                             spin_lock_irqsave(A)
-         ▼                                      |
-  Head of MCS queue                             ▼
-         |                             CPU0 is previous tail
-         ▼                                      |
-   Spin indefinitely                            ▼
-  (until "nodes[1].next != NULL")      prev = get_tail_qnode(A, CPU0)
-                                                |
-                                                ▼
-                                       prev == &qnodes[CPU0].nodes[0]
-                                     (as qnodes[CPU0].nodes[0].lock == A)
-                                                |
-                                                ▼
-                                       WRITE_ONCE(prev->next, node)
-                                                |
-                                                ▼
-                                        Spin indefinitely
-                                     (until nodes[0].locked == 1)
+Yes.
 
-Thanks to Saket Kumar Bhaskar for help with recreating the issue
+> 
+>>
+>> Note: "RO" / "RW" expresses the intended semantics, not that the *kmap*
+>> will be RO/RW protected.
+> 
+> 
+> Good. Please also incorporate the feedback from Muchun.
 
-Fixes: 84990b169557 ("powerpc/qspinlock: add mcs queueing for contended waiters")
-Cc: stable@vger.kernel.org # v6.2+
-Reported-by: Geetika Moolchandani <geetika@linux.ibm.com>
-Reported-by: Vaishnavi Bhat <vaish123@in.ibm.com>
-Reported-by: Jijo Varghese <vargjijo@in.ibm.com>
-Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/lib/qspinlock.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+OK, I will change it in v3 to the following:
 
-diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
-index 5de4dd549f6e..bcc7e4dff8c3 100644
---- a/arch/powerpc/lib/qspinlock.c
-+++ b/arch/powerpc/lib/qspinlock.c
-@@ -697,7 +697,15 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
- 	}
- 
- release:
--	qnodesp->count--; /* release the node */
-+	/*
-+	 * Clear the lock before releasing the node, as another CPU might see stale
-+	 * values if an interrupt occurs after we increment qnodesp->count
-+	 * but before node->lock is initialized. The barrier ensures that
-+	 * there are no further stores to the node after it has been released.
-+	 */
-+	node->lock = NULL;
-+	barrier();
-+	qnodesp->count--;
- }
- 
- void queued_spin_lock_slowpath(struct qspinlock *lock)
--- 
-2.46.0
+pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like
+pte_offset_map(); but when successful, it also outputs a pointer to the
+spinlock in ptlp - as pte_offset_map_lock() does, but in this case
+without locking it.  This helps the caller to avoid a later
+pte_lockptr(mm, *pmd), which might by that time act on a changed *pmd:
+pte_offset_map_ro_nolock() provides the correct spinlock pointer for the
+page table that it returns. Even after grabbing the spinlock, we might
+be looking either at a page table that is still mapped or one that was 
+unmapped and is about to get freed. But for R/O access this is
+sufficient. So it is only applicable for read-only cases where any 
+modification operations to the page table are not allowed even if
+the corresponding spinlock is held afterwards.
 
+pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is like
+pte_offset_map_ro_nolock(); but when successful, it also outputs the
+pdmval. It is applicable for may-write cases where any modification
+operations to the page table may happen after the corresponding spinlock
+is held afterwards. But the users should make sure the page table is
+stable like holding mmap_lock for write or checking pte_same() or
+checking pmd_same() by using the output pmdval before performing the
+write operations.
+
+Note: "RO" / "RW" expresses the intended semantics, not that the *kmap*
+will be read-only/read-write protected.
+
+
+> 
 
