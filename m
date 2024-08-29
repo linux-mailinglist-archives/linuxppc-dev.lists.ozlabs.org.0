@@ -1,43 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-712-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-713-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF8196382B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 04:26:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D5A96382C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 04:26:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvQBS33XPz2yK9;
-	Thu, 29 Aug 2024 12:26:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvQBh3GQCz2yn2;
+	Thu, 29 Aug 2024 12:26:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.189
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724898368;
-	cv=none; b=hGOjaEaiOIdZzz2bmXJQr5zklT33e9m/wnyvzaVKnq3IsAkaKYXTL34ksJvpAvJx8LNU9E8fVLhAF16umS5HAH5+egS/JvcNcIewURLd4y5KBCcXTx51lGZsBTJEp1f4MMwh7TR3cEDmZ1LJXivaIJBLOUGPR0yZzORknrtIXytmSw1SC75IJaetqt4v/1OK2VY9w/RjCSieLNrlVXKj+RJk1CbxL8BLLCiwu5E6NyKJ8kmPici1O30m/jsd3g/z5uXux278hpoFMg40yUF987b3dI/fdk+E9qeZNf1t57Fs4H9QG4LVRfg31K78aQUFaF4ghNIzXMOxeiN07cRxVw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724898380;
+	cv=none; b=VRSlu8ZnE7S0fiE8yExgMj0+Uo7vgZ8jMLS0xh9VZZDVEd/tb+VxG0ie3csLyWRQifSnlMXMy0HZCSdo9LsPK1VVSs6Cj2rVsRrWnQPCVfYNAHyzk4nw8x2uaJ7zOJNH6L6o8JPyrTW0jcXuvvJpIeb+OqmV5ZSs8unjWzggPDzA8kiz1b/VlyWsOloKTraxtLexNTzLCfxZEMOqFdz8ykhYJY34GP8vBE1/t7TecVFfRNUS8RGrZoE6bLHO99mxQGRJkCAxM5HJDjYfcQntmUJSUXhOVcVQTb7BwFhlpDRLrFTbFyeWzffCaMqtXcl3sUl40Xq/rlngzcDWeOcvVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724898368; c=relaxed/relaxed;
-	bh=CEACD0d4Jp1McKomMo/UqFp89P6UQ3eCV24nUtC4TPc=;
-	h=Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:Content-Language:To:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy; b=bMZvqKR38eFN+KbuNYLOdw4sE0fE+HZM3SCdyzmR9rykQaxtcykWXAlJ4LAmqiC3PM4qd6OeZYAW8ZUsQzAlFw1Vm58gaMaW2oUsxufa6VBUjVo/TVXsThS/aSw4Ow2XWANpkwp9M+Ok6zGHQZ50WGqRx8rA2v0M2MVc+XO1po+Skupww46CrdeJgaCtcbl4wrfmB8tpCOghPDe/S8hbuOGwjfa/aZuAWt6NalCYNvF6JTMvePqVveMSAkwcCmPMja/87JzC0XQNvsL8ncHTeqQgGbC5JJtpcgG1+Uj5HRu6j7mkdIVOENm0BL8Jc2AN6+k/nAK8Gks8oDIEY11nrg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	t=1724898380; c=relaxed/relaxed;
+	bh=gbxzZ3hYPM6MPQ3vGsdG2IxA6riTloMwPP58d6bMTjg=;
+	h=Received:DKIM-Signature:Received:Received:Received:Received:
+	 Received:Received:Received:Received:Received:Message-ID:Subject:
+	 From:To:Cc:Date:In-Reply-To:References:Content-Type:X-Mailer:
+	 Mime-Version:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details; b=fiSBEW4V2UiM8GX72hEeTQIgSwWca9v3CFJaimbUxM/JYI54RzMJWzthXCzG7lHfa1wEHxHJfaJ408m8KCIlviDSmG6IcqZiO5+HQRs271y4HQGKwcrJPVrbW/JZCDrF19FyH5qfBoCAUVhK/hsGongMJjpmyjY5oXFuKDV00UvRKwU6F/21eyxj7I5jD4TnIAkE/AN+QLZe/cB4a6vbSl4FP7OCsq1qMuW12Dpjz7Qv4sXh8drJNcN5tTTJyuYDm7LZ0z6yI9RZIUIsUzEWtDm5op78uPolLaotf1esrodwHpi86rA9M7HpDgKLlDEPGQQBmJ/Xuql7kOaNOCXUtA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EWS3Tcbm; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EWS3Tcbm;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvQBR2yKXz2yF1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 12:26:01 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WvQ4c4D8YzQr2n;
-	Thu, 29 Aug 2024 10:21:04 +0800 (CST)
-Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1966D1400FF;
-	Thu, 29 Aug 2024 10:25:55 +0800 (CST)
-Received: from [10.67.109.254] (10.67.109.254) by
- kwepemh500013.china.huawei.com (7.202.181.146) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 29 Aug 2024 10:25:54 +0800
-Message-ID: <195dd9e0-ef42-bcf8-b71a-d9d548af014a@huawei.com>
-Date: Thu, 29 Aug 2024 10:25:53 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvQBg6vyjz2yF1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 12:26:19 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47SLJN7F003863;
+	Thu, 29 Aug 2024 02:26:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:subject:from:to:cc:date:in-reply-to:references
+	:content-type:mime-version:content-transfer-encoding; s=pp1; bh=
+	gbxzZ3hYPM6MPQ3vGsdG2IxA6riTloMwPP58d6bMTjg=; b=EWS3TcbmJ05W1zNf
+	iWdDQUzYEQeeMcoqOOlIir3Khij4eq43T5dVnq2V4S76S832TI/KuOIH00NIorFK
+	HL/xS3fKw+gC645/tNkCBlE1IVkpfTjV26A3FdW2uzvQyGYk6d7Kd1Q+NQ53KEsr
+	Mc3a0kK4xvgCt4SLKunm/YtJjBXdEEz8fOYflOEOreK6CsB1B4cMkw0/nNYn9VW0
+	UGR3SSpIwXaUw0NTSZ4h7WUb5Qvkxfman39p7+Y14Sh5q6MquIIXqH8enYT3P0fI
+	xp/Uziecg55zgPFJP0q1I10nlR9a8hv07xzlF9TknpRvw2vc3nH8UqAjnh+MAvbD
+	IakKWA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8p5xrf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 02:26:13 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47T2PECs016620;
+	Thu, 29 Aug 2024 02:26:12 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 419q8p5xrb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 02:26:12 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47SMaU1h008228;
+	Thu, 29 Aug 2024 02:26:11 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 417v2mtcav-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 02:26:11 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47T2Q8iO53739868
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 29 Aug 2024 02:26:08 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2C1BD58064;
+	Thu, 29 Aug 2024 02:26:08 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9CC8F5805A;
+	Thu, 29 Aug 2024 02:26:07 +0000 (GMT)
+Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com (unknown [9.61.80.235])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 29 Aug 2024 02:26:07 +0000 (GMT)
+Message-ID: <706b666aaf1e515506bb6a4bc1146ee00571a137.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 3/3] powerpc/pseries/dlpar: Add device tree nodes for
+ DLPAR IO add
+From: Haren Myneni <haren@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Cc: npiggin@gmail.com, tyreld@linux.ibm.com, brking@linux.ibm.com,
+        hbabu@us.ibm.com
+Date: Wed, 28 Aug 2024 19:26:07 -0700
+In-Reply-To: <87y14hdq0r.fsf@mail.lhotse>
+References: <20240822025028.938332-1-haren@linux.ibm.com>
+	 <20240822025028.938332-3-haren@linux.ibm.com> <87y14hdq0r.fsf@mail.lhotse>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-26.el8_10) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -46,61 +96,145 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH -next 2/8] soc: fsl: cpm1: Simplify with dev_err_probe()
-Content-Language: en-US
-To: Krzysztof Kozlowski <krzk@kernel.org>, <andrew@lunn.ch>,
-	<sebastian.hesselbarth@gmail.com>, <gregory.clement@bootlin.com>,
-	<herve.codina@bootlin.com>, <qiang.zhao@nxp.com>,
-	<christophe.leroy@csgroup.eu>, <thierry.reding@gmail.com>,
-	<jonathanh@nvidia.com>, <nm@ti.com>, <ssantosh@kernel.org>,
-	<petlozup@nvidia.com>, <pshete@nvidia.com>, <christophe.jaillet@wanadoo.fr>,
-	<ulf.hansson@linaro.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-tegra@vger.kernel.org>, <jic23@kernel.org>
-References: <20240827114607.4019972-1-ruanjinjie@huawei.com>
- <20240827114607.4019972-3-ruanjinjie@huawei.com>
- <87abe3f1-3cf2-4331-8dde-a422716dd94a@kernel.org>
- <97ff8c02-1a97-7974-06fa-edb35437707d@huawei.com>
- <32e8ef50-ae45-4001-92b6-1e9e0608b402@kernel.org>
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-In-Reply-To: <32e8ef50-ae45-4001-92b6-1e9e0608b402@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.109.254]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemh500013.china.huawei.com (7.202.181.146)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: W_5kTMQCg56kGDz0LMJzR3u8WvCRf45u
+X-Proofpoint-ORIG-GUID: kSFipkjdxAww1bVGQrxGu4ItI3eZEkaN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-29_01,2024-08-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
+ mlxscore=0 phishscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 suspectscore=0 spamscore=0 impostorscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408290014
 
-
-
-On 2024/8/28 21:08, Krzysztof Kozlowski wrote:
-> On 28/08/2024 03:58, Jinjie Ruan wrote:
->>
->>
->> On 2024/8/27 21:50, Krzysztof Kozlowski wrote:
->>> On 27/08/2024 13:46, Jinjie Ruan wrote:
->>>> Use the dev_err_probe() helper to simplify error handling during probe.
->>>> This also handle scenario, when EDEFER is returned and useless error
->>>> is printed.
->>>
->>> ? Sorry, this cannot happen. Please point to below code which can defer.
->>>
->>
->> Thank you!
->>
->> This is not referring to a specific one, but rather the benefits it
->> offers，simplify code is the main purpose, if necessary, it will be
->> removed in next version.
+On Wed, 2024-08-28 at 18:12 +1000, Michael Ellerman wrote:
+> Hi Haren,
 > 
-> It just feels like you are doing these in machine way without actually
-> knowing concepts behind dev_err_probe().
-
-Just try my best to make the code as clean as possible and do it by the way.
-
+> One query below about the of_node refcounting.
 > 
-> Best regards,
-> Krzysztof
+> Haren Myneni <haren@linux.ibm.com> writes:
+> > In the powerpc-pseries specific implementation, the IO hotplug
+> > event is handled in the user space (drmgr tool). For the DLPAR
+> > IO ADD, the corresponding device tree nodes and properties will
+> > be added to the device tree after the device enable. The user
+> > space (drmgr tool) uses configure_connector RTAS call with the
+> > DRC index to retrieve the device nodes and updates the device
+> > tree by writing to /proc/ppc64/ofdt. Under system lockdown,
+> > /dev/mem access to allocate buffers for configure_connector RTAS
+> > call is restricted which means the user space can not issue this
+> > RTAS call and also can not access to /proc/ppc64/ofdt. The
+> > pseries implementation need user interaction to power-on and add
+> > device to the slot during the ADD event handling. So adds
+> > complexity if the complete hotplug ADD event handling moved to
+> > the kernel.
+> > 
+> > To overcome /dev/mem access restriction, this patch extends the
+> > /sys/kernel/dlpar interface and provides ‘dt add index <drc_index>’
+> > to the user space. The drmgr tool uses this interface to update
+> > the device tree whenever the device is added. This interface
+> > retrieves device tree nodes for the corresponding DRC index using
+> > the configure_connector RTAS call and adds new device nodes /
+> > properties to the device tree.
+> > 
+> > Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
+> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> > ---
+> >  arch/powerpc/platforms/pseries/dlpar.c | 130
+> > +++++++++++++++++++++++++
+> >  1 file changed, 130 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/platforms/pseries/dlpar.c
+> > b/arch/powerpc/platforms/pseries/dlpar.c
+> > index 1b49b47c4a4f..6f0bc3ddbf85 100644
+> > --- a/arch/powerpc/platforms/pseries/dlpar.c
+> > +++ b/arch/powerpc/platforms/pseries/dlpar.c
+> ...
+> > @@ -330,6 +345,118 @@ int dlpar_unisolate_drc(u32 drc_index)
+> >  	return 0;
+> >  }
+> >  
+> > +static struct device_node *
+> > +get_device_node_with_drc_index(u32 index)
+> > +{
+> > +	struct device_node *np = NULL;
+> > +	u32 node_index;
+> > +	int rc;
+> > +
+> > +	for_each_node_with_property(np, "ibm,my-drc-index") {
+> > +		rc = of_property_read_u32(np, "ibm,my-drc-index",
+> > +					     &node_index);
+> > +		if (rc) {
+> > +			pr_err("%s: %pOF: of_property_read_u32 %s:
+> > %d\n",
+> > +			       __func__, np, "ibm,my-drc-index", rc);
+> > +			of_node_put(np);
+> > +			return NULL;
+> > +		}
+> > +
+> > +		if (index == node_index)
+> > +			break;
 > 
+> Here we return with np's refcount elevated.
+> 
+> > +	}
+> > +
+> > +	return np;
+> > +}
+> ...
+> > +
+> > +static int dlpar_hp_dt_add(u32 index)
+> > +{
+> > +	struct device_node *np, *nodes;
+> > +	struct of_changeset ocs;
+> > +	int rc;
+> > +
+> > +	/*
+> > +	 * Do not add device node(s) if already exists in the
+> > +	 * device tree.
+> > +	 */
+> > +	np = get_device_node_with_drc_index(index);
+> > +	if (np) {
+> > +		pr_err("%s: Adding device node for index (%d), but "
+> > +				"already exists in the device tree\n",
+> > +				__func__, index);
+> > +		rc = -EINVAL;
+> > +		goto out;
+>  
+> In the error case you drop the reference on np (at out).
+> 
+> > +	}
+> > +	np = get_device_node_with_drc_info(index);
+> > 
+> But in the success case np is reassigned, so the refcount is leaked.
+> I think that's unintentional, but I'm not 100% sure.
+
+Michael, 
+
+get_device_node_with_drc_index() holds the refcount only if the node is
+already exists. In this case this refcount is dropped. 
+
+if (np) {
+                pr_err("%s: Adding device node for index (%d), but "
+                                "already exists in the device tree\n",
+                                __func__, index);
+                rc = -EINVAL;
+                goto out; --> drop refcount 
+        }
+
+Whereas failure from the get_device_node_with_drc_index() - can not
+find the match node. means we do not hold the refcount and need to add
+the node from get_device_node_with_drc_info()
+
+I should add a comment regarding refcount to make it clear. will post
+V4 patch with this comment.
+
+
+Thanks
+Haren
+
+> cheers
+
 
