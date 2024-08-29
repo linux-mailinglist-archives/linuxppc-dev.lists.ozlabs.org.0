@@ -1,87 +1,119 @@
-Return-Path: <linuxppc-dev+bounces-733-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-738-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22023963E51
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 10:26:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1D2963F4C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 Aug 2024 10:58:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WvZBm6HYmz2ypP;
-	Thu, 29 Aug 2024 18:26:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WvZtX23GBz2xqc;
+	Thu, 29 Aug 2024 18:57:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724920016;
-	cv=none; b=Jjv61ieHX9fzPD61JdnCFxiJvMLmxTqRPBzXfZVVZmEbRVQ1ACwPMXTrs0GTkklKKeeghaOkkAML44ZloLfRx17FJQ43arOC2gjpBOq0S/4BPHsrvdWZJYkUiZiURSgaqThLK9TRpjdmpY66HZPv+kjp1sbEZ8NqImJFhq60so3+qMRUxYJFpmSCpKCWgXet9NZR/OaQ1fzjBw4R1EGEsKh6IO5dLhEo3B3Un0BgvPxeYQG358Fxf84Vg6TLBfYGjCCti4ZJXuku8Jk8epJAQNC8Lh6lN8tbUkLVn/7jNNI7tMu70Daejpn0gZvsvOtHLA9ZlHFcm+Z4iJkw42++HA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::433"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724920266;
+	cv=none; b=WeB5g/QpbhKuZdp0zt/sZ5TM6uu2ZkE5PbpthUP0BCeekVMI5V+C9cKohyfgG7HzYugWOA4TlRqL8ooeD5ys3IW1ax66F3fCHYrR4gxk4QDX4QcpUmkSHKZV01aaK6rueoPhwHVO8jEQkoTydorZ6SqahVMopHOrYybdSFbYvVdEveDrqbSmwmyFclL+7uCGjdAVvrU4fgqLrgmQ8AVWE+1OYgPa0tUrLZ1Pvoqyk2jfeikfrbnMgQhQmgFKsV+HyXLHHeOenHepaiDvTY414qhRJReBAae2KpxSivMITRxNAC8DA442PqY2eV+/ThMwH/0TzbBx7QEcaC0P4X8vwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724920016; c=relaxed/relaxed;
-	bh=CzX6lvuIolyjXVJmi/cVG/X6CAC23HjxHju8uHsztN0=;
-	h=DKIM-Signature:Received:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type; b=hszclkFJsa03nBFdoQH+HEAYlBdEvhnKLEqyarwdnWR8FaaNdL9d3uPZKSrgN59/5SwLWa4aUtPdTNYlDTA4MVpPqX7kM8Ld1qxeVi4L43gzjNViIS78KmlWvrV6drh2SjAmt5dSn88IYpb0rp8HuKlyltNTuXKEG0d2cLEzAWvoXuqvgykPJ7c44zVxfWGF6lmUBBOFZBxSsMFMin7kh8o08K1wXCTHAhlrg1vE618lHdLeHGniC52v0tJcvb/4biPrBHjPiqUFAW09qdt5HrEpuaTZ7amNI28RyT/FuKMRh2umgxw564gqdEOiMIJxkio9jkS7+W90ZUZRsWwgsA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ifdmLA2Z; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1724920266; c=relaxed/relaxed;
+	bh=mhnlNgvuSYKooCUA3K3P7Rvv1F/ipLIuFC4LArX03WU=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=gk9KhcTdpJS42XJwJL1GmSDBIQf5CNOO+mB9IYNRzoKbJhFWhRJamQRBPrHPx0vwG0gTyWPn8uV6+xRjPklDJv1Tr/U7lpekO35yOk/7vBKijycZ2g8tjaKwFPxZpBrrIztLeT2rHodtKWeF7y9OhXOI3GfQmGQAyIW886TSGgpst2GiL8ok0txCIuFGwE30CD/hPgOc5nt5tBVF2euwYA0AGHI+HO21EZITelUOUXahzh/25Mo2yUECbEWrk3l3zncY2kM6fn+o8sYnxLxATNLfvwrxkxbeVv5K2fVctSskMnJePlzV38rCDN3Ug20hC9kcQl8ImTsEZ4xasUrt1w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=VNXwTpxn; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::433; helo=mail-wr1-x433.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ifdmLA2Z;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=VNXwTpxn;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::433; helo=mail-wr1-x433.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvZBm04qCz2ypD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 18:26:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1724920014;
-	bh=CzX6lvuIolyjXVJmi/cVG/X6CAC23HjxHju8uHsztN0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ifdmLA2ZirGiQQ8DKH6A6ZHgCMR1ss7zyDFp3CptPsdwMvp/3YGG5gBHGQUEUKUzg
-	 ITO14BjJMTtMSVhv+OWGvxvVRuqV/uDr1qMTHrjCXpCA4AhG+fXdppjYRKj1SYalDA
-	 c5OEvTytT2HGK7FuARoCOz0vu+NPkuwhztoGR1vEusip5cUw9u2oaNaTthykDEP4om
-	 aG2SxS1UuJhaWBae0UnoEaKnIcych9qgh1+wLPD/3IrbnzUQZgDwgKUPmcIv0mATKK
-	 PtmYiyKLMkmTsA/rAyMlTUsbJAoexgEIiM3ollUIPnJsv6rs7t3Jl4HY46paJVrakT
-	 7gCuXwLBau9iw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WvZBV0vd6z4wd6;
-	Thu, 29 Aug 2024 18:26:42 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Charlie Jenkins <charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>,
- Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky
- <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, Vineet Gupta
- <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Guo Ren
- <guoren@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
- <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
- Deller <deller@gmx.de>, Nicholas Piggin <npiggin@gmail.com>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
- <dalias@libc.org>, John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, Shuah Khan <shuah@kernel.org>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, Charlie Jenkins <charlie@rivosinc.com>
-Subject: Re: [PATCH RFC v2 1/4] mm: Add MAP_BELOW_HINT
-In-Reply-To: <20240829-patches-below_hint_mmap-v2-1-638a28d9eae0@rivosinc.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WvZHY6S8fz2ypW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 18:31:05 +1000 (AEST)
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-371afae614aso236081f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 01:31:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1724920258; x=1725525058; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mhnlNgvuSYKooCUA3K3P7Rvv1F/ipLIuFC4LArX03WU=;
+        b=VNXwTpxnlMkIuu8OcMGZUVBTXbMwuYb5J8ZvEkG0bIucPdUEiYf1sH3CTVXKyYgUUp
+         9pg0TP+hhxeE9hTfkyBPATrcQVWoLIs2ta9t++gd4zBypYCtkkghpTfroVVM9RCICSvZ
+         DZlYTawLOmb84joXB7qDSApjnUXAfN1HKTwcFbmHBd//17vncoH+a73bXNSIOnLhvojy
+         oDUWKZPdmeuajuTQxO2bpWIfVFJXvhUaH4P8VQyKVxvoFTlvSQwdKMdFIEi7Mo5wERio
+         ad3rqwah816TjJNcVc9rHY7Ac9+sPdb6UlEgKqJ/lqhK72SyDu/0IOA10l1XGnhEOHw1
+         U4RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724920258; x=1725525058;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mhnlNgvuSYKooCUA3K3P7Rvv1F/ipLIuFC4LArX03WU=;
+        b=MRwm39AmKveF1Vm4IRIyZmpFSr5gs9SBdeplK7GHL7+p9oI3hTsruXX1JZq1IPqgyQ
+         lrrRk7g8oh7mmGAs5l2AdxgrR8qbMzo56AG8hbLU6NoD87MWM4WBYSIYSgYMHjdKLeVl
+         xjr8e8/wyWvReYUC7KUxyWhi5ygMAi0SaxNthTpN/NlwvRBrOxW5Msayhpv9FCw7inPD
+         neKD0xjtrslt/upkGVOXgeLn7pXaLs302Hmz5XVttuETa2xYEpi98TaC+06AnJEvV7GI
+         J6LHWvP6vV0eib1PQ7CjEMTvbPxoC2yIXEbEXp9ysHsdPhOajiV5MOdrDor1NLzht21J
+         L9PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMxE9BvSBg6Vq0gcwgZBQJbHKdb/kjspTjkxFdy2unYTvDHuebmi6soh2A670ElOARRhIXc1201Qrpm/g=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzbwARbf5D66VUgxo/HIwo9TQJWrET7XEZX/5RJARioO//xQAq1
+	S3uyHzLp8ctAlDYBrXXdHhbtFM4ATQBrgmSzVFRstMUUJEgQ7feTI5NFYVzsTcA=
+X-Google-Smtp-Source: AGHT+IH7DF9ylXdsuqLih7sACGDNUKmPe9OYfvQtJgi5uGMLK6sqxI9YIz1ijmJ7+1Xtw2Y0sxRMNg==
+X-Received: by 2002:adf:ecd0:0:b0:371:8a49:f206 with SMTP id ffacd0b85a97d-3749b54ece3mr1331552f8f.30.1724920258302;
+        Thu, 29 Aug 2024 01:30:58 -0700 (PDT)
+Received: from localhost (109-81-82-19.rct.o2.cz. [109.81.82.19])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3749eeabbc1sm802650f8f.63.2024.08.29.01.30.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Aug 2024 01:30:57 -0700 (PDT)
+Date: Thu, 29 Aug 2024 10:30:56 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC v2 0/4] mm: Introduce MAP_BELOW_HINT
+Message-ID: <ZtAxwJFH_hAh1BPG@tiehlicka>
 References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
- <20240829-patches-below_hint_mmap-v2-1-638a28d9eae0@rivosinc.com>
-Date: Thu, 29 Aug 2024 18:26:41 +1000
-Message-ID: <87mskvenum.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,43 +123,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
 
-Charlie Jenkins <charlie@rivosinc.com> writes:
+On Thu 29-08-24 00:15:57, Charlie Jenkins wrote:
 > Some applications rely on placing data in free bits addresses allocated
 > by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
 > address returned by mmap to be less than the 48-bit address space,
 > unless the hint address uses more than 47 bits (the 48th bit is reserved
 > for the kernel address space).
->
-> To make this behavior explicit and more versatile across all
-> architectures, define a mmap flag that allows users to define an
-> arbitrary upper limit on addresses returned by mmap.
->
-> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-> ---
->  include/uapi/asm-generic/mman-common.h       | 1 +
->  tools/include/uapi/asm-generic/mman-common.h | 1 +
-  
-You're not meant to update the headers in tools/ directly. There's a
-mail somewhere from acme somewhere describing the proper process, but
-the tldr is leave it up to him.
+> 
+> The riscv architecture needs a way to similarly restrict the virtual
+> address space. On the riscv port of OpenJDK an error is thrown if
+> attempted to run on the 57-bit address space, called sv57 [1].  golang
+> has a comment that sv57 support is not complete, but there are some
+> workarounds to get it to mostly work [2].
+> 
+> These applications work on x86 because x86 does an implicit 47-bit
+> restriction of mmap() address that contain a hint address that is less
+> than 48 bits.
+> 
+> Instead of implicitly restricting the address space on riscv (or any
+> current/future architecture), a flag would allow users to opt-in to this
+> behavior rather than opt-out as is done on other architectures. This is
+> desirable because it is a small class of applications that do pointer
+> masking.
 
-> diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
-> index 6ce1f1ceb432..03ac13d9aa37 100644
-> --- a/include/uapi/asm-generic/mman-common.h
-> +++ b/include/uapi/asm-generic/mman-common.h
-> @@ -32,6 +32,7 @@
->  
->  #define MAP_UNINITIALIZED 0x4000000	/* For anonymous mmap, memory could be
->  					 * uninitialized */
-> +#define MAP_BELOW_HINT	  0x8000000	/* give out address that is below (inclusive) hint address */
+IIRC this has been discussed at length when 5-level page tables support
+has been proposed for x86. Sorry I do not have a link handy but lore
+should help you. Linus was not really convinced and in the end vetoed it
+and prefer that those few applications that benefit from greater address
+space would do that explicitly than other way around.
 
-IMHO the API would be clearer if this actually forced the address to be
-below the hint. That's what the flag name implies after all.
-
-It would also mean the application doesn't need to take into account the
-length of the mapping when passing the hint.
-
-cheers
+-- 
+Michal Hocko
+SUSE Labs
 
