@@ -1,59 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-803-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-804-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB5A966045
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 13:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAAD796606D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 13:17:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwFrL5NSfz305v;
-	Fri, 30 Aug 2024 21:13:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WwFxZ3LqFz307f;
+	Fri, 30 Aug 2024 21:17:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725016402;
-	cv=none; b=f+9zH4MhwGq6BwU75qaynu1KCR18dBDLJ42SE5SoLPjV0vpo9sp1QwkXx/s8hBCCjQxQII1y/fW4jyWGayyL2n1hLfc/4aIjHngWRCRFhAMdLD72mYYImDHW6rzsXuASelUp9MpE1AHRyonnm6IVb3KWRh4t0uMUvHIIDThrhmrfBjU/0IlnV/4KuS0lagMqf27/WTL1DMYqmCHz5yTRwnfJ3A9c0a+w1b+EIlT2UI806scDTHKhHI0G79PXotnERGn8BCNJOBmuzo/FKU297sri4+YmUDUc/XvCAcv+wsn6VY37yxpPsHdXwS5uNKn57H7Mw8FEY9SWe1hsE/Ni9g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725016674;
+	cv=none; b=bsFkf+dXcMYK1/yi/IWNRoObA4WC6eIRq3s0kW+BPLb5N7vufVA/g5nqXWFbHakkcKlLm6U79wdNGFs7bL52KWBHUQDCfHLXPh3vdabUmQrYpaN/GBHyc3mGFc/Kl8W20kFdqr/fmSK/tvV8I2ng5JNgCh8XCRzKU4QxfEPoxV/PUtJ9fnX0SExED2z3KnfaL20ugG2OorcUnOIkwBFCKJA7gqk8Syba6Cz53WwANlXD9JEHquE5/lWBL6XOWtsfhJv7tVM9H4GfC86jZxvpUVMdiQqOvrasg5BGKJPbmw6SHsm8AkcwEmaPARB+zju4AEIJoVr7v7ecB0fwCNSZ7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725016402; c=relaxed/relaxed;
-	bh=54VEsYyzzl8aBVA+cH24RkP2lRIl4hPJAoqqwcft+Iw=;
-	h=DKIM-Signature:Received:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=gBZSl+DmJe9rJww+lZmTH/wJWrme8Ix/fQ4iMUuLgEPlTBcoCRYy7vk1XEqV3YhOcVp0IpR0QoPGS/SDHFOYJqbbraxGMjqw000IEIGA5rHqYaM/UHmOV2Pk326Q891/axwTzar9U0IpKBq5v5TcZw218FgE48RuoqLUcG71JBW5oNrQzj6r9ziLlSN1QMU9yjS7p3aat/Pg0iNt8PRuJwU2MtI/ADZxaZD2EVvUp1ZYBdb/KSjTJBW7leud/sezaRDBANJeSAsw3rXdyb5LN9tTrUzJzt+J5Fi4QGX0EEXKBq6maqo7qB3Nht2l7JqQGb1lieeJQquVwnBtWqVefQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lTXx7eNh; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1725016674; c=relaxed/relaxed;
+	bh=pUb4QrzT7qCuzKr20VTbfQnlpedFsYgESJIJB+0lq8k=;
+	h=DKIM-Signature:DKIM-Signature:Received:X-MC-Unique:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To:X-Scanned-By; b=EH266Zm0eR5/U4NiE5M5hVhhP9+27MLYtbD/rs8icgHAz+LGVssyQBNXV4M1aWIoHWXIZW6Q49AkhT3wKlxVvMJj9kTTKSK0zee7EA4uZRtolE4aoBsrF3jg4EhprTq+7XSeGk79TjGxHKUWd0SRCWgJIbptg+uInFLjhxupQ+9NGYyu0BjRtKGjpRJ0/OW3isdWFiLCi8gZMtMnVenYs1AT3Cj1MJPkTm5oZUNx+PbyNukxBq58U2i9171ep1hLc2FxKF9AEN4WjNEC5XPclcxgXtoLtxe+aC36vloTwtk+1/s0wWQKqrm5Lz1MFsmik+EbpOiBv4hmZIfzRNOS6g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JvhkxaC4; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JvhkxaC4; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lTXx7eNh;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JvhkxaC4;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JvhkxaC4;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwFrK4Zm7z3048
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 21:13:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1725016400;
-	bh=54VEsYyzzl8aBVA+cH24RkP2lRIl4hPJAoqqwcft+Iw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lTXx7eNhfGuEsboY1jQMYEe5MGANkVd85xzwCIQmfQk6bCEg01QnS+wwf+t07gd1b
-	 buEJNasX9cugg2qG44IyUYyILEV8D5o9JTRStV0IKVykArL8ilgBICS9Rf5RH01/1U
-	 5hiC9BGbR8kgKBtV4xhFWYTFu8NaskxETiVmgZK9aRux23a0Q8HcGyLhMA+6HncmTo
-	 Kkn3Z9X72zAeZ9JAvVdOx8mY/0htPmqaxsjM7xX/+Z84OZVIMsxh8T4A+f+CeBMitX
-	 l0dQ+1JrbCH6c2yYxCbi0QmxyLIdY20RUGoAJMCLAtibzwYLnJokNVh2BIeVt2JIWm
-	 +/CsMIqI25MaA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwFxY6TYzz306G
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 21:17:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725016665;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pUb4QrzT7qCuzKr20VTbfQnlpedFsYgESJIJB+0lq8k=;
+	b=JvhkxaC4uUy3VF0/Sze0UrYKGDsrxNVzk4SBdw6nCNuWIlQ81qB87w8SSDlVDwtxUStKXQ
+	wJsWtvXwAL5tvmXxZp1R2iDLZeG9B/1XT8+8U1WPzoz2v5gvqOzFSS7PPc5VdvjJwatHs0
+	rZvUWO4DUumZ2kQShGu7ecWMLWDm9oI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725016665;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pUb4QrzT7qCuzKr20VTbfQnlpedFsYgESJIJB+0lq8k=;
+	b=JvhkxaC4uUy3VF0/Sze0UrYKGDsrxNVzk4SBdw6nCNuWIlQ81qB87w8SSDlVDwtxUStKXQ
+	wJsWtvXwAL5tvmXxZp1R2iDLZeG9B/1XT8+8U1WPzoz2v5gvqOzFSS7PPc5VdvjJwatHs0
+	rZvUWO4DUumZ2kQShGu7ecWMLWDm9oI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-Y6QDg5daOvCkiKXeP_nKMg-1; Fri,
+ 30 Aug 2024 07:17:41 -0400
+X-MC-Unique: Y6QDg5daOvCkiKXeP_nKMg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WwFrJ1stpz4wcl;
-	Fri, 30 Aug 2024 21:13:20 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, "Ritesh Harjani (IBM)"
- <ritesh.list@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: Re: [PATCH] powerpc: Use printk instead of WARN in change_memory_attr
-In-Reply-To: <a09687b8-184c-40bf-bf5f-b9639dd6d136@csgroup.eu>
-References: <e2fcabe78795552264f045bd224f83609903708f.1724749026.git.ritesh.list@gmail.com>
- <a09687b8-184c-40bf-bf5f-b9639dd6d136@csgroup.eu>
-Date: Fri, 30 Aug 2024 21:13:19 +1000
-Message-ID: <87ed66e01c.fsf@mail.lhotse>
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 44DF11955BF2;
+	Fri, 30 Aug 2024 11:17:39 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.42])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 87A6019560AA;
+	Fri, 30 Aug 2024 11:17:36 +0000 (UTC)
+Date: Fri, 30 Aug 2024 19:17:33 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Hari Bathini <hbathini@linux.ibm.com>, kexec@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	x86@kernel.org, Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
+Subject: Re: [PATCH] kexec/crash: no crash update when kexec in progress
+Message-ID: <ZtGqTSMvx6Ljf5Xi@MiWiFi-R3L-srv>
+References: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
+ <87v80lnf8d.fsf@mail.lhotse>
+ <10c666ae-d528-4f49-82e9-8e0fee7099e0@linux.ibm.com>
+ <355b58b1-6c51-4c42-b6ea-dcd6b1617a18@linux.ibm.com>
+ <ZsLjGJvAUIaxrG6x@MiWiFi-R3L-srv>
+ <1e4a8e18-cda9-45f5-a842-8ffcd725efc9@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,65 +90,149 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1e4a8e18-cda9-45f5-a842-8ffcd725efc9@linux.ibm.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 27/08/2024 =C3=A0 11:12, Ritesh Harjani (IBM) a =C3=A9crit=C2=A0:
->> [Vous ne recevez pas souvent de courriers de ritesh.list@gmail.com. D=C3=
-=A9couvrez pourquoi ceci est important =C3=A0 https://aka.ms/LearnAboutSend=
-erIdentification ]
->>=20
->> Use pr_warn_once instead of WARN_ON_ONCE as discussed here [1]
->> for printing possible use of set_memory_* on linear map on Hash.
->>=20
->> [1]: https://lore.kernel.org/all/877cc2fpi2.fsf@mail.lhotse/#t
->>=20
->> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> ---
->>   arch/powerpc/mm/pageattr.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
->> index ac22bf28086f..c8c2d664c6f3 100644
->> --- a/arch/powerpc/mm/pageattr.c
->> +++ b/arch/powerpc/mm/pageattr.c
->> @@ -94,8 +94,11 @@ int change_memory_attr(unsigned long addr, int numpag=
-es, long action)
->>          if (!radix_enabled()) {
->>                  int region =3D get_region_id(addr);
->>=20
->> -               if (WARN_ON_ONCE(region !=3D VMALLOC_REGION_ID && region=
- !=3D IO_REGION_ID))
->> +               if (region !=3D VMALLOC_REGION_ID && region !=3D IO_REGI=
-ON_ID) {
->> +                       pr_warn_once("%s: possible use of set_memory_* o=
-n linear map on Hash from (%ps)\n",
->> +                                       __func__, __builtin_return_addre=
-ss(0));
->
-> Is it really only linear map ?
->
-> What about "possible user of set_memory_* outside of vmalloc or io region.
+On 08/20/24 at 12:10pm, Sourabh Jain wrote:
+> Hello Baoquan,
+> 
+> On 19/08/24 11:45, Baoquan He wrote:
+> > On 08/19/24 at 09:45am, Sourabh Jain wrote:
+> > > Hello Michael and Boaquan
+> > > 
+> > > On 01/08/24 12:21, Sourabh Jain wrote:
+> > > > Hello Michael,
+> > > > 
+> > > > On 01/08/24 08:04, Michael Ellerman wrote:
+> > > > > Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+> > > > > > The following errors are observed when kexec is done with SMT=off on
+> > > > > > powerpc.
+> > > > > > 
+> > > > > > [  358.458385] Removing IBM Power 842 compression device
+> > > > > > [  374.795734] kexec_core: Starting new kernel
+> > > > > > [  374.795748] kexec: Waking offline cpu 1.
+> > > > > > [  374.875695] crash hp: kexec_trylock() failed, elfcorehdr may
+> > > > > > be inaccurate
+> > > > > > [  374.935833] kexec: Waking offline cpu 2.
+> > > > > > [  375.015664] crash hp: kexec_trylock() failed, elfcorehdr may
+> > > > > > be inaccurate
+> > > > > > snip..
+> > > > > > [  375.515823] kexec: Waking offline cpu 6.
+> > > > > > [  375.635667] crash hp: kexec_trylock() failed, elfcorehdr may
+> > > > > > be inaccurate
+> > > > > > [  375.695836] kexec: Waking offline cpu 7.
+> > > > > Are they actually errors though? Do they block the actual kexec from
+> > > > > happening? Or are they just warnings in dmesg?
+> > > > The kexec kernel boots fine.
+> > > > 
+> > > > This warning appears regardless of whether the kdump kernel is loaded.
+> > > > 
+> > > > However, when the kdump kernel is loaded, we will not be able to update
+> > > > the kdump image (FDT).
+> > > > I think this should be fine given that kexec is in progress.
+> > > > 
+> > > > Please let me know your opinion.
+> > > > 
+> > > > > Because the fix looks like it could be racy.
+> > > > It seems like it is racy, but given that kexec takes the lock first and
+> > > > then
+> > > > brings the CPU up, which triggers the kdump image, which always fails to
+> > > > update the kdump image because it could not take the same lock.
+> > > > 
+> > > > Note: the kexec lock is not released unless kexec boot fails.
+> > > Any comments or suggestions on this fix?
+> > Is this a little better?
+> > 
+> > diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+> > index 63cf89393c6e..0355ffb712f4 100644
+> > --- a/kernel/crash_core.c
+> > +++ b/kernel/crash_core.c
+> > @@ -504,7 +504,7 @@ int crash_check_hotplug_support(void)
+> >   	crash_hotplug_lock();
+> >   	/* Obtain lock while reading crash information */
+> > -	if (!kexec_trylock()) {
+> > +	if (!kexec_trylock() && kexec_in_progress) {
+> >   		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
+> >   		crash_hotplug_unlock();
+> >   		return 0;
+> > @@ -539,7 +539,7 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
+> >   	crash_hotplug_lock();
+> >   	/* Obtain lock while changing crash information */
+> > -	if (!kexec_trylock()) {
+> > +	if (!kexec_trylock() && kexec_in_progress) {
+> >   		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
+> >   		crash_hotplug_unlock();
+> >   		return;
+> 
+> Ideally, when `kexec_in_progress` is True, there should be no way to acquire
+> the kexec lock.
+> Therefore, calling `kexec_trylock()` before checking `kexec_in_progress` is
+> not helpful.
+> The kernel will print the error message "kexec_trylock() failed, elfcorehdr
+> may be inaccurate."
+> So, with the above changes, the original problem remains unsolved.
+> 
+> However, after closely inspecting the `kernel/kexec_core.c:kernel_kexec()`
+> function, I discovered
+> an exceptional case where my patch needs an update. The issue arises when
+> the system returns
+> from the `machine_kexec()` function, which indicates that kexec has failed.
+> 
+> In this scenario, the kexec lock is released, but `kexec_in_progress`
+> remains True.
+> 
+> I am unsure why `kexec_in_progress` is NOT set to False when kexec fails.
+> Was this by design,
+> or was it an oversight because returning from the `machine_kexec()` function
+> is highly unlikely?
+> 
+> Here is my proposal to address the original problem along with the
+> exceptional case I described
+> above.
+> 
+> Let's implement two patches:
+> 
+> 1. A patch that sets `kexec_in_progress` to False if the system returns from
+> `machine_kexec()` before
 
-Yeah that's more accurate. Can drop "possible" too I think? We're pretty
-sure that's what happened.
+I don't think we have chance to return from machine_kexec() after
+triggering kexec/kdump jumping. The KEXEC_JUMP could return, but I'v
+never heard people using it.
 
-> Maybe a show_stack() would also be worth it ?
->
->
-> But in principle I think it would be better to keep the WARN_ONCE until=20
-> we can add __must_check to set_memory_xxx() functions to be sure all=20
-> callers check the result, as mandated by=20
-> https://github.com/KSPP/linux/issues/7
+>    unlocking the kexec lock in the `kernel_kexec()` function.
+> 
+>    ```
+>    diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+>    index c0caa14880c3..b41277183455 100644
+>    --- a/kernel/kexec_core.c
+>    +++ b/kernel/kexec_core.c
+>    @@ -1069,6 +1069,7 @@ int kernel_kexec(void)
+>    #endif
+> 
+>     Unlock:
+>    +      kexec_in_progress = false;
+>            kexec_unlock();
+>            return error;
+>     ```
+> 
+> 2. A patch to return early from the `crash_handle_hotplug_event()` function
+> if `kexec_in_progress` is
+>    set to True. This is essentially my original patch.
 
-Will that help in this case though?
+There's a race gap between the kexec_in_progress checking and the
+setting it to true which Michael has mentioned. That's why I think
+maybe checking kexec_in_progress after failing to retriving
+__kexec_lock is a little better, not very sure.
 
-If the caller checks the return value they'll see that the call failed,
-and presumably error out, possibly breaking boot or something else crucial.
+> 
+> Please share your comments on the new approach.
+> 
+> Thank you for review.
+> 
+> - Sourabh Jain
+> 
 
-Unless we change change_memory_attr() to return EOPNOTSUPP or something
-in this case, and expect callers to handle that.
-
-cheers
 
