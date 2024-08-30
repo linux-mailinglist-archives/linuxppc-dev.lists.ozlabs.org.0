@@ -1,81 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-819-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-818-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245329664B9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 16:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FA19664B6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 16:57:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwLqx0NWRz30D3;
-	Sat, 31 Aug 2024 00:58:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WwLqB6Tfyz30Bp;
+	Sat, 31 Aug 2024 00:57:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=178.60.130.6
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725029430;
-	cv=none; b=Ac390SW4QoDsEucC/cL+pPqjZ9QM0HhQeXtWg7fC9hSggt4wt911zlVfOzUYn5NwFVxzzFJ3kycuPiaK4epS6kMcifugwlTw8NHYd6QgoV2DeBsSFlVJmUu1PM5VKQ00iHpN+57fBeyqmPSoiffcZJy2raQK2Ig3ods8sseXYMyNqr4FFmE6oAPvFAH6AeoQ1sQ/ljJxTR4x6jQe/h3GSrlQy867D0kPAIvunniaSLvykrTeZPoMbIoZ+os5lLy2LFBQVz4K++6DdTkDpervttwEFn2iU1Y7nnkTjSg/m6HjhfKyHF5DNEaLgmIO3OwnBhbmvMlxBkyMMSjFDaQwIQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.84
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725028101;
+	cv=none; b=ftEzSkJ28jkbuZSYPl5EZaxB8ot6HdYEWG+KzfJQk66uQkFlUWFfUd4vk8yFPW+fuf4o+eVXmv36U8icDQwIeQkLWZ2pxBIJRiu33FrDPJSV2VxiLnvhX6h3XC5XFbm1JDBLaA3rKs1kIg0NZeUYTACcARPgGBC0msEqEOwKo1NGL3m/1Kq+2OOJzvpeTKcLlZrJxvAjhH59uz+xUllc4rIDv4dUsDxNbWDDIpkx4aOVI7y+LK+38gz8IrKpEBqN3CRWPJj4uRCBnQXzATmJ+XP/6PmL8JcpkVmGqvJ0Ql2t7wfk0BZTug+SRGMcCQEFQbsynzhjpjKSpBUYlNwtbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725029430; c=relaxed/relaxed;
-	bh=v6/zyvof4qMqjJ+4xzc0g1Ye/jBKn1I/cVtXd5Huwfg=;
-	h=X-Greylist:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding; b=lk8n/IqcuTPgQCxGiuTyxTiPhhVtbgVfyQpPLQcWyIZwjqnz0otUAt6bHjWhVEawTYLJf748Zi8rXq0Mjsin4h9VunLagSl4vZsIRZjV8MHqB8nZGmOQFHc1DTGzN067H4D3hzChHHYTPhH7TZCaPgXIEaQrrmYnaywruj50OKKFYulBhtR2zDg3EGqq+ciqWfz4v1Mdss0WtH2QM8wv1wBIe7KCGaQoOqkg3ljyI0iXqzHAx1oeZE8n6NHgj3vjlWK7Fa7on8AYHeP5vbNy4VFLXco4UhAdtPgjJWwvBGIuYdQDSAaghSd+PFRdPJ4xkESVAVrnZWftbquNz5vyfw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=igalia.com; dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=ez/ZxdhR; dkim-atps=neutral; spf=pass (client-ip=178.60.130.6; helo=fanzine2.igalia.com; envelope-from=gpiccoli@igalia.com; receiver=lists.ozlabs.org) smtp.mailfrom=igalia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=ez/ZxdhR;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com; envelope-from=gpiccoli@igalia.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1937 seconds by postgrey-1.37 at boromir; Sat, 31 Aug 2024 00:50:28 AEST
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	t=1725028101; c=relaxed/relaxed;
+	bh=ruqW9VPyy+1mLQAyh1V0yLZihyccQ9bYsUtmbQxeGyk=;
+	h=X-Greylist:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo; b=hAI2FEpBPgsdKbsgVqorTdvBhYNoOmPyfKROG4BFcGbt6SXDtHDa3yBDZl1SSllQO+Pbow9YzX5KW0EXJ2wBVQacrbReX4aLCaHrmEHeN+MqNR2JycoMA+GLPYnW7P0PtuiNTHfwah19RH70CHiAa07KjRK1NuOGYh0rXrjWyc1Xn7TO5/QYruUJCv9i3H8267AQXoIzq//hIChB0RzDx1CfNDrIM2HWgD5TwUXQiSX9SjsY/2qfKIdD/Qdsgiq7hFut6AXJszm60C2Ye57rPi0KMVmI+s7JA58ShaKveyWjjzifi0iBBD8RntAxQPxbS8AwLWw1NGbTmu+kumeXfw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 389 seconds by postgrey-1.37 at boromir; Sat, 31 Aug 2024 00:28:20 AEST
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwLfr3t56z3009
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 00:50:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=v6/zyvof4qMqjJ+4xzc0g1Ye/jBKn1I/cVtXd5Huwfg=; b=ez/ZxdhRyaLTDXkcXt65kzdlXC
-	2F44k9Z3lOfVzv7CwMwOroZhtPXAalN0AmKaIGuapFlajlqY1xlF/6PB5aRl5wk116Iao061OZ0mA
-	akWE8kVPlF5imhW8ZGxMyxKcviQXCv2rKt/qZfsqSoA51I1n0N/NklNUkLUIdfLBj2fIL5M+lDtI6
-	ka3De4ySH7ImuAqJ+F28rzMXkemWtdw862wGu4V8hcvcRNj7Em4oeUUu9I0/XjawFmvAZDVrwYQRX
-	uBuQlkvGzuLeSY/wFa8o/crROA326Xbtg6lHoytkl4bh6lO2ccY/o9NMLPiH/RbsyhX5dH3D+gZZz
-	YdxGJBgQ==;
-Received: from [177.76.152.96] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1sk2Rs-007B3a-Mf; Fri, 30 Aug 2024 16:18:00 +0200
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-To: kexec@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	x86@kernel.org
-Cc: bhe@redhat.com,
-	vgoyal@redhat.com,
-	dyoung@redhat.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	naveen@kernel.org,
-	hbathini@linux.ibm.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	ashish.kalra@amd.com,
-	michael.roth@amd.com,
-	brijesh.singh@amd.com,
-	thomas.lendacky@amd.com,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwL9J4yV0z2yjV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 00:28:19 +1000 (AEST)
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowADHcEBu1dFmz5R+Cw--.3389S2;
+	Fri, 30 Aug 2024 22:21:36 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: jochen@scram.de,
+	andi.shyti@kernel.org,
+	grant.likely@linaro.org,
+	thierry.reding@gmail.com,
+	rob.herring@calxeda.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-i2c@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	stephen.s.brennan@oracle.com,
-	kernel@gpiccoli.net,
-	kernel-dev@igalia.com,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: [PATCH] powerpc/fadump, x86/sev: Inform about unconditionally enabling crash_kexec_post_notifiers
-Date: Fri, 30 Aug 2024 11:17:15 -0300
-Message-ID: <20240830141752.460173-1-gpiccoli@igalia.com>
-X-Mailer: git-send-email 2.46.0
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] of/irq: handle irq_of_parse_and_map() errors
+Date: Fri, 30 Aug 2024 22:21:27 +0800
+Message-Id: <20240830142127.3446406-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,45 +55,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowADHcEBu1dFmz5R+Cw--.3389S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JrWfuF17Kr4DCr4kuFWktFb_yoWfArgEgw
+	1kXa9xArWUGFnxXw15AFWfZry5KFy8WF1kAF1vvr9xC34DWw17JF1DZrn3JrsrXry3KFyq
+	9w1qvF4S9wnrJjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbfAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-Originating-IP: [183.174.60.14]
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Inspired by commit d57d6fe5bf34 ("drivers: hv: log when enabling crash_kexec_post_notifiers"),
-a good idea is to signal on dmesg about unconditionally enabling the kernel
-parameter crash_kexec_post_notifiers, which affects how kdump works.
+Zero and negative number is not a valid IRQ for in-kernel code and the
+irq_of_parse_and_map() function returns zero on error.  So this check for
+valid IRQs should only accept values > 0.
 
-By checking the source code, found 2 more cases besides Hyper-V, so let's
-print that on dmesg for them as well.
-
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Cc: stable@vger.kernel.org
+Fixes: f7578496a671 ("of/irq: Use irq_of_parse_and_map()")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- arch/powerpc/kernel/fadump.c | 1 +
- arch/x86/virt/svm/sev.c      | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-cpm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index a612e7513a4f..37dee89a0bf2 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1819,6 +1819,7 @@ int __init setup_fadump(void)
- 	 * notifiers are invoked.
- 	 */
- 	crash_kexec_post_notifiers = true;
-+	pr_info("PPC/fadump: enabling crash_kexec_post_notifiers\n");
+diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
+index 4794ec066eb0..41e3c95c0ef7 100644
+--- a/drivers/i2c/busses/i2c-cpm.c
++++ b/drivers/i2c/busses/i2c-cpm.c
+@@ -435,7 +435,7 @@ static int cpm_i2c_setup(struct cpm_i2c *cpm)
+ 	init_waitqueue_head(&cpm->i2c_wait);
  
- 	return 1;
- }
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index 0ce17766c0e5..ac445ad2fcc8 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -257,6 +257,7 @@ static int __init snp_rmptable_init(void)
- 	 * notifier is invoked to do SNP IOMMU shutdown before kdump.
- 	 */
- 	crash_kexec_post_notifiers = true;
-+	pr_info("AMD/SEV: enabling crash_kexec_post_notifiers\n");
+ 	cpm->irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
+-	if (!cpm->irq)
++	if (cpm->irq <= 0)
+ 		return -EINVAL;
  
- 	return 0;
- 
+ 	/* Install interrupt handler. */
 -- 
-2.46.0
+2.25.1
 
 
