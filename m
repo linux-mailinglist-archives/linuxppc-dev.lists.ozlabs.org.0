@@ -1,72 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-834-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-835-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CFB966941
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 21:02:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 426B9966953
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 21:11:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwSFr56Ddz30M0;
-	Sat, 31 Aug 2024 05:02:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WwSS66cGQz30FR;
+	Sat, 31 Aug 2024 05:11:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725044560;
-	cv=none; b=ltKpQKYWZXrHGWmHvBRIs0fqKnp7GgvZC9obG7vx/eM/LXxUpKP6emYEvUjwwXuNp00V9AGfi3jOxA+aZfEzxgAmCbWJBO8dqi9fsZT1zfAiTXUCVB5efMpSRKjXOlCdLZNHeHWFg5n8gG/64oN93FbfzhpjnS/fXMfGoq+QsloeNTGqkAaeKTvJ5g9sVYkCu26/V6ed+1/ZaYgvPn9QW+FN185g0U7CvQZ3MQMYDH4/mucQs6IFxLVLThnWpw/+G4KCWvYgoUvKlu4onY3az8P6d5Uk2aCKbMQshOuvbAeXpBu5Xu6NlkNMeGRhMZVD2UwewY20wy/DatumdIMHVQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725045094;
+	cv=none; b=MlyWKld/fYGXyS7+m+UDrS49PmECVvKoZ/R4zeSMlgs75Ytn8oVl93hq21fH4fbbNOGPshWbWj3UL+eOfL711eDfsOa94n9k209jnhRVPQZ7IuAaxJt0lRpfq7X60o3cxCK3+qjvv3hJBVeHNNiAww5pMRPEcJvghhj9wXDzx0XiAuX58RzvHMlbuw6/9D6U0QJ68ZblAfUB4XAjrC1uL3FcGWdse/xBdqe6ftRzoF0NJWWUmCoHfkGebBn0TEqXdoUk36d9pHmojAHr3K+m4SsFJ/QrNVgWlaiu1qCcQBkVBdSHYbX/V2I/a7hzK/6qZ3xsP4c+2N8XT+deCJ+mEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725044560; c=relaxed/relaxed;
-	bh=FywVel09u9vEQcGoBnJqmM3nFE8c9Rs4L/jKL+SXYO8=;
-	h=DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:X-IronPort-AV:
-	 X-IronPort-AV:Received:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:User-Agent; b=MZA1BXeB/WU4y1hCCVksBIiPTYHVx6fuqqt19tTwEXoZvbGL2d12StD3GL6a5AXS9nc3uossIDjepEXwvV3cn/XuJr3cJGLM4wco+3zOZ/61kLcX1TXaOY7TOBRhuu6D7OtI3AG+fOGpeDtIKd/6/Rx477vIQGnJFyaSnwCNQm32jNFIq298P9YsuFzzca0aeeRfsEfuakFU+A4rhkQhMWebc9vM1fYx2h5dUr2XgXvbNCb4gbvruUO/tiJDMys6uSjc+X70jiQsVK4Jc0wSFvkIt1rVbKGe814Yn3NvLPEkTDrsoRAve60+448mBpMn7lYqrZ8jczNqAXssKQZXVg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a4A2HC7b; dkim-atps=neutral; spf=pass (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1725045094; c=relaxed/relaxed;
+	bh=eEhCCeqkOC4O/L5fV+sbQ0pRV2nbdxLUVkCuD+uhlQ8=;
+	h=Received:Received:DKIM-Signature:Date:From:To:Cc:Subject:
+	 Message-ID:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To; b=Nayg81n13VMRP+aWRdd/ZGrCxp5qfqgFrMiUzW6EdcEXHttCNn7tz2bdk0LHHnXli5XshlVuG3x1i1bmo15CkNdOym0e6sEwPve7JwlGJ4FxpVgfW2g6BFL+u8zCcRuq3CeIfCKBzG/mRlM4hZ40BctiZmHGeKDd1XWGQBm0LvN7zPlItI7uZ3rbW6SVTAjnRM5z7IwNmh4jz476YrN5mPkqoKFVm3JEYsqFCQ0ZdPql397EsQxPSITAzN7S6FT1ykLXoa9ELHyjxmosUKYNT2lv+HpuiKcUiGTGMPA1SQ/p5sBToadzhfABy27QkJuM5IbAdK3SdjxWlLWYiwa53A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sUNjx4jH; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a4A2HC7b;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sUNjx4jH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwSFp5g56z30Gq
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 05:02:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725044559; x=1756580559;
-  h=date:from:to:cc:subject:message-id;
-  bh=BZh1si6EiPTjToRp5e9bi3a+AfsYwJPn5uRXWPbFp9k=;
-  b=a4A2HC7bDzczvgi5BALhVkUTTNDyoaZKFuKnqD2s4lWg49ofX10ZzzAq
-   JgOFXqxyRjPIRiebDwDaXBjFJbMUWvyBi1PAaZRCz2TGXo0zL9qs0LOS0
-   hG85TOeAmvlsPhOBarND139hUnv9M9QnmIIcRNKBrQxDJVdBkRftWvADQ
-   oobNMtHNLWbL8JYHlaVAJr0B9ZwfutE/P3k+/BcS0PKyw46uYCX1cIFIw
-   6P3OMEVkrqa80Ly0mWvD6k4gFnYR/qYJ3aLHO8cLEC9lG4M+7oWfbChj2
-   v16x1QjUENiKnXKEz1cz4Noz42kr7TdXSnE8b51dRl79glczLWO0XXrj/
-   g==;
-X-CSE-ConnectionGUID: ryr9rWTbRTmeE8gYDRBV+Q==
-X-CSE-MsgGUID: HdebYEVWT7CeAAefKq6K3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11180"; a="27577301"
-X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
-   d="scan'208";a="27577301"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 12:02:32 -0700
-X-CSE-ConnectionGUID: H7bBTJ77RliwKmEPkAvEiQ==
-X-CSE-MsgGUID: Wl2U77DuRhudw7Nz9fcovw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
-   d="scan'208";a="68377716"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 30 Aug 2024 12:02:30 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sk6tA-0001wE-2A;
-	Fri, 30 Aug 2024 19:02:28 +0000
-Date: Sat, 31 Aug 2024 03:01:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 15d63cbced5cb10f99253a75ed2ae9aaff6dc1b8
-Message-ID: <202408310340.k53uWsrI-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwSS61jHdz30BY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 05:11:34 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1F3E85C0074;
+	Fri, 30 Aug 2024 19:11:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D468DC4CEC2;
+	Fri, 30 Aug 2024 19:11:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725045091;
+	bh=t2rLa4qLBaeQmb8d7MyO0jie2JSa7eFtQpHu1NNFc8Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=sUNjx4jH+xRMLWMZWVXbXZhM3sIz2p+Fl09oo0Sv3dTSs2LbMQSYfrdAUuamBT1FM
+	 CdRNKKrp38c9yp0x/vXtrtMgjE6zU7C9s6tyK3JAqdXynKzf4cLe+2V9ZSFOewOhOs
+	 W/eyAoalF51GI5YCDLyI578onnyAQs+b0dxy+bajngoJGxlbaPuBgT5buSDqiy1Xfi
+	 xEgQ2Ne3Hp8tOdv5UGyw8BPZJbz7tSpJJA/dd7GVtHXAWrD+St6z3XsJutPl3dSpVo
+	 vYB6xPe8oJqWU3OuqC7PTbMobQG87x7xFMnAQUNiWX5NFkolEte4P2MH21gt/0GNDj
+	 lQYY5mMajmKWA==
+Date: Fri, 30 Aug 2024 14:11:29 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Lukas Wunner <lukas@wunner.de>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 7/7] PCI: Create helper to print TLP Header and Prefix
+ Log
+Message-ID: <20240830191129.GA115840@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,150 +63,158 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240514113109.6690-8-ilpo.jarvinen@linux.intel.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 15d63cbced5cb10f99253a75ed2ae9aaff6dc1b8  Automatic merge of 'next' into merge (2024-08-27 14:25)
+On Tue, May 14, 2024 at 02:31:09PM +0300, Ilpo Järvinen wrote:
+> Add pcie_print_tlp_log() helper to print TLP Header and Prefix Log.
+> Print End-End Prefixes only if they are non-zero.
+> 
+> Consolidate the few places which currently print TLP using custom
+> formatting.
+> 
+> The first attempt used pr_cont() instead of building a string first but
+> it turns out pr_cont() is not compatible with pci_err() and prints on a
+> separate line. When I asked about this, Andy Shevchenko suggested
+> pr_cont() should not be used in the first place (to eventually get rid
+> of it) so pr_cont() is now replaced with building the string first.
+> 
+> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> ---
+>  drivers/pci/pci.h      |  2 ++
+>  drivers/pci/pcie/aer.c | 10 ++--------
+>  drivers/pci/pcie/dpc.c |  5 +----
+>  drivers/pci/pcie/tlp.c | 31 +++++++++++++++++++++++++++++++
+>  4 files changed, 36 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 7afdd71f9026..45083e62892c 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -423,6 +423,8 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
+>  int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
+>  		      unsigned int tlp_len, struct pcie_tlp_log *log);
+>  unsigned int aer_tlp_log_len(struct pci_dev *dev);
+> +void pcie_print_tlp_log(const struct pci_dev *dev,
+> +			const struct pcie_tlp_log *log, const char *pfx);
+>  #endif	/* CONFIG_PCIEAER */
+>  
+>  #ifdef CONFIG_PCIEPORTBUS
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index ecc1dea5a208..efb9e728fe94 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -664,12 +664,6 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
+>  	}
+>  }
+>  
+> -static void __print_tlp_header(struct pci_dev *dev, struct pcie_tlp_log *t)
+> -{
+> -	pci_err(dev, "  TLP Header: %08x %08x %08x %08x\n",
+> -		t->dw[0], t->dw[1], t->dw[2], t->dw[3]);
+> -}
+> -
+>  static void __aer_print_error(struct pci_dev *dev,
+>  			      struct aer_err_info *info)
+>  {
+> @@ -724,7 +718,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  	__aer_print_error(dev, info);
+>  
+>  	if (info->tlp_header_valid)
+> -		__print_tlp_header(dev, &info->tlp);
+> +		pcie_print_tlp_log(dev, &info->tlp, "  ");
 
-elapsed time: 1798m
+I see you went to some trouble to preserve the previous output, down
+to the number of spaces prefixing it.
 
-configs tested: 129
-configs skipped: 5
+But more than the leading spaces, I think what people will notice is
+that previously AER and DPC dmesgs contain the "AER: " or "DPC: "
+prefixes implicitly added by the dev_fmt definitions [1], where now
+IIUC they won't.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I think adding dev_fmt("") here should take care of that, e.g.,
 
-tested configs:
-alpha                             allnoconfig   gcc-14.1.0
-alpha                            allyesconfig   clang-20
-alpha                               defconfig   gcc-14.1.0
-arc                              allmodconfig   clang-20
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-14.1.0
-arc                              allyesconfig   clang-20
-arc                              allyesconfig   gcc-13.2.0
-arc                          axs103_defconfig   gcc-13.2.0
-arc                                 defconfig   gcc-14.1.0
-arc                     nsimosci_hs_defconfig   gcc-13.2.0
-arm                              allmodconfig   clang-20
-arm                              allmodconfig   gcc-13.2.0
-arm                               allnoconfig   gcc-14.1.0
-arm                              allyesconfig   clang-20
-arm                              allyesconfig   gcc-13.2.0
-arm                     am200epdkit_defconfig   gcc-13.2.0
-arm                       aspeed_g5_defconfig   gcc-13.2.0
-arm                                 defconfig   gcc-14.1.0
-arm                           imxrt_defconfig   gcc-13.2.0
-arm                   milbeaut_m10v_defconfig   gcc-13.2.0
-arm                        spear6xx_defconfig   gcc-13.2.0
-arm64                            allmodconfig   clang-20
-arm64                             allnoconfig   gcc-14.1.0
-arm64                               defconfig   gcc-14.1.0
-csky                              allnoconfig   gcc-14.1.0
-csky                                defconfig   gcc-14.1.0
-hexagon                          allmodconfig   clang-20
-hexagon                           allnoconfig   gcc-14.1.0
-hexagon                          allyesconfig   clang-20
-hexagon                             defconfig   gcc-14.1.0
-i386                             allmodconfig   clang-18
-i386                              allnoconfig   clang-18
-i386                             allyesconfig   clang-18
-i386         buildonly-randconfig-001-20240830   gcc-12
-i386         buildonly-randconfig-002-20240830   gcc-12
-i386         buildonly-randconfig-003-20240830   gcc-12
-i386         buildonly-randconfig-004-20240830   gcc-12
-i386         buildonly-randconfig-005-20240830   gcc-12
-i386         buildonly-randconfig-006-20240830   gcc-12
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240830   gcc-12
-i386                  randconfig-002-20240830   gcc-12
-i386                  randconfig-003-20240830   gcc-12
-i386                  randconfig-004-20240830   gcc-12
-i386                  randconfig-005-20240830   gcc-12
-i386                  randconfig-006-20240830   gcc-12
-i386                  randconfig-011-20240830   gcc-12
-i386                  randconfig-012-20240830   gcc-12
-i386                  randconfig-013-20240830   gcc-12
-i386                  randconfig-014-20240830   gcc-12
-i386                  randconfig-015-20240830   gcc-12
-i386                  randconfig-016-20240830   gcc-12
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch                           defconfig   gcc-14.1.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                                defconfig   gcc-14.1.0
-m68k                          hp300_defconfig   gcc-13.2.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-microblaze                          defconfig   gcc-14.1.0
-mips                              allnoconfig   gcc-14.1.0
-mips                           gcw0_defconfig   gcc-13.2.0
-nios2                             allnoconfig   gcc-14.1.0
-nios2                               defconfig   gcc-14.1.0
-openrisc                          allnoconfig   clang-20
-openrisc                            defconfig   gcc-12
-parisc                            allnoconfig   clang-20
-parisc                              defconfig   gcc-12
-parisc64                            defconfig   gcc-14.1.0
-powerpc                           allnoconfig   clang-20
-powerpc                 mpc8313_rdb_defconfig   gcc-13.2.0
-powerpc                  mpc866_ads_defconfig   gcc-13.2.0
-powerpc                     tqm8541_defconfig   gcc-13.2.0
-riscv                             allnoconfig   clang-20
-riscv                               defconfig   gcc-12
-riscv                    nommu_virt_defconfig   gcc-13.2.0
-s390                             allmodconfig   gcc-14.1.0
-s390                              allnoconfig   clang-20
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   gcc-12
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                                  defconfig   gcc-12
-sh                   sh7770_generic_defconfig   gcc-13.2.0
-sh                             shx3_defconfig   gcc-13.2.0
-sh                            titan_defconfig   gcc-13.2.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-12
-um                               allmodconfig   clang-20
-um                                allnoconfig   clang-20
-um                               allyesconfig   clang-20
-um                                  defconfig   gcc-12
-um                             i386_defconfig   gcc-12
-um                           x86_64_defconfig   gcc-12
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240830   clang-18
-x86_64       buildonly-randconfig-002-20240830   clang-18
-x86_64       buildonly-randconfig-003-20240830   clang-18
-x86_64       buildonly-randconfig-004-20240830   clang-18
-x86_64       buildonly-randconfig-005-20240830   clang-18
-x86_64       buildonly-randconfig-006-20240830   clang-18
-x86_64                              defconfig   clang-18
-x86_64                randconfig-001-20240830   clang-18
-x86_64                randconfig-002-20240830   clang-18
-x86_64                randconfig-003-20240830   clang-18
-x86_64                randconfig-004-20240830   clang-18
-x86_64                randconfig-005-20240830   clang-18
-x86_64                randconfig-006-20240830   clang-18
-x86_64                randconfig-011-20240830   clang-18
-x86_64                randconfig-012-20240830   clang-18
-x86_64                randconfig-013-20240830   clang-18
-x86_64                randconfig-014-20240830   clang-18
-x86_64                randconfig-015-20240830   clang-18
-x86_64                randconfig-016-20240830   clang-18
-x86_64                randconfig-071-20240830   clang-18
-x86_64                randconfig-072-20240830   clang-18
-x86_64                randconfig-073-20240830   clang-18
-x86_64                randconfig-074-20240830   clang-18
-x86_64                randconfig-075-20240830   clang-18
-x86_64                randconfig-076-20240830   clang-18
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-14.1.0
+  pcie_print_tlp_log(dev, &info->tlp, dev_fmt(""));
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[1] https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1990272
+
+>  out:
+>  	if (info->id && info->error_dev_num > 1 && info->id == id)
+> @@ -796,7 +790,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+>  			aer->uncor_severity);
+>  
+>  	if (tlp_header_valid)
+> -		__print_tlp_header(dev, &aer->header_log);
+> +		pcie_print_tlp_log(dev, &aer->header_log, "  ");
+>  
+>  	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
+>  			aer_severity, tlp_header_valid, &aer->header_log);
+> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> index 5056cc6961ec..598f74384471 100644
+> --- a/drivers/pci/pcie/dpc.c
+> +++ b/drivers/pci/pcie/dpc.c
+> @@ -220,10 +220,7 @@ static void dpc_process_rp_pio_error(struct pci_dev *pdev)
+>  	pcie_read_tlp_log(pdev, cap + PCI_EXP_DPC_RP_PIO_HEADER_LOG,
+>  			  cap + PCI_EXP_DPC_RP_PIO_TLPPREFIX_LOG,
+>  			  dpc_tlp_log_len(pdev), &tlp_log);
+> -	pci_err(pdev, "TLP Header: %#010x %#010x %#010x %#010x\n",
+> -		tlp_log.dw[0], tlp_log.dw[1], tlp_log.dw[2], tlp_log.dw[3]);
+> -	for (i = 0; i < pdev->dpc_rp_log_size - 5; i++)
+> -		pci_err(pdev, "TLP Prefix Header: dw%d, %#010x\n", i, tlp_log.prefix[i]);
+> +	pcie_print_tlp_log(pdev, &tlp_log, "");
+>  
+>  	if (pdev->dpc_rp_log_size < 5)
+>  		goto clear_status;
+> diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
+> index def9dd7b73e8..097ac8514e96 100644
+> --- a/drivers/pci/pcie/tlp.c
+> +++ b/drivers/pci/pcie/tlp.c
+> @@ -6,6 +6,7 @@
+>   */
+>  
+>  #include <linux/aer.h>
+> +#include <linux/array_size.h>
+>  #include <linux/pci.h>
+>  #include <linux/string.h>
+>  
+> @@ -76,3 +77,33 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
+>  
+>  	return 0;
+>  }
+> +
+> +/**
+> + * pcie_print_tlp_log - Print TLP Header / Prefix Log contents
+> + * @dev: PCIe device
+> + * @log: TLP Log structure
+> + * @pfx: String prefix (for print out indentation)
+> + *
+> + * Prints TLP Header and Prefix Log information held by @log.
+> + */
+> +void pcie_print_tlp_log(const struct pci_dev *dev,
+> +			const struct pcie_tlp_log *log, const char *pfx)
+> +{
+> +	char buf[(10 + 1) * (4 + ARRAY_SIZE(log->prefix)) + 14 + 1];
+> +	unsigned int i;
+> +	int len;
+> +
+> +	len = scnprintf(buf, sizeof(buf), "%#010x %#010x %#010x %#010x",
+> +			log->dw[0], log->dw[1], log->dw[2], log->dw[3]);
+> +
+> +	if (log->prefix[0])
+> +		len += scnprintf(buf + len, sizeof(buf) - len, " E-E Prefixes:");
+> +	for (i = 0; i < ARRAY_SIZE(log->prefix); i++) {
+> +		if (!log->prefix[i])
+> +			break;
+> +		len += scnprintf(buf + len, sizeof(buf) - len,
+> +				 " %#010x", log->prefix[i]);
+> +	}
+> +
+> +	pci_err(dev, "%sTLP Header: %s\n", pfx, buf);
+> +}
+> -- 
+> 2.39.2
+> 
 
