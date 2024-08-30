@@ -1,98 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-809-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-810-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F0A96612F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 13:59:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171699661A5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 14:28:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwGs50SHKz2xXw;
-	Fri, 30 Aug 2024 21:59:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WwHWX5Dgmz304B;
+	Fri, 30 Aug 2024 22:28:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725019145;
-	cv=none; b=HaXH1UEX53RtR4ikNxceq23yig3UidgobxwE/mvWzBJMZ3wrFmeO+U/e9L9GZa1pg3Bodjv+rGrmJO7qAR0XW1RspcMpTbN1oOc6YB5cedevftd8QCk+6Dnw8yXzqKcMmXEA9oRa1Af9Nsz5uzQ23Kyd4+N1260wGYys7oXxmMggd+abWeVVKCFLBuuHOrbtNv+Gh5iBE5+bfRJgmU7q2Bz0dwfq39GeLeXG5FBgAxx2+T9TP9imToqe0IvSWYfpSLfXmIXtwTNR/QCaeIaI/YZi1e5WoDcT8XEv8ojgr5yiiHrGFVnEXO0Mm29Y4/hIDV7vc6MFKFeuxDbKgiFvog==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725020936;
+	cv=none; b=MnyRte7hQdwbhGqp0nt0hNr213ydVkXd15VyzDJ7JHTz5bzdIhsa1+oNsKS+DiIaLmMMdPogh0vEpsaKvAPTAvd73sr/EYtIzermXRQqE8tQjofzjkRIRyrQVpNyqbUzzi6r9TH7lIkdKPF+96JsfDFGzcvy1GD8fJNnYxfet+YBzEDvxMFUWH0ULpNUePQn+8FGTnblWHvoECMQfji/C0T1FHNkICsF/XayYb0A+zyAlS9I2aF9yT5hJz6ytEE9JILm5qSHQ4vMOmFTF4zHJHlCaiy+PJLLhRG3KVDmZkWPozlOtGpOTV3ZYp9bVO0sfP+X4P1s/EOfBS5gMf40aA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725019145; c=relaxed/relaxed;
-	bh=PJmln/CG5iMI09NjG1i4YN2rdEBJMeeOmypct1YMRLc=;
-	h=Received:Received:DKIM-Signature:Received:Date:Message-ID:From:To:
-	 Cc:Subject:In-Reply-To:References:User-Agent:MIME-Version:
-	 Content-Type:X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:
-	 X-SA-Exim-Mail-From:X-SA-Exim-Scanned; b=SttyfpHbI7B9hcP223mX6uvq37+ehcUQ/ZBV8X9oYYDBonvl+xVdRwCxST1sE15Y/EBweJjB7DU70HdiYyJ1gtmgwKEmsOTtgrxjUoN1X5onsZEc2WnaDTp4B2nKAc2t3gMPjNbm0cSq4zHo4QXSuOxD7YPydBhTWakNbmfLFXftD7jO2q5hyZX+/jOoVipivIweRF045wP4cz39MPxQ1ODFtT63yO6+IODTSqhrTwEGSqQUYN7MxlAHr8mfEhnZZ/rdlvvzZDHE9LlvpHvbvMKy0jJGRfWTu7GfePqHqPqscOQXPXbI+odexdxWUyb5s4Wm0aPQFwPbZRGwqlCdXQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UfrhExWc; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UfrhExWc;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	t=1725020936; c=relaxed/relaxed;
+	bh=A+rmpRSl1uHby4VKNAcqAgRy0R0NS9niiUfrWTXQ37A=;
+	h=Received:X-Virus-Scanned:Received:Received:Received:
+	 X-Virus-Scanned:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:X-Developer-Signature:
+	 X-Developer-Key:Content-Transfer-Encoding; b=V/xJh16Ze28hIxc57U9AIBZiV7wj5J8FArG2N88RpYaZR0gsHOHBTcknnNXAXtY3PesQnU4eriFFA0ZZyhP21ho3z3W3f5x7UObjrq6OlfyORTE/7ypI7FSuAWy5hYI4EPjDwxmArzJRZ9+YenTfZIWXn28/VvAwRvblSxEpxuf08VIivCb4IRr0s2ZpXQmwHeZ/ursl3HAZXVkZl+HNvXsli3tx6Cl/FU81xTQPZbPGPQwHLEemjCSZe0CcfQ2r7XL468DWInyXcOk1YeLNNgxIvssbshpK8+R0bXpc35fw6hcUUiKfPSri3FX0Dq5EydIl19SEH3OzqiN5k9k+Iw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwGs449THz2xCj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 21:59:04 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id C10B8A44708;
-	Fri, 30 Aug 2024 11:58:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3B1C4CEC2;
-	Fri, 30 Aug 2024 11:59:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725019141;
-	bh=VEP7aVQREPxzdE+e/d07GI+Bf+lB2Ws+XRqTgaeCxu4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UfrhExWcg1C6SQizVcm2DJ85tiDdXrFnSB8Y2HXg+epYhEwbxwSFuCfWuclYXue6N
-	 Az88yVQSFZrVWRa6I2mg39jBGRA6JtmF8GwvK1gSOpQrHPpvs8nT9/PurJreRgj+JE
-	 Oo0T8x2FsW+FZwZL6JYPi3RA7KqNIvtOkt7ydZSizQAHe3gEUVpFtYD/b/Utjrhwg4
-	 oqXfSQqKwsOhWrZXW5Yab56eVHxNrB7njUykaAPOpQTgYnHKGIaLjywFCL3Ys+Ux5G
-	 l/9V+IniLg2JVb5VWjHCCgemFIp5oCZhPrFQkcmUvdvnJ6TRR7LsM0ROlHEW6PgHpQ
-	 DZ9XOSBvXLmLw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sk0HK-008E0N-Of;
-	Fri, 30 Aug 2024 12:58:58 +0100
-Date: Fri, 30 Aug 2024 12:58:57 +0100
-Message-ID: <86a5guw7b2.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	nd@arm.com,
-	akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com,
-	anshuman.khandual@arm.com,
-	bp@alien8.de,
-	broonie@kernel.org,
-	catalin.marinas@arm.com,
-	christophe.leroy@csgroup.eu,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	mingo@redhat.com,
-	mpe@ellerman.id.au,
-	naveen.n.rao@linux.ibm.com,
-	npiggin@gmail.com,
-	oliver.upton@linux.dev,
-	shuah@kernel.org,
-	skhan@linuxfoundation.org,
-	szabolcs.nagy@arm.com,
-	tglx@linutronix.de,
-	x86@kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 08/30] KVM: arm64: make kvm_at() take an OP_AT_*
-In-Reply-To: <20240830090522.GA7678@willie-the-truck>
-References: <20240822151113.1479789-1-joey.gouly@arm.com>
-	<20240822151113.1479789-9-joey.gouly@arm.com>
-	<20240823134811.GG32156@willie-the-truck>
-	<86cylqwib5.wl-maz@kernel.org>
-	<20240830090522.GA7678@willie-the-truck>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwHWX2Ztmz300B
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 22:28:55 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WwHWR2MX5z9sSC;
+	Fri, 30 Aug 2024 14:28:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id iBkr1uqN9TXB; Fri, 30 Aug 2024 14:28:51 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WwHWR1XJMz9sS8;
+	Fri, 30 Aug 2024 14:28:51 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 24C748B794;
+	Fri, 30 Aug 2024 14:28:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id gHt5fIi9xSXm; Fri, 30 Aug 2024 14:28:51 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.234.133])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9C72E8B764;
+	Fri, 30 Aug 2024 14:28:50 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Shuah Khan <shuah@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andy Lutomirski <luto@mit.edu>,
+	"H. Peter Anvin" <hpa@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/5] selftests: vdso: Fix vDSO name for powerpc
+Date: Fri, 30 Aug 2024 14:28:35 +0200
+Message-ID: <6c5da802e72befecfa09046c489aa45d934d611f.1725020674.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.44.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,67 +71,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: will@kernel.org, joey.gouly@arm.com, linux-arm-kernel@lists.infradead.org, nd@arm.com, akpm@linux-foundation.org, aneesh.kumar@kernel.org, aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de, broonie@kernel.org, catalin.marinas@arm.com, christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com, hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com, oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org, szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1725020918; l=1444; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=1CBaJwzTNzlgxwtmL+5E5zwxDWXC8lvz35YzdHo+8qQ=; b=GqQlckbm4yv99v1KrYHEPLEGiiksyVmMX/s/reH2va53dhe71BAE0Uv6wZYaMBlV8LZ/SR+63 eVEeDCGmoePDOwGCQKVauQ4M8mW5KA7aHqDuUajx1yGsozv4zZ/JygN
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 
-On Fri, 30 Aug 2024 10:05:22 +0100,
-Will Deacon <will@kernel.org> wrote:
-> 
-> Hey Marc,
-> 
-> On Fri, Aug 30, 2024 at 09:01:18AM +0100, Marc Zyngier wrote:
-> > On Fri, 23 Aug 2024 14:48:11 +0100,
-> > Will Deacon <will@kernel.org> wrote:
-> > > 
-> > > On Thu, Aug 22, 2024 at 04:10:51PM +0100, Joey Gouly wrote:
-> > > > To allow using newer instructions that current assemblers don't know about,
-> > > > replace the `at` instruction with the underlying SYS instruction.
-> > > > 
-> > > > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> > > > Cc: Marc Zyngier <maz@kernel.org>
-> > > > Cc: Oliver Upton <oliver.upton@linux.dev>
-> > > > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > > > Cc: Will Deacon <will@kernel.org>
-> > > > Reviewed-by: Marc Zyngier <maz@kernel.org>
-> > > > ---
-> > > >  arch/arm64/include/asm/kvm_asm.h       | 3 ++-
-> > > >  arch/arm64/kvm/hyp/include/hyp/fault.h | 2 +-
-> > > >  2 files changed, 3 insertions(+), 2 deletions(-)
-> > > 
-> > > Marc -- what would you like to do with this patch? I think the POE series
-> > > is really close now, so ideally I'd queue the lot on a branch in arm64
-> > > and you could pull the first ~10 patches into kvmarm if you need 'em.
-> > > 
-> > > Would what work for you, or did you have something else in mind (since
-> > > this one is also included in your series adding nv support for AT).
-> > 
-> > Is there any progress on this front? I am quite eager to queue the AT
-> > series, but the dependency on this patch is preventing me to do so.
-> > 
-> > I can see there are outstanding questions on the POE series, so I was
-> > wondering if we should consider reversing the dependency: I can create
-> > a stable branch with this single patch, which you can pull as a prefix
-> > of the POE series.
-> 
-> That sounds like a good idea. The uaccess discussion seems to have
-> stalled and I don't really want to merge the series without concluding
-> that.
-> 
-> So please go ahead with this single patch and I'll pull it in if things
-> start moving again.
+Following error occurs when running vdso_test_correctness on powerpc:
 
-Now pushed to [1].
+~ # ./vdso_test_correctness
+[WARN]	failed to find vDSO
+[SKIP]	No vDSO, so skipping clock_gettime() tests
+[SKIP]	No vDSO, so skipping clock_gettime64() tests
+[RUN]	Testing getcpu...
+[OK]	CPU 0: syscall: cpu 0, node 0
 
-Thanks,
+On powerpc, vDSO is neither called linux-vdso.so.1 nor linux-gate.so.1
+but linux-vdso32.so.1 or linux-vdso64.so.1.
 
-	M.
+Also search those two names before giving up.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git/log/?h=arm64-shared-6.12
+Fixes: c7e5789b24d3 ("kselftest: Move test_vdso to the vDSO test suite")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ tools/testing/selftests/vDSO/vdso_test_correctness.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
+diff --git a/tools/testing/selftests/vDSO/vdso_test_correctness.c b/tools/testing/selftests/vDSO/vdso_test_correctness.c
+index e691a3cf1491..cdb697ae8343 100644
+--- a/tools/testing/selftests/vDSO/vdso_test_correctness.c
++++ b/tools/testing/selftests/vDSO/vdso_test_correctness.c
+@@ -114,6 +114,12 @@ static void fill_function_pointers()
+ 	if (!vdso)
+ 		vdso = dlopen("linux-gate.so.1",
+ 			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
++	if (!vdso)
++		vdso = dlopen("linux-vdso32.so.1",
++			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
++	if (!vdso)
++		vdso = dlopen("linux-vdso64.so.1",
++			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
+ 	if (!vdso) {
+ 		printf("[WARN]\tfailed to find vDSO\n");
+ 		return;
 -- 
-Without deviation from the norm, progress is not possible.
+2.44.0
+
 
