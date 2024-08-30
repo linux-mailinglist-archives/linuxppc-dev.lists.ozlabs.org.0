@@ -1,50 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-818-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-820-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FA19664B6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 16:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9139664F0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 17:04:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwLqB6Tfyz30Bp;
-	Sat, 31 Aug 2024 00:57:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WwLzS4q3Xz30DL;
+	Sat, 31 Aug 2024 01:04:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.84
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725028101;
-	cv=none; b=ftEzSkJ28jkbuZSYPl5EZaxB8ot6HdYEWG+KzfJQk66uQkFlUWFfUd4vk8yFPW+fuf4o+eVXmv36U8icDQwIeQkLWZ2pxBIJRiu33FrDPJSV2VxiLnvhX6h3XC5XFbm1JDBLaA3rKs1kIg0NZeUYTACcARPgGBC0msEqEOwKo1NGL3m/1Kq+2OOJzvpeTKcLlZrJxvAjhH59uz+xUllc4rIDv4dUsDxNbWDDIpkx4aOVI7y+LK+38gz8IrKpEBqN3CRWPJj4uRCBnQXzATmJ+XP/6PmL8JcpkVmGqvJ0Ql2t7wfk0BZTug+SRGMcCQEFQbsynzhjpjKSpBUYlNwtbA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725030292;
+	cv=none; b=P1ZfVUa/EG4kQd789avSa2XLFacxJ+KAEgKynEkQtriXayYLqkxOfhj8DQI8eE71bVJG+CsPCRLKBuKx52KJ90CZRvv+Y6fZkLUcfkokBjJbvnSGexdLgk307tJzwT/4dVqEydsPp2Rtx+W7ERBz+sCZ0RaPF/z/ExOIveQ83ITXrnaiduP0gNxn1CrJ6qp81kn5fVGludZgiKEVQj7jzph8PGDfYXO1GJ6qwaDOzX2kv4d5gaqw3yvOEMW0z9NHtVtY9ntNHpOr/2u7q2V5TadUBK+79/ti0kZc1NWZx22ff5RruDCD777ZJ/0SsWU7lDsN+Rrw4e6KMcmOrKXA6A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725028101; c=relaxed/relaxed;
-	bh=ruqW9VPyy+1mLQAyh1V0yLZihyccQ9bYsUtmbQxeGyk=;
-	h=X-Greylist:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo; b=hAI2FEpBPgsdKbsgVqorTdvBhYNoOmPyfKROG4BFcGbt6SXDtHDa3yBDZl1SSllQO+Pbow9YzX5KW0EXJ2wBVQacrbReX4aLCaHrmEHeN+MqNR2JycoMA+GLPYnW7P0PtuiNTHfwah19RH70CHiAa07KjRK1NuOGYh0rXrjWyc1Xn7TO5/QYruUJCv9i3H8267AQXoIzq//hIChB0RzDx1CfNDrIM2HWgD5TwUXQiSX9SjsY/2qfKIdD/Qdsgiq7hFut6AXJszm60C2Ye57rPi0KMVmI+s7JA58ShaKveyWjjzifi0iBBD8RntAxQPxbS8AwLWw1NGbTmu+kumeXfw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.84; helo=cstnet.cn; envelope-from=make24@iscas.ac.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 389 seconds by postgrey-1.37 at boromir; Sat, 31 Aug 2024 00:28:20 AEST
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1725030292; c=relaxed/relaxed;
+	bh=v9ekaK+/8DQ2xRtV6eWdUKEKDm4TQqtbBAl5RDu17Dk=;
+	h=X-Greylist:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding; b=RuZiKoR3lVpi1oa65TuY/9bzVbl9mYm5C9CBfb31U67VzccfZzFjNxQ4O2XD3dZyfVGMmVO5ugnfydYPyyXVKwPKws9kDMVFG60bLklGlvTs2pc/s8Vq08kbSnUG2T0R2Djre+E2kuZ9aWmCjDK/ieUzzj8vLGOltshblLvCWu8+D7hS0wvBRRAhW7isMNP/wGu9p9aR90X/RFYtf32GM+9zGfjoHpVLZPKRcZ27zv63Crw9x+iC8nHR12cBLgr12m7EbfGGcLKlnh5XZlLnGNORZ5Rlf1VUjo7afrESRT3aUGkR4ftAYarQMmDPOkdu+DiynyWkOLkLQYgc5QLEMA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iGSB5haL; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iGSB5haL;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Sat, 31 Aug 2024 01:04:50 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwL9J4yV0z2yjV
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 00:28:19 +1000 (AEST)
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowADHcEBu1dFmz5R+Cw--.3389S2;
-	Fri, 30 Aug 2024 22:21:36 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: jochen@scram.de,
-	andi.shyti@kernel.org,
-	grant.likely@linaro.org,
-	thierry.reding@gmail.com,
-	rob.herring@calxeda.com
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] of/irq: handle irq_of_parse_and_map() errors
-Date: Fri, 30 Aug 2024 22:21:27 +0800
-Message-Id: <20240830142127.3446406-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwLzQ5YpHz2xxr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 01:04:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725030291; x=1756566291;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6o7JyR5HGx7yBW/bLFYB5UEEz+m8g4pL6Cmsk6vGPS4=;
+  b=iGSB5haL1cE04knyjdvs3FZHrSXNgHiJuePZtY76wNj9ReM9PaKZPnWN
+   bDHgBXiQ1OmtlID2hKoszsQmwdfyOVHo0ensPurv+56d6VWVZm2N3Ctc/
+   1sRXmSDPXQdBlonqjYiXKn2bivaZhwRyaB4XoCSn00KlSf05z8Zw1Jgfr
+   S7ahbofQhoqvOKCxrzzoUOAf6aYR9GQPyeqC4UjUZ4qC0tT3Vcj2Juy4c
+   BQUTG88W6J9FeAgmWyPD70O1zuQ8A2qYrnKKqrF4Avw1anVVX3hzPqL0u
+   1g3Tgnov+ZKWSMYimD3CyQNpVejPJm5NoS8RjAOXh8VHoISI9G1a15Xah
+   Q==;
+X-CSE-ConnectionGUID: nsrlQYmQQ8yvX4m1oeKHBw==
+X-CSE-MsgGUID: SJ3kfYD9QdeZLVCPbfyQbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11180"; a="23859122"
+X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
+   d="scan'208";a="23859122"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 08:03:41 -0700
+X-CSE-ConnectionGUID: r7q0CKUlTQC3x1miP8LLtw==
+X-CSE-MsgGUID: eXfyfPtHSKSD6y5ZoE14uw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
+   d="scan'208";a="64273994"
+Received: from cmdeoliv-mobl.amr.corp.intel.com (HELO [10.125.108.69]) ([10.125.108.69])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 08:03:40 -0700
+Message-ID: <a922737b-be1a-4ae9-b2d8-fefc44bb6419@intel.com>
+Date: Fri, 30 Aug 2024 08:03:25 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,52 +70,115 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 0/4] mm: Introduce MAP_BELOW_HINT
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Charlie Jenkins <charlie@rivosinc.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
+ <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
+ <ab90ff3b-67dc-4195-89a7-54e394da1aa0@lucifer.local>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <ab90ff3b-67dc-4195-89a7-54e394da1aa0@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADHcEBu1dFmz5R+Cw--.3389S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JrWfuF17Kr4DCr4kuFWktFb_yoWfArgEgw
-	1kXa9xArWUGFnxXw15AFWfZry5KFy8WF1kAF1vvr9xC34DWw17JF1DZrn3JrsrXry3KFyq
-	9w1qvF4S9wnrJjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbfAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
-	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
-X-Originating-IP: [183.174.60.14]
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Zero and negative number is not a valid IRQ for in-kernel code and the
-irq_of_parse_and_map() function returns zero on error.  So this check for
-valid IRQs should only accept values > 0.
+On 8/29/24 01:42, Lorenzo Stoakes wrote:
+>> These applications work on x86 because x86 does an implicit 47-bit
+>> restriction of mmap() address that contain a hint address that is less
+>> than 48 bits.
+> You mean x86 _has_ to limit to physically available bits in a canonical
+> format 🙂 this will not be the case for 5-page table levels though...
 
-Cc: stable@vger.kernel.org
-Fixes: f7578496a671 ("of/irq: Use irq_of_parse_and_map()")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/i2c/busses/i2c-cpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+By "physically available bits" are you referring to the bits that can be
+used as a part of the virtual address?  "Physically" may not have been
+the best choice of words. ;)
 
-diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
-index 4794ec066eb0..41e3c95c0ef7 100644
---- a/drivers/i2c/busses/i2c-cpm.c
-+++ b/drivers/i2c/busses/i2c-cpm.c
-@@ -435,7 +435,7 @@ static int cpm_i2c_setup(struct cpm_i2c *cpm)
- 	init_waitqueue_head(&cpm->i2c_wait);
- 
- 	cpm->irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
--	if (!cpm->irq)
-+	if (cpm->irq <= 0)
- 		return -EINVAL;
- 
- 	/* Install interrupt handler. */
--- 
-2.25.1
+There's a canonical hole in 4-level paging and 5-level paging on x86.
+The 5-level canonical hole is just smaller.
 
+Also, I should probably say that the >47-bit mmap() access hint was more
+of a crutch than something that we wanted to make ABI forever.  We knew
+that high addresses might break some apps and we hoped that the list of
+things it would break would go down over time so that we could
+eventually just let mmap() access the whole address space by default.
+
+That optimism may have been misplaced.
 
