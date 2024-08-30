@@ -1,71 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-817-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-819-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829419664B4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 16:57:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 245329664B9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 16:58:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwLpX25M0z30CL;
-	Sat, 31 Aug 2024 00:57:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WwLqx0NWRz30D3;
+	Sat, 31 Aug 2024 00:58:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725024936;
-	cv=none; b=IVwqHenB3MzoxMalBSC30C51Ki9RIFO9qzWKfPBrrwuZKlaw8ahAT0WAXEqhO+qJgfThpxuHSPCta2igAUzWqbGA+GxKAnpBjai3z1s3dzXnezRm8ZflJ7pSTJPbCDaHrY9/4BsDkkGEs8VYWsKZ91Y5agH1GgRWHtGSkQjKgGwS4dpdobEionP+OhlImGYlP/eQJ3x+cST2Am8L8Ke34B9ejzOVGE76OuztKtahrmwYvf8qcmBS0yueBzYGQ/R3wHlalD6pzcj7lZ20uaoBSL5eAKeHqZxAOwlsffUwaJVS8fXykKrKnd09msFiwdi9DJu1V081M7wI6kt/ueLHUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=178.60.130.6
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725029430;
+	cv=none; b=Ac390SW4QoDsEucC/cL+pPqjZ9QM0HhQeXtWg7fC9hSggt4wt911zlVfOzUYn5NwFVxzzFJ3kycuPiaK4epS6kMcifugwlTw8NHYd6QgoV2DeBsSFlVJmUu1PM5VKQ00iHpN+57fBeyqmPSoiffcZJy2raQK2Ig3ods8sseXYMyNqr4FFmE6oAPvFAH6AeoQ1sQ/ljJxTR4x6jQe/h3GSrlQy867D0kPAIvunniaSLvykrTeZPoMbIoZ+os5lLy2LFBQVz4K++6DdTkDpervttwEFn2iU1Y7nnkTjSg/m6HjhfKyHF5DNEaLgmIO3OwnBhbmvMlxBkyMMSjFDaQwIQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725024936; c=relaxed/relaxed;
-	bh=lHvnH/4zOuzzT8TCzaUdUbOM1uEXUpCOxCXYL3PqkuU=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding; b=oBRc0bVDA1rD+w6IgGtujPJnQIXXJiuqc908CByBGM4JD7aXIuiWdUCKALr8RKR8Q4EOlEwz3BXJRHIVyS64itdZh1yhEosy9SD2oHKX7Ai3gEJNLs211Xz/qw0yWI4oHT0Qm5ldEcOVpewXqEfpGriwRcTqB0LuhZx8knv2mZ44g+/HOkeT/D7b/2rh9BypvvcOHDr7Q1cmrQvey5A3jnDGqMAF+jh7Zpi4c7z5+PN6V3ZTFG/gTEcB/jLxVhydIyFLtuu5toO8TGzzuiZZGPQLyNOMuq+sPv+Xza715wDi8UPmpvbfS59Xxa9o1nMduqRKVHn0NMrU/pqHVgVRSw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=Shzvo8Hd; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=skhan@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+	t=1725029430; c=relaxed/relaxed;
+	bh=v6/zyvof4qMqjJ+4xzc0g1Ye/jBKn1I/cVtXd5Huwfg=;
+	h=X-Greylist:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding; b=lk8n/IqcuTPgQCxGiuTyxTiPhhVtbgVfyQpPLQcWyIZwjqnz0otUAt6bHjWhVEawTYLJf748Zi8rXq0Mjsin4h9VunLagSl4vZsIRZjV8MHqB8nZGmOQFHc1DTGzN067H4D3hzChHHYTPhH7TZCaPgXIEaQrrmYnaywruj50OKKFYulBhtR2zDg3EGqq+ciqWfz4v1Mdss0WtH2QM8wv1wBIe7KCGaQoOqkg3ljyI0iXqzHAx1oeZE8n6NHgj3vjlWK7Fa7on8AYHeP5vbNy4VFLXco4UhAdtPgjJWwvBGIuYdQDSAaghSd+PFRdPJ4xkESVAVrnZWftbquNz5vyfw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=igalia.com; dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=ez/ZxdhR; dkim-atps=neutral; spf=pass (client-ip=178.60.130.6; helo=fanzine2.igalia.com; envelope-from=gpiccoli@igalia.com; receiver=lists.ozlabs.org) smtp.mailfrom=igalia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=Shzvo8Hd;
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=ez/ZxdhR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=skhan@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com; envelope-from=gpiccoli@igalia.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1937 seconds by postgrey-1.37 at boromir; Sat, 31 Aug 2024 00:50:28 AEST
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwK0R27v7z2ywR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 23:35:33 +1000 (AEST)
-Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-451a0b04f6bso10056861cf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 06:35:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1725024928; x=1725629728; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lHvnH/4zOuzzT8TCzaUdUbOM1uEXUpCOxCXYL3PqkuU=;
-        b=Shzvo8HdumRqWLDDV08vHQFeaukmznDuurFw+ssDX4Ha674GEwcCcBo/b+khrL0yxY
-         +hCB6nEqm26vNscFh6DvL8IT1rwFFZE5gfjkRqVapVxxyroifdTC9L/iHHjRpRRGAhy/
-         +bOjvySJWnIIbIltpyroQVK4AtxRictvD1YnM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725024928; x=1725629728;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lHvnH/4zOuzzT8TCzaUdUbOM1uEXUpCOxCXYL3PqkuU=;
-        b=oMc3FafZ6DWbBN6Z/TvI4HVJ1qEiKwhTMYKQe2FSgaemLwNSNn9yq08PnmwIxViVao
-         yHIgty87sN8nztgjLvXfcn1Lwp4z4SO0qhVhwdB7vpyQeZcxVLb0MzvZeomX9/WvLfQG
-         M0A7msIfNXQe0Gn3Mx01/1HFx6aqL2+g0zMzfHRv8wmOmVvYsDuBjBt/6s0Dt01MJQSf
-         +HSwP1uLsBh2O/x7W86A8jttWv7/lIixBCqEQDrS167JIe+PM6X90keLgwGiG9EVq6RM
-         P3OEktjdA8/OOyM1aMoQI5gWEaEJgkSSLzu9QzfIBsLnIPBoY38GN4DG0k6bA+VsK2P3
-         OvzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWaqze5Vp1LQ7kOtjqccT5oaXMaFgDoFPX+wI5+kiFmJ/d1EcyI5wkutw+8/iUVTiWrYxz4EsOkHc25eiM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywey+hfVEO9v9mXr5ptk8CQCZedFkirmWV810iBnOCuju4O1quk
-	DTq7uNAA+FXW9cNspNV/ByjDmrc9QqW5A3eEn3nK8Q7oOgtk3xufRmSFeVhsEk4=
-X-Google-Smtp-Source: AGHT+IG8cg3+iwNoBRjX29bHUWGerLYZqb/2lmBI6h5IfvZ9WYS6tunfEvRS+bcOhw4pt4KgG5PXtw==
-X-Received: by 2002:a05:622a:40c8:b0:456:4688:d70b with SMTP id d75a77b69052e-4567f71c204mr79224871cf.61.1725024928201;
-        Fri, 30 Aug 2024 06:35:28 -0700 (PDT)
-Received: from [172.19.248.149] ([205.220.129.17])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45682d66c9dsm13869521cf.76.2024.08.30.06.35.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Aug 2024 06:35:27 -0700 (PDT)
-Message-ID: <af63ebb4-af0c-4b0d-9b58-691be5087868@linuxfoundation.org>
-Date: Fri, 30 Aug 2024 07:34:53 -0600
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwLfr3t56z3009
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 00:50:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=v6/zyvof4qMqjJ+4xzc0g1Ye/jBKn1I/cVtXd5Huwfg=; b=ez/ZxdhRyaLTDXkcXt65kzdlXC
+	2F44k9Z3lOfVzv7CwMwOroZhtPXAalN0AmKaIGuapFlajlqY1xlF/6PB5aRl5wk116Iao061OZ0mA
+	akWE8kVPlF5imhW8ZGxMyxKcviQXCv2rKt/qZfsqSoA51I1n0N/NklNUkLUIdfLBj2fIL5M+lDtI6
+	ka3De4ySH7ImuAqJ+F28rzMXkemWtdw862wGu4V8hcvcRNj7Em4oeUUu9I0/XjawFmvAZDVrwYQRX
+	uBuQlkvGzuLeSY/wFa8o/crROA326Xbtg6lHoytkl4bh6lO2ccY/o9NMLPiH/RbsyhX5dH3D+gZZz
+	YdxGJBgQ==;
+Received: from [177.76.152.96] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1sk2Rs-007B3a-Mf; Fri, 30 Aug 2024 16:18:00 +0200
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: kexec@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	x86@kernel.org
+Cc: bhe@redhat.com,
+	vgoyal@redhat.com,
+	dyoung@redhat.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	naveen@kernel.org,
+	hbathini@linux.ibm.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	ashish.kalra@amd.com,
+	michael.roth@amd.com,
+	brijesh.singh@amd.com,
+	thomas.lendacky@amd.com,
+	linux-kernel@vger.kernel.org,
+	linux-debuggers@vger.kernel.org,
+	stephen.s.brennan@oracle.com,
+	kernel@gpiccoli.net,
+	kernel-dev@igalia.com,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Subject: [PATCH] powerpc/fadump, x86/sev: Inform about unconditionally enabling crash_kexec_post_notifiers
+Date: Fri, 30 Aug 2024 11:17:15 -0300
+Message-ID: <20240830141752.460173-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,40 +85,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] selftests: vdso: Fix vDSO name for powerpc
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Shuah Khan <shuah@kernel.org>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Andy Lutomirski <luto@mit.edu>,
- "H. Peter Anvin" <hpa@linux.intel.com>, Mark Brown <broonie@kernel.org>,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <6c5da802e72befecfa09046c489aa45d934d611f.1725020674.git.christophe.leroy@csgroup.eu>
- <ZtG-DqWo8kBMocVh@zx2c4.com>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <ZtG-DqWo8kBMocVh@zx2c4.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/30/24 06:41, Jason A. Donenfeld wrote:
-> Hi Shuah,
-> 
-> No 0/5 patch, so replying to the first one.
-> 
-> These are fixes to the vDSO selftests that Christophe is ostensibly
-> providing as a preamble to his work porting vgetrandom to PPC. Do you
-> mind if I take these via my random tree so his PPC vgetrandom code can
-> go on top of it?
-> 
-> Jason
-> 
+Inspired by commit d57d6fe5bf34 ("drivers: hv: log when enabling crash_kexec_post_notifiers"),
+a good idea is to signal on dmesg about unconditionally enabling the kernel
+parameter crash_kexec_post_notifiers, which affects how kdump works.
 
-Yes - here is the Ack to apply to all patches in the series:
+By checking the source code, found 2 more cases besides Hyper-V, so let's
+print that on dmesg for them as well.
 
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+---
+ arch/powerpc/kernel/fadump.c | 1 +
+ arch/x86/virt/svm/sev.c      | 1 +
+ 2 files changed, 2 insertions(+)
 
-thanks,
--- Shuah
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index a612e7513a4f..37dee89a0bf2 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1819,6 +1819,7 @@ int __init setup_fadump(void)
+ 	 * notifiers are invoked.
+ 	 */
+ 	crash_kexec_post_notifiers = true;
++	pr_info("PPC/fadump: enabling crash_kexec_post_notifiers\n");
+ 
+ 	return 1;
+ }
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index 0ce17766c0e5..ac445ad2fcc8 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -257,6 +257,7 @@ static int __init snp_rmptable_init(void)
+ 	 * notifier is invoked to do SNP IOMMU shutdown before kdump.
+ 	 */
+ 	crash_kexec_post_notifiers = true;
++	pr_info("AMD/SEV: enabling crash_kexec_post_notifiers\n");
+ 
+ 	return 0;
+ 
+-- 
+2.46.0
+
 
