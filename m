@@ -1,54 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-833-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-834-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89F096692D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 20:52:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CFB966941
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 21:02:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwS2N2d1Zz30Kd;
-	Sat, 31 Aug 2024 04:52:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WwSFr56Ddz30M0;
+	Sat, 31 Aug 2024 05:02:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725043964;
-	cv=none; b=GpLASLP1brV+n0isHuYpiTnBL8RBom+n2xs+XY6bmHK4o6WQGT58/TJyO3HVWb2OMiQZtqiYM0EFm6IWmFAcySTyQoo9aowGqgj35+oYxPp8QtRP2RIv2YiqpYDJ7ah2GaBlG3fm2NdIiBHZ73MnRex8mX83bwmFN8Pe1U6Byy1wZ0m2QjKUZm+3u9u18Yt/DU5I0ystDpp/owFHyhmmW9VOszKvhd40V0n+RJbym6OfoZPImA8TFaPcwSZQOtlUuaWWa0fT1E0LiXiChan7S/diIZ5/tE0dVN5rOZh34LVQfcUw1QB1YL1PcXeEGNZPrTrztBw3+P1jXzytAdo7Sg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725044560;
+	cv=none; b=ltKpQKYWZXrHGWmHvBRIs0fqKnp7GgvZC9obG7vx/eM/LXxUpKP6emYEvUjwwXuNp00V9AGfi3jOxA+aZfEzxgAmCbWJBO8dqi9fsZT1zfAiTXUCVB5efMpSRKjXOlCdLZNHeHWFg5n8gG/64oN93FbfzhpjnS/fXMfGoq+QsloeNTGqkAaeKTvJ5g9sVYkCu26/V6ed+1/ZaYgvPn9QW+FN185g0U7CvQZ3MQMYDH4/mucQs6IFxLVLThnWpw/+G4KCWvYgoUvKlu4onY3az8P6d5Uk2aCKbMQshOuvbAeXpBu5Xu6NlkNMeGRhMZVD2UwewY20wy/DatumdIMHVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725043964; c=relaxed/relaxed;
-	bh=ixFOCowLbihHuXZkkS8D+oetf/5p26hfwIgu6Bu4264=;
-	h=Received:X-Virus-Scanned:Received:Received:Received:
-	 X-Virus-Scanned:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding; b=YAlzu0jOgQQxKiMxnl08N+IKu8MmzuokPGvsSvRcL7SngHurqT+ZYySJ0UQfjAz1jjNBS6VEMNi9AwndyFt/i6eQvNB3B0pQYk2jwZyhlnutdFLMyYN8m6M2uPqRDzwN8UTWc9NgBhHnrZ4XzLgoW1cW5jEonaD/h0UvwTSHOAp8k2fRXkqEuIAY4i40fSyUaomzg6KE8YF/PUpxyYZulAxqBerZMxk9nRVRz9uMBMf3qccYZmTaB9/F7SbyiuivVenkSgSnJYgDAfP6imRzrRLd4IfcwaaMq22TAEAUo17ydgQxP0mntLESxdB9uMcFuYvFWSZueXF+fxEl/byk5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1725044560; c=relaxed/relaxed;
+	bh=FywVel09u9vEQcGoBnJqmM3nFE8c9Rs4L/jKL+SXYO8=;
+	h=DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:X-IronPort-AV:
+	 X-IronPort-AV:Received:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:User-Agent; b=MZA1BXeB/WU4y1hCCVksBIiPTYHVx6fuqqt19tTwEXoZvbGL2d12StD3GL6a5AXS9nc3uossIDjepEXwvV3cn/XuJr3cJGLM4wco+3zOZ/61kLcX1TXaOY7TOBRhuu6D7OtI3AG+fOGpeDtIKd/6/Rx477vIQGnJFyaSnwCNQm32jNFIq298P9YsuFzzca0aeeRfsEfuakFU+A4rhkQhMWebc9vM1fYx2h5dUr2XgXvbNCb4gbvruUO/tiJDMys6uSjc+X70jiQsVK4Jc0wSFvkIt1rVbKGe814Yn3NvLPEkTDrsoRAve60+448mBpMn7lYqrZ8jczNqAXssKQZXVg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a4A2HC7b; dkim-atps=neutral; spf=pass (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a4A2HC7b;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwS2N08K9z30Gq
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 04:52:43 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WwS2H2zdLz9sSN;
-	Fri, 30 Aug 2024 20:52:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 3f9-XC2A1YeT; Fri, 30 Aug 2024 20:52:39 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WwS2H1wnjz9sSK;
-	Fri, 30 Aug 2024 20:52:39 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 28C2A8B794;
-	Fri, 30 Aug 2024 20:52:39 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id h0_TT9jQfciA; Fri, 30 Aug 2024 20:52:39 +0200 (CEST)
-Received: from [192.168.234.133] (unknown [192.168.234.133])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 428938B764;
-	Fri, 30 Aug 2024 20:52:38 +0200 (CEST)
-Message-ID: <ef38cd36-3e15-4608-8b72-87cf7621cce6@csgroup.eu>
-Date: Fri, 30 Aug 2024 20:52:37 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwSFp5g56z30Gq
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 05:02:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725044559; x=1756580559;
+  h=date:from:to:cc:subject:message-id;
+  bh=BZh1si6EiPTjToRp5e9bi3a+AfsYwJPn5uRXWPbFp9k=;
+  b=a4A2HC7bDzczvgi5BALhVkUTTNDyoaZKFuKnqD2s4lWg49ofX10ZzzAq
+   JgOFXqxyRjPIRiebDwDaXBjFJbMUWvyBi1PAaZRCz2TGXo0zL9qs0LOS0
+   hG85TOeAmvlsPhOBarND139hUnv9M9QnmIIcRNKBrQxDJVdBkRftWvADQ
+   oobNMtHNLWbL8JYHlaVAJr0B9ZwfutE/P3k+/BcS0PKyw46uYCX1cIFIw
+   6P3OMEVkrqa80Ly0mWvD6k4gFnYR/qYJ3aLHO8cLEC9lG4M+7oWfbChj2
+   v16x1QjUENiKnXKEz1cz4Noz42kr7TdXSnE8b51dRl79glczLWO0XXrj/
+   g==;
+X-CSE-ConnectionGUID: ryr9rWTbRTmeE8gYDRBV+Q==
+X-CSE-MsgGUID: HdebYEVWT7CeAAefKq6K3g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11180"; a="27577301"
+X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
+   d="scan'208";a="27577301"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 12:02:32 -0700
+X-CSE-ConnectionGUID: H7bBTJ77RliwKmEPkAvEiQ==
+X-CSE-MsgGUID: Wl2U77DuRhudw7Nz9fcovw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
+   d="scan'208";a="68377716"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 30 Aug 2024 12:02:30 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sk6tA-0001wE-2A;
+	Fri, 30 Aug 2024 19:02:28 +0000
+Date: Sat, 31 Aug 2024 03:01:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:merge] BUILD SUCCESS
+ 15d63cbced5cb10f99253a75ed2ae9aaff6dc1b8
+Message-ID: <202408310340.k53uWsrI-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,62 +75,150 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/5] powerpc/vdso: Wire up getrandom() vDSO
- implementation on PPC32
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
- llvm@lists.linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org,
- Adhemerval Zanella <adhemerval.zanella@linaro.org>,
- Xi Ruoyao <xry111@xry111.site>
-References: <cover.1725031952.git.christophe.leroy@csgroup.eu>
- <e7e4c6d36cf98229850c333f113bcea909564501.1725031952.git.christophe.leroy@csgroup.eu>
- <ZtHwnc4AZuRULkom@zx2c4.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <ZtHwnc4AZuRULkom@zx2c4.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 15d63cbced5cb10f99253a75ed2ae9aaff6dc1b8  Automatic merge of 'next' into merge (2024-08-27 14:25)
 
+elapsed time: 1798m
 
-Le 30/08/2024 à 18:17, Jason A. Donenfeld a écrit :
-> On Fri, Aug 30, 2024 at 05:57:08PM +0200, Christophe Leroy wrote:
->> @@ -14,6 +14,10 @@ ifeq ($(uname_M),x86_64)
->>   TEST_GEN_PROGS += vdso_test_getrandom
->>   TEST_GEN_PROGS += vdso_test_chacha
->>   endif
->> +ifeq ($(ARCH),powerpc)
->> +TEST_GEN_PROGS += vdso_test_getrandom
->> +TEST_GEN_PROGS += vdso_test_chacha
->> +endif
-> 
-> FYI, as of [1], you should now be able to add powerpc to the filter list
-> instead of having to duplicate a new stanza:
-> 
-> [1] https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fcrng%2Frandom.git%2Fcommit%2F%3Fid%3Dbbaae98172ed284fc0d5d39cc0d68f5d06164f06&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4f51736c027a44cc7df908dcc90f46d6%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638606314665557021%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=UtLdKTuEaZVhsguKa7kX1TBJ%2BvvQtl7DmU9hSBeThWo%3D&reserved=0
+configs tested: 129
+configs skipped: 5
 
-I'm a bit sceptic with that commit. IIUC you are changing the meaning of 
-$ARCH. How does that fit with the $ARCH we give when we cross-build or 
-with the ARCH which is set by the top-level Makefile in 
-tools/testing/selftests ?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Also, wouldn't there be a way to use scripts/subarch.include instead of 
-opencoding ?
+tested configs:
+alpha                             allnoconfig   gcc-14.1.0
+alpha                            allyesconfig   clang-20
+alpha                               defconfig   gcc-14.1.0
+arc                              allmodconfig   clang-20
+arc                              allmodconfig   gcc-13.2.0
+arc                               allnoconfig   gcc-14.1.0
+arc                              allyesconfig   clang-20
+arc                              allyesconfig   gcc-13.2.0
+arc                          axs103_defconfig   gcc-13.2.0
+arc                                 defconfig   gcc-14.1.0
+arc                     nsimosci_hs_defconfig   gcc-13.2.0
+arm                              allmodconfig   clang-20
+arm                              allmodconfig   gcc-13.2.0
+arm                               allnoconfig   gcc-14.1.0
+arm                              allyesconfig   clang-20
+arm                              allyesconfig   gcc-13.2.0
+arm                     am200epdkit_defconfig   gcc-13.2.0
+arm                       aspeed_g5_defconfig   gcc-13.2.0
+arm                                 defconfig   gcc-14.1.0
+arm                           imxrt_defconfig   gcc-13.2.0
+arm                   milbeaut_m10v_defconfig   gcc-13.2.0
+arm                        spear6xx_defconfig   gcc-13.2.0
+arm64                            allmodconfig   clang-20
+arm64                             allnoconfig   gcc-14.1.0
+arm64                               defconfig   gcc-14.1.0
+csky                              allnoconfig   gcc-14.1.0
+csky                                defconfig   gcc-14.1.0
+hexagon                          allmodconfig   clang-20
+hexagon                           allnoconfig   gcc-14.1.0
+hexagon                          allyesconfig   clang-20
+hexagon                             defconfig   gcc-14.1.0
+i386                             allmodconfig   clang-18
+i386                              allnoconfig   clang-18
+i386                             allyesconfig   clang-18
+i386         buildonly-randconfig-001-20240830   gcc-12
+i386         buildonly-randconfig-002-20240830   gcc-12
+i386         buildonly-randconfig-003-20240830   gcc-12
+i386         buildonly-randconfig-004-20240830   gcc-12
+i386         buildonly-randconfig-005-20240830   gcc-12
+i386         buildonly-randconfig-006-20240830   gcc-12
+i386                                defconfig   clang-18
+i386                  randconfig-001-20240830   gcc-12
+i386                  randconfig-002-20240830   gcc-12
+i386                  randconfig-003-20240830   gcc-12
+i386                  randconfig-004-20240830   gcc-12
+i386                  randconfig-005-20240830   gcc-12
+i386                  randconfig-006-20240830   gcc-12
+i386                  randconfig-011-20240830   gcc-12
+i386                  randconfig-012-20240830   gcc-12
+i386                  randconfig-013-20240830   gcc-12
+i386                  randconfig-014-20240830   gcc-12
+i386                  randconfig-015-20240830   gcc-12
+i386                  randconfig-016-20240830   gcc-12
+loongarch                        allmodconfig   gcc-14.1.0
+loongarch                         allnoconfig   gcc-14.1.0
+loongarch                           defconfig   gcc-14.1.0
+m68k                             allmodconfig   gcc-14.1.0
+m68k                              allnoconfig   gcc-14.1.0
+m68k                             allyesconfig   gcc-14.1.0
+m68k                                defconfig   gcc-14.1.0
+m68k                          hp300_defconfig   gcc-13.2.0
+microblaze                       allmodconfig   gcc-14.1.0
+microblaze                        allnoconfig   gcc-14.1.0
+microblaze                       allyesconfig   gcc-14.1.0
+microblaze                          defconfig   gcc-14.1.0
+mips                              allnoconfig   gcc-14.1.0
+mips                           gcw0_defconfig   gcc-13.2.0
+nios2                             allnoconfig   gcc-14.1.0
+nios2                               defconfig   gcc-14.1.0
+openrisc                          allnoconfig   clang-20
+openrisc                            defconfig   gcc-12
+parisc                            allnoconfig   clang-20
+parisc                              defconfig   gcc-12
+parisc64                            defconfig   gcc-14.1.0
+powerpc                           allnoconfig   clang-20
+powerpc                 mpc8313_rdb_defconfig   gcc-13.2.0
+powerpc                  mpc866_ads_defconfig   gcc-13.2.0
+powerpc                     tqm8541_defconfig   gcc-13.2.0
+riscv                             allnoconfig   clang-20
+riscv                               defconfig   gcc-12
+riscv                    nommu_virt_defconfig   gcc-13.2.0
+s390                             allmodconfig   gcc-14.1.0
+s390                              allnoconfig   clang-20
+s390                             allyesconfig   gcc-14.1.0
+s390                                defconfig   gcc-12
+sh                               allmodconfig   gcc-14.1.0
+sh                                allnoconfig   gcc-14.1.0
+sh                               allyesconfig   gcc-14.1.0
+sh                                  defconfig   gcc-12
+sh                   sh7770_generic_defconfig   gcc-13.2.0
+sh                             shx3_defconfig   gcc-13.2.0
+sh                            titan_defconfig   gcc-13.2.0
+sparc                            allmodconfig   gcc-14.1.0
+sparc64                             defconfig   gcc-12
+um                               allmodconfig   clang-20
+um                                allnoconfig   clang-20
+um                               allyesconfig   clang-20
+um                                  defconfig   gcc-12
+um                             i386_defconfig   gcc-12
+um                           x86_64_defconfig   gcc-12
+x86_64                            allnoconfig   clang-18
+x86_64                           allyesconfig   clang-18
+x86_64       buildonly-randconfig-001-20240830   clang-18
+x86_64       buildonly-randconfig-002-20240830   clang-18
+x86_64       buildonly-randconfig-003-20240830   clang-18
+x86_64       buildonly-randconfig-004-20240830   clang-18
+x86_64       buildonly-randconfig-005-20240830   clang-18
+x86_64       buildonly-randconfig-006-20240830   clang-18
+x86_64                              defconfig   clang-18
+x86_64                randconfig-001-20240830   clang-18
+x86_64                randconfig-002-20240830   clang-18
+x86_64                randconfig-003-20240830   clang-18
+x86_64                randconfig-004-20240830   clang-18
+x86_64                randconfig-005-20240830   clang-18
+x86_64                randconfig-006-20240830   clang-18
+x86_64                randconfig-011-20240830   clang-18
+x86_64                randconfig-012-20240830   clang-18
+x86_64                randconfig-013-20240830   clang-18
+x86_64                randconfig-014-20240830   clang-18
+x86_64                randconfig-015-20240830   clang-18
+x86_64                randconfig-016-20240830   clang-18
+x86_64                randconfig-071-20240830   clang-18
+x86_64                randconfig-072-20240830   clang-18
+x86_64                randconfig-073-20240830   clang-18
+x86_64                randconfig-074-20240830   clang-18
+x86_64                randconfig-075-20240830   clang-18
+x86_64                randconfig-076-20240830   clang-18
+x86_64                          rhel-8.3-rust   clang-18
+xtensa                            allnoconfig   gcc-14.1.0
 
-Afterall, would it be a problem to build it even for i386 ? It should 
-now be ignored anyway with your new commit f78280b1a3ce ("selftests: 
-vDSO: skip getrandom test if architecture is unsupported")
-
-Christophe
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
