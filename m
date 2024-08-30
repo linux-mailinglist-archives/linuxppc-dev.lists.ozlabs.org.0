@@ -1,71 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-816-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-817-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E9F9664B3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 16:56:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829419664B4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 16:57:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwLp21vcxz306d;
-	Sat, 31 Aug 2024 00:56:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WwLpX25M0z30CL;
+	Sat, 31 Aug 2024 00:57:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725020623;
-	cv=none; b=N3oz5a/YzhBnUk8JXCs7aNSUgMZzIbxrVQcXeEXIiT/vl+/CbZoXKCNUxwx1/De2q9AjLblOCUrIbvEVzFCKRFbGB3qceNJQ6GyzjXSH8eU/L/Rga9uDtnetzJ7LsFun+OOQNOkPGhCDsLKSKpXk38zOZXqCKQACY8/qFleZwLJyiMkKjNpm/rNjfrDsWJVibJ58qdONtlXCQ4qxioOe890tbpdM7XSJzCanc6MzUjH7kOTLOjPyp1sZAK3HsaW/OiSh/xkARQndof/era7LfuGi98luFEffDUlQ9SbHXt4XXUpwEucvYtlJ3+oYpAGSdK8YF9cjIz6eb8nRAMYhFA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725024936;
+	cv=none; b=IVwqHenB3MzoxMalBSC30C51Ki9RIFO9qzWKfPBrrwuZKlaw8ahAT0WAXEqhO+qJgfThpxuHSPCta2igAUzWqbGA+GxKAnpBjai3z1s3dzXnezRm8ZflJ7pSTJPbCDaHrY9/4BsDkkGEs8VYWsKZ91Y5agH1GgRWHtGSkQjKgGwS4dpdobEionP+OhlImGYlP/eQJ3x+cST2Am8L8Ke34B9ejzOVGE76OuztKtahrmwYvf8qcmBS0yueBzYGQ/R3wHlalD6pzcj7lZ20uaoBSL5eAKeHqZxAOwlsffUwaJVS8fXykKrKnd09msFiwdi9DJu1V081M7wI6kt/ueLHUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725020623; c=relaxed/relaxed;
-	bh=ayxgQlzkjC5lEZzk5yqJFecSk5flKGrYF+0TOF2Qz9o=;
-	h=DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:X-IronPort-AV:
-	 X-IronPort-AV:Received:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-ExtLoop1:X-IronPort-AV:Received:From:Date:To:cc:Subject:
-	 In-Reply-To:Message-ID:References:MIME-Version:Content-Type; b=etENElGDN+JRh4+MMPJiVx5Avhjr/GNwUGhZj+6+MdB2zZlWe/QQWcewxBokkwwzk98go3EC621P+5r6Ee2j1Ztqboi8kRqE+EOOfbygq9ksK4lnDHQG6HoXQtU5NyHeds+tIYxq2ef8xc5x62/YQrEey+frDkRUqxZM4D2Jh+wKA4tigE5Imw1ANaYNQ7uh4QQJthh0lXhr48RJDnk3Ct9if4atRANCociWw2KMQFxs3LB19IkmeGPQhvs+UxlPPXpqYISGC1kWqN7splEZJ6FEs3FE3PlXw5k/PbnuXXJzKBvDFvob7FlU4umLTPt4/xoATone9kOFRvEaEqpHaA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UTHv3pyD; dkim-atps=neutral; spf=none (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1725024936; c=relaxed/relaxed;
+	bh=lHvnH/4zOuzzT8TCzaUdUbOM1uEXUpCOxCXYL3PqkuU=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding; b=oBRc0bVDA1rD+w6IgGtujPJnQIXXJiuqc908CByBGM4JD7aXIuiWdUCKALr8RKR8Q4EOlEwz3BXJRHIVyS64itdZh1yhEosy9SD2oHKX7Ai3gEJNLs211Xz/qw0yWI4oHT0Qm5ldEcOVpewXqEfpGriwRcTqB0LuhZx8knv2mZ44g+/HOkeT/D7b/2rh9BypvvcOHDr7Q1cmrQvey5A3jnDGqMAF+jh7Zpi4c7z5+PN6V3ZTFG/gTEcB/jLxVhydIyFLtuu5toO8TGzzuiZZGPQLyNOMuq+sPv+Xza715wDi8UPmpvbfS59Xxa9o1nMduqRKVHn0NMrU/pqHVgVRSw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=Shzvo8Hd; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=skhan@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UTHv3pyD;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=Shzvo8Hd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=skhan@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwHPT4JrXz2yvw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 22:23:39 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725020622; x=1756556622;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=cxrQeFVCyW/V+8awK9/tTd4oB2KNPfWEV4kRyotwVsU=;
-  b=UTHv3pyDCKdzmcHNou45L3XPQz32boQj++djfMl0YvuVGvJotz2xtp3Q
-   Mw3CBYQrunGNO6MV0LRFiq025TzOTdYJmvjs90HBI/LytG+jwAn9x+3FI
-   /34RzH3lG/Ld5EEx3b5ygUq7ja5C0oWwobegqCF+JbuCT0mDrnZK6RBP5
-   w8hI1gF2eAcUm44zYBlV1jPVBGsgovagOA//OxTppHaisxNmyruK2uYTg
-   z49lNAlnJ0N5fOb2tGer7f+ctgZJuACiof8WRgDBibg6E6fXj6Jml5U9n
-   kNNfYPU54Plv5QB4Mzp8aG9dT5wLj2nOPDvD8CHGGB93hbHyr48hZhLYF
-   g==;
-X-CSE-ConnectionGUID: AKzUj+QyTimUKY8F3nfqdg==
-X-CSE-MsgGUID: mV6srwrvR4e2033D2jXm/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="27422920"
-X-IronPort-AV: E=Sophos;i="6.10,188,1719903600"; 
-   d="scan'208";a="27422920"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 05:23:36 -0700
-X-CSE-ConnectionGUID: d/hHSfZ2SOKCjMdhZ5I6EQ==
-X-CSE-MsgGUID: NGJStJN1Sn6X9IfbN8Sc8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,188,1719903600"; 
-   d="scan'208";a="68033775"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.245.174])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 05:23:31 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 30 Aug 2024 15:23:28 +0300 (EEST)
-To: Bjorn Helgaas <bhelgaas@google.com>
-cc: linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-    Oliver O'Halloran <oohall@gmail.com>, Lukas Wunner <lukas@wunner.de>, 
-    linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 0/7] PCI: Consolidate TLP Log reading and printing
-In-Reply-To: <20240514113109.6690-1-ilpo.jarvinen@linux.intel.com>
-Message-ID: <076a7814-1ab9-a6a1-6b08-3f414595c6ba@linux.intel.com>
-References: <20240514113109.6690-1-ilpo.jarvinen@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwK0R27v7z2ywR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 23:35:33 +1000 (AEST)
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-451a0b04f6bso10056861cf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 06:35:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1725024928; x=1725629728; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lHvnH/4zOuzzT8TCzaUdUbOM1uEXUpCOxCXYL3PqkuU=;
+        b=Shzvo8HdumRqWLDDV08vHQFeaukmznDuurFw+ssDX4Ha674GEwcCcBo/b+khrL0yxY
+         +hCB6nEqm26vNscFh6DvL8IT1rwFFZE5gfjkRqVapVxxyroifdTC9L/iHHjRpRRGAhy/
+         +bOjvySJWnIIbIltpyroQVK4AtxRictvD1YnM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725024928; x=1725629728;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lHvnH/4zOuzzT8TCzaUdUbOM1uEXUpCOxCXYL3PqkuU=;
+        b=oMc3FafZ6DWbBN6Z/TvI4HVJ1qEiKwhTMYKQe2FSgaemLwNSNn9yq08PnmwIxViVao
+         yHIgty87sN8nztgjLvXfcn1Lwp4z4SO0qhVhwdB7vpyQeZcxVLb0MzvZeomX9/WvLfQG
+         M0A7msIfNXQe0Gn3Mx01/1HFx6aqL2+g0zMzfHRv8wmOmVvYsDuBjBt/6s0Dt01MJQSf
+         +HSwP1uLsBh2O/x7W86A8jttWv7/lIixBCqEQDrS167JIe+PM6X90keLgwGiG9EVq6RM
+         P3OEktjdA8/OOyM1aMoQI5gWEaEJgkSSLzu9QzfIBsLnIPBoY38GN4DG0k6bA+VsK2P3
+         OvzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaqze5Vp1LQ7kOtjqccT5oaXMaFgDoFPX+wI5+kiFmJ/d1EcyI5wkutw+8/iUVTiWrYxz4EsOkHc25eiM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywey+hfVEO9v9mXr5ptk8CQCZedFkirmWV810iBnOCuju4O1quk
+	DTq7uNAA+FXW9cNspNV/ByjDmrc9QqW5A3eEn3nK8Q7oOgtk3xufRmSFeVhsEk4=
+X-Google-Smtp-Source: AGHT+IG8cg3+iwNoBRjX29bHUWGerLYZqb/2lmBI6h5IfvZ9WYS6tunfEvRS+bcOhw4pt4KgG5PXtw==
+X-Received: by 2002:a05:622a:40c8:b0:456:4688:d70b with SMTP id d75a77b69052e-4567f71c204mr79224871cf.61.1725024928201;
+        Fri, 30 Aug 2024 06:35:28 -0700 (PDT)
+Received: from [172.19.248.149] ([205.220.129.17])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45682d66c9dsm13869521cf.76.2024.08.30.06.35.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 Aug 2024 06:35:27 -0700 (PDT)
+Message-ID: <af63ebb4-af0c-4b0d-9b58-691be5087868@linuxfoundation.org>
+Date: Fri, 30 Aug 2024 07:34:53 -0600
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,77 +75,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1575701497-1725020608=:1027"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] selftests: vdso: Fix vDSO name for powerpc
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Shuah Khan <shuah@kernel.org>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Andy Lutomirski <luto@mit.edu>,
+ "H. Peter Anvin" <hpa@linux.intel.com>, Mark Brown <broonie@kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Shuah Khan <skhan@linuxfoundation.org>
+References: <6c5da802e72befecfa09046c489aa45d934d611f.1725020674.git.christophe.leroy@csgroup.eu>
+ <ZtG-DqWo8kBMocVh@zx2c4.com>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <ZtG-DqWo8kBMocVh@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 8/30/24 06:41, Jason A. Donenfeld wrote:
+> Hi Shuah,
+> 
+> No 0/5 patch, so replying to the first one.
+> 
+> These are fixes to the vDSO selftests that Christophe is ostensibly
+> providing as a preamble to his work porting vgetrandom to PPC. Do you
+> mind if I take these via my random tree so his PPC vgetrandom code can
+> go on top of it?
+> 
+> Jason
+> 
 
---8323328-1575701497-1725020608=:1027
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Yes - here is the Ack to apply to all patches in the series:
 
-On Tue, 14 May 2024, Ilpo J=C3=A4rvinen wrote:
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
 
-> This series has the remaining patches of the AER & DPC TLP Log handling
-> consolidation and now includes a few minor improvements to the earlier
-> accepted TLP Logging code.
->=20
-> v5:
-> - Fix build with AER=3Dy and DPC=3Dn
-> - Match kerneldoc and function parameter name
-
-Hi Bjorn,
-
-A gentle reminder, could you take a look at this series (and perhaps also=
-=20
-the one which introduces the Flit mode support on top of this series).
-
---=20
- i.
-
-> v4:
-> - Added patches:
-> =09- Remove EXPORT of pcie_read_tlp_log()
-> =09- Moved code to pcie/tlp.c and build only with AER enabled
-> =09- Match variables in prototype and function
-> =09- int -> unsigned int conversion
-> =09- eetlp_prefix_max into own patch
-> - struct pcie_tlp_log param consistently called "log" within tlp.c
-> - Moved function prototypes into drivers/pci/pci.h
-> - Describe AER/DPC differences more clearly in one commit message
->=20
-> v3:
-> - Small rewording in a commit message
->=20
-> v2:
-> - Don't add EXPORT()s
-> - Don't include igxbe changes
-> - Don't use pr_cont() as it's incompatible with pci_err() and according
->   to Andy Shevchenko should not be used in the first place
->=20
-> Ilpo J=C3=A4rvinen (7):
->   PCI: Don't expose pcie_read_tlp_log() outside of PCI subsystem
->   PCI: Move TLP Log handling to own file
->   PCI: Make pcie_read_tlp_log() signature same
->   PCI: Use unsigned int i in pcie_read_tlp_log()
->   PCI: Store # of supported End-End TLP Prefixes
->   PCI: Add TLP Prefix reading into pcie_read_tlp_log()
->   PCI: Create helper to print TLP Header and Prefix Log
->=20
->  drivers/pci/ats.c             |   2 +-
->  drivers/pci/pci.c             |  28 ---------
->  drivers/pci/pci.h             |   9 +++
->  drivers/pci/pcie/Makefile     |   2 +-
->  drivers/pci/pcie/aer.c        |  14 ++---
->  drivers/pci/pcie/dpc.c        |  14 ++---
->  drivers/pci/pcie/tlp.c        | 109 ++++++++++++++++++++++++++++++++++
->  drivers/pci/probe.c           |  14 +++--
->  include/linux/aer.h           |   3 +-
->  include/linux/pci.h           |   2 +-
->  include/uapi/linux/pci_regs.h |   2 +
->  11 files changed, 143 insertions(+), 56 deletions(-)
->  create mode 100644 drivers/pci/pcie/tlp.c
->=20
->=20
---8323328-1575701497-1725020608=:1027--
+thanks,
+-- Shuah
 
