@@ -1,59 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-781-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-782-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C3A9655B7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 05:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A03D8965607
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 05:58:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ww3kf6NZZz2yQL;
-	Fri, 30 Aug 2024 13:37:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ww4Bk0cxCz3045;
+	Fri, 30 Aug 2024 13:58:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.219.53
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724989066;
-	cv=none; b=S7O4db2ZURZC3w3c4JnF/asxdUfDeWhHry0OZxd9xfS7V8muI9Hc2fBov4mKbMjB7xR8EJmulMvBxtXG5yt0jc59IbWbR6ZmVH5gbM8svE8T20Ou7fhr37vfbj2Lhw9DjS+ioRpP1RciXs+JcM82zsSk8KEruvU9aTSOAdo/GT9EC/OuMDqC28jVCu0j7EFmKYoDJ2FpM2FCVmjlOS3NReeOxiJi826ysYA83OnXyR+mG9ZasA4WcDA71xM1eqmVq12CmbaOa7d2/yI2/VlfySMnPdGgci7UxYdc+sresyJ8rgAVadGc1uEm0n+HIc5MVWg1IPDeIW7jqEhnJVVbkg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.35
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724990318;
+	cv=none; b=oD5tte+l/2oIEVjodj6tO9HJo0ODomfnAdjDSg1e9dzSkW+iP2P9Uk5X2buFtfnA2rdLPV8eVvAMHBMSn0Ix7YrY+xjtcbQyNKvgJneSJ+ruN3pgf3aPSlTO1Z7l/Hv8iTW9bkNF1Wv2iR6eVgOLoQk7T+y/4CGxaHTD6qJzfmPE1WS3WTQVV5hGyf1tQp6M4ik98vLddx0rqsK2eOcjWNHcKzuCw+zIf+QanLw44kDN/gz92z3AyuB1RudSBRoVIg3j3NjHDx8YbEBmroF9ECX4FuFhaYxHoYNL5q0210/QzbVmLnaJe7C0+J7nrEAn8YQvQLpqHVa+xj2YeoA00w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724989066; c=relaxed/relaxed;
-	bh=fo9L05Z0QSBRe+YpGa+Uw+0Mfbc5M8wNwQrY2Gw1TrU=;
-	h=Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=PHIb3Q/cTqjft/hD10qxWruqJeOWnZE2AQsHd+YgXEZOg92FJZ8mgsiGXlHoNqMnr8Nh+KFe9GBVdk8iH25fGzpZxh/93YmmDKkyByrWeqhY7ijSeIHJVmFMtCK76y06Z/7tq4rEvIZLL+tHbqVGp3aIIcyqVLfI2Dz7rhZfpiAOgt5rqP/IbZUFQuHUKCIcbJ4EoA30vgGTw0/v7iJeGigzSNYwfxTBqgqqizapTzce/F7ab7XTLVPe6UNp8GyAEBtBCS1md68GlhAQnWgt7eqHLAijcR9BXv1HnmqCkJhiJ4a9ZSImXIIJkLZNohUt0UY6c5TYJGQUmVQsfu8kEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca; spf=pass (client-ip=209.85.219.53; helo=mail-qv1-f53.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.53; helo=mail-qv1-f53.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1724990318; c=relaxed/relaxed;
+	bh=MhgrHDB1sdpthvh1DxVT5i8160sR2tfQII8zy+lQdn8=;
+	h=Received:Received:Received:From:To:CC:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-Originating-IP:X-ClientProxiedBy; b=bUVMsZG62/pdvNyxuuhizRNz5xQP/U8cs9nj7vXAkOgbBXyS2Yu1uidRh8zYmAmWDF6vhEMbD/si+N8qnJVNN0t1zHkjpl5DqCL5mXPJh6cC2kp5tj6AZE7yfeTpuY8TP+t1VSiDScrE4NaJwnLH8Yi7cJhpZ9/EnafJ0/TBqonJ0uiyBMtywpnuSQaYMBe/+ouLiNhxUPnN/LtDREqcBYZOOa58Ra8QUxw/Zjt5awsm42a5jzWp8AlGmmt0cgZvbVEYHuauNQKOtCzpT6NeS/cP0zrlLhh7I+IvwuwoAjf0NfMoWi72mJjGLAaZ3X+YPXrWolEt5eBjGY+8lwSIkA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=ruanjinjie@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ww3kd5rHcz2yNB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 13:37:45 +1000 (AEST)
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6bf6606363fso7666156d6.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 20:37:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724989062; x=1725593862;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fo9L05Z0QSBRe+YpGa+Uw+0Mfbc5M8wNwQrY2Gw1TrU=;
-        b=a391NKJuksVlxosaNHZEc4PfNJg2ho8oY8C9pydGBysk/oWhH2Roj1GYHC7Lhn7Jc3
-         amcyYhv2ZeaNIJLqg4wg///SZ2NqSrk3jtEsUdDK0/dNtpcDD9O56LxsIujQS8HQJJVc
-         79NUIXsaliyWUETPrdQEYukj3J7H3WAW7KIxJtLqjaKCm0WNputPRH/bwN8iFk1NJiOf
-         R565LKG+anQ3JzVtg78jxqle4fIURYYr2MnPxsSjsJTHTDVJkf5CEJMry6B3nEz4/hSy
-         eWwdpwz+1c/SyJIqtYvGwG16dR0bXqkixIbedrIQ9O+xXPvWHpJtPyNEUwRZ5+VMB51V
-         75zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDZ6ftEG1GCdiZapkq0S1wGnZetM0V2CIS+fylQhhUTTSzpVl53Sdbx+ZYZTCMZN2BX9xwipVhRn3LJDw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxEvGJnkTAKmD9oLQMaw2G82g+EJR3VPmoGSOMCC04Hrg6721EM
-	JK49uSbozSQIGisePq0194YSQZfRdwK8wciNy4c37asgdt5pRRlG
-X-Google-Smtp-Source: AGHT+IF5lvFeC41ykAP/5lmiaGuGSVJ62dpKhpYmw92FoqNUdVPe/V37Z2IbmmFTugcCgHwIe+E9QA==
-X-Received: by 2002:a05:6214:3d9b:b0:6b5:d73d:918f with SMTP id 6a1803df08f44-6c33e4f053cmr61325206d6.0.1724989061710;
-        Thu, 29 Aug 2024 20:37:41 -0700 (PDT)
-Received: from [192.168.2.204] ([65.93.184.127])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c340bfafaesm11005716d6.22.2024.08.29.20.37.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Aug 2024 20:37:40 -0700 (PDT)
-Message-ID: <1568b378-5592-4d23-a572-4e09f3996331@vasilevsky.ca>
-Date: Thu, 29 Aug 2024 23:37:29 -0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ww4Bj2Pv7z303K
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 13:58:35 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Ww4BH0P3mz1S9TT;
+	Fri, 30 Aug 2024 11:58:15 +0800 (CST)
+Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2B4C81400F4;
+	Fri, 30 Aug 2024 11:58:29 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
+ (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 30 Aug
+ 2024 11:58:28 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <herve.codina@bootlin.com>, <qiang.zhao@nxp.com>,
+	<christophe.leroy@csgroup.eu>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<krzk@kernel.org>, <jic23@kernel.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [PATCH -next v2 0/4] soc: fsl: cpm1: Simplify with scoped for each OF child loop and dev_err_probe()
+Date: Fri, 30 Aug 2024 12:06:32 +0800
+Message-ID: <20240830040636.3508679-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,37 +54,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crash: Default to CRASH_DUMP=n when support for it is
- unlikely
-To: Baoquan He <bhe@redhat.com>
-Cc: glaubitz@physik.fu-berlin.de, linuxppc-dev@lists.ozlabs.org,
- linux-sh@vger.kernel.org, mpe@ellerman.id.au, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, =?UTF-8?Q?Reimar_D=C3=B6ffinger?=
- <Reimar.Doeffinger@gmx.de>
-References: <20240823125156.104775-1-dave@vasilevsky.ca>
- <ZtE5Z/gDR1WixG9S@MiWiFi-R3L-srv>
-Content-Language: en-US
-From: Dave Vasilevsky <dave@vasilevsky.ca>
-In-Reply-To: <ZtE5Z/gDR1WixG9S@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemh500013.china.huawei.com (7.202.181.146)
 
-On 2024-08-29 23:15, Baoquan He wrote:
->> +config ARCH_DEFAULT_CRASH_DUMP
->> +	def_bool n
-> 
-> If we don't add ARCH_DEFAULT_CRASH_DUMP at all in sh arch, the
-> CRASH_DUMP will be off by default according to the below new definition
-> of CRASH_DUMP?
+Use for_each_child_of_node_scoped() and dev_err_probe() to simplify code.
 
-Yes, that's true. But if we don't add it at all in sh arch, it looks confusing
-in the search feature of menuconfig:
+Changes in v2:
+- Split from the whole soc patch set.
+- Update the commit message.
 
-> Symbol: ARCH_DEFAULT_CRASH_DUMP [=ARCH_DEFAULT_CRASH_DUMP]
-> Type  : unknown
+Jinjie Ruan (4):
+  soc: fsl: cpm1: Simplify with scoped for each OF child loop
+  soc: fsl: cpm1: Simplify with dev_err_probe()
+  soc: fsl: cpm1: qmc: Simplify with scoped for each OF child
+  soc: fsl: cpm1: qmc: Simplify with dev_err_probe()
 
-So I thought it was better to explicitly set it to 'n'. What do you think?
+ drivers/soc/fsl/qe/qmc.c | 66 ++++++++++-------------------
+ drivers/soc/fsl/qe/tsa.c | 90 ++++++++++++----------------------------
+ 2 files changed, 50 insertions(+), 106 deletions(-)
 
--Dave
+-- 
+2.34.1
+
 
