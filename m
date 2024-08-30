@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-828-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-829-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2FA96669E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 18:15:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 466BF9666A5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 18:17:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwNXM2sBWz30NP;
-	Sat, 31 Aug 2024 02:14:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WwNbY1y1mz30PD;
+	Sat, 31 Aug 2024 02:17:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725034499;
-	cv=none; b=HDUcsnzTwYiNICmAgaxbRM+xyThf6DhSFJy+b3DhMw5FtriG2Qbvzd5fWQRCVdHKtKCqIbqEKJfWxIvRi4fAyhTsC5s8PG0yicxqVIPt3ELAzuegWxl5uueG5cGJPdYO1ctr02bHrzeaIuEpdJVhf6I3X2YVkeWd6T6FkEh+XM59lJJZThLMGHbpXE46BBFhsREKGrHP+dSts+X3ZmmqB8Omheg3hJ7Q/xcQLRhRf5dTRI4gkkf5eKLnb2N8QcWnHFbqVE/paT3+ImVYbHvBR9YF6G7cvuJ6Yx1MxFnFEpvxUvo1D+ogcvHyZoJdDyrjU5/XzyM6uOC9tKZagVeNvA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725034665;
+	cv=none; b=RE+QogEp2twOcLxmdS1fXIsjtFJKTO40a990X6/nlucvN8kG3NZWYsSXrxXti8MKNGI8yMjN3DsP3HmuEwu2PGhGJNsGCtcn1dIg9X0RZrmg1/cLgjPBmOCugaZrxEj1rqGUg9jsbCsIPncaFafQ52vI5uhELnKZCJOOeDH7QhZw7SsEchh3FxoWLPm2PJiPHRNIx9FwLv2VaLg+OpDH7TvTw4ecqJI91DqM83X0fFg+F5rC5ApCyL6WQ7UU7AxtFX8nYrfLYaaaX267h/iDJakAKUgreF4S3tOUmJZeS5ENVDlfUHT9+PRbhev1rxBXPlXJ9HcQ1nvXx7Hct5KFJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725034499; c=relaxed/relaxed;
-	bh=hP39KjvEhHFzK05596i191mBdhVDUqtp/Tqc+PvtOIk=;
+	t=1725034665; c=relaxed/relaxed;
+	bh=4V9WSctwTuWuaC+9YWeMzjXHA67ruA71pLDIgbwvzQM=;
 	h=Received:Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:
 	 Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=X1byna3OmsBOWQf9ix3YG7+5fIlujkLjvM82GpzLfgEqmBZr/ZXDNUQfr5d1b1gFBK2s4NFzUZHsxsQHdj3f1CPcufRKOTeUl+ydeNYQEidk5bIpBN2ECzuWP5bEQkpAfw4XBsmvmx0SDXtc35+c6W2W+bvFXk3j8dxgICj3PEOM8UKcBXIaLeWmnEwxQ+kPoh31PEMKEIZ2XxJPugoML/023Sj5Jm5bSH4Y4VLU1XMc7pL5tTYbBP1fArncQPAzzl9ETZJn+fSGcN9qPoWb5F9WMbDYg5jYeNtnjxQ5sAETS+LalkaRQ5+pDwzEE0l7wbCnUFr2WgxUTrbUR0T/Gg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=X4B3Z3+R; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=4jm9=p5=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Disposition:In-Reply-To; b=AmDXRmZXkclpl0pog+RqWFNX8XELHaJqli1N88TwlH5cyQIDLHksNvsfj28DY7mOARbr4DVAfx7VEzCjYVGHWWwYMyqUYmQGDe6bp7Ze/0ZApFTf4UH87VdtNXmSIVRJfsz0ehugI7BpLW42c2JTIWKAUGGrPLI50NCqyr4dEUKqUud3kaq4AcPVNm7h410atQvLufDSf2ZrUDu3ZQYpACOS/Kv0xjstl52i9r6VerxaS8Wu7j0cLnYW/oE95y78EI1RT9wnVCBwQHNqtSCoznRqpr/MyQEVG6dennD7bkmMD4d6GgYAf8o91t4Z0cIxQy8NUtEi1ksdMjdwrJcjnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=JpbhujkJ; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=4jm9=p5=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=X4B3Z3+R;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=JpbhujkJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=4jm9=p5=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=4jm9=p5=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwNXK2wrzz30MM
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 02:14:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwNbY0P2yz30MM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 02:17:45 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7F9525C10CC;
-	Fri, 30 Aug 2024 16:14:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933EBC4CEC2;
-	Fri, 30 Aug 2024 16:14:52 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 20A175C006B;
+	Fri, 30 Aug 2024 16:17:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB6AC4CEC2;
+	Fri, 30 Aug 2024 16:17:39 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="X4B3Z3+R"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="JpbhujkJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1725034490;
+	t=1725034657;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hP39KjvEhHFzK05596i191mBdhVDUqtp/Tqc+PvtOIk=;
-	b=X4B3Z3+RRpb6hKFMi1l1zo0Djitaj3Er0l8oTk/JJVDXNAhN1AX8yFBysIBe+ckynP2qVO
-	nyIQFAJq9DymFp/Kl5+S0iFSvp3phz7shrdSoqpPTsxO0USvCUxu6X0wOHej+YBpOuYBLG
-	er0UTBm+MFCED3Ceb8+SRsiPuJfgJrg=
+	bh=4V9WSctwTuWuaC+9YWeMzjXHA67ruA71pLDIgbwvzQM=;
+	b=JpbhujkJUXq1uk0Y0jqDBpxTfnVNfq53N2rv5YQsHeCptpCOwgh3bCbr/YIMxylwO3n5No
+	TnOFlxyTKJEG2X1X/9gM2gvPyskQiCmifotrmFx2qf7yyQJjLTybZ8GLL+cn/0YbdYgx6z
+	7oh7adhrtquvMjsiHA2IQwUSPYbEkrA=
 Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 7100d0c8 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 30 Aug 2024 16:14:50 +0000 (UTC)
-Date: Fri, 30 Aug 2024 18:14:45 +0200
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 21e77804 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Fri, 30 Aug 2024 16:17:37 +0000 (UTC)
+Date: Fri, 30 Aug 2024 18:17:33 +0200
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -70,7 +70,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Xi Ruoyao <xry111@xry111.site>
 Subject: Re: [PATCH v3 4/5] powerpc/vdso: Wire up getrandom() vDSO
  implementation on PPC32
-Message-ID: <ZtHv9R8b7qwWKR2b@zx2c4.com>
+Message-ID: <ZtHwnc4AZuRULkom@zx2c4.com>
 References: <cover.1725031952.git.christophe.leroy@csgroup.eu>
  <e7e4c6d36cf98229850c333f113bcea909564501.1725031952.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -87,17 +87,17 @@ Content-Disposition: inline
 In-Reply-To: <e7e4c6d36cf98229850c333f113bcea909564501.1725031952.git.christophe.leroy@csgroup.eu>
 
 On Fri, Aug 30, 2024 at 05:57:08PM +0200, Christophe Leroy wrote:
-> + *	r5: 8-byte counter input/output (saved on stack)
-> + *
-> + *	r14-r15: counter
-> + */
-> +SYM_FUNC_START(__arch_chacha20_blocks_nostack)
-> +	stwu	r1, -96(r1)
-> +	stw	r5, 20(r1)
-> +	stmw	r14, 24(r1)
-> +	li	r31, 4
-> +	LWZX_LE	r14, 0, r5
-> +	LWZX_LE	r15, r31, r5
+> @@ -14,6 +14,10 @@ ifeq ($(uname_M),x86_64)
+>  TEST_GEN_PROGS += vdso_test_getrandom
+>  TEST_GEN_PROGS += vdso_test_chacha
+>  endif
+> +ifeq ($(ARCH),powerpc)
+> +TEST_GEN_PROGS += vdso_test_getrandom
+> +TEST_GEN_PROGS += vdso_test_chacha
+> +endif
 
-Why swap endian on the counter?
+FYI, as of [1], you should now be able to add powerpc to the filter list
+instead of having to duplicate a new stanza:
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/commit/?id=bbaae98172ed284fc0d5d39cc0d68f5d06164f06
 
