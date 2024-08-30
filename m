@@ -1,83 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-791-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-792-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31EE9657B9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 08:35:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 734079657BC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 Aug 2024 08:38:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ww7h132n2z303N;
-	Fri, 30 Aug 2024 16:35:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ww7kb2xTwz3041;
+	Fri, 30 Aug 2024 16:37:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724999745;
-	cv=none; b=H2h3YnXt+YSsGgsUd2JDVRIscvs3Ckcp/SCX8aqLX6rjTsoVZEEB8dx+53fzbETlIW5HTkgGRw2tMmToIDO6Eb0vi/JnP5AUWOPf7imo2M4UGfb35BRbfyvgn4SejWmSoHVItPhlqoLn9J9CRKBZUyCzwSX8lMOw5pfkyf15gwWapvgWVgZpAyFuBuSI0A4QW/XPYLuetSlVmwJUow/tgI6GExdluDn+PqbFRJStt/XMj8SjkPvdAg5e9JhCHbJH9Y00JGTqRXUo3F76VaeVs0noVUOz2RMu123TDcZ88JfSvBP4f6Pi+wr10hib7ckfJwHp50s0ZReiuj91YL+/WA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::631"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1724999879;
+	cv=none; b=I/gS0DmVdALIorKzu/JshG7yj6CDDGur1qjG5aNn/gmFX8mloIrUxvVVeCUP/zTZ0IZ0DMlip6T7vZJtRTmuHVxkWIlXFpeAY175JZYiDhyCTGA+43dln1c/BLCS7yfumSVe7oJuHlgTDdqEyKBdAwr6Krn6gL06s8tzphcc95MPcyJJbkwos1mnF2/RdeWiVeyHD5s0vqcBznsOS1T1a38CaLiPLE6iZQiGOEde9FUNlxx1dAiRVHb1ys/PTVh0UIJYreSN6e3VB3DVIf49gIVpCRLDSdUBkQ/mcGUEp5IwEd4OTW6QgJlhaaAUXOfdeuHW3PyGZR0l6MDBDRTw4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1724999745; c=relaxed/relaxed;
-	bh=HrWNOiIuuwv6rUwr8p842oSg3wAC+6BD/WbJwvg4yP0=;
-	h=DKIM-Signature:DKIM-Signature:Received:X-MC-Unique:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:X-Scanned-By; b=Achr7cKMpYtN4wu4xJTnyJmpA40I5QM0PH2EVcHydl9qQnFhIw91qceqik23a3Y7VroRBjS53HhOiWD8Jip/q0+i/fdq3xh7ekp2CO3SKoAQaTbzVv1PICaFm4RyXlQ5v8M6m4/8Wc789FivVg3yJLi0F2M6onpCBsRxWVnuODzlHnF1AM9myBdg9zKqVLjNITEWyR0kC1HnY4jKxJCViTEfk5p0wNyDaFBg3Oo+Iig9JTo0nywBxF5PgIFTREALvXo+zHxAJjzMQUtclvOQiX+V8v4QSvRJU+88lyq760pig+Z85fFmPvo3bFUkCkkB22hI2HE12PGxbE4ucnjHIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cqh9hqzC; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R+H3bVzc; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1724999879; c=relaxed/relaxed;
+	bh=3Bon54RF1R2NVypdRmo7ECOWifc7jarfkosYQe9jtxo=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Google-Smtp-Source:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding; b=gHdhbeo+Zh0gpFzp2Y3Fi+mgrkbjY1uD9BsC5qGjgZrfeYEF2mKPUyDiaS8AyFAgJhg3p+DTg6EkLdy3njDt2juTi2K0PXGEYxH6bd3aOKOeJ14vSDbtBa2DuSZ9MIdfkAtkxqbKg5pa1BxLz2ymOb64JeC2Oqp4BBKH4yr6Xm5IumfLCY9bp+couqrtDon/YfE5GBmuB4j8CsgW6G/nRBqwkY51QhzBJWHs7VfJRJRMVEMhH2F7Wdi+bojrs5YCjyU7ZkM+eb81o1dFn8x73pH0a8Ot8LGsGdPYyEueJas0PXAOsIRM55B6bWe69cS9y+9zmwB9l25ARrD3uZQsuA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=T0zxbYxz; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cqh9hqzC;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=R+H3bVzc;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=T0zxbYxz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ww7h06bnfz303K
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 16:35:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724999741;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HrWNOiIuuwv6rUwr8p842oSg3wAC+6BD/WbJwvg4yP0=;
-	b=cqh9hqzCyIxHtGfGAGpDfbaTU0eJpwFsVB7Ay771xkR7PLs/2SUnGqeI3VwHVPGid/y88x
-	WKdK+El9zDhwQ1u04kOGpeiPG29pNuFcmEDUlbrSHPTu2Yuyz2usVIXRV0I+9KAwJGGN7g
-	WBtuax5imudo8NvkWZWG+o72BP0OWZY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724999742;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HrWNOiIuuwv6rUwr8p842oSg3wAC+6BD/WbJwvg4yP0=;
-	b=R+H3bVzclt+U46rGttFZuGoVaNtrV7u46lKhm5YTfzFrAAJUEfE2SGy4wJARjkQ0z8ssHB
-	riTwYm/J+Lk+OldqdKXLAA6VFIT81A5nULXkU3MIYAsDjv0Wxgc6foDoGx5p5H4pG2GyAe
-	s9KmicmfDwFr4N9gu7LGPaL91dF0QJ4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-59-JmQCpNOLOBqYBCgbQINbGQ-1; Fri,
- 30 Aug 2024 02:35:37 -0400
-X-MC-Unique: JmQCpNOLOBqYBCgbQINbGQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5487419560B1;
-	Fri, 30 Aug 2024 06:35:35 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.42])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ABB3E19560AD;
-	Fri, 30 Aug 2024 06:35:32 +0000 (UTC)
-Date: Fri, 30 Aug 2024 14:35:28 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Dave Vasilevsky <dave@vasilevsky.ca>
-Cc: akpm@linux-foundation.org, glaubitz@physik.fu-berlin.de,
-	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-	mpe@ellerman.id.au, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Reimar =?iso-8859-1?Q?D=F6ffinger?= <Reimar.Doeffinger@gmx.de>
-Subject: Re: [PATCH] crash: Default to CRASH_DUMP=n when support for it is
- unlikely
-Message-ID: <ZtFoMMsS5PuFw3LF@MiWiFi-R3L-srv>
-References: <20240823125156.104775-1-dave@vasilevsky.ca>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ww7kZ1Ycwz303K
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 Aug 2024 16:37:56 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-20223b5c1c0so13633305ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 Aug 2024 23:37:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1724999874; x=1725604674; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3Bon54RF1R2NVypdRmo7ECOWifc7jarfkosYQe9jtxo=;
+        b=T0zxbYxzV0aTepQG1wt75F44bfiAriskJCZjqSzvcfZlq51s6JiettW48fklU3efdB
+         fkCQaGyrxTVvfCMyFHUjo5GUIyXMB80ourmUilUxbYifN59ptDYmw+IUPJY+4K84LnSq
+         OGP0nE+x2MkHw3NLICE9jX1bk4s5AC0yKRRjtzu1w1pEul08SsgGld4cSx4imni1TcSa
+         f1KbK8tkWPTD2S1xqWEir5zc7r54LeP3B7zHEBAGBKgwDPxsf2e7H19X8AfeLtu+eBJB
+         lspS4f4lWwI6ljMMJcfnHu3k+epU0hYQ5e2U0YQXCj6hMpJbuVknxV6gwYK7vHIp9ACf
+         6PfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724999874; x=1725604674;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3Bon54RF1R2NVypdRmo7ECOWifc7jarfkosYQe9jtxo=;
+        b=vBKLmNrQsEqQbkyyrqTzlUHCzNSeQqa4H1axlUuhxB5y1pn9Q+1cDAB/SrU3m13OPI
+         mqHsKMNrZvLoOCFHD9P7I7Gu4+FyLygoxoj7Vfeotlw/gnEXSYqnEbqiQSrHAgVunnT+
+         MjqnD6naRrml/Q2aJr0NgHGdQdZO77g9x/qFlsvPEjLx5F77p7zhPGtEp8gKK75cN6JA
+         vdN23smUYpqTbQrdkdu/c0eElu0HcBFRWf/jZcx3Tj1A9hUvDzVdKMxsZvf2LxHAg9pn
+         O6puKyo56R0KjpqP9Vf5lX4jDxB/3rMrkcnaataJnOQCgntkgDk0rOjyhYhQSzbddMGp
+         jh+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXDNApLa++/nI54CpdKJvcLikfq0+tlTNx7wxF5dY1dWL6vN9Uvb8sxV/na2yuHG/68cVINk2mwJ2v6PfU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzrYG0RdS6Qvv8muDQcfEwGlNy2v60Qd73p6WENedjlB3M7Z5iY
+	q+GYj1SLqw19ru+MjW291Twxp6vDNQofBG+e8Z2Qghny3koBfJ64m5wPGn3a+uI=
+X-Google-Smtp-Source: AGHT+IHyOcbVEmEnId0vqSTOSgNPwIG0EVfd04p/S0G8sj3iEkziTAMfHoZozyVyNkJHSOdGOsiCTQ==
+X-Received: by 2002:a17:902:fb86:b0:203:a0ea:62a3 with SMTP id d9443c01a7336-2050c219597mr35192155ad.1.1724999873833;
+        Thu, 29 Aug 2024 23:37:53 -0700 (PDT)
+Received: from [10.4.59.158] ([139.177.225.242])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20515533bd3sm20643165ad.140.2024.08.29.23.37.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Aug 2024 23:37:53 -0700 (PDT)
+Message-ID: <a3986998-1f63-4e8c-94ed-c6d1004bf111@bytedance.com>
+Date: Fri, 30 Aug 2024 14:37:44 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,196 +78,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240823125156.104775-1-dave@vasilevsky.ca>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/14] mm: pgtable: introduce
+ pte_offset_map_{ro|rw}_nolock()
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>
+Cc: muchun.song@linux.dev, hughd@google.com, willy@infradead.org,
+ vbabka@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+ vishal.moola@gmail.com, peterx@redhat.com, ryan.roberts@arm.com,
+ christophe.leroy2@cs-soprasteria.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <cover.1724310149.git.zhengqi.arch@bytedance.com>
+ <e866151ccd257ca14a9361ba59f8c3086aa76e4f.1724310149.git.zhengqi.arch@bytedance.com>
+ <f318f65d-4198-481c-98a0-00415664614c@redhat.com>
+ <4481a0e4-a7a5-4223-a8ab-d1215d7c6352@bytedance.com>
+ <42aba316-2b01-4fdb-9aff-9e670aac4c6e@redhat.com>
+ <63ef0611-50c2-49b5-ba3f-c6ea81f9fbce@bytedance.com>
+ <8cbd44d9-f39b-4ee8-b1c1-ba89c12c0e23@redhat.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <8cbd44d9-f39b-4ee8-b1c1-ba89c12c0e23@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 08/23/24 at 08:51am, Dave Vasilevsky wrote:
-> Fixes boot failures on 6.9 on PPC_BOOK3S_32 machines using
-> Open Firmware. On these machines, the kernel refuses to boot
-> from non-zero PHYSICAL_START, which occurs when CRASH_DUMP is on.
-> 
-> Since most PPC_BOOK3S_32 machines boot via Open Firmware, it should
-> default to off for them. Users booting via some other mechanism
-> can still turn it on explicitly.
-> 
-> Also defaults to CRASH_DUMP=n on sh.
 
-The overrall looks good to me except of the CRASH_DUMP=n on sh, do you
-have a comment about the reasoning since you have discussed with John?
-Is it because of below config items?
 
-arch/sh/Kconfig:
-config ARCH_SUPPORTS_CRASH_DUMP
-        def_bool BROKEN_ON_SMP
-...
-config PHYSICAL_START
-        hex "Physical address where the kernel is loaded" if (EXPERT || CRASH_DUMP)
-        default MEMORY_START
-	...
+On 2024/8/29 23:31, David Hildenbrand wrote:
+> On 29.08.24 12:59, Qi Zheng wrote:
+>>
+>>
+>> On 2024/8/28 18:48, David Hildenbrand wrote:
+>>> On 27.08.24 06:33, Qi Zheng wrote:
+>>
+>> [...]
+>>
+>>>> sufficient AFAIUK.
+>>>
+>>> Drop the "AFAIUK" :)
+>>>
+>>> "For R/O access this is sufficient."
+>>>
+>>>>
+>>>> pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is like
+>>>> pte_offset_map_ro_nolock(); but when successful, it also outputs the
+>>>> pdmval. For R/W access, the callers can not accept that the page table
+>>>> it sees has been unmapped and is about to get freed. The pmdval can 
+>>>> help
+>>>> callers to recheck pmd_same() to identify this case once the 
+>>>> spinlock is
+>>>> taken. For some cases where exclusivity is already guaranteed, such as
+>>>> holding the write lock of mmap_lock, or in cases where checking is
+>>>> sufficient, such as a !pte_none() pte will be rechecked after the
+>>>> spinlock is taken, there is no need to recheck pdmval.
+>>>
+>>> Right, using pte_same() one can achieve a similar result, assuming that
+>>> the freed page table gets all ptes set to pte_none().
+>>>
+>>> page_table_check_pte_clear_range() before pte_free_defer() in
+>>> retract_page_tables/collapse_pte_mapped_thp() sanity checks that I 
+>>> think.
+>>
+>> Since commit 1d65b771bc08, retract_page_tables() only holds the
+>> i_mmap_lock_read(mapping) but not mmap_lock, so it seems that
+>> holding the write lock of mmap_lock cannot guarantee the stability
+>> of the PTE page.
+> 
+> Guess it depends. khugepaged on anonymous memory will block any page 
+> table walkers (like anon THP collapse does) -- per-VMA lock, mmap lock, 
+> mapping lock/RMAP lock ... so it *should* be sufficient to hold any of 
+> these, right?
+
+retract_page_tables() itself is safe, but because it does not hold the
+read lock of mmap_lock, other paths that only hold the write lock of
+mmap_lock may be concurrent with it, such as the paths in
+[PATCH v2 08/14] and [PATCH v2 09/14].
 
 > 
-> Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
-> Reported-by: Reimar Döffinger <Reimar.Doeffinger@gmx.de>
-> Closes: https://lists.debian.org/debian-powerpc/2024/07/msg00001.html
-> Fixes: 75bc255a7444 ("crash: clean up kdump related config items")
-> ---
->  arch/arm/Kconfig       | 3 +++
->  arch/arm64/Kconfig     | 3 +++
->  arch/loongarch/Kconfig | 3 +++
->  arch/mips/Kconfig      | 3 +++
->  arch/powerpc/Kconfig   | 4 ++++
->  arch/riscv/Kconfig     | 3 +++
->  arch/s390/Kconfig      | 3 +++
->  arch/sh/Kconfig        | 3 +++
->  arch/x86/Kconfig       | 3 +++
->  kernel/Kconfig.kexec   | 2 +-
->  10 files changed, 29 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 54b2bb817a7f..200995052690 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -1597,6 +1597,9 @@ config ATAGS_PROC
->  config ARCH_SUPPORTS_CRASH_DUMP
->  	def_bool y
->  
-> +config ARCH_DEFAULT_CRASH_DUMP
-> +	def_bool y
-> +
->  config AUTO_ZRELADDR
->  	bool "Auto calculation of the decompressed kernel image address" if !ARCH_MULTIPLATFORM
->  	default !(ARCH_FOOTBRIDGE || ARCH_RPC || ARCH_SA1100)
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index a2f8ff354ca6..43e08cc8204f 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1558,6 +1558,9 @@ config ARCH_DEFAULT_KEXEC_IMAGE_VERIFY_SIG
->  config ARCH_SUPPORTS_CRASH_DUMP
->  	def_bool y
->  
-> +config ARCH_DEFAULT_CRASH_DUMP
-> +	def_bool y
-> +
->  config ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
->  	def_bool CRASH_RESERVE
->  
-> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-> index 70f169210b52..ce232ddcd27d 100644
-> --- a/arch/loongarch/Kconfig
-> +++ b/arch/loongarch/Kconfig
-> @@ -599,6 +599,9 @@ config ARCH_SUPPORTS_KEXEC
->  config ARCH_SUPPORTS_CRASH_DUMP
->  	def_bool y
->  
-> +config ARCH_DEFAULT_CRASH_DUMP
-> +	def_bool y
-> +
->  config ARCH_SELECTS_CRASH_DUMP
->  	def_bool y
->  	depends on CRASH_DUMP
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 60077e576935..b547f4304d0c 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -2881,6 +2881,9 @@ config ARCH_SUPPORTS_KEXEC
->  config ARCH_SUPPORTS_CRASH_DUMP
->  	def_bool y
->  
-> +config ARCH_DEFAULT_CRASH_DUMP
-> +	def_bool y
-> +
->  config PHYSICAL_START
->  	hex "Physical address where the kernel is loaded"
->  	default "0xffffffff84000000"
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index d7b09b064a8a..0f3c1f958eac 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -682,6 +682,10 @@ config RELOCATABLE_TEST
->  config ARCH_SUPPORTS_CRASH_DUMP
->  	def_bool PPC64 || PPC_BOOK3S_32 || PPC_85xx || (44x && !SMP)
->  
-> +config ARCH_DEFAULT_CRASH_DUMP
-> +	bool
-> +	default y if !PPC_BOOK3S_32
-> +
->  config ARCH_SELECTS_CRASH_DUMP
->  	def_bool y
->  	depends on CRASH_DUMP
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 0f3cd7c3a436..eb247b5ee569 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -880,6 +880,9 @@ config ARCH_SUPPORTS_KEXEC_PURGATORY
->  config ARCH_SUPPORTS_CRASH_DUMP
->  	def_bool y
->  
-> +config ARCH_DEFAULT_CRASH_DUMP
-> +	def_bool y
-> +
->  config ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
->  	def_bool CRASH_RESERVE
->  
-> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-> index a822f952f64a..05a1fb408471 100644
-> --- a/arch/s390/Kconfig
-> +++ b/arch/s390/Kconfig
-> @@ -275,6 +275,9 @@ config ARCH_SUPPORTS_CRASH_DUMP
->  	  This option also enables s390 zfcpdump.
->  	  See also <file:Documentation/arch/s390/zfcpdump.rst>
->  
-> +config ARCH_DEFAULT_CRASH_DUMP
-> +	def_bool y
-> +
->  menu "Processor type and features"
->  
->  config HAVE_MARCH_Z10_FEATURES
-> diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-> index 1aa3c4a0c5b2..b04cfa23378c 100644
-> --- a/arch/sh/Kconfig
-> +++ b/arch/sh/Kconfig
-> @@ -549,6 +549,9 @@ config ARCH_SUPPORTS_KEXEC
->  config ARCH_SUPPORTS_CRASH_DUMP
->  	def_bool BROKEN_ON_SMP
->  
-> +config ARCH_DEFAULT_CRASH_DUMP
-> +	def_bool n
-> +
->  config ARCH_SUPPORTS_KEXEC_JUMP
->  	def_bool y
->  
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 007bab9f2a0e..aa4666bb9e9c 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -2087,6 +2087,9 @@ config ARCH_SUPPORTS_KEXEC_JUMP
->  config ARCH_SUPPORTS_CRASH_DUMP
->  	def_bool X86_64 || (X86_32 && HIGHMEM)
->  
-> +config ARCH_DEFAULT_CRASH_DUMP
-> +	def_bool y
-> +
->  config ARCH_SUPPORTS_CRASH_HOTPLUG
->  	def_bool y
->  
-> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-> index 6c34e63c88ff..4d111f871951 100644
-> --- a/kernel/Kconfig.kexec
-> +++ b/kernel/Kconfig.kexec
-> @@ -97,7 +97,7 @@ config KEXEC_JUMP
->  
->  config CRASH_DUMP
->  	bool "kernel crash dumps"
-> -	default y
-> +	default ARCH_DEFAULT_CRASH_DUMP
->  	depends on ARCH_SUPPORTS_CRASH_DUMP
->  	depends on KEXEC_CORE
->  	select VMCORE_INFO
-> -- 
-> 2.34.1
-> 
+> So at least for now, these (anonymous memory) cases would be ok. Likely 
+> that will change when reclaiming empty page tables.
 
+When reclaiming the empty page tables, I will hold the read lock of 
+mmap_lock.
+
+Therefore, either perform a pmd_same() check on the case where the
+write lock of mmap_lock is held, or add the read lock of mmap_lock
+to retract_page_tables() as well.
+
+> 
+>>
+>> IIUC, I will also perform a pmd_same() check on the case where the
+>> write lock of mmap_lock is held in v3. Or do I miss something?
+> 
+> Can you spell out the instances where you think it might be required.
+
+For example, the paths in [PATCH v2 08/14] and [PATCH v2 09/14] need
+to do pmd_same() check after holding the PTL.
+
+> 
 
