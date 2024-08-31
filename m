@@ -1,69 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-845-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-846-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82179670E4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2024 12:30:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5CE9672B3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 Aug 2024 18:31:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WwrrZ43DVz2yF4;
-	Sat, 31 Aug 2024 20:30:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wx0rv0bKjz2y3b;
+	Sun,  1 Sep 2024 02:31:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725100238;
-	cv=none; b=Zk9NVqiR8uP2VgXeOUDQwQwIlGXt/uSeN9ulHxlLmsK7LhU9zEdw/XychsY8vgTFJk+VJ8suom/p333UgF91vEGxp1YpqgBa5QaGIi9rU6P9LMTF4yACR8+VE6ErKT6++bSAiz2LPwbCOo6q5+NOUyObCWqnYPLmGrYpuGEX3ALzk6dTbdVEbce0T/Y5Bx10UYM7pZnV0tiDHt5ShpzdC3oVyxyKOZ/oGvUhHZhWb/Q6xLBRD6ap7Eea4lY6KXhy6XzMe+P6Rc6T+bhfoJ9izJpBh40tJ5SV9yudgxIjIg8TGyoEp465RqmbKc6RFNcCNsjq9SFdVRksWD9CFrfhNQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.58.85.151
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725121887;
+	cv=none; b=eLDLI37K783Cplq5XDL2RShlFq3BojQ1x5fpzrLrnzvNohgyzs5S5M6paTC7MxbvB8iryh9qJMaUTF+nIOimhyuuiwICygnWcJ3bggPXjrbLZsBI0jNKLEff5MBpaw+0SyzuQgjm7Eh7o2wjtN/YIE/hIOg8EoA/144jY8mbYv/k8AOHLYuTDpYPi7fcpCrSQFlAax/e9LFopBhXFxU7gYEafXOr/rvWvr6VYjbpISN4KPRdTlcToYgvQ6kdRHb/IFw9anxC+4URauivW5TMesBrUbbRZo6x6+wtsO27pScf9SWkjMqpqorer5PU/m/Kc13QYSeCIAZG5sYe1nQ5vw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725100238; c=relaxed/relaxed;
-	bh=MnX/IGVIP89663Ock/GpjByC6wPR8nm9yFoq3qfpgKk=;
-	h=Received:Received:DKIM-Signature:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding; b=FWDu8rXvInd1/OkNfdET7gRGiQb5xS9g0FxOMD+jshvLri+Q4+/hx1BTbvk69wFZeI5O9El5QDXkI2Edf6hGpVjmVyb5ZoUwVS6TT2xFirs+YWKo5jZ/DFwfeYtPaw2kaKau7F2E67ubgoUX7w2o/ZOS2v8daZ5wi5GKCN6Gel5iF+19xfNOwMv/GlQmws9waHPkjuqmpfnXJZf1XIi0PeaPMU4NOXw8lURMYZcxF1aeIp7r48Jv8TRRAmwBxMhHlHCnwFkadv58qseuDDoOxaPTgFS3b32dvGHduIY3H+EcbFhgSaHh1ySr6vJ6hNu18SqZQg6YvSrmgEtyv9cAdA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QEffq0MX; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jic23@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QEffq0MX;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jic23@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	t=1725121887; c=relaxed/relaxed;
+	bh=AuLfZzUmtglWqwz48TCd9lAiPu5sOPRAyVJ52ZHkrxk=;
+	h=Received:X-MC-Unique:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-exchange-transport-fromentityheader:x-originating-ip:
+	 MIME-Version:X-Mimecast-Spam-Score:X-Mimecast-Originator:
+	 Content-Language:Content-Type:Content-Transfer-Encoding; b=ZrMyKKxD+SgBC3EVHPfC61lsFnKP4Mth+63TmCjKPV84rpcvQmpszT+49+x+d2VY+Pnf4EFrUy6egfMkcqzB+uOx0AagiVaclcK6qgPb6bgfe3yTDuvBe94DLhPCvPF2QMctT3Ib4EkxQNJJEPzFiA9MiRMe1YFzOBwudQ2weFh6EEU4Dpz5MnYDsdc0IFbDkk9hyKCa+P2GE8OALZl5ZHyfWUJmpmoIpPuMlVAt+DoHotv1M2N4snHiyKZq+Z0MdzwJAukxWcHPKyqt+LGEzTrbHTcDIQOxbCDS+Hxic8q9z7MHzr4vu2gsAmvjnKlINRpxavlC+ivzpi8RC7kpAQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org) smtp.mailfrom=aculab.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WwrrZ1WqKz2yF0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 Aug 2024 20:30:38 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id AA64FA402DF;
-	Sat, 31 Aug 2024 10:30:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E1FC4CEC0;
-	Sat, 31 Aug 2024 10:30:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725100232;
-	bh=6SWTTgTAzp6pqg4Vm4RZubkX3UCuusQwF+vJGG/x2vQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QEffq0MXDsWJWK5sRvImQL8mf+7JPH7FqWXdrsgY3Cd7NXJR8fmTHMuusiYMGnyhC
-	 MHZRnQPI2BQBNzCli8vVmgh+dEdC0uxBsz/fRD4SJemPO70j2WI5R14ofbm4VjUpqj
-	 kjhuO/TmLT2Aem8eyujuJ1mvRbendpbr22r/NmZB8VHlPSpsUMXOsVwaG1aQ4wijVU
-	 RybOdpY2DoFelEtVjQyRLTVrH9HyaFC1lbjOm1n7PKyWOTl8dYcRCY4yp8Qh8GHVki
-	 ymaipbd5WA6OB41R7ckuL0rn3ouJJGPlz4pdjabaARYh6JkylN/XBqkaD8dQdf/vUx
-	 XFfHdhi7Y3qYw==
-Date: Sat, 31 Aug 2024 11:30:21 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Kousik Sanagavarapu <five231003@gmail.com>, <andrew@lunn.ch>,
- <sebastian.hesselbarth@gmail.com>, <gregory.clement@bootlin.com>,
- <herve.codina@bootlin.com>, <qiang.zhao@nxp.com>,
- <christophe.leroy@csgroup.eu>, <thierry.reding@gmail.com>,
- <jonathanh@nvidia.com>, <nm@ti.com>, <ssantosh@kernel.org>,
- <petlozup@nvidia.com>, <pshete@nvidia.com>,
- <christophe.jaillet@wanadoo.fr>, <ulf.hansson@linaro.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-tegra@vger.kernel.org>,
- <krzk@kernel.org>, jonathan.cameron@huawei.com
-Subject: Re: [PATCH -next 8/8] soc: ti: knav_qmss_queue: Simplify with
- scoped for each OF child loop
-Message-ID: <20240831113021.08a9010a@jic23-huawei>
-In-Reply-To: <598efadd-da27-0be3-6d1c-dee50e71c811@huawei.com>
-References: <ZtCapIwWZolY7oMH@five231003>
-	<598efadd-da27-0be3-6d1c-dee50e71c811@huawei.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wx0rt0KGmz2xyG
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Sep 2024 02:31:23 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-262-wK_tsTO6PIqyGgtMlXpe8w-1; Sat, 31 Aug 2024 17:31:14 +0100
+X-MC-Unique: wK_tsTO6PIqyGgtMlXpe8w-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sat, 31 Aug
+ 2024 17:30:28 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Sat, 31 Aug 2024 17:30:28 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Christophe Leroy' <christophe.leroy@csgroup.eu>, Charlie Jenkins
+	<charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Catalin Marinas <catalin.marinas@arm.com>, "Will
+ Deacon" <will@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, "Nicholas
+ Piggin" <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Muchun Song
+	<muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
+	"Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Huacai Chen
+	<chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Russell King
+	<linux@armlinux.org.uk>, "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller
+	<deller@gmx.de>, Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+	<gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, Christian Borntraeger
+	<borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, "Yoshinori
+ Sato" <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, "John Paul
+ Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>, "David S. Miller"
+	<davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Shuah Khan
+	<shuah@kernel.org>, Alexandre Ghiti <alexghiti@rivosinc.com>
+CC: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Palmer Dabbelt
+	<palmer@rivosinc.com>, "linux-riscv@lists.infradead.org"
+	<linux-riscv@lists.infradead.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+	"linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+	"sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
+Subject: RE: [PATCH 07/16] powerpc: mm: Support MAP_BELOW_HINT
+Thread-Topic: [PATCH 07/16] powerpc: mm: Support MAP_BELOW_HINT
+Thread-Index: AQHa+RRTN/GnVgA7wEmCsX6Cdbuah7JBk7Rw
+Date: Sat, 31 Aug 2024 16:30:28 +0000
+Message-ID: <7011cb340586473dac83efbbe84c4a05@AcuMS.aculab.com>
+References: <20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com>
+ <20240827-patches-below_hint_mmap-v1-7-46ff2eb9022d@rivosinc.com>
+ <a43c52c6-c1ac-4ef3-b511-08f0459bddad@csgroup.eu>
+In-Reply-To: <a43c52c6-c1ac-4ef3-b511-08f0459bddad@csgroup.eu>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,57 +99,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On Fri, 30 Aug 2024 11:24:14 +0800
-Jinjie Ruan <ruanjinjie@huawei.com> wrote:
-
-> On 2024/8/29 23:58, Kousik Sanagavarapu wrote:
-> > Jinjie Ruan <ruanjinjie@huawei.com> writes:  
-> >> @@ -1080,17 +1080,13 @@ static int knav_queue_setup_regions(struct knav_device *kdev,
-> >>  {
-> >>  	struct device *dev = kdev->dev;
-> >>  	struct knav_region *region;
-> >> -	struct device_node *child;
-> >>  	u32 temp[2];
-> >>  	int ret;
-> >>  
-> >> -	for_each_child_of_node(regions, child) {
-> >> +	for_each_child_of_node_scoped(regions, child) {  
-> > 
-> > Are you sure using *_scoped() is better here?  Since it seems that we
-> > need the memory pointed to by "child" in cases where we don't go into an
-> > error path.  
-> 
-> Hi, Jonathan, could you help review this code?
-
-I don't understand the review comment.
-The reference counting before and after this patch is the same, just
-with the error path handled in a simpler fashion and the scope of
-the child variable reduced.
-
-
-> 
-> >   
-> >>  		region = devm_kzalloc(dev, sizeof(*region), GFP_KERNEL);
-> >> -		if (!region) {
-> >> -			of_node_put(child);
-> >> -			dev_err(dev, "out of memory allocating region\n");
-> >> -			return -ENOMEM;
-> >> -		}
-> >> +		if (!region)
-> >> +			return dev_err_probe(dev, -ENOMEM, "out of memory allocating region\n");
-> >>  
-> >>  		region->name = knav_queue_find_name(child);
-> >>  		of_property_read_u32(child, "id", &region->id);  
-> > 
-> > Similarly in most of the other cases in this series where a similar
-> > change is done.
-> > 
-> > Also FYI, as for dev_err_probe(), I think I covered all of them in this
-> > file and a patch for it is currently sitting in ti-drivers-soc-next.
-> > 
-> > Thanks  
+RnJvbTogQ2hyaXN0b3BoZSBMZXJveQ0KPiBTZW50OiAyOCBBdWd1c3QgMjAyNCAwNzozNQ0KPiBI
+aSBDaGFybGllLA0KPiANCj4gTGUgMjgvMDgvMjAyNCDDoCAwNzo0OSwgQ2hhcmxpZSBKZW5raW5z
+IGEgw6ljcml0wqA6DQo+ID4gQWRkIHN1cHBvcnQgZm9yIE1BUF9CRUxPV19ISU5UIHRvIGFyY2hf
+Z2V0X21tYXBfYmFzZSgpIGFuZA0KPiA+IGFyY2hfZ2V0X21tYXBfZW5kKCkuDQo+ID4NCj4gPiBT
+aWduZWQtb2ZmLWJ5OiBDaGFybGllIEplbmtpbnMgPGNoYXJsaWVAcml2b3NpbmMuY29tPg0KPiA+
+IC0tLQ0KPiA+ICAgYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3Rhc2tfc2l6ZV82NC5oIHwgMzYg
+KysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tDQo+ID4gICAxIGZpbGUgY2hhbmdlZCwg
+MzAgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9h
+cmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vdGFza19zaXplXzY0LmggYi9hcmNoL3Bvd2VycGMvaW5j
+bHVkZS9hc20vdGFza19zaXplXzY0LmgNCj4gPiBpbmRleCAyMzliMzYzODQxYWEuLmEzN2E1YTgx
+MzY1ZCAxMDA2NDQNCj4gPiAtLS0gYS9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vdGFza19zaXpl
+XzY0LmgNCj4gPiArKysgYi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vdGFza19zaXplXzY0LmgN
+Cj4gPiBAQCAtNzIsMTIgKzcyLDM2IEBADQo+ID4gICAjZGVmaW5lIFNUQUNLX1RPUF9NQVggVEFT
+S19TSVpFX1VTRVI2NA0KPiA+ICAgI2RlZmluZSBTVEFDS19UT1AgKGlzXzMyYml0X3Rhc2soKSA/
+IFNUQUNLX1RPUF9VU0VSMzIgOiBTVEFDS19UT1BfVVNFUjY0KQ0KPiA+DQo+ID4gLSNkZWZpbmUg
+YXJjaF9nZXRfbW1hcF9iYXNlKGFkZHIsIGxlbiwgYmFzZSwgZmxhZ3MpIFwNCj4gPiAtCSgoKGFk
+ZHIpID4gREVGQVVMVF9NQVBfV0lORE9XKSA/IChiYXNlKSArIFRBU0tfU0laRSAtIERFRkFVTFRf
+TUFQX1dJTkRPVyA6IChiYXNlKSkNCj4gPiArI2RlZmluZSBhcmNoX2dldF9tbWFwX2Jhc2UoYWRk
+ciwgbGVuLCBiYXNlLCBmbGFncykJCQkJCVwNCj4gDQo+IFRoaXMgbWFjcm8gbG9va3MgcXVpdGUg
+YmlnIGZvciBhIG1hY3JvLCBjYW4gaXQgYmUgYSBzdGF0aWMgaW5saW5lDQo+IGZ1bmN0aW9uIGlu
+c3RlYWQgPyBTYW1lIGZvciB0aGUgb3RoZXIgbWFjcm8gYmVsb3cuDQoNCk9yIGV2ZW4gYSByZWFs
+IGZ1bmN0aW9uPw0KR2l2ZW4gdGhlIGFjdHVhbCBjb3N0IG9mIG1hcHBpbmcgbWVtb3J5IGFuIGV4
+dHJhIGZ1bmN0aW9uIGNhbGwNCmlzbid0IGdvaW5nIHRvIGJlIG1hc3VyYWJsZS4NCg0KCURhdmlk
+DQoNCj4gDQo+ID4gKyh7CQkJCQkJCQkJCQlcDQo+ID4gKwl1bnNpZ25lZCBsb25nIG1tYXBfYmFz
+ZTsJCQkJCQkJXA0KPiA+ICsJdHlwZW9mKGZsYWdzKSBfZmxhZ3MgPSAoZmxhZ3MpOwkJCQkJCQlc
+DQo+ID4gKwl0eXBlb2YoYWRkcikgX2FkZHIgPSAoYWRkcik7CQkJCQkJCVwNCj4gPiArCXR5cGVv
+ZihiYXNlKSBfYmFzZSA9IChiYXNlKTsJCQkJCQkJXA0KPiA+ICsJdHlwZW9mKGxlbikgX2xlbiA9
+IChsZW4pOwkJCQkJCQlcDQo+ID4gKwl1bnNpZ25lZCBsb25nIHJuZF9nYXAgPSBERUZBVUxUX01B
+UF9XSU5ET1cgLSAoX2Jhc2UpOwkJCQlcDQo+ID4gKwlpZiAoX2ZsYWdzICYgTUFQX0JFTE9XX0hJ
+TlQgJiYgX2FkZHIgIT0gMCAmJiAoKF9hZGRyICsgX2xlbikgPiBCSVQoVkFfQklUUyAtIDEpKSlc
+DQo+ID4gKwkJbW1hcF9iYXNlID0gKF9hZGRyICsgX2xlbikgLSBybmRfZ2FwOwkJCQkJXA0KPiA+
+ICsJZWxzZQkJCQkJCQkJCQlcDQo+ID4gKwkJbW1hcF9lbmQgPSAoKF9hZGRyID4gREVGQVVMVF9N
+QVBfV0lORE9XKSA/CQkJCVwNCj4gPiArCQkJCV9iYXNlICsgVEFTS19TSVpFIC0gREVGQVVMVF9N
+QVBfV0lORE9XIDoJCVwNCj4gPiArCQkJCV9iYXNlKTsJCQkJCQkJXA0KPiA+ICsJbW1hcF9lbmQ7
+CQkJCQkJCQkJXA0KPiANCj4gbW1hcF9lbmQgZG9lc24ndCBleGlzdCwgZGlkIHlvdSBtZWFuIG1t
+YXBfYmFzZSA/DQo+IA0KPiA+ICt9KQ0KPiA+DQo+ID4gLSNkZWZpbmUgYXJjaF9nZXRfbW1hcF9l
+bmQoYWRkciwgbGVuLCBmbGFncykgXA0KPiA+IC0JKCgoYWRkcikgPiBERUZBVUxUX01BUF9XSU5E
+T1cpIHx8IFwNCj4gPiAtCSAoKChmbGFncykgJiBNQVBfRklYRUQpICYmICgoYWRkcikgKyAobGVu
+KSA+IERFRkFVTFRfTUFQX1dJTkRPVykpID8gVEFTS19TSVpFIDogXA0KPiA+IC0JCQkJCQkJCQkg
+ICAgREVGQVVMVF9NQVBfV0lORE9XKQ0KPiA+ICsjZGVmaW5lIGFyY2hfZ2V0X21tYXBfZW5kKGFk
+ZHIsIGxlbiwgZmxhZ3MpCQkJCQkJCVwNCj4gPiArKHsJCQkJCQkJCQkJCQlcDQo+ID4gKwl1bnNp
+Z25lZCBsb25nIG1tYXBfZW5kOwkJCQkJCQkJCVwNCj4gPiArCXR5cGVvZihmbGFncykgX2ZsYWdz
+ID0gKGZsYWdzKTsJCQkJCQkJCVwNCj4gPiArCXR5cGVvZihhZGRyKSBfYWRkciA9IChhZGRyKTsJ
+CQkJCQkJCVwNCj4gPiArCXR5cGVvZihsZW4pIF9sZW4gPSAobGVuKTsJCQkJCQkJCVwNCj4gPiAr
+CWlmIChfZmxhZ3MgJiBNQVBfQkVMT1dfSElOVCAmJiBfYWRkciAhPSAwICYmICgoX2FkZHIgKyBf
+bGVuKSA+IEJJVChWQV9CSVRTIC0gMSkpKQlcDQo+ID4gKwkJbW1hcF9lbmQgPSAoX2FkZHIgKyBf
+bGVuKTsJCQkJCQkJXA0KPiA+ICsJZWxzZQkJCQkJCQkJCQkJXA0KPiA+ICsJCW1tYXBfZW5kID0g
+KCgoX2FkZHIpID4gREVGQVVMVF9NQVBfV0lORE9XKSB8fAkJCQkJXA0KPiA+ICsJCQkJKCgoX2Zs
+YWdzKSAmIE1BUF9GSVhFRCkgJiYgKChfYWRkcikgKyAoX2xlbikgPiBERUZBVUxUX01BUF9XSU5E
+T1cpKVwNCj4gPiArCQkJCT8gVEFTS19TSVpFIDogREVGQVVMVF9NQVBfV0lORE9XKQkJCQlcDQo+
+ID4gKwltbWFwX2VuZDsJCQkJCQkJCQkJXA0KPiA+ICt9KQ0KPiA+DQo+ID4gICAjZW5kaWYgLyog
+X0FTTV9QT1dFUlBDX1RBU0tfU0laRV82NF9IICovDQo+ID4NCg0KLQ0KUmVnaXN0ZXJlZCBBZGRy
+ZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1L
+MSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
 
