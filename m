@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-892-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-893-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50EE968E4C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 21:17:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9091D968E4E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 21:17:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WyJRt04Rjz2yNP;
-	Tue,  3 Sep 2024 05:17:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WyJRy4S9lz2yPD;
+	Tue,  3 Sep 2024 05:17:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725304665;
-	cv=none; b=ARdB3YoVrnCxCptmZqPN1M/gXpy/QwEf+4xKTvJtWYOmeaRC57qFnAabr+OQ4ObAghfq9uvmT/WKT3cYVlKVcbZJ73gJTqHq5KbNtEQd4YB8gikq3CawqTo8m5a9Pfg5I0LyvDqaTYvEioofYmtX9aoxDGkL6ul6aCoyVw37GfRraGL4r/KPIuTO7vYhyvbdftcOZQZCaB1oLX98DsktWcmey4GohSCFQv9J9gTgakufA5khuY5IvExJb+alSRNAaU5Z0Jd0ijxcLQOJCqoZ4Bw9M6xEFxex7nnCDN1w/YuX37MDnzsFbEgFQbuUbJI2Hc77eupUPx4wgLDUe2wGBQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725304670;
+	cv=none; b=FZ15UQ0bzPa1+g9fzSkXEfH6XYsNeLP3wsRqM1P+zAr7Cr/MPjibBKEZMn1UwVQi4jYU+4F5j1oX1pktRU1aPoNR0vDRZ5BW69c4DFQhsHvQbJgNAbznFTVfe1z3vK7WPz/DhocWZuiKonDxmy2nu63TJX904+cvd9gwnmGIip6GewKh3HXZUXDMP3BOFvNfGsfiPaDDcNaddXSCvXg+kP48Qj6yt6xbQN+GyoSZ7kMMx3xp9fckdDLvxPUnYvZ3KSNIYy58lp/yK1NykNxgJMAJ1VjhuTPsatANCTznaoAAbk7PaQ1XsSxEpIGGpD7TNITvwtbesJcoHdi5ioGc4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725304665; c=relaxed/relaxed;
-	bh=MwCQPr+DkzFiDHzjMK222UDVKoya0EMyZrgWc4ytvxg=;
+	t=1725304670; c=relaxed/relaxed;
+	bh=DytUxfbmplaMrRHhl3qFQ+Z19NOu/EOZY8HpIR/7NxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eKeqqpXRUN/yL+5nJD7hWYTWBBN6yesaTGFTo94tqklpYuPJhu7FR9zdyaNIRJRH1qofdp3uaxDHP1vbF1Cl4jTqOHxbQ0FYDqF6ah81LHGQpeh9vTpXmvD0WBUshoCWR+tQqoNUK6Hbxz/AX/vD6cgPCTwi/3xWFjaHbJQEGelwi9Bi87HlgUuKXHHCMhD0rsX+s85EWs/oygNJblmHWJe5zmyZZ4JvGGTdrv22Fnf5GQCShSyLzfqn1IAvZglkcI5gLNOuAI1i5+zIDIVHZa2XAYR7qL3hQtpo9zmTINr0H4/FArlCYmnFCIFbXplHtKMb57hgrARwGyw6RDxJSw==
+	 MIME-Version; b=HmCs618D9lPQxepXEmg2LZtdT8QtdSUU1AwzV9cgc3GbzXN3vhvZgz9S69bchAllet5/quaqfNh915oHQyf2YFOvsHSTtTvoLevbsVF3V/UwXwOElbr2XDqi2TIS8SFlHcJ7WiLa+ZhVl/FhqiXpaB0R+Ke7uIlMWv2OnXFRp7YTNQAniFTr5E8cpncZeA6O7mBJvq1mPB+ucp1Yvj/exgsp0jJ8VsxAF8WjnAFcB9+aNhz2HWpYQvlE+BUL8Ndlui4quQ7Fq5O7aa+Yl0GV2fVEO3GNILcS/BA+I6GpYLA+mEyReN/dTA3ryLhc+kK+tJ3x48dmlomnHJ9B6pT5DA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
@@ -23,28 +23,28 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyJRs4yLxz2xfK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 05:17:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyJRy2GYyz2xfK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 05:17:50 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WyJRc3m9Mz9sSL;
-	Mon,  2 Sep 2024 21:17:32 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4WyJRd3X2sz9sSN;
+	Mon,  2 Sep 2024 21:17:33 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id WV1hwhARAFwi; Mon,  2 Sep 2024 21:17:32 +0200 (CEST)
+	with ESMTP id e6nsoT8P5hdh; Mon,  2 Sep 2024 21:17:33 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WyJRc2wThz9sS7;
-	Mon,  2 Sep 2024 21:17:32 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WyJRd2fdTz9sS7;
+	Mon,  2 Sep 2024 21:17:33 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 552768B773;
-	Mon,  2 Sep 2024 21:17:32 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B5518B773;
+	Mon,  2 Sep 2024 21:17:33 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id HA515LPe95Te; Mon,  2 Sep 2024 21:17:32 +0200 (CEST)
+	with ESMTP id hfPTGw2zbvQ8; Mon,  2 Sep 2024 21:17:33 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.234.167])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5CC028B76E;
-	Mon,  2 Sep 2024 21:17:31 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D4838B770;
+	Mon,  2 Sep 2024 21:17:32 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
@@ -69,9 +69,9 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-trace-kernel@vger.kernel.org,
 	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
 	Xi Ruoyao <xry111@xry111.site>
-Subject: [PATCH v5 2/5] powerpc/vdso32: Add crtsavres
-Date: Mon,  2 Sep 2024 21:17:19 +0200
-Message-ID: <5cf0574fed3e75028407f9e1f0b559af211b78a2.1725304404.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v5 3/5] powerpc/vdso: Refactor CFLAGS for CVDSO build
+Date: Mon,  2 Sep 2024 21:17:20 +0200
+Message-ID: <915d012b5d19ceea4daae70b1d9e20019223ea19.1725304404.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1725304404.git.christophe.leroy@csgroup.eu>
 References: <cover.1725304404.git.christophe.leroy@csgroup.eu>
@@ -84,74 +84,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1725304638; l=2796; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=utdv6V/SvZxVA50hOk7t/lkGWDvSE1q/kJYchx6i5SU=; b=QPu40YkIuiZNZY/gfuwhYtnydWYHKI2VDQ4sgoCCxnQL1ccyYRw1PUdGYSIy7wbcfGWFhYXM7 KDTsbkWYgWvDO1OTuJgivp2/+unzZytK5NfkyueftmWFRLwypcamIKn
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1725304638; l=4208; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=8uyRGNGCCgVJfGMmDTrx0v5vR/iTZQuTWlNxnOkFWq8=; b=osqIoo0JSy/xlAhsLIcV9tBSh3GYquOHfc16I8SPSsx7J/+1fY18BmUgRE+k55JDahIugxCk5 GQretRwJRNDBzEsxE+tsonofNq/p1qXhKsVndOzPur5o808j0jux/Mf
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 
-Commit 08c18b63d965 ("powerpc/vdso32: Add missing _restgpr_31_x to fix
-build failure") added _restgpr_31_x to the vdso for gettimeofday, but
-the work on getrandom shows that we will need more of those functions.
-
-Remove _restgpr_31_x and link in crtsavres.o so that we get all
-save/restore functions when optimising the kernel for size.
+In order to avoid two much duplication when we add new VDSO
+functionnalities in C like getrandom, refactor common CFLAGS.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/vdso/Makefile       |  5 ++++-
- arch/powerpc/kernel/vdso/gettimeofday.S | 13 -------------
- 2 files changed, 4 insertions(+), 14 deletions(-)
+v3: Also refactor removed flags
+---
+ arch/powerpc/kernel/vdso/Makefile | 32 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
 diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 1425b6edc66b..c07a425b8f78 100644
+index c07a425b8f78..67fe79d26fae 100644
 --- a/arch/powerpc/kernel/vdso/Makefile
 +++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -43,6 +43,7 @@ else
+@@ -10,28 +10,11 @@ obj-vdso64 = sigtramp64-64.o gettimeofday-64.o datapage-64.o cacheflush-64.o not
+ 
+ ifneq ($(c-gettimeofday-y),)
+   CFLAGS_vgettimeofday-32.o += -include $(c-gettimeofday-y)
+-  CFLAGS_vgettimeofday-32.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+-  CFLAGS_vgettimeofday-32.o += $(call cc-option, -fno-stack-protector)
+-  CFLAGS_vgettimeofday-32.o += -DDISABLE_BRANCH_PROFILING
+-  CFLAGS_vgettimeofday-32.o += -ffreestanding -fasynchronous-unwind-tables
+-  CFLAGS_REMOVE_vgettimeofday-32.o = $(CC_FLAGS_FTRACE)
+-  CFLAGS_REMOVE_vgettimeofday-32.o += -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
+-  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
+-  # an unused command line flag warning for this file.
+-  ifdef CONFIG_CC_IS_CLANG
+-  CFLAGS_REMOVE_vgettimeofday-32.o += -fno-stack-clash-protection
+-  endif
+-  CFLAGS_vgettimeofday-64.o += -include $(c-gettimeofday-y)
+-  CFLAGS_vgettimeofday-64.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+-  CFLAGS_vgettimeofday-64.o += $(call cc-option, -fno-stack-protector)
+-  CFLAGS_vgettimeofday-64.o += -DDISABLE_BRANCH_PROFILING
+-  CFLAGS_vgettimeofday-64.o += -ffreestanding -fasynchronous-unwind-tables
+-  CFLAGS_REMOVE_vgettimeofday-64.o = $(CC_FLAGS_FTRACE)
+ # Go prior to 1.16.x assumes r30 is not clobbered by any VDSO code. That used to be true
+ # by accident when the VDSO was hand-written asm code, but may not be now that the VDSO is
+ # compiler generated. To avoid breaking Go tell GCC not to use r30. Impact on code
+ # generation is minimal, it will just use r29 instead.
+-  CFLAGS_vgettimeofday-64.o += $(call cc-option, -ffixed-r30)
++  CFLAGS_vgettimeofday-64.o += -include $(c-gettimeofday-y) $(call cc-option, -ffixed-r30)
  endif
  
- targets := $(obj-vdso32) vdso32.so.dbg vgettimeofday-32.o
-+targets += crtsavres-32.o
- obj-vdso32 := $(addprefix $(obj)/, $(obj-vdso32))
- targets += $(obj-vdso64) vdso64.so.dbg vgettimeofday-64.o
+ # Build rules
+@@ -49,6 +32,11 @@ targets += $(obj-vdso64) vdso64.so.dbg vgettimeofday-64.o
  obj-vdso64 := $(addprefix $(obj)/, $(obj-vdso64))
-@@ -68,7 +69,7 @@ targets += vdso64.lds
- CPPFLAGS_vdso64.lds += -P -C
  
- # link rule for the .so file, .lds has to be first
--$(obj)/vdso32.so.dbg: $(obj)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday-32.o FORCE
-+$(obj)/vdso32.so.dbg: $(obj)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday-32.o $(obj)/crtsavres-32.o FORCE
- 	$(call if_changed,vdso32ld_and_check)
- $(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o FORCE
- 	$(call if_changed,vdso64ld_and_check)
-@@ -76,6 +77,8 @@ $(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o
- # assembly rules for the .S files
- $(obj-vdso32): %-32.o: %.S FORCE
- 	$(call if_changed_dep,vdso32as)
-+$(obj)/crtsavres-32.o: %-32.o: $(srctree)/arch/powerpc/lib/crtsavres.S FORCE
-+	$(call if_changed_dep,vdso32as)
- $(obj)/vgettimeofday-32.o: %-32.o: %.c FORCE
- 	$(call if_changed_dep,vdso32cc)
- $(obj-vdso64): %-64.o: %.S FORCE
-diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vdso/gettimeofday.S
-index 48fc6658053a..67254ac9c8bb 100644
---- a/arch/powerpc/kernel/vdso/gettimeofday.S
-+++ b/arch/powerpc/kernel/vdso/gettimeofday.S
-@@ -118,16 +118,3 @@ V_FUNCTION_END(__kernel_clock_getres)
- V_FUNCTION_BEGIN(__kernel_time)
- 	cvdso_call __c_kernel_time call_time=1
- V_FUNCTION_END(__kernel_time)
--
--/* Routines for restoring integer registers, called by the compiler.  */
--/* Called with r11 pointing to the stack header word of the caller of the */
--/* function, just beyond the end of the integer restore area.  */
--#ifndef __powerpc64__
--_GLOBAL(_restgpr_31_x)
--_GLOBAL(_rest32gpr_31_x)
--	lwz	r0,4(r11)
--	lwz	r31,-4(r11)
--	mtlr	r0
--	mr	r1,r11
--	blr
--#endif
+ ccflags-y := -fno-common -fno-builtin
++ccflags-y += $(DISABLE_LATENT_ENTROPY_PLUGIN)
++ccflags-y += $(call cc-option, -fno-stack-protector)
++ccflags-y += -DDISABLE_BRANCH_PROFILING
++ccflags-y += -ffreestanding -fasynchronous-unwind-tables
++ccflags-remove-y := $(CC_FLAGS_FTRACE)
+ ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack $(CLANG_FLAGS)
+ ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
+ ldflags-$(CONFIG_LD_ORPHAN_WARN) += -Wl,--orphan-handling=$(CONFIG_LD_ORPHAN_WARN_LEVEL)
+@@ -57,6 +45,12 @@ ldflags-$(CONFIG_LD_ORPHAN_WARN) += -Wl,--orphan-handling=$(CONFIG_LD_ORPHAN_WAR
+ ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
+ 
+ CC32FLAGS := -m32
++CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
++  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
++  # an unused command line flag warning for this file.
++ifdef CONFIG_CC_IS_CLANG
++CC32FLAGSREMOVE += -fno-stack-clash-protection
++endif
+ LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
+ AS32FLAGS := -D__VDSO32__
+ 
+@@ -105,7 +99,7 @@ quiet_cmd_vdso32ld_and_check = VDSO32L $@
+ quiet_cmd_vdso32as = VDSO32A $@
+       cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) $(AS32FLAGS) -c -o $@ $<
+ quiet_cmd_vdso32cc = VDSO32C $@
+-      cmd_vdso32cc = $(VDSOCC) $(c_flags) $(CC32FLAGS) -c -o $@ $<
++      cmd_vdso32cc = $(VDSOCC) $(filter-out $(CC32FLAGSREMOVE), $(c_flags)) $(CC32FLAGS) -c -o $@ $<
+ 
+ quiet_cmd_vdso64ld_and_check = VDSO64L $@
+       cmd_vdso64ld_and_check = $(VDSOCC) $(ldflags-y) $(LD64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
 -- 
 2.44.0
 
