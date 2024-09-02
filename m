@@ -1,49 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-890-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-891-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C72B968E48
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 21:17:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545C4968E49
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 21:17:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WyJRh6xSDz2xfP;
-	Tue,  3 Sep 2024 05:17:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WyJRn4BR1z2yN4;
+	Tue,  3 Sep 2024 05:17:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725304656;
-	cv=none; b=iMEfDO4z0FTMpkZrwoFLbJMsv6mDJY1xENOA6qRxsn4CZV/tOIinNZTxKJFHAv8MUCku91NrfZ48uy3FO4+3o5vI6yMtIjvu9bo1qTB/xB37sMc9gJXW30dRwtJLrAuFjAVlga4aV9y0MyjXvtul+vGCgzYg/izrchr+KrekDMuniTY6SZQMt5pCye3J8qsQHimJqsTg6MbZmx+P7G3I3piDrLuS2BYUDHx3Oty90+itCfN8ulL2TH4Y3o8g7Uy2yrSYgpWA4ZZiCgWdq0eP/+V1YYOiRWyksLYx6JrAy7rzN/TWg07zZJVx77PSLblIhPNfK2YBXhE+BjAzZjelHg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725304661;
+	cv=none; b=l/SccFK4A7SOxNxAM25k5VKxf1RSWa152xS+MEQYcISY5YB+h09Gd2IE3czcRbu3HIJUpPy7lx39jzd8eEYD5uAbU7Y2k7RSsE/KNNOX6QGQ3joOkdw047XHj0bLLIDhY393QZnXGHuirYXSp65sJaGmYAhNVXl9GnBUQLOh4mwkFC5kqemKhxwMYUu2mwIZUwaJfQNFsFDgYU7bXKQmddCwfGrJOy0tl3iHztBMbNGcLGQPzAi8IdS+T2MkZJDTFOwhmw0pusSnvRoLyUf97lCDVh1bCYKa1NjNEaNFP42D0TNCpZBLLQ190qGWK/A6HNmKsBJw1MeRHZP6P7iQxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725304656; c=relaxed/relaxed;
-	bh=1ELg/QOG9fGwj6TCDmkswti7plm4t6vg3WY7QTBORIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+L75573Ys3a9OaG9yZoNuBy2gEGBS1FISSfzSwSza/Vdl0mOxewb1m93YtK5czeTY1rw5+6nf30p738qOl6u2R8E/GcbjuMjBy/4XI9t70IXJ0NJ2QFkExkZoTxTXHGEeeZt6bhorIHCv/HnBli/3MRlfsnngTxo/cb6ihyoBZCdTMpOqoh/5+8tvLC3aZlKNshBOLXHqdjqYjHKtKn3Upge0f/uzJXpy75NRlobtwp42MqrkHidgSxsaWP3VGCyaXAuL7VXALsLI2fz1DMi7WeRsmOtFcIkMu/l/e+eH6XL/Zgpz7oKuYCqJ+Z1eD8iMngpoRcaRKuc3YNkZYLeg==
+	t=1725304661; c=relaxed/relaxed;
+	bh=tAg61Zyqrflk/oJA5T5Z5RbcySQiS7N9PdlZqAQYPWw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Auz9ngOUryC7b9NeNLYyG0RUqzD+M0nXDohFKQrSLY+FvZBJelc9Ulb6ZZApx91R4i31xjnDwNjaTdmyPqzsVAq8lx6JxFKlH7BJvtcvFvtKFMDx4H8mC1RVt/uw6a87JAcKmO8wa/7ZyfcEVmfBX0dSTW+aijEFcjjK8l5ey5EYiSh0F+NDErHBxLEckX5IuIdazdrCLfki+nUZcPLeRBscLXMHcoxQxtqHTudP41j1An5IA5LBBG9dap65b0/FlUQBfcK/ZKB5iQ/tTdwRiGXSvOpLbXQEjE0siUuJETlV4vzVWaoUMZtD1KeZ7RqX/8Kg5uDWUCM9RgRUM63OzQ==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyJRh4YFVz2xfK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 05:17:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyJRn232pz2xfK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 05:17:41 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WyJRZ4rkWz9sSC;
-	Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4WyJRb4YChz9sSK;
+	Mon,  2 Sep 2024 21:17:31 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ax3nmbJ-MmBS; Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+	with ESMTP id Rliv3BQP30eL; Mon,  2 Sep 2024 21:17:31 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WyJRZ3bHMz9sS7;
-	Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WyJRb3KmGz9sS7;
+	Mon,  2 Sep 2024 21:17:31 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 63ACB8B773;
-	Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 642888B773;
+	Mon,  2 Sep 2024 21:17:31 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Gzm3BpU0vDdS; Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+	with ESMTP id RznGlAhRZuPR; Mon,  2 Sep 2024 21:17:31 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.234.167])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 655368B76E;
-	Mon,  2 Sep 2024 21:17:29 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C7B58B770;
+	Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
@@ -68,10 +69,12 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-trace-kernel@vger.kernel.org,
 	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
 	Xi Ruoyao <xry111@xry111.site>
-Subject: [PATCH v5 0/5] Wire up getrandom() vDSO implementation on powerpc
-Date: Mon,  2 Sep 2024 21:17:17 +0200
-Message-ID: <cover.1725304404.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v5 1/5] mm: Define VM_DROPPABLE for powerpc/32
+Date: Mon,  2 Sep 2024 21:17:18 +0200
+Message-ID: <0e6772967de99ca9282bb0310c874ea12d7451ac.1725304404.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <cover.1725304404.git.christophe.leroy@csgroup.eu>
+References: <cover.1725304404.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,91 +84,91 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1725304637; l=3687; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=G56Surs4RcPMKqkQ+D4HRpn8ohpC1w0ACTtV2JlOfkQ=; b=L7YIZ5u53kP07q3XacSpkIO1Xjr62J1hUfE5txFxRpTNzPgGtylrmGgBb9ZY29iqGucj6655o E5MakVa329fBcczeFP71VjjmQ8YbRTi4BpFAc8ULVyQWxF+LYYG38qW
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1725304637; l=3068; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=D2XQkJzjCFhHvddcGK1wPF6zrU/7AFSP1S12xB5e/Jg=; b=wPREOAD0QoGI3TW4gibAz+4870cjqR2AP1EDXAzDUImqHYutjDy/A0w6uXuA0u18wT9L6TgOA YxZ/LTuImy+AoekkJJDf68lKw7vkcVjepyt1+WTQH38anbkqvsubuT+
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 
-This series wires up getrandom() vDSO implementation on powerpc.
+Commit 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always
+lazily freeable mappings") only adds VM_DROPPABLE for 64 bits
+architectures.
 
-Tested on PPC32 on real hardware.
-Tested on PPC64 (both BE and LE) on QEMU:
+In order to also use the getrandom vDSO implementation on powerpc/32,
+use VM_ARCH_1 for VM_DROPPABLE on powerpc/32. This is possible because
+VM_ARCH_1 is used for VM_SAO on powerpc and VM_SAO is only for
+powerpc/64. It is used in combination with PROT_SAO in some parts of
+code that are restricted to CONFIG_PPC64 through #ifdefs, it is
+therefore possible to define VM_SAO for CONFIG_PPC64 only.
 
-Performance on powerpc 885:
-	~# ./vdso_test_getrandom bench-single
-	   vdso: 25000000 times in 62.938002291 seconds
-	   libc: 25000000 times in 535.581916866 seconds
-	syscall: 25000000 times in 531.525042806 seconds
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v4: Added more details in commit message following comment from Michael.
+v3: Fixed build failure reported by robots.
+---
+ fs/proc/task_mmu.c             | 4 +++-
+ include/linux/mm.h             | 4 +++-
+ include/trace/events/mmflags.h | 4 ++--
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-Performance on powerpc 8321:
-	~# ./vdso_test_getrandom bench-single
-	   vdso: 25000000 times in 16.899318858 seconds
-	   libc: 25000000 times in 131.050596522 seconds
-	syscall: 25000000 times in 129.794790389 seconds
-
-Performance on QEMU pseries:
-	~ # ./vdso_test_getrandom bench-single
-	   vdso: 25000000 times in 4.977777162 seconds
-	   libc: 25000000 times in 75.516749981 seconds
-	syscall: 25000000 times in 86.842242014 seconds
-
-Changes in v5:
-- The split between last two patches is not anymore PPC32/PPC64 but VDSO32/VDSO64
-- Removed the stub returning ENOSYS
-- Using meaningfull names for registers
-- Restored symbolic link that disappeared in v4
-
-Changes in v4:
-- Rebased on recent random git tree (963233ff0133) (The new tree includes selftests fixes)
-- Read/write counter in native byte order
-- Don't use anymore compat macros to write output
-- Fixed selftests build failure with patch 4 (without patch 5) on little endian on PPC64
-- Implement a __kernel_getrandom() stub returning ENOSYS on ppc64 in patch 4 (without patch 5) to make selftests happy.
-
-Changes in v3:
-- Rebased on recent random git tree (0c7e00e22c21)
-- Fixed build failures reported by robots around VM_DROPPABLE
-- Fixed crash on PPC64 due to clobbered r13 by not using r13 anymore (saving it was not enough for signals).
-- Split final patch in two, first for PPC32, second for PPC64
-- Moved selftest fixes out of this series
-
-Changes in v2:
-- Define VM_DROPPABLE for powerpc/32
-- Fixes generic vDSO getrandom headers to enable CONFIG_COMPAT build.
-- Fixed size of generation counter
-- Fixed selftests to work on non x86 architectures
-
-Christophe Leroy (5):
-  mm: Define VM_DROPPABLE for powerpc/32
-  powerpc/vdso32: Add crtsavres
-  powerpc/vdso: Refactor CFLAGS for CVDSO build
-  powerpc/vdso: Wire up getrandom() vDSO implementation on VDSO32
-  powerpc/vdso: Wire up getrandom() vDSO implementation on VDSO64
-
- arch/powerpc/Kconfig                         |   1 +
- arch/powerpc/include/asm/mman.h              |   2 +-
- arch/powerpc/include/asm/vdso/getrandom.h    |  54 +++
- arch/powerpc/include/asm/vdso/vsyscall.h     |   6 +
- arch/powerpc/include/asm/vdso_datapage.h     |   2 +
- arch/powerpc/kernel/asm-offsets.c            |   1 +
- arch/powerpc/kernel/vdso/Makefile            |  57 +--
- arch/powerpc/kernel/vdso/getrandom.S         |  58 +++
- arch/powerpc/kernel/vdso/gettimeofday.S      |  13 -
- arch/powerpc/kernel/vdso/vdso32.lds.S        |   1 +
- arch/powerpc/kernel/vdso/vdso64.lds.S        |   1 +
- arch/powerpc/kernel/vdso/vgetrandom-chacha.S | 365 +++++++++++++++++++
- arch/powerpc/kernel/vdso/vgetrandom.c        |  14 +
- fs/proc/task_mmu.c                           |   4 +-
- include/linux/mm.h                           |   4 +-
- include/trace/events/mmflags.h               |   4 +-
- tools/arch/powerpc/vdso                      |   1 +
- tools/testing/selftests/vDSO/Makefile        |   2 +-
- 18 files changed, 547 insertions(+), 43 deletions(-)
- create mode 100644 arch/powerpc/include/asm/vdso/getrandom.h
- create mode 100644 arch/powerpc/kernel/vdso/getrandom.S
- create mode 100644 arch/powerpc/kernel/vdso/vgetrandom-chacha.S
- create mode 100644 arch/powerpc/kernel/vdso/vgetrandom.c
- create mode 120000 tools/arch/powerpc/vdso
-
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 5f171ad7b436..3a07e13e2f81 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -987,8 +987,10 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+ #ifdef CONFIG_X86_USER_SHADOW_STACK
+ 		[ilog2(VM_SHADOW_STACK)] = "ss",
+ #endif
+-#ifdef CONFIG_64BIT
++#if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
+ 		[ilog2(VM_DROPPABLE)] = "dp",
++#endif
++#ifdef CONFIG_64BIT
+ 		[ilog2(VM_SEALED)] = "sl",
+ #endif
+ 	};
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6549d0979b28..028847f39442 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -359,7 +359,7 @@ extern unsigned int kobjsize(const void *objp);
+ 
+ #if defined(CONFIG_X86)
+ # define VM_PAT		VM_ARCH_1	/* PAT reserves whole VMA at once (x86) */
+-#elif defined(CONFIG_PPC)
++#elif defined(CONFIG_PPC64)
+ # define VM_SAO		VM_ARCH_1	/* Strong Access Ordering (powerpc) */
+ #elif defined(CONFIG_PARISC)
+ # define VM_GROWSUP	VM_ARCH_1
+@@ -409,6 +409,8 @@ extern unsigned int kobjsize(const void *objp);
+ #ifdef CONFIG_64BIT
+ #define VM_DROPPABLE_BIT	40
+ #define VM_DROPPABLE		BIT(VM_DROPPABLE_BIT)
++#elif defined(CONFIG_PPC32)
++#define VM_DROPPABLE		VM_ARCH_1
+ #else
+ #define VM_DROPPABLE		VM_NONE
+ #endif
+diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
+index b63d211bd141..37265977d524 100644
+--- a/include/trace/events/mmflags.h
++++ b/include/trace/events/mmflags.h
+@@ -143,7 +143,7 @@ IF_HAVE_PG_ARCH_X(arch_3)
+ 
+ #if defined(CONFIG_X86)
+ #define __VM_ARCH_SPECIFIC_1 {VM_PAT,     "pat"           }
+-#elif defined(CONFIG_PPC)
++#elif defined(CONFIG_PPC64)
+ #define __VM_ARCH_SPECIFIC_1 {VM_SAO,     "sao"           }
+ #elif defined(CONFIG_PARISC)
+ #define __VM_ARCH_SPECIFIC_1 {VM_GROWSUP,	"growsup"	}
+@@ -165,7 +165,7 @@ IF_HAVE_PG_ARCH_X(arch_3)
+ # define IF_HAVE_UFFD_MINOR(flag, name)
+ #endif
+ 
+-#ifdef CONFIG_64BIT
++#if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
+ # define IF_HAVE_VM_DROPPABLE(flag, name) {flag, name},
+ #else
+ # define IF_HAVE_VM_DROPPABLE(flag, name)
 -- 
 2.44.0
 
