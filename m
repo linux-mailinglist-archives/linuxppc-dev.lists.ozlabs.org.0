@@ -1,51 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-888-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052D3968E34
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 21:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBBF968E3B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 21:09:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WyJFs74VJz2yLT;
-	Tue,  3 Sep 2024 05:09:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WyJG561tpz2yN3;
+	Tue,  3 Sep 2024 05:09:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725304145;
-	cv=none; b=MEcNxs1OrjxUHy8rl72JqAChln0nAFR/qaVKwQyRTpvjOOlY46Eic7F5Eqstf5TTUcrAUBq6mu5Cyv7fix11K+GqmLqSvr2xHuVtG+Ww/NygPvj1DQPN09XUJz67Qohp8zaEAiNtRmVbZ2uX+Z6Mi8S4K++kzVLgSJPlz+jds+s+KoGc8nGbzqUflMaqscJO95Q95zMJgfGson9DuUMD398pEEFjBBfYx4o6FgLhnofWSxXB29Bqlqj8kZSjnpdq8f4hF/VhqVrizRL+S1Pu5w3zjzZXVOXb0Yr4bTuW/8BwgweYvsyf6Fv/qs9ifbQP3CzxQUIt+h/0Eay6h3USHg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725304157;
+	cv=none; b=AeTjsZoHaQBqaX3/8zGHpBEaLm6a6V8l9DdY+D9N8/Jfry5b8QfDxCOeJcwSugX0q8OJMcqMsvRxOTCu2rm3VE8N7Y49thDnX/tofX3/hz9nNhwdUFrYQXVsMam3ETVcymCHPZI4Wr3u8s8XkwQrc/uHDafPVDyW3rRTkrc8CYPbD5MkKD8GjMIfJDDsMfL7mC2AYBSJx0jYVi11NauGZassykbFiVA3J2fE/qU+Mh27cwOK2AafEDIORQERVF2+4HX3dSQM46cs67ay37NfUkiNxxbwHw9rZ/OZkwhNJ3RWp8hu3DogtK45tV81U8uiCXmpJLUz2bUgGVpPbmSiBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725304145; c=relaxed/relaxed;
-	bh=dv2m7wDXPS+Km/Z6zIsCY4XQSEFAckNB98z2E/oK1VY=;
+	t=1725304157; c=relaxed/relaxed;
+	bh=skKtGoHZba1B1jgyPh2jyqZ4+CsPg9VpbHI8ZnDusRw=;
 	h=DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc; b=bzwmAP51sKKUJLNvr5Cte6NuB+o7T2dZeg49gU3ogq2XNWd4nj0t5OS48FASFC2MUqMw9z2pEcdC/UrVVXpHXQ1NzgOC8C1v17XsdSXeXA5JdZQVR3H7ICWSRlahf030f34TDEGjWgndj19QYXh+WIB0PkTWfiTJvdvO5P0jWlI2AfI0FSmXYNVZSKMGmcSuJ4KIhe0jPQt6to3X5qISdInygALMQKnFQVCaTQrTWSjQLJ0YxYkmJxM5UNsqBIvw2SUAHiWfnmbcl7QCrJIBTbjuOqCe4eb3DdUlnoOel0n4jj90hWIrA6eHFJZ/hdjjOkKzi/PZLquZSFoek4tpZg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ufsKnZLL; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Message-Id:References:In-Reply-To:To:Cc; b=HESehz3yacN3I6VMikbz6huhvVok/5I616sL5uhldESwuNHPvLuQdlasZ5tOSzDEvwqk5q4YqxaYpTzI1u4zSVomnV1qKJoBFwkGIYgCfuMQAl+IwBsaZ886lzZYSdSTX81Ng2WFiAf1KnlapxR5MRk7nKJrIEjjrvu30dhc38pDscIvJsrIptYOELEsDeaEL0WjzAskAdVMFpstlKN9B4ISOKKOMLEAlVWBbz66xQPej/TilX4usUcrmPLfSsjp33JV6MUc0FjWL8Ip9hrUZiuQya9yOf0fbSI74ghvfwkZSxfyweZ2eu2jfEcuIl6TyTOFzYey9M6V4H5SiH7PPg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N9sI26+Y; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ufsKnZLL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N9sI26+Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyJFs3q1lz2xbF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 05:09:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyJG538HMz2xbF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 05:09:17 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 2FFE5A431CC;
-	Mon,  2 Sep 2024 19:08:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF47C4CEC9;
-	Mon,  2 Sep 2024 19:08:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 35BFC5C5786;
+	Mon,  2 Sep 2024 19:09:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C9CC4CEC8;
+	Mon,  2 Sep 2024 19:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725304143;
-	bh=nejS97KnA2Qms3Gvgo3SMj9sJCiVfLci6/Mfi/Rsw8U=;
+	s=k20201202; t=1725304155;
+	bh=0/hF44fORO0Gery9A2B+FBHrfD+c3aFRzdrAQPNITJE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ufsKnZLLQwEHAwpacZdtysRg/9QTknqhrlzPG0gTIS2ybE0mNRT06SNEuUXiZCc52
-	 rL+kMleAwcxpyJCXunOkVdq2gkI0N4rXboHt0oCmSgcGWyIDtKyzqE1RLH6FGpCehJ
-	 Nca5DzLVoAyJkCzqFoxcM2eyWPTVeaxie9bJU/MGsXST6olZu3DlCT9zPLmzlDYiDo
-	 26pYLD97shqH/Vu3qR8DrMi1U/FYh0ChQcfnXrx7ZvWkDhG+mSHja+QAtiFSNdNyh4
-	 wOsgcVvHRsT0fJO5jdxMGCUzxcJPTzigqd/TdNVNvI1OlUf5pvD6mFYRBg0yAvRUbY
-	 6Q9pMzCUd4xCg==
+	b=N9sI26+YB1BFPD9a0+oQnaOYoEp8JD6VMjANXfF4vZthYCbAVo/geEan5PCYE/5YG
+	 KyNtsWx0ZmtF4GI6OmQqvHuRlOVg8nJg01jLUUvrGS8k0qXeZSz9H6+XV52mPp5OT9
+	 SiFxv0FaUoXnD8v0PwGJEyUEBBupfs/d/2YxBDJJeebGN6LeO2fcg3zg8MsSGoraop
+	 tcocc1osS+PVlcQOrKjq5qbDCptBphGD5397tCq3uoQScdTyYNG0/L00MB3+u9eT91
+	 Po9TaiUwdOyyXQuJiSHGiI3yZh0UNZiv/JBij7SxkXKL2T4XOAiQx7+fQg9SMU8IKV
+	 ZubyoBQssJRwg==
 From: Mark Brown <broonie@kernel.org>
-Date: Mon, 02 Sep 2024 20:08:14 +0100
-Subject: [PATCH 2/3] mm: Pass vm_flags to generic_get_unmapped_area()
+Date: Mon, 02 Sep 2024 20:08:15 +0100
+Subject: [PATCH 3/3] mm: Care about shadow stack guard gap when getting an
+ unmapped area
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,7 +58,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240902-mm-generic-shadow-stack-guard-v1-2-9acda38b3dd3@kernel.org>
+Message-Id: <20240902-mm-generic-shadow-stack-guard-v1-3-9acda38b3dd3@kernel.org>
 References: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
 In-Reply-To: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
 To: Richard Henderson <richard.henderson@linaro.org>, 
@@ -95,114 +96,80 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
  loongarch@lists.linux.dev, linux-parisc@vger.kernel.org, 
  linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
  linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org, 
- Mark Brown <broonie@kernel.org>
+ Mark Brown <broonie@kernel.org>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
 X-Mailer: b4 0.15-dev-37811
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4018; i=broonie@kernel.org;
- h=from:subject:message-id; bh=nejS97KnA2Qms3Gvgo3SMj9sJCiVfLci6/Mfi/Rsw8U=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBm1g0v9w9lBiTjIu5lnJumAd7oKheioErj5Av8o9p9
- xjbw4dqJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZtYNLwAKCRAk1otyXVSH0FX7B/
- 9slZJSbOLk1zaWaFIlxJH7fsKOjdUxsEOGWqCfQQ7SzheizYCzQY9YUFbpp6x55PbW9KNdQ/ikhexU
- ts50XikTINzfTgQ5Nv4584Ko0cc5QH9Vvp0f0XFS3G8wep0Uq6vKMRlTzj2D8sUxFbzP65JLa882Vz
- pTQ7zTU/tzgbq3wMWfLtM/IqmqQJPSikIxU5k6R1bMD0jw/s2LwtAq5lD5a/g30apMg/klNkyAShDn
- JdrvWvSR2DLgHDfOSFSLUlLXNVTd61W01f/ngaSuv3L1ymol4mTPWXexFqqN6BKbYj9tM2RHTYuHDn
- LkE9GrCLQjRp0t+wnKJpiI8cN1kT2+
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2208; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=0/hF44fORO0Gery9A2B+FBHrfD+c3aFRzdrAQPNITJE=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBm1g0waix/xDVLlXSaTD4u/rRM+Xov1S4sJqN9L4bW
+ qlKpuiaJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZtYNMAAKCRAk1otyXVSH0D8aCA
+ CF9K7LlaivE2EybLobtlEVyd3x4/yQFEmQzQPnmLchhUTmpNDtOjAWH5nWJB5csnuTjOxnJKPohxjU
+ OlGKNnXZ4xzXd0tKckj2SwQe75FXPlRlPAsaelj3L+B0sFx+eaxKOJptUrnxX0L5qOqpZ7yxSSg7Lp
+ QqS957ontDIGI1sWL7Jr883SmGUsD3O1znFCoOJSJgM0E4BSv5EsC6tkrAy58jG3VQAOqtDHm5b8r9
+ 9yDRusfPXLA88jssbTu7Bg4R1DSDS6OnJlDIn0c2CKKk/Cw+o6jzMxTmxntZMd5Iiz1JndFzNYziYB
+ 5TydVe5LsQPAyaA9p8ecpXQVC+h/i/
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-In preparation for using vm_flags to ensure guard pages for shadow stacks
-supply them as an argument to generic_get_unmapped_area(). The only user
-outside of the core code is the PowerPC book3s64 implementation which is
-trivially wrapping the generic implementation in the radix_enabled() case.
+As covered in the commit log for c44357c2e76b ("x86/mm: care about shadow
+stack guard gap during placement") our current mmap() implementation does
+not take care to ensure that a new mapping isn't placed with existing
+mappings inside it's own guard gaps. This is particularly important for
+shadow stacks since if two shadow stacks end up getting placed adjacent to
+each other then they can overflow into each other which weakens the
+protection offered by the feature.
 
+On x86 there is a custom arch_get_unmapped_area() which was updated by the
+above commit to cover this case by specifying a start_gap for allocations
+with VM_SHADOW_STACK. Both arm64 and RISC-V have equivalent features and
+use the generic implementation of arch_get_unmapped_area() so let's make
+the equivalent change there so they also don't get shadow stack pages
+placed without guard pages.
+
+Architectures which do not have this feature will define VM_SHADOW_STACK
+to VM_NONE and hence be unaffected.
+
+Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- arch/powerpc/mm/book3s64/slice.c |  4 ++--
- include/linux/sched/mm.h         |  4 ++--
- mm/mmap.c                        | 10 ++++++----
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ mm/mmap.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
-index ada6bf896ef8..87307d0fc3b8 100644
---- a/arch/powerpc/mm/book3s64/slice.c
-+++ b/arch/powerpc/mm/book3s64/slice.c
-@@ -641,7 +641,7 @@ unsigned long arch_get_unmapped_area(struct file *filp,
- 				     vm_flags_t vm_flags)
- {
- 	if (radix_enabled())
--		return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
-+		return generic_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
- 
- 	return slice_get_unmapped_area(addr, len, flags,
- 				       mm_ctx_user_psize(&current->mm->context), 0);
-@@ -655,7 +655,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
- 					     vm_flags_t vm_flags)
- {
- 	if (radix_enabled())
--		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags);
-+		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags, vm_flags);
- 
- 	return slice_get_unmapped_area(addr0, len, flags,
- 				       mm_ctx_user_psize(&current->mm->context), 1);
-diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-index c4d34abc45d4..07bb8d4181d7 100644
---- a/include/linux/sched/mm.h
-+++ b/include/linux/sched/mm.h
-@@ -204,11 +204,11 @@ unsigned long mm_get_unmapped_area_vmflags(struct mm_struct *mm,
- unsigned long
- generic_get_unmapped_area(struct file *filp, unsigned long addr,
- 			  unsigned long len, unsigned long pgoff,
--			  unsigned long flags);
-+			  unsigned long flags, vm_flags_t vm_flags);
- unsigned long
- generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
- 				  unsigned long len, unsigned long pgoff,
--				  unsigned long flags);
-+				  unsigned long flags, vm_flags_t vm_flags);
- #else
- static inline void arch_pick_mmap_layout(struct mm_struct *mm,
- 					 struct rlimit *rlim_stack) {}
 diff --git a/mm/mmap.c b/mm/mmap.c
-index 7528146f886f..b06ba847c96e 100644
+index b06ba847c96e..902c482b6084 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -1789,7 +1789,7 @@ unsigned long vm_unmapped_area(struct vm_unmapped_area_info *info)
- unsigned long
- generic_get_unmapped_area(struct file *filp, unsigned long addr,
- 			  unsigned long len, unsigned long pgoff,
--			  unsigned long flags)
-+			  unsigned long flags, vm_flags_t vm_flags)
- {
- 	struct mm_struct *mm = current->mm;
- 	struct vm_area_struct *vma, *prev;
-@@ -1823,7 +1823,8 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
- 		       unsigned long len, unsigned long pgoff,
- 		       unsigned long flags, vm_flags_t vm_flags)
- {
--	return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
-+	return generic_get_unmapped_area(filp, addr, len, pgoff, flags,
-+					 vm_flags);
+@@ -1753,6 +1753,14 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
+ 	return gap;
  }
- #endif
  
-@@ -1834,7 +1835,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
- unsigned long
- generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
- 				  unsigned long len, unsigned long pgoff,
--				  unsigned long flags)
-+				  unsigned long flags, vm_flags_t vm_flags)
- {
- 	struct vm_area_struct *vma, *prev;
- 	struct mm_struct *mm = current->mm;
-@@ -1887,7 +1888,8 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
- 			       unsigned long len, unsigned long pgoff,
- 			       unsigned long flags, vm_flags_t vm_flags)
- {
--	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags);
-+	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags,
-+						 vm_flags);
++static inline unsigned long stack_guard_placement(vm_flags_t vm_flags)
++{
++	if (vm_flags & VM_SHADOW_STACK)
++		return PAGE_SIZE;
++
++	return 0;
++}
++
+ /*
+  * Search for an unmapped address range.
+  *
+@@ -1814,6 +1822,7 @@ generic_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.length = len;
+ 	info.low_limit = mm->mmap_base;
+ 	info.high_limit = mmap_end;
++	info.start_gap = stack_guard_placement(vm_flags);
+ 	return vm_unmapped_area(&info);
  }
- #endif
  
+@@ -1863,6 +1872,7 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 	info.length = len;
+ 	info.low_limit = PAGE_SIZE;
+ 	info.high_limit = arch_get_mmap_base(addr, mm->mmap_base);
++	info.start_gap = stack_guard_placement(vm_flags);
+ 	addr = vm_unmapped_area(&info);
+ 
+ 	/*
 
 -- 
 2.39.2
