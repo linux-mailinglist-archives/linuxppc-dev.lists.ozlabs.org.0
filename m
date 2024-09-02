@@ -1,52 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-890-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBBF968E3B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 21:09:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C72B968E48
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 21:17:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WyJG561tpz2yN3;
-	Tue,  3 Sep 2024 05:09:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WyJRh6xSDz2xfP;
+	Tue,  3 Sep 2024 05:17:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725304157;
-	cv=none; b=AeTjsZoHaQBqaX3/8zGHpBEaLm6a6V8l9DdY+D9N8/Jfry5b8QfDxCOeJcwSugX0q8OJMcqMsvRxOTCu2rm3VE8N7Y49thDnX/tofX3/hz9nNhwdUFrYQXVsMam3ETVcymCHPZI4Wr3u8s8XkwQrc/uHDafPVDyW3rRTkrc8CYPbD5MkKD8GjMIfJDDsMfL7mC2AYBSJx0jYVi11NauGZassykbFiVA3J2fE/qU+Mh27cwOK2AafEDIORQERVF2+4HX3dSQM46cs67ay37NfUkiNxxbwHw9rZ/OZkwhNJ3RWp8hu3DogtK45tV81U8uiCXmpJLUz2bUgGVpPbmSiBw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725304656;
+	cv=none; b=iMEfDO4z0FTMpkZrwoFLbJMsv6mDJY1xENOA6qRxsn4CZV/tOIinNZTxKJFHAv8MUCku91NrfZ48uy3FO4+3o5vI6yMtIjvu9bo1qTB/xB37sMc9gJXW30dRwtJLrAuFjAVlga4aV9y0MyjXvtul+vGCgzYg/izrchr+KrekDMuniTY6SZQMt5pCye3J8qsQHimJqsTg6MbZmx+P7G3I3piDrLuS2BYUDHx3Oty90+itCfN8ulL2TH4Y3o8g7Uy2yrSYgpWA4ZZiCgWdq0eP/+V1YYOiRWyksLYx6JrAy7rzN/TWg07zZJVx77PSLblIhPNfK2YBXhE+BjAzZjelHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725304157; c=relaxed/relaxed;
-	bh=skKtGoHZba1B1jgyPh2jyqZ4+CsPg9VpbHI8ZnDusRw=;
-	h=DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc; b=HESehz3yacN3I6VMikbz6huhvVok/5I616sL5uhldESwuNHPvLuQdlasZ5tOSzDEvwqk5q4YqxaYpTzI1u4zSVomnV1qKJoBFwkGIYgCfuMQAl+IwBsaZ886lzZYSdSTX81Ng2WFiAf1KnlapxR5MRk7nKJrIEjjrvu30dhc38pDscIvJsrIptYOELEsDeaEL0WjzAskAdVMFpstlKN9B4ISOKKOMLEAlVWBbz66xQPej/TilX4usUcrmPLfSsjp33JV6MUc0FjWL8Ip9hrUZiuQya9yOf0fbSI74ghvfwkZSxfyweZ2eu2jfEcuIl6TyTOFzYey9M6V4H5SiH7PPg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N9sI26+Y; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N9sI26+Y;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	t=1725304656; c=relaxed/relaxed;
+	bh=1ELg/QOG9fGwj6TCDmkswti7plm4t6vg3WY7QTBORIU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k+L75573Ys3a9OaG9yZoNuBy2gEGBS1FISSfzSwSza/Vdl0mOxewb1m93YtK5czeTY1rw5+6nf30p738qOl6u2R8E/GcbjuMjBy/4XI9t70IXJ0NJ2QFkExkZoTxTXHGEeeZt6bhorIHCv/HnBli/3MRlfsnngTxo/cb6ihyoBZCdTMpOqoh/5+8tvLC3aZlKNshBOLXHqdjqYjHKtKn3Upge0f/uzJXpy75NRlobtwp42MqrkHidgSxsaWP3VGCyaXAuL7VXALsLI2fz1DMi7WeRsmOtFcIkMu/l/e+eH6XL/Zgpz7oKuYCqJ+Z1eD8iMngpoRcaRKuc3YNkZYLeg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyJG538HMz2xbF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 05:09:17 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 35BFC5C5786;
-	Mon,  2 Sep 2024 19:09:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C9CC4CEC8;
-	Mon,  2 Sep 2024 19:09:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725304155;
-	bh=0/hF44fORO0Gery9A2B+FBHrfD+c3aFRzdrAQPNITJE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=N9sI26+YB1BFPD9a0+oQnaOYoEp8JD6VMjANXfF4vZthYCbAVo/geEan5PCYE/5YG
-	 KyNtsWx0ZmtF4GI6OmQqvHuRlOVg8nJg01jLUUvrGS8k0qXeZSz9H6+XV52mPp5OT9
-	 SiFxv0FaUoXnD8v0PwGJEyUEBBupfs/d/2YxBDJJeebGN6LeO2fcg3zg8MsSGoraop
-	 tcocc1osS+PVlcQOrKjq5qbDCptBphGD5397tCq3uoQScdTyYNG0/L00MB3+u9eT91
-	 Po9TaiUwdOyyXQuJiSHGiI3yZh0UNZiv/JBij7SxkXKL2T4XOAiQx7+fQg9SMU8IKV
-	 ZubyoBQssJRwg==
-From: Mark Brown <broonie@kernel.org>
-Date: Mon, 02 Sep 2024 20:08:15 +0100
-Subject: [PATCH 3/3] mm: Care about shadow stack guard gap when getting an
- unmapped area
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyJRh4YFVz2xfK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 05:17:35 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WyJRZ4rkWz9sSC;
+	Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ax3nmbJ-MmBS; Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WyJRZ3bHMz9sS7;
+	Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 63ACB8B773;
+	Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id Gzm3BpU0vDdS; Mon,  2 Sep 2024 21:17:30 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.234.167])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 655368B76E;
+	Mon,  2 Sep 2024 21:17:29 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kselftest@vger.kernel.org,
+	llvm@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
+	Xi Ruoyao <xry111@xry111.site>
+Subject: [PATCH v5 0/5] Wire up getrandom() vDSO implementation on powerpc
+Date: Mon,  2 Sep 2024 21:17:17 +0200
+Message-ID: <cover.1725304404.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.44.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,122 +81,92 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240902-mm-generic-shadow-stack-guard-v1-3-9acda38b3dd3@kernel.org>
-References: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
-In-Reply-To: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
-To: Richard Henderson <richard.henderson@linaro.org>, 
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
- Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>, 
- Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
- "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, 
- Max Filippov <jcmvbkbc@gmail.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Deepak Gupta <debug@rivosinc.com>, 
- linux-arm-kernel@lists.infradead.org, linux-alpha@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-parisc@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org, 
- Mark Brown <broonie@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-X-Mailer: b4 0.15-dev-37811
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2208; i=broonie@kernel.org;
- h=from:subject:message-id; bh=0/hF44fORO0Gery9A2B+FBHrfD+c3aFRzdrAQPNITJE=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBm1g0waix/xDVLlXSaTD4u/rRM+Xov1S4sJqN9L4bW
- qlKpuiaJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZtYNMAAKCRAk1otyXVSH0D8aCA
- CF9K7LlaivE2EybLobtlEVyd3x4/yQFEmQzQPnmLchhUTmpNDtOjAWH5nWJB5csnuTjOxnJKPohxjU
- OlGKNnXZ4xzXd0tKckj2SwQe75FXPlRlPAsaelj3L+B0sFx+eaxKOJptUrnxX0L5qOqpZ7yxSSg7Lp
- QqS957ontDIGI1sWL7Jr883SmGUsD3O1znFCoOJSJgM0E4BSv5EsC6tkrAy58jG3VQAOqtDHm5b8r9
- 9yDRusfPXLA88jssbTu7Bg4R1DSDS6OnJlDIn0c2CKKk/Cw+o6jzMxTmxntZMd5Iiz1JndFzNYziYB
- 5TydVe5LsQPAyaA9p8ecpXQVC+h/i/
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1725304637; l=3687; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=G56Surs4RcPMKqkQ+D4HRpn8ohpC1w0ACTtV2JlOfkQ=; b=L7YIZ5u53kP07q3XacSpkIO1Xjr62J1hUfE5txFxRpTNzPgGtylrmGgBb9ZY29iqGucj6655o E5MakVa329fBcczeFP71VjjmQ8YbRTi4BpFAc8ULVyQWxF+LYYG38qW
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 
-As covered in the commit log for c44357c2e76b ("x86/mm: care about shadow
-stack guard gap during placement") our current mmap() implementation does
-not take care to ensure that a new mapping isn't placed with existing
-mappings inside it's own guard gaps. This is particularly important for
-shadow stacks since if two shadow stacks end up getting placed adjacent to
-each other then they can overflow into each other which weakens the
-protection offered by the feature.
+This series wires up getrandom() vDSO implementation on powerpc.
 
-On x86 there is a custom arch_get_unmapped_area() which was updated by the
-above commit to cover this case by specifying a start_gap for allocations
-with VM_SHADOW_STACK. Both arm64 and RISC-V have equivalent features and
-use the generic implementation of arch_get_unmapped_area() so let's make
-the equivalent change there so they also don't get shadow stack pages
-placed without guard pages.
+Tested on PPC32 on real hardware.
+Tested on PPC64 (both BE and LE) on QEMU:
 
-Architectures which do not have this feature will define VM_SHADOW_STACK
-to VM_NONE and hence be unaffected.
+Performance on powerpc 885:
+	~# ./vdso_test_getrandom bench-single
+	   vdso: 25000000 times in 62.938002291 seconds
+	   libc: 25000000 times in 535.581916866 seconds
+	syscall: 25000000 times in 531.525042806 seconds
 
-Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- mm/mmap.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Performance on powerpc 8321:
+	~# ./vdso_test_getrandom bench-single
+	   vdso: 25000000 times in 16.899318858 seconds
+	   libc: 25000000 times in 131.050596522 seconds
+	syscall: 25000000 times in 129.794790389 seconds
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index b06ba847c96e..902c482b6084 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1753,6 +1753,14 @@ static unsigned long unmapped_area_topdown(struct vm_unmapped_area_info *info)
- 	return gap;
- }
- 
-+static inline unsigned long stack_guard_placement(vm_flags_t vm_flags)
-+{
-+	if (vm_flags & VM_SHADOW_STACK)
-+		return PAGE_SIZE;
-+
-+	return 0;
-+}
-+
- /*
-  * Search for an unmapped address range.
-  *
-@@ -1814,6 +1822,7 @@ generic_get_unmapped_area(struct file *filp, unsigned long addr,
- 	info.length = len;
- 	info.low_limit = mm->mmap_base;
- 	info.high_limit = mmap_end;
-+	info.start_gap = stack_guard_placement(vm_flags);
- 	return vm_unmapped_area(&info);
- }
- 
-@@ -1863,6 +1872,7 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
- 	info.length = len;
- 	info.low_limit = PAGE_SIZE;
- 	info.high_limit = arch_get_mmap_base(addr, mm->mmap_base);
-+	info.start_gap = stack_guard_placement(vm_flags);
- 	addr = vm_unmapped_area(&info);
- 
- 	/*
+Performance on QEMU pseries:
+	~ # ./vdso_test_getrandom bench-single
+	   vdso: 25000000 times in 4.977777162 seconds
+	   libc: 25000000 times in 75.516749981 seconds
+	syscall: 25000000 times in 86.842242014 seconds
+
+Changes in v5:
+- The split between last two patches is not anymore PPC32/PPC64 but VDSO32/VDSO64
+- Removed the stub returning ENOSYS
+- Using meaningfull names for registers
+- Restored symbolic link that disappeared in v4
+
+Changes in v4:
+- Rebased on recent random git tree (963233ff0133) (The new tree includes selftests fixes)
+- Read/write counter in native byte order
+- Don't use anymore compat macros to write output
+- Fixed selftests build failure with patch 4 (without patch 5) on little endian on PPC64
+- Implement a __kernel_getrandom() stub returning ENOSYS on ppc64 in patch 4 (without patch 5) to make selftests happy.
+
+Changes in v3:
+- Rebased on recent random git tree (0c7e00e22c21)
+- Fixed build failures reported by robots around VM_DROPPABLE
+- Fixed crash on PPC64 due to clobbered r13 by not using r13 anymore (saving it was not enough for signals).
+- Split final patch in two, first for PPC32, second for PPC64
+- Moved selftest fixes out of this series
+
+Changes in v2:
+- Define VM_DROPPABLE for powerpc/32
+- Fixes generic vDSO getrandom headers to enable CONFIG_COMPAT build.
+- Fixed size of generation counter
+- Fixed selftests to work on non x86 architectures
+
+Christophe Leroy (5):
+  mm: Define VM_DROPPABLE for powerpc/32
+  powerpc/vdso32: Add crtsavres
+  powerpc/vdso: Refactor CFLAGS for CVDSO build
+  powerpc/vdso: Wire up getrandom() vDSO implementation on VDSO32
+  powerpc/vdso: Wire up getrandom() vDSO implementation on VDSO64
+
+ arch/powerpc/Kconfig                         |   1 +
+ arch/powerpc/include/asm/mman.h              |   2 +-
+ arch/powerpc/include/asm/vdso/getrandom.h    |  54 +++
+ arch/powerpc/include/asm/vdso/vsyscall.h     |   6 +
+ arch/powerpc/include/asm/vdso_datapage.h     |   2 +
+ arch/powerpc/kernel/asm-offsets.c            |   1 +
+ arch/powerpc/kernel/vdso/Makefile            |  57 +--
+ arch/powerpc/kernel/vdso/getrandom.S         |  58 +++
+ arch/powerpc/kernel/vdso/gettimeofday.S      |  13 -
+ arch/powerpc/kernel/vdso/vdso32.lds.S        |   1 +
+ arch/powerpc/kernel/vdso/vdso64.lds.S        |   1 +
+ arch/powerpc/kernel/vdso/vgetrandom-chacha.S | 365 +++++++++++++++++++
+ arch/powerpc/kernel/vdso/vgetrandom.c        |  14 +
+ fs/proc/task_mmu.c                           |   4 +-
+ include/linux/mm.h                           |   4 +-
+ include/trace/events/mmflags.h               |   4 +-
+ tools/arch/powerpc/vdso                      |   1 +
+ tools/testing/selftests/vDSO/Makefile        |   2 +-
+ 18 files changed, 547 insertions(+), 43 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/vdso/getrandom.h
+ create mode 100644 arch/powerpc/kernel/vdso/getrandom.S
+ create mode 100644 arch/powerpc/kernel/vdso/vgetrandom-chacha.S
+ create mode 100644 arch/powerpc/kernel/vdso/vgetrandom.c
+ create mode 120000 tools/arch/powerpc/vdso
 
 -- 
-2.39.2
+2.44.0
 
 
