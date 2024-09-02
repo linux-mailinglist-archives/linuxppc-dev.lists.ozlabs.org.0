@@ -1,52 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-871-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-872-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E961968702
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 14:05:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C99968793
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Sep 2024 14:35:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wy6rt0vbTz2xgv;
-	Mon,  2 Sep 2024 22:05:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wy7WD5Cwbz2xtb;
+	Mon,  2 Sep 2024 22:35:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725278718;
-	cv=none; b=ogzU24hD9IHXGJRA/rEIsgpzf+z5/SLiufEtaH4J+osTgSSCT3CQSyTtW4L8J8xEwnSt9Ku7gX9rFgckbFY7yJ914rnW95NyOSXpGd0X4wytrxSGIdFFpW4vYCq2XLR/VAIETJGkj0SGgS0mTUT48G/G9qTgpIbGd7/CGO9XTeiXSVisS86Jiq1FNrd4Agy76KedMvlNPVFbMqc2MIN/byNn8b8b3r9lhzJUjzuQ59z9uLh/CX/3miZrnv6xnN9apZNdk1vF/pUOMiX/JMQcYOP06nK6SeKhgTULVO0GKSzreUd12QmmyTnVrKRrj6wl5CwpBL/MrMvhTT2fPNF07Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725280504;
+	cv=none; b=c1VT8TpYbN++PjyGLFjTtSnsWRN9FdaeDTNxBHV/xIQcm08p6bUWbPQj9StVtiwHM7PzEtv6BW5nJhN7lyBQU4FrWvAmJLzcJLHHRZ2b2HKxOWtvtxVThnFkG0y+OSkc0RFCMMJyL1gdsqhovteTPQ5msfIKU/08lkhsAT4T4AIKP+CiUhtPgEyrtDPpKh5LPmZSUtboQb9PvxYhhwNPcOHEUTnPZLJ50+5csSw6EOBl+4yMROLeQD7Y0+CcqYdF4lxmlPGCthYaLNVvXG1jyZmtLqCOXL5wkTVo9qVg30lTs/d+kZxlw3sEL14tegH6BwhfI5zCnbFI3IWmEyI+pQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725278718; c=relaxed/relaxed;
-	bh=mqBAfwkE3svNYfhjnmV07mtGkCrQOsMuQc8ZuPa6ylo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+4KPSeQAEogBS6CN0jL2/68wPqUMhtLLoL3do5fFlb2c4er387yPKq4MPUSeofaaIE5qwiWkoVZMiBYghM2paUhtyrfzV26c0RCiyVecKBiuwi9Wzqs38WRb+EFrEDWSfolq16NjQkChxpu1SzeeWXwCEoAEQ/kR9OJaj25TSbtJIkirv2g04i+4+OZI9gttMASpyQqwxNkFq8M3tT/uvTA+nMC2MyE1njf2cGG3aRoOaOeI8tEefKPpCx1cm11JBq+kuXr/ORYQT84QuAr/beUmQ7jXIWKXDLiq01wL3q6uH8e4i5vIsoj2ve08KwzeN3+3m0NanBqFNDwnGAYbQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1725280504; c=relaxed/relaxed;
+	bh=882s/0oxY3IaUveWmEXQ9Cl4UCSpcI/yfMpsZGvZIqQ=;
+	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=beKkypo9gJx/sCorJ/Lda3ABNJh8x2JjStsF7562rE3N+mE9iGpOKFm7jGLijfu53+IXFLiUU4wdmrhXe0qikBHfID4+7QNUJFzk7mymD2a8foJBfJjSS05mCX+bWesNfDIOuiVPSUWHL/EZZ2Pu3GtRqA0AlcPaISovtvHh9r4AJWh3WxQesYFZ5ogWLTAJtRUB9UyJU0RaIDArZfDYRUdpjv3SoGaEs8BhA2wdy9dkUYBCWz+bQwa33+j4cJz9Mu2aF1kaSoMDAeMi6R73Ri/oeIhoHfKBidKakf3UnqIQWiX2iERCIZjbd55bvA3gGFsfbid2azPRTeOLGv2ZTA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=GvCPvbhW; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=hwiv=qa=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=GvCPvbhW;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=hwiv=qa=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wy6rs5qptz2xZK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2024 22:05:17 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Wy6rM1R4wz9sSY;
-	Mon,  2 Sep 2024 14:04:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id H2HBx5amsJ9z; Mon,  2 Sep 2024 14:04:51 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wy6rL4VqZz9sST;
-	Mon,  2 Sep 2024 14:04:50 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 836838B763;
-	Mon,  2 Sep 2024 14:04:50 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 7ZlsiK2UwxjX; Mon,  2 Sep 2024 14:04:50 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.234.167])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7C90F8B76C;
-	Mon,  2 Sep 2024 14:04:49 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Andrew Morton <akpm@linux-foundation.org>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wy7WB60HDz2xKg
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Sep 2024 22:35:02 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 81C975C5839;
+	Mon,  2 Sep 2024 12:34:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839DDC4CEC2;
+	Mon,  2 Sep 2024 12:34:57 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="GvCPvbhW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1725280495;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=882s/0oxY3IaUveWmEXQ9Cl4UCSpcI/yfMpsZGvZIqQ=;
+	b=GvCPvbhW2m2jYoAxPU1wvqvYj9FboQLHWShrj+s+adjZAJT3TuHPHxTV7jxhkLBDOaMexZ
+	lgOnLbMwcrBalkcwK2Us5lCoS0HPCfmqmBrkvHWRXH4kgn5eiovHjf2iVAYU/SglD3w6gQ
+	EdxGyEKCEpN2M6xkxzv9bOZ82o4t/fw=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 6aea6560 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Mon, 2 Sep 2024 12:34:54 +0000 (UTC)
+Date: Mon, 2 Sep 2024 14:34:49 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
@@ -57,24 +61,17 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Nick Desaulniers <ndesaulniers@google.com>,
 	Bill Wendling <morbo@google.com>,
 	Justin Stitt <justinstitt@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kselftest@vger.kernel.org,
-	llvm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
+	llvm@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
 	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
 	Xi Ruoyao <xry111@xry111.site>
-Subject: [PATCH v4 5/5] powerpc/vdso: Wire up getrandom() vDSO implementation on PPC64
-Date: Mon,  2 Sep 2024 14:04:42 +0200
-Message-ID: <27de70dcc356e56754a03a2887a97597f5e840a4.1725278148.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1725278148.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 4/5] powerpc/vdso: Wire up getrandom() vDSO
+ implementation on PPC32
+Message-ID: <ZtWw6Wuudqj4IYWL@zx2c4.com>
 References: <cover.1725278148.git.christophe.leroy@csgroup.eu>
+ <ec4d2919836a9f3a7791c2540ee79067396d701b.1725278148.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,347 +81,177 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1725278679; l=9613; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=cOOZykEmFqkZRyJ1E/vRN/T5sHb1DXPD+zLw58NgmJc=; b=iQVBXnbAbleCScAmhC4jQI8rTg2g1n1MPrzXTpClLQc0uELa0PfoAKC764KONLv8nzMGwr0R9 iJ5HnlZ1f9ODzWAZUSyHZvhWNR+2jEWzNVCX7WzFkz1GcvkhH/eVYP1
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ec4d2919836a9f3a7791c2540ee79067396d701b.1725278148.git.christophe.leroy@csgroup.eu>
 
-Extend getrandom() vDSO implementation to powerpc64.
+On Mon, Sep 02, 2024 at 02:04:41PM +0200, Christophe Leroy wrote:
+> This first patch adds support for PPC32. As selftests cannot easily
+> be generated only for PPC32, and because the following patch brings
+> support for PPC64 anyway, this patch opts out all code in
+> __arch_chacha20_blocks_nostack() so that vdso_test_chacha will not
+> fail to compile and will not crash on PPC64/PPC64LE, allthough the
+> selftest itself will fail. This patch also adds a dummy
+> __kernel_getrandom() function that returns ENOSYS on PPC64 so that
+> vdso_test_getrandom returns KSFT_SKIP instead of KSFT_FAIL.
 
-Tested on QEMU on both ppc64_defconfig and ppc64le_defconfig.
+Why not just wire up the selftests in the next patch like you did for
+v3? This seems like extra stuff for no huge reason?
 
-The results are not precise as it is QEMU on an x86 laptop, but
-no need to be precise to see the benefit.
+>  arch/powerpc/Kconfig                         |   1 +
+>  arch/powerpc/include/asm/vdso/getrandom.h    |  54 +++++
+>  arch/powerpc/include/asm/vdso/vsyscall.h     |   6 +
+>  arch/powerpc/include/asm/vdso_datapage.h     |   2 +
+>  arch/powerpc/kernel/asm-offsets.c            |   1 +
+>  arch/powerpc/kernel/vdso/Makefile            |  13 +-
+>  arch/powerpc/kernel/vdso/getrandom.S         |  58 ++++++
+>  arch/powerpc/kernel/vdso/vdso32.lds.S        |   1 +
+>  arch/powerpc/kernel/vdso/vdso64.lds.S        |   1 +
+>  arch/powerpc/kernel/vdso/vgetrandom-chacha.S | 207 +++++++++++++++++++
+>  arch/powerpc/kernel/vdso/vgetrandom.c        |  16 ++
+>  tools/testing/selftests/vDSO/Makefile        |   2 +-
+>  12 files changed, 359 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/powerpc/include/asm/vdso/getrandom.h
+>  create mode 100644 arch/powerpc/kernel/vdso/getrandom.S
+>  create mode 100644 arch/powerpc/kernel/vdso/vgetrandom-chacha.S
+>  create mode 100644 arch/powerpc/kernel/vdso/vgetrandom.c
 
-~ # ./vdso_test_getrandom bench-single
-   vdso: 25000000 times in 4.977777162 seconds
-   libc: 25000000 times in 75.516749981 seconds
-syscall: 25000000 times in 86.842242014 seconds
+I think you might have forgotten to add the symlink in this commit (or
+the next one, per my comment above, if you agree with it).
 
-~ # ./vdso_test_getrandom bench-single
-   vdso: 25000000 times in 6.473814156 seconds
-   libc: 25000000 times in 73.875109463 seconds
-syscall: 25000000 times in 71.805066229 seconds
+> +/*
+> + * Very basic 32 bits implementation of ChaCha20. Produces a given positive number
+> + * of blocks of output with a nonce of 0, taking an input key and 8-byte
+> + * counter. Importantly does not spill to the stack. Its arguments are:
+> + *
+> + *	r3: output bytes
+> + *	r4: 32-byte key input
+> + *	r5: 8-byte counter input/output (saved on stack)
+> + *	r6: number of 64-byte blocks to write to output
+> + *
+> + *	r0: counter of blocks (initialised with r6)
+> + *	r4: Value '4' after key has been read.
+> + *	r5-r12: key
+> + *	r14-r15: counter
+> + *	r16-r31: state
+> + */
+> +SYM_FUNC_START(__arch_chacha20_blocks_nostack)
+> +#ifdef __powerpc64__
+> +	blr
+> +#else
+> +	stwu	r1, -96(r1)
+> +	stw	r5, 20(r1)
+> +	stmw	r14, 24(r1)
+> +
+> +	lwz	r14, 0(r5)
+> +	lwz	r15, 4(r5)
+> +	mr	r0, r6
+> +	subi	r3, r3, 4
+> +
+> +	lwz	r5, 0(r4)
+> +	lwz	r6, 4(r4)
+> +	lwz	r7, 8(r4)
+> +	lwz	r8, 12(r4)
+> +	lwz	r9, 16(r4)
+> +	lwz	r10, 20(r4)
+> +	lwz	r11, 24(r4)
+> +	lwz	r12, 28(r4)
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v4:
-- Use __BIG_ENDIAN__ which is defined by GCC instead of CONFIG_CPU_BIG_ENDIAN which is unknown by selftests
-- Implement a cleaner/smaller output copy for little endian instead of keeping compat macro.
+If you don't want to do this, don't worry about it, but while I'm
+commenting on things, I think it's worth noting that x86, loongarch, and
+arm64 implementations all use the preprocessor or macros to give names
+to these registers -- state1,2,3,...copy1,2,3 and so forth. Might be
+worth doing the same if you think there's an easy and obvious way of
+doing it. If not -- or if that kind of work abhors you -- don't worry
+about it, as I'm confident enough that this code works fine. But it
+might be "nice to have". Up to you.
 
-v3: New (split out of previous patch)
----
- arch/powerpc/Kconfig                         |   2 +-
- arch/powerpc/include/asm/mman.h              |   2 +-
- arch/powerpc/kernel/vdso/Makefile            |  11 +-
- arch/powerpc/kernel/vdso/getrandom.S         |  16 +--
- arch/powerpc/kernel/vdso/vgetrandom-chacha.S | 117 ++++++++++++++++++-
- arch/powerpc/kernel/vdso/vgetrandom.c        |   2 -
- 6 files changed, 132 insertions(+), 18 deletions(-)
+> +
+> +	li	r4, 4
+> +.Lblock:
+> +	li	r31, 10
+> +
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 54b270ef18b1..b45452ac4a73 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -311,7 +311,7 @@ config PPC
- 	select SYSCTL_EXCEPTION_TRACE
- 	select THREAD_INFO_IN_TASK
- 	select TRACE_IRQFLAGS_SUPPORT
--	select VDSO_GETRANDOM			if PPC32
-+	select VDSO_GETRANDOM
- 	#
- 	# Please keep this list sorted alphabetically.
- 	#
-diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
-index 17a77d47ed6d..42a51a993d94 100644
---- a/arch/powerpc/include/asm/mman.h
-+++ b/arch/powerpc/include/asm/mman.h
-@@ -6,7 +6,7 @@
- 
- #include <uapi/asm/mman.h>
- 
--#ifdef CONFIG_PPC64
-+#if defined(CONFIG_PPC64) && !defined(BUILD_VDSO)
- 
- #include <asm/cputable.h>
- #include <linux/mm.h>
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index af3ba61b022e..56fb1633529a 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -9,7 +9,7 @@ obj-vdso32 = sigtramp32-32.o gettimeofday-32.o datapage-32.o cacheflush-32.o not
- obj-vdso64 = sigtramp64-64.o gettimeofday-64.o datapage-64.o cacheflush-64.o note-64.o getcpu-64.o
- 
- obj-vdso32 += getrandom-32.o vgetrandom-chacha-32.o
--obj-vdso64 += getrandom-64.o
-+obj-vdso64 += getrandom-64.o vgetrandom-chacha-64.o
- 
- ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday-32.o += -include $(c-gettimeofday-y)
-@@ -22,6 +22,7 @@ endif
- 
- ifneq ($(c-getrandom-y),)
-   CFLAGS_vgetrandom-32.o += -include $(c-getrandom-y)
-+  CFLAGS_vgetrandom-64.o += -include $(c-getrandom-y) $(call cc-option, -ffixed-r30)
- endif
- 
- # Build rules
-@@ -35,10 +36,10 @@ endif
- targets := $(obj-vdso32) vdso32.so.dbg vgettimeofday-32.o vgetrandom-32.o
- targets += crtsavres-32.o
- obj-vdso32 := $(addprefix $(obj)/, $(obj-vdso32))
--targets += $(obj-vdso64) vdso64.so.dbg vgettimeofday-64.o
-+targets += $(obj-vdso64) vdso64.so.dbg vgettimeofday-64.o vgetrandom-64.o
- obj-vdso64 := $(addprefix $(obj)/, $(obj-vdso64))
- 
--ccflags-y := -fno-common -fno-builtin
-+ccflags-y := -fno-common -fno-builtin -DBUILD_VDSO
- ccflags-y += $(DISABLE_LATENT_ENTROPY_PLUGIN)
- ccflags-y += $(call cc-option, -fno-stack-protector)
- ccflags-y += -DDISABLE_BRANCH_PROFILING
-@@ -72,7 +73,7 @@ CPPFLAGS_vdso64.lds += -P -C
- # link rule for the .so file, .lds has to be first
- $(obj)/vdso32.so.dbg: $(obj)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday-32.o $(obj)/vgetrandom-32.o $(obj)/crtsavres-32.o FORCE
- 	$(call if_changed,vdso32ld_and_check)
--$(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o FORCE
-+$(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o $(obj)/vgetrandom-64.o FORCE
- 	$(call if_changed,vdso64ld_and_check)
- 
- # assembly rules for the .S files
-@@ -88,6 +89,8 @@ $(obj-vdso64): %-64.o: %.S FORCE
- 	$(call if_changed_dep,vdso64as)
- $(obj)/vgettimeofday-64.o: %-64.o: %.c FORCE
- 	$(call if_changed_dep,cc_o_c)
-+$(obj)/vgetrandom-64.o: %-64.o: %.c FORCE
-+	$(call if_changed_dep,cc_o_c)
- 
- # Generate VDSO offsets using helper script
- gen-vdso32sym := $(src)/gen_vdso32_offsets.sh
-diff --git a/arch/powerpc/kernel/vdso/getrandom.S b/arch/powerpc/kernel/vdso/getrandom.S
-index 7db51c0635a5..a957cd2b2b03 100644
---- a/arch/powerpc/kernel/vdso/getrandom.S
-+++ b/arch/powerpc/kernel/vdso/getrandom.S
-@@ -5,8 +5,6 @@
-  *
-  * Copyright (C) 2024 Christophe Leroy <christophe.leroy@csgroup.eu>, CS GROUP France
-  */
--#include <linux/errno.h>
--
- #include <asm/processor.h>
- #include <asm/ppc_asm.h>
- #include <asm/vdso.h>
-@@ -29,10 +27,18 @@
-   .cfi_adjust_cfa_offset PPC_MIN_STKFRM
- 	PPC_STL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
-   .cfi_rel_offset lr, PPC_MIN_STKFRM + PPC_LR_STKOFF
-+#ifdef __powerpc64__
-+	PPC_STL		r2, PPC_MIN_STKFRM + STK_GOT(r1)
-+  .cfi_rel_offset r2, PPC_MIN_STKFRM + STK_GOT
-+#endif
- 	get_datapage	r8
- 	addi		r8, r8, VDSO_RNG_DATA_OFFSET
- 	bl		CFUNC(DOTSYM(\funct))
- 	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
-+#ifdef __powerpc64__
-+	PPC_LL		r2, PPC_MIN_STKFRM + STK_GOT(r1)
-+  .cfi_restore r2
-+#endif
- 	cmpwi		r3, 0
- 	mtlr		r0
- 	addi		r1, r1, 2 * PPC_MIN_STKFRM
-@@ -48,11 +54,5 @@
- 
- 	.text
- V_FUNCTION_BEGIN(__kernel_getrandom)
--#ifdef CONFIG_PPC64
--	li	r3, ENOSYS
--	crset	so
--	blr
--#else
- 	cvdso_call __c_kernel_getrandom
--#endif
- V_FUNCTION_END(__kernel_getrandom)
-diff --git a/arch/powerpc/kernel/vdso/vgetrandom-chacha.S b/arch/powerpc/kernel/vdso/vgetrandom-chacha.S
-index 17a2f586223a..6b334bcef017 100644
---- a/arch/powerpc/kernel/vdso/vgetrandom-chacha.S
-+++ b/arch/powerpc/kernel/vdso/vgetrandom-chacha.S
-@@ -80,14 +80,58 @@
-  */
- SYM_FUNC_START(__arch_chacha20_blocks_nostack)
- #ifdef __powerpc64__
--	blr
-+	std	r5, -216(r1)
-+
-+	std	r14, -144(r1)
-+	std	r15, -136(r1)
-+	std	r16, -128(r1)
-+	std	r17, -120(r1)
-+	std	r18, -112(r1)
-+	std	r19, -104(r1)
-+	std	r20, -96(r1)
-+	std	r21, -88(r1)
-+	std	r22, -80(r1)
-+	std	r23, -72(r1)
-+	std	r24, -64(r1)
-+	std	r25, -56(r1)
-+	std	r26, -48(r1)
-+	std	r27, -40(r1)
-+	std	r28, -32(r1)
-+	std	r29, -24(r1)
-+	std	r30, -16(r1)
-+	std	r31, -8(r1)
- #else
- 	stwu	r1, -96(r1)
- 	stw	r5, 20(r1)
-+#ifdef __BIG_ENDIAN__
- 	stmw	r14, 24(r1)
-+#else
-+	stw	r14, 24(r1)
-+	stw	r15, 28(r1)
-+	stw	r16, 32(r1)
-+	stw	r17, 36(r1)
-+	stw	r18, 40(r1)
-+	stw	r19, 44(r1)
-+	stw	r20, 48(r1)
-+	stw	r21, 52(r1)
-+	stw	r22, 56(r1)
-+	stw	r23, 60(r1)
-+	stw	r24, 64(r1)
-+	stw	r25, 68(r1)
-+	stw	r26, 72(r1)
-+	stw	r27, 76(r1)
-+	stw	r28, 80(r1)
-+	stw	r29, 84(r1)
-+	stw	r30, 88(r1)
-+	stw	r31, 92(r1)
-+#endif
-+#endif
- 
- 	lwz	r14, 0(r5)
- 	lwz	r15, 4(r5)
-+#ifdef __powerpc64__
-+	rldimi	r14, r15, 32, 0
-+#endif
- 	mr	r0, r6
- 	subi	r3, r3, 4
- 
-@@ -156,6 +200,7 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
- 	add	r28, r28, r14
- 	add	r29, r29, r15
- 
-+#ifdef __BIG_ENDIAN__
- 	stwbrx	r16, r4, r3
- 	addi	r3, r3, 8
- 	stwbrx	r17, 0, r3
-@@ -180,15 +225,42 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
- 	stwbrx	r30, r4, r3
- 	addi	r3, r3, 8
- 	stwbrx	r31, 0, r3
-+#else
-+	stw	r16, 4(r3)
-+	stw	r17, 8(r3)
-+	stw	r18, 12(r3)
-+	stw	r19, 16(r3)
-+	stw	r20, 20(r3)
-+	stw	r21, 24(r3)
-+	stw	r22, 28(r3)
-+	stw	r23, 32(r3)
-+	stw	r24, 36(r3)
-+	stw	r25, 40(r3)
-+	stw	r26, 44(r3)
-+	stw	r27, 48(r3)
-+	stw	r28, 52(r3)
-+	stw	r29, 56(r3)
-+	stw	r30, 60(r3)
-+	stwu	r31, 64(r3)
-+#endif
- 
- 	subic.	r0, r0, 1	/* subi. can't use r0 as source */
- 
-+#ifdef __powerpc64__
-+	addi	r14, r14, 1
-+	srdi	r15, r14, 32
-+#else
- 	addic	r14, r14, 1
- 	addze	r15, r15
-+#endif
- 
- 	bne	.Lblock
- 
-+#ifdef __powerpc64__
-+	ld	r5, -216(r1)
-+#else
- 	lwz	r5, 20(r1)
-+#endif
- 	stw	r14, 0(r5)
- 	stw	r15, 4(r5)
- 
-@@ -200,8 +272,49 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
- 	li	r11, 0
- 	li	r12, 0
- 
-+#ifdef __powerpc64__
-+	ld	r14, -144(r1)
-+	ld	r15, -136(r1)
-+	ld	r16, -128(r1)
-+	ld	r17, -120(r1)
-+	ld	r18, -112(r1)
-+	ld	r19, -104(r1)
-+	ld	r20, -96(r1)
-+	ld	r21, -88(r1)
-+	ld	r22, -80(r1)
-+	ld	r23, -72(r1)
-+	ld	r24, -64(r1)
-+	ld	r25, -56(r1)
-+	ld	r26, -48(r1)
-+	ld	r27, -40(r1)
-+	ld	r28, -32(r1)
-+	ld	r29, -24(r1)
-+	ld	r30, -16(r1)
-+	ld	r31, -8(r1)
-+#else
-+#ifdef __BIG_ENDIAN__
- 	lmw	r14, 24(r1)
-+#else
-+	lwz	r14, 24(r1)
-+	lwz	r15, 28(r1)
-+	lwz	r16, 32(r1)
-+	lwz	r17, 36(r1)
-+	lwz	r18, 40(r1)
-+	lwz	r19, 44(r1)
-+	lwz	r20, 48(r1)
-+	lwz	r21, 52(r1)
-+	lwz	r22, 56(r1)
-+	lwz	r23, 60(r1)
-+	lwz	r24, 64(r1)
-+	lwz	r25, 68(r1)
-+	lwz	r26, 72(r1)
-+	lwz	r27, 76(r1)
-+	lwz	r28, 80(r1)
-+	lwz	r29, 84(r1)
-+	lwz	r30, 88(r1)
-+	lwz	r31, 92(r1)
-+#endif
- 	addi	r1, r1, 96
--	blr
- #endif
-+	blr
- SYM_FUNC_END(__arch_chacha20_blocks_nostack)
-diff --git a/arch/powerpc/kernel/vdso/vgetrandom.c b/arch/powerpc/kernel/vdso/vgetrandom.c
-index 923330845b2c..5f855d45fb7b 100644
---- a/arch/powerpc/kernel/vdso/vgetrandom.c
-+++ b/arch/powerpc/kernel/vdso/vgetrandom.c
-@@ -7,10 +7,8 @@
- #include <linux/time.h>
- #include <linux/types.h>
- 
--#ifndef CONFIG_PPC64
- ssize_t __c_kernel_getrandom(void *buffer, size_t len, unsigned int flags, void *opaque_state,
- 			     size_t opaque_len, const struct vdso_rng_data *vd)
- {
- 	return __cvdso_getrandom_data(vd, buffer, len, flags, opaque_state, opaque_len);
- }
--#endif
--- 
-2.44.0
+Maybe a comment here, "expand 32-byte k" or similar.
 
+> +	lis	r16, 0x6170
+> +	lis	r17, 0x3320
+> +	lis	r18, 0x7962
+> +	lis	r19, 0x6b20
+> +	addi	r16, r16, 0x7865
+> +	addi	r17, r17, 0x646e
+> +	addi	r18, r18, 0x2d32
+> +	addi	r19, r19, 0x6574
+> +
+> +	mtctr	r31
+> +
+> +	mr	r20, r5
+> +	mr	r21, r6
+> +	mr	r22, r7
+> +	mr	r23, r8
+> +	mr	r24, r9
+> +	mr	r25, r10
+> +	mr	r26, r11
+> +	mr	r27, r12
+> +
+> +	mr	r28, r14
+> +	mr	r29, r15
+> +	li	r30, 0
+> +	li	r31, 0
+> +
+> +.Lpermute:
+> +	QUARTERROUND4( 0, 4, 8,12, 1, 5, 9,13, 2, 6,10,14, 3, 7,11,15)
+> +	QUARTERROUND4( 0, 5,10,15, 1, 6,11,12, 2, 7, 8,13, 3, 4, 9,14)
+> +
+> +	bdnz	.Lpermute
+> +
+> +	addis	r16, r16, 0x6170
+> +	addis	r17, r17, 0x3320
+> +	addis	r18, r18, 0x7962
+> +	addis	r19, r19, 0x6b20
+> +	addi	r16, r16, 0x7865
+> +	addi	r17, r17, 0x646e
+> +	addi	r18, r18, 0x2d32
+> +	addi	r19, r19, 0x6574
+> +
+> +	add	r20, r20, r5
+> +	add	r21, r21, r6
+> +	add	r22, r22, r7
+> +	add	r23, r23, r8
+> +	add	r24, r24, r9
+> +	add	r25, r25, r10
+> +	add	r26, r26, r11
+> +	add	r27, r27, r12
+> +
+> +	add	r28, r28, r14
+> +	add	r29, r29, r15
+> +
+> +	stwbrx	r16, r4, r3
+> +	addi	r3, r3, 8
+> +	stwbrx	r17, 0, r3
+> +	stwbrx	r18, r4, r3
+> +	addi	r3, r3, 8
+> +	stwbrx	r19, 0, r3
+> +	stwbrx	r20, r4, r3
+> +	addi	r3, r3, 8
+> +	stwbrx	r21, 0, r3
+> +	stwbrx	r22, r4, r3
+> +	addi	r3, r3, 8
+> +	stwbrx	r23, 0, r3
+> +	stwbrx	r24, r4, r3
+> +	addi	r3, r3, 8
+> +	stwbrx	r25, 0, r3
+> +	stwbrx	r26, r4, r3
+> +	addi	r3, r3, 8
+> +	stwbrx	r27, 0, r3
+> +	stwbrx	r28, r4, r3
+> +	addi	r3, r3, 8
+> +	stwbrx	r29, 0, r3
+> +	stwbrx	r30, r4, r3
+> +	addi	r3, r3, 8
+> +	stwbrx	r31, 0, r3
+> +
+> +	subic.	r0, r0, 1	/* subi. can't use r0 as source */
+
+Never seen the period suffix. Just looked this up. Neat.
 
