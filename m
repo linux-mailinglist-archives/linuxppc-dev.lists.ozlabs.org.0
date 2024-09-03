@@ -1,44 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-901-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-902-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A319692CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 06:13:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2D19693A2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 08:27:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WyXLW3ZqJz2yGd;
-	Tue,  3 Sep 2024 14:13:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WybK00ts4z2y8l;
+	Tue,  3 Sep 2024 16:27:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.226.251.21
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725331046;
-	cv=none; b=Il6Gm2IhKON0WcdA+YB3USvInNaiCO32gKqyb5ySSlj9+11QfF9iT4VkFsDR3NfJKT4IVOEd87jtKYTWE9wJZicd3zIox13fWgiNYSea3mxaFThUwvirkwbCK0gZWF6GiD13xwJZHYrfGEZsLr0h+7OsdRSP6CXWXYwEIVtOT8kgLbobh/C0h3cv+gKaPVwwIATtwl/pCnmHyMyoPZHOgZwdu51rn4EAfzzMAluCpL9S29VVa6EPnywTorWDlgBxpMOqZEqEnoZHjiNntiEEQ+ZgUXtyILDEF3XElAY0FzWMj1fnzcjHW2ZZcnuMn6SHlUmvUCb1JYGAgTBM1hgmyQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725344868;
+	cv=none; b=PPKkoc2ckpa2QRNWmtQwxaR1ARjA9/eexp5Oa7SgwDrw7S9gaECpKU6QV/3smtA/+oPg04K5N8BA+oy8dodR/j5hfsIuJvA+Xj233TncaQnwdIrRB+kN+LyDBLI2L+9S5ILOv/9KAYmfZRy9k+mpw/jJKnUASLZSmzk+cXsEHQqgdGpmNuzSJKtoy/qaHVu4FXPYn2n7eH7t5caIhdmWcMkAGnKJCtCxURCgD52fVERQ7WHy0UVi7+OZkgSZ/7vFwpkBwMfoyimF5wEbh4PxuAxAXXNZ5kQTAP6aEs775RcRogXBHFMrqiWL/tU8U2lEceNRePDuHnCqHUPCWBMQPw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725331046; c=relaxed/relaxed;
-	bh=pl6diveakjWnVjdlEVLSM6Ew9pVoqxm00LK1Z0BCiY8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KrTs+bomptGK2LPrQws1VlPfcNiCEDiwMuizAULSaR4yizIJ5UhaeVU7oMyZ+yuqFwt947fo6aJW0WCAxcAA+Jka6E+BCo9uNE8veXSgyQGYJCAtnA7pIGgA02eRX6i5Z3gf36f3zbYspbXazyoWwiAuI5L5CQ3HGVReE2R1AKUeN2askmbYtwnGzV7uOy9iqqZnTJP1i6IOtiNac2EvloLrxB01XmodJibFwdIGDRh8zH0MTWUJ+67j1SDBNoiT8Iz3HnUR9wQIhm+dl1al7GTyjLNcayW0DT4WrPaPbkaI+9Y3YgQD+0zEa+3VgjaWJZuBsznGFMv7+x9erzbhpQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass (client-ip=159.226.251.21; helo=cstnet.cn; envelope-from=nichen@iscas.ac.cn; receiver=lists.ozlabs.org) smtp.mailfrom=iscas.ac.cn
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iscas.ac.cn (client-ip=159.226.251.21; helo=cstnet.cn; envelope-from=nichen@iscas.ac.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 417 seconds by postgrey-1.37 at boromir; Tue, 03 Sep 2024 12:37:25 AEST
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1725344868; c=relaxed/relaxed;
+	bh=VgrxN144iUPf7NqeoMOyzsSN98GEfqKoLsawzlynxPg=;
+	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 Message-ID:MIME-Version:Content-Type; b=Y4y9DHJ1uMkaKASfpArV36cVciEzbW+BGPlMLe9IaHF5VYmA0LTBjhvjeE53ofi9aBqEJ33/fNldmpXlyK8UNPnodKWGcjsaqOCBpl3QcG9JOFmpwDZX3EZ3ABP9+yF+w1hieku8Kq344GeEBrjnWn3yEu9a4gcUV6rkVZ1Vmm80cXuV65lSbV00f2VK2qXttqHbmmCmMuXytc3lAi+fKd2xFSkki2WEBfCbA8RM6j+bKCTzgvc5gkNuRm/S9r7tJUbqoO5rPgCsmz8VkaS5g6GIMQIFNUl9KUc1JOid8r6wiaQtScdWl2Q9Y6PdjcDc8u4uREKmgfGWjKJAa3e50A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rzESbfHi; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=svens@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rzESbfHi;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=svens@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyVC96NxGz2yJL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 12:37:25 +1000 (AEST)
-Received: from localhost (unknown [124.16.138.129])
-	by APP-01 (Coremail) with SMTP id qwCowACH3aq9dNZmBmG0AA--.35682S2;
-	Tue, 03 Sep 2024 10:30:21 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	Chen Ni <nichen@iscas.ac.cn>
-Subject: [PATCH] tty: hvc: convert comma to semicolon
-Date: Tue,  3 Sep 2024 10:30:01 +0800
-Message-Id: <20240903023001.491055-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WybJz0Thkz2xch
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 16:27:46 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 482MmnT9025891;
+	Tue, 3 Sep 2024 06:27:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:in-reply-to:references:date:message-id
+	:mime-version:content-type; s=pp1; bh=VgrxN144iUPf7NqeoMOyzsSN98
+	GEfqKoLsawzlynxPg=; b=rzESbfHimjo981rF1eOvgpMSjsCQ2UXY78JmMhDEPZ
+	DPh07gQoAfNtgrqCnJFv+HngQ73My+guTlInZU4UAvE+Dm9dcfsYpQEIqRqoVG6I
+	obVtiqyrCd8ZtLNynhBiS1xKvLMAi/spun5PMu9Eab4stcoNMpzU0EqMEfHF9k64
+	+Lwt5vXL3GQWmcwF7+U+6eOVKzqSx/n6WbnE3sku4HNati9Ia2vVLoEPV1PxeuvG
+	3fui9eN9a0KkNJJxBS5E1cd0jLPmZSXe5AuC2X3sdunUJeNgYrgy4e73/Bna0Inl
+	PYj52ozWBoOg+tVNxtsqs4KH9vbGLWVO9WCW8G0uWdcA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqmhru-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Sep 2024 06:27:23 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4836RNUi007387;
+	Tue, 3 Sep 2024 06:27:23 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqmhrr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Sep 2024 06:27:23 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4832HPjd012052;
+	Tue, 3 Sep 2024 06:27:22 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41cegpse6m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Sep 2024 06:27:22 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4836RKVJ14483918
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Sep 2024 06:27:20 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1289B2004D;
+	Tue,  3 Sep 2024 06:27:20 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9BD9820040;
+	Tue,  3 Sep 2024 06:27:19 +0000 (GMT)
+Received: from tuxmaker.linux.ibm.com (unknown [9.152.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  3 Sep 2024 06:27:19 +0000 (GMT)
+From: Sven Schnelle <svens@linux.ibm.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Nathan Chancellor
+ <nathan@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, linux-mm@kvack.org,
+        linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu,
+        jeffxu@google.com, Liam.Howlett@oracle.com,
+        linux-kernel@vger.kernel.org, npiggin@gmail.com, oliver.sang@intel.com,
+        pedro.falcato@gmail.com, linux-um@lists.infradead.org,
+        linux-s390@vger.kernel.org,
+        Ravi Bangoria
+ <ravi.bangoria@linux.ibm.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v2 1/4] mm: Add optional close() to struct
+ vm_special_mapping
+In-Reply-To: <CAHk-=wjD0XLhkzou89J-TK=L6B88pFoNYxN1uTWRQB3U5Czywg@mail.gmail.com>
+	(Linus Torvalds's message of "Mon, 2 Sep 2024 14:02:56 -0700")
+References: <20240812082605.743814-1-mpe@ellerman.id.au>
+	<20240819185253.GA2333884@thelio-3990X>
+	<yt9dy149vprr.fsf@linux.ibm.com>
+	<20240902134953.e834bc2e57d36b1d3b1397e4@linux-foundation.org>
+	<CAHk-=wjD0XLhkzou89J-TK=L6B88pFoNYxN1uTWRQB3U5Czywg@mail.gmail.com>
+Date: Tue, 03 Sep 2024 08:27:19 +0200
+Message-ID: <yt9dr0a1uu9k.fsf@linux.ibm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -48,48 +105,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACH3aq9dNZmBmG0AA--.35682S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Jw4UZF15Zr47GrWUJFyxKrg_yoW3ZFb_AF
-	sIyrWxu3W5ArsI93Wjqr4F9F92qF45uFs3CrnIqF9aqFZrZr48Xa47Xr13W34Y9a4DXF98
-	AFZxJr1kKF43tjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVxFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F
-	4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
-	xVWUAVWUtwCY02Avz4vE14v_Gr1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
-	73UjIFyTuYvjfUYdgADUUUU
-X-Originating-IP: [124.16.138.129]
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9aSqu6fFfWss73YgKp0gBlzFQVIXapXn
+X-Proofpoint-ORIG-GUID: OxhEA4e_rV3dfcm0C7DWi8uVqyGWdHzl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-02_06,2024-09-02_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1011 mlxscore=0 impostorscore=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 adultscore=0 mlxlogscore=970 bulkscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2409030046
 
-Replace a comma between expression statements by a semicolon.
+Linus Torvalds <torvalds@linux-foundation.org> writes:
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
----
- drivers/tty/hvc/hvsi_lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On Mon, 2 Sept 2024 at 13:49, Andrew Morton <akpm@linux-foundation.org> wrote:
+>>
+>> uprobe_clear_state() is a pretty simple low-level thing.  Side-effects
+>> seem unlikely?
+>
+> I think uprobe_clear_state() should be removed from fork.c entirely,
+> made 'static', and then we'd have
+>
+>         area->xol_mapping.close = uprobe_clear_state;
+>
+> in __create_xol_area() instead (ok, the arguments change, instead of
+> looking up "mm->uprobes_state.xol_area", it would get it as the vma
+> argument)
+>
+> That's how it should always have been, except we didn't have a close() function.
+>
+> Hmm?
 
-diff --git a/drivers/tty/hvc/hvsi_lib.c b/drivers/tty/hvc/hvsi_lib.c
-index 22e1bc4d8a66..b35c44caf3d7 100644
---- a/drivers/tty/hvc/hvsi_lib.c
-+++ b/drivers/tty/hvc/hvsi_lib.c
-@@ -303,7 +303,7 @@ int hvsilib_write_mctrl(struct hvsi_priv *pv, int dtr)
- 	pr_devel("HVSI@%x: %s DTR...\n", pv->termno,
- 		 dtr ? "Setting" : "Clearing");
- 
--	ctrl.hdr.type = VS_CONTROL_PACKET_HEADER,
-+	ctrl.hdr.type = VS_CONTROL_PACKET_HEADER;
- 	ctrl.hdr.len = sizeof(struct hvsi_control);
- 	ctrl.verb = cpu_to_be16(VSV_SET_MODEM_CTL);
- 	ctrl.mask = cpu_to_be32(HVSI_TSDTR);
--- 
-2.25.1
+Indeed, that's much better. I'll prepare a patch.
 
+Thanks!
 
