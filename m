@@ -1,51 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-903-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-904-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C85A9693CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 08:36:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F97969418
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 08:48:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WybWL6mfvz2xGC;
-	Tue,  3 Sep 2024 16:36:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wybmg1Q1Fz2xr4;
+	Tue,  3 Sep 2024 16:48:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725345406;
-	cv=none; b=aUQWo7yiEtw/kiKV3Yoj4L45jHLYJHzdrgWpWJPW4g+lTrpMw+p6oI6qJQJrMciCdcOMkz1QUgo0e2kBvuc/Ll52itLMljGSdeRAQYY+LDnwDLeXKVwUZV7wWRp2YIyYG7U7T8ALpzL4sYMJP+1O7HfUxVld02KDkmXMy5tXuvmxaW9v8ZcDf6xhjCvCbvsui3maPhBW1XzRJ7oHvYNNO8CX21vNCafNv9cuGo6+USeBTmahSF6oj053kury5yuu+3qgH4AL9PZhokKwWiDxJ4bRBP3gDMJ71iueNeI5smsUKHmQHiNaxecps+LAWljwLVgpP/fMftgpjj48P9MQhw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725346099;
+	cv=none; b=XplIuBhU1huaFTEaJJVGq4bUtHTnX7g5dbXTzdoErUSkhnfnttSVYH0OQIut4Q2Pn6LjjKH60KAw8crPAytXCWHO5HvV1M0z/u4Xcy54nDtM5aLzuDAibDxGxGUX3SIbr2HgEVLaMcrjpRAe6NgKJXz3R+eIX54Cko+ee+Ax5pBsZ3fDhiw2IzK+GpX+JBE+0C5maHAIZRrJRaF1Q4Wc6vVTHctJZ8iD1GjOqFvj5I65vWO/0K6/VXGnhWdx7R839LVEbQD/D3Ua/7nq3zLDfqbn42Cj7vwxKn0LtZ4iemzLGwd6cH6SkSwDrZZw3giBWq5xDYYi+wc0+d11fxCOJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725345406; c=relaxed/relaxed;
-	bh=U7aUJoF4LDjK3bYV/oPCaieVT1XX4cvbYejUP953Sg8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=oYxg/c+YXXUVhy1mC/3ZfVc9GjnL/O8imN7M1ptdhtFk9sGR0a2PvP+Jl9D+dmVtwzmzLV74LiXhYWCI583/xD6Uw/prt6H20otQtcd4GCT2/QRpPJjnzanGY65mWlc47aFeTdQPst1KDNFTpGcWPnQixAFKhU9mSiRMntjfZ+fWxKkljVh04SOye6uQd4H4uPO2Q1ddxxiR6imIK2FNmMWtI8+af7lWzyePZpn+QTdlsNuNqXhDrisx0EhtPUltWSwmPKaX+E4yuJpkIsJU4o0TARidivGBDfqTfw6pFejrYGDZ961DZrj5K+VClBCLBP1g5aBlWeo03BQiIbdkeg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1725346099; c=relaxed/relaxed;
+	bh=M3epQsUKJhzbx4cflHZxn6z4gD7cw0fgFe7nIBjpPlU=;
+	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 Message-ID:MIME-Version:Content-Type; b=mSlREBDy5RsNDG937FCSZFDN5vVaotC4UVXEe/YQC3M2eWQOxLygmr9nj6Yk5vPTOiYPtq0ubOkUCE0IC5nJvUgc1LSDnx5Ue0b9sTtGeMfF/UXa04CWqXc4voyi5kQohY9yph93ByZZ54Vevn5MowcNNdkXc+yy16gbZ7+d4BD2TJicIe1jdmTglC+fU95Esde7uW98+GqeasHUABOhvsY7m0FEViNOkk8R3sYhI8tzm02WLMpmcQdMCjE0xS85z9GjpdpUqEqYLUV7l4a7jvMhyObm5QW8Gk4+q7OKifOsH6D4/83xfDXOvLA6ORUM5nmqOXFK2QXQr9HrWjAU1Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=abSKDFpD; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=abSKDFpD;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WybWL4QyHz2xB1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 16:36:45 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WybWF5HjZz9sSH;
-	Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 2PdnbsYL7xth; Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WybWF4Jw0z9sSC;
-	Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 822B98B76E;
-	Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 8n4_MCluhO-u; Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4EAAC8B768;
-	Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
-Message-ID: <326d9a7d-7674-4c28-aa40-dd2c190244dd@csgroup.eu>
-Date: Tue, 3 Sep 2024 08:36:41 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wybmd6xpTz2xfB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 16:48:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1725346091;
+	bh=M3epQsUKJhzbx4cflHZxn6z4gD7cw0fgFe7nIBjpPlU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=abSKDFpD91bF6JK7v3JWap7RqTbP1xIyPnqTojelNm86rzr7LfsH+onAz9HFy4aFF
+	 3aYhWkxUmHPDaYksi4L/FJqnCUEfKZYcTJf/Cz47dpigzLOUoiBvxLekE2iELXn60B
+	 BYRZJZ2EUMR3MRmN73WJZFPEUrjzfLtSHJa55tS4ik3eWOou7Gs2prbeZhPHNGQZWU
+	 ZGxf9swVExNqkogGyTZX9eeUVNtU2FXzSZmnAdQ6yRiOUOqEZUV1T5sbVp5arfYTbY
+	 GfJpc4U81Q5Ls6BrsrSgWbOG0ih889sG0OziCv1MyPfwp8Sp7ITALf42QwDEugVYch
+	 tvm4slcVDP6Rw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WybmW2CH4z4wc4;
+	Tue,  3 Sep 2024 16:48:11 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Abhishek Dubey <adubey@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ mhiramat@kernel.org 
+Cc: naveen@kernel.org, hbathini@linux.ibm.com, npiggin@gmail.com,
+ bpf@vger.kernel.org, Abhishek Dubey <adubey@linux.ibm.com>
+Subject: Re: [PATCH v4 RESEND] powerpc: Replace kretprobe code with rethook
+ on powerpc
+In-Reply-To: <20240830113131.7597-1-adubey@linux.ibm.com>
+References: <20240830113131.7597-1-adubey@linux.ibm.com>
+Date: Tue, 03 Sep 2024 16:48:10 +1000
+Message-ID: <871q216xn9.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -55,121 +63,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [GIT PULL] SOC FSL for 6.12 (retry)
-To: soc@kernel.org, Arnd Bergmann <arnd@arndb.de>
-Cc: Herve Codina <herve.codina@bootlin.com>,
- Xiaolei Wang <xiaolei.wang@windriver.com>,
- Lu Baolu <baolu.lu@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Language: fr-FR
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi Arnd,
+Abhishek Dubey <adubey@linux.ibm.com> writes:
+> This is an adaptation of commit f3a112c0c40d ("x86,rethook,kprobes:
+> Replace kretprobe with rethook on x86") to powerpc.
+>
+> Rethook follows the existing kretprobe implementation, but separates
+> it from kprobes so that it can be used by fprobe (ftrace-based
+> function entry/exit probes). As such, this patch also enables fprobe
+> to work on powerpc. The only other change compared to the existing
+> kretprobe implementation is doing the return address fixup in
+> arch_rethook_fixup_return().
+>
+> Reference to other archs:
+> commit b57c2f124098 ("riscv: add riscv rethook implementation")
+> commit 7b0a096436c2 ("LoongArch: Replace kretprobe with rethook")
+>
+> Note:
+> =====
+>
+> In future, rethook will be only for kretprobe, and kretprobe
+> will be replaced by fprobe.
+>
+> https://lore.kernel.org/all/172000134410.63468.13742222887213469474.stgit@devnote2/
+>
+> We will	adapt the above	implementation for powerpc once its upstream.
+> Until then, we can have	this implementation of rethook to serve
+> current	kretprobe usecases.
+>
+> Reviewed-by: Naveen Rao <naveen@kernel.org>
+> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
+> ---
 
-Please pull the following Freescale Soc Drivers changes for 6.12
+Was Masami's objection to v3 resolved?
 
-There are no conflicts with latest linux-next tree.
-
-Thanks
-Christophe
-
-The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f017b:
-
-   Linux 6.11-rc1 (2024-07-28 14:19:55 -0700)
-
-are available in the Git repository at:
-
-   https://github.com/chleroy/linux.git tags/soc_fsl-6.12-2
-
-for you to fetch changes up to 7a99b1c0bce5cf8c554ceecd29ad1e8085557fd3:
-
-   Merge branch 'support-for-quicc-engine-tsa-and-qmc' (2024-09-03 
-07:51:34 +0200)
-
-----------------------------------------------------------------
-- A series from HervÃ© Codina that bring support for the newer version
-of QMC (QUICC Multi-channel Controller) and TSA (Time Slots Assigner)
-found on MPC 83xx micro-controllers.
-
-- Misc changes for qbman freescale drivers for removing a redundant
-warning and using iommu_paging_domain_alloc()
-
-----------------------------------------------------------------
-Christophe Leroy (1):
-       Merge branch 'support-for-quicc-engine-tsa-and-qmc'
-
-Herve Codina (36):
-       soc: fsl: cpm1: qmc: Update TRNSYNC only in transparent mode
-       soc: fsl: cpm1: qmc: Enable TRNSYNC only when needed
-       soc: fsl: cpm1: tsa: Fix tsa_write8()
-       soc: fsl: cpm1: tsa: Use BIT(), GENMASK() and FIELD_PREP() macros
-       soc: fsl: cpm1: tsa: Fix blank line and spaces
-       soc: fsl: cpm1: tsa: Add missing spinlock comment
-       dt-bindings: soc: fsl: cpm_qe: Add QUICC Engine (QE) TSA controller
-       soc: fsl: cpm1: tsa: Remove unused registers offset definition
-       soc: fsl: cpm1: tsa: Use ARRAY_SIZE() instead of hardcoded 
-integer values
-       soc: fsl: cpm1: tsa: Make SIRAM entries specific to CPM1
-       soc: fsl: cpm1: tsa: Introduce tsa_setup() and its CPM1 
-compatible version
-       soc: fsl: cpm1: tsa: Isolate specific CPM1 part from 
-tsa_serial_{dis}connect()
-       soc: fsl: cpm1: tsa: Introduce tsa_version
-       soc: fsl: cpm1: tsa: Add support for QUICC Engine (QE) implementation
-       MAINTAINERS: Add QE files related to the Freescale TSA controller
-       soc: fsl: cpm1: tsa: Introduce tsa_serial_get_num()
-       soc: fsl: cpm1: qmc: Rename QMC_TSA_MASK
-       soc: fsl: cpm1: qmc: Use BIT(), GENMASK() and FIELD_PREP() macros
-       soc: fsl: cpm1: qmc: Fix blank line and spaces
-       soc: fsl: cpm1: qmc: Remove unneeded parenthesis
-       soc: fsl: cpm1: qmc: Fix 'transmiter' typo
-       soc: fsl: cpm1: qmc: Add missing spinlock comment
-       dt-bindings: soc: fsl: cpm_qe: Add QUICC Engine (QE) QMC controller
-       soc: fsl: cpm1: qmc: Introduce qmc_data structure
-       soc: fsl: cpm1: qmc: Re-order probe() operations
-       soc: fsl: cpm1: qmc: Introduce qmc_init_resource() and its CPM1 
-version
-       soc: fsl: cpm1: qmc: Introduce qmc_{init,exit}_xcc() and their 
-CPM1 version
-       soc: fsl: cpm1: qmc: Rename qmc_chan_command()
-       soc: fsl: cpm1: qmc: Handle RPACK initialization
-       soc: fsl: cpm1: qmc: Rename SCC_GSMRL_MODE_QMC
-       soc: fsl: cpm1: qmc: Introduce qmc_version
-       soc: fsl: qe: Add resource-managed muram allocators
-       soc: fsl: qe: Add missing PUSHSCHED command
-       soc: fsl: cpm1: qmc: Add support for QUICC Engine (QE) implementation
-       soc: fsl: cpm1: qmc: Handle QUICC Engine (QE) soft-qmc firmware
-       MAINTAINERS: Add QE files related to the Freescale QMC controller
-
-Lu Baolu (1):
-       soc: fsl: qbman: Use iommu_paging_domain_alloc()
-
-Xiaolei Wang (1):
-       soc: fsl: qbman: Remove redundant warnings
-
-  .../bindings/soc/fsl/cpm_qe/fsl,qe-tsa.yaml        | 210 +++++++
-  .../bindings/soc/fsl/cpm_qe/fsl,qe-ucc-qmc.yaml    | 197 ++++++
-  MAINTAINERS                                        |   3 +
-  drivers/soc/fsl/qbman/qman_ccsr.c                  |   2 -
-  drivers/soc/fsl/qbman/qman_portal.c                |   5 +-
-  drivers/soc/fsl/qe/Kconfig                         |  18 +-
-  drivers/soc/fsl/qe/qe_common.c                     |  80 +++
-  drivers/soc/fsl/qe/qmc.c                           | 667 
-++++++++++++++++-----
-  drivers/soc/fsl/qe/tsa.c                           | 659 
-+++++++++++++++-----
-  drivers/soc/fsl/qe/tsa.h                           |   3 +
-  include/dt-bindings/soc/qe-fsl,tsa.h               |  13 +
-  include/soc/fsl/qe/qe.h                            |  23 +-
-  12 files changed, 1552 insertions(+), 328 deletions(-)
-  create mode 100644 
-Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-tsa.yaml
-  create mode 100644 
-Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ucc-qmc.yaml
-  create mode 100644 include/dt-bindings/soc/qe-fsl,tsa.h
+cheers
 
