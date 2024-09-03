@@ -1,82 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-929-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-930-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC8A96A76D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 21:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DBA996A779
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 21:39:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WywqH2xR4z2xWb;
-	Wed,  4 Sep 2024 05:36:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WywtH0P21z2yNs;
+	Wed,  4 Sep 2024 05:39:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725392203;
-	cv=pass; b=fJSy50nXQXlNHsb9/LUFAWo/tL9JyRwNmTRQR6IzEAnY7Sb142vODLL7wI5gK8YSn72BMZi9TSjIiE/jh3AQGlrcuPa4xE/DtnJOthjqyr7RdRWX1knVBC+0UR9Wf9+Klw5wZjIcpNhqGxPUfBGu23nrXZZq9b702Z6nq+bvoOEkNvR2e4+GExJRHrEuq8rq8aasbShkh5ZgfuSGOW3pmKt+OXRKoSDJOGwk80KST1sdZeUl/xJAV+vrToFclVjadLFz3FQcavrTUCRIJUSlm/mQRcEzesvvjAlGaKu+PZGJHusdvM72pe3UEHmvP+6Rn9aKmQMUAgDqtrc45Ja4zg==
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725392359;
+	cv=pass; b=Ch6pxEWmAT37JGEZGvvFa1OMe9c4tqRqvPVazx2PxudbPkap3BR103537VDvCarl7MW3AjzsDJr9J5j9V06ylkcgDqX2zoWYEKI86ch+f52SRe/sNe+4Rr+iBgueEwxFmXGp4wz679sqfn0xvZgShnDgx7EvEYlvlSOMp93tj4Q8+R0YEiWwPYoCXLZzMQUjLiHZj8OLF4ItIJyijIDwnNaNR3U7o202+RJ21fFRTH8v7JSv9m9ylbPeuafI+PTfYZR/cuycvJytP2zZJzI5LmdXW/Rtr1LLZyUFKvEKvGeQ1cX+qxf1eAKmQHmsG+VTRR3wSSUi5Du8qelLmpSACg==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725392203; c=relaxed/relaxed;
-	bh=XNWUzWtD4jyUHCjUGRd4PNytuuVB9fsnDINWxWiCOzU=;
+	t=1725392359; c=relaxed/relaxed;
+	bh=wt9ZQCmknOoKlv4iGnfqxj+/B+Mo5cwpnSezO7GQWMM=;
 	h=DKIM-Signature:ARC-Authentication-Results:DKIM-Signature:Date:
 	 From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=M0gFLzF3ZGY6Jz186C1g6WkSliCesxQTBPq7ONDmCHFgx269bvZe5V+K6t5aVNrWoyBju6D8g5j7Ptg369kKfyiLlLijm40LG8/ngrQ60AXRiC+2F1XBP16eYErRS6U8abfd6EtJ57uLZWhGzrMzXp5Ry8knyDI52oHh4//HKPYsql5IY3nMImDCh5HAz/MvOoG0SHQVNDPHpUvjejr7Ef0Wx1dqv+v3Cw4T6Vc+egvoNnI8tzanYcImSvGojwoY4DUHxNRtk/XwYxFo10eQ2pJVS9paIWoTG4VoWVQVef6MN8q7ZS0fUxxTK5eOoL4sedv568R2l2wao/IGpSsQ6g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=AYHrwZ+B; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=on/UMaDg; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Aj/jxUExpkqHgUAw9QpY073kdXIPwT2o8Y1+ptfiKXFOO0A93Bs8bWlz7eIzk/8GoJ+8IJrX+I8+CKfd+cK990yHpxveMlqQqZ05QHxQU2B17BUDTKPBFTeqvaOJzgpNVZ4rdPVqrgI75yiFbz71Zvi9Yma0fzMP3f9OT3kUUZssAq48nnp4WDhSVJHk9SWcamLPhMu8BwBa/mCq5opo97RwiY10ri9TVfnGBC7ppXeJTuLXFfIusgpMxpq9a8G1SUFw4trs99GGngblj+LcmM7OEQyXJ9zgW3bYREMP8abxIEPsk1KEkqvlpGhkhk+fDv/8qO+KHPj9yhW2bKpCzQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=C7KK2gzP; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=WaYMdS52; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=AYHrwZ+B;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=on/UMaDg;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=C7KK2gzP;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=WaYMdS52;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org)
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WywqG6NN8z2xTN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 05:36:41 +1000 (AEST)
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 483JXTbr024292;
-	Tue, 3 Sep 2024 19:35:49 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WywtG4BLQz2yNn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 05:39:17 +1000 (AEST)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 483JXTUC004492;
+	Tue, 3 Sep 2024 19:38:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
 	date:from:to:cc:subject:message-id:references:content-type
-	:in-reply-to:mime-version; s=corp-2023-11-20; bh=XNWUzWtD4jyUHCj
-	UGRd4PNytuuVB9fsnDINWxWiCOzU=; b=AYHrwZ+BMAeoQMrUrK8oaTs/p+/+zw2
-	2yF76d8nJy7PD+Sgcm5Ssba7DcXfOfQ/b71bWbSJsPgG4WzNOe0f69qGJBGdhVwX
-	Uqn8fBRgYSHhh895QuOq/o2/fVY+SLhuey0UsMx250oSV+bDy8IZetgTJt256H9K
-	rpOm2JHNhoIAUoeuqK1/Fq8nvZVPt9OcHzzLGfHJMXQIvxnnZOaZPZwmKMrgqPUI
-	ehJhL1CA9NYMhTVwBVXgOGVJNb+FpB4eJUpPuXhmuOlJnWB1rQudNP2L3TSrnLqD
-	KILW6eUSxvG2LWgj6sGZRhrTzHqDPZrDvoj9mCS+HwdAhub/QKhmg0A==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41dk84jfuj-1
+	:in-reply-to:mime-version; s=corp-2023-11-20; bh=wt9ZQCmknOoKlv4
+	iGnfqxj+/B+Mo5cwpnSezO7GQWMM=; b=C7KK2gzPIUjHNEMVOd8vU3XVwWNYZ6W
+	9v/XTDrv2m1BqhpFrvDhjjsrVYkOWSUFSWKvrBlD39u7WtNNMn1i+kEg0/9/44VY
+	pYuq/h4HJ+7F/VH28ZNHRbGc9yjKABlnFsLZKwj8Zx3Oi/cwKnuC+klDkUCPMOeb
+	T7rtBTt8RpNCE4+hhC1aMBmPDrSrX3/J+zqDKOpURIayEVhXsr0MlkVZz23QrQwf
+	xo1/5aD1FxUZ/oNTMe+BNccB3GWE6C9fBq4jhzZZ6DWOFg3QRYYUYVpgPZ37nxG6
+	JrZr538y19uMpuc9KBZ14g2Dq4WAvm7esXITfBbL4ty2ptu9T0l2uJQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41dwndhnye-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 03 Sep 2024 19:35:48 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 483J2tvR039558;
-	Tue, 3 Sep 2024 19:35:48 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2040.outbound.protection.outlook.com [104.47.66.40])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 41bsm95s6y-1
+	Tue, 03 Sep 2024 19:38:32 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 483JFrKj032655;
+	Tue, 3 Sep 2024 19:38:30 GMT
+Received: from nam02-sn1-obe.outbound.protection.outlook.com (mail-sn1nam02lp2040.outbound.protection.outlook.com [104.47.57.40])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41bsm9bu73-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 03 Sep 2024 19:35:47 +0000
+	Tue, 03 Sep 2024 19:38:30 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pEt9RiBN1SX05CRlck18XNzCzAJPWQMJmxxPF8Y2g9KTHDD7sfnJgU8IF46+dJ7gjQAafiO61Km8FeSRZbJD8YIUJy0jsr6Mlvqwnn91Bst1DaRrp1tgldsq2CpfTiTnpY3KqqQYRE1+lgRGtG83U8IerfNyBZQHOLz/hSzi0wAB36Jylwkl+5YqbBsUg4VRiQt4aZHB9JCuGd89TzJzxcVVcRFRzd9pNLuQGhY1hqoN/03uT3SPMI7URW6EcigSaRDMcdS2OYa/O+ruEvKxfq4UFv9G3WncuJS2GDGoRjMLDx3rradbGZaahIzL+X6aGdJ96u1sLB+SqvTns0CPjQ==
+ b=MNBMSCPxgalaKbaCMpeX7zeeVfRyg6Se/UGFuFHp1vpkkgMAY62fW9RZqZa+lg5zUmVnhlBhHNxNpSSkCGwOMtETR1ID8gB3rQttRpXSaT42w6+h1dlzNsxlrCHX3vC0t5uelRqDOPbUvMUs15TjJ7hFAmv2e5Ilnd/TAwCL9GEXtvCszo1IZSzXX9Z5NW0Ir8qovhTyNWM4jmamPbVUjvfND/C37XHOU7bxUmB1WFzWElPqIIIBrIeFCgWKPOV2Yu7ioAJddyS/MSnzWttrKBjX3us/a1x9/XYD2jNUwSchZY0kNqi8l2mR/7eAa7CjTPfQTGABeDENUNJ92nXcow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XNWUzWtD4jyUHCjUGRd4PNytuuVB9fsnDINWxWiCOzU=;
- b=wwWis+DWtVCSl6cIm7q4xmRYh06uDo8wcvqrCWav6y6LMeNrUyjqbokhmhSvwrkZzidiboYwqv0YumNZag+9w8YhFn0VySfIfslHoX0K7YwFEApmPXJzPEA+YKfbrxsEYUAe/lqGpeQRYZSmFIF+B6S0agp05R8LVboj3Kkom4hcrRs0P+hK5O3D1v/LhQ0anXTDf0IRGG3jzyBTcJtHKIwiXWwkxgoHVYbznxL93i6y1qzsMTxdj6/NgwUnZKv80V+lhoE0b52rqYybv95qJlcAc8aLA6/q4cNy+VCMMUNc04jBN4IJJiiCL7IaeR4jFwH4d9MFBaRZ/vFH4goA4w==
+ bh=wt9ZQCmknOoKlv4iGnfqxj+/B+Mo5cwpnSezO7GQWMM=;
+ b=RKXRpjcA020vNd8JLcBJ+MzWqMZF81H1TNKUfEHaciwx2v5+M2irhSa3rB2lrt/jkDwOwtk34e3z2pAVPkztknzwtovKMqljIhPPSBGwxfQtDj4PX5vSF9SSP2DqXUmXnGgGLQ07YQR4RPGAEH+DUU8zp/kXRrj9ciXPSnyZScqmUJmcAhnVDNGifM+U6/05IMUmQmXtrWc0OA/s2jmE6joFjK9bWIL16F8DaSYTF+NmmG6NKN0atcFLzar0jiqNO+wnaU0EESvi3BL44sg4bu39Ks0+ZdoVQupykbpb9B62HtcSoADBcNUEaf1X5rgjc4En6VC3ZE4jp+d5UFbvcw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XNWUzWtD4jyUHCjUGRd4PNytuuVB9fsnDINWxWiCOzU=;
- b=on/UMaDgWk0dmZn7LYR0SNa4eBenDWrNPiYbphTdagGc4GW2I+tgOZW31+4Hx0gmH1X8wBMp7qZe/WRMPP08ckJlBkCv5Hj0DbCXmEaGka/NfHarGltufT4yNoDBwyUa1wRoHOTJ7Lbt9x1GmhLPrYlHkhqvsVN8TfvkREusxlo=
+ bh=wt9ZQCmknOoKlv4iGnfqxj+/B+Mo5cwpnSezO7GQWMM=;
+ b=WaYMdS52D4SXmZs4/aoTTUaJObbSLALksTR2oulxZiuOopdZySA4Xhp96KOTBcaBxMPKF8xLAjB7kJ+Qfeh62MAeoF8YoBXaUI7nZi42fAjk5GYNhYktC8nik4Jv4CFuaKIXVRzB666nR8RNi3g388wLxVkalimxNtEx0rWfhB0=
 Received: from LV8PR10MB7943.namprd10.prod.outlook.com (2603:10b6:408:1f9::22)
- by SN7PR10MB7048.namprd10.prod.outlook.com (2603:10b6:806:347::21) with
+ by IA1PR10MB7199.namprd10.prod.outlook.com (2603:10b6:208:3f9::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.14; Tue, 3 Sep
- 2024 19:35:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.23; Tue, 3 Sep
+ 2024 19:37:56 +0000
 Received: from LV8PR10MB7943.namprd10.prod.outlook.com
  ([fe80::a8ec:6b6b:e1a:782d]) by LV8PR10MB7943.namprd10.prod.outlook.com
  ([fe80::a8ec:6b6b:e1a:782d%7]) with mapi id 15.20.7918.020; Tue, 3 Sep 2024
- 19:35:43 +0000
-Date: Tue, 3 Sep 2024 15:35:38 -0400
+ 19:37:56 +0000
+Date: Tue, 3 Sep 2024 15:37:52 -0400
 From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -115,9 +115,8 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/3] mm: Make arch_get_unmapped_area() take vm_flags by
- default
-Message-ID: <oruvg2nly4taqwdmfzzpzrnnvbyfzvhbktamte2h4ztma76cy4@vtd5v3seao4d>
+Subject: Re: [PATCH 2/3] mm: Pass vm_flags to generic_get_unmapped_area()
+Message-ID: <c72vxvgbnfnph2rtcntkckqr23yd6y4nzk6fow6x644r7noaob@43c6mbe7r4v4>
 Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
 	Mark Brown <broonie@kernel.org>, Richard Henderson <richard.henderson@linaro.org>, 
 	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
@@ -143,13 +142,13 @@ Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
 	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org
 References: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
- <20240902-mm-generic-shadow-stack-guard-v1-1-9acda38b3dd3@kernel.org>
+ <20240902-mm-generic-shadow-stack-guard-v1-2-9acda38b3dd3@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240902-mm-generic-shadow-stack-guard-v1-1-9acda38b3dd3@kernel.org>
+In-Reply-To: <20240902-mm-generic-shadow-stack-guard-v1-2-9acda38b3dd3@kernel.org>
 User-Agent: NeoMutt/20240425
-X-ClientProxiedBy: YT4PR01CA0321.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10a::15) To LV8PR10MB7943.namprd10.prod.outlook.com
+X-ClientProxiedBy: YT3PR01CA0048.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:82::32) To LV8PR10MB7943.namprd10.prod.outlook.com
  (2603:10b6:408:1f9::22)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -161,554 +160,190 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR10MB7943:EE_|SN7PR10MB7048:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3416324-594d-4b89-ecd3-08dccc4f991c
+X-MS-TrafficTypeDiagnostic: LV8PR10MB7943:EE_|IA1PR10MB7199:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55408ea6-0e59-4c94-e0c0-08dccc4fe8e4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Jv68cBl1w2YPH2kUnj0VY1uqQ+1ff7EB9ieECNFqG2tXD0qPf5CjrYxVvjfh?=
- =?us-ascii?Q?DvvUrXG+dkN4vCVEzzZwea2/3uNrLqu4QIsEln/aG0cw36vNFc9YZR/cIJYG?=
- =?us-ascii?Q?WLxevh9W916uhM85s2dX8dOaxd9AC8LbOxTBOxB4yIwtcUKHJccsyyBvHI8m?=
- =?us-ascii?Q?gwkTEp7pP0ckdQm0Y2/P6z7lyLnLOrlH/DAFkjbf9Qut4Z+of8kwzky23drX?=
- =?us-ascii?Q?/49qjqB6wAfwAOJTF/dpFS/cR/ybWHDnFnCdOfe6uvZUreMc8cDfj5zEwmTz?=
- =?us-ascii?Q?zxg/ST6VAmNkYx1J+2hdvfNrsR6WYh8BbYYh0BVPEhszEoocfsfod63i/5VK?=
- =?us-ascii?Q?4Rh5UJ97ok5yKkEXrDrgD+KVxBywzPQXEawRkqGwnFpK8UuYUv/H39timL7p?=
- =?us-ascii?Q?JgTzqRrAR1zTaJr9qOjzohLUvzhqFCtd3UjPctGJgK1/9C8hRwXGEUfOZ5Cy?=
- =?us-ascii?Q?g8tNR8KDFbo9LzstKvYIPmt5C8si7pbDojvaIIW0Ta4tIBwpxQIIDwCWlfVj?=
- =?us-ascii?Q?mMj6WcKUU+GPsZ76KFfBeto9nO9ntRNjITSC0PKiQEC30Nv1cmoHoR5OQABb?=
- =?us-ascii?Q?q8wsPMiFookm7yVx0R1s9cWHXxFd3IxBHkIx3pC0d03/1exxVOaLL2zUpxdo?=
- =?us-ascii?Q?qSBSrbg6KbHO4BG7r4qDEZ+6MSymOgGYNYznUtl2aPtPtBV4dn20VhGvVhB7?=
- =?us-ascii?Q?raRuv6bUobl/MW+oSoVNAVQTX7Gz6CRr2KoRzMRzGam6KcpFoop99v7Qtu4I?=
- =?us-ascii?Q?Um+fZJ+CGY4eBaTK/Q7xyBSy2UwxvyqY5tfHnE611L9xmx/zf/EHPpg6fQ+1?=
- =?us-ascii?Q?Cgn+TITFvAQZTwzW5HABHHcShGkKUbVdgxLqtQ2GHPB/pGk5w7qfRHR3yMDP?=
- =?us-ascii?Q?FoAS47CJbud2tPCTK+90IholcBCefou09fS+0sYBNyObVBjgSEWDBoYzHfON?=
- =?us-ascii?Q?CkS2H42soJdqYp44CQjJghJB8kAJL+EU9nQ2+pv1+m68ZgAo5FVYmeuY2Xm3?=
- =?us-ascii?Q?n7T+UZ+e21MxZE1lbz2TdYbozGcfFKMf87M3TWEyqw82ho+TNJmRKN8kf/VN?=
- =?us-ascii?Q?4UAgBGu0NrW0OymkbGA4lUcLY8kuzThZ1MGqmE5sS5gFYYm+7cIT79e5ZHs5?=
- =?us-ascii?Q?0a/99izarDUjGDUZ+PWs8JahV+H6YgfjucuI+VgbjXxhWoYuKY3wSVWpOt0I?=
- =?us-ascii?Q?NlLtWfwHS1CJJYx5awqK8YnENfbwgIetevJCPDaX6VJuAswGsn+wrkRjRcNL?=
- =?us-ascii?Q?UByTv76k5VJKkP15n91WQ8EPKi7ljghY30aUc0Fh22RYXWbjCs3GKFLDZhPX?=
- =?us-ascii?Q?B8cs1CQvIRMnAkq9BhahrvOELXoQzMC+EL/GMnJOLKAB8g=3D=3D?=
+	=?us-ascii?Q?Ljk0gatIXDFOgCq8lj3UWubx9v+++iqHhiG9cSDnTT/KLdnxnxE9BFJUfvX4?=
+ =?us-ascii?Q?1dNO7z//7rxLZOn6EpkT04dBg+thdloykPqufLBvD7YoqhuHGOGhYH+k5Fkv?=
+ =?us-ascii?Q?oOUyBaBhzM6mrEyzHa9aIa5BSv/oSyu7dG7PMSPpLixeKihG1vUQc22MN1uD?=
+ =?us-ascii?Q?IqBXiULr63kF10b8h7FMex7I9a7ue/d7NwZkOlgn/O1XCSyKGoXm0bvV1K/E?=
+ =?us-ascii?Q?BPEz/u0DuEIJrsVer/xnxUqZTR/XB4I1gznlOoFrQVf/RP79NVNOaJxt/nku?=
+ =?us-ascii?Q?5lkKlid2BvgBWauOKN2chPf197yn8SvkfBVQwZvGXVACx2ywp/yvGA3s+NRX?=
+ =?us-ascii?Q?Td/zY6RxXnUXCSM1NBGGGxwFR3S3Ju6wMrckaVwq7SLxjBtILWBhqEKJQRhT?=
+ =?us-ascii?Q?EvW3oS0QjpmA2q+mryl/EO0o/HH1NXt5Pl1/UZ5lNPK1JvCTkaMdsbxC2QVs?=
+ =?us-ascii?Q?d7E1k/5N7ZMi7tOIBApMC0zsmCfMETHoJvamCG1bLFc9RE6FpmYoNg5OMBZo?=
+ =?us-ascii?Q?K/IkQTN32Z3q4jFEGs2fQiG6GxpeBKCu5HNZv6sPht3ypQVB54TEMawoQ5bT?=
+ =?us-ascii?Q?L15fKy+WZXBEsPoxnvIjVpZhMfpPj+Rm4Pu7c6x28RfdY/QWtZkPlXv8VqvL?=
+ =?us-ascii?Q?ooOotTtx4zRMEEud9V7U6giQD8l7Xocyzcnamdu7hsx0sNUv3nCL2IAPFPZI?=
+ =?us-ascii?Q?NgH4egoozd7bgsOofHayBxAwOVpCa+XovOu2TFcZgmrplgRX9WDGUI4Q4WL7?=
+ =?us-ascii?Q?O0TNDJD/I3xHNsgoovYNU/M7uoqIYyyEyoKruJnm7/4DQLF/u5nd7Jlkj3Wu?=
+ =?us-ascii?Q?iW99NKCDbfCPnVR6RtcbJcmpKeQfkI+eOPXwwa1h+1lI/Z2pR2poaBsuaiy2?=
+ =?us-ascii?Q?PKIs7xuIE2vfPl+B4TRRXeUKf1Oa9gFUertXQ0IteNcu4Y/JW5Z9JDda71DE?=
+ =?us-ascii?Q?v0mb34krGEg91QGsCiVpnllqaMgfXHylc6SOpLjS2yo5ukrUxLQH4ztN+Uv7?=
+ =?us-ascii?Q?k34PQes0JXeYn2h4yR26u88T2dxOYRrrm76pFUxXsDAGkzC8nNzToouDTbpY?=
+ =?us-ascii?Q?fNbqB6v1pAGETaAMy42NNc56iSl9zhY6JDAlxz94RrlNTppcYqtavnVGhMNA?=
+ =?us-ascii?Q?SYyU1+5nFLYdAx4bge2U343CAb1xbDnUM4+Zjsoy/3P/VwTLWDPQNu3DD9d0?=
+ =?us-ascii?Q?Sw9P/2PQfObPy+tztChNZreG5ORdGy01SkUQTqUMSptbDbvh+SZcLG1kSmTU?=
+ =?us-ascii?Q?w1i/PIQnJaTr0p3jdkbiqAIVB0upx11USeaM2WzeyZpJNu0YwSnvll/2GZ83?=
+ =?us-ascii?Q?jbSCJpmHPegsSprhl5qGdJ6JbNVKcc6fzdkIRMgcStWM5Q=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR10MB7943.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR10MB7943.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6XiNDH7mprLl0fwQEE8GmO4DWLCqVC5OBISbW857MaXuJzSmWfAdNXFWqCGa?=
- =?us-ascii?Q?qBA1QPCHHUUC5XHI20ayDo9BQ/zkIMM+t9K5vjt7dt9uJp+lMgMt+pR73snV?=
- =?us-ascii?Q?3UkezUiHzBdARdeai6x99sbVOo5WilgI/daEHdhlNlrcxGCgWOupzYSFbSQ4?=
- =?us-ascii?Q?WM7CbP9AufUtaJfpdvqxgaJrt8u6SAPGIEd/lUBo9F5N5HJUeECCilbFOkHj?=
- =?us-ascii?Q?jIjYqCt8goMA6ZVQCdcg53gmYiiPNifLNqyleVdnqodODiAyDNWkzqb6nGgf?=
- =?us-ascii?Q?Go7fih0//ESEw3yWMWelM27EQWPDvKhy/3uD4aS7aFNSEYMYLij0KPc00V03?=
- =?us-ascii?Q?pXMst3D6k7fvv1htxOBB86tlKZWEZZ+RyRJCRovZvSfoU+RTEW3yHXRAyo+2?=
- =?us-ascii?Q?QpNVzovGt0SOQn0kpicrJm2dtHnXb6b8EMRD+YCIy7hlioXl/ov35rNQVDPV?=
- =?us-ascii?Q?C2sZcSrU2tAblQlI++bNAgVXaJFd+/fFb2FsVUFw9XwG0fhuV5ETKsFyZGzB?=
- =?us-ascii?Q?Ps75lKM7j+2nJtTBoKKrq/j/05VmNSHAuwi9r/bcwW2A8cn1tJlrDLX01Vty?=
- =?us-ascii?Q?t/IK4mYqzdiiLSlQWtDR8uSn+k+6LYxT1HaUtu3Mg1sAd0doorYfwBKxJD2o?=
- =?us-ascii?Q?s5z9Hpnenpi4wnXMNWqDIH92V3R5nfBSAHWFQ5CZcvQ2zNyg4ksLzC/pQJtL?=
- =?us-ascii?Q?uD+iNLFqGLu4VbsfCmZkkRJHMnoy1NocQ/hC5QNsbV/V2ZvbQygywEj8I/yg?=
- =?us-ascii?Q?OmWfAAvv3+vGBegYFPsJhq9pqLxenIj0dq0jHLk2MhVJsAJINLltf3V+mVFj?=
- =?us-ascii?Q?Ju4YzyrPg97af23kuCHIACENCNGHrszxfSVvpGjJhwX62+G6OabN2E5/2Jef?=
- =?us-ascii?Q?13SgGWd0Olh4Q/KvP2RUSQDKUuuUHDWlqa9AFM4JhZQIyhBb4TJNeR0Ajr9l?=
- =?us-ascii?Q?sdIXjmwokpjz0+R/iAwpOMXxuB3hZVLdbnmJtGzMBDlJ1k+hyS0yvUvrQ63L?=
- =?us-ascii?Q?EJQxu/FW2K7B3QxmjBoUMKAozQ4oPRtPpBsaTVsQ082n3BftKW/k8zh1UcaJ?=
- =?us-ascii?Q?X5Eb9tyieKpbhEr/tW99/MyLZWJ0kDkn/y7i8dVRK3kA688YC4Ce5YVrtYiv?=
- =?us-ascii?Q?Hxsol5aQtmu3P2qsIgRIOwsxlWq1Ktc/P+Gns61x1YPS2HB6SEcuGGbuPLms?=
- =?us-ascii?Q?5WZSYBwHQNcDeMKrbycDZMuc73c0B6gG5GxkSs9qin2l+ahlBnX0nOWjlKQX?=
- =?us-ascii?Q?XZp1vhVU1ucWhQcuwIjftqgSyfJHi3rI8+z7zMWjoBHi5lUg9c/s2gLXkYUx?=
- =?us-ascii?Q?xLxXYxWHIDPpCmvTePS9VLjB8OuWoU2ThaM08JFAwu65fz4iuHP4iITbJjd0?=
- =?us-ascii?Q?t2jfNjEVDY+kuQBwxoPdiNZ06WST27sIFBmCPSd6ZKe5kHmVBDCg4Ziv81XJ?=
- =?us-ascii?Q?THYdl+L4RPtFEog7tG7HDvED9GIk/IPd+3YB+yw/V3+qbYbHkbMtPIaEawsr?=
- =?us-ascii?Q?oAbvAMNbMTdsJ7S3EUSAd4scl5rz87PuKRJ9ZElRZkPPnQJ2mWYs0AJwBsjm?=
- =?us-ascii?Q?QlvjbSdEgd6cAfEE8ILV/aUlIoujMdvDXf+xuNIm?=
+	=?us-ascii?Q?dibtE6Q6MzSoM8kVH9blZ3aSAflur0cKqGRwuBfpGX5wF5aMV0UJCMBTB1sD?=
+ =?us-ascii?Q?56hUnFQ4o9kbkui3FauoDxPgjF4HR+ddMZlCn7BIis+P6M/p6USWn3oFEZyg?=
+ =?us-ascii?Q?pJA9CT7ke8a5eu53wgQuHV4GPGFGsPFMudnyqPS8NLUpQJQ+wxoT/JrOSNle?=
+ =?us-ascii?Q?ofxXnViHv3SwnbZ9Ukn9vjcu71kzZMPv8uIIjXwubdx9DpLUO/fQokkN0Sls?=
+ =?us-ascii?Q?3tRIVoZIwYpOvhQ97IiiHeu3qDYpIIcRDF0sCZeWzgXpxyx/gBYXKoSA/MxL?=
+ =?us-ascii?Q?k78aswR76I2XT5IIVMCidUDHWoOPFvnQPzVzUHoKJYm4LschD15Z0UlC9qMc?=
+ =?us-ascii?Q?tdb+jVuwsYPq6Sit9se0MwBYOno4IGUfmU4FmC2TlvEWiAP2sNXHIIDf7znj?=
+ =?us-ascii?Q?sOHkko8usNHFpb5tt8SFZlf3x6VJCH5phR6u3rRGucttDxarrGnFIWwGlX92?=
+ =?us-ascii?Q?7vI7k9UtUjdHAN8W1mBkPJJjleTbAwgWBWEkK6YHKrioqOBkAOb/SzHQQEQ9?=
+ =?us-ascii?Q?XqVB22fikijB1Z2xOhkcnzFf34fTLEKQfwLWv1ke3voU5Fx9rYgIb8nkeVps?=
+ =?us-ascii?Q?x6NK1kYdPEEDILNpgl8viZtid1x5f4bLVTNHpbarsAZMNqkbIknauEEBIqkj?=
+ =?us-ascii?Q?ziyoe1fRbzr631ThLBWMHU/qF2j+hlG+mXu6M2W4OPwi2/YOWFClfl0kG6V1?=
+ =?us-ascii?Q?2mwEkOQP259rI9rXl1kY//y4vwmfKvLvJfjg1tH8jvsLNNzA2wbih+gWgZFZ?=
+ =?us-ascii?Q?lM8cvZndRIGkGvaOvVKSOjvCbNULxhOf7q6sEOldtw+LejpnhZkUqPj7G9/R?=
+ =?us-ascii?Q?ETO9aJWbIsUSVwAqzuTrO9dwVcOX32MGdc/qa+HQPaL3DlUNULttv7znDDtc?=
+ =?us-ascii?Q?rPlAbRhRBz4gA2sEk9k5akFQDodHROo4SaKvwC+Ur6VvMr28OsKE3ijiFDv7?=
+ =?us-ascii?Q?vWgwpWSJQ2G7c/Xna5QP8nZptrz9SRt79T+XtVPdO3e5zVI6/N6M13L4TbSv?=
+ =?us-ascii?Q?uuCPpTasYzWhyiYrw+D4USlszKofp5EKbJYa58ibezQUM85q72Jwp1etC6Ej?=
+ =?us-ascii?Q?ZKdSg8fgIfLka7jwz0J2rTAAW49/dztWeNJO4NTiMysCYYMAokkg//6/II+u?=
+ =?us-ascii?Q?302Rk9xwh67Qzus+Zqg5fxR3D4OLspTB8mo2uHGDTEyykp1RsHP/ywEbV6VR?=
+ =?us-ascii?Q?O6nM5FeZg5GVock/KC0l+OksPaEam5JHtxRXuUL4LEEj860wX2H1p6KEfRoS?=
+ =?us-ascii?Q?43Gr8bBiNsmRLqpRC5+Af//3qiKP78TRecetHUPXxQGnOQaMboiI7LUy1UrC?=
+ =?us-ascii?Q?YixSmovbblL7pdO+EF8s4aWxboBz9ITCkAP1+b+6zMSZgxVQ4CB+4LBl8/d7?=
+ =?us-ascii?Q?Ap8hNhVqk+90b7EPYVoSwa9uzfllo58GAOakhFEopf9WKicyogxSvj3Tber2?=
+ =?us-ascii?Q?+N6P8u/jVThV9I86HIQBjk9OyuUKYfEDtvNtlk/u3WqqsyS3yPN+h/QhoDQD?=
+ =?us-ascii?Q?k7UOQ/lI2vC01MLocGYiuiBD6aQoL8sNUbT8x8KBYlP8Q8YjKzi8loCOdtAs?=
+ =?us-ascii?Q?syj+mMkY4tb4mzyjfjUELPCGMWsC7bp0blAdNQv6?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	WniYVBWYozP095f9ILXHXBGT3ev9mZTjsbjz/0VmO9R9dp2dLK6aUxzkNY2FV8772/ASlHtM3nXwyjb73EFifQa0cwlZEngIaFI1Ursy74fELETSkUf7frohOAtAYf/BFbNw4Bwjn2d2QyiDfqi/6v0h9ckUeW6mDHDoRYI6PidHjGHzZFoOCz+R6PoWFyi1NG/8wooZmrzktd+P2EERA92aVjtwQLpBqYneybd2VHfVVNcqWcYOXunZN/qBL0ZjIWGJga3mTUedRvcRuA7PVJuHiMNK3utksfqNz3oqg0S7uikM2q1bIRr0PTJ+oSJjCt9GJ/gocZXlcfeJRWNvgBAeq1HHMcc3P3WRre4MVutTm9Mpb3SioYDjBKx0nJdbsETovm4QXlXNQ6Zqhhg2zF35G34pI6mztqBqZgRL/ufuk2huWAnS1Hp0nq+w3vxiko/PFuoH0Nd9sqhlc0tEQLo+4Qhbs5OZWenkxEeixnDd3RxocmFWXn+0QArFHD4LNU6V2MM0rBIg2Q5PQA0EN9Zf/Ot5zTae3RteqfRQOswf227o/MaxYXPQ+NuP3CtJoX4tx1EwldJcfQuYWovuVyBL9gl7DHqFDUEVRGKyG3M=
+	4oW3cMtwkzPq1ORHBX/Cd82RSPeDXQbsj2pqaSIc2GQAsTzj5okRLB/PpCfWtbNBhXH5g3/FZ1FNCoJbTBPfuBx06Yo2Cbx/auBnFmWGzkzVHCCONLFvWaA7ktf3Bwkl9IwN5mu/q/af/nOWdx9byDtZrkXhyycfwBicGLKybZJTVu9EglcWkeOncbtt/b/TfQv2/pKxREtW+LCADxDljCVIpW9zFh8op8qIwCh7fV0cy87d4nMzI9zcLhzc9UOS03VSdDoJQU8Y0cOwy+OtY9xs1UwysaHiZz2EGuftZ2ycBG3b1Atj4QFhCfT2Pq4gT6WWHM4sXIScYYt7vXU99PaZLCOBuGW6Rcw8leD77kjjgodjq+ITLTE95QzODjfLMOS9fX6A3GO7hwbH/USoTxQ6l9QV8/Ktax2PA9FIWtIoaFA+F8Nz1jIG0eFu/Uqzn7okqqyIy6XT5qRa0rOzed1UA+7fVLnF8639J9GfpLULlmkcgX3bGrrBEI408d+SYsmI6Lk098mJagZvX1ysWqzUUSvJbnNovrmZIusop7AOzQWQZ4UHfdlbunzTU+ugjZS1bdtClxoMDd7nI3D7qiVr5/YQQLdcbf/DoiaOYvc=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3416324-594d-4b89-ecd3-08dccc4f991c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55408ea6-0e59-4c94-e0c0-08dccc4fe8e4
 X-MS-Exchange-CrossTenant-AuthSource: LV8PR10MB7943.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2024 19:35:42.6167
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2024 19:37:56.3086
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: afb4OQd6R8SBbpzGnsrhFN5SzOX6n7CdaJYU0nnjCF1r2vBtuWx4bghkjewLnWxxDUgj2znZMaXOG7JFXHZ5jg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB7048
+X-MS-Exchange-CrossTenant-UserPrincipalName: HgzALcugHCDefdQxenLAzhGfK5YCBy5ObNO3RVHU18gXyz/FWyxPPg/qg/qkd5WnA0/ihG1OBlqYi9pgyy75Yw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7199
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-03_07,2024-09-03_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- mlxlogscore=999 suspectscore=0 bulkscore=0 spamscore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2407110000 definitions=main-2409030157
-X-Proofpoint-GUID: G-AijYksxi5A1NPaIZ2guU5BAla7EKWG
-X-Proofpoint-ORIG-GUID: G-AijYksxi5A1NPaIZ2guU5BAla7EKWG
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 phishscore=0
+ mlxscore=0 bulkscore=0 adultscore=0 malwarescore=0 mlxlogscore=859
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
+ definitions=main-2409030158
+X-Proofpoint-GUID: ufDMhQupoIYRL5DWhIQxmsUY2JyoEryv
+X-Proofpoint-ORIG-GUID: ufDMhQupoIYRL5DWhIQxmsUY2JyoEryv
 
 * Mark Brown <broonie@kernel.org> [240902 15:09]:
-> When we introduced arch_get_unmapped_area_vmflags() in 961148704acd
-> ("mm: introduce arch_get_unmapped_area_vmflags()") we did so as part of
-> properly supporting guard pages for shadow stacks on x86_64, which uses
-> a custom arch_get_unmapped_area(). Equivalent features are also present
-> on both arm64 and RISC-V, both of which use the generic implementation
-> of arch_get_unmapped_area() and will require equivalent modification
-> there. Rather than continue to deal with having two versions of the
-> functions let's bite the bullet and have all implementations of
-> arch_get_unmapped_area() take vm_flags as a parameter.
-> 
-> The new parameter is currently ignored by all implementations other than
-> x86. The only caller that doesn't have a vm_flags available is
-> mm_get_unmapped_area(), as for the x86 implementation and the wrapper used
-> on other architectures this is modified to supply no flags.
-> 
-> No functional changes.
+> In preparation for using vm_flags to ensure guard pages for shadow stacks
+> supply them as an argument to generic_get_unmapped_area(). The only user
+> outside of the core code is the PowerPC book3s64 implementation which is
+> trivially wrapping the generic implementation in the radix_enabled() case.
 > 
 > Signed-off-by: Mark Brown <broonie@kernel.org>
 
-I don't love sparc32/sparc64 requires a wide screen monitor, but it
-already broke the 80 char limit.
+
+It is interesting that book3s64 ppc is special in this regard.
 
 Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
 
 > ---
->  arch/alpha/kernel/osf_sys.c       |  2 +-
->  arch/arc/mm/mmap.c                |  3 ++-
->  arch/arm/mm/mmap.c                |  7 ++++---
->  arch/csky/abiv1/mmap.c            |  3 ++-
->  arch/loongarch/mm/mmap.c          |  5 +++--
->  arch/mips/mm/mmap.c               |  2 +-
->  arch/parisc/kernel/sys_parisc.c   |  5 +++--
->  arch/parisc/mm/hugetlbpage.c      |  2 +-
->  arch/powerpc/mm/book3s64/slice.c  |  6 ++++--
->  arch/s390/mm/mmap.c               |  4 ++--
->  arch/sh/mm/mmap.c                 |  5 +++--
->  arch/sparc/kernel/sys_sparc_32.c  |  2 +-
->  arch/sparc/kernel/sys_sparc_64.c  |  4 ++--
->  arch/x86/include/asm/pgtable_64.h |  1 -
->  arch/x86/kernel/sys_x86_64.c      | 21 +++------------------
->  arch/xtensa/kernel/syscall.c      |  3 ++-
->  include/linux/sched/mm.h          | 23 ++++++++---------------
->  mm/mmap.c                         | 31 +++++++------------------------
->  18 files changed, 49 insertions(+), 80 deletions(-)
+>  arch/powerpc/mm/book3s64/slice.c |  4 ++--
+>  include/linux/sched/mm.h         |  4 ++--
+>  mm/mmap.c                        | 10 ++++++----
+>  3 files changed, 10 insertions(+), 8 deletions(-)
 > 
-> diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
-> index e5f881bc8288..8886ab539273 100644
-> --- a/arch/alpha/kernel/osf_sys.c
-> +++ b/arch/alpha/kernel/osf_sys.c
-> @@ -1229,7 +1229,7 @@ arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
->  unsigned long
->  arch_get_unmapped_area(struct file *filp, unsigned long addr,
->  		       unsigned long len, unsigned long pgoff,
-> -		       unsigned long flags)
-> +		       unsigned long flags, vm_flags_t vm_flags)
->  {
->  	unsigned long limit;
->  
-> diff --git a/arch/arc/mm/mmap.c b/arch/arc/mm/mmap.c
-> index 69a915297155..2185afe8d59f 100644
-> --- a/arch/arc/mm/mmap.c
-> +++ b/arch/arc/mm/mmap.c
-> @@ -23,7 +23,8 @@
->   */
->  unsigned long
->  arch_get_unmapped_area(struct file *filp, unsigned long addr,
-> -		unsigned long len, unsigned long pgoff, unsigned long flags)
-> +		unsigned long len, unsigned long pgoff,
-> +		unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct *vma;
-> diff --git a/arch/arm/mm/mmap.c b/arch/arm/mm/mmap.c
-> index d65d0e6ed10a..3dbb383c26d5 100644
-> --- a/arch/arm/mm/mmap.c
-> +++ b/arch/arm/mm/mmap.c
-> @@ -28,7 +28,8 @@
->   */
->  unsigned long
->  arch_get_unmapped_area(struct file *filp, unsigned long addr,
-> -		unsigned long len, unsigned long pgoff, unsigned long flags)
-> +		unsigned long len, unsigned long pgoff,
-> +		unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct *vma;
-> @@ -78,8 +79,8 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
->  
->  unsigned long
->  arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
-> -			const unsigned long len, const unsigned long pgoff,
-> -			const unsigned long flags)
-> +		        const unsigned long len, const unsigned long pgoff,
-> +		        const unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct vm_area_struct *vma;
->  	struct mm_struct *mm = current->mm;
-> diff --git a/arch/csky/abiv1/mmap.c b/arch/csky/abiv1/mmap.c
-> index 7f826331d409..1047865e82a9 100644
-> --- a/arch/csky/abiv1/mmap.c
-> +++ b/arch/csky/abiv1/mmap.c
-> @@ -23,7 +23,8 @@
->   */
->  unsigned long
->  arch_get_unmapped_area(struct file *filp, unsigned long addr,
-> -		unsigned long len, unsigned long pgoff, unsigned long flags)
-> +		unsigned long len, unsigned long pgoff,
-> +		unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct *vma;
-> diff --git a/arch/loongarch/mm/mmap.c b/arch/loongarch/mm/mmap.c
-> index 889030985135..914e82ff3f65 100644
-> --- a/arch/loongarch/mm/mmap.c
-> +++ b/arch/loongarch/mm/mmap.c
-> @@ -89,7 +89,8 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
->  }
->  
->  unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
-> -	unsigned long len, unsigned long pgoff, unsigned long flags)
-> +	unsigned long len, unsigned long pgoff, unsigned long flags,
-> +	vm_flags_t vm_flags)
->  {
->  	return arch_get_unmapped_area_common(filp,
->  			addr0, len, pgoff, flags, UP);
-> @@ -101,7 +102,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
->   */
->  unsigned long arch_get_unmapped_area_topdown(struct file *filp,
->  	unsigned long addr0, unsigned long len, unsigned long pgoff,
-> -	unsigned long flags)
-> +	unsigned long flags, vm_flags_t vm_flags)
->  {
->  	return arch_get_unmapped_area_common(filp,
->  			addr0, len, pgoff, flags, DOWN);
-> diff --git a/arch/mips/mm/mmap.c b/arch/mips/mm/mmap.c
-> index 7e11d7b58761..02bf5353efbd 100644
-> --- a/arch/mips/mm/mmap.c
-> +++ b/arch/mips/mm/mmap.c
-> @@ -110,7 +110,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr0,
->   */
->  unsigned long arch_get_unmapped_area_topdown(struct file *filp,
->  	unsigned long addr0, unsigned long len, unsigned long pgoff,
-> -	unsigned long flags)
-> +	unsigned long flags, vm_flags_t vm_flags)
->  {
->  	return arch_get_unmapped_area_common(filp,
->  			addr0, len, pgoff, flags, DOWN);
-> diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
-> index f7722451276e..f852fe274abe 100644
-> --- a/arch/parisc/kernel/sys_parisc.c
-> +++ b/arch/parisc/kernel/sys_parisc.c
-> @@ -167,7 +167,8 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
->  }
->  
->  unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
-> -	unsigned long len, unsigned long pgoff, unsigned long flags)
-> +	unsigned long len, unsigned long pgoff, unsigned long flags,
-> +	vm_flags_t vm_flags)
->  {
->  	return arch_get_unmapped_area_common(filp,
->  			addr, len, pgoff, flags, UP);
-> @@ -175,7 +176,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
->  
->  unsigned long arch_get_unmapped_area_topdown(struct file *filp,
->  	unsigned long addr, unsigned long len, unsigned long pgoff,
-> -	unsigned long flags)
-> +	unsigned long flags, vm_flags_t vm_flags)
->  {
->  	return arch_get_unmapped_area_common(filp,
->  			addr, len, pgoff, flags, DOWN);
-> diff --git a/arch/parisc/mm/hugetlbpage.c b/arch/parisc/mm/hugetlbpage.c
-> index 0356199bd9e7..aa664f7ddb63 100644
-> --- a/arch/parisc/mm/hugetlbpage.c
-> +++ b/arch/parisc/mm/hugetlbpage.c
-> @@ -40,7 +40,7 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
->  		addr = ALIGN(addr, huge_page_size(h));
->  
->  	/* we need to make sure the colouring is OK */
-> -	return arch_get_unmapped_area(file, addr, len, pgoff, flags);
-> +	return arch_get_unmapped_area(file, addr, len, pgoff, flags, 0);
->  }
->  
->  
 > diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
-> index ef3ce37f1bb3..ada6bf896ef8 100644
+> index ada6bf896ef8..87307d0fc3b8 100644
 > --- a/arch/powerpc/mm/book3s64/slice.c
 > +++ b/arch/powerpc/mm/book3s64/slice.c
-> @@ -637,7 +637,8 @@ unsigned long arch_get_unmapped_area(struct file *filp,
->  				     unsigned long addr,
->  				     unsigned long len,
->  				     unsigned long pgoff,
-> -				     unsigned long flags)
-> +				     unsigned long flags,
-> +				     vm_flags_t vm_flags)
+> @@ -641,7 +641,7 @@ unsigned long arch_get_unmapped_area(struct file *filp,
+>  				     vm_flags_t vm_flags)
 >  {
 >  	if (radix_enabled())
->  		return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
-> @@ -650,7 +651,8 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
->  					     const unsigned long addr0,
->  					     const unsigned long len,
->  					     const unsigned long pgoff,
-> -					     const unsigned long flags)
-> +					     const unsigned long flags,
-> +					     vm_flags_t vm_flags)
+> -		return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
+> +		return generic_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
+>  
+>  	return slice_get_unmapped_area(addr, len, flags,
+>  				       mm_ctx_user_psize(&current->mm->context), 0);
+> @@ -655,7 +655,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+>  					     vm_flags_t vm_flags)
 >  {
 >  	if (radix_enabled())
->  		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags);
-> diff --git a/arch/s390/mm/mmap.c b/arch/s390/mm/mmap.c
-> index 206756946589..96efa061ce01 100644
-> --- a/arch/s390/mm/mmap.c
-> +++ b/arch/s390/mm/mmap.c
-> @@ -82,7 +82,7 @@ static int get_align_mask(struct file *filp, unsigned long flags)
+> -		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags);
+> +		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags, vm_flags);
 >  
->  unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
->  				     unsigned long len, unsigned long pgoff,
-> -				     unsigned long flags)
-> +				     unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct *vma;
-> @@ -117,7 +117,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
->  
->  unsigned long arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
->  					     unsigned long len, unsigned long pgoff,
-> -					     unsigned long flags)
-> +					     unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct vm_area_struct *vma;
->  	struct mm_struct *mm = current->mm;
-> diff --git a/arch/sh/mm/mmap.c b/arch/sh/mm/mmap.c
-> index bee329d4149a..c442734d9b0c 100644
-> --- a/arch/sh/mm/mmap.c
-> +++ b/arch/sh/mm/mmap.c
-> @@ -52,7 +52,8 @@ static inline unsigned long COLOUR_ALIGN(unsigned long addr,
->  }
->  
->  unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
-> -	unsigned long len, unsigned long pgoff, unsigned long flags)
-> +	unsigned long len, unsigned long pgoff, unsigned long flags,
-> +	vm_flags_t vm_flags)
->  {
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct *vma;
-> @@ -99,7 +100,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
->  unsigned long
->  arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
->  			  const unsigned long len, const unsigned long pgoff,
-> -			  const unsigned long flags)
-> +			  const unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct vm_area_struct *vma;
->  	struct mm_struct *mm = current->mm;
-> diff --git a/arch/sparc/kernel/sys_sparc_32.c b/arch/sparc/kernel/sys_sparc_32.c
-> index 08a19727795c..80822f922e76 100644
-> --- a/arch/sparc/kernel/sys_sparc_32.c
-> +++ b/arch/sparc/kernel/sys_sparc_32.c
-> @@ -39,7 +39,7 @@ SYSCALL_DEFINE0(getpagesize)
->  	return PAGE_SIZE; /* Possibly older binaries want 8192 on sun4's? */
->  }
->  
-> -unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags)
-> +unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct vm_unmapped_area_info info = {};
->  
-> diff --git a/arch/sparc/kernel/sys_sparc_64.c b/arch/sparc/kernel/sys_sparc_64.c
-> index d9c3b34ca744..acade309dc2f 100644
-> --- a/arch/sparc/kernel/sys_sparc_64.c
-> +++ b/arch/sparc/kernel/sys_sparc_64.c
-> @@ -87,7 +87,7 @@ static inline unsigned long COLOR_ALIGN(unsigned long addr,
->  	return base + off;
->  }
->  
-> -unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags)
-> +unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len, unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct * vma;
-> @@ -146,7 +146,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
->  unsigned long
->  arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
->  			  const unsigned long len, const unsigned long pgoff,
-> -			  const unsigned long flags)
-> +			  const unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct vm_area_struct *vma;
->  	struct mm_struct *mm = current->mm;
-> diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-> index 3c4407271d08..7e9db77231ac 100644
-> --- a/arch/x86/include/asm/pgtable_64.h
-> +++ b/arch/x86/include/asm/pgtable_64.h
-> @@ -245,7 +245,6 @@ extern void cleanup_highmap(void);
->  
->  #define HAVE_ARCH_UNMAPPED_AREA
->  #define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
-> -#define HAVE_ARCH_UNMAPPED_AREA_VMFLAGS
->  
->  #define PAGE_AGP    PAGE_KERNEL_NOCACHE
->  #define HAVE_PAGE_AGP 1
-> diff --git a/arch/x86/kernel/sys_x86_64.c b/arch/x86/kernel/sys_x86_64.c
-> index 01d7cd85ef97..87f8c9a71c49 100644
-> --- a/arch/x86/kernel/sys_x86_64.c
-> +++ b/arch/x86/kernel/sys_x86_64.c
-> @@ -121,7 +121,7 @@ static inline unsigned long stack_guard_placement(vm_flags_t vm_flags)
->  }
->  
->  unsigned long
-> -arch_get_unmapped_area_vmflags(struct file *filp, unsigned long addr, unsigned long len,
-> +arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len,
->  		       unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct mm_struct *mm = current->mm;
-> @@ -158,7 +158,7 @@ arch_get_unmapped_area_vmflags(struct file *filp, unsigned long addr, unsigned l
->  }
->  
->  unsigned long
-> -arch_get_unmapped_area_topdown_vmflags(struct file *filp, unsigned long addr0,
-> +arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr0,
->  			  unsigned long len, unsigned long pgoff,
->  			  unsigned long flags, vm_flags_t vm_flags)
->  {
-> @@ -228,20 +228,5 @@ arch_get_unmapped_area_topdown_vmflags(struct file *filp, unsigned long addr0,
->  	 * can happen with large stack limits and large mmap()
->  	 * allocations.
->  	 */
-> -	return arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
-> -}
-> -
-> -unsigned long
-> -arch_get_unmapped_area(struct file *filp, unsigned long addr,
-> -		unsigned long len, unsigned long pgoff, unsigned long flags)
-> -{
-> -	return arch_get_unmapped_area_vmflags(filp, addr, len, pgoff, flags, 0);
-> -}
-> -
-> -unsigned long
-> -arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr,
-> -			  const unsigned long len, const unsigned long pgoff,
-> -			  const unsigned long flags)
-> -{
-> -	return arch_get_unmapped_area_topdown_vmflags(filp, addr, len, pgoff, flags, 0);
-> +	return arch_get_unmapped_area(filp, addr0, len, pgoff, flags, 0);
->  }
-> diff --git a/arch/xtensa/kernel/syscall.c b/arch/xtensa/kernel/syscall.c
-> index b3c2450d6f23..7f048d368dba 100644
-> --- a/arch/xtensa/kernel/syscall.c
-> +++ b/arch/xtensa/kernel/syscall.c
-> @@ -55,7 +55,8 @@ asmlinkage long xtensa_fadvise64_64(int fd, int advice,
->  
->  #ifdef CONFIG_MMU
->  unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
-> -		unsigned long len, unsigned long pgoff, unsigned long flags)
-> +		unsigned long len, unsigned long pgoff, unsigned long flags,
-> +		vm_flgs_t vm_flags)
->  {
->  	struct vm_area_struct *vmm;
->  	struct vma_iterator vmi;
+>  	return slice_get_unmapped_area(addr0, len, flags,
+>  				       mm_ctx_user_psize(&current->mm->context), 1);
 > diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-> index 91546493c43d..c4d34abc45d4 100644
+> index c4d34abc45d4..07bb8d4181d7 100644
 > --- a/include/linux/sched/mm.h
 > +++ b/include/linux/sched/mm.h
-> @@ -179,27 +179,20 @@ static inline void mm_update_next_owner(struct mm_struct *mm)
->  
->  extern void arch_pick_mmap_layout(struct mm_struct *mm,
->  				  struct rlimit *rlim_stack);
-> -extern unsigned long
-> -arch_get_unmapped_area(struct file *, unsigned long, unsigned long,
-> -		       unsigned long, unsigned long);
-> -extern unsigned long
-> +
-> +unsigned long
-> +arch_get_unmapped_area(struct file *filp, unsigned long addr,
-> +		       unsigned long len, unsigned long pgoff,
-> +		       unsigned long flags, vm_flags_t vm_flags);
-> +unsigned long
->  arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
-> -			  unsigned long len, unsigned long pgoff,
+> @@ -204,11 +204,11 @@ unsigned long mm_get_unmapped_area_vmflags(struct mm_struct *mm,
+>  unsigned long
+>  generic_get_unmapped_area(struct file *filp, unsigned long addr,
+>  			  unsigned long len, unsigned long pgoff,
 > -			  unsigned long flags);
-> +			       unsigned long len, unsigned long pgoff,
-> +			       unsigned long flags, vm_flags_t);
->  
->  unsigned long mm_get_unmapped_area(struct mm_struct *mm, struct file *filp,
->  				   unsigned long addr, unsigned long len,
->  				   unsigned long pgoff, unsigned long flags);
->  
-> -unsigned long
-> -arch_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
-> -			       unsigned long len, unsigned long pgoff,
-> -			       unsigned long flags, vm_flags_t vm_flags);
-> -unsigned long
-> -arch_get_unmapped_area_topdown_vmflags(struct file *filp, unsigned long addr,
-> -				       unsigned long len, unsigned long pgoff,
-> -				       unsigned long flags, vm_flags_t);
-> -
->  unsigned long mm_get_unmapped_area_vmflags(struct mm_struct *mm,
->  					   struct file *filp,
->  					   unsigned long addr,
+> +			  unsigned long flags, vm_flags_t vm_flags);
+>  unsigned long
+>  generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+>  				  unsigned long len, unsigned long pgoff,
+> -				  unsigned long flags);
+> +				  unsigned long flags, vm_flags_t vm_flags);
+>  #else
+>  static inline void arch_pick_mmap_layout(struct mm_struct *mm,
+>  					 struct rlimit *rlim_stack) {}
 > diff --git a/mm/mmap.c b/mm/mmap.c
-> index d0dfc85b209b..7528146f886f 100644
+> index 7528146f886f..b06ba847c96e 100644
 > --- a/mm/mmap.c
 > +++ b/mm/mmap.c
-> @@ -1821,7 +1821,7 @@ generic_get_unmapped_area(struct file *filp, unsigned long addr,
+> @@ -1789,7 +1789,7 @@ unsigned long vm_unmapped_area(struct vm_unmapped_area_info *info)
 >  unsigned long
->  arch_get_unmapped_area(struct file *filp, unsigned long addr,
+>  generic_get_unmapped_area(struct file *filp, unsigned long addr,
+>  			  unsigned long len, unsigned long pgoff,
+> -			  unsigned long flags)
+> +			  unsigned long flags, vm_flags_t vm_flags)
+>  {
+>  	struct mm_struct *mm = current->mm;
+>  	struct vm_area_struct *vma, *prev;
+> @@ -1823,7 +1823,8 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
 >  		       unsigned long len, unsigned long pgoff,
-> -		       unsigned long flags)
-> +		       unsigned long flags, vm_flags_t vm_flags)
+>  		       unsigned long flags, vm_flags_t vm_flags)
 >  {
->  	return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
->  }
-> @@ -1885,38 +1885,21 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
->  unsigned long
->  arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
->  			       unsigned long len, unsigned long pgoff,
-> -			       unsigned long flags)
-> +			       unsigned long flags, vm_flags_t vm_flags)
->  {
->  	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags);
+> -	return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
+> +	return generic_get_unmapped_area(filp, addr, len, pgoff, flags,
+> +					 vm_flags);
 >  }
 >  #endif
 >  
-> -#ifndef HAVE_ARCH_UNMAPPED_AREA_VMFLAGS
-> -unsigned long
-> -arch_get_unmapped_area_vmflags(struct file *filp, unsigned long addr, unsigned long len,
-> -			       unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
-> -{
-> -	return arch_get_unmapped_area(filp, addr, len, pgoff, flags);
-> -}
-> -
-> -unsigned long
-> -arch_get_unmapped_area_topdown_vmflags(struct file *filp, unsigned long addr,
-> -				       unsigned long len, unsigned long pgoff,
-> -				       unsigned long flags, vm_flags_t vm_flags)
-> -{
-> -	return arch_get_unmapped_area_topdown(filp, addr, len, pgoff, flags);
-> -}
-> -#endif
-> -
->  unsigned long mm_get_unmapped_area_vmflags(struct mm_struct *mm, struct file *filp,
->  					   unsigned long addr, unsigned long len,
->  					   unsigned long pgoff, unsigned long flags,
->  					   vm_flags_t vm_flags)
->  {
->  	if (test_bit(MMF_TOPDOWN, &mm->flags))
-> -		return arch_get_unmapped_area_topdown_vmflags(filp, addr, len, pgoff,
-> -							      flags, vm_flags);
-> -	return arch_get_unmapped_area_vmflags(filp, addr, len, pgoff, flags, vm_flags);
-> +		return arch_get_unmapped_area_topdown(filp, addr, len, pgoff,
-> +						      flags, vm_flags);
-> +	return arch_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
->  }
->  
+> @@ -1834,7 +1835,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
 >  unsigned long
-> @@ -1978,8 +1961,8 @@ mm_get_unmapped_area(struct mm_struct *mm, struct file *file,
->  		     unsigned long pgoff, unsigned long flags)
+>  generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+>  				  unsigned long len, unsigned long pgoff,
+> -				  unsigned long flags)
+> +				  unsigned long flags, vm_flags_t vm_flags)
 >  {
->  	if (test_bit(MMF_TOPDOWN, &mm->flags))
-> -		return arch_get_unmapped_area_topdown(file, addr, len, pgoff, flags);
-> -	return arch_get_unmapped_area(file, addr, len, pgoff, flags);
-> +		return arch_get_unmapped_area_topdown(file, addr, len, pgoff, flags, 0);
-> +	return arch_get_unmapped_area(file, addr, len, pgoff, flags, 0);
+>  	struct vm_area_struct *vma, *prev;
+>  	struct mm_struct *mm = current->mm;
+> @@ -1887,7 +1888,8 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+>  			       unsigned long len, unsigned long pgoff,
+>  			       unsigned long flags, vm_flags_t vm_flags)
+>  {
+> -	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags);
+> +	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags,
+> +						 vm_flags);
 >  }
->  EXPORT_SYMBOL(mm_get_unmapped_area);
+>  #endif
 >  
 > 
 > -- 
