@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-937-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-939-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D80596AA14
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 23:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B26496AA18
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 23:28:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WyzHT32wPz2yPM;
-	Wed,  4 Sep 2024 07:27:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WyzJ16qTsz2yR1;
+	Wed,  4 Sep 2024 07:28:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.189
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725381082;
-	cv=none; b=eBUB78nSH5RI8qSHkYs5HZIrrfqSBti8e/gRp7cCQOuiTk3bT/w+JNmEgdgOP97CScITLLWY3uJoFnGQIybAg2CwreqR8QST2ieErRGKSOdgQDk/2cLW92jV8HuEBFGFiEVc4csAZiiOSgtehxjJirykpbSAcLwVPejhXU3jUiJXX/ZwgSczB3jzffAD61lGn7fzTunOpZMR5d2FpAZdxXS+5fr50cVCN8xsxStx/PhZI0KFH+p6fx6SKXuppv5tIjTAsx2R6uXsX0XPFoGCF2sR9r5vTRyvj3s0pIvr3epO0bR+Jlf/hpbGKVX1gvX7f7DUO/KypvzEFW5dyR+umg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.175
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725381591;
+	cv=none; b=AaK0JaHOQHkmFCeOoEudDn9ZtvlHeaXtjsGe8pUOQdRMJqrQGd2XpTEESaMQyNEn/WmFVO1yLDakAY3IdFXxaNBXsqamMdi6gr2NXU53mLL5oiVVpqHCN0gjKPthk/unMlXeU4VgutkUUIhgBfG9Mez0x+ZDBg1aJp9TgHdH9ix+fkHAie2HE2rAC8MgqWwiukL+vrdQJkvjRDN0RE8X5WrM5ieOTF61LbPVZf/SIJy2vBtebyHQVgu9niOqKupTMN6pyNDV/w2zKRluGJa/3D3EtS6U13KpM2JYe5hpmXDI9f9/QNjYnf+V7tZydPSBSCdMrVmAgJCelmET2M9MeA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725381082; c=relaxed/relaxed;
-	bh=3UxheV3LaB96UvBMKdu1CVVmJDUPIpuIrbtZKkMPtcQ=;
+	t=1725381591; c=relaxed/relaxed;
+	bh=9YGHRkZZZq6gSBTbmL0m4A7pOzURwmJyYm0zSj6RQgA=;
 	h=DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version; b=IVRUBIfzTUIh619nf3d81HoWSc1KIlgEKpv82Zvpj2XvvEowvLBAfdaM3KQ+O0gQ0HRoXqsi0ppdQdBdHZ+2qpDE4qAMaA3z3oFh1aC9Xcg+4+wAN5CrKJBupicY7u/aY5b6G1epcHtYl7FRfFtbq13YFWoC5Y7aK9STD4aadK5EXOgHMEvoM4wFGXq9Y6C0oVggWfO7Z2rMDax/hep67dmC6VO8tPAAWATFPzH1g9O63VooAYaYwb9s0GP0uqcU9PaA2pwQiI99PKIAwmxrsqR8NEJUmtScnABbC+fzbmzU/9qR08iDUnbE94yp1Ckg33eQs1WLBRKvvrQqqM/tGw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=t/f9dess; dkim-atps=neutral; spf=pass (client-ip=91.218.175.189; helo=out-189.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 References:MIME-Version; b=VZm3pAYdv9e1c93BtCZSCPY3U+gaWlD7b+yJCqc7UFXV6QVTxV/JiGj5NUi3nIkUyPLqg53uAoZX/r4r21KcVI+sRwCwG9GGX3Jj692PjqrmnKxEfLGAiIzIOND3jtkF80V5GQQonJGYqu2buY54g0TusHtPYoWhqguPcGJUr9etgkzq6MT+pWuEjC0iaHbxnO5ddXjnZMfPjafuv3tQ4lBzH5HFbmfXyIfOMduMYbNMYfpi5XvaayE2/UQ9yCbDJpnT8Byhy9PLuOf3hUA5yLl1UuuzCWlR31JyAeTt/7xPFGyAm7/Ee3vWilVpetrht3o1yWpMCCqQ/pweVbgwIw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QZSx9FlW; dkim-atps=neutral; spf=pass (client-ip=95.215.58.175; helo=out-175.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=t/f9dess;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QZSx9FlW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.189; helo=out-189.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.175; helo=out-175.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyrjN4r88z2yL5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 02:31:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyrvC0t2Qz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 02:39:50 +1000 (AEST)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1725381056;
+	t=1725381059;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3UxheV3LaB96UvBMKdu1CVVmJDUPIpuIrbtZKkMPtcQ=;
-	b=t/f9dessP1gbOkieG//YAQXRph3gSAkFIlqtbV8X+u4B2ZB8CqL6HKtaQ+2yg5v5b5qHAB
-	Kvg6v4fCSYhDvH7/nPjBz1jJ402Uf6c6zAuQ4LJGCGLSZ6gxoVX9xKhmsDG1KHgaxk8h7z
-	DbGiBbDKjeGY9q7gQ/Bf3UfmzsNm+CQ=
+	bh=9YGHRkZZZq6gSBTbmL0m4A7pOzURwmJyYm0zSj6RQgA=;
+	b=QZSx9FlW5q/PKHaiVhKUcE209XR2Jv2S4PWXyQ+C2agSThKJDI3G35n7oWlu97ZlgiXY50
+	NWkXNF5Pfg/x/RNjS/zCybHxNXq9ELm9dkqtnVKppPm1dm+hrrQOx7Ubqnb3lIfPcgqtJx
+	psaZB3pKvx15c+peLES4B+uoKed0yPY=
 From: Andrew Jones <andrew.jones@linux.dev>
 To: kvm@vger.kernel.org,
 	kvm-riscv@lists.infradead.org,
@@ -54,9 +54,9 @@ Cc: pbonzini@redhat.com,
 	atishp@rivosinc.com,
 	cade.richard@berkeley.edu,
 	jamestiotio@gmail.com
-Subject: [kvm-unit-tests PATCH 1/3] riscv: Drop mstrict-align
-Date: Tue,  3 Sep 2024 18:30:48 +0200
-Message-ID: <20240903163046.869262-6-andrew.jones@linux.dev>
+Subject: [kvm-unit-tests PATCH 2/3] configure: Support cross compiling with clang
+Date: Tue,  3 Sep 2024 18:30:49 +0200
+Message-ID: <20240903163046.869262-7-andrew.jones@linux.dev>
 In-Reply-To: <20240903163046.869262-5-andrew.jones@linux.dev>
 References: <20240903163046.869262-5-andrew.jones@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -71,28 +71,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The spec says unaligned accesses are supported, so this isn't required
-and clang doesn't support it. A platform might have slow unaligned
-accesses, but kvm-unit-tests isn't about speed anyway.
+When a user specifies the compiler with --cc assume it's already
+fully named, even if the user also specifies a cross-prefix. This
+allows clang to be selected for the compiler, which doesn't use
+prefixes, but also still provide a cross prefix for binutils. If
+a user needs a prefix on the compiler that they specify with --cc,
+then they'll just have to specify it with the prefix prepended.
+
+Also ensure user provided cflags are used when testing the compiler,
+since the flags may drastically change behavior, such as the --target
+flag for clang.
+
+With these changes it's possible to cross compile for riscv with
+clang after configuring with
+
+ ./configure --arch=riscv64 --cc=clang --cflags='--target=riscv64' \
+             --cross-prefix=riscv64-linux-gnu-
 
 Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
 ---
- riscv/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ configure | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/riscv/Makefile b/riscv/Makefile
-index 179a373dbacf..2ee7c5bb5ad8 100644
---- a/riscv/Makefile
-+++ b/riscv/Makefile
-@@ -76,7 +76,7 @@ LDFLAGS += -melf32lriscv
- endif
- CFLAGS += -DCONFIG_RELOC
- CFLAGS += -mcmodel=medany
--CFLAGS += -mstrict-align
-+#CFLAGS += -mstrict-align
- CFLAGS += -std=gnu99
- CFLAGS += -ffreestanding
- CFLAGS += -O2
+diff --git a/configure b/configure
+index 27ae9cc89657..337af07374df 100755
+--- a/configure
++++ b/configure
+@@ -130,6 +130,7 @@ while [[ "$1" = -* ]]; do
+ 	    ;;
+ 	--cc)
+ 	    cc="$arg"
++	    cc_selected=yes
+ 	    ;;
+ 	--cflags)
+ 	    cflags="$arg"
+@@ -200,6 +201,10 @@ while [[ "$1" = -* ]]; do
+     esac
+ done
+ 
++if [ -z "$cc_selected" ] && [ "$cross_prefix" ]; then
++    cc="$cross_prefix$cc"
++fi
++
+ if [ -z "$efi" ] || [ "$efi" = "n" ]; then
+     [ "$efi_direct" = "y" ] && efi_direct=
+ fi
+@@ -370,7 +375,7 @@ fi
+ cat << EOF > lib-test.c
+ __UINT32_TYPE__
+ EOF
+-u32_long=$("$cross_prefix$cc" -E lib-test.c | grep -v '^#' | grep -q long && echo yes)
++u32_long=$("$cc" $cflags -E lib-test.c | grep -v '^#' | grep -q long && echo yes)
+ rm -f lib-test.c
+ 
+ # check if slash can be used for division
+@@ -379,7 +384,7 @@ if [ "$arch" = "i386" ] || [ "$arch" = "x86_64" ]; then
+ foo:
+     movl (8 / 2), %eax
+ EOF
+-  wa_divide=$("$cross_prefix$cc" -c lib-test.S >/dev/null 2>&1 || echo yes)
++  wa_divide=$("$cc" $cflags -c lib-test.S >/dev/null 2>&1 || echo yes)
+   rm -f lib-test.{o,S}
+ fi
+ 
+@@ -442,7 +447,7 @@ ARCH=$arch
+ ARCH_NAME=$arch_name
+ ARCH_LIBDIR=$arch_libdir
+ PROCESSOR=$processor
+-CC=$cross_prefix$cc
++CC=$cc
+ CFLAGS=$cflags
+ LD=$cross_prefix$ld
+ OBJCOPY=$cross_prefix$objcopy
 -- 
 2.46.0
 
