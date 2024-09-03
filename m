@@ -1,101 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-902-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-903-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2D19693A2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 08:27:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C85A9693CE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 08:36:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WybK00ts4z2y8l;
-	Tue,  3 Sep 2024 16:27:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WybWL6mfvz2xGC;
+	Tue,  3 Sep 2024 16:36:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725344868;
-	cv=none; b=PPKkoc2ckpa2QRNWmtQwxaR1ARjA9/eexp5Oa7SgwDrw7S9gaECpKU6QV/3smtA/+oPg04K5N8BA+oy8dodR/j5hfsIuJvA+Xj233TncaQnwdIrRB+kN+LyDBLI2L+9S5ILOv/9KAYmfZRy9k+mpw/jJKnUASLZSmzk+cXsEHQqgdGpmNuzSJKtoy/qaHVu4FXPYn2n7eH7t5caIhdmWcMkAGnKJCtCxURCgD52fVERQ7WHy0UVi7+OZkgSZ/7vFwpkBwMfoyimF5wEbh4PxuAxAXXNZ5kQTAP6aEs775RcRogXBHFMrqiWL/tU8U2lEceNRePDuHnCqHUPCWBMQPw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725345406;
+	cv=none; b=aUQWo7yiEtw/kiKV3Yoj4L45jHLYJHzdrgWpWJPW4g+lTrpMw+p6oI6qJQJrMciCdcOMkz1QUgo0e2kBvuc/Ll52itLMljGSdeRAQYY+LDnwDLeXKVwUZV7wWRp2YIyYG7U7T8ALpzL4sYMJP+1O7HfUxVld02KDkmXMy5tXuvmxaW9v8ZcDf6xhjCvCbvsui3maPhBW1XzRJ7oHvYNNO8CX21vNCafNv9cuGo6+USeBTmahSF6oj053kury5yuu+3qgH4AL9PZhokKwWiDxJ4bRBP3gDMJ71iueNeI5smsUKHmQHiNaxecps+LAWljwLVgpP/fMftgpjj48P9MQhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725344868; c=relaxed/relaxed;
-	bh=VgrxN144iUPf7NqeoMOyzsSN98GEfqKoLsawzlynxPg=;
-	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 Message-ID:MIME-Version:Content-Type; b=Y4y9DHJ1uMkaKASfpArV36cVciEzbW+BGPlMLe9IaHF5VYmA0LTBjhvjeE53ofi9aBqEJ33/fNldmpXlyK8UNPnodKWGcjsaqOCBpl3QcG9JOFmpwDZX3EZ3ABP9+yF+w1hieku8Kq344GeEBrjnWn3yEu9a4gcUV6rkVZ1Vmm80cXuV65lSbV00f2VK2qXttqHbmmCmMuXytc3lAi+fKd2xFSkki2WEBfCbA8RM6j+bKCTzgvc5gkNuRm/S9r7tJUbqoO5rPgCsmz8VkaS5g6GIMQIFNUl9KUc1JOid8r6wiaQtScdWl2Q9Y6PdjcDc8u4uREKmgfGWjKJAa3e50A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rzESbfHi; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=svens@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rzESbfHi;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=svens@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1725345406; c=relaxed/relaxed;
+	bh=U7aUJoF4LDjK3bYV/oPCaieVT1XX4cvbYejUP953Sg8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=oYxg/c+YXXUVhy1mC/3ZfVc9GjnL/O8imN7M1ptdhtFk9sGR0a2PvP+Jl9D+dmVtwzmzLV74LiXhYWCI583/xD6Uw/prt6H20otQtcd4GCT2/QRpPJjnzanGY65mWlc47aFeTdQPst1KDNFTpGcWPnQixAFKhU9mSiRMntjfZ+fWxKkljVh04SOye6uQd4H4uPO2Q1ddxxiR6imIK2FNmMWtI8+af7lWzyePZpn+QTdlsNuNqXhDrisx0EhtPUltWSwmPKaX+E4yuJpkIsJU4o0TARidivGBDfqTfw6pFejrYGDZ961DZrj5K+VClBCLBP1g5aBlWeo03BQiIbdkeg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WybJz0Thkz2xch
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 16:27:46 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 482MmnT9025891;
-	Tue, 3 Sep 2024 06:27:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:in-reply-to:references:date:message-id
-	:mime-version:content-type; s=pp1; bh=VgrxN144iUPf7NqeoMOyzsSN98
-	GEfqKoLsawzlynxPg=; b=rzESbfHimjo981rF1eOvgpMSjsCQ2UXY78JmMhDEPZ
-	DPh07gQoAfNtgrqCnJFv+HngQ73My+guTlInZU4UAvE+Dm9dcfsYpQEIqRqoVG6I
-	obVtiqyrCd8ZtLNynhBiS1xKvLMAi/spun5PMu9Eab4stcoNMpzU0EqMEfHF9k64
-	+Lwt5vXL3GQWmcwF7+U+6eOVKzqSx/n6WbnE3sku4HNati9Ia2vVLoEPV1PxeuvG
-	3fui9eN9a0KkNJJxBS5E1cd0jLPmZSXe5AuC2X3sdunUJeNgYrgy4e73/Bna0Inl
-	PYj52ozWBoOg+tVNxtsqs4KH9vbGLWVO9WCW8G0uWdcA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqmhru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Sep 2024 06:27:23 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4836RNUi007387;
-	Tue, 3 Sep 2024 06:27:23 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqmhrr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Sep 2024 06:27:23 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4832HPjd012052;
-	Tue, 3 Sep 2024 06:27:22 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41cegpse6m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Sep 2024 06:27:22 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4836RKVJ14483918
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Sep 2024 06:27:20 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1289B2004D;
-	Tue,  3 Sep 2024 06:27:20 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9BD9820040;
-	Tue,  3 Sep 2024 06:27:19 +0000 (GMT)
-Received: from tuxmaker.linux.ibm.com (unknown [9.152.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  3 Sep 2024 06:27:19 +0000 (GMT)
-From: Sven Schnelle <svens@linux.ibm.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Nathan Chancellor
- <nathan@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>, linux-mm@kvack.org,
-        linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu,
-        jeffxu@google.com, Liam.Howlett@oracle.com,
-        linux-kernel@vger.kernel.org, npiggin@gmail.com, oliver.sang@intel.com,
-        pedro.falcato@gmail.com, linux-um@lists.infradead.org,
-        linux-s390@vger.kernel.org,
-        Ravi Bangoria
- <ravi.bangoria@linux.ibm.com>,
-        Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH v2 1/4] mm: Add optional close() to struct
- vm_special_mapping
-In-Reply-To: <CAHk-=wjD0XLhkzou89J-TK=L6B88pFoNYxN1uTWRQB3U5Czywg@mail.gmail.com>
-	(Linus Torvalds's message of "Mon, 2 Sep 2024 14:02:56 -0700")
-References: <20240812082605.743814-1-mpe@ellerman.id.au>
-	<20240819185253.GA2333884@thelio-3990X>
-	<yt9dy149vprr.fsf@linux.ibm.com>
-	<20240902134953.e834bc2e57d36b1d3b1397e4@linux-foundation.org>
-	<CAHk-=wjD0XLhkzou89J-TK=L6B88pFoNYxN1uTWRQB3U5Czywg@mail.gmail.com>
-Date: Tue, 03 Sep 2024 08:27:19 +0200
-Message-ID: <yt9dr0a1uu9k.fsf@linux.ibm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WybWL4QyHz2xB1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 16:36:45 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WybWF5HjZz9sSH;
+	Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 2PdnbsYL7xth; Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WybWF4Jw0z9sSC;
+	Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 822B98B76E;
+	Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 8n4_MCluhO-u; Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4EAAC8B768;
+	Tue,  3 Sep 2024 08:36:41 +0200 (CEST)
+Message-ID: <326d9a7d-7674-4c28-aa40-dd2c190244dd@csgroup.eu>
+Date: Tue, 3 Sep 2024 08:36:41 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,40 +55,121 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9aSqu6fFfWss73YgKp0gBlzFQVIXapXn
-X-Proofpoint-ORIG-GUID: OxhEA4e_rV3dfcm0C7DWi8uVqyGWdHzl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-02_06,2024-09-02_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 mlxscore=0 impostorscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 adultscore=0 mlxlogscore=970 bulkscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409030046
+User-Agent: Mozilla Thunderbird
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [GIT PULL] SOC FSL for 6.12 (retry)
+To: soc@kernel.org, Arnd Bergmann <arnd@arndb.de>
+Cc: Herve Codina <herve.codina@bootlin.com>,
+ Xiaolei Wang <xiaolei.wang@windriver.com>,
+ Lu Baolu <baolu.lu@linux.intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
+Content-Language: fr-FR
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Linus Torvalds <torvalds@linux-foundation.org> writes:
+Hi Arnd,
 
-> On Mon, 2 Sept 2024 at 13:49, Andrew Morton <akpm@linux-foundation.org> wrote:
->>
->> uprobe_clear_state() is a pretty simple low-level thing.  Side-effects
->> seem unlikely?
->
-> I think uprobe_clear_state() should be removed from fork.c entirely,
-> made 'static', and then we'd have
->
->         area->xol_mapping.close = uprobe_clear_state;
->
-> in __create_xol_area() instead (ok, the arguments change, instead of
-> looking up "mm->uprobes_state.xol_area", it would get it as the vma
-> argument)
->
-> That's how it should always have been, except we didn't have a close() function.
->
-> Hmm?
+Please pull the following Freescale Soc Drivers changes for 6.12
 
-Indeed, that's much better. I'll prepare a patch.
+There are no conflicts with latest linux-next tree.
 
-Thanks!
+Thanks
+Christophe
+
+The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f017b:
+
+   Linux 6.11-rc1 (2024-07-28 14:19:55 -0700)
+
+are available in the Git repository at:
+
+   https://github.com/chleroy/linux.git tags/soc_fsl-6.12-2
+
+for you to fetch changes up to 7a99b1c0bce5cf8c554ceecd29ad1e8085557fd3:
+
+   Merge branch 'support-for-quicc-engine-tsa-and-qmc' (2024-09-03 
+07:51:34 +0200)
+
+----------------------------------------------------------------
+- A series from HervÃ© Codina that bring support for the newer version
+of QMC (QUICC Multi-channel Controller) and TSA (Time Slots Assigner)
+found on MPC 83xx micro-controllers.
+
+- Misc changes for qbman freescale drivers for removing a redundant
+warning and using iommu_paging_domain_alloc()
+
+----------------------------------------------------------------
+Christophe Leroy (1):
+       Merge branch 'support-for-quicc-engine-tsa-and-qmc'
+
+Herve Codina (36):
+       soc: fsl: cpm1: qmc: Update TRNSYNC only in transparent mode
+       soc: fsl: cpm1: qmc: Enable TRNSYNC only when needed
+       soc: fsl: cpm1: tsa: Fix tsa_write8()
+       soc: fsl: cpm1: tsa: Use BIT(), GENMASK() and FIELD_PREP() macros
+       soc: fsl: cpm1: tsa: Fix blank line and spaces
+       soc: fsl: cpm1: tsa: Add missing spinlock comment
+       dt-bindings: soc: fsl: cpm_qe: Add QUICC Engine (QE) TSA controller
+       soc: fsl: cpm1: tsa: Remove unused registers offset definition
+       soc: fsl: cpm1: tsa: Use ARRAY_SIZE() instead of hardcoded 
+integer values
+       soc: fsl: cpm1: tsa: Make SIRAM entries specific to CPM1
+       soc: fsl: cpm1: tsa: Introduce tsa_setup() and its CPM1 
+compatible version
+       soc: fsl: cpm1: tsa: Isolate specific CPM1 part from 
+tsa_serial_{dis}connect()
+       soc: fsl: cpm1: tsa: Introduce tsa_version
+       soc: fsl: cpm1: tsa: Add support for QUICC Engine (QE) implementation
+       MAINTAINERS: Add QE files related to the Freescale TSA controller
+       soc: fsl: cpm1: tsa: Introduce tsa_serial_get_num()
+       soc: fsl: cpm1: qmc: Rename QMC_TSA_MASK
+       soc: fsl: cpm1: qmc: Use BIT(), GENMASK() and FIELD_PREP() macros
+       soc: fsl: cpm1: qmc: Fix blank line and spaces
+       soc: fsl: cpm1: qmc: Remove unneeded parenthesis
+       soc: fsl: cpm1: qmc: Fix 'transmiter' typo
+       soc: fsl: cpm1: qmc: Add missing spinlock comment
+       dt-bindings: soc: fsl: cpm_qe: Add QUICC Engine (QE) QMC controller
+       soc: fsl: cpm1: qmc: Introduce qmc_data structure
+       soc: fsl: cpm1: qmc: Re-order probe() operations
+       soc: fsl: cpm1: qmc: Introduce qmc_init_resource() and its CPM1 
+version
+       soc: fsl: cpm1: qmc: Introduce qmc_{init,exit}_xcc() and their 
+CPM1 version
+       soc: fsl: cpm1: qmc: Rename qmc_chan_command()
+       soc: fsl: cpm1: qmc: Handle RPACK initialization
+       soc: fsl: cpm1: qmc: Rename SCC_GSMRL_MODE_QMC
+       soc: fsl: cpm1: qmc: Introduce qmc_version
+       soc: fsl: qe: Add resource-managed muram allocators
+       soc: fsl: qe: Add missing PUSHSCHED command
+       soc: fsl: cpm1: qmc: Add support for QUICC Engine (QE) implementation
+       soc: fsl: cpm1: qmc: Handle QUICC Engine (QE) soft-qmc firmware
+       MAINTAINERS: Add QE files related to the Freescale QMC controller
+
+Lu Baolu (1):
+       soc: fsl: qbman: Use iommu_paging_domain_alloc()
+
+Xiaolei Wang (1):
+       soc: fsl: qbman: Remove redundant warnings
+
+  .../bindings/soc/fsl/cpm_qe/fsl,qe-tsa.yaml        | 210 +++++++
+  .../bindings/soc/fsl/cpm_qe/fsl,qe-ucc-qmc.yaml    | 197 ++++++
+  MAINTAINERS                                        |   3 +
+  drivers/soc/fsl/qbman/qman_ccsr.c                  |   2 -
+  drivers/soc/fsl/qbman/qman_portal.c                |   5 +-
+  drivers/soc/fsl/qe/Kconfig                         |  18 +-
+  drivers/soc/fsl/qe/qe_common.c                     |  80 +++
+  drivers/soc/fsl/qe/qmc.c                           | 667 
+++++++++++++++++-----
+  drivers/soc/fsl/qe/tsa.c                           | 659 
++++++++++++++++-----
+  drivers/soc/fsl/qe/tsa.h                           |   3 +
+  include/dt-bindings/soc/qe-fsl,tsa.h               |  13 +
+  include/soc/fsl/qe/qe.h                            |  23 +-
+  12 files changed, 1552 insertions(+), 328 deletions(-)
+  create mode 100644 
+Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-tsa.yaml
+  create mode 100644 
+Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ucc-qmc.yaml
+  create mode 100644 include/dt-bindings/soc/qe-fsl,tsa.h
 
