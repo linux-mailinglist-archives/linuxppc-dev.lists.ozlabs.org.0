@@ -1,58 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-905-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-907-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCFB969426
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 08:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E3B969679
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 10:06:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wybql4snmz2yLB;
-	Tue,  3 Sep 2024 16:50:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WydVW6R2vz2xf2;
+	Tue,  3 Sep 2024 18:06:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725346259;
-	cv=none; b=WgebitN9VJzrxXl4kMvcjfd+70m319DmpmnX4lWz40WXgqcSlH3C2YrcpKYOIsum9kmFF/kQWzwPKZMfALj277e9lDfVpu5dLR3PFOEFTuORAqdxmhLVLlbJVBmZFJWzuUsIgdJRdnJtc5hbHK4KuXa3+pWusDaj5W6QJ19eZ0Vn9QjvKskpNAIjM/LDD/VXZlubW9Npl1e1e28a1SWcSa69VeTHpB5ItlIbf1F0NO1ykGDCpdylz0q5fZKT+mzIleQUGDfCeIomYFgDIgRkfhC/DfMpSxcU/+2k4txjjpmk8G1oGSs+S8XefYreyYTSLcGqTu9h9ALiWPZ5rGuoXw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.157
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725350771;
+	cv=none; b=cFwf5K2vC+c7awKb2URk490PpwuNAvJfyQbPxDecyeG9JlMVkhnaSA3Jjjmi1KGhv+2JVpyPsDW5jTrrt9JnpTsaJf3ucwSr/5mM+mjuL64S6Qz44rtJfiI7By43ZVx7wBCunTRC6FKNj48Q/NU1f2ieNLp1gMVNVsVavUHcdRA8LpBEjdv+Wsja2O6UFkcY4bJpPGMQslXI3Z/xpjjd/uhHO4yTA8OBz4F5rfWLQ82RO/W8oNfJA8JoGrq6bieaMKcCGrg5wO4RUqAAOOsPvsQ7DSWX9IYGMXdty7r+yLcHdOiQ+hOsVOsCnw+fBordxxdcD1/yDaKXGb9GV6vlNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725346259; c=relaxed/relaxed;
-	bh=CQh0HwbwudB1Ww2VJkCueArmMI0AZXpCTMdiFdJKXpI=;
-	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 Message-ID:MIME-Version:Content-Type; b=ZBVlLCOTZW0QXlWH/emoG7mald/XWEOdq+w5PBCa06DDUxNGkeTcj6Fk3q7P+Pv5hkO9Yb9LNjFxZZ5ycuwigqtzqKnwbxwVs9ONuWGQJPvWxb+4jW0J4J4BRGZI3xtOD4OXS39ek65+pwnaNsfhK7w/aHyuY1DCUNMJPNIBYtf3wB8apvEGs5VDQvCgp4UGt3yu6ipG8PSaXFW+5Bkpbq0YecZ8MSIysvzjCF5AkjhO1YCihNJzrksK6pz8qgmveRm4B43A/u711GSYXlpHIkOMjF2tXrLV8ZhBqeTDOXOBjo6OWqLKAHj+70CsbbT7z/dnJhbEQxp9KUPbKXChXw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TJkkp3Er; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1725350771; c=relaxed/relaxed;
+	bh=5r93MWaJJQSMO5oail0RmsFtM4vGFRa2fu0nxIJMlgg=;
+	h=DKIM-Signature:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Message-Id:In-Reply-To:References:Subject:Content-Type; b=CzccUs3gdPoovcDt1AoRITE8AwgTnI2OMSHCK/aiB6osnp78dhrFlaPVRjxTgpyjApfkvryAyx3duutiCnEWWB/IJX4RbGdanOk7xF7GEHSGsRmu1O6oMnls9rz1in+I/ngaxrHTeVtH3/JgBUzWMwOz/Bl1yPI4cUyB7A3s5mQ7FDj1jCyv+4j+V8UOtMIHfyIMELBCzK4tqIoqW2tzsTRLbfR0B6HROqMlYLLRNesGGI5woTLHrZg0B0TZkqBSfbLav8JsBFz5Lawl9leKTPqwioS/WV6y1dxpqJ3WRpS3wDalrijoJwJNGqtNRmiqR0/MoSJ25BA+bmRfg9m8OA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=CcASwc66; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=iUjAj74E; dkim-atps=neutral; spf=pass (client-ip=103.168.172.157; helo=pfhigh6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TJkkp3Er;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=CcASwc66;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=iUjAj74E;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.157; helo=pfhigh6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from pfhigh6-smtp.messagingengine.com (fhigh6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wybql4dksz2yL5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 16:50:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1725346259;
-	bh=CQh0HwbwudB1Ww2VJkCueArmMI0AZXpCTMdiFdJKXpI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TJkkp3ErSASQvhmMaTnHtityUB+krmJD4Y3zwvw6vlTumSrwmJStye9dB1DwAPiRO
-	 xcdsxaYqL7NAnSy0J7S565BeSD17qUpIFYfb0o83u+kXV/FGFvDZ3VL1FD3sxCbuHm
-	 Vs0hY/tI/8Iu0z92RQH64V156VoHgCkOOiK5Jpo4l+TvolJ26gL9yA0mL7KUOkFc26
-	 oeUaQjbd0lsBh+7y1JmjFfFK3bovuuL4kZ2uRAeSBYOuGmnVJy/nv0VnSd2Hl7H3Lz
-	 kEvjRiVx5UHmnqbu0Svdei7SvKBdhVf0HXjsV6G7u0746zt1QQ/3vnqmG80RI4N/Z/
-	 oY6CKnKhr6exQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wybql3cL7z4w2F;
-	Tue,  3 Sep 2024 16:50:59 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Chen Ni <nichen@iscas.ac.cn>, gregkh@linuxfoundation.org,
- jirislaby@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org, Chen Ni <nichen@iscas.ac.cn>
-Subject: Re: [PATCH] tty: hvc: convert comma to semicolon
-In-Reply-To: <20240903023001.491055-1-nichen@iscas.ac.cn>
-References: <20240903023001.491055-1-nichen@iscas.ac.cn>
-Date: Tue, 03 Sep 2024 16:50:58 +1000
-Message-ID: <87y1495iy5.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WydVT1PDKz2xck
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 18:06:08 +1000 (AEST)
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 868D811401E9;
+	Tue,  3 Sep 2024 04:06:05 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-01.internal (MEProxy); Tue, 03 Sep 2024 04:06:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1725350765;
+	 x=1725437165; bh=5r93MWaJJQSMO5oail0RmsFtM4vGFRa2fu0nxIJMlgg=; b=
+	CcASwc66w65rrfPDWz2b3SruDBIOppw36WzPT4bwEJWBmXJ9lUjqLWeXQohgpVjN
+	mhvsW130XSbCClvYXUm3dWcetDwUNNog+NTQala830a69hIGUUX5ZaJVtsZQs/8R
+	q+zUU2wJWewMpdAK2r6Vr/a47NQjWZ+tPEYVRpWroLHEEXP9dx/UAWh/jYEAYBWj
+	7jBFSu6N1MvdaEnO2ilDoK42pAwhjjn18ZxlJVFDB3jLOE2O4qyoTCoCPZ2uU/hZ
+	otEQcqTRZGguPWu76HOmdFvhRONHxg2x0QyNkxuySrEgH/8KpC9RWCAFe2EvoJTM
+	RtIxR5JM2qDiDEJ+eEk6BQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725350765; x=
+	1725437165; bh=5r93MWaJJQSMO5oail0RmsFtM4vGFRa2fu0nxIJMlgg=; b=i
+	UjAj74EOU5tFHf7eGIe93aS8YDUNUs0oSiQcT6bciu6tkxieWOBXaAEVBFqJBsIf
+	6ZHs6MjQ4qdGLYwP5f67sXj7iuCImHAM5efVtjWzSS6jFF9U0WijlLhwBCszv/l1
+	spu5VJYA/kXcGTfNEbEOOGW7l2le5Cb5q7zkL2X+UQbeltj5kxmzz/2tQz+RxFPB
+	q/WikrTPArQSNeVMyuLuw6OHZOSiG5inUtjkTzDlelzDB1r3G1RYdp6p0WAgrO9d
+	Kvinb55pUND8G/7lwkzeSSCsRclWnK3JK6yNrUZwPpYtI/otP7K2H/koYf8V6Fs6
+	77+/i7V+4SQqSd6kJmyag==
+X-ME-Sender: <xms:bcPWZuVXhOzOuucmpaBTj9L9RNbsTiavjNvovY5IZ9BYELKoAAL-8w>
+    <xme:bcPWZoY4jRHKEB8JE2uTnsHcfV0vEFf8iBkaS7zJCRSqC6qkMtLtYnNo4LuGttDMW
+    PDqUnWijeTqPwgEcP0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehgedgudeftdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
+    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeek
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessg
+    hoohhtlhhinhdrtghomhdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohies
+    tghsghhrohhuphdrvghupdhrtghpthhtohepshhotgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepsggrohhluhdrlhhusehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthht
+    oheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurd
+    horhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggs
+    shdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopeigihgrohhlvghirdifrghnghesfihinhgurhhivhgv
+    rhdrtghomh
+X-ME-Proxy: <xmx:bcPWZs2qslYJ2EH4QUzntUrsIdITPsIqFaMX7ZhO5I45bYUABOvHqA>
+    <xmx:bcPWZig1GfkWF5gTEJ5fA2Ejcz8FAwVhP6Jze7Gygsw_Ae-uWx2MQw>
+    <xmx:bcPWZoalSO7pT5yfbFhlI6lkqFfFgjhTe_JjdZMUaPcpzynxoE97Uw>
+    <xmx:bcPWZqTEWaByDSNVPeMTFfSZBk0XmEt3xmboOudgPOfzB9wfhDUULQ>
+    <xmx:bcPWZoDfF_ktGnKJ-0CKQia_rjw0bQeHcOaMTG8yrZZKUfHztqFDzY5G>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 7C4A022202A0; Tue,  3 Sep 2024 03:04:33 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,33 +96,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+Date: Tue, 03 Sep 2024 07:04:13 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, soc@kernel.org
+Cc: "Herve Codina" <herve.codina@bootlin.com>,
+ "Xiaolei Wang" <xiaolei.wang@windriver.com>,
+ "Baolu Lu" <baolu.lu@linux.intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "Linux ARM" <linux-arm-kernel@lists.infradead.org>
+Message-Id: <3c8bd8bb-36d0-4265-a6d9-95b4767c911d@app.fastmail.com>
+In-Reply-To: <326d9a7d-7674-4c28-aa40-dd2c190244dd@csgroup.eu>
+References: <326d9a7d-7674-4c28-aa40-dd2c190244dd@csgroup.eu>
+Subject: Re: [GIT PULL] SOC FSL for 6.12 (retry)
 Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Chen Ni <nichen@iscas.ac.cn> writes:
-> Replace a comma between expression statements by a semicolon.
+On Tue, Sep 3, 2024, at 06:36, Christophe Leroy wrote:
+> Hi Arnd,
 >
-> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-> ---
->  drivers/tty/hvc/hvsi_lib.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Please pull the following Freescale Soc Drivers changes for 6.12
+>
+> There are no conflicts with latest linux-next tree.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Thanks, pulled now.
 
-cheers
-
-> diff --git a/drivers/tty/hvc/hvsi_lib.c b/drivers/tty/hvc/hvsi_lib.c
-> index 22e1bc4d8a66..b35c44caf3d7 100644
-> --- a/drivers/tty/hvc/hvsi_lib.c
-> +++ b/drivers/tty/hvc/hvsi_lib.c
-> @@ -303,7 +303,7 @@ int hvsilib_write_mctrl(struct hvsi_priv *pv, int dtr)
->  	pr_devel("HVSI@%x: %s DTR...\n", pv->termno,
->  		 dtr ? "Setting" : "Clearing");
->  
-> -	ctrl.hdr.type = VS_CONTROL_PACKET_HEADER,
-> +	ctrl.hdr.type = VS_CONTROL_PACKET_HEADER;
->  	ctrl.hdr.len = sizeof(struct hvsi_control);
->  	ctrl.verb = cpu_to_be16(VSV_SET_MODEM_CTL);
->  	ctrl.mask = cpu_to_be32(HVSI_TSDTR);
-> -- 
-> 2.25.1
+     Arnd
 
