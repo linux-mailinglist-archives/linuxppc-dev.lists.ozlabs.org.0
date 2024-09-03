@@ -1,96 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-932-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-941-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEEE196A7E3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 21:57:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CFB96AC8C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 00:55:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WyxHN4GjGz2yNn;
-	Wed,  4 Sep 2024 05:57:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wz1Dw0z99z2xjh;
+	Wed,  4 Sep 2024 08:55:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725393456;
-	cv=none; b=M6gvFSecwVXu9AXDkziQneneWrAbEsoLc7luqOutH1yiURN7tbzY+8gCh77isTICkEML5S4inMeC9VBCmkfLv9L7ikMFI3rEbl/O8R7mjXSuv4fYHbSI8KT1/MZwOy3wagNRdInbgjCgVgEY0IvkEvlRjhs4oE5sTQMNjJxPQxbJbrHCLUw68d1Rnci7SaHCcWISQ/kqmLqjrOYBfL/KZNXH19Rn8h41lRqbo9Zgk7xVy3UT/ZC7i3HP7qcENJzJdJzSHLF7l7R4Zkb2YuXwe3qYYaGCmxctnqMRyW2P1yfJoIP3ThDCMNnnS62rzRB9/AzCvCu5KUkBsM/CEL/FpQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725404144;
+	cv=none; b=CBuQXGarD+QXLu/Ayr55MNp9DTEpxhQZDIz70dPAcLEj3T7QkwbNJccqGKDtShVetxE/+ysAJx6Y+aYrfPt7qEkBxGeBo388xzdyN5KmhNkNNCp33JMtDT+mp9/IjZ1u7jCp+Auf/1k7JUUNPY+Mie2m24GaFSiBOp+pnk7mWc6MTdG+vbEhLi7NuZ+7E85yBFpKv9P8AN4CI0VDyEl181Cu8SqkM37iFILdMeMxhHb20oWS4GnAhjD5uRDngLUTOktdcwizEilBodvdTiRnpWF8Xs+JLHm+RBwxHatwyyXUYuqccu7it9LEjhHLkd5y3XVlnsUePSMFSrpluN5h1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725393456; c=relaxed/relaxed;
-	bh=5q5jFh6a2kXI80w5f6YQw4phvFCzdIPzun18yiuR3uQ=;
-	h=DKIM-Signature:Date:From:To:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=KEd3uEdRQJ/tRdUetNpWjOFmDGxk5Nzzm4wwPg7Nakhk+6L+ia5qS5waEVhgBapf+sp5W+jcnYzJRmUelSiP98QqNmTzW/QOaxrv1oPJ0klrb2O17Y1hB8WvmthHEHg0Oge0CqyaX2loBfWqG0aJvL8tZ57zAdGaZqIAra75s5Efo3vLvwfjyqZ7Zo5wowlL+eErMebmprfJdtfh3Q6eavp9AE2O0XfWSq8Mt21bJuiNEGfaC1TrI5wTpgQni2irLcgL2G/fKNUAJizL+aKwlsIwIWguCofDZkN8k2NXjhClyUsiIQ8X0008cPE85Fm7VwBThLjv+yriz3RPoOBPPQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ibTzt+Zg; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1725404144; c=relaxed/relaxed;
+	bh=CbaWqDovG+ohtkpCOQ3fg4acmFkRuPzG7NgRf1Zltsg=;
+	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=nkbf93xluVThiTy6u2ru7ZzuxgbQwMV7YQBDXTfbrfMDUl9kR979WCSV4htkvdl8O0UD3XP9CUdrxjXS3FkmhfLImAzExCu1pvEuZKn9+CfhdtLr771QYqYtRvaseijRqa04E/V+EJJPdBLorHoJ3MI0NlSupNus/xyn6tl9ZOUTrqo3NueX4SkX6uRsv7qtMyJTF5SkuWKayVHjg5fs1rOvyfYVcYZH91SjrkXkMBvY2M/Zx+gSn0OjTA/TYOAjhCaTZRdAu+lHaJ9V4VqiEWQOd4yZXzdIuTKDhjllD1i4nJOGxdq503bVITQVrZnS6Ht8/3cPBP85cOzqe6K5rw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NRlwE7Lv; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ibTzt+Zg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NRlwE7Lv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyxHN1DGWz2xZr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 05:57:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wz1Dv6DmGz2xdw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 08:55:43 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id F174A5C543B;
-	Tue,  3 Sep 2024 19:57:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C7EC4CEC4;
-	Tue,  3 Sep 2024 19:57:23 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 49150A4400B;
+	Tue,  3 Sep 2024 22:55:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6410EC4CEC4;
+	Tue,  3 Sep 2024 22:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725393453;
-	bh=NTkAihUq8wJ3QQyD2jsoOFW0fG+0732f5lSDZtBgAPI=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=ibTzt+ZgEdTELo0NowH5uGIH2Wtx8O6oChkl1Q28nqiyWxDTqR8tphBxYgCay32pV
-	 1hPna6pOCaS45hl+sLTuFw+Pl79mj27SkX+HpLxKECYJlYBG0h7SaAkMmPwDx6njIE
-	 2rYYbxd/PvXGm8b5i0aeQaggLGjHy5i+JmHGE7xq/T4LZ5poYfToPT4ar4DwnZ6LFz
-	 xUVGuklq6NgdHhkMPsoZgMeus69wEVzDTS4x9rtvNNbP5iGQfDm+My7uvbaZprUrQJ
-	 oMpGYNsaV408haO9OPNGCb7dBVZJWkElUMT/UHks93JFjH0pu162EUYzIc/cTsD9Sg
-	 qFv2tPt1j4P1g==
-Date: Tue, 3 Sep 2024 20:57:20 +0100
-From: Mark Brown <broonie@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Deepak Gupta <debug@rivosinc.com>,
-	linux-arm-kernel@lists.infradead.org, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-mm@kvack.org,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH 3/3] mm: Care about shadow stack guard gap when getting
- an unmapped area
-Message-ID: <dbaf5653-df46-4e17-bce1-aec7fb168197@sirena.org.uk>
-References: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
- <20240902-mm-generic-shadow-stack-guard-v1-3-9acda38b3dd3@kernel.org>
- <is6ewj3bhtqy3zadj6lbdv6maupx4kmduvhny66ntifkji6hoj@xmhcf5jt4o66>
+	s=k20201202; t=1725404139;
+	bh=JaFeuTgF5zkNdK6dIe1LkaFh5oqtU0LVvqZXpKHmJ4A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NRlwE7LvocDygbDhIt5g8nT6IbP52AIzW+TpfoYqne4Y4W56FzQIU1lS/Fl83xPJA
+	 w6UMPMDvkrdQHJ5UJ5MGPebfjrxDgk49mGWgmR/GZoDkCV4tNGya/RHngnTKhlN5GC
+	 P/mHemNWkgkbmcUr3sPPs9ROmLh4fFLML/4nPYwrF9XHsUSoIp9EMR61R0o7obXd/c
+	 A5iL0S0yjha5eEMpnEAuA2frZEit4Bj+IKiSWh8Yggq0S/mIbStNOMU85gwGEtEEY+
+	 GarctGUW2gaEnOXxzQV9rxbcRjju9E8BUUN01y8IWZ8m/JeqVCb5+Y42UGMCVZeb7W
+	 xgAIYBPilOqDg==
+Date: Wed, 4 Sep 2024 00:55:35 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Ma Ke <make24@iscas.ac.cn>, jochen@scram.de, grant.likely@linaro.org, 
+	thierry.reding@gmail.com, rob.herring@calxeda.com, linuxppc-dev@lists.ozlabs.org, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] of/irq: handle irq_of_parse_and_map() errors
+Message-ID: <u4qlhdhmya5pwfboffbuvmgabmmpjxh6dfqptw65k5fiiaeqoy@pnmzj2lgh5z4>
+References: <20240830142127.3446406-1-make24@iscas.ac.cn>
+ <90924209-888d-4ff3-8f60-f82a073bcf1c@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,46 +62,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IPVQox5bvuHO+FID"
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <is6ewj3bhtqy3zadj6lbdv6maupx4kmduvhny66ntifkji6hoj@xmhcf5jt4o66>
-X-Cookie: Words must be weighed, not counted.
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <90924209-888d-4ff3-8f60-f82a073bcf1c@csgroup.eu>
 
+On Tue, Sep 03, 2024 at 06:56:41PM GMT, Christophe Leroy wrote:
+> Le 30/08/2024 à 16:21, Ma Ke a écrit :
+> > Zero and negative number is not a valid IRQ for in-kernel code and the
+> > irq_of_parse_and_map() function returns zero on error.  So this check for
+> > valid IRQs should only accept values > 0.
+> 
+> unsigned int irq_of_parse_and_map(struct device_node *node, int index);
+> 
+> I can't see how an 'unsigned int' can be negative.
 
---IPVQox5bvuHO+FID
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+hehe... correct... even though looks like we are walking on a
+slackline, relying too much that no one in the future, inside
+irq_of_parse_and_map() (and various callers), someone will try to
+fit an -ENOSOMETHING into the unsigned int.
 
-On Tue, Sep 03, 2024 at 03:41:49PM -0400, Liam R. Howlett wrote:
-> * Mark Brown <broonie@kernel.org> [240902 15:09]:
+I wouldn't mind something like this[*] to ensure I can sleep
+soundly.
 
-> > +static inline unsigned long stack_guard_placement(vm_flags_t vm_flags)
-> > +{
-> > +	if (vm_flags & VM_SHADOW_STACK)
-> > +		return PAGE_SIZE;
+Thanks for the review,
+Andi
 
-> Is PAGE_SIZE is enough?
+[*]
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index cea8f6874b1fb..df44a8ffa6843 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -954,6 +954,8 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
+ out:
+        mutex_unlock(&domain->root->mutex);
 
-It's what x86 currently uses so it'll be no worse off if it gets moved
-to the generic code (there's a comment in the arch code explaing what's
-needed there) and it's enough for arm64, we only do single record
-pushes/pops or (optionally) writes to unconstrained addresses.
++       BUG_ON(virq < 0);
++
+        return virq;
+ }
+ EXPORT_SYMBOL_GPL(irq_create_fwspec_mapping);
 
---IPVQox5bvuHO+FID
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbXah8ACgkQJNaLcl1U
-h9C2Awf/e7PKpZHkmToVtr07IL4qcZTgpwJkRcA4S8aF/OKy2aVmo+pW2nNnK5sc
-/MpaZW0Ms2eiZxaG4R3y3oBshdiHLdMS1qimFTuewZWtDAJ9lE9Zubq1rr+onqIw
-z7QLTklFTJhwJLiv4r822HjfHqW872zY7tA8OQKs18OmYzyGFWnMuKcdZwQWf/Wl
-S0krgEkvPgYV5FyIP9SeyBVfAnRbH3u2q0dDWORZ7e3pVwZ+0huL1DYzlgP/Nx4a
-EUb0rRhFG8tHp5EwazuvDfdaQyfqtytNRDe6NTrqVdsrqXi7QzkjglFsx44oMBFK
-rSdl35QkF7WXDFsXE2sd4O+m2ZbJFQ==
-=a8UG
------END PGP SIGNATURE-----
-
---IPVQox5bvuHO+FID--
+> Christophe
+> 
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: f7578496a671 ("of/irq: Use irq_of_parse_and_map()")
+> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> > ---
+> >   drivers/i2c/busses/i2c-cpm.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
+> > index 4794ec066eb0..41e3c95c0ef7 100644
+> > --- a/drivers/i2c/busses/i2c-cpm.c
+> > +++ b/drivers/i2c/busses/i2c-cpm.c
+> > @@ -435,7 +435,7 @@ static int cpm_i2c_setup(struct cpm_i2c *cpm)
+> >   	init_waitqueue_head(&cpm->i2c_wait);
+> >   	cpm->irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
+> > -	if (!cpm->irq)
+> > +	if (cpm->irq <= 0)
+> >   		return -EINVAL;
+> >   	/* Install interrupt handler. */
 
