@@ -1,52 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-921-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-922-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A43B96A4E4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 18:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B96396A548
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 19:18:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WysGk5RqSz2xYY;
-	Wed,  4 Sep 2024 02:56:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wyslt6QZjz2xps;
+	Wed,  4 Sep 2024 03:18:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725382606;
-	cv=none; b=M0Fa1iqoYKJiQm1zAU5RNyHjKHhK08ehtBBPWZb7XwPew4DXGwzoJ0v8o3VpyEdL09ngLccOtzTNR7J7d3A2zPUDg5NEQFQzijLRNZ2Nx1MXPD9onRb8Bq8x8PpyENrVCrFDgfRm66WZg6v5OQTIduppJ1eJUq0yMOcXmkJI2fq5BrLvBcTVh3zLtqAGryyu+0ryifLW1QSEs/Dnwxg4tzz5z3Sqtkvq6eAWYqd3N6H0ZeoVQapt5WtPXR3h30gm0gg27CuqUoSndN/F4CNyl8E64aWddp/0F2448/wpO1wvuPGXWC8vUJosvKKewcYo8jfyBQNbwqA6ne789qe9Sg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725383914;
+	cv=none; b=BOa3Cz3vEacoUEPULisERBiJZwjo98qnI8ScxJYNQkt1wM+PoeF5gE0UFplic6wQSj80vwIucivugqgEAmu1EVkHrKM3gtMj3fN0Gr5nu7QDDVbseq9zQCelWznFHJ5b/3aZW5ZprXh7fvwflceARuEGb+sMVTCM4HmsPRyF/fnaf7wYaREEHCIHRlxo90+hYRwslb+K/okPjr6aFmAtB7MYDg/P5Nyrgne88sPq4+D6FTjQ9yT+nK3phrA1PPXRN+l6vbHCsfEQ85muFaxNXR2U45akL+KkHPCcBLeG2iwIqGJM+U3jmHfFcBFpL8EezJqcb5uCMYnPexI6nExKog==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725382606; c=relaxed/relaxed;
-	bh=aZNo/Og5S/OC5KYian1D1B9U4n6335cfrw3bAIxckus=;
+	t=1725383914; c=relaxed/relaxed;
+	bh=E6rVrw28lQjxJVfoXcBiTrAsfiC6FfVhGXY+ztmNnoc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iw6qKtU/5oZ2ML5PiRSUXVqcuL7blj7Qh2WWYuTIjg60nVSiTGyv8Z8JLZCA1UmyqHYF5CA4TGzg9uVY0yleYIuvlM6PJTYga3Vtvu+4lq5zo6ZDNqmfqiTwfg5IjvyqpALYPXz4jMZfSzEAXmXyrHLbpFhBdUhlz9kVxUIq7vwuI8PhnxHcyKcJFsCcGTYr54riGxo0wh2vMyRG9/EDParXKOKGPSYHdQ6ELzzetEoObVtr05/IlpAul4BcRbE+7kcLN7iWw+BDnevw0ip9NGdMn8i/LQZOaLsmOxmUibfKaxu0yI2BhFZUFZ2BDohB1g7osKB/5d9epM9LSm4J7g==
+	 In-Reply-To:Content-Type; b=Wgz4l89sCKa7Tadc2SQg6TcPIgySOGOExXMnOg3XrHrgeE1Wo1BdDAbxikFBJgkOSvNyvdgBkmTvZpPFarGgQqEpPRQs6dlxbuNJBJwBFVlx+yQfjqIebzSbj4Mdz7L2ewCQCyvmdNwjH17WQgaUW0M0T+fGx1Rr9n5yfluGogxx56GJUtoaUsvz+IcwcEHwYmKSGJxi8Jh7Q+PUGtMmZC4Vj8BmI1RkD1P5WtDxF8z8c0AggFgYjFesjGqW8ZljoG95U3J+Sip85Y8UVFwiQxzMeadzo9Y+GDa3CRn5MZrMWFP4uLJAOuiPNkBGBtRTTVLoCR6krkfcqVcIlkUAQg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WysGk351Vz2xJ6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 02:56:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wyslt46Dcz2xZK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 03:18:34 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WysGf22nGz9sSH;
-	Tue,  3 Sep 2024 18:56:42 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4Wyslp6shpz9sSC;
+	Tue,  3 Sep 2024 19:18:30 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id JzJmN4SzLcUB; Tue,  3 Sep 2024 18:56:42 +0200 (CEST)
+	with ESMTP id hEi4N-oS1BVW; Tue,  3 Sep 2024 19:18:30 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WysGf1FZ7z9sSC;
-	Tue,  3 Sep 2024 18:56:42 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wysln4fbCz9sSH;
+	Tue,  3 Sep 2024 19:18:29 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1A00F8B778;
-	Tue,  3 Sep 2024 18:56:42 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E91E8B779;
+	Tue,  3 Sep 2024 19:18:29 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 1Eunu3JRLihx; Tue,  3 Sep 2024 18:56:42 +0200 (CEST)
+	with ESMTP id pxEcRzUEidZI; Tue,  3 Sep 2024 19:18:29 +0200 (CEST)
 Received: from [192.168.234.228] (unknown [192.168.234.228])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9C6338B774;
-	Tue,  3 Sep 2024 18:56:41 +0200 (CEST)
-Message-ID: <90924209-888d-4ff3-8f60-f82a073bcf1c@csgroup.eu>
-Date: Tue, 3 Sep 2024 18:56:41 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CEB98B774;
+	Tue,  3 Sep 2024 19:18:27 +0200 (CEST)
+Message-ID: <6b07c48d-656f-4e42-bfa7-0ecead72a7b8@csgroup.eu>
+Date: Tue, 3 Sep 2024 19:18:26 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,50 +57,123 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] of/irq: handle irq_of_parse_and_map() errors
-To: Ma Ke <make24@iscas.ac.cn>, jochen@scram.de, andi.shyti@kernel.org,
- grant.likely@linaro.org, thierry.reding@gmail.com, rob.herring@calxeda.com
-Cc: linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240830142127.3446406-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH RFC v2 2/4] mm: Add hint and mmap_flags to struct
+ vm_unmapped_area_info
+To: Charlie Jenkins <charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
+ <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
+ <20240829-patches-below_hint_mmap-v2-2-638a28d9eae0@rivosinc.com>
 Content-Language: fr-FR
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20240830142127.3446406-1-make24@iscas.ac.cn>
+In-Reply-To: <20240829-patches-below_hint_mmap-v2-2-638a28d9eae0@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+Hi Charlie,
 
-
-Le 30/08/2024 à 16:21, Ma Ke a écrit :
-> Zero and negative number is not a valid IRQ for in-kernel code and the
-> irq_of_parse_and_map() function returns zero on error.  So this check for
-> valid IRQs should only accept values > 0.
-
-unsigned int irq_of_parse_and_map(struct device_node *node, int index);
-
-I can't see how an 'unsigned int' can be negative.
-
-Christophe
-
+Le 29/08/2024 à 09:15, Charlie Jenkins a écrit :
+> The hint address and mmap_flags are necessary to determine if
+> MAP_BELOW_HINT requirements are satisfied.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: f7578496a671 ("of/irq: Use irq_of_parse_and_map()")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
 > ---
->   drivers/i2c/busses/i2c-cpm.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   arch/alpha/kernel/osf_sys.c      | 2 ++
+>   arch/arc/mm/mmap.c               | 3 +++
+>   arch/arm/mm/mmap.c               | 7 +++++++
+>   arch/csky/abiv1/mmap.c           | 3 +++
+>   arch/loongarch/mm/mmap.c         | 3 +++
+>   arch/mips/mm/mmap.c              | 3 +++
+>   arch/parisc/kernel/sys_parisc.c  | 3 +++
+>   arch/powerpc/mm/book3s64/slice.c | 7 +++++++
+>   arch/s390/mm/hugetlbpage.c       | 4 ++++
+>   arch/s390/mm/mmap.c              | 6 ++++++
+>   arch/sh/mm/mmap.c                | 6 ++++++
+>   arch/sparc/kernel/sys_sparc_32.c | 3 +++
+>   arch/sparc/kernel/sys_sparc_64.c | 6 ++++++
+>   arch/sparc/mm/hugetlbpage.c      | 4 ++++
+>   arch/x86/kernel/sys_x86_64.c     | 6 ++++++
+>   arch/x86/mm/hugetlbpage.c        | 4 ++++
+>   fs/hugetlbfs/inode.c             | 4 ++++
+>   include/linux/mm.h               | 2 ++
+>   mm/mmap.c                        | 6 ++++++
+>   19 files changed, 82 insertions(+)
 > 
-> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
-> index 4794ec066eb0..41e3c95c0ef7 100644
-> --- a/drivers/i2c/busses/i2c-cpm.c
-> +++ b/drivers/i2c/busses/i2c-cpm.c
-> @@ -435,7 +435,7 @@ static int cpm_i2c_setup(struct cpm_i2c *cpm)
->   	init_waitqueue_head(&cpm->i2c_wait);
+
 >   
->   	cpm->irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
-> -	if (!cpm->irq)
-> +	if (cpm->irq <= 0)
->   		return -EINVAL;
+> diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
+> index ef3ce37f1bb3..f0e2550af6d0 100644
+> --- a/arch/powerpc/mm/book3s64/slice.c
+> +++ b/arch/powerpc/mm/book3s64/slice.c
+> @@ -286,6 +286,10 @@ static unsigned long slice_find_area_bottomup(struct mm_struct *mm,
+>   		.length = len,
+>   		.align_mask = PAGE_MASK & ((1ul << pshift) - 1),
+>   	};
+> +
+> +	info.hint = addr;
+> +	info.mmap_flags = flags;
+> +
+>   	/*
+>   	 * Check till the allow max value for this mmap request
+>   	 */
+> @@ -331,6 +335,9 @@ static unsigned long slice_find_area_topdown(struct mm_struct *mm,
+>   	};
+>   	unsigned long min_addr = max(PAGE_SIZE, mmap_min_addr);
 >   
->   	/* Install interrupt handler. */
+> +	info.hint = addr;
+> +	info.mmap_flags = flags;
+> +
+>   	/*
+>   	 * If we are trying to allocate above DEFAULT_MAP_WINDOW
+>   	 * Add the different to the mmap_base.
+
+ppc64_defconfig:
+
+   CC      arch/powerpc/mm/book3s64/slice.o
+arch/powerpc/mm/book3s64/slice.c: In function 'slice_find_area_bottomup':
+arch/powerpc/mm/book3s64/slice.c:291:27: error: 'flags' undeclared 
+(first use in this function)
+   291 |         info.mmap_flags = flags;
+       |                           ^~~~~
+arch/powerpc/mm/book3s64/slice.c:291:27: note: each undeclared 
+identifier is reported only once for each function it appears in
+arch/powerpc/mm/book3s64/slice.c: In function 'slice_find_area_topdown':
+arch/powerpc/mm/book3s64/slice.c:339:27: error: 'flags' undeclared 
+(first use in this function)
+   339 |         info.mmap_flags = flags;
+       |                           ^~~~~
+make[5]: *** [scripts/Makefile.build:244: 
+arch/powerpc/mm/book3s64/slice.o] Error 1
 
