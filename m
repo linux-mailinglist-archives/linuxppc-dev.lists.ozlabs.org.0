@@ -1,72 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-926-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-927-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAAB096A640
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 20:12:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26CE796A656
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 20:20:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WytyD5VbPz2yN1;
-	Wed,  4 Sep 2024 04:12:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wyv764KLnz2yLP;
+	Wed,  4 Sep 2024 04:20:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.17
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725387156;
-	cv=none; b=QCNf+gJt5SzhoRTiqq8lcMS97mu5XNJrOLqkJqQyDzBOqqt14cSl3Bg0wFKfqyPgESc8F9eMpL2fkF0IMj3HKvakzlq1xkwblLZ6yTosQ9a8fcgdbqSAZCVVP8VmqJ2XWE/RHIwFgT8bJ8Zr1haCbDbeQSAbpWZs7PsnQ638KOwDaW9ebE5vZWE+QREvDPAinuNqxETZCt0IRtUORk5XEGlBXtAIFY7o1PitIBnoqaUil0YVAJ76+B2hvjwols68RWvtKgNMBOQcFaan47Ejgh6KBiBmzrgYkjD3nA9/oi+XU4QBp92AIuPVSwi9N56HJC4iw1RMrsH8ADfMblUY5A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725387618;
+	cv=none; b=YcKDtj4nkSh+4zBE7ZQ/AIyN+l9vlVydWKR9S/f9R3OIw2w0WsuPwTKVNDp2S/bQxTAIW1S96GMpE4PBXxevdS4AfBZn+4+lM4XIgu00PYrK2ZZ/HA3kySXFTylHefMrxGg5FyuK0JCyYWAKWp9oh9Kz4hsuoyIeY++NfV9v60kpymLeAbknyCHfkG5ixRpTwLA4bI6+CkCpF/7vrFeed+j2jkVg0HjtJrkr3AXmHT4tyJlFeX2UU/XQRgSIf4KFLOwDcwYT3MdJYSD5hZtN0OlQSWUSV7nPQUD6Yu4uItDq/tSZu24h/edw9knGUveO8qClWY7RciZfPFKiuZ0p4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725387156; c=relaxed/relaxed;
-	bh=lMEMjIWSUBRMMHUMG21WoVYacEdgw0Th46eGyaQKNVQ=;
+	t=1725387618; c=relaxed/relaxed;
+	bh=3M41hDuZ2hOv4A0wqx1B4EpRjBwVCpmQ+MYvSeDr0Yw=;
 	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=dP+fuYj8mRJBc8hlU9Rx9vX8VjeJN31xO3FMKSv7xXyRk67aTBv6vziNObNqhx+GyXVWAXcNPAcVcNQXCI8kIt6Fjf0xoIQuKnoBSEeQAhJLbuYY7KrP+XxY1W5U4aOjgf1th7/SwkvLl8f4KHp67B64wd3A8THYhpn3yIBhL2pmrvZGDWuHJJXE+JpeN0SzlchqN2gZT1SPZHP2KTEhQXtgDNqVawgQbyNwL9EVQCOmjW1y9Zj8qsaL5wgsefhpRfWqhlKT4GKB11EeFccjv37ELDTpFz0/iMZM+fztMtehBOSXXuUZpSnJXkVXphoPNenOmkNyTquRJggCaUcJ5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cM91PqXR; dkim-atps=neutral; spf=pass (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=K2fl78C/QF1J369+jwAIKdrXAdVBdBUDGgM3/SolpFJ9bD2wN3HZ9aHZejoXmUGQ+jm5GD0gr0oRj36YylM8Ln0ErDPCv3SEg3qgrKsiqhb21xwIyxpkcWj6cnSE9WTRFggCAXWg9D2t8UT5VnrwtdI2si2DLD7N1cMRamggEgUv07VbGvwHCzd67OX2/7ZKmxHtz+wHZjZ5thm5FEKNCYnNYtoWYXYYPx8bVp2XMStL3qyms7u+OIvNV1KAvhyEUyydgp1ZzvkBtdsl4w5xl3+tAhHSWBtIHJb878k2D0rwhXl7c1tXMbIZGxWSa0q6U6jeMOz+Fu5krseGcxDJ2g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ciUdQG6T; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cM91PqXR;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ciUdQG6T;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WytyB1QjBz2yLY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 04:12:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725387156; x=1756923156;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pzCgbYp+uZiPVye8BBNyhOit5czUSbS56GIlK+PdvrU=;
-  b=cM91PqXRZuq7hM5BUdygXoRSCWaekWPKCDruJF1SIeEeP5HIEx5qnvQa
-   IQS9HYnDaIk6llgwEsji7BdmxUfHdPPNuV3arN6Kff8dtMhgy9rBIUka/
-   2z4hN5liBvAwkndRgHvt6FSB8iuZRIvI7/h0KdwJuYjo04iqDWvNsk9Yg
-   lHebVlyB7Apub7i6LMUqoj5154tG+wUI6UerBib6+sxRlcqxxY49wphdT
-   FXpwqH9LDZHYbWtN0zaG5yE8hTuGMvUQmI5Ocq/WiGKlkKGshoJxwm++R
-   qAEsHP/cZD642R3ZcEr3xE3UaY9pXeusu/B3C2DI7g45P2RRBOoe2bwFM
-   Q==;
-X-CSE-ConnectionGUID: cbloQoR+TRuYo+lHLs3Iww==
-X-CSE-MsgGUID: /P8GNFP5TjObCbErLHlT9w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="24168961"
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
-   d="scan'208";a="24168961"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 11:12:28 -0700
-X-CSE-ConnectionGUID: Bww0iBw6S1SqK7h9ZA/7yA==
-X-CSE-MsgGUID: 0vRmUWqVSnSod1/3SVXfgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
-   d="scan'208";a="69617272"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 03 Sep 2024 11:12:25 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1slY0s-00071I-36;
-	Tue, 03 Sep 2024 18:12:22 +0000
-Date: Wed, 4 Sep 2024 02:12:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Hongbo Li <lihongbo22@huawei.com>, christophe.leroy@csgroup.eu
-Cc: oe-kbuild-all@lists.linux.dev, lihongbo22@huawei.com,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH -next] soc/fsl/qbman: make use of the helper function
- kthread_run_on_cpu()
-Message-ID: <202409040110.A8frNNIF-lkp@intel.com>
-References: <20240902133125.3089560-1-lihongbo22@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wyv756Qflz2xdT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 04:20:17 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id BDADF5C59E4;
+	Tue,  3 Sep 2024 18:20:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05262C4CEC5;
+	Tue,  3 Sep 2024 18:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725387614;
+	bh=3M41hDuZ2hOv4A0wqx1B4EpRjBwVCpmQ+MYvSeDr0Yw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ciUdQG6Ttgi9yvvZQGiq8UopO75eB7vVzLKBng7HwibzPFRnXBalgGP0DHJOhsgYw
+	 3uk4X//pO6AWblx6uj2/rrtcfZi8xJ+KLRhTGUIMHNMXYzXGdpl88AE1LNLYhQLrSP
+	 DF8KUTdzVN5U6fM8gZroVggjf3verSxfxLuJNEjmcXfbWXBE0OFnt2KZ4iEV5Vhk9j
+	 JeNKEHjQ3QpE+rmpaiNn2XI0qgA0oJV7QO0sGId48qZnT0wsdO40PdufRSPzAvFgKn
+	 YqlXDkAF0Dp4f65YVZerwA+zsLHpTSAMy3EtYLEl14MtxYmN71YQsS6p8hzMMNF/7p
+	 L/5KsXBbyQ2oQ==
+Date: Tue, 3 Sep 2024 19:20:02 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Deepak Gupta <debug@rivosinc.com>,
+	linux-arm-kernel@lists.infradead.org, linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-mm@kvack.org,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH 3/3] mm: Care about shadow stack guard gap when getting
+ an unmapped area
+Message-ID: <3ff7a6dc-a21a-4a53-b3d5-cc8b0b5333fb@sirena.org.uk>
+References: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
+ <20240902-mm-generic-shadow-stack-guard-v1-3-9acda38b3dd3@kernel.org>
+ <6d91ca85-def3-422c-8fb2-76337136257d@lucifer.local>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,151 +100,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="o37zrp9IxB4WCgx3"
+Content-Disposition: inline
+In-Reply-To: <6d91ca85-def3-422c-8fb2-76337136257d@lucifer.local>
+X-Cookie: Words must be weighed, not counted.
+
+
+--o37zrp9IxB4WCgx3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240902133125.3089560-1-lihongbo22@huawei.com>
 
-Hi Hongbo,
+On Tue, Sep 03, 2024 at 06:49:46PM +0100, Lorenzo Stoakes wrote:
+> On Mon, Sep 02, 2024 at 08:08:15PM GMT, Mark Brown wrote:
 
-kernel test robot noticed the following build errors:
+> > On x86 there is a custom arch_get_unmapped_area() which was updated by the
+> > above commit to cover this case by specifying a start_gap for allocations
+> > with VM_SHADOW_STACK. Both arm64 and RISC-V have equivalent features and
+> > use the generic implementation of arch_get_unmapped_area() so let's make
+> > the equivalent change there so they also don't get shadow stack pages
+> > placed without guard pages.
 
-[auto build test ERROR on next-20240902]
+> Don't you need to unwind that change in x86 now you're doing it in generic code?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Hongbo-Li/soc-fsl-qbman-make-use-of-the-helper-function-kthread_run_on_cpu/20240903-060257
-base:   next-20240902
-patch link:    https://lore.kernel.org/r/20240902133125.3089560-1-lihongbo22%40huawei.com
-patch subject: [PATCH -next] soc/fsl/qbman: make use of the helper function kthread_run_on_cpu()
-config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20240904/202409040110.A8frNNIF-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240904/202409040110.A8frNNIF-lkp@intel.com/reproduce)
+No, x86 had a preexisting custom implementation for some other reason
+(hence the "updated by the above commit" part above) - the shadow stack
+support would most likely have been added in the core in the first place
+were it not for that.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409040110.A8frNNIF-lkp@intel.com/
+--o37zrp9IxB4WCgx3
+Content-Type: application/pgp-signature; name="signature.asc"
 
-All errors (new ones prefixed by >>):
+-----BEGIN PGP SIGNATURE-----
 
-   drivers/soc/fsl/qbman/qman_test_stash.c: In function 'on_all_cpus':
->> drivers/soc/fsl/qbman/qman_test_stash.c:111:41: error: too many arguments to function 'kthread_run_on_cpu'
-     111 |                 struct task_struct *k = kthread_run_on_cpu(bstrap_fn, &bstrap,
-         |                                         ^~~~~~~~~~~~~~~~~~
-   In file included from drivers/soc/fsl/qbman/dpaa_sys.h:38,
-                    from drivers/soc/fsl/qbman/qman_priv.h:31,
-                    from drivers/soc/fsl/qbman/qman_test.h:31,
-                    from drivers/soc/fsl/qbman/qman_test_stash.c:31:
-   include/linux/kthread.h:73:1: note: declared here
-      73 | kthread_run_on_cpu(int (*threadfn)(void *data), void *data,
-         | ^~~~~~~~~~~~~~~~~~
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbXU1EACgkQJNaLcl1U
+h9D6cgf/XDZdPu9OMFQe6TQgFZfL0q5O9mqkm+BWBPaJVUsfz+b1eJX8MY/X94i7
+isw0bRIKXl4Rdgglf/Mjack/jKZI2dA1nVQtiA0++/6tT814x3Y/iykb6tAbghmy
+uinhNXZQlV9/DYrMjNAbBcGeFlMlKmRBSrZEuoHwLuaOsQ3CfzCxB7zqsWtaxrBk
+Ct7Jtsia48hr6Df5deBgMHgDTE6xyu7fxb9fDqVippx4fBJzXvjimEBvAG8OWp/z
+77YIEDqfJ+JuDQvg3E5YL5EW1xarV++hvLacqfnaffNQFwngWwUWM8TyY7p5C4VK
+LKP++oAShrv2wbyvnGgxkpomt/Eb5g==
+=xc/U
+-----END PGP SIGNATURE-----
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for OMAP2PLUS_MBOX
-   Depends on [n]: MAILBOX [=y] && (ARCH_OMAP2PLUS || ARCH_K3)
-   Selected by [y]:
-   - TI_K3_M4_REMOTEPROC [=y] && REMOTEPROC [=y] && (ARCH_K3 || COMPILE_TEST [=y])
-
-
-vim +/kthread_run_on_cpu +111 drivers/soc/fsl/qbman/qman_test_stash.c
-
-    35	
-    36	/*
-    37	 * Algorithm:
-    38	 *
-    39	 * Each cpu will have HP_PER_CPU "handlers" set up, each of which incorporates
-    40	 * an rx/tx pair of FQ objects (both of which are stashed on dequeue). The
-    41	 * organisation of FQIDs is such that the HP_PER_CPU*NUM_CPUS handlers will
-    42	 * shuttle a "hot potato" frame around them such that every forwarding action
-    43	 * moves it from one cpu to another. (The use of more than one handler per cpu
-    44	 * is to allow enough handlers/FQs to truly test the significance of caching -
-    45	 * ie. when cache-expiries are occurring.)
-    46	 *
-    47	 * The "hot potato" frame content will be HP_NUM_WORDS*4 bytes in size, and the
-    48	 * first and last words of the frame data will undergo a transformation step on
-    49	 * each forwarding action. To achieve this, each handler will be assigned a
-    50	 * 32-bit "mixer", that is produced using a 32-bit LFSR. When a frame is
-    51	 * received by a handler, the mixer of the expected sender is XOR'd into all
-    52	 * words of the entire frame, which is then validated against the original
-    53	 * values. Then, before forwarding, the entire frame is XOR'd with the mixer of
-    54	 * the current handler. Apart from validating that the frame is taking the
-    55	 * expected path, this also provides some quasi-realistic overheads to each
-    56	 * forwarding action - dereferencing *all* the frame data, computation, and
-    57	 * conditional branching. There is a "special" handler designated to act as the
-    58	 * instigator of the test by creating an enqueuing the "hot potato" frame, and
-    59	 * to determine when the test has completed by counting HP_LOOPS iterations.
-    60	 *
-    61	 * Init phases:
-    62	 *
-    63	 * 1. prepare each cpu's 'hp_cpu' struct using on_each_cpu(,,1) and link them
-    64	 *    into 'hp_cpu_list'. Specifically, set processor_id, allocate HP_PER_CPU
-    65	 *    handlers and link-list them (but do no other handler setup).
-    66	 *
-    67	 * 2. scan over 'hp_cpu_list' HP_PER_CPU times, the first time sets each
-    68	 *    hp_cpu's 'iterator' to point to its first handler. With each loop,
-    69	 *    allocate rx/tx FQIDs and mixer values to the hp_cpu's iterator handler
-    70	 *    and advance the iterator for the next loop. This includes a final fixup,
-    71	 *    which connects the last handler to the first (and which is why phase 2
-    72	 *    and 3 are separate).
-    73	 *
-    74	 * 3. scan over 'hp_cpu_list' HP_PER_CPU times, the first time sets each
-    75	 *    hp_cpu's 'iterator' to point to its first handler. With each loop,
-    76	 *    initialise FQ objects and advance the iterator for the next loop.
-    77	 *    Moreover, do this initialisation on the cpu it applies to so that Rx FQ
-    78	 *    initialisation targets the correct cpu.
-    79	 */
-    80	
-    81	/*
-    82	 * helper to run something on all cpus (can't use on_each_cpu(), as that invokes
-    83	 * the fn from irq context, which is too restrictive).
-    84	 */
-    85	struct bstrap {
-    86		int (*fn)(void);
-    87		atomic_t started;
-    88	};
-    89	static int bstrap_fn(void *bs)
-    90	{
-    91		struct bstrap *bstrap = bs;
-    92		int err;
-    93	
-    94		atomic_inc(&bstrap->started);
-    95		err = bstrap->fn();
-    96		if (err)
-    97			return err;
-    98		while (!kthread_should_stop())
-    99			msleep(20);
-   100		return 0;
-   101	}
-   102	static int on_all_cpus(int (*fn)(void))
-   103	{
-   104		int cpu;
-   105	
-   106		for_each_cpu(cpu, cpu_online_mask) {
-   107			struct bstrap bstrap = {
-   108				.fn = fn,
-   109				.started = ATOMIC_INIT(0)
-   110			};
- > 111			struct task_struct *k = kthread_run_on_cpu(bstrap_fn, &bstrap,
-   112							cpu, "hotpotato%d", cpu);
-   113			int ret;
-   114	
-   115			if (IS_ERR(k))
-   116				return -ENOMEM;
-   117			/*
-   118			 * If we call kthread_stop() before the "wake up" has had an
-   119			 * effect, then the thread may exit with -EINTR without ever
-   120			 * running the function. So poll until it's started before
-   121			 * requesting it to stop.
-   122			 */
-   123			while (!atomic_read(&bstrap.started))
-   124				msleep(20);
-   125			ret = kthread_stop(k);
-   126			if (ret)
-   127				return ret;
-   128		}
-   129		return 0;
-   130	}
-   131	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--o37zrp9IxB4WCgx3--
 
