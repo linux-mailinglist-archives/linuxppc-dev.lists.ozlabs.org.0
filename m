@@ -1,52 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-911-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-913-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12A1969792
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 10:45:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59392969D1C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Sep 2024 14:12:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WyfN75gHRz2xck;
-	Tue,  3 Sep 2024 18:45:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WykyH0tMRz2xSl;
+	Tue,  3 Sep 2024 22:12:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725353143;
-	cv=none; b=JiO1SRYclFX4zb9QV9+lRvAASGUV9uE53ZK9VIHhab++tQeMUMYjpeFKaw/BVyQHmT6KyGvnhFMhQ6CcR0wcSlwgNrOJRyjkvjarT9DFJOKQDQOO6t4meJirsgm/n9jDSVkOlC8A87CNILAJFN9GfEIj7CqVUm93o2EV69AluzGDA1j9+CW4UEkN+TJAPkq5ijXkH9oY4wcIovdkHu8Oz8dmRznITD0n7zHk1jUjSc7cqRhdZizIHM1RlpCo6PG35XFIvPk8twx4Ok2ugw+dTQHS6cBZejG1zeJXc7lIWiMSCOu7JkIrZf0LIbpTvBTo6Y26xYBZJNubMK3dT5KS8Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725354193;
+	cv=none; b=FtiD3S+/JL+xSUH7GGvrDhny/yzLRXlgRww+zOeXC1MVWlt/6pKJO14xtrEVYY3dmPZbys0MYFBERmtMgtYfyBp6kTxF3eSy7BFwXs7WFORbpYdSrKfk+g4z32dXNSGaIJGepg4951rm369pSVajhhqzVvkXwcN6A8AUl8qJ7wm97ush809wWL2ckmrWph1E0A9HosnXXSU7gGsUCNVHOCY1nc0FxZDueI66exLjL/KIo2cPj88IAXC3c4mTBUspG01QahwlGJU+gKnu3kL8tBrTeghq6S0ixt2uQQRMahNddk/ZieMrC0Y8xYjCYWmG/i6xBCGGLPs30ctDznkFSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725353143; c=relaxed/relaxed;
-	bh=WDXn+tcCF4R9YXePdAQ26F/SNyFZIQ+BexAY4jmAkxE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hxq+4if9AKEh13hUZ0W7B3cQ2VLnEc5FzYGpkl96u2FTlaiZnBH4aKjqpeK2dDKxmi8J5A1ANcNo4lF3c/Pw1Ups82f+JCwlB1rUEamFKwPiJgUoACysvDfQt7i7GSMEoIIYyzkb0jzkB3ehgNBumTVbuxtZtRZLT8NX+6EgNGtTVzKDtx9dcnM03SIUYOqzK2exYEUrc0FHNzvWI9ViFJZ6Yc0DMtN2r+TrzIoBhD0q14Mn+gxuVJ6ycKSAiNnV6zL8qfyKYYf8Fk2iNGnpTLpE2DO4tb4M+aVItOgo6462vEq2/h9pCYxb4a0UxkbvJVt1btMlP7Wh/krJwAOMgw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1725354193; c=relaxed/relaxed;
+	bh=vXMjQRozUzAfZtDGQl5kmRCarCMdJrz35wUmsxbqBGY=;
+	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=E61oZxrWRzv9Hesq1UyD3Ej69HnZ7oV1VT4ugP+oOXQl2Fo4DQEGid1O7dJrTfAbE3VtulJBCS3voyT/umLaYiMmIgZ1q2bV271bzskMJc40Qh3b3UiK38F0tL7e73u8uTt2u07ptTMqidNOuO4vuTIlkisJ3FywE+zHs4ZnGyS3KsLGUxkFROELyD/jPVTDw3UJc26h4IgdDFIs66UsuqqVfL3ohHNGf9VfHYf/Ygojm8v5ap5cPLjrrEm8j25Bs7zSckWr82cS98+i2JgLg+mDS5meC7wEeoIgQw9m8M95oZ6F9kny3o0U7HMUwJjU/RXUe5QIxhymFYtmtqCvMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=swOLosvC; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=swOLosvC;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::52f; helo=mail-pg1-x52f.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyfN73Tkbz2xbC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 18:45:43 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WyfN44H9Kz9sSC;
-	Tue,  3 Sep 2024 10:45:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id kgnPgwmJvGCa; Tue,  3 Sep 2024 10:45:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WyfN43XSfz9sRy;
-	Tue,  3 Sep 2024 10:45:40 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 684628B76E;
-	Tue,  3 Sep 2024 10:45:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id oqf0uNZh5oTP; Tue,  3 Sep 2024 10:45:40 +0200 (CEST)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B3BD8B768;
-	Tue,  3 Sep 2024 10:45:40 +0200 (CEST)
-Message-ID: <3d0e63da-770d-4317-8c33-023d5ffdd0fa@csgroup.eu>
-Date: Tue, 3 Sep 2024 10:45:40 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WyfmJ4pWSz2xTR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Sep 2024 19:03:10 +1000 (AEST)
+Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-7cb3db0932cso3810884a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2024 02:03:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725354185; x=1725958985; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vXMjQRozUzAfZtDGQl5kmRCarCMdJrz35wUmsxbqBGY=;
+        b=swOLosvCiiiCRPthvTuuT2+gLpwlHJQpj1RtTTtZuivxt+oELEbzO0tuAGU1b5yspG
+         hq+z5x/4s96aRePFleGIQ1LQN6ukyi8t4d+ELnunIpj9ha0CLbUTr77BJlJQM7G0LxZB
+         jvOeAHjayYMJrmYxd/n1Ha9o03b0XnsIw92z5Xx7BEhrjMp5+Bn+tqJy40qZGLAjGQVs
+         b/lpnl5G0H3kWKv7s5dOylu5vc7BO7jpDhoF1mkyL3Tp9QB6d5lzzU6mUR/mFpC2FefT
+         euku7rwOnCOJu4qXHuEd03otJj29XkbzKrSUoW1vaSF+m7kJHJmAUsK/fzoFq9zyrw6E
+         MTKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725354185; x=1725958985;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vXMjQRozUzAfZtDGQl5kmRCarCMdJrz35wUmsxbqBGY=;
+        b=AIZp21j7EixhNyS3NXUvZl7lw+Xn1Sz9aaC6OwRHJokLV1WrKYW//166YK5RidwpX5
+         rZObhAgCVfUEb563CrqesHt4ATg77oU1PLJfzHD11pOz8k9+w384zgCStwLuGEalClLr
+         KvvrApRW3lZEmeurxxMdkXveVQNg5w7gVR5cqcJSS0SQ7riz8v0KoUUXNa1x3eviptb5
+         WJw3IP+pnAhH1aKZ7VNy5n9VZE+ZYizC9ifrFVXii4+FxfR4S3p4TxGPc582IhCUDKMQ
+         w3lbENWjSwSjyHZ7OPeM3Pu/AFzmZIkZR7gFlwK1tLqE8zQYmYgQc2uNTyXg71dGRTBR
+         c/Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCVD1q7V8qvj4XXeU5dn/5dNbwQqdfzFMw5/pO69UyjtPbYq0KvN/kD2S7RJPRIrJrbHlg0cEo/3Hk0Zj44=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyqGs0wUcYzTO6OzapJaF6TGftupxgMNYbvC+2oJ8N4JfZOH1Xv
+	A09yvev+NZsif7ZWJIydx+0M0NBhRdBqpXiQ/rxx7VWj+Z7ULFZC1eqGZnPD0ws=
+X-Google-Smtp-Source: AGHT+IGbzt8vUGrEk6tocF11V7cRb1xoAuI7nhEIChNefDbTXr8mJQYLikgxuEKN2ui2+XiiLzZpXw==
+X-Received: by 2002:a17:90a:2c9:b0:2c9:7219:1db0 with SMTP id 98e67ed59e1d1-2d85616ed48mr19057360a91.3.1725354185405;
+        Tue, 03 Sep 2024 02:03:05 -0700 (PDT)
+Received: from localhost ([122.172.83.237])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2da5932d1ecsm1320793a91.43.2024.09.03.02.03.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Sep 2024 02:03:04 -0700 (PDT)
+Date: Tue, 3 Sep 2024 14:33:02 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Liu Jing <liujing@cmss.chinamobile.com>
+Cc: rafael@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, naveen@kernel.org,
+	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: Fix the cacography in powernv-cpufreq.c
+Message-ID: <20240903090302.j7znk6icmztf3dnf@vireshk-i7>
+References: <20240902082816.2599-1-liujing@cmss.chinamobile.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,52 +82,20 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soc: fsl: qbman: Remove redundant warnings
-To: Xiaolei Wang <xiaolei.wang@windriver.com>, robh@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240802021651.3854295-1-xiaolei.wang@windriver.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20240802021651.3854295-1-xiaolei.wang@windriver.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240902082816.2599-1-liujing@cmss.chinamobile.com>
 
-
-
-Le 02/08/2024 à 04:16, Xiaolei Wang a écrit :
-> [Vous ne recevez pas souvent de courriers de xiaolei.wang@windriver.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+On 02-09-24, 16:28, Liu Jing wrote:
+> The word 'swtich' is wrong, so fix it.
 > 
-> RESERVEDMEM_OF_DECLARE usage has been removed. For
-> non-popwerpc platforms, such as ls1043, this warning
-> is redundant. ls1043 itself uses shared-dma-mem.
-> 
-> Fixes: 3e62273ac63a ("soc: fsl: qbman: Remove RESERVEDMEM_OF_DECLARE usage")
-> Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+> Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
 > ---
->   drivers/soc/fsl/qbman/qman_ccsr.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/soc/fsl/qbman/qman_ccsr.c b/drivers/soc/fsl/qbman/qman_ccsr.c
-> index 392e54f14dbe..aa5348f4902f 100644
-> --- a/drivers/soc/fsl/qbman/qman_ccsr.c
-> +++ b/drivers/soc/fsl/qbman/qman_ccsr.c
-> @@ -791,8 +791,6 @@ static int fsl_qman_probe(struct platform_device *pdev)
->           * FQD memory MUST be zero'd by software
->           */
->          zero_priv_mem(fqd_a, fqd_sz);
-> -#else
-> -       WARN(1, "Unexpected architecture using non shared-dma-mem reservations");
->   #endif
->          dev_dbg(dev, "Allocated FQD 0x%llx 0x%zx\n", fqd_a, fqd_sz);
-> 
-> --
-> 2.25.1
-> 
+>  drivers/cpufreq/powernv-cpufreq.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied for 6.12
+Applied. Thanks.
 
-Thanks
-Christophe
+-- 
+viresh
 
