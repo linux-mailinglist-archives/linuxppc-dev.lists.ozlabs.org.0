@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-979-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CAA96B92F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 12:51:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B18BB96B930
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 12:51:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzK654Y0Dz2ygG;
-	Wed,  4 Sep 2024 20:50:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzK674Yf8z2yhD;
+	Wed,  4 Sep 2024 20:50:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.173
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725447053;
-	cv=none; b=nbC4UZ/jPNZyTpWjbdd9yoesRMe0AV92qH4xcUNnzgFm66OUPwaj8rWNA6Xk6IEMwZHkWuy5iApL96H67mg0wNznn2wWx7kzYGnyiLI2vfzRew6T2OyZkkqNi3nx7nOKJGiSlR2LOHVU0sL/ctgwo3aNLl1Adgjfk7BH5WaEabXGTBef/ckxtkADjgOFi7r4sIpw8zkzDY3vuPGz2RGsMhKOdwxG0R4eqD3DdacbRqXVyNjmIxgw/sVt+lpWF9HzFkflq54Gu6vIuX6qNPh/QJAtn7RO8p2f4JIVefxbMAd72iVDHMsvkXxvJQo14hqTtKby/PvTtJ8oQt9XI8KUOA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.182
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725447055;
+	cv=none; b=YJMSB9is0UZhMgKChARfi+abLoxtK3gdQOR8PK20MYd/DHwncEf2FFoEi5af5/YS8QNpeaHiY62OAsZLeU5y+yLZW1SLcHKGHFqiezretsX/mfDUWXTYJMDXujPXea3/ZgfyH6PXavq7SpLkW5gGG1HIuPv9V3095fyegCqgx5O/3wGHg2AHLkcjBPnwUe+fHEnPAnZ/n1wnWL8SwsCMeaI0hBp8dOg4xpIJBY44PZS8Cjv/fCAR2r9T9AxCdIHwdc8//3Qe2qfhibxdry5AL1QCyaqyP9lrte5hqVSEvM0izEA+ynUjxfUv+p8amyFre8vkZYWIsarreI3RZSyz8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725447053; c=relaxed/relaxed;
-	bh=kNTcbcoGqC40B7+iBoWPEf68cZWl3EVbLygndY9kHOM=;
+	t=1725447055; c=relaxed/relaxed;
+	bh=ZhPTZTrrRJVhwWNoNwQnkN0fKy36Z67lIvpYzPGyDVM=;
 	h=DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version; b=iDLhskjZCTuGTZQhZniIHrkbcEeshysJRW7z7gVjfKCkW6Oz4sMc8af4ZOulVG+/vkP9VJCbU+6ZmsnjHtpnTJfNBcSghj9WyXYySLzl/Nl9b4kVnb0bsEktM9xOAF0fvdJX8xWryCo6R+ULmBCRNbxUoGZhfzCHryyKHrwAq01vzupZnqkEWdOoypfS87NO5HX9dMKfaqH17PnPFOsW6NZ95NfX5Uh8zOLRamG3jhdEGMzlfodI0/1UguddSVVVaBJg9OWFSUPFraAGwCK7r5hJDUhGxjocl9fqzZYe05eS8xuZVCdzgDNTow//H3VDcu1XgyGnohv1s599lXICKA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DfwOsMng; dkim-atps=neutral; spf=pass (client-ip=91.218.175.173; helo=out-173.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 References:MIME-Version; b=nkqZejTiRm4g6lnr2RfSigbb2GpFCfKFJEpaj1YDJ2oLjvhbsMiQXbINN0pn4qgZszK3JHVsFEZzsnJWyUEP36wmpzG6vw5dykuXRR2wWiyi18d3xcj3oPSVbzwBF4fVuigDzh3x6fTEiDhni1sr68AZ5LTqbBCtRRjBNrhJy7+DbgtQSN9IdNb4cRZ655r5M2374ZvvhjBIkJVo9FGCruNL6ztAYxRhWqBpoog4eHKrMX9GHCXjBMd6RjBsU0TAS/LIPAcp33W/j0tBMWwg1NK9CBkTmPpe1tWYUq5Ndwuw1jzZIIp9EQBrokWzE5fF5EoLZkwfLsqrWhELwYh2Rw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RO3kLNCP; dkim-atps=neutral; spf=pass (client-ip=95.215.58.182; helo=out-182.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DfwOsMng;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RO3kLNCP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.173; helo=out-173.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.182; helo=out-182.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzK652ckDz2yWy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 20:50:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzK672f2mz2yWy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 20:50:55 +1000 (AEST)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1725447033;
+	t=1725447036;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kNTcbcoGqC40B7+iBoWPEf68cZWl3EVbLygndY9kHOM=;
-	b=DfwOsMngKluH7GcwpljWLkvl87ksYQ8YxID4gdUeq1JHuXHhquhhB8ZkS0lyS0SDeJM5r5
-	Kx4zUoP/Mfrs3I0ob+gaRCdkORb+wS1zh0ygqm2KAu2Wp4xP89OKPsUT3u1SpsThTQeYqe
-	H8Gh1/16xHhT8yEcunySMkEsqwIaYeA=
+	bh=ZhPTZTrrRJVhwWNoNwQnkN0fKy36Z67lIvpYzPGyDVM=;
+	b=RO3kLNCPH9ub5/C7TIsWdlvI31qRyVNSt88Ikuz/ZxkPKwBET31zOiiashgp8zi3AhWaEl
+	17PdyUyRD662k+LsmtrG7jc/xv/36HjDlilu6CsvG3YQK+QjjPqykxRz7pH3BeQN+Ipew2
+	Gxyg+v90vuXLsWzpqsaLfc7Etkccmpg=
 From: Andrew Jones <andrew.jones@linux.dev>
 To: kvm@vger.kernel.org,
 	kvm-riscv@lists.infradead.org,
@@ -54,9 +54,9 @@ Cc: pbonzini@redhat.com,
 	atishp@rivosinc.com,
 	cade.richard@berkeley.edu,
 	jamestiotio@gmail.com
-Subject: [kvm-unit-tests PATCH v2 3/4] configure: Support cross compiling with clang
-Date: Wed,  4 Sep 2024 12:50:24 +0200
-Message-ID: <20240904105020.1179006-9-andrew.jones@linux.dev>
+Subject: [kvm-unit-tests PATCH v2 4/4] riscv: gitlab-ci: Add clang build tests
+Date: Wed,  4 Sep 2024 12:50:25 +0200
+Message-ID: <20240904105020.1179006-10-andrew.jones@linux.dev>
 In-Reply-To: <20240904105020.1179006-6-andrew.jones@linux.dev>
 References: <20240904105020.1179006-6-andrew.jones@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -71,79 +71,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-When a user specifies the compiler with --cc assume it's already
-fully named, even if the user also specifies a cross-prefix. This
-allows clang to be selected for the compiler, which doesn't use
-prefixes, but also still provide a cross prefix for binutils. If
-a user needs a prefix on the compiler that they specify with --cc,
-then they'll just have to specify it with the prefix prepended.
+Test building 32 and 64-bit with clang. Throw a test of in- and out-
+of-tree building in too by swapping which is done to which (32-bit
+vs. 64-bit) with respect to the gcc build tests.
 
-Also ensure user provided cflags are used when testing the compiler,
-since the flags may drastically change behavior, such as the --target
-flag for clang.
-
-With these changes it's possible to cross compile for riscv with
-clang after configuring with
-
- ./configure --arch=riscv64 --cc=clang --cflags='--target=riscv64' \
-             --cross-prefix=riscv64-linux-gnu-
-
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Acked-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
 ---
- configure | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ .gitlab-ci.yml | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/configure b/configure
-index 27ae9cc89657..337af07374df 100755
---- a/configure
-+++ b/configure
-@@ -130,6 +130,7 @@ while [[ "$1" = -* ]]; do
- 	    ;;
- 	--cc)
- 	    cc="$arg"
-+	    cc_selected=yes
- 	    ;;
- 	--cflags)
- 	    cflags="$arg"
-@@ -200,6 +201,10 @@ while [[ "$1" = -* ]]; do
-     esac
- done
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 67a9a15733f1..b7ad99870e5a 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -176,6 +176,49 @@ build-riscv64-efi:
+       | tee results.txt
+  - grep -q PASS results.txt && ! grep -q FAIL results.txt
  
-+if [ -z "$cc_selected" ] && [ "$cross_prefix" ]; then
-+    cc="$cross_prefix$cc"
-+fi
++build-riscv32-clang:
++ extends: .intree_template
++ script:
++ - dnf install -y qemu-system-riscv gcc-riscv64-linux-gnu clang
++ - ./configure --arch=riscv32 --cc=clang --cflags='--target=riscv32' --cross-prefix=riscv64-linux-gnu-
++ - make -j2
++ - printf "FOO=foo\nBAR=bar\nBAZ=baz\nMVENDORID=0\nMARCHID=0\nMIMPID=0\n" >test-env
++ - ACCEL=tcg KVM_UNIT_TESTS_ENV=test-env ./run_tests.sh
++      selftest
++      sbi
++      | tee results.txt
++ - grep -q PASS results.txt && ! grep -q FAIL results.txt
 +
- if [ -z "$efi" ] || [ "$efi" = "n" ]; then
-     [ "$efi_direct" = "y" ] && efi_direct=
- fi
-@@ -370,7 +375,7 @@ fi
- cat << EOF > lib-test.c
- __UINT32_TYPE__
- EOF
--u32_long=$("$cross_prefix$cc" -E lib-test.c | grep -v '^#' | grep -q long && echo yes)
-+u32_long=$("$cc" $cflags -E lib-test.c | grep -v '^#' | grep -q long && echo yes)
- rm -f lib-test.c
- 
- # check if slash can be used for division
-@@ -379,7 +384,7 @@ if [ "$arch" = "i386" ] || [ "$arch" = "x86_64" ]; then
- foo:
-     movl (8 / 2), %eax
- EOF
--  wa_divide=$("$cross_prefix$cc" -c lib-test.S >/dev/null 2>&1 || echo yes)
-+  wa_divide=$("$cc" $cflags -c lib-test.S >/dev/null 2>&1 || echo yes)
-   rm -f lib-test.{o,S}
- fi
- 
-@@ -442,7 +447,7 @@ ARCH=$arch
- ARCH_NAME=$arch_name
- ARCH_LIBDIR=$arch_libdir
- PROCESSOR=$processor
--CC=$cross_prefix$cc
-+CC=$cc
- CFLAGS=$cflags
- LD=$cross_prefix$ld
- OBJCOPY=$cross_prefix$objcopy
++build-riscv64-clang:
++ extends: .outoftree_template
++ script:
++ - dnf install -y qemu-system-riscv gcc-riscv64-linux-gnu clang
++ - mkdir build
++ - cd build
++ - ../configure --arch=riscv64 --cc=clang --cflags='--target=riscv64' --cross-prefix=riscv64-linux-gnu-
++ - make -j2
++ - printf "FOO=foo\nBAR=bar\nBAZ=baz\nMVENDORID=0\nMARCHID=0\nMIMPID=0\n" >test-env
++ - ACCEL=tcg KVM_UNIT_TESTS_ENV=test-env ./run_tests.sh
++      selftest
++      sbi
++      | tee results.txt
++ - grep -q PASS results.txt && ! grep -q FAIL results.txt
++
++build-riscv64-clang-efi:
++ extends: .intree_template
++ script:
++ - dnf install -y edk2-riscv64 qemu-system-riscv gcc-riscv64-linux-gnu clang
++ - cp /usr/share/edk2/riscv/RISCV_VIRT_CODE.fd .
++ - truncate -s 32M RISCV_VIRT_CODE.fd
++ - ./configure --arch=riscv64 --cc=clang --cflags='--target=riscv64' --cross-prefix=riscv64-linux-gnu- --enable-efi
++ - make -j2
++ - printf "FOO=foo\nBAR=bar\nBAZ=baz\nMVENDORID=0\nMARCHID=0\nMIMPID=0\n" >test-env
++ - ACCEL=tcg KVM_UNIT_TESTS_ENV=test-env ./run_tests.sh
++      selftest
++      sbi
++      | tee results.txt
++ - grep -q PASS results.txt && ! grep -q FAIL results.txt
++
+ build-s390x:
+  extends: .outoftree_template
+  script:
 -- 
 2.46.0
 
