@@ -1,72 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-1018-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1019-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8B696CA78
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 00:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0705C96CA79
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 00:34:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzcj62VnKz2yQJ;
-	Thu,  5 Sep 2024 08:33:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzcjl6WRNz2yDY;
+	Thu,  5 Sep 2024 08:34:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725476032;
-	cv=none; b=QsFuVXhkTqzNFng8ZyQ8R9aceABgg162ONGu9yFg5a4jZ5xd7cwYsyKT56JaT1Qn1ybcTbTR3z4PB8ocg1M64G9jOAVf3viYFJH6e8gGTtP8RwPcvc5rb1obsDnPXLkLOBGXMmlmPat4CFQKu58w+1w6elzHmVSxGnozWRgA/2XZiNoYQI/h73//ABUgh+eKlscRm8j5UgVDMWYPeDKg8vp5bYxdmbXhqdOChnBl1G0Ak2nbouM+pin9mrNbOZNEuveMa9x7szbJgK/I4s3i2h1nK8XbdAdmzeqBq17eO0lyxRrhTeVnsZfzUL77VXn5S1ALXi86LYr9se4+qF9eow==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725476841;
+	cv=none; b=KP7CrtoTPE6M1v3hUVc400K6DHm4Uu4VpQ+PaZPuy4I3mimlZWjkrjer0ZJLgUi3t6hvdFlWH/f57Q52Ebkq7Cu7WKJw2Uid4CwU7AQAl0i27wB2MBp9NIQPCJwmSbk8nOLMKx5DEpY+45YT4JiBHRTfISnFU5eo2qbHetqDcmg2q2GWvDXxDx/xVqn48w6Cb8onFcJFlUkAfftbSf/NnoHGjQBjTjsu49OeE5xoQorA4ywKqkLIjL2sATO+cnVr4a5WZSJLQKt8NFKCqPOa6bGXSfRFe1n10U2fOlDOte396cBXKJWFWprjabT1uL5SCqMMSgYWc9sC5fnauqXxsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725476032; c=relaxed/relaxed;
-	bh=s92rW/1gEQr3xvJKMRwsWt6P8BZ8Funj1rbavwH4oWQ=;
+	t=1725476841; c=relaxed/relaxed;
+	bh=o2U7wgEbLS4i4a8ingcWCBDQrhNmwXrz+ffgx64j+qE=;
 	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=PMdbUhxxxHzudvdmTgD+8V/+hx15jwnDMyTrLImX+zKrR+3BzTOKHI3Oko+So+AzG64Fd8e5YvotGXbJoFmaYBhqgmeg2sk9i+Qu30JtMdBZuEth9jNwMr6IWXVOfdxPocFd+txWMxLEu2iDVmM0j5torcH/IkyFqbSBhduC2Q7Qwfax9YR69Yrzpi2Ppib5OyV20n3KGwPM5iuwGO57djXOIuNeIWntrEmTPt+9MKsAy7Rv1NJf/iiqR5DhD8OUvpQ+fmBGZ/+9aN1ZpmmTqOdBVO4Tb57n3cxbZmAoZYDqG1IOT+7pSEVxGm3RlcjHGdLuRtnAuBRcEAqWyxOi2Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Z0FhoNhN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=debug@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=b8Ru+jIJpAHGPli0SEVaErfVa2BzbBos24GMGqkwNC1KUuM8kWXrjKAGiP2fw7YJLop3T0VEMTrLQYiSlkVBd04OEgvKt1Wax4mjErkFc0j4hpqmP4sHZESzIm+822dig4q/M4fZ0j6dqRS8qIpDON9l6Ae84PK2Kb/VHSa46JKUmoLAYZcOMmTUui2nfXr4Wb9g8T3StHBErbsH7Ek6cKRrkrp/TPVlwdEhPVMGQVDB7pO3rVVH9JpzLODHdOYgunjNHU42TCcPD6aDrw3WnwRNfkZ6LrPb/1FkUgt2H8+P9cCJVkr8ErJS/CU7i9udXi1REmpqUhzGuXWvQvIThA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=l8lB/l0d; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=debug@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Z0FhoNhN;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=l8lB/l0d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::42f; helo=mail-pf1-x42f.google.com; envelope-from=debug@rivosinc.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=debug@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzWqN0Xrvz2yYd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 04:53:51 +1000 (AEST)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-715e64ea7d1so5875812b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2024 11:53:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzX6x0YXMz2xjd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 05:07:19 +1000 (AEST)
+Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-2d8a4bad409so3098235a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2024 12:07:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1725476030; x=1726080830; darn=lists.ozlabs.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1725476837; x=1726081637; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=s92rW/1gEQr3xvJKMRwsWt6P8BZ8Funj1rbavwH4oWQ=;
-        b=Z0FhoNhNW6wnJJcGCox1is3Ld99K31JWRscf3j6b8Ouuq0azcGH8azRUcmCBRbYlxs
-         k0tYJAgcmLSs2fIoqoKVnHWSE1zseKrp5nHBsY0UDYGgdsqgp77OhvlJYTjZ6VYSvPmh
-         hAzm9bM3vmW4iLbq4TDMd882YcH291hsrTHEWal0wW6EWiL1x0bsQTNfBpCTxHc2U4uE
-         tHCez+ieEajulPtiU7bhrZME9uEcwG4yDxiPDHttFHKOmueM4E8UnxEX1d68k67o4erk
-         HoOaoDIbAvsk5sUOHOS8zxlBpaU90D5ExsF2IIZHvfctCOa6riP205cCR/VQ4dU1mltR
-         XthQ==
+        bh=o2U7wgEbLS4i4a8ingcWCBDQrhNmwXrz+ffgx64j+qE=;
+        b=l8lB/l0daNW4RcmdlmcidgGXdedCY6Rc9UWYxo18EbzN8u8MFJrFgeGQvIW0ZwuSLO
+         8H4dflEkriyNh6P+yGS16eUWkuT+0y5/G6qzO5aG2aaaXcKuDFSiGgBcd2FJc8ZjXVXL
+         khRJ9uN8AAfFoKQHzX447Exk6i8sr3Pwwn8tkGzS048gNZBhzvfRM4MbDOrLmEgnXH7z
+         ptEuArT+QFU4T5Hii/3qELLVYZA+9736aXvIgfBySmSd8GEu2XyJRHZabjxgMNzeRNKP
+         2RD+lwBrFQcX9isLh4vgCTTabCu9/NLFzGeucCHmetkJRqdzHRYeJUPGDckLIJbmLVJs
+         sGLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725476030; x=1726080830;
+        d=1e100.net; s=20230601; t=1725476837; x=1726081637;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s92rW/1gEQr3xvJKMRwsWt6P8BZ8Funj1rbavwH4oWQ=;
-        b=CGgnzr2tSvlMeEuGpdt32VQvYsyL0V3bID1yinfn3C7H6V3RBiDxiIUsek+ZtHL2k/
-         pkGJA8V5wrRrBnGLpuc4mJS3ceVzFi8yAqa/qm7Enjpi2u9bFJSnUfEGzcKkPw1tEjiz
-         8RGiooCV8XQSwsgD3SG7oupqLq0mFFymCDqxz6HBY+WaBZDLnKYrEPC6y6axH7pW7HOK
-         RWpw5ca3eFDjpY45B1HHFHxm/LJivmDv2KZpcsntlbbC4q3hR3+CGeeenDdxQ/70SFYg
-         i867FLhHIzd6HrIczPKJbTDhMknCrEw07wJpBfr8viCHG8wUpuYxiH3pSrcDEEDIsMgh
-         ymaA==
-X-Forwarded-Encrypted: i=1; AJvYcCXR/VDHKmRCaYdGjjJ/hKusfaxEPxDMSEf4Wb9CFvvnnDP9Ba/kOVLup0/MDjuQW+JB+438t0+wBoehKZI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzW4ndN5BV5GhX9aVKtlPuoNqyjnSmMg9zTgQqXdgU1q+FZv5Yc
-	iXCW28cfs/dmgwNBemZc2NbysmQ/VFzFtI6CqeuyS3NwBTuMbJOjhc3VXa0IVmY=
-X-Google-Smtp-Source: AGHT+IE2IsoC0LRmiLcI1CkvV1DU3vw4DUJdyqp6MID1n1cX+56uyYB7jBo1wGGq/wkl04oTY4Plng==
-X-Received: by 2002:a05:6a21:318b:b0:1ce:cbcf:aaa9 with SMTP id adf61e73a8af0-1cecdfdea62mr20770394637.36.1725476029832;
-        Wed, 04 Sep 2024 11:53:49 -0700 (PDT)
+        bh=o2U7wgEbLS4i4a8ingcWCBDQrhNmwXrz+ffgx64j+qE=;
+        b=k2QBzs0O4nc9nx8McOCGY/zygnoStl1hNRttbwslqpIQcLn8qKTAxvgRyk9pBIEuum
+         jnXz6CRomLl51rwW+S7zywR9txnLUU5l7DJX8LnfHnEaFcUekNxvunWxc8lEzT/faRA0
+         rUYkPiPD6pu0U5olMvwrsGRdekjpxyqWFdYLGwnXlD4++RMhc4KC2ASX5VQ2Q2ZDVShl
+         YNxJwdKGvN1ZysZvZEfe4/VGZpwAT/I3L1VJXyh6eapuRjGOwgOY+utyXzIBHMDs2/qr
+         zKKS4EeQDLq61ZXM49U1GUczgWqb0L/7Ch985hENX6xe/GiyNAFH9k6PhgMz9ZrbFmj6
+         qlBg==
+X-Forwarded-Encrypted: i=1; AJvYcCVOcAe+sL4dd48Z7sgYWJwYAaYlUdhLBAvzij/skRvAu5FhkG1BKWozdpw2rqgACjy8/D3ZIN1ge4Ex0ro=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyOReKtUf9OmAgeZG4XqOBDq3YO4BZfmS07MO+GA/1qM+8zM03X
+	z8p9wxrc1dx2nzc4B05liDrBU+stb+CX1jKUd7/som2QHVhN7cSP3eIhcKOZ2Ac=
+X-Google-Smtp-Source: AGHT+IGRXMFw8eODDeHuSZGixob1QmbWy894YR3dac/q8kTYt2afjYPzXJiDq5qdDnRm4AHLgT4d4Q==
+X-Received: by 2002:a17:90b:300e:b0:2d8:27c3:87d7 with SMTP id 98e67ed59e1d1-2d893284ebdmr13545892a91.8.1725476836620;
+        Wed, 04 Sep 2024 12:07:16 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71778522979sm1947597b3a.30.2024.09.04.11.53.47
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2da53740084sm4858056a91.32.2024.09.04.12.07.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Sep 2024 11:53:49 -0700 (PDT)
-Date: Wed, 4 Sep 2024 11:53:45 -0700
+        Wed, 04 Sep 2024 12:07:16 -0700 (PDT)
+Date: Wed, 4 Sep 2024 12:07:12 -0700
 From: Deepak Gupta <debug@rivosinc.com>
 To: Mark Brown <broonie@kernel.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
 	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
 	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
 	Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
@@ -94,7 +95,6 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
 	Max Filippov <jcmvbkbc@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
@@ -104,11 +104,14 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	loongarch@lists.linux.dev, linux-parisc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
 	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 2/3] mm: Pass vm_flags to generic_get_unmapped_area()
-Message-ID: <ZtisuRySfREHjnN/@debug.ba.rivosinc.com>
+	linux-mm@kvack.org, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH 3/3] mm: Care about shadow stack guard gap when getting
+ an unmapped area
+Message-ID: <Ztiv4NtsIkKnyiLO@debug.ba.rivosinc.com>
 References: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
- <20240902-mm-generic-shadow-stack-guard-v1-2-9acda38b3dd3@kernel.org>
+ <20240902-mm-generic-shadow-stack-guard-v1-3-9acda38b3dd3@kernel.org>
+ <is6ewj3bhtqy3zadj6lbdv6maupx4kmduvhny66ntifkji6hoj@xmhcf5jt4o66>
+ <dbaf5653-df46-4e17-bce1-aec7fb168197@sirena.org.uk>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -120,16 +123,24 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20240902-mm-generic-shadow-stack-guard-v1-2-9acda38b3dd3@kernel.org>
+In-Reply-To: <dbaf5653-df46-4e17-bce1-aec7fb168197@sirena.org.uk>
 
-On Mon, Sep 02, 2024 at 08:08:14PM +0100, Mark Brown wrote:
->In preparation for using vm_flags to ensure guard pages for shadow stacks
->supply them as an argument to generic_get_unmapped_area(). The only user
->outside of the core code is the PowerPC book3s64 implementation which is
->trivially wrapping the generic implementation in the radix_enabled() case.
+On Tue, Sep 03, 2024 at 08:57:20PM +0100, Mark Brown wrote:
+>On Tue, Sep 03, 2024 at 03:41:49PM -0400, Liam R. Howlett wrote:
+>> * Mark Brown <broonie@kernel.org> [240902 15:09]:
 >
->Signed-off-by: Mark Brown <broonie@kernel.org>
+>> > +static inline unsigned long stack_guard_placement(vm_flags_t vm_flags)
+>> > +{
+>> > +	if (vm_flags & VM_SHADOW_STACK)
+>> > +		return PAGE_SIZE;
+>
+>> Is PAGE_SIZE is enough?
+>
+>It's what x86 currently uses so it'll be no worse off if it gets moved
+>to the generic code (there's a comment in the arch code explaing what's
+>needed there) and it's enough for arm64, we only do single record
+>pushes/pops or (optionally) writes to unconstrained addresses.
 
-Reviewed-by: Deepak Gupta <debug@rivosinc.com>
+It's enough for RISC-V too.
 
 
