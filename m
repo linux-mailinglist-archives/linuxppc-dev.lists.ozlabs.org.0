@@ -1,64 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-987-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-988-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C19196BC88
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 14:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCA596BD33
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 14:55:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzMSv1WYjz2yGD;
-	Wed,  4 Sep 2024 22:37:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzMtC0dn8z2yV3;
+	Wed,  4 Sep 2024 22:55:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=156.67.10.101
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725453439;
-	cv=none; b=KesKZ9AFKL4Geb8pviq++9YWBnpc5PWS7gYc3cBqAoW+JBoqE886diG0zAQ5KiklRcAEBPxjqlWS3PI6ZaZm5f5MSxOwVIG2EM9ExU8uIokqZ9V6549iKYe6+uK1Q8aM8Z4WNiasiYV5warCgfQhq0KtWnoKmmxwkMUkhw72ZnzyNGoCey0ZnAZHoH0V6i7I9zJxtSMBseH6Yuw1gSZuVLmUlIFJdz0u2AtoYi0+w4pwWq4yk1PBfohSCOYfP3wFjy6a/9xGlRmMXqGEn2rglAYt1qxLT7tTmmgSh7Z1lsU8dkCBqaPm2W9r3nH8EOfRFY1R2Q3UaEsM/KKWztGbRw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725454547;
+	cv=none; b=beCcOun8HwCzwxD9+Mq4ym90GRFziw1IpCj9I73gespFXI0y7WtCEIhj0BpYPf2/aXeVjX0clpjxaXjYZTLAY243DAfFyJsUJbDhVL8ijgRJOXdwFLmipX46PKC47ENSvKAS0YYJaEGqfkvX6T3wAtBZGlsfjgeJp+m4uNaLJWtq/NFgeFI1STtGn58fF0QcyNbKr8JI/u88hlkulF6I6m1MwZkLJvX1gaHqQzGk20ildh2w8rlqY/B2SKM4/w3knIyxFnhH5n/jUs1j3J9Lka1ul4jZy9gFOuSl+QiVB0F4hVBPw8m8Nr43tF8ORZMVyfoCh11lpwHaxbDsduP1Wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725453439; c=relaxed/relaxed;
-	bh=QeHS5gYeBwIHKYodExNcm3Ca29cLrkM3gWUGPTXMyb8=;
-	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=aPhm4JIycC60o2frVzYSjQ4Cbw10RMwcXnphQmAhtWbCNfP4v5AoIlEsgt76UhppXrT1KSiOtKyLTzw/GCvnN/njLuFF3f1KvQtHaHyblhRPdJZ3W7XtKYjLDsk2aPzviC86EvOQwTk2jjiSjavZB6HD+zKGs3/ukvb9e8URaePmvkSUUAN39Fi89jTSDZxjwcw37ItKsWnuagNfQJPkqLlFZfmLm1ocN6NXCl2mCpTE+Ig81lIgnDuapyBkkdIHda6TMZ0BLUbIn90d+yz+O7QrliDpZ0cePLUAYPxeJlllyufwnrmCNBTp8Sk+eFDvTLw2Z5rUL/QfyGHdKF62Bg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=G4Z+/pMB; dkim-atps=neutral; spf=pass (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org) smtp.mailfrom=lunn.ch
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=G4Z+/pMB;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzMSs20mkz2y8G
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 22:37:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QeHS5gYeBwIHKYodExNcm3Ca29cLrkM3gWUGPTXMyb8=; b=G4Z+/pMByzWepvK55PL6wa7XUD
-	2+e/gb3tIQpEcc9KItRjA5l2RTcx+56kge/vEJBIVgK2JhQiH2Le4yJHkI2VV5hW4VRDo8hz5ni+1
-	ChdCZwh7/IY32fgzuZhizTJKd6K8zf+ISozo5hZkP4rqginFvDV3Q7tMp2yvmz/2FBiA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1slpFq-006YP3-49; Wed, 04 Sep 2024 14:36:58 +0200
-Date: Wed, 4 Sep 2024 14:36:58 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, Pantelis Antoniou <pantelis.antoniou@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	Herve Codina <herve.codina@bootlin.com>,
-	Simon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v2 3/7] net: ethernet: fs_enet: drop the
- .adjust_link custom fs_ops
-Message-ID: <58cf7db3-4321-4bd9-a422-3642ce59f21f@lunn.ch>
-References: <20240829161531.610874-1-maxime.chevallier@bootlin.com>
- <20240829161531.610874-4-maxime.chevallier@bootlin.com>
- <480a16fd-a1eb-4ea0-b859-5d874ecc3b15@lunn.ch>
- <20240904102711.1accc8ce@fedora.home>
+	t=1725454547; c=relaxed/relaxed;
+	bh=Vcsv9bvioKD8zrCjVbG9oMpKYf2rGSiavnM+dIHCh4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j/LEo4EVfpJz6w7WFXIStjlHqhQ8cFGmXOlRl7f75FcgGqSJaRDy3BuWWb/xKJVQwqBdoA+4A3S73nNz1W9ZRKmtbxYucVUW44945fR3xnI1nt7R1nYzLzf11u5mBqqJBD6vVc/71RNCRlnQFY6GBNjXAGYKSDCfh9GS0qpjxuI1HCIr55xKFjnvJGn1JWXSw/316XaAXtPGa++YlXyB92ssFET/w4cPvo3BOrJCvmHIbGUadozPkWUaEjPX09Dbb1q3qIKaxdxd3hWbM8vp4KE+zYUyRhvyri9dA38WVLX3tfbDWC2j/CNdG60UgVTobkEeg6G82tHKxqWQf38DZw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=joey.gouly@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzMtB1gF2z2y8X
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 22:55:44 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9FBD8FEC;
+	Wed,  4 Sep 2024 05:55:37 -0700 (PDT)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 369393F73B;
+	Wed,  4 Sep 2024 05:55:08 -0700 (PDT)
+Date: Wed, 4 Sep 2024 13:55:03 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	linux-arm-kernel@lists.infradead.org, nd@arm.com,
+	akpm@linux-foundation.org, aneesh.kumar@kernel.org,
+	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
+	broonie@kernel.org, christophe.leroy@csgroup.eu,
+	dave.hansen@linux.intel.com, hpa@zytor.com,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
+	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
+	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
+	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
+	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v5 06/30] arm64: context switch POR_EL0 register
+Message-ID: <20240904125503.GA3901671@e124191.cambridge.arm.com>
+References: <20240823144531.GH32156@willie-the-truck>
+ <Zsi7ovLOfuFdfuuz@arm.com>
+ <20240823170835.GA1181@willie-the-truck>
+ <ZsjXtE7Kg0LQwNAL@arm.com>
+ <20240827113803.GB4318@willie-the-truck>
+ <ZtYNGBrcE-j35fpw@arm.com>
+ <20240903145413.GB3669886@e124191.cambridge.arm.com>
+ <20240904102254.GA13280@willie-the-truck>
+ <20240904113221.GA3891700@e124191.cambridge.arm.com>
+ <20240904114301.GA13550@willie-the-truck>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,45 +66,113 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240904102711.1accc8ce@fedora.home>
+In-Reply-To: <20240904114301.GA13550@willie-the-truck>
 
-On Wed, Sep 04, 2024 at 10:27:11AM +0200, Maxime Chevallier wrote:
-> Hi Andrew,
-> 
-> On Fri, 30 Aug 2024 23:06:08 +0200
-> Andrew Lunn <andrew@lunn.ch> wrote:
-> 
-> > > --- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-> > > +++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-> > > @@ -649,12 +649,7 @@ static void fs_adjust_link(struct net_device *dev)
-> > >  	unsigned long flags;
-> > >  
-> > >  	spin_lock_irqsave(&fep->lock, flags);
-> > > -
-> > > -	if (fep->ops->adjust_link)
-> > > -		fep->ops->adjust_link(dev);
-> > > -	else
-> > > -		generic_adjust_link(dev);
-> > > -
-> > > +	generic_adjust_link(dev);
-> > >  	spin_unlock_irqrestore(&fep->lock, flags);  
+On Wed, Sep 04, 2024 at 12:43:02PM +0100, Will Deacon wrote:
+> On Wed, Sep 04, 2024 at 12:32:21PM +0100, Joey Gouly wrote:
+> > On Wed, Sep 04, 2024 at 11:22:54AM +0100, Will Deacon wrote:
+> > > On Tue, Sep 03, 2024 at 03:54:13PM +0100, Joey Gouly wrote:
+> > > > On Mon, Sep 02, 2024 at 08:08:08PM +0100, Catalin Marinas wrote:
+> > > > > On Tue, Aug 27, 2024 at 12:38:04PM +0100, Will Deacon wrote:
+> > > > > > On Fri, Aug 23, 2024 at 07:40:52PM +0100, Catalin Marinas wrote:
+> > > > > > > On Fri, Aug 23, 2024 at 06:08:36PM +0100, Will Deacon wrote:
+> > > > > > > > On Fri, Aug 23, 2024 at 05:41:06PM +0100, Catalin Marinas wrote:
+> > > > > > > > > On Fri, Aug 23, 2024 at 03:45:32PM +0100, Will Deacon wrote:
+> > > > > > > > > > On Thu, Aug 22, 2024 at 04:10:49PM +0100, Joey Gouly wrote:
+> > > > > > > > > > > +static void permission_overlay_switch(struct task_struct *next)
+> > > > > > > > > > > +{
+> > > > > > > > > > > +	if (!system_supports_poe())
+> > > > > > > > > > > +		return;
+> > > > > > > > > > > +
+> > > > > > > > > > > +	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> > > > > > > > > > > +	if (current->thread.por_el0 != next->thread.por_el0) {
+> > > > > > > > > > > +		write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
+> > > > > > > > > > > +		/* ISB required for kernel uaccess routines when chaning POR_EL0 */
+> > > > > > > > > >
+> > > > > > > > > > nit: typo "chaning".
+> > > > > > > > > >
+> > > > > > > > > > But more substantially, is this just to prevent spurious faults in the
+> > > > > > > > > > context of a new thread using a stale value for POR_EL0?
+> > > > > > > > >
+> > > > > > > > > Not just prevent faults but enforce the permissions from the new
+> > > > > > > > > thread's POR_EL0. The kernel may continue with a uaccess routine from
+> > > > > > > > > here, we can't tell.
+> > > > > [...]
+> > > > > > > > So what do we actually gain by having the uaccess routines honour this?
+> > > > > > >
+> > > > > > > I guess where it matters is more like not accidentally faulting because
+> > > > > > > the previous thread had more restrictive permissions.
+> > > > > >
+> > > > > > That's what I wondered initially, but won't the fault handler retry in
+> > > > > > that case?
+> > > > >
+> > > > > Yes, it will retry and this should be fine (I assume you are only
+> > > > > talking about the dropping ISB in the context switch).
+> > > > >
+> > > > > For the case of running with a more permissive stale POR_EL0, arguably it's
+> > > > > slightly more predictable for the user but, OTOH, some syscalls like
+> > > > > readv() could be routed through GUP with no checks. As with MTE, we
+> > > > > don't guarantee uaccesses honour the user permissions.
+> > > > >
+> > > > > That said, at some point we should sanitise this path anyway and have a
+> > > > > single ISB at the end. In the meantime, I'm fine with dropping the ISB
+> > > > > here.
+> > > > >
+> > > > 
+> > > > commit 3141fb86bee8d48ae47cab1594dad54f974a8899
+> > > > Author: Joey Gouly <joey.gouly@arm.com>
+> > > > Date:   Tue Sep 3 15:47:26 2024 +0100
+> > > > 
+> > > >     fixup! arm64: context switch POR_EL0 register
+> > > > 
+> > > > diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+> > > > index a3a61ecdb165..c224b0955f1a 100644
+> > > > --- a/arch/arm64/kernel/process.c
+> > > > +++ b/arch/arm64/kernel/process.c
+> > > > @@ -515,11 +515,8 @@ static void permission_overlay_switch(struct task_struct *next)
+> > > >                 return;
+> > > > 
+> > > >         current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> > > > -       if (current->thread.por_el0 != next->thread.por_el0) {
+> > > > +       if (current->thread.por_el0 != next->thread.por_el0)
+> > > >                 write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
+> > > > -               /* ISB required for kernel uaccess routines when chaning POR_EL0 */
+> > > > -               isb();
+> > > > -       }
+> > > >  }
+> > > 
+> > > What about the one in flush_poe()? I'm inclined to drop that as well.
 > > 
-> > Holding a spinlock is pretty unusual. We are in thread context, and
-> > the phydev mutex is held. Looking at generic_adjust_link, do any of
-> > the fep->foo variables actually need protecting, particularly from
-> > changes in interrupts context?
+> > Yes I guess that one can be removed too. Catalin any comments?
+> > 
+> > > 
+> > > > Will, do you want me to re-send the series with this and the permissions
+> > > > diff from the other thread [1],
+> > > > or you ok with applying them when you pull it in?
+> > > 
+> > > I'll have a crack now, but if it fails miserably then I'll let you know.
+> > 
+> > Thanks! Just to make sure, you should pick the patch up from
+> > 
+> > 	https://lore.kernel.org/linux-arm-kernel/20240903152937.GA3768522@e124191.cambridge.arm.com/
+> > 
+> > Not the one I linked to in [1] in my previous e-mail.
 > 
-> Yes there are, the interrupt mask/event registers are being accessed
-> from the interrupt handler and the ->restart() hook. I can try to
-> rework this a bit for a cleaner interrupt handling, but I don't have
-> means to test this on all mac flavors (fec/fcc/scc) :(
+> Right, there's quite a lot I need to do:
+> 
+> - Uncorrupt your patches
+> - Fix the conflict in the kvm selftests
+> - Drop the unnecessary ISBs
+> - Fix the ESR checking
+> - Fix the el2_setup labels
+> - Reorder the patches
+> - Drop the patch that is already in kvmarm
+> 
+> Working on it...
 
-As far as i can see, none of the fep->old* members are accessed
-outside of fs_enet-main.c. There values are not important for the
-restart call. So the spinlock has nothing to do with adjust_link as
-such, but restart. So maybe narrow down the lock to just the restart
-call? But it is not a big issues, just unusual.
+Sorry! I'm happy to rebase onto some arm64 branch if that will help, just let me know.
 
-	Andrew
-
+> 
+> Will
+> 
 
