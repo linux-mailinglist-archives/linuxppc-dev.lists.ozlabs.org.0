@@ -1,112 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-986-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-987-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF6F96BB2D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 13:47:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C19196BC88
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 14:37:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzLM21QJsz2xFn;
-	Wed,  4 Sep 2024 21:47:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzMSv1WYjz2yGD;
+	Wed,  4 Sep 2024 22:37:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725450430;
-	cv=none; b=nocJZdEjkocNqX7e7FEVlqmI85GzvgP3fuCxiAATbcjGD343yVraKHDt0lg/PFM5CxYVX0PPFu3GNiEJge5rSWxZans05HBczNeJYZSRkdBBoj8RdLENpvOYbn1P59SXFdmC03psUVZQVthacpl26vO9ugLzP6aSmxCB6ZT+VVKE9mniRlLzrEGEi11dAvcRpH9nUtslSUiVCO/gT/aRTxgKbm3pw3pU4JhPhGxAYzJeCtBbHmAfxubjNmSmT7+GTaYRfYUqsFmeG3ToRaR9g3zxaodunax0wby2YLwz1Z0NzBvUFYLOegJCUhbGgS1rfX+chZSObXwpBMtXrydQVw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=156.67.10.101
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725453439;
+	cv=none; b=KesKZ9AFKL4Geb8pviq++9YWBnpc5PWS7gYc3cBqAoW+JBoqE886diG0zAQ5KiklRcAEBPxjqlWS3PI6ZaZm5f5MSxOwVIG2EM9ExU8uIokqZ9V6549iKYe6+uK1Q8aM8Z4WNiasiYV5warCgfQhq0KtWnoKmmxwkMUkhw72ZnzyNGoCey0ZnAZHoH0V6i7I9zJxtSMBseH6Yuw1gSZuVLmUlIFJdz0u2AtoYi0+w4pwWq4yk1PBfohSCOYfP3wFjy6a/9xGlRmMXqGEn2rglAYt1qxLT7tTmmgSh7Z1lsU8dkCBqaPm2W9r3nH8EOfRFY1R2Q3UaEsM/KKWztGbRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725450430; c=relaxed/relaxed;
-	bh=MTV8FP7JpS252DXDlD7g+lznBNg91Cnezr5tlyrHd7M=;
-	h=DKIM-Signature:Message-ID:Date:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type:MIME-Version; b=kN4j4y2J64vifc4wE2zl1HxnnBw7XyOLPdmP++Sz8DQoO8wRXfLphJSLzazcbZubUsGnAYr65vJSvYxtcbRhFBBPd48e08a87V+FOlpf3vDl2AdWq/TsPkl9fnT8GHJVvmpdrQuj9rYIZSPBE7LhAKPTJVHTHBrpCMY8jdYfP4K+oAKnat2lt4+G19lsUj/FzviYsJrXEW3wWZ7Uj5hTNISwPeNGY57ByhC7nxrEJ+Pf5XHkZWqKY9FQG4apq5RCW4aGVD7uw2PybQNUx0oXNmCMWVVWkQ+90G3fMJMkvkSwZhspUf0MFbIMiBrJnkcSWof591A16BRKsckbDvO5yQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PN21NC2B; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1725453439; c=relaxed/relaxed;
+	bh=QeHS5gYeBwIHKYodExNcm3Ca29cLrkM3gWUGPTXMyb8=;
+	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=aPhm4JIycC60o2frVzYSjQ4Cbw10RMwcXnphQmAhtWbCNfP4v5AoIlEsgt76UhppXrT1KSiOtKyLTzw/GCvnN/njLuFF3f1KvQtHaHyblhRPdJZ3W7XtKYjLDsk2aPzviC86EvOQwTk2jjiSjavZB6HD+zKGs3/ukvb9e8URaePmvkSUUAN39Fi89jTSDZxjwcw37ItKsWnuagNfQJPkqLlFZfmLm1ocN6NXCl2mCpTE+Ig81lIgnDuapyBkkdIHda6TMZ0BLUbIn90d+yz+O7QrliDpZ0cePLUAYPxeJlllyufwnrmCNBTp8Sk+eFDvTLw2Z5rUL/QfyGHdKF62Bg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=G4Z+/pMB; dkim-atps=neutral; spf=pass (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org) smtp.mailfrom=lunn.ch
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PN21NC2B;
+	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=G4Z+/pMB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzLM14WVHz2x9W
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 21:47:09 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4845kj9l020520;
-	Wed, 4 Sep 2024 11:46:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:subject:to:cc:references:from:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
-	MTV8FP7JpS252DXDlD7g+lznBNg91Cnezr5tlyrHd7M=; b=PN21NC2BvCWvtGFK
-	4wUnS7e0D9xNsPbM8okDU5JElUtpZdNWwwCqre93Tq6bViGZFbZoLOGt7H9p6qva
-	GSvtX7cgPVaBz8IAYz37IXmx1Ebr/EUB3ROku9eql8lPLw1H5mYUmyf3vEIPvPJH
-	+oUaoM0fpMLwGUmjhF1UMYsSBvadfObIBvYEP636/wu2detlh9yFY0V0dS76n+qw
-	G0WY2Ky4J4OOV4bj5WEHHIkuE7JZsFWFUEW0g1BYRxoEKhJr5W9o2Eekn2qLWXJm
-	5Iu7uduAfU0kAhsDAMqrU8N6nk4xbYPyEQcwmKvvDBbaH/vFRDXxw/2jv/tturLu
-	8+2ZUQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41btp9jtr3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 11:46:36 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 484BkabI014422;
-	Wed, 4 Sep 2024 11:46:36 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41btp9jtqx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 11:46:36 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4848dW8i018726;
-	Wed, 4 Sep 2024 11:46:34 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41cdw17mjc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 11:46:34 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 484BkX9d5571214
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Sep 2024 11:46:33 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 788905805F;
-	Wed,  4 Sep 2024 11:46:33 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 591415805A;
-	Wed,  4 Sep 2024 11:46:24 +0000 (GMT)
-Received: from [9.43.58.251] (unknown [9.43.58.251])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  4 Sep 2024 11:46:23 +0000 (GMT)
-Message-ID: <af338cfa-a926-4877-abd5-41bd9c0989fa@linux.ibm.com>
-Date: Wed, 4 Sep 2024 17:16:21 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/5] powerpc/vdso: Wire up getrandom() vDSO
- implementation on VDSO64
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu
- <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Bill Wendling
- <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>, Shuah Khan <shuah@kernel.org>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kselftest@vger.kernel.org, llvm@lists.linux.dev,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-trace-kernel@vger.kernel.org,
-        Adhemerval Zanella <adhemerval.zanella@linaro.org>,
-        Xi Ruoyao <xry111@xry111.site>
-References: <cover.1725304404.git.christophe.leroy@csgroup.eu>
- <de334b1de27260f217d6bc65e02c841e8eff75be.1725304404.git.christophe.leroy@csgroup.eu>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <de334b1de27260f217d6bc65e02c841e8eff75be.1725304404.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HJf9FfRxUIn-bus3YS-8Nv7wys3fWlq0
-X-Proofpoint-ORIG-GUID: GsORRVOOw0bsMXq53jCcymkKLcDzZwmV
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzMSs20mkz2y8G
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 22:37:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=QeHS5gYeBwIHKYodExNcm3Ca29cLrkM3gWUGPTXMyb8=; b=G4Z+/pMByzWepvK55PL6wa7XUD
+	2+e/gb3tIQpEcc9KItRjA5l2RTcx+56kge/vEJBIVgK2JhQiH2Le4yJHkI2VV5hW4VRDo8hz5ni+1
+	ChdCZwh7/IY32fgzuZhizTJKd6K8zf+ISozo5hZkP4rqginFvDV3Q7tMp2yvmz/2FBiA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1slpFq-006YP3-49; Wed, 04 Sep 2024 14:36:58 +0200
+Date: Wed, 4 Sep 2024 14:36:58 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Herve Codina <herve.codina@bootlin.com>,
+	Simon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next v2 3/7] net: ethernet: fs_enet: drop the
+ .adjust_link custom fs_ops
+Message-ID: <58cf7db3-4321-4bd9-a422-3642ce59f21f@lunn.ch>
+References: <20240829161531.610874-1-maxime.chevallier@bootlin.com>
+ <20240829161531.610874-4-maxime.chevallier@bootlin.com>
+ <480a16fd-a1eb-4ea0-b859-5d874ecc3b15@lunn.ch>
+ <20240904102711.1accc8ce@fedora.home>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -116,255 +68,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-04_09,2024-09-04_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0 spamscore=0
- malwarescore=0 mlxlogscore=999 adultscore=0 mlxscore=0 suspectscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409040088
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240904102711.1accc8ce@fedora.home>
 
+On Wed, Sep 04, 2024 at 10:27:11AM +0200, Maxime Chevallier wrote:
+> Hi Andrew,
+> 
+> On Fri, 30 Aug 2024 23:06:08 +0200
+> Andrew Lunn <andrew@lunn.ch> wrote:
+> 
+> > > --- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+> > > +++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+> > > @@ -649,12 +649,7 @@ static void fs_adjust_link(struct net_device *dev)
+> > >  	unsigned long flags;
+> > >  
+> > >  	spin_lock_irqsave(&fep->lock, flags);
+> > > -
+> > > -	if (fep->ops->adjust_link)
+> > > -		fep->ops->adjust_link(dev);
+> > > -	else
+> > > -		generic_adjust_link(dev);
+> > > -
+> > > +	generic_adjust_link(dev);
+> > >  	spin_unlock_irqrestore(&fep->lock, flags);  
+> > 
+> > Holding a spinlock is pretty unusual. We are in thread context, and
+> > the phydev mutex is held. Looking at generic_adjust_link, do any of
+> > the fep->foo variables actually need protecting, particularly from
+> > changes in interrupts context?
+> 
+> Yes there are, the interrupt mask/event registers are being accessed
+> from the interrupt handler and the ->restart() hook. I can try to
+> rework this a bit for a cleaner interrupt handling, but I don't have
+> means to test this on all mac flavors (fec/fcc/scc) :(
 
-On 9/3/24 12:47 AM, Christophe Leroy wrote:
-> Extend getrandom() vDSO implementation to VDSO64
->
-> Tested on QEMU on both ppc64_defconfig and ppc64le_defconfig.
->
-> The results are not precise as it is QEMU on an x86 laptop, but
-> no need to be precise to see the benefit.
->
-> ~ # ./vdso_test_getrandom bench-single
->     vdso: 25000000 times in 4.977777162 seconds
->     libc: 25000000 times in 75.516749981 seconds
-> syscall: 25000000 times in 86.842242014 seconds
->
-> ~ # ./vdso_test_getrandom bench-single
->     vdso: 25000000 times in 6.473814156 seconds
->     libc: 25000000 times in 73.875109463 seconds
-> syscall: 25000000 times in 71.805066229 seconds
+As far as i can see, none of the fep->old* members are accessed
+outside of fs_enet-main.c. There values are not important for the
+restart call. So the spinlock has nothing to do with adjust_link as
+such, but restart. So maybe narrow down the lock to just the restart
+call? But it is not a big issues, just unusual.
 
-Tried the patchset on top of
+	Andrew
 
-https://kernel.googlesource.com/pub/scm/linux/kernel/git/crng/random.git
-(commit 963233ff013377bc2aa0d641b9efbb7fd4c2b72c (origin/master, 
-origin/HEAD, master))
-
-Results from a Power9 (PowerNV)
-# ./vdso_test_getrandom bench-single
-    vdso: 25000000 times in 0.787943615 seconds
-    libc: 25000000 times in 14.101887252 seconds
-    syscall: 25000000 times in 14.047475082 seconds
-
-Impressive, thanks for enabling it.
-
-Tested-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
-> v5:
-> - VDSO32 for both PPC32 and PPC64 is in previous patch. This patch have the logic for VDSO64.
->
-> v4:
-> - Use __BIG_ENDIAN__ which is defined by GCC instead of CONFIG_CPU_BIG_ENDIAN which is unknown by selftests
-> - Implement a cleaner/smaller output copy for little endian instead of keeping compat macro.
->
-> v3: New (split out of previous patch)
-> ---
->   arch/powerpc/Kconfig                         |  2 +-
->   arch/powerpc/kernel/vdso/Makefile            |  8 ++-
->   arch/powerpc/kernel/vdso/getrandom.S         |  8 +++
->   arch/powerpc/kernel/vdso/vdso64.lds.S        |  1 +
->   arch/powerpc/kernel/vdso/vgetrandom-chacha.S | 53 ++++++++++++++++++++
->   5 files changed, 69 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index e500a59ddecc..b45452ac4a73 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -311,7 +311,7 @@ config PPC
->   	select SYSCTL_EXCEPTION_TRACE
->   	select THREAD_INFO_IN_TASK
->   	select TRACE_IRQFLAGS_SUPPORT
-> -	select VDSO_GETRANDOM			if VDSO32
-> +	select VDSO_GETRANDOM
->   	#
->   	# Please keep this list sorted alphabetically.
->   	#
-> diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-> index 7a4a935406d8..56fb1633529a 100644
-> --- a/arch/powerpc/kernel/vdso/Makefile
-> +++ b/arch/powerpc/kernel/vdso/Makefile
-> @@ -9,6 +9,7 @@ obj-vdso32 = sigtramp32-32.o gettimeofday-32.o datapage-32.o cacheflush-32.o not
->   obj-vdso64 = sigtramp64-64.o gettimeofday-64.o datapage-64.o cacheflush-64.o note-64.o getcpu-64.o
->   
->   obj-vdso32 += getrandom-32.o vgetrandom-chacha-32.o
-> +obj-vdso64 += getrandom-64.o vgetrandom-chacha-64.o
->   
->   ifneq ($(c-gettimeofday-y),)
->     CFLAGS_vgettimeofday-32.o += -include $(c-gettimeofday-y)
-> @@ -21,6 +22,7 @@ endif
->   
->   ifneq ($(c-getrandom-y),)
->     CFLAGS_vgetrandom-32.o += -include $(c-getrandom-y)
-> +  CFLAGS_vgetrandom-64.o += -include $(c-getrandom-y) $(call cc-option, -ffixed-r30)
->   endif
->   
->   # Build rules
-> @@ -34,7 +36,7 @@ endif
->   targets := $(obj-vdso32) vdso32.so.dbg vgettimeofday-32.o vgetrandom-32.o
->   targets += crtsavres-32.o
->   obj-vdso32 := $(addprefix $(obj)/, $(obj-vdso32))
-> -targets += $(obj-vdso64) vdso64.so.dbg vgettimeofday-64.o
-> +targets += $(obj-vdso64) vdso64.so.dbg vgettimeofday-64.o vgetrandom-64.o
->   obj-vdso64 := $(addprefix $(obj)/, $(obj-vdso64))
->   
->   ccflags-y := -fno-common -fno-builtin -DBUILD_VDSO
-> @@ -71,7 +73,7 @@ CPPFLAGS_vdso64.lds += -P -C
->   # link rule for the .so file, .lds has to be first
->   $(obj)/vdso32.so.dbg: $(obj)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday-32.o $(obj)/vgetrandom-32.o $(obj)/crtsavres-32.o FORCE
->   	$(call if_changed,vdso32ld_and_check)
-> -$(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o FORCE
-> +$(obj)/vdso64.so.dbg: $(obj)/vdso64.lds $(obj-vdso64) $(obj)/vgettimeofday-64.o $(obj)/vgetrandom-64.o FORCE
->   	$(call if_changed,vdso64ld_and_check)
->   
->   # assembly rules for the .S files
-> @@ -87,6 +89,8 @@ $(obj-vdso64): %-64.o: %.S FORCE
->   	$(call if_changed_dep,vdso64as)
->   $(obj)/vgettimeofday-64.o: %-64.o: %.c FORCE
->   	$(call if_changed_dep,cc_o_c)
-> +$(obj)/vgetrandom-64.o: %-64.o: %.c FORCE
-> +	$(call if_changed_dep,cc_o_c)
->   
->   # Generate VDSO offsets using helper script
->   gen-vdso32sym := $(src)/gen_vdso32_offsets.sh
-> diff --git a/arch/powerpc/kernel/vdso/getrandom.S b/arch/powerpc/kernel/vdso/getrandom.S
-> index 21773ef3fc1d..a957cd2b2b03 100644
-> --- a/arch/powerpc/kernel/vdso/getrandom.S
-> +++ b/arch/powerpc/kernel/vdso/getrandom.S
-> @@ -27,10 +27,18 @@
->     .cfi_adjust_cfa_offset PPC_MIN_STKFRM
->   	PPC_STL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
->     .cfi_rel_offset lr, PPC_MIN_STKFRM + PPC_LR_STKOFF
-> +#ifdef __powerpc64__
-> +	PPC_STL		r2, PPC_MIN_STKFRM + STK_GOT(r1)
-> +  .cfi_rel_offset r2, PPC_MIN_STKFRM + STK_GOT
-> +#endif
->   	get_datapage	r8
->   	addi		r8, r8, VDSO_RNG_DATA_OFFSET
->   	bl		CFUNC(DOTSYM(\funct))
->   	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
-> +#ifdef __powerpc64__
-> +	PPC_LL		r2, PPC_MIN_STKFRM + STK_GOT(r1)
-> +  .cfi_restore r2
-> +#endif
->   	cmpwi		r3, 0
->   	mtlr		r0
->   	addi		r1, r1, 2 * PPC_MIN_STKFRM
-> diff --git a/arch/powerpc/kernel/vdso/vdso64.lds.S b/arch/powerpc/kernel/vdso/vdso64.lds.S
-> index 400819258c06..9481e4b892ed 100644
-> --- a/arch/powerpc/kernel/vdso/vdso64.lds.S
-> +++ b/arch/powerpc/kernel/vdso/vdso64.lds.S
-> @@ -123,6 +123,7 @@ VERSION
->   		__kernel_sigtramp_rt64;
->   		__kernel_getcpu;
->   		__kernel_time;
-> +		__kernel_getrandom;
->   
->   	local: *;
->   	};
-> diff --git a/arch/powerpc/kernel/vdso/vgetrandom-chacha.S b/arch/powerpc/kernel/vdso/vgetrandom-chacha.S
-> index ac85788205cb..7f9061a9e8b4 100644
-> --- a/arch/powerpc/kernel/vdso/vgetrandom-chacha.S
-> +++ b/arch/powerpc/kernel/vdso/vgetrandom-chacha.S
-> @@ -124,6 +124,26 @@
->    */
->   SYM_FUNC_START(__arch_chacha20_blocks_nostack)
->   #ifdef __powerpc64__
-> +	std	counter, -216(r1)
-> +
-> +	std	r14, -144(r1)
-> +	std	r15, -136(r1)
-> +	std	r16, -128(r1)
-> +	std	r17, -120(r1)
-> +	std	r18, -112(r1)
-> +	std	r19, -104(r1)
-> +	std	r20, -96(r1)
-> +	std	r21, -88(r1)
-> +	std	r22, -80(r1)
-> +	std	r23, -72(r1)
-> +	std	r24, -64(r1)
-> +	std	r25, -56(r1)
-> +	std	r26, -48(r1)
-> +	std	r27, -40(r1)
-> +	std	r28, -32(r1)
-> +	std	r29, -24(r1)
-> +	std	r30, -16(r1)
-> +	std	r31, -8(r1)
->   #else
->   	stwu	r1, -96(r1)
->   	stw	counter, 20(r1)
-> @@ -149,9 +169,13 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
->   	stw	r30, 88(r1)
->   	stw	r31, 92(r1)
->   #endif
-> +#endif	/* __powerpc64__ */
->   
->   	lwz	counter0, 0(counter)
->   	lwz	counter1, 4(counter)
-> +#ifdef __powerpc64__
-> +	rldimi	counter0, counter1, 32, 0
-> +#endif
->   	mr	idx_r0, nblocks
->   	subi	dst_bytes, dst_bytes, 4
->   
-> @@ -267,12 +291,21 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
->   
->   	subic.	idx_r0, idx_r0, 1	/* subi. can't use r0 as source */
->   
-> +#ifdef __powerpc64__
-> +	addi	counter0, counter0, 1
-> +	srdi	counter1, counter0, 32
-> +#else
->   	addic	counter0, counter0, 1
->   	addze	counter1, counter1
-> +#endif
->   
->   	bne	.Lblock
->   
-> +#ifdef __powerpc64__
-> +	ld	counter, -216(r1)
-> +#else
->   	lwz	counter, 20(r1)
-> +#endif
->   	stw	counter0, 0(counter)
->   	stw	counter1, 4(counter)
->   
-> @@ -284,6 +317,26 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
->   	li	r11, 0
->   	li	r12, 0
->   
-> +#ifdef __powerpc64__
-> +	ld	r14, -144(r1)
-> +	ld	r15, -136(r1)
-> +	ld	r16, -128(r1)
-> +	ld	r17, -120(r1)
-> +	ld	r18, -112(r1)
-> +	ld	r19, -104(r1)
-> +	ld	r20, -96(r1)
-> +	ld	r21, -88(r1)
-> +	ld	r22, -80(r1)
-> +	ld	r23, -72(r1)
-> +	ld	r24, -64(r1)
-> +	ld	r25, -56(r1)
-> +	ld	r26, -48(r1)
-> +	ld	r27, -40(r1)
-> +	ld	r28, -32(r1)
-> +	ld	r29, -24(r1)
-> +	ld	r30, -16(r1)
-> +	ld	r31, -8(r1)
-> +#else
->   #ifdef __BIG_ENDIAN__
->   	lmw	r14, 24(r1)
->   #else
 
