@@ -1,87 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-945-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-946-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989FA96AFAE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 06:14:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 255FE96B158
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 08:16:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wz8J71bqXz2xdR;
-	Wed,  4 Sep 2024 14:13:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzC145MDLz2xxw;
+	Wed,  4 Sep 2024 16:16:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725423239;
-	cv=none; b=Y+okViRQXYtpLMPEyMNj3J5j7UywCRZcCLU84DoDx20e3c2wwrWSeJTD1mgRHYqBhDfhwXjNVoqrBQgxC6DfiF25p0lCSTl8FQk7BLkqD3Y3w0YoBn9EGHY49hfjVSSRBiEbVOw2aJobHhdpE/DsylWCywhu2uExz+w+uuGizpGfL5I31EK7I4yM0pNCDtmXKjucAlU199D/7/dNQpR8hqiKBuGsh5Gs95OmZW8wNasrC3YJhbKT3PTRLbAa99rUQ+wN0LsPGW+n2epJiuN11JzPwQjoAOyjo7u6mD32dVMH/pYwIZqsSukB+/kfUBM5EjcVFeJoNl92lbsgmjzjgw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725430234;
+	cv=none; b=MMmnfiOjX0pbWC1F6r/+Vx3mcduMhtRiLR4Nhk6MYuu0syShfdOjgiZw7wpgTdMnWhf5BQuCjq3o20Co0Igm0uRQlr8zBxzZl80KwDkHdpRW8fzGSTTlP17QRn/OL1EFS+QoA3c/bA1Fnqz0BoDkWF1olfPm0pEL81eVDsV135sspQLT3yCziSdTuP42APb6xi3v3E1Haga2CZK6aa9oE+oA4mLbLaZEW/rI3UOcTSF7BQJCFvzVdO+LqLlJtBIcGo6nwMqq29+fqNAkkfVkuz2CGKY6XyZmoNp3km1//l6h4MRvMceCEaSjNbFvH9CgfLjvCFG8kMovUuWfYwb4Og==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725423239; c=relaxed/relaxed;
-	bh=eMgOBDwTX8trwBbhMUy1qHUpMDhdRlVDIssPJb8Gsmo=;
-	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 Message-ID:MIME-Version:Content-Type; b=OcrLbqjmXuTX1ohUr0CkuRxEIZzmyvKsqrc+Iwc58WL/ufZiDgEHosemJU5bVKSLB7U9L78WK/UXjir3y5p/lAiLTTGyT44JCmsiADE8w4U4s7J/d/Ki7GB+Wahcz16KcdsZ2xH8sFpNidb6VwmIqhuCZZ5RptP+7y6QU6JoDK8Bo7C8ONaVyL0qf+bKeULl9TwimW5zzLFOUMl1oUVpdcQvIrx68Z0m6aq7vJalSR7A4pMg3shTwszWNGBEfMHts8wJYtqAIlJcX4PYkhH2NUSNY5xCbqKeHMwUSzlpCE2V1mVHwSbVwZq2WFKM8bbWqRrPwXh9eXUIhonpF/huYA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Atgw5p+o; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1725430234; c=relaxed/relaxed;
+	bh=l6V+fxyx9J17jMpvz7+Fq8AeiBhZGiwz6aJOg0X+z7o=;
+	h=DKIM-Signature:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 Subject:To:Cc:References:From:In-Reply-To:Content-Type; b=QYQ5FlSkRN6Yx7pCugQGteU+xRsglbThrtu7pO/3ody9ySKgNZGuA8ewfBM3RYuWk4JleirNrBJqU1J/LZVnvRmQG/6nJjKRI2s4jxWlGaytik1zJICZA9uhYH6RvpkqLIHvKlG3rDqeur3c+5aYyVS4op4qdUxwyZ758pgZgJmz/m0FtrP7IzCQUY/K+xtItj6C7g9EoHqA/zZerbWxYuUSHpyUcIqj69FTA4ahALoi9hLOVhkhC6KhNPwOFPCzAkbCl/R0ng936AQa49ulsuXlbXXs8MJdxbPUTqM5/vaL8ZLhkPFn2emJoZX2qdMWgbHHcrDtprdB2YUfj83Hvw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Az0zsf+c; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Az0zsf+c; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Atgw5p+o;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Az0zsf+c;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Az0zsf+c;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wz8J61Zwtz2xZQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 14:13:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1725423237;
-	bh=eMgOBDwTX8trwBbhMUy1qHUpMDhdRlVDIssPJb8Gsmo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Atgw5p+ous8ponaujRBR9zeHm87YGXlWFJw/APeKvwTJfN+vDA+MA/XCf729+PnVA
-	 yIoWrvR8Tg01Q4kTrqjbf+6l9UmkC2+E2eKeM0lpnBzHzQLZr6WfUF+RwlGDv9na7Y
-	 VJ6SDLZrN5hF4Pw9qE+168Zj3QWww8gocoC1nJ966vxltqaxwrFOfSbul6kyFfi2d0
-	 JlXz4kSSwijD4hHUrXsf8IlpvudZE3CIHAEjc3DtzlAKa/tvrIdpfiNxgF0xas/YL4
-	 mHLB2qUie8SKPjqF5MpzhdViqlVcFcXog5f66aL4m0C5o/rSTOnJ5fJzWnRTdDtt9J
-	 XaxynAPBdZR7w==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wz8Hv4YYPz4wb7;
-	Wed,  4 Sep 2024 14:13:47 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mark Brown <broonie@kernel.org>, Richard Henderson
- <richard.henderson@linaro.org>, Ivan Kokshaysky
- <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, Vineet Gupta
- <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Guo Ren
- <guoren@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
- <kernel@xen0n.name>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Alexander
- Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
- <dalias@libc.org>, John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max
- Filippov <jcmvbkbc@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
- <will@kernel.org>, Deepak Gupta <debug@rivosinc.com>,
- linux-arm-kernel@lists.infradead.org, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- loongarch@lists.linux.dev, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org,
- Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/3] mm: Pass vm_flags to generic_get_unmapped_area()
-In-Reply-To: <20240902-mm-generic-shadow-stack-guard-v1-2-9acda38b3dd3@kernel.org>
-References: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
- <20240902-mm-generic-shadow-stack-guard-v1-2-9acda38b3dd3@kernel.org>
-Date: Wed, 04 Sep 2024 14:13:47 +1000
-Message-ID: <87plpk5a4k.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzBtd42fJz2xZQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 16:10:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725430228;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=l6V+fxyx9J17jMpvz7+Fq8AeiBhZGiwz6aJOg0X+z7o=;
+	b=Az0zsf+cNf4tNkJWQnKP7uMM1XToP2o2q3oRmrZV5su4LjTCUfAchTSMSQ/usQZvplaahn
+	DO1rtfN105Qqd33S3pmenrRnNp7DbIZL1+3OjqQDds7OmmNislot8p1Y3c74KvE3UWfGDe
+	CZ71sugEhjGWx4G6IcxXgnxpzEpyHPU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725430228;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=l6V+fxyx9J17jMpvz7+Fq8AeiBhZGiwz6aJOg0X+z7o=;
+	b=Az0zsf+cNf4tNkJWQnKP7uMM1XToP2o2q3oRmrZV5su4LjTCUfAchTSMSQ/usQZvplaahn
+	DO1rtfN105Qqd33S3pmenrRnNp7DbIZL1+3OjqQDds7OmmNislot8p1Y3c74KvE3UWfGDe
+	CZ71sugEhjGWx4G6IcxXgnxpzEpyHPU=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-434-1Af5BVi3Ozy1f-aAK8NmKg-1; Wed, 04 Sep 2024 02:10:27 -0400
+X-MC-Unique: 1Af5BVi3Ozy1f-aAK8NmKg-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a7a83fad218so556233866b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Sep 2024 23:10:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725430226; x=1726035026;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l6V+fxyx9J17jMpvz7+Fq8AeiBhZGiwz6aJOg0X+z7o=;
+        b=L+XSdynAyAgUccG4DEQxjth80uB9Js908uvFGiI1MtR4VATSoQORO2quVCkwCwnUG2
+         i8h8/aGgTqA2pD05p7oRkCT2CDTG+tuYyxNcAT38ukLtA7TO+w5Cpp8t7l2UMmDQMzZ+
+         HTqDyyHOKiCMHc0c8SK+Tdpi5m6dMS2ZZKZQ2InZ7NaDJGkphmPJwXwYRp91SEmNuVt6
+         9It2A+9USrVeR4ZHWXow5fPAC0BEHo7zJY72OJzm5RdHYM29CEPXtkX9Kb6h2HmXDw8R
+         nPqXe2b8yEMEk5JMHfB9XznygBozS4gDw87SitgOYwBPr6VF58SLSvZ8Rj16eIIAKWk2
+         UhLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXQ+bAK/gnTuuxA00sa6w0lTB4Fmh1TmKU9KJO65dL+GZ0FbXs/qc53r6VDhjPOKWy++3/4aJPi60loKQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxGuiPu8xLDO09XmmlqXLRqD6pQ4z1Ni+7E586uFmGKcG++p/W0
+	uwT99cP/nrvmLgEF39dThjAOgjs5kMnNLBFBMd1YzRenTugt0rLPRQJlfuNI7TjENVzRevzqkxY
+	CMWo+Ul9OL2V/6uKCNfC7Jv4gG2S1LNCbEkfx2LNaCO5fmQ3E7nne96P84jPPqMk=
+X-Received: by 2002:a17:907:7e98:b0:a7a:97ca:3059 with SMTP id a640c23a62f3a-a89b9568fb7mr914180266b.34.1725430225921;
+        Tue, 03 Sep 2024 23:10:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG2R4cP9J+W47K4+S/93+/qMlByI9g4pLQSot/De5DcDW6cAfj6YNv4/0hVq6CwiaDFPMR8sw==
+X-Received: by 2002:a17:907:7e98:b0:a7a:97ca:3059 with SMTP id a640c23a62f3a-a89b9568fb7mr914178066b.34.1725430225410;
+        Tue, 03 Sep 2024 23:10:25 -0700 (PDT)
+Received: from [192.168.0.6] (ip-109-43-176-181.web.vodafone.de. [109.43.176.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a898900e746sm768992066b.52.2024.09.03.23.10.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Sep 2024 23:10:24 -0700 (PDT)
+Message-ID: <f8c797ae-a8de-4e6f-a1b5-c0db79e15011@redhat.com>
+Date: Wed, 4 Sep 2024 08:10:23 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,108 +93,90 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH 2/3] configure: Support cross compiling
+ with clang
+To: Andrew Jones <andrew.jones@linux.dev>, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
+Cc: pbonzini@redhat.com, lvivier@redhat.com, frankja@linux.ibm.com,
+ imbrenda@linux.ibm.com, nrb@linux.ibm.com, atishp@rivosinc.com,
+ cade.richard@berkeley.edu, jamestiotio@gmail.com
+References: <20240903163046.869262-5-andrew.jones@linux.dev>
+ <20240903163046.869262-7-andrew.jones@linux.dev>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240903163046.869262-7-andrew.jones@linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Mark Brown <broonie@kernel.org> writes:
-> In preparation for using vm_flags to ensure guard pages for shadow stacks
-> supply them as an argument to generic_get_unmapped_area(). The only user
-> outside of the core code is the PowerPC book3s64 implementation which is
-> trivially wrapping the generic implementation in the radix_enabled() case.
->
-> Signed-off-by: Mark Brown <broonie@kernel.org>
+On 03/09/2024 18.30, Andrew Jones wrote:
+> When a user specifies the compiler with --cc assume it's already
+> fully named, even if the user also specifies a cross-prefix. This
+> allows clang to be selected for the compiler, which doesn't use
+> prefixes, but also still provide a cross prefix for binutils. If
+> a user needs a prefix on the compiler that they specify with --cc,
+> then they'll just have to specify it with the prefix prepended.
+> 
+> Also ensure user provided cflags are used when testing the compiler,
+> since the flags may drastically change behavior, such as the --target
+> flag for clang.
+> 
+> With these changes it's possible to cross compile for riscv with
+> clang after configuring with
+> 
+>   ./configure --arch=riscv64 --cc=clang --cflags='--target=riscv64' \
+>               --cross-prefix=riscv64-linux-gnu-
+> 
+> Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
 > ---
->  arch/powerpc/mm/book3s64/slice.c |  4 ++--
->  include/linux/sched/mm.h         |  4 ++--
->  mm/mmap.c                        | 10 ++++++----
->  3 files changed, 10 insertions(+), 8 deletions(-)
+>   configure | 11 ++++++++---
+>   1 file changed, 8 insertions(+), 3 deletions(-)
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-cheers
-
-> diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
-> index ada6bf896ef8..87307d0fc3b8 100644
-> --- a/arch/powerpc/mm/book3s64/slice.c
-> +++ b/arch/powerpc/mm/book3s64/slice.c
-> @@ -641,7 +641,7 @@ unsigned long arch_get_unmapped_area(struct file *filp,
->  				     vm_flags_t vm_flags)
->  {
->  	if (radix_enabled())
-> -		return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
-> +		return generic_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
->  
->  	return slice_get_unmapped_area(addr, len, flags,
->  				       mm_ctx_user_psize(&current->mm->context), 0);
-> @@ -655,7 +655,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
->  					     vm_flags_t vm_flags)
->  {
->  	if (radix_enabled())
-> -		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags);
-> +		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags, vm_flags);
->  
->  	return slice_get_unmapped_area(addr0, len, flags,
->  				       mm_ctx_user_psize(&current->mm->context), 1);
-> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-> index c4d34abc45d4..07bb8d4181d7 100644
-> --- a/include/linux/sched/mm.h
-> +++ b/include/linux/sched/mm.h
-> @@ -204,11 +204,11 @@ unsigned long mm_get_unmapped_area_vmflags(struct mm_struct *mm,
->  unsigned long
->  generic_get_unmapped_area(struct file *filp, unsigned long addr,
->  			  unsigned long len, unsigned long pgoff,
-> -			  unsigned long flags);
-> +			  unsigned long flags, vm_flags_t vm_flags);
->  unsigned long
->  generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
->  				  unsigned long len, unsigned long pgoff,
-> -				  unsigned long flags);
-> +				  unsigned long flags, vm_flags_t vm_flags);
->  #else
->  static inline void arch_pick_mmap_layout(struct mm_struct *mm,
->  					 struct rlimit *rlim_stack) {}
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 7528146f886f..b06ba847c96e 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1789,7 +1789,7 @@ unsigned long vm_unmapped_area(struct vm_unmapped_area_info *info)
->  unsigned long
->  generic_get_unmapped_area(struct file *filp, unsigned long addr,
->  			  unsigned long len, unsigned long pgoff,
-> -			  unsigned long flags)
-> +			  unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct mm_struct *mm = current->mm;
->  	struct vm_area_struct *vma, *prev;
-> @@ -1823,7 +1823,8 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
->  		       unsigned long len, unsigned long pgoff,
->  		       unsigned long flags, vm_flags_t vm_flags)
->  {
-> -	return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
-> +	return generic_get_unmapped_area(filp, addr, len, pgoff, flags,
-> +					 vm_flags);
->  }
->  #endif
->  
-> @@ -1834,7 +1835,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
->  unsigned long
->  generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
->  				  unsigned long len, unsigned long pgoff,
-> -				  unsigned long flags)
-> +				  unsigned long flags, vm_flags_t vm_flags)
->  {
->  	struct vm_area_struct *vma, *prev;
->  	struct mm_struct *mm = current->mm;
-> @@ -1887,7 +1888,8 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
->  			       unsigned long len, unsigned long pgoff,
->  			       unsigned long flags, vm_flags_t vm_flags)
->  {
-> -	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags);
-> +	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags,
-> +						 vm_flags);
->  }
->  #endif
->  
->
-> -- 
-> 2.39.2
 
