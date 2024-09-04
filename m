@@ -1,58 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-941-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-942-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01CFB96AC8C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 00:55:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9842A96ADA4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 03:11:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wz1Dw0z99z2xjh;
-	Wed,  4 Sep 2024 08:55:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wz4FZ34yQz2y72;
+	Wed,  4 Sep 2024 11:11:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725404144;
-	cv=none; b=CBuQXGarD+QXLu/Ayr55MNp9DTEpxhQZDIz70dPAcLEj3T7QkwbNJccqGKDtShVetxE/+ysAJx6Y+aYrfPt7qEkBxGeBo388xzdyN5KmhNkNNCp33JMtDT+mp9/IjZ1u7jCp+Auf/1k7JUUNPY+Mie2m24GaFSiBOp+pnk7mWc6MTdG+vbEhLi7NuZ+7E85yBFpKv9P8AN4CI0VDyEl181Cu8SqkM37iFILdMeMxhHb20oWS4GnAhjD5uRDngLUTOktdcwizEilBodvdTiRnpWF8Xs+JLHm+RBwxHatwyyXUYuqccu7it9LEjhHLkd5y3XVlnsUePSMFSrpluN5h1A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725412290;
+	cv=none; b=AzRY0dcZT/hUq0nHG/Yil4uv00Jm9uD8IqrV8e4FgIjkVdGwp6c42eNWfYM6n4mn2SlwrxJZbtGf+o9HIeRVALkBaoPuWeCvwahvL+1NuQjlPKkrr+KDkBz0wqe90/QqcJN5fCgOKDt7zvxdbvX/Nf+Hz9GJxECyXitTFKGtslaD32GhfM5peb1fI5mTGRroTMtsyLYb1zQ95h32wa25dzqUIsK3xgSokHAY6BGvGjsI7phcU65aecTSGrSy+KHKaH/CQ7ol0KyYgztE5hZLegP+iNQALxQfUoQW86+KM01UorQ9FVUJWQz5jc0vPQtrhh5rAtyhjZEVj1D4LKEN+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725404144; c=relaxed/relaxed;
-	bh=CbaWqDovG+ohtkpCOQ3fg4acmFkRuPzG7NgRf1Zltsg=;
-	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=nkbf93xluVThiTy6u2ru7ZzuxgbQwMV7YQBDXTfbrfMDUl9kR979WCSV4htkvdl8O0UD3XP9CUdrxjXS3FkmhfLImAzExCu1pvEuZKn9+CfhdtLr771QYqYtRvaseijRqa04E/V+EJJPdBLorHoJ3MI0NlSupNus/xyn6tl9ZOUTrqo3NueX4SkX6uRsv7qtMyJTF5SkuWKayVHjg5fs1rOvyfYVcYZH91SjrkXkMBvY2M/Zx+gSn0OjTA/TYOAjhCaTZRdAu+lHaJ9V4VqiEWQOd4yZXzdIuTKDhjllD1i4nJOGxdq503bVITQVrZnS6Ht8/3cPBP85cOzqe6K5rw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NRlwE7Lv; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NRlwE7Lv;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1725412290; c=relaxed/relaxed;
+	bh=QwwuWxpGT6wlPvJE2+Klf8cFFLsQyZ5bYmDuwBpi5wA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MQpCyhNKrBrPNluSf5qMoYw2vWA6n/+eigCXbc7nBdm7x5R6vkRBjT2/adCdKyPBLx32fQoQ7b+zymqa7/veAAY67s/entKBxeBmCzoXp9w23xSYCnNbRMBwTvwL9l0yR4LQoJMtLV06Zrk385gupxg2kld034rgv2nF9qFojv+jH2S33Sc4ykCczVKS4yMOSXO+I14++Z8apxgWwrQvBvQ2qSaaKIZ/xneolFw+nfpnfZ6DVsLEcYoAIUm3Rs2KbvRBechonVEWFjEkr+kZ3ow5cz75+PCGktreYXTONVb5YCAawE/IwYEoiCAf0CU+28rFpDMq/bZ/97hE57VSlA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=lihongbo22@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=lihongbo22@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wz1Dv6DmGz2xdw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 08:55:43 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 49150A4400B;
-	Tue,  3 Sep 2024 22:55:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6410EC4CEC4;
-	Tue,  3 Sep 2024 22:55:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725404139;
-	bh=JaFeuTgF5zkNdK6dIe1LkaFh5oqtU0LVvqZXpKHmJ4A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NRlwE7LvocDygbDhIt5g8nT6IbP52AIzW+TpfoYqne4Y4W56FzQIU1lS/Fl83xPJA
-	 w6UMPMDvkrdQHJ5UJ5MGPebfjrxDgk49mGWgmR/GZoDkCV4tNGya/RHngnTKhlN5GC
-	 P/mHemNWkgkbmcUr3sPPs9ROmLh4fFLML/4nPYwrF9XHsUSoIp9EMR61R0o7obXd/c
-	 A5iL0S0yjha5eEMpnEAuA2frZEit4Bj+IKiSWh8Yggq0S/mIbStNOMU85gwGEtEEY+
-	 GarctGUW2gaEnOXxzQV9rxbcRjju9E8BUUN01y8IWZ8m/JeqVCb5+Y42UGMCVZeb7W
-	 xgAIYBPilOqDg==
-Date: Wed, 4 Sep 2024 00:55:35 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Ma Ke <make24@iscas.ac.cn>, jochen@scram.de, grant.likely@linaro.org, 
-	thierry.reding@gmail.com, rob.herring@calxeda.com, linuxppc-dev@lists.ozlabs.org, 
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] of/irq: handle irq_of_parse_and_map() errors
-Message-ID: <u4qlhdhmya5pwfboffbuvmgabmmpjxh6dfqptw65k5fiiaeqoy@pnmzj2lgh5z4>
-References: <20240830142127.3446406-1-make24@iscas.ac.cn>
- <90924209-888d-4ff3-8f60-f82a073bcf1c@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wz4FY3RjDz2xfR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 11:11:24 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Wz49M4httz1HJ6J;
+	Wed,  4 Sep 2024 09:07:51 +0800 (CST)
+Received: from dggpeml500022.china.huawei.com (unknown [7.185.36.66])
+	by mail.maildlp.com (Postfix) with ESMTPS id AEDE418002B;
+	Wed,  4 Sep 2024 09:11:18 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by dggpeml500022.china.huawei.com
+ (7.185.36.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 4 Sep
+ 2024 09:11:18 +0800
+From: Hongbo Li <lihongbo22@huawei.com>
+To: <fbarrat@linux.ibm.com>, <ajd@linux.ibm.com>, <arnd@arndb.de>,
+	<gregkh@linuxfoundation.org>
+CC: <linuxppc-dev@lists.ozlabs.org>, <lihongbo22@huawei.com>
+Subject: [PATCH -next] cxl: Constify struct kobj_type
+Date: Wed, 4 Sep 2024 09:19:51 +0800
+Message-ID: <20240904011951.2010646-1-lihongbo22@huawei.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,66 +50,38 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <90924209-888d-4ff3-8f60-f82a073bcf1c@csgroup.eu>
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.73]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500022.china.huawei.com (7.185.36.66)
 
-On Tue, Sep 03, 2024 at 06:56:41PM GMT, Christophe Leroy wrote:
-> Le 30/08/2024 à 16:21, Ma Ke a écrit :
-> > Zero and negative number is not a valid IRQ for in-kernel code and the
-> > irq_of_parse_and_map() function returns zero on error.  So this check for
-> > valid IRQs should only accept values > 0.
-> 
-> unsigned int irq_of_parse_and_map(struct device_node *node, int index);
-> 
-> I can't see how an 'unsigned int' can be negative.
+This 'struct kobj_type' is not modified. It is only used in
+kobject_init_and_add() which takes a 'const struct kobj_type *ktype'
+parameter.
 
-hehe... correct... even though looks like we are walking on a
-slackline, relying too much that no one in the future, inside
-irq_of_parse_and_map() (and various callers), someone will try to
-fit an -ENOSOMETHING into the unsigned int.
+Constifying this structure and moving it to a read-only section,
+and can increase over all security.
 
-I wouldn't mind something like this[*] to ensure I can sleep
-soundly.
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+---
+ drivers/misc/cxl/sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks for the review,
-Andi
-
-[*]
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index cea8f6874b1fb..df44a8ffa6843 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -954,6 +954,8 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
- out:
-        mutex_unlock(&domain->root->mutex);
-
-+       BUG_ON(virq < 0);
-+
-        return virq;
+diff --git a/drivers/misc/cxl/sysfs.c b/drivers/misc/cxl/sysfs.c
+index 315c43f17dd3..409bd1c39663 100644
+--- a/drivers/misc/cxl/sysfs.c
++++ b/drivers/misc/cxl/sysfs.c
+@@ -579,7 +579,7 @@ static void release_afu_config_record(struct kobject *kobj)
+ 	kfree(cr);
  }
- EXPORT_SYMBOL_GPL(irq_create_fwspec_mapping);
+ 
+-static struct kobj_type afu_config_record_type = {
++static const struct kobj_type afu_config_record_type = {
+ 	.sysfs_ops = &kobj_sysfs_ops,
+ 	.release = release_afu_config_record,
+ 	.default_groups = afu_cr_groups,
+-- 
+2.34.1
 
-> Christophe
-> 
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: f7578496a671 ("of/irq: Use irq_of_parse_and_map()")
-> > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> > ---
-> >   drivers/i2c/busses/i2c-cpm.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
-> > index 4794ec066eb0..41e3c95c0ef7 100644
-> > --- a/drivers/i2c/busses/i2c-cpm.c
-> > +++ b/drivers/i2c/busses/i2c-cpm.c
-> > @@ -435,7 +435,7 @@ static int cpm_i2c_setup(struct cpm_i2c *cpm)
-> >   	init_waitqueue_head(&cpm->i2c_wait);
-> >   	cpm->irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
-> > -	if (!cpm->irq)
-> > +	if (cpm->irq <= 0)
-> >   		return -EINVAL;
-> >   	/* Install interrupt handler. */
 
