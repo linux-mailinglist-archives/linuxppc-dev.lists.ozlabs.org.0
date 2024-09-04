@@ -1,78 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-971-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-972-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50F896B686
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 11:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB8E296B845
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 12:23:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzHCp2k7vz2yY1;
-	Wed,  4 Sep 2024 19:25:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzJV60Hznz2yVG;
+	Wed,  4 Sep 2024 20:23:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725441942;
-	cv=none; b=K8qQw9rMMyPrnYrorOswVfrWoF11YDjJK5e7xQy/S9rE2q0ikVDkFAuwK5jpsAoU/8xdg7MpivStruo2KR5hmEJfKQrgjFF1VdZrVrq5uPHJ2TIisUTfvVZUW+TFTuBX1qLW4Gj9vVs9Sp3uTE7Z/5GlWXcQO76vOztclvbfKQJDHTc5JjDmo2IS2pDZ625+gJkPhxxU0nR9O8l+E6DW89M92AgYo5uAYLaEvyRm/Ur5/14N8M+wlEU/DaiEt/7jzJb4/np/6KIIF/LrH6QGapCU6LpMRjtSbl716ytQ0eDfiqTxJw4MpXh4dkff8JWp1OwIbepzKCf/f5DRhrO0rQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725445390;
+	cv=none; b=WnHGWhVh7BcCn0OLNh7ksMbMk1tQT9qu0m5cX+THioJG/THiybmy56Fz5MxV+7vhWa8a6fzePoCkmZ34F21pGTsm55Dvp3C1duYchy6S4JSex3A4medaHwKCLB+6JhdwdXgEMh8L20kYM+r300X4gOaj2B7b3JFiMfrIeMzicoWoTX5e3EN8zfAV3xr1+YHpQaLVPRKJRwymif4J83Mti37WkJ4buNZZUVSJ4tdWiRZQHM9QsaoKI1QmAEyL6XhuprNN/WTPmPsLv8PJj0hmJ5C4ryk4NducvP2xEDoNZLH/Zzg5ZQIW7Zn0/v3XzZ07uggkMWETYD/SF12lLLawtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725441942; c=relaxed/relaxed;
-	bh=wfUAADQz465dY49+LelFIq/3GUmstF7YsBpH18AnJfU=;
-	h=DKIM-Signature:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type; b=QogLsVTbJZUHhoYVjuIuSz03yrQPFon+7QgbBfJk6UV55gzTx81rdCeR9E9RTR2s7tpra5rjWyejPyxm4i5Qbw75w1CmkFDgnkDp0SqIIVka9V+qLjpS1f+qs1d4MA5+HqBBlTbLxVAfqdofiJhMdUGVzsuEgJ80/PgoB2mMKNQ7LUHSzzgexloIx75TblulAgPbAQbu1f88481RPKexMJjZRedqmytc8Mq8deg3UMkTPwI26KKcbVKgS7E4OlT+vTzXYDcrZs2omHLhjEn5+/ziVE8h3SDvlF+sAT5FkR0ubNtiMGJSvRMmSEd+pIsEBICql5Fq1Mgdo5qu/IQdjQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PPG3j0gG; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1725445390; c=relaxed/relaxed;
+	bh=PdIy0IDxxcEhjL8PbG0hJAsg75yLIk5qtMcVRqIYb0I=;
+	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=aU28a8Vv8ulnHMW0rcY/2RbcQoLFTnQ0HmK1pyeGmJdtG3ddBKk9DgsXcKJZydpWDS1h5NzFHzyTwB4oTfYL6vJpp8NaJJHK4N8nTXgIfSbIQCk5qYwRzMhBJywt02fIuL6mmtHHipbvnjJEIR4/8zJpthD3KxbrnWSwFhftg5gNg7Pq/PDlRTMFuz3TKis+guE41OJOZiLTt/rkskd2eVGf70hIZhURuJNGfoSCoXS1LyEdWBI8vqf5ZYbp6vHBHZ+fSVN9Kz0UEmA00/C+15c9l8SKbff8dYuNdF8qmN5Uky9FVWjojWD+HY2JPf9dZkvce3uIt8UH8gY1WtGWOg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XFuWolvo; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PPG3j0gG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XFuWolvo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzHCn6hmyz2yV3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 19:25:41 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 483NL8AY028870;
-	Wed, 4 Sep 2024 09:25:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=w
-	fUAADQz465dY49+LelFIq/3GUmstF7YsBpH18AnJfU=; b=PPG3j0gGikQGvDZ61
-	eSVKEfQHqYSybHyCwMCugyIot9xV8V9mIuuil0eciQUxn7kaQPQNoRRLcx6qZeMZ
-	OZ7saliI0jYwQxOFbyubCI2O7jbponzk/teoF11EqMU5Rb1h07I+OUxMcd7TprrA
-	968nYGCHssmmJ2Jj7E2E8bGpSXaGXzhghs6YVJvH4d/Tx9LQ8E+iei18S8uqerzR
-	mvOm5sxYrCjodQ9QI+ik53SPB9VivUCvypMSM3LhtcR3lcnHNOhurw820mSVliU1
-	3IJLjB87UGw93Z0s9u5DZ6XwrLcF4jcpt3cp7qBmeucSwettWkw8djUYocSXNGEJ
-	0bF2g==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqtnbc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 09:25:29 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4849PTBc003485;
-	Wed, 4 Sep 2024 09:25:29 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqtnb9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 09:25:29 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48484NBS000957;
-	Wed, 4 Sep 2024 09:25:28 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41cdguq8ar-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 09:25:28 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4849PO4T31588942
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Sep 2024 09:25:24 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 84E412004D;
-	Wed,  4 Sep 2024 09:25:24 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 165B320040;
-	Wed,  4 Sep 2024 09:25:19 +0000 (GMT)
-Received: from [9.43.31.118] (unknown [9.43.31.118])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  4 Sep 2024 09:25:18 +0000 (GMT)
-Message-ID: <0dd94920-b13f-4da7-9ea6-4f008af1f4b3@linux.ibm.com>
-Date: Wed, 4 Sep 2024 14:55:15 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzJV53C1Mz2yS0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 20:23:09 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 89E0E5C56EA;
+	Wed,  4 Sep 2024 10:22:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02FEC4CEC6;
+	Wed,  4 Sep 2024 10:22:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725445382;
+	bh=x6g+EMj9hEE7gJBznAvd51VhitMf4AGn6YNEwakOXnM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XFuWolvohOrzFjBimZJsYPU40a03g6/+mE8Mf5MyAP+BtHCQ04YOEk3qScOLHFauH
+	 LHvXml9pB5vCkZObjlHtsowepQgfnDM0ZXqIYnHwqg+RVtgRYP0PCfrbaEsNTbu9Nf
+	 LklDAmkyWdjN4wkHFRPAcV7LSz7OKTnxR4MAvSHC0x1f8PBWRcwOlhLJ2k0w14koAs
+	 86Fgnm5u0+u999x7MXvWytZryAmoTWHrymaEp+DTUrlT1oUzsmEaY8g7A2F/gyuSgW
+	 0TSCRY37gyHXmyfic0kLPzDjGO4QFwgv25bixlW6H66a5BOAIPiZ0AZR+kAufu8J+E
+	 maWhiRUgAL2EA==
+Date: Wed, 4 Sep 2024 11:22:54 +0100
+From: Will Deacon <will@kernel.org>
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	linux-arm-kernel@lists.infradead.org, nd@arm.com,
+	akpm@linux-foundation.org, aneesh.kumar@kernel.org,
+	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
+	broonie@kernel.org, christophe.leroy@csgroup.eu,
+	dave.hansen@linux.intel.com, hpa@zytor.com,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
+	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
+	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
+	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
+	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v5 06/30] arm64: context switch POR_EL0 register
+Message-ID: <20240904102254.GA13280@willie-the-truck>
+References: <20240822151113.1479789-1-joey.gouly@arm.com>
+ <20240822151113.1479789-7-joey.gouly@arm.com>
+ <20240823144531.GH32156@willie-the-truck>
+ <Zsi7ovLOfuFdfuuz@arm.com>
+ <20240823170835.GA1181@willie-the-truck>
+ <ZsjXtE7Kg0LQwNAL@arm.com>
+ <20240827113803.GB4318@willie-the-truck>
+ <ZtYNGBrcE-j35fpw@arm.com>
+ <20240903145413.GB3669886@e124191.cambridge.arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,207 +78,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kexec/crash: no crash update when kexec in progress
-To: Baoquan He <bhe@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-        Hari Bathini <hbathini@linux.ibm.com>, kexec@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
-References: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
- <87v80lnf8d.fsf@mail.lhotse>
- <10c666ae-d528-4f49-82e9-8e0fee7099e0@linux.ibm.com>
- <355b58b1-6c51-4c42-b6ea-dcd6b1617a18@linux.ibm.com>
- <ZsLjGJvAUIaxrG6x@MiWiFi-R3L-srv>
- <1e4a8e18-cda9-45f5-a842-8ffcd725efc9@linux.ibm.com>
- <ZtGqTSMvx6Ljf5Xi@MiWiFi-R3L-srv>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <ZtGqTSMvx6Ljf5Xi@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -fL4bXMBe2073WQZzvHxXRdpZK2kbqcd
-X-Proofpoint-ORIG-GUID: 8aB4jZWTqqZ63vSBki47gDH_EiBmPZ1t
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-04_07,2024-09-04_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1015 mlxscore=0 impostorscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 adultscore=0 mlxlogscore=999 bulkscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409040067
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240903145413.GB3669886@e124191.cambridge.arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Hello Baoquan,
+On Tue, Sep 03, 2024 at 03:54:13PM +0100, Joey Gouly wrote:
+> On Mon, Sep 02, 2024 at 08:08:08PM +0100, Catalin Marinas wrote:
+> > On Tue, Aug 27, 2024 at 12:38:04PM +0100, Will Deacon wrote:
+> > > On Fri, Aug 23, 2024 at 07:40:52PM +0100, Catalin Marinas wrote:
+> > > > On Fri, Aug 23, 2024 at 06:08:36PM +0100, Will Deacon wrote:
+> > > > > On Fri, Aug 23, 2024 at 05:41:06PM +0100, Catalin Marinas wrote:
+> > > > > > On Fri, Aug 23, 2024 at 03:45:32PM +0100, Will Deacon wrote:
+> > > > > > > On Thu, Aug 22, 2024 at 04:10:49PM +0100, Joey Gouly wrote:
+> > > > > > > > +static void permission_overlay_switch(struct task_struct *next)
+> > > > > > > > +{
+> > > > > > > > +	if (!system_supports_poe())
+> > > > > > > > +		return;
+> > > > > > > > +
+> > > > > > > > +	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> > > > > > > > +	if (current->thread.por_el0 != next->thread.por_el0) {
+> > > > > > > > +		write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
+> > > > > > > > +		/* ISB required for kernel uaccess routines when chaning POR_EL0 */
+> > > > > > >
+> > > > > > > nit: typo "chaning".
+> > > > > > >
+> > > > > > > But more substantially, is this just to prevent spurious faults in the
+> > > > > > > context of a new thread using a stale value for POR_EL0?
+> > > > > >
+> > > > > > Not just prevent faults but enforce the permissions from the new
+> > > > > > thread's POR_EL0. The kernel may continue with a uaccess routine from
+> > > > > > here, we can't tell.
+> > [...]
+> > > > > So what do we actually gain by having the uaccess routines honour this?
+> > > >
+> > > > I guess where it matters is more like not accidentally faulting because
+> > > > the previous thread had more restrictive permissions.
+> > >
+> > > That's what I wondered initially, but won't the fault handler retry in
+> > > that case?
+> >
+> > Yes, it will retry and this should be fine (I assume you are only
+> > talking about the dropping ISB in the context switch).
+> >
+> > For the case of running with a more permissive stale POR_EL0, arguably it's
+> > slightly more predictable for the user but, OTOH, some syscalls like
+> > readv() could be routed through GUP with no checks. As with MTE, we
+> > don't guarantee uaccesses honour the user permissions.
+> >
+> > That said, at some point we should sanitise this path anyway and have a
+> > single ISB at the end. In the meantime, I'm fine with dropping the ISB
+> > here.
+> >
+> 
+> commit 3141fb86bee8d48ae47cab1594dad54f974a8899
+> Author: Joey Gouly <joey.gouly@arm.com>
+> Date:   Tue Sep 3 15:47:26 2024 +0100
+> 
+>     fixup! arm64: context switch POR_EL0 register
+> 
+> diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+> index a3a61ecdb165..c224b0955f1a 100644
+> --- a/arch/arm64/kernel/process.c
+> +++ b/arch/arm64/kernel/process.c
+> @@ -515,11 +515,8 @@ static void permission_overlay_switch(struct task_struct *next)
+>                 return;
+> 
+>         current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> -       if (current->thread.por_el0 != next->thread.por_el0) {
+> +       if (current->thread.por_el0 != next->thread.por_el0)
+>                 write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
+> -               /* ISB required for kernel uaccess routines when chaning POR_EL0 */
+> -               isb();
+> -       }
+>  }
 
-On 30/08/24 16:47, Baoquan He wrote:
-> On 08/20/24 at 12:10pm, Sourabh Jain wrote:
->> Hello Baoquan,
->>
->> On 19/08/24 11:45, Baoquan He wrote:
->>> On 08/19/24 at 09:45am, Sourabh Jain wrote:
->>>> Hello Michael and Boaquan
->>>>
->>>> On 01/08/24 12:21, Sourabh Jain wrote:
->>>>> Hello Michael,
->>>>>
->>>>> On 01/08/24 08:04, Michael Ellerman wrote:
->>>>>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
->>>>>>> The following errors are observed when kexec is done with SMT=off on
->>>>>>> powerpc.
->>>>>>>
->>>>>>> [  358.458385] Removing IBM Power 842 compression device
->>>>>>> [  374.795734] kexec_core: Starting new kernel
->>>>>>> [  374.795748] kexec: Waking offline cpu 1.
->>>>>>> [  374.875695] crash hp: kexec_trylock() failed, elfcorehdr may
->>>>>>> be inaccurate
->>>>>>> [  374.935833] kexec: Waking offline cpu 2.
->>>>>>> [  375.015664] crash hp: kexec_trylock() failed, elfcorehdr may
->>>>>>> be inaccurate
->>>>>>> snip..
->>>>>>> [  375.515823] kexec: Waking offline cpu 6.
->>>>>>> [  375.635667] crash hp: kexec_trylock() failed, elfcorehdr may
->>>>>>> be inaccurate
->>>>>>> [  375.695836] kexec: Waking offline cpu 7.
->>>>>> Are they actually errors though? Do they block the actual kexec from
->>>>>> happening? Or are they just warnings in dmesg?
->>>>> The kexec kernel boots fine.
->>>>>
->>>>> This warning appears regardless of whether the kdump kernel is loaded.
->>>>>
->>>>> However, when the kdump kernel is loaded, we will not be able to update
->>>>> the kdump image (FDT).
->>>>> I think this should be fine given that kexec is in progress.
->>>>>
->>>>> Please let me know your opinion.
->>>>>
->>>>>> Because the fix looks like it could be racy.
->>>>> It seems like it is racy, but given that kexec takes the lock first and
->>>>> then
->>>>> brings the CPU up, which triggers the kdump image, which always fails to
->>>>> update the kdump image because it could not take the same lock.
->>>>>
->>>>> Note: the kexec lock is not released unless kexec boot fails.
->>>> Any comments or suggestions on this fix?
->>> Is this a little better?
->>>
->>> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
->>> index 63cf89393c6e..0355ffb712f4 100644
->>> --- a/kernel/crash_core.c
->>> +++ b/kernel/crash_core.c
->>> @@ -504,7 +504,7 @@ int crash_check_hotplug_support(void)
->>>    	crash_hotplug_lock();
->>>    	/* Obtain lock while reading crash information */
->>> -	if (!kexec_trylock()) {
->>> +	if (!kexec_trylock() && kexec_in_progress) {
->>>    		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
->>>    		crash_hotplug_unlock();
->>>    		return 0;
->>> @@ -539,7 +539,7 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
->>>    	crash_hotplug_lock();
->>>    	/* Obtain lock while changing crash information */
->>> -	if (!kexec_trylock()) {
->>> +	if (!kexec_trylock() && kexec_in_progress) {
->>>    		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
->>>    		crash_hotplug_unlock();
->>>    		return;
->> Ideally, when `kexec_in_progress` is True, there should be no way to acquire
->> the kexec lock.
->> Therefore, calling `kexec_trylock()` before checking `kexec_in_progress` is
->> not helpful.
->> The kernel will print the error message "kexec_trylock() failed, elfcorehdr
->> may be inaccurate."
->> So, with the above changes, the original problem remains unsolved.
->>
->> However, after closely inspecting the `kernel/kexec_core.c:kernel_kexec()`
->> function, I discovered
->> an exceptional case where my patch needs an update. The issue arises when
->> the system returns
->> from the `machine_kexec()` function, which indicates that kexec has failed.
->>
->> In this scenario, the kexec lock is released, but `kexec_in_progress`
->> remains True.
->>
->> I am unsure why `kexec_in_progress` is NOT set to False when kexec fails.
->> Was this by design,
->> or was it an oversight because returning from the `machine_kexec()` function
->> is highly unlikely?
->>
->> Here is my proposal to address the original problem along with the
->> exceptional case I described
->> above.
->>
->> Let's implement two patches:
->>
->> 1. A patch that sets `kexec_in_progress` to False if the system returns from
->> `machine_kexec()` before
-> I don't think we have chance to return from machine_kexec() after
-> triggering kexec/kdump jumping. The KEXEC_JUMP could return, but I'v
-> never heard people using it.
+What about the one in flush_poe()? I'm inclined to drop that as well.
 
-Agree, on most arch there is no return from machine_kexec function.
-So lets drop the above idea of resetting kexec_in_progress.
+> Will, do you want me to re-send the series with this and the permissions
+> diff from the other thread [1],
+> or you ok with applying them when you pull it in?
 
+I'll have a crack now, but if it fails miserably then I'll let you know.
 
->
->>     unlocking the kexec lock in the `kernel_kexec()` function.
->>
->>     ```
->>     diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
->>     index c0caa14880c3..b41277183455 100644
->>     --- a/kernel/kexec_core.c
->>     +++ b/kernel/kexec_core.c
->>     @@ -1069,6 +1069,7 @@ int kernel_kexec(void)
->>     #endif
->>
->>      Unlock:
->>     +      kexec_in_progress = false;
->>             kexec_unlock();
->>             return error;
->>      ```
->>
->> 2. A patch to return early from the `crash_handle_hotplug_event()` function
->> if `kexec_in_progress` is
->>     set to True. This is essentially my original patch.
-> There's a race gap between the kexec_in_progress checking and the
-> setting it to true which Michael has mentioned.
-
-The window where kernel is holding kexec_lock to do kexec boot
-but kexec_in_progress is yet not set to True.
-
-If kernel needs to handle crash hotplug event, the function
-crash_handle_hotplug_event()  will not get the kexec_lock and
-error out by printing error message about not able to update
-kdump image.
-
-I think it should be fine. Given that lock is already taken for
-kexec kernel boot.
-
-Am I missing something major?
-
-> That's why I think
-> maybe checking kexec_in_progress after failing to retriving
-> __kexec_lock is a little better, not very sure.
-
-Try for kexec lock before kexec_in_progress check will not solve
-the original problem this patch trying to solve.
-
-You proposed the below changes earlier:
-
--	if (!kexec_trylock()) {
-+	if (!kexec_trylock() && kexec_in_progress) {
-  		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
-  		crash_hotplug_unlock();
-
-
-Once the kexec_in_progress is set to True there is no way one can get
-kexec_lock. So kexec_trylock() before kexec_in_progress is not helpful
-for the problem I am trying to solve.
-
-
-Thanks,
-Sourabh Jain
-
-
-
+Will
 
