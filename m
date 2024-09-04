@@ -1,64 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-953-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-981-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F2A96B477
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 10:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF3396BA13
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 13:19:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzFwd28Mpz2xVW;
-	Wed,  4 Sep 2024 18:27:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzKkl0Dhlz2yNJ;
+	Wed,  4 Sep 2024 21:19:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8::221"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725438449;
-	cv=none; b=ROElfTtcLTL56UCw+CPmDb1VkUdXSLhKIzaGd9niJwQ5m/8F9mqI3xgrViZy7tU9Bo7PG1ik4j+g6C8SllTL1fWHwYG4MFftPXDJz2ZM+vYBIPShI9AQ/fXVoRgqNHQb8wJPN5kE+6icrlRwd/uUKQnOdVFIsxif3ilyncp+X7eKNCfFFLq4u7SDpj99fumqKmrhujNi1cD48Xa5r9ktjLEEwHqscdZVrxEnUx2BzmMRpZwyrEQ82LJ+m0oD+T0OzDjxqVllBr6ntz5tmFi5RSQGjHCwYRBtGeWZuQ/p03NI60qInfal+b9jBpmGNAArYoGIngbcIDQvgBn9ULXf1w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.196
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725438803;
+	cv=none; b=L/HVqwECQuvaCmr/W496d3ixXOvJ2t+/cC0b+I131DEaWsDSPNF0rKNomR177l0KBT96yJCUduGK9PgaFyohe2+yHjwNd7VrPNii8UGnRe6sh0UYbSj0n/E9F/R53lbr2LNU/sTCWNbS0Bu3TWDvLX5SK+jEmmH23m5Vo2ShAnpAgz3sMXTbnnAxm0n4MDTMEID9x7ljyaxvArQxoUIOSh+gV0tIlgpPYinbtLGCvjaSf5KJOnnRkz9h637ZV9vlEEfC+SmoRS2+tItOmPyhgtCNFGfXBDTdrGOqM0Kk3ocGeNzAcpyiu7WtcWEJ2vd5vEPPmBnxlXwj91kA5Udogg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725438449; c=relaxed/relaxed;
-	bh=06yNZMAas3qa1wzVuxc7+kvtibUzV5sjLz3xzS89tAQ=;
+	t=1725438803; c=relaxed/relaxed;
+	bh=TUGv9wHevgRZb5cc15QcdSSIcNgojKzy+jo82zKMyNc=;
 	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type; b=Zd8D0rbfrpVtlZN+3SOEZ+TuyiYp7o2cxQr/t/a1ZBdWSZZyI7zXwngQH6Q4AKDIX/ikGf2XPCVANQ+adNO4j91pdzMDrAH/7CSV93Xhk5f1fSXFyEoVQKNgFMuuaQk2aTHMtkcxek4levST18opP2GVsh+u1Rs3asOJP2NYmWa62qsBj7mXXN0143sfGJ9epbqLGfDpXsBZIUXGpWIxKwQTI4Yd/lkcxzUQCUIAsNuFTIF26WSyj6G8O9d5kGfkHCIx5/odWGdQYSUC+B+szV/DDmsn/j+xV3H9CgBhdSSWAYHV5E6E02jQ1A5CAIwM7jkNPMAvKQTz5ZK7fD8VvA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=cf/+eqqw; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::221; helo=relay1-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+	 References:MIME-Version:Content-Type; b=lh+zabOitPr8M3RG4oZYGcJFAD5ghGZvqUxrRIuSFuNnCpeaG5XqJ2YY+xV0tpBBC+hqmN/LCTwkIqYrymarJKC/C9sU2OgV1Fe2EE4twcBZyby2XKHS7YQQfLGZfrAUo9xEGUbZ4UFY/y8g/FVm86JSKrUctnYJUhSw9h3soxhd1D2v+Fo4sbVawlxAUYjncPaVtU07AqASe0oT8uIx7pHvIqv64kyYTRi9a1n8OZMzj0ZqbKfTMT081KyQEh7+0HRoALUWPBJZ9D7jWFzjDG7JkM01nTsdGoZNnXOCRvNv1MJrD+PJ6gSKENnrfp8tBB5tXQQz5iF/x9+aXpm1vQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=eGVbKqY1; dkim-atps=neutral; spf=pass (client-ip=217.70.183.196; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=cf/+eqqw;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=eGVbKqY1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::221; helo=relay1-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.196; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzFwc1y3Wz2xTq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 18:27:24 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 841AC240007;
-	Wed,  4 Sep 2024 08:27:12 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzG3Q5pxrz2xZK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 18:33:21 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6A26AE0002;
+	Wed,  4 Sep 2024 08:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1725438434;
+	t=1725438797;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=06yNZMAas3qa1wzVuxc7+kvtibUzV5sjLz3xzS89tAQ=;
-	b=cf/+eqqweQOsre9lGOCoZlwQB82NF5KgHhFDxEBJ3kea7y34PrJG2YOJ8EcobMrFLr2VtP
-	PduHnq68WowKQv/152sHG1bFevwnhehvSy+prbdWCMgvutCVdHy6hQwqymN53Ly4ReT3ci
-	Xcg6OLN+ofMHeZMOiiaJm9bpIcnJ/DfrtNKktx+PmV97fK8zPgvUESZ/c5jtRVPK81gWig
-	Ek2BhzUzPCPPxBIRAxCtXPCcjioKU0i93L1tNkykdVwX8sYRqAU6crvov4Ut1Prsd8bxmm
-	BYi9PlhKUHygMWuQP5kQjUDu9udhOX87jyNXpoKNl/OupRx+dU7PponFQ9axLA==
-Date: Wed, 4 Sep 2024 10:27:11 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, Pantelis Antoniou <pantelis.antoniou@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Florian Fainelli
- <f.fainelli@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Herve Codina <herve.codina@bootlin.com>,
- Simon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v2 3/7] net: ethernet: fs_enet: drop the
- .adjust_link custom fs_ops
-Message-ID: <20240904102711.1accc8ce@fedora.home>
-In-Reply-To: <480a16fd-a1eb-4ea0-b859-5d874ecc3b15@lunn.ch>
-References: <20240829161531.610874-1-maxime.chevallier@bootlin.com>
-	<20240829161531.610874-4-maxime.chevallier@bootlin.com>
-	<480a16fd-a1eb-4ea0-b859-5d874ecc3b15@lunn.ch>
+	bh=TUGv9wHevgRZb5cc15QcdSSIcNgojKzy+jo82zKMyNc=;
+	b=eGVbKqY1J+/gbeDzfyyEbvjwQtZ/8Gz6/IvBdLy9Z7ZMyo/3mmyPyiQYv+f7P0fCtK50AL
+	ji6uVTvvZ8lZPOjkb8l9US43KD7pugQf+XszbkD2i73SKjZsy3DIuETg2t0ry/4CmFyQRq
+	aOFJl1rYEQ3v4xXsLClVU/Qvev41Dklh/Zi7lJl31HcrTz9tytd8d6xGS2rUP1ZqajP2bP
+	czUUX6rmfRRlnk7QK5ndVnndzHCG2v0w4xvzSNJzEKvAxI3EfD6Wd45jS1B6dIAXe0o+Aj
+	g7IO5Tmm9H9cc91OU5zUkSkwPBLhf97o6taIa+QkbuBk5rx5j7h86NNoZgq6AQ==
+Date: Wed, 4 Sep 2024 10:33:13 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Qiang Zhao <qiang.zhao@nxp.com>
+Subject: Re: [PATCH] soc: fsl: cpm1: qmc: Fix dependency on fsl_soc.h
+Message-ID: <20240904103313.21aed2de@bootlin.com>
+In-Reply-To: <fcca0369d0bcd527aa77bccdfc0894faa029cead.1725431771.git.christophe.leroy@csgroup.eu>
+References: <fcca0369d0bcd527aa77bccdfc0894faa029cead.1725431771.git.christophe.leroy@csgroup.eu>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -70,42 +62,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-Hi Andrew,
+Hi Christophe,
 
-On Fri, 30 Aug 2024 23:06:08 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
+On Wed,  4 Sep 2024 09:51:09 +0200
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-> > --- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-> > +++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-> > @@ -649,12 +649,7 @@ static void fs_adjust_link(struct net_device *dev)
-> >  	unsigned long flags;
-> >  
-> >  	spin_lock_irqsave(&fep->lock, flags);
-> > -
-> > -	if (fep->ops->adjust_link)
-> > -		fep->ops->adjust_link(dev);
-> > -	else
-> > -		generic_adjust_link(dev);
-> > -
-> > +	generic_adjust_link(dev);
-> >  	spin_unlock_irqrestore(&fep->lock, flags);  
+> QMC driver requires fsl_soc.h to use function get_immrbase().
+> This header is provided by powerpc architecture and the functions
+> it declares are defined only when FSL_SOC is selected.
 > 
-> Holding a spinlock is pretty unusual. We are in thread context, and
-> the phydev mutex is held. Looking at generic_adjust_link, do any of
-> the fep->foo variables actually need protecting, particularly from
-> changes in interrupts context?
+> Today the dependency is the following:
+> 
+> 	depends on CPM1 || QUICC_ENGINE || \
+> 		   (FSL_SOC && (CPM || QUICC_ENGINE) && COMPILE_TEST)
+> 
+> This dependency tentatively ensure that FSL_SOC is there when doing a
+> COMPILE_TEST.
+> 
+> CPM1 is only selected by PPC_8xx and cannot be selected manually.
+> CPM1 selects FSL_SOC
+> 
+> QUICC_ENGINE on the other hand can be selected by ARM or ARM64 which
+> doesn't select FSL_SOC. QUICC_ENGINE can also be selected with just
+> COMPILE_TEST.
+> 
+> It is therefore possible to end up with CPM_QMC selected
+> without FSL_SOC.
+> 
+> So fix it by making it depend on FSL_SOC at all time.
+> 
+> The rest of the above dependency is the same as the one for CPM_TSA on
+> which CPM_QMC also depends, so it can go away, leaving only a simple
+> dependency on FSL_SOC.
+> 
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Closes: https://lore.kernel.org/lkml/20240904104859.020fe3a9@canb.auug.org.au/
+> Fixes: 8655b76b7004 ("soc: fsl: cpm1: qmc: Handle QUICC Engine (QE) soft-qmc firmware")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Yes there are, the interrupt mask/event registers are being accessed
-from the interrupt handler and the ->restart() hook. I can try to
-rework this a bit for a cleaner interrupt handling, but I don't have
-means to test this on all mac flavors (fec/fcc/scc) :(
+Thanks for this patch!
 
-Thanks for reviewing this,
+Acked-by: Herve Codina <herve.codina@bootlin.com>
 
-Maxime
-
+Best regards,
+Hervé
 
