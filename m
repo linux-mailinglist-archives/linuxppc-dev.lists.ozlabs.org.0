@@ -1,102 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-999-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FDB96C4DE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 19:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CE696C51F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 19:18:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzTQN4X5Zz2y8X;
-	Thu,  5 Sep 2024 03:05:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzTjM0C7fz2ygX;
+	Thu,  5 Sep 2024 03:18:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725469532;
-	cv=none; b=PwVSgIxltQGJyZ8H5KUd4Aux5b7Oy4WBbI55wdswKduojFv+NEwkJgVrUPWwuq1Olq4LAJRl/VsCBjoZ7vRtn7cEqKz3Li/zuQuAsI6/3dK+26GlEztOKwLtNkgl8EgXr9vqDmcnmJggK0MtHOk7mned7BGS55zrU9ELJmmG6pZrnAOnuM4EDULBorsbZxQ+j5ykefwg0WxX+pkRviYp1ec8ykCThaE5yd/mLvLnDB6/wJ+OleEfNNGtEZjizK6suexWU2zRe9tNyS+mDZ3QE4yD9A9+aeJ3eDaI0gk4zQSV3exeDEGXN7rNH4riTXq5a6OsizsEMfDaup1cMvobnA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.201
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725470311;
+	cv=none; b=ZIsNCI90X613enKLDtFKm0Q5IGSR6oly00eQGMiRK9h7K+Myekv6Xp4aiWvtSIMd5rYNcssruPeainqtFGmVCocEskt2qDhpREIgrm+hcxh9HQb0uUg7K4BS90MVKmpXjFIzfjLUF/Irgz4s1Zqa4exAvk1/j3Ruhmu5y4O5UZbhGRByFHD0B6CEfkY74e7rDeoUbbpf8MB3zIB93j90frjPY3tEevlVCuZ7lShdA/zQnChAagGfpZm8pQ/r98jxIau1tePPRWP9MpYE5hWqn1Mhf2+sA40eEMQG2Gw2DQ45yu4l8yGt9N71Eoqfn8I2QCBIJru3p0Vq2kwYGzJpbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725469532; c=relaxed/relaxed;
-	bh=3KPZwsxRmn2Zb0fXZONfEMnKNwenhQcWZ3s6o8HBVLc=;
-	h=DKIM-Signature:Date:Message-ID:From:To:Cc:Subject:In-Reply-To:
-	 References:MIME-Version:Content-Type; b=mAZhVSnE83QMNHjUhlEuxAY4ktL8yobUBVuosVt2etT6LeohyF0rtW2katCRjcWDvm9MzAMO0OBaghTfaX27r6RZd8cO/GzXCWLvs4LddBjOJarnxduKLwnACFfPs7KMcmBZetzLgfzsY9ytl3gG5ZG+muHPYKAkF3ZLRLfSdF5t3vzbxo71sTSZFIN0oeSwzZBCffjH6qYJuFlroHAnnhPrgSdqe8Z1pPqrTosV2TejOPYoUfy0yXisZS0SwWA5D+6vglS4707mzCGokSTC558a3nNIU+3wWmac++g2kYyRV3H+ntuUx/ZqmX5A0IwaeRaOz5YCRCzUj9kXd/U9nA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qKlqsYDL; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1725470311; c=relaxed/relaxed;
+	bh=b5GPOiRWglxmB+1s+UM7/QwT5TJ9jmKJ77MFU2A6G9o=;
+	h=DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=SwcCkcJ8YWUjeoVTD733OiVISuy9mG3E5ZGEfCCPB/2Mpue42UoTMzajgrZMt9ZmgC8QMnNN4x/T8T8/lhL5EIB4BX7DNO7SM++IUPHo2vnUUhgQom41/VwxUij4l/C54ad95FKHW4DLJtiGDCrDREQKJztYHlZ2ZeOtG7cShjC95UUDtifVINeyfRYSWYBWkiyNrwHiLC5vK96i9ygf5M9kMPT+N6hTmYMvEriJJttLI/mGpl9VhWeEFtQgVYbSAr/VGY8rQ56RM66KsLR8FhssG1amEroqkWYWhiPr+Kr832WsxSyqRIVnNppVSFzIxOzmLxlgNn84m63e9rIYqQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kXoHkyYr; dkim-atps=neutral; spf=pass (client-ip=217.70.183.201; helo=relay8-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qKlqsYDL;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kXoHkyYr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.201; helo=relay8-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzTQN1Kvnz2xdY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 03:05:32 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D5DE1A445F1;
-	Wed,  4 Sep 2024 17:05:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40408C4CEC5;
-	Wed,  4 Sep 2024 17:05:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725469529;
-	bh=0gw45QxN3fNUQlIV0l0iCm8GEARvkwPgJdU3FZfLCE4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qKlqsYDLXHs0iW3ETzrWnTRx/FFUL3jDSU4JY29c9EYYGmqlPmyUvUnkw7/SWH2G3
-	 VdNQNSRW6//Mm1pBsOORRXDfmjRazMqR1R/JqgZ2Zss1tL4l5Y7tLElrzXRanury9D
-	 CeiQfmDFIxVzSo3roysBXKD6LYAXHzaV1WfP4ykVbE+8snaRnTD70u0d4y9cmZgNqB
-	 LJYwhAn+SIMVfd0rHI3ly9q54Fa9Fcp/5aK0UtTYmnIHcRcr+pxha1T+d4XjGGGB2N
-	 J6QtFp1RDFErkjMpK/FgI4UTUf/i9lpDKzMpYNBold6zhiVaRdpsn8KF7CHLvC0vq2
-	 y5vpwwebK2gwA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sltRe-009hKx-M3;
-	Wed, 04 Sep 2024 18:05:26 +0100
-Date: Wed, 04 Sep 2024 18:05:26 +0100
-Message-ID: <86plpjuz6x.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	nd@arm.com,
-	akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com,
-	anshuman.khandual@arm.com,
-	bp@alien8.de,
-	broonie@kernel.org,
-	christophe.leroy@csgroup.eu,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	mingo@redhat.com,
-	mpe@ellerman.id.au,
-	naveen.n.rao@linux.ibm.com,
-	npiggin@gmail.com,
-	oliver.upton@linux.dev,
-	shuah@kernel.org,
-	skhan@linuxfoundation.org,
-	szabolcs.nagy@arm.com,
-	tglx@linutronix.de,
-	x86@kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 06/30] arm64: context switch POR_EL0 register
-In-Reply-To: <20240904161758.GA14323@willie-the-truck>
-References: <Zsi7ovLOfuFdfuuz@arm.com>
-	<20240823170835.GA1181@willie-the-truck>
-	<ZsjXtE7Kg0LQwNAL@arm.com>
-	<20240827113803.GB4318@willie-the-truck>
-	<ZtYNGBrcE-j35fpw@arm.com>
-	<20240903145413.GB3669886@e124191.cambridge.arm.com>
-	<20240904102254.GA13280@willie-the-truck>
-	<20240904113221.GA3891700@e124191.cambridge.arm.com>
-	<20240904114301.GA13550@willie-the-truck>
-	<20240904125503.GA3901671@e124191.cambridge.arm.com>
-	<20240904161758.GA14323@willie-the-truck>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzTjL3X6wz2yfl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 03:18:28 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2EBB31BF207;
+	Wed,  4 Sep 2024 17:18:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1725470305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=b5GPOiRWglxmB+1s+UM7/QwT5TJ9jmKJ77MFU2A6G9o=;
+	b=kXoHkyYrjZc3bzBJ+Hy6K7klwuT/Yy3gwaBaKzoxSu8SEMgH3PI4RfnHb2Op3qodkVXA5I
+	Gc8FGaposZQHUKPcfVXS+27HpKH9AxXdFWzjeLP+MZmuCK9kyBtNzt4dvxsPIzoCTAbzI5
+	kyK7vc6GMRfH9q6gwAjyyoXCa+MCR/41W7h4qeJXTjBtd+JCuU6aEqC4l+zvJ1kujjHfu9
+	eb4Qp4gP30/KZcsCHtwk/k783BscSQ41mu7GDpAICndx736DJD0o+oUgVSJDVVl9oomadk
+	0sFVS0OomQxXutr91dQfPscDdjZaeFvFd3JtpJOH5ufW8eRQeE6vjsUFvWFv7Q==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Herve Codina <herve.codina@bootlin.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH net-next v3 0/8] net: ethernet: fs_enet: Cleanup and phylink conversion
+Date: Wed,  4 Sep 2024 19:18:13 +0200
+Message-ID: <20240904171822.64652-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,54 +69,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: will@kernel.org, joey.gouly@arm.com, catalin.marinas@arm.com, linux-arm-kernel@lists.infradead.org, nd@arm.com, akpm@linux-foundation.org, aneesh.kumar@kernel.org, aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de, broonie@kernel.org, christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com, hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, mingo@redhat.com, mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com, oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org, szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Wed, 04 Sep 2024 17:17:58 +0100,
-Will Deacon <will@kernel.org> wrote:
-> 
-> On Wed, Sep 04, 2024 at 01:55:03PM +0100, Joey Gouly wrote:
-> > On Wed, Sep 04, 2024 at 12:43:02PM +0100, Will Deacon wrote:
-> > > Right, there's quite a lot I need to do:
-> > > 
-> > > - Uncorrupt your patches
-> > > - Fix the conflict in the kvm selftests
-> > > - Drop the unnecessary ISBs
-> > > - Fix the ESR checking
-> > > - Fix the el2_setup labels
-> > > - Reorder the patches
-> > > - Drop the patch that is already in kvmarm
-> > > 
-> > > Working on it...
-> > 
-> > Sorry! I'm happy to rebase onto some arm64 branch if that will help, just let me know.
-> 
-> Please have a look at for-next/poe (also merged into for-next/core and
-> for-kernelci) and let me know what I got wrong!
-> 
-> For Marc: I reordered the series so the KVM bits (and deps) are all the
-> beginning, should you need them. The branch is based on a merge of the
-> shared branch you created previously.
+Hi everyone,
 
-I just had a quick check, and while there is a small conflict with
-kvmarm/next, it is extremely minor (small clash in the vcpu_sysreg,
-for which the resolving order doesn't matter), and not worth dragging
-additional patches in the shared branch.
+This is V3 of a series that cleans-up fs_enet, with the ultimate goal of
+converting it to phylink (patch 8).
 
-However, if KVM's own S1PIE series [1] ends up being merged (which I'd
-really like), I will definitely have to pull the prefix in, as this is
-a bit more involved conflict wise.
+The main changes compared to V2 are :
+ - Reviewed-by tags from Andrew were gathered
+ - Patch 5 now includes the removal of now unused includes, thanks
+   Andrew for spotting this
+ - Patch 4 is new, it reworks the adjust_link to move the spinlock
+   acquisition to a more suitable location. Although this dissapears in
+   the actual phylink port, it makes the phylink conversion clearer on
+   that point
+ - Patch 8 includes fixes in the tx_timeout cancellation, to prevent
+   taking rtnl twice when canceling a pending tx_timeout. Thanks Jakub
+   for spotting this.
 
-Thanks,
+Link to V2: https://lore.kernel.org/netdev/20240829161531.610874-1-maxime.chevallier@bootlin.com/
+Link to V1: https://lore.kernel.org/netdev/20240828095103.132625-1-maxime.chevallier@bootlin.com/
 
-	M.
+Maxime Chevallier (8):
+  net: ethernet: fs_enet: convert to SPDX
+  net: ethernet: fs_enet: cosmetic cleanups
+  net: ethernet: fs_enet: drop the .adjust_link custom fs_ops
+  net: ethernet: fs_enet: only protect the .restart() call in
+    .adjust_link
+  net: ethernet: fs_enet: drop unused phy_info and mii_if_info
+  net: ethernet: fs_enet: use macros for speed and duplex values
+  net: ethernet: fs_enet: simplify clock handling with devm accessors
+  net: ethernet: fs_enet: phylink conversion
 
-[1] http://lore.kernel.org/all/20240903153834.1909472-1-maz@kernel.org
+ .../net/ethernet/freescale/fs_enet/Kconfig    |   2 +-
+ .../ethernet/freescale/fs_enet/fs_enet-main.c | 444 ++++++++----------
+ .../net/ethernet/freescale/fs_enet/fs_enet.h  |  27 +-
+ .../net/ethernet/freescale/fs_enet/mac-fcc.c  |  17 +-
+ .../net/ethernet/freescale/fs_enet/mac-fec.c  |  15 +-
+ .../net/ethernet/freescale/fs_enet/mac-scc.c  |  11 +-
+ .../ethernet/freescale/fs_enet/mii-bitbang.c  |   5 +-
+ .../net/ethernet/freescale/fs_enet/mii-fec.c  |   5 +-
+ 8 files changed, 219 insertions(+), 307 deletions(-)
 
 -- 
-Without deviation from the norm, progress is not possible.
+2.46.0
+
 
