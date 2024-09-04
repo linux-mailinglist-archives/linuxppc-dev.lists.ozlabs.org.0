@@ -1,93 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-970-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-971-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2C096B651
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 11:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B50F896B686
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 11:25:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzH4F1gWLz2yXY;
-	Wed,  4 Sep 2024 19:19:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzHCp2k7vz2yY1;
+	Wed,  4 Sep 2024 19:25:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725441549;
-	cv=none; b=Jg7A5gXAnn3nxgozndqV9ftSj0z/NAFvWql2nQOxPbFv/LElym8TzOi3T81v/L4tUVvTVgU9YMP4yhDfNWGrVbeD1dD89RGmKfo9QOqWvlnxp16exGKulkrVwHzBpWS/5OKu38MOKbe4qvsF4YIjLgkBY2CWWWmQuNOf1QVbg/qiF9AVV7aW+7d6EC1OAHHgonAOOAOobeTkgQSU8E/knkOuYwmD2oig5Md96iGIYKuxR/gTJlLvj9HV46zwNTeBVYm/gLz80vLsHTn/tavDBMMVVJdNpRhDo9SwSrt63WGhrZboqszynA5rrUawpC5abfGD3f9yyRob8C7jVUSNBA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725441942;
+	cv=none; b=K8qQw9rMMyPrnYrorOswVfrWoF11YDjJK5e7xQy/S9rE2q0ikVDkFAuwK5jpsAoU/8xdg7MpivStruo2KR5hmEJfKQrgjFF1VdZrVrq5uPHJ2TIisUTfvVZUW+TFTuBX1qLW4Gj9vVs9Sp3uTE7Z/5GlWXcQO76vOztclvbfKQJDHTc5JjDmo2IS2pDZ625+gJkPhxxU0nR9O8l+E6DW89M92AgYo5uAYLaEvyRm/Ur5/14N8M+wlEU/DaiEt/7jzJb4/np/6KIIF/LrH6QGapCU6LpMRjtSbl716ytQ0eDfiqTxJw4MpXh4dkff8JWp1OwIbepzKCf/f5DRhrO0rQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725441549; c=relaxed/relaxed;
-	bh=No+ZWBVLeGFEntqxKUPXdow5p2Qk0f8/DwriUb8SxDM=;
-	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
-	 Content-Type:Content-Disposition:In-Reply-To:MIME-Version; b=PTQj6T2NMQw+9cjHT6yX9TK13KXuYQ6L7TTSxAXC2S+pAKAk9iVjqziNUcyN8RgtNXy2bgbrsPdfLA5/WSe/ghCBqgHX0/k8vwMMaiXFGsqtxrga16XPuZ+DklZckOhTW9wLs995MoNSXHm5OURLSDaDGCSXDU6BpMJs/5goxp1a2Xn/bAZhGoHG2WNnN9HovZfwJ7/IQYomNTWkkt4khDComZhrXexCvWpNCuJhrrKH912BEIJAUlIwpj0Todi9Fmxl2dlw1vFIGP2dNeX/jwOhz2J4kAS8KvnWvRzQ5azrttAwwKW+U1sE/WbAOIMtoazcJA/As2aUWkuRmHLYMg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qaNOBQy9; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1725441942; c=relaxed/relaxed;
+	bh=wfUAADQz465dY49+LelFIq/3GUmstF7YsBpH18AnJfU=;
+	h=DKIM-Signature:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type; b=QogLsVTbJZUHhoYVjuIuSz03yrQPFon+7QgbBfJk6UV55gzTx81rdCeR9E9RTR2s7tpra5rjWyejPyxm4i5Qbw75w1CmkFDgnkDp0SqIIVka9V+qLjpS1f+qs1d4MA5+HqBBlTbLxVAfqdofiJhMdUGVzsuEgJ80/PgoB2mMKNQ7LUHSzzgexloIx75TblulAgPbAQbu1f88481RPKexMJjZRedqmytc8Mq8deg3UMkTPwI26KKcbVKgS7E4OlT+vTzXYDcrZs2omHLhjEn5+/ziVE8h3SDvlF+sAT5FkR0ubNtiMGJSvRMmSEd+pIsEBICql5Fq1Mgdo5qu/IQdjQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PPG3j0gG; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qaNOBQy9;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PPG3j0gG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzH4D3QbBz2yV3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 19:19:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzHCn6hmyz2yV3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 19:25:41 +1000 (AEST)
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4848NRVI005433;
-	Wed, 4 Sep 2024 09:18:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:reply-to:references:content-type
-	:in-reply-to:mime-version; s=pp1; bh=No+ZWBVLeGFEntqxKUPXdow5p2Q
-	k0f8/DwriUb8SxDM=; b=qaNOBQy9Xfw3JJ/UJtcCtCh/i/Vw3EizXCnI2Cpn86h
-	iE/B50YF4OAIM7b2O1T0v5PQkEL/NOgb9NRpZyJnh4/WY15Yshz1p6AWQeWzG+iQ
-	WBKdDvis8DPazVfTsYTH7JaptCTuu4UnNA8CMVJ9X60IfyL7sqU+XG9fi7jDs5HF
-	+hGEuAUAbWmemgsm+bxW3i5Wgs2QCZ8SCYn7K0PsBQ/8bU6FpgHmgPX11NZ55K4z
-	tEpBY2B6wBKI3n4HlD33IvSGIO5nDjqE2MltFmq4SD4FTXKyq04ZKcAjcRgmxKdQ
-	79Cfo5LchW/nwpliW88hOY7kM5X2FJozl7Qa0nkyPEA==
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 483NL8AY028870;
+	Wed, 4 Sep 2024 09:25:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=w
+	fUAADQz465dY49+LelFIq/3GUmstF7YsBpH18AnJfU=; b=PPG3j0gGikQGvDZ61
+	eSVKEfQHqYSybHyCwMCugyIot9xV8V9mIuuil0eciQUxn7kaQPQNoRRLcx6qZeMZ
+	OZ7saliI0jYwQxOFbyubCI2O7jbponzk/teoF11EqMU5Rb1h07I+OUxMcd7TprrA
+	968nYGCHssmmJ2Jj7E2E8bGpSXaGXzhghs6YVJvH4d/Tx9LQ8E+iei18S8uqerzR
+	mvOm5sxYrCjodQ9QI+ik53SPB9VivUCvypMSM3LhtcR3lcnHNOhurw820mSVliU1
+	3IJLjB87UGw93Z0s9u5DZ6XwrLcF4jcpt3cp7qBmeucSwettWkw8djUYocSXNGEJ
+	0bF2g==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqtmk0-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqtnbc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 09:18:55 +0000 (GMT)
+	Wed, 04 Sep 2024 09:25:29 +0000 (GMT)
 Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4849EMiu013481;
-	Wed, 4 Sep 2024 09:18:55 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqtmju-1
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4849PTBc003485;
+	Wed, 4 Sep 2024 09:25:29 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkqtnb9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 09:18:55 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4848dWYD018726;
-	Wed, 4 Sep 2024 09:18:54 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41cdw174a6-1
+	Wed, 04 Sep 2024 09:25:29 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48484NBS000957;
+	Wed, 4 Sep 2024 09:25:28 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41cdguq8ar-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 09:18:54 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4849Io9F15139186
+	Wed, 04 Sep 2024 09:25:28 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4849PO4T31588942
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Sep 2024 09:18:50 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E0C12004E;
-	Wed,  4 Sep 2024 09:18:50 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7CE2E2004B;
-	Wed,  4 Sep 2024 09:18:48 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.124.216.36])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  4 Sep 2024 09:18:48 +0000 (GMT)
-Date: Wed, 4 Sep 2024 14:48:46 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: Narayana Murty N <nnmlinux@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
-        linux-kernel@vger.kernel.org, oohall@gmail.com, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, naveen@kernel.org, vaibhav@linux.ibm.com,
-        ganeshgr@linux.ibm.com, sbhat@linux.ibm.com
-Subject: Re: [PATCH v2] powerpc/pseries/eeh: Fix pseries_eeh_err_inject
-Message-ID: <hop6tsixsczuktfowy5hqo6hbfllogomkxgjvkimrxm7bt3pt3@hcvxg552xkoc>
-Reply-To: mahesh@linux.ibm.com
-References: <20240823151158.92602-1-nnmlinux@linux.ibm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240823151158.92602-1-nnmlinux@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 049Qn5xHnq_pk63kbZqNV7QrvbNft6W6
-X-Proofpoint-ORIG-GUID: VvBqTS0_l0D8lbvtSckAPfRNPsDqGlFA
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	Wed, 4 Sep 2024 09:25:24 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 84E412004D;
+	Wed,  4 Sep 2024 09:25:24 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 165B320040;
+	Wed,  4 Sep 2024 09:25:19 +0000 (GMT)
+Received: from [9.43.31.118] (unknown [9.43.31.118])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  4 Sep 2024 09:25:18 +0000 (GMT)
+Message-ID: <0dd94920-b13f-4da7-9ea6-4f008af1f4b3@linux.ibm.com>
+Date: Wed, 4 Sep 2024 14:55:15 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,152 +82,207 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kexec/crash: no crash update when kexec in progress
+To: Baoquan He <bhe@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+        Hari Bathini <hbathini@linux.ibm.com>, kexec@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
+References: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
+ <87v80lnf8d.fsf@mail.lhotse>
+ <10c666ae-d528-4f49-82e9-8e0fee7099e0@linux.ibm.com>
+ <355b58b1-6c51-4c42-b6ea-dcd6b1617a18@linux.ibm.com>
+ <ZsLjGJvAUIaxrG6x@MiWiFi-R3L-srv>
+ <1e4a8e18-cda9-45f5-a842-8ffcd725efc9@linux.ibm.com>
+ <ZtGqTSMvx6Ljf5Xi@MiWiFi-R3L-srv>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <ZtGqTSMvx6Ljf5Xi@MiWiFi-R3L-srv>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -fL4bXMBe2073WQZzvHxXRdpZK2kbqcd
+X-Proofpoint-ORIG-GUID: 8aB4jZWTqqZ63vSBki47gDH_EiBmPZ1t
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-04_07,2024-09-04_01,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 mlxscore=0 impostorscore=0 malwarescore=0 suspectscore=0
+ clxscore=1015 mlxscore=0 impostorscore=0 malwarescore=0 suspectscore=0
  priorityscore=1501 adultscore=0 mlxlogscore=999 bulkscore=0 spamscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2407110000 definitions=main-2409040067
 
-On 2024-08-23 10:11:58 Fri, Narayana Murty N wrote:
-> VFIO_EEH_PE_INJECT_ERR ioctl is currently failing on pseries
-> due to missing implementation of err_inject eeh_ops for pseries.
-> This patch implements pseries_eeh_err_inject in eeh_ops/pseries
-> eeh_ops. Implements support for injecting MMIO load/store error
-> for testing from user space.
-> 
-> The check on PCI error type code is moved to platform code, since
-> the eeh_pe_inject_err can be allowed to more error types depending
-> on platform requirement.
-> 
-> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-> ---
-> 
-> Testing:
-> ========
-> vfio-test [1] by Alex Willamson, was forked and updated to add
-> support inject error on pSeries guest and used to test this
-> patch[2].
-> 
-> References:
-> ===========
-> [1] https://github.com/awilliam/tests
-> [2] https://github.com/nnmwebmin/vfio-ppc-tests/tree/vfio-ppc-ex
-> 
-> ================
-> Changelog:
-> V1:https://lore.kernel.org/all/20240822082713.529982-1-nnmlinux@linux.ibm.com/
-> - Resolved build issues for ppc64|le_defconfig by moving the
-> pseries_eeh_err_inject() definition outside of the CONFIG_PCI_IOV
-> code block.
-> - New eeh_pe_inject_mmio_error wrapper function added to avoid
-> CONFIG_EEH is not set.
-> ---
->  arch/powerpc/include/asm/eeh.h               |  6 ++-
->  arch/powerpc/kernel/eeh.c                    |  9 +++--
->  arch/powerpc/platforms/pseries/eeh_pseries.c | 39 +++++++++++++++++++-
->  3 files changed, 48 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
-> index 91a9fd53254f..8da6b047a4fe 100644
-> --- a/arch/powerpc/include/asm/eeh.h
-> +++ b/arch/powerpc/include/asm/eeh.h
-> @@ -308,7 +308,7 @@ int eeh_pe_reset(struct eeh_pe *pe, int option, bool include_passed);
->  int eeh_pe_configure(struct eeh_pe *pe);
->  int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->  		      unsigned long addr, unsigned long mask);
-> -
-> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev);
->  /**
->   * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.
->   *
-> @@ -338,6 +338,10 @@ static inline int eeh_check_failure(const volatile void __iomem *token)
->  	return 0;
->  }
->  
-> +static inline int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
-> +{
-> +	return -ENXIO;
-> +}
->  #define eeh_dev_check_failure(x) (0)
->  
->  static inline void eeh_addr_cache_init(void) { }
-> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> index d03f17987fca..49ab11a287a3 100644
-> --- a/arch/powerpc/kernel/eeh.c
-> +++ b/arch/powerpc/kernel/eeh.c
-> @@ -1537,10 +1537,6 @@ int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->  	if (!eeh_ops || !eeh_ops->err_inject)
->  		return -ENOENT;
->  
-> -	/* Check on PCI error type */
-> -	if (type != EEH_ERR_TYPE_32 && type != EEH_ERR_TYPE_64)
-> -		return -EINVAL;
-> -
->  	/* Check on PCI error function */
->  	if (func < EEH_ERR_FUNC_MIN || func > EEH_ERR_FUNC_MAX)
->  		return -EINVAL;
-> @@ -1851,6 +1847,11 @@ static const struct file_operations eeh_dev_break_fops = {
->  	.read   = eeh_debugfs_dev_usage,
->  };
->  
-> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
-> +{
-> +	return eeh_debugfs_break_device(pdev);
-> +}
-> +
->  static ssize_t eeh_dev_can_recover(struct file *filp,
->  				   const char __user *user_buf,
->  				   size_t count, loff_t *ppos)
-> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> index b1ae0c0d1187..1893f66371fa 100644
-> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> @@ -784,6 +784,43 @@ static int pseries_notify_resume(struct eeh_dev *edev)
->  }
->  #endif
->  
-> +/**
-> + * pseries_eeh_err_inject - Inject specified error to the indicated PE
-> + * @pe: the indicated PE
-> + * @type: error type
-> + * @func: specific error type
-> + * @addr: address
-> + * @mask: address mask
-> + * The routine is called to inject specified error, which is
-> + * determined by @type and @func, to the indicated PE
-> + */
-> +static int pseries_eeh_err_inject(struct eeh_pe *pe, int type, int func,
-> +				  unsigned long addr, unsigned long mask)
-> +{
-> +	struct	eeh_dev	*pdev;
-> +
-> +	/* Check on PCI error type */
-> +	if (type != EEH_ERR_TYPE_32 && type != EEH_ERR_TYPE_64)
-> +		return -EINVAL;
-> +
-> +	switch (func) {
-> +	case EEH_ERR_FUNC_LD_MEM_ADDR:
-> +	case EEH_ERR_FUNC_LD_MEM_DATA:
-> +	case EEH_ERR_FUNC_ST_MEM_ADDR:
-> +	case EEH_ERR_FUNC_ST_MEM_DATA:
-> +		/* injects a MMIO error for all pdev's belonging to PE */
-> +		pci_lock_rescan_remove();
-> +		list_for_each_entry(pdev, &pe->edevs, entry)
-> +			eeh_pe_inject_mmio_error(pdev->pdev);
-> +		pci_unlock_rescan_remove();
+Hello Baoquan,
+
+On 30/08/24 16:47, Baoquan He wrote:
+> On 08/20/24 at 12:10pm, Sourabh Jain wrote:
+>> Hello Baoquan,
+>>
+>> On 19/08/24 11:45, Baoquan He wrote:
+>>> On 08/19/24 at 09:45am, Sourabh Jain wrote:
+>>>> Hello Michael and Boaquan
+>>>>
+>>>> On 01/08/24 12:21, Sourabh Jain wrote:
+>>>>> Hello Michael,
+>>>>>
+>>>>> On 01/08/24 08:04, Michael Ellerman wrote:
+>>>>>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>>>>>>> The following errors are observed when kexec is done with SMT=off on
+>>>>>>> powerpc.
+>>>>>>>
+>>>>>>> [  358.458385] Removing IBM Power 842 compression device
+>>>>>>> [  374.795734] kexec_core: Starting new kernel
+>>>>>>> [  374.795748] kexec: Waking offline cpu 1.
+>>>>>>> [  374.875695] crash hp: kexec_trylock() failed, elfcorehdr may
+>>>>>>> be inaccurate
+>>>>>>> [  374.935833] kexec: Waking offline cpu 2.
+>>>>>>> [  375.015664] crash hp: kexec_trylock() failed, elfcorehdr may
+>>>>>>> be inaccurate
+>>>>>>> snip..
+>>>>>>> [  375.515823] kexec: Waking offline cpu 6.
+>>>>>>> [  375.635667] crash hp: kexec_trylock() failed, elfcorehdr may
+>>>>>>> be inaccurate
+>>>>>>> [  375.695836] kexec: Waking offline cpu 7.
+>>>>>> Are they actually errors though? Do they block the actual kexec from
+>>>>>> happening? Or are they just warnings in dmesg?
+>>>>> The kexec kernel boots fine.
+>>>>>
+>>>>> This warning appears regardless of whether the kdump kernel is loaded.
+>>>>>
+>>>>> However, when the kdump kernel is loaded, we will not be able to update
+>>>>> the kdump image (FDT).
+>>>>> I think this should be fine given that kexec is in progress.
+>>>>>
+>>>>> Please let me know your opinion.
+>>>>>
+>>>>>> Because the fix looks like it could be racy.
+>>>>> It seems like it is racy, but given that kexec takes the lock first and
+>>>>> then
+>>>>> brings the CPU up, which triggers the kdump image, which always fails to
+>>>>> update the kdump image because it could not take the same lock.
+>>>>>
+>>>>> Note: the kexec lock is not released unless kexec boot fails.
+>>>> Any comments or suggestions on this fix?
+>>> Is this a little better?
+>>>
+>>> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+>>> index 63cf89393c6e..0355ffb712f4 100644
+>>> --- a/kernel/crash_core.c
+>>> +++ b/kernel/crash_core.c
+>>> @@ -504,7 +504,7 @@ int crash_check_hotplug_support(void)
+>>>    	crash_hotplug_lock();
+>>>    	/* Obtain lock while reading crash information */
+>>> -	if (!kexec_trylock()) {
+>>> +	if (!kexec_trylock() && kexec_in_progress) {
+>>>    		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
+>>>    		crash_hotplug_unlock();
+>>>    		return 0;
+>>> @@ -539,7 +539,7 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
+>>>    	crash_hotplug_lock();
+>>>    	/* Obtain lock while changing crash information */
+>>> -	if (!kexec_trylock()) {
+>>> +	if (!kexec_trylock() && kexec_in_progress) {
+>>>    		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
+>>>    		crash_hotplug_unlock();
+>>>    		return;
+>> Ideally, when `kexec_in_progress` is True, there should be no way to acquire
+>> the kexec lock.
+>> Therefore, calling `kexec_trylock()` before checking `kexec_in_progress` is
+>> not helpful.
+>> The kernel will print the error message "kexec_trylock() failed, elfcorehdr
+>> may be inaccurate."
+>> So, with the above changes, the original problem remains unsolved.
+>>
+>> However, after closely inspecting the `kernel/kexec_core.c:kernel_kexec()`
+>> function, I discovered
+>> an exceptional case where my patch needs an update. The issue arises when
+>> the system returns
+>> from the `machine_kexec()` function, which indicates that kexec has failed.
+>>
+>> In this scenario, the kexec lock is released, but `kexec_in_progress`
+>> remains True.
+>>
+>> I am unsure why `kexec_in_progress` is NOT set to False when kexec fails.
+>> Was this by design,
+>> or was it an oversight because returning from the `machine_kexec()` function
+>> is highly unlikely?
+>>
+>> Here is my proposal to address the original problem along with the
+>> exceptional case I described
+>> above.
+>>
+>> Let's implement two patches:
+>>
+>> 1. A patch that sets `kexec_in_progress` to False if the system returns from
+>> `machine_kexec()` before
+> I don't think we have chance to return from machine_kexec() after
+> triggering kexec/kdump jumping. The KEXEC_JUMP could return, but I'v
+> never heard people using it.
+
+Agree, on most arch there is no return from machine_kexec function.
+So lets drop the above idea of resetting kexec_in_progress.
 
 
-Changes looks good to me.
+>
+>>     unlocking the kexec lock in the `kernel_kexec()` function.
+>>
+>>     ```
+>>     diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+>>     index c0caa14880c3..b41277183455 100644
+>>     --- a/kernel/kexec_core.c
+>>     +++ b/kernel/kexec_core.c
+>>     @@ -1069,6 +1069,7 @@ int kernel_kexec(void)
+>>     #endif
+>>
+>>      Unlock:
+>>     +      kexec_in_progress = false;
+>>             kexec_unlock();
+>>             return error;
+>>      ```
+>>
+>> 2. A patch to return early from the `crash_handle_hotplug_event()` function
+>> if `kexec_in_progress` is
+>>     set to True. This is essentially my original patch.
+> There's a race gap between the kexec_in_progress checking and the
+> setting it to true which Michael has mentioned.
 
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+The window where kernel is holding kexec_lock to do kexec boot
+but kexec_in_progress is yet not set to True.
 
-I have tested this with your VFIO chenges at https://github.com/nnmwebmin/vfio-ppc-tests/tree/vfio-ppc-ex
+If kernel needs to handle crash hotplug event, the function
+crash_handle_hotplug_event()  will not get the kexec_lock and
+error out by printing error message about not able to update
+kdump image.
 
-Tested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+I think it should be fine. Given that lock is already taken for
+kexec kernel boot.
+
+Am I missing something major?
+
+> That's why I think
+> maybe checking kexec_in_progress after failing to retriving
+> __kexec_lock is a little better, not very sure.
+
+Try for kexec lock before kexec_in_progress check will not solve
+the original problem this patch trying to solve.
+
+You proposed the below changes earlier:
+
+-	if (!kexec_trylock()) {
++	if (!kexec_trylock() && kexec_in_progress) {
+  		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
+  		crash_hotplug_unlock();
+
+
+Once the kexec_in_progress is set to True there is no way one can get
+kexec_lock. So kexec_trylock() before kexec_in_progress is not helpful
+for the problem I am trying to solve.
+
 
 Thanks,
--Mahesh.
+Sourabh Jain
+
+
+
 
