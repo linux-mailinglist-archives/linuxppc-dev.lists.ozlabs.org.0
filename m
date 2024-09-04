@@ -1,77 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-1010-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1011-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A3696C6A2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 20:44:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8B796C6A3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 20:45:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzWcb4dXXz2yfl;
-	Thu,  5 Sep 2024 04:44:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzWdr45F9z2yfm;
+	Thu,  5 Sep 2024 04:45:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725475471;
-	cv=none; b=laPfbwXSdpEMYNgVa1Ey0npKw54MaH5KKBhUeYg1mi7W0moFNN863yMekFjillRDt0+Ilib71Pundid97fqLkcuZ6j3SqshWueB7g3bOjU/qM6XrAxdXqzwvAdK6jT1XVGErTTCtH6PtlDP1YtqUjdOAq6snWp1TcDN98eQeh16EpfBRYStJhT2cF6W3s0dqzSv+HYbvsdAayYFfymq3UAD4R821Paq8b6+7ylX+WOZos6lx8K/NHWIf0S6monJ48EYZ41zPFrNdb5FE5FnaeF52zJAR3ZQtc2JTO/76bj8z7M1U5mvAGPgrEOrrQ0X+u13NmSnYC0od0FZK9jGK7Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725475536;
+	cv=none; b=lQWaJ+UD/COgqGx1VQyVIX7tDmb3dGT1gS96/LG+hGYk1TzSyr5KcHJNx1Fjknh4r1REjJf5liJZcHWAQKzToLqveVR4whjHVw+Ar/Duacoy7dFBsJvs1zzf0odomUkOd1IY49TyqrFcHF9UySJKgxDMxVHBrmgh7r4TBmmZkzSDRE5bjEx3vMMGENQHdyMN9L5AOAEuqlHhAWvmAYuO+IIs0mZ86ceBYqwkMSlNg4sOyKI5sbKPnukfpiuuK41/GPH8kpSVlpin8VhhnUWOjWlXJPKuayQjOwJDT9WKuYs4f1Yp2iPjJpwsECenTLBHEcMsmCXFRK2/AxDz2FRd3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725475471; c=relaxed/relaxed;
-	bh=YgHFLJHjFySkLrkQbW13i1FNcl4+/MKPF84n+E1N1tM=;
+	t=1725475536; c=relaxed/relaxed;
+	bh=A2cJF63QP/c5w3ieUuwO3beX5UgVacLYpP/NWWLTmBU=;
 	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:Date:Message-ID:
-	 References:MIME-version:Content-type; b=CYC9VqjziTKT8PmAVANDu9KvrbuI82YgrUdKhBcs9Kdwcegizy59bUHDRvnDprJAZnDTTD8Tlc3vwejQ1LU0pNS83CXZProyeEAzzeJcmkPq7AsBp5tl33M0VrUftFVg9v+KTTEGVqNexjgAU4wqT6tP8OEuM5plDyigUd/QVBfOCbf9bDrvx6rCBkwiDqWjaSaRmeteSe97n0BoFwn3QX/kcx2YKQYzNBdpiEaJeYYff2jixIKyNnhHAwx+wNlFlZXoxCjfINCxusdX8m2WyNMMLgXXadO2diUrNO9Ain7sLP8iRAv/uh7xBjbnWFWC/MuxIB6s7+vE7DX2uRmBJg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DCpVigqJ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 References:MIME-version:Content-type; b=aV25SdfUTQYfjWRMD7oqZbY/T4y0swYWpmyPmXO0caMUsQ8lHWbHTSWzyZjy2IG/YEEoXab/Q9J3EbCD7OzSi4KPLBkPrO5v8CF/A9l3E+iJphxhAriy0DV6pqDPQVxFhduHdl/QtV2xVpgcLRt0DE/3QhJDOtF0/m5BsBYZWWQJ0DZoXWJIQlod5EClCXJTDaAlqGYG93/H/liKLOSjqc40UgUHG9M5IuA/anuLX4pkLzTiGYtEpmWQZNV/ubCABn8JiHmTA35AcHueGPb88ZU3X+hMxG/nAwAWTBN8IZHQeUDqX8HkSw9llFNfl2ZWniCT/sDuFm0pKpxrvo/b0Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fOla3e0r; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DCpVigqJ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fOla3e0r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzWcb1b2Dz2yWy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 04:44:29 +1000 (AEST)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-2053525bd90so38601055ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2024 11:44:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzWdr2Wq0z2yWy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 04:45:36 +1000 (AEST)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2d88690837eso3840207a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2024 11:45:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725475466; x=1726080266; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1725475534; x=1726080334; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:message-id:date
          :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YgHFLJHjFySkLrkQbW13i1FNcl4+/MKPF84n+E1N1tM=;
-        b=DCpVigqJZlHiHOugRlYriHGkjNczurliCEKpqsda17g2+Xmleg6GvKRPH5fM8Rvo1/
-         xZMCZ6GHivfAp9y/CJgmrqRBgrk3ZVzRBUyABW/osyhuXFhc5BReoDY0Gp1sZ8kF/fCK
-         n6ofcNvJNkoQdsHXSUeYhEwLPkwk1jcO82cfp+dVt5p7Ekpwu6aXnyA4FmWzaOAfQHCJ
-         71dAUaoL72EHTsRpQNUpZXmPp6NEQUPjVlcOgCaolUdOBRMhF0foSn3tzc4+AEBAgMO7
-         mGTrCiEQY9dKAWURlcPTpEL4duRLtRavDw/bzsFFxtHwBnALf/80ILkhcYSG2XggBzyq
-         d/Sw==
+        bh=A2cJF63QP/c5w3ieUuwO3beX5UgVacLYpP/NWWLTmBU=;
+        b=fOla3e0rjlTyDgwhreu9dzAfyp1B7w2tyaPpab25gmTF6BGQZKRF/UExSfo1OiPNwM
+         cy7m9RmsF6rlTCPfJ5DAslyQF8taeu5NxejNjW1l9S+B6zFswkXa9w1In+sc6YafXCbO
+         5NFVLxktDwpNlN6JcjKci0AtH59Y/oZp/D5ojf8pKhnVPkrYXRPynyZJGnKX9gzu3GiF
+         L77z1oY5jme3E2wsrB23gjDRLgp02KkZyIsCtlBPnPCwQ6F+hpKHEHASWLhqh/NOWkSg
+         SuVpBoQoBQyqd51E8wRhYK2aLQU6TSgGGFnfT0kZ6BCYa282vGAHgTxcFMU4d4/qMyv6
+         ibfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725475466; x=1726080266;
+        d=1e100.net; s=20230601; t=1725475534; x=1726080334;
         h=content-transfer-encoding:mime-version:references:message-id:date
          :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YgHFLJHjFySkLrkQbW13i1FNcl4+/MKPF84n+E1N1tM=;
-        b=qpi7U9t+XXCBRYRBttA6KcpmZ5SdAKk0FAnHlBrrT4IpqkB7ZYOPJQ4DEMd5M76X58
-         2y3cyWkGJAFouWpV6Ma16WHuCS3UL/MCH+04Q9iKK8elgbXmppFIPtvXZa+wDLu+8I6T
-         7huMzMJKOUhRfXAqpI7FOjRNTyDsrz637IBeyztDzWpr9k8RfcPmNQk1Rrh8Czfzr6yz
-         C1+P69x22uvdJb++hVJn8K8NzRWWG8hMyrMRIQI+tQMIonJcjpwMQsZALfZWTJD7BMkl
-         CCphTmWz/p68iWnGX87arE7z1YzDLiy2HiH0UM78CaTpDuBsrVzZAGXzWpZrBW/zR/6J
-         tdXA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSWQvJDzswAvN/6n57LMyai0ua/lykpGHXs5YLYllQr9qHOY0MTlz3RsVQYTH6ojB7evngbWEuXTArWfY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzwlrgnFLtHQCSnZ/hJQQSkR2BNVrG4FwfMQaBbEVg9z3WwD9r9
-	Jjgj4nDdMw6EKQWJUh5OMoAW5g4d5DCohQvbfcpCar6XyptNrDSc
-X-Google-Smtp-Source: AGHT+IEjTKWtslS5vaK91XOUjdRJaDUR6SpUN4Km4jw0RPNFjXM8gAGqnbvKfJCQi21N+GxmptTg/g==
-X-Received: by 2002:a17:902:ced1:b0:203:74fe:4ee0 with SMTP id d9443c01a7336-2054c4765d1mr177313565ad.53.1725475466378;
-        Wed, 04 Sep 2024 11:44:26 -0700 (PDT)
+        bh=A2cJF63QP/c5w3ieUuwO3beX5UgVacLYpP/NWWLTmBU=;
+        b=MiHvDrD/ZnHve4VwIl7aKJw7XcFmKOytLrYUA+cBXPl+T8I+aLWa9PznEWi2XOSsvd
+         jwEPqkO1kNdSkeJYbX7eLlT+JBJ1CxxXYELpUM5QWWe8R1iFbercG/a9ZubJiMWc/eIB
+         sEcV5sGZRZyaMQQXLTysos+ense3iB9NrcSc22l2hGmI3/2tMP0Kjj2hFWYH4gFxoC0F
+         M8sCXbvrLYnrSwDuK/NZhp8uHrVU11xji19u4JK+J4NIxYhgfF5HxJ1OM95ohWBIBdqm
+         l9cuASdGUjUmQ4gGwZPMCHmVRkM4JX3SeTa9f4ziiG4zecvBZjwsuW1YL33gqidgo8qA
+         lHwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUZSnkQdw6sLD7+9OUK/cvTCwjzcXVMBKQoOCau5DLIfgnmxEz1aUHIC7g1xTvTFfj3nekPtX4Y7KE4Qlg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzm0+b6DEoweuk/HTyC5WONDOcWLrbcW1I7rikuZ2ZUL9Ahe6Mb
+	ww10UKEAVYj8rRbRistTJeRcJ/xVzjShZPem96Fpbt+ivRbEtf8N
+X-Google-Smtp-Source: AGHT+IHc2e2vLMtpgUXS1tI52gf1buiD4YvgfCEcYTpqHrkvHGaoZfMMzMZorhVoVrjYeCTSItHnJg==
+X-Received: by 2002:a17:90a:eb0f:b0:2d8:8138:fa11 with SMTP id 98e67ed59e1d1-2da6344d3d4mr6980158a91.37.1725475533704;
+        Wed, 04 Sep 2024 11:45:33 -0700 (PDT)
 Received: from dw-tp ([49.205.218.89])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206ae78c41csm16869605ad.0.2024.09.04.11.44.22
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d85b3b95cesm13848845a91.53.2024.09.04.11.45.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Sep 2024 11:44:25 -0700 (PDT)
+        Wed, 04 Sep 2024 11:45:33 -0700 (PDT)
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Cc: Nicholas Piggin <npiggin@gmail.com>, Hari Bathini <hbathini@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Donet Tom <donettom@linux.vnet.ibm.com>, Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
-Subject: Re: [RFC v1 09/10] book3s64/radix: Refactoring common kfence related functions
-In-Reply-To: <f37526c7-a608-426c-b23b-2681139868db@csgroup.eu>
-Date: Thu, 05 Sep 2024 00:04:44 +0530
-Message-ID: <87a5gn2rp7.fsf@gmail.com>
-References: <cover.1722408881.git.ritesh.list@gmail.com> <292790d676ed9e31507a0ba4b11800cbc6670e44.1722408881.git.ritesh.list@gmail.com> <f37526c7-a608-426c-b23b-2681139868db@csgroup.eu>
+Subject: Re: [RFC v1 10/10] book3s64/hash: Disable kfence if not early init
+In-Reply-To: <8fc490bc-b0e6-4730-87ff-ee247fea887d@csgroup.eu>
+Date: Thu, 05 Sep 2024 00:14:31 +0530
+Message-ID: <878qw72r8w.fsf@gmail.com>
+References: <cover.1722408881.git.ritesh.list@gmail.com> <fd77730375a0ab6ae0a89f934385750b239d3113.1722408881.git.ritesh.list@gmail.com> <8fc490bc-b0e6-4730-87ff-ee247fea887d@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,95 +89,53 @@ Christophe Leroy <christophe.leroy@csgroup.eu> writes:
 > Le 31/07/2024 à 09:56, Ritesh Harjani (IBM) a écrit :
 >> [Vous ne recevez pas souvent de courriers de ritesh.list@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
 >> 
->> Both radix and hash on book3s requires to detect if kfence
->> early init is enabled or not. Hash needs to disable kfence
->> if early init is not enabled because with kfence the linear map is
->> mapped using PAGE_SIZE rather than 16M mapping.
->> We don't support multiple page sizes for slb entry used for kernel
->> linear map in book3s64.
+>> Enable kfence on book3s64 hash only when early init is enabled.
+>> This is because, kfence could cause the kernel linear map to be mapped
+>> at PAGE_SIZE level instead of 16M (which I guess we don't want).
 >> 
->> This patch refactors out the common functions required to detect kfence
->> early init is enabled or not.
+>> Also currently there is no way to -
+>> 1. Make multiple page size entries for the SLB used for kernel linear
+>>     map.
+>> 2. No easy way of getting the hash slot details after the page table
+>>     mapping for kernel linear setup. So even if kfence allocate the
+>>     pool in late init, we won't be able to get the hash slot details in
+>>     kfence linear map.
+>> 
+>> Thus this patch disables kfence on hash if kfence early init is not
+>> enabled.
 >> 
 >> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 >> ---
->>   arch/powerpc/include/asm/kfence.h        |  2 ++
->>   arch/powerpc/mm/book3s64/radix_pgtable.c | 12 ------------
->>   arch/powerpc/mm/init-common.c            | 12 ++++++++++++
->>   3 files changed, 14 insertions(+), 12 deletions(-)
+>>   arch/powerpc/mm/book3s64/hash_utils.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
 >> 
->> diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
->> index fab124ada1c7..5975688d8de1 100644
->> --- a/arch/powerpc/include/asm/kfence.h
->> +++ b/arch/powerpc/include/asm/kfence.h
->> @@ -15,6 +15,8 @@
->>   #define ARCH_FUNC_PREFIX "."
->>   #endif
+>> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+>> index c66b9921fc7d..759dbcbf1483 100644
+>> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+>> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+>> @@ -410,6 +410,8 @@ static phys_addr_t kfence_pool;
 >> 
->> +extern bool kfence_early_init;
->> +
->>   #ifdef CONFIG_KFENCE
->>   extern bool kfence_disabled;
->> 
->> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
->> index b0d927009af8..311e2112d782 100644
->> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
->> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
->> @@ -363,18 +363,6 @@ static int __meminit create_physical_mapping(unsigned long start,
->>   }
->> 
->>   #ifdef CONFIG_KFENCE
->> -static bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
->> -
->> -static int __init parse_kfence_early_init(char *arg)
->> -{
->> -       int val;
->> -
->> -       if (get_option(&arg, &val))
->> -               kfence_early_init = !!val;
->> -       return 0;
->> -}
->> -early_param("kfence.sample_interval", parse_kfence_early_init);
->> -
->>   static inline phys_addr_t alloc_kfence_pool(void)
+>>   static inline void hash_kfence_alloc_pool(void)
 >>   {
->>          phys_addr_t kfence_pool;
->> diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
->> index 21131b96d209..259821a4db62 100644
->> --- a/arch/powerpc/mm/init-common.c
->> +++ b/arch/powerpc/mm/init-common.c
->> @@ -33,6 +33,18 @@ bool disable_kuep = !IS_ENABLED(CONFIG_PPC_KUEP);
->>   bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
->>   #ifdef CONFIG_KFENCE
->>   bool __ro_after_init kfence_disabled;
->> +bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
->> +static int __init parse_kfence_early_init(char *arg)
+>> +       if (!kfence_early_init)
+>> +               goto err;
+>> 
+>>          // allocate linear map for kfence within RMA region
+>>          linear_map_kf_hash_count = KFENCE_POOL_SIZE >> PAGE_SHIFT;
+>> @@ -1074,7 +1076,8 @@ static void __init htab_init_page_sizes(void)
+>>          bool aligned = true;
+>>          init_hpte_page_sizes();
+>> 
+>> -       if (!debug_pagealloc_enabled_or_kfence()) {
+>> +       if (!debug_pagealloc_enabled() &&
+>> +           !(IS_ENABLED(CONFIG_KFENCE) && kfence_early_init)) {
 >
-> If I understand correctly, previously it was only for radix, now it is 
-> for every platform including PPC32 ?
->
-
-Ok. I see what you mean. Let me see how can I limit this cmdline parsing
-of kfence and/or special case kfence handling to book3s64 only.
-
->> +{
->> +       int val;
->> +
->> +       if (get_option(&arg, &val))
->> +               kfence_early_init = !!val;
->> +       return 0;
->> +}
->> +early_param("kfence.sample_interval", parse_kfence_early_init);
->> +#else
->> +bool __ro_after_init kfence_early_init;
->
-> I don't understand, why do you need that in the #else case ?
+> Looks complex, can we do simpler ?
 >
 
-Yes, I don't like it either. Let me clean this up.
-this was required in htab_init_page_sizes(). 
+Yes, kfence_early_init anyway needs clean up. Will make it simpler.
 
-Thanks for pointing out.
+Thanks for the review!
 
 -ritesh
 
