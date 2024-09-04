@@ -1,66 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-976-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62AA496B911
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 12:50:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2217996B925
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 12:50:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzK542JmWz2yRd;
-	Wed,  4 Sep 2024 20:50:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzK5z6yKtz2yVd;
+	Wed,  4 Sep 2024 20:50:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.201
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725447000;
-	cv=none; b=CTExN7a+U0c/nW8cVjdyyD/HcYzW3CBKhCIoTtFWVpdNt+8peZ1cvjXeF/slc7DFYjtm0x2qpnBJ+4F++IgnhJ3fr1Uw8uF1G2ROCw2rhwTuryE7r35Yfosq4uLQQJO4uyMh4IKliYPJw3yiCWXXKlBGAvbMoLjgZnHssrZJAjIPdq08ubZMnH4awesnavqFU+ktpCt7SCYgAe4pF0FlX3QxMZT7S3xqKu01vF9RaO3ysDmy7l4QhXX2mweu8luO/clKmIoIFADsfs56CsmB8rbl6jlH4dPvQvflpU4T7YQy1zndHL2GENHtw4Sk9UUNwWFsSTw0YwZ2UlsYrXW9Sg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.183
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725447047;
+	cv=none; b=jM0PtnyD/0PxWoES4qTf8mV+IgB1DvJysxjJ5MxYo942MBWXm1qP8SwRpKABkJ9l8YT0Ei3fi1qHQ4ZtpK9sdYq75p0rnOSJOgHyaJdZPgQgOIzqhVN+fg8oXl/9RvlFOEjTB8I/cXC6ZBR+olE2grBPEEUs3ZnplSfVRBNvMaZWQxgmvZybftsL3LDkrKBd4IHlP2awdyeIOHszDqWakahn+sjvGJBtIvUdco+w2wDKlblJ4N46+E5CzZdxoDqYNPeADf9CUM8AQDgMi9e/ARwpg91SD/BSL1S7PazDk+Mu45ABI2JpKXpS5COGZahdCzLMKIYYOFUDNIKUlpEy7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725447000; c=relaxed/relaxed;
-	bh=OlQwp//l7+YMqCwEc62IbsKJVaVaIN0kbujxzcaSERM=;
-	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type; b=Di5KyQ9HorDFORf7M0UiQyBzqObUreW17M1pSkot/BXRP/QhslCAuZg8t9OgirwuzB12r0dwML+CfYkFmU7PWkmtomKcFqEqVni9f9nwmBLe8uDi8g6zcxCRBebp3bxqTkv8rxLExxfh5X06BfX7zBSspAA5va0eTC04VT7buIbuFXueKM1aBeHEX8JvzgD5l0sGnqYuNZ4ljHHt+I3QNdA84NKMLqP66Dl6qGA6clg39eluHrRi7/GmEPPlSakM4rIo8Osx7U3Y6bDnkmceMa8BVwDmDWX6qo2e5EQMAtKuzFs8YzvinlFc7oJklYqGYqJfjkQr2pwCTBbBREbZoQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=AjO+zJcz; dkim-atps=neutral; spf=pass (client-ip=217.70.183.201; helo=relay8-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+	t=1725447047; c=relaxed/relaxed;
+	bh=mriS1H0sJTSVPaDrzCARMiATA5eWDief//MW7qUXAF0=;
+	h=DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=L61jm2OdCJ5v6cxawTGgDzCjjigzniKWJWRuoilNM9Zobwi1s2LD6IlojUQ5j1FKv4GyYa3+g5+smJExsyYtSmTFClBBRJfAy0P5mgHcgSkVvogbyhIloC2KeqFTEc/ve/FqnrceKHJArGOU6MxZPrefBJ5gBjKx8inBAf7zaIKZg1XWn6J0GeylpzZYiPKE99rO/umwOZ8TVUQlKtrUpGcE1w0Fz6Xx9aTBn6v9jpia6eHCEFMVVCwlrZqNH2czTYorr3cdOFsSL8VsjAfPmwaBX7OyMa/i2NR6kRcU/26CSQUMz0/oAHULPEks6Vv516yMZc6fOpOJGaVPtUGoEw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EFbICRFV; dkim-atps=neutral; spf=pass (client-ip=95.215.58.183; helo=out-183.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=AjO+zJcz;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=EFbICRFV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.201; helo=relay8-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.183; helo=out-183.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzK533lWQz2yRC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 20:49:57 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 805841BF206;
-	Wed,  4 Sep 2024 10:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1725446992;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzK5y15Dwz2yRC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 20:50:44 +1000 (AEST)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1725447024;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OlQwp//l7+YMqCwEc62IbsKJVaVaIN0kbujxzcaSERM=;
-	b=AjO+zJczyrIU9K82FhJ8IfAofM+yJtFx1/tB0Usq8CuxFJmN/lqMvG7f4uaUqRzzKIg32Y
-	072cQqb2AYT+TcGFLby8CWj4hKXnCXptPUgIIXJ1a8KYaP8UNSiIFSV52DXfCMuy7V8Jbd
-	67ZvV/uH0AlmbJ81czvB2WNIuDTpqwhNrOm2OUUojHecup2yvlEtUGdmNT6GUyJd3JihgY
-	GjBlIAQUEwsCJoElvHxaqzCoGfd5HvX/ZgCtb3r5sM9HKrd/Y1q+k3RXuoL3bUPtv+xFt6
-	RCfqul/llDwO58QjXYaEAQJF0+rROiGIUJskuUOfy9c8UGZN1Z7qFCCkeJHrCA==
-Date: Wed, 4 Sep 2024 12:49:49 +0200
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, Pantelis Antoniou <pantelis.antoniou@gmail.com>,
- Andrew Lunn <andrew@lunn.ch>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Florian Fainelli
- <f.fainelli@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Herve Codina <herve.codina@bootlin.com>,
- Simon Horman <horms@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v2 7/7] net: ethernet: fs_enet: phylink
- conversion
-Message-ID: <20240904124949.563f1343@fedora.home>
-In-Reply-To: <20240902185543.48d91e87@kernel.org>
-References: <20240829161531.610874-1-maxime.chevallier@bootlin.com>
-	<20240829161531.610874-8-maxime.chevallier@bootlin.com>
-	<20240902185543.48d91e87@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mriS1H0sJTSVPaDrzCARMiATA5eWDief//MW7qUXAF0=;
+	b=EFbICRFVSqlYITPSXqcNWPA0WOazR4AJIycYCljwu7mNHiJFebjXOtL5fzFKuZYVoKO9Cd
+	pOcp3gcZ48wUuLBSpa1aOPsCbNaq75WpYmjB7vvlrqTDN/cGmY7FPpiWjkpJ26p+8tfK7G
+	tE8sDUQ3EV8W3bQqkYlCr4uyaDo6fps=
+From: Andrew Jones <andrew.jones@linux.dev>
+To: kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org
+Cc: pbonzini@redhat.com,
+	thuth@redhat.com,
+	lvivier@redhat.com,
+	frankja@linux.ibm.com,
+	imbrenda@linux.ibm.com,
+	nrb@linux.ibm.com,
+	atishp@rivosinc.com,
+	cade.richard@berkeley.edu,
+	jamestiotio@gmail.com
+Subject: [kvm-unit-tests PATCH v2 0/4] Support cross compiling with clang
+Date: Wed,  4 Sep 2024 12:50:21 +0200
+Message-ID: <20240904105020.1179006-6-andrew.jones@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,61 +65,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: maxime.chevallier@bootlin.com
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Jakub,
+Modify configure to allow --cc=clang and a cross-prefix to be specified
+together (as well as --cflags). This allows compiling with clang, but
+using cross binutils for everything else, including the linker. So far
+tested on riscv 32- and 64-bit and aarch64 (with some hacks to the code
+to get it to compile - which is why there's no gitlab-ci patch for aarch64
+in this series). I suspect it should work for other architectures too.
 
-On Mon, 2 Sep 2024 18:55:43 -0700
-Jakub Kicinski <kuba@kernel.org> wrote:
+v2:
+ - fix building with clang and --config-efi by suppressing a warning
+ - added riscv clang efi build to CI
+ - picked up Thomas's tags
 
-> On Thu, 29 Aug 2024 18:15:30 +0200 Maxime Chevallier wrote:
-> > @@ -582,15 +591,12 @@ static void fs_timeout_work(struct work_struct *work)
-> >  
-> >  	dev->stats.tx_errors++;
-> >  
-> > -	spin_lock_irqsave(&fep->lock, flags);
-> > -
-> > -	if (dev->flags & IFF_UP) {
-> > -		phy_stop(dev->phydev);
-> > -		(*fep->ops->stop)(dev);
-> > -		(*fep->ops->restart)(dev);
-> > -	}
-> > +	rtnl_lock();  
-> 
-> so we take rtnl_lock here..
-> 
-> > +	phylink_stop(fep->phylink);
-> > +	phylink_start(fep->phylink);
-> > +	rtnl_unlock();
-> >  
-> > -	phy_start(dev->phydev);
-> > +	spin_lock_irqsave(&fep->lock, flags);
-> >  	wake = fep->tx_free >= MAX_SKB_FRAGS &&
-> >  	       !(CBDR_SC(fep->cur_tx) & BD_ENET_TX_READY);
-> >  	spin_unlock_irqrestore(&fep->lock, flags);  
-> 
-> > @@ -717,19 +686,18 @@ static int fs_enet_close(struct net_device *dev)
-> >  	unsigned long flags;
-> >  
-> >  	netif_stop_queue(dev);
-> > -	netif_carrier_off(dev);
-> >  	napi_disable(&fep->napi);
-> >  	cancel_work_sync(&fep->timeout_work);  
-> 
-> ..and cancel_work_sync() under rtnl_lock here?
-> 
-> IDK if removing the the "dev->flags & IFF_UP" check counts as
-> meaningfully making it worse, but we're going in the wrong direction.
-> The _sync() has to go, and the timeout work needs to check if device
-> has been closed under rtnl_lock ?
+Andrew Jones (4):
+  riscv: Drop mstrict-align
+  Makefile: Prepare for clang EFI builds
+  configure: Support cross compiling with clang
+  riscv: gitlab-ci: Add clang build tests
 
-Arg that's true, I didn't consider that call path at all... Sorry about
-that, I'll indeed rework that to address this deadlock waiting to
-happen.
+ .gitlab-ci.yml | 43 +++++++++++++++++++++++++++++++++++++++++++
+ Makefile       |  2 ++
+ configure      | 11 ++++++++---
+ riscv/Makefile |  2 +-
+ 4 files changed, 54 insertions(+), 4 deletions(-)
 
-Thanks,
+-- 
+2.46.0
 
-Maxime
 
