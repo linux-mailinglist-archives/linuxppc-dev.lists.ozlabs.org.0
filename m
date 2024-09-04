@@ -1,77 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-1011-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1013-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B8B796C6A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 20:45:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E733396CA4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 00:26:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzWdr45F9z2yfm;
-	Thu,  5 Sep 2024 04:45:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzcX86Mwyz2y8B;
+	Thu,  5 Sep 2024 08:26:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725475536;
-	cv=none; b=lQWaJ+UD/COgqGx1VQyVIX7tDmb3dGT1gS96/LG+hGYk1TzSyr5KcHJNx1Fjknh4r1REjJf5liJZcHWAQKzToLqveVR4whjHVw+Ar/Duacoy7dFBsJvs1zzf0odomUkOd1IY49TyqrFcHF9UySJKgxDMxVHBrmgh7r4TBmmZkzSDRE5bjEx3vMMGENQHdyMN9L5AOAEuqlHhAWvmAYuO+IIs0mZ86ceBYqwkMSlNg4sOyKI5sbKPnukfpiuuK41/GPH8kpSVlpin8VhhnUWOjWlXJPKuayQjOwJDT9WKuYs4f1Yp2iPjJpwsECenTLBHEcMsmCXFRK2/AxDz2FRd3Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725455686;
+	cv=none; b=gtS6WCiyCbxTGqM4Hl4beI+85FJ3lC3qMw+frbr27ng216Y4A5adYk7vX6shA/H8A4biZGfuTUiHr8nrHCFgeGhERojKPAks/EMgS2SZXlMu60h+YHy7FE/gAfO1QoJrYhGtxT6VUL2ovJRE9VlZs2eWqUHHWKc+LsrNUGi3JGQ1xVeOAigTAeoXxbDp1w69wzdijcInTKRYzl9+niX7u3aBqPyNVUSdDFLWizz2AHqb+tD1KfxklcVHECgkTYLAaThYXjJQDCCQl2xSQoDXUufXRWGvi3jl++3eifS2gX6O5tRw1XwphTeIApSHHn1ykKT5SgERftaRq3RHvaqwQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725475536; c=relaxed/relaxed;
-	bh=A2cJF63QP/c5w3ieUuwO3beX5UgVacLYpP/NWWLTmBU=;
-	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:Date:Message-ID:
-	 References:MIME-version:Content-type; b=aV25SdfUTQYfjWRMD7oqZbY/T4y0swYWpmyPmXO0caMUsQ8lHWbHTSWzyZjy2IG/YEEoXab/Q9J3EbCD7OzSi4KPLBkPrO5v8CF/A9l3E+iJphxhAriy0DV6pqDPQVxFhduHdl/QtV2xVpgcLRt0DE/3QhJDOtF0/m5BsBYZWWQJ0DZoXWJIQlod5EClCXJTDaAlqGYG93/H/liKLOSjqc40UgUHG9M5IuA/anuLX4pkLzTiGYtEpmWQZNV/ubCABn8JiHmTA35AcHueGPb88ZU3X+hMxG/nAwAWTBN8IZHQeUDqX8HkSw9llFNfl2ZWniCT/sDuFm0pKpxrvo/b0Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fOla3e0r; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1725455686; c=relaxed/relaxed;
+	bh=IcwSc34LvXMP/cT7noBpbT1jqfRVjScu2K4oFpyriwE=;
+	h=From:DKIM-Signature:DKIM-Signature:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:To:Cc; b=gLhJHGXo4Vjm3m1YhDXKONxlfi32awfjWWNCoQ4xePSYh3hQrKNwq9LEWIvRX+JA9lQargnLbkywAOj3WHhoQU49yOcA2npRwbNb9wy2dr8LF31qMjPjRq08jSxTZVwV67RasbEYTFhmeNcvlUKCQgR12uMMZHtV92XSXl8vgR08H7Lnn4C+1bWouoDYFR+aIEuT+aJVnNrppzOfIThtOKQUv7M7VIyQ07j0P8HD7yyaP5N2Y9uqCh8Yzp6sRtgh2myPIRwhw0ekDQKkX3pV0uWvElHWX2BrNriLE5MsR7ph3MtRt231djGTyEKLiR9YhrEcYDrUb4bG3FHfzy9s7g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=pKIctVY4; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=E+eXvp9U; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fOla3e0r;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=pKIctVY4;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=E+eXvp9U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 538 seconds by postgrey-1.37 at boromir; Wed, 04 Sep 2024 23:14:45 AEST
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzWdr2Wq0z2yWy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 04:45:36 +1000 (AEST)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2d88690837eso3840207a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2024 11:45:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725475534; x=1726080334; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=A2cJF63QP/c5w3ieUuwO3beX5UgVacLYpP/NWWLTmBU=;
-        b=fOla3e0rjlTyDgwhreu9dzAfyp1B7w2tyaPpab25gmTF6BGQZKRF/UExSfo1OiPNwM
-         cy7m9RmsF6rlTCPfJ5DAslyQF8taeu5NxejNjW1l9S+B6zFswkXa9w1In+sc6YafXCbO
-         5NFVLxktDwpNlN6JcjKci0AtH59Y/oZp/D5ojf8pKhnVPkrYXRPynyZJGnKX9gzu3GiF
-         L77z1oY5jme3E2wsrB23gjDRLgp02KkZyIsCtlBPnPCwQ6F+hpKHEHASWLhqh/NOWkSg
-         SuVpBoQoBQyqd51E8wRhYK2aLQU6TSgGGFnfT0kZ6BCYa282vGAHgTxcFMU4d4/qMyv6
-         ibfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725475534; x=1726080334;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A2cJF63QP/c5w3ieUuwO3beX5UgVacLYpP/NWWLTmBU=;
-        b=MiHvDrD/ZnHve4VwIl7aKJw7XcFmKOytLrYUA+cBXPl+T8I+aLWa9PznEWi2XOSsvd
-         jwEPqkO1kNdSkeJYbX7eLlT+JBJ1CxxXYELpUM5QWWe8R1iFbercG/a9ZubJiMWc/eIB
-         sEcV5sGZRZyaMQQXLTysos+ense3iB9NrcSc22l2hGmI3/2tMP0Kjj2hFWYH4gFxoC0F
-         M8sCXbvrLYnrSwDuK/NZhp8uHrVU11xji19u4JK+J4NIxYhgfF5HxJ1OM95ohWBIBdqm
-         l9cuASdGUjUmQ4gGwZPMCHmVRkM4JX3SeTa9f4ziiG4zecvBZjwsuW1YL33gqidgo8qA
-         lHwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZSnkQdw6sLD7+9OUK/cvTCwjzcXVMBKQoOCau5DLIfgnmxEz1aUHIC7g1xTvTFfj3nekPtX4Y7KE4Qlg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzm0+b6DEoweuk/HTyC5WONDOcWLrbcW1I7rikuZ2ZUL9Ahe6Mb
-	ww10UKEAVYj8rRbRistTJeRcJ/xVzjShZPem96Fpbt+ivRbEtf8N
-X-Google-Smtp-Source: AGHT+IHc2e2vLMtpgUXS1tI52gf1buiD4YvgfCEcYTpqHrkvHGaoZfMMzMZorhVoVrjYeCTSItHnJg==
-X-Received: by 2002:a17:90a:eb0f:b0:2d8:8138:fa11 with SMTP id 98e67ed59e1d1-2da6344d3d4mr6980158a91.37.1725475533704;
-        Wed, 04 Sep 2024 11:45:33 -0700 (PDT)
-Received: from dw-tp ([49.205.218.89])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d85b3b95cesm13848845a91.53.2024.09.04.11.45.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Sep 2024 11:45:33 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>, Hari Bathini <hbathini@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Donet Tom <donettom@linux.vnet.ibm.com>, Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
-Subject: Re: [RFC v1 10/10] book3s64/hash: Disable kfence if not early init
-In-Reply-To: <8fc490bc-b0e6-4730-87ff-ee247fea887d@csgroup.eu>
-Date: Thu, 05 Sep 2024 00:14:31 +0530
-Message-ID: <878qw72r8w.fsf@gmail.com>
-References: <cover.1722408881.git.ritesh.list@gmail.com> <fd77730375a0ab6ae0a89f934385750b239d3113.1722408881.git.ritesh.list@gmail.com> <8fc490bc-b0e6-4730-87ff-ee247fea887d@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzNJ55gCrz2yYd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 23:14:45 +1000 (AEST)
+From: Anna-Maria Behnsen <anna-maria@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1725455132;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=IcwSc34LvXMP/cT7noBpbT1jqfRVjScu2K4oFpyriwE=;
+	b=pKIctVY4axfpzaDAkuW89nfEerNMQNXGr4oRrZz38wPjBOmrxBuAnOBWaEizzBAwauAjPh
+	iSPCWacRZvzl6CCp1is+uBZAeRqXH7FmxMsCNUd2XW7fLBRd3R2v/gVjNOtuOAe97g20n4
+	iyKyv4M3SsAHlQyN0Bb5+/WPEPJl38gvPLOQnPCVAYjWpdHo54oO5T6wTZVXJJDlbqXkkE
+	3oyAKI4DEAwwq/8zn1lI0pDDGpx/h1p9ThiWQxIDIVUHt673XGvyw0iUaWqSDLv7yLyqpo
+	Anfa2HXMo+/DXNdDrHE8hi9N5LqhVKzPFFuFJBaC1IHamnKd3WZ2Kp5fjH9bRQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1725455132;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=IcwSc34LvXMP/cT7noBpbT1jqfRVjScu2K4oFpyriwE=;
+	b=E+eXvp9UB9r1HGGHMLtT0w+geizfWK2j8vOahsM5RXh4xyoJXjN+XNIwwk0C+aPRWMYALP
+	cm7NexPhzPCUw2DQ==
+Subject: [PATCH 00/15] timers: Cleanup delay/sleep related mess
+Date: Wed, 04 Sep 2024 15:04:50 +0200
+Message-Id: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,62 +61,132 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPJa2GYC/x3NQQqDMBBG4avIrDsQ07QkvUrpYtTfdkBTmYgUx
+ Ls3uPw27+1UYIpCj2Ynw6ZFv7mivTTUfyS/wTpUk3c+uOQCD9gwseQsPIupcBd41RlWeJwKsHC
+ 8xltqfZfuKVLtLIZRf+fj+TqOPzF6qSBzAAAA
+To: Frederic Weisbecker <frederic@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ Peter Zijlstra <peterz@infradead.org>, SeongJae Park <sj@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+ linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, 
+ linux-arch@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Andy Whitcroft <apw@canonical.com>, 
+ Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Andrew Lunn <andrew@lunn.ch>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, netdev@vger.kernel.org, 
+ linux-sound@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
+ Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+Hi,
 
-> Le 31/07/2024 à 09:56, Ritesh Harjani (IBM) a écrit :
->> [Vous ne recevez pas souvent de courriers de ritesh.list@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
->> 
->> Enable kfence on book3s64 hash only when early init is enabled.
->> This is because, kfence could cause the kernel linear map to be mapped
->> at PAGE_SIZE level instead of 16M (which I guess we don't want).
->> 
->> Also currently there is no way to -
->> 1. Make multiple page size entries for the SLB used for kernel linear
->>     map.
->> 2. No easy way of getting the hash slot details after the page table
->>     mapping for kernel linear setup. So even if kfence allocate the
->>     pool in late init, we won't be able to get the hash slot details in
->>     kfence linear map.
->> 
->> Thus this patch disables kfence on hash if kfence early init is not
->> enabled.
->> 
->> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> ---
->>   arch/powerpc/mm/book3s64/hash_utils.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->> 
->> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
->> index c66b9921fc7d..759dbcbf1483 100644
->> --- a/arch/powerpc/mm/book3s64/hash_utils.c
->> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
->> @@ -410,6 +410,8 @@ static phys_addr_t kfence_pool;
->> 
->>   static inline void hash_kfence_alloc_pool(void)
->>   {
->> +       if (!kfence_early_init)
->> +               goto err;
->> 
->>          // allocate linear map for kfence within RMA region
->>          linear_map_kf_hash_count = KFENCE_POOL_SIZE >> PAGE_SHIFT;
->> @@ -1074,7 +1076,8 @@ static void __init htab_init_page_sizes(void)
->>          bool aligned = true;
->>          init_hpte_page_sizes();
->> 
->> -       if (!debug_pagealloc_enabled_or_kfence()) {
->> +       if (!debug_pagealloc_enabled() &&
->> +           !(IS_ENABLED(CONFIG_KFENCE) && kfence_early_init)) {
->
-> Looks complex, can we do simpler ?
->
+a question about which sleeping function should be used in acpi_os_sleep()
+started a discussion and examination about the existing documentation and
+implementation of functions which insert a sleep/delay.
 
-Yes, kfence_early_init anyway needs clean up. Will make it simpler.
+The result of the discussion was, that the documentation is outdated and
+the implemented fsleep() reflects the outdated documentation but doesn't
+help to reflect reality which in turns leads to the queue which covers the
+following things:
 
-Thanks for the review!
+- Minor changes (naming and typo fixes)
 
--ritesh
+- Split out all timeout and sleep related functions from hrtimer.c and timer.c
+  into a separate file
+
+- Update function descriptions of sleep related functions
+
+- Change fsleep() to reflect reality
+
+- Rework all comments or users which obviously rely on the outdated
+  documentation as they reference "Documentation/timers/timers-howto.rst"
+
+- Last but not least (as there are no more references): Update the outdated
+  documentation and move it into a file with a self explaining file name
+
+The queue is available here and applies on top of tip/timers/core:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/anna-maria/linux-devel.git timers/misc
+
+Cc: linux-kernel@vger.kernel.org
+Cc: Len Brown <len.brown@intel.com>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+To: Jonathan Corbet <corbet@lwn.net>
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+
+Thanks,
+
+Anna-Maria
+
+---
+Anna-Maria Behnsen (15):
+      timers: Rename next_expiry_recalc() to be unique
+      cpu: Use already existing usleep_range()
+      Comments: Fix wrong singular form of jiffies
+      timers: Move *sleep*() and timeout functions into a separate file
+      timers: Rename sleep_idle_range() to sleep_range_idle()
+      timers: Update function descriptions of sleep/delay related functions
+      timers: Adjust flseep() to reflect reality
+      mm/damon/core: Use generic upper bound recommondation for usleep_range()
+      timers: Add a warning to usleep_range_state() for wrong order of arguments
+      checkpatch: Remove broken sleep/delay related checks
+      regulator: core: Use fsleep() to get best sleep mechanism
+      iopoll/regmap/phy/snd: Fix comment referencing outdated timer documentation
+      powerpc/rtas: Use fsleep() to minimize additional sleep duration
+      media: anysee: Fix link to outdated sleep function documentation
+      timers/Documentation: Cleanup delay/sleep documentation
+
+ Documentation/admin-guide/media/vivid.rst          |   2 +-
+ Documentation/dev-tools/checkpatch.rst             |   6 -
+ Documentation/timers/delay_sleep_functions.rst     | 122 +++++++
+ Documentation/timers/index.rst                     |   2 +-
+ Documentation/timers/timers-howto.rst              | 115 -------
+ .../sp_SP/scheduler/sched-design-CFS.rst           |   2 +-
+ MAINTAINERS                                        |   2 +
+ arch/arm/mach-versatile/spc.c                      |   2 +-
+ arch/m68k/q40/q40ints.c                            |   2 +-
+ arch/powerpc/kernel/rtas.c                         |  21 +-
+ arch/x86/kernel/cpu/mce/dev-mcelog.c               |   2 +-
+ drivers/char/ipmi/ipmi_ssif.c                      |   2 +-
+ drivers/dma-buf/st-dma-fence.c                     |   2 +-
+ drivers/gpu/drm/i915/gem/i915_gem_wait.c           |   2 +-
+ drivers/gpu/drm/i915/gt/selftest_execlists.c       |   4 +-
+ drivers/gpu/drm/i915/i915_utils.c                  |   2 +-
+ drivers/gpu/drm/v3d/v3d_bo.c                       |   2 +-
+ drivers/isdn/mISDN/dsp_cmx.c                       |   2 +-
+ drivers/media/usb/dvb-usb-v2/anysee.c              |   6 +-
+ drivers/net/ethernet/marvell/mvmdio.c              |   2 +-
+ drivers/regulator/core.c                           |  33 +-
+ fs/xfs/xfs_buf.h                                   |   2 +-
+ include/asm-generic/delay.h                        |  46 ++-
+ include/linux/delay.h                              |  79 ++++-
+ include/linux/iopoll.h                             |  24 +-
+ include/linux/jiffies.h                            |   2 +-
+ include/linux/phy.h                                |   7 +-
+ include/linux/regmap.h                             |  18 +-
+ include/linux/timekeeper_internal.h                |   2 +-
+ kernel/cpu.c                                       |   2 +-
+ kernel/time/Makefile                               |   2 +-
+ kernel/time/alarmtimer.c                           |   2 +-
+ kernel/time/clockevents.c                          |   2 +-
+ kernel/time/hrtimer.c                              | 122 +------
+ kernel/time/posix-timers.c                         |   4 +-
+ kernel/time/sleep_timeout.c                        | 363 +++++++++++++++++++++
+ kernel/time/timer.c                                | 210 +-----------
+ lib/Kconfig.debug                                  |   2 +-
+ mm/damon/core.c                                    |   5 +-
+ net/batman-adv/types.h                             |   2 +-
+ scripts/checkpatch.pl                              |  38 ---
+ sound/soc/sof/ops.h                                |   6 +-
+ 42 files changed, 668 insertions(+), 607 deletions(-)
+
 
