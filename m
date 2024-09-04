@@ -1,58 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-950-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-951-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7FBE96B34C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 09:49:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 059A396B36D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 09:51:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzF4L66mKz2xZQ;
-	Wed,  4 Sep 2024 17:49:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzF6d1fmsz2y8r;
+	Wed,  4 Sep 2024 17:51:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=43.155.80.173
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725436146;
-	cv=none; b=RmSKaMDXVloWbuBdrw+AGHF8iWuC6PXNIAaaO4RUR95Gu0zIREMPMqROoD1/zS1zLJA3c98B2gAGvIlHF2ZtZkHePRgehN77mC4VOsD+1/wbpDmC6FOHDgYqlvB+jQLN/n6+MljI6MH7MGB47bgE73owJUlmdzTsxclL2RVHxWsZ9B/gyDAB+UIEQcYxhISKJ/x3K03UfeeWMXExugkS68M5EuKk53Pt2DudATVMa16Q9L9bO5pHP4LhbE5rj/7RnjfP2Y0/iUXONYTzjf2UFIAKijQupc0lCXr+SqQ9I95t/gf87wJ30zBr2ikOMjAAkjwEOVic17EBTlrba+eHxg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725436265;
+	cv=none; b=HPDegqw+Ldl1wtNtDDdG7NeXJzWLXZxOCz4G7WTzdatUxrVfYFYjbGl2P4lwBgTV4lGzm9xjYL/+uKbauiDA8VZO3IHRFLQjieh/qQNJX/rWd4yeQOfNyBQIQ5VsCWEFGWYuDLn02qb7VDhGcJX+XQeRvI+zesX/73NucFUaECO9vtbWntOnuvUxJVTJCNutfiDTWqXDwIasjQA4vULAmIbR3wNbL0W7fWs+58iEHqPdHrobLZ+pQ1M6gLwobn/cZVhGFKrOLkudMnKFE73oZKwHrWq5E/D7DlNQerheVLSc+nMNPgXIUTwhAt7RSK2C8fXAXsLYhUKLurqOpTiugA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725436146; c=relaxed/relaxed;
-	bh=IBppk4AjUXFb20sR8w1BNxSTvC/aDrpi0hebL+3NyAc=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=iP92em6iMZ/cub0RPdifWNreLB5lSwGdciPBY7F07CEUSCgRo9il40aqIim7vuM/uVzD/Iq0Xx2YmgQ1ACxSfXxDt6GAnb4EHR1yBvfCSm5PZlcVEdddEqvaPzRgLXzhhtBLt3NyGuP1n/Ch6uvIveMU5IEcT6uH0kRoKl/pkKpbuFDT+V+/DWwXfUq9g4LkdT27VBvlgWrAyXh1YMjXW4Quw22HLvatAy8Wk5FKawSFrJCNPPmekYUhtag0Gs8OP7pN3bnnZkWqqZ5oIxYYgO4A0NUESeNp0VphQC2GBBTlqLab+s3NX3lW67/kcoIwtDzdx0e9wusd9NFvPLqJgw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org) smtp.mailfrom=shingroup.cn
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1725436265; c=relaxed/relaxed;
+	bh=AU1p1DXBVmXIl6YxYAEjEuw7v6nXJYuynqitO9fDnNA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dbgtHts0RHLmW7by0ga5q1zDAQqwkNVJbeg11AJarGXcXRIwOmryCwI3w/soq99k3YK5c0T5XJng6y+2xidLocJRYjGsYUs7tczgezZANkFBD88cA9J+8q8NIEU1kYD6D3j4Y8n0mQjRwEyul9qr4DZ3tz6fwKGK8tMyOZWkxDeDoLeNfTIUhgXa0koKlQRwGuC1uzPbbHPo6HUg0HVBpsiE2bv1wGOu3DDcpIpJBWJaQhlCRCcGSFCe5bB8jihyq0s1m7wjzCUudzVIZ+Y/XnhbB50wYb5C33+OYhxHzhzD939KlIJgQ5op+RsfC0JXlgHSJF216Ue1X/wX8vYQHQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzF4K6RJKz2xYr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 17:49:05 +1000 (AEST)
-X-QQ-GoodBg: 2
-X-BAN-DOWNLOAD: 1
-X-BAN-SHARE: 1
-X-QQ-SSF: 0040000000000060
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-X-QQ-XMAILINFO: Nr9+mHXfAFYqb2u4o6mSFCAOExMD1FGLWnwGwcUeX3N6XxGOeVorxTvu
-	EH5tmqwIqoQxeXLeahN9e3t+it338Qt8aMk+PYfV/ANiLXvoDB0WNlkHeHGIa6EIFmrIOdk
-	eq/nBJR3xzdSfazkSml1T+tZ5R9X+0/0PBd1eETCxXYw028pFxKEgK/LE7ti4UiBBgNavKr
-	3ps3T1vuwURDzw++W4zzoENthW9gtld0V0PqRcJmsM4ln555I34sdkgBKz5l3YI8NOAvYYc
-	H2xQJweTb1F34/dmasDtZ/BJCHLjkwx6YQcp4xvZBua2cRQUQZPfQCOELprY2ugrp6XYW8L
-	B/gCkjyEq1iDv/yZXd8qDpArJM21L6ccoFpuiSGO2nRXgWpEO78FG4C8ByP9VQdw2Xp63sz
-	LVs5q6JQ/DSbstcYne9ybTPUnykGHtPVU0pv8cxlyHIf81fQwEfdNmMVP05gKfu8M8OWS3N
-	aFLRkrC3wtK8lcGJBVuPHS7PjDpZfc+ZNLBmi8WTlPsGOAJSaTyFGevrwBmRjptLh0tzfj6
-	HZHPvpyaa6/RVEoLP4ELDLyBF6rRJW4hNqU3HgRPl++vdUGi/Qg4PlDBwS8wX21cR3Qcjj3
-	GybrycRl26PmOO5w5aj318IqVLHodZm7Tj+cwHkNLNgGZA/38IJUYR8YLbLVfgLXvFac2f5
-	PkTrErM0EVGZZcCRk086GwNNegceITBQ9I2Aw/pOSmZQ8t52R/4w7P8EKqdkWItN7/y9k3+
-	2/3ehMPm6sc+f0eas5ZBMox3AZFDEvkbDgDYyKSonAtSIARlY/f0X3wLkxehVZoDU/5GYIJ
-	wYjWavWs+nNuX/RHovCvSDcgoRWHQ0VbYh45cQtfasjSrFscDXr4qV7DJjCgk0Osn1wws8C
-	DvkBuIgWmW1WgZA0G7TPAEnN2CUdF9LG
-X-QQ-FEAT: D4aqtcRDiqQpBpTnjIJt3/f21w9WO3enREO5ZSgO7MU=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: E7inRcGMD3FFQkYdnvBRHVe92HC6Hxe27PpmZrNNZek=
-X-Originating-IP: 180.171.234.62
-X-QQ-STYLE: 
-X-QQ-mid: t6gz5a-0t1725436046t4155309
-From: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>
-To: "=?utf-8?B?WWFuZyBKaWFsb25nIOadqOS9s+m+mQ==?=" <jialong.yang@shingroup.cn>, "=?utf-8?B?bXBl?=" <mpe@ellerman.id.au>, "=?utf-8?B?bnBpZ2dpbg==?=" <npiggin@gmail.com>, "=?utf-8?B?Y2hyaXN0b3BoZS5sZXJveQ==?=" <christophe.leroy@csgroup.eu>, "=?utf-8?B?TmF2ZWVuIE4uIFJhbw==?=" <naveen.n.rao@linux.ibm.com>
-Cc: "=?utf-8?B?c2hlbmdodWkucXU=?=" <shenghui.qu@shingroup.cn>, "=?utf-8?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?U3RldmVuIFJvc3RlZHQ=?=" <rostedt@goodmis.org>, "=?utf-8?B?TWFzYW1pIEhpcmFtYXRzdQ==?=" <mhiramat@kernel.org>, "=?utf-8?B?S2Fyb2wgSGVyYnN0?=" <karolherbst@gmail.com>, "=?utf-8?B?UGVra2EgUGFhbGFuZW4=?=" <ppaalanen@gmail.com>, "=?utf-8?B?bm91dmVhdQ==?=" <nouveau@lists.freedesktop.org>
-Subject: Re: [PATCH v1 1/2] powerpc/mmiotrace: Add MMIO Tracing tool for PowerPC
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzF6c6MQ2z2xYr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 17:51:03 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4WzF6T6FRvz9sSC;
+	Wed,  4 Sep 2024 09:50:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id MyT5AqoNw1ah; Wed,  4 Sep 2024 09:50:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4WzF6T53SRz9sS7;
+	Wed,  4 Sep 2024 09:50:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D7618B77A;
+	Wed,  4 Sep 2024 09:50:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id XVy8Rvp824KA; Wed,  4 Sep 2024 09:50:57 +0200 (CEST)
+Received: from [192.168.234.246] (unknown [192.168.234.246])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id EC5188B778;
+	Wed,  4 Sep 2024 09:50:56 +0200 (CEST)
+Message-ID: <64e74f4d-948d-442e-9810-69907915401c@csgroup.eu>
+Date: Wed, 4 Sep 2024 09:50:56 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,124 +55,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Wed, 4 Sep 2024 15:47:25 +0800
-X-Priority: 3
-Message-ID: <tencent_525B0DBF67E67116595BAF23@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <2bf90acf7d29641ba6643934ff8dbba897dbd2d9.1718873074.git.jialong.yang@shingroup.cn>
-	<87h6ddlfc7.fsf@mail.lhotse>
-	<2CCFA0BD64E5F2E0+e4c7fc43-47b1-4788-a7d2-44f6a33cff66@shingroup.cn>
-In-Reply-To: <2CCFA0BD64E5F2E0+e4c7fc43-47b1-4788-a7d2-44f6a33cff66@shingroup.cn>
-X-QQ-ReplyHash: 4089120458
-X-BIZMAIL-ID: 6568626761907018191
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Wed, 04 Sep 2024 15:47:27 +0800 (CST)
-Feedback-ID: t:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm: make copy_to_kernel_nofault() not fault on user
+ addresses
+To: Omar Sandoval <osandov@osandov.com>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Benjamin Gray <bgray@linux.ibm.com>,
+ "Christopher M. Riedl" <cmr@bluescreens.de>
+Cc: Christoph Hellwig <hch@lst.de>, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-um@lists.infradead.org, kernel-team@fb.com
+References: <cover.1725223574.git.osandov@fb.com>
+ <f0e171cbae576758d9387cee374dd65088e75b07.1725223574.git.osandov@fb.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <f0e171cbae576758d9387cee374dd65088e75b07.1725223574.git.osandov@fb.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-SGksDQoNCnRoZSBwYXRjaCBzZXQgYW5kIG1taW8gdHJhY2UgY2FwYWJpbGl0eSBoZWxwZWQg
-dXMgdG8gdHJhY2sgZG93biB0byB0aGUgcm9vdCBjYXVzZSBvZiAgYSBteXN0ZXJpb3VzIEVF
-SCBvbmx5IG9uIHBvd2VybnYgcGxhdGZvcm0NCiB0cmlnZ2VyZWQgYnkgYSB0ZXN0cG1kIGRw
-ZGsgdXNlciBtb2RlIGRyaXZlciAoVUlPKSBieSBjb21wYXJpbmcgdGhlIG1taW8gdHJhY2Ug
-ZnJvbSBVSU8gYW5kIG5hdGl2ZSBrZXJuZWwgZHJpdmVyIGZyb20gdGhlIHNhbWUgbmljLiAN
-CkFuZCB0aGUgcHJvYmxlbSBpcyBzb2x2ZWQgYnkgc3dpdGNoIHRvIFZGSU8gZHJpdmVyIGFz
-IGJhY2tlbmQuDQoNCnRoZSBwcm9ibGVtIGlzIHRoZSBtbWlvdHJhY2UgY291bGQgbm90IGNh
-cHR1cmUgdXNlciBtb2RlIG1taW8gd2hpY2ggSSB0aGluayBpdCBjb3VsZCBiZSBsaW1pdGF0
-aW9uIGJ5IGl0cyBjdXJyZW50IGRlc2lnbi4NCg0Kc28sIEkgdGhpbmsgd2UgY291bGQgdGlk
-eSB1cCB0aGUgcGF0Y2ggYW5kIGRvIHNvbWUgZmVhdHVyZSBlbmhhbmNlbWVudCB0aGVuIHdl
-IGNhbiBzdWJtaXQgYWdhaW4gZm9yIHRoZSBkZWJ1ZyB2YWx1ZSBvZiB0aGUgcGF0Y2guDQpB
-cyBpdCByZWFsbHkgaXMgcGFpbmZ1bCB3aGVuIEVFSCBBL0IgcmVjb3JkIGRvZXNuJ3QgcG9p
-bnQgdG8gYSBjbGVhciByb290IGNhdXNlIG9yIHN1ZmZpZW50IGRldGFpbHMgdGhhdCBjYW4g
-aGVscCB1cyB0byBmaXggIGRyaXZlciBjb2RlIGZvciB0aGUgdW5hbGlnbmVkDQpNTUlPIGZv
-ciBhIDNyZCBwYXJ0eSBuaWMgdmVuZG9yIG9uIHBvd2VybnYgcGxhdGZvcm0uDQogDQpDaGVl
-cnMsDQpMdW1pbmcNCi0tLS0tLS0tLS0tLS0tLS0tLSBPcmlnaW5hbCAtLS0tLS0tLS0tLS0t
-LS0tLS0NCkZyb206ICAiWWFuZyBKaWFsb25nIOadqOS9s+m+mSI8amlhbG9uZy55YW5nQHNo
-aW5ncm91cC5jbj47DQpEYXRlOiAgRnJpLCBKdW4gMjgsIDIwMjQgMDQ6MjEgUE0NClRvOiAg
-Im1wZSI8bXBlQGVsbGVybWFuLmlkLmF1PjsgIm5waWdnaW4iPG5waWdnaW5AZ21haWwuY29t
-PjsgImNocmlzdG9waGUubGVyb3kiPGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldT47ICJO
-YXZlZW4gTi4gUmFvIjxuYXZlZW4ubi5yYW9AbGludXguaWJtLmNvbT47IA0KQ2M6ICAi6Jme
-6ZmG6ZOtIjxsdW1pbmcueXVAc2hpbmdyb3VwLmNuPjsgInNoZW5naHVpLnF1IjxzaGVuZ2h1
-aS5xdUBzaGluZ3JvdXAuY24+OyAibGludXhwcGMtZGV2IjxsaW51eHBwYy1kZXZAbGlzdHMu
-b3psYWJzLm9yZz47ICJsaW51eC1rZXJuZWwiPGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5v
-cmc+OyAiU3RldmVuIFJvc3RlZHQiPHJvc3RlZHRAZ29vZG1pcy5vcmc+OyAiTWFzYW1pIEhp
-cmFtYXRzdSI8bWhpcmFtYXRAa2VybmVsLm9yZz47ICJLYXJvbCBIZXJic3QiPGthcm9saGVy
-YnN0QGdtYWlsLmNvbT47ICJQZWtrYSBQYWFsYW5lbiI8cHBhYWxhbmVuQGdtYWlsLmNvbT47
-ICJub3V2ZWF1Ijxub3V2ZWF1QGxpc3RzLmZyZWVkZXNrdG9wLm9yZz47IA0KU3ViamVjdDog
-IFJlOiBbUEFUQ0ggdjEgMS8yXSBwb3dlcnBjL21taW90cmFjZTogQWRkIE1NSU8gVHJhY2lu
-ZyB0b29sIGZvciBQb3dlclBDDQoNCiANCg0KDQrlnKggMjAyNC82LzI4IDE1OjAyLCBNaWNo
-YWVsIEVsbGVybWFuIOWGmemBkzoNCj4gSmlhbG9uZyBZYW5nIDxqaWFsb25nLnlhbmdAc2hp
-bmdyb3VwLmNuPiB3cml0ZXM6DQo+PiBtbWlvdHJhY2UgaXMgYSB1c2VmdWwgdG9vbCB0byB0
-cmFjZSBNTUlPIGFjY2Vzc2VzLiBOb3dhZGF5cywgaXQgb25seQ0KPj4gc3VwcG9ydGVkIG9u
-IHg4NiBhbmQgeDg2XzY0IHBsYXRmb3Jtcy4NCj4gSSd2ZSBuZXZlciB1c2VkIG1taW90cmFj
-ZSwgYW5kIGRvbid0IGtub3cgaXQgd2VsbC4NCj4NCj4gSSdtIG5vdCBuZWNlc3NhcmlseSBv
-cHBvc2VkIHRvIG1lcmdpbmcgaXQsIGJ1dCBBRkFJSyBpdCB3YXMgbW9zdGx5IHVzZWQNCj4g
-Zm9yIHJldmVyc2UgZW5naW5lZXJpbmcgcHJvcHJpZXRhcnkgZHJpdmVycywgd2hlcmUgdGhl
-IGRyaXZlciBpdHNlbGYNCj4gY291bGRuJ3QgYmUgZWFzaWx5IGluc3RydW1lbnRlZC4gSXMg
-dGhhdCB3aGF0IHlvdSdyZSB1c2luZyBpdCBmb3I/DQoNClllcy4gSnVzdCBsaWtlIHlvdSB0
-aGluay4gV2UgaGF2ZSB1c2VkIGl0IGZvciBuZXR3b3JrIHN0YWNrIGRlYnVnIGluIA0KcHBj
-NjRsZS4NCg0KDQo+DQo+IEZvciBkcml2ZXJzIHdoZXJlIHdlIGhhdmUgdGhlIHNvdXJjZSB3
-b3VsZG4ndCBpdCBiZSBlYXNpZXIgdG8ganVzdCB1c2UNCj4gdHJhY2Vwb2ludHMgaW4gdGhl
-IE1NSU8gYWNjZXNzb3JzPw0KDQoNClRyYWNlcG9pbnRzIG5lZWQgcHJlLWRlZmluZWQuIEFu
-ZCBpbiBzb21lIGJpZyBkcml2ZXIsIGl0J3Mgbm90IGVhc3kgdG8gDQpvdmVyd3JpdGUNCg0K
-YWxsIHBvaW50cyB3aGVyZSBhY2Nlc3MgcmVnaXN0ZXJzIGluIGlvIGFyZWEuIEFuZCB0cmFj
-ZXBvaW50IGlzIEMgDQpmdW5jdGlvbiBsZXZlbCBmaWx0ZXIuDQoNCm1taW90cmFjZSBpcyBz
-aW1pbGFyIHRvIHNldCB0cmFjZXBvaW50cyBpbiB3cml0ZWwvcmVhZGwuLi4gQnV0IGl0IGNh
-biBkbyANCmRlZXBlcmx5Lg0KDQptbWlvdHJhY2UgaXMgYSBhc20gbGV2ZWwgZmlsdGVyIHRv
-b2wuIEl0IGRvZXNuJ3QgY2FyZSB3aGF0IGhhdmUgZG9uZSBpbiANCkMgbGV2ZWwuIEl0IHdp
-bGwNCg0Kb25seSBmaW5kIHdoYXQgaGF2ZSBkb25lIGJ5IGFzbSwgc3VjaCBhcyBzdHcoc3Rv
-cmUgd29yZCkvbHcobG9hZCB3b3JkKSwgIA0KanVzdCBsaWtlIHN0YW5kaW5nDQoNCmluIHRo
-ZSB2aWV3IG9mIGRldmljZS4NCg0KDQo+DQo+IElzIGl0IHN0aWxsIGluLXVzZS9tYWludGFp
-bmVkIG9uIHRoZSB4ODYgc2lkZT8NCg0KDQpIZXJlIGlzIHNvbWUgY29yZSBmaWxlIHBhdGNo
-ZXMgbnVtYmVyIGluIHg4NjoNCg0KfCAgICAgIHwgbW1pb19tb2QuYyB8IGttbWlvLmMgfCBw
-Zl9pbi4qIHwgdGVzdG1taW90cmFjZS5jIHwNCnwtLS0tLS0rLS0tLS0tLS0tLS0tKy0tLS0t
-LS0tLSstLS0tLS0tLS0rLS0tLS0tLS0tLS0tLS0tLS18DQp8IDIwMjIgfCAgICAgICAgICAg
-ICAgIDEgfCAgICAgICAgICAgIDMgfCB8ICAgICAgICAgICAgICAgICAgfA0KfCAyMDIxIHwg
-ICAgICAgICAgICAgICAyIHwgICAgICAgICAgICAxIHwgICAgICAgICAgICAgICB8ICAgICAg
-ICAgfA0KfCAyMDIwIHwgICAgICAgICAgICAgICA0IHwgICAgICAgICAgICA0IHwgfCAgICAg
-ICAgICAgICAgIDEgfA0KfCAyMDE5IHwgICAgICAgICAgICAgICAyIHwgICAgICAgICAgICAx
-IHwgICAgICAgICAgICAxIHwgICAgICAgICAgICAgICA0IHwNCnwgMjAxOCB8ICAgICAgICAg
-ICAgICAgICAgfCAgICAgICAgICAgIDIgfCAgICAgICAgICAgICAgIHwgICAgICAgICAgfA0K
-fCAyMDE3IHwgICAgICAgICAgICAgICAyIHwgICAgICAgICAgICAyIHwgfCAgICAgICAgICAg
-ICAgIDEgfA0KfCAyMDE2IHwgICAgICAgICAgICAgICAxIHwgICAgICAgICAgICAyIHwgICAg
-ICAgICAgICAxIHwgICAgICAgIHwNCnwgMjAxNCB8ICAgICAgICAgICAgICAgICAgfCAgICAg
-ICAgICAgIDEgfCAgICAgICAgICAgICAgIHwgICAgICAgICAgfA0KfCAyMDEzIHwgICAgICAg
-ICAgICAgICAxIHwgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgfCAgICAgICAgICB8
-DQp8IDIwMTIgfCAgICAgICAgICAgICAgIDEgfCAgICAgICAgICAgICAgIHwgfCAgICAgICAg
-ICAgICAgICAgIHwNCnwgMjAxMSB8ICAgICAgICAgICAgICAgMyB8ICAgICAgICAgICAgICAg
-fCAgICAgICAgICAgIDEgfCAgICAgICAgIHwNCnwgMjAxMCB8ICAgICAgICAgICAgICAgMSB8
-ICAgICAgICAgICAgMyB8ICAgICAgICAgICAgMiB8ICAgICAgICAgICAgICAgMSB8DQp8IDIw
-MDkgfCAgICAgICAgICAgICAgIDQgfCAgICAgICAgICAxOSB8IHwgICAgICAgICAgICAgICAz
-IHwNCnwgMjAwOCB8ICAgICAgICAgICAgIDEzIHwgICAgICAgICAgICA1IHwgICAgICAgICAg
-ICAyIHwgICAgICAgICAgICAgICAzIHwNCg0KPg0KPj4gSGVyZSBpcyBhIHN1cHBvcnQgZm9y
-IHBvd2VycGMuDQo+PiBUaGUgbWFudWFsIGlzIGxvY2F0ZWQgYXQgRG9jdW1lbnRhdGlvbi90
-cmFjZS9tbWlvdHJhY2UucnN0IHdoaWNoIG1lYW5zDQo+PiBJIGhhdmUgbm90IGNoYW5nZWQg
-dXNlciBBUEkuIFBlb3BsZSB3aWxsIGJlIGVhc3kgdG8gdXNlIGl0Lg0KPj4gQWxtb3N0IGFs
-bCBmaWxlcyBhcmUgY29waWVkIGZyb20geDg2L21tLCB0aGVyZSBhcmUgb25seSBzb21lDQo+
-PiBkaWZmZXJlbmNlcyBmcm9tIGhhcmR3YXJlIGFuZCBhcmNoaXRlY3R1cmVzIHNvZnR3YXJl
-Lg0KPj4NCj4+IExJTks6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAwODAxMjcx
-OTU1MzYuNTA4MDk5NzRAZGFlZGFsdXMucHEuaWtpLmZpLw0KPj4NCj4+IFNpZ25lZC1vZmYt
-Ynk6IEppYWxvbmcgWWFuZyA8amlhbG9uZy55YW5nQHNoaW5ncm91cC5jbj4NCj4+IC0tLQ0K
-Pj4gICBhcmNoL3Bvd2VycGMvS2NvbmZpZy5kZWJ1ZyAgICAgICB8ICAgMyArDQo+PiAgIGFy
-Y2gvcG93ZXJwYy9tbS9NYWtlZmlsZSAgICAgICAgIHwgICAxICsNCj4+ICAgYXJjaC9wb3dl
-cnBjL21tL2ttbWlvLmMgICAgICAgICAgfCA2NDkgKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKw0KPj4gICBhcmNoL3Bvd2VycGMvbW0vbW1pby1tb2QuYyAgICAgICB8IDQxNCAr
-KysrKysrKysrKysrKysrKysrKw0KPj4gICBhcmNoL3Bvd2VycGMvbW0vbW1pb3RyYWNlX2Fy
-Y2guYyB8IDE0OSArKysrKysrDQo+PiAgIGFyY2gvcG93ZXJwYy9tbS9tbWlvdHJhY2VfYXJj
-aC5oIHwgIDI1ICsrDQo+PiAgIGFyY2gvcG93ZXJwYy9tbS9wZl9pbi5jICAgICAgICAgIHwg
-MTg1ICsrKysrKysrKw0KPj4gICBhcmNoL3Bvd2VycGMvbW0vcGZfaW4uaCAgICAgICAgICB8
-ICAzMyArKw0KPj4gICA4IGZpbGVzIGNoYW5nZWQsIDE0NTkgaW5zZXJ0aW9ucygrKQ0KPiAg
-ICANCj4gQXQgYSBnbGFuY2UgbW9zdCBvZiB0aGF0IGNvZGUgY291bGQgYmUgc2hhcmVkIGJl
-dHdlZW4gYXJjaGVzLiBJIGRvbid0DQo+IHRoaW5rIEkgY2FuIG1lcmdlIHRoYXQgYXMtaXMs
-IHdpdGhvdXQgc29tZSBhdHRlbXB0IHRvIHNwbGl0IHRoZSBnZW5lcmljDQo+IHBhcnRzIG91
-dC4NCg0KDQpSaWdodC4NCg0KSSBqdXN0IGNvcHkgdGhlbSBmcm9tIGFyY2gveDg2L21tLiBU
-aGVyZSBhcmUgbWFueSBjb2RlIG5vdCBhcmNoIHNwZWNpZmljLg0KDQoNCj4gY2hlZXJzDQo+
+Hi,
 
+Le 02/09/2024 à 07:31, Omar Sandoval a écrit :
+> [Vous ne recevez pas souvent de courriers de osandov@osandov.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> From: Omar Sandoval <osandov@fb.com>
+> 
+> I found that on x86, copy_to_kernel_nofault() still faults on addresses
+> outside of the kernel address range (including NULL):
+> 
+>    # echo ttyS0 > /sys/module/kgdboc/parameters/kgdboc
+>    # echo g > /proc/sysrq-trigger
+>    ...
+>    [15]kdb> mm 0 1234
+>    [   94.652476] BUG: kernel NULL pointer dereference, address: 0000000000000000
+...
+> 
+> Note that copy_to_kernel_nofault() uses pagefault_disable(), but it
+> still faults. This is because with Supervisor Mode Access Prevention
+> (SMAP) enabled, do_user_addr_fault() Oopses on a fault for a user
+> address from kernel space _before_ checking faulthandler_disabled().
+> 
+> copy_from_kernel_nofault() avoids this by checking that the address is
+> in the kernel before doing the actual memory access. Do the same in
+> copy_to_kernel_nofault() so that we get an error as expected:
+> 
+>    # echo ttyS0 > /sys/module/kgdboc/parameters/kgdboc
+>    # echo g > /proc/sysrq-trigger
+>    ...
+>    [17]kdb> mm 0 1234
+>    kdb_putarea_size: Bad address 0x0
+>    diag: -21: Invalid address
+> 
+> Signed-off-by: Omar Sandoval <osandov@fb.com>
+> ---
+>   mm/maccess.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/maccess.c b/mm/maccess.c
+> index 72e9c03ea37f..d67dee51a1cc 100644
+> --- a/mm/maccess.c
+> +++ b/mm/maccess.c
+> @@ -61,6 +61,9 @@ long copy_to_kernel_nofault(void *dst, const void *src, size_t size)
+>          if (!IS_ENABLED(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS))
+>                  align = (unsigned long)dst | (unsigned long)src;
+> 
+> +       if (!copy_kernel_nofault_allowed(dst, size))
+> +               return -ERANGE;
+> +
+>          pagefault_disable();
+>          if (!(align & 7))
+>                  copy_to_kernel_nofault_loop(dst, src, size, u64, Efault);
+> --
+> 2.46.0
+> 
 
+This patch leads to the following errors on ppc64le_defconfig:
+
+[    2.423930][    T1] Running code patching self-tests ...
+[    2.428912][    T1] code-patching: test failed at line 395
+[    2.429085][    T1] code-patching: test failed at line 398
+[    2.429561][    T1] code-patching: test failed at line 432
+[    2.429679][    T1] code-patching: test failed at line 435
+
+This seems to be linked to commit c28c15b6d28a ("powerpc/code-patching: 
+Use temporary mm for Radix MMU"), copy_from_kernel_nofault_allowed() 
+returns false for the patching area.
+
+Christophe
 
