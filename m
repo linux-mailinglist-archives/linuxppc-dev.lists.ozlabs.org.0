@@ -1,52 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-990-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-991-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D961A96C0C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 16:36:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1099F96C109
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 16:45:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzQ6G0qpBz2yft;
-	Thu,  5 Sep 2024 00:36:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzQJG4lHDz2yVM;
+	Thu,  5 Sep 2024 00:45:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725460582;
-	cv=none; b=MlNEKTnfxwgAMDvbkmQzNL2PBqCTc1gpPME3pMeH3vZrgMZGXsiyVBTOFe2DpjrX7XFY3ZKRgOEODQ5pNHxx6bBFvIrw/16oz7xEwwKvV28PPPi+GT7cIb+gO+vUl1I/TXggy623YquD/mIO2OHQst/gnljPD0rXwlvKHuiB7SaNV+P0+d18FPqoDtHcpDOgu8xDmAQkqEddOCizgIqCQk85C198E1LD61A8OlOSq2XeOhlmQiBir/SLbHyzfHmbWUj/GBzhhHDoFIX6YYkCy0nws0+526RkEP96s00O9eCn9OaXKJVdl4Et1GZtFt08y553ZKs7gQlqqsU88H/Fgg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725461102;
+	cv=none; b=RmTReMgmjH/qymVC7SEyhpQ0O96HgLij2z0w75/w56eZsYIYyoigGww8v8J4V/6AuLpRW4+AjRVfP978DsuVvnXIbjWmLF3CwVlZbHWy0fpzh12MDY0igqNjBe0KAVlw4BxC/XeJ/M27DenkRmHg0n5+cdlnTbKtfeOkdXtSu5MHju7FEqg8toFwH9csmOMwhsaQY+VBHFrbheWp25S3KuuQO+Osi9ReyjaMj/oogzyWmQ2wWSr6RiO3wXIqyx9NWAlmy8tsoYath+C0s5ad5PAzX/CL2xjNu1o+c8Pc7SAftDTBPJ9KdFV7/1UB3/m4Bd6sVIFQUSaZLEQjJejCzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725460582; c=relaxed/relaxed;
-	bh=2ZU3hxjzzcR0KE1vLB4cYy6nfqvAuY3d0hRkBqf/TCA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BKBEClwDecrDUPAWy82Yfln/qtkvS6dxAoS99hhQOACEGc/3khzUlflT4Ou2Yws2C0I7hjeN3RIb5OGdswjiS/YEWmwxMGzybvBqrP4nL1neJ6HWTdOOkHt2QdzLlZ1cumUYgrwI20QPjBZeLxdlvSCL9G8/72mjxHC16DE4ximcRqULFCYPituLXbFj53i+mVHZM/groqPFu/L16JPBal/xNZd3DP9lVhn48xBtHi9MVt480fXCtuCcC2jIh5AjCqW+a0nnFQf1axT2pK5zbb+SRpPMm6jzdxX99L1uJBzs0eHylDKt3cELoZ0n/soPOjgEJ6pFh8HugwFssfMj6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1725461102; c=relaxed/relaxed;
+	bh=Uu0nBMEsWQ03xP8pcUVRVc+x4Imnk32z5L6ejaG1Ms8=;
+	h=DKIM-Signature:MIME-Version:References:In-Reply-To:From:Date:
+	 Message-ID:Subject:To:Cc:Content-Type; b=L1jl19FWq5RSLWkCjBpp1vzyKWQg2+u9Pw+JFClEtfjReKIDdaqUmoK/F6UhfNl063izZrBLJ7V4cdJkcWGls50AOz3YJ92HQepw0SZIikm/ln0P66/7dHTO+4RqxHxISWcHugVROAGdb5ZVSuPf85tQZbSwdcNsAue6G3Lrw8SjT1boz62eFk3+anfLDqSP+qS6PtZro0YaJ4kQCwfQ1I4hWovGeyCiIvb2pDvqedP26O8/tOxoSRJediJNlb4LN7kVQRTtuK9HQGPCNtQ5FJ9SZNNKBfn9q87a/BCWLuVZ7vLVaA46ywWk1bpp2OkVVFbt+9cBRQpenSBrDEqFMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vMaeIFXV; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vMaeIFXV;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzQ6F5WCrz3c5N
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 00:36:20 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4WzQ685Z1lz9sS7;
-	Wed,  4 Sep 2024 16:36:16 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id j3Oi0qoOC3QN; Wed,  4 Sep 2024 16:36:16 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4WzQ684j7Sz9sRy;
-	Wed,  4 Sep 2024 16:36:16 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8DE208B77A;
-	Wed,  4 Sep 2024 16:36:16 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id MDg64KpQGgK2; Wed,  4 Sep 2024 16:36:16 +0200 (CEST)
-Received: from [192.168.234.246] (unknown [192.168.234.246])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D5618B778;
-	Wed,  4 Sep 2024 16:36:15 +0200 (CEST)
-Message-ID: <070a2aa1-a804-4124-ad89-c43e09dc3ded@csgroup.eu>
-Date: Wed, 4 Sep 2024 16:36:15 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzQJG1lBvz2xks
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 00:45:02 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id B4EAE5C56FA
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 14:44:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD899C4AF09
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 14:44:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725461099;
+	bh=ArAPCxI1Kj/v1qq50FpqqDgsTk6eZ/UAqDvPFj1T2/8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vMaeIFXVmG5TwnYwCPIyHpt12OpEsK/pI0cxjWT9uUKQHp1pWc4ZBU/WcIJSR0DZs
+	 QzSqsGdkj+OuQ9wXdNsaJvxdRuzx7e3Rz9elyL9vkhWYfhdY3U6Zer/Cy/8idp3bGL
+	 muQdcKV7rfHrAYEc67s94wy9Lkprb7fg0VbpeKve+qiPIbqPRDqhlIDDDj+MByqxQf
+	 Y1zUwjFiV5emnv2A9qfHNjTv1ELkKIhBAjN9WVVJTS0ZaVhTLaQyh5YkRMzHiDywrR
+	 XRVkQT8R+O7CVZ8tJC4KewPEtHaaBpJ+a8tPYK2FYZ9y7WDWjV/gQF9x/ubByzdmdx
+	 vd6yrc+Yj9Vdw==
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3df0ec140dcso395096b6e.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2024 07:44:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUj+OVgaWEWXcB/BRJGJh1NRS+SH/hRUbWO7PhnB2kzfwFsJUBGO00ENFs3q4NQShP7JY3K+wrLAETlyDY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyhnMx0zhnVqCxNcn70Np6HE+FVGD8cpYBeImZTrLATYp8OWwm6
+	IZUKeZIjctw6MsHv+0RW6Hh6W1HpWaxMZPpSIOiOKYEzXeMF1NYK4cpQDs/WXtHux9FoOsiJ9ZN
+	VDjDalsOc4JImkvnMMMUpUdW9Nzk=
+X-Google-Smtp-Source: AGHT+IEv8U+fDbCjLqUFxz4//WKn6tB39IzLuCQnJWmLkgmLJZnbV32x+Njonp88P0xuQvY07t3qf0x9Ck/Ekt8R4EI=
+X-Received: by 2002:a05:6808:138a:b0:3db:50ed:e121 with SMTP id
+ 5614622812f47-3e01315d6camr1093652b6e.0.1725461099193; Wed, 04 Sep 2024
+ 07:44:59 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,80 +62,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/5] Wire up getrandom() vDSO implementation on powerpc
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
- llvm@lists.linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org,
- Adhemerval Zanella <adhemerval.zanella@linaro.org>,
- Xi Ruoyao <xry111@xry111.site>
-References: <cover.1725304404.git.christophe.leroy@csgroup.eu>
- <Zthr1nB_RJ56YD3O@zx2c4.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <Zthr1nB_RJ56YD3O@zx2c4.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
+In-Reply-To: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 4 Sep 2024 16:44:47 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0i_tLZ6W2gb4VbqkYhDEfA_KM2EPyogQRFZGtsN=uGdpw@mail.gmail.com>
+Message-ID: <CAJZ5v0i_tLZ6W2gb4VbqkYhDEfA_KM2EPyogQRFZGtsN=uGdpw@mail.gmail.com>
+Subject: Re: [PATCH 00/15] timers: Cleanup delay/sleep related mess
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org, 
+	Len Brown <len.brown@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, SeongJae Park <sj@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org, 
+	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
+	Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
+	Dwaipayan Ray <dwaipayanray1@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, netdev@vger.kernel.org, linux-sound@vger.kernel.org, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch <nathanl@linux.ibm.com>, 
+	linuxppc-dev@lists.ozlabs.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	linux-media@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Sep 4, 2024 at 3:05=E2=80=AFPM Anna-Maria Behnsen
+<anna-maria@linutronix.de> wrote:
+>
+> Hi,
+>
+> a question about which sleeping function should be used in acpi_os_sleep(=
+)
+> started a discussion and examination about the existing documentation and
+> implementation of functions which insert a sleep/delay.
+>
+> The result of the discussion was, that the documentation is outdated and
+> the implemented fsleep() reflects the outdated documentation but doesn't
+> help to reflect reality which in turns leads to the queue which covers th=
+e
+> following things:
+>
+> - Minor changes (naming and typo fixes)
+>
+> - Split out all timeout and sleep related functions from hrtimer.c and ti=
+mer.c
+>   into a separate file
+>
+> - Update function descriptions of sleep related functions
+>
+> - Change fsleep() to reflect reality
+>
+> - Rework all comments or users which obviously rely on the outdated
+>   documentation as they reference "Documentation/timers/timers-howto.rst"
+>
+> - Last but not least (as there are no more references): Update the outdat=
+ed
+>   documentation and move it into a file with a self explaining file name
+>
+> The queue is available here and applies on top of tip/timers/core:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/anna-maria/linux-devel.gi=
+t timers/misc
+>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Len Brown <len.brown@intel.com>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> To: Frederic Weisbecker <frederic@kernel.org>
+> To: Thomas Gleixner <tglx@linutronix.de>
+> To: Jonathan Corbet <corbet@lwn.net>
+> Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+>
+> Thanks,
+>
+> Anna-Maria
+>
+> ---
+> Anna-Maria Behnsen (15):
+>       timers: Rename next_expiry_recalc() to be unique
+>       cpu: Use already existing usleep_range()
+>       Comments: Fix wrong singular form of jiffies
+>       timers: Move *sleep*() and timeout functions into a separate file
+>       timers: Rename sleep_idle_range() to sleep_range_idle()
+>       timers: Update function descriptions of sleep/delay related functio=
+ns
+>       timers: Adjust flseep() to reflect reality
+>       mm/damon/core: Use generic upper bound recommondation for usleep_ra=
+nge()
+>       timers: Add a warning to usleep_range_state() for wrong order of ar=
+guments
+>       checkpatch: Remove broken sleep/delay related checks
+>       regulator: core: Use fsleep() to get best sleep mechanism
+>       iopoll/regmap/phy/snd: Fix comment referencing outdated timer docum=
+entation
+>       powerpc/rtas: Use fsleep() to minimize additional sleep duration
+>       media: anysee: Fix link to outdated sleep function documentation
+>       timers/Documentation: Cleanup delay/sleep documentation
 
+I like the changes, so
 
-Le 04/09/2024 à 16:16, Jason A. Donenfeld a écrit :
-> Hi Christophe, Michael,
-> 
-> On Mon, Sep 02, 2024 at 09:17:17PM +0200, Christophe Leroy wrote:
->> This series wires up getrandom() vDSO implementation on powerpc.
->>
->> Tested on PPC32 on real hardware.
->> Tested on PPC64 (both BE and LE) on QEMU:
->>
->> Performance on powerpc 885:
->> 	~# ./vdso_test_getrandom bench-single
->> 	   vdso: 25000000 times in 62.938002291 seconds
->> 	   libc: 25000000 times in 535.581916866 seconds
->> 	syscall: 25000000 times in 531.525042806 seconds
->>
->> Performance on powerpc 8321:
->> 	~# ./vdso_test_getrandom bench-single
->> 	   vdso: 25000000 times in 16.899318858 seconds
->> 	   libc: 25000000 times in 131.050596522 seconds
->> 	syscall: 25000000 times in 129.794790389 seconds
->>
->> Performance on QEMU pseries:
->> 	~ # ./vdso_test_getrandom bench-single
->> 	   vdso: 25000000 times in 4.977777162 seconds
->> 	   libc: 25000000 times in 75.516749981 seconds
->> 	syscall: 25000000 times in 86.842242014 seconds
-> 
-> Looking good. I have no remaining nits on this patchset; it looks good
-> to me.
-> 
-> A review from Michael would be nice though (in addition to the necessary
-> "Ack" I need to commit this to my tree), because there are a lot of PPC
-> particulars that I don't know enough about to review properly. For
-> example, you use -ffixed-r30 on PPC64. I'm sure there's a good reason
-> for this, but I don't know enough to assess it. And cvdso_call I have no
-> idea what's going on. Etc.
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 
-You can learn a bit more about cvdso_call in commit ce7d8056e38b 
-("powerpc/vdso: Prepare for switching VDSO to generic C implementation.")
-
-About the fixed-r30, you can learn more in commit a88603f4b92e 
-("powerpc/vdso: Don't use r30 to avoid breaking Go lang")
-
-
-> 
-> But anyway, awesome work, and I look forward to the final stretches.
-
-Thanks, looking forward to getting this series applied.
-
-Christophe
+for the series.
 
