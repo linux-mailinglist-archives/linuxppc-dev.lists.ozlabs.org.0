@@ -1,46 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-944-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-945-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8054A96AE7E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 04:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 989FA96AFAE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Sep 2024 06:14:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wz5kY6wPkz2xsH;
-	Wed,  4 Sep 2024 12:18:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wz8J71bqXz2xdR;
+	Wed,  4 Sep 2024 14:13:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.189
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725416293;
-	cv=none; b=ZV8eNRCFSD2nk+6K32RRQVfhsaswWQ3cUVku40l0igcJdoBxmZ2PC4NUKf5IqVFupL1fwP5/cJ1txVhiRDUDPF0mGQ0a4toqWnGOPWTBa64omt1UJ+OvEMGV/IjcKaabRyM5t9KacWnT/R/1BjsQL/Jt2QkM8ESGbtibpe5h+PmF1y4AQTLR5BAkIZZKTpHsL8d0F8FjClVnW4b1+o2BxmhmkbZ1yHdM1eip+Q2TKjKY8vh/DRfSEl39aTjLCtaA3O7OrZ6cxFaxLGDldgHJSCvy1/oZSC+4dE53wfGQZDEUE2RHxjUvbDX5TTxtZEY1euVsmf9nbdCDYiEROJfiuQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725423239;
+	cv=none; b=Y+okViRQXYtpLMPEyMNj3J5j7UywCRZcCLU84DoDx20e3c2wwrWSeJTD1mgRHYqBhDfhwXjNVoqrBQgxC6DfiF25p0lCSTl8FQk7BLkqD3Y3w0YoBn9EGHY49hfjVSSRBiEbVOw2aJobHhdpE/DsylWCywhu2uExz+w+uuGizpGfL5I31EK7I4yM0pNCDtmXKjucAlU199D/7/dNQpR8hqiKBuGsh5Gs95OmZW8wNasrC3YJhbKT3PTRLbAa99rUQ+wN0LsPGW+n2epJiuN11JzPwQjoAOyjo7u6mD32dVMH/pYwIZqsSukB+/kfUBM5EjcVFeJoNl92lbsgmjzjgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725416293; c=relaxed/relaxed;
-	bh=sooL9IoI5x3i08yyZTvCV12CNg2urho5OAujQacY2BU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q7ECOo7b04hwe1e1+wEpqYocRwRijYagpONbX78BY5jNfjGqyIquO5k2GhJqj8AR8s2ZoW3cvfpyHuVOl3XKD/hHdh7gj8FOo2biB7y2oK9uLLmlgx9d8f1vdomQAC9KykS2TUmmx7N8hL5M+U6IweYFptXTgaNgqPwKKoZwGO/C9a43qMEvdYmxD9fNnp6OLJEuvTfbRmOnujdmg+mhclpnLWdBpJB8NzgQmdZMgl6vZAk7oieDcTby5N57Sez4ffx750Rb80CUHheOsYqPo6kKHYd5xdiogluNNBTbQ4UNTI0ZgVf0XY5TJZVX8MPT3/4847ZyqGB5S468pc9FpQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=lihongbo22@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=lihongbo22@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1725423239; c=relaxed/relaxed;
+	bh=eMgOBDwTX8trwBbhMUy1qHUpMDhdRlVDIssPJb8Gsmo=;
+	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 Message-ID:MIME-Version:Content-Type; b=OcrLbqjmXuTX1ohUr0CkuRxEIZzmyvKsqrc+Iwc58WL/ufZiDgEHosemJU5bVKSLB7U9L78WK/UXjir3y5p/lAiLTTGyT44JCmsiADE8w4U4s7J/d/Ki7GB+Wahcz16KcdsZ2xH8sFpNidb6VwmIqhuCZZ5RptP+7y6QU6JoDK8Bo7C8ONaVyL0qf+bKeULl9TwimW5zzLFOUMl1oUVpdcQvIrx68Z0m6aq7vJalSR7A4pMg3shTwszWNGBEfMHts8wJYtqAIlJcX4PYkhH2NUSNY5xCbqKeHMwUSzlpCE2V1mVHwSbVwZq2WFKM8bbWqRrPwXh9eXUIhonpF/huYA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Atgw5p+o; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Atgw5p+o;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wz5kX3Rd6z2xfK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 12:18:08 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Wz5cb72RDz69Ny;
-	Wed,  4 Sep 2024 10:13:03 +0800 (CST)
-Received: from dggpeml500022.china.huawei.com (unknown [7.185.36.66])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1E660180105;
-	Wed,  4 Sep 2024 10:18:01 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by dggpeml500022.china.huawei.com
- (7.185.36.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 4 Sep
- 2024 10:18:00 +0800
-From: Hongbo Li <lihongbo22@huawei.com>
-To: <christophe.leroy@csgroup.eu>
-CC: <lihongbo22@huawei.com>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: [PATCH -next v2] soc/fsl/qbman: make use of the helper function kthread_run_on_cpu()
-Date: Wed, 4 Sep 2024 10:26:33 +0800
-Message-ID: <20240904022633.2079803-1-lihongbo22@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wz8J61Zwtz2xZQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 14:13:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1725423237;
+	bh=eMgOBDwTX8trwBbhMUy1qHUpMDhdRlVDIssPJb8Gsmo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Atgw5p+ous8ponaujRBR9zeHm87YGXlWFJw/APeKvwTJfN+vDA+MA/XCf729+PnVA
+	 yIoWrvR8Tg01Q4kTrqjbf+6l9UmkC2+E2eKeM0lpnBzHzQLZr6WfUF+RwlGDv9na7Y
+	 VJ6SDLZrN5hF4Pw9qE+168Zj3QWww8gocoC1nJ966vxltqaxwrFOfSbul6kyFfi2d0
+	 JlXz4kSSwijD4hHUrXsf8IlpvudZE3CIHAEjc3DtzlAKa/tvrIdpfiNxgF0xas/YL4
+	 mHLB2qUie8SKPjqF5MpzhdViqlVcFcXog5f66aL4m0C5o/rSTOnJ5fJzWnRTdDtt9J
+	 XaxynAPBdZR7w==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wz8Hv4YYPz4wb7;
+	Wed,  4 Sep 2024 14:13:47 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Mark Brown <broonie@kernel.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Ivan Kokshaysky
+ <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, Vineet Gupta
+ <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Guo Ren
+ <guoren@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
+ <kernel@xen0n.name>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Alexander
+ Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker
+ <dalias@libc.org>, John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max
+ Filippov <jcmvbkbc@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
+ <will@kernel.org>, Deepak Gupta <debug@rivosinc.com>,
+ linux-arm-kernel@lists.infradead.org, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org,
+ Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/3] mm: Pass vm_flags to generic_get_unmapped_area()
+In-Reply-To: <20240902-mm-generic-shadow-stack-guard-v1-2-9acda38b3dd3@kernel.org>
+References: <20240902-mm-generic-shadow-stack-guard-v1-0-9acda38b3dd3@kernel.org>
+ <20240902-mm-generic-shadow-stack-guard-v1-2-9acda38b3dd3@kernel.org>
+Date: Wed, 04 Sep 2024 14:13:47 +1000
+Message-ID: <87plpk5a4k.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -50,57 +91,108 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500022.china.huawei.com (7.185.36.66)
 
-Replace kthread_create/kthread_bind/wake_up_process() with
-kthread_run_on_cpu() to simplify the code.
+Mark Brown <broonie@kernel.org> writes:
+> In preparation for using vm_flags to ensure guard pages for shadow stacks
+> supply them as an argument to generic_get_unmapped_area(). The only user
+> outside of the core code is the PowerPC book3s64 implementation which is
+> trivially wrapping the generic implementation in the radix_enabled() case.
+>
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> ---
+>  arch/powerpc/mm/book3s64/slice.c |  4 ++--
+>  include/linux/sched/mm.h         |  4 ++--
+>  mm/mmap.c                        | 10 ++++++----
+>  3 files changed, 10 insertions(+), 8 deletions(-)
 
-Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
----
-v2:
-  - Remove the extra parameter to solve the compilation.
-  - Change cpu from int type to unsigned int type.
+cheers
 
-v1: https://lore.kernel.org/linux-arm-kernel/20240902133125.3089560-1-lihongbo22@huawei.com/T/
----
- drivers/soc/fsl/qbman/qman_test_stash.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/soc/fsl/qbman/qman_test_stash.c b/drivers/soc/fsl/qbman/qman_test_stash.c
-index b7e8e5ec884c..639acaf6ce18 100644
---- a/drivers/soc/fsl/qbman/qman_test_stash.c
-+++ b/drivers/soc/fsl/qbman/qman_test_stash.c
-@@ -101,21 +101,19 @@ static int bstrap_fn(void *bs)
- }
- static int on_all_cpus(int (*fn)(void))
- {
--	int cpu;
-+	unsigned int cpu;
- 
- 	for_each_cpu(cpu, cpu_online_mask) {
- 		struct bstrap bstrap = {
- 			.fn = fn,
- 			.started = ATOMIC_INIT(0)
- 		};
--		struct task_struct *k = kthread_create(bstrap_fn, &bstrap,
--			"hotpotato%d", cpu);
-+		struct task_struct *k = kthread_run_on_cpu(bstrap_fn, &bstrap,
-+						cpu, "hotpotato%u");
- 		int ret;
- 
- 		if (IS_ERR(k))
- 			return -ENOMEM;
--		kthread_bind(k, cpu);
--		wake_up_process(k);
- 		/*
- 		 * If we call kthread_stop() before the "wake up" has had an
- 		 * effect, then the thread may exit with -EINTR without ever
--- 
-2.34.1
-
+> diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
+> index ada6bf896ef8..87307d0fc3b8 100644
+> --- a/arch/powerpc/mm/book3s64/slice.c
+> +++ b/arch/powerpc/mm/book3s64/slice.c
+> @@ -641,7 +641,7 @@ unsigned long arch_get_unmapped_area(struct file *filp,
+>  				     vm_flags_t vm_flags)
+>  {
+>  	if (radix_enabled())
+> -		return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
+> +		return generic_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
+>  
+>  	return slice_get_unmapped_area(addr, len, flags,
+>  				       mm_ctx_user_psize(&current->mm->context), 0);
+> @@ -655,7 +655,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+>  					     vm_flags_t vm_flags)
+>  {
+>  	if (radix_enabled())
+> -		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags);
+> +		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags, vm_flags);
+>  
+>  	return slice_get_unmapped_area(addr0, len, flags,
+>  				       mm_ctx_user_psize(&current->mm->context), 1);
+> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+> index c4d34abc45d4..07bb8d4181d7 100644
+> --- a/include/linux/sched/mm.h
+> +++ b/include/linux/sched/mm.h
+> @@ -204,11 +204,11 @@ unsigned long mm_get_unmapped_area_vmflags(struct mm_struct *mm,
+>  unsigned long
+>  generic_get_unmapped_area(struct file *filp, unsigned long addr,
+>  			  unsigned long len, unsigned long pgoff,
+> -			  unsigned long flags);
+> +			  unsigned long flags, vm_flags_t vm_flags);
+>  unsigned long
+>  generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+>  				  unsigned long len, unsigned long pgoff,
+> -				  unsigned long flags);
+> +				  unsigned long flags, vm_flags_t vm_flags);
+>  #else
+>  static inline void arch_pick_mmap_layout(struct mm_struct *mm,
+>  					 struct rlimit *rlim_stack) {}
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 7528146f886f..b06ba847c96e 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1789,7 +1789,7 @@ unsigned long vm_unmapped_area(struct vm_unmapped_area_info *info)
+>  unsigned long
+>  generic_get_unmapped_area(struct file *filp, unsigned long addr,
+>  			  unsigned long len, unsigned long pgoff,
+> -			  unsigned long flags)
+> +			  unsigned long flags, vm_flags_t vm_flags)
+>  {
+>  	struct mm_struct *mm = current->mm;
+>  	struct vm_area_struct *vma, *prev;
+> @@ -1823,7 +1823,8 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+>  		       unsigned long len, unsigned long pgoff,
+>  		       unsigned long flags, vm_flags_t vm_flags)
+>  {
+> -	return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
+> +	return generic_get_unmapped_area(filp, addr, len, pgoff, flags,
+> +					 vm_flags);
+>  }
+>  #endif
+>  
+> @@ -1834,7 +1835,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+>  unsigned long
+>  generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+>  				  unsigned long len, unsigned long pgoff,
+> -				  unsigned long flags)
+> +				  unsigned long flags, vm_flags_t vm_flags)
+>  {
+>  	struct vm_area_struct *vma, *prev;
+>  	struct mm_struct *mm = current->mm;
+> @@ -1887,7 +1888,8 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+>  			       unsigned long len, unsigned long pgoff,
+>  			       unsigned long flags, vm_flags_t vm_flags)
+>  {
+> -	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags);
+> +	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags,
+> +						 vm_flags);
+>  }
+>  #endif
+>  
+>
+> -- 
+> 2.39.2
 
