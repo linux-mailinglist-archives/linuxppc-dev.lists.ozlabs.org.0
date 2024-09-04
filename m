@@ -1,60 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-1012-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1014-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F80496CA41
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 00:24:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD61696CA53
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 00:26:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzcVW3tKRz2xqp;
-	Thu,  5 Sep 2024 08:24:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzcXW5ZrGz2y8q;
+	Thu,  5 Sep 2024 08:26:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725455686;
-	cv=none; b=gaeOvHstNyI32KNpYqEby1XbNtekVH28b2Wm/2SivUrHCfN86441NEnIScXVChZjjeIdtg53LCB6Kt59R6oUO0lR8xiO8GxZhyvyY+x+SQPK8maxqm+w9lS6jwFD67vuybjRrrxbQdjdg0H6HQHEpU6/opGtAibodI2jOKW8uHvMKhrbHRqGq9x7ked6SMq/H9SJliDeCedsZBQfWgcvmeyMwnTna6XbbI5u+hZCrSwtN2pbtCEEVY/BTN9tS19LUOffNamj2n4WFGBX3nDoCNWJZ/8ocgMSpuuF9uugEX58p9BZ5ApMaEGdpWWlXFQc0hocMO97RE4G+oPaBlTOlA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725456113;
+	cv=none; b=kP+nGYywwg2h3sqZAu3/P8wi3/U/bjFFHPoeOGbp2zTHqTvo6s7H8JbO8+By2XNOhZPlb0JLnM+jrOK3QICX66sj+9Sc40dJuieezWg1rG6VXJMmUTDgtOi8D18UWI/xxeyBAA1OzhfWk5w4nv2nP2nt++CwEUUmtKm1II1W5rbv5/GQPNlutjznIdTXLgInM49BiraqOZ5907qPS5fKcgbeN77LN8MGtnXhL+vBqc03sCvzlRuSTRo6ZarX8QzQg/LKQJ3YNjDzX9DNbNSCMRu+FEaMt8BVDQIDDL9Ugb/eMq+J4gvd4I0zbUth2+pY59fJP0z1zv0ygs9kOeexZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725455686; c=relaxed/relaxed;
-	bh=w1hgFVgMLZ521/p+E0dyRVQl2rbyAAPZ0ir+q/NjJSQ=;
-	h=From:DKIM-Signature:DKIM-Signature:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc; b=TNfAIDgd1GKFtRIJR2fo6rxT4/P+jTUa+Fvpfb/RzZhr4fR4spVyGLvR09WW1ebooDcvK09qgeFhBoTVNKUsHu/XKU5U2Bj2JrdDWxMeX0+ArU5pr/C7iSt/Qhcx/9sAevpPWuXFDFqRUywwoPJdwYBX1XPmAp09ybvGX12bOsFmwaJETrKwM7/blmz5DgWez/pXciyLALu0oe9wu2+wQ0dyEasZQDM57708QBiuz7OO437f0MXxXIL1CY7MRS4IVwPDHBV5oYNssdn3eQecWAcuzQd0wKe+M0ToJgpKC9qqe30J9mRsICuhHjJdckJcQ0aFa+tdAvGahjsXG/pPnA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=z4P3q5Oy; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=eF3O2ZUl; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1725456113; c=relaxed/relaxed;
+	bh=Vd2ZYCNG0SqbW6OjTbIGTZ++FMQuVNRn0puOuY80IA4=;
+	h=DKIM-Signature:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type; b=V+7QfY4kAELaJ5onKHu3124Eu61DAsfEsFvAF1mgUVuXBLMGZqhauNOGMYoD5I1+6GknTphD47DqNouEGvGs8Rmp+46InMcfurd6RTA6ngf8p6nG75OGXWSoySwhwP/gAM3ExVrVvrjlCl7JZi2j+ZRVuyBpyQX2sipfpE539tjiF16QlIljPBMC5FALnJw564930ySK4C20nzcEYgN7iARYbzUcU39jlyoXSpV3bjpIStBApuuhYdy1iPJmx8Kiji7G6cYkwl6uUZDpvzkBMI9TbLALKOhPG9pxVUaYYjkO77rzIbgUza7vooQuh0TAtaW0OnSj9nXFNrLSwmkmHg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cSc5mpms; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=adhemerval.zanella@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=z4P3q5Oy;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=eF3O2ZUl;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cSc5mpms;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 548 seconds by postgrey-1.37 at boromir; Wed, 04 Sep 2024 23:14:45 AEST
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=adhemerval.zanella@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzNJ54WZkz2y8V
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 23:14:45 +1000 (AEST)
-From: Anna-Maria Behnsen <anna-maria@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1725455139;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w1hgFVgMLZ521/p+E0dyRVQl2rbyAAPZ0ir+q/NjJSQ=;
-	b=z4P3q5OyzPM2OPXYhZTZDs8f4jcuLXx0cBv0nAd6tj54uuDk226NFzqzGYYv+cEf0yNFBv
-	2yhEQ5zKBeqeI5WD6+FlldipAPRUQP1Tmuov+v3qNMInz2MxJ459rZB+gmeNHDywYlsJT8
-	9XV+cy/iLbLzw/cls81OoMpxQog7EZK0iwd9G8h7Rm38JJwMa028TjJbIpOStnZg1QEDjo
-	UzOoayLQcd8JfBUUPQNFdeFMgkjaiE1ibKLtRbUxKtDvMJIKv1HXyldBidorvuDun5piZd
-	DFE0s/9jqzZQqXHkluJ2HLAgz3rW0R519TeZ1t6lFHKo9US3BOcDTNRKRtaWpw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1725455139;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w1hgFVgMLZ521/p+E0dyRVQl2rbyAAPZ0ir+q/NjJSQ=;
-	b=eF3O2ZUlBaIyY4KkXmRltcDq2SpPujm++XqPS46DXxIeh832EzE2Ujm17IhwcLC8u0Sq7Q
-	4OVnhvqKgszJr8Aw==
-Date: Wed, 04 Sep 2024 15:05:03 +0200
-Subject: [PATCH 13/15] powerpc/rtas: Use fsleep() to minimize additional
- sleep duration
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzNSJ5S73z2xKQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Sep 2024 23:21:50 +1000 (AEST)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-20570b42f24so33308965ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2024 06:21:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725456109; x=1726060909; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vd2ZYCNG0SqbW6OjTbIGTZ++FMQuVNRn0puOuY80IA4=;
+        b=cSc5mpmsw02MCVDbHfLFmAfmV3tXykS+UqadkpUeITCvP93Mh8F6863YFiDN23C/Fc
+         S4ABJDZBgkvBNO5qvCm4rOh8mPHYA1wOatwOF2HVBoz/ZT4DdVIEB4xgMb6WJd/JeCCU
+         SOvjJ5Dh2mV78XIHVGrF6j+nEUXRN1EJtbYXSAXxlz1QlXcv20u5nrGljl+p3FJEDI1c
+         2UkAQ7tEFka9pw3AjV9wIpyZOaCUr68zVfSBDHypvlD0MLfoQIMCFLaY/d4Qp+hIlf1O
+         nnkxFFb5YhIB3QucckboERDoYFzrMDOlsjzaZqa/wX92MVDqVxWf/GKVvTOEEBNQbST9
+         vusQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725456109; x=1726060909;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vd2ZYCNG0SqbW6OjTbIGTZ++FMQuVNRn0puOuY80IA4=;
+        b=m0KnYtI7G+J18/7+87hQ7bZIbmsvmXBTewvgIgAVmlGP6ABK0tnd+73rIyOEvvkPJ2
+         5eqNGr8pMn4UvGfaX1SQts3I6p6/hwQa3PoEsTl9NOq0BZMupJlL4rec0fOaJASmBcAc
+         9rf609kCzHw1zGM1ZOppRZMRDLmsZWTapqm1t7SXWEx5JXkeA9RHayICWyz8SmjtUuOs
+         4f2O3O8f6yxD0PLPjKCDjhBEJq81OhIsWrnFbQZHbXoq8haJKdalVesK+y4jV0zU7hrb
+         x2pyWMiWAt0WlJMBA17NeEHnhRGlWG9bt8Lf4e7YNK3VeZ9yBV9kkwNW9QHaHBHKbEeo
+         nAdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXppvYXghN66XZLbTwdUVf5nM/MdOK7TjdCLmhD/0HpK86kNdFPG2feFZDbJqtxysn2KfMY+zO4JEwawvQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyFFwuESUTOXsZcRTR2DgxPiOKf7141oYuC2kUdFJH3Bc5v6lSP
+	BvrQW/yzEgt7meTncKW1nx3t29Mgu4BCplQROBitf38I65OIC7QKBf7laNLP1XA=
+X-Google-Smtp-Source: AGHT+IHNpwkCP+QEkYIrMc7mghHUBa8dyZ0ef4WmVGXl0vpaZbDnwcxB6gw+kSB/ilBIMALmK26aeQ==
+X-Received: by 2002:a17:903:234e:b0:206:94f5:c312 with SMTP id d9443c01a7336-20699af10a7mr74145445ad.28.1725456108954;
+        Wed, 04 Sep 2024 06:21:48 -0700 (PDT)
+Received: from ?IPV6:2804:1b3:a7c3:e912:6904:dd5a:7f0d:ac77? ([2804:1b3:a7c3:e912:6904:dd5a:7f0d:ac77])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206ae912bf3sm13555005ad.24.2024.09.04.06.21.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Sep 2024 06:21:48 -0700 (PDT)
+Message-ID: <45fbd9a2-78f7-4697-b3f7-b26b72f4a795@linaro.org>
+Date: Wed, 4 Sep 2024 10:21:45 -0300
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,86 +76,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240904-devel-anna-maria-b4-timers-flseep-v1-13-e98760256370@linutronix.de>
-References: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
-In-Reply-To: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
-To: Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch <nathanl@linux.ibm.com>, 
- linuxppc-dev@lists.ozlabs.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: Profiling of vdso_test_random
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, Xi Ruoyao <xry111@xry111.site>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <30e9575c-a53e-4e17-bbbd-7127798efb05@csgroup.eu>
+Content-Language: en-US
+From: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>
+Organization: Linaro
+In-Reply-To: <30e9575c-a53e-4e17-bbbd-7127798efb05@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When commit 38f7b7067dae ("powerpc/rtas: rtas_busy_delay() improvements")
-was introduced, documentation about proper usage of sleep realted functions
-was outdated.
 
-The commit message references the usage of a HZ=100 system. When using a
-20ms sleep duration on such a system and therefore using msleep(), the
-possible additional slack will be +10ms.
 
-When the system is configured with HZ=100 the granularity of a jiffy and of
-a bucket of the lowest timer wheel level is 10ms. To make sure a timer will
-not expire early (when queueing of the timer races with an concurrent
-update of jiffies), timers are always queued into the next bucket. This is
-the reason for the maximal possible slack of 10ms.
+On 04/09/24 08:41, Christophe Leroy wrote:
+> Hi,
+> 
+> I'm done a 'perf record' on vdso_test_random reduced to vdso test only, and I get the following function usage profile.
+> 
+> Do you see the same type of percentage on your platforms ?
+> 
+> I would have expected most of the time to be spent in __arch_chacha20_blocks_nostack() but that's in fact not the case.
+> 
+> # Samples: 61K of event 'task-clock:ppp'
+> # Event count (approx.): 15463500000
+> #
+> # Overhead  Command          Shared Object        Symbol
+> # ........  ...............  ................... ....................................
+> #
+>     57.74%  vdso_test_getra  [vdso]               [.] __c_kernel_getrandom
+>     22.49%  vdso_test_getra  [vdso]               [.] __arch_chacha20_blocks_nostack
+>     10.80%  vdso_test_getra  vdso_test_getrandom  [.] test_vdso_getrandom
+>      8.89%  vdso_test_getra  [vdso]               [.] __kernel_getrandom
+>      0.01%  vdso_test_getra  [kernel.kallsyms]    [k] finish_task_switch.isra.0
+> 
 
-fsleep() limits the maximal possible slack to 25% by making threshold
-between usleep_range() and msleep() HZ dependent. As soon as the accuracy
-of msleep() is sufficient, the less expensive timer list timer based
-sleeping function is used instead of the more expensive hrtimer based
-usleep_range() function. The udelay() will not be used in this specific
-usecase as the lowest sleep length is larger than 1 microsecond.
+After tinkering with vDSO build parameters (I had to remove the '-Bsymbolic'
+and 'objdump -S') to get perf show the symbols I see on aarch64 with a reduced
+vdso_test_random:
 
-Use fsleep() directly instead of using an own heuristic for the best
-sleeping mechanism to use..
+$ perf record ./vdso_test_getrandom bench-single
+$ perf report
+[...]
+# Samples: 305  of event 'cycles:P'
+# Event count (approx.): 5583551
+#
+# Overhead  Command          Shared Object        Symbol
+# ........  ...............  ...................  .........................................
+#
+    44.27%  vdso_test_getra  [vdso]               [.] __arch_chacha20_blocks_nostack
+    21.16%  vdso_test_getra  [vdso]               [.] __kernel_getrandom
+     6.19%  vdso_test_getra  [kernel.kallsyms]    [k] task_mm_cid_work
+     3.14%  vdso_test_getra  [kernel.kallsyms]    [k] perf_iterate_ctx
+     2.96%  vdso_test_getra  vdso_test_getrandom  [.] test_vdso_getrandom
+     2.48%  vdso_test_getra  [kernel.kallsyms]    [k] __memcg_slab_free_hook
+     2.28%  vdso_test_getra  [kernel.kallsyms]    [k] next_uptodate_folio
+     2.05%  vdso_test_getra  [kernel.kallsyms]    [k] _raw_spin_unlock_irq
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
----
- arch/powerpc/kernel/rtas.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
-
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index f7e86e09c49f..0794ca28e51e 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1390,21 +1390,14 @@ bool __ref rtas_busy_delay(int status)
- 		 */
- 		ms = clamp(ms, 1U, 1000U);
- 		/*
--		 * The delay hint is an order-of-magnitude suggestion, not
--		 * a minimum. It is fine, possibly even advantageous, for
--		 * us to pause for less time than hinted. For small values,
--		 * use usleep_range() to ensure we don't sleep much longer
--		 * than actually needed.
--		 *
--		 * See Documentation/timers/timers-howto.rst for
--		 * explanation of the threshold used here. In effect we use
--		 * usleep_range() for 9900 and 9901, msleep() for
--		 * 9902-9905.
-+		 * The delay hint is an order-of-magnitude suggestion, not a
-+		 * minimum. It is fine, possibly even advantageous, for us to
-+		 * pause for less time than hinted. To make sure pause time will
-+		 * not be a way longer than requested independent of HZ
-+		 * configuration, use fsleep(). See fsleep() for detailes of
-+		 * used sleeping functions.
- 		 */
--		if (ms <= 20)
--			usleep_range(ms * 100, ms * 1000);
--		else
--			msleep(ms);
-+		fsleep(ms * 1000);
- 		break;
- 	case RTAS_BUSY:
- 		ret = true;
-
--- 
-2.39.2
-
+It is what I would expect, so I am not sure why might be different on powerpc.
 
