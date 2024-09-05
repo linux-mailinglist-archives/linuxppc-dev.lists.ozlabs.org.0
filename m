@@ -1,75 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-1041-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1038-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CB696D30A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 11:25:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D367396D29C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 10:58:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzv8X2CcGz2yYk;
-	Thu,  5 Sep 2024 19:25:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WztYn4hW8z2ypV;
+	Thu,  5 Sep 2024 18:58:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=51.81.35.219
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725526916;
-	cv=none; b=GRsJhF5YhV2vwBaoYbx5hNPDeHTtLAhJUHkqeMdH1i5L9L2O++4F1GFOfluEfMSrY6eCoy6GF25MVmRy90ENj6LEEvr2Kf+3mPUTMqFXUGDCu3SqrpxmXksLF9rXOul7daqMUaKb/16gkXVFpS7V+Vr8rHrfFjPjhONgnEXh2+kWjCh6RZB4JUS3EIZBf733Xf3cg0bQtgwfW+a3ihittCW6Jl7xnfmQFWqv+LhZuZLzdW+JHWfAO44aZCsTsL+vMZ/1LITslmxMatQluQck+qdc97o8p9HozfL7as+ExBys6Q9a0IRq/9xa07R+q+vBzn729Me7P1l+wAywwnC0+g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.178
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725526701;
+	cv=none; b=PoCBZjq8CwplOECEENlp+FsWYqm7+mbfNQhmICBp/6qt6lPeNXHDR21QkXz6EFfRAcQCUD7jvskIS9EHsUs6Kq/aHnrlQvmhK80GGus2SQWSAsiEc0WoaLDzBRDBjRPHl802NQgkR9mdUy7GtwQBSvh77FY2OpnDtoOAtGdFi3CYqOZvvpf1NiuRl5X0guHQSWYV19ugpXOS6vuhwf88Geddd19XumH5yqW6cuZVV1wGsfOPZOXUHZFf14EMQddsICLNLOKHx9GzbqNC+eEfXj42piIY1iAWQa6Uhc9XHzu3EEdVPIsQPunbdJf3VfDhlRapq/brFIWLhNj6jsvz1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725526916; c=relaxed/relaxed;
-	bh=H9MpIYSRcEX+VD9OMp2crHKTWLp2ChM3Wcl4xbI1QDs=;
-	h=DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=XSjDiDB8sGBw4Kzdkew/0rWFfU2CRYYWvO/jmJCdYgWCkWQwaioT4ULj8vXKuwcCxdh/lcqjjCAtsj96s+TahYVANFrJ1uvQw3sBvMa1i6rysPoI0vMMI74beYk88pnYdRZHk4va9+iwyFnPRYYL+NEDQ1gHHPK7mv46MUT59DStq9Yf+xdv2WxE7/UWAfdSHkE41uBzdLwg4I1E+VX46NMgalOQOfOGdCCpvLidoBCO2c/nQLbIxt6NkAi5UyGlE9755TxG+eFpu5i3+q7uIXwFJYuDih6OHBAIkSiT55XcgWaoj8hMVgOUzhHHPauj3h2zZi7IbW8CyrgmIji8/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=aosc.io; dkim=pass (1024-bit key; unprotected) header.d=aosc.io header.i=@aosc.io header.a=rsa-sha256 header.s=default header.b=w3IN+vsm; dkim-atps=neutral; spf=pass (client-ip=51.81.35.219; helo=relay-us1.mymailcheap.com; envelope-from=kexybiscuit@aosc.io; receiver=lists.ozlabs.org) smtp.mailfrom=aosc.io
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=aosc.io
+	t=1725526701; c=relaxed/relaxed;
+	bh=CZtqExsDOIYp5HqPgrPdq+CzPwDzSkiYY8yvT9Jxwhw=;
+	h=Message-ID:DKIM-Signature:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type; b=SiDVPdC4gs+0IjyOZKFc+wcxOaxcBgg0ZVj4CZ05xWjCcS5b7zckuwQozVUFpwKkEbB6q+DoBojNKL6mQ18hmETGKFTbVt8IHsZ5ubdi6EHyihDCzFy6OhsCN5/f6P/3dOU+2FtBfEh6wXV9gv9o+NBo2Cw3bg3pVPFHVt6pgyqJLje0b9LRJjzCMixxNU4doCbDFkSgiZAFC3eGTojMonPQ7EXg6JSidhZ8ypTtNOk2CYg4jh9WRwgxEusBo+fdTThdQR3qfRaBQv/QlNd3/nfWIuNcyEdMcajkSZAmRsADuOYqxA0hSqYw+kbxThR+PNU30buauMTXv4A3OskbUg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hHL2mCMb; dkim-atps=neutral; spf=pass (client-ip=91.218.175.178; helo=out-178.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=aosc.io header.i=@aosc.io header.a=rsa-sha256 header.s=default header.b=w3IN+vsm;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hHL2mCMb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aosc.io (client-ip=51.81.35.219; helo=relay-us1.mymailcheap.com; envelope-from=kexybiscuit@aosc.io; receiver=lists.ozlabs.org)
-X-Greylist: delayed 383 seconds by postgrey-1.37 at boromir; Thu, 05 Sep 2024 19:01:55 AEST
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wztdv6sQmz2xnc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 19:01:55 +1000 (AEST)
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id D252F202DD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 08:55:28 +0000 (UTC)
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.157])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 201332619F
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 08:55:22 +0000 (UTC)
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 96F293E970;
-	Thu,  5 Sep 2024 10:55:16 +0200 (CEST)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 91B81400B3;
-	Thu,  5 Sep 2024 08:55:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1725526514; bh=f1MPAD4O/d2BtmRLp4/BYgjptMhBAm5TS4m5Ii3NVJY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=w3IN+vsmPVD4TLlGAVgh4wAY9Bqv2QZbp8Oj/VVoDmNq6/9tyh4jXwVK6JAzQ/LVF
-	 8uQeyoQK7+wn1+qwvO6gy5cOT2U1uHPL1qEAP22SWNT8bbwYFwhtipACq8SzjrU2E8
-	 GQ/nP3k13J5pz/FrVkhMNSb55MnWeqkqwxHWitsw=
-Received: from localhost.localdomain (unknown [58.32.40.121])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.178; helo=out-178.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id ECFFF42639;
-	Thu,  5 Sep 2024 08:55:07 +0000 (UTC)
-From: Kexy Biscuit <kexybiscuit@aosc.io>
-To: stefanb@linux.ibm.com,
-	jarkko@kernel.org,
-	linux-integrity@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org,
-	mpe@ellerman.id.au,
-	naveen.n.rao@linux.ibm.com,
-	zohar@linux.ibm.com,
-	Kexy Biscuit <kexybiscuit@aosc.io>,
-	stable@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Mingcong Bai <jeffbai@aosc.io>
-Subject: [PATCH v2 RESEND] tpm: export tpm2_sessions_init() to fix ibmvtpm building
-Date: Thu,  5 Sep 2024 16:52:20 +0800
-Message-ID: <20240905085219.77240-2-kexybiscuit@aosc.io>
-X-Mailer: git-send-email 2.46.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WztYl4gCCz2yn4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 18:58:17 +1000 (AEST)
+Message-ID: <d8e2ef66-c345-43f0-9989-f20f16df34d3@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1725526676;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CZtqExsDOIYp5HqPgrPdq+CzPwDzSkiYY8yvT9Jxwhw=;
+	b=hHL2mCMbuNK+Hs/O408hs/N7aassZHQuWT3l/9qpf3OwEqwDoq18fUNQy7T4vQkPAhr7Ip
+	KhS7GNRdIL7YXvr4Kwk1nBVf05wbZgGwqSvv3B9YBaijU8YfoK9B1DhEgjDylQD3XI58dx
+	j3oiLIpOO5R1TF/4CpCnFRK2Hn4WWvc=
+Date: Thu, 5 Sep 2024 16:57:44 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,59 +49,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH v3 08/14] mm: copy_pte_range() use
+ pte_offset_map_rw_nolock()
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ david@redhat.com, hughd@google.com, willy@infradead.org, vbabka@kernel.org,
+ akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
+ peterx@redhat.com, ryan.roberts@arm.com, christophe.leroy2@cs-soprasteria.com
+References: <20240904084022.32728-1-zhengqi.arch@bytedance.com>
+ <20240904084022.32728-9-zhengqi.arch@bytedance.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20240904084022.32728-9-zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 91B81400B3
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Spamd-Result: default: False [1.40 / 10.00];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Rspamd-Action: no action
+X-Migadu-Flow: FLOW_OUT
 
-Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
-initialize session support") adds call to tpm2_sessions_init() in ibmvtpm,
-which could be built as a module. However, tpm2_sessions_init() wasn't
-exported, causing libmvtpm to fail to build as a module:
 
-ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
 
-Export tpm2_sessions_init() to resolve the issue.
+On 2024/9/4 16:40, Qi Zheng wrote:
+> In copy_pte_range(), we may modify the src_pte entry after holding the
+> src_ptl, so convert it to using pte_offset_map_rw_nolock(). Since we may
+> free the PTE page in retract_page_tables() without holding the read lock
+> of mmap_lock, so we still need to get pmdval and do pmd_same() check after
+> the ptl is held.
 
-Cc: stable@vger.kernel.org # v6.10+
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lkp@intel.com/
-Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support")
-Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
----
-V1 -> V2: Added Fixes tag and fixed email format
-RESEND: The previous email was sent directly to stable-rc review
+See commit 3db82b9374ca92, copy_pte_range and retract_page_tables
+are using vma->anon_vma to be exclusive.
 
- drivers/char/tpm/tpm2-sessions.c | 1 +
- 1 file changed, 1 insertion(+)
+retract_page_tables()                    copy_page_range()
+     vma_interval_tree_foreach()              if (!vma_needs_copy())
+         if (READ_ONCE(vma->anon_vma))            return 0;
+             continue;                        copy_pte_range()
 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index d3521aadd43e..44f60730cff4 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
- 
- 	return rc;
- }
-+EXPORT_SYMBOL(tpm2_sessions_init);
- #endif /* CONFIG_TCG_TPM2_HMAC */
--- 
-2.46.0
+So I think mmap write lock here is also used for keeping ->anon_vma stable.
+And we do not need pmd_same().
+
+Muchun,
+Thanks.
+>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+> Hi Muchun, since the code has changed, I dropped your Reviewed-by tag here.
+>
+>   mm/memory.c | 18 +++++++++++++++++-
+>   1 file changed, 17 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 06674f94b7a4e..47974cc4bd7f2 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -1082,6 +1082,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+>   	struct mm_struct *src_mm = src_vma->vm_mm;
+>   	pte_t *orig_src_pte, *orig_dst_pte;
+>   	pte_t *src_pte, *dst_pte;
+> +	pmd_t pmdval;
+>   	pte_t ptent;
+>   	spinlock_t *src_ptl, *dst_ptl;
+>   	int progress, max_nr, ret = 0;
+> @@ -1107,13 +1108,28 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+>   		ret = -ENOMEM;
+>   		goto out;
+>   	}
+> -	src_pte = pte_offset_map_nolock(src_mm, src_pmd, addr, &src_ptl);
+> +
+> +	/*
+> +	 * Since we may free the PTE page in retract_page_tables() without
+> +	 * holding the read lock of mmap_lock, so we still need to do a
+> +	 * pmd_same() check after holding the PTL.
+> +	 */
+> +	src_pte = pte_offset_map_rw_nolock(src_mm, src_pmd, addr, &pmdval,
+> +					   &src_ptl);
+>   	if (!src_pte) {
+>   		pte_unmap_unlock(dst_pte, dst_ptl);
+>   		/* ret == 0 */
+>   		goto out;
+>   	}
+>   	spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+> +
+> +	if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(src_pmd)))) {
+> +		pte_unmap_unlock(src_pte, src_ptl);
+> +		pte_unmap_unlock(dst_pte, dst_ptl);
+> +		/* ret == 0 */
+> +		goto out;
+> +	}
+> +
+>   	orig_src_pte = src_pte;
+>   	orig_dst_pte = dst_pte;
+>   	arch_enter_lazy_mmu_mode();
 
 
