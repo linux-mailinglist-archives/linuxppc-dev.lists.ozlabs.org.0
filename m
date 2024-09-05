@@ -1,35 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-1036-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1037-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814B796D242
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 10:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E164096D257
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 10:38:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzt3f1pCPz2ydW;
-	Thu,  5 Sep 2024 18:35:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzt6n5hHkz2yT0;
+	Thu,  5 Sep 2024 18:38:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725525342;
-	cv=none; b=NbsXg+VEkVjlHhDrWDXfqtgKJJEFant51fZjvWk+QCTgeGv2b/HLd/JJZv5wOvwIl7XOK5GxFxSA+rxv4KQNuw66pSIBz1IpTEj4DH10M5nmrbR0I74dBAX8RQvq4WxogitXcxz32fcv2Nbax3/duQ0qK3DAshSuoDOnJJcwMyYGkWmC25riBiHZlNwPC/UM9ht/qJPrYPmrvMAqA5jzQHbAltVRKm3jpBgnMVLisX8f6gnZ1czhI3si+a08MEamBNNB1O5558LtzqHmz1wPMIXNJpe1vd35kxqaWw6tfBa/Ppyn980PlVRnIBPPYiHl2KdL03exsMP8xmQ1HDwAWw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725525505;
+	cv=none; b=Xb6Dx6csbndsxOBxuxexBIzbb092yEVD8lPxJ7yWi6C+dShNn6G9rZEGNEcOUgdxBoZX47ZT/QIGGV/nis/ZoS0H6cvYPke3BG0xmL+dW+4WAiu1G7ljtf0ZsRKYQCZ22F1ofrg6/buVC7zyZCzPEajFBbU0UKRH0O3jJhkA++O8XL5O6Kjfj7W99z8dE5hPqMylVt+lulqOWl76FF/M2qdFUO1yF8gHUkdM3ieFZVNLo4QlYj4jgKsFZptq9Jf97syHAvwdLdHyh5+CVbdRR2h9l1lDPrIIySl+PcxTarKRgWiSca5mLsUEM+pD8/u2IcdoCd3xrZlucDjDXSwVXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725525342; c=relaxed/relaxed;
-	bh=4mLOPe6wLZxX8VFMq/OsoqlCL3JsgYKPWY0cK1Uw4Vs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DZ/9Tn0an+rXsEYLgxa4ciKzvI0+8WC4r1glDXHQG81xGQjSyQleqHfGTrQWTFJWup6iiHxpLs8EaJm3dlzvC9kay5GZF2Dr2kZcafirIfDarnoP1rUQRoM2iXefizEzYvMv8X0kYV67eb5rRcO3XgVfA6l5JbsfNOs+FWkuILeC45xjnmj0Owm1NElqI2YmQalWeNt4idj6SWA+zlfsM3Kd3bh1cn/GbghQRqbjrs/1VmAKnkRWrp014uTJSeMJILC1/cnq3UBkGWNwPMIut+EK8p186aGePgpqJZe+9HFNRYGJXq/MBXd2+3EM3UmoZTGd8i0JKH2WbxIHqren9w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzt3d2l1Dz2yT0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 18:35:39 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3AD9FEC;
-	Thu,  5 Sep 2024 01:35:33 -0700 (PDT)
-Received: from [10.57.71.124] (unknown [10.57.71.124])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D8F703F66E;
-	Thu,  5 Sep 2024 01:35:02 -0700 (PDT)
-Message-ID: <277bd093-422b-4301-92a3-d0a58eb41af5@arm.com>
-Date: Thu, 5 Sep 2024 10:34:57 +0200
+	t=1725525505; c=relaxed/relaxed;
+	bh=P9ADIHjRXj1WJsIRfcpdcdI+TM8EPlLvEY98Zxn8VVk=;
+	h=DKIM-Signature:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type; b=hIK+OHAEfLaGwhHR6NnvjHoFXMUisC+vog1p70NYQkvW5OaVSPWwT06ffVHT1St+3nKwOEXme9PBcssEhO8dknSUC5nWR/rzcJ5lbyJgMZOzIDv8D8WTN+3v3Il/7B46pcYdjw/3IeSfwCfmScA5C/pvzp5sOzGVd6stykLS5/4SndLNc5PCiiycljghFYuLCt5ZOjxoiiMKU06hdkg6qmnf877r5yFJX4833bf9GnbncDGPgtO/WaPtvjqBW/BJR/C2lVKr45UMVugq29aIAlBWNHp9iKCJ5/To3BSr2mlCb0U+OZvdKUoK4D5GiZEVHWaUwyK9O4SMr5bt8evVkg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LuyNdk5o; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LuyNdk5o;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzt6n01R5z2yRZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 18:38:24 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4853NF5a018187;
+	Thu, 5 Sep 2024 08:38:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=P
+	9ADIHjRXj1WJsIRfcpdcdI+TM8EPlLvEY98Zxn8VVk=; b=LuyNdk5oCTEB4An5o
+	jfiLCTtfzXlCIPovMi8tpFj+lroHcSdiPiURhwxuv+1wBvn5DwlGsXIaCZujFhAh
+	BQmUqEzH8aqEnRCYzMHeTGEycBv8FYYRaG2XCZbVc62e/VpnhWvsJp+n6kBlcp6u
+	nbIUf1XfJwjfOPIO5+0Bq0k0vM4nrQtEfKjfSOMKwys+258nDoWLi4Ti6hF7Hlzf
+	u4AcT9XiIssb9EOSdpVqpSOVohSIsIOhhGABfOn8ypLxgBHbH3KH2akckOYDc1Hj
+	62u8xk0e/AqN1e7dOAPSEbqAX0/m/+tIXO2EpzS6lrMjseO37IDSurCZiNRN1JnA
+	PiWLQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkr02mj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Sep 2024 08:38:09 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4858U5SO023730;
+	Thu, 5 Sep 2024 08:38:09 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkr02mg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Sep 2024 08:38:08 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4855vRsS018672;
+	Thu, 5 Sep 2024 08:38:08 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41cdw1c0ga-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Sep 2024 08:38:08 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4858c5Uv15335874
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 5 Sep 2024 08:38:05 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C9B9420063;
+	Thu,  5 Sep 2024 08:38:05 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D1EF320043;
+	Thu,  5 Sep 2024 08:38:00 +0000 (GMT)
+Received: from [9.43.125.148] (unknown [9.43.125.148])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  5 Sep 2024 08:38:00 +0000 (GMT)
+Message-ID: <c6f30e31-69fe-4ece-b251-c49f1ab59a04@linux.ibm.com>
+Date: Thu, 5 Sep 2024 14:07:58 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -40,187 +83,133 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] arm64: topology: Support SMT control on ACPI based
- system
-To: Yicong Yang <yangyicong@huawei.com>
-Cc: yangyicong@hisilicon.com, linuxppc-dev@lists.ozlabs.org, bp@alien8.de,
- dave.hansen@linux.intel.com, mingo@redhat.com,
- linux-arm-kernel@lists.infradead.org, mpe@ellerman.id.au,
- peterz@infradead.org, tglx@linutronix.de, sudeep.holla@arm.com,
- will@kernel.org, catalin.marinas@arm.com, x86@kernel.org,
- linux-kernel@vger.kernel.org, dietmar.eggemann@arm.com,
- gregkh@linuxfoundation.org, rafael@kernel.org, jonathan.cameron@huawei.com,
- prime.zeng@hisilicon.com, linuxarm@huawei.com, xuwei5@huawei.com,
- guohanjun@huawei.com
-References: <20240806085320.63514-1-yangyicong@huawei.com>
- <20240806085320.63514-4-yangyicong@huawei.com>
- <a998c723-7451-439a-9c88-7c8b5c1b890b@arm.com>
- <00e6110a-462a-c117-0292-e88b57d27a05@huawei.com>
- <3947cb79-3199-4cd6-b784-51a245084581@arm.com>
- <1a7b5ac7-f040-672f-07a0-d7f3dc170c88@huawei.com>
- <6c05e39c-41f3-451c-b119-7b8662c1ceee@arm.com>
- <7f722af2-2969-aae5-1fb5-68d353eb95b9@huawei.com>
+Subject: Re: [PATCH] kexec/crash: no crash update when kexec in progress
+To: Baoquan He <bhe@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+        Hari Bathini <hbathini@linux.ibm.com>, kexec@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
+References: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
+ <87v80lnf8d.fsf@mail.lhotse>
+ <10c666ae-d528-4f49-82e9-8e0fee7099e0@linux.ibm.com>
+ <355b58b1-6c51-4c42-b6ea-dcd6b1617a18@linux.ibm.com>
+ <ZsLjGJvAUIaxrG6x@MiWiFi-R3L-srv>
+ <1e4a8e18-cda9-45f5-a842-8ffcd725efc9@linux.ibm.com>
+ <ZtGqTSMvx6Ljf5Xi@MiWiFi-R3L-srv>
+ <0dd94920-b13f-4da7-9ea6-4f008af1f4b3@linux.ibm.com>
+ <ZtkkIoUIu8shp/ut@MiWiFi-R3L-srv>
 Content-Language: en-US
-From: Pierre Gondois <pierre.gondois@arm.com>
-In-Reply-To: <7f722af2-2969-aae5-1fb5-68d353eb95b9@huawei.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <ZtkkIoUIu8shp/ut@MiWiFi-R3L-srv>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3E_zICSznpiTbAsJp_vUj6gzJGxIoAtF
+X-Proofpoint-ORIG-GUID: hIqrKRw-KLK960E0ks9WsRAv3WYC4C5x
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-05_04,2024-09-04_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1011 mlxscore=0 impostorscore=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 adultscore=0 mlxlogscore=992 bulkscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2409050063
 
-Hello Yicong,
+Hello Baoquan,
 
->>> Wondering if we can avoid this 2nd loop. Greg express the worries of looping twice on large scale
->>> system in v1. Maybe we could use the hetero_id and get the necessary information in one loop, I need
->>> further think.
+On 05/09/24 08:53, Baoquan He wrote:
+> On 09/04/24 at 02:55pm, Sourabh Jain wrote:
+>> Hello Baoquan,
 >>
->> I found this comments (not sure this is what you are refering to):
->> - https://lore.kernel.org/linux-arm-kernel/20231011103303.00002d8f@Huawei.com/
->> - https://lore.kernel.org/all/20230921150333.c2zqigs3xxwcg4ln@bogus/T/#m406c4c16871ca7ae431beb20feccfb5e14498452
+>> On 30/08/24 16:47, Baoquan He wrote:
+>>> On 08/20/24 at 12:10pm, Sourabh Jain wrote:
+>>>> Hello Baoquan,
+>>>>
+> ......snip...
+>>>> 2. A patch to return early from the `crash_handle_hotplug_event()` function
+>>>> if `kexec_in_progress` is
+>>>>      set to True. This is essentially my original patch.
+>>> There's a race gap between the kexec_in_progress checking and the
+>>> setting it to true which Michael has mentioned.
+>> The window where kernel is holding kexec_lock to do kexec boot
+>> but kexec_in_progress is yet not set to True.
 >>
->> I don't see another way to do it right now. Also, I thing the complexity is in
->> O(2n), which should be better than the original O(n**2),
+>> If kernel needs to handle crash hotplug event, the function
+>> crash_handle_hotplug_event()  will not get the kexec_lock and
+>> error out by printing error message about not able to update
+>> kdump image.
+> But you wanted to avoid the erroring out if it's being in
+> kernel_kexec().  Now you are seeing at least one the noising
+> message, aren't you?
+
+Yes, but it is very rare to encounter.
+
+My comments on your updated code are inline below.
+
+>
+>> I think it should be fine. Given that lock is already taken for
+>> kexec kernel boot.
 >>
-> 
-> yes it's less complex. I'm wondering build up the xarray in another way then we can avoid the
-> long loops. What about below:
-
-I tried the patch on a ThunderX2 with 4 threads per CPU. PPTT topology describes
-2 clusters of 128 cores each. Each cluster is described as independent (i.e. there
-is no root node in the PPTT). The PPTT is of revision 1, so the IDENTICAL
-flag is not available on the platform.
-
-I also tried it on a faked SMT asymmetric platform and there might be a small
-correction required.
-
-> 
->  From 5ff5d0100435982764cd85566a6fe006e60ee98e Mon Sep 17 00:00:00 2001
-> From: Yicong Yang <yangyicong@hisilicon.com>
-> Date: Fri, 20 Oct 2023 15:38:38 +0800
-> Subject: [PATCH] arm64: topology: Support SMT control on ACPI based system
-> 
-> For ACPI we'll build the topology from PPTT and we cannot directly
-> get the SMT number of each core. Instead using a temporary xarray
-> to record the heterogeneous information (from ACPI_PPTT_ACPI_IDENTICAL)
-> and SMT information of the first core in its heterogeneous CPU cluster
-> when building the topology. Then we can know the largest SMT number
-> in the system. Warn if heterogeneous SMT topology exists (multiple
-> heterogeneous CPU clusters with different SMT thread number) since the
-> SMT control cannot handle this well. Then enable the support of SMT
-> control.
-> 
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> ---
->   arch/arm64/kernel/topology.c | 60 ++++++++++++++++++++++++++++++++++++
->   1 file changed, 60 insertions(+)
-> 
-> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> index 1a2c72f3e7f8..f6ec30fae70e 100644
-> --- a/arch/arm64/kernel/topology.c
-> +++ b/arch/arm64/kernel/topology.c
-> @@ -15,8 +15,10 @@
->   #include <linux/arch_topology.h>
->   #include <linux/cacheinfo.h>
->   #include <linux/cpufreq.h>
-> +#include <linux/cpu_smt.h>
->   #include <linux/init.h>
->   #include <linux/percpu.h>
-> +#include <linux/xarray.h>
-> 
->   #include <asm/cpu.h>
->   #include <asm/cputype.h>
-> @@ -37,17 +39,29 @@ static bool __init acpi_cpu_is_threaded(int cpu)
->   	return !!is_threaded;
->   }
-> 
-> +struct cpu_smt_info {
-> +	int thread_num;
-> +	int core_id;
-> +	int cpu;
-> +};
-> +
->   /*
->    * Propagate the topology information of the processor_topology_node tree to the
->    * cpu_topology array.
->    */
->   int __init parse_acpi_topology(void)
->   {
-> +	int max_smt_thread_num = 1;
-> +	struct cpu_smt_info *entry;
-> +	struct xarray hetero_cpu;
-> +	unsigned long hetero_id;
->   	int cpu, topology_id;
-> 
->   	if (acpi_disabled)
+>> Am I missing something major?
+>>
+>>> That's why I think
+>>> maybe checking kexec_in_progress after failing to retriving
+>>> __kexec_lock is a little better, not very sure.
+>> Try for kexec lock before kexec_in_progress check will not solve
+>> the original problem this patch trying to solve.
+>>
+>> You proposed the below changes earlier:
+>>
+>> -	if (!kexec_trylock()) {
+>> +	if (!kexec_trylock() && kexec_in_progress) {
+>>   		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
+>>   		crash_hotplug_unlock();
+> Ah, I meant as below, but wrote it mistakenly.
+>
+> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+> index 63cf89393c6e..e7c7aa761f46 100644
+> --- a/kernel/crash_core.c
+> +++ b/kernel/crash_core.c
+> @@ -504,7 +504,7 @@ int crash_check_hotplug_support(void)
+>   
+>   	crash_hotplug_lock();
+>   	/* Obtain lock while reading crash information */
+> -	if (!kexec_trylock()) {
+> +	if (!kexec_trylock() && !kexec_in_progress) {
+>   		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
+>   		crash_hotplug_unlock();
 >   		return 0;
-> 
-> +	xa_init(&hetero_cpu);
-> +
->   	for_each_possible_cpu(cpu) {
->   		topology_id = find_acpi_cpu_topology(cpu, 0);
->   		if (topology_id < 0)
-> @@ -57,6 +71,30 @@ int __init parse_acpi_topology(void)
->   			cpu_topology[cpu].thread_id = topology_id;
->   			topology_id = find_acpi_cpu_topology(cpu, 1);
->   			cpu_topology[cpu].core_id   = topology_id;
-> +
-> +			/*
-> +			 * Build up the XArray using the heterogeneous ID of
-> +			 * the CPU cluster. Store the CPU and SMT information
-> +			 * of the first appeared CPU in the CPU cluster of this
-> +			 * heterogeneous ID since the SMT information should be
-> +			 * the same in this CPU cluster. Then we can know the
-> +			 * SMT information of each heterogeneous CPUs in the
-> +			 * system.
-> +			 */
-> +			hetero_id = find_acpi_cpu_topology_hetero_id(cpu);
-> +			entry = (struct cpu_smt_info *)xa_load(&hetero_cpu, hetero_id);
-> +			if (!entry) {
-> +				entry = kzalloc(sizeof(*entry), GFP_KERNEL);
-> +				WARN_ON(!entry);
-> +
-> +				entry->cpu = cpu;
-> +				entry->core_id = topology_id;
-> +				entry->thread_num = 1;
-> +				xa_store(&hetero_cpu, hetero_id,
-> +					 entry, GFP_KERNEL);
-> +			} else if (entry->core_id == topology_id) {
-> +				entry->thread_num++;
-> +			}
->   		} else {
->   			cpu_topology[cpu].thread_id  = -1;
->   			cpu_topology[cpu].core_id    = topology_id;
-> @@ -67,6 +105,28 @@ int __init parse_acpi_topology(void)
->   		cpu_topology[cpu].package_id = topology_id;
->   	}
-> 
-> +	/*
-> +	 * This should be a short loop depending on the number of heterogeneous
-> +	 * CPU clusters. Typically on a homogeneous system there's only one
-> +	 * entry in the XArray.
-> +	 */
-> +	xa_for_each(&hetero_cpu, hetero_id, entry) {
-> +		if (entry->thread_num == 1)
-> +			continue;
+>
+>
+>>
+>> Once the kexec_in_progress is set to True there is no way one can get
+>> kexec_lock. So kexec_trylock() before kexec_in_progress is not helpful
+>> for the problem I am trying to solve.
+> With your patch, you could still get the error message if the race gap
+> exist. With above change, you won't get it. Please correct me if I am
+> wrong.
 
-If a platform has CPUs with:
-- 1 thread
-- X (!= 1) threads
-Then I think that the asymmetry is not detected
+The above code will print an error message during the race gap. Here's why:
 
-> +
-> +		if (entry->thread_num != max_smt_thread_num &&
-> +		    max_smt_thread_num != 1)
-> +			pr_warn("Heterogeneous SMT topology not handled");
-> +
-> +		if (entry->thread_num > max_smt_thread_num)
-> +			max_smt_thread_num = entry->thread_num;
-> +
-> +		xa_erase(&hetero_cpu, hetero_id);
-> +		kfree(entry);
-> +	}
-> +
-> +	cpu_smt_set_num_threads(max_smt_thread_num, max_smt_thread_num);
-> +	xa_destroy(&hetero_cpu);
->   	return 0;
->   }
->   #endif
+Let’s say the kexec lock is acquired in the kernel_kexec() function,
+but kexec_in_progress is not yet set to True. In this scenario, the code 
+will print
+an error message.
+
+There is another issue I see with the above code:
+
+Consider that the system is on the kexec kernel boot path, and 
+kexec_in_progress
+is set to True. If crash_hotplug_unlock() is called, the kernel will not 
+only update
+the kdump image without acquiring the kexec lock, but it will also 
+release the
+kexec lock in the out label. I believe this is incorrect.
+
+Please share your thoughts.
+
+Thanks,
+Sourabh Jain
+
+
 
