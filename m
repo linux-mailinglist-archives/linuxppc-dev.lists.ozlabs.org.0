@@ -1,105 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-1039-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1040-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20AED96D303
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 11:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C52D896D308
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 11:23:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzv5j2MBvz2xwH;
-	Thu,  5 Sep 2024 19:22:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzv6z55Lgz2y92;
+	Thu,  5 Sep 2024 19:23:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::335"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725528153;
-	cv=none; b=gHJhQGZ71XTdLkYOplWc6o6iKaREYpnIWuOG7lnz6pnP9XowBMWm0GD9ubIKAx0GkvAlYQXYQMY1gpLJo4XjH8Lpd8FcyAFBmeTnYk7yIPEukrjnUVIB3JorDiI/XYN/lTvJwQs9Wmhg6fg7JyMAajaXh8FJJIvsjYp/85MZdIJ2/8fW/X59LtrIkPEnMW0bzwAdicFRhvQAitzAUyoTmtsgotu2wsDYW5OqivRChWs/8+Bts3YXTGnmUxKLocd4SxO4y4SnYZZbQLwR7THfFFzsx+WPaL2030n+2m9Zc8Ya0teO1YAlKHekus2jqi89u2fR87nyWOtrW6zLFuZk0A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.156
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725528219;
+	cv=none; b=O0Y/KYalN6bqnJ8f9FU7OOL8A9SCu5dTo7eTjUwpXkF3xohmsFZ3Azq3hccl3e+ouB93XAgHaW4DxYRe2N6DtRPObghh6JM+tpjqC+xU9HF5/iLe8jX8EASWOosVnTxQcBBB7C92BidX1xgTIPjSQr/N9kOh8EWm3WpjSbIQ2fMmXhGqaLayr1YxMl7ycZsj9xhC9q5s+y8TyD4kUHdlY+hVUkn6O4u5WE6eYcaDkDAEGO/EZU+FfW0NUkxiNOVJ9wZuH7A2Q3HdbIF6LFGZPk9FIJujHOwy1Dk4tdeNZpgGfyNWL2Y4tds6FNa68wXDHSs+fE61jyMWo1UKzrO3bw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725528153; c=relaxed/relaxed;
-	bh=8LgmwilwZTv00oKOBkFrZ/42OcenxN7DIQ4qoy+ip1I=;
-	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=LRYRr/MalXcPp/fGhpdJyOB/CdIWfkKHw3ddYtKG5BCNoArvIpnjhaMOS3thjMaKJD14BHbVvBPz97+zH5bNkARYjxIt4n/x5xRrfcgJhM3BTQXLgzd/tKLoniln4qgM3+0Fhj5rNkJzDsXELcDcc5r6A50TvucvFtXDA9Y2ohmgtdpta5+9HRDItoHdIkhvjdY9/liiPl8+SdzkkGvv9/6Y+pIVjhxYeoHdFB4aIsie8UJfcnqjAnYd88nHvCBUQBZme11S7JLAXkdh/bn3Jz+jriX+XRhjA3Fcata9bN5H/kL0YfIvTgINvZKoCaUeFfT8oUbDQAHpVF2s+lDJsw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gwNuniQg; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+	t=1725528219; c=relaxed/relaxed;
+	bh=/kd72puemH7HG5k90wuxIWlVONqVTbIySxjDZBLyORg=;
+	h=DKIM-Signature:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Message-Id:In-Reply-To:References:Subject:Content-Type; b=TuhMMI6GvBHiNiHqy+RWCWSW14LAIIc3NHKoHGTgLFxgQlM7gh9ZA0cG66teHU0eD2eEsoVgcJY39I2PgGruGd4qt9LvZ/HdNwv70Jon7adlUdyHDcffwv4HEW/cq8vLr1JCPnkfvpzKmQMHtsI//TLeMUW7ZiUbOMbPw9BOPNshBmGikBVngYymY8AUZxpoOWMOuPzFIb1qiiOI9iQTiWk1EabdH1a0/pvfzMJmvpHwkA81Fd4khdllFxq/B4UL2PQlYB+5SYBfPNEAjAKujn7mp014WikYQ5uM6m1rWymjEwAMX17TXHZIla9ey7DwARNSxtlh3K/4qY2TwDPSjQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=BkwxLa2W; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=mc/5r8qk; dkim-atps=neutral; spf=pass (client-ip=103.168.172.156; helo=fhigh5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gwNuniQg;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=BkwxLa2W;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=mc/5r8qk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.156; helo=fhigh5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fhigh5-smtp.messagingengine.com (fhigh5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzv5h3S4mz2xpn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 19:22:31 +1000 (AEST)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-42bc19e94bdso3863925e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2024 02:22:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725528145; x=1726132945; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8LgmwilwZTv00oKOBkFrZ/42OcenxN7DIQ4qoy+ip1I=;
-        b=gwNuniQgoQSSPFLUT3eXwgJeA683PyYUMY1T3kWnX1F9Rfd4cysf0TQiDUdMrDakCm
-         I/gfOA/ldXJzOnrhdtg4SNQzDL+Wr/w90QEe9Ee9ZwUtaAhS8J7l25capFGI+SEAjzIz
-         a5OqNpMtzAO6Q1cCcMtTDtozSuNF3G1qTbHyl4Am5b7D+3XsEn6UWoONnsAInrs7Iu+r
-         v8yoFJpM5WdlaCamw5wDtnU+wnq6ta8fxfc+Rf3aOAMSkHGYKqemKsfxr4MkRAOgTPRV
-         g9jLdqlgzrON7o2SbLvHG5S9CtdsQRwJYlREL/6d+qYGZfa0yyjIogJi5txgP9kzE1Kt
-         zDTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725528145; x=1726132945;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8LgmwilwZTv00oKOBkFrZ/42OcenxN7DIQ4qoy+ip1I=;
-        b=AkgtUU6dDQuF0oqdeL9K+ZYda4MMEF285Ggh3jksHo9CCHpEMA38wQVDLzOdIUh/tj
-         27IKECDtQO3Jj6PIfbSO4XVuQ5cpABksPXt2k6/9DeAOvJURywFMScni6L9f829O+BTG
-         bYA/majkFyqWAYWSVNhM0wfcG0OB9wZ1SYWoNBCiLQv+TxnYtLHP55KxguoHBMk4APMG
-         hWZcJDk3Rw2aQF/XILozPA5baKgt9kB4Cgf32L9nKp9WK+hz5pNlL1JEdC75ho7Hbhdj
-         wtrrDf+q3na1+Q9bjrs00aq39iYkmUClcEk0PBo2laMJDINJn0kYuctwQvTXoShgVO3a
-         fFFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXojYFOHDc4IUSodjXpGbJwag4aR2Tg+1RoNAnmqZurEKeRSzSZsKXtQsPW1WNW93DGgS/EJgmaoAvWIOY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyhpfTW3kSlrCUjo3qgg/r19QkM8KGfgVSTf23ZxBarU4Ow6cjF
-	2ahjuZ/djhDpYVU/mT9HBsdQiuhX78DGLGPub+lLwp4CXUe6f5zj
-X-Google-Smtp-Source: AGHT+IFUdfGNW49G4+DfGHtef+3iH+rTqtv4vp7wb8eaC9NCVgAim+dCJf5aeZgCMrKkgfBOdEZuqg==
-X-Received: by 2002:a05:600c:19d2:b0:427:fa39:b0db with SMTP id 5b1f17b1804b1-42c8de9ddb6mr49602095e9.27.1725528144107;
-        Thu, 05 Sep 2024 02:22:24 -0700 (PDT)
-Received: from gmail.com (1F2EF525.unconfigured.pool.telekom.hu. [31.46.245.37])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba6425a77sm266553755e9.45.2024.09.05.02.22.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Sep 2024 02:22:23 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Thu, 5 Sep 2024 11:22:20 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: kvm@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>,
-	Sean Christopherson <seanjc@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH 4/5] x86: perf: Refactor misc flag assignments
-Message-ID: <Ztl4TDI98tnCkH0X@gmail.com>
-References: <20240904204133.1442132-1-coltonlewis@google.com>
- <20240904204133.1442132-5-coltonlewis@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzv6w3DVDz2xpn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 19:23:35 +1000 (AEST)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 75D99114012C;
+	Thu,  5 Sep 2024 05:23:32 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-04.internal (MEProxy); Thu, 05 Sep 2024 05:23:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1725528212;
+	 x=1725614612; bh=/kd72puemH7HG5k90wuxIWlVONqVTbIySxjDZBLyORg=; b=
+	BkwxLa2WEoy8SOhL4ZQfEBGnMx9iUu4JMtVeQtWn8xwCPMDarpkqPPLbGHlxCuId
+	v0Sh0g3opi/cbrUcFgD8lentdBESbNyTZjLAEsoj7qJ6JVaHKikyuOo0f7ceOpca
+	XvwOqM/C1iNrdz5b0w58Jwo0jifr6UtKmRuVMpB1AGleMf8eC2MkpCNS0URKTLFQ
+	oCaRr+r1egywwKu9crfzlMtE5ki+iW/a4yx9cZdk60A1E+WzOPWuaIDARChrOtgz
+	/NZLHcWuAdLnv/IKukNseXfhiVCs52Rk+BYxwuDa0zIirzPW+H4xfMNxxrZzEks1
+	+2kYyknF70Tnn/uhAslWBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725528212; x=
+	1725614612; bh=/kd72puemH7HG5k90wuxIWlVONqVTbIySxjDZBLyORg=; b=m
+	c/5r8qk0GYWh2cw3TsbKB3aNZIXLr8CTLhciWmeQNmT0jvyYD8Wxm8tToAU4OR9H
+	06s5dLq3S3826SHP8k53hfasyJLnHdFFZ+akMJ/ngg7bGcpuaNqH7W5HgOGmvoE4
+	Z6OvYCoukTgaiDWeA7ZUi1mXMusqXSREpwIwT2h1Pg93KKWqPWOhyUj9i05Ps3s2
+	tHGEI7ZaaWI0ccJnILAEW18kPSSkHsMOksWMnp5C3lfE+Y/1RUbTGAAD3NmdkgYP
+	T08qFnPDq7lJmwlplrRmkpcMe8xj1e1ob0OLwpq5KPwtythqcxOtRzylsx5p5U4K
+	u1ivnMlQgNWYvgnCixvXA==
+X-ME-Sender: <xms:lHjZZlQQ2Qw3yVmlRqsbAFDjpai9VPp69EbjE71ej2RDlSQapf0pGg>
+    <xme:lHjZZuyHfapqOLfVsJkivhV8EB6ik-GlVcrqSeoSaowd6IEB6oAKO7xzqe3L2ycz6
+    Z9-QT78PIbG8aS9c3E>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehledgudehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhepkedvuefhiedtueeijeevtdeiieejfeelvefffeel
+    keeiteejffdvkefgteeuhffgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlh
+    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghr
+    nhgusgdruggvpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthho
+    pehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtth
+    hopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhrtghpthht
+    oheplhhkphesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvg
+    hrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhn
+    uhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdhrtghpthhtohepqh
+    hirghnghdriihhrghosehngihprdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:lHjZZq0_gUxdYs52_lYFfs3Gcxe_laL-EPCwRgcl5860KAfu4aUH8g>
+    <xmx:lHjZZtD2nLCV2YRN4VsCWKoFP28K-xSwNB1y5UG9WINURKSJo5OySA>
+    <xmx:lHjZZui6l1yvfHJMIJpoeezgW0M48_GP4OGXTmsByBywf97izulwBw>
+    <xmx:lHjZZhqhTb3ztlLlAaU5MQciyiTve5aBAPO2hIR1dDi8M7J60cY-nQ>
+    <xmx:lHjZZijlSE6Ptrs17NVCvIjDgdPUK0t3wyiXfewthpeyB9d73kfRJNpq>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 2A2312220071; Thu,  5 Sep 2024 05:23:32 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,60 +96,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240904204133.1442132-5-coltonlewis@google.com>
+Date: Thu, 05 Sep 2024 09:23:10 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Herve Codina" <herve.codina@bootlin.com>, "Qiang Zhao" <qiang.zhao@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
+ "kernel test robot" <lkp@intel.com>
+Message-Id: <24dd3479-6fef-43ec-bcec-e70474128e53@app.fastmail.com>
+In-Reply-To: <7091c023-c7e6-4b3a-b306-12d73b8f6698@csgroup.eu>
+References: <20240905072215.337010-1-herve.codina@bootlin.com>
+ <7091c023-c7e6-4b3a-b306-12d73b8f6698@csgroup.eu>
+Subject: Re: [PATCH] soc: fsl: qe: ucc: Export ucc_mux_set_grant_tsa_bkpt
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Sep 5, 2024, at 07:31, Christophe Leroy wrote:
+> Le 05/09/2024 =C3=A0 09:22, Herve Codina a =C3=A9crit=C2=A0:
+>> When TSA is compiled as module the following error is reported:
+>>    "ucc_mux_set_grant_tsa_bkpt" [drivers/soc/fsl/qe/tsa.ko] undefined!
+>>=20
+>> Indeed, the ucc_mux_set_grant_tsa_bkpt symbol is not exported.
+>>=20
+>> Simply export ucc_mux_set_grant_tsa_bkpt.
+>>=20
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202409051409.fszn8rEo-l=
+kp@intel.com/
+>> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+>
+> Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>
+> Arnd, it is ok for you to take this patch directly ?
 
-* Colton Lewis <coltonlewis@google.com> wrote:
+I've applied this one directly, but I'm not always paying attention
+to patches flying by, so if you have more fixes like this in the future,
+I recommend that you forward those to soc@kernel.org, either as a patch
+or a pull request.
 
-> Break the assignment logic for misc flags into their own respective
-> functions to reduce the complexity of the nested logic.
-> 
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
-> ---
->  arch/x86/events/core.c            | 31 +++++++++++++++++++++++--------
->  arch/x86/include/asm/perf_event.h |  2 ++
->  2 files changed, 25 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-> index 760ad067527c..87457e5d7f65 100644
-> --- a/arch/x86/events/core.c
-> +++ b/arch/x86/events/core.c
-> @@ -2948,16 +2948,34 @@ unsigned long perf_arch_instruction_pointer(struct pt_regs *regs)
->  	return regs->ip + code_segment_base(regs);
->  }
->  
-> +static unsigned long common_misc_flags(struct pt_regs *regs)
-> +{
-> +	if (regs->flags & PERF_EFLAGS_EXACT)
-> +		return PERF_RECORD_MISC_EXACT_IP;
-> +
-> +	return 0;
-> +}
-> +
-> +unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
-> +{
-> +	unsigned long guest_state = perf_guest_state();
-> +	unsigned long flags = common_misc_flags();
-> +
-> +	if (guest_state & PERF_GUEST_USER)
-> +		flags |= PERF_RECORD_MISC_GUEST_USER;
-> +	else if (guest_state & PERF_GUEST_ACTIVE)
-> +		flags |= PERF_RECORD_MISC_GUEST_KERNEL;
-> +
-> +	return flags;
-> +}
-> +
->  unsigned long perf_arch_misc_flags(struct pt_regs *regs)
->  {
->  	unsigned int guest_state = perf_guest_state();
-> -	int misc = 0;
-> +	unsigned long misc = common_misc_flags();
+That way, I see them in patchwork and will apply them from there.
 
-So I'm quite sure this won't even build at this point ...
-
-Thanks,
-
-	Ingo
+      Arnd
 
