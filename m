@@ -1,68 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-1053-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1054-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F3B96D828
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 14:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4958596D841
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 14:21:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzz19035Gz2ytg;
-	Thu,  5 Sep 2024 22:18:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzz4M6qv9z2yvs;
+	Thu,  5 Sep 2024 22:21:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725538732;
-	cv=none; b=bRQZlFUo9FqojOVY0CuBOvo377CcV3d7Dps33sJUPdzGPLUfuamFVGKmTHsP7x9l9UM7xlOdyRwqrKSpdXNvOJD+bYTc+uxIaZ+oPWvTurj4+zzlWcQgrqe+hiyBQ0HtAW9fvuf/UnbpdGzzAK7aR5Q0ok60xXdZ7kU8pxy9z7O8TPaW5wsIWBJEpaEBtbEC3LoVP50+8fOiCv3QU0lhg0voDsgFS6rc/O0nCBbM2bXQXOJxPs7MOmGKgrOXWthSoXCUJZjgitieTacYSUPNr+QZ4eTrgoCMYjsRPdcAJo958NQC9x6gdu2zOeOuMv1gE2n4lj3OFLGoOR/tT6Aodw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.182
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725538899;
+	cv=none; b=bENlgG+XAvL1nme/lT1TT7bQNhG3OXeVk/X6vFFdNbu881mBdyIiUx2z/lB33EZHkxrev5vrBXKdesp8u6yfIhqz2FpLJZ37E9bONS/aw75w6Gg8mQVU5Kczt1lx3zOZ9FjYnj/Y66KXGR7cBFpxvGmbketHZZ9Gv1zNxEESPPWCiNMTfK3UwcEZVr2W9ymer2jlHN0k3TIEjRPCxsic3zWtB3lT+3QODnllweIYP2oh8jNaeAkAW/zYEkuRNvKkhjhN3SRfTCFL+7/QAO1/T9jACcuOxrjKfBlWqeyMZUY2QoK71RGgAJ4Iguc0bgt9QOZDgNkJbc/GSiGcaeNtrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725538732; c=relaxed/relaxed;
-	bh=uHtMyZ0mGdGut63ipl9pSNEPhg4gQFAZt25TdNzawnM=;
-	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 Message-ID:MIME-Version:Content-Type; b=OqUm5pxAMXirC1Q7eAHFF5bThOR9u8rPLgJPiZ/v1V/fU/DH9hdmubpz8QYcmPHH9OX7VqQqpZENpnGdU28xpz+twiKzEKjEpNPd9DqsxF6wZfOCJzVYYjqtiZrYJEFZqVJLO9l7IzB8m0BHkF64yItY1hn32tGpD4XV0mUUTccpJxcYnKo/oKSFNlcaMSBQH1NhRJZiAhncLA1lrX5PK4of3TmUs1E7Y+B93ojt3Pwk156YgkC0VM50LYRX/XNIrDp+RDIuzoQ425U9Yazjq/mzc0iVMW7y1/EfmniZyjpSIpSxB/TQtAnekUzOWrTyD3j/IqmR/BUQn+umrS5cFg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=K9RNtijG; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1725538899; c=relaxed/relaxed;
+	bh=RG+B9RQMt9wqZwEFGQtC9HihmbtSol0+CD88scwrr1g=;
+	h=Content-Type:DKIM-Signature:Mime-Version:Subject:From:In-Reply-To:
+	 Date:Cc:Message-Id:References:To; b=c77OuJuZiC1w/dm42tULMwSY9qjcK6YzkguqYzifdSgrjOgsukQz+jjVwvHgWjUiENwlHVL9bUsFRteoxq0q7cMQvqzFBbtxk9ScQEu6qLD2knN2n9lc52QWgGFsZE7bXUnd2hJjvNH9cTZmHR3r3ksDPvUzBhrFDv0FvBn+jdjlEmcy5ZyCd9R6avcTOi7M188Wfr/HBmO152xpzlhVU2rZ98IOkE4ShT71mPojowfwfU4wkdmR8+FF1of9ipbuRyF8to1UtnNRRTYmL5A6w3AkhbJF85IlOSPe1kV8mcr+XJOOencH6mQs8+lKFz2dM+ZoBb0VSaCuXMv66hNbpQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qn2XqsEe; dkim-atps=neutral; spf=pass (client-ip=91.218.175.182; helo=out-182.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=K9RNtijG;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qn2XqsEe;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.182; helo=out-182.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzz1731rqz2yjN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 22:18:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1725538726;
-	bh=uHtMyZ0mGdGut63ipl9pSNEPhg4gQFAZt25TdNzawnM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=K9RNtijGnQSSSovlUF+85A4m8nKayeSvx/Ob0UZe5MJZyqYtM2pQp+6L4nOcFBaL8
-	 BMvvg2k7bpp41TQpyqsAUXWRf9BykbfFXJDdQCMgNnVRzMXGqdYM3Sm6ZG58e+Zzi8
-	 xqDI/zBSXPr5VH16d77RzHiYS8QQhrpNG+LVTWOYc8PJiopRQ7aKFTBzvlaxwbnjCz
-	 6ss+QYEqmuStkZsohKp2idavtqXQSJWsED2PrAQKG3qsuvIpbAmxC3YKMYwXrruEr9
-	 LEfLpNhWcsB0I1NH6JCVZcsdgJSq7qa1g0AzaMpAXveSikpyikaPbous9gKJoszvTM
-	 yYb9S47fFXRUg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wzz0y4N1Rz4w2Q;
-	Thu,  5 Sep 2024 22:18:42 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Nicholas Piggin
- <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill
- Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Shuah
- Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
- llvm@lists.linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, Adhemerval Zanella
- <adhemerval.zanella@linaro.org>, Xi Ruoyao <xry111@xry111.site>
-Subject: Re: [PATCH v5 0/5] Wire up getrandom() vDSO implementation on powerpc
-In-Reply-To: <Zthr1nB_RJ56YD3O@zx2c4.com>
-References: <cover.1725304404.git.christophe.leroy@csgroup.eu>
- <Zthr1nB_RJ56YD3O@zx2c4.com>
-Date: Thu, 05 Sep 2024 22:18:40 +1000
-Message-ID: <87frqe5m5b.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzz4L2dCQz2yjN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 22:21:36 +1000 (AEST)
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1725538876;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RG+B9RQMt9wqZwEFGQtC9HihmbtSol0+CD88scwrr1g=;
+	b=qn2XqsEevTtNsm0C0CHtnQmRNmZ+AVm0hM6Uy5e3u/BOaVmtKVjJpC/c0EPxHY7wdVSgju
+	4dwEvwrBRPQycogduv5yry7QUbkmrGoUawtvZQ+t0uqSe0k35+sSKbVAwOxBxyj3bIsXqz
+	qtdbnn5qyiTt19S2z5SyP1ZsF5TaLO4=
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,59 +48,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH v3 11/14] mm: userfaultfd: move_pages_pte() use
+ pte_offset_map_rw_nolock()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20240904084022.32728-12-zhengqi.arch@bytedance.com>
+Date: Thu, 5 Sep 2024 20:20:30 +0800
+Cc: David Hildenbrand <david@redhat.com>,
+ Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vishal Moola <vishal.moola@gmail.com>,
+ Peter Xu <peterx@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ christophe.leroy2@cs-soprasteria.com,
+ LKML <linux-kernel@vger.kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <7FEBE447-2635-4BA9-83F1-89A3F0CB3BD6@linux.dev>
+References: <20240904084022.32728-1-zhengqi.arch@bytedance.com>
+ <20240904084022.32728-12-zhengqi.arch@bytedance.com>
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
 
-"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
-> Hi Christophe, Michael,
->
-> On Mon, Sep 02, 2024 at 09:17:17PM +0200, Christophe Leroy wrote:
->> This series wires up getrandom() vDSO implementation on powerpc.
->> 
->> Tested on PPC32 on real hardware.
->> Tested on PPC64 (both BE and LE) on QEMU:
->> 
->> Performance on powerpc 885:
->> 	~# ./vdso_test_getrandom bench-single
->> 	   vdso: 25000000 times in 62.938002291 seconds
->> 	   libc: 25000000 times in 535.581916866 seconds
->> 	syscall: 25000000 times in 531.525042806 seconds
->> 
->> Performance on powerpc 8321:
->> 	~# ./vdso_test_getrandom bench-single
->> 	   vdso: 25000000 times in 16.899318858 seconds
->> 	   libc: 25000000 times in 131.050596522 seconds
->> 	syscall: 25000000 times in 129.794790389 seconds
->> 
->> Performance on QEMU pseries:
->> 	~ # ./vdso_test_getrandom bench-single
->> 	   vdso: 25000000 times in 4.977777162 seconds
->> 	   libc: 25000000 times in 75.516749981 seconds
->> 	syscall: 25000000 times in 86.842242014 seconds
->
-> Looking good. I have no remaining nits on this patchset; it looks good
-> to me.
->
-> A review from Michael would be nice though (in addition to the necessary
-> "Ack" I need to commit this to my tree), because there are a lot of PPC
-> particulars that I don't know enough about to review properly. For
-> example, you use -ffixed-r30 on PPC64. I'm sure there's a good reason
-> for this, but I don't know enough to assess it. And cvdso_call I have no
-> idea what's going on. Etc.
- 
-It all looks good to me, and has survived some testing. Let's get it
-merged and get some wider test coverage.
 
-There is an existing comment in the a/p/vdso/Makefile about the
-fixed-r30 thing, tldr is it's a workaround to avoid breaking old
-versions of Go.
 
-For the series:
+> On Sep 4, 2024, at 16:40, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
+> 
+> In move_pages_pte(), we may modify the dst_pte and src_pte after acquiring
+> the ptl, so convert it to using pte_offset_map_rw_nolock(). But since we
+> already do the pte_same() check, there is no need to get pmdval to do
+> pmd_same() check, just pass a dummy variable to it.
+> 
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 
-If you can include Maddy's test results from Power9 in the change log
-for patch 5 that'd be nice.
+Thanks.
 
-cheers
 
