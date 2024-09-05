@@ -1,45 +1,105 @@
-Return-Path: <linuxppc-dev+bounces-1038-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1039-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D367396D29C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 10:58:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AED96D303
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 11:22:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WztYn4hW8z2ypV;
-	Thu,  5 Sep 2024 18:58:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzv5j2MBvz2xwH;
+	Thu,  5 Sep 2024 19:22:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.178
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725526701;
-	cv=none; b=PoCBZjq8CwplOECEENlp+FsWYqm7+mbfNQhmICBp/6qt6lPeNXHDR21QkXz6EFfRAcQCUD7jvskIS9EHsUs6Kq/aHnrlQvmhK80GGus2SQWSAsiEc0WoaLDzBRDBjRPHl802NQgkR9mdUy7GtwQBSvh77FY2OpnDtoOAtGdFi3CYqOZvvpf1NiuRl5X0guHQSWYV19ugpXOS6vuhwf88Geddd19XumH5yqW6cuZVV1wGsfOPZOXUHZFf14EMQddsICLNLOKHx9GzbqNC+eEfXj42piIY1iAWQa6Uhc9XHzu3EEdVPIsQPunbdJf3VfDhlRapq/brFIWLhNj6jsvz1w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::335"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725528153;
+	cv=none; b=gHJhQGZ71XTdLkYOplWc6o6iKaREYpnIWuOG7lnz6pnP9XowBMWm0GD9ubIKAx0GkvAlYQXYQMY1gpLJo4XjH8Lpd8FcyAFBmeTnYk7yIPEukrjnUVIB3JorDiI/XYN/lTvJwQs9Wmhg6fg7JyMAajaXh8FJJIvsjYp/85MZdIJ2/8fW/X59LtrIkPEnMW0bzwAdicFRhvQAitzAUyoTmtsgotu2wsDYW5OqivRChWs/8+Bts3YXTGnmUxKLocd4SxO4y4SnYZZbQLwR7THfFFzsx+WPaL2030n+2m9Zc8Ya0teO1YAlKHekus2jqi89u2fR87nyWOtrW6zLFuZk0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725526701; c=relaxed/relaxed;
-	bh=CZtqExsDOIYp5HqPgrPdq+CzPwDzSkiYY8yvT9Jxwhw=;
-	h=Message-ID:DKIM-Signature:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type; b=SiDVPdC4gs+0IjyOZKFc+wcxOaxcBgg0ZVj4CZ05xWjCcS5b7zckuwQozVUFpwKkEbB6q+DoBojNKL6mQ18hmETGKFTbVt8IHsZ5ubdi6EHyihDCzFy6OhsCN5/f6P/3dOU+2FtBfEh6wXV9gv9o+NBo2Cw3bg3pVPFHVt6pgyqJLje0b9LRJjzCMixxNU4doCbDFkSgiZAFC3eGTojMonPQ7EXg6JSidhZ8ypTtNOk2CYg4jh9WRwgxEusBo+fdTThdQR3qfRaBQv/QlNd3/nfWIuNcyEdMcajkSZAmRsADuOYqxA0hSqYw+kbxThR+PNU30buauMTXv4A3OskbUg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hHL2mCMb; dkim-atps=neutral; spf=pass (client-ip=91.218.175.178; helo=out-178.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+	t=1725528153; c=relaxed/relaxed;
+	bh=8LgmwilwZTv00oKOBkFrZ/42OcenxN7DIQ4qoy+ip1I=;
+	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=LRYRr/MalXcPp/fGhpdJyOB/CdIWfkKHw3ddYtKG5BCNoArvIpnjhaMOS3thjMaKJD14BHbVvBPz97+zH5bNkARYjxIt4n/x5xRrfcgJhM3BTQXLgzd/tKLoniln4qgM3+0Fhj5rNkJzDsXELcDcc5r6A50TvucvFtXDA9Y2ohmgtdpta5+9HRDItoHdIkhvjdY9/liiPl8+SdzkkGvv9/6Y+pIVjhxYeoHdFB4aIsie8UJfcnqjAnYd88nHvCBUQBZme11S7JLAXkdh/bn3Jz+jriX+XRhjA3Fcata9bN5H/kL0YfIvTgINvZKoCaUeFfT8oUbDQAHpVF2s+lDJsw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gwNuniQg; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hHL2mCMb;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gwNuniQg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.178; helo=out-178.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::335; helo=mail-wm1-x335.google.com; envelope-from=mingo.kernel.org@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WztYl4gCCz2yn4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 18:58:17 +1000 (AEST)
-Message-ID: <d8e2ef66-c345-43f0-9989-f20f16df34d3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1725526676;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CZtqExsDOIYp5HqPgrPdq+CzPwDzSkiYY8yvT9Jxwhw=;
-	b=hHL2mCMbuNK+Hs/O408hs/N7aassZHQuWT3l/9qpf3OwEqwDoq18fUNQy7T4vQkPAhr7Ip
-	KhS7GNRdIL7YXvr4Kwk1nBVf05wbZgGwqSvv3B9YBaijU8YfoK9B1DhEgjDylQD3XI58dx
-	j3oiLIpOO5R1TF/4CpCnFRK2Hn4WWvc=
-Date: Thu, 5 Sep 2024 16:57:44 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzv5h3S4mz2xpn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 19:22:31 +1000 (AEST)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-42bc19e94bdso3863925e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2024 02:22:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725528145; x=1726132945; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8LgmwilwZTv00oKOBkFrZ/42OcenxN7DIQ4qoy+ip1I=;
+        b=gwNuniQgoQSSPFLUT3eXwgJeA683PyYUMY1T3kWnX1F9Rfd4cysf0TQiDUdMrDakCm
+         I/gfOA/ldXJzOnrhdtg4SNQzDL+Wr/w90QEe9Ee9ZwUtaAhS8J7l25capFGI+SEAjzIz
+         a5OqNpMtzAO6Q1cCcMtTDtozSuNF3G1qTbHyl4Am5b7D+3XsEn6UWoONnsAInrs7Iu+r
+         v8yoFJpM5WdlaCamw5wDtnU+wnq6ta8fxfc+Rf3aOAMSkHGYKqemKsfxr4MkRAOgTPRV
+         g9jLdqlgzrON7o2SbLvHG5S9CtdsQRwJYlREL/6d+qYGZfa0yyjIogJi5txgP9kzE1Kt
+         zDTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725528145; x=1726132945;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8LgmwilwZTv00oKOBkFrZ/42OcenxN7DIQ4qoy+ip1I=;
+        b=AkgtUU6dDQuF0oqdeL9K+ZYda4MMEF285Ggh3jksHo9CCHpEMA38wQVDLzOdIUh/tj
+         27IKECDtQO3Jj6PIfbSO4XVuQ5cpABksPXt2k6/9DeAOvJURywFMScni6L9f829O+BTG
+         bYA/majkFyqWAYWSVNhM0wfcG0OB9wZ1SYWoNBCiLQv+TxnYtLHP55KxguoHBMk4APMG
+         hWZcJDk3Rw2aQF/XILozPA5baKgt9kB4Cgf32L9nKp9WK+hz5pNlL1JEdC75ho7Hbhdj
+         wtrrDf+q3na1+Q9bjrs00aq39iYkmUClcEk0PBo2laMJDINJn0kYuctwQvTXoShgVO3a
+         fFFw==
+X-Forwarded-Encrypted: i=1; AJvYcCXojYFOHDc4IUSodjXpGbJwag4aR2Tg+1RoNAnmqZurEKeRSzSZsKXtQsPW1WNW93DGgS/EJgmaoAvWIOY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyhpfTW3kSlrCUjo3qgg/r19QkM8KGfgVSTf23ZxBarU4Ow6cjF
+	2ahjuZ/djhDpYVU/mT9HBsdQiuhX78DGLGPub+lLwp4CXUe6f5zj
+X-Google-Smtp-Source: AGHT+IFUdfGNW49G4+DfGHtef+3iH+rTqtv4vp7wb8eaC9NCVgAim+dCJf5aeZgCMrKkgfBOdEZuqg==
+X-Received: by 2002:a05:600c:19d2:b0:427:fa39:b0db with SMTP id 5b1f17b1804b1-42c8de9ddb6mr49602095e9.27.1725528144107;
+        Thu, 05 Sep 2024 02:22:24 -0700 (PDT)
+Received: from gmail.com (1F2EF525.unconfigured.pool.telekom.hu. [31.46.245.37])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba6425a77sm266553755e9.45.2024.09.05.02.22.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Sep 2024 02:22:23 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date: Thu, 5 Sep 2024 11:22:20 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Colton Lewis <coltonlewis@google.com>
+Cc: kvm@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
+Subject: Re: [PATCH 4/5] x86: perf: Refactor misc flag assignments
+Message-ID: <Ztl4TDI98tnCkH0X@gmail.com>
+References: <20240904204133.1442132-1-coltonlewis@google.com>
+ <20240904204133.1442132-5-coltonlewis@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -49,94 +109,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 08/14] mm: copy_pte_range() use
- pte_offset_map_rw_nolock()
-To: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- david@redhat.com, hughd@google.com, willy@infradead.org, vbabka@kernel.org,
- akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
- peterx@redhat.com, ryan.roberts@arm.com, christophe.leroy2@cs-soprasteria.com
-References: <20240904084022.32728-1-zhengqi.arch@bytedance.com>
- <20240904084022.32728-9-zhengqi.arch@bytedance.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20240904084022.32728-9-zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240904204133.1442132-5-coltonlewis@google.com>
 
 
+* Colton Lewis <coltonlewis@google.com> wrote:
 
-On 2024/9/4 16:40, Qi Zheng wrote:
-> In copy_pte_range(), we may modify the src_pte entry after holding the
-> src_ptl, so convert it to using pte_offset_map_rw_nolock(). Since we may
-> free the PTE page in retract_page_tables() without holding the read lock
-> of mmap_lock, so we still need to get pmdval and do pmd_same() check after
-> the ptl is held.
-
-See commit 3db82b9374ca92, copy_pte_range and retract_page_tables
-are using vma->anon_vma to be exclusive.
-
-retract_page_tables()                    copy_page_range()
-     vma_interval_tree_foreach()              if (!vma_needs_copy())
-         if (READ_ONCE(vma->anon_vma))            return 0;
-             continue;                        copy_pte_range()
-
-So I think mmap write lock here is also used for keeping ->anon_vma stable.
-And we do not need pmd_same().
-
-Muchun,
-Thanks.
->
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Break the assignment logic for misc flags into their own respective
+> functions to reduce the complexity of the nested logic.
+> 
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
 > ---
-> Hi Muchun, since the code has changed, I dropped your Reviewed-by tag here.
->
->   mm/memory.c | 18 +++++++++++++++++-
->   1 file changed, 17 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 06674f94b7a4e..47974cc4bd7f2 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -1082,6 +1082,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->   	struct mm_struct *src_mm = src_vma->vm_mm;
->   	pte_t *orig_src_pte, *orig_dst_pte;
->   	pte_t *src_pte, *dst_pte;
-> +	pmd_t pmdval;
->   	pte_t ptent;
->   	spinlock_t *src_ptl, *dst_ptl;
->   	int progress, max_nr, ret = 0;
-> @@ -1107,13 +1108,28 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->   		ret = -ENOMEM;
->   		goto out;
->   	}
-> -	src_pte = pte_offset_map_nolock(src_mm, src_pmd, addr, &src_ptl);
+>  arch/x86/events/core.c            | 31 +++++++++++++++++++++++--------
+>  arch/x86/include/asm/perf_event.h |  2 ++
+>  2 files changed, 25 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+> index 760ad067527c..87457e5d7f65 100644
+> --- a/arch/x86/events/core.c
+> +++ b/arch/x86/events/core.c
+> @@ -2948,16 +2948,34 @@ unsigned long perf_arch_instruction_pointer(struct pt_regs *regs)
+>  	return regs->ip + code_segment_base(regs);
+>  }
+>  
+> +static unsigned long common_misc_flags(struct pt_regs *regs)
+> +{
+> +	if (regs->flags & PERF_EFLAGS_EXACT)
+> +		return PERF_RECORD_MISC_EXACT_IP;
 > +
-> +	/*
-> +	 * Since we may free the PTE page in retract_page_tables() without
-> +	 * holding the read lock of mmap_lock, so we still need to do a
-> +	 * pmd_same() check after holding the PTL.
-> +	 */
-> +	src_pte = pte_offset_map_rw_nolock(src_mm, src_pmd, addr, &pmdval,
-> +					   &src_ptl);
->   	if (!src_pte) {
->   		pte_unmap_unlock(dst_pte, dst_ptl);
->   		/* ret == 0 */
->   		goto out;
->   	}
->   	spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+> +	return 0;
+> +}
 > +
-> +	if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(src_pmd)))) {
-> +		pte_unmap_unlock(src_pte, src_ptl);
-> +		pte_unmap_unlock(dst_pte, dst_ptl);
-> +		/* ret == 0 */
-> +		goto out;
-> +	}
+> +unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
+> +{
+> +	unsigned long guest_state = perf_guest_state();
+> +	unsigned long flags = common_misc_flags();
 > +
->   	orig_src_pte = src_pte;
->   	orig_dst_pte = dst_pte;
->   	arch_enter_lazy_mmu_mode();
+> +	if (guest_state & PERF_GUEST_USER)
+> +		flags |= PERF_RECORD_MISC_GUEST_USER;
+> +	else if (guest_state & PERF_GUEST_ACTIVE)
+> +		flags |= PERF_RECORD_MISC_GUEST_KERNEL;
+> +
+> +	return flags;
+> +}
+> +
+>  unsigned long perf_arch_misc_flags(struct pt_regs *regs)
+>  {
+>  	unsigned int guest_state = perf_guest_state();
+> -	int misc = 0;
+> +	unsigned long misc = common_misc_flags();
 
+So I'm quite sure this won't even build at this point ...
+
+Thanks,
+
+	Ingo
 
