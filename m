@@ -1,63 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-1056-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1058-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA3896D85C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 14:24:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B903596D977
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 14:56:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzz7C0DhXz2ywq;
-	Thu,  5 Sep 2024 22:24:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzzrh2ZGPz2yXd;
+	Thu,  5 Sep 2024 22:56:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725539047;
-	cv=none; b=AeNljOlSAg7E2VZk+rdSvqHHwVhModo7Ks4Wtd1OLMbNW2tUfm26XxDPhTz31lBW6GaR/nfC75MemDF/Gp/vjpRroeBXPFtMleMvDEwPOUP3qNe1fQAZsq0hYKYhDIpBzDKzOUXupbr3r5yYDFCAhvjg3cMzZ+rQE49gKgl7M6prf8OLhWlME03q0M8iaUWwaVOlVQMWCBVbjZzqyh3ETjGhrrYTeSGGpRN8I3rcklxDgis6oo1T/y6RXOlhtrpOdUbezZSoVhuvAJLRrV2++KPIT0uABZ8jR9sebVnxV8t+CQ522Qs5NZE1VJ2G8bQflt8HZ13HfBaLYPZ6yXsOQQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725540996;
+	cv=none; b=YxRtHVb9R0sLePeSTscEXKSeyqPEHTjAETdlIcIaR77XN9/53hh4Uu8wrh3YWdMm2i5a9e/bravX2LC3x/Mt8LLQpaSp0bnynYW6bw52qNBlY0+8+xgWBSwPSTgF5TDnouMO3naYWdCt/Inq4xfcn6WK5avmeyYAfT3Ah6E1oQni6myMhcbSuFjvGWgRnabKPv88Gi1Dvqu30/REwlUwU84i7xVFU8KZGIc0PMmUcRxiPFv7eqMHFY065a0IuDCwOKG2Ozi1EinqFqVulkjn5CVC7PTgbCLZG2hDEJ8rsLMs5cYI62SKGq+5D8Y+lOy25rNOQ3gfIlJQfAdA6nUzcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725539047; c=relaxed/relaxed;
-	bh=mUdYVDhcBbnbe8Qnsh0MBGJ/CuaR+SGTw9WGn1Sesjw=;
-	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 Message-ID:MIME-Version:Content-Type; b=B7hUZV2tcbTWa2tooxYtYcwU5Bvgrh8LhSHqd2QHpgwLap0AINBdnFzm5sqEZA2eX0Ez3gMT1nqS+OyYbM6mn6idtHifj0Um50tETKkUMh5MjNhQ/4StkAUxO7TiR3HSmCIHGOIs5VTbCW38wG4CDNUIjaSLP87Hti1hCUljh3aRW7qdzZ7J/lJ/8z9Tpz8dSlTvlTHr1ez9tfpDO0g6V09Niub2cZUDvyw01WGJe64j1sLPtC7m9QbeRlWvzKYt+dQKnDhIgu25M1T+De/dZzr+XpnxbcEeB3v86YESAS48SdWY62a/WcHmQGIhBOTEiFEdBkw9yKLPY+NTm4LI3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aNE0hW3k; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1725540996; c=relaxed/relaxed;
+	bh=6MTRMH1950H7pYJdyL+qM9S+/x9T4aarJ3EpbvZXG0c=;
+	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=k7qOiiLEP+p8Gq/0Db+Y6EWAAZjC/lR3furEZanS6kuDBdGt8ptU88kHW+mPS0t/LE6mSKXB3xk+1dzZyrQg6R9qAlmNWgwUPKitsWhYvEO5rHqiOyeh+btgTw2bdUlbAkVt/AR535HcFMkhd1djHyQ6nobPYVJMgR0Z3mSqiziRc8CfJ1UHsgWzluOVS9D1bn7HpZQHCBEsPkX8dccT1FqQOPfMCr81OcxAeFBFlabD0RednDhajQNxlzVt1O9ygLu0Jwiwzxx6tU/bttyPVGlkeWzXLyBIz4T58zpd2thnIfC4vC+wLT/58OVrP7g1MxlHvOranauukDdEgd/aMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=A9I5x1EB; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=ehjl=qd=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aNE0hW3k;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=A9I5x1EB;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=ehjl=qd=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzz7B3xMDz2ysg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 22:24:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1725539046;
-	bh=mUdYVDhcBbnbe8Qnsh0MBGJ/CuaR+SGTw9WGn1Sesjw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aNE0hW3ktB5ARsICz/sDICJpPHa+7JLjwZbfyZgZ3pBirixCFOKOHsJlHJKueCT+4
-	 oO/jlji0rW5pNKsVEZb9l1e+vrwuXvXHlzxe3cW/CD+/DxV2M5RhbL/mu/Pxk+02P9
-	 qsipRyRV0PDMs0nXFL0649/B2oYRSZgVw2QMf74t1tyGqR0SZL1fjy6VA2WsTdDrJZ
-	 nFFHe+UBoIVY4RgE3JcARKeeLqK1M/Ui2reF+e1tAZ92g0d32LXyubGymdFC3d3Fuc
-	 iqGnn6qGk8pQ972Et1Be/4tzXT7uvXw6+nDOIi3J5F7PsxjXKcp9OpButWBGUjKxsh
-	 Rbiu1u9E3GfiA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Wzz795cY6z4x0H;
-	Thu,  5 Sep 2024 22:24:05 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker
- <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jonathan
- Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, "Rafael
- J. Wysocki" <rafael@kernel.org>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, Nathan Lynch <nathanl@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 13/15] powerpc/rtas: Use fsleep() to minimize additional
- sleep duration
-In-Reply-To: <20240904-devel-anna-maria-b4-timers-flseep-v1-13-e98760256370@linutronix.de>
-References: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
- <20240904-devel-anna-maria-b4-timers-flseep-v1-13-e98760256370@linutronix.de>
-Date: Thu, 05 Sep 2024 22:24:05 +1000
-Message-ID: <87cyli5lwa.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzzrf5DKQz2xFq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 22:56:34 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id BC1CCA4497B;
+	Thu,  5 Sep 2024 12:56:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B06BC4CEC7;
+	Thu,  5 Sep 2024 12:56:29 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="A9I5x1EB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1725540987;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6MTRMH1950H7pYJdyL+qM9S+/x9T4aarJ3EpbvZXG0c=;
+	b=A9I5x1EBzjWpsyVHdJmPYjDYEuQpDwByqVQ89KOcyYwjwC/5UglJ7bOVFCORH/KKdLDSsj
+	hE0+FEYI1HzmSRsLBGvjoYX+tvf6Yr6IvTYdDzNBFgQnOfkYAjE0L/FEuSL0rfcnnK/EpH
+	wvrGrZzEfhJC/aKxpXKjrA1SYDA0ufM=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 83f56dc6 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 5 Sep 2024 12:56:27 +0000 (UTC)
+Date: Thu, 5 Sep 2024 14:56:22 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
+	llvm@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
+	Xi Ruoyao <xry111@xry111.site>
+Subject: Re: [PATCH v5 0/5] Wire up getrandom() vDSO implementation on powerpc
+Message-ID: <Ztmqdr01_idiz64-@zx2c4.com>
+References: <cover.1725304404.git.christophe.leroy@csgroup.eu>
+ <Zthr1nB_RJ56YD3O@zx2c4.com>
+ <87frqe5m5b.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,62 +81,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87frqe5m5b.fsf@mail.lhotse>
 
-Anna-Maria Behnsen <anna-maria@linutronix.de> writes:
-> When commit 38f7b7067dae ("powerpc/rtas: rtas_busy_delay() improvements")
-> was introduced, documentation about proper usage of sleep realted functions
-> was outdated.
->
-...
-> Use fsleep() directly instead of using an own heuristic for the best
-> sleeping mechanism to use..
+On Thu, Sep 05, 2024 at 10:18:40PM +1000, Michael Ellerman wrote:
+> There is an existing comment in the a/p/vdso/Makefile about the
+> fixed-r30 thing, tldr is it's a workaround to avoid breaking old
+> versions of Go.
 
-Thanks for tidying this up. I only learnt about fsleep() in the last ~year.
-
-Two minor nits ...
-
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index f7e86e09c49f..0794ca28e51e 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -1390,21 +1390,14 @@ bool __ref rtas_busy_delay(int status)
->  		 */
->  		ms = clamp(ms, 1U, 1000U);
->  		/*
-> -		 * The delay hint is an order-of-magnitude suggestion, not
-> -		 * a minimum. It is fine, possibly even advantageous, for
-> -		 * us to pause for less time than hinted. For small values,
-> -		 * use usleep_range() to ensure we don't sleep much longer
-> -		 * than actually needed.
-> -		 *
-> -		 * See Documentation/timers/timers-howto.rst for
-> -		 * explanation of the threshold used here. In effect we use
-> -		 * usleep_range() for 9900 and 9901, msleep() for
-> -		 * 9902-9905.
-> +		 * The delay hint is an order-of-magnitude suggestion, not a
-> +		 * minimum. It is fine, possibly even advantageous, for us to
-> +		 * pause for less time than hinted. To make sure pause time will
-> +		 * not be a way longer than requested independent of HZ
- 
-"not be way longer" reads better I think?
-
-> +		 * configuration, use fsleep(). See fsleep() for detailes of
-                                                                 ^
-                                                                 details
-> +		 * used sleeping functions.
->  		 */
-> -		if (ms <= 20)
-> -			usleep_range(ms * 100, ms * 1000);
-> -		else
-> -			msleep(ms);
-> +		fsleep(ms * 1000);
->  		break;
->  	case RTAS_BUSY:
->  		ret = true;
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Thanks. Indeed, following Christophe's links yesterday, I tumbled down
+that rabbit hole for a bit. Interesting how ABIs ossify unintentionally.
 
 
-cheers
+> For the series:
+> 
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+Excellent, queued up now.
+
+> If you can include Maddy's test results from Power9 in the change log
+> for patch 5 that'd be nice.
+
+Was my plan exactly. I replaced the QEMU result with the PowerNV one.
+
+Jason
 
