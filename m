@@ -1,71 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-1050-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1051-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBBE96D67E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 12:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9E196D7D2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 14:02:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzx9z3QJLz2ytN;
-	Thu,  5 Sep 2024 20:56:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzyfN3ryvz2ytd;
+	Thu,  5 Sep 2024 22:02:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725533783;
-	cv=none; b=dN4tuXII/RE2uIIRD6lfItI+xdC5R/a+ecOG1n8M+kTTFQuPvvn/nYyin+s+b+gcZfZA2rh7VBUCSXy3KbolCG2Ou7l0/y1d7shM5CCQa5ixXZj/SUYB3R4q+Fkubr4Yx6QRju4NzyR2YpzqNU4lMGhVmR471Ok89HmuQdhSkv1U2N0qMUYHmqQNj6yw80nQWzEulgtAQVe5JD0rlCEsBucP+pSLIxbfK1smHZJWPKEZVf/j3x0a2sbBgXXt0EsnNgPok/AsNaN/jGj2x53y22wwu4K9t+CHStUiL1mP94RoBuaVzdvGu+B4J6HTqWdKODTDiE+8P6B0VSq1L1xTkA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.188
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725537756;
+	cv=none; b=VlvVcykh88fPz4l4jmhsnK0RHaLtkuv0evEYc+QajrmlaZDUKtS47eGdRghE5Bv9MLji37CxTOTWFW6sOaUkzBPGsVHOfqFWNHs+G1jDRDbkgAoXRa5+KUxCWHypQ5QumCReD3HSN6FJlp3MHEyJeABUGhLZYcljUhU/PRKebsG07r5dJALda4tj56nIIm8BioOAkaPFHcoQjL6HH5F4NKTILocAEf9uYr6Z5TQXHmhj9xgYdFEqE5cW7f+iw6I+DJzxEVAY9XEkLW77YEmlKW0DpDpuYz8ejDcjclFBn3ubE5bA1g98Ux1J976kDnOKZwlp6oew8EWGouUDBDCXnQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725533783; c=relaxed/relaxed;
-	bh=4DJPppfvsq3bVrU8OAZnr57xaqKDJESryIS8WamVFSc=;
-	h=DKIM-Signature:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type; b=nXStJxxm66FIGQ/PuRotp+3bR8Nzq2dlrCXLJ/OBpEQrAueLS/PED23qwMTl38KWo6oJG9TnkzhTwnrw94ks5RhF5cHJL7P0+ewXLkm+l84NjvePTel7G9HpXqX0Iimf+ZRp1y0h3m6azjRs5t4ounK62CbYWLHNyyY2M3cvKnrs7AGno9cTpc0pDhdsr5XNiv8jhkNEznnwht+OPHXYRO1sAArpj2NVXk6yOgFiff1ws6U0o18NfRRZMUH1whUavVlGC4P1Kw7Hv/gOFby/6270RF7N55+3rFlwlk5ccQ3APuFvSTL2nIl0EZcyt9BnLCQ1iI3VAiqhYWakwUzONA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=SVRoeHBF; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=SVRoeHBF;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1725537756; c=relaxed/relaxed;
+	bh=rpxMd43XpALlSdcSVNh9jQ+pFUNeSUssn38kGdhURLU=;
+	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=F1zt8pyDOAqbfT5kE/Qp66bc/ITwB6N8J+PCbrDgMTtNEX6qMlJVAEJlOHYSMfTgIAtADptMzWe3NKtA9Jft8dixJsbPtgtGBQojeHS+hOZnbAiyd+zh594DCLVzWuyUopsJVDE+DHAPKZq3ItLV1bB2PUE2QOaYw9LzD7adC552SL+6oSPMmsH4ERbIZNLs4kv809eYBTTsXorZP5ADIvCcgaDw6WmcF4H1ryb+I04mvMd8oqH0Sv9usxg57VW5k/Xvs1lieY+Z8sFiK8EHZm34bOZ6gnvXLDwYt8nv4BFdmzMvHkzG0mSEtakohp1Qi8fb3ClGMf4fbSWd3jJlig==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzx9z1r3dz2yN8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 20:56:23 +1000 (AEST)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-7c6b4222fe3so514417a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2024 03:56:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1725533780; x=1726138580; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4DJPppfvsq3bVrU8OAZnr57xaqKDJESryIS8WamVFSc=;
-        b=SVRoeHBFyAqDmBIhEqUCCjJJ/7Oyl/GNsAL+YuPZNnb/VCCzPrpDflfKQuRtMMP36+
-         eF5cY+o9rG3w3i8MuZmsuHFr7+Zfaelk3uy1hdmj/TIgqRUWePINempS1QMk2+EgcO00
-         U9QzypSfuJo8eNLr6DaW+HmOHNXaA32eO9qyOuAGz8GtitzpGmH1e3rdfmuHIbbV3CXN
-         jI14Jcg73pzw7Af+31LeuWno142i2q82rdzU7wV6l6/j0AFttHjTv29TFn8clEVIXYe6
-         8hSsZSGFHfrisKh0C9wsLQHNOOPHOfkgVX4Y73wr5+1oQoaD2FgOkm6Z2uLqgy3lIyk2
-         Hs4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725533780; x=1726138580;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4DJPppfvsq3bVrU8OAZnr57xaqKDJESryIS8WamVFSc=;
-        b=OXCFqkb4PdKT6wk7pNGkdc5mnfqv0+srVgrf1DEbBY/7TDTVGla1wxKNhSFLIjvTDd
-         6FzCPrO9JUmNWjl9GM3tu/pCrhIPzqufVF93f19xwVozkYG6CAHBpzTwwOk4yCDexM8I
-         TPsNjifvTjzmQjRy9gSl+rxLdFPS596E+Od3i7GazYlPbZcj9+QJv50m18kklvzaUSwn
-         S8mVPuF49kgyGWbH3U5nYBbvTy56wk/Ow2+SC1u5061xcVfEk5NN3FLkNjTxlOXJpqit
-         kcFGmdZJ2owB+r+hMGxnzF59FD8vX3k/jkGIS5HfvXL+uElLpKKIf5MWtMOuiWx4Aoxo
-         TRxw==
-X-Forwarded-Encrypted: i=1; AJvYcCU00Nl6qmNRT9EtGRId05ksWTXlgxZt5BiaglaK1MvjEoZ7hP2OkR7nTCLybmbdOs+lG/r0Wh/fx0Qathg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyQc72HQF4gVXGgjx2DubchvnIFW3EZOjOK9hDZZeP7JyAOFSrT
-	hyMLo8ybTy6pkQNV1cr3eCPicW6PwU7FNs3vZz2BpcyZid7Z7Oh9M2Eu1WA87BE=
-X-Google-Smtp-Source: AGHT+IHilYsBgfadCapwrPljiidrpCa41K0Hyb98p/0x3xNpGLLwKBsqtfV83jJC0DRLwz+P6VWrRQ==
-X-Received: by 2002:a17:90a:de8c:b0:2d8:7307:3f73 with SMTP id 98e67ed59e1d1-2d8906204f6mr17130275a91.39.1725533780409;
-        Thu, 05 Sep 2024 03:56:20 -0700 (PDT)
-Received: from [10.4.59.158] ([139.177.225.242])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d8b8fe1f68sm9312094a91.31.2024.09.05.03.56.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Sep 2024 03:56:20 -0700 (PDT)
-Message-ID: <cccc16ad-21fb-4c99-8c49-91ee15c202cc@bytedance.com>
-Date: Thu, 5 Sep 2024 18:56:14 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzyfM1gNCz2xTN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 22:02:32 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Wzybf1DgwzfblP;
+	Thu,  5 Sep 2024 20:00:14 +0800 (CST)
+Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id DB95E18005F;
+	Thu,  5 Sep 2024 20:02:21 +0800 (CST)
+Received: from [10.67.121.177] (10.67.121.177) by
+ kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Thu, 5 Sep 2024 20:02:20 +0800
+CC: <yangyicong@hisilicon.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <mingo@redhat.com>,
+	<linux-arm-kernel@lists.infradead.org>, <mpe@ellerman.id.au>,
+	<peterz@infradead.org>, <tglx@linutronix.de>, <sudeep.holla@arm.com>,
+	<will@kernel.org>, <catalin.marinas@arm.com>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dietmar.eggemann@arm.com>,
+	<gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
+	<linuxarm@huawei.com>, <xuwei5@huawei.com>, <guohanjun@huawei.com>
+Subject: Re: [PATCH v5 3/4] arm64: topology: Support SMT control on ACPI based
+ system
+To: Pierre Gondois <pierre.gondois@arm.com>
+References: <20240806085320.63514-1-yangyicong@huawei.com>
+ <20240806085320.63514-4-yangyicong@huawei.com>
+ <a998c723-7451-439a-9c88-7c8b5c1b890b@arm.com>
+ <00e6110a-462a-c117-0292-e88b57d27a05@huawei.com>
+ <3947cb79-3199-4cd6-b784-51a245084581@arm.com>
+ <1a7b5ac7-f040-672f-07a0-d7f3dc170c88@huawei.com>
+ <6c05e39c-41f3-451c-b119-7b8662c1ceee@arm.com>
+ <7f722af2-2969-aae5-1fb5-68d353eb95b9@huawei.com>
+ <277bd093-422b-4301-92a3-d0a58eb41af5@arm.com>
+From: Yicong Yang <yangyicong@huawei.com>
+Message-ID: <10082e64-b00a-a30b-b9c5-1401a54f6717@huawei.com>
+Date: Thu, 5 Sep 2024 20:02:20 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,93 +69,211 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/14] mm: mremap: move_ptes() use
- pte_offset_map_rw_nolock()
-Content-Language: en-US
-To: Muchun Song <muchun.song@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- david@redhat.com, hughd@google.com, willy@infradead.org, vbabka@kernel.org,
- akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
- peterx@redhat.com, ryan.roberts@arm.com, christophe.leroy2@cs-soprasteria.com
-References: <20240904084022.32728-1-zhengqi.arch@bytedance.com>
- <20240904084022.32728-10-zhengqi.arch@bytedance.com>
- <1b03a7de-1278-4e36-8068-885dd1c29742@linux.dev>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <1b03a7de-1278-4e36-8068-885dd1c29742@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <277bd093-422b-4301-92a3-d0a58eb41af5@arm.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.121.177]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemd200014.china.huawei.com (7.221.188.8)
 
-
-
-On 2024/9/5 17:25, Muchun Song wrote:
+On 2024/9/5 16:34, Pierre Gondois wrote:
+> Hello Yicong,
 > 
+>>>> Wondering if we can avoid this 2nd loop. Greg express the worries of looping twice on large scale
+>>>> system in v1. Maybe we could use the hetero_id and get the necessary information in one loop, I need
+>>>> further think.
+>>>
+>>> I found this comments (not sure this is what you are refering to):
+>>> - https://lore.kernel.org/linux-arm-kernel/20231011103303.00002d8f@Huawei.com/
+>>> - https://lore.kernel.org/all/20230921150333.c2zqigs3xxwcg4ln@bogus/T/#m406c4c16871ca7ae431beb20feccfb5e14498452
+>>>
+>>> I don't see another way to do it right now. Also, I thing the complexity is in
+>>> O(2n), which should be better than the original O(n**2),
+>>>
+>>
+>> yes it's less complex. I'm wondering build up the xarray in another way then we can avoid the
+>> long loops. What about below:
 > 
-> On 2024/9/4 16:40, Qi Zheng wrote:
->> In move_ptes(), we may modify the new_pte after acquiring the new_ptl, so
->> convert it to using pte_offset_map_rw_nolock(). Since we may free the PTE
->> page in retract_page_tables() without holding the read lock of mmap_lock,
->> so we still need to do a pmd_same() check after holding the PTL.
+> I tried the patch on a ThunderX2 with 4 threads per CPU. PPTT topology describes
+> 2 clusters of 128 cores each. Each cluster is described as independent (i.e. there
+> is no root node in the PPTT). The PPTT is of revision 1, so the IDENTICAL
+> flag is not available on the platform.
 > 
-> retract_page_tables() and move_ptes() are synchronized with
-> i_mmap_lock, right?
 
-Right, will remove the pmd_same() check in v4. Thanks!
+I think the SMT detection should work on this case, does it? In this case there should be
+2 entries for each cluster respectively in the hetero_cpu array. Since the thread number
+are the same, we'll detect a symmetric SMT topology.
 
-> 
-> Muchun,
-> Thanks.
+> I also tried it on a faked SMT asymmetric platform and there might be a small
+> correction required.
 > 
 >>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>  From 5ff5d0100435982764cd85566a6fe006e60ee98e Mon Sep 17 00:00:00 2001
+>> From: Yicong Yang <yangyicong@hisilicon.com>
+>> Date: Fri, 20 Oct 2023 15:38:38 +0800
+>> Subject: [PATCH] arm64: topology: Support SMT control on ACPI based system
+>>
+>> For ACPI we'll build the topology from PPTT and we cannot directly
+>> get the SMT number of each core. Instead using a temporary xarray
+>> to record the heterogeneous information (from ACPI_PPTT_ACPI_IDENTICAL)
+>> and SMT information of the first core in its heterogeneous CPU cluster
+>> when building the topology. Then we can know the largest SMT number
+>> in the system. Warn if heterogeneous SMT topology exists (multiple
+>> heterogeneous CPU clusters with different SMT thread number) since the
+>> SMT control cannot handle this well. Then enable the support of SMT
+>> control.
+>>
+>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 >> ---
->>   mm/mremap.c | 20 ++++++++++++++++++--
->>   1 file changed, 18 insertions(+), 2 deletions(-)
+>>   arch/arm64/kernel/topology.c | 60 ++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 60 insertions(+)
 >>
->> diff --git a/mm/mremap.c b/mm/mremap.c
->> index 24712f8dbb6b5..16e54151395ad 100644
->> --- a/mm/mremap.c
->> +++ b/mm/mremap.c
->> @@ -143,6 +143,7 @@ static int move_ptes(struct vm_area_struct *vma, 
->> pmd_t *old_pmd,
->>       spinlock_t *old_ptl, *new_ptl;
->>       bool force_flush = false;
->>       unsigned long len = old_end - old_addr;
->> +    pmd_t pmdval;
->>       int err = 0;
->>       /*
->> @@ -175,14 +176,29 @@ static int move_ptes(struct vm_area_struct *vma, 
->> pmd_t *old_pmd,
->>           err = -EAGAIN;
->>           goto out;
->>       }
->> -    new_pte = pte_offset_map_nolock(mm, new_pmd, new_addr, &new_ptl);
->> +    /*
->> +     * Since we may free the PTE page in retract_page_tables() without
->> +     * holding the read lock of mmap_lock, so we still need to do a
->> +     * pmd_same() check after holding the PTL.
->> +     */
->> +    new_pte = pte_offset_map_rw_nolock(mm, new_pmd, new_addr, &pmdval,
->> +                       &new_ptl);
->>       if (!new_pte) {
->>           pte_unmap_unlock(old_pte, old_ptl);
->>           err = -EAGAIN;
->>           goto out;
->>       }
->> -    if (new_ptl != old_ptl)
->> +    if (new_ptl != old_ptl) {
->>           spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+>> index 1a2c72f3e7f8..f6ec30fae70e 100644
+>> --- a/arch/arm64/kernel/topology.c
+>> +++ b/arch/arm64/kernel/topology.c
+>> @@ -15,8 +15,10 @@
+>>   #include <linux/arch_topology.h>
+>>   #include <linux/cacheinfo.h>
+>>   #include <linux/cpufreq.h>
+>> +#include <linux/cpu_smt.h>
+>>   #include <linux/init.h>
+>>   #include <linux/percpu.h>
+>> +#include <linux/xarray.h>
+>>
+>>   #include <asm/cpu.h>
+>>   #include <asm/cputype.h>
+>> @@ -37,17 +39,29 @@ static bool __init acpi_cpu_is_threaded(int cpu)
+>>       return !!is_threaded;
+>>   }
+>>
+>> +struct cpu_smt_info {
+>> +    int thread_num;
+>> +    int core_id;
+>> +    int cpu;
+>> +};
 >> +
->> +        if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(new_pmd)))) {
->> +            pte_unmap_unlock(new_pte, new_ptl);
->> +            pte_unmap_unlock(old_pte, old_ptl);
->> +            err = -EAGAIN;
->> +            goto out;
->> +        }
+>>   /*
+>>    * Propagate the topology information of the processor_topology_node tree to the
+>>    * cpu_topology array.
+>>    */
+>>   int __init parse_acpi_topology(void)
+>>   {
+>> +    int max_smt_thread_num = 1;
+>> +    struct cpu_smt_info *entry;
+>> +    struct xarray hetero_cpu;
+>> +    unsigned long hetero_id;
+>>       int cpu, topology_id;
+>>
+>>       if (acpi_disabled)
+>>           return 0;
+>>
+>> +    xa_init(&hetero_cpu);
+>> +
+>>       for_each_possible_cpu(cpu) {
+>>           topology_id = find_acpi_cpu_topology(cpu, 0);
+>>           if (topology_id < 0)
+>> @@ -57,6 +71,30 @@ int __init parse_acpi_topology(void)
+>>               cpu_topology[cpu].thread_id = topology_id;
+>>               topology_id = find_acpi_cpu_topology(cpu, 1);
+>>               cpu_topology[cpu].core_id   = topology_id;
+>> +
+>> +            /*
+>> +             * Build up the XArray using the heterogeneous ID of
+>> +             * the CPU cluster. Store the CPU and SMT information
+>> +             * of the first appeared CPU in the CPU cluster of this
+>> +             * heterogeneous ID since the SMT information should be
+>> +             * the same in this CPU cluster. Then we can know the
+>> +             * SMT information of each heterogeneous CPUs in the
+>> +             * system.
+>> +             */
+>> +            hetero_id = find_acpi_cpu_topology_hetero_id(cpu);
+>> +            entry = (struct cpu_smt_info *)xa_load(&hetero_cpu, hetero_id);
+>> +            if (!entry) {
+>> +                entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+>> +                WARN_ON(!entry);
+>> +
+>> +                entry->cpu = cpu;
+>> +                entry->core_id = topology_id;
+>> +                entry->thread_num = 1;
+>> +                xa_store(&hetero_cpu, hetero_id,
+>> +                     entry, GFP_KERNEL);
+>> +            } else if (entry->core_id == topology_id) {
+>> +                entry->thread_num++;
+>> +            }
+>>           } else {
+>>               cpu_topology[cpu].thread_id  = -1;
+>>               cpu_topology[cpu].core_id    = topology_id;
+>> @@ -67,6 +105,28 @@ int __init parse_acpi_topology(void)
+>>           cpu_topology[cpu].package_id = topology_id;
+>>       }
+>>
+>> +    /*
+>> +     * This should be a short loop depending on the number of heterogeneous
+>> +     * CPU clusters. Typically on a homogeneous system there's only one
+>> +     * entry in the XArray.
+>> +     */
+>> +    xa_for_each(&hetero_cpu, hetero_id, entry) {
+>> +        if (entry->thread_num == 1)
+>> +            continue;
+> 
+> If a platform has CPUs with:
+> - 1 thread
+> - X (!= 1) threads
+> Then I think that the asymmetry is not detected
+
+Ah ok, I only handle the case where there are several thread numbers except no SMT CPUs in the
+system. For this case I was thinking we don't need to handle this since there's only one kind
+of SMT core in the system, control should works fine for the SMT CPU clusters and we may not
+care about the CPUs with no SMT.
+
+Below code should handle the case if we initialize the max_smt_thread_num to 0. I also
+reword the warning messages to match the fact. For heterogeneous SMT topology we still
+support control SMT by on/off toggle but not fully support setting the thread number.
+
+	int max_smt_thread_num = 0;
+	[...]
+	/*
+	 * This should be a short loop depending on the number of heterogeneous
+	 * CPU clusters. Typically on a homogeneous system there's only one
+	 * entry in the XArray.
+	 */
+	xa_for_each(&hetero_cpu, hetero_id, entry) {
+		/*
+		 * If max_smt_thread_num has been initialized and doesn't match
+		 * the thread number of this entry, then the system has
+		 * heterogeneous SMT topology.
+		 */
+		if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)
+			pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
+
+		if (entry->thread_num > max_smt_thread_num)
+			max_smt_thread_num = entry->thread_num;
+
+		xa_erase(&hetero_cpu, hetero_id);
+		kfree(entry);
+	}
+
+Thanks.
+
+> 
+>> +
+>> +        if (entry->thread_num != max_smt_thread_num &&
+>> +            max_smt_thread_num != 1)
+>> +            pr_warn("Heterogeneous SMT topology not handled");
+>> +
+>> +        if (entry->thread_num > max_smt_thread_num)
+>> +            max_smt_thread_num = entry->thread_num;
+>> +
+>> +        xa_erase(&hetero_cpu, hetero_id);
+>> +        kfree(entry);
 >> +    }
 >> +
->>       flush_tlb_batched_pending(vma->vm_mm);
->>       arch_enter_lazy_mmu_mode();
+>> +    cpu_smt_set_num_threads(max_smt_thread_num, max_smt_thread_num);
+>> +    xa_destroy(&hetero_cpu);
+>>       return 0;
+>>   }
+>>   #endif
 > 
+> .
 
