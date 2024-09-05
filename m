@@ -1,78 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-1037-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1041-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E164096D257
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 10:38:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62CB696D30A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 11:25:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzt6n5hHkz2yT0;
-	Thu,  5 Sep 2024 18:38:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Wzv8X2CcGz2yYk;
+	Thu,  5 Sep 2024 19:25:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725525505;
-	cv=none; b=Xb6Dx6csbndsxOBxuxexBIzbb092yEVD8lPxJ7yWi6C+dShNn6G9rZEGNEcOUgdxBoZX47ZT/QIGGV/nis/ZoS0H6cvYPke3BG0xmL+dW+4WAiu1G7ljtf0ZsRKYQCZ22F1ofrg6/buVC7zyZCzPEajFBbU0UKRH0O3jJhkA++O8XL5O6Kjfj7W99z8dE5hPqMylVt+lulqOWl76FF/M2qdFUO1yF8gHUkdM3ieFZVNLo4QlYj4jgKsFZptq9Jf97syHAvwdLdHyh5+CVbdRR2h9l1lDPrIIySl+PcxTarKRgWiSca5mLsUEM+pD8/u2IcdoCd3xrZlucDjDXSwVXA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=51.81.35.219
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725526916;
+	cv=none; b=GRsJhF5YhV2vwBaoYbx5hNPDeHTtLAhJUHkqeMdH1i5L9L2O++4F1GFOfluEfMSrY6eCoy6GF25MVmRy90ENj6LEEvr2Kf+3mPUTMqFXUGDCu3SqrpxmXksLF9rXOul7daqMUaKb/16gkXVFpS7V+Vr8rHrfFjPjhONgnEXh2+kWjCh6RZB4JUS3EIZBf733Xf3cg0bQtgwfW+a3ihittCW6Jl7xnfmQFWqv+LhZuZLzdW+JHWfAO44aZCsTsL+vMZ/1LITslmxMatQluQck+qdc97o8p9HozfL7as+ExBys6Q9a0IRq/9xa07R+q+vBzn729Me7P1l+wAywwnC0+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725525505; c=relaxed/relaxed;
-	bh=P9ADIHjRXj1WJsIRfcpdcdI+TM8EPlLvEY98Zxn8VVk=;
-	h=DKIM-Signature:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type; b=hIK+OHAEfLaGwhHR6NnvjHoFXMUisC+vog1p70NYQkvW5OaVSPWwT06ffVHT1St+3nKwOEXme9PBcssEhO8dknSUC5nWR/rzcJ5lbyJgMZOzIDv8D8WTN+3v3Il/7B46pcYdjw/3IeSfwCfmScA5C/pvzp5sOzGVd6stykLS5/4SndLNc5PCiiycljghFYuLCt5ZOjxoiiMKU06hdkg6qmnf877r5yFJX4833bf9GnbncDGPgtO/WaPtvjqBW/BJR/C2lVKr45UMVugq29aIAlBWNHp9iKCJ5/To3BSr2mlCb0U+OZvdKUoK4D5GiZEVHWaUwyK9O4SMr5bt8evVkg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LuyNdk5o; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1725526916; c=relaxed/relaxed;
+	bh=H9MpIYSRcEX+VD9OMp2crHKTWLp2ChM3Wcl4xbI1QDs=;
+	h=DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=XSjDiDB8sGBw4Kzdkew/0rWFfU2CRYYWvO/jmJCdYgWCkWQwaioT4ULj8vXKuwcCxdh/lcqjjCAtsj96s+TahYVANFrJ1uvQw3sBvMa1i6rysPoI0vMMI74beYk88pnYdRZHk4va9+iwyFnPRYYL+NEDQ1gHHPK7mv46MUT59DStq9Yf+xdv2WxE7/UWAfdSHkE41uBzdLwg4I1E+VX46NMgalOQOfOGdCCpvLidoBCO2c/nQLbIxt6NkAi5UyGlE9755TxG+eFpu5i3+q7uIXwFJYuDih6OHBAIkSiT55XcgWaoj8hMVgOUzhHHPauj3h2zZi7IbW8CyrgmIji8/Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=aosc.io; dkim=pass (1024-bit key; unprotected) header.d=aosc.io header.i=@aosc.io header.a=rsa-sha256 header.s=default header.b=w3IN+vsm; dkim-atps=neutral; spf=pass (client-ip=51.81.35.219; helo=relay-us1.mymailcheap.com; envelope-from=kexybiscuit@aosc.io; receiver=lists.ozlabs.org) smtp.mailfrom=aosc.io
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=aosc.io
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LuyNdk5o;
+	dkim=pass (1024-bit key; unprotected) header.d=aosc.io header.i=@aosc.io header.a=rsa-sha256 header.s=default header.b=w3IN+vsm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aosc.io (client-ip=51.81.35.219; helo=relay-us1.mymailcheap.com; envelope-from=kexybiscuit@aosc.io; receiver=lists.ozlabs.org)
+X-Greylist: delayed 383 seconds by postgrey-1.37 at boromir; Thu, 05 Sep 2024 19:01:55 AEST
+Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wzt6n01R5z2yRZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 18:38:24 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4853NF5a018187;
-	Thu, 5 Sep 2024 08:38:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=P
-	9ADIHjRXj1WJsIRfcpdcdI+TM8EPlLvEY98Zxn8VVk=; b=LuyNdk5oCTEB4An5o
-	jfiLCTtfzXlCIPovMi8tpFj+lroHcSdiPiURhwxuv+1wBvn5DwlGsXIaCZujFhAh
-	BQmUqEzH8aqEnRCYzMHeTGEycBv8FYYRaG2XCZbVc62e/VpnhWvsJp+n6kBlcp6u
-	nbIUf1XfJwjfOPIO5+0Bq0k0vM4nrQtEfKjfSOMKwys+258nDoWLi4Ti6hF7Hlzf
-	u4AcT9XiIssb9EOSdpVqpSOVohSIsIOhhGABfOn8ypLxgBHbH3KH2akckOYDc1Hj
-	62u8xk0e/AqN1e7dOAPSEbqAX0/m/+tIXO2EpzS6lrMjseO37IDSurCZiNRN1JnA
-	PiWLQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkr02mj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 08:38:09 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4858U5SO023730;
-	Thu, 5 Sep 2024 08:38:09 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41brkr02mg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 08:38:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4855vRsS018672;
-	Thu, 5 Sep 2024 08:38:08 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41cdw1c0ga-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 08:38:08 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4858c5Uv15335874
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Sep 2024 08:38:05 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C9B9420063;
-	Thu,  5 Sep 2024 08:38:05 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D1EF320043;
-	Thu,  5 Sep 2024 08:38:00 +0000 (GMT)
-Received: from [9.43.125.148] (unknown [9.43.125.148])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Sep 2024 08:38:00 +0000 (GMT)
-Message-ID: <c6f30e31-69fe-4ece-b251-c49f1ab59a04@linux.ibm.com>
-Date: Thu, 5 Sep 2024 14:07:58 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Wztdv6sQmz2xnc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 19:01:55 +1000 (AEST)
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id D252F202DD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 08:55:28 +0000 (UTC)
+Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.157])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 201332619F
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 08:55:22 +0000 (UTC)
+Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
+	by relay3.mymailcheap.com (Postfix) with ESMTPS id 96F293E970;
+	Thu,  5 Sep 2024 10:55:16 +0200 (CEST)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 91B81400B3;
+	Thu,  5 Sep 2024 08:55:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1725526514; bh=f1MPAD4O/d2BtmRLp4/BYgjptMhBAm5TS4m5Ii3NVJY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=w3IN+vsmPVD4TLlGAVgh4wAY9Bqv2QZbp8Oj/VVoDmNq6/9tyh4jXwVK6JAzQ/LVF
+	 8uQeyoQK7+wn1+qwvO6gy5cOT2U1uHPL1qEAP22SWNT8bbwYFwhtipACq8SzjrU2E8
+	 GQ/nP3k13J5pz/FrVkhMNSb55MnWeqkqwxHWitsw=
+Received: from localhost.localdomain (unknown [58.32.40.121])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id ECFFF42639;
+	Thu,  5 Sep 2024 08:55:07 +0000 (UTC)
+From: Kexy Biscuit <kexybiscuit@aosc.io>
+To: stefanb@linux.ibm.com,
+	jarkko@kernel.org,
+	linux-integrity@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org,
+	mpe@ellerman.id.au,
+	naveen.n.rao@linux.ibm.com,
+	zohar@linux.ibm.com,
+	Kexy Biscuit <kexybiscuit@aosc.io>,
+	stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>,
+	Mingcong Bai <jeffbai@aosc.io>
+Subject: [PATCH v2 RESEND] tpm: export tpm2_sessions_init() to fix ibmvtpm building
+Date: Thu,  5 Sep 2024 16:52:20 +0800
+Message-ID: <20240905085219.77240-2-kexybiscuit@aosc.io>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,134 +79,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kexec/crash: no crash update when kexec in progress
-To: Baoquan He <bhe@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-        Hari Bathini <hbathini@linux.ibm.com>, kexec@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
-References: <20240731152738.194893-1-sourabhjain@linux.ibm.com>
- <87v80lnf8d.fsf@mail.lhotse>
- <10c666ae-d528-4f49-82e9-8e0fee7099e0@linux.ibm.com>
- <355b58b1-6c51-4c42-b6ea-dcd6b1617a18@linux.ibm.com>
- <ZsLjGJvAUIaxrG6x@MiWiFi-R3L-srv>
- <1e4a8e18-cda9-45f5-a842-8ffcd725efc9@linux.ibm.com>
- <ZtGqTSMvx6Ljf5Xi@MiWiFi-R3L-srv>
- <0dd94920-b13f-4da7-9ea6-4f008af1f4b3@linux.ibm.com>
- <ZtkkIoUIu8shp/ut@MiWiFi-R3L-srv>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <ZtkkIoUIu8shp/ut@MiWiFi-R3L-srv>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3E_zICSznpiTbAsJp_vUj6gzJGxIoAtF
-X-Proofpoint-ORIG-GUID: hIqrKRw-KLK960E0ks9WsRAv3WYC4C5x
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-05_04,2024-09-04_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 mlxscore=0 impostorscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 adultscore=0 mlxlogscore=992 bulkscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409050063
+X-Rspamd-Queue-Id: 91B81400B3
+X-Rspamd-Server: nf2.mymailcheap.com
+X-Spamd-Result: default: False [1.40 / 10.00];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Rspamd-Action: no action
 
-Hello Baoquan,
+Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
+initialize session support") adds call to tpm2_sessions_init() in ibmvtpm,
+which could be built as a module. However, tpm2_sessions_init() wasn't
+exported, causing libmvtpm to fail to build as a module:
 
-On 05/09/24 08:53, Baoquan He wrote:
-> On 09/04/24 at 02:55pm, Sourabh Jain wrote:
->> Hello Baoquan,
->>
->> On 30/08/24 16:47, Baoquan He wrote:
->>> On 08/20/24 at 12:10pm, Sourabh Jain wrote:
->>>> Hello Baoquan,
->>>>
-> ......snip...
->>>> 2. A patch to return early from the `crash_handle_hotplug_event()` function
->>>> if `kexec_in_progress` is
->>>>      set to True. This is essentially my original patch.
->>> There's a race gap between the kexec_in_progress checking and the
->>> setting it to true which Michael has mentioned.
->> The window where kernel is holding kexec_lock to do kexec boot
->> but kexec_in_progress is yet not set to True.
->>
->> If kernel needs to handle crash hotplug event, the function
->> crash_handle_hotplug_event()  will not get the kexec_lock and
->> error out by printing error message about not able to update
->> kdump image.
-> But you wanted to avoid the erroring out if it's being in
-> kernel_kexec().  Now you are seeing at least one the noising
-> message, aren't you?
+ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
 
-Yes, but it is very rare to encounter.
+Export tpm2_sessions_init() to resolve the issue.
 
-My comments on your updated code are inline below.
+Cc: stable@vger.kernel.org # v6.10+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lkp@intel.com/
+Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support")
+Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+---
+V1 -> V2: Added Fixes tag and fixed email format
+RESEND: The previous email was sent directly to stable-rc review
 
->
->> I think it should be fine. Given that lock is already taken for
->> kexec kernel boot.
->>
->> Am I missing something major?
->>
->>> That's why I think
->>> maybe checking kexec_in_progress after failing to retriving
->>> __kexec_lock is a little better, not very sure.
->> Try for kexec lock before kexec_in_progress check will not solve
->> the original problem this patch trying to solve.
->>
->> You proposed the below changes earlier:
->>
->> -	if (!kexec_trylock()) {
->> +	if (!kexec_trylock() && kexec_in_progress) {
->>   		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
->>   		crash_hotplug_unlock();
-> Ah, I meant as below, but wrote it mistakenly.
->
-> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-> index 63cf89393c6e..e7c7aa761f46 100644
-> --- a/kernel/crash_core.c
-> +++ b/kernel/crash_core.c
-> @@ -504,7 +504,7 @@ int crash_check_hotplug_support(void)
->   
->   	crash_hotplug_lock();
->   	/* Obtain lock while reading crash information */
-> -	if (!kexec_trylock()) {
-> +	if (!kexec_trylock() && !kexec_in_progress) {
->   		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
->   		crash_hotplug_unlock();
->   		return 0;
->
->
->>
->> Once the kexec_in_progress is set to True there is no way one can get
->> kexec_lock. So kexec_trylock() before kexec_in_progress is not helpful
->> for the problem I am trying to solve.
-> With your patch, you could still get the error message if the race gap
-> exist. With above change, you won't get it. Please correct me if I am
-> wrong.
+ drivers/char/tpm/tpm2-sessions.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The above code will print an error message during the race gap. Here's why:
-
-Let’s say the kexec lock is acquired in the kernel_kexec() function,
-but kexec_in_progress is not yet set to True. In this scenario, the code 
-will print
-an error message.
-
-There is another issue I see with the above code:
-
-Consider that the system is on the kexec kernel boot path, and 
-kexec_in_progress
-is set to True. If crash_hotplug_unlock() is called, the kernel will not 
-only update
-the kdump image without acquiring the kexec lock, but it will also 
-release the
-kexec lock in the out label. I believe this is incorrect.
-
-Please share your thoughts.
-
-Thanks,
-Sourabh Jain
-
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index d3521aadd43e..44f60730cff4 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
+ 
+ 	return rc;
+ }
++EXPORT_SYMBOL(tpm2_sessions_init);
+ #endif /* CONFIG_TCG_TPM2_HMAC */
+-- 
+2.46.0
 
 
