@@ -1,59 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-1059-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1060-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6593A96D9AF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 15:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E58A96DBB8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 16:26:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X00166qq7z2yy9;
-	Thu,  5 Sep 2024 23:03:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X01rJ3kfcz2ydG;
+	Fri,  6 Sep 2024 00:26:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725541434;
-	cv=none; b=RqxcfkT9ovXoBqKgwd3Xx8dL4bqcXumTHGrbgC7APQ90wLvRJyH1uTPmHnWUVM9pSUDmaPdf6hFeVtdfPhg2Bhkf7qPGbPZcWjnL2Zyb+h2pWYZ4o3IX1aYIcwhBnN7ei/jbRIRRxFuRWkf84mKzKy7QjfrXLnZ7zM3fJuob37+TZoeGHxJr0sUsUOiX34lQiQzGohgTKrKAPonFpNoQ8DhCGsSXtsspJ+DCPOCRsBmay6n1SEjfDhadZ+IqORuJAuhlUltrCOknuuoLhekD3LGyZXP0r8nUXd5MmOtx3WhzvVec0hJiRMECC16WDDXMZWhQ7jW5SYTNX0uq57KX3g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725546384;
+	cv=none; b=CzJSmgENQlWWPghEtU8utGg5FEl/4zGnnbN5TDGvIQwBmceY6glXmAvFItt3PhEWOAiPhTIhHqLWQaTq/HdcNgAFQwQXo4FzuMdd9PfMOQ3NzyfNPRAcnRDDVRX92eeL0Is2/nD/YDJJxdsF4WWPOYgM4V3w/OV+/6TLK0UHFRG7dhM2y8byH0gZeCZukYgFZDSD2Fe94QCpeFg68TgMaPGS3pM/dRAxe6Muh4umvJUnM6R8genIL4SCPmznamyR5soQtrcyxF+93JaJYqasGKS/WNORmXYxdFJj1HrQaSGi7iAjrV2/X5wagxlFz3iGknA9UCpP6QEpOv+Zm2fG2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725541434; c=relaxed/relaxed;
-	bh=RXRwmdIw2hmujIu+zOU3bMrotz29NiEUkMEbFdyrSEk=;
-	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 Message-ID:MIME-Version:Content-Type; b=eboqpxroHKAiuntSWgI9AZXXrxyci8ETY/PRTzUsZs5NjpF7NPZDPi3sPTxJlhzvkbA3OH1kxvOnx7OSQruBkVTokVloWEOkiXiZ2qGstTvD5K3j1H6CEnfNlhKtiKxEvdn3EsvPvQPybghslC3C/vDT21xe0jEQPwZxglVQ/5Sa//1t3owaDlCDp6r2y/ls0/MySaOm0/aE9MbAb6y+7rBjX7q75eOV26CTNfPeQQExeS+2OZAMvLGnrGMd9TDyvvkLFuZ55dj4ZGPja74OaDTWWSC5hIqS/2GwYVlrUJxX8l2qCcbLkLUARSFkKz/d70c2t6DO+dSaWs/6UWR46w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qVxA64tz; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1725546384; c=relaxed/relaxed;
+	bh=mZRLje0nZWz21+doXaYk4vxjz89WdRJ6395xOReDcKc=;
+	h=DKIM-Signature:Mime-Version:Content-Type:Date:Message-Id:Cc:
+	 Subject:From:To:References:In-Reply-To; b=YRpiu2oIXOzpe6u4VGe25eeGEU3SNsHZElwmhnALBKMVtw9K8Namsq6PdEKg1rVFoccr2jxsXNOcYaR12/51v5+rmiDdpM4j/ahRt1gRxyuvcqsDtxv/v+LSScYV9iYjkNdHchpRPi4T3mYFqpZJ/jNqY/7dQvwRb3l36hILW6DktpvlaJN9MxQrE5bJDh+uLOwGvOUGj1w1hLYB2TxwcX44B2fogoBaVu4VX0//Dqu4nMl1X8CaCFIqbGQdMIws0HE/5PpTO03S/S3z/TRj5rcfmc3V0NIV546ZZNrSwzkPUZj1Y+22eBrXaQtuwR7Ekqv5vp69sobPWQ2Z1pcx0g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LT2emT1x; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qVxA64tz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LT2emT1x;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X00155x8Vz2yxj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 23:03:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1725541433;
-	bh=RXRwmdIw2hmujIu+zOU3bMrotz29NiEUkMEbFdyrSEk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qVxA64tzjJkTa4KIhbNdHQZLZSYP5jVH+TbDzUfI1Z67UCCZGjo4ErcXqMrmgHsZ5
-	 1gxnnq4fGLeSjR+CvesYrxURi1Oooo5wlsJwLDj1fidxwmB1BY+IqAULqcSr1Zp30m
-	 2+VREPlHs1sf3f/BT0e39xqeCW2kL6tHZflax9sOHK/2d3SA++9Y/4cFpSMuknuYOe
-	 aTn4nKhD+dXRvBRk/PEryq6Y6PBZ0xDyV3C7+tppU8iCGwxnUPKwNJZOXC6T2K4GBS
-	 mOhZbYqa6BTt28B8wmS7Yfa/e3msGZswJaQXg97IjrfGWcewBqKKCB8FATVviDYt8j
-	 MwJPuOW84uewA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X00153jJGz4w2N;
-	Thu,  5 Sep 2024 23:03:53 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Narayana Murty N <nnmlinux@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, naveen@kernel.org, vaibhav@linux.ibm.com,
- ganeshgr@linux.ibm.com, sbhat@linux.ibm.com
-Subject: Re: [PATCH v2] powerpc/pseries/eeh: Fix pseries_eeh_err_inject
-In-Reply-To: <20240823151158.92602-1-nnmlinux@linux.ibm.com>
-References: <20240823151158.92602-1-nnmlinux@linux.ibm.com>
-Date: Thu, 05 Sep 2024 23:03:53 +1000
-Message-ID: <877cbq5k1y.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X01rJ29cvz2yYq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 00:26:24 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id D3CCA5C5CBD;
+	Thu,  5 Sep 2024 14:26:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1696C4CEC5;
+	Thu,  5 Sep 2024 14:26:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725546381;
+	bh=cjIK4MXp2ychqW40KbQPt1aZ9lUypAyZZyXEdWDht28=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=LT2emT1xvJ0FhLoGFLsWTR30Nr7s1gp/0JQHuJd0rqQXSTFLN26dVSci4YQmtqkb1
+	 0T2VWkl0bW555WoLgXDkL4er5ehSlUK1+UI1hg0uRT1SmDv7C11kKwOAdyAgiH0dEO
+	 SzeTyo0+tkxhWzyrcivLgoCMXT4It1F7Dv0DZg3tNzAYtXFEa8DWdpawrCDO+QAmJe
+	 quT1X04TnwiNcVXjUoocSEg0OlBOljNnXW+TLcBISeQjCvKuXPZNEf+BvEx+6DteNJ
+	 O78VDKO7XTonkh2xFA5tI29414mpqNTfzf34YKE+wt2bNUIWphHdTh1LmzrNgWuPnV
+	 P2/IZZ/yopH1Q==
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,91 +51,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Sep 2024 17:26:17 +0300
+Message-Id: <D3YF52E4EVJ0.2ZJSCR5FCVIGX@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <mpe@ellerman.id.au>,
+ <naveen.n.rao@linux.ibm.com>, <zohar@linux.ibm.com>,
+ <stable@vger.kernel.org>, "kernel test robot" <lkp@intel.com>, "Mingcong
+ Bai" <jeffbai@aosc.io>
+Subject: Re: [PATCH v2 RESEND] tpm: export tpm2_sessions_init() to fix
+ ibmvtpm building
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Kexy Biscuit" <kexybiscuit@aosc.io>, <stefanb@linux.ibm.com>,
+ <linux-integrity@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
+X-Mailer: aerc 0.18.2
+References: <20240905085219.77240-2-kexybiscuit@aosc.io>
+In-Reply-To: <20240905085219.77240-2-kexybiscuit@aosc.io>
 
-Narayana Murty N <nnmlinux@linux.ibm.com> writes:
-> VFIO_EEH_PE_INJECT_ERR ioctl is currently failing on pseries
-> due to missing implementation of err_inject eeh_ops for pseries.
-> This patch implements pseries_eeh_err_inject in eeh_ops/pseries
-> eeh_ops. Implements support for injecting MMIO load/store error
-> for testing from user space.
+On Thu Sep 5, 2024 at 11:52 AM EEST, Kexy Biscuit wrote:
+> Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
+> initialize session support") adds call to tpm2_sessions_init() in ibmvtpm=
+,
+> which could be built as a module. However, tpm2_sessions_init() wasn't
+> exported, causing libmvtpm to fail to build as a module:
 >
-> The check on PCI error type code is moved to platform code, since
-> the eeh_pe_inject_err can be allowed to more error types depending
-> on platform requirement.
+> ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko] un=
+defined!
 >
-> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+> Export tpm2_sessions_init() to resolve the issue.
+>
+> Cc: stable@vger.kernel.org # v6.10+
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lkp@i=
+ntel.com/
+> Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initiali=
+ze session support")
+> Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
+> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
 > ---
+> V1 -> V2: Added Fixes tag and fixed email format
+> RESEND: The previous email was sent directly to stable-rc review
 >
-> Testing:
-> ========
-> vfio-test [1] by Alex Willamson, was forked and updated to add
-> support inject error on pSeries guest and used to test this
-> patch[2].
+>  drivers/char/tpm/tpm2-sessions.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> References:
-> ===========
-> [1] https://github.com/awilliam/tests
-> [2] https://github.com/nnmwebmin/vfio-ppc-tests/tree/vfio-ppc-ex
->
-> ================
-> Changelog:
-> V1:https://lore.kernel.org/all/20240822082713.529982-1-nnmlinux@linux.ibm.com/
-> - Resolved build issues for ppc64|le_defconfig by moving the
-> pseries_eeh_err_inject() definition outside of the CONFIG_PCI_IOV
-> code block.
-> - New eeh_pe_inject_mmio_error wrapper function added to avoid
-> CONFIG_EEH is not set.
- 
-I don't see why that's necessary?
-
-It's only called from eeh_pseries.c, which is only built for
-PPC_PSERIES, and when PPC_PSERIES=y, EEH is always enabled.
-
-> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
-> index 91a9fd53254f..8da6b047a4fe 100644
-> --- a/arch/powerpc/include/asm/eeh.h
-> +++ b/arch/powerpc/include/asm/eeh.h
-> @@ -308,7 +308,7 @@ int eeh_pe_reset(struct eeh_pe *pe, int option, bool include_passed);
->  int eeh_pe_configure(struct eeh_pe *pe);
->  int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->  		      unsigned long addr, unsigned long mask);
-> -
-> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev);
->  /**
->   * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.
->   *
-> @@ -338,6 +338,10 @@ static inline int eeh_check_failure(const volatile void __iomem *token)
->  	return 0;
+> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-ses=
+sions.c
+> index d3521aadd43e..44f60730cff4 100644
+> --- a/drivers/char/tpm/tpm2-sessions.c
+> +++ b/drivers/char/tpm/tpm2-sessions.c
+> @@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
+> =20
+>  	return rc;
 >  }
->  
-> +static inline int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
-> +{
-> +	return -ENXIO;
-> +}
->  #define eeh_dev_check_failure(x) (0)
->  
->  static inline void eeh_addr_cache_init(void) { }
-> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-> index d03f17987fca..49ab11a287a3 100644
-> --- a/arch/powerpc/kernel/eeh.c
-> +++ b/arch/powerpc/kernel/eeh.c
-> @@ -1537,10 +1537,6 @@ int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->  	if (!eeh_ops || !eeh_ops->err_inject)
->  		return -ENOENT;
->  
-> -	/* Check on PCI error type */
-> -	if (type != EEH_ERR_TYPE_32 && type != EEH_ERR_TYPE_64)
-> -		return -EINVAL;
-> -
- 
-The change log should mention why it's OK to remove these checks. You
-add the same checks in pseries_eeh_err_inject(), but what about
-pnv_eeh_err_inject() ?
+> +EXPORT_SYMBOL(tpm2_sessions_init);
+>  #endif /* CONFIG_TCG_TPM2_HMAC */
 
-It is OK AFAICS, because pnv_eeh_err_inject() already contains
-equivalent checks, but you should spell that out.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-cheers
+BR, Jarkko
 
