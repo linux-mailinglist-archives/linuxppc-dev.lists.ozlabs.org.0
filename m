@@ -1,71 +1,140 @@
-Return-Path: <linuxppc-dev+bounces-1031-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1032-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5318D96CF88
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 08:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0515A96CFEE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 09:02:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4WzqXN0DH6z2yks;
-	Thu,  5 Sep 2024 16:41:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4WzqzY33plz2xr2;
+	Thu,  5 Sep 2024 17:02:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725518515;
-	cv=none; b=GBJ7i5TT9LhX7undxSUR3zxBDcANUlWJh6ZI+KG8Kdvuvd2A/lTdE1mV82t6fJiz73SAjmULbrm1fdNkdzWoxQbuYd4qzDM+7Y5VPxAwOoUQ/HSRqRUCZTZVe01fdKdDn7bFzfcSQXTD3P3e/qD0OA9mEcTRbQKNhiFQg4Depzgr8dTEn66TjhhkIatesVx8QdVoFPFonr7cQzlgR5IW0mZ+OPjIbekd3/6iBIpMghxFQ8WoN70y10KlSeL29tP0DYf2s14apiY56FIzSyWIu8g1bSO4P/vpOy2r5pU2T90RpySgEfaVvg6CEXzmGABkRZo0kjgRVmGkENM1xyeqkQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.139
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725519395;
+	cv=none; b=FsnvRkApiCfrPafJAys6TbfU3Br4DWEawmUgbfZLDBf076NGOlIHWfMFbCRDhdyo0kh98lndR00g3lE4yhqerEkGIojf3CCswXKgaQJZtXcGssEw3hg9+uOhFTvh5YbqOC1OqMNbnbm1npvQt6uQjzbBo+c1XNveMwPX8tX+c/zpa4Hol/jnDIdx6gYr+jW7yHWwmLW+Ia9ktQEz1Ftczn3Cjc496wM0OJPU1wtHnFZ/T/EG9eGEO2zBvfQOTccuD2Jzl0uda0D7VTHIvjoHFhe1+U8TZX37oP35qBZjkvVPKIBzSyl/KFCe9Y+ihnab04/ymV68mjW/48T3vkdvCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725518515; c=relaxed/relaxed;
-	bh=WamOeSbvE69odMjKoDapuHUBM0CdYmc1m7bY1qxzMEU=;
-	h=DKIM-Signature:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type; b=S0/S4qyfKKx+yqVRg+9pAs9EnumVAUnCDqtyLUsAMhALCW2iQL+lJL1fPY7NjHXLdwGNP80EsBurEJrtxnmCTg2tCW8ietWw0fxZfU49+CBBat+XQXZm6nR59nw/5TSII2NUc0bCq0OBIJw6QGGJcak6gaFpuriOv0GY0I2ST+I3ad93yFflKqVAZTkPqu+ELMV8RnwKituxhhKYPNy0e1HWDNnLiiZ1LF8QSdLl4BRxBH2ypbOc1wmh1IeSwqrkj7DfJCexgDfYwdLahpjVJ4KPvimWbmy1m2kS6tR8x4c9caiEJpTZ7oqnghj/wuBl/2r8dnOCNsQpG6MZD8imfA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=FtUaBXdK; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+	t=1725519395; c=relaxed/relaxed;
+	bh=Mf2wLWEzbgEDGO9xDiUM7qVc6lrNS1Frm04RYEBk1sI=;
+	h=DKIM-Signature:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To; b=CE1WBal3jxUkTmExYACN4qS3T2frH0mCH3aS13Wy9vxp4lOTmFuWWGiTw6wUstw6RimhV5kWKzeUqxhQzKnIwkek+79CW3ttcoRVuHq2M+j8Dmx+Uck2AKRcvIrkxgFoVeOPgm8eyY/Xg2PAUQX41PtZd130fp5a0U1UlL6OHtp4pPqzkaB0OLQ5hQvTBcHMMDstH8ZSBIFRbLqFGt/BHTStEM5SJPLevnC835iN8OnSiqolxkH3sHvZaZkbW5qnOfJtJCgxR8vCm6BznsWFA6/cHTEogUlA7p9fgwmtdyTA2xUrPSpbYopYhxpPNzhHszVJ2UFLmWReo2sKh/kmoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name; dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm2 header.b=Q8crL5EL; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=OU81mlQL; dkim-atps=neutral; spf=pass (client-ip=103.168.172.139; helo=flow4-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org) smtp.mailfrom=shutemov.name
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=FtUaBXdK;
+	dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm2 header.b=Q8crL5EL;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=OU81mlQL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shutemov.name (client-ip=103.168.172.139; helo=flow4-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org)
+X-Greylist: delayed 496 seconds by postgrey-1.37 at boromir; Thu, 05 Sep 2024 16:56:33 AEST
+Received: from flow4-smtp.messagingengine.com (flow4-smtp.messagingengine.com [103.168.172.139])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzqXM1bWFz2xst
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 16:41:54 +1000 (AEST)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-20573eb852aso10882745ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Sep 2024 23:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1725518513; x=1726123313; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WamOeSbvE69odMjKoDapuHUBM0CdYmc1m7bY1qxzMEU=;
-        b=FtUaBXdK4pDqjjWIYgjCK3tPxuLbc+mNSaU16XlLz8/ThuZnUy29/qhBjgnZLkr7qR
-         Mz7d2ti49arF0C1EEvGCiHYuEEZCh/K8xZstEMNk+rk0TaxNvynw5UB0ZR1RukYD3gE7
-         FSQJZ7IsdOkHYze6nWpSJf4fyJX/+kFOY9N7alPlfpNvKvPtCjwF0DItutP4b/DYOoqi
-         aAANtnlGqxLiq60btW1cXAlpA2fKfnP9w6WeIJvy2P38ghOeIh/NRhTpMVRj9BcPGWvq
-         YipIbUvzS57JvfCJe5Y5YDHfez3JeiXnmRZAbhR9+dcCQkywwS2z8WVeYfWoDETvxtcO
-         jWig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725518513; x=1726123313;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WamOeSbvE69odMjKoDapuHUBM0CdYmc1m7bY1qxzMEU=;
-        b=ixFpmVYeAySAOuKzfp/2R91Iec0irelhIhBn41VeCgpbaOt5QRC58sIMidcj/epNek
-         ae1U8jOgqSmZtBclfkw7efnoTc96tTvds6p4raO/QDsC2ksYj0DzdbNlONtwBrGbd5tO
-         Y2Ymc1lmLYLLBihHgi1nv426UW/if70R74FaVQMns+7EfWW0rZSHsoDMNv/KbsWR3aM2
-         86v6fDuc3dMlusICzcvwq88MLNC56a6FAO9ZLjZ+yVXB208yCehCjGpaJi8LCqM6i/zK
-         YqYcKT0Auo1bQlkVzfAtMbEjnY26Ptu/pg7lF+1HIXtAIjXfA7guA8h1xcbt8RfSb+8B
-         xkJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwEm3AUOqNtLKj0HoyPZsS+HynlmLLptMqNkUamcNyJ7xSJIpyNf4MvS3nWTa6naYFr+6kbLnlIWGRUnw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwebHNib/ZgzwnGA2G/cVAzWkAhwIeTeMcvB7+XV5IcI/4aGK2v
-	j4u9OjZfX1cahpkxtkbLNS/hf7fEwG/+6IGLAU+pfgcaNZyRK0MkkScBbOcbT28=
-X-Google-Smtp-Source: AGHT+IHktKrTh8PvuJAL8kCtov7hkYGbJWjTkWNvKOOeXCvnLHj3NgWJCdo2tCrZ/l2NqbI1yVxHFQ==
-X-Received: by 2002:a17:903:41ca:b0:205:9112:6c2d with SMTP id d9443c01a7336-206b7d0021cmr84941475ad.5.1725518512930;
-        Wed, 04 Sep 2024 23:41:52 -0700 (PDT)
-Received: from [10.4.59.158] ([139.177.225.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206aea37cc2sm22663425ad.160.2024.09.04.23.41.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Sep 2024 23:41:52 -0700 (PDT)
-Message-ID: <7f22c46c-2119-4de6-9d58-efcab05b5751@bytedance.com>
-Date: Thu, 5 Sep 2024 14:41:43 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4WzqsF0NNDz2xr2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Sep 2024 16:56:33 +1000 (AEST)
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailflow.phl.internal (Postfix) with ESMTP id 2A50C200312;
+	Thu,  5 Sep 2024 02:48:13 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Thu, 05 Sep 2024 02:48:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1725518893; x=
+	1725526093; bh=Mf2wLWEzbgEDGO9xDiUM7qVc6lrNS1Frm04RYEBk1sI=; b=Q
+	8crL5ELpizMZj53aZEPPP8KupjNzGuUtN+S5Eql/8fjeevh2FEI8C/KRzBgjisY8
+	ios3Pgjc7SkHZNFrwTBdbN9vLV0hQOPZ0eGAbRLWcSFDhE/k/dFK/6686hm06Qc7
+	j+d1+irVVZvEWixrzNwCK0W0NFAOLfexqwJSuWjLycECHToeCwRE/1nGc1l53s4y
+	bTxHKlADHmHXtzGUzzaiGYjtQhWPUZPI1/USh3xl6u1Sv+0nc2TPrbw6UIkv/TH5
+	o0fe/l4uJKU0W7HYU3dmXPK5TN/niHwvbSVEfHyU6/SyMLvAiqJybTS8Vdvh4PKb
+	H+eYihXIcEOzrl4xD0b/g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1725518893; x=1725526093; bh=Mf2wLWEzbgEDGO9xDiUM7qVc6lrN
+	S1Frm04RYEBk1sI=; b=OU81mlQLPJz3hQL5seRxaoll2jedmTxaU/rc98Aelm4E
+	LAxjKKoyXT3sGMCDk5gVUo9sxMNF10KBdu8zNR469iNU+zb+tCPxEiRvZRViIIGY
+	4fRFF6UlbxvVpD5zNmimnvrmkdHBLjbsEEMeFENIAWyU688aW4sL4S7nK33Ed+/W
+	TyoXbq/qhCQqfRaAUgcJL4Qlr9Fj3Kdw1fErx8TN92mDg+L0IfsQjqkdjZyqKyoX
+	xxZY1zHYiN3d8+EpCTErHeTz8LagFsN6v0fROg/TqD03KtfFlVXL4OQSdmSkjWEs
+	7+FNGRNxSZmK+xVN+gK5oYOL0OpwypHDNQIa583pLA==
+X-ME-Sender: <xms:KVTZZtmPE-thdTnuY_8p_VYbScCFsLPUpHQE1sSDWOUGpPhis5okIQ>
+    <xme:KVTZZo1Rk7zksy2dploGdpr-AyeT9WYUGP1TsK2AxLpGyZ512Gxr45tn13iRPanwo
+    jUygEc69YU63tyiwpI>
+X-ME-Received: <xmr:KVTZZjq_WhH3u82jxZ84wXaPI17hSYcHUbnROaZ7wU0ggfeJ3nMXkfr_MNvXqfbD0Tby-A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehkedguddugecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdfstddttddv
+    necuhfhrohhmpedfmfhirhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
+    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnhepffdvveeuteduhffh
+    ffevlefhteefveevkeelveejudduvedvuddvleetudevhfeknecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
+    vhdrnhgrmhgvpdhnsggprhgtphhtthhopeehjedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtoheptghhrghrlhhivgesrhhivhhoshhinhgtrdgtohhmpdhrtghpthhtoheprghr
+    nhgusegrrhhnuggsrdguvgdprhgtphhtthhopehrihgthhgrrhgurdhhvghnuggvrhhsoh
+    hnsehlihhnrghrohdrohhrghdprhgtphhtthhopehinhhksehjuhhrrghsshhitgdrphgr
+    rhhkrdhmshhurdhruhdprhgtphhtthhopehmrghtthhsthekkeesghhmrghilhdrtghomh
+    dprhgtphhtthhopehvghhuphhtrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhi
+    nhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehguhhorhgvnheskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtoheptghhvghnhhhurggtrghisehkvghrnhgvlhdr
+    ohhrgh
+X-ME-Proxy: <xmx:KVTZZtnzzMVFQMQuTZtC752mZiRRbs6t6YcMoPbuWvOsshNuIpN2ZA>
+    <xmx:KVTZZr2NqJHS-K1m6CZXX9gA76bE8gj6MA6NfpzKnkdoePcXVRrFGA>
+    <xmx:KVTZZsvDPoUpWv-9vcqAuPt1ffOgwMCdy7jO9etPU_H5-IK1rvsyPg>
+    <xmx:KVTZZvVQYxvPemikvBptMQf8FFNrgJR1-TyZmjrtc_-NhbXBtGvm-w>
+    <xmx:LVTZZrXmQ5mCcW2zvtjGPHJiDs11N1_ZXK9wQrKvm9JMfjCFohmINZ7A>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Sep 2024 02:47:52 -0400 (EDT)
+Date: Thu, 5 Sep 2024 09:47:47 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ 	Richard Henderson <richard.henderson@linaro.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ 	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+ 	Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, 	WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ 	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, 	Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ 	Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>,
+ 	Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ 	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ 	Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ 	Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Rich Felker <dalias@libc.org>,
+ 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "David S. Miller" <davem@davemloft.net>,
+ 	Andreas Larsson <andreas@gaisler.com>,
+ Thomas Gleixner <tglx@linutronix.de>, 	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, 	Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ 	Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+ 	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org,
+ 	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ loongarch@lists.linux.dev, 	linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ 	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, 	linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC v2 0/4] mm: Introduce MAP_BELOW_HINT
+Message-ID: <yu7um2tcxg2apoz372rmzpkrfgbb42ndvabvrsp4usb2e3bkrf@huaucjsp5vlj>
+References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,133 +144,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/14] mm: khugepaged: collapse_pte_mapped_thp() use
- pte_offset_map_rw_nolock()
-Content-Language: en-US
-To: Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>,
- Matthew Wilcox <willy@infradead.org>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
- Vishal Moola <vishal.moola@gmail.com>, Peter Xu <peterx@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, christophe.leroy2@cs-soprasteria.com,
- LKML <linux-kernel@vger.kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
-References: <cover.1724310149.git.zhengqi.arch@bytedance.com>
- <c377dab2bf55950e6155ea051aba3887ed5a2773.1724310149.git.zhengqi.arch@bytedance.com>
- <24be821f-a95f-47f1-879a-c392a79072cc@linux.dev>
- <cd137540-ae01-46a1-93d2-062bc21b827c@bytedance.com>
- <05955456-8743-448A-B7A4-BC45FABEA628@linux.dev>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <05955456-8743-448A-B7A4-BC45FABEA628@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
 
-
-
-On 2024/9/5 14:32, Muchun Song wrote:
+On Thu, Aug 29, 2024 at 12:15:57AM -0700, Charlie Jenkins wrote:
+> Some applications rely on placing data in free bits addresses allocated
+> by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
+> address returned by mmap to be less than the 48-bit address space,
+> unless the hint address uses more than 47 bits (the 48th bit is reserved
+> for the kernel address space).
 > 
+> The riscv architecture needs a way to similarly restrict the virtual
+> address space. On the riscv port of OpenJDK an error is thrown if
+> attempted to run on the 57-bit address space, called sv57 [1].  golang
+> has a comment that sv57 support is not complete, but there are some
+> workarounds to get it to mostly work [2].
 > 
->> On Aug 30, 2024, at 14:54, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
->>
->>
->>
->> On 2024/8/29 16:10, Muchun Song wrote:
->>> On 2024/8/22 15:13, Qi Zheng wrote:
->>>> In collapse_pte_mapped_thp(), we may modify the pte and pmd entry after
->>>> acquring the ptl, so convert it to using pte_offset_map_rw_nolock(). At
->>>> this time, the write lock of mmap_lock is not held, and the pte_same()
->>>> check is not performed after the PTL held. So we should get pgt_pmd and do
->>>> pmd_same() check after the ptl held.
->>>>
->>>> For the case where the ptl is released first and then the pml is acquired,
->>>> the PTE page may have been freed, so we must do pmd_same() check before
->>>> reacquiring the ptl.
->>>>
->>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>> ---
->>>>   mm/khugepaged.c | 16 +++++++++++++++-
->>>>   1 file changed, 15 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->>>> index 53bfa7f4b7f82..15d3f7f3c65f2 100644
->>>> --- a/mm/khugepaged.c
->>>> +++ b/mm/khugepaged.c
->>>> @@ -1604,7 +1604,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->>>>       if (userfaultfd_armed(vma) && !(vma->vm_flags & VM_SHARED))
->>>>           pml = pmd_lock(mm, pmd);
->>>> -    start_pte = pte_offset_map_nolock(mm, pmd, haddr, &ptl);
->>>> +    start_pte = pte_offset_map_rw_nolock(mm, pmd, haddr, &pgt_pmd, &ptl);
->>>>       if (!start_pte)        /* mmap_lock + page lock should prevent this */
->>>>           goto abort;
->>>>       if (!pml)
->>>> @@ -1612,6 +1612,9 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->>>>       else if (ptl != pml)
->>>>           spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
->>>> +    if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd))))
->>>> +        goto abort;
->>>> +
->>>>       /* step 2: clear page table and adjust rmap */
->>>>       for (i = 0, addr = haddr, pte = start_pte;
->>>>            i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE, pte++) {
->>>> @@ -1657,6 +1660,16 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->>>>       /* step 4: remove empty page table */
->>>>       if (!pml) {
->>>>           pml = pmd_lock(mm, pmd);
->>>> +        /*
->>>> +         * We called pte_unmap() and release the ptl before acquiring
->>>> +         * the pml, which means we left the RCU critical section, so the
->>>> +         * PTE page may have been freed, so we must do pmd_same() check
->>>> +         * before reacquiring the ptl.
->>>> +         */
->>>> +        if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd)))) {
->>>> +            spin_unlock(pml);
->>>> +            goto pmd_change;
->>> Seems we forget to flush TLB since we've cleared some pte entry?
->>
->> See comment above the ptep_clear():
->>
->> /*
->> * Must clear entry, or a racing truncate may re-remove it.
->> * TLB flush can be left until pmdp_collapse_flush() does it.
->> * PTE dirty? Shmem page is already dirty; file is read-only.
->> */
->>
->> The TLB flush was handed over to pmdp_collapse_flush(). If a
+> These applications work on x86 because x86 does an implicit 47-bit
+> restriction of mmap() address that contain a hint address that is less
+> than 48 bits.
 > 
-> But you skipped pmdp_collapse_flush().
+> Instead of implicitly restricting the address space on riscv (or any
+> current/future architecture), a flag would allow users to opt-in to this
+> behavior rather than opt-out as is done on other architectures. This is
+> desirable because it is a small class of applications that do pointer
+> masking.
 
-I skip it only in !pmd_same() case, at which time it must be cleared
-by other thread, which will be responsible for flushing TLB:
+This argument looks broken to me.
 
-CPU 0				CPU 1
-				pmd_clear
-				spin_unlock
-				flushing tlb
-spin_lock
-if (!pmd_same)	
-	goto pmd_change;
-pmdp_collapse_flush
+The "small class of applications" is going to be broken unless they got
+patched to use your new mmap() flag. You are asking for bugs.
 
-Did I miss something?
+Consider the case when you write, compile and validate a piece of software
+on machine that has <=47bit VA. The binary got shipped to customers.
+Later, customer gets a new shiny machine that supports larger address
+space and your previously working software is broken. Such binaries might
+exist today.
 
-> 
->> concurrent thread free the PTE page at this time, the TLB will
->> also be flushed after pmd_clear().
->>
->>>> +        }
->>>>           if (ptl != pml)
->>>>               spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
->>>>       }
->>>> @@ -1688,6 +1701,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
->>>>           pte_unmap_unlock(start_pte, ptl);
->>>>       if (pml && pml != ptl)
->>>>           spin_unlock(pml);
->>>> +pmd_change:
->>>>       if (notified)
->>>>           mmu_notifier_invalidate_range_end(&range);
->>>>   drop_folio:
-> 
+It is bad idea to use >47bit VA by default. Most of software got tested on
+x86 with 47bit VA.
+
+We can consider more options to opt-in into wider address space like
+personality or prctl() handle. But opt-out is no-go from what I see.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
