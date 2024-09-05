@@ -1,81 +1,118 @@
-Return-Path: <linuxppc-dev+bounces-1065-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1066-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE0B96E0F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 19:16:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5726496E110
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Sep 2024 19:27:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X05cc3thWz2yxY;
-	Fri,  6 Sep 2024 03:16:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X05rl0j0Wz2yxf;
+	Fri,  6 Sep 2024 03:27:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725556592;
-	cv=none; b=NsCq41LjSYptWHXHDL7jG5kbDrzEyTy9WZfkxbSlV5r+KsfZFVGybBLumQlbrbBypSoOqhiz6SIxIIwP2xVO3YCOIyzpJjHxg/QYlBEIZchs8QZFCEgo8CgPY3AXAKnfpInTjp7cVrJouIulJTvR/IRgZULkliV8RrNvMQtyB/2XDWJ7nED9TA448y3pvBnPiVpWDBzWlJllFEm0SDWT+O6Pm9Dcj6EsT4br4ZNGlApFh8hZxCREw2rCbACagqH86cN9Hu18QDVEnFfhcEsC/SpsZ3vvq5jNLe5o3u694cDB8gmQiB3sLiE7MqKl9hczoqtytmrg4PgGXfAIFzeoeQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725557223;
+	cv=none; b=m7GfuIeastuHPkjk4zz/tmwiLO5W7oBa7je2IFlOdVRGwyDMNRw5M3Ey6EwcM7FnTJwYLnMtrj7SSGh7QqzZ/5clLVze6rEp+RLDxWFEYQ05T4c2p3X7LdRnos/eVZFH5+VS0lzfkEw/LGKjUKOA2IerXYKWAlbeKqXlOWpGdPJ2Lw3X0n7PpDWNuGD9euDy8KZmTGq8wxOfdRQ5X8L2fiP7+9+urviPwag4+sVXFzQNx4iKKTzv1qNiPTHRDzLiO8WCZFuLA4t/gb81D29RNm+qZSrmftUBWWq/RKU/mXUtYNn8pdwh17tjsoLyLxckmBmrwFq4JayUNBCpr00k/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725556592; c=relaxed/relaxed;
-	bh=U/i7kxMFedYKvorYnbQF73cn+5NdhIM30ISsp20UbHg=;
+	t=1725557223; c=relaxed/relaxed;
+	bh=TzHtjVKsvMG2J+VEdT3JJ4mY+8euHciuRxZ037YJyIs=;
 	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=ShhscCk3E0s+/0h2bEFBOGP792Co/WyVOj5Ma5tkxdJdm8K8zSVmVf1oXF9S5wunb+4HjEWMLRG7OheZSLmrvjaPDvmNsvGmJM42+87EQpQlZRqzbLmDsmbxgu9AeKc0E85y3G8pxMWiz9cQIrd7xKV3DJS1CqMtK5xOIHLU07olsgcqKmqCIPgJx3d+NYXVL20gOWsd1YNHe/aq7kqJ0iGVbTUdGY+jVMgRIYOJf6D1IIuUgsfetNWgVTI+OntpN04v/M4TNXCCDH33sdn8TNZAko+nyANo3ErrA/a3wbOAVYUZqx3XPCmOoRSYOc/Lviv4TU6pOvMFWb0ccz7qYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=hCjAgG29; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=ehjl=qd=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=TJqlf4i8blD+EYytp5OiQ294GneaipkyDjcSdi5xRfQQcOThYSV1iM9IEbg+dZX5zkCtJOBcPnzE4/R206slc3mgpQRjbiT3haYTDruk8xqeMFxSdXYbrN9HuO0vwKHhAYmmtZo+IVG0iZuQPJxiog9nsTV8mkUucWf9NBQ6meeYqC3BvBiTU7Ktma3lH+NhH0CRWKXl3mvtlmZXdw3qN9PpyFM8f3ff4Q/+ZO4ksiTV7Dh7EuCWbh1l6uvINpz0iDw0lWnkb1HITg2oE2HTzCFKWO6u88BEU4++JrulkMlPX8cV7XtVHllIrVL3qR2arClrLVc7KHvKhevM+5khBQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=3Dhcbqu/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=hCjAgG29;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=3Dhcbqu/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=ehjl=qd=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X05cZ2srCz2yxP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 03:16:30 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id EFB4BA44E2F;
-	Thu,  5 Sep 2024 17:16:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0216CC4CEC3;
-	Thu,  5 Sep 2024 17:16:25 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="hCjAgG29"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1725556584;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U/i7kxMFedYKvorYnbQF73cn+5NdhIM30ISsp20UbHg=;
-	b=hCjAgG292GvjSYLd7cIJbV9+sE37uAJnudlmH79DWrvxKhI1aT+MkTsEmZIqTXhYJC3AjG
-	GKu0T3GOiKFo6Gd/ZQwz0mjJ7G8jNN7vZoXVVqlMX+NTR4p/v66KLBzSg7LZ0ZRymTcpi5
-	z8NptxebJrjClHLK2svu5ZYfVCDOfJ0=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c27291d3 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 5 Sep 2024 17:16:24 +0000 (UTC)
-Date: Thu, 5 Sep 2024 19:16:20 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X05rk213tz2yxP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 03:27:00 +1000 (AEST)
+Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-2d8818337a5so1648213a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Sep 2024 10:27:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1725557218; x=1726162018; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TzHtjVKsvMG2J+VEdT3JJ4mY+8euHciuRxZ037YJyIs=;
+        b=3Dhcbqu/F8z0Ch0TTe9Ya95nCswiO0mYHkN7hDPcPA+BuLwX93h5LOVRdhdfin/PfP
+         2BwmCJrflWuSVeumUmZSQtQu7JRx0L/yhnPvOcMmfjcbreD1WSCZhGyqfFzTBBS+TQUD
+         wPa+4x/GKBmhRIgESR3NfjJ/gr813pqcOlNBgkI0S+7BeRUwd0UPpw9ga6JANY1An5P0
+         c0twN7+jxJtoNuDLLUUwuUc4ZjuWRyTU7NE/a6pprCcbyo5MEJYuuNfLGsa1GdYHt59q
+         MZXQc4fQTVsYZ7V4G2ePqnh6SGVkI8TIFzvIWjVCVB3NvOFL/LP0lVDSTvXWTOD9kLXu
+         sEkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725557218; x=1726162018;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TzHtjVKsvMG2J+VEdT3JJ4mY+8euHciuRxZ037YJyIs=;
+        b=p5gVCLxDkOhZ5DOa3mSuC0mzQ3msMJsg6N52ken4Vcw2JsnHd3WBv4rLjGF8rYIbYa
+         SwNpBqqi60apwiMrG7Rzm/3yCXQ/EHOgLxdimnxiL6Jp1I0yzLSXRNjAxVFnblhtfn+D
+         PxJMU38eJiX8DvAzVvpdl38Bf+3PDp/XtJUkq+tr1pyWrynveI17QeGnyLdWu8Rc6Eim
+         DfZZUqF/cpP9VZro7Qg6I4mIeRNUqA+LAKqKbTA0z6f5SaTWdZBQ/N9mp0//AQCGFmeL
+         MrrW9/DMT9uys+w6BWHcIVKzIUrEhh/8cp7oQODTpokNhbAkHbX2UtkUaElHMJKfP73q
+         41kA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3/ZEGcH7Ue39LBtfc53MgYoqlkP2nIgypW87L5pDYVUn0p4TBJD0i1X+BgfZguQB/9xK51QGjsMWz/54=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxz5eX/eXxOfnxYWyFlrw6oquTNU9WFjey4PzJesY0xfLmoTX72
+	2AlWIE8w3qT7JFJ1m8gMdP+b74QG6q82C1MYbZxw9EbVxj7VkkDFnvP33Xzydbw=
+X-Google-Smtp-Source: AGHT+IFxrgWNtdxCWG0RBGHbyeqfO4T1K/TMURzEB4vAspGF/eaSh/6stCCkbbdo5V+yBGPBQxqCJA==
+X-Received: by 2002:a17:90b:3d2:b0:2d8:9fbe:6727 with SMTP id 98e67ed59e1d1-2dad4f0e4damr67155a91.4.1725557218097;
+        Thu, 05 Sep 2024 10:26:58 -0700 (PDT)
+Received: from ghost ([50.145.13.30])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2da5932d1ecsm6506552a91.43.2024.09.05.10.26.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Sep 2024 10:26:57 -0700 (PDT)
+Date: Thu, 5 Sep 2024 10:26:52 -0700
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Naveen N Rao <naveen@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
-	llvm@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
-	Xi Ruoyao <xry111@xry111.site>
-Subject: Re: [PATCH v5 4/5] powerpc/vdso: Wire up getrandom() vDSO
- implementation on VDSO32
-Message-ID: <ZtnnZMa_Yi-UwhHT@zx2c4.com>
-References: <cover.1725304404.git.christophe.leroy@csgroup.eu>
- <1f49c2ce009f8b007ab0676fb41187b2d54f28b2.1725304404.git.christophe.leroy@csgroup.eu>
- <ZtnYqZI-nrsNslwy@zx2c4.com>
- <85c02620-e8b2-4c97-9905-685a9a4e556d@csgroup.eu>
- <ZtnkZsHJESAqU-FH@zx2c4.com>
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC v2 0/4] mm: Introduce MAP_BELOW_HINT
+Message-ID: <Ztnp3OAIRz/daj7s@ghost>
+References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
+ <yu7um2tcxg2apoz372rmzpkrfgbb42ndvabvrsp4usb2e3bkrf@huaucjsp5vlj>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,142 +122,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZtnkZsHJESAqU-FH@zx2c4.com>
+In-Reply-To: <yu7um2tcxg2apoz372rmzpkrfgbb42ndvabvrsp4usb2e3bkrf@huaucjsp5vlj>
 
-On Thu, Sep 05, 2024 at 07:03:34PM +0200, Jason A. Donenfeld wrote:
-> On Thu, Sep 05, 2024 at 06:55:27PM +0200, Christophe Leroy wrote:
+On Thu, Sep 05, 2024 at 09:47:47AM +0300, Kirill A. Shutemov wrote:
+> On Thu, Aug 29, 2024 at 12:15:57AM -0700, Charlie Jenkins wrote:
+> > Some applications rely on placing data in free bits addresses allocated
+> > by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
+> > address returned by mmap to be less than the 48-bit address space,
+> > unless the hint address uses more than 47 bits (the 48th bit is reserved
+> > for the kernel address space).
 > > 
+> > The riscv architecture needs a way to similarly restrict the virtual
+> > address space. On the riscv port of OpenJDK an error is thrown if
+> > attempted to run on the 57-bit address space, called sv57 [1].  golang
+> > has a comment that sv57 support is not complete, but there are some
+> > workarounds to get it to mostly work [2].
 > > 
-> > Le 05/09/2024 à 18:13, Jason A. Donenfeld a écrit :
-> > >> +/*
-> > >> + * The macro sets two stack frames, one for the caller and one for the callee
-> > >> + * because there are no requirement for the caller to set a stack frame when
-> > >> + * calling VDSO so it may have omitted to set one, especially on PPC64
-> > >> + */
-> > >> +
-> > >> +.macro cvdso_call funct
-> > >> +  .cfi_startproc
-> > >> +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
-> > >> +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
-> > >> +	mflr		r0
-> > >> +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
-> > >> +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
-> > >> +	PPC_STL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
-> > >> +  .cfi_rel_offset lr, PPC_MIN_STKFRM + PPC_LR_STKOFF
-> > >> +	get_datapage	r8
-> > >> +	addi		r8, r8, VDSO_RNG_DATA_OFFSET
-> > >> +	bl		CFUNC(DOTSYM(\funct))
-> > >> +	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
-> > >> +	cmpwi		r3, 0
-> > >> +	mtlr		r0
-> > >> +	addi		r1, r1, 2 * PPC_MIN_STKFRM
-> > >> +  .cfi_restore lr
-> > >> +  .cfi_def_cfa_offset 0
-> > >> +	crclr		so
-> > >> +	bgelr+
-> > >> +	crset		so
-> > >> +	neg		r3, r3
-> > >> +	blr
-> > >> +  .cfi_endproc
-> > >> +.endm
-> > > 
-> > > You wrote in an earlier email that this worked with time namespaces, but
-> > > in my testing that doesn't seem to be the case.
+> > These applications work on x86 because x86 does an implicit 47-bit
+> > restriction of mmap() address that contain a hint address that is less
+> > than 48 bits.
 > > 
-> > Did I write that ? I can't remember and neither can I remember testing 
-> > it with time namespaces.
+> > Instead of implicitly restricting the address space on riscv (or any
+> > current/future architecture), a flag would allow users to opt-in to this
+> > behavior rather than opt-out as is done on other architectures. This is
+> > desirable because it is a small class of applications that do pointer
+> > masking.
 > 
-> It's possible I confused you with someone else? Hum. Anyway...
+> This argument looks broken to me.
 > 
-> > >  From my test harness [1]:
-> > > 
-> > > Normal single thread
-> > >     vdso: 25000000 times in 12.494133131 seconds
-> > >     libc: 25000000 times in 69.594625188 seconds
-> > > syscall: 25000000 times in 67.349243972 seconds
-> > > Time namespace single thread
-> > >     vdso: 25000000 times in 71.673057436 seconds
-> > >     libc: 25000000 times in 71.712774121 seconds
-> > > syscall: 25000000 times in 66.902318080 seconds
-> > > 
-> > > I'm seeing this on ppc, ppc64, and ppc64le.
-> > 
-> > What is the command to use to test with time namespace ?
+> The "small class of applications" is going to be broken unless they got
+> patched to use your new mmap() flag. You are asking for bugs.
 > 
-> Look at the C in the commit I linked.
+> Consider the case when you write, compile and validate a piece of software
+> on machine that has <=47bit VA. The binary got shipped to customers.
+> Later, customer gets a new shiny machine that supports larger address
+> space and your previously working software is broken. Such binaries might
+> exist today.
+> 
+> It is bad idea to use >47bit VA by default. Most of software got tested on
+> x86 with 47bit VA.
+> 
+> We can consider more options to opt-in into wider address space like
+> personality or prctl() handle. But opt-out is no-go from what I see.
+> 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
-The below also seems to work well for testing on x86. I'll clean that up
-and send a patch to the list.
+riscv is in an interesting state in regards to this because the software
+ecosystem is much less mature than other architectures. The existing
+riscv hardware supports either 38 or 47 bit userspace VAs, but a lot of
+people test on QEMU which defaults to 56 bit. As a result, a lot of
+code is tested with the larger address space. Applications that don't
+work on the larger address space, like OpenJDK, currently throw an error
+and exit.
 
-diff --git a/tools/testing/selftests/vDSO/vdso_test_getrandom.c b/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-index 8866b65a4605..4df80f769aa7 100644
---- a/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-+++ b/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-@@ -16,8 +16,11 @@
- #include <sys/mman.h>
- #include <sys/random.h>
- #include <sys/syscall.h>
-+#include <sys/ptrace.h>
-+#include <sys/wait.h>
- #include <sys/types.h>
- #include <linux/random.h>
-+#include <linux/ptrace.h>
+Since riscv does not currently have the address space default to 47
+bits, some applications just don't work on 56 bits. We could change the
+kernel so that these applications start working without the need for
+them to change their code, but that seems like the kernel is
+overstepping and fixing binaries rather than providing users tools to
+fix the binaries themselves.
 
- #include "../kselftest.h"
- #include "parse_vdso.h"
-@@ -239,9 +242,10 @@ static void fill(void)
- static void kselftest(void)
- {
- 	uint8_t weird_size[1263];
-+	pid_t child;
+This mmap flag was an attempt to provide a tool for these applications
+that work on the existing 47 bit VA hardware to also work on different
+hardware that supports a 56 bit VA space. After feedback, it looks like
+a better solution than the mmap flag is to use the personality syscall
+to set a process wide restriction to 47 bits instead, which matches the
+32 bit flag that already exists.
 
- 	ksft_print_header();
--	ksft_set_plan(1);
-+	ksft_set_plan(2);
-
- 	for (size_t i = 0; i < 1000; ++i) {
- 		ssize_t ret = vgetrandom(weird_size, sizeof(weird_size), 0);
-@@ -250,6 +254,39 @@ static void kselftest(void)
- 	}
-
- 	ksft_test_result_pass("getrandom: PASS\n");
-+
-+	assert(unshare(CLONE_NEWTIME) == 0);
-+	child = fork();
-+	assert(child >= 0);
-+
-+	if (!child) {
-+		vgetrandom_init();
-+		child = getpid();
-+		assert(ptrace(PTRACE_TRACEME, 0, NULL, NULL) == 0);
-+		assert(kill(child, SIGSTOP) == 0);
-+		assert(vgetrandom(weird_size, sizeof(weird_size), 0) == sizeof(weird_size));
-+		_exit(0);
-+	}
-+	for (;;) {
-+		struct ptrace_syscall_info info = { 0 };
-+		int status, ret;
-+		assert(waitpid(child, &status, 0) >= 0);
-+		if (WIFEXITED(status))
-+			break;
-+		assert(WIFSTOPPED(status));
-+		if (WSTOPSIG(status) == SIGSTOP)
-+			assert(ptrace(PTRACE_SETOPTIONS, child, 0, PTRACE_O_TRACESYSGOOD) == 0);
-+		else if (WSTOPSIG(status) == SIGTRAP | 0x80) {
-+			assert(ptrace(PTRACE_GET_SYSCALL_INFO, child, sizeof(info), &info) > 0);
-+			if (info.entry.nr == __NR_getrandom &&
-+			    ((void *)info.entry.args[0] == &weird_size && info.entry.args[1] == sizeof(weird_size)))
-+				exit(KSFT_FAIL);
-+		}
-+		assert(ptrace(PTRACE_SYSCALL, child, 0, 0) == 0);
-+	}
-+
-+	ksft_test_result_pass("getrandom timens: PASS\n");
-+
- 	exit(KSFT_PASS);
- }
+- Charlie
 
 
