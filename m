@@ -1,58 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-1099-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1100-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7759E96F0F5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 12:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B30A96F17C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 12:30:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0X1Q23v3z304l;
-	Fri,  6 Sep 2024 20:06:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0XY666FZz3054;
+	Fri,  6 Sep 2024 20:30:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725617162;
-	cv=none; b=Kqb/f1vaLUOWQ8KyrEsq17rczkl2IUz3QO4Z4r65XuEpcCK4KVg3l+we39O056p0fPIEwLvTdc17LMi03400VjPhWRlO5u/ZsBZW7HHM9KeK37sIyDazq+ZyohgRIA012fVcVy1JQ13Vd/ua45uvarNXtbMCimjSSWVYINnrL5rG0rtLEypbVGdqwHevGTnCd9n5rqXwrkAmEl2vT/ylniznM11uXyGwUE3cr3B4n0eHiEzPQwpnSYu5wOpGHW+FaIEcnp7ru2qPJiZZD47eWHVt8FMX7rivSdnjUrL8Fx+47rXig+Z8OzgcOnNxp5bQ9vF4trt+i/1e2SfFwTD1aQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725618602;
+	cv=none; b=RJcdi449HCmQOYf3bxuOYNAkLxdJP/nAlfubwDEczCB8CmaFoCVurYL7Tzvl1SfqdjhW837jheFYyuypLa7H5I9aLRlfN+dyHEplU5P7Zx+WmVKCFJkn9MCedqdXcHH7J7CCEDUCx4cGYHM50LhJ8044Y6qudfcjw1tKYfAn8RdB/vWQ24zT5pQ1CE+GWctm+vZq3Z4ODFgkIOAuKQiZdm4lcVqn4sjUBloL03Bn+rfU7zLRkA0GkDW3fxwAIUTH9pVBQv4X9FdlR+aWejSJk9aK4Dr7N0OY0EJ2Yet/LrK5sJEGoXv3JdG/b2roX4nQC3SlWYtOPpSFqYVhGysDcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725617162; c=relaxed/relaxed;
-	bh=xk5Akn471TKQWn5neOjgSQDStg5n2ODlIn5sLehI3wc=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=ZdCC8iyS4Kj+uvFL+rI8HiIZ++kMNg263CueaomALviq7TuLPvZ4loHeOSDur0XKfurfm+Cu4TQ/KiIB1CVJaLyJ0dfeHibsO5nMLzc/Zg/AQRRyTuxZeOHQdkJWoKr9effug2zIcaA6rYitVeNsKEQN5YHMAcyUPj4Impn6b0e61HazG1ZDCkapCWm9N7976ph2QpQqPGo9uIMEWB9rupIP+Z6YYlMBOwCpCAhvcaZGzpu398NIydm4wHWv/fCSTX2PCGCRXR/CGAXtM0SMve/r9UiIBwzKyneXvH0TC0QetubMPUswkgGmWHVmK/BeoFb707TjUbOU3hFJ0nWgBg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1725618602; c=relaxed/relaxed;
+	bh=C+7VKlBLUM+gRO+v7q/DNa240NdaVdhGABTToZbBcJU=;
+	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 Message-ID:MIME-Version:Content-Type; b=O4I6jU+TrePmafFZGSxLLfw0EFvycWzxjU6/9ekOJKr3ryvoO1kbPrD+TET/XH0JfLbR9AuXPvY6FWSr8qmvwn8DwQ7KF+bfqGB9cjhlcKNFmvC7EWp1pSSnLbD8DzvhoczsZ5ZkcfVqN52+GtCziZqTQ0DXO/EeeAkgH7IWW8I5A8Qt/9bGtBPwxE1+w7BuktWnLQxneis0GmRnwiOoYn2dBIpd4QEUHiL1oQewFkzn7BsblDVhEhycHmpLw5miF0ssAiWrIDgnLjJVAfVmWUkUDXYMezPZxYFhaVSehXnHK5VUjW20A3rqVey0Hn9g8AwsGpnvA/VjDV8ahSShGw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QtbQzhfd; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QtbQzhfd;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0X1Q06D1z301n
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 20:06:02 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id BA8641A1059;
-	Fri,  6 Sep 2024 12:05:59 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7FC301A19DA;
-	Fri,  6 Sep 2024 12:05:59 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 3B33C180031E;
-	Fri,  6 Sep 2024 18:05:54 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: vkoul@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v3 6/6] ASoC: fsl_easrc: register m2m platform device
-Date: Fri,  6 Sep 2024 17:43:57 +0800
-Message-Id: <1725615837-24872-7-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1725615837-24872-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1725615837-24872-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0XY55V4Bz304N
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 20:30:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1725618601;
+	bh=C+7VKlBLUM+gRO+v7q/DNa240NdaVdhGABTToZbBcJU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=QtbQzhfdU9KrOkcN98cSlcIJQfPgPXyEPQ5R31cuNvxQX5Cowen108ylCMHKzzzD2
+	 R1ChFXF5cJghBNCtJMq6c4AkOIO1oQXYCvfKnyT45ZxEe9mteF4mUe4fyrrzC7iF7t
+	 4T1sRJHlCiwWkLOM6OmMINKchQnFOhgSe4IOKR/HcWrilvcpGklvZtAXEAk+qMEo/W
+	 teZG8oLkZb+z82p3cehLGbFXCcLFLAqhC+/c8N4ObzBvWaxpbvdpyJqdh3ZnZRpn8O
+	 Fjk1ehBx18I/9cJ4y82g6rW90ug3yBzlDyUamMtKkiPX8S4NRD0aqGIHWJjNN+m+6T
+	 iyHNSo0bF4y6w==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X0XY45291z4wyh;
+	Fri,  6 Sep 2024 20:30:00 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Solar Designer <solar@openwall.com>, oss-security@lists.openwall.com
+Cc: 2639161967 <2639161967@qq.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [oss-security] Linux kernel: memory leak in
+ arch/powerpc/platforms/powernv/opal-irqchip.c: opal_event_init()
+In-Reply-To: <20240902133435.GA29502@openwall.com>
+References: <tencent_BB0764F9635412BA90A36B3B19EDEEF09905@qq.com>
+ <20240902133435.GA29502@openwall.com>
+Date: Fri, 06 Sep 2024 20:29:59 +1000
+Message-ID: <87wmjp3wig.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,76 +63,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Register m2m platform device,that user can
-use M2M feature.
+Solar Designer <solar@openwall.com> writes:
+> Hi,
+>
+> This bug report is misaddressed.  Per upstream's preference and common
+> sense (given how many issue reports there are against the Linux kernel),
+> most Linux kernel (maybe-)issues should first be reported to Linux
+> kernel maintainers/lists or (if you're reasonably sure of significant
+> security relevance) to the Linux kernel security team, and only then (if
+> relevant) maybe also to general security lists.  Occasional exceptions
+> exist, such as for publicly exploited issues, but if you're new to this
+> chances are that you should play by the rules, not claim an exception.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_easrc.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+This was also reported to security@kernel.org, and I replied saying
+there was no real security impact and that it should be reported to
+linuxppc-dev@lists.ozlabs.org.
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index a1a7a90ff5ef..25d1c103df32 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -2204,6 +2204,12 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 		goto err_pm_disable;
- 	}
- 
-+	ret = fsl_asrc_m2m_init(easrc);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to init m2m device %d\n", ret);
-+		return ret;
-+	}
-+
- 	return 0;
- 
- err_pm_disable:
-@@ -2213,6 +2219,10 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 
- static void fsl_easrc_remove(struct platform_device *pdev)
- {
-+	struct fsl_asrc *easrc = dev_get_drvdata(&pdev->dev);
-+
-+	fsl_asrc_m2m_exit(easrc);
-+
- 	pm_runtime_disable(&pdev->dev);
- }
- 
-@@ -2313,10 +2323,29 @@ static int fsl_easrc_runtime_resume(struct device *dev)
- 	return ret;
- }
- 
-+static int fsl_easrc_suspend(struct device *dev)
-+{
-+	struct fsl_asrc *easrc = dev_get_drvdata(dev);
-+	int ret;
-+
-+	fsl_asrc_m2m_suspend(easrc);
-+	ret = pm_runtime_force_suspend(dev);
-+	return ret;
-+}
-+
-+static int fsl_easrc_resume(struct device *dev)
-+{
-+	struct fsl_asrc *easrc = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = pm_runtime_force_resume(dev);
-+	fsl_asrc_m2m_resume(easrc);
-+	return ret;
-+}
-+
- static const struct dev_pm_ops fsl_easrc_pm_ops = {
- 	RUNTIME_PM_OPS(fsl_easrc_runtime_suspend, fsl_easrc_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				pm_runtime_force_resume)
-+	SYSTEM_SLEEP_PM_OPS(fsl_easrc_suspend, fsl_easrc_resume)
- };
- 
- static struct platform_driver fsl_easrc_driver = {
--- 
-2.34.1
+> On Mon, Sep 02, 2024 at 09:54:52AM +0800, 2639161967 wrote:
+>> in the newest linux release version, in&nbsp;/arch/powerpc/platforms/powernv/opal-irqchip.c&nbsp;file , the&nbsp;
+>> opal_event_init function, the variable "name"defined in line 270, and is alloced memory in line 274 or 276, but not free, cause many times memory leak, and most old release versions have the problem.
+>
+> The code in question is:
+>
+> int __init opal_event_init(void)
+> {
+> [...]
+> 	/* Install interrupt handlers */
+> 	for (i = 0; i < opal_irq_count; i++) {
+> 		struct resource *r = &opal_irqs[i];
+> 		const char *name;
+>
+> 		/* Prefix name */
+> 		if (r->name && strlen(r->name))
+> 			name = kasprintf(GFP_KERNEL, "opal-%s", r->name);
+> 		else
+> 			name = kasprintf(GFP_KERNEL, "opal");
+>
+> 		if (!name)
+> 			continue;
+> 		/* Install interrupt handler */
+> 		rc = request_irq(r->start, opal_interrupt, r->flags & IRQD_TRIGGER_MASK,
+> 				 name, NULL);
+> 		if (rc) {
+> 			pr_warn("Error %d requesting OPAL irq %d\n", rc, (int)r->start);
+> 			continue;
+> 		}
+> 	}
+...
+>
+> I'm CC'ing this to some maintainers in case they want to add to the "if
+> (rc) {" block, if only to silence static analysis tools, but other than
+> that I see nothing to do on this report.
 
+If the request_irq() fails it's either some sort of firmware
+misconfiguration, or ENOMEM, both which are possibly fatal to the
+machine.
+
+But still, it would be reasonable to kfree() name in the error path, as
+you say if only to keep the static analysis clean.
+
+Thanks for looking at it and sorry for the noise on your lists.
+
+cheers
 
