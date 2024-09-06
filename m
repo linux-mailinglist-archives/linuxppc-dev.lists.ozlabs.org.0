@@ -1,68 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-1130-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1131-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E708E96F742
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 16:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800F996F7E4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 17:10:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0fDp5XyKz300M;
-	Sat,  7 Sep 2024 00:46:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0fn91b3sz301n;
+	Sat,  7 Sep 2024 01:10:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725633978;
-	cv=none; b=AzmLav7h6Zp3fvSxkNFW2DToSAXNwzc5ULh10t1xqDa/oxJfHO0TvdyscxrPOQDB0sM3ul8qSfwD4bCPU93raOf+m1hiLEnpDvgq+/+JQxLX1Owr3jR6XZj/j+fkBC+LTx6dELhjaFi4+3MHFQzjAdobRLeoJ9OKWUq/8uOUs3nBECnwj2zYvasG6f9OCHUx7LEc4zfLChhc+ksw6XqADqWKXFSG226ya/pZrfN6O1iya24Kr9zBzHA3GeuCTRV4uW+00F9/CxT8VrVOp5k5kdsZKvg+SI+q/7nOiMag0SlJ9FrZAxJNwQHYceu+elkkr0unnOwA7dPNUuzKYy38uA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.178.240
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725635453;
+	cv=none; b=D4gHQHyKYFPD3tplXYTSP468D5gjA9brvwuKHftpRHN5Im5CBcNb/2syfDGd+zhg7dlrr1/6vl+K/5oDp5+7UF8E6HScTV9kydVCyG8CTrjAePm5u+d+QpGOrgv4Ptm8xENijINH4mferSEaMRY69srqL3QgeAMAfgKZLSihHLHsxSCityz9PdvL3ZFXWj/WT+HPSXcFCZN9OG4ROSUUdbuxBQEhFHPe7+upwqW9oV+ddYVaSRSotlg3suriDDAcMxKd1S/NLyAwKyIQvAxhXF3Oii5pC08wk3dKzTgD75/mQwGPPS5/nIrA1PJGnM7Vf+X1oFQE0SzDfJU9ILZYhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725633978; c=relaxed/relaxed;
-	bh=LQaqdd4gn6hwyJ6X/+wp06IeAX1AuCwE2tKJcvmByYs=;
-	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=IjuH/PjcJr/ciZQ2/dDStwdNzIsehg6cOiHk1TsyxK6aU67wi/MsotX13BFU6XBks8sZbKjlucJ+V4AfbctV1K2kQDVNGOlpKasW1LybKQnfZvwrQudeRHjaMZ4eUvMQ80i0MEwAbLBTiPKMeKMXl2KMdmxUOvGcjA/lWW1R+TZ/3fy0/FIzWANdKBgVKsP/qAT/LHRZxOC06TwcnfGmrUBOcR+rfXKF8Jl/0uhIo2BshENHX5HzpeJNLiwO1qheNM7DoaaGk1XQGiiGnyyn1Ps0hvsIUNZC+uxRsgKZsSFeNlDTNPcXhIIBlJEY9FR3JUslMMjhIDDQ98AQAVDmDA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=hdkchmhx; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=v4y+=qe=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
+	t=1725635453; c=relaxed/relaxed;
+	bh=TlWUjv85UmB/FzR7qBD8k/0BSGkObn4DwgKFQhETorg=;
+	h=DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version; b=eFkA633dnq4SZ6Irl2cz9BwNcF0RYJEXRJPM2knoMdo/qh4mpR7V10GP+CzVxEvS61DM+F7rz7rYjQ8VS15yS/RPacB95XIB2LbJtVcURP0jyVlhqOKvoUWskLlb9U5pb/XwZb0AaimrZkO/rry7jmWRMjwWLCbTw5FKtDwl44veXdPgLfeEILZFsjY6lPdon/Wn+lPaVmbrzXMVnPVNShvrQVOU7qevOLYYryM1Fcdx/o+DSYX6/qgIOHaENVmk+BvvzH3SCY7J5ELJVKNw8pkZfjtTucrUmX0MkxvGkKswocyZLNTTzTL80tnbFCZMiuicoqauosfqucP7li+aKA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=pUXCenkN; dkim-atps=neutral; spf=pass (client-ip=217.70.178.240; helo=mslow1.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=hdkchmhx;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=pUXCenkN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=v4y+=qe=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.178.240; helo=mslow1.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com; receiver=lists.ozlabs.org)
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0fDm5gfmz2yn1
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 00:46:16 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 15ED3A404BD;
-	Fri,  6 Sep 2024 14:46:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C37EC4CEC4;
-	Fri,  6 Sep 2024 14:46:12 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="hdkchmhx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1725633970;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0fn75p6Cz2ytJ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 01:10:51 +1000 (AEST)
+Received: from relay3-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::223])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id B6527C4C36
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 15:10:45 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2273C60008;
+	Fri,  6 Sep 2024 15:10:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1725635427;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LQaqdd4gn6hwyJ6X/+wp06IeAX1AuCwE2tKJcvmByYs=;
-	b=hdkchmhxBGCbaIA9Ddy8tLE2V3TigvEtRRSSeTX9BsM7QQ4qIJuX0ADLJbDVgWmYlSonvd
-	Bz0qYCzSkg8NdulUBcB2nO4r2j8iwwSNGQko0n9UdoJdiRM6FT6m7IIdYnvEifxsZ47cna
-	AwAA+oz9pguT0Yk6OmB338aNuSS3wI0=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 89574607 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 6 Sep 2024 14:46:10 +0000 (UTC)
-Date: Fri, 6 Sep 2024 16:46:07 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrei Vagin <avagin@gmail.com>
-Subject: Re: [PATCH 2/2] Fixup for 3279be36b671 ("powerpc/vdso: Wire up
- getrandom() vDSO implementation on VDSO32")
-Message-ID: <ZtsVry_LL2jjeLJ3@zx2c4.com>
-References: <700dbf296d02e32376329774be35cfbead08041d.1725611321.git.christophe.leroy@csgroup.eu>
- <ffd7fc255e194d1e2b0aa3d9d129e826c53219d4.1725611321.git.christophe.leroy@csgroup.eu>
- <ZtsMpcV7iLYoytdJ@zx2c4.com>
- <795db5f1-c266-4fb3-a51b-c2b3745d334b@csgroup.eu>
+	bh=TlWUjv85UmB/FzR7qBD8k/0BSGkObn4DwgKFQhETorg=;
+	b=pUXCenkNv+uLK7//UHJoWJ7iq8w2tLMEh5eb3Za6lkA7wiVPjOAhoAfRUJjZfnO1cMVS09
+	9vLnHkNX7Eg2jUK3XZDJs8Db2BMOLhB4fxywPKpiLXrpv8shdeorcloOZ1OmUEsMbKml0F
+	3gH8nrzNcED57LDamv+WGTKNSe4h6Rqx8GXUIUKNkej9/gN774fkGE6UH3I2ssrUZ357ax
+	JITZdg/JengIA3Q6T0u3SkXVLjl0M7xR6WkjV70Jvwfc507aYSwqfPhqvLm6COwKOSrGtL
+	Da6LiWrkfLKA5/oHMdwJCmX58wrV8fnH5ZE9TLgY+UImQTnhzwgkZMqEXmzVig==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Charles Han <hanchunchao@inspur.com>,
+	robh@kernel.org,
+	miquel.raynal@bootlin.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com
+Cc: christophe.leroy@csgroup.eu,
+	naveen@kernel.org,
+	tudor.ambarus@linaro.org,
+	liuyanming@ieisystem.com,
+	linux-mtd@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] mtd: powernv: Add check devm_kasprintf() returned value
+Date: Fri,  6 Sep 2024 17:10:24 +0200
+Message-ID: <20240906151024.736454-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240828092427.128177-1-hanchunchao@inspur.com>
+References: 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,72 +71,19 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <795db5f1-c266-4fb3-a51b-c2b3745d334b@csgroup.eu>
+X-linux-mtd-patch-notification: thanks
+X-linux-mtd-patch-commit: b'395999829880a106bb95f0ce34e6e4c2b43c6a5d'
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Fri, Sep 06, 2024 at 04:26:32PM +0200, Christophe Leroy wrote:
-> And thanks for playing up with it while I was sleeping and getting ideas 
-> too.
+On Wed, 2024-08-28 at 09:24:27 UTC, Charles Han wrote:
+> devm_kasprintf() can return a NULL pointer on failure but this
+> returned value is not checked.
 > 
-> Did you learn powerpc assembly during the night or did you know it already ?
+> Fixes: acfe63ec1c59 ("mtd: Convert to using %pOFn instead of device_node.name")
+> Signed-off-by: Charles Han <hanchunchao@inspur.com>
 
-I don't really know ppc assembly. I had perused the tree over the last
-week and gotten some feel for it when reviewing patches, but I don't
-have anything memorized (except, perhaps, the eieio instruction [1,2]).
-Last night after sending the first broken patch I went out to play (I
-play jazz guitar ~every night these days), and the whole time I kept
-thinking about the problem. So first thing I did when I got home was try
-to fake my way through some ppc asm. A fun mini project for me.
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/next, thanks.
 
-[1] https://lore.kernel.org/lkml/Pine.LNX.4.33.0110120919130.31677-100000@penguin.transmeta.com/
-[2] https://lore.kernel.org/lkml/alpine.LFD.2.00.0904141006170.18124@localhost.localdomain/
-
-> At the end I ended up with something which I think is simple enough for 
-> a backport to stable.
-
-It seems like a good patch indeed, and hopefully small enough that
-Michael will let me carry in my tree for 6.12, per the plan.
-
-> On the long run I wonder if we should try to find a more generic 
-> solution for getrandom instead of requiring each architecture to handle 
-> it. On gettimeofday the selection of the right page is embeded in the 
-> generic part, see for instance :
-> 
-> static __maybe_unused __kernel_old_time_t
-> __cvdso_time_data(const struct vdso_data *vd, __kernel_old_time_t *time)
-> {
-> 	__kernel_old_time_t t;
-> 
-> 	if (IS_ENABLED(CONFIG_TIME_NS) &&
-> 	    vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
-> 		vd = __arch_get_timens_vdso_data(vd);
-> 
-> 	t = READ_ONCE(vd[CS_HRES_COARSE].basetime[CLOCK_REALTIME].sec);
-> 
-> 	if (time)
-> 		*time = t;
-> 
-> 	return t;
-> }
-> 
-> and powerpc just provides:
-> 
-> static __always_inline
-> const struct vdso_data *__arch_get_timens_vdso_data(const struct 
-> vdso_data *vd)
-> {
-> 	return (void *)vd + (1U << CONFIG_PAGE_SHIFT);
-> }
-
-It's tempting, but maybe a bit tricky. LoongArch, for example, doesn't
-have this problem at all, because the layout of their vvars doesn't
-require it. So the vd->clock_mode access is unnecessary.
-
-> Or another solution could be to put random data in a third page that is 
-> always at the same place regardless of timens ?
-
-Maybe that's the easier way, yea. Potentially wasteful, though.
-
-Jason
+Miquel
 
