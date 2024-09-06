@@ -1,48 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-1133-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1134-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F14C96F9F9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 19:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B76A96FB84
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 20:55:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0k184wjqz301Y;
-	Sat,  7 Sep 2024 03:36:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0llm016xz2ynn;
+	Sat,  7 Sep 2024 04:55:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725644188;
-	cv=none; b=B2EN3ehg4ivsQ34uaolTl1bZ1VRxm+2Q7+aEtB+5VpBKJilLIsAoe9PkBVswzg0+pY0Bqy/mJWczAGZ/wG1jUwzalBNOQ6AAjjwMOp7fJlVgZEBXID5e2WCoHIs3kD18rr20udChIgQ8Waeq0NWzAB23RUxSNCdMJ1TQjSsd+G7nYzaveavLIJtFzcGjA1/I0pnwTdsz4abPxb/p4qd7DNix5aahVxAOZj73olK/g1kSrHKOpWJEToLviC9MCg+tk52fMmgvEUQYoPA/UwlHX1tLMKnWFK2/wCr3O5KtziqhHx2oCE/l+GHO+QapI8WvcnWlZmmKjJesTG/6Lu6tDg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725648899;
+	cv=none; b=QTWx77eAXem21UMhhDApAOu9PVArwFR8lhYoQz2lSRlCV8tSgALITo9aJXO5WH17qqEY1YIcGc+F5Kruli6S4wEx2ZGQBFElpOiTrSrK12Cg8R/05NvNh1tlSl4BHMQ16soaNSrYz+B9bG6vhUWfZXqNm7T7yJReOXBCGIkflj6hufxLfxwARY0oOuqu15ZugxCfaEwEF/jXPhIP2oY3asuY2mFGY80O1E1fGoLlb6dm7+plOhvYfGivvZ2LXu4cgkDPNoYZWccvkoJ/Ep/skx4CWy8XPDsDxfcozSJRhErYLRKrrOiPi8mQbLub/gya/HWiDenagb0PYlUqEzaGSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725644188; c=relaxed/relaxed;
-	bh=F5p0FlPRhyRBy8rHQIto1v/VaWCYbt60EputVDrTk1I=;
-	h=DKIM-Signature:Mime-Version:Content-Type:Date:Message-Id:Cc:
-	 Subject:From:To:References:In-Reply-To; b=fywkemUNtESANR0cv3gE4qh4VD0PyblHHvl+13BQekSVxWkjl2jbxYJneW0hCzexX/xt2HqWpBvoWAjXSotwVIdzKIFVcZpAx4YpswK4NFKrw8Eebu/zJpQCO8fPKlKej5l3TiQwGxmkCJLmB+tavCbibVjUXRX4MzqkJslx108ves5/QJlOy0aYbIYdvI0vuKVv+/bRbgWIXJE5uogRFERxHHL4REKM7mvWIfTyPmGwwpvzg5krzV6uKXnicf6vyqTdUaOUKxiktzbFu89NTzV6BWtbFc5jmyX2AEiZWtM0+BP5IPmPEY5RmJzSmaG0I2a+1gCmAaciUAq4AbKrlg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IiYAylp8; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1725648899; c=relaxed/relaxed;
+	bh=Y4fO2uD55CapDb7E2rYz7b7g+1GsC4SXbsHVZgINqmk=;
+	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=OurWmVNdNkWM6UBLOP6HqOmNVmfZeQ6B5lEUOA4tyYDvIGH6HtY5g8cbVVEYrqV+9jXqqaNMU9uhYz5iwCoGQlen1fOL4fyDOOSl8ZhkO9M8TQsdDVa749F8WjBqwKE4p5n9b9DPJRdq9Xioy13Lhap3LShsO3SmyXEQM35lRXdW+BsDvnAIEhfBMpN4oxw+DAha3JCE8GGwZrlRDCzwi30wSWHDgJn5Ibwdc9orcytdN9XZJsO8dLtJJii33rCZMYOQ48n9QYSoq4h/5hbSK2VuljAiVHKfAboxDnWRJqzewox8MgF9fCzjCykpv6TfmAelU2zpYJR8HbJ+pdb1SQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=efgMiD7z; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=v4y+=qe=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IiYAylp8;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=efgMiD7z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=v4y+=qe=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0k181wYrz2ysh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 03:36:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0llk15Zcz2yN8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 04:54:58 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 57C3B5C5A85;
-	Fri,  6 Sep 2024 17:36:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99CEC4CEC4;
-	Fri,  6 Sep 2024 17:36:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725644183;
-	bh=aRfeEhcEuH0P68oO5jth9G8d0DHMgdo2eFNaf8ND4CU=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=IiYAylp8CKShIMa2CwTo5hOFj5Ou5ORqkhXh4ALP/uL5r2RmE3NQD4ikpySJ7yIe0
-	 OV9Sa8tfznO4aV+9PBk99hAJWxcLYPqrlFaO1ANw8rDjXPdMudJqGceq7lMmYcERyz
-	 cPNMd5b//NKZ6k089LXuwysoq3KdzVXUFnmIApsNI58w+2yzhfolz9bOzXEfX87X5x
-	 cw09R36oznw9eF8jyrnRqk9MD8U33KcFILVqPBKCfFjGkhp23Vo9NUXpeIzqrDpV8x
-	 pb/mhpnNdwCMy1MOI7jp2hn6JkjaqNlO3Vwt+1we3DH/LDpQvVrqIt4TYOCFwbu/4G
-	 gXU/fb+3DM71A==
+	by nyc.source.kernel.org (Postfix) with ESMTP id AFACBA4525C;
+	Fri,  6 Sep 2024 18:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821CBC4CEC4;
+	Fri,  6 Sep 2024 18:54:53 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="efgMiD7z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1725648891;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y4fO2uD55CapDb7E2rYz7b7g+1GsC4SXbsHVZgINqmk=;
+	b=efgMiD7z3gM+I+ScpKY5zOxbUYBqiKjOMk4A9og1wreeDYjHRj6B0THIElQoI+3Jmd58aG
+	jbN8OZ+EGjfjZetq0p8s14rZHXsvZmJgF44HLBxsValYTFEqBGWtBGmZ4uFQFdcV3T2XXP
+	ob6Ca27ME5rPao2YSrgvcj/qtr5Yf88=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 6a974a26 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Fri, 6 Sep 2024 18:54:51 +0000 (UTC)
+Date: Fri, 6 Sep 2024 20:54:49 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrei Vagin <avagin@gmail.com>
+Subject: Re: [PATCH 2/2] Fixup for 3279be36b671 ("powerpc/vdso: Wire up
+ getrandom() vDSO implementation on VDSO32")
+Message-ID: <ZttP-SU9i6iOyfnG@zx2c4.com>
+References: <700dbf296d02e32376329774be35cfbead08041d.1725611321.git.christophe.leroy@csgroup.eu>
+ <ffd7fc255e194d1e2b0aa3d9d129e826c53219d4.1725611321.git.christophe.leroy@csgroup.eu>
+ <ZtsMpcV7iLYoytdJ@zx2c4.com>
+ <795db5f1-c266-4fb3-a51b-c2b3745d334b@csgroup.eu>
+ <ZtsVry_LL2jjeLJ3@zx2c4.com>
+ <8d0a8d03-95b3-40a8-85cd-5c2e6f92eb6b@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,77 +74,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Sep 2024 20:36:19 +0300
-Message-Id: <D3ZDT3Z8MZ40.1ZT3K2C7JPYMF@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <mpe@ellerman.id.au>,
- <naveen.n.rao@linux.ibm.com>, <zohar@linux.ibm.com>,
- <stable@vger.kernel.org>, "kernel test robot" <lkp@intel.com>, "Mingcong
- Bai" <jeffbai@aosc.io>
-Subject: Re: [PATCH v2 RESEND] tpm: export tpm2_sessions_init() to fix
- ibmvtpm building
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>, "Kexy Biscuit"
- <kexybiscuit@aosc.io>, <linux-integrity@vger.kernel.org>,
- <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: aerc 0.18.2
-References: <20240905085219.77240-2-kexybiscuit@aosc.io>
- <D3YF52E4EVJ0.2ZJSCR5FCVIGX@kernel.org>
- <603acd64-0a6d-470b-9c9b-f6146443dc0c@linux.ibm.com>
-In-Reply-To: <603acd64-0a6d-470b-9c9b-f6146443dc0c@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8d0a8d03-95b3-40a8-85cd-5c2e6f92eb6b@csgroup.eu>
 
-On Fri Sep 6, 2024 at 8:02 PM EEST, Stefan Berger wrote:
->
->
-> On 9/5/24 10:26 AM, Jarkko Sakkinen wrote:
-> > On Thu Sep 5, 2024 at 11:52 AM EEST, Kexy Biscuit wrote:
-> >> Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
-> >> initialize session support") adds call to tpm2_sessions_init() in ibmv=
-tpm,
-> >> which could be built as a module. However, tpm2_sessions_init() wasn't
-> >> exported, causing libmvtpm to fail to build as a module:
+On Fri, Sep 06, 2024 at 05:14:43PM +0200, Christophe Leroy wrote:
+> 
+> 
+> Le 06/09/2024 à 16:46, Jason A. Donenfeld a écrit :
+> > On Fri, Sep 06, 2024 at 04:26:32PM +0200, Christophe Leroy wrote:
+> > 
+> >> On the long run I wonder if we should try to find a more generic
+> >> solution for getrandom instead of requiring each architecture to handle
+> >> it. On gettimeofday the selection of the right page is embeded in the
+> >> generic part, see for instance :
 > >>
-> >> ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko]=
- undefined!
+> >> static __maybe_unused __kernel_old_time_t
+> >> __cvdso_time_data(const struct vdso_data *vd, __kernel_old_time_t *time)
+> >> {
+> >> 	__kernel_old_time_t t;
 > >>
-> >> Export tpm2_sessions_init() to resolve the issue.
+> >> 	if (IS_ENABLED(CONFIG_TIME_NS) &&
+> >> 	    vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
+> >> 		vd = __arch_get_timens_vdso_data(vd);
 > >>
-> >> Cc: stable@vger.kernel.org # v6.10+
-> >> Reported-by: kernel test robot <lkp@intel.com>
-> >> Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lk=
-p@intel.com/
-> >> Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initi=
-alize session support")
-> >> Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
-> >> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-> >> ---
-> >> V1 -> V2: Added Fixes tag and fixed email format
-> >> RESEND: The previous email was sent directly to stable-rc review
+> >> 	t = READ_ONCE(vd[CS_HRES_COARSE].basetime[CLOCK_REALTIME].sec);
 > >>
-> >>   drivers/char/tpm/tpm2-sessions.c | 1 +
-> >>   1 file changed, 1 insertion(+)
+> >> 	if (time)
+> >> 		*time = t;
 > >>
-> >> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-=
-sessions.c
-> >> index d3521aadd43e..44f60730cff4 100644
-> >> --- a/drivers/char/tpm/tpm2-sessions.c
-> >> +++ b/drivers/char/tpm/tpm2-sessions.c
-> >> @@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
-> >>  =20
-> >>   	return rc;
-> >>   }
-> >> +EXPORT_SYMBOL(tpm2_sessions_init);
-> >>   #endif /* CONFIG_TCG_TPM2_HMAC */
-> >=20
-> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >=20
-> Would have tested it but machine is down..
->
-> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> >> 	return t;
+> >> }
+> >>
+> >> and powerpc just provides:
+> >>
+> >> static __always_inline
+> >> const struct vdso_data *__arch_get_timens_vdso_data(const struct
+> >> vdso_data *vd)
+> >> {
+> >> 	return (void *)vd + (1U << CONFIG_PAGE_SHIFT);
+> >> }
+> > 
+> > It's tempting, but maybe a bit tricky. LoongArch, for example, doesn't
+> > have this problem at all, because the layout of their vvars doesn't
+> > require it. So the vd->clock_mode access is unnecessary.
+> > 
+> >> Or another solution could be to put random data in a third page that is
+> >> always at the same place regardless of timens ?
+> > 
+> > Maybe that's the easier way, yea. Potentially wasteful, though.
+> > 
+> 
+> Indeed I just looked at Loongarch and that's exactly what they do: they 
+> have a third page after the two pages dedicated to TIME for arch 
+> specific data, and they have added getrandom data there.
+> 
+> The third page is common to every process so it won't waste more than a 
+> few bytes. It doesn't worry me even on the older boards that only have 
+> 32 Mbytes of RAM.
+> 
+> So yes, I may have a look at that in the future, what we have at the 
+> moment is good enough to move forward.
 
-I'll add this before the PR, thank you.
+My x86 code is kind of icky for this:
 
-BR, Jarkko
+static __always_inline const struct vdso_rng_data *__arch_get_vdso_rng_data(void)
+{
+        if (IS_ENABLED(CONFIG_TIME_NS) && __vdso_data->clock_mode == VDSO_CLOCKMODE_TIMENS)
+                return (void *)&__vdso_rng_data + ((void *)&__timens_vdso_data - (void *)&__vdso_data);
+        return &__vdso_rng_data;
+}
+
+Doing the subtraction like that means that this is more clearly correct.
+But it also makes the compiler insert two jumps for the branch, and then
+reads the addresses of those variables and such.
+
+If I change it to:
+
+static __always_inline const struct vdso_rng_data *__arch_get_vdso_rng_data(void)
+{
+        if (IS_ENABLED(CONFIG_TIME_NS) && __vdso_data->clock_mode == VDSO_CLOCKMODE_TIMENS)
+                return (void *)&__vdso_rng_data + (3UL << CONFIG_PAGE_SHIFT);
+        return &__vdso_rng_data;
+}
+
+Then there's a much nicer single `cmov` with no branching.
+
+But if I want to do that for real, I'll have to figure out what set of
+nice compile-time constants I can use. I haven't looked into this yet.
+
+Jason
 
