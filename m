@@ -1,101 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-1078-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1079-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB3A96E9FF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 08:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0925996EA21
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 08:26:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0R0t3CfZz3020;
-	Fri,  6 Sep 2024 16:20:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0R7r4fQ5z3028;
+	Fri,  6 Sep 2024 16:26:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=130.133.4.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725603614;
-	cv=none; b=RtCz9lIQEKIsEWuedG0xSwzL8oM90A7xmLD9tiZQhyOwLwZXQXthWX4U2XPS2xdQnRXPPjRgnx4v2W3CKyIjGincPHYLR/UHgkEJTE4nRPP/6js9UtD8DV/Q3y/3OKRNuY4FNfugNOe9BiiQfFt7zna0abeVqvAQsmL+6eRw2ruLuHF52BZ5UPLkPpQ3oIiwpxjeExVh543evDUbDy02Zz43cUnE9r6MUZ0mAk4qA/Bwgv/HIxtvIuorbW4u0YgPRW312IsTpwawVe7Uz9SIXYsdsXSjV/aLeZPXrA5ssCaxILRS1t7lh+JIHHGAfFVGXOGThnHuEfGiUwefWMyBQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725603614; c=relaxed/relaxed;
-	bh=Pf0qJBv2a5VO5pnFKJd+fG12gABSq0Jxz8dYrGBJaUk=;
-	h=DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version; b=J9kqXn9+0w0lZKP3ZPPUBHf8+M+08cpP2+5hqEJ535lNm4JRqxTnJXvj43OGRhWbE+5GqmQSGGrQPuwPh13/7zPSHJIsANDFTbyv+kd9YeMbX6HnrExgqm+oYbbdaRKBz5FwXVmH2pOsMTLbiSD4BF9X5dIjvqPpXSIFyKsDgiZPhOvvwtCiuk4OwU1m+Rf3YJ8QMa6OAF5anD+zil4k7N6bbEIgpZUZrqTitFrCVW5DmvlemeL+ADQR9BhKx6U7DxjbFslHm5RFvDfZbMseFOMxinMNl7ramex7w8ROdhrqhScwzkt/AH4kCerNmQ71hWEG6YO6o0ij+0PqBcIUlw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=jpnXNPqR; dkim-atps=neutral; spf=pass (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org) smtp.mailfrom=zedat.fu-berlin.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:200a::626" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725603976;
+	cv=pass; b=aF4N4573RlVv+zKAlGrwaqRx/kcx7aTOiDVn6Mkw04UVovAxq/TXQVP17jZfFUg6TGmDwNCjbTJiJsM/WAkrrSLK3QfO1VOvtkoF+BQ0Ij7Y9TvexHvHnSvZjf4O0vAHq/d7t0elPAoApR7QsCrrKzqEV7vqD8toq5MhXdVlyPim2IVkmMY5PDX2jsQhcub7c1AgBYw3WIMdfDyZb0bwq4HZ1glOLFCgaVvRa1Virn5CrpE/ZcXSIjtaHH/hlXDwEyxC97L4qZvctNJN4DOWgszJFADslQLGcMEdJ4Ia0kT2zt30eJuCVaqgeDDnj5bsP1kHsiWk6gKsT0sSOwsX2w==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1725603976; c=relaxed/relaxed;
+	bh=5yoTby9ct0vxVKAUMvwbhURvMRMtDZTCIToUhzGW0YM=;
+	h=ARC-Authentication-Results:DKIM-Signature:References:From:To:Cc:
+	 Subject:Date:In-reply-to:Message-ID:Content-Type:MIME-Version; b=CeS1hDRFowTieFtxOtFLs7kXT1/yM/x1G+uAhEMjy1sy+NwzGzjjR6j5z97sAdaNgdp4I1RnjEyNmTog82XgobhA9TMYqCRaAO8pNdKm7qRmQFMS9tVynUw7p4wal6G8IfzBlLTfKzXS2dkWfZL9HgQbCYxOz+4H89Kx2eTMK74/69EQy5zwbIwdI/eNm7dTuz/H7KjKtHoevaTGLRdhOSFG7ayr7I2Bk2NNBj17z1mUtHFfc8VDB6rhzyLknhpBlNaolXYzDIXIzEA/0mw36r+5tXGIlqYYAbj71xdNxRjhcZzV6miQxw/D8dB1cNCu0CSnOk3Z2VNQzwNV8ZWjjQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=l2wdSrAl; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:200a::626; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=jpnXNPqR;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=l2wdSrAl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:200a::626; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20626.outbound.protection.outlook.com [IPv6:2a01:111:f403:200a::626])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0R0q5GVTz2ytm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 16:20:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Pf0qJBv2a5VO5pnFKJd+fG12gABSq0Jxz8dYrGBJaUk=; t=1725603611; x=1726208411; 
-	b=jpnXNPqRED4JAlzNlyVEzOmQRMmBX8iwcnsC7TVCY2bnSvl7wbvZRwJOikMEbvoPJIB+X7CHEIg
-	9GHZfzXxc0qroiIHHve8tQnTvJDFLuIDyGlRPa/lnz2wfE7QFXRTTGj5xEqQs3jxiKE5Np5xEFXWP
-	dCbDH3BoDDAlHieehkohDvdEEeH/5m7CgVDF1clKVWGelTLr1UzZPWH3D3npdRGj/9PvO1rDlxNTZ
-	36AuF4rKD6+N7JmqUYquscyVuv29TOZpSNplE407RfbmCbXCnf1cZOrgqsTH10L5mUgXDHhw3TLlD
-	zFrDXa/B43bMIEiEBRFGFsuf9uL8iAzefHuQ==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1smSJT-00000003bKB-2zIl; Fri, 06 Sep 2024 08:19:19 +0200
-Received: from dynamic-077-191-186-033.77.191.pool.telefonica.de ([77.191.186.33] helo=[192.168.178.20])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1smSJT-00000001qiA-1L1j; Fri, 06 Sep 2024 08:19:19 +0200
-Message-ID: <f8e0faafbb56e8ab748cf14c314497501d375529.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH RFC v3 0/2] mm: Introduce ADDR_LIMIT_47BIT personality
- flag
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Charlie Jenkins <charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>, 
- Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky
- <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, Vineet Gupta
- <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Guo Ren
- <guoren@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
- <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
- Deller <deller@gmx.de>,  Michael Ellerman <mpe@ellerman.id.au>, Nicholas
- Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
- <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Rich
- Felker <dalias@libc.org>, "David S. Miller" <davem@davemloft.net>, Andreas
- Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Muchun Song <muchun.song@linux.dev>, Andrew Morton
- <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, Shuah Khan <shuah@kernel.org>, Christoph
- Hellwig <hch@infradead.org>, Michal Hocko <mhocko@suse.com>, "Kirill A.
- Shutemov" <kirill@shutemov.name>, Chris Torek <chris.torek@gmail.com>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org,  linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org,  linux-abi-devel@lists.sourceforge.net
-Date: Fri, 06 Sep 2024 08:19:17 +0200
-In-Reply-To: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
-References: 
-	<20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0R7r0jTwz3023
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 16:26:14 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=frBlN4lIKwr0sTea2C9PIWE7ggpGCoa1t6aJIXQDzETEZJfm68tSD8fIC0EyVwtumw8qZrKfBdj2LJRKzd1RHUmcWypQbwbx3BXlcqtpq640VSg/sXPexlwCxvyaXy6KJgN7o9x7mocgVpGUn6i34UE+BMBzg5PwHIN8obVEAOQ1HPXcE6D6AHZeHvcn24+lo+ngQntgQWzErxOgReV+PiqTtyFpKhZT1ujnsq2jr6WXDJdKQEn+odmu8D9HfOOixuqSnxBo8NcLlBaB8lC6+lsV+D/tyEYfO3uHEwr5FiQ2k4wWV5DRWzHznWqVFuFbNh4GlmmQ1ISVkyIIiIi6ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5yoTby9ct0vxVKAUMvwbhURvMRMtDZTCIToUhzGW0YM=;
+ b=FduCfRaija00nJHm0D0EPSlQ9rW+yCfuTcuIEtudr2m6CXXK3JXBlyZE38jWt/zYRgaOgxYUS6PVpQwJdTdZzvEp1LZmpQb0qjN1Cb5lYNzWJU7M6T5m/tgH8SYEIMcyLiXOMkV+muZbYpOXAZunH1wqvDdHJAh/lCbB/5VFGK84n3Hfgy4q4r1KFW15M8d0ZlG10Y85R0FA7BQHoO1qWDbbrMWAcu8Pko5kNRS2EZ+V1ySmSnwOJ64JInk5qmBf/jJv/Xcak3odp1IsZ3Yg0ZXYJSj0hmcgFRhBRn7vzZ67WRBAv69kcZNY9GTMZktxiyqbcJhuwRAdCRlxAM3xHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5yoTby9ct0vxVKAUMvwbhURvMRMtDZTCIToUhzGW0YM=;
+ b=l2wdSrAlU/FIKYuVfapFH0x+wgyF7aREg08YlaafPP5QP/9Gc4Rg9UGtgbp0kkXIAmkcoQ7uBhzeJpUktY7r4C8r+uDB3IlfV0Mfy3CgEbtOHjROfI4G5bg7Y8vj1zcn0RQPCrr4PRT+UPomCxOkoSQoCh+sWdkBZVLzB+u/nlsaCF21a0g8Jc+3fbiskhQYX6SyeHetiWS5FaNvFaxYGmsSopUON4ak6gQ4+TzYPIEmDhImeNz5gRuEsVDGtpL3qHk9S9gkThUAMRfdWX9wXJXw1oee7IX/LwTsN5CsTodYMJpRp+cgi0g/Vyy7YhiQ8vfSOkDgxkcj2IKA82nPCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ DS0PR12MB8815.namprd12.prod.outlook.com (2603:10b6:8:14f::16) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7918.27; Fri, 6 Sep 2024 06:25:55 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%3]) with mapi id 15.20.7918.024; Fri, 6 Sep 2024
+ 06:25:55 +0000
+References: <cover.66009f59a7fe77320d413011386c3ae5c2ee82eb.1719386613.git-series.apopple@nvidia.com>
+ <50013c1ee52b5bb1213571bff66780568455f54c.1719386613.git-series.apopple@nvidia.com>
+ <20240627113328.ozqkzhloufrpsdcr@quack3>
+User-agent: mu4e 1.10.8; emacs 29.1
+From: Alistair Popple <apopple@nvidia.com>
+To: Jan Kara <jack@suse.cz>
+Cc: dan.j.williams@intel.com, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, logang@deltatee.com, bhelgaas@google.com,
+ jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org,
+ mpe@ellerman.id.au, npiggin@gmail.com, dave.hansen@linux.intel.com,
+ ira.weiny@intel.com, willy@infradead.org, djwong@kernel.org,
+ tytso@mit.edu, linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org,
+ jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com
+Subject: Re: [PATCH 06/13] mm/memory: Add dax_insert_pfn
+Date: Fri, 06 Sep 2024 16:21:53 +1000
+In-reply-to: <20240627113328.ozqkzhloufrpsdcr@quack3>
+Message-ID: <87seudb8nm.fsf@nvdebian.thelocal>
+Content-Type: text/plain
+X-ClientProxiedBy: SY8P282CA0021.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:29b::34) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,161 +87,188 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 77.191.186.33
-X-ZEDAT-Hint: PO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|DS0PR12MB8815:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1de8f71-9409-408a-0f4b-08dcce3cc320
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?7tOlp9WHQB+SRopOWA1znLKekTVpxl1+0qy/BNtXEJ9XDOfHKUMH7zynvu/Q?=
+ =?us-ascii?Q?50Mcygz/PTpkQR08YjUHKpEXia60P8QdQitKZ4eeoBDFi40eHC/ttgw0oHSb?=
+ =?us-ascii?Q?/9ggp9Oq6bDek1rP0TN9KRnTVjBsFLSkKytgW32n/n4f+bSy4XKCWboMgb5p?=
+ =?us-ascii?Q?ouK9netXEel2AW4ViSTO3Rm9OItA/kften8CWhY+t9f6TpqIWz4fSulNYp5O?=
+ =?us-ascii?Q?qeJQp38NnZoGalWR7014UPjzEdzOkRf+oVLL6JvXZHzDF97iVsPi9zriwEct?=
+ =?us-ascii?Q?XGHBs/bY64Y6gQweDbrgarg7BJrXpv6pWUu/n5gQ5nXUr9gwt0iCL+bDmSHK?=
+ =?us-ascii?Q?B8jC8bp2UxBkWGBfA3D3WcqXEyYH6g2fZqPL71mr/xani/gOh3mYI6KYTxB1?=
+ =?us-ascii?Q?307xuXNJExlbO7YM5gshdmX6epZfFAbyNhMkwRQoPAB/ZJ0XRukV1LIAby3k?=
+ =?us-ascii?Q?NgjfKqP7y+wWX2pMg3Rz0S8OKeCGabBQcsndNgnSSFGM+yJknMz8L5vKHTvp?=
+ =?us-ascii?Q?9h/zaB4HEzC+4y0ZMEDhJcRioMDnrlzoqyYvBPbjyy5pmFAg5n9eAB2Owxlo?=
+ =?us-ascii?Q?nFsgDRKaEUdFXka5y8jT5fKq5csHygKXKwEFBDEqSS2QTs2Go048REhbthid?=
+ =?us-ascii?Q?WMOcl0NDxGeU8QoYIqRoHh6jvtAlYw4MHA2pFH6kb2HDaXxeAIVHZq4ZQj3C?=
+ =?us-ascii?Q?vh/gMeZY6SOw0aA/trOPod2kO8wDT2v9W4ONJZUz7lnQipOXA9aegDifJNCx?=
+ =?us-ascii?Q?ZtPXXu3MAhbCHWRcuxZ5MoSsAzHy7S9k3uELbh8oScwiszl1BujyJOePlGCU?=
+ =?us-ascii?Q?uXzOMc6CTbctHJgVUhRh8FeMYnQWTVdVn8nFeyAipcAtrLIyUlx63qrZWsjD?=
+ =?us-ascii?Q?kyRmo8+AmZuveSj8bGkkhBciGGnLFg3HQjIb7Ool7DaWjBRPhmuxjJNPWUPV?=
+ =?us-ascii?Q?MrNnik3GsyIc1n1jKBxU54oyuvwk2lrAdLWG6ltnoDqVAhjmhD0turmt7eT5?=
+ =?us-ascii?Q?4eBFQ6QqXtj5VWzafnj43XbDeyS/cYDvCfzF/MCkZOGJmzGj91BPajMqxjB6?=
+ =?us-ascii?Q?mrGh/+73tDvcuTzn6ESz2IPaTpgs/LcpjiXxXd/U23coEWXkWMOqP2TlB75a?=
+ =?us-ascii?Q?fojTqfUXaUkJI82SFqHo5A2MoaRhYMuYIuZKoBDwrIqpPhCKTCcCX/DW4y00?=
+ =?us-ascii?Q?h7Wu2RYzLi1BERBQHJp3jEL8sW2VYl/aXfa2ENKdF2D+Lw/QO2dzqwbR8vWW?=
+ =?us-ascii?Q?SKWJ1RVPxUnOKHvAMIkRB+UOH1r2yIjaWRQVk+0gjNfod6sYhtOyStJAgbxo?=
+ =?us-ascii?Q?+4I3Kx9Xc87ah6dsT+h26nWp5o1K4A/Uy9eP9SEXY1bhqw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?v5re1mP/kGCdhCmJabWt2lZoVI4qc2rueOJciGra+YBTCenLV9nBpRwR1RC3?=
+ =?us-ascii?Q?MJrvZQs09ied6+J0iKzgnhKh2ovopftWp1KRdf2oBlj706eghm9Ro8DZkSgT?=
+ =?us-ascii?Q?SYmQgVvWsUbZ/CbNZ3kQNCixhDTcQhaMPdjPP+DkvTUz/92bAbjsZFZ0tJJ+?=
+ =?us-ascii?Q?08iQtOtNySu878H/YyXUlTwyKqJNspFe0pm7lo3lrZBA0ekKXO0g3DqQh7Pf?=
+ =?us-ascii?Q?T4Y0seetLSsrBXRECIsSN/oMFZ0gR/XR9TuU/6dP3UwfcCJE8s/WnupP6KxA?=
+ =?us-ascii?Q?EWi8PDbyKSPEJ9Ego1MgV31E4Je6K3FXjnO1d23wqqtjXaneH/9G3Ja6UPg5?=
+ =?us-ascii?Q?/AWibFuLU/dPHUogy3bc6Wol1OzMG2SQjtX7PYV0ZaB2OLgtCH0pF9k2TGhC?=
+ =?us-ascii?Q?aqpOVszXZo9DfDLzKHrZC988LZa5U4ne0FbDAubKZ3h0qDkymcWsjpcMvLx+?=
+ =?us-ascii?Q?gBbTeJIUON89Q/9NfVoV20awkbmufkZRKvZUoO/6epEez/8R0+1GC29gjvoX?=
+ =?us-ascii?Q?oQKMEUCtz9avbVk2mbWo80Vx4q6qOakUUeoaulBnVNc/vQFnv/sU5Wdvsrcs?=
+ =?us-ascii?Q?dW9f8BLTajRt1LI/HOWVFbpJnZPClPiPLFfTlce7rcSlx9wXXsbtOb7z7I11?=
+ =?us-ascii?Q?U6juQc67I/jIsnPt7XoKxc/i4SU130Sxq8j5U8ITXZ9CgWJ4bpFra0syFnd5?=
+ =?us-ascii?Q?TZFrBVt29nfWoKUOY9IQYcgi3xFKKTjta2djJLMw6L/iEYyKok0F/QuCn2eM?=
+ =?us-ascii?Q?8/qhiY7qRT7oK/+ndgF0QWn3UYjVg/THE2vpIrN3iCvcfr5CvAEFjDLiOmvw?=
+ =?us-ascii?Q?iPnHFsrz/YrenIVS5FXykAN2U+9L6gn/GTUlmN8XL36Rp2jJZcynsLi7wyto?=
+ =?us-ascii?Q?HUAzGLn2YC3LRQY7xKiny+oIjVQ7SwYs6pFVAs+udzdHmhjmlzRLxocR+NRg?=
+ =?us-ascii?Q?R20LbDITiiFG9OLb4g8dP+s6gBgkMuaP2wClJwtLPyN4kzTEl1t0kEvO18XJ?=
+ =?us-ascii?Q?H62BvTQQkfRCT6XsEAJnlpPoIjLIbVUVtePmcsmSGJDFE4XWGj7vJ2ZkhoHD?=
+ =?us-ascii?Q?dC/MXcHdQKBFavVM5C+60OrGD9SpAhW/rIfLXV3qKCcQGvFvB+m6y67kJxGz?=
+ =?us-ascii?Q?ZXPklaqAj6VTcf+l8xOsa6O1/+OrWmDHJxD21H3aPzeCkDTGTmq3Tz+enDp1?=
+ =?us-ascii?Q?dHyQSqZw5wYrIaflUd3awxp+w6PxkvPR4nQYcWPpZ/lOwaav7dusbPkdiDn7?=
+ =?us-ascii?Q?nHvlkR/m/DSYUIr1iX6N6b89QCgxw9l9IOC4kW8kd1YTk70D2TMXW5JI8t0t?=
+ =?us-ascii?Q?EpAn+DnEVFoFDDK5vXCu6J0UvGtylPJDLbjdhtLYow83REcLJLNT7Gci/Do8?=
+ =?us-ascii?Q?OSbWoRjx8AAssnmOCgIebiHMce6hHstneD3EqBTl39HNH2ZIaFpOFXLKtSfr?=
+ =?us-ascii?Q?WyPoFfaYa5lBhAbDrwIwdf1VxE6l5Hae6D3sS3TgZ7VWnihV8Bo2TNcA1q17?=
+ =?us-ascii?Q?b/tFpmLwi60h37d3dn7c41jTN6FuyLcWYai1SZaYPUV68vRVoVcL0jS89Z9j?=
+ =?us-ascii?Q?VnJxyaXARoRK2W3Eh8VUJ5qHB1EBFV4SoxJhKYrg?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1de8f71-9409-408a-0f4b-08dcce3cc320
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2024 06:25:54.9695
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jWWF6kKX3e17lDUexyK5K3VWsHWh6s5wuAQONjytzomouWbo2hW1wZtSa53qWwo1/Oq8GG/krsEFCz9+cj/a3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8815
 
-Hi Charlie,
 
-On Thu, 2024-09-05 at 14:15 -0700, Charlie Jenkins wrote:
-> Some applications rely on placing data in free bits addresses allocated
-> by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
-> address returned by mmap to be less than the 48-bit address space,
-> unless the hint address uses more than 47 bits (the 48th bit is reserved
-> for the kernel address space).
->=20
-> The riscv architecture needs a way to similarly restrict the virtual
-> address space. On the riscv port of OpenJDK an error is thrown if
-> attempted to run on the 57-bit address space, called sv57 [1].  golang
-> has a comment that sv57 support is not complete, but there are some
-> workarounds to get it to mostly work [2].
->=20
-> These applications work on x86 because x86 does an implicit 47-bit
-> restriction of mmap() address that contain a hint address that is less
-> than 48 bits.
->=20
-> Instead of implicitly restricting the address space on riscv (or any
-> current/future architecture), provide a flag to the personality syscall
-> that can be used to ensure an application works in any arbitrary VA
-> space. A similar feature has already been implemented by the personality
-> syscall in ADDR_LIMIT_32BIT.
->=20
-> This flag will also allow seemless compatibility between all
-> architectures, so applications like Go and OpenJDK that use bits in a
-> virtual address can request the exact number of bits they need in a
-> generic way. The flag can be checked inside of vm_unmapped_area() so
-> that this flag does not have to be handled individually by each
-> architecture.=20
->=20
-> Link:
-> https://github.com/openjdk/jdk/blob/f080b4bb8a75284db1b6037f8c00ef3b1ef1a=
-dd1/src/hotspot/cpu/riscv/vm_version_riscv.cpp#L79
-> [1]
-> Link:
-> https://github.com/golang/go/blob/9e8ea567c838574a0f14538c0bbbd83c3215aa5=
-5/src/runtime/tagptr_64bit.go#L47
-> [2]
->=20
-> To: Arnd Bergmann <arnd@arndb.de>
-> To: Richard Henderson <richard.henderson@linaro.org>
-> To: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-> To: Matt Turner <mattst88@gmail.com>
-> To: Vineet Gupta <vgupta@kernel.org>
-> To: Russell King <linux@armlinux.org.uk>
-> To: Guo Ren <guoren@kernel.org>
-> To: Huacai Chen <chenhuacai@kernel.org>
-> To: WANG Xuerui <kernel@xen0n.name>
-> To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> To: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-> To: Helge Deller <deller@gmx.de>
-> To: Michael Ellerman <mpe@ellerman.id.au>
-> To: Nicholas Piggin <npiggin@gmail.com>
-> To: Christophe Leroy <christophe.leroy@csgroup.eu>
-> To: Naveen N Rao <naveen@kernel.org>
-> To: Alexander Gordeev <agordeev@linux.ibm.com>
-> To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-> To: Heiko Carstens <hca@linux.ibm.com>
-> To: Vasily Gorbik <gor@linux.ibm.com>
-> To: Christian Borntraeger <borntraeger@linux.ibm.com>
-> To: Sven Schnelle <svens@linux.ibm.com>
-> To: Yoshinori Sato <ysato@users.sourceforge.jp>
-> To: Rich Felker <dalias@libc.org>
-> To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> To: David S. Miller <davem@davemloft.net>
-> To: Andreas Larsson <andreas@gaisler.com>
-> To: Thomas Gleixner <tglx@linutronix.de>
-> To: Ingo Molnar <mingo@redhat.com>
-> To: Borislav Petkov <bp@alien8.de>
-> To: Dave Hansen <dave.hansen@linux.intel.com>
-> To: x86@kernel.org
-> To: H. Peter Anvin <hpa@zytor.com>
-> To: Andy Lutomirski <luto@kernel.org>
-> To: Peter Zijlstra <peterz@infradead.org>
-> To: Muchun Song <muchun.song@linux.dev>
-> To: Andrew Morton <akpm@linux-foundation.org>
-> To: Liam R. Howlett <Liam.Howlett@oracle.com>
-> To: Vlastimil Babka <vbabka@suse.cz>
-> To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> To: Shuah Khan <shuah@kernel.org>
-> To: Christoph Hellwig <hch@infradead.org>
-> To: Michal Hocko <mhocko@suse.com>
-> To: "Kirill A. Shutemov" <kirill@shutemov.name>
-> To: Chris Torek <chris.torek@gmail.com>
-> Cc: linux-arch@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-alpha@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-csky@vger.kernel.org
-> Cc: loongarch@lists.linux.dev
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: sparclinux@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kselftest@vger.kernel.org
-> Cc: linux-abi-devel@lists.sourceforge.net
-> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
->=20
-> Changes in v2:
-> - Added much greater detail to cover letter
-> - Removed all code that touched architecture specific code and was able
->   to factor this out into all generic functions, except for flags that
->   needed to be added to vm_unmapped_area_info
-> - Made this an RFC since I have only tested it on riscv and x86
-> - Link to v1: https://lore.kernel.org/r/20240827-patches-below_hint_mmap-=
-v1-0-46ff2eb9022d@rivosinc.com
->=20
-> Changes in v3:
-> - Use a personality flag instead of an mmap flag
-> - Link to v2: https://lore.kernel.org/r/20240829-patches-below_hint_mmap-=
-v2-0-638a28d9eae0@rivosinc.com
->=20
-> ---
-> Charlie Jenkins (2):
->       mm: Add personality flag to limit address to 47 bits
->       selftests/mm: Create ADDR_LIMIT_47BIT test
->=20
->  include/uapi/linux/personality.h                   |  1 +
->  mm/mmap.c                                          |  3 ++
->  tools/testing/selftests/mm/.gitignore              |  1 +
->  tools/testing/selftests/mm/Makefile                |  1 +
->  tools/testing/selftests/mm/map_47bit_personality.c | 34 ++++++++++++++++=
-++++++
->  5 files changed, 40 insertions(+)
-> ---
-> base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
-> change-id: 20240827-patches-below_hint_mmap-b13d79ae1c55
+Jan Kara <jack@suse.cz> writes:
 
-Wow, this issue has been plaguing SPARC users for years already as the arch=
-itecture
-uses a 52-bit virtual address space and Javascript engines such as the one =
-in Firefox
-or Webkit have been crashing ever since.
+> On Thu 27-06-24 10:54:21, Alistair Popple wrote:
+>> Currently to map a DAX page the DAX driver calls vmf_insert_pfn. This
+>> creates a special devmap PTE entry for the pfn but does not take a
+>> reference on the underlying struct page for the mapping. This is
+>> because DAX page refcounts are treated specially, as indicated by the
+>> presence of a devmap entry.
+>> 
+>> To allow DAX page refcounts to be managed the same as normal page
+>> refcounts introduce dax_insert_pfn. This will take a reference on the
+>> underlying page much the same as vmf_insert_page, except it also
+>> permits upgrading an existing mapping to be writable if
+>> requested/possible.
+>> 
+>> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+>
+> Overall this looks good to me. Some comments below.
+>
+>> ---
+>>  include/linux/mm.h |  4 ++-
+>>  mm/memory.c        | 79 ++++++++++++++++++++++++++++++++++++++++++-----
+>>  2 files changed, 76 insertions(+), 7 deletions(-)
+>> 
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 9a5652c..b84368b 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -1080,6 +1080,8 @@ int vma_is_stack_for_current(struct vm_area_struct *vma);
+>>  struct mmu_gather;
+>>  struct inode;
+>>  
+>> +extern void prep_compound_page(struct page *page, unsigned int order);
+>> +
+>
+> You don't seem to use this function in this patch?
 
-I should definitely give this series a try and see if that fixes Javascript=
- crashes
-on SPARC.
+Thanks, bad rebase splitting this up. It belongs later in the series.
 
-Thanks a lot for addressing this nasty long-standing problem!
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index ce48a05..4f26a1f 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -1989,14 +1989,42 @@ static int validate_page_before_insert(struct page *page)
+>>  }
+>>  
+>>  static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
+>> -			unsigned long addr, struct page *page, pgprot_t prot)
+>> +			unsigned long addr, struct page *page, pgprot_t prot, bool mkwrite)
+>>  {
+>>  	struct folio *folio = page_folio(page);
+>> +	pte_t entry = ptep_get(pte);
+>>  
+>> -	if (!pte_none(ptep_get(pte)))
+>> +	if (!pte_none(entry)) {
+>> +		if (mkwrite) {
+>> +			/*
+>> +			 * For read faults on private mappings the PFN passed
+>> +			 * in may not match the PFN we have mapped if the
+>> +			 * mapped PFN is a writeable COW page.  In the mkwrite
+>> +			 * case we are creating a writable PTE for a shared
+>> +			 * mapping and we expect the PFNs to match. If they
+>> +			 * don't match, we are likely racing with block
+>> +			 * allocation and mapping invalidation so just skip the
+>> +			 * update.
+>> +			 */
+>> +			if (pte_pfn(entry) != page_to_pfn(page)) {
+>> +				WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
+>> +				return -EFAULT;
+>> +			}
+>> +			entry = maybe_mkwrite(entry, vma);
+>> +			entry = pte_mkyoung(entry);
+>> +			if (ptep_set_access_flags(vma, addr, pte, entry, 1))
+>> +				update_mmu_cache(vma, addr, pte);
+>> +			return 0;
+>> +		}
+>>  		return -EBUSY;
+>
+> If you do this like:
+>
+> 		if (!mkwrite)
+> 			return -EBUSY;
+>
+> You can reduce indentation of the big block and also making the flow more
+> obvious...
 
-Adrian
+Good idea.
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+>> +	}
+>> +
+>>  	/* Ok, finally just insert the thing.. */
+>>  	folio_get(folio);
+>> +	if (mkwrite)
+>> +		entry = maybe_mkwrite(mk_pte(page, prot), vma);
+>> +	else
+>> +		entry = mk_pte(page, prot);
+>
+> I'd prefer:
+>
+> 	entry = mk_pte(page, prot);
+> 	if (mkwrite)
+> 		entry = maybe_mkwrite(entry, vma);
+>
+> but I don't insist. Also insert_pfn() additionally has pte_mkyoung() and
+> pte_mkdirty(). Why was it left out here?
+
+An oversight by me, thanks for pointing it out!
+
+> 								Honza
+
 
