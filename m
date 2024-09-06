@@ -1,58 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1089-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1090-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD8596EEEA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 11:14:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C740A96EF6C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 11:37:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0VtL4xxPz305P;
-	Fri,  6 Sep 2024 19:14:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0WNl5735z303B;
+	Fri,  6 Sep 2024 19:37:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725614090;
-	cv=none; b=QKgfj2ToglskXqg1UTEsr8tzjafTEhUSFE9//57BuNOKPVw6PjBnzUYvTG7u5EMH4tNokb5y8xV62bD24Uu/nDmViGgpEDlHXBW4uM3T9uB0OW/2/RvkunDeKwQh1yp5wRCk7+3oRtpZGuBfeRvNKLWi3/I3X6iA6SDXEzuTXtgP1PTiR3ox0EkQmLp2F3qXRdv7beyG612ZXrio4hGxs3TPj21XGwyKOw8pjytNbLF4XRHymcCp6fX4Yru59Q4iE2jBm6nQV5v+mHivqJ4hj5+3lnFcqfFsX1YxRmUAitI1t1Cc1TImsEfE1ENzE/QVe+mg/TLLujtOnWE2vlKj1w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725615463;
+	cv=none; b=i2qNKN0rVfdDlaNt6PB9EIDFfwKhpkspeaFdGud603Ib3Holt25zAa2TIhj0ErRExVN6qURy/5uo344QZJGx6wDKpIoV7+ooKB+dDDDaYMSpUCY9OU+IsLgWpM0QY1WcHj0Jtt9cJp4cFaWLx67n2bNj9UfRYRP1mfCsIoZypM9XTuiXczMcnx8o/R5YXhMl7zsWIgBe7X9iJEgObXF+XN2dhkAY6H5m3wc45TC5T9cWm1jNX6rYh9gIvSNekhD2LOkBjbY+TDRuztY7I2R4Rr9RgenSNADSceRHDjM6YswPyoGnuJBSOHWztgkgU2EFWlcsCU5/wO5g6MDoHwMD/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725614090; c=relaxed/relaxed;
-	bh=13Vu2Svh897BcYIxkfKsu+/lxNt9bBj5ZU6AM3AdS4A=;
-	h=DKIM-Signature:MIME-Version:References:In-Reply-To:From:Date:
-	 Message-ID:Subject:To:Cc:Content-Type; b=WmNySXKzJQ/eBbyff9lJmjpqTdcF6SB1LmNEAH7rsVqrQuqZVjlfivZeLqNKNSotp3g6eGl2aZFpDTXS7CbAhFjhBOz23gUe977n2gU/aKi9t1OrweWwW5ILGdFl1HAM9zsdTFvtJQsF7fJxjjveIj92N4pVrxbnYHzt5/6xRjTgsZ58H9tWXFCtTZBPao0ega0GQj2BVsEdd6AeGPzGloKIbqKHLU4zLyL6cPrKRk7j3IKU3hs4Z6Lz+RJkdwXJVfJPcDJfWk/VmHpStNMcs8BYjKjzWyg/Xxcj9TKxF42gL3KmrJgUl2cexwl4nqi5ZtHbtJG9qYwJoX0F0eJB5w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U0IYQIoe; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U0IYQIoe;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	t=1725615463; c=relaxed/relaxed;
+	bh=07zl3rDKNL42OquwovqeTaJr18sf2ej01sdg0t++LZ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FtEoOmqHZdXfCkVW9yNhAGO4lqWbC6RoinSMbgzmYjzXHU7IcvG/j/78IH5FnlwNaxfvXNvIkQ6JOl4VevANLv9ZAMSoJ6lWouGdMUel32CnYh/nYy42kA9sJHeJd1J6ltVSDu2UnEGQ/ZT1izYIJcooVMZIdNS7hPkhPO+sEueQCLQ6LdJEwAFZ5gx745NLAgv6e6+EULpQZ/1akwlWZ2icjYbB8GQwwpcu/K4VsJbzmV0yf40i4EBoQMqA1zAPBOL80X6GV1HuhsYhqWZAnGMHGffi1vx8h2ivGfRiS0woS1JORt5KJKCZJeQhkLoce6d9gHjIabOCcl6JI8GThQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0VtL1S6rz304l
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 19:14:50 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 827B45C5B6B
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 09:14:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B8EC4CED3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 09:14:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725614085;
-	bh=CMKQqQlBAwt7nyxZopr8LzhXpjpqLG+zrRS2vHgL2CU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=U0IYQIoeba7I86BlQCZUgY7cG6HJp2P8pN16E+8wtS4NA3f0A+QxJeNxfzeNHFQRM
-	 37U8ndFZhrAIL5QhPbz7SVsS5n/Cob/pfNWiElVqKitYODD+w8EZ9qN2D3O1hXN4gK
-	 BReAbislBv+hctHTQsXiB52hgiPOhjk+c8Z3eHPaI4iP3mEoJ+fd7rjqCshX2nqnqK
-	 L3bRBzqKdvUGneVtGV0fYDl9qZOknFbiib428EGpUegM6MEAyR35NfQSVEh07hLw4W
-	 YBmV84Au2oR3CGbwDaNWeyykhwf5vXAVAASu7T19lQ5frIbc7Bw1YDbAv76E/JfKLw
-	 3czemgjWisuDQ==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5356bb5522bso2271778e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Sep 2024 02:14:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW67eIKEg3V478CB2obpeswwRwWFTByXBBYkBpQk5YLDN88ZyYrDi6huugcCypHS+VhJMvYzpgPf/yzelU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwbTm3K3Nl6XNHpJZyli/zDuBMRLwJe/qpw+Iv8BWfP0Nm6wTVb
-	jBtmt0e/xkRBdt4crqy/9gnbLGVJqk+M7ilo84FiKuIswCvnqQ7ezB9DEFEBfRMY4amTLRia4iT
-	JmLcXoVgK6V/QnbI4j+0Lr8w+NwM=
-X-Google-Smtp-Source: AGHT+IG36wbIRnT1Ou+S3dPUzuz2yggKLEtxdYmatoEi0v4jKJk+IlFZ4GYCNU3aoE7cv9QcH4wQMa5emUdk1dRhZxo=
-X-Received: by 2002:a05:6512:33cf:b0:52c:df6f:a66 with SMTP id
- 2adb3069b0e04-53658815a6cmr1065929e87.58.1725614083466; Fri, 06 Sep 2024
- 02:14:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0WNl2nbpz302b
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 19:37:41 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4X0WNf1FhNz9sRs;
+	Fri,  6 Sep 2024 11:37:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id fKy3LdL3k-CP; Fri,  6 Sep 2024 11:37:38 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4X0WNc6RQfz9sRy;
+	Fri,  6 Sep 2024 11:37:36 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C3BE58B77C;
+	Fri,  6 Sep 2024 11:37:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id of0oryN1Xdlh; Fri,  6 Sep 2024 11:37:36 +0200 (CEST)
+Received: from [192.168.235.70] (unknown [192.168.235.70])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 65D348B764;
+	Fri,  6 Sep 2024 11:37:34 +0200 (CEST)
+Message-ID: <7c3720ff-b763-44b0-9b57-a2fbff3c7f56@csgroup.eu>
+Date: Fri, 6 Sep 2024 11:37:34 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,101 +56,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
- <20240905-patches-below_hint_mmap-v3-1-3cd5564efbbb@rivosinc.com> <9fc4746b-8e9d-4a75-b966-e0906187e6b7@app.fastmail.com>
-In-Reply-To: <9fc4746b-8e9d-4a75-b966-e0906187e6b7@app.fastmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Fri, 6 Sep 2024 17:14:31 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTTVX9CFM3oRZZP3hGExwVwA_=n1Lrq_0DQKWA+-ZbOekg@mail.gmail.com>
-Message-ID: <CAJF2gTTVX9CFM3oRZZP3hGExwVwA_=n1Lrq_0DQKWA+-ZbOekg@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 1/2] mm: Add personality flag to limit address to
- 47 bits
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Charlie Jenkins <charlie@rivosinc.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
-	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S . Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, shuah <shuah@kernel.org>, 
-	Christoph Hellwig <hch@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	"Kirill A. Shutemov" <kirill@shutemov.name>, Chris Torek <chris.torek@gmail.com>, 
-	Linux-Arch <linux-arch@vger.kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, 
-	"linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-abi-devel@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Sep 6, 2024 at 3:18=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Thu, Sep 5, 2024, at 21:15, Charlie Jenkins wrote:
-> > Create a personality flag ADDR_LIMIT_47BIT to support applications
-> > that wish to transition from running in environments that support at
-> > most 47-bit VAs to environments that support larger VAs. This
-> > personality can be set to cause all allocations to be below the 47-bit
-> > boundary. Using MAP_FIXED with mmap() will bypass this restriction.
-> >
-> > Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
->
-> I think having an architecture-independent mechanism to limit the size
-> of the 64-bit address space is useful in general, and we've discussed
-> the same thing for arm64 in the past, though we have not actually
-> reached an agreement on the ABI previously.
->
-> > @@ -22,6 +22,7 @@ enum {
-> >       WHOLE_SECONDS =3D         0x2000000,
-> >       STICKY_TIMEOUTS =3D       0x4000000,
-> >       ADDR_LIMIT_3GB =3D        0x8000000,
-> > +     ADDR_LIMIT_47BIT =3D      0x10000000,
-> > };
->
-> I'm a bit worried about having this done specifically in the
-> personality flag bits, as they are rather limited. We obviously
-> don't want to add many more such flags when there could be
-> a way to just set the default limit.
->
-> It's also unclear to me how we want this flag to interact with
-> the existing logic in arch_get_mmap_end(), which attempts to
-> limit the default mapping to a 47-bit address space already.
-
-To optimize RISC-V progress, I recommend:
-
-Step 1: Approve the patch.
-Step 2: Update Go and OpenJDK's RISC-V backend to utilize it.
-Step 3: Wait approximately several iterations for Go & OpenJDK
-Step 4: Remove the 47-bit constraint in arch_get_mmap_end()
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 7/8] execmem: add support for cache of large ROX pages
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+ Brian Cain <bcain@quicinc.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Dinh Nguyen
+ <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>,
+ Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
+ Song Liu <song@kernel.org>, Stafford Horne <shorne@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Uladzislau Rezki <urezki@gmail.com>,
+ Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+ bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org, x86@kernel.org
+References: <20240826065532.2618273-1-rppt@kernel.org>
+ <20240826065532.2618273-8-rppt@kernel.org>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20240826065532.2618273-8-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
->
-> For some reason, it appears that the arch_get_mmap_end()
-> logic on RISC-V defaults to the maximum address
-> space for the 'addr=3D=3D0' case which is inconsistentn with
-> the other architectures, so we should probably fix that
-> part first, possibly moving more of that logic into a
-> shared implementation.
->
->       Arnd
->
 
+Le 26/08/2024 à 08:55, Mike Rapoport a écrit :
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Using large pages to map text areas reduces iTLB pressure and improves
+> performance.
+> 
+> Extend execmem_alloc() with an ability to use PMD_SIZE'ed pages with ROX
+> permissions as a cache for smaller allocations.
 
---=20
-Best Regards
- Guo Ren
+Why only PMD_SIZE ?
+
+On power 8xx, PMD_SIZE is 4M and the 8xx doesn't have such a page size. 
+When you call vmalloc() with VM_ALLOW_HUGE_VMAP you get 16k pages or 
+512k pages depending on the size you ask for, see function 
+arch_vmap_pte_supported_shift()
+
+> 
+> To populate the cache, a writable large page is allocated from vmalloc with
+> VM_ALLOW_HUGE_VMAP, filled with invalid instructions and then remapped as
+> ROX.
+> 
+> Portions of that large page are handed out to execmem_alloc() callers
+> without any changes to the permissions.
+> 
+> When the memory is freed with execmem_free() it is invalidated again so
+> that it won't contain stale instructions.
+> 
+> The cache is enabled when an architecture sets EXECMEM_ROX_CACHE flag in
+> definition of an execmem_range.
+> 
+
+Christophe
 
