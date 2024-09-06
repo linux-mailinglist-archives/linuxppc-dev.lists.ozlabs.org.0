@@ -1,66 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-1136-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1137-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D2896FCAC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 22:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 597D996FE24
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2024 00:55:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0nqY0Rr5z2yq4;
-	Sat,  7 Sep 2024 06:28:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0s5Q0CDHz2yN8;
+	Sat,  7 Sep 2024 08:55:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725654505;
-	cv=none; b=Yh7iXmdqo2Dw7L2j8KW7X4oh8L/1Cc0h1ERtlfE1T6QnYmx3IRPOhPMF9pjrrRH6K73X7RSUcVG1AofrGEhUA4BBnOq+7q0ZJ37kG1PG6OXM65KP++EqjICAajRtIJUOmnNj1fJLNc+H0Lou5e6IYaB0PdaQ/DKGFrrj8NPUiCPYbr73kJFF11HZfZTjvU5k5XF8NBUerDhWNeXsDRlLj75l8XBwwKFwsB273G5ttA9JNfTtVKvphbrxG5367+03me3LzTasjL4xQCf6X+cHIz2Z9aJLe8UZ0ZthpGSQgTw5q2jA4iALEF5+8YkfGFPIeuoJgB/CqvXqnyt0PtnjMg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725642190;
+	cv=none; b=ggZO9Qfnq5N/vr9goH4EB6Z+q+xfaaSBp4GTSTp5nZf0lsrUbmFjsJBtpYkGtPin+jjXPFQ6ZyNTDoMqeqYv3iK0o+BLN5RfHtJ7DCgZIGZYUc+3wp8G7qEtg9xG50+CuoWdLmPFngzzqSGCgPsPndK3fMWJMn/aACth7R4s8s7fWO1ElFHVZI8bu0b+OCRDYpGEMf3aA7NNLxEmoSbiIpvbJPEsGIrHnPrLXVP5pJZ6OrmCgAiccZgVClgnh+ukmESDLxbuynFAu0lEEaJFo/7xjfZ5Q7BJik9nj17dvDSYdqGCr36Lmr4CNjCBjMiQceSKfVOrz2ZRsW7ymHcX1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725654505; c=relaxed/relaxed;
-	bh=pwds3VXoOGDUphXZ6Kktp0mmF33MpLA4Zgl2tDkPXyo=;
-	h=DKIM-Signature:Subject:From:In-Reply-To:References:Message-Id:
-	 Date:To:Cc; b=N6QZCxx+ssKUcVI242SDdwFqPWGIpQeGAriSlUx3L6u4I23Lj2VbzpZPii2MqGHB7Jc4tmIkMOhMjM0kFUql6PGucWLC6nnYWWpJJyNoIt0bj17NlfGgukCZAeIFwpgkmrCqEIdaRwrB6PqfZyjf9HplzJGsY8gHZMnQoDhxtBniiR6ZNY7DE/4PAkIDHk8IVaLP2hXv9JnUGQIkpQc1DpyAMhNtKPR5xnvfPug7CQZ8RUaGGuVm1+KaKT6KJ4ytZWSlxTuYAY08x42yBmNhDRbEYNxB76lQcy7l9fdumRzyjpmUXhRUfu7HO25iLB5gNQetHyQCVAWLeIOryWu61Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QiFb6S7u; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1725642190; c=relaxed/relaxed;
+	bh=8YYOBneB917QBCdakNuvYI37onUQ5PmLSY+eVM2JoYA=;
+	h=DKIM-Signature:Message-ID:Date:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type:MIME-Version; b=dKegKazbKyWmyIuRMBo83ysPDZdpZMN60DAKCNCBUNIljlE2cZYeNElTvyD5vlTGeYrhn2UUeZsX7LjEp/UgT/TSNcl/SeNNc4FuRM5Oqfga66lnR19sIjg62jFuJC3uTD5v72S2UpCZ+CuUqyc+cq2hmVHb7b3BlUcDD/M4uLyQFYL2Tkavq32jD2Zo5NQLdAI68aDf6WuW7ZHu/Xh+MDwfIO+0sXS86n41G/WsBgJqeZUsJ7rctV+Fvv3KZOIlXdghKJ8ay0kfjdbeYW9ujmFon+IbAyph3dF/EWmwX8l1wwuatObSGXlEFYfXhZOtBc88ziK80vzT/1nG3KHrFg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AXbZrfsn; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QiFb6S7u;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AXbZrfsn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0nqX5sMpz2yNj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 06:28:24 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 293BA5C4A54;
-	Fri,  6 Sep 2024 20:28:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51445C4CEC4;
-	Fri,  6 Sep 2024 20:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725654502;
-	bh=Em/82/sxQZ2ZmxxfBQmS3rxR/qbFW9jvMHw+SAgGsQ4=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=QiFb6S7uT/pHGuLOCZ4rpis9UhTIbgvhbTmokCJO6X2cGbE7lJFNfnlpkjh6/BnZt
-	 MSq8AIdWglyquZjSQv925ElXx8ENy1RnQabhxqbof0UUpy2Sysa1boGawT6cc2exLb
-	 6GDgxEteXcIl3FVRglQBUbZQLaCJBWFzaZhD8DKezEUlRZ/ZmRUJKqjYPS41QCGa+h
-	 qNY0ebEsKafMW8Kg+oYmBhYjMZ84+hYo+Tb4Od5uqeeSLOg474PNMQ3/wdmgIEuWxx
-	 iygURoNYZQhlm3XLCDhSh/PhxtFdy0UPVFij3kUsYdokuQlczUo8VBmCxJgHzdJ5e4
-	 5pCZpj1kIWYBA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 719573806644;
-	Fri,  6 Sep 2024 20:28:24 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.11-3 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87ttet3rz9.fsf@mail.lhotse>
-References: <87ttet3rz9.fsf@mail.lhotse>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87ttet3rz9.fsf@mail.lhotse>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.11-3
-X-PR-Tracked-Commit-Id: 734ad0af3609464f8f93e00b6c0de1e112f44559
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: a78d7dce1e71231cef671ccf5ab48b31606fe352
-Message-Id: <172565450306.2515438.2687222332316048321.pr-tracker-bot@kernel.org>
-Date: Fri, 06 Sep 2024 20:28:23 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, nysal@linux.ibm.com
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0jGj3X9Kz2ytJ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 03:03:08 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 486Dt68d026367;
+	Fri, 6 Sep 2024 17:02:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	8YYOBneB917QBCdakNuvYI37onUQ5PmLSY+eVM2JoYA=; b=AXbZrfsnlN7G6+6P
+	xag44Eo7Ti/JzR943oC4grZXK5CvazRF/qqtm4uc1Uw8bpeurcjSS1r7SXi9J99Z
+	DPqjhbI66Adaoq/NAQFHfovZRAKAHfdIsSUsHMWVCCPNokZAoNmqGMk9L9BU2oOF
+	KT/HQlLgZUNv+gXHUu7UaNYr2pvH2o2Bw0fkJdEw8voR9LTUHymcMSlmrApGu8VC
+	kWqva39KVzJS11Q1iPhwpoggnhz0fD0lfZvym6zhsomlAJ9fwloChK62fz1ciUsZ
+	Cr2UUHtpqWDSxusMrkanwJRA6Jf0RIniuQOS4Xa83qYVCIkt2gtF1aBOTced9dIF
+	rY0adQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41fj1m58s8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Sep 2024 17:02:45 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 486FjK4u019891;
+	Fri, 6 Sep 2024 17:02:41 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41fj3xvp9n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Sep 2024 17:02:41 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 486H2evq52953428
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Sep 2024 17:02:40 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 16B1858058;
+	Fri,  6 Sep 2024 17:02:40 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EB9795805B;
+	Fri,  6 Sep 2024 17:02:38 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  6 Sep 2024 17:02:38 +0000 (GMT)
+Message-ID: <603acd64-0a6d-470b-9c9b-f6146443dc0c@linux.ibm.com>
+Date: Fri, 6 Sep 2024 13:02:37 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 RESEND] tpm: export tpm2_sessions_init() to fix ibmvtpm
+ building
+To: Jarkko Sakkinen <jarkko@kernel.org>, Kexy Biscuit <kexybiscuit@aosc.io>,
+        linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, mpe@ellerman.id.au,
+        naveen.n.rao@linux.ibm.com, zohar@linux.ibm.com,
+        stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        Mingcong Bai <jeffbai@aosc.io>
+References: <20240905085219.77240-2-kexybiscuit@aosc.io>
+ <D3YF52E4EVJ0.2ZJSCR5FCVIGX@kernel.org>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <D3YF52E4EVJ0.2ZJSCR5FCVIGX@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cFcTW404zW7yxxo24IlSG3T7nXofLOZk
+X-Proofpoint-ORIG-GUID: cFcTW404zW7yxxo24IlSG3T7nXofLOZk
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,17 +94,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_03,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1011
+ adultscore=0 lowpriorityscore=0 spamscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 mlxscore=0 malwarescore=0
+ mlxlogscore=999 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2408220000 definitions=main-2409060125
 
-The pull request you sent on Fri, 06 Sep 2024 22:07:54 +1000:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.11-3
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/a78d7dce1e71231cef671ccf5ab48b31606fe352
+On 9/5/24 10:26 AM, Jarkko Sakkinen wrote:
+> On Thu Sep 5, 2024 at 11:52 AM EEST, Kexy Biscuit wrote:
+>> Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
+>> initialize session support") adds call to tpm2_sessions_init() in ibmvtpm,
+>> which could be built as a module. However, tpm2_sessions_init() wasn't
+>> exported, causing libmvtpm to fail to build as a module:
+>>
+>> ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
+>>
+>> Export tpm2_sessions_init() to resolve the issue.
+>>
+>> Cc: stable@vger.kernel.org # v6.10+
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lkp@intel.com/
+>> Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support")
+>> Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
+>> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+>> ---
+>> V1 -> V2: Added Fixes tag and fixed email format
+>> RESEND: The previous email was sent directly to stable-rc review
+>>
+>>   drivers/char/tpm/tpm2-sessions.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+>> index d3521aadd43e..44f60730cff4 100644
+>> --- a/drivers/char/tpm/tpm2-sessions.c
+>> +++ b/drivers/char/tpm/tpm2-sessions.c
+>> @@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
+>>   
+>>   	return rc;
+>>   }
+>> +EXPORT_SYMBOL(tpm2_sessions_init);
+>>   #endif /* CONFIG_TCG_TPM2_HMAC */
+> 
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> 
+Would have tested it but machine is down..
 
-Thank you!
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+> BR, Jarkko
+> 
 
