@@ -1,64 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-1129-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1130-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50C396F6FF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 16:36:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E708E96F742
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 16:46:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0f1j1nCxz2ywR;
-	Sat,  7 Sep 2024 00:36:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0fDp5XyKz300M;
+	Sat,  7 Sep 2024 00:46:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725633401;
-	cv=none; b=Evw7LraIMM2J3YzWyag9Fm5yyQlEU0a/auBCYF22198TZR1VBgjfElYHGAfJLLxfC9x3lNNMCgLeDT+q4FkyqxyXSleCfGVyQHhzlmzseM1RJv10Y/AlGPIH6Yzjv0E8lyXcy+/oCZV7i4U1kV8bW14soTw+/yXasmOeR4T7DJaaD0YJcRj/FT7JMEB1WY/mz9AktaF4GgPT3hnfWTptVAxSoGcDCaM3vfFgMxSY0UqtthEQkx5lwzEydwizrhbCyFOBmjuk+aMNJXUDnP5dhqbnpBvN/ANtK7X5u99/LLMYg7TBHgQzRW+05iQRuG6uXkwuXXWUL5AVkSaYYXL5wQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725633978;
+	cv=none; b=AzmLav7h6Zp3fvSxkNFW2DToSAXNwzc5ULh10t1xqDa/oxJfHO0TvdyscxrPOQDB0sM3ul8qSfwD4bCPU93raOf+m1hiLEnpDvgq+/+JQxLX1Owr3jR6XZj/j+fkBC+LTx6dELhjaFi4+3MHFQzjAdobRLeoJ9OKWUq/8uOUs3nBECnwj2zYvasG6f9OCHUx7LEc4zfLChhc+ksw6XqADqWKXFSG226ya/pZrfN6O1iya24Kr9zBzHA3GeuCTRV4uW+00F9/CxT8VrVOp5k5kdsZKvg+SI+q/7nOiMag0SlJ9FrZAxJNwQHYceu+elkkr0unnOwA7dPNUuzKYy38uA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725633401; c=relaxed/relaxed;
-	bh=XqDf1IFSPRmnkLeOOfhEN8R37Qr25b+7q7Psmj+CwGs=;
-	h=From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type; b=hxrx2zKnQnw1QJvLQcUwalNFpBqaOvELkuWS0XSyRyuG5PAnRvtpnfgTBgwQ9f65NtFMr8vHHoLKUFoLcWjCQFj9gC2HyM/eewx8hjz74m4h8UrJR1pg5XGyICz+zzSX996VTl0jWeIqCnPSHqmzXm9+1V3Rck5LlD9OWYLaW2xo0HuSV2oqdW8WbXfnlFEO1Xaab1cRuAKuvzzX24GL6sudAle7Z5m2ljkxJhndDjr6NeSMdCMEy+ZNGumf+OwUOzbNwPoHf9ytacXFI2UUP4SAUcOl3Xqa37+E+hf+CP6HDKl6aRgRwTI0LeRfiR92yk9VvVDBcdUnVmDIrLOA1w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Ro3NCSWs; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=CXht1XFP; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1725633978; c=relaxed/relaxed;
+	bh=LQaqdd4gn6hwyJ6X/+wp06IeAX1AuCwE2tKJcvmByYs=;
+	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=IjuH/PjcJr/ciZQ2/dDStwdNzIsehg6cOiHk1TsyxK6aU67wi/MsotX13BFU6XBks8sZbKjlucJ+V4AfbctV1K2kQDVNGOlpKasW1LybKQnfZvwrQudeRHjaMZ4eUvMQ80i0MEwAbLBTiPKMeKMXl2KMdmxUOvGcjA/lWW1R+TZ/3fy0/FIzWANdKBgVKsP/qAT/LHRZxOC06TwcnfGmrUBOcR+rfXKF8Jl/0uhIo2BshENHX5HzpeJNLiwO1qheNM7DoaaGk1XQGiiGnyyn1Ps0hvsIUNZC+uxRsgKZsSFeNlDTNPcXhIIBlJEY9FR3JUslMMjhIDDQ98AQAVDmDA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=hdkchmhx; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=v4y+=qe=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Ro3NCSWs;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=CXht1XFP;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=hdkchmhx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=v4y+=qe=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0f1h25fnz2ydR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 00:36:40 +1000 (AEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1725633390;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0fDm5gfmz2yn1
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 00:46:16 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 15ED3A404BD;
+	Fri,  6 Sep 2024 14:46:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C37EC4CEC4;
+	Fri,  6 Sep 2024 14:46:12 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="hdkchmhx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1725633970;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XqDf1IFSPRmnkLeOOfhEN8R37Qr25b+7q7Psmj+CwGs=;
-	b=Ro3NCSWstn0jOxZcaRvYcg3L1VjimheJTVlYRpu+pc35F2wAleirXJvFX1XRCEVaWtexjH
-	HsilswSBvDFMSfniuHepAkMlKP6+oCtt65o9fTHnQ0QV6bTBSmPrx4GR4JU7OGrYNdjY0v
-	yN1xybwLEjqDqBdlX/wv0tyvd9FZnt4fEEYtgX6wOi+uO0jffhf1oremGkKk/Eptt8sWtv
-	dvUnnQUn0XUkkwfFOgFCnB7Pe23NRr+kXCNPYuNxuCdPj9JyTCkgaFXb07tDvxQTbPIvgv
-	3Rb93VyOK9xl4y0pVE9krunDg+Me8U4Dx4mflWFbg5qzpGH22fOmk1jae9jAyw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1725633390;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XqDf1IFSPRmnkLeOOfhEN8R37Qr25b+7q7Psmj+CwGs=;
-	b=CXht1XFPbcJsT6gCiTVJ3lnKlbCr7Kq+A4vcTy4KxP5X2zZrR00B+mIC9apOTF6PNbVS6X
-	JC3lEIVhq3N4Y/CA==
-To: Ma Ke <make24@iscas.ac.cn>, jochen@scram.de, andi.shyti@kernel.org,
- grant.likely@linaro.org, thierry.reding@gmail.com, rob.herring@calxeda.com
-Cc: linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
- linux-kernel@vger.kernel.org, Ma Ke <make24@iscas.ac.cn>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] of/irq: handle irq_of_parse_and_map() errors
-In-Reply-To: <20240830142127.3446406-1-make24@iscas.ac.cn>
-References: <20240830142127.3446406-1-make24@iscas.ac.cn>
-Date: Fri, 06 Sep 2024 16:36:30 +0200
-Message-ID: <87bk10etn5.ffs@tglx>
+	bh=LQaqdd4gn6hwyJ6X/+wp06IeAX1AuCwE2tKJcvmByYs=;
+	b=hdkchmhxBGCbaIA9Ddy8tLE2V3TigvEtRRSSeTX9BsM7QQ4qIJuX0ADLJbDVgWmYlSonvd
+	Bz0qYCzSkg8NdulUBcB2nO4r2j8iwwSNGQko0n9UdoJdiRM6FT6m7IIdYnvEifxsZ47cna
+	AwAA+oz9pguT0Yk6OmB338aNuSS3wI0=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 89574607 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Fri, 6 Sep 2024 14:46:10 +0000 (UTC)
+Date: Fri, 6 Sep 2024 16:46:07 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrei Vagin <avagin@gmail.com>
+Subject: Re: [PATCH 2/2] Fixup for 3279be36b671 ("powerpc/vdso: Wire up
+ getrandom() vDSO implementation on VDSO32")
+Message-ID: <ZtsVry_LL2jjeLJ3@zx2c4.com>
+References: <700dbf296d02e32376329774be35cfbead08041d.1725611321.git.christophe.leroy@csgroup.eu>
+ <ffd7fc255e194d1e2b0aa3d9d129e826c53219d4.1725611321.git.christophe.leroy@csgroup.eu>
+ <ZtsMpcV7iLYoytdJ@zx2c4.com>
+ <795db5f1-c266-4fb3-a51b-c2b3745d334b@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,43 +72,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <795db5f1-c266-4fb3-a51b-c2b3745d334b@csgroup.eu>
 
-On Fri, Aug 30 2024 at 22:21, Ma Ke wrote:
-> Zero and negative number is not a valid IRQ for in-kernel code and the
-> irq_of_parse_and_map() function returns zero on error.  So this check for
-> valid IRQs should only accept values > 0.
+On Fri, Sep 06, 2024 at 04:26:32PM +0200, Christophe Leroy wrote:
+> And thanks for playing up with it while I was sleeping and getting ideas 
+> too.
+> 
+> Did you learn powerpc assembly during the night or did you know it already ?
 
-The subsystem prefix is wrong. This changes drivers/i2c/busses/i2c-cpm.c
-and has nothing to do with of/irq. Sure, the problem has been caused
-by the commit below, but that's a different thing.
+I don't really know ppc assembly. I had perused the tree over the last
+week and gotten some feel for it when reviewing patches, but I don't
+have anything memorized (except, perhaps, the eieio instruction [1,2]).
+Last night after sending the first broken patch I went out to play (I
+play jazz guitar ~every night these days), and the whole time I kept
+thinking about the problem. So first thing I did when I got home was try
+to fake my way through some ppc asm. A fun mini project for me.
 
-> Cc: stable@vger.kernel.org
-> Fixes: f7578496a671 ("of/irq: Use irq_of_parse_and_map()")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/i2c/busses/i2c-cpm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/i2c/busses/i2c-cpm.c b/drivers/i2c/busses/i2c-cpm.c
-> index 4794ec066eb0..41e3c95c0ef7 100644
-> --- a/drivers/i2c/busses/i2c-cpm.c
-> +++ b/drivers/i2c/busses/i2c-cpm.c
-> @@ -435,7 +435,7 @@ static int cpm_i2c_setup(struct cpm_i2c *cpm)
->  	init_waitqueue_head(&cpm->i2c_wait);
->  
->  	cpm->irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
-> -	if (!cpm->irq)
-> +	if (cpm->irq <= 0)
->  		return -EINVAL;
+[1] https://lore.kernel.org/lkml/Pine.LNX.4.33.0110120919130.31677-100000@penguin.transmeta.com/
+[2] https://lore.kernel.org/lkml/alpine.LFD.2.00.0904141006170.18124@localhost.localdomain/
 
-The function _cannot return a negative number:
+> At the end I ended up with something which I think is simple enough for 
+> a backport to stable.
 
-extern unsigned int irq_of_parse_and_map(struct device_node *node, int index);
+It seems like a good patch indeed, and hopefully small enough that
+Michael will let me carry in my tree for 6.12, per the plan.
 
-So what is this actually fixing?
+> On the long run I wonder if we should try to find a more generic 
+> solution for getrandom instead of requiring each architecture to handle 
+> it. On gettimeofday the selection of the right page is embeded in the 
+> generic part, see for instance :
+> 
+> static __maybe_unused __kernel_old_time_t
+> __cvdso_time_data(const struct vdso_data *vd, __kernel_old_time_t *time)
+> {
+> 	__kernel_old_time_t t;
+> 
+> 	if (IS_ENABLED(CONFIG_TIME_NS) &&
+> 	    vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
+> 		vd = __arch_get_timens_vdso_data(vd);
+> 
+> 	t = READ_ONCE(vd[CS_HRES_COARSE].basetime[CLOCK_REALTIME].sec);
+> 
+> 	if (time)
+> 		*time = t;
+> 
+> 	return t;
+> }
+> 
+> and powerpc just provides:
+> 
+> static __always_inline
+> const struct vdso_data *__arch_get_timens_vdso_data(const struct 
+> vdso_data *vd)
+> {
+> 	return (void *)vd + (1U << CONFIG_PAGE_SHIFT);
+> }
 
-Thanks,
+It's tempting, but maybe a bit tricky. LoongArch, for example, doesn't
+have this problem at all, because the layout of their vvars doesn't
+require it. So the vd->clock_mode access is unnecessary.
 
-        tglx
+> Or another solution could be to put random data in a third page that is 
+> always at the same place regardless of timens ?
+
+Maybe that's the easier way, yea. Potentially wasteful, though.
+
+Jason
 
