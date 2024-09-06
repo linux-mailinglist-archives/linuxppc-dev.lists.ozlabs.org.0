@@ -1,59 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-1101-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1093-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C449796F1C7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 12:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6624F96F0EB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 12:05:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0Xqq3JvFz304B;
-	Fri,  6 Sep 2024 20:42:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0X0w27b7z3045;
+	Fri,  6 Sep 2024 20:05:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725606440;
-	cv=none; b=eLAQ2e4L3zkfijAHWRWSL8J+8Z4fSgnVWwtqDFU7bL5+7bIDxmv9Rt/H2STFkOqot7AfKay8zdx5oZmfUL2LEohsVZo2qU1PgJLdIRA6oYhXGAwb91AV6tZEPVSoiPAbHSyKM0QX+WEb8wLxRGS5LXP32ze6SuFqZD9Icai4GxxmM1/NRRaXdTtrt45V7138Lzcy4syvR5RaQshzjH5wehfmc9fYeJOSK8qcrBm4mvBh5OBJnEVBfWwri9sATagQ0hW+gFRBxY6pEn2sgmTZnP1rNXVFi4OPBDXh/B5aTZ6oKg8S/l46ISL6ZaIDVX3dsQHPmUdYJUaub/3SWtq44Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725617135;
+	cv=none; b=YLeLVlhAtweXsPLC/lOAdaxW1J1O3rBTjARik59a2OUUp9c0yBJfOZEzhb8FEDYbhH0ivjDItGeadi5Zm0l7yCBk+VeOgMLm8khrbFrkXAWdIL5PkLEB8D6IWA3rzA3AIbm15vKU80ghJvSVH/AfBYLviyf+mgoohxTmZc/tWn1FK4WaTdg7ciirDb+Iw6+4rSv3WZFQHT65sJEOpMDLyu8GYy2bUkxJbyIzywIGBlgatsmvoZTP97TzjT3jxD6jVzElUZB0/8OdUzF/NmO0MGsaTw+9KZUMOm3xspf4O7Xswv7Bg+9m9IjNux//fpHvbNepz0eRo6wxchRrsZ1e1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725606440; c=relaxed/relaxed;
-	bh=JzHuzwYv1A4WZNysYS65N8PwpinTo4zkrx7lnPByC8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mA5Xc5aWN7ZVaY3+sNUk39Na0rsxjAH+StR34HV3O74i4U5qJuBhts4Un7Q/UckvcoWYy4v4lI+k7sfxuVPcnWqdvu1hzFdgWE8n1qZnUByJ3xOZJr+TwRiTfzvcs+4x83C7b1Vp84yg0aYVwQQihQEtf02gcyQFPxMaAd9HIfVq058Andioc2TUBoqJFa9uh/2CpvAcRRsYA063LdL3RIuZm1JQ4/LGCnhLvdHCwO0MaPWkd+6AgHP3mel4iy8vbKfuv2rtMU24ztM0MVwvu4Xc48KKZeXlLnicrQHDW7SaBr6HLj9xqf8SMWrn8pV3tg8IfOTbMLTBuvQs/MmXGg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=morten.rasmussen@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=morten.rasmussen@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0S3D0sTtz301Y
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 17:07:17 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 69D0EFEC;
-	Fri,  6 Sep 2024 00:07:12 -0700 (PDT)
-Received: from R5WKVNH4JW (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D6703F66E;
-	Fri,  6 Sep 2024 00:06:41 -0700 (PDT)
-Date: Fri, 6 Sep 2024 09:06:33 +0200
-From: Morten Rasmussen <morten.rasmussen@arm.com>
-To: Yicong Yang <yangyicong@huawei.com>
-Cc: Pierre Gondois <pierre.gondois@arm.com>, yangyicong@hisilicon.com,
-	linuxppc-dev@lists.ozlabs.org, bp@alien8.de,
-	dave.hansen@linux.intel.com, mingo@redhat.com,
-	linux-arm-kernel@lists.infradead.org, mpe@ellerman.id.au,
-	peterz@infradead.org, tglx@linutronix.de, sudeep.holla@arm.com,
-	will@kernel.org, catalin.marinas@arm.com, x86@kernel.org,
-	linux-kernel@vger.kernel.org, dietmar.eggemann@arm.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org,
-	jonathan.cameron@huawei.com, prime.zeng@hisilicon.com,
-	linuxarm@huawei.com, xuwei5@huawei.com, guohanjun@huawei.com
-Subject: Re: [PATCH v5 3/4] arm64: topology: Support SMT control on ACPI
- based system
-Message-ID: <Ztqp-SUinu8C9a-P@R5WKVNH4JW>
-References: <20240806085320.63514-1-yangyicong@huawei.com>
- <20240806085320.63514-4-yangyicong@huawei.com>
- <a998c723-7451-439a-9c88-7c8b5c1b890b@arm.com>
- <00e6110a-462a-c117-0292-e88b57d27a05@huawei.com>
- <3947cb79-3199-4cd6-b784-51a245084581@arm.com>
- <1a7b5ac7-f040-672f-07a0-d7f3dc170c88@huawei.com>
- <6c05e39c-41f3-451c-b119-7b8662c1ceee@arm.com>
- <7f722af2-2969-aae5-1fb5-68d353eb95b9@huawei.com>
- <277bd093-422b-4301-92a3-d0a58eb41af5@arm.com>
- <10082e64-b00a-a30b-b9c5-1401a54f6717@huawei.com>
+	t=1725617135; c=relaxed/relaxed;
+	bh=zpZiYz0iN/GqP3NA1mQ6ndQ0FN/WKZ0nwGkGT6CX1Ao=;
+	h=From:To:Subject:Date:Message-Id; b=H+6OOiNdYZR8BLYmY21e6RxT20eFjz3USiVfysQdwkC0c14JmY4oqw5HXslcOGnmt4AmAKosWhyFsKLFSjXnUCbGS369Uzs8A3WM72ljYEhznX5q9nGM1jAgqtaN5Bvl+aq/vJ8/GoWyYrUZS6//s/AU15la3ARqmC4EKyL2A+j62fOZO4gXhT7N6OJKCJV4R6saHJBm5iCUBrqEo5dmTCxPH9eY0zgssaR7m7ccEE/huMTBlSU8Zx9DsXEQiOtaXomRlYr4Z2T266QFSjzvsJ/35sNDzi8AG0sXX25cqyNgF1atI87xLzQTZFy7mGFO+RKDX1uucPY85muE1Jnrdw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0X0t6WFvz301n
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 20:05:34 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3AF792018C6;
+	Fri,  6 Sep 2024 12:05:31 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 017362018CB;
+	Fri,  6 Sep 2024 12:05:31 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 309F1183AC0A;
+	Fri,  6 Sep 2024 18:05:25 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: vkoul@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v3 0/6] ASoC: fsl: add memory to memory function for ASRC
+Date: Fri,  6 Sep 2024 17:43:51 +0800
+Message-Id: <1725615837-24872-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,51 +59,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <10082e64-b00a-a30b-b9c5-1401a54f6717@huawei.com>
 
-Hi Yicong,
+This function is base on the accelerator implementation
+for compress API:
+https://patchwork.kernel.org/project/alsa-devel/patch/20240731083843.59911-1-perex@perex.cz/
 
-On Thu, Sep 05, 2024 at 08:02:20PM +0800, Yicong Yang wrote:
-> On 2024/9/5 16:34, Pierre Gondois wrote:
-> > Hello Yicong,
-> > 
-> > If a platform has CPUs with:
-> > - 1 thread
-> > - X (!= 1) threads
-> > Then I think that the asymmetry is not detected
-> 
-> Ah ok, I only handle the case where there are several thread numbers except no SMT CPUs in the
-> system. For this case I was thinking we don't need to handle this since there's only one kind
-> of SMT core in the system, control should works fine for the SMT CPU clusters and we may not
-> care about the CPUs with no SMT.
-> 
-> Below code should handle the case if we initialize the max_smt_thread_num to 0. I also
-> reword the warning messages to match the fact. For heterogeneous SMT topology we still
-> support control SMT by on/off toggle but not fully support setting the thread number.
-> 
-> 	int max_smt_thread_num = 0;
-> 	[...]
-> 	/*
-> 	 * This should be a short loop depending on the number of heterogeneous
-> 	 * CPU clusters. Typically on a homogeneous system there's only one
-> 	 * entry in the XArray.
-> 	 */
-> 	xa_for_each(&hetero_cpu, hetero_id, entry) {
-> 		/*
-> 		 * If max_smt_thread_num has been initialized and doesn't match
-> 		 * the thread number of this entry, then the system has
-> 		 * heterogeneous SMT topology.
-> 		 */
-> 		if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)
-> 			pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
+Audio signal processing also has the requirement for memory to
+memory similar as Video.
 
-What does 'partly supported' mean here?
+This asrc memory to memory (memory ->asrc->memory) case is a non
+real time use case.
 
-If the SMT control doesn't work as intended for this topology, I don't
-think it should be enabled for it.
+User fills the input buffer to the asrc module, after conversion, then asrc
+sends back the output buffer to user. So it is not a traditional ALSA playback
+and capture case.
 
-Morten
+Because we had implemented the "memory -> asrc ->i2s device-> codec"
+use case in ALSA.  Now the "memory->asrc->memory" needs
+to reuse the code in asrc driver, so the patch 1 and patch 2 is for refining
+the code to make it can be shared by the "memory->asrc->memory"
+driver.
+
+Other change is to add memory to memory support for two kinds of i.MX ASRC
+modules.
+
+changes in v3:
+- use Jaroslav's suggestion for header file compress_params.h (PATCH 01)
+- remove the ASRC_OUTPUT_FORMAT/ASRC_OUTPUT_RATE definition
+- remove ASRC_RATIO_MOD in this version because it uses .set_metadata()
+  Will wait Jaroslav's update or other better method in the future.
+- Address some comments from Pierre.
+
+changes in v2:
+- Remove the changes in compress API
+- drop the SNDRV_COMPRESS_SRC_RATIO_MOD
+- drop the SND_AUDIOCODEC_SRC and struct snd_dec_src
+- define private metadata key value
+  ASRC_OUTPUT_FORMAT/ASRC_OUTPUT_RATE/ASRC_RATIO_MOD
+
+Shengjiu Wang (6):
+  ALSA: compress: Add output rate and output format support
+  ASoC: fsl_asrc: define functions for memory to memory usage
+  ASoC: fsl_easrc: define functions for memory to memory usage
+  ASoC: fsl_asrc_m2m: Add memory to memory function
+  ASoC: fsl_asrc: register m2m platform device
+  ASoC: fsl_easrc: register m2m platform device
+
+ include/uapi/sound/compress_params.h |  23 +-
+ sound/soc/fsl/Kconfig                |   1 +
+ sound/soc/fsl/Makefile               |   2 +-
+ sound/soc/fsl/fsl_asrc.c             | 179 ++++++-
+ sound/soc/fsl/fsl_asrc.h             |   2 +
+ sound/soc/fsl/fsl_asrc_common.h      |  70 +++
+ sound/soc/fsl/fsl_asrc_m2m.c         | 727 +++++++++++++++++++++++++++
+ sound/soc/fsl/fsl_easrc.c            | 261 +++++++++-
+ sound/soc/fsl/fsl_easrc.h            |   4 +
+ 9 files changed, 1260 insertions(+), 9 deletions(-)
+ create mode 100644 sound/soc/fsl/fsl_asrc_m2m.c
+
+-- 
+2.34.1
+
 
