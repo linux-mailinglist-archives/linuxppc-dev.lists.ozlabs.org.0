@@ -1,67 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-1138-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1139-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC9A96FE25
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2024 00:56:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 008A996FE54
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Sep 2024 01:11:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0s615zncz2yNj;
-	Sat,  7 Sep 2024 08:56:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0sRt69CBz2ydR;
+	Sat,  7 Sep 2024 09:11:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.50
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725645027;
-	cv=none; b=BL/J/cNhDofpdri6bB6cbH8Upm+JMrRc1Smh0Nyt/uMRz4RQNQLO7+9eT/UeE2WXMZgTXscIaX+cmeClkxeIFDB+4ta2vsrhjRkQOTt0+Y5hakew9byVMXZUQdQbGjef6uVZXigSQ6lrJNztaJT6aXaFImq8TLQEq7/QJdGM9ozCt7blbCX1Ry+l4N4TIHjpnxKi11LKe8czRg6qcnjOz6AalHsciImJXINnH6CWCKjP1WvTxUj8iYYyASVgGpLtqQB9khY2voGhQUpjD867AxUWjQUWVA0+4tSgN6LNWNBsqY3O65l/bd/KGljIIHQxFOpaJlyiCQzlvonGAT+UXQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725664298;
+	cv=none; b=Zdo8YLr97Zjix+s1arYqY/teFAjJjOw840JFFk6L46Qix4Nc87Zg5S1e0nrAigdPiKr2ttChueusrF3yhSFHnoTS/uNMQd6RP2ySXCfbQZgv4hd5MbVK6mcUhGRo8Bx0guM9afHxQKaUG/FNEfXh15Ipu8PfFDcjgMPoYAB4VCamZgDDDR0GITVHaf8LL+Zd3UWrp9BxiNTZ+9iL40ySyKxwMUjPQFqvVAdoUua9UFGwVQubytybJjSCmf1hDBe1CKfgYwbXmJRpsLyOfx3uCWvQ132um9W4Nhl4CTnprOuZBP/PerrZtwBMNI/TqHCXX5tDytwGe+J3S80XjW4c/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725645027; c=relaxed/relaxed;
-	bh=cBwPrXfQENKYJlILGnwqxaMS8yZZIqO6Bs9phkuiKJY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hsHlPMJKoySRs3kiacFFjTh14DkYQ8pu9+3iYQO9qia/Xamjxvov14zs5O1iOF060PgLolNtZp55FaqKaCfc0KB/qQz7yt4m5jd94N9d/GtDfsSc6awVVVMojt5BDVkEgWjbQaFt1THNhNwTzxTDoczAxGYWYcJSWBiIYUWSv3+BntNlzUNKWvvWdNjOi56A5BRqrG/txJv0EFLl6HKOmYrxHuxNrIMVgtg6PSoplWxHlgj6h/YZiPPRxk20aozqbLdjpbWAIiWh9wK4SzOhE3DnNEAer/rkaX1pTKzD/g2Q/lY0GN91lKxttEh8QT7/yulNGuNa8F8IkRuTnFu2YQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=redhat.com; spf=pass (client-ip=209.85.128.50; helo=mail-wm1-f50.google.com; envelope-from=constantine.shulyupin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.50; helo=mail-wm1-f50.google.com; envelope-from=constantine.shulyupin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	t=1725664298; c=relaxed/relaxed;
+	bh=HEF6t61oQcZPeWEFUYghSOz/WmQUigaLAqj5lwawg9Y=;
+	h=DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 Message-ID:MIME-Version:Content-Type; b=j3QAVcCjhATvWA/J+0/b+OvFk6zgo37sHUgJsQ/2XDIiuFLY5L4u25pSmRUkAEwNwTM/LSnnDRAdZN5SNjD/m02ua9RgI5rrkdD8whPJ7y3aOTdqgoc+iUH5HgiL64ovAc22SCHJM7dC6cDSwalNjdrHIuW90ZWhYpD90dxlaEcBuaIb4CbqFZete+nUjwHtagvARFTXYu8uPB7pzRLow9KL2BztH5fmgqeId8HZdqcha1uwJASQcV6MBXzhMeb0XWD+54vVZgMM5P2oBpTlC2M1iEp+/gRRQ5qFWMfbCUqmTqK5qQAbPWG5UYNOwQ6kfJVqq7CnIV0SUwoxlDOq/w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Po55viVX; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Po55viVX;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0kKG4tpzz2yGX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 03:50:25 +1000 (AEST)
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42ca4e0299eso5892855e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 Sep 2024 10:50:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725645022; x=1726249822;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cBwPrXfQENKYJlILGnwqxaMS8yZZIqO6Bs9phkuiKJY=;
-        b=ld9pGEhFtY9hzIPvxPBGsMI34RdNZhK1qXstXgLvJr/IQLiobpR5hzyt9fXnZNCE7R
-         aWcZk3URhRcE71rEAI1D5xzKSq/Qw9zskrCaanI7nxVZGSbV4BghXUPyyHtyERHP/ZKM
-         o0qITM/lAEFvA4M2o4GLZGWZLjtv8sqY66CGu/NgJnA/mv1XTk/eKH3/MmWTxiwuVfbS
-         8lCJDf1Dc0Rj48bIf6hyrFCg/Rij6uaICbjzXu/RC5VeJO53vDltEOy14GRH6fn2UU5P
-         UkODmC/Cf9qBXzf6mhBOBspTLwzA+C334kJmuOc6os+xWaLh6kejVvOWNORZRFJgOJ/E
-         bx+g==
-X-Forwarded-Encrypted: i=1; AJvYcCX65eX+trFErox8SwtwDH6zPXpXs0xLlh47heUrlAZZ2qHHN1AkIx15MIhXasYZPpqOsw0lh/zj62QuImM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyrPpSWs7/iFtHwvxrG9tNiLS+aziDHYI0ZOA13hak03fW/BxVK
-	0omLOdyIwUsmguwwsa9w5KFiV9p3rNicvpANqte7ZPVnkcAlXrHF
-X-Google-Smtp-Source: AGHT+IFCFQDCipGqICeFJ8E8CGwuoBP8ciZam2q+rs25bUZzeBwA8DyQ8K8CRJvgWbUp8Cr0GJh8vw==
-X-Received: by 2002:a05:6000:10e:b0:376:df1f:1245 with SMTP id ffacd0b85a97d-37892703f37mr11604f8f.39.1725645021469;
-        Fri, 06 Sep 2024 10:50:21 -0700 (PDT)
-Received: from costa-tp.redhat.com ([2a00:a041:e281:f300:ddd7:8878:b93d:7c0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37891607ccdsm443827f8f.4.2024.09.06.10.50.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Sep 2024 10:50:20 -0700 (PDT)
-From: Costa Shulyupin <costa.shul@redhat.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Costa Shulyupin <costa.shul@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: ming.lei@redhat.com
-Subject: [PATCH] powerpc/xive: Use cpumask_intersects()
-Date: Fri,  6 Sep 2024 20:49:36 +0300
-Message-ID: <20240906174941.1147197-2-costa.shul@redhat.com>
-X-Mailer: git-send-email 2.45.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0sRr6KBPz2yVB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Sep 2024 09:11:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1725664291;
+	bh=HEF6t61oQcZPeWEFUYghSOz/WmQUigaLAqj5lwawg9Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Po55viVX1hlmgK10Q8yQDjvyM2VHZheLwnbXdnxlKNaW/54rsQJsaCNwJQjO1AX3P
+	 WEwGP9gXr6Mfpng9r8/4K1F1BnVNo9dfXHUA+gYiQ7R7rTPT+iQjCXRLVrMH+0aeLE
+	 bO1pQ5VJFH0MgjafH2HAS3Di72fu1PWEmnJsNNY5UIGArOnZ5mAnIvp1GJXMUf59Bz
+	 9Lu2PD2+1F0krDeVAnsFPjuYYyI8+gfs36WPUNvpBU2NuV4bmvgB3cFQLCWPlCdw+k
+	 st3B1BfRpe0lW6TEOmBQkZ4b2+83p43dY5KEczwDl/JI0OPfw3hADpcvERmJb2j9EA
+	 8VMdqgg5LnAEw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X0sRl3CtQz4wj1;
+	Sat,  7 Sep 2024 09:11:31 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, nysal@linux.ibm.com
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.11-3 tag
+In-Reply-To: <CAHk-=wj6L6Qb10jVk+eHH2D3oHFathTc2nnZRpKKbqKuO3Rkow@mail.gmail.com>
+References: <87ttet3rz9.fsf@mail.lhotse>
+ <CAHk-=wj6L6Qb10jVk+eHH2D3oHFathTc2nnZRpKKbqKuO3Rkow@mail.gmail.com>
+Date: Sat, 07 Sep 2024 09:11:30 +1000
+Message-ID: <87o7504btp.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,30 +62,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Replace `cpumask_any_and(a, b) >= nr_cpu_ids`
-with the more readable `!cpumask_intersects(a, b)`.
+Linus Torvalds <torvalds@linux-foundation.org> writes:
+> On Fri, 6 Sept 2024 at 05:08, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>
+>> Please pull some more powerpc fixes for 6.11:
+>>
+>>   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.11-3
+>
+> Hmm. New pgp key? Please don't take me by surprise like this.
 
-Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
----
- arch/powerpc/sysdev/xive/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yes, sorry. I switched to it a few weeks back but this is the first pull
+request I've sent since.
 
-diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-index fa01818c1972c..a6c388bdf5d08 100644
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -726,7 +726,7 @@ static int xive_irq_set_affinity(struct irq_data *d,
- 	pr_debug("%s: irq %d/0x%x\n", __func__, d->irq, hw_irq);
- 
- 	/* Is this valid ? */
--	if (cpumask_any_and(cpumask, cpu_online_mask) >= nr_cpu_ids)
-+	if (!cpumask_intersects(cpumask, cpu_online_mask))
- 		return -EINVAL;
- 
- 	/*
--- 
-2.45.0
+> The key looks fine, I see the signature by Stephen Rothwell, but I get
+> worried when I suddenly see a new signature with no notice and then
+> have to go looking around for it.
 
+It's also signed by my old key.
+
+I posted it to the keys repo:
+  https://lore.kernel.org/keys/87o75pp2bt.fsf@mail.lhotse/
+
+But yeah I still should have mentioned it in the pull request.
+
+cheers
 
