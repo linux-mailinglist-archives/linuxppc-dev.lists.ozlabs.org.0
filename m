@@ -1,91 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-1081-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1082-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C4696EBCC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 09:18:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E79C596EBD9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 09:21:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0SHq5yZbz301v;
-	Fri,  6 Sep 2024 17:18:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0SMq4TwZz2x9T;
+	Fri,  6 Sep 2024 17:21:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.136
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725607095;
-	cv=none; b=KL8EnPvSqCjKphJIaYZet9AkwoNrw0fLStT/O7Y1LKPbqA+bQUYH188F6E+LklW8VcRBaS7UJowJyVOvCYv3mvUf1rJ+lpjJ2GpvNgjNXDXct9XCoXt6fQGF8z4L8tOVI3rmLwl1PJZeEpdPVdUc8G23nP0T2S/ZnrKPUbfiYtLkdmQwKcVS6hQUfbfyL2VV1nfUZvr+GHaYk40yhoLuTgC9iUk1aFHYGTtyC6jC8etnkYWB47m0wo+RliEOhJzSLq4ACd38YW2md520IKUKFumWkUaTDyjDcYrlEJHILbZNOYLiWuM1dv9wjLPTAoXx9dkSBT74uQGcs02IOCON+g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::b5"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725607303;
+	cv=none; b=cnW7gTKwB9/a8bA555QYB1OxhA3btxCDBQvpJVIrPvxFd/F9MeYlhz+IGdEv3Rbqxy6MrmSbWGbbj0l+HG13lUPapjlT1/KSf1JU4g9VPEcHrk7xXVKLajk0ZCkmpztEvl4JdN21ByLAiivIdjT6u7tFTV3UfZ6o+lsERf4wGmQ0VAPc1kzDoiBtl4IBJxFzzB2grytttJ7v8XO/y40kptzOqz1iKZWHpizyPP1fTBESVNxp43U9FVYERXFwfW49Hblo+eg7ZYdw7MsoZc/s70rlI3piZts4PjbOOAPyT6dnkko/3q9bIiDXNjwHa3uZjwm1VaCS5ApiOuKOjrl99A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725607095; c=relaxed/relaxed;
-	bh=v3KUbqaJkdY70T8W1uPjXNY2qtbx3TSnJ5p4uWowLhw=;
-	h=DKIM-Signature:DKIM-Signature:MIME-Version:Date:From:To:Cc:
-	 Message-Id:In-Reply-To:References:Subject:Content-Type; b=TI+C4wJrEAndGRQ/+m42u8vzOZY5q17W0Jxq/EjWLlgIpBWqafL3buU06qIho/2WdFkuJUDwf3enYYLm9pUWJaY7EGRDuK+pOmPdDhzD8tyL//x/SLRm+i/YWZKGeqL7wO8nIQEzIyKIEXK187DtcgpV1W7QDRzR7QrGQqIpOMh526Fv0QX2YQXQUvVJD9pqyXdEk4yN3cI0MRURrrR1YCKTJv3JUDsmcfUDZOj310vOaAVlgizlsk85DiLksSlnw/EHoTJn6pCBx7Wk+7DazDOaDZgVkTaxYDMgqYOKldU16qSxV1Rq5W7fV0gXNCxNxhkLf354nG3RRetxMCvLBQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=aLq1/tQM; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=o2QCm3RU; dkim-atps=neutral; spf=pass (client-ip=103.168.172.136; helo=flow1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1725607303; c=relaxed/relaxed;
+	bh=zJPCh8PbP6Ph7SJVvvtMaEdy7Om9qiXdVbZwIKJbLac=;
+	h=Message-ID:DKIM-Signature:Date:MIME-Version:From:Subject:To:Cc:
+	 References:In-Reply-To:Content-Type; b=LWnSKvVlNZlVtKJiLMMXAukmQw/1PAx5hOHslk5or3t9WdTXrpnDU1NaokXubhqf+qvbfRuCvcSthl2C9j8dF1EgtWZsMZf4aoXZZQNS85B8aGAKpj9/cMmBCdMfp0QX6Xg5OdVMRehOhUNmSCmEpBHL175bE80MIJHZ+jBYEyQWpcyzwyz7XQW0J7wExUQml5ViXb0e+9M0dhN/rKzmiH9ynqNdbqy8gXcvsErKZrwGgcqcFZ9OR2Y3iemy6V3gwWU2DFTDtW84kKWMi3zPRShDzEsvV9bc40weWknLQbNyXKQGTilODqYar05mnS0DdOIuZNCIWAGqV1cgcHNSWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xNyKdDHP; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::b5; helo=out-181.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=aLq1/tQM;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=o2QCm3RU;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xNyKdDHP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.136; helo=flow1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from flow1-smtp.messagingengine.com (flow1-smtp.messagingengine.com [103.168.172.136])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::b5; helo=out-181.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [IPv6:2001:41d0:203:375::b5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0SHm66czz301n
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 17:18:11 +1000 (AEST)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailflow.phl.internal (Postfix) with ESMTP id E698B2002CB;
-	Fri,  6 Sep 2024 03:18:07 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Fri, 06 Sep 2024 03:18:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1725607087;
-	 x=1725614287; bh=v3KUbqaJkdY70T8W1uPjXNY2qtbx3TSnJ5p4uWowLhw=; b=
-	aLq1/tQMzmLulGgoq1JTbuWQ4lSo6PtfGwXy1aA73MEfseBN97Y+UmeAAjHfyg/5
-	jUbmy+yH4P6nI7XZUXIJ1fG6Cexa4OKSy8o2PK9JUPEoPIcA5o18rcnBgyp54w0j
-	2J8HZhcPE5rKzsA2DhQEFHocMDIE73Q4lMwekiiRSf3QhtOaMbo0leRXV/N0UEdy
-	TX61xKsIdM76ba7PDckxmgH6aYJo4Ou5x/SHcQtxwK/poLKsJ6Tt+8HVdGUlRJlv
-	xKtQPovCqqn/VszCPDR9Vwn6wIYfV/BLj4wFFTd9FY1pLuiBxOlfJ0R7ifNJ/oov
-	cEh7czryvx5BZskI5QQnUQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725607087; x=
-	1725614287; bh=v3KUbqaJkdY70T8W1uPjXNY2qtbx3TSnJ5p4uWowLhw=; b=o
-	2QCm3RUBkvdyIc0G6rV/KlX5op/78YryYTFHh+oWZtXUPin2BDjVFk3IE6vP9veB
-	l1Qbfba0iQxH5dD906hjINFvCE4HARQyl2AFsCXjJwAXKdqH80qfAJiZZ+e9t1xc
-	/S+a6hP4Se7CKsKjopgkM2LD04E44C4dQii9oUE5P/T/aWv4eDrHBVz9C/vn0ERj
-	IdHM5EvzCq9heAtXxhs1ZvyZxgE7JWx/Vs4MHe3pNPNcOqPNJ2zXyD+Rb2Okgu3t
-	1auhr89onDdcWYwo/aykRC/NWJt7dwj7B/GpNH40FTxRpvPvRAJkuqlrHh2sgBIU
-	sQ3zk2hwxSi+MW78Hmx+w==
-X-ME-Sender: <xms:rKzaZt5PUx2awmbvkLlPn1QnBtbVF79QfYME7xJL0tjtTTBBxExbCw>
-    <xme:rKzaZq6R2ML2ByKU5dFHXJWnqNZIlkfNq_Qw9_HTFNQNz4yK_avaOOWHRIj8vz038
-    kstsUHtBi-0YZObKdA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudeitddguddukecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
-    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeeh
-    tddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpd
-    hrtghpthhtohepthhssghoghgvnhgusegrlhhphhgrrdhfrhgrnhhkvghnrdguvgdprhgt
-    phhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoheptg
-    hhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegu
-    rghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghllhgvrh
-    hmrghnrdhiugdrrghupdhrtghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtgho
-    mhdprhgtphhtthhopegthhhrihhsrdhtohhrvghksehgmhgrihhlrdgtohhmpdhrtghpth
-    htohepmhgrthhtshhtkeeksehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:rKzaZkez4LA7tX9hpcEB8D9J8BRBU7hdAy_-dxVzqgTW3TLpWq-U3g>
-    <xmx:rKzaZmKLFU2eWg80ImcEkx9_a8GMHJ46iO2onMEowq5enIahZloO2w>
-    <xmx:rKzaZhIpAuSbbsH3org--1LUAk0dAT6rezieBcnRKofjTIlaF8HO8A>
-    <xmx:rKzaZvxEUP-4UOlB4rgdIuaaEnQO1PjOxXxM57Y6bUSNFWDtErzcYg>
-    <xmx:r6zaZnZCpuO_FJUglH9u5W_GV8xg0dvGTBq8eZ4ASwuda2wXiCUWanxI>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 99D14222006F; Fri,  6 Sep 2024 03:18:04 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0SMm60vcz301n
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 17:21:40 +1000 (AEST)
+Message-ID: <d02fe02d-a6c7-4157-bb7d-3fe235f21237@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1725607268;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zJPCh8PbP6Ph7SJVvvtMaEdy7Om9qiXdVbZwIKJbLac=;
+	b=xNyKdDHP4ERpm0wvOkIn/jYqCTzwSwzDwa0+P37KJndJaFEiFop/OTDMjIXGU5EDJLKXfQ
+	mM7OUatDpyRMqiet5XMBmQKn4oL7VnZRGFdfrUQz1HJqpKUQfoqZxcWhrkQcnK5SFyFKwO
+	tEHqWfpnmG0P3LEQRiK/xdTIgCz4fc8=
+Date: Fri, 6 Sep 2024 15:20:53 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,99 +49,175 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Fri, 06 Sep 2024 07:17:44 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Charlie Jenkins" <charlie@rivosinc.com>,
- "Richard Henderson" <richard.henderson@linaro.org>,
- "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
- "Matt Turner" <mattst88@gmail.com>, "Vineet Gupta" <vgupta@kernel.org>,
- "Russell King" <linux@armlinux.org.uk>, guoren <guoren@kernel.org>,
- "Huacai Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Helge Deller" <deller@gmx.de>, "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N Rao" <naveen@kernel.org>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>,
- "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- "Sven Schnelle" <svens@linux.ibm.com>,
- "Yoshinori Sato" <ysato@users.sourceforge.jp>,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- "David S . Miller" <davem@davemloft.net>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Andy Lutomirski" <luto@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Muchun Song" <muchun.song@linux.dev>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, shuah <shuah@kernel.org>,
- "Christoph Hellwig" <hch@infradead.org>,
- "Michal Hocko" <mhocko@suse.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- "Chris Torek" <chris.torek@gmail.com>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-abi-devel@lists.sourceforge.net
-Message-Id: <9fc4746b-8e9d-4a75-b966-e0906187e6b7@app.fastmail.com>
-In-Reply-To: 
- <20240905-patches-below_hint_mmap-v3-1-3cd5564efbbb@rivosinc.com>
-References: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
- <20240905-patches-below_hint_mmap-v3-1-3cd5564efbbb@rivosinc.com>
-Subject: Re: [PATCH RFC v3 1/2] mm: Add personality flag to limit address to 47 bits
-Content-Type: text/plain
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+Subject: Re: [PATCH v3 01/14] mm: pgtable: introduce
+ pte_offset_map_{ro|rw}_nolock()
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ David Hildenbrand <david@redhat.com>, hughd@google.com, willy@infradead.org,
+ vbabka@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
+ vishal.moola@gmail.com, peterx@redhat.com, ryan.roberts@arm.com,
+ christophe.leroy2@cs-soprasteria.com
+References: <20240904084022.32728-1-zhengqi.arch@bytedance.com>
+ <20240904084022.32728-2-zhengqi.arch@bytedance.com>
+In-Reply-To: <20240904084022.32728-2-zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Sep 5, 2024, at 21:15, Charlie Jenkins wrote:
-> Create a personality flag ADDR_LIMIT_47BIT to support applications
-> that wish to transition from running in environments that support at
-> most 47-bit VAs to environments that support larger VAs. This
-> personality can be set to cause all allocations to be below the 47-bit
-> boundary. Using MAP_FIXED with mmap() will bypass this restriction.
+
+
+On 2024/9/4 16:40, Qi Zheng wrote:
+> Currently, the usage of pte_offset_map_nolock() can be divided into the
+> following two cases:
 >
-> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+> 1) After acquiring PTL, only read-only operations are performed on the PTE
+>     page. In this case, the RCU lock in pte_offset_map_nolock() will ensure
+>     that the PTE page will not be freed, and there is no need to worry
+>     about whether the pmd entry is modified.
+>
+> 2) After acquiring PTL, the pte or pmd entries may be modified. At this
+>     time, we need to ensure that the pmd entry has not been modified
+>     concurrently.
+>
+> To more clearing distinguish between these two cases, this commit
+> introduces two new helper functions to replace pte_offset_map_nolock().
+> For 1), just rename it to pte_offset_map_ro_nolock(). For 2), in addition
+> to changing the name to pte_offset_map_rw_nolock(), it also outputs the
+> pmdval when successful. It is applicable for may-write cases where any
+> modification operations to the page table may happen after the
+> corresponding spinlock is held afterwards. But the users should make sure
+> the page table is stable like checking pte_same() or checking pmd_same()
+> by using the output pmdval before performing the write operations.
+>
+> Note: "RO" / "RW" expresses the intended semantics, not that the *kmap*
+> will be read-only/read-write protected.
+>
+> Subsequent commits will convert pte_offset_map_nolock() into the above
+> two functions one by one, and finally completely delete it.
+>
+> Signed-off-by: Qi Zheng<zhengqi.arch@bytedance.com>
+> ---
+>   Documentation/mm/split_page_table_lock.rst |  7 +++
+>   include/linux/mm.h                         |  5 +++
+>   mm/pgtable-generic.c                       | 50 ++++++++++++++++++++++
+>   3 files changed, 62 insertions(+)
+>
+> diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
+> index e4f6972eb6c04..08d0e706a32db 100644
+> --- a/Documentation/mm/split_page_table_lock.rst
+> +++ b/Documentation/mm/split_page_table_lock.rst
+> @@ -19,6 +19,13 @@ There are helpers to lock/unlock a table and other accessor functions:
+>    - pte_offset_map_nolock()
+>   	maps PTE, returns pointer to PTE with pointer to its PTE table
+>   	lock (not taken), or returns NULL if no PTE table;
+> + - pte_offset_map_ro_nolock()
+> +	maps PTE, returns pointer to PTE with pointer to its PTE table
+> +	lock (not taken), or returns NULL if no PTE table;
+> + - pte_offset_map_rw_nolock()
+> +	maps PTE, returns pointer to PTE with pointer to its PTE table
+> +	lock (not taken) and the value of its pmd entry, or returns NULL
+> +	if no PTE table;
+>    - pte_offset_map()
+>   	maps PTE, returns pointer to PTE, or returns NULL if no PTE table;
+>    - pte_unmap()
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index a7c74a840249a..1fde9242231c9 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3006,6 +3006,11 @@ static inline pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
+>   
+>   pte_t *pte_offset_map_nolock(struct mm_struct *mm, pmd_t *pmd,
+>   			unsigned long addr, spinlock_t **ptlp);
+> +pte_t *pte_offset_map_ro_nolock(struct mm_struct *mm, pmd_t *pmd,
+> +				unsigned long addr, spinlock_t **ptlp);
+> +pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
+> +				unsigned long addr, pmd_t *pmdvalp,
+> +				spinlock_t **ptlp);
+>   
+>   #define pte_unmap_unlock(pte, ptl)	do {		\
+>   	spin_unlock(ptl);				\
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index a78a4adf711ac..262b7065a5a2e 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -317,6 +317,33 @@ pte_t *pte_offset_map_nolock(struct mm_struct *mm, pmd_t *pmd,
+>   	return pte;
+>   }
+>   
+> +pte_t *pte_offset_map_ro_nolock(struct mm_struct *mm, pmd_t *pmd,
+> +				unsigned long addr, spinlock_t **ptlp)
+> +{
+> +	pmd_t pmdval;
+> +	pte_t *pte;
+> +
+> +	pte = __pte_offset_map(pmd, addr, &pmdval);
+> +	if (likely(pte))
+> +		*ptlp = pte_lockptr(mm, &pmdval);
+> +	return pte;
+> +}
+> +
+> +pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
+> +				unsigned long addr, pmd_t *pmdvalp,
+> +				spinlock_t **ptlp)
+> +{
+> +	pmd_t pmdval;
+> +	pte_t *pte;
+> +
+> +	VM_WARN_ON_ONCE(!pmdvalp);
+> +	pte = __pte_offset_map(pmd, addr, &pmdval);
+> +	if (likely(pte))
+> +		*ptlp = pte_lockptr(mm, &pmdval);
+> +	*pmdvalp = pmdval;
+> +	return pte;
+> +}
+> +
+>   /*
+>    * pte_offset_map_lock(mm, pmd, addr, ptlp), and its internal implementation
+>    * __pte_offset_map_lock() below, is usually called with the pmd pointer for
+> @@ -356,6 +383,29 @@ pte_t *pte_offset_map_nolock(struct mm_struct *mm, pmd_t *pmd,
+>    * recheck *pmd once the lock is taken; in practice, no callsite needs that -
+>    * either the mmap_lock for write, or pte_same() check on contents, is enough.
+>    *
+> + * pte_offset_map_ro_nolock(mm, pmd, addr, ptlp), above, is like pte_offset_map();
+> + * but when successful, it also outputs a pointer to the spinlock in ptlp - as
+> + * pte_offset_map_lock() does, but in this case without locking it.  This helps
+> + * the caller to avoid a later pte_lockptr(mm, *pmd), which might by that time
+> + * act on a changed *pmd: pte_offset_map_ro_nolock() provides the correct spinlock
+> + * pointer for the page table that it returns. Even after grabbing the spinlock,
+> + * we might be looking either at a page table that is still mapped or one that
+> + * was unmapped and is about to get freed. But for R/O access this is sufficient.
+> + * So it is only applicable for read-only cases where any modification operations
+> + * to the page table are not allowed even if the corresponding spinlock is held
+> + * afterwards.
+> + *
+> + * pte_offset_map_rw_nolock(mm, pmd, addr, pmdvalp, ptlp), above, is like
+> + * pte_offset_map_ro_nolock(); but when successful, it also outputs the pdmval.
+> + * It is applicable for may-write cases where any modification operations to the
+> + * page table may happen after the corresponding spinlock is held afterwards.
+> + * But the users should make sure the page table is stable like checking pte_same()
+> + * or checking pmd_same() by using the output pmdval before performing the write
+> + * operations.
 
-I think having an architecture-independent mechanism to limit the size
-of the 64-bit address space is useful in general, and we've discussed
-the same thing for arm64 in the past, though we have not actually
-reached an agreement on the ABI previously.
+Now, we have two options to make sure the stability of PTE for users
+of pte_offset_map_rw_nolock(), in order to ease this operation, how
+about proposing a new helper (or two, one for pmd_same, another for
+pte_same) like pte_lock_stability (I am not good at naming, maybe
+you can) which helps users 1) hold the PTL and 2) check if the PTE is
+stable and 3) return true if the PTE stable, otherwise return false.
 
-> @@ -22,6 +22,7 @@ enum {
->  	WHOLE_SECONDS =		0x2000000,
->  	STICKY_TIMEOUTS	=	0x4000000,
->  	ADDR_LIMIT_3GB = 	0x8000000,
-> +	ADDR_LIMIT_47BIT = 	0x10000000,
-> };
+Muchun,
+Thanks.
 
-I'm a bit worried about having this done specifically in the
-personality flag bits, as they are rather limited. We obviously
-don't want to add many more such flags when there could be
-a way to just set the default limit.
+> + *
+> + * Note: "RO" / "RW" expresses the intended semantics, not that the *kmap* will
+> + * be read-only/read-write protected.
+> + *
+>    * Note that free_pgtables(), used after unmapping detached vmas, or when
+>    * exiting the whole mm, does not take page table lock before freeing a page
+>    * table, and may not use RCU at all: "outsiders" like khugepaged should avoid
 
-It's also unclear to me how we want this flag to interact with
-the existing logic in arch_get_mmap_end(), which attempts to
-limit the default mapping to a 47-bit address space already.
-
-For some reason, it appears that the arch_get_mmap_end()
-logic on RISC-V defaults to the maximum address
-space for the 'addr==0' case which is inconsistentn with
-the other architectures, so we should probably fix that
-part first, possibly moving more of that logic into a
-shared implementation.
-
-      Arnd
 
