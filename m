@@ -1,53 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-1072-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1073-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE3E96E7DF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 04:48:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7099D96E82D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Sep 2024 05:24:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X0LJr0bxgz2ytR;
-	Fri,  6 Sep 2024 12:48:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X0M6D1fGsz2yvq;
+	Fri,  6 Sep 2024 13:24:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725590924;
-	cv=none; b=CbajZ3YUxp1pHkFoIGw5wNAwWm8RCVbMtLKovLkXI9BbTmXpM9PF5CDqpr7EMtLdUsxikgwHR1TuVwQMsKMsFi6TKXMDWQfxM6dxY2ISuztEfcZRMd++70ObN5ajffNGTG0co8bolVnvfGhym4xg7DZ2fKv4a5bt7xOfoRKapH/xkRwLV05IGmFM0yhZbI5BODILUbRdojyBL+PTcJgAHEMo7tY9jItDBFsKTQn1kSEwnHl0d9Sik82+q9wsmRDfLqkPhuTz1v+zz6q6mKgUlORQDFTtOoI121B9sEz2duOLZmUoddHTDQ5pRrjUSXosUHOlRqYnk3OKVlGFVCs/5Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725593076;
+	cv=none; b=dLV2KL3POD/FUk2IOFzEd3GxMAdr/NB2lBbA2YjQnNTDiZFazwioG0SOASJUFKF7f2mC5OSH8+P/hp3AwY4/OoM9u88yGUDrt4Qtm+w8gJdDKjDxm+zHXe7bhzmjVCrWt0Pez1tPKLZfZ713yAng9DQia4UtCDlVUDktaeq8byD45FHO0/bUbMDhW5IMZyvKJN7SDwWWaIHc+aOdrX3Nbt4dY3ccpeY52N2MUhFkqZlfrMGHi//O8opNCe63BuB1X80CZtJGBNkhCll4VBnnCDw9Awmre+YeXpTLJeQn45iNiLyUuTQ5y1Dba/168tnbFMKu6WeXmH7F/MTY+XC54Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725590924; c=relaxed/relaxed;
-	bh=GDin/TTzmHCatsL5YEP7qml5EKwCyw3+unP9HsNBBks=;
+	t=1725593076; c=relaxed/relaxed;
+	bh=Z2dxDPKKa2YK6AR5mLMyQ8i6dADRrELxYn6efyeudEY=;
 	h=DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=ZlCXD2OA07eGAIyPHjJ1ucr7VSem+0qYlufGtpUhJrHNHejnusZrqkBwAOqRx1oaMlNbZUL5Zy9x5dlW5/48La5+aIqr+HvNlQ3rw/WFVII2VB3BKkgerTUv0aqHAWJ2Xuink5iK/ZWLl2jORa9lUORgtnDeQMCK4o9OQctdjs7MsHViwAweIraGIhWZtvYYmA7NeOjxoprB/q2xlnVlOMW3i1c+EMVBd2RBQumud2iqO0tSfLqHJf/3BENUdqAHz+1d/0Wj13yO9t0Bg7FKKql29BxCXkJCS9gd13bALAtgEjPWg5IF61BIL4T4fGsibAVSOmuWNYtdZ1Swc5DqEg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=bRX4+VzE; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=v4y+=qe=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=kEIm/F3WPa0iZtI1In4DYa05nnC+yJtdBpOmk71lDITaI+npdWpEAPdah6rQzYlTrcd9h/GYUm7DyE+TQ1huJmH6gEeLRAPHuD2czu8B1gtfUlkN9jSaYbwf2w8C4BUQO1/hm1R6SiS/2jb3EwE0Pzn527CIg40DXDedzShC8kQmBcFMWNzAqdcxDj+RHDhEE488eN0cK1NmiEBrFydz/xNpOVS+SPLj+jC7gU0KiidvTaI2f+TYUq8F1YS6oE2iOpJp9OpOn53v2K78A0dlheBvDa4VxZlZLU3xiOA2Zvx+0wIR2GKYv03Ei5/VXTKR9/4QAMDbDAyIDA2Q5am1qQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=lWXUkZvb; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=v4y+=qe=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=bRX4+VzE;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=lWXUkZvb;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=v4y+=qe=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0LJn5P9Pz2yDk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 12:48:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X0M6C5lmvz2y65
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Sep 2024 13:24:35 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A74E45C5976;
-	Fri,  6 Sep 2024 02:48:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754BFC4CEC3;
-	Fri,  6 Sep 2024 02:48:35 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 27E575C5A9F;
+	Fri,  6 Sep 2024 03:24:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC162C4CEC3;
+	Fri,  6 Sep 2024 03:24:30 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="bRX4+VzE"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="lWXUkZvb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1725590913;
+	t=1725593069;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GDin/TTzmHCatsL5YEP7qml5EKwCyw3+unP9HsNBBks=;
-	b=bRX4+VzElx6AhF7yIERy0JoxrcqZ8w2XnNUX4cySvATmmNIgFgKdGdfDY+DT1KfFqexJRX
-	9BvfkivoCdg2WCBNWf5LjK2iwqnwDbLFu2UJPBepJhXrsh39RcDJ68oyyRJJCk1qgWS81f
-	K191Ft9MxUKb0Efd83zvLBnDi2pl2n4=
+	bh=Z2dxDPKKa2YK6AR5mLMyQ8i6dADRrELxYn6efyeudEY=;
+	b=lWXUkZvbvlbUyOMCWA1zuc7ad4c+I0UJcawqwTucUHLSLfjSoDcXGiWc2V7qkYM6p9qDOE
+	xqMX7fe/Xfh9D0076bwd4NPqJu9BUto8QUy3Vo/4JDK4c4+j1HrSQbP9/ilbY+G0btPrj7
+	0Zg0qZDITzK9zGSnoBQ0QQgntbqq/qk=
 Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5ee168b6 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 6 Sep 2024 02:48:32 +0000 (UTC)
-Date: Fri, 6 Sep 2024 04:48:28 +0200
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 182a6eb3 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Fri, 6 Sep 2024 03:24:28 +0000 (UTC)
+Date: Fri, 6 Sep 2024 05:24:24 +0200
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -69,11 +69,12 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Xi Ruoyao <xry111@xry111.site>
 Subject: Re: [PATCH v5 4/5] powerpc/vdso: Wire up getrandom() vDSO
  implementation on VDSO32
-Message-ID: <ZtptfOicjZU3k3ZV@zx2c4.com>
+Message-ID: <Ztp16FkqG0ALlXnh@zx2c4.com>
 References: <cover.1725304404.git.christophe.leroy@csgroup.eu>
  <1f49c2ce009f8b007ab0676fb41187b2d54f28b2.1725304404.git.christophe.leroy@csgroup.eu>
  <ZtnYqZI-nrsNslwy@zx2c4.com>
  <ZtoXhGYflBNR74g0@zx2c4.com>
+ <ZtptfOicjZU3k3ZV@zx2c4.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,99 +86,77 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZtoXhGYflBNR74g0@zx2c4.com>
+In-Reply-To: <ZtptfOicjZU3k3ZV@zx2c4.com>
 
-On Thu, Sep 05, 2024 at 10:41:40PM +0200, Jason A. Donenfeld wrote:
-> On Thu, Sep 05, 2024 at 06:13:29PM +0200, Jason A. Donenfeld wrote:
-> > > +/*
-> > > + * The macro sets two stack frames, one for the caller and one for the callee
-> > > + * because there are no requirement for the caller to set a stack frame when
-> > > + * calling VDSO so it may have omitted to set one, especially on PPC64
-> > > + */
-> > > +
-> > > +.macro cvdso_call funct
-> > > +  .cfi_startproc
-> > > +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
-> > > +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
-> > > +	mflr		r0
-> > > +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
-> > > +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
-> > > +	PPC_STL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
-> > > +  .cfi_rel_offset lr, PPC_MIN_STKFRM + PPC_LR_STKOFF
-> > > +	get_datapage	r8
-> > > +	addi		r8, r8, VDSO_RNG_DATA_OFFSET
-> > > +	bl		CFUNC(DOTSYM(\funct))
-> > > +	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
-> > > +	cmpwi		r3, 0
-> > > +	mtlr		r0
-> > > +	addi		r1, r1, 2 * PPC_MIN_STKFRM
-> > > +  .cfi_restore lr
-> > > +  .cfi_def_cfa_offset 0
-> > > +	crclr		so
-> > > +	bgelr+
-> > > +	crset		so
-> > > +	neg		r3, r3
-> > > +	blr
-> > > +  .cfi_endproc
-> > > +.endm
+On Fri, Sep 06, 2024 at 04:48:28AM +0200, Jason A. Donenfeld wrote:
+> On Thu, Sep 05, 2024 at 10:41:40PM +0200, Jason A. Donenfeld wrote:
+> > On Thu, Sep 05, 2024 at 06:13:29PM +0200, Jason A. Donenfeld wrote:
+> > > > +/*
+> > > > + * The macro sets two stack frames, one for the caller and one for the callee
+> > > > + * because there are no requirement for the caller to set a stack frame when
+> > > > + * calling VDSO so it may have omitted to set one, especially on PPC64
+> > > > + */
+> > > > +
+> > > > +.macro cvdso_call funct
+> > > > +  .cfi_startproc
+> > > > +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
+> > > > +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
+> > > > +	mflr		r0
+> > > > +	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
+> > > > +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
+> > > > +	PPC_STL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
+> > > > +  .cfi_rel_offset lr, PPC_MIN_STKFRM + PPC_LR_STKOFF
+> > > > +	get_datapage	r8
+> > > > +	addi		r8, r8, VDSO_RNG_DATA_OFFSET
+> > > > +	bl		CFUNC(DOTSYM(\funct))
+> > > > +	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
+> > > > +	cmpwi		r3, 0
+> > > > +	mtlr		r0
+> > > > +	addi		r1, r1, 2 * PPC_MIN_STKFRM
+> > > > +  .cfi_restore lr
+> > > > +  .cfi_def_cfa_offset 0
+> > > > +	crclr		so
+> > > > +	bgelr+
+> > > > +	crset		so
+> > > > +	neg		r3, r3
+> > > > +	blr
+> > > > +  .cfi_endproc
+> > > > +.endm
+> > > 
+> > > Can you figure out what's going on and send a fix, which I'll squash
+> > > into this commit?
 > > 
-> > Can you figure out what's going on and send a fix, which I'll squash
-> > into this commit?
+> > This doesn't work, but I wonder if something like it is what we want. I
+> > need to head out for the day, but here's what I've got. It's all wrong
+> > but might be of interest.
 > 
-> This doesn't work, but I wonder if something like it is what we want. I
-> need to head out for the day, but here's what I've got. It's all wrong
-> but might be of interest.
+> Oh, I just got one small detail wrong before. The below actually works,
+> and uses the same strategy as on arm64.
+> 
+> Let me know if you'd like me to fix up this commit with the below patch,
+> or if you have another way you'd like to go about it.
 
-Oh, I just got one small detail wrong before. The below actually works,
-and uses the same strategy as on arm64.
-
-Let me know if you'd like me to fix up this commit with the below patch,
-or if you have another way you'd like to go about it.
-
-diff --git a/arch/powerpc/include/asm/vdso/getrandom.h b/arch/powerpc/include/asm/vdso/getrandom.h
-index 501d6bb14e8a..acb271709d30 100644
---- a/arch/powerpc/include/asm/vdso/getrandom.h
-+++ b/arch/powerpc/include/asm/vdso/getrandom.h
-@@ -47,7 +47,8 @@ static __always_inline struct vdso_rng_data *__arch_get_vdso_rng_data(void)
- }
-
- ssize_t __c_kernel_getrandom(void *buffer, size_t len, unsigned int flags, void *opaque_state,
--			     size_t opaque_len, const struct vdso_rng_data *vd);
-+			     size_t opaque_len, const struct vdso_data *vd,
-+			     const struct vdso_rng_data *vrd);
-
- #endif /* !__ASSEMBLY__ */
+And here's the much shorter version in assembly, which maybe you prefer.
+Also works, and is a bit less invasive than the other thing.
 
 diff --git a/arch/powerpc/kernel/vdso/getrandom.S b/arch/powerpc/kernel/vdso/getrandom.S
-index a957cd2b2b03..64cc1fad3ccc 100644
+index a957cd2b2b03..070daba2d547 100644
 --- a/arch/powerpc/kernel/vdso/getrandom.S
 +++ b/arch/powerpc/kernel/vdso/getrandom.S
-@@ -32,7 +32,8 @@
+@@ -32,6 +32,14 @@
    .cfi_rel_offset r2, PPC_MIN_STKFRM + STK_GOT
  #endif
  	get_datapage	r8
--	addi		r8, r8, VDSO_RNG_DATA_OFFSET
-+	addi		r9, r8, VDSO_RNG_DATA_OFFSET
-+	addi		r8, r8, VDSO_DATA_OFFSET
++#ifdef CONFIG_TIME_NS
++	lis		r10, 0x7fff
++	ori		r10, r10, 0xffff
++	lwz		r9, VDSO_DATA_OFFSET + 4(r8)
++	cmpw		r9, r10
++	bne		+8
++	addi		r8, r8, (1 << CONFIG_PAGE_SHIFT)
++#endif
+ 	addi		r8, r8, VDSO_RNG_DATA_OFFSET
  	bl		CFUNC(DOTSYM(\funct))
  	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
- #ifdef __powerpc64__
-diff --git a/arch/powerpc/kernel/vdso/vgetrandom.c b/arch/powerpc/kernel/vdso/vgetrandom.c
-index 5f855d45fb7b..408c76036868 100644
---- a/arch/powerpc/kernel/vdso/vgetrandom.c
-+++ b/arch/powerpc/kernel/vdso/vgetrandom.c
-@@ -8,7 +8,10 @@
- #include <linux/types.h>
-
- ssize_t __c_kernel_getrandom(void *buffer, size_t len, unsigned int flags, void *opaque_state,
--			     size_t opaque_len, const struct vdso_rng_data *vd)
-+			     size_t opaque_len, const struct vdso_data *vd,
-+			     const struct vdso_rng_data *vrd)
- {
--	return __cvdso_getrandom_data(vd, buffer, len, flags, opaque_state, opaque_len);
-+	if (IS_ENABLED(CONFIG_TIME_NS) && vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
-+		vrd = (void *)vrd + (1UL << CONFIG_PAGE_SHIFT);
-+	return __cvdso_getrandom_data(vrd, buffer, len, flags, opaque_state, opaque_len);
- }
 
 
