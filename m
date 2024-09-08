@@ -1,56 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-1154-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1155-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6317197099C
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Sep 2024 21:58:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DF1970A79
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2024 00:39:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X213W4vJpz2xfq;
-	Mon,  9 Sep 2024 05:57:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X24fD3vyfz2xfP;
+	Mon,  9 Sep 2024 08:39:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.219.176
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725825479;
-	cv=none; b=kk8el/XNsE/rmpHJs5OAhKcAa3h/Bp0hINtBGN4zBNy+AyldDIVdVshmHvtPOON2bwHWJ4w3kjFWFLMQOR4ZRpN6Z0WS7nzuCbG+R1ArA/D/JfCXLs0B5yJ3oOSjWSHHy9CwjOD3J5GAhrVAYBx5IxrAnDVhD/qaJYFN5S79c+CpMnfuyt6i3K8DZOoVH6PjaqG0sEZ84Hkusban6DK/nhTs81DQ2ibpYPblwF681lWRkuYb6dbRAh1NDwrW5bKyScXkyVHWSpzAxg6f4dUlu2c+0qGXXfnJzI1pjdn6Zmz6iAvUJ69oBIi5iHxkZ8Dx+J0l+LBLT6+JkiiX9OG7vw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.139
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725795373;
+	cv=none; b=nCsAuvkFyrl+dOAElX873gOqF2KWAKCloQ5JquwcWczD5lmSe470W+JefYW0hFDI97Kq2BJH3QcohZP3IW//e0r3X3F79QTr3PVylQmjVlyLaX9Tk5XlFMBSiDNfN8GH2h7yz2izCsgarRn1+sgpLxztM84WgJ6648TNR48cJUx4c318yoODa7BLBPcMi6Pm7W50nYWx6uDD1f8nVqiBZhBMtSrv+3zaU5r0vJpGwvGIohwVnT/xG8+zzex9dcBMgOLH4tYc1w72LgR0C+8oHeix4fq5EgvyLpRYT+aL4xFOUeJxvm3KsNetZhzfFTxxNA6Gr4Tbc7mgZy1DDd1+Fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725825479; c=relaxed/relaxed;
-	bh=6iRQ4ycMPuueLuQbrmkO5BYrgQaV5z5SVussbCyOKoM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f83/wSByvSKhy1P0xKEEymYMEiNjC/wCNCw76TuGtc1mFUMPnJH7DDIZTfP3225zWiPHZFdw+EwQg1600S1lDsGC4FfDJEeH9WLKQA4zjf8o3qEnXUGnKPmAOYRTxj7lWAjSzgOYdPi1TuPj7myJ4sliZ8cOdYvhNE5X4zLe2Z/k7jukxVV5SjG+FGpOtQbvRiS7L/ZXfjoRt9JQmikb605zzzMDrnIM5evugjrMqcoRKWSpnWk515+EzYIr4sOJWJkdk9TmzETWtHhUG5O4dbyxRmEQaqECO9hxUn9rJ0gGjBNnA6mpjvnS6wtfAkTDNAireHcJ46/3GcHwGh2rxQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca; spf=pass (client-ip=209.85.219.176; helo=mail-yb1-f176.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=vasilevsky.ca
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.176; helo=mail-yb1-f176.google.com; envelope-from=djvasi@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	t=1725795373; c=relaxed/relaxed;
+	bh=XEUlxjTawgkGJUbuV5995m7w7A2+JrHLDxzMf66rOFU=;
+	h=DKIM-Signature:DKIM-Signature:MIME-Version:Date:From:To:Cc:
+	 Message-Id:In-Reply-To:References:Subject:Content-Type; b=GEclWn2FEl432PScK6bsf6lKt/ths2/lOs0NmdOGzgycmHMn4aSbptBSbmTfZ/7L4UMw+1Ugq5uKuBmMHFArFn+Z30MKYPkWuLqsALuijZzqc4Rln5p+ApFP1cWltyHUhfr99Th804hTRnpWSKdOucsNi5eZkZlt3gF64sBwGwQzBznHu+GbmtGAg+7YqrKXuECEmwZl97jC1NooGBwj7aFahY08GyiFq4c7aCnrDLkpcPnt7MSl8yfIvq6UQ4+XYlhEoILvt8Ru4LHU9HTvCjFbGDUNQ+S4+aa9y5NFbIpQBDGrbGLURJkOwCzXxnYQrMHLtOso+7b1LW8pFkrF/A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm2 header.b=1RqsBYWn; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Cdsqc3O9; dkim-atps=neutral; spf=pass (client-ip=103.168.172.139; helo=flow4-smtp.messagingengine.com; envelope-from=jiaxun.yang@flygoat.com; receiver=lists.ozlabs.org) smtp.mailfrom=flygoat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm2 header.b=1RqsBYWn;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Cdsqc3O9;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flygoat.com (client-ip=103.168.172.139; helo=flow4-smtp.messagingengine.com; envelope-from=jiaxun.yang@flygoat.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 574 seconds by postgrey-1.37 at boromir; Sun, 08 Sep 2024 21:36:11 AEST
+Received: from flow4-smtp.messagingengine.com (flow4-smtp.messagingengine.com [103.168.172.139])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X213V5vJ0z2xYl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Sep 2024 05:57:58 +1000 (AEST)
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e05f25fb96eso3939274276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Sep 2024 12:57:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725825475; x=1726430275;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6iRQ4ycMPuueLuQbrmkO5BYrgQaV5z5SVussbCyOKoM=;
-        b=AKQTHdglXaFX5IewSeL/6J71Idhz2CDKT5DuajggbKNyWRsTzJmWoOb+TfmDCOUSR+
-         pFVt428OfY0yi36wWyvIrQOcUqQJlcS8FwIkx2ATh7D64iywb3o82RoUG6ZvKwgOhagK
-         ocgD5Yvr3eeoUHUPAXcW1B3cAOfvDojFE5vvFZ2KGXbGSt2f/wI3HC2utYJKp0JRDw9q
-         s7QFP/+zDIAjFGKeP1NnORGMTPFaXYr2QTjgH5YF7FjAJqSxa9cyNpaoHhdfGSvKE5Yq
-         bK6RzNpD+uRjjA2ElAnG3ygb5nAck8hUAxGR+OhsC38QXdK+0K7Ey45rhEUghZYrfEOl
-         fJNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0UBkzeG9sIlHBislpUPQkT2T/Gwj+dH0eZQurQsb9ytu7UGbmEB75uHNuJMgp6aoeFGN2L1ds3XsL2ME=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyiPLRH3U1MQwPt265T/xz56KaIXbg9cHXk6CZqtbrJdA4zfAhM
-	wCZQi641/Dddspz9uFwex9cDHbm2OvF7sZl089uJ9f2k7/HPmOhs
-X-Google-Smtp-Source: AGHT+IHbDiMdtH2pqnAbxLEMjAlHcuY4ygwDQW8Q8ews50/boV7RDQlibc4OTUwRVZ+TyW4cporrAg==
-X-Received: by 2002:a25:cece:0:b0:e1d:436c:3b4f with SMTP id 3f1490d57ef6-e1d436c3bd7mr5094797276.50.1725825474790;
-        Sun, 08 Sep 2024 12:57:54 -0700 (PDT)
-Received: from [192.168.2.254] ([70.24.204.168])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822e7723asm14597531cf.22.2024.09.08.12.57.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Sep 2024 12:57:54 -0700 (PDT)
-Message-ID: <c04fe24a-26e6-44b5-a2dd-00eac589e36b@vasilevsky.ca>
-Date: Sun, 8 Sep 2024 15:57:42 -0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X1nwW6Sylz2xHp
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Sep 2024 21:36:11 +1000 (AEST)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailflow.phl.internal (Postfix) with ESMTP id 7520620010F;
+	Sun,  8 Sep 2024 07:26:33 -0400 (EDT)
+Received: from phl-imap-12 ([10.202.2.86])
+  by phl-compute-09.internal (MEProxy); Sun, 08 Sep 2024 07:26:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1725794793;
+	 x=1725801993; bh=XEUlxjTawgkGJUbuV5995m7w7A2+JrHLDxzMf66rOFU=; b=
+	1RqsBYWnwT4FfoKwD8HOSHteOOT9ciPyjmBQqMyvcr6+a49w9ITDGHReCqlKQ2QA
+	w6LflN5n1R32xrU1xq2pIQUhw2YtNSZPREepgs7fFh/JiqskWgBI2q1oyrafoAoX
+	OXv3Od7eW2mwOR/prATgt5rOF/YnKFqclBTHKg1I7fgB/KzYIhNfna0/I1Kkkkix
+	Cw/j32+Ac/ao6JT1NOKot7uC14h4ncceMxC0oG8lad9utiOysG+JubQG2QCO42FN
+	aaB/C7qy6BW/s3Y/XAsoNS4kMzEF8v05z3j3XR2ciLA88taJPIrCv19JmVh4IYaC
+	e/1tkYDVneKs0oixOgexAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725794793; x=
+	1725801993; bh=XEUlxjTawgkGJUbuV5995m7w7A2+JrHLDxzMf66rOFU=; b=C
+	dsqc3O9g9+P1uvJEQHGHAFH+WsHowmjhRVy+cqRNjQG++7x02Zs6YEtS3Z8WE9Q7
+	aU7Iyt8RK34PG634m7GdOLdc65TjyLlQ1FMnVcQDrKU1vzx9ZRt7CF5ubdgXZ5hD
+	LICkHzbR+VU5TW8gyNRRA+8tUrQ1gyDD4AgYcSft7m1DT4wa5iXfOq6TFoHseKlc
+	ZKKjp2fzBKD4C5Vg6N/L2WyPaWaSk/D/xDvTo+QbGyz1c5LwQ598Z1zUm1qYi2TI
+	Yo/X4zL4wxVl7PWyB6MPPrBNBLnV9cGyPZwCbCyxnslwXC+24EdDff0OvF6bpxbo
+	vqgoQPXgllSGln8FDDRng==
+X-ME-Sender: <xms:5ondZv4zT1mzhUMUTQzG10IJfddGHJ0zWNQriMXqeMVE9T6_YZ50HA>
+    <xme:5ondZk5zjak4Ydo9XQEC5_iAquMrOd_atPoKQ96BVfMT2YYDx9vqgHiwWixrtNewg
+    G1Ny6-v0uoneFUa_bQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudeihedgfeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+    necuhfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfh
+    hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepjeehfeduvddtgffgvdffkeet
+    hefhlefgvdevvdekuefffeekheehgeevhfevteejnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgr
+    thdrtghomhdpnhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopehtshgsohhgvghnugesrghl
+    phhhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuh
+    igrdhorhhgrdhukhdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtghpthht
+    oheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtth
+    hopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghl
+    lhgvrhhmrghnrdhiugdrrghupdhrtghpthhtoheprghnughrvggrshesghgrihhslhgvrh
+    drtghomhdprhgtphhtthhopegthhhrihhsrdhtohhrvghksehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:5ondZmeEGi7Zphdy-TIo3rqIOR8NdWAWLW97nTHVkixQm2hr7zi_lg>
+    <xmx:5ondZgJWFhoAhESpgoV8HqH0WSt1SGQGzDYdrSWWUBYB0eOSXRYfyg>
+    <xmx:5ondZjIv5G778Hr5ut3xkDDBdWEw4LkqLddMC19cVit9ESab8p1oRA>
+    <xmx:5ondZpygjZgzfq9YzCe6vFMmqD7cPQFQugI3PiJsvCSf-xhZMXrz0w>
+    <xmx:6YndZpZiu9HbuzT5oVUkok3yUEmNCf2gNYQHj65nIEn4Qe-iJ9a104zM>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 900D51C20065; Sun,  8 Sep 2024 07:26:30 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,27 +96,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crash: Default to CRASH_DUMP=n when support for it is
- unlikely
-To: glaubitz@physik.fu-berlin.de, bhe@redhat.com,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, mpe@ellerman.id.au,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: =?UTF-8?Q?Reimar_D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
-References: <20240823125156.104775-1-dave@vasilevsky.ca>
-Content-Language: en-US
-From: Dave Vasilevsky <dave@vasilevsky.ca>
-In-Reply-To: <20240823125156.104775-1-dave@vasilevsky.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Sun, 08 Sep 2024 12:26:09 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "Charlie Jenkins" <charlie@rivosinc.com>,
+ "Arnd Bergmann" <arnd@arndb.de>,
+ "Richard Henderson" <richard.henderson@linaro.org>,
+ "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
+ "Matt Turner" <mattst88@gmail.com>, "Vineet Gupta" <vgupta@kernel.org>,
+ "Russell King" <linux@armlinux.org.uk>, "Guo Ren" <guoren@kernel.org>,
+ "Huacai Chen" <chenhuacai@kernel.org>, "Xuerui Wang" <kernel@xen0n.name>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "James Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Helge Deller" <deller@gmx.de>, "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Naveen N Rao" <naveen@kernel.org>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>,
+ "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>,
+ "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+ "Rich Felker" <dalias@libc.org>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Andy Lutomirski" <luto@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Muchun Song" <muchun.song@linux.dev>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Shuah Khan" <shuah@kernel.org>, "Christoph Hellwig" <hch@infradead.org>,
+ "Michal Hocko" <mhocko@suse.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ "Chris Torek" <chris.torek@gmail.com>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ loongarch@lists.linux.dev,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-abi-devel@lists.sourceforge.net
+Message-Id: <53384dc9-38c9-4d05-bcde-a3552fbed7ac@app.fastmail.com>
+In-Reply-To: 
+ <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
+References: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
+Subject: Re: [PATCH RFC v3 0/2] mm: Introduce ADDR_LIMIT_47BIT personality flag
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-I received a notification from Patchwork that my patch is now in the state "Handled Elsewhere".[0] Does that mean someone merged it somewhere? Or that I should be using a different mailing list? Or something else?
-
-I'd appreciate some guidance.
-
-Thanks,
-Dave
 
 
-[0] http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20240823125156.104775-1-dave@vasilevsky.ca/
+=E5=9C=A82024=E5=B9=B49=E6=9C=885=E6=97=A5=E4=B9=9D=E6=9C=88 =E4=B8=8B=E5=
+=8D=8810:15=EF=BC=8CCharlie Jenkins=E5=86=99=E9=81=93=EF=BC=9A
+> Some applications rely on placing data in free bits addresses allocated
+> by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
+> address returned by mmap to be less than the 48-bit address space,
+> unless the hint address uses more than 47 bits (the 48th bit is reserv=
+ed
+> for the kernel address space).
+>
+> The riscv architecture needs a way to similarly restrict the virtual
+> address space. On the riscv port of OpenJDK an error is thrown if
+> attempted to run on the 57-bit address space, called sv57 [1].  golang
+> has a comment that sv57 support is not complete, but there are some
+> workarounds to get it to mostly work [2].
+>
+> These applications work on x86 because x86 does an implicit 47-bit
+> restriction of mmap() address that contain a hint address that is less
+> than 48 bits.
+>
+> Instead of implicitly restricting the address space on riscv (or any
+> current/future architecture), provide a flag to the personality syscall
+> that can be used to ensure an application works in any arbitrary VA
+> space. A similar feature has already been implemented by the personali=
+ty
+> syscall in ADDR_LIMIT_32BIT.
+>
+> This flag will also allow seemless compatibility between all
+> architectures, so applications like Go and OpenJDK that use bits in a
+> virtual address can request the exact number of bits they need in a
+> generic way. The flag can be checked inside of vm_unmapped_area() so
+> that this flag does not have to be handled individually by each
+> architecture.=20
+
+Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+
+Tested on MIPS VA 48 system, fixed pointer tagging on mozjs!
+
+Thanks!
+
+[...]
+--=20
+- Jiaxun
 
