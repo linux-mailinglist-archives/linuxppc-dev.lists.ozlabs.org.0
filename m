@@ -1,79 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-1185-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1186-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD987971D13
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2024 16:49:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10D5971D4C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2024 16:58:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X2V9X3CZYz2yQ9;
-	Tue, 10 Sep 2024 00:49:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X2VM560xRz2yNP;
+	Tue, 10 Sep 2024 00:58:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725893392;
-	cv=none; b=cW5pscGRvpG6+HbAt9OYmbAhPZEcHaGqQm86O451ryF+lk/L0CblqeDJ7VNbC5J9HsvJNsCT9d2US1b+640Tv9mEQZFvXTh21Pex7lzS0fj+RvXd8bREvij7Q90z/gPPAPwpYtKk/vL/Lrf+OMQa/gi24WnyMaMVdvkW+TRKuhxzT+jbzqHD4utfdWESEe8uQlgkTkyspyHADSZVL2PkctkepJeGqJtLzSfzOdjUw5fA66qOU8RQ3ydFg9C7irrir33iBpRiqwtm6AhdwyXwnBaVEAw0ZkdCzo33qLwvAU+q9LMxzQiXW/bFalD6w0mB9ByCte6iAsQ7FKJ+/M9uXg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725893889;
+	cv=none; b=by6U3Vnk00fSKNM6ZOn/6pgYf2McENO2tFAAr4u9OC5uGzFwz1p9W34HWihmQkBAbA4TF4FnXjDRwegRv3dgvtJPMl8bumSety70sJfPNA7pAZKfG5s+4XnygV1EjqzJMaFqNnYEaF/IBck8yLTZo87eAMOpbs5wnlYd1qoBQ0fGgDODg8c6eApd3k0mDgtJcHsf/nnTmsr+2mmDEGAHTfUKkxwu29UxQRt6RX58pX/GYn/nUMFp4G/zrng37eNqQjkvmZq69p4qqNpleMWBnE2EPPnKHPgwWCHQ1masks+x+ppF4EjeoYcIkUcyrPzyzL7NC/MaTTIydtdi4Re03A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725893392; c=relaxed/relaxed;
-	bh=rCUjKs3zWYCyeMG5H+lBybDJNyI55woPVsrQWuULxrg=;
+	t=1725893889; c=relaxed/relaxed;
+	bh=PBOVkZww8Y1CyMvmzZcDEQcfauCNuY4CzWakfWzf4dQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F1l+AJsgrDYsddf6x21xuoqypyKTFWi0ObFa4btD8o/2wvFwau3V4yvmmY0O8GBsGbktk/BsOnWRRgqk+0Gybfv5kXM6Sl6Ab5QrXRINO2X0T8QVD59xOHiv7+eZaygeyxvn6zv0/TWdQwuU9SE5rgccSFZdLmXiaxI1al7fRCELSqrXNbz6L4xEJA/ug0tWAAkT+hJM0DzPuy/UzDa/TqFlqGHuOy6Yn7MBicbSwmmMI13HDSl7UvQHkHsMUfcgPdi841kQttXNR9CMi+IedtZyR0H6HiqJDqVWuaXnzngTDNUGKOs0QtLtVZaIL6WhoWJArKib0xtb3jpa3nbCpQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=5o0h=qh=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=5o0h=qh=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	 MIME-Version:Content-Type; b=dXL+sFaDfv2E3iSflL+w9z8Wckn4Yq4DWmkHDHaVoK7h1x0dXuOzd+yf2um0R7KgmhrNZyGQUaKK2gkZbNkwle9FF8aSjYHOrcuFF9N+c8E7kGl/jZs1n4roK/DLPLLPASwhzlhM7lhXjHZjHv3JoDET8bZf1E806gkdjQdHsguSPqKfdApCJd+lUkPoAvEgAzhK29nkutNsFAABaHQ0Gg3d6AXBoAArccsxBZFB9vBU5LFUDyRzoJsSonV2YzarzGguVmuOslrR88q0Xai8qdbhBQI8W/d9EuzyAxIvmP/2fFkUDqhRpgV7c6V+ZMKXXWS79pzY8ooefSi8QY0ddg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=HnKHNogN; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=HnKHNogN;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X2V9W24hhz2yPM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 00:49:51 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id B62E3A43CB7;
-	Mon,  9 Sep 2024 14:49:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23C7C4CEC5;
-	Mon,  9 Sep 2024 14:49:41 +0000 (UTC)
-Date: Mon, 9 Sep 2024 10:49:40 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Andrew Morton
- <akpm@linux-foundation.org>, Andreas Larsson <andreas@gaisler.com>, Andy
- Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav
- Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Christoph Hellwig <hch@infradead.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen
- <dave.hansen@linux.intel.com>, Dinh Nguyen <dinguyen@kernel.org>, Geert
- Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Helge
- Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Kent Overstreet
- <kent.overstreet@linux.dev>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>, Palmer
- Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, Russell
- King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>, Stafford Horne
- <shorne@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas
- Gleixner <tglx@linutronix.de>, Uladzislau Rezki <urezki@gmail.com>, Vineet
- Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
- bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v3 6/8] x86/module: perpare module loading for ROX
- allocations of text
-Message-ID: <20240909104940.71d8464c@gandalf.local.home>
-In-Reply-To: <Zt8HiAzcaZS8lHT-@kernel.org>
-References: <20240909064730.3290724-1-rppt@kernel.org>
-	<20240909064730.3290724-7-rppt@kernel.org>
-	<20240909092923.GB4723@noisy.programming.kicks-ass.net>
-	<Zt8HiAzcaZS8lHT-@kernel.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X2VM55lhLz2xdR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 00:58:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1725893889;
+	bh=PBOVkZww8Y1CyMvmzZcDEQcfauCNuY4CzWakfWzf4dQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HnKHNogNfnZIrT2JtmSWn+LmmIDxSr/Yi0fd9e5iyW06hMgX8SOFkqJPLsrf8d0jD
+	 BFCkLEA72KZd/TeMZB5PHgVG+3gfkk/U1W9cWDbXKFWzYmyic5De8MtVcaBjOBFSTi
+	 VXuvOLfMAytdxeWSDgEKZstyE3guvuD9arAwnAxWG+xpcn5kJs8yzTVpoKLP5F3xzh
+	 LyznG0WT5CsShiZctvMZE8isSaM+79zJsbPzGI/GWz9w8vGF/aPqXOysaqRDtSMxLB
+	 k7Za2h18g63kCqUD/thaBJUsX85HadizmBrJlOe2udv5AP0kivBNhx6brCv0Bv4dVM
+	 7Jl5K6FDrhnIQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X2VM53yB7z4wc1;
+	Tue, 10 Sep 2024 00:58:09 +1000 (AEST)
+Date: Tue, 10 Sep 2024 00:58:08 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Masahiro Yamada
+ <masahiroy@kernel.org>, "Rob Herring (Arm)" <robh@kernel.org>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: Re: linux-next: build failure after merge of the powerpc tree
+Message-ID: <20240910005808.2e355995@canb.auug.org.au>
+In-Reply-To: <afa6f06a-8d92-4ac1-b5fe-d5b6ade3f740@csgroup.eu>
+References: <20240909200948.70087f49@canb.auug.org.au>
+	<afa6f06a-8d92-4ac1-b5fe-d5b6ade3f740@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,23 +65,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/R2HOHTA/RK=GO7xuxNWT1SO";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-On Mon, 9 Sep 2024 17:34:48 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+--Sig_/R2HOHTA/RK=GO7xuxNWT1SO
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-> > This is insane, just force BUILDTIME_MCOUNT_SORT  
-> 
-> The comment in ftrace.c says "... while mcount loc in modules can not be
-> sorted at build time"
->  
-> I don't know enough about objtool, but I'd presume it's because the sorting
-> should happen after relocations, no?
-> 
+Hi Christophe,
 
-IIRC, the sorting at build time uses scripts/sorttable.c, which from what I
-can tell, only gets called on vmlinux.
+On Mon, 9 Sep 2024 16:22:26 +0200 Christophe Leroy <christophe.leroy@csgrou=
+p.eu> wrote:
+>
+> Le 09/09/2024 =C3=A0 12:09, Stephen Rothwell a =C3=A9crit=C2=A0:
+> > Hi all,
+> >=20
+> > After merging the powerpc tree, today's linux-next build (powerpc
+> > ppc44x_defconfig) failed like this:
+> >=20
+> > make[3]: *** No rule to make target 'arch/powerpc/boot/treeImage.ebony'=
+, needed by 'arch/powerpc/boot/zImage'.  Stop.
+> > make[2]: *** [/home/sfr/next/next/arch/powerpc/Makefile:236: zImage] Er=
+ror 2
+> > make[1]: *** [/home/sfr/next/next/Makefile:224: __sub-make] Error 2
+> > make: *** [Makefile:224: __sub-make] Error 2
+> >=20
+> > It is not obvious to me what change caused this, so I have just left
+> > the build  broken for today.
+> >  =20
+>=20
+> Bisected to commit e6abfb536d16 ("kbuild: split device tree build rules i=
+nto scripts/Makefile.dtbs")
 
--- Steve
+Thanks for that.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/R2HOHTA/RK=GO7xuxNWT1SO
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmbfDQAACgkQAVBC80lX
+0GybSwf/Qr7o1BZ6Cx4fElpbFJBc7ndD4mwjh9TYk+a0oY38b6Mu/hYOoQQRRbuF
+YOuZ1dlbEchB0snIqXODHhr5Ad3h7KcvIlFqlfFqGgxjRZh7PklffnW63SQ80epk
+5oEnQFwwUW9gTsqOq8BB6uSuFzre9X8zMp8l9HnIDLhfY7cZ3TzMc8j8PbFChOR1
+NVQQOLhfY+r8ahWC3W9aEomm9/O93Uh8lyr3TU7z1auh6gQROzQb2HtDxLUH2kE7
+58zE6TMd41Zss69CyfvM2XM6JWLmCeIUwzHZBCZ1fB/heo52LKVFnoMDBQ9RIp/K
+v/xu9xhHS3ITq072SbIdV18xgI1YVQ==
+=1oA0
+-----END PGP SIGNATURE-----
+
+--Sig_/R2HOHTA/RK=GO7xuxNWT1SO--
 
