@@ -1,92 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-1155-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1156-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DF1970A79
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2024 00:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F0C970B48
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Sep 2024 03:35:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X24fD3vyfz2xfP;
-	Mon,  9 Sep 2024 08:39:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X28Xh6yQ7z2yGF;
+	Mon,  9 Sep 2024 11:35:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.139
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725795373;
-	cv=none; b=nCsAuvkFyrl+dOAElX873gOqF2KWAKCloQ5JquwcWczD5lmSe470W+JefYW0hFDI97Kq2BJH3QcohZP3IW//e0r3X3F79QTr3PVylQmjVlyLaX9Tk5XlFMBSiDNfN8GH2h7yz2izCsgarRn1+sgpLxztM84WgJ6648TNR48cJUx4c318yoODa7BLBPcMi6Pm7W50nYWx6uDD1f8nVqiBZhBMtSrv+3zaU5r0vJpGwvGIohwVnT/xG8+zzex9dcBMgOLH4tYc1w72LgR0C+8oHeix4fq5EgvyLpRYT+aL4xFOUeJxvm3KsNetZhzfFTxxNA6Gr4Tbc7mgZy1DDd1+Fg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1030"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725844404;
+	cv=none; b=QJubteu/kproZq/xI7642yFczLEs3g5hIod+1RzixhlQJBmd/WpCXVCIEvoyBwm5sgJIDewySyySrSRrf5zInTN4D7PipL972I0OriLHoAN3evgAWXAxvPEge2sXYlV2ww66OhT/akVNh+dno0OinjanRuS5PxtqIYr9tio4slvgkn/qO1m3qR+VtH9BKG8rQbC/05AWCprFFVIO6UTcbNEaynpxZCD66UFdsIcSwkNVi3g8zJGqdCKKhOWq2M6rzbOfLb8lbFkdKwtAyoxjfeAjxkBQw79AcNrRAmCkqHcCY5jPORKv2W/0O0mRgrh1ZgZ7QCv8vka/z1P3ZVEsyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725795373; c=relaxed/relaxed;
-	bh=XEUlxjTawgkGJUbuV5995m7w7A2+JrHLDxzMf66rOFU=;
-	h=DKIM-Signature:DKIM-Signature:MIME-Version:Date:From:To:Cc:
-	 Message-Id:In-Reply-To:References:Subject:Content-Type; b=GEclWn2FEl432PScK6bsf6lKt/ths2/lOs0NmdOGzgycmHMn4aSbptBSbmTfZ/7L4UMw+1Ugq5uKuBmMHFArFn+Z30MKYPkWuLqsALuijZzqc4Rln5p+ApFP1cWltyHUhfr99Th804hTRnpWSKdOucsNi5eZkZlt3gF64sBwGwQzBznHu+GbmtGAg+7YqrKXuECEmwZl97jC1NooGBwj7aFahY08GyiFq4c7aCnrDLkpcPnt7MSl8yfIvq6UQ4+XYlhEoILvt8Ru4LHU9HTvCjFbGDUNQ+S4+aa9y5NFbIpQBDGrbGLURJkOwCzXxnYQrMHLtOso+7b1LW8pFkrF/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm2 header.b=1RqsBYWn; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Cdsqc3O9; dkim-atps=neutral; spf=pass (client-ip=103.168.172.139; helo=flow4-smtp.messagingengine.com; envelope-from=jiaxun.yang@flygoat.com; receiver=lists.ozlabs.org) smtp.mailfrom=flygoat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+	t=1725844404; c=relaxed/relaxed;
+	bh=lmqfjRgLjURaheeD9gs5xwILKCqZABC92txMpZWTQPU=;
+	h=DKIM-Signature:MIME-Version:References:In-Reply-To:From:Date:
+	 Message-ID:Subject:To:Cc:Content-Type; b=ZiqR22bBYclBLNLZ/0oajfYC5Y2svsPuEW/AiH3J1H9Jgv+hbemKr73VKopm7SUgl++8lbU1U2LTfxUv//MVYjQa4SynCvjrqjoQVn/4pq3cAMxF5ONbTzJ+HbIWVbxYw/92UNIz8CrTgWAsTrXHQZDHGT0W6uDi45FMoQUDTAuxwufDcglFymcDI33FTWVXYIzcVjXiH0vEoVb+ZxkhQ1SUg9TIuZSkQ62AnMh4u1Cj420CtFO/rcjywhXWl8Cf71rNqZwtTwND9OOpOHjEfL5LvVUujccFnESSkeN0PB0qLRujUYguBix0JR2SjlyNIr3tLOYToQAM5dCntzkeAA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Zqc9i42k; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=andrii.nakryiko@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=flygoat.com header.i=@flygoat.com header.a=rsa-sha256 header.s=fm2 header.b=1RqsBYWn;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Cdsqc3O9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Zqc9i42k;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flygoat.com (client-ip=103.168.172.139; helo=flow4-smtp.messagingengine.com; envelope-from=jiaxun.yang@flygoat.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 574 seconds by postgrey-1.37 at boromir; Sun, 08 Sep 2024 21:36:11 AEST
-Received: from flow4-smtp.messagingengine.com (flow4-smtp.messagingengine.com [103.168.172.139])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=andrii.nakryiko@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X1nwW6Sylz2xHp
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Sep 2024 21:36:11 +1000 (AEST)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailflow.phl.internal (Postfix) with ESMTP id 7520620010F;
-	Sun,  8 Sep 2024 07:26:33 -0400 (EDT)
-Received: from phl-imap-12 ([10.202.2.86])
-  by phl-compute-09.internal (MEProxy); Sun, 08 Sep 2024 07:26:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1725794793;
-	 x=1725801993; bh=XEUlxjTawgkGJUbuV5995m7w7A2+JrHLDxzMf66rOFU=; b=
-	1RqsBYWnwT4FfoKwD8HOSHteOOT9ciPyjmBQqMyvcr6+a49w9ITDGHReCqlKQ2QA
-	w6LflN5n1R32xrU1xq2pIQUhw2YtNSZPREepgs7fFh/JiqskWgBI2q1oyrafoAoX
-	OXv3Od7eW2mwOR/prATgt5rOF/YnKFqclBTHKg1I7fgB/KzYIhNfna0/I1Kkkkix
-	Cw/j32+Ac/ao6JT1NOKot7uC14h4ncceMxC0oG8lad9utiOysG+JubQG2QCO42FN
-	aaB/C7qy6BW/s3Y/XAsoNS4kMzEF8v05z3j3XR2ciLA88taJPIrCv19JmVh4IYaC
-	e/1tkYDVneKs0oixOgexAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725794793; x=
-	1725801993; bh=XEUlxjTawgkGJUbuV5995m7w7A2+JrHLDxzMf66rOFU=; b=C
-	dsqc3O9g9+P1uvJEQHGHAFH+WsHowmjhRVy+cqRNjQG++7x02Zs6YEtS3Z8WE9Q7
-	aU7Iyt8RK34PG634m7GdOLdc65TjyLlQ1FMnVcQDrKU1vzx9ZRt7CF5ubdgXZ5hD
-	LICkHzbR+VU5TW8gyNRRA+8tUrQ1gyDD4AgYcSft7m1DT4wa5iXfOq6TFoHseKlc
-	ZKKjp2fzBKD4C5Vg6N/L2WyPaWaSk/D/xDvTo+QbGyz1c5LwQ598Z1zUm1qYi2TI
-	Yo/X4zL4wxVl7PWyB6MPPrBNBLnV9cGyPZwCbCyxnslwXC+24EdDff0OvF6bpxbo
-	vqgoQPXgllSGln8FDDRng==
-X-ME-Sender: <xms:5ondZv4zT1mzhUMUTQzG10IJfddGHJ0zWNQriMXqeMVE9T6_YZ50HA>
-    <xme:5ondZk5zjak4Ydo9XQEC5_iAquMrOd_atPoKQ96BVfMT2YYDx9vqgHiwWixrtNewg
-    G1Ny6-v0uoneFUa_bQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudeihedgfeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
-    necuhfhrohhmpedflfhirgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfh
-    hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepjeehfeduvddtgffgvdffkeet
-    hefhlefgvdevvdekuefffeekheehgeevhfevteejnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgr
-    thdrtghomhdpnhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopehtshgsohhgvghnugesrghl
-    phhhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuh
-    igrdhorhhgrdhukhdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtghpthht
-    oheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtth
-    hopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghl
-    lhgvrhhmrghnrdhiugdrrghupdhrtghpthhtoheprghnughrvggrshesghgrihhslhgvrh
-    drtghomhdprhgtphhtthhopegthhhrihhsrdhtohhrvghksehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:5ondZmeEGi7Zphdy-TIo3rqIOR8NdWAWLW97nTHVkixQm2hr7zi_lg>
-    <xmx:5ondZgJWFhoAhESpgoV8HqH0WSt1SGQGzDYdrSWWUBYB0eOSXRYfyg>
-    <xmx:5ondZjIv5G778Hr5ut3xkDDBdWEw4LkqLddMC19cVit9ESab8p1oRA>
-    <xmx:5ondZpygjZgzfq9YzCe6vFMmqD7cPQFQugI3PiJsvCSf-xhZMXrz0w>
-    <xmx:6YndZpZiu9HbuzT5oVUkok3yUEmNCf2gNYQHj65nIEn4Qe-iJ9a104zM>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 900D51C20065; Sun,  8 Sep 2024 07:26:30 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X283S0LD5z2xf2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Sep 2024 11:13:22 +1000 (AEST)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-2d86f713557so2483056a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 Sep 2024 18:13:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725844398; x=1726449198; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lmqfjRgLjURaheeD9gs5xwILKCqZABC92txMpZWTQPU=;
+        b=Zqc9i42kNzjR+OIboduxNHgZd7P4/LF9gX6XAItVJDf6DUJkLNlCuCuYgjAVWQ8PMi
+         FTqXS5nzcNik+HbSaVJVXtcJM/1+uVWlBnbq9MS8Flfvh6OEkaoRDOaUxVryfGHWGzUG
+         Bj7pJcexUu8qOt87LHu+aXS45IueryYL9cagaOBLqRRpW17Y2uJKVllVKL0RKzH3IM8I
+         irYZ8HqS3wqfzXlXspglVP2YqpW60EvWPmeol6NqX35YcGS/HGBKXXT9hA54nDUB1UDS
+         oPxawwQRCH7lhdyfj6T1761x8GhTjE2qPk1W86XHdS6bqcAHCeP2d/up1RqZOxWDjZue
+         Y4mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725844398; x=1726449198;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lmqfjRgLjURaheeD9gs5xwILKCqZABC92txMpZWTQPU=;
+        b=T29Y1BYjlR81JiLtUh62fyItbImBZ7w82tcqTdnsxmEW4t/vth4JNgFknOvMCW0XJg
+         sr5GjtaISEjZU2fI/U2Danum6uqe8acOyctuMJsZoMoIC32zE1bzmYn2qa2b3fncdrwk
+         thCfkl5ib9TJp1+NfwfhphqPVn8LeD1DM5icKSFNcfJ+5OsuB01iBcOOyFl4USaWHEv+
+         7gX6gc5svbxWmTvcPf4ht5jSNnhITyuErd/OI49clGhveIa8/+fQZ/lc7yEAUCSPZbyS
+         BmP3aDhkNjcNaM/c0hky5e8PZGeWzenVMIPKv22Qg+n4Xd9smUZBd8LlCVI56eBEzRZ8
+         vRvA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNkjhXUhBJTU1nlk3/YPRoCiuklMFHcTIfMwQ7GjhRBRJlywa5Kgq3i6Z0jYzKgQMU1QuJqr9NYcsa/j4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxQ60Ck+3U9ENayhNpORgcgkMYDvnJcl+9k0Y2ZaTbcv5gj1GeZ
+	kYf65GATRcK4x7A94PensAhFRt3zYV1UCHQktYZNi1MVWw8t/sY6xJ2pole0xH6bjF/eiyKIiFZ
+	uypzt8/JTDsSqWKDS/ZFmY9O5z/8=
+X-Google-Smtp-Source: AGHT+IHZYNXjMZsWum9aNMwAXVkyySi4fNZopOCM8m2K8Y0jUQHJEBS+f4rW/0wV/KFyuaAT4zLceiHtrYtyy+xpawg=
+X-Received: by 2002:a17:90b:204:b0:2c9:9eb3:8477 with SMTP id
+ 98e67ed59e1d1-2dad4efd2b3mr10783978a91.16.1725844397996; Sun, 08 Sep 2024
+ 18:13:17 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,105 +71,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Sun, 08 Sep 2024 12:26:09 +0100
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: "Charlie Jenkins" <charlie@rivosinc.com>,
- "Arnd Bergmann" <arnd@arndb.de>,
- "Richard Henderson" <richard.henderson@linaro.org>,
- "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
- "Matt Turner" <mattst88@gmail.com>, "Vineet Gupta" <vgupta@kernel.org>,
- "Russell King" <linux@armlinux.org.uk>, "Guo Ren" <guoren@kernel.org>,
- "Huacai Chen" <chenhuacai@kernel.org>, "Xuerui Wang" <kernel@xen0n.name>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "James Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Helge Deller" <deller@gmx.de>, "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N Rao" <naveen@kernel.org>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>,
- "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- "Sven Schnelle" <svens@linux.ibm.com>,
- "Yoshinori Sato" <ysato@users.sourceforge.jp>,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- "David S . Miller" <davem@davemloft.net>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Andy Lutomirski" <luto@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Muchun Song" <muchun.song@linux.dev>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Shuah Khan" <shuah@kernel.org>, "Christoph Hellwig" <hch@infradead.org>,
- "Michal Hocko" <mhocko@suse.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- "Chris Torek" <chris.torek@gmail.com>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- loongarch@lists.linux.dev,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-abi-devel@lists.sourceforge.net
-Message-Id: <53384dc9-38c9-4d05-bcde-a3552fbed7ac@app.fastmail.com>
-In-Reply-To: 
- <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
-References: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
-Subject: Re: [PATCH RFC v3 0/2] mm: Introduce ADDR_LIMIT_47BIT personality flag
-Content-Type: text/plain; charset=utf-8
+References: <20240830113131.7597-1-adubey@linux.ibm.com> <172562357215.467568.2172858907419105155.b4-ty@ellerman.id.au>
+ <20240908221053.ad2ed73bf42db9273aac419c@kernel.org>
+In-Reply-To: <20240908221053.ad2ed73bf42db9273aac419c@kernel.org>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Sun, 8 Sep 2024 18:13:06 -0700
+Message-ID: <CAEf4BzbbVRGROtRn8PM4h1493avHMggz1kSDDJcaNZ1USO_eVw@mail.gmail.com>
+Subject: Re: [PATCH v4 RESEND] powerpc: Replace kretprobe code with rethook on powerpc
+To: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Michael Ellerman <patch-notifications@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Abhishek Dubey <adubey@linux.ibm.com>, naveen@kernel.org, hbathini@linux.ibm.com, 
+	mpe@ellerman.id.au, npiggin@gmail.com, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-
-
-=E5=9C=A82024=E5=B9=B49=E6=9C=885=E6=97=A5=E4=B9=9D=E6=9C=88 =E4=B8=8B=E5=
-=8D=8810:15=EF=BC=8CCharlie Jenkins=E5=86=99=E9=81=93=EF=BC=9A
-> Some applications rely on placing data in free bits addresses allocated
-> by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
-> address returned by mmap to be less than the 48-bit address space,
-> unless the hint address uses more than 47 bits (the 48th bit is reserv=
-ed
-> for the kernel address space).
+On Sun, Sep 8, 2024 at 6:11=E2=80=AFAM Masami Hiramatsu <mhiramat@kernel.or=
+g> wrote:
 >
-> The riscv architecture needs a way to similarly restrict the virtual
-> address space. On the riscv port of OpenJDK an error is thrown if
-> attempted to run on the 57-bit address space, called sv57 [1].  golang
-> has a comment that sv57 support is not complete, but there are some
-> workarounds to get it to mostly work [2].
+> On Fri, 06 Sep 2024 21:52:52 +1000
+> Michael Ellerman <patch-notifications@ellerman.id.au> wrote:
 >
-> These applications work on x86 because x86 does an implicit 47-bit
-> restriction of mmap() address that contain a hint address that is less
-> than 48 bits.
+> > On Fri, 30 Aug 2024 07:31:31 -0400, Abhishek Dubey wrote:
+> > > This is an adaptation of commit f3a112c0c40d ("x86,rethook,kprobes:
+> > > Replace kretprobe with rethook on x86") to powerpc.
+> > >
+> > > Rethook follows the existing kretprobe implementation, but separates
+> > > it from kprobes so that it can be used by fprobe (ftrace-based
+> > > function entry/exit probes). As such, this patch also enables fprobe
+> > > to work on powerpc. The only other change compared to the existing
+> > > kretprobe implementation is doing the return address fixup in
+> > > arch_rethook_fixup_return().
+> > >
+> > > [...]
+> >
+> > Applied to powerpc/next.
+> >
+> > [1/1] powerpc: Replace kretprobe code with rethook on powerpc
+> >       https://git.kernel.org/powerpc/c/19f1bc3fb55452739dd3d56cfd06c29e=
+cdbe3e9f
 >
-> Instead of implicitly restricting the address space on riscv (or any
-> current/future architecture), provide a flag to the personality syscall
-> that can be used to ensure an application works in any arbitrary VA
-> space. A similar feature has already been implemented by the personali=
-ty
-> syscall in ADDR_LIMIT_32BIT.
+> Thanks, and sorry for late reply, but I don't have any objection.
 >
-> This flag will also allow seemless compatibility between all
-> architectures, so applications like Go and OpenJDK that use bits in a
-> virtual address can request the exact number of bits they need in a
-> generic way. The flag can be checked inside of vm_unmapped_area() so
-> that this flag does not have to be handled individually by each
-> architecture.=20
 
-Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+It's weird that powerpc and a bunch of other arguably less popular
+architectures have rethook implementation, but ARM64 doesn. Any reason
+why that is the case, Masami?
 
-Tested on MIPS VA 48 system, fixed pointer tagging on mozjs!
-
-Thanks!
-
-[...]
---=20
-- Jiaxun
+> >
+> > cheers
+>
+>
+> --
+> Masami Hiramatsu (Google) <mhiramat@kernel.org>
+>
 
