@@ -1,61 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-1216-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1217-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925899737E8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2024 14:50:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 377629738D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2024 15:42:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X33T25CwTz2xxp;
-	Tue, 10 Sep 2024 22:50:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X34d85X70z2y6G;
+	Tue, 10 Sep 2024 23:42:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.166.48
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725972614;
-	cv=none; b=CNdmqCpDj/BXUUsEgXOwuoRB+00vQR7e7HaGnDGgjcXKeWU+2QCe6eWlhgCg3rY91uZ11/9G+UxaEP/7KkEGNdOKN6aG8Zpv2cMAYsQmWTIsiF1fqqcuHm6ZBJb27A0fWttPsLqcaezOQCBgXHYoWOJvdMzz8qzMEIZTkxsDfxbPeknfQy3G7wbAPgkbsFOi3W3BqkweGdJL9+HPW3knNGV89o17Iy8ebtO8taMP2A65XJUP7WVNCxVeyAQzutSQOd0MlCRgpo97Auz+arVcIFjBIlhUTny1aI/JjZ8WCSsvnXxmT7CocRlm0hnrWzpC/NfXUnAeNfgLl9vIw9QFPQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725975740;
+	cv=none; b=SZqrtu208XCpfpz+NAjZLjfvWk36/nKsoEXuIPX+TxMaxfXUB9JWkUnH81OnDoVsB0fe7lBIVlV706VjRRmaJgffnUg/eXwg20GdlOjaruj1j2+6zda/XX/xQHLORPTAxC/LgxSL8pmVMMI/nK94DWyupYQvSOC7kvu6APWrE+fTRTlAK4qjmxdAArIprYBjlLa5YUrnfToPXGi+lutwSnT5J/ro3Zj6oYMujMB352iv/uoRlIL4at9+FjGsD3McfR8tH/sY85rV4Xh1iokFamne6GE92MykCYQUKsHScVHDPigYQKbX9zdH8vuhJ+APtMAlFDx4saUj1lLQiUrxew==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725972614; c=relaxed/relaxed;
-	bh=FY/G3MXaavbXgZQIcVqEM6/ihxl9V6XepDsCDLrUSCE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U98wi/eNHdsvLcihp9Upy/CxXq9l8TaWd7NdOSGQUuURw0sklARhFRMyFoWb4MfjFRdzyjNpeWLVcMTCYNUtG8H0jhRezfiFMgZycGCy+vto19CW44QbblugZLGZwuz28+Tu9aMTbRhtExwVcWRo9ErQOf5TxV9wfT7s/A2MSMjL4rkx/grzgzHAFD/0eHzI8V2sHrt+vVUbQSlTmx+78HWZ6wNqxctWtJijd4xwxy0/cb+ltMsIoN0Vny3uqRWecjcfaJNq0KZH3BoPmpC9m0kxTZlrGh9GbKz7s18IgfinF+ECoxJK7OXc0sXAMGUL8jd6BhIRCRc6LI/czeNEPQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.166.48; helo=mail-io1-f48.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.48; helo=mail-io1-f48.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+	t=1725975740; c=relaxed/relaxed;
+	bh=wxzBgx3kqKVoI3jlEN02U0lcelhmIv1peZoDYksnKQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lYb0Y9cq38fy1JkyTEVgag79Dubvr5zmUx2Y124EhmZkhvs2sHVFQxWvmU5YDD/cT1rS0yd8PwuDHuRsWz6qHhBplOl3A+b7TbqUUkBJWsWhf2JL0LVb1RMTEiCRUNn9QQUqw3OVes55EIYRpZJaeoDOup9TrHmZyZ1wHsGQNSFJPGFhUQBGRCG5M4d1i/EhOXGIix+O4dwu9BWWPQyaglD1+JMP9maKPPvoJjkVzfUSBQMCGffz2wbJd0VDtHAG6CKH8OSBk0ge4SsWKiHCT2HIgYXN2Sis40JhwgOLvtQOMYMiSlwnqYj69AUJQVHu/SuJU2clNpRF5RZeOY8xvw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Ql4vqC8b; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Ql4vqC8b;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X33T13kQrz2xXW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 22:50:13 +1000 (AEST)
-Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-82a238e0a9cso256318239f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 05:50:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725972609; x=1726577409;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FY/G3MXaavbXgZQIcVqEM6/ihxl9V6XepDsCDLrUSCE=;
-        b=rzRovQDJ4jVBseU6lZyb7qNFibhvCv4mtYGnHwV6IhecoqCeQfuRXynoGWlc5W1naQ
-         /pRS8KioDIKKViEt8keex0VgxavDc0ts8LAnGtY013jg+lyN3PNpSBNbVPnry4/ZSBhl
-         pnZI3jZgPfESYa1bIYQ+rW7KJ18tgJ2H7GVXrw9AcuvMQwaYCIvmbIv2sk6RaQHYBXLW
-         GwaoYt7cvXupWnEtIVYy4ZYsMAGvvOI6n/s3zWoxa1kKLw1ez4+Xg2cW9qNcq+OgopAR
-         kBZsWLtphas1ivJhkV7z5hi0vJUNfKSc2VHv9M1vtxqZHNdrLe/BLH4teOWyfd9R7+6H
-         VlPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUE2vZC9CYYQmqjt5rsz4cfowX9oKq3UXUDgbcJ/gOS+FLSPf8R4GLM5JRvMxyA7T6Hy4NQs/diVdKGqIk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy8fGfBRKC6c2vQE5Wifv8Fzhx2tnKbw+l2PnXngqUdXN3t98L/
-	E38sLHujWFI+hZpINtJSuqcFxYQQ7w5bblFuV38xnoWMlR1CQ72Bb4YenQln
-X-Google-Smtp-Source: AGHT+IFxVAqJunghHsdi38abAOTTzva4mxrLH0kPuMO+pDQ9zQyRQj1FS4hFckb1VcSWRO39ki0mIw==
-X-Received: by 2002:a05:6602:27c2:b0:82a:4490:692a with SMTP id ca18e2360f4ac-82a961a8fe9mr2007443339f.7.1725972609079;
-        Tue, 10 Sep 2024 05:50:09 -0700 (PDT)
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com. [209.85.166.177])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d20b64732asm110029173.8.2024.09.10.05.50.08
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Sep 2024 05:50:08 -0700 (PDT)
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-39f526fd19bso21824975ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 05:50:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXksHQDQF66Pgj8PEPpQHortitb+vmy0kHLpW78KDVrVBEjY2hZ8Jfpz3z5Lwynm8N4Ss2NetfFpQDAs/I=@lists.ozlabs.org
-X-Received: by 2002:a05:690c:39d:b0:6c8:1e30:513f with SMTP id
- 00721157ae682-6db44f37140mr169442817b3.23.1725972199364; Tue, 10 Sep 2024
- 05:43:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X34d414fLz2y69
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 23:42:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wxzBgx3kqKVoI3jlEN02U0lcelhmIv1peZoDYksnKQE=; b=Ql4vqC8boH+fZrAUoC8Aa6Psgt
+	RErCIrXi9ls6VySEg6mIvd5hNzYoDFZSKEE6w4Arli+Aomfx2k3AURv9IZ3Kq1epkDAwAQjQKn9/i
+	bdIHlb6dv6AcFIp5giL3Z44FyGQFNieKtbiAFfOFmYChI7TokimX33nB17CcKexqNaagFgQnuYSUe
+	lW6RaJtU/ATEI1WyTW2IeJ6aPH9c/nH6dQWFaPAnTTAVoVCgam2fDn62Bq8/zTH+MXWY717GziaJv
+	iT+Smj0GKJzb/HC8YKyB5p9m9J/58ZrBG/Mh9dmVp4oeUm7NI6VzeLt0ZcigAvPv6y+dUCpJf672/
+	cPFt8iiQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1so17l-0000000BLwy-1gHR;
+	Tue, 10 Sep 2024 13:41:41 +0000
+Date: Tue, 10 Sep 2024 14:41:41 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: dan.j.williams@intel.com, linux-mm@kvack.org, vishal.l.verma@intel.com,
+	dave.jiang@intel.com, logang@deltatee.com, bhelgaas@google.com,
+	jack@suse.cz, jgg@ziepe.ca, catalin.marinas@arm.com,
+	will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
+	dave.hansen@linux.intel.com, ira.weiny@intel.com, djwong@kernel.org,
+	tytso@mit.edu, linmiaohe@huawei.com, david@redhat.com,
+	peterx@redhat.com, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org,
+	jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH 04/12] mm: Allow compound zone device pages
+Message-ID: <ZuBMlUK-v24-9m3G@casper.infradead.org>
+References: <cover.9f0e45d52f5cff58807831b6b867084d0b14b61c.1725941415.git-series.apopple@nvidia.com>
+ <c7026449473790e2844bb82012216c57047c7639.1725941415.git-series.apopple@nvidia.com>
+ <Zt_PbIADa4baLEBw@casper.infradead.org>
+ <87v7z4gfi7.fsf@nvdebian.thelocal>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,86 +72,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
- <20240905-patches-below_hint_mmap-v3-1-3cd5564efbbb@rivosinc.com>
- <87zfol468z.fsf@mail.lhotse> <Zt9HboH/PmPlRPmH@ghost> <1aca8e4c-1c12-4624-a689-147ff60b75d6@csgroup.eu>
-In-Reply-To: <1aca8e4c-1c12-4624-a689-147ff60b75d6@csgroup.eu>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 10 Sep 2024 14:43:06 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdURgy6NPthHhfOv_h=C_gw2hEpnGQ7iBGoDE=ZazUPRHA@mail.gmail.com>
-Message-ID: <CAMuHMdURgy6NPthHhfOv_h=C_gw2hEpnGQ7iBGoDE=ZazUPRHA@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 1/2] mm: Add personality flag to limit address to
- 47 bits
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Charlie Jenkins <charlie@rivosinc.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Arnd Bergmann <arnd@arndb.de>, Richard Henderson <richard.henderson@linaro.org>, 
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
-	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Shuah Khan <shuah@kernel.org>, 
-	Christoph Hellwig <hch@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	"Kirill A. Shutemov" <kirill@shutemov.name>, Chris Torek <chris.torek@gmail.com>, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-abi-devel@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v7z4gfi7.fsf@nvdebian.thelocal>
 
-Hi Christophe,
-
-On Tue, Sep 10, 2024 at 11:21=E2=80=AFAM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> >>> diff --git a/include/uapi/linux/personality.h b/include/uapi/linux/pe=
-rsonality.h
-> >>> index 49796b7756af..cd3b8c154d9b 100644
-> >>> --- a/include/uapi/linux/personality.h
-> >>> +++ b/include/uapi/linux/personality.h
-> >>> @@ -22,6 +22,7 @@ enum {
-> >>>     WHOLE_SECONDS =3D         0x2000000,
-> >>>     STICKY_TIMEOUTS =3D       0x4000000,
-> >>>     ADDR_LIMIT_3GB =3D        0x8000000,
-> >>> +   ADDR_LIMIT_47BIT =3D      0x10000000,
-> >>>   };
-> >>
-> >> I wonder if ADDR_LIMIT_128T would be clearer?
-> >>
+On Tue, Sep 10, 2024 at 04:57:41PM +1000, Alistair Popple wrote:
+> 
+> Matthew Wilcox <willy@infradead.org> writes:
+> 
+> > On Tue, Sep 10, 2024 at 02:14:29PM +1000, Alistair Popple wrote:
+> >> @@ -337,6 +341,7 @@ struct folio {
+> >>  	/* private: */
+> >>  				};
+> >>  	/* public: */
+> >> +			struct dev_pagemap *pgmap;
 > >
-> > I don't follow, what does 128T represent?
->
-> 128T is 128 Terabytes, that's the maximum size achievable with a 47BIT
-> address, that naming would be more consistant with the ADDR_LIMIT_3GB
-> just above that means a 3 Gigabytes limit.
+> > Shouldn't that be indented by one more tab stop?
+> >
+> > And for ease of reading, perhaps it should be placed either immediately
+> > before or after 'struct list_head lru;'?
+> >
+> >> +++ b/include/linux/mmzone.h
+> >> @@ -1134,6 +1134,12 @@ static inline bool is_zone_device_page(const struct page *page)
+> >>  	return page_zonenum(page) == ZONE_DEVICE;
+> >>  }
+> >>  
+> >> +static inline struct dev_pagemap *page_dev_pagemap(const struct page *page)
+> >> +{
+> >> +	WARN_ON(!is_zone_device_page(page));
+> >> +	return page_folio(page)->pgmap;
+> >> +}
+> >
+> > I haven't read to the end yet, but presumably we'll eventually want:
+> >
+> > static inline struct dev_pagemap *folio_dev_pagemap(const struct folio *folio)
+> > {
+> > 	WARN_ON(!folio_is_zone_device(folio))
+> > 	return folio->pgmap;
+> > }
+> >
+> > and since we'll want it eventually, maybe now is the time to add it,
+> > and make page_dev_pagemap() simply call it?
+> 
+> Sounds reasonable. I had open-coded folio->pgmap where it's needed
+> because at those points it's "obviously" a ZONE_DEVICE folio. Will add
+> it.
 
-Hence ADDR_LIMIT_128TB?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Oh, if it's obvious then just do the dereference.
 
