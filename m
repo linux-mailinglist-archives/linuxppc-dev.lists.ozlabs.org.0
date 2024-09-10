@@ -1,61 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1212-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1213-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B79972A84
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2024 09:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1613A972C2C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2024 10:32:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X2wBj559nz2yVV;
-	Tue, 10 Sep 2024 17:22:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X2xlC4yM2z2yRF;
+	Tue, 10 Sep 2024 18:32:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725952941;
-	cv=none; b=cVURtsBgCGGBJax/KmG5weJ/YlWBg6RlM9f7AYZ8CRnplG3WIgUYWPWGXoOfVf85Km4xZRnvaZ+/XGPYkFZ4QxUaCavw1G59awVsnMs1MxlhM4BL1+HgYiaDORjxFxcnCJl5qCCT0EvS2j9iaXON97rSdsnRJC3sBI9xV+HKxTklRB+cCZXXKTvOnVpDp2HsUfDDPFYu71f4ApI9+d+PxK2ClZQDuXknANxG+VKj7WwodkwJ1xpzJ95kFr6lJn3fBXt/uTFAinb/WL2AFWq/L/eWzUWsL34RL/kRLo8adKHSOpDbrs0cNs2EwTa0+I6EOf1TRQ0LwggyUCWdj89BRw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725957127;
+	cv=none; b=YErNhRwgRgzi0M64CC2GID/OFwSNCDQP8ALtTrm37UFQdlG0WVgfmu4dTsCye9mYpq4ZvKKR7D5Q31+jaPPdnZX8DLxDh4fKEkcfZoXoZ73Ctfh6EtgAGnx7HG9tImT+XMW6MncvPNXNKZw1p+6rdBVL6APfm2eUMVRcCBK3G0He3ahnpKEB0TMeRG8mE7pxpw48HucggjP2jSBslchNcF+BFNs/6KXl3l+93y0mu0dOw9E/jg0BHRJKy24baAIjv9fPOUYaCxsgUHq4pRF9altph0hNMHQd9fHL0SZul4HA8CfgJQebveYYxfPomc2nYBGQlRWwuSlp8vPcTLqeVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725952941; c=relaxed/relaxed;
-	bh=mNSuJkPjaGszk/6QjVxxo1sA0bso5AxEgAYw67M1VHw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=P7Snu9y0DqR1nULIoq4Ejzh0+6+TudKg3s8lOgTLlTXSWZLkvDv5L2oCX9ltIg3511K9kHiL4vs8E+Uahkv/7UvYJW6pOxXWH+gEZFRN+65OhEQiKdHwmzxgQJTUApZ4XaEcSRpHLTKiwoIMj/+/85B4g2SpVYmo0K3w0Rrvetlr6mWJZWuoR8Ps6SdcBMhvjA54sxt7Vy0AAxBhFtpgThCqyx9QKGaQo4jvCqBzfRL1IxenI3mwaKfGEWABsfPzSxW1EHYz6LOO9UDLtWib7T0MF1WWCigcBSsQdqEBkcuXgbpGY++fFEnSoU5AyaBOh7JxxY9UjCYb5D1QefLaTg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RKYF0GC4; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RKYF0GC4;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	t=1725957127; c=relaxed/relaxed;
+	bh=0Cu/821ks5FQF1eaN1UZvUuEkPHBz1+vogQ/2/8m++E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D9y/DCqJnsXJYOoGjEER8SSrqcO3pIkVRztvCojtdgCEpfpIzGUSGxRXHepRzyHaUUXMg5HObFgMzuTG697Ks5iIiXi1q0ixTS7ZL32JnrqftY2hzwHBIDrekYq8LRR1vO2h6D/O64YX91MO0KDlVpTJYFWbZ65WaHhSba5v7ApgDQPbKI3AXnpun/uaOQGuvc2SdJn3l9q9jY0PYls2G2hsbnV06HZPmkrQKnlZXHKC8YJrmNiMvCIdTjSCT/fS55QLxJmREwI98w4GwYXp6Ep43DIs0Lsobe8FP7fu40dDuN3T+Bx1PqUno0wG7aVmN0KMzaVr4vsntXkI0J0btA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X2wBj4xtCz2yS0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 17:22:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1725952941;
-	bh=mNSuJkPjaGszk/6QjVxxo1sA0bso5AxEgAYw67M1VHw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=RKYF0GC40MtcKhbsq3tYIyHqWmB7ck2yxp2cpwDIkBNflR/gjzE7TYy4JbFxD6toO
-	 4D6pWfc6vbTKpP2WO0a+Mi6PvOJ+KYQg6cQgZ+aHz0rnUi32Zja9SNutQ3JqIjN2v2
-	 VVCjaJ5MBRsScVkGgEGbGzi1NUbWxvnRwe+jI2CzIXsKQwaseSYvI+txN1xsUsMh+c
-	 wvDuhQWJ7/yQ4cfhYfKnKLMNKWXpYOHm0MHH2IU1gQ8glsckvHcGKprry3DOzKcMHi
-	 5Mpar3Iz5dODy6ceALimYjqpsZi+X4mhMi4WZjFvnTC+EtYe+oIzOx9XuvN5ojQrIa
-	 CejW5FQW6JY4g==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X2wBj3xcfz4x3p;
-	Tue, 10 Sep 2024 17:22:21 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Narayana Murty N <nnmlinux@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, naveen@kernel.org, vaibhav@linux.ibm.com,
- ganeshgr@linux.ibm.com, sbhat@linux.ibm.com
-Subject: Re: [PATCH v2] powerpc/pseries/eeh: Fix pseries_eeh_err_inject
-In-Reply-To: <66e3558d-a9a6-4caa-9102-7c22a695acda@linux.ibm.com>
-References: <20240823151158.92602-1-nnmlinux@linux.ibm.com>
- <877cbq5k1y.fsf@mail.lhotse>
- <66e3558d-a9a6-4caa-9102-7c22a695acda@linux.ibm.com>
-Date: Tue, 10 Sep 2024 17:22:21 +1000
-Message-ID: <878qw0rn0y.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X2xlC2YvHz2xbC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 18:32:06 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4X2xl203YTz9sPd;
+	Tue, 10 Sep 2024 10:31:58 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id WECQOnNEitDQ; Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4X2xl16Dtlz9rvV;
+	Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C2E588B770;
+	Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id WK6MAQwnSTyr; Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
+Received: from [192.168.232.177] (unknown [192.168.232.177])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 574848B766;
+	Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
+Message-ID: <125adbe2-453e-4b02-a7c5-25f655b431a7@csgroup.eu>
+Date: Tue, 10 Sep 2024 10:31:57 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,101 +56,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: No rule to make target 'arch/powerpc/boot/dtbImage.ps3', needed
+ by 'arch/powerpc/boot/zImage'.
+To: Naresh Kamboju <naresh.kamboju@linaro.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Arnd Bergmann <arnd@arndb.de>,
+ Anders Roxell <anders.roxell@linaro.org>, naveen@kernel.org
+References: <CA+G9fYvG3Tv-Gk6f6oSTuY4=sJWMcF5oRc9Qe1otFvetysm4zw@mail.gmail.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <CA+G9fYvG3Tv-Gk6f6oSTuY4=sJWMcF5oRc9Qe1otFvetysm4zw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Narayana Murty N <nnmlinux@linux.ibm.com> writes:
-> On 05/09/24 6:33 PM, Michael Ellerman wrote:
->> Narayana Murty N <nnmlinux@linux.ibm.com> writes:
->>> VFIO_EEH_PE_INJECT_ERR ioctl is currently failing on pseries
->>> due to missing implementation of err_inject eeh_ops for pseries.
->>> This patch implements pseries_eeh_err_inject in eeh_ops/pseries
->>> eeh_ops. Implements support for injecting MMIO load/store error
->>> for testing from user space.
->>>
->>> The check on PCI error type code is moved to platform code, since
->>> the eeh_pe_inject_err can be allowed to more error types depending
->>> on platform requirement.
->>>
->>> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
->>> ---
->>>
->>> Testing:
->>> ========
->>> vfio-test [1] by Alex Willamson, was forked and updated to add
->>> support inject error on pSeries guest and used to test this
->>> patch[2].
->>>
->>> References:
->>> ===========
->>> [1] https://github.com/awilliam/tests
->>> [2] https://github.com/nnmwebmin/vfio-ppc-tests/tree/vfio-ppc-ex
->>>
->>> ================
->>> Changelog:
->>> V1:https://lore.kernel.org/all/20240822082713.529982-1-nnmlinux@linux.ibm.com/
->>> - Resolved build issues for ppc64|le_defconfig by moving the
->>> pseries_eeh_err_inject() definition outside of the CONFIG_PCI_IOV
->>> code block.
->>> - New eeh_pe_inject_mmio_error wrapper function added to avoid
->>> CONFIG_EEH is not set.
->>   
->> I don't see why that's necessary?
->>
->> It's only called from eeh_pseries.c, which is only built for
->> PPC_PSERIES, and when PPC_PSERIES=y, EEH is always enabled.
->>
->>> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
->>> index 91a9fd53254f..8da6b047a4fe 100644
->>> --- a/arch/powerpc/include/asm/eeh.h
->>> +++ b/arch/powerpc/include/asm/eeh.h
->>> @@ -308,7 +308,7 @@ int eeh_pe_reset(struct eeh_pe *pe, int option, bool include_passed);
->>>   int eeh_pe_configure(struct eeh_pe *pe);
->>>   int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->>>   		      unsigned long addr, unsigned long mask);
->>> -
->>> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev);
->>>   /**
->>>    * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.
->>>    *
->>> @@ -338,6 +338,10 @@ static inline int eeh_check_failure(const volatile void __iomem *token)
->>>   	return 0;
->>>   }
->>>   
->>> +static inline int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
->>> +{
->>> +	return -ENXIO;
->>> +}
->>>   #define eeh_dev_check_failure(x) (0)
->>>   
->>>   static inline void eeh_addr_cache_init(void) { }
->>> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
->>> index d03f17987fca..49ab11a287a3 100644
->>> --- a/arch/powerpc/kernel/eeh.c
->>> +++ b/arch/powerpc/kernel/eeh.c
->>> @@ -1537,10 +1537,6 @@ int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->>>   	if (!eeh_ops || !eeh_ops->err_inject)
->>>   		return -ENOENT;
->>>   
->>> -	/* Check on PCI error type */
->>> -	if (type != EEH_ERR_TYPE_32 && type != EEH_ERR_TYPE_64)
->>> -		return -EINVAL;
->>> -
->>   
->> The change log should mention why it's OK to remove these checks. You
->> add the same checks in pseries_eeh_err_inject(), but what about
->> pnv_eeh_err_inject() ?
->>
->> It is OK AFAICS, because pnv_eeh_err_inject() already contains
->> equivalent checks, but you should spell that out.
->>
->> cheers
->
-> yes mpe. I do agree, your comments are addressed in V3 posted
->
-> here 
-> https://lore.kernel.org/all/20240909140220.529333-1-nnmlinux@linux.ibm.com/
 
-Thanks.
 
-cheers
+Le 09/09/2024 à 21:25, Naresh Kamboju a écrit :
+> The Powerpc cell_defconfig and mpc83xx_defconfig builds failed on the
+> Linux next-20240909 due to following build warnings / errors with gcc-13 and
+> clang-19.
+> 
+> First seen on next-20240909
+>    Good: next-20240906
+>    BAD:  next-20240909
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> build log:
+> --------
+> make[3]: *** No rule to make target 'arch/powerpc/boot/dtbImage.ps3',
+> needed by 'arch/powerpc/boot/zImage'.
+> make[3]: Target 'arch/powerpc/boot/zImage' not remade because of errors.
+> 
+
+See 
+https://lore.kernel.org/linuxppc-dev/b154ab25-70f6-46cd-99db-ccfbe3e13fb7@csgroup.eu/T/#m7cc489243ce5a17af97ff8ec7cc15c663565b6fd
+
+Christophe
+
+
+> 
+> Build Log links,
+> --------
+>   - https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fqa-reports.linaro.org%2Flkft%2Flinux-next-master%2Fbuild%2Fnext-20240909%2Ftestrun%2F25078675%2Fsuite%2Fbuild%2Ftest%2Fclang-19-cell_defconfig%2Flog&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152486474122%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=k4QsFvSrqrtJkwe5i8qvTetu941J%2FiokAMEDIy1hgO4%3D&reserved=0
+> 
+> Build failed comparison:
+>   - https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fqa-reports.linaro.org%2Flkft%2Flinux-next-master%2Fbuild%2Fnext-20240909%2Ftestrun%2F25078675%2Fsuite%2Fbuild%2Ftest%2Fclang-19-cell_defconfig%2Fhistory%2F&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152486482765%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=hZJF6oi09QQnOcjWlPkn5YQw3L33uG5vobqZX%2FJzW%2Fc%3D&reserved=0
+> 
+> metadata:
+> ----
+>    git describe: next-20240909
+>    git repo: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgitlab.com%2FLinaro%2Flkft%2Fmirrors%2Fnext%2Flinux-next&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152486487967%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=FIZK7ic0Dwbnt8zclmji5w2mTS0konX%2Bh6izCQ2QoqQ%3D&reserved=0
+>    git sha: 100cc857359b5d731407d1038f7e76cd0e871d94
+>    kernel config:
+> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstorage.tuxsuite.com%2Fpublic%2Flinaro%2Flkft%2Fbuilds%2F2lpXzh3wwbuC6nYpMV2nPNA0IpF%2Fconfig&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152487540129%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=KPpD9d%2FM2gxLqjaVIsN26jwolSkzetd%2B0VGVMaV4Mwo%3D&reserved=0
+>    build url: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstorage.tuxsuite.com%2Fpublic%2Flinaro%2Flkft%2Fbuilds%2F2lpXzh3wwbuC6nYpMV2nPNA0IpF%2F&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152487548564%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=dS0BYsDDrcnW7fF2KeUZFBvFKnMKLz36nLWt%2BmeqIIQ%3D&reserved=0
+>    toolchain: gcc-13, clang-19 and clang-nightly
+>    config: cell_defconfig and mpc83xx_defconfig
+> 
+> Steps to reproduce:
+> ---------
+>   - # tuxmake --runtime podman --target-arch powerpc --toolchain
+> clang-19 --kconfig cell_defconfig LLVM_IAS=0
+>   - # tuxmake --runtime podman --target-arch powerpc --toolchain gcc-13
+> --kconfig mpc83xx_defconfig
+> 
+> 
+> --
+> Linaro LKFT
+> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flkft.linaro.org%2F&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152487553541%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=Pzu3tW7FdI%2F7FYj%2BUSz%2FTfENPPGRZUEf%2FsXcaSpPXB8%3D&reserved=0
+> 
 
