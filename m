@@ -1,52 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-1213-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1214-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1613A972C2C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2024 10:32:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE37972D29
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Sep 2024 11:14:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X2xlC4yM2z2yRF;
-	Tue, 10 Sep 2024 18:32:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X2yh41p4kz2yRd;
+	Tue, 10 Sep 2024 19:14:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725957127;
-	cv=none; b=YErNhRwgRgzi0M64CC2GID/OFwSNCDQP8ALtTrm37UFQdlG0WVgfmu4dTsCye9mYpq4ZvKKR7D5Q31+jaPPdnZX8DLxDh4fKEkcfZoXoZ73Ctfh6EtgAGnx7HG9tImT+XMW6MncvPNXNKZw1p+6rdBVL6APfm2eUMVRcCBK3G0He3ahnpKEB0TMeRG8mE7pxpw48HucggjP2jSBslchNcF+BFNs/6KXl3l+93y0mu0dOw9E/jg0BHRJKy24baAIjv9fPOUYaCxsgUHq4pRF9altph0hNMHQd9fHL0SZul4HA8CfgJQebveYYxfPomc2nYBGQlRWwuSlp8vPcTLqeVA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.138
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1725959668;
+	cv=none; b=iXEnzEmxvcoLXOV3NNfPdvDG065c9UeWC2kJPwDNpgu4xwr36xiDWDmrUy96yh2T8mUDzujxlDuoRo6m8p/XE07fa84BQrlLCderBvfE8E03g/+v2NQccNUSuumA+l4t9fMztXwUL3+OkESEcqpCAI8FZB+r1hj4ABeOA4yVfw52PIxy/ghU8gfZoO67FtfabGbzx7gbPgWoRbHFOcP175iO5dYlGkiggPkcuu2aJ7iLIguzIWGMZqT8YzJkAov291WatBlHB03DSKoRHxo8u9JA7IkQkhyKC/x8tuSquLNhMf9axjPJA4KcbyPj6DkQmPqok72CDZHWZJSggfafHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1725957127; c=relaxed/relaxed;
-	bh=0Cu/821ks5FQF1eaN1UZvUuEkPHBz1+vogQ/2/8m++E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D9y/DCqJnsXJYOoGjEER8SSrqcO3pIkVRztvCojtdgCEpfpIzGUSGxRXHepRzyHaUUXMg5HObFgMzuTG697Ks5iIiXi1q0ixTS7ZL32JnrqftY2hzwHBIDrekYq8LRR1vO2h6D/O64YX91MO0KDlVpTJYFWbZ65WaHhSba5v7ApgDQPbKI3AXnpun/uaOQGuvc2SdJn3l9q9jY0PYls2G2hsbnV06HZPmkrQKnlZXHKC8YJrmNiMvCIdTjSCT/fS55QLxJmREwI98w4GwYXp6Ep43DIs0Lsobe8FP7fu40dDuN3T+Bx1PqUno0wG7aVmN0KMzaVr4vsntXkI0J0btA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1725959668; c=relaxed/relaxed;
+	bh=0bAs8GYS7XnporkOcRS5T4HRjTKpKe/QReainQI38Rk=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=n3q2OUlwWWoq7dSK6d2lx6aQTA2y7/odVwEgxYlq0nLFJBWm9A6/3CI+LtAcykYg977+DM6axFPJHKp6EcKyD5g4Lapc7ns6WqACoEYb9l74oluqzdTP9YpnbECDkClmqvBQ8Zd+1GzSmcSl/LXVgMTvEdBO1VN2MWAkhP2wgdG/dRMAxdHOHoDPZ5staMfcJdlfOX/pw3Hhgp3u3Rj4qyuPKllAJRG52kbZGx5+Z9ETAwqKJMlwvfhz8Vf7gt46gjrBTSAyeXYjiUDAQ0HqCNQ1h5sW1zWIwdBf2mFLtNzrCr+bQysHXt3OMaiVuuoo7+9JJveIVO1fHzrZ15JHQg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=gDz+28Ep; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=rWap/EB3; dkim-atps=neutral; spf=pass (client-ip=103.168.172.138; helo=flow3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=gDz+28Ep;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=rWap/EB3;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.138; helo=flow3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from flow3-smtp.messagingengine.com (flow3-smtp.messagingengine.com [103.168.172.138])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X2xlC2YvHz2xbC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 18:32:06 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4X2xl203YTz9sPd;
-	Tue, 10 Sep 2024 10:31:58 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id WECQOnNEitDQ; Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4X2xl16Dtlz9rvV;
-	Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C2E588B770;
-	Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id WK6MAQwnSTyr; Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
-Received: from [192.168.232.177] (unknown [192.168.232.177])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 574848B766;
-	Tue, 10 Sep 2024 10:31:57 +0200 (CEST)
-Message-ID: <125adbe2-453e-4b02-a7c5-25f655b431a7@csgroup.eu>
-Date: Tue, 10 Sep 2024 10:31:57 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X2yh13FXfz2yRZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Sep 2024 19:14:24 +1000 (AEST)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailflow.phl.internal (Postfix) with ESMTP id 72BC5200351;
+	Tue, 10 Sep 2024 05:14:21 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Tue, 10 Sep 2024 05:14:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1725959661;
+	 x=1725966861; bh=0bAs8GYS7XnporkOcRS5T4HRjTKpKe/QReainQI38Rk=; b=
+	gDz+28EpjBqcJxXIpE07fsC74DAIbGxqo+wO/HvSw2cBjD0C4R6ZpUDaWI8whYgB
+	Uou5tC2Ba2wAK+EqftPNq2n28JERnlqyobUzsSO7FOGcG9ZiHwpfeJASHNlk/d4X
+	5WiSttpIB5Eir9pgs0kvpEK0oEXGwRcZGRDrgUdP8vFhxfezO3ZRebg6KxQY8DB+
+	Uhf5KhhI6mL50jLO0daKWiHfpjmqkQas8EX/yg3llN0VUKg/Stthb0rDw6zcxqPY
+	hlQQwIDg5uokWvMGZ5nIpVqoej/xmK+OuzWbc01t+AIEgASbJhDVMG1M0JMEeFDW
+	72pPfdCEMdc8thjma5PNPQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725959661; x=
+	1725966861; bh=0bAs8GYS7XnporkOcRS5T4HRjTKpKe/QReainQI38Rk=; b=r
+	Wap/EB3CA7vwicHILWXH6WMegg0FjR1Y0PbkSlHz6bdN930Oik8Wzk0mX3oX3Dcf
+	mgJex09u2n+JG/FORnOd62+EaW184geOkclWYSUlgQn8nU841vhkp+eh4R+ZLYk7
+	DrXAGb6hkGTp5ublWeGD9m4c/xVj/Mak9mwuU7MvtygsYDeDF+kcsBRlQbRYQPY8
+	fUF+xTxPfulNUbAFbGAzpDkalWbBpwaOe3FDeFX0A25/64tjJrpUw5GkeufjRD7V
+	NNqgO+ua3k+FdgEB7he2co98A/HrB++MPt6MD+fMHIqTQJpQcTBj2Aey7tX4yR1y
+	Qda9OdbsMwbeGeP9pgQAw==
+X-ME-Sender: <xms:6w3gZtSNigwJbM4kq3Ho3lz6Oyxs7tmCSsiSxXHZ1gWG3xLgjltsRg>
+    <xme:6w3gZmz30LEeOyALW1olDfDteOenIRlWDAxhJJLR8EqdfxeQSGx_mOP6lWh8qZwIG
+    mGAzeEUWvS9rB01ltA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudeiledguddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohephedt
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprh
+    gtphhtthhopehtshgsohhgvghnugesrghlphhhrgdrfhhrrghnkhgvnhdruggvpdhrtghp
+    thhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegthh
+    hrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtohepuggr
+    vhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehmphgvsegvlhhlvghrmh
+    grnhdrihgurdgruhdprhgtphhtthhopegrnhgurhgvrghssehgrghishhlvghrrdgtohhm
+    pdhrtghpthhtoheptghhrhhishdrthhorhgvkhesghhmrghilhdrtghomhdprhgtphhtth
+    hopehmrghtthhsthekkeesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:6w3gZi25NCuMYsHvF4JPJ5-Hsx2gk93DZNkK5pJU4nxaCreHeSGRXw>
+    <xmx:6w3gZlCyMMRfwGGvEKVgxWZ3M-1Ey3cenNfMfzJzIgKOfMHnT6AIrA>
+    <xmx:6w3gZmiQ80aB7sHrPICA36rJejIl4DPGoBMWO4CM1C6uPQJRJXf-MA>
+    <xmx:6w3gZpqIONrFxQiuso8dhcouvVRtfzvSTIDT18bekI9WMbAHfJmS_g>
+    <xmx:7Q3gZqx1eEmFAKZo4yINUBS6CDSl30x6UdV96JYbm1dLqVF0ba9ZAB3I>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 02253222006F; Tue, 10 Sep 2024 05:14:18 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,76 +95,144 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: No rule to make target 'arch/powerpc/boot/dtbImage.ps3', needed
- by 'arch/powerpc/boot/zImage'.
-To: Naresh Kamboju <naresh.kamboju@linaro.org>,
- open list <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Arnd Bergmann <arnd@arndb.de>,
- Anders Roxell <anders.roxell@linaro.org>, naveen@kernel.org
-References: <CA+G9fYvG3Tv-Gk6f6oSTuY4=sJWMcF5oRc9Qe1otFvetysm4zw@mail.gmail.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <CA+G9fYvG3Tv-Gk6f6oSTuY4=sJWMcF5oRc9Qe1otFvetysm4zw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Date: Tue, 10 Sep 2024 09:13:33 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Charlie Jenkins" <charlie@rivosinc.com>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
+Cc: "Richard Henderson" <richard.henderson@linaro.org>,
+ "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
+ "Matt Turner" <mattst88@gmail.com>, "Vineet Gupta" <vgupta@kernel.org>,
+ "Russell King" <linux@armlinux.org.uk>, guoren <guoren@kernel.org>,
+ "Huacai Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Helge Deller" <deller@gmx.de>, "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Naveen N Rao" <naveen@kernel.org>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>,
+ "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>,
+ "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+ "Rich Felker" <dalias@libc.org>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Andy Lutomirski" <luto@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Muchun Song" <muchun.song@linux.dev>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, shuah <shuah@kernel.org>,
+ "Christoph Hellwig" <hch@infradead.org>,
+ "Michal Hocko" <mhocko@suse.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ "Chris Torek" <chris.torek@gmail.com>,
+ Linux-Arch <linux-arch@vger.kernel.org>, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-abi-devel@lists.sourceforge.net
+Message-Id: <89d21669-8daa-4225-b6d2-33d439ebd746@app.fastmail.com>
+In-Reply-To: <Zt+DGHZrHFxfq7xo@ghost>
+References: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
+ <20240905-patches-below_hint_mmap-v3-1-3cd5564efbbb@rivosinc.com>
+ <9fc4746b-8e9d-4a75-b966-e0906187e6b7@app.fastmail.com>
+ <58f39d58-579e-4dd3-8084-baebf86f1ae0@lucifer.local>
+ <7be08ea9-f343-42da-805f-e5f0d61bde26@app.fastmail.com>
+ <016c7857-9ea8-4333-96e6-3ae3870f375f@lucifer.local> <Zt+DGHZrHFxfq7xo@ghost>
+Subject: Re: [PATCH RFC v3 1/2] mm: Add personality flag to limit address to 47 bits
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
+On Mon, Sep 9, 2024, at 23:22, Charlie Jenkins wrote:
+> On Fri, Sep 06, 2024 at 10:52:34AM +0100, Lorenzo Stoakes wrote:
+>> On Fri, Sep 06, 2024 at 09:14:08AM GMT, Arnd Bergmann wrote:
+>> The intent is to optionally be able to run a process that keeps higher bits
+>> free for tagging and to be sure no memory mapping in the process will
+>> clobber these (correct me if I'm wrong Charlie! :)
+>> 
+>> So you really wouldn't want this if you are using tagged pointers, you'd
+>> want to be sure literally nothing touches the higher bits.
 
+My understanding was that the purpose of the existing design
+is to allow applications to ask for a high address without having
+to resort to the complexity of MAP_FIXED.
 
-Le 09/09/2024 à 21:25, Naresh Kamboju a écrit :
-> The Powerpc cell_defconfig and mpc83xx_defconfig builds failed on the
-> Linux next-20240909 due to following build warnings / errors with gcc-13 and
-> clang-19.
-> 
-> First seen on next-20240909
->    Good: next-20240906
->    BAD:  next-20240909
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> build log:
-> --------
-> make[3]: *** No rule to make target 'arch/powerpc/boot/dtbImage.ps3',
-> needed by 'arch/powerpc/boot/zImage'.
-> make[3]: Target 'arch/powerpc/boot/zImage' not remade because of errors.
-> 
+In particular, I'm sure there is precedent for applications that
+want both tagged pointers (for most mappings) and untagged pointers
+(for large mappings). With a per-mm_struct or per-task_struct
+setting you can't do that.
 
-See 
-https://lore.kernel.org/linuxppc-dev/b154ab25-70f6-46cd-99db-ccfbe3e13fb7@csgroup.eu/T/#m7cc489243ce5a17af97ff8ec7cc15c663565b6fd
+> Various architectures handle the hint address differently, but it
+> appears that the only case across any architecture where an address
+> above 47 bits will be returned is if the application had a hint address
+> with a value greater than 47 bits and was using the MAP_FIXED flag.
+> MAP_FIXED bypasses all other checks so I was assuming that it would be
+> logical for MAP_FIXED to bypass this as well. If MAP_FIXED is not set,
+> then the intent is for no hint address to cause a value greater than 47
+> bits to be returned.
 
-Christophe
+I don't think the MAP_FIXED case is that interesting here because
+it has to work in both fixed and non-fixed mappings.
 
+>> This would be more consistent vs. other arches.
+>
+> Yes riscv is an outlier here. The reason I am pushing for something like
+> a flag to restrict the address space rather than setting it to be the
+> default is it seems like if applications are relying on upper bits to be
+> free, then they should be explicitly asking the kernel to keep them free
+> rather than assuming them to be free.
 
-> 
-> Build Log links,
-> --------
->   - https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fqa-reports.linaro.org%2Flkft%2Flinux-next-master%2Fbuild%2Fnext-20240909%2Ftestrun%2F25078675%2Fsuite%2Fbuild%2Ftest%2Fclang-19-cell_defconfig%2Flog&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152486474122%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=k4QsFvSrqrtJkwe5i8qvTetu941J%2FiokAMEDIy1hgO4%3D&reserved=0
-> 
-> Build failed comparison:
->   - https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fqa-reports.linaro.org%2Flkft%2Flinux-next-master%2Fbuild%2Fnext-20240909%2Ftestrun%2F25078675%2Fsuite%2Fbuild%2Ftest%2Fclang-19-cell_defconfig%2Fhistory%2F&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152486482765%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=hZJF6oi09QQnOcjWlPkn5YQw3L33uG5vobqZX%2FJzW%2Fc%3D&reserved=0
-> 
-> metadata:
-> ----
->    git describe: next-20240909
->    git repo: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgitlab.com%2FLinaro%2Flkft%2Fmirrors%2Fnext%2Flinux-next&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152486487967%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=FIZK7ic0Dwbnt8zclmji5w2mTS0konX%2Bh6izCQ2QoqQ%3D&reserved=0
->    git sha: 100cc857359b5d731407d1038f7e76cd0e871d94
->    kernel config:
-> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstorage.tuxsuite.com%2Fpublic%2Flinaro%2Flkft%2Fbuilds%2F2lpXzh3wwbuC6nYpMV2nPNA0IpF%2Fconfig&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152487540129%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=KPpD9d%2FM2gxLqjaVIsN26jwolSkzetd%2B0VGVMaV4Mwo%3D&reserved=0
->    build url: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstorage.tuxsuite.com%2Fpublic%2Flinaro%2Flkft%2Fbuilds%2F2lpXzh3wwbuC6nYpMV2nPNA0IpF%2F&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152487548564%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=dS0BYsDDrcnW7fF2KeUZFBvFKnMKLz36nLWt%2BmeqIIQ%3D&reserved=0
->    toolchain: gcc-13, clang-19 and clang-nightly
->    config: cell_defconfig and mpc83xx_defconfig
-> 
-> Steps to reproduce:
-> ---------
->   - # tuxmake --runtime podman --target-arch powerpc --toolchain
-> clang-19 --kconfig cell_defconfig LLVM_IAS=0
->   - # tuxmake --runtime podman --target-arch powerpc --toolchain gcc-13
-> --kconfig mpc83xx_defconfig
-> 
-> 
-> --
-> Linaro LKFT
-> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flkft.linaro.org%2F&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Cbea1fddc11ef4588817208dcd118fdb1%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638615152487553541%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=Pzu3tW7FdI%2F7FYj%2BUSz%2FTfENPPGRZUEf%2FsXcaSpPXB8%3D&reserved=0
-> 
+Let's see what the other architectures do and then come up with
+a way that fixes the pointer tagging case first on those that are
+broken. We can see if there needs to be an extra flag after that.
+Here is what I found:
+
+- x86_64 uses DEFAULT_MAP_WINDOW of BIT(47), uses a 57 bit
+  address space when an addr hint is passed.
+- arm64 uses DEFAULT_MAP_WINDOW of BIT(47) or BIT(48), returns
+  higher 52-bit addresses when either a hint is passed or
+  CONFIG_EXPERT and CONFIG_ARM64_FORCE_52BIT is set (this
+  is a debugging option)
+- ppc64 uses a DEFAULT_MAP_WINDOW of BIT(47) or BIT(48),
+  returns 52 bit address when an addr hint is passed
+- riscv uses a DEFAULT_MAP_WINDOW of BIT(47) but only uses
+  it for allocating the stack below, ignoring it for normal
+  mappings
+- s390 has no DEFAULT_MAP_WINDOW but tried to allocate in
+  the current number of pgtable levels and only upgrades to
+  the next level (31, 42, 53, 64 bits) if a hint is passed or
+  the current level is exhausted.
+- loongarch64 has no DEFAULT_MAP_WINDOW, and a default VA
+  space of 47 bits (16K pages, 3 levels), but can support
+  a 55 bit space (64K pages, 3 levels).
+- sparc has no DEFAULT_MAP_WINDOW and up to 52 bit VA space.
+  It may allocate both positive and negative addresses in
+  there. (?)
+- mips64, parisc64 and alpha have no DEFAULT_MAP_WINDOW and
+  at most 48, 41 or 39 address bits, respectively.
+
+I would suggest these changes:
+
+- make riscv enforce DEFAULT_MAP_WINDOW like x86_64, arm64
+   and ppc64, leave it at 47
+
+- add DEFAULT_MAP_WINDOW on loongarch64 (47/48 bits
+  based on page size), sparc (48 bits) and s390 (unsure if
+  42, 53, 47 or 48 bits)
+
+- leave the rest unchanged.
+
+       Arnd
 
