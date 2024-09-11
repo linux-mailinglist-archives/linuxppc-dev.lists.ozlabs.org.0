@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-1258-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1259-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF2597576F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2024 17:46:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 415B0975941
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2024 19:24:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X3lKW0PHzz2xYk;
-	Thu, 12 Sep 2024 01:46:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X3nVx4j5lz2ydQ;
+	Thu, 12 Sep 2024 03:24:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.8
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726069567;
-	cv=none; b=RbLVR7S7wWxb6hcR+zLLBTQDB/MPBp+X2D/5157YeysxlkdbOx1yG6vLkHtJlaTf7Alho8koLRPyI8Qanee2Bij3jkzEGbQzd3wQM93LTm31fcx/2X+nuZyaXxYR8P+AQN0Sf1S3V4bBh51vUZ1FHNq6fsRQC3Bq2QvGcKR+AYXB9X1aaoA9CFGO1kREDgIDn35HkUFcKhaxDjidxVLiJsR8lKbOylkfYScdZq0xivtPQcrxMPxmdUbBmgMYaDhfmnFlAnPDfkcRRMoA7nsnYQTXn2nUfq/8dtPwTMlCD7/Voy3rwqvg5TVQOIY5n9t5wxFoAXUw+HpFV3EzL+jxEg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b4a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726075465;
+	cv=none; b=RVMConXz8lRr6f7Ik2KwMdfQ7pXuQH7CDrVtzUfSd2QCqT8pwClgz8nJiqBlzPRqYS1JokwNoZ6ZxQ1uEM3krCtDVA9ZKOCf/8gbUuC7Iet3EGQ97AEud2zczkaf+EeWMnW1W5ZR3dEWkpgfVmXcCozwxpxiWR8wfS5hv4WJt7DnYYXEJemugqnKwiZztChJlFBSswbU0bjHo38zcVRbb7Tlx6VX9ZozW9uftPmyGpADGBfmIGZKkJRD0um8mT7oxdbEHxCHz7EYmLlvt/Zo0zXZ9shyoORHvnXjluDt/C1U2zYZzUw3jhr3olOSMVHQvL2slrb1dRPOW0ozLAgNsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726069567; c=relaxed/relaxed;
-	bh=y/HdZIKg6zXEXoru7pMkPljaUZr2uTr33MtP9qTCtJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=HMl+t/DjwpHK7CErtunleLTlRzhV0yq7cVMvLB1z6uhy3RYawefrVVF+fnLZ/S8DCDsNFVF/K9igYAPqpPCqJdoUpZLm5Mt2BED0HOmEIYx1U3XyiW8rLZ3VrzGWMTyrXEAppSh5eoz5LvuE3rE8hOWkENe/bM2xhSbKqbIGlQ2MOZRkbMQI7q81WZLJdVyco326+CRXeXA/lGiWpsN0ZWqHgMQbt/wTOH4xHYBOrrRDO8XbQJ2lYrSpC9y7KifW45Hv9uQALZqVi6bFAz9syGrT9UmL0ffylGNKQlwkqG75qdUxxJmqladgMPmSqWKmVc5G/Mi+pa8RSnNPReHM4A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kXKg/G5+; dkim-atps=neutral; spf=pass (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1726075465; c=relaxed/relaxed;
+	bh=SaSesydasxzfbVhVncU6hEY4UY7i9QKYOocGcFq6lVw=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=kCipv/H7oEy6YmMnVb1nS7Zva4lJm6V9oSczo/QDKrNn8ghJKCSLLgDsOPXOvsGvedk6y1A/XgfRqLY92p7FlDaRCiw5OCjGmstG7KCQuQrD/0haDCsNMM/Z0a0Euug85XHzoiio0qxtVdi0oyCmZFMORX5MsGdhgTaEVXmh/d311Ow9MTnmtTE2Zc6c1y7yi87l082Id/rLp6YoQ+FzW+tBxIhfc5pf2itzoIEAW7DYbuYJOXbb1vq1KiyJBY/hH/brp9JoXSc2oFGzyrZkV0lBj2oht8YfRFf5ABKpUCLjtowRw+C0fc8Z4plV+ckbQZtbgINYB2TS95fendp8UQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dWddOyuq; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3qdlhzgskdkomyvdyxvogscqyyqvo.mywvsxehzzm-nofvscdc.yjvklc.ybq@flex--coltonlewis.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--coltonlewis.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kXKg/G5+;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dWddOyuq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--coltonlewis.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3qdlhzgskdkomyvdyxvogscqyyqvo.mywvsxehzzm-nofvscdc.yjvklc.ybq@flex--coltonlewis.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X3lKV2hrgz2xYY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2024 01:46:05 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726069566; x=1757605566;
-  h=date:from:to:cc:subject:message-id;
-  bh=bSb2qu8urxj0O/Vbpw0Fmt94123VlVvNpZ5PSpeOv8U=;
-  b=kXKg/G5+rcWu530TB2/9aDcjSuo9u7LfHydZG6/9WeqQL3bR+D4h+Oyv
-   rzKMxh4P3a70nQIwW4HE1rzhgOPL2pAR75aSwS9cpXl9NOWQu1JiKBg11
-   MG/dNNVFvpIkz771KUq6wlp3evcD0KIsgb6DZbrHVS6+4mWeTkffKKRJk
-   +2WkIc3Jaw06G13b52Hcfn5YEQ3X3RlbQUY29dRqDaIv55nnTHqeZ256F
-   noTomRSvL6rll8067xClHZk8fNE+RvB+abEijwdSGvpHu2lHpGJGvL6Kd
-   xdShLX/gEmkZsy+CurG8KAtw/+b1ABOJxlS8ataN4sgfIuVYSEaTVn3Lk
-   w==;
-X-CSE-ConnectionGUID: WB7KT2enRwi0f6SkaRMPnA==
-X-CSE-MsgGUID: I+1ew6GxQ4CleD/AyJ+etw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="42393672"
-X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; 
-   d="scan'208";a="42393672"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 08:46:02 -0700
-X-CSE-ConnectionGUID: pVU32R8GTluov0IiRCPLLQ==
-X-CSE-MsgGUID: /0Pai8bFSTO167kQ4zTRmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; 
-   d="scan'208";a="72186083"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 11 Sep 2024 08:46:01 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1soPXa-0003mQ-2e;
-	Wed, 11 Sep 2024 15:45:58 +0000
-Date: Wed, 11 Sep 2024 23:45:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- d79fcc2d4d36f96aa4ed9959337788be86594fd8
-Message-ID: <202409112303.hvu6hUNb-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X3nVw4fB1z2yPD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2024 03:24:22 +1000 (AEST)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-e1ce98dcafaso308594276.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2024 10:24:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726075458; x=1726680258; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SaSesydasxzfbVhVncU6hEY4UY7i9QKYOocGcFq6lVw=;
+        b=dWddOyuqYHSJW9ckCkEhniVmn/7bm+neLVc9Xd0Sq2Csr9KJqJ+KVAyjHa/qpmQZDy
+         VXteySCSpmeSfY9U8OcrkHplhcEfja6C+Erb8k7Bgv/sZzZT9Qm8aLbXlYK1X6N/Tlu+
+         xvNkpyqvEkOpZydt04252jqDPGaXj4k9/VplvqkWS7AN4bLu73n3/HIjgyrobqW67YqI
+         Kbf5bsBBC1FMrAseS/FbsAWsQAjkhvAjdCH+fQY/qzMTR1DEeeMNM/YZAttRq69epkal
+         kd4qQVpCwW82vqirBvu8PK9aHP0wJ+cMXDA2NIL7fanKTMitSLgYZ+3tBKvm9LoBhXrJ
+         z7sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726075458; x=1726680258;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SaSesydasxzfbVhVncU6hEY4UY7i9QKYOocGcFq6lVw=;
+        b=CKceJg5++kdby7bewf/4C3+339TIe2JyS3taIHSNlSpIrwfsGh2E/2zSUTt0h1ZSLY
+         4LhmqciGJJ3eCbPE4qV8SmkINXHxpCseJQzo2YEG1PSU2Qhhi/xJxbP4EPmPLaRaIeJz
+         74ove33ZPqim+TteRr1BkABVJKtw+jT/oZgLfxZVjDYcg7/1JlxyKggT/sg2E+rtI6ig
+         TzJATJjyBxr0dOGvHw65oM1l1sVomiajbX4vr5uvYdvwEyySKt72oDcWn192nyOdD4EV
+         g1mXuHg/MaQb6Ba7GOG/fip7KRPbGBH7FKcZUm09SLf/KMM29rswT8oSvx6xQ3Ev84Sn
+         U1YA==
+X-Forwarded-Encrypted: i=1; AJvYcCUoxk3JA2DrHqGIx/Ueip8+Rk25dQAY8MCx+hK6SlpIim1eez+uq/cs9lyF1NIOZtJIHdN19b1DMY4KfWg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxpNHTG/eRdtJhvqquCvUx7rdkW5LAeNNNSPvfyLALvNtuUh16/
+	F1mcsbWV3waCtW1mv1cI3Y7Ln/YdfCCzH55nKcd3vKwBXh6cgdv2ANHMZ/uA16LAJm6gogp8XFE
+	LEFNjvZmYFdvbuGmDUbCuzw==
+X-Google-Smtp-Source: AGHT+IF0bUdUbcCOClt0/WYli3uuDRUJs0keADgBT2fi3kki6SRriwc15ZsmXxjB7diodiG4JkONa9BVdzmH2TzP6g==
+X-Received: from coltonlewis-kvm.c.googlers.com ([fda3:e722:ac3:cc00:11b:3898:ac11:fa18])
+ (user=coltonlewis job=sendgmr) by 2002:a05:6902:529:b0:e1d:96a7:c9b1 with
+ SMTP id 3f1490d57ef6-e1d9dc2cfd7mr203276.6.1726075457958; Wed, 11 Sep 2024
+ 10:24:17 -0700 (PDT)
+Date: Wed, 11 Sep 2024 17:24:17 +0000
+In-Reply-To: <ZtmHBuggqUr3ncw6@J2N7QTR9R3> (message from Mark Rutland on Thu,
+ 5 Sep 2024 11:25:10 +0100)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,215 +72,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+Mime-Version: 1.0
+Message-ID: <gsnty13ycddq.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH 1/5] arm: perf: Drop unused functions
+From: Colton Lewis <coltonlewis@google.com>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: kvm@vger.kernel.org, oliver.upton@linux.dev, seanjc@google.com, 
+	peterz@infradead.org, mingo@redhat.com, acme@kernel.org, namhyung@kernel.org, 
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com, 
+	adrian.hunter@intel.com, kan.liang@linux.intel.com, will@kernel.org, 
+	linux@armlinux.org.uk, catalin.marinas@arm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@linutronix.de, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: d79fcc2d4d36f96aa4ed9959337788be86594fd8  powerpc/vdso: Fix VDSO data access when running in a non-root time namespace
+Mark Rutland <mark.rutland@arm.com> writes:
 
-elapsed time: 1439m
+> On Wed, Sep 04, 2024 at 08:41:29PM +0000, Colton Lewis wrote:
+>> perf_instruction_pointer() and perf_misc_flags() aren't used anywhere
+>> in this particular perf implementation. Drop them.
 
-configs tested: 194
-configs skipped: 5
+> I think it'd be better to say that arch/arm's implementation of these is
+> equivalent to the generic versions in include/linux/perf_event.h, and so
+> arch/arm doesn't need to provide its own versions. It doesn't matter if
+> arch/arm uses them itself since they're being provided for the core perf
+> code.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> With words to that effect:
 
-tested configs:
-alpha                             allnoconfig   gcc-13.3.0
-alpha                             allnoconfig   gcc-14.1.0
-alpha                            allyesconfig   gcc-13.3.0
-alpha                               defconfig   gcc-13.3.0
-alpha                               defconfig   gcc-14.1.0
-arc                              allmodconfig   clang-20
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-14.1.0
-arc                              allyesconfig   clang-20
-arc                              allyesconfig   gcc-13.2.0
-arc                          axs101_defconfig   clang-20
-arc                                 defconfig   gcc-13.2.0
-arc                                 defconfig   gcc-14.1.0
-arc                   randconfig-001-20240911   gcc-13.2.0
-arc                   randconfig-002-20240911   gcc-13.2.0
-arm                              allmodconfig   clang-20
-arm                              allmodconfig   gcc-14.1.0
-arm                               allnoconfig   clang-20
-arm                               allnoconfig   gcc-14.1.0
-arm                              allyesconfig   clang-20
-arm                              allyesconfig   gcc-14.1.0
-arm                     davinci_all_defconfig   clang-20
-arm                                 defconfig   clang-14
-arm                                 defconfig   gcc-14.1.0
-arm                            mps2_defconfig   clang-20
-arm                   randconfig-001-20240911   clang-20
-arm                   randconfig-002-20240911   clang-20
-arm                   randconfig-003-20240911   clang-20
-arm                   randconfig-004-20240911   gcc-14.1.0
-arm64                            allmodconfig   clang-20
-arm64                             allnoconfig   gcc-14.1.0
-arm64                               defconfig   gcc-14.1.0
-arm64                 randconfig-001-20240911   clang-20
-arm64                 randconfig-002-20240911   clang-15
-arm64                 randconfig-003-20240911   clang-20
-arm64                 randconfig-004-20240911   clang-15
-csky                              allnoconfig   gcc-14.1.0
-csky                                defconfig   gcc-14.1.0
-csky                  randconfig-001-20240911   gcc-14.1.0
-csky                  randconfig-002-20240911   gcc-14.1.0
-hexagon                          allmodconfig   clang-20
-hexagon                           allnoconfig   clang-20
-hexagon                           allnoconfig   gcc-14.1.0
-hexagon                          allyesconfig   clang-20
-hexagon                             defconfig   clang-20
-hexagon                             defconfig   gcc-14.1.0
-hexagon               randconfig-001-20240911   clang-20
-hexagon               randconfig-002-20240911   clang-20
-i386                             allmodconfig   clang-18
-i386                             allmodconfig   gcc-12
-i386                              allnoconfig   clang-18
-i386                              allnoconfig   gcc-12
-i386                             allyesconfig   clang-18
-i386                             allyesconfig   gcc-12
-i386         buildonly-randconfig-001-20240911   clang-18
-i386         buildonly-randconfig-002-20240911   gcc-12
-i386         buildonly-randconfig-003-20240911   clang-18
-i386         buildonly-randconfig-004-20240911   gcc-12
-i386         buildonly-randconfig-005-20240911   gcc-12
-i386         buildonly-randconfig-006-20240911   gcc-12
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240911   gcc-12
-i386                  randconfig-002-20240911   clang-18
-i386                  randconfig-003-20240911   clang-18
-i386                  randconfig-004-20240911   gcc-12
-i386                  randconfig-005-20240911   gcc-12
-i386                  randconfig-006-20240911   clang-18
-i386                  randconfig-011-20240911   gcc-12
-i386                  randconfig-012-20240911   gcc-12
-i386                  randconfig-013-20240911   clang-18
-i386                  randconfig-014-20240911   clang-18
-i386                  randconfig-015-20240911   gcc-12
-i386                  randconfig-016-20240911   clang-18
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch                           defconfig   gcc-14.1.0
-loongarch             randconfig-001-20240911   gcc-14.1.0
-loongarch             randconfig-002-20240911   gcc-14.1.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                                defconfig   gcc-14.1.0
-microblaze                       alldefconfig   clang-20
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-microblaze                          defconfig   gcc-14.1.0
-mips                              allnoconfig   gcc-14.1.0
-mips                         db1xxx_defconfig   clang-20
-mips                  decstation_64_defconfig   clang-20
-mips                 decstation_r4k_defconfig   clang-20
-mips                          rb532_defconfig   clang-20
-mips                          rm200_defconfig   clang-20
-nios2                             allnoconfig   gcc-14.1.0
-nios2                               defconfig   gcc-14.1.0
-nios2                 randconfig-001-20240911   gcc-14.1.0
-nios2                 randconfig-002-20240911   gcc-14.1.0
-openrisc                          allnoconfig   clang-20
-openrisc                          allnoconfig   gcc-14.1.0
-openrisc                         allyesconfig   gcc-14.1.0
-openrisc                            defconfig   gcc-14.1.0
-parisc                           allmodconfig   gcc-14.1.0
-parisc                            allnoconfig   clang-20
-parisc                            allnoconfig   gcc-14.1.0
-parisc                           allyesconfig   gcc-14.1.0
-parisc                              defconfig   gcc-14.1.0
-parisc                randconfig-001-20240911   gcc-14.1.0
-parisc                randconfig-002-20240911   gcc-14.1.0
-parisc64                            defconfig   gcc-14.1.0
-powerpc                          allmodconfig   gcc-14.1.0
-powerpc                           allnoconfig   clang-20
-powerpc                           allnoconfig   gcc-14.1.0
-powerpc                          allyesconfig   clang-20
-powerpc                          allyesconfig   gcc-14.1.0
-powerpc                  iss476-smp_defconfig   clang-20
-powerpc                     mpc512x_defconfig   clang-20
-powerpc                      ppc64e_defconfig   clang-20
-powerpc               randconfig-003-20240911   gcc-14.1.0
-powerpc                 xes_mpc85xx_defconfig   clang-20
-powerpc64             randconfig-001-20240911   clang-17
-powerpc64             randconfig-002-20240911   clang-15
-powerpc64             randconfig-003-20240911   gcc-14.1.0
-riscv                            allmodconfig   clang-20
-riscv                            allmodconfig   gcc-14.1.0
-riscv                             allnoconfig   clang-20
-riscv                             allnoconfig   gcc-14.1.0
-riscv                            allyesconfig   clang-20
-riscv                            allyesconfig   gcc-14.1.0
-riscv                               defconfig   clang-20
-riscv             nommu_k210_sdcard_defconfig   clang-20
-riscv                 randconfig-001-20240911   gcc-14.1.0
-riscv                 randconfig-002-20240911   gcc-14.1.0
-s390                             allmodconfig   clang-20
-s390                             allmodconfig   gcc-14.1.0
-s390                              allnoconfig   clang-20
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   clang-20
-s390                  randconfig-001-20240911   gcc-14.1.0
-s390                  randconfig-002-20240911   clang-20
-s390                       zfcpdump_defconfig   clang-20
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                                  defconfig   gcc-14.1.0
-sh                               j2_defconfig   clang-20
-sh                    randconfig-001-20240911   gcc-14.1.0
-sh                    randconfig-002-20240911   gcc-14.1.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-14.1.0
-sparc64               randconfig-001-20240911   gcc-14.1.0
-sparc64               randconfig-002-20240911   gcc-14.1.0
-um                               allmodconfig   clang-20
-um                                allnoconfig   clang-17
-um                                allnoconfig   clang-20
-um                               allyesconfig   gcc-12
-um                                  defconfig   clang-20
-um                             i386_defconfig   gcc-12
-um                    randconfig-001-20240911   clang-15
-um                    randconfig-002-20240911   clang-20
-um                           x86_64_defconfig   clang-15
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240911   clang-18
-x86_64       buildonly-randconfig-002-20240911   clang-18
-x86_64       buildonly-randconfig-003-20240911   gcc-12
-x86_64       buildonly-randconfig-004-20240911   gcc-12
-x86_64       buildonly-randconfig-005-20240911   gcc-12
-x86_64       buildonly-randconfig-006-20240911   clang-18
-x86_64                              defconfig   clang-18
-x86_64                              defconfig   gcc-11
-x86_64                randconfig-001-20240911   gcc-12
-x86_64                randconfig-002-20240911   gcc-12
-x86_64                randconfig-003-20240911   clang-18
-x86_64                randconfig-004-20240911   clang-18
-x86_64                randconfig-005-20240911   clang-18
-x86_64                randconfig-006-20240911   gcc-12
-x86_64                randconfig-011-20240911   clang-18
-x86_64                randconfig-012-20240911   clang-18
-x86_64                randconfig-013-20240911   gcc-12
-x86_64                randconfig-014-20240911   clang-18
-x86_64                randconfig-015-20240911   gcc-12
-x86_64                randconfig-016-20240911   clang-18
-x86_64                randconfig-071-20240911   clang-18
-x86_64                randconfig-072-20240911   gcc-11
-x86_64                randconfig-073-20240911   clang-18
-x86_64                randconfig-074-20240911   clang-18
-x86_64                randconfig-075-20240911   gcc-12
-x86_64                randconfig-076-20240911   clang-18
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-14.1.0
-xtensa                  cadence_csp_defconfig   clang-20
-xtensa                randconfig-001-20240911   gcc-14.1.0
-xtensa                randconfig-002-20240911   gcc-14.1.0
+Done
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> Acked-by: Mark Rutland <mark.rutland@arm.com>
+
+> Mark.
+
+
+>> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+>> ---
+>>   arch/arm/include/asm/perf_event.h |  7 -------
+>>   arch/arm/kernel/perf_callchain.c  | 17 -----------------
+>>   2 files changed, 24 deletions(-)
+
+>> diff --git a/arch/arm/include/asm/perf_event.h  
+>> b/arch/arm/include/asm/perf_event.h
+>> index bdbc1e590891..c08f16f2e243 100644
+>> --- a/arch/arm/include/asm/perf_event.h
+>> +++ b/arch/arm/include/asm/perf_event.h
+>> @@ -8,13 +8,6 @@
+>>   #ifndef __ARM_PERF_EVENT_H__
+>>   #define __ARM_PERF_EVENT_H__
+
+>> -#ifdef CONFIG_PERF_EVENTS
+>> -struct pt_regs;
+>> -extern unsigned long perf_instruction_pointer(struct pt_regs *regs);
+>> -extern unsigned long perf_misc_flags(struct pt_regs *regs);
+>> -#define perf_misc_flags(regs)	perf_misc_flags(regs)
+>> -#endif
+>> -
+>>   #define perf_arch_fetch_caller_regs(regs, __ip) { \
+>>   	(regs)->ARM_pc = (__ip); \
+>>   	frame_pointer((regs)) = (unsigned long) __builtin_frame_address(0); \
+>> diff --git a/arch/arm/kernel/perf_callchain.c  
+>> b/arch/arm/kernel/perf_callchain.c
+>> index 1d230ac9d0eb..a2601b1ef318 100644
+>> --- a/arch/arm/kernel/perf_callchain.c
+>> +++ b/arch/arm/kernel/perf_callchain.c
+>> @@ -96,20 +96,3 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx  
+>> *entry, struct pt_regs *re
+>>   	arm_get_current_stackframe(regs, &fr);
+>>   	walk_stackframe(&fr, callchain_trace, entry);
+>>   }
+>> -
+>> -unsigned long perf_instruction_pointer(struct pt_regs *regs)
+>> -{
+>> -	return instruction_pointer(regs);
+>> -}
+>> -
+>> -unsigned long perf_misc_flags(struct pt_regs *regs)
+>> -{
+>> -	int misc = 0;
+>> -
+>> -	if (user_mode(regs))
+>> -		misc |= PERF_RECORD_MISC_USER;
+>> -	else
+>> -		misc |= PERF_RECORD_MISC_KERNEL;
+>> -
+>> -	return misc;
+>> -}
+>> --
+>> 2.46.0.469.g59c65b2a67-goog
+
 
