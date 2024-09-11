@@ -1,59 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-1232-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1233-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28D8974986
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2024 07:14:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 223ED974B27
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2024 09:23:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X3TJB3FS2z2yZ1;
-	Wed, 11 Sep 2024 15:14:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X3X9V5b3tz2yRC;
+	Wed, 11 Sep 2024 17:23:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726031642;
-	cv=none; b=UMYBEQHR3ZLrhE3ip194VI3sgXxwI90NnDr8ELDZD2BsNtJfmoYirj857RgicpI7fdQqYhjM5rJH66aY3mdM0BYHfe1EYk4uSc2GmObnGtqwJ+elAKipwhB82cfwpVhFXmRM98fA8pjnlkAUx6Hmi2jYGEqAbTqPuv/NQFe3QgpsJoPxZZDeD0CffyTDmhSyc3QafpuTZdVlHOVJsEkV7hPdFb4THskUqLdrPsUM36BgqznRQm8XX/SF1UJAH+kkotkbWIqMxeuoVgy8VjviD2m/jpiIy7N0ahBUfJ3QI81MvXhVafXxp6jI0e8lf/oJIdZe5fIY2mFhLsZ1XbHwIg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726038198;
+	cv=none; b=gffOa6C7FzrmthFDnInF5g4u/6TTEJyhCE2Z+pgmhrw38W8s24nLL0o+cufHwcB3Q7z4JVfDEOGRd6nSDs6ZhmCNwdp1PfE7E/X/ktU8B1chjYwiV09EfHCYt9FGQVMSeDxIPbe3Hgcccb8V1LUeEVPJ7P5iepyXYbOTJwoOahQGLdC04lTGUb8XHAW0JxUpx0FhOwaoO0uWRB6iMojIiSQpgHVguYp4CK3PwPFsBIc6ERrbronVWeD6KCTyJkVA0V+80mC+hI1phFOeMjEZXW1QnSwnjkZ8jHwydX4449iIWFMmjcPgumLw4iweP/cbAX6fibheMM3PnQaofwMBVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726031642; c=relaxed/relaxed;
-	bh=TYHTnWg90GO/Adzm/xlNmVzdNdsY7txrgGU6OMGh5ag=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Sd4Ge7FC94CHMZQFVfY1mVuYIoda4CH0VLb46j/P6s59fOBMqN3m1Y8/Lq4XH6oR/2PTMCvafCqctPMlmpirF+NH07KvbJecmWPllWZUdJQMJlfP8fIoFryRDeNM4Ca8TCzK5+VJIGz3Kf4m5Y4tG7mEg5auecvzQ5YeYTUBWOxxEJR2CpmbYMP6cs8l6J9OU8jTM/Qn/AeTJ8jnaUYq1eGRgo0/TCd1/WG1Zf+fxXejrgvvsOolTTxCMsPYO8pk6b9HyKxDrJaWRspiVoB74lemS0LKDmsfDATWUofFCsJNKqDu+ZyWviYKx+KipyqichnJU0qwD58A23hL9Z/9WA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=UiR2NcsA; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Rnjh4EVK; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1726038198; c=relaxed/relaxed;
+	bh=VwYc4An08sBS55DKeA632NYy7SQM0lGP59R9VF/yO6E=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=RgAbU33XqNiWV30MZOrcyh+maoJvyDiT2xw+NOOYgu6eQqvlryDb/jBITc/4m6d2/wRTIY5zZUdsmWW0LaJ9BzzqJrmS2L5JoLGMZAzj6cR8iMWhryUTgwds/AtuwmysLC6W2RhRr1G5Bx8Qq2EObWFHmyY8AnYHzrtKPti2cIeU9aD4qxZ1fokQtNgClF8PVZ6fkRGVobAXIAEFSmOZO6q5mzA8ulHRalH377qxdNL9i6ls6qvQnE2hT/oWCS7etL1yXt33TZ99dCPQtq7f9lg137BMO8Ty5nhfAoYX9L7ZO+h3G4jSiVxePsUHoy5u6tRpNAXm7TP00OO4KcmiZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h7Q8S2kZ; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=UiR2NcsA;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Rnjh4EVK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h7Q8S2kZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X3TJB14qJz2y72
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2024 15:14:02 +1000 (AEST)
-From: Anna-Maria Behnsen <anna-maria@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1726031635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TYHTnWg90GO/Adzm/xlNmVzdNdsY7txrgGU6OMGh5ag=;
-	b=UiR2NcsAC9i4ZW/0yyfeerjtAB84C6rxBP2AjJVghd8Zc693ibg0t0LPO124a/gcvvy1jT
-	cyvc7nAZO/r7Q1P9n7Az6s9X3LcCho5bRI78pKX454ysg4y40GcE6ot9vfcAcFsOMUKWBu
-	l+tyUqRBZhBr9fGWBpRQIWJh19Rt7e4+LdWtLn/E6nCOZPw0wHDnHIIXmwC5nPxMg4e04o
-	QposPh3H05412DmD3/6zKTCN22un+RbJIB25KF3mojgSZtQsDn0SM4Y7asD3X7/6+27Qew
-	r+IbqEd79alZ3uJPVvLLR08KqnBM1xAUWTkjNgWphUHgdrL9UqfYgktI0fVNmg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1726031635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TYHTnWg90GO/Adzm/xlNmVzdNdsY7txrgGU6OMGh5ag=;
-	b=Rnjh4EVKzBewiHVfpCXtDI+g14W3w20GvMd+olwoEufskS5lpV/SML3o+WmsePJPn74JmH
-	aZ6OOfeBk4eyPSBw==
-Date: Wed, 11 Sep 2024 07:13:39 +0200
-Subject: [PATCH v2 13/15] powerpc/rtas: Use fsleep() to minimize additional
- sleep duration
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X3WkF3JTzz2xKg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2024 17:03:16 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48B1mRW1014847;
+	Wed, 11 Sep 2024 07:03:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:to:cc:from:subject:content-type
+	:content-transfer-encoding; s=pp1; bh=VwYc4An08sBS55DKeA632NYy7S
+	QM0lGP59R9VF/yO6E=; b=h7Q8S2kZZPtaZm0ygTElMUxPhNmGW8nYXmy09pMOGX
+	B/1WKMOVCDwwUq+r5Y4SjsdpQfG3Nej2ZcLHtLV5twkJPv+tzl2HTXG4Dkbo51nT
+	WDm7gTtxPDN/7HRr30fJbROqC8KanLOiv59ZxNNxjJTz7TGVOyCnv3rQ9a/22A5w
+	QqZ8BUzxC0uPgbvZZJX2sBHF7WDa6zRyYpL+vsLocLe1ttWf4TKcQkYn7XUNx0Ck
+	XT1Na1CEgRRYD2akOg50uU6IhD2YH8Q3b0mrbH8dbUE191SikKD9uVu4GWuSoE5i
+	Q0nNKKgzg+mJnOxtKwWVTqQd3AF/S4hZzM3/Dj6hWFdw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gebac24w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Sep 2024 07:03:06 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48B50sLG027297;
+	Wed, 11 Sep 2024 07:03:05 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3v37ffw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Sep 2024 07:03:05 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48B735ZG10289688
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Sep 2024 07:03:05 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 173BF58045;
+	Wed, 11 Sep 2024 07:03:05 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4D3F758061;
+	Wed, 11 Sep 2024 07:03:03 +0000 (GMT)
+Received: from [9.61.250.4] (unknown [9.61.250.4])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Sep 2024 07:03:02 +0000 (GMT)
+Message-ID: <ced64e0b-2ef7-48d6-b085-976aa878c017@linux.vnet.ibm.com>
+Date: Wed, 11 Sep 2024 12:33:01 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,89 +73,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240911-devel-anna-maria-b4-timers-flseep-v2-13-b0d3f33ccfe0@linutronix.de>
-References: <20240911-devel-anna-maria-b4-timers-flseep-v2-0-b0d3f33ccfe0@linutronix.de>
-In-Reply-To: <20240911-devel-anna-maria-b4-timers-flseep-v2-0-b0d3f33ccfe0@linutronix.de>
-To: Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch <nathanl@linux.ibm.com>, 
- linuxppc-dev@lists.ozlabs.org
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: peterz@infradead.org, tglx@linutronix.de
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Sachin Sant <sachinp@linux.ibm.com>
+From: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Subject: [PowerPC][linux-next-6.11-rc7-20240910] Kernel Warnings at
+ kernel/jump_label.c:266
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3nRN1RfavNm0kPdLEa_fMj95EXRZJ3m0
+X-Proofpoint-GUID: 3nRN1RfavNm0kPdLEa_fMj95EXRZJ3m0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-10_12,2024-09-09_02,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ mlxscore=0 mlxlogscore=666 impostorscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409110052
 
-When commit 38f7b7067dae ("powerpc/rtas: rtas_busy_delay() improvements")
-was introduced, documentation about proper usage of sleep realted functions
-was outdated.
+Greetings!!!
 
-The commit message references the usage of a HZ=100 system. When using a
-20ms sleep duration on such a system and therefore using msleep(), the
-possible additional slack will be +10ms.
 
-When the system is configured with HZ=100 the granularity of a jiffy and of
-a bucket of the lowest timer wheel level is 10ms. To make sure a timer will
-not expire early (when queueing of the timer races with an concurrent
-update of jiffies), timers are always queued into the next bucket. This is
-the reason for the maximal possible slack of 10ms.
+I am observing kernel warnings while booting with 
+linux-next-6.11-rc7-20240910 kernel. Below are the warnings.
 
-fsleep() limits the maximal possible slack to 25% by making threshold
-between usleep_range() and msleep() HZ dependent. As soon as the accuracy
-of msleep() is sufficient, the less expensive timer list timer based
-sleeping function is used instead of the more expensive hrtimer based
-usleep_range() function. The udelay() will not be used in this specific
-usecase as the lowest sleep length is larger than 1 microsecond.
 
-Use fsleep() directly instead of using an own heuristic for the best
-sleeping mechanism to use..
+[   63.613506] WARNING: CPU: 20 PID: 214 at kernel/jump_label.c:266 
+static_key_dec+0x78/0x8c
+[   63.613518] Modules linked in: ext4 mbcache jbd2 dm_service_time 
+sd_mod sg ibmvfc mlx5_core ibmvnic scsi_transport_fc ibmveth mlxfw 
+psample dm_multipath dm_mirror dm_region_hash dm_log dm_mod fuse
+[   63.613542] CPU: 20 UID: 0 PID: 214 Comm: kworker/20:1 Not tainted 
+6.11.0-rc7-next-20240910-auto #1
+[   63.613549] Hardware name: IBM,9080-HEX POWER10 (architected) 
+0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_016) hv:phyp pSeries
+[   63.613556] Workqueue: cgroup_destroy css_free_rwork_fn
+[   63.613563] NIP:  c00000000048ca20 LR: c00000000048d060 CTR: 
+c0000000005cb330
+[   63.613568] REGS: c00000005a1afa80 TRAP: 0700   Not tainted 
+(6.11.0-rc7-next-20240910-auto)
+[   63.613573] MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  
+CR: 24000884  XER: 20040001
+[   63.613586] CFAR: c00000000048c9cc IRQMASK: 0
+[   63.613586] GPR00: c00000000048d060 c00000005a1afd20 c0000000015f4300 
+c000000002faa440
+[   63.613586] GPR04: 0000000000000001 000000000000009e c0000000084bae00 
+000000000000009d
+[   63.613586] GPR08: 0000000000000000 0000000000000000 ffffffffffffffff 
+c00000005b852780
+[   63.613586] GPR12: c0000000005cb330 c000000c7db7df00 c0000000001a779c 
+c0000000084b27c0
+[   63.613586] GPR16: 0000000000000000 0000000000000000 0000000000000000 
+0000000000000000
+[   63.613586] GPR20: c000000c7b914300 c000000002de73c8 c0000000027b07a8 
+fffffffffffffef7
+[   63.613586] GPR24: 0000000000000402 c00000005b852780 c000000008eabc05 
+0000000000000010
+[   63.613586] GPR28: c000000002d2fac0 c00000000e9d6000 c000000070444000 
+c000000002faa440
+[   63.613633] NIP [c00000000048ca20] static_key_dec+0x78/0x8c
+[   63.613639] LR [c00000000048d060] 
+__static_key_slow_dec_cpuslocked+0x38/0xb4
+[   63.613645] Call Trace:
+[   63.613647] [c00000005a1afd20] [c00000005a1afd50] 0xc00000005a1afd50 
+(unreliable)
+[   63.613653] [c00000005a1afd50] [c00000000048d124] 
+static_key_slow_dec+0x48/0xb0
+[   63.613660] [c00000005a1afdc0] [c0000000005cb40c] 
+mem_cgroup_css_free+0xdc/0x104
+[   63.613667] [c00000005a1afdf0] [c0000000002c4d58] 
+css_free_rwork_fn+0x70/0x394
+[   63.613673] [c00000005a1afe40] [c00000000019a7dc] 
+process_one_work+0x1fc/0x4dc
+[   63.613680] [c00000005a1afef0] [c00000000019b73c] 
+worker_thread+0x340/0x504
+[   63.613686] [c00000005a1aff90] [c0000000001a78cc] kthread+0x138/0x140
+[   63.613691] [c00000005a1affe0] [c00000000000df98] 
+start_kernel_thread+0x14/0x18
+[   63.613697] Code: 7c0004ac 7c074800 40820018 38600001 5463063e 
+4e800020 60000000 60000000 7ce93b78 4bffffa4 60000000 60000000 
+<0fe00000> 38600001 7c60189e 5463063e
+[   63.613711] ---[ end trace 0000000000000000 ]---
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
----
-v2: fix typos
----
- arch/powerpc/kernel/rtas.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index f7e86e09c49f..d31c9799cab2 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1390,21 +1390,14 @@ bool __ref rtas_busy_delay(int status)
- 		 */
- 		ms = clamp(ms, 1U, 1000U);
- 		/*
--		 * The delay hint is an order-of-magnitude suggestion, not
--		 * a minimum. It is fine, possibly even advantageous, for
--		 * us to pause for less time than hinted. For small values,
--		 * use usleep_range() to ensure we don't sleep much longer
--		 * than actually needed.
--		 *
--		 * See Documentation/timers/timers-howto.rst for
--		 * explanation of the threshold used here. In effect we use
--		 * usleep_range() for 9900 and 9901, msleep() for
--		 * 9902-9905.
-+		 * The delay hint is an order-of-magnitude suggestion, not a
-+		 * minimum. It is fine, possibly even advantageous, for us to
-+		 * pause for less time than hinted. To make sure pause time will
-+		 * not be way longer than requested independent of HZ
-+		 * configuration, use fsleep(). See fsleep() for details of
-+		 * used sleeping functions.
- 		 */
--		if (ms <= 20)
--			usleep_range(ms * 100, ms * 1000);
--		else
--			msleep(ms);
-+		fsleep(ms * 1000);
- 		break;
- 	case RTAS_BUSY:
- 		ret = true;
+Issue is introduced by the commit: de752774f38bb766941ed1bf910ba5a9f6cc6bf7
 
--- 
-2.39.2
+
+Reverting the above commit, issue is not seen.
+
+
+Regards,
+
+Venkat.
 
 
