@@ -1,91 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-1234-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1235-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3920974B31
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2024 09:25:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC81F974C3E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2024 10:13:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X3XD42mqhz2ydG;
-	Wed, 11 Sep 2024 17:25:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X3YGn3lDFz2xJ6;
+	Wed, 11 Sep 2024 18:13:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.140
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726039540;
-	cv=none; b=jfUSWn/y5YzXZNqDK2KdeG7flUqOhfZuHio5CDvPK4MjmCWI+FCOzVa+QGBj5YB/tfkcH/aMZJePArFP0Jowt7Og+UBdFNIH36aEfMIwMPSkB5P6tx4GUyxL8svCEKLK2Gr9mIcl5/XDAq6udlH8EQrSIijfnfH2Lug0rz/yWWG3EHoTHItAbzpFPpD0laEg0Moj1PxiF2KhMNgqNO0gv+K/eiC/vOIZ8jAaMLAU3OwQTMAoUWbn+38T6+9zm9m8AOnJ1LcU29Fa0dbw6Y4Y+gYzvcR4bfn33143O7Ehpo2LCXFtYA+UucNfK029vb0tJ0SwkI9xwBa1b2rPrpWJZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::631"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726040889;
+	cv=none; b=WSZPwq4tBel4irNtssjrT6ZfZndjpqVhbEyLs3llDVY/X2dYsnfJb9Ec3q3mU5hXjHANhLUdsbahaX5ML9ltog94LjNrnP8i6oiFaI5SBH5eYB1T+n9WDd2gavKzFKf9IdmaCgCE4PgDP2nH2gAXeOFWiWdKNoaYfWdGyHOwfee26xJKZoubuNOhOK6acRhUS5ZMqElj6NxghM0+74t1tXBhfn+5hlqrbNq3srmoAbQV5+FAVvfLo8AlZWDWn2u8SqQN9/g5mgzxja9F9Uh9d9UVGyFCEG7H2YktaRDyi5KCYWi0xG+vYG22BrJT2PS6YnGZE1nLNihc71CIBdYW5Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726039540; c=relaxed/relaxed;
-	bh=yCULKLzEw1t/f1sPt/nrm6FrZBRX7uDhUSLEPSMpBQQ=;
-	h=MIME-Version:Date:From:To:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=A8Rk1mwxGyJ3dh7m3gHE4F/H2ufEnjoNrRpT1SgAMvw0dDcDvbbEOT2rmoezHXA2lLbVHIdaaX5itqnPYCjJJNGU0fEGe0F+tnhCV+z09ZXotaIZguSFcoLxlk4coCB9Rx8a4l76LTOe/ig13bVdA1+JqjMnaCnzP4Sob9Vw39UxYyk/g6zEs5ClBIgoUpray9/tli5I5EGIu7rJSpkdsHXBxL9hF3OByGCJTmW0Gr3t7qhqXZyBXxsEozlzJdDxHzs/i1FWBhl8+XYAe6hwbWzIElHIuEwQRh/V2GUMM5eeVimJusXV7KCEl2GeCBysLxsXxgxHWhMwv15zgHcUgw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=VgpE/1U4; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=uPd7y278; dkim-atps=neutral; spf=pass (client-ip=103.168.172.140; helo=flow5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1726040889; c=relaxed/relaxed;
+	bh=DAqoY6jIAjc3xzIZO9ujMSqjm0EX+JGfOEbTRNWh9ek=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CI+Ykz9z9KUaJ8Mv0KDOqkF85yftKdjkKCpCS4e/Wpy4MgzSDL52wirWLPGX3um5UygidlG9ghv7WD4je68l2jruMTSwsDSxlO2owF0hJdKHiq30/iFNspzLHms/leavZkMsDf8ZKQAcpp+ePWEGnGjV79PxR68YAuUvaY1jy+KnP88R5XUgwW1QkeuZNrj09h7Y3XaKRVNItzAvnRE/sIQXP58hRUFbv5ZubMG2S2c40wAQyXCs0gK2z9K11gbmEsDTerHSA7Hr40l6MYnR9ckCW5QtX7y6T3GWL/MEJ697mXZEofigTXVds4mgcPJRfQD6wNEa2jrTMjrGjjOPVQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PIh2vXkO; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=zhanglyra.2023@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=VgpE/1U4;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=uPd7y278;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PIh2vXkO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.140; helo=flow5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from flow5-smtp.messagingengine.com (flow5-smtp.messagingengine.com [103.168.172.140])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::631; helo=mail-ej1-x631.google.com; envelope-from=zhanglyra.2023@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X3XD06fT4z2xfC
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2024 17:25:36 +1000 (AEST)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailflow.phl.internal (Postfix) with ESMTP id 5FF0B20031F;
-	Wed, 11 Sep 2024 03:25:33 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 11 Sep 2024 03:25:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1726039533;
-	 x=1726046733; bh=yCULKLzEw1t/f1sPt/nrm6FrZBRX7uDhUSLEPSMpBQQ=; b=
-	VgpE/1U4loJri9LiuX7Zp3kpL8B/8h0OclDS8D2qwbi1j/gV/4Dv0Is+b0/KrUjc
-	bgS87B1lv+q5Ww8OQNHMs7UUCFzhYwqeNEI7qcSCJ5R8Cz6zyi9VQfE3HuT6WlUU
-	IJVyijW60CE0wSdiD0Z5i8cXac4tC2E4XXyQo+BIYzPN/E8AHr+rEYPKjJ2JEj3a
-	pazvkihnp/Gt/CI+rGrCWj7mQ+PxlVRrdD8wErMCd+duga8MvKpYjHS0ASNqV5py
-	eK8pix0YokPCoBvBj7t/5/L7Rr5Y6AZPgl9p66wMb8srBd3P1fQ0YCu+n/12a0kE
-	LQn0BwlFInbl9ta8zMHnGA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-transfer-encoding:content-type
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1726039533; x=
-	1726046733; bh=yCULKLzEw1t/f1sPt/nrm6FrZBRX7uDhUSLEPSMpBQQ=; b=u
-	Pd7y278RoZsWfSRrvw+gMVM8jAt7Bbg3GADlLo3PeCstdM+9j+qexh54tdP/gEtN
-	ajwYHFbXXYe6u4iRwBsf0Oz8q96Q3KjMJAv2xJFw6UFoUkBRCBX3RMeTShpc/wyl
-	hNUDB3BLdBBIbAFkMJYs7OB7oV7KwNjpVkNxej7MFuimIz13nRM6ftAd+6d2rZEq
-	ehlnSP5uoes83Td45KcieFiLmMqTPKRVrxnmi0V0urnvUpJ3vhmDr2eY8pEf7uo5
-	+YsyctX/5nWESrcf7hSGMRlZHk3+LDTt6iyIFhst5Jqlh0c8MLw3YFK54iOERtxj
-	fjHHFbXRHE0yCIbpPAOdQ==
-X-ME-Sender: <xms:6UXhZslhiU1FurSmYueZbYv7HbWofGtwNnipVBqSz2PKanCywy8LTw>
-    <xme:6UXhZr1UmyyvpIL8RtvBF9VbT8mMWJC_S1W0WAF1_2CYrkbegeGP1OBvPKJwa7c5q
-    bXE0tg86Nb4G2YhoQE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudejtddguddulecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfekledtffefhffghfetteehuefhgfetgefhtdeu
-    feduueeltefghedtjeeifffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohephedt
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprh
-    gtphhtthhopehtshgsohhgvghnugesrghlphhhrgdrfhhrrghnkhgvnhdruggvpdhrtghp
-    thhtoheptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhope
-    hlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoheptghhrhhishht
-    ohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegurghvvghmse
-    gurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhi
-    ugdrrghupdhrtghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtph
-    htthhopegthhhrihhsrdhtohhrvghksehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:6UXhZqo64Yf9aetQdYEe1AabvRLoXxI5u4FKjctMO5yoOUleq1zlNg>
-    <xmx:6UXhZokiNvscpSgwGsF4sy_GGDcHivntiRwJ0PffeHdFNjeLD9YiyA>
-    <xmx:6UXhZq2Oo3lGes2-0rpbjDy01o1V_VkSEWLa6XgJP-OipZiIuBcoDw>
-    <xmx:6UXhZvvJNctQ6LgtY1_0Zu1dZVxD11ZkLJkfaUAiz-d-LIJwck0YeA>
-    <xmx:7UXhZgGR9tz3pIskqmga3-R-2tuRDU1veIZMJt9PoW0NK4-vAcGX0h_v>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 466A32220072; Wed, 11 Sep 2024 03:25:29 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X3Xjz6x43z2xYq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2024 17:48:07 +1000 (AEST)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-a8d3e662791so243679766b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2024 00:48:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726040880; x=1726645680; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DAqoY6jIAjc3xzIZO9ujMSqjm0EX+JGfOEbTRNWh9ek=;
+        b=PIh2vXkOnQOsV6AliToyKBBMdg/KO4UzUkCZSnj8ebwLsgAPWuSKXH8TqbrQKXJ9FV
+         UJS3qGE7htPBRZq3NGsdEa1ckqFY8O0qyS6+dTKsBZFMlLTt/hn7n3cuhcKHifdM+Ku8
+         eB9aW0CybwneMzY5H9BYDEJ4se9jdIeoyz9njn2soME6zsbIwar+yG5CjQ+rI1OVR9GW
+         gYweQt+dKpHNCubXifGE+pr86UNUjz1vvKdI0fEExVoJsbs95KbNgGEqmh4M5RD2YRKv
+         CjEM5+etpaNdWAVZxn9Hj0gwoVJ/gK6ZU/6mrjNmqOAY9kmJdIGyOyCSW+YeDMoLW3RO
+         29PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726040880; x=1726645680;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DAqoY6jIAjc3xzIZO9ujMSqjm0EX+JGfOEbTRNWh9ek=;
+        b=tZL+IyNEveCQ0ynwveJ035hh1AhNAG13HTd7SH8h3i9Bd7EpfDWuFw2V9GJz0Clz+s
+         NAjFJB6qUf93xErMZDDf9NKJRVtiSkd1UjLQTbOqIFIPn7duZkaGDOd/gsyP7eikVxEc
+         SOUwxuVkCnz70n826cqMwdpMRdXIGQuAAXvh5bTzQenAcpWoDgt+DeKE2nK9czJWEpzl
+         4pBn+zs5b+07Tk/9aqlYucND2f7utAhSiF82j99dh2r05gPZ3Exmq2XmnYGTo4LNPEEN
+         lCkw9QgrhSojQ9G6RRDH+xefPX8hCrLrjSCgnmfJwLurtYI20Wk/wsMLFXM4+koudsmd
+         ve/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXLgz3plddYchXE4Q0q5GVkfty8eU4LPeu5quYxCC1F4A3D6vKFALzyZ/D56JqDyRZbeM6Xp6GiqmD1Vkw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxJMKZSHPnWjAYRgK4hqf9Thgq5DYEL1DUWSlVynCZMyjA2+BO2
+	V10U2gXmzH8pZ7StN2aZ40Ib0Qvgj9qOsS1efEFlhnqPQnpJQKSLps7y/fQaGhOFIKAvLb4ofkP
+	KOBUDPVtVuXE0t03qcF+BebhMrSg=
+X-Google-Smtp-Source: AGHT+IFIM8V4DC0Z/5BWC5YRsJ9oRKTopRmw4RDrk2NBxBFwPDaaIWbAeLPw628HCYH5EvgpHLChk4iqxgrwnmbG4z4=
+X-Received: by 2002:a05:6402:40d4:b0:5c3:d0e1:9f81 with SMTP id
+ 4fb4d7f45d1cf-5c3dc77ab97mr18285042a12.7.1726040879000; Wed, 11 Sep 2024
+ 00:47:59 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,98 +70,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Wed, 11 Sep 2024 07:25:08 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Charlie Jenkins" <charlie@rivosinc.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Catalin Marinas" <catalin.marinas@arm.com>, guoren <guoren@kernel.org>,
- "Richard Henderson" <richard.henderson@linaro.org>,
- "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
- "Matt Turner" <mattst88@gmail.com>, "Vineet Gupta" <vgupta@kernel.org>,
- "Russell King" <linux@armlinux.org.uk>,
- "Huacai Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Helge Deller" <deller@gmx.de>, "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N Rao" <naveen@kernel.org>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>,
- "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- "Sven Schnelle" <svens@linux.ibm.com>,
- "Yoshinori Sato" <ysato@users.sourceforge.jp>,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- "David S . Miller" <davem@davemloft.net>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Andy Lutomirski" <luto@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Muchun Song" <muchun.song@linux.dev>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, shuah <shuah@kernel.org>,
- "Christoph Hellwig" <hch@infradead.org>,
- "Michal Hocko" <mhocko@suse.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- "Chris Torek" <chris.torek@gmail.com>,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-abi-devel@lists.sourceforge.net
-Message-Id: <8130e50c-01e2-45c3-a516-45f5499311f2@app.fastmail.com>
-In-Reply-To: <ZuDoExckq21fePoe@ghost>
-References: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
- <20240905-patches-below_hint_mmap-v3-1-3cd5564efbbb@rivosinc.com>
- <9fc4746b-8e9d-4a75-b966-e0906187e6b7@app.fastmail.com>
- <CAJF2gTTVX9CFM3oRZZP3hGExwVwA_=n1Lrq_0DQKWA+-ZbOekg@mail.gmail.com>
- <f23b18c6-1856-4b59-9ba3-59809b425c81@app.fastmail.com>
- <Ztrq8PBLJ3QuFJz7@arm.com>
- <oshwto46wbbgneiayj63umllyozm3c4267rvpszqzaopwnt2l7@6mxl5vydtons>
- <ZuDoExckq21fePoe@ghost>
-Subject: Re: [PATCH RFC v3 1/2] mm: Add personality flag to limit address to 47 bits
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <cover.9f0e45d52f5cff58807831b6b867084d0b14b61c.1725941415.git-series.apopple@nvidia.com>
+ <39b1a78aa16ebe5db1c4b723e44fbdd217d302ac.1725941415.git-series.apopple@nvidia.com>
+In-Reply-To: <39b1a78aa16ebe5db1c4b723e44fbdd217d302ac.1725941415.git-series.apopple@nvidia.com>
+From: Chunyan Zhang <zhang.lyra@gmail.com>
+Date: Wed, 11 Sep 2024 15:47:22 +0800
+Message-ID: <CAOsKWHCEFSw6d7nC3A1Z4DKMNuUjirt-oULSr7hCWqT2GfnUDQ@mail.gmail.com>
+Subject: Re: [PATCH 12/12] mm: Remove devmap related functions and page table bits
+To: Alistair Popple <apopple@nvidia.com>
+Cc: dan.j.williams@intel.com, linux-mm@kvack.org, vishal.l.verma@intel.com, 
+	dave.jiang@intel.com, logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, 
+	jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au, 
+	npiggin@gmail.com, dave.hansen@linux.intel.com, ira.weiny@intel.com, 
+	willy@infradead.org, djwong@kernel.org, tytso@mit.edu, linmiaohe@huawei.com, 
+	david@redhat.com, peterx@redhat.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
+	linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, jhubbard@nvidia.com, 
+	hch@lst.de, david@fromorbit.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 11, 2024, at 00:45, Charlie Jenkins wrote:
-> On Tue, Sep 10, 2024 at 03:08:14PM -0400, Liam R. Howlett wrote:
+Hi Alistair,
+
+On Tue, 10 Sept 2024 at 12:21, Alistair Popple <apopple@nvidia.com> wrote:
 >
-> I responded to Arnd in the other thread, but I am still not convinced
-> that the solution that x86 and arm64 have selected is the best solution.
-> The solution of defaulting to 47 bits does allow applications the
-> ability to get addresses that are below 47 bits. However, due to
-> differences across architectures it doesn't seem possible to have all
-> architectures default to the same value. Additionally, this flag will be
-> able to help users avoid potential bugs where a hint address is passed
-> that causes upper bits of a VA to be used.
+> Now that DAX and all other reference counts to ZONE_DEVICE pages are
+> managed normally there is no need for the special devmap PTE/PMD/PUD
+> page table bits. So drop all references to these, freeing up a
+> software defined page table bit on architectures supporting it.
 >
-> The other issue I have with this is that if there is not a hint address
-> specified to be greater than 47 bits on x86, then mmap() may return an
-> address that is greater than 47-bits. The documentation in
-> Documentation/arch/x86/x86_64/5level-paging.rst says:
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Acked-by: Will Deacon <will@kernel.org> # arm64
+> ---
+>  Documentation/mm/arch_pgtable_helpers.rst     |  6 +--
+>  arch/arm64/Kconfig                            |  1 +-
+>  arch/arm64/include/asm/pgtable-prot.h         |  1 +-
+>  arch/arm64/include/asm/pgtable.h              | 24 +--------
+>  arch/powerpc/Kconfig                          |  1 +-
+>  arch/powerpc/include/asm/book3s/64/hash-4k.h  |  6 +--
+>  arch/powerpc/include/asm/book3s/64/hash-64k.h |  7 +--
+>  arch/powerpc/include/asm/book3s/64/pgtable.h  | 52 +------------------
+>  arch/powerpc/include/asm/book3s/64/radix.h    | 14 +-----
+>  arch/x86/Kconfig                              |  1 +-
+>  arch/x86/include/asm/pgtable.h                | 50 +-----------------
+>  arch/x86/include/asm/pgtable_types.h          |  5 +--
+
+RISC-V's references also need to be cleanup, it simply can be done by
+reverting the commit
+
+216e04bf1e4d (riscv: mm: Add support for ZONE_DEVICE)
+
+Thanks,
+Chunyan
+
+>  include/linux/mm.h                            |  7 +--
+>  include/linux/pfn_t.h                         | 20 +-------
+>  include/linux/pgtable.h                       | 19 +------
+>  mm/Kconfig                                    |  4 +-
+>  mm/debug_vm_pgtable.c                         | 59 +--------------------
+>  mm/hmm.c                                      |  3 +-
+>  18 files changed, 11 insertions(+), 269 deletions(-)
 >
-> "If hint address set above 47-bit, but MAP_FIXED is not specified, we try
-> to look for unmapped area by specified address. If it's already
-> occupied, we look for unmapped area in *full* address space, rather than
-> from 47-bit window."
-
-This is also in the commit message of b569bab78d8d ("x86/mm: Prepare
-to expose larger address space to userspace"), which introduced it.
-However, I don't actually see the fallback to the full address space,
-instead the actual behavior seems to be the same as arm64.
-
-Am I missing something in the x86 implementation, or do we just
-need to update the documentation?
-
-      Arnd
 
