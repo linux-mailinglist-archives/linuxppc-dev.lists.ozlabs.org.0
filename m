@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-1241-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1242-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 271E3974E3D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2024 11:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA82974E40
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Sep 2024 11:14:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X3Zds0nYkz2yDx;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X3Zds4b7Qz2xSl;
 	Wed, 11 Sep 2024 19:14:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.171
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.178
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726046081;
-	cv=none; b=kSHWuNIU/PYtnb39B9lNamRoPcjj7qj49tWQ2UF/DgWike/eB61+j6fgQ1MaQ/o8brPyeBB2W1qg3o7rXudHQ8lQyctc2VuP662hCnWuRT5uQNnBMjKP36dpQSsQLNU43EfU7lvMA6rL+iAMs6ezNQOkQ3Hj8D/KQYId5Fd/iFRwe20qr595Yj4VAWBSvd+z07xxYGFsI3VDPpRfH2rULrXaaqrqKnVnKHeZFTVjrvysgNJwA83HVsPlCSHkDfKy5Vm5jXpuyua60cQX2HYKPS8tYr3+95BZG2bt2Zk9NNh4/u6YjXRTagnxhmSJuhZ2aNnkiJfbOilIpQNdAwwBXQ==
+	cv=none; b=BvElyd5ZLIs7BMdprZNhm9kFhWBqyUn3CJ6JwccDHcwDFLq/I9BHQJlrc5ELQWh1BBZXNXPLi4oWZfo4gtvVEi+XP7IaSnFoI1zAAUQwFhpsFWGU0o+JGEzZTynzRF0QHNNFFqOpVGsGOdRF2OU2HImxP15941YoGTo6RUNVuxPG9ALjinIvWI9PR7mDvrz2MyFM0dazfJAHoWKbFhBQO78W+a3uSb3opmfp6uFr0atqguOw+GTA39WD6wyoCEHSRS7dJxYmOLqRx7g+UH3nwF0NX50YOSRo36HUilsFtKKv29UCNvRHiQcZ0WtkdTjRHmEyc+HolIPRFRSUOw6nJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1726046081; c=relaxed/relaxed;
-	bh=PG2DAax+JlcWtQamyINUSDmt+za3swHNY4VA8lUVONc=;
+	bh=MjH3y5GFZG4iHF0CwOafpGZ1X8c3+7VTVQzIHYqdBQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFupFRVEmKXVli0XovKdkOfdFdXWEtjiMPI2zGexGE6b6qFc3kA2AVqQHppmDfTZ10eAyk+CbLc2zxg8ubprwWL0MA5WSDCzYnUE+delYDrpfITXtgSnHMLHZFdPH3/hHs/kcQd04jdmWwCvBR6L+Y8WjoryKmjSyzc10YB3zj87Fr8d1EPRrd39kMO+EgVmIBREmUcYcGwqebbVf7bOv3ZgkypeXH3i7XafAlmYjZJ9vpS8x++lgVKqo2iA9VuEDn8fyO/Q5yWE7g/x/QMjDx4/VKWAH908XqpGEqgu1y+ImdXcN+snjYS/OUlnmdZmLHIdZfTiujttJ4lPQlqG4Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ukkq+j7D; dkim-atps=neutral; spf=pass (client-ip=91.218.175.171; helo=out-171.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 MIME-Version; b=Cko9L8juNgh5UymoMFasfQj9Z5nhryaz5kBw2xM2gv3ecquSZAi70pPjAOJNZ7Ihf58v1I27BZs2HC+Cpo1fIgC8ZKkZv9AtS29pFaPgSBuDd7f/8iZi2MAU3vHDWB98myA64n/d6vjmCiU/VcxQAt7tZP0PtJXg52ubpcuc64DlY80JWErFXtHpZX7SNKnsErZUfXq5k3qCz+GQxRA9E1yS3wdiQaEH3yCDrCh/g44GZJ/MTABDzFpLgSjQR0Fs3FjBLXXnQ47LDL75OcE5gjQCdnejzeKKY4xmaxyqmBMmmVHfTKv8NuTPqmkS3hbuK4jQ7QHK7B+Llq1Eio7BzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Euz6oyDc; dkim-atps=neutral; spf=pass (client-ip=95.215.58.178; helo=out-178.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ukkq+j7D;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Euz6oyDc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.171; helo=out-171.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.178; helo=out-178.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X3Zdq1xxyz2xSl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2024 19:14:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X3Zds2SNgz2ygX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Sep 2024 19:14:40 +1000 (AEST)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1726046058;
+	t=1726046062;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PG2DAax+JlcWtQamyINUSDmt+za3swHNY4VA8lUVONc=;
-	b=ukkq+j7DSgzu99+s4/Sj7crBGzDfShHZKTFs2u72WegAsbbYuORO7jgNfgze3vogvP3D6k
-	3vpzTR+AZ1TXwx5pqiziUb+WHgS55/sAqA3h9+fYA90AAidxkqm/fOe0VJ64UegmgY/FWJ
-	+I4h4bD34o4s0knIOFV/gn/cq7bPnfs=
+	bh=MjH3y5GFZG4iHF0CwOafpGZ1X8c3+7VTVQzIHYqdBQI=;
+	b=Euz6oyDcYjtOpteyceqjb20WH4aWa8y1bSxbcm2wTTp8P+Bg8DY4V2Uu36HzRSnssfq8xJ
+	Fqk4vTcyLs8THPrsw8ErJkMKfRzbgxfN2qAvc3U9npGnGrsXuGEbz5vrCRyFnHrOEocuYk
+	S9sibAFjqJUI65I0k8/wmhqsIDpM0ks=
 From: Andrew Jones <andrew.jones@linux.dev>
 To: kvm@vger.kernel.org,
 	kvm-riscv@lists.infradead.org,
@@ -53,10 +53,11 @@ Cc: pbonzini@redhat.com,
 	nrb@linux.ibm.com,
 	atishp@rivosinc.com,
 	cade.richard@berkeley.edu,
-	jamestiotio@gmail.com
-Subject: [kvm-unit-tests PATCH v3 1/5] riscv: Drop mstrict-align
-Date: Wed, 11 Sep 2024 11:14:08 +0200
-Message-ID: <20240911091406.134240-8-andrew.jones@linux.dev>
+	jamestiotio@gmail.com,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: [kvm-unit-tests PATCH v3 2/5] Makefile: Prepare for clang EFI builds
+Date: Wed, 11 Sep 2024 11:14:09 +0200
+Message-ID: <20240911091406.134240-9-andrew.jones@linux.dev>
 In-Reply-To: <20240911091406.134240-7-andrew.jones@linux.dev>
 References: <20240911091406.134240-7-andrew.jones@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -71,31 +72,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The spec says unaligned accesses are supported, so this isn't required
-and clang doesn't support it. A platform might have slow unaligned
-accesses, but kvm-unit-tests isn't about speed anyway.
+clang complains about GNU extensions such as variable sized types not
+being at the end of structs unless -Wno-gnu is used. We may
+eventually want -Wno-gnu, but for now let's just handle the warnings
+as they come. Add -Wno-gnu-variable-sized-type-not-at-end to avoid
+the warning issued for the initrd_dev_path struct. (Eliminating the
+warning is preferred to reworking the struct, because the
+implementation is imported verbatim from Linux.)
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
 ---
- riscv/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/riscv/Makefile b/riscv/Makefile
-index 179a373dbacf..22fd273acac3 100644
---- a/riscv/Makefile
-+++ b/riscv/Makefile
-@@ -76,7 +76,9 @@ LDFLAGS += -melf32lriscv
+diff --git a/Makefile b/Makefile
+index 3d51cb726120..7471f7285b78 100644
+--- a/Makefile
++++ b/Makefile
+@@ -50,6 +50,8 @@ EFI_CFLAGS += -fshort-wchar
+ # EFI applications use PIC as they are loaded to dynamic addresses, not a fixed
+ # starting address
+ EFI_CFLAGS += -fPIC
++# Avoid error with the initrd_dev_path struct
++EFI_CFLAGS += -Wno-gnu-variable-sized-type-not-at-end
+ # Create shared library
+ EFI_LDFLAGS := -Bsymbolic -shared -nostdlib
  endif
- CFLAGS += -DCONFIG_RELOC
- CFLAGS += -mcmodel=medany
--CFLAGS += -mstrict-align
-+# Unaligned accesses are allowed, but may be emulated by M-mode.
-+# Enable -mstrict-align if that's troublesome (only supported by gcc).
-+#CFLAGS += -mstrict-align
- CFLAGS += -std=gnu99
- CFLAGS += -ffreestanding
- CFLAGS += -O2
 -- 
 2.46.0
 
