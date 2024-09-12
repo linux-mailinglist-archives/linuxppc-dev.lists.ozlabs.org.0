@@ -1,51 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-1278-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1279-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C797646A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2024 10:26:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901589764B2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2024 10:35:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X49X01WmBz2yPM;
-	Thu, 12 Sep 2024 18:26:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X49kC2v7Dz2yG9;
+	Thu, 12 Sep 2024 18:35:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=114.132.124.171
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726129600;
-	cv=none; b=ee+erA7rWO0h+qCS3A2sDhIfhY2nNCWF9o0yxJ8pQcNnshZb1AnaD8JwhqrwL+udI5T7guGFUpk1bthhZEN3iLq37fVimkQ+PxrrcI3egz7Wqj7BrQ01pDgVmDADkdR8KahToZweZ6XvPrz6PzFmzduls1D8/L29KfEuGKfi1fHZKqGXD4ZO+7MaHk0ln/TIUf5KXj/O9C3dSQTEYg14tooyGWZPnasHM7f702JAsvLuAX8ZQ97GmWRqH3Zv9lXRgYbpMQYpshnye5g2Mg47GzwP5K3hKl3378q57xqSEJn3Z7asFBQi6+HkRxfbjMtvwn7/muisruIwFoUPNqFfDg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726130131;
+	cv=none; b=Nfg9CbhFy3h5rylmjF4IeQpO+h0MWK3PEXNWqP5ip8QWjqLl6olFI2Bij1icFFMuDUGTjqZttbXetprcObb3b0B5vmijBcDq5EaMs3rKFJeh2pKMryvIjO/wcjTxB5chiqv2QqTBF2XaI/mXtxtdepDRJv4o35T+A4arbogfUlHsBlbuhhCoxCGKKTEDQdWtEMX32eVA7+OpwKtZiGWHCX50YYxcgcoWfXGFlUlGDWCOBUNamFv4exzX4NDsa9bqZYDKkZtaWY5SHSiAobIEzHGsfsIJsp/01c+XedJvKiVyTmGBqqBAzMsPVzPY1qkEpRgKVka+TH34uKgv6c7tTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726129600; c=relaxed/relaxed;
-	bh=yVZ+l6pW4lICdHN0oex9+pMnxFnLzCGk6bZdcrNYYuo=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nciu9+4ickev8vkIp9EQg5hTSmDwR7CPm0ArIQZgsK8oJ81WcqN/xFuEbJyjJMvDWb6758LZNTBNHQP5QOnmsv8/MVgafUlJLnupIE6y75ytuy2qSoseD3+9NkzOwoNIdtpYkTcLsCbSTiCZYER3aC/6BBzLFvOUbDRV8XK2R9WQ/+B9pB5YLkbDdewmjzRnBt6Co328kqHnPOf0mLgB7UQ5tUYpbdJijtYD+6062cG0Tr1tW5XPOLaAKMeAMBzplrI69xG4EsSGXlwlvp7oC3e3ie55TAWSN6XJlXk/Zba2onB5h/69ZVUwIQELODzsmUSgy8MXMqikxPWgD9fX5Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass (client-ip=114.132.124.171; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org) smtp.mailfrom=shingroup.cn
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.124.171; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.124.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1726130131; c=relaxed/relaxed;
+	bh=8n8VSjvILIl7oYC7bobYUFaIgZoDIf7snFAjTE/j5ps=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nrM1tuMO3kTNM+vnv1xIpzjqvUCEsIoJCdZn/HL0ytBF3e5Udo5lpa98ND4D22bq59CG7cczMtvY2slmZsuwfv/E/B5cPy50lOsR4AkQTbALPsCSlVVd5FD2ISJI0a2tMih/5NmiQWL6IVC+nh4/rOpTse+Mgse4siWFz2A0V9X04zXpKOthhGDJuw3N1lXnoh26cuhVphCXJcKpV+pAj/X5C/vPJKKHqH1h0RorNhJrSfgMLbdAnuL7DGEtcz400AZglZfidhb9FM86Z1o2B6YmZZuZd9m/d+87Fk+1ps6bQQg4GQnLI+VOvCuL2giBKWdIiL0h3gACpq/yYGv5sg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EpLkLrs0; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EpLkLrs0; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EpLkLrs0;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EpLkLrs0;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X49Wz1GrVz2y8t
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2024 18:26:38 +1000 (AEST)
-X-QQ-mid: bizesmtpsz3t1726129533t9pgnd9
-X-QQ-Originating-IP: tkWPz5UWQyJUHZmLTf8Iyz5rhCyS445T/fPWfgyOab8=
-Received: from HX09040029.powercore.com.cn ( [180.171.104.254])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 12 Sep 2024 16:25:32 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16748915590400865990
-From: Luming Yu <luming.yu@shingroup.cn>
-To: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	jialong.yang@shingroup.cn,
-	luming.yu@gmail.com
-Subject: [PATCH 2/2] powerpc/entry: entry clean up for common entry
-Date: Thu, 12 Sep 2024 16:24:59 +0800
-Message-ID: <50B10485E86A3208+20240912082500.1469-2-luming.yu@shingroup.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
-In-Reply-To: <20240912082500.1469-1-luming.yu@shingroup.cn>
-References: <20240912082500.1469-1-luming.yu@shingroup.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X49kB6NdNz2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2024 18:35:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726130125;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8n8VSjvILIl7oYC7bobYUFaIgZoDIf7snFAjTE/j5ps=;
+	b=EpLkLrs0g60HyMv9lwso4AGVplHM/Zfhj5BJraVXuU/64h8Ogp+GkLBmZ43f6F26njdyGE
+	MaDluj72PSeQoB2wblT22vDXv4A375imHhqtTTHQ9sOdBKUOdO8D6Fgt0gufz0BBwijR8m
+	JlUjCgqVrMsJtA+VEg6/exRKwo8nQwY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726130125;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8n8VSjvILIl7oYC7bobYUFaIgZoDIf7snFAjTE/j5ps=;
+	b=EpLkLrs0g60HyMv9lwso4AGVplHM/Zfhj5BJraVXuU/64h8Ogp+GkLBmZ43f6F26njdyGE
+	MaDluj72PSeQoB2wblT22vDXv4A375imHhqtTTHQ9sOdBKUOdO8D6Fgt0gufz0BBwijR8m
+	JlUjCgqVrMsJtA+VEg6/exRKwo8nQwY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-563-2BlVXIOmMKqAuDa4ttDdxw-1; Thu,
+ 12 Sep 2024 04:35:21 -0400
+X-MC-Unique: 2BlVXIOmMKqAuDa4ttDdxw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 78FAF1955D47;
+	Thu, 12 Sep 2024 08:35:19 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.58])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 95D0119560A3;
+	Thu, 12 Sep 2024 08:35:17 +0000 (UTC)
+Date: Thu, 12 Sep 2024 16:35:13 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, akpm@linux-foundation.org
+Cc: Hari Bathini <hbathini@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	x86@kernel.org, Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
+Subject: Re: [PATCH RESEND v2] kexec/crash: no crash update when kexec in
+ progress
+Message-ID: <ZuKnwcqv9xQDNOrl@MiWiFi-R3L-srv>
+References: <20240911112111.108056-1-sourabhjain@linux.ibm.com>
+ <ZuGnH5R+FOC481V3@MiWiFi-R3L-srv>
+ <f4dcb6b4-2da8-4355-9d89-8b41af30214d@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -55,196 +84,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f4dcb6b4-2da8-4355-9d89-8b41af30214d@linux.ibm.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Yu Luming <luming.yu@gmail.com>
+On 09/12/24 at 01:33pm, Sourabh Jain wrote:
+> Hello Baoquan,
+> 
+> On 11/09/24 19:50, Baoquan He wrote:
+> > On 09/11/24 at 04:51pm, Sourabh Jain wrote:
+> > > The following errors are observed when kexec is done with SMT=off on
+> > > powerpc.
+> > > 
+> > > [  358.458385] Removing IBM Power 842 compression device
+> > > [  374.795734] kexec_core: Starting new kernel
+> > > [  374.795748] kexec: Waking offline cpu 1.
+> > > [  374.875695] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+> > > [  374.935833] kexec: Waking offline cpu 2.
+> > > [  375.015664] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+> > > snip..
+> > > [  375.515823] kexec: Waking offline cpu 6.
+> > > [  375.635667] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+> > > [  375.695836] kexec: Waking offline cpu 7.
+> > > 
+> > > To avoid kexec kernel boot failure on PowerPC, all the present CPUs that
+> > > are offline are brought online during kexec. For more information, refer
+> > > to commit e8e5c2155b00 ("powerpc/kexec: Fix orphaned offline CPUs across
+> > > kexec"). Bringing the CPUs online triggers the crash hotplug handler,
+> > > crash_handle_hotplug_event(), to update the kdump image. Since the
+> > > system is on the kexec kernel boot path and the kexec lock is held, the
+> > > crash_handle_hotplug_event() function fails to acquire the same lock to
+> > > update the kdump image, resulting in the error messages mentioned above.
+> > > 
+> > > To fix this, return from crash_handle_hotplug_event() without printing
+> > > the error message if kexec is in progress.
+> > > 
+> > > The same applies to the crash_check_hotplug_support() function. Return
+> > > 0 if kexec is in progress because kernel is not in a position to update
+> > > the kdump image.
+> > LGTM, thanks.
+> > 
+> > Acked-by: Baoquan he <bhe@redhat.com>
+> 
+> Thank you for the Ack!
+> 
+> My understanding is that this patch will go upstream via the linux-next
+> tree, as it is based on
+> https://lore.kernel.org/all/20240902034708.88EC1C4CEC2@smtp.kernel.org/
+> which is already part of the linux-next master branch. - Sourabh Jain
 
-clean up do_syscall_trace_enter/leave and do_seccomp
+Then you should mark it as [PATCH linux-next] in subject.
 
- Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
----
- arch/powerpc/kernel/interrupt.c     |   5 -
- arch/powerpc/kernel/ptrace/ptrace.c | 141 ----------------------------
- 2 files changed, 146 deletions(-)
+Since this patch is in generic code, it needs Andrew's help to
+pick it. Let's wait and see if Andrew need a new post to change
+the subject.
 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index 7fe704946e96..609ba48034de 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -296,11 +296,6 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
- 		regs->gpr[3] = r3;
- 	}
- 
--	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
--		do_syscall_trace_leave(regs);
--		ret |= _TIF_RESTOREALL;
--	}
--
- 	local_irq_disable();
- 	ret = interrupt_exit_user_prepare_main(ret, regs);
- 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index 727ed4a14545..6cd180bc36ab 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -21,9 +21,6 @@
- #include <asm/switch_to.h>
- #include <asm/debug.h>
- 
--#define CREATE_TRACE_POINTS
--#include <trace/events/syscalls.h>
--
- #include "ptrace-decl.h"
- 
- /*
-@@ -195,144 +192,6 @@ long arch_ptrace(struct task_struct *child, long request,
- 	return ret;
- }
- 
--#ifdef CONFIG_SECCOMP
--static int do_seccomp(struct pt_regs *regs)
--{
--	if (!test_thread_flag(TIF_SECCOMP))
--		return 0;
--
--	/*
--	 * The ABI we present to seccomp tracers is that r3 contains
--	 * the syscall return value and orig_gpr3 contains the first
--	 * syscall parameter. This is different to the ptrace ABI where
--	 * both r3 and orig_gpr3 contain the first syscall parameter.
--	 */
--	regs->gpr[3] = -ENOSYS;
--
--	/*
--	 * We use the __ version here because we have already checked
--	 * TIF_SECCOMP. If this fails, there is nothing left to do, we
--	 * have already loaded -ENOSYS into r3, or seccomp has put
--	 * something else in r3 (via SECCOMP_RET_ERRNO/TRACE).
--	 */
--	if (__secure_computing(NULL))
--		return -1;
--
--	/*
--	 * The syscall was allowed by seccomp, restore the register
--	 * state to what audit expects.
--	 * Note that we use orig_gpr3, which means a seccomp tracer can
--	 * modify the first syscall parameter (in orig_gpr3) and also
--	 * allow the syscall to proceed.
--	 */
--	regs->gpr[3] = regs->orig_gpr3;
--
--	return 0;
--}
--#else
--static inline int do_seccomp(struct pt_regs *regs) { return 0; }
--#endif /* CONFIG_SECCOMP */
--
--/**
-- * do_syscall_trace_enter() - Do syscall tracing on kernel entry.
-- * @regs: the pt_regs of the task to trace (current)
-- *
-- * Performs various types of tracing on syscall entry. This includes seccomp,
-- * ptrace, syscall tracepoints and audit.
-- *
-- * The pt_regs are potentially visible to userspace via ptrace, so their
-- * contents is ABI.
-- *
-- * One or more of the tracers may modify the contents of pt_regs, in particular
-- * to modify arguments or even the syscall number itself.
-- *
-- * It's also possible that a tracer can choose to reject the system call. In
-- * that case this function will return an illegal syscall number, and will put
-- * an appropriate return value in regs->r3.
-- *
-- * Return: the (possibly changed) syscall number.
-- */
--long do_syscall_trace_enter(struct pt_regs *regs)
--{
--	u32 flags;
--
--	flags = read_thread_flags() & (_TIF_SYSCALL_EMU | _TIF_SYSCALL_TRACE);
--
--	if (flags) {
--		int rc = ptrace_report_syscall_entry(regs);
--
--		if (unlikely(flags & _TIF_SYSCALL_EMU)) {
--			/*
--			 * A nonzero return code from
--			 * ptrace_report_syscall_entry() tells us to prevent
--			 * the syscall execution, but we are not going to
--			 * execute it anyway.
--			 *
--			 * Returning -1 will skip the syscall execution. We want
--			 * to avoid clobbering any registers, so we don't goto
--			 * the skip label below.
--			 */
--			return -1;
--		}
--
--		if (rc) {
--			/*
--			 * The tracer decided to abort the syscall. Note that
--			 * the tracer may also just change regs->gpr[0] to an
--			 * invalid syscall number, that is handled below on the
--			 * exit path.
--			 */
--			goto skip;
--		}
--	}
--
--	/* Run seccomp after ptrace; allow it to set gpr[3]. */
--	if (do_seccomp(regs))
--		return -1;
--
--	/* Avoid trace and audit when syscall is invalid. */
--	if (regs->gpr[0] >= NR_syscalls)
--		goto skip;
--
--	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
--		trace_sys_enter(regs, regs->gpr[0]);
--
--	if (!is_32bit_task())
--		audit_syscall_entry(regs->gpr[0], regs->gpr[3], regs->gpr[4],
--				    regs->gpr[5], regs->gpr[6]);
--	else
--		audit_syscall_entry(regs->gpr[0],
--				    regs->gpr[3] & 0xffffffff,
--				    regs->gpr[4] & 0xffffffff,
--				    regs->gpr[5] & 0xffffffff,
--				    regs->gpr[6] & 0xffffffff);
--
--	/* Return the possibly modified but valid syscall number */
--	return regs->gpr[0];
--
--skip:
--	/*
--	 * If we are aborting explicitly, or if the syscall number is
--	 * now invalid, set the return value to -ENOSYS.
--	 */
--	regs->gpr[3] = -ENOSYS;
--	return -1;
--}
--
--void do_syscall_trace_leave(struct pt_regs *regs)
--{
--	int step;
--
--	audit_syscall_exit(regs);
--
--	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
--		trace_sys_exit(regs, regs->result);
--
--	step = test_thread_flag(TIF_SINGLESTEP);
--	if (step || test_thread_flag(TIF_SYSCALL_TRACE))
--		ptrace_report_syscall_exit(regs, step);
--}
--
- void __init pt_regs_check(void);
- 
- /*
--- 
-2.42.0.windows.2
+Thanks
+Baoquan
 
 
