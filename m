@@ -1,104 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-1295-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1294-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273C09769D3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2024 14:59:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79229769BB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Sep 2024 14:56:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4Hb06Wzzz2yRM;
-	Thu, 12 Sep 2024 22:59:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4HVy36qGz2yR5;
+	Thu, 12 Sep 2024 22:56:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726145980;
-	cv=none; b=RZH4y58jDom9EoqJ4RoCyar8Y2K5BRyA0zFD9PhD9cxHUbi4E+XjkD9uoVNJF8rFrChv1goUJRkbVzxl9C8byDcoTCr9XTEPEQLcT5DI3ieocQQLbdNoBNT47VLapDFGCfwaRCshD4pTqnEYh7/hdYb9PIvvaVgY2MaD/sf4KlrG8GBWvhGZkXcPdBuORyGl/lTyf7V1U/kCzYP0bJe215YZVA5ogK1sBHGPrdmtzf6zUravq4OHT8Z/rYJtmse8UPZttwR0v5paliVYRxmb/w9Rw6PX1e/X5a9w3JUU2QD3IQOORdm/Xc9fjBie4Kd256F+Qm+N8PBaznYAl4UReg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726145770;
+	cv=none; b=MzABuJ5veCT7A+gnFXBUPur3DwvzQkwC9p04A2+JzStLqYIElYrXt+EaDww1BLnCrfdAAt2yINehBKX+4w7tPSbQIm0VjWgMfAn7Ht2EQvnGg8nfHo8OfFjD9khR8G9wRK9nc19ZviS1rjV57GMYN4+buB4WntVcRRn1V6zY7xU6zEo203KMlZsmyN3S9L1nT5kpLmrizIDYTPkXusUeCQiVUPRGvvSYed0jAwUlyFXHfdjTP4E541xy8GI/hFE3Ft4kVmJiFlc1mrbhiP+3N8/zHamQNp61WsmJ01cvSTFEwIhZXBEuIxEsoqMuj+V7FenfcysRZ0GYSqPkjTsMLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726145980; c=relaxed/relaxed;
-	bh=XpD/X77lqA2X1MwBp8e+ur8KLx0SrQSGDLfeVcHTiUI=;
+	t=1726145770; c=relaxed/relaxed;
+	bh=YYj+OrHO7/9jg6cZXzRIzpWIlAtM9rD/jZjmfyc78c8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JRjo+48bwy0XG5NHRoWp6nXfBkbyxSbO8NvGO3WyzOlkHNUEI7+suqz3ngWjKboLlZmpZfA2kR0cNcemvwwU13iXry9UWr0QKxlktF/h/sq6+W5dw3+jXbIp+L+hmMT71wSz23XW7zQIw3rOSKYgfihZjnhmfRHUCRS1h4UHRPQOt4h+HCPEJ2lpMJkkf4Tt0pYkqXsRJ3kb4bPg0/27HiPeUcXI2nzRKzGl+RdGJ1E+V79aWgvObB3AJA6m/aagegFqNc5FXEdQUwJi4CJmxUUJdTzsgbaO8gfB40x9DJngHoKfp6Xe1vCtq/vtAW0pxYNJEeso/BOXzbUmZToHNQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=JBe7SGXr; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sUAssYPp; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=JBe7SGXr; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sUAssYPp; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=lxX0SVS2QrXLJYyrfGYUTWDodZz4SbpZLDMqLSS1BVqYeZNDKh2aywfCNhJ+zwn7MSnAj2EnyDtHIFBI3aEX12iN3wBCaoxVfM/yH0w0fpgXbd2y8d7CxeK6vaCVAgwm/Oe+o9mQB2D7vkPv/W6XIkyAd55BLYA173iopABuRK0zRcuP1sbZ0mT4LRgJokibJaFnmoLaRcXadMgitoXqVyP5lq459r7Ml492bFrIoLCFDUL6ObCdFKKiFLz9BgKSfuKzVWaW6lJooYyP2Nx0tlggOlJEF5Cu4sDftb3spVB3JsuWya/iT23UovpO4tD7GQUDqx2F/AhGKS0/YKYpVw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A7xrGz8J; dkim-atps=neutral; spf=pass (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=JBe7SGXr;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sUAssYPp;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=JBe7SGXr;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sUAssYPp;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A7xrGz8J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 362 seconds by postgrey-1.37 at boromir; Thu, 12 Sep 2024 22:59:39 AEST
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4HZz4QCLz2yNj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2024 22:59:38 +1000 (AEST)
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 79AA71FB74;
-	Thu, 12 Sep 2024 12:53:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726145612; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XpD/X77lqA2X1MwBp8e+ur8KLx0SrQSGDLfeVcHTiUI=;
-	b=JBe7SGXrxt6QxAQ4dTBgjo9UuvN9TZq6EDfhbhKFeM37XVq+76Mt5DgWn1FPP7rGnesQAr
-	MrLuxVez1HSlM3rkAmLO9efpH6EBjXmD6HdboCD/Vh2t3MXxwklyXaJZwSezIVq/VJiyXt
-	RCEkadWYFlVUcgFnhV2biH64DCLDuTI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726145612;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XpD/X77lqA2X1MwBp8e+ur8KLx0SrQSGDLfeVcHTiUI=;
-	b=sUAssYPpOAzlZyM8ayyp7s5Wo30orVV8PcrUmsFHyaD8UudIvNRo9chcON4TAiiAtm1VOw
-	2pCXTLhk+2U8UwAg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726145612; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XpD/X77lqA2X1MwBp8e+ur8KLx0SrQSGDLfeVcHTiUI=;
-	b=JBe7SGXrxt6QxAQ4dTBgjo9UuvN9TZq6EDfhbhKFeM37XVq+76Mt5DgWn1FPP7rGnesQAr
-	MrLuxVez1HSlM3rkAmLO9efpH6EBjXmD6HdboCD/Vh2t3MXxwklyXaJZwSezIVq/VJiyXt
-	RCEkadWYFlVUcgFnhV2biH64DCLDuTI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726145612;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XpD/X77lqA2X1MwBp8e+ur8KLx0SrQSGDLfeVcHTiUI=;
-	b=sUAssYPpOAzlZyM8ayyp7s5Wo30orVV8PcrUmsFHyaD8UudIvNRo9chcON4TAiiAtm1VOw
-	2pCXTLhk+2U8UwAg==
-Date: Thu, 12 Sep 2024 14:53:31 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Morten Rasmussen <morten.rasmussen@arm.com>
-Cc: Yicong Yang <yangyicong@huawei.com>, yangyicong@hisilicon.com,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	linuxppc-dev@lists.ozlabs.org, bp@alien8.de,
-	dave.hansen@linux.intel.com, mingo@redhat.com,
-	linux-arm-kernel@lists.infradead.org, mpe@ellerman.id.au,
-	peterz@infradead.org, tglx@linutronix.de, sudeep.holla@arm.com,
-	will@kernel.org, catalin.marinas@arm.com, x86@kernel.org,
-	linux-kernel@vger.kernel.org, dietmar.eggemann@arm.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org,
-	jonathan.cameron@huawei.com, prime.zeng@hisilicon.com,
-	linuxarm@huawei.com, xuwei5@huawei.com, guohanjun@huawei.com
-Subject: Re: [PATCH v5 3/4] arm64: topology: Support SMT control on ACPI
- based system
-Message-ID: <20240912125331.GZ26466@kitsune.suse.cz>
-References: <00e6110a-462a-c117-0292-e88b57d27a05@huawei.com>
- <3947cb79-3199-4cd6-b784-51a245084581@arm.com>
- <1a7b5ac7-f040-672f-07a0-d7f3dc170c88@huawei.com>
- <6c05e39c-41f3-451c-b119-7b8662c1ceee@arm.com>
- <7f722af2-2969-aae5-1fb5-68d353eb95b9@huawei.com>
- <277bd093-422b-4301-92a3-d0a58eb41af5@arm.com>
- <10082e64-b00a-a30b-b9c5-1401a54f6717@huawei.com>
- <Ztqp-SUinu8C9a-P@R5WKVNH4JW>
- <bb2bd7f4-e0ea-a771-7960-e35949ec9e03@huawei.com>
- <ZuLXlOe0CyiH5eXd@R5WKVNH4JW>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4HVx5snmz2yNj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2024 22:56:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726145770; x=1757681770;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dGAeN13W305HmHWI3EX/D8HuXsJ0/ArD+TPGFFRkJWc=;
+  b=A7xrGz8J/V3QXZ/+tUAEfaC8bNbCwANF7RvKYsxTiV4PG8XwC8sZ7S5U
+   YOYMJFVVfw2bZB1Uo3c8cNoWN2DLqoMaAn30jgmf/Zquzn+pevv9ubbd7
+   SM9cAx9z2MjO1KvY4T4yypNcEFcc35s2wYyuIvPL+WxlmGdc97R3UHUwe
+   DleBl0dEPSgxUoFyUGk3D4a8Wuvm6sMsIVIIATA6CUuN9WWymH3ESvDMy
+   yRDWB8QBlsbt4mGScZrf9AsRbygUzDXLnOKx/lKaKRDyyWrzB9wYa01+X
+   MSi/Aw3lkhGsDaiXr3w+pSbMSGZN0gTEgaIoux8tgyyDKsoOR0preHUbo
+   A==;
+X-CSE-ConnectionGUID: dfRvisaeS6en8y7P2w3Ifg==
+X-CSE-MsgGUID: 6HVgJ8C8RdmXs2+L8hoC8g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="47506318"
+X-IronPort-AV: E=Sophos;i="6.10,223,1719903600"; 
+   d="scan'208";a="47506318"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2024 05:56:06 -0700
+X-CSE-ConnectionGUID: WI5ZxRdPS1OSvF46W9f0Ng==
+X-CSE-MsgGUID: 42Lg1Wh1Q/6X9fgClrychQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,223,1719903600"; 
+   d="scan'208";a="98523065"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 12 Sep 2024 05:56:00 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sojMb-0005Ay-0r;
+	Thu, 12 Sep 2024 12:55:57 +0000
+Date: Thu, 12 Sep 2024 20:55:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alistair Popple <apopple@nvidia.com>, dan.j.williams@intel.com,
+	linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev, Alistair Popple <apopple@nvidia.com>,
+	vishal.l.verma@intel.com, dave.jiang@intel.com, logang@deltatee.com,
+	bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca,
+	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
+	npiggin@gmail.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
+	willy@infradead.org, djwong@kernel.org, tytso@mit.edu,
+	linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 12/12] mm: Remove devmap related functions and page table
+ bits
+Message-ID: <202409122016.5i2hNKRU-lkp@intel.com>
+References: <39b1a78aa16ebe5db1c4b723e44fbdd217d302ac.1725941415.git-series.apopple@nvidia.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -110,117 +89,66 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZuLXlOe0CyiH5eXd@R5WKVNH4JW>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Level: 
-X-Spamd-Result: default: False [-8.30 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.996];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_ZERO(0.00)[0];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Spam-Score: -8.30
-X-Spam-Flag: NO
+In-Reply-To: <39b1a78aa16ebe5db1c4b723e44fbdd217d302ac.1725941415.git-series.apopple@nvidia.com>
 
-Hello,
+Hi Alistair,
 
-On Thu, Sep 12, 2024 at 01:59:16PM +0200, Morten Rasmussen wrote:
-> On Fri, Sep 06, 2024 at 04:36:30PM +0800, Yicong Yang wrote:
-> > On 2024/9/6 15:06, Morten Rasmussen wrote:
-> > > Hi Yicong,
-> > > 
-> > > On Thu, Sep 05, 2024 at 08:02:20PM +0800, Yicong Yang wrote:
-> > >> On 2024/9/5 16:34, Pierre Gondois wrote:
-> > >>> Hello Yicong,
-> > >>>
-> > >>> If a platform has CPUs with:
-> > >>> - 1 thread
-> > >>> - X (!= 1) threads
-> > >>> Then I think that the asymmetry is not detected
-> > >>
-> > >> Ah ok, I only handle the case where there are several thread numbers except no SMT CPUs in the
-> > >> system. For this case I was thinking we don't need to handle this since there's only one kind
-> > >> of SMT core in the system, control should works fine for the SMT CPU clusters and we may not
-> > >> care about the CPUs with no SMT.
-> > >>
-> > >> Below code should handle the case if we initialize the max_smt_thread_num to 0. I also
-> > >> reword the warning messages to match the fact. For heterogeneous SMT topology we still
-> > >> support control SMT by on/off toggle but not fully support setting the thread number.
-> > >>
-> > >> 	int max_smt_thread_num = 0;
-> > >> 	[...]
-> > >> 	/*
-> > >> 	 * This should be a short loop depending on the number of heterogeneous
-> > >> 	 * CPU clusters. Typically on a homogeneous system there's only one
-> > >> 	 * entry in the XArray.
-> > >> 	 */
-> > >> 	xa_for_each(&hetero_cpu, hetero_id, entry) {
-> > >> 		/*
-> > >> 		 * If max_smt_thread_num has been initialized and doesn't match
-> > >> 		 * the thread number of this entry, then the system has
-> > >> 		 * heterogeneous SMT topology.
-> > >> 		 */
-> > >> 		if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)
-> > >> 			pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
-> > > 
-> > > What does 'partly supported' mean here?
-> > > 
-> > > If the SMT control doesn't work as intended for this topology, I don't
-> > > think it should be enabled for it.
-> > > 
-> > 
-> > The /sys/devices/system/cpu/smt/control supports 2 kind of controls [1]
-> > (a) enable/disable SMT entirely by writing on/off
-> > (b) enable/disable SMT partially by writing a valid thread number (CONFIG_SMT_NUM_THREADS_DYNAMIC)
-> > 
-> > We assume 3 kind of SMT topology:
-> > 1. homogeneous SMT topology, all the CPUs support SMT or not
-> > 2.1 heterogeneous SMT topology, part of CPU clusters have SMT and others not. Clusters support SMT
-> >     have the same SMT thread number
-> > 2.2 heterogeneous SMT topology, part of CPU clusters have SMT and the thread number may differs
-> >     (e.g. cluster 1 is of SMT 2 and cluster 2 is of SMT 4. not sure there's such a real system)
-> > 
-> > For any of above SMT topology, control (a) should work as expected. When enabling SMT by writing "on"
-> > the SMT is disabled for those CPU clusters who have SMT. Same for disabling SMT by writing "off".
-> > But control (b) may not work for case 2.2 since the SMT thread number is not the same across
-> > the system.
-> > 
-> > For this series alone we won't met this since CONFIG_SMT_NUM_THREADS_DYNAMIC is not enabled.
-> > So control (b) only supports write 1/max_thread which behaves same as write off/on and will
-> > work as intended for all the 3 cases. As discussed Pierre will add support for
-> >  CONFIG_SMT_NUM_THREADS_DYNAMIC since thunderX2 is a symmetric SMT4 machine and
-> > CONFIG_SMT_NUM_THREADS_DYNAMIC would be useful. We thought a warning should be useful
-> > if running on a system of case 2.2.
-> 
-> Thanks for explaining the situation.
-> 
-> So IIUC, for case 2.2 there will be _no_ failures if someone writes a
-> value different from 1 or max_threads?
-> 
-> The SMT control code can handle that max_threads isn't the correct
-> number of threads for all cores in the system?
+kernel test robot noticed the following build errors:
 
-Hello,
+[auto build test ERROR on 6f1833b8208c3b9e59eff10792667b6639365146]
 
-I suppose a number can be interpreted as 'up to this number'. If that's
-what the user wanted is another question, on a hypothetical heterogenous
-system with different number of threads in different CPUs it is
-questionalble what this achieves.
+url:    https://github.com/intel-lab-lkp/linux/commits/Alistair-Popple/mm-gup-c-Remove-redundant-check-for-PCI-P2PDMA-page/20240910-121806
+base:   6f1833b8208c3b9e59eff10792667b6639365146
+patch link:    https://lore.kernel.org/r/39b1a78aa16ebe5db1c4b723e44fbdd217d302ac.1725941415.git-series.apopple%40nvidia.com
+patch subject: [PATCH 12/12] mm: Remove devmap related functions and page table bits
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20240912/202409122016.5i2hNKRU-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240912/202409122016.5i2hNKRU-lkp@intel.com/reproduce)
 
-Arguably once such system is found and the desired configurations
-undestood this can be expanded to handle them.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409122016.5i2hNKRU-lkp@intel.com/
 
-Thanks
+All errors (new ones prefixed by >>):
 
-Michal
+   In file included from arch/powerpc/include/asm/book3s/64/mmu-hash.h:20,
+                    from arch/powerpc/include/asm/book3s/64/mmu.h:32,
+                    from arch/powerpc/include/asm/mmu.h:377,
+                    from arch/powerpc/include/asm/paca.h:18,
+                    from arch/powerpc/include/asm/current.h:13,
+                    from include/linux/thread_info.h:23,
+                    from include/asm-generic/preempt.h:5,
+                    from ./arch/powerpc/include/generated/asm/preempt.h:1,
+                    from include/linux/preempt.h:79,
+                    from include/linux/alloc_tag.h:11,
+                    from include/linux/rhashtable-types.h:12,
+                    from include/linux/ipc.h:7,
+                    from include/uapi/linux/sem.h:5,
+                    from include/linux/sem.h:5,
+                    from include/linux/compat.h:14,
+                    from arch/powerpc/kernel/asm-offsets.c:12:
+>> arch/powerpc/include/asm/book3s/64/pgtable.h:1390:1: error: expected identifier or '(' before '}' token
+    1390 | }
+         | ^
+   make[3]: *** [scripts/Makefile.build:117: arch/powerpc/kernel/asm-offsets.s] Error 1
+   make[3]: Target 'prepare' not remade because of errors.
+   make[2]: *** [Makefile:1193: prepare0] Error 2
+   make[2]: Target 'prepare' not remade because of errors.
+   make[1]: *** [Makefile:224: __sub-make] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:224: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
+
+
+vim +1390 arch/powerpc/include/asm/book3s/64/pgtable.h
+
+953c66c2b22a30 Aneesh Kumar K.V  2016-12-12  1389  
+ebd31197931d75 Oliver O'Halloran 2017-06-28 @1390  }
+6a1ea36260f69f Aneesh Kumar K.V  2016-04-29  1391  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ebd31197931d75 Oliver O'Halloran 2017-06-28  1392  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
