@@ -1,52 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1310-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1311-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314529778D8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 08:30:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FA1977902
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 08:54:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4kvp4wNsz2yVP;
-	Fri, 13 Sep 2024 16:30:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4lQx0DBJz2yZ4;
+	Fri, 13 Sep 2024 16:54:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726209046;
-	cv=none; b=UVMxToFEImILmF8rCACd/o8s0UDQpkymzqbmAwXZgu1TZjK6RX2nRw2Mg9WuM0lg6JM03tWpQN7+JFch6l273l/DZvlHgF+x0QJQOnzqHtNW80RuXnM5dq8l/v4uzSwEcqiOa9Rg6BJXjMkT46ZQ4ENKhV1W07uTXz/wtnLWzeXeoER06i7MWPaHSNUuHZc0/N5AXFX6XVJPw2Lu4QjvLsJjkhqWZQWsdcBoA62JkmIaLFB/xghBXBP9uaQPuol+arHcbHRSgY++7uM61icoqzjhmMJM4DHWIpS0iI35kvLwPAlJz6o/Z2szuSrnDqtKJpfsdNRxMtRATGPfmymo0Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726210456;
+	cv=none; b=hq4iYAZic9j7fyQ9Mj9EyhySG4FD+yM8bA7CHBFXuEdEp87WzjbYGDN9J+NEOQBfHRW7TIs357Gk7XQLZDjxMN6xUaiiRVnK68dCv/NyyT1Mk26JoChIGILokHxk0HjAnTihlakFIvydUIOF6OIbvQrEovvHH/slr0v3g6cnGiLVx0NYBx+honxtJ9QXcRjmxN0mpfDtDr+G8S/72lAgMWWeiw8y9kk4K5O5a6zOe1n1rwyIC/L2h0cf2KDVWJlxFXDx4/p6jHSqgAS1m9Gxnhz13gb/TcxrZQRpZe+7lOGex2IdOj1ZAjaHiiFj6MUfESNREc4A1iO/NShqKeqiZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726209046; c=relaxed/relaxed;
-	bh=jylDzQCitBSPeTVqmxm4OSycX0/yXnoI2vcMG+gJKdA=;
+	t=1726210456; c=relaxed/relaxed;
+	bh=8SvU7I62HvfMFyPLnS1qjjeTZi56XbsvpoqcTu3wp88=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IcdKwoQ2eVQrGYhXD6cJJjVbVWyrUtZ3IID1auxoanH/yrsdW68QQxGrNgcKIpjylbcu2AMVM9fxICnYsIj3rpn18K0q9eSYgnl7+eJR4/e2AWhWp26EFtIJIpURkJmCJ6tmIynr3eXRssozkP9iqzCg3zHhXNmecELf4vjV9M9tG8Z0dvFptpCVYlFNZGkBbYLB2KwgUDMbSo4u2ZrmDf4jqw355eOGEADbG2olMmBAwMdzVHVk4D/RcZai9KQXb60M45QhGO8/DXLsZaGooTmNn66BGL3hIJwi3tAlDl8bxE0wUu/AeSNeij72OWr8+NwcRadN1kaTFgSU4vwwWg==
+	 In-Reply-To:Content-Type; b=l7V8pSE1pFpa9b4ZZKilYTKEU8lkqGYxE8dFtoMkVZeqDwHqUq3aT96Yvhb+wo/avBS+Biz31tg48406FxlK2NTKWMI5jyLmrFJZIOQ72KNXbkGQtdlhsvsxgkt7fdSgfItVG7S8UknHlfo5MmjrPzYygz+3iWTAXE/S6v8bKii0Ca/eKG8Tkzd7Jao4Vld01cxwjLEkWAZt2IkwchcjpaNLyQhg8s7ZmLw/pO2MVQxRgKQu06yV6j95mTa3nIWzS2pY9D319HgbSjPTmgB/5DYZ6FaRVypM3z+o0v5KDKecAfPR++Nr3sE2CV3DrjAFv3gJZ6p8+wvp0eLKNbe2hQ==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4kvp2fnbz2yVD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 16:30:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4lQw54Nbz2yYy
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 16:54:15 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4X4kvl1mYcz9sxD;
-	Fri, 13 Sep 2024 08:30:43 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4X4lQs0pJ2z9scR;
+	Fri, 13 Sep 2024 08:54:13 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id KPoVoPcVMXmd; Fri, 13 Sep 2024 08:30:43 +0200 (CEST)
+	with ESMTP id kL0iLXdYMHHv; Fri, 13 Sep 2024 08:54:13 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4X4kvl0pksz9sxB;
-	Fri, 13 Sep 2024 08:30:43 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4X4lQr6zCrz9sX6;
+	Fri, 13 Sep 2024 08:54:12 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 093388B77A;
-	Fri, 13 Sep 2024 08:30:43 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id DD4FF8B77A;
+	Fri, 13 Sep 2024 08:54:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id r0dE7jHRRDpY; Fri, 13 Sep 2024 08:30:42 +0200 (CEST)
+	with ESMTP id Acd_6_kLEZSa; Fri, 13 Sep 2024 08:54:12 +0200 (CEST)
 Received: from [192.168.233.70] (unknown [192.168.233.70])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 511308B766;
-	Fri, 13 Sep 2024 08:30:42 +0200 (CEST)
-Message-ID: <56b53876-0838-416f-adce-b1ffbd0916fc@csgroup.eu>
-Date: Fri, 13 Sep 2024 08:30:41 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 751288B766;
+	Fri, 13 Sep 2024 08:54:12 +0200 (CEST)
+Message-ID: <95ced963-b584-4ccf-ba34-8f2ba99172f4@csgroup.eu>
+Date: Fri, 13 Sep 2024 08:54:12 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,95 +57,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] powerpc/vpa_pmu: Add interface to expose vpa counters
- via perf
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
-Cc: atrajeev@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, maddy@linux.ibm.com,
- disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- hbathini@linux.ibm.com, adubey@linux.ibm.com
-References: <20240828102141.1052332-1-kjain@linux.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/entry: convert to common and generic entry
+To: Luming Yu <luming.yu@shingroup.cn>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ mpe@ellerman.id.au, npiggin@gmail.com, jialong.yang@shingroup.cn,
+ luming.yu@gmail.com
+References: <B4ABABEA5F13B86A+20240912082500.1469-1-luming.yu@shingroup.cn>
+ <fc509bcd-5ca0-4dc2-962e-766a01cbe4fb@csgroup.eu>
+ <153FD6B5CE4F97D9+ZuOYDQ-iHIIwJjbh@HX09040029.powercore.com.cn>
 Content-Language: fr-FR
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20240828102141.1052332-1-kjain@linux.ibm.com>
+In-Reply-To: <153FD6B5CE4F97D9+ZuOYDQ-iHIIwJjbh@HX09040029.powercore.com.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
-Le 28/08/2024 à 12:21, Kajol Jain a écrit :
-> The pseries Shared Processor Logical Partition(SPLPAR) machines
-> can retrieve a log of dispatch and preempt events from the
-> hypervisor using data from Disptach Trace Log(DTL) buffer.
-> With this information, user can retrieve when and why each dispatch &
-> preempt has occurred. Added an interface to expose the Virtual Processor
-> Area(VPA) DTL counters via perf.
+Le 13/09/2024 à 03:40, Luming Yu a écrit :
+> On Thu, Sep 12, 2024 at 12:23:29PM +0200, Christophe Leroy wrote:
+>>
+>>
+>> Le 12/09/2024 à 10:24, Luming Yu a écrit :
+>>> From: Yu Luming <luming.yu@gmail.com>
+>>>
+>>> convert powerpc entry code in syscall and fault to use syscall_work
+>>> and irqentry_state as well as common calls from generic entry infrastructure.
+>>>
+>>> Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+>>> ---
+>>>    arch/powerpc/Kconfig                   | 1 +
+>>>    arch/powerpc/include/asm/hw_irq.h      | 5 +++++
+>>>    arch/powerpc/include/asm/processor.h   | 6 ++++++
+>>>    arch/powerpc/include/asm/syscall.h     | 5 +++++
+>>>    arch/powerpc/include/asm/thread_info.h | 1 +
+>>>    arch/powerpc/kernel/syscall.c          | 6 +++++-
+>>>    arch/powerpc/mm/fault.c                | 5 +++++
+>>>    7 files changed, 28 insertions(+), 1 deletion(-)
+>>
+>> There is another build problem:
+>>
+>>    CC      kernel/entry/common.o
+>> kernel/entry/common.c: In function 'irqentry_exit':
+>> kernel/entry/common.c:335:21: error: implicit declaration of function
+>> 'regs_irqs_disabled'; did you mean 'raw_irqs_disabled'?
+>> [-Werror=implicit-function-declaration]
+>>    335 |         } else if (!regs_irqs_disabled(regs)) {
+>>        |                     ^~~~~~~~~~~~~~~~~~
+>>        |                     raw_irqs_disabled
+>>
+>>
+>> You have put regs_irqs_disabled() in a section dedicated to PPC64, so it
+>> fails on PPC32.
+>>
+>>
+>> After fixing this problem and providing an empty asm/entry-common.h it is
+>> now possible to build the kernel. But that's not enough, the board is stuck
+>> after:
+>>
+>> ...
+>> [    2.871391] Freeing unused kernel image (initmem) memory: 1228K
+>> [    2.877990] Run /init as init process
 > 
-> The following events are available and exposed in sysfs:
-> 
->   vpa_dtl/dtl_cede/ - Trace voluntary (OS initiated) virtual processor waits
->   vpa_dtl/dtl_preempt/ - Trace time slice preempts
->   vpa_dtl/dtl_fault/ - Trace virtual partition memory page faults.
->   vpa_dtl/dtl_all/ - Trace all (dtl_cede/dtl_preempt/dtl_fault)
-> 
-> Added interface defines supported event list, config fields for the
-> event attributes and their corresponding bit values which are exported
-> via sysfs. User could use the standard perf tool to access perf events
-> exposed via vpa-dtl pmu.
-> 
-> The VPA DTL PMU counters do not interrupt on overflow or generate any
-> PMI interrupts. Therefore, the kernel needs to poll the counters, added
-> hrtimer code to do that. The timer interval can be provided by user via
-> sample_period field in nano seconds.
-> 
-> Result on power10 SPLPAR system with 656 cpu threads.
-> In the below perf record command with vpa_dtl pmu, -c option is used
-> to provide sample_period whch corresponding to 1000000000ns i.e; 1sec
-> and the workload time is also 1 second, hence we are getting 656 samples:
-> 
-> [command] perf record -a -R -e vpa_dtl/dtl_all/ -c 1000000000 sleep 1
-> [ perf record: Woken up 1 times to write data ]
-> [ perf record: Captured and wrote 0.828 MB perf.data (656 samples) ]
-> 
-> There is one hrtimer added per vpa-dtl pmu thread. Code added to handle
-> addition of dtl buffer data in the raw sample. Since DTL does not provide
-> IP address for a sample and it just have traces on reason of
-> dispatch/preempt, we directly saving DTL buffer data to perf.data file as
-> raw sample. For each hrtimer restart call, interface will dump all the
-> new dtl entries added to dtl buffer as a raw sample.
-> 
-> To ensure there are no other conflicting dtl users (example: debugfs dtl
-> or /proc/powerpc/vcpudispatch_stats), interface added code to use
-> "down_write_trylock" call to take the dtl_access_lock. The dtl_access_lock
-> is defined in dtl.h file. Also added global reference count variable called
-> "dtl_global_refc", to ensure dtl data can be captured per-cpu. Code also
-> added global lock called "dtl_global_lock" to avoid race condition.
-> 
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> ---
-> Notes:
-> 
-> - Made code changes on top of recent fix sent by Michael Ellerman.
->    Link to the patch: https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20240819122401.513203-1-mpe@ellerman.id.au/
-> 
->   arch/powerpc/perf/Makefile  |   2 +-
->   arch/powerpc/perf/vpa-pmu.c | 469 ++++++++++++++++++++++++++++++++++++
->   include/linux/cpuhotplug.h  |   1 +
->   3 files changed, 471 insertions(+), 1 deletion(-)
->   create mode 100644 arch/powerpc/perf/vpa-pmu.c
+> Thanks for these questions. :-)
+> I haven't gotten chance to run it in ppc32 qemu.
+> the common syscall trace enter lost this hunk
+> -       if (!is_32bit_task())
+> -               audit_syscall_entry(regs->gpr[0], regs->gpr[3], regs->gpr[4],
+> -                                   regs->gpr[5], regs->gpr[6]);
+> -       else
+> -               audit_syscall_entry(regs->gpr[0],
+> -                                   regs->gpr[3] & 0xffffffff,
+> -                                   regs->gpr[4] & 0xffffffff,
+> -                                   regs->gpr[5] & 0xffffffff,
+> -                                   regs->gpr[6] & 0xffffffff);
+> which I don't understand whether we need a arch callbacks for it.
 
+I don't thing so.
 
-Seems like it doesn't build on PPC64:
+As far as I can see, audit_syscall_entry() is called by 
+syscall_enter_audit() in kernel/entry/common.c
 
-arch/powerpc/perf/vpa-pmu.c#L212
-passing argument 1 of 'up_write' from incompatible pointer type 
-[-Wincompatible-pointer-types]
+And the masking of arguments based on is_32bit_task() is done in 
+syscall_get_arguments() with is called by
+syscall_enter_audit() just before calling audit_syscall_entry() and 
+which is an arch callback that does the same as the removed hunk.
+> 
+> Before I sent out the RFC patch set, the very limited compile and boot test goes well with a ppc64 qemu VM. Surely, there will be a lot of test, debug and following up patch set update that is necessary to make it a complete convert.
 
-arch/powerpc/perf/vpa-pmu.c#L261
-passing argument 1 of 'down_write_trylock' from incompatible pointer 
-type [-Wincompatible-pointer-types]
+Even on ppc64 it doesn't build, at the first place because 
+arch/powerpc/include/asm/entry-common.h is missing in your patch. Did 
+you forget to 'git add' it ?
 
-arch/powerpc/perf/vpa-pmu.c#L402
-passing argument 1 of 'up_write' from incompatible pointer type 
-[-Wincompatible-pointer-types]
+And same as with PPC32, when I build PPC64 with an empty 
+asm/entry-common.h, it doesn't work. So, I guess you had some needed 
+code in that file and you have to send it.
 
