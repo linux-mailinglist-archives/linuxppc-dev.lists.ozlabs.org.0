@@ -1,61 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-1362-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1363-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F70978BB6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 01:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0768978BDA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 01:26:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X595C6VS0z302P;
-	Sat, 14 Sep 2024 09:10:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X59RY2Dcbz3020;
+	Sat, 14 Sep 2024 09:26:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726269023;
-	cv=none; b=ROxtEBFVpJ04smI2I/8hre8gOxjaeMM47y7/tmdcEo3x1eGNAe6T6WUOhvwct+798e3wTWfF/Cd2BZq8ZQBfni8Q+KfinD4NYpicqpW/Yv/HUzneqEO7qSKXrjjdbAiNdt8KjzMapcC0FJRGT1MUNbC3cQcqOnv3DORmiLuTmH7W5gBcVarImuR6MlNiwqouhxkhgufbL+XTX+PiTVn93X+Z1UJv9g0kuoQ1GC7v/tatflppfEep1Af2gag67/hnFX+iQbZsEq3DBgwwCmgmtZARkVEYTx49xZd8MBovNn4IqDp4Sd+NFXYV08X1u/5rhP/wgdTS307Wpu42wBUH3g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::833"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726269977;
+	cv=none; b=Z0sfZDo2TaO54nJF+IPLGOkdeX8LHbo24TbeUKwbkHGUirrag9MR9cVIpcwy3sSFFmufabofWRWTl+b79TlzSlKbLgT4eB3U/LwnoikdJ+IckEExPoK/wKjCNv34QPO1OiMoQqsfS0wrvrIw5HavMjC3rP6+BD74Ii8FpI/JDBaLp11CnhqAwP95ybmznPuA6bkxZbg/re1vs9j0ykVA2yD/MsIStCcy0EGGszJ+vFO9G0RMQpUn+54VDdr7rejzkTOoiFOK5ErX21m1u+eVwyJrppyai4gEB5pLqAGc8XqUEENo2ECOXNtTecLNcn5/4YjSXqMB/NwIgFiiMZawuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726269023; c=relaxed/relaxed;
-	bh=gy3hRIQfFMt+naW5uo5M4vgY3O8DQ+s8NBlJGzQZOSY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BFqZwaaOgF2Vst7Pgwe7zxzBYhwSRKpvx99AcnW2uD0nXlE1nz8Ht+t+kVUpthl74S9eRISl01MtZEc84OGOrAF3OLkIP6bWCs+9E4DR8GyEa090x0ZnwazKajc57lzLuG/sxJ+19SMjHgRg8TeK5f5JeLCS4hyUtS0VNzX0RM8wDMOgZ08fOEoLDkJCpikcsaeYF7yuZxlMNJ+keYk+eYdiM+dMZm+g+pe+Ojs6L7ro4P3HOoWOBkBc04BR7gu2jdQ30nFngeMw74ul3i43VHw3X6XiY+4qEcz2w4+ywxYiAw9DkyX5YgFxyMWi1dXZ70NcuQ0CdVgV3JliXAP2Kw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qcpULeM/; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1726269977; c=relaxed/relaxed;
+	bh=y/zSGPiOArXOzzX0HwJWO9XDkJRj9M2wk/pUWi0k/Ks=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T7SxcpMXacLlxxplpJ2AS9oxM59aUOPKYaQ3IEQDTFhuXOCPK6cNw1muYrWJuckpQSIBLQ6BV/77kPSu7vP391TJoTzYIwdAZcKG3Qy4v9YysbPcjJnaeqKt2V40HzknJQzZCWe3UeoilZUnPntzOjfQtLPosx8vNN+aNYGR9m0yUZP9yjEKRVGT7ChWXhwpVsDRJd+L65M7IGDpGOQ+mRijgQJQhgmLaXmdSTHoU3MLm1BoPJ7H4jbDqcYZV1nMkfBmynE5ZSVCfeQRDrbCXzCsjo/EFsR/a38TfRKP4FUHogjyJc5agRGMyQh8fkO6wuNz3G1A7klAUbCyCL7erw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JZ/cFaCv; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::833; helo=mail-qt1-x833.google.com; envelope-from=almasrymina@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qcpULeM/;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JZ/cFaCv;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::833; helo=mail-qt1-x833.google.com; envelope-from=almasrymina@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X595C238jz2xmh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 09:10:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726269023;
-	bh=gy3hRIQfFMt+naW5uo5M4vgY3O8DQ+s8NBlJGzQZOSY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qcpULeM/kqlHDKMJdI99cEZTIQVTUG1Ecedaa6xxZ2uQ3S9WQcM7etXghncO5Prbv
-	 B/++QsNVSrw+L08LnkqU/PQPUcwrmjyPFJ8LMWPHoP4JiOqxVU8DQ5S2aBwCdHzxgj
-	 JOrqdd9pFb81Gk7i9npf4WZj9gI3xMKGhc52A260yT6MtmxkBLbrH8kWhQZnpEmAes
-	 lzYmDQ1Ebg0iml/6IPQhhzzUAj0V/JM8wKMxcCI5OTs7+gBZrxQgdbZDcPaZ4V6Fhm
-	 eYwbYbgCLqABXGzISOv7/yAuerVBRW1S7F93NF+mypdUNZCgikRr7cFuZIPoiVWrab
-	 hB9aXGh+0fBUw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X595C0jDtz4x8c;
-	Sat, 14 Sep 2024 09:10:23 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Rob Herring <robh@kernel.org>
-Cc: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Saravana Kannan
- <saravanak@google.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] of: address: Unify resource bounds overflow checking
-In-Reply-To: <CAL_JsqLYQyue9WyYiQPaM1D8Hxve-a4RXCaDRvyeF2VWWx=Ozg@mail.gmail.com>
-References: <20240906-of-address-overflow-v1-1-19567aaa61da@linutronix.de>
- <87plp7r8ye.fsf@mail.lhotse>
- <CAL_JsqLYQyue9WyYiQPaM1D8Hxve-a4RXCaDRvyeF2VWWx=Ozg@mail.gmail.com>
-Date: Sat, 14 Sep 2024 09:10:20 +1000
-Message-ID: <87mskbqher.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X59RX2kBRz2ywC
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 09:26:15 +1000 (AEST)
+Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-4581cec6079so108331cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 16:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726269973; x=1726874773; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y/zSGPiOArXOzzX0HwJWO9XDkJRj9M2wk/pUWi0k/Ks=;
+        b=JZ/cFaCvqJk9Fi/WjtbVvOwZu/4H5S9mNkjNeXHLgh51xYAAR3c77n6G72Vna3HCLe
+         wVrpZvFtkEGt2iCbA5/g6z9fSsyePwvu7rGgPmRzmS7EQPj5o4GGG2VE4pyaXnoXS53E
+         75Ntv+Q71J9gwtM8iOHciuIVioAbHL3AYne669/nYQH+IvglAacYdHyi2Wad3jB/7lvo
+         Epm4WXWnTvJzktK+cY7Pma2CpG6/Oc+bLdgVA5Tje0RYecXDi/0senxh6Pdzjpr3bMAI
+         GupnXB430BI1V5XZhG1KMXNEUX7CooNuKDyCTu7IplzfhXKvtf8WRAKdMtC6mCzANBNg
+         r5cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726269973; x=1726874773;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y/zSGPiOArXOzzX0HwJWO9XDkJRj9M2wk/pUWi0k/Ks=;
+        b=b8KFJCcALz4gy0aEfe4BsulGqj7VKROREl+URUQt1vtmq9V6IuE5vZt6uvpt0aZEu9
+         uxddHelU7QMUltVLFEl4ND12rolNxoAALd4YC5shCrcnOzFo0d8cQx3cATDWSPycGKze
+         LzfnuhoHYvcb6K5wlvFO7ldZ9TQG6hFeyJvxkwawcpgVsT3XK1ni63HTRvGWp7+AUSoA
+         H3yviGrxqgXx304wZ8SJKv2QKgMF/RuwIVTvW16HGMGQmwyitgK7OlWiBUFiVTf4I+TQ
+         1P7FA5WqtjvsnLYUevgDZr+8gZbvQojh55vDnM7SOl0EJ7x/dkTvHxvBd3DFP1fdq0TP
+         kLkg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/NMhuxRG6IHwc8I9tZtTqk/F/W/WFNR2gUiPLmsFrFGhF7OP7UnOqxJBLA7sIFwst0IpKxrMrE/pBXKs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzTCHaPrK27Pr7mBlGHk3IAGgei2MNgqB/Yi2zHQwo1V0NXQenx
+	jQ0XgbCv33M92f320R6bg9pOchNpNEbGLEMtCyR3Zq1CCPWk6YwNVF/4DN4g3QNuSVHZqDRtt6Y
+	MjpLf/8XffYHB+PIQXp0O3cE1tXcoHamrPNyj
+X-Google-Smtp-Source: AGHT+IEXO5gvdbs+il7CDpTLc6xhdGle0XlSKxYKCooQsafNwkd1uFCAY64vKMmqs8XWP2QDEPY442O3slWn7LVJZhU=
+X-Received: by 2002:ac8:5a89:0:b0:456:7513:44ba with SMTP id
+ d75a77b69052e-45860789e90mr8634561cf.4.1726269972348; Fri, 13 Sep 2024
+ 16:26:12 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,58 +71,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240913213351.3537411-1-almasrymina@google.com>
+ <ZuS0x5ZRCGyzvTBg@mini-arch> <ZuS1u8G6M9ch2tLC@casper.infradead.org> <ZuS8Zp_iiMfi0PX9@mini-arch>
+In-Reply-To: <ZuS8Zp_iiMfi0PX9@mini-arch>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 13 Sep 2024 16:26:00 -0700
+Message-ID: <CAHS8izMV48MeqcFB3QS_TkHNLWkQb1CjFrMk+XSS4dVqO66t2w@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] page_pool: fix build on powerpc with GCC 14
+To: Stanislav Fomichev <stfomichev@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>, 
+	Linux Next Mailing List <linux-next@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Rob Herring <robh@kernel.org> writes:
-> On Fri, Sep 13, 2024 at 8:15=E2=80=AFAM Michael Ellerman <mpe@ellerman.id=
-.au> wrote:
->> Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de> writes:
->> > The members "start" and "end" of struct resource are of type
->> > "resource_size_t" which can be 32bit wide.
->> > Values read from OF however are always 64bit wide.
->> >
->> > Refactor the diff overflow checks into a helper function.
->> > Also extend the checks to validate each calculation step.
->> >
->> > Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
->> > ---
->> >  drivers/of/address.c | 45 ++++++++++++++++++++++++++-----------------=
---
->> >  1 file changed, 26 insertions(+), 19 deletions(-)
->> >
->> > diff --git a/drivers/of/address.c b/drivers/of/address.c
->> > index 7e59283a4472..df854bb427ce 100644
->> > --- a/drivers/of/address.c
->> > +++ b/drivers/of/address.c
->> > @@ -198,6 +198,25 @@ static u64 of_bus_pci_map(__be32 *addr, const __b=
-e32 *range, int na, int ns,
->> >
->> >  #endif /* CONFIG_PCI */
->> >
->> > +static int __of_address_resource_bounds(struct resource *r, u64 start=
-, u64 size)
->> > +{
->> > +     u64 end =3D start;
->> > +
->> > +     if (overflows_type(start, r->start))
->> > +             return -EOVERFLOW;
->> > +     if (size =3D=3D 0)
->> > +             return -EOVERFLOW;
->> > +     if (check_add_overflow(end, size - 1, &end))
->> > +             return -EOVERFLOW;
->> > +     if (overflows_type(end, r->end))
->> > +             return -EOVERFLOW;
->>
->> This breaks PCI on powerpc qemu. Part of the PCI probe reads a resource
->> that's zero sized, which used to succeed but now fails due to the size
->> check above.
->>
->> The diff below fixes it for me.
+On Fri, Sep 13, 2024 at 3:27=E2=80=AFPM Stanislav Fomichev <stfomichev@gmai=
+l.com> wrote:
 >
-> I fixed it up with your change.
+> On 09/13, Matthew Wilcox wrote:
+> > On Fri, Sep 13, 2024 at 02:55:19PM -0700, Stanislav Fomichev wrote:
+> > > On 09/13, Mina Almasry wrote:
+> > > > Building net-next with powerpc with GCC 14 compiler results in this
+> > > > build error:
+> > > >
+> > > > /home/sfr/next/tmp/ccuSzwiR.s: Assembler messages:
+> > > > /home/sfr/next/tmp/ccuSzwiR.s:2579: Error: operand out of domain (3=
+9 is
+> > > > not a multiple of 4)
+> > > > make[5]: *** [/home/sfr/next/next/scripts/Makefile.build:229:
+> > > > net/core/page_pool.o] Error 1
+> > >
+> > > Are we sure this is the only place where we can hit by this?
+> >
+> > It's a compilation error, so yes, we're sure.
+>
+> We also have netmem_compound_head() which does page_to_netmem(compound_he=
+ad()).
+> Wondering whether we'll eventually hit a similar issue over there.
 
-Thanks.
+A bit of a head scratcher why the compiler isn't running into the same
+issue for netmem_compound_head.
 
-cheers
+The callsites of netmem_compound_head are in net/core/skbuff.c, in
+skb_pp_frag_ref & napi_pp_put_page. Looking at the assembly generated,
+looks like somehow the compiler completely optimized out the call in
+napi_pp_put_page, and the call in skb_pp_frag_ref morphs into:
+
+ # net/core/skbuff.c:1047:      return
+napi_pp_put_page(page_to_netmem(virt_to_page(data)));
+        addis 9,2,.LC63@toc@ha   # tmp158,,
+        ld 10,.LC63@toc@l(9)     #, tmp140
+ # ./arch/powerpc/include/asm/page.h:230:       return __pa(kaddr) >>
+PAGE_SHIFT;
+        rldicl 9,31,48,20        #, _17, head,
+ # net/core/skbuff.c:1047:      return
+napi_pp_put_page(page_to_netmem(virt_to_page(data)));
+        sldi 9,9,6       #, _18, _17
+ # net/core/skbuff.c:1047:      return
+napi_pp_put_page(page_to_netmem(virt_to_page(data)));
+        ld 3,0(10)       # vmemmap, vmemmap
+ # net/core/skbuff.c:1047:      return
+napi_pp_put_page(page_to_netmem(virt_to_page(data)));
+        add 3,3,9        #, vmemmap, _18
+
+Since it's page_to_netmem(virt_to_page(data)) (not virt_to_head_page),
+the we don't hit there right now. It's certainly possible to trigger
+this in the future.
+
+I think we could also READ_ONCE in netmem_compound_head for some
+future proofness.
+
+--
+Thanks,
+Mina
 
