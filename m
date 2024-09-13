@@ -1,48 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-1305-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1306-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E18977678
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 03:42:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313F39776E7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 04:29:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4cVs64Fjz2xPL;
-	Fri, 13 Sep 2024 11:42:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4dYW6RQgz2xpl;
+	Fri, 13 Sep 2024 12:29:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=54.243.244.52
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726191733;
-	cv=none; b=SXkLYx5VDQ5pIS0tefZe8wtn58/BpVuZVq99cIqWsIP3j0+y9jQdMpbuQ7HwmmY21HPVwxZrzaUv2sJiMZb2FaqTttaA/76bjgvZ4VTC2sdBADBNNq5vsJ6fsHdpUo2GkeeOeBuNeEDz45MbneeQ8xWOOIrhsA3ZyOMzFLwqx1qrhR87VrMEpvyMpmywGJ8XwmbwJY249MVyjpcd7OBV95a28DjJFXet4G4w6JP48IrvGsXLWi0Awmc8qCLya9czILHxni669gS0zR21LqZdpwWztAOsZgaADfpI8rFxv8I0wFCiw13E2QxSjOI1UEHEr0EFH5xpeH4aANzV5s08Ug==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::133"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726194575;
+	cv=none; b=HnkwbbFilbWZ8cKKcpIoHXQcz5Nf42B1nfCmyp0gktdz2X3XIka8fiAG5+WRWicJnp1C4beg8/Sl7kvTZv6L5Mo7SEXZuLq+VFqwNDwvwwJ0tkDnR+2uQsc+pFOYk+RxcGgMgx4y0hiMMyQQRsi3ZzpCRZ2WsPDIMu/PhaG5HkERjA4IYnNRCNJrnVL/Qv6yeMpBRz/Cemls/hs1Z546H6N0DCeXoel6i+OPc4wpnuG0RxBLMtC39kfr2S/op42tWSmEwrkj2pB/Dr6gmnQKuEESkKAXncRNEt3Rqf8TgZWshpC7hWDUMZwbnEWnkbwgwE/Jg5qu8JhgmeRiUf+KIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726191733; c=relaxed/relaxed;
-	bh=dbBU4TjLlR7bNNlJPiUXBvxgWoaRAeufG4qG5fX0Zlo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LJBNEBsnpVw0w9H5zYcnzNtHa5McO7S2J3OqC5f71CtDwTdaYJc5yIp7ggGJfSe6RtVmeGcWIUpGFnlY+BZQ5+P59SMkOF8a1zaxYQexP4nY1mDdp8BowqlE+Byi+64Mm8uDWgrFMPQPclwoh9zQk8jVJKoPljAaNqr4S8tLkP/ZvajMm7DiL1dH9KnfRvhzo+CjHCDKpzrzDeL4pl9fSkJqOm+XztS2STxqOlOyK9H9fI/sJjGip8aUlkfVQ2x59bIhXmdQM1b2UljSTzbDY2oy4aLo7sSx0D7OClLn6GfYpnRCtc+JjRlOsMgcaBtpn6tQRAff+9cNc8tPnVzmQg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass (client-ip=54.243.244.52; helo=smtpbguseast3.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org) smtp.mailfrom=shingroup.cn
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=54.243.244.52; helo=smtpbguseast3.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-X-Greylist: delayed 62139 seconds by postgrey-1.37 at boromir; Fri, 13 Sep 2024 11:42:12 AEST
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1726194575; c=relaxed/relaxed;
+	bh=PTMhgEbsFwO+pBfHozMIUKTCxeSJ9rkkx6pXiVEJYI4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rbo0lGHp4uexrWKXys7dhigdXz/QSzRSuG3GUfqU+kJvq5kE3ROA9E9MqAmIDWev23Zub6DIF3oaVYk9aH6QXv4ydCiX/KgHHK7QkmMGXGklyfL6zUajwY7M+hpsXiQJvpuv5URmeOzdnnbV2coPO0kSTiFivNzM42XbL61U06KABBEtbhFD65iJyZebNPKCqyPZE6rX6FpcoDHmfrQi3rZ4Y4mwOU0MXzBYzR7NUJsFTuph7ol3hr3IqAmTFOKsDZ/b45711G8xqRIeeU69wBWOLXNCG1MluZ59m1t61bYBddAxSLN/ZZUE+UADPFZ+AMKs5277S/E9icIqMqwKkg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WMXEM9LZ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::133; helo=mail-il1-x133.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WMXEM9LZ;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::133; helo=mail-il1-x133.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4cVr0G15z2xKQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 11:42:00 +1000 (AEST)
-X-QQ-mid: bizesmtpsz10t1726191665tzs1mm
-X-QQ-Originating-IP: ntUUR5HCbH45R31EnJtFXoJQJMPf/PsHyejSfRzk1nE=
-Received: from HX09040029.powercore.com.cn ( [180.171.104.254])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 13 Sep 2024 09:40:53 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 6794888667536814964
-Date: Fri, 13 Sep 2024 09:40:29 +0800
-From: Luming Yu <luming.yu@shingroup.cn>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	mpe@ellerman.id.au, npiggin@gmail.com, jialong.yang@shingroup.cn,
-	luming.yu@gmail.com
-Subject: Re: [PATCH 1/2] powerpc/entry: convert to common and generic entry
-Message-ID: <153FD6B5CE4F97D9+ZuOYDQ-iHIIwJjbh@HX09040029.powercore.com.cn>
-References: <B4ABABEA5F13B86A+20240912082500.1469-1-luming.yu@shingroup.cn>
- <fc509bcd-5ca0-4dc2-962e-766a01cbe4fb@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4dYV6wD9z2xKQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 12:29:34 +1000 (AEST)
+Received: by mail-il1-x133.google.com with SMTP id e9e14a558f8ab-39d2e4d73bcso6779695ab.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Sep 2024 19:29:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726194569; x=1726799369; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PTMhgEbsFwO+pBfHozMIUKTCxeSJ9rkkx6pXiVEJYI4=;
+        b=WMXEM9LZKjQkfsJrKs20rygfR1J7XOtowbR+DrUKl69y0RohJzTFHD+Exw2Wwqk7H4
+         uLs8Y5PFEUTsuukQSfykGjjEPj+CLaX/Q16M9F8BFf8mqADe8op847POCFk5mcualmhT
+         G1PfsRoswKqsB2XY797I1J/iN8j1fcTaC5HyBEbZUS7bVuCOM7RNww5iYuK6xru6kUd4
+         rehKo5ST2LhQBbZNCfkJ9trbHTncouPySWZ1vRGpkEeEDx4S0cNXKQ5YIz0JWoH6VLQ8
+         UfYxWTKAAyelxkMP3yiulf08jsPdqWNk8SSokaVCrT6mc4MYfmuw8OS+6s2N5wk9Cu2i
+         H9rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726194569; x=1726799369;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PTMhgEbsFwO+pBfHozMIUKTCxeSJ9rkkx6pXiVEJYI4=;
+        b=W2V6zBxbuKzRyUY9uK/mEjTmPT/FYvhp4e7UsbeB8qnqisSpjeWRfzyp20k91lmkF5
+         5pPV6Hql0NcGxNXhsi8o4LzoB+9IPtricYByEi3yT15+d195uIZES+98DadEcy0awPuU
+         Q2zL8kOkwK4KI5zo6x61/K9wCtP8uG8uoPkjyOkAaZ1cl16htjhkQ/THwPIplf47DDuB
+         If84Yd66O7XcqoAA2xHZenBJQ8Yv9R8fRntKLIfzq76xqqFBtye49I2zOtltCgThxmpG
+         U0c0gf5sd3alm+2XqVS+LlMK9pJmu0lAcLT707zkcZomldf+ytocDjZcjCK9rydau7PY
+         dqWw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzd80DyoZQQofFg78gpLN6HNEHCOHPcfnPSGo1FjRVEprWP2ifhYH6lMU+qPujMOblU/3NWtH8uveqrB4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxuaGn2w4clj8fWiamhS7obal2F4n9sEO1hdcJteiYZp/GiSVV7
+	dnWU9jhQ6TDW/ppoGbM3lDMy+t6UbXyBrg//FSNvEHi4VQtiOhxcpHYEaREvJgrnd+Yn+YMppjc
+	guB0f+HueLALyuSiV8m7MFfKlJo0=
+X-Google-Smtp-Source: AGHT+IENKLUdj9+ZkJdPontbPGNcWKf/93O8fVsmGBQhknsCe7sTxPjA/0aEHZIrgYGLHSh2qlW9DaOFsfh/RDk3zVc=
+X-Received: by 2002:a05:6e02:12c5:b0:39f:5efe:ae73 with SMTP id
+ e9e14a558f8ab-3a0848eb2admr53336035ab.5.1726194569381; Thu, 12 Sep 2024
+ 19:29:29 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -52,80 +71,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <fc509bcd-5ca0-4dc2-962e-766a01cbe4fb@csgroup.eu>
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
+References: <1725615837-24872-1-git-send-email-shengjiu.wang@nxp.com>
+In-Reply-To: <1725615837-24872-1-git-send-email-shengjiu.wang@nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 13 Sep 2024 10:29:13 +0800
+Message-ID: <CAA+D8AOkQOanya6RViXfk_=CmNmCWx-N3cb-0SjMhSy0AA7LeA@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 0/6] ASoC: fsl: add memory to memory function for ASRC
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: vkoul@kernel.org, perex@perex.cz, tiwai@suse.com, 
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
+	linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 12, 2024 at 12:23:29PM +0200, Christophe Leroy wrote:
-> 
-> 
-> Le 12/09/2024 à 10:24, Luming Yu a écrit :
-> > From: Yu Luming <luming.yu@gmail.com>
-> > 
-> > convert powerpc entry code in syscall and fault to use syscall_work
-> > and irqentry_state as well as common calls from generic entry infrastructure.
-> > 
-> > Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
-> > ---
-> >   arch/powerpc/Kconfig                   | 1 +
-> >   arch/powerpc/include/asm/hw_irq.h      | 5 +++++
-> >   arch/powerpc/include/asm/processor.h   | 6 ++++++
-> >   arch/powerpc/include/asm/syscall.h     | 5 +++++
-> >   arch/powerpc/include/asm/thread_info.h | 1 +
-> >   arch/powerpc/kernel/syscall.c          | 6 +++++-
-> >   arch/powerpc/mm/fault.c                | 5 +++++
-> >   7 files changed, 28 insertions(+), 1 deletion(-)
-> 
-> There is another build problem:
-> 
->   CC      kernel/entry/common.o
-> kernel/entry/common.c: In function 'irqentry_exit':
-> kernel/entry/common.c:335:21: error: implicit declaration of function
-> 'regs_irqs_disabled'; did you mean 'raw_irqs_disabled'?
-> [-Werror=implicit-function-declaration]
->   335 |         } else if (!regs_irqs_disabled(regs)) {
->       |                     ^~~~~~~~~~~~~~~~~~
->       |                     raw_irqs_disabled
-> 
-> 
-> You have put regs_irqs_disabled() in a section dedicated to PPC64, so it
-> fails on PPC32.
-> 
-> 
-> After fixing this problem and providing an empty asm/entry-common.h it is
-> now possible to build the kernel. But that's not enough, the board is stuck
-> after:
-> 
-> ...
-> [    2.871391] Freeing unused kernel image (initmem) memory: 1228K
-> [    2.877990] Run /init as init process
+On Fri, Sep 6, 2024 at 6:05=E2=80=AFPM Shengjiu Wang <shengjiu.wang@nxp.com=
+> wrote:
+>
+> This function is base on the accelerator implementation
+> for compress API:
+> https://patchwork.kernel.org/project/alsa-devel/patch/20240731083843.5991=
+1-1-perex@perex.cz/
 
-Thanks for these questions. :-)
-I haven't gotten chance to run it in ppc32 qemu.
-the common syscall trace enter lost this hunk
--       if (!is_32bit_task())
--               audit_syscall_entry(regs->gpr[0], regs->gpr[3], regs->gpr[4],
--                                   regs->gpr[5], regs->gpr[6]);
--       else
--               audit_syscall_entry(regs->gpr[0],
--                                   regs->gpr[3] & 0xffffffff,
--                                   regs->gpr[4] & 0xffffffff,
--                                   regs->gpr[5] & 0xffffffff,
--                                   regs->gpr[6] & 0xffffffff);
-which I don't understand whether we need a arch callbacks for it.
+Hi Jaroslav
 
-Before I sent out the RFC patch set, the very limited compile and boot test goes well with a ppc64 qemu VM. Surely, there will be a lot of test, debug and following up patch set update that is necessary to make it a complete convert.
+    Shall I add this patch to my patch set next time? Last time I
+reported an issue
+about "list_for_each_entry_safe_reverse", I can help to add it.  or
+will you send
+another version by yourself?
 
-And the patch set should really be re-named to RFC and v1. 
+Best regards
+Shengjiu Wang
 
-Cheers  
-
-> 
-> 
-> Christophe
-> 
-
+>
+> Audio signal processing also has the requirement for memory to
+> memory similar as Video.
+>
+> This asrc memory to memory (memory ->asrc->memory) case is a non
+> real time use case.
+>
+> User fills the input buffer to the asrc module, after conversion, then as=
+rc
+> sends back the output buffer to user. So it is not a traditional ALSA pla=
+yback
+> and capture case.
+>
+> Because we had implemented the "memory -> asrc ->i2s device-> codec"
+> use case in ALSA.  Now the "memory->asrc->memory" needs
+> to reuse the code in asrc driver, so the patch 1 and patch 2 is for refin=
+ing
+> the code to make it can be shared by the "memory->asrc->memory"
+> driver.
+>
+> Other change is to add memory to memory support for two kinds of i.MX ASR=
+C
+> modules.
+>
+> changes in v3:
+> - use Jaroslav's suggestion for header file compress_params.h (PATCH 01)
+> - remove the ASRC_OUTPUT_FORMAT/ASRC_OUTPUT_RATE definition
+> - remove ASRC_RATIO_MOD in this version because it uses .set_metadata()
+>   Will wait Jaroslav's update or other better method in the future.
+> - Address some comments from Pierre.
+>
+> changes in v2:
+> - Remove the changes in compress API
+> - drop the SNDRV_COMPRESS_SRC_RATIO_MOD
+> - drop the SND_AUDIOCODEC_SRC and struct snd_dec_src
+> - define private metadata key value
+>   ASRC_OUTPUT_FORMAT/ASRC_OUTPUT_RATE/ASRC_RATIO_MOD
+>
+> Shengjiu Wang (6):
+>   ALSA: compress: Add output rate and output format support
+>   ASoC: fsl_asrc: define functions for memory to memory usage
+>   ASoC: fsl_easrc: define functions for memory to memory usage
+>   ASoC: fsl_asrc_m2m: Add memory to memory function
+>   ASoC: fsl_asrc: register m2m platform device
+>   ASoC: fsl_easrc: register m2m platform device
+>
+>  include/uapi/sound/compress_params.h |  23 +-
+>  sound/soc/fsl/Kconfig                |   1 +
+>  sound/soc/fsl/Makefile               |   2 +-
+>  sound/soc/fsl/fsl_asrc.c             | 179 ++++++-
+>  sound/soc/fsl/fsl_asrc.h             |   2 +
+>  sound/soc/fsl/fsl_asrc_common.h      |  70 +++
+>  sound/soc/fsl/fsl_asrc_m2m.c         | 727 +++++++++++++++++++++++++++
+>  sound/soc/fsl/fsl_easrc.c            | 261 +++++++++-
+>  sound/soc/fsl/fsl_easrc.h            |   4 +
+>  9 files changed, 1260 insertions(+), 9 deletions(-)
+>  create mode 100644 sound/soc/fsl/fsl_asrc_m2m.c
+>
+> --
+> 2.34.1
+>
 
