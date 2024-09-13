@@ -1,59 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-1330-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1333-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90A09782A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 16:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1ADC9782AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 16:37:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4xj7464gz2ykC;
-	Sat, 14 Sep 2024 00:37:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4xjH31Cnz2yqB;
+	Sat, 14 Sep 2024 00:37:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726238235;
-	cv=none; b=P1pEme6+OdXZuYzqafFnSiFcQMMxdA2e2ZC96/jwvDobhQr/0teFjtH8hJytaO+9mEIGrnhB+3M/JWYJCGsrZkQFKSWdLg0ggYzD7DGbTYntsDVxC/G1UGcWvuvJcXaCtJRsCX/0AWYhajY1QxEL1S+0rXM6ZZyIn5c5j/YTH9c7s0QC3uh35OUVGNvkhWYj1A1ElKsqgGyHtezQQTLu72jrAujG5zasdlkUyO0vtsA6iMFcQrCWpho4mvNcXxPBTWHoZqkTUvoFLk16A58nS0r/PTUOzgz5yZUdqC1IMG7/TlcUbkCPK5EYoE7CTtyBVO2IOu8k27FuE6qB1VpwBA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726238243;
+	cv=none; b=FiLwpsyYREmdz9RJPlfdj+N8Rfqbda9iJkvEYM2ifPimAdkDn2og8xC05JFy9QkYsDnfVnGCPQ443nHu7GK59uKxwezIGY4uTpHfOxoDpAKogOQWhg8ufJ4kCjYlGCwWIZUzfDki9BES1AiWdexHG1HmSooe+1RfQ1ylU+Zxw1MAR5TBWKUZQzzLXHJ4aX1fGXHD4Pi9Fxnpu9wYFSokbs+hVjxJaoZYr/fu/pvxB/ACmuX3CJydB8XR3In42J7ba0Ow8JbIPyWmOa9scmy71O+pQ0qhME6e9mXGdkS6LW2ccjKvi/7HLVLsXm06GVsg4S+cVuGWaD+syw4jyHZ6Hg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726238235; c=relaxed/relaxed;
-	bh=eY3dJ1RrG9wq01AYKNZv3UO+ppNx1PRxyphf8Bit21M=;
+	t=1726238243; c=relaxed/relaxed;
+	bh=CubNJN1Jc6E8nOqNs+evJ61HRcBxcneNbj7CJL1z1oc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZQekfVg+S4i01b0VUxNbivm33aSdkNiswNP7iVl/zIEXGbBypYnw/eDaWMSxSiw8lU2J9pADkW/e9anAkm0qb7eqdCEZLQNiawjbm8dScQNSA86yS6ZbAXKrVXaL7xIZWKFc36XaVYKoVTWIrjwnP1lRdJQC+Qaj5E1clzSvZdehxcnJZAm4N6u53AF9/L/6HxPi08PkFvGL7VhFhmgYEk401d9zvEOWlQiNn3p5jwO4wOdxDpUWyAanjqXqKbhztXq60cf80gQPv8U+F+xougW7WyN45MQvUE723w2q4cH1sp3sOFUiXnLyluJJMKWp0DGfsC4K7oDN26fFFqPRyg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bWLNBRCx; dkim-atps=neutral; spf=none (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 MIME-Version:Content-Type; b=mb12LyXZJuEl4k4Va1NzkUzKSZso4Uxj/7cLzaWEnLwhDfACAbxvQPV2dK/u3pfZIrRwpKl6ypFkj5un4fsMjRMveGMYOQYc38aGD+zuMRVt6sVr5diDEqRoYF4rK94nFTRIL1v2+otdgJ3eDd4cZEPmi9A2L59IQiJth+iY1pchdVkwGlCft9vOPdBXb/vMLsHDKdfiiAkP57b7hBtQ1/gI3Fd4rl1Mpab5kNMUxVFzcScZ9ZQz/8U9Ivd5sm7K+PQNQdF17EHwqhnfVoTYD6H8UkK8TJGjxFEdIhj9KIUoW8e13oKJThHQqXBXcy7qX2M83hoksXW08rN5odrpqA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NArw+B19; dkim-atps=neutral; spf=none (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bWLNBRCx;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NArw+B19;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4xj66xYXz2yk8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 00:37:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4xjG6CYVz2yq4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 00:37:22 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726238235; x=1757774235;
+  t=1726238243; x=1757774243;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TVMIEcYV4lRuU2NwGaITevK1+8W4KKh6YOoRO/qra7M=;
-  b=bWLNBRCxCZa8AJOOUpwtx4xHXRHXn7NEAdgndtVTEgC6eAege6Kznp0U
-   dwjl2YdsS/LPFP5Xnt4yvGSu24J79ozsW590cGAMLKgD1l6DzcWkXNyzn
-   5P2c/rN8IwCucJGCxwoa6z66fHphgCU1VYBSDbdHiTdYwL04eWCpPA7BE
-   WnBsgCO7PM8bs4u+bgMY1mMEUncBz7uFwMjwsk4hyI7LOWZdDMiQgeD+t
-   fUa8gPkAkTh6ctHAgPWlueZaSIwFVFGwehiaQcgLMkrrT1UeP/dEyQid1
-   8szal95c+83dwGj0IxL1jvKFgAMU/m80EtxSHD2XgcBEUtCjyJ7osTWMY
+  bh=vrR9lSZtbojiA2EubTfEXC7NUqhoH2bBkEIK7kkkTFA=;
+  b=NArw+B1976Y6018c4z+ZC/4HjqGjtLy5eWfjJIIS97TYFwseEDsJZiun
+   5GhRkWtOjX/iIrbIIpJu6VKA4Geu7xqo71lo7GzC8qz/g/+XBpdW9Z0Am
+   S5TBLLVdtx6PrmRMdDJ55D1xlTEcH4r/DsjGMXQ9pwv0vYroPMv7UQmpB
+   tdMcRKw/SKH2zi5EVdjBLNb9p0mMhbVV9gDD+YVeK1NRf4DqEiEt0MraM
+   Dh+x0ZljKZ4LjbKc/QI3N6xohNXt+miLT0k+tHTgn8NdMP33hjT+qYlkg
+   S7lRpc8Bk17n1zgVgnejn9prn2kSGIJd4/KXLuED82sbLHFhlM8nqPSnt
    Q==;
-X-CSE-ConnectionGUID: VFyR3q5uRbqxrG2KBU+9hA==
-X-CSE-MsgGUID: frUHtHYoQrCDE9729//M+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="28886514"
+X-CSE-ConnectionGUID: 8QxJgA3kSBOKc2MjYqDDuA==
+X-CSE-MsgGUID: LdQkWstdSAq7oqX9di8V2g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="28886524"
 X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
-   d="scan'208";a="28886514"
+   d="scan'208";a="28886524"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 07:37:13 -0700
-X-CSE-ConnectionGUID: kXh3m9yKS2+tVa+PIBJopA==
-X-CSE-MsgGUID: kmnA2HQkT6ysfSaM6gHb+w==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 07:37:21 -0700
+X-CSE-ConnectionGUID: 4Ad/XL1YSjipkJFyp6pVbg==
+X-CSE-MsgGUID: a6/9cR+jSM+V6/nc+ovmxg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
-   d="scan'208";a="68400260"
+   d="scan'208";a="68400273"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.154])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 07:37:10 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 07:37:18 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: linux-pci@vger.kernel.org,
 	Bjorn Helgaas <bhelgaas@google.com>,
@@ -64,9 +64,9 @@ To: linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH v6 3/8] PCI: Make pcie_read_tlp_log() signature same
-Date: Fri, 13 Sep 2024 17:36:27 +0300
-Message-Id: <20240913143632.5277-4-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v6 4/8] PCI: Use unsigned int i in pcie_read_tlp_log()
+Date: Fri, 13 Sep 2024 17:36:28 +0300
+Message-Id: <20240913143632.5277-5-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240913143632.5277-1-ilpo.jarvinen@linux.intel.com>
 References: <20240913143632.5277-1-ilpo.jarvinen@linux.intel.com>
@@ -82,48 +82,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-pcie_read_tlp_log()'s prototype and function signature diverged due to
-changes made while applying.
-
-Make the parameters of pcie_read_tlp_log() named identically.
+Loop variable i counting from 0 upwards does not need to be signed so
+make it unsigned int.
 
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/pci/pcie/tlp.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/pci/pcie/tlp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
-index 3f053cc62290..2bf15749cd31 100644
+index 2bf15749cd31..65ac7b5d8a87 100644
 --- a/drivers/pci/pcie/tlp.c
 +++ b/drivers/pci/pcie/tlp.c
-@@ -15,22 +15,21 @@
-  * pcie_read_tlp_log - read TLP Header Log
-  * @dev: PCIe device
-  * @where: PCI Config offset of TLP Header Log
-- * @tlp_log: TLP Log structure to fill
-+ * @log: TLP Log structure to fill
-  *
-- * Fill @tlp_log from TLP Header Log registers, e.g., AER or DPC.
-+ * Fill @log from TLP Header Log registers, e.g., AER or DPC.
-  *
-  * Return: 0 on success and filled TLP Log structure, <0 on error.
-  */
+@@ -24,7 +24,8 @@
  int pcie_read_tlp_log(struct pci_dev *dev, int where,
--		      struct pcie_tlp_log *tlp_log)
-+		      struct pcie_tlp_log *log)
+ 		      struct pcie_tlp_log *log)
  {
- 	int i, ret;
+-	int i, ret;
++	unsigned int i;
++	int ret;
  
--	memset(tlp_log, 0, sizeof(*tlp_log));
-+	memset(log, 0, sizeof(*log));
+ 	memset(log, 0, sizeof(*log));
  
- 	for (i = 0; i < 4; i++) {
--		ret = pci_read_config_dword(dev, where + i * 4,
--					    &tlp_log->dw[i]);
-+		ret = pci_read_config_dword(dev, where + i * 4, &log->dw[i]);
- 		if (ret)
- 			return pcibios_err_to_errno(ret);
- 	}
 -- 
 2.39.2
 
