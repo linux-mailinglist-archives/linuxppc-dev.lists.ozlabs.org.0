@@ -1,78 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-1338-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1339-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83DE9782E0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 16:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6CB978323
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 17:01:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4xxN5yVwz2xfK;
-	Sat, 14 Sep 2024 00:47:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4yDW5LWRz2ynn;
+	Sat, 14 Sep 2024 01:00:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726238872;
-	cv=none; b=Q2po1LIXtMe2zApzYoQsxHDNGIl5j1QIlEBt0bmcKiHNWdcG1GAqbUzGLZWIn3DBtRiCREDZlzV3i1tsHk9dhKWsuBHTvpUtH4h66qcSu/KC/einmYxmDiylzkqGeDAZmAVo6cQLiPHXkwpOpe2QkTidn3ci6Gb27a51ySsTm/dL1iV42c/iJsEFTgSn1AYe8FWx5qU6TG0PHTjfd69S42xNI0yZI5n5xY6jjBlW2vDhDF2bvXhhmW9g0bQwp3RRiWYGNMhkZknUVXXap9lcpBbzd4Ff85Wf6SgN2OYC7Qh06pKMcvImC4iMf+mNU/H+3PCo9cKyWM7y2j/Go0rIfw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726239659;
+	cv=none; b=N731dIIHl0yKa4v17pyJ1OPpMRvmvMYo3qpQ8tNo13QJb9O8dP6dyi098nm4k990brDOARZ2Q+5J77C8enWpsuTb+ER3o1PVXZi3wFi5khafhwSzfSM7xE8pHqO6pcuArNMhsLv4Msql3nrZTCvbmjqT7Twl/OzfJPRPKuFyxmWSm/TiZrbNDTmfb4Ltz05F9B6nEGMsrTBtltE0McVUC/ttBxYU8nBGSRMrAqz6WOeoQW9YL98TMa9wUvkWNKzk1iBI3psZJJZjaAHO2RTjQswJmMDlgl/IDHuFjyAqz/NhxFVcooSAh/tVrbhPP7p+63nS7iyhUlTqwxyVF4YWNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726238872; c=relaxed/relaxed;
-	bh=aA0VD6ILZwVsRCqF6gyMIXcvETRy4AHsm47dMSMexos=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NG5voxjlH31LGXAjWDXhxjBnltoul8zc/Ho1al7EF7NojSlQbmPXjnZl1jY+P53dDJsgDKAdu6iwb/Yst+jqTImTz7Fw2SNXsEH5KrH149NTnHaabBxP59niSNyFApbt1AU29/57O/ZDqX81NBJsDB9Al/4daPIwzgTYi2yif+t2NBba675iccWdhPBSoBMWKEDB66g56ve2zcLgNtv/A5TwCe+9IvNP6nr8nArsfXFBBEwoddC8ibX2ru92coccVGSz6R5Cm6mj7ioP1+UIOBl9yIdgr7OcOVfff+s89gosWrFyVANyRatHmLlIS1LMEdb8GVHVbdfoUrtdGy1lWg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HZ4lmL5D; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1726239659; c=relaxed/relaxed;
+	bh=P6vlq4KZuWy+cpagWnMP/i1WxsOpBsApAGszCvaZ6aE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VlbSHA16i+hOt479/1tyxUO1UgKI14ZMRzJAvhtJnZKJuUqBtw/dBJHpC2tBL2kREEQ8Jfxl9NPDaVuaGOqfxgeUQX6UGBeyH2/hFq6q6QTz02qmt6zzLycdg7XMJH2JsHDbXBGxv2CFCkKgYxA3xlu+s4TpN3rV80hgylkhsXbklnS7PKRblK4cCC4XwQfQd5gyU6bQMGc91fFKuxyv40DL3lgUEbB+oaKUzI9ORGecnyY+Ll6ZCovDbVL0DEP05cQSucsHeFZuKrwDpeuN75rUKMc0TOeP+fS2OGRoamuJdTCqE9YJoXWJkBvcL2jaggcxP0kCrPM5Uq3sUBnFLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UDm3heQL; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HZ4lmL5D;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UDm3heQL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4xxN2WdDz2xCj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 00:47:51 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48D74ZVp028394;
-	Fri, 13 Sep 2024 14:42:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=pp1; bh=aA0VD6ILZwVsRCqF6gyMIXcvET
-	Ry4AHsm47dMSMexos=; b=HZ4lmL5DfAEi7SrWDWljVLFu/HrpBbdPmmOfbd5XNZ
-	DalIyxewb9m7uYdGawvPM3GwWsNir1FVhgzJPUx7n1qghWrp4Jrn5/p230j2NLvB
-	PzIwecRik9bz/0aOX3n90CY8ecNCcvyNG+L22PaFgVkLsKaZUTBzoeXZO9vGQ4Xr
-	2VyKbbWO/sRrfwv6qgDmL4GISwGTM5IGB7UJxjn0+pq8+XSHh4LhfiJuNmbQ0vNO
-	SDXFhI6gGUzO+IJFwMiVLVxOkHL0l1PvhioAVpWqOyFIYWGszElhjN7WRyKx6pQW
-	4ZQBSQOOhuTfjtfTAfT6s+j6szsR67+P3HmG+1j5sLIw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41geg02de4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Sep 2024 14:42:37 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48DCgFTA027389;
-	Fri, 13 Sep 2024 14:42:36 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3v3pev3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Sep 2024 14:42:36 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48DEgYu522413890
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Sep 2024 14:42:35 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B762758058;
-	Fri, 13 Sep 2024 14:42:34 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5BD9858059;
-	Fri, 13 Sep 2024 14:42:34 +0000 (GMT)
-Received: from ltcden12-lp3.aus.stglabs.ibm.com (unknown [9.40.195.53])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 13 Sep 2024 14:42:34 +0000 (GMT)
-From: Danny Tsen <dtsen@linux.ibm.com>
-To: linux-crypto@vger.kernel.org
-Cc: stable@vger.kernel.org, herbert@gondor.apana.org.au, leitao@debian.org,
-        nayna@linux.ibm.com, appro@cryptogams.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        mpe@ellerman.id.au, ltcgcw@linux.vnet.ibm.com, dtsen@us.ibm.com,
-        Danny Tsen <dtsen@linux.ibm.com>
-Subject: [PATCH v2] crypto: Removing CRYPTO_AES_GCM_P10.
-Date: Fri, 13 Sep 2024 10:42:23 -0400
-Message-ID: <20240913144223.1783162-1-dtsen@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4yDW0vRGz2yk8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 01:00:59 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id AA0D65C5495
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 15:00:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7571C4CED3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 15:00:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726239655;
+	bh=BA0ANnltDBBfuoBltj9aaFdaXEL//Iks38XJnB02U/g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=UDm3heQLpcg5nfB2wo0AUkyhUHeZzC7otMWgPlJOxbwr3+idodQD7mw/DQXAFb685
+	 +hv7r9KV0G12j4Rf0C8hWRmIp8UEV8UjeYNRzJIZUC0trah5MQWx8Jc3E8tz6pTzQD
+	 Bd/Xgb4r++0FL77uQSStU9FjqkhGEmhxKQT0X73g472DcGUTX9EMySKmHCLbrNPK37
+	 Q+q1N9N/7GnJl1wXK4szqtZwR2y/sccxlr2jor/yF1XjEYcAWiznZtcMUp2RTsfouP
+	 vm3NW1CUMNGC+XFp7p6D9yWzGJ/0zNv6I8qtpKYX3LugO/rUiO2YqReAN2zhdxhEeS
+	 6/HH95+iUrWqg==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2f75129b3a3so25817961fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 08:00:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWusBBesXhYQ0DtOwlZOiYg63TXRv4XRpYZsQDF8l6tX6Ths9runEELbM1GKxyAGpGxVVe8IuNqDD/Ttg0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxsa4q0ngf5qiGthiw0ivoqppTD1GKmTgPch9ffUoEf7A70e0o5
+	iv1uaKxmCegRQaH4GtX7nSk8HLG1v6Ul2rOFrBSIC0tmeUpoW8x11L+eKggeqLKEqO1hph9xcjU
+	/E7tEGynWj+eJaWDrsUGmeILW/6o=
+X-Google-Smtp-Source: AGHT+IEIp2MygUsW5Tc1gnqrEXhSi4Y5LfaJ7pDs2t1FcVSY61BEs2pVKMYAU/+O+nJIsawLe6NqpBRTPpsi7cWLSzQ=
+X-Received: by 2002:a05:651c:1a0c:b0:2f0:1e0a:4696 with SMTP id
+ 38308e7fff4ca-2f787dabe7emr39035411fa.7.1726239653924; Fri, 13 Sep 2024
+ 08:00:53 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,40 +62,170 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -CEw3quGPWS97YQJeKZRXaB0Yg4lcMyu
-X-Proofpoint-ORIG-GUID: -CEw3quGPWS97YQJeKZRXaB0Yg4lcMyu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-13_11,2024-09-13_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=808 priorityscore=1501
- adultscore=0 clxscore=1011 spamscore=0 bulkscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409130102
+References: <20240909064730.3290724-1-rppt@kernel.org> <20240909064730.3290724-8-rppt@kernel.org>
+In-Reply-To: <20240909064730.3290724-8-rppt@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 13 Sep 2024 17:00:42 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXG_Z=7B_eDAk3vhtDjfcnka3AoSKNzvFQDzpvYY2EyVfg@mail.gmail.com>
+Message-ID: <CAMj1kXG_Z=7B_eDAk3vhtDjfcnka3AoSKNzvFQDzpvYY2EyVfg@mail.gmail.com>
+Subject: Re: [PATCH v3 7/8] execmem: add support for cache of large ROX pages
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andreas Larsson <andreas@gaisler.com>, 
+	Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, 
+	Brian Cain <bcain@quicinc.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Christoph Hellwig <hch@infradead.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>, 
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>, 
+	Stafford Horne <shorne@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
+	Uladzislau Rezki <urezki@gmail.com>, Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>, 
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-mm@kvack.org, linux-modules@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
+	linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	loongarch@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Disabling CRYPTO_AES_GCM_P10 in Kconfig first so that we can apply the
-subsequent patches to fix data mismatch over ipsec tunnel.
+Hi Mike,
 
-Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
----
- arch/powerpc/crypto/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+On Mon, 9 Sept 2024 at 08:51, Mike Rapoport <rppt@kernel.org> wrote:
+>
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> Using large pages to map text areas reduces iTLB pressure and improves
+> performance.
+>
+> Extend execmem_alloc() with an ability to use huge pages with ROX
+> permissions as a cache for smaller allocations.
+>
+> To populate the cache, a writable large page is allocated from vmalloc with
+> VM_ALLOW_HUGE_VMAP, filled with invalid instructions and then remapped as
+> ROX.
+>
+> Portions of that large page are handed out to execmem_alloc() callers
+> without any changes to the permissions.
+>
+> When the memory is freed with execmem_free() it is invalidated again so
+> that it won't contain stale instructions.
+>
+> The cache is enabled when an architecture sets EXECMEM_ROX_CACHE flag in
+> definition of an execmem_range.
+>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  include/linux/execmem.h |   2 +
+>  mm/execmem.c            | 289 +++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 286 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/linux/execmem.h b/include/linux/execmem.h
+> index dfdf19f8a5e8..7436aa547818 100644
+> --- a/include/linux/execmem.h
+> +++ b/include/linux/execmem.h
+> @@ -77,12 +77,14 @@ struct execmem_range {
+>
+>  /**
+>   * struct execmem_info - architecture parameters for code allocations
+> + * @fill_trapping_insns: set memory to contain instructions that will trap
+>   * @ranges: array of parameter sets defining architecture specific
+>   * parameters for executable memory allocations. The ranges that are not
+>   * explicitly initialized by an architecture use parameters defined for
+>   * @EXECMEM_DEFAULT.
+>   */
+>  struct execmem_info {
+> +       void (*fill_trapping_insns)(void *ptr, size_t size, bool writable);
+>         struct execmem_range    ranges[EXECMEM_TYPE_MAX];
+>  };
+>
+> diff --git a/mm/execmem.c b/mm/execmem.c
+> index 0f6691e9ffe6..f547c1f3c93d 100644
+> --- a/mm/execmem.c
+> +++ b/mm/execmem.c
+> @@ -7,28 +7,88 @@
+>   */
+>
+>  #include <linux/mm.h>
+> +#include <linux/mutex.h>
+>  #include <linux/vmalloc.h>
+>  #include <linux/execmem.h>
+> +#include <linux/maple_tree.h>
+>  #include <linux/moduleloader.h>
+>  #include <linux/text-patching.h>
+>
+> +#include <asm/tlbflush.h>
+> +
+> +#include "internal.h"
+> +
+>  static struct execmem_info *execmem_info __ro_after_init;
+>  static struct execmem_info default_execmem_info __ro_after_init;
+>
+> -static void *__execmem_alloc(struct execmem_range *range, size_t size)
+> +#ifdef CONFIG_MMU
+> +struct execmem_cache {
+> +       struct mutex mutex;
+> +       struct maple_tree busy_areas;
+> +       struct maple_tree free_areas;
+> +};
+> +
+> +static struct execmem_cache execmem_cache = {
+> +       .mutex = __MUTEX_INITIALIZER(execmem_cache.mutex),
+> +       .busy_areas = MTREE_INIT_EXT(busy_areas, MT_FLAGS_LOCK_EXTERN,
+> +                                    execmem_cache.mutex),
+> +       .free_areas = MTREE_INIT_EXT(free_areas, MT_FLAGS_LOCK_EXTERN,
+> +                                    execmem_cache.mutex),
+> +};
+> +
+> +static void execmem_cache_clean(struct work_struct *work)
+> +{
+> +       struct maple_tree *free_areas = &execmem_cache.free_areas;
+> +       struct mutex *mutex = &execmem_cache.mutex;
+> +       MA_STATE(mas, free_areas, 0, ULONG_MAX);
+> +       void *area;
+> +
+> +       mutex_lock(mutex);
+> +       mas_for_each(&mas, area, ULONG_MAX) {
+> +               size_t size;
+> +
+> +               if (!xa_is_value(area))
+> +                       continue;
+> +
+> +               size = xa_to_value(area);
+> +
+> +               if (IS_ALIGNED(size, PMD_SIZE) &&
+> +                   IS_ALIGNED(mas.index, PMD_SIZE)) {
+> +                       void *ptr = (void *)mas.index;
+> +
+> +                       mas_erase(&mas);
+> +                       vfree(ptr);
+> +               }
+> +       }
+> +       mutex_unlock(mutex);
+> +}
+> +
+> +static DECLARE_WORK(execmem_cache_clean_work, execmem_cache_clean);
+> +
+> +static void execmem_fill_trapping_insns(void *ptr, size_t size, bool writable)
+> +{
+> +       if (execmem_info->fill_trapping_insns)
+> +               execmem_info->fill_trapping_insns(ptr, size, writable);
+> +       else
+> +               memset(ptr, 0, size);
 
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 09ebcbdfb34f..46a4c85e85e2 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -107,6 +107,7 @@ config CRYPTO_AES_PPC_SPE
- 
- config CRYPTO_AES_GCM_P10
- 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
-+	depends on BROKEN
- 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
- 	select CRYPTO_LIB_AES
- 	select CRYPTO_ALGAPI
--- 
-2.43.0
+Does this really have to be a function pointer with a runtime check?
 
+This could just be a __weak definition, with the arch providing an
+override if the memset() is not appropriate.
 
