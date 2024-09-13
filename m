@@ -1,58 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-1339-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1340-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6CB978323
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 17:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9832978412
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 17:15:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4yDW5LWRz2ynn;
-	Sat, 14 Sep 2024 01:00:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4yXw4zw1z2yk8;
+	Sat, 14 Sep 2024 01:15:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726239659;
-	cv=none; b=N731dIIHl0yKa4v17pyJ1OPpMRvmvMYo3qpQ8tNo13QJb9O8dP6dyi098nm4k990brDOARZ2Q+5J77C8enWpsuTb+ER3o1PVXZi3wFi5khafhwSzfSM7xE8pHqO6pcuArNMhsLv4Msql3nrZTCvbmjqT7Twl/OzfJPRPKuFyxmWSm/TiZrbNDTmfb4Ltz05F9B6nEGMsrTBtltE0McVUC/ttBxYU8nBGSRMrAqz6WOeoQW9YL98TMa9wUvkWNKzk1iBI3psZJJZjaAHO2RTjQswJmMDlgl/IDHuFjyAqz/NhxFVcooSAh/tVrbhPP7p+63nS7iyhUlTqwxyVF4YWNQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726240512;
+	cv=none; b=d22djWWolmoVrknMcpIjK0dEDCPH2zPl4xGZDm2JHfLXRmixH94IEIVFd+Omma916QbzzMXKBCf1kEwA/esAPAurvsICyvtUqd2adJsuWNkIORm0EvqNedymWPfZpVE5j37C8WUVYL4aH0Nl7Ngwizcr82J4+DQTv2jYHSy13Z3qneKyshjGb9k4gX9pG7BXGVD2XOlHvgfxYmZARbCwloMjE3pB7NjpGFbRUke1Jvqd3q0lww7LQ4F5EYMIESqR3Cyc822qFl4nbxsvQb4UB3P7edMQHAFao3TJOkyjvl0xTmMMJbJME38WyRYsG0Ry23rvawVlyhcKshMzoc0bdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726239659; c=relaxed/relaxed;
-	bh=P6vlq4KZuWy+cpagWnMP/i1WxsOpBsApAGszCvaZ6aE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VlbSHA16i+hOt479/1tyxUO1UgKI14ZMRzJAvhtJnZKJuUqBtw/dBJHpC2tBL2kREEQ8Jfxl9NPDaVuaGOqfxgeUQX6UGBeyH2/hFq6q6QTz02qmt6zzLycdg7XMJH2JsHDbXBGxv2CFCkKgYxA3xlu+s4TpN3rV80hgylkhsXbklnS7PKRblK4cCC4XwQfQd5gyU6bQMGc91fFKuxyv40DL3lgUEbB+oaKUzI9ORGecnyY+Ll6ZCovDbVL0DEP05cQSucsHeFZuKrwDpeuN75rUKMc0TOeP+fS2OGRoamuJdTCqE9YJoXWJkBvcL2jaggcxP0kCrPM5Uq3sUBnFLA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UDm3heQL; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1726240512; c=relaxed/relaxed;
+	bh=dTLu7MIFHyDNhq8ItbYdY645AH8LAcdSbZc+lrrmu0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OKw6Cxm0ae39Kk+uywQJunXU1xYKp5h30z9vzxyq3ErYVLYqnz5dFPlthXaCvtbGC7oHD4Aorw8SUDTn5UOZjYQy2vOiCu/7O+X0jmRis4KzGkDIORbSX4HF6vE4N81ol7x5Lmb25TlhH3CIOWXI7tRaFjfLRs7UJSRYj12VY6dWAVbmQMLhNxybUVCKWLAxJVESbpsucguNJiFi9Ayw/RADUnmbssKbfeVV92RtwWX3IxmNCOgUKk97qKH1PQeBm54I5bZGETmNMn68mkm/WZ+IgPmQvgX3zSGiFeGJJ1f4KH9kF7Rhwrx1/RSlXhfyU2ucdj68kb++VwOduMvALw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BWnylCm4; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UDm3heQL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BWnylCm4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4yDW0vRGz2yk8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 01:00:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4yXw20Xrz2xjd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 01:15:12 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id AA0D65C5495
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 15:00:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7571C4CED3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 15:00:55 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 591CA5C5529;
+	Fri, 13 Sep 2024 15:15:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB3AC4CEC0;
+	Fri, 13 Sep 2024 15:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726239655;
-	bh=BA0ANnltDBBfuoBltj9aaFdaXEL//Iks38XJnB02U/g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UDm3heQLpcg5nfB2wo0AUkyhUHeZzC7otMWgPlJOxbwr3+idodQD7mw/DQXAFb685
-	 +hv7r9KV0G12j4Rf0C8hWRmIp8UEV8UjeYNRzJIZUC0trah5MQWx8Jc3E8tz6pTzQD
-	 Bd/Xgb4r++0FL77uQSStU9FjqkhGEmhxKQT0X73g472DcGUTX9EMySKmHCLbrNPK37
-	 Q+q1N9N/7GnJl1wXK4szqtZwR2y/sccxlr2jor/yF1XjEYcAWiznZtcMUp2RTsfouP
-	 vm3NW1CUMNGC+XFp7p6D9yWzGJ/0zNv6I8qtpKYX3LugO/rUiO2YqReAN2zhdxhEeS
-	 6/HH95+iUrWqg==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2f75129b3a3so25817961fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 08:00:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWusBBesXhYQ0DtOwlZOiYg63TXRv4XRpYZsQDF8l6tX6Ths9runEELbM1GKxyAGpGxVVe8IuNqDD/Ttg0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yxsa4q0ngf5qiGthiw0ivoqppTD1GKmTgPch9ffUoEf7A70e0o5
-	iv1uaKxmCegRQaH4GtX7nSk8HLG1v6Ul2rOFrBSIC0tmeUpoW8x11L+eKggeqLKEqO1hph9xcjU
-	/E7tEGynWj+eJaWDrsUGmeILW/6o=
-X-Google-Smtp-Source: AGHT+IEIp2MygUsW5Tc1gnqrEXhSi4Y5LfaJ7pDs2t1FcVSY61BEs2pVKMYAU/+O+nJIsawLe6NqpBRTPpsi7cWLSzQ=
-X-Received: by 2002:a05:651c:1a0c:b0:2f0:1e0a:4696 with SMTP id
- 38308e7fff4ca-2f787dabe7emr39035411fa.7.1726239653924; Fri, 13 Sep 2024
- 08:00:53 -0700 (PDT)
+	s=k20201202; t=1726240508;
+	bh=hG0+mr6n6c2AOqquKXji3PgaSzohcst94Wj42JS1S+I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BWnylCm4mReU8AS0leB+Zu+H/60Ov75IX+4RcMT07bw/NSlFUtgczPE92soGj0A0q
+	 542x8M8eWvcVYa3w8j1pJ4wodResMwstCU9WRWL+4Bv7klLpSkpILEqOXkK2xTbvjI
+	 k7LO3FcSRX+QQPQ85stGEPkaCLs/93PocVVcAqwc97TkLzlGfXUTiDkvoa/W31NhS8
+	 ZTsEo1Zfjv/PTpTlD075NPfKSAhzSd7lUsWT3ZAvYgMWVY06K4V/tyQXnFNxB9zsX0
+	 tss/gEKf+QaNU/wq7UCRsBMZMRdCi4O4eV+W/SoX8gfoYY4bCaUnaRFI3uHHSOXLks
+	 8MndKUMe6veNw==
+Date: Fri, 13 Sep 2024 16:14:59 +0100
+From: Will Deacon <will@kernel.org>
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	linux-arm-kernel@lists.infradead.org, nd@arm.com,
+	akpm@linux-foundation.org, aneesh.kumar@kernel.org,
+	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
+	broonie@kernel.org, catalin.marinas@arm.com,
+	christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
+	hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
+	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
+	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
+	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
+	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v5 06/30] arm64: context switch POR_EL0 register
+Message-ID: <20240913151459.GA24129@willie-the-truck>
+References: <20240822151113.1479789-1-joey.gouly@arm.com>
+ <20240822151113.1479789-7-joey.gouly@arm.com>
+ <425b8f8c-b6b5-422a-b5f4-41dd2d1ae3bb@arm.com>
+ <6c8ad091-a56b-41ba-b403-2e3c2e578100@intel.com>
+ <20240912105017.GA22788@willie-the-truck>
+ <20240912124835.GA1220495@e124191.cambridge.arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,170 +76,82 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20240909064730.3290724-1-rppt@kernel.org> <20240909064730.3290724-8-rppt@kernel.org>
-In-Reply-To: <20240909064730.3290724-8-rppt@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 13 Sep 2024 17:00:42 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG_Z=7B_eDAk3vhtDjfcnka3AoSKNzvFQDzpvYY2EyVfg@mail.gmail.com>
-Message-ID: <CAMj1kXG_Z=7B_eDAk3vhtDjfcnka3AoSKNzvFQDzpvYY2EyVfg@mail.gmail.com>
-Subject: Re: [PATCH v3 7/8] execmem: add support for cache of large ROX pages
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Andreas Larsson <andreas@gaisler.com>, 
-	Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, 
-	Brian Cain <bcain@quicinc.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Christoph Hellwig <hch@infradead.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>, 
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>, 
-	Stafford Horne <shorne@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
-	Uladzislau Rezki <urezki@gmail.com>, Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>, 
-	bpf@vger.kernel.org, linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-mm@kvack.org, linux-modules@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
-	linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	loongarch@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240912124835.GA1220495@e124191.cambridge.arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Hi Mike,
+On Thu, Sep 12, 2024 at 01:48:35PM +0100, Joey Gouly wrote:
+> On Thu, Sep 12, 2024 at 11:50:18AM +0100, Will Deacon wrote:
+> > On Wed, Sep 11, 2024 at 08:33:54AM -0700, Dave Hansen wrote:
+> > > On 9/11/24 08:01, Kevin Brodsky wrote:
+> > > > On 22/08/2024 17:10, Joey Gouly wrote:
+> > > >> @@ -371,6 +382,9 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+> > > >>  		if (system_supports_tpidr2())
+> > > >>  			p->thread.tpidr2_el0 = read_sysreg_s(SYS_TPIDR2_EL0);
+> > > >>  
+> > > >> +		if (system_supports_poe())
+> > > >> +			p->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> > > > Here we are only reloading POR_EL0's value if the target is a user
+> > > > thread. However, as this series stands, POR_EL0 is also relevant to
+> > > > kthreads, because any uaccess or GUP done from a kthread will also be
+> > > > checked against POR_EL0. This is especially important in cases like the
+> > > > io_uring kthread, which accesses the memory of the user process that
+> > > > spawned it. To prevent such a kthread from inheriting a stale value of
+> > > > POR_EL0, it seems that we should reload POR_EL0's value in all cases
+> > > > (user and kernel thread).
+> > > 
+> > > The problem with this is trying to figure out which POR_EL0 to use.  The
+> > > kthread could have been spawned ages ago and might not have a POR_EL0
+> > > which is very different from the current value of any of the threads in
+> > > the process right now.
+> > > 
+> > > There's also no great way for a kthread to reach out and grab an updated
+> > > value.  It's all completely inherently racy.
+> > > 
+> > > > Other approaches could also be considered (e.g. resetting POR_EL0 to
+> > > > unrestricted when creating a kthread), see my reply on v4 [1].
+> > > 
+> > > I kinda think this is the only way to go.  It's the only sensible,
+> > > predictable way.  I _think_ it's what x86 will end up doing with PKRU,
+> > > but there's been enough churn there that I'd need to go double check
+> > > what happens in practice.
+> > 
+> > I agree.
+> > 
+> > > Either way, it would be nice to get an io_uring test in here that
+> > > actually spawns kthreads:
+> > > 
+> > > 	tools/testing/selftests/mm/protection_keys.c
+> > 
+> > It would be good to update Documentation/core-api/protection-keys.rst
+> > as well, since the example with read() raises more questions than it
+> > answers!
+> > 
+> > Kevin, Joey -- I've got this series queued in arm64 as-is, so perhaps
+> > you could send some patches on top so we can iron this out in time for
+> > 6.12? I'll also be at LPC next week if you're about.
+> 
+> I found the code in arch/x86 that does this, I must have missed this previously.
+> 
+> arch/x86/kernel/process.c: int copy_thread()                                                                                                                   
+> 
+>         /* Kernel thread ? */                                                                                                                                                                  
+>         if (unlikely(p->flags & PF_KTHREAD)) {                                                                                                                                                 
+>                 p->thread.pkru = pkru_get_init_value();                                                                                                                                        
+>                 memset(childregs, 0, sizeof(struct pt_regs));                                                                                                                                  
+>                 kthread_frame_init(frame, args->fn, args->fn_arg);                                                                                                                             
+>                 return 0;                                                                                                                                                                      
+>         }
+> 
+> I can send a similar patch for arm64.  I have no idea how to write io_uring
+> code, so looking for examples I can work with to get a test written. Might just
+> send the arm64 fix first, if that's fine?
 
-On Mon, 9 Sept 2024 at 08:51, Mike Rapoport <rppt@kernel.org> wrote:
->
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Using large pages to map text areas reduces iTLB pressure and improves
-> performance.
->
-> Extend execmem_alloc() with an ability to use huge pages with ROX
-> permissions as a cache for smaller allocations.
->
-> To populate the cache, a writable large page is allocated from vmalloc with
-> VM_ALLOW_HUGE_VMAP, filled with invalid instructions and then remapped as
-> ROX.
->
-> Portions of that large page are handed out to execmem_alloc() callers
-> without any changes to the permissions.
->
-> When the memory is freed with execmem_free() it is invalidated again so
-> that it won't contain stale instructions.
->
-> The cache is enabled when an architecture sets EXECMEM_ROX_CACHE flag in
-> definition of an execmem_range.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  include/linux/execmem.h |   2 +
->  mm/execmem.c            | 289 +++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 286 insertions(+), 5 deletions(-)
->
-> diff --git a/include/linux/execmem.h b/include/linux/execmem.h
-> index dfdf19f8a5e8..7436aa547818 100644
-> --- a/include/linux/execmem.h
-> +++ b/include/linux/execmem.h
-> @@ -77,12 +77,14 @@ struct execmem_range {
->
->  /**
->   * struct execmem_info - architecture parameters for code allocations
-> + * @fill_trapping_insns: set memory to contain instructions that will trap
->   * @ranges: array of parameter sets defining architecture specific
->   * parameters for executable memory allocations. The ranges that are not
->   * explicitly initialized by an architecture use parameters defined for
->   * @EXECMEM_DEFAULT.
->   */
->  struct execmem_info {
-> +       void (*fill_trapping_insns)(void *ptr, size_t size, bool writable);
->         struct execmem_range    ranges[EXECMEM_TYPE_MAX];
->  };
->
-> diff --git a/mm/execmem.c b/mm/execmem.c
-> index 0f6691e9ffe6..f547c1f3c93d 100644
-> --- a/mm/execmem.c
-> +++ b/mm/execmem.c
-> @@ -7,28 +7,88 @@
->   */
->
->  #include <linux/mm.h>
-> +#include <linux/mutex.h>
->  #include <linux/vmalloc.h>
->  #include <linux/execmem.h>
-> +#include <linux/maple_tree.h>
->  #include <linux/moduleloader.h>
->  #include <linux/text-patching.h>
->
-> +#include <asm/tlbflush.h>
-> +
-> +#include "internal.h"
-> +
->  static struct execmem_info *execmem_info __ro_after_init;
->  static struct execmem_info default_execmem_info __ro_after_init;
->
-> -static void *__execmem_alloc(struct execmem_range *range, size_t size)
-> +#ifdef CONFIG_MMU
-> +struct execmem_cache {
-> +       struct mutex mutex;
-> +       struct maple_tree busy_areas;
-> +       struct maple_tree free_areas;
-> +};
-> +
-> +static struct execmem_cache execmem_cache = {
-> +       .mutex = __MUTEX_INITIALIZER(execmem_cache.mutex),
-> +       .busy_areas = MTREE_INIT_EXT(busy_areas, MT_FLAGS_LOCK_EXTERN,
-> +                                    execmem_cache.mutex),
-> +       .free_areas = MTREE_INIT_EXT(free_areas, MT_FLAGS_LOCK_EXTERN,
-> +                                    execmem_cache.mutex),
-> +};
-> +
-> +static void execmem_cache_clean(struct work_struct *work)
-> +{
-> +       struct maple_tree *free_areas = &execmem_cache.free_areas;
-> +       struct mutex *mutex = &execmem_cache.mutex;
-> +       MA_STATE(mas, free_areas, 0, ULONG_MAX);
-> +       void *area;
-> +
-> +       mutex_lock(mutex);
-> +       mas_for_each(&mas, area, ULONG_MAX) {
-> +               size_t size;
-> +
-> +               if (!xa_is_value(area))
-> +                       continue;
-> +
-> +               size = xa_to_value(area);
-> +
-> +               if (IS_ALIGNED(size, PMD_SIZE) &&
-> +                   IS_ALIGNED(mas.index, PMD_SIZE)) {
-> +                       void *ptr = (void *)mas.index;
-> +
-> +                       mas_erase(&mas);
-> +                       vfree(ptr);
-> +               }
-> +       }
-> +       mutex_unlock(mutex);
-> +}
-> +
-> +static DECLARE_WORK(execmem_cache_clean_work, execmem_cache_clean);
-> +
-> +static void execmem_fill_trapping_insns(void *ptr, size_t size, bool writable)
-> +{
-> +       if (execmem_info->fill_trapping_insns)
-> +               execmem_info->fill_trapping_insns(ptr, size, writable);
-> +       else
-> +               memset(ptr, 0, size);
+I think fix + documentation is what we need before 6.12, but you've still
+got plenty of time after the merge window.
 
-Does this really have to be a function pointer with a runtime check?
+Cheers,
 
-This could just be a __weak definition, with the arch providing an
-override if the memset() is not appropriate.
+Will
 
