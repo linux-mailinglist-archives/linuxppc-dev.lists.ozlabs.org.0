@@ -1,67 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-1357-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1358-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E2C978BA4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 01:04:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327A3978BA8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 01:05:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X58yX3K3yz301N;
-	Sat, 14 Sep 2024 09:04:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X58z90dwNz301Y;
+	Sat, 14 Sep 2024 09:05:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726263543;
-	cv=none; b=eXnGc99TeK5ocucd7GDr4ZMEem4h7X1EnlLdx3jku6hFn2riILhgwlBNobW7ONf/aYLlF6kWNTWCtpipZCMhnNDuYFu5loUYNf5Mpo/+VV25B1vjamnnbnyqjDQ3ZFUc7w6hpOb2eTFQrk4AmJuV6Aw+vqXKDFf2efLpdmCEcC1uxvRnsBZnOO9Hj7S+W3qowCSuh6GxuksIebytCxkAluCssD0YJaRIF6e2clYBxw/FdfR6KrgZsSWBebaUtuiWpl+4dAirLFQtxUEOL0PXvpXoujF5fGeHZC3hdQyVBAOze7fPmJPCBGJi9acV0tXf1SiKzMFNF5jT+gGiq9dEZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726264526;
+	cv=none; b=Wsn67DQlLGRpc0ZlFUMCKwOH5Z38olUMEWLN0xCV5Im9bqcUOUHsi3qg9j18SsKHMRnZoDf6OHcBposkcm7i/lfmM6kCCQQK5GyXX/UusAkYWIcmsCtmMOMcG+01/WYjGeKnkPIl4/sp8koqjp8rx3fHOegYiZuwkLM5xEOfUFFgdUxH5HyGjIiAuKH45AxxK2SQx8YVRqncJUeqVJe3XT62J/B306pxoBJzi/EgAMod0UMfP0gp4Sli5r7Mc0K5q5hySi4NM9WajOEBZFBBFq6KQwJGnwMb85OP5+y3vU1upTicTUARnLzuPFltQtjzt5D9ACiFrYgW4xr54YFxYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726263543; c=relaxed/relaxed;
-	bh=SxOaF8AxUHaggzGBR0vXSvLLKExg7G9i5r3GTwRaXcM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lcbH1xTTyohXxYVcrLs3eZbFjyV9v0O/mP9cP4tIUtuXpuKvgbv7bBLC+R4jex20K+lmys5alPR+i25OJe6V/q1I1DURMIu3FJPUWz/ELZ43ZHd4IvVBJ98nDzwuuCcCtpGk1MXFHjwE6Zo1wft5yj8Xpag1bnNAuAHdDfnRpbugPP5I/gMhBHtKvbVUH/OnxJEzhznU03E5Hpc+EeavoCRGGWjidL9O8IrzGzFD/CkP3QSWc87Yxm6StibO6DWDv5lHLqX5/30rSJSiXTBrlQ+P5x02/i7yCP1Hx+aeEQiY/hZgOOv85YC7vaFIh9N7JK2aLTDcmQemZgzV7Rn70Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=K9/uHEOd; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=almasrymina@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1726264526; c=relaxed/relaxed;
+	bh=c4PTjS5fX5Q389WHB/etaU28p0uL2TY5wkUk4Exja9I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VCK8EIRqBRh3YCma3I9Mv9XXZwzU1OOjbl0IDMUuFhmEhKloE7Va3PgYEb5bmMkabCPtzt5/d0ZfRAWt01qaKEVwN34Uq45ZhmAkZ6JWzTT3xsYVMFbi8bD0fSdd7hdQt4Ep4DcjUgc9bGlvAXy4MXWij6alswgQrk4YHTmnGPq1dyDfZfrYUiu2cGtWIRX89fCWQIU0ZHoYN5o8gLnVg/mdZw/hcR/A2foCwThRCL/xVboFjoWc7jrm2T2ptHv09gUA1+6U/E5hmMdsyLt6ekordOWsTdcfKSENWKh0TE6S41omyam3mF+x2d09MHiJnI9f5g0ltcomP8keGk1NfA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IVod8zfF; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=stfomichev@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=K9/uHEOd;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IVod8zfF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=almasrymina@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=stfomichev@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X573p4LVYz2yZN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 07:39:01 +1000 (AEST)
-Received: by mail-qt1-x82d.google.com with SMTP id d75a77b69052e-4582fa01090so84661cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 14:39:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X57Qj14b4z2ysX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 07:55:23 +1000 (AEST)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-201d5af11a4so29633045ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 14:55:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726263539; x=1726868339; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SxOaF8AxUHaggzGBR0vXSvLLKExg7G9i5r3GTwRaXcM=;
-        b=K9/uHEOdHYZsyXmG1X8tnq4n+27qRxbzirxTeph3aFxScnbYqVQcaG/hR7rS5FwmPT
-         GURKh7O2fylxdkBrXhUhSbbQ6LmqamXqnj7BcWFbj4ZULEtjQKEgHnkxRPaOfxBQu4it
-         3bThf/2HdjFJw/07+9lUyAJ3gvlG8xu0w0suP1HtL2KJdh0469wey8AshnOu43y7Xje4
-         7luPfIvR5fP/4zEhdrpof4xYSkMveVhSdH5qSx80kN6r1ZdrAFhKGvDXVUpDi/ntaDyn
-         hOk5uU7/zO0rW9Dglg+qOVJlsj4mYivtMCk1S9iwT/rGKrGHOkewyivn3t2m3bJaJ/qp
-         cNsA==
+        d=gmail.com; s=20230601; t=1726264520; x=1726869320; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c4PTjS5fX5Q389WHB/etaU28p0uL2TY5wkUk4Exja9I=;
+        b=IVod8zfFM69gHQJI5iuZVnM/+0CToU/yBTTOEhuOkx2ndglgLtm/uz1EAWRb8qVQF1
+         oDN+pKjy4NQ2g2jx8Jklo2vYXVk2kS1c2GV4sgvFtdIVkDe9G566rjuBr9Bn3cG0Jhxc
+         0e5Fv4HVUT5bhP2Hpuxepuopj14qNC9RH5A66osp++6t1AnI/a22VPFV33b8GLqFt/m7
+         ZWmGnpAgPymZisxrcmUW48UsfpO4r8tVNnFmRbkLKHkz3B2CvCQat6kPahtJFd3OZojk
+         jh0+QzE1gTcbHXI9BrqKZ9NT9u744qRSxKDafB1qsk+LYAo/NAoYJqznMOmr/WwRdvZ9
+         NNJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726263539; x=1726868339;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SxOaF8AxUHaggzGBR0vXSvLLKExg7G9i5r3GTwRaXcM=;
-        b=Ne2WksihtpNFlK1b5Ea2FpmKiNxhgAd5vW0IswVFvZcYtsq0n23fSOSN9eUJpPe3Ue
-         PiztrawXhdrctacjEv5xkQKjiUI2/jGblZuHKRPqlJ0SbI4P5/e4kVpMaEPcURCuEQLH
-         XGHkGO/jKfPEvHva6nfJ7g38uHpbOjgF576BuNRQfFAAPNHpj9+13NYjgqHggHFxhFLB
-         OqWU7THPWqMoyoYyU/HRsgRjV40tL9yR2nOsJ3Z/Pw19H6lpB5foSDLTXiWBMkq+3c6Y
-         0rDVeipVX2iqxOrK1e4gE/rhx/TccPj7w182XM2i/ySZ9tqEdLhlPBE3jehxtJ1uGrNU
-         SDlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLslmwZFdkii5g8uh7/DAibpIIQLrpEYciJ6WWM7nvgMH97bPhTVqefnnUraYJmC4/Y7h1vXGUq108JrE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxUDGaktKUtR/kaqhp0BvW0boEDJP9tiEr33t7UT4MeEIHSu99X
-	0mpQpyRh889NJuXRqNOjyT3fuBW6f6bYfBlVd9fIXzmOIH80keURLKGZzlTxedUy5ZhIUrYgG61
-	Yt4mJ5Z/UiHg3etV1ZCwpLZhInMZT07oODAT0
-X-Google-Smtp-Source: AGHT+IE7wQ6d82h+20+gfYgwUOrNdS6QR9EOku3ZBk+A8q3enqbGgESkjkfIrzysdu6Edkr34sHnqy06TDcBVoKfdsU=
-X-Received: by 2002:ac8:7f41:0:b0:456:7501:7c4d with SMTP id
- d75a77b69052e-458644fcbebmr8520731cf.9.1726263538792; Fri, 13 Sep 2024
- 14:38:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726264520; x=1726869320;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c4PTjS5fX5Q389WHB/etaU28p0uL2TY5wkUk4Exja9I=;
+        b=p7Acl0zfhp+lLCrIxu/VVAjYB2SdfpK+f9OMPPdMyJF36RG9KTfH2tUKuz1Ed4SqfY
+         ga50+llW3Dw/JkRTim+Y7MTTY9xAM6SjbCXX+KnrUu6NhLcDMKhoB9SKQ8oIEfa0Aqeg
+         C9lH2/6f9SaeVp0P5SQTkyvay3NeHKHxjYrhjRuYVEq+2MZwynfecpNPIFWo1KiA+TKX
+         qfMSjgXXTplDyecPIqjjxScEKAHkBBBmna7zICHse2qzgs5Wj1s+sGH753Fc0d3de4Lk
+         ar3MtT5e5U9OBB5qa1CauQ6GcXYu7L5Rev3glUcFXQujgBLxkPn32T3y1bbyykKP1YJK
+         yKTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNRDc8IaXrUvPV8mF04u+LFT6Dl5bP8AF69WmnQwXMEgwjIIplC3x4MaBBHbjY2aWX92bZATS6+u0eFKc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyHil+XRAg6mwO2mPvO93g9ju2ZrWUmW5DsVT7XkrtVltUHxxJB
+	LC6Pd9cusIYxPFLTnmtGhZzV/b2Z4pIpoISPC4p1ItqmxNDFOJM=
+X-Google-Smtp-Source: AGHT+IH5BwiPmrclx07PBc1QAqEq+dk1qo/Lw7Ssd5LW8hV09kF4E4owLL0iuRHRj3mllCztINhnDQ==
+X-Received: by 2002:a17:902:d510:b0:206:b4cf:3107 with SMTP id d9443c01a7336-2076e422055mr128280685ad.49.1726264520410;
+        Fri, 13 Sep 2024 14:55:20 -0700 (PDT)
+Received: from localhost ([2601:646:9e00:f56e:2844:3d8f:bf3e:12cc])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207946d668bsm845185ad.141.2024.09.13.14.55.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2024 14:55:20 -0700 (PDT)
+Date: Fri, 13 Sep 2024 14:55:19 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH net-next v2] page_pool: fix build on powerpc with GCC 14
+Message-ID: <ZuS0x5ZRCGyzvTBg@mini-arch>
+References: <20240913213351.3537411-1-almasrymina@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,61 +90,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20240913213351.3537411-1-almasrymina@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 In-Reply-To: <20240913213351.3537411-1-almasrymina@google.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 13 Sep 2024 14:38:45 -0700
-Message-ID: <CAHS8izMfFPkXU5Wx7i7af2c2=nVzZ_GJnoj0YyLugKDr5uAyjQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] page_pool: fix build on powerpc with GCC 14
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stephen Rothwell <sfr@canb.auug.org.au>, Linux Next Mailing List <linux-next@vger.kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 13, 2024 at 2:33=E2=80=AFPM Mina Almasry <almasrymina@google.co=
-m> wrote:
->
+On 09/13, Mina Almasry wrote:
 > Building net-next with powerpc with GCC 14 compiler results in this
 > build error:
->
+> 
 > /home/sfr/next/tmp/ccuSzwiR.s: Assembler messages:
 > /home/sfr/next/tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is
 > not a multiple of 4)
 > make[5]: *** [/home/sfr/next/next/scripts/Makefile.build:229:
 > net/core/page_pool.o] Error 1
->
+> 
 > Root caused in this thread:
-> https://lore.kernel.org/netdev/913e2fbd-d318-4c9b-aed2-4d333a1d5cf0@cs-so=
-prasteria.com/
->
+> https://lore.kernel.org/netdev/913e2fbd-d318-4c9b-aed2-4d333a1d5cf0@cs-soprasteria.com/
+> 
 > We try to access offset 40 in the pointer returned by this function:
->
+> 
 > static inline unsigned long _compound_head(const struct page *page)
 > {
->         unsigned long head =3D READ_ONCE(page->compound_head);
->
+>         unsigned long head = READ_ONCE(page->compound_head);
+> 
 >         if (unlikely(head & 1))
 >                 return head - 1;
 >         return (unsigned long)page_fixed_fake_head(page);
 > }
->
+> 
 > The GCC 14 (but not 11) compiler optimizes this by doing:
->
+> 
 > ld page + 39
->
+> 
 > Rather than:
->
+> 
 > ld (page - 1) + 40
->
+> 
 > And causing an unaligned load. Get around this by issuing a READ_ONCE as
 > we convert the page to netmem.  That disables the compiler optimizing the
 > load in this way.
->
+> 
 > Cc: Simon Horman <horms@kernel.org>
 > Cc: Stephen Rothwell <sfr@canb.auug.org.au>
 > Cc: Jakub Kicinski <kuba@kernel.org>
@@ -137,16 +141,68 @@ prasteria.com/
 > Cc: Arnd Bergmann <arnd@arndb.de>
 > Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 > Cc: Matthew Wilcox <willy@infradead.org>
->
+> 
 > Suggested-by: Jakub Kicinski <kuba@kernel.org>
 > Signed-off-by: Mina Almasry <almasrymina@google.com>
->
+> 
+> ---
+> 
+> v2: https://lore.kernel.org/netdev/20240913192036.3289003-1-almasrymina@google.com/
+> 
+> - Work around this issue as we convert the page to netmem, instead of
+>   a generic change that affects compound_head().
+> ---
+>  net/core/page_pool.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+> index a813d30d2135..74ea491d0ab2 100644
+> --- a/net/core/page_pool.c
+> +++ b/net/core/page_pool.c
+> @@ -859,12 +859,25 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+>  {
+>  	int i, bulk_len = 0;
+>  	bool allow_direct;
+> +	netmem_ref netmem;
+> +	struct page *page;
+>  	bool in_softirq;
+>  
+>  	allow_direct = page_pool_napi_local(pool);
+>  
+>  	for (i = 0; i < count; i++) {
+> -		netmem_ref netmem = page_to_netmem(virt_to_head_page(data[i]));
+> +		page = virt_to_head_page(data[i]);
+> +
+> +		/* GCC 14 powerpc compiler will optimize reads into the
+> +		 * resulting netmem_ref into unaligned reads as it sees address
+> +		 * arithmetic in _compound_head() call that the page has come
+> +		 * from.
+> +		 *
+> +		 * The READ_ONCE here gets around that by breaking the
+> +		 * optimization chain between the address arithmetic and later
+> +		 * indexing.
+> +		 */
+> +		netmem = page_to_netmem(READ_ONCE(page));
+>  
+>  		/* It is not the last user for the page frag case */
+>  		if (!page_pool_is_last_ref(netmem))
 
-Gah, right after I hit send I realized I missed the 24hr rule.
-Although I'm unsure about the urgency of build fixes. Sorry about
-that.
+Are we sure this is the only place where we can hit by this?
+Any reason not to hide this inside page_to_netmem?
 
---=20
-Thanks,
-Mina
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 8a6e20be4b9d..46bc362acec4 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -100,7 +100,7 @@ static inline netmem_ref net_iov_to_netmem(struct net_iov *niov)
+
+ static inline netmem_ref page_to_netmem(struct page *page)
+ {
+-       return (__force netmem_ref)page;
++       return (__force netmem_ref)READ_ONCE(page);
+ }
+
+ static inline int netmem_ref_count(netmem_ref netmem)
+
+Is it gonna generate slower code elsewhere?
 
