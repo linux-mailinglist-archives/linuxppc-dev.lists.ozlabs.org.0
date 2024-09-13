@@ -1,67 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-1352-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1353-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4354978B90
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 00:57:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFC1978B92
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 00:59:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X58pD4fL4z2yn2;
-	Sat, 14 Sep 2024 08:57:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X58rr41qrz2xfP;
+	Sat, 14 Sep 2024 08:59:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726244855;
-	cv=none; b=CYfch6AR+pL85r2Wm64E9xcdL6uMhGZEmC6OM4zj5b2mYpY+wu2+kaEikAoVRinTnZLgRHETlNNSuAiXR8JNhSEOK8rYuW3++Tkj0Wtmq9vN3607flJ8glyzDfYqHMyaG9xTDyplWk7q/Ms8GeM7bDupgD7YTSwkbVpXJnYXkqQIELECqQ1oRaXKo03wPkGjfEd75syJPsQyb8SfZjVZpcN3803tOWuRCXFtZ99OYyEQEMB9P4puqtMlokd1HznVp81TjI5+Z2YeGddFKHpakVNAzDZrHLiumZwKPXhCLccBE08HTasZVWXRf/9D/TSaGN3tYE9AXBl/DyFIR2/lOA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1149"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726255256;
+	cv=none; b=E9AK4fUSOgz3QXS16MXwxwmIG2Yrvhyp1QecgUhydgPn2kzif6XDbzrUf1i8Hg2BHM5fWlrXIlCYJuZrensweiQcmaUX5kswq7LK44A4RwGSeDx6s5BGc7WGSixQV+c75Jdrs7ZklnLsFDZKfk38RcDkACgH/XxNuPN8FztwoiEQGatNqVF+6UQgePgakkob7Ij+qNJ97ZHbtm1ZqTa45ZSU0q/wVnZiVxfTgZPXEZejM547v7vX1ST5JH10ug3cL+UfqUc5a7kamY0QoTegIOF0NfXsOJ7hO2gbu8g/a4vW4g7qwjDEi7QBJZD69dTVJmRO4aJqTzDqZBin6U+mxw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726244855; c=relaxed/relaxed;
-	bh=Kaogzt0x83O50oW2Cdc8KsfEPIv2RHrKFooPdPcHuF0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D0U6DR7CEQ6wAElycMhH+vxypBMuCWWGTYbGrQrelz+bLWZ64I08OpBp/CDPmCdeulY/jLocLiPrdRf6Px2hZdlg5vdSq0AsnVy9TV77lUO9giWYQGhVFja9/18R+SwCFZhfo7NbVqT4V/vR8Ukfod5P5dIxWfMPjObMc8qIjv8oTqjFnsWYecalFW+ahCZQW4x+ZA54kozu93YGEjI5R9Lf2fAuxok7Sw4HeDqttPl9dYAXxkCXjxdYNPDzofuMpximFAxKHP86N3tv38dUbk0+UMjUy4fPJCCN24ZPFZ7tNGH1c6gIw7PQu8SluNLGJq7jxb/i6AS+CGld/nX1uA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JGBL/yi0; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=almasrymina@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+	t=1726255256; c=relaxed/relaxed;
+	bh=XyVwmJzFbJ/oT6rl4j6NoyNuLyObf2RLXKIfBjhIh5k=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=NcHMVnlRcrF+fyxTBlNbVYWNoPjOQZKS/St2lDxzqTG+l/IBtOsckcAcX3H+fEV3ejLhWI17iHe6PlVN96GrzaDU5Dnj53czN4GWZaZXHyyhTxUDcFp8CXJKVDlhbEDJ+8S9VywYmonEqXLVx817uTbwDb0Xcdggjz5u8uHxqrcLbsZJ0Wu4IBXeXvat4L9uRG9hyEioIgJN6VtmF86B5HW83hDxWVbMGgqB/gFzL4LJEkepUkrOl2wv3g1k+8LkWHAIUqQJCjytxLtxavSnMKd38Qqs2M/rdTHJkyJDR2ExYSgwbHaPl2rxtipl1bZjGsIu0WmqGVeqn7sRQzHabA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=tU50woYu; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3kjdkzgskdiefqrfxw3rnsflttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--almasrymina.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JGBL/yi0;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=tU50woYu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=almasrymina@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--almasrymina.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3kjdkzgskdiefqrfxw3rnsflttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--almasrymina.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X508R0G2Mz2yvh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 02:27:33 +1000 (AEST)
-Received: by mail-qt1-x82d.google.com with SMTP id d75a77b69052e-4582a5b495cso234271cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 09:27:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X540S0Wxqz2yl1
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 05:20:54 +1000 (AEST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-6d9e31e66eeso34154677b3.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 12:20:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726244850; x=1726849650; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kaogzt0x83O50oW2Cdc8KsfEPIv2RHrKFooPdPcHuF0=;
-        b=JGBL/yi04KU56JKySZm9Ka4cpjddpqHeq6j8QtSUpx6wTwishbTylWKzTKlFuW0ide
-         7wB3jLlBCXz70SEsEtHcwC8XpmTou5BwoB/U3idj5dKDFZwsUozfsYX1b5xWhDwI+Vjo
-         ZWn332+rVLw87h2vakjh0h3rteyHAzFzmfbvzOfyZsIij7WppyjiB3dD6L5ydsMJ2sL4
-         fphXmWk/Hz5bLZIlhcCmtAauFznuPcBeCH8Lxux878r4GDq1hje+u+Cw9RvCOnNRAQFL
-         XM0mHXVMc9lXSWZioSkwwnc+sUKeUytsF0xDaHLPnK2eVJvrByN8l1m0MMuwPoI4ql11
-         lzLA==
+        d=google.com; s=20230601; t=1726255249; x=1726860049; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XyVwmJzFbJ/oT6rl4j6NoyNuLyObf2RLXKIfBjhIh5k=;
+        b=tU50woYuhaGRzCdw7azef9vBEMxs+QI/m0MwmVcWEhA7s/v9I3oBhMO5py6xoNejYD
+         8fy5WCNuo7uXdoL4b5UyazzJe6BCQjK9ehfkc/vkkq8cPT9Pnxkn2Wm0YrHGedIb5DO2
+         M6qMpqaDxJ7wreqRIznYjKZg+Uz69stn3MPj4lB+ss54dsK0xBGxmas+cBMWYx1A0cqP
+         KWuOkAFUx2YbDlGHBM7wZZMPKukkHayZI905qkHbVxg+6b++9uSmqYSxVITW3671gcDc
+         XmjF/k7SUSCqBp6xmBIHyLtuwjH1Gr08uLJxrtMF7F1S/XeuPey8o/7XP6RxV5oLw4Vu
+         QoKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726244850; x=1726849650;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kaogzt0x83O50oW2Cdc8KsfEPIv2RHrKFooPdPcHuF0=;
-        b=HgMIhAIwul0k6+jLL43vRi3vt6jW3yS1vJ6x6WPVaj9uqGXcM9iv/U8aVDCRr/Aq2i
-         bWR8tVWA4qy3OYXbcmfo4Ee7aS4FPnnlUTw+RNGseKLnwK4o6YAKYi9EVUdGufxdE+/d
-         HJFXFrl8EoP8CS1ItyxzoUggdJDz+P5GNVWJshkzSa4NgL3UsIOPQGio4bK4JUxPXiwi
-         8EL+eOXd4XKAU3VhLU18Rn2eC/fnzr7kVCHvfJFNB+/Dq/G+S5Pi/NT/5dMojf8CU7QS
-         j3x9nO39yx5zZx/4Qx9EhpDDvZCx473lmdmjiPSD1uRghD+k/iUG5CqkWJtsTH/yaNzf
-         uR+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXNY757amVEoXz3BEO+5IXi2KH7Zd541PyfTpuFQrYq+Umoxj5CS6nJlct+dHkc+cbxGme8ongcq6PuhzA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxjWTXy1+MnZGgGfbeNhj01/hOA31N5fSePOJsKEJka3S+5/DDy
-	WYn1bjirHmfwvYPTjEBJrWsJN/PefgWjg9FqutmxHobNp7PQ0qxQQPUZuUjTlf4+8Aeun+sVZ8/
-	FHd6RQIqDVZLXeOSeZu2bxUhYyIBkJelyFQuU
-X-Google-Smtp-Source: AGHT+IFLIVO3GAQiV32AIRq5tRq8/+Y6XmNS4xK792rwOjota6Ua04VI9PjqMQ/wHusA5aDseJUdCQZv6B0+BHgZ16k=
-X-Received: by 2002:a05:622a:4cc:b0:456:796b:2fe5 with SMTP id
- d75a77b69052e-45864512051mr7158501cf.9.1726244849858; Fri, 13 Sep 2024
- 09:27:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726255249; x=1726860049;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XyVwmJzFbJ/oT6rl4j6NoyNuLyObf2RLXKIfBjhIh5k=;
+        b=VZ0GAjyhqv3Uq0bdSFrwUMGIFWakNvi1RaaNwnvomM1VXevuCloV5XgP2YXGE5UH2f
+         bmI++p543e8Y9eF07kcBVxT+2xkog49/lvRExSJiuZmvAC3sx3iJ6qlbPK378Rj5x6tx
+         KSz+4Alpa9FbVubacmM5AZJMn85q+GkxkSNiRt+caMfs9hjRXlpHfPW4ditNNzzqXStS
+         YBwFImFahjIGg8cTDJTOTV9Bn29Kl/O4iEGgC6k/ErF6/gEST/EVAQD2oQ7FznmXP5Ar
+         GK5P5vUJun9MYuUbIzRK2BfFLKgeGSECd/wLfkKW1FUhtjVXfHx3tKjAi5qNSD2GQDXk
+         8Aeg==
+X-Forwarded-Encrypted: i=1; AJvYcCV53gWeFWqhnue78QUjhSqw+EIHBwuw8F0G5xosQ7Lujauo5FRHsUMDPa5U1COBQt1jp5VwMsqvCZ9Vy7I=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YztKJzktIie2/JGoxLgLg9q1OApZt5yvL01VLI77wkohoGKAgLJ
+	ag90l5gix77cwjU01L5R4DYbobSMY25TKlIgaW72w78Bll0Fw1CFEVSfcZxUxL/G9LbA2yXoDZg
+	52VS9fBFBufEJBHhtXg6r1Q==
+X-Google-Smtp-Source: AGHT+IFDF32N4mQwATZNCLz25QLEOkKmOIRWCMujqX0ZzKlzsSNpONZ53k1X0A26W9ZzFOaKPw2IjNpPtPK3sfm+wg==
+X-Received: from almasrymina.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:4bc5])
+ (user=almasrymina job=sendgmr) by 2002:a05:690c:7487:b0:6d5:df94:b7f2 with
+ SMTP id 00721157ae682-6dbcc579a34mr1597487b3.5.1726255248865; Fri, 13 Sep
+ 2024 12:20:48 -0700 (PDT)
+Date: Fri, 13 Sep 2024 19:20:36 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,108 +69,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-References: <20240913125302.0a06b4c7@canb.auug.org.au> <20240912200543.2d5ff757@kernel.org>
- <20240913204138.7cdb762c@canb.auug.org.au> <20240913083426.30aff7f4@kernel.org>
- <20240913084938.71ade4d5@kernel.org> <913e2fbd-d318-4c9b-aed2-4d333a1d5cf0@cs-soprasteria.com>
-In-Reply-To: <913e2fbd-d318-4c9b-aed2-4d333a1d5cf0@cs-soprasteria.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.0.662.g92d0881bb0-goog
+Message-ID: <20240913192036.3289003-1-almasrymina@google.com>
+Subject: [PATCH net-next v1] mm: fix build on powerpc with GCC 14
 From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 13 Sep 2024 09:27:17 -0700
-Message-ID: <CAHS8izPf29T51QB4u46NJRc=C77vVDbR1nXekJ5-ysJJg8fK8g@mail.gmail.com>
-Subject: Re: linux-next: build failure after merge of the net-next tree
-To: christophe.leroy2@cs-soprasteria.com
-Cc: Jakub Kicinski <kuba@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>, 
-	David Miller <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Networking <netdev@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+To: netdev@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Simon Horman <horms@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>, 
+	Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
 	Linux Next Mailing List <linux-next@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
+	LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 13, 2024 at 9:13=E2=80=AFAM LEROY Christophe
-<christophe.leroy2@cs-soprasteria.com> wrote:
->
->
->
-> Le 13/09/2024 =C3=A0 17:49, Jakub Kicinski a =C3=A9crit :
-> > On Fri, 13 Sep 2024 08:34:26 -0700 Jakub Kicinski wrote:
-> >>> The second "asm" above (CONFIG_PPC_KERNEL_PREFIXED is not set).  I am
-> >>> guessing by searching for "39" in net/core/page_pool.s
-> >>>
-> >>> This is maybe called from page_pool_unref_netmem()
-> >>
-> >> Thanks! The compiler version helped, I can repro with GCC 14.
-> >>
-> >> It's something special about compound page handling on powerpc64,
-> >> AFAICT. I'm guessing that the assembler is mad that we're doing
-> >> an unaligned read:
-> >>
-> >>     3300         ld 8,39(8)       # MEM[(const struct atomic64_t *)_29=
-].counter, t
-> >>
-> >> which does indeed look unaligned to a naked eye. If I replace
-> >> virt_to_head_page() with virt_to_page() on line 867 in net/core/page_p=
-ool.c
-> >> I get:
-> >>
-> >>     2982         ld 8,40(10)      # MEM[(const struct atomic64_t *)_94=
-].counter, t
-> >>
-> >> and that's what we'd expect. It's reading pp_ref_count which is at
-> >> offset 40 in struct net_iov. I'll try to take a closer look at
-> >> the compound page handling, with powerpc assembly book in hand,
-> >> but perhaps this rings a bell for someone?
-> >
-> > Oh, okay, I think I understand now. My lack of MM knowledge showing.
-> > So if it's a compound head we do:
-> >
-> > static inline unsigned long _compound_head(const struct page *page)
-> > {
-> >          unsigned long head =3D READ_ONCE(page->compound_head);
-> >
-> >          if (unlikely(head & 1))
-> >                  return head - 1;
-> >          return (unsigned long)page_fixed_fake_head(page);
-> > }
-> >
-> > Presumably page->compound_head stores the pointer to the head page.
-> > I'm guessing the compiler is "smart" and decides "why should I do
-> > ld (page - 1) + 40, when I can do ld page + 39 :|
-> >
-> > I think it's a compiler bug...
-> >
->
-> Would it work if you replace it with following ?
->
->         return head & ~1;
->
+Building net-next with powerpc with GCC 14 compiler results in this
+build error:
 
-I was able to reproduce with the correct compiler version, and yes,
-this fixes the build for me. Thanks!
+/home/sfr/next/tmp/ccuSzwiR.s: Assembler messages:
+/home/sfr/next/tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is
+not a multiple of 4)
+make[5]: *** [/home/sfr/next/next/scripts/Makefile.build:229:
+net/core/page_pool.o] Error 1
 
-Probably healthy to add UL, yes?
+Root caused in this thread:
+https://lore.kernel.org/netdev/913e2fbd-d318-4c9b-aed2-4d333a1d5cf0@cs-soprasteria.com/
+
+We try to access offset 40 in the pointer returned by this function:
+
+static inline unsigned long _compound_head(const struct page *page)
+{
+	unsigned long head = READ_ONCE(page->compound_head);
+
+	if (unlikely(head & 1))
+		return head - 1;
+	return (unsigned long)page_fixed_fake_head(page);
+}
+
+The GCC 14 (but not 11) compiler optimizes this by doing:
+
+ld page + 39
+
+Rather than:
+
+ld (page - 1) + 40
+
+Causing an unaligned read error. Fix this by bitwise operand instead of
+an arthimetic operation to clear the pointer, which probably
+communicates the intention of the code a bit better anyway.
+
+Cc: Simon Horman <horms@kernel.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: David Miller <davem@davemloft.net>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Networking <netdev@vger.kernel.org>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+
+Suggested-by: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+
+---
+ include/linux/page-flags.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
 index 5769fe6e4950..ea4005d2d1a9 100644
 --- a/include/linux/page-flags.h
 +++ b/include/linux/page-flags.h
-@@ -239,8 +239,8 @@ static inline unsigned long _compound_head(const
-struct page *page)
+@@ -239,8 +239,8 @@ static inline unsigned long _compound_head(const struct page *page)
  {
-        unsigned long head =3D READ_ONCE(page->compound_head);
-
--       if (unlikely(head & 1))
--               return head - 1;
-+       if (unlikely(head & 1UL))
-+               return head & ~1UL;
-        return (unsigned long)page_fixed_fake_head(page);
+ 	unsigned long head = READ_ONCE(page->compound_head);
+ 
+-	if (unlikely(head & 1))
+-		return head - 1;
++	if (unlikely(head & 1UL))
++		return head & ~1UL;
+ 	return (unsigned long)page_fixed_fake_head(page);
  }
+ 
+-- 
+2.46.0.662.g92d0881bb0-goog
 
-Other than that I think this is a correct fix. Jakub, what to do here.
-Do I send this fix to the mm tree or to net-next?
-
---=20
-Thanks,
-Mina
 
