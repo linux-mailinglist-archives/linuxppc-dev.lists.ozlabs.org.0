@@ -1,60 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1326-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1327-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81FD9780CE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 15:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD259781B3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 15:56:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4vtq3MV2z2y8k;
-	Fri, 13 Sep 2024 23:15:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4wnZ465kz2yGC;
+	Fri, 13 Sep 2024 23:56:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726233331;
-	cv=none; b=d0G4FnPlTs96p6OgpLVMpdBL1Vl5+T+jCXiebyT5KXQW8j8xWYXOS0+YLkRjfe71b8mXH66H8Sa3SQOszwB6X2jCdN+3egsqMPS5WUcbZtqO0Negh3/OTPEISJIGHJUcxH0WbOnQVjnJRZfNPKMnNnVmfJYdIKqwi1Jf9VfdmeEGQkjmwLl6OEDwDgesRVZ25fODh0V2W+773HGzcoGiMpeP7+QCloQWwDATMxpMQqaT0vfHYeZV90N0TRgyjr02JGp+/DB+jiQLdNg+2ITxajEC/42TQFDLx8Wj9vnMWjim1fjfH7WmTDoBDnYBQt4Brhk90GRpWbVtgITRkhsjQQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726235762;
+	cv=none; b=BOWvct6yxndSJO1FAlNgzA7a+4pCylKgkvnM1NrBOwyH1uTxKbeQSIe8QXOgRVp6tERZpEVpPJFacv9QLOAWsz/5meK9IAZ6dOnp8YJwGFAxPzyYYM1thHY0g1FwvoFv2xhWhB/L9kx7Gp3dAO315z2G3lHEbfKFiaOtJLX6u5YL8+RLirNf6a2PGii7X8/Z8P8J8FwkbA2zswSsH1ZZ8MNiTYJGMmrcmxbkEJcCV79HN3L96R3i7pGf0yp+DfLgaBF+dEWCxv6LvHSW9I07/+/ketgzB9AayBknV/M+2X/DqxReOWOGvzYEyjH5XWgDKfOWIsJw8titbn9Zo3c2gg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726233331; c=relaxed/relaxed;
-	bh=nt0wBmAol6tMoem7ESVcPxXpXMmwnfJWNcB17dRflFM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=P3krV0m2AUYAqDfrLsQTpI8qAQP8+vLMWMAdn/W9H0S5u00ipQVwayreKbKlqgTyPXSHv1e0WclQYDomAOffmuQwmoVM6OLz78CZ6FS1e3wtk0nL2u0wh1TPYflscB9FLRaP5Zs25phRRMpXiPHeOxzjD7cLWF7ou968PxArNoWvUT5da1Mvq7q/d1eiNRUzTfVqrh63ArlOysDY/SuAqOkaMHQaQ3ipczrK9qpm1sSCxSqfS/OY+/igBmcZiaU/WmDTtJAramsjwlkJL9+G996S+c4U9gWEVK05wG5GSzLXPIrmjRhtFxt5S4OyoB6AuLGjhk4aGXyf87fohipUdg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VMCMGf41; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VMCMGf41;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	t=1726235762; c=relaxed/relaxed;
+	bh=jU7+q5ieaf/csyxGZ9+7/oBRvEi3x03CJEOIJU+qmDc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RsmLSC3Kq4Zp3Pmuob6I0so4VWlflhEygNlqLkjDQRYzA8Gxx5QKkg5kucqdEl3Y2KRYnc7niq3c6jANMG7wX9PI8CUkjtVr84jl8p5dXYUfJnhay3rjV6dkYw40F03XADXk79KIZHWt2e8olbWhR/dDwJMMedDNVd+/FPkH2a4qVCf908dBhvb33eniE/UXbXs/G7Rz830tVpmS4qcSh+zylHgu/Kh5pjG5snLWpr3BuiSEACa/fegndtqfCoiNqTqDiNYe6W7Asj6pTVckze2Eb4pONkGAonf3FM41WWEBWtBYTZRowZcL81mCfu23Pgeqy2KbDMkJ6oaFH37H8g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4vtn5hKnz2y8h
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 23:15:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726233322;
-	bh=nt0wBmAol6tMoem7ESVcPxXpXMmwnfJWNcB17dRflFM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=VMCMGf41drt8ib6eRyj4uH8cl/ZAhfszPYZyDAS80NNABs68YSgq60CPzWBpXCba4
-	 pGhU3rm4oEIwEiLdnuUd43wCR5eFEtTjfpK8jsdJoDIPv+/39w7LvJ2yQYbcaDrYVi
-	 LJogoDLPZdXy0dBXH+wXaneam8oozMzR3Qt0fGS69b3wFvHv1ZOOVr0kL9qDNUhTK3
-	 EBt336Qp4naTEoHuXKa8EsvHiruDagdr8fctEsCLYgQEOrilMbP8ov/RDO7Cjy6Clx
-	 Q7p6I0bNEJbGdgv4axsga6uFoxh3ob/8iZTdWiI9oRX00cIdo+uouwHll/iclnRAi+
-	 +g0aiwiHv1cag==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X4vtf1ylTz4xQV;
-	Fri, 13 Sep 2024 23:15:22 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Rob
- Herring
- <robh@kernel.org>, Saravana Kannan <saravanak@google.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas
- =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- <linuxppc-dev@lists.ozlabs.org> 
-Subject: Re: [PATCH] of: address: Unify resource bounds overflow checking
-In-Reply-To: <20240906-of-address-overflow-v1-1-19567aaa61da@linutronix.de>
-References: <20240906-of-address-overflow-v1-1-19567aaa61da@linutronix.de>
-Date: Fri, 13 Sep 2024 23:15:21 +1000
-Message-ID: <87plp7r8ye.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4wnZ1gycz2xnS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 23:56:01 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4X4wnT638kz9sfV;
+	Fri, 13 Sep 2024 15:55:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id NdghGpa9uVpK; Fri, 13 Sep 2024 15:55:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4X4wnT56q9z9sVl;
+	Fri, 13 Sep 2024 15:55:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B0F68B77C;
+	Fri, 13 Sep 2024 15:55:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 00vgt6UPj302; Fri, 13 Sep 2024 15:55:57 +0200 (CEST)
+Received: from [192.168.233.70] (unknown [192.168.233.70])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0FB758B766;
+	Fri, 13 Sep 2024 15:55:57 +0200 (CEST)
+Message-ID: <4742a397-eb68-4a79-a2fa-fc45a81e7c2b@csgroup.eu>
+Date: Fri, 13 Sep 2024 15:55:56 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,74 +56,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] crypto: Removing CRYPTO_AES_GCM_P10.
+To: Danny Tsen <dtsen@linux.ibm.com>, linux-crypto@vger.kernel.org
+Cc: herbert@gondor.apana.org.au, leitao@debian.org, nayna@linux.ibm.com,
+ appro@cryptogams.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+ ltcgcw@linux.vnet.ibm.com, dtsen@us.ibm.com
+References: <20240913123043.1636183-1-dtsen@linux.ibm.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20240913123043.1636183-1-dtsen@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de> writes:
-> The members "start" and "end" of struct resource are of type
-> "resource_size_t" which can be 32bit wide.
-> Values read from OF however are always 64bit wide.
->
-> Refactor the diff overflow checks into a helper function.
-> Also extend the checks to validate each calculation step.
->
-> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+
+
+Le 13/09/2024 à 14:30, Danny Tsen a écrit :
+> [Vous ne recevez pas souvent de courriers de dtsen@linux.ibm.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> Removing CRYPTO_AES_GCM_P10 in Kconfig first so that we can apply the
+> subsequent patches to fix data mismatch over ipsec tunnel.
+
+To deactivate a driver, all you have to do is to add:
+
+	depends on BROKEN
+
+Christophe
+
+
+> 
+> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
 > ---
->  drivers/of/address.c | 45 ++++++++++++++++++++++++++-------------------
->  1 file changed, 26 insertions(+), 19 deletions(-)
->
-> diff --git a/drivers/of/address.c b/drivers/of/address.c
-> index 7e59283a4472..df854bb427ce 100644
-> --- a/drivers/of/address.c
-> +++ b/drivers/of/address.c
-> @@ -198,6 +198,25 @@ static u64 of_bus_pci_map(__be32 *addr, const __be32=
- *range, int na, int ns,
->=20=20
->  #endif /* CONFIG_PCI */
->=20=20
-> +static int __of_address_resource_bounds(struct resource *r, u64 start, u=
-64 size)
-> +{
-> +	u64 end =3D start;
-> +
-> +	if (overflows_type(start, r->start))
-> +		return -EOVERFLOW;
-> +	if (size =3D=3D 0)
-> +		return -EOVERFLOW;
-> +	if (check_add_overflow(end, size - 1, &end))
-> +		return -EOVERFLOW;
-> +	if (overflows_type(end, r->end))
-> +		return -EOVERFLOW;
-=20
-This breaks PCI on powerpc qemu. Part of the PCI probe reads a resource
-that's zero sized, which used to succeed but now fails due to the size
-check above.
-
-The diff below fixes it for me.
-
-It leaves r.end =3D=3D r.start, which is fine in my case, because the code
-only uses r.start.
-
-And it seems more sane than the old code which would return
-end =3D start - 1, for zero sized resources.
-
-cheers
-
-
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index df854bb427ce..a001e789a6c4 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -204,9 +204,7 @@ static int __of_address_resource_bounds(struct resource=
- *r, u64 start, u64 size)
-=20
- 	if (overflows_type(start, r->start))
- 		return -EOVERFLOW;
--	if (size =3D=3D 0)
--		return -EOVERFLOW;
--	if (check_add_overflow(end, size - 1, &end))
-+	if (size > 0 && check_add_overflow(end, size - 1, &end))
- 		return -EOVERFLOW;
- 	if (overflows_type(end, r->end))
- 		return -EOVERFLOW;
+>   arch/powerpc/crypto/Kconfig | 32 ++++++++++++++++----------------
+>   1 file changed, 16 insertions(+), 16 deletions(-)
+> 
+> diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+> index 09ebcbdfb34f..96ca2c4c8827 100644
+> --- a/arch/powerpc/crypto/Kconfig
+> +++ b/arch/powerpc/crypto/Kconfig
+> @@ -105,22 +105,22 @@ config CRYPTO_AES_PPC_SPE
+>            architecture specific assembler implementations that work on 1KB
+>            tables or 256 bytes S-boxes.
+> 
+> -config CRYPTO_AES_GCM_P10
+> -       tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
+> -       depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+> -       select CRYPTO_LIB_AES
+> -       select CRYPTO_ALGAPI
+> -       select CRYPTO_AEAD
+> -       select CRYPTO_SKCIPHER
+> -       help
+> -         AEAD cipher: AES cipher algorithms (FIPS-197)
+> -         GCM (Galois/Counter Mode) authenticated encryption mode (NIST SP800-38D)
+> -         Architecture: powerpc64 using:
+> -           - little-endian
+> -           - Power10 or later features
+> -
+> -         Support for cryptographic acceleration instructions on Power10 or
+> -         later CPU. This module supports stitched acceleration for AES/GCM.
+> +#config CRYPTO_AES_GCM_P10
+> +#      tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
+> +#      depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+> +#      select CRYPTO_LIB_AES
+> +#      select CRYPTO_ALGAPI
+> +#      select CRYPTO_AEAD
+> +#      select CRYPTO_SKCIPHER
+> +#      help
+> +#        AEAD cipher: AES cipher algorithms (FIPS-197)
+> +#        GCM (Galois/Counter Mode) authenticated encryption mode (NIST SP800-38D)
+> +#        Architecture: powerpc64 using:
+> +#          - little-endian
+> +#          - Power10 or later features
+> +#
+> +#        Support for cryptographic acceleration instructions on Power10 or
+> +#        later CPU. This module supports stitched acceleration for AES/GCM.
+> 
+>   config CRYPTO_CHACHA20_P10
+>          tristate "Ciphers: ChaCha20, XChacha20, XChacha12 (P10 or later)"
+> --
+> 2.43.0
+> 
+> 
 
