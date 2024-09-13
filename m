@@ -1,88 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-1361-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1362-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D05A978BB0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 01:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F70978BB6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 01:10:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X591h041Mz301v;
-	Sat, 14 Sep 2024 09:07:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X595C6VS0z302P;
+	Sat, 14 Sep 2024 09:10:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::532"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726266474;
-	cv=none; b=M59vdJolGBLZ82a/01TalfUAEJv1eO48DpaHbyx0e7PjmE1C3VUGca17HRBJPqHeHLw5QRG+nxYiP0/wQWE1zjx9GQqM3jigZonSIiR4bIIUn5HIKow/S5kwiq3OtGB/cHaJQQ3bMXXZez8Ht7NnBpPh+ltp8BgXGRq93bQYZYxKzKy15l7M1j0eC4u2LUi+Va6WXOUn8JjU67ZER9bcxV9dq8/GfX5j1CMfyMHkTN7+p+7EXmiN1GYJQlQ4UfCSF2wDhV6lZzfavZwcCmiXQinDuFzQzTUG8xpzLCCddrcD9avS9pn/w45zOPu7LbXDdUyca2eKa3Nn4Ya5EE+Vjg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726269023;
+	cv=none; b=ROxtEBFVpJ04smI2I/8hre8gOxjaeMM47y7/tmdcEo3x1eGNAe6T6WUOhvwct+798e3wTWfF/Cd2BZq8ZQBfni8Q+KfinD4NYpicqpW/Yv/HUzneqEO7qSKXrjjdbAiNdt8KjzMapcC0FJRGT1MUNbC3cQcqOnv3DORmiLuTmH7W5gBcVarImuR6MlNiwqouhxkhgufbL+XTX+PiTVn93X+Z1UJv9g0kuoQ1GC7v/tatflppfEep1Af2gag67/hnFX+iQbZsEq3DBgwwCmgmtZARkVEYTx49xZd8MBovNn4IqDp4Sd+NFXYV08X1u/5rhP/wgdTS307Wpu42wBUH3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726266474; c=relaxed/relaxed;
-	bh=ho4A2dlkxLyKDzVyfgfjhOPRDsg2t0/XpGUELeP46ZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M6jNsfCFi6l5xxqYncbzEyatktpyI+4ed27HSAkdfWxx8tKP0fMrvgpydXiBwkcPxhCeygwnGUdaQrGBRe5CslrZVuzDkpz6Rh+nGV6Spi6s6aNu6LTeTdBDkpY7nx66h9kuKKBVmh65lkfEHjgCXGI4ObpK+DDC+HU9WWPz0Q2CTaLMOdRror6ghfwlORVACaYJVb1KHHs5vJMvGEZ85vzaUiU3frAM52yi+KmaDpfD4v4gIzUUEFzuhwlcciKVZFUwdvoQqT8ze6AnkC1yhija96Q15+iSFiCPGbPZircdfdW5bQEtsZN8M1CoYSEEvmwbKIFUMF30tAaDJax2vA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BefQDQPx; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=stfomichev@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1726269023; c=relaxed/relaxed;
+	bh=gy3hRIQfFMt+naW5uo5M4vgY3O8DQ+s8NBlJGzQZOSY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BFqZwaaOgF2Vst7Pgwe7zxzBYhwSRKpvx99AcnW2uD0nXlE1nz8Ht+t+kVUpthl74S9eRISl01MtZEc84OGOrAF3OLkIP6bWCs+9E4DR8GyEa090x0ZnwazKajc57lzLuG/sxJ+19SMjHgRg8TeK5f5JeLCS4hyUtS0VNzX0RM8wDMOgZ08fOEoLDkJCpikcsaeYF7yuZxlMNJ+keYk+eYdiM+dMZm+g+pe+Ojs6L7ro4P3HOoWOBkBc04BR7gu2jdQ30nFngeMw74ul3i43VHw3X6XiY+4qEcz2w4+ywxYiAw9DkyX5YgFxyMWi1dXZ70NcuQ0CdVgV3JliXAP2Kw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qcpULeM/; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BefQDQPx;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qcpULeM/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=stfomichev@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X588B0vmMz2xyG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 08:27:53 +1000 (AEST)
-Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-7163489149eso1086755a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 15:27:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726266471; x=1726871271; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ho4A2dlkxLyKDzVyfgfjhOPRDsg2t0/XpGUELeP46ZY=;
-        b=BefQDQPxJWCBOhJlkmj91YvbRwpraG39LbdPijy1WgYgSiwjMrAX8p0lIX0V4i1uTu
-         SI6BYri3hjFTLTGRzHyk6vyIKQZinJUDAJirE3sodwc8T7CgToJXw8Z7qt7TfMH8xYJb
-         IkRKFFMXHiz/XXhJrVuay6Oe32R42pg03oHSU0n8CBi4Rk69yCd4y0DDJ6Kcj9u9EBtY
-         MUJdFt2XC3KOWsRkXE1x5KqnIqRrJPEqO5LCJ7wlchL5mxTHNrmr4Z+3V17kB4xDhb7d
-         1XX2vBiej/aq79LxL2uuY7nqylEUoSijgdLl9eY1G+4W25j2Czp7x/82YQVWVKmT+UCl
-         gkYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726266471; x=1726871271;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ho4A2dlkxLyKDzVyfgfjhOPRDsg2t0/XpGUELeP46ZY=;
-        b=trzOpZLP/uHvMDBfjOS2mN6H5W8E3hZesDndKEEoW9ZHTnBwYFrK8XBvqMPsRUkD3M
-         0rZ2OBGM9mUkhD9kt72imCzw93CY5ckNmiPJK1PYocOjz10RWUimeJIMrFtSrwf0lqQK
-         h+Q30PZGH5iWAJVNHyVdrMhRmw7PyuZcKgVc/ZDC9O4yhPTJGXIqS6zhuGG5m2+scv7d
-         /4582o9nLfqeoz439tobo3g9HUTu7p+w0Dlg0guP4RI+q4nnaf2358qZIUsaU1i6KS6R
-         66T3ECbIgZqbpauN+XBtjcC3nv7boU44QuowvGIOvb/IMRuxSlDfPFOTyaP+EcUz9eQB
-         n0Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBeQlPsjaqbc/yPr/Obzto9XwSivk0PZghsrOdjZ/HrVOah/hgvizo9iTiq5PuUhTL59McGeWZTDEyVC8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyumCfpdctaW/C74BQ4g7YSgnDgZChmq1fFHaTq0zqKWhM9pl4h
-	HrJNe+nnnF9ktV+abywEiStLqaCfSXlG3/6fw9YOuQOvdUJ/xs4=
-X-Google-Smtp-Source: AGHT+IGMD6FwApmJ+MqRiyYkS+omxKRFa7rqnD3JQ7w575O5kdRxfkkNpa2MsAfMisPRNr5f5k6EvQ==
-X-Received: by 2002:a05:6a21:3a96:b0:1cf:3e99:d7a7 with SMTP id adf61e73a8af0-1d112b60cdbmr6984887637.12.1726266471397;
-        Fri, 13 Sep 2024 15:27:51 -0700 (PDT)
-Received: from localhost ([2601:646:9e00:f56e:2844:3d8f:bf3e:12cc])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71944a97574sm80042b3a.31.2024.09.13.15.27.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 15:27:51 -0700 (PDT)
-Date: Fri, 13 Sep 2024 15:27:50 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH net-next v2] page_pool: fix build on powerpc with GCC 14
-Message-ID: <ZuS8Zp_iiMfi0PX9@mini-arch>
-References: <20240913213351.3537411-1-almasrymina@google.com>
- <ZuS0x5ZRCGyzvTBg@mini-arch>
- <ZuS1u8G6M9ch2tLC@casper.infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X595C238jz2xmh
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 09:10:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1726269023;
+	bh=gy3hRIQfFMt+naW5uo5M4vgY3O8DQ+s8NBlJGzQZOSY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=qcpULeM/kqlHDKMJdI99cEZTIQVTUG1Ecedaa6xxZ2uQ3S9WQcM7etXghncO5Prbv
+	 B/++QsNVSrw+L08LnkqU/PQPUcwrmjyPFJ8LMWPHoP4JiOqxVU8DQ5S2aBwCdHzxgj
+	 JOrqdd9pFb81Gk7i9npf4WZj9gI3xMKGhc52A260yT6MtmxkBLbrH8kWhQZnpEmAes
+	 lzYmDQ1Ebg0iml/6IPQhhzzUAj0V/JM8wKMxcCI5OTs7+gBZrxQgdbZDcPaZ4V6Fhm
+	 eYwbYbgCLqABXGzISOv7/yAuerVBRW1S7F93NF+mypdUNZCgikRr7cFuZIPoiVWrab
+	 hB9aXGh+0fBUw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X595C0jDtz4x8c;
+	Sat, 14 Sep 2024 09:10:23 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rob Herring <robh@kernel.org>
+Cc: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Saravana Kannan
+ <saravanak@google.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] of: address: Unify resource bounds overflow checking
+In-Reply-To: <CAL_JsqLYQyue9WyYiQPaM1D8Hxve-a4RXCaDRvyeF2VWWx=Ozg@mail.gmail.com>
+References: <20240906-of-address-overflow-v1-1-19567aaa61da@linutronix.de>
+ <87plp7r8ye.fsf@mail.lhotse>
+ <CAL_JsqLYQyue9WyYiQPaM1D8Hxve-a4RXCaDRvyeF2VWWx=Ozg@mail.gmail.com>
+Date: Sat, 14 Sep 2024 09:10:20 +1000
+Message-ID: <87mskbqher.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,25 +66,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZuS1u8G6M9ch2tLC@casper.infradead.org>
+Content-Transfer-Encoding: quoted-printable
 
-On 09/13, Matthew Wilcox wrote:
-> On Fri, Sep 13, 2024 at 02:55:19PM -0700, Stanislav Fomichev wrote:
-> > On 09/13, Mina Almasry wrote:
-> > > Building net-next with powerpc with GCC 14 compiler results in this
-> > > build error:
-> > > 
-> > > /home/sfr/next/tmp/ccuSzwiR.s: Assembler messages:
-> > > /home/sfr/next/tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is
-> > > not a multiple of 4)
-> > > make[5]: *** [/home/sfr/next/next/scripts/Makefile.build:229:
-> > > net/core/page_pool.o] Error 1
-> > 
-> > Are we sure this is the only place where we can hit by this?
-> 
-> It's a compilation error, so yes, we're sure.
+Rob Herring <robh@kernel.org> writes:
+> On Fri, Sep 13, 2024 at 8:15=E2=80=AFAM Michael Ellerman <mpe@ellerman.id=
+.au> wrote:
+>> Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de> writes:
+>> > The members "start" and "end" of struct resource are of type
+>> > "resource_size_t" which can be 32bit wide.
+>> > Values read from OF however are always 64bit wide.
+>> >
+>> > Refactor the diff overflow checks into a helper function.
+>> > Also extend the checks to validate each calculation step.
+>> >
+>> > Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+>> > ---
+>> >  drivers/of/address.c | 45 ++++++++++++++++++++++++++-----------------=
+--
+>> >  1 file changed, 26 insertions(+), 19 deletions(-)
+>> >
+>> > diff --git a/drivers/of/address.c b/drivers/of/address.c
+>> > index 7e59283a4472..df854bb427ce 100644
+>> > --- a/drivers/of/address.c
+>> > +++ b/drivers/of/address.c
+>> > @@ -198,6 +198,25 @@ static u64 of_bus_pci_map(__be32 *addr, const __b=
+e32 *range, int na, int ns,
+>> >
+>> >  #endif /* CONFIG_PCI */
+>> >
+>> > +static int __of_address_resource_bounds(struct resource *r, u64 start=
+, u64 size)
+>> > +{
+>> > +     u64 end =3D start;
+>> > +
+>> > +     if (overflows_type(start, r->start))
+>> > +             return -EOVERFLOW;
+>> > +     if (size =3D=3D 0)
+>> > +             return -EOVERFLOW;
+>> > +     if (check_add_overflow(end, size - 1, &end))
+>> > +             return -EOVERFLOW;
+>> > +     if (overflows_type(end, r->end))
+>> > +             return -EOVERFLOW;
+>>
+>> This breaks PCI on powerpc qemu. Part of the PCI probe reads a resource
+>> that's zero sized, which used to succeed but now fails due to the size
+>> check above.
+>>
+>> The diff below fixes it for me.
+>
+> I fixed it up with your change.
 
-We also have netmem_compound_head() which does page_to_netmem(compound_head()).
-Wondering whether we'll eventually hit a similar issue over there.
+Thanks.
+
+cheers
 
