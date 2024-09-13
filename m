@@ -1,100 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-1320-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1321-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9422D977D31
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 12:21:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB655977E3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 13:12:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4r1v1clRz2yfj;
-	Fri, 13 Sep 2024 20:21:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4s8f4C6cz2xjv;
+	Fri, 13 Sep 2024 21:12:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726222883;
-	cv=none; b=FlfDGxn1cjqHMX0FPC9sCuJSt4bcGTg+ES0Z1evOzyY9p5vuNgIcLuNiQOk2lUXjOSL8X5cK5rb8V3TKfxvrRd7WOewUy17gT9IP/4vVRJfJHgB+05AHHvUU+dLkD5c3ZzZ+4BtnD+AKqjDCo+sWXVHI/EBvqfwkLHL5D0MCpjblxkFyp+nE566ZH/i2yKaEDaSEoKjGBiVIE6zCSguPl3tgHuokbyZ6+7k464zXgGjReKh/CoFj736eBH1nD4l+fSNcZKkOjzcc3aZcyrSdmf+hSIdsyTXHIigtsiFyFeNrS5AJuojEcGqPDmObtElkxv7F8cfnHY78+agWVtJeLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726225938;
+	cv=none; b=fWMPtEiIarn22gygVxQ6nvQSlZgSToaM0XhZkD0wgNOPMBlxIqBdQ214/tMNFCVmFaDBq+eNCP20pfwZDLM2z+qwbOfcgW/M5LMhICeL2Jw44/7ioMSOQ/aUow8tizP1qXILvAjB9rbXCa+Mfqxg65T7bVQuDK8UjD14frbl5wYuzKItVUOaRaDKktKGUZjq+KgC6zoBeoWT4TsieH6qm3XT2IzHuQkJ9qmBAK4rIIr1Jvx4Bk+p9dFJhdFkBYGdrFER0UYf+k1YkbhLjJb6pC5EV3gVcoFg8YqpAwlMk0Kvnd7w/EkCSIGzflU69okBFzxkSNZcLGtiFSk1QgA7dg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726222883; c=relaxed/relaxed;
-	bh=JjivTjdDYEGFy4s4fXI/aZS3Cf4tpgLQCIGxve2BKbQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dGaZtt0kCIWPKXjXx95bA5m9Wca/QUZ3l37tzBQfl2Om+SIytWXF15VaICmlfupMivAYATR03N1vLnoetxkZqnb4n5gkxibguu4UJ8Cyf0VEp0/15uy82LVB9MPsBtokMJPlpAxDm/rOitCdB8yoOtWfho4kC4GP8S2v/ZPeD1lMq4LfllP0q+re+BSGGVKWB+uLJPC2D0Zp1NCAeZ5uoh9YnSOF9MKMJ9ja9drOm+jvWWaL2aQgUYWO4TE3iFOf6y6BZ3q52uWkwPHRD4vuAw2TSiWtvFR59szNKr5GhKOq8QAwxSZfg3gFfMFjJk/MQEKL7fr1RqAPKdPSL4mc+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1726225938; c=relaxed/relaxed;
+	bh=iQhjEs8ki/xL/wsHpZzAsFpWHpcSNMnfW5ARyW8D1N8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZIa9dAInOF0+DLq1eoKnErmcrgH27nr7IC8bT2DezLtU+OLVDzlTza86t5d2cKnTRZnRtyYPd8AbVwyqEtVHWcXy1zkW/bYjymWkLbKdlbI2nUC0DegFoG9dRhNpUvxLDntzRNbbonAwCImB6z0Um8GzlR1j/93OSkkTr0O1PGR6bRaCash60zzRpj64IENfHfo+OGJOYC6V7DIun9+CwdTPZM4ini+ga5xi1t8uk3fhh8HxjfmH/3qVba5CLs5svFCIHsQbk7IyAryNkDmX0KQjJGyBx+CPS71sD9c7EAk4x77WtnTs42o0liWGVZepw5Ya/4MgRfm1BM6NWxVUzg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gjGnN6Sg; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gjGnN6Sg;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4r1t5pSHz2yYK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 20:21:22 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 43ED05C5D13;
-	Fri, 13 Sep 2024 10:21:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE3CC4CEC0;
-	Fri, 13 Sep 2024 10:21:08 +0000 (UTC)
-Date: Fri, 13 Sep 2024 11:21:06 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Charlie Jenkins <charlie@rivosinc.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>, guoren <guoren@kernel.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	shuah <shuah@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	"Kirill A. Shutemov" <kirill@shutemov.name>,
-	Chris Torek <chris.torek@gmail.com>,
-	Linux-Arch <linux-arch@vger.kernel.org>,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	"linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-abi-devel@lists.sourceforge.net
-Subject: Re: [PATCH RFC v3 1/2] mm: Add personality flag to limit address to
- 47 bits
-Message-ID: <ZuQSEn3rFVnIrbRH@arm.com>
-References: <CAJF2gTTVX9CFM3oRZZP3hGExwVwA_=n1Lrq_0DQKWA+-ZbOekg@mail.gmail.com>
- <f23b18c6-1856-4b59-9ba3-59809b425c81@app.fastmail.com>
- <Ztrq8PBLJ3QuFJz7@arm.com>
- <oshwto46wbbgneiayj63umllyozm3c4267rvpszqzaopwnt2l7@6mxl5vydtons>
- <ZuDoExckq21fePoe@ghost>
- <ZuHfp0_tAQhaymdy@arm.com>
- <ZuKHpFB+uWuJe2xm@ghost>
- <ZuLIPZId9aHcAY2j@arm.com>
- <ZuNaD+zAXiAulc0n@ghost>
- <ZuQPF7Gbcqzq0U6N@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4s8d5g97z2xb9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 21:12:16 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DA9adk004900;
+	Fri, 13 Sep 2024 11:12:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=i
+	QhjEs8ki/xL/wsHpZzAsFpWHpcSNMnfW5ARyW8D1N8=; b=gjGnN6SgdzP1JyRO3
+	/JSnGmBTuD2hCa/XgyCDkJx0Lr8gPw7QxpthloLqqq5dC1x12VmD0o/eLpE7tJas
+	w61Jlf+vZ6DjGD9ZoXJ03KezbeYMhr6k2C+3upG7ZclTZ4pNQ7ZDMG2U953s1WSC
+	K5mvAk73Ev5p+Sqg/y5qSiFBS371cKvbwkr9rvqS7/sO+eDPdrvMAlxTz8QVVAZv
+	j0jctsSPROMr+Z7jch/F2z8LhFQLE9wvZ+UwXf74qtYqvwxTrDW0SzTFdAKpAkRR
+	//iSlsSAzQtkCZECfQW4WTpnOq7XM83iSxb+TyuLhTXqeBKMRcBFA2QQ0LK5qsIK
+	oKNmA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8qsr6h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Sep 2024 11:12:03 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48D9dQue013566;
+	Fri, 13 Sep 2024 11:12:02 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3cmngaa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Sep 2024 11:12:02 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48DBC0XW57934088
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Sep 2024 11:12:00 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 83CB658051;
+	Fri, 13 Sep 2024 11:12:00 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4B06058062;
+	Fri, 13 Sep 2024 11:12:00 +0000 (GMT)
+Received: from [9.61.250.246] (unknown [9.61.250.246])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 13 Sep 2024 11:12:00 +0000 (GMT)
+Message-ID: <3b3e019a-0576-4ef6-a5c7-aa5ebc35d600@linux.ibm.com>
+Date: Fri, 13 Sep 2024 06:12:00 -0500
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,29 +75,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZuQPF7Gbcqzq0U6N@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] crypto: Fix data mismatch over ipsec tunnel
+ encrypted/decrypted with ppc64le AES/GCM module.
+To: Michael Ellerman <mpe@ellerman.id.au>, linux-crypto@vger.kernel.org
+Cc: herbert@gondor.apana.org.au, leitao@debian.org, nayna@linux.ibm.com,
+        appro@cryptogams.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, ltcgcw@linux.vnet.ibm.com,
+        dtsen@us.ibm.com
+References: <20240912174537.1409567-1-dtsen@linux.ibm.com>
+ <87seu4qmv6.fsf@mail.lhotse>
+Content-Language: en-US
+From: Danny Tsen <dtsen@linux.ibm.com>
+In-Reply-To: <87seu4qmv6.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: DDi48tHiC1lCxZTBoadouUmG7ZywYP9p
+X-Proofpoint-ORIG-GUID: DDi48tHiC1lCxZTBoadouUmG7ZywYP9p
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-13_09,2024-09-13_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ mlxscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 adultscore=0 clxscore=1015 mlxlogscore=999 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409130076
 
-On Fri, Sep 13, 2024 at 11:08:23AM +0100, Catalin Marinas wrote:
-> On Thu, Sep 12, 2024 at 02:15:59PM -0700, Charlie Jenkins wrote:
-> > On Thu, Sep 12, 2024 at 11:53:49AM +0100, Catalin Marinas wrote:
-> > > On Wed, Sep 11, 2024 at 11:18:12PM -0700, Charlie Jenkins wrote:
-> > > > Opting-in to the higher address space is reasonable. However, it is not
-> > > > my preference, because the purpose of this flag is to ensure that
-> > > > allocations do not exceed 47-bits, so it is a clearer ABI to have the
-> > > > applications that want this guarantee to be the ones setting the flag,
-> > > > rather than the applications that want the higher bits setting the flag.
-[...]
-> Anyway, the prctl() can go both ways, either expanding or limiting the
-> default address space. So I'd be fine with such interface.
+Hi Michael,
 
-Ah, I just realised (while reading Lorenzo's reply) that we can't really
-restrict the space via a prctl() as we have the main thread stack
-already allocated by the kernel before the user code starts. You may
-need to limit this stack as well, not just the later heap allocations
-(anonymous mmap()).
+I did think of that.  I can try to remove the feature first and apply 
+the subsequent changes.
 
--- 
-Catalin
+Thanks.
+
+-Danny
+
+On 9/12/24 10:00 PM, Michael Ellerman wrote:
+> Danny Tsen <dtsen@linux.ibm.com> writes:
+>> This patch is to fix an issue when simd is not usable that data mismatch
+>> may occur over ipsec tunnel. The fix is to register algs as SIMD modules
+>> so that the algorithm is excecuted when SIMD instructions is usable.
+>>
+>> A new module rfc4106(gcm(aes)) is also added. Re-write AES/GCM assembly
+>> codes with smaller footprints and small performance gain.
+>>
+>> This patch has been tested with the kernel crypto module tcrypt.ko and
+>> has passed the selftest.  The patch is also tested with
+>> CONFIG_CRYPTO_MANAGER_EXTRA_TESTS enabled.
+>>
+>> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+>> ---
+>>   arch/powerpc/crypto/Kconfig            |    1 +
+>>   arch/powerpc/crypto/aes-gcm-p10-glue.c |  141 +-
+>>   arch/powerpc/crypto/aes-gcm-p10.S      | 2421 +++++++++++-------------
+>>   3 files changed, 1187 insertions(+), 1376 deletions(-)
+> As this is a bug fix it should have a Fixes: tag, and probably a stable
+> Cc as well.
+>
+> But that diffstat is really large for a bug fix. Is there no way to fix
+> the issue in a smaller patch? Even if that is just disabling the feature
+> until it can be fixed in subsequent commits?
+>
+> cheers
+>
 
