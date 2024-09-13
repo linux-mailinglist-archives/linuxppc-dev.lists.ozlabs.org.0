@@ -1,133 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-1347-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1348-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56279789A9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 22:15:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BAD9789E5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 22:24:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X55Cm1pJ0z2ysg;
-	Sat, 14 Sep 2024 06:15:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X55Q36SHsz2ytQ;
+	Sat, 14 Sep 2024 06:24:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726258548;
-	cv=none; b=YJZl6+lH4Iqti7t60UAHx093Bn3wqAfEuyMfDOQCrVEraWaws9ZI5dn9LaNnKi5Js79dSa12mV0FvRg6QVagaRKky9Jfnaqp1L6uE7rCkR0qa7gNKfon2MDwNRaYFygPJQpuav85fgMOA6BARXX81YSwYjCg8ocdtp0oBlnxrOwdO03arA9xd+xmLWpUw+yebtG5fw4GSUYPZj8K0A4YJqs4aMdU/udGnTlujndBotCLTvRCr8GgoqmPh8d2NfcQNpZQb4SqMerVEm3IEQvoddOCkfOd1xm5cNzBm+m2lGRYgZBFrl7RL28xH1YVDeXM1uChmWW1xzjbFF+zz7H9vw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726259083;
+	cv=none; b=kD7wsuQWdyJTIVoeOZ+fbfwYa6Ot2R6wQaGrKwQq9kLT+boQUC39U/p7k5xd8q2muOl6raJpbIleicg4OjyFh+pWlFJYhi9vfpP06nk+MU8xkH4eQ+Xspgp1T/KXQhiJTWoGrwHgpWILU/4TanCppYBvdm2fmGKyS9g9AKn+n9aqvo6mrhE03XA8UCeU3+I2Wi8eNJDvdnH/v+pFK0oGdiTL2Y5Rz9h75b91jt20TQnMhgCUWZNW7fzHX97YEZzCbdc3fzVsKHvwpfQo8xh4OvcdP+HuR2bQiswCeJ+FtvFCVFA4U3+LVO9t/JuBcP1hiGv7PR47rA1XKGHQZcsjiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726258548; c=relaxed/relaxed;
-	bh=w1FIyAVC28uVndIDT9MHoNGdB/uDnM+DRyhrjJeTBk0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mvGG/KpyitLqjmmMs7xkg4L9+/rnPc2z4HQ8l40HwiVCf+1gwVHAwjCBqjO4xTfOFmyAaJGFQrCPWbv3qn6ckGF17KvpndjIQFZNT999t1rUrmRKuMXpoXh9i/x2TQbxsRbk5b+1s/uOi/ocLC7+5uM+m0CeBKhgyOnVm2C5D5x6eA6aFJrA5fAfKFXXGE04G/swp87pY+WhsiMnM5tVPe+wu+hrcK51uXiCgUOg0DyDvXMfx/Fgab40aDGCRT64/pKRONrkSiqKcQ/gU+TJhcCxj3QKBJO+OQTFRZSpT0Fw8TXkar3TrYhjrGBbjx0kN5dNnTqw0EjYP31YiMRPWQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Q4a3gTHq; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=rivosinc.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+	t=1726259083; c=relaxed/relaxed;
+	bh=vVUy3TAsyvuDd/zPcRhcxwX63nrqUWaxEmgfKwVKzAY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hm2qb0Jhimne80pRFh2i1x2ChYthtmZ9Eov7zeJ4+y97BalqEQauL3b64TZDIbLrj4fGPcryeV9judqj5vQf4wmMEpfmbApJjEISxNsKwGscEurUS1suB2zMIWU5zdT8MUDDGJZYPWFO8ZT9Z/IC82mQwNptnvhIGZEH30UvoWDSP4OR1dHlKbJ5Hj3H7sbMWiHeMrheh9iq1TVE4AahWKiF0/tID7/2VYskk4tSkZLztBGzH/TxQtiRgqzbQIAOkgiKpnDNFmNdjI53Ti0kanUOiZFTsXECIB1kKTTfLq/a437sMceHy8xS7LkuQD9P7AJlWaJ5nTDy3Gbzutq4mQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZMbr6xew; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Q4a3gTHq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZMbr6xew;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=charlie@rivosinc.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X55Cl29CJz2ysf
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 06:15:44 +1000 (AEST)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-20688fbaeafso15483265ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 13:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1726258542; x=1726863342; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w1FIyAVC28uVndIDT9MHoNGdB/uDnM+DRyhrjJeTBk0=;
-        b=Q4a3gTHqdskCLPKc5IbFsIts4W0Cpr+DoAx7hpIrSNJqhUwwdpyHqRdSSdkdX0jG+d
-         2hbS9y1gV35geIs9gtcXYYvSM9BtGqbd6GhGla2KyGIKxuc5Yyrh7hQcsz609TTlTfTC
-         I8CG8008cu/Ob3JLj4zg4tVtXwpuNjkuf3HeNDaVBpQ38wcTMdNRN61n2fl6q4xX1Yff
-         fjZeC6WpXQbRgLdBMipdzYB/ab9IcZU9nMpkqksAI4lm8bHh3WAMhcLruuC0hbfi+YMb
-         zb5UPlhITuZhgKNO5ETfwPmqKpMez2NwUF6osA1lbKyT54b5V8VPSDrB7hZfAlD3Ts+t
-         3eUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726258542; x=1726863342;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w1FIyAVC28uVndIDT9MHoNGdB/uDnM+DRyhrjJeTBk0=;
-        b=uq09Hd6ryuZ01ctCWQ3lw+7hWm+69jMIHr48vE9RECkTf8hRIHzhxZpVk+H7wwX+07
-         5nj3s9SQZFln6Yz4c1eWygHp825hUHO3PWYathgmKiZ4zmWBVSf/rznvD8KKhAbfA2DR
-         7hb3aXydy2aWMuGrEdRLn3+DnZy4+eVXHKelT57Cb6NV1KRZRWGSBLjNT1P9oenr4pzt
-         Aa9oN5E4AHZ0ArevxP4crwYOYxxIfWs/G2lrYSqVgTYXqYRencup+xOp0Qv4fmZ7kd2V
-         tVvxBjDIGpxXZXsq+zN5GpLDUEPm8ANOHh9mjO+kvSu+2YizwWhSkSPWAGdgdVZtpNyK
-         LlFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgm/MsWJAmaVK9WAtFfQLh/r+EIkuoOPpxXv2cwrG56JbZzEWVWsLMlBVBGnxekMo9p+bKQUwf3RESSWQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwFjjQAkty5clVQrnlggEngP4GwhcyGT9EKukCszZc5KdN+V/eh
-	GbtSvvnT2ImTHLj+ehIxFKf6b85NjsupwIW8cTuS4IafZnT/J/dXhBtwBnU7rBo=
-X-Google-Smtp-Source: AGHT+IF+aNQZr3gdahRoQqk9W7f54mB5JjUQKc3RHBzDdb3qrFRnfek72JEtbqkZMIR2o3KSJzgpeA==
-X-Received: by 2002:a17:902:dad1:b0:205:8407:6321 with SMTP id d9443c01a7336-20781b4740dmr63844425ad.9.1726258541784;
-        Fri, 13 Sep 2024 13:15:41 -0700 (PDT)
-Received: from ghost ([50.145.13.30])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207945db10csm315195ad.53.2024.09.13.13.15.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 13:15:41 -0700 (PDT)
-Date: Fri, 13 Sep 2024 13:15:35 -0700
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>, guoren <guoren@kernel.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	shuah <shuah@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	"Kirill A. Shutemov" <kirill@shutemov.name>,
-	Chris Torek <chris.torek@gmail.com>,
-	Linux-Arch <linux-arch@vger.kernel.org>,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	"linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-abi-devel@lists.sourceforge.net
-Subject: Re: [PATCH RFC v3 1/2] mm: Add personality flag to limit address to
- 47 bits
-Message-ID: <ZuSdZ2bi1JvLJVYe@ghost>
-References: <CAJF2gTTVX9CFM3oRZZP3hGExwVwA_=n1Lrq_0DQKWA+-ZbOekg@mail.gmail.com>
- <f23b18c6-1856-4b59-9ba3-59809b425c81@app.fastmail.com>
- <Ztrq8PBLJ3QuFJz7@arm.com>
- <oshwto46wbbgneiayj63umllyozm3c4267rvpszqzaopwnt2l7@6mxl5vydtons>
- <ZuDoExckq21fePoe@ghost>
- <ZuHfp0_tAQhaymdy@arm.com>
- <ZuKHpFB+uWuJe2xm@ghost>
- <ZuLIPZId9aHcAY2j@arm.com>
- <ZuNaD+zAXiAulc0n@ghost>
- <ZuQPF7Gbcqzq0U6N@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X55Q33XDKz2yst
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 06:24:43 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 49A255C47A7;
+	Fri, 13 Sep 2024 20:24:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B63C4CEC0;
+	Fri, 13 Sep 2024 20:24:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726259079;
+	bh=SLAQonTzL+ETpOKN32UdFXtUV4JfAqDvyG7i/mcZUuY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZMbr6xewxaHNK3ojM9J9pajyvXeWe5WgsUPGP70h8Yc4iy6AYb1YF3RogVna6Y43l
+	 eX/Wjf3kxcl0yNJpZV4VHvb1N5Hq+IQW3OjMCY0AngOQVPcqbEK5sgh4QkYnkLwSgd
+	 t8kqzXb3u07J+r4Xzx/qOMlPwkbxOln0ZBXWntIKo9gUC5AB7/3opz8rEuxyJrpMGX
+	 jI66HLUDzuayUrQw/4C6+rUMQcRSw01t5/t03SACah6W8x1LwStSwZdXzWz2sFFlkv
+	 VhQOhkT+iOxlhLl2A8Bra8P+gTU+BdYAqgpIdFnoFcSkze/BkELe5gkr45it+JfCBl
+	 2QZv4LSzZaMfg==
+Date: Fri, 13 Sep 2024 13:24:38 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Stephen Rothwell
+ <sfr@canb.auug.org.au>, christophe.leroy2@cs-soprasteria.com, David Miller
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Networking
+ <netdev@vger.kernel.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: linux-next: build failure after merge of the net-next tree
+Message-ID: <20240913132438.4235abe4@kernel.org>
+In-Reply-To: <CAHS8izNSjZ9z2JfODbpo-ULgOcz1dGe5xe7_LKU-8LzJN_z-iw@mail.gmail.com>
+References: <20240913125302.0a06b4c7@canb.auug.org.au>
+	<20240912200543.2d5ff757@kernel.org>
+	<20240913204138.7cdb762c@canb.auug.org.au>
+	<20240913083426.30aff7f4@kernel.org>
+	<20240913084938.71ade4d5@kernel.org>
+	<913e2fbd-d318-4c9b-aed2-4d333a1d5cf0@cs-soprasteria.com>
+	<CAHS8izPf29T51QB4u46NJRc=C77vVDbR1nXekJ5-ysJJg8fK8g@mail.gmail.com>
+	<20240913113619.4bf2bf16@kernel.org>
+	<CAHS8izNSjZ9z2JfODbpo-ULgOcz1dGe5xe7_LKU-8LzJN_z-iw@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -137,57 +74,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZuQPF7Gbcqzq0U6N@arm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 13, 2024 at 11:08:23AM +0100, Catalin Marinas wrote:
-> On Thu, Sep 12, 2024 at 02:15:59PM -0700, Charlie Jenkins wrote:
-> > On Thu, Sep 12, 2024 at 11:53:49AM +0100, Catalin Marinas wrote:
-> > > On Wed, Sep 11, 2024 at 11:18:12PM -0700, Charlie Jenkins wrote:
-> > > > Opting-in to the higher address space is reasonable. However, it is not
-> > > > my preference, because the purpose of this flag is to ensure that
-> > > > allocations do not exceed 47-bits, so it is a clearer ABI to have the
-> > > > applications that want this guarantee to be the ones setting the flag,
-> > > > rather than the applications that want the higher bits setting the flag.
-> > > 
-> > > Yes, this would be ideal. Unfortunately those applications don't know
-> > > they need to set a flag in order to work.
-> > 
-> > It's not a regression, the applications never worked (on platforms that
-> > do not have this default). The 47-bit default would allow applications
-> > that didn't work to start working at the cost of a non-ideal ABI. That
-> > doesn't seem like a reasonable tradeoff to me.  If applications want to
-> > run on new hardware that has different requirements, shouldn't they be
-> > required to update rather than expect the kernel will solve their
-> > problems for them?
+On Fri, 13 Sep 2024 13:05:32 -0700 Mina Almasry wrote:
+> Change, got NAKed:
+> https://lore.kernel.org/netdev/ZuSQ9BT9Vg7O2kXv@casper.infradead.org/
+
+Humpf.
+
+> But AFAICT we don't really need to do this inside of mm, affecting
+> things like compound_head. This equivalent change also makes the build
+> pass. Does this look good?
 > 
-> That's a valid point but it depends on the application and how much you
-> want to spend updating user-space. OpenJDK is fine, if you need a JIT
-> you'll have to add support for that architecture anyway. But others are
-> arch-agnostic, you just recompile to your target. It's not an ABI
-> problem, more of an API one.
-
-The arch-agnosticism is my hope with this personality flag, it can be
-added arch-agnostic userspace code and allow the application to work
-everywhere, but it does have the downside of requiring that change to
-user-space code.
-
+> diff --git a/include/net/netmem.h b/include/net/netmem.h
+> index 8a6e20be4b9d..58f2120cd392 100644
+> --- a/include/net/netmem.h
+> +++ b/include/net/netmem.h
+> @@ -100,7 +100,15 @@ static inline netmem_ref net_iov_to_netmem(struct
+> net_iov *niov)
 > 
-> The x86 case (and powerpc/arm64) was different, the 47-bit worked for a
-> long time before expanding it. So it made a lot of sense to keep the
-> same default.
+>  static inline netmem_ref page_to_netmem(struct page *page)
+>  {
+> -       return (__force netmem_ref)page;
+> +       /* page* exported from the mm stack would not have the LSB set, but the
+> +        * GCC 14 powerpc compiler will optimize reads into this pointer into
+> +        * unaligned reads as it sees address arthemetic in _compound_head().
+> +        *
+> +        * Explicitly clear the LSB until what looks like a GCC compiler issue
+> +        * is resolved.
+> +        */
+> +       DEBUG_NET_WARN_ON_ONCE((unsigned long)page & 1UL);
+> +       return (__force netmem_ref)page & ~1UL;
+>  }
 
-Yes it is very reasonable that this solution was selected for those
-architectures since the support for higher address spaces evolved in the
-manner that it did!
+Hmm. Not really, the math this is doing is a bit of a cargo cult,
+AFAIU the operation itself is meaningless. It works because it
+achieves breaking the optimization/register chain in the compiler.
+But the exact ALU op doesn't matter. So pretending LSB is meaningful 
+could be confusing to the reader.
 
-- Charlie
+I think this will achieve the same effect without the spurious ALU
+operations (apologies for broken whitespace):
 
-> 
-> Anyway, the prctl() can go both ways, either expanding or limiting the
-> default address space. So I'd be fine with such interface.
-> 
-> -- 
-> Catalin
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index a813d30d2135..b7e0acaed933 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -864,7 +864,11 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+        allow_direct = page_pool_napi_local(pool);
+ 
+        for (i = 0; i < count; i++) {
+-               netmem_ref netmem = page_to_netmem(virt_to_head_page(data[i]));
++               struct page *page = virt_to_head_page(data[i]);
++               netmem_ref netmem;
++
++               /* $explanation */
++               netmem = page_to_netmem(READ_ONCE(page));
+ 
+                /* It is not the last user for the page frag case */
+                if (!page_pool_is_last_ref(netmem))
+
+If it makes sense could you polish it up and submit?
 
