@@ -1,52 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-1315-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1317-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2D0977B03
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 10:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11473977B28
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 10:35:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4nZc6MBsz2ydR;
-	Fri, 13 Sep 2024 18:31:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4nh16pkMz2ygX;
+	Fri, 13 Sep 2024 18:35:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726216264;
-	cv=none; b=A9PFgpvHnlp1ItGrqg2WH70Xp6JkW3+CucdYXEg3TDk8HIl6WU8irjaCbQo1K+nH7yaMXaNYfZl29hcpBJmw3genYHfxoz5gxQn8/SEI7VOflkDTNs5Tjtz8cq0dJINzTHPhJGcVp49T0jNvN84Dys/B2ewvQf+RdHUP18IKydrZ6wPmXUP4TT1fLIGm6AsZFngazW3swXPuDXCym1+36r86hvpA7cTK/rWtp26zBx6UPvrwpRzPCDL5yW34AHzzLnDzMLSODz8lJU3cVBZz1fWu7i8Rl4J2dViNWttbHN1ajSZBcmkEOFyultmf3+EQXWT0kaprXF+fyCmDdPuwvw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726216545;
+	cv=none; b=Fmpm5yTjQuxXLEDbSzGHaV6UKXYbTwTQ/NkSIGd2MlJKlT2SAiucATd/Ic3F+xBwVm+94E1W+edHI/kYp40jckFaHx3M6JO0pav6x6mITDnJVUPcTkaNCh+mJvva+pmhqTmW+4DgWDPH/r0YqD+xuLozzLtTPAf/Mgpk1uPgB5mqDLwjNSgeo+xKNAjS/coUCoI7OFjm1vtRufS9x+g9//sTa+fEU3++70CEhH15ZuoNQM8MdssokUOG3ftpUqVmQLa3IiHY6kdB09xB1A4hIhDeQv5aJKm4dGsELF7bWOkrBd8JkF1ekF+3S+U5e5JYLGosryqLED4rCqU119tjRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726216264; c=relaxed/relaxed;
-	bh=kPurAE5r55+itDQ4VQefqj5SjyND8MKEaZ8r11zXSvE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SuE13zdqm6+5suKDltVZ7qdeiY0A0VAVLZNVt7mfBKvneRL38ivvCGJ3OI7DNUhTIReNZdydhckYdfgVaZFezOaxS9KEmZjtDVu2I1GOhexluVh3anQitNU0chbHDHKawWQZuwvjkYFqnldK+w2IM76EIAs0uz3sg8TMjLMMcLFF2lgl7feIQm41dyfQ2Gvo9CXhYQjH8LC2PHmvFbVVyVS35FYzFvSLYNKyiSx4x0fS3npDjDdvFy5N0tVlM06X8GJiUZXe9+TccTrocmTFsDRPTinV+JHs1VJ45sNP8e6690sOr1IcfZs7cCyJqM8i1lLfMea3xkb6+L5F19LNTQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1726216545; c=relaxed/relaxed;
+	bh=StZG6R15DIf2nBirSiFNGX9i4sLjTFFP8nh2d5l3Q54=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Aqc7UBOq7Vz7SPnAnExPq5UqhlsKrq1hzVM+h85UkFN0UHL7L1cXzNkxEJd5/Rm73d8oagDOGK+YEPHRUPUqNIyc/kVILA9ISnCwdY48aQKAlMj1+J0pBC203JFP/50Bpr5PbARG9xyZ8bYexsXwvs6cVEHpcIqSKQHlsGAy8/oPED4fkOnwl+9IhPcHpTJsnSxKNB4CAWOldgzFk+9HYICarn1DELTKMW9nzve0vSVEVJxfIUlsXgf9RBocgZoXkuzodjpI+xhtOM9RSOLt5X5UUHeWpRsnxMOhE5XL1x7kMTwNIcpzepsA5BKBpTR2/EI1Y67yfwb4LGSm8Zs1wA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tlbE/jtu; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tlbE/jtu;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4nZc3rYLz2yYk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 18:31:01 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4X4nZV4c6yz9scx;
-	Fri, 13 Sep 2024 10:30:58 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id CsX7-oCed2Zm; Fri, 13 Sep 2024 10:30:58 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4X4nZT2Pgbz9scR;
-	Fri, 13 Sep 2024 10:30:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3E87D8B77A;
-	Fri, 13 Sep 2024 10:30:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id NpS8B5KE_7ER; Fri, 13 Sep 2024 10:30:57 +0200 (CEST)
-Received: from [192.168.233.70] (unknown [192.168.233.70])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C0CE68B766;
-	Fri, 13 Sep 2024 10:30:56 +0200 (CEST)
-Message-ID: <854eef54-4779-4233-a958-0c98ae5fcb7e@csgroup.eu>
-Date: Fri, 13 Sep 2024 10:30:56 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4nh12VNwz2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Sep 2024 18:35:45 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48D2t2J5027446;
+	Fri, 13 Sep 2024 08:35:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	StZG6R15DIf2nBirSiFNGX9i4sLjTFFP8nh2d5l3Q54=; b=tlbE/jtuJy3jDSu9
+	OdANTgMZeezdFERzqX+gLijW3+Rl9ztDybUMyXI7e8bbGwcs0Wk6IQS5ZY1mvK05
+	P4rSdnkHF/+5PdyK64fTHis7ZrjuyTTz8TgufRe2W9NcCTpS/nMHcNbJkmdi36i6
+	DBXJckS7K5SuRFoLh3B8cY3pVi61zycnY7DAglbogUymVxys2D4w1eU4XG4GiaJx
+	f70D3P/1vaC1S/Lhm9gblc9UEiCI+EXqdE62sElNqp5N3JQ8p9b3o7P24C82yraK
+	9b3Xf01TSDcKGEaci01GyXoKicLrwFLd6QblFj1yWnJ1V7UCagPe+RNi/qkrRbJD
+	SVR37w==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gejb0sav-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Sep 2024 08:35:35 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48D6Adux010729;
+	Fri, 13 Sep 2024 08:35:34 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41kmb70m9g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Sep 2024 08:35:33 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48D8ZU4L14680342
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Sep 2024 08:35:30 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F1A1E20040;
+	Fri, 13 Sep 2024 08:35:29 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 887B820043;
+	Fri, 13 Sep 2024 08:35:27 +0000 (GMT)
+Received: from [9.43.112.138] (unknown [9.43.112.138])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 13 Sep 2024 08:35:27 +0000 (GMT)
+Message-ID: <9c18c4d4-ee60-4543-8bbb-ddc729c0a0f5@linux.ibm.com>
+Date: Fri, 13 Sep 2024 14:05:26 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] powerpc/vpa_pmu: Add interface to expose vpa counters
+ via perf
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, mpe@ellerman.id.au
+Cc: atrajeev@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, maddy@linux.ibm.com,
+        disgoel@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        hbathini@linux.ibm.com, adubey@linux.ibm.com
+References: <20240828102141.1052332-1-kjain@linux.ibm.com>
+ <56b53876-0838-416f-adce-b1ffbd0916fc@csgroup.eu>
+Content-Language: en-US
+From: kajoljain <kjain@linux.ibm.com>
+In-Reply-To: <56b53876-0838-416f-adce-b1ffbd0916fc@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: pdNkXY-ly2RFLAqx9Xjvw2FlUpe2Y68A
+X-Proofpoint-GUID: pdNkXY-ly2RFLAqx9Xjvw2FlUpe2Y68A
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,174 +94,110 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] powerpc/entry: convert to common and generic entry
-To: Luming Yu <luming.yu@shingroup.cn>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- mpe@ellerman.id.au, npiggin@gmail.com, jialong.yang@shingroup.cn,
- luming.yu@gmail.com
-References: <B4ABABEA5F13B86A+20240912082500.1469-1-luming.yu@shingroup.cn>
- <fc509bcd-5ca0-4dc2-962e-766a01cbe4fb@csgroup.eu>
- <153FD6B5CE4F97D9+ZuOYDQ-iHIIwJjbh@HX09040029.powercore.com.cn>
- <95ced963-b584-4ccf-ba34-8f2ba99172f4@csgroup.eu>
- <0332BAE1905768B6+ZuPsBvgv0nwmFAjW@HX09040029.powercore.com.cn>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <0332BAE1905768B6+ZuPsBvgv0nwmFAjW@HX09040029.powercore.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-13_04,2024-09-13_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ phishscore=0 mlxlogscore=999 spamscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409130058
 
 
 
-Le 13/09/2024 à 09:38, Luming Yu a écrit :
-> On Fri, Sep 13, 2024 at 08:54:12AM +0200, Christophe Leroy wrote:
->>
->>
->> Le 13/09/2024 à 03:40, Luming Yu a écrit :
->>> On Thu, Sep 12, 2024 at 12:23:29PM +0200, Christophe Leroy wrote:
->>>>
->>>>
->>>> Le 12/09/2024 à 10:24, Luming Yu a écrit :
->>>>> From: Yu Luming <luming.yu@gmail.com>
->>>>>
->>>>> convert powerpc entry code in syscall and fault to use syscall_work
->>>>> and irqentry_state as well as common calls from generic entry infrastructure.
->>>>>
->>>>> Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
->>>>> ---
->>>>>     arch/powerpc/Kconfig                   | 1 +
->>>>>     arch/powerpc/include/asm/hw_irq.h      | 5 +++++
->>>>>     arch/powerpc/include/asm/processor.h   | 6 ++++++
->>>>>     arch/powerpc/include/asm/syscall.h     | 5 +++++
->>>>>     arch/powerpc/include/asm/thread_info.h | 1 +
->>>>>     arch/powerpc/kernel/syscall.c          | 6 +++++-
->>>>>     arch/powerpc/mm/fault.c                | 5 +++++
->>>>>     7 files changed, 28 insertions(+), 1 deletion(-)
->>>>
->>>> There is another build problem:
->>>>
->>>>     CC      kernel/entry/common.o
->>>> kernel/entry/common.c: In function 'irqentry_exit':
->>>> kernel/entry/common.c:335:21: error: implicit declaration of function
->>>> 'regs_irqs_disabled'; did you mean 'raw_irqs_disabled'?
->>>> [-Werror=implicit-function-declaration]
->>>>     335 |         } else if (!regs_irqs_disabled(regs)) {
->>>>         |                     ^~~~~~~~~~~~~~~~~~
->>>>         |                     raw_irqs_disabled
->>>>
->>>>
->>>> You have put regs_irqs_disabled() in a section dedicated to PPC64, so it
->>>> fails on PPC32.
->>>>
->>>>
->>>> After fixing this problem and providing an empty asm/entry-common.h it is
->>>> now possible to build the kernel. But that's not enough, the board is stuck
->>>> after:
->>>>
->>>> ...
->>>> [    2.871391] Freeing unused kernel image (initmem) memory: 1228K
->>>> [    2.877990] Run /init as init process
->>>
->>> Thanks for these questions. :-)
->>> I haven't gotten chance to run it in ppc32 qemu.
->>> the common syscall trace enter lost this hunk
->>> -       if (!is_32bit_task())
->>> -               audit_syscall_entry(regs->gpr[0], regs->gpr[3], regs->gpr[4],
->>> -                                   regs->gpr[5], regs->gpr[6]);
->>> -       else
->>> -               audit_syscall_entry(regs->gpr[0],
->>> -                                   regs->gpr[3] & 0xffffffff,
->>> -                                   regs->gpr[4] & 0xffffffff,
->>> -                                   regs->gpr[5] & 0xffffffff,
->>> -                                   regs->gpr[6] & 0xffffffff);
->>> which I don't understand whether we need a arch callbacks for it.
->>
->> I don't thing so.
->>
->> As far as I can see, audit_syscall_entry() is called by
->> syscall_enter_audit() in kernel/entry/common.c
->>
->> And the masking of arguments based on is_32bit_task() is done in
->> syscall_get_arguments() with is called by
->> syscall_enter_audit() just before calling audit_syscall_entry() and which is
->> an arch callback that does the same as the removed hunk.
-> so, syscall_get_arguments is the ppc arch callback. thanks. :-)
->>>
->>> Before I sent out the RFC patch set, the very limited compile and boot test goes well with a ppc64 qemu VM. Surely, there will be a lot of test, debug and following up patch set update that is necessary to make it a complete convert.
->>
->> Even on ppc64 it doesn't build, at the first place because
->> arch/powerpc/include/asm/entry-common.h is missing in your patch. Did you
->> forget to 'git add' it ?
-> oh, I forget that I was testing this patch on top of the early user notifier patch:
-> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Flinuxppc%2Fissues%2Fissues%2F477&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C35a08ca9a81f4c6ff8ce08dcd3c73555%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638618099770810941%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=yCQWLIAXL%2BNHnzrh0e91WIBvF0c5WfF6pY6ZMHstocA%3D&reserved=0, https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpatchwork.ozlabs.org%2Fproject%2Flinuxppc-dev%2Fpatch%2F1FD36D52828D2506%2B20231218031309.2063-1-luming.yu%40shingroup.cn%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C35a08ca9a81f4c6ff8ce08dcd3c73555%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638618099770819779%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=0WBSUlpAbL6EMdPEAtJv1HUHkbeUjjUcP98wYf9IxM4%3D&reserved=0
-> and the entry-common.h is as follows:
-> [root@localhost linux]# cat arch/powerpc/include/asm/entry-common.h
-> /* SPDX-License-Identifier: GPL-2.0 */
-> #ifndef ARCH_POWERPC_ENTRY_COMMON_H
-> #define ARCH_POWERPC_ENTRY_COMMON_H
+On 9/13/24 12:00, Christophe Leroy wrote:
 > 
-> #include <linux/user-return-notifier.h>
 > 
-> static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
->                                                    unsigned long ti_work)
-> {
->          if (ti_work & _TIF_USER_RETURN_NOTIFY)
->                  fire_user_return_notifiers();
-> }
-> 
-> #define arch_exit_to_user_mode_prepare arch_exit_to_user_mode_prepare
-> 
-> #endif
-> 
-> As you could see , it looks irrelevant.
+> Le 28/08/2024 à 12:21, Kajol Jain a écrit :
+>> The pseries Shared Processor Logical Partition(SPLPAR) machines
+>> can retrieve a log of dispatch and preempt events from the
+>> hypervisor using data from Disptach Trace Log(DTL) buffer.
+>> With this information, user can retrieve when and why each dispatch &
+>> preempt has occurred. Added an interface to expose the Virtual Processor
+>> Area(VPA) DTL counters via perf.
 >>
->> And same as with PPC32, when I build PPC64 with an empty asm/entry-common.h,
->> it doesn't work. So, I guess you had some needed code in that file and you
->> have to send it.
-> 
-> please send me your kernel config and let me reproduce and double check
-> if there could be another bit of code make the difference. My test p8 64bit VM boots
-> an unmodified fedora 38 user space just fine with the patch.
-> After boot, the only difference is make install of kernel could hang for a while, that
-> I'm not sure how that could happen yet. and I plan to do some unit test for many common
-> features like : lockdep, ptrace, rcu, audit...
+>> The following events are available and exposed in sysfs:
 >>
+>>   vpa_dtl/dtl_cede/ - Trace voluntary (OS initiated) virtual processor
+>> waits
+>>   vpa_dtl/dtl_preempt/ - Trace time slice preempts
+>>   vpa_dtl/dtl_fault/ - Trace virtual partition memory page faults.
+>>   vpa_dtl/dtl_all/ - Trace all (dtl_cede/dtl_preempt/dtl_fault)
+>>
+>> Added interface defines supported event list, config fields for the
+>> event attributes and their corresponding bit values which are exported
+>> via sysfs. User could use the standard perf tool to access perf events
+>> exposed via vpa-dtl pmu.
+>>
+>> The VPA DTL PMU counters do not interrupt on overflow or generate any
+>> PMI interrupts. Therefore, the kernel needs to poll the counters, added
+>> hrtimer code to do that. The timer interval can be provided by user via
+>> sample_period field in nano seconds.
+>>
+>> Result on power10 SPLPAR system with 656 cpu threads.
+>> In the below perf record command with vpa_dtl pmu, -c option is used
+>> to provide sample_period whch corresponding to 1000000000ns i.e; 1sec
+>> and the workload time is also 1 second, hence we are getting 656 samples:
+>>
+>> [command] perf record -a -R -e vpa_dtl/dtl_all/ -c 1000000000 sleep 1
+>> [ perf record: Woken up 1 times to write data ]
+>> [ perf record: Captured and wrote 0.828 MB perf.data (656 samples) ]
+>>
+>> There is one hrtimer added per vpa-dtl pmu thread. Code added to handle
+>> addition of dtl buffer data in the raw sample. Since DTL does not provide
+>> IP address for a sample and it just have traces on reason of
+>> dispatch/preempt, we directly saving DTL buffer data to perf.data file as
+>> raw sample. For each hrtimer restart call, interface will dump all the
+>> new dtl entries added to dtl buffer as a raw sample.
+>>
+>> To ensure there are no other conflicting dtl users (example: debugfs dtl
+>> or /proc/powerpc/vcpudispatch_stats), interface added code to use
+>> "down_write_trylock" call to take the dtl_access_lock. The
+>> dtl_access_lock
+>> is defined in dtl.h file. Also added global reference count variable
+>> called
+>> "dtl_global_refc", to ensure dtl data can be captured per-cpu. Code also
+>> added global lock called "dtl_global_lock" to avoid race condition.
+>>
+>> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+>> ---
+>> Notes:
+>>
+>> - Made code changes on top of recent fix sent by Michael Ellerman.
+>>    Link to the patch:
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20240819122401.513203-1-mpe@ellerman.id.au/
+>>
+>>   arch/powerpc/perf/Makefile  |   2 +-
+>>   arch/powerpc/perf/vpa-pmu.c | 469 ++++++++++++++++++++++++++++++++++++
+>>   include/linux/cpuhotplug.h  |   1 +
+>>   3 files changed, 471 insertions(+), 1 deletion(-)
+>>   create mode 100644 arch/powerpc/perf/vpa-pmu.c
 > 
+> 
+> Seems like it doesn't build on PPC64:
+> 
+> arch/powerpc/perf/vpa-pmu.c#L212
+> passing argument 1 of 'up_write' from incompatible pointer type
+> [-Wincompatible-pointer-types]
+> 
+> arch/powerpc/perf/vpa-pmu.c#L261
+> passing argument 1 of 'down_write_trylock' from incompatible pointer
+> type [-Wincompatible-pointer-types]
+> 
+> arch/powerpc/perf/vpa-pmu.c#L402
+> passing argument 1 of 'up_write' from incompatible pointer type
+> [-Wincompatible-pointer-types]
 
+Hi Christophe,
+   Thanks for checking the patch. These changes are on top of fix patch
+sent by Michael Ellerman
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20240819122401.513203-1-mpe@ellerman.id.au/
 
-I tested with both ppc64_defconfig and ppc64le_defconfig. With those two 
-configs QEMU remains stuck after the following lines. I use QEMU with 
-machine pseries:
+Since he changed the dtl_access_lock to be a rw_semaphore.
 
-[    2.701874][    T1] Running code patching self-tests ...
-[    2.734007][    T1] registered taskstats version 1
-[    2.735891][    T1] Loading compiled-in X.509 certificates
-[    2.756472][    T1] Loaded X.509 cert 'Build time autogenerated 
-kernel key: 003f25410c2285abf44b4685b6d63682a2dc9f11'
-[    2.784474][    T1] Demotion targets for Node 0: null
-[    2.784748][    T1] page_owner is disabled
-[    2.786795][    T1] Secure boot mode disabled
-[    2.787436][    T1] ima: No TPM chip found, activating TPM-bypass!
-[    2.787568][    T1] Loading compiled-in module X.509 certificates
-[    2.790854][    T1] Loaded X.509 cert 'Build time autogenerated 
-kernel key: 003f25410c2285abf44b4685b6d63682a2dc9f11'
-[    2.791289][    T1] ima: Allocated hash algorithm: sha256
-[    2.796260][    T1] Secure boot mode disabled
-[    2.796448][    T1] Trusted boot mode disabled
-[    2.796560][    T1] ima: No architecture policies found
-[    2.799580][    T1] printk: legacy console [netcon0] enabled
-[    2.799696][    T1] netconsole: network logging started
-[    2.880282][    T1] Freeing unused kernel image (initmem) memory: 6528K
-[    2.884618][    T1] Checked W+X mappings: passed, no W+X pages found
-[    2.885366][    T1] rodata_test: all tests were successful
-[    2.885749][    T1] Run /init as init process
-[    3.214730][   T58] mount (58) used greatest stack depth: 28672 bytes 
-left
-...
-nothing happens after that.
+Are you trying with Michael patch changes?
 
+Thanks,
+Kajol Jain
 
-For PPC32 I use pmac32_defconfig and QEMU machine mac99
-
-Christophe
 
