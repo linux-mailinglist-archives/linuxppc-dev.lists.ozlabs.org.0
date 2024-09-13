@@ -1,72 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-1340-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1341-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9832978412
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 17:15:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAEB9784F7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Sep 2024 17:34:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X4yXw4zw1z2yk8;
-	Sat, 14 Sep 2024 01:15:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X4yzC4NYnz2ywR;
+	Sat, 14 Sep 2024 01:34:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726240512;
-	cv=none; b=d22djWWolmoVrknMcpIjK0dEDCPH2zPl4xGZDm2JHfLXRmixH94IEIVFd+Omma916QbzzMXKBCf1kEwA/esAPAurvsICyvtUqd2adJsuWNkIORm0EvqNedymWPfZpVE5j37C8WUVYL4aH0Nl7Ngwizcr82J4+DQTv2jYHSy13Z3qneKyshjGb9k4gX9pG7BXGVD2XOlHvgfxYmZARbCwloMjE3pB7NjpGFbRUke1Jvqd3q0lww7LQ4F5EYMIESqR3Cyc822qFl4nbxsvQb4UB3P7edMQHAFao3TJOkyjvl0xTmMMJbJME38WyRYsG0Ry23rvawVlyhcKshMzoc0bdQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726241671;
+	cv=none; b=NbsKB4juYg93h1rCAaaMIiEHVi0u7dLrd2XgVNwacZWDQvQ17AnCvOjOdLUdVapfh7/p9kjyO2BcwycF/Q4RbRmsB56tgC+h+nJSX8gLx7u7iuxP24k9Y/H8VVMkkLYNf6go6qQbyQkhW4HObNhldw27fR39euzf2EO1E09KHJ/d9b0mJ3HVH4MerQ9QhOLF39GzrdhRHkYxuOTwF9/lhHj+x83MOO588YWuqnxzSlM456Vh071mlEWUPUjZ4l75M2LLRTuMKatVpnu87DRG1pBfKsGIa/Btjxm4jBMts+EVPInQfgtu/beJTRiv/Oz10ifocwRlptOcIYp7mnDTgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726240512; c=relaxed/relaxed;
-	bh=dTLu7MIFHyDNhq8ItbYdY645AH8LAcdSbZc+lrrmu0g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OKw6Cxm0ae39Kk+uywQJunXU1xYKp5h30z9vzxyq3ErYVLYqnz5dFPlthXaCvtbGC7oHD4Aorw8SUDTn5UOZjYQy2vOiCu/7O+X0jmRis4KzGkDIORbSX4HF6vE4N81ol7x5Lmb25TlhH3CIOWXI7tRaFjfLRs7UJSRYj12VY6dWAVbmQMLhNxybUVCKWLAxJVESbpsucguNJiFi9Ayw/RADUnmbssKbfeVV92RtwWX3IxmNCOgUKk97qKH1PQeBm54I5bZGETmNMn68mkm/WZ+IgPmQvgX3zSGiFeGJJ1f4KH9kF7Rhwrx1/RSlXhfyU2ucdj68kb++VwOduMvALw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BWnylCm4; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1726241671; c=relaxed/relaxed;
+	bh=3TVavxKuaYJvx+VkOjM0uvwOk0nZ9PhNzNGaLnhBB5k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L6cxXu5F1h56ZMGDirVbozj2+aM703qYPb5qacga21QxkayKpMNTfXZDXTlwvuKk5ZADIcDCV+/lFdowIvUQ1kCFCSD6hSZ4u54bF6R0u/lilnV5PjMyfCR+TDc5VyXGgp39BTtmyYEVAXeX/GyBOZG6bMFbnv+LUoGN1L7KJGF8npJ071pzDHNATuWpfja3pxph6ArmX/sfuB/auXLq1GAB+JOJ6XPgxPykUslGXzMEkV6w5+DYTQjAj+OOVfVOfG4DiJih/Hh1ShHnD02QTcLm6+t0OSk6zF10QDub4tdlmBFQmcWatTUib65i99qd/F2QEDjA1ejwoV2eehH7Gg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fvnRCFVH; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BWnylCm4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fvnRCFVH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4yXw20Xrz2xjd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 01:15:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X4yzC2WLCz2ywM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 01:34:31 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 591CA5C5529;
-	Fri, 13 Sep 2024 15:15:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB3AC4CEC0;
-	Fri, 13 Sep 2024 15:15:03 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 6047CA44D54;
+	Fri, 13 Sep 2024 15:34:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58843C4CEC0;
+	Fri, 13 Sep 2024 15:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726240508;
-	bh=hG0+mr6n6c2AOqquKXji3PgaSzohcst94Wj42JS1S+I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BWnylCm4mReU8AS0leB+Zu+H/60Ov75IX+4RcMT07bw/NSlFUtgczPE92soGj0A0q
-	 542x8M8eWvcVYa3w8j1pJ4wodResMwstCU9WRWL+4Bv7klLpSkpILEqOXkK2xTbvjI
-	 k7LO3FcSRX+QQPQ85stGEPkaCLs/93PocVVcAqwc97TkLzlGfXUTiDkvoa/W31NhS8
-	 ZTsEo1Zfjv/PTpTlD075NPfKSAhzSd7lUsWT3ZAvYgMWVY06K4V/tyQXnFNxB9zsX0
-	 tss/gEKf+QaNU/wq7UCRsBMZMRdCi4O4eV+W/SoX8gfoYY4bCaUnaRFI3uHHSOXLks
-	 8MndKUMe6veNw==
-Date: Fri, 13 Sep 2024 16:14:59 +0100
-From: Will Deacon <will@kernel.org>
-To: Joey Gouly <joey.gouly@arm.com>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	linux-arm-kernel@lists.infradead.org, nd@arm.com,
-	akpm@linux-foundation.org, aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
-	broonie@kernel.org, catalin.marinas@arm.com,
-	christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
-	hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
-	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
-	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
-	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
-	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 06/30] arm64: context switch POR_EL0 register
-Message-ID: <20240913151459.GA24129@willie-the-truck>
-References: <20240822151113.1479789-1-joey.gouly@arm.com>
- <20240822151113.1479789-7-joey.gouly@arm.com>
- <425b8f8c-b6b5-422a-b5f4-41dd2d1ae3bb@arm.com>
- <6c8ad091-a56b-41ba-b403-2e3c2e578100@intel.com>
- <20240912105017.GA22788@willie-the-truck>
- <20240912124835.GA1220495@e124191.cambridge.arm.com>
+	s=k20201202; t=1726241667;
+	bh=aeBS/jexYN5ZGjpVm407B7hRMZZ4ukiBkzvptBAgJaU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fvnRCFVHGls2KVupkmqKoiiT6kDNtgpUr/OtlXRhNExNuQwj/1mVFgnCGu6RaHVN5
+	 yImCV0xqRqSYRTa9WEA+G6dyWs7hKhAnshmW04/6UdqvfI1ZyEPv6myYvbZIPgzbLg
+	 RaDUjFNXhcs8MG0e708PDLA25bqBQWChlPVii3HZYW72/c6lGzBGAJnxLSX/YMLpI8
+	 9k38k21KExHymnbg6c/H0/mlbkb7dvWpnkHsi09iQz2zpXi7IuX+PtRbZiAWZB1TtJ
+	 CqA4Q+iV2ZG0HIcpVu76xHsnZ2Jha/4JTDOnOOWMHG8pkc8Z/8DzdVi32zwqL8t5u6
+	 woBDZts1VdL6g==
+Date: Fri, 13 Sep 2024 08:34:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: David Miller <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ Mina Almasry <almasrymina@google.com>, Networking <netdev@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next
+ Mailing List <linux-next@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: linux-next: build failure after merge of the net-next tree
+Message-ID: <20240913083426.30aff7f4@kernel.org>
+In-Reply-To: <20240913204138.7cdb762c@canb.auug.org.au>
+References: <20240913125302.0a06b4c7@canb.auug.org.au>
+	<20240912200543.2d5ff757@kernel.org>
+	<20240913204138.7cdb762c@canb.auug.org.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,82 +66,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240912124835.GA1220495@e124191.cambridge.arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 12, 2024 at 01:48:35PM +0100, Joey Gouly wrote:
-> On Thu, Sep 12, 2024 at 11:50:18AM +0100, Will Deacon wrote:
-> > On Wed, Sep 11, 2024 at 08:33:54AM -0700, Dave Hansen wrote:
-> > > On 9/11/24 08:01, Kevin Brodsky wrote:
-> > > > On 22/08/2024 17:10, Joey Gouly wrote:
-> > > >> @@ -371,6 +382,9 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
-> > > >>  		if (system_supports_tpidr2())
-> > > >>  			p->thread.tpidr2_el0 = read_sysreg_s(SYS_TPIDR2_EL0);
-> > > >>  
-> > > >> +		if (system_supports_poe())
-> > > >> +			p->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-> > > > Here we are only reloading POR_EL0's value if the target is a user
-> > > > thread. However, as this series stands, POR_EL0 is also relevant to
-> > > > kthreads, because any uaccess or GUP done from a kthread will also be
-> > > > checked against POR_EL0. This is especially important in cases like the
-> > > > io_uring kthread, which accesses the memory of the user process that
-> > > > spawned it. To prevent such a kthread from inheriting a stale value of
-> > > > POR_EL0, it seems that we should reload POR_EL0's value in all cases
-> > > > (user and kernel thread).
-> > > 
-> > > The problem with this is trying to figure out which POR_EL0 to use.  The
-> > > kthread could have been spawned ages ago and might not have a POR_EL0
-> > > which is very different from the current value of any of the threads in
-> > > the process right now.
-> > > 
-> > > There's also no great way for a kthread to reach out and grab an updated
-> > > value.  It's all completely inherently racy.
-> > > 
-> > > > Other approaches could also be considered (e.g. resetting POR_EL0 to
-> > > > unrestricted when creating a kthread), see my reply on v4 [1].
-> > > 
-> > > I kinda think this is the only way to go.  It's the only sensible,
-> > > predictable way.  I _think_ it's what x86 will end up doing with PKRU,
-> > > but there's been enough churn there that I'd need to go double check
-> > > what happens in practice.
-> > 
-> > I agree.
-> > 
-> > > Either way, it would be nice to get an io_uring test in here that
-> > > actually spawns kthreads:
-> > > 
-> > > 	tools/testing/selftests/mm/protection_keys.c
-> > 
-> > It would be good to update Documentation/core-api/protection-keys.rst
-> > as well, since the example with read() raises more questions than it
-> > answers!
-> > 
-> > Kevin, Joey -- I've got this series queued in arm64 as-is, so perhaps
-> > you could send some patches on top so we can iron this out in time for
-> > 6.12? I'll also be at LPC next week if you're about.
+On Fri, 13 Sep 2024 20:41:38 +1000 Stephen Rothwell wrote:
+> I have bisected it (just using the net-next tree) to commit
 > 
-> I found the code in arch/x86 that does this, I must have missed this previously.
+> 8ab79ed50cf10f338465c296012500de1081646f is the first bad commit
+> commit 8ab79ed50cf10f338465c296012500de1081646f
+> Author: Mina Almasry <almasrymina@google.com>
+> Date:   Tue Sep 10 17:14:49 2024 +0000
 > 
-> arch/x86/kernel/process.c: int copy_thread()                                                                                                                   
+>     page_pool: devmem support
+>     
 > 
->         /* Kernel thread ? */                                                                                                                                                                  
->         if (unlikely(p->flags & PF_KTHREAD)) {                                                                                                                                                 
->                 p->thread.pkru = pkru_get_init_value();                                                                                                                                        
->                 memset(childregs, 0, sizeof(struct pt_regs));                                                                                                                                  
->                 kthread_frame_init(frame, args->fn, args->fn_arg);                                                                                                                             
->                 return 0;                                                                                                                                                                      
->         }
+> And it may be pointing at arch/powerpc/include/asm/atomic.h line 200
+> which is this:
 > 
-> I can send a similar patch for arm64.  I have no idea how to write io_uring
-> code, so looking for examples I can work with to get a test written. Might just
-> send the arm64 fix first, if that's fine?
+> static __inline__ s64 arch_atomic64_read(const atomic64_t *v)
+> {
+>         s64 t;
+> 
+>         /* -mprefixed can generate offsets beyond range, fall back hack */
+>         if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
+>                 __asm__ __volatile__("ld %0,0(%1)" : "=r"(t) : "b"(&v->counter))
+> ;
+>         else
+>                 __asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : "m<>"(v->counter));
+> 
+>         return t;
+> }
+> 
+> The second "asm" above (CONFIG_PPC_KERNEL_PREFIXED is not set).  I am
+> guessing by searching for "39" in net/core/page_pool.s
+> 
+> This is maybe called from page_pool_unref_netmem()
 
-I think fix + documentation is what we need before 6.12, but you've still
-got plenty of time after the merge window.
+Thanks! The compiler version helped, I can repro with GCC 14.
 
-Cheers,
+It's something special about compound page handling on powerpc64,
+AFAICT. I'm guessing that the assembler is mad that we're doing
+an unaligned read:
 
-Will
+   3300         ld 8,39(8)       # MEM[(const struct atomic64_t *)_29].counter, t
+
+which does indeed look unaligned to a naked eye. If I replace
+virt_to_head_page() with virt_to_page() on line 867 in net/core/page_pool.c
+I get:
+
+   2982         ld 8,40(10)      # MEM[(const struct atomic64_t *)_94].counter, t
+
+and that's what we'd expect. It's reading pp_ref_count which is at
+offset 40 in struct net_iov. I'll try to take a closer look at 
+the compound page handling, with powerpc assembly book in hand, 
+but perhaps this rings a bell for someone?
 
