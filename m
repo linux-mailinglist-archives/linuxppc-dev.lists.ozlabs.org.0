@@ -1,64 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1372-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1373-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F40B978F11
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 10:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4C5978F44
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 10:55:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X5PFv6Zwyz2y8h;
-	Sat, 14 Sep 2024 18:18:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X5Q4S50x2z2yHj;
+	Sat, 14 Sep 2024 18:55:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.194
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726301923;
-	cv=none; b=XWv4LF3VoZZUr/MqIDMeIWtZD5mlYEOidGsCRdX+sRyS+hrT51WtCnNMPbksaKmUqkPmfmcXppuhi8lmYdrEOM3911lr8MFh4NNs3bqDkCOyITAWC1vCDfTmXESNkG4F6Q9u6RGNiwkgUuEGX/EXFsjrNVIzhWxTWYO774c/LCDu4MoT/aWyi+8MoYMtxKk2Ba5hVUYFjFFp6lB/vffXbWEmAJj1xVw00pBieSvCCM2SZU0U1vcSq506UO9Z9IBEDDV1JZ1fl00jkY7MC0I4Ty+U/KsxLATv+FbNWYMHnAt/05oF0ygEpsUkCvwc+4Sf4k9worffrro1Hu6psXFshQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726304136;
+	cv=none; b=Wz3WbMCAm8GlG9aqTyEGuEf2EObjsYAzx+z80pc0ugzlGbFuDOdRxIblbESisSyc0LOOf6zRjmXPNHQvM/K8PqrN/wcbjKg9xJZnF7nrzWtfr9lyTM+tNy9dHui1u15nItbbYTab0X5DNxmOwYIxj32FB37ejahoTQuDfqUwfa+yqKzyzLk7bGPloA22Nrha6YnzrF6FBWW/mrjimpsFplR34noV0TBzX+UJixCYI6UO307yWHAPRBXn2Xi+zVugBB9hoSY+ijGwhYSEU3lMQOoobbf7+jMdd3uHsME23khJfELDdEpMaDFm/X02Qnbyn+fB+gngLPPnaPSCJVNB7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726301923; c=relaxed/relaxed;
-	bh=A/NMzLz8Tuxq/gt5dPNpj6i4kHuPhRrw0hNedu0YR04=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MWZshff09h0rOOhVaE05K70hfdrDe9AOWRs4RCZpA0hcZ3UP5Vdgbx1dRY/fbTW0zEmv6zLexmKP/BHHHeplQG3TRFnjUMqUczd65o+tPXJUb92XjeUNmSKJQ+/zbak28XL45fFUOVRQGEELWYKOawz0gMXiCr5Euso8wdhTR8g6e9iZYAUHoLtBChSjOktYCUduzcsSFXp8Bh86F2Z2Ig8cFXfHyYvvcUZNSpfw0mBkAhDNi2FhXLzdiHTzOM4Hkz36j9+hAws2IEURGy1atAx4V3yOYSwGfEq8OXxuO0o1bj9DNpC0oi5XUVWPWfhGpJHM+C/49zYDLFvlZ8NBrA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ImkbUKGP; dkim-atps=neutral; spf=pass (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ImkbUKGP;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1726304136; c=relaxed/relaxed;
+	bh=bhN/XrjebWMKB6qSo/PQo5GvT9Vm7fpIVm2ekccQmSc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ORPGO/C3w/ID/pJyqS8QYNFKJk/c57/qEuoFuXK7srsW8EKBFJbSDPCUoScZ08wJzpkYecPzPZYL6hcag7iPWwpv1Mva6hgCEDVJDh8ugAlAdrdzWxS2BBs33Sv1mUFryiz6y6+mbKuuAMN/njqkRiujrHV1I4PT5T1iko0B8HbxkJnT4UgLqlUGJ86kWlFQRrGZ7LWlXclmtbUnGs0Fg3RSLGQSIIq5BBXBkP26Dr/mD7LLQx0Y/HCIdZ9Uten5kEsr8QaxaLYsz9wQeHGq7G3Ce+Yr7d0iGys+nqUsQKNDsFjQHM6LZ9aJg+HWy3qDBonfNtB6IQ7XsR/jp8uyOA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X5PFv2nb7z2y8d
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 18:18:42 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7A35D40007;
-	Sat, 14 Sep 2024 08:18:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1726301917;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=A/NMzLz8Tuxq/gt5dPNpj6i4kHuPhRrw0hNedu0YR04=;
-	b=ImkbUKGPiXQbqZnvZeefqE2T+XlO2xqBLvMzz3ERKEgEJWWoHmlKvoBW5skj91waHHidgv
-	/FEQzgtpvoMZo9T9Y/V8u2LGvlhVQ8CBI5nRGcqIGG123RU7DDzNtE9duTZAzHcZ6LjHcW
-	pvwxS/OWtZG0Q+LQWyRytZcmvrkqz6gD9g3V8QyOCRBvhOuCGo91vV0VsPF9nNui35p1+V
-	Sg8y37iBy4OrvXlaocl4HH5SR84ftgMrzCvg7zLObpdybaqRVTZw8E9MvL9E2yuosmMkrM
-	5Vp7tkKhRk4v3TSskKkYMqjYQPbhneUaoRT9obs82MhbcvNie6V96euuw9LBdw==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Pantelis Antoniou <pantelis.antoniou@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	thomas.petazzoni@bootlin.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH net-next] net: ethernet: fs_enet: Make the per clock optional
-Date: Sat, 14 Sep 2024 10:18:20 +0200
-Message-ID: <20240914081821.209130-1-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.46.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X5Q4S2cyKz2y8F
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 18:55:35 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4X5Q4M5yyWz9sxD;
+	Sat, 14 Sep 2024 10:55:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id j_N8AC9snYEy; Sat, 14 Sep 2024 10:55:31 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4X5Q4M4vznz9sxC;
+	Sat, 14 Sep 2024 10:55:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 91D078B764;
+	Sat, 14 Sep 2024 10:55:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id tYHQT-gWUP4W; Sat, 14 Sep 2024 10:55:31 +0200 (CEST)
+Received: from [192.168.233.150] (PO20379.IDSI0.si.c-s.fr [192.168.233.150])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id DF0AB8B763;
+	Sat, 14 Sep 2024 10:55:30 +0200 (CEST)
+Message-ID: <498e7990-2c81-4779-83e6-1ff072796dbd@csgroup.eu>
+Date: Sat, 14 Sep 2024 10:55:30 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,37 +56,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] page_pool: fix build on powerpc with GCC 14
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Matthew Wilcox <willy@infradead.org>
+References: <20240913213351.3537411-1-almasrymina@google.com>
+ <87jzffq9ge.fsf@mail.lhotse>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <87jzffq9ge.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: maxime.chevallier@bootlin.com
 
-Some platforms that use fs_enet don't have the PER register clock. This
-optional dependency on the clock was incorrectly made mandatory when
-switching to devm_ accessors.
 
-Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Closes: https://lore.kernel.org/netdev/4e4defa9-ef2f-4ff1-95ca-6627c24db20c@wanadoo.fr/
-Fixes: c614acf6e8e1 ("net: ethernet: fs_enet: simplify clock handling with devm accessors")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
-This patch fixes a commit in net-next.
 
- drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Le 14/09/2024 à 04:02, Michael Ellerman a écrit :
+> Mina Almasry <almasrymina@google.com> writes:
+>> Building net-next with powerpc with GCC 14 compiler results in this
+>> build error:
+>>
+>> /home/sfr/next/tmp/ccuSzwiR.s: Assembler messages:
+>> /home/sfr/next/tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is
+>> not a multiple of 4)
+>> make[5]: *** [/home/sfr/next/next/scripts/Makefile.build:229:
+>> net/core/page_pool.o] Error 1
+>>
+>> Root caused in this thread:
+>> https://lore.kernel.org/netdev/913e2fbd-d318-4c9b-aed2-4d333a1d5cf0@cs-soprasteria.com/
+> 
+> Sorry I'm late to this, the original report wasn't Cc'ed to linuxppc-dev :D
+> 
+> I think this is a bug in the arch/powerpc inline asm constraints.
+> 
+> Can you try the patch below, it fixes the build error for me.
+> 
+> I'll run it through some boot tests and turn it into a proper patch over
+> the weekend.
+> 
+> cheers
+> 
+> 
+> diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
+> index 5bf6a4d49268..0e41c1da82dd 100644
+> --- a/arch/powerpc/include/asm/atomic.h
+> +++ b/arch/powerpc/include/asm/atomic.h
+> @@ -23,6 +23,12 @@
+>   #define __atomic_release_fence()					\
+>   	__asm__ __volatile__(PPC_RELEASE_BARRIER "" : : : "memory")
+>   
+> +#ifdef CONFIG_CC_IS_CLANG
+> +#define DS_FORM_CONSTRAINT "Z<>"
+> +#else
+> +#define DS_FORM_CONSTRAINT "YZ<>"
+> +#endif
 
-diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-index d300b01859a1..3425c4a6abcb 100644
---- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-@@ -895,7 +895,7 @@ static int fs_enet_probe(struct platform_device *ofdev)
- 	 * but require enable to succeed when a clock was specified/found,
- 	 * keep a reference to the clock upon successful acquisition
- 	 */
--	clk = devm_clk_get_enabled(&ofdev->dev, "per");
-+	clk = devm_clk_get_optional_enabled(&ofdev->dev, "per");
- 	if (IS_ERR(clk))
- 		goto out_free_fpi;
- 
--- 
-2.46.0
+I see we have the same in uaccess.h, added by commit 2d43cc701b96 
+("powerpc/uaccess: Fix build errors seen with GCC 13/14")
 
+Should that go in a common header, maybe ppc_asm.h ?
+
+> +
+>   static __inline__ int arch_atomic_read(const atomic_t *v)
+>   {
+>   	int t;
+> @@ -197,7 +203,7 @@ static __inline__ s64 arch_atomic64_read(const atomic64_t *v)
+>   	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
+>   		__asm__ __volatile__("ld %0,0(%1)" : "=r"(t) : "b"(&v->counter));
+>   	else
+> -		__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : "m<>"(v->counter));
+> +		__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : DS_FORM_CONSTRAINT (v->counter));
+>   
+>   	return t;
+>   }
+> @@ -208,7 +214,7 @@ static __inline__ void arch_atomic64_set(atomic64_t *v, s64 i)
+>   	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
+>   		__asm__ __volatile__("std %1,0(%2)" : "=m"(v->counter) : "r"(i), "b"(&v->counter));
+>   	else
+> -		__asm__ __volatile__("std%U0%X0 %1,%0" : "=m<>"(v->counter) : "r"(i));
+> +		__asm__ __volatile__("std%U0%X0 %1,%0" : "=" DS_FORM_CONSTRAINT (v->counter) : "r"(i));
+>   }
+>   
+>   #define ATOMIC64_OP(op, asm_op)						\
+> 
 
