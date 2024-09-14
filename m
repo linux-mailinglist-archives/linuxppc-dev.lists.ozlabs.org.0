@@ -1,64 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-1366-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1367-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F31978C86
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 04:02:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCAE0978CC3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Sep 2024 04:24:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X5DvY4W2hz2yDT;
-	Sat, 14 Sep 2024 12:02:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X5FNx5KcNz2y66;
+	Sat, 14 Sep 2024 12:24:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726279337;
-	cv=none; b=B2+fCtMYxmXPlmqczfZYRT3TgjDXSQPorEyv7npyP+dxL5adjpnUVTz3J/w/eOBJ0tYfsYNE6NEaDfM85PA7ennbd/8JyMsQhm+7ytT2oeoCqZ9soUqZJUNSUJZLpna65+ev9f8ATkOUg0mK1W7LFKHC7297jDshQ4+25Y0JOxem32ZOnzr14BNOHRJcJJUAFtDnvbttLGuBt+DAMUfdjlB9W2h0ycQl3SZnDzYVIxGyNB9gmr9DGgwQRAWREy4VYnLYd4nN4XDwueqWG+ClWGf3tHaZtU7++0E4+/yO6ZAp4ti0sjyAN7loIRlHZhueIYqhBjvtcysmNg8NeR7SAg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=114.132.62.65
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726280657;
+	cv=none; b=oI+L3I0gN69JoVy6+F6GdJTqoSDtR7DUVZvbaLh2/CASxxaztum/YTz2IwYT++uFy4UexySm93Zr2/FXCwHJA0oxCt7xMVh5qKwtrb009JZqUsScLRQ5pZ4L69Oxo91O6txQH/AN91LqjuImDPzrI3L/h9OhAmQS/cYS/u/4J6vZA3vmuTdZ54xh/1yI+BPATjZD4mNLTFLGQJcSWH/nyDg9vIcHW9xjlLJ6Q2rqz7qpruWdc3xEPOeqXCsbq8yeKuRwTt7skABksTjNtuLVx+k3ikbg3HtB5piQ/O0meNAGhJxGqgCJEIKqZtOmokd/Z2qarLvuFWWKZNe7f1QZdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726279337; c=relaxed/relaxed;
-	bh=/wsM4f9mZobOe68S738M7h2FcsJwRNVl7jUmuHE5wmY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WF96Z9TCowlBEAjmSNMUCGissZbMnBXMjDuGvXmZzFzR/SAU93gnr/Pv/vFtb8q8nyjl6y2/J74oas4VKCtbuLdS/PW5/dDlAm8UBThnayD/h0idAVye9WK7nMw0+Oynh0IcG7rbxB+kNEncpc6boXbdzqH/a1TvRDeBzol5S6q0QYsxceoqgMF7ZeHuUC2QblR00sBpzB0WdZfiPKlzUV4OhPj/PIbNXVSiWfowHO2nQiqcI5qpfzNv2/Zxfxi1WLT965Bu0UVUbOL3vRTw/27mGsXMO/C3OL1FWjBMtZ4fCInXiA8mPgkHPiyTrpyQINl+Gt4qCFJ8tsCWcHVLXg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DH0dsbxR; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DH0dsbxR;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1726280657; c=relaxed/relaxed;
+	bh=4rXaDdI3e3gQsuUIPBBn1q0zN6WJwgQ7NKlxHU38evM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ceahD6YCnPgxLLRCyt6UScwAU8XB6cepG+igTeGLWZ+ej8I3WP6jOoY+J2RFfB0isbismBejrWel1YcKsn0m+0zjMFmOsMC5fsNTytvW89dZabXg7xIb1bhpmLiwzwmqtljvUvqG1roRmVIwRw7ZT39sP2jThiQnhhca9RQRN8owxSKI1tUS/WYkHoXfVURbN7ESvTwsi1VR0rM5lcwlyosWZqqLYg0msyIr7QQ9SZDKwYbZj9k3KNlkT6KKM/Md/JfXWpoHkkut0JhwBYvzt8kopkFIgtwUTv9sf7BVDHP6eCozR9EDyc+Z7O7EqlPUc58xaieEI1DKBxyKHIOvdw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass (client-ip=114.132.62.65; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org) smtp.mailfrom=shingroup.cn
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.62.65; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+X-Greylist: delayed 67423 seconds by postgrey-1.37 at boromir; Sat, 14 Sep 2024 12:24:15 AEST
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.62.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X5DvY1WyCz2y8F
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 12:02:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726279332;
-	bh=/wsM4f9mZobOe68S738M7h2FcsJwRNVl7jUmuHE5wmY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=DH0dsbxRzHaIGZKdW/VAzQa6uKPKiQwb8xCnbJaXLX9IAec2jz1b/fzg6cAhA8ErS
-	 pB/HLkT+Chh7obMNzCGZjoOWTe/vD0JNDCM4Bk1nb264MmakqUKTgdIBJ2vYKocfIX
-	 TQFU167XMfXx/BQsIbkQmum5VaXobPpVYwGgo1VhMa4CtzPmjmlEkxQ80fw3po0b0D
-	 HtJ6eUTWVbxOb+AYQWVe+VAvYPaM3Togzjtar6Bx3JrukSCSxH/pAfJbln0hO7udza
-	 MN7MYow2a+b425Pd8snDmc6s2XJ5BK0WWvGoVetzAKhaADtomefCQYQLBwDN6OI2zp
-	 D2h9711DyUhjg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X5DvR1TfQz4xD3;
-	Sat, 14 Sep 2024 12:02:11 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Mina Almasry <almasrymina@google.com>, Jesper Dangaard Brouer
- <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>, Linux
- Next Mailing List <linux-next@vger.kernel.org>, Arnd Bergmann
- <arnd@arndb.de>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>, Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH net-next v2] page_pool: fix build on powerpc with GCC 14
-In-Reply-To: <20240913213351.3537411-1-almasrymina@google.com>
-References: <20240913213351.3537411-1-almasrymina@google.com>
-Date: Sat, 14 Sep 2024 12:02:09 +1000
-Message-ID: <87jzffq9ge.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X5FNv72YFz2xnX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Sep 2024 12:24:15 +1000 (AEST)
+X-QQ-mid: bizesmtpsz4t1726280583t45kfja
+X-QQ-Originating-IP: zt9s5hnMP9ASfBOErfW6YV8nnU/KKrV7riW77zoyeqY=
+Received: from HX09040029.powercore.com.cn ( [180.171.104.254])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 14 Sep 2024 10:23:00 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 2754753639437398407
+Date: Sat, 14 Sep 2024 10:22:34 +0800
+From: Luming Yu <luming.yu@shingroup.cn>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	mpe@ellerman.id.au, npiggin@gmail.com, jialong.yang@shingroup.cn,
+	luming.yu@gmail.com
+Subject: Re: [PATCH 1/2] powerpc/entry: convert to common and generic entry
+Message-ID: <9B5E7C0A7C4BFBF0+ZuTzanfk7BcYoFas@HX09040029.powercore.com.cn>
+References: <B4ABABEA5F13B86A+20240912082500.1469-1-luming.yu@shingroup.cn>
+ <fc509bcd-5ca0-4dc2-962e-766a01cbe4fb@csgroup.eu>
+ <153FD6B5CE4F97D9+ZuOYDQ-iHIIwJjbh@HX09040029.powercore.com.cn>
+ <95ced963-b584-4ccf-ba34-8f2ba99172f4@csgroup.eu>
+ <0332BAE1905768B6+ZuPsBvgv0nwmFAjW@HX09040029.powercore.com.cn>
+ <854eef54-4779-4233-a958-0c98ae5fcb7e@csgroup.eu>
+ <F81D1486B7B82141+ZuQp4YQkAA2cB9Rw@HX09040029.powercore.com.cn>
+ <81200b50-eaec-4cfd-9121-f661f3065572@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,66 +58,54 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <81200b50-eaec-4cfd-9121-f661f3065572@csgroup.eu>
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
 
-Mina Almasry <almasrymina@google.com> writes:
-> Building net-next with powerpc with GCC 14 compiler results in this
-> build error:
->
-> /home/sfr/next/tmp/ccuSzwiR.s: Assembler messages:
-> /home/sfr/next/tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is
-> not a multiple of 4)
-> make[5]: *** [/home/sfr/next/next/scripts/Makefile.build:229:
-> net/core/page_pool.o] Error 1
->
-> Root caused in this thread:
-> https://lore.kernel.org/netdev/913e2fbd-d318-4c9b-aed2-4d333a1d5cf0@cs-soprasteria.com/
+On Fri, Sep 13, 2024 at 02:15:40PM +0200, Christophe Leroy wrote:
+> 
+> 
+> Le 13/09/2024 à 14:02, Luming Yu a écrit :
+> 
+> > > ...
+> > > nothing happens after that.
+> > reproduced with ppc64_defconfig
+> > [    0.818972][    T1] Run /init as init process
+> > [    5.851684][  T240] request_module: modprobe binfmt-4c46 cannot be processed, kmod busy with 50 threads for more than 5 seconds now
+> > [    5.851742][  T240] kworker/u33:18 (240) used greatest stack depth: 13584 bytes left
+> > [    5.860081][  T232] kworker/u33:16 (232) used greatest stack depth: 13072 bytes left
+> > [    5.863145][  T210] kworker/u35:13 (210) used greatest stack depth: 12928 bytes left
+> > [    5.865000][    T1] Failed to execute /init (error -8)
+> > [    5.868897][    T1] Run /sbin/init as init process
+> > [   10.891673][  T315] request_module: modprobe binfmt-4c46 cannot be processed, kmod busy with 50 threads for more than 5 seconds now
+> > [   10.894036][    T1] Starting init: /sbin/init exists but couldn't execute it (error -8)
+> > [   10.901455][    T1] Run /etc/init as init process
+> > [   10.903154][    T1] Run /bin/init as init process
+> > [   10.904747][    T1] Run /bin/sh as init process
+> > [   15.931679][  T367] request_module: modprobe binfmt-4c46 cannot be processed, kmod busy with 50 threads for more than 5 seconds now
+> > [   15.934689][    T1] Starting init: /bin/sh exists but couldn't execute it (error -8)
+> 
+> That's something different, this is because you built a big-endian kernel
+> and you are trying to run a little-endian userspace.
+okay
+> 
+> Does it work with ppc64le_defconfig ?
+make ppc64le_defconfig
 
-Sorry I'm late to this, the original report wasn't Cc'ed to linuxppc-dev :D
+yes, it builds && boots just fine.
+the host is a p8 powernv system , the qemu command line is as below:
+qemu-system-ppc64 -m 64g -smp 16,cores=4,threads=4 --enable-kvm  -nographic -net nic -net tap,ifname=tap0,script=/etc/qemu-ifup-nat,downscript=/etc/qemu-ifdown-nat  Downloads/Fedora-Cloud-Base-38-1.6.ppc64le.qcow2
 
-I think this is a bug in the arch/powerpc inline asm constraints.
+I will try other test configures as well.
+> 
+> On my side there is absolutely nothing happening after the last line, the
+> screen remains steady.
+> 
+> 
+> Christophe
+> 
 
-Can you try the patch below, it fixes the build error for me.
-
-I'll run it through some boot tests and turn it into a proper patch over
-the weekend.
-
-cheers
-
-
-diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
-index 5bf6a4d49268..0e41c1da82dd 100644
---- a/arch/powerpc/include/asm/atomic.h
-+++ b/arch/powerpc/include/asm/atomic.h
-@@ -23,6 +23,12 @@
- #define __atomic_release_fence()					\
- 	__asm__ __volatile__(PPC_RELEASE_BARRIER "" : : : "memory")
- 
-+#ifdef CONFIG_CC_IS_CLANG
-+#define DS_FORM_CONSTRAINT "Z<>"
-+#else
-+#define DS_FORM_CONSTRAINT "YZ<>"
-+#endif
-+
- static __inline__ int arch_atomic_read(const atomic_t *v)
- {
- 	int t;
-@@ -197,7 +203,7 @@ static __inline__ s64 arch_atomic64_read(const atomic64_t *v)
- 	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
- 		__asm__ __volatile__("ld %0,0(%1)" : "=r"(t) : "b"(&v->counter));
- 	else
--		__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : "m<>"(v->counter));
-+		__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : DS_FORM_CONSTRAINT (v->counter));
- 
- 	return t;
- }
-@@ -208,7 +214,7 @@ static __inline__ void arch_atomic64_set(atomic64_t *v, s64 i)
- 	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
- 		__asm__ __volatile__("std %1,0(%2)" : "=m"(v->counter) : "r"(i), "b"(&v->counter));
- 	else
--		__asm__ __volatile__("std%U0%X0 %1,%0" : "=m<>"(v->counter) : "r"(i));
-+		__asm__ __volatile__("std%U0%X0 %1,%0" : "=" DS_FORM_CONSTRAINT (v->counter) : "r"(i));
- }
- 
- #define ATOMIC64_OP(op, asm_op)						\
 
