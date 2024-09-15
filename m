@@ -1,49 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-1377-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD6D9795D5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 10:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6291D97965D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 12:45:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X620v0bRcz2yGY;
-	Sun, 15 Sep 2024 18:54:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X64Sj5csLz2xxy;
+	Sun, 15 Sep 2024 20:45:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726390479;
-	cv=none; b=duDy9LOCiTxH3a6BwtxYv6Yx56+hiL8l9Lgu2DBPKYLz+Z7PaNDGj/enGgJ+YjQUMXxl3ZdQ1ixUyIWYriXePRTLcZ5FXLMvj69UyxOpbsUEUsAqEBVyUOaYOqpg2yDsF/3xBnSHI5LpH2xmAxrhYbtDRFr4/nJWZWoZvK+cpJBlSe1YS/RibYXDgKh3vaDfNCber2NLn+q/PSBDmp1vEY0BG31NWMnzZXJM4Yuenh6ubscSgS3GmyPTY+Zf+Gbm9NgPdBQo9wWCBHJZGsB9qdAu6nQGbeG3aXbV4NjEw5cOkUtj8sZnzr/0nkwpgVNRlec0uPAg1Dk/d8T6q6iR5g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726397125;
+	cv=none; b=XsCwHy1cYqb4d1cBJKz/towtd86438OPjMC4JB/a8ppPTLknn3Pl8YIKtgY5UUlhPTdwFLH11lAZVB/gKPhr/eZWOTCiZySEjjsflIgBkPzfG8BqGSYkFIkomNHNGLp4i4DjoIPVrr1O+NgJ/ExrAWWAf4zebCBcIZbpYXEkkk+j7FzH2DLJUoJ+/W9NAVZI0kv8oNN3h2PLGn4IV2HnQBcaRH77LJaO0SPUoKVb2QVNpxkl4ohiGa1wfkI54PKwyNxbLxPTnbIGZexQGpErOJgkd6qpcA24u6Rl7WYRMSXJBRxWlCEj/eKlBjxA2yFWiSlT3CK1dTXyR/OGKS1lmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726390479; c=relaxed/relaxed;
-	bh=TlZ31AAai8dWg6nK2ST8Ib2FrAE9HTfOlpRGrNZ2QgU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lDdOSYpz8DU48EHh/ZHKxH0XEHoVAELTaRDM86BcyFS46xxOcmdex/foWmEDx3yw7WW6Q85mS9tWhXEURiNP6GawmqBOq+1vfUKcCh1xQ53itRFpE2ETh9z+Gn02A6myh4GDiNi3f2fOHS3VUy9SzTwHvy0r5sMo7XMgDuxgkpuK4RtcJ27ZAcoJfiBnPkMrzh40BP5Bmc3GHOT7+HSVhhZZ33sG1agJfO3emNEe6q1DvOHEqfafErzoxjFIjrpl86MX93U8KfaOSEOp6Ikeq41EnLYUgtyEosO/aQwcUPHaKWg3H+tLOlW+ifGdK+QCZwqE1YpuNHkKb1uRdnIcCw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=f26y=qn=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=f26y=qn=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	t=1726397125; c=relaxed/relaxed;
+	bh=jqW6okUGofPnWuzoo94v770ZzhF41RU9ioXhQiBiADc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YGobicTNKo0s6gx3xAHwnDSJtShwiWhVwH1KX2GoFCRfp2v4OFl+nJ+T2WoW/sN6QT2VjWD+ULqoPeLcSTucgt9L+Y8aQy8/rBJXvJJBFcWD8q1nqS3qoYA6J67jBC5mdUn2jU1ro+c1FXSfwrkIXJ7TP95Rg1/Zh6s5V7iwncEA4AFuMzpiDimbu4/xw0dV2hK04qb8jTdIs388fA2e66mJqDQiVRiVSimg+GJGV6ZdK3Yzn6lbyCDo3K4wf5uDxTalNLUPbEtNFOl8MVSTeKuxh6jAxy7A1yaPpS40OLRPQ36IXreOmFSP4zronqDf0Zvl8Ov2tkndrzZQ89rICg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X620t4np3z2xdN
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2024 18:54:38 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A1E755C10BD;
-	Sun, 15 Sep 2024 08:54:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AC0C4CEC3;
-	Sun, 15 Sep 2024 08:54:32 +0000 (UTC)
-Date: Sun, 15 Sep 2024 04:54:28 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Florent Revest
- <revest@chromium.org>, linux-trace-kernel@vger.kernel.org, LKML
- <linux-kernel@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, Jiri
- Olsa <jolsa@kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v14 05/19] function_graph: Pass ftrace_regs to retfunc
-Message-ID: <20240915045428.2b7be046@rorschach.local.home>
-In-Reply-To: <172615374207.133222.13117574733580053025.stgit@devnote2>
-References: <172615368656.133222.2336770908714920670.stgit@devnote2>
- <172615374207.133222.13117574733580053025.stgit@devnote2>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X64Sc1BXvz2xks
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2024 20:45:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=jqW6okUGofPnWuzoo94v770ZzhF41RU9ioXhQiBiADc=; b=oWxm+dE83ehjHDkC7vek7mEFiO
+	4Fd/ZzJSkXmdu7kWTjRE8XjS4Mor/2mmkjzLs16r29mC1r92/tXTUkDnya0gJCQrQfySHPtcBc3VE
+	l7MvfdVO0pZCawsjTrE/tEwuKoLdcNZrWs+a93Rt+C2kQCNHlzZ8ddxaAmNho+Lcf/4zJNvtAenBb
+	Ll8o/kItLA+lgBFsnay7as5MVqaZbWdhGBmWi3L+TlJ7BReAeIH1LW6INPmwMMTo9Jcbn+jT/ml0g
+	CuyvWXdC5NAO0YS+9Ehg1PhgeT9vEcO/d6Q6CqP3RY3F0jg/q7CDOyXYM73vTC//b9LyCXY95KMmW
+	6gmz3KrQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1spmkU-00000000ktC-1OaC;
+	Sun, 15 Sep 2024 10:44:58 +0000
+Date: Sun, 15 Sep 2024 11:44:58 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Simon Horman <horms@kernel.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Jakub Kicinski <kuba@kernel.org>,
+	David Miller <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH net-next v1] mm: fix build on powerpc with GCC 14
+Message-ID: <Zua6qtUCG84236gp@casper.infradead.org>
+References: <20240913192036.3289003-1-almasrymina@google.com>
+ <ZuSQ9BT9Vg7O2kXv@casper.infradead.org>
+ <30e8dee7-e98e-42cb-aab3-6b75f1a6316d@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,225 +65,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <30e8dee7-e98e-42cb-aab3-6b75f1a6316d@csgroup.eu>
 
-
-Can I get an Acked-by from the POWERPC maintainers for this patch?
-
-Thanks!
-
--- Steve
-
-[ Note this is modifies the return side ]
-
-On Fri, 13 Sep 2024 00:09:02 +0900
-"Masami Hiramatsu (Google)" <mhiramat@kernel.org> wrote:
-
-> From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+On Sat, Sep 14, 2024 at 08:50:46AM +0200, Christophe Leroy wrote:
+> Hi,
 > 
-> Pass ftrace_regs to the fgraph_ops::retfunc(). If ftrace_regs is not
-> available, it passes a NULL instead. User callback function can access
-> some registers (including return address) via this ftrace_regs.
+> Le 13/09/2024 à 21:22, Matthew Wilcox a écrit :
+> > On Fri, Sep 13, 2024 at 07:20:36PM +0000, Mina Almasry wrote:
+> > > +++ b/include/linux/page-flags.h
+> > > @@ -239,8 +239,8 @@ static inline unsigned long _compound_head(const struct page *page)
+> > >   {
+> > >   	unsigned long head = READ_ONCE(page->compound_head);
+> > > -	if (unlikely(head & 1))
+> > > -		return head - 1;
+> > > +	if (unlikely(head & 1UL))
+> > > +		return head & ~1UL;
+> > >   	return (unsigned long)page_fixed_fake_head(page);
+> > 
+> > NAK, that pessimises compound_head().
+> > 
 > 
-> Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> ---
->  Changes in v8:
->   - Pass ftrace_regs to retfunc, instead of adding retregfunc.
->  Changes in v6:
->   - update to use ftrace_regs_get_return_value() because of reordering
->     patches.
->  Changes in v3:
->   - Update for new multiple fgraph.
->   - Save the return address to instruction pointer in ftrace_regs.
-> ---
->  include/linux/ftrace.h               |    3 ++-
->  kernel/trace/fgraph.c                |   16 +++++++++++-----
->  kernel/trace/ftrace.c                |    3 ++-
->  kernel/trace/trace.h                 |    3 ++-
->  kernel/trace/trace_functions_graph.c |    7 ++++---
->  kernel/trace/trace_irqsoff.c         |    3 ++-
->  kernel/trace/trace_sched_wakeup.c    |    3 ++-
->  kernel/trace/trace_selftest.c        |    3 ++-
->  8 files changed, 27 insertions(+), 14 deletions(-)
+> Can you please give more details on what the difference is ?
 > 
-> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
-> index 13987cd63553..e7c41d9988e1 100644
-> --- a/include/linux/ftrace.h
-> +++ b/include/linux/ftrace.h
-> @@ -1069,7 +1069,8 @@ struct fgraph_ops;
->  
->  /* Type of the callback handlers for tracing function graph*/
->  typedef void (*trace_func_graph_ret_t)(struct ftrace_graph_ret *,
-> -				       struct fgraph_ops *); /* return */
-> +				       struct fgraph_ops *,
-> +				       struct ftrace_regs *); /* return */
->  typedef int (*trace_func_graph_ent_t)(struct ftrace_graph_ent *,
->  				      struct fgraph_ops *,
->  				      struct ftrace_regs *); /* entry */
-> diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
-> index 30bebe43607d..6a3e2db16aa4 100644
-> --- a/kernel/trace/fgraph.c
-> +++ b/kernel/trace/fgraph.c
-> @@ -297,7 +297,8 @@ static int entry_run(struct ftrace_graph_ent *trace, struct fgraph_ops *ops,
->  }
->  
->  /* ftrace_graph_return set to this to tell some archs to run function graph */
-> -static void return_run(struct ftrace_graph_ret *trace, struct fgraph_ops *ops)
-> +static void return_run(struct ftrace_graph_ret *trace, struct fgraph_ops *ops,
-> +		       struct ftrace_regs *fregs)
->  {
->  }
->  
-> @@ -491,7 +492,8 @@ int ftrace_graph_entry_stub(struct ftrace_graph_ent *trace,
->  }
->  
->  static void ftrace_graph_ret_stub(struct ftrace_graph_ret *trace,
-> -				  struct fgraph_ops *gops)
-> +				  struct fgraph_ops *gops,
-> +				  struct ftrace_regs *fregs)
->  {
->  }
->  
-> @@ -787,6 +789,9 @@ __ftrace_return_to_handler(struct ftrace_regs *fregs, unsigned long frame_pointe
->  	}
->  
->  	trace.rettime = trace_clock_local();
-> +	if (fregs)
-> +		ftrace_regs_set_instruction_pointer(fregs, ret);
-> +
->  #ifdef CONFIG_FUNCTION_GRAPH_RETVAL
->  	trace.retval = ftrace_regs_get_return_value(fregs);
->  #endif
-> @@ -796,7 +801,7 @@ __ftrace_return_to_handler(struct ftrace_regs *fregs, unsigned long frame_pointe
->  #ifdef CONFIG_HAVE_STATIC_CALL
->  	if (static_branch_likely(&fgraph_do_direct)) {
->  		if (test_bit(fgraph_direct_gops->idx, &bitmap))
-> -			static_call(fgraph_retfunc)(&trace, fgraph_direct_gops);
-> +			static_call(fgraph_retfunc)(&trace, fgraph_direct_gops, fregs);
->  	} else
->  #endif
->  	{
-> @@ -806,7 +811,7 @@ __ftrace_return_to_handler(struct ftrace_regs *fregs, unsigned long frame_pointe
->  			if (gops == &fgraph_stub)
->  				continue;
->  
-> -			gops->retfunc(&trace, gops);
-> +			gops->retfunc(&trace, gops, fregs);
->  		}
->  	}
->  
-> @@ -956,7 +961,8 @@ void ftrace_graph_sleep_time_control(bool enable)
->   * Simply points to ftrace_stub, but with the proper protocol.
->   * Defined by the linker script in linux/vmlinux.lds.h
->   */
-> -void ftrace_stub_graph(struct ftrace_graph_ret *trace, struct fgraph_ops *gops);
-> +void ftrace_stub_graph(struct ftrace_graph_ret *trace, struct fgraph_ops *gops,
-> +		       struct ftrace_regs *fregs);
->  
->  /* The callbacks that hook a function */
->  trace_func_graph_ret_t ftrace_graph_return = ftrace_stub_graph;
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index 775040a9f541..fd6c5a50c5e5 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -840,7 +840,8 @@ static int profile_graph_entry(struct ftrace_graph_ent *trace,
->  }
->  
->  static void profile_graph_return(struct ftrace_graph_ret *trace,
-> -				 struct fgraph_ops *gops)
-> +				 struct fgraph_ops *gops,
-> +				 struct ftrace_regs *fregs)
->  {
->  	struct ftrace_ret_stack *ret_stack;
->  	struct ftrace_profile_stat *stat;
-> diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-> index 28d8ad5e31e6..f4a3f75bd916 100644
-> --- a/kernel/trace/trace.h
-> +++ b/kernel/trace/trace.h
-> @@ -682,7 +682,8 @@ void trace_latency_header(struct seq_file *m);
->  void trace_default_header(struct seq_file *m);
->  void print_trace_header(struct seq_file *m, struct trace_iterator *iter);
->  
-> -void trace_graph_return(struct ftrace_graph_ret *trace, struct fgraph_ops *gops);
-> +void trace_graph_return(struct ftrace_graph_ret *trace, struct fgraph_ops *gops,
-> +			struct ftrace_regs *fregs);
->  int trace_graph_entry(struct ftrace_graph_ent *trace, struct fgraph_ops *gops,
->  		      struct ftrace_regs *fregs);
->  
-> diff --git a/kernel/trace/trace_functions_graph.c b/kernel/trace/trace_functions_graph.c
-> index b9785fc919c9..241407000109 100644
-> --- a/kernel/trace/trace_functions_graph.c
-> +++ b/kernel/trace/trace_functions_graph.c
-> @@ -240,7 +240,7 @@ void __trace_graph_return(struct trace_array *tr,
->  }
->  
->  void trace_graph_return(struct ftrace_graph_ret *trace,
-> -			struct fgraph_ops *gops)
-> +			struct fgraph_ops *gops, struct ftrace_regs *fregs)
->  {
->  	unsigned long *task_var = fgraph_get_task_var(gops);
->  	struct trace_array *tr = gops->private;
-> @@ -270,7 +270,8 @@ void trace_graph_return(struct ftrace_graph_ret *trace,
->  }
->  
->  static void trace_graph_thresh_return(struct ftrace_graph_ret *trace,
-> -				      struct fgraph_ops *gops)
-> +				      struct fgraph_ops *gops,
-> +				      struct ftrace_regs *fregs)
->  {
->  	ftrace_graph_addr_finish(gops, trace);
->  
-> @@ -283,7 +284,7 @@ static void trace_graph_thresh_return(struct ftrace_graph_ret *trace,
->  	    (trace->rettime - trace->calltime < tracing_thresh))
->  		return;
->  	else
-> -		trace_graph_return(trace, gops);
-> +		trace_graph_return(trace, gops, fregs);
->  }
->  
->  static struct fgraph_ops funcgraph_ops = {
-> diff --git a/kernel/trace/trace_irqsoff.c b/kernel/trace/trace_irqsoff.c
-> index ad739d76fc86..504de7a05498 100644
-> --- a/kernel/trace/trace_irqsoff.c
-> +++ b/kernel/trace/trace_irqsoff.c
-> @@ -208,7 +208,8 @@ static int irqsoff_graph_entry(struct ftrace_graph_ent *trace,
->  }
->  
->  static void irqsoff_graph_return(struct ftrace_graph_ret *trace,
-> -				 struct fgraph_ops *gops)
-> +				 struct fgraph_ops *gops,
-> +				 struct ftrace_regs *fregs)
->  {
->  	struct trace_array *tr = irqsoff_trace;
->  	struct trace_array_cpu *data;
-> diff --git a/kernel/trace/trace_sched_wakeup.c b/kernel/trace/trace_sched_wakeup.c
-> index 23360a2700de..9ffbd9326898 100644
-> --- a/kernel/trace/trace_sched_wakeup.c
-> +++ b/kernel/trace/trace_sched_wakeup.c
-> @@ -144,7 +144,8 @@ static int wakeup_graph_entry(struct ftrace_graph_ent *trace,
->  }
->  
->  static void wakeup_graph_return(struct ftrace_graph_ret *trace,
-> -				struct fgraph_ops *gops)
-> +				struct fgraph_ops *gops,
-> +				struct ftrace_regs *fregs)
->  {
->  	struct trace_array *tr = wakeup_trace;
->  	struct trace_array_cpu *data;
-> diff --git a/kernel/trace/trace_selftest.c b/kernel/trace/trace_selftest.c
-> index 89067f02094a..1ebd0899238f 100644
-> --- a/kernel/trace/trace_selftest.c
-> +++ b/kernel/trace/trace_selftest.c
-> @@ -807,7 +807,8 @@ static __init int store_entry(struct ftrace_graph_ent *trace,
->  }
->  
->  static __init void store_return(struct ftrace_graph_ret *trace,
-> -				struct fgraph_ops *gops)
-> +				struct fgraph_ops *gops,
-> +				struct ftrace_regs *fregs)
->  {
->  	struct fgraph_fixture *fixture = container_of(gops, struct fgraph_fixture, gops);
->  	const char *type = fixture->store_type_name;
+> I can't see what it pessimises. In both cases, you test if the value is odd,
+> when it is odd you make it even.
 
+On x86, for example, it is perfectly valid to load a 64-bit value from
+an offset of 0x2f relative to a pointer.  So there's no need to make it
+even.
 
