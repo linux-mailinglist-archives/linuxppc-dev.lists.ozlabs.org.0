@@ -1,99 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1380-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1381-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5589796E7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 15:51:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43ED19797AC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 18:01:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X68bv23gbz2y8r;
-	Sun, 15 Sep 2024 23:51:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X6CTR2G1hz2xk7;
+	Mon, 16 Sep 2024 02:01:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726408315;
-	cv=none; b=SUR2hM2nZcq7qdQb+1iXj8epcQmA6tH9b4y3tpBHT8E98WleSsWJDGMitC8rDJ3H2vQ2UI6mE+vhs+g7eMJ0RN0X9Av4LtewGy3/dTOupX+YD0+qyh0p/Dc1DTHrg6FG6lZRF8z8EmSTjLImVT68PFvRE3DdcS11yLLeX+dXpyBwuxdJTfyc1i2FlUyv1PNuShU6kI+FWXgAAWv06Jc20HJ52UOvhi1vZHtCasLqPL3dHdDdRDpcp2H/K2Fzzb9+IA8HjZobNmGN7MfmB3an6gz+32ydsP1G0CZ+4wL62hXaZuL+Zj06s3IEnAmN1xVkPLnDVQmswCPzcOUMhJv7qQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726416091;
+	cv=none; b=DHDfEmI8gQxjeF8D0+wqwk2q3DUbQQZt6rM755r1i+7SC0TXGxzKm4zr4QcocuHKR3xEOeqYnjAWU7q0iLDVUtzf0aGNHtgrshg/+UxzlBW5muMdDulyRb6zsrqVZyNF29J46+ZTFKpAm07irQ8ODD0xzp0OsUzEEUUfSGhMpAgmorUwmx1EvTWERw6qbE8bRuBLXi4qxB1xk2wRHAS7/O/C5QDJh69ZC9sJfkJi52+72wvOpL6dpMCLpbxfXCnPZN3sQtJNs9Pn5wSf+KKL8uc63t9VGBMYJVwl9KB4JYUwH8OttUnT87nXjeuVSe03TR6h/murKkljBk9ClxqmOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726408315; c=relaxed/relaxed;
-	bh=PRdpsXqKOB66nzid05vkfMQY+h3dZqrBw/EG9fBVIP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c+6K8INxp4LzUv176Cej0+JcpV/BGublMxkLvrrVKmRipBO9Hh9/f1Ptfg0YNMgBRoFKhNxQC2RU5aAg0CqFHi+YbFZBkHDlURtVBb8zm+RYCfCEUWQilxIFpBk5y9fQjjSH119ryHcSTCHOtgoGcdTVQPLBFZNdqzoW0majIRrV7lMDxYQ5UQk+IVF2Fj1M7gvyAha3557nz0R0BNMFEPzl6FMlfi077FWDi9SwFNYlkviPaKNjGPyvetmWIfL2OfVJj8ue/4cPU74Ij/Uv2sn9sAOTytHqTL/4tTfxytIPXVHvefhDfaNJojPE394x2Q49AOVBxJb8UZ9NSIn8IQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DRkIar9R; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1726416091; c=relaxed/relaxed;
+	bh=rvU7RY6BSHuGO7deGhW4A+gfiIYnHxMKHkDACiyQyMc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YbC+9YQUQe+v/J5kx5yseX4QHJyq1vCdrLkgKwxzmEqoQaWIAX2zVtox7mYaP/Z0kRjULEpHNfw05rJNqeDJcoAmldRDiG5v22w9olt16QqhJp0PmWEzlNa2TLKYESt2OEGp1mTT8c0QLsuFTXrWN9wpkRf5VHLfXjh7fG/Xtbigvj44Fw5EHMXVqAE5TK0ObYlB5YCBruUH2gjhhqnq3UmygOo5nJ5ccvjpHF9gkGYPgmlO0J/7LNhov1QVQ8kJcRwI1fxJ0pTjDLdAR/74ZilG/FZkb4NMiRzeYFtl08n/b+LcbZP15VyT6pqRsCJCtcpMrK2ReAGjH7aSooqsRQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZHkWk0JA; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DRkIar9R;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZHkWk0JA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X68bt6D1qz2y8n
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2024 23:51:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X6CTR0RRMz2xLR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2024 02:01:30 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 45A6A5C54F3;
-	Sun, 15 Sep 2024 13:51:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666C4C4CEC3;
-	Sun, 15 Sep 2024 13:51:28 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 371E55C59B5;
+	Sun, 15 Sep 2024 16:01:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878FAC4CEC6;
+	Sun, 15 Sep 2024 16:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726408306;
-	bh=q7WJquAI08+CAD5lP6bdNehob9Dq1wPKxQPjeFRtiiI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DRkIar9RFkBNG39Lg4VF36+C0l1NwYSaEE09Z1SxGxc6M4S+jx9O3QiS3XE0iEOXa
-	 dugg4+gux8cHvhMy415EwhG2oqeI29OZXErerIPWPPLxGdjDxioHvmSB5SFgMR8cmZ
-	 GF890/YHKLL0YWKx3z2y3nIavnufDvUSXph8DwoVC1aciO37Nuj9Dl/4U3xgMBW1Vr
-	 QqbWqbJwbZ+B8JLq+POjgebhgVzaYSVrG+oX+aypioA+ScnFYEAUCNxQIIMCRKMIR8
-	 1d75vfMvgyrvMLYGrv0O59GREHzSdXP1f5IYJf2XBPq1KtNNCfQ4hdGzn/h6TRc0iB
-	 7g69hrbWPmj5g==
-Date: Sun, 15 Sep 2024 16:48:27 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
-	Stafford Horne <shorne@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
-	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v3 7/8] execmem: add support for cache of large ROX pages
-Message-ID: <Zublq4tR0q7lvicK@kernel.org>
-References: <20240909064730.3290724-1-rppt@kernel.org>
- <20240909064730.3290724-8-rppt@kernel.org>
- <CAMj1kXG_Z=7B_eDAk3vhtDjfcnka3AoSKNzvFQDzpvYY2EyVfg@mail.gmail.com>
+	s=k20201202; t=1726416087;
+	bh=Y8QP24CKHUvxLYd6VZy5Fp3zHnNGYYSNewltGROYn34=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ZHkWk0JA/Ib6KBKxL+0HxbEwiOP+hmS3CZCOYnTJOS5KKOfuVxrG83DRGloVa2hMl
+	 XjrOrOu3mZdFpJL9JOdX1oHsBWfHa0SBcMWeNQePdpZpo0mGKWJcyo9nftFyLg/MCV
+	 qOTjCzlVKTUk5yyai9tIZRDIRiR+ozqu+qUXhPKFZ8csxkbxFkWCR3J+NNMGlj73s/
+	 RcNJil1qYQV4wOWsrSEEnAGVZBIUQZvRIKkbVttB4F/5iAAnxTqfcsLKFc/cnnl59L
+	 cUY4E8VgFBQMeH1UEXwPZGO3nKBFQnU73dfmyBEHeYb0D9n7yu+4JLAsRHuieWgboj
+	 jwzOuBM6qNRVg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D6B3804C85;
+	Sun, 15 Sep 2024 16:01:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,38 +56,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXG_Z=7B_eDAk3vhtDjfcnka3AoSKNzvFQDzpvYY2EyVfg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: ethernet: fs_enet: Make the per clock optional
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172641608876.3111582.12752959256186522702.git-patchwork-notify@kernel.org>
+Date: Sun, 15 Sep 2024 16:01:28 +0000
+References: <20240914081821.209130-1-maxime.chevallier@bootlin.com>
+In-Reply-To: <20240914081821.209130-1-maxime.chevallier@bootlin.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, pantelis.antoniou@gmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ thomas.petazzoni@bootlin.com, andrew@lunn.ch, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
+ christophe.leroy@csgroup.eu, herve.codina@bootlin.com,
+ christophe.jaillet@wanadoo.fr
 
-Hi Ard,
+Hello:
 
-On Fri, Sep 13, 2024 at 05:00:42PM +0200, Ard Biesheuvel wrote:
-> Hi Mike,
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sat, 14 Sep 2024 10:18:20 +0200 you wrote:
+> Some platforms that use fs_enet don't have the PER register clock. This
+> optional dependency on the clock was incorrectly made mandatory when
+> switching to devm_ accessors.
 > 
-> On Mon, 9 Sept 2024 at 08:51, Mike Rapoport <rppt@kernel.org> wrote:
-
-...
-
-> > +static void execmem_fill_trapping_insns(void *ptr, size_t size, bool writable)
-> > +{
-> > +       if (execmem_info->fill_trapping_insns)
-> > +               execmem_info->fill_trapping_insns(ptr, size, writable);
-> > +       else
-> > +               memset(ptr, 0, size);
+> Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Closes: https://lore.kernel.org/netdev/4e4defa9-ef2f-4ff1-95ca-6627c24db20c@wanadoo.fr/
+> Fixes: c614acf6e8e1 ("net: ethernet: fs_enet: simplify clock handling with devm accessors")
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 > 
-> Does this really have to be a function pointer with a runtime check?
-> 
-> This could just be a __weak definition, with the arch providing an
-> override if the memset() is not appropriate.
+> [...]
 
-I prefer to keep this a method in execmem_info rather that have a __weak
-definition that architectures can override.
+Here is the summary with links:
+  - [net-next] net: ethernet: fs_enet: Make the per clock optional
+    https://git.kernel.org/netdev/net-next/c/c209847b8974
 
-This is not on the hot path, so I don't think a runtime check here would
-matter. Still, I can fill in a default with memset at init time.
-
+You are awesome, thank you!
 -- 
-Sincerely yours,
-Mike.
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
