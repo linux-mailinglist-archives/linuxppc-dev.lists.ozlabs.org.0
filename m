@@ -1,67 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-1379-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1380-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349F0979691
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 14:20:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5589796E7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 15:51:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X66Z11R5tz2yNc;
-	Sun, 15 Sep 2024 22:20:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X68bv23gbz2y8r;
+	Sun, 15 Sep 2024 23:51:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726402809;
-	cv=none; b=S20b5vfjUKORWN7HQ0tmw4kzCNAnYeYAuSm4XmQIFkxsFNubvb7GG2nVZeeZwhCnUvi9YbTHTNyl+FGNbysMGSyHcZ0/gliaOVlYpqhXLDptypGWx8LuBTtHo59HCb9GJV728fhwQv/+5LZxqWWXDQlDzOmZQDPrj25FrCjnebIR/iKE435WJVU+4RK/C1h0HDJLTB5HDNpf3R2Hj/YglgXNM7cvd+7NeCgqD+NKeXGYT1Z1i23//tFJXe3+NSLU2+cmwRLB3/wbrt9nmxTuj3BcSZ/WhS3ZQqtI3/m4CuZEg5oOQpX0fINVZ2HozrBdxXTD5BchRAZrM8WO90Ce4g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726408315;
+	cv=none; b=SUR2hM2nZcq7qdQb+1iXj8epcQmA6tH9b4y3tpBHT8E98WleSsWJDGMitC8rDJ3H2vQ2UI6mE+vhs+g7eMJ0RN0X9Av4LtewGy3/dTOupX+YD0+qyh0p/Dc1DTHrg6FG6lZRF8z8EmSTjLImVT68PFvRE3DdcS11yLLeX+dXpyBwuxdJTfyc1i2FlUyv1PNuShU6kI+FWXgAAWv06Jc20HJ52UOvhi1vZHtCasLqPL3dHdDdRDpcp2H/K2Fzzb9+IA8HjZobNmGN7MfmB3an6gz+32ydsP1G0CZ+4wL62hXaZuL+Zj06s3IEnAmN1xVkPLnDVQmswCPzcOUMhJv7qQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726402809; c=relaxed/relaxed;
-	bh=LcqIBVzHw0KnwXTko6FqDEVdGVv2zi2crglHm27G4d8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=OS5Ow0KGcmEbN5718ykq6gsM+C+1PvMkRDwwyIjAnSmjHkQRu2Gh5prZAr5Kqj9edXVLFPeldFT53AJGPP5f9ACavlCWLYDRMUcQo9ZyUsPvOqHTY+b0bmQb7oGRtP7U7DvxvpGsH1+arkXRVJ8kdYb2IlsTL0iBpIU83sXp3VJKVN8nhQVOytYAYIMulM3zAub9E6AIYozWJ0zqBGxheR0+WRwq/2g6pEaJzhx+Ok+2h5OWjxoJL4kBwdDc6Nu1+VWatqWK+0mwWJULUlm6jqxjk/XRWYSrxgZri11379bERefXn2oJ7kIHriD0eIQFGCISPWKPtJ7NRuN1Wp+wAg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=I6iTjJPi; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1726408315; c=relaxed/relaxed;
+	bh=PRdpsXqKOB66nzid05vkfMQY+h3dZqrBw/EG9fBVIP0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c+6K8INxp4LzUv176Cej0+JcpV/BGublMxkLvrrVKmRipBO9Hh9/f1Ptfg0YNMgBRoFKhNxQC2RU5aAg0CqFHi+YbFZBkHDlURtVBb8zm+RYCfCEUWQilxIFpBk5y9fQjjSH119ryHcSTCHOtgoGcdTVQPLBFZNdqzoW0majIRrV7lMDxYQ5UQk+IVF2Fj1M7gvyAha3557nz0R0BNMFEPzl6FMlfi077FWDi9SwFNYlkviPaKNjGPyvetmWIfL2OfVJj8ue/4cPU74Ij/Uv2sn9sAOTytHqTL/4tTfxytIPXVHvefhDfaNJojPE394x2Q49AOVBxJb8UZ9NSIn8IQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DRkIar9R; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=I6iTjJPi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DRkIar9R;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X66Z003ZRz2yLV
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2024 22:20:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726402803;
-	bh=LcqIBVzHw0KnwXTko6FqDEVdGVv2zi2crglHm27G4d8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=I6iTjJPikupA477s76MI4hBQ6xsZn3ga+yalo4/iLaFuUS78Rj0BUT9N6AswrEcWT
-	 CDwMCJmusbYk6Ig8YpaBv5TvStzLHfR0phcE51BneSptcxhQVb8bv3K6hPrOBKlptG
-	 1UfGTiGjWzZFUZZLYMqNQW57tplBHAbAViNUfDkTIvlrnptU7I4eocj2KnCziNk0e7
-	 6IfgkTQIVGMzjExC5wmO7ZxNz3Y36+2ol2ZFq7bJg+HsE1vi4LhkzrdtnUbCjgOnuQ
-	 Nd3s3BtWeeQhGquc1UcaXLNsa+vwi8oiCdfS2d8yLNZue6Pfj0dUlHhqAsIDqnkza6
-	 L3vPXeZU7yhqQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X66Ys6GwTz4x8H;
-	Sun, 15 Sep 2024 22:20:00 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Mina Almasry
- <almasrymina@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Stephen
- Rothwell <sfr@canb.auug.org.au>, Linux Next Mailing List
- <linux-next@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Matthew
- Wilcox <willy@infradead.org>
-Subject: Re: [PATCH net-next v2] page_pool: fix build on powerpc with GCC 14
-In-Reply-To: <498e7990-2c81-4779-83e6-1ff072796dbd@csgroup.eu>
-References: <20240913213351.3537411-1-almasrymina@google.com>
- <87jzffq9ge.fsf@mail.lhotse>
- <498e7990-2c81-4779-83e6-1ff072796dbd@csgroup.eu>
-Date: Sun, 15 Sep 2024 22:19:58 +1000
-Message-ID: <87h6ahqfbl.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X68bt6D1qz2y8n
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Sep 2024 23:51:54 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 45A6A5C54F3;
+	Sun, 15 Sep 2024 13:51:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666C4C4CEC3;
+	Sun, 15 Sep 2024 13:51:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726408306;
+	bh=q7WJquAI08+CAD5lP6bdNehob9Dq1wPKxQPjeFRtiiI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DRkIar9RFkBNG39Lg4VF36+C0l1NwYSaEE09Z1SxGxc6M4S+jx9O3QiS3XE0iEOXa
+	 dugg4+gux8cHvhMy415EwhG2oqeI29OZXErerIPWPPLxGdjDxioHvmSB5SFgMR8cmZ
+	 GF890/YHKLL0YWKx3z2y3nIavnufDvUSXph8DwoVC1aciO37Nuj9Dl/4U3xgMBW1Vr
+	 QqbWqbJwbZ+B8JLq+POjgebhgVzaYSVrG+oX+aypioA+ScnFYEAUCNxQIIMCRKMIR8
+	 1d75vfMvgyrvMLYGrv0O59GREHzSdXP1f5IYJf2XBPq1KtNNCfQ4hdGzn/h6TRc0iB
+	 7g69hrbWPmj5g==
+Date: Sun, 15 Sep 2024 16:48:27 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v3 7/8] execmem: add support for cache of large ROX pages
+Message-ID: <Zublq4tR0q7lvicK@kernel.org>
+References: <20240909064730.3290724-1-rppt@kernel.org>
+ <20240909064730.3290724-8-rppt@kernel.org>
+ <CAMj1kXG_Z=7B_eDAk3vhtDjfcnka3AoSKNzvFQDzpvYY2EyVfg@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,40 +103,38 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXG_Z=7B_eDAk3vhtDjfcnka3AoSKNzvFQDzpvYY2EyVfg@mail.gmail.com>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 14/09/2024 =C3=A0 04:02, Michael Ellerman a =C3=A9crit=C2=A0:
+Hi Ard,
+
+On Fri, Sep 13, 2024 at 05:00:42PM +0200, Ard Biesheuvel wrote:
+> Hi Mike,
+> 
+> On Mon, 9 Sept 2024 at 08:51, Mike Rapoport <rppt@kernel.org> wrote:
+
 ...
->>=20
->> diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/as=
-m/atomic.h
->> index 5bf6a4d49268..0e41c1da82dd 100644
->> --- a/arch/powerpc/include/asm/atomic.h
->> +++ b/arch/powerpc/include/asm/atomic.h
->> @@ -23,6 +23,12 @@
->>   #define __atomic_release_fence()					\
->>   	__asm__ __volatile__(PPC_RELEASE_BARRIER "" : : : "memory")
->>=20=20=20
->> +#ifdef CONFIG_CC_IS_CLANG
->> +#define DS_FORM_CONSTRAINT "Z<>"
->> +#else
->> +#define DS_FORM_CONSTRAINT "YZ<>"
->> +#endif
->
-> I see we have the same in uaccess.h, added by commit 2d43cc701b96=20
-> ("powerpc/uaccess: Fix build errors seen with GCC 13/14")
 
-Yep.
+> > +static void execmem_fill_trapping_insns(void *ptr, size_t size, bool writable)
+> > +{
+> > +       if (execmem_info->fill_trapping_insns)
+> > +               execmem_info->fill_trapping_insns(ptr, size, writable);
+> > +       else
+> > +               memset(ptr, 0, size);
+> 
+> Does this really have to be a function pointer with a runtime check?
+> 
+> This could just be a __weak definition, with the arch providing an
+> override if the memset() is not appropriate.
 
-> Should that go in a common header, maybe ppc_asm.h ?
+I prefer to keep this a method in execmem_info rather that have a __weak
+definition that architectures can override.
 
-That would be the obvious place, but unfortunately including ppc_asm.h
-in atomic.h breaks the build due to header spaghetti.
+This is not on the hot path, so I don't think a runtime check here would
+matter. Still, I can fill in a default with memset at init time.
 
-For now I've put the defines in asm-compat.h, which is not ideal but
-seems to work.
-
-cheers
+-- 
+Sincerely yours,
+Mike.
 
