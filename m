@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-1389-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1390-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D019798D7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 22:58:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5BE9798D9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 22:58:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X6L3H2CfDz2yZZ;
-	Mon, 16 Sep 2024 06:57:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X6L3Q11Rwz2ykc;
+	Mon, 16 Sep 2024 06:57:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726433867;
-	cv=none; b=idMXJhSAG+u2tygJrTY1xZv0YRlZG7gt5dw6YBBFFWLixiRlDxS475yYDHKQep0UhLSN8nEkasfS9Ns1ixquHwYNdygm3RC7j9qAG+6WkABnMwEco+C7MCPNeMlR9fOxrSPjKgMTBnbieJfkZivYM/lWP5ftq57tH3I/OUyYNf6ZKmSNET5IeQcjY1RONYE78Q28Wm1jYLh2AIV+W7z+JilKkJB3vBjfUq8DFgiNs8m/hIx1YOccCtI/Ghpu3jrUi/QQFJ/AiA8uI2T7wgE1fxa1ZUpd6ONvDfPWXByarGgtdogOD74Ka4zuX61q1h9Xwk0/unT0+ZVtq7G3pQkr5g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726433874;
+	cv=none; b=FXKWySTRAm/cLZJfYLVZOpAqdngP8va5Cv+VbPVlC2oFtLDLBbbMBUZBnLvcyOGFoEExnttfCW9D3AqpeIriRuJT2khVvw3Z3CjhMO2DnAHE6wDXl76aM6f8FrIA/EhBCgU/ZVZydZcMaoMWGW4sOLsV7HRVxcg86xL/8a2+mAvuW0UEu/Xy50zBSfT1o+UmcB35PuOg6Mv2xdg6PQoCyZmOFEB/z+7OeM6dEuJtWaDDcpQFGkvPUSqRSZXbRrgU4H+efsrZoVfwlztIdrQwznWfWwFCX5j4TIdS6D1Sp+j1B/g4WT4TJX3JGBqDzGN5yYNokdCJbvf8n0vyzu+zgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726433867; c=relaxed/relaxed;
-	bh=rICOsI28/72qjimCAjutIBgMENDkpjnCUa7QBsCo8Kc=;
+	t=1726433874; c=relaxed/relaxed;
+	bh=Zn3cmO/ZSLIB4cOQ0BVeGzbvuQwSYFTvFd/HV7gK3Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHWZVnA/Shi5asR5VtAkh4aJSVHj8e5aFTBTaxe8E+9we6YAl91ccrCCaN4NETjE8ijJJ4nz3I23pqNXC/SmmfaT8WAfDrU/dDF6dvWHueSN4rZSmApSSepiMTb7KEMEM6TihFUFaHTJsXLo7wj8hITIbrEHPPRBM3CdJ25yPZMVWHgQRddXDzVnjfg92UmYtuWiGOcyFZ51KF7JuKORnP3jaecSiTF+OlpX3On7Cs6x0Pb0Wm/K4XOnhaPyPlXXqlHLAmcrTO7lNQ4tVL50KKTPdJ6VaBjbut38GEgRQRcJ+PJ/30BLzWE/hv9hXgj4jPriIsJ2OszoJ29ZJ0c/Hw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nutLOqyM; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=JdHqvOrONz7gmFVVyiWoSXSV14hcGGjTUYmhrZ1h2SYebjZmRpjb4UVIUstWLgi0mx7PaipPo7aGMUEGTWpjg7D6deuAB5t71/U0Zly1DPTY2/nDEOJzOCKy4iC7UQPXbN7FCYB5X5robsx6vCJmmo+F8lRfvK7CxVEMHzOkWVDbL2BZDbPaJsVSn37ALinUONGAP5jvjcEMOcAGMNKDCIMgnE7+V6uFVkEKQIMYn7Ff1xsWVKKz0NlemaCQR9WV1grdPkKHo1qd95ZvFZIR0nMOguytQIaMTouVYJgfT4oMzZZZOiQlI8B7SyIOl7dmhnc5FWNLxvVJtgzmSA3wMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c+c3Iq8n; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nutLOqyM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c+c3Iq8n;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X6L3G6Bn0z2yZ6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2024 06:57:46 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48FKfcvN029990;
-	Sun, 15 Sep 2024 20:57:29 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X6L3P4dxWz2yZ6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2024 06:57:53 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48ENn2Iq013855;
+	Sun, 15 Sep 2024 20:57:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
 	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=pp1; bh=rICOsI28/72qj
-	imCAjutIBgMENDkpjnCUa7QBsCo8Kc=; b=nutLOqyMJ3TtUk/YOdBSFFlaod1xx
-	+YdSveTydJmckbSRa6oMRBrDdbGrOh61QAWwRlfgsiM1twrrZIdC3DJdp2u75k2r
-	ZG5mlBYo7/xEWh9Qc3HrimRV90v2NPSD5oZAp9n/DVYSlDvA3XwsV/vUowBC37LD
-	D34Wvbe6bVbWoQV6Xh7ls2CJ148MAXQUhbsUBhPlgVFYSkpVYO4bP+/cBm2g7KBd
-	PvYY5mv7Zus1qjPErZg9TLh0lfqDglr6i7eNSvMNL8ZloPA/5nihPh79xr5vWUNj
-	lSHupR6JMtaPejSYkkNqnfwZslw54xhhaN+MZFOItHF/Ixf/3ORS1wHKQ==
+	:mime-version:content-transfer-encoding; s=pp1; bh=Zn3cmO/ZSLIB4
+	cOQ0BVeGzbvuQwSYFTvFd/HV7gK3Ok=; b=c+c3Iq8nVSp9MxtxXfxEPjqdC++EJ
+	kzCS4B8178rcqltTDhr7Z1+9XGpxBkyuYgr69beTumgyncDtL0pJXYEVaYgxXbPM
+	5CouiCbFtQRx2gKMPYqqdzscTRiNL3K8EDjzkA8meAivN4Qd6GdLvegdwRR9Vxrd
+	iWlLqttjhNlbQsoajAlEuxb0/qlISJHZ1LRmYjroyErKozb8MzX5YC9juw3xgwxC
+	kx7ZJRsklSG56XOeh1YVYAziH8JdvzT0ZQlWYF9U7XId8aR511zJnbNLY+OD/zHE
+	nqtYpyiQLFFVOmrHAjaFGiwZQLEv2H4X4IIVy3Nd8oU1iG2eLbI9Qxnjg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3vne8h5-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n41a683q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Sep 2024 20:57:28 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48FKvSCY024779;
-	Sun, 15 Sep 2024 20:57:28 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3vne8h3-1
+	Sun, 15 Sep 2024 20:57:32 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48FKv618010815;
+	Sun, 15 Sep 2024 20:57:32 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n41a683m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Sep 2024 20:57:28 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48FIiwJY000634;
-	Sun, 15 Sep 2024 20:57:27 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41nn70uw7t-1
+	Sun, 15 Sep 2024 20:57:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48FIVsKA001907;
+	Sun, 15 Sep 2024 20:57:31 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41nmtubyd5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Sep 2024 20:57:27 +0000
+	Sun, 15 Sep 2024 20:57:31 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48FKvN3O54854032
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48FKvRXs54264312
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 15 Sep 2024 20:57:23 GMT
+	Sun, 15 Sep 2024 20:57:27 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7244420049;
+	by IMSVA (Postfix) with ESMTP id BC38C20049;
+	Sun, 15 Sep 2024 20:57:27 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D966720040;
 	Sun, 15 Sep 2024 20:57:23 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9020B20040;
-	Sun, 15 Sep 2024 20:57:19 +0000 (GMT)
 Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.68.55])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 15 Sep 2024 20:57:19 +0000 (GMT)
+	Sun, 15 Sep 2024 20:57:23 +0000 (GMT)
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
         linux-trace-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
@@ -85,9 +85,9 @@ Cc: "Naveen N. Rao" <naveen@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
         Vishal Chourasia <vishalc@linux.ibm.com>,
         Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
         Masami Hiramatsu <mhiramat@kernel.org>
-Subject: [PATCH v5 07/17] powerpc/ftrace: Skip instruction patching if the instructions are the same
-Date: Mon, 16 Sep 2024 02:26:38 +0530
-Message-ID: <20240915205648.830121-8-hbathini@linux.ibm.com>
+Subject: [PATCH v5 08/17] powerpc/ftrace: Move ftrace stub used for init text before _einittext
+Date: Mon, 16 Sep 2024 02:26:39 +0530
+Message-ID: <20240915205648.830121-9-hbathini@linux.ibm.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240915205648.830121-1-hbathini@linux.ibm.com>
 References: <20240915205648.830121-1-hbathini@linux.ibm.com>
@@ -102,42 +102,48 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -xhLp2SQbwzr2h4N68QqUOI8_hACQXJt
-X-Proofpoint-GUID: 8-HrT9gb5nKTgblEAuOAfxvk7VMxngb9
+X-Proofpoint-GUID: SFrHo37G6vO571LOWP7sqHpJzASTcJCH
+X-Proofpoint-ORIG-GUID: Qr-zl2DY1jGbaQS3SWbpM8ziQTC28El_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-15_12,2024-09-13_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=832
- priorityscore=1501 phishscore=0 clxscore=1015 malwarescore=0 bulkscore=0
- impostorscore=0 spamscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2409150159
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 spamscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409150159
 
 From: Naveen N Rao <naveen@kernel.org>
 
-To simplify upcoming changes to ftrace, add a check to skip actual
-instruction patching if the old and new instructions are the same. We
-still validate that the instruction is what we expect, but don't
-actually patch the same instruction again.
+Move the ftrace stub used to cover inittext before _einittext so that it
+is within kernel text, as seen through core_kernel_text(). This is
+required for a subsequent change to ftrace.
 
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 ---
- arch/powerpc/kernel/trace/ftrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/vmlinux.lds.S | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index fe0546fbac8e..719517265d39 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -82,7 +82,7 @@ static inline int ftrace_modify_code(unsigned long ip, ppc_inst_t old, ppc_inst_
- {
- 	int ret = ftrace_validate_inst(ip, old);
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 7ab4e2fb28b1..b4c9decc7a75 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -265,14 +265,13 @@ SECTIONS
+ 	.init.text : AT(ADDR(.init.text) - LOAD_OFFSET) {
+ 		_sinittext = .;
+ 		INIT_TEXT
+-
++		*(.tramp.ftrace.init);
+ 		/*
+ 		 *.init.text might be RO so we must ensure this section ends on
+ 		 * a page boundary.
+ 		 */
+ 		. = ALIGN(PAGE_SIZE);
+ 		_einittext = .;
+-		*(.tramp.ftrace.init);
+ 	} :text
  
--	if (!ret)
-+	if (!ret && !ppc_inst_equal(old, new))
- 		ret = patch_instruction((u32 *)ip, new);
- 
- 	return ret;
+ 	/* .exit.text is discarded at runtime, not link time,
 -- 
 2.46.0
 
