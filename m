@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-1393-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1394-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720219798DF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 22:58:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CB59798E2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Sep 2024 22:58:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X6L3d679qz2yGl;
-	Mon, 16 Sep 2024 06:58:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X6L3m3hwsz2yst;
+	Mon, 16 Sep 2024 06:58:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726433885;
-	cv=none; b=gjdT6lSfDxAq/BSXEcivVvwatpYdOqJHaACsvikIbDL1eRSx+e54/TL0GjcieUaDr5D8esg3kylgRo9MWG5cZmtAag8Hi0UbyEyvGC6G/DEWKcpFUue2CMsKH3SJGJDnRG2/s9fOBKOnp9WRQO4BVYwI9gC39at5wMMGG3JScvyvqVewOm+Jf7zTpzMtET5xqNrwZOGfQe52/+w4i8FHBMfmGDPkFUzH040LL6BdBGEa0F1TdqIutNB1kU8RyDmnLBNlcREFA14apHN/FtRcNINogCmu28D7g3oLhiYju4rhLzxXo6rm54ysne8FpR+7GT9LOLAFx8aSffn6wbiLgQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726433892;
+	cv=none; b=GAVSoSC1nr31ZIS0i5ojDJpQ1fLJ2aOqG0R7TsemnJV6zYgS3g6I3s+jADfzwKgzhwEBO9LFf+c+g9RuVCsMEiIjqP9lJRmCWm2o2PiDWvWLM2UdJUNwJPqMoDtr5MNedLdIlTbcegCvtuLI8OynMk09AMkUQJz3xgTOJl7/nJwOPIQYd8KZCpa6+8nkyjC4EG8nJwHOnKaK5uGngTN/iYolRg1m9QNrvcq0934AtQcjk6g9liCCxlhyJ6bwIQYhYVIG96pOreevjXCDGDoWZNFIRSyY2MgW2TXfNQtIQZ4S7SAFXJxwwF1+ZGKdvULw91VT37vNZk70obz/+bDzRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726433885; c=relaxed/relaxed;
-	bh=nkx0MGe6EehYhWkii12Ck+b8oun2Zf6u+PoXXIH9k/o=;
+	t=1726433892; c=relaxed/relaxed;
+	bh=rqOyCr0uCfPwqckG0LZsDvWReQOYVR8VwLXpWx2uZUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IQX7rOw4szWqepN+rWNN3us5rlgTGkwhxTT8VcepOnfYtcRoCwxZqE9aRKMcKQg9dBrz7vDJRWr2AHrkOmIl46IdvzrTns+pCwdW+mr6aTmcM5l4Q2zSPRVCQ90nrJGhWLmByg836MpJDgo5KR8Szd/Nf7kU6s22b4jjQK31UllB6L5PWt6KGpNREND/H4K/2pn/BtE58G5FDxrAqhSqKT8qv5+ujJpX2yNg/xgXyteeYI4rmGL5rudFBBX3g7WWGvBUDeAVJncsmMlrzv4VKRQzHBvZClzOFx6j8B0j7C1vImBMP9fSrPCH6ObCVfNNGlOzjMCOJ8KBSqknPpcBMg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lb1pXnQX; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=e9RNTzHE5AxIiSTsrmoMI6LzvEw9ooDB+CHZ92UiP4u9tFIQ8cWtATLpifG+pgR7K5UbqAKP1zm47a7WmFsyiBiDEaLaZxo8d/Gi5/FqBRLoE7voS9sZ1LTWuem7xolGViGl/fx6Ek4wxTH6HxYpSZnxVCCOO8NlKA6PZnOl/y6apRy1K1iObmYLYlfitGnZyIP1FdLju0qQ0ikSmLZVWybLTxKhD/9gwubPX3MdTs4QSSbULAC1BaX6dlZKeeagQcaxBTTaJkk6keclrsbs0GsY10S4dyAK5sE24mU+E6IJ11B7b70WdtPM6fbfmh4SpII8fBNNVahp7JujYzQLnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X88UKZgi; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lb1pXnQX;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X88UKZgi;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X6L3d3Mw1z2xxp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2024 06:58:05 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48F9wqwm003643;
-	Sun, 15 Sep 2024 20:57:45 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X6L3m1Cx4z2xxp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2024 06:58:12 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48FFobD8025501;
+	Sun, 15 Sep 2024 20:57:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
 	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=pp1; bh=nkx0MGe6EehYh
-	Wkii12Ck+b8oun2Zf6u+PoXXIH9k/o=; b=lb1pXnQXopZlTSBEfHun9o2UEVZiO
-	WPPxZmUjHClyBF5rvohWuYs/iZQMcqSXH3U9V2jJBzU6XS2VwYRg+Z3vRZwI39+a
-	e17NqL3NjrabxPjTgTb2c/qtXasQ2vSsqYt2jj+EwaadrWbkPTlXVCutb5fGMUkA
-	lrTSkTlETH7Mx9mQ/r5f4peF8+btwby7iHCbDsKm0BftW7+c5IRiVxvoLYGi33TZ
-	Wb+bcSfsi2k8ukH9iD/V0ZRBVKHlWcA8RalO0K81rjoYoU+cmzA+1J3rl305tBFq
-	dUy8CrD9d5yblqbxfFYtbPo2OaVZ6jz8OHnDgCst0q5M4kXEnaEarFhZw==
+	:mime-version:content-transfer-encoding; s=pp1; bh=rqOyCr0uCfPwq
+	ckG0LZsDvWReQOYVR8VwLXpWx2uZUY=; b=X88UKZgiprM27XCphbtfInmUhuoOb
+	wX/x04Iov2jxEP3sxmy6DvvnbRvcsUcG3F5KlblIpBcJX8jfZN10OQA/0zNjHwI9
+	yrH5QtK+ualdngOVv1Qci+9baL11G1R/GADcZ14dJJvLzQGmipWED9U9zvD97Pmk
+	a1Zc71WSWfX3Usi69x0kLU8AeH/+AvLfK6hCmUWYs5lUpxNravijW5xC4v2BJm/L
+	PcPP6Q7L8vOzJ02A9nadaJT23ElxQ/XgAt72zGS3CyYHqF1C1+rVCwYzToUkcfkJ
+	fgdyqiDDCE8b7ijcnnkOIgLGEew4Zz8qcXZ+bCHmd6qDCcFjTTPhMDOMg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3ucxerg-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3uhxdx9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Sep 2024 20:57:45 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48FKvi46015861;
-	Sun, 15 Sep 2024 20:57:44 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3ucxere-1
+	Sun, 15 Sep 2024 20:57:50 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48FKvnTI028353;
+	Sun, 15 Sep 2024 20:57:50 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3uhxdx6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Sep 2024 20:57:44 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48FIb9rV001915;
-	Sun, 15 Sep 2024 20:57:43 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41nmtubye2-1
+	Sun, 15 Sep 2024 20:57:49 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48FKBlkB030649;
+	Sun, 15 Sep 2024 20:57:48 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41npamumhb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Sep 2024 20:57:43 +0000
+	Sun, 15 Sep 2024 20:57:48 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48FKveix57410004
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48FKviTS54329656
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 15 Sep 2024 20:57:40 GMT
+	Sun, 15 Sep 2024 20:57:44 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1214E2004B;
+	by IMSVA (Postfix) with ESMTP id 3096C20049;
+	Sun, 15 Sep 2024 20:57:44 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 750B620040;
 	Sun, 15 Sep 2024 20:57:40 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B92820040;
-	Sun, 15 Sep 2024 20:57:36 +0000 (GMT)
 Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.68.55])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 15 Sep 2024 20:57:36 +0000 (GMT)
+	Sun, 15 Sep 2024 20:57:40 +0000 (GMT)
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
         linux-trace-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
@@ -85,9 +85,9 @@ Cc: "Naveen N. Rao" <naveen@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
         Vishal Chourasia <vishalc@linux.ibm.com>,
         Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
         Masami Hiramatsu <mhiramat@kernel.org>
-Subject: [PATCH v5 11/17] kbuild: Add generic hook for architectures to use before the final vmlinux link
-Date: Mon, 16 Sep 2024 02:26:42 +0530
-Message-ID: <20240915205648.830121-12-hbathini@linux.ibm.com>
+Subject: [PATCH v5 12/17] powerpc64/ftrace: Move ftrace sequence out of line
+Date: Mon, 16 Sep 2024 02:26:43 +0530
+Message-ID: <20240915205648.830121-13-hbathini@linux.ibm.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240915205648.830121-1-hbathini@linux.ibm.com>
 References: <20240915205648.830121-1-hbathini@linux.ibm.com>
@@ -102,98 +102,837 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SDgoBHYVGlnWxWse3WD1EF0kq8e9R5Pi
-X-Proofpoint-ORIG-GUID: nAcNwEdjiXliK5vSb8C5K87LPoM9zyFQ
+X-Proofpoint-ORIG-GUID: axvE66zg7DbLsFFt0pgVHTG0EDIiuow_
+X-Proofpoint-GUID: MvEd_wKlqsj979q4D183eI4bFNUL4PgX
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-15_12,2024-09-13_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- phishscore=0 impostorscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- adultscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2409150159
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 adultscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 suspectscore=0 mlxscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409150159
 
 From: Naveen N Rao <naveen@kernel.org>
 
-On powerpc, we would like to be able to make a pass on vmlinux.o and
-generate a new object file to be linked into vmlinux. Add a generic pass
-in Makefile.vmlinux that architectures can use for this purpose.
+Function profile sequence on powerpc includes two instructions at the
+beginning of each function:
+	mflr	r0
+	bl	ftrace_caller
 
-Architectures need to select CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX and must
-provide arch/<arch>/tools/Makefile with .arch.vmlinux.o target, which
-will be invoked prior to the final vmlinux link step.
+The call to ftrace_caller() gets nop'ed out during kernel boot and is
+patched in when ftrace is enabled.
+
+Given the sequence, we cannot return from ftrace_caller with 'blr' as we
+need to keep LR and r0 intact. This results in link stack (return
+address predictor) imbalance when ftrace is enabled. To address that, we
+would like to use a three instruction sequence:
+	mflr	r0
+	bl	ftrace_caller
+	mtlr	r0
+
+Further more, to support DYNAMIC_FTRACE_WITH_CALL_OPS, we need to
+reserve two instruction slots before the function. This results in a
+total of five instruction slots to be reserved for ftrace use on each
+function that is traced.
+
+Move the function profile sequence out-of-line to minimize its impact.
+To do this, we reserve a single nop at function entry using
+-fpatchable-function-entry=1 and add a pass on vmlinux.o to determine
+the total number of functions that can be traced. This is then used to
+generate a .S file reserving the appropriate amount of space for use as
+ftrace stubs, which is built and linked into vmlinux.
+
+On bootup, the stub space is split into separate stubs per function and
+populated with the proper instruction sequence. A pointer to the
+associated stub is maintained in dyn_arch_ftrace.
+
+For modules, space for ftrace stubs is reserved from the generic module
+stub space.
+
+This is restricted to and enabled by default only on 64-bit powerpc,
+though there are some changes to accommodate 32-bit powerpc. This is
+done so that 32-bit powerpc could choose to opt into this based on
+further tests and benchmarks.
+
+As an example, after this patch, kernel functions will have a single nop
+at function entry:
+<kernel_clone>:
+	addis	r2,r12,467
+	addi	r2,r2,-16028
+	nop
+	mfocrf	r11,8
+	...
+
+When ftrace is enabled, the nop is converted to an unconditional branch
+to the stub associated with that function:
+<kernel_clone>:
+	addis	r2,r12,467
+	addi	r2,r2,-16028
+	b	ftrace_ool_stub_text_end+0x11b28
+	mfocrf	r11,8
+	...
+
+The associated stub:
+<ftrace_ool_stub_text_end+0x11b28>:
+	mflr	r0
+	bl	ftrace_caller
+	mtlr	r0
+	b	kernel_clone+0xc
+	...
+
+This change showed an improvement of ~10% in null_syscall benchmark on a
+Power 10 system with ftrace enabled.
 
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 ---
 
 Changes in v5:
-* Intermediate files named .vmlinux.arch.* instead of .arch.vmlinux.*
+* Fixed ftrace stack tracer failure due to inadvertent use of
+  'add r7, r3, MCOUNT_INSN_SIZE' instruction instead of
+  'addi r7, r3, MCOUNT_INSN_SIZE'
+* Fixed build error for !CONFIG_MODULES case.
+* .vmlinux.arch.* files compiled under arch/powerpc/tools
+* Made sure .vmlinux.arch.* files are cleaned with `make clean`
 
 
- arch/Kconfig             | 6 ++++++
- scripts/Makefile.vmlinux | 7 +++++++
- scripts/link-vmlinux.sh  | 7 ++++++-
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ arch/powerpc/Kbuild                        |   2 +-
+ arch/powerpc/Kconfig                       |   5 +
+ arch/powerpc/Makefile                      |   4 +
+ arch/powerpc/include/asm/ftrace.h          |  11 ++
+ arch/powerpc/include/asm/module.h          |   5 +
+ arch/powerpc/kernel/asm-offsets.c          |   4 +
+ arch/powerpc/kernel/module_64.c            |  58 +++++++-
+ arch/powerpc/kernel/trace/ftrace.c         | 162 +++++++++++++++++++--
+ arch/powerpc/kernel/trace/ftrace_entry.S   | 116 +++++++++++----
+ arch/powerpc/tools/Makefile                |  12 ++
+ arch/powerpc/tools/ftrace-gen-ool-stubs.sh |  43 ++++++
+ 11 files changed, 384 insertions(+), 38 deletions(-)
+ create mode 100644 arch/powerpc/tools/Makefile
+ create mode 100755 arch/powerpc/tools/ftrace-gen-ool-stubs.sh
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 975dd22a2dbd..ef868ff8156a 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1643,4 +1643,10 @@ config CC_HAS_SANE_FUNCTION_ALIGNMENT
- config ARCH_NEED_CMPXCHG_1_EMU
- 	bool
+diff --git a/arch/powerpc/Kbuild b/arch/powerpc/Kbuild
+index 571f260b0842..b010ccb071b6 100644
+--- a/arch/powerpc/Kbuild
++++ b/arch/powerpc/Kbuild
+@@ -19,4 +19,4 @@ obj-$(CONFIG_KEXEC_CORE)  += kexec/
+ obj-$(CONFIG_KEXEC_FILE)  += purgatory/
  
-+config ARCH_WANTS_PRE_LINK_VMLINUX
-+	def_bool n
-+	help
-+	  An architecture can select this if it provides arch/<arch>/tools/Makefile
-+	  with .arch.vmlinux.o target to be linked into vmlinux.
-+
- endmenu
-diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-index 49946cb96844..edf6fae8d960 100644
---- a/scripts/Makefile.vmlinux
-+++ b/scripts/Makefile.vmlinux
-@@ -22,6 +22,13 @@ targets += .vmlinux.export.o
- vmlinux: .vmlinux.export.o
- endif
+ # for cleaning
+-subdir- += boot
++subdir- += boot tools
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index de18f3baff66..bae96b65f295 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -568,6 +568,11 @@ config ARCH_USING_PATCHABLE_FUNCTION_ENTRY
+ 	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh $(CC) -mlittle-endian) if PPC64 && CPU_LITTLE_ENDIAN
+ 	def_bool $(success,$(srctree)/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh $(CC) -mbig-endian) if PPC64 && CPU_BIG_ENDIAN
  
-+ifdef CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX
-+vmlinux: arch/$(SRCARCH)/tools/.vmlinux.arch.o
++config PPC_FTRACE_OUT_OF_LINE
++	def_bool PPC64 && ARCH_USING_PATCHABLE_FUNCTION_ENTRY
++	depends on PPC64
++	select ARCH_WANTS_PRE_LINK_VMLINUX
 +
-+arch/$(SRCARCH)/tools/.vmlinux.arch.o: vmlinux.o
-+	$(Q)$(MAKE) $(build)=arch/$(SRCARCH)/tools $@
+ config HOTPLUG_CPU
+ 	bool "Support for enabling/disabling CPUs"
+ 	depends on SMP && (PPC_PSERIES || \
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index bbfe4a1f06ef..c973e6cd1ae8 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -155,7 +155,11 @@ CC_FLAGS_NO_FPU		:= $(call cc-option,-msoft-float)
+ ifdef CONFIG_FUNCTION_TRACER
+ ifdef CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY
+ KBUILD_CPPFLAGS	+= -DCC_USING_PATCHABLE_FUNCTION_ENTRY
++ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++CC_FLAGS_FTRACE := -fpatchable-function-entry=1
++else
+ CC_FLAGS_FTRACE := -fpatchable-function-entry=2
 +endif
-+
- ARCH_POSTLINK := $(wildcard $(srctree)/arch/$(SRCARCH)/Makefile.postlink)
+ else
+ CC_FLAGS_FTRACE := -pg
+ ifdef CONFIG_MPROFILE_KERNEL
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+index 278d4548e8f1..bdbafc668b20 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -24,6 +24,10 @@ unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
+ struct module;
+ struct dyn_ftrace;
+ struct dyn_arch_ftrace {
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	/* pointer to the associated out-of-line stub */
++	unsigned long ool_stub;
++#endif
+ };
  
- # Final link of vmlinux with optional arch pass after final link
-diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-index f7b2503cdba9..b3a940c0e6c2 100755
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -100,7 +100,7 @@ vmlinux_link()
- 	${ld} ${ldflags} -o ${output}					\
- 		${wl}--whole-archive ${objs} ${wl}--no-whole-archive	\
- 		${wl}--start-group ${libs} ${wl}--end-group		\
--		${kallsymso} ${btf_vmlinux_bin_o} ${ldlibs}
-+		${kallsymso} ${btf_vmlinux_bin_o} ${arch_vmlinux_o} ${ldlibs}
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
+@@ -130,6 +134,13 @@ static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
+ 
+ #ifdef CONFIG_FUNCTION_TRACER
+ extern unsigned int ftrace_tramp_text[], ftrace_tramp_init[];
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++struct ftrace_ool_stub {
++	u32	insn[4];
++};
++extern struct ftrace_ool_stub ftrace_ool_stub_text_end[], ftrace_ool_stub_inittext[];
++extern unsigned int ftrace_ool_stub_text_end_count, ftrace_ool_stub_inittext_count;
++#endif
+ void ftrace_free_init_tramp(void);
+ unsigned long ftrace_call_adjust(unsigned long addr);
+ #else
+diff --git a/arch/powerpc/include/asm/module.h b/arch/powerpc/include/asm/module.h
+index 300c777cc307..9ee70a4a0fde 100644
+--- a/arch/powerpc/include/asm/module.h
++++ b/arch/powerpc/include/asm/module.h
+@@ -47,6 +47,11 @@ struct mod_arch_specific {
+ #ifdef CONFIG_DYNAMIC_FTRACE
+ 	unsigned long tramp;
+ 	unsigned long tramp_regs;
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	struct ftrace_ool_stub *ool_stubs;
++	unsigned int ool_stub_count;
++	unsigned int ool_stub_index;
++#endif
+ #endif
+ };
+ 
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 23733282de4d..6854547d3164 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -674,5 +674,9 @@ int main(void)
+ 	DEFINE(BPT_SIZE, BPT_SIZE);
+ #endif
+ 
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	DEFINE(FTRACE_OOL_STUB_SIZE, sizeof(struct ftrace_ool_stub));
++#endif
++
+ 	return 0;
+ }
+diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+index 1db88409bd95..6816e9967cab 100644
+--- a/arch/powerpc/kernel/module_64.c
++++ b/arch/powerpc/kernel/module_64.c
+@@ -205,7 +205,9 @@ static int relacmp(const void *_x, const void *_y)
+ 
+ /* Get size of potential trampolines required. */
+ static unsigned long get_stubs_size(const Elf64_Ehdr *hdr,
+-				    const Elf64_Shdr *sechdrs)
++				    const Elf64_Shdr *sechdrs,
++				    char *secstrings,
++				    struct module *me)
+ {
+ 	/* One extra reloc so it's always 0-addr terminated */
+ 	unsigned long relocs = 1;
+@@ -244,6 +246,24 @@ static unsigned long get_stubs_size(const Elf64_Ehdr *hdr,
+ 	/* stubs for ftrace_caller and ftrace_regs_caller */
+ 	relocs += IS_ENABLED(CONFIG_DYNAMIC_FTRACE) + IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_REGS);
+ 
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	/* stubs for the function tracer */
++	for (i = 1; i < hdr->e_shnum; i++) {
++		if (!strcmp(secstrings + sechdrs[i].sh_name, "__patchable_function_entries")) {
++			me->arch.ool_stub_count = sechdrs[i].sh_size / sizeof(unsigned long);
++			me->arch.ool_stub_index = 0;
++			relocs += roundup(me->arch.ool_stub_count * sizeof(struct ftrace_ool_stub),
++					  sizeof(struct ppc64_stub_entry)) /
++				  sizeof(struct ppc64_stub_entry);
++			break;
++		}
++	}
++	if (i == hdr->e_shnum) {
++		pr_err("%s: doesn't contain __patchable_function_entries.\n", me->name);
++		return -ENOEXEC;
++	}
++#endif
++
+ 	pr_debug("Looks like a total of %lu stubs, max\n", relocs);
+ 	return relocs * sizeof(struct ppc64_stub_entry);
+ }
+@@ -454,7 +474,7 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
+ #endif
+ 
+ 	/* Override the stubs size */
+-	sechdrs[me->arch.stubs_section].sh_size = get_stubs_size(hdr, sechdrs);
++	sechdrs[me->arch.stubs_section].sh_size = get_stubs_size(hdr, sechdrs, secstrings, me);
+ 
+ 	return 0;
+ }
+@@ -1079,6 +1099,37 @@ int module_trampoline_target(struct module *mod, unsigned long addr,
+ 	return 0;
  }
  
- # generate .BTF typeinfo from DWARF debuginfo
-@@ -214,6 +214,11 @@ fi
++static int setup_ftrace_ool_stubs(const Elf64_Shdr *sechdrs, unsigned long addr, struct module *me)
++{
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	unsigned int i, total_stubs, num_stubs;
++	struct ppc64_stub_entry *stub;
++
++	total_stubs = sechdrs[me->arch.stubs_section].sh_size / sizeof(*stub);
++	num_stubs = roundup(me->arch.ool_stub_count * sizeof(struct ftrace_ool_stub),
++			    sizeof(struct ppc64_stub_entry)) / sizeof(struct ppc64_stub_entry);
++
++	/* Find the next available entry */
++	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
++	for (i = 0; stub_func_addr(stub[i].funcdata); i++)
++		if (WARN_ON(i >= total_stubs))
++			return -1;
++
++	if (WARN_ON(i + num_stubs > total_stubs))
++		return -1;
++
++	stub += i;
++	me->arch.ool_stubs = (struct ftrace_ool_stub *)stub;
++
++	/* reserve stubs */
++	for (i = 0; i < num_stubs; i++)
++		if (patch_u32((void *)&stub->funcdata, PPC_RAW_NOP()))
++			return -1;
++#endif
++
++	return 0;
++}
++
+ int module_finalize_ftrace(struct module *mod, const Elf_Shdr *sechdrs)
+ {
+ 	mod->arch.tramp = stub_for_addr(sechdrs,
+@@ -1097,6 +1148,9 @@ int module_finalize_ftrace(struct module *mod, const Elf_Shdr *sechdrs)
+ 	if (!mod->arch.tramp)
+ 		return -ENOENT;
  
- ${MAKE} -f "${srctree}/scripts/Makefile.build" obj=init init/version-timestamp.o
++	if (setup_ftrace_ool_stubs(sechdrs, mod->arch.tramp, mod))
++		return -ENOENT;
++
+ 	return 0;
+ }
+ #endif
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index 719517265d39..1fee074388cc 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -37,7 +37,8 @@ unsigned long ftrace_call_adjust(unsigned long addr)
+ 	if (addr >= (unsigned long)__exittext_begin && addr < (unsigned long)__exittext_end)
+ 		return 0;
  
-+arch_vmlinux_o=""
-+if is_enabled CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX; then
-+	arch_vmlinux_o=arch/${SRCARCH}/tools/.vmlinux.arch.o
+-	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
++	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY) &&
++	    !IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
+ 		addr += MCOUNT_INSN_SIZE;
+ 
+ 	return addr;
+@@ -127,11 +128,25 @@ static unsigned long ftrace_lookup_module_stub(unsigned long ip, unsigned long a
+ }
+ #endif
+ 
++static unsigned long ftrace_get_ool_stub(struct dyn_ftrace *rec)
++{
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	return rec->arch.ool_stub;
++#else
++	BUILD_BUG();
++#endif
++}
++
+ static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr, ppc_inst_t *call_inst)
+ {
+-	unsigned long ip = rec->ip;
++	unsigned long ip;
+ 	unsigned long stub;
+ 
++	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
++		ip = ftrace_get_ool_stub(rec) + MCOUNT_INSN_SIZE; /* second instruction in stub */
++	else
++		ip = rec->ip;
++
+ 	if (is_offset_in_branch_range(addr - ip))
+ 		/* Within range */
+ 		stub = addr;
+@@ -142,7 +157,7 @@ static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr, ppc_
+ 		stub = ftrace_lookup_module_stub(ip, addr);
+ 
+ 	if (!stub) {
+-		pr_err("0x%lx: No ftrace stubs reachable\n", ip);
++		pr_err("0x%lx (0x%lx): No ftrace stubs reachable\n", ip, rec->ip);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -150,6 +165,92 @@ static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr, ppc_
+ 	return 0;
+ }
+ 
++static int ftrace_init_ool_stub(struct module *mod, struct dyn_ftrace *rec)
++{
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	static int ool_stub_text_end_index, ool_stub_inittext_index;
++	int ret = 0, ool_stub_count, *ool_stub_index;
++	ppc_inst_t inst;
++	/*
++	 * See ftrace_entry.S if changing the below instruction sequence, as we rely on
++	 * decoding the last branch instruction here to recover the correct function ip.
++	 */
++	struct ftrace_ool_stub *ool_stub, ool_stub_template = {
++		.insn = {
++			PPC_RAW_MFLR(_R0),
++			PPC_RAW_NOP(),		/* bl ftrace_caller */
++			PPC_RAW_MTLR(_R0),
++			PPC_RAW_NOP()		/* b rec->ip + 4 */
++		}
++	};
++
++	WARN_ON(rec->arch.ool_stub);
++
++	if (is_kernel_inittext(rec->ip)) {
++		ool_stub = ftrace_ool_stub_inittext;
++		ool_stub_index = &ool_stub_inittext_index;
++		ool_stub_count = ftrace_ool_stub_inittext_count;
++	} else if (is_kernel_text(rec->ip)) {
++		ool_stub = ftrace_ool_stub_text_end;
++		ool_stub_index = &ool_stub_text_end_index;
++		ool_stub_count = ftrace_ool_stub_text_end_count;
++#ifdef CONFIG_MODULES
++	} else if (mod) {
++		ool_stub = mod->arch.ool_stubs;
++		ool_stub_index = &mod->arch.ool_stub_index;
++		ool_stub_count = mod->arch.ool_stub_count;
++#endif
++	} else {
++		return -EINVAL;
++	}
++
++	ool_stub += (*ool_stub_index)++;
++
++	if (WARN_ON(*ool_stub_index > ool_stub_count))
++		return -EINVAL;
++
++	if (!is_offset_in_branch_range((long)rec->ip - (long)&ool_stub->insn[0]) ||
++	    !is_offset_in_branch_range((long)(rec->ip + MCOUNT_INSN_SIZE) -
++				       (long)&ool_stub->insn[3])) {
++		pr_err("%s: ftrace ool stub out of range (%p -> %p).\n",
++					__func__, (void *)rec->ip, (void *)&ool_stub->insn[0]);
++		return -EINVAL;
++	}
++
++	rec->arch.ool_stub = (unsigned long)&ool_stub->insn[0];
++
++	/* bl ftrace_caller */
++	if (!mod)
++		ret = ftrace_get_call_inst(rec, (unsigned long)ftrace_caller, &inst);
++#ifdef CONFIG_MODULES
++	else
++		/*
++		 * We can't use ftrace_get_call_inst() since that uses
++		 * __module_text_address(rec->ip) to look up the module.
++		 * But, since the module is not fully formed at this stage,
++		 * the lookup fails. We know the target though, so generate
++		 * the branch inst directly.
++		 */
++		inst = ftrace_create_branch_inst(ftrace_get_ool_stub(rec) + MCOUNT_INSN_SIZE,
++						 mod->arch.tramp, 1);
++#endif
++	ool_stub_template.insn[1] = ppc_inst_val(inst);
++
++	/* b rec->ip + 4 */
++	if (!ret && create_branch(&inst, &ool_stub->insn[3], rec->ip + MCOUNT_INSN_SIZE, 0))
++		return -EINVAL;
++	ool_stub_template.insn[3] = ppc_inst_val(inst);
++
++	if (!ret)
++		ret = patch_instructions((u32 *)ool_stub, (u32 *)&ool_stub_template,
++					 sizeof(ool_stub_template), false);
++
++	return ret;
++#else /* !CONFIG_PPC_FTRACE_OUT_OF_LINE */
++	BUILD_BUG();
++#endif
++}
++
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
+ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr, unsigned long addr)
+ {
+@@ -162,18 +263,29 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr, unsigned
+ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ {
+ 	ppc_inst_t old, new;
+-	int ret;
++	unsigned long ip = rec->ip;
++	int ret = 0;
+ 
+ 	/* This can only ever be called during module load */
+-	if (WARN_ON(!IS_ENABLED(CONFIG_MODULES) || core_kernel_text(rec->ip)))
++	if (WARN_ON(!IS_ENABLED(CONFIG_MODULES) || core_kernel_text(ip)))
+ 		return -EINVAL;
+ 
+ 	old = ppc_inst(PPC_RAW_NOP());
+-	ret = ftrace_get_call_inst(rec, addr, &new);
+-	if (ret)
+-		return ret;
++	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
++		ip = ftrace_get_ool_stub(rec) + MCOUNT_INSN_SIZE; /* second instruction in stub */
++		ret = ftrace_get_call_inst(rec, (unsigned long)ftrace_caller, &old);
++	}
++
++	ret |= ftrace_get_call_inst(rec, addr, &new);
++
++	if (!ret)
++		ret = ftrace_modify_code(ip, old, new);
+ 
+-	return ftrace_modify_code(rec->ip, old, new);
++	if (!ret && IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
++		ret = ftrace_modify_code(rec->ip, ppc_inst(PPC_RAW_NOP()),
++			 ppc_inst(PPC_RAW_BRANCH((long)ftrace_get_ool_stub(rec) - (long)rec->ip)));
++
++	return ret;
+ }
+ 
+ int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec, unsigned long addr)
+@@ -206,6 +318,13 @@ void ftrace_replace_code(int enable)
+ 		new_addr = ftrace_get_addr_new(rec);
+ 		update = ftrace_update_record(rec, enable);
+ 
++		if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE) && update != FTRACE_UPDATE_IGNORE) {
++			ip = ftrace_get_ool_stub(rec) + MCOUNT_INSN_SIZE;
++			ret = ftrace_get_call_inst(rec, (unsigned long)ftrace_caller, &nop_inst);
++			if (ret)
++				goto out;
++		}
++
+ 		switch (update) {
+ 		case FTRACE_UPDATE_IGNORE:
+ 		default:
+@@ -230,6 +349,24 @@ void ftrace_replace_code(int enable)
+ 
+ 		if (!ret)
+ 			ret = ftrace_modify_code(ip, old, new);
++
++		if (!ret && IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE) &&
++		    (update == FTRACE_UPDATE_MAKE_NOP || update == FTRACE_UPDATE_MAKE_CALL)) {
++			/* Update the actual ftrace location */
++			call_inst = ppc_inst(PPC_RAW_BRANCH((long)ftrace_get_ool_stub(rec) -
++							    (long)rec->ip));
++			nop_inst = ppc_inst(PPC_RAW_NOP());
++			ip = rec->ip;
++
++			if (update == FTRACE_UPDATE_MAKE_NOP)
++				ret = ftrace_modify_code(ip, call_inst, nop_inst);
++			else
++				ret = ftrace_modify_code(ip, nop_inst, call_inst);
++
++			if (ret)
++				goto out;
++		}
++
+ 		if (ret)
+ 			goto out;
+ 	}
+@@ -249,7 +386,8 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+ 	/* Verify instructions surrounding the ftrace location */
+ 	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY)) {
+ 		/* Expect nops */
+-		ret = ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_NOP()));
++		if (!IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
++			ret = ftrace_validate_inst(ip - 4, ppc_inst(PPC_RAW_NOP()));
+ 		if (!ret)
+ 			ret = ftrace_validate_inst(ip, ppc_inst(PPC_RAW_NOP()));
+ 	} else if (IS_ENABLED(CONFIG_PPC32)) {
+@@ -277,6 +415,10 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+ 	if (ret)
+ 		return ret;
+ 
++	/* Set up out-of-line stub */
++	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
++		return ftrace_init_ool_stub(mod, rec);
++
+ 	/* Nop-out the ftrace location */
+ 	new = ppc_inst(PPC_RAW_NOP());
+ 	addr = MCOUNT_ADDR;
+diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
+index 244a1c7bb1e8..5b2fc6483dce 100644
+--- a/arch/powerpc/kernel/trace/ftrace_entry.S
++++ b/arch/powerpc/kernel/trace/ftrace_entry.S
+@@ -56,7 +56,7 @@
+ 	SAVE_GPR(2, r1)
+ 	SAVE_GPRS(11, 31, r1)
+ 	.else
+-#ifdef CONFIG_LIVEPATCH_64
++#if defined(CONFIG_LIVEPATCH_64) || defined(CONFIG_PPC_FTRACE_OUT_OF_LINE)
+ 	SAVE_GPR(14, r1)
+ #endif
+ 	.endif
+@@ -78,10 +78,6 @@
+ 
+ 	/* Get the _mcount() call site out of LR */
+ 	mflr	r7
+-	/* Save it as pt_regs->nip */
+-	PPC_STL	r7, _NIP(r1)
+-	/* Also save it in B's stackframe header for proper unwind */
+-	PPC_STL	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
+ 	/* Save the read LR in pt_regs->link */
+ 	PPC_STL	r0, _LINK(r1)
+ 
+@@ -96,16 +92,6 @@
+ 	lwz	r5,function_trace_op@l(r3)
+ #endif
+ 
+-#ifdef CONFIG_LIVEPATCH_64
+-	mr	r14, r7		/* remember old NIP */
+-#endif
+-
+-	/* Calculate ip from nip-4 into r3 for call below */
+-	subi    r3, r7, MCOUNT_INSN_SIZE
+-
+-	/* Put the original return address in r4 as parent_ip */
+-	mr	r4, r0
+-
+ 	/* Save special regs */
+ 	PPC_STL	r8, _MSR(r1)
+ 	.if \allregs == 1
+@@ -114,17 +100,69 @@
+ 	PPC_STL	r11, _CCR(r1)
+ 	.endif
+ 
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	/* Save our real return address in nvr for return */
++	.if \allregs == 0
++	SAVE_GPR(15, r1)
++	.endif
++	mr	r15, r7
++	/*
++	 * We want the ftrace location in the function, but our lr (in r7)
++	 * points at the 'mtlr r0' instruction in the out of line stub.  To
++	 * recover the ftrace location, we read the branch instruction in the
++	 * stub, and adjust our lr by the branch offset.
++	 *
++	 * See ftrace_init_ool_stub() for the profile sequence.
++	 */
++	lwz	r8, MCOUNT_INSN_SIZE(r7)
++	slwi	r8, r8, 6
++	srawi	r8, r8, 6
++	add	r3, r7, r8
++	/*
++	 * Override our nip to point past the branch in the original function.
++	 * This allows reliable stack trace and the ftrace stack tracer to work as-is.
++	 */
++	addi	r7, r3, MCOUNT_INSN_SIZE
++#else
++	/* Calculate ip from nip-4 into r3 for call below */
++	subi    r3, r7, MCOUNT_INSN_SIZE
++#endif
++
++	/* Save NIP as pt_regs->nip */
++	PPC_STL	r7, _NIP(r1)
++	/* Also save it in B's stackframe header for proper unwind */
++	PPC_STL	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
++#if defined(CONFIG_LIVEPATCH_64) || defined(CONFIG_PPC_FTRACE_OUT_OF_LINE)
++	mr	r14, r7		/* remember old NIP */
++#endif
++
++	/* Put the original return address in r4 as parent_ip */
++	mr	r4, r0
++
+ 	/* Load &pt_regs in r6 for call below */
+ 	addi    r6, r1, STACK_INT_FRAME_REGS
+ .endm
+ 
+ .macro	ftrace_regs_exit allregs
++#ifndef CONFIG_PPC_FTRACE_OUT_OF_LINE
+ 	/* Load ctr with the possibly modified NIP */
+ 	PPC_LL	r3, _NIP(r1)
+ 	mtctr	r3
+ 
+ #ifdef CONFIG_LIVEPATCH_64
+ 	cmpd	r14, r3		/* has NIP been altered? */
++#endif
++#else /* !CONFIG_PPC_FTRACE_OUT_OF_LINE */
++	/* Load LR with the possibly modified NIP */
++	PPC_LL	r3, _NIP(r1)
++	cmpd	r14, r3		/* has NIP been altered? */
++	bne-	1f
++
++	mr	r3, r15
++	.if \allregs == 0
++	REST_GPR(15, r1)
++	.endif
++1:	mtlr	r3
+ #endif
+ 
+ 	/* Restore gprs */
+@@ -132,14 +170,16 @@
+ 	REST_GPRS(2, 31, r1)
+ 	.else
+ 	REST_GPRS(3, 10, r1)
+-#ifdef CONFIG_LIVEPATCH_64
++#if defined(CONFIG_LIVEPATCH_64) || defined(CONFIG_PPC_FTRACE_OUT_OF_LINE)
+ 	REST_GPR(14, r1)
+ #endif
+ 	.endif
+ 
+ 	/* Restore possibly modified LR */
+ 	PPC_LL	r0, _LINK(r1)
++#ifndef CONFIG_PPC_FTRACE_OUT_OF_LINE
+ 	mtlr	r0
++#endif
+ 
+ #ifdef CONFIG_PPC64
+ 	/* Restore callee's TOC */
+@@ -153,7 +193,16 @@
+         /* Based on the cmpd above, if the NIP was altered handle livepatch */
+ 	bne-	livepatch_handler
+ #endif
+-	bctr			/* jump after _mcount site */
++	/* jump after _mcount site */
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	/*
++	 * Return with blr to keep the link stack balanced. The function profiling sequence
++	 * uses 'mtlr r0' to restore LR.
++	 */
++	blr
++#else
++	bctr
++#endif
+ .endm
+ 
+ _GLOBAL(ftrace_regs_caller)
+@@ -177,6 +226,11 @@ _GLOBAL(ftrace_stub)
+ 
+ #ifdef CONFIG_PPC64
+ ftrace_no_trace:
++#ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	REST_GPR(3, r1)
++	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
++	blr
++#else
+ 	mflr	r3
+ 	mtctr	r3
+ 	REST_GPR(3, r1)
+@@ -184,6 +238,7 @@ ftrace_no_trace:
+ 	mtlr	r0
+ 	bctr
+ #endif
++#endif
+ 
+ #ifdef CONFIG_LIVEPATCH_64
+ 	/*
+@@ -194,11 +249,17 @@ ftrace_no_trace:
+ 	 * We get here when a function A, calls another function B, but B has
+ 	 * been live patched with a new function C.
+ 	 *
+-	 * On entry:
+-	 *  - we have no stack frame and can not allocate one
++	 * On entry, we have no stack frame and can not allocate one.
++	 *
++	 * With PPC_FTRACE_OUT_OF_LINE=n, on entry:
+ 	 *  - LR points back to the original caller (in A)
+ 	 *  - CTR holds the new NIP in C
+ 	 *  - r0, r11 & r12 are free
++	 *
++	 * With PPC_FTRACE_OUT_OF_LINE=y, on entry:
++	 *  - r0 points back to the original caller (in A)
++	 *  - LR holds the new NIP in C
++	 *  - r11 & r12 are free
+ 	 */
+ livepatch_handler:
+ 	ld	r12, PACA_THREAD_INFO(r13)
+@@ -208,18 +269,23 @@ livepatch_handler:
+ 	addi	r11, r11, 24
+ 	std	r11, TI_livepatch_sp(r12)
+ 
+-	/* Save toc & real LR on livepatch stack */
+-	std	r2,  -24(r11)
+-	mflr	r12
+-	std	r12, -16(r11)
+-
+ 	/* Store stack end marker */
+ 	lis     r12, STACK_END_MAGIC@h
+ 	ori     r12, r12, STACK_END_MAGIC@l
+ 	std	r12, -8(r11)
+ 
+-	/* Put ctr in r12 for global entry and branch there */
++	/* Save toc & real LR on livepatch stack */
++	std	r2,  -24(r11)
++#ifndef CONFIG_PPC_FTRACE_OUT_OF_LINE
++	mflr	r12
++	std	r12, -16(r11)
+ 	mfctr	r12
++#else
++	std	r0, -16(r11)
++	mflr	r12
++	/* Put ctr in r12 for global entry and branch there */
++	mtctr	r12
++#endif
+ 	bctrl
+ 
+ 	/*
+diff --git a/arch/powerpc/tools/Makefile b/arch/powerpc/tools/Makefile
+new file mode 100644
+index 000000000000..3a389526498e
+--- /dev/null
++++ b/arch/powerpc/tools/Makefile
+@@ -0,0 +1,12 @@
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++quiet_cmd_gen_ftrace_ool_stubs = GEN     $@
++      cmd_gen_ftrace_ool_stubs = $< vmlinux.o $@
++
++$(obj)/.vmlinux.arch.S: $(src)/ftrace-gen-ool-stubs.sh vmlinux.o FORCE
++	$(call if_changed,gen_ftrace_ool_stubs)
++
++$(obj)/.vmlinux.arch.o: $(obj)/.vmlinux.arch.S FORCE
++	$(call if_changed_rule,as_o_S)
++
++clean-files += .vmlinux.arch.S .vmlinux.arch.o
+diff --git a/arch/powerpc/tools/ftrace-gen-ool-stubs.sh b/arch/powerpc/tools/ftrace-gen-ool-stubs.sh
+new file mode 100755
+index 000000000000..8e0a6d4ea202
+--- /dev/null
++++ b/arch/powerpc/tools/ftrace-gen-ool-stubs.sh
+@@ -0,0 +1,43 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0-or-later
++
++# Error out on error
++set -e
++
++is_enabled() {
++	grep -q "^$1=y" include/config/auto.conf
++}
++
++vmlinux_o=${1}
++arch_vmlinux_S=${2}
++
++RELOCATION=R_PPC64_ADDR64
++if is_enabled CONFIG_PPC32; then
++	RELOCATION=R_PPC_ADDR32
 +fi
 +
- btf_vmlinux_bin_o=
- kallsymso=
- strip_debug=
++num_ool_stubs_text=$(${CROSS_COMPILE}objdump -r -j __patchable_function_entries ${vmlinux_o} |
++		     grep -v ".init.text" | grep "${RELOCATION}" | wc -l)
++num_ool_stubs_inittext=$(${CROSS_COMPILE}objdump -r -j __patchable_function_entries ${vmlinux_o} |
++			 grep ".init.text" | grep "${RELOCATION}" | wc -l)
++
++cat > ${arch_vmlinux_S} <<EOF
++#include <asm/asm-offsets.h>
++#include <linux/linkage.h>
++
++.pushsection .tramp.ftrace.text,"aw"
++SYM_DATA(ftrace_ool_stub_text_end_count, .long ${num_ool_stubs_text})
++
++SYM_CODE_START(ftrace_ool_stub_text_end)
++	.space ${num_ool_stubs_text} * FTRACE_OOL_STUB_SIZE
++SYM_CODE_END(ftrace_ool_stub_text_end)
++.popsection
++
++.pushsection .tramp.ftrace.init,"aw"
++SYM_DATA(ftrace_ool_stub_inittext_count, .long ${num_ool_stubs_inittext})
++
++SYM_CODE_START(ftrace_ool_stub_inittext)
++	.space ${num_ool_stubs_inittext} * FTRACE_OOL_STUB_SIZE
++SYM_CODE_END(ftrace_ool_stub_inittext)
++.popsection
++EOF
 -- 
 2.46.0
 
