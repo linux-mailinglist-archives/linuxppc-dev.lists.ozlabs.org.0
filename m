@@ -1,60 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-1404-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1405-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE33097A119
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2024 14:05:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3842F97A216
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2024 14:22:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X6kBT4FSLz2yL5;
-	Mon, 16 Sep 2024 22:05:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X6kZf01mTz2yN4;
+	Mon, 16 Sep 2024 22:22:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726488321;
-	cv=none; b=E6b/ZY1Ji0krReXBzpDSIs3fE3wYDRX2d4+Oh26b4r9Qj4YHZmxHttCPfHuSD0A7+uQl9VEjbxyJdHhY/pXYyc9HPdq00aqIUuBkdrIRT1doa5DKkZQJeSfZoVknaa0u3bFHci99xhJJYStdcFtkBdJ1fmvxNZOew/kdt7ARH7GoM7h3irbPzVJ0fwCl9Buvu0C2ysJLOG3M6xPau3WPaSmZa5p4C+NKMvJ0YjJo35tU5ysoJWEIpfiz3I410/F/2ti0uSQGr2qAd2NJpDGqr+B8sRQYhPLfN78hpMgNCSQ06WAo9Z6TH8B8sJWc4QTbsBoOC2qxEoFiutacd0sxxw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.49
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726489369;
+	cv=none; b=KBD08dYOx+ddxzEA/q7Rmufvui2K/6mo7RXsclxf36yzgh57CXSh2rePZ9m9U3tC4vIt72yi1mKONVonTlyW7OzpfkaQRn1/07rivHVvxxW08RhZSva2D4yWhO8KRlblSyyOoohhfJXd15rN6by8P5W5lyDhF4gI2lOQ3yVdt+W9jfzgMUL//riMqKTXkuQoXzUQIvMZa3lhcE6ie+JmQev7swNgJVoBGxp9Kf8arNqVvMwvwIycRgpf3RQMZwyoRegrEE376e57I71E5kMGVUGWmGnZRK9EOFhZjFgVs9KuyYPVgMSGd6rake1MYVW2vTPtP42sqHVq03sNVHEiYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726488321; c=relaxed/relaxed;
-	bh=18t7rflhaYvVgyXnOMIFDUq2RCu2sj0IPep/TMv98gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GAE+gCf68zhY9C482dornZXxV/HXLPbBVxfPW7TTtR5SMbN2YKyfy8ci8DOR5bgTbz0rXmgpoCfg+r7pV1t6IXAY4rKhYNM0iZx1g3efPfsGNiE2t+YtQw0G3HucrZE089lQ47eIg7wSePGKsX0xyKmvLY+O1/vQGBmK8HfOWaHt9xaJmWB1NDvN6V8af+f3fT8zjsPgYstLppU4CoDd4rmDTcA7CNxyv+sjPZ1GMGkyYaYbJA8SOpV1Ug1+u4iNHnZK6+vt8MLFAogMSVGJD6PDixU7XFeyDxvxTyibalI87dxkGoVaE942B882DUBA0dqgrHdgZbc4i3iz1Hgoog==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bYGSkZ4u; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bYGSkZ4u;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	t=1726489369; c=relaxed/relaxed;
+	bh=GZBGRbBIGV5X5xLZ+rni4rJi5KtmpNZvI6X54qPGr6M=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=IzaVNJgXlc55aKU4Bshj3SLf4PSWWyhzp4vMfDuz6pC1JlTaKBZm/bsvhDMU+j71LJnkEt8/wraKeXMztR1G/rkYOayCzW8VukNmO+lAqGyQO9JJNREZ7Sk1W94niFd/TQW9+2ztBytE652SYQL77sxtLH+pJMJSMOmDSGe8vsf188bqm4P78sNNDQdNGOYYuEQrbvxwzffyu8xZI9UxM/1CSKoYCVGPMLCyRqrddR9x1fzS/jEjz0xYGE/etA+y6EIVK+z+QjJmFYOSxfjmKt+rNVjfHjC5jTAW0D+FvT/QY+f+rcpRjtW/9t9sfH0QLGx5MyNpMPjzWgHAkL8X6g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=redhat.com; spf=pass (client-ip=209.85.221.49; helo=mail-wr1-f49.google.com; envelope-from=constantine.shulyupin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.49; helo=mail-wr1-f49.google.com; envelope-from=constantine.shulyupin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X6kBS28Zpz2xYg
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2024 22:05:20 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726488318;
-	bh=18t7rflhaYvVgyXnOMIFDUq2RCu2sj0IPep/TMv98gk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bYGSkZ4uNi3nbhd6+xFM/L/builVI1Q41dpuBlNBkFGO65ljpumCpXpZsdo3clE7P
-	 cn5/4048DYulkfwq4U2QK0kYE3dGeSNquMWZcyCpbbhMpeOtE1lyQ37cI82d6wUWnD
-	 u/HJbZr2XQkrjmVFQ3wWxYkCQrl3YixBPcgZLXxgH2WGVvK63lA7OAIK1nz7k/Mb7a
-	 mIEbIdPgdsX6HDHDeaOYYpAZvsESgx+hsQHb/qAphDP+/NqJ2Cw92+OKx/qTttma0Q
-	 8c/Z8JRQLqx+TdmjbJ0JdFu+xL6TLbCPyz6Cwd4voN4YHqk922F1W709BeOGcO0oXa
-	 wP3YAyzkZpbIA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X6kBP1Qc6z4x8g;
-	Mon, 16 Sep 2024 22:05:17 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Cc: <christophe.leroy@csgroup.eu>,
-	<segher@kernel.crashing.org>,
-	<sfr@canb.auug.org.au>,
-	<linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>,
-	almasrymina@google.com,
-	<kuba@kernel.org>
-Subject: [PATCH] powerpc/atomic: Use YZ constraints for DS-form instructions
-Date: Mon, 16 Sep 2024 22:05:10 +1000
-Message-ID: <20240916120510.2017749-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.46.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X6kZd2qPcz2xkr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2024 22:22:48 +1000 (AEST)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-374d29ad8a7so3117530f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2024 05:22:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726489365; x=1727094165;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GZBGRbBIGV5X5xLZ+rni4rJi5KtmpNZvI6X54qPGr6M=;
+        b=IKMnoypnIPFyGzymfBl1yP2eK/V8soakjEnHhEJIS9RMQOl5OucasU3hrKjh5FXvG4
+         9Lzpczl4A2NELjuOGyhVLdJ3qAaclKYFnpVHUE6U+UN4AKphoMXWDpYSOoZ9U35kGm32
+         UnQT7E4I+Gda+3CQFD9xr2Y0Ha4ikMYk+AdT53iWaKgbPTi/flr/IcdVNGDkm6w/wpUv
+         nz6/ymUWuQ2v68bjZBkUwPkxzArNZsyqKIkHw1mBwYJ0KlurCFyvQRdLoYGNhwE6BE9j
+         1o2AqFimUjfpXYMuCw6d58ozgJbarcVMLM36MW05lMo3VBAjdUafeyUS0kWOFBZKFV2+
+         Pxng==
+X-Forwarded-Encrypted: i=1; AJvYcCUp2SyJa0qzExRD8HsPG9mwd0+/l5ezCr/OJOlQMcLJOIvwYMFSyK6VObUA21LKvVUIAMy8d/FXuQeaHNc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxMHukH03lnkMSaUoCvNpTKQRc8N8lWGQ7Ggdy0NBFzpliVahCN
+	eAJPpo+L3UognZPJhvSKWhOKkXRO1C42W0882InBRdUQYQ2Xc/6s
+X-Google-Smtp-Source: AGHT+IGnUnioaOxDZX1BUgvxFZDQXINgpAKMfpUC4aZJf56RSiMwVoLkPknPemhA8R9PyXrbvWBA7w==
+X-Received: by 2002:a5d:5747:0:b0:374:c4e2:3cad with SMTP id ffacd0b85a97d-378c2d5b237mr7952757f8f.52.1726489364668;
+        Mon, 16 Sep 2024 05:22:44 -0700 (PDT)
+Received: from costa-tp.. ([2a00:a041:e281:f300:ddd7:8878:b93d:7c0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e7800243sm7117272f8f.86.2024.09.16.05.22.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Sep 2024 05:22:43 -0700 (PDT)
+From: Costa Shulyupin <costa.shul@redhat.com>
+To: longman@redhat.com,
+	ming.lei@redhat.com,
+	pauld@redhat.com,
+	juri.lelli@redhat.com,
+	vschneid@redhat.com,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Zefan Li <lizefan.x@bytedance.com>,
+	Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Costa Shulyupin <costa.shul@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org
+Subject: [RFC PATCH v3 0/3] genirq/cpuhotplug: Adjust managed interrupts according to change of housekeeping cpumask
+Date: Mon, 16 Sep 2024 15:20:41 +0300
+Message-ID: <20240916122044.3056787-1-costa.shul@redhat.com>
+X-Mailer: git-send-email 2.45.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,112 +89,63 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The 'ld' and 'std' instructions require a 4-byte aligned displacement
-because they are DS-form instructions. But the "m" asm constraint
-doesn't enforce that.
+The housekeeping CPU masks, set up by the "isolcpus" and "nohz_full"
+boot command line options, are used at boot time to exclude selected
+CPUs from running some kernel housekeeping subsystems to minimize
+disturbance to latency sensitive userspace applications such as DPDK.
+This options can only be changed with a reboot. This is a problem for
+containerized workloads running on OpenShift/Kubernetes where a
+mix of low latency and "normal" workloads can be created/destroyed
+dynamically and the number of CPUs allocated to each workload is often
+not known at boot time.
 
-That can lead to build errors if the compiler chooses a non-aligned
-displacement, as seen with GCC 14:
+Theoretically, complete CPU offlining/onlining could be used for
+housekeeping adjustments, but this approach is not practical.
+Telco companies use Linux to run DPDK in OpenShift/Kubernetes containers.
+DPDK requires isolated cpus to run real-time processes.
+Kubernetes manages allocation of resources for containers.
+Unfortunately Kubernetes doesn't support dynamic CPU offlining/onlining:
+https://github.com/kubernetes/kubernetes/issues/67500
+and is not planning to support it.
+Addressing this issue at the application level appears to be even
+less straightforward than addressing it at the kernel level.
 
-  /tmp/ccuSzwiR.s: Assembler messages:
-  /tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is not a multiple of 4)
-  make[5]: *** [scripts/Makefile.build:229: net/core/page_pool.o] Error 1
+This series of patches is based on series
+isolation: Exclude dynamically isolated CPUs from housekeeping masks:
+https://lore.kernel.org/lkml/20240821142312.236970-1-longman@redhat.com/
+Its purpose is to exclude dynamically isolated CPUs from some
+housekeeping masks so that subsystems that check the housekeeping masks
+at run time will not use those isolated CPUs.
 
-Dumping the generated assembler shows:
+However, some of subsystems can use obsolete housekeeping CPU masks.
+Therefore, to prevent the use of these isolated CPUs, it is necessary to
+explicitly propagate changes of the housekeeping masks to all subsystems
+depending on the mask.
 
-  ld 8,39(8)       # MEM[(const struct atomic64_t *)_29].counter, t
+Changes in v2:
+- Focusing in this patch series on interrupts only.
 
-Use the YZ constraints to tell the compiler either to generate a DS-form
-displacement, or use an X-form instruction, either of which prevents the
-build error.
+v1:
+- https://lore.kernel.org/lkml/20240516190437.3545310-1-costa.shul@redhat.com/
 
-See commit 2d43cc701b96 ("powerpc/uaccess: Fix build errors seen with
-GCC 13/14") for more details on the constraint letters.
+References:
+- Linux Kernel Dynamic CPU Isolation: https://pretalx.com/devconf-us-2024/talk/AZBQLE/
 
-Fixes: 9f0cbea0d8cc ("[POWERPC] Implement atomic{, 64}_{read, write}() without volatile")
-Cc: stable@vger.kernel.org # v2.6.24+
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/all/20240913125302.0a06b4c7@canb.auug.org.au
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/asm-compat.h | 6 ++++++
- arch/powerpc/include/asm/atomic.h     | 5 +++--
- arch/powerpc/include/asm/uaccess.h    | 7 +------
- 3 files changed, 10 insertions(+), 8 deletions(-)
+Costa Shulyupin (3):
+  sched/isolation: Add infrastructure for dynamic CPU isolation
+  genirq/cpuhotplug: Adjust managed irqs according to change of
+    housekeeping CPU
+  DO NOT MERGE: test for managed irqs adjustment
 
-diff --git a/arch/powerpc/include/asm/asm-compat.h b/arch/powerpc/include/asm/asm-compat.h
-index 2bc53c646ccd..83848b534cb1 100644
---- a/arch/powerpc/include/asm/asm-compat.h
-+++ b/arch/powerpc/include/asm/asm-compat.h
-@@ -39,6 +39,12 @@
- #define STDX_BE	stringify_in_c(stdbrx)
- #endif
- 
-+#ifdef CONFIG_CC_IS_CLANG
-+#define DS_FORM_CONSTRAINT "Z<>"
-+#else
-+#define DS_FORM_CONSTRAINT "YZ<>"
-+#endif
-+
- #else /* 32-bit */
- 
- /* operations for longs and pointers */
-diff --git a/arch/powerpc/include/asm/atomic.h b/arch/powerpc/include/asm/atomic.h
-index 5bf6a4d49268..d1ea554c33ed 100644
---- a/arch/powerpc/include/asm/atomic.h
-+++ b/arch/powerpc/include/asm/atomic.h
-@@ -11,6 +11,7 @@
- #include <asm/cmpxchg.h>
- #include <asm/barrier.h>
- #include <asm/asm-const.h>
-+#include <asm/asm-compat.h>
- 
- /*
-  * Since *_return_relaxed and {cmp}xchg_relaxed are implemented with
-@@ -197,7 +198,7 @@ static __inline__ s64 arch_atomic64_read(const atomic64_t *v)
- 	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
- 		__asm__ __volatile__("ld %0,0(%1)" : "=r"(t) : "b"(&v->counter));
- 	else
--		__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : "m<>"(v->counter));
-+		__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : DS_FORM_CONSTRAINT (v->counter));
- 
- 	return t;
- }
-@@ -208,7 +209,7 @@ static __inline__ void arch_atomic64_set(atomic64_t *v, s64 i)
- 	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
- 		__asm__ __volatile__("std %1,0(%2)" : "=m"(v->counter) : "r"(i), "b"(&v->counter));
- 	else
--		__asm__ __volatile__("std%U0%X0 %1,%0" : "=m<>"(v->counter) : "r"(i));
-+		__asm__ __volatile__("std%U0%X0 %1,%0" : "=" DS_FORM_CONSTRAINT (v->counter) : "r"(i));
- }
- 
- #define ATOMIC64_OP(op, asm_op)						\
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index fd594bf6c6a9..4f5a46a77fa2 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -6,6 +6,7 @@
- #include <asm/page.h>
- #include <asm/extable.h>
- #include <asm/kup.h>
-+#include <asm/asm-compat.h>
- 
- #ifdef __powerpc64__
- /* We use TASK_SIZE_USER64 as TASK_SIZE is not constant */
-@@ -92,12 +93,6 @@ __pu_failed:							\
- 		: label)
- #endif
- 
--#ifdef CONFIG_CC_IS_CLANG
--#define DS_FORM_CONSTRAINT "Z<>"
--#else
--#define DS_FORM_CONSTRAINT "YZ<>"
--#endif
--
- #ifdef __powerpc64__
- #ifdef CONFIG_PPC_KERNEL_PREFIXED
- #define __put_user_asm2_goto(x, ptr, label)			\
+ include/linux/irq.h      |   2 +
+ kernel/cgroup/cpuset.c   |   1 +
+ kernel/irq/cpuhotplug.c  |  95 ++++++++++++++++++++++++++++++++
+ kernel/sched/isolation.c |  46 ++++++++++++++--
+ tests/managed_irq.sh     | 113 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 254 insertions(+), 3 deletions(-)
+ create mode 100755 tests/managed_irq.sh
+
 -- 
-2.46.0
+2.45.0
 
 
