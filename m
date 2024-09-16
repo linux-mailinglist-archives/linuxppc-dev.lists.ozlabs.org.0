@@ -1,78 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-1409-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1410-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907F997A44E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2024 16:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D412A97A470
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Sep 2024 16:49:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X6ndw728Dz2xdR;
-	Tue, 17 Sep 2024 00:40:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X6nqq5hbpz2y72;
+	Tue, 17 Sep 2024 00:49:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726497652;
-	cv=none; b=L7jq1HwxvAwNW7K9NaAWOrlVvadQ9YoxsygzbVaCLFuQsMLgoOND6h0PwYJ+uXWZ1aRpALasNzlqbWVGc/OiBy75NsSBFqFCA8Pl3U0pp4c2C+Vlju8Z1AxDSVbVH+vKzoanE9Kf/Fa/wom5YGPumTYjktL23/Uc2ALoew+mSd/pm3O9eSqlHFzSIuZOK0KyhV/qxRtWZ4gb6bxOE4zybwWjGDHiNI6fHuM5N5xOhiQKjN0D+6vTKT7IELZ1kb5Hymnc2KsOhxFYOAC0wHbffrZ5AAVFrVTtUo9scj9XGSaP4rspV4cLjxpAekI8WcaPOPwXcwzGfnp7qi5Xko/2Dw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726498167;
+	cv=none; b=NtrOLSMELJg2sdv0qY9vi2/wSWI0335UVdAZlcDEgCOJyemuy4mjR585ZOpMS5kFx+n6qn0XevIb+rI27TeU4RpbxCWjR+58GqbBryMRHqQg3ZL9K0bxsROryD3t9cC/Hxh8281gBKY2K58mOdcBAQuwQpQZaDcvuhX7fCrZRmS50Xf9OxxSAIHvocMIZfdPvsx0LyYnGXmgxXLaLvZhzq5LpQaSGCktSArSltHBqz3UzvMK/+VYL0naSA46jpqXgHAFvVlBkhcKviudQPxl8Sq02SKTErkOYA4EKK42r58CPtlEtPz2AKbamoDAuAyKUT+sv5Q39axKHL2Gz6q7kQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726497652; c=relaxed/relaxed;
-	bh=0+LfZKsnxa1uPbMa6VF6ZtYTzNeMhfwoldMW/TwADvc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FbXll1TxKteJ1gl+Xh4OiYrrCibWZd784CbJznTWirCYt5gfgs5rtY3hCn7D/sP74UJzw7aJKER7gz2TEkFdAhKFNcgQ6xD1n456lamR4+G7hQVL31tWdfjzive3SVXzPU4k095qvGCtsPw9C26t7RNWnRa9y3FSwaY+FcqRLPQBQCulqPmomIjNtdIRtFZ+hT9AFowzsnN98sfN47av10BPZtNhsb++OrxcHRv0+nGScviRK9pKUgGOLNJ7oxmEAW8fJ9vrWZKqwyxWqTiDE2UCg+KUCdJCPrc03PZhDAs/ZOYlhG6sYIichUD8K42/XCYZYG+hax8HbsYpiYCVzA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Agr/oit0; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1726498167; c=relaxed/relaxed;
+	bh=EMelMzTkoJmecj8Ec280QAFHRxkxEeMzZsfbZtByo7k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QufOc5QMIP2K6CY8ie4VHVqt06UUHcm2psl6vxZmBLkqhHpKavoAEP41WGu7eCYcBTr0XjlJk9FieJu9y0U2QuNXIDNlfOdcxYsigQpcWbo0cl/IslXOqRaeR6rLRnEwONr7M2DRIU1yCBc3UrfZgUfac4AL31A1JUDEBQtitqi4a4zmvijFoq3kK4bPTPSjAuPZuTzBeAXRE2qBQQvEoOsqpRfB5xSCaOyRjRGYdmerhbtizS1mpPYjiNDUiydPq9//uPST9H/JU1jLCv+nDEHjKaCC7QhrtsIess5bN+OTemxLgOd8490zSQaVZrWdqNhBg9oBeTCn8nqadoyrOw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Q+3b5uki; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82f; helo=mail-qt1-x82f.google.com; envelope-from=almasrymina@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Agr/oit0;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Q+3b5uki;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82f; helo=mail-qt1-x82f.google.com; envelope-from=almasrymina@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X6ndw2zh2z2xPf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2024 00:40:51 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48GCb3Eg031030;
-	Mon, 16 Sep 2024 14:40:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=0
-	+LfZKsnxa1uPbMa6VF6ZtYTzNeMhfwoldMW/TwADvc=; b=Agr/oit0rObVmdh4A
-	7Dp7ELC39MqQL8y8BZDrvasA/znyRbQImtkioB8ajOnKllDdMza9aa0sW96GEvKf
-	ScyXBDhVA0TUmeJ5U03pvzPz4CC8HmdHZau/syo/2ieCUH4MQkD/GaxNhDvuHZT9
-	cX7XYtBM70BdNLAH29X0LIpaSuxkMAyq8w7u8PUognYfSSEOk2u+og7VRMwXHFyi
-	lLV1bHxO+fad+2R1blRFI346ORiQ9QIoqZ3gvjXhCRe7YlSbR3xu48biMkNsDxzp
-	7rJTUqB9jWPWu32UVV0ttNOPWVI4tGyBhBaaB1F+z6a2yf3Nb03k0mWvC/GbKg6C
-	oYvBQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3uj2m0f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Sep 2024 14:40:39 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48GEed49017778;
-	Mon, 16 Sep 2024 14:40:39 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3uj2m0c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Sep 2024 14:40:39 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48GC9ajr024637;
-	Mon, 16 Sep 2024 14:40:38 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41nq1mqqj5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Sep 2024 14:40:38 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48GEebMv14156366
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Sep 2024 14:40:37 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC3615805A;
-	Mon, 16 Sep 2024 14:40:37 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E829058052;
-	Mon, 16 Sep 2024 14:40:35 +0000 (GMT)
-Received: from [9.61.251.169] (unknown [9.61.251.169])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 16 Sep 2024 14:40:35 +0000 (GMT)
-Message-ID: <f4cc885a-33af-4af5-85b2-72142fe83c87@linux.vnet.ibm.com>
-Date: Mon, 16 Sep 2024 20:10:34 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X6nqq03k7z2y71
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2024 00:49:25 +1000 (AEST)
+Received: by mail-qt1-x82f.google.com with SMTP id d75a77b69052e-4582b71df40so609711cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Sep 2024 07:49:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726498161; x=1727102961; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EMelMzTkoJmecj8Ec280QAFHRxkxEeMzZsfbZtByo7k=;
+        b=Q+3b5uki2cr3J3YFLsZjyouY0/pxrYTve8gq3jCOQuxjr/eDHOSUQMULEoS3hlWs8o
+         jWPBO7P90rq2yshCI/DW/MUTTODe6s/Y9cWKYXFffpc0zigFr7T6uBrZnitfkpIlnaI+
+         EvvXVIMjgT9JVAENL0bbuhtjLjuwRTuYo1Y+zkMOLBSWVgOuMBv2NWb9Q7v/w+Bxvytp
+         pgdqsy0fHTB+G2IE+hIqQnqiSaUOw35/zWB/jHFXViMMrGowMGbFuBs4B9kNOdzFN9b2
+         pEy/DnAI29d5P2hLSfXMb7TOYRev1Y4F0VslW51Io/8q6xRhgrAOmYDsdES+i0XUa9I7
+         3flw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726498161; x=1727102961;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EMelMzTkoJmecj8Ec280QAFHRxkxEeMzZsfbZtByo7k=;
+        b=Z5Fx2NAqB+d3EZiE0l4c1NWZ0epVK326Wd3ikvpu0LLaOo7sXtfKqYZL//nqQ1PVc1
+         nx/8OpvNbjjrAc/nr4AD5BqhfR4PQAKw5z9aZmxIuvfWNgU13qPYOETyxOUCEEljEJVU
+         9h3kVaIhsUewB5oS2c1rovDb6pXXY52n/kTiJlaAdjvV31JreOGE0lh1uWah4aK3UAIY
+         hgBSB28V6oIrkusrUeyz1XiQfIlhTQowjauixH1ZsA6WjdT+ZJuZJkmNWZEG8891Y7lk
+         Zl/YG+wa1UPEPyO6v+5VyuVKovLH6zESOCLqB5wvia851GZJFAPDea2SUj153UZ7LxcI
+         4BOg==
+X-Gm-Message-State: AOJu0YwYEcuNF5A7+0blUbXxJNg6Wa7QSDoPv0E0Nhq2/MRaI2ohCtbS
+	jJjD3xG2AOynkabiwy3jmt+ZKBE/z0J/6xYr1m3WaH3eSGr0A+ZbdjU5a+XaRnftyOkRy4rG+y2
+	7gEp24mTprpAn2cdjp+58Qlda0L58U0FjfyGo
+X-Google-Smtp-Source: AGHT+IGG1zTJv0c5bKWcBL6ppyd+R0pFs7s6AY9gInCgYJM1VZD4gWzAvaBlLTTRQ29SZSznByKAx07pm4J3HlYVrNA=
+X-Received: by 2002:a05:622a:413:b0:456:77a8:ea2d with SMTP id
+ d75a77b69052e-458644f9fd7mr12223071cf.17.1726498160849; Mon, 16 Sep 2024
+ 07:49:20 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,40 +70,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PowerPC][Linux-next][6.11.0-rc4-next-20240820] OOPs while
- running LTP FS Stress
-Content-Language: en-GB
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        vschneid@redhat.com, mingo@kernel.org, sfr@canb.auug.org.au
-References: <82b9c434-a0fd-4488-95be-a45b8cd4b6e6@linux.vnet.ibm.com>
- <20240916113030.GZ4723@noisy.programming.kicks-ass.net>
-From: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-In-Reply-To: <20240916113030.GZ4723@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: GM2-HkX9HUnakcrXoUa9fjOaJNwzyoSy
-X-Proofpoint-GUID: 4qxLe0pjbSlgDfJTDO_3AjSrdeYW7n-w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-16_11,2024-09-13_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=860 adultscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 mlxscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409160094
+References: <20240916120510.2017749-1-mpe@ellerman.id.au>
+In-Reply-To: <20240916120510.2017749-1-mpe@ellerman.id.au>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 16 Sep 2024 07:49:09 -0700
+Message-ID: <CAHS8izM-3DSw+hvFasu=xge5st9cE9MrwJ3FOOHpYHsj5r0Ydg@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/atomic: Use YZ constraints for DS-form instructions
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu, 
+	segher@kernel.crashing.org, sfr@canb.auug.org.au, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, kuba@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Yes, Issue is still seen. Latest seen was on 6.11.0-rc7-next-20240910.
-
-I am re-attempting Git Bisect. Will update the results, once I am done.
-
-On 16/09/24 5:00 pm, Peter Zijlstra wrote:
-> On Mon, Sep 16, 2024 at 12:00:52PM +0530, Venkat Rao Bagalkote wrote:
+On Mon, Sep 16, 2024 at 5:05=E2=80=AFAM Michael Ellerman <mpe@ellerman.id.a=
+u> wrote:
 >
->> I am seeing below kernel crash from 6.11.0-rc4-next-20240820.
-> 0820 is almost a month old by now, did you verify if the same happens on
-> a recent kernel? We did fix a bunch of issues around this.
+> The 'ld' and 'std' instructions require a 4-byte aligned displacement
+> because they are DS-form instructions. But the "m" asm constraint
+> doesn't enforce that.
 >
+> That can lead to build errors if the compiler chooses a non-aligned
+> displacement, as seen with GCC 14:
+>
+>   /tmp/ccuSzwiR.s: Assembler messages:
+>   /tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is not a multipl=
+e of 4)
+>   make[5]: *** [scripts/Makefile.build:229: net/core/page_pool.o] Error 1
+>
+> Dumping the generated assembler shows:
+>
+>   ld 8,39(8)       # MEM[(const struct atomic64_t *)_29].counter, t
+>
+> Use the YZ constraints to tell the compiler either to generate a DS-form
+> displacement, or use an X-form instruction, either of which prevents the
+> build error.
+>
+> See commit 2d43cc701b96 ("powerpc/uaccess: Fix build errors seen with
+> GCC 13/14") for more details on the constraint letters.
+>
+> Fixes: 9f0cbea0d8cc ("[POWERPC] Implement atomic{, 64}_{read, write}() wi=
+thout volatile")
+> Cc: stable@vger.kernel.org # v2.6.24+
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Closes: https://lore.kernel.org/all/20240913125302.0a06b4c7@canb.auug.org=
+.au
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+
+I'm not familiar enough with the code around the changes, but I have
+been able to confirm cherry-picking this resolves the build issue I'm
+seeing on net-next, so, FWIW,
+
+Tested-by: Mina Almasry <almasrymina@google.com>
+
+--=20
+Thanks,
+Mina
 
