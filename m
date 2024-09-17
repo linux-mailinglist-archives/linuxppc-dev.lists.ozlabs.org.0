@@ -1,60 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-1417-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1419-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AB897AAC0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2024 06:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D25797AB2E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2024 07:56:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X788x3WXWz2xfT;
-	Tue, 17 Sep 2024 14:35:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X79xz59z5z2xjP;
+	Tue, 17 Sep 2024 15:56:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726547729;
-	cv=none; b=HMNp6bZfnwhwD+B+LbR2UUSfGrh0g52Aez+Dj1utSucxs8I0QETzq0pXcFKZuqyEdwK5i820nn+1PPU7bg4SwrLeKmzfx47vlcAxAGG2Uxg3NlQKvT85F45POwwsIGXk3kh6dbAicGw5/0q09+Cv3Td1ICxoLy+qvDmefIzQWB2Hc0hRMjkIYCsnWnSzy8fafDLh7Z2qQdtq2LwisL4BwhpZxyRStZ2JCSBIBHiB1qvhokM6LcdsWvk2Elz/4Gi1JlFznU3jAxq2bLiNFlK4l/TVod6M19wAznIlefoeHdeI5YAi9URuCrrPSAbgli2xYMf9m4b6X66lsCOp6+EK1Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.12.242.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726552567;
+	cv=none; b=Z7PtzMJM+/W4bEs+TOzyvWjLMUAn9lPmMZvSmRiElwnySun1vIs1U4H6bQX5pYPCtl1Me4qNHcFP3egQV0D0VuMDyIzZBSu6YG8tvApoCKzKgRNxfyUmL1AxwvnncRmY3rOz/rUiGHU9c2IABphvhERDUCOW4SqUKIndgDLve8auCw5i6Ja0+H42kqylrPPQqogRhBw9go+j1N1juDMdyVn9M4Pw4cFzh+7BqwLo0p00onSPezDy0l0yFEON6eWNOWQTf5lw3IV54XXt+35GLYD5Nvb0+B2ovv9orngAbE9i1Q4z4kuPnWdoTvjfUzau154kUNqY/PkefnJvza5Kbw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726547729; c=relaxed/relaxed;
-	bh=IUEa298+/HnSGhVzOT26xrNR64cr3qT+KBkosyliq2A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jl1Q+zHXD6q8Lnm7OlQGwZy8RIdDq+raA+l825UpxKrdxW04qjn8jtsUDPbDdysX4LWuBUbdsVE8eLbbxKT0arYCqZd2SinS6I3GOv9tEPidrYKmM2zG0nXd/MOWCFpDmQpExcU8uiBREG3u9QyKY6GHXCVxlSEwqlRijvszUWA6fIv6VA3nKTPII2ZAu4RBFP8UY3tEWvF+OF3/2wkZyXx7KFHOacyL1U3sDP/ASqo2DbdWN45pQsOGR8wpdH6vleKeqT75seIFRyz4P4lp0b7ZmkHLJQTYj09tTGagpq9BZIKmCClwceUsbB1mN38ODr+89d4Nj/DTiV/f61hyng==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IaI+3H6y; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1726552567; c=relaxed/relaxed;
+	bh=ox/BUEVjGvecYqicoCV10v4Q9kXMIsRKDm9TgbacwPA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=HzxmmN6qN4RRQ2S3GGwcV2PsSE2KKRYQrD/9aWUDXRghj0cHWL3pgyn7tRHOQ1+Nb3ATytc9MbGkVgZvlccz1Lxqsq/FHzc2xp0j1tsuIgCJejNvQILBfHZp2x394wqw0NXqQdKEeZjcNWYt1dDEeAvXAWu9UxBNYGFcJDYzFag1laYhXpJWU9ew+7k0Sgf/cv/RXc4j1/3eJJ9w7xFQsAsSc4wppm294zQg05DiAsjvguDaGkXr+/jZUc+AsuvjCcYQviOeJbomCTb7mkVkKppWwSspAgelPw3GGVLgxUuPiiMqwmhWakmnow33t6foynfMg0ci61yQtauKan0C4Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=uE7YHFnc; dkim-atps=neutral; spf=pass (client-ip=80.12.242.13; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org) smtp.mailfrom=wanadoo.fr
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IaI+3H6y;
+	dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=uE7YHFnc;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.13; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org)
+Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X788w4YYMz2xb9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2024 14:35:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726547719;
-	bh=IUEa298+/HnSGhVzOT26xrNR64cr3qT+KBkosyliq2A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=IaI+3H6ys+fmP41dMTuJyHVoH7u4Qj7Xw3zVhhBSQs9jLFZeo+ep7lMgHu4jaec7T
-	 OLJD9DgD75YUc+PBZLbv1wowf49AII0+Qf7wF+s1uQg6oNYzMvg7rMHroPPE+0EfRS
-	 AhEBVyb3GIrmck9wYgs+u0CrKwzQCwILDFajlvfyOYZ2ygVnwcG0Zb25NXboMb3lhV
-	 AvhuN31qcOF4BcIusJcf/JzauI//CC+BqjpThqeoBtX7No6TzpeKrWvlvzfTKAoyS5
-	 q7RqaL2B4lazVZrsfGPmQJ1iDyJ1bUEu3YPGPctN1uAP2NCIJfEgCvNvqktvVisH5p
-	 CZBDkNo8yFEOg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X788l4wjyz4xZZ;
-	Tue, 17 Sep 2024 14:35:19 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mina Almasry <almasrymina@google.com>
-Cc: linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu,
- segher@kernel.crashing.org, sfr@canb.auug.org.au,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, kuba@kernel.org
-Subject: Re: [PATCH] powerpc/atomic: Use YZ constraints for DS-form
- instructions
-In-Reply-To: <CAHS8izM-3DSw+hvFasu=xge5st9cE9MrwJ3FOOHpYHsj5r0Ydg@mail.gmail.com>
-References: <20240916120510.2017749-1-mpe@ellerman.id.au>
- <CAHS8izM-3DSw+hvFasu=xge5st9cE9MrwJ3FOOHpYHsj5r0Ydg@mail.gmail.com>
-Date: Tue, 17 Sep 2024 14:35:17 +1000
-Message-ID: <878qvqrj7e.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X79xy0Q04z2xb9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2024 15:56:04 +1000 (AEST)
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id qQf2sEuii3ZMyqQf2s4PfP; Tue, 17 Sep 2024 07:22:08 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1726550528;
+	bh=ox/BUEVjGvecYqicoCV10v4Q9kXMIsRKDm9TgbacwPA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To;
+	b=uE7YHFncSbIkns75ceMLvKBWR2lLESwDluJGLQhQBCQV5lrcOaRwCaTNTSOfcQpVq
+	 HJm+j7e1uOEsx+GUZ7TkF+WOOqssb6mQ20ALFlGIaRf9KYFvSjIxmC0ctChK9RKjkP
+	 VHegYqJfxnmpTt+hhya69OXSYxRcdh4NY3Nx4ludydVSWdFFHnCuY48Vq5d4BGuFHH
+	 iIBCrqPhkEWoNiBUDqoomBPmojMFvpSGzksiXevYTJzesiUhHvUmNIIDj1if0WR1dK
+	 bCJHsDM4ZJQSKYDiq97zSpNKRY9B+XwVjxgT8qhAE/jWfxA728uT22uHSOZu+Yfgmr
+	 KFRvY0tmnJyeg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Tue, 17 Sep 2024 07:22:08 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <6cbedd50-c2d5-4ad7-8133-774eebd9d2f1@wanadoo.fr>
+Date: Tue, 17 Sep 2024 07:22:00 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,51 +55,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH v2 00/15] timers: Cleanup delay/sleep related mess
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+ linux-mm@kvack.org, SeongJae Park <sj@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+ Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Andy Whitcroft <apw@canonical.com>,
+ Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Andrew Lunn <andrew@lunn.ch>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, netdev@vger.kernel.org,
+ linux-sound@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>
+References: <20240911-devel-anna-maria-b4-timers-flseep-v2-0-b0d3f33ccfe0@linutronix.de>
+ <c794b4a6-468d-4552-a6d6-8185f49339d3@wanadoo.fr>
+Content-Language: en-US, fr-FR
+In-Reply-To: <c794b4a6-468d-4552-a6d6-8185f49339d3@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Mina Almasry <almasrymina@google.com> writes:
-> On Mon, Sep 16, 2024 at 5:05=E2=80=AFAM Michael Ellerman <mpe@ellerman.id=
-.au> wrote:
->>
->> The 'ld' and 'std' instructions require a 4-byte aligned displacement
->> because they are DS-form instructions. But the "m" asm constraint
->> doesn't enforce that.
->>
->> That can lead to build errors if the compiler chooses a non-aligned
->> displacement, as seen with GCC 14:
->>
->>   /tmp/ccuSzwiR.s: Assembler messages:
->>   /tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is not a multip=
-le of 4)
->>   make[5]: *** [scripts/Makefile.build:229: net/core/page_pool.o] Error 1
->>
->> Dumping the generated assembler shows:
->>
->>   ld 8,39(8)       # MEM[(const struct atomic64_t *)_29].counter, t
->>
->> Use the YZ constraints to tell the compiler either to generate a DS-form
->> displacement, or use an X-form instruction, either of which prevents the
->> build error.
->>
->> See commit 2d43cc701b96 ("powerpc/uaccess: Fix build errors seen with
->> GCC 13/14") for more details on the constraint letters.
->>
->> Fixes: 9f0cbea0d8cc ("[POWERPC] Implement atomic{, 64}_{read, write}() w=
-ithout volatile")
->> Cc: stable@vger.kernel.org # v2.6.24+
->> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
->> Closes: https://lore.kernel.org/all/20240913125302.0a06b4c7@canb.auug.or=
-g.au
->> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->
-> I'm not familiar enough with the code around the changes, but I have
-> been able to confirm cherry-picking this resolves the build issue I'm
-> seeing on net-next, so, FWIW,
->
-> Tested-by: Mina Almasry <almasrymina@google.com>
 
-Thanks.
 
-cheers
+Le 16/09/2024 à 22:20, Christophe JAILLET a écrit :
+> Le 11/09/2024 à 07:13, Anna-Maria Behnsen a écrit :
+>> Hi,
+>>
+>> a question about which sleeping function should be used in 
+>> acpi_os_sleep()
+>> started a discussion and examination about the existing documentation and
+>> implementation of functions which insert a sleep/delay.
+>>
+>> The result of the discussion was, that the documentation is outdated and
+>> the implemented fsleep() reflects the outdated documentation but doesn't
+>> help to reflect reality which in turns leads to the queue which covers 
+>> the
+>> following things:
+>>
+>> - Split out all timeout and sleep related functions from hrtimer.c and 
+>> timer.c
+>>    into a separate file
+>>
+>> - Update function descriptions of sleep related functions
+>>
+>> - Change fsleep() to reflect reality
+>>
+>> - Rework all comments or users which obviously rely on the outdated
+>>    documentation as they reference "Documentation/timers/timers- 
+>> howto.rst"
+>>
+>> - Last but not least (as there are no more references): Update the 
+>> outdated
+>>    documentation and move it into a file with a self explaining file name
+>>
+>> The queue is available here and applies on top of tip/timers/core:
+>>
+>>    git://git.kernel.org/pub/scm/linux/kernel/git/anna-maria/linux- 
+>> devel.git timers/misc
+>>
+>> Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+> 
+> Hi,
+> 
+> not directly related to your serie, but some time ago I sent a patch to 
+> micro-optimize Optimize usleep_range(). (See [1])
+> 
+> The idea is that the 2 parameters of usleep_range() are usually 
+> constants and some code reordering could easily let the compiler compute 
+> a few things at compilation time.
+> 
+> There was consensus on the value of the change (see [2]), but as you are 
+
+Typo: there was *no* consensus...
+
+> touching things here, maybe it makes sense now to save a few cycles at 
+> runtime and a few bytes of code?
+> 
+> CJ
+> 
+> [1]: https://lore.kernel.org/all/ 
+> f0361b83a0a0b549f8ec5ab8134905001a6f2509.1659126514.git.christophe.jaillet@wanadoo.fr/
+> 
+> [2]: https://lore.kernel.org/ 
+> all/03c2bbe795fe4ddcab66eb852bae3715@AcuMS.aculab.com/
+> 
+> 
+> 
+> 
+
 
