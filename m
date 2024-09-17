@@ -1,62 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-1416-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1417-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3442097A953
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2024 00:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB897AAC0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Sep 2024 06:35:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X70VF2Dkbz2xQD;
-	Tue, 17 Sep 2024 08:49:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X788x3WXWz2xfT;
+	Tue, 17 Sep 2024 14:35:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726526997;
-	cv=none; b=bVudfk7grfwNb3a3bHZufgDeid25Va2XB2gm8psglZQCkIDQie0P+ClJqHO9MSVIyq1QrEL0GCxMVQE0Tn+IKfgGz3laSuPRan/ibh7DyKOqN3rOa/pXe2uxHmH9LTR2Qzg4Fgp+WEeyTbhO08vVmb4qw2IuStYac7OUXESIH8E36TOJC4YXmY677abXVacvq3YFJaPnS2iCyV1qowDUAVE6OPbdfLLHXloZmDh0mEVeivdhzz92XjzpGPAVHbuN4kBzZAHmEdKKuYwsbohzUR3t1TTFPQOpUmV43Mu+5GWJB4WdCOeLSggkusrQzPoBn/G/adeXN6X/SNTucO75gg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726547729;
+	cv=none; b=HMNp6bZfnwhwD+B+LbR2UUSfGrh0g52Aez+Dj1utSucxs8I0QETzq0pXcFKZuqyEdwK5i820nn+1PPU7bg4SwrLeKmzfx47vlcAxAGG2Uxg3NlQKvT85F45POwwsIGXk3kh6dbAicGw5/0q09+Cv3Td1ICxoLy+qvDmefIzQWB2Hc0hRMjkIYCsnWnSzy8fafDLh7Z2qQdtq2LwisL4BwhpZxyRStZ2JCSBIBHiB1qvhokM6LcdsWvk2Elz/4Gi1JlFznU3jAxq2bLiNFlK4l/TVod6M19wAznIlefoeHdeI5YAi9URuCrrPSAbgli2xYMf9m4b6X66lsCOp6+EK1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726526997; c=relaxed/relaxed;
-	bh=5r3VXIp0XmMBXAlxSwILes2Jqbowq2uwAxf2gqQQs9w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hWimd3r0dC9V/aUgW5Eyj3ZIxlmSdOP+XDAgRzbavZZFtVty22ghxPyFuOfmu25vNC0HYkyhD4NUBiY5RbXYBc1B9+b5qO8PKcgaJvxoOUTmdPaRs/4TqfxIKoHAPPEEmdzK95n7jXVV4h0Ai2zj3LiwOubqXtEY1cBVYQRK0aUaDoVfAtANPAYLxU93T49bEs883KaDrKRvh4/y331ZYFVyEQMM0EJpUFZjYzpwmiu7I/qKP73rj9ghA4YMSR/tJGVuCCPwXcRdnhFE7o7stQVDPCGUVcMR2kamk0IE5Dwb5JZz2indUwdXM3cxkCWyIRJ0QsMernGFPobZU4P3DA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a1Xe10Sj; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1726547729; c=relaxed/relaxed;
+	bh=IUEa298+/HnSGhVzOT26xrNR64cr3qT+KBkosyliq2A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jl1Q+zHXD6q8Lnm7OlQGwZy8RIdDq+raA+l825UpxKrdxW04qjn8jtsUDPbDdysX4LWuBUbdsVE8eLbbxKT0arYCqZd2SinS6I3GOv9tEPidrYKmM2zG0nXd/MOWCFpDmQpExcU8uiBREG3u9QyKY6GHXCVxlSEwqlRijvszUWA6fIv6VA3nKTPII2ZAu4RBFP8UY3tEWvF+OF3/2wkZyXx7KFHOacyL1U3sDP/ASqo2DbdWN45pQsOGR8wpdH6vleKeqT75seIFRyz4P4lp0b7ZmkHLJQTYj09tTGagpq9BZIKmCClwceUsbB1mN38ODr+89d4Nj/DTiV/f61hyng==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IaI+3H6y; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a1Xe10Sj;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IaI+3H6y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X70VD5p7Nz2xHl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2024 08:49:56 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 26EA25C1FDF;
-	Mon, 16 Sep 2024 22:49:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31DFC4CEC4;
-	Mon, 16 Sep 2024 22:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726526992;
-	bh=bRL09e91cC7LQEEs/ysPp5d5gcrpXYKGy36AOC6GrXg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1Xe10SjRDFp1Tnjo4rEV1qSSh5I/fFYmkJvMjVN/tBBFXbHuDqfW2ZKpbL9bTGkv
-	 U7tz8C47kArBx6KohU4yk94kVLrNEyfFFoMtu3sI1rGeB601xnuvrdFUb86o5jzxaw
-	 pXK9Bd6V1qDtIWeD9jqJCTq9qnaq9XQo//DpeB/mhKF+NNXs+gr/abL/4fyQmiGxSq
-	 mF4B31rqHLk0PajC+YeepD7dpn398dZY0XD8DZ9EJZmJhGVNOybAq569O4+8DOqx4+
-	 6VPjKNaq3VbbLRUMck9HsrMHITLQNGh6AadX2R8FQiIm+M39JtECZI8lyhca0jGq8O
-	 B0iU4+iN5HyLQ==
-From: Frederic Weisbecker <frederic@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 07/19] soc/qman: test: Use kthread_run_on_cpu()
-Date: Tue, 17 Sep 2024 00:49:11 +0200
-Message-ID: <20240916224925.20540-8-frederic@kernel.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916224925.20540-1-frederic@kernel.org>
-References: <20240916224925.20540-1-frederic@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X788w4YYMz2xb9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2024 14:35:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1726547719;
+	bh=IUEa298+/HnSGhVzOT26xrNR64cr3qT+KBkosyliq2A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=IaI+3H6ys+fmP41dMTuJyHVoH7u4Qj7Xw3zVhhBSQs9jLFZeo+ep7lMgHu4jaec7T
+	 OLJD9DgD75YUc+PBZLbv1wowf49AII0+Qf7wF+s1uQg6oNYzMvg7rMHroPPE+0EfRS
+	 AhEBVyb3GIrmck9wYgs+u0CrKwzQCwILDFajlvfyOYZ2ygVnwcG0Zb25NXboMb3lhV
+	 AvhuN31qcOF4BcIusJcf/JzauI//CC+BqjpThqeoBtX7No6TzpeKrWvlvzfTKAoyS5
+	 q7RqaL2B4lazVZrsfGPmQJ1iDyJ1bUEu3YPGPctN1uAP2NCIJfEgCvNvqktvVisH5p
+	 CZBDkNo8yFEOg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X788l4wjyz4xZZ;
+	Tue, 17 Sep 2024 14:35:19 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Mina Almasry <almasrymina@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu,
+ segher@kernel.crashing.org, sfr@canb.auug.org.au,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, kuba@kernel.org
+Subject: Re: [PATCH] powerpc/atomic: Use YZ constraints for DS-form
+ instructions
+In-Reply-To: <CAHS8izM-3DSw+hvFasu=xge5st9cE9MrwJ3FOOHpYHsj5r0Ydg@mail.gmail.com>
+References: <20240916120510.2017749-1-mpe@ellerman.id.au>
+ <CAHS8izM-3DSw+hvFasu=xge5st9cE9MrwJ3FOOHpYHsj5r0Ydg@mail.gmail.com>
+Date: Tue, 17 Sep 2024 14:35:17 +1000
+Message-ID: <878qvqrj7e.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,40 +64,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Use the proper API instead of open coding it.
+Mina Almasry <almasrymina@google.com> writes:
+> On Mon, Sep 16, 2024 at 5:05=E2=80=AFAM Michael Ellerman <mpe@ellerman.id=
+.au> wrote:
+>>
+>> The 'ld' and 'std' instructions require a 4-byte aligned displacement
+>> because they are DS-form instructions. But the "m" asm constraint
+>> doesn't enforce that.
+>>
+>> That can lead to build errors if the compiler chooses a non-aligned
+>> displacement, as seen with GCC 14:
+>>
+>>   /tmp/ccuSzwiR.s: Assembler messages:
+>>   /tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is not a multip=
+le of 4)
+>>   make[5]: *** [scripts/Makefile.build:229: net/core/page_pool.o] Error 1
+>>
+>> Dumping the generated assembler shows:
+>>
+>>   ld 8,39(8)       # MEM[(const struct atomic64_t *)_29].counter, t
+>>
+>> Use the YZ constraints to tell the compiler either to generate a DS-form
+>> displacement, or use an X-form instruction, either of which prevents the
+>> build error.
+>>
+>> See commit 2d43cc701b96 ("powerpc/uaccess: Fix build errors seen with
+>> GCC 13/14") for more details on the constraint letters.
+>>
+>> Fixes: 9f0cbea0d8cc ("[POWERPC] Implement atomic{, 64}_{read, write}() w=
+ithout volatile")
+>> Cc: stable@vger.kernel.org # v2.6.24+
+>> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+>> Closes: https://lore.kernel.org/all/20240913125302.0a06b4c7@canb.auug.or=
+g.au
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>
+> I'm not familiar enough with the code around the changes, but I have
+> been able to confirm cherry-picking this resolves the build issue I'm
+> seeing on net-next, so, FWIW,
+>
+> Tested-by: Mina Almasry <almasrymina@google.com>
 
-However it looks like kthreads here could be replaced by the use of a
-per-cpu workqueue instead.
+Thanks.
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
----
- drivers/soc/fsl/qbman/qman_test_stash.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/soc/fsl/qbman/qman_test_stash.c b/drivers/soc/fsl/qbman/qman_test_stash.c
-index b7e8e5ec884c..f4d3c2146f4f 100644
---- a/drivers/soc/fsl/qbman/qman_test_stash.c
-+++ b/drivers/soc/fsl/qbman/qman_test_stash.c
-@@ -108,14 +108,12 @@ static int on_all_cpus(int (*fn)(void))
- 			.fn = fn,
- 			.started = ATOMIC_INIT(0)
- 		};
--		struct task_struct *k = kthread_create(bstrap_fn, &bstrap,
--			"hotpotato%d", cpu);
-+		struct task_struct *k = kthread_run_on_cpu(bstrap_fn, &bstrap,
-+							   cpu, "hotpotato%d");
- 		int ret;
- 
- 		if (IS_ERR(k))
- 			return -ENOMEM;
--		kthread_bind(k, cpu);
--		wake_up_process(k);
- 		/*
- 		 * If we call kthread_stop() before the "wake up" has had an
- 		 * effect, then the thread may exit with -EINTR without ever
--- 
-2.46.0
-
+cheers
 
