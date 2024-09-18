@@ -1,52 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-1430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1431-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE1997BD43
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2024 15:47:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D579697BDE6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2024 16:19:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X80MP0y9hz2xJ8;
-	Wed, 18 Sep 2024 23:47:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X814j0SGjz2xJy;
+	Thu, 19 Sep 2024 00:19:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726667249;
-	cv=none; b=m96pWpArZzLTgFD5tZfhSUFxhGROJ0dsiPYalEA9u5rJilbrg/C5iRbE8JGQzyTlGJCOZ1vTUGTuGyB2bVtE3AvekpdRNPq88XjFOhKvG+iyMKNxm8lYS2dKJARbRigJRFSZp/3McF5A7Q3IFa4b9n32862XfvVFmlaTxuCvf8Vrvrrgs/wbqtS8wqP69hnyAziDgQMIqZ4LpWrzn2G9ntdCMcOGEwTg/cLKGk2HG78aSNdIddreR1bAVgq02sMlgR2tIyvhDPu+S/gcaEi5UwJODJKVPZ6K7UhxDWkDtOKnzNOXUmojnwEY+/cx5cV13c01/GhnZNuA3+BX8FL7iw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726669189;
+	cv=none; b=GDV3L0TjjpQVHBUgRU0KnEctaf9XtiZq6m7ioUb4a15t+E4BYjkkvCS57eN1RJz4ImulE3xWqeVzHNicea7yVnB1lUVEOAhNb2JAqbOoyAQUdL72c3rbut8ABpciIn1fsBoHDZZYcM8QO8e6iDxhvpEKSZpLTElFvxmweuQkEEKWonDiRRd4v5HrGWirl4ThlcnL3tQL+fYVVsEe7ZDUORv2Rk9mIJwyLl7XvRzicRb4IbghPXtgw5lLPEHDFgRWs6zHb3LK6/GM9vgyGfjhEo5vTFMIDVbgX+6ICAwGUbsp8hZcaORH74pMIZQTZgI9nV7uX2/ado8NjryTlDJhoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726667249; c=relaxed/relaxed;
-	bh=LA88xgrVVsZ9HS6mv44/h7M+SVZ/ogtb+tJwjKT9Dfo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ShK/7FZcJ86hhk2+BiJAkBk5bORDgL8NuGPhMXbQjyfAgKpUMlZcAmJ+YDQIGqmTZsjy0eW0GQA2bkTVea8Zk7lEAFbh4R8dX1yRokkjw7+yoazmRvtVrVsFSCAiBrnTn4PwEtB++FtR/27B3jiMRW64R4kBKU6cOAdlmFY0GxurmLSDXEceF1rZ94o7EYVI2w0bJqe+w5IVedBt1WvY0rlSKS5/tETgEG9OjlN7GNxMlbs2v7DX9ooNpx3a8ZH7jg1Kd/p8I4Lm0ncajOP6z+hwGbui5h2mg16egXaN92VZDbH6LilwBZ1c1/4svWNSqlHHr9JwY0jeebzXeh8cbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1726669189; c=relaxed/relaxed;
+	bh=xNGrxblZLjGZAqk6sbr/+V0cGACKOR658A4nQUdcHM0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aSzr4EXyTVmvOqWNL/eINrOmqRDhM9gkdilkukSm5ubq0Ws6lCMIbR1xXCl5kqX5M3o3uq9zDF1orsOTHLR0NwARRIn6zv7ts+4quQaJgXfIQP3LI4Q7ej5Dlj3l/TW08U/yGHmPxpodntE6hCKgdxGWLXyRgCOuzTbret7a22Ka+furde+n1tHL1LLyUbMOi0sCKLXlQSOYJ5Z65rShvqV++VX57FR+nGa3W++Q0P9pxw43rzVH+5nGBFrknYbxgz3UILvSluHy4K7+zR7Klb5qnqoGgncHjJrswrYGapo7kQY9j131XMGtL7cPxbWDGC8ugy3hu3MobmXo6vMF6g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MrjErDPP; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MrjErDPP;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X80MN5ZpWz2xJ5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2024 23:47:27 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4X80MG5tqDz9sVq;
-	Wed, 18 Sep 2024 15:47:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Ylb4EsR4YRR3; Wed, 18 Sep 2024 15:47:22 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4X80MG4bnGz9sVf;
-	Wed, 18 Sep 2024 15:47:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8BECF8B776;
-	Wed, 18 Sep 2024 15:47:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id LVZBc5wuqCZJ; Wed, 18 Sep 2024 15:47:22 +0200 (CEST)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 573B88B775;
-	Wed, 18 Sep 2024 15:47:22 +0200 (CEST)
-Message-ID: <7f1dfb0f-85ca-4251-96df-c8d4b923c4fd@csgroup.eu>
-Date: Wed, 18 Sep 2024 15:47:22 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X814g3clRz2xCp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 00:19:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1726669184;
+	bh=xNGrxblZLjGZAqk6sbr/+V0cGACKOR658A4nQUdcHM0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MrjErDPPEkZDq1zIOtslEz6QLqJ7h9sk0DPxirUKSQFzsXL+IU0o6j6Z7nstFaKb4
+	 XaqE2BZMwk0G2ARM+RNGbSJk3b5aTkur0DwlvgXQzGwVjc2qrs9ZHVfoXRj5UPsE/W
+	 lZ4o/dCFGvijMbkPzptVNM9Kv4q3suU3mRQ43CyWXdsg5oxyqbPsKvcseFVK/zmLDE
+	 OzfX/1MBUlDDj4U5m7w1EAlXmH8vUxFt1f/KwFV4M4Aypp29mi/XVeSPqTAOh16f4F
+	 8u9wIG5v4qW4SMwAGMZNiNOvF+ZSC1C0BZcNXVGIbks9uT0NacIc9oJHzX7pYzpB36
+	 6HRufTrsAG0/g==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X814Y4k2Xz4xVV;
+	Thu, 19 Sep 2024 00:19:41 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: adubey@linux.ibm.com, alexs@kernel.org, arnd@arndb.de,
+ bgray@linux.ibm.com, christophe.leroy@csgroup.eu, cuigaosheng1@huawei.com,
+ gautam@linux.ibm.com, haren@linux.ibm.com, huangxiaojia2@huawei.com,
+ jk@ozlabs.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, naveen@kernel.org,
+ nnmlinux@linux.ibm.com, robh@kernel.org, ruanjinjie@huawei.com,
+ tzimmermann@suse.de, u.kleine-koenig@baylibre.com, zhangzekun11@huawei.com
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.12-1 tag
+Date: Thu, 19 Sep 2024 00:19:38 +1000
+Message-ID: <8734lxqc1x.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,168 +63,241 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] powerpc/entry: convert to common and generic entry
-To: Luming Yu <luming.yu@shingroup.cn>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- mpe@ellerman.id.au, npiggin@gmail.com, jialong.yang@shingroup.cn,
- luming.yu@gmail.com
-References: <B4ABABEA5F13B86A+20240912082500.1469-1-luming.yu@shingroup.cn>
- <fc509bcd-5ca0-4dc2-962e-766a01cbe4fb@csgroup.eu>
- <153FD6B5CE4F97D9+ZuOYDQ-iHIIwJjbh@HX09040029.powercore.com.cn>
- <95ced963-b584-4ccf-ba34-8f2ba99172f4@csgroup.eu>
- <0332BAE1905768B6+ZuPsBvgv0nwmFAjW@HX09040029.powercore.com.cn>
- <854eef54-4779-4233-a958-0c98ae5fcb7e@csgroup.eu>
- <F81D1486B7B82141+ZuQp4YQkAA2cB9Rw@HX09040029.powercore.com.cn>
- <81200b50-eaec-4cfd-9121-f661f3065572@csgroup.eu>
- <9B5E7C0A7C4BFBF0+ZuTzanfk7BcYoFas@HX09040029.powercore.com.cn>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <9B5E7C0A7C4BFBF0+ZuTzanfk7BcYoFas@HX09040029.powercore.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
 
-Le 14/09/2024 à 04:22, Luming Yu a écrit :
-> On Fri, Sep 13, 2024 at 02:15:40PM +0200, Christophe Leroy wrote:
->>
->>
->> Le 13/09/2024 à 14:02, Luming Yu a écrit :
->>
->>>> ...
->>>> nothing happens after that.
->>> reproduced with ppc64_defconfig
->>> [    0.818972][    T1] Run /init as init process
->>> [    5.851684][  T240] request_module: modprobe binfmt-4c46 cannot be processed, kmod busy with 50 threads for more than 5 seconds now
->>> [    5.851742][  T240] kworker/u33:18 (240) used greatest stack depth: 13584 bytes left
->>> [    5.860081][  T232] kworker/u33:16 (232) used greatest stack depth: 13072 bytes left
->>> [    5.863145][  T210] kworker/u35:13 (210) used greatest stack depth: 12928 bytes left
->>> [    5.865000][    T1] Failed to execute /init (error -8)
->>> [    5.868897][    T1] Run /sbin/init as init process
->>> [   10.891673][  T315] request_module: modprobe binfmt-4c46 cannot be processed, kmod busy with 50 threads for more than 5 seconds now
->>> [   10.894036][    T1] Starting init: /sbin/init exists but couldn't execute it (error -8)
->>> [   10.901455][    T1] Run /etc/init as init process
->>> [   10.903154][    T1] Run /bin/init as init process
->>> [   10.904747][    T1] Run /bin/sh as init process
->>> [   15.931679][  T367] request_module: modprobe binfmt-4c46 cannot be processed, kmod busy with 50 threads for more than 5 seconds now
->>> [   15.934689][    T1] Starting init: /bin/sh exists but couldn't execute it (error -8)
->>
->> That's something different, this is because you built a big-endian kernel
->> and you are trying to run a little-endian userspace.
-> okay
->>
->> Does it work with ppc64le_defconfig ?
-> make ppc64le_defconfig
-> 
-> yes, it builds && boots just fine.
-> the host is a p8 powernv system , the qemu command line is as below:
-> qemu-system-ppc64 -m 64g -smp 16,cores=4,threads=4 --enable-kvm  -nographic -net nic -net tap,ifname=tap0,script=/etc/qemu-ifup-nat,downscript=/etc/qemu-ifdown-nat  Downloads/Fedora-Cloud-Base-38-1.6.ppc64le.qcow2
+Hi Linus,
 
-With that command you don't boot a freshly built kernel, you boot:
+Please pull powerpc updates for 6.12. No conflicts that I'm aware of. The V=
+DSO
+changes have already been merged via the random tree.
 
-Linux version 6.2.9-300.fc38.ppc64le 
-(mockbuild@0e2dbea752814aea985bdc5347ce35da) (gcc (GCC) 13.0.1 20230318 
-(Red Hat 13.0.1-0), GNU ld version 2.39-9.fc38)
+cheers
 
-Are you sure you tried with the ppc64le_defconfig ? On my side the boot 
-fails as follows when using a ppc64le_defconfig vmlinux with the file 
-Fedora-Cloud-Base-38-1.6.ppc64le.qcow2:
+The following changes since commit de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed:
 
-...
-[    2.602758][    T1] md: autorun ...
-[    2.602808][    T1] md: ... autorun DONE.
-[    2.612596][  T189] kworker/u73:0 (189) used greatest stack depth: 
-29008 bytes left
-[    2.617068][    T1] /dev/root: Can't open blockdev
-[    2.618136][    T1] VFS: Cannot open root device "" or 
-unknown-block(0,0): error -6
-[    2.618239][    T1] Please append a correct "root=" boot option; here 
-are the available partitions:
-[    2.618611][    T1] 0100           65536 ram0
-[    2.618768][    T1]  (driver?)
-[    2.619101][    T1] 0101           65536 ram1
-[    2.619120][    T1]  (driver?)
-[    2.619187][    T1] 0102           65536 ram2
-[    2.619199][    T1]  (driver?)
-[    2.619251][    T1] 0103           65536 ram3
-[    2.619261][    T1]  (driver?)
-[    2.619312][    T1] 0104           65536 ram4
-[    2.619322][    T1]  (driver?)
-[    2.619372][    T1] 0105           65536 ram5
-[    2.619382][    T1]  (driver?)
-[    2.619436][    T1] 0106           65536 ram6
-[    2.619447][    T1]  (driver?)
-[    2.619500][    T1] 0107           65536 ram7
-[    2.619519][    T1]  (driver?)
-[    2.619571][    T1] 0108           65536 ram8
-[    2.619581][    T1]  (driver?)
-[    2.619631][    T1] 0109           65536 ram9
-[    2.619641][    T1]  (driver?)
-[    2.619690][    T1] 010a           65536 ram10
-[    2.619700][    T1]  (driver?)
-[    2.619754][    T1] 010b           65536 ram11
-[    2.619764][    T1]  (driver?)
-[    2.619818][    T1] 010c           65536 ram12
-[    2.619827][    T1]  (driver?)
-[    2.619880][    T1] 010d           65536 ram13
-[    2.619889][    T1]  (driver?)
-[    2.619942][    T1] 010e           65536 ram14
-[    2.619952][    T1]  (driver?)
-[    2.620023][    T1] 010f           65536 ram15
-[    2.620036][    T1]  (driver?)
-[    2.620116][    T1] 0b00         1048575 sr0
-[    2.620150][    T1]  driver: sr
-[    2.620221][    T1] 0800         5242880 sda
-[    2.620234][    T1]  driver: sd
-[    2.620310][    T1]   0801            4096 sda1 
-709431c7-74bd-4ec4-bbe8-d4f7e7e3194e
-[    2.620369][    T1]
-[    2.620449][    T1]   0802         1024000 sda2 
-e0b0a6de-ca8f-4e50-808c-121324c94d04
-[    2.620463][    T1]
-[    2.620531][    T1]   0803          102400 sda3 
-8ed2fbf1-fd2c-4ab0-b66f-d31df1d24e3e
-[    2.620544][    T1]
-[    2.620599][    T1]   0804            1024 sda4 
-46dc7fc8-bf10-4166-9bc8-98daabbec06d
-[    2.620610][    T1]
-[    2.620666][    T1]   0805         4109312 sda5 
-8a52b54b-c379-43a5-bf8d-a43fdef4a370
-[    2.620676][    T1]
-[    2.620838][    T1] List of all bdev filesystems:
-[    2.620884][    T1]  ext3
-[    2.620918][    T1]  ext2
-[    2.620947][    T1]  ext4
-[    2.620971][    T1]  msdos
-[    2.620995][    T1]  iso9660
-[    2.621018][    T1]  xfs
-[    2.621050][    T1]
-[    2.621311][    T1] Kernel panic - not syncing: VFS: Unable to mount 
-root fs on unknown-block(0,0)
-[    2.621992][    T1] CPU: 2 UID: 0 PID: 1 Comm: swapper/0 Not tainted 
-6.11.0-06480-gfabc9e955334 #1217
-[    2.622166][    T1] Hardware name: IBM pSeries (emulated by qemu) 
-POWER9 (architected) 0x4e1200 0xf000005 of:SLOF,HEAD pSeries
-[    2.622456][    T1] Call Trace:
-[    2.622574][    T1] [c000000003797ad0] [c000000001189fe8] 
-dump_stack_lvl+0xd8/0xf0 (unreliable)
-[    2.623575][    T1] [c000000003797b00] [c00000000014830c] 
-panic+0x2f8/0x4fc
-[    2.623666][    T1] [c000000003797ba0] [c000000002006858] 
-mount_root_generic+0x2c8/0x474
-[    2.623748][    T1] [c000000003797c70] [c000000002006f40] 
-prepare_namespace+0x94/0x3a4
-[    2.623804][    T1] [c000000003797d00] [c000000002005e7c] 
-kernel_init_freeable+0x4cc/0x530
-[    2.623896][    T1] [c000000003797de0] [c000000000011138] 
-kernel_init+0x34/0x26c
-[    2.623954][    T1] [c000000003797e50] [c00000000000debc] 
-ret_from_kernel_user_thread+0x14/0x1c
-[    2.624025][    T1] --- interrupt: 0 at 0x0
-[    4.502550][    T1] pstore: backend (nvram) writing error (-1)
-qemu-system-ppc64: OS terminated:
+  Linux 6.11-rc2 (2024-08-04 13:50:53 -0700)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
+werpc-6.12-1
+
+for you to fetch changes up to 39190ac7cff1fd15135fa8e658030d9646fdb5f2:
+
+  powerpc/atomic: Use YZ constraints for DS-form instructions (2024-09-17 2=
+2:17:57 +1000)
+
+- ------------------------------------------------------------------
+powerpc updates for 6.12
+
+ - Reduce alignment constraints on STRICT_KERNEL_RWX and speed-up TLB misse=
+s on
+   8xx and 603.
+
+ - Replace kretprobe code with rethook and enable fprobe.
+
+ - Remove the "fast endian switch" syscall.
+
+ - Handle DLPAR device tree updates in kernel, allowing the deprecation of =
+the
+   binary /proc/powerpc/ofdt interface.
+
+Thanks to: Abhishek Dubey, Alex Shi, Benjamin Gray, Christophe Leroy, Gaosh=
+eng
+Cui, Gautam Menghani, Geert Uytterhoeven, Haren Myneni, Hari Bathini, Huang
+Xiaojia, Jinjie Ruan, Madhavan Srinivasan, Miguel Ojeda, Mina Almasry, Nara=
+yana
+Murty N, Naveen Rao, Rob Herring (Arm), Scott Cheloha, Segher Boessenkool,
+Stephen Rothwell, Thomas Zimmermann, Uwe Kleine-K=C3=B6nig, Vaibhav Jain, Z=
+hang
+Zekun.
+
+- ------------------------------------------------------------------
+Abhishek Dubey (1):
+      powerpc: Replace kretprobe code with rethook on powerpc
+
+Alex Shi (1):
+      KVM: PPC: Book3S HV: remove unused varible
+
+Benjamin Gray (5):
+      powerpc/code-patching: Add generic memory patching
+      powerpc/code-patching: Add data patch alignment check
+      powerpc/64: Convert patch_instruction() to patch_u32()
+      powerpc/32: Convert patch_instruction() to patch_uint()
+      powerpc/code-patching: Add boot selftest for data patching
+
+Christophe Leroy (17):
+      powerpc: Remove unused LHZX_BE macro
+      powerpc/8xx: Fix initial memory mapping
+      powerpc/8xx: Fix kernel vs user address comparison
+      powerpc/8xx: Copy kernel PGD entries into all PGDIRs
+      Revert "powerpc/8xx: Always pin kernel text TLB"
+      powerpc/8xx: Allow setting DATA alignment even with STRICT_KERNEL_RWX
+      powerpc/8xx: Reduce default size of module/execmem area
+      powerpc/8xx: Preallocate execmem page tables
+      powerpc/8xx: Inconditionally use task PGDIR in ITLB misses
+      powerpc/8xx: Inconditionally use task PGDIR in DTLB misses
+      powerpc/32s: Reduce default size of module/execmem area
+      powerpc/603: Copy kernel PGD entries into all PGDIRs and preallocate =
+execmem page tables
+      powerpc/603: Switch r0 and r3 in TLB miss handlers
+      powerpc/603: Inconditionally use task PGDIR in ITLB misses
+      powerpc/603: Inconditionally use task PGDIR in DTLB misses
+      powerpc/32: Implement validation of emergency stack
+      powerpc/vdso: Inconditionally use CFUNC macro
+
+Gaosheng Cui (5):
+      powerpc: Remove obsoleted declaration for _get_SP
+      powerpc/maple: Remove obsoleted declaration for maple_calibrate_decr()
+      powerpc/pasemi: Remove obsoleted declaration for pas_pci_irq_fixup()
+      powerpc: Remove obsoleted declarations for use_cop and drop_cop
+      powerpc/powernv/pci: Remove obsoleted declaration for pnv_pci_init_io=
+da_hub
+
+Gautam Menghani (1):
+      KVM: PPC: Book3S HV: Refactor HFSCR emulation for KVM guests
+
+Haren Myneni (3):
+      powerpc/pseries: Use correct data types from pseries_hp_errorlog stru=
+ct
+      powerpc/pseries/dlpar: Remove device tree node for DLPAR IO remove
+      powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add
+
+Huang Xiaojia (3):
+      powerpc: Constify struct kobj_type
+      powerpc: powernv: Constify struct kobj_type
+      powerpc: pseries: Constify struct kobj_type
+
+Jinjie Ruan (1):
+      powerpc: Remove useless config comment in asm/percpu.h
+
+Madhavan Srinivasan (2):
+      powerpc/xmon: Fix tmpstr length check in scanhex
+      selftests/powerpc: Allow building without static libc
+
+Michael Ellerman (13):
+      MAINTAINERS: Mark powerpc Cell as orphaned
+      MAINTAINERS: Mark powerpc spufs as orphaned
+      powerpc/configs/64s: Enable DEFERRED_STRUCT_PAGE_INIT
+      powerpc/64s/mm: Move __real_pte stubs into hash-4k.h
+      powerpc/64s: Make mmu_hash_ops __ro_after_init
+      powerpc/mm/64s: Move THP reqs into a separate symbol
+      powerpc/mm/64s: Restrict THP to Radix or HPT w/64K pages
+      powerpc/64s: Remove the "fast endian switch" syscall
+      powerpc: Stop using no_llseek
+      macintosh/via-pmu: register_pmu_pm_ops() can be __init
+      Merge branch 'topic/ppc-kvm' into next
+      MAINTAINERS: powerpc: Add Maddy
+      powerpc/atomic: Use YZ constraints for DS-form instructions
+
+Narayana Murty N (1):
+      powerpc/pseries/eeh: Fix pseries_eeh_err_inject
+
+Rob Herring (Arm) (1):
+      powerpc: Use of_property_present()
+
+Thomas Zimmermann (2):
+      powerpc/traps: Use backlight power constants
+      macintosh/via-pmu-backlight: Use backlight power constants
+
+Uwe Kleine-K=C3=B6nig (2):
+      powerpc/476: Drop explicit initialization of struct i2c_device_id::dr=
+iver_data to 0
+      powerpc: Switch back to struct platform_driver::remove()
+
+Zhang Zekun (2):
+      powerpc/powermac/pfunc_base: Use helper function for_each_child_of_no=
+de()
+      powerpc/pseries/dlpar: Use helper function for_each_child_of_node()
 
 
-Christophe
+ CREDITS                                                  |   6 +
+ MAINTAINERS                                              |   9 +-
+ arch/powerpc/Kconfig                                     |  32 ++-
+ arch/powerpc/Kconfig.debug                               |   6 -
+ arch/powerpc/configs/ppc64_defconfig                     |   1 +
+ arch/powerpc/include/asm/asm-compat.h                    |   8 +-
+ arch/powerpc/include/asm/atomic.h                        |   5 +-
+ arch/powerpc/include/asm/book3s/32/pgtable.h             |   3 +-
+ arch/powerpc/include/asm/book3s/64/hash-4k.h             |  20 ++
+ arch/powerpc/include/asm/book3s/64/pgtable.h             |  26 ---
+ arch/powerpc/include/asm/code-patching.h                 |  37 ++++
+ arch/powerpc/include/asm/eeh.h                           |   1 +
+ arch/powerpc/include/asm/mmu_context.h                   |   3 -
+ arch/powerpc/include/asm/nohash/32/mmu-8xx.h             |   3 +-
+ arch/powerpc/include/asm/nohash/pgalloc.h                |   8 +-
+ arch/powerpc/include/asm/percpu.h                        |   2 +-
+ arch/powerpc/include/asm/rtas.h                          |   1 +
+ arch/powerpc/include/asm/thread_info.h                   |   4 +
+ arch/powerpc/include/asm/uaccess.h                       |   7 +-
+ arch/powerpc/kernel/Makefile                             |   1 +
+ arch/powerpc/kernel/cacheinfo.c                          |   2 +-
+ arch/powerpc/kernel/eeh.c                                |  13 +-
+ arch/powerpc/kernel/exceptions-64s.S                     |  17 --
+ arch/powerpc/kernel/head_8xx.S                           |  78 ++++---
+ arch/powerpc/kernel/head_book3s_32.S                     | 144 ++++++------
+ arch/powerpc/kernel/kprobes.c                            |  65 +-----
+ arch/powerpc/kernel/module_64.c                          |   5 +-
+ arch/powerpc/kernel/optprobes.c                          |   2 +-
+ arch/powerpc/kernel/process.c                            |  22 +-
+ arch/powerpc/kernel/rethook.c                            |  73 ++++++
+ arch/powerpc/kernel/secvar-sysfs.c                       |   2 +-
+ arch/powerpc/kernel/stacktrace.c                         |   6 +-
+ arch/powerpc/kernel/static_call.c                        |   2 +-
+ arch/powerpc/kernel/traps.c                              |   2 +-
+ arch/powerpc/kernel/vdso/gettimeofday.S                  |   4 -
+ arch/powerpc/kvm/book3s_hv.c                             |  18 +-
+ arch/powerpc/lib/code-patching.c                         |  70 ++++--
+ arch/powerpc/lib/test-code-patching.c                    |  41 ++++
+ arch/powerpc/mm/book3s32/mmu.c                           |   2 +
+ arch/powerpc/mm/book3s64/hash_utils.c                    |   2 +-
+ arch/powerpc/mm/mem.c                                    |  14 ++
+ arch/powerpc/mm/nohash/8xx.c                             |   9 +-
+ arch/powerpc/platforms/44x/ppc476.c                      |   2 +-
+ arch/powerpc/platforms/512x/mpc512x_lpbfifo.c            |   2 +-
+ arch/powerpc/platforms/52xx/mpc52xx_gpt.c                |   1 -
+ arch/powerpc/platforms/85xx/sgy_cts1000.c                |   2 +-
+ arch/powerpc/platforms/8xx/Kconfig                       |   7 +
+ arch/powerpc/platforms/Kconfig.cputype                   |  11 +-
+ arch/powerpc/platforms/cell/spufs/file.c                 |  17 --
+ arch/powerpc/platforms/maple/maple.h                     |   1 -
+ arch/powerpc/platforms/pasemi/gpio_mdio.c                |   2 +-
+ arch/powerpc/platforms/pasemi/pasemi.h                   |   1 -
+ arch/powerpc/platforms/powermac/pfunc_base.c             |   2 +-
+ arch/powerpc/platforms/powermac/smp.c                    |   2 +-
+ arch/powerpc/platforms/powernv/eeh-powernv.c             |   3 +-
+ arch/powerpc/platforms/powernv/opal-dump.c               |   2 +-
+ arch/powerpc/platforms/powernv/opal-elog.c               |   2 +-
+ arch/powerpc/platforms/powernv/opal-lpc.c                |   2 +-
+ arch/powerpc/platforms/powernv/opal-prd.c                |   2 +-
+ arch/powerpc/platforms/powernv/pci.h                     |   1 -
+ arch/powerpc/platforms/pseries/dlpar.c                   | 234 +++++++++++=
++++++++--
+ arch/powerpc/platforms/pseries/dtl.c                     |   1 -
+ arch/powerpc/platforms/pseries/eeh_pseries.c             |  39 +++-
+ arch/powerpc/platforms/pseries/hotplug-cpu.c             |   2 +-
+ arch/powerpc/platforms/pseries/hotplug-memory.c          |  16 +-
+ arch/powerpc/platforms/pseries/papr_scm.c                |   2 +-
+ arch/powerpc/platforms/pseries/pmem.c                    |   2 +-
+ arch/powerpc/platforms/pseries/vas-sysfs.c               |   4 +-
+ arch/powerpc/sysdev/fsl_msi.c                            |   2 +-
+ arch/powerpc/sysdev/pmi.c                                |   2 +-
+ arch/powerpc/xmon/xmon.c                                 |   2 +-
+ drivers/macintosh/via-pmu-backlight.c                    |   2 +-
+ drivers/macintosh/via-pmu.c                              |   2 +-
+ tools/testing/selftests/powerpc/benchmarks/Makefile      |   2 +-
+ tools/testing/selftests/powerpc/benchmarks/exec_target.c |  16 +-
+ 75 files changed, 781 insertions(+), 385 deletions(-)
+ create mode 100644 arch/powerpc/kernel/rethook.c
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQRjvi15rv0TSTaE+SIF0oADX8seIQUCZurhKAAKCRAF0oADX8se
+IZ13AQCm39s+vzO2omeS0Gmy3OGZJclzH1vdPVQgi+NVtWeJXAD+M5Vd6zbpUpw3
+5yLOLy25C919Aujgo1bsk1ALg9g/Ugs=3D
+=3D0TcI
+-----END PGP SIGNATURE-----
 
