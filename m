@@ -1,60 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-1426-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1427-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E9097B6D2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2024 04:33:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3B697B6F3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Sep 2024 04:54:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X7jPp5nq0z2yDM;
-	Wed, 18 Sep 2024 12:33:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X7jsM2XWQz2xpl;
+	Wed, 18 Sep 2024 12:53:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726626814;
-	cv=none; b=YgH9oa6FQkQSFUxRYml0GvPsTdkUxEJ6lg++YixdM8b6Vj5owCP/VNSMG7C1VSuE913Sb5CpU7QcXvvtl1pUfIUvK6rOImF9XvqfNuphO5+bOqSbtQwoLRdGkALuEQr7XUU/aOre6knX4pzHddeTIzjJrhkVgvYcHe21VGdcoTAcITpbdQprHkmqHRVUYXR4NA933fmlfINO8BvbZqTurFtQLIQNHhPYJHHAUKjJQRFyKiVjY62vCkb0aUUPpJ7P6GTtgivFUFoKFSUhrrbqoIp6/UZX3vaoqnU/Nn8Q4pq/lTkXPIsujqW9JT4wG10n5ehkZv58ZebFoaST0P40ZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::532"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726628039;
+	cv=none; b=nIhDpHvI/IIoBekeWobvMmC1OmTRvHH9YSHWdJhjTHLYo1NcvdR8BCM1L5ldoLPaJQZ27cSPvzMvK0eI6NtKP8c3QJ31uiBaKm46TKABqs8s0GpjbJ+ChFlE+4Y7pWWjdnCklTPd5N3KgItKTEc4nf4I8Euwv/at6pSKu42XeCKlHBUhaacdzJUfmB3J2CUt5uLnwcLNJyWgtw4KY7UPszRJYKx9VUHIF8tghIuxXOJypkeMrv4Dc2kz7bmHlZ+W9AoZ4Bq5UH44XL8dIYuq+WMy9GlGkz8f1jjrZF0gr9r+oTW2jZmuEyCO9CMleSCD5XR75Dx+vmz1Cjd1rqJ4TA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726626814; c=relaxed/relaxed;
-	bh=nTH4cSKPkyYveYR5hN8FWjwVaXptyW8BZiIACU0AG/Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EkMjQxOmOak4puZRpWDZ1XSZGfGmSZ6JiIoON18/I96rmNGdN/ZLNahi961mxAxdDdoscW1kDy1S5+MeodiXaYea1i6FJlXWVaFJTe5kc+Ss3Az5YNAqv1uLaVmCd0KiCuRq5xqT1os8B8nw3BJoRdg65Le26kJz2RY8N5lAjRiy3bs019t3ZLEFs5xmXyDJfLuwGjAmLYoTfGUuRY0MuxBnPQ8piaCfmmIEtX2XUjG2WZLut197mDk492X/H6/45uOhb5eu9F2PIXHf3xDHLWhCi2eKmTvWy95rnpMLgiqodazpRHKPbdDvh4+x/dFkrsTjdIFuwsvASYY+AQ7GKQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IZVfUi4q; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1726628039; c=relaxed/relaxed;
+	bh=AWZ3qcTMi/V1RAhpylJg9TiYZi40Z2/VWqsDBDLTX80=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=fcTIkSQsmrPL/i3eqh3OpYyLCYVMwGRYIXzRXbREdgWshAOB03m6ZPS5nMGbbxdUieqNJDp6QBS4C2sXrq1m9OtS09Zfuk00Fs1UTjfrHgolC53izFG9CsrBemuAojUk4vISH3Re/W/ByDpf2tOb1ezg00cJAM9GuMKczg6wKujdI0SDjn2L5bS8A236a0lArTKH2nH2DuDWQt/LUU5R8iAQz56pNQVwFAyHMjyedVraGnGI5/CidAFb4G80PJUjiuaYy4XTGmizdArcjXUVtHNXzWdilN8bvACNPpx5wmI8GLK+Wo875Fmn4m5WKwIkH7U2dec2HeJGpLiJRvK0aw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dEEyzpth; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IZVfUi4q;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dEEyzpth;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532; helo=mail-pg1-x532.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X7jPn2D7lz2xYl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2024 12:33:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726626811;
-	bh=nTH4cSKPkyYveYR5hN8FWjwVaXptyW8BZiIACU0AG/Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=IZVfUi4qsnAdIKkAtZcG2JdzpmXjE6seVDSNsIrrxavUQl0TMF/PfePlH9Ghc+k25
-	 /kbSEW8+RswLDcA4DUdT7T17RW/knaMT4gdH62IOkLtBbivOm+VowCGgsqcaZjehEm
-	 XWfVp5Un8fMU3Is5LrnaOGsvUBGusq7vdChOtsM9UawIVSMuIWbYnPhRjHTe3EehrA
-	 U0Mxs+GzhpdcJ/sslUd9TfsTcI+CtF+wgWIJflTMCiytBTji8WFgWCSbJJTN7ell+b
-	 Uqv8YOONEtyCu66R0ETwREElfA2T2bBc+SQbPmfk72FhxfASHZX1scthO+ZH/F4L9/
-	 Y+sm8drVOroXA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X7jPl1HxQz4wcL;
-	Wed, 18 Sep 2024 12:33:30 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin
- <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Peter Bergner
- <bergner@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RFC PATCH] powerpc/vdso: Should VDSO64 functions be flagged as
- functions like VDSO32 ?
-In-Reply-To: <6fa86f3de610ffc180ae0f5dbd511453e7473b36.1726208058.git.christophe.leroy@csgroup.eu>
-References: <6fa86f3de610ffc180ae0f5dbd511453e7473b36.1726208058.git.christophe.leroy@csgroup.eu>
-Date: Wed, 18 Sep 2024 12:33:27 +1000
-Message-ID: <875xqtr8qw.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X7jsL428Jz2xYl
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2024 12:53:57 +1000 (AEST)
+Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-7db1f13b14aso5503483a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Sep 2024 19:53:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726628033; x=1727232833; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AWZ3qcTMi/V1RAhpylJg9TiYZi40Z2/VWqsDBDLTX80=;
+        b=dEEyzpthvEHA1iMihtr0dWXn7IuyP5VI/1Rn1Kr6GxlIokBYSFl3fKoKTX7G4iODtJ
+         ukr4fJ251acEFxWF8RfaTFmcmr58Dx6ASDdDkyXXa5GGhm2Zv3rk1TUzUaw970uGl/xl
+         AIbci1e/IEc3SLyq9eLq1b9EmHtjuQfNZzPBeNLwS8IauuMPbivZ2ILBhup1u9PNVv1F
+         2gT/2KQ4Ggw7BU0maG/ZSe90FeuY8EBUMyUVUYR7KjOmKdsk9JXoPSJ+X1x0Ndhlz1ye
+         omFxkqsUukVk5ejgD1LNkowmba38rE6D+x5xtKnq0E2e14RQaruBFHuTz9YqMwfX3Nuk
+         3rMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726628033; x=1727232833;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AWZ3qcTMi/V1RAhpylJg9TiYZi40Z2/VWqsDBDLTX80=;
+        b=OLyx9LIelTVj+rMwLZNg67d+HQa7z5GNExLI19orwzQd3AKj/jN2gT04WaM/iOD1V/
+         hqXS7dxlXBzz7xy4ElMrSeuWUkZSVpo2xOw4GPMcVUqoJ3L2GBOnZ1DMakdwpZnXBKyb
+         GxvtUAsPkFyvNFqQcPV4qGTPzWrtCIL7DpjbFxFnLVZlyALPgV4NxEkXF1YW6xIcDlcs
+         VHFjizsstv/W9LZjVpavE2mSTnOFFJVp9bvqE/72tsmRl4fxhux7LFQNi78bI/e/yySK
+         RQoL4BCLYGOo5qBaqh41yUmSAfqFzpsB6dWD3i5WTt8u11U1eND/WukzLPuRNZ0ISPVz
+         e8cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVeFg8VYvDPf9gAVKb85+92HmWsSYp28MlehoMNzdUB3q9+8nQnludzqhsRBsnd/xYElBp9UOg16EJL6lY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwlDMkdOzgWbvgp5VwNex74hhdFbdNFX7yHi/IfWgZ/+7LRuMCo
+	oS8tEPzqCQhrtBIB+0JGHU2ZRm62327bMk+efv/FopYUB9+gmRtH
+X-Google-Smtp-Source: AGHT+IGKGWYruuAC6rL2FMLKK+SZlN2gY4arKU4qgCeD621ynurim1YEbscPsFKq5JQECLbkqScxkQ==
+X-Received: by 2002:a17:903:2304:b0:202:4cd2:d6e4 with SMTP id d9443c01a7336-2076e36157emr331090675ad.24.1726628033104;
+        Tue, 17 Sep 2024 19:53:53 -0700 (PDT)
+Received: from dw-tp ([171.76.85.129])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207945da788sm56252145ad.18.2024.09.17.19.53.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Sep 2024 19:53:52 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Narayana Murty N <nnmlinux@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, linux-kernel@vger.kernel.org
+Cc: mahesh@linux.ibm.com, oohall@gmail.com, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, vaibhav@linux.ibm.com, ganeshgr@linux.ibm.com, sbhat@linux.ibm.com
+Subject: Re: [PATCH] powerpc/pseries/eeh: move pseries_eeh_err_inject() outside CONFIG_DEBUG_FS block
+In-Reply-To: <20240917132445.3868016-1-nnmlinux@linux.ibm.com>
+Date: Wed, 18 Sep 2024 08:03:56 +0530
+Message-ID: <871q1hbsh7.fsf@gmail.com>
+References: <20240917132445.3868016-1-nnmlinux@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,135 +77,144 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> On powerpc64 as shown below by readelf, vDSO functions symbols have
-> type NOTYPE.
+Narayana Murty N <nnmlinux@linux.ibm.com> writes:
+
+> Makes pseries_eeh_err_inject() available even when debugfs
+> is disabled (CONFIG_DEBUG_FS=n). It moves eeh_debugfs_break_device()
+> and eeh_pe_inject_mmio_error() out of the CONFIG_DEBUG_FS block
+> and renames it as eeh_break_device().
 >
-> $ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
-> ELF Header:
->   Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
->   Class:                             ELF64
->   Data:                              2's complement, big endian
->   Version:                           1 (current)
->   OS/ABI:                            UNIX - System V
->   ABI Version:                       0
->   Type:                              DYN (Shared object file)
->   Machine:                           PowerPC64
->   Version:                           0x1
-> ...
->
-> Symbol table '.dynsym' contains 12 entries:
->    Num:    Value          Size Type    Bind   Vis      Ndx Name
-> ...
->      1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-> ...
->      4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
->      5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
->
-> Symbol table '.symtab' contains 56 entries:
->    Num:    Value          Size Type    Bind   Vis      Ndx Name
-> ...
->     45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
->     46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
->     47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
->
-> To overcome that, commit ba83b3239e65 ("selftests: vDSO: fix vDSO
-> symbols lookup for powerpc64") was proposed to make selftests also
-> look for NOTYPE symbols, but is it the correct fix ?
->
-> VDSO32 functions are flagged as functions, why not VDSO64 functions ?
-> Is it because VDSO functions are not traditional C functions using
-> the standard API ?
-
-Yes. There's some explanation in the original commit:
-
-    Note that the symbols exposed by the vDSO aren't "normal" function symbols, apps
-    can't be expected to link against them directly, the vDSO's are both seen
-    as if they were linked at 0 and the symbols just contain offsets to the
-    various functions.  This is done on purpose to avoid a relocation step
-    (ppc64 functions normally have descriptors with abs addresses in them).
-    When glibc uses those functions, it's expected to use it's own trampolines
-    that know how to reach them.
-
-From https://github.com/mpe/linux-fullhistory/commit/5f2dd691b62da9d9cc54b938f8b29c22c93cb805
-
-The descriptors it's talking about are the OPD function descriptors used
-on ABI v1 (big endian).
-
-> But it is exactly the same for VDSO32 functions, allthough they are
-> flagged as functions.
- 
-It's not quite the same because of the function descriptors.
-
-On ppc64/ABIv1 a function pointer for "F" points to an opd, which then
-points to ".F" which has the actual text. It's the ".F" symbol that has
-type "function".
-
-> So lets flag them as functions and revert the selftest change.
->
-> What's your opinion on that ?
-
-I think it's fine on ppc64le, I worry slightly that it risks breaking
-glibc or something else on big endian.
-
-It is more correct for the text symbol to have type function, even if
-there's no function descriptor for it.
-
-glibc has a special case already for handling the VDSO symbols which
-creates a fake opd pointing at the kernel symbol. So changing the VDSO
-symbol type to function shouldn't affect that AFAICS.
-
-I think the only cause of breakage would be if something is explicitly
-looking for NOTYPE symbols, which seems unlikely, but you never know.
-
-So I think we could attempt to take this change for v6.13, giving it
-lots of time to get some test coverage in next before going to mainline.
-
-cheers
-
-
-
-> It predates git kernel history and both VDSO32 and VDSO64 were brough by
-> arch/ppc64/ with that difference already.
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202409170509.VWC6jadC-lkp@intel.com/
+> Fixes: b0e2b828dfca ("powerpc/pseries/eeh: Fix pseries_eeh_err_inject")
+> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 > ---
-> commit ba83b3239e65 is in random git tree at the moment : https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/commit/?id=ba83b3239e657469709d15dcea5f9b65bf9dbf34
-> On the list at : https://lore.kernel.org/lkml/fc1a0862516b1e11b336d409f2cb8aab10a97337.1725020674.git.christophe.leroy@csgroup.eu/T/#u
-> ---
->  arch/powerpc/include/asm/vdso.h           | 1 +
->  tools/testing/selftests/vDSO/parse_vdso.c | 3 +--
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  arch/powerpc/kernel/eeh.c | 198 +++++++++++++++++++-------------------
+>  1 file changed, 99 insertions(+), 99 deletions(-)
+
+Ok, so in your original patch you implemented eeh_inject ops for pseries
+using mmio based eeh error injection (eeh_pe_inject_mmio_error()), which
+uses the functions defined under debugfs -> eeh_debugfs_break_device(). 
+
+This was failing when CONFIG_DEBUGFS is not defined, thus referring to
+undefined function definition. 
+
+Minor nit below.
+
 >
-> diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
-> index 7650b6ce14c8..8d972bc98b55 100644
-> --- a/arch/powerpc/include/asm/vdso.h
-> +++ b/arch/powerpc/include/asm/vdso.h
-> @@ -25,6 +25,7 @@ int vdso_getcpu_init(void);
->  #ifdef __VDSO64__
->  #define V_FUNCTION_BEGIN(name)		\
->  	.globl name;			\
-> +	.type name,@function; 		\
->  	name:				\
+> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+> index 49ab11a287a3..0fe25e907ea6 100644
+> --- a/arch/powerpc/kernel/eeh.c
+> +++ b/arch/powerpc/kernel/eeh.c
+> @@ -1574,6 +1574,104 @@ static int proc_eeh_show(struct seq_file *m, void *v)
+>  }
+>  #endif /* CONFIG_PROC_FS */
 >  
->  #define V_FUNCTION_END(name)		\
-> diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-> index d9ccc5acac18..4ae417372e9e 100644
-> --- a/tools/testing/selftests/vDSO/parse_vdso.c
-> +++ b/tools/testing/selftests/vDSO/parse_vdso.c
-> @@ -216,8 +216,7 @@ void *vdso_sym(const char *version, const char *name)
->  		ELF(Sym) *sym = &vdso_info.symtab[chain];
->  
->  		/* Check for a defined global or weak function w/ right name. */
-> -		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
-> -		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
-> +		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
->  			continue;
->  		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
->  		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
-> -- 
-> 2.44.0
+> +static int eeh_break_device(struct pci_dev *pdev)
+> +{
+> +	struct resource *bar = NULL;
+> +	void __iomem *mapped;
+> +	u16 old, bit;
+> +	int i, pos;
+> +
+> +	/* Do we have an MMIO BAR to disable? */
+> +	for (i = 0; i <= PCI_STD_RESOURCE_END; i++) {
+> +		struct resource *r = &pdev->resource[i];
+> +
+> +		if (!r->flags || !r->start)
+> +			continue;
+> +		if (r->flags & IORESOURCE_IO)
+> +			continue;
+> +		if (r->flags & IORESOURCE_UNSET)
+> +			continue;
+> +
+> +		bar = r;
+> +		break;
+> +	}
+> +
+> +	if (!bar) {
+> +		pci_err(pdev, "Unable to find Memory BAR to cause EEH with\n");
+> +		return -ENXIO;
+> +	}
+> +
+> +	pci_err(pdev, "Going to break: %pR\n", bar);
+> +
+> +	if (pdev->is_virtfn) {
+> +#ifndef CONFIG_PCI_IOV
+> +		return -ENXIO;
+> +#else
+> +		/*
+> +		 * VFs don't have a per-function COMMAND register, so the best
+> +		 * we can do is clear the Memory Space Enable bit in the PF's
+> +		 * SRIOV control reg.
+> +		 *
+> +		 * Unfortunately, this requires that we have a PF (i.e doesn't
+> +		 * work for a passed-through VF) and it has the potential side
+> +		 * effect of also causing an EEH on every other VF under the
+> +		 * PF. Oh well.
+> +		 */
+> +		pdev = pdev->physfn;
+> +		if (!pdev)
+> +			return -ENXIO; /* passed through VFs have no PF */
+> +
+> +		pos  = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
+> +		pos += PCI_SRIOV_CTRL;
+> +		bit  = PCI_SRIOV_CTRL_MSE;
+> +#endif /* !CONFIG_PCI_IOV */
+> +	} else {
+> +		bit = PCI_COMMAND_MEMORY;
+> +		pos = PCI_COMMAND;
+> +	}
+> +
+> +	/*
+> +	 * Process here is:
+> +	 *
+> +	 * 1. Disable Memory space.
+> +	 *
+> +	 * 2. Perform an MMIO to the device. This should result in an error
+> +	 *    (CA  / UR) being raised by the device which results in an EEH
+> +	 *    PE freeze. Using the in_8() accessor skips the eeh detection hook
+> +	 *    so the freeze hook so the EEH Detection machinery won't be
+> +	 *    triggered here. This is to match the usual behaviour of EEH
+> +	 *    where the HW will asynchronously freeze a PE and it's up to
+> +	 *    the kernel to notice and deal with it.
+> +	 *
+> +	 * 3. Turn Memory space back on. This is more important for VFs
+> +	 *    since recovery will probably fail if we don't. For normal
+> +	 *    the COMMAND register is reset as a part of re-initialising
+> +	 *    the device.
+> +	 *
+> +	 * Breaking stuff is the point so who cares if it's racy ;)
+> +	 */
+> +	pci_read_config_word(pdev, pos, &old);
+> +
+> +	mapped = ioremap(bar->start, PAGE_SIZE);
+> +	if (!mapped) {
+> +		pci_err(pdev, "Unable to map MMIO BAR %pR\n", bar);
+> +		return -ENXIO;
+> +	}
+> +
+> +	pci_write_config_word(pdev, pos, old & ~bit);
+> +	in_8(mapped);
+> +	pci_write_config_word(pdev, pos, old);
+> +
+> +	iounmap(mapped);
+> +
+> +	return 0;
+> +}
+> +
+> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
+> +{
+> +	return eeh_break_device(pdev);
+> +}
+> +
+
+Why have an extra eeh_pe_inject_mmio_error() function which only calls
+eeh_break_device()?
+
+Maybe we can rename eeh_break_device() to eeh_mmio_break_device() and use
+this function itself at both call sites?
+
+-ritesh
 
