@@ -1,77 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-1454-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1457-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F22A97C43B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 08:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B14DA97C4AD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 09:12:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8QSN4dmtz2y8R;
-	Thu, 19 Sep 2024 16:23:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8RY555WYz2yD5;
+	Thu, 19 Sep 2024 17:12:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::635"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726726996;
-	cv=none; b=EspmJ3VkiMw9SQ09A7ldurw1MYSP6f+aNi2Y/0y1Q6SPORy9EP/MigIfXDKCupOK2IGE3ULMsIWUgx/EJyy5wRmEFTMoXLnPgS1JM7KzQ8Tadz3KDaXRMXwCq74ddWH4cB2LY3Ia+DTa0sNhPiRO7VBqaOkkT88+SDrCgRoMIj48zgZuIJpqpqSlyKsqDjD+2220cQyZyJ9Ag46w4kWkCyto9EtY21IT6pbEtFqXPeTTCQfVo3iLeoPekDhFkM3mZt2bPgu1MJdyk29P6irNXBMXK4Rz+Dd6eujadrjCwdv9JCwmDLx4mA5xide1TN9rr3dTewakHYH+uaGTWKpPIg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.17.22
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726726557;
+	cv=none; b=J+H/u1vFSXZO9wNkVQpDphLG2MT/7oSYAat8LX+ndLX3W88/djalUSSi8xWG7HncwhbwnSb00+OT8UbZ38Etl3RHSipEwgp+0eggOkrWwKMnnou0VjIvdtMiBZkAubuRcZohcCy4wxL3dvFA3vAO/3r50NuM+vEBQ36mzwNhyxP41sYaTSFxft5mqkyTMwX4AABzeG4zUOHM4NblPTqhvLowxaAhzU5v3kFNPrtbDaJo+NYULMhE56J8Y4qYs116DMnxjiRQL6XrZRwHqkI9GBJCL8494bk+QuxBLtQhHubexhNQ/KUMQalIHUu6YlNI+sppZPTyOarK8mgsFeAiXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726726996; c=relaxed/relaxed;
-	bh=lMB28cCoh+EtgWHGA1hGa1Xqf23n12o3JH476WnchVA=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-version:Content-type; b=chVkoly2O/e993YcUNsKraszA03fedyuBEI7sg6y2NKoylH07Hva8Y7RJT8gqvuNveHZySoVO8TxlWLyggQQZ4dadGlA2D9Jht5uF1irpmWJ9VJ8sC9VVX1037w5b19iOPsVlTTuC4NUAVN37DLj0H/0XVZoCFpf2rruzDipDvZ8LoRBUkxx7dKStNHyeWMj5pqbrtoSBx9p1czH1IH7tnlPfKGD5GuJHkEOz0YeSX/wMlds5wXed/LzrJDOZ2a3A31lZ3LQVzyj/wIwp3AGHDy7ciXJYfAfpbbD3zhJuF+mc15p07/artIpCJyPPHhLfCNZXC1pl0ne3idYAxumkQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=P0wS2Xzu; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1726726557; c=relaxed/relaxed;
+	bh=LJb5IgePZ4BgrdGP9a6NUaWhuwLLTGAN/jzME6Q2d6A=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XAwBU9sepNErbBy/uZvjHcaXM+lXHuM4IAOPp1Z4uXlvlcZeAKZYmcF/4/z2natnNj7+NrLLdzcpXJ/WNOLFLXL1mRWpzI1PbFO8MI/utkB4S8fk7XRvifsNsbN9Jo5mwBNpX4t2Wj2I/xmdI0NBadhE7PWj/wA4PBCYQIzPWXqrIO1sDK7JouotADZsXT0OP7LVzyG/ccmnhZEz52X2Su67aO7Bxj6rMjol3pulS5J3V4b6BSJrVMntcklzBLRW5Eym3e4h3L5AUV5yOjnVGgh9GAj6mqIVToaqV8nnRUdEeDF96Q0udU60AaacazA8tMeWkYoHorgZZDDnoXderA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=efault@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=Tu5UJABH; dkim-atps=neutral; spf=pass (client-ip=212.227.17.22; helo=mout.gmx.net; envelope-from=efault@gmx.de; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=P0wS2Xzu;
+	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=efault@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=Tu5UJABH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.17.22; helo=mout.gmx.net; envelope-from=efault@gmx.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 333 seconds by postgrey-1.37 at boromir; Thu, 19 Sep 2024 16:15:54 AEST
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8QSM5Z42z2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 16:23:15 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-2068a7c9286so5681595ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2024 23:23:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726726990; x=1727331790; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lMB28cCoh+EtgWHGA1hGa1Xqf23n12o3JH476WnchVA=;
-        b=P0wS2Xzu815KfhV8q/J5cEvRh+NHUJa9ucBnCrc+4qUqCJSUJX7AsAgNJddQ8szGz1
-         CJRYzWdaxoR3Qpq2pxOCuUuSlZC1syMK7OQEVycQThDczoAZ9LAlel6oB4ROTRgmI+2M
-         Jw8x49SC+IFo8zEr/ZxWAS/LXPjFOX7bDJ1ThZ8502qIiUh3l9tkM7BLoOHCccIZ1NsJ
-         23Z0kfbxmMxvcINQ0plklV3HikGGjQn1iqQoArI0q40bIU0s41ojkCUcatN1n0ApYA02
-         tmrC8eX4Sw+Rd3X0KPqKXcuxfnL5k0Re3rbJDRJD0Bi8aEOanDmQuJ8DOTZC+dWvaRAI
-         6qOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726726990; x=1727331790;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lMB28cCoh+EtgWHGA1hGa1Xqf23n12o3JH476WnchVA=;
-        b=QSyj4B2ltLHIBF880WHCKzzFyBXvMUC5Y8hLhuPm0iH2uLANoUrNUS4rspkfs0EZvi
-         pQD0OMD5Cksp4wq4ZUy2Qp7HVGWwyuGYa8UasZFdELrxZZRmC/PTzNExYSdhjrRfiHCf
-         orcooUuIPlcggmYFdaj3bfUSkeG5Cb22T2XeAN1EaGmpsu6m/8My2hZnFomZyKpPNuJg
-         +b6K2/VcOz/nJS9Xr/sZuahthMMPCsHo7H57b3hIq+NH0o17AIwxHboVWN2vMFTvExpm
-         IF+7qBR/ik+s2hDnqmWaL7o4TkQ/Be0Jsx3Rq7FkvRc9TwKheHXYwcjFm3ccO6uV8kut
-         VMJg==
-X-Forwarded-Encrypted: i=1; AJvYcCXe5lS9XcK61Lg1bc9L8SoaXc84Dqx1zranOYTGHv0SaVAnxx8nud86jZevu0QBkbP8JUVuZoXCT0o/cFg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxgwrPVd7ir+R2Ksiq6+xs9Fl/Og1f/tYZUeSCt34igsc+DYwni
-	YTYadEcxccXTRnMU4XErEMvqGWKQydiu8Zt9RN3G0pYC3F907dXV
-X-Google-Smtp-Source: AGHT+IFU4vkqxFNSe4Eq83apMu7w+OxEO+qEiDjIV8fsRkhk1oJexJP9mvnlYzqaic6d160YK6bbqQ==
-X-Received: by 2002:a17:902:e84a:b0:1fb:57e7:5bb4 with SMTP id d9443c01a7336-20782a69aa5mr302633235ad.37.1726726990257;
-        Wed, 18 Sep 2024 23:23:10 -0700 (PDT)
-Received: from dw-tp ([171.76.85.129])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207946fcad2sm73406885ad.211.2024.09.18.23.23.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2024 23:23:09 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org, 
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Donet Tom <donettom@linux.vnet.ibm.com>, Pavithra Prakash <pavrampu@linux.vnet.ibm.com>, Nirjhar Roy <nirjhar@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, kasan-dev@googlegroups.com, Disha Goel <disgoel@linux.ibm.com>, Alexander Potapenko <glider@google.com>
-Subject: Re: [RFC v2 02/13] powerpc: mm: Fix kfence page fault reporting
-In-Reply-To: <65664ab8-4250-47c2-be50-d56c112a17fb@csgroup.eu>
-Date: Thu, 19 Sep 2024 11:17:16 +0530
-Message-ID: <87ldzotct7.fsf@gmail.com>
-References: <cover.1726571179.git.ritesh.list@gmail.com> <87095ffca1e3b932c495942defc598907bf955f6.1726571179.git.ritesh.list@gmail.com> <65664ab8-4250-47c2-be50-d56c112a17fb@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8QHt4S67z2y8R
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 16:15:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1726726550; x=1727331350; i=efault@gmx.de;
+	bh=LJb5IgePZ4BgrdGP9a6NUaWhuwLLTGAN/jzME6Q2d6A=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Tu5UJABHNliEvPXOj5bHGkNUaN7gfPSjkKyOf9Y8M8q3XvOhILqBX77mqSXRSNvO
+	 Ik8gxK4mf2he22TXGJsIZsxSNEiTm38MhEwejb8wpOL3j4yMOOqwWWxlVXdXAUP/L
+	 8WKdljOQcYEkhLrLVVf+0a59FxiEWxHFXBOQLWBMtZ0RHpt3hKILQWU4EzlX1Nak6
+	 6M3LouaQMA19o/H5boRqRiUzS3XBnB8+XC7gme3LYyWePdBRtP1kI5uJatp+Dgxmc
+	 hofOAPNj8CrdTGfGwigAu2Akmny6+gOrmdCXJnBO1qwM8+uZZQULb9aDo4Z79M+FT
+	 9we3/vkjRT8nyp3Caw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from homer.fritz.box ([91.212.106.56]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCKFu-1shqxC3d6g-004GNr; Thu, 19
+ Sep 2024 08:09:48 +0200
+Message-ID: <2fb24ab402d9de45e3cf16e6ba0ad23a7843e5c1.camel@gmx.de>
+Subject: [patch] Re: [PowerPC][Linux-next][6.11.0-rc4-next-20240820] OOPs
+ while running LTP FS Stress
+From: Mike Galbraith <efault@gmx.de>
+To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, 
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ peterz@infradead.org, vschneid@redhat.com, mingo@kernel.org,
+ sfr@canb.auug.org.au
+Date: Thu, 19 Sep 2024 08:09:47 +0200
+In-Reply-To: <82b9c434-a0fd-4488-95be-a45b8cd4b6e6@linux.vnet.ibm.com>
+References: <82b9c434-a0fd-4488-95be-a45b8cd4b6e6@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,73 +67,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zXiz7bdk1O2092M+28wKsKOHNyhGwevFOgeHjWiyixY3kKbkF80
+ q7f3jlBj+9u7JO6xwYWvhE7kaUeZxkf8JlcgwnNgFDoO9UY11S1Edb+4jGnS1KE+wgd0wB6
+ pPLUV/aRLuksGSrm1dAQX7VWS8gyHsmugR3ml5/qrSO0psnhlsrz7gOvpw5fB7y+S92AZ8+
+ jBnk5qcFCvDawigeur35w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ISFuX3WU798=;4km2KO8oWeu9Y8qxQfl2WBbaPch
+ 1xuiXEoRgyWOHks2EkoOZEkeOK8UPq+/GLDcPtkHKX+4jEmFi5hWBsZuXytteZBNIq41I05fr
+ wVZwDt2THoTeVDtAbVIfYKjS80GMDz3JKlOEv/+dzd+AO2j0Iw8RbbeHsaXvmzXph3y17yU8H
+ EV0fHX0pnNLfVBmyvr5YE4jKrVq3I3FlTczrMOsb0VNbvs85uXXwHwwVH9G0+TfXjoopFujyo
+ o7acL63Q22xdFnEPOgCq7Jtnb916KzllP4/+idK49V5FBvIGOGoBpvH1AOfUkdRJ1be3C11rN
+ +gzbjLyGxq9dDCvZOGawvtSl34goRxK2df2doeIne1xO/MkNTB2fzntgOqQgZtfYJrhMu8QZt
+ VIlt7LXiwfqhrSlbRzPSEyZ3vOczpFtQr9654HHw0Qr5N4GuhK2l6l2fNCu7NZENjxIGlmVuj
+ /DkcaRPzeinbLXiLxT/DZHmBy7MXg5uDe69uqjD9ZLt7TgpRqPwrVnzGSVnFlh1YSamhARc2f
+ jErr4M19TlDDDPbUaCY05A5rermH3JOyfbQRWbFGWOrL0ZQyRV+amMxGG3WkaQP0f3/uK2o1n
+ xOZfu7FbheWCEZ3wS2ArXzGyPYLtTNRSkJi/Qej7KnRCsd5qa1w+1D/pcOnlrZRK6w9hnjICx
+ 72ImaiWpdr8UbS2a8C1KOWkkjG/uiYdZU4wzP89uZRXyGEeMFpeaY8sarGO3r9SNE5Bzkinbp
+ 50eq5uNXwfSrusY/6N2hLzYJi+Vf1inSyORN4F4hbPvwrKCf7yE8I6YT0J/8RsuAcctqIFdTD
+ KmwLql5lPbsS3uRxF0PQgdCw==
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+On Mon, 2024-09-16 at 12:00 +0530, Venkat Rao Bagalkote wrote:
+> Greetings!!!
 
-> Le 19/09/2024 à 04:56, Ritesh Harjani (IBM) a écrit :
->> copy_from_kernel_nofault() can be called when doing read of /proc/kcore.
->> /proc/kcore can have some unmapped kfence objects which when read via
->> copy_from_kernel_nofault() can cause page faults. Since *_nofault()
->> functions define their own fixup table for handling fault, use that
->> instead of asking kfence to handle such faults.
->> 
->> Hence we search the exception tables for the nip which generated the
->> fault. If there is an entry then we let the fixup table handler handle the
->> page fault by returning an error from within ___do_page_fault().
+Greetings,
+
+> I am seeing below kernel crash from 6.11.0-rc4-next-20240820.
 >
-> Searching the exception table is a heavy operation and all has been done 
-> in the past to minimise the number of times it is called, see for 
-> instance commit cbd7e6ca0210 ("powerpc/fault: Avoid heavy 
-> search_exception_tables() verification")
-
-This should not cause latency in user page fault paths. We call
-search_exception_tables() only when there is a page fault for kernel
-address (which isn't that common right) which otherwise kfence will handle.
-
 >
-> Also, by trying to hide false positives you also hide real ones. For 
-
-I believe these should be false negatives. If kernel functions provides an
-exception table to handle such a fault, then shouldn't it be handled via
-fixup table provided rather then via kfence?
-
-> instance if csum_partial_copy_generic() is using a kfence protected 
-> area, it will now go undetected.
-
-I can go and look into usages of csum_partial_copy_generic(). But can
-you please expand more here on what you meant? 
-
-... so if a fault occurs for above case, this patch will just let the
-fixup table handle that fault rather than kfence reporting it and
-returning 0.
-
-
-The issue we see here is when unmapped kfence addresses get accessed via
-*_nofault() variants which causes kfence to report a false negative
-(this happens when we use read /proc/kcore or tools like perf read that)
-
-This is because as per my understanding copy_from_kernel_nofault()
-should return -EFAULT from it's fixup table if a fault occurs...
-whereas with kfence it will report the warning and will return 0 after
-kfence handled the fault.
-
-I see other archs too calling fixup_table() in their fault handling
-routine before allowing kfence to handle the fault. 
-
+> Tried to do git bisect, but it didnt point to right patch. Attached is
+> the bisect log.
 >
-> IIUC, here your problem is limited to copy_from_kernel_nofault(). You 
-> should handle the root cause, not its effects. For that, you could 
-> perform additional verifications in copy_from_kernel_nofault_allowed().
+> Any help in fixing this is much appriciated.
 
-Sorry, why make copy_from_kernel_nofault() as a special case for powerpc?
-I don't see any other arch making copy_from_kernel_nofault() as a
-special case. Shouldn't Kernel faults be handled via fixup_table(), if
-it is supplied, before kfence handling it?
-(maybe I am missing something)
+I met this, as well as other ways the wheels can fall off that turned
+out to have the same root.  I gave Peter a heads up with diag offline,
+but having now convinced myself that all is well, I'll go ahead and
+post a patchlet.
 
+At the very least it's worth putting out for wider testing.. and should
+anyone have something prettier in mind, yeah, do that instead.
 
--ritesh
+sched: Fix sched_delayed vs cfs_bandwidth
+
+Meeting an unfinished DELAY_DEQUEUE treated entity in unthrottle_cfs_rq()
+leads to a couple terminal scenarios.  Finish it first, so ENQUEUE_WAKEUP
+can proceed as it would have sans DELAY_DEQUEUE treatment.
+
+Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
+Signed-off-by: Mike Galbraith <efault@gmx.de>
+=2D--
+ kernel/sched/fair.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+=2D-- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6049,10 +6049,14 @@ void unthrottle_cfs_rq(struct cfs_rq *cf
+ 	for_each_sched_entity(se) {
+ 		struct cfs_rq *qcfs_rq =3D cfs_rq_of(se);
+
+-		if (se->on_rq) {
+-			SCHED_WARN_ON(se->sched_delayed);
+-			break;
++		/* Handle any unfinished DELAY_DEQUEUE business first. */
++		if (unlikely(se->on_rq && se->sched_delayed)) {
++			int flags =3D DEQUEUE_SLEEP | DEQUEUE_SPECIAL;
++
++			dequeue_entity(qcfs_rq, se, flags | DEQUEUE_DELAYED);
+ 		}
++		if (se->on_rq)
++			break;
+ 		enqueue_entity(qcfs_rq, se, ENQUEUE_WAKEUP);
+
+ 		if (cfs_rq_is_idle(group_cfs_rq(se)))
+
 
