@@ -1,52 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-1466-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1467-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC86997CB83
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 17:16:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C796697CBF2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 18:01:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8fH75SMGz2yF1;
-	Fri, 20 Sep 2024 01:16:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8gHb3lVnz2yJ9;
+	Fri, 20 Sep 2024 02:01:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726758963;
-	cv=none; b=hGrBqc3I96f1Af4XeeH37zFxg6c2jZqNgzNdZ3cO8MwPdLZCsK0EY0oIYCHDqpL409FRKrrKlnkZl4eR85oDkE8UzF0qaMJI6SGZ4eLUy66E3Cs9PxFmdohshACgm8Ol414xhLcNUX5c7PxCwDWsCfX7lqpLTpA9/zUWQjyNrfdw8tLocWN5zIHTevXOTe7j1K9miz1jdFyGwYULxuYMq0ZECmE9k2z97xUgiraEHzHX5iA1eObUpBWYdY1iIAu5KJ5moh/Ywa3CklBbBlzC/CpA5QjaKsmAL9jK447j/DhPQ+1+z1FtvDUuw9IDwMNncXld6ZkaZYdqH+dBIlGXPQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726761691;
+	cv=none; b=oRXOCpcf/FsOi75MytYXBjJ+ZORNQrX3hYYLoeBE6w2ujb5hwxopshQVG3fqUQpqxdSXTbwe129keejgnRFIfbldSDwkrsfbrKlCbl8jSlJ76JzUOwD34jx1sSa3MDOg9f8t583rVSyojOqh9gWViESLhWdrwaXv4P2wVqTdeHk+91Xl9CPC/3hLVcxN8pyhsNEPImo319GijQZ76dPPTsdOqsamDv7qtLcXUr1GbPUq6Gs1tHfwSIfzRymA1kfmzheVxl1pkIALswY+1ih+NWHGon8ue74YWP8r+HAsygqADjC4PzmA/ACV758Izd/MtzRR5xbO1DgEvJxTbRNAQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726758963; c=relaxed/relaxed;
-	bh=/64YFQLg5dWd0QHaRS3LIYALMVRLqGIcnTDOEMnNc4Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D1mFEOgyYHE71S47kyEhlI+ugWlSkBaLQznZ+2LHDntuuc87Ew4DL0A9iSkHxmxA3LZfUMa6p5wqnONY9icBThRMS5tvmlIU8pdb3zLzUx3uFIGI2FWzvLPQNeRkVTHMYqlE/8NH7ZqO7erKzq+tACkLTojdPHPb9BSlQdespSyJ+PldhRrG2H7nJngQ4LVcYexbSwGjxeEQLM2+a8msEXEt/BblUhlGea5TBWxcGjH/m/o3DiojAr4tNEMpip9MFzScAaa2DwHOBygqwq3A0GRnmgPjzAW+fmKiMFZf70D3+/uq6OJoLz32cVka5M8gqdcOIZRGhohmGcW4XNFIFg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1726761691; c=relaxed/relaxed;
+	bh=qFsRcTH4dqvFwHspAU/RYsmB8cUfGUGMr6LZVGKB7g4=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=YryXDpbbBDCNKk4mSWAMCKU9bvZJIks3LKbEIbtiGd3SyM7yzlF5n+dF5m2B33KiqHxVfHqalGmZwTvfohPBr2Daws/e6qtxFzyrIqsHdHzpkDck24S7bEKNd/84Yj54/xKWBofvKSJLqtZlPAMBIlzipcmKSITpRd8/lclyuktbHe4oekRszErbUpeTxN+iVYVgTzgviHORemW824opSdWJFYr9AVDxbFxWbRoww40O72vk96ZszLko638GC+1FFIimD7i1gA2SWNMvLfp0qiTCVAQrmiwTgoACuHlAvMYSKhc1ZJ/sUqxZMHqsnNVUNWgzUEplduHoNCkIxXRFCw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KVMysakL; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KVMysakL;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8fH735njz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2024 01:16:02 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4X8fH00lMfz9tQx;
-	Thu, 19 Sep 2024 17:15:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Rdjj_y7Skjiu; Thu, 19 Sep 2024 17:15:56 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4X8fH001bzz9tQw;
-	Thu, 19 Sep 2024 17:15:56 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E25878B77E;
-	Thu, 19 Sep 2024 17:15:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id IRwUsOkm0OKo; Thu, 19 Sep 2024 17:15:55 +0200 (CEST)
-Received: from [192.168.234.38] (unknown [192.168.234.38])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8EC568B77D;
-	Thu, 19 Sep 2024 17:15:55 +0200 (CEST)
-Message-ID: <047b7503-af0c-4bb0-b12a-2f6b1e461752@csgroup.eu>
-Date: Thu, 19 Sep 2024 17:15:55 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8gHb00Nkz2xjh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2024 02:01:29 +1000 (AEST)
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-7b0c9bbddb4so692699a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 09:01:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726761687; x=1727366487; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qFsRcTH4dqvFwHspAU/RYsmB8cUfGUGMr6LZVGKB7g4=;
+        b=KVMysakLTmVJ00HxRWfScW1AxYq6k672cI8vxn8nM8IVcENZQUviDCo2CgUEULtI91
+         8YA5gxw7R6clgm7AmypJ4xbE4Va1TKrE3ZJWviol+PX4+62z57DTJPDPwgmrqOb5dK0U
+         tsc5dHVGxG7XnhLP9HZrlCv5KoezSUzIAp/0lJDWg5ki9ajuien44rgfLXZeZSL+D935
+         66yyBj7Vb1lO6IQVsMyaYlhKdcQdizuvy6tU0YX2CS5XZ6h8p+nKtbq+n8W6Q7Su4Bfi
+         ywo5xt9MTWyFRiG+0dIH2QdcC7wwThO7lZa8xA3FvhPwFrbTM02LKbrrFKYWhWVxsIZN
+         psVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726761687; x=1727366487;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qFsRcTH4dqvFwHspAU/RYsmB8cUfGUGMr6LZVGKB7g4=;
+        b=JSZo6H8ZMTgi57YTCLCpIILuppH6U++3VtyDazliRF6HSxPabp2pixUHqADwSRbOWU
+         LZMamJPkdS9TROLypi2turDtPVALr8Sa6+e+RvDIE3JEDEoFs4B+pnvew/ih4la899a/
+         V/k+cnz16vZpAyBFVg9GXWq+jedilLQclD9THKU1WHwxMLgjWy/Rc1uIs3ZjUC1zgD5C
+         oXM6utvg+Q+8g3fneviGzVheRmpcwjXEC3fDXLUDbyuHF2jrGR7QmjCJ1S7D9iJIsE3N
+         CX53/eJc+e2KU0msuadk/9PX8IywBCOWleo+s3/9QojuZxQZSp2QBKgr1qTGbSeFlNDC
+         q/YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX8wBSwacdpIFYskDTzwhxhmWBW0gyS6OE7tLNfw0fMH3ivPS6JM3f5M4DFzNch0zk69mhcfSnJd2oUvSo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx1h5yuMUNK+2ZF1VPg85zx9Kar9SW8sQR40xnXT+oA6MfXkdmO
+	h3yeBdxhftsu+cwXi2ALMDglS7OoTcL/7BImF0UbY79vyDBmus/X
+X-Google-Smtp-Source: AGHT+IGSQoGV/dFPSfyt6DFt+8Gjr3FqkXJ6TCEHVhdpHE/Gfg42Mlj3KP9xkMxWihDLlukD954wuQ==
+X-Received: by 2002:a17:90b:1e0a:b0:2da:8730:5683 with SMTP id 98e67ed59e1d1-2dba006a195mr28204989a91.39.1726761686528;
+        Thu, 19 Sep 2024 09:01:26 -0700 (PDT)
+Received: from dw-tp ([171.76.85.129])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2dd6eee0965sm2069560a91.42.2024.09.19.09.01.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Sep 2024 09:01:25 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, Narayana Murty N <nnmlinux@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, linux-kernel@vger.kernel.org
+Cc: mahesh@linux.ibm.com, oohall@gmail.com, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, ganeshgr@linux.ibm.com, sbhat@linux.ibm.com
+Subject: Re: [PATCH] powerpc/pseries/eeh: move pseries_eeh_err_inject() outside CONFIG_DEBUG_FS block
+In-Reply-To: <87bk0jbsdb.fsf@vajain21.in.ibm.com>
+Date: Thu, 19 Sep 2024 21:11:27 +0530
+Message-ID: <875xqrzm54.fsf@gmail.com>
+References: <20240917132445.3868016-1-nnmlinux@linux.ibm.com> <871q1hbsh7.fsf@gmail.com> <87bk0jbsdb.fsf@vajain21.in.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -55,67 +77,187 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [FSL P50x0] [GIT KERNEL] [VDSO] compiling issue
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
- Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Trevor Dickinson <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>,
- Darren Stevens <darren@stevens-zone.net>
-References: <de2d1e74-52e5-4d74-8228-4aaea61cad51@xenosoft.de>
- <0C6E937D-A322-4B76-96E8-2C239241F049@xenosoft.de>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <0C6E937D-A322-4B76-96E8-2C239241F049@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Hi Christian,
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 
-Le 19/09/2024 à 17:02, Christian Zigotzky a écrit :
-> Hi All,
-> 
-> The compiling of the latest Git kernel doesn’t work anymore for our FSL P5020/P5040 boards [1] since the random-6.12-rc1 updates [2].
-> 
-> Error messages:
-> 
-> arch/powerpc/kernel/vdso/vdso32.so.dbg: dynamic relocations are not supported
-> 
-> make[2]: *** [arch/powerpc/kernel/vdso/Makefile:75: arch/powerpc/kernel/vdso/vdso32.so.dbg]
-> 
-> Reverting of the vdso updates has solved the compiing issue.
-> 
-> Could you please check the random-6.12-rc1 updates? [2]
-> 
-> Thanks,
-> Christian
-> 
-> [1] https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwiki.amiga.org%2Findex.php%3Ftitle%3DX5000&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4b327823a8d843f5dc8d08dcd8bc2600%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638623549830455660%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=xtne08CcJdt0jF0eir8q%2F5CeMcCv6JN4Uj4LDKqUiog%3D&reserved=0
-> 
-> [2] https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git%2Fcommit%2F%3Fid%3D4a39ac5b7d62679c07a3e3d12b0f6982377d8a7d&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4b327823a8d843f5dc8d08dcd8bc2600%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638623549830472839%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=sVQ9FhoXe9YDrqFrwb4a1rmMlN7Kegg7z1yMQ4uAFvo%3D&reserved=0
-> 
-> + Kernel config
-> 
-> Link: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fraw.githubusercontent.com%2Fchzigotzky%2Fkernels%2Frefs%2Fheads%2Fmain%2Fconfigs%2Fx5000_defconfig&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4b327823a8d843f5dc8d08dcd8bc2600%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638623549830486185%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=SQi%2B9R4TM59QB8Msxq3KuKPvvJEBMVUdyOhoY6ndzVU%3D&reserved=0
-> 
-> + Christophe Leroy
-> + Michael Ellerman
+> Hi Ritesh,
+>
+> Thanks for looking into this patch. My responses your review inline
+> below:
+>
+> Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
+>
+>> Narayana Murty N <nnmlinux@linux.ibm.com> writes:
+>>
+>>> Makes pseries_eeh_err_inject() available even when debugfs
+>>> is disabled (CONFIG_DEBUG_FS=n). It moves eeh_debugfs_break_device()
+>>> and eeh_pe_inject_mmio_error() out of the CONFIG_DEBUG_FS block
+>>> and renames it as eeh_break_device().
+>>>
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>> Closes: https://lore.kernel.org/oe-kbuild-all/202409170509.VWC6jadC-lkp@intel.com/
+>>> Fixes: b0e2b828dfca ("powerpc/pseries/eeh: Fix pseries_eeh_err_inject")
+>>> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+>>> ---
+>>>  arch/powerpc/kernel/eeh.c | 198 +++++++++++++++++++-------------------
+>>>  1 file changed, 99 insertions(+), 99 deletions(-)
+>>
+>> Ok, so in your original patch you implemented eeh_inject ops for pseries
+>> using mmio based eeh error injection (eeh_pe_inject_mmio_error()), which
+>> uses the functions defined under debugfs -> eeh_debugfs_break_device(). 
+>>
+>> This was failing when CONFIG_DEBUGFS is not defined, thus referring to
+>> undefined function definition. 
+>>
+>> Minor nit below.
+>>
+>>>
+>>> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+>>> index 49ab11a287a3..0fe25e907ea6 100644
+>>> --- a/arch/powerpc/kernel/eeh.c
+>>> +++ b/arch/powerpc/kernel/eeh.c
+>>> @@ -1574,6 +1574,104 @@ static int proc_eeh_show(struct seq_file *m, void *v)
+>>>  }
+>>>  #endif /* CONFIG_PROC_FS */
+>>>  
+>>> +static int eeh_break_device(struct pci_dev *pdev)
+>>> +{
+>>> +	struct resource *bar = NULL;
+>>> +	void __iomem *mapped;
+>>> +	u16 old, bit;
+>>> +	int i, pos;
+>>> +
+>>> +	/* Do we have an MMIO BAR to disable? */
+>>> +	for (i = 0; i <= PCI_STD_RESOURCE_END; i++) {
+>>> +		struct resource *r = &pdev->resource[i];
+>>> +
+>>> +		if (!r->flags || !r->start)
+>>> +			continue;
+>>> +		if (r->flags & IORESOURCE_IO)
+>>> +			continue;
+>>> +		if (r->flags & IORESOURCE_UNSET)
+>>> +			continue;
+>>> +
+>>> +		bar = r;
+>>> +		break;
+>>> +	}
+>>> +
+>>> +	if (!bar) {
+>>> +		pci_err(pdev, "Unable to find Memory BAR to cause EEH with\n");
+>>> +		return -ENXIO;
+>>> +	}
+>>> +
+>>> +	pci_err(pdev, "Going to break: %pR\n", bar);
+>>> +
+>>> +	if (pdev->is_virtfn) {
+>>> +#ifndef CONFIG_PCI_IOV
+>>> +		return -ENXIO;
+>>> +#else
+>>> +		/*
+>>> +		 * VFs don't have a per-function COMMAND register, so the best
+>>> +		 * we can do is clear the Memory Space Enable bit in the PF's
+>>> +		 * SRIOV control reg.
+>>> +		 *
+>>> +		 * Unfortunately, this requires that we have a PF (i.e doesn't
+>>> +		 * work for a passed-through VF) and it has the potential side
+>>> +		 * effect of also causing an EEH on every other VF under the
+>>> +		 * PF. Oh well.
+>>> +		 */
+>>> +		pdev = pdev->physfn;
+>>> +		if (!pdev)
+>>> +			return -ENXIO; /* passed through VFs have no PF */
+>>> +
+>>> +		pos  = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
+>>> +		pos += PCI_SRIOV_CTRL;
+>>> +		bit  = PCI_SRIOV_CTRL_MSE;
+>>> +#endif /* !CONFIG_PCI_IOV */
+>>> +	} else {
+>>> +		bit = PCI_COMMAND_MEMORY;
+>>> +		pos = PCI_COMMAND;
+>>> +	}
+>>> +
+>>> +	/*
+>>> +	 * Process here is:
+>>> +	 *
+>>> +	 * 1. Disable Memory space.
+>>> +	 *
+>>> +	 * 2. Perform an MMIO to the device. This should result in an error
+>>> +	 *    (CA  / UR) being raised by the device which results in an EEH
+>>> +	 *    PE freeze. Using the in_8() accessor skips the eeh detection hook
+>>> +	 *    so the freeze hook so the EEH Detection machinery won't be
+>>> +	 *    triggered here. This is to match the usual behaviour of EEH
+>>> +	 *    where the HW will asynchronously freeze a PE and it's up to
+>>> +	 *    the kernel to notice and deal with it.
+>>> +	 *
+>>> +	 * 3. Turn Memory space back on. This is more important for VFs
+>>> +	 *    since recovery will probably fail if we don't. For normal
+>>> +	 *    the COMMAND register is reset as a part of re-initialising
+>>> +	 *    the device.
+>>> +	 *
+>>> +	 * Breaking stuff is the point so who cares if it's racy ;)
+>>> +	 */
+>>> +	pci_read_config_word(pdev, pos, &old);
+>>> +
+>>> +	mapped = ioremap(bar->start, PAGE_SIZE);
+>>> +	if (!mapped) {
+>>> +		pci_err(pdev, "Unable to map MMIO BAR %pR\n", bar);
+>>> +		return -ENXIO;
+>>> +	}
+>>> +
+>>> +	pci_write_config_word(pdev, pos, old & ~bit);
+>>> +	in_8(mapped);
+>>> +	pci_write_config_word(pdev, pos, old);
+>>> +
+>>> +	iounmap(mapped);
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
+>>> +{
+>>> +	return eeh_break_device(pdev);
+>>> +}
+>>> +
+>>
+>> Why have an extra eeh_pe_inject_mmio_error() function which only calls
+>> eeh_break_device()?
+>>
+>> Maybe we can rename eeh_break_device() to eeh_mmio_break_device() and use
+>> this function itself at both call sites?
+>
+> Fair suggestion,
+>
+> However we want to keep the method debugfs interface uses
+> to inject EEH (thats ppc platform agonistic), decoupled from what pseries
+> uses. Right now to support as initial work VFIO EEH injection on
+> pseries, we are piggy backing on eeh_debugfs_break_device().
 
-Can you try with the following change:
+Right. 
 
-diff --git a/arch/powerpc/lib/crtsavres.S b/arch/powerpc/lib/crtsavres.S
-index 7e5e1c28e56a..8967903c15e9 100644
---- a/arch/powerpc/lib/crtsavres.S
-+++ b/arch/powerpc/lib/crtsavres.S
-@@ -46,7 +46,7 @@
+>
+> This will change in future as we add more capabilities to pseries EEH
+> injection and this will change working of eeh_pe_inject_mmio_error()
+> without impacting the semantics of existing eeh_break_device().
 
-  	.section ".text"
+Thanks Vaibhav for the context. 
 
--#ifndef CONFIG_PPC64
-+#ifndef __powerpc64__
+The debugfs interface "eeh_break_device()" is defined here in
+"arch/powerpc/kernel/eeh.c". Those "future pseries changes" could remain
+in arch/powerpc/platforms/pseries/eeh_pseries.c using the generic
+functions defined from <>/kernel/eeh.c, right. And today
+eeh_pe_inject_mmio_error() has nothing pseries specific anyway.
 
-  /* Routines for saving integer registers, called by the compiler.  */
-  /* Called with r11 pointing to the stack header word of the caller of 
-the */
+But I get it that this is a minor compile fix for the patch that has
+already landed in 6.12 now. As I said earlier too, this was just a minor
+nit.
+
+Maybe we could get rid of this redundant function later when we add
+pseries specific capabilities (if we still find this extra function has
+no use).
+
+So - 
+
+Please feel free to add - 
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
 
