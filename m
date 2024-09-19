@@ -1,64 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-1457-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1455-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14DA97C4AD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 09:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D21097C44D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 08:27:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8RY555WYz2yD5;
-	Thu, 19 Sep 2024 17:12:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8QYT0M5lz2yF0;
+	Thu, 19 Sep 2024 16:27:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.17.22
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726726557;
-	cv=none; b=J+H/u1vFSXZO9wNkVQpDphLG2MT/7oSYAat8LX+ndLX3W88/djalUSSi8xWG7HncwhbwnSb00+OT8UbZ38Etl3RHSipEwgp+0eggOkrWwKMnnou0VjIvdtMiBZkAubuRcZohcCy4wxL3dvFA3vAO/3r50NuM+vEBQ36mzwNhyxP41sYaTSFxft5mqkyTMwX4AABzeG4zUOHM4NblPTqhvLowxaAhzU5v3kFNPrtbDaJo+NYULMhE56J8Y4qYs116DMnxjiRQL6XrZRwHqkI9GBJCL8494bk+QuxBLtQhHubexhNQ/KUMQalIHUu6YlNI+sppZPTyOarK8mgsFeAiXQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::633"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726727261;
+	cv=none; b=WcMpEJlawl863o5k3MDdjFXYiBjQneMEx+KD5/hr6UE73Lp2xJDItzpiSMspGX8i1x8Kyi9XKhJe7MKOh50ZpDL0VlXbYF6aJF/zUfdq2kXQtnItIAvNl9yDeRguUHgQodcMC0HfCWLgMidx6BFkv3Ry2xt6s0qknizd2YAV0T0vKroy5ATzvqYIEm7RkKHZQrtRF/eGUg6FwbWub3JQz5QFh3oqfG3lOmdsgp3ePZcMpCZEDh+fDCPi1YfGXL7eo+QMFYOEBiXTRqMzuXUhmFoCbgLlAI37dJS+5ctru0eFa+BhbTfVhs0eqrwLSLZkdVVJHQ84FB4ROqkEbxvA7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726726557; c=relaxed/relaxed;
-	bh=LJb5IgePZ4BgrdGP9a6NUaWhuwLLTGAN/jzME6Q2d6A=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XAwBU9sepNErbBy/uZvjHcaXM+lXHuM4IAOPp1Z4uXlvlcZeAKZYmcF/4/z2natnNj7+NrLLdzcpXJ/WNOLFLXL1mRWpzI1PbFO8MI/utkB4S8fk7XRvifsNsbN9Jo5mwBNpX4t2Wj2I/xmdI0NBadhE7PWj/wA4PBCYQIzPWXqrIO1sDK7JouotADZsXT0OP7LVzyG/ccmnhZEz52X2Su67aO7Bxj6rMjol3pulS5J3V4b6BSJrVMntcklzBLRW5Eym3e4h3L5AUV5yOjnVGgh9GAj6mqIVToaqV8nnRUdEeDF96Q0udU60AaacazA8tMeWkYoHorgZZDDnoXderA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=efault@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=Tu5UJABH; dkim-atps=neutral; spf=pass (client-ip=212.227.17.22; helo=mout.gmx.net; envelope-from=efault@gmx.de; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+	t=1726727261; c=relaxed/relaxed;
+	bh=2Hj+1vqgujWOrqlQpkce2sq1h+JT76BLtBiXrr9bmsw=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-version:Content-type; b=eFXg+kQNoRrrdaIYxxG09xyn1HqauwVFH/uINo33dRfYIjlllxNpewfXLRTt+m3Pvw7h8zsA8/PkJ28rTJutgoxgYU3eib9sBvYdbLe4ViWLljs64fxiD+GmNtDd0wgqLi6SLwcyzIqDKURchUIoP+ASNdiI4dj4LpQi+GCGiUESv31aAZaxkLc9QudEKs5WcYIy9o66A/3Bv0/SIDxLJEs5sztUt+FBI/q97BdTMitsLMdxYyF24XBABUULXBNeI/4eN1pjw0b3VT3hDO3rtw9ORg/dQT9n1RZ2WPnb+kccW4DnsThP7S0ifRZCpFDG8Q5nTKcsk8BkGwnDQMbtwQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=j19JX7be; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=efault@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=Tu5UJABH;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=j19JX7be;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.17.22; helo=mout.gmx.net; envelope-from=efault@gmx.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 333 seconds by postgrey-1.37 at boromir; Thu, 19 Sep 2024 16:15:54 AEST
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8QHt4S67z2y8R
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 16:15:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1726726550; x=1727331350; i=efault@gmx.de;
-	bh=LJb5IgePZ4BgrdGP9a6NUaWhuwLLTGAN/jzME6Q2d6A=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Tu5UJABHNliEvPXOj5bHGkNUaN7gfPSjkKyOf9Y8M8q3XvOhILqBX77mqSXRSNvO
-	 Ik8gxK4mf2he22TXGJsIZsxSNEiTm38MhEwejb8wpOL3j4yMOOqwWWxlVXdXAUP/L
-	 8WKdljOQcYEkhLrLVVf+0a59FxiEWxHFXBOQLWBMtZ0RHpt3hKILQWU4EzlX1Nak6
-	 6M3LouaQMA19o/H5boRqRiUzS3XBnB8+XC7gme3LYyWePdBRtP1kI5uJatp+Dgxmc
-	 hofOAPNj8CrdTGfGwigAu2Akmny6+gOrmdCXJnBO1qwM8+uZZQULb9aDo4Z79M+FT
-	 9we3/vkjRT8nyp3Caw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from homer.fritz.box ([91.212.106.56]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MCKFu-1shqxC3d6g-004GNr; Thu, 19
- Sep 2024 08:09:48 +0200
-Message-ID: <2fb24ab402d9de45e3cf16e6ba0ad23a7843e5c1.camel@gmx.de>
-Subject: [patch] Re: [PowerPC][Linux-next][6.11.0-rc4-next-20240820] OOPs
- while running LTP FS Stress
-From: Mike Galbraith <efault@gmx.de>
-To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, 
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- peterz@infradead.org, vschneid@redhat.com, mingo@kernel.org,
- sfr@canb.auug.org.au
-Date: Thu, 19 Sep 2024 08:09:47 +0200
-In-Reply-To: <82b9c434-a0fd-4488-95be-a45b8cd4b6e6@linux.vnet.ibm.com>
-References: <82b9c434-a0fd-4488-95be-a45b8cd4b6e6@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8QYS4vMxz2yDt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 16:27:40 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-206f9b872b2so4371385ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2024 23:27:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726727258; x=1727332058; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2Hj+1vqgujWOrqlQpkce2sq1h+JT76BLtBiXrr9bmsw=;
+        b=j19JX7be+6DYYrhZBUpAxgWSeAE2vJSozTpbwND8N7LNirZhCBk1EKMJzkBC/N5NbK
+         ah6mPxcWLrcMG5voexNRuqmAYG4zA9P84laU0Tg8WFHLZ+0HK1w0A90P3ZDoOlJKAI6u
+         ncgFbghA+wEBfK14MDNb8XepYKmGHtBZuzA+WXSb7nKlXpc7oR6rvrcRU1hIe4D8Qnrz
+         yIhOrN3u7Dcy6t1zVaDqxFfqTFsjVMOFij01YYH3mcuF26XeQ7WE63kFC00yWR3VsWMd
+         CoBgjNq2PyxQ7j15TRWyDSjr8Zw2IMcS3v5Gq0WGS+jGGt4UGzOVnNnHMDynSev+YAcL
+         DRmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726727258; x=1727332058;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2Hj+1vqgujWOrqlQpkce2sq1h+JT76BLtBiXrr9bmsw=;
+        b=SJmUX4d9kmtx4i1WKLecoiRSHWvtezwrHgs0wCKpp8cT9cSLk8YOf+JhYMkqFuQgYq
+         DAFnaBAqsdr5U4UmZJK0dx2pzvoGhqx2zsKFMEF4ITbpy/2L9NneNSRrAQkUA8h6CF2y
+         nWyT2IEaYWWyvjTcRNrPWiKjoslCty6rHfjW5mKE06j8WZfkN7BO9P5BnCR2P0svSp0w
+         Y+AEfPfyYDoCvNwEn83ePwR+IaxWdjSfevjI+kUfkJ4Ct+nBNZupQIofuCROBQ4QwsEP
+         2/cPUpn09B6Hwuyi9TC+x9wQB1Y37V/e4Ch04FCQlJIbvcYM+SIUwikT0e7xKuh5h/XC
+         NlHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXpoUCCZjxUJMQNehfDRWB/uWLIZc11MfHtm2ZLZGA5VcEUjoP8b6/ZcveHnwoMFDHzS8XTdBsbGW4nUwE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxWyqo0uQPPE195aOk0S5xYvGbbQ0nP1AaIipW4FsbP6KLSy7Ll
+	QkDDN//e0iC+rXar7ojKtIHhWqI86oNbN28FwBLnVlVln3+6JRMS
+X-Google-Smtp-Source: AGHT+IE50XMoZa4hBwRIz3mN6qx5JWjHTF23/FUJHa75WuBjbh10hAyGn2DW14ljgJyxa6XgGD0eSg==
+X-Received: by 2002:a17:902:eb8a:b0:206:ca91:1dda with SMTP id d9443c01a7336-2076e39c56bmr305359875ad.17.1726727258556;
+        Wed, 18 Sep 2024 23:27:38 -0700 (PDT)
+Received: from dw-tp ([171.76.85.129])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207945da793sm73443715ad.54.2024.09.18.23.27.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Sep 2024 23:27:37 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Donet Tom <donettom@linux.vnet.ibm.com>, Pavithra Prakash <pavrampu@linux.vnet.ibm.com>, Nirjhar Roy <nirjhar@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, kasan-dev@googlegroups.com
+Subject: Re: [RFC v2 03/13] book3s64/hash: Remove kfence support temporarily
+In-Reply-To: <d9d8703a-df24-47e3-bd0d-2ff5a6eae184@csgroup.eu>
+Date: Thu, 19 Sep 2024 11:53:15 +0530
+Message-ID: <87jzf8tb58.fsf@gmail.com>
+References: <cover.1726571179.git.ritesh.list@gmail.com> <5f6809f3881d5929eedc33deac4847bf41a063b9.1726571179.git.ritesh.list@gmail.com> <d9d8703a-df24-47e3-bd0d-2ff5a6eae184@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,79 +80,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:zXiz7bdk1O2092M+28wKsKOHNyhGwevFOgeHjWiyixY3kKbkF80
- q7f3jlBj+9u7JO6xwYWvhE7kaUeZxkf8JlcgwnNgFDoO9UY11S1Edb+4jGnS1KE+wgd0wB6
- pPLUV/aRLuksGSrm1dAQX7VWS8gyHsmugR3ml5/qrSO0psnhlsrz7gOvpw5fB7y+S92AZ8+
- jBnk5qcFCvDawigeur35w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ISFuX3WU798=;4km2KO8oWeu9Y8qxQfl2WBbaPch
- 1xuiXEoRgyWOHks2EkoOZEkeOK8UPq+/GLDcPtkHKX+4jEmFi5hWBsZuXytteZBNIq41I05fr
- wVZwDt2THoTeVDtAbVIfYKjS80GMDz3JKlOEv/+dzd+AO2j0Iw8RbbeHsaXvmzXph3y17yU8H
- EV0fHX0pnNLfVBmyvr5YE4jKrVq3I3FlTczrMOsb0VNbvs85uXXwHwwVH9G0+TfXjoopFujyo
- o7acL63Q22xdFnEPOgCq7Jtnb916KzllP4/+idK49V5FBvIGOGoBpvH1AOfUkdRJ1be3C11rN
- +gzbjLyGxq9dDCvZOGawvtSl34goRxK2df2doeIne1xO/MkNTB2fzntgOqQgZtfYJrhMu8QZt
- VIlt7LXiwfqhrSlbRzPSEyZ3vOczpFtQr9654HHw0Qr5N4GuhK2l6l2fNCu7NZENjxIGlmVuj
- /DkcaRPzeinbLXiLxT/DZHmBy7MXg5uDe69uqjD9ZLt7TgpRqPwrVnzGSVnFlh1YSamhARc2f
- jErr4M19TlDDDPbUaCY05A5rermH3JOyfbQRWbFGWOrL0ZQyRV+amMxGG3WkaQP0f3/uK2o1n
- xOZfu7FbheWCEZ3wS2ArXzGyPYLtTNRSkJi/Qej7KnRCsd5qa1w+1D/pcOnlrZRK6w9hnjICx
- 72ImaiWpdr8UbS2a8C1KOWkkjG/uiYdZU4wzP89uZRXyGEeMFpeaY8sarGO3r9SNE5Bzkinbp
- 50eq5uNXwfSrusY/6N2hLzYJi+Vf1inSyORN4F4hbPvwrKCf7yE8I6YT0J/8RsuAcctqIFdTD
- KmwLql5lPbsS3uRxF0PQgdCw==
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2024-09-16 at 12:00 +0530, Venkat Rao Bagalkote wrote:
-> Greetings!!!
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
 
-Greetings,
-
-> I am seeing below kernel crash from 6.11.0-rc4-next-20240820.
+> Le 19/09/2024 à 04:56, Ritesh Harjani (IBM) a écrit :
+>> Kfence on book3s Hash on pseries is anyways broken. It fails to boot
+>> due to RMA size limitation. That is because, kfence with Hash uses
+>> debug_pagealloc infrastructure. debug_pagealloc allocates linear map
+>> for entire dram size instead of just kfence relevant objects.
+>> This means for 16TB of DRAM it will require (16TB >> PAGE_SHIFT)
+>> which is 256MB which is half of RMA region on P8.
+>> crash kernel reserves 256MB and we also need 2048 * 16KB * 3 for
+>> emergency stack and some more for paca allocations.
+>> That means there is not enough memory for reserving the full linear map
+>> in the RMA region, if the DRAM size is too big (>=16TB)
+>> (The issue is seen above 8TB with crash kernel 256 MB reservation).
+>> 
+>> Now Kfence does not require linear memory map for entire DRAM.
+>> It only needs for kfence objects. So this patch temporarily removes the
+>> kfence functionality since debug_pagealloc code needs some refactoring.
+>> We will bring in kfence on Hash support in later patches.
+>> 
+>> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>> ---
+>>   arch/powerpc/include/asm/kfence.h     |  5 +++++
+>>   arch/powerpc/mm/book3s64/hash_utils.c | 16 +++++++++++-----
+>>   2 files changed, 16 insertions(+), 5 deletions(-)
+>> 
+>> diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
+>> index fab124ada1c7..f3a9476a71b3 100644
+>> --- a/arch/powerpc/include/asm/kfence.h
+>> +++ b/arch/powerpc/include/asm/kfence.h
+>> @@ -10,6 +10,7 @@
+>>   
+>>   #include <linux/mm.h>
+>>   #include <asm/pgtable.h>
+>> +#include <asm/mmu.h>
+>>   
+>>   #ifdef CONFIG_PPC64_ELF_ABI_V1
+>>   #define ARCH_FUNC_PREFIX "."
+>> @@ -25,6 +26,10 @@ static inline void disable_kfence(void)
+>>   
+>>   static inline bool arch_kfence_init_pool(void)
+>>   {
+>> +#ifdef CONFIG_PPC64
+>> +	if (!radix_enabled())
+>
+> No need for a #ifdef here, you can just do:
+>
+> 	if (IS_ENABLED(CONFIG_PPC64) && !radix_enabled())
+> 		return false;
 >
 >
-> Tried to do git bisect, but it didnt point to right patch. Attached is
-> the bisect log.
+
+This special radix handling is anyway dropped in later pacthes. 
+So I didn't bother changing it here.
+
+>> +		return false;
+>> +#endif
+>>   	return !kfence_disabled;
 >
-> Any help in fixing this is much appriciated.
+> But why not just set kfence_disabled to true by calling disable_kfence() 
+> from one of the powerpc init functions ?
+>
 
-I met this, as well as other ways the wheels can fall off that turned
-out to have the same root.  I gave Peter a heads up with diag offline,
-but having now convinced myself that all is well, I'll go ahead and
-post a patchlet.
+This patch is only temporarily disabling kfence support for only Hash.
+This special Hash handling gets removed in patch-10 which brings back
+kfence support.
 
-At the very least it's worth putting out for wider testing.. and should
-anyone have something prettier in mind, yeah, do that instead.
-
-sched: Fix sched_delayed vs cfs_bandwidth
-
-Meeting an unfinished DELAY_DEQUEUE treated entity in unthrottle_cfs_rq()
-leads to a couple terminal scenarios.  Finish it first, so ENQUEUE_WAKEUP
-can proceed as it would have sans DELAY_DEQUEUE treatment.
-
-Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
-Signed-off-by: Mike Galbraith <efault@gmx.de>
-=2D--
- kernel/sched/fair.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-=2D-- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6049,10 +6049,14 @@ void unthrottle_cfs_rq(struct cfs_rq *cf
- 	for_each_sched_entity(se) {
- 		struct cfs_rq *qcfs_rq =3D cfs_rq_of(se);
-
--		if (se->on_rq) {
--			SCHED_WARN_ON(se->sched_delayed);
--			break;
-+		/* Handle any unfinished DELAY_DEQUEUE business first. */
-+		if (unlikely(se->on_rq && se->sched_delayed)) {
-+			int flags =3D DEQUEUE_SLEEP | DEQUEUE_SPECIAL;
-+
-+			dequeue_entity(qcfs_rq, se, flags | DEQUEUE_DELAYED);
- 		}
-+		if (se->on_rq)
-+			break;
- 		enqueue_entity(qcfs_rq, se, ENQUEUE_WAKEUP);
-
- 		if (cfs_rq_is_idle(group_cfs_rq(se)))
-
+-ritesh
 
