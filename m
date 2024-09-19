@@ -1,67 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-1432-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1433-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123FC97C2AA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 03:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D03297C2E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 04:56:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8JH25JCdz2xX3;
-	Thu, 19 Sep 2024 11:44:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8Ksn5rLrz2xHt;
+	Thu, 19 Sep 2024 12:56:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::132"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726710286;
-	cv=none; b=FFnMoz5Zcmoi4L1grYn2UI8YP+N4iNiLQRQEXYkbETwLqAwczYjHh/dHYXH+XdAYyt98P1N1ry7HkoDe33A59F3C3hK41RASHDdTQkAudbhqC4OUvU5bPLwNLjwSdOUKqIjXp7u5e7++PXlmfzK8cFHyZnBsKapjeyYdTY2CY7yqIjGIGM17dAgWfPJ3tAOX1hdVmFJRkjhSaXCTVVRxMe18n8fEYrDmim+JxgdD6gf4Ufnx6UmUExi9ZMI8sScKBfACXcLnJdNCUcibdLOfqISmkMxI357cpvdmWn9vrF7D6LfI5FEpJ+qpaXaPdcYKTi8febl9kDn2MJfDUZpZeg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726714589;
+	cv=none; b=Vk2tHb7bOa982Y+6m3QCZhSaWT6RB0muTxMs/6Is+gi+3RkkY4HWJA/3aKHjj/4TZJi83pt+jG3bxgxYh1GBJvp5bABaCDiu9iRyves51aXTuge2bykIBoN7ZQTZ6PYuiR1jBahKjB6CGq9LMrlBMoK0uNPC3mkalMaT/61r5tM91haztFW0Yz09IjygVW7YloG2lnTIR8gtp8DQsKk2mWLbZrBciqP+haLksvuO6O67xYIcniU0jJSwBVwFgFfI1ZT2+v3b7xpyUv3Z2U28dH52r61W5/hwjy+kkARQfaISUXqOnfDc6AmN4M41IEqp5xar1vgfGPmdCoMg98XvMw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726710286; c=relaxed/relaxed;
-	bh=DX8B0AVGc1Jcf/sZuX/Lm5rKGNOWSa7SVLWhBKf+5LU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bRB6/HVQRWSKhF+RSjd6Ix4wD2JM3K3xrMfT5slDT2lSCltmGr2jSnKVtH08oJmFUyEzn0WTh3miggX24bqgGMK3Wn6difihAiMPqTjf7wDYQ7ApdFuVPaoLZ8AQ6dMnIZUqF9Omw2sUTjpujKHKnz3yq6V5JBGJmSk6c44/hryjUu3kXvnl0k9CZRzXEl54/XUZ0A9GUNQhIHtyMaFDG3BPcS1moy1vPyMrwaA8b8lJ1BWfq7pfw3WUUtLVn536zE3P54W1KnIna8VvLcIpg7y9Jk1oHfalvNuKK1KsUV5rkcgb1L+GoBvRY85QFo+DEzo3UgwscXB+aLDGKgj0Dg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GSmRv034; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1726714589; c=relaxed/relaxed;
+	bh=5GJhA0mjEPdtfqnf/P6njWML6hfKb60sWwrvJGKoU+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gl0bu5UtT/QlNg8g99EXGyG0qXpkb0d5dbMwRTvIQGNc0W8g8fG5XczRE+ay5EF1Ec7hR5TzKdW34tGRP/mKYh3HUQxijA7xQCB3WAZRRZeGMkoY5eo1jcIbviXyAz4nGLKywZSYCOW5PprT3Z6lblX1FL0RhdXQ+x8NS68y2J+mJ1Dl18DhBgnYQZI9MdJQvMCxWP4crOCIofe6sXGVBeyTr9GUkE0CKAoNfMUcsTRdUfX4aDYIHEi7MUq34insjO3iWfzTD2v0C7eDAWtRr5SlsKawDxBJnG/FvoVV54PwZvKJIZPL8iE5ApoYKxXEIrI9p+9AogaLYvjFqAHt3g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jBgm84It; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GSmRv034;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jBgm84It;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8JH205xlz2xMQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 11:44:45 +1000 (AEST)
-Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-3a09af86744so1334315ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2024 18:44:45 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8Ksn0FXVz2xHl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 12:56:28 +1000 (AEST)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-205659dc63aso3656305ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2024 19:56:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726710282; x=1727315082; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DX8B0AVGc1Jcf/sZuX/Lm5rKGNOWSa7SVLWhBKf+5LU=;
-        b=GSmRv034XRBtSfe3JsDjZMZUqc6j7tCL99gD3oh81ilngf0ZhgxSClmLJGRyLjDD6T
-         fTD83JkiaIV6wb6+DANYyxeUpvgImReDIrS6a5GMcOJJTvKEBuCShRnDFNLJ6QWFw9vl
-         Go3D187RJkMmcwDHTvRQZEwMav+Z3gQzfkvjhJKBRvs7l0Hhu72vcctjj/EVSpgWcpD2
-         acmNGcocuIsJTsPLIT1hXKppHqVDLS7DU4kRCMaNvGbiwenCSQDg34XIdeZXDSD/vC7c
-         prTP9opXgRceRFxtJ9HPCD4UgYap9cfclRS0Va7dIZUPrB8Hfr+7ZnjnwjWkbdyt9Tcy
-         Y66Q==
+        d=gmail.com; s=20230601; t=1726714585; x=1727319385; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5GJhA0mjEPdtfqnf/P6njWML6hfKb60sWwrvJGKoU+s=;
+        b=jBgm84ItHWXgNflisrCAdl0Vwp6oWahCQ7gjpdaTkdYlflAz0Of+sJlZfPKcIgKd87
+         9cTzF9i3RYaQyNA31vtSTiPn04SliWIJJMtAK/iXtKh+XE2a0dmEdspqPODcS/ZiJuac
+         7h2FJkuvg7uZdt4PT55Dg+3PrmC30nqkaFaJL1Z95NLsjolnSH0Iv2j1wwqVl9eqeII3
+         YuMdRH5N1grgwX4x7Gofsodic6uIicMn7rnoWumkQrGLY4HXSHpx0A0xyOR4x0CT3GK7
+         qORPBP6XD+DMdlWDNdRv3/6CwzzKDV/HOU6bb5zPtoAv5CoBApC4oP7xXVBZPg5JEgmb
+         znpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726710282; x=1727315082;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DX8B0AVGc1Jcf/sZuX/Lm5rKGNOWSa7SVLWhBKf+5LU=;
-        b=dFB1UO0G8Hf3krnnOmyhMHykRFHwVKgmGIkMQYikp6sjmWRXJ/aiLgIYAuvX/azDhl
-         lJVrv2F98u4cM+I4SwE1tQ1AIRJ5Xzdvt7xVp3wEjVFNu2L0jfhmTQH7pB5FcP8a3r0f
-         q2QKtCW8kxeUy/iuwBWHBlAiBqCy1EHmu9rlSY3iuh0U2ADLEq5ocggvkwBafjapFJQx
-         v8B/7AFqiwni4e+HyVejcD82ohW26mNGo+hvAwGSH1R4V27ytZKtyyKvjo7nvprfkDyU
-         Ct9v/tMJiAnvbVWx2+hOMoKgI+9RKTURGo3Y8lvY0F1nEZ2KXT8jfUXkMHum6jntxMz6
-         vl6w==
-X-Forwarded-Encrypted: i=1; AJvYcCV6gNllzFWiLGBVHu7ck3iAjH6PrOUuiNDR+/GaHmJSQshpo4B9qP4hZsX8eeEmcIyZOnfcoOIml2nG8RE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yztb//NYBoKXx01iui5mTSOQzhDryM5MG7Lc9ya0daCvzA0AF4Q
-	liEdGgjTzpwHa9Txc8Ai8NwLtzNeLMIPNBq/Q9KmYOr0LZgUoe/JOeCr0w7/vWjATVzKA+6uTuG
-	pthkb+Mrn31HPrA7bIOwenPJStx4=
-X-Google-Smtp-Source: AGHT+IFvWrciDr6mTn/0jLlxcfQLFJaLJCVtLl6E6HMysiz+7fvxdv5D3t/y67xbPvsZHZCxSp+6BBa6yDCK4/1bo5U=
-X-Received: by 2002:a05:6e02:13a2:b0:39f:6180:afca with SMTP id
- e9e14a558f8ab-3a08491196bmr275534325ab.13.1726710282105; Wed, 18 Sep 2024
- 18:44:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726714585; x=1727319385;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5GJhA0mjEPdtfqnf/P6njWML6hfKb60sWwrvJGKoU+s=;
+        b=apNMNBZDR6H8X2I87uKvu8K/Yx8IwcqNKa22ZI+4MAWBTPE6ZVOhmjq+Hb/yu19VEq
+         ZvKDArmELoguuwgvK8fhBOnVJ4If3tbA1KOc1QMytQ8z8JsiqviDF1JdBf0lnemzOcij
+         zvEVIzn4kBWOl83w856fudST/UxjXHcNI6TOpWNzvzugv1HVnzwxnldvsbEiGzAxhpwP
+         iZYLvS8gCuHY00nIIzJG5hUcEv5h+hxTl0OInAYQE9dDE+Q+VUCugNAZly4QQW0jyJNY
+         J7PxqUd9nPC8VA0ZJhKSmZV5SUbeJ+TWW99zdv3qqqfKAqcLF2JqUDheZ0EYr4QJP6zW
+         A29A==
+X-Gm-Message-State: AOJu0YzcWTqBveJ+IktUtVqBLlznzt0dxvPPD6cPiQpIsmwHFFxxDQ14
+	zdJQ7Cq/g3c7jhYKNqLYRriUmGS8TG/3TN1k0zclqizhEd6wvtauOAdcfg==
+X-Google-Smtp-Source: AGHT+IHIzIrN7dSCPrbE7fe3ybp0UNqueC5VHEPzo/kjfCC7reDC/kUQyqMyZ+se7vzPcIhbgfXgSg==
+X-Received: by 2002:a17:903:1252:b0:204:e310:8c7b with SMTP id d9443c01a7336-2076e3f7347mr313393475ad.34.1726714584737;
+        Wed, 18 Sep 2024 19:56:24 -0700 (PDT)
+Received: from dw-tp.. ([171.76.85.129])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207946d2823sm71389105ad.148.2024.09.18.19.56.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Sep 2024 19:56:24 -0700 (PDT)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Donet Tom <donettom@linux.vnet.ibm.com>,
+	Pavithra Prakash <pavrampu@linux.vnet.ibm.com>,
+	Nirjhar Roy <nirjhar@linux.ibm.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	kasan-dev@googlegroups.com,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [RFC v2 00/13] powerpc/kfence: Improve kfence support
+Date: Thu, 19 Sep 2024 08:25:58 +0530
+Message-ID: <cover.1726571179.git.ritesh.list@gmail.com>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,112 +88,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <1725615837-24872-1-git-send-email-shengjiu.wang@nxp.com> <CAA+D8AOkQOanya6RViXfk_=CmNmCWx-N3cb-0SjMhSy0AA7LeA@mail.gmail.com>
-In-Reply-To: <CAA+D8AOkQOanya6RViXfk_=CmNmCWx-N3cb-0SjMhSy0AA7LeA@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 19 Sep 2024 09:44:31 +0800
-Message-ID: <CAA+D8ANFn6yD=gV+uMYXyQ_7TmOoBnmJtMZ70qPOS_dHn8OkPA@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 0/6] ASoC: fsl: add memory to memory function for ASRC
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: vkoul@kernel.org, perex@perex.cz, tiwai@suse.com, 
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Jaroslav
+This patch series addresses following to improve kfence support on Powerpc.
 
-On Fri, Sep 13, 2024 at 10:29=E2=80=AFAM Shengjiu Wang <shengjiu.wang@gmail=
-.com> wrote:
->
-> On Fri, Sep 6, 2024 at 6:05=E2=80=AFPM Shengjiu Wang <shengjiu.wang@nxp.c=
-om> wrote:
-> >
-> > This function is base on the accelerator implementation
-> > for compress API:
-> > https://patchwork.kernel.org/project/alsa-devel/patch/20240731083843.59=
-911-1-perex@perex.cz/
->
-> Hi Jaroslav
->
->     Shall I add this patch to my patch set next time? Last time I
-> reported an issue
-> about "list_for_each_entry_safe_reverse", I can help to add it.  or
-> will you send
-> another version by yourself?
+1. Usage of copy_from_kernel_nofault() within kernel, such as read from
+   /proc/kcore can cause kfence to report false negatives.
 
-A gentle reminder, look forward to your reply.
-Thanks.
+2. (book3s64) Kfence depends upon debug_pagealloc infrastructure on Hash.
+   debug_pagealloc allocates a linear map based on the size of the DRAM i.e.
+   1 byte for every 64k page. That means for a 16TB DRAM, it will need 256MB
+   memory for linear map. Memory for linear map on pseries comes from
+   RMA region which has size limitation. On P8 RMA is 512MB, in which we also
+   fit crash kernel at 256MB, paca allocations and emergency stacks.
+   That means there is not enough memory in the RMA region for the linear map
+   based on DRAM size (required by debug_pagealloc).
 
-Best regards
-Shengjiu Wang
+   Now kfence only requires memory for it's kfence objects. kfence by default
+   requires only (255 + 1) * 2 i.e. 32 MB for 64k pagesize.
 
->
-> Best regards
-> Shengjiu Wang
->
-> >
-> > Audio signal processing also has the requirement for memory to
-> > memory similar as Video.
-> >
-> > This asrc memory to memory (memory ->asrc->memory) case is a non
-> > real time use case.
-> >
-> > User fills the input buffer to the asrc module, after conversion, then =
-asrc
-> > sends back the output buffer to user. So it is not a traditional ALSA p=
-layback
-> > and capture case.
-> >
-> > Because we had implemented the "memory -> asrc ->i2s device-> codec"
-> > use case in ALSA.  Now the "memory->asrc->memory" needs
-> > to reuse the code in asrc driver, so the patch 1 and patch 2 is for ref=
-ining
-> > the code to make it can be shared by the "memory->asrc->memory"
-> > driver.
-> >
-> > Other change is to add memory to memory support for two kinds of i.MX A=
-SRC
-> > modules.
-> >
-> > changes in v3:
-> > - use Jaroslav's suggestion for header file compress_params.h (PATCH 01=
-)
-> > - remove the ASRC_OUTPUT_FORMAT/ASRC_OUTPUT_RATE definition
-> > - remove ASRC_RATIO_MOD in this version because it uses .set_metadata()
-> >   Will wait Jaroslav's update or other better method in the future.
-> > - Address some comments from Pierre.
-> >
-> > changes in v2:
-> > - Remove the changes in compress API
-> > - drop the SNDRV_COMPRESS_SRC_RATIO_MOD
-> > - drop the SND_AUDIOCODEC_SRC and struct snd_dec_src
-> > - define private metadata key value
-> >   ASRC_OUTPUT_FORMAT/ASRC_OUTPUT_RATE/ASRC_RATIO_MOD
-> >
-> > Shengjiu Wang (6):
-> >   ALSA: compress: Add output rate and output format support
-> >   ASoC: fsl_asrc: define functions for memory to memory usage
-> >   ASoC: fsl_easrc: define functions for memory to memory usage
-> >   ASoC: fsl_asrc_m2m: Add memory to memory function
-> >   ASoC: fsl_asrc: register m2m platform device
-> >   ASoC: fsl_easrc: register m2m platform device
-> >
-> >  include/uapi/sound/compress_params.h |  23 +-
-> >  sound/soc/fsl/Kconfig                |   1 +
-> >  sound/soc/fsl/Makefile               |   2 +-
-> >  sound/soc/fsl/fsl_asrc.c             | 179 ++++++-
-> >  sound/soc/fsl/fsl_asrc.h             |   2 +
-> >  sound/soc/fsl/fsl_asrc_common.h      |  70 +++
-> >  sound/soc/fsl/fsl_asrc_m2m.c         | 727 +++++++++++++++++++++++++++
-> >  sound/soc/fsl/fsl_easrc.c            | 261 +++++++++-
-> >  sound/soc/fsl/fsl_easrc.h            |   4 +
-> >  9 files changed, 1260 insertions(+), 9 deletions(-)
-> >  create mode 100644 sound/soc/fsl/fsl_asrc_m2m.c
-> >
-> > --
-> > 2.34.1
-> >
+This series in Patch-1 adds a kfence kunit testcase to detect
+copy_from_kernel_nofault() case. I assume the same should be needed for all
+other archs as well.
+
+Patch-2 adds a fix to handle this false negatives from copy_from_kernel_nofault().
+
+Patch[3-9] removes the direct dependency of kfence on debug_pagealloc
+infrastructure. We make Hash kernel linear map functions to take linear map array
+as a parameter so that it can support debug_pagealloc and kfence individually.
+That means we don't need to keep the size of the linear map to be
+DRAM_SIZE >> PAGE_SHIFT anymore for kfence.
+
+Patch-10: Adds kfence support with above (abstracted out) kernel linear map
+infrastructure. With it, this also fixes, the boot failure problem when kfence
+gets enabled on Hash with >=16TB of RAM.
+
+Patch-11 & Patch-12: Ensure late initialization of kfence is disabled for both
+Hash and Radix due to linear mapping size limiations. Commit gives more
+description.
+
+Patch-13: Early detects if debug_pagealloc cannot be enabled (due to RMA size
+limitation) so that the linear mapping size can be set correctly during init.
+
+Testing:
+========
+It passes kfence kunit tests with Hash and Radix.
+[   44.355173][    T1] # kfence: pass:27 fail:0 skip:0 total:27
+[   44.358631][    T1] # Totals: pass:27 fail:0 skip:0 total:27
+[   44.365570][    T1] ok 1 kfence
+
+
+Future TODO:
+============
+When kfence on Hash gets enabled, the kernel linear map uses PAGE_SIZE mapping
+rather than 16MB mapping.
+
+
+v1 -> v2:
+=========
+1. Added a kunit testcase patch-1.
+2. Fixed a false negative with copy_from_kernel_nofault() in patch-2.
+3. Addressed review comments from Christophe Leroy.
+4. Added patch-13.
+
+
+Nirjhar Roy (1):
+  mm/kfence: Add a new kunit test test_use_after_free_read_nofault()
+
+Ritesh Harjani (IBM) (12):
+  powerpc: mm: Fix kfence page fault reporting
+  book3s64/hash: Remove kfence support temporarily
+  book3s64/hash: Refactor kernel linear map related calls
+  book3s64/hash: Add hash_debug_pagealloc_add_slot() function
+  book3s64/hash: Add hash_debug_pagealloc_alloc_slots() function
+  book3s64/hash: Refactor hash__kernel_map_pages() function
+  book3s64/hash: Make kernel_map_linear_page() generic
+  book3s64/hash: Disable debug_pagealloc if it requires more memory
+  book3s64/hash: Add kfence functionality
+  book3s64/radix: Refactoring common kfence related functions
+  book3s64/hash: Disable kfence if not early init
+  book3s64/hash: Early detect debug_pagealloc size requirement
+
+ arch/powerpc/include/asm/kfence.h        |   8 +-
+ arch/powerpc/mm/book3s64/hash_utils.c    | 364 +++++++++++++++++------
+ arch/powerpc/mm/book3s64/pgtable.c       |  13 +
+ arch/powerpc/mm/book3s64/radix_pgtable.c |  12 -
+ arch/powerpc/mm/fault.c                  |  10 +-
+ arch/powerpc/mm/init-common.c            |   1 +
+ mm/kfence/kfence_test.c                  |  17 ++
+ 7 files changed, 318 insertions(+), 107 deletions(-)
+
+--
+2.46.0
+
 
