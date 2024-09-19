@@ -1,77 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-1455-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1456-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D21097C44D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 08:27:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6246597C46C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 08:48:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8QYT0M5lz2yF0;
-	Thu, 19 Sep 2024 16:27:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8R1G1FDXz2xFm;
+	Thu, 19 Sep 2024 16:48:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::633"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726727261;
-	cv=none; b=WcMpEJlawl863o5k3MDdjFXYiBjQneMEx+KD5/hr6UE73Lp2xJDItzpiSMspGX8i1x8Kyi9XKhJe7MKOh50ZpDL0VlXbYF6aJF/zUfdq2kXQtnItIAvNl9yDeRguUHgQodcMC0HfCWLgMidx6BFkv3Ry2xt6s0qknizd2YAV0T0vKroy5ATzvqYIEm7RkKHZQrtRF/eGUg6FwbWub3JQz5QFh3oqfG3lOmdsgp3ePZcMpCZEDh+fDCPi1YfGXL7eo+QMFYOEBiXTRqMzuXUhmFoCbgLlAI37dJS+5ctru0eFa+BhbTfVhs0eqrwLSLZkdVVJHQ84FB4ROqkEbxvA7g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726728498;
+	cv=none; b=UEi/1Zn1SwRDOU0smiMFDdvpe0TKGkk6bC/wevjCsU5UHQjhtvzl9eXRyeDZH0+4je22tp0Qo8V8vrKDVH4cExojqiyW1u93IwnsaqiJ/8s9Lc6WtLjeq2j9QHap4l0jZffcNO37Tg2TuoQbqwdutu5LOCYjTl4AQPPxuXrMmJSVvSUyCokIG8/Shp2OpvYvfqQ6UgzwOlbm+zCsIbiP6sfzuWZvOc5P80jbxcwM/LgDp1fiDKdCR5GY5UOND4KrS24uR4Kl1Vc5a4p//1aX1fe32AAXKggJJ88k/WV9f8BD7UW7x3Gp7x9uqphqgeKVTB55t3JtLODarMjk0bYa3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726727261; c=relaxed/relaxed;
-	bh=2Hj+1vqgujWOrqlQpkce2sq1h+JT76BLtBiXrr9bmsw=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-version:Content-type; b=eFXg+kQNoRrrdaIYxxG09xyn1HqauwVFH/uINo33dRfYIjlllxNpewfXLRTt+m3Pvw7h8zsA8/PkJ28rTJutgoxgYU3eib9sBvYdbLe4ViWLljs64fxiD+GmNtDd0wgqLi6SLwcyzIqDKURchUIoP+ASNdiI4dj4LpQi+GCGiUESv31aAZaxkLc9QudEKs5WcYIy9o66A/3Bv0/SIDxLJEs5sztUt+FBI/q97BdTMitsLMdxYyF24XBABUULXBNeI/4eN1pjw0b3VT3hDO3rtw9ORg/dQT9n1RZ2WPnb+kccW4DnsThP7S0ifRZCpFDG8Q5nTKcsk8BkGwnDQMbtwQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=j19JX7be; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1726728498; c=relaxed/relaxed;
+	bh=qzFct2wPC2/ZRn6nkpmX0Kmt6QrEdSXOy7GQnEKjFA4=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Nx8gqnRF23dWn1qW0FkaEg7Zt43fiX+gOJNvPNBoCqYLbjCWGnO6j4MzmyL/qToF4mGIl4mkJfqC0iCWoLMmBVmJoezABxN7Zve5hc0moKlp9q55nI34xjlPC//GATugT98ne8hQ/uxm9Pa/H9/++95QB4WWvHd6cbN3C6c/lnud83UCrGFg65tyYZy6xDXPTDubYm53N0qXwN8lbRbKsWtcDBkIbb7LYM/DRkCbrgeagbQ1aybgEwwjn5l9BXuBEESSWAHSpkzwEp9dzUR8W3twFNGiOZBFjJJnF82vmMmIJY+Op+Ol71LdRaOyHA6R0fA/6dwrO+PIF2/095s31Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q81Roesj; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=j19JX7be;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q81Roesj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8QYS4vMxz2yDt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 16:27:40 +1000 (AEST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-206f9b872b2so4371385ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Sep 2024 23:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726727258; x=1727332058; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2Hj+1vqgujWOrqlQpkce2sq1h+JT76BLtBiXrr9bmsw=;
-        b=j19JX7be+6DYYrhZBUpAxgWSeAE2vJSozTpbwND8N7LNirZhCBk1EKMJzkBC/N5NbK
-         ah6mPxcWLrcMG5voexNRuqmAYG4zA9P84laU0Tg8WFHLZ+0HK1w0A90P3ZDoOlJKAI6u
-         ncgFbghA+wEBfK14MDNb8XepYKmGHtBZuzA+WXSb7nKlXpc7oR6rvrcRU1hIe4D8Qnrz
-         yIhOrN3u7Dcy6t1zVaDqxFfqTFsjVMOFij01YYH3mcuF26XeQ7WE63kFC00yWR3VsWMd
-         CoBgjNq2PyxQ7j15TRWyDSjr8Zw2IMcS3v5Gq0WGS+jGGt4UGzOVnNnHMDynSev+YAcL
-         DRmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726727258; x=1727332058;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2Hj+1vqgujWOrqlQpkce2sq1h+JT76BLtBiXrr9bmsw=;
-        b=SJmUX4d9kmtx4i1WKLecoiRSHWvtezwrHgs0wCKpp8cT9cSLk8YOf+JhYMkqFuQgYq
-         DAFnaBAqsdr5U4UmZJK0dx2pzvoGhqx2zsKFMEF4ITbpy/2L9NneNSRrAQkUA8h6CF2y
-         nWyT2IEaYWWyvjTcRNrPWiKjoslCty6rHfjW5mKE06j8WZfkN7BO9P5BnCR2P0svSp0w
-         Y+AEfPfyYDoCvNwEn83ePwR+IaxWdjSfevjI+kUfkJ4Ct+nBNZupQIofuCROBQ4QwsEP
-         2/cPUpn09B6Hwuyi9TC+x9wQB1Y37V/e4Ch04FCQlJIbvcYM+SIUwikT0e7xKuh5h/XC
-         NlHA==
-X-Forwarded-Encrypted: i=1; AJvYcCXpoUCCZjxUJMQNehfDRWB/uWLIZc11MfHtm2ZLZGA5VcEUjoP8b6/ZcveHnwoMFDHzS8XTdBsbGW4nUwE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxWyqo0uQPPE195aOk0S5xYvGbbQ0nP1AaIipW4FsbP6KLSy7Ll
-	QkDDN//e0iC+rXar7ojKtIHhWqI86oNbN28FwBLnVlVln3+6JRMS
-X-Google-Smtp-Source: AGHT+IE50XMoZa4hBwRIz3mN6qx5JWjHTF23/FUJHa75WuBjbh10hAyGn2DW14ljgJyxa6XgGD0eSg==
-X-Received: by 2002:a17:902:eb8a:b0:206:ca91:1dda with SMTP id d9443c01a7336-2076e39c56bmr305359875ad.17.1726727258556;
-        Wed, 18 Sep 2024 23:27:38 -0700 (PDT)
-Received: from dw-tp ([171.76.85.129])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207945da793sm73443715ad.54.2024.09.18.23.27.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2024 23:27:37 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Donet Tom <donettom@linux.vnet.ibm.com>, Pavithra Prakash <pavrampu@linux.vnet.ibm.com>, Nirjhar Roy <nirjhar@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, kasan-dev@googlegroups.com
-Subject: Re: [RFC v2 03/13] book3s64/hash: Remove kfence support temporarily
-In-Reply-To: <d9d8703a-df24-47e3-bd0d-2ff5a6eae184@csgroup.eu>
-Date: Thu, 19 Sep 2024 11:53:15 +0530
-Message-ID: <87jzf8tb58.fsf@gmail.com>
-References: <cover.1726571179.git.ritesh.list@gmail.com> <5f6809f3881d5929eedc33deac4847bf41a063b9.1726571179.git.ritesh.list@gmail.com> <d9d8703a-df24-47e3-bd0d-2ff5a6eae184@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8R1F5gsZz2xCp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 16:48:17 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 1CDAEA43AF5;
+	Thu, 19 Sep 2024 06:48:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BBCC4CEC6;
+	Thu, 19 Sep 2024 06:48:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726728494;
+	bh=ptlNwoMjKB9av3H5kpJ+WQGwxruc9JPLbe+DNrJLVE8=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=Q81RoesjmcgXs13T7PojFQx/xWI4m2qQ/yhsgAmMGdmpzmk09z0Cwp+3OQO7mQfl4
+	 nUbH5y0BGtPTRJe6gS1ynxU7wMi47hLP1/nml8F5g0iUS7e3h/GRjke7DYRPLqEDEN
+	 xQ2ZMChb5A2ljV61fuVOc0LklEwORkqblhgyHbqzcpnRFaodnEbxX3Klr8h9Y/uxcO
+	 AOOF/OqzhXLcOjU26S7ifaWnVUYcpD4jKiipJ54uEmq8weeuUyHbTMCPF9WARtDNUJ
+	 Q9u1usn0lr9Ln7ya70ibPcOm4Ebfnh6vlnCdoIiNhydmBP5LCASu292WKqi9omBJNQ
+	 kBr8A23J4YXpg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF2A3809A80;
+	Thu, 19 Sep 2024 06:48:17 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.12-1 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <8734lxqc1x.fsf@mail.lhotse>
+References: <8734lxqc1x.fsf@mail.lhotse>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <8734lxqc1x.fsf@mail.lhotse>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.12-1
+X-PR-Tracked-Commit-Id: 39190ac7cff1fd15135fa8e658030d9646fdb5f2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 3a7101e9b27fe97240c2fd430c71e61262447dd1
+Message-Id: <172672849627.1360580.1044648835370166976.pr-tracker-bot@kernel.org>
+Date: Thu, 19 Sep 2024 06:48:16 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, adubey@linux.ibm.com, alexs@kernel.org, arnd@arndb.de, bgray@linux.ibm.com, christophe.leroy@csgroup.eu, cuigaosheng1@huawei.com, gautam@linux.ibm.com, haren@linux.ibm.com, huangxiaojia2@huawei.com, jk@ozlabs.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, naveen@kernel.org, nnmlinux@linux.ibm.com, robh@kernel.org, ruanjinjie@huawei.com, tzimmermann@suse.de, u.kleine-koenig@baylibre.com, zhangzekun11@huawei.com
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,76 +68,17 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+The pull request you sent on Thu, 19 Sep 2024 00:19:38 +1000:
 
-> Le 19/09/2024 à 04:56, Ritesh Harjani (IBM) a écrit :
->> Kfence on book3s Hash on pseries is anyways broken. It fails to boot
->> due to RMA size limitation. That is because, kfence with Hash uses
->> debug_pagealloc infrastructure. debug_pagealloc allocates linear map
->> for entire dram size instead of just kfence relevant objects.
->> This means for 16TB of DRAM it will require (16TB >> PAGE_SHIFT)
->> which is 256MB which is half of RMA region on P8.
->> crash kernel reserves 256MB and we also need 2048 * 16KB * 3 for
->> emergency stack and some more for paca allocations.
->> That means there is not enough memory for reserving the full linear map
->> in the RMA region, if the DRAM size is too big (>=16TB)
->> (The issue is seen above 8TB with crash kernel 256 MB reservation).
->> 
->> Now Kfence does not require linear memory map for entire DRAM.
->> It only needs for kfence objects. So this patch temporarily removes the
->> kfence functionality since debug_pagealloc code needs some refactoring.
->> We will bring in kfence on Hash support in later patches.
->> 
->> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> ---
->>   arch/powerpc/include/asm/kfence.h     |  5 +++++
->>   arch/powerpc/mm/book3s64/hash_utils.c | 16 +++++++++++-----
->>   2 files changed, 16 insertions(+), 5 deletions(-)
->> 
->> diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
->> index fab124ada1c7..f3a9476a71b3 100644
->> --- a/arch/powerpc/include/asm/kfence.h
->> +++ b/arch/powerpc/include/asm/kfence.h
->> @@ -10,6 +10,7 @@
->>   
->>   #include <linux/mm.h>
->>   #include <asm/pgtable.h>
->> +#include <asm/mmu.h>
->>   
->>   #ifdef CONFIG_PPC64_ELF_ABI_V1
->>   #define ARCH_FUNC_PREFIX "."
->> @@ -25,6 +26,10 @@ static inline void disable_kfence(void)
->>   
->>   static inline bool arch_kfence_init_pool(void)
->>   {
->> +#ifdef CONFIG_PPC64
->> +	if (!radix_enabled())
->
-> No need for a #ifdef here, you can just do:
->
-> 	if (IS_ENABLED(CONFIG_PPC64) && !radix_enabled())
-> 		return false;
->
->
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.12-1
 
-This special radix handling is anyway dropped in later pacthes. 
-So I didn't bother changing it here.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/3a7101e9b27fe97240c2fd430c71e61262447dd1
 
->> +		return false;
->> +#endif
->>   	return !kfence_disabled;
->
-> But why not just set kfence_disabled to true by calling disable_kfence() 
-> from one of the powerpc init functions ?
->
+Thank you!
 
-This patch is only temporarily disabling kfence support for only Hash.
-This special Hash handling gets removed in patch-10 which brings back
-kfence support.
-
--ritesh
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
