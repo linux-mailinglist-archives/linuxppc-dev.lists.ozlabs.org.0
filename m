@@ -1,61 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-1448-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1449-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF2797C31C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 05:24:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEBC97C339
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 05:56:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8LV155YPz2yD8;
-	Thu, 19 Sep 2024 13:24:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8MBV5M26z2yDH;
+	Thu, 19 Sep 2024 13:56:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726716265;
-	cv=none; b=OGYLnl8MS2MCWc/oztQg+R+gzFc1I01MiOmmw/V8MNZDuKFvQe+BP0HHLGeC0/yu7p+Zk42ajEexxDszsEqK9+bICDrenMVlaOvrRGsQo17Kf1m8+bIZMRXrc6l+gzNbjXybqs7ailyTZhgrBa4jTWXON7y7/OU+Vea2JQ4xy6BF4JE3+5L/tbC9nr4mk3YD59yFn/Ar8zdSpTSeio0egY0+lYc1YavvhQoMcgUy5+kDecq3QKv5duHQn6Hl8ZBGfx7b4qCh63i9lbMJvvdC4vycjg4I9NxdexEpLqwa8ExVDM2cDoLizv2sZDQk5XJ1/rtNrBFMC/cZS3G2aB80zw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=114.132.124.171
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726718162;
+	cv=none; b=oWkwJKBPk6CMEbHqItyYidD5GvZc1SRlLh8WfcRMzcj5h27hqebfQvUUR+28g5cLocOBOoisHk52eG9NPI3rDkCQi0NkMxXXwQfrxO5NiKSTo6IJykRqSRnjvqrGs34D4Vz8OB7pjx00XQ3jRI6nvVRuCMrqW6eza9j7WfaZGm6+kbTBCkohNaNolIiZeURNe9UMaadWchvR5CPjCB8ZuhZdBkQMlfXtvuGj8csxWVWqsFn44CNaNOibfo55oPJ4Dd82Hn3P8pBsaMIdnOwrxu8dQ66gNn7tRsYwQ01FZr+CTsnY//uaUBZxihvZAjAEMcO510DeM1FKJHLhJEYpXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726716265; c=relaxed/relaxed;
-	bh=fZa83PjDF+loDF68mkxwlic+EMe/zFZXGtZzppvd0EI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DsA/mgXZO7ZP1SgLXqKO7Nq9dU/toudabijkzwtbcCkVsiNSZlOaf21xqLZVq7t3atdVHK4bGNDO4wwXO2GXZkpas2V4FdLnjp9ccxxPzB0zUlNZclUCIWYmO5WrAB2/iM9ViE9DY+aY+YZO4BiXL38K4cRTtAtwdWxHELD/tMdHDlhn2WlfMKxWuHWKTPTjS/FzAvkWGPJbnjpyd76Jk5ZSOjUsCVBwH6EwUtBsW58vRUdwxh61Hj9wt+HUjVYBaGEfbNLgv2DShZtghycrpx95Yab/KIZbILS6XiDz7RBlGu5+YcxIHBgXg81D96dx0c6get7dzylDTXXbLP8pFA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kKrfwXQz; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kKrfwXQz;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	t=1726718162; c=relaxed/relaxed;
+	bh=oywtgu0lp2wX5/DmWyzjhOdSfP3v1EHicaX4JOOY80M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XpYO72EngxD5CgO6KutuDwtqzIGeye8oFvQt87gA6tA2Itov9RCHi3001p6lY+DMbTSf1kN+d/Uuvjpt3nhHCOEsj90ozAR76MdABy3I/1INDrRL0vVARwR3Vtc8qXxDEMnsW5RYXtlroMzWFQ4pRI693wr4d0gH6iUSbwtA6dQmvEo4UOphIlSVmt+JQpknoJDDCo+GO0khQ84HVOWBv6siaTBnJVB8wxAZtRaDBnx/CSRBZXELWPW2aYcWSQO2EgotRrbF9Z24mwl8wMapdnAhLPEmKSxTfTvXxUkSq0bNbuilhF/4yJvHo/Bo5EgcOgUj+8t2tb3QcyKSlWkhsQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass (client-ip=114.132.124.171; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org) smtp.mailfrom=shingroup.cn
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=114.132.124.171; helo=bg1.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.124.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8LV14qY0z2xs8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 13:24:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726716265;
-	bh=fZa83PjDF+loDF68mkxwlic+EMe/zFZXGtZzppvd0EI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kKrfwXQzYOVoLALAu4QL5cpeNLZ3QlBIP45hb3cw/4FvpWKiSfhgBqI9/imj0M0Hf
-	 FcOhPgV7nLSzZozANLb+DWAG9iM+k7ioTpcaQK+Z/3dTu81vHqFjyQU4yBDtvMFr2T
-	 vgAmi/i58LOQYT3ZCnzPkz+6KQPEwUlJBThCDLC1UDMLdR9fJmJayb6xiZjOp+/kTc
-	 uSEJYWpnekmA0Y1inNEkjpEqoQabVADoCxvH3tbI5jTye0aknSrsJMoWCWl3DRbPgw
-	 Z/PqCvPn1RU8HxzF+hG9DBu3xMzrAMEhf9/Xa+ut3OyOw8urSdGB6Ave3V6vLKrRLe
-	 aveMIY2NWz7Aw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X8LTz0kTlz4xWZ;
-	Thu, 19 Sep 2024 13:24:22 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Dave Vasilevsky <dave@vasilevsky.ca>, glaubitz@physik.fu-berlin.de,
- bhe@redhat.com, linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- ebiederm@xmission.com
-Cc: Dave Vasilevsky <dave@vasilevsky.ca>, Reimar =?utf-8?Q?D=C3=B6ffinger?=
- <Reimar.Doeffinger@gmx.de>
-Subject: Re: [PATCH v2] crash, powerpc: Default to CRASH_DUMP=n on
- PPC_BOOK3S_32
-In-Reply-To: <20240917163720.1644584-1-dave@vasilevsky.ca>
-References: <20240917163720.1644584-1-dave@vasilevsky.ca>
-Date: Thu, 19 Sep 2024 13:24:22 +1000
-Message-ID: <87ttecpbq1.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8MBT0ycqz2xs8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 13:56:00 +1000 (AEST)
+X-QQ-mid: bizesmtpsz7t1726718080telposq
+X-QQ-Originating-IP: V5NafoQtd2r3EER7QhH+pxJhBzkw4FTZ0iHW6xRwIMY=
+Received: from HX09040029.powercore.com.cn ( [180.171.104.254])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 19 Sep 2024 11:54:38 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 10480147457873423502
+Date: Thu, 19 Sep 2024 11:54:08 +0800
+From: Luming Yu <luming.yu@shingroup.cn>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	npiggin@gmail.com, christophe.leroy@csgroup.eu,
+	jialong.yang@shingroup.cn, luming.yu@gmail.com
+Subject: Re: [RFC PATCH] powerpc/tlb: enable arch want batched unmap tlb flush
+Message-ID: <040533E1233A67C4+ZuugYFMsPMaDAjI9@HX09040029.powercore.com.cn>
+References: <9BC3D1299ECE8428+20240918092515.2121-2-luming.yu@shingroup.cn>
+ <87wmj8pbte.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,39 +51,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87wmj8pbte.fsf@mail.lhotse>
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
 
-Dave Vasilevsky <dave@vasilevsky.ca> writes:
-> Fixes boot failures on 6.9 on PPC_BOOK3S_32 machines using
-> Open Firmware. On these machines, the kernel refuses to boot
-> from non-zero PHYSICAL_START, which occurs when CRASH_DUMP is on.
->
-> Since most PPC_BOOK3S_32 machines boot via Open Firmware, it should
-> default to off for them. Users booting via some other mechanism
-> can still turn it on explicitly.
->
-> Does not change the default on any other architectures for the
-> time being.
->
-> Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
-> Reported-by: Reimar D=C3=B6ffinger <Reimar.Doeffinger@gmx.de>
-> Closes: https://lists.debian.org/debian-powerpc/2024/07/msg00001.html
-> Fixes: 75bc255a7444 ("crash: clean up kdump related config items")
-> ---
->  arch/arm/Kconfig       | 3 +++
->  arch/arm64/Kconfig     | 3 +++
->  arch/loongarch/Kconfig | 3 +++
->  arch/mips/Kconfig      | 3 +++
->  arch/powerpc/Kconfig   | 4 ++++
->  arch/riscv/Kconfig     | 3 +++
->  arch/s390/Kconfig      | 3 +++
->  arch/sh/Kconfig        | 3 +++
->  arch/x86/Kconfig       | 3 +++
->  kernel/Kconfig.kexec   | 2 +-
->  10 files changed, 29 insertions(+), 1 deletion(-)
+On Thu, Sep 19, 2024 at 01:22:21PM +1000, Michael Ellerman wrote:
+> Luming Yu <luming.yu@shingroup.cn> writes:
+> > From: Yu Luming <luming.yu@gmail.com>
+> >
+> > ppc always do its own tracking for batch tlb.
+> 
+> I don't think it does? :)
+> 
+> I think you're referring to the batch handling in 
+> arch/powerpc/include/asm/book3s/64/tlbflush-hash.h ?
+> 
+> But that's only used for 64-bit Book3S with the HPT MMU.
+> 
+> > By trivially enabling
+> > the ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH in ppc, ppc arch can re-use
+> > common code in rmap and reduce overhead and do optimization it could not
+> > have without a tlb flushing context at low architecture level.
+> >
+> > Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+> > ---
+> >  arch/powerpc/Kconfig                |  1 +
+> >  arch/powerpc/include/asm/tlbbatch.h | 30 +++++++++++++++++++++++++++++
+> >  2 files changed, 31 insertions(+)
+> >  create mode 100644 arch/powerpc/include/asm/tlbbatch.h
+> 
+> This doesn't build:
+> 
+>   https://github.com/linuxppc/linux-snowpatch/actions/runs/10919442655
+> 
+> Can you please follow the instructions here:
+> 
+>   https://github.com/linuxppc/wiki/wiki/Testing-with-GitHub-Actions
+> 
+> Which describe how to fork our CI tree that has Github Actions
+> preconfigured, then you can apply your patches on top and push to github
+> and it will do some test builds for you. Notably it will do 32-bit
+> builds which is what broke here.
+thanks, I will take a look and do this for next patch before posting on mailing list. :-)
+Ideally it should also include qemu boot tests for targets that must work.
+I think we could also need a powerpc yocto recipe as well to make patch test more customizable
+and reproducible than fedora/Debian distro. I've been searching for it for a while, but I couldn't find a useful one. Maybe I need to come up one of my own to facilitate the ci test bot ideas.
+> 
+> cheers
+> 
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
 
