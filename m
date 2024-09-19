@@ -1,60 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-1462-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1463-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1181997C968
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 14:43:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6192D97C98B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 14:52:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8Ztr5sYPz2yGX;
-	Thu, 19 Sep 2024 22:43:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8b5R0QGvz2yGh;
+	Thu, 19 Sep 2024 22:52:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726749796;
-	cv=none; b=FzKAmxVxgVQ30tVMTX3UG9I8zJdNFhLsMRj3+FKLXLxG+wKOCPR79HDeFcVNeOHcnmKSYDdmO0qtAXS1mgvcdrXDKVFirYwdOVVloBzvHUaHNCYxkl4lmwF1ZoY7vucrDAb80nhZjbszZw1Eqdj1zrobOABIPThU/H3K8xcMAMl0in8WOrYcGKnjn4hgaq+S7Sq/rPRH+S5Xwm+U4YdZOFmqHKhWlY39VGvCuPxysZDzDDoH4hQOg3HT0/1Doo1JikuD96sWDIb6BRgxIf2mGduTfJsx3h534QD+qebq3Yoq7pEKMwEIKerI8KiEjHENDvCnULTNeBreKW/MRGkwbA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726750347;
+	cv=none; b=cLh8ZpbxK9mbeWLsvMcN9qCPg/0/UgOVjxhI34wGPMrUMiA1+hmrEJNSjIk5moJ/tWRsZctXy2TtRf1X0mGhi0E8VuKL7aKPcF+0TVhGE1Lum/jMyeLtz/wXZHRI/8heq5e52r4LFfexAaBS0CTIyYQ/Vs0kWmgN8q2/OO4bo8a0KTgwcUZVysMzPXhLYsnyw+S+WT+kxkcTMoqkhq/dO9gY1qk1RniiEgD8xjU5V0E08Dp5LadBIoFIgL36LkupGmifqO0MMjYFsr0ypkp1+JU4y9aPzOlLDqYG4AXsa/neqzeVVISs5Ad7uzPaTyV/yGjYn3p7N+c+u9pwVfeCTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726749796; c=relaxed/relaxed;
-	bh=+4ltGAVEzrHoagPXKaFdfBj/AJkWKcAhVfPM62hcyyQ=;
+	t=1726750347; c=relaxed/relaxed;
+	bh=YdfaTvkQDBi4PXl8ldsfHZrG66LfS85qUpPVnUW7PhQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=QyB2y1Z0Hn6H8TooKX01ImLS9DYHiTlIcQ2CNvbwZ/AQ0007COPryosBccxRUhaGpsrqRBIAbDG4+PFFIOyeUstaxUaCZSJ30xWIh3NUPPmbKR/O7WMcNbQt8a/n2NEvy7Jzjx4iyvrtfT9YbhWpKau12jNRHXlb9y3RHdtaOWBj2BIX1KiFVn+xvyVnhH3wZHs2BixZEXWOv7qUm83YmigC3vEOCJwW2Sl2uJ2zpk1D5IBMa9ndazNtrtvvrKpsbtDayifPIR4rWIZ9stpNb+5UUx/8KwqqHJOx1vO7m69YfkjGrcOW35d0dOY5vOR6c4FRwzhg8zGe/XbElIbqUg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WmVYim2V; dkim-atps=neutral
+	 MIME-Version:Content-Type; b=UCowwsA/l9uYX2+HoWVKqgwdUI4Qj7F2eoEC0D2Dcg00CqXf6hg8Lqukcs465pSZQdcdcNAnYSHmxvkjVkP6zegmVrw7L8LJnVSGFxSnljwH70c11C/EXyMUdcWWQzUoGs7SRhoHoSYoJzypDf3/MBL+zSLxdK/GeRqw5jINZeW2pjiQdPQYB9xr8dpPEJc+omx8BLhCCyb/kP09kXwQAU7TYsDHHy1GV9ohPwjjsRLt4Ftfv1evholoZ6ddXqumj8D9xWcbx45v/6bTmAgN3kIbe0+Mc67o0V8zXMg0M0D9sGd5OM0KjggNQ8+hFhKuWJ7GoWCgFmcxlDkKdSPAhw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cEkP6PDQ; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WmVYim2V;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cEkP6PDQ;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8Ztq3c00z2xFn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 22:43:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8b5Q3dgYz2yGd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 22:52:26 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726749791;
-	bh=+4ltGAVEzrHoagPXKaFdfBj/AJkWKcAhVfPM62hcyyQ=;
+	s=201909; t=1726750342;
+	bh=YdfaTvkQDBi4PXl8ldsfHZrG66LfS85qUpPVnUW7PhQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=WmVYim2V/4PUaKRq9MRgUC5zdyhXQ7tSQ76it7dTsMSEQUwtKtK/WvohX6DyAmMcN
-	 D1GaGr5ck9B/RLLLjojYdILfGiwUkiAc42xY31sJVuIgu1iCDSB5Ne8WoV0jLCqI8d
-	 zrQVH2/E8wHrzeL472ZLIgKvcRebtNP0/pDHSIeMrOMs1K3UHnNiSWWyaDfov92n6B
-	 nX+72Kkyna45gtpiXraRHWX8dA2MM2VAD3/mATghE5+9YSoGPDZR+jxbVLBJfj7SYt
-	 +PZlFeirujvDyDFZLcpTy+hpNAk8k+YbLWlsrFQSPy8kfZwx9aUoN4J9MxpblfUpCb
-	 Cm5dILFZG65Ug==
+	b=cEkP6PDQe/cGBgTv9xjFn5FgrS7hVSmWVy0zMzRWqw09WZXJO0jznZ8GNsNkK4Tud
+	 lP3vMJ9RHxCdEFxHBY8sK6jHAtIV2x/sm5uYnl+1VdEn8W33TfUUNJc/EB2XgzVFFp
+	 QulvhH0tGFKYz3ehJ1BRy6PmIgTt8oD6Fb6WB4gnqotpOWgM8zsEauceb4CzuY/dxO
+	 QqgMehIOEd3FRkx9N1OK7ceGLK3yfe+j6kyvopQ3pE/1F/eUacccfnLtluJ88tYwhm
+	 IZ0/jc9OWlX0UJOwL1T9CQDHLxnQbwogGSY6JOK/CCkNsRaAvPSXcT4XtqeTrr5fG3
+	 A0v6Ki80FR4lQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X8Ztl2z32z4wb5;
-	Thu, 19 Sep 2024 22:43:11 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X8b5L1MZhz4x5M;
+	Thu, 19 Sep 2024 22:52:21 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: linuxppc-dev@lists.ozlabs.org, christophe.leroy@csgroup.eu,
- sfr@canb.auug.org.au, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, almasrymina@google.com, kuba@kernel.org
-Subject: Re: [PATCH] powerpc/atomic: Use YZ constraints for DS-form
- instructions
-In-Reply-To: <20240917073750.GZ29862@gate.crashing.org>
-References: <20240916120510.2017749-1-mpe@ellerman.id.au>
- <20240917073750.GZ29862@gate.crashing.org>
-Date: Thu, 19 Sep 2024 22:43:10 +1000
-Message-ID: <87o74jrezl.fsf@mail.lhotse>
+To: Luming Yu <luming.yu@shingroup.cn>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu, jialong.yang@shingroup.cn,
+ luming.yu@gmail.com
+Subject: Re: [RFC PATCH] powerpc/tlb: enable arch want batched unmap tlb flush
+In-Reply-To: <040533E1233A67C4+ZuugYFMsPMaDAjI9@HX09040029.powercore.com.cn>
+References: <9BC3D1299ECE8428+20240918092515.2121-2-luming.yu@shingroup.cn>
+ <87wmj8pbte.fsf@mail.lhotse>
+ <040533E1233A67C4+ZuugYFMsPMaDAjI9@HX09040029.powercore.com.cn>
+Date: Thu, 19 Sep 2024 22:52:21 +1000
+Message-ID: <87ldznreka.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,32 +66,64 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-> Hi!
->
-> On Mon, Sep 16, 2024 at 10:05:10PM +1000, Michael Ellerman wrote:
->> The 'ld' and 'std' instructions require a 4-byte aligned displacement
->> because they are DS-form instructions. But the "m" asm constraint
->> doesn't enforce that.
+Luming Yu <luming.yu@shingroup.cn> writes:
+> On Thu, Sep 19, 2024 at 01:22:21PM +1000, Michael Ellerman wrote:
+>> Luming Yu <luming.yu@shingroup.cn> writes:
+>> > From: Yu Luming <luming.yu@gmail.com>
+>> >
+>> > ppc always do its own tracking for batch tlb.
 >> 
->> That can lead to build errors if the compiler chooses a non-aligned
->> displacement, as seen with GCC 14:
+>> I don't think it does? :)
 >> 
->>   /tmp/ccuSzwiR.s: Assembler messages:
->>   /tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is not a multiple of 4)
->>   make[5]: *** [scripts/Makefile.build:229: net/core/page_pool.o] Error 1
+>> I think you're referring to the batch handling in 
+>> arch/powerpc/include/asm/book3s/64/tlbflush-hash.h ?
 >> 
->> Dumping the generated assembler shows:
+>> But that's only used for 64-bit Book3S with the HPT MMU.
 >> 
->>   ld 8,39(8)       # MEM[(const struct atomic64_t *)_29].counter, t
+>> > By trivially enabling
+>> > the ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH in ppc, ppc arch can re-use
+>> > common code in rmap and reduce overhead and do optimization it could not
+>> > have without a tlb flushing context at low architecture level.
+>> >
+>> > Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+>> > ---
+>> >  arch/powerpc/Kconfig                |  1 +
+>> >  arch/powerpc/include/asm/tlbbatch.h | 30 +++++++++++++++++++++++++++++
+>> >  2 files changed, 31 insertions(+)
+>> >  create mode 100644 arch/powerpc/include/asm/tlbbatch.h
 >> 
->> Use the YZ constraints to tell the compiler either to generate a DS-form
->> displacement, or use an X-form instruction, either of which prevents the
->> build error.
->
-> Great explanation text, a perfect commit!  :-)
+>> This doesn't build:
+>> 
+>>   https://github.com/linuxppc/linux-snowpatch/actions/runs/10919442655
+>> 
+>> Can you please follow the instructions here:
+>> 
+>>   https://github.com/linuxppc/wiki/wiki/Testing-with-GitHub-Actions
+>> 
+>> Which describe how to fork our CI tree that has Github Actions
+>> preconfigured, then you can apply your patches on top and push to github
+>> and it will do some test builds for you. Notably it will do 32-bit
+>> builds which is what broke here.
 
-Thanks - I'm sure there's something that could be better, but I do try :)
+> thanks, I will take a look and do this for next patch before posting on mailing list. :-)
+> 
+> Ideally it should also include qemu boot tests for targets that must work.
+ 
+Those scripts do qemu boots of pseries p8/p9, powernv p8/p9, 44x,
+e5500, g5, and mac99.
+
+It doesn't boot full distros because that's too slow for Github Actions,
+so it doesn't catch all bugs, but it's better than nothing.
+
+> I think we could also need a powerpc yocto recipe as well to make
+> patch test more customizable
+> and reproducible than fedora/Debian distro. I've been searching for it
+> for a while, but I couldn't find a useful one. Maybe I need to come up
+> one of my own to facilitate the ci test bot ideas.
+
+I've never used Yocto, not sure if it does/did support powerpc.
+
+Buildroot can build powerpc images with lots of packages included.
 
 cheers
 
