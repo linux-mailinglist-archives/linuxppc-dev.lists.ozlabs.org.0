@@ -1,66 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-1477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1459-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F013997CFAB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2024 02:31:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FB697C85D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 13:13:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8tc55bs3z2yL0;
-	Fri, 20 Sep 2024 10:31:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8XvL1ZD1z2yDS;
+	Thu, 19 Sep 2024 21:13:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=203.205.221.252
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726742812;
-	cv=none; b=lxWL29w70L3laH99cIdmtqmXkiEUrExn9Be5T6u7ggTt08a4vD2WvmQqd+ODAFhTMSBceMgEk39lt/Xwm9g2vG7cytDKstVf8g6ufYS4kALOvpJqI32bM/FP/aoE0pBgT5+TvssH0PYao9ysRqOCiJPJduqQW8/86G30lzrv7fd3yleWJId50Z/T6yVZwyKUDMaQ1iCQgM7OFUdQBea/KzoMK8wkXdDGaC3PQYvHaT8owI1iIKFNg/vvtnesQdUjIr/dQuEI5Ztn5BFuc6tS8iELEjOf7ddroScSAQmNGKQWgSnpxkUf0TXjJdIFpjGe7ksoQNQ3KwMEObPE+aJY3Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726744414;
+	cv=none; b=XaPzBAjjzdSkQaOzkOb8t8i3S8J9pES7kA4GLu1IrCMXrkkcDEsAidh5QH/GpIP5dWc0tH/mJ0RqwedcCoOCBOCOW2quurtrv60SsfzKr0ElXBaoui31+JokXHXEi4/rhoy6nnZpDG9Ws6cyiC8txbUaIfv1obRmiV9jHDREpMeICm8DWixfXRGJHFmJYRwbljivC0ZD7+RFdmtRGy/Gg0oTXVVxhkTe+XmmA7Ns9BD5J4bzft61ToJ2Xw6j0ztpSbB9FvgkKvKL1KW6Bgi5hVL4MxNEWqwMjHzo4Z55vzDXECjcWub2eFNYu3Yzry85MU1pqSZ07Ra4IZtq6MAa6A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726742812; c=relaxed/relaxed;
-	bh=P2+aQQvJA7zmfFVak44DdkW9s35hgNWDfDwCSY34wqk=;
-	h=From:To:Subject:Mime-Version:Content-Type:Date:Message-ID; b=DK2NIAAWNJD+eXoHqyP0pXojHOnefIJkAnIf8nsGIn2dRMDnGAr36amw9+7r7D8Fa+sIJYNRRfozp2dm8P2etGSOOMeEgL1EMM5xpyXIgQEzUMYb6mAYaHtmdbT5JNEKXGCNlbjM2DoZdVIR9KrEC+z0b2+u2du6ca26PZtF14bwfoCYOny9gPd2tuX8WZrw7p8JJLg+mnH2pPv/1SMDO4zNBsls5lPaAUMLpqyFCNbSgzuo97luBosuBKXJIRziDNLcEllhkP12FFbv9fQR+5na5jJOBGhZRPjoOTyL8pEHvL+4bZKEbMTPoEwJGyS+BxZlWp/hV/Hl4Nzu9orHfA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=x7FLHjLK; dkim-atps=neutral; spf=pass (client-ip=203.205.221.252; helo=out203-205-221-252.mail.qq.com; envelope-from=2639161967@qq.com; receiver=lists.ozlabs.org) smtp.mailfrom=qq.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+	t=1726744414; c=relaxed/relaxed;
+	bh=rfTOEAXZNZarvbG2AF5ajeIf7S3tcYldEG1+ILtAxS8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V+475nyHx3Jk7nq7l3QuQhXfLJUHRnHVaJ5bDQwLP5mIqIwPJXRzUdt1bpcAWOCOqnO97cmffILODgftqd39khODr0X/9CVrUFJWKyi2V2w3o9DPLh9A5A6e0hN1Tp245kYNbfGE44213Htx1CPyrl5myb4dXV57I57cBxR7uRuqqS/wJEWZ3Y3gRlNotjsfO5SzPtT7sdmWBY1T8c6FwOjRH9wVrjgGYMWyGQA+SsyAbOxP2qSdkgcqzWq4NU4nZABEon+HzCLscV5UwSEjTX60SEFj4Yzl/BQr03encuzLEonRuz1PSRzq1+2LpIz+hVVp4psPPfrNWwtYxkAuWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nfNp3Jat; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=x7FLHjLK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nfNp3Jat;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=qq.com (client-ip=203.205.221.252; helo=out203-205-221-252.mail.qq.com; envelope-from=2639161967@qq.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 123 seconds by postgrey-1.37 at boromir; Thu, 19 Sep 2024 20:46:50 AEST
-Received: from out203-205-221-252.mail.qq.com (out203-205-221-252.mail.qq.com [203.205.221.252])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4X8XJV1qN7z2y8h
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 20:46:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1726742807; bh=P2+aQQvJA7zmfFVak44DdkW9s35hgNWDfDwCSY34wqk=;
-	h=From:To:Subject:Date;
-	b=x7FLHjLKG0zbL2u9L0qwuoiu5h1MH3I/kFBwzNHzBvp8ZRbu70Anqagyo62PZ1fii
-	 UqUUpx39D2lkac/0kBkjIs5QAspr5FwwW/pAYF0H2dIBMaIrPufq90BIAT/vebI0dR
-	 ZOM4EbEA71GyApaHo3IX3R2/kzAbvIjEjr+Fs9Dk=
-X-QQ-FEAT: oHWrrGTW1dBM1wq2dbSTgn8AaBOV+Hnu
-X-QQ-SSF: 00000000000000F0000000000000
-X-QQ-SPAM: true
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-X-QQ-XMAILINFO: NVuAGxGwjruQCVmI0Mvo3Iuo2JgB7Gd+IB3Zx8XlwXbEbTtwE5btcsUwr8yvYW
-	 fstrxzYz9jJbBQ+U/qpgWoe2qtNtHzXQs3ixxjIT/uKUNlSduQntnZQPOOgOrf8IEwjLIuVafW+Vh
-	 YtbdRUnDLJl8x1OmnKIq8LoXLQrBRefXgM/W//w6eBAcGnw0WTg4gfz+ChxPrToPnhiuK5MWNN9A4
-	 9E+S/LsY74dnqqWcM6HkL1ZNt9SxLR2IgDrPg71e9MF+JwGV3+6liSZV40v2npHB1dF98peCH2tf2
-	 x3kAzxpXZ4NhUHinLXKA0m8y8/LBfSeF9n2hWTVQqlfJwQPi7FwAJ2ZsFhVKUv7NfBSf0chyBAFb/
-	 L/MmVcMqFtNdNIM21Zhv+wfrBrFzLi3SubHGvYNYhVkbgmmicCmJigJNgfCT2qQ0w05oQrvGqkmrX
-	 G1PxU6xRJP6soFno38CATUuzEaUuOnp9ERcmjKmUejQ7wWb1V4ZTgJZnRwjZAhdycxNyAfemfhJzq
-	 LVYcD3/X0a7wvRrXWHiOeB/EIfSSOhGtO527O3X2FJkJwG+WDixsthm0va6YhsvTM+8bqBbKoSqjQ
-	 fAAHw5l1WQjc1RTZ48sIBZ58SpSNhmvj2S7NgDrXT7WjUrJKY8uGuMXm0GtWUm8riMVJYQjnO6yLa
-	 c4t+OcPsuIf4K4OLHT5B+yZWw4FNgGM8w2s0Rgszx9pBhYL7klQxnX4mS9Rfqsl+ZYttPO2tULeqY
-	 4297sIAbgR8wkib9d0oC3vBF9tSU5QfJkG07lURGLrelFa1VCIOlRo46hCDibNNCI+dDfkc6tameB
-	 3O0M4opIaW/G46dmL5NLzWIETahLtk0oYw/bFwAXEGNaM5MXe4o3MyHZyKvAH2k8cDGQwAagjrJiz
-	 UE+ENuRRZtBZEFpwtETqcKhpHhLOhVLvp3k3+A/7Q1hg4c2L1R75wdNwoGrvQviq5LLhxZeODTtSk
-	 unXRcq4t3sS2NChnIV7e9p34zTemcgqPFyCJZfWtRV5YBQaLOn2lKT6o+FIHIZpYJ1RRQ/Pedd0a2
-	 WPRMe1Fxp3VM64bvtbDlDpSLaT6dxmhWqnQHV
-X-HAS-ATTACH: no
-X-QQ-BUSINESS-ORIGIN: 2
-X-Originating-IP: 38.207.248.214
-X-QQ-STYLE: 
-X-QQ-mid: webmail635t1726742617t900878
-From: "=?gb18030?B?MjYzOTE2MTk2Nw==?=" <2639161967@qq.com>
-To: "=?gb18030?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>
-Subject: =?gb18030?B?16q3oqO6W3ZzXSBCdWcgcmVwb3J0OiBNZW1vcnkg?=
- =?gb18030?B?bGVhayBpbiBvcGFsX2V2ZW50X2luaXQ=?=
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8XvK2sqhz2y66
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 21:13:32 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48J6GKgl030026;
+	Thu, 19 Sep 2024 11:06:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=r
+	fTOEAXZNZarvbG2AF5ajeIf7S3tcYldEG1+ILtAxS8=; b=nfNp3JatxK7CrVZdh
+	1tRJiujGQ7yVv6IiviOr2r/96PFplZzRo9ChwyZ3cU9FXinTUiJ1ptvLOkQazj1I
+	U2fszw8SaodAhIB+XqHTgpFl4ZNQmuylN8adkkM9nm6AZzmncsOiYnFw/dgedJTG
+	xMHAJg6g8dCJO1xOpxzCSL++XYZiIj/4hlG5NluPk19bYT6LZT62IXD1Z28pxIVh
+	izV7HvHOI2jJ/wbQWZ7pQaaImFnVkIB7IXgpEduiPiesEXLJKBtVxnGG6+9q2LOt
+	YRFKnyrEct/weRVyovRNk6qd/QlUP0sEjnXGHt/qWgoqOmj6X7M5Nj+VBR4DEgIX
+	pI1Hw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3udk82x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Sep 2024 11:06:57 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48JA3but001187;
+	Thu, 19 Sep 2024 11:06:56 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41nntqgxbh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Sep 2024 11:06:56 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48JB6sRd45220240
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Sep 2024 11:06:55 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C14225805E;
+	Thu, 19 Sep 2024 11:06:54 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3741958059;
+	Thu, 19 Sep 2024 11:06:54 +0000 (GMT)
+Received: from [9.61.250.246] (unknown [9.61.250.246])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Sep 2024 11:06:54 +0000 (GMT)
+Message-ID: <1d8bb55a-a498-44b8-a29a-f0916518e483@linux.ibm.com>
+Date: Thu, 19 Sep 2024 06:06:53 -0500
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,120 +74,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_66EC0058_1B2ACA98_234B7103"
-Content-Transfer-Encoding: 8Bit
-Date: Thu, 19 Sep 2024 18:43:36 +0800
-X-Priority: 3
-Message-ID: <tencent_CEBE8F7A49B442AD2E976492BBACE7161007@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] crypto: Removing CRYPTO_AES_GCM_P10.
+To: Michael Ellerman <mpe@ellerman.id.au>, linux-crypto@vger.kernel.org
+Cc: herbert@gondor.apana.org.au, leitao@debian.org, nayna@linux.ibm.com,
+        appro@cryptogams.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, ltcgcw@linux.vnet.ibm.com,
+        dtsen@us.ibm.com
+References: <20240913123043.1636183-1-dtsen@linux.ibm.com>
+ <87r09gp7ho.fsf@mail.lhotse>
+Content-Language: en-US
+From: Danny Tsen <dtsen@linux.ibm.com>
+In-Reply-To: <87r09gp7ho.fsf@mail.lhotse>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oB3dgjWHfI2Hj--1h9fBAB0_MbHmV2Ho
+X-Proofpoint-ORIG-GUID: oB3dgjWHfI2Hj--1h9fBAB0_MbHmV2Ho
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-19_08,2024-09-18_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ phishscore=0 impostorscore=0 spamscore=0 priorityscore=1501 suspectscore=0
+ adultscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409190071
 
-This is a multi-part message in MIME format.
+Thanks Michael.
 
-------=_NextPart_66EC0058_1B2ACA98_234B7103
-Content-Type: text/plain;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
-
-LS0tLS0tLS0tLS0tLS0tLS0tJm5ic3A71K3KvNPKvP4mbmJzcDstLS0tLS0tLS0tLS0tLS0t
-LS0NCreivP7IyzogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAiMjYzOTE2MTk2NyIgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICA8MjYzOTE2MTk2N0BxcS5jb20mZ3Q7Ow0Kt6LLzcqxvOQ6Jm5ic3A7MjAy
-NMTqOdTCMsjVKNDHxtrSuykgyc/O5zEwOjE2DQrK1bz+yMs6Jm5ic3A7ImxpbnV4LWRpc3Ry
-b3MiPGxpbnV4LWRpc3Ryb3NAdnMub3BlbndhbGwub3JnJmd0OzsNCg0K1vfM4jombmJzcDtb
-dnNdIEJ1ZyByZXBvcnQ6IE1lbW9yeSBsZWFrIGluIG9wYWxfZXZlbnRfaW5pdA0KDQoNCg0K
-DQoNCmhpLCBJIGZpbmQgdGhhdCBpbiB0aGUgbmV3ZXN0IGxpbnV4IHJlbGVhc2UgdmVyc2lv
-biwgaW4gL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9vcGFsLWlycWNoaXAuYyZu
-YnNwO2ZpbGUgLCB0aGUgDQpvcGFsX2V2ZW50X2luaXQmbmJzcDtmdW5jdGlvbiwgdGhlIHZh
-cmlhYmxlICJuYW1lImRlZmluZWQgaW4gbGluZSAyNzAsJm5ic3A7YW5kIGlzIGFsbG9jZWQg
-bWVtb3J5IGluIGxpbmUgMjc0IG9yIDI3NiwgYnV0IG5vdCBmcmVlLCBjYXVzZSBtYW55IHRp
-bWVzIG1lbW9yeSBsZWFrLCBhbmQgbW9zdCBvbGQgcmVsZWFzZSB2ZXJzaW9ucyBoYXZlIHRo
-ZSBwcm9ibGVtLg==
-
-------=_NextPart_66EC0058_1B2ACA98_234B7103
-Content-Type: text/html;
-	charset="gb18030"
-Content-Transfer-Encoding: base64
-
-PG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNo
-YXJzZXQ9R0IxODAzMCI+PGRpdj48YnI+PC9kaXY+PGRpdiBzdHlsZT0icG9zaXRpb246IHJl
-bGF0aXZlOyI+PGRpdj48YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdiBzdHlsZT0iZm9u
-dC1zaXplOiAxMnB4O2ZvbnQtZmFtaWx5OiBBcmlhbCBOYXJyb3c7cGFkZGluZzoycHggMCAy
-cHggMDsiPi0tLS0tLS0tLS0tLS0tLS0tLSZuYnNwO9StyrzTyrz+Jm5ic3A7LS0tLS0tLS0t
-LS0tLS0tLS0tPC9kaXY+PGRpdiBzdHlsZT0iZm9udC1zaXplOiAxMnB4O2JhY2tncm91bmQ6
-I2VmZWZlZjtwYWRkaW5nOjhweDsiPjxkaXY+PGI+t6K8/sjLOjwvYj4gICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAi
-MjYzOTE2MTk2NyIgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAmbHQ7MjYzOTE2MTk2
-N0BxcS5jb20mZ3Q7OzwvZGl2PjxkaXY+PGI+t6LLzcqxvOQ6PC9iPiZuYnNwOzIwMjTE6jnU
-wjLI1SjQx8ba0rspIMnPzucxMDoxNjwvZGl2PjxkaXY+PGI+ytW8/sjLOjwvYj4mbmJzcDsi
-bGludXgtZGlzdHJvcyImbHQ7bGludXgtZGlzdHJvc0B2cy5vcGVud2FsbC5vcmcmZ3Q7Ozx3
-YnI+PC9kaXY+PGRpdj48L2Rpdj48ZGl2PjxiPtb3zOI6PC9iPiZuYnNwO1t2c10gQnVnIHJl
-cG9ydDogTWVtb3J5IGxlYWsgaW4gb3BhbF9ldmVudF9pbml0PC9kaXY+PC9kaXY+PGRpdj48
-YnI+PC9kaXY+PGRpdiBjbGFzcz0icW1ib3giPjxkaXYgY2xhc3M9InFtYm94Ij48ZGl2IGNs
-YXNzPSJxbWJveCI+PGRpdiBjbGFzcz0icW1ib3giPjxkaXYgY2xhc3M9InFtYm94Ij48ZGl2
-IGNsYXNzPSJxbWJveCI+PGRpdiBzdHlsZT0iICA7IDsgOyA7IDsgOyA7IDsgIj48YnI+PC9k
-aXY+PGRpdiBzdHlsZT0iZm9udC1zaXplOjEwLjVwdDtiYWNrZ3JvdW5kLWNvbG9yOnJnYigy
-NTUsIDI1NSwgMjU1KTttYXJnaW4tdG9wOjBweDttYXJnaW4tYm90dG9tOjBweCI+aGksIEkg
-ZmluZCB0aGF0IGluIHRoZSBuZXdlc3QgbGludXggcmVsZWFzZSB2ZXJzaW9uLCBpbiA8YSBo
-cmVmPSJodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4xMS1yYzIvc291cmNl
-L2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2lkcGYvaWRwZl90eHJ4LmMiIHRhcmdldD0i
-X2JsYW5rIiByZWw9Im5vb3BlbmVyIG5vcmVmZXJyZXIiIHN0eWxlPSJ0ZXh0LWRlY29yYXRp
-b246bm9uZTtvdXRsaW5lOm5vbmU7Y29sb3I6cmdiKDc0LCAxNDQsIDIyNik7Y3Vyc29yOnBv
-aW50ZXIiPjwvYT48YSBjbGFzcz0icHJvamVjdF9xUDFlXzAiIGhyZWY9Imh0dHBzOi8vZWxp
-eGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y2LjExLXJjNi9zb3VyY2UiIHRhcmdldD0iX2JsYW5r
-IiByZWw9Im5vb3BlbmVyIG5vcmVmZXJyZXIiIHN0eWxlPSJ0ZXh0LWRlY29yYXRpb246bm9u
-ZTtvdXRsaW5lOm5vbmU7Y29sb3I6cmdiKDc0LCAxNDQsIDIyNik7Y3Vyc29yOnBvaW50ZXIi
-Pi88L2E+PGEgaHJlZj0iaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGludXgvdjYuMTEt
-cmM2L3NvdXJjZS9hcmNoIiB0YXJnZXQ9Il9ibGFuayIgcmVsPSJub29wZW5lciBub3JlZmVy
-cmVyIiBzdHlsZT0idGV4dC1kZWNvcmF0aW9uOm5vbmU7b3V0bGluZTpub25lO2NvbG9yOnJn
-Yig3NCwgMTQ0LCAyMjYpO2N1cnNvcjpwb2ludGVyIj5hcmNoPC9hPi88YSBocmVmPSJodHRw
-czovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4xMS1yYzYvc291cmNlL2FyY2gvcG93
-ZXJwYyIgdGFyZ2V0PSJfYmxhbmsiIHJlbD0ibm9vcGVuZXIgbm9yZWZlcnJlciIgc3R5bGU9
-InRleHQtZGVjb3JhdGlvbjpub25lO291dGxpbmU6bm9uZTtjb2xvcjpyZ2IoNzQsIDE0NCwg
-MjI2KTtjdXJzb3I6cG9pbnRlciI+cG93ZXJwYzwvYT4vPGEgaHJlZj0iaHR0cHM6Ly9lbGl4
-aXIuYm9vdGxpbi5jb20vbGludXgvdjYuMTEtcmM2L3NvdXJjZS9hcmNoL3Bvd2VycGMvcGxh
-dGZvcm1zIiB0YXJnZXQ9Il9ibGFuayIgcmVsPSJub29wZW5lciBub3JlZmVycmVyIiBzdHls
-ZT0idGV4dC1kZWNvcmF0aW9uOm5vbmU7b3V0bGluZTpub25lO2NvbG9yOnJnYig3NCwgMTQ0
-LCAyMjYpO2N1cnNvcjpwb2ludGVyIj5wbGF0Zm9ybXM8L2E+LzxhIGhyZWY9Imh0dHBzOi8v
-ZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y2LjExLXJjNi9zb3VyY2UvYXJjaC9wb3dlcnBj
-L3BsYXRmb3Jtcy9wb3dlcm52IiB0YXJnZXQ9Il9ibGFuayIgcmVsPSJub29wZW5lciBub3Jl
-ZmVycmVyIiBzdHlsZT0idGV4dC1kZWNvcmF0aW9uOm5vbmU7b3V0bGluZTpub25lO2NvbG9y
-OnJnYig3NCwgMTQ0LCAyMjYpO2N1cnNvcjpwb2ludGVyIj5wb3dlcm52PC9hPi88YSBocmVm
-PSJodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4xMS1yYzYvc291cmNlL2Fy
-Y2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9vcGFsLWlycWNoaXAuYyIgdGFyZ2V0PSJf
-YmxhbmsiIHJlbD0ibm9vcGVuZXIgbm9yZWZlcnJlciIgc3R5bGU9InRleHQtZGVjb3JhdGlv
-bjpub25lO291dGxpbmU6bm9uZTtjb2xvcjpyZ2IoNzQsIDE0NCwgMjI2KTtjdXJzb3I6cG9p
-bnRlciI+b3BhbC1pcnFjaGlwLmM8L2E+Jm5ic3A7ZmlsZSAsIHRoZSA8L2Rpdj48cHJlIHN0
-eWxlPSJtYXJnaW46MHB4O2NvbG9yOnJnYigxOSwgMjQsIDI5KTtiYWNrZ3JvdW5kLWNvbG9y
-OnJnYigyNTUsIDI1NSwgMjU1KSI+PHNwYW4gY2xhc3M9Im5fTHE2Ql8xIj48cHJlIHN0eWxl
-PSJtYXJnaW46MHB4Ij48c3BhbiBjbGFzcz0ibmZfTWhrOF8yIj48YSBjbGFzcz0iaWRlbnRf
-Q2J3Q18zIiBocmVmPSJodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4xMS1y
-YzYvQy9pZGVudC9vcGFsX2V2ZW50X2luaXQiIHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3Bl
-bmVyIG5vcmVmZXJyZXIiIHN0eWxlPSJ0ZXh0LWRlY29yYXRpb246bm9uZTtvdXRsaW5lOm5v
-bmU7Y29sb3I6cmdiKDc0LCAxNDQsIDIyNik7Y3Vyc29yOnBvaW50ZXIiPm9wYWxfZXZlbnRf
-aW5pdDwvYT48L3NwYW4+Jm5ic3A7ZnVuY3Rpb24sIHRoZSB2YXJpYWJsZSAibmFtZSJkZWZp
-bmVkIGluIGxpbmUgMjcwLDxzcGFuPiZuYnNwO2FuZCBpcyBhbGxvY2VkIG1lbW9yeSBpbiBs
-aW5lIDI3NCBvciAyNzYsIDwvc3Bhbj48L3ByZT48cHJlIHN0eWxlPSJtYXJnaW46MHB4Ij48
-c3Bhbj5idXQgbm90IGZyZWUsIGNhdXNlIG1hbnkgdGltZXMgbWVtb3J5IGxlYWssIDwvc3Bh
-bj5hbmQgbW9zdCBvbGQgcmVsZWFzZSB2ZXJzaW9ucyBoYXZlIHRoZSBwcm9ibGVtLjwvcHJl
-Pjwvc3Bhbj48L3ByZT48cHJlPjxzcGFuIGNsYXNzPSJuIj48L3NwYW4+PC9wcmU+PHA+PC9w
-PjxkaXYgeG1haWwtc2lnbmF0dXJlPSIiPjx4bS1zaWduYXR1cmU+PC94bS1zaWduYXR1cmU+
-PHA+PC9wPjwvZGl2PjwvZGl2PjxkaXYgeG1haWwtc2lnbmF0dXJlPSIiPjx4bS1zaWduYXR1
-cmU+PC94bS1zaWduYXR1cmU+PHA+PC9wPjwvZGl2PjwvZGl2PjxkaXYgeG1haWwtc2lnbmF0
-dXJlPSIiPjx4bS1zaWduYXR1cmU+PC94bS1zaWduYXR1cmU+PHA+PC9wPjwvZGl2PjwvZGl2
-PjxkaXYgeG1haWwtc2lnbmF0dXJlPSIiPjx4bS1zaWduYXR1cmU+PC94bS1zaWduYXR1cmU+
-PHA+PC9wPjwvZGl2PjwvZGl2PjxkaXYgeG1haWwtc2lnbmF0dXJlPSIiPjx4bS1zaWduYXR1
-cmU+PC94bS1zaWduYXR1cmU+PHA+PC9wPjwvZGl2PjwvZGl2PjxkaXYgeG1haWwtc2lnbmF0
-dXJlPSIiPjx4bS1zaWduYXR1cmU+PC94bS1zaWduYXR1cmU+PHA+PC9wPjwvZGl2PjwvZGl2
-PjwvZGl2Pg==
-
-------=_NextPart_66EC0058_1B2ACA98_234B7103--
-
+On 9/18/24 11:55 PM, Michael Ellerman wrote:
+> Danny Tsen <dtsen@linux.ibm.com> writes:
+>> Removing CRYPTO_AES_GCM_P10 in Kconfig first so that we can apply the
+>> subsequent patches to fix data mismatch over ipsec tunnel.
+> This change log needs to stand on its own. ie. it needs to explain what
+> the problem is and why the feature is being disabled, without reference
+> to subsequent patches (which will probably be merged separately).
+>
+> It should also have a Fixes/stable tag.
+>
+> And as Christophe said, just adding a dependency on BROKEN is
+> sufficient.
+>
+> cheers
+>
+>
+>> diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+>> index 09ebcbdfb34f..96ca2c4c8827 100644
+>> --- a/arch/powerpc/crypto/Kconfig
+>> +++ b/arch/powerpc/crypto/Kconfig
+>> @@ -105,22 +105,22 @@ config CRYPTO_AES_PPC_SPE
+>>   	  architecture specific assembler implementations that work on 1KB
+>>   	  tables or 256 bytes S-boxes.
+>>   
+>> -config CRYPTO_AES_GCM_P10
+>> -	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
+>> -	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+>> -	select CRYPTO_LIB_AES
+>> -	select CRYPTO_ALGAPI
+>> -	select CRYPTO_AEAD
+>> -	select CRYPTO_SKCIPHER
+>> -	help
+>> -	  AEAD cipher: AES cipher algorithms (FIPS-197)
+>> -	  GCM (Galois/Counter Mode) authenticated encryption mode (NIST SP800-38D)
+>> -	  Architecture: powerpc64 using:
+>> -	    - little-endian
+>> -	    - Power10 or later features
+>> -
+>> -	  Support for cryptographic acceleration instructions on Power10 or
+>> -	  later CPU. This module supports stitched acceleration for AES/GCM.
+>> +#config CRYPTO_AES_GCM_P10
+>> +#	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
+>> +#	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+>> +#	select CRYPTO_LIB_AES
+>> +#	select CRYPTO_ALGAPI
+>> +#	select CRYPTO_AEAD
+>> +#	select CRYPTO_SKCIPHER
+>> +#	help
+>> +#	  AEAD cipher: AES cipher algorithms (FIPS-197)
+>> +#	  GCM (Galois/Counter Mode) authenticated encryption mode (NIST SP800-38D)
+>> +#	  Architecture: powerpc64 using:
+>> +#	    - little-endian
+>> +#	    - Power10 or later features
+>> +#
+>> +#	  Support for cryptographic acceleration instructions on Power10 or
+>> +#	  later CPU. This module supports stitched acceleration for AES/GCM.
+>>   
+>>   config CRYPTO_CHACHA20_P10
+>>   	tristate "Ciphers: ChaCha20, XChacha20, XChacha12 (P10 or later)"
+>> -- 
+>> 2.43.0
 
