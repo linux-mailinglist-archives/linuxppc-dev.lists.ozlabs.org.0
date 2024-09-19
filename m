@@ -1,77 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-1476-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BE797CFAA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2024 02:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F013997CFAB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2024 02:31:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8tZB1WXyz2y92;
-	Fri, 20 Sep 2024 10:29:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8tc55bs3z2yL0;
+	Fri, 20 Sep 2024 10:31:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.176
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726741463;
-	cv=none; b=m552lAsIbkaOw+7dT8GgFUUf32oTTpdWQw0R1GZkAZmY1cnlLV8MjInxJprJ+Z9jIEjtWXBXVgcamDl4C3VDv0v6KQXr3u+Adai3zQFwBDs/+tZ4EDvTLAAkcZMKQc25UaXo40UdkND56TGIPbuLA4Lw1jpXDs8APTLoDSnMGWVpWsUI6olEMhkajqhyuo2IJK2v69aTIDk7qz2x9T+QzvPm9scI12sVZK1Ipxb6yi5yKwDuWYbpIvPqMUbQsBNG4+s7bpVF+9WQG5kLDAAF4mLelGvohKl5Nkp9+2UmpnMf6eR0PrmpjPOxoQUFuX36fVscez699sdCfz8u78+y4g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=203.205.221.252
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726742812;
+	cv=none; b=lxWL29w70L3laH99cIdmtqmXkiEUrExn9Be5T6u7ggTt08a4vD2WvmQqd+ODAFhTMSBceMgEk39lt/Xwm9g2vG7cytDKstVf8g6ufYS4kALOvpJqI32bM/FP/aoE0pBgT5+TvssH0PYao9ysRqOCiJPJduqQW8/86G30lzrv7fd3yleWJId50Z/T6yVZwyKUDMaQ1iCQgM7OFUdQBea/KzoMK8wkXdDGaC3PQYvHaT8owI1iIKFNg/vvtnesQdUjIr/dQuEI5Ztn5BFuc6tS8iELEjOf7ddroScSAQmNGKQWgSnpxkUf0TXjJdIFpjGe7ksoQNQ3KwMEObPE+aJY3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726741463; c=relaxed/relaxed;
-	bh=I1mckTS2FV38bbZ879rd+/BowKPTlDKekDspILq4S7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L6yyORoKRpJJiXlXp18aIRfpPdQA/Vhv6EYrYqqH3XPlHW59vMNTl3XucLfYROY2FB2J+An7wYdPLQQmMuBI9cXXF2MZtfw4iRq2BxyVD89pyiIcPdREcMdKtulttM3kurjE91xjSNtmp02MM2Yu+1HvzG5rYAGef5zjy2xRmx1xfC6nzgugSIHacWPjfi9yKSI1cMm7yAF27kba05jqeGHbOXqK0N/uusGQ7f/ts0+YdzSiZ6u35EUPPxQ8ohVu28v62T8PZfcCThwj53hj9GzOCvelC/flv5XQ/dVNnLAIIv6P6q04CK1o2r68CzXN9xZS0jdQ/+5/dJoF8SUxrw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=D6x6BKht; dkim-atps=neutral; spf=pass (client-ip=91.218.175.176; helo=out-176.mta0.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+	t=1726742812; c=relaxed/relaxed;
+	bh=P2+aQQvJA7zmfFVak44DdkW9s35hgNWDfDwCSY34wqk=;
+	h=From:To:Subject:Mime-Version:Content-Type:Date:Message-ID; b=DK2NIAAWNJD+eXoHqyP0pXojHOnefIJkAnIf8nsGIn2dRMDnGAr36amw9+7r7D8Fa+sIJYNRRfozp2dm8P2etGSOOMeEgL1EMM5xpyXIgQEzUMYb6mAYaHtmdbT5JNEKXGCNlbjM2DoZdVIR9KrEC+z0b2+u2du6ca26PZtF14bwfoCYOny9gPd2tuX8WZrw7p8JJLg+mnH2pPv/1SMDO4zNBsls5lPaAUMLpqyFCNbSgzuo97luBosuBKXJIRziDNLcEllhkP12FFbv9fQR+5na5jJOBGhZRPjoOTyL8pEHvL+4bZKEbMTPoEwJGyS+BxZlWp/hV/Hl4Nzu9orHfA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=x7FLHjLK; dkim-atps=neutral; spf=pass (client-ip=203.205.221.252; helo=out203-205-221-252.mail.qq.com; envelope-from=2639161967@qq.com; receiver=lists.ozlabs.org) smtp.mailfrom=qq.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=D6x6BKht;
+	dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=x7FLHjLK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.176; helo=out-176.mta0.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 361 seconds by postgrey-1.37 at boromir; Thu, 19 Sep 2024 20:24:20 AEST
-Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=qq.com (client-ip=203.205.221.252; helo=out203-205-221-252.mail.qq.com; envelope-from=2639161967@qq.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 123 seconds by postgrey-1.37 at boromir; Thu, 19 Sep 2024 20:46:50 AEST
+Received: from out203-205-221-252.mail.qq.com (out203-205-221-252.mail.qq.com [203.205.221.252])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8WpX4jNxz2xtp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 20:24:20 +1000 (AEST)
-Date: Thu, 19 Sep 2024 03:17:38 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1726741064;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I1mckTS2FV38bbZ879rd+/BowKPTlDKekDspILq4S7U=;
-	b=D6x6BKhtU1AsDKi/4KqvcONlUrTfddheLB6mjS/liWOZikXBBbl320OPz8mgGIKM4WllXD
-	+wY9aYHdLlkmHh4egDXFCzDa+mmurZ3C2W/5Yn9b7oeoiOBTG25PlxVj4C73Kx3idnOFp+
-	Vxq68Xs1nMkSJWGZkP3uhgfHcFJ6DPg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v3 0/5] Correct perf sampling with Guest VMs
-Message-ID: <Zuv6QveQAHZ9H0HP@linux.dev>
-References: <20240912205133.4171576-1-coltonlewis@google.com>
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4X8XJV1qN7z2y8h
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 20:46:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1726742807; bh=P2+aQQvJA7zmfFVak44DdkW9s35hgNWDfDwCSY34wqk=;
+	h=From:To:Subject:Date;
+	b=x7FLHjLKG0zbL2u9L0qwuoiu5h1MH3I/kFBwzNHzBvp8ZRbu70Anqagyo62PZ1fii
+	 UqUUpx39D2lkac/0kBkjIs5QAspr5FwwW/pAYF0H2dIBMaIrPufq90BIAT/vebI0dR
+	 ZOM4EbEA71GyApaHo3IX3R2/kzAbvIjEjr+Fs9Dk=
+X-QQ-FEAT: oHWrrGTW1dBM1wq2dbSTgn8AaBOV+Hnu
+X-QQ-SSF: 00000000000000F0000000000000
+X-QQ-SPAM: true
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+X-QQ-XMAILINFO: NVuAGxGwjruQCVmI0Mvo3Iuo2JgB7Gd+IB3Zx8XlwXbEbTtwE5btcsUwr8yvYW
+	 fstrxzYz9jJbBQ+U/qpgWoe2qtNtHzXQs3ixxjIT/uKUNlSduQntnZQPOOgOrf8IEwjLIuVafW+Vh
+	 YtbdRUnDLJl8x1OmnKIq8LoXLQrBRefXgM/W//w6eBAcGnw0WTg4gfz+ChxPrToPnhiuK5MWNN9A4
+	 9E+S/LsY74dnqqWcM6HkL1ZNt9SxLR2IgDrPg71e9MF+JwGV3+6liSZV40v2npHB1dF98peCH2tf2
+	 x3kAzxpXZ4NhUHinLXKA0m8y8/LBfSeF9n2hWTVQqlfJwQPi7FwAJ2ZsFhVKUv7NfBSf0chyBAFb/
+	 L/MmVcMqFtNdNIM21Zhv+wfrBrFzLi3SubHGvYNYhVkbgmmicCmJigJNgfCT2qQ0w05oQrvGqkmrX
+	 G1PxU6xRJP6soFno38CATUuzEaUuOnp9ERcmjKmUejQ7wWb1V4ZTgJZnRwjZAhdycxNyAfemfhJzq
+	 LVYcD3/X0a7wvRrXWHiOeB/EIfSSOhGtO527O3X2FJkJwG+WDixsthm0va6YhsvTM+8bqBbKoSqjQ
+	 fAAHw5l1WQjc1RTZ48sIBZ58SpSNhmvj2S7NgDrXT7WjUrJKY8uGuMXm0GtWUm8riMVJYQjnO6yLa
+	 c4t+OcPsuIf4K4OLHT5B+yZWw4FNgGM8w2s0Rgszx9pBhYL7klQxnX4mS9Rfqsl+ZYttPO2tULeqY
+	 4297sIAbgR8wkib9d0oC3vBF9tSU5QfJkG07lURGLrelFa1VCIOlRo46hCDibNNCI+dDfkc6tameB
+	 3O0M4opIaW/G46dmL5NLzWIETahLtk0oYw/bFwAXEGNaM5MXe4o3MyHZyKvAH2k8cDGQwAagjrJiz
+	 UE+ENuRRZtBZEFpwtETqcKhpHhLOhVLvp3k3+A/7Q1hg4c2L1R75wdNwoGrvQviq5LLhxZeODTtSk
+	 unXRcq4t3sS2NChnIV7e9p34zTemcgqPFyCJZfWtRV5YBQaLOn2lKT6o+FIHIZpYJ1RRQ/Pedd0a2
+	 WPRMe1Fxp3VM64bvtbDlDpSLaT6dxmhWqnQHV
+X-HAS-ATTACH: no
+X-QQ-BUSINESS-ORIGIN: 2
+X-Originating-IP: 38.207.248.214
+X-QQ-STYLE: 
+X-QQ-mid: webmail635t1726742617t900878
+From: "=?gb18030?B?MjYzOTE2MTk2Nw==?=" <2639161967@qq.com>
+To: "=?gb18030?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>
+Subject: =?gb18030?B?16q3oqO6W3ZzXSBCdWcgcmVwb3J0OiBNZW1vcnkg?=
+ =?gb18030?B?bGVhayBpbiBvcGFsX2V2ZW50X2luaXQ=?=
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,36 +69,120 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240912205133.4171576-1-coltonlewis@google.com>
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_66EC0058_1B2ACA98_234B7103"
+Content-Transfer-Encoding: 8Bit
+Date: Thu, 19 Sep 2024 18:43:36 +0800
+X-Priority: 3
+Message-ID: <tencent_CEBE8F7A49B442AD2E976492BBACE7161007@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
 
-On Thu, Sep 12, 2024 at 08:51:28PM +0000, Colton Lewis wrote:
-> v3:
->   * Clarify final commit message further
->   * Remove an unused variable in perf_arch_misc_flags()
-> 
-> v2:
-> https://lore.kernel.org/kvm/20240911222433.3415301-1-coltonlewis@google.com/
-> 
-> v1:
-> https://lore.kernel.org/kvm/20240904204133.1442132-1-coltonlewis@google.com/
-> 
-> This series cleans up perf recording around guest events and improves
-> the accuracy of the resulting perf reports.
+This is a multi-part message in MIME format.
 
-Please fix the intermediate build issue, and also test that each patch
-in the series compiles. With that corrected, for the series:
+------=_NextPart_66EC0058_1B2ACA98_234B7103
+Content-Type: text/plain;
+	charset="gb18030"
+Content-Transfer-Encoding: base64
 
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+LS0tLS0tLS0tLS0tLS0tLS0tJm5ic3A71K3KvNPKvP4mbmJzcDstLS0tLS0tLS0tLS0tLS0t
+LS0NCreivP7IyzogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAiMjYzOTE2MTk2NyIgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICA8MjYzOTE2MTk2N0BxcS5jb20mZ3Q7Ow0Kt6LLzcqxvOQ6Jm5ic3A7MjAy
+NMTqOdTCMsjVKNDHxtrSuykgyc/O5zEwOjE2DQrK1bz+yMs6Jm5ic3A7ImxpbnV4LWRpc3Ry
+b3MiPGxpbnV4LWRpc3Ryb3NAdnMub3BlbndhbGwub3JnJmd0OzsNCg0K1vfM4jombmJzcDtb
+dnNdIEJ1ZyByZXBvcnQ6IE1lbW9yeSBsZWFrIGluIG9wYWxfZXZlbnRfaW5pdA0KDQoNCg0K
+DQoNCmhpLCBJIGZpbmQgdGhhdCBpbiB0aGUgbmV3ZXN0IGxpbnV4IHJlbGVhc2UgdmVyc2lv
+biwgaW4gL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9vcGFsLWlycWNoaXAuYyZu
+YnNwO2ZpbGUgLCB0aGUgDQpvcGFsX2V2ZW50X2luaXQmbmJzcDtmdW5jdGlvbiwgdGhlIHZh
+cmlhYmxlICJuYW1lImRlZmluZWQgaW4gbGluZSAyNzAsJm5ic3A7YW5kIGlzIGFsbG9jZWQg
+bWVtb3J5IGluIGxpbmUgMjc0IG9yIDI3NiwgYnV0IG5vdCBmcmVlLCBjYXVzZSBtYW55IHRp
+bWVzIG1lbW9yeSBsZWFrLCBhbmQgbW9zdCBvbGQgcmVsZWFzZSB2ZXJzaW9ucyBoYXZlIHRo
+ZSBwcm9ibGVtLg==
 
-A nice follow-up on the arm64 side would be to further constrain
-kvm_arch_pmi_in_guest() to return true iff we exited the guest due to an
-IRQ.
+------=_NextPart_66EC0058_1B2ACA98_234B7103
+Content-Type: text/html;
+	charset="gb18030"
+Content-Transfer-Encoding: base64
 
--- 
-Thanks,
-Oliver
+PG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNo
+YXJzZXQ9R0IxODAzMCI+PGRpdj48YnI+PC9kaXY+PGRpdiBzdHlsZT0icG9zaXRpb246IHJl
+bGF0aXZlOyI+PGRpdj48YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdiBzdHlsZT0iZm9u
+dC1zaXplOiAxMnB4O2ZvbnQtZmFtaWx5OiBBcmlhbCBOYXJyb3c7cGFkZGluZzoycHggMCAy
+cHggMDsiPi0tLS0tLS0tLS0tLS0tLS0tLSZuYnNwO9StyrzTyrz+Jm5ic3A7LS0tLS0tLS0t
+LS0tLS0tLS0tPC9kaXY+PGRpdiBzdHlsZT0iZm9udC1zaXplOiAxMnB4O2JhY2tncm91bmQ6
+I2VmZWZlZjtwYWRkaW5nOjhweDsiPjxkaXY+PGI+t6K8/sjLOjwvYj4gICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAi
+MjYzOTE2MTk2NyIgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAmbHQ7MjYzOTE2MTk2
+N0BxcS5jb20mZ3Q7OzwvZGl2PjxkaXY+PGI+t6LLzcqxvOQ6PC9iPiZuYnNwOzIwMjTE6jnU
+wjLI1SjQx8ba0rspIMnPzucxMDoxNjwvZGl2PjxkaXY+PGI+ytW8/sjLOjwvYj4mbmJzcDsi
+bGludXgtZGlzdHJvcyImbHQ7bGludXgtZGlzdHJvc0B2cy5vcGVud2FsbC5vcmcmZ3Q7Ozx3
+YnI+PC9kaXY+PGRpdj48L2Rpdj48ZGl2PjxiPtb3zOI6PC9iPiZuYnNwO1t2c10gQnVnIHJl
+cG9ydDogTWVtb3J5IGxlYWsgaW4gb3BhbF9ldmVudF9pbml0PC9kaXY+PC9kaXY+PGRpdj48
+YnI+PC9kaXY+PGRpdiBjbGFzcz0icW1ib3giPjxkaXYgY2xhc3M9InFtYm94Ij48ZGl2IGNs
+YXNzPSJxbWJveCI+PGRpdiBjbGFzcz0icW1ib3giPjxkaXYgY2xhc3M9InFtYm94Ij48ZGl2
+IGNsYXNzPSJxbWJveCI+PGRpdiBzdHlsZT0iICA7IDsgOyA7IDsgOyA7IDsgIj48YnI+PC9k
+aXY+PGRpdiBzdHlsZT0iZm9udC1zaXplOjEwLjVwdDtiYWNrZ3JvdW5kLWNvbG9yOnJnYigy
+NTUsIDI1NSwgMjU1KTttYXJnaW4tdG9wOjBweDttYXJnaW4tYm90dG9tOjBweCI+aGksIEkg
+ZmluZCB0aGF0IGluIHRoZSBuZXdlc3QgbGludXggcmVsZWFzZSB2ZXJzaW9uLCBpbiA8YSBo
+cmVmPSJodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4xMS1yYzIvc291cmNl
+L2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2lkcGYvaWRwZl90eHJ4LmMiIHRhcmdldD0i
+X2JsYW5rIiByZWw9Im5vb3BlbmVyIG5vcmVmZXJyZXIiIHN0eWxlPSJ0ZXh0LWRlY29yYXRp
+b246bm9uZTtvdXRsaW5lOm5vbmU7Y29sb3I6cmdiKDc0LCAxNDQsIDIyNik7Y3Vyc29yOnBv
+aW50ZXIiPjwvYT48YSBjbGFzcz0icHJvamVjdF9xUDFlXzAiIGhyZWY9Imh0dHBzOi8vZWxp
+eGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y2LjExLXJjNi9zb3VyY2UiIHRhcmdldD0iX2JsYW5r
+IiByZWw9Im5vb3BlbmVyIG5vcmVmZXJyZXIiIHN0eWxlPSJ0ZXh0LWRlY29yYXRpb246bm9u
+ZTtvdXRsaW5lOm5vbmU7Y29sb3I6cmdiKDc0LCAxNDQsIDIyNik7Y3Vyc29yOnBvaW50ZXIi
+Pi88L2E+PGEgaHJlZj0iaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGludXgvdjYuMTEt
+cmM2L3NvdXJjZS9hcmNoIiB0YXJnZXQ9Il9ibGFuayIgcmVsPSJub29wZW5lciBub3JlZmVy
+cmVyIiBzdHlsZT0idGV4dC1kZWNvcmF0aW9uOm5vbmU7b3V0bGluZTpub25lO2NvbG9yOnJn
+Yig3NCwgMTQ0LCAyMjYpO2N1cnNvcjpwb2ludGVyIj5hcmNoPC9hPi88YSBocmVmPSJodHRw
+czovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4xMS1yYzYvc291cmNlL2FyY2gvcG93
+ZXJwYyIgdGFyZ2V0PSJfYmxhbmsiIHJlbD0ibm9vcGVuZXIgbm9yZWZlcnJlciIgc3R5bGU9
+InRleHQtZGVjb3JhdGlvbjpub25lO291dGxpbmU6bm9uZTtjb2xvcjpyZ2IoNzQsIDE0NCwg
+MjI2KTtjdXJzb3I6cG9pbnRlciI+cG93ZXJwYzwvYT4vPGEgaHJlZj0iaHR0cHM6Ly9lbGl4
+aXIuYm9vdGxpbi5jb20vbGludXgvdjYuMTEtcmM2L3NvdXJjZS9hcmNoL3Bvd2VycGMvcGxh
+dGZvcm1zIiB0YXJnZXQ9Il9ibGFuayIgcmVsPSJub29wZW5lciBub3JlZmVycmVyIiBzdHls
+ZT0idGV4dC1kZWNvcmF0aW9uOm5vbmU7b3V0bGluZTpub25lO2NvbG9yOnJnYig3NCwgMTQ0
+LCAyMjYpO2N1cnNvcjpwb2ludGVyIj5wbGF0Zm9ybXM8L2E+LzxhIGhyZWY9Imh0dHBzOi8v
+ZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y2LjExLXJjNi9zb3VyY2UvYXJjaC9wb3dlcnBj
+L3BsYXRmb3Jtcy9wb3dlcm52IiB0YXJnZXQ9Il9ibGFuayIgcmVsPSJub29wZW5lciBub3Jl
+ZmVycmVyIiBzdHlsZT0idGV4dC1kZWNvcmF0aW9uOm5vbmU7b3V0bGluZTpub25lO2NvbG9y
+OnJnYig3NCwgMTQ0LCAyMjYpO2N1cnNvcjpwb2ludGVyIj5wb3dlcm52PC9hPi88YSBocmVm
+PSJodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4xMS1yYzYvc291cmNlL2Fy
+Y2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9vcGFsLWlycWNoaXAuYyIgdGFyZ2V0PSJf
+YmxhbmsiIHJlbD0ibm9vcGVuZXIgbm9yZWZlcnJlciIgc3R5bGU9InRleHQtZGVjb3JhdGlv
+bjpub25lO291dGxpbmU6bm9uZTtjb2xvcjpyZ2IoNzQsIDE0NCwgMjI2KTtjdXJzb3I6cG9p
+bnRlciI+b3BhbC1pcnFjaGlwLmM8L2E+Jm5ic3A7ZmlsZSAsIHRoZSA8L2Rpdj48cHJlIHN0
+eWxlPSJtYXJnaW46MHB4O2NvbG9yOnJnYigxOSwgMjQsIDI5KTtiYWNrZ3JvdW5kLWNvbG9y
+OnJnYigyNTUsIDI1NSwgMjU1KSI+PHNwYW4gY2xhc3M9Im5fTHE2Ql8xIj48cHJlIHN0eWxl
+PSJtYXJnaW46MHB4Ij48c3BhbiBjbGFzcz0ibmZfTWhrOF8yIj48YSBjbGFzcz0iaWRlbnRf
+Q2J3Q18zIiBocmVmPSJodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92Ni4xMS1y
+YzYvQy9pZGVudC9vcGFsX2V2ZW50X2luaXQiIHRhcmdldD0iX2JsYW5rIiByZWw9Im5vb3Bl
+bmVyIG5vcmVmZXJyZXIiIHN0eWxlPSJ0ZXh0LWRlY29yYXRpb246bm9uZTtvdXRsaW5lOm5v
+bmU7Y29sb3I6cmdiKDc0LCAxNDQsIDIyNik7Y3Vyc29yOnBvaW50ZXIiPm9wYWxfZXZlbnRf
+aW5pdDwvYT48L3NwYW4+Jm5ic3A7ZnVuY3Rpb24sIHRoZSB2YXJpYWJsZSAibmFtZSJkZWZp
+bmVkIGluIGxpbmUgMjcwLDxzcGFuPiZuYnNwO2FuZCBpcyBhbGxvY2VkIG1lbW9yeSBpbiBs
+aW5lIDI3NCBvciAyNzYsIDwvc3Bhbj48L3ByZT48cHJlIHN0eWxlPSJtYXJnaW46MHB4Ij48
+c3Bhbj5idXQgbm90IGZyZWUsIGNhdXNlIG1hbnkgdGltZXMgbWVtb3J5IGxlYWssIDwvc3Bh
+bj5hbmQgbW9zdCBvbGQgcmVsZWFzZSB2ZXJzaW9ucyBoYXZlIHRoZSBwcm9ibGVtLjwvcHJl
+Pjwvc3Bhbj48L3ByZT48cHJlPjxzcGFuIGNsYXNzPSJuIj48L3NwYW4+PC9wcmU+PHA+PC9w
+PjxkaXYgeG1haWwtc2lnbmF0dXJlPSIiPjx4bS1zaWduYXR1cmU+PC94bS1zaWduYXR1cmU+
+PHA+PC9wPjwvZGl2PjwvZGl2PjxkaXYgeG1haWwtc2lnbmF0dXJlPSIiPjx4bS1zaWduYXR1
+cmU+PC94bS1zaWduYXR1cmU+PHA+PC9wPjwvZGl2PjwvZGl2PjxkaXYgeG1haWwtc2lnbmF0
+dXJlPSIiPjx4bS1zaWduYXR1cmU+PC94bS1zaWduYXR1cmU+PHA+PC9wPjwvZGl2PjwvZGl2
+PjxkaXYgeG1haWwtc2lnbmF0dXJlPSIiPjx4bS1zaWduYXR1cmU+PC94bS1zaWduYXR1cmU+
+PHA+PC9wPjwvZGl2PjwvZGl2PjxkaXYgeG1haWwtc2lnbmF0dXJlPSIiPjx4bS1zaWduYXR1
+cmU+PC94bS1zaWduYXR1cmU+PHA+PC9wPjwvZGl2PjwvZGl2PjxkaXYgeG1haWwtc2lnbmF0
+dXJlPSIiPjx4bS1zaWduYXR1cmU+PC94bS1zaWduYXR1cmU+PHA+PC9wPjwvZGl2PjwvZGl2
+PjwvZGl2Pg==
+
+------=_NextPart_66EC0058_1B2ACA98_234B7103--
+
 
