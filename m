@@ -1,69 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1451-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1452-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2E497C3BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 07:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6683997C3CB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Sep 2024 07:12:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8Ng30d9dz2yDg;
-	Thu, 19 Sep 2024 15:02:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8Nv85DGLz2yDk;
+	Thu, 19 Sep 2024 15:12:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.21
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726722143;
-	cv=none; b=DlD4487RsQKjNKl4zZa0IRbynFw7EZEesqd1Y1HMP6OjnVLQr5/QmHz5zMdTaayFUri6r90Lqj9aPR0C+Le3mDzZPyiJeckX39JllaiQ1m4h7R5bExlwb4WGE9skwyUXK2RbpwzaZoZ2wUQ+ik0ZLoTQ/0j8qmakLU5MEvxbWmIyK/RU3PioTpv2V105tPHUK+O9T6VHhdUhX9Dsv/6PQ7yyTO5bVrqy/7maGHF/1ktvrozqo1F3xI/5T66Bud4ypSTfxH18rRDB20+QMalNhQzczI12D/2lRlFhzCDSnmQ/ZXddE5VWnZ1rDxSiEXrERg0x0CuVT+v55afxh0qXUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726722772;
+	cv=none; b=awqizJDIfDRx9irkwnHfn4FWekMxwBWdb6sGRffcBH9hn5klsovehvmmk2vexjCOif7KzYBSlX1i0DJcyl0kTbeaOqOMdT6sqZ0a5TofgXa3703G33xvtG3j7shUbUUVmYpeniCIzQBaFOsCDN3TXjMkb+bGb0lPAEY6cO7LEsQoHDravMJZgWm9TDVvB5WmTxSSsd9mL3GuDycAXc64KwAaeF9zM5CJo4gWQXnQdXiJsutdM9mt4OW52DTNa1ytbKvUO4Nx9UFLlh4uUp8NW+2uRX6m2J0mt38g5utVo9i417Ru0aR4niaWghBQtRurk0S0taGs2H+8I/BW/kUPfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726722143; c=relaxed/relaxed;
-	bh=duBcLbyXPyTs+Z2U4FjffLUbBch3xZ6j/xeBAdRq5fA=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=T5JbTNO12UwEn8mIPHOw9Rb8JJasr4WguDhDgEFdSxTBCFkAKMOsEPPoPuB0VwebeZkWtudkgtx0PNanqrrDO4B6iIRfWalARbI8ufuOyF/cZJxlNbGRu3/IhsvvydnWWl0fdrQx21WDsYBedxpeRzJeKN4vyMI3SVRsBwMJ5dt2iLhSL/RQ/G9nL1nE8SQ4Vt4iRWef9lhYr6A4Q0ZUuxW7GPmp7OpxGken0/8fPJT9cLNLH2B//8NnEm1F6TBGEXZixUONyGxDDov3OocObBcksU0hPXGyu1g974EDSfkckQKvUBflEv1uJ5dYA6MfTYa6dHXJOYakBWUo5DXHvQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iegBVUgX; dkim-atps=neutral; spf=pass (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iegBVUgX;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1726722772; c=relaxed/relaxed;
+	bh=4zpcdFnCoTeK8iU0GeUVVMww8lNj1OYq8wkhh/Mkm4g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VeYewyZPPb7EWJv5k/zfUf6AtuERqEpJtlFVxJCM5Qe5EXcLju8K3cv/fNDDVa8anKABrkkD+LtQXS6LL77txub1DHBosK+blQlRq1h+rQr/ruCaWQvFOgmGzi4PveZc4W4gf0ZbvVkDtb3EanEOMjmuaqwY1Co6Kk5zdRh/lJmLPTulCkXUr4D2uQGtvyEDlqB8s1EfvQf8UgxMuf1YwAcH6s+TNxaSIyAGDeKM+ymZdq3BOc3Kt126rNf46RF9wRozj4CTkmI66A8bvoxPjv9oyd0gWg0cWp/q7mYv4wxSRMY5y5Vwxok3lkk2SrBWpB7nWbCW5URYBRANrAIkQw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8Ng1348qz2y92
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 15:02:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726722142; x=1758258142;
-  h=date:from:to:cc:subject:message-id;
-  bh=H5F0/4Btkh31Vvx/BX54WK5kkfMn64oK60cRy1yzcdU=;
-  b=iegBVUgXR2poet5rznSKib8iY6lFg2l5c+Qq1JWeptSEf4XDpovq75do
-   eQAkIQS+e+9vNbixIsromZneW+bS6uyhsOxlSqZzR8g+iKOWQkEXgh5tj
-   0+5mMGBvssJYz2xP3S6zR8jRjv0M2OsqA5FRp7Z6sQZbLNU1NEaNedpLO
-   rApyhbHKldtZDs7shdy80T50lpW9blcBdPlmiMIJ+vhmyvG5vLD3aKarF
-   syiuh+16iuEMAHLWmnrOWD+QWC4UD/e1zVnRDaO7Zg5nRPqPOUue9fgcr
-   1V9ouxbwy+GL2fVp4PN02PiBFYBqT7/J/Rd0Cy2xbS/Dl+50lOYOzBiH7
-   g==;
-X-CSE-ConnectionGUID: 8D3G+nnIREe1repZi5rZpw==
-X-CSE-MsgGUID: YZjTagZrQ6GJNtfcq6GuVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25606610"
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; 
-   d="scan'208";a="25606610"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2024 22:02:16 -0700
-X-CSE-ConnectionGUID: 8nj1f1BnQl2Rk08kPL10rg==
-X-CSE-MsgGUID: gA0zgIF1SPGAkdlK4a80Rg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,240,1719903600"; 
-   d="scan'208";a="69829235"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 18 Sep 2024 22:02:15 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sr9Iy-000Cwu-0g;
-	Thu, 19 Sep 2024 05:02:12 +0000
-Date: Thu, 19 Sep 2024 13:01:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 93a0594106c7caa79e118776eb9859ecc7993c7a
-Message-ID: <202409191325.Y22FmdeL-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8Nv82z1Xz2y92
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Sep 2024 15:12:51 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4X8Nv262lTz9tQt;
+	Thu, 19 Sep 2024 07:12:46 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 4RULTJogRSBh; Thu, 19 Sep 2024 07:12:46 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4X8Nv25Brdz9tQC;
+	Thu, 19 Sep 2024 07:12:46 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A1CF48B775;
+	Thu, 19 Sep 2024 07:12:46 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 9-15FAM90Jzf; Thu, 19 Sep 2024 07:12:46 +0200 (CEST)
+Received: from [192.168.234.38] (unknown [192.168.234.38])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0416F8B763;
+	Thu, 19 Sep 2024 07:12:45 +0200 (CEST)
+Message-ID: <65664ab8-4250-47c2-be50-d56c112a17fb@csgroup.eu>
+Date: Thu, 19 Sep 2024 07:12:43 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,127 +55,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v2 02/13] powerpc: mm: Fix kfence page fault reporting
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Donet Tom <donettom@linux.vnet.ibm.com>,
+ Pavithra Prakash <pavrampu@linux.vnet.ibm.com>,
+ Nirjhar Roy <nirjhar@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>,
+ kasan-dev@googlegroups.com, Disha Goel <disgoel@linux.ibm.com>
+References: <cover.1726571179.git.ritesh.list@gmail.com>
+ <87095ffca1e3b932c495942defc598907bf955f6.1726571179.git.ritesh.list@gmail.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <87095ffca1e3b932c495942defc598907bf955f6.1726571179.git.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 93a0594106c7caa79e118776eb9859ecc7993c7a  Automatic merge of 'next' into merge (2024-09-17 22:19)
 
-elapsed time: 2400m
 
-configs tested: 106
-configs skipped: 4
+Le 19/09/2024 à 04:56, Ritesh Harjani (IBM) a écrit :
+> copy_from_kernel_nofault() can be called when doing read of /proc/kcore.
+> /proc/kcore can have some unmapped kfence objects which when read via
+> copy_from_kernel_nofault() can cause page faults. Since *_nofault()
+> functions define their own fixup table for handling fault, use that
+> instead of asking kfence to handle such faults.
+> 
+> Hence we search the exception tables for the nip which generated the
+> fault. If there is an entry then we let the fixup table handler handle the
+> page fault by returning an error from within ___do_page_fault().
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Searching the exception table is a heavy operation and all has been done 
+in the past to minimise the number of times it is called, see for 
+instance commit cbd7e6ca0210 ("powerpc/fault: Avoid heavy 
+search_exception_tables() verification")
 
-tested configs:
-alpha                             allnoconfig    gcc-13.3.0
-alpha                            allyesconfig    gcc-13.3.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                      axs103_smp_defconfig    gcc-13.2.0
-arc                 nsimosci_hs_smp_defconfig    gcc-13.2.0
-arc                   randconfig-001-20240919    gcc-13.2.0
-arc                   randconfig-002-20240919    gcc-13.2.0
-arm                               allnoconfig    clang-20
-arm                              allyesconfig    gcc-14.1.0
-arm                      footbridge_defconfig    clang-20
-arm                   randconfig-001-20240919    clang-20
-arm                   randconfig-002-20240919    clang-20
-arm                   randconfig-003-20240919    clang-20
-arm                   randconfig-004-20240919    clang-20
-arm                           sama5_defconfig    gcc-14.1.0
-arm                       versatile_defconfig    gcc-14.1.0
-arm64                             allnoconfig    gcc-14.1.0
-arm64                 randconfig-001-20240919    gcc-14.1.0
-arm64                 randconfig-002-20240919    clang-15
-arm64                 randconfig-003-20240919    clang-20
-arm64                 randconfig-004-20240919    gcc-14.1.0
-csky                              allnoconfig    gcc-14.1.0
-csky                  randconfig-001-20240919    gcc-14.1.0
-csky                  randconfig-002-20240919    gcc-14.1.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    clang-20
-hexagon               randconfig-001-20240919    clang-20
-hexagon               randconfig-002-20240919    clang-20
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20240918    clang-18
-i386        buildonly-randconfig-002-20240918    gcc-12
-i386        buildonly-randconfig-003-20240918    gcc-12
-i386        buildonly-randconfig-004-20240918    gcc-12
-i386        buildonly-randconfig-005-20240918    clang-18
-i386        buildonly-randconfig-006-20240918    gcc-12
-i386                                defconfig    clang-18
-i386                  randconfig-001-20240918    clang-18
-i386                  randconfig-002-20240918    clang-18
-i386                  randconfig-003-20240918    clang-18
-i386                  randconfig-004-20240918    gcc-12
-i386                  randconfig-005-20240918    gcc-12
-i386                  randconfig-006-20240918    clang-18
-i386                  randconfig-011-20240918    gcc-12
-i386                  randconfig-012-20240918    clang-18
-i386                  randconfig-013-20240918    gcc-12
-i386                  randconfig-014-20240918    clang-18
-loongarch                        allmodconfig    gcc-14.1.0
-loongarch                         allnoconfig    gcc-14.1.0
-loongarch             randconfig-001-20240919    gcc-14.1.0
-loongarch             randconfig-002-20240919    gcc-14.1.0
-m68k                             allmodconfig    gcc-14.1.0
-m68k                              allnoconfig    gcc-14.1.0
-m68k                             allyesconfig    gcc-14.1.0
-m68k                          multi_defconfig    gcc-14.1.0
-microblaze                        allnoconfig    gcc-14.1.0
-microblaze                       allyesconfig    gcc-14.1.0
-mips                              allnoconfig    gcc-14.1.0
-mips                          ath25_defconfig    clang-20
-mips                  decstation_64_defconfig    gcc-13.2.0
-mips                           ip32_defconfig    clang-20
-mips                malta_qemu_32r6_defconfig    gcc-13.2.0
-nios2                             allnoconfig    gcc-14.1.0
-nios2                 randconfig-001-20240919    gcc-14.1.0
-nios2                 randconfig-002-20240919    gcc-14.1.0
-openrisc                          allnoconfig    gcc-14.1.0
-openrisc                         allyesconfig    gcc-14.1.0
-openrisc                            defconfig    gcc-14.1.0
-parisc                           alldefconfig    gcc-14.1.0
-parisc                           allmodconfig    gcc-14.1.0
-parisc                            allnoconfig    gcc-14.1.0
-parisc                           allyesconfig    gcc-14.1.0
-parisc                              defconfig    gcc-14.1.0
-powerpc                          allmodconfig    gcc-14.1.0
-powerpc                           allnoconfig    gcc-14.1.0
-powerpc                     asp8347_defconfig    clang-17
-powerpc                       eiger_defconfig    clang-20
-powerpc                          g5_defconfig    gcc-14.1.0
-powerpc                     tqm8541_defconfig    clang-15
-riscv                             allnoconfig    gcc-14.1.0
-riscv                               defconfig    clang-20
-s390                             allmodconfig    clang-20
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.1.0
-s390                                defconfig    clang-20
-sh                               allmodconfig    gcc-14.1.0
-sh                                allnoconfig    gcc-14.1.0
-sh                               allyesconfig    gcc-14.1.0
-sh                                  defconfig    gcc-14.1.0
-sparc                            allmodconfig    gcc-14.1.0
-sparc64                             defconfig    gcc-14.1.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-17
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-20
-x86_64                            allnoconfig    clang-18
-x86_64                           allyesconfig    clang-18
-x86_64                              defconfig    gcc-11
-x86_64                           rhel-8.3-bpf    gcc-12
-x86_64                         rhel-8.3-kunit    gcc-12
-x86_64                           rhel-8.3-ltp    gcc-12
-x86_64                          rhel-8.3-rust    clang-18
-xtensa                            allnoconfig    gcc-14.1.0
+Also, by trying to hide false positives you also hide real ones. For 
+instance if csum_partial_copy_generic() is using a kfence protected 
+area, it will now go undetected.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+IIUC, here your problem is limited to copy_from_kernel_nofault(). You 
+should handle the root cause, not its effects. For that, you could 
+perform additional verifications in copy_from_kernel_nofault_allowed().
+
+Christophe
 
