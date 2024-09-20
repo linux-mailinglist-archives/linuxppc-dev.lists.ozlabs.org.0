@@ -1,54 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-1489-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1490-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB25397D3B2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2024 11:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4955A97D3C0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2024 11:38:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X96gf71tvz2yNR;
-	Fri, 20 Sep 2024 19:35:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X96kk72vcz2yQ9;
+	Fri, 20 Sep 2024 19:38:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726824926;
-	cv=none; b=YlQzlm2PIh0LUEmd4PQaOFOjhvRbAMpou/9UpeMPqfR2K1c/SuRw18wRcQDTXVIPHKSuxdcmyRZ4bYbGtZ65JGZunLED+WFZscVmulPza7u9D0Lhbik1Xs6WsHqKY5G2TUM0328DEnE5jsts1PUw8+nco866Qa/bdenYSke1Wb8DV/QZzpRrKJ/Gwp1gK/ELRaGKN/pmcaMN7Raxp+fzbizLttaNsDXjvdaxlva7CMr5asCHfpO3tj4zHDHWVk8Yqt3V4nR+keBdrvdPIVistOwk5+31N21VD72xl3OYDsXQ3w1VQaBsUsuxxeL94NpSyAXIOgXkRLmaV8LXZZqLxw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.47.19.141
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726825086;
+	cv=none; b=dcylzCjwxEZDWX6+qfBmUylH2b9Mnw25KfuzwOPaNxfS0QsPBx2Ahtge51wSdu9cAcTxmZM/2AaRthvVsMMqC4ok+lz6t8/3PBcBQ5qw7HqBJP4UEYcF+eq32DrEhXiJ9lYHeztUM3f9LV8Y7ndqfxjryMDlHDIcqxOcP3sB6OhOO5sgxUHMzouOorPCPye2Q0sYmXcOaE54WtoQLI2wdFN/jPLEwQDcRJoxXyCRL6JqmP1yXC8lu2uEqXNeJ9+G9yOv16XJqKKrIlOZwLtdA3Z+6xQ2eKX6NcyEtDaxONQSDCon5lrEuYUPEeJkZQa9+hSA/xYjIUSaad6JG8aq4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726824926; c=relaxed/relaxed;
-	bh=MjaLr9GNYLQxOxvv+bAJ2U9YC4JPXOEHGJODm7PBqHo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A/uI78gztX3QUL4X4W3P35FrTWkc0Mq/jLdQteuWAt9K4Sq4AG8aOAKRplpMstlHMMbLBeqnStDdQPUVWszBW3oy7jFUS3QusLe2Wr4glw1Yu7yIqGV77H6+kDYJ/SZeV36dbF77HdsSzBaM1polLhQKPkOkSIqdZJWF5QVRbPyBlGNIZbnYXcShWK1d62aNI7sgm0vnpIITH9uRbQeJIrEirp58ngDEUNnhmNrCbd5Bq4zCodbp8aK7sgGUF2XUpUv7Zc2CuBH/Jy1Rx/bUW4aOV0qYbbgYjgBnLYp2jwhsv9Hq+od13SVg48iDe2kUNMdxQXo1mK85YKJz9lH8AA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LaIJthlI; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1726825086; c=relaxed/relaxed;
+	bh=D0mskHRaG8uO51XB0w+Qjupk2ywjqNEa2TOnwxQtqhQ=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DRQOOABuBXgUOX9ZMzMGQ6RoRfkO4pXVRwhgbDOypFmjGvQbtEPz0d7HupZrWogI511jUTil2rH+lciZ03dH+BYF14cErxLMGiWgvw9KDOWwEgCoBSlUxxGECYdCPx2H1W2hf1Zyg9/t3NJmDMVNT5HCxeaNFFb+/A9SG6sSONpbPfV0rABHO4V9VBNXPhMnSjvTsBUArEPg683O5BAnvF38NS8L2kKrPMZskViyqFP8X6wjSIdY014mYN9Tvv1sTU+fMY0YvuNH6RSIctyKelXcjRPopXj7VwyTjPv4b2HVA4EEI2t0buRpGju7lkfV0gag/Gh6rld2cfCRlQxDqA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; dkim=pass (1024-bit key; unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=ti-com-17Q1 header.b=a3kWlhvp; dkim-atps=neutral; spf=pass (client-ip=198.47.19.141; helo=fllv0015.ext.ti.com; envelope-from=kamlesh@ti.com; receiver=lists.ozlabs.org) smtp.mailfrom=ti.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=LaIJthlI;
+	dkim=pass (1024-bit key; unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=ti-com-17Q1 header.b=a3kWlhvp;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ti.com (client-ip=198.47.19.141; helo=fllv0015.ext.ti.com; envelope-from=kamlesh@ti.com; receiver=lists.ozlabs.org)
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X96gf3byLz2yNB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2024 19:35:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1726824926;
-	bh=MjaLr9GNYLQxOxvv+bAJ2U9YC4JPXOEHGJODm7PBqHo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LaIJthlIzX4NaRCPc0RvYQZ9YbAVIoikR2nWWwfoIGToOvxO9ZJtNs4a70RRVNS8T
-	 Bma+dudJJNKo1FEIrqQ3+dC4cEsZWWvkcuuOlEVCmBEnyIisYXX+T2E1zCKyfr17xS
-	 TkNPmX+QzltheewaisK5cuI47Rs1id7PsiYnGjS5dFdM2d3FRwpy1dNGD5S4JkzUBq
-	 oqrW9bz7c9M64pm1ZRHoY4cCgrkC6cLZoS4n+osrkWkA/uprMzw+ffHfdooj13sjUf
-	 yMAti+FDTtUTw4M1GUNZCzN3XTEcE7sdNrze/HC2lFZwtkFIpkZpuoTpB4SALORKd/
-	 UJ0zVojivUnLg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X96gd60mCz4xDF;
-	Fri, 20 Sep 2024 19:35:25 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Cc: 2639161967@qq.com
-Subject: [PATCH] powerpc/powernv: Free name on error in opal_event_init()
-Date: Fri, 20 Sep 2024 19:35:20 +1000
-Message-ID: <20240920093520.67997-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.46.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X96kh62VPz2yNB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2024 19:38:02 +1000 (AEST)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 48K9bKjn025160;
+	Fri, 20 Sep 2024 04:37:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1726825040;
+	bh=D0mskHRaG8uO51XB0w+Qjupk2ywjqNEa2TOnwxQtqhQ=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date;
+	b=a3kWlhvpf7IkGjWVT7lDFl5kpISZbS1j+VWuBtJR9VfBSU3nRHit4EI73t62rGy8m
+	 hMuak9pesVjAl9mfLUqywH+IJBAmsyq72nQxbgDpafsse10uCQUWAmJ3Q3itijTb/k
+	 Qfx183o9yeTivmeYQ6bqd1Ht+sdtxnzoXLoHXf5w=
+Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 48K9bKDD015708
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 20 Sep 2024 04:37:20 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 20
+ Sep 2024 04:37:20 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 20 Sep 2024 04:37:20 -0500
+Received: from localhost (kamlesh.dhcp.ti.com [172.24.227.123])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 48K9bJLg087632;
+	Fri, 20 Sep 2024 04:37:20 -0500
+From: Kamlesh Gurudasani <kamlesh@ti.com>
+To: Danny Tsen <dtsen@linux.ibm.com>, <linux-crypto@vger.kernel.org>
+CC: <stable@vger.kernel.org>, <herbert@gondor.apana.org.au>,
+        <leitao@debian.org>, <nayna@linux.ibm.com>, <appro@cryptogams.org>,
+        <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <mpe@ellerman.id.au>, <ltcgcw@linux.vnet.ibm.com>, <dtsen@us.ibm.com>,
+        Danny
+ Tsen <dtsen@linux.ibm.com>
+Subject: Re: [PATCH v3] crypto: Removing CRYPTO_AES_GCM_P10.
+In-Reply-To: <20240919113637.144343-1-dtsen@linux.ibm.com>
+References: <20240919113637.144343-1-dtsen@linux.ibm.com>
+Date: Fri, 20 Sep 2024 15:07:19 +0530
+Message-ID: <87ldzmll80.fsf@kamlesh.i-did-not-set--mail-host-address--so-tickle-me>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,34 +74,45 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-In opal_event_init() if request_irq() fails name is not freed, leading
-to a memory leak. The code only runs at boot time, there's no way for a
-user to trigger it, so there's no security impact.
+Danny Tsen <dtsen@linux.ibm.com> writes:
 
-Fix the leak by freeing name in the error path.
+> Data mismatch found when testing ipsec tunnel with AES/GCM crypto.
+> Disabling CRYPTO_AES_GCM_P10 in Kconfig for this feature.
+>
+> Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched implementation")
+> Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
+> Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
+>
+> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+nitpick
+checkpatch complains
+Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' -
+ie: 'Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and
+Makefile")'
 
-Reported-by: 2639161967 <2639161967@qq.com>
-Closes: https://lore.kernel.org/linuxppc-dev/87wmjp3wig.fsf@mail.lhotse
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/platforms/powernv/opal-irqchip.c | 1 +
- 1 file changed, 1 insertion(+)
+There is no rule for 12 characters, but it is generally preferred.
+I guess it is just a typo for you as you have correctly added other
+Fixes tag.
 
-diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
-index 56a1f7ce78d2..d92759c21fae 100644
---- a/arch/powerpc/platforms/powernv/opal-irqchip.c
-+++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
-@@ -282,6 +282,7 @@ int __init opal_event_init(void)
- 				 name, NULL);
- 		if (rc) {
- 			pr_warn("Error %d requesting OPAL irq %d\n", rc, (int)r->start);
-+			kfree(name);
- 			continue;
- 		}
- 	}
--- 
-2.46.1
+If you end up re-spinning, please correct this
 
+Also, just to understand,
+
+"A Fixes: tag indicates that the patch fixes an issue in a previous
+ commit. It is used to make it easy to determine where a bug originated,
+ which can help review a bug fix"
+
+from 
+https://docs.kernel.org/process/submitting-patches.html
+
+should there not be just single Fixes tag? as bug originated from one
+commit, may be the commit that actually broke the functionality.
+
+P.S.
+Not expert on this, just trying to learn.
+
+Kamlesh
 
