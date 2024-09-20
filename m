@@ -1,66 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-1481-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA2797CFDE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2024 04:21:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBD097D092
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Sep 2024 06:31:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X8x334rdMz2xmk;
-	Fri, 20 Sep 2024 12:21:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X8zwQ1ZGjz2xjY;
+	Fri, 20 Sep 2024 14:31:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.15.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726798895;
-	cv=none; b=cE4qeoXFHdHJNWcMxH407BB0leCvEHs+x3+4JCKUmgGL7RB747JIAFxZ8Sy+9q7/iGzGgFn804E+Vmj9kG97Ua3T5B5exGlIbmRBgq18WNIMt/Ij4XY8RVXuM0fRRHiye10BXyRxPkJmTyswXUVQ+6mxbpyr0zNUTUFvFBjIF/MS08Eu0WMDlv+IIfQlZsb299NtfUKR3KIS3El4jHbLAjFLbLDUeYMW8TpKJtbZatIBIoIPGUw8l7X7B202s3VxqL/ZzkdV6KV6dVi/nYHWG9KdZBwj9FodrasT42qJowP0W8i7sS5Kn378GFW9X2/ydMMl3hFz565UmZjdtD8Zxw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726806662;
+	cv=none; b=m/OLLJ/cbJkoZsMnt+6rPV4gz+TB68ygbHR9pAy+UixtTZeBFq56Aybmozh8OrVZi3ize5PMaS4AIi362TcWtMsqf1I60hKl+lvUoCnxk0l+Pkh0/AP0BqBxZUFSzyzX7YOGWXzDh5HR/KQ2ch/CHVFGQ3gXy8PP2tIKyPiM2WZRfNZWmavL+KLFgger+yzD4pxXPSNkVbJa+9Agw8diGb1Dh8GjLlej5pyY8H8cfz2CQKG+yBbAfQfMkexfnFL4vpl/kk2YiW1w5dFbG9uHK6wl7ux1l64A9gbmj2abd/7R/ZxbDW8+gF5m4LIGsQkln8sE80d8o/o8u+ZL+AAdEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726798895; c=relaxed/relaxed;
-	bh=77Gj7np+ZKHtU14T/xiajXIjnpe8O//Izjbw4Cr9qXs=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G/Ze56i+Soe3LM1ExY5K+eEc9J2yocK5oYgQIImhvyyVWwMJb6kvhSkOlE//98yQBc3WNcYmIl8VmkJMBQ16g1A741/+GlNRKwuRFlzxV2Vk43fHmYj96D8edoNL6p7xc38U6oce2pEa4Wo2dtDcpLJwdeIcbytHYTLKmZzqi01cgcPJS1ZdHgYYAfnvf93tNmWDMugmFyUPNLHio+FTOLabHs4nupr2JfP+YYzq68P/hyhVFYNk9i4vfhML+j4Zr2b5fEld+wbxaXo8r9J9J27cDMB1bD/D6LJg/3U6G6+1UFhWOeWhBtRNRnOqE18NhUg3d9GxRSqT2fvgz68ocg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=efault@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=Zhh25imj; dkim-atps=neutral; spf=pass (client-ip=212.227.15.19; helo=mout.gmx.net; envelope-from=efault@gmx.de; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+	t=1726806662; c=relaxed/relaxed;
+	bh=vwZzQGX/XbT68ML+CG1eoReUIKZmt+68bHViuwXsGFM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=koPBvzdCdHs9jObW18pA/2g5vBNAI3VXSFLVJByFEG/AhdXxiaavLyT/qtdAnSftAKt0KNQ9odu5qfnVAigtKXWXVTMAuajy5xFaAtFKZr/9vOfrKKBiG4iRYTZXgD3GQ5vUai+EFNy3Gfuy9d2M4ohE/XYn3S18bwi6VCxkgoBmnHAdgx7j6LFwYDDORDbwaMOG1Ks3bvIPMRoLtLRikBaJOuVVm/JCeEA+e5sKECAfhSXHN/rRhitjw80iE9D0nNj6XaK/494Fa1MFdd6JQPW4+EbA7SJZb3NpTmTZcj1L4G0SC0JaRD7MgtH+7NVgIPP5wha2qXDhxwZ99B1o+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cSMXUfkX; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=efault@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=Zhh25imj;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=cSMXUfkX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.15.19; helo=mout.gmx.net; envelope-from=efault@gmx.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 333 seconds by postgrey-1.37 at boromir; Fri, 20 Sep 2024 12:21:34 AEST
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8x322vDBz2xmZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2024 12:21:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1726798890; x=1727403690; i=efault@gmx.de;
-	bh=77Gj7np+ZKHtU14T/xiajXIjnpe8O//Izjbw4Cr9qXs=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Zhh25imj3X7IruBss1+Hb2fGZ3AdiB10qTZ1qOoLKmN0GLuFnQmVcQt6AIhFqC5b
-	 pALUL+q/06jLZy1zf6WMcRoL9hbPuC4R2m803mP1QynCxYrO6YwBpVqYOl1dDXap0
-	 z60xP1ctIVDrpBL7DxGK/RNKpFmQ7KpJNYvHc31WQhuNA+xrI0ClI+JzdI74goVK5
-	 mo4+COmt+52CPQBHwlX9ae4YwIb5GdrVPeER6aehjvfMU+1LMjyD/VVGzLV/0aY4S
-	 J1VssSiKSWcuvLKbOILNjknVVEVchKCTyyfzxLwcOLu4cVR4RLN7dXfXowI2LxCrA
-	 hz2BYZK9IiLBg7ooow==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from homer.fritz.box ([91.212.106.56]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MaJ3n-1sUbFm41Mz-00PLir; Fri, 20
- Sep 2024 04:15:32 +0200
-Message-ID: <177646b0c427786c90a8ccb67f5b956a12759d3a.camel@gmx.de>
-Subject: Re: [patch] Re: [PowerPC][Linux-next][6.11.0-rc4-next-20240820]
- OOPs while running LTP FS Stress
-From: Mike Galbraith <efault@gmx.de>
-To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, 
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- peterz@infradead.org, vschneid@redhat.com, mingo@kernel.org,
- sfr@canb.auug.org.au
-Date: Fri, 20 Sep 2024 04:15:30 +0200
-In-Reply-To: <c8c28050-8c6e-45b1-8b70-06cf5e0921e6@linux.vnet.ibm.com>
-References: <82b9c434-a0fd-4488-95be-a45b8cd4b6e6@linux.vnet.ibm.com>
-	 <2fb24ab402d9de45e3cf16e6ba0ad23a7843e5c1.camel@gmx.de>
-	 <c8c28050-8c6e-45b1-8b70-06cf5e0921e6@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X8zwP1gd3z2xYl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Sep 2024 14:31:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1726806661;
+	bh=vwZzQGX/XbT68ML+CG1eoReUIKZmt+68bHViuwXsGFM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=cSMXUfkXUZUos7/jmTKVyD2QpMpcWHWAaHePHfpTNN5WWg5z6YGK5zbnh51RgKRFy
+	 CrVhR691goYtJLWQl0ArNXACn5dvLk1mhCInebpqBCGuJ2qPgUxn+ERlxuJLphj2kx
+	 en4qlLC6Anaf5374MfQkYBbr2tpJJSA5PrATZ5O+w+dFOwMBb53K9D1/icLb4aat5Q
+	 zZTJsuYGdOfMy7DtM8u3+lESQuPhSuNvx2MntTim8athoDVW6/RK9Eon6TFPYvBi4U
+	 mzrLr2OGea7RC44mog6+77sUsp4X5cwQUCWxL0cY1VPI+ZXZlX730iH5EcgXmWDkVh
+	 v1/wGFjbi7EQQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X8zwM2xw1z4xR5;
+	Fri, 20 Sep 2024 14:30:58 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Trevor Dickinson
+ <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>, Darren Stevens
+ <darren@stevens-zone.net>
+Subject: Re: [FSL P50x0] [GIT KERNEL] [VDSO] compiling issue
+In-Reply-To: <0C6E937D-A322-4B76-96E8-2C239241F049@xenosoft.de>
+References: <de2d1e74-52e5-4d74-8228-4aaea61cad51@xenosoft.de>
+ <0C6E937D-A322-4B76-96E8-2C239241F049@xenosoft.de>
+Date: Fri, 20 Sep 2024 14:30:56 +1000
+Message-ID: <874j6bndz3.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,75 +64,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dsBviHucoPVCIAkRArCXYTRRur6moHQ5PlWxYDaBZ/fY83nVrrz
- PpGRUkO2aYEq04jy2P6KV61taffA/FL1dP3Ddl/QYoQQygpZWYXqEjX19bZIlBl9H0vI8Fr
- Bb3X1azisbO0yzKFabdrMc6m9Na0+qdgsngTYcd45yZLLUg+dJMYhdnHSlEvgHTBKam33VV
- 0z5mri6YzM0GfjmCJppBQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Z7LK3j1vvi8=;vhpgIoYqbeOwMza2brpmCQ8gfnf
- dqJeSnSP04ZTvJo5mvCLOso3qVQiLsq5vIH4/NLv2hNejkPhSSJRcktTvDCuuyGIqoxVA5NZE
- w5I4p3o7Djq/sa1sL6BmxDPTXF2UC1aqQHBUv/3ax5xVRHT7UZmhxsFHmm01geycAzVTrsQE7
- ccMCRTMkbkApeIL+gzypmI5vDtZdQDqR4xnbZ3mmd5frOgFHIWA/owP9vvvbsasI2Zg0krTS7
- OZOXqk7pr6nAFbx23/RCfSTXsaF18McgOMvr9cNXC+Gv3Hr9nLSg2mYikRr+T1hfxmtrSZM7S
- TMystNrk0XOll71WcGmquY8ClFWcPZgrkteBrI0ljUaFZ8cn0xLbdU49+efWRF3JRRALgYOoO
- vBWtqmExAK7SHyXJAbhtOJfvAN9FncG6IHeJjI0BriA6zLvq9DvLV2U7J0snVj/wN/M5vmNPQ
- UnL1nILRXtlkA/3fJx9JWOs0c0O3MS9rBs/AHINVG8inI+WPM4JpMhtVIUMxbPai0YdwnWfpM
- bHUYvM7go1jPC1Y/UQjQKxKN0Jfg3CvaaKjPUvlBRRrTzyVZLVzeoK5yD0MfBhegHDQWxcaPk
- mmV4bOh4tDryktKaYeGY9iWdOOt56Z0LWdyY1k5Dp15ANcZ5jYFwyeEdn56zIUin15qTW+ceu
- Z3V9XZkbrH4CxYV03/8gXtUsw6uKDYydB3+ABnRMLwv714A7nV0KZJkUcrfU0Kep/i5SyVsYx
- jrS1VzB0foJAqr8vvsE7n1T/skQvtqnnSUHxXc/aK9Mu7ImirFMGjlcHvApXWiOQzADosAQ1V
- DJEykGUMtD0tljTHZRgjfELg==
 
-On Thu, 2024-09-19 at 20:09 +0530, Venkat Rao Bagalkote wrote:
+Christian Zigotzky <chzigotzky@xenosoft.de> writes:
+> Hi All,
 >
-> Please add the below tags.
+> The compiling of the latest Git kernel doesn=E2=80=99t work anymore for o=
+ur FSL P5020/P5040 boards [1] since the random-6.12-rc1 updates [2].
 >
+> Error messages:
 >
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+> arch/powerpc/kernel/vdso/vdso32.so.dbg: dynamic relocations are not suppo=
+rted
 >
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+> make[2]: *** [arch/powerpc/kernel/vdso/Makefile:75: arch/powerpc/kernel/v=
+dso/vdso32.so.dbg]
+>
+> Reverting of the vdso updates has solved the compiing issue.
+>
+> Could you please check the random-6.12-rc1 updates? [2]
+>
+> Thanks,
+> Christian
+>
+> [1] http://wiki.amiga.org/index.php?title=3DX5000
+>
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
+mmit/?id=3D4a39ac5b7d62679c07a3e3d12b0f6982377d8a7d
+>
+> + Kernel config
+>
+> Link: https://raw.githubusercontent.com/chzigotzky/kernels/refs/heads/mai=
+n/configs/x5000_defconfig
 
-Sure, and while at it I can brush patchlet's rather scruffy fur.
+Your config has:
 
-1. on_rq being implied by sched_delayed, redundant check can go.
-2. no tasks anywhere in sight, DEQUEUE_SPECIAL can go.
-3. use of unlikely in an unlikely path can also go.
-No functional change.  Too bad everything around there fits in 80
-characters, or a couple useless diffstat plus signs could go too.
+  # CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set
+  CONFIG_CC_OPTIMIZE_FOR_SIZE=3Dy
 
-sched: Fix sched_delayed vs cfs_bandwidth
+But all our defconfigs use CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE. Which
+explains why we didn't catch this in build testing. I've added a build
+with OPTIMIZE_FOR_SIZE=3Dy so hopefully we'll catch any similar errors in
+future.
 
-Meeting an unfinished DELAY_DEQUEUE treated entity in unthrottle_cfs_rq()
-leads to a couple terminal scenarios.  Finish it first, so ENQUEUE_WAKEUP
-can proceed as it would have sans DELAY_DEQUEUE treatment.
-
-Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Signed-off-by: Mike Galbraith <efault@gmx.de>
-=2D--
- kernel/sched/fair.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-=2D-- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6049,10 +6049,13 @@ void unthrottle_cfs_rq(struct cfs_rq *cf
- 	for_each_sched_entity(se) {
- 		struct cfs_rq *qcfs_rq =3D cfs_rq_of(se);
-
--		if (se->on_rq) {
--			SCHED_WARN_ON(se->sched_delayed);
-+		/* Handle any unfinished DELAY_DEQUEUE business first. */
-+		if (se->sched_delayed) {
-+			int flags =3D DEQUEUE_SLEEP | DEQUEUE_DELAYED;
-+
-+			dequeue_entity(qcfs_rq, se, flags);
-+		} else if (se->on_rq)
- 			break;
--		}
- 		enqueue_entity(qcfs_rq, se, ENQUEUE_WAKEUP);
-
- 		if (cfs_rq_is_idle(group_cfs_rq(se)))
-
+cheers
 
