@@ -1,61 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-1505-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1506-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C053297DBBB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2024 07:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB25897DC05
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2024 09:47:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X9ctq4p6Gz2y8Z;
-	Sat, 21 Sep 2024 15:16:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4X9hF83rjNz2xrM;
+	Sat, 21 Sep 2024 17:47:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726895811;
-	cv=none; b=WCrOfkH9YpUh/29ohBs6x41qkhPmgXqqRBycMVYdpd68llRBHQLniU1MYvCdOcar8G7KGatziADUN+evSITnJQ4TdWnWeMfezeE2BSTsH3nzSWCjOznPV+3MV3S5kEj9vRkJjc5OvjGd2gBZctoMfK6TMQknUa+eEWDXUUeX7J29Xv3agKUVXUwd4mvuGDVb3IVDYn9LOIvlvhOkqNtmR7FLRZjBh7qBxsmQfKekcnoFZTcn92qqFuQce+TjGg5rn5XEHsVE90PrvCkmt6s81v/06gSRrI4fwmk5ThnEl1zT9Q8aOAmSt5exR5lgSr42ajUyQZA8vEocA7DsJV1w2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726895811; c=relaxed/relaxed;
-	bh=qyx/dHX7YUt7tYPdVE5RWKeFUCXghcIpaCAzPuASVKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UlnQfYHMwFiTcVy6bcX1bmveelzs0HECSDh6+WWzi07ugsroA1gjDboPgSrSPW+Z5P02D5wDnEvbj9+FYrwBkUYFFUGsvWbhRENeeqkx3J3hf2+xXQ9hAGxVjLOtC90a9TJZfuL8vxjPg8eAFrLrk5ajlzCDaUY8DTn0Qyt695acP1PNGkySnJaat70ZeGeF2OafjH2t9dbdE2EDlfNI4LNTEorIZQKSqtxeBBi36SRHS9sKBVRXLV3AzfnGZjFx17bOZD9mqnmVrha4DB3xqLTNfp+J+YxcEiNPHT2ICnkjgDOPZYU/pC/99yEasgGBvX8ECf0quVN1vfEBeGfm1w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Id95Uh0T; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.51 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726904875;
+	cv=pass; b=kf6nkBvGADZwsFeB1JLIhbShwN+yOEoEcVvesMQZ8LW1ibZKd6UEkYz5RFffBBcOyy5EvekH4B2neUIi476NZLwgxkA9UME66sbAcYAHQN7PdC3dbdSWk2okrxOcqiEsQn/4f3UlXdhdBB8Q3b3gsWhGELHi/ftvAexlRxvEYke1lMyY+0vfE7N6PMD86R59bI4TjFw6nDp/Jg0wIzzmDIhV56YjDCpzwhuq5w+QFnaeXnCiip79C17J9cbEPrM6ERdBA3DC8CMpkpsr+Iin4I5i8clc2bRtGU8xsmm+cO9N/jirGNCHqPJHi/bu3difGk6yEO4airMExm3kuBaQdg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1726904875; c=relaxed/relaxed;
+	bh=UX6oax5JNv0f4YrefZ/CLdZTH+8SxXkpF1uGuXRjE60=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Mc/4a6XaZqpuLwtY2GtfDJZf9Guu/JdUoblXLlvPLtXB6A95/VkjaxEPkROppv2Xscgbs+seN8hrD0igk15h1bnVe+pA/Tvu2D2jxmHCP0jsxiPs7iFqjvyAagtuEIn9om0phbCfs46g+NZ/hoatXnvJtgzr7PSafVwI+iwRiLernqSu57v0rUNGEyN8qv7V0XT+dRF5Q11ZsfJ/TZ65c+2cazHT/xCKLxn6+BU7Y1aEtyeQJqjcjoFofiPFdrfUPOnT9RSrXba7Ah1NQzU5ah18kMphTtt5MYuKwno3Ue3wxqKPTYh/QtyorCDNVC0fKvPXJbQd2gkp+vrevidcWg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=H4r+FQlq; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=F6f3KcUf; dkim-atps=neutral; spf=pass (client-ip=85.215.255.51; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Id95Uh0T;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=H4r+FQlq;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=F6f3KcUf;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X9ctm0VNnz2xxm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2024 15:16:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1726895806;
-	bh=qyx/dHX7YUt7tYPdVE5RWKeFUCXghcIpaCAzPuASVKA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Id95Uh0TMdJVZiDEBKIrjFEpwJCF9A1H/c/voUcjFf9gh5bnQcyoiu77PbCHWvM3W
-	 07SUJ5XFJ8nnlFheNhmmfp67Edcp66LSRIN+sZtk6Dx7qT/FKHKN4U2uBdr9ptL2TI
-	 i2l/2ihF0fwG2U1K7e+zjqDAVcGdzywGlICGZSYVoPd08ashLz7hRLEG9uP0eKD4et
-	 WnrPQk8az/kxSzG1Zcx0HtL+3UahEY0p1xW2HUb5SOlfBnB+84L/VJkKd+7CUttfHS
-	 hkQjphjGLYEu1d41Yc+Lds62wBd7ORIZgL4MmDam0uJX2o0Pjuqb67bI8Vw2P9H9uV
-	 988q5puR1c9TQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X9ctj1Syrz4x8Y;
-	Sat, 21 Sep 2024 15:16:44 +1000 (AEST)
-Date: Sat, 21 Sep 2024 15:16:42 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Kamlesh Gurudasani <kamlesh@ti.com>
-Cc: Danny Tsen <dtsen@linux.ibm.com>, <linux-crypto@vger.kernel.org>,
- <stable@vger.kernel.org>, <herbert@gondor.apana.org.au>,
- <leitao@debian.org>, <nayna@linux.ibm.com>, <appro@cryptogams.org>,
- <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <mpe@ellerman.id.au>, <ltcgcw@linux.vnet.ibm.com>, <dtsen@us.ibm.com>
-Subject: Re: [PATCH v3] crypto: Removing CRYPTO_AES_GCM_P10.
-Message-ID: <20240921151642.60b89e86@canb.auug.org.au>
-In-Reply-To: <87ldzmll80.fsf@kamlesh.i-did-not-set--mail-host-address--so-tickle-me>
-References: <20240919113637.144343-1-dtsen@linux.ibm.com>
-	<87ldzmll80.fsf@kamlesh.i-did-not-set--mail-host-address--so-tickle-me>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4X9hF41hWpz2xHb
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2024 17:47:49 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1726904826; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=tA5C4sR6/p/2xLmQzyIx/9080eklDLXhpIdYtjavuRariA+rlATtDhrChpbfHTTYmF
+    X4vnbmzz9A09XKLkYWDwTLUrx8jbzs+/2PDYfHOks3V4nY6d9uE76GX17OWEHfXHIXMX
+    nR2ypl30eHbcFU/BktE5EGTNpZt2LbSQiaLrbab3TlMMOMgeyKemMUEbhHXnb+xcgHZj
+    MpfneGGCuKP+hx2PTRQGuHCZXcfUuwtDXe9w33QMc9TTdVaPV4tPlb6ZDV2Nem7rItN+
+    f5cmDzKPzMZfL0YTNHRsH62vy5X54b+ErjNYm7phRIwcxWTPBbNlXjIUxwHZOa6pTRcn
+    ACCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1726904826;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=UX6oax5JNv0f4YrefZ/CLdZTH+8SxXkpF1uGuXRjE60=;
+    b=CxdUoBOD3KhVEVOUrzpqV0g8hxqGBOv69X8V/Iz2GI75KjE2g/+fRcZxvFi4MG0EOV
+    McYyHwstoJfD+Z4EMr5zPtRBrqdL5l7KLFp4XGW9XkIUmn+xMmHdDpzftgiiI2W7hCBO
+    YeeFIDHSqczdb9c9Juef0GBwgFbj0KY7HJ2ngDdjWdLS/XkNDyVQQ+LnSA2UDfSPu2y/
+    aYn/Vwzsy6aCJg85f+tYhmSOAMx/FPPPOFscmmCrawSe9ONDY4hEZ56DEVtL2VeqyVE+
+    4tnubQN4VOU4alMFtTKS1Kx89e0FpsxZZaCIIbN6++iwe35WK5OCyw7VPRw1UE626rN+
+    aduQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1726904826;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=UX6oax5JNv0f4YrefZ/CLdZTH+8SxXkpF1uGuXRjE60=;
+    b=H4r+FQlqcir3ZPpK395lhIEGzfMss5Pvn0yynrBDej9OthbGbOSZo8Xs8/QmmeW1iV
+    ctUHvWJs/Kh2JBLv/roXdHB5HLnKHqb+Tt1puTaV2F26WUtqj4KLM09nMoe8Z5XgEWxC
+    ASBC8HATD/CVPOty41O9kms0/NUic9bzM8zSDu2L9uZRnBD/AB4+e4z+E89Vq4wPSpMH
+    BGLhNEaMdw8DkXiDlRYKJl187xVQNaW3V0loxTro1bzSwGFCQyAaN0GHD6IeoCE8bUSi
+    P3AgA1n0Gh+n+nzd9OzCdZ9CaTbn3B3i9a93NlUsjIdPsY6oz3osGRm9oY7Pqp/CKg/1
+    WEow==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1726904826;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=UX6oax5JNv0f4YrefZ/CLdZTH+8SxXkpF1uGuXRjE60=;
+    b=F6f3KcUfnXx68RHsHehldiIaWNutml+8+RLZ76cbwv8zFcJoAYbQzfDTpwA1iCB+Qh
+    kj8wMAWA0lZhRigTRABg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7VpngsyrDDn7tV8xuJ2lZeftchKhvJvsCocNyYw=="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 51.2.8 AUTH)
+    with ESMTPSA id e0da1a08L7l51aY
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sat, 21 Sep 2024 09:47:05 +0200 (CEST)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,83 +87,62 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/jhSltXngbv+WsRpVn7yvHAs";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] powerpc/vdso32: Fix use of crtsavres for PPC64
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <aded2b257018fe654db759fdfa4ab1a0b5426b1b.1726772140.git.christophe.leroy@csgroup.eu>
+Date: Sat, 21 Sep 2024 09:46:54 +0200
+Cc: Jason A Donenfeld <Jason@zx2c4.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Trevor Dickinson <rtd2@xtra.co.nz>,
+ mad skateman <madskateman@gmail.com>,
+ Darren Stevens <darren@stevens-zone.net>
+Message-Id: <A9FC02B9-A15D-4A75-872F-BC85248A1BBB@xenosoft.de>
+References: <aded2b257018fe654db759fdfa4ab1a0b5426b1b.1726772140.git.christophe.leroy@csgroup.eu>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Mailer: iPhone Mail (22A3354)
 
---Sig_/jhSltXngbv+WsRpVn7yvHAs
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 19. Sep 2024, at 20:56, Christophe Leroy <christophe.leroy@csgroup.eu> wr=
+ote:
 
-Hi Kamlesh,
+=EF=BB=BFcrtsavres.S content is encloded by a #ifndef CONFIG_PPC64
 
-On Fri, 20 Sep 2024 15:07:19 +0530 Kamlesh Gurudasani <kamlesh@ti.com> wrot=
-e:
->
-> Danny Tsen <dtsen@linux.ibm.com> writes:
->=20
-> > Data mismatch found when testing ipsec tunnel with AES/GCM crypto.
-> > Disabling CRYPTO_AES_GCM_P10 in Kconfig for this feature.
-> >
-> > Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stit=
-ched implementation")
-> > Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitc=
-hed implementation")
-> > Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefil=
-e")
-> >
-> > Signed-off-by: Danny Tsen <dtsen@linux.ibm.com> =20
-> nitpick
-> checkpatch complains
-> Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>=
-")' -
-> ie: 'Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and
-> Makefile")'
->=20
-> There is no rule for 12 characters, but it is generally preferred.
-> I guess it is just a typo for you as you have correctly added other
-> Fixes tag.
+To be used on VDSO32 on PPC64 it's content must available on PPC64 as
+well.
 
-It should be at least 12 hex digits i.e. more is fine.  It is possible
-that some commits need more than 12 hex digits of the SHA1 to be
-uniquely identified in some git repositories already.  I guess
-checkpatch needs a patch.
+Replace #ifndef CONFIG_PPC64 by #ifndef __powerpc64__ as __powerpc64__
+is not set when building VDSO32 on PPC64.
 
-> Also, just to understand,
->=20
-> "A Fixes: tag indicates that the patch fixes an issue in a previous
->  commit. It is used to make it easy to determine where a bug originated,
->  which can help review a bug fix"
->=20
-> from=20
-> https://docs.kernel.org/process/submitting-patches.html
->=20
-> should there not be just single Fixes tag? as bug originated from one
-> commit, may be the commit that actually broke the functionality.
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Closed: https://lore.kernel.org/linuxppc-dev/047b7503-af0c-4bb0-b12a-2f6b1e4=
+61752@csgroup.eu/T/
+Fixes: b163596a5b6f ("powerpc/vdso32: Add crtsavres")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+arch/powerpc/lib/crtsavres.S | 2 +-
+1 file changed, 1 insertion(+), 1 deletion(-)
 
-While we generally prefer that a patch only fix one bug, it is very
-possible that the bug may have been introduced in more than one commit
-e.g. in different files.
+diff --git a/arch/powerpc/lib/crtsavres.S b/arch/powerpc/lib/crtsavres.S
+index 7e5e1c28e56a..8967903c15e9 100644
+--- a/arch/powerpc/lib/crtsavres.S
++++ b/arch/powerpc/lib/crtsavres.S
+@@ -46,7 +46,7 @@
 
---=20
-Cheers,
-Stephen Rothwell
+   .section ".text"
 
---Sig_/jhSltXngbv+WsRpVn7yvHAs
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+-#ifndef CONFIG_PPC64
++#ifndef __powerpc64__
 
------BEGIN PGP SIGNATURE-----
+/* Routines for saving integer registers, called by the compiler.  */
+/* Called with r11 pointing to the stack header word of the caller of the */=
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmbuVroACgkQAVBC80lX
-0GzFnwf/e23oe9Qw1Ca7dvh9xkyu30hNMVeham1rhS6bKpc17gT0szzMz8eWWdln
-m4DiWnBXv3x7L07rJ22+fiEtO9N6KZMKW5PWJzEQElsBzmMJfrSwgo/eUnODTZZx
-3LpE0RV0scL9+XdTaM1nOjy5nOHXG33QR3llmtXuJ/PG+RrEARjBXctl6tF/8uzp
-UI8R/NmiDozwvMXb+xGaTfxemK9CDZX0HRgY28XdRlz+Tz8j3FwEJQ7vdAJanzgp
-poRsA7urS2fg2KQBRVFL2oFaW/9OVWuoYmB4eXF971g0qOyBCMg8smG5n4TdRKsM
-8uHloMPT9uun/CL6E4onHEIgjddfvQ==
-=S5Bm
------END PGP SIGNATURE-----
+--
+2.44.0
 
---Sig_/jhSltXngbv+WsRpVn7yvHAs--
+
+It works! Thank you.
+
+Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>=
+
 
