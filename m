@@ -1,84 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-1511-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1512-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E20E97E06B
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Sep 2024 09:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A000397E113
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Sep 2024 13:19:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XBHNK3QlPz2xdR;
-	Sun, 22 Sep 2024 17:11:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XBNtv0yw1z2xpv;
+	Sun, 22 Sep 2024 21:19:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.164 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726989072;
-	cv=pass; b=M/iW41S6eNCp8l/h5pCWvKXDkRzrL2EjaQ5uBHcUQRW9ydXilE87pB8H/KNKKh94yNXISqsACR6VWE7fyaY/x7DGKfURttRZrxhIRs5llFwcBA8xvGlrXRNTh07rhVI+FYNwxZqPdgBEqw/MBy8ZYoXoMaN6eSs3or0jnlOucdCqVMU8Bez4vE1GdXXUP+xSU7lCzoIMpnca1iUvhA2KG4dyTESaJB6OTQTO9dY6WL+rpnLtovFk8Zn6jkRCOCRNO1GAyPyL8t6jF0X8bCO/X7OGKHqw/BYkYV5yU7IojBxpDphqVci5mx920x/vEV5f+3a8qgT8lBCXEI6GCmoCtQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726989072; c=relaxed/relaxed;
-	bh=XT2btQo2l2+uW+7fLGuafe13KGjmlesHpzO33/mJsnw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=CjY0cdaXT3zlssmhlT+MU2h8hlpJzsDQ6ecDWWv+krB/nRm/GUhghRjTKgAxKVKM2BsYG/fRNE3lapKVRlpiVomcCh9gGRs7vRxCgTelS3Z8f07vE4Fm87/fKj55NwWnaRJOf05w2pDvlZ4Xc6O1Df+/5VebQlmRULR5GZOXIJeuYvnYQPsXpQ2v1ud6A7cUuEP9hRe/+7y9brvB6itNxKN7fIwmJ3Tuv64ukv4geduak+3ds4MsZpnvvelBdOEeYLU5fVcI4rA3v2c/MAlX7TLZYTsQLwwYmWFgbMklAltDjmKCICxSHNfx5DZblsZgKdHwVicVg9Qb5WAL5IqC4g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=dHRjowmc; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=6o0N9nOr; dkim-atps=neutral; spf=pass (client-ip=81.169.146.164; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::432"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727003975;
+	cv=none; b=R6KaYhO6TEADICJ9oRWb668T3gclmWC5bnOKFv8OKZN4cx3HLiaKiACjjfG2PxAdFkWA74oe8iMwmq+vWRbjgp7wK+wYih5mc9aibCy2ipk5ZSHFdQCVQuK1+7ill/JTlsFO6DV/mh1moRYIW3tpE26ae7Vh9b+EhBdGVVd2jvDb+sfsJa3e4u7a7ilJ/6Oub4KUDZL+CVy4+SWXSRm0FUcANBUQz0+48sQlFb5Y94xfl3HZl/xx9+qOd9KEdJxcijGD5DyEvN8RKbE6bVAEwdu+mA92Mlh8SykUP1ALecfdzltcf6UPW9zwFzyvxhnmPtMBskPaJmdHDCk9sZOnhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1727003975; c=relaxed/relaxed;
+	bh=0XGOYj44mxYlAIPacdVz2Xqqf2VHJVuoXCavyaxAiLM=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=WXfREKdOz7tR0aIqIh6RFtFwt7oLih90B5SgkSm08DlJhp8ssGjr1IFObIs6lAiAphNdjQdf7Gj4X75pzbarNrNly3G+Zh1tR9kG+xGXQz7soaU7n+KGzb5rkbCvXeeY7lzKWLNyic3RTf1jMR0wq7lO54Ub1Ab8QNZ6vNEj5XrQ7tR/ufiJUJTmnj1M21t7VoHnPtUqmsqYJWW4xKsKjqfxwsPvjcynN9s8Gp3VNAkrbMv3N+YBiF7dZAy9CIHezvqDdDDlU/5hOwAfvbCYnU8cIUXAXsO2P0lZ7XM7DVTVubxnIppMazZGtN7Vlmy3Y5WlRIz2+fGHo3AywjLrqQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gyOIt0A7; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=dHRjowmc;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=6o0N9nOr;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gyOIt0A7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.164; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.164])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XBHNF6R7Dz2xYw
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2024 17:11:07 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1726989038; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=LwkzdSEPnPZgkpeJCgnVcpyf2T7P+D8skDgfU9PiGAZnMgMVi/TnGso+OmrPeE+tiZ
-    bZ9cTx1/snAZoXWgZ3usUjz2SoIfxhlKRziBlfZemr13oY5JRyE18k3xEqLhnaz1A1FV
-    5GjbL5lHWv2+t0ax9PN3LlaFN5d3m+4m9V58Jjtigs+KmVQMFuGtlq+BBV2snurvrsaj
-    vDoY0E73lD84KpIV9v5AkV+IMphLT35RTClD1ru60vA244wAAoNuK1eowTmYCyafedVR
-    PWRRuF+FK0eTBZ8P1zlMQllEI7y5dQt0bY5zlbVmvrt85s9pZ+eTTP5Hv87k73fWjrjQ
-    W1WA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1726989038;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=XT2btQo2l2+uW+7fLGuafe13KGjmlesHpzO33/mJsnw=;
-    b=Ft69fqukilDJ/i6RVShemo3vhQLQL4/mQKNHCiSoCqV+Iun2KC7GiQXhgLz/G+CVd4
-    NMxpxhMfQm3kv9oy1UXcWP5cxPsAnqWXlUCurWVpoTp0WIdy1VZzt4gjR7lLtshatgCg
-    GBbMiyLmP2UheI7S0FPZIpzsr4/X27l9etk5nbO6v444U0c1ZzwlIRm0byD5qeKMP3qP
-    SYr5er5hR2TJHcDWC+3prh8V5/6jDx5nVLud2rInfmSVWzriYCjxrDMf2BUujipR/yxc
-    gheBKbQLKXk8q369NZGebDclJk97f5VfcF+2bAX07zRueJy0MGEQQBziLvcftCuo5vmU
-    Yiew==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1726989038;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=XT2btQo2l2+uW+7fLGuafe13KGjmlesHpzO33/mJsnw=;
-    b=dHRjowmcfLwXH9Hh7gZtcEA9vIMPSv6+stlbXeEozDHSPen/23O03A3pGLXEN/Ho2m
-    6DxiOInek296UgwIXz7VKGc0EHTS/oOpkNQNMeIDbcCxlzb5niV9xSqY7cGgQWElJrhn
-    YbdCe8HWewkLh3jo005wmpDSJTp7BZulXr6OgzL3mFuFWUjG8PMfCDTm7uuROhuOJqEa
-    r2ik0ImKGIwxBiJ8HkcLMz8Lwqlzf1bGs9zf8GBsrele1v56LgeTdco30VnOD6LmFveB
-    omo9Lm2o2gTciV60irxwLF2HhuXdf9T53rFXRbltK1Jj511UCChhFBB2vCdaoA2c4s28
-    ZFvQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1726989038;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=XT2btQo2l2+uW+7fLGuafe13KGjmlesHpzO33/mJsnw=;
-    b=6o0N9nOreYK/jIEFOTJitb3kmAFnjiJCd2xSN+ylMcq4wUCvz8PD2qOFenSQwcZqKW
-    31efDkINeEXEVlWZ3QBA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr44+gKidpmhkOpz46lpM="
-Received: from [192.168.178.134]
-    by smtp.strato.de (RZmta 51.2.8 DYNA|AUTH)
-    with ESMTPSA id e0da1a08M7Aa2TW
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sun, 22 Sep 2024 09:10:36 +0200 (CEST)
-Message-ID: <7525c876-4dff-4f63-b96d-98435c24dee8@xenosoft.de>
-Date: Sun, 22 Sep 2024 09:10:35 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XBNtt2PqWz2xfT
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2024 21:19:32 +1000 (AEST)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-71781f42f75so3323340b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2024 04:19:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727003970; x=1727608770; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0XGOYj44mxYlAIPacdVz2Xqqf2VHJVuoXCavyaxAiLM=;
+        b=gyOIt0A7wlm2CRc/yq7j94JytfQVAoYxprM4tvp8L7IBmu0ZwNbAQju4/msi1QCRQ2
+         qLLJ3vQFUdf1Sfp3MrwVc9tF248bld/XIhmdj7JwYje+npNqouXSwY8RTc9yy25B+IBX
+         YJu7ah52m9Z4IOo97baz6O2tqkt0+02CWAHlw3nmYyBfQwoxXwrxxG+53vzM6E8FTRda
+         LEe7n00DYatGZKy6RWde1WvWNLKp0QA39HRj4o6QBUrCitoD+5M+lB6cco3ym1mHH5+j
+         c2bLiiupu7c3exsEdbBsh84buedqSqODmG8JH1KMwvI6UQqc+syxB73D1lh0+XyZgyDm
+         ywAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727003970; x=1727608770;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0XGOYj44mxYlAIPacdVz2Xqqf2VHJVuoXCavyaxAiLM=;
+        b=gPfx9g6ihF7PsNLjIjzCRbtyispr3s5E56OIXLsiLZ7KFE9yxun9AloYMPoQqt9m5A
+         m0qrKVGXhmfZpmNoKCSsFSsE0j7mczmJEM5Xl7Ceo3qWBvqrGVdhYl/hfBLvONn+Gxjm
+         PEecLpBsEWF99zNpdHhWR8oJcI7yJbDfHMIoOETUrWnI62Gv3MtH/F8eWrGEDmAmv0Zc
+         ObHKF/bnWyyJy/LZcqHIdDdS3ZvvpsBSUOydRM0mHoPZO4HekD2JhSMxZoL3iN63uKjk
+         hIAAGym7Xl9I5/ZV/Aew/bKX/T+2T1Se9quzb28e00S6YguQZHbv5mWCQW3UOPe9DZ9C
+         YB2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWJQO4jxohbTcBDMPKhsQluMp2FmYUNFSsBMXgcwwDgkIAmdduHtrARQt+Ty0J9AH0C0pw66UwgG6D6Rv0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwO7/8apjKDuPhfq7f7XZf0ZJyXJYxvFRXKhYFQz5HTeOFGWEWg
+	Zwrbg27SnK894JiUNqKsRD4N6vX8gfFS9CO6tc9V35qgAJFTTsCd
+X-Google-Smtp-Source: AGHT+IEarJPEGCPBYFymlyfwJIi6kol8+OpmLQWTv1Xlfmdw6aA8QyOeHPPTb+TJxBDxV5NMZGWPRg==
+X-Received: by 2002:a05:6a00:4b0c:b0:717:8deb:c195 with SMTP id d2e1a72fcca58-7199ce0c432mr12177581b3a.21.1727003970167;
+        Sun, 22 Sep 2024 04:19:30 -0700 (PDT)
+Received: from dw-tp ([171.76.87.135])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71944a974dcsm12412341b3a.32.2024.09.22.04.19.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Sep 2024 04:19:29 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Luming Yu <luming.yu@shingroup.cn>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, jialong.yang@shingroup.cn, luming.yu@gmail.com
+Cc: Luming Yu <luming.yu@shingroup.cn>
+Subject: Re: [RFC PATCH] powerpc/tlb: enable arch want batched unmap tlb flush
+In-Reply-To: <9BC3D1299ECE8428+20240918092515.2121-2-luming.yu@shingroup.cn>
+Date: Sun, 22 Sep 2024 16:39:53 +0530
+Message-ID: <87frpsymf2.fsf@gmail.com>
+References: <9BC3D1299ECE8428+20240918092515.2121-2-luming.yu@shingroup.cn>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,62 +77,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PPC] Kernel doesn't boot after DRM updates (drm-next-2024-09-19)
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>
-Cc: mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Darren Stevens <darren@stevens-zone.net>, hypexed@yahoo.com.au
-References: <f163bcec-e5b1-4aef-91dd-431736fd6d11@xenosoft.de>
- <ac6ced8f-d063-433a-8660-73ced7d18dd4@xenosoft.de>
-Content-Language: de-DE
-In-Reply-To: <ac6ced8f-d063-433a-8660-73ced7d18dd4@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 22 September 2024 at 08:48 am, Christian Zigotzky wrote:
-> On 21 September 2024 at 06:15 am, Christian Zigotzky wrote:
->> Hi All,
->>
->> The lastest Git kernel doesn't boot anymore after the latest DRM 
->> updates (drm-next-2024-09-19). [1]
->>
->> I tested it with an AMD Radeon HD 6970 (Cayman XT) and with an AMD 
->> Radeon HD 5870 (Cypress XT).
->>
->> I reverted the DRM updates and after that the kernel boots without 
->> any problems.
->>
->> Please note: Due to a lack of time, I can't do a bisect.
->>
->> Please check the latest DRM updates.
->>
->> Thanks,
->> Christian
->>
->>
->> [1] 
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=de848da12f752170c2ebe114804a985314fd5a6a
->>
->>
->>
-> I replaced the new Radeon DRM driver from the Git kernel with the 
-> Radeon DRM driver from the kernel 6.11. (cp -R 
-> linux-6.11/drivers/gpu/drm/radeon a/drivers/gpu/drm/)
->
-> It compiles without any problems but unfortunately the kernel doesn't 
-> boot either.
->
-> Have you tested the new Radeon DRM driver with AMD Radeon graphics cards?
-Maybe this is the issue (included in the latest DRM updates - 
-drm-next-2024-09-19): 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/arch/powerpc/kernel/nvram_64.c?id=de848da12f752170c2ebe114804a985314fd5a6a
+Luming Yu <luming.yu@shingroup.cn> writes:
 
-+ linuxppc-dev
-+ Christophe Leroy
-+ Michael Ellerman
+> From: Yu Luming <luming.yu@gmail.com>
+>
+> ppc always do its own tracking for batch tlb. By trivially enabling
+> the ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH in ppc, ppc arch can re-use
+> common code in rmap and reduce overhead and do optimization it could not
+> have without a tlb flushing context at low architecture level.
+
+I looked at this patch and other than the compile failure, this patch
+still won't optimize anything. The idea of this config is that we want
+to batch all the tlb flush operation at the end. By returning false from
+should_defer_flush() (in this patch), we are saying we cannot defer
+the flush and hence we do tlb flush in the same context of unmap.
+
+Anyway, I took a quick look at ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+and I have a quick PoC for the same. I will soon post it.
+
+-ritesh
+
+>
+> Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+> ---
+>  arch/powerpc/Kconfig                |  1 +
+>  arch/powerpc/include/asm/tlbbatch.h | 30 +++++++++++++++++++++++++++++
+>  2 files changed, 31 insertions(+)
+>  create mode 100644 arch/powerpc/include/asm/tlbbatch.h
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index e94e7e4bfd40..e6db84dd014a 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -175,6 +175,7 @@ config PPC
+>  	select ARCH_WANT_IPC_PARSE_VERSION
+>  	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+>  	select ARCH_WANT_LD_ORPHAN_WARN
+> +	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
+>  	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if PPC_RADIX_MMU
+>  	select ARCH_WANTS_MODULES_DATA_IN_VMALLOC	if PPC_BOOK3S_32 || PPC_8xx
+>  	select ARCH_WEAK_RELEASE_ACQUIRE
+> diff --git a/arch/powerpc/include/asm/tlbbatch.h b/arch/powerpc/include/asm/tlbbatch.h
+> new file mode 100644
+> index 000000000000..484628460057
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/tlbbatch.h
+> @@ -0,0 +1,30 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ARCH_PPC_TLBBATCH_H
+> +#define _ARCH_PPC_TLBBATCH_H
+> +
+> +struct arch_tlbflush_unmap_batch {
+> +	/*
+> +         *
+> +	 */
+> +};
+> +
+> +static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
+> +{
+> +}
+> +
+> +static inline void arch_tlbbatch_add_pending(struct arch_tlbflush_unmap_batch *batch,
+> +						struct mm_struct *mm,
+> +						unsigned long uarddr)
+> +{
+> +}
+> +
+> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+> +{
+> +	/*ppc always do tlb flush in batch*/
+> +	return false;
+> +}
+> +
+> +static inline void arch_flush_tlb_batched_pending(struct mm_struct *mm)
+> +{
+> +}
+> +#endif /* _ARCH_PPC_TLBBATCH_H */
+> -- 
+> 2.42.0.windows.2
 
