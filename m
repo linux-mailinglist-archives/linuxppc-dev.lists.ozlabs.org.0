@@ -1,74 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-1512-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1519-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A000397E113
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Sep 2024 13:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C925B97E19B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Sep 2024 14:46:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XBNtv0yw1z2xpv;
-	Sun, 22 Sep 2024 21:19:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XBQqS604Gz2y8n;
+	Sun, 22 Sep 2024 22:46:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::432"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727003975;
-	cv=none; b=R6KaYhO6TEADICJ9oRWb668T3gclmWC5bnOKFv8OKZN4cx3HLiaKiACjjfG2PxAdFkWA74oe8iMwmq+vWRbjgp7wK+wYih5mc9aibCy2ipk5ZSHFdQCVQuK1+7ill/JTlsFO6DV/mh1moRYIW3tpE26ae7Vh9b+EhBdGVVd2jvDb+sfsJa3e4u7a7ilJ/6Oub4KUDZL+CVy4+SWXSRm0FUcANBUQz0+48sQlFb5Y94xfl3HZl/xx9+qOd9KEdJxcijGD5DyEvN8RKbE6bVAEwdu+mA92Mlh8SykUP1ALecfdzltcf6UPW9zwFzyvxhnmPtMBskPaJmdHDCk9sZOnhg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727009204;
+	cv=none; b=f3ThMqgxaWH81i0l4xrmIxAx11fbNKkJRBgVrTpxMv9gCwXVapL/OFL8vSG7rGv69G98hi/QmZAu0RJApliN8Y4z6IQG6UNPpNpTguNJkyAqa4h3ETDdPGwj0yEGVp10SMIr3OUrUJ1JOVpWW5wRhaYt82/ZEpNkoNws210zGjkgjxUr1ha4/CjMcbUdkxEfDAWGuvTc1jYe+DfUcUVGYrv25mh3dV7CsbPLAaVPNnoQSKzuMe0jBB41rAiDKH21NhmBtrTK/8z2cjkgnxOcA86vYvKdKqh/Pjy/0wlrFjU9olekiSAnhz2YHIaCD+sCUdEyXqolVmagwAs3t/UJGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727003975; c=relaxed/relaxed;
-	bh=0XGOYj44mxYlAIPacdVz2Xqqf2VHJVuoXCavyaxAiLM=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=WXfREKdOz7tR0aIqIh6RFtFwt7oLih90B5SgkSm08DlJhp8ssGjr1IFObIs6lAiAphNdjQdf7Gj4X75pzbarNrNly3G+Zh1tR9kG+xGXQz7soaU7n+KGzb5rkbCvXeeY7lzKWLNyic3RTf1jMR0wq7lO54Ub1Ab8QNZ6vNEj5XrQ7tR/ufiJUJTmnj1M21t7VoHnPtUqmsqYJWW4xKsKjqfxwsPvjcynN9s8Gp3VNAkrbMv3N+YBiF7dZAy9CIHezvqDdDDlU/5hOwAfvbCYnU8cIUXAXsO2P0lZ7XM7DVTVubxnIppMazZGtN7Vlmy3Y5WlRIz2+fGHo3AywjLrqQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gyOIt0A7; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1727009204; c=relaxed/relaxed;
+	bh=1d6ErifsnrSsT38T4JJA8Y82xn33h3c3g8IFMCA75zg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m5ZGJ8B01mVVxkJDjMoG2fyeZz0pScwXgZUbO874mQ8+nav81dYyC2j0CDRAeN83ZjKx54LeoqqRB9LTEki/AzGNrG3S4I2uPfgxQHaLxF4XpYD5lx6gBpYx0ho9omBuZbx+GzND600GMv0YU/0buRaXHvNEr0LNUPcvNdhtLJBfMcn5qzIM/kbQp+P4EzOCi/ehGknf1WZOOfyn5Ioh68qhT9RbgwsZc0li66GrYk2qY6bGbkqJ5uGymIYYXh3H2r1nk1dF8AB5SVEQldVtRhQ8MR/vVuAwjQ72dkuFMbLIqJmpKO/RkU+KiZUW6xyw+QAaT+RmtI3k9q15HfY0Tg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nEJrZ1y1; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gyOIt0A7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nEJrZ1y1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XBNtt2PqWz2xfT
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2024 21:19:32 +1000 (AEST)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-71781f42f75so3323340b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2024 04:19:32 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XBQqS0Kwsz2xfT
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2024 22:46:42 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-2054feabfc3so31216035ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2024 05:46:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727003970; x=1727608770; darn=lists.ozlabs.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0XGOYj44mxYlAIPacdVz2Xqqf2VHJVuoXCavyaxAiLM=;
-        b=gyOIt0A7wlm2CRc/yq7j94JytfQVAoYxprM4tvp8L7IBmu0ZwNbAQju4/msi1QCRQ2
-         qLLJ3vQFUdf1Sfp3MrwVc9tF248bld/XIhmdj7JwYje+npNqouXSwY8RTc9yy25B+IBX
-         YJu7ah52m9Z4IOo97baz6O2tqkt0+02CWAHlw3nmYyBfQwoxXwrxxG+53vzM6E8FTRda
-         LEe7n00DYatGZKy6RWde1WvWNLKp0QA39HRj4o6QBUrCitoD+5M+lB6cco3ym1mHH5+j
-         c2bLiiupu7c3exsEdbBsh84buedqSqODmG8JH1KMwvI6UQqc+syxB73D1lh0+XyZgyDm
-         ywAw==
+        d=gmail.com; s=20230601; t=1727009199; x=1727613999; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1d6ErifsnrSsT38T4JJA8Y82xn33h3c3g8IFMCA75zg=;
+        b=nEJrZ1y1FpAViYl0ws49WbrBB0eun5eqgwroqOZaKMrD3MotvFpHzGZDzqU57LFGwW
+         lonxnKv6VjbsZfsjUqkcBC29VZ6RYMyKeFptYXCybiWWoVgMEpRn/+D60kls21k0Me4E
+         NBYWdzTHvd5VMZX+spgQvUifKbMnvLpKrVfOgskADm4TJAI7m10hb8kPZKsZ9F7LX+8+
+         Iu/trp/RPu3lFjnoz0rFo//kDWaBC71c7kNBJRbz9FoogfgWX33kI34Es+P5RYo9w3UG
+         k7GVp8o9afxT/TRng28Fu3jHMibOLMRQQQmyNWZMhRvm1ltbnLIVbdsO28Fmi5gAJMGU
+         lGLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727003970; x=1727608770;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0XGOYj44mxYlAIPacdVz2Xqqf2VHJVuoXCavyaxAiLM=;
-        b=gPfx9g6ihF7PsNLjIjzCRbtyispr3s5E56OIXLsiLZ7KFE9yxun9AloYMPoQqt9m5A
-         m0qrKVGXhmfZpmNoKCSsFSsE0j7mczmJEM5Xl7Ceo3qWBvqrGVdhYl/hfBLvONn+Gxjm
-         PEecLpBsEWF99zNpdHhWR8oJcI7yJbDfHMIoOETUrWnI62Gv3MtH/F8eWrGEDmAmv0Zc
-         ObHKF/bnWyyJy/LZcqHIdDdS3ZvvpsBSUOydRM0mHoPZO4HekD2JhSMxZoL3iN63uKjk
-         hIAAGym7Xl9I5/ZV/Aew/bKX/T+2T1Se9quzb28e00S6YguQZHbv5mWCQW3UOPe9DZ9C
-         YB2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWJQO4jxohbTcBDMPKhsQluMp2FmYUNFSsBMXgcwwDgkIAmdduHtrARQt+Ty0J9AH0C0pw66UwgG6D6Rv0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwO7/8apjKDuPhfq7f7XZf0ZJyXJYxvFRXKhYFQz5HTeOFGWEWg
-	Zwrbg27SnK894JiUNqKsRD4N6vX8gfFS9CO6tc9V35qgAJFTTsCd
-X-Google-Smtp-Source: AGHT+IEarJPEGCPBYFymlyfwJIi6kol8+OpmLQWTv1Xlfmdw6aA8QyOeHPPTb+TJxBDxV5NMZGWPRg==
-X-Received: by 2002:a05:6a00:4b0c:b0:717:8deb:c195 with SMTP id d2e1a72fcca58-7199ce0c432mr12177581b3a.21.1727003970167;
-        Sun, 22 Sep 2024 04:19:30 -0700 (PDT)
-Received: from dw-tp ([171.76.87.135])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71944a974dcsm12412341b3a.32.2024.09.22.04.19.26
+        d=1e100.net; s=20230601; t=1727009199; x=1727613999;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1d6ErifsnrSsT38T4JJA8Y82xn33h3c3g8IFMCA75zg=;
+        b=Yu6pLFuhAwSVHztnQETYSRS02n4l5NTi1iUiKlUlMlceE7psWlQbIQCznDuVKYVqI3
+         m6BjQ7djMC7PavbRvsdXdICXQr3XqkoRXbxZGnk3knsU1B65fwoFjNYtOFouTlQo414m
+         i4X9uZSz1U8dW1UZHve4nghFQPtTwvt9sSQyvH4S9Nu1ELasHeDY/qKkfVLp3vQX8tnv
+         cCwdQf+psydwimT/q1iPF2WHQRrqpfxbFbKZR1gtcXkJBrtMwnC4a2X6cHTbD6gnwsBm
+         szCZnccOxWfybVdesPK1BvkKl51Mjt98zuO5zI/K/ttUKwEloUuaCOC/k6vV88ZFW2jB
+         q8/w==
+X-Gm-Message-State: AOJu0Ywnt6DXmwuTMc2C1vcQerhsFZpznd235xZf5XAROqViyR0tkF3v
+	VV+ianG+aVgWlEv/7sespoj7UrBKDp3uSzf/N/Kp6hbOC/1kYN+KYzxA0g==
+X-Google-Smtp-Source: AGHT+IEErnc4kiN4jb2LvbdfB67R2vqvkV0zBOBcvy8te6zsBl9Cd9Yo6sEVpe89ph9ouy1i+Tc59Q==
+X-Received: by 2002:a17:902:e5cd:b0:206:9caf:1e09 with SMTP id d9443c01a7336-208d98bd28cmr89162375ad.61.1727009198583;
+        Sun, 22 Sep 2024 05:46:38 -0700 (PDT)
+Received: from dw-tp.. ([171.76.87.135])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207946d19aasm119420975ad.127.2024.09.22.05.46.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 04:19:29 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Luming Yu <luming.yu@shingroup.cn>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, jialong.yang@shingroup.cn, luming.yu@gmail.com
-Cc: Luming Yu <luming.yu@shingroup.cn>
-Subject: Re: [RFC PATCH] powerpc/tlb: enable arch want batched unmap tlb flush
-In-Reply-To: <9BC3D1299ECE8428+20240918092515.2121-2-luming.yu@shingroup.cn>
-Date: Sun, 22 Sep 2024 16:39:53 +0530
-Message-ID: <87frpsymf2.fsf@gmail.com>
-References: <9BC3D1299ECE8428+20240918092515.2121-2-luming.yu@shingroup.cn>
+        Sun, 22 Sep 2024 05:46:36 -0700 (PDT)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [RFC / PoC v1 0/1] powerpc: Add support for batched unmap TLB flush
+Date: Sun, 22 Sep 2024 18:16:23 +0530
+Message-ID: <cover.1727001426.git.ritesh.list@gmail.com>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,83 +82,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Luming Yu <luming.yu@shingroup.cn> writes:
+Hello All,
 
-> From: Yu Luming <luming.yu@gmail.com>
->
-> ppc always do its own tracking for batch tlb. By trivially enabling
-> the ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH in ppc, ppc arch can re-use
-> common code in rmap and reduce overhead and do optimization it could not
-> have without a tlb flushing context at low architecture level.
+This is a quick PoC to add ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH support to
+powerpc for book3s64. The ISA in 6.10 of "Translation Table Update
+Synchronization Requirements" says that the architecture allows for optimizing
+the translation cache invalidation by doing it in bulk later after the PTE
+change has been done.
+That means if we can add ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH support, it will be
+possible to utilize optimizations in reclaim and migrate pages path which can
+defer the tlb invalidations to be done in bulk after all the page unmap
+operations has been completed.
 
-I looked at this patch and other than the compile failure, this patch
-still won't optimize anything. The idea of this config is that we want
-to batch all the tlb flush operation at the end. By returning false from
-should_defer_flush() (in this patch), we are saying we cannot defer
-the flush and hence we do tlb flush in the same context of unmap.
+This a quick PoC for the same. Note that this may not be a complete patch yet,
+TLB on Power is already complex from the hardware side :) and then many
+optimizations done in the software (e.g. exit_lazy_flush_tlb to avoid tlbies).
+But since the current patch looked somewhat sane to me, I wanted to share to get
+an early feedback from people who are well versed with this side of code.
 
-Anyway, I took a quick look at ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
-and I have a quick PoC for the same. I will soon post it.
+Meanwhile I have many TODOs to look into which I am working in parallel for this
+work. Later will also get some benchmarks w.r.t promotion / demotion.
 
--ritesh
+I ran a micro-benchmark which was shared in other commits that adds this
+support on other archs. I can see some good initial improvements.
 
->
-> Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
-> ---
->  arch/powerpc/Kconfig                |  1 +
->  arch/powerpc/include/asm/tlbbatch.h | 30 +++++++++++++++++++++++++++++
->  2 files changed, 31 insertions(+)
->  create mode 100644 arch/powerpc/include/asm/tlbbatch.h
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index e94e7e4bfd40..e6db84dd014a 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -175,6 +175,7 @@ config PPC
->  	select ARCH_WANT_IPC_PARSE_VERSION
->  	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
->  	select ARCH_WANT_LD_ORPHAN_WARN
-> +	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
->  	select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP	if PPC_RADIX_MMU
->  	select ARCH_WANTS_MODULES_DATA_IN_VMALLOC	if PPC_BOOK3S_32 || PPC_8xx
->  	select ARCH_WEAK_RELEASE_ACQUIRE
-> diff --git a/arch/powerpc/include/asm/tlbbatch.h b/arch/powerpc/include/asm/tlbbatch.h
-> new file mode 100644
-> index 000000000000..484628460057
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/tlbbatch.h
-> @@ -0,0 +1,30 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ARCH_PPC_TLBBATCH_H
-> +#define _ARCH_PPC_TLBBATCH_H
-> +
-> +struct arch_tlbflush_unmap_batch {
-> +	/*
-> +         *
-> +	 */
-> +};
-> +
-> +static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
-> +{
-> +}
-> +
-> +static inline void arch_tlbbatch_add_pending(struct arch_tlbflush_unmap_batch *batch,
-> +						struct mm_struct *mm,
-> +						unsigned long uarddr)
-> +{
-> +}
-> +
-> +static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
-> +{
-> +	/*ppc always do tlb flush in batch*/
-> +	return false;
-> +}
-> +
-> +static inline void arch_flush_tlb_batched_pending(struct mm_struct *mm)
-> +{
-> +}
-> +#endif /* _ARCH_PPC_TLBBATCH_H */
-> -- 
-> 2.42.0.windows.2
+without patch (perf report showing 7% in radix__flush_tlb_page_psize, even with
+single thread)
+==================
+root# time ./a.out
+real    0m23.538s
+user    0m0.191s
+sys     0m5.270s
+
+# Overhead  Command  Shared Object               Symbol
+# ........  .......  ..........................  .............................................
+#
+     7.19%  a.out    [kernel.vmlinux]            [k] radix__flush_tlb_page_psize
+     5.63%  a.out    [kernel.vmlinux]            [k] _raw_spin_lock
+     3.21%  a.out    a.out                       [.] main
+     2.93%  a.out    [kernel.vmlinux]            [k] page_counter_cancel
+     2.58%  a.out    [kernel.vmlinux]            [k] page_counter_try_charge
+     2.56%  a.out    [kernel.vmlinux]            [k] _raw_spin_lock_irq
+     2.30%  a.out    [kernel.vmlinux]            [k] try_to_unmap_one
+
+with patch
+============
+root# time ./a.out
+real    0m8.593s
+user    0m0.064s
+sys     0m1.610s
+
+# Overhead  Command  Shared Object               Symbol
+# ........  .......  ..........................  .............................................
+#
+     5.10%  a.out    [kernel.vmlinux]            [k] _raw_spin_lock
+     3.55%  a.out    [kernel.vmlinux]            [k] __mod_memcg_lruvec_state
+     3.13%  a.out    a.out                       [.] main
+     3.00%  a.out    [kernel.vmlinux]            [k] page_counter_try_charge
+     2.62%  a.out    [kernel.vmlinux]            [k] _raw_spin_lock_irq
+     2.58%  a.out    [kernel.vmlinux]            [k] page_counter_cancel
+     2.22%  a.out    [kernel.vmlinux]            [k] try_to_unmap_one
+
+
+<micro-benchmark>
+====================
+#define PAGESIZE 65536
+#define SIZE (1 * 1024 * 1024 * 10)
+int main()
+{
+        volatile unsigned char *p = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
+                                         MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+
+        memset(p, 0x88, SIZE);
+
+        for (int k = 0; k < 10000; k++) {
+                /* swap in */
+                for (int i = 0; i < SIZE; i += PAGESIZE) {
+                        (void)p[i];
+                }
+
+                /* swap out */
+                madvise(p, SIZE, MADV_PAGEOUT);
+        }
+}
+
+
+
+Ritesh Harjani (IBM) (1):
+  powerpc: Add support for batched unmap TLB flush
+
+ arch/powerpc/Kconfig                          |  1 +
+ arch/powerpc/include/asm/book3s/64/tlbflush.h |  5 +++
+ arch/powerpc/include/asm/tlbbatch.h           | 14 ++++++++
+ arch/powerpc/mm/book3s64/radix_tlb.c          | 32 +++++++++++++++++++
+ 4 files changed, 52 insertions(+)
+ create mode 100644 arch/powerpc/include/asm/tlbbatch.h
+
+--
+2.46.0
+
 
