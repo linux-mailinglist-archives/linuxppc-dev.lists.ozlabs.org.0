@@ -1,90 +1,121 @@
-Return-Path: <linuxppc-dev+bounces-1509-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1513-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15D697DCD9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Sep 2024 12:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88EAE97E18F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Sep 2024 14:38:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4X9m1g37fnz2xGs;
-	Sat, 21 Sep 2024 20:38:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XBQfS0xvbz2xjM;
+	Sun, 22 Sep 2024 22:38:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726915095;
-	cv=none; b=ItohModYqjwnt7M+B6ZXQyEX7iPf1faE2706KPcdrdB82suM/uxzvpdFqS4mbFRpVM/ZtgkjZ7uZArgMiQ0e+WKtORjQwm+QVd504AWPvmBMWuXUPggC+qqpmGSWXKmoRj5qBZf1GEgdI6rOoZdfv9cuLRQGaWIUWPaqPmT/+2bMsPnPT27Ue+v8vCr9DmMpgwNDjlJbW2QbVPta7GgJLg80s5FuEZz6zmNp1RzsDesARgENUZ3gyhez1bKSSwdGF/IRL/f5Nk37iBvU3jsF7GAlCCVGsxyAmUmewgGSCQj9JIoWpKr5JmA1UtG9rLlVKHctL+AtDhDWo2Fj34Kvzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1726915095; c=relaxed/relaxed;
-	bh=+KWORPeSJNnYHKPUC/+D2RgrnP4L87qsmYvEGxnGsGI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QtZOK6QQUf0D/BP1VZ7ranZ7EYPNtNL20hHBp1BKdpuvY/z3rhs6AICsTotRO4/bhP2xX2VQaUNcen8Bh1P0w/WhqgAmeDWGiUmE3pmyjY6bdcPf/knsaBObfy1Kstvf0NBZHYnf1SqvX+hhXZWOmevu3goc6V+9Ajldrwp5oHq+n+98x8M/zD23djE5XcMJy/teAB9dvC2ham6gLPIleQzZuI2ZJXJD38QWdOEat5OHWF2S9wB/0tFYlLAUQWdv57lVTIqR5ojDBe2YlLEKAbC8OJl3/GYOIvghEzD8yKlDRZDsZ4w6HvCBheF1m6hcSIC8aGvDcvSBCP4LFLeoug==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Soq95gx9; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=198.175.65.9
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1726966908;
+	cv=fail; b=kqUwuV5jat7fejEp5ktoZajdncvguhQ8XcnY7yoQoWBUMAtnLKpEZqinTzbkBseM7mH3Jn34710Q4YOCvhlR1nUCbbL/oZz5ZjJMJnLH4stM4U9qA7PzzAtrbJ69XMZzze9yo/VkFlf/Q7PoLMQ42O++GYtlQrh4Rxk4XuXtri5k5dlMejIFOVY8dHyEj8c4/T+j0hoCM0U/nVZMWU9PtaIzxWbocdi4VUhBTNhqVkPIPK3R/g37k5+g17yQ/ODiYpOjnwo1Iir16IQrYmh+acEWsaJQNfsJWHuyRLjzmYl2B+wXCX/3lNn4dysKRAzZVkvIF8EPLfafcJlcn9zWtw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1726966908; c=relaxed/relaxed;
+	bh=LRsC191aWeX7WfxUiROMBLasKK+U0tMCg8VlYC5S7ps=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=MgpwOuDdVODvjd47opS+C9CAuyfZTkD16IuJPisR7/OPBuTQKTRv6m8FD0zBawhV0s7APoHOamgNWP2VbGXuFvmJ9IW9A/H3DR/1th1yMhq67UE8UE0jNm0I9eZfGCNs8jhmHKcjiIzXb7dAzGW9RFuwwYtFuH55N+YfwQTddJcDIGXQAsi5GtRGenyTuEt4ke7mbtN5g6WvV8PODIVGJVXe22OzjV3F1V0OIqPJOm0CrR+5cd0pmxGJZAZaet+DOVZ3mi4NWUjjXcQzTUBfO8gryMMNlk0i0+WclSL3dKDlmE9k6W/nKCPlG3GAMrNYXlJuc/eUAZhujagah2426w==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lzz8e6vG; dkim-atps=neutral; spf=pass (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Soq95gx9;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lzz8e6vG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 65 seconds by postgrey-1.37 at boromir; Sun, 22 Sep 2024 11:01:47 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4X9m1f4ppLz2xCp
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Sep 2024 20:38:14 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48L3ZSoH020639;
-	Sat, 21 Sep 2024 10:38:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:content-transfer-encoding
-	:mime-version; s=pp1; bh=+KWORPeSJNnYHKPUC/+D2RgrnP4L87qsmYvEGxn
-	GsGI=; b=Soq95gx9HXNUpxWjJQ/o9OrZ9fG1fJhnN3Erfe3u5zW0//OiKHboscC
-	+gQmt2cijb0qt3c4WDrhvJ09hV2QgpdO7XnwY+nKHE50tZSWyEe1yGPAxlfou/l8
-	Sos7n5Tbgp0SNMHuLxRkECBGvJXL4nq+ovi/6yBRg+y5nEgjhAF3odpC2pxjMMcb
-	9kT/o/6KlPTSmd0r/XW59uFaOjlC6+uaYxSnzZL+qcT0YO10Ij6+tGzg6zjrXomU
-	nXYm3Kkv1Dj8JIz9V0QsAEBKPrZpSAsbeKnxvWlPjcbV9fvf+ubUsOCTIWPyy4jX
-	WkcgnIZnTb6wrzZ+YgVaR3TaUD7Wnqg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41sntvsa7p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 21 Sep 2024 10:37:59 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48LAbwDK030568;
-	Sat, 21 Sep 2024 10:37:58 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41sntvsa7k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 21 Sep 2024 10:37:58 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48L6UbIE030625;
-	Sat, 21 Sep 2024 10:37:57 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41npanv0b3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 21 Sep 2024 10:37:57 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48LAbtkD53543276
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 21 Sep 2024 10:37:55 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 466EF20043;
-	Sat, 21 Sep 2024 10:37:55 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 436A420040;
-	Sat, 21 Sep 2024 10:37:50 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.3.44])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 21 Sep 2024 10:37:49 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: akpm@linux-foundation.org
-Cc: Hari Bathini <hbathini@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, Baoquan he <bhe@redhat.com>,
-        Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
-Subject: [PATCH linux-next v3] kexec/crash: no crash update when kexec in progress
-Date: Sat, 21 Sep 2024 16:07:45 +0530
-Message-ID: <20240921103745.560430-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.46.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: wMAXGuOH2kq_dOGs8E5y7uv0SrYy_m_Z
-X-Proofpoint-GUID: YKaJhgw807CeiwvpUPvZCy5Emqg2xOId
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XB7B30sfPz2xxr
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2024 11:01:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726966907; x=1758502907;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=1iQQwRWO3nZ+RF3m5sZtNGsVNdgcpbuSxyZD7UIuMTE=;
+  b=lzz8e6vG32dGfvxJxtA7+y7P7JCZAVGZGtvnqANZ3jRjqaLBaKGVD2nT
+   qOtIJS2UzP985p9pS++/XYxSCiZmK7AaOs7hZjomMbp1vNWs1kg95igFB
+   9uEyqdzcsJc5Bh9WmPYndvxRv/NVYHuWgi7X1hkDghLwYT4MlD3HmEyZF
+   glOhZbwYOh9UGb8NQtRlvzB4k3tjldX3tSwSMlVTOx0qVyMVc2K33G1yV
+   KDDPmFgySrjUbXf2GjpBBtgVrrCPceRSoMJu0lGh0jxBuNn4wueTqv2Ws
+   KnUiUE+k5ZYd5YJM4VGEJV6GT7Xnxe5myUxnwkaQcnXBXLKnvFA4hL9v2
+   g==;
+X-CSE-ConnectionGUID: R3o+eAcgR1OHA5QFxDnI/A==
+X-CSE-MsgGUID: AwUJHl20QYip0HlXfetmUA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="48465871"
+X-IronPort-AV: E=Sophos;i="6.10,248,1719903600"; 
+   d="scan'208";a="48465871"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2024 18:00:35 -0700
+X-CSE-ConnectionGUID: UBeovkMHSxG6Kdyv5xioZg==
+X-CSE-MsgGUID: Jo2g8gGjTtqyR0STCj72Vw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,248,1719903600"; 
+   d="scan'208";a="75243216"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Sep 2024 18:00:35 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Sat, 21 Sep 2024 18:00:34 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Sat, 21 Sep 2024 18:00:34 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.43) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Sat, 21 Sep 2024 18:00:34 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Alw8f1yyMijLedgPhTsyUDZ+px3vu9Oow+nnjsrADzebJF8z4Ss/h6fJYxIxC3kskWvb5PdZWQY9cSxOVkkohUOgX6xy3iRQiuZF5WWZafolBZXAXYgUoedDz9RzUHVP3AJgDqKlBDo1VjWaiFThBiTR/4y/YQfmLED30eZkXlRz1GHB9gSYiJq66JIWGa3sru655I30Du215xRp525QdxClTdGblNeiSE6lktvsGPRz/UT6pzgt2Xr3yniFH7zl78sn5JVyblPnUeaOjT0mzJUaX65iDoBBB/VkwL9KYNrt/1mZfBCnky7ovgtDElNwhfLvJhx2sCsRmt+gWFsHvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LRsC191aWeX7WfxUiROMBLasKK+U0tMCg8VlYC5S7ps=;
+ b=SRFSyBIodMntQAWjElSdbB0ZKnku1RFyCrr1Xdifpb9IXG3odNM4wPuQN7p6ho/RDAXQo1Mqk0GdAWD5Lz+7lIlSae8wlRGV3kLmAUlIrFaSGi9srL4Rhi3BdGhvHc/oDiV3T846dZlM1BXnDq18+wkGZou0iLZY9E7+6c04H3C2NdxK8LpryxBxx/d94FPgko/sc+bqyltk+iqCe/7bzjhkdIbLuqdXsdiDjsSY1k3hqF+80GVeZx6JaVbBEtPUzKKNApVGWgG55NypAKZvSQB+vwBcTAoc6KZa0LrhBqPeqceUjtNZLgZmkj8Sp6hMRDMjWOoeu00di3oXKTC8kQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DM3PR11MB8684.namprd11.prod.outlook.com (2603:10b6:0:4a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.24; Sun, 22 Sep
+ 2024 01:00:32 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%7]) with mapi id 15.20.7962.027; Sun, 22 Sep 2024
+ 01:00:31 +0000
+Date: Sun, 22 Sep 2024 03:00:27 +0200
+From: Dan Williams <dan.j.williams@intel.com>
+To: Alistair Popple <apopple@nvidia.com>, <dan.j.williams@intel.com>,
+	<linux-mm@kvack.org>
+CC: Alistair Popple <apopple@nvidia.com>, <vishal.l.verma@intel.com>,
+	<dave.jiang@intel.com>, <logang@deltatee.com>, <bhelgaas@google.com>,
+	<jack@suse.cz>, <jgg@ziepe.ca>, <catalin.marinas@arm.com>, <will@kernel.org>,
+	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <dave.hansen@linux.intel.com>,
+	<ira.weiny@intel.com>, <willy@infradead.org>, <djwong@kernel.org>,
+	<tytso@mit.edu>, <linmiaohe@huawei.com>, <david@redhat.com>,
+	<peterx@redhat.com>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <nvdimm@lists.linux.dev>,
+	<linux-cxl@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-ext4@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
+	<jhubbard@nvidia.com>, <hch@lst.de>, <david@fromorbit.com>, Jason Gunthorpe
+	<jgg@nvidia.com>
+Subject: Re: [PATCH 01/12] mm/gup.c: Remove redundant check for PCI P2PDMA
+ page
+Message-ID: <66ef6c2bb7f9_edc02946b@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <cover.9f0e45d52f5cff58807831b6b867084d0b14b61c.1725941415.git-series.apopple@nvidia.com>
+ <2ebba7a606ef78084d6c8869dc18580c56de810f.1725941415.git-series.apopple@nvidia.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <2ebba7a606ef78084d6c8869dc18580c56de810f.1725941415.git-series.apopple@nvidia.com>
+X-ClientProxiedBy: MW4PR03CA0247.namprd03.prod.outlook.com
+ (2603:10b6:303:b4::12) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,99 +125,103 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-21_05,2024-09-19_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409210078
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM3PR11MB8684:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7174a89b-836b-45c7-90ff-08dcdaa1f506
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?nusA1ho/HWWWNsKZ6EOnrQwETitYJOgk4namvewBCjpTsvDa/SNOaMom0JnT?=
+ =?us-ascii?Q?IsQ+VIErMLqMI9PbaUpBL1YBuRbmsw+IcXg087x198jh/lRgTjYQm//x9Qgr?=
+ =?us-ascii?Q?/Y4vClPg1Dp+Oa9dbCU0j8JTJAJ5JfW/7ANRrcSszD6rTfKlUwykWB8BJiqj?=
+ =?us-ascii?Q?RZOYrL8KuLXJAmCGkr3ENu59y9YoxmciVdpkRi0VqCOhOYZVd6eeYz80fgv2?=
+ =?us-ascii?Q?QO7X0vl6V7x3DcbLAcwlfPxRN+DftOjFE7y0Ns9N2iV23+6V204BsguHWoeD?=
+ =?us-ascii?Q?juBHPEqmQlE1PpPoLUl/u0KgWUj9GOkCnFSDpjJDKknGm4Sl95XMU2pIRUc/?=
+ =?us-ascii?Q?h0m/YCYXt8b4i8kpVYVCLh8R1chwLSUhQj3Wonx29OvXNeu1gHjfrAspN/AO?=
+ =?us-ascii?Q?oS6P8gezOf9TfK1uNCBhIOaks9WVIWYlC570tsKLxhDRcAMs6x1FNdOfF3Af?=
+ =?us-ascii?Q?NvTs6s3VhCTgbv5HYCcR2IqOeOBHs8HRVA4dXO8IpYVaU2mqZ+B6od4V8Mgp?=
+ =?us-ascii?Q?+ah80J6gkejwcifecuoT6eaZXkbMVzJolm+WTcNI+xjRP2LxC8DtLflg2QRY?=
+ =?us-ascii?Q?EePWQYVQJf4TZwnN/AOb4mA3avfZirn3ZmRq0ZGv9CuB4rOok5hvMcVsej7d?=
+ =?us-ascii?Q?PFy2zH55fcm0I4uTzuUpV6msdZPlYMyH6c3ABq8R5g+qy0keCSE+Ny3I+T8c?=
+ =?us-ascii?Q?YuiaJBiq48khL3TrTMHnIIMZrzm3pAPOjlbyV8V2ODdini37iKnzXq6NWdzO?=
+ =?us-ascii?Q?23Abd9Q9Gq8Xd7qc8QT6iyfs9A+3Vgr4oZSef+vyk90tggBW/nSHKGsGnO2U?=
+ =?us-ascii?Q?27QWqDWIiMdK15b1IWMueb4gW6hF+xPfjT3iDR+r9XJThx0GnOgVGoSpiD3z?=
+ =?us-ascii?Q?fLXaC45bm9DzKf5JILltFSsAPj9qxWPhrA6Mt4OMwIjGiU1rqxYHQm+8e3/G?=
+ =?us-ascii?Q?tq9K7a+Jxet0GSxgrrttQ7o7CwhVWyJ8CvWI6SDSh707khTvkkMb/xXvgAP1?=
+ =?us-ascii?Q?L/wuCQ/XZXXRP/CR5hhzWvbOs4B3AQ5saY4qFEuRSikNL67PHguI+ZD+1vXE?=
+ =?us-ascii?Q?JW3exM8Cxfc4RdmdV170v/wjaP4YHu8mKu3hoA2VWrUIBgx/xEx5qZ8PoiYS?=
+ =?us-ascii?Q?sKT28ihzxpFwZ0A2ZunRWtg7IWDt0q049IywBKzmCc7Ujy6hijbZJQ3+FI/K?=
+ =?us-ascii?Q?9b/jDHpCODj0y1MTqgUqBnx6eKEhd2bVM0XI5Wk3ztrLF+SgFvhXT7LKSssr?=
+ =?us-ascii?Q?suTYxc+1OD+aEahTtHcx0e5Yt/N0Kg29qFQt31ub1DfZmDAfXzwgrptXlGa7?=
+ =?us-ascii?Q?xZgACt0B8+gi89NIc+5XjrQW2KqkLfisEnZhIZ3XIP62CA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+Yh5e9WxUZwbt0TC2PFjTU2fceJmZCVsnbn3PsoDX8/PSRVX+Q/cRa9YTroj?=
+ =?us-ascii?Q?QbxF/womFGyXel4ODiTh6o09MoWU0XUPBg60ilzIN94EH5b9lofa+K+VhHpc?=
+ =?us-ascii?Q?O4GmSZpm9Jav7+hTT4o8ap3lMbQ4RftulmRax0b3wKVWYwYl3vmAPJMG+MtH?=
+ =?us-ascii?Q?OZRVyOfRNhtfyBiPm/7NocbavQPP8CWrZv4LU8P17BCfjLoRAr/8Mmh64JFo?=
+ =?us-ascii?Q?qsvVFxgkwSc+zmr6vqgK3J6/+vIPKz0OwbCOQjD/Z6IOfHcqgszIS3DeYMjl?=
+ =?us-ascii?Q?pLNUrg/c/BxD8G6d48wyywSHxwv0WJbweGZsYuNQL10j9U8bN3N4blOedl89?=
+ =?us-ascii?Q?efcay/IYDEbDBmaOMkg9V8q01JTmWJyA32Jn6cJwygBWRXwwgDvQ/xpjSilY?=
+ =?us-ascii?Q?QaGtjt+RzrUcBgk1gc0Gs4ZMNrJ4RmGxd9WcyzXZ05OmIDHCoTrxcw3ISJZx?=
+ =?us-ascii?Q?Kezowa4/tPY+vH7VNh8n3Hp+I6/8fP1QouPSyncp9Jha/rGo6V8E/iZo8Jrh?=
+ =?us-ascii?Q?RFqwEZYZqYKNGAXebGHmhewzhA1OTK1n8n6sW19p9WBG37EIf3YT1f25iv3p?=
+ =?us-ascii?Q?QdoY8bafd7fa4tUeYBCEMMLnwRbCzOwG5YXdUW/8lOEP10Eo8dE9TZ/CLYIA?=
+ =?us-ascii?Q?fwmKOf/yUm9Q30YHTAvhNRjUSc+kTfl4OmpROjzgbMV4JQu+GKkNO3UwzCy9?=
+ =?us-ascii?Q?hee/r/QFWlVxchtkcyxj+JOAyXB+uBzV91jmm6rRAyWrBboCkTKc7NliYxP5?=
+ =?us-ascii?Q?I2hsWINBaljU6UXEkiZBvF9SLAIsyEv7IRxnulC1Glxj/BUtvD1Pejks8HlZ?=
+ =?us-ascii?Q?Lq4WOFIUyWrfAXlUdQ2GwXeHsARoOWzVehK1Xigt+UdhJZ/HUYvlji5CpPyO?=
+ =?us-ascii?Q?2QI82UCeE/i8eZMvnUXGeIYjhACMclLrycW1II9/wxmtvegfvAbcnA6pFDL9?=
+ =?us-ascii?Q?JZiGrNUF4CHIezLRsayMaRaYHBW/wq3Q/4TxHnGE/ex5pEh6+HkxkJG1eBfd?=
+ =?us-ascii?Q?Le6gegbG60ZPdCvkthWRlkda3WydS5tArMXBVtbjzXfm2rC6/JwCqIyvTh4O?=
+ =?us-ascii?Q?e5aW+nnEjUwgGqMxEW8jfceolHmF48ZE4BGbTy9sFyMEv1wq2Zj/9Z0xITi2?=
+ =?us-ascii?Q?mOAKV6OjWRdQusDv+yRC05xGyNvHRghNECOJrbfgKww0CW0nzSvCRNa7HSCN?=
+ =?us-ascii?Q?Egsb5O5kExffBtC8XRKgNtXOB6YWlwl/zSTRTwFFkt2lRjI62XEtb+ZFZ1CC?=
+ =?us-ascii?Q?BsPGgM5LQGKWPzNCZtWhYRPBKa1ZlHv0zsu0SJ9Bl3txOyTn3HPoJYRzc8tk?=
+ =?us-ascii?Q?np46yEG79VNWi8IIn57hGv/sQOBKXRtui/Kr+uj2djy/gM7GSIRsjJ29tzH/?=
+ =?us-ascii?Q?Bmf5BffcTj9dNIt83ZhGMXAa5WBf1whOt74BdjIsFVtjjvIZ8MxnaKcVAgdH?=
+ =?us-ascii?Q?Nz6/4wuHt9aIkBYIEm13wJUtPSR9yqIhH4TAKU9XTMxld/N53vbtfNMkBaKJ?=
+ =?us-ascii?Q?UOQHpr3ffw/1uDWcJL328ghwHj1BHAi+TvBoiV1bWRhBnBV3/YkC6VnYZY1Z?=
+ =?us-ascii?Q?P6g6ywibh6Sd7b/byd/VYbzYd8fwpev2qoCb1eWLD2Mu3F/f1rqLNyk/aWxH?=
+ =?us-ascii?Q?fQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7174a89b-836b-45c7-90ff-08dcdaa1f506
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2024 01:00:31.7353
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pvfpW0wuLZEaH67JetQFo+q0vjy/+l+TU4ALS5Lh/dtQ5cq2iDDwVBW2+tpxWye54q357NY95QLBpBD8PFh0qoKLj/DO1b/XCF+NQDPWllU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR11MB8684
+X-OriginatorOrg: intel.com
 
-The following errors are observed when kexec is done with SMT=off on
-powerpc.
+Alistair Popple wrote:
+> PCI P2PDMA pages are not mapped with pXX_devmap PTEs therefore the
+> check in __gup_device_huge() is redundant. Remove it
+> 
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> ---
+>  mm/gup.c | 5 -----
+>  1 file changed, 5 deletions(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index d19884e..5d2fc9a 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -2954,11 +2954,6 @@ static int gup_fast_devmap_leaf(unsigned long pfn, unsigned long addr,
+>  			break;
+>  		}
+>  
+> -		if (!(flags & FOLL_PCI_P2PDMA) && is_pci_p2pdma_page(page)) {
+> -			gup_fast_undo_dev_pagemap(nr, nr_start, flags, pages);
+> -			break;
+> -		}
+> -
 
-[  358.458385] Removing IBM Power 842 compression device
-[  374.795734] kexec_core: Starting new kernel
-[  374.795748] kexec: Waking offline cpu 1.
-[  374.875695] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
-[  374.935833] kexec: Waking offline cpu 2.
-[  375.015664] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
-snip..
-[  375.515823] kexec: Waking offline cpu 6.
-[  375.635667] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
-[  375.695836] kexec: Waking offline cpu 7.
+Looks good.
 
-To avoid kexec kernel boot failure on PowerPC, all the present CPUs that
-are offline are brought online during kexec. For more information, refer
-to commit e8e5c2155b00 ("powerpc/kexec: Fix orphaned offline CPUs across
-kexec"). Bringing the CPUs online triggers the crash hotplug handler,
-crash_handle_hotplug_event(), to update the kdump image. Since the
-system is on the kexec kernel boot path and the kexec lock is held, the
-crash_handle_hotplug_event() function fails to acquire the same lock to
-update the kdump image, resulting in the error messages mentioned above.
-
-To fix this, return from crash_handle_hotplug_event() without printing
-the error message if kexec is in progress.
-
-The same applies to the crash_check_hotplug_support() function. Return
-0 if kexec is in progress because kernel is not in a position to update
-the kdump image.
-
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: kexec@lists.infradead.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org
-Cc: x86@kernel.org
-Acked-by: Baoquan he <bhe@redhat.com>
-Reported-by: Sachin P Bappalige <sachinpb@linux.vnet.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
-Changelog:
-
-Since v1:
- - Keep the kexec_in_progress check within kexec_trylock() - Baoquan He
- - Include the reason why PowerPC brings offline CPUs online
-   during the kexec kernel boot path - Baoquan He
- - Rebased on top of #next-20240910 to avoid conflict with the patch below
-   https://lore.kernel.org/all/20240812041651.703156-1-sourabhjain@linux.ibm.com/T/#u
-
-V2 RESEND: https://lore.kernel.org/all/20240911112111.108056-1-sourabhjain@linux.ibm.com/
- - Update linuxppc-dev mailing list address
-
-Since v2:
- - Rebased it on top of #next-20240920
-
----
- kernel/crash_core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-index c1048893f4b6..078fe5bc5a74 100644
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -505,7 +505,8 @@ int crash_check_hotplug_support(void)
- 	crash_hotplug_lock();
- 	/* Obtain lock while reading crash information */
- 	if (!kexec_trylock()) {
--		pr_info("kexec_trylock() failed, kdump image may be inaccurate\n");
-+		if (!kexec_in_progress)
-+			pr_info("kexec_trylock() failed, kdump image may be inaccurate\n");
- 		crash_hotplug_unlock();
- 		return 0;
- 	}
-@@ -547,7 +548,8 @@ static void crash_handle_hotplug_event(unsigned int hp_action, unsigned int cpu,
- 	crash_hotplug_lock();
- 	/* Obtain lock while changing crash information */
- 	if (!kexec_trylock()) {
--		pr_info("kexec_trylock() failed, kdump image may be inaccurate\n");
-+		if (!kexec_in_progress)
-+			pr_info("kexec_trylock() failed, kdump image may be inaccurate\n");
- 		crash_hotplug_unlock();
- 		return;
- 	}
--- 
-2.46.0
-
+Reviewed-by: Dan Wiliams <dan.j.williams@intel.com>
 
