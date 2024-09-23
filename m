@@ -1,73 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-1524-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1525-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE36397E598
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2024 07:20:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE0F97E5A7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2024 07:37:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XBrtT3HDNz2yNs;
-	Mon, 23 Sep 2024 15:20:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XBsFC6m4Hz2yPM;
+	Mon, 23 Sep 2024 15:37:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::436"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727068849;
-	cv=none; b=PHZ8g8uhy/GFCmPS6+6fTNKcFUu4iB8DN0ZC+H76viS1n15Ce2tpSZ9TGa5byGdKXf8+tg//rJrYWEp/fcOMvhZ+SzCKuvUDkxtl7TnkyfFzbbfsY9rFVwQ7uy4z1l5uw3S7sg3hFozBYJGaHNwP7tPeDmG5pVw5kX1FMVUa/oBsQx7y9+CwmstROFYfQG12MypJgiV6wqOmntGvYDH+pS+B/2EYPHbQJrW3CZ+0yxl3FUuJr5eXTnw74I0KyNoNE4NUQI2E8B0lSASyBma1/QNKc86KAqPhtDzYpNwh/pHxyCSk1t01gzg17hQuf5+0LjueBCNtvdwf5zZ67D4TfA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727069823;
+	cv=none; b=K8Lob7+iwLBrl9OllAhY8ik0gNWEtEbM1j9YKuz3qBr9Gyd9NAXxhO2peUW++1Ng1AajUQ/wL6t1e7K0y/R8To2OmP+jpDIoJ/35a8kPA/cBbzezR9KtA7yTFcjET7fxrPdwPn4aCBrf0ifCjSXQ216yo4buytFKOK4Ja8e8kQ9GtefJB3TvBCf9ZIjgTwRcm9Kyyx9JyJ0Ua0K9YFekggHW3ba73uCZvbBweW+w+B/Bu95OIqTi5K3S9J6YMyNudYfdfAqdnxnmUYDXm+xeyJziTn06Scy2dImMBTa/macA/V+JTzl4dGMneADae5Mz/IdHgrlmhKo26VIuxIvE8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727068849; c=relaxed/relaxed;
-	bh=x7Q3h2SawaWR+sw9PYfDN+KcfCiaOHpGieRaMWQOs6Y=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=NgwII/i8ApDFMp3VKWvGxnntAOrPh24GUbUSLOY0mrp7Ke0b89wKiSf2TeIMBPJBu6Yp9bVD6a9bXvqAO39VYVJ0xbhJLHYjnSzNXlIrdLrNQtJsbeVZ7YH3HycgYdCbo3TraIC/W7Z8jKvzNg2aR5MUc5ZPp9Chh+yzrmBzdegawO7B4k9Hn8IXfUgHbnzqRFq6VG2V0OAZK1RdghAVM4mox4t1EC4Km7b5bwUEUvXRiWJ4NbVSrcRNaWPuE3IFVCaPIH/0PRtpMgxbB8RRTfGDRMAT/4AkJU7ScKpWBXfSKgV9yxHKDy5kFl1Xw7VFR7x6qs7PsukOLdKbdjCSIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KXqayR7w; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1727069823; c=relaxed/relaxed;
+	bh=e6xPyTGaCARr9kHdRBWXY1Z266siIPfCD8X32fMOBgk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=aGihryqC3DMcOSm9aRb6joPoGTgvVd1Ie8HT5mhSMbqrYuSITXYeGsZfHPDsxhr+hlAzHQA1OyctnEJ+qskPUE0e5yl+ZkiCPxy/noOaTsn8XqbYAfTBpLN8MvBT0A9c2qW8H1gR7ITcY6Bi7H1v/swnJWYXO6kJ2/T8bKW4r6bk7PZOKgb7veihA62GojMB4PIAFf7P0pziC1/LJTWAqW2TWz+y/VRTzRKqQuEJawu+gYu9iS8LN5r/8rOl6n+HiFoKb61Moy1Olmp4mCizn1A3xCHx/YsRHCeW9rBKtwMW5GwFi9sRTPWy152jK6tbzDd1KJY1pGQW1Hj1hjoiGw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZLPSa//g; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KXqayR7w;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZLPSa//g;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XBrtS5cHZz2yNj
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2024 15:20:48 +1000 (AEST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-71923d87be4so2880534b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Sep 2024 22:20:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727068846; x=1727673646; darn=lists.ozlabs.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=x7Q3h2SawaWR+sw9PYfDN+KcfCiaOHpGieRaMWQOs6Y=;
-        b=KXqayR7wtxTS4cp50zbtednVkuR1Gq2TonYgeJhr5e+p5Si7bg4p2MbuWTXr92A09f
-         QKzMoRa/aZEDgVMKsEFi1gA1b3oJkpOQFzSUHdO/RzibfBVRPm3rV5ZJtl2/oGWR2/C6
-         g74mT3O0PSqzu0UIOMXrp96TKQzDILhC2Ufvka92OMlVhpn3ri0EzjG1vo2wvIeOh1pU
-         WQWKBYDcxQAh9GgsW/NiScX1rbfkXb/WmRB1ECn8gyi+XVTXufRPiWs7V55T0FNz89FF
-         rn9e2g2vrYiyHybqt/25jyUYzPif7BZSVW/nZeTxhQfA2sZUisPYjKaB52etYQ654f6m
-         OFoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727068846; x=1727673646;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x7Q3h2SawaWR+sw9PYfDN+KcfCiaOHpGieRaMWQOs6Y=;
-        b=aqrmVYDYUkDmKYPGrfAOTLLP2KGGgJYjDpjGLHY5RdEf7dWRa/sheaBdxaizgDPPWv
-         sVFFLSDjnGR4Tv1ErwsscMsG4+cWw4yMn774ntNmiS3Sy/llO4mbkvHb0rU80ZSOZeh4
-         xP0tcC6MKflzXkfAyZ6qz/ShY9wxDO7IAf4F2kYa7+MQwWpumV0Z2nqdIKXaURFdjBON
-         COURXIbaB5VzDbZKOxxZ50H9FQil67olrcQbzP9hwkAlEqMYq4a/bLiUySaXVQw4G8n6
-         XECrAwl0u6n0O/fKVAlz/15Bj4U5hcyvZMlSp6nH9FrR+zrEn9ehCdCtKcvtW43bva65
-         gLxA==
-X-Gm-Message-State: AOJu0YzHjFBwynVWNkjcwtGnb17vuLjP5a64rqGrqT2PnnlVDsqOmK6f
-	OJQ14PqSeLAzlk1I9ghRSMgH62m5mMl5v5wNFSvc676FwFDOkCdwCnja07Zg
-X-Google-Smtp-Source: AGHT+IEgJn9OKt3pC4i9q2cvQwxoJM+LLyrR6saLnYmaNWreDtyQQqIFXVH8bK0Oqh4X2XHXoQur6A==
-X-Received: by 2002:a05:6a00:1ad3:b0:717:8b4e:98b6 with SMTP id d2e1a72fcca58-7199c9f0bddmr15013739b3a.21.1727068845770;
-        Sun, 22 Sep 2024 22:20:45 -0700 (PDT)
-Received: from dw-tp ([129.41.58.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71944a9707dsm13148165b3a.38.2024.09.22.22.20.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 22:20:45 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Luming Yu <luming.yu@shingroup.cn>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, jialong.yang@shingroup.cn, luming.yu@gmail.com
-Subject: Re: [RFC PATCH] powerpc/tlb: enable arch want batched unmap tlb flush
-In-Reply-To: <3A7F514D32DFA545+ZvDZF58z6KTRqRjG@HX09040029.powercore.com.cn>
-Date: Mon, 23 Sep 2024 10:48:11 +0530
-Message-ID: <87ed5bymlo.fsf@gmail.com>
-References: <9BC3D1299ECE8428+20240918092515.2121-2-luming.yu@shingroup.cn> <87frpsymf2.fsf@gmail.com> <3A7F514D32DFA545+ZvDZF58z6KTRqRjG@HX09040029.powercore.com.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XBsFC3QZVz2yNJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2024 15:37:02 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48N2dGBT001531;
+	Mon, 23 Sep 2024 05:36:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	e6xPyTGaCARr9kHdRBWXY1Z266siIPfCD8X32fMOBgk=; b=ZLPSa//gxK6eokjQ
+	2VIbkMX+k5zxZ1SDEpg1+f2AVpNKjPx1bXlbKlYZgu5UAuEb+AQRACfVHalQvcEx
+	3bd+ol2VC7FE+P2FwO6LiTvNl2Aur4ZmthqyDTVYG980lx08IlTsMn2Yk0zFTqbG
+	72u6VfxZwhUzzQzbSuF+Zq+M5NJeCiVAMjwX2/WM2u1npnmSM27Bs9hg6dZSL1uI
+	FXCJn/NhnWwexIlMGja4eFhCLI0Fx3d74XMzRGqfdnpR3nsB1Y2XHxWPY1AVOXcs
+	rnU+7Z5zvavmRKSUDhyG0vHOEyxYU0G8R6hT3d2l+aMHFXe1G/eD0YIxjxcnoFT9
+	1D4WKg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41snna1qwy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Sep 2024 05:36:49 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48N0daXU020846;
+	Mon, 23 Sep 2024 05:36:48 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41tb62vb6w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Sep 2024 05:36:48 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48N5alGB28508748
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Sep 2024 05:36:47 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6583858052;
+	Mon, 23 Sep 2024 05:36:47 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 28EF358065;
+	Mon, 23 Sep 2024 05:36:45 +0000 (GMT)
+Received: from [9.61.252.168] (unknown [9.61.252.168])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Sep 2024 05:36:44 +0000 (GMT)
+Message-ID: <03a55b4b-eb45-4187-9de6-ef06f8176d05@linux.vnet.ibm.com>
+Date: Mon, 23 Sep 2024 11:06:43 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Bug][Git-Bisect][6.11.0-next-20240917]BUG: Unable to handle
+ kernel data access on read at 0xc00c020000013d88
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        akpm@linux-foundation.org, minchan@kernel.org, terrelln@fb.com,
+        sfr@canb.auug.org.au
+References: <57130e48-dbb6-4047-a8c7-ebf5aaea93f4@linux.vnet.ibm.com>
+ <20240923021557.GA38742@google.com>
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+In-Reply-To: <20240923021557.GA38742@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: j_6Ip9-DdyJmOeFLwhwqwk8BF74tf54h
+X-Proofpoint-ORIG-GUID: j_6Ip9-DdyJmOeFLwhwqwk8BF74tf54h
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,39 +92,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-23_02,2024-09-19_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ mlxscore=0 mlxlogscore=858 spamscore=0 impostorscore=0 priorityscore=1501
+ phishscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409230037
 
-Luming Yu <luming.yu@shingroup.cn> writes:
+Hello,
 
-> On Sun, Sep 22, 2024 at 04:39:53PM +0530, Ritesh Harjani wrote:
->> Luming Yu <luming.yu@shingroup.cn> writes:
->> 
->> > From: Yu Luming <luming.yu@gmail.com>
->> >
->> > ppc always do its own tracking for batch tlb. By trivially enabling
->> > the ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH in ppc, ppc arch can re-use
->> > common code in rmap and reduce overhead and do optimization it could not
->> > have without a tlb flushing context at low architecture level.
->> 
->> I looked at this patch and other than the compile failure, this patch
->> still won't optimize anything. The idea of this config is that we want
->> to batch all the tlb flush operation at the end. By returning false from
->> should_defer_flush() (in this patch), we are saying we cannot defer
->> the flush and hence we do tlb flush in the same context of unmap.
-> not exactly, as false return implies, we currently do nothing but relying on
-> book3S_64's tlb batch implementation which contains a bit of defer optimization
-> that we need to use a real benchmark to do some performance characterization.
+
+Below is the TC, I was running.
+
+
+https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/generic/ltp.py
+
+Regards,
+
+Venkat.
+
+On 23/09/24 7:45 am, Sergey Senozhatsky wrote:
+> Hi,
 >
-> And I need to get my test bed ready for patch testing first. So I have to
-> defer the real optimization in this area.
->> 
->> Anyway, I took a quick look at ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
->> and I have a quick PoC for the same. I will soon post it.
-> thanks for picking up the barton for the future collaboration on the
-> potential common performance benefits among us for powerpc arch.
-
-Sure Thanks, Luming. 
-I have posted this work here [1].
-
-[1]: https://lore.kernel.org/linuxppc-dev/cover.1727001426.git.ritesh.list@gmail.com/
--ritesh
+> On (24/09/22 22:23), Venkat Rao Bagalkote wrote:
+>> Greetings!!!
+>>
+>> I am observing Kernel OOPs on PowerPC system, while running LTP Test case.
+>>
+>> [11472.962838] BUG: Unable to handle kernel data access on read at
+>> 0xc00c020000013d88
+>> [11472.962846] Faulting instruction address: 0xc00000000055e2c0
+> [..]
+>> [11472.963005] NIP [c00000000055e2c0] kfree+0x60/0x468
+>> [11472.963013] LR [c008000004e02838] zram_destroy_comps+0x5c/0xa4 [zram]
+>> [11472.963020] Call Trace:
+>> [11472.963023] [c0000005da817b30] [c00000051f580440] 0xc00000051f580440
+>> (unreliable)
+>> [11472.963028] [c0000005da817ba0] [c008000004e02838]
+>> zram_destroy_comps+0x5c/0xa4 [zram]
+>> [11472.963034] [c0000005da817bd0] [c008000004e02d24]
+>> zram_reset_device+0x178/0x250 [zram]
+>> [11472.963040] [c0000005da817c20] [c008000004e031e0] reset_store+0xd0/0x174
+>> [zram]
+>> [11472.963046] [c0000005da817c80] [c000000000a85874]
+>> dev_attr_store+0x34/0x50
+>> [11472.963052] [c0000005da817ca0] [c00000000070e7a4]
+>> sysfs_kf_write+0x64/0x78
+>> [11472.963060] [c0000005da817cc0] [c00000000070d2a8]
+>> kernfs_fop_write_iter+0x1b0/0x290
+>> [11472.963066] [c0000005da817d10] [c000000000604868] vfs_write+0x38c/0x488
+>> [11472.963071] [c0000005da817dc0] [c000000000604c98] ksys_write+0x84/0x140
+> Can you post the script that you run?
 
