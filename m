@@ -1,81 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-1530-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1532-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE1597EC4D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2024 15:31:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16FC97EDD7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2024 17:13:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XC3mC3YnDz2yGd;
-	Mon, 23 Sep 2024 23:31:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XC61v3bF1z2xk7;
+	Tue, 24 Sep 2024 01:13:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727098267;
-	cv=none; b=RAhlSRtiRNfw5xq/N2uO5NG7KBplF1Pb/XjBweimcZmINj9adT4g8cCDi+O1UVFSeWo7DBcghiaS0/stOoExtYs16Qq1H7v2TcwxShBmDR+DpIUclcN/l96VdUitNp0yuxw/qNEstMFb4eLb8vfoKb/7QL21qIKCQEILfWq4SKZYVm1emP8vMPWtxrwctlduI9hnr8hwp9ekufE8zEyjtmAGCQnRHlU2xHkng1OLgAAQJ0Pui8yylTQR9Sv0IkaOUaOM8Qd1eQ87ZO9BHL+tBS0t8q3E/KRZQ59NHN5EmnuzthvA7uiS9iuoUGIdgKRjHG8/WxTSvK04b8tvW3Mz0A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727104387;
+	cv=none; b=I94HAm6dW47BRVjXxcI0Ew7kq+4rXCIE8XxG6z9F1kgcx+SUlMpe0USZNgd/+IBs6c1SjbmBMooFAhjOXqamLxDkjJ3GeL4PkYKS1my/C7pWN0N25MKLIZnKGp1XXgNkPGcpGqj2Oijoq5yTWCy531n9MHwvHl4sslpaex+/YnUOn5SUQoPiIeGkLVQmdRxjr/cPYWxmxfOVVxDTaLJZZKjSI9b7cy59M8io720v9MNzVGJ33Vb3j5zGFezf6W7j9KGWoHR04INuDstMHujy07L2FitJ1+whN1HKy5X+0yuchFdm0tujW+uaW6+XZdNQ54ddsEPfHTcPCXGHRAiAXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727098267; c=relaxed/relaxed;
-	bh=u7k5SwI6chCIksCZz8Hi2DUWn3zMg3MUHqjtPjnnnwI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjaLiQvweG+YkJqn78SaaETnNNR9d0jcZlCmSYA72mMFJJ2leJgQvGX1ubfxoG3HdRaOJTqedfpWxjm3e23w4/RdKlbNSOuYJgctvOfr1JPEwHbUjR7XF5Z3v7hc3zAQKpVjF/1ObDdiicAYMKb6yEoPIvG6G4pfFMfBqkBf9b4o3/bTAULBd7UVgmVcbQgG1IT9lXniNGEu4IuqxmoPCUEbqmMi43vuSnXs0IS3ikZ8+WF02c5BOScFyFnGrG7uVOpnFO7vYP7/ctIeVBBXq4T+3XyzRMLjVbyBVQ1aw6oEOCotD7gyWNoGT1hoPkvBY8UNo66NnZsKoH4cPh+juw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hg9wFZ6R; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1727104387; c=relaxed/relaxed;
+	bh=elBGvOspzH3iGmK1fYd/bVgzyP8I6OQGyztmlAKbFJU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nIB4JOkVVLsyY3edUh9GC/YDlc5j0rELxHBe5O2pMXaWL9D9ILt5mwurUHQEXGWgKyqciSwJhmbd76dciJ5Efu0pgArHo+uW8l9CaK3ryFqD5N/NSlziiyEp+NwDvh5K8c+AMa+pPl0+/rtI+9SVStVPQYwonAYaYGOwEzLHlaCK1kyiKE9r5ywTieSJ5eDHJYEBxSRWF9n45xAQ9Dx1i3enuXbVEOXZpe3e3r5cVhqBDI2bhsqZQFZjZ9sxhUuDUHCECfWLfrih5FFTXRQDtLMNIHhUJll7iTLl5ktfw+7qzkT/fta6bLSiE8TNpxTEY2OOGTyZh1SFUE/vsuvLgQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=PBfKNMCo; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Ncg/SvYz; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hg9wFZ6R;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=PBfKNMCo;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Ncg/SvYz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XC3mC14Sfz2xk7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2024 23:31:06 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48N1qrBw022199;
-	Mon, 23 Sep 2024 13:30:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=pp1; bh=u7k5SwI6chCIk
-	sCZz8Hi2DUWn3zMg3MUHqjtPjnnnwI=; b=hg9wFZ6Rd1sP01JpFDlNGN2PJ51ZU
-	bKCifHe2jBfpBc6+baLTY2cvHfl+vZbmWn2OfMPELbLatvzSlue1TGrHqlRLN3WO
-	UiW863CvPoUVDAwI7NXNrozA7zKqecGtiqZ+sSWm8bGyfwhXX0y/6kloCbE1Bp2W
-	7XWgBVU18ykMTAvWv7nwuXcP9TaUtHUtCtkMB2GT1o9dxUErrDMUnCsTtAGuympY
-	6K1pqZ29fYHRHpl/RCWzlJfhbfCJX1oHyDTDVXqiqgiPdAXLQ867nZp8IZ4uZJ2r
-	Kty9flSJmqOBehZNEhyQa1cn2/0gHSIcEbLdH9XsPeGR71w29wZvg6gaw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41sntw46ek-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Sep 2024 13:30:54 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48NAwTQn008701;
-	Mon, 23 Sep 2024 13:30:51 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41t8v0xww8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Sep 2024 13:30:51 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48NDUnGh33489364
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Sep 2024 13:30:50 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C16FD5805A;
-	Mon, 23 Sep 2024 13:30:49 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1D6985805C;
-	Mon, 23 Sep 2024 13:30:49 +0000 (GMT)
-Received: from ltcden12-lp3.aus.stglabs.ibm.com (unknown [9.40.195.53])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Sep 2024 13:30:49 +0000 (GMT)
-From: Danny Tsen <dtsen@linux.ibm.com>
-To: linux-crypto@vger.kernel.org
-Cc: stable@vger.kernel.org, herbert@gondor.apana.org.au, leitao@debian.org,
-        nayna@linux.ibm.com, appro@cryptogams.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        mpe@ellerman.id.au, ltcgcw@linux.vnet.ibm.com, dtsen@us.ibm.com,
-        Danny Tsen <dtsen@linux.ibm.com>
-Subject: [PATCH 3/3] crypto: added CRYPTO_SIMD in Kconfig for CRYPTO_AES_GCM_P10.
-Date: Mon, 23 Sep 2024 09:30:40 -0400
-Message-ID: <20240923133040.4630-4-dtsen@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240923133040.4630-1-dtsen@linux.ibm.com>
-References: <20240923133040.4630-1-dtsen@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XC61t4smPz2xb9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 01:13:06 +1000 (AEST)
+From: Anna-Maria Behnsen <anna-maria@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1727104377;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=elBGvOspzH3iGmK1fYd/bVgzyP8I6OQGyztmlAKbFJU=;
+	b=PBfKNMCoXVgqUMQ+jS8J96N56vpHFkiEIv7N0xlOaDipsFXHcUA3PDP3QEcMOcBBsigKcu
+	ep2rSt1lLmY2DOAonrtcys3ggssiwc2a9tr/YB5alUERWPb6VXbNoKRZigHzcgV4755VTn
+	wYk2+oEYFTBeLTvaEZ2pCcfw4KlNVPS6/D7TaIAiY0D8BB+WIJhmIwmXannp8UhBY3G1mi
+	G3uxSUcypZgacKtqZK/L7EwPqpg1IfqrNDdQvgliRnYaxsk4TTzPhYuwSgE1DT6uKROso/
+	5t/eiTVejV5slXI2ZzVLWwCneMD86d/J/xsNeJTYKgO8rphcsMBTmkNWCz+K2w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1727104377;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=elBGvOspzH3iGmK1fYd/bVgzyP8I6OQGyztmlAKbFJU=;
+	b=Ncg/SvYzGFuvGC711XUusZn2/nNt5VKfdynTFfYe/Dj4+RDnjWTCN3ea404B/VToJ/4LZq
+	lwKy9a1/BRdLjSCQ==
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org,
+ SeongJae Park <sj@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ linux-arch@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>, "David
+ S. Miller" <davem@davemloft.net>, Andy Whitcroft <apw@canonical.com>, Joe
+ Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Andrew
+ Lunn <andrew@lunn.ch>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
+ <tiwai@suse.com>, netdev@vger.kernel.org, linux-sound@vger.kernel.org,
+ Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch
+ <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Mauro Carvalho
+ Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org, Frederic
+ Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH v2 00/15] timers: Cleanup delay/sleep related mess
+In-Reply-To: <6cbedd50-c2d5-4ad7-8133-774eebd9d2f1@wanadoo.fr>
+References: <20240911-devel-anna-maria-b4-timers-flseep-v2-0-b0d3f33ccfe0@linutronix.de>
+ <c794b4a6-468d-4552-a6d6-8185f49339d3@wanadoo.fr>
+ <6cbedd50-c2d5-4ad7-8133-774eebd9d2f1@wanadoo.fr>
+Date: Mon, 23 Sep 2024 17:12:56 +0200
+Message-ID: <87ed5aietj.fsf@somnus>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,47 +83,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VMTLlQ3Y2GYVfKo8jqx_hYOZoqfcDzAQ
-X-Proofpoint-GUID: VMTLlQ3Y2GYVfKo8jqx_hYOZoqfcDzAQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-23_10,2024-09-23_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 mlxlogscore=864 bulkscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409230099
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Added CRYPTO_SIMD for CRYPTO_AES_GCM_P10.
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
 
-Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
+> Le 16/09/2024 =C3=A0 22:20, Christophe JAILLET a =C3=A9crit=C2=A0:
+>> Le 11/09/2024 =C3=A0 07:13, Anna-Maria Behnsen a =C3=A9crit=C2=A0:
+>>> Hi,
+>>>
+>>> a question about which sleeping function should be used in=20
+>>> acpi_os_sleep()
+>>> started a discussion and examination about the existing documentation a=
+nd
+>>> implementation of functions which insert a sleep/delay.
+>>>
+>>> The result of the discussion was, that the documentation is outdated and
+>>> the implemented fsleep() reflects the outdated documentation but doesn't
+>>> help to reflect reality which in turns leads to the queue which covers=
+=20
+>>> the
+>>> following things:
+>>>
+>>> - Split out all timeout and sleep related functions from hrtimer.c and=
+=20
+>>> timer.c
+>>> =C2=A0=C2=A0 into a separate file
+>>>
+>>> - Update function descriptions of sleep related functions
+>>>
+>>> - Change fsleep() to reflect reality
+>>>
+>>> - Rework all comments or users which obviously rely on the outdated
+>>> =C2=A0=C2=A0 documentation as they reference "Documentation/timers/time=
+rs-=20
+>>> howto.rst"
+>>>
+>>> - Last but not least (as there are no more references): Update the=20
+>>> outdated
+>>> =C2=A0=C2=A0 documentation and move it into a file with a self explaini=
+ng file name
+>>>
+>>> The queue is available here and applies on top of tip/timers/core:
+>>>
+>>> =C2=A0=C2=A0 git://git.kernel.org/pub/scm/linux/kernel/git/anna-maria/l=
+inux-=20
+>>> devel.git timers/misc
+>>>
+>>> Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+>>=20
+>> Hi,
+>>=20
+>> not directly related to your serie, but some time ago I sent a patch to=
+=20
+>> micro-optimize Optimize usleep_range(). (See [1])
+>>=20
+>> The idea is that the 2 parameters of usleep_range() are usually=20
+>> constants and some code reordering could easily let the compiler compute=
+=20
+>> a few things at compilation time.
+>>=20
+>> There was consensus on the value of the change (see [2]), but as you are=
+=20
+>
+> Typo: there was *no* consensus...
+>
+>> touching things here, maybe it makes sense now to save a few cycles at=20
+>> runtime and a few bytes of code?
+>>=20
 
-Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
----
- arch/powerpc/crypto/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sorry for the late reply. I'll check it and will come back to you.
 
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 46a4c85e85e2..951a43726461 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -107,12 +107,12 @@ config CRYPTO_AES_PPC_SPE
- 
- config CRYPTO_AES_GCM_P10
- 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
--	depends on BROKEN
- 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
- 	select CRYPTO_LIB_AES
- 	select CRYPTO_ALGAPI
- 	select CRYPTO_AEAD
- 	select CRYPTO_SKCIPHER
-+	select CRYPTO_SIMD
- 	help
- 	  AEAD cipher: AES cipher algorithms (FIPS-197)
- 	  GCM (Galois/Counter Mode) authenticated encryption mode (NIST SP800-38D)
--- 
-2.43.0
+Thanks,
+	Anna-Maria
 
 
