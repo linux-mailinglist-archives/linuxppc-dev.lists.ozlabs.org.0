@@ -1,79 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-1532-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1533-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16FC97EDD7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2024 17:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EACEF97EE08
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Sep 2024 17:23:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XC61v3bF1z2xk7;
-	Tue, 24 Sep 2024 01:13:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XC6G74wjNz2yQl;
+	Tue, 24 Sep 2024 01:23:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727104387;
-	cv=none; b=I94HAm6dW47BRVjXxcI0Ew7kq+4rXCIE8XxG6z9F1kgcx+SUlMpe0USZNgd/+IBs6c1SjbmBMooFAhjOXqamLxDkjJ3GeL4PkYKS1my/C7pWN0N25MKLIZnKGp1XXgNkPGcpGqj2Oijoq5yTWCy531n9MHwvHl4sslpaex+/YnUOn5SUQoPiIeGkLVQmdRxjr/cPYWxmxfOVVxDTaLJZZKjSI9b7cy59M8io720v9MNzVGJ33Vb3j5zGFezf6W7j9KGWoHR04INuDstMHujy07L2FitJ1+whN1HKy5X+0yuchFdm0tujW+uaW6+XZdNQ54ddsEPfHTcPCXGHRAiAXA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::432"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727105023;
+	cv=none; b=XUtItQJZh9QXAXgVcga+aH+xWTWjGX1eJYPrShR2igxmpaDGNbrBaWGX93vHt/TUFeZ/W4PBSPevLpbFrC/HlK4WFEwQWhiyLJoTFBWVawC5tMWnID8iJ2lNEdwnJHZlreBwG2Tc/s/v9YohuSEZDM41Ol2phvrAFGCN5LaM51BOWAUbOGugKQN10nryFgkgfBmDw6UybyicSJrBUllz9ECr/KweXyx31wivrgFqx1hhBC+BpiVIX9OKF4Wd8EE7Z9RJBXe+I7/3O1Hg1XOeYq3N5USwQi8MgcqTz3GlY+D8qdyKHeLLwxXy8ZmxMp12BnbD3WJ2mpJWzg0seXyFUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727104387; c=relaxed/relaxed;
-	bh=elBGvOspzH3iGmK1fYd/bVgzyP8I6OQGyztmlAKbFJU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nIB4JOkVVLsyY3edUh9GC/YDlc5j0rELxHBe5O2pMXaWL9D9ILt5mwurUHQEXGWgKyqciSwJhmbd76dciJ5Efu0pgArHo+uW8l9CaK3ryFqD5N/NSlziiyEp+NwDvh5K8c+AMa+pPl0+/rtI+9SVStVPQYwonAYaYGOwEzLHlaCK1kyiKE9r5ywTieSJ5eDHJYEBxSRWF9n45xAQ9Dx1i3enuXbVEOXZpe3e3r5cVhqBDI2bhsqZQFZjZ9sxhUuDUHCECfWLfrih5FFTXRQDtLMNIHhUJll7iTLl5ktfw+7qzkT/fta6bLSiE8TNpxTEY2OOGTyZh1SFUE/vsuvLgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=PBfKNMCo; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Ncg/SvYz; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1727105023; c=relaxed/relaxed;
+	bh=SRbHlAUD8+zFJXZcm/RxNEmbJtnDlqGFSqJp0i/pnEU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CaEv1+vtjey9V7f9MxLyh7/Jf5ReUMG/RqMvpnAsdW9BTRVEAyqxapgOOHczca+UkPCRoG/GooxuaxK/37rBtrZLR5PKLWThI/hzItbQeUSqnJdRM+ez2XDLYT2TrscMvXhNHc+8fBHuwg+SCqc0nFhIYsP2VnEln3uG0dugxE1LLgZpZhqIUtCFItootDd+1FNzE3mg5173vfsxoEDU6bTKepWw6heLqL/fyWO0l+pw99RzJqiYLfenomT9WsWHsDzSBW7oTLIWW9+Z0DBIlPrrj+sizfY5LKu9TFB04IvsW5BLxq0I1MSqZJQNgUc1PzV6NO0HIsJH3I+c0pk9HQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org; dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VvdAY9l/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=senozhatsky@chromium.org; receiver=lists.ozlabs.org) smtp.mailfrom=chromium.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=PBfKNMCo;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Ncg/SvYz;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=VvdAY9l/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=senozhatsky@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XC61t4smPz2xb9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 01:13:06 +1000 (AEST)
-From: Anna-Maria Behnsen <anna-maria@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1727104377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=elBGvOspzH3iGmK1fYd/bVgzyP8I6OQGyztmlAKbFJU=;
-	b=PBfKNMCoXVgqUMQ+jS8J96N56vpHFkiEIv7N0xlOaDipsFXHcUA3PDP3QEcMOcBBsigKcu
-	ep2rSt1lLmY2DOAonrtcys3ggssiwc2a9tr/YB5alUERWPb6VXbNoKRZigHzcgV4755VTn
-	wYk2+oEYFTBeLTvaEZ2pCcfw4KlNVPS6/D7TaIAiY0D8BB+WIJhmIwmXannp8UhBY3G1mi
-	G3uxSUcypZgacKtqZK/L7EwPqpg1IfqrNDdQvgliRnYaxsk4TTzPhYuwSgE1DT6uKROso/
-	5t/eiTVejV5slXI2ZzVLWwCneMD86d/J/xsNeJTYKgO8rphcsMBTmkNWCz+K2w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1727104377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=elBGvOspzH3iGmK1fYd/bVgzyP8I6OQGyztmlAKbFJU=;
-	b=Ncg/SvYzGFuvGC711XUusZn2/nNt5VKfdynTFfYe/Dj4+RDnjWTCN3ea404B/VToJ/4LZq
-	lwKy9a1/BRdLjSCQ==
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, "Rafael
- J. Wysocki" <rafael@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org,
- SeongJae Park <sj@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- linux-arch@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>, "David
- S. Miller" <davem@davemloft.net>, Andy Whitcroft <apw@canonical.com>, Joe
- Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, Liam
- Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Andrew
- Lunn <andrew@lunn.ch>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
- <tiwai@suse.com>, netdev@vger.kernel.org, linux-sound@vger.kernel.org,
- Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch
- <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Mauro Carvalho
- Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org, Frederic
- Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v2 00/15] timers: Cleanup delay/sleep related mess
-In-Reply-To: <6cbedd50-c2d5-4ad7-8133-774eebd9d2f1@wanadoo.fr>
-References: <20240911-devel-anna-maria-b4-timers-flseep-v2-0-b0d3f33ccfe0@linutronix.de>
- <c794b4a6-468d-4552-a6d6-8185f49339d3@wanadoo.fr>
- <6cbedd50-c2d5-4ad7-8133-774eebd9d2f1@wanadoo.fr>
-Date: Mon, 23 Sep 2024 17:12:56 +0200
-Message-ID: <87ed5aietj.fsf@somnus>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XC6G674RMz2yPq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 01:23:40 +1000 (AEST)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-718e3c98b5aso3172378b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2024 08:23:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1727105018; x=1727709818; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SRbHlAUD8+zFJXZcm/RxNEmbJtnDlqGFSqJp0i/pnEU=;
+        b=VvdAY9l/UODQPEBnUyKeFF9GDogv3f1m1VAp/MFdtQRib1ffxuuBDJ71MOLT5eCVb1
+         ZU+u75l0MM4orDMNKKgSsoFdkz0rI3tCo3dgg6S/GE51WV0mGy951BdX1agd4FhntUvO
+         bLvgWJBwaQKcs5KtNjnPw1CdNlmtW60GXfbIQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727105018; x=1727709818;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SRbHlAUD8+zFJXZcm/RxNEmbJtnDlqGFSqJp0i/pnEU=;
+        b=K0bhFDXdHL/906ekAnk8CIrGHASWhuCVIBbsufEV7vYguDa5dheuG9F8TrpK7LJ1z/
+         UzSKF1wr2YREyXuwmpuUCfbgW9OP6GhHKdgkCcR8XJ1C32cvY/ZYNeb7QPbE/8SdUjqC
+         23aJUQuEfAsAVRDehqg4RbJErNuxLixeIR0xs4IJY28JPTmDhlcCJrqT2JWmDDPPrRLY
+         FneuBzibKV1FHXAeW4GfKH/KYuIgPvYgcO42k+Pz9PIFzSx3ARAvUCwuKOGDBMhj2Qxb
+         DVPLMivZhsJhgRlr1YmnrDCGtKNY32XriaGryqFanM3UvYUumw2oRey0DjGi3phr7J+B
+         XMnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUSMaVCs6fBwVOi2NN/IWplQ8YWz14qhel+/iRyvcQ0p2iGXmCwKEOf7dis8spw884qhPfmNPXgtTczeNk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxErQO3HRw6TbfhQ4lzQ/OoCW6cADtMqHyqWW9Ub9oSYzHWNI3l
+	GfB4DXl+hstGa5AgG4RRFI2injqiEx2P/bcLFX32gafuBBhK2j4YmRt9wuMDrQ==
+X-Google-Smtp-Source: AGHT+IEoqLYJOZjRKTpWHHQA/7YZunca0vmEGaKX7nwVC1pccwb3zqQkHK24skxuscdAt5DSm8gq5Q==
+X-Received: by 2002:a05:6a21:e85:b0:1cf:4ea4:178 with SMTP id adf61e73a8af0-1d30c9e55ccmr14680839637.14.1727105018358;
+        Mon, 23 Sep 2024 08:23:38 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:fd63:e1cf:ea96:b4b0])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71944abb60dsm13975913b3a.70.2024.09.23.08.23.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Sep 2024 08:23:37 -0700 (PDT)
+Date: Tue, 24 Sep 2024 00:23:33 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	akpm@linux-foundation.org, minchan@kernel.org, terrelln@fb.com,
+	sfr@canb.auug.org.au
+Subject: Re: [Bug][Git-Bisect][6.11.0-next-20240917]BUG: Unable to handle
+ kernel data access on read at 0xc00c020000013d88
+Message-ID: <20240923152333.GB38742@google.com>
+References: <57130e48-dbb6-4047-a8c7-ebf5aaea93f4@linux.vnet.ibm.com>
+ <20240923021557.GA38742@google.com>
+ <03a55b4b-eb45-4187-9de6-ef06f8176d05@linux.vnet.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,78 +82,20 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <03a55b4b-eb45-4187-9de6-ef06f8176d05@linux.vnet.ibm.com>
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
+Hi,
 
-> Le 16/09/2024 =C3=A0 22:20, Christophe JAILLET a =C3=A9crit=C2=A0:
->> Le 11/09/2024 =C3=A0 07:13, Anna-Maria Behnsen a =C3=A9crit=C2=A0:
->>> Hi,
->>>
->>> a question about which sleeping function should be used in=20
->>> acpi_os_sleep()
->>> started a discussion and examination about the existing documentation a=
-nd
->>> implementation of functions which insert a sleep/delay.
->>>
->>> The result of the discussion was, that the documentation is outdated and
->>> the implemented fsleep() reflects the outdated documentation but doesn't
->>> help to reflect reality which in turns leads to the queue which covers=
-=20
->>> the
->>> following things:
->>>
->>> - Split out all timeout and sleep related functions from hrtimer.c and=
-=20
->>> timer.c
->>> =C2=A0=C2=A0 into a separate file
->>>
->>> - Update function descriptions of sleep related functions
->>>
->>> - Change fsleep() to reflect reality
->>>
->>> - Rework all comments or users which obviously rely on the outdated
->>> =C2=A0=C2=A0 documentation as they reference "Documentation/timers/time=
-rs-=20
->>> howto.rst"
->>>
->>> - Last but not least (as there are no more references): Update the=20
->>> outdated
->>> =C2=A0=C2=A0 documentation and move it into a file with a self explaini=
-ng file name
->>>
->>> The queue is available here and applies on top of tip/timers/core:
->>>
->>> =C2=A0=C2=A0 git://git.kernel.org/pub/scm/linux/kernel/git/anna-maria/l=
-inux-=20
->>> devel.git timers/misc
->>>
->>> Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
->>=20
->> Hi,
->>=20
->> not directly related to your serie, but some time ago I sent a patch to=
-=20
->> micro-optimize Optimize usleep_range(). (See [1])
->>=20
->> The idea is that the 2 parameters of usleep_range() are usually=20
->> constants and some code reordering could easily let the compiler compute=
-=20
->> a few things at compilation time.
->>=20
->> There was consensus on the value of the change (see [2]), but as you are=
-=20
->
-> Typo: there was *no* consensus...
->
->> touching things here, maybe it makes sense now to save a few cycles at=20
->> runtime and a few bytes of code?
->>=20
+On (24/09/23 11:06), Venkat Rao Bagalkote wrote:
+> Hello,
+> 
+> Below is the TC, I was running.
+> 
+> https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/generic/ltp.py
 
-Sorry for the late reply. I'll check it and will come back to you.
+Out of curiosity, does this [1] patch fix the issue for you?
 
-Thanks,
-	Anna-Maria
-
+[1] https://lore.kernel.org/all/20240923080211.820185-1-andrej.skvortzov@gmail.com/
 
