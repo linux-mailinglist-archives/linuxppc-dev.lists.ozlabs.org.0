@@ -1,53 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-1570-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1571-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80AE984838
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 17:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DDE984CA4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 23:18:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XCjqD0dw1z2yRG;
-	Wed, 25 Sep 2024 01:06:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XCt4t0bnbz2y8p;
+	Wed, 25 Sep 2024 07:18:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727190360;
-	cv=none; b=Ls+f+vYhdP2Al3K0CoIsvqOgFAnZZDm0j3VyHCe5OIXafIXL+/4vzNIjPtG7CJF1kL7aOYzbYQvQTnjgE/6vMmhXCRbQlARwHmmsZ9yahtmJk/UKJn/ha2cCius/JW9T0fmYEuF9nLw0z8BDsWPyjLvQe1GmB958AmYLshR8/kPKDU1QO7xJfxFg0sPbpLd7Uxv+rAn11S/TbMMSOGXpQ7mULcY3dEOwvAb7/gqTGXq13906RFE8K804D6EfOuaiWSlRparDm7Q7JSlQ7hESF9QKQ5fQ8Gg6mtrsBTH1eLU0kM14fCYrQEPLe9ZKzRiitTtIZCCYfVZhlcq58FmpGQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::22e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727190370;
+	cv=none; b=ZiSPjCspzwLL1zd/7cEXIZ582ObkvKCZZX3KNQQtjJSX7Lh+akG/MGs9GUom4okKIjlYoyaTKxVn1t1Fy6Ds0Xjx52xGKOWb4h0Tas8FQEuNHtn5POUu3Y8SZ5KVTob6mTatrWiZuOhs+sE6CNg+HcsMnEh7NHrZEzQcSqIAWqRj8XO0yr0itqO+w9c4Eo+pOiO7dbzXH++W3Nb6lDVHk4yXz3SCpJYqlGZz7z+iiHm/bonBOMn7KqqdojQ8EJPLRNMNb6Vkihm4JI+yeJSyadVgzVz5g9nNbWVmhJFCAiEos3Egune5L/vf1hkxCcTdKoqkdt4c4B4eTRAlkfFP8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727190360; c=relaxed/relaxed;
-	bh=mklFHkXhRn/bZ8Lhq7FZkmILG+yT7GCgmYCDnIZpfBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jfXJfL8HF4P+geDtGBHpqejXoBxwdEMBRguADr3hQhUcLcEVtetnfTXaR+iCr6P0Te32B6TTRqKE4C11Qw57vYsrpXtXITVtoZMuRguGNO8PCgzhjyXy8Z2d3jv4o9oRf1snCbNjED+MTqHa8kDnM1P/gX6CjYXKwvddmPJwMjLAI4+97EhKUblKs2lFjtKsh4NBgyfmsITWTppHNtiHMQB4CLQrKZ9I//C9RpbS9nLUx/7jPPUmP80ajcpuoXWW1lbg0+nMAeCNRXItoDpVJ8OvImO2+uiC9S8IsJm0q87kCFsnq83UhTDfvF3eQQH9k736Mj1lAjUd9d0mbyHYkg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XCjqC36Dcz2yN1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2024 01:05:57 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 68898DA7;
-	Tue, 24 Sep 2024 08:05:54 -0700 (PDT)
-Received: from e133380.arm.com (e133380.arm.com [10.1.197.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B4EF3F7A6;
-	Tue, 24 Sep 2024 08:05:20 -0700 (PDT)
-Date: Tue, 24 Sep 2024 16:04:43 +0100
-From: Dave Martin <Dave.Martin@arm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org,
-	nd@arm.com, akpm@linux-foundation.org, aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
-	broonie@kernel.org, catalin.marinas@arm.com,
-	christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
-	hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
-	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
-	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
-	szabolcs.nagy@arm.com, tglx@linutronix.de, will@kernel.org,
-	x86@kernel.org, kvmarm@lists.linux.dev,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 19/30] arm64: add POE signal support
-Message-ID: <ZvLVC0/baXfJHgww@e133380.arm.com>
-References: <20240822151113.1479789-1-joey.gouly@arm.com>
- <20240822151113.1479789-20-joey.gouly@arm.com>
- <47e1537f-5b60-4541-aed1-a20e804c137d@arm.com>
+	t=1727190370; c=relaxed/relaxed;
+	bh=WEt4t4OKLC44wD9fFRRRREDLnvhSGokn0SJPbLcxpss=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dvPr05rxHOkbN3u3Gg3Qkr40G8zJG5IHw8ay2riuk10x+eRDvzzAK0sxyrvHRE5bPz9TGKNaOGNcAb1DeZjvC/fqxjJO51j0MInc97jEzjOAtKIq9VpyhytlPUFv25B0MebhAOMyjhzcaQIPSo8S55Po+oxZYoRogfwreaAROZN3siLQ/e9FtVOu9E2f+72TFCTiXaIgZRVzQMruuljLfCdKZDLXnewmIw0bLa8zhQiC7lpp9nRxoGcbe1CrAe6YcaEPY84MSDQF+7ra9eW5ck2F9tiPPo5miNqxQFwmMvMd1A42BwoO6vQAtvOnyYwPPeAz/tvVpjtcC4u+ZHYzzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Qcv1zqam; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=festevam@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Qcv1zqam;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=festevam@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCjqP5LHkz2yN1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2024 01:06:09 +1000 (AEST)
+Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2f759688444so47406211fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 08:06:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727190363; x=1727795163; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WEt4t4OKLC44wD9fFRRRREDLnvhSGokn0SJPbLcxpss=;
+        b=Qcv1zqamEcRntYMdUin+eejAG55sL7DLwab95jNFOU1kjK0G88CNh3Au0gaoYNIgU0
+         AOtlqwXf77o69ZZ9O/Fk3HAGTP35TQ4PNhhdvSlgOkFqCBMWPsZcFpmTl7RRBv+vbLxv
+         66JLWkUu7juo5fnuJi0mCRxA8nrHLk+ZcpQp0ScoBNAb6IKHsFmLCphT70Hl72yD5SpX
+         qMfOBhutLXA2jHxsGwLrdDQXwymhYghmxJzk+fNoLQ7yQyKGC1RJJLbchoZEGuI3zsVo
+         EVgHSuarhoWxRJ9jbqqnMNBBeqGxH1xthNQ7IuA1dEZ6aYFEFcKQaEp2sdPo0P//KCF7
+         m3WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727190363; x=1727795163;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WEt4t4OKLC44wD9fFRRRREDLnvhSGokn0SJPbLcxpss=;
+        b=QW+EZdKjPzOKSxQt8wwbclJNnnpJXMxUgWVtz8pLPAvleffDEmRbEnLIm+gjBseL9N
+         GhyJbULrvxWd2G3uDu2NGGya/ICvFG1AeKniM4pW56lradZJHlEJkHKcuCA3QK35ZAmM
+         nImvyweAjW10RxXlPrvJID/9ujVfVpC6tdirAJ0DstZrb+0F75GY4tde5JdLIpcJJWNI
+         OZItMtBHPv181kBB5ysC7Qky+cCObCqhbojqwL5lMGLr558OcBA6qva7x6oOgJdib0en
+         BOUncj+C+VQANGbINlfXOzDX5i2uz+khSw5Rthlp31ya7tBz7aJoJcJCC1h5FDZGAHUQ
+         /VWg==
+X-Forwarded-Encrypted: i=1; AJvYcCVgnv9cepAhk1D8NlGSPymoHPSxNKHBQmdNxT2Kr5inR3ObGHsEy8kTM1/41LqrzR9ZCpLfPwyWIaIdQPk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yya2NQtGw3OlvVrbdprcU6+KTPIO+ayKppvo6pB3OC64y8MSjar
+	40bSiaHv8nfBZw5SapkwLqfTJP1e8VL0bsHvDl25ss52mUqJNuEH9kbCmq3yvdugRhxtNyqMhO5
+	Eu4XJseiKH/r6Q/Uv9bqao0aWsD8=
+X-Google-Smtp-Source: AGHT+IHJXnBttmZSW+jlVDB4ya7Xha0cvgTxb8sPbFzzC+SpJMt6q1ghM6s3jvwsHh6rzM4yTYmh4kBk3zW7n3O2GmY=
+X-Received: by 2002:a2e:4a12:0:b0:2ef:2d3a:e70a with SMTP id
+ 38308e7fff4ca-2f7cb2f6912mr64838401fa.18.1727190362321; Tue, 24 Sep 2024
+ 08:06:02 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,48 +71,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <47e1537f-5b60-4541-aed1-a20e804c137d@arm.com>
+References: <20240924-asoc-imx-maple-v1-1-8b993901f71e@kernel.org>
+In-Reply-To: <20240924-asoc-imx-maple-v1-1-8b993901f71e@kernel.org>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 24 Sep 2024 12:05:50 -0300
+Message-ID: <CAOMZO5DYNK_T4xFBToMK25PuCfns57Cn+z0PoZ-y7pGr=2J=tA@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl: Use maple tree register cache
+To: Mark Brown <broonie@kernel.org>
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+	alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 24, 2024 at 01:27:58PM +0200, Kevin Brodsky wrote:
-> On 22/08/2024 17:11, Joey Gouly wrote:
-> > @@ -1178,6 +1237,9 @@ static void setup_return(struct pt_regs *regs, struct k_sigaction *ka,
-> >  		sme_smstop();
-> >  	}
-> >  
-> > +	if (system_supports_poe())
-> > +		write_sysreg_s(POR_EL0_INIT, SYS_POR_EL0);
-> 
-> At the point where setup_return() is called, the signal frame has
-> already been written to the user stack. In other words, we write to the
-> user stack first, and then reset POR_EL0. This may be problematic,
-> especially if we are using the alternate signal stack, which the
-> interrupted POR_EL0 may not grant access to. In that situation uaccess
-> will fail and we'll end up with a SIGSEGV.
-> 
-> This issue has already been discussed on the x86 side, and as it happens
-> patches to reset PKRU early [1] have just landed. I don't think this is
-> a blocker for getting this series landed, but we should try and align
-> with x86. If there's no objection, I'm planning to work on a counterpart
-> to the x86 series (resetting POR_EL0 early during signal delivery).
-> 
-> Kevin
-> 
-> [1]
-> https://lore.kernel.org/lkml/20240802061318.2140081-2-aruna.ramakrishna@oracle.com/
+On Tue, Sep 24, 2024 at 10:58=E2=80=AFAM Mark Brown <broonie@kernel.org> wr=
+ote:
+>
+> Several of the NXP drivers use regmaps with a rbtree register cache. Sinc=
+e
+> the maple tree cache is uisng a generally more modern data structure whic=
+h
 
-+1, all the uaccess in signal delivery is done by the kernel on behalf
-of the signal handler context, so we should do it with (at least) the
-same memory permissions that the signal handler is going to be entered
-with.
+Typo: using.
 
-(In an ideal world, userspace would save this information itself, using
-its own handler permissions -- well, no, in an ideal world we wouldn't
-have the signal delivery mechanism at all, but hopefully you get the
-idea.)
-
-Cheers
----Dave
-> 
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
 
