@@ -1,46 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-1555-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1556-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A088983F3C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 09:36:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F76983F61
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 09:40:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XCWrq01Byz2xjb;
-	Tue, 24 Sep 2024 17:36:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XCWx81KxJz2yT0;
+	Tue, 24 Sep 2024 17:40:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.181
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727163402;
-	cv=none; b=QTkr9mphZsxAup/Mz3biU0UYL/rCjtzqgX6rC9SdID2Sdx4LtIEh8PlHgQpjmN9ogzXMidbD648roKwCWSekEdROVhYxmof3JeY+Z0JTMds+1Lv36ulZwZNdh58pSr0alfRBx95uEoWFKEbzO4n7S+qm4rw7yThumtyl+pJK1yJiKrSqLNzVa7yTaAmla3pVLKR+J2rB2/YEuc3gPkB6gPEIqokA5RpQQNQbJGi3XaEhjzNjcBVnhVELR8lgFFTL/a2ltPtoNGmPWO0KS4JAalM5HwTXFxXax0KzOs0QzUd0WDdyq5RNUOQuC/44/Cho2O5ZHJ96xK+PivpdQzrxgA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.179
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727163628;
+	cv=none; b=LMJ/CQDGNg3wt3kCNRu7hIqsO7oADZjl365KSgLuUq59pdwdgjiQgNhU32/pX7F1w5I0i1dJ30ciwKXej+9ERDzVlDRa8cNMKNyyXQZV2zram29ISy31QZCrXATWu3cc0E7SZrltUYTg9gu6SLA/oPrd52RED6x9wHE90Ot/Vj4oLVlllwLvd8drGrg1x22Iuau+nRyL9xlXmgTgQDdPzvBpO2xMk2wyYdq4RH09cjBMZg16SxHoae+k/R1gmvfwTZvg49jEp5G/hD98dJnCUU9qWmJk8E9wW0c0nYtdA+c42ENnWWTj6gUptljwqlb+f1hZlpHk/Bvxe+fBiZ+ZrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727163402; c=relaxed/relaxed;
-	bh=DoLXxu3sHCyM5uOz8aZIUvfdOpT8jMclqRj2gZrUUOM=;
+	t=1727163628; c=relaxed/relaxed;
+	bh=feLnDK54jWgpehNv7jGj+iux9/EZ9Wgvx1Gm5rmvg6M=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ilLgkwbRNhhkfCEriB4ltWxdzuajBbSJXBO9tdpkBSsA63ICPS7YeECvsaDKrA8e/Lu8IDy3+kCHGGYPcu6hRquG/Om4ehbRYK1Ik9aJzqE5GvOfQDQa095m4VLfKgSYcic5YFiN3J5bzLKY7PmG1PY2cv4bQOS3thWjzmOqTTD9knb39cpO0AxUKkdia/pGfGOvKIkffbyBb9W/S2GkeYADaNxUazET+t5jCeslFEcQW5/gRBLg5mdXni9SFNYbnmxEp73GPHl6S20MRvNYYToyT3aRFOaFPkLPjjxJswnLIiaevgucKnW79Tdbyssz7qPwfZXz6C684vKL5ShRfQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TeIzHIRw; dkim-atps=neutral; spf=pass (client-ip=95.215.58.181; helo=out-181.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 Message-Id:References:To; b=fMVW3COjlR+iurwa2JGERbz/J2brubkLyjo9orXsWE0ogxDh4OOfIqZhK5klCkG3VrxhFc+mDG7yKm8A0BpH/H+qT7r0tXHxXlhSA58OJ04/nLT/C+EZcwfSKfRSxf6Veir+7gWaCWW91MBt7DhCsqHnrvBhI9M7w7wirL1i/Jg8S8SngJmwKr59FnxSUGijPADfL6by1ClZY5kwVpDhrMcH1MQXpb2UYx17O1P6sxIs/qGbXi0PaF3qBemQNqiolpa8kCOe7uf9/TWirQDrL7XewRlf7HqK/CnDltSNEmzHHvcPS5mIaf+9J8D2NI/QM1XNCOws4KUxLwzltbO/Nw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YPkedyFU; dkim-atps=neutral; spf=pass (client-ip=95.215.58.179; helo=out-179.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TeIzHIRw;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YPkedyFU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.181; helo=out-181.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1269 seconds by postgrey-1.37 at boromir; Tue, 24 Sep 2024 17:36:41 AEST
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.179; helo=out-179.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCWrn0hwkz2xH8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 17:36:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCWx76F3Mz2yMk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 17:40:27 +1000 (AEST)
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1727163378;
+	t=1727163606;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DoLXxu3sHCyM5uOz8aZIUvfdOpT8jMclqRj2gZrUUOM=;
-	b=TeIzHIRwa9J+AAi/w/MnUrNvnJp4eggEJopgtjtdGBDKCoMm28m+up3f3+siiMNxstukd/
-	sRci7QOJMrJjuYp1XIEk17HMgvkqe9hLfpxdl0GvCaoKIW4HaxGHx1o9ZOHh2/3Wtf1x4o
-	qUwgrE28b9B2kx+PKH4ccRCtzch7RJA=
+	bh=feLnDK54jWgpehNv7jGj+iux9/EZ9Wgvx1Gm5rmvg6M=;
+	b=YPkedyFU/qRPuoy/VtaBWlSgDWI8B2BI03Y7bNfEpngs/NFa8208jLRInhPul0eFFj+VSy
+	+fFZzUeFSO22eScfZyubg4GNkcVW1clL3kJLI6JpuHZpWp5k7MqrHb79qaIv206sIuK4sf
+	eo9VQMecooB/ppvUQTJvAMlpDNOb2J0=
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -50,12 +49,12 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: [PATCH v4 08/13] mm: copy_pte_range() use
+Subject: Re: [PATCH v4 09/13] mm: mremap: move_ptes() use
  pte_offset_map_rw_nolock()
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <b70b7cb91e000d540773a0e892789da64ab6c108.1727148662.git.zhengqi.arch@bytedance.com>
-Date: Tue, 24 Sep 2024 15:35:37 +0800
+In-Reply-To: <c7b3ba9e8e58efe7bba9d52ce30a8ff4f4298e2f.1727148662.git.zhengqi.arch@bytedance.com>
+Date: Tue, 24 Sep 2024 15:39:21 +0800
 Cc: david@redhat.com,
  hughd@google.com,
  willy@infradead.org,
@@ -71,9 +70,9 @@ Cc: david@redhat.com,
  linux-arm-kernel@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org
 Content-Transfer-Encoding: 7bit
-Message-Id: <65E61995-5C32-48D4-ACB4-761EEAE7A585@linux.dev>
+Message-Id: <EF701BDB-5742-417C-AAC3-99EF12997DFB@linux.dev>
 References: <cover.1727148662.git.zhengqi.arch@bytedance.com>
- <b70b7cb91e000d540773a0e892789da64ab6c108.1727148662.git.zhengqi.arch@bytedance.com>
+ <c7b3ba9e8e58efe7bba9d52ce30a8ff4f4298e2f.1727148662.git.zhengqi.arch@bytedance.com>
 To: Qi Zheng <zhengqi.arch@bytedance.com>
 X-Migadu-Flow: FLOW_OUT
 
@@ -81,11 +80,12 @@ X-Migadu-Flow: FLOW_OUT
 
 > On Sep 24, 2024, at 14:10, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
 > 
-> In copy_pte_range(), we may modify the src_pte entry after holding the
-> src_ptl, so convert it to using pte_offset_map_rw_nolock(). Since we
-> already hold the exclusive mmap_lock, and the copy_pte_range() and
-> retract_page_tables() are using vma->anon_vma to be exclusive, so the PTE
-> page is stable, there is no need to get pmdval and do pmd_same() check.
+> In move_ptes(), we may modify the new_pte after acquiring the new_ptl, so
+> convert it to using pte_offset_map_rw_nolock(). Now new_pte is none, so
+> hpage_collapse_scan_file() path can not find this by traversing
+> file->f_mapping, so there is no concurrency with retract_page_tables(). In
+> addition, we already hold the exclusive mmap_lock, so this new_pte page is
+> stable, so there is no need to get pmdval and do pmd_same() check.
 > 
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 
