@@ -1,73 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-1537-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1538-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE3C983B65
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 04:56:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49190983CAF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 08:10:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XCPdg6Ll4z2xpk;
-	Tue, 24 Sep 2024 12:56:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XCTxQ1s1Bz2xKg;
+	Tue, 24 Sep 2024 16:10:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727146599;
-	cv=none; b=YYPpyXTBdSYEu17PdmZm6oDtNGLAChJ8rGGUZh5NajrGyRpZb4SiVUTMhzufytlMwGeHmHEambIM7z01RaxgLFykUuqBXfuxpnLmQHpgERAs9F9lJQibTMqys3/4RJlB8HcjaEX/gvKChB+7UeQKDVaZAyDdmH4gw7fVxsijO+ck/MiEHOGK7BLxOFEDtXHxdXS8EfMqxMAHOwWqECeWLABojoBDHO5hfYaCn/qCXpbxVCppFfXRP3GtQqhlS2uSO1Iz7WAaXRPAx7e4lnpIIsJRE9+RFyv24uMqlLrH2DEQ/uDA1OgC5L1WFLdzBsPoV9mPt/g7VEAhwlyO1lUJ5w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::634"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727158234;
+	cv=none; b=V2Hg7FXdf+COLbeE9Q18mgRgopuetql3uw+Y0pqQwqlSESMSt+pCeddEGsOmyeRGYczIjV1AduyFGEuPfKgPxPV8rYu2NdqIVzzwVGwTi3fcb/txDN0mFiEBhEQ1FcZtAcm9sp0QkSxEBDAOD/8+Wazz2z1nu1Ik2eb74LVD9k3BjmcuVQRyF7jP3ahHVwwCcqjI/mWLuMBpHafA1vW/BbptRrFuf2JfJxDLS21ComahVK5ucn9N9j4/erYyY4i5BDSgrUV1Tui15s+SeTkXng6zm1tXLLEBRJVtSuXL/ily8G4BMOSNpyK5ChkMy52ni9L0P4KM+sfUcmd8WvnhTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727146599; c=relaxed/relaxed;
-	bh=On9oGsvIZfjem73sGq+MqJdM2U+WXxLGXRq4IkAZ4Lo=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=c531ijbFvHXlgw0hWDzjsNxjPqV33fS5VPNSlb/gf16Wtw4/mRKH3ggyqMao3VYGY6cqFTspRbLwfbKom52SGqbr6weWoikDvWMbrgBAGItiJuPqo+z3IIXhUTfjz9GSrHVPga0/kIeplUyrCb6Qkfkp9QEHzQlubvtsMWuica5QDs9wAgROnLxSrtB0xgi3VwUl5riVyhdMq+/6iIIWVMYRd/vIGq3s/0c2aKbdVDReZq6UdmbrivPaoPBnNb2Q9zNcnWl0FmQoB99b8JCn7/tZTMVhrsTe8lRM4WjjHr/6A5qVET1797py06kJvgKL1BTPcQxnBKJVMcOuIXUfbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aoYozNvk; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1727158234; c=relaxed/relaxed;
+	bh=FZ+6J9fpvc8LtEIEryLlJSsbAdd45v7edjcT5rDHpkU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=glswnXKMlEMJzHhLSDQsV+4yheIHaB4ly7VjSo2ECDSZuwVNRVLxHYFxb6ZtQnRwSLMkqKITzsWRPa8y0JFVW1OBBO0vzek3/X/z7X8Mm5mtWVwVqp8l8OKKtmzu5wloVwS7PybUeXAhbA9ZbBKshe9fWMH4OaQCEdDi7khKtksjhKIQk0ByOgSv/N29eODjTycGZSL5Ny6zAXSXBBRjINHOa01AwuDIDtLvyKAZ2/NK/okD1bjcX9kf89RyjONaNdxyEmoxJx2JXBsvrWwn5knXvelu9ho2Yt7nib7tTtkipX1yqtn9FxnTV+kn0VYMC8p3O2066q7705MNfpFglw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=cEsGMldv; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aoYozNvk;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=cEsGMldv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCPdf2rpsz2xfR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 12:56:37 +1000 (AEST)
-Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-7db0fb03df5so3426352a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2024 19:56:37 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCTxP0GdBz2xHr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 16:10:30 +1000 (AEST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-2068acc8a4fso47157825ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Sep 2024 23:10:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727146596; x=1727751396; darn=lists.ozlabs.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=On9oGsvIZfjem73sGq+MqJdM2U+WXxLGXRq4IkAZ4Lo=;
-        b=aoYozNvkiuGmJLXuD40UNzKOBSBnZtnfllUjupcbKfXqUN7EEFUPlzY6FyejowbeTw
-         JSicX5DbISKCywjvBnJ98Z8A7KmoIDzayRVoAmrq3Iu4nmoGVOf+NCZnx+TiuZXqNpB+
-         dBa+1enp+UObgRJf7HF6N3ONHXnVXArdp4t8gnxkY6tpweLlocEfaKVcRcnZQI+NefVd
-         OcD27v5QWiO0rDFRXqMtax+hkZ8wexvHtjSMRB+nZXxkW0VfzHRL53ubXSMCXwoBgzPs
-         GyJeJED6oXdyX3i8yINULThJ02Vxqkm93Nx+IWWHb7WfvY6I7g5mtesXaeCzJGpEe4AQ
-         eH6Q==
+        d=bytedance.com; s=google; t=1727158228; x=1727763028; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FZ+6J9fpvc8LtEIEryLlJSsbAdd45v7edjcT5rDHpkU=;
+        b=cEsGMldvGyndHDtCpjIsYxcABwmm3IVh2OqlSdqIKWj91///H1PeAFWEi+PyBXO1Xw
+         XsYlqctgz/DjtAt4IKrg00rqEqUGgsqXLO98uHdkbr1xtcZgavQzMmrGMF6gZnxbYkj/
+         nbctCkKmpjzkGtr+4/jDjbRgv0yE2WAFYV3deM+L3Cket/dECfXAU9R1KMDYvMxZxZIW
+         w00RNfOSA5TSCxGiae4/+lb8ZQWt4Ia1MwwfI/0rNORsfUO4SyrTpn28xNLgIGaGTjZb
+         sE7a1aQVJGvO7VoC8c4xrNN2cNiqJRayQgykZxKAzwHV1dQR/SWcyvKLCAfAfH+J4Z9m
+         EakA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727146596; x=1727751396;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=On9oGsvIZfjem73sGq+MqJdM2U+WXxLGXRq4IkAZ4Lo=;
-        b=Km8ruCmpOGE8EaX5LXsNj/0c8UgJM4tuo7dC6m5aP3xPBRIaHzcYbhmm1MKDR51zkT
-         KAroV1rbNSYM5+XYemCPBNCteNI0yr0mEvZASYQp+IAM7CGdusrwOPgcE+VXn+ue2Gsk
-         aSSvG6EAZ0sUf/gC6vztqhubb/AftnCVoUsHEeePdqUOYq8+bQpn4w6u/lasTeeJcMge
-         WRkayPp9ZhP8LF2yME/phxKctpYOfyexLJugYer00885+zKGZbNAWxAwa2Ew2xFqYS/j
-         AbVFe2hCiVrBY5Hht7cM58aqf2utna8NEQrQR8u/tdLqXehaC1RuT0hIObOaJ+zhZFxf
-         spVw==
-X-Gm-Message-State: AOJu0YwPbHLDdwgG0y5pWpKNRnlVn83v4fYAhP/7lJAGpjqKTL+T3NQH
-	Gb5zCB4/XCeSdpfRQRSb+ELSllXkGf4G/0DgvSxtcC5l8xFNoKvX
-X-Google-Smtp-Source: AGHT+IGCM/yRJ3B8EHDlCv/yrPfabD25tlj3A/kHgW0/fWrGcWy5BoiszT2hpqv3WpjdbmjtaZnRow==
-X-Received: by 2002:a17:90a:fa8f:b0:2d8:53f8:77c0 with SMTP id 98e67ed59e1d1-2dd80c05452mr18655444a91.7.1727146595600;
-        Mon, 23 Sep 2024 19:56:35 -0700 (PDT)
-Received: from dw-tp ([171.76.82.70])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e058f6ed30sm348649a91.25.2024.09.23.19.56.30
+        d=1e100.net; s=20230601; t=1727158228; x=1727763028;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FZ+6J9fpvc8LtEIEryLlJSsbAdd45v7edjcT5rDHpkU=;
+        b=TqoRnd3Ja8pz55KDDrvrpqSJ6zK5ezZgHRXOVH99DvbeTmqsHwsOITMaWs+kPvricU
+         JUmvb8q7/T/Ii87wjNOxlE/56AmzkqEuofJEjUpO07n4ZgD4JtPgnh7DGV9N1UkkGglI
+         mO87Dx8Aw0ldRVskST1dq7iuVJ+/RvsnWXH1PuwlMtQqCXj4CTSweitqkhp3TzdD+cni
+         Sqklja6iQCPUoUvJVvcmgeFUHmd8yZAdA0BLOzjHoYZ8iRCv+5arGImX0KsnD1ojpYa4
+         o7ujQJKzhiFWzbDbFwM/ivUc/Z2sTWK64zbrOCAGPyHdS/TXNfJhBDbFUHChDG7SmjrB
+         lpVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUr3P3Cf9yODRG7gfiWWDEqE6Mu/i+q7yzCAu6efD3QXQ/fxZyku7ZeovwLof3PjEPDAbGYEuR3kKr9Syo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxSZbU9c4fgacP0HxBp4qzYyn+7gaALaPAKYn+Oc91C89SZ1glU
+	DiVYEue6ItB7DfVnvLjw+Pnq8XhI5N4aX7Aw2Guobme2yUWvEg+gW+FOe6L/bxo=
+X-Google-Smtp-Source: AGHT+IE3JgWdRJx6WCYXen89wPhryGlCmdGWyOg8hF+XH/7tbK6pMmGNNEBSXyybrad6ihXB6X7r6g==
+X-Received: by 2002:a17:903:22c7:b0:206:a1ea:f4fe with SMTP id d9443c01a7336-208d832a9c8mr174328585ad.10.1727158228146;
+        Mon, 23 Sep 2024 23:10:28 -0700 (PDT)
+Received: from C02DW0BEMD6R.bytedance.net ([63.216.146.178])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af17229c9sm4344885ad.85.2024.09.23.23.10.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2024 19:56:34 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Guenter Roeck <linux@roeck-us.net>, Narayana Murty N <nnmlinux@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, linux-kernel@vger.kernel.org, mahesh@linux.ibm.com, oohall@gmail.com, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, vaibhav@linux.ibm.com, ganeshgr@linux.ibm.com, sbhat@linux.ibm.com
-Subject: Re: [PATCH v3] powerpc/pseries/eeh: Fix pseries_eeh_err_inject
-In-Reply-To: <c474f56f-af74-479d-9db6-fbbfdb287604@roeck-us.net>
-Date: Tue, 24 Sep 2024 08:23:18 +0530
-Message-ID: <87a5fxbw4h.fsf@gmail.com>
-References: <20240909140220.529333-1-nnmlinux@linux.ibm.com> <c474f56f-af74-479d-9db6-fbbfdb287604@roeck-us.net>
+        Mon, 23 Sep 2024 23:10:27 -0700 (PDT)
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+To: david@redhat.com,
+	hughd@google.com,
+	willy@infradead.org,
+	muchun.song@linux.dev,
+	vbabka@kernel.org,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	vishal.moola@gmail.com,
+	peterx@redhat.com,
+	ryan.roberts@arm.com,
+	christophe.leroy2@cs-soprasteria.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 00/13] introduce pte_offset_map_{ro|rw}_nolock()
+Date: Tue, 24 Sep 2024 14:09:52 +0800
+Message-Id: <cover.1727148662.git.zhengqi.arch@bytedance.com>
+X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,86 +91,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Guenter Roeck <linux@roeck-us.net> writes:
+Changes in v4:
+ - arm: adjust_pte() use pte_offset_map_rw_nolock()
+   (use ptl != vmf->ptl to check if we are using split PTE locks)
+   mm: khugepaged: collapse_pte_mapped_thp() use pte_offset_map_rw_nolock()
+   (move the pte_unmap() backward)
+   mm: copy_pte_range() use pte_offset_map_rw_nolock()
+   (remove pmd_same() check)
+   mm: mremap: move_ptes() use pte_offset_map_rw_nolock()
+   (remove pmd_same() check)
+   mm: page_vma_mapped_walk: map_pte() use pte_offset_map_rw_nolock()
+   (move the assignment to pvmw->ptl backward)
+ - remove [PATCH v3 14/14] (will be sent as a separate patch)
+ - reorder patches
+ - collect the Reviewed-bys
+ - rebase onto the next-20240923
 
-> Hi,
->
-> On Mon, Sep 09, 2024 at 09:02:20AM -0500, Narayana Murty N wrote:
->> VFIO_EEH_PE_INJECT_ERR ioctl is currently failing on pseries
->> due to missing implementation of err_inject eeh_ops for pseries.
->> This patch implements pseries_eeh_err_inject in eeh_ops/pseries
->> eeh_ops. Implements support for injecting MMIO load/store error
->> for testing from user space.
->> 
->> The check on PCI error type (bus type) code is moved to platform
->> code, since the eeh_pe_inject_err can be allowed to more error
->> types depending on platform requirement. Removal of the check for
->> 'type' in eeh_pe_inject_err() doesn't impact PowerNV as
->> pnv_eeh_err_inject() already has an equivalent check in place.
->> 
->> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
->> Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->> 
->> ---
->>  arch/powerpc/include/asm/eeh.h               |  2 +-
->>  arch/powerpc/kernel/eeh.c                    |  9 +++--
->>  arch/powerpc/platforms/pseries/eeh_pseries.c | 39 +++++++++++++++++++-
->>  3 files changed, 44 insertions(+), 6 deletions(-)
->> 
->> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
->> index 91a9fd53254f..317b12fc1fe4 100644
->> --- a/arch/powerpc/include/asm/eeh.h
->> +++ b/arch/powerpc/include/asm/eeh.h
->> @@ -308,7 +308,7 @@ int eeh_pe_reset(struct eeh_pe *pe, int option, bool include_passed);
->>  int eeh_pe_configure(struct eeh_pe *pe);
->>  int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->>  		      unsigned long addr, unsigned long mask);
->> -
->> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev);
->>  /**
->>   * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.
->>   *
->> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
->> index d03f17987fca..49ab11a287a3 100644
->> --- a/arch/powerpc/kernel/eeh.c
->> +++ b/arch/powerpc/kernel/eeh.c
->> @@ -1537,10 +1537,6 @@ int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
->>  	if (!eeh_ops || !eeh_ops->err_inject)
->>  		return -ENOENT;
->>  
->> -	/* Check on PCI error type */
->> -	if (type != EEH_ERR_TYPE_32 && type != EEH_ERR_TYPE_64)
->> -		return -EINVAL;
->> -
->>  	/* Check on PCI error function */
->>  	if (func < EEH_ERR_FUNC_MIN || func > EEH_ERR_FUNC_MAX)
->>  		return -EINVAL;
->> @@ -1851,6 +1847,11 @@ static const struct file_operations eeh_dev_break_fops = {
->>  	.read   = eeh_debugfs_dev_usage,
->>  };
->>  
->> +int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
->> +{
->> +	return eeh_debugfs_break_device(pdev);
->> +}
->> +
->
-> The new function, as the context suggests, is only compiled if CONFIG_DEBUG_FS=y.
-> However, it is called unconditionally. With CONFIG_DEBUG_FS=n, this results in
->
-> powerpc64-linux-ld: arch/powerpc/platforms/pseries/eeh_pseries.o: in function `pseries_eeh_err_inject':
-> /opt/buildbot/slave/qemu-ppc64/build/arch/powerpc/platforms/pseries/eeh_pseries.c:814:(.text+0x554): undefined reference to `eeh_pe_inject_mmio_error'
-> make[3]: *** [/opt/buildbot/slave/qemu-ppc64/build/scripts/Makefile.vmlinux:34: vmlinux] Error 1
-> make[2]: *** [/opt/buildbot/slave/qemu-ppc64/build/Makefile:1157: vmlinux] Error 2
->
-> I'll enable CONFIG_DEBUG_FS in my tests and won't report this further,
-> but you might want to consider fixing the problem at some point.
->
+Changes in v3:
+ - change to use VM_WARN_ON_ONCE() instead of BUG_ON() in pte_offset_map_rw_nolock()
+   (David Hildenbrand)
+ - modify the comment above the pte_offset_map_lock() in [PATCH v2 01/14]
+   (David Hildenbrand and Muchun Song)
+ - modify the comment above the pte_offset_map_rw_nolock() in [PATCH v2 06/14]
+   (David Hildenbrand and Muchun Song)
+ - also perform a pmd_same() check in [PATCH v2 08/14] and [PATCH v2 09/14]
+   (since we may free the PTE page in retract_page_tables() without holding the
+    read lock of mmap_lock)
+ - collect the Acked-bys and Reviewed-bys
+ - rebase onto the next-20240904
 
-Yes, this is fixed and picked up in powerpc tree.
+Changes in v2:
+ - rename pte_offset_map_{readonly|maywrite}_nolock() to
+   pte_offset_map_{ro|rw}_nolock() (LEROY Christophe)
+ - make pte_offset_map_rw_nolock() not accept NULL parameters
+   (David Hildenbrand)
+ - rebase onto the next-20240822
 
-https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?h=merge&id=3af2e2f68cc6baf0a11f662d30b0bf981f77bfea
+Hi all,
 
--ritesh
+As proposed by David Hildenbrand [1], this series introduces the following two
+new helper functions to replace pte_offset_map_nolock().
+
+1. pte_offset_map_ro_nolock()
+2. pte_offset_map_rw_nolock()
+
+As the name suggests, pte_offset_map_ro_nolock() is used for read-only
+case. In this case, only read-only operations will be performed on PTE page
+after the PTL is held. The RCU lock in pte_offset_map_nolock() will ensure that
+the PTE page will not be freed, and there is no need to worry about whether the
+pmd entry is modified. Therefore pte_offset_map_ro_nolock() is just a renamed
+version of pte_offset_map_nolock().
+
+pte_offset_map_rw_nolock() is used for may-write case. In this case, the pte or
+pmd entry may be modified after the PTL is held, so we need to ensure that the
+pmd entry has not been modified concurrently. So in addition to the name change,
+it also outputs the pmdval when successful. The users should make sure the page
+table is stable like checking pte_same() or checking pmd_same() by using the
+output pmdval before performing the write operations.
+
+This series will convert all pte_offset_map_nolock() into the above two helper
+functions one by one, and finally completely delete it.
+
+This also a preparation for reclaiming the empty user PTE page table pages.
+
+This series is based on the next-20240923.
+
+Comments and suggestions are welcome!
+
+Thanks,
+Qi
+
+Qi Zheng (13):
+  mm: pgtable: introduce pte_offset_map_{ro|rw}_nolock()
+  powerpc: assert_pte_locked() use pte_offset_map_ro_nolock()
+  mm: filemap: filemap_fault_recheck_pte_none() use
+    pte_offset_map_ro_nolock()
+  mm: khugepaged: __collapse_huge_page_swapin() use
+    pte_offset_map_ro_nolock()
+  arm: adjust_pte() use pte_offset_map_rw_nolock()
+  mm: handle_pte_fault() use pte_offset_map_rw_nolock()
+  mm: khugepaged: collapse_pte_mapped_thp() use
+    pte_offset_map_rw_nolock()
+  mm: copy_pte_range() use pte_offset_map_rw_nolock()
+  mm: mremap: move_ptes() use pte_offset_map_rw_nolock()
+  mm: page_vma_mapped_walk: map_pte() use pte_offset_map_rw_nolock()
+  mm: userfaultfd: move_pages_pte() use pte_offset_map_rw_nolock()
+  mm: multi-gen LRU: walk_pte_range() use pte_offset_map_rw_nolock()
+  mm: pgtable: remove pte_offset_map_nolock()
+
+ Documentation/mm/split_page_table_lock.rst |  6 ++-
+ arch/arm/mm/fault-armv.c                   | 53 +++++++++-------------
+ arch/powerpc/mm/pgtable.c                  |  2 +-
+ include/linux/mm.h                         |  7 ++-
+ mm/filemap.c                               |  4 +-
+ mm/khugepaged.c                            | 20 ++++++--
+ mm/memory.c                                | 25 ++++++++--
+ mm/mremap.c                                | 11 ++++-
+ mm/page_vma_mapped.c                       | 25 ++++++++--
+ mm/pgtable-generic.c                       | 43 +++++++++++++++---
+ mm/userfaultfd.c                           | 15 ++++--
+ mm/vmscan.c                                |  9 +++-
+ 12 files changed, 159 insertions(+), 61 deletions(-)
+
+-- 
+2.20.1
+
 
