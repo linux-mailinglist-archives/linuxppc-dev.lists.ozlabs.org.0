@@ -1,45 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-1552-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1553-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F89D983D1A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 08:25:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D249983DA5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 09:15:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XCVGm39Nnz2yQL;
-	Tue, 24 Sep 2024 16:25:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XCWNY44pBz2yVv;
+	Tue, 24 Sep 2024 17:15:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.186
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727159136;
-	cv=none; b=dK9a2VmXwo8JqMrUWRZqpMZp9hpvGdwtpiKDFBnDM2HCeCAy7iMQEDo/nLQ/fFAVDir/3j/TJ0GXnZZM8Ymkler4zNZbBBAoNWt4ALLUeorXfMXCZjgy4MObHoeLZykv6g7fjMin4UE08PEBFBq/b4EwzuRY9cFmABeoLos4Q3e6lPItoMX1HDGpIrXY6vJ7DY1Q0YjsxN+5xjWxXfBpW1n7PI4md+sMN5EK+ehEG8PZ6ADuYXFwZvtTyKvnjjf9qYd7b0YWWJU0D5hwRhnpRJ+PEiLLYY6WAfFNR9ZoxrJBOENU339O665EhfVq0eFcRxqe+3B7JTO0eIm6mFT21Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::bd"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727162141;
+	cv=none; b=CsnjE109EN5dxkN5OHTBoB/FS2gLqbb4LpKUDg4id8PXfFRpcuP0vfwwGbmi89nrbZ2EnEQlUEcdobkFybE9j0W3xeGD8V3lCGZ+81OsFJzXhRBiN9LLlflsd1rIEpaHnCkNhG0v3d6trjHlvkxhD16iqU/+OUvGWyCyUi9sYIorjm7fLYNitq7nLm+Qc5pCMRRNAhgoPd6mqkNWrP4KxYo8BcxshQAqtl2C0D5ZRkX1GOFZkisD6Z07RomhoNhFszHUJqB3/NggyDR16WqpiGrlLhBru4IilG+ZG+1nrgNBIhKCoEaCbt6z8rsByv+dW3E40XovFKfXqIlmm/PbAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727159136; c=relaxed/relaxed;
-	bh=/aYhado5OwzZFYPAS8E74g3IrdHqPgkubeEg7xLGfQY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=onUxq0cMXIcxDEHklPhjbQ2VBW5rMN8HCpazHytfrn4nXRi4tuK+okID54MRJNKPM1WR7PArMVmplGN5SL6mIjyELJppylEBV3wln4b8rDR+/7Axg+2h0V9/t6H0FafXkWh20TgALXlDG+n0dx05Lv+GZFrBfSeJE0AozGr5yOBMZAyLtNdaMTs1zteu+0PF/cN/vf7zWA60WaoYO1U2C/rqLiMsWPPEisO1Wivmw1xvMozKv/H8dN1tAF2Q9Q2JTw2LIWeZzsUAEGCdWi1y99u5Vl6iArVkhX+E4gsHczLe6YLRP6sPtSmlvXPOeipZSagQuht5ZiuFHqqwC/p7Iw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vTZjTUVf; dkim-atps=neutral; spf=pass (client-ip=91.218.175.186; helo=out-186.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	t=1727162141; c=relaxed/relaxed;
+	bh=Zp82X1gEUMsH0cTyMFodXGf6d6eN6K2y3H6Zo3CY6V4=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Cc:Date:
+	 Message-Id:References:To; b=TCnZ0xs3ss1BvA0QZMbGS8s0ustBIcXr+InEvH2FA6/27IOoTzsTu+AR+ghXfJnBEh2pTlScrqCRidrCROcrtWPFaR9AkwUqKyEVXmGN1Ygl42IKN4X3jW6xmG/wzOebLmD/Y0dxrXlVG9o31obEoDyR5lPdq8YWaTJAkVUIuh64AXeL7mm/xA1HpJMWf7Jj0JIIacZurI1u0QzNX6gdfcldSQS/FCLkY9EgFErX4/yPplDwwxXD2TgUAA5wRuH6Ucq9iLca04qIBq004iav+q7t4oeO9GqkV8PSMVyunIFH8XdHL45cJqJJdf0lD+y1kFN+bUgK1+hIfdMn9nucGA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GvYaS4II; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::bd; helo=out-189.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vTZjTUVf;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GvYaS4II;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.186; helo=out-186.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::bd; helo=out-189.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [IPv6:2001:41d0:203:375::bd])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCVGk0Kfbz2yNf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 16:25:31 +1000 (AEST)
-Content-Type: text/plain;
-	charset=us-ascii
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCWNW6w4nz2yNf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 17:15:39 +1000 (AEST)
+Content-Type: text/plain; charset=utf-8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1727159110;
+	t=1727162106;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/aYhado5OwzZFYPAS8E74g3IrdHqPgkubeEg7xLGfQY=;
-	b=vTZjTUVfu5HZHc+3wl9pLaAy6KGDor9B0L2oxER/ntkzITpVy7bWliohhRheobOThq/tnF
-	HL4sONWWsPMW0ncQWMe9LLqRPKyHktICgGU+zUczbRyzISml4fMsH0chtX9RyvIJ4B26wX
-	MZMt2nLfnJDnEtbaottDuuXxiTsw1nk=
+	bh=Zp82X1gEUMsH0cTyMFodXGf6d6eN6K2y3H6Zo3CY6V4=;
+	b=GvYaS4II90o9GYK0iIC3QYuCKDMNOPlhACCwBTXmCWQBvZjlyKPBPGlCFb0RWXghLLfHZW
+	IhHdZAjaAOJhJfaIc+yWwY5pxLcX1yMPuxnDbZQ5WHYWUhOj2e9vlBrFcoz7xCj+XQZOdE
+	O9XuikCg+BwKGuiqghMOTI64McSTg2E=
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -48,69 +48,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: [PATCH v4 01/13] mm: pgtable: introduce
- pte_offset_map_{ro|rw}_nolock()
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v4 07/13] mm: khugepaged: collapse_pte_mapped_thp() use pte_offset_map_rw_nolock()
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <1a4fea06f8cada72553a8d8992a92e9c09f2c9d4.1727148662.git.zhengqi.arch@bytedance.com>
-Date: Tue, 24 Sep 2024 14:24:27 +0800
-Cc: david@redhat.com,
- hughd@google.com,
- willy@infradead.org,
- vbabka@kernel.org,
- akpm@linux-foundation.org,
- rppt@kernel.org,
- vishal.moola@gmail.com,
- peterx@redhat.com,
- ryan.roberts@arm.com,
- christophe.leroy2@cs-soprasteria.com,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org,
+In-Reply-To: <07d975c50fe09c246e087303b39998430b1a66bd.1727148662.git.zhengqi.arch@bytedance.com>
+Cc: david@redhat.com, hughd@google.com, willy@infradead.org, vbabka@kernel.org,
+ akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
+ peterx@redhat.com, ryan.roberts@arm.com,
+ christophe.leroy2@cs-soprasteria.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <4D6AAB88-6BA9-4F7E-9EEA-829640D1BDDF@linux.dev>
-References: <cover.1727148662.git.zhengqi.arch@bytedance.com>
- <1a4fea06f8cada72553a8d8992a92e9c09f2c9d4.1727148662.git.zhengqi.arch@bytedance.com>
+Date: Tue, 24 Sep 2024 15:14:25 +0800
+Message-Id: <79699B24-0D99-4051-91F3-5695D32D62AC@linux.dev>
+References: <07d975c50fe09c246e087303b39998430b1a66bd.1727148662.git.zhengqi.arch@bytedance.com>
 To: Qi Zheng <zhengqi.arch@bytedance.com>
 X-Migadu-Flow: FLOW_OUT
 
 
 
-> On Sep 24, 2024, at 14:09, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
-> 
-> Currently, the usage of pte_offset_map_nolock() can be divided into the
-> following two cases:
-> 
-> 1) After acquiring PTL, only read-only operations are performed on the PTE
->   page. In this case, the RCU lock in pte_offset_map_nolock() will ensure
->   that the PTE page will not be freed, and there is no need to worry
->   about whether the pmd entry is modified.
-> 
-> 2) After acquiring PTL, the pte or pmd entries may be modified. At this
->   time, we need to ensure that the pmd entry has not been modified
->   concurrently.
-> 
-> To more clearing distinguish between these two cases, this commit
-> introduces two new helper functions to replace pte_offset_map_nolock().
-> For 1), just rename it to pte_offset_map_ro_nolock(). For 2), in addition
-> to changing the name to pte_offset_map_rw_nolock(), it also outputs the
-> pmdval when successful. It is applicable for may-write cases where any
-> modification operations to the page table may happen after the
-> corresponding spinlock is held afterwards. But the users should make sure
-> the page table is stable like checking pte_same() or checking pmd_same()
-> by using the output pmdval before performing the write operations.
-> 
-> Note: "RO" / "RW" expresses the intended semantics, not that the *kmap*
-> will be read-only/read-write protected.
-> 
-> Subsequent commits will convert pte_offset_map_nolock() into the above
-> two functions one by one, and finally completely delete it.
-> 
+> On Sep 24, 2024, at 14:11, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
+> =EF=BB=BFIn collapse_pte_mapped_thp(), we may modify the pte and pmd entry=
+ after
+> acquring the ptl, so convert it to using pte_offset_map_rw_nolock(). At
+> this time, the pte_same() check is not performed after the PTL held. So we=
+
+> should get pgt_pmd and do pmd_same() check after the ptl held.
+>=20
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+> mm/khugepaged.c | 14 +++++++++++---
+> 1 file changed, 11 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 6498721d4783a..8ab79c13d077f 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1605,7 +1605,7 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, un=
+signed long addr,
+>    if (userfaultfd_armed(vma) && !(vma->vm_flags & VM_SHARED))
+>        pml =3D pmd_lock(mm, pmd);
+>=20
+> -    start_pte =3D pte_offset_map_nolock(mm, pmd, haddr, &ptl);
+> +    start_pte =3D pte_offset_map_rw_nolock(mm, pmd, haddr, &pgt_pmd, &ptl=
+);
+>    if (!start_pte)        /* mmap_lock + page lock should prevent this */
+>        goto abort;
+>    if (!pml)
+> @@ -1613,6 +1613,9 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, un=
+signed long addr,
+>    else if (ptl !=3D pml)
+>        spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+>=20
+> +    if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd))))
+> +        goto abort;
+> +
+>    /* step 2: clear page table and adjust rmap */
+>    for (i =3D 0, addr =3D haddr, pte =3D start_pte;
+>         i < HPAGE_PMD_NR; i++, addr +=3D PAGE_SIZE, pte++) {
+> @@ -1645,7 +1648,6 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, un=
+signed long addr,
+>        nr_ptes++;
+>    }
+>=20
+> -    pte_unmap(start_pte);
+>    if (!pml)
+>        spin_unlock(ptl);
+>=20
+> @@ -1658,13 +1660,19 @@ int collapse_pte_mapped_thp(struct mm_struct *mm, u=
+nsigned long addr,
+>    /* step 4: remove empty page table */
+>    if (!pml) {
+>        pml =3D pmd_lock(mm, pmd);
+> -        if (ptl !=3D pml)
+> +        if (ptl !=3D pml) {
+>            spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+> +            if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd)))) {
+> +                spin_unlock(pml);
+> +                goto abort;
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Drop the reference of folio and the mm counter twice at the label of abort a=
+nd the step 3.
 
+> +            }
+> +        }
+>    }
+>    pgt_pmd =3D pmdp_collapse_flush(vma, haddr, pmd);
+>    pmdp_get_lockless_sync();
+>    if (ptl !=3D pml)
+>        spin_unlock(ptl);
+> +    pte_unmap(start_pte);
+>    spin_unlock(pml);
 
+Why not?
+
+pte_unmap_unlock(start_pte, ptl);
+if (pml !=3D ptl)
+        spin_unlock(pml);
+
+>=20
+>    mmu_notifier_invalidate_range_end(&range);
+> --
+> 2.20.1
 
