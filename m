@@ -1,71 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-1561-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1562-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34F89840DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 10:45:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB7798411F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 10:53:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XCYMw3T4yz2yZZ;
-	Tue, 24 Sep 2024 18:45:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XCYYb5TMTz2yZN;
+	Tue, 24 Sep 2024 18:53:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727167516;
-	cv=none; b=I5Wi/8pRYr6CskSqosvBZ3xlb1KetI3+oavuMLdvvs+3hYC//HLPxR7uuDY8rX7cbDuPzqH3M+enx6oZv3GkUoPg1eMiete07EAXCQ2iflYj8Y1NFBNO8Vbr8aVLhjlKC5KKYPxMJmPRYMMa4LQa8mB7A0Jg1SleQN+z45U4T5so7sLJqYCCU/lOcY1X3fPsrISFoYs8C7Mm6QZI5dflN1iSdVH39CE20BxPCrgsydrqEmfjW7Sc5ePyhzRku16FCHktPETRljoLI0wgye0Py1iLvKQk+CIeEnFqZpsXlZatbVDScXZ4nM7usjU7VCje72eXxCU6f6epTVmCEe2xSQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.171
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727168019;
+	cv=none; b=KQUwR0mNLcF8bGfpPg97qPxyM4+cKIEx5IwjMmSVdM6TOE/HDOHBBdvEQWcCZ5hyUfoLBl62RmwY0UUL/m2XdbijNb4YdzbN7zzZyUCZDwh+6fICu8rHBOBrzhK3co6ByOGhNhxL+PfuLNIbxGmyZx3jkER5j8uj8+anGIxiRuuZ0Z/tcngJ0a2HEqsWudJy+bm2n4WBIIO5XXcrhNdvJi4s9a/vOV9z1zm023xTeVLhFHHUUOe7G8NaB1TaEPgXtfFTtiQsdyFSNzEg6aIQ4KeJAvnOTdLDzWw7YBXZtAWh6Db0nLdDLqPRONuVaA2SsfynwAM5fQDcRCepnxB9cA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727167516; c=relaxed/relaxed;
-	bh=y2nQE9aToLO8F86J/y/Pv+vvJWva/3rLYd5MS5wex68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Duck7oPM7zDKRhB0G0bw4bDm5bRFZAnnOHg+srDyIicOUjSKR0WWa5xgnd4qiLMz2s3NCKGAkdXUcLfZ/AI4Iy81obTWu000tSwkyDlH80eQ4TG21RtvUWSHK5qJaO/mh9FWhMYqAswAio+jbbwvrX67XY8GZVFvMWQqxC8vV/rd8WtWEFyaPoXWn6xntetTEAbWflwlTZ51jZRF1Sdj6sYlzQp1XLKgKBz5FAq4EGfj8LoygJTZyOPSzOScCobLBaMj9HJbDXPNg7IkVDQLWNemH0XUBbeyBq+ouvlrfsphe+p3OKGEM3FvIMkXJdBPmp88ZcZAI9xYR/AHP+Jx7Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=YvNyJlEb; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+	t=1727168019; c=relaxed/relaxed;
+	bh=wpyNjX3SywB8uvA6z8NNxtoy61vc2SVjYp0FLcYU0Bg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=UeKWFsNXJ5Dt2/5O8zdB6HeOfWRhnpCIOOoxZniz2HfOw3FCA41FZ9PJ+AmUgnZ/IfiN5Y3eA9ZF+rBUSGFajyKhPaLdOkJPcN4Yzf8Bm82GbXDAmnCjfRYBvGE0jEnvneNpxzV0qPgItIy1D1oN/+zZ6m+CMprmKnZ0GO/QAEj8Z+rpA4bj4ApYY0x8A5TIenYhARFVK93x1pLglMJ2KumQuwatkzshtwJDPQ+K6yrIS8JACIluZunrMO/x2d4dBMUewLLK7pROG4/Q/G2Qc4m5l9MRW4yRUkM5So7maKYB5fzjnMm4wAjJazlk7bkTVPG3eEjIJ8pZ7Yyir7cu9Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Y/NlUSsN; dkim-atps=neutral; spf=pass (client-ip=91.218.175.171; helo=out-171.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=YvNyJlEb;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Y/NlUSsN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.171; helo=out-171.mta0.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCYMv2scTz2yZN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 18:45:13 +1000 (AEST)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-206aee40676so42246535ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 01:45:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1727167511; x=1727772311; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=y2nQE9aToLO8F86J/y/Pv+vvJWva/3rLYd5MS5wex68=;
-        b=YvNyJlEbjwRNCMPJXeylZyMgWin/GPPJepizIx4BoeTxN9jxDEzIu0wPu1qGpH6QEg
-         HiE4UVpOSjt8Q8tSd7ye24qoDFWdidAAp7pbLJ1gPqVG67uzkzXVKhUauYPjYkcWOtI2
-         JQYHypGwahMtyrOzQoPZLNA95qGi8l0BgCiSpc+7yfziskq01kAwsiS+pxtuqwfvLjVg
-         Ygfe2xhj2gO0x6DqX4ZfzBZO228B11wswzKrvipt3GppB+vxwyNHCdCT5KMZYOfcVzgn
-         LdjTorkjfOVNDQWxHYoA+KjyUaTIKMkjeW5qpoaai8wKwsLYx61x0DWgkJs4c5FMMF0w
-         47ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727167511; x=1727772311;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y2nQE9aToLO8F86J/y/Pv+vvJWva/3rLYd5MS5wex68=;
-        b=PBtNhlmHIjOeh6FhdkQRY/YLzBp0G0CbmJPc1zgxPVQPBL615FTD2wJ6oYAEDWAkSn
-         AjkU2V0XSBVXelp/WGC6fZZ6DVEARszbCvfXqfDcoX2qdhPoXqopyIM5U7NzA/8cQgbf
-         jvQMLEnxuNgEoaFqUwM5ca0JbqjfUBnVSPKViH2TjF3sw1tOaPV986wkr/MpcMHVN4OF
-         OsDMwRAU5LffIRSPQM5WW0HMWg8/Qy4aLFczsix6Ri5iH6/qls6b5Zsvfylz1Ux6/egb
-         YdfGQJJVxwjnU25rleVt/GCCXFJ2GAZBi8b849yb54WyobzwK5+3RVHnFE3Tops+sble
-         zMSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWVsMHvNl7gLsXwqekM+mGX4e0qtUOsafEvHDJZfntUqql2COILsoEPfbSTumB0Sme+XhUhW9RIlTtq6Y8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwTLL1RWfGq3mECT08zlKz5aQjG/G4Fm7GgbZ3pB/LgMdZneS84
-	eixAie6si7EbdtkZck9NHALZcezxSropl9AZL4tLZjAJ2oVJ0vQRdiXYe3Z/5Tk=
-X-Google-Smtp-Source: AGHT+IHo2ftEdEocasBZgbxVxDZL2Zt2IqqMpv0cagmh9vhh6c4h0pR5iAzOHA5lidbuQIZfPE+d7A==
-X-Received: by 2002:a17:902:e543:b0:206:a574:b4fd with SMTP id d9443c01a7336-208d832a9bbmr214723865ad.9.1727167511212;
-        Tue, 24 Sep 2024 01:45:11 -0700 (PDT)
-Received: from [10.68.125.128] ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af17e3272sm6659695ad.179.2024.09.24.01.45.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Sep 2024 01:45:10 -0700 (PDT)
-Message-ID: <ddc6a307-9520-4f5e-bc41-ef380b0d826a@bytedance.com>
-Date: Tue, 24 Sep 2024 16:45:03 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCYYZ083bz2yTs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 18:53:36 +1000 (AEST)
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1727167995;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wpyNjX3SywB8uvA6z8NNxtoy61vc2SVjYp0FLcYU0Bg=;
+	b=Y/NlUSsNLr1ACfiVoikNI877ntJ8eQYVJ79owK8l2o96uz/W+SW5BzZ9Yl2sW1QHthH6qw
+	/K38dLAstL3gN/S/H9vCtK6QVpg/3wmjbBNVlh8Sm8CfOZrojR5+YCAeqlErfWBM3S6tYR
+	84G6gXzxoUGE03YcUoZZL6IjT8URxhc=
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,142 +48,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/13] mm: page_vma_mapped_walk: map_pte() use
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH v4 07/13] mm: khugepaged: collapse_pte_mapped_thp() use
  pte_offset_map_rw_nolock()
-Content-Language: en-US
-To: Muchun Song <muchun.song@linux.dev>
-Cc: david@redhat.com, hughd@google.com, willy@infradead.org,
- vbabka@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
- vishal.moola@gmail.com, peterx@redhat.com, ryan.roberts@arm.com,
- christophe.leroy2@cs-soprasteria.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <2343da2e-f91f-4861-bb22-28f77db98c52@bytedance.com>
+Date: Tue, 24 Sep 2024 16:52:34 +0800
+Cc: david@redhat.com,
+ hughd@google.com,
+ willy@infradead.org,
+ vbabka@kernel.org,
+ akpm@linux-foundation.org,
+ rppt@kernel.org,
+ vishal.moola@gmail.com,
+ peterx@redhat.com,
+ ryan.roberts@arm.com,
+ christophe.leroy2@cs-soprasteria.com,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org
-References: <ecffb7d71363fa79048c0a929780215e0fa93491.1727148662.git.zhengqi.arch@bytedance.com>
- <E2AAD3DA-4C73-4785-939C-13164FA8543D@linux.dev>
- <cccc53fc-29c2-43c0-83d4-d330bade70c7@bytedance.com>
- <2CBAEE27-9C4E-4902-B6BB-B6029FD42E8D@linux.dev>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <2CBAEE27-9C4E-4902-B6BB-B6029FD42E8D@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1D1872F1-7280-4F43-8213-A720C56B0646@linux.dev>
+References: <07d975c50fe09c246e087303b39998430b1a66bd.1727148662.git.zhengqi.arch@bytedance.com>
+ <79699B24-0D99-4051-91F3-5695D32D62AC@linux.dev>
+ <2343da2e-f91f-4861-bb22-28f77db98c52@bytedance.com>
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
 
 
 
-On 2024/9/24 16:39, Muchun Song wrote:
-> 
-> 
->> On Sep 24, 2024, at 16:33, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
->>
->>
->>
->> On 2024/9/24 16:25, Muchun Song wrote:
->>>> On Sep 24, 2024, at 14:11, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
->>>>
->>>> ﻿In the caller of map_pte(), we may modify the pvmw->pte after acquiring
->>>> the pvmw->ptl, so convert it to using pte_offset_map_rw_nolock(). At
->>>> this time, the pte_same() check is not performed after the pvmw->ptl held,
->>>> so we should get pmdval and do pmd_same() check to ensure the stability of
->>>> pvmw->pmd.
->>>>
->>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>> ---
->>>> mm/page_vma_mapped.c | 25 ++++++++++++++++++++-----
->>>> 1 file changed, 20 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>> index ae5cc42aa2087..6410f29b37c1b 100644
->>>> --- a/mm/page_vma_mapped.c
->>>> +++ b/mm/page_vma_mapped.c
->>>> @@ -13,9 +13,11 @@ static inline bool not_found(struct page_vma_mapped_walk *pvmw)
->>>>     return false;
->>>> }
->>>>
->>>> -static bool map_pte(struct page_vma_mapped_walk *pvmw, spinlock_t **ptlp)
->>>> +static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
->>>> +            spinlock_t **ptlp)
->>>> {
->>>>     pte_t ptent;
->>>> +    pmd_t pmdval;
->>> Why declare a new variable? Can’t we use *pmdvalp instead?
->>
->> It's just a coding habit, both are fine for me.
-> 
-> Agree. But sometime it could make code look a little simpler.
-> 
->>
->>>>
->>>>     if (pvmw->flags & PVMW_SYNC) {
->>>>         /* Use the stricter lookup */
->>>> @@ -25,6 +27,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, spinlock_t **ptlp)
->>>>         return !!pvmw->pte;
->>>>     }
->>>>
->>>> +again:
->>>>     /*
->>>>      * It is important to return the ptl corresponding to pte,
->>>>      * in case *pvmw->pmd changes underneath us; so we need to
->>>> @@ -32,10 +35,11 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, spinlock_t **ptlp)
->>>>      * proceeds to loop over next ptes, and finds a match later.
->>>>      * Though, in most cases, page lock already protects this.
->>>>      */
->>>> -    pvmw->pte = pte_offset_map_nolock(pvmw->vma->vm_mm, pvmw->pmd,
->>>> -                      pvmw->address, ptlp);
->>>> +    pvmw->pte = pte_offset_map_rw_nolock(pvmw->vma->vm_mm, pvmw->pmd,
->>>> +                         pvmw->address, &pmdval, ptlp);
->>>>     if (!pvmw->pte)
->>>>         return false;
->>>> +    *pmdvalp = pmdval;
-> 
-> For instance, here, it is unnecessary if pmdvalp is passed directly to
-> pte_offset_map_rw_nolock.
+> On Sep 24, 2024, at 15:29, Qi Zheng <zhengqi.arch@bytedance.com> =
+wrote:
+>=20
+>=20
+>=20
+> On 2024/9/24 15:14, Muchun Song wrote:
+>>> On Sep 24, 2024, at 14:11, Qi Zheng <zhengqi.arch@bytedance.com> =
+wrote:
+>>> =EF=BB=BFIn collapse_pte_mapped_thp(), we may modify the pte and pmd =
+entry after
+>>> acquring the ptl, so convert it to using pte_offset_map_rw_nolock(). =
+At
+>>> this time, the pte_same() check is not performed after the PTL held. =
+So we
+>>> should get pgt_pmd and do pmd_same() check after the ptl held.
+>>>=20
+>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> ---
+>>> mm/khugepaged.c | 14 +++++++++++---
+>>> 1 file changed, 11 insertions(+), 3 deletions(-)
+>>>=20
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index 6498721d4783a..8ab79c13d077f 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -1605,7 +1605,7 @@ int collapse_pte_mapped_thp(struct mm_struct =
+*mm, unsigned long addr,
+>>>    if (userfaultfd_armed(vma) && !(vma->vm_flags & VM_SHARED))
+>>>        pml =3D pmd_lock(mm, pmd);
+>>>=20
+>>> -    start_pte =3D pte_offset_map_nolock(mm, pmd, haddr, &ptl);
+>>> +    start_pte =3D pte_offset_map_rw_nolock(mm, pmd, haddr, =
+&pgt_pmd, &ptl);
+>>>    if (!start_pte)        /* mmap_lock + page lock should prevent =
+this */
+>>>        goto abort;
+>>>    if (!pml)
+>>> @@ -1613,6 +1613,9 @@ int collapse_pte_mapped_thp(struct mm_struct =
+*mm, unsigned long addr,
+>>>    else if (ptl !=3D pml)
+>>>        spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+>>>=20
+>>> +    if (unlikely(!pmd_same(pgt_pmd, pmdp_get_lockless(pmd))))
+>>> +        goto abort;
+>>> +
+>>>    /* step 2: clear page table and adjust rmap */
+>>>    for (i =3D 0, addr =3D haddr, pte =3D start_pte;
+>>>         i < HPAGE_PMD_NR; i++, addr +=3D PAGE_SIZE, pte++) {
+>>> @@ -1645,7 +1648,6 @@ int collapse_pte_mapped_thp(struct mm_struct =
+*mm, unsigned long addr,
+>>>        nr_ptes++;
+>>>    }
+>>>=20
+>>> -    pte_unmap(start_pte);
+>>>    if (!pml)
+>>>        spin_unlock(ptl);
+>>>=20
+>>> @@ -1658,13 +1660,19 @@ int collapse_pte_mapped_thp(struct mm_struct =
+*mm, unsigned long addr,
+>>>    /* step 4: remove empty page table */
+>>>    if (!pml) {
+>>>        pml =3D pmd_lock(mm, pmd);
+>>> -        if (ptl !=3D pml)
+>>> +        if (ptl !=3D pml) {
+>>>            spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
+>>> +            if (unlikely(!pmd_same(pgt_pmd, =
+pmdp_get_lockless(pmd)))) {
+>>> +                spin_unlock(pml);
+>>> +                goto abort;
+>> Drop the reference of folio and the mm counter twice at the label of =
+abort and the step 3.
+>=20
+> My bad, should set nr_ptes to 0 and call flush_tlb_mm() here, right?
 
-OK, will use pmdvalp directly. ;)
+Or add a new label "out" just below the "abort". Then go to out.
 
-> 
->>>>
->>>>     ptent = ptep_get(pvmw->pte);
->>>>
->>>> @@ -67,8 +71,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, spinlock_t **ptlp)
->>>>     } else if (!pte_present(ptent)) {
->>>>         return false;
->>>>     }
->>>> +    spin_lock(*ptlp);
->>>> +    if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pvmw->pmd)))) {
->>>> +        pte_unmap_unlock(pvmw->pte, *ptlp);
->>>> +        goto again;
->>>> +    }
->>>>     pvmw->ptl = *ptlp;
->>>> -    spin_lock(pvmw->ptl);
->>>> +
->>>>     return true;
->>>> }
->>>>
->>>> @@ -278,7 +287,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>>             step_forward(pvmw, PMD_SIZE);
->>>>             continue;
->>>>         }
->>>> -        if (!map_pte(pvmw, &ptl)) {
->>>> +        if (!map_pte(pvmw, &pmde, &ptl)) {
->>>>             if (!pvmw->pte)
->>>>                 goto restart;
->>>>             goto next_pte;
->>>> @@ -307,6 +316,12 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>>         if (!pvmw->ptl) {
->>>>             pvmw->ptl = ptl;
->>>>             spin_lock(pvmw->ptl);
->>>> +            if (unlikely(!pmd_same(pmde, pmdp_get_lockless(pvmw->pmd)))) {
->>>> +                pte_unmap_unlock(pvmw->pte, pvmw->ptl);
->>>> +                pvmw->ptl = NULL;
->>>> +                pvmw->pte = NULL;
->>>> +                goto restart;
->>>> +            }
->>>>         }
->>>>         goto this_pte;
->>>>     } while (pvmw->address < end);
->>>> --
->>>> 2.20.1
-> 
-> 
+>=20
+>>> +            }
+>>> +        }
+>>>    }
+>>>    pgt_pmd =3D pmdp_collapse_flush(vma, haddr, pmd);
+>>>    pmdp_get_lockless_sync();
+>>>    if (ptl !=3D pml)
+>>>        spin_unlock(ptl);
+>>> +    pte_unmap(start_pte);
+>>>    spin_unlock(pml);
+>> Why not?
+>> pte_unmap_unlock(start_pte, ptl);
+>> if (pml !=3D ptl)
+>>         spin_unlock(pml);
+>=20
+> Both are fine, will do.
+>=20
+> Thanks,
+> Qi
+>=20
+>>>=20
+>>>    mmu_notifier_invalidate_range_end(&range);
+>>> --
+>>> 2.20.1
+
+
 
