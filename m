@@ -1,91 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-1557-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1558-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9DB983FFD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 10:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FFD984070
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Sep 2024 10:26:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XCXZX3MHfz2yLT;
-	Tue, 24 Sep 2024 18:09:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XCXxy5GFFz2yZ1;
+	Tue, 24 Sep 2024 18:26:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727165364;
-	cv=none; b=oIYCIILCC3rOTKu/sCr8fhyrE92qedLdOxeJ8uDkLcWIePFttZHuTmB6uDxflcH9KrgbBifpbHywbasXTqDuKXzWv0hBiyyasSSN0ON9B7yvqspa/nP/Z1vboDOpPG6eq9V2KpUmsJwaoViAuQBMeKC+8AqBFxmlRZB9oxU6SiRfwJjhV9QZYVkahfRZp1VSAhFwF3ZPmGsFAobh8rTxb7Mpc10DnPtmIToAQpGDvaVMUM5BD9xBO5EBWxavOWHgKVVr6uHBLyEqzFKk2XHvV9JzgwT++af/ZWMGKzVf3UF8TyvQILXgkBj4dBQLi1JYG9yr0PYuaZOvzrfOOoRgyQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::ac"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727166374;
+	cv=none; b=B6ZHuoN4i3gXijqEzWrvEcFXOY7u2jfCuoR+l0cJ8Fwmj4omEENpckjUGP+MpC6N5NN0Wi7c2KNA36vCYvKQcmdr4hp3WxYYxmOWpAEPYqIRN0DuAuHjM/Yo53TINAYXKYdSVtUliHPZb89N0JtLl3ykCV0g8Wu2+NnsjU7m9yRAXaLQ+DpfR6qpmCCmHiOjGd2DRzJ3kM1YzItxipNyVDjoRFWLlvsjRmz/NPm7MAGjaAfbpplgGvkvopT2h3una5dF+ymWXFvn7xnNvffhg5l9WwjjN2QJ3IQ+H/Ec5JhgUN1pImZmhtiLLk956t1YaBfbOZNd/3tEemvahfqpog==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727165364; c=relaxed/relaxed;
-	bh=oILC7b+VYGL8iCjP4snxl26072XF0sliYpvFhTTwAnw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=HC5DqON7+vXXcs9pHNyGs2PlZC3IiqqAt9N9pmbERIA59yjo3JAcNffre7nhz448y9n9LVyV+JXZeqfFgzUiygXGb95mFplaod8pP+hjTAsmK3ZcrdHiUZPf3/g6NvhzheHIKync0yD9jnnoCeH8WH4b1Tdji5KEorBU+aV3eUjo7pVItThKGwgCRIycfCUW7vJF4QMzoNH9CeFlTvEx7qS5QawBdVgUkEkWVu5Y7yvCRebbNNM8K6yEboKlXoDIvVNfcxmA+XW6jOhqk7lHGRkOr7xCSs4Kk6KXs74aSi5fReHXfLmbZL1OF/UTHJLzv4GT7C9uNTBUUYIX8QuMUg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YBniJEN1; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1727166374; c=relaxed/relaxed;
+	bh=1y5CwMb2yKa3w/NIt/ri0sQu3/1xDcimH4xSI7fLtgQ=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=OA4cKqcx9Ugj42ufxCR46IhQvJV9jWeiqQvbY2JmbzMiBhy7BY+ChDsEzkoGEePx46MD9dtc6/6sD/kpvcYAtqmz9UEbLgmm/u9nIf87LVMFwE+BzAXNNp67T6utLuWsjX1w+CYGRnt1EFFzyzoHr25DZc3HGlNzWDyaobf+mrdL9E8F4ECJjxcHW1oQgdOCBzTi5zungAvzWtZkCcO2JHZbjrdVy4R25wsf4PVAjVRqMHTEaDJqgruR13jif9fwYyqMycnaReaAnnG13QdzZG/QROo+RcTW4WJjZhb9ZXbyLpugXsdBKOWKfGsmjEtrT/HP3zMzSepkc9KEIeEmLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Tjp0P3kf; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::ac; helo=out-172.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YBniJEN1;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Tjp0P3kf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::ac; helo=out-172.mta1.migadu.com; envelope-from=muchun.song@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [IPv6:2001:41d0:203:375::ac])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCXZW5SBFz2yLP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 18:09:23 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48O0UpkL022399;
-	Tue, 24 Sep 2024 08:09:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:subject:to:cc:references:from:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
-	oILC7b+VYGL8iCjP4snxl26072XF0sliYpvFhTTwAnw=; b=YBniJEN18BSR4PyP
-	NkiZBLnRIXbeyy1Raf881XPhuG5N5G7GhM7FCpAM8JVTFFZb1Y1TdjIJIRH8mUuI
-	pJe2f8hEdBv/XnUOPlCfP0DDhmoT2T7ib+EKl5sXQpBBDKlWEuXBLpdGxRekJc+Q
-	1ADohLg4Np48nhD2w1QKj5wFEqktFokuyk5GqLeHv5KL1GyShYAXhMkqzbK00hA7
-	tGEAXk/wQlpnzG/yOwIN3Bqzl0o1E5Q/r+WBO2GIomPIjnodxy2Znln5i86VPEKF
-	aCKxNQ0MaFYBQTgvYMaBxHGSBZQCfZqP+e8OUilF+ChdEnM5x3m903x9y8CZcczg
-	ikBkhw==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41skjrgmn2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Sep 2024 08:09:09 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48O78p5s000668;
-	Tue, 24 Sep 2024 08:09:08 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41t8fujx7v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Sep 2024 08:09:08 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48O897rG13107934
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Sep 2024 08:09:08 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 97DB558059;
-	Tue, 24 Sep 2024 08:09:07 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1139A58057;
-	Tue, 24 Sep 2024 08:09:05 +0000 (GMT)
-Received: from [9.204.204.92] (unknown [9.204.204.92])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 24 Sep 2024 08:09:04 +0000 (GMT)
-Message-ID: <71971d19-802e-4d42-88d2-512f031ebe56@linux.vnet.ibm.com>
-Date: Tue, 24 Sep 2024 13:39:01 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Bug][Git-Bisect][6.11.0-next-20240917]BUG: Unable to handle
- kernel data access on read at 0xc00c020000013d88
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        akpm@linux-foundation.org, minchan@kernel.org, terrelln@fb.com,
-        sfr@canb.auug.org.au
-References: <57130e48-dbb6-4047-a8c7-ebf5aaea93f4@linux.vnet.ibm.com>
- <20240923021557.GA38742@google.com>
- <03a55b4b-eb45-4187-9de6-ef06f8176d05@linux.vnet.ibm.com>
- <20240923152333.GB38742@google.com>
-Content-Language: en-GB
-From: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-In-Reply-To: <20240923152333.GB38742@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8tVPCqFal_zpP5LZVPlbyqaekVs3PsBD
-X-Proofpoint-ORIG-GUID: 8tVPCqFal_zpP5LZVPlbyqaekVs3PsBD
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XCXxx02q2z2yY0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 18:26:10 +1000 (AEST)
+Content-Type: text/plain; charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1727166344;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1y5CwMb2yKa3w/NIt/ri0sQu3/1xDcimH4xSI7fLtgQ=;
+	b=Tjp0P3kfHa/lcIBU5PC1B0bQQCvLGfyq8015xxHclGgdFLLPxO/1pTOinxm0BDuczsBQUv
+	m5ZY1EvglHhF0Inymte3gC1+yKjYpSfigpVX8d8pHJhpC3jeMXjhqqORPMtLQ/ZViMl3ti
+	cU3EvV03qYBYxqNC+aDS+qZDaTycsVA=
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,34 +50,127 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-24_02,2024-09-23_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- spamscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0
- clxscore=1015 malwarescore=0 mlxlogscore=828 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2409240053
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v4 10/13] mm: page_vma_mapped_walk: map_pte() use pte_offset_map_rw_nolock()
+Date: Tue, 24 Sep 2024 16:25:06 +0800
+Message-Id: <E2AAD3DA-4C73-4785-939C-13164FA8543D@linux.dev>
+References: <ecffb7d71363fa79048c0a929780215e0fa93491.1727148662.git.zhengqi.arch@bytedance.com>
+Cc: david@redhat.com, hughd@google.com, willy@infradead.org, vbabka@kernel.org,
+ akpm@linux-foundation.org, rppt@kernel.org, vishal.moola@gmail.com,
+ peterx@redhat.com, ryan.roberts@arm.com,
+ christophe.leroy2@cs-soprasteria.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <ecffb7d71363fa79048c0a929780215e0fa93491.1727148662.git.zhengqi.arch@bytedance.com>
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+X-Migadu-Flow: FLOW_OUT
 
-Hi,
 
-Test passed with the below patch.
 
-Regards,
+> On Sep 24, 2024, at 14:11, Qi Zheng <zhengqi.arch@bytedance.com> wrote:
+>=20
+> =EF=BB=BFIn the caller of map_pte(), we may modify the pvmw->pte after acq=
+uiring
+> the pvmw->ptl, so convert it to using pte_offset_map_rw_nolock(). At
+> this time, the pte_same() check is not performed after the pvmw->ptl held,=
 
-Venkat.
+> so we should get pmdval and do pmd_same() check to ensure the stability of=
 
-On 23/09/24 8:53 pm, Sergey Senozhatsky wrote:
-> Hi,
->
-> On (24/09/23 11:06), Venkat Rao Bagalkote wrote:
->> Hello,
->>
->> Below is the TC, I was running.
->>
->> https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/generic/ltp.py
-> Out of curiosity, does this [1] patch fix the issue for you?
->
-> [1] https://lore.kernel.org/all/20240923080211.820185-1-andrej.skvortzov@gmail.com/
+> pvmw->pmd.
+>=20
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+> mm/page_vma_mapped.c | 25 ++++++++++++++++++++-----
+> 1 file changed, 20 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index ae5cc42aa2087..6410f29b37c1b 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -13,9 +13,11 @@ static inline bool not_found(struct page_vma_mapped_wal=
+k *pvmw)
+>    return false;
+> }
+>=20
+> -static bool map_pte(struct page_vma_mapped_walk *pvmw, spinlock_t **ptlp)=
+
+> +static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+> +            spinlock_t **ptlp)
+> {
+>    pte_t ptent;
+> +    pmd_t pmdval;
+
+Why declare a new variable? Can=E2=80=99t we use *pmdvalp instead?
+
+>=20
+>    if (pvmw->flags & PVMW_SYNC) {
+>        /* Use the stricter lookup */
+> @@ -25,6 +27,7 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, s=
+pinlock_t **ptlp)
+>        return !!pvmw->pte;
+>    }
+>=20
+> +again:
+>    /*
+>     * It is important to return the ptl corresponding to pte,
+>     * in case *pvmw->pmd changes underneath us; so we need to
+> @@ -32,10 +35,11 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw,=
+ spinlock_t **ptlp)
+>     * proceeds to loop over next ptes, and finds a match later.
+>     * Though, in most cases, page lock already protects this.
+>     */
+> -    pvmw->pte =3D pte_offset_map_nolock(pvmw->vma->vm_mm, pvmw->pmd,
+> -                      pvmw->address, ptlp);
+> +    pvmw->pte =3D pte_offset_map_rw_nolock(pvmw->vma->vm_mm, pvmw->pmd,
+> +                         pvmw->address, &pmdval, ptlp);
+>    if (!pvmw->pte)
+>        return false;
+> +    *pmdvalp =3D pmdval;
+>=20
+>    ptent =3D ptep_get(pvmw->pte);
+>=20
+> @@ -67,8 +71,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, s=
+pinlock_t **ptlp)
+>    } else if (!pte_present(ptent)) {
+>        return false;
+>    }
+> +    spin_lock(*ptlp);
+> +    if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pvmw->pmd)))) {
+> +        pte_unmap_unlock(pvmw->pte, *ptlp);
+> +        goto again;
+> +    }
+>    pvmw->ptl =3D *ptlp;
+> -    spin_lock(pvmw->ptl);
+> +
+>    return true;
+> }
+>=20
+> @@ -278,7 +287,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *=
+pvmw)
+>            step_forward(pvmw, PMD_SIZE);
+>            continue;
+>        }
+> -        if (!map_pte(pvmw, &ptl)) {
+> +        if (!map_pte(pvmw, &pmde, &ptl)) {
+>            if (!pvmw->pte)
+>                goto restart;
+>            goto next_pte;
+> @@ -307,6 +316,12 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk=
+ *pvmw)
+>        if (!pvmw->ptl) {
+>            pvmw->ptl =3D ptl;
+>            spin_lock(pvmw->ptl);
+> +            if (unlikely(!pmd_same(pmde, pmdp_get_lockless(pvmw->pmd)))) {=
+
+> +                pte_unmap_unlock(pvmw->pte, pvmw->ptl);
+> +                pvmw->ptl =3D NULL;
+> +                pvmw->pte =3D NULL;
+> +                goto restart;
+> +            }
+>        }
+>        goto this_pte;
+>    } while (pvmw->address < end);
+> --
+> 2.20.1
+>=20
 
