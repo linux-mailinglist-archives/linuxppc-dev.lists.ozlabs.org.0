@@ -1,37 +1,37 @@
-Return-Path: <linuxppc-dev+bounces-1577-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1578-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA79F985392
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2024 09:18:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4C4985394
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2024 09:18:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XD7Ng61QPz2yMX;
-	Wed, 25 Sep 2024 17:17:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XD7Nh4V49z2y8B;
+	Wed, 25 Sep 2024 17:17:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.21
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727248675;
-	cv=none; b=RDyLPw9lE6du35w7oDCLbtHcIzr/f7zC74ZX2X2PI9c15TY0FJXPmk7dsBenQC97fenVZI4TrIpmxOJim5R+PfqXLLA5fFe3gFDgiHWeH83atVhu0+ya121cMpD6f6rzSfhTtwmz31gdoyfaOnukTKx7N0RWJn7wFr7y0/4xoOXdTw4siYo14j1M3p0ID016KPSnp+6+G53rFFyCa/5xPJQX2QiRvC3NqvbCbnv02yGraZPIgZMHY+7pPG1+EZzCjzuf5myNlU19jnrGm8T4VUAGn0oCNpG6NksF1toJSpDTqegqlWHHrMSAdYWIDEW86Zjtd+sf0073xG1CcosStA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727248676;
+	cv=none; b=frnaK7NyxwwpoU8s8BnkWq8JVyxOMuwu5vtXVrywu55hdwwXoyJQSb0keDAGax5nLOJKVZNlV/wDsNg63yFthRK0N0LGb8xv2dez3yHXcsfZxR4XsV0fEuMwJSGuYiEZ3UNr+ODa1sVnz0gEfAGzil827tsoJXi4dO304JNfQ84tIMj2kV0o6emFYTPfXK990cM/zZGwNqNjb7vxtG1Mx8ssN7n0qimR4Vuk80YN857gvqsOzT/rjpKb2J4MUsPsV2A8hEeiYMuKXzJM+AJF/jBShPv+KF4xY0i5SqlCadY1nMaQXBQK0wQTR6QRNgKNq86xM77R/Zhlhn/l7Y1RGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727248675; c=relaxed/relaxed;
-	bh=Ay75kz6DF5TjcAU7u8b/5Fi3fF1spVOfMFprgHBXrqU=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=ikt6ogkgOtv1vXg/SzT0IVuGLbcZifjiFnbPVNYE99IPdH1nrFJoE5m/9wQEsJPlrpjesZ51qPWCDva45Kbw2ngbuRiaOg4KwxL2k9R1rOLlz75XRI0385VEB3AbBIIq/Hyud/t4aHKoeHeJe8mM0kWUkG1yfv6qpc7VME/I4tRba2+P1Uy+AVNeTNlpz+HJyqZYZRn54JlaOgbVqsjY/8nIbdaXBqWnb9wvyrSYpr4vmaP74fx+QfKJrA8kXejUK+ecFdfiqUgVFREOHCYtCZncRiWexsDWIbVJHko3UURYBI7BxsYU3hcv25EFsvBYnpKMmOjN5bsyKPoJklbOJg==
+	t=1727248676; c=relaxed/relaxed;
+	bh=v5BsXWvwIkOMgYeBmb6sq4on4GJnNAHeTc8G7fU1ayM=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=Q1rHFOe7V4UnGMyTCY/qHxTFUl7FuJCt1rQui344nW3+HNjpTDypGdLh6HHaPw6ZcziLqjNDnPGam+Pmu320rbuG2sco8s6UaKlem4y/ok+eoL/g3lyDskZYJ58IiFH/CbCBfKp2s0RfdqXTl+d6xIjUKaFB4TP9gEKTtPmpoTf4aS7/kSquVmX2zKqvIO7PTqYo2tcymtTkGM3kzAFZRLTycGMKGyPdstgCqRWVfNkrLAy4sBzkfNuXH58d5hsHBzcA5S8CUtH4LLkN/G3XUoltJP/4Wrs28YLm14wS4OduB8d1EG19AvKvKSD+Ktbd51jw9TBd0KGkOos8LbR+qw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XD7Ng1Gpgz2y8B
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2024 17:17:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XD7Nh0kvKz2yPG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2024 17:17:56 +1000 (AEST)
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 985E02025F9;
-	Wed, 25 Sep 2024 09:17:52 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C8E212029FB;
+	Wed, 25 Sep 2024 09:17:53 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 6896C2029FB;
-	Wed, 25 Sep 2024 09:17:52 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9691C201FFF;
+	Wed, 25 Sep 2024 09:17:53 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id B88A9183AD46;
-	Wed, 25 Sep 2024 15:17:50 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id E6E51183AD44;
+	Wed, 25 Sep 2024 15:17:51 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: vkoul@kernel.org,
 	perex@perex.cz,
@@ -46,9 +46,9 @@ To: vkoul@kernel.org,
 	lgirdwood@gmail.com,
 	broonie@kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 3/7] ASoC: fsl_asrc: define functions for memory to memory usage
-Date: Wed, 25 Sep 2024 14:55:12 +0800
-Message-Id: <1727247316-16156-4-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH v4 4/7] ASoC: fsl_easrc: define functions for memory to memory usage
+Date: Wed, 25 Sep 2024 14:55:13 +0800
+Message-Id: <1727247316-16156-5-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1727247316-16156-1-git-send-email-shengjiu.wang@nxp.com>
 References: <1727247316-16156-1-git-send-email-shengjiu.wang@nxp.com>
@@ -63,104 +63,102 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
 ASRC can be used on memory to memory case, define several
-functions for m2m usage.
-
-m2m_prepare: prepare for the start step
-m2m_start: the start step
-m2m_unprepare: unprepare for stop step, optional
-m2m_stop: stop step
-m2m_check_format: check format is supported or not
-m2m_calc_out_len: calculate output length according to input length
-m2m_get_maxburst: burst size for dma
-m2m_pair_suspend: suspend function of pair, optional.
-m2m_pair_resume: resume function of pair
-get_output_fifo_size: get remaining data size in FIFO
+functions for m2m usage and export them as function pointer.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- sound/soc/fsl/fsl_asrc.c        | 142 ++++++++++++++++++++++++++++++++
- sound/soc/fsl/fsl_asrc.h        |   2 +
- sound/soc/fsl/fsl_asrc_common.h |  61 ++++++++++++++
- 3 files changed, 205 insertions(+)
+ sound/soc/fsl/fsl_easrc.c | 228 ++++++++++++++++++++++++++++++++++++++
+ sound/soc/fsl/fsl_easrc.h |   4 +
+ 2 files changed, 232 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-index b793263291dc..b1b35954f7ac 100644
---- a/sound/soc/fsl/fsl_asrc.c
-+++ b/sound/soc/fsl/fsl_asrc.c
-@@ -1063,6 +1063,139 @@ static int fsl_asrc_get_fifo_addr(u8 dir, enum asrc_pair_index index)
- 	return REG_ASRDx(dir, index);
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index 962f30912091..a1a7a90ff5ef 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -1861,6 +1861,224 @@ static int fsl_easrc_get_fifo_addr(u8 dir, enum asrc_pair_index index)
+ 	return REG_EASRC_FIFO(dir, index);
  }
  
 +/* Get sample numbers in FIFO */
-+static unsigned int fsl_asrc_get_output_fifo_size(struct fsl_asrc_pair *pair)
++static unsigned int fsl_easrc_get_output_fifo_size(struct fsl_asrc_pair *pair)
 +{
 +	struct fsl_asrc *asrc = pair->asrc;
 +	enum asrc_pair_index index = pair->index;
 +	u32 val;
 +
-+	regmap_read(asrc->regmap, REG_ASRFST(index), &val);
++	regmap_read(asrc->regmap, REG_EASRC_SFS(index), &val);
++	val &= EASRC_SFS_NSGO_MASK;
 +
-+	val &= ASRFSTi_OUTPUT_FIFO_MASK;
-+
-+	return val >> ASRFSTi_OUTPUT_FIFO_SHIFT;
++	return val >> EASRC_SFS_NSGO_SHIFT;
 +}
 +
-+static int fsl_asrc_m2m_prepare(struct fsl_asrc_pair *pair)
++static int fsl_easrc_m2m_prepare(struct fsl_asrc_pair *pair)
 +{
-+	struct fsl_asrc_pair_priv *pair_priv = pair->private;
++	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
 +	struct fsl_asrc *asrc = pair->asrc;
 +	struct device *dev = &asrc->pdev->dev;
-+	struct asrc_config config;
 +	int ret;
 +
-+	/* fill config */
-+	config.pair = pair->index;
-+	config.channel_num = pair->channels;
-+	config.input_sample_rate = pair->rate[IN];
-+	config.output_sample_rate = pair->rate[OUT];
-+	config.input_format = pair->sample_format[IN];
-+	config.output_format = pair->sample_format[OUT];
-+	config.inclk = INCLK_NONE;
-+	config.outclk = OUTCLK_ASRCK1_CLK;
++	ctx_priv->in_params.sample_rate = pair->rate[IN];
++	ctx_priv->in_params.sample_format = pair->sample_format[IN];
++	ctx_priv->out_params.sample_rate = pair->rate[OUT];
++	ctx_priv->out_params.sample_format = pair->sample_format[OUT];
 +
-+	pair_priv->config = &config;
-+	ret = fsl_asrc_config_pair(pair, true);
++	ctx_priv->in_params.fifo_wtmk = FSL_EASRC_INPUTFIFO_WML;
++	ctx_priv->out_params.fifo_wtmk = FSL_EASRC_OUTPUTFIFO_WML;
++	/* Fill the right half of the re-sampler with zeros */
++	ctx_priv->rs_init_mode = 0x2;
++	/* Zero fill the right half of the prefilter */
++	ctx_priv->pf_init_mode = 0x2;
++
++	ret = fsl_easrc_set_ctx_format(pair,
++				       &ctx_priv->in_params.sample_format,
++				       &ctx_priv->out_params.sample_format);
 +	if (ret) {
-+		dev_err(dev, "failed to config pair: %d\n", ret);
++		dev_err(dev, "failed to set context format: %d\n", ret);
 +		return ret;
 +	}
 +
-+	pair->first_convert = 1;
++	ret = fsl_easrc_config_context(asrc, pair->index);
++	if (ret) {
++		dev_err(dev, "failed to config context %d\n", ret);
++		return ret;
++	}
 +
++	ctx_priv->in_params.iterations = 1;
++	ctx_priv->in_params.group_len = pair->channels;
++	ctx_priv->in_params.access_len = pair->channels;
++	ctx_priv->out_params.iterations = 1;
++	ctx_priv->out_params.group_len = pair->channels;
++	ctx_priv->out_params.access_len = pair->channels;
++
++	ret = fsl_easrc_set_ctx_organziation(pair);
++	if (ret) {
++		dev_err(dev, "failed to set fifo organization\n");
++		return ret;
++	}
++
++	/* The context start flag */
++	pair->first_convert = 1;
 +	return 0;
 +}
 +
-+static int fsl_asrc_m2m_start(struct fsl_asrc_pair *pair)
++static int fsl_easrc_m2m_start(struct fsl_asrc_pair *pair)
 +{
++	/* start context once */
 +	if (pair->first_convert) {
-+		fsl_asrc_start_pair(pair);
++		fsl_easrc_start_context(pair);
 +		pair->first_convert = 0;
 +	}
-+	/*
-+	 * Clear DMA request during the stall state of ASRC:
-+	 * During STALL state, the remaining in input fifo would never be
-+	 * smaller than the input threshold while the output fifo would not
-+	 * be bigger than output one. Thus the DMA request would be cleared.
-+	 */
-+	fsl_asrc_set_watermarks(pair, ASRC_FIFO_THRESHOLD_MIN,
-+				ASRC_FIFO_THRESHOLD_MAX);
-+
-+	/* Update the real input threshold to raise DMA request */
-+	fsl_asrc_set_watermarks(pair, ASRC_M2M_INPUTFIFO_WML,
-+				ASRC_M2M_OUTPUTFIFO_WML);
 +
 +	return 0;
 +}
 +
-+static int fsl_asrc_m2m_stop(struct fsl_asrc_pair *pair)
++static int fsl_easrc_m2m_stop(struct fsl_asrc_pair *pair)
 +{
++	/* Stop pair/context */
 +	if (!pair->first_convert) {
-+		fsl_asrc_stop_pair(pair);
++		fsl_easrc_stop_context(pair);
 +		pair->first_convert = 1;
 +	}
 +
@@ -168,194 +166,179 @@ index b793263291dc..b1b35954f7ac 100644
 +}
 +
 +/* calculate capture data length according to output data length and sample rate */
-+static int fsl_asrc_m2m_calc_out_len(struct fsl_asrc_pair *pair, int input_buffer_length)
++static int fsl_easrc_m2m_calc_out_len(struct fsl_asrc_pair *pair, int input_buffer_length)
 +{
-+	unsigned int in_width, out_width;
++	struct fsl_asrc *easrc = pair->asrc;
++	struct fsl_easrc_priv *easrc_priv = easrc->private;
++	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
++	unsigned int in_rate = ctx_priv->in_params.norm_rate;
++	unsigned int out_rate = ctx_priv->out_params.norm_rate;
 +	unsigned int channels = pair->channels;
 +	unsigned int in_samples, out_samples;
++	unsigned int in_width, out_width;
 +	unsigned int out_length;
++	unsigned int frac_bits;
++	u64 val1, val2;
 +
-+	in_width = snd_pcm_format_physical_width(pair->sample_format[IN]) / 8;
-+	out_width = snd_pcm_format_physical_width(pair->sample_format[OUT]) / 8;
++	switch (easrc_priv->rs_num_taps) {
++	case EASRC_RS_32_TAPS:
++		/* integer bits = 5; */
++		frac_bits = 39;
++		break;
++	case EASRC_RS_64_TAPS:
++		/* integer bits = 6; */
++		frac_bits = 38;
++		break;
++	case EASRC_RS_128_TAPS:
++		/* integer bits = 7; */
++		frac_bits = 37;
++		break;
++	default:
++		return -EINVAL;
++	}
 +
-+	in_samples = input_buffer_length / in_width / channels;
-+	out_samples = pair->rate[OUT] * in_samples / pair->rate[IN];
-+	out_length = (out_samples - ASRC_OUTPUT_LAST_SAMPLE) * out_width * channels;
++	val1 = (u64)in_rate << frac_bits;
++	do_div(val1, out_rate);
++	val1 += (s64)ctx_priv->ratio_mod << (frac_bits - 31);
++
++	in_width = snd_pcm_format_physical_width(ctx_priv->in_params.sample_format) / 8;
++	out_width = snd_pcm_format_physical_width(ctx_priv->out_params.sample_format) / 8;
++
++	ctx_priv->in_filled_len += input_buffer_length;
++	if (ctx_priv->in_filled_len <= ctx_priv->in_filled_sample * in_width * channels) {
++		out_length = 0;
++	} else {
++		in_samples = ctx_priv->in_filled_len / (in_width * channels) -
++			     ctx_priv->in_filled_sample;
++
++		/* right shift 12 bit to make ratio in 32bit space */
++		val2 = (u64)in_samples << (frac_bits - 12);
++		val1 = val1 >> 12;
++		do_div(val2, val1);
++		out_samples = val2;
++
++		out_length = out_samples * out_width * channels;
++		ctx_priv->in_filled_len = ctx_priv->in_filled_sample * in_width * channels;
++	}
 +
 +	return out_length;
 +}
 +
-+static int fsl_asrc_m2m_get_maxburst(u8 dir, struct fsl_asrc_pair *pair)
++static int fsl_easrc_m2m_get_maxburst(u8 dir, struct fsl_asrc_pair *pair)
 +{
-+	struct fsl_asrc *asrc = pair->asrc;
-+	struct fsl_asrc_priv *asrc_priv = asrc->private;
-+	int wml = (dir == IN) ? ASRC_M2M_INPUTFIFO_WML : ASRC_M2M_OUTPUTFIFO_WML;
++	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
 +
-+	if (!asrc_priv->soc->use_edma)
-+		return wml * pair->channels;
++	if (dir == IN)
++		return ctx_priv->in_params.fifo_wtmk * pair->channels;
 +	else
-+		return 1;
++		return ctx_priv->out_params.fifo_wtmk * pair->channels;
 +}
 +
-+static int fsl_asrc_m2m_get_cap(struct fsl_asrc_m2m_cap *cap)
++static int fsl_easrc_m2m_pair_suspend(struct fsl_asrc_pair *pair)
 +{
-+	cap->fmt_in = FSL_ASRC_FORMATS;
-+	cap->fmt_out = FSL_ASRC_FORMATS | SNDRV_PCM_FMTBIT_S8;
-+
-+	cap->rate_in = supported_asrc_rate;
-+	cap->rate_in_count = ARRAY_SIZE(supported_asrc_rate);
-+	cap->rate_out = supported_asrc_rate;
-+	cap->rate_out_count = ARRAY_SIZE(supported_asrc_rate);
-+	cap->chan_min = 1;
-+	cap->chan_max = 10;
++	fsl_easrc_stop_context(pair);
 +
 +	return 0;
 +}
 +
-+static int fsl_asrc_m2m_pair_resume(struct fsl_asrc_pair *pair)
++static int fsl_easrc_m2m_pair_resume(struct fsl_asrc_pair *pair)
 +{
-+	struct fsl_asrc *asrc = pair->asrc;
-+	int i;
-+
-+	for (i = 0; i < pair->channels * 4; i++)
-+		regmap_write(asrc->regmap, REG_ASRDI(pair->index), 0);
++	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
 +
 +	pair->first_convert = 1;
++	ctx_priv->in_filled_len = 0;
++
 +	return 0;
 +}
 +
- static int fsl_asrc_runtime_resume(struct device *dev);
- static int fsl_asrc_runtime_suspend(struct device *dev);
- 
-@@ -1147,6 +1280,15 @@ static int fsl_asrc_probe(struct platform_device *pdev)
- 	asrc->get_fifo_addr = fsl_asrc_get_fifo_addr;
- 	asrc->pair_priv_size = sizeof(struct fsl_asrc_pair_priv);
- 
-+	asrc->m2m_prepare = fsl_asrc_m2m_prepare;
-+	asrc->m2m_start = fsl_asrc_m2m_start;
-+	asrc->m2m_stop = fsl_asrc_m2m_stop;
-+	asrc->get_output_fifo_size = fsl_asrc_get_output_fifo_size;
-+	asrc->m2m_calc_out_len = fsl_asrc_m2m_calc_out_len;
-+	asrc->m2m_get_maxburst = fsl_asrc_m2m_get_maxburst;
-+	asrc->m2m_pair_resume = fsl_asrc_m2m_pair_resume;
-+	asrc->m2m_get_cap = fsl_asrc_m2m_get_cap;
++/* val is Q31 */
++static int fsl_easrc_m2m_set_ratio_mod(struct fsl_asrc_pair *pair, int val)
++{
++	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
++	struct fsl_asrc *easrc = pair->asrc;
++	struct fsl_easrc_priv *easrc_priv = easrc->private;
++	unsigned int frac_bits;
 +
- 	if (of_device_is_compatible(np, "fsl,imx35-asrc")) {
- 		asrc_priv->clk_map[IN] = input_clk_map_imx35;
- 		asrc_priv->clk_map[OUT] = output_clk_map_imx35;
-diff --git a/sound/soc/fsl/fsl_asrc.h b/sound/soc/fsl/fsl_asrc.h
-index 86d2422ad606..1c492eb237f5 100644
---- a/sound/soc/fsl/fsl_asrc.h
-+++ b/sound/soc/fsl/fsl_asrc.h
-@@ -12,6 +12,8 @@
- 
- #include  "fsl_asrc_common.h"
- 
-+#define ASRC_M2M_INPUTFIFO_WML		0x4
-+#define ASRC_M2M_OUTPUTFIFO_WML		0x2
- #define ASRC_DMA_BUFFER_NUM		2
- #define ASRC_INPUTFIFO_THRESHOLD	32
- #define ASRC_OUTPUTFIFO_THRESHOLD	32
-diff --git a/sound/soc/fsl/fsl_asrc_common.h b/sound/soc/fsl/fsl_asrc_common.h
-index 7e1c13ca37f1..3bdd6ea07c09 100644
---- a/sound/soc/fsl/fsl_asrc_common.h
-+++ b/sound/soc/fsl/fsl_asrc_common.h
-@@ -21,6 +21,26 @@ enum asrc_pair_index {
- 
- #define PAIR_CTX_NUM  0x4
- 
-+/**
-+ * struct fsl_asrc_m2m_cap - capability data
-+ * @fmt_in: input sample format
-+ * @fmt_out: output sample format
-+ * @chan_min: minimum channel number
-+ * @chan_max: maximum channel number
-+ * @rate_in: minimum rate
-+ * @rate_out: maximum rete
-+ */
-+struct fsl_asrc_m2m_cap {
-+	u64 fmt_in;
-+	u64 fmt_out;
-+	int chan_min;
-+	int chan_max;
-+	const unsigned int *rate_in;
-+	int rate_in_count;
-+	const unsigned int *rate_out;
-+	int rate_out_count;
-+};
++	ctx_priv->ratio_mod += val;
 +
- /**
-  * fsl_asrc_pair: ASRC Pair common data
-  *
-@@ -34,6 +54,13 @@ enum asrc_pair_index {
-  * @pos: hardware pointer position
-  * @req_dma_chan: flag to release dev_to_dev chan
-  * @private: pair private area
-+ * @complete: dma task complete
-+ * @sample_format: format of m2m
-+ * @rate: rate of m2m
-+ * @buf_len: buffer length of m2m
-+ * @dma_buffer: buffer pointers
-+ * @first_convert: start of conversion
-+ * @ratio_mod: ratio modification
++	switch (easrc_priv->rs_num_taps) {
++	case EASRC_RS_32_TAPS:
++		/* integer bits = 5; */
++		frac_bits = 39;
++		break;
++	case EASRC_RS_64_TAPS:
++		/* integer bits = 6; */
++		frac_bits = 38;
++		break;
++	case EASRC_RS_128_TAPS:
++		/* integer bits = 7; */
++		frac_bits = 37;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	val <<= (frac_bits - 31);
++	regmap_write(easrc->regmap, REG_EASRC_RUC(pair->index), EASRC_RSUC_RS_RM(val));
++
++	return 0;
++}
++
++static int fsl_easrc_m2m_get_cap(struct fsl_asrc_m2m_cap *cap)
++{
++	cap->fmt_in = FSL_EASRC_FORMATS;
++	cap->fmt_out = FSL_EASRC_FORMATS | SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE;
++	cap->rate_in = easrc_rates;
++	cap->rate_in_count = ARRAY_SIZE(easrc_rates);
++	cap->rate_out = easrc_rates;
++	cap->rate_out_count = ARRAY_SIZE(easrc_rates);
++	cap->chan_min = 1;
++	cap->chan_max = 32;
++	return 0;
++}
++
+ static const struct of_device_id fsl_easrc_dt_ids[] = {
+ 	{ .compatible = "fsl,imx8mn-easrc",},
+ 	{}
+@@ -1926,6 +2144,16 @@ static int fsl_easrc_probe(struct platform_device *pdev)
+ 	easrc->release_pair = fsl_easrc_release_context;
+ 	easrc->get_fifo_addr = fsl_easrc_get_fifo_addr;
+ 	easrc->pair_priv_size = sizeof(struct fsl_easrc_ctx_priv);
++	easrc->m2m_prepare = fsl_easrc_m2m_prepare;
++	easrc->m2m_start = fsl_easrc_m2m_start;
++	easrc->m2m_stop = fsl_easrc_m2m_stop;
++	easrc->get_output_fifo_size = fsl_easrc_get_output_fifo_size;
++	easrc->m2m_calc_out_len = fsl_easrc_m2m_calc_out_len;
++	easrc->m2m_get_maxburst = fsl_easrc_m2m_get_maxburst;
++	easrc->m2m_pair_suspend = fsl_easrc_m2m_pair_suspend;
++	easrc->m2m_pair_resume = fsl_easrc_m2m_pair_resume;
++	easrc->m2m_set_ratio_mod = fsl_easrc_m2m_set_ratio_mod;
++	easrc->m2m_get_cap = fsl_easrc_m2m_get_cap;
+ 
+ 	easrc_priv->rs_num_taps = EASRC_RS_32_TAPS;
+ 	easrc_priv->const_coeff = 0x3FF0000000000000;
+diff --git a/sound/soc/fsl/fsl_easrc.h b/sound/soc/fsl/fsl_easrc.h
+index 7c70dac52713..c9f770862662 100644
+--- a/sound/soc/fsl/fsl_easrc.h
++++ b/sound/soc/fsl/fsl_easrc.h
+@@ -601,6 +601,8 @@ struct fsl_easrc_slot {
+  * @out_missed_sample: sample missed in output
+  * @st1_addexp: exponent added for stage1
+  * @st2_addexp: exponent added for stage2
++ * @ratio_mod: update ratio
++ * @in_filled_len: input filled length
   */
- struct fsl_asrc_pair {
- 	struct fsl_asrc *asrc;
-@@ -49,6 +76,15 @@ struct fsl_asrc_pair {
- 	bool req_dma_chan;
- 
- 	void *private;
-+
-+	/* used for m2m */
-+	struct completion complete[2];
-+	snd_pcm_format_t sample_format[2];
-+	unsigned int rate[2];
-+	unsigned int buf_len[2];
-+	struct snd_dma_buffer dma_buffer[2];
-+	unsigned int first_convert;
-+	unsigned int ratio_mod;
+ struct fsl_easrc_ctx_priv {
+ 	struct fsl_easrc_io_params in_params;
+@@ -618,6 +620,8 @@ struct fsl_easrc_ctx_priv {
+ 	int out_missed_sample;
+ 	int st1_addexp;
+ 	int st2_addexp;
++	int ratio_mod;
++	unsigned int in_filled_len;
  };
  
  /**
-@@ -72,6 +108,17 @@ struct fsl_asrc_pair {
-  * @request_pair: function pointer
-  * @release_pair: function pointer
-  * @get_fifo_addr: function pointer
-+ * @m2m_get_cap: function pointer
-+ * @m2m_prepare: function pointer
-+ * @m2m_start: function pointer
-+ * @m2m_unprepare: function pointer
-+ * @m2m_stop: function pointer
-+ * @m2m_calc_out_len: function pointer
-+ * @m2m_get_maxburst: function pointer
-+ * @m2m_pair_suspend: function pointer
-+ * @m2m_pair_resume: function pointer
-+ * @m2m_set_ratio_mod: function pointer
-+ * @get_output_fifo_size: function pointer
-  * @pair_priv_size: size of pair private struct.
-  * @private: private data structure
-  */
-@@ -97,6 +144,20 @@ struct fsl_asrc {
- 	int (*request_pair)(int channels, struct fsl_asrc_pair *pair);
- 	void (*release_pair)(struct fsl_asrc_pair *pair);
- 	int (*get_fifo_addr)(u8 dir, enum asrc_pair_index index);
-+	int (*m2m_get_cap)(struct fsl_asrc_m2m_cap *cap);
-+
-+	int (*m2m_prepare)(struct fsl_asrc_pair *pair);
-+	int (*m2m_start)(struct fsl_asrc_pair *pair);
-+	int (*m2m_unprepare)(struct fsl_asrc_pair *pair);
-+	int (*m2m_stop)(struct fsl_asrc_pair *pair);
-+
-+	int (*m2m_calc_out_len)(struct fsl_asrc_pair *pair, int input_buffer_length);
-+	int (*m2m_get_maxburst)(u8 dir, struct fsl_asrc_pair *pair);
-+	int (*m2m_pair_suspend)(struct fsl_asrc_pair *pair);
-+	int (*m2m_pair_resume)(struct fsl_asrc_pair *pair);
-+	int (*m2m_set_ratio_mod)(struct fsl_asrc_pair *pair, int val);
-+
-+	unsigned int (*get_output_fifo_size)(struct fsl_asrc_pair *pair);
- 	size_t pair_priv_size;
- 
- 	void *private;
 -- 
 2.34.1
 
