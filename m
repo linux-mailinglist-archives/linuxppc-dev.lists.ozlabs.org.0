@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-1596-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1597-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D31986803
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2024 23:07:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE79986806
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2024 23:07:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XDTnZ1d0Vz2yRD;
-	Thu, 26 Sep 2024 07:07:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XDTnk041Pz2xCW;
+	Thu, 26 Sep 2024 07:07:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727298434;
-	cv=none; b=N+8QRRP3NNoVlhke5H6bwQ5i9G2s0fc46HPR+OO+n1rROBbSpEc/cFWp0TdAWl8dNZzOfeouaeT+0ZXn5lqlETRiLrIEP23NEv1EUV8FiHJ9AFaLKDLPJowcAOiE2xP+4Kc/SFHhfdK1GNJ1W6FKaIYNXY1tAOHiG/X7NHekKsYtMqNM/yfTFLcAY5yDV4EwNHKE9wlTvPR8IQYJo6zS/GKD6SoDcDStTp382sobtK82iHVdKt6vE+jga/ad1kS70tmkUfs4F3seZ0QQl33CljDr/P0zp1VRjkGFtKS68ZsvIKCQrQ6fiHgn1DQP4KaOEeCx/Z50usXqu5/9hUakLQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727298441;
+	cv=none; b=AHLSO0WCXtZxOrTfzipIxH1vGNsUnsWzhTB37viOQrymdLagRCrohBZgaX9Ac6jxkvE6yR/8eYAjehuIJIcvizfte6WFldH8W8xpu5kQHrvX0PZNGYSaehjcDj3iKz5KIuu0fwhfFzD5q6QGum4a7DsBeNMxaS0xlIwx/uWMvkghoMsYyO+NSCNgCFFxn5fE10h9hdEWfoaZ4AuN26sib939Wkavx7gBpRfQsBtjXIac/ni4aShzre2axjGuMWi3V5wsm710xvuH57RxO7NSohSrVGvmlR1wd7Varf1hdxq3zyhUxcxJY5YJf9b1tUGCIrkMERq3pQxs5Sq4zwhKXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727298434; c=relaxed/relaxed;
-	bh=8CVTgd+7b6LEU/GD97fZdlNzkmFWQW6tq/yEuPivrIc=;
+	t=1727298441; c=relaxed/relaxed;
+	bh=R2qYtjyBIuz80JpmkuEhL9W0+O6x6xatHtzfGo2zqwA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D1Xdc5SDAZuAHO76xWgl21ijftujV3VcDakVPMcjVqRYwl+836F0Jqxqdd/QBIXEJXumh3Mdtpzx2CKvMknwr/arTBEqNcij4DYxPlJWxpVxfZd65RYlZv+MIzwQ4To9vG+iYwAorbcJKsuRQ+MoAjWZlTlWjtMjTSGMWPTpb8ZoUKYlePtEqqKBva2ZpN+IntNq+nd5nhF0z+kdNhoII127iFjwcBEVq+FPa+BUPgo2pBdXIC4mtXrBnGV7EnyxZTwO8AQfnApmLYqrCKdDij3DXOUSkVNhEWcZ3oqcnMXVHb+Mp1OSwjy2/EIK/FpkgcCB3mgSCe8YmEt2kEgSBA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RFMABg80; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=Fk0DqBbucdGO+WmqkG5qm08RkmbpdnjgPD4zoWU66xaJNzw6Fa6FdXAFk7BFbTOMFlizCz7OFg/t2SBha15E9JRlmttL62qdUChwAyhOIGakHuMNjOKSVCBy96y5X853vfSk2oJPQcd0GBEqxhMlHmRPCi9YutmEe3ORvgJBc9J9LhyQT2KjBLTi0fUEY4rFORiAmlcPqTyrmJDHDzaQWoDE2VC9CkcBeFqFG45NhyPuWUtFHzmQKBXaNPngjV7uR0s39VgWD2P8srn1PNdSA1Qno8nUU9xiC57d/dPEvCwYuTUTcWciDK9cCESWN8/Ld3S8UNFbIfx6STHK84Oi8g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UqUeN44x; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RFMABg80;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UqUeN44x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XDTnY5Tf0z2yPR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2024 07:07:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XDTnj3tSVz2xBm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2024 07:07:21 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 8C5C7A4489A;
-	Wed, 25 Sep 2024 21:07:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44A1C4CECF;
-	Wed, 25 Sep 2024 21:07:04 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id EB6B4A443AA;
+	Wed, 25 Sep 2024 21:07:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93BAC4CEC3;
+	Wed, 25 Sep 2024 21:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727298431;
-	bh=9WWq9eu7cuIVH7faIexy4b1QmBlJqq/TWxw3ZIHVjt4=;
+	s=k20201202; t=1727298438;
+	bh=ODTKCHXxIZE3eYSHvfpmzYWSeBfhCgyCnxo8sL2fUHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RFMABg80UAzlZRGWyrqfIVrpC9pf+KZ7ccnvBYINSdZOE0vEoxMWceBAliZEcMTDW
-	 RCpJv2VfcSBLoHeF7E0VDAWsrUKkSgwBOV+P/dVgyITQ122pl5kO5UEOgqjNQZdVfO
-	 h4SNxxhIeb2DH76DzE4IlhLrg0T8UQo/j9VkVlXW+oUFymIn6rtT8GPYYlUEcZu7uZ
-	 wqHhouBebch/JiLDf7+51e9ufJfgMu3DNhow/hM/VsMPDaC6oAMSQo6eXKF+wHEHKy
-	 BbipYo1sQUC+mbsQHvc97qE69iXeCHgMwZE4eDvGEVZFYu6lq2naZhA8bXu43iX0nU
-	 OKOKG0CyQpcrg==
+	b=UqUeN44x2CyaBUPaNDkT98k6QN3VewzS7CUSKeQCD7Er05TZWE0qz2tzTPJ5xFD/o
+	 SZdsfPJBUcVK4dRlnz8/NqnIbj/TOm7FASPiv+Zps96TFrJjYpEVq4XxK0nqdTGty8
+	 cVz2cOJxhyz6vRclrGlh3FDM1KAMq5JWGh1Z3LYFBAgcqBisNYyEg6kxvm+G+h1/34
+	 AKFLgqXcNy+hn1N/9l0tNjYChvvNXi0fQ3/AHQvp7aGYCZu8vedTaYrNErzVdPI0aH
+	 yTvTayfqA+sFZUYQ+NLii51HXTvqMUHW975iSPHKFjGcwkF95HyatEteJJwpOUEYZt
+	 xQwPkqnb9dgXw==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-mm@kvack.org
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -77,9 +77,9 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linux-parisc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH 4/5] asm-generic: use asm-generic/mman-common.h on parisc and alpha
-Date: Wed, 25 Sep 2024 21:06:14 +0000
-Message-Id: <20240925210615.2572360-5-arnd@kernel.org>
+Subject: [PATCH 5/5] [RFC] mm: Remove MAP_UNINITIALIZED support
+Date: Wed, 25 Sep 2024 21:06:15 +0000
+Message-Id: <20240925210615.2572360-6-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240925210615.2572360-1-arnd@kernel.org>
 References: <20240925210615.2572360-1-arnd@kernel.org>
@@ -96,227 +96,287 @@ Content-Transfer-Encoding: 8bit
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-These two architectures each have their own set of MAP_* flags, like
-powerpc, mips and others do. In addition, the msync() flags are also
-different, here both define the same flags but in a different order.
-Finally, alpha also has a custom MADV_DONTNEED flag for madvise.
+MAP_UNINITIALIZED was added back in 2009 for NOMMU kernels, specifically
+for blackfin, which is long gone. MAP_HUGE_SHIFT/MAP_HUGE_MASK were
+added in 2012 for architectures supporting hugepages, which at the time
+did not overlap with the ones supporting NOMMU.
 
-Make the generic MADV_DONTNEED and MS_* definitions conditional on
-them already being defined and then include the common header
-header from both architectures, to remove the bulk of the contents.
+Adding the macro under an #ifdef was obviously a mistake, which
+Christoph Hellwig tried to address by making it unconditionally defined
+to 0x4000000 as part of the series to support RISC-V NOMMU kernels. At
+this point linux/mman.h contained two conflicting definitions for bit 26,
+though the two are still mutually exclusive at runtime in all supported
+configurations.
 
+According to the commit 854e9ed09ded ("mm: support madvise(MADV_FREE)")
+description, it was previously used internally by facebook, which
+would have resulted in MAP_HUGE_1MB turning into MAP_HUGE_2MB
+with MAP_UNINITIALIZED enabled, and every other page size implying
+MAP_UNINITIALIZED. I assume there are no remaining out of tree users
+on MMU-enabled kernels today.
+
+I do not see any sensible way to redefine the macros for the ABI in
+a way avoids breaking something. The only ideas so far are:
+
+ - do nothing, try to document the bug, hope for the best
+
+ - remove the kernel implementation and redefine MAP_UNINITIALIZED to
+   zero in the header to silently turn it off for everyone. There are
+   few NOMMU users left, and the ones that do use NOMMU usually turn
+   off MMAP_ALLOW_UNINITIALIZED, as it still has the potential to cause
+   bugs and even security issues on systems with a memory protection
+   unit.
+
+ - remove both the implementation and the macro to force a build
+   failure for anyone trying to use the feature. This way we can
+   see who complains and whether we need to put it back in some
+   form or change the userspace sources to no longer pass the flag.
+
+Implement the third option here for the sake of discussion.
+
+Link: https://git.uclibc.org/uClibc/commit/libc/stdlib/malloc/malloc.c?id=00673f93826bf1f
+Link: https://lore.kernel.org/lkml/20190610221621.10938-4-hch@lst.de/
+Link: https://lore.kernel.org/lkml/1352157848-29473-1-git-send-email-andi@firstfloor.org/
+Link: https://lore.kernel.org/lkml/1448865583-2446-2-git-send-email-minchan@kernel.org/
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: Greg Ungerer <gerg@linux-m68k.org>
+Cc: Vladimir Murzin <vladimir.murzin@arm.com>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/alpha/include/uapi/asm/mman.h     | 68 +++-----------------------
- arch/parisc/include/uapi/asm/mman.h    | 66 +------------------------
- include/uapi/asm-generic/mman-common.h |  5 ++
- 3 files changed, 13 insertions(+), 126 deletions(-)
+ Documentation/admin-guide/mm/nommu-mmap.rst | 10 ++--------
+ arch/alpha/include/uapi/asm/mman.h          |  2 --
+ arch/mips/include/uapi/asm/mman.h           |  2 --
+ arch/parisc/include/uapi/asm/mman.h         |  2 --
+ arch/powerpc/include/uapi/asm/mman.h        |  5 -----
+ arch/sh/configs/rsk7264_defconfig           |  1 -
+ arch/sparc/include/uapi/asm/mman.h          |  3 ---
+ arch/xtensa/include/uapi/asm/mman.h         |  3 ---
+ fs/binfmt_elf_fdpic.c                       |  3 +--
+ include/linux/mman.h                        |  4 ----
+ include/uapi/asm-generic/mman.h             |  4 ----
+ mm/Kconfig                                  | 22 ---------------------
+ mm/nommu.c                                  |  4 +---
+ 13 files changed, 4 insertions(+), 61 deletions(-)
 
+diff --git a/Documentation/admin-guide/mm/nommu-mmap.rst b/Documentation/admin-guide/mm/nommu-mmap.rst
+index 530fed08de2c..9434c2fa99ae 100644
+--- a/Documentation/admin-guide/mm/nommu-mmap.rst
++++ b/Documentation/admin-guide/mm/nommu-mmap.rst
+@@ -135,14 +135,8 @@ Further notes on no-MMU MMAP
+      significant delays during a userspace malloc() as the C library does an
+      anonymous mapping and the kernel then does a memset for the entire map.
+ 
+-     However, for memory that isn't required to be precleared - such as that
+-     returned by malloc() - mmap() can take a MAP_UNINITIALIZED flag to
+-     indicate to the kernel that it shouldn't bother clearing the memory before
+-     returning it.  Note that CONFIG_MMAP_ALLOW_UNINITIALIZED must be enabled
+-     to permit this, otherwise the flag will be ignored.
+-
+-     uClibc uses this to speed up malloc(), and the ELF-FDPIC binfmt uses this
+-     to allocate the brk and stack region.
++     Previously, Linux also supported a MAP_UNINITIALIZED flag to allocate
++     memory without clearing it, this is no longer support.
+ 
+  (#) A list of all the private copy and anonymous mappings on the system is
+      visible through /proc/maps in no-MMU mode.
 diff --git a/arch/alpha/include/uapi/asm/mman.h b/arch/alpha/include/uapi/asm/mman.h
-index 1f1c03c047ce..fc8b74aa3f89 100644
+index fc8b74aa3f89..1099b17a4003 100644
 --- a/arch/alpha/include/uapi/asm/mman.h
 +++ b/arch/alpha/include/uapi/asm/mman.h
-@@ -2,18 +2,6 @@
- #ifndef __ALPHA_MMAN_H__
- #define __ALPHA_MMAN_H__
+@@ -21,8 +21,6 @@
+ /* MAP_SYNC not supported */
+ #define MAP_FIXED_NOREPLACE	0x200000/* MAP_FIXED which doesn't unmap underlying mapping */
  
--#define PROT_READ	0x1		/* page can be read */
--#define PROT_WRITE	0x2		/* page can be written */
--#define PROT_EXEC	0x4		/* page can be executed */
--#ifndef PROT_SEM /* different on mips and xtensa */
--#define PROT_SEM	0x8		/* page may be used for atomic ops */
--#endif
--/*			0x10		   reserved for arch-specific use */
--/*			0x20		   reserved for arch-specific use */
--#define PROT_NONE	0x0		/* page can not be accessed */
--#define PROT_GROWSDOWN	0x01000000	/* mprotect flag: extend change to start of growsdown vma */
--#define PROT_GROWSUP	0x02000000	/* mprotect flag: extend change to end of growsup vma */
+-/* MAP_UNINITIALIZED not supported */
 -
- /* 0x01 - 0x03 are defined in linux/mman.h */
- #define MAP_TYPE	0x0f		/* Mask for type of mapping (OSF/1 is _wrong_) */
- #define MAP_FIXED	0x100		/* Interpret addr exactly */
-@@ -43,62 +31,18 @@
- #define MCL_ONFAULT	32768		/* lock all pages that are faulted in */
- 
  /*
-- * Flags for mlock
-- */
--#define MLOCK_ONFAULT	0x01		/* Lock pages in range after they are faulted in, do not prefault */
--
--/*
-- * Flags for msync
-+ * Flags for msync, order is different from all others
+  * Flags for mlockall
   */
- #define MS_ASYNC	1		/* sync memory asynchronously */
- #define MS_SYNC		2		/* synchronous memory sync */
- #define MS_INVALIDATE	4		/* invalidate the caches */
+diff --git a/arch/mips/include/uapi/asm/mman.h b/arch/mips/include/uapi/asm/mman.h
+index 6deb62db90de..9463c9071268 100644
+--- a/arch/mips/include/uapi/asm/mman.h
++++ b/arch/mips/include/uapi/asm/mman.h
+@@ -31,8 +31,6 @@
+ /* MAP_SYNC not supported */
+ #define MAP_FIXED_NOREPLACE	0x100000	/* MAP_FIXED which doesn't unmap underlying mapping */
  
--#define MADV_NORMAL	0		/* no further special treatment */
--#define MADV_RANDOM	1		/* expect random page references */
--#define MADV_SEQUENTIAL	2		/* expect sequential page references */
--#define MADV_WILLNEED	3		/* will need these pages */
--#define MADV_DONTNEED	6		/* don't need these pages */
-+/*
-+ * Flags for madvise, 1 through 3 are normal
-+ */
- /* originally MADV_SPACEAVAIL 5 */
-+#define MADV_DONTNEED	6		/* don't need these pages */
- 
--/* common parameters: try to keep these consistent across architectures */
--#define MADV_FREE	8		/* free pages only if memory pressure */
--#define MADV_REMOVE	9		/* remove these pages & resources */
--#define MADV_DONTFORK	10		/* don't inherit across fork */
--#define MADV_DOFORK	11		/* do inherit across fork */
+-/* MAP_UNINITIALIZED not supported */
 -
--#define MADV_MERGEABLE   12		/* KSM may merge identical pages */
--#define MADV_UNMERGEABLE 13		/* KSM may not merge identical pages */
--
--#define MADV_HUGEPAGE	14		/* Worth backing with hugepages */
--#define MADV_NOHUGEPAGE	15		/* Not worth backing with hugepages */
--
--#define MADV_DONTDUMP   16		/* Explicity exclude from the core dump,
--					   overrides the coredump filter bits */
--#define MADV_DODUMP	17		/* Clear the MADV_DONTDUMP flag */
--
--#define MADV_WIPEONFORK 18		/* Zero memory on fork, child only */
--#define MADV_KEEPONFORK 19		/* Undo MADV_WIPEONFORK */
--
--#define MADV_COLD	20		/* deactivate these pages */
--#define MADV_PAGEOUT	21		/* reclaim these pages */
--
--#define MADV_POPULATE_READ	22	/* populate (prefault) page tables readable */
--#define MADV_POPULATE_WRITE	23	/* populate (prefault) page tables writable */
--
--#define MADV_DONTNEED_LOCKED	24	/* like DONTNEED, but drop locked pages too */
--
--#define MADV_COLLAPSE	25		/* Synchronous hugepage collapse */
--
--#define MADV_HWPOISON	100		/* poison a page for testing */
--#define MADV_SOFT_OFFLINE 101		/* soft offline page for testing */
--
--/* compatibility flags */
--#define MAP_FILE	0
--
--#define PKEY_DISABLE_ACCESS	0x1
--#define PKEY_DISABLE_WRITE	0x2
--#define PKEY_ACCESS_MASK	(PKEY_DISABLE_ACCESS |\
--				 PKEY_DISABLE_WRITE)
-+#include <asm-generic/mman-common.h>
- 
- #endif /* __ALPHA_MMAN_H__ */
+ /*
+  * Flags for mlockall
+  */
 diff --git a/arch/parisc/include/uapi/asm/mman.h b/arch/parisc/include/uapi/asm/mman.h
-index 1cd5d816d4cf..3732950a5cd8 100644
+index 3732950a5cd8..8d7f3a8912b3 100644
 --- a/arch/parisc/include/uapi/asm/mman.h
 +++ b/arch/parisc/include/uapi/asm/mman.h
-@@ -2,19 +2,6 @@
- #ifndef __PARISC_MMAN_H__
- #define __PARISC_MMAN_H__
+@@ -20,8 +20,6 @@
+ /* MAP_SYNC not supported */
+ #define MAP_FIXED_NOREPLACE	0x100000	/* MAP_FIXED which doesn't unmap underlying mapping */
  
+-/* MAP_UNINITIALIZED not supported */
 -
--#define PROT_READ	0x1		/* page can be read */
--#define PROT_WRITE	0x2		/* page can be written */
--#define PROT_EXEC	0x4		/* page can be executed */
--#ifndef PROT_SEM /* different on mips and xtensa */
--#define PROT_SEM	0x8		/* page may be used for atomic ops */
+ /*
+  * Flags for mlockall
+  */
+diff --git a/arch/powerpc/include/uapi/asm/mman.h b/arch/powerpc/include/uapi/asm/mman.h
+index d57b347c37fe..48c734b4d201 100644
+--- a/arch/powerpc/include/uapi/asm/mman.h
++++ b/arch/powerpc/include/uapi/asm/mman.h
+@@ -33,11 +33,6 @@
+ #define MAP_SYNC		0x080000 /* perform synchronous page faults for the mapping */
+ #define MAP_FIXED_NOREPLACE	0x100000	/* MAP_FIXED which doesn't unmap underlying mapping */
+ 
+-#define MAP_UNINITIALIZED 0x4000000	/* For anonymous mmap, memory could be
+-					 * uninitialized */
+-
+-
+-
+ #define MCL_CURRENT     0x2000          /* lock all currently mapped pages */
+ #define MCL_FUTURE      0x4000          /* lock all additions to address space */
+ #define MCL_ONFAULT	0x8000		/* lock all pages that are faulted in */
+diff --git a/arch/sh/configs/rsk7264_defconfig b/arch/sh/configs/rsk7264_defconfig
+index e4ef259425c4..86421e2fec10 100644
+--- a/arch/sh/configs/rsk7264_defconfig
++++ b/arch/sh/configs/rsk7264_defconfig
+@@ -12,7 +12,6 @@ CONFIG_KALLSYMS_ALL=y
+ CONFIG_EXPERT=y
+ CONFIG_PERF_COUNTERS=y
+ # CONFIG_VM_EVENT_COUNTERS is not set
+-CONFIG_MMAP_ALLOW_UNINITIALIZED=y
+ CONFIG_PROFILING=y
+ # CONFIG_BLK_DEV_BSG is not set
+ CONFIG_PARTITION_ADVANCED=y
+diff --git a/arch/sparc/include/uapi/asm/mman.h b/arch/sparc/include/uapi/asm/mman.h
+index afb86698cdb1..e05ac492f9a8 100644
+--- a/arch/sparc/include/uapi/asm/mman.h
++++ b/arch/sparc/include/uapi/asm/mman.h
+@@ -30,9 +30,6 @@
+ #define MAP_SYNC		0x080000 /* perform synchronous page faults for the mapping */
+ #define MAP_FIXED_NOREPLACE	0x100000	/* MAP_FIXED which doesn't unmap underlying mapping */
+ 
+-#define MAP_UNINITIALIZED 0x4000000	/* For anonymous mmap, memory could be
+-					 * uninitialized */
+-
+ #define MCL_CURRENT     0x2000          /* lock all currently mapped pages */
+ #define MCL_FUTURE      0x4000          /* lock all additions to address space */
+ #define MCL_ONFAULT	0x8000		/* lock all pages that are faulted in */
+diff --git a/arch/xtensa/include/uapi/asm/mman.h b/arch/xtensa/include/uapi/asm/mman.h
+index e713b8dc8587..6fdf9f3e587a 100644
+--- a/arch/xtensa/include/uapi/asm/mman.h
++++ b/arch/xtensa/include/uapi/asm/mman.h
+@@ -36,9 +36,6 @@
+ /* MAP_SYNC not supported */
+ #define MAP_FIXED_NOREPLACE	0x100000	/* MAP_FIXED which doesn't unmap underlying mapping */
+ 
+-#define MAP_UNINITIALIZED 0x4000000	/* For anonymous mmap, memory could be
+-					 * uninitialized */
+-
+ /*
+  * Flags for mlockall
+  */
+diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+index 4fe5bb9f1b1f..82ba92d28ddf 100644
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -418,8 +418,7 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
+ 
+ 	current->mm->start_brk = vm_mmap(NULL, 0, stack_size, stack_prot,
+ 					 MAP_PRIVATE | MAP_ANONYMOUS |
+-					 MAP_UNINITIALIZED | MAP_GROWSDOWN,
+-					 0);
++					 MAP_GROWSDOWN, 0);
+ 
+ 	if (IS_ERR_VALUE(current->mm->start_brk)) {
+ 		retval = current->mm->start_brk;
+diff --git a/include/linux/mman.h b/include/linux/mman.h
+index bcb201ab7a41..f606b2264cc0 100644
+--- a/include/linux/mman.h
++++ b/include/linux/mman.h
+@@ -24,9 +24,6 @@
+ #ifndef MAP_HUGE_1GB
+ #define MAP_HUGE_1GB 0
+ #endif
+-#ifndef MAP_UNINITIALIZED
+-#define MAP_UNINITIALIZED 0
 -#endif
--/*			0x10		   reserved for arch-specific use */
--/*			0x20		   reserved for arch-specific use */
--#define PROT_NONE	0x0		/* page can not be accessed */
--#define PROT_GROWSDOWN	0x01000000	/* mprotect flag: extend change to start of growsdown vma */
--#define PROT_GROWSUP	0x02000000	/* mprotect flag: extend change to end of growsup vma */
--
- /* 0x01 - 0x03 are defined in linux/mman.h */
- #define MAP_TYPE	0x2b		/* Mask for type of mapping, includes bits 0x08 and 0x20 */
- #define MAP_FIXED	0x04		/* Interpret addr exactly */
-@@ -43,61 +30,12 @@
- #define MCL_ONFAULT	4		/* lock all pages that are faulted in */
+ #ifndef MAP_SYNC
+ #define MAP_SYNC 0
+ #endif
+@@ -44,7 +41,6 @@
+ 		| MAP_ANONYMOUS \
+ 		| MAP_DENYWRITE \
+ 		| MAP_EXECUTABLE \
+-		| MAP_UNINITIALIZED \
+ 		| MAP_GROWSDOWN \
+ 		| MAP_LOCKED \
+ 		| MAP_NORESERVE \
+diff --git a/include/uapi/asm-generic/mman.h b/include/uapi/asm-generic/mman.h
+index f26f9b4c03e1..541be26ad947 100644
+--- a/include/uapi/asm-generic/mman.h
++++ b/include/uapi/asm-generic/mman.h
+@@ -27,10 +27,6 @@
+ #define MAP_SYNC		0x080000 /* perform synchronous page faults for the mapping */
+ #define MAP_FIXED_NOREPLACE	0x100000	/* MAP_FIXED which doesn't unmap underlying mapping */
  
+-#define MAP_UNINITIALIZED 0x4000000	/* For anonymous mmap, memory could be
+-					 * uninitialized */
+-
+-
  /*
-- * Flags for mlock
-- */
--#define MLOCK_ONFAULT	0x01		/* Lock pages in range after they are faulted in, do not prefault */
--
--/*
-- * Flags for msync
-+ * Flags for msync, order is different from all others
-  */
- #define MS_SYNC		1		/* synchronous memory sync */
- #define MS_ASYNC	2		/* sync memory asynchronously */
- #define MS_INVALIDATE	4		/* invalidate the caches */
+  * Bits [26:31] are reserved, see asm-generic/hugetlb_encode.h
+  * for MAP_HUGETLB usage
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 09aebca1cae3..7326820ba200 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -381,28 +381,6 @@ config COMPAT_BRK
  
--#define MADV_NORMAL	0		/* no further special treatment */
--#define MADV_RANDOM	1		/* expect random page references */
--#define MADV_SEQUENTIAL	2		/* expect sequential page references */
--#define MADV_WILLNEED	3		/* will need these pages */
--#define MADV_DONTNEED	4		/* don't need these pages */
--
--/* common parameters: try to keep these consistent across architectures */
--#define MADV_FREE	8		/* free pages only if memory pressure */
--#define MADV_REMOVE	9		/* remove these pages & resources */
--#define MADV_DONTFORK	10		/* don't inherit across fork */
--#define MADV_DOFORK	11		/* do inherit across fork */
--
--#define MADV_MERGEABLE   12		/* KSM may merge identical pages */
--#define MADV_UNMERGEABLE 13		/* KSM may not merge identical pages */
--
--#define MADV_HUGEPAGE	14		/* Worth backing with hugepages */
--#define MADV_NOHUGEPAGE	15		/* Not worth backing with hugepages */
--
--#define MADV_DONTDUMP   16		/* Explicity exclude from the core dump,
--					   overrides the coredump filter bits */
--#define MADV_DODUMP	17		/* Clear the MADV_DONTDUMP flag */
--
--#define MADV_WIPEONFORK 18		/* Zero memory on fork, child only */
--#define MADV_KEEPONFORK 19		/* Undo MADV_WIPEONFORK */
--
--#define MADV_COLD	20		/* deactivate these pages */
--#define MADV_PAGEOUT	21		/* reclaim these pages */
--
--#define MADV_POPULATE_READ	22	/* populate (prefault) page tables readable */
--#define MADV_POPULATE_WRITE	23	/* populate (prefault) page tables writable */
--
--#define MADV_DONTNEED_LOCKED	24	/* like DONTNEED, but drop locked pages too */
--
--#define MADV_COLLAPSE	25		/* Synchronous hugepage collapse */
--
--#define MADV_HWPOISON	100		/* poison a page for testing */
--#define MADV_SOFT_OFFLINE 101		/* soft offline page for testing */
--
--/* compatibility flags */
--#define MAP_FILE	0
--
--#define PKEY_DISABLE_ACCESS	0x1
--#define PKEY_DISABLE_WRITE	0x2
--#define PKEY_ACCESS_MASK	(PKEY_DISABLE_ACCESS |\
--				 PKEY_DISABLE_WRITE)
-+#include <asm-generic/mman-common.h>
+ 	  On non-ancient distros (post-2000 ones) N is usually a safe choice.
  
- #endif /* __PARISC_MMAN_H__ */
-diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
-index 2911dd14ef2a..81a14ed99197 100644
---- a/include/uapi/asm-generic/mman-common.h
-+++ b/include/uapi/asm-generic/mman-common.h
-@@ -27,15 +27,20 @@
- /*
-  * Flags for msync
-  */
-+#ifndef MS_ASYNC /* different order on alpha and parisc */
- #define MS_ASYNC	1		/* sync memory asynchronously */
- #define MS_INVALIDATE	2		/* invalidate the caches */
- #define MS_SYNC		4		/* synchronous memory sync */
-+#endif
+-config MMAP_ALLOW_UNINITIALIZED
+-	bool "Allow mmapped anonymous memory to be uninitialized"
+-	depends on EXPERT && !MMU
+-	default n
+-	help
+-	  Normally, and according to the Linux spec, anonymous memory obtained
+-	  from mmap() has its contents cleared before it is passed to
+-	  userspace.  Enabling this config option allows you to request that
+-	  mmap() skip that if it is given an MAP_UNINITIALIZED flag, thus
+-	  providing a huge performance boost.  If this option is not enabled,
+-	  then the flag will be ignored.
+-
+-	  This is taken advantage of by uClibc's malloc(), and also by
+-	  ELF-FDPIC binfmt's brk and stack allocator.
+-
+-	  Because of the obvious security issues, this option should only be
+-	  enabled on embedded devices where you control what is run in
+-	  userspace.  Since that isn't generally a problem on no-MMU systems,
+-	  it is normally safe to say Y here.
+-
+-	  See Documentation/admin-guide/mm/nommu-mmap.rst for more information.
+-
+ config SELECT_MEMORY_MODEL
+ 	def_bool y
+ 	depends on ARCH_SELECT_MEMORY_MODEL
+diff --git a/mm/nommu.c b/mm/nommu.c
+index 385b0c15add8..793fa7303065 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1172,9 +1172,7 @@ unsigned long do_mmap(struct file *file,
+ 	add_nommu_region(region);
  
- #define MADV_NORMAL	0		/* no further special treatment */
- #define MADV_RANDOM	1		/* expect random page references */
- #define MADV_SEQUENTIAL	2		/* expect sequential page references */
- #define MADV_WILLNEED	3		/* will need these pages */
-+/* 4 through 6 are different on alpha */
-+#ifndef MADV_DONTNEED
- #define MADV_DONTNEED	4		/* don't need these pages */
-+#endif
+ 	/* clear anonymous mappings that don't ask for uninitialized data */
+-	if (!vma->vm_file &&
+-	    (!IS_ENABLED(CONFIG_MMAP_ALLOW_UNINITIALIZED) ||
+-	     !(flags & MAP_UNINITIALIZED)))
++	if (!vma->vm_file)
+ 		memset((void *)region->vm_start, 0,
+ 		       region->vm_end - region->vm_start);
  
- /* common parameters: try to keep these consistent across architectures */
- #define MADV_FREE	8		/* free pages only if memory pressure */
 -- 
 2.39.2
 
