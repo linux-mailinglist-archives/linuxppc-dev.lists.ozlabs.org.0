@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-1584-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1585-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B80985960
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2024 13:52:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14565985A86
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2024 14:08:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XDFTn44Xfz2y8l;
-	Wed, 25 Sep 2024 21:52:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XDFrB5ZPvz2yL0;
+	Wed, 25 Sep 2024 22:08:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727265165;
-	cv=none; b=i+7LdjpGzh2yQE2Y7eYy9S3ftkXnVNiPsRNVxcvxmWAZ0VpKqqBQhEJJPfVXT4+epgAnhiwgf9EIvcqThJFHpFMWXrWQxdTOTGMTQZHjRx1++7juZpH+HtagHQZ/s/kHmVNw2+ApipxWgWob01aYXNcwJAQakVxHOJWJz8rCOk0HTHKT2ZcXKl6Wgwu2iAG9j6RC/LX05+9T1JuuT7bJqEG/BxoBG/hAhsqF5V/1PAv+hvdsx9iPYXOfEok5ZJ3y4wwH7GqtYiNAXCMcalauottfdE2Yqihg4BV0FvLPAIZcJ4sQ5DvDVgnvVl2u+FjzLuaYaMtnrJdnnBzGUtY1Qg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727266122;
+	cv=none; b=NVsk32877Vt+WDII4hsAvXQCLv4FLfQwO0v45/6gVH10oRv8fKsWXk6C3aI79xFngOjCWkkjtKOKa2GmAxwmsbh1pfiaE0xmBFHWMfsuz95Bleg8kCq5UE/yCDkyqx6JyenG0HXK7Z3qt29SGXCWnNLSCQpnCbUexiy8Vje8GTmF0yZavymYsrTZNVe+mmtlmjXL+GZOewixVAo8m5YgngyJ77oeXkKXlOs5jKvUklENxoaE081dP4VWtPYFWvljdjLwt7VX+cbQ28WTdabl1YQQWv1LjBCiK/qFz29HGTcmy6eAk8ND40TVbNrz7PGAw37aUenBz6K+wDFVYI00DQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727265165; c=relaxed/relaxed;
+	t=1727266122; c=relaxed/relaxed;
 	bh=m3RUqadWXx1a/47arDRgAjYVT0SBSelO4eFMcbm+vLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYEYYARyYkHRhbvwHABbSe4njdmUJ7d+uW5R0c4r87NzL1+T3OxywvdGqde2Rz+Fnj/Iso7Yubmq/Ot+M0SeQGw7M63S5TkGIMcCfJtCdKnjB9fm5bMfd4Uuc0yDSM3bDpPe7eXPkh0jDHTZ5WdTliVjnHotuDgbtcSEAUZ6uQ4S9P8aLc4jsP4txHFd07MDNRK2FYew28LXIoeJnK6YGR6wo4/FwwekBG9s5XccvUKoZafWCrgSaAbQ0LiJIlTOn5GBfxZ0vv2XR/DeLPvp+6W0Le/+dFJRkbY5nTqxd0r6wPF6uID8L+5eUeYCV6vRMTFc8Y+5w/Ohzi5D+G/51A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fl2iBLTr; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=e3HNCmnR25aFTbujjBYkhZZcnVdDtFxCy9cPOdpeztdWrlex9EYGGxXYLjtJFCHxo/jioIdhuKvr/Q5cpcDi9kRJbv+6QUalehoXf3OoCJ46wrD8r2SC0tuRtRrEKjpysMUVCYM6Vv9wyczzIpblv4ipEjsygynFVb+CjjcViJqysggtLSYVkZ+gUJIn4azIQ+HVxLIHjEqT38B+vjq+oHaPF5Z07pkPs9OY2yvPTWQBDe3P/2plEXR1k9SkU0Rxbdk6eDUsmg3XeWQxZ77BeIZxFuSQJv29e/4kym5r6OKwL0IlJVBB9DYq7VjgrRNzk+7+lxeWFt58sa9XIf1UBA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XLYJsA1r; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fl2iBLTr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XLYJsA1r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XDFTn16ZRz2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2024 21:52:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XDFrB2HfSz2yHL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2024 22:08:42 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id CF76A5C5B02;
-	Wed, 25 Sep 2024 11:52:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64E5C4CECD;
-	Wed, 25 Sep 2024 11:52:39 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id BA1C0A4415B;
+	Wed, 25 Sep 2024 12:08:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFE3C4CECD;
+	Wed, 25 Sep 2024 12:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265161;
+	s=k20201202; t=1727266119;
 	bh=dbDoaenS2JiEt3m25szAgyBcrRLV6AE6DACT1SCRILc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fl2iBLTrbOT2X2MIdK7i7WTTBakFS67UhcXXa6wQyOu7f5QEcomp+xvBQ8HVHbqeq
-	 djSUfVALLKDoFbxNemghPAFV22ABHM2K47Q2xq09QbKdswGmyUsr5aLzX3gp6BByin
-	 ycSvbfywzG8ymKZluaHEjvnLS2fylzYWKhSukDsS5ow6CVSnAUTtbH1m2wJrWJzRm9
-	 S1UzAfNV33IT0artlSAXS3UgkDsBRRapOXmJuo7E1F+xctuCatCUcJ17pSNrOu8BdG
-	 /PdOSTAdufBk4iNJaGBfHhLrRT8QNBEaxS1I/C9+Ms6RTGEgBHgFxg6sZnvRU6FnIS
-	 kCfyr0WeMwpKA==
+	b=XLYJsA1rpsbcXagiD/T3093EscnIeZu31T5lnIkDJ1YSYO0231LSOan1eaUB14brT
+	 mygVtcY2z7JPfHIgbKWPm246MbSAgziOkGsVD7SN6WnBXokelu7+74y+mUdoETkxow
+	 mFTxEUGqBA1jw+cLmdf96JpftNXQqwEr6G6Hj1c7qYNo1K2+rAXywdZxnb+KP2BIrT
+	 0TZbYrF3S4FlAxZOldfsO5J+d427fNecJpQFbPt103dme5B2Haxm9JlmvXo6px5b8+
+	 OzwfQJHzF8OoZjRrLlNYmn0pH/rz+TMrxe1Bc/tqkceTG95ggvn9AccFCmhTxc5jYk
+	 FUEBgJTcR4uVg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -53,12 +53,12 @@ Cc: Haren Myneni <haren@linux.ibm.com>,
 	nathanl@linux.ibm.com,
 	bgray@linux.ibm.com,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.11 221/244] powerpc/pseries: Use correct data types from pseries_hp_errorlog struct
-Date: Wed, 25 Sep 2024 07:27:22 -0400
-Message-ID: <20240925113641.1297102-221-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 178/197] powerpc/pseries: Use correct data types from pseries_hp_errorlog struct
+Date: Wed, 25 Sep 2024 07:53:17 -0400
+Message-ID: <20240925115823.1303019-178-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
-References: <20240925113641.1297102-1-sashal@kernel.org>
+In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
+References: <20240925115823.1303019-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11
+X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
 From: Haren Myneni <haren@linux.ibm.com>
