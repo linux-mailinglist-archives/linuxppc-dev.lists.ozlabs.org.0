@@ -1,58 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-1581-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1583-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5D3985399
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2024 09:18:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B584098592B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Sep 2024 13:50:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XD7Nm49s1z2yXd;
-	Wed, 25 Sep 2024 17:18:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XDFRH3wXSz2xy2;
+	Wed, 25 Sep 2024 21:50:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.21
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727248680;
-	cv=none; b=lpniMnrMoj3EAWwQSbiD1kpCpaNtFfdgokGalhU2IsNAMgoJh522UGMd6V5auHbagraixRXWrQB02lIvlFFEBcuVphu9RS/9fYn7k6/LMyiwhwnvPI7YIqg84sAu9jWLajAtOh/wAzU0lbBFCrRBiujz+hMzjJOY4CBTB8raKbmaUSna9GJMzpGYlkDEOdYIgIqK2nCCZrLKH14lwZ5/iXl2CA6YlyujxcZnblxhHVebjUfruKCFFuHK7el2WqWj7t7UHvo/YlnD3NzZrlSQcgFtpeigIP0FrwWAFl8V5ThKP5FgEXs+SEM3TOIAydGeJxAhB3UzkkxU13riLSS0FA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727246983;
+	cv=none; b=BhOPKeg7DvwqeJBiPIyvmEG0CMYDGNl4oOqeHsD3HZH84kWsBfuHyP8sEkIRjBL5wwr0O1jVD63OazsmhT/7+HtBM+kuwSdQOn0uaDbhBzB7AFWrlCk+4oIitJ4ZHWe0/bigS1LXGcGMLj1yvptk2krCpCZPZGqpoOCcfiuX4t74Mws8YdYu99k/8wRaC14AqCaqTdhFK20OdPP5oKCB8nuZIylUan2IKUoV84ty0XX3SaWcrTbOobSYy6oDUQgiyVLGGFxSHk8nd+eNrRAFb9hw9y60r+gsNMv7qN1rhimLnKbVhb5PxFnimFVKOF/rA26FAGiBpntdt1FMk3+3Wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727248680; c=relaxed/relaxed;
-	bh=xk5Akn471TKQWn5neOjgSQDStg5n2ODlIn5sLehI3wc=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=OhvzINObb2bcVbWoMloN+tH344aVDGgNUyTfUhXnOBd0qP1l8zqLVE5KrarSVGCeXUHwfaQFrzj8FJS3aMulurMYN/ttRG8V0xoPzhj+z1IvLwRpSavb5/iU4JOMSSFmxJF8bE1MRzl9j7u1SrHoQuLOgTqF2cDszMMuvJCzLmrAsZCi3W9ofrLg8Y4NSPUXKiiD2fX7c2Xgz6rMw3v27w/5aZ+c1Zl4UvphshxHz7N1ISxKy0aeR7RI/xk2ftssgKiF8lyKdU6Vq1WEJFVcSpeisrZ7TwUeG7pd8gNX6yIGEf4CBnU+qMNDeDb3qYe833VMTJRZGIX73b+d1CXeag==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1727246983; c=relaxed/relaxed;
+	bh=kk0Mt/+Hyj4BQOBJfxHEcKPbnwRr+BiwB73GhiBhJzc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O9cX5HW8VZhSeOV0H9u1a5hMWWr/NdjBeNLk6+cVUcwE9hKbiTMUMiBCh5Flmf/MzJZqARWTfaE/VXXfercKZFc2P8QU8HnjAiXLXLcsLM56SFx8DhT+XkbOV4vKVOcT7mUaarZ11/7TuEDW4SoMdgzml53AoaiBHV1B91EGe5S5r8qJD1gGuqjDpIJY1k9DovneTbpeuRGaqMQZe0P3Hv3zSrr58Y8nIUdcbI7U8jXma3DReGBcswPwi13lS6jwU6K0gMXUztEGid7ocjLDKLPPQ5ZrobsG96TgOBNKIiu7lfmzbCdkyJatjK8GFdkGl0uLoQ+uDFyekjmUw5Ko0w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lSDre6Ni; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lSDre6Ni;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XD7Nl5rr9z2yVV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2024 17:17:59 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5B9E4202A0C;
-	Wed, 25 Sep 2024 09:17:57 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2B885202A0A;
-	Wed, 25 Sep 2024 09:17:57 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 7B1E4183AD47;
-	Wed, 25 Sep 2024 15:17:55 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: vkoul@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 7/7] ASoC: fsl_easrc: register m2m platform device
-Date: Wed, 25 Sep 2024 14:55:16 +0800
-Message-Id: <1727247316-16156-8-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1727247316-16156-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1727247316-16156-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XD6m64sjVz2xtc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Sep 2024 16:49:41 +1000 (AEST)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-a8a7cdfdd80so880955566b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Sep 2024 23:49:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727246977; x=1727851777; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kk0Mt/+Hyj4BQOBJfxHEcKPbnwRr+BiwB73GhiBhJzc=;
+        b=lSDre6NiCjuzqsoc+i1Ngdha9VpV6dlqut3aNe0ge8M+MtP4IuU3zQMHA0PFT/CyRn
+         dpc7snkrHsGDv3meyqyJ5YiBbH1dQ2DHp2P2QedSvfwfsfPXXvLdKZhrGO7Qvulje0NU
+         t0rIE5ibE6KgS4YTzdHbAa3eC2HRSVakhPlCKnyiT3F61vFUIgEqx6vfwh36Zk9uZ0pZ
+         lIgiBLyX8KAFc0LLNjdemFYAnR918+WIxC5AyDP9wX7Budp7RZmqQIKcDDAfJEblCY2Y
+         zQjgpAVl95Z+44sI9oDavaWLU50MSmTbzv89kgflMieiakkPB9yfEuaT3JJruJwtCX3+
+         i24g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727246977; x=1727851777;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kk0Mt/+Hyj4BQOBJfxHEcKPbnwRr+BiwB73GhiBhJzc=;
+        b=vG6Tei051Wu4cJ1SHsXId6N5fveDHYS3KZbOxgc+jVhQrXEyYhW9yOqX3ojhb2JOwG
+         KKTQIbev43bJK8OsDISJ7e4b929LLGRcrVnIn+xfAR71+05iUcVDbB2zjHu/mRboV10m
+         GgprKpApt3Sel6zrMNHdGZPdA0KKb5u95YDzC6BWjg1VXoi4r0nXgfgrJMhp5muevZpt
+         /fVVOF+gC3Z/V1AGxwqCvbuog2aDgcox2W+KmeIy1VEkv0hwasdiFrTwro7+U+LtuKgU
+         op+ELyFh+Ym1BOvCIG0yCqg3IjITJXcNDe8bzCB8ZQ6AYGtW0TTgxKa2gVvcCk8nOfGN
+         I6tw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyd6uJsLi+lZNUusdD7gw9QUNb5NF1i5yAbB8w2IbeJhH/N/xQveXPlLWZCPs1kJMiVxVvzplu2p59hW4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxT0Wk8pvyezWbiH1Z1qux62PgjzX3FhvENch+JchVd93aaow8X
+	fAX8gtZj9YLTtXvSsWv7awTq2JpMVPDo56XUH8/tUxQXZ/+gbaX6b1XmRXIcMCvihdbDnNJMbC+
+	tbrYFE5eabIpfWx2OwfpVGiGgNQQ=
+X-Google-Smtp-Source: AGHT+IG4EhVNx4ZXTlcmLKwxSpAi+1Cc6wEcJlS0M5tzYd1bPulq0A8B/RQMJgdldFEu+s5xV1faX8OGR4qz9F9spEc=
+X-Received: by 2002:a17:907:c7d5:b0:a86:86d7:2890 with SMTP id
+ a640c23a62f3a-a93a05d6507mr137992666b.50.1727246976510; Tue, 24 Sep 2024
+ 23:49:36 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,76 +70,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+References: <20240924-asoc-imx-maple-v1-1-8b993901f71e@kernel.org>
+In-Reply-To: <20240924-asoc-imx-maple-v1-1-8b993901f71e@kernel.org>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 25 Sep 2024 09:50:35 +0300
+Message-ID: <CAEnQRZBde3AV7Dvu-jtXCTbZnBg60COdp7eheSdyfE_6mP9GQw@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl: Use maple tree register cache
+To: Mark Brown <broonie@kernel.org>
+Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+	Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, alsa-devel@alsa-project.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Register m2m platform device,that user can
-use M2M feature.
+On Tue, Sep 24, 2024 at 4:59=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> Several of the NXP drivers use regmaps with a rbtree register cache. Sinc=
+e
+> the maple tree cache is uisng a generally more modern data structure whic=
+h
+> makes implementation choices more suitable for modern systems let's conve=
+rt
+> these drivers to it. This should have no practical impact.
+>
+> Signed-off-by: Mark Brown <broonie@kernel.org>
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_easrc.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index a1a7a90ff5ef..25d1c103df32 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -2204,6 +2204,12 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 		goto err_pm_disable;
- 	}
- 
-+	ret = fsl_asrc_m2m_init(easrc);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to init m2m device %d\n", ret);
-+		return ret;
-+	}
-+
- 	return 0;
- 
- err_pm_disable:
-@@ -2213,6 +2219,10 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 
- static void fsl_easrc_remove(struct platform_device *pdev)
- {
-+	struct fsl_asrc *easrc = dev_get_drvdata(&pdev->dev);
-+
-+	fsl_asrc_m2m_exit(easrc);
-+
- 	pm_runtime_disable(&pdev->dev);
- }
- 
-@@ -2313,10 +2323,29 @@ static int fsl_easrc_runtime_resume(struct device *dev)
- 	return ret;
- }
- 
-+static int fsl_easrc_suspend(struct device *dev)
-+{
-+	struct fsl_asrc *easrc = dev_get_drvdata(dev);
-+	int ret;
-+
-+	fsl_asrc_m2m_suspend(easrc);
-+	ret = pm_runtime_force_suspend(dev);
-+	return ret;
-+}
-+
-+static int fsl_easrc_resume(struct device *dev)
-+{
-+	struct fsl_asrc *easrc = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = pm_runtime_force_resume(dev);
-+	fsl_asrc_m2m_resume(easrc);
-+	return ret;
-+}
-+
- static const struct dev_pm_ops fsl_easrc_pm_ops = {
- 	RUNTIME_PM_OPS(fsl_easrc_runtime_suspend, fsl_easrc_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				pm_runtime_force_resume)
-+	SYSTEM_SLEEP_PM_OPS(fsl_easrc_suspend, fsl_easrc_resume)
- };
- 
- static struct platform_driver fsl_easrc_driver = {
--- 
-2.34.1
-
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
