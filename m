@@ -1,93 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1625-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1626-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34AE598734B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2024 14:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A75987379
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2024 14:22:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XDsqz2Rhwz2y3Z;
-	Thu, 26 Sep 2024 22:10:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XDt5w0Tjvz2yGL;
+	Thu, 26 Sep 2024 22:22:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727352639;
-	cv=none; b=hKj6avsnTMoJC76Ld+JowcMCHxg5LvKAYrSqOZF2gYP8tPBXkF0O4rAfR+ZHj2e0z55VxME/R6AA9JI0jnWCvm3Fi+V7bDbHOfm9o421p4Cj05g1IQ6wyEnWvpV62kZF5weoqbUADc2+sGTK8UOHjssmYbvIeL6GXTyr8+G6amKcX+DlsqTVuTPF037/ajKOtyEg91cUUOA0JBtkBi/aV67Oy4HHsay6ZsNtqLq7mJHmZ7X2ezgA3OWKlvLFb2YqNdl0RK5U+Wwg0Z7xAWwIAfhXf6VsIerLYDD7HoYFvEz6iYsj8Q9bLcf1q1Q+1t4Md2Tiz38FvWSaA9hMUQ+LVA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727353364;
+	cv=none; b=Qh5kBkm8KSx95qHVrBM5rFfxGoNc/dc/j8iX+pT7M40hu2+pBkXtt1y80254BEBbKHh8MeL/CYD0DcEANYEL5fuZD9irDiNSDEdao4LNlQlM6JqwTRaTN7F0lVSYuelWmHew6TKifWmkUSeF0g3d1vZ2WLpHD/zAGCw4VLcHZCrRlmpL/YQzkiZIbgLipmDcZPTyJVsOP3dzm7nydzMf0qRoAgGIPe/zEZEy/UvTAybtD5znUpLCo+gOlVVv/SL0UAPMMg64vHrrHiOrJO7a9hbCYQ4EsO4GdCRRTKkpldynjtRNwz85Tg8jYmwaptmtsm7jc/1YIllZlFxHfDHWuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727352639; c=relaxed/relaxed;
-	bh=mO+mBgqQ/T6X+tSWYJekgurpKW0Dnm8xbzizv8ba9T8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nGGaurF7DQIMcCBD/kG1hrkmIY2sr6JxgpDamzMNxizRHvk+nqzwQ5cyfBCK325HesAB72yRgBxJdmd7rclxvHqDPY/rGTuEvsCqiAhxE7DBoqR7/JxfZ60BGW66oNWquRBJD+1JQAO9BrI7zAoskQDWsFRDmeB1TnMBgNrH7b7Pi1k+W1v0YedhMH3+n5NBm2FmbzP8+LDkN5U48QIyShTwYXQ5BaEdproEKFIzmKblkPrMQVRYCXr8YEZlN8kbkUTchaVfb0N5ppQOerR1RcnGZlO2dpOK5t+w8P78eZO3scobwxA6HQVRzJQ15dSLkTFm58kFduE+8xBfoBbTGg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=xypqOioA; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tQ3HjyUZ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=xypqOioA; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tQ3HjyUZ; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=xypqOioA;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tQ3HjyUZ;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=xypqOioA;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tQ3HjyUZ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	t=1727353364; c=relaxed/relaxed;
+	bh=/4f/LAVy77RkJWivsXBV5FX1olb+qRN8gRM7H6iyXvU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V14zVhYcMQxKxZPhERSTjsjcWlwLo4CN5bTKLWXo7JKbMvDHkzW2M8g1otHX9CTCSkIBcXcRuKnD0ogCsNJ9IFEW9UbXg3XjOFKCrefAduU6nglQJjYhjWzrWreY5cgqlN0gCmCCBO/qYtbQXMRjjo7Hi9h1TFTrylNf1wecxRw9D7Mksq5p1Y1brlSH1/zImbGVmidyb5lnipwdEOEgJC7WxUaO8kwLkPRgHPD1Yb0d5EWA5iH97LdyQi1YjHW3jkNjjlcdybm5ycKny533btO3GWtHJD8VympoP0FikIMl64INaFGXXbLny/rHcnyooP7EzMdrLS+9xcRaMyEGCA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XDsqy5Z9mz2xxm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2024 22:10:38 +1000 (AEST)
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7BB011F853;
-	Thu, 26 Sep 2024 12:10:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1727352634; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mO+mBgqQ/T6X+tSWYJekgurpKW0Dnm8xbzizv8ba9T8=;
-	b=xypqOioAmz3znrCC0ei4IJzk5VUn5OhOzGsdS/R0MwtXqBZMP3BsT1mp5mKXFJuGn0bh1e
-	sAUrAoxgHeS4vLbI1w8Zf4a4rFzR2hl8NsTEWwF0sAqezLt+M4gLLOszNmvyaYJoe0hH3N
-	FWE96gOnF0RdB7Xw6mlYwzLKl+4n96k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1727352634;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mO+mBgqQ/T6X+tSWYJekgurpKW0Dnm8xbzizv8ba9T8=;
-	b=tQ3HjyUZ+i6qEqCkzhCWjFTO7FEy2dx6rGn5HaE37/gpFbhVNIlTNWsj3vTeBfPbZrWJr6
-	ddCuNn3fdMiLEtBg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1727352634; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mO+mBgqQ/T6X+tSWYJekgurpKW0Dnm8xbzizv8ba9T8=;
-	b=xypqOioAmz3znrCC0ei4IJzk5VUn5OhOzGsdS/R0MwtXqBZMP3BsT1mp5mKXFJuGn0bh1e
-	sAUrAoxgHeS4vLbI1w8Zf4a4rFzR2hl8NsTEWwF0sAqezLt+M4gLLOszNmvyaYJoe0hH3N
-	FWE96gOnF0RdB7Xw6mlYwzLKl+4n96k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1727352634;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mO+mBgqQ/T6X+tSWYJekgurpKW0Dnm8xbzizv8ba9T8=;
-	b=tQ3HjyUZ+i6qEqCkzhCWjFTO7FEy2dx6rGn5HaE37/gpFbhVNIlTNWsj3vTeBfPbZrWJr6
-	ddCuNn3fdMiLEtBg==
-Date: Thu, 26 Sep 2024 14:10:33 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Cc: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-	mikey@neuling.org, sbhat@linux.ibm.com, kvm@vger.kernel.org,
-	amachhiw@linux.vnet.ibm.com, gautam@linux.ibm.com,
-	npiggin@gmail.com, David.Laight@aculab.com, kvm-ppc@vger.kernel.org,
-	sachinp@linux.ibm.com, kconsul@linux.vnet.ibm.com
-Subject: Re: [PATCH v5 00/11] KVM: PPC: Nested APIv2 guest support
-Message-ID: <ZvVPOW-GmK3G7wnH@kitsune.suse.cz>
-References: <20230914030600.16993-1-jniethe5@gmail.com>
- <ZvRIG1LHwqa5_kgP@kitsune.suse.cz>
- <874j636l9a.fsf@vajain21.in.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XDt5v5B7Xz2yFL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2024 22:22:42 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4XDt5q71Kdz9sSL;
+	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id SeWZDw47vw6L; Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4XDt5q5zDDz9sRy;
+	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B71BE8B76E;
+	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id cW2IzJlvTqAb; Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 63CB08B763;
+	Thu, 26 Sep 2024 14:22:39 +0200 (CEST)
+Message-ID: <b31c74c1-0c19-4bc4-b1af-db817977748d@csgroup.eu>
+Date: Thu, 26 Sep 2024 14:22:39 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,52 +56,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
+To: Matthew Maurer <mmaurer@google.com>, masahiroy@kernel.org,
+ ndesaulniers@google.com, ojeda@kernel.org, gary@garyguo.net,
+ mcgrof@kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Benjamin Gray <bgray@linux.ibm.com>,
+ Naveen N Rao <naveen@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st,
+ j@jannau.net, asahi@lists.linux.dev, linux-modules@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
+ <da.gomez@samsung.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org
+References: <20240925233854.90072-1-mmaurer@google.com>
+ <20240925233854.90072-15-mmaurer@google.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20240925233854.90072-15-mmaurer@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <874j636l9a.fsf@vajain21.in.ibm.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,lists.ozlabs.org,neuling.org,linux.ibm.com,vger.kernel.org,linux.vnet.ibm.com,aculab.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
 
-On Thu, Sep 26, 2024 at 10:53:45AM +0530, Vaibhav Jain wrote:
-> Hi Michal,
-> 
-> Michal Such�nek <msuchanek@suse.de> writes:
-> 
-> <snip>
-> 
-> > Hello,
-> >
-> > are there any machines on which this is supposed to work?
-> >
-> > On a 9105-22A with ML1050_fw1050.20 (78) and
-> 
-> On 9105-22A you need atleast:
-> Firmware level: FW1060.10
 
-Indeed, upgrading to FW1060 makes the KVM functionality available.
 
-Thanks
+Le 26/09/2024 à 01:38, Matthew Maurer a écrit :
+> Adds a new format for MODVERSIONS which stores each field in a separate
+> ELF section. This initially adds support for variable length names, but
+> could later be used to add additional fields to MODVERSIONS in a
+> backwards compatible way if needed. Any new fields will be ignored by
+> old user tooling, unlike the current format where user tooling cannot
+> tolerate adjustments to the format (for example making the name field
+> longer).
+> 
+> Since PPC munges its version records to strip leading dots, we reproduce
+> the munging for the new format. Other architectures do not appear to
+> have architecture-specific usage of this information.
+> 
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> ---
+>   arch/powerpc/kernel/module_64.c | 23 ++++++++-
+>   kernel/module/internal.h        | 11 ++++
+>   kernel/module/main.c            | 92 ++++++++++++++++++++++++++++++---
+>   kernel/module/version.c         | 45 ++++++++++++++++
+>   4 files changed, 161 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+> index e9bab599d0c2..4e7b156dd8b2 100644
+> --- a/arch/powerpc/kernel/module_64.c
+> +++ b/arch/powerpc/kernel/module_64.c
+> @@ -355,6 +355,23 @@ static void dedotify_versions(struct modversion_info *vers,
+>   		}
+>   }
+>   
+> +static void dedotify_ext_version_names(char *str_seq, unsigned long size)
+> +{
+> +	unsigned long out = 0;
+> +	unsigned long in;
+> +	char last = '\0';
+> +
+> +	for (in = 0; in < size; in++) {
+> +		/* Skip one leading dot */
+> +		if (last == '\0' && str_seq[in] == '.')
+> +			in++;
+> +		last = str_seq[in];
+> +		str_seq[out++] = last;
+> +	}
 
-Michal
+Why do you need a loop here ?
+
+Can't you just do something like:
+
+	if (str_seq[0] == '.')
+		memmove(str_seq, str_seq + 1, size);
+
+
+> +	/* Zero the trailing portion of the names table for robustness */
+> +	memset(&str_seq[out], 0, size - out);
+
+This seems unneeded.
+
+> +}
+> +
+>   /*
+>    * Undefined symbols which refer to .funcname, hack to funcname. Make .TOC.
+>    * seem to be defined (value set later).
+
+
+
+Christophe
 
