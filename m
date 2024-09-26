@@ -1,92 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-1627-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1628-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87509874D6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2024 15:55:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8FFC987926
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Sep 2024 20:37:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XDw885QlCz2yVX;
-	Thu, 26 Sep 2024 23:54:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XF2QT2wtxz2xyG;
+	Fri, 27 Sep 2024 04:37:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.145
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727358888;
-	cv=none; b=hHdsMZq+8UekfptEaJzVVRIOH2/SUeTMwGZVKsmR4ykAT7MK5q3T4XnRSIar9h3RGYpwC2RoR0wk2K+pnxQhrNTY1BjvCsZ5g4aBH4uKXnJ/25LwA7K9lnvf7p8EPahNa/XEJDm00RvHVIJXpplxlNk5mGnY+S2Ea/5+wx9WJYWDTqEukE3g0QYwtZ4DQiMXLwGunkoMwmXiDXEjG7WVaGZQQLV1dRHTZpK794VOdW21QiFMyTnIrIRJ31Mp0zMCDrz+VPJxBNC71MudScbnu//xHyTlcu2QQLTP6QLmxcysicJTU44JPMfpHvz8JUiNrawCJm6ZfONdHJlYEwKB5Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::834"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727375857;
+	cv=none; b=ZB9Blt/dxaX0eqaw7cSLT3lGvxsbPaV4xILN3ul37d0rgb8r7edBZlTpIOeWIdboZFQj+Psfh9YTElIoqqRVkrtyMLcsS+CHQy9BVAwzEKchGXPrDNP2WM/mUZLGsYR4+/sewI+0JCvWazWr1+et0Kr3/EtMQQFPVKjfx+dqEliM9eyrCItIctx34q5VoeBInMJPNHmKXXUduGiLi9g19HHFcFJmakXv7omj1QS2HRh0JQNF7501p04TwsTwrjDCKxsol3qOD+8UXcX8LndaMW2E6AwCfHR4lFYUf/qPhTtLJnts5cwT167dmvV7Q4WzOGcJstkMBo7cSWgenDLE6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727358888; c=relaxed/relaxed;
-	bh=6riDWHgJboduwD6LaSFNyFPLRcRPaab9kSUcfli2BKY=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Tzp9i+it1CHVJCJzz5p3YimyEFs6sZjSS+/UPteUNW4ad7jwMdw2imnCyxc7YTIwVeU6cimyr/soFTjHQO7YTeVvmwlqU3IZqHwlEaD+oQIfAd7z9Hmpp4zzw/XDHrRpGCk1nN59tpPgIJdvw/WkFV1MsI2wVX84VuDIjy0ot41v95ccV4Y3iBaa/WtAIJVWvq+fkoVTKEYRaiKzeDvnDOIV8acVmwAqHTjdkNrDQ+4xhOGOuLte6JQlG/OXv2vKhtEcEePrviSeBmCXDav+5bkPfJyiqFhpW5inQHkPuxyF+UYeYrhJCoBsmxNjBR6mdV2//bH6rv0aCNt3W5fEeQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=Ed82I70M; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=R3y/KsXa; dkim-atps=neutral; spf=pass (client-ip=103.168.172.145; helo=fout-a2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1727375857; c=relaxed/relaxed;
+	bh=ajD7HYLuvBx8/17wWfxPAMem46iIj42I6Vl0LQ86WrE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YmnU88Da2/q9foG+l5zWXKhoTjy7ehfwX0oYE4b22y75wDiYm+9V/DWDlQ4OsBmH+8+HOOY0KMv1+ohulLjiNHnrHIQZuj3kJLpFp++rAIbETfbwiE1YtQw4A7fP6CuOnu6T8gekayx0EtoPBc0tkiMY5R5DWt22mW30EzzPA+Gtpu2AvGfB0nLc+Y46EEE8t3MutzFZUObcvtRBUmyJm98yfP/eMNdF2dRit8K6aR0n6LqGDyzJ5nKXSilHhpDJ2z8rNvZzZT/eRP8gr/TatP7wMd06ocYlAfSk83eObAFwvSi0LfV4PZP8VWPZrfUtCR7xJiwvNuiNaRMK1nn7Ug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pibQDCcb; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::834; helo=mail-qt1-x834.google.com; envelope-from=samitolvanen@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=Ed82I70M;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=R3y/KsXa;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=pibQDCcb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.145; helo=fout-a2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::834; helo=mail-qt1-x834.google.com; envelope-from=samitolvanen@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XDw854kdqz2yV8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2024 23:54:45 +1000 (AEST)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id 152F51380297;
-	Thu, 26 Sep 2024 09:54:42 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Thu, 26 Sep 2024 09:54:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1727358882;
-	 x=1727445282; bh=6riDWHgJboduwD6LaSFNyFPLRcRPaab9kSUcfli2BKY=; b=
-	Ed82I70M0gRdT9TOoYaLzrvfHoLQ2RkVw5BljDBCWBHW5/YtKj816v3sAP+b7ZSm
-	cZoIFqIaVwq5PHBT/e35Wg4s5vbFREFevM//daefmaW6kP+XYxepPCYyTXHw3QZ0
-	9Za1MYRn7T98NbA5SZfsbPsmZzSiI7SC3tSrSXiBBKVyfj2pBH6mBaNrjOxrFaHE
-	j49q0/22DpSKg/bsY3mml7j9HF3n4sLnbkfP6PQILPBqWhYIc1DlKnqtFgxhz20J
-	3kccxBEvmwm7gelOqzjUi/OyBkCJJShdYOKtnleaeWdN5njs6O1xbn4nIFM65Yhm
-	YmauC2QVmPVGgRo9SrBwFg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1727358882; x=
-	1727445282; bh=6riDWHgJboduwD6LaSFNyFPLRcRPaab9kSUcfli2BKY=; b=R
-	3y/KsXabibaJ2Z/XkVysWRaZOs8MTtsGNxYTlNWKe7wzJP2qTTNiBsy3MdawjKzW
-	0c/i8g4NVXfzSmdWt87jP66p8OWqjCS2WourGpBGTP2iwOVQgH79FH+EE3gQR0m0
-	rheDEpOt7B7Dso+6iT/5xT59DHUYbAseI3FJ7vd9kVI6eGyd+dD6sxD56OuQ1Mgw
-	4YU0P7chz9BoVPa9xYbZWK0T1egLvkjZunHNa98cjf8dNOsPcURxW/lkhDQYd9uT
-	5YVDeZSGlPl3GmQQIK38QWLQjVwddi8BnzWgbhpeLRrZuKjZEtasvdnzWAy3mCM/
-	WuF3u9Im8+31VwBTNF1PQ==
-X-ME-Sender: <xms:oGf1ZkqdmIpA7o2_QzgaN1fdtEYURj_XJL8PbUipRTKbPtqfIWADNA>
-    <xme:oGf1ZqqQeZTrmeBKpSvohuYmfbNnevz71Ar_g3IYdL_mHSretB_U6oJUuZO9-jznk
-    16KkdMa_LQIOvQaVog>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvddtjedgjedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhepgeehveefleethefhudfhjeeutedvtedttdejieff
-    feeuieevhfehgeekieffgfeunecuffhomhgrihhnpehutghlihgstgdrohhrghdpuggvsg
-    hirghnrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepfeefpdhmohguvg
-    epshhmthhpohhuthdprhgtphhtthhopehtshgsohhgvghnugesrghlphhhrgdrfhhrrghn
-    khgvnhdruggvpdhrtghpthhtohepvhhlrgguihhmihhrrdhmuhhriihinhesrghrmhdrtg
-    homhdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdr
-    vghupdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtoh
-    eprghlvgigrghnughrvgdrthhorhhguhgvsehfohhsshdrshhtrdgtohhmpdhrtghpthht
-    oheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehjtghmvhgskh
-    gstgesghhmrghilhdrtghomhdprhgtphhtthhopehmrghtthhsthekkeesghhmrghilhdr
-    tghomhdprhgtphhtthhopehnphhighhgihhnsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:oGf1ZpOs0y-FbPti-OKl6xR1ZY2dhie4YLDkmurMdwnfxHpHtJYoFA>
-    <xmx:oGf1Zr74k2DXoCSjpcxnYW6z-HhZzsyJVBY7ImllYBvWSFNv1qkDIA>
-    <xmx:oGf1Zj5h518sYyyR-7X7t9gpI0zata-tw922AwVZ1WhK4IinxbpVLQ>
-    <xmx:oGf1Zri38KCr4FELnXbIKGVGM8vn4Dn5Mz07V6elrrKyLhz_X1BznA>
-    <xmx:omf1ZtSyM5YH_Y3K6L2LepXVBPOPk7t-GP7MIFO1kTmF_iVRLYo_xwlZ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E77A02220071; Thu, 26 Sep 2024 09:54:39 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XF2QS3bm4z2xFn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 04:37:35 +1000 (AEST)
+Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-4582a5b495cso46251cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Sep 2024 11:37:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727375851; x=1727980651; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ajD7HYLuvBx8/17wWfxPAMem46iIj42I6Vl0LQ86WrE=;
+        b=pibQDCcb9H8WALvsm5qBaJYz1F30K425Mq3GFujy++FiqKzOnnidZUEaz5RjKGnO4X
+         wLnCWDKap39Fz9ZzGuYM9/ey1QoqqTjVGjjQgdXr6cS53BKFFgmRUsRg+2T9ZgxVKoCE
+         lufrOhkiRggM82HydL5pDeFx/Cooio3sZ1v2ZYZbRew4B8/G1HWZVsLzTrICi5t7KOi+
+         g8Qka9z8T2T2H5NA08eKTI1OfM2ZKV/GHiuT5aijMznkbuvzc0lrypX16qwpR6ovXyhg
+         q63h/41OTX1aHpIgYulcDi4KTN1znDlvRlc6wZClt/koH4V9hDHBARFYXxu/oosiF4qp
+         0vlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727375851; x=1727980651;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ajD7HYLuvBx8/17wWfxPAMem46iIj42I6Vl0LQ86WrE=;
+        b=ftkt2YM3yiTOEySj3rM+EHCDzp9wlb301vHV/mZq+chQbGGYTkwxJQE7R6WPeQYMVj
+         smCU3QzX05ae7KaWVG9pPVLvcOaki4Zh6Sgru6V/5Ql0XHcpbCZSQ4akF6yRl4gZ+O75
+         pVT+oVkcMzG4d7c4MvdReLyLH1FlNaAjSjs1yN4biXG3vCNkzuS0frS+nBljRSNCkZnj
+         Zz8OEtYB4p5XoB+okxB8FAm5OKpLu3fxzhSbi0ry8kytfRiRPc5m4nCrrMboE/plRafi
+         v3cNZbPf+eChzLkmdPHD3t8J2JYWuWNWqjui4fnW4EzHyEYaymgekhGLby2yvlNjAO/Y
+         Hpag==
+X-Forwarded-Encrypted: i=1; AJvYcCXsMZYtW++4mTfX1i+5xhc18l+SFpsNZHzhFzNW2uZyffe9QgP6HN08zOSFty6fYXTzaipY875JG9Z3waQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwEASDqZJDbd2wK8q/A6ayk92b+7IdNPIXvF7tbxMdRWiy+VyVq
+	T2BFnpJsrX40nX2kkDtF5OrP570dtbXW0RSBTV121YOb2sKH9dQc/RVZaSAZuyW5nPhiLfPwIHg
+	QP8RP4sksWC+gG5WHClVyVnzWGMJ9VZq+285s
+X-Google-Smtp-Source: AGHT+IE5luy5UBQ185BJWoPqDDM1TnLd4PCqV2DLnc+LIC9QgkGZbzUPxUEZLm0+v/dLWn/IHMzUNmnXBY+ab/kjVpA=
+X-Received: by 2002:ac8:4904:0:b0:456:7d9f:2af8 with SMTP id
+ d75a77b69052e-45ca03bd89bmr245591cf.7.1727375850392; Thu, 26 Sep 2024
+ 11:37:30 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,87 +71,102 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Thu, 26 Sep 2024 13:54:09 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "David Hildenbrand" <david@redhat.com>, "Arnd Bergmann" <arnd@kernel.org>,
- linux-mm@kvack.org
-Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Ard Biesheuvel" <ardb@kernel.org>,
- "Christian Brauner" <brauner@kernel.org>,
- "Christoph Hellwig" <hch@lst.de>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Damien Le Moal" <dlemoal@kernel.org>,
- "Greg Ungerer" <gerg@linux-m68k.org>, "Helge Deller" <deller@gmx.de>,
- "Kees Cook" <kees@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Matt Turner" <mattst88@gmail.com>, "Max Filippov" <jcmvbkbc@gmail.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Michal Hocko" <mhocko@suse.com>, "Nicholas Piggin" <npiggin@gmail.com>,
- "Richard Henderson" <richard.henderson@linaro.org>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Vladimir Murzin" <vladimir.murzin@arm.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Linux-Arch <linux-arch@vger.kernel.org>
-Message-Id: <1a1f118e-9a7c-4c66-b956-d21eb36fce48@app.fastmail.com>
-In-Reply-To: <b7f7f849-00d1-49e5-8455-94eb9b45e273@redhat.com>
-References: <20240925210615.2572360-1-arnd@kernel.org>
- <20240925210615.2572360-6-arnd@kernel.org>
- <b7f7f849-00d1-49e5-8455-94eb9b45e273@redhat.com>
-Subject: Re: [PATCH 5/5] [RFC] mm: Remove MAP_UNINITIALIZED support
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20240925233854.90072-1-mmaurer@google.com> <20240925233854.90072-15-mmaurer@google.com>
+ <b31c74c1-0c19-4bc4-b1af-db817977748d@csgroup.eu>
+In-Reply-To: <b31c74c1-0c19-4bc4-b1af-db817977748d@csgroup.eu>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Thu, 26 Sep 2024 11:36:51 -0700
+Message-ID: <CABCJKudyC_EzRTtkJSSQqQhLdUk_9tYBtoq62tjmghFyi8omWg@mail.gmail.com>
+Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Matthew Maurer <mmaurer@google.com>, masahiroy@kernel.org, ndesaulniers@google.com, 
+	ojeda@kernel.org, gary@garyguo.net, mcgrof@kernel.org, 
+	Michael Ellerman <mpe@ellerman.id.au>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Benjamin Gray <bgray@linux.ibm.com>, Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, neal@gompa.dev, 
+	marcan@marcan.st, j@jannau.net, asahi@lists.linux.dev, 
+	linux-modules@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 26, 2024, at 08:46, David Hildenbrand wrote:
-> On 25.09.24 23:06, Arnd Bergmann wrote:
+On Thu, Sep 26, 2024 at 5:22=E2=80=AFAM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 >
-> The first, uncontroversial step could indeed be to make 
-> MAP_UNINITIALIZED a nop, but still leave the definitions in mman.h etc 
-> around.
 >
-> This is the same we did with MAP_DENYWRITE. There might be some weird 
-> user out there, and carelessly reusing the bit could result in trouble. 
-> (people might argue that they are not using it with MAP_HUGETLB, so it 
-> would work)
 >
-> Going forward and removing MAP_UNINITIALIZED is a bit more 
-> controversial, but maybe there really isn't any other user around. 
-> Software that is not getting recompiled cannot be really identified by 
-> letting it rest in -next only.
+> Le 26/09/2024 =C3=A0 01:38, Matthew Maurer a =C3=A9crit :
+> > Adds a new format for MODVERSIONS which stores each field in a separate
+> > ELF section. This initially adds support for variable length names, but
+> > could later be used to add additional fields to MODVERSIONS in a
+> > backwards compatible way if needed. Any new fields will be ignored by
+> > old user tooling, unlike the current format where user tooling cannot
+> > tolerate adjustments to the format (for example making the name field
+> > longer).
+> >
+> > Since PPC munges its version records to strip leading dots, we reproduc=
+e
+> > the munging for the new format. Other architectures do not appear to
+> > have architecture-specific usage of this information.
+> >
+> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> > ---
+> >   arch/powerpc/kernel/module_64.c | 23 ++++++++-
+> >   kernel/module/internal.h        | 11 ++++
+> >   kernel/module/main.c            | 92 ++++++++++++++++++++++++++++++--=
+-
+> >   kernel/module/version.c         | 45 ++++++++++++++++
+> >   4 files changed, 161 insertions(+), 10 deletions(-)
+> >
+> > diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/modu=
+le_64.c
+> > index e9bab599d0c2..4e7b156dd8b2 100644
+> > --- a/arch/powerpc/kernel/module_64.c
+> > +++ b/arch/powerpc/kernel/module_64.c
+> > @@ -355,6 +355,23 @@ static void dedotify_versions(struct modversion_in=
+fo *vers,
+> >               }
+> >   }
+> >
+> > +static void dedotify_ext_version_names(char *str_seq, unsigned long si=
+ze)
+> > +{
+> > +     unsigned long out =3D 0;
+> > +     unsigned long in;
+> > +     char last =3D '\0';
+> > +
+> > +     for (in =3D 0; in < size; in++) {
+> > +             /* Skip one leading dot */
+> > +             if (last =3D=3D '\0' && str_seq[in] =3D=3D '.')
+> > +                     in++;
+> > +             last =3D str_seq[in];
+> > +             str_seq[out++] =3D last;
+> > +     }
 >
-> My take would be to leave MAP_UNINITIALIZED in the headers in some form 
-> for documentation purposes.
+> Why do you need a loop here ?
+>
+> Can't you just do something like:
+>
+>         if (str_seq[0] =3D=3D '.')
+>                 memmove(str_seq, str_seq + 1, size);
 
-I don't think there is much point in doing this in multiple
-steps, either we want to break it at compile time or leave
-it silently doing nothing. There is also very little
-difference in practice because applications almost always
-use sys/mman.h instead of linux/mman.h.
+I initially had the same thought, but it's because this is is a
+sequence of multiple null-terminated strings, and we need to dedotify
+all of them, not just the first one. Here's an example:
 
-FWIW, the main user appears to be the uClibc and uclibc-ng
-malloc() implementation for NOMMU targets:
+https://godbolt.org/z/avMGnd48M
 
-https://git.uclibc.org/uClibc/commit/libc/stdlib/malloc/malloc.c?id=00673f93826bf1f
+> > +     /* Zero the trailing portion of the names table for robustness */
+> > +     memset(&str_seq[out], 0, size - out);
+>
+> This seems unneeded.
 
-Both of these also define this constant itself as 0x4000000
-for all architectures.
+Strictly speaking it shouldn't be needed, but I think it's still good
+hygiene to not leave another null-terminated fragment at the end.
 
-There are a few others that I could find with Debian codesearch:
-
-https://sources.debian.org/src/monado/21.0.0+git2905.e26a272c1~dfsg1-2/src/external/tracy/client/tracy_rpmalloc.cpp/?hl=890#L889
-https://sources.debian.org/src/systemtap/5.1-4/testsuite/systemtap.syscall/mmap.c/?hl=224#L224
-https://sources.debian.org/src/fuzzel/1.11.1+ds-1/shm.c/?hl=488#L488
-https://sources.debian.org/src/notcurses/3.0.7+dfsg.1-1/src/lib/fbuf.h/?hl=35#L35
-https://sources.debian.org/src/lmms/1.2.2+dfsg1-6/src/3rdparty/rpmalloc/rpmalloc/rpmalloc/rpmalloc.c/?hl=1753#L1753
-
-All of these will fall back to not passing MAP_UNINITIALIZED
-if it's not defined, which is what happens on glibc and musl.
-
-       Arnd
+Sami
 
