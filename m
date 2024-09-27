@@ -1,67 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-1664-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1665-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0ECF988783
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 16:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D95DE988787
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 16:49:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XFYHX6h5fz3cN4;
-	Sat, 28 Sep 2024 00:48:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XFYJw6FqQz3cJ9;
+	Sat, 28 Sep 2024 00:49:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727441987;
-	cv=none; b=iROxRE9yaHyag8h6Bp/ldrEGFhYb1gLSgSbrewxjLZxkBuMnhMomjLrvFwyJ8vrL347C3KvfRKe99Gnbcqpiuo55OUbIEiCYY++9qThyZI3zzzdYs2JRZTi0m6Wf4Yfe6mmqp9MJKLBY2SLqTSaMrLu1LtiGQ1uSlXFdqaViSv+0sIBSGeOKaqmRfZFlwEnufs7/UHvUPLx09VMeRNTxxKlCVhRvoXGcVcTk16S34c4u5RmT+Rvg6hKF78q5yEhTQK3DKmvgtb3NhwKoF+PE37iPCH7ix2QB0mVA62TZ12y4kfbdx+b23rKvB4hNV4mIbxcMMWYNl6X8ndv+ZDhxeQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::534"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727442246;
+	cv=none; b=h3tXX1IrWQov3tzFcyxpHMe41WV0dM0tv9RKgp/crb6BW+z53km4HLsjCnr+NNrDR4tlrXj0HAXn6Qksb8qIyi9QiHFX4rVGhfeqPPW7reMbWnTWloIGr/m5OLxT9LEEAX3wFURMCb1ipAScrycNKvMUp7PK7VafJq2wpNxYzPDK3hK2MF2kAla4x8PX9BqY5xPvzmFS6mFIPY4qcxt8NsT7fTJc7eoVOn2Yd/8grClDKwgToDMu7j9jNlSN5ASB78ftulQjZkkQfVsQMIQiGewGIeNH15gCabdfyb2Cowv+AkR7kq7VMVGgJ+fHXkkJP6vVroMUb266mLKQSn6fXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727441987; c=relaxed/relaxed;
-	bh=5kRvQYqrDxlyQ/4IJ60voMIp6Qt/AmF1WSn0sGcC0t0=;
+	t=1727442246; c=relaxed/relaxed;
+	bh=lLZBoouw/VuTYq1d8wJ2tQsyjB5lc2Ro32qoC8DsyX8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h8xQV7VCEg+XZerQ81wr5AVW4mXxPoFB94FPXK6hhzRN8U3DFvRbhczkPLon+zpaz0j+xyMphVJloLx+rMpNZs4yLB8hSpYzbWy4ZmB2qKbiwjXnZXVXBFibpLckXE5oDNUVFZ5NkXecSCsa+62dE0RILOHEXzv/JlVxgKfxfUrIrUe8hUqBhM4XZ37K4Rr/X3hcU0udeqI8+3ENAstIDxoNggmmGWmosFEncg71IXJeQFQFPT/t1yWjoDZq5DJCoXSZZUYbj7qnCDqf49g7oC8Srj0dzmOUqP6svlbjDN5cAst8wv2bRxvy8ODVHKyCuQtzM3+cRRLPVYILOnpI5g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=P7ytwmFN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=aford173@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=ivA6CbTrYaBIZuvsppNATChREHlmN83bw7SthyRFDbyGQQjNrGoR67et2UozSDNbYGsjOio9hO6Ix0hJpDaxtP/y0+ByxhUHpkHJO2g2qPJ08xf6Q4of4DXie19R/MpZt+h/gaw/0CpwZKZk9wB+INXor8miqrbhVhgDfll7/QY0AX4DM1jHLE25JBfsrKcO34ww5LXxN7fc1D1IZInZhKKJXJE6almJsLnT6obiilVsSnTL34n0SG5QTxmjEU77bleNuzpOTLROymwVsRvdhPXFoklDNOEJo0hL6RpQh8KiKJH/Bqi0qTh8cWJNGIC6e3/ch8KoYKY+sSp7vIKsMA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kmX3WWpA; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=aford173@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=P7ytwmFN;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kmX3WWpA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=aford173@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534; helo=mail-pg1-x534.google.com; envelope-from=aford173@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFVtC03qNz3cCM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 22:59:46 +1000 (AEST)
-Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-2e09a276ec6so1574553a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 05:59:46 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFVzB2Y1Hz2y8n
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 23:04:05 +1000 (AEST)
+Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-7db90a28cf6so2269158a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 06:04:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727441984; x=1728046784; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1727442243; x=1728047043; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5kRvQYqrDxlyQ/4IJ60voMIp6Qt/AmF1WSn0sGcC0t0=;
-        b=P7ytwmFNxiYlLwNyZ+Ne/bANtejv+urOrc2DnECtttJbrV3tRxwq9HiO9RTi4/FgsY
-         P+oJeU0JJoNPwY2EuE2nx3Wgw7nCOTpzvdHlSD+KUA9AM8cH2exLxmTp3rH6e6Az1xFl
-         gG2I75eCkXhBAPDBXCGRKIPtjfC6LSkYVwy+AMWs0QNJrdaOEiDTQuuPHqDQs2iUecik
-         QYtRoOfQU5imSWvCWi6k6/Ml/JQFk133LEXVNgv4izYFnuPW4VEP94zI3dMjCATv1zwz
-         j456M9FDBohwv8XavJswAOUkuENU6AZKUAc3xP2lRvZ+Rn0G+AVOD/7DXhCIpQx0fCgg
-         nLLA==
+        bh=lLZBoouw/VuTYq1d8wJ2tQsyjB5lc2Ro32qoC8DsyX8=;
+        b=kmX3WWpAl7Jz9ofiPG75jAv4rPvRgo7Ii3XcGJ+1gYgZB7bkp250sF1N76FrhLJTyT
+         gcukTeIcgGD9ejP7JlFk8OgSBXnmbQ0PPsV8WVmiBNvSKWRu9w7dpQ3xxfv8u7omVFF2
+         XZadjOg0l0YFcshOUoz3EGd93tiweiHQq3K35IZDGZxXKJcqjAg835AjXj+Lecl+2831
+         n9/+6OY/53mlYiMftGfciihOW5doY/nfuW69YlVwbdo8LhB5hzHulUmDn3lerf0EiecI
+         s64E2MWHTkhHe8pmav13Fmai4YO3YKO1BbCdF3RMHGb7kD9ljLA7uYlI8pIzKvcyV+s2
+         Usug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727441984; x=1728046784;
+        d=1e100.net; s=20230601; t=1727442243; x=1728047043;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5kRvQYqrDxlyQ/4IJ60voMIp6Qt/AmF1WSn0sGcC0t0=;
-        b=RTI/wNf0WH4z8IcsxsQ0fKnA7Zn1OiBfW2oKzqYKb+kEjX38Vf5i4doG9ZRMP2cCdP
-         u9mI18ctbkHwIFkuV/dRvcn+EEsbbQ/86QTM9h7uRWST196VqXV6+z+hvbzjOJnZObzp
-         TcztXb19g47zKfPpjqBix8tK1v6okCVufBpPAAd/hMti8jFFnY/t7/PfJL7eHiAgbWwu
-         hrRZDD8N+D7VfTP9kPHXi9uxuZv1QMAW+SfY7S44vCZaA5JsSnoGULx1UUbvP6P8j2jB
-         MIjZXtx2qqxvFSSQdyTBgYvkUaifoaEJir+LQBrPtq+qD1EBfBqVK4sTDjf5XwSlqg9c
-         yrPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgCr2An9fz09/6NM6GdlC8LBsAcYTehBpR1PgnlbX1++Z2skASO07iGBlyix9kkeWJh9P0uoltorjY23g=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwVrox2x6cqasL64RvD/IRhFwFLZaP1tsE0gs6gz/8IqHityew8
-	5WFaRdkwuA8kU8tckGNEfimE623E+LZHtqosWfYO+rY6SiKlJhzQMwASZzc3DtOlKQS3vw5bdtv
-	p4PCVxz8UTdzkMGn7wIjFI3FSU28=
-X-Google-Smtp-Source: AGHT+IHCtWkk/m0gIJI4HjMGIxf6HDCRDpOESUdGt/5A/Krn13z9jK+YnLyf6mEmoZB4cokgO5ouczhwAV6HyE5bjfY=
-X-Received: by 2002:a17:90b:1896:b0:2de:ec70:837 with SMTP id
- 98e67ed59e1d1-2e0b876f84bmr4254037a91.1.1727441983559; Fri, 27 Sep 2024
- 05:59:43 -0700 (PDT)
+        bh=lLZBoouw/VuTYq1d8wJ2tQsyjB5lc2Ro32qoC8DsyX8=;
+        b=r3jITlNA7iTSrVUFH8M4XxRLcESy8qcIJYAlS1eDZQcO4XMiickS8RDyOYBeb1YYHq
+         3/NnbRYDtNn+xCoZ++k/OFirbhmiMBV2xDLogJMXDWKSBJO/67jx6iqwhLIuxTg4E4UP
+         h/cKguUvNcYB5FPLixC+m6EREwdwqQfZfZdnoGZzU5EWqOfs/adzsBr6idCWJNlSCYKN
+         qX1SjpN7kdNKtxJ6N/W1RhGliKk7yZvq0qwu8W4xmwPmqgPl4xqpSm9maD1/ZMCpJvHC
+         +1cGINI+ShgdMqzHhVHcfKFtV7J6YA80jdB0+gfFv1Rnb+5vdgT0jPzb/PJa5in0b9xp
+         VyBw==
+X-Forwarded-Encrypted: i=1; AJvYcCWuusXY4z0JRzsfWgpm7NUZepvVTx05DRZrcgbI4hHZm4VLs2cVF6WLLUZLzkhI15Twibj1ZBiLQqxhq5U=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzXTqhKpLbZc98Pd/QljEd23xX4Vb8OR68cN0bJJVx3gKDQN65P
+	VbfQ60yJB+72M7yR3et1at0Q6c8vHea4PvRDK8HNx5ybouiWNNObPj2dxidGfXmLGJ04DkhcxQJ
+	FBlPzqoTFTo722EAvQRAbPflBL+c=
+X-Google-Smtp-Source: AGHT+IFtB7KLDPn+GDWKySAL2J4hNThlacj2FyNRmL5tDSlTqDrYlCCyOxeg5M2NMx4sjqT6GHGIxy0O+b+GZDd+MQM=
+X-Received: by 2002:a17:90a:8984:b0:2e0:855b:9b21 with SMTP id
+ 98e67ed59e1d1-2e09111a9ebmr10387052a91.8.1727442242759; Fri, 27 Sep 2024
+ 06:04:02 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,14 +71,13 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <cover.1727438777.git.geert+renesas@glider.be> <750d6ac7911aef9a461dca6d07e5c1fab6211ecb.1727438777.git.geert+renesas@glider.be>
- <0bd21761-a81f-494a-9934-877f24b7fe0a@kernel.org>
-In-Reply-To: <0bd21761-a81f-494a-9934-877f24b7fe0a@kernel.org>
+References: <cover.1727438777.git.geert+renesas@glider.be> <7ff1bfb73a6d6fc71f3d751dbb7133b045853f64.1727438777.git.geert+renesas@glider.be>
+ <00fd0f7d-e05b-4140-9997-b4ffe0fcd8e9@kernel.org>
+In-Reply-To: <00fd0f7d-e05b-4140-9997-b4ffe0fcd8e9@kernel.org>
 From: Adam Ford <aford173@gmail.com>
-Date: Fri, 27 Sep 2024 07:59:32 -0500
-Message-ID: <CAHCN7xKKs9mUvnqZaLE2gCsDau4QtZ706LLoYcS_47-U86-nfA@mail.gmail.com>
-Subject: Re: [PATCH treewide 05/11] arm64: dts: renesas: beacon-renesom:
- Switch to mic-det-gpios
+Date: Fri, 27 Sep 2024 08:03:51 -0500
+Message-ID: <CAHCN7xKywTnuW9W-5abwpq8txNYhN39G9OX8zJDy_j=fqJFPfg@mail.gmail.com>
+Subject: Re: [PATCH treewide 10/11] ARM: dts: nxp: imx: Switch to {hp,mic}-det-gpios
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: Geert Uytterhoeven <geert+renesas@glider.be>, Liam Girdwood <lgirdwood@gmail.com>, 
 	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -101,24 +100,40 @@ Cc: Geert Uytterhoeven <geert+renesas@glider.be>, Liam Girdwood <lgirdwood@gmail
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 27, 2024 at 7:56=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
+On Fri, Sep 27, 2024 at 8:00=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
 g> wrote:
 >
 > On 27/09/2024 14:42, Geert Uytterhoeven wrote:
-> > Replace the deprecated "mic-det-gpio" property by "mic-det-gpios" in
-> > Audio Graph Card device nodes.
-
-Thanks!
-
+> > Replace the deprecated "hp-det-gpio" and "mic-det-gpio" properties by
+> > "hp-det-gpios" resp. "mic-det-gpios" in Freescale Generic ASoC Sound
+> > Card device nodes.
 > >
 > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 > > ---
-> >  arch/arm64/boot/dts/renesas/beacon-renesom-baseboard.dtsi | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > This has a run-time dependency on "ASoC: fsl-asoc-card: Add missing
+> > handling of {hp,mic}-dt-gpios".
 >
-> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Adam Ford <aford173@gmail.com>
+> Therefore this should wait a cycle. Patch is good, although maybe we
+> should keep both properties for backwards compatibility?
 
+I also wonder what the point of the customer fsl-asoc-card is when
+used in conjunction with a standard audio codec because the simple
+audio card works just fine.  I think they have some special drivers
+that need it like their ARC/eARC and HDMI drivers, but I have tested
+several NXP boards using a simple sound card and it works fine.
+
+adam
+>
+> Subject: drop "nxp" prefix.
+>
+> > ---
+> >  arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi  | 4 ++--
+> >  arch/arm/boot/dts/nxp/imx/imx6sl-evk.dts        | 2 +-
+> >  arch/arm/boot/dts/nxp/imx/imx6sll-evk.dts       | 2 +-
+> >  arch/arm/boot/dts/nxp/imx/imx6sx-sdb.dtsi       | 2 +-
+> >  arch/arm/boot/dts/nxp/imx/imx6ul-14x14-evk.dtsi | 2 +-
+> >  arch/arm/boot/dts/nxp/imx/imx7d-sdb.dts         | 2 +-
+>
 >
 > Best regards,
 > Krzysztof
