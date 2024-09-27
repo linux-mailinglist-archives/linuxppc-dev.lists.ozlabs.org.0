@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-1660-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1662-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA2298877F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 16:47:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C12988781
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 16:48:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XFYGr4nxWz3cLN;
-	Sat, 28 Sep 2024 00:47:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XFYH86LQhz3cM8;
+	Sat, 28 Sep 2024 00:48:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.130.132.49
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727441500;
-	cv=none; b=AF4LoqYRy2gKdxxTkOvTeeOYefWSmWAzO5gld7sGfOinlEk15qqoj3Ua8UYft7x+FSqM2+p5pZqDk9YboMCJng7MT8ia7D3kIZwqOvyy/QcJR4Ggx+4jkI/zP+BEWofb/dcdcZLh6cBOd9L7uRfVJNclKa8ipHhQaaH43yQ/XwLUl91zqH3glFHjOj1emyccU/XrHXgrjZR24vK1QyCa9+LXCTEpbxqcD2o1WtJaOx2wN5YtX6VCkXQD9fXARQHEtkRImALjZn3aCi5HABKzwKDHYJeESaoSBmN0XJ26/mrErARDtNO5dumD+ktc78SQmjEfpFrebpWmXx8SICVF5Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727441501;
+	cv=none; b=mfYZHd0WNDOSCuJi/2+hvP6vss8udzMMBlvNW8jYwI5rSmNcDM1LacvZJMArf9DCZSmrzUsOsd38hrprBZvZ5P/0MxMgC3LuGQ6o23kta7rzwWvq+PeUmIGYi6OiUu9EVQHmi6/Qt01ntlwRsqEMaj3PUbpZdmoPX+X9kjbNfUA0PanA9qUCARjU59Kr+etseivO3tJ9dDyEefaVfiUKihZERZVADbo3odYt6ceCDOMy7gW6+uORb95cZEAA37xy8Bo5uAnQfjX3Mad0OnQBGFHhlA8zYcJW0A5RKbQCBgxCaRrIv4Oq6558I/hOoYirtD18B7qR6/0V78fOw+B5Lg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727441500; c=relaxed/relaxed;
-	bh=+0+zCePXNc+rE/8h2AC/DEq4DCkjTNDcXegmOtv89q0=;
+	t=1727441501; c=relaxed/relaxed;
+	bh=XN/S71njyCwGtb3vMxvlLndIhvPpqasINxbHDyGejq8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V4k4egqsejle0deGyyV24vaSK1n2BLPl+/y92CT8a8/OiDBtkswo5hyNNHTvnwQ/FAbDRGtYx77tKeHwuP2IGiQ7YNzfHiY+LKceA1PkmhYFdi1IzGDOfedo4YNCQ38UqF62YBamjMlggA6GbhVZPoTeXYPO6YDl0/xm8yCZLyHn9XvWam21ZDBHq081UdgFUoP2BTBjh4Z1G8ST4SkwZjtmtCaLa+o2BjT1kz4gfJ904tYmIc7oSZeHvVicUSX+MHWz+dNtaRwj1dMDSkEA/qap0PoL+7DKvJNvb4PdkIUCjlNdtMqLrntgFZK2G3ZO4Jp3kYsLNveAXOwAh20b2Q==
+	 MIME-Version; b=OKIRqGsCbQnhkDEbbhjIPJFmhEtK4YaYA98dIJpxRLNLoTqLfhn89BHs+NfZdmkN2A5JDTO9dRFFXeZraKbtFZ6QY+dToVGDAGKTA9yRR72tj4rKFyYS7zu50Zh/ZSTRVpmrnZq4P7RzzUytRnb6aEVkJUtX2U75qoAABAeczjA401OjYUHEESqE6YIghqhaGiqOziskEIHga53dgirXQC6puPA0j2zcIyo7LwFSqTYMUqEjfhi0mInYJXuSLWK+PqqNrKZ2RWfO+NODJV1bKO83WyJwKeL+J/ITLHy4KwsxwOoVZH9iGjwZp8imAyYETkRv7Qoa4xuW3ZzgrDXR/Q==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=pass (client-ip=195.130.132.49; helo=gauss.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=gauss.telenet-ops.be
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=glider.be
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=gauss.telenet-ops.be (client-ip=195.130.132.49; helo=gauss.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org)
@@ -23,22 +23,22 @@ Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [195.130.132.49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFVhq5Tqjz3c7Q
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 22:51:39 +1000 (AEST)
-Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4XFVVv0Kwkz4xRWs
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 14:43:03 +0200 (CEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFVhs1ytKz3c7Q
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 22:51:41 +1000 (AEST)
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4XFVVt6vRHz4xQGp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 14:43:02 +0200 (CEST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:b47d:fd74:3975:15b7])
-	by michel.telenet-ops.be with cmsmtp
-	id HQic2D00L3BfLyr06Qicqj; Fri, 27 Sep 2024 14:43:02 +0200
+	by baptiste.telenet-ops.be with cmsmtp
+	id HQic2D00E3BfLyr01Qicjw; Fri, 27 Sep 2024 14:43:02 +0200
 Received: from rox.of.borg ([192.168.97.57])
 	by ramsan.of.borg with esmtp (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1suAIj-000fPv-HG;
+	id 1suAIj-000fPr-HE;
 	Fri, 27 Sep 2024 14:42:31 +0200
 Received: from geert by rox.of.borg with local (Exim 4.95)
 	(envelope-from <geert@linux-m68k.org>)
-	id 1suAIo-008IDd-UI;
+	id 1suAIo-008IDg-V7;
 	Fri, 27 Sep 2024 14:42:30 +0200
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 To: Liam Girdwood <lgirdwood@gmail.com>,
@@ -76,9 +76,9 @@ Cc: linux-sound@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH treewide 01/11] ASoC: fsl-asoc-card: Add missing handling of {hp,mic}-dt-gpios
-Date: Fri, 27 Sep 2024 14:42:16 +0200
-Message-Id: <dbcb5bfea005a468ec6dc38374fe6d02bc693c22.1727438777.git.geert+renesas@glider.be>
+Subject: [PATCH treewide 02/11] ASoC: dt-bindings: Deprecate {hp,mic}-det-gpio
+Date: Fri, 27 Sep 2024 14:42:17 +0200
+Message-Id: <833d5d9560339bf39a125914225c9a0930e134cc.1727438777.git.geert+renesas@glider.be>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1727438777.git.geert+renesas@glider.be>
 References: <cover.1727438777.git.geert+renesas@glider.be>
@@ -93,56 +93,73 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The DT bindings deprecated the "hp-det-gpio" and "mic-det-gpio"
-properties in favor of "hp-det-gpios" and "mic-det-gpios", but the
-driver was never updated to support the latter.
+Commit 2071d0968e564b4b ("Documentation: gpio: guidelines for bindings")
+deprecated the "gpio" suffix for GPIO consumers in favor of the "gpios"
+suffix.  Update the Audio Graph and Simple Audio Card DT bindings to
+reflect this.
 
-Even before, there existed users of "hp-det-gpios" and "mic-det-gpios".
-While this may have been handled fine by the ASoC core, this was missed
-by the Freescale-specific part.
-
-Fixes: 4189b54220e5af15 ("ASoC: dt-bindings: fsl-asoc-card: convert to YAML")
-Fixes: 40ba2eda0a7b727f ("arm64: dts: imx8mm-nitrogen-r2: add audio")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
-Noticed accidentally.
-Compile-tested only.
+No driver changes needed, as gpiod_get_optional() as called from
+simple_util_init_jack() tries all suffixes.
 ---
- sound/soc/fsl/fsl-asoc-card.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ .../devicetree/bindings/sound/audio-graph.yaml       |  6 ++++++
+ .../devicetree/bindings/sound/simple-card.yaml       | 12 ++++++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index f6c3aeff0d8eafd7..a0c2ce84c32b1d06 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -1033,14 +1033,15 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	}
+diff --git a/Documentation/devicetree/bindings/sound/audio-graph.yaml b/Documentation/devicetree/bindings/sound/audio-graph.yaml
+index 71f52f7e55f6ce72..9899d9d1958d9d93 100644
+--- a/Documentation/devicetree/bindings/sound/audio-graph.yaml
++++ b/Documentation/devicetree/bindings/sound/audio-graph.yaml
+@@ -37,8 +37,14 @@ properties:
+   pa-gpios:
+     maxItems: 1
+   hp-det-gpio:
++    deprecated: true
++    maxItems: 1
++  hp-det-gpios:
+     maxItems: 1
+   mic-det-gpio:
++    deprecated: true
++    maxItems: 1
++  mic-det-gpios:
+     maxItems: 1
  
- 	/*
--	 * Properties "hp-det-gpio" and "mic-det-gpio" are optional, and
-+	 * Properties "hp-det-gpios" and "mic-det-gpios" are optional, and
- 	 * simple_util_init_jack() uses these properties for creating
- 	 * Headphone Jack and Microphone Jack.
- 	 *
- 	 * The notifier is initialized in snd_soc_card_jack_new(), then
- 	 * snd_soc_jack_notifier_register can be called.
- 	 */
--	if (of_property_read_bool(np, "hp-det-gpio")) {
-+	if (of_property_read_bool(np, "hp-det-gpios") ||
-+	    of_property_read_bool(np, "hp-det-gpio") /* deprecated */) {
- 		ret = simple_util_init_jack(&priv->card, &priv->hp_jack,
- 					    1, NULL, "Headphone Jack");
- 		if (ret)
-@@ -1049,7 +1050,8 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 		snd_soc_jack_notifier_register(&priv->hp_jack.jack, &hp_jack_nb);
- 	}
+ required:
+diff --git a/Documentation/devicetree/bindings/sound/simple-card.yaml b/Documentation/devicetree/bindings/sound/simple-card.yaml
+index 59ac2d1d1ccfa4ce..533d0a1da56e34eb 100644
+--- a/Documentation/devicetree/bindings/sound/simple-card.yaml
++++ b/Documentation/devicetree/bindings/sound/simple-card.yaml
+@@ -207,8 +207,14 @@ properties:
+   simple-audio-card,pin-switches:
+     $ref: "#/definitions/pin-switches"
+   simple-audio-card,hp-det-gpio:
++    deprecated: true
++    maxItems: 1
++  simple-audio-card,hp-det-gpios:
+     maxItems: 1
+   simple-audio-card,mic-det-gpio:
++    deprecated: true
++    maxItems: 1
++  simple-audio-card,mic-det-gpios:
+     maxItems: 1
  
--	if (of_property_read_bool(np, "mic-det-gpio")) {
-+	if (of_property_read_bool(np, "mic-det-gpios") ||
-+	    of_property_read_bool(np, "mic-det-gpio") /* deprecated */) {
- 		ret = simple_util_init_jack(&priv->card, &priv->mic_jack,
- 					    0, NULL, "Mic Jack");
- 		if (ret)
+ patternProperties:
+@@ -256,8 +262,14 @@ patternProperties:
+       pin-switches:
+         $ref: "#/definitions/pin-switches"
+       hp-det-gpio:
++        deprecated: true
++        maxItems: 1
++      hp-det-gpios:
+         maxItems: 1
+       mic-det-gpio:
++        deprecated: true
++        maxItems: 1
++      mic-det-gpios:
+         maxItems: 1
+ 
+     patternProperties:
 -- 
 2.34.1
 
