@@ -1,100 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-1640-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1641-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F816988409
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 14:18:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4826A98857C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 14:49:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XFTyT35nBz3bZ6;
-	Fri, 27 Sep 2024 22:18:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XFVfr6kSPz301N;
+	Fri, 27 Sep 2024 22:49:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727430745;
-	cv=none; b=NICDQZFMR72xePCxJEq94kqzdCh7JxqJpNK1UPtT+GAZz1QTRH9R5+Dh2rwAG6IwBZ6Gwee40UXWyftNRS/foXKzNDh/vBsGaD1bsy6wAfBi5hc7Vi5LA0cY0uCaywCle4PW4gsdjAHtWiLmsnleqFQDgpv+MuRlYpt2JveODsw2cJzJYY5xNvHOyZtBszosTQ9v4/EfrBd8jgPBcclavDzJQfisI9s3qrJtDkQK0e1BDjdg6L6ASgImzBj0JvyTpmgB8tObGuHlveB5tSlWZ4QorPvPR7QlRTv4dSkRlCYH3YZv/4LAusWw85ZDDPvE3x5VDh28rR1ZA9YVFfLRPg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727441396;
+	cv=none; b=WdeaRFfr7/RyfAE+p3tZhfyMiRoGR7b+IcrpgRjzJj17kge6d6cLF7MDV+RWzdJGYT7DgK3dV3G5ZSx0F63lsKM6D+/7o0krb0t/DKTbfSrXqZZsBKWQUDqbhpKmX5DqsqWE4WhDdWLtri1b7l6FsnnUnAOhOlaLwAaR/eTQMksujdPNn8QOOIqlDfwcwgSqHviJFmKeeXpRiy6WTq+r2gRlFEdZR/jRpJK/lU889aa6mg4Bdyd2QEgUSkXQlb+OUZC38wDcqu/nUf5KlpDGvm0ikYSLNpxz6C5ZLp/C4Emd1o2lKrtyJurZPRKO3zvDK/0NFqLQG8uESdt8H0/dIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727430745; c=relaxed/relaxed;
-	bh=376iBOeZUuX7OjmvgZ+CVlpPHnHLOYHzUjijev9CODQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GfzTPAtlQvoug8D7GjHrijmbpSuK2g83OT+y7+Ve5X5HgFHJYHspvSdhxN/peOZYJfkfGFAJzlUcmg6ybzWRQUP1W4dVHdkRzDOcgyoSD6k1zswH/RIkeH4/GmAcjO3vSCo7yZM+6kTagVj2r2qALq8L6SFFRbtTDg5VGGyDD3r8jGWRO5e330Cflj2VLQQK6JORjbmcFt7dIFeS/uPotdvzTLFR1kSK+zOJ9cKR2BfvqnSSaxAC3oqzUtwZ9p/XsX2Au+egJtRqhBBH+6nv+cjTZWWl0bXcNRWvof5to0re9ndA3UWu8ibzVAnPXLmFhVVLjEuZNaHpt3TwDdsj6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b5V7HQnC; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CgwX9D91; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=lbulwahn@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1727441396; c=relaxed/relaxed;
+	bh=FWw6dvpQEfbBPUDxaxQxfJa7w/XzVTBPqsFYbhxW6L8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PZYAT7gvGqN/vpmEEH5FacJmRT0aB+GN9ua9vaFC9XONRacxL+ac0/ghh8NHAFE+D5Ry6G5v+W03XJY1HSMMT1rbdGxsWKIVzlL/Sy1iTEsyJQaVaf9iQcMR1GGCjCQk49FJOC3T4OgyGvh9wMW4xoD486dibCoFpDA4ZOIC621ojOjBFPd7SUom6JgpxBO5bmvNF1UUzckgoRwf0phuLUCLVr51srCeAvIQOpRK4SwYKHvIJtG+6AMFOQGD1P6U5RaS75shVt9Qs6jjkmZ52eE2GY+/mabGzgiMB8inHxJy4piEtpXdm2ZL6acRs+5Cd/S/JBveykIDSzeIpTDWVg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=flDQBek5; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b5V7HQnC;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CgwX9D91;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=flDQBek5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=lbulwahn@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFQk04B5Vz304B
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 19:52:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727430737;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=376iBOeZUuX7OjmvgZ+CVlpPHnHLOYHzUjijev9CODQ=;
-	b=b5V7HQnCeDjfnOKXiQLy8qIjfbsAKggxWxYtblwoneCV5Sln+HZiJBCzXp4xLfMV6E1Auy
-	NPjDfH01bsLdfniFjlN5nnXXx6Co4PsILjb4/QjNLky/JsyllB2sHeLnyR5AD/5TKNYlv2
-	34wr9Zrk+ZnhHfNdQeNI1hh5zjxv0ZQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727430738;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=376iBOeZUuX7OjmvgZ+CVlpPHnHLOYHzUjijev9CODQ=;
-	b=CgwX9D91TC0Z2UUzmk+BWMqLi1rD9SDrg39JmY0WBdDNSBolqMygydo2GKYJG1P58CIeZ7
-	X9I/2ggtyrHyz2nRoUUjI+tGgj38CFvkZKhN2ibHAmLkeGVPeX0C36Sejk2ZOMWDBZhYq0
-	iX5vV2zxb4I6thEdMOpfamI+YudG4bM=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-27-UCBA234rP8-EEXMX1QVTSg-1; Fri, 27 Sep 2024 05:52:15 -0400
-X-MC-Unique: UCBA234rP8-EEXMX1QVTSg-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7acdd745756so356132585a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 02:52:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727430735; x=1728035535;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=376iBOeZUuX7OjmvgZ+CVlpPHnHLOYHzUjijev9CODQ=;
-        b=KI0CaePBaCQB90JcgKVHKQYostdv7yXeTkKGJi1X+Qu0ssxjEph0wKTSXh6T1ZFtI9
-         hX813cOfUJ1W4DEk0BdiBnA+5Hs6csMYAgcn1mVJoe0Q0iv5NwqRrRzWX0OTXmCA5PHr
-         Do6/RP9flVDNgTdb1SvblTEFVpQv37wWeunN5nPJDo/qF0NDJsxUg/BnERvteR4Ug7NI
-         cvf6xM0L5sjvHA1NbSyws9z52S+XRCspF562I4ZOyDarZxrdBYBbxjW3Hfw6zj+Z2G8M
-         eF2Z6XOik4xRHVne0N7eTO0ImjVMOO+9XiVf2ARQP2dZNu3hiRVu2eqjmZh8yeD3+NmM
-         B4sA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjT6aXRWTNjxRyNzKG+pkOq/bq3Xt6ma1jMWe8bfhX5s/rJ6wgSo99XNPo1wE3wyAi7FY28SWw7E43nns=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzVjb0pvFBt4cfqv0c4a3d18klRb5hnecoTckB4uwmcyLNIMzqZ
-	RamuPqkVfvkuP9lARDYfp0xOlNxegUgXUg7MXrmzLvWC9hwAiE7Qr/mPNqpzOCkEVJ2gnZI3GDe
-	5eTMtbSLqXAJn/zN8epfgykrtaxX56YqX0ylXHGAKcvFIF7z5TN1sSxINMQ+dqpM=
-X-Received: by 2002:a05:620a:3196:b0:7a9:9ec7:63d1 with SMTP id af79cd13be357-7ae3782e3b3mr378552885a.18.1727430735017;
-        Fri, 27 Sep 2024 02:52:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHcRCGQ3J5pp0phB8xmBJPL/cN9jReho1pvo3oym0cfHErzgl2Eu/dJWBypCa1n5PpNPoUe3w==
-X-Received: by 2002:a05:620a:3196:b0:7a9:9ec7:63d1 with SMTP id af79cd13be357-7ae3782e3b3mr378549485a.18.1727430734574;
-        Fri, 27 Sep 2024 02:52:14 -0700 (PDT)
-Received: from lbulwahn-thinkpadx1carbongen9.rmtde.csb ([2a02:810d:7e40:14b0:4ce1:e394:7ac0:6905])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae377d5db7sm69557385a.28.2024.09.27.02.52.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2024 02:52:13 -0700 (PDT)
-From: Lukas Bulwahn <lbulwahn@redhat.com>
-X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-To: Scott Wood <oss@buserror.net>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Gortmaker <paul.gortmaker@windriver.com>,
-	linuxppc-dev@lists.ozlabs.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: [PATCH] powerpc: remove dead config options for MPC85xx platform support
-Date: Fri, 27 Sep 2024 11:52:03 +0200
-Message-ID: <20240927095203.392365-1-lukas.bulwahn@redhat.com>
-X-Mailer: git-send-email 2.46.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFVfr2l5Cz2yxN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 22:49:56 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4C5645C5709;
+	Fri, 27 Sep 2024 12:49:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C8AC4CEC4;
+	Fri, 27 Sep 2024 12:49:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727441392;
+	bh=MCRmT1tGikliogFhH3yZwzjHEvydH6PJYBw/yBG7KAg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=flDQBek5H0nrQVY2wzHF5fik3K/4q+/JtPLkVU9sbL6EWn6/r7q+gvRm0DugHHuiG
+	 CZnSvpxLuIt+X0XsHK4sWBy96+X6UJEk/FUI8mQ8Q7Vg9Lhy/TFGuJgFxGzSbxfCEV
+	 BwrwwXeI12yfItXhaa9bwctvBLAMZNcf51V/S5uZwARtM4r9iz/Fw/E3a1pj9vS3ps
+	 SFTtbHR8PcoIcJ8J3py05ocTf7gHbobcfw//4QZJSaqIt/Vn23sAvLXZVpKv/Mvm/e
+	 bPrRSEeq8uJ4ky0rHgyWW2olf+V969wY+0tW2TtbOTaUOFEIBEFUeb7MJHotuDhdqt
+	 hVSNDv1Yja76g==
+Message-ID: <baf065b7-c164-42c8-b4d0-c81653a71ef8@kernel.org>
+Date: Fri, 27 Sep 2024 14:49:41 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,62 +54,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH treewide 01/11] ASoC: fsl-asoc-card: Add missing handling
+ of {hp,mic}-dt-gpios
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>,
+ Heiko Stuebner <heiko@sntech.de>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Paul Cercueil
+ <paul@crapouillou.net>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Adrien Grassein <adrien.grassein@gmail.com>, Adam Ford <aford173@gmail.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ linux-mips@vger.kernel.org, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <cover.1727438777.git.geert+renesas@glider.be>
+ <dbcb5bfea005a468ec6dc38374fe6d02bc693c22.1727438777.git.geert+renesas@glider.be>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <dbcb5bfea005a468ec6dc38374fe6d02bc693c22.1727438777.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+On 27/09/2024 14:42, Geert Uytterhoeven wrote:
+> The DT bindings deprecated the "hp-det-gpio" and "mic-det-gpio"
+> properties in favor of "hp-det-gpios" and "mic-det-gpios", but the
+> driver was never updated to support the latter.
+> 
+> Even before, there existed users of "hp-det-gpios" and "mic-det-gpios".
+> While this may have been handled fine by the ASoC core, this was missed
+> by the Freescale-specific part.
+> 
+> Fixes: 4189b54220e5af15 ("ASoC: dt-bindings: fsl-asoc-card: convert to YAML")
+> Fixes: 40ba2eda0a7b727f ("arm64: dts: imx8mm-nitrogen-r2: add audio")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> Noticed accidentally.
+> Compile-tested only.
 
-Commit 384e338a9187 ("powerpc: drop MPC8540_ADS and MPC8560_ADS platform
-support") and commit b751ed04bc5e ("powerpc: drop MPC85xx_CDS platform
-support") removes the platform support for MPC8540_ADS, MPC8560_ADS and
-MPC85xx_CDS in the source tree, but misses to remove the config options in
-the Kconfig file. Hence, these three config options are without any effect
-since then.
 
-Drop these three dead config options.
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Fixes: 384e338a9187 ("powerpc: drop MPC8540_ADS and MPC8560_ADS platform support")
-Fixes: b751ed04bc5e ("powerpc: drop MPC85xx_CDS platform support")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
----
- arch/powerpc/platforms/85xx/Kconfig | 21 ---------------------
- 1 file changed, 21 deletions(-)
-
-diff --git a/arch/powerpc/platforms/85xx/Kconfig b/arch/powerpc/platforms/85xx/Kconfig
-index 9315a3b69d6d..604c1b4b6d45 100644
---- a/arch/powerpc/platforms/85xx/Kconfig
-+++ b/arch/powerpc/platforms/85xx/Kconfig
-@@ -40,27 +40,6 @@ config BSC9132_QDS
- 	  and dual StarCore SC3850 DSP cores.
- 	  Manufacturer : Freescale Semiconductor, Inc
- 
--config MPC8540_ADS
--	bool "Freescale MPC8540 ADS"
--	select DEFAULT_UIMAGE
--	help
--	  This option enables support for the MPC 8540 ADS board
--
--config MPC8560_ADS
--	bool "Freescale MPC8560 ADS"
--	select DEFAULT_UIMAGE
--	select CPM2
--	help
--	  This option enables support for the MPC 8560 ADS board
--
--config MPC85xx_CDS
--	bool "Freescale MPC85xx CDS"
--	select DEFAULT_UIMAGE
--	select PPC_I8259
--	select HAVE_RAPIDIO
--	help
--	  This option enables support for the MPC85xx CDS board
--
- config MPC85xx_MDS
- 	bool "Freescale MPC8568 MDS / MPC8569 MDS / P1021 MDS"
- 	select DEFAULT_UIMAGE
--- 
-2.46.1
+Best regards,
+Krzysztof
 
 
