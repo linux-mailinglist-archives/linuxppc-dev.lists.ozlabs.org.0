@@ -1,67 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-1638-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1639-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA1A9882A1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 12:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A53B39883FC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 14:15:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XFRjz71kFz2yYJ;
-	Fri, 27 Sep 2024 20:37:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XFTtX6KgBz30T8;
+	Fri, 27 Sep 2024 22:15:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727433447;
-	cv=none; b=O50pOH74P4ZSj3bMyu8DbBrF+oRJq70lJQT6hsTD5WguOURpqnfNp1wFo0BLmc/Udeo4rLZOjimC4NoxxzMQ22YxhVCO/+J/oYOz91+TfMTjY4bt4qZmw58dkD93xXcZVCAJz9hE0U19vcOD8vaDjE1+wAFZUWzaxoh4VsByc6xBFOAbnK1BPEH9Wl4m0O3nz+Iz4Zk/k4tZz9LXv8v0WZKU6n8fQ/6tHZtstpHkYBAl7vMYYNCCkklciXkHQxPZaJJjDsAxnxXMN5ATHtfWyFHcx1WUyCuWRMdWKXgqdAB5umtqaXSxoJUspZzkDhsTrc6IWDuyiipuiloODSmWkw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=111.22.67.151
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727418519;
+	cv=none; b=dJBgaHRdRYidltHvXp/fMH8ON+Vp76dUE0/wErTElP7drbT/PYX9GFxT8J4KpqEYDgUgBvYUXp5IYi7Amr3JorH+OBrnuR7Rq9rTD9MsFbl8E60WikXZM1f72nfOVpzWlJ1Hu5NCbCIqW6M6mBNH2Cd+2iznXrxlBvQ0Z9kJcDWa7yIcixGsLouqfxLZgsGRWnE9LdJvXbof/JcE7FhTaTRpqxbLWChedjA3XIXDSkM7MdlGnptE4e7hSyvDcEqSQ6qN0zFF4YN8S1KKRJdlk/eArSk/IteSu4AuCGly35e77ddyC3qEkLB12fs0J53O7ltPedprSBypLP/HUKNiCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727433447; c=relaxed/relaxed;
-	bh=hHoju3u/041HhlyK9FzkDceCp+u0ugdPviMfZb0y9V0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dK5prF0MN3bmhnHrJkXYItHRauxoGmArafhzO9waWTS4LzqdIsyfAAWEiILBljCLXhYHx/yVeeuxXsbkUjl15vOKXd3Xu6R5UvnPlXZxKgCjhD8c31KGSgbij+YjfHt4+KiA8SXgV3szYou5q5BKeznG4KDCoskh3+oUrG++bWJJK2FEGhVuk4Kjm2SphwhlUwIZ3E5qyc0xOlGaTNZKzYGUyBUbr8u0vTEzBWIz598lEluxK+6SqbYUdwLUipJgNvq5cczPCw2FCDBCtyAUER7FAKih4jWKUr/+vbh8j2F+GCPrv0oafg0PCiTmkZmZIlnuLGbLav1t6rAHZpLsHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TSnd0JnQ; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TSnd0JnQ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFRjy6Pyvz2xl5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 20:37:26 +1000 (AEST)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-a8ce5db8668so311607766b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 03:37:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727433440; x=1728038240; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hHoju3u/041HhlyK9FzkDceCp+u0ugdPviMfZb0y9V0=;
-        b=TSnd0JnQbjSMD6/ixTYFwZ3meqLmyRgSaogdBDyNDszY3KRCANyo8qY4XMYb8oZ2R3
-         uY0hLCgS5K8onEGGsl8r7TOCq3KtSOlSbke2zEYZO/jlrwyAxWcaL4OIknTGl0egF31L
-         NnWYaw4/9E5l1dy4li4lIpMPqK9BJD4Hj6FzminR0RxvNFV8uZ0VT3/krxfb5CQ2iEd5
-         xIY75CVe9lqaYvAKC4ANYUmd3Vzpessh54rojjoWxnqPhFapU5vFDqkFLEWyG6fzhhM+
-         p0w3Jshn+kIVWKPqML6h3ZHszbs9X/mWtnIlE1TdfPvVvYVaWLd+wWtHx2j9BVuAoihA
-         jDeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727433440; x=1728038240;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hHoju3u/041HhlyK9FzkDceCp+u0ugdPviMfZb0y9V0=;
-        b=AsFngnbHMydgeRru+DDnqq0Qx1L0LojtxqV6KCUg1jD6U/f2KKvuReSs6ITJfaaT/R
-         63alxah90EP3GP3jDC3WHZyJoWAe2BQJTE5Xms2YhCLurznQaXxwAYmG/0G62IhNIY1S
-         4c7kDRzpU9SosdPD1Aa/DzQ8Zxxq42nupD2GQyq24huSHxd9m5Vv6FwOejQbgxK3oexd
-         73JNXcleUBPY/VkhMYiajAeLXMvWkW/M8Apk1XaSYvjuNXEM2RpjenLCl/Rb6TxZr27N
-         Eem2VPKAl7plUrsywahxLhI4uaDbsumhE4rt0EJ5R6nD6/oG+xJE1RnoHXIjbZD9GHCI
-         atQg==
-X-Forwarded-Encrypted: i=1; AJvYcCXBwci2mStit7fE46bKPIylIRUwUnzTpIi9+BR138DRVuZ9kobm29jZbXoSLQUm5mQc8kEuZCTXXLR3NUk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyLWzvnU82x+vRMq6NW0oGzVRTG0XfY6r2VX3nuw0UjB9iNdCn3
-	dXYw/TFo5iWP2QzlND5mh4IsthA8571XqZOhVqvvswajpi1JrMbwphrM6kUo0lFsd+YQr8iwOjG
-	fb9zSts7eRnfbYThXDSoDNMn5YRM=
-X-Google-Smtp-Source: AGHT+IH78ZbE2U9C9t69k5TZ6X+Gi8DEQA9qne76aeeb9j3yf1y3FHSicvo5uPYPSIyCtIKCVHczjOJor/I4gd87RzU=
-X-Received: by 2002:a17:907:9709:b0:a8a:7b8e:fe52 with SMTP id
- a640c23a62f3a-a93c4a98d9dmr283774766b.59.1727433440228; Fri, 27 Sep 2024
- 03:37:20 -0700 (PDT)
+	t=1727418519; c=relaxed/relaxed;
+	bh=307VRQ+RT4hvYmgaRPoNH4/mXs8JSe2PjrikH/+E4Hc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YsuzGGzajVaSQ6sYaT7a6qtUQUhcteFQ+X5XZqMqqEFL0MwCC1UPj+EKnljvWRGbSwD9HgD+4gCZRrLonUtUoVknAUrA3IpqweNmofLwoPu1FSLRchAAh1N7i2EX8zA9Tl6u4aZGPBR90lbTKPZ2ea/Tcqzij+qsPEGtBAfovmYb9d8ItopWn8gTaJdkqOqht9VbYeKdUbrxakjrQSetHdpU0t7RyLNX2ULX4EMOPu1Q0jacEhHbXQ0q9jzz6oolxSIrdET3Ucraum768XYGtyVXIJ/EECWd+ZDCR3qQw7z1CTIOY9fNssYYL1d4Zz6HTVj/xYtIwNVYsXQa1lC82g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass (client-ip=111.22.67.151; helo=cmccmta2.chinamobile.com; envelope-from=zhangjiao2@cmss.chinamobile.com; receiver=lists.ozlabs.org) smtp.mailfrom=cmss.chinamobile.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cmss.chinamobile.com (client-ip=111.22.67.151; helo=cmccmta2.chinamobile.com; envelope-from=zhangjiao2@cmss.chinamobile.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 181 seconds by postgrey-1.37 at boromir; Fri, 27 Sep 2024 16:28:37 AEST
+Received: from cmccmta2.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XFLBs5rWZz304s
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 16:28:37 +1000 (AEST)
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee666f64fd8248-6cb0c;
+	Fri, 27 Sep 2024 14:25:30 +0800 (CST)
+X-RM-TRANSID:2ee666f64fd8248-6cb0c
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.101])
+	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee866f64fda322-3205d;
+	Fri, 27 Sep 2024 14:25:30 +0800 (CST)
+X-RM-TRANSID:2ee866f64fda322-3205d
+From: zhangjiao2 <zhangjiao2@cmss.chinamobile.com>
+To: shuah@kernel.org
+Cc: mpe@ellerman.id.au,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Subject: [PATCH] selftests/powerpc: Rm the unnecessary remove function.
+Date: Fri, 27 Sep 2024 12:31:25 +0800
+Message-Id: <20240927043125.8199-1-zhangjiao2@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.33.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,30 +54,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <1727424031-19551-1-git-send-email-shengjiu.wang@nxp.com> <1727424031-19551-2-git-send-email-shengjiu.wang@nxp.com>
-In-Reply-To: <1727424031-19551-2-git-send-email-shengjiu.wang@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 27 Sep 2024 13:38:15 +0300
-Message-ID: <CAEnQRZC3SPUQg3B=0KtsWdNj40=rvjp9+e=1zAn7DhS+Z3wZ5Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ASoC: fsl_micfil: fix regmap_write_bits usage
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 27, 2024 at 11:23=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.c=
-om> wrote:
->
-> The last parameter 1 means BIT(0), which should be the
-> correct BIT(X).
->
-> Fixes: 47a70e6fc9a8 ("ASoC: Add MICFIL SoC Digital Audio Interface driver=
-.")
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Path is not initialized before use,
+remove the unnecessary remove function.
+
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+---
+ tools/testing/selftests/powerpc/mm/tlbie_test.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tools/testing/selftests/powerpc/mm/tlbie_test.c b/tools/testing/selftests/powerpc/mm/tlbie_test.c
+index 48344a74b212..fd1456d16a7d 100644
+--- a/tools/testing/selftests/powerpc/mm/tlbie_test.c
++++ b/tools/testing/selftests/powerpc/mm/tlbie_test.c
+@@ -314,7 +314,6 @@ static inline void end_verification_log(unsigned int tid, unsigned nr_anamolies)
+ 	fclose(f);
+ 
+ 	if (nr_anamolies == 0) {
+-		remove(path);
+ 		return;
+ 	}
+ 
+-- 
+2.33.0
+
+
+
 
