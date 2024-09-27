@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-1667-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1668-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3224498888B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 17:51:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 450FE9888DE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 18:17:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XFZhR4zg2z3cKQ;
-	Sat, 28 Sep 2024 01:51:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XFbG006Dyz3cMG;
+	Sat, 28 Sep 2024 02:17:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::629"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727452295;
-	cv=none; b=OdJ3NHLwbxYFBSELUTJyhthUJ92GMiVaDMCYsjDiWn0zAD+gQRV9ZE3MthEekr/T3nByH7c8OWQvQoXGLrilQsl5A1lo6n8ehTYz1s/7A/3Pj7kQ4zrzqlg4FGO0W8NbWEKvEkRFbas9ExiWPO7dtVFstN1LuWjB0y2LO8ex78ZRwHn2eQtMHdj5QJMSYb1ULX6fLCL6YouVDM4HZbmJnhO4KXfHgsDIfkjkgYCeQJdpjVs3A8lBbV9eyRgpTWfBOX18/GKmK82Z/9npDm995Y//n2CK2eDN3MDU/iv0XzlG0BnFk5g2/NYQsDRFhFD+2n35pLrgZady/3P9/4ldbQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::429"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727453831;
+	cv=none; b=IIiIUfCN23wbZB9CwQVYj53jRjf0A8Tk7zuN4VHRMBXYVPVVh0ViaMzzH210uWGRPORqHtwmQNi7JXnMP7tZiL4pF1T1DzbsIeOqERu5+vzRSql5SnN6QuRzd3VDycanRSucTi7DCsTE+GaAwqvqdNR1FLtSJw+iVU+TbVl+2Al1FXd6yQAvtejbNsdTG8GzwjDCcVZFj1DkBCVZKdUuXAeBfccZgQXfYvVvO4vbVPyfLySdLTdA7FxL+n+VlcyNQIVJ1SMsOGwZqx95t1xwujtFMUazzB54WMz9SW1/E0F64o5M92dj5x9bXNrFIojY4kQLVmKT1BXRmFckJova1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727452295; c=relaxed/relaxed;
-	bh=siq7XCFpoWz1j+ij/CuNUWO3s9GtQAEeoPcY53GflA8=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=GSdGQw3oyTqc9DrACracMo+ROQb67xKlnjBHxZ8e0DwuAJC8U1cOg8tC0V2WzAp+dkIl1sWH2x8dmXYk7/5/7PZjEVFuDCiVje8ELR7j2DlS+7IuRKXUV7DUO8A4Zb1YZDW14lda83+0bc4tdh518Pj2HJ+CZl+IZC3wkFDpnhf88+mieXZZXMVgnhJiSWOnbFr5+Om7JMuxmu1OKAOp6vaBZUrTxUoyZZWC8mQvtfvKMGGnUm5iXaRXCNoDcIk7RxGW3sEqxQtkWotoqLgimL5MpEnJJne6RFFIfDXdEHOxy1kN8CYEzf4Zoe70a1/qN1B77fLRTiK/hJUsIPfa9g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QospUAoH; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1727453831; c=relaxed/relaxed;
+	bh=L+yddGmNvvninROrZh27GX7gU63fOouPWzZAESW4FuI=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=UJhB+Rqo2B2YnG2KTNawzglNggrIbWzXc7YkACLn5d5m1Qtq9VXN7+cruECWMrZlZAHCCCJPNP30myWqgX4AEal/jx4apXre2H50m2A4cFyzIt18noadX0AZhkdXwXvIMWesUMld0+IAZoUMN2wBf8mTSeu4C43mKjQ5iwQ3HFUeOJI9cmIMuDrcyiEUnfTygQ1nMFoZYoojH2wQFMNkcLssFkaPtLRx3SQRTmLV1JVfOMpT90ObiugspTG/IxMehxMXHj1jXx1xXLqfjy53xnijhWaXoKAqciBvkF+f9Iz/UvDq5ZNR8ykTmVbtXnALTYjrPzupx9x2YT95drBvcg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Mjw5OnTH; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QospUAoH;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Mjw5OnTH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFZhR0P3rz2xH8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Sep 2024 01:51:34 +1000 (AEST)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-20b483f2c4aso5381595ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 08:51:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFbFz4qmPz3cM2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Sep 2024 02:17:09 +1000 (AEST)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-7178df70f28so1958693b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 09:17:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727452290; x=1728057090; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1727453827; x=1728058627; darn=lists.ozlabs.org;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=siq7XCFpoWz1j+ij/CuNUWO3s9GtQAEeoPcY53GflA8=;
-        b=QospUAoHvmLUrJvhvEIP7pMt33Nd128ltYeKGQIhpbpH4NeUujNcfGpwlJAa9MRzq5
-         4hYrvgrTvtlmyi3GPwzZAUBWvsOmYt+PgRoL6m5tAd3Iflmh7YrN0MPUDwqdYvMses3F
-         H4wHxsBAM7BOT0I30RSRfCEfu4MYc4sUsD0gdK57MHQqnub4JMLuAzwe0puVP2zyEPI7
-         cLy11OheZJJTYe4koHql7mi66mYoH4uQqsIeJ89whHLe1unPnpy3GBoiCt63QO/7L7YP
-         88V8Nn0MjjJJsXHueJtuosKuGLQymrqjJ4WbZSBgLGEgx6qR1rrSrodRQyJGOlfTEQYv
-         v/jw==
+        bh=L+yddGmNvvninROrZh27GX7gU63fOouPWzZAESW4FuI=;
+        b=Mjw5OnTHD5atUq9QAT0fwOAj/C2Y1R/+tPpFG8Ui5DOJq7qvdNJnTHm0BW/fV+dSs7
+         3EP534dtreKqSK/lvZqQSGvhOYzB+wqSIJAh2VOGwYCOOj4aF+CsPok9DGIRCS3L8Xhn
+         IWfGsw4mUubScAEAbpiudT6byd3udXkphpBW4ybYb2/sljk7pP6YUunfHvYsjTc1osc6
+         97+ITrSxYMAoo26XpNWqhGqf8cHCP5Hyrj8lIgBCvWj6qNE/e5ju3JocrdrXXzmsxU5f
+         8s33gjiYGWXpBza5dwMj2+ONsnOH1eVPyJCkR+B0We4Eqvercy9hfmDLvTGQA3Qs5x8i
+         9ZiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727452290; x=1728057090;
+        d=1e100.net; s=20230601; t=1727453827; x=1728058627;
         h=references:message-id:date:in-reply-to:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=siq7XCFpoWz1j+ij/CuNUWO3s9GtQAEeoPcY53GflA8=;
-        b=FWeWNfbQ71Q06cS3ZZ6W1FiE6iey/JOMlkZTuVeuOYJJBrh88PtyjmkOtDwmPc7opc
-         Wo4cdgcpl+wGflxYhaq3Z5wckAPrDuRMTnDEgBPn/6zvDF3xCsXRpQpl8HM1FrcmBy17
-         9xvrnxSmoPXVlfhqlBGw/cZgy1UGlIbOinNxCsu+6WWu3WFv0XqgX5W/uutEx/CNYEyG
-         quZj94VWVJu3FWDn2XM7O5/eudz6akaetZ8IJoD+/18+spTsHdNY71pE5ZhqqQ2zHj3i
-         1iWoUPcFHJMnF7/DlXnAGRBC04qXF82rEf82UhAWo3fOYVoNe+ECrlzdWUDZ7ytQhED6
-         rZXg==
-X-Forwarded-Encrypted: i=1; AJvYcCXyRKjAgFp6c7wEgBraAe2P2+dzUtoQmg+3KNv5mMY31O+li7DrOFZufqxo64gTm7mtSCesso445VPLhMo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwniBwLGSbCsSMEXYPgaABo+VrozQVpSR7FQZa70ZDURp4UpYB4
-	gXm58RVyPo2ODffJioKywnL490TLDOZwKI5p99k4lEDsRBbfZ3i5
-X-Google-Smtp-Source: AGHT+IHYen+9SCB9zAwc+2YM+I/YJeUCIgN9O5oINntyeB1ech4upS2dfT1q+IPsJIFbM8mIsRWLFg==
-X-Received: by 2002:a17:903:11cd:b0:206:96ae:dc57 with SMTP id d9443c01a7336-20b37b912b5mr62267395ad.48.1727452290237;
-        Fri, 27 Sep 2024 08:51:30 -0700 (PDT)
+        bh=L+yddGmNvvninROrZh27GX7gU63fOouPWzZAESW4FuI=;
+        b=ZWaBC+IQu3NnPrqkiV5Kfnag1zK7AVIARciu8OqYc5OCn1dw6yhXGJXOrjxUOO2pyt
+         LwXsi3vK093S0FeFoiyswwSvsYpaUsjuHrSzaHd/hPfTurby9JH2XY6RsI4aQUrajOUJ
+         Lu6iJy4MutoTybKAvNbdFgGpxu3T5O/D1stLxcHTZBicxnTC1qA4rAvpdMSJ4XI6rXwx
+         xE37Kb4IlviL5Ob2f1Xke7qkSx9uneqnePI+Nscj0sS4Sb51q53UACHNEM03uqZBjyDT
+         z/GvacoJf5AkxxjfmyzUp0TQGlyRBVU208ytToL4hGrSDBg3wt/WCX3Mung1B5rWUFFD
+         RHZA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnjvG15FY/9Eln/4kf2kimKpAvY/mDEoN/RLfo3akCDtBC1YgcLo/R8dAkfUaqCkMWF82c+1UUu3HuDBY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzGkb3m36smBXNXvkgytQJUdiQtBNWg6gYHdNCc376S06nuhyNz
+	B4wVe6oOWvRZ8RS5WO7FEY502bWcjHVxZi+klQH0sahg17qNZyGc
+X-Google-Smtp-Source: AGHT+IGozEALnQx1Er7SBfzGwW2QDie8jNd5SkYPMBx3yNF2xMOdfceVDjor2c9KEZXwlrpTM7HORA==
+X-Received: by 2002:a05:6a00:17a9:b0:70d:2fb5:f996 with SMTP id d2e1a72fcca58-71b25f451e7mr5943442b3a.11.1727453826683;
+        Fri, 27 Sep 2024 09:17:06 -0700 (PDT)
 Received: from dw-tp ([171.76.86.51])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37da2667sm15170095ad.102.2024.09.27.08.51.27
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71b26515f1asm1766740b3a.135.2024.09.27.09.17.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2024 08:51:29 -0700 (PDT)
+        Fri, 27 Sep 2024 09:17:05 -0700 (PDT)
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: zhangjiao2 <zhangjiao2@cmss.chinamobile.com>, shuah@kernel.org
-Cc: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Subject: Re: [PATCH] selftests/powerpc: Rm the unnecessary remove function.
-In-Reply-To: <20240927043125.8199-1-zhangjiao2@cmss.chinamobile.com>
-Date: Fri, 27 Sep 2024 21:15:41 +0530
-Message-ID: <87h6a1aymy.fsf@gmail.com>
-References: <20240927043125.8199-1-zhangjiao2@cmss.chinamobile.com>
+To: Lukas Bulwahn <lbulwahn@redhat.com>, Scott Wood <oss@buserror.net>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Paul Gortmaker <paul.gortmaker@windriver.com>, linuxppc-dev@lists.ozlabs.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: Re: [PATCH] powerpc: remove dead config options for MPC85xx platform support
+In-Reply-To: <20240927095203.392365-1-lukas.bulwahn@redhat.com>
+Date: Fri, 27 Sep 2024 21:23:45 +0530
+Message-ID: <87frplay9i.fsf@gmail.com>
+References: <20240927095203.392365-1-lukas.bulwahn@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,65 +78,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
-zhangjiao2 <zhangjiao2@cmss.chinamobile.com> writes:
+Lukas Bulwahn <lbulwahn@redhat.com> writes:
 
-> From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+> From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 >
-> Path is not initialized before use,
-> remove the unnecessary remove function.
+> Commit 384e338a9187 ("powerpc: drop MPC8540_ADS and MPC8560_ADS platform
+> support") and commit b751ed04bc5e ("powerpc: drop MPC85xx_CDS platform
+> support") removes the platform support for MPC8540_ADS, MPC8560_ADS and
+> MPC85xx_CDS in the source tree, but misses to remove the config options in
+> the Kconfig file. Hence, these three config options are without any effect
+> since then.
 >
-> Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+> Drop these three dead config options.
+>
+
+Indeed these looks to be dead config remaining.
+
+> Fixes: 384e338a9187 ("powerpc: drop MPC8540_ADS and MPC8560_ADS platform support")
+> Fixes: b751ed04bc5e ("powerpc: drop MPC85xx_CDS platform support")
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 > ---
->  tools/testing/selftests/powerpc/mm/tlbie_test.c | 1 -
->  1 file changed, 1 deletion(-)
+>  arch/powerpc/platforms/85xx/Kconfig | 21 ---------------------
+>  1 file changed, 21 deletions(-)
+
+I couldn't find any relevant reference of MPC8540_ADS, MPC8560_ADS or MPC85xx_CDS
+after this patch
+
+So please feel free to add - 
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
 >
-> diff --git a/tools/testing/selftests/powerpc/mm/tlbie_test.c b/tools/testing/selftests/powerpc/mm/tlbie_test.c
-> index 48344a74b212..fd1456d16a7d 100644
-> --- a/tools/testing/selftests/powerpc/mm/tlbie_test.c
-> +++ b/tools/testing/selftests/powerpc/mm/tlbie_test.c
-> @@ -314,7 +314,6 @@ static inline void end_verification_log(unsigned int tid, unsigned nr_anamolies)
->  	fclose(f);
+> diff --git a/arch/powerpc/platforms/85xx/Kconfig b/arch/powerpc/platforms/85xx/Kconfig
+> index 9315a3b69d6d..604c1b4b6d45 100644
+> --- a/arch/powerpc/platforms/85xx/Kconfig
+> +++ b/arch/powerpc/platforms/85xx/Kconfig
+> @@ -40,27 +40,6 @@ config BSC9132_QDS
+>  	  and dual StarCore SC3850 DSP cores.
+>  	  Manufacturer : Freescale Semiconductor, Inc
 >  
->  	if (nr_anamolies == 0) {
-> -		remove(path);
->  		return;
->  	}
-
-Nice catch. Indeed the path is uninitialized here. 
-
-However, I believe the above "if" block should come after initializing
-the path. The idea is if there were no anamolies noted, then we can
-simply remove the log file and return.
-
-Something like below. Thoughts?
-
-diff --git a/tools/testing/selftests/powerpc/mm/tlbie_test.c b/tools/testing/selftests/powerpc/mm/tlbie_test.c
-index 48344a74b212..35f0098399cc 100644
---- a/tools/testing/selftests/powerpc/mm/tlbie_test.c
-+++ b/tools/testing/selftests/powerpc/mm/tlbie_test.c
-@@ -313,16 +313,16 @@ static inline void end_verification_log(unsigned int tid, unsigned nr_anamolies)
-
-        fclose(f);
-
--       if (nr_anamolies == 0) {
--               remove(path);
--               return;
--       }
--
-        sprintf(logfile, logfilename, tid);
-        strcpy(path, logdir);
-        strcat(path, separator);
-        strcat(path, logfile);
-
-+       if (nr_anamolies == 0) {
-+               remove(path);
-+               return;
-+       }
-+
-        printf("Thread %02d chunk has %d corrupted words. For details check %s\n",
-                tid, nr_anamolies, path);
- }
-
-
--ritesh
+> -config MPC8540_ADS
+> -	bool "Freescale MPC8540 ADS"
+> -	select DEFAULT_UIMAGE
+> -	help
+> -	  This option enables support for the MPC 8540 ADS board
+> -
+> -config MPC8560_ADS
+> -	bool "Freescale MPC8560 ADS"
+> -	select DEFAULT_UIMAGE
+> -	select CPM2
+> -	help
+> -	  This option enables support for the MPC 8560 ADS board
+> -
+> -config MPC85xx_CDS
+> -	bool "Freescale MPC85xx CDS"
+> -	select DEFAULT_UIMAGE
+> -	select PPC_I8259
+> -	select HAVE_RAPIDIO
+> -	help
+> -	  This option enables support for the MPC85xx CDS board
+> -
+>  config MPC85xx_MDS
+>  	bool "Freescale MPC8568 MDS / MPC8569 MDS / P1021 MDS"
+>  	select DEFAULT_UIMAGE
+> -- 
+> 2.46.1
 
