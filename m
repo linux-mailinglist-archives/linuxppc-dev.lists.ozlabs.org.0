@@ -1,37 +1,37 @@
-Return-Path: <linuxppc-dev+bounces-1635-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1637-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1D5988035
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 10:23:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235FD988039
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Sep 2024 10:23:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XFNlB1GWHz30Gf;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XFNlB6vBcz2yyq;
 	Fri, 27 Sep 2024 18:23:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.13
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.21
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727425398;
-	cv=none; b=AkTKoLd63UOMxpPeLbci2LnecoQ+3UFmblMovUmG1mxfcCHqeuHQqv4OzeJQUXh+u2hcD4q9KPAKp+MT+XDa9OqzxGXNr0rL88kgnBF85yjXixP6bEUG1PTngE3JJs3UAa45r6vDh6sV9HEjXy1kGu6x2Fnb1IDygyRjMHOZrztXnm7uo6AxmhNqKtA9O2Ktb6D7YyiZemPoZxS8UwM01hL/OKAQKVDDYYMXVuQnhxOCUKp3e+EXNIRzzfgN81XCoByukmeDxEQIqxAJm0bRL6UD1ZYVuserrb6BKGTL8FXhuF12lnfup5oFMaS9+k0mZDUrafivrw9A1ahDC6/zUA==
+	cv=none; b=akX5BxoyldG/Lo310bcmk0WwEPketR7lxSubariI/6K1sX05v/dUec+7pLDzyZ7sNaU4cwkMIUApsNfF3twvuqLrrFnU5XYv+f8ykFHQESFZziwRVbm974CKHJ38WRkf7fRs0aMnTmqu3t4XIqJH5M8Am9gkR86evxwFwpRHG28Cq2QRVht8IzEbomYNO+o+ArZ1ZUtZJq9GKdpb+JIgwdUoXxZt7ew8XY6/8Kx+Ts9LreL805DeebOL3zj2SlWcwxENHN4B4STBuU+QLU/NmL/wA0OBN0ZckU08o74P5Ioz6CD/lGd5lrB0Rdw01GAbCjE3QFQGgabUcIEx7MoRGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1727425398; c=relaxed/relaxed;
-	bh=hAMIg+xAC2+zUlS+Cx8zruw+iWDthF8DtZpHmDlFdrw=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=GhpSh7koXiqBDDp5+K+qJh7Yenc4CGj5OpI8U00UaC4qIkNIk4tGaw9AF0pOYgCDAKWFPeXA928GTaa1c5ytkYmiNxwY7S5pTD/ufpM2GzWix7Ht/0wK1n8jTTsNmPEKzlNyDs69m1wQ74RlNox5xUFvZo0n8/4EfnJrCe4LRjQSmY7ub2bxuXVVfnPbjwgGGenI++rtNH0Zj/JV2fowUuhr0Fftv0F4K2XshTM8NPHeSd08oatzSbCWoyiGqay18FguBNsqKWZ9VB7QibPnWh6jcgV3pxLnm7TPY/WuO+GAvSKXiFfK04XenNt+UXKUZfwZ7R7x+L8icj7dvppHmQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+	bh=r+WhuCCPTIUFSLfeWYZ6uwvbHERF0G6Zf5yhnqvfbhw=;
+	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=BFIrB/OE6jfliwIJ8F1JPiU9s3Duo7db6V2yXWHs7omUGTNKRletdwIIyL9aYhj67WekCu3oVWXsQEBUZvKVJTUz+PIpfK1bNAb84fkC0wnxxV/9rWfLndBYXm0iI58boTAWCmhHk8J3UAvMzcWmPgBckpFBW1+RUGZLDT+Si5gZsrUQwgHDKxLO3zZ6/y2YlyXWh4/qpg/ZRaFRFxa6+XeFSIx5umNUwVgaLy5dnr6/RrVVVxPIuuKbgkZrw4yfZS/ScsDzWqS5ChIbP6/Ngc2v0QpQYAVKvQtW2JKPUjIxGi2iAjHLkr1iD+zYN7+mQ8EKu4QZh7XvV8n7F/6Gtg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFNl93vPLz30Dw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 18:23:17 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6814A1A1B60;
-	Fri, 27 Sep 2024 10:23:14 +0200 (CEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XFNlB4LPJz30KY
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Sep 2024 18:23:18 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id EC9A2201A2A;
+	Fri, 27 Sep 2024 10:23:15 +0200 (CEST)
 Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 379251A1B45;
-	Fri, 27 Sep 2024 10:23:14 +0200 (CEST)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B0453201A52;
+	Fri, 27 Sep 2024 10:23:15 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id ED3DA183DC02;
-	Fri, 27 Sep 2024 16:23:12 +0800 (+08)
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 18AAD183DC03;
+	Fri, 27 Sep 2024 16:23:14 +0800 (+08)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: shengjiu.wang@gmail.com,
 	Xiubo.Lee@gmail.com,
@@ -45,9 +45,9 @@ To: shengjiu.wang@gmail.com,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] ASoC: fsl_micfil: Add mclk enable flag
-Date: Fri, 27 Sep 2024 16:00:30 +0800
-Message-Id: <1727424031-19551-3-git-send-email-shengjiu.wang@nxp.com>
+Subject: [PATCH 3/3] ASoC: fsl_micfil: Enable micfil error interrupt
+Date: Fri, 27 Sep 2024 16:00:31 +0800
+Message-Id: <1727424031-19551-4-git-send-email-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1727424031-19551-1-git-send-email-shengjiu.wang@nxp.com>
 References: <1727424031-19551-1-git-send-email-shengjiu.wang@nxp.com>
@@ -61,98 +61,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
-Previously the mclk is enabled in probe() stage, which
-is not necessary. Move mclk enablement to hw_params()
-and mclk disablement to hw_free() will be more efficient.
-'mclk_flag' is used for this case.
+Enable micfil error interrupt, in the error handler,
+FIFO state and OUT state need to be cleared.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- sound/soc/fsl/fsl_micfil.c | 29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index c347cb3a4712..6ecf46e9ac4c 100644
+index 6ecf46e9ac4c..0930d8c9b8d7 100644
 --- a/sound/soc/fsl/fsl_micfil.c
 +++ b/sound/soc/fsl/fsl_micfil.c
-@@ -58,6 +58,7 @@ struct fsl_micfil {
- 	int vad_detected;
- 	struct fsl_micfil_verid verid;
- 	struct fsl_micfil_param param;
-+	bool mclk_flag;  /* mclk enable flag */
- };
+@@ -651,7 +651,7 @@ static int fsl_micfil_trigger(struct snd_pcm_substream *substream, int cmd,
  
- struct fsl_micfil_soc_data {
-@@ -693,7 +694,6 @@ static int fsl_micfil_reparent_rootclk(struct fsl_micfil *micfil, unsigned int s
- 	clk = micfil->mclk;
+ 		/* Enable the module */
+ 		ret = regmap_set_bits(micfil->regmap, REG_MICFIL_CTRL1,
+-				      MICFIL_CTRL1_PDMIEN);
++				      MICFIL_CTRL1_PDMIEN | MICFIL_CTRL1_ERREN);
+ 		if (ret)
+ 			return ret;
  
- 	/* Disable clock first, for it was enabled by pm_runtime */
--	clk_disable_unprepare(clk);
- 	fsl_asoc_reparent_pll_clocks(dev, clk, micfil->pll8k_clk,
- 				     micfil->pll11k_clk, ratio);
- 	ret = clk_prepare_enable(clk);
-@@ -730,6 +730,8 @@ static int fsl_micfil_hw_params(struct snd_pcm_substream *substream,
- 	if (ret)
- 		return ret;
+@@ -667,7 +667,7 @@ static int fsl_micfil_trigger(struct snd_pcm_substream *substream, int cmd,
  
-+	micfil->mclk_flag = true;
-+
- 	ret = clk_set_rate(micfil->mclk, rate * clk_div * osr * 8);
- 	if (ret)
- 		return ret;
-@@ -764,6 +766,17 @@ static int fsl_micfil_hw_params(struct snd_pcm_substream *substream,
- 	return 0;
- }
+ 		/* Disable the module */
+ 		ret = regmap_clear_bits(micfil->regmap, REG_MICFIL_CTRL1,
+-					MICFIL_CTRL1_PDMIEN);
++					MICFIL_CTRL1_PDMIEN | MICFIL_CTRL1_ERREN);
+ 		if (ret)
+ 			return ret;
  
-+static int fsl_micfil_hw_free(struct snd_pcm_substream *substream,
-+			      struct snd_soc_dai *dai)
-+{
-+	struct fsl_micfil *micfil = snd_soc_dai_get_drvdata(dai);
-+
-+	clk_disable_unprepare(micfil->mclk);
-+	micfil->mclk_flag = false;
-+
-+	return 0;
-+}
-+
- static int fsl_micfil_dai_probe(struct snd_soc_dai *cpu_dai)
+@@ -940,6 +940,7 @@ static bool fsl_micfil_volatile_reg(struct device *dev, unsigned int reg)
  {
- 	struct fsl_micfil *micfil = dev_get_drvdata(cpu_dai->dev);
-@@ -806,6 +819,7 @@ static const struct snd_soc_dai_ops fsl_micfil_dai_ops = {
- 	.startup	= fsl_micfil_startup,
- 	.trigger	= fsl_micfil_trigger,
- 	.hw_params	= fsl_micfil_hw_params,
-+	.hw_free	= fsl_micfil_hw_free,
- };
+ 	switch (reg) {
+ 	case REG_MICFIL_STAT:
++	case REG_MICFIL_FIFO_STAT:
+ 	case REG_MICFIL_DATACH0:
+ 	case REG_MICFIL_DATACH1:
+ 	case REG_MICFIL_DATACH2:
+@@ -948,6 +949,7 @@ static bool fsl_micfil_volatile_reg(struct device *dev, unsigned int reg)
+ 	case REG_MICFIL_DATACH5:
+ 	case REG_MICFIL_DATACH6:
+ 	case REG_MICFIL_DATACH7:
++	case REG_MICFIL_OUT_STAT:
+ 	case REG_MICFIL_VERID:
+ 	case REG_MICFIL_PARAM:
+ 	case REG_MICFIL_VAD0_STAT:
+@@ -1024,6 +1026,8 @@ static irqreturn_t micfil_err_isr(int irq, void *devid)
+ {
+ 	struct fsl_micfil *micfil = (struct fsl_micfil *)devid;
+ 	struct platform_device *pdev = micfil->pdev;
++	u32 fifo_stat_reg;
++	u32 out_stat_reg;
+ 	u32 stat_reg;
  
- static struct snd_soc_dai_driver fsl_micfil_dai = {
-@@ -1279,7 +1293,8 @@ static int fsl_micfil_runtime_suspend(struct device *dev)
- 
- 	regcache_cache_only(micfil->regmap, true);
- 
--	clk_disable_unprepare(micfil->mclk);
-+	if (micfil->mclk_flag)
-+		clk_disable_unprepare(micfil->mclk);
- 	clk_disable_unprepare(micfil->busclk);
- 
- 	return 0;
-@@ -1294,10 +1309,12 @@ static int fsl_micfil_runtime_resume(struct device *dev)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = clk_prepare_enable(micfil->mclk);
--	if (ret < 0) {
--		clk_disable_unprepare(micfil->busclk);
--		return ret;
-+	if (micfil->mclk_flag) {
-+		ret = clk_prepare_enable(micfil->mclk);
-+		if (ret < 0) {
-+			clk_disable_unprepare(micfil->busclk);
-+			return ret;
-+		}
+ 	regmap_read(micfil->regmap, REG_MICFIL_STAT, &stat_reg);
+@@ -1040,6 +1044,14 @@ static irqreturn_t micfil_err_isr(int irq, void *devid)
+ 				  MICFIL_STAT_LOWFREQF, MICFIL_STAT_LOWFREQF);
  	}
  
- 	regcache_cache_only(micfil->regmap, false);
++	regmap_read(micfil->regmap, REG_MICFIL_FIFO_STAT, &fifo_stat_reg);
++	regmap_write_bits(micfil->regmap, REG_MICFIL_FIFO_STAT,
++			  fifo_stat_reg, fifo_stat_reg);
++
++	regmap_read(micfil->regmap, REG_MICFIL_OUT_STAT, &out_stat_reg);
++	regmap_write_bits(micfil->regmap, REG_MICFIL_OUT_STAT,
++			  out_stat_reg, out_stat_reg);
++
+ 	return IRQ_HANDLED;
+ }
+ 
 -- 
 2.34.1
 
