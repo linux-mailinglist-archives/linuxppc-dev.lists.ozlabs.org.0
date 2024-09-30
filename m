@@ -1,72 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-1699-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1697-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC0F98AFB6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2024 00:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF7B98AEFA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2024 23:26:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XHb3g334Cz2xGH;
-	Tue,  1 Oct 2024 08:15:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XHYzr0CLDz301G;
+	Tue,  1 Oct 2024 07:26:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=199.89.1.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727720371;
-	cv=none; b=cn4SZejDRGTmFAy1zhSogJRqhfhYrmki4+rYLBUHn9rGrBksSHoH4ja0RpPuwpubVCQLHdr/LBdx04EnZXIMu44zz5+r6DnIUeO3O/7bOQmiN/9dTj4Nx9QJ7RCzKi59aM8LgTQBhkGk/8gUSxvmqe6LDyQMFeGfx3fZ3nlbMnLGbc2mVregU5yaT+LCi1c7jCF/a1Gzt6cCXZqROQivBTv2oWHv2hMXC1iQTCOlkiX49V5lFCOeVCZiBoW5NTpuKwjCbSsivVFXt9GYGWISmvBB7b1O537CO6lLSMJ3hhVOOmt/76mEKwnKHZidggT+1CmY7VJ5/Hw/FrhObX04nA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727731607;
+	cv=none; b=VQ368cT1RoGm6lWJMb4EHTDbD3bzuL+v17QU84RbDDXILM2LmHEhim+yf+W7Z3Bgmby57vWLVJefVbHilHDXhYJ2w4aegqhFLphDNlNAmd28CslmhjXW+D+JCJyIAtKq3Na9vpkW8ZLyds2qC6dzlJymbnxOEizoZw3GXA/3ZOf45dbOmmu2T9aakJoPK8LumNuQ2mUpU9qL5uCvBCQvZKZPhXmp5hxOtJXQJ0omnGN40ZPUI5CDyJNYSNeJYFc5GYrvhYeqKuSjNJMOJ/UEMG0WiQNCVfvhvDXDVXmqAC2UWTMps/qFtkSB1wm0QzcvuvkV2k4VOWVhEwFpwevE7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727720371; c=relaxed/relaxed;
-	bh=zaI39plbOj1b0fMPH7CHurh+dET18cQh8zlGr0HXTtw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCRhiMih2xaDRlyGuA/Xjx9Ell9lq5KM8X1Cw+/yaaOpI6W8AJc/0RarS8+eeniI50ylCn5uI/uVvWGpPaPPkg9EEyfmd3BK/e22zg3cJ0j2pYFuzGkPoLla0nXotQ3a6qTSbt1XErGML2gl4qx2XzybnJSmDsTDIu1L9ds1bw/7t9c0ys4WuTsIbbK1K6FeJNOL1Xg2k7zeWE1SGNNJitFUQ6Nndo94A4EWMWGZ8oRzW0Vvf4mb/aS2/YdmtZVDXEVSSiAPvoTFQfY17Esnx5ISiw1qxYUWfY9xHeRQNKjLYji/cjqfWed669FHLGqzC83Yvb3QQ+R6cMcq+CDPzg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=acm.org; dkim=pass (2048-bit key; unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=ELHSdJJZ; dkim-atps=neutral; spf=pass (client-ip=199.89.1.12; helo=009.lax.mailroute.net; envelope-from=bvanassche@acm.org; receiver=lists.ozlabs.org) smtp.mailfrom=acm.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+	t=1727731607; c=relaxed/relaxed;
+	bh=8U+PR0Olc6pa82L7saTEX3cuvOrpLiqj4a3YfY3UsSg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=EiXJUuqKgQtC+i/NQDMh2HpOZqp74U60Fwn8B9brZ0vZa7O+lNpFf4hK5H9hv2u1fAPuH6HGcFsY8jK12n/1DQQds/ZIKkUcFi/vSi6E836eWQ6SkF1/EhnZ1jZhGNE05sGjVBFnJ+P+KB6ReBScg/sutNUg7A51h9m8rOwwb0NucbvfOTxeEEvbjJBslJ/wM0EOm8JvB4IV2M2a25pR0h3TR6fswBPjoluJrvykgjd8/QmMGi77i2uX3bKg9MHmHm3y8V85u5OjQJnQ5WPrSplkYJkER/8OWh6M3lBS+1hgr27a/GliRxzuS456F9rw4l9MMHZCMQZl9ZZSCvlzJQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qx9+ijmC; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=ELHSdJJZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qx9+ijmC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=acm.org (client-ip=199.89.1.12; helo=009.lax.mailroute.net; envelope-from=bvanassche@acm.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 176 seconds by postgrey-1.37 at boromir; Tue, 01 Oct 2024 04:19:31 AEST
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHTql585Jz2xYl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 04:19:31 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4XHTmJ63wzzlgMVs;
-	Mon, 30 Sep 2024 18:16:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:from:from
-	:received:received; s=mr01; t=1727720189; x=1730312190; bh=zaI39
-	plbOj1b0fMPH7CHurh+dET18cQh8zlGr0HXTtw=; b=ELHSdJJZaYp7FTWNj8JWl
-	0t9zqDuLCCUrsH5umTrlv12Jm7F2aCziZxfYDTQ7bCdQjriDquPkv296VB96DWgV
-	7G63LC/njwBukmkiWnhCqv5OtErCw7PbrMPCdEObffF+A2CuxtABZgphJwO/p6VV
-	jM+0nSGrx7inGGU4FDGP3t5fWfbcJj1HdQ/kMlKMV4xwPQnME6TrnyM4zTOaFqLT
-	yBUFs41qDzKhbhSV8E8bf0pgfcELoFUZlHiOkYQlcdjJpliHKaQHbxg+P0lBVdJX
-	U5nUMMgLPuLCZ+34Dh0cveMID7hDcBzblIoCCm1G0Tk3hVSrs6lGTUGyyd3fZAqC
-	Q==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id b-l6cx9my2_3; Mon, 30 Sep 2024 18:16:29 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4XHTmD5V7ZzlgMVj;
-	Mon, 30 Sep 2024 18:16:28 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 04/21] powerpc/cell: Switch to number_of_interrupts()
-Date: Mon, 30 Sep 2024 11:15:43 -0700
-Message-ID: <20240930181600.1684198-5-bvanassche@acm.org>
-X-Mailer: git-send-email 2.46.1.824.gd892dcdcdd-goog
-In-Reply-To: <20240930181600.1684198-1-bvanassche@acm.org>
-References: <20240930181600.1684198-1-bvanassche@acm.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHYzq07Tbz300g
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 07:26:46 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 5F8FFA416D9;
+	Mon, 30 Sep 2024 21:26:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B21C4CEC7;
+	Mon, 30 Sep 2024 21:26:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727731602;
+	bh=NkRqiuMzhon0316LV3Kd2sU6eM23gxXjReXGVuES79I=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Qx9+ijmCV0QWEi1Y3/I0BppzWyFZVGTnGK/kuxt4amCNYMWAAhex2Ojp/1Ipd9w6j
+	 Zu1EdY6/lt9gWstfSbToWwF/U0xEqJL5FQNpw9tIQ1btd/ffNA1LphbiwBMaykzNQc
+	 5W+JJWj9I/6Jt4IkmgZG2zLhZDJJ+Y8t9B/VyxzY8ied3nAfZqBqQO+k6Ej2I6Nl7Q
+	 JZS08jHRK9gfNiigzZrtzKjMgApPH3zvwQwmArLAm+qnO6TjSNS2i9UzYTbDwFFXo1
+	 n7DoD4qEZXHUktUmxCMz9EewyNE7yBHCrYyI4CeCzjQULmZxZuRg143ACLMmJdP4aM
+	 1hs7qx0qdQn+g==
+From: Mark Brown <broonie@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240924-asoc-imx-maple-v1-1-8b993901f71e@kernel.org>
+References: <20240924-asoc-imx-maple-v1-1-8b993901f71e@kernel.org>
+Subject: Re: [PATCH] ASoC: fsl: Use maple tree register cache
+Message-Id: <172773160047.2197048.13783696550298838000.b4-ty@kernel.org>
+Date: Mon, 30 Sep 2024 22:26:40 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,35 +63,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-99b12
+X-Spam-Status: No, score=-0.3 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Use the number_of_interrupts() function instead of the global variable
-'nr_irqs'. This patch prepares for changing 'nr_irqs' from an exported
-global variable into a variable with file scope.
+On Tue, 24 Sep 2024 15:58:42 +0200, Mark Brown wrote:
+> Several of the NXP drivers use regmaps with a rbtree register cache. Since
+> the maple tree cache is uisng a generally more modern data structure which
+> makes implementation choices more suitable for modern systems let's convert
+> these drivers to it. This should have no practical impact.
+> 
+> 
 
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- arch/powerpc/platforms/cell/axon_msi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied to
 
-diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platfo=
-rms/cell/axon_msi.c
-index 28dc86744cac..b7996bc091e6 100644
---- a/arch/powerpc/platforms/cell/axon_msi.c
-+++ b/arch/powerpc/platforms/cell/axon_msi.c
-@@ -112,7 +112,7 @@ static void axon_msi_cascade(struct irq_desc *desc)
- 		pr_devel("axon_msi: woff %x roff %x msi %x\n",
- 			  write_offset, msic->read_offset, msi);
-=20
--		if (msi < nr_irqs && irq_get_chip_data(msi) =3D=3D msic) {
-+		if (msi < number_of_interrupts() && irq_get_chip_data(msi) =3D=3D msic=
-) {
- 			generic_handle_irq(msi);
- 			msic->fifo_virt[idx] =3D cpu_to_le32(0xffffffff);
- 		} else {
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: fsl: Use maple tree register cache
+      commit: bbeffdda5f26a56072cb8cf741f4c52bc2174838
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
