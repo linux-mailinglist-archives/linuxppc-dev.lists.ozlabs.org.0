@@ -1,85 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-1682-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1683-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D71598998A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2024 05:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1832989A2A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2024 07:34:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XH6Hh01LRz2yHj;
-	Mon, 30 Sep 2024 13:38:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XH8sC1sMxz2yLg;
+	Mon, 30 Sep 2024 15:34:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.54 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727667533;
-	cv=pass; b=AVikLiUnSkJ6/Hom+/AAYZ91EecFs5wNPyq5vQN/DaQ84KkLLbZhGmgdmRv0zWlIhYaMtLJMcHG8SBMdeuWcVfqGOnXIJb2KRkYPn2iVqaYKQ4IsKa+K4k2/Ekvbb3XQuHqpXgV89MF9PYv/zx4C8gPb0hUZkOsBejW/FLxyJqhcCYO21yYt6E24J+qKSnjVl67HKDb9eZ2OcNHIPgj/hI7PForSjHEaDvTj0N5E2sfM727GT2+9WcIanfL+olu91hOtlQD3sziv9z2G8+XdD6KEOBlT7VwQve/5WXnT5wtRZpeUAUwv/bXJOIdj+2Hl32V7tFj9yjgPIafbuatqTQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727667533; c=relaxed/relaxed;
-	bh=vN/joSxsscuq8xTOS5QrFXVe/E83bOhifjrslcJewss=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=PI//0UTPL3VHrkQWYKvDQqIKEvRCesi0xk4kr7Yrf3rHkBhetimtwoWvahWMijvElo10GvYGZgtM+IGgtt80tSC+ClPvmVyocW0ZiYJkd8njsH0/q8I+nY+PV7NnJ3skad44dNZrC57vH2QDQUFaBSdd2CnfNfb5Q83fYqLLzYmCR8TOqYW5gDEJtuayM9vFOWE/GOTxZ5zNGel0Nw8js4YttGwF5NtFFZw8bgDeo+KvBHWnSVAp/Eqoci3MoQyV7X8+MlQXU7Ez0U0S2fu4yhr/PvfUlh5QREY0LGxMGb5aq5XlR972Nrz1TOF6G4dbAMMj7c6l3vQWCjEZiX6tqw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=QeQhHvEv; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=XOZkiOAM; dkim-atps=neutral; spf=pass (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727674478;
+	cv=none; b=j94SN/79t0DzuO9tg0Gw6buyG7VPcuL2Q6N/GWtkaw28pUWPM/PgFUL0Zm8A5RPpcngSeG4Rcva8zBCnv13B66fqch12OYIYUwA3tQItsJBKaCtdpMXiC7gN5CqGAikundxMkbIeKEbJaq9sNThPr2VFaPzst5MBRueGET5kdWrjHzxQx8wcE/QCiS8Elnr6Gzp7Ehx4UfVPDqbZ5Z/16TP/vTJ/4RTyz8WbE1x8WoSpef2B5YRsNLTY8Fsh7JYJpRw5fU9NdTV0pBTI11Oaj0RxuT7yhBDRvkjnVKkaIEoTFT4JDhjF3/e2BHkrkCPKjzKHHJu0iDDG4+7dxPkvYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1727674478; c=relaxed/relaxed;
+	bh=cgkgCdD8MJY3Rd/1F//mH53/BFW4BMvD0+YrzQ8BWS8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=nh0FmaQpLJFXG2svc+OZZTYK17w0LEaid980gBa6jqLEzFRu+zFX2/xBXkayKzThRaga4cuyxsA7paS93LlubI8cOeT/j4/sX9oXM1ZpLhYHFSFyZ/jeItMneLqV36UDpfzm9bCpeG8St6Sk0SkRm79tYp3yjsBCN/dsBH9t/ZhlFD07iq3vqZbFcFFn19l2vFy6S+WibPa7JezqmUGptQrO59Jt5hqIbgKRJhti7/NCh/R67j423pUQjEdzrOQj+EzKZ314EBJ/XSLxTqx17vSGpBFBUJSB1GZMQDGnBkwOiVDpfiD6or070vc64IpTzvSnVW15aTx4Xvf/GyBl5A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lAtGeCiL; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=QeQhHvEv;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=XOZkiOAM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lAtGeCiL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XH6HZ3hPnz2xBb
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2024 13:38:48 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1727667521; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=GXjItPiKT9uG7F08yrY3tHL9cf8Iw+odIT+nD6SFQw0B3FbG0K2WjyW2mXZkytucHI
-    YmWCoF/Pf49JrpvCPzXw5blvr/eXEoaGGQ7yR1M8offoMH+uuTe3xDcWe2EEpZAyf9ut
-    nCLdk6mnBQKd6AYErEf1+yJ+j481u8vbpGF10+eeG//NojMnoafd7egaxkC/iF8kL1W1
-    gIy0E444xaps5uCq4FAGUyZMPZDOmZCc+o4jwqZq1rkxQh14V39o2ug9VwSHykl8dpX9
-    9hyfgxV910Xo5/MM62rf1h8rmdfqwRSnLrdvodF6cBtM8U99Ysx5gI92wwBYineVUuZz
-    Ox/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1727667521;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=vN/joSxsscuq8xTOS5QrFXVe/E83bOhifjrslcJewss=;
-    b=EiP5bWNuYologHGOMgkBO2o2kmsv4Dlfo0ES4Lpdt02+0YO8vVpIQyNM8Se+w9QbOb
-    mv9WPaXMmXijn4YFCb5vaC/8CRvea9TXTFaNrEXmudgDtQ/mjne91jXCdxlT4G9l85tk
-    Svft+IbLrfwzzk7uv4DpQUdRUM1LsGPBKD4PNzIex2xxvXtLU5xAEOziWhFdkf4PM5bc
-    PAC5r2lz656JGiN+761C0se9Yp5enpMQr0oy0wFTI4Mxm/XlIoBnBXo12HJwVYzzSAqi
-    Fa6AAgeKlq9Kc0pedFwZoXAC51nlFI7TvBlTcfzcHFIsSwlMY4qGS7r86vRMHvd8jHF+
-    4Vzw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1727667521;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=vN/joSxsscuq8xTOS5QrFXVe/E83bOhifjrslcJewss=;
-    b=QeQhHvEvp0sPXfLgfyF1IahpjvVrn07IcpnAVPYy/+8Pi0jbk1xbKA4R653QTFdJfv
-    nvoZsdlIbdSq6mTpQf/SI4cakwo7Def2B+ysg8570/LfXbyAvZqtVJ8nl3eLx1T0ux87
-    35cndOEEZH1IYqNWo0v+kntB08Sg6ndUcjPuXnbDvI+eI3l1f0lDmAOjIrawKKoC/PGo
-    geHt7bT1/ItXNtS2bMs2VO3mujyQzj1I8/xRq2KPcImmf1bd8mip1WKpYbcZmUi2B7Cc
-    zz3UMUo9SQokQ662I1nen4LQ4iBbOfNh3M0dtclN/AtSa44KrSFjzI1yUpa1w9Vzps1z
-    RWKQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1727667521;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=vN/joSxsscuq8xTOS5QrFXVe/E83bOhifjrslcJewss=;
-    b=XOZkiOAMGkCw9o07aivF08eQOZLL0o169+3DkRZCkyYtYAo+sJbvdCxNZwOdultNWO
-    9Hlkmw/7ciEFmIu41rBQ==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7Vpq0s3mSXHagypRTj2U+/aY7GigIdl/mSHO/"
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 51.2.8 AUTH)
-    with ESMTPSA id e0da1a08U3cePP6
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 30 Sep 2024 05:38:40 +0200 (CEST)
-Content-Type: multipart/alternative; boundary=Apple-Mail-8C172D51-DE26-46A3-805D-358433D1E81B
-Content-Transfer-Encoding: 7bit
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XH8s923JQz2yLT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2024 15:34:36 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48T9wpCw010857;
+	Mon, 30 Sep 2024 05:33:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	cgkgCdD8MJY3Rd/1F//mH53/BFW4BMvD0+YrzQ8BWS8=; b=lAtGeCiLfDF5ICoA
+	W/mu48Lb0LwwBNe1SEUwx+ycS2Sln7JFrWdAEvMWcIBZfe8VVSCb5NxFDff5Ki29
+	46vTBKPxNg2OTEv0kjS/JG5MBcqoJnnhGIoplKIiGRGjIreCL7gn9H2l+9VdFJcU
+	mh/0+j6mfJjQPmU3VlZbmxaK+DGFiL3ZZcpy9sdmg6zdnQLxUC2YH/YoTvnRZlu7
+	4cmDSioTImUy6N4nfiFFI4NHpmw8dCdHLjZcjpyZUks1cm1YpAIAD+KUHd03r8Iq
+	axtFCJQyMLrDNqGGQ868hFDMJvw5TjlK85eFGNXzHHOTbKs2rTtbATHwUWAwhbTq
+	XTw5Aw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41x9f7ydhd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 05:33:48 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48U5Xl2g008425;
+	Mon, 30 Sep 2024 05:33:47 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41x9f7ydha-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 05:33:47 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48U5ALJC002386;
+	Mon, 30 Sep 2024 05:33:46 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41xxu0vekq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 05:33:46 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48U5XhcJ47644978
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 30 Sep 2024 05:33:43 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 34AF920043;
+	Mon, 30 Sep 2024 05:33:43 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9959D20040;
+	Mon, 30 Sep 2024 05:33:39 +0000 (GMT)
+Received: from [9.203.115.143] (unknown [9.203.115.143])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 30 Sep 2024 05:33:39 +0000 (GMT)
+Message-ID: <32249e74-633d-4757-8931-742b682a63d3@linux.ibm.com>
+Date: Mon, 30 Sep 2024 11:03:38 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 17/17] powerpc64/bpf: Add support for bpf trampolines
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf <bpf@vger.kernel.org>,
+        linux-trace-kernel <linux-trace-kernel@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Naveen N. Rao" <naveen@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Vishal Chourasia <vishalc@linux.ibm.com>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+References: <20240915205648.830121-1-hbathini@linux.ibm.com>
+ <20240915205648.830121-18-hbathini@linux.ibm.com>
+ <CAADnVQL60XXW95tgwKn3kVgSQAN7gr1STy=APuO1xQD7mz-aXA@mail.gmail.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <CAADnVQL60XXW95tgwKn3kVgSQAN7gr1STy=APuO1xQD7mz-aXA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wetF4buMaLPTrBakXdZ-howbEduaj1dN
+X-Proofpoint-ORIG-GUID: qkAqFR7ZS0h1tu3GBp6zr4aPrEqa9AXK
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,88 +112,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (1.0)
-Subject: Kernel doesn't boot after DRM updates (drm-next-2024-09-19)
-Date: Mon, 30 Sep 2024 05:38:29 +0200
-Message-Id: <EAA3868D-0DC5-438B-ACD6-11EE3ECCA63C@xenosoft.de>
-References: <396DA24A-85A6-419B-8E90-9A05EF608C41@xenosoft.de>
-Cc: Maling list DRI developers <dri-devel@lists.freedesktop.org>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Darren Stevens <darren@stevens-zone.net>, hypexed@yahoo.com.au,
- Christian Zigotzky <info@xenosoft.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <396DA24A-85A6-419B-8E90-9A05EF608C41@xenosoft.de>
-To: Alex Deucher <alexdeucher@gmail.com>
-X-Mailer: iPhone Mail (22A3354)
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HTML_MESSAGE,
-	MIME_QP_LONG_LINE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-	SPF_NONE autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-30_04,2024-09-27_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 clxscore=1011 adultscore=0 mlxscore=0 impostorscore=0
+ bulkscore=0 suspectscore=0 mlxlogscore=910 malwarescore=0 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409300035
+X-Spam-Status: No, score=0.0 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
---Apple-Mail-8C172D51-DE26-46A3-805D-358433D1E81B
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
+On 17/09/24 1:20 pm, Alexei Starovoitov wrote:
+> On Sun, Sep 15, 2024 at 10:58 PM Hari Bathini <hbathini@linux.ibm.com> wrote:
+>>
+>> +
+>> +       /*
+>> +        * Generated stack layout:
+>> +        *
+>> +        * func prev back chain         [ back chain        ]
+>> +        *                              [                   ]
+>> +        * bpf prog redzone/tailcallcnt [ ...               ] 64 bytes (64-bit powerpc)
+>> +        *                              [                   ] --
+> ...
+>> +
+>> +       /* Dummy frame size for proper unwind - includes 64-bytes red zone for 64-bit powerpc */
+>> +       bpf_dummy_frame_size = STACK_FRAME_MIN_SIZE + 64;
+> 
+> What is the goal of such a large "red zone" ?
+> The kernel stack is a limited resource.
+> Why reserve 64 bytes ?
+> tail call cnt can probably be optional as well.
 
-> On 26 September 2024 at 6:38pm, Christian Zigotzky <chzigotzky@xenosoft.de=
-> wrote:
->=20
-> =EF=BB=BFOn 26 September 2024 at 5:50pm, Alex Deucher wrote:
->=20
-> Can you attach your dmesg output?  There was a regression in the dma
-> subsystem what was fixed by this commit:
->=20
-> commit b348b6d17fd1d5d89b86db602f02be
-> a54a754bd8
-> Author: Leon Romanovsky <leon@kernel.org>
-> Date:   Sun Sep 22 21:09:48 2024 +0300
->=20
->   dma-mapping: report unlimited DMA addressing in IOMMU DMA path
->=20
-> Alex
->=20
-> =E2=80=94=E2=80=94=E2=80=94-
->=20
-> Hello Alex,
->=20
-> This issue is gone.
->=20
-> Thanks for the information,
->=20
-> Christian
+Hi Alexei, thanks for reviewing.
+FWIW, the redzone on ppc64 is 288 bytes. BPF JIT for ppc64 was using
+a redzone of 80 bytes since tailcall support was introduced [1].
+It came down to 64 bytes thanks to [2]. The red zone is being used
+to save NVRs and tail call count when a stack is not setup. I do
+agree that we should look at optimizing it further. Do you think
+the optimization should go as part of PPC64 trampoline enablement
+being done here or should that be taken up as a separate item, maybe?
 
-Unfortunately, the issue still exists.
+[1] 
+https://lore.kernel.org/all/40b65ab2bb3a48837ab047a70887de3ccd70c56b.1474661927.git.naveen.n.rao@linux.vnet.ibm.com/
+[2] https://lore.kernel.org/all/20180503230824.3462-11-daniel@iogearbox.net/
 
-dmesg: https://www.xenosoft.de/PuTTY_P5040_U-Boot.log=
-
---Apple-Mail-8C172D51-DE26-46A3-805D-358433D1E81B
-Content-Type: text/html;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
-utf-8"></head><body dir=3D"auto"><div dir=3D"ltr"><br></div><div dir=3D"ltr"=
-><blockquote type=3D"cite">On 26 September 2024 at 6:38pm, Christian Zigotzk=
-y &lt;chzigotzky@xenosoft.de&gt; wrote:<br><br></blockquote></div><blockquot=
-e type=3D"cite"><div dir=3D"ltr">=EF=BB=BF<span>On 26 September 2024 at 5:50=
-pm, Alex Deucher wrote:</span><br><span></span><br><span>Can you attach your=
- dmesg output? &nbsp;There was a regression in the dma</span><br><span>subsy=
-stem what was fixed by this commit:</span><br><span></span><br><span>commit b=
-348b6d17fd1d5d89b86db602f02be</span><br><span>a54a754bd8</span><br><span>Aut=
-hor: Leon Romanovsky &lt;leon@kernel.org&gt;</span><br><span>Date: &nbsp;&nb=
-sp;Sun Sep 22 21:09:48 2024 +0300</span><br><span></span><br><span> &nbsp;&n=
-bsp;dma-mapping: report unlimited DMA addressing in IOMMU DMA path</span><br=
-><span></span><br><span>Alex</span><br><span></span><br><span>=E2=80=94=E2=80=
-=94=E2=80=94-</span><br><span></span><br><span>Hello Alex,</span><br><span><=
-/span><br><span>This issue is gone. </span><br><span></span><br><span>Thanks=
- for the information,</span><br><span></span><br><span>Christian</span></div=
-></blockquote><br><div>Unfortunately, the issue still exists.</div><div><br>=
-</div><div>dmesg:&nbsp;<a href=3D"https://www.xenosoft.de/PuTTY_P5040_U-Boot=
-.log">https://www.xenosoft.de/PuTTY_P5040_U-Boot.log</a></div></body></html>=
-
---Apple-Mail-8C172D51-DE26-46A3-805D-358433D1E81B--
+Thanks
+Hari
 
