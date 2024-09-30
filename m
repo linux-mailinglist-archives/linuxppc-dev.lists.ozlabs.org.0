@@ -1,58 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-1684-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1685-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B72989A88
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2024 08:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B013989C39
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2024 10:11:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XHB6X04Rmz2yK9;
-	Mon, 30 Sep 2024 16:31:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XHDKp63wSz2xSl;
+	Mon, 30 Sep 2024 18:11:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727677875;
-	cv=none; b=OtzAjD2/frlpMPhLLW8xkyQythDuQTR5gQrQkxxQIT9aLtkPZD9sA0qIQCOACKnWmpQXHHg3vf1o7jBpxZmzVNviq3HwaCv4FtMYWOy7KGDQEtSQyXS6kv6F6C1McXclNVgKvGWDyEQYusx+TgD2yNojKQrkc+8Mprp35Rujl4SKTNt8fPXIe0St91mPa0kZnbr9tIdHq6pCV92KxGOIFmeSuvQtVflq5qc4q935IRiIPy6yxsXkXraefDSrKHPoJ60tLhd/SxokNaeeXzXebpqYwW1VTfJKd3ZRey88sAsSzEscBLi4n9ETHmmMOBMzryNj/tkzz8X64Tqde6/xmw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727683867;
+	cv=none; b=FxNeEwuK4VX/Sm0TjUDpQBNCpAy/jeXanJp+ZNPw6FTnl0/xCpxD+e7JkLQWEY4SK8RrQBU9R817xCHjyb+/b4IJkqNsXBbIwWje83b3/sbJVM0/40Q7fFyUF7uNl0yuZAM99NggWzJUJ7STlCMBOElmGR1IsPlq6S/cRc/7Iac3X4LCfR9Uo2Xo4A8E2/7XT96OwHMWGrIjdPY1gfbposnubUUv2hzsqsD9nVi6S1vaDVOO7jREmGIC8Kl1ASsBhjN6F60uCA3rUZ9YGoM3TiZNmYtKHpnBHv54ijT1HENdV7iaaj3MpAIsHpK/tBAC57w/rsWyb2y4BA1OUQNDHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727677875; c=relaxed/relaxed;
-	bh=w3u+rBUek+XTdqKOnouvjqneODRITqXAUEaOu1gCgC0=;
-	h=From:To:Subject:Date:Message-Id; b=SII5El7ZhpaCx/w7RQnMN+389oahxU0pZ5ZMBrWXZ8fo37Ig7MDypyLODNSn3LywRkB/wC1/SG1V5Lbnao/dqoCB2Rnrvx5Xi3AHp0ktreYhNjL2oPW/zecRRjb93qI6sqmSUeJdHu+tIZqk9JNMoLRLbUPbWHfw7vIK4rOxUP8kv/AUMsflWI1JdOJ++/ru6WeL1hvhbebOwKohuHxB8cpM6r6NM4wxYwj13zKbXXhwo3pTMt6gR6xJwofvgB/NOvnktVO8jZUP4XdAI0VtS+woD3vtm73qHzTLw5YnVvpqeWlvFDbkuxxOmaWahOmQoP4RgJe4pBAhISeYgk5bIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+	t=1727683867; c=relaxed/relaxed;
+	bh=HLycQApx8pxhD8j47d1dL2iWz5ynQbkYEqHPYwUfLbM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CVlwoqknPFT5DggsWYWmaEPmpc050iMa934sJ50ksMTfnqwRIMD2Z/bpus6bUQzZaZUnAJ9e7pyod8dc3tRgIR3sJXxm9j3LWvJBNDLYth/xhPHDYh6PMasgNL3YVtejXj3YWttKVhcfbmv7S28aYC2AAZMh7CVVlHw3qtUTh2iOWeQaW2bBUtgOSsru7KJs7lTuiAqydpS6noPdunlSqHzEYtxYydvVrKyKGx8gyvT35mgdnym/QA2A5a7bhdHl7pcEt+gM0ftDby/WmU/4c6plNL1tDNIPQH0EmXc/KXWvryalei/FvXUnfZCV7u/DHeQj6/WHKG3VPtuiOGMOKQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHB6W17Glz2yJL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2024 16:31:14 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 9616B1A016A;
-	Mon, 30 Sep 2024 08:31:11 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 5E53A1A1780;
-	Mon, 30 Sep 2024 08:31:11 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id C0556183DC04;
-	Mon, 30 Sep 2024 14:31:09 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: fsl_sai: Enable 'FIFO continue on error' FCONT bit
-Date: Mon, 30 Sep 2024 14:08:28 +0800
-Message-Id: <1727676508-22830-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Spam-Status: No, score=0.0 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHDKk1zgdz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2024 18:11:01 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XHDJT6ymMz2QTvx;
+	Mon, 30 Sep 2024 16:10:01 +0800 (CST)
+Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6AC741A0188;
+	Mon, 30 Sep 2024 16:10:55 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by kwepemf500003.china.huawei.com
+ (7.202.181.241) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 30 Sep
+ 2024 16:10:54 +0800
+From: Zhang Zekun <zhangzekun11@huawei.com>
+To: <mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
+	<naveen@kernel.org>, <maddy@linux.ibm.com>, <linuxppc-dev@lists.ozlabs.org>
+CC: <chenjun102@huawei.com>, <zhangzekun11@huawei.com>
+Subject: [PATCH] powerpc/kexec: Fix the return of uninitialized variable
+Date: Mon, 30 Sep 2024 15:56:28 +0800
+Message-ID: <20240930075628.125138-1-zhangzekun11@huawei.com>
+X-Mailer: git-send-email 2.17.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,56 +49,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.208]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemf500003.china.huawei.com (7.202.181.241)
+X-Spam-Status: No, score=0.0 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-FCONT=1 means On FIFO error, the SAI will continue from the
-same word that caused the FIFO error to set after the FIFO
-warning flag has been cleared.
+The of_property_read_u64() can fail and remain the variable uninitialized,
+which will then be used. Return error if we failed to read the property.
 
-Set FCONT bit in control register to avoid the channel swap
-issue after SAI xrun.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Fixes: 2e6bd221d96f ("powerpc/kexec_file: Enable early kernel OPAL calls")
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
 ---
- sound/soc/fsl/fsl_sai.c | 5 ++++-
- sound/soc/fsl/fsl_sai.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/kexec/file_load_64.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index ab58a4461073..634168d2bb6e 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -613,6 +613,9 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 9738adabeb1f..dc65c1391157 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -736,13 +736,18 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
+ 	if (dn) {
+ 		u64 val;
  
- 	val_cr4 |= FSL_SAI_CR4_FRSZ(slots);
- 
-+	/* Set to avoid channel swap */
-+	val_cr4 |= FSL_SAI_CR4_FCONT;
+-		of_property_read_u64(dn, "opal-base-address", &val);
++		ret = of_property_read_u64(dn, "opal-base-address", &val);
++		if (ret)
++			goto out;
 +
- 	/* Set to output mode to avoid tri-stated data pins */
- 	if (tx)
- 		val_cr4 |= FSL_SAI_CR4_CHMOD;
-@@ -699,7 +702,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_base", &val,
+ 						     sizeof(val), false);
+ 		if (ret)
+ 			goto out;
  
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
- 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK |
--			   FSL_SAI_CR4_CHMOD_MASK,
-+			   FSL_SAI_CR4_CHMOD_MASK | FSL_SAI_CR4_FCONT_MASK,
- 			   val_cr4);
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
- 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-index dadbd16ee394..9c4d19fe22c6 100644
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -137,6 +137,7 @@
- 
- /* SAI Transmit and Receive Configuration 4 Register */
- 
-+#define FSL_SAI_CR4_FCONT_MASK	BIT(28)
- #define FSL_SAI_CR4_FCONT	BIT(28)
- #define FSL_SAI_CR4_FCOMB_SHIFT BIT(26)
- #define FSL_SAI_CR4_FCOMB_SOFT  BIT(27)
+-		of_property_read_u64(dn, "opal-entry-address", &val);
++		ret = of_property_read_u64(dn, "opal-entry-address", &val);
++		if (ret)
++			goto out;
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_entry", &val,
+ 						     sizeof(val), false);
+ 	}
 -- 
-2.34.1
+2.17.1
 
 
