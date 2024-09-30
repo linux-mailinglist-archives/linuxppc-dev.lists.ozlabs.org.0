@@ -1,59 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-1697-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1700-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF7B98AEFA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2024 23:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E316798B090
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2024 00:58:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XHYzr0CLDz301G;
-	Tue,  1 Oct 2024 07:26:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XHc214dqPz2xFr;
+	Tue,  1 Oct 2024 08:58:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727731607;
-	cv=none; b=VQ368cT1RoGm6lWJMb4EHTDbD3bzuL+v17QU84RbDDXILM2LmHEhim+yf+W7Z3Bgmby57vWLVJefVbHilHDXhYJ2w4aegqhFLphDNlNAmd28CslmhjXW+D+JCJyIAtKq3Na9vpkW8ZLyds2qC6dzlJymbnxOEizoZw3GXA/3ZOf45dbOmmu2T9aakJoPK8LumNuQ2mUpU9qL5uCvBCQvZKZPhXmp5hxOtJXQJ0omnGN40ZPUI5CDyJNYSNeJYFc5GYrvhYeqKuSjNJMOJ/UEMG0WiQNCVfvhvDXDVXmqAC2UWTMps/qFtkSB1wm0QzcvuvkV2k4VOWVhEwFpwevE7A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727737128;
+	cv=none; b=SDCSD3JCjQWAPyozWWZafGeDDCFLG190JKqEEo4sN+f2eEliS8a6exIt+yFUxR1jfkAKR1p7KNrR7GBllnsR+Q2cNe0pIYhCfMd8UNqyNF9BrDoHGD0DAmmA8t7XvN/Dh02RUAnzCUsFZsvda7J27QmUbm3CR48qO3w6yEiP9U9es57LePif0xt8Vctz68cO8IJ3xo6XTEIx8stoTwaVbTv/TrVyHsivdpuaC1YLSu2uO5HtA1x8NGOFU1TdEWDS1ODssBtAStKEGYDO9p9GHtEi5s1qOu7j+3W9wpk+kcoYOe2nCWTZBumWKZY5PnbHuG9ZVRbmTCbLC58kQIjy6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727731607; c=relaxed/relaxed;
-	bh=8U+PR0Olc6pa82L7saTEX3cuvOrpLiqj4a3YfY3UsSg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=EiXJUuqKgQtC+i/NQDMh2HpOZqp74U60Fwn8B9brZ0vZa7O+lNpFf4hK5H9hv2u1fAPuH6HGcFsY8jK12n/1DQQds/ZIKkUcFi/vSi6E836eWQ6SkF1/EhnZ1jZhGNE05sGjVBFnJ+P+KB6ReBScg/sutNUg7A51h9m8rOwwb0NucbvfOTxeEEvbjJBslJ/wM0EOm8JvB4IV2M2a25pR0h3TR6fswBPjoluJrvykgjd8/QmMGi77i2uX3bKg9MHmHm3y8V85u5OjQJnQ5WPrSplkYJkER/8OWh6M3lBS+1hgr27a/GliRxzuS456F9rw4l9MMHZCMQZl9ZZSCvlzJQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qx9+ijmC; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1727737128; c=relaxed/relaxed;
+	bh=gz9QjimzhSxjwgOk1NVB/pXBBRpQjZ6HapOEfF947eo=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=eare0Hqz2m9f+yDMHWTJivmyAgT5t5dVLrXjImVkHffA0GOMcqA0MPqPej7UEF9bKPkNf35sYW2F+aLLXMdFNK9h+qq2OrUOiHzTze/JmgfBGccqUdUnz2xkCN0SexgeBDiMe54hNQOym5x/Ph9H9gvb4OOJ/PjOKQHDXIa0npeOizJOzTU7Nv+Z+3VWmZ59C+Jmhi2bfR+urnOcCIXx+SHU5WlxHu+v8ZweKzsdp0THsg+EtCWF6CPoPi7DZAsSxiT4zlrRSeCcwdBTxZay1MH6Wc0RCmNV93cP9Dohn6WzFDV5TOUwKr6SgsDGVLMXOdDYfG7v6KS3RhxtFin6zA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S6tcsBH+; dkim-atps=neutral; spf=pass (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qx9+ijmC;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=S6tcsBH+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHYzq07Tbz300g
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 07:26:46 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 5F8FFA416D9;
-	Mon, 30 Sep 2024 21:26:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B21C4CEC7;
-	Mon, 30 Sep 2024 21:26:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727731602;
-	bh=NkRqiuMzhon0316LV3Kd2sU6eM23gxXjReXGVuES79I=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Qx9+ijmCV0QWEi1Y3/I0BppzWyFZVGTnGK/kuxt4amCNYMWAAhex2Ojp/1Ipd9w6j
-	 Zu1EdY6/lt9gWstfSbToWwF/U0xEqJL5FQNpw9tIQ1btd/ffNA1LphbiwBMaykzNQc
-	 5W+JJWj9I/6Jt4IkmgZG2zLhZDJJ+Y8t9B/VyxzY8ied3nAfZqBqQO+k6Ej2I6Nl7Q
-	 JZS08jHRK9gfNiigzZrtzKjMgApPH3zvwQwmArLAm+qnO6TjSNS2i9UzYTbDwFFXo1
-	 n7DoD4qEZXHUktUmxCMz9EewyNE7yBHCrYyI4CeCzjQULmZxZuRg143ACLMmJdP4aM
-	 1hs7qx0qdQn+g==
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240924-asoc-imx-maple-v1-1-8b993901f71e@kernel.org>
-References: <20240924-asoc-imx-maple-v1-1-8b993901f71e@kernel.org>
-Subject: Re: [PATCH] ASoC: fsl: Use maple tree register cache
-Message-Id: <172773160047.2197048.13783696550298838000.b4-ty@kernel.org>
-Date: Mon, 30 Sep 2024 22:26:40 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHc1y6JMbz2xCW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 08:58:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727737127; x=1759273127;
+  h=date:from:to:cc:subject:message-id;
+  bh=oFRGR37CGGS87A4iwjI0CbZu1vP9nRcPfpAdo2L+LFQ=;
+  b=S6tcsBH+FY/iXaqKbNRocOVvoJf+h8R195SlavIDVUXRCngfkRWyPVxT
+   eFlnhOh8+E64dcdUs42HSirkSc6hNHVPQM1PH7SNBl3QQyOOwQaLlgkXl
+   5qklyMSOcImlCFcNnaBWD50g5aLRrffM616kCeDa85rOlOlJj+XX0GAwQ
+   tOvipMR7Pq95ZRJV5tw93AsiqEfF37pr0+BeCaLnOhvDfKjcOZJdjbaJq
+   x2HyjRozI4WYc50QwlPUwOu3cVlQguS6qwkWbhpkOWE5qWZ++YpS6Ik6n
+   bhOW2Cw7i51h/wvdqPMqHXnkGJDzWrNp6RFUW5zcy9xEdtSftlDiHlKSN
+   g==;
+X-CSE-ConnectionGUID: FlcUHMpnSceVqKnJEKhgwA==
+X-CSE-MsgGUID: fFl1PNFRQPasVBVlD9Fr7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="37523901"
+X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
+   d="scan'208";a="37523901"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 15:58:41 -0700
+X-CSE-ConnectionGUID: 6bH5zFquT6KThUiAFLOXEA==
+X-CSE-MsgGUID: 8kSw7+FcRNSAKcVuev7bOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
+   d="scan'208";a="73720239"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 30 Sep 2024 15:58:40 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1svPLi-000Q0L-0d;
+	Mon, 30 Sep 2024 22:58:38 +0000
+Date: Tue, 01 Oct 2024 06:58:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 4b058c9f281f5b100efbf665dd5a1a05e1654d6d
+Message-ID: <202410010654.hmC0nzdE-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-0.3 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,49 +76,104 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-99b12
-X-Spam-Status: No, score=-0.3 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 24 Sep 2024 15:58:42 +0200, Mark Brown wrote:
-> Several of the NXP drivers use regmaps with a rbtree register cache. Since
-> the maple tree cache is uisng a generally more modern data structure which
-> makes implementation choices more suitable for modern systems let's convert
-> these drivers to it. This should have no practical impact.
-> 
-> 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 4b058c9f281f5b100efbf665dd5a1a05e1654d6d  powerpc/vdso: allow r30 in vDSO code generation of getrandom
 
-Applied to
+elapsed time: 774m
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+configs tested: 83
+configs skipped: 137
 
-Thanks!
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-[1/1] ASoC: fsl: Use maple tree register cache
-      commit: bbeffdda5f26a56072cb8cf741f4c52bc2174838
+tested configs:
+alpha                             allnoconfig    gcc-14.1.0
+alpha                            allyesconfig    clang-20
+arc                              allmodconfig    clang-20
+arc                               allnoconfig    gcc-14.1.0
+arc                              allyesconfig    clang-20
+arm                              allmodconfig    clang-20
+arm                               allnoconfig    gcc-14.1.0
+arm                              allyesconfig    clang-20
+arm64                            allmodconfig    clang-20
+arm64                             allnoconfig    gcc-14.1.0
+csky                              allnoconfig    gcc-14.1.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    gcc-14.1.0
+hexagon                          allyesconfig    clang-20
+i386                             allmodconfig    clang-18
+i386                              allnoconfig    clang-18
+i386                             allyesconfig    clang-18
+i386        buildonly-randconfig-001-20241001    clang-18
+i386        buildonly-randconfig-002-20241001    clang-18
+i386        buildonly-randconfig-003-20241001    clang-18
+i386        buildonly-randconfig-004-20241001    clang-18
+i386        buildonly-randconfig-005-20241001    clang-18
+i386        buildonly-randconfig-006-20241001    clang-18
+i386                                defconfig    clang-18
+i386                  randconfig-001-20241001    clang-18
+i386                  randconfig-002-20241001    clang-18
+i386                  randconfig-003-20241001    clang-18
+i386                  randconfig-004-20241001    clang-18
+i386                  randconfig-005-20241001    clang-18
+i386                  randconfig-006-20241001    clang-18
+i386                  randconfig-011-20241001    clang-18
+i386                  randconfig-012-20241001    clang-18
+i386                  randconfig-013-20241001    clang-18
+i386                  randconfig-014-20241001    clang-18
+i386                  randconfig-015-20241001    clang-18
+i386                  randconfig-016-20241001    clang-18
+loongarch                        allmodconfig    gcc-14.1.0
+loongarch                         allnoconfig    gcc-14.1.0
+m68k                             allmodconfig    gcc-14.1.0
+m68k                              allnoconfig    gcc-14.1.0
+m68k                             allyesconfig    gcc-14.1.0
+microblaze                       allmodconfig    gcc-14.1.0
+microblaze                        allnoconfig    gcc-14.1.0
+microblaze                       allyesconfig    gcc-14.1.0
+mips                              allnoconfig    gcc-14.1.0
+nios2                             allnoconfig    gcc-14.1.0
+openrisc                          allnoconfig    gcc-14.1.0
+openrisc                         allyesconfig    gcc-14.1.0
+openrisc                            defconfig    gcc-12
+parisc                           allmodconfig    gcc-14.1.0
+parisc                            allnoconfig    gcc-14.1.0
+parisc                           allyesconfig    gcc-14.1.0
+parisc                              defconfig    gcc-12
+powerpc                          allmodconfig    gcc-14.1.0
+powerpc                           allnoconfig    gcc-14.1.0
+powerpc                          allyesconfig    gcc-14.1.0
+riscv                            allmodconfig    gcc-14.1.0
+riscv                             allnoconfig    gcc-14.1.0
+riscv                            allyesconfig    gcc-14.1.0
+riscv                               defconfig    gcc-12
+s390                             allmodconfig    gcc-14.1.0
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.1.0
+s390                                defconfig    gcc-12
+sh                               allmodconfig    gcc-14.1.0
+sh                                allnoconfig    gcc-14.1.0
+sh                               allyesconfig    gcc-14.1.0
+sh                                  defconfig    gcc-12
+sparc                            allmodconfig    gcc-14.1.0
+sparc64                             defconfig    gcc-12
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-17
+um                               allyesconfig    clang-20
+um                                  defconfig    gcc-12
+um                             i386_defconfig    gcc-12
+um                           x86_64_defconfig    gcc-12
+x86_64                            allnoconfig    clang-18
+x86_64                           allyesconfig    clang-18
+x86_64                              defconfig    clang-18
+x86_64                                  kexec    gcc-12
+x86_64                               rhel-8.3    gcc-12
+x86_64                          rhel-8.3-rust    clang-18
+xtensa                            allnoconfig    gcc-14.1.0
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
