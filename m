@@ -1,56 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-1698-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1699-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC0298AFA6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2024 00:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC0F98AFB6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2024 00:15:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XHZzf2c1vz2xMQ;
-	Tue,  1 Oct 2024 08:11:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XHb3g334Cz2xGH;
+	Tue,  1 Oct 2024 08:15:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a02:1800:120:4::f00:11"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727708930;
-	cv=none; b=PLzeHy6xBnp+t8ygCANW34Z+2zJB54WwXNFrhRwx43rw8JZrobdspnNAZ1t66VXydLfiMZ0/Kvcb0LtEngraRkL40oXS5GHXbcDWb1Kd1lXMRdcpEzFJPvllHBUFyegmxoKrC5xVjS8lp3QnxJnImD4XOEysGfwNzJ4WaA0EpzLOj3SeMizYRzqemFHZV+0ReNQb25AlFmIVbkrmJanP33PgAS5oAXTLRiNtpVd96iBwP5xQveB6zY4bbt6QBus2BzNwtQQsV7T/jwa7FUARwW5MzIS2oe42q5UxFem8o9FCXh5eRX31iAmSFOXk52pE/q2e/WHYnJQXrMS7WTpocA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=199.89.1.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727720371;
+	cv=none; b=cn4SZejDRGTmFAy1zhSogJRqhfhYrmki4+rYLBUHn9rGrBksSHoH4ja0RpPuwpubVCQLHdr/LBdx04EnZXIMu44zz5+r6DnIUeO3O/7bOQmiN/9dTj4Nx9QJ7RCzKi59aM8LgTQBhkGk/8gUSxvmqe6LDyQMFeGfx3fZ3nlbMnLGbc2mVregU5yaT+LCi1c7jCF/a1Gzt6cCXZqROQivBTv2oWHv2hMXC1iQTCOlkiX49V5lFCOeVCZiBoW5NTpuKwjCbSsivVFXt9GYGWISmvBB7b1O537CO6lLSMJ3hhVOOmt/76mEKwnKHZidggT+1CmY7VJ5/Hw/FrhObX04nA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727708930; c=relaxed/relaxed;
-	bh=3v2n15fuRXu8yFTBL0ZAJ/mu4EO8nwPGK3Xc8xqXrfI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Um0cU9jcW0YVqvQPfI4cJRSGXOG5gT51P7yrjGWNek1rOR3T7eQENtITnBV37tdz0ENPHW2EfVEPnHcty3YcMnBdBsQzFyFKQRxszSo+c7HH4pJxENPcu876SUKDOPCcUUbRwxJ7QsU1t2gx+CMjenMCb+m2DAEAHOTssPWO9fIzSyCZZAMPw5xYtwjt/GQP+s9m3gazbUX68P47CAg6Qyrv3gOkeCSoGRx0wn1MrctHb1wCwxaBKbG+PvaSs1POaMbsYIIJm83gjM9sQKasyoN40elDo/jFtDA6XkdGPxumk/h7L0cZB946rjTGzWlBf3nTsXp/krRr54WOcT1t5w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=pass (client-ip=2a02:1800:120:4::f00:11; helo=gauss.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=gauss.telenet-ops.be
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=glider.be
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=gauss.telenet-ops.be (client-ip=2a02:1800:120:4::f00:11; helo=gauss.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org)
-Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [IPv6:2a02:1800:120:4::f00:11])
+	t=1727720371; c=relaxed/relaxed;
+	bh=zaI39plbOj1b0fMPH7CHurh+dET18cQh8zlGr0HXTtw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZCRhiMih2xaDRlyGuA/Xjx9Ell9lq5KM8X1Cw+/yaaOpI6W8AJc/0RarS8+eeniI50ylCn5uI/uVvWGpPaPPkg9EEyfmd3BK/e22zg3cJ0j2pYFuzGkPoLla0nXotQ3a6qTSbt1XErGML2gl4qx2XzybnJSmDsTDIu1L9ds1bw/7t9c0ys4WuTsIbbK1K6FeJNOL1Xg2k7zeWE1SGNNJitFUQ6Nndo94A4EWMWGZ8oRzW0Vvf4mb/aS2/YdmtZVDXEVSSiAPvoTFQfY17Esnx5ISiw1qxYUWfY9xHeRQNKjLYji/cjqfWed669FHLGqzC83Yvb3QQ+R6cMcq+CDPzg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=acm.org; dkim=pass (2048-bit key; unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=ELHSdJJZ; dkim-atps=neutral; spf=pass (client-ip=199.89.1.12; helo=009.lax.mailroute.net; envelope-from=bvanassche@acm.org; receiver=lists.ozlabs.org) smtp.mailfrom=acm.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=ELHSdJJZ;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=acm.org (client-ip=199.89.1.12; helo=009.lax.mailroute.net; envelope-from=bvanassche@acm.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 176 seconds by postgrey-1.37 at boromir; Tue, 01 Oct 2024 04:19:31 AEST
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHPbj42H6z2xH9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 01:08:47 +1000 (AEST)
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4XHPbV2wtZz4xCRW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2024 17:08:38 +0200 (CEST)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:99bb:7ad4:7fac:370a])
-	by albert.telenet-ops.be with cmsmtp
-	id Jf8b2D00E4pGYif06f8biQ; Mon, 30 Sep 2024 17:08:37 +0200
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1svI0h-000wdt-PO;
-	Mon, 30 Sep 2024 17:08:35 +0200
-Received: from geert by rox.of.borg with local (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1svI0p-000acd-68;
-	Mon, 30 Sep 2024 17:08:35 +0200
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Herve Codina <herve.codina@bootlin.com>,
-	Qiang Zhao <qiang.zhao@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHTql585Jz2xYl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 04:19:31 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4XHTmJ63wzzlgMVs;
+	Mon, 30 Sep 2024 18:16:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:references:in-reply-to
+	:x-mailer:message-id:date:date:subject:subject:from:from
+	:received:received; s=mr01; t=1727720189; x=1730312190; bh=zaI39
+	plbOj1b0fMPH7CHurh+dET18cQh8zlGr0HXTtw=; b=ELHSdJJZaYp7FTWNj8JWl
+	0t9zqDuLCCUrsH5umTrlv12Jm7F2aCziZxfYDTQ7bCdQjriDquPkv296VB96DWgV
+	7G63LC/njwBukmkiWnhCqv5OtErCw7PbrMPCdEObffF+A2CuxtABZgphJwO/p6VV
+	jM+0nSGrx7inGGU4FDGP3t5fWfbcJj1HdQ/kMlKMV4xwPQnME6TrnyM4zTOaFqLT
+	yBUFs41qDzKhbhSV8E8bf0pgfcELoFUZlHiOkYQlcdjJpliHKaQHbxg+P0lBVdJX
+	U5nUMMgLPuLCZ+34Dh0cveMID7hDcBzblIoCCm1G0Tk3hVSrs6lGTUGyyd3fZAqC
+	Q==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id b-l6cx9my2_3; Mon, 30 Sep 2024 18:16:29 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4XHTmD5V7ZzlgMVj;
+	Mon, 30 Sep 2024 18:16:28 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Russell King <linux@armlinux.org.uk>,
 	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] soc: fsl: cpm1: qmc: Do not use IS_ERR_VALUE() on error pointers
-Date: Mon, 30 Sep 2024 17:08:31 +0200
-Message-Id: <8b113596b2c8cdda6655346232cc603efdeb935a.1727708905.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.34.1
+	Bart Van Assche <bvanassche@acm.org>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 04/21] powerpc/cell: Switch to number_of_interrupts()
+Date: Mon, 30 Sep 2024 11:15:43 -0700
+Message-ID: <20240930181600.1684198-5-bvanassche@acm.org>
+X-Mailer: git-send-email 2.46.1.824.gd892dcdcdd-goog
+In-Reply-To: <20240930181600.1684198-1-bvanassche@acm.org>
+References: <20240930181600.1684198-1-bvanassche@acm.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,59 +76,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_NONE
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-ppc64_book3e_allmodconfig:
+Use the number_of_interrupts() function instead of the global variable
+'nr_irqs'. This patch prepares for changing 'nr_irqs' from an exported
+global variable into a variable with file scope.
 
-    drivers/soc/fsl/qe/qmc.c: In function ‘qmc_qe_init_resources’:
-    include/linux/err.h:28:49: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-       28 | #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
-	  |                                                 ^
-    include/linux/compiler.h:77:45: note: in definition of macro ‘unlikely’
-       77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
-	  |                                             ^
-    drivers/soc/fsl/qe/qmc.c:1764:13: note: in expansion of macro ‘IS_ERR_VALUE’
-     1764 |         if (IS_ERR_VALUE(info)) {
-	  |             ^~~~~~~~~~~~
-
-IS_ERR_VALUE() is only meant for pointers.  Fix this by checking for a
-negative error value instead, which matches the documented behavior of
-devm_qe_muram_alloc() aka devm_cpm_muram_alloc().
-While at it, remove the unneeded print in case of a memory allocation
-failure, and propagate the returned error code.
-
-Fixes: eb680d563089e55b ("soc: fsl: cpm1: qmc: Add support for QUICC Engine (QE) implementation")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 ---
-Compile-tested only.
----
- drivers/soc/fsl/qe/qmc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/cell/axon_msi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 3dffebb48b0daced..659c579d751d7240 100644
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -1761,10 +1761,9 @@ static int qmc_qe_init_resources(struct qmc *qmc, struct platform_device *pdev)
- 	 */
- 	info = devm_qe_muram_alloc(qmc->dev, UCC_SLOW_PRAM_SIZE + 2 * 64,
- 				   ALIGNMENT_OF_UCC_SLOW_PRAM);
--	if (IS_ERR_VALUE(info)) {
--		dev_err(qmc->dev, "cannot allocate MURAM for PRAM");
--		return -ENOMEM;
--	}
-+	if (info < 0)
-+		return info;
-+
- 	if (!qe_issue_cmd(QE_ASSIGN_PAGE_TO_DEVICE, qmc->qe_subblock,
- 			  QE_CR_PROTOCOL_UNSPECIFIED, info)) {
- 		dev_err(qmc->dev, "QE_ASSIGN_PAGE_TO_DEVICE cmd failed");
--- 
-2.34.1
-
+diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platfo=
+rms/cell/axon_msi.c
+index 28dc86744cac..b7996bc091e6 100644
+--- a/arch/powerpc/platforms/cell/axon_msi.c
++++ b/arch/powerpc/platforms/cell/axon_msi.c
+@@ -112,7 +112,7 @@ static void axon_msi_cascade(struct irq_desc *desc)
+ 		pr_devel("axon_msi: woff %x roff %x msi %x\n",
+ 			  write_offset, msic->read_offset, msi);
+=20
+-		if (msi < nr_irqs && irq_get_chip_data(msi) =3D=3D msic) {
++		if (msi < number_of_interrupts() && irq_get_chip_data(msi) =3D=3D msic=
+) {
+ 			generic_handle_irq(msi);
+ 			msic->fifo_virt[idx] =3D cpu_to_le32(0xffffffff);
+ 		} else {
 
