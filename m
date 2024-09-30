@@ -1,52 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-1694-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1695-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313FD98A838
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2024 17:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C20B698A9A9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Sep 2024 18:24:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XHPfc53TYz2yGB;
-	Tue,  1 Oct 2024 01:11:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XHRGr3s3nz2yyR;
+	Tue,  1 Oct 2024 02:24:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.130.137.80
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727709079;
-	cv=none; b=ZTxnA5BuZ4a4+7iMcZHkLd1H0736JL4zx14SHldAz3gba95eEOh2/N4rUqB7ZBJAVUMrR4+xRM50qyogp4wFx5aQpI4AB6nlZDbSQ1INDsXMAGnEYnSh7u9L32TtZQ7XKqVvnFYkyO+nCuL38kpxf+1LuMCye+ENL0idW5sSdf0cB/nlPx5kSoyEmqVaA1cEzQBqI4O8qUU0EnwpQON13WBvFg8PfTrKWC04QjXcqaY8suw1a1LrxEc/hNMCaoNt1iFrsC9klSejYv0HAHvz9uMHj2kFZcc4idognjj7KtIwgRinFArQ8LqEbSSGVHkE5V1g0j3drpqvkbCQaY7ysQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8::224"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727713459;
+	cv=none; b=Pqb9I3/7kah2jsL4KqT9wHX1rMNkT68hY+LT84M8XK25GypLXo6f93pbjFmHcwq7TV7OsTw48H0fldyjoFgH7AVs9TYe7cWAJJlHn2kEZirCDr6oPaPHQaZ7QNYp4wJRnEh977A2KDoo61MPWmBhlRCxurAhclFnCIS+lGuA5bImHLsdgJIpuQjePdDtXFadPlT8/GQRVS8VK5U5iZJz1a833pjWm7sd1sAs1isZqKJtGARhUAptiNl1870xF0nnIH0EqOf3tDNjR6ZfMIJB/WgQyKkrp4FRDe9KLikl67hQabtls9WaAZ82o50gwngl0hbkEp6ubeiTpaA9ULLzkg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727709079; c=relaxed/relaxed;
-	bh=ZwdT6krl4va9qUtdXtWBXzOka221nv45rSuGN/xJZks=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=EKTqjunlBWX+JnXKdgPWU96zTGTiaKU52Bark1z2EBdA0YQTgOdLxBCaikTkW0/fW5E0oKrjEgOGWFo64O4OKrltUVMBLTnuqtr/TofXZXtqmuAcF6MhWKd8IWhfoLRmeoi03jxVzh+u/v1ccTWPeBwMDcYE7aznBdl6Sxd+rvQ07bLwxoa3Brp+J6TAYaaJRpJM39ONkEMJKqDoWj/h2qL0P9oypWPWsiZonydqXigwL+kK3HpvMDmwA+jXNJG2YCBVVv5TtgokHO1m8Je3x6cfxjRJqefZCKjMsfWk7E44GiCwH1e7//agun6SffFBnrbKpHg3fMArwc2RdA5zUg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=195.130.137.80; helo=riemann.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=riemann.telenet-ops.be
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=riemann.telenet-ops.be (client-ip=195.130.137.80; helo=riemann.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org)
-Received: from riemann.telenet-ops.be (riemann.telenet-ops.be [195.130.137.80])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1727713459; c=relaxed/relaxed;
+	bh=Ak/OpaHZla/c5uUaOqdAyJ559kbBrFZymGfhIpH/FxU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GMpYGQnpYK/XSDhcAMDOflKC+2PI+/313+Nbta5IClnfJtb8Ek+du3H4OAlanpjoixIwv7dQI/TSGz6YU2HAj5oFQrG0LQJR3RuhxkYeHBLFkIfbdnCXQxEl4cT7Y2XAA7aWmS0OC2cKfVm6ydGdwJJFYxXkTgdxBMnkpmBpSHWFzDMPsulo8B5WiTzLTdyGSYkdJU7oYkhF6Vy3KQUihmw5pnwmPxNiFu5DRNf2ltbgJ511HBlRkWyxKYfIeBYijU/KQc2kWyu/xHMQYiW37jMmSGCG2IWepMo1ZogZ51zga4Be/YVSETvgWliCfur0M1Db79Ym90j8RDSBvvsrJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=N5riAqBg; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=N5riAqBg;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHPfb0YMbz2xpm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 01:11:18 +1000 (AEST)
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-	by riemann.telenet-ops.be (Postfix) with ESMTPS id 4XHPfQ2qSqz4wxNc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Sep 2024 17:11:10 +0200 (CEST)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:99bb:7ad4:7fac:370a])
-	by albert.telenet-ops.be with cmsmtp
-	id JfB92D00Y4pGYif06fB9DU; Mon, 30 Sep 2024 17:11:09 +0200
-Received: from geert (helo=localhost)
-	by ramsan.of.borg with local-esmtp (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1svI3J-000wex-Ml;
-	Mon, 30 Sep 2024 17:11:09 +0200
-Date: Mon, 30 Sep 2024 17:11:09 +0200 (CEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: linux-kernel@vger.kernel.org
-cc: Kent Overstreet <kent.overstreet@linux.dev>, 
-    Herve Codina <herve.codina@bootlin.com>, 
-    Christophe Leroy <christophe.leroy@csgroup.eu>, 
-    linux-bcache@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: Build regressions/improvements in v6.12-rc1
-In-Reply-To: <20240930145322.129875-1-geert@linux-m68k.org>
-Message-ID: <6464b079-372d-d3f-d774-a7c05916fbe2@linux-m68k.org>
-References: <CAHk-=wiwVOCZsC6a4dLdb1UjL2fS_CnLNjrPL0XGFbDd9C26Cg@mail.gmail.com> <20240930145322.129875-1-geert@linux-m68k.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHRGp4mnQz2yvv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 02:24:15 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AD5FEE0004;
+	Mon, 30 Sep 2024 16:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1727713443;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ak/OpaHZla/c5uUaOqdAyJ559kbBrFZymGfhIpH/FxU=;
+	b=N5riAqBg5lyO1VUxKxPagcwP2FZzNvzdMFcKizPj+jDk0tofSyjgNg2xdso0NxS/uQe/qk
+	ylcLtuChL/mF9pp9os7j3nPbhcIfMERAt9Uf9y0kpf8e38O7CTfgnU8bHa+Vvckb43MmgQ
+	qQytaOBRZNO31P3uurZsEI8XFAbr3dE0ZCRbKsnvglGTrR0METsx8JAIFh9/cPo3tOVnMf
+	YZEO0N8xPkjCHRM8amWhfnpNMVNZSNsHzKeYD1mzdQULVRXR0lOl1SoqUvSRRhUzyE+Gd0
+	K8wxLHahoXSNIK+Oco0JEQ3Vbo9Z6tAe05Knrl0xmILzqOzwy/W4fxV5TcBggw==
+Date: Mon, 30 Sep 2024 18:24:01 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] soc: fsl: cpm1: qmc: Do not use IS_ERR_VALUE() on error
+ pointers
+Message-ID: <20240930182401.3dd15aaa@bootlin.com>
+In-Reply-To: <8b113596b2c8cdda6655346232cc603efdeb935a.1727708905.git.geert+renesas@glider.be>
+References: <8b113596b2c8cdda6655346232cc603efdeb935a.1727708905.git.geert+renesas@glider.be>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,62 +63,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Status: No, score=-0.9 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 30 Sep 2024, Geert Uytterhoeven wrote:
-> Below is the list of build error/warning regressions/improvements in
-> v6.12-rc1[1] compared to v6.11[2].
+Hi Geert,
 
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/9852d85ec9d492ebef56dc5f229416c925758edc/ (all 131 configs)
-> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/98f7e32f20d28ec452afb208f9cffc08448a2652/ (all 131 configs)
->
->
-> *** ERRORS ***
->
-> 12 error regressions:
->  + /kisskb/src/fs/bcachefs/backpointers.c: error: 'const struct bkey' has no member named 'bversion'; did you mean 'version'?:  => 504:53
->  + /kisskb/src/fs/bcachefs/bcachefs_format.h: error: 'struct bkey' has no member named 'bversion'; did you mean 'version'?:  => 332:49, 331:49
->  + /kisskb/src/fs/bcachefs/bkey.h: error: 'const struct bkey' has no member named 'bversion':  => 578:48
->  + /kisskb/src/fs/bcachefs/bkey.h: error: 'const struct bkey' has no member named 'bversion'; did you mean 'version'?:  => 558:27, 557:41, 557:27, 558:41
->  + /kisskb/src/fs/bcachefs/bkey.h: error: 'struct bkey' has no member named 'bversion'; did you mean 'version'?:  => 557:41, 558:41
->  + /kisskb/src/fs/bcachefs/bkey_methods.c: error: 'const struct bkey' has no member named 'bversion'; did you mean 'version'?:  => 292:65
->  + /kisskb/src/fs/bcachefs/bkey_methods.h: error: 'const struct bkey' has no member named 'bversion':  => 73:31, 73:18
->  + /kisskb/src/fs/bcachefs/bkey_methods.h: error: 'const struct bkey' has no member named 'bversion'; did you mean 'version'?:  => 73:33, 73:20, 73:47, 73:34
->  + /kisskb/src/fs/bcachefs/bkey_methods.h: error: control reaches end of non-void function [-Werror=return-type]:  => 75:1
->  + /kisskb/src/fs/bcachefs/disk_accounting.h: error: 'const struct bkey' has no member named 'bversion'; did you mean 'version'?:  => 40:28, 40:42, 39:50, 39:43
->  + /kisskb/src/fs/bcachefs/disk_accounting.h: error: 'struct bkey' has no member named 'bversion'; did you mean 'version'?:  => 39:26, 40:10, 39:33, 40:24
+On Mon, 30 Sep 2024 17:08:31 +0200
+Geert Uytterhoeven <geert+renesas@glider.be> wrote:
 
-All big-endian platforms (fix available, even on a public mailing list ;-)
+> ppc64_book3e_allmodconfig:
+> 
+>     drivers/soc/fsl/qe/qmc.c: In function ‘qmc_qe_init_resources’:
+>     include/linux/err.h:28:49: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+>        28 | #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
+> 	  |                                                 ^
+>     include/linux/compiler.h:77:45: note: in definition of macro ‘unlikely’
+>        77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+> 	  |                                             ^
+>     drivers/soc/fsl/qe/qmc.c:1764:13: note: in expansion of macro ‘IS_ERR_VALUE’
+>      1764 |         if (IS_ERR_VALUE(info)) {
+> 	  |             ^~~~~~~~~~~~
+> 
+> IS_ERR_VALUE() is only meant for pointers.  Fix this by checking for a
+> negative error value instead, which matches the documented behavior of
+> devm_qe_muram_alloc() aka devm_cpm_muram_alloc().
+> While at it, remove the unneeded print in case of a memory allocation
+> failure, and propagate the returned error code.
+> 
+> Fixes: eb680d563089e55b ("soc: fsl: cpm1: qmc: Add support for QUICC Engine (QE) implementation")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> Compile-tested only.
+> ---
+>  drivers/soc/fsl/qe/qmc.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
 
->  + /kisskb/src/include/linux/err.h: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]:  => 28:49
+Thanks for the patch.
+Works on my side, no regressions found on my MPC8321 system.
+Tested-by: Herve Codina <herve.codina@bootlin.com>
 
-powerpc-gcc13/ppc64_book3e_allmodconfig
+And of course:
+Acked-by: Herve Codina <herve.codina@bootlin.com>
 
-drivers/soc/fsl/qe/qmc.c: In function 'qmc_qe_init_resources':
-include/linux/err.h:28:49: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-    28 | #define IS_ERR_VALUE(x) unlikely((unsigned long)(void *)(x) >= (unsigned long)-MAX_ERRNO)
-       |                                                 ^
-include/linux/compiler.h:77:45: note: in definition of macro 'unlikely'
-    77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
-       |                                             ^
-drivers/soc/fsl/qe/qmc.c:1764:13: note: in expansion of macro 'IS_ERR_VALUE'
-  1764 |         if (IS_ERR_VALUE(info)) {
-       |             ^~~~~~~~~~~~
-
-IS_ERR_VALUE() is meant for pointers (fix available)
-
-Gr{oetje,eeting}s,
-
- 						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
+Sorry for this mistake.
+Best regards,
+Hervé
 
