@@ -1,60 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1707-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1708-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA2A98BAB5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2024 13:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7030598BBCD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2024 14:08:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XHwL33w8fz2y7K;
-	Tue,  1 Oct 2024 21:13:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XHxY7615Fz2xJ5;
+	Tue,  1 Oct 2024 22:08:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727781226;
-	cv=none; b=o1y8aoGOhvc0CFc9992frlulE92u/Blls2gtY74Yd2bu/Ut0OqvwQZLIAQuksH98Nk3KzU8OzNEzvzRhKIPRnSvOpCi3AFS+1r8PL3t1ocetMfbKGhpnrvXFDnKJIusMesejuX1/205clGX852YEIfWejLyl6NzZW4BqmI1SHhcfVPpsqARa8CjojwstRvjNTTTuGvHl22RYteDCeOy0zYPLuJ65ZeaxYSEqSKUUFaQhQiSSjtpcavXt4yPG4eXFxolIaJZLYyrl1KpgbHbrD8IeNb6UZ1UW5jNgJKjzmL9m81tX28k0ukX568BFlxEhGUjbyzjvfzCqr+S7BdBG0Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727784507;
+	cv=none; b=CjpqsGOA+ZVE28rHDWWQA5B2dT95qxr3iAOgdG2/8QnBVu1Z550BEeJeOJRlWiJZwdJUIMBJFtVMUxem278WxDOvETu/IUz39LlMbCoxp2AvAQpWmxDCBVxmTj0LQcv2RZN63muuuQpVgUw50Hm7UVewesICTcwJM18MnLAyqEup4KPwgMOzMmYZQ3rZ8RM+DbylzWsuApRwt8jqGDKqA0mLol6g8VErmmJjJ4pcbj0h1RoSyW8Exz+Rj85cmde+0YyuQXR6+0E55tME24vDDeDb8L1Z6AV1D5XlxZjiw6vF2VUMaJ1FeWqXZzf3P4l3qP5JgrDqE4OkMerMQYRWCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727781226; c=relaxed/relaxed;
-	bh=lKH/B8Ytzb8oQsn8eJcKQj1sUXxkPK+VC9EP+ssoiGU=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=PocF48V77CYvEAsEDKjG9dVUtVgxUKIjW62XVgD6BWkMkUTvLaQrPilhXQZse+xbbX2bKH+KNHRm6ERMLuFJ5wPKSgYz+t/KiPE9TXvAsLgkZAlU8H4R/kIWX4PPWuO8Es23+Yn2nwXoZ4okwF7hD2SJtOBx2/NZ4D7yPyq6DwmF4Hx5XQqHGT8y/2RYBcPX/w2z6k4QTMCWzR4CUGJKj0ZboLrmVmGSzo6RebS9ldDkybHkKXnFv3ADUAzflao/TGys6nFIef3TDWCNETmuYzJRhW/kaygaaht5b4bTjgZ0A9P4EpX14quH7WfLFrJoxJ2WYg9g7Rlv9HHKpZB2Rw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jiCbGyoL; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jiCbGyoL;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	t=1727784507; c=relaxed/relaxed;
+	bh=yhzEjbqjVc5TXkw6reHCEZ+/p2ZVIXM1UnzJdTwXkcw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JJ2XANmMFNolbAMVNwRkJ/L1r5v1GIBZJ/QUMjWt9+V/n567h+g6xS6/93vuE6P8VUupeL4uaqc7oDpEgR/sR6zHjtTzya62KnILBlGwK6LzxdHk0YzrkBixj2j1hVvV8V313neFPS2Ad/QR14v3UkoIlSkDY7WGFYIjjp0FBOwXGIntmKaviEUuN7lD6D9mWAxPboMRuFdbuy1cgN1puPljT5y3D36BJh638C2nSj/5qkHHUgC/yS70q6LwvPiVajyxRQDDt4rTHa09Ib4CzLsmSHok02tIB1w+8F6e6GenbwV2YOegCLhjOt4Z23n3YvkjLEp+J+IbRWixx/X4CQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHwL22fF4z2xnX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 21:13:46 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 860AF5C4769;
-	Tue,  1 Oct 2024 11:13:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522D7C4CED2;
-	Tue,  1 Oct 2024 11:13:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727781222;
-	bh=uzylzzEuT8st5r1GDFGho8NGlqZCts0HU6U/XLuQMR8=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=jiCbGyoLA/AwlO5tcvz+hWeVL91xgjw+Jv5wABi6oRclBCAnwfxAm3gxrshOY2SJC
-	 zK67yNlOoa3lu8gxuxL3d1QODvZjRAMTtz47vNNfXjY5T6ci9gRoDqoTcxK7WSeWDM
-	 q831zSyCnXrw983Juyz9MLqlIO4xpNR9dGAeaOdnmaOE1VFSEjY/UHUkosDLqnFuC2
-	 T+CSEuNZaIhzv3R6btsjP/rKge9TdCj2WH32Y9z98PKBZymkYeTKDfYQec0vQByJHF
-	 HbxLYcz+bsciC2fUZjdjACem+C+23D3t/N/TigYeEl93gc33/fKvj/5VNXddMY6kI7
-	 uNleuFTBa+fGg==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1727676508-22830-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1727676508-22830-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Enable 'FIFO continue on error' FCONT
- bit
-Message-Id: <172778121960.2280749.6663720660194136965.b4-ty@kernel.org>
-Date: Tue, 01 Oct 2024 12:13:39 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XHxY659qgz2xHb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Oct 2024 22:08:25 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4XHxXz5KvCz9sRk;
+	Tue,  1 Oct 2024 14:08:19 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id CpCsvAqWB3yv; Tue,  1 Oct 2024 14:08:19 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4XHxXz4XmTz9sPd;
+	Tue,  1 Oct 2024 14:08:19 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 87E3E8B770;
+	Tue,  1 Oct 2024 14:08:19 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id CYV2A-JBknUu; Tue,  1 Oct 2024 14:08:19 +0200 (CEST)
+Received: from [192.168.232.216] (unknown [192.168.232.216])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A15B8B766;
+	Tue,  1 Oct 2024 14:08:19 +0200 (CEST)
+Message-ID: <8e6c75db-5c98-4f82-8151-5f86c53f4cf2@csgroup.eu>
+Date: Tue, 1 Oct 2024 14:08:18 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,50 +56,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-99b12
-X-Spam-Status: No, score=-0.3 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] powerpc/sstep: Unexport analyze_instr,
+ emulate_vsx_load, emulate_vsx_store
+To: Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Paul Mackerras <paulus@ozlabs.org>, linux-kernel@vger.kernel.org
+References: <8ecdbd907a8a92cbf9c7308df13f9d19f5ba5621.1727777273.git.msuchanek@suse.de>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <8ecdbd907a8a92cbf9c7308df13f9d19f5ba5621.1727777273.git.msuchanek@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=ARC_SIGNED,ARC_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 30 Sep 2024 14:08:28 +0800, Shengjiu Wang wrote:
-> FCONT=1 means On FIFO error, the SAI will continue from the
-> same word that caused the FIFO error to set after the FIFO
-> warning flag has been cleared.
+
+
+Le 01/10/2024 à 12:08, Michal Suchanek a écrit :
+> There is no modular user of analyze_instr, and the latter two are only
+> used by sstep itself.
+
+analyze_instr() is used in arch/powerpc/kvm/emulate_loadstore.c which 
+can be a module as far as I can see in Makefile:
+
+common-objs-y += powerpc.o emulate_loadstore.o
+
+kvm-book3s_64-module-objs := \
+	$(common-objs-y) \
+	book3s.o \
+	book3s_rtas.o \
+	$(kvm-book3s_64-objs-y)
+
+kvm-objs-$(CONFIG_KVM_BOOK3S_64) := $(kvm-book3s_64-module-objs)
+
+config KVM_BOOK3S_64
+	tristate "KVM support for PowerPC book3s_64 processors"
+
+
 > 
-> Set FCONT bit in control register to avoid the channel swap
-> issue after SAI xrun.
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> ---
+>   arch/powerpc/lib/sstep.c | 3 ---
+>   1 file changed, 3 deletions(-)
 > 
-> [...]
-
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: fsl_sai: Enable 'FIFO continue on error' FCONT bit
-      commit: 72455e33173c1a00c0ce93d2b0198eb45d5f4195
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index e65f3fb68d06..a0557b0d9a24 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -863,7 +863,6 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+>   		break;
+>   	}
+>   }
+> -EXPORT_SYMBOL_GPL(emulate_vsx_load);
+>   NOKPROBE_SYMBOL(emulate_vsx_load);
+>   
+>   void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+> @@ -955,7 +954,6 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+>   		break;
+>   	}
+>   }
+> -EXPORT_SYMBOL_GPL(emulate_vsx_store);
+>   NOKPROBE_SYMBOL(emulate_vsx_store);
+>   
+>   static nokprobe_inline int do_vsx_load(struct instruction_op *op,
+> @@ -3172,7 +3170,6 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+>   	op->val = SRR1_PROGTRAP;
+>   	return 0;
+>   }
+> -EXPORT_SYMBOL_GPL(analyse_instr);
+>   NOKPROBE_SYMBOL(analyse_instr);
+>   
+>   /*
 
