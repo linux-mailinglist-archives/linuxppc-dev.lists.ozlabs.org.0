@@ -1,59 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-1717-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1718-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5E498C4D6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2024 19:53:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B7098C73C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2024 23:05:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XJ5CJ2gQjz2yLB;
-	Wed,  2 Oct 2024 03:53:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XJ9SH1h4Cz2yGX;
+	Wed,  2 Oct 2024 07:05:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727805210;
-	cv=none; b=Va95ekWyQ77HWAzxylP6XUnEIfvj5vfQ3kfRau+/nosLWe9PlHSAAuGXNmg1R8/8a0d70CwkxoGesI0AVRZftEcrdhMYHIgT+rLJ4bH4PnuXQfHx/vl+80WB4wgiyjj5JTh/S9qIbJexZR44fK9bJySMUKOsb07Ozqj43vM6OdgeijuN0RUYxpIat4agHhyq/KKNjArTAKWrwbECRqvGR5C14WiVmbSXVmDoWIGvHKOS/jdwGvE6tHG+aBeA8j2nyaHkJn8j3Tv6TTexcBaBYFBSyFlGMflFu7OmDs2AwDsd/yTYpIgFWDYz7fsmJWcElRQKWs6ru+oM3nQpobgbBw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727816701;
+	cv=none; b=NtJ9eEYBiSzqVPUhHMH0s6fKhqEYYmNyAOVTg7vjX26XUKQH4+xenfb+HlAd0Tl8EQgwDUgDl9O2vPteLGPZOy3jv+VwCHLTdQPbjtetTzb7cQlTh9nOEtB4urZ/Ap1VLxwUiGTsTFmX2BphwMZvSu5HiMH3f2SIAEAtV5ZQ1cQuEHaVouKpF7j5J8r72hS+Gy7i7SaIgS+D2o+uQMDW7Mg6jRWT4Tv5iXbkV4X2U7uT7w6Ej/ddrzH2HW080JIoWwNSQXbg8EYFeN0xD3HLMF8pWbCIXxuauJEIXeDIViNyw/7mzlXuIeVmCSJwIYQqDepH9BOi3EpfUAePXn4hNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727805210; c=relaxed/relaxed;
-	bh=ijOjawPTh24oC8zd5Tk/+mhfJ9b5AKsXuZ2hsq2PRC8=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZKQdpzbh70OBwHYrqAgjblGkFie8nW6BY2YrCWYWDGcSp+pdlEzeXBk2qSJ2JnEFODVM0psuNYUjUnCXi+O3/zqsiSpYHikoGkXtnpQMDK4HaGXX+tHJP0M8Ao0HFnUo6QQlts04etri0eLc+1EclBvW0FODNsd80RlKgsYDb0dyVJu6x6vM57nXQSa/4iBBnEzT0QkQDf5L+zeBQHJVLKanEINnmGWl5iLcttFDfg0de2/YhSxBLl9QcWVcxMjGASpBRW8TB7KWbpSsuCMy6zDZddS19iJmoaFcpcEl2K7a9MexPC6etpyvX0W5azLycY78yy9n5aMm8lKY9TBzbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BtTa7fc5; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1727816701; c=relaxed/relaxed;
+	bh=qPyDujOFTLNSxbcnmHDSi+KZgC/UzTfXThHY/68Uscw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dSF2P8ITTBMbtq7go/FRiHtsgMik502uAGauuM1PeiRquFPa3oczLEytnnIXtVbLQ5n/ZJwEcq7XCpHcE4txbBNxBfXoA1nTKgIXRQdXenCbnLLwCkQurMJjiEzUG2d/Aba/UdfBFefxM3o7B351cAHuYalciFKAOslI2KYmzHY0Xj1ZOHXGnDCTKQeNCYHHBvNeMuuMitSJ483VSQRUaJFEhO3LYziSYsW+F0OZNzAg8nrDfsGMnw+VCMgbpyZABMtcH7cQc5KQb9ckp8ZQfV9UPiazc+FHZAfQ8SZkgUE+ioHciGWmUqR5MNKbt/ozVCtrWDTIvR/z26vgW9R7cw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=AKh5CBMH; dkim-atps=neutral; spf=permerror (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org) smtp.mailfrom=purestorage.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BtTa7fc5;
+	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=AKh5CBMH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XJ5CG4yr6z2yGd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2024 03:53:30 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 8B6D3A41879;
-	Tue,  1 Oct 2024 17:53:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249B9C4CECD;
-	Tue,  1 Oct 2024 17:53:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727805207;
-	bh=zFUAfX1xGLKWPqysQ2DsF4JQETrYOAYztxgnX54f+SU=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=BtTa7fc5dYV7KmtWiwKcr/Gn5pqBlFp2RlGzO/sBQcWTRxSwnOL/1nFaQPu0bGQYa
-	 fRyrtywXMXiY32M9yj5/ZJamVKXInQm3iPrSUPkzjDltkBUaxMkkG/jSesFL1c8Qqb
-	 Au3Y9+9vqxi/1NkBe5jqUSmtJKKxUrs7pVsUCPAr5L6nGdgP5G0VQh7QUdu1dF/mQW
-	 +KFOJhXVYWU5Am/F2QZSTwgh2goWTcLYZXJaq8BuPQCCwV9b5n7lQjLACvknMYEdJu
-	 CO/9ssjkRPPcp09yrwntnriRrEcAymTysK0Ef3zqUnvLjs7jOZx6gpDoBpXWicNkjD
-	 ejNW3L3AfbqaA==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1727424031-19551-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1727424031-19551-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 0/3] ASoC: fsl_micfil: fix and improvement
-Message-Id: <172780520382.2298697.5976871562900019910.b4-ty@kernel.org>
-Date: Tue, 01 Oct 2024 18:53:23 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XJ9SD5SRPz2yGL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2024 07:04:58 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-20b6458ee37so42062645ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Oct 2024 14:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1727816696; x=1728421496; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qPyDujOFTLNSxbcnmHDSi+KZgC/UzTfXThHY/68Uscw=;
+        b=AKh5CBMH77d9YSjkItmqdZ5487hV9GPPyLk0xQzRs7s/1gjpcC+/FFfdTQbiPF72XI
+         WGTsgGth71MFeoh67bKuloi5yhnCcDeU4M7mKKCnDYp5co29bY10QqWs9SwvTRGDiRtC
+         ND3qOsWp0sNOVVRRloqtxWtnToPYnh6ocn8X9AJxtzQp9GhAeaf30NfFghG7ZJxU0cf4
+         EOl1/CGgrNPKOEbcYN3L90erqq8kMQXtP1FZV4BJHpZfPGmuXu7VtrlTAJDRhxPZi0OW
+         qcPk0laQI2/Rw+/DTF3pWe24BD5uuUMMpk9fSJ8/U3w2xeFzbrOYpzqy0PNB9EbTc1Is
+         Nvlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727816696; x=1728421496;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qPyDujOFTLNSxbcnmHDSi+KZgC/UzTfXThHY/68Uscw=;
+        b=X+knQiJnSS3jhX6TBpnvXGY7SWHqIEdl29VDCaMUevNSu95Btaz3FaoRxP3PFWeAjp
+         l3PyNKn0vU0OR+RB6xcnJs5CFuI+mIK0BM+cXUUx4Ke1ExGQevrfP/UvJvtcX9+DVV8P
+         m1NX+KeXY7jCKCA9gI6L2JsvwSlzQFH9WuvwbMupSO19aP0J+X813njLigCjvzpmhy84
+         tslmx0tfTVMOPdeCqPlMSkDzCqJAgzGYH+FOdy/T5LRjGq4LSe1a/cgj+Ded9C20uCNW
+         UV/8ol5FChyD1Ijwbz8HmeUBdM2daXvKvvcS79gem678IPJXs/zDtFMOTGnCH6YWOMVD
+         0bMw==
+X-Forwarded-Encrypted: i=1; AJvYcCVnFP4U5gat9BM2PphKFwqy9I9zDwaNq6wo9UjGjNv46DaEHZ3pUkROUvZAgGkTyOr+FwcLxh+RDnbOnSI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxr1cKZbSNawrC/5ByK++K33W+yVWU/6QIJNID/os6CdCa+jzVS
+	HQlY5jaJhfLaNlVGpAaGHauF4OFFUqMVZopayZRt1eXsiImzAefM2bDdO5fvkec=
+X-Google-Smtp-Source: AGHT+IHOCKqwJNquHm6zECkIBJWswhGFdb4YTpGgI9Bdwu0jMqj8A4NHRSk3KDE5XuPFEDX+sBe2ng==
+X-Received: by 2002:a17:902:ec8f:b0:20b:6f02:b4e5 with SMTP id d9443c01a7336-20bc59ae323mr13811435ad.9.1727816695778;
+        Tue, 01 Oct 2024 14:04:55 -0700 (PDT)
+Received: from dev-mattc2.dev.purestorage.com ([208.88.159.129])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-20b37e37168sm73412995ad.186.2024.10.01.14.04.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Oct 2024 14:04:55 -0700 (PDT)
+From: Matthew W Carlis <mattc@purestorage.com>
+To: macro@orcam.me.uk
+Cc: alex.williamson@redhat.com,
+	bhelgaas@google.com,
+	davem@davemloft.net,
+	david.abdurachmanov@gmail.com,
+	edumazet@google.com,
+	helgaas@kernel.org,
+	kuba@kernel.org,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lukas@wunner.de,
+	mahesh@linux.ibm.com,
+	mattc@purestorage.com,
+	mika.westerberg@linux.intel.com,
+	netdev@vger.kernel.org,
+	npiggin@gmail.com,
+	oohall@gmail.com,
+	pabeni@redhat.com,
+	pali@kernel.org,
+	saeedm@nvidia.com,
+	sr@denx.de,
+	wilson@tuliptree.org
+Subject: PCI: Work around PCIe link training failures
+Date: Tue,  1 Oct 2024 15:04:46 -0600
+Message-ID: <20241001210446.14547-1-mattc@purestorage.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <alpine.DEB.2.21.2408160312180.59022@angie.orcam.me.uk>
+References: <alpine.DEB.2.21.2408160312180.59022@angie.orcam.me.uk>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,56 +105,23 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-99b12
-X-Spam-Status: No, score=-0.3 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+	T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, 27 Sep 2024 16:00:28 +0800, Shengjiu Wang wrote:
-> Fix the usage of regmap_write_bits().
-> Move mclk clock enablement to late stage.
-> Enable the micfil error interrupt.
-> 
-> Shengjiu Wang (3):
->   ASoC: fsl_micfil: fix regmap_write_bits usage
->   ASoC: fsl_micfil: Add mclk enable flag
->   ASoC: fsl_micfil: Enable micfil error interrupt
-> 
-> [...]
+I just wanted to follow up with our testing results for the mentioned
+patches. It took me a while to get them running in our test pool, but
+we just got it going yesterday and the initial results look really good.
+We will continue running them in our testing from now on & if any issues
+come up I'll try to report them, but otherwise I wanted to say thank you
+for entertaining the discussion & reacting so quickly with new patches.
 
-Applied to
+The patches we pulled into our testing:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+[PATCH v3 1/4] PCI: Clear the LBMS bit after a link retrain
+[PATCH v3 2/4] PCI: Revert to the original speed after PCIe failed link retraining
 
-Thanks!
-
-[1/3] ASoC: fsl_micfil: fix regmap_write_bits usage
-      commit: 06df673d20230afb0e383e39235a4fa8b9a62464
-[2/3] ASoC: fsl_micfil: Add mclk enable flag
-      commit: b47024dc624bcffb89d238f4a5b490363cea2a1e
-[3/3] ASoC: fsl_micfil: Enable micfil error interrupt
-      commit: cc3ae21f360bfa375fc3539e24e7adb0e643a9d4
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+- Matt
 
