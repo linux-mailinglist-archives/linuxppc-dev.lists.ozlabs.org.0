@@ -1,101 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-1718-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1719-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B7098C73C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Oct 2024 23:05:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1140298CC83
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Oct 2024 07:49:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XJ9SH1h4Cz2yGX;
-	Wed,  2 Oct 2024 07:05:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XJP5P1gLDz2yNB;
+	Wed,  2 Oct 2024 15:49:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727816701;
-	cv=none; b=NtJ9eEYBiSzqVPUhHMH0s6fKhqEYYmNyAOVTg7vjX26XUKQH4+xenfb+HlAd0Tl8EQgwDUgDl9O2vPteLGPZOy3jv+VwCHLTdQPbjtetTzb7cQlTh9nOEtB4urZ/Ap1VLxwUiGTsTFmX2BphwMZvSu5HiMH3f2SIAEAtV5ZQ1cQuEHaVouKpF7j5J8r72hS+Gy7i7SaIgS+D2o+uQMDW7Mg6jRWT4Tv5iXbkV4X2U7uT7w6Ej/ddrzH2HW080JIoWwNSQXbg8EYFeN0xD3HLMF8pWbCIXxuauJEIXeDIViNyw/7mzlXuIeVmCSJwIYQqDepH9BOi3EpfUAePXn4hNw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::431"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727848168;
+	cv=none; b=h94zZlUTWvwdQ12GRTXCWQQTsd68ru9dF2zHfaMYVQ+uVA1kZls2io9L4WxWGriBYvFmm2i6ApQ6ODlgwkRC34yh/kVY8sWZa7eWgSoPYgJ8/NHe/ySOF3Umy9Bn5fuPqSYmmCTbgMpc57E/ztSyq7Fjyfs/UmU69JA2DlD1Fw0j+xSjbl/A056d25BKbUWUNVKpRYFXIomeOrtl6Bw+hM0AtUmqakjhBQ+LDNkbEuzpTKDMvgUVJRHT9t3UcgIweAXcza3DRADqYYx+gCDddK2FdcUmpyxxalazmE9m3aMKUfayQeSacuUhstVzfJIroPQiVyyJUVrSgL2Wupcjrg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727816701; c=relaxed/relaxed;
-	bh=qPyDujOFTLNSxbcnmHDSi+KZgC/UzTfXThHY/68Uscw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSF2P8ITTBMbtq7go/FRiHtsgMik502uAGauuM1PeiRquFPa3oczLEytnnIXtVbLQ5n/ZJwEcq7XCpHcE4txbBNxBfXoA1nTKgIXRQdXenCbnLLwCkQurMJjiEzUG2d/Aba/UdfBFefxM3o7B351cAHuYalciFKAOslI2KYmzHY0Xj1ZOHXGnDCTKQeNCYHHBvNeMuuMitSJ483VSQRUaJFEhO3LYziSYsW+F0OZNzAg8nrDfsGMnw+VCMgbpyZABMtcH7cQc5KQb9ckp8ZQfV9UPiazc+FHZAfQ8SZkgUE+ioHciGWmUqR5MNKbt/ozVCtrWDTIvR/z26vgW9R7cw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=AKh5CBMH; dkim-atps=neutral; spf=permerror (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org) smtp.mailfrom=purestorage.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+	t=1727848168; c=relaxed/relaxed;
+	bh=nAi3+Jj7VO1oSuzWLs/Xs3zSVfvIN3Gva8xKesxmS0Q=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=HgH7g/9eO069xZJYKEGoox22dvIH9ThMGZ+rCRg/sFFm3B2wSRfzohjJd2ZrU0wE8mshjIvedBIDsR57uyXSQEoLlWsJ2kuY2rkqRlr3shVqa9gZ3HDbauJZgR/BH08aTsryb48jZ1RuQJNsFx724g1uSKLvyEN8CUVlldl1bpOex4C9LF4ickdozOtdlHpRbKLx+TpChdJVYwbAu8CkKa/GgH2vEdPPTu1HhJf3R/Wy1fqHt0VAGJfArZ2tJ51WtHmDBr/9qoONh5PP1xXnb5Ym+3njRRLSiQBYhGWMwda3hnlfa8f2D9LLFaX7OMyhhcxzvZHRsr61nPSZwnLpZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SqlRhZIE; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=AKh5CBMH;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SqlRhZIE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XJ9SD5SRPz2yGL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2024 07:04:58 +1000 (AEST)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-20b6458ee37so42062645ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Oct 2024 14:04:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XJP5M5S6wz2yN2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Oct 2024 15:49:26 +1000 (AEST)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-718e2855479so4491445b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Oct 2024 22:49:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1727816696; x=1728421496; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qPyDujOFTLNSxbcnmHDSi+KZgC/UzTfXThHY/68Uscw=;
-        b=AKh5CBMH77d9YSjkItmqdZ5487hV9GPPyLk0xQzRs7s/1gjpcC+/FFfdTQbiPF72XI
-         WGTsgGth71MFeoh67bKuloi5yhnCcDeU4M7mKKCnDYp5co29bY10QqWs9SwvTRGDiRtC
-         ND3qOsWp0sNOVVRRloqtxWtnToPYnh6ocn8X9AJxtzQp9GhAeaf30NfFghG7ZJxU0cf4
-         EOl1/CGgrNPKOEbcYN3L90erqq8kMQXtP1FZV4BJHpZfPGmuXu7VtrlTAJDRhxPZi0OW
-         qcPk0laQI2/Rw+/DTF3pWe24BD5uuUMMpk9fSJ8/U3w2xeFzbrOYpzqy0PNB9EbTc1Is
-         Nvlg==
+        d=gmail.com; s=20230601; t=1727848162; x=1728452962; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=nAi3+Jj7VO1oSuzWLs/Xs3zSVfvIN3Gva8xKesxmS0Q=;
+        b=SqlRhZIEVhr7XjlRQe8W5ks1f9YfyhfPA47rb7fHgth5mcfG4UXUIOp3JMaqWZr2X8
+         BZ3k5l1rGIBUdIfJMvKqhFnmQG8P4tfAZXZYJTWqb++DN8R+nTAhlJn06eyNS9xD4x9Z
+         x+p9uRQJ179aa/ETB2IvmixQwqV8amrLLCn39gPzhwZ8z7hzJXpz8ZAN5h+RhcdEkLuy
+         XAP90NI0KzUDbM15cK6Wjhc70emjmZmyFJ3ABLivBPTc8Vyr05XGVzSc7ZGm70RaIsoy
+         QC5Bkiz+gciFGjwCVCAE42xe29iaLAnhsdPYIznSW8bIxjnOd4xpUt+Fg8UhwHtdq4PC
+         Izcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727816696; x=1728421496;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qPyDujOFTLNSxbcnmHDSi+KZgC/UzTfXThHY/68Uscw=;
-        b=X+knQiJnSS3jhX6TBpnvXGY7SWHqIEdl29VDCaMUevNSu95Btaz3FaoRxP3PFWeAjp
-         l3PyNKn0vU0OR+RB6xcnJs5CFuI+mIK0BM+cXUUx4Ke1ExGQevrfP/UvJvtcX9+DVV8P
-         m1NX+KeXY7jCKCA9gI6L2JsvwSlzQFH9WuvwbMupSO19aP0J+X813njLigCjvzpmhy84
-         tslmx0tfTVMOPdeCqPlMSkDzCqJAgzGYH+FOdy/T5LRjGq4LSe1a/cgj+Ded9C20uCNW
-         UV/8ol5FChyD1Ijwbz8HmeUBdM2daXvKvvcS79gem678IPJXs/zDtFMOTGnCH6YWOMVD
-         0bMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnFP4U5gat9BM2PphKFwqy9I9zDwaNq6wo9UjGjNv46DaEHZ3pUkROUvZAgGkTyOr+FwcLxh+RDnbOnSI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yxr1cKZbSNawrC/5ByK++K33W+yVWU/6QIJNID/os6CdCa+jzVS
-	HQlY5jaJhfLaNlVGpAaGHauF4OFFUqMVZopayZRt1eXsiImzAefM2bDdO5fvkec=
-X-Google-Smtp-Source: AGHT+IHOCKqwJNquHm6zECkIBJWswhGFdb4YTpGgI9Bdwu0jMqj8A4NHRSk3KDE5XuPFEDX+sBe2ng==
-X-Received: by 2002:a17:902:ec8f:b0:20b:6f02:b4e5 with SMTP id d9443c01a7336-20bc59ae323mr13811435ad.9.1727816695778;
-        Tue, 01 Oct 2024 14:04:55 -0700 (PDT)
-Received: from dev-mattc2.dev.purestorage.com ([208.88.159.129])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-20b37e37168sm73412995ad.186.2024.10.01.14.04.53
+        d=1e100.net; s=20230601; t=1727848162; x=1728452962;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nAi3+Jj7VO1oSuzWLs/Xs3zSVfvIN3Gva8xKesxmS0Q=;
+        b=fWShHdkILUWSOjDCnTZtzmS6SulGCK11oGil2NugBr5OJkW5W/475YZ6IqwaUxMs0O
+         XjJNMNGkE5s046jpbwNOK9i7eyiEcccrA2dbMO4gqaQN/mdUhu29Jf2zlIZXGW6s5w4+
+         9xKJGNk1JFQDd6SF2cjSfP0mawzdM9AvUrqxLZNOjO4/VqXNJBRbd5/f9zQqWqzFtG7F
+         8G3u5hF8WZVLuUMnEEaK4nGLp1mExqLG8i9+qolaGj83kBfnwzqqQzvdlEZAU4dWFEil
+         lOjXKdaSZL542K61hpzyC0c3PpBj5xtOAJaTO+mxBxTScRZL56tH95EBP5046JweiHy3
+         KoQw==
+X-Forwarded-Encrypted: i=1; AJvYcCX/CR4ZHdzJeutCzN/IxUkmdZXtrSdloey0DRvbd4DT0MumUYGj1C7sskfS1YlFtpKTmLucwf8ozL7/HXg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxrG4gjuV78v0EOKVZPjpttHZZpIYInO8cYg4TVgWAJ+2rv5JRk
+	gUBowtRfbamsfzSHnYpcsMJDZNMl4vdOrDivOFjbsn4R2uB2/VvN
+X-Google-Smtp-Source: AGHT+IEctg1bG1h01FMpZ7KPv7MN8I3/B8gsYF6W6p4t+ELncb4q7gaLjWWJyeNYbzuFubS/soGvgQ==
+X-Received: by 2002:aa7:8886:0:b0:70d:2e7e:1853 with SMTP id d2e1a72fcca58-71dc5d54399mr3506061b3a.19.1727848162143;
+        Tue, 01 Oct 2024 22:49:22 -0700 (PDT)
+Received: from dw-tp ([171.76.83.199])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71b264bcca6sm9114024b3a.78.2024.10.01.22.49.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2024 14:04:55 -0700 (PDT)
-From: Matthew W Carlis <mattc@purestorage.com>
-To: macro@orcam.me.uk
-Cc: alex.williamson@redhat.com,
-	bhelgaas@google.com,
-	davem@davemloft.net,
-	david.abdurachmanov@gmail.com,
-	edumazet@google.com,
-	helgaas@kernel.org,
-	kuba@kernel.org,
-	leon@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	lukas@wunner.de,
-	mahesh@linux.ibm.com,
-	mattc@purestorage.com,
-	mika.westerberg@linux.intel.com,
-	netdev@vger.kernel.org,
-	npiggin@gmail.com,
-	oohall@gmail.com,
-	pabeni@redhat.com,
-	pali@kernel.org,
-	saeedm@nvidia.com,
-	sr@denx.de,
-	wilson@tuliptree.org
-Subject: PCI: Work around PCIe link training failures
-Date: Tue,  1 Oct 2024 15:04:46 -0600
-Message-ID: <20241001210446.14547-1-mattc@purestorage.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <alpine.DEB.2.21.2408160312180.59022@angie.orcam.me.uk>
-References: <alpine.DEB.2.21.2408160312180.59022@angie.orcam.me.uk>
+        Tue, 01 Oct 2024 22:49:21 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: zhangjiao2 <zhangjiao2@cmss.chinamobile.com>
+Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, shuah@kernel.org, zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Subject: Re: [PATCH v2] selftests/powerpc: Remove the path after initialization.
+In-Reply-To: <20240930012757.2395-1-zhangjiao2@cmss.chinamobile.com>
+Date: Wed, 02 Oct 2024 11:15:11 +0530
+Message-ID: <87frpfxdlk.fsf@gmail.com>
+References: <20240930012757.2395-1-zhangjiao2@cmss.chinamobile.com>
+X-Spam-Status: No, score=3.4 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Level: ***
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,24 +82,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-	T_SPF_PERMERROR autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-I just wanted to follow up with our testing results for the mentioned
-patches. It took me a while to get them running in our test pool, but
-we just got it going yesterday and the initial results look really good.
-We will continue running them in our testing from now on & if any issues
-come up I'll try to report them, but otherwise I wanted to say thank you
-for entertaining the discussion & reacting so quickly with new patches.
+zhangjiao2 <zhangjiao2@cmss.chinamobile.com> writes:
 
-The patches we pulled into our testing:
+> From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+>
+> If there were no anamolies noted, then we can
+> simply remove the log file and return, ....
 
-[PATCH v3 1/4] PCI: Clear the LBMS bit after a link retrain
-[PATCH v3 2/4] PCI: Revert to the original speed after PCIe failed link retraining
+after the path variable has been initialized.
 
-- Matt
+(minor nit)
+
+
+>
+> Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+> ---
+> v1->v2:
+> 	Remove the path after initialization.
+>
+>  tools/testing/selftests/powerpc/mm/tlbie_test.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+
+
+Thanks for the fix. Looks good to me. 
+Please feel free to add - 
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
