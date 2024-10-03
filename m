@@ -1,81 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-1741-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1743-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD01498E95F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2024 07:34:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9B498EA8B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2024 09:40:15 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nKnywCZN;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=msVjPsQa;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XK0k42SGJz2yRD;
-	Thu,  3 Oct 2024 15:34:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XK3Vh3h04z2yRC;
+	Thu,  3 Oct 2024 17:40:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727933692;
-	cv=none; b=SjC8rfJaPs2putGnpuBM24MpkT5q8Jgo3bmiB/v/zUGEyDK4vVI1wRe+8uQguj7YxfxUckRffPZ+R1++0KhTy9mwAG2Dnr8+szMpRKYJQmIzilPFH2M+aqyugLGKka4JxdIYxo25uR2g13GkOKWA7Oc/ML5YqQvdMZB3K3eQKa35U3UTcq4Sv0K49atckkhmCIZy3kJ6PT8S9jdVMzhr2+4bI0R6Bh433PDv95LHrro3P7j9oPQ6OW8Sr2pGsTYlX5p6F051zAi5PEE8QqI1oLIncFv7B6DlXKgIHU/eoRgE4hzNTzjp6V3wHmB/pX+bKWQPJ4uGOtbPm3OIoGnwhA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::333"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727935019;
+	cv=none; b=Y5Xi8AqcImNb+USYfP896tS9d+PMDghPof1awWFXGMBhw4pqNX6xvKc3Z9iW5UJ0jQ/CeKKV0eomvjeZ2nGZcEXKY0W2XnZSjcq2yJsJz0NcTMFwpenTEvWZAfzo8gNrzQk7EBN4xyWlnFsSaM5bXLQwLOVrpDi1CPzoyqdPkyFt4zB9askpZsHQj+XWxE50gFY9+dBQU1WPqAge25j2XheO5AMYTFnRXRuF7Otw9t6chAIUMiGhxF9u5q6+yqxNRaqaFStPCD3+5Z6xKJz1TmPOChf5uabBu7Ve2LZolLTeXsRiDIVyCyJSe7vbP7gbTBeaFCkWj9Yvm3VOd5BQiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727933692; c=relaxed/relaxed;
-	bh=DU2EVq/dJRHq3kbfnrGZl+Z6bZudmAtCY8KaXHsKQKU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eWHDCtSdMovtgaEg2ooKzZHZz/ftvI1ZBxd+VpMhgFTEvztg4I3ID7x72xqgni1uYOICzUeds3Acnd08TjYuF6LicPPepJKO4giXvtBCFBFXIem1Gn+6QvSwYoyUuxwtXFl8BFoKU9PicGKiUXfgwQIxHYpbU9IIT7KhadnJ4785SvpWni1IAw8DS39v1t0OQ9Woh+99MSffJNJRa4+dTMVifjfImMPkqYuhzclg/ITWh9dyk5t6epfEWIM+tOs0aqRBuf510BYO0jM7a+YRUb7xPYMUszLu7HBDUqUV/Arn7RFBl3KK8aM17fOtmSYdhIs/W6G1+81MoWyAydAPVQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nKnywCZN; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1727935019; c=relaxed/relaxed;
+	bh=M5sZr8kVTGEtzRoAeFfcsUkXeKf0SJMvytdAssiPvdw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pjhyremi5AMmFwrkeWEDCCPoCrj4TPTGJCfFkgQ0Aq1MsFdXHoas0VdBbQefnCLZZ98yIz4ehgMj9GNTzNRwSv/jSBaiEM0+bmd+GMrNYQLO5DonsejRLoE/LKbIF1x12EUEHGjnIAd864DGnwpE/BqQpPCcsCVR+L6BOOeQIPoeXK5ZKBLTAadTJleZXodITz+qNuCSoUEY0Tekmj2IXmUop7X+ckZxZmDCGcU/kO9sXV/+/FGJt1rADs9LVeT9B70Tav1sRMe5mnjekDVlRQHDomDcpzYO8oGsPjqgAcLkQvfj5bjGYlRNLrxsnlP6VKRnJC6d9tuKkKPGfdF2Eg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=msVjPsQa; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com; envelope-from=dan.carpenter@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nKnywCZN;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=msVjPsQa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com; envelope-from=dan.carpenter@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XK0k24Xhpz2yQ9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2024 15:34:49 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4935NeYB029655;
-	Thu, 3 Oct 2024 05:34:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=D
-	U2EVq/dJRHq3kbfnrGZl+Z6bZudmAtCY8KaXHsKQKU=; b=nKnywCZNvHuWuJeNp
-	JvE0Noncqn8uGVyji3dy61l31fH4SBnGRHLx5cy//eCoTlz8j2RsdBEd8RoYszp3
-	GwNWgerApi3F3VllB30HglkF0KIznGE2zBjW9Rx4NLpKF4O4Aq8HA6RUtAd1rqAB
-	G7GWUjfSjLIiN/R3/yREVa05TYXXvWnBL1RjSoOKB3BAYQoLYlsPVbRpdi/ULF4f
-	M4IOMuZEzJaIe9tqJz1VYx4Js6qqgB+dGhC0aBrHv82GppxSoNnf89ppRoFaddIN
-	9qaVkifnlXhgUKJsVZGPRPSuuo0B4cnWjBRxjE03F2jhYKLr8YAGtJfUyUMTfXX3
-	5lf5w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 421n2q00xf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Oct 2024 05:34:01 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4935Y0mG021923;
-	Thu, 3 Oct 2024 05:34:00 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 421n2q00xc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Oct 2024 05:34:00 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49313JW6013047;
-	Thu, 3 Oct 2024 05:33:59 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41xxbjny5t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Oct 2024 05:33:59 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4935Xu4M53477772
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 3 Oct 2024 05:33:56 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 306CC2004B;
-	Thu,  3 Oct 2024 05:33:56 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 57E5E20040;
-	Thu,  3 Oct 2024 05:33:52 +0000 (GMT)
-Received: from [9.43.34.175] (unknown [9.43.34.175])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  3 Oct 2024 05:33:52 +0000 (GMT)
-Message-ID: <0b10ef55-bb70-4000-b028-2f38c1879b4a@linux.ibm.com>
-Date: Thu, 3 Oct 2024 11:03:51 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XK1CY1lDKz2yQ9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2024 15:56:55 +1000 (AEST)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-42cae6bb895so4976715e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Oct 2024 22:56:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727935008; x=1728539808; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=M5sZr8kVTGEtzRoAeFfcsUkXeKf0SJMvytdAssiPvdw=;
+        b=msVjPsQau33RaSxvMgx26Wv7Wk09qR15BsiXR5vipNx8Y2ZHyzeBh3siS38Xk6NETN
+         pStqu5armg3MoKZas4G6+Am3Yc+h5Mxnix3OkUjc1OFirM8gEQjsySfCCsKFhF6Z0OZ9
+         e0Jp5h56rvnnEbYD2YfLLkmW7OlE4tEkUpCBc0Lo2uSwEnbEeDSyzeh6iVe6vHmRmRIZ
+         13NfWd2d8Lksy+IPF1aPFSrt39j48OmooM6QmrSrN8alOMuTLFTHMbrZJ4nm6fPRCcnJ
+         VcfALVWQIQaV/5+V4F2fX5sa097l09tx9QW/xbptgN56Fx4CTKRk2T26XgPVLvcMcHxL
+         RVYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727935008; x=1728539808;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M5sZr8kVTGEtzRoAeFfcsUkXeKf0SJMvytdAssiPvdw=;
+        b=CsZsODj99czxzAuomDOluEdU5ZkYR0l/3mPxgMKdR3ibo+O6CYE7dGB2QqDAUGvJEO
+         MVifSHCilM7HS2JWoGpxZ+2A+nzwcZx8AYQ/1YNFccyM2zcApNxVPkY+iE/ntFbWo9aJ
+         FiBihnJFWsDSfBzpsSt4atyYbCmrPj76JkQsZT43KCkk7ewcjNCz1ZYXLqTWaT/TIN/X
+         hr8vC3NrESsPgUCErXsosx6n4FzvWVIb+T6yQZh0xmKVBKuiHzgvE/xVzsUYXDl1XlKJ
+         DPMIL54yhZQf8xHfYTrPlq/kUwic0axu3y+DWOqXOGl9XiQm1V7vh685JaJNdut//oKK
+         ip1g==
+X-Forwarded-Encrypted: i=1; AJvYcCX2t2GerAMwar8yJOTx75+XwIRJOFBqy0JAQ8YkCCJVtB51scSD4WQffrPi7sCwaZH2Eu7MGno2I3pBY2A=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwjLB8TUvV0Opab0k/0iS2fQ/TYDc39Lm4QQBf/datMk9hXRA6A
+	1qvy9JMyHTxpGuAjimON+2RuoCoPQ2uAiW+e6UVu4FdMq7lesWCKXlFr/ps1tJU=
+X-Google-Smtp-Source: AGHT+IEAQ7vgs1gj+ETBdYfXrCS6c1Fp2NHSUwSlmfV2FP/70trlY9ue+6G9YkrG20AA5sv1yjYHMg==
+X-Received: by 2002:a05:600c:358f:b0:42c:c003:edd1 with SMTP id 5b1f17b1804b1-42f777b99b0mr41468065e9.10.1727935007902;
+        Wed, 02 Oct 2024 22:56:47 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f7a02eaccsm35231745e9.42.2024.10.02.22.56.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2024 22:56:47 -0700 (PDT)
+Date: Thu, 3 Oct 2024 08:56:43 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Markus Elfring <Markus.Elfring@web.de>, linuxppc-dev@lists.ozlabs.org,
+	Jani Nikula <jani.nikula@intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Paul Mackerras <paulus@samba.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	LKML <linux-kernel@vger.kernel.org>,
+	kernel-janitors@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH] powermac: Call of_node_put(bk_node) only once in
+ pmac_has_backlight_type()
+Message-ID: <34233c4c-1f61-4bc6-aeca-9f5faba8509e@stanley.mountain>
+References: <b7e69e04-e15c-41ec-b62b-37253debc654@web.de>
+ <d9bdc1b6-ea7e-47aa-80aa-02ae649abf72@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,129 +96,43 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 17/17] powerpc64/bpf: Add support for bpf trampolines
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf <bpf@vger.kernel.org>,
-        linux-trace-kernel <linux-trace-kernel@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Naveen N. Rao" <naveen@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Vishal Chourasia <vishalc@linux.ibm.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-References: <20240915205648.830121-1-hbathini@linux.ibm.com>
- <20240915205648.830121-18-hbathini@linux.ibm.com>
- <CAADnVQL60XXW95tgwKn3kVgSQAN7gr1STy=APuO1xQD7mz-aXA@mail.gmail.com>
- <32249e74-633d-4757-8931-742b682a63d3@linux.ibm.com>
- <CAADnVQKfSH_zkP0-TwOB_BLxCBH9efot9mk03uRuooCTMmWnWA@mail.gmail.com>
- <7afc9cc7-95cd-45c7-b748-28040206d9a0@linux.ibm.com>
- <CAADnVQJjqnSVqq2n70-uqfrYRHH3n=5s9=t3D2AMooxxAHYfJQ@mail.gmail.com>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <CAADnVQJjqnSVqq2n70-uqfrYRHH3n=5s9=t3D2AMooxxAHYfJQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nfk4x77q3uIih6IxVoMQw5vL6RKfZNVa
-X-Proofpoint-ORIG-GUID: AOTm3W-XTbmLTZO3OzmfxPQdAdP4Ygbv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-03_04,2024-09-30_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- mlxlogscore=907 phishscore=0 clxscore=1015 priorityscore=1501
- malwarescore=0 adultscore=0 spamscore=0 mlxscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2410030035
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <d9bdc1b6-ea7e-47aa-80aa-02ae649abf72@csgroup.eu>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+First of all, the change is wrong.  We can't dereference "prop" after calling
+of_node_put().  You have to be a bit extra careful reviewing Markus's patches
+because a lot of the rest of us have blocked these messages so you're on your
+own in that way.
 
-
-On 01/10/24 8:23 pm, Alexei Starovoitov wrote:
-> On Tue, Oct 1, 2024 at 12:18â€¯AM Hari Bathini <hbathini@linux.ibm.com> wrote:
->>
->>
->>
->> On 30/09/24 6:25 pm, Alexei Starovoitov wrote:
->>> On Sun, Sep 29, 2024 at 10:33â€¯PM Hari Bathini <hbathini@linux.ibm.com> wrote:
->>>>
->>>>
->>>>
->>>> On 17/09/24 1:20 pm, Alexei Starovoitov wrote:
->>>>> On Sun, Sep 15, 2024 at 10:58â€¯PM Hari Bathini <hbathini@linux.ibm.com> wrote:
->>>>>>
->>>>>> +
->>>>>> +       /*
->>>>>> +        * Generated stack layout:
->>>>>> +        *
->>>>>> +        * func prev back chain         [ back chain        ]
->>>>>> +        *                              [                   ]
->>>>>> +        * bpf prog redzone/tailcallcnt [ ...               ] 64 bytes (64-bit powerpc)
->>>>>> +        *                              [                   ] --
->>>>> ...
->>>>>> +
->>>>>> +       /* Dummy frame size for proper unwind - includes 64-bytes red zone for 64-bit powerpc */
->>>>>> +       bpf_dummy_frame_size = STACK_FRAME_MIN_SIZE + 64;
->>>>>
->>>>> What is the goal of such a large "red zone" ?
->>>>> The kernel stack is a limited resource.
->>>>> Why reserve 64 bytes ?
->>>>> tail call cnt can probably be optional as well.
->>>>
->>>> Hi Alexei, thanks for reviewing.
->>>> FWIW, the redzone on ppc64 is 288 bytes. BPF JIT for ppc64 was using
->>>> a redzone of 80 bytes since tailcall support was introduced [1].
->>>> It came down to 64 bytes thanks to [2]. The red zone is being used
->>>> to save NVRs and tail call count when a stack is not setup. I do
->>>> agree that we should look at optimizing it further. Do you think
->>>> the optimization should go as part of PPC64 trampoline enablement
->>>> being done here or should that be taken up as a separate item, maybe?
->>>
->>> The follow up is fine.
->>> It just odd to me that we currently have:
->>>
->>> [   unused red zone ] 208 bytes protected
->>>
->>> I simply don't understand why we need to waste this much stack space.
->>> Why can't it be zero today ?
->>>
->>
->> The ABI for ppc64 has a redzone of 288 bytes below the current
->> stack pointer that can be used as a scratch area until a new
->> stack frame is created. So, no wastage of stack space as such.
->> It is just red zone that can be used before a new stack frame
->> is created. The comment there is only to show how redzone is
->> being used in ppc64 BPF JIT. I think the confusion is with the
->> mention of "208 bytes" as protected. As not all of that scratch
->> area is used, it mentions the remaining as unused. Essentially
->> 288 bytes below current stack pointer is protected from debuggers
->> and interrupt code (red zone). Note that it should be 224 bytes
->> of unused red zone instead of 208 bytes as red zone usage in
->> ppc64 BPF JIT come down from 80 bytes to 64 bytes since [2].
->> Hope that clears the misunderstanding..
+On Wed, Oct 02, 2024 at 10:43:46PM +0200, Christophe Leroy wrote:
 > 
-> I see. That makes sense. So it's similar to amd64 red zone,
-> but there we have an issue with irqs, hence the kernel is
-> compiled with -mno-red-zone.
 > 
-> I guess ppc always has a different interrupt stack and
-> it's not an issue?
+> Le 02/10/2024 à 22:02, Markus Elfring a écrit :
+> > From: Markus Elfring <elfring@users.sourceforge.net>
+> > Date: Wed, 2 Oct 2024 21:50:27 +0200
+> > 
+> > An of_node_put(bk_node) call was immediately used after a pointer check
+> > for an of_get_property() call in this function implementation.
+> > Thus call such a function only once instead directly before the check.
+> 
+> It seems pointless to perform a put immediately after a get. Shouldn't
+> of_find_property() be used instead ? And then of_property_read_string()
+> would probably be better.
+> 
+> Maybe you can even use of_property_match_string().
 
-Yeah. On ppc64, kernel also uses redzone.
-Interrupts use a different stack..
+The of_get_property() function doesn't do a get as in get/put, it just finds
+the property and returns it.  It doesn't bump the reference count.  It's a
+confusing name in that way.  The The of_node_put() pairs with
+of_find_node_by_name().
 
-Thanks
-Hari
+regards,
+dan carpenter
 
 
