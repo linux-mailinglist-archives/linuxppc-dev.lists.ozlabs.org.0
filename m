@@ -1,95 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-1753-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1754-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD7E98FA0B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2024 00:47:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEBC98FA10
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2024 00:49:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XKRdY12FHz2y1W;
-	Fri,  4 Oct 2024 08:47:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XKRgR0zcCz2yDY;
+	Fri,  4 Oct 2024 08:49:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::836"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727962738;
-	cv=none; b=F7u0sO2jNIMBXYdtvaS3w79/w8+cowLiMffp+eznpNoc4LU/OQxFtesQNFLArgHAVOqn4uK+arMCVDobTLQJ+N0VWXol9zC6r9DJ8qfqbqzCtDfak5k6yqYh72uUa/Etsbkye9mUYNzC3vZGpZQTx5aTBGaFrD/hUaMoW43FrJw18Zz3NLglxDN+3/IxLU8GDT1rawtOih1BXT6A3KZC0EYq5dKfVURAvtHmINg1rwBY9sQx/1+m1y6s8r05Cfe1kEEMmzA4uzGgCGu1OF3oYQAGOmyxPP/kXveoCRIjQFX8xiEhZU9C9z9Nc1WaW0Rrmw+m++6O4NIRQC3i6drI7g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.17.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727970484;
+	cv=none; b=QydlKFpoDX0mhslGLqlgzjlUtedewxZZHhiklbhITyqkmgncOrvfwc0fRBTonQyWPjCbQswMbr6+QgdoW3v2vres0v7cEAH9R3rqzyV6UNEgODQ1RIPMF6Egb+qo8L6ObdBVO7u8f0pXaz5eBXXtNYdvFzQ5MUYh92wFysFCQTJmepsPXH4WefX7G0qi/OCxYmQ3ZrH1IV8dhMHeIgARN7m26F4b5/hhfhOnv7/AZwAkMyO4U9towKqauFRKe2o06vLbX1m0b1FOWj+mq8X+CT1sQgYPBco2jeC+KEminSwtt8ChDun1ujoZUbm6bzDrnMj5NAJEPWL4BuhnpDgWvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727962738; c=relaxed/relaxed;
-	bh=7cYlQ8sS3dSodfjWbJOUDRW+BCri6YPN6Z8wFgeEOOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c5nIxlMyVwPt3CcgX8Plwo5LnmIKfpiTx5ZKnoLGIL5Dz3coJzaCXhMHqxoivp1jTERcd5+HHiCZOxdxj89cThP9kDjvdIKYHkED5uBGeG1RDQde1MBaFpLgUI7utNr7IafmjC6syJdD3mj4qVoilKO/zL+qWlbjcz+kR9mqtyEPScNAsgbxzagn6t973Zu+vCzUORBCDgKnh0jxreuhULvJc4FIlqif+ZJPCyDVVO+PbKfaHh/C9QG46JmiigjBMmds/ZQvp2Fn34X/zvwun6EpnpPIcbmNSY913uu6myT5KWWuCs7NputYmjAXqggob4GA3kkOL3+rbMlHWubNOQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=jaW1lYJA; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::836; helo=mail-qt1-x836.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org) smtp.mailfrom=ziepe.ca
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+	t=1727970484; c=relaxed/relaxed;
+	bh=6YtWEy943w6XN6R2AHNa0OznWZOmWncdEFICHNQpfYU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mGClrmW5f5ECUUjo/cjxt/85drNGwBq30JjSYfi5H4MfPP+a6mY2XclnXNMxd2uI2oTQvF0+lZb1hOSDE2/p9m/v/i5MZekelTIcp2xDwF63JRIY16VZ9LUsvpWME7JeELpQqADbQuNI8vipdOdHsMuiW6G8oGEHgvPPkZma9ESKrcPdC1zMCWarOtgiEQAyEMmoxzH8GLlo/MEDRwh6sl3fG+f230JCWTnopyWtcKw/nDB8tMnDSmEjJnUe/392D0q8THDmOAXZc4/PULdiIEpg+zhJv4tO6xXraIvclwjB++4ji+XgGvvBJ1AjLohhFEhk1taqiRDwz1YX1r8wUw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=uRKwIq89; dkim-atps=neutral; spf=pass (client-ip=212.227.17.11; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org) smtp.mailfrom=web.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=jaW1lYJA;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=uRKwIq89;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::836; helo=mail-qt1-x836.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.17.11; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XKCSd0kdzz2xqc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2024 23:38:55 +1000 (AEST)
-Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-4581ee65b46so8462171cf.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Oct 2024 06:38:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1727962731; x=1728567531; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7cYlQ8sS3dSodfjWbJOUDRW+BCri6YPN6Z8wFgeEOOM=;
-        b=jaW1lYJAPTjBvi+FRtLWheR3GwjvTMyfcuMJnCrRQpl9Q/MWJnK9aGDJMf7xuwEZ99
-         xdEz1C8IroKxHn78/TttsSGkAmMgHA4C2EkHFWw7KF1qAuEuEZaQZ9FD+WaopWbaAW5B
-         caX3RKNa/EtOb+/bXMjDNBBemEbyW9LC6HUoS8YQmXX+sMsC02H0B9H89dprE+fCNP5w
-         +UA7mfKzRkMK1pDDY88+aWYuwcwAGOkhcQhWJJIAJlKh7ECM2aq7e/aWdRSsmUYAFUqA
-         XhN9C58nB+pswI/UYl+V7/K4dFoDt3ZVTdafWDVTIWS2Pog+9AT8/8/iM0nkIwwI+4Vk
-         clmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727962731; x=1728567531;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7cYlQ8sS3dSodfjWbJOUDRW+BCri6YPN6Z8wFgeEOOM=;
-        b=qREyHbf6WjwszNV2Ljt2NiT3EkW3xPcvQ7TYTSe58gVZKksLtUca8s3PQiS6FHu1gs
-         zviFZRyLHc5lHnO/tgnMGT5ZVcAucDPTWpcfnpPPovdThM2YKjLMHu9n+Lfc4JkyH1dM
-         ZlNPs16QQ8fkGX7/O/MCvLNtBFeRmRx/Hhu865ygTVpoMshvKE9TGPj+G5owKksGDZPl
-         DqcK7Mmz7NtV5PoJMc7Q7IGzvqErMX8SMZ8MoIqnb9k4oXM03uFm2EFbLwu1Eoxf2PoF
-         gyTF+n2beaMpIDctB8SBHzUCWnZnuGNTbb+iodHXk0p4oIVlGGEQDqqjJSzfQKkSZnwg
-         t02w==
-X-Forwarded-Encrypted: i=1; AJvYcCUEtP7mFh+KF0gRuoHCUxdIdonUvGpcXYm0rD8tESL6BtQWMN9AlhVb7eQpmd0IXuElV9XpXlwKud+hAIE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxmyWJxePw9O5Xvr5E+kKBDT2hxBTs3YlJzT39xyBoz7XrEk7m4
-	UuPREoqnVnTPIzVRaRTctXVtIcpjDIxi1zJhD3kX09opJN5Paxe9v7Q5OzfjJ9Y=
-X-Google-Smtp-Source: AGHT+IEeXln8uxBBs7r0qbtw2wolKdiK0oe/fV/z2xXXfZUZhaM6OzDUMtsWVXSO1oxDdjO6OayXDA==
-X-Received: by 2002:ac8:58c4:0:b0:458:2795:4853 with SMTP id d75a77b69052e-45d804d3296mr96964851cf.32.1727962730877;
-        Thu, 03 Oct 2024 06:38:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45d92ed4dcesm5550881cf.69.2024.10.03.06.38.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2024 06:38:50 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1swM2b-00ASZK-KP;
-	Thu, 03 Oct 2024 10:38:49 -0300
-Date: Thu, 3 Oct 2024 10:38:49 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Timothy Pearson <tpearson@raptorengineering.com>
-Cc: Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	Michael Ellerman <mpe@ellerman.id.au>, npiggin <npiggin@gmail.com>,
-	christophe leroy <christophe.leroy@csgroup.eu>,
-	aneesh kumar <aneesh.kumar@kernel.org>,
-	naveen n rao <naveen.n.rao@linux.ibm.com>,
-	gbatra <gbatra@linux.vnet.ibm.com>, brking@linux.vnet.ibm.com,
-	Alexey Kardashevskiy <aik@ozlabs.ru>, robh@kernel.org,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	kvm <kvm@vger.kernel.org>, aik <aik@amd.com>, msuchanek@suse.de,
-	jroedel <jroedel@suse.de>, vaibhav <vaibhav@linux.ibm.com>,
-	svaidy@linux.ibm.com
-Subject: Re: [RFC PATCH 1/3] powerpc/pseries/iommu: Bring back userspace view
- for single level TCE tables
-Message-ID: <20241003133849.GD2456194@ziepe.ca>
-References: <171026724548.8367.8321359354119254395.stgit@linux.ibm.com>
- <171026725393.8367.17497620074051138306.stgit@linux.ibm.com>
- <20240319143202.GA66976@ziepe.ca>
- <1386271253.24278379.1710873411133.JavaMail.zimbra@raptorengineeringinc.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XKGKW4HHtz2yLC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Oct 2024 01:47:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1727970445; x=1728575245; i=markus.elfring@web.de;
+	bh=6YtWEy943w6XN6R2AHNa0OznWZOmWncdEFICHNQpfYU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=uRKwIq89YSdIDUSSN6xXQU2nxgDwzu+GmR2DgpocW/h55ZNLZnSWP9uBlEFhQnPs
+	 9L6jHYFdPAFZp9magrXVsE3kkyBVu2IkLUt1R559o0aP/pMcbyDfG2006txOwD5wb
+	 wACAJtxuxztRUk/CZiNLcjh8W7OWCsvvmVRZF3w1Zuv5SyyNGQtTsQfkbfLHcdCOq
+	 6osE6+vaBsOjhy6nIwdMNWbdlhoDDbOuuCk7TAoiICbE/1RxKkDIXpL1TWVbK2Gkk
+	 Cv8xmq8/Ucthxov1RL07qgsmCc2y11DzZQ5ivRa4VxF3MKw2NBHxDyK5K4GRjJKnR
+	 CMakiobT8kqbkFynog==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.87.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MS13Z-1sTXja2faV-00QQXB; Thu, 03
+ Oct 2024 17:47:25 +0200
+Message-ID: <66655a11-888b-4c50-8e57-06552b82f922@web.de>
+Date: Thu, 3 Oct 2024 17:47:06 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,35 +57,71 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1386271253.24278379.1710873411133.JavaMail.zimbra@raptorengineeringinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] powerpc/4xx: Fix exception handling in
+ ppc4xx_pciex_port_setup_hose()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Josh Boyer <jwboyer@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Stefan Roese <sr@denx.de>
+Cc: cocci@inria.fr, LKML <linux-kernel@vger.kernel.org>
+References: <f9303bdc-b1a7-be5e-56c6-dfa8232b8b55@web.de>
+ <72a7bfe2-6051-01b0-6c51-a0f8cc0c93a5@web.de>
+ <ecda8227-d89a-9c23-06b7-54f9d974af5e@web.de>
+ <e68a714b-32f2-de9f-066e-99a3f51a264f@web.de>
+ <8edc93c8-b146-4507-8336-0709b2596cb9@csgroup.eu>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <8edc93c8-b146-4507-8336-0709b2596cb9@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:7MPgs994GP7PFwTjO44hqBW56mTWsQeui4bBMdSxXLvJc+I18VO
+ s3LsKLJlB0WoxgwzjZ3tpXnNToRVLOajOQJrK5FHuToJD9iwBaTwB3/EYIyHLfak5541MD4
+ z+J/lsV1Ae+bTBuAk96TDFTiscjOfyOrECsQUkwKqq8FY+kMmfdCeB0a1TdZ+DpOjv0/T3O
+ ehS3hOXBDffyRnAy/y4yw==
+UI-OutboundReport: notjunk:1;M01:P0:GJwRiYMBY8M=;LW10UzlCbGnHFde9E838MAi2OIL
+ wSC/ml98zkbeD4DWod8gSxUewZX3IEkJ5aExpsgM3RjbNjXc1PEtBUvuv7gOczmmdtqArMJAZ
+ 3czz0b56geNY56a8I6Pde7f9u0Lpz2ByxceN4jElHLmdKCDkPuTXACBmPZQVvxG3vJmPB42ZM
+ nHPrJLCvnp2qz8H1swUjXdHY93ft1ten354QN1DeyeDzxOM9XvarY9sc2mTJedPK9C78yOROL
+ svdUlaxvCGJ/o1nf06qMfLEc4SaYgG/AlmzFTpYk3WYiPmEekwyuIydN6t6+ujd7h5SL12DxD
+ 0yeUZifEA7Z3Au8tXix2iIh/PPo6YpM3O4P3nx00is0Lgmvv9TKxBRa/D+R5ai736S4KiN/GA
+ 7CQb89+v6OvVXWnxF+xUTliWQMD/VHtlD6EPcOaA3Hb35mWZigPOP1sTZNVawgdiqNX/ENM0N
+ ALQw/4ri9OPoQhi42TzkJXUHlaLBOfGbCuBebLKqoqq1b2XQZL79tZPDQf6ZBOKStk7epP1XZ
+ OvxsdVQzRv2GoSZL3pWUYHvYL84eFkme/bjS8oH/H/9UOttoeKaME+rZEn1geQ2thpRIUl7tt
+ we0NIepxreeXWJA1xyOId/kD0mFoKnWvaicqFYXAAkYkvHPND7Nze62E5lfEzQRmTfT6dhl93
+ Of8/rbbkxHPsBpXT9l4TzcwVnMPrJpxu3cDL+iFvbW/YNjJzUPXQ/jeJHYizZlAX+fhA486x3
+ ePgbTSI7opOvpCjqhWv+IY4f+TvpzNiqh7owCEn+4FTfl8lNDApOHpTKaoUfAsYVNZNiagFyH
+ pF/EzXXeriqSBJZ3hj8VYbjw==
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Mar 19, 2024 at 01:36:51PM -0500, Timothy Pearson wrote:
-> > On Tue, Mar 12, 2024 at 01:14:20PM -0500, Shivaprasad G Bhat wrote:
-> >> The commit 090bad39b237a ("powerpc/powernv: Add indirect levels to
-> >> it_userspace") which implemented the tce indirect levels
-> >> support for PowerNV ended up removing the single level support
-> >> which existed by default(generic tce_iommu_userspace_view_alloc/free()
-> >> calls). On pSeries the TCEs are single level, and the allocation
-> >> of userspace view is lost with the removal of generic code.
-> > 
-> > :( :(
-> > 
-> > If this has been broken since 2018 and nobody cared till now can we
-> > please go in a direction of moving this code to the new iommu APIs
-> > instead of doubling down on more of this old stuff that apparently
-> > almost nobody cares about ??
-> 
-> Just FYI Raptor is working on porting things over to the new APIs.
-> RFC patches should be posted in the next week or two.
+=E2=80=A6
+> Looks like you have messed up your patches,
 
-There was a discussion about this at LPC a few weeks ago, did any
-patches get prepared?
+There were special communication settings involved which hindered desirabl=
+e
+data processing for known information systems.
 
-Jason
+
+> there is no much we can do it seems:
+>
+> $ b4 shazam e68a714b-32f2-de9f-066e-99a3f51a264f@web.de
+
+Please take another look also at published information according to furthe=
+r
+mailing list archive interfaces.
+
+Example:
+[PATCH v2 0/4] powerpc/4xx: Adjustments for four function implementations
+https://lore.kernel.org/cocci/ecda8227-d89a-9c23-06b7-54f9d974af5e@web.de/
+https://sympa.inria.fr/sympa/arc/cocci/2023-03/msg00079.html
+
+
+Regards,
+Markus
 
