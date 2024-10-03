@@ -1,81 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-1740-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1741-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218B098E950
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2024 07:17:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD01498E95F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Oct 2024 07:34:54 +0200 (CEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VijjpUT2;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nKnywCZN;
 	dkim-atps=neutral
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XK0Km5KZ4z2yDx;
-	Thu,  3 Oct 2024 15:17:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XK0k42SGJz2yRD;
+	Thu,  3 Oct 2024 15:34:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727932636;
-	cv=none; b=Zx4ATpptpkp6YPe1VqKUpYgMx1jztBx4wEqNO6S/GgUOyuCoGYcfBhbZYB6rgwFCvzlqfRj0jbG1hpNx+D3otPeo6ufoOZvvmHmzSeIxyp8VgQa0iGBqGyNweIvL0NCRc1CxF4mSDIZofyQlVpFb5UEY059iLW90pbhnoR6ujtTRKE5gkjQQybuu7cF4jB/o9LHWgeS0UssHecf1uMWhnTV3i5bTl1DRPnMVytxzUY9ivDESFJNINfOUhvGB5p1CPsqBRpQZEZ6geurcOfSwPAc1T42bIDl2mQhrwPI9Opyu26IZTKUyjVaJO0Vfr7ikgoSrTF1T7Ra3ebGyZqiBgA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1727933692;
+	cv=none; b=SjC8rfJaPs2putGnpuBM24MpkT5q8Jgo3bmiB/v/zUGEyDK4vVI1wRe+8uQguj7YxfxUckRffPZ+R1++0KhTy9mwAG2Dnr8+szMpRKYJQmIzilPFH2M+aqyugLGKka4JxdIYxo25uR2g13GkOKWA7Oc/ML5YqQvdMZB3K3eQKa35U3UTcq4Sv0K49atckkhmCIZy3kJ6PT8S9jdVMzhr2+4bI0R6Bh433PDv95LHrro3P7j9oPQ6OW8Sr2pGsTYlX5p6F051zAi5PEE8QqI1oLIncFv7B6DlXKgIHU/eoRgE4hzNTzjp6V3wHmB/pX+bKWQPJ4uGOtbPm3OIoGnwhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1727932636; c=relaxed/relaxed;
-	bh=P61WjNBevRMtAfuGcNIvU5lX9OAgdg1UBpDmxbARpHY=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Pc1T9lZEX3y1+v5PYovtzbccpu6xPJo8YISDANXYf7R5Fzm5UUat/sS0zDV1KVtwN2tuLD9apfUsfxVWuK07/Jd/5XQJ6oLjOmPQzdNueCZM8TQqTUA9U02XpUx/WPfXFRFxDXJNEgUa8LN7lomMO1+HUeaNG0u6h9+kaNqwFPHtYumTH/hZp1KHi6I1+yG/3vsVAj9zIKg/SKABXkzb5TlII+/+8U/IxBh8VI6HiqFoolEnxidS7DNVjZVOxcu1B5xbtqz2HP+EExQtVUESAodYn0JjKZHlM6sL9/7XKkqH+upkv+GOdwMuVY/ZfKLD6ztWMUHeY8cuabZAbKT8uQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VijjpUT2; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1727933692; c=relaxed/relaxed;
+	bh=DU2EVq/dJRHq3kbfnrGZl+Z6bZudmAtCY8KaXHsKQKU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eWHDCtSdMovtgaEg2ooKzZHZz/ftvI1ZBxd+VpMhgFTEvztg4I3ID7x72xqgni1uYOICzUeds3Acnd08TjYuF6LicPPepJKO4giXvtBCFBFXIem1Gn+6QvSwYoyUuxwtXFl8BFoKU9PicGKiUXfgwQIxHYpbU9IIT7KhadnJ4785SvpWni1IAw8DS39v1t0OQ9Woh+99MSffJNJRa4+dTMVifjfImMPkqYuhzclg/ITWh9dyk5t6epfEWIM+tOs0aqRBuf510BYO0jM7a+YRUb7xPYMUszLu7HBDUqUV/Arn7RFBl3KK8aM17fOtmSYdhIs/W6G1+81MoWyAydAPVQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nKnywCZN; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VijjpUT2;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nKnywCZN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XK0Kl2NSvz2xnc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2024 15:17:15 +1000 (AEST)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-71b8d10e9b3so429559b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Oct 2024 22:17:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727932631; x=1728537431; darn=lists.ozlabs.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=P61WjNBevRMtAfuGcNIvU5lX9OAgdg1UBpDmxbARpHY=;
-        b=VijjpUT2lYpgU7ZqGsCDzMSudT5cAN4VWh5hzNytUg+jVk8wcFGvoys+b7mxt/ittC
-         fMPOTXPnvwKO47qNCkvVAWZ71vkrlWe6z8EAt90HTpcWv+7TGX/b9oEwcOII332nM53L
-         4UzjeVtf06ZHYQKU+0HLmRFHDyQtWrMvaveLWTse4alxfo3nxtzPjGH3JQ274PaZlpsC
-         uIsW4+5JicSpZh1fR42bgrAg3zEeUaATNy1z5+U925vGtJmWDE0Lx9NBZmA+55SDPFq/
-         ctFZhrDKpqf3YkUTlHzYkGwHO0W3YjwEYczDh6amD4dCc3YVI9x/XxW5fB/H3H7OQjdm
-         GskA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727932631; x=1728537431;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P61WjNBevRMtAfuGcNIvU5lX9OAgdg1UBpDmxbARpHY=;
-        b=nue7+ZVxaoYEPqcrP2Hy+pcozIHz6NITPOtvGEadhBjffN4PwzSHuM3sR9e8JfQKzH
-         f2PP5wnmjfqzM76/dpIbXC7HEBoB5U0PY7GMOIaIVT0BVgdqaTcTFAtNtWfM3/bSUDnN
-         qGQmovutoUzKGMUFZOy3L8FDLxwFKtdEBuO1WcOC/Z+dUHLBA1qfupRLwHsjPLU90z7X
-         gKa0P0VH4D7NmBVDfc7Kg6rk+AcGXvcrDjv9vQslpZjs+aJ/Vss+A4/mmfzc5qPIkDv6
-         t16LE6vLhfuUQ34/aoEYh46q8Di+kbik+FSBIF3vUkhZNqMDYrEY+sNcvnHw8tyO3zZv
-         I5cQ==
-X-Gm-Message-State: AOJu0Yyz/BOb6aAQZ8wYuDs7OUSP3LbL+up4Af2HVykVqqgHlNmLqT6l
-	pmIgunVh0RgpUNjCTXX/F+BN53ZmC2lvMwP0hA4QASCcEqRPjA1B
-X-Google-Smtp-Source: AGHT+IGSqOhDYBnasu93qnl5wHf+ezCb1CmvK8YGFgZJKvwFslVJPTu8jAGM36pLvWJ19ve2joTQMQ==
-X-Received: by 2002:a05:6a00:1915:b0:717:8489:6318 with SMTP id d2e1a72fcca58-71dc5c6756bmr8301952b3a.10.1727932630532;
-        Wed, 02 Oct 2024 22:17:10 -0700 (PDT)
-Received: from dw-tp ([171.76.83.199])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71dd9d7e54csm444461b3a.67.2024.10.02.22.17.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 22:17:09 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org, kasan-dev@googlegroups.com
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Hari Bathini <hbathini@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Donet Tom <donettom@linux.vnet.ibm.com>, Pavithra Prakash <pavrampu@linux.vnet.ibm.com>, Nirjhar Roy <nirjhar@linux.ibm.com>, LKML <linux-kernel@vger.kernel.org>, Alexander Potapenko <glider@google.com>, linux-mm@kvack.org, Heiko Carstens <hca@linux.ibm.com>
-Subject: Re: [RFC v2 01/13] mm/kfence: Add a new kunit test test_use_after_free_read_nofault()
-In-Reply-To: <a8ca8bd5eb4114304b34dd8bac7a6280d358c728.1726571179.git.ritesh.list@gmail.com>
-Date: Thu, 03 Oct 2024 10:36:08 +0530
-Message-ID: <87cykhydvj.fsf@gmail.com>
-References: <cover.1726571179.git.ritesh.list@gmail.com> <a8ca8bd5eb4114304b34dd8bac7a6280d358c728.1726571179.git.ritesh.list@gmail.com>
-X-Spam-Status: No, score=3.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_SBL_CSS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Level: ***
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XK0k24Xhpz2yQ9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Oct 2024 15:34:49 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4935NeYB029655;
+	Thu, 3 Oct 2024 05:34:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=D
+	U2EVq/dJRHq3kbfnrGZl+Z6bZudmAtCY8KaXHsKQKU=; b=nKnywCZNvHuWuJeNp
+	JvE0Noncqn8uGVyji3dy61l31fH4SBnGRHLx5cy//eCoTlz8j2RsdBEd8RoYszp3
+	GwNWgerApi3F3VllB30HglkF0KIznGE2zBjW9Rx4NLpKF4O4Aq8HA6RUtAd1rqAB
+	G7GWUjfSjLIiN/R3/yREVa05TYXXvWnBL1RjSoOKB3BAYQoLYlsPVbRpdi/ULF4f
+	M4IOMuZEzJaIe9tqJz1VYx4Js6qqgB+dGhC0aBrHv82GppxSoNnf89ppRoFaddIN
+	9qaVkifnlXhgUKJsVZGPRPSuuo0B4cnWjBRxjE03F2jhYKLr8YAGtJfUyUMTfXX3
+	5lf5w==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 421n2q00xf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Oct 2024 05:34:01 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4935Y0mG021923;
+	Thu, 3 Oct 2024 05:34:00 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 421n2q00xc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Oct 2024 05:34:00 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49313JW6013047;
+	Thu, 3 Oct 2024 05:33:59 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41xxbjny5t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Oct 2024 05:33:59 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4935Xu4M53477772
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 3 Oct 2024 05:33:56 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 306CC2004B;
+	Thu,  3 Oct 2024 05:33:56 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 57E5E20040;
+	Thu,  3 Oct 2024 05:33:52 +0000 (GMT)
+Received: from [9.43.34.175] (unknown [9.43.34.175])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  3 Oct 2024 05:33:52 +0000 (GMT)
+Message-ID: <0b10ef55-bb70-4000-b028-2f38c1879b4a@linux.ibm.com>
+Date: Thu, 3 Oct 2024 11:03:51 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,80 +84,130 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 17/17] powerpc64/bpf: Add support for bpf trampolines
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf <bpf@vger.kernel.org>,
+        linux-trace-kernel <linux-trace-kernel@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Naveen N. Rao" <naveen@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Vishal Chourasia <vishalc@linux.ibm.com>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+References: <20240915205648.830121-1-hbathini@linux.ibm.com>
+ <20240915205648.830121-18-hbathini@linux.ibm.com>
+ <CAADnVQL60XXW95tgwKn3kVgSQAN7gr1STy=APuO1xQD7mz-aXA@mail.gmail.com>
+ <32249e74-633d-4757-8931-742b682a63d3@linux.ibm.com>
+ <CAADnVQKfSH_zkP0-TwOB_BLxCBH9efot9mk03uRuooCTMmWnWA@mail.gmail.com>
+ <7afc9cc7-95cd-45c7-b748-28040206d9a0@linux.ibm.com>
+ <CAADnVQJjqnSVqq2n70-uqfrYRHH3n=5s9=t3D2AMooxxAHYfJQ@mail.gmail.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <CAADnVQJjqnSVqq2n70-uqfrYRHH3n=5s9=t3D2AMooxxAHYfJQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nfk4x77q3uIih6IxVoMQw5vL6RKfZNVa
+X-Proofpoint-ORIG-GUID: AOTm3W-XTbmLTZO3OzmfxPQdAdP4Ygbv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-03_04,2024-09-30_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ mlxlogscore=907 phishscore=0 clxscore=1015 priorityscore=1501
+ malwarescore=0 adultscore=0 spamscore=0 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2410030035
+X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
-Hello Kasan/kfence-devs, 
 
-Wanted your inputs on this kfence kunit test [PATCH-1] and it's respective
-powerpc fix [Patch-2]. The commit msgs has a good description of it. I
-see that the same problem was noticed on s390 as well [1] a while ago.
-So that makes me believe that maybe we should have a kunit test for the
-same to make sure all architectures handles this properly. 
+On 01/10/24 8:23 pm, Alexei Starovoitov wrote:
+> On Tue, Oct 1, 2024 at 12:18 AM Hari Bathini <hbathini@linux.ibm.com> wrote:
+>>
+>>
+>>
+>> On 30/09/24 6:25 pm, Alexei Starovoitov wrote:
+>>> On Sun, Sep 29, 2024 at 10:33 PM Hari Bathini <hbathini@linux.ibm.com> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 17/09/24 1:20 pm, Alexei Starovoitov wrote:
+>>>>> On Sun, Sep 15, 2024 at 10:58 PM Hari Bathini <hbathini@linux.ibm.com> wrote:
+>>>>>>
+>>>>>> +
+>>>>>> +       /*
+>>>>>> +        * Generated stack layout:
+>>>>>> +        *
+>>>>>> +        * func prev back chain         [ back chain        ]
+>>>>>> +        *                              [                   ]
+>>>>>> +        * bpf prog redzone/tailcallcnt [ ...               ] 64 bytes (64-bit powerpc)
+>>>>>> +        *                              [                   ] --
+>>>>> ...
+>>>>>> +
+>>>>>> +       /* Dummy frame size for proper unwind - includes 64-bytes red zone for 64-bit powerpc */
+>>>>>> +       bpf_dummy_frame_size = STACK_FRAME_MIN_SIZE + 64;
+>>>>>
+>>>>> What is the goal of such a large "red zone" ?
+>>>>> The kernel stack is a limited resource.
+>>>>> Why reserve 64 bytes ?
+>>>>> tail call cnt can probably be optional as well.
+>>>>
+>>>> Hi Alexei, thanks for reviewing.
+>>>> FWIW, the redzone on ppc64 is 288 bytes. BPF JIT for ppc64 was using
+>>>> a redzone of 80 bytes since tailcall support was introduced [1].
+>>>> It came down to 64 bytes thanks to [2]. The red zone is being used
+>>>> to save NVRs and tail call count when a stack is not setup. I do
+>>>> agree that we should look at optimizing it further. Do you think
+>>>> the optimization should go as part of PPC64 trampoline enablement
+>>>> being done here or should that be taken up as a separate item, maybe?
+>>>
+>>> The follow up is fine.
+>>> It just odd to me that we currently have:
+>>>
+>>> [   unused red zone ] 208 bytes protected
+>>>
+>>> I simply don't understand why we need to waste this much stack space.
+>>> Why can't it be zero today ?
+>>>
+>>
+>> The ABI for ppc64 has a redzone of 288 bytes below the current
+>> stack pointer that can be used as a scratch area until a new
+>> stack frame is created. So, no wastage of stack space as such.
+>> It is just red zone that can be used before a new stack frame
+>> is created. The comment there is only to show how redzone is
+>> being used in ppc64 BPF JIT. I think the confusion is with the
+>> mention of "208 bytes" as protected. As not all of that scratch
+>> area is used, it mentions the remaining as unused. Essentially
+>> 288 bytes below current stack pointer is protected from debuggers
+>> and interrupt code (red zone). Note that it should be 224 bytes
+>> of unused red zone instead of 208 bytes as red zone usage in
+>> ppc64 BPF JIT come down from 80 bytes to 64 bytes since [2].
+>> Hope that clears the misunderstanding..
+> 
+> I see. That makes sense. So it's similar to amd64 red zone,
+> but there we have an issue with irqs, hence the kernel is
+> compiled with -mno-red-zone.
+> 
+> I guess ppc always has a different interrupt stack and
+> it's not an issue?
 
-Thoughts?
+Yeah. On ppc64, kernel also uses redzone.
+Interrupts use a different stack..
 
-[1]: https://lore.kernel.org/all/20230213183858.1473681-1-hca@linux.ibm.com/
+Thanks
+Hari
 
--ritesh
-
-
-"Ritesh Harjani (IBM)" <ritesh.list@gmail.com> writes:
-
-> From: Nirjhar Roy <nirjhar@linux.ibm.com>
->
-> Faults from copy_from_kernel_nofault() needs to be handled by fixup
-> table and should not be handled by kfence. Otherwise while reading
-> /proc/kcore which uses copy_from_kernel_nofault(), kfence can generate
-> false negatives. This can happen when /proc/kcore ends up reading an
-> unmapped address from kfence pool.
->
-> Let's add a testcase to cover this case.
->
-> Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Signed-off-by: Nirjhar Roy <nirjhar@linux.ibm.com>
-> Cc: kasan-dev@googlegroups.com
-> Cc: Alexander Potapenko <glider@google.com>
-> Cc: linux-mm@kvack.org
-> ---
->  mm/kfence/kfence_test.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
-> index 00fd17285285..f65fb182466d 100644
-> --- a/mm/kfence/kfence_test.c
-> +++ b/mm/kfence/kfence_test.c
-> @@ -383,6 +383,22 @@ static void test_use_after_free_read(struct kunit *test)
->  	KUNIT_EXPECT_TRUE(test, report_matches(&expect));
->  }
->
-> +static void test_use_after_free_read_nofault(struct kunit *test)
-> +{
-> +	const size_t size = 32;
-> +	char *addr;
-> +	char dst;
-> +	int ret;
-> +
-> +	setup_test_cache(test, size, 0, NULL);
-> +	addr = test_alloc(test, size, GFP_KERNEL, ALLOCATE_ANY);
-> +	test_free(addr);
-> +	/* Use after free with *_nofault() */
-> +	ret = copy_from_kernel_nofault(&dst, addr, 1);
-> +	KUNIT_EXPECT_EQ(test, ret, -EFAULT);
-> +	KUNIT_EXPECT_FALSE(test, report_available());
-> +}
-> +
->  static void test_double_free(struct kunit *test)
->  {
->  	const size_t size = 32;
-> @@ -780,6 +796,7 @@ static struct kunit_case kfence_test_cases[] = {
->  	KFENCE_KUNIT_CASE(test_out_of_bounds_read),
->  	KFENCE_KUNIT_CASE(test_out_of_bounds_write),
->  	KFENCE_KUNIT_CASE(test_use_after_free_read),
-> +	KFENCE_KUNIT_CASE(test_use_after_free_read_nofault),
->  	KFENCE_KUNIT_CASE(test_double_free),
->  	KFENCE_KUNIT_CASE(test_invalid_addr_free),
->  	KFENCE_KUNIT_CASE(test_corruption),
-> --
-> 2.46.0
 
