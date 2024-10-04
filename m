@@ -1,67 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-1763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA06699078A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2024 17:32:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4AD990B2C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Oct 2024 20:23:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XKswh3SRrz3bcj;
-	Sat,  5 Oct 2024 01:32:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XKxkq656dz2xtN;
+	Sat,  5 Oct 2024 04:23:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728055924;
-	cv=none; b=DKhZSfg6vSmyXJpMQHwvki/6EaS91TSU+3VkKYkPvF7qDLBNd3O+LO8yfugiQ4oYUdJlukdMFIsAn9RlWcKhzsUS4q9VW3Qds/PG2s6NqzHpu4VXJalUDCO/x4W1Y3LUO9uMHhHCHixIxRQeZ56m8WR2QLEAOpe41P+vgEZljRMwV8r+4QVSDXsk0INySMFb3uaBjlHUaArPhBfoND9vXLA1ew3dqOY4ud3kbHlPR1CnBs1gXug6HtBPKV+gi7UHj37CQNjiR0y7CrARjtSctdaolMe+gHHenGI1MHU04OSjji3u1jwNps0mjvB0V5gxdyCKYqeeyskF87ox+H2SeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728055924; c=relaxed/relaxed;
-	bh=7VFtDtbJQMSdAimV4mrzPzM12OSRkmK3dBudwKeEPXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lXhhHiucxKg90RknpNfOyFad2poK0EkeqDs+nydchru8X6hj5ZXxFTMksq7TSqJDMtmW8ebv7AQAHF/edgIz4KlaKbr3Oi9mL6TOUH2dqMAyKdsGCfl+porF4wcTQLvMaArct3BvYb9MQ9g/sJ0djHWnXrJ0lSc7P+dagNaEsTexIy9IdrEHvwsbKioXhpJPj7ZO4nfpEykK6/mqYPescBhvcXZ9+scr7/aqKVY1uJtLCXUJETSCg30PdStVqx3o50jW8P4KdpJnKp2FgngxSOw9RxAyG6yniXT2jC4fHI9gtqHZQmaXAZamwHsBC9eT0DEt+YG0dC5+3kbVCg3qiQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XKswg38Zxz3bbH
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Oct 2024 01:32:02 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2D07F150C;
-	Fri,  4 Oct 2024 08:32:01 -0700 (PDT)
-Received: from J2N7QTR9R3.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7051D3F7C5;
-	Fri,  4 Oct 2024 08:31:27 -0700 (PDT)
-Date: Fri, 4 Oct 2024 16:31:25 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: kvm@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>,
-	Sean Christopherson <seanjc@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v5 5/5] perf: Correct perf sampling with guest VMs
-Message-ID: <ZwAKTUrwQH9Xk-ET@J2N7QTR9R3.cambridge.arm.com>
-References: <20240920174740.781614-1-coltonlewis@google.com>
- <20240920174740.781614-6-coltonlewis@google.com>
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.165 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728066227;
+	cv=pass; b=hAoOlLhmjG5oJFbSZkeP2QBQ6ltu8uvsxznYWvHmMyioVgwB4pwRXyHroI9AH70j9ZCZKTL3nmmBqwoXzoY9CQi+zfs58+UdlCrtc/DpU1Z9HeKftFXvm9eYoF3X6mT/HVtkBJ8CQnuItggBFWtOlyiDjUtmX0GfPmPFLSgBglkWloTDjA4knJtsvXdtxo1Fk88Ub0XCZq8Nr7BueR5D0z13rshp8zSBW3lHjVoJxxZkpaKXSAzaMjdAMbdE9LO2Bb6W/LnhF3+KhLltuM7oXC6qWQ4EjXJ1MTIwcpfLdM92ZujIYQ8DIRKIq3XyoUPNM5MzZxpare1apySDhIdyBA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1728066227; c=relaxed/relaxed;
+	bh=fh5lK3S2+T6zI5umkiU5AYrf63ArwtBPlfiCR8hznDs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TXjVdK+CmyFue5Loa/vl3r49KSKkX59Cavazk0lY4lJDSmvRxMu/qAY/6GOWz5Zc2j5roCvUKgXsOKtArgAPSoCJ1sgRagbnZJMgpKpZ8fjEnSigHDQpO530ITvN9cpXM+rmGLEwSiuq1ppfkSQWGsGknRt/thf+5SUtndGTZJrVsp+n4YIT01CG4NE2EBzKUC38YFJCZ3zCpIWXTqWmZu8E8RVzpUj4S4LyuNqKZwasz6mteWlmzyiva2WTWTDgHp9BmgHoNANbW+tfWdoABhx8JebV3CZZcCqrovzfmJBLdt/YWrsfFHQ8aEI66K7DiabLtqIqT9Mmr6+BwDuoGA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=p3rOZDzg; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=cPrDotOU; dkim-atps=neutral; spf=pass (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=p3rOZDzg;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=cPrDotOU;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XKxkk40MDz2xrv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Oct 2024 04:23:39 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1728066202; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=ryuDJkyoAigBE+RjYWjHOwz8Thcg/gbb5fWaZSHOKf3JBmDgDoTeXz3xVdKujnkzl8
+    R+SWtAHPD1GziAmZIjOmP/jPWL+X84TE7IeB7kg4kNOzDLylwqwmOYD5SYD7SA6JDaTx
+    yVPfjPHrhNZArjZpXx3lm0B8HZtXcG00gvxxVFG+AVqH8SC8iMyuOrjCZJqNPfu55/i+
+    OId08i3wIHDYgsOy7AL3GEPgDwuzI52EbKO0c6j1pUCohNtxMmnYAUFeMZZ6Jo51jUz9
+    YXvOdPy4SfziFFzJEtdxeDdT0X9JfgI8AOeTvuzMmfk9WZucU1OZ3S9Y8jH9cKucX9Rg
+    N4KA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1728066202;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=fh5lK3S2+T6zI5umkiU5AYrf63ArwtBPlfiCR8hznDs=;
+    b=cpYZO3RGAgzFip2LJ6xDfBHZMeM1zuDUDM2Vk6+Vb2B4rEOMjbOW07Z2xTsWTP8Xu6
+    xYDEPYn7HVSpFjZ9MZ4hchhfzwY5GsSobHh0yDIqt5JFKU2+6G5hqsBjrAJaZfh32szy
+    5I2qjpmcDj9ctG0xSAdlq38N/f3HokxgmpbTKi/VElEe1cDrgKZ0qgNsCW55YdWrSCjp
+    oyoWec6QE2TzN5xW/LIHmxhnVIVzuLLHReErjR+4wTFN/IWppD22UVhMnHhxFR8CNQ9U
+    CZXB4kHCYShrXcUQ7sH/4pV0FI1imTATdKPy7kVh4pnsLCcKYz7gBHZYwZO5rGXM1Z0f
+    H8Fw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1728066202;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=fh5lK3S2+T6zI5umkiU5AYrf63ArwtBPlfiCR8hznDs=;
+    b=p3rOZDzgUeuNjjwRSaUcfaVPHXrMVMvdn2MkrRb+3WKWL1fkyB0L9WkitiF2tfEheo
+    H7+NzvSZwpxiAG/vBhFIgL3FdGwIAPFRDPU3k+dsS6Sd4NilPuI3QzbopyoONEg9AygS
+    koBB2JmRhdVygCTSE52rXEb72/Dvwg0HtzPMhgXchL+uymFEHBX+WsCtAxeeys39NgIb
+    AZ5FcrzcYaZl1lMG1Yv4OxrLmCEqNSLooxCHkxHyXLgEqTPWbDYyi1dddhzGqDP6LIUr
+    b9j6p7UJASIBdWdEBlgitL+lfgo9x9GNKtdYR6s+LNQfM20Dl42Xw94hzms4VMXuAkSw
+    eOZA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1728066202;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=fh5lK3S2+T6zI5umkiU5AYrf63ArwtBPlfiCR8hznDs=;
+    b=cPrDotOUMGIqIkpyrdwgVL/OvKnf2X+2HfYKDSbbZooT2v6gIAQ66Qn8b3ArRjUC1w
+    rCaUNpTGk9m9F74AYhAA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5jms33DCCl8yuj1GiXKxy2NgsIyNI7J6OEvKwI="
+Received: from [IPV6:2a01:599:80b:670e:7ae4:fdea:aa8b:6a58]
+    by smtp.strato.de (RZmta 51.2.8 AUTH)
+    with ESMTPSA id e0da1a094INKf8x
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Fri, 4 Oct 2024 20:23:20 +0200 (CEST)
+Message-ID: <b758c87b-1ab3-4ce0-bc97-ac8fe9387c1b@xenosoft.de>
+Date: Fri, 4 Oct 2024 20:24:21 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,227 +88,145 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240920174740.781614-6-coltonlewis@google.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH v2] drm/radeon: add late_register for connector - Please test
+To: Alex Deucher <alexdeucher@gmail.com>, Wu Hoi Pok <wuhoipok@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Alex Deucher <alexander.deucher@amd.com>, Hans de Goede
+ <hdegoede@redhat.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Xinhui Pan <Xinhui.Pan@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ "open list:RADEON and AMDGPU DRM DRIVERS" <amd-gfx@lists.freedesktop.org>,
+ "open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson"
+ <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>,
+ hypexed@yahoo.com.au, Darren Stevens <darren@stevens-zone.net>
+References: <20241004010601.3387-1-wuhoipok@gmail.com>
+ <CADnq5_Nt=8Lx6KOXHf0DHmqo2O7dYKDTfGCz-w_Hv+__=BqP9w@mail.gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <CADnq5_Nt=8Lx6KOXHf0DHmqo2O7dYKDTfGCz-w_Hv+__=BqP9w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Sep 20, 2024 at 05:47:40PM +0000, Colton Lewis wrote:
-> Previously any PMU overflow interrupt that fired while a VCPU was
-> loaded was recorded as a guest event whether it truly was or not. This
-> resulted in nonsense perf recordings that did not honor
-> perf_event_attr.exclude_guest and recorded guest IPs where it should
-> have recorded host IPs.
-> 
-> Rework the sampling logic to only record guest samples for events with
-> exclude_guest = 0. This way any host-only events with exclude_guest
-> set will never see unexpected guest samples. The behaviour of events
-> with exclude_guest = 0 is unchanged.
-> 
-> Note that events configured to sample both host and guest may still
-> misattribute a PMI that arrived in the host as a guest event depending
-> on KVM arch and vendor behavior.
-> 
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+Hi All,
 
-This looks good to me, though I wonder if we should handle all of the
-exclude_* flags in one go and pick the right user/kernel/guest regs to
-sample from...
+I compiled a new RC1 of kernel 6.12 with this patch today. Please test it.
 
-As this stands, it's definitely an improvement on what we have, so:
+Downloads:
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
+- https://github.com/chzigotzky/kernels/releases/tag/v6.12.0-rc1-2
+- https://www.xenosoft.de/linux-image-6.12-rc1-2-X1000_X5000.tar.gz
 
-Mark.
+Thanks,
+Christian
 
-> ---
->  arch/arm64/include/asm/perf_event.h |  4 ----
->  arch/arm64/kernel/perf_callchain.c  | 28 ----------------------------
->  arch/x86/events/core.c              | 16 ++++------------
->  include/linux/perf_event.h          | 21 +++++++++++++++++++--
->  kernel/events/core.c                | 21 +++++++++++++++++----
->  5 files changed, 40 insertions(+), 50 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/perf_event.h b/arch/arm64/include/asm/perf_event.h
-> index 31a5584ed423..ee45b4e77347 100644
-> --- a/arch/arm64/include/asm/perf_event.h
-> +++ b/arch/arm64/include/asm/perf_event.h
-> @@ -10,10 +10,6 @@
->  #include <asm/ptrace.h>
->  
->  #ifdef CONFIG_PERF_EVENTS
-> -struct pt_regs;
-> -extern unsigned long perf_arch_instruction_pointer(struct pt_regs *regs);
-> -extern unsigned long perf_arch_misc_flags(struct pt_regs *regs);
-> -#define perf_arch_misc_flags(regs)	perf_misc_flags(regs)
->  #define perf_arch_bpf_user_pt_regs(regs) &regs->user_regs
->  #endif
->  
-> diff --git a/arch/arm64/kernel/perf_callchain.c b/arch/arm64/kernel/perf_callchain.c
-> index 01a9d08fc009..9b7f26b128b5 100644
-> --- a/arch/arm64/kernel/perf_callchain.c
-> +++ b/arch/arm64/kernel/perf_callchain.c
-> @@ -38,31 +38,3 @@ void perf_callchain_kernel(struct perf_callchain_entry_ctx *entry,
->  
->  	arch_stack_walk(callchain_trace, entry, current, regs);
->  }
-> -
-> -unsigned long perf_arch_instruction_pointer(struct pt_regs *regs)
-> -{
-> -	if (perf_guest_state())
-> -		return perf_guest_get_ip();
-> -
-> -	return instruction_pointer(regs);
-> -}
-> -
-> -unsigned long perf_arch_misc_flags(struct pt_regs *regs)
-> -{
-> -	unsigned int guest_state = perf_guest_state();
-> -	int misc = 0;
-> -
-> -	if (guest_state) {
-> -		if (guest_state & PERF_GUEST_USER)
-> -			misc |= PERF_RECORD_MISC_GUEST_USER;
-> -		else
-> -			misc |= PERF_RECORD_MISC_GUEST_KERNEL;
-> -	} else {
-> -		if (user_mode(regs))
-> -			misc |= PERF_RECORD_MISC_USER;
-> -		else
-> -			misc |= PERF_RECORD_MISC_KERNEL;
-> -	}
-> -
-> -	return misc;
-> -}
-> diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-> index d51e5d24802b..3c5f512d2bcf 100644
-> --- a/arch/x86/events/core.c
-> +++ b/arch/x86/events/core.c
-> @@ -2942,9 +2942,6 @@ static unsigned long code_segment_base(struct pt_regs *regs)
->  
->  unsigned long perf_arch_instruction_pointer(struct pt_regs *regs)
->  {
-> -	if (perf_guest_state())
-> -		return perf_guest_get_ip();
-> -
->  	return regs->ip + code_segment_base(regs);
->  }
->  
-> @@ -2971,17 +2968,12 @@ unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
->  
->  unsigned long perf_arch_misc_flags(struct pt_regs *regs)
->  {
-> -	unsigned int guest_state = perf_guest_state();
->  	unsigned long misc = common_misc_flags(regs);
->  
-> -	if (guest_state) {
-> -		misc |= perf_arch_guest_misc_flags(regs);
-> -	} else {
-> -		if (user_mode(regs))
-> -			misc |= PERF_RECORD_MISC_USER;
-> -		else
-> -			misc |= PERF_RECORD_MISC_KERNEL;
-> -	}
-> +	if (user_mode(regs))
-> +		misc |= PERF_RECORD_MISC_USER;
-> +	else
-> +		misc |= PERF_RECORD_MISC_KERNEL;
->  
->  	return misc;
->  }
-> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-> index d061e327ad54..968f3edd95e4 100644
-> --- a/include/linux/perf_event.h
-> +++ b/include/linux/perf_event.h
-> @@ -1633,8 +1633,9 @@ extern void perf_tp_event(u16 event_type, u64 count, void *record,
->  			  struct task_struct *task);
->  extern void perf_bp_event(struct perf_event *event, void *data);
->  
-> -extern unsigned long perf_misc_flags(struct pt_regs *regs);
-> -extern unsigned long perf_instruction_pointer(struct pt_regs *regs);
-> +extern unsigned long perf_misc_flags(struct perf_event *event, struct pt_regs *regs);
-> +extern unsigned long perf_instruction_pointer(struct perf_event *event,
-> +					      struct pt_regs *regs);
->  
->  #ifndef perf_arch_misc_flags
->  # define perf_arch_misc_flags(regs) \
-> @@ -1645,6 +1646,22 @@ extern unsigned long perf_instruction_pointer(struct pt_regs *regs);
->  # define perf_arch_bpf_user_pt_regs(regs) regs
->  #endif
->  
-> +#ifndef perf_arch_guest_misc_flags
-> +static inline unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
-> +{
-> +	unsigned long guest_state = perf_guest_state();
-> +
-> +	if (guest_state & PERF_GUEST_USER)
-> +		return PERF_RECORD_MISC_GUEST_USER;
-> +
-> +	if (guest_state & PERF_GUEST_ACTIVE)
-> +		return PERF_RECORD_MISC_GUEST_KERNEL;
-> +
-> +	return 0;
-> +}
-> +# define perf_arch_guest_misc_flags(regs)	perf_arch_guest_misc_flags(regs)
-> +#endif
-> +
->  static inline bool has_branch_stack(struct perf_event *event)
->  {
->  	return event->attr.sample_type & PERF_SAMPLE_BRANCH_STACK;
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index eeabbf791a8c..c5e57c024d9a 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -6921,13 +6921,26 @@ void perf_unregister_guest_info_callbacks(struct perf_guest_info_callbacks *cbs)
->  EXPORT_SYMBOL_GPL(perf_unregister_guest_info_callbacks);
->  #endif
->  
-> -unsigned long perf_misc_flags(struct pt_regs *regs)
-> +static bool should_sample_guest(struct perf_event *event)
->  {
-> +	return !event->attr.exclude_guest && perf_guest_state();
-> +}
-> +
-> +unsigned long perf_misc_flags(struct perf_event *event,
-> +			      struct pt_regs *regs)
-> +{
-> +	if (should_sample_guest(event))
-> +		return perf_arch_guest_misc_flags(regs);
-> +
->  	return perf_arch_misc_flags(regs);
->  }
->  
-> -unsigned long perf_instruction_pointer(struct pt_regs *regs)
-> +unsigned long perf_instruction_pointer(struct perf_event *event,
-> +				       struct pt_regs *regs)
->  {
-> +	if (should_sample_guest(event))
-> +		return perf_guest_get_ip();
-> +
->  	return perf_arch_instruction_pointer(regs);
->  }
->  
-> @@ -7743,7 +7756,7 @@ void perf_prepare_sample(struct perf_sample_data *data,
->  	__perf_event_header__init_id(data, event, filtered_sample_type);
->  
->  	if (filtered_sample_type & PERF_SAMPLE_IP) {
-> -		data->ip = perf_instruction_pointer(regs);
-> +		data->ip = perf_instruction_pointer(event, regs);
->  		data->sample_flags |= PERF_SAMPLE_IP;
->  	}
->  
-> @@ -7907,7 +7920,7 @@ void perf_prepare_header(struct perf_event_header *header,
->  {
->  	header->type = PERF_RECORD_SAMPLE;
->  	header->size = perf_sample_data_size(data, event);
-> -	header->misc = perf_misc_flags(regs);
-> +	header->misc = perf_misc_flags(event, regs);
->  
->  	/*
->  	 * If you're adding more sample types here, you likely need to do
-> -- 
-> 2.46.0.792.g87dc391469-goog
-> 
+On 04 October 2024 at 4:00pm, Alex Deucher wrote:
+> On Thu, Oct 3, 2024 at 9:18 PM Wu Hoi Pok <wuhoipok@gmail.com> wrote:
+>> The patch is to solve null dereference in 'aux.dev', which is
+>> introduced in recent radeon rework. By having 'late_register',
+>> the connector should be registered after 'drm_dev_register'
+>> automatically, where in before it is the opposite.
+>>
+>> Fixes: 90985660ba48 ("drm/radeon: remove load callback from kms_driver")
+>> Tested-by: Hans de Goede <hdegoede@redhat.com>
+>> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Signed-off-by: Wu Hoi Pok <wuhoipok@gmail.com>
+> Applied.  Thanks!
+>
+> Alex
+>
+>> ---
+>>   drivers/gpu/drm/radeon/atombios_dp.c       |  9 ++-------
+>>   drivers/gpu/drm/radeon/radeon_connectors.c | 17 +++++++++++++++++
+>>   2 files changed, 19 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/radeon/atombios_dp.c b/drivers/gpu/drm/radeon/atombios_dp.c
+>> index fca8b08535a5..6328627b7c34 100644
+>> --- a/drivers/gpu/drm/radeon/atombios_dp.c
+>> +++ b/drivers/gpu/drm/radeon/atombios_dp.c
+>> @@ -228,10 +228,8 @@ void radeon_dp_aux_init(struct radeon_connector *radeon_connector)
+>>   {
+>>          struct drm_device *dev = radeon_connector->base.dev;
+>>          struct radeon_device *rdev = dev->dev_private;
+>> -       int ret;
+>>
+>>          radeon_connector->ddc_bus->rec.hpd = radeon_connector->hpd.hpd;
+>> -       radeon_connector->ddc_bus->aux.dev = radeon_connector->base.kdev;
+>>          radeon_connector->ddc_bus->aux.drm_dev = radeon_connector->base.dev;
+>>          if (ASIC_IS_DCE5(rdev)) {
+>>                  if (radeon_auxch)
+>> @@ -242,11 +240,8 @@ void radeon_dp_aux_init(struct radeon_connector *radeon_connector)
+>>                  radeon_connector->ddc_bus->aux.transfer = radeon_dp_aux_transfer_atom;
+>>          }
+>>
+>> -       ret = drm_dp_aux_register(&radeon_connector->ddc_bus->aux);
+>> -       if (!ret)
+>> -               radeon_connector->ddc_bus->has_aux = true;
+>> -
+>> -       WARN(ret, "drm_dp_aux_register() failed with error %d\n", ret);
+>> +       drm_dp_aux_init(&radeon_connector->ddc_bus->aux);
+>> +       radeon_connector->ddc_bus->has_aux = true;
+>>   }
+>>
+>>   /***** general DP utility functions *****/
+>> diff --git a/drivers/gpu/drm/radeon/radeon_connectors.c b/drivers/gpu/drm/radeon/radeon_connectors.c
+>> index 528a8f3677c2..f9c73c55f04f 100644
+>> --- a/drivers/gpu/drm/radeon/radeon_connectors.c
+>> +++ b/drivers/gpu/drm/radeon/radeon_connectors.c
+>> @@ -1786,6 +1786,20 @@ static enum drm_mode_status radeon_dp_mode_valid(struct drm_connector *connector
+>>          return MODE_OK;
+>>   }
+>>
+>> +static int
+>> +radeon_connector_late_register(struct drm_connector *connector)
+>> +{
+>> +       struct radeon_connector *radeon_connector = to_radeon_connector(connector);
+>> +       int r = 0;
+>> +
+>> +       if (radeon_connector->ddc_bus->has_aux) {
+>> +               radeon_connector->ddc_bus->aux.dev = radeon_connector->base.kdev;
+>> +               r = drm_dp_aux_register(&radeon_connector->ddc_bus->aux);
+>> +       }
+>> +
+>> +       return r;
+>> +}
+>> +
+>>   static const struct drm_connector_helper_funcs radeon_dp_connector_helper_funcs = {
+>>          .get_modes = radeon_dp_get_modes,
+>>          .mode_valid = radeon_dp_mode_valid,
+>> @@ -1800,6 +1814,7 @@ static const struct drm_connector_funcs radeon_dp_connector_funcs = {
+>>          .early_unregister = radeon_connector_unregister,
+>>          .destroy = radeon_connector_destroy,
+>>          .force = radeon_dvi_force,
+>> +       .late_register = radeon_connector_late_register,
+>>   };
+>>
+>>   static const struct drm_connector_funcs radeon_edp_connector_funcs = {
+>> @@ -1810,6 +1825,7 @@ static const struct drm_connector_funcs radeon_edp_connector_funcs = {
+>>          .early_unregister = radeon_connector_unregister,
+>>          .destroy = radeon_connector_destroy,
+>>          .force = radeon_dvi_force,
+>> +       .late_register = radeon_connector_late_register,
+>>   };
+>>
+>>   static const struct drm_connector_funcs radeon_lvds_bridge_connector_funcs = {
+>> @@ -1820,6 +1836,7 @@ static const struct drm_connector_funcs radeon_lvds_bridge_connector_funcs = {
+>>          .early_unregister = radeon_connector_unregister,
+>>          .destroy = radeon_connector_destroy,
+>>          .force = radeon_dvi_force,
+>> +       .late_register = radeon_connector_late_register,
+>>   };
+>>
+>>   void
+>> --
+>> 2.46.2
+>>
+
 
