@@ -1,63 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-1765-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1766-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0A299142E
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Oct 2024 05:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2173B99149E
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Oct 2024 07:36:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XLBKn4nwNz2yDt;
-	Sat,  5 Oct 2024 13:51:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XLDfR663yz2yFK;
+	Sat,  5 Oct 2024 15:35:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728100285;
-	cv=none; b=NqqsxfW5LDGiRaTm5/+wM33c9CCwG9TYA1cPbKnr5COHyWMSLNndwMset62iPT4ym+/MEPc7SsSVQR8mgF73s9zfx1gCfdj87rCCpIlKAdeCp2MI0/GaVfbHh9JHL9ZaqRtyj7Es98WIOTAmmTXuhCfV6wGmXtnmn33nk68IjvFeSU5fvovT/LbWV+P/0l9o3Dd3N2OOcKaSJK3LX9Nn1wWvx5lOYHkZLQxzJlJp2ra3lnIocCM0Q+TwwroYucquCDm/FykRuvMkxO+t88rMyU4FRCHxMp506Dc+kY0gcbQrQjisOtWncMK6SbXj2V4QTLF1PIX/KSAxI8g8Mv/gPA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728106559;
+	cv=none; b=cP1TZXlRH+lcGPpj0yZFqcAcOT5OkBU6tvrb+7um3uJuSSsbb8rI12SB5AdqolxgLvNYwltjPJ3WCftptbOutalrhdn1Zrxm9e+rjpybp0HSodfo6XSn2bTuwgxcnBDq78qYC/mVWxcnC+CMlDcVpa9C9M3eZ8TxNW7F1NUEr5PAQLbYoWhmM7EstqN39OrZRG8oNmosKZLNgeFDQDHwqNVBkrzMkvDnUcphyAtnPEjCxlySX7QoykS+LEJB1pMvgukaF2GErOVri1l4Y5+y50YcQWQ9LufvkmX/QlUEvZweqXWPklIa1UJFw9TdWmcpP4ZNZlfT69ADJLQBAc6oaw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728100285; c=relaxed/relaxed;
-	bh=dHk14linz07dfsyMct7Srg6ZsEEiYAXw0j0Frers2Wc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZT6Y/YKC1QOcyU/FntW4cP2wwZWUSbLgJRxaHrmNmZILCRPUlFeBb9IPRYnift4Cc//znwtyOJoI7YD7JbgV6HNus5m7wMXfNlNsJdvHhgiCUN41nCPOVQeVIHwzYbOXWmzoBu353QjG3hiSJs8nlaCdDd2SO87Jklk7zJzOPCOKaE1b7BHh2OH4J9C73pdHJ3A4vJ8x0oxBhF/fOa8nl7oqSt8teF8pSFnhLII4H9gC5NBTXZ3iNw8KGofGppKhwI926cWBrK1kEzZ9IFcMRT0k5IZNCL7QSc18Q9CncYcLWEVimGXnL/tCH2icOxBuyQhyi/RUvfBuOpD16nZqNA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Pb/Ik5ac; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1728106559; c=relaxed/relaxed;
+	bh=Cm/+r/Iu7iT6qjqotRyzDFVjq3VicaFGGYKMIAH+pZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V21gFCsZaT/OIS0TC234fnH87KKn0yRZo/DFh6/dSntP2Iotw+cp9YMwEZU/lAthGcoq5LCoqCIbUb5DlqUBZ1C5AsW3TF3vOPt8SZZiCKreKRsWBQ/e2IRiAHM0gNRiYueasCntTNMVUX6Glwa3yw1vfKmpV9KpBt1ecK9HXUYVxjzNKKgy3YSV1wFfQgTvDBcJEKICdh7YTk/eTZdF3RPaGbIeUZN7+CQZVL4ll6HrnnvGa4OpXOxj32UNgfsUK3v3zXn4HbxckInalnpB93gPIuphwqWiMUj9Qz5m+I5zMhhR3dgXf0HsNzbfoExujA0q2hHdPqXkwTxZiu39bA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=bT4fUEiE; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Pb/Ik5ac;
+	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=bT4fUEiE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XLBKm0pZGz2y8X
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Oct 2024 13:51:24 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 33563A443E6;
-	Sat,  5 Oct 2024 03:51:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB33CC4CEC2;
-	Sat,  5 Oct 2024 03:51:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728100279;
-	bh=LwpJjL/sAZamAjbREfwblRFe/pUWGWf4oudQBiz54rk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Pb/Ik5ac1zGRheA15syfndYOOvy73c90bPQPVxm871bmWsMbGYDrjomhqi2AtbxIE
-	 3nsrYWCJn7l+VIKNngJ0bxbREgXEv5BuJ2Q5z4y6hba1GWlTElttgb6nwxfmi8uZuc
-	 SIVoAWPjaF8jE70V4EX/Fbiqoo5LUO+BX+EIBZn5CxRfI10qQQKL6OAZ4AmBfXg35H
-	 Wp49z25WRy/1b95jcLtLvq3YcFA2IARpS/KtMzoUcBtw6K51CODQQcXDIGF+213Zwj
-	 qUpf67QGvVTeO5mCeUKV1Ww5FyjrIozk/Cv38jTo5T02w033VxkIZ/EbLWN+iZuWdp
-	 Fh4SjQetlVBlA==
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Herve Codina <herve.codina@bootlin.com>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-In-Reply-To: <20241003122015.677681-1-herve.codina@bootlin.com>
-References: <20241003122015.677681-1-herve.codina@bootlin.com>
-Subject: Re: [PATCH] ASoC: fsl: fsl_qmc_audio: Remove the logging when
- parsing channels
-Message-Id: <172810027430.832098.16999500333273178564.b4-ty@kernel.org>
-Date: Sat, 05 Oct 2024 04:51:14 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XLDfP6Q01z2xrC
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Oct 2024 15:35:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=Cm/+r/Iu7iT6qjqotRyzDFVjq3VicaFGGYKMIAH+pZQ=; b=bT4fUEiE0R4OQ3Jn19EjBbst3h
+	/GULhvNMTDaKPlxeuW4LZeQV4LUEce/O1ovahnW9CimmKIL2fVpNvMrOaNR/HAu2txg8yDYQ9yCvA
+	55EQWfbGNRyweHmFxiZB+AiLlVrnrhGEFG3eidD5AlC/aKaKlwozSczoy8jQQcbdxAo9mkvzdVGlw
+	JG19blDhjeRPK9hKJWZ3RGBTn0MaJK9BAIIAJqKZvvaZP/8/NaRLZRsyd+Rys6Nmhf/LzTaJ5nvMH
+	p2dlOvpMderqf9yYTDzBcgjWybS1BywLfac5/tgcuE2Nkt8ct/Ff8P3S19Qb/6kupjDb9cf715BGZ
+	t7FEKkeg==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1swxIG-0071bZ-2j;
+	Sat, 05 Oct 2024 13:35:43 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 05 Oct 2024 13:35:42 +0800
+Date: Sat, 5 Oct 2024 13:35:42 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Danny Tsen <dtsen@linux.ibm.com>
+Cc: linux-crypto@vger.kernel.org, stable@vger.kernel.org, leitao@debian.org,
+	nayna@linux.ibm.com, appro@cryptogams.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	mpe@ellerman.id.au, ltcgcw@linux.vnet.ibm.com, dtsen@us.ibm.com
+Subject: Re: [PATCH 0/3] crypto: Fix data mismatch over ipsec tunnel
+ encrypted/decrypted with ppc64le AES/GCM module.
+Message-ID: <ZwDQLmwA1LvWx5Dg@gondor.apana.org.au>
+References: <20240923133040.4630-1-dtsen@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,50 +65,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-9b746
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240923133040.4630-1-dtsen@linux.ibm.com>
+X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, 03 Oct 2024 14:20:15 +0200, Herve Codina wrote:
-> On each channel parsing, a log message is issued. This log message is
-> not needed and become annoying when many channels are used (up to 64
-> channel supported).
+On Mon, Sep 23, 2024 at 09:30:37AM -0400, Danny Tsen wrote:
+> Fix data mismatch over ipsec tunnel encrypted/decrypted with ppc64le AES/GCM module.
 > 
-> Simply remove this unneeded log message.
+> This patch is to fix an issue when simd is not usable that data mismatch
+> may occur. The fix is to register algs as SIMD modules so that the
+> algorithm is excecuted when SIMD instructions is usable.
 > 
+> A new module rfc4106(gcm(aes)) is also added. Re-write AES/GCM assembly
+> codes with smaller footprints and small performance gain.
 > 
-> [...]
+> This patch has been tested with the kernel crypto module tcrypt.ko and
+> has passed the selftest.  The patch is also tested with
+> CONFIG_CRYPTO_MANAGER_EXTRA_TESTS enabled.
+> 
+> Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched implementation")
+> Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
+> Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
+> 
+> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+> 
+> Danny Tsen (3):
+>   crypto: Re-write AES/GCM stitched implementation for ppcle64.
+>   crypto: Register modules as SIMD modules for ppcle64 AES/GCM algs.
+>   crypto: added CRYPTO_SIMD in Kconfig for CRYPTO_AES_GCM_P10.
+> 
+>  arch/powerpc/crypto/Kconfig            |    2 +-
+>  arch/powerpc/crypto/aes-gcm-p10-glue.c |  141 +-
+>  arch/powerpc/crypto/aes-gcm-p10.S      | 2421 +++++++++++-------------
+>  3 files changed, 1187 insertions(+), 1377 deletions(-)
+> 
+> -- 
+> 2.43.0
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: fsl: fsl_qmc_audio: Remove the logging when parsing channels
-      commit: c6e86e19e778553dbedab617aafb25b6bbaf4cd9
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+All applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
