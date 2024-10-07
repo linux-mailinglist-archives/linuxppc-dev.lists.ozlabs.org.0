@@ -1,53 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-1795-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1794-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22762992A58
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2024 13:38:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BBF9929FE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Oct 2024 13:07:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XMcbn5k2mz2yfm;
-	Mon,  7 Oct 2024 22:38:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XMbvw5pbYz2xm5;
+	Mon,  7 Oct 2024 22:07:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.15.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728285415;
-	cv=none; b=je144TbCMAPAu/FBLTXuS8KOevI+6llGywdCWzS95ewOu0EU0UccwOHIJtOilZRzuZRDJQlu4B39D8JH09nO9KCx9XegzDwQrvJOUgEl4grFLfvaC5ggEEnIFI005n4zBsVBRXK4TbRaaf6/zNAZQSPZr/+zV6SDxWw+pni9c8Y11elqlVYGDnUT4Xqg4qfKaC8mz4XWmRi12m0b6jbbvy5eC8V2IPnMv6qJ1v2K7FfXPzWrF2j9BEMLOsiWRNHmspeOhX/x3bI4LU/CwzlQPd/mP0DKhMPAJPrLh8iz8sBK2DpMjCHkMAnG7xmRca4NMPKnOjRu96nBmPHnS9dHOw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728299244;
+	cv=none; b=HsVYI+/+jn/n/YQzVWZ8oUHfcb6yrh6N7PpUXzP8/Fw+KZ9TORkCh08MHwJ2PioE7/Qn0Y7h96oPoU8fNLNall4nXdyabEFGrUqkLLeK2wbx7jAqltWGFc7srNBr49tgYcg0vsSCkZAcCcjvXyoONj+aaPYyBjIYiJRHO1ddfimgBSsrffAswf+WTsSxPm9VQJ/z1e5EHCBRUBWmr0U6cypGLQ64IxglxA2XZUmDGjE4A5xeZwgOspKRsGwBm8Y2+KZDzaWD6uFpLlrYdl4//VZmo5DLVEXDSGUYy/PDOE3uGwdfRfrImkxAO7NL8qTw7YjM7kDaNC+0EsiCnEtikQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728285415; c=relaxed/relaxed;
-	bh=LfrIY+pHO/ZX6h42WD8AmA8x940CYl5/uS/Of9wHfV0=;
+	t=1728299244; c=relaxed/relaxed;
+	bh=HlfaUppSnhlYTBtOdNhHzLyqLgKPEpMIJGf6GhYDUFw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N8x1RuLEbV0QcwBCNxrbFxeO/2m38BqPvDn7+82b66EBQX7LOrOkcVNhdaJg9lMBEPGaVf/5x93YT1HKCl+pgii5pHaskmYgW++eEUq8spRsTqVfbhKloqKDahEYHNkzAZDCdBHiSIii5zDbsUT2jwOS2bmCC81lWow60pFBZyMTnZyxEsrD18QQLORffLFdAqLqPuOoWV4BI1zPgidP82giFwb0dIw2Pw0+4pUP+r4GN1LR3r+k7ywhJ4LNQWlJ4TfuPecUnU3+ygYrCMKXm2BFUxuMC82vxDMsb6uS3eEfwL7N252AZ/M1Z8RHJPPlTMrDsYh/OGrOSkqZeGfFQw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=N4saO+fg; dkim-atps=neutral; spf=pass (client-ip=212.227.15.14; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org) smtp.mailfrom=web.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+	 In-Reply-To:Content-Type; b=B2fKgeR3IyQdmp/rw71+4tCvn5QnbvDdo0J5lFYZP9PmyGFWmW7IrMy72rrbQtq95mUE4HrobowvMyPyoWL34f3TYbzSteYeTwnjFi17ZrX0bPi4FcX+ByRGUFXlf6/H2cpxjKBpTOurbIiBXUEO/L4qQ56zT3iPnFCJnmGuJ9iv/CfZBavyDd5nhpAkcvM3kafkXAHlxr7k4tN6Kn46KYG5B3vDG4BOvzcf4yE1NZ+hM43U5pCHQpXTVQX4Sxe8ztgm2iK2t5/zVHyyaCN4Pc82IiR5kuBLJNiz/2rdvAwJlSLFMvBdpCASRLMmGQ3nCxYN0FUWJwGABaCYAi9Bxg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bkfsrNLI; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=N4saO+fg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bkfsrNLI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.15.14; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=dtsen@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XMVnv44Kcz2xKh
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Oct 2024 18:16:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1728285361; x=1728890161; i=markus.elfring@web.de;
-	bh=LfrIY+pHO/ZX6h42WD8AmA8x940CYl5/uS/Of9wHfV0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=N4saO+fgvYoaTltoDC2V5qHcHc3aI51HVxxMC5jsmaAWCaAnndTUM7ge7dVWVahf
-	 y0Rf2zvP7kGCHnn5LV14Hh/G4hM08wjo7AJ/Nu17tObvWmlyuDnULVfzck8K+ukWI
-	 NdPKRmjW71FJD0ywjUZN6bJLXbnUTPvqtmdxXtcOOvCq1XeTfjNCti4erWxReHKha
-	 ID8gM30UmTIMCcRCgE9bQokITKGdkM+OdB4rgGyhJZBtQR1diY24fooY4T9jqasZO
-	 c+2YjDlJwKmdOx6HptPWjLHbxhcqK1bweM8W09gm/K00MwXmKfB08ZIOk1HwsRmJW
-	 IGK6M9RRbef/CydXrw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.81.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MLRYd-1tEYAU0U3H-00J2BO; Mon, 07
- Oct 2024 09:16:01 +0200
-Message-ID: <f5bfdc01-05b1-4015-8fbe-d84417b69138@web.de>
-Date: Mon, 7 Oct 2024 09:15:51 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XMbvv326yz2xHx
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Oct 2024 22:07:23 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4979nq3s003196;
+	Mon, 7 Oct 2024 11:02:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=H
+	lfaUppSnhlYTBtOdNhHzLyqLgKPEpMIJGf6GhYDUFw=; b=bkfsrNLIIeP81w49E
+	sxCVoSfOA7o54mDxq4BSn4bML01kfdUMKoCShlwoOa15wuNnxA3sgyyST7y9qkHu
+	+f8xWn16qZ0+yF38M8MjKCAaaHxg+mKjQuRIU2X+B/rWbg4Du92yGBZyriPAWgny
+	ohZbqT+c/Vl2giYVVpNjNuAxv2s+9A0o5l/U18MwD6MpDsCLq+m8YwJRjrYTwLr0
+	5nNqyxbxLrRZCWIsxKF8WeH4fuR84sxHuLC9VZ7rxiaNpZV0Urot/wXaWBMoxDBm
+	4wJZrCkSr7m3s+yM4eNouk/0lr2VOmp+3U+yn4N6dxNFVhHbdwkb3Jp33P5XcWWI
+	3LB4w==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 424dbv8bkk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Oct 2024 11:02:05 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 497Au0CT011512;
+	Mon, 7 Oct 2024 11:02:05 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 423g5xe745-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Oct 2024 11:02:05 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 497B23iW41812290
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 7 Oct 2024 11:02:03 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CC56958056;
+	Mon,  7 Oct 2024 11:02:03 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9CF4B58052;
+	Mon,  7 Oct 2024 11:02:03 +0000 (GMT)
+Received: from [9.61.253.216] (unknown [9.61.253.216])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Oct 2024 11:02:03 +0000 (GMT)
+Message-ID: <e1b6c598-0200-49b3-b1af-176826a5e83f@linux.ibm.com>
+Date: Mon, 7 Oct 2024 06:02:03 -0500
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,68 +76,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: powermac: Call of_node_put(bk_node) only once in
- pmac_has_backlight_type()
-To: Dan Carpenter <dan.carpenter@linaro.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Naveen N Rao <naveen@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Thomas Zimmermann <tzimmermann@suse.de>, LKML
- <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <b7e69e04-e15c-41ec-b62b-37253debc654@web.de>
- <d9bdc1b6-ea7e-47aa-80aa-02ae649abf72@csgroup.eu>
- <34233c4c-1f61-4bc6-aeca-9f5faba8509e@stanley.mountain>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <34233c4c-1f61-4bc6-aeca-9f5faba8509e@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Imoe7ZEwCJyTawNAyPA70ApwEVLa20g7u9LEzf/ELxArBp1NIGW
- k7rL310fUUIVzHcvZY1mDW7djNPCpStml1KdeoMvyRzcS2wFF4M8tuDAmwgpm8Z7O/0sQ5+
- lD582KkFDiLMG2CCbNbcOFOxCyQXO+ywtUg+5xm/NBw3eHKMKaOUrReKlYNSo3KDNTEIxcZ
- wAB07N1+HNQSk9uOtpGOw==
-UI-OutboundReport: notjunk:1;M01:P0:5AdduQQ23uY=;gRPrvDdYEt2bChq+CWEYWCgqc1K
- 0WdHt/6k5kpY7vnwZuSCEf03Zs+rc6PpWzC1ENPMR+8wsHuSMQme/RkyjY391+qkbXtTFmB3k
- 8KBTg9Mzmy46+OSyTJqI4fMM/jMghe/s8lIlCf5DGSFPm44bZ217s8g6x6aiCsIxanDiI663a
- OJu32/rBn6F9oicEpMrlbzt6f6eirjP/iqt+7w2dAo1h5ERGNxIOQj0M5YZAsEkiMEFkVHlRl
- JqJRK7qC1i3GOexvh/TWeAMeRFtdqfaOSA0ZmNtYAGkgH19talR+tKdY2qrqRRKkNIfCFcPg5
- KtrFmloBYyBKb3JFTtNe/zCxto6VgLI/KGtabTpCR+yosdF7Tvrvdc7ZRgZShB7O4uhFw7WMe
- zgN+4CB7RFYxLkiavBmPLmpuw2sjVqSwB/D54Au/HLIzx1Y2VZ0K5lU7MGhDGxwmvgV2trXtK
- ixSFKEcX4vUPAsqg/caW8WbOg0uPUKLDa3JyrcgHQvUfaiQYdAnIFKJ+cNVBZIROZR5fRCg86
- abgT/jc2iiGlaxKimlbnvLmY3F8aXMh379FgjJbMfUgZHn+klI7v7kXjAg034ZjXbweNZG+im
- VIzUvtW1mKKiEvNH7knu9idBAvOwqaCixq/ntxEmZg4pcAHfBIaCSHVXvO3v2U4Ika05zpQRe
- 5rEd23d5HeEYT8aqNckhZxLoxWMFc11vRCMww9kn7tKDHqjmM5ZGBpd+jgJFjV7db9lDJqWJF
- IteBg900ZeC02iAfJS8Tz12fBjXGJfqMDXfb6rX7wIiB9rGJnF6Nau1fHVwV6p9x2IXkMsJWa
- OSJgpF8A6XejYWbabdImIakw==
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Subject: Re: [PATCH 0/3] crypto: Fix data mismatch over ipsec tunnel
+ encrypted/decrypted with ppc64le AES/GCM module.
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: linux-crypto@vger.kernel.org, stable@vger.kernel.org, leitao@debian.org,
+        nayna@linux.ibm.com, appro@cryptogams.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        mpe@ellerman.id.au, ltcgcw@linux.vnet.ibm.com, dtsen@us.ibm.com
+References: <20240923133040.4630-1-dtsen@linux.ibm.com>
+ <ZwDQLmwA1LvWx5Dg@gondor.apana.org.au>
+Content-Language: en-US
+From: Danny Tsen <dtsen@linux.ibm.com>
+In-Reply-To: <ZwDQLmwA1LvWx5Dg@gondor.apana.org.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Fh1jG0QpfSRCnmdfj-GbvttqGPMGgb90
+X-Proofpoint-GUID: Fh1jG0QpfSRCnmdfj-GbvttqGPMGgb90
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-07_01,2024-10-07_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 spamscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0
+ mlxscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0 adultscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410070076
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-> First of all, the change is wrong.  We can't dereference "prop" after ca=
-lling
-> of_node_put().
-=E2=80=A6
-> The of_get_property() function doesn't do a get as in get/put, it just f=
-inds
-> the property and returns it.  It doesn't bump the reference count.  It's=
- a
-> confusing name in that way.  The The of_node_put() pairs with
-> of_find_node_by_name().
-Thanks for your information.
+Thanks Herbert.
 
-* Do you see opportunities for improving the software documentation accord=
-ingly?
+-Danny
 
-* How much can source code analysis tools influence development efforts?
-
-
-Regards,
-Markus
+On 10/5/24 12:35 AM, Herbert Xu wrote:
+> On Mon, Sep 23, 2024 at 09:30:37AM -0400, Danny Tsen wrote:
+>> Fix data mismatch over ipsec tunnel encrypted/decrypted with ppc64le AES/GCM module.
+>>
+>> This patch is to fix an issue when simd is not usable that data mismatch
+>> may occur. The fix is to register algs as SIMD modules so that the
+>> algorithm is excecuted when SIMD instructions is usable.
+>>
+>> A new module rfc4106(gcm(aes)) is also added. Re-write AES/GCM assembly
+>> codes with smaller footprints and small performance gain.
+>>
+>> This patch has been tested with the kernel crypto module tcrypt.ko and
+>> has passed the selftest.  The patch is also tested with
+>> CONFIG_CRYPTO_MANAGER_EXTRA_TESTS enabled.
+>>
+>> Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched implementation")
+>> Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
+>> Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
+>>
+>> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+>>
+>> Danny Tsen (3):
+>>    crypto: Re-write AES/GCM stitched implementation for ppcle64.
+>>    crypto: Register modules as SIMD modules for ppcle64 AES/GCM algs.
+>>    crypto: added CRYPTO_SIMD in Kconfig for CRYPTO_AES_GCM_P10.
+>>
+>>   arch/powerpc/crypto/Kconfig            |    2 +-
+>>   arch/powerpc/crypto/aes-gcm-p10-glue.c |  141 +-
+>>   arch/powerpc/crypto/aes-gcm-p10.S      | 2421 +++++++++++-------------
+>>   3 files changed, 1187 insertions(+), 1377 deletions(-)
+>>
+>> -- 
+>> 2.43.0
+> All applied.  Thanks.
 
