@@ -1,80 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-1859-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE77995937
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 23:19:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC4F995930
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 23:18:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNTS63lgcz2y3b;
-	Wed,  9 Oct 2024 08:19:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNTQx2yngz2xpp;
+	Wed,  9 Oct 2024 08:18:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.227.221.253
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728404279;
-	cv=none; b=Cj8ACWUe9ekyf7fdWl9VmFvBxQj4tMCvD8Gb1OqFLK0YopuhffmDIEVBD3uGWljdoOJdPmx4+vy77Ptg+BfBoPsJKKdN4yTGSE3j6igcsZHe3ypr/2j5EXc7vY+sbulBDAhtlFMoXa3Q663YWVS/pLuYoZyPm6Jh7iMX09lhzEMqQVAFCe2iiY6RhYP69vqaO5Ig6BvmeDZ9TWIr5a6aLyREKaZQWwHbPS4o3eZv4guAdCxSfqDc5M/fTCacl1cSXFb+ZTxU7NSbPgZG8HwQnadSxVNaXGOqkAcozffM7RsWuE4cgQb9+De1MdoeQzQJaZBu/uEEjEtN1yXRPnOleA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728403778;
+	cv=none; b=jYM47IqvYaPJKnVEPmVBgdBtkN78HHU2h9O3GqyBUQMIMApRoJbeZMq5y/SzGIotBNRhsvN0u794UXhlkxT6DGGuj1uK1+Db73nN4uKA6uUHUiSlFwepjCKdZgz4wSrOdM0ecavk1nC3yYdpDZzx6fGQTrPlNzI1y38ioD5c3ckGPAHGghzCmH/hBKjcMceopDjywdxCLnV4xG1K7H0DNSHNqvfrOjv48rhFpibpN45RfHIS2pPZXGfG5x94aZI2F6/vNAor4SUr7CT0rfKbfj6n7TUZrANR43Oa11oU9sv167gYzMKiDhMEQ3XaHcAihZnsO8FJRh35JNRX4B3cLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728404279; c=relaxed/relaxed;
-	bh=Be1lMPNnE3lyAmS0s0JekcNeCZMW9LO8oGmCCamfWiY=;
+	t=1728403778; c=relaxed/relaxed;
+	bh=oJizpp9aoOY0AopSPxylxEhhCtx+WlqEdtLodFwISho=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZyD6f9s+qGLPaSrpllwiR+5gMfx90iWp/76GrLbDWY9admENmWZoFGUYzJD3MJZTwhGVKGdguwFnvWXCBxkOJWNARF9eNl726TIkJ3ZvfmJJvLJzLNvNt1VkkeAbmZSmO/k7OEYFNZFAX6PFf1PAn8IwrDghIIqHnVXeb0/lSjzOy/n/87K6mYZ/D2hqgpS3oPh/fIoHpc3+y7aBAbCc9V3pPInb6M9gYkhKm0Yvi4d3CsHfFZq1eO5EJRh9xwvXPfeQExPXYMY8jj7iB8DHfTiqiCk1ctfxIbRCva021TpD5wCcxd7+3QDJBpKZJSABZvV3nAnemt4HvEtruqFrcw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=keithp.com; dkim=pass (2048-bit key; unprotected) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=wi5UHOGz; dkim=pass (2048-bit key) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=e0/Uw2uz; dkim-atps=neutral; spf=pass (client-ip=63.227.221.253; helo=elaine.keithp.com; envelope-from=keithp@keithp.com; receiver=lists.ozlabs.org) smtp.mailfrom=keithp.com
+	 MIME-Version:Content-Type; b=SPPQ4S+0+f9dfMANLrgcSQMZudm5XFreS3WM+Cp0UK0NuDD8kdDs8wE9yvU8ePtgnygs6N4zTQjB3410pYeoV0AD024vCBMbma0LOXZkVzgV4sP40y7PPyJzS7n7js4NeNmwn8orCApQNCPMnVBiYsjE5irzyGLUFaNK8r5HZghTYZZ8mp7Npy/R84ODpD2XxWGgMce5SeQEhdd5lhVXk03ZymRcMvKUupcxlCL7S8XZyMMEqxFS2xSCnca11L0HTpC5zykObeLQP7mMs7fnLVc8smhDy6m2ft6FPj1mp+Q86JqNN49QyxPG/IFHwYOH7y4rgz1t8qnp2Rg3wpeRAQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=keithp.com; dkim=pass (2048-bit key; unprotected) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=Zk9bYakH; dkim=pass (2048-bit key) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=NSOj9hJX; dkim-atps=neutral; spf=pass (client-ip=63.227.221.253; helo=elaine.keithp.com; envelope-from=keithp@keithp.com; receiver=lists.ozlabs.org) smtp.mailfrom=keithp.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=keithp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=wi5UHOGz;
-	dkim=pass (2048-bit key) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=e0/Uw2uz;
+	dkim=pass (2048-bit key; unprotected) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=Zk9bYakH;
+	dkim=pass (2048-bit key) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=NSOj9hJX;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=keithp.com (client-ip=63.227.221.253; helo=elaine.keithp.com; envelope-from=keithp@keithp.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 66 seconds by postgrey-1.37 at boromir; Wed, 09 Oct 2024 03:09:35 AEDT
 Received: from elaine.keithp.com (home.keithp.com [63.227.221.253])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNLlp6R71z2yTH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 03:17:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNLZ74R75z2yVb
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 03:09:35 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
-	t=1728403701; bh=Be1lMPNnE3lyAmS0s0JekcNeCZMW9LO8oGmCCamfWiY=;
+	t=1728403773; bh=oJizpp9aoOY0AopSPxylxEhhCtx+WlqEdtLodFwISho=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=wi5UHOGzMPYDdaMlW6tAM0wzB8FAZqDhWv92xGXqSEUqu7UV2hqmBSumlq6u6YaGC
-	 nm/Il6qLql7wMjPuJPYrsJvpTD380HBKq32xW4Omunf/U/mrHMqWFTEHgq6TY/sCgV
-	 L7+mOTBuXhWnc+ft5GzRLDRL3u4qY5ZhL9RoI76mlIArSctcAuqxQBPWQFHOqSOeNk
-	 fBeyz7QCEMfCjwFFA5YhKVQNhwq7H6tDXu+2MzgaXvYiFaafyVUUKJccQ0QdzfGzKQ
-	 b+oIaB6dkGEsa7R2aUsrL2KVi1yi+SpE4W5GEGlMOSBiMvi/nXfkk8kXW2+y5I3o/Q
-	 B+ailmMqIYXcQ==
+	b=Zk9bYakHOUzQevZrYXCQdXBwTsIS5nq41acB4bsphbLmhLTYSyaXRBvQ/wpXNYCMW
+	 A4nw5snc1cJpmvG0auJZ6pG+nVepA5tXPZ3CByJmkGh8ahJijudq74dm9/dXu/ZAtu
+	 jS97S/U+Wt2wTgIcjazn7BBCX78Ttw3TwmzP9vQSKjGQxXA7Wyyz6ratkbZ2kkTsCL
+	 5lhcSp2JtVVoD4fImTWHru0z5JDA4ySGqvLMVfvoeEK2ZSBnGmx6pBHyod9mHMx10k
+	 tzHI2AIfQmnsd/Ux0AyvWZltpgUxRarkJJoRgGtg3/3RHqPKddNAabFm9s84YPXyr2
+	 pVN26WltMk8pA==
 Received: from localhost (localhost [127.0.0.1])
-	by elaine.keithp.com (Postfix) with ESMTP id 1A8703F20A16;
-	Tue,  8 Oct 2024 09:08:21 -0700 (PDT)
+	by elaine.keithp.com (Postfix) with ESMTP id BAA4C3F2275A;
+	Tue,  8 Oct 2024 09:09:33 -0700 (PDT)
 X-Virus-Scanned: Debian amavis at keithp.com
 Received: from elaine.keithp.com ([127.0.0.1])
  by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
- id wA-LEzRtO2wP; Tue,  8 Oct 2024 09:08:20 -0700 (PDT)
+ id yKexJ_RQZQJk; Tue,  8 Oct 2024 09:09:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
-	t=1728403699; bh=Be1lMPNnE3lyAmS0s0JekcNeCZMW9LO8oGmCCamfWiY=;
+	t=1728403772; bh=oJizpp9aoOY0AopSPxylxEhhCtx+WlqEdtLodFwISho=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=e0/Uw2uzSRNbLGxH1f5Vd//kAsgVYBI6+Ul0EuQeHEB2OfXgunGqjilMV/GChdZmM
-	 ci6E9pHuPl8q8IulQcOKjNsifUOYXqQKqgZgRUliS3vunFVFMBeSSPiN7tXqpVl8uq
-	 H5mU0bU7Vn3zaDiIhz+S66yKT+zwJUMI3UtPdI3fIsnbBvA5duj/HhMxdHWaNN0qR4
-	 0XM9NIbuH4SKftzPQlvNp9yHmjUQsxyB61af7lq7g5NJAAMeTTV/+dGUA7zzX/4hcj
-	 4Bf+6rw1UhrhXjK7N3iIE5wTYf65Yu35xMP/0XA3j9xhe+El0lgPkoXfzbP38FhWl1
-	 /Om8JYcp3zeUw==
+	b=NSOj9hJXUKpWGlxGQaDVv+uH0SmT6MyLkQDbBdfEy45nmCLfbAK0DnTb+FjcOEn21
+	 z7cf99MaJkoNan2k6IIo5Cz8tCZiqLQk5lUHiQJMK0P/8V6ejiXS5hFMSV5VR4eF+F
+	 1+0xUuXi5+q9HxIyB4WLMrepJ9r/btzY9Evmp210t16mlL4EpdH9NhLfO69ItzbRna
+	 RROQKFKpbcnePP3tJVKTsK/SSGox+9EexFPuq5+F0cA6ObQ+jl2L9rxyFt9HjkL6DD
+	 9otdZSXaMLfpqcjtejPGdhcBbKpUUWom27rLVGDHsoeMduuTDPREVNYGf9VtWOGyeS
+	 gmyQCOangUMhw==
 Received: from keithp.com (koto.keithp.com [192.168.11.2])
-	by elaine.keithp.com (Postfix) with ESMTPSA id D5D763F208E2;
-	Tue,  8 Oct 2024 09:08:19 -0700 (PDT)
+	by elaine.keithp.com (Postfix) with ESMTPSA id A4A193F208E2;
+	Tue,  8 Oct 2024 09:09:32 -0700 (PDT)
 Received: by keithp.com (Postfix, from userid 1000)
-	id 597E41E60239; Tue, 08 Oct 2024 18:08:19 +0200 (CEST)
+	id 6643A1E60239; Tue, 08 Oct 2024 18:09:32 +0200 (CEST)
 From: Keith Packard <keithp@keithp.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nathan Chancellor
- <nathan@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Nick Desaulniers
+To: Nathan Chancellor <nathan@kernel.org>, Michael Ellerman
+ <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Nick Desaulniers
  <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
  <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org,
- llvm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH 3/3] powerpc: Include -m32 / -m64 for stack protector
- Kconfig test
-In-Reply-To: <a57f21db-911c-4331-af7b-c02c0ea8b1e6@csgroup.eu>
+ llvm@lists.linux.dev, patches@lists.linux.dev, Nathan Chancellor
+ <nathan@kernel.org>
+Subject: Re: [PATCH 0/3] powerpc: Prepare for clang's per-task stack
+ protector support
+In-Reply-To: <20241007-powerpc-fix-stackprotector-test-clang-v1-0-08c15b2694e4@kernel.org>
 References: <20241007-powerpc-fix-stackprotector-test-clang-v1-0-08c15b2694e4@kernel.org>
- <20241007-powerpc-fix-stackprotector-test-clang-v1-3-08c15b2694e4@kernel.org>
- <a57f21db-911c-4331-af7b-c02c0ea8b1e6@csgroup.eu>
-Date: Tue, 08 Oct 2024 09:08:18 -0700
-Message-ID: <87o73uvaq5.fsf@keithp.com>
+Date: Tue, 08 Oct 2024 09:09:32 -0700
+Message-ID: <87ldyyvao3.fsf@keithp.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,29 +93,15 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 --=-=-=
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
 
-> Why is there any restriction at all on which register can be used ? I=20
-> can't see such restriction in GCC documentation :=20
-> https://gcc.gnu.org/onlinedocs/gcc/RS_002f6000-and-PowerPC-Options.html
+> This series prepares the powerpc Kconfig and Kbuild files for clang's
+> per-task stack protector support.
 
-The clang implementation shares the same code paths as the user space
-thread local storage implementation. That code uses a fixed register (2
-for 32-bit, 13 for 64-bit) and a fixed offset (-0x7008 for 32-bit and
-=2D0x7010 for 64-bit).
-
-The new code controls the offset value with a command line parameter.
-
-I didn't see any need to make the changes more complicated by including
-support for arbitrary registers. The implementation would be reasonably
-straightforward, but it would make testing a bunch harder.
-
-The command line parsing code validates that you've selected the correct
-register =E2=80=94 if we allow other registers in the future, you'll be abl=
-e to
-verify whether the compiler supports that by testing at build time.
+Reviewed-by: Keith Packard <keithp@keithp.com>
+Tested-by: Keith Packard <keithp@keithp.com>
 
 =2D-=20
 =2Dkeith
@@ -124,19 +111,19 @@ Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAmcFWPMACgkQ2yIaaQAA
-ABECOA//Sm+07+C6UnNX8tFcnftLQhSmKWADbibLW63BL6QrKDIiW4/KWPk7kyiN
-vCqwS5vQ3vxWizedY2o/JZ4DiO7gtHDue9ikTkBnHs5w1lNjoOOd2NaV7kaaUkJW
-AgXU8dZL0ldCFbeF0YqXuQ9ugf6D/FYK0trvurrHffvS4qMcE/C9SYG+5LkbCm38
-vjZfihr32X/7QPXnRNqdNAp64Y1N3P0iPj/RdNpvg566mPhTDRr9gdMYH87l0uDX
-Z+svG3DTILn96nPqlUG9hH0m0f/iW5D3aBuRuwZo5W3YbcKGTGaUhRXIukYZ4PCm
-pI6U9wJMlSUMF4DggW0ZkrZmEOYOTEASm+LW8b7Z+vtd250lyeOFOCQDOhTdiYuP
-RPVEEE+KgHAjO4S6NAoko7zBr4BkCnOXjRdP/xIw5ljorDWlJweL8C+AsjviSTpW
-KxsKJbEHbJRMFyar8cGnRGbKG7eOg2sgQE5xz+bLwicmxTj5hd/5MALrg9W5fpMd
-NmsL2lIhem54JZnSSfX8GO3iKfNI8d4Ra52b1hLtd5ZuJdu3vXxkcgq5puGpnaKA
-EUDrcRPfofvlY8LCtAx5r8rCTonpeK3AwzXr3HIb30MgGhryzVBXCgsk/cnq6gAB
-/tmswKMTEq/AALZryZ+7mFOXOzxcshzk863kdYkgLiwNJdQ9hKA=
-=3DzG
+iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAmcFWTwACgkQ2yIaaQAA
+ABGMCQ/+P5eh4p/7FKNEwLPB1NvaEIPPnwmj0iF7AGh45nKXbtvCVPYuBTXTs+/z
+xhYj8zmizQJLgfEjuhJVBLE2DHGQ/hw6ajS/zUPOkwwwmtT81e5sV0OsrxwWqH1E
+LPA+jbNyqETz/Khznu5ev2gT5q70AvPigFpufd1CcLZHT/BQjkGKm0WmIrH3DbCH
+bsH8fJb1wwmudUQO7XLv/X/znlyFp14wmb3wpVAWooeCzm8dYPoIY139TYbr35HF
++UFQ5HtoA6CsuZOOspjuUSc3GvcDRPEbs1bO3WX3RZVBiBesZsFNiel2Rg33Xlw/
+VsGOKkxAotpZbJA6nYA+O42aizykgL4k29/AHaXGVfDONx7SPLzfHSAE1YFEbqRZ
+g3M0OxVOJFRF0vo4Pw9YVs9lgxwdu6tWSYMVbF5UMROxSX1CDU8hOzgbQhJ1XaV1
+ckJaJNu6E1+1d9dzHydbrgYPZsvAfeeKLjyVaqTroYHfOM4u8ObKNbzpafVFZ9Sw
+GTgOS8k5iwOdQT3Pxp9NXimVmqzcRJqs3VnODz9kuYjhGHHO5gU9dm49J1u0HXVV
+9xuP2wxAjiP9ue9DWs9hW52k4bYj0o2ssrl3oG8LWQvssuZSxo0jXd7Blmm0ygqJ
+FAqH2qOYU8C/Fi/n5iQdPgmSu23BCfS3rnq0cQzit2QjXAiWXKA=
+=7U2U
 -----END PGP SIGNATURE-----
 --=-=-=--
 
