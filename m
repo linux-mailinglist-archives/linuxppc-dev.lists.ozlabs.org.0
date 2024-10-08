@@ -1,93 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-1850-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1849-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E079954BA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 18:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F6E9954A6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 18:41:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNMKp6yNXz2yZ1;
-	Wed,  9 Oct 2024 03:43:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNMGl5D6nz2yVd;
+	Wed,  9 Oct 2024 03:41:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728405838;
-	cv=none; b=aHe1HmdPgDyZJiwYou2mcPXYOjq2+1JITq59B+Bv354wsJ0Yg1WmM8SUjMGa0G4UBgE+6FmP4PnPt01Hfv/L+TR0QPJNEW1P7LxaIuq932s/WeHKWswChlYC231EHt/7DdQOxj+qjZZoruRgTOmivKeBNY3+f+7ocTCMISaQ7bDQ7h6LFucGGjuroEeXDyV39Cglh1/O2zC6Du0u9p4eV7Z6RqtiHlIfcbtUtmfUSfW7du1FPm/NFp7n+W/0+txQaINAGIzHcku3nu4cwwvCqhe0Ms+gsF1m0q4SIQSmMtXZrZ6x+050JHJ7fhStPwzg6AnEmfPQlKSKSlXAfYkhSw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728405679;
+	cv=none; b=S9zX2+Tc/ic6bBQm7cZpDLDDCZcbZAb6rRWmHQU3FZvoYwHVFqBBZKj6LvCUf1hh+SKUmAQVXrqznS8/Ags70Ipm3U7GkMXT2pXguC/A7JKHtYKtbZ2xrtlixy7CLvHq69b9gURu0Ql+ykgqIYKbapofU8rs+8JNaZsj+uana0+2xYpYriOOsvSR2hg153LQAjVJ4X6VEXq015cjbt9UbIy4cjKL/dijBgViMUQ7afU42eXxoEoHSfDZfpZTVTE/HsjgUPyyB9zs6OqlOFG5QrR9Shyyv0Xc59MumvL+JAZ78+THPAD21UamE3XQWEPFCC802Ux3wTs1qKWsGrYmnQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728405838; c=relaxed/relaxed;
-	bh=BMUPyVXLd+LDl/ZL7ymEeTwuIs5yS/vjsLxKqhtCqaw=;
+	t=1728405679; c=relaxed/relaxed;
+	bh=mtenrswijttyI2TZ+UORBuTHyNb0BxQkIBiJreUH8H4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jFdqlfNREmC2CctGxjkK8nH2xe7olu7oYVNmGdyZBDeYbedUcMJ2yzHcqHwz/ZXhDgsWLZl/zlyhBXEpyJhae0bNekoVw/Gi876iehhLyzPdnuE+gwZIY+MTIBoHZb9y1QWhIX1dYmnULywXPQDQofzTgl6G16VYJcz35F0eCrCW4pbIhUwjxGWLqusnai+Z3aqjwsj0IEkqcYWw/iWx8qGprVeuRUjuo7T/F8X9slb9OvG4islCLYQQcbCPA6jKs3VTvoFsp+V3pvLEsvxRBKIAwgv+CN994Fc+JwMKTZSz4F1GZFzslzYSgKa3pMwqU3JxeDpq2UmmKZnYjltjXg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=mQlP9E5s; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hwesBxXa; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=mQlP9E5s; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hwesBxXa; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+	 In-Reply-To:Content-Type; b=A4sX8PcNDN6CVY5ChpDCG8GDEiDDn4Tcn2897Ow7Mi9W78vYt8gySwKHJ0rWrndTEuNvgZZrl40lTN9h8Lw7/Jx+KXdgCixMK14bwahQ8fG3dL1SiTFbaD7HsPsIvGVXij8TUJ0DGql2oL6bwPMhswUpPB/CGap4JXJVNUziKDbYcC7Me8buVluI2fWjN6/sJ7d1xUqaT/HvRZo2xfTgtuwj64LVS+dvH9ZT34Lkczl8AKl28PmpEJY1xMu90KKHRBYjjuMtDBQvLcwdyA3UyvVN+Ix3HxPMOqboVw6qC2TFBqS0Rh8I0K2vbKhNy9vAgeP7i1S7O1yLfmeL1RZQWw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Pvsp/E++; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Wdw6Jq0d; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Pvsp/E++; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Wdw6Jq0d; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=mQlP9E5s;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hwesBxXa;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=mQlP9E5s;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hwesBxXa;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Pvsp/E++;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Wdw6Jq0d;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Pvsp/E++;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Wdw6Jq0d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 290 seconds by postgrey-1.37 at boromir; Wed, 09 Oct 2024 03:41:16 AEDT
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNMKn6bnZz2yTs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 03:43:57 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNMGh4RDpz2yTs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 03:41:16 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 341EC21D5B;
-	Tue,  8 Oct 2024 16:36:11 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8EF531FDF5;
+	Tue,  8 Oct 2024 16:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1728405371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1728405673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BMUPyVXLd+LDl/ZL7ymEeTwuIs5yS/vjsLxKqhtCqaw=;
-	b=mQlP9E5s/11e/CjftGGrRoU6j7K/s36FGlOqcFLpbhBLLkMQ/ljT5HzNIZEr4ZzK5XYYOZ
-	am2BUh542vweWyC83EybNarwaLWVq6x/eeNNR4UW5ZFL69mVlGB7P9Q5u65UZYyw/Ka8o6
-	lBm8cnkhDd4YKqdTevX8+1KnCMgFQ10=
+	bh=mtenrswijttyI2TZ+UORBuTHyNb0BxQkIBiJreUH8H4=;
+	b=Pvsp/E++boRCm57w35vjDq+BxImThoesf65cc7UfJigKYOkybNQz4xMepivgmK378Dnq3m
+	HcU3zDSUpZ5SWO9l9JKY8EKwIiCDKd07uHV0JvPJzzBg3yJ/s2SelyXY7Sb6gVwM7iVt1a
+	W8uj0+aCEZi8OQfDWVuuiGO4mpWxA2g=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1728405371;
+	s=susede2_ed25519; t=1728405673;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BMUPyVXLd+LDl/ZL7ymEeTwuIs5yS/vjsLxKqhtCqaw=;
-	b=hwesBxXanA3ymRC+PkaTSPZd29rMLk9C+fEk/Am2Y4bZMgwG/qKzPXTKF6SSYgtUEgQJkY
-	5MTzEj/k8e9GZXAQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mQlP9E5s;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hwesBxXa
+	bh=mtenrswijttyI2TZ+UORBuTHyNb0BxQkIBiJreUH8H4=;
+	b=Wdw6Jq0dhwefp0IBqRD4XEWDgtVHGrihh/M7K2izEB/fNCZDa3kFBp1MnfEG61vwKOY6CM
+	OhhTYJUZ7Eg+sZAA==
+Authentication-Results: smtp-out2.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1728405371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1728405673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BMUPyVXLd+LDl/ZL7ymEeTwuIs5yS/vjsLxKqhtCqaw=;
-	b=mQlP9E5s/11e/CjftGGrRoU6j7K/s36FGlOqcFLpbhBLLkMQ/ljT5HzNIZEr4ZzK5XYYOZ
-	am2BUh542vweWyC83EybNarwaLWVq6x/eeNNR4UW5ZFL69mVlGB7P9Q5u65UZYyw/Ka8o6
-	lBm8cnkhDd4YKqdTevX8+1KnCMgFQ10=
+	bh=mtenrswijttyI2TZ+UORBuTHyNb0BxQkIBiJreUH8H4=;
+	b=Pvsp/E++boRCm57w35vjDq+BxImThoesf65cc7UfJigKYOkybNQz4xMepivgmK378Dnq3m
+	HcU3zDSUpZ5SWO9l9JKY8EKwIiCDKd07uHV0JvPJzzBg3yJ/s2SelyXY7Sb6gVwM7iVt1a
+	W8uj0+aCEZi8OQfDWVuuiGO4mpWxA2g=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1728405371;
+	s=susede2_ed25519; t=1728405673;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=BMUPyVXLd+LDl/ZL7ymEeTwuIs5yS/vjsLxKqhtCqaw=;
-	b=hwesBxXanA3ymRC+PkaTSPZd29rMLk9C+fEk/Am2Y4bZMgwG/qKzPXTKF6SSYgtUEgQJkY
-	5MTzEj/k8e9GZXAQ==
+	bh=mtenrswijttyI2TZ+UORBuTHyNb0BxQkIBiJreUH8H4=;
+	b=Wdw6Jq0dhwefp0IBqRD4XEWDgtVHGrihh/M7K2izEB/fNCZDa3kFBp1MnfEG61vwKOY6CM
+	OhhTYJUZ7Eg+sZAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F0ECE137CF;
-	Tue,  8 Oct 2024 16:36:10 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 48742137CF;
+	Tue,  8 Oct 2024 16:41:13 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id c4GBOnpfBWeLSwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 08 Oct 2024 16:36:10 +0000
-Message-ID: <1585a3fc-ade2-4e1e-a016-e04336c0a103@suse.cz>
-Date: Tue, 8 Oct 2024 18:36:10 +0200
+	id 66s+EalgBWcBTQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 08 Oct 2024 16:41:13 +0000
+Message-ID: <37807ec7-d521-4f01-bcfc-a32650d5de25@suse.cz>
+Date: Tue, 8 Oct 2024 18:41:12 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,8 +101,11 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 00/14] replace call_rcu by kfree_rcu for simple
  kmem_cache_free callback
 Content-Language: en-US
-To: Julia Lawall <Julia.Lawall@inria.fr>, linux-block@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org, bridge@lists.linux.dev,
+To: paulmck@kernel.org
+Cc: Uladzislau Rezki <urezki@gmail.com>, "Jason A. Donenfeld"
+ <Jason@zx2c4.com>, Jakub Kicinski <kuba@kernel.org>,
+ Julia Lawall <Julia.Lawall@inria.fr>, linux-block@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, bridge@lists.linux.dev,
  linux-trace-kernel@vger.kernel.org,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, kvm@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
@@ -114,10 +117,16 @@ Cc: kernel-janitors@vger.kernel.org, bridge@lists.linux.dev,
  Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org,
  linux-can@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>,
  netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- "Paul E . McKenney" <paulmck@kernel.org>,
- "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>, Steven Rostedt <rostedt@goodmis.org>
-References: <20240609082726.32742-1-Julia.Lawall@inria.fr>
+ kasan-dev <kasan-dev@googlegroups.com>
+References: <6711935d-20b5-41c1-8864-db3fc7d7823d@suse.cz>
+ <ZnCDgdg1EH6V7w5d@pc636> <36c60acd-543e-48c5-8bd2-6ed509972d28@suse.cz>
+ <ZnFT1Czb8oRb0SE7@pc636>
+ <5c8b2883-962f-431f-b2d3-3632755de3b0@paulmck-laptop>
+ <9967fdfa-e649-456d-a0cb-b4c4bf7f9d68@suse.cz>
+ <6dad6e9f-e0ca-4446-be9c-1be25b2536dd@paulmck-laptop>
+ <4cba4a48-902b-4fb6-895c-c8e6b64e0d5f@suse.cz> <ZnVInAV8BXhgAjP_@pc636>
+ <df0716ac-c995-498c-83ee-b8c25302f9ed@suse.cz>
+ <b3d9710a-805e-4e37-8295-b5ec1133d15c@paulmck-laptop>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -158,159 +167,69 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  w9XOLH1IIWh7RURU7G1iOfEfmImFeC3cbbS73LQEFGe1urxvIH5K/7vX+FkNcr9ujwWuPE9b
  1C2o4i/yZPLXIVy387EjA6GZMqvQUFuSTs/GeBcv0NjIQi8867H3uLjz+mQy63fAitsDwLmR
  EP+ylKVEKb0Q2A==
-In-Reply-To: <20240609082726.32742-1-Julia.Lawall@inria.fr>
+In-Reply-To: <b3d9710a-805e-4e37-8295-b5ec1133d15c@paulmck-laptop>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 341EC21D5B
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
 	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
 	FUZZY_BLOCKED(0.00)[rspamd.com];
-	R_RATELIMIT(0.00)[to_ip_from(RLujeud1qp5x6qhm7ow61zc6bu)];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,efficios.com,lists.ozlabs.org,linux.ibm.com,csgroup.eu,gmail.com,lists.zx2c4.com,suse.de,netapp.com,oracle.com,talpey.com,netfilter.org,kernel.org,zx2c4.com,goodmis.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
 	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[29];
+	FREEMAIL_CC(0.00)[gmail.com,zx2c4.com,kernel.org,inria.fr,vger.kernel.org,lists.linux.dev,efficios.com,lists.ozlabs.org,linux.ibm.com,csgroup.eu,lists.zx2c4.com,suse.de,netapp.com,oracle.com,talpey.com,netfilter.org,googlegroups.com];
+	RCVD_TLS_ALL(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLr583pch5u74edj9dsne3chzi)];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email]
+X-Spam-Level: 
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 6/9/24 10:27, Julia Lawall wrote:
-> Since SLOB was removed, it is not necessary to use call_rcu
-> when the callback only performs kmem_cache_free. Use
-> kfree_rcu() directly.
+On 7/24/24 15:53, Paul E. McKenney wrote:
+> On Mon, Jul 15, 2024 at 10:39:38PM +0200, Vlastimil Babka wrote:
+>> On 6/21/24 11:32 AM, Uladzislau Rezki wrote:
+>> > On Wed, Jun 19, 2024 at 11:28:13AM +0200, Vlastimil Babka wrote:
+>> > One question. Maybe it is already late but it is better to ask rather than not.
+>> > 
+>> > What do you think if we have a small discussion about it on the LPC 2024 as a
+>> > topic? It might be it is already late or a schedule is set by now. Or we fix
+>> > it by a conference time.
+>> > 
+>> > Just a thought.
+>> 
+>> Sorry for the late reply. The MM MC turned out to be so packed I didn't even
+>> propose a slab topic. We could discuss in hallway track or a BOF, but
+>> hopefully if the current direction taken by my RFC brings no unexpected
+>> surprise, and the necessary RCU barrier side is also feasible, this will be
+>> settled by time of plumbers.
+> 
+> That would be even better!
+> 
+> 							Thanx, Paul
 
-FYI, as of 6.12-rc1 - commit 6c6c47b063b5 ("mm, slab: call
-kvfree_rcu_barrier() from kmem_cache_destroy()")
-it should be possible to restart this effort for the remaining cases which
-had to be postponed until kmem_cache_destroy() / module unload is sorted out.
+Hah, so it was close but my hope was fulfilled in the end!
 
-Thanks,
-Vlastimil
+commit bdf56c7580d267a123cc71ca0f2459c797b76fde
+Merge: efdfcd40ad5e ecc4d6af979b
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Sep 18 08:53:53 2024 +0200
 
-> The changes were done using the following Coccinelle semantic patch.
-> This semantic patch is designed to ignore cases where the callback
-> function is used in another way.
-> 
-> // <smpl>
-> @r@
-> expression e;
-> local idexpression e2;
-> identifier cb,f;
-> position p;
-> @@
-> 
-> (
-> call_rcu(...,e2)
-> |
-> call_rcu(&e->f,cb@p)
-> )
-> 
-> @r1@
-> type T;
-> identifier x,r.cb;
-> @@
-> 
->  cb(...) {
-> (
->    kmem_cache_free(...);
-> |
->    T x = ...;
->    kmem_cache_free(...,x);
-> |
->    T x;
->    x = ...;
->    kmem_cache_free(...,x);
-> )
->  }
-> 
-> @s depends on r1@
-> position p != r.p;
-> identifier r.cb;
-> @@
-> 
->  cb@p
-> 
-> @script:ocaml@
-> cb << r.cb;
-> p << s.p;
-> @@
-> 
-> Printf.eprintf "Other use of %s at %s:%d\n"
->    cb (List.hd p).file (List.hd p).line
-> 
-> @depends on r1 && !s@
-> expression e;
-> identifier r.cb,f;
-> position r.p;
-> @@
-> 
-> - call_rcu(&e->f,cb@p)
-> + kfree_rcu(e,f)
-> 
-> @r1a depends on !s@
-> type T;
-> identifier x,r.cb;
-> @@
-> 
-> - cb(...) {
-> (
-> -  kmem_cache_free(...);
-> |
-> -  T x = ...;
-> -  kmem_cache_free(...,x);
-> |
-> -  T x;
-> -  x = ...;
-> -  kmem_cache_free(...,x);
-> )
-> - }
-> // </smpl>
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> 
-> ---
-> 
->  arch/powerpc/kvm/book3s_mmu_hpte.c  |    8 +-------
->  block/blk-ioc.c                     |    9 +--------
->  drivers/net/wireguard/allowedips.c  |    9 ++-------
->  fs/ecryptfs/dentry.c                |    8 +-------
->  fs/nfsd/nfs4state.c                 |    9 +--------
->  fs/tracefs/inode.c                  |   10 +---------
->  kernel/time/posix-timers.c          |    9 +--------
->  kernel/workqueue.c                  |    8 +-------
->  net/bridge/br_fdb.c                 |    9 +--------
->  net/can/gw.c                        |   13 +++----------
->  net/ipv4/fib_trie.c                 |    8 +-------
->  net/ipv4/inetpeer.c                 |    9 ++-------
->  net/ipv6/ip6_fib.c                  |    9 +--------
->  net/ipv6/xfrm6_tunnel.c             |    8 +-------
->  net/kcm/kcmsock.c                   |   10 +---------
->  net/netfilter/nf_conncount.c        |   10 +---------
->  net/netfilter/nf_conntrack_expect.c |   10 +---------
->  net/netfilter/xt_hashlimit.c        |    9 +--------
->  18 files changed, 22 insertions(+), 143 deletions(-)
+    Merge tag 'slab-for-6.12' of
+git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab
 
+So that was at 8:53 Vienna time, and Plumbers started at 10:00...
 
