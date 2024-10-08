@@ -1,71 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-1855-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1860-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7D299585C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 22:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C6C995A64
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 00:41:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNSGc0Bt9z2yGs;
-	Wed,  9 Oct 2024 07:26:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNWGn6xXjz30NN;
+	Wed,  9 Oct 2024 09:41:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=199.89.1.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728419191;
-	cv=none; b=JaaP+TQfdFT1g0Z7ZS0cw4/xXD7j5ED8CuWweh0GwB0yTa29QrfR4Tvlm8cg3bQCI+s7QtBdmr9Tf8ry/kC2TzBgqIbv54AgCZZ5HPjSF1foNWUky3r0bqJPnGKl0diDl2UxZcSoh/RTOhEvGOay03xiU9Jy+glNJ8kfkIVnPlrdYd4uRyVH+BPJons00PN2DMdHi8A/AlLx6fRsVp5MFCmtX1sVcGzbi3XFipUp3IwYD8Mzn6vhpc7maRclUDkKC7FcYKM0Dg3Zuyl0pvE2XqbCQgK/vQ/pmKKxiFNPhEvOf5BuPoKm0rVAIbjaMu3x3trxB1KnzeMFUEQ2HtENRA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728427313;
+	cv=none; b=JL0d6L9lLDafoE6UUsr5gwtyoHaxktjSM8Gth/oeF5Cu7qLRLXZK/AniAQNU47oO0OfYS/9BuaImKUy/31cmXTQ/YFVmxZlxXPaR48WuarNSDdHbewWGxpXXgWylz6RQnpEp0dkmgOYvNDPbG26mTrsVMYCXt7ldeqOvYpX/kmBFLXyEPFC9phS+ljDVcSEeSbo/Awf0d636HiOZuGCA/KzpeNR7cmbaWFA9Dx/RbI6gveuQ0E64jb3cmuRL/x07GkI9xnXMWQiHn79Zsqgu62jcxqxkvAcoffDwuybFG6TWbKv7EMbK4Te2R8kxp3YcleR1aEWl8M6e2iPmd+ijtQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728419191; c=relaxed/relaxed;
-	bh=MyUaPbvugmKd3NVvycIqSqhXcIEjEkyEltEdZjwCUac=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hsQHhZrYhYXzgUltzyjgJbrmvKA+DE4OJjLh7VJue/Zh2NayfjmSfc5svrHJszkuB2cDeL7OdlGzNkKqP5Y4oYkHBZuEu+tTNwKvsMTNhBCjR4HuZjYvOYMThdpo9UQylZmMBpuPqDIJntMCuvHopy+m7imqgKsKoG5owhWnJZ3MUAJqEwZwdfrxHn6A0QYqw+/H3pF0qfX+HA9Y/7XwUBZC3JgJMGcxBfLOQAvI/czrOOmtws3PHvUqdd4KWxFnOrEGHdryj1msfn8JCps5BSEK8MDrYT0UVLuq0WWxRN2CI0YnOBzFOKOGWlQQoOpVp/exY9o9MFxWxDpknyNUFA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=acm.org; dkim=pass (2048-bit key; unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=nP6zLf64; dkim-atps=neutral; spf=pass (client-ip=199.89.1.11; helo=008.lax.mailroute.net; envelope-from=bvanassche@acm.org; receiver=lists.ozlabs.org) smtp.mailfrom=acm.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+	t=1728427313; c=relaxed/relaxed;
+	bh=KcX3rJfGpGwvCQtPqzOqQmuMAM6PM+w2Dk3quxgq17g=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=ddIGMLwoV8b9uR7GidwHDZIrp1v6xCbqL8JQBIq5FvLymsjl1ihAUjk9y2hgsqGEvEnDd//30rVouzvXiPGETaL97OW9EvKrgcxtJh2Zl/vyXUCrkR4MPzfB9/9l/aqcJyaoNqqGrYYi7pn0EwsEE7vr/nT5BAAlnWiHjS/8Sb8ZgSg3rA1mKLZZxQS2FiPbUMIg3S4DKRXdxKK1GN1ZZlVyo4KU9qvRq1RCMJDg6GjppKSNvETI9s4nHXngk9P/Z4S5FUmCLEhoUEYo6VhGISL3HPTFd1WwQjVUwHVMN/4vBX9YCIGYyswGiRgosOofpE6Xakg8VHwBFEyA7SVk1Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YVKI9Crq; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=nP6zLf64;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YVKI9Crq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=acm.org (client-ip=199.89.1.11; helo=008.lax.mailroute.net; envelope-from=bvanassche@acm.org; receiver=lists.ozlabs.org)
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNSGZ5xjbz2xjY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 07:26:29 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4XNSGV5q9Lz6ClY9d;
-	Tue,  8 Oct 2024 20:26:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:from:from
-	:received:received; s=mr01; t=1728419184; x=1731011185; bh=MyUaP
-	bvugmKd3NVvycIqSqhXcIEjEkyEltEdZjwCUac=; b=nP6zLf64ncxoqFuow88JG
-	PVz/1BU/VJ0/+eAKkW0zzH1vKaMXqfNnI+SbvKfnQnW3rPvLOt1klprltNo9c0Sg
-	jNqnd8L6Gbk6qsksxWUNcq+M6nAkaxfiUH2wU8fV7vMcoVJBkkkrEF3Sjv9RQ/sP
-	ajKN4yd1zEb4Ht7QqtAXvScPla4VlogqMUI8jtIAH/fjHgEZEaLYc3bO1kw/U5Ft
-	dMtxLERx2QBPC9ozZ9IejIWwTCggADUl8ehPHUyTHn2NHFj/zpvcCpPh3KgJDCmw
-	vugGMRrqC7i8xVZYdPJ+U3QhPo/oygIhpWCRXBWRceiPPuEhiM64BEuW8tzgx7Uh
-	w==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id n9sqEiyXRz1i; Tue,  8 Oct 2024 20:26:24 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4XNSGQ4TP7z6ClY9Q;
-	Tue,  8 Oct 2024 20:26:22 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 04/22] powerpc/cell: Switch to irq_get_nr_irqs()
-Date: Tue,  8 Oct 2024 13:25:43 -0700
-Message-ID: <20241008202601.3737326-5-bvanassche@acm.org>
-X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
-In-Reply-To: <20241008202601.3737326-1-bvanassche@acm.org>
-References: <20241008202601.3737326-1-bvanassche@acm.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNWGm6nLYz30MR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 09:41:52 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 89C5C5C547A;
+	Tue,  8 Oct 2024 22:41:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821CEC4CEC7;
+	Tue,  8 Oct 2024 22:41:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728427310;
+	bh=dcyvt0dgAZszkRlVAvb5HjPFo8uYI0c0H8I8+ifT9Mc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YVKI9Crqoxb+kubNcOuiLkrNECGkggxSHQ7zCyU+C4i8uxiYSqLNhL0X/vyK4nbzv
+	 ZTZhdx2QyfKE2LnLqpmbl5qupaMKqcPjo4pfP0XVVDT7jJ3Pi+yGLIFlAoyQ1zJ8f/
+	 LRx6mNnFL/YEgXB3zZceNPZm3XxIxsg2PBPTbpBe46PAYpR81VHsD8MOEnS/HXOEZ2
+	 Ap8/akyKsgqNs5Pe4svGt4x+EP0vBEWmNqIITelNqML0XZvg5lqB67aOG28+RNgkvt
+	 wfDDeXaYNBD5I8SjevQEEAIRaEj2kZMlEcSfY0ZWuEXT4HdfIj190zY9PkfL3KNXYl
+	 LDp5MEWE7lO/w==
+Date: Wed, 9 Oct 2024 07:41:40 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux Trace Kernel
+ <linux-trace-kernel@vger.kernel.org>, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "x86@kernel.org"
+ <x86@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Mark Rutland <mark.rutland@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao
+ <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Paul
+ Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH] ftrace: Make ftrace_regs abstract from direct use
+Message-Id: <20241009074140.b163eceb2f973227b400c962@kernel.org>
+In-Reply-To: <20241007204743.41314f1d@gandalf.local.home>
+References: <20241007204743.41314f1d@gandalf.local.home>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,35 +78,45 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Use the irq_get_nr_irqs() function instead of the global variable
-'nr_irqs'. This patch prepares for changing 'nr_irqs' from an exported
-global variable into a variable with file scope.
+Hi Steve, 
 
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- arch/powerpc/platforms/cell/axon_msi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> diff --git a/include/asm-generic/ftrace.h b/include/asm-generic/ftrace.h
+> index 3a23028d69d2..ba7b7d6e55d6 100644
+> --- a/include/asm-generic/ftrace.h
+> +++ b/include/asm-generic/ftrace.h
+> @@ -10,4 +10,17 @@
+>   * common definitions are already in linux/ftrace.h.
+>   */
+>  
+> +#ifndef CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS
+> +struct __arch_ftrace_regs {
+> +	struct pt_regs		regs;
+> +};
+> +
+> +#define arch_ftrace_get_regs(fregs)					\
+> +	({ struct __arch_fregs_regs *__f = (struct __arch_ftrace_regs *)(fregs); \
+> +		&__f->regs;						\
+> +	})
+> +
+> +struct ftrace_regs;
+> +#define arch_ftrace_regs(fregs) ((struct __arch_ftrace_regs *)(fregs))
+> +
+>  #endif /* __ASM_GENERIC_FTRACE_H__ */
 
-diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platfo=
-rms/cell/axon_msi.c
-index 28dc86744cac..d243f7fd8982 100644
---- a/arch/powerpc/platforms/cell/axon_msi.c
-+++ b/arch/powerpc/platforms/cell/axon_msi.c
-@@ -112,7 +112,7 @@ static void axon_msi_cascade(struct irq_desc *desc)
- 		pr_devel("axon_msi: woff %x roff %x msi %x\n",
- 			  write_offset, msic->read_offset, msi);
-=20
--		if (msi < nr_irqs && irq_get_chip_data(msi) =3D=3D msic) {
-+		if (msi < irq_get_nr_irqs() && irq_get_chip_data(msi) =3D=3D msic) {
- 			generic_handle_irq(msi);
- 			msic->fifo_virt[idx] =3D cpu_to_le32(0xffffffff);
- 		} else {
+There seems no #endif for CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS.
+I wonder how it passed the build. (#ifdef block does not affect over
+the file boundary?
+
+Thank you,
+
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
