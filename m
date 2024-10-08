@@ -1,66 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-1842-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1843-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF97994F68
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 15:27:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993AB994F6E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 15:27:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNGzQ553Jz2yF1;
-	Wed,  9 Oct 2024 00:27:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNGzS33TSz2yl1;
+	Wed,  9 Oct 2024 00:27:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728394066;
-	cv=none; b=dUVlq9VUwa+5JgzDjPIuMKMeAhP5UpMhv7qnusz/6kz0r0XBFS+tnlUCtmIn+VjhzJXmrYyZcfVmWU1azz/Ma5Z3Gvmeu/MaP+JGNAQdBG6SCB/7IrvNyr2Qjj5Du5pmD5DY+OYPcxgJb/KKWbfjD03nruUlzTZSQFs+I45xKYoTP0oMPorFuGQNuXIF4oAIFUQx8zGov0YcTUQTsHPBdHGDN2f8DCfgZs1oiwWQj6FVbzhO/K0lYwTXF5SQLQsLwpZ/Irl39Z+UYQeZM9K42QwLrbUtN3H3Myve9VQLElG4ZKRVRCQ5O0e85TrD/3AbVvCtcS3mcjYqZHcz+SQ4SQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728394068;
+	cv=none; b=bXBXsmQizyYUXL4c3GBO64Bg3cMcHeSs5BYy0bBcsNiNGYe75dE9USFZOLolMbBinAQ7vqeQfXrOjwF582gyZSxMd/hS50nbvbuPeUeX2abDv9kla1X4hNVSiuJwiz50S8QcbD+beE2uKF+7w3Km0TaKNxkZ442gSjx3wv5SRd9stm93AK39+bUggFaEzP9A5mXLUIQlYP7OQVRwxGpJTJaycuZDaAhhb23FtNoWaCneJqz5eRbNkWtKmGgSIbS9h/VUaAf8JNI3IaTB4dQEADSXrj6JTrQGCmk6t9HyiTSd2NsNM1spsefzA55tKOIw2sKdv+ZqQQdDWQDAhhbzvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728394066; c=relaxed/relaxed;
-	bh=GNRTK4GY4M/5SnKSdR40yf4xxmnZc4ktxUmJ5/TaZVA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fJ1C2Rl2L7mQuEDEbjnejyOqvAdd+UymBFcMsWY5GnGtpl6p49xeZ+TidN+LLNWqgyz5pIZbyHbH0vI+98Tvqk89e3543b27JxZq9NLpgc0MuROe28B+WvZRuLBRlPfSsptLoOPfXucEMga9JkuUSd9tovRgmMrHo8Mf+sbUlCEfS7o9q6Lan4RbTdN/UdeozVWTojTYrl6mMkH0UvAUCe+2DNNvRcetTQQUhEMReB+8zKEoHFOEf40/P/DxikiJeyniDd3PAlCguKa5o9ki8GR3yabBq4dSJYgFnm3qXtMh7IoAp4DMqGEIiJGEXHuYaITqSC3wd06cYRDgpoZ4Fw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IjDKxA8O; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1728394068; c=relaxed/relaxed;
+	bh=iORC/3+gFiV4oQN4Aw7kbFgz84yNOuZ0Gq1M6ocZ+00=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Xl6unhbKCdxB2s3RLR/Zk9QeT/QtlvSLvgaSoCOBJMZk7GMZc/2MkTGtN+lUIuEg3Qx9A9i+Cc/o1rWMJoIEF4PY7tSp0KHb7lkLBlcyE2CSNbVF+JRQurVqdLKKpJkFZ1JEtI34whPD/+dl4XDcNv+sulPC1BIyGJYb+dxi5cYAeE+e0iLxCfORq2UOpFUKS2cRSgQeyoMzzT2i8KyWqNWRU2kZoUS/o9t+oZpA5x/RIYqraxRda1DfXRIqtK7AD7Ye063zdHMqX51jK9/RyO58d78m+D1Umakc6qK6/zoG5PMNmIqdeoFKDI+c+v/gHw1/l3Wq8XZ2nJgkSgyIZg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZQxh0RTm; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IjDKxA8O;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZQxh0RTm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNGzP1N5Kz2xy0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 00:27:43 +1100 (AEDT)
-Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-7ea24595bccso251676a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Oct 2024 06:27:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNGzR4D7dz2xy0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 00:27:47 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2e0a5088777so4325813a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Oct 2024 06:27:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728394059; x=1728998859; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GNRTK4GY4M/5SnKSdR40yf4xxmnZc4ktxUmJ5/TaZVA=;
-        b=IjDKxA8Ooy8NPx8HQ+l0Kkj2TdWczth+wN/6jbK1cQfbt747PaKpSlwHDtCvGW0cgs
-         8/OLqcdjJVzvpytA+S5FsCQPscNiPAv97Lc8yzhJ8/mizalz5gTFDcC8woRwpxz7RDPn
-         Ab5MInU/FJ9WB58O13SeA5kTKQV2MJvG5SvMLsXkqe6riz35EVwAMhWroZrDNEQUoI48
-         XoQxQ/C9K5RoIgJOwI+8X4vCc2dhT7OYMSBVWEKd+2kCIlSris/FWSvmsnXZs1nFLwEO
-         fCzjDuLjWRzaRW6Tj+cgdjXqxgSOcPz5HSgRCJo5CwOaVhSO/Uwp9UPW7m1ak74Zdosm
-         RzsA==
+        d=gmail.com; s=20230601; t=1728394064; x=1728998864; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iORC/3+gFiV4oQN4Aw7kbFgz84yNOuZ0Gq1M6ocZ+00=;
+        b=ZQxh0RTmszoKfykxr8LWh9LNXxy71pkefAO/RPCdCqTIq+/4oASXOc5Ph72e2PYgWZ
+         Jt6JvtV+qr8q9EZIl5uk1299cZPTm9YAG2d3xb5JUF1Rf1v/STWLaxU0JL5fZB9sLvCC
+         9JrI2Q11PEoDbZM0ednuXYzSXd1SL8IXTuVGz3TFIqqqXXGtol+UzHmyjCKEOph0s3zH
+         FNhh7u8QyVdhlsJnaQ/36eTmwB5KS74JotaYYYSidQQ6b2cBHI8HfewEY7XrrI662P+/
+         vyaZ41x9ivgkjZcCmJSUgxDKC3bt6AhWuKObIUNd1EvexyXvSSxFt1bnnu/eSkSZJ8W7
+         hKQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728394059; x=1728998859;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GNRTK4GY4M/5SnKSdR40yf4xxmnZc4ktxUmJ5/TaZVA=;
-        b=j4L/XozPpAQ6AHYkzWCjs3X5bUESqrYpubLWMlfqHZqjfeHCEc0jjyHzrQbx2R0I7L
-         gme4SGtKoTCuKERbM0T5jM+DSnWo0OJd0Fsa/zMnIQq9MUAcqd7j2B3kLGwKCldi7YIU
-         NrOVOBv8jbkxp5NLA/juZ+iIV+Qas27PrwS3/BfsKPGZSDyA2hdBh1a8x6AyBjlxwaVb
-         8e20+jAAANECw2wO+SjIvxgNzzfs/i1W6qvutaa8DMRKvbv/JMCwvyfY1TcotuLe4Iky
-         9Jfx6nCQlkhfilLvEKp+SaJAES0mwos6vOcykN3BVDZQH3eqh+mP3oEvugxnovkgoTUn
-         D1dw==
-X-Gm-Message-State: AOJu0YxKET68z5T9sQNM4oXIED/2vhWH2W4nLPi0onFG+DSoorqVNAgZ
-	xQsc8Uqba8OimeQpWqlJTBwolbJtp7wby2Juh1XuqE1CaSbMxFwrQGvEcw==
-X-Google-Smtp-Source: AGHT+IEPBSY9n6qD6ZyvnmB52+tWd6fPMTLLVgOtWzgpTHXZv6NjkRb9kArISqSlxpL+qPUzVtYrRA==
-X-Received: by 2002:a05:6a20:c886:b0:1cc:da34:585e with SMTP id adf61e73a8af0-1d6dfaee214mr21301979637.46.1728394058567;
-        Tue, 08 Oct 2024 06:27:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728394064; x=1728998864;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iORC/3+gFiV4oQN4Aw7kbFgz84yNOuZ0Gq1M6ocZ+00=;
+        b=CX2PgnIbVNhXQT5FOBQtB7BrQHgQ4PW0SboRUDBQ4jDxH/fddWO58pB0JJrgTTN9ME
+         0OF3dCTuej7SFHybtkswLGrjOelOwkhvt6uVqhyexnXu6B8FW0nHllmuSVRYUcSTS8ad
+         AqhGiNJovNmP27ZRQsCEdyvntUFcBgxCIesFnkydSxgr+BkAeoFpsHn4GHLznExiNghg
+         1iqnv4N21eR8Yg+J/fvVMGSr5HHfQGGtaP0soEnn0m6pHqMOiPLx8x8CKStQYMx+v27L
+         NSjqIROY2D47jbS/4JEnvoTvOAOlihvrMhfyaOCL3yoJme3prDietkRoy2B6TcqkFGlJ
+         u2Uw==
+X-Gm-Message-State: AOJu0Yx/CQl7qKzDbiP1rNHbDyYmxdaQeloyjjfUpK1UZpxMmkgdcIA/
+	InxpSVibS7pxTlCKZCUBjbHFIOionQzGELLFCOq9ghC6tpBJUglypGX4Ew==
+X-Google-Smtp-Source: AGHT+IFUSmB5qj013ukPWcd2PnqbxEbtyk9xGORICVlDGwgM/Alk+7OzaNIs/iU7kZlzw9YIiIXvNQ==
+X-Received: by 2002:a17:90b:360f:b0:2d8:8175:38c9 with SMTP id 98e67ed59e1d1-2e1e626c076mr18806026a91.20.1728394064555;
+        Tue, 08 Oct 2024 06:27:44 -0700 (PDT)
 Received: from dw-tp.ibmuc.com ([171.76.87.188])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e20af4655dsm7628992a91.27.2024.10.08.06.27.33
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e20af4655dsm7628992a91.27.2024.10.08.06.27.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2024 06:27:37 -0700 (PDT)
+        Tue, 08 Oct 2024 06:27:43 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: linux-mm@kvack.org,
@@ -75,12 +77,13 @@ Cc: linux-mm@kvack.org,
 	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
 	Donet Tom <donettom@linux.vnet.ibm.com>,
 	LKML <linux-kernel@vger.kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Sachin P Bappalige <sachinpb@linux.ibm.com>
-Subject: [RFC 1/2] cma: Fix CMA_MIN_ALIGNMENT_BYTES during early_init
-Date: Tue,  8 Oct 2024 18:57:18 +0530
-Message-ID: <c1e66d3e69c8d90988c02b84c79db5d9dd93f053.1728386179.git.ritesh.list@gmail.com>
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [RFC 2/2] fadump: Make fadump reserve_dump_area_start CMA aligned in case of holes
+Date: Tue,  8 Oct 2024 18:57:19 +0530
+Message-ID: <7950c20ae9f771a39eb0c0d568beb8681fee0209.1728386179.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <c1e66d3e69c8d90988c02b84c79db5d9dd93f053.1728386179.git.ritesh.list@gmail.com>
+References: <c1e66d3e69c8d90988c02b84c79db5d9dd93f053.1728386179.git.ritesh.list@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,72 +99,68 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-During early init CMA_MIN_ALIGNMENT_BYTES can be PAGE_SIZE,
-since pageblock_order is still zero and it gets initialized
-later during paging_init() e.g.
-paging_init() -> free_area_init() -> set_pageblock_order().
+Consider cma alignment into account while calculating base address for
+fadump memory allocation. Physical memory ranges can have holes and
+fadump_locate_reserve_mem() tries to find a suitable base address.
+If CMA is enabled and fadump nocma is false then we need to consider
+CMA_MIN_ALIGNMENT_BYTES for reserve_dump_area_start.
 
-One such use case is -
-early_setup() -> early_init_devtree() -> fadump_reserve_mem()
+For e.g. in case of below memory layout, the most suitable base address
+is 0x00000501000000 for crashkernel=4097M which is 16M (order 8) aligned
+as expected by CMA_MIN_ALIGNMENT_BYTES on PPC64 during early boot
+(when pageblock_order is still not initialized)
 
-This causes CMA memory alignment check to be bypassed in
-cma_init_reserved_mem(). Then later cma_activate_area() can hit
-a VM_BUG_ON_PAGE(pfn & ((1 << order) - 1)) if the reserved memory
-area was not pageblock_order aligned.
+~ # cat /proc/iomem
+00000000-1fffffff : System RAM
+100000000-1ffffffff : System RAM
+300000000-3ffffffff : System RAM
+500200000-9001fffff : System RAM
 
-Instead of fixing it locally for fadump case on PowerPC, I believe
-this should be fixed for CMA_MIN_ALIGNMENT_BYTES.
+~ # dmesg |grep -Ei "fadump|cma"
+fadump: Reserved 4112MB of memory at 0x00000501000000 (System RAM: 25088MB)
+fadump: Initialized 0x101000000 bytes cma area at 20496MB from 0x1010002a8 bytes of memory reserved for firmware-assisted dump
+Kernel command line: root=/dev/vda1 console=ttyS0 nokaslr slub_max_order=0 norandmaps noreboot crashkernel=4097M fadump=on disable_radix=no debug_pagealloc=off
+Memory: 21246656K/25690112K available (31872K kernel code, 4544K rwdata, 17280K rodata, 9216K init, 2212K bss, 218432K reserved, 4210688K cma-reserved)
 
-<stack trace>
-==============
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10010
-flags: 0x13ffff800000000(node=1|zone=0|lastcpupid=0x7ffff) CMA
-raw: 013ffff800000000 5deadbeef0000100 5deadbeef0000122 0000000000000000
-raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: VM_BUG_ON_PAGE(pfn & ((1 << order) - 1))
-------------[ cut here ]------------
-kernel BUG at mm/page_alloc.c:778!
-
-Call Trace:
-__free_one_page+0x57c/0x7b0 (unreliable)
-free_pcppages_bulk+0x1a8/0x2c8
-free_unref_page_commit+0x3d4/0x4e4
-free_unref_page+0x458/0x6d0
-init_cma_reserved_pageblock+0x114/0x198
-cma_init_reserved_areas+0x270/0x3e0
-do_one_initcall+0x80/0x2f8
-kernel_init_freeable+0x33c/0x530
-kernel_init+0x34/0x26c
-ret_from_kernel_user_thread+0x14/0x1c
-
-Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
+Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- include/linux/cma.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/fadump.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 9db877506ea8..20abc6561bcd 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -5,6 +5,7 @@
- #include <linux/init.h>
- #include <linux/types.h>
- #include <linux/numa.h>
-+#include <linux/minmax.h>
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index a612e7513a4f..15ea9c80bc03 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -512,6 +512,10 @@ static u64 __init fadump_locate_reserve_mem(u64 base, u64 size)
+ 	phys_addr_t mstart, mend;
+ 	int idx = 0;
+ 	u64 i, ret = 0;
++	unsigned long align = PAGE_SIZE;
++
++	if (IS_ENABLED(CONFIG_CMA) && !fw_dump.nocma)
++		align = CMA_MIN_ALIGNMENT_BYTES;
 
- #ifdef CONFIG_CMA_AREAS
- #define MAX_CMA_AREAS	CONFIG_CMA_AREAS
-@@ -17,7 +18,8 @@
-  * -- can deal with only some pageblocks of a higher-order page being
-  *  MIGRATE_CMA, we can use pageblock_nr_pages.
-  */
--#define CMA_MIN_ALIGNMENT_PAGES pageblock_nr_pages
-+#define CMA_MIN_ALIGNMENT_PAGES \
-+	(1ULL << min_not_zero(MAX_PAGE_ORDER, pageblock_order))
- #define CMA_MIN_ALIGNMENT_BYTES (PAGE_SIZE * CMA_MIN_ALIGNMENT_PAGES)
+ 	mrngs = reserved_mrange_info.mem_ranges;
+ 	for_each_free_mem_range(i, NUMA_NO_NODE, MEMBLOCK_NONE,
+@@ -520,7 +524,7 @@ static u64 __init fadump_locate_reserve_mem(u64 base, u64 size)
+ 			 i, mstart, mend, base);
 
- struct cma;
+ 		if (mstart > base)
+-			base = PAGE_ALIGN(mstart);
++			base = ALIGN(mstart, align);
+
+ 		while ((mend > base) && ((mend - base) >= size)) {
+ 			if (!overlaps_reserved_ranges(base, base+size, &idx)) {
+@@ -529,7 +533,7 @@ static u64 __init fadump_locate_reserve_mem(u64 base, u64 size)
+ 			}
+
+ 			base = mrngs[idx].base + mrngs[idx].size;
+-			base = PAGE_ALIGN(base);
++			base = ALIGN(base, align);
+ 		}
+ 	}
+
 --
 2.46.0
 
