@@ -1,69 +1,115 @@
-Return-Path: <linuxppc-dev+bounces-1823-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1832-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183BE99450A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 12:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2332B9945AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 12:43:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNBSX5LDMz2xps;
-	Tue,  8 Oct 2024 21:04:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNCLG0BJZz2yZ7;
+	Tue,  8 Oct 2024 21:43:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728381852;
-	cv=none; b=HYmYVlIEoGQG1l47SSdwK+h4v5BjLnQRD4jZu1iLo9Agkuthe0o+/VvDyJdhCCP7dAejcoHJ0t0DKey7lMEX/m5mYlJPbGWbtEAeBu6qgK7eGyBOXKnEB6Sbn4W/oS2Eg0oyR+1CUVluHxnjvw1mGR2vmsUYbxyJYgymjZDr+1xjCmTRmxRS+g3z1TgDZ9aLh0H0kU9MCO2slWYFodmcpTzewgG///dLhsadWDMAbKwr8h7OaqlQxLgGgUVnHl+gHI8Gluj9dW/RpiCEJw6xKj++yIXwTKvEGKCeoZkDSrnUpGOFQk0jwdjXWjtQf4XnQJngDBDQTFU6ylbpG+5lWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728381852; c=relaxed/relaxed;
-	bh=i41cTgDGxYCF03sFAzCQfC4E35upvi9UYKHS+jZiY9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cl/wpQqPHMbuOWa2EEDmcHIyHIaX8ztaTT78MWW7ynmfJzh78Duh0tfrBl4TD1dHd/U4egaOg3hFO1eQJ2Z5egTpOgm2OAj+LjklB51kmjSsCea9ybdkAze5QBFVvO08RFzNGZOdFlieKPW7DbTCBM1EzsAJj7055x8/aRDRzP4uWY4ZwUszPvycAraYtxKV57ogBGwzpHw1c2yPZOrltNEqkOZrfjJf3LIZa24e9I64JcHuAJbQFlPgdbfMvcv0Ksu9er/gIylZ2hPuJGifuJ5GtCqYuGCh++2zhXOAkuzfn+XmbJhENy06S8T7ot/td3GK19LEdABHOzL+HNt7fw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=85.31.212.143
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728374109;
+	cv=fail; b=oNednzDsbs7//K+QOgsT5C0rEoKGJJT/2R5Y4iLcEEACbxyvfgAEDDyXRJRW+u8dIYEFYP3SifzDycsIiIL8WZDoOQ2YQxtONflEM3ypomzOG3xPiNLXzD95pODyV+LKC4mCTCWtkpKRfKNt1N6nFBzeDKidvvoVTLR6ztMgQ8TqzptK714zKcbNdIh26hVSStKszXaD3996OnJKQT0GIbcSLIWKHmRl7Tu3H7COJ0gYTToQLuptxdTCZV8W7C3AD5U5aIaOCVBucJHGgq2V6wqCj6oc6BgbHdz/YiFqsMbf1CqsnUnmyxBbftDWrqyJpk2417afjNjbp/bSPeAg3g==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1728374109; c=relaxed/relaxed;
+	bh=L6sX696qZP1ndFsua0R+x9MDgsEnI65B6JAyYUl24Eo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L5GMSJtsD5B1OeM4iR79dpt23JossLMFkC0auClAlCMGWyBQSpNkplRVhjG3WyWpOLfUTcvok9Fa9e/gL8HCou2bPIry7rwD/2R/v8Qq7OnUa1FLX7A6io2G22iF+LKQgOmFpmhAHMQnRqvbc25BBbR239dOXNDOLD7F7foopz/dOiSakvUnLZWZ5+HssO6s42PsReTkinuOWZt+qxEZJ1dPa8LwvPGR0oqw57y1/SlzH9rwgRqNkvBTG1Lmh/V/js4IcnBFxXDn1428IsLxbGDjnIjqntHQrV/mIFF8XBOfh6X9QMDCsLh8k6ddk8hx73okMneKoy86TeU15AZvpQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com; dkim=pass (1024-bit key; unprotected) header.d=kalrayinc.com header.i=@kalrayinc.com header.a=rsa-sha256 header.s=sec-sig-email header.b=eFooBVNe; dkim=fail (2048-bit key; unprotected) header.d=kalrayinc.com header.i=@kalrayinc.com header.a=rsa-sha256 header.s=selector1 header.b=ETbeZjMu reason="signature verification failed"; dkim-atps=neutral; spf=pass (client-ip=85.31.212.143; helo=smtpout143.security-mail.net; envelope-from=jvetter@kalrayinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=kalrayinc.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=kalrayinc.com header.i=@kalrayinc.com header.a=rsa-sha256 header.s=sec-sig-email header.b=eFooBVNe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kalrayinc.com header.i=@kalrayinc.com header.a=rsa-sha256 header.s=selector1 header.b=ETbeZjMu;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kalrayinc.com (client-ip=85.31.212.143; helo=smtpout143.security-mail.net; envelope-from=jvetter@kalrayinc.com; receiver=lists.ozlabs.org)
+Received: from smtpout143.security-mail.net (smtpout143.security-mail.net [85.31.212.143])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNBSV73k3z2xnc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Oct 2024 21:04:10 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 43C2FA42600;
-	Tue,  8 Oct 2024 10:03:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49794C4CEC7;
-	Tue,  8 Oct 2024 10:04:00 +0000 (UTC)
-Date: Tue, 8 Oct 2024 11:03:57 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Linux Trace Kernel <linux-trace-kernel@vger.kernel.org>,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH] ftrace: Make ftrace_regs abstract from direct use
-Message-ID: <ZwUDjbrYZNC7HLZS@arm.com>
-References: <20241007204743.41314f1d@gandalf.local.home>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XN7bY4c96z2xs4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Oct 2024 18:55:05 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+	by fx403.security-mail.net (Postfix) with ESMTP id 121628A2B60
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Oct 2024 09:51:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
+	s=sec-sig-email; t=1728373864;
+	bh=K52sFCVR40cjX80xMzZQKAoa1YFmSTrfnUEfR/JO2Ys=;
+	h=From:To:Cc:Subject:Date;
+	b=eFooBVNeCa0wzpuh5Qh+PGmBfMWoOGpNopxyZigzhARoEn2III11FJaJjvFz7ODiO
+	 0zXuVI7G3/o6wDfTVWOmUgSvrfNfL2tvqv7YP96JrYkfxsQ+XuOXaTElJ6LTr3PNTC
+	 Q/ZdvrXlkX4SrKoTFD1Cr6CkXXbt3VzKb46fTS50=
+Received: from fx403 (localhost [127.0.0.1]) by fx403.security-mail.net
+ (Postfix) with ESMTP id 973608A320F; Tue, 08 Oct 2024 09:51:03 +0200 (CEST)
+Received: from PAUP264CU001.outbound.protection.outlook.com
+ (mail-francecentralazlp17011025.outbound.protection.outlook.com
+ [40.93.76.25]) by fx403.security-mail.net (Postfix) with ESMTPS id
+ 5BA0A8A2F56; Tue, 08 Oct 2024 09:51:02 +0200 (CEST)
+Received: from PAYP264MB3766.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:118::6)
+ by MR1P264MB2194.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:5::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Tue, 8 Oct
+ 2024 07:51:00 +0000
+Received: from PAYP264MB3766.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::6fc2:2c8c:edc1:f626]) by PAYP264MB3766.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::6fc2:2c8c:edc1:f626%4]) with mapi id 15.20.8026.020; Tue, 8 Oct 2024
+ 07:51:00 +0000
+X-Secumail-id: <90a8.6704e466.58fd0.0>
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ev40TVUTG5gm0ikQ31X521ft2AKH/nd/yYGU54O6WfUyhXxI200L3Kk5fghME8fqGONbhwlVTuJkKC82WiDZwY3wZGa+QnMrAsSAcF7KMaMxtmYxYo99c0za5eS61G28q0JWPcvGnvMRUQnJ/KNrlTLXk3D9qgLHqTp0fUT1DhzRQT31c/I/SZnWYcXfHGrBAXRjgZKuAFj2Bzmvm+6pFVpczwCp50cb4ylWiU8r51PZLy8Xk5xaGach+mdw5YOKt0mirLxr8YMMA+lY63c7HkC/m0rn6U2CRzMD0NZU7l4FngvPaUyK3RD314NPb5w4ccvDmpxZZtyly98hZ2nn3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microsoft.com; s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L6sX696qZP1ndFsua0R+x9MDgsEnI65B6JAyYUl24Eo=;
+ b=iOYojA7vBzefDEM7tVPQlbCOulQByo40toEad1UmDU0I0Xtumj3rdQ8elpSVpDcBSkQgz1BnsD/cSFgzI8dleMUNlhYKGzZ/P+EVIVmx8h56WDtuZpJiLBd4/jAnwVJ/76pcBFLfij/0/wUzcB4v4WCLqqwOQ9Zo+FRdzWbBu5TchhI5NDLTFWFp3bpg/2EJOSLC9OzP0SLGX9j10rrDMzknaQDsap6IdhTgJPzPexIWilj0DFcZ3S+aWtGKhzhuOK6temvSI0AuPr+GXlYBibyD2Ydx9XWK/WPZFD7eAiycX0mcv8xaL+qvBlC/4J+9maIzqMbYFwNbj2stMOu/vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kalrayinc.com; dmarc=pass action=none
+ header.from=kalrayinc.com; dkim=pass header.d=kalrayinc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalrayinc.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L6sX696qZP1ndFsua0R+x9MDgsEnI65B6JAyYUl24Eo=;
+ b=ETbeZjMu/PsoNEgqh1U85C2gtvW2PlkQsHTyebOJiedy88skQog52dL3wS8SNGtBnx/4dD9Wz1kfhhMm39SYgk/0qS7pJ5KEaUo3nOzKrQ8moNT8T7iqADuz54SD3trodk5qpGlcYtHwVJ1OvU/dYQhmu6FTVgm0qqUtC3GUP4Kc6qHdrjE3VNEyD8jLdR4kMl5lxmxd9PO30MFNaGZmOKyp49xy/+XGPIc01qib93XWqxMhCwN9K/OZ29JyLq1/AcVXG43p6umfLFRixTnR/pNKFSKYVKQ3Wvb0GKQzVgvLB3A+0gk2Yuz6XRtjx2hIK7Nu3Ee7y3f/PZQSFfhhPQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kalrayinc.com;
+From: Julian Vetter <jvetter@kalrayinc.com>
+To: Arnd Bergmann <arnd@arndb.de>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG
+ Xuerui <kernel@xen0n.name>, Andrew Morton <akpm@linux-foundation.org>, Geert
+ Uytterhoeven <geert@linux-m68k.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Matt Turner <mattst88@gmail.com>, "James E . J . Bottomley"
+ <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Richard Weinberger
+ <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes
+ Berg <johannes@sipsolutions.net>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Manivannan
+ Sadhasivam <manivannan.sadhasivam@linaro.org>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Vignesh Raghavendra <vigneshr@ti.com>, Jaroslav
+ Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ linux-mtd@lists.infradead.org, linux-sound@vger.kernel.org, Yann Sionneau
+ <ysionneau@kalrayinc.com>, Julian Vetter <jvetter@kalrayinc.com>
+Subject: [PATCH v8 00/14] Consolidate IO memcpy functions
+Date: Tue,  8 Oct 2024 09:50:08 +0200
+Message-ID: <20241008075023.3052370-1-jvetter@kalrayinc.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM4PR07CA0019.eurprd07.prod.outlook.com
+ (2603:10a6:205:1::32) To PAYP264MB3766.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:118::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,41 +119,165 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241007204743.41314f1d@gandalf.local.home>
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAYP264MB3766:EE_|MR1P264MB2194:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7803a017-ee44-43b7-3758-08dce76df3b0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|52116014|366016|921020|38350700014;
+X-Microsoft-Antispam-Message-Info: OgYTdyHDTYUkqfVxZC15bklhw2uc346fsM4qfWjmBFfEBpKiG43f0oVgyQLFqcGljBXMnQoR9IiWdQw/GwHPhS2jp5RxMTYLolU6yLVVBptkZJ6x0YF0g9Yg+UDtCzHA9VtxBnFIg9Pw3KvtpVC2xPsIm8vUjspvvOe0fNkAlu6iGlvUGuqhyUImTN65fjAFfFSjPNTfDazm8+NK6Lp7dA4yQOvNkvzWnBY9n9k6rF0d3CnEY6SvfFDjphJnGU2q/QuirIRg5CjIUGVyzFmG8Zfi/V5J3As2F7VinN+ZjQw+qLmxqX8I75O4WcRvdNp0dDs/md0wwl5ekdomNl6hSoDGrA41fS49D2VQf7FOxwgBdJwltE6i4Ux3aMKoPQ2e1YxRePh/HR3vj4IL/6SP8JU4GsENmAXzFgfE33dOcUDMLZcF3PDvnIqMbBdvv/T3GhWpmjLSqimnMlgkpwXLP0pRowA4bikVzPiG9tdtjg1gTBBE+U8obvREknSRZpdDNzQlKZBRBEtE5n5ERG3bgn+zZPLQYPvCbYDfDwiUGZyARqPs+NFHoLNVKGWzuGsG4BwwrfusmLNo3V8Dd7HLfVPR6QWMzIGL55BUAp22T4cKjaydpsGMqTvym8rcxy0vCQxI6Z2lw3Qz5xBIfk+igt2xdvQmeoYdEcK+/KczfiH3FzRkvKVsIJ/DbzAGCB4EKONW3VzET4kIYnPXJboCfztbU+e3mjavvYS3tbYt58pcd2QdPb+utnNXPGT2k66sINy7sn6cAjBLpUPTmo+22KAYBRuYXjbU+3ggC6XaVhP8mQuVb15Ttrduh71jOPKpuTlfe8cMdBNpy4G5YZNRO44ggIvDxPC+9Ib8Roa3g1vxlhentaS6vQv/7jrEVDo4EyS59Ba8hajTHxKo97DLy+jd/0X9WrE2nsXFKjZyrytL1mnzTFADCLC066pKji0z8K6
+ bBZzRHlegZalsrQ2GpmXZBJyw7YR8F0Op5S3Lo7L3gNdtZry0kyLVV0VVpAJEOx98arKyK+NPyn6KOBTJEy7EzhrcQSNhVVVgqrbzGLes1LF2JiVeJgddJcO2kpDHUuQiqtuiOkmk1iqzWQ8myFgkHHixMTN+Qf99gThVr30VzkTJzYDCpZwmXB7nWlrC+/96WW0i/9At9tlY9ttXgsJdg2332AJBALxg+ClVBtg6DRmAaWL/EPHOOfH1pw5q/jFYuA05TUkOd7phGyVHiApxFO5AfVk7EEdy/gTP6OFl04OR7kMsEw6SBUByCanO1pk2imLyaM7kFj3FRGECYdyWVMLOrFeRYz2Zd5lCY61OeG92wFEA/nw8H/5q+SrCyboNmkk6oYGMXm9oH+Yf98fNv7LMb4QOJ4emBWxz8Yk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAYP264MB3766.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(52116014)(366016)(921020)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: JtngIlAsEZwFOhipiFeU/d2xRH+OGafZACAkF/ovbPzgjMzPFFVtT9jJXZZyTZymET0OcC2WQ5KfsfDTIM1QHM+wv7IMBuyixtUXyYaGgY5ayJ71THhAIFSJhK8Rwxm8ZVhyra+Eb1cPng8TznqWP5ppmyeiJGFexawO7TXuzuxnBZTcGcK0uD/HG0IJrX5//K2FR+NtYfsh3wlkEHoYS7LnHnrZwr/WEXe2AGrWRR7IGHePSnmAa99BQj/KuWYxpoLiBJkXdpWTgUvg3IVjIvu5AQ16urcK6HFgwGTO8Ktkm4IpxjEFZY1RV1pMHpQX1lOrGYNZhJ3GfIA6TiIbZFpbL2qIWmxWucS43K64TFIfxHn22p5c6wtwaPijUXTXzTfHyZ2DPCIbGPu4WSeqoxW96xFji4/sB9fNGbX3MB2H+HQ/lgg5hln3vRlHQlR6s1uRXWGRtE66PrTLzXjb1Fcee4pp51aI5rtC/2EipaYfCemcHiasFhxgIKdnnAIJvmIwE0v7yeS89hke0kUYgtMKMASs1Z+Auyfbb/yQMyPBv5cTuA32lDsOnxEWXFhsutj/D6QKGwvM4Bdo3QqBdq3PIBS6sW1PTT8UHJcR3YRT9XBpApsxNXxOjJ1D6F6HRcVLTT78A27/PoH8MemRKz75tgI8VF0wslCyU/O6/FeebIrdeL5f8984nZQXXtmizj0r1KJbTUPe49Kut8AHX3yX48l6NVSnMlyqqZcwq+aEb9bxzMdT9DwKVBnRA6VGjFy8NGu3yjymJg3WAHFzeqmXP1YI5nMxw+EvP+zRVr+xYmf/S9IwvfQYAFStbeh+8IYLF7Xm6MTLuWSDl/lDCyi7r+T2x3n1t0f3W7kVq5ts8bDTu4luAQHRS+551QCqAX0AXsfNTozrE6Ymxmoc0LN2pJpx2GCq3Uqt8HMaxqxf4xP4HAuA+DYvF8xZZwY1
+ eHfDAoMHM8DIDoPp/AGF2AE4zMQueIvwsC2szIPSK38A7fjDWas32TC7wdDHXCTZJ1f5fkDmhpKz/a9P0MR0RkURjTbE/gRfndTv/1TzXkCV5sy3FSQwWQDEguS7iUaB6U4e79ycxEzjU739a6HVHaCUBZemLx5LWKj5e4E0PscgXeT9Awu99V4N8qhkUA091tczW87MWDZIR/VaxKeOUb7D/pbTCJr/Ik2RlXWsOOZbNND5UMTusOJQZAYiU1CmHWOlL1chG/F5xbtR/ApRb+nl4Bvob1THzdictm+6YyYkalf3XdTmPjrWA/MFtZ8JQpJl3WToppQqCdS0yRUpQOElaXuoNUPNzSiqGHjN5xoWuh4RPuso4G6DXUFrlNYY/hz9+6Q5momk3LuPTyrWSMhE6PlVcP0mXelKLGkpanQcn7sPIPyyB2dOLw85RBM4jiJhFxX88OqoRXtgVDSUy6drsbpQnFQQ6I/2rbpIxNNMUVuVHCwas3+p6wYZxRmfBa6UKWvpeKznRqYlgdYl34GP119MobOJCTn4JG/k8qTaLV2a5ghnwlVOpjOKq6DNc+uH/qaY7XM4GKe0FiaMZi1J+fSTzh2bKrqZUMEoQgLPwAr+RugGh8jtXbgmKn8y
+X-OriginatorOrg: kalrayinc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7803a017-ee44-43b7-3758-08dce76df3b0
+X-MS-Exchange-CrossTenant-AuthSource: PAYP264MB3766.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2024 07:51:00.7317
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Srdp3qh/5Gay69C/17lCN25B6iD3z0PGj6spSRuzdscf3Rb1diPo7MF1XFNr70RydCWK7tnS4ERI8+9iLqTndQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2194
+Content-Type: text/plain; charset=utf-8
+X-ALTERMIMEV2_out: done
+X-Spam-Status: No, score=-0.9 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Oct 07, 2024 at 08:47:43PM -0400, Steven Rostedt wrote:
-> From: Steven Rostedt <rostedt@goodmis.org>
-> 
-> ftrace_regs was created to hold registers that store information to save
-> function parameters, return value and stack. Since it is a subset of
-> pt_regs, it should only be used by its accessor functions. But because
-> pt_regs can easily be taken from ftrace_regs (on most archs), it is
-> tempting to use it directly. But when running on other architectures, it
-> may fail to build or worse, build but crash the kernel!
-> 
-> Instead, make struct ftrace_regs an empty structure and have the
-> architectures define __arch_ftrace_regs and all the accessor functions
-> will typecast to it to get to the actual fields. This will help avoid
-> usage of ftrace_regs directly.
-> 
-> Link: https://lore.kernel.org/all/20241007171027.629bdafd@gandalf.local.home/
-> 
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> ---
-> Note, I tried to cros-compile the affected architectures,
-> but my builds failed for 32 bit powerpc and s390 (without this patch).
-> It mostly compiled, and the affected files seemed to build.
-> 
->  arch/arm64/include/asm/ftrace.h          | 20 +++++++++--------
->  arch/arm64/kernel/asm-offsets.c          | 22 +++++++++----------
->  arch/arm64/kernel/ftrace.c               | 10 ++++-----
+New patch set with all remarks taken into account.
 
-For arm64:
+Thank you Richard and David. I have masked the int with 0xff for alpha
+and parisc, and I have replaced the shift operation by the
+multiplication as you proposed.
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Thank you Johannes for your remarks on the UM arch. Finally, I have
+created an UM allyesconfig. I have manually disabled HAS_IOMEM and
+INDIRECT_IOMEM. This way I was able to identify the drivers which don't
+guard with 'depends on HAS_IOMEM || INDIRECT_IOMEM'. It was only a small
+number. I changed them and added the patches to this series (see patch
+12 to 14).
+
+Thank you Niklas for your feedback. Unfortunately I was not able to
+simply change the prototypes of the zpci_memcpy functions because they
+return an int to indicate whether the pci transaction was successful. At
+the same time they are used as generic memcpy IO functions in the driver
+code. To resolve this, I implemented three wrapper functions and added
+defines to overwrite the default. So, on s390 we always use the fast
+zpci operations and don't fall back to the generic ones.
+
+Signed-off-by: Julian Vetter <jvetter@kalrayinc.com>
+---
+Changes for v8:
+- Dropped the arch/um patch that adds dummy implementations for IO
+  memcpy functions
+- Added 3 new patches that fix the dependency problem for UM (added
+  dependencies on HAS_IOMEM || INDIRECT_IOMEM)
+- Added new patch for s390 to internally call the zpci_memcpy functions
+  and not the generic ones from libs/iomap_copy.c
+- Addressed reviewer comments and replaced 2 or 3 shifts by
+  'qc *= ~0UL / 0xff;'
+- Addressed reviewer comments on pasrisc (masking the int value)
+- Addressed reviewer comments on alpha (masking the int value)
+
+Changes for v7:
+- Added dummy implementations for memcpy_{to,from}io and memset_io on um
+  architecture so drivers that use these functions build for um
+- Replaced all accesses and checks by long type
+- Added function prototypes as extern to asm-generic/io.h
+- Removed '__' from the 3 new function names
+- Some archs implement their own version of these IO functions with
+  slightly different prototypes. So, I added 3 new patches to align
+  prototypes with new ones in iomap_copy.c + io.h
+
+Changes for v6:
+- Added include of linux/align.h to fix build on arm arch
+- Replaced compile-time check by ifdef for the CONFIG_64BIT otherwise we
+  get a warning for the 'qc << 32' for archs with 32bit int types
+- Suffixed arch commits by arch name
+
+Changes for v5:
+- Added functions to iomap_copy.c as proposed by Arndt
+- Removed again the new io_copy.c and related objects
+- Removed GENERIC_IO_COPY symbol and instead rely on the existing
+  HAS_IOMEM symbol
+- Added prototypes of __memcpy_{to,from}io and __memset_io functions to
+  asm-generic/io.h
+
+Changes for v4:
+- Replaced memcpy/memset in asm-generic/io.h by the new
+  __memcpy_{to,from}io and __memset_io, so individual architectures can
+  use it instead of using their own implementation.
+
+Changes for v3:
+- Replaced again 'if(IS_ENABLED(CONFIG_64BIT))' by '#ifdef CONFIG_64BIT'
+  because on 32bit architectures (e.g., csky), __raw_{read,write}q are
+  not defined. So, it leads to compilation errors
+
+Changes for v2:
+- Renamed io.c -> io_copy.c
+- Updated flag to 'GENERIC_IO_COPY'
+- Replaced pointer dereferences by 'put_unaligned()'/'get_unaligned()'
+- Replaced '#ifdef CONFIG_64BIT' by 'if(IS_ENABLED(CONFIG_64BIT))'
+- Removed '__raw_{read,write}_native' and replaced by
+  'if(IS_ENABLED(CONFIG_64BIT))' -> '__raw_write{l,q}'
+---
+Julian Vetter (14):
+  Consolidate IO memcpy/memset into iomap_copy.c
+  arm64: Use generic IO memcpy/memset
+  csky: Use generic IO memcpy/memset
+  loongarch: Use generic IO memcpy/memset
+  m68k: Align prototypes of IO memcpy/memset
+  alpha: Align prototypes of IO memcpy/memset
+  parisc: Align prototypes of IO memcpy/memset
+  sh: Align prototypes of IO memcpy/memset
+  arm: Align prototype of IO memset
+  powerpc: Align prototypes of IO memcpy and memset
+  s390: Add wrappers around zpci_memcpy/zpci_memset
+  bus: mhi: ep: Add HAS_IOMEM || INDIRECT_IOMEM dependency
+  mtd: Add HAS_IOMEM || INDIRECT_IOMEM dependency
+  sound: Make CONFIG_SND depend on INDIRECT_IOMEM instead of UML
+
+ arch/alpha/include/asm/io.h        |   6 +-
+ arch/alpha/kernel/io.c             |   4 +-
+ arch/arm/include/asm/io.h          |   2 +-
+ arch/arm64/include/asm/io.h        |  11 ---
+ arch/arm64/kernel/io.c             |  87 --------------------
+ arch/csky/include/asm/io.h         |  11 ---
+ arch/csky/kernel/Makefile          |   2 +-
+ arch/csky/kernel/io.c              |  91 ---------------------
+ arch/loongarch/include/asm/io.h    |  10 ---
+ arch/loongarch/kernel/Makefile     |   2 +-
+ arch/loongarch/kernel/io.c         |  94 ---------------------
+ arch/m68k/include/asm/kmap.h       |   8 +-
+ arch/parisc/include/asm/io.h       |   3 -
+ arch/parisc/lib/io.c               |  12 ++-
+ arch/powerpc/include/asm/io-defs.h |   6 +-
+ arch/powerpc/include/asm/io.h      |   6 +-
+ arch/powerpc/kernel/io.c           |   6 +-
+ arch/s390/include/asm/io.h         |  27 +++++-
+ arch/s390/include/asm/pci_io.h     |   6 +-
+ arch/sh/include/asm/io.h           |   3 -
+ arch/sh/kernel/io.c                |   6 +-
+ drivers/bus/mhi/ep/Kconfig         |   1 +
+ drivers/mtd/chips/Kconfig          |   4 +
+ drivers/mtd/lpddr/Kconfig          |   1 +
+ include/asm-generic/io.h           |  58 ++-----------
+ lib/iomap_copy.c                   | 127 +++++++++++++++++++++++++++++
+ sound/Kconfig                      |   2 +-
+ 27 files changed, 197 insertions(+), 399 deletions(-)
+ delete mode 100644 arch/csky/kernel/io.c
+ delete mode 100644 arch/loongarch/kernel/io.c
+
+-- 
+2.34.1
+
+
+
+
+
 
