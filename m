@@ -1,81 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-1858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1855-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC4F995930
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 23:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7D299585C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Oct 2024 22:26:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNTQx2yngz2xpp;
-	Wed,  9 Oct 2024 08:18:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNSGc0Bt9z2yGs;
+	Wed,  9 Oct 2024 07:26:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.227.221.253
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728403778;
-	cv=none; b=jYM47IqvYaPJKnVEPmVBgdBtkN78HHU2h9O3GqyBUQMIMApRoJbeZMq5y/SzGIotBNRhsvN0u794UXhlkxT6DGGuj1uK1+Db73nN4uKA6uUHUiSlFwepjCKdZgz4wSrOdM0ecavk1nC3yYdpDZzx6fGQTrPlNzI1y38ioD5c3ckGPAHGghzCmH/hBKjcMceopDjywdxCLnV4xG1K7H0DNSHNqvfrOjv48rhFpibpN45RfHIS2pPZXGfG5x94aZI2F6/vNAor4SUr7CT0rfKbfj6n7TUZrANR43Oa11oU9sv167gYzMKiDhMEQ3XaHcAihZnsO8FJRh35JNRX4B3cLQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=199.89.1.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728419191;
+	cv=none; b=JaaP+TQfdFT1g0Z7ZS0cw4/xXD7j5ED8CuWweh0GwB0yTa29QrfR4Tvlm8cg3bQCI+s7QtBdmr9Tf8ry/kC2TzBgqIbv54AgCZZ5HPjSF1foNWUky3r0bqJPnGKl0diDl2UxZcSoh/RTOhEvGOay03xiU9Jy+glNJ8kfkIVnPlrdYd4uRyVH+BPJons00PN2DMdHi8A/AlLx6fRsVp5MFCmtX1sVcGzbi3XFipUp3IwYD8Mzn6vhpc7maRclUDkKC7FcYKM0Dg3Zuyl0pvE2XqbCQgK/vQ/pmKKxiFNPhEvOf5BuPoKm0rVAIbjaMu3x3trxB1KnzeMFUEQ2HtENRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728403778; c=relaxed/relaxed;
-	bh=oJizpp9aoOY0AopSPxylxEhhCtx+WlqEdtLodFwISho=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SPPQ4S+0+f9dfMANLrgcSQMZudm5XFreS3WM+Cp0UK0NuDD8kdDs8wE9yvU8ePtgnygs6N4zTQjB3410pYeoV0AD024vCBMbma0LOXZkVzgV4sP40y7PPyJzS7n7js4NeNmwn8orCApQNCPMnVBiYsjE5irzyGLUFaNK8r5HZghTYZZ8mp7Npy/R84ODpD2XxWGgMce5SeQEhdd5lhVXk03ZymRcMvKUupcxlCL7S8XZyMMEqxFS2xSCnca11L0HTpC5zykObeLQP7mMs7fnLVc8smhDy6m2ft6FPj1mp+Q86JqNN49QyxPG/IFHwYOH7y4rgz1t8qnp2Rg3wpeRAQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=keithp.com; dkim=pass (2048-bit key; unprotected) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=Zk9bYakH; dkim=pass (2048-bit key) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=NSOj9hJX; dkim-atps=neutral; spf=pass (client-ip=63.227.221.253; helo=elaine.keithp.com; envelope-from=keithp@keithp.com; receiver=lists.ozlabs.org) smtp.mailfrom=keithp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=keithp.com
+	t=1728419191; c=relaxed/relaxed;
+	bh=MyUaPbvugmKd3NVvycIqSqhXcIEjEkyEltEdZjwCUac=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hsQHhZrYhYXzgUltzyjgJbrmvKA+DE4OJjLh7VJue/Zh2NayfjmSfc5svrHJszkuB2cDeL7OdlGzNkKqP5Y4oYkHBZuEu+tTNwKvsMTNhBCjR4HuZjYvOYMThdpo9UQylZmMBpuPqDIJntMCuvHopy+m7imqgKsKoG5owhWnJZ3MUAJqEwZwdfrxHn6A0QYqw+/H3pF0qfX+HA9Y/7XwUBZC3JgJMGcxBfLOQAvI/czrOOmtws3PHvUqdd4KWxFnOrEGHdryj1msfn8JCps5BSEK8MDrYT0UVLuq0WWxRN2CI0YnOBzFOKOGWlQQoOpVp/exY9o9MFxWxDpknyNUFA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=acm.org; dkim=pass (2048-bit key; unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=nP6zLf64; dkim-atps=neutral; spf=pass (client-ip=199.89.1.11; helo=008.lax.mailroute.net; envelope-from=bvanassche@acm.org; receiver=lists.ozlabs.org) smtp.mailfrom=acm.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=acm.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=Zk9bYakH;
-	dkim=pass (2048-bit key) header.d=keithp.com header.i=@keithp.com header.a=rsa-sha256 header.s=mail header.b=NSOj9hJX;
+	dkim=pass (2048-bit key; unprotected) header.d=acm.org header.i=@acm.org header.a=rsa-sha256 header.s=mr01 header.b=nP6zLf64;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=keithp.com (client-ip=63.227.221.253; helo=elaine.keithp.com; envelope-from=keithp@keithp.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 66 seconds by postgrey-1.37 at boromir; Wed, 09 Oct 2024 03:09:35 AEDT
-Received: from elaine.keithp.com (home.keithp.com [63.227.221.253])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=acm.org (client-ip=199.89.1.11; helo=008.lax.mailroute.net; envelope-from=bvanassche@acm.org; receiver=lists.ozlabs.org)
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNLZ74R75z2yVb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 03:09:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
-	t=1728403773; bh=oJizpp9aoOY0AopSPxylxEhhCtx+WlqEdtLodFwISho=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Zk9bYakHOUzQevZrYXCQdXBwTsIS5nq41acB4bsphbLmhLTYSyaXRBvQ/wpXNYCMW
-	 A4nw5snc1cJpmvG0auJZ6pG+nVepA5tXPZ3CByJmkGh8ahJijudq74dm9/dXu/ZAtu
-	 jS97S/U+Wt2wTgIcjazn7BBCX78Ttw3TwmzP9vQSKjGQxXA7Wyyz6ratkbZ2kkTsCL
-	 5lhcSp2JtVVoD4fImTWHru0z5JDA4ySGqvLMVfvoeEK2ZSBnGmx6pBHyod9mHMx10k
-	 tzHI2AIfQmnsd/Ux0AyvWZltpgUxRarkJJoRgGtg3/3RHqPKddNAabFm9s84YPXyr2
-	 pVN26WltMk8pA==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNSGZ5xjbz2xjY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 07:26:29 +1100 (AEDT)
 Received: from localhost (localhost [127.0.0.1])
-	by elaine.keithp.com (Postfix) with ESMTP id BAA4C3F2275A;
-	Tue,  8 Oct 2024 09:09:33 -0700 (PDT)
-X-Virus-Scanned: Debian amavis at keithp.com
-Received: from elaine.keithp.com ([127.0.0.1])
- by localhost (elaine.keithp.com [127.0.0.1]) (amavis, port 10024) with LMTP
- id yKexJ_RQZQJk; Tue,  8 Oct 2024 09:09:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=keithp.com; s=mail;
-	t=1728403772; bh=oJizpp9aoOY0AopSPxylxEhhCtx+WlqEdtLodFwISho=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NSOj9hJXUKpWGlxGQaDVv+uH0SmT6MyLkQDbBdfEy45nmCLfbAK0DnTb+FjcOEn21
-	 z7cf99MaJkoNan2k6IIo5Cz8tCZiqLQk5lUHiQJMK0P/8V6ejiXS5hFMSV5VR4eF+F
-	 1+0xUuXi5+q9HxIyB4WLMrepJ9r/btzY9Evmp210t16mlL4EpdH9NhLfO69ItzbRna
-	 RROQKFKpbcnePP3tJVKTsK/SSGox+9EexFPuq5+F0cA6ObQ+jl2L9rxyFt9HjkL6DD
-	 9otdZSXaMLfpqcjtejPGdhcBbKpUUWom27rLVGDHsoeMduuTDPREVNYGf9VtWOGyeS
-	 gmyQCOangUMhw==
-Received: from keithp.com (koto.keithp.com [192.168.11.2])
-	by elaine.keithp.com (Postfix) with ESMTPSA id A4A193F208E2;
-	Tue,  8 Oct 2024 09:09:32 -0700 (PDT)
-Received: by keithp.com (Postfix, from userid 1000)
-	id 6643A1E60239; Tue, 08 Oct 2024 18:09:32 +0200 (CEST)
-From: Keith Packard <keithp@keithp.com>
-To: Nathan Chancellor <nathan@kernel.org>, Michael Ellerman
- <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan
- Srinivasan <maddy@linux.ibm.com>, Nick Desaulniers
- <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
- <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org,
- llvm@lists.linux.dev, patches@lists.linux.dev, Nathan Chancellor
- <nathan@kernel.org>
-Subject: Re: [PATCH 0/3] powerpc: Prepare for clang's per-task stack
- protector support
-In-Reply-To: <20241007-powerpc-fix-stackprotector-test-clang-v1-0-08c15b2694e4@kernel.org>
-References: <20241007-powerpc-fix-stackprotector-test-clang-v1-0-08c15b2694e4@kernel.org>
-Date: Tue, 08 Oct 2024 09:09:32 -0700
-Message-ID: <87ldyyvao3.fsf@keithp.com>
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4XNSGV5q9Lz6ClY9d;
+	Tue,  8 Oct 2024 20:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:references:in-reply-to
+	:x-mailer:message-id:date:date:subject:subject:from:from
+	:received:received; s=mr01; t=1728419184; x=1731011185; bh=MyUaP
+	bvugmKd3NVvycIqSqhXcIEjEkyEltEdZjwCUac=; b=nP6zLf64ncxoqFuow88JG
+	PVz/1BU/VJ0/+eAKkW0zzH1vKaMXqfNnI+SbvKfnQnW3rPvLOt1klprltNo9c0Sg
+	jNqnd8L6Gbk6qsksxWUNcq+M6nAkaxfiUH2wU8fV7vMcoVJBkkkrEF3Sjv9RQ/sP
+	ajKN4yd1zEb4Ht7QqtAXvScPla4VlogqMUI8jtIAH/fjHgEZEaLYc3bO1kw/U5Ft
+	dMtxLERx2QBPC9ozZ9IejIWwTCggADUl8ehPHUyTHn2NHFj/zpvcCpPh3KgJDCmw
+	vugGMRrqC7i8xVZYdPJ+U3QhPo/oygIhpWCRXBWRceiPPuEhiM64BEuW8tzgx7Uh
+	w==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id n9sqEiyXRz1i; Tue,  8 Oct 2024 20:26:24 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4XNSGQ4TP7z6ClY9Q;
+	Tue,  8 Oct 2024 20:26:22 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-kernel@vger.kernel.org,
+	Bart Van Assche <bvanassche@acm.org>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 04/22] powerpc/cell: Switch to irq_get_nr_irqs()
+Date: Tue,  8 Oct 2024 13:25:43 -0700
+Message-ID: <20241008202601.3737326-5-bvanassche@acm.org>
+X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
+In-Reply-To: <20241008202601.3737326-1-bvanassche@acm.org>
+References: <20241008202601.3737326-1-bvanassche@acm.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,45 +75,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha256; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Use the irq_get_nr_irqs() function instead of the global variable
+'nr_irqs'. This patch prepares for changing 'nr_irqs' from an exported
+global variable into a variable with file scope.
 
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ arch/powerpc/platforms/cell/axon_msi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> This series prepares the powerpc Kconfig and Kbuild files for clang's
-> per-task stack protector support.
-
-Reviewed-by: Keith Packard <keithp@keithp.com>
-Tested-by: Keith Packard <keithp@keithp.com>
-
-=2D-=20
-=2Dkeith
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAmcFWTwACgkQ2yIaaQAA
-ABGMCQ/+P5eh4p/7FKNEwLPB1NvaEIPPnwmj0iF7AGh45nKXbtvCVPYuBTXTs+/z
-xhYj8zmizQJLgfEjuhJVBLE2DHGQ/hw6ajS/zUPOkwwwmtT81e5sV0OsrxwWqH1E
-LPA+jbNyqETz/Khznu5ev2gT5q70AvPigFpufd1CcLZHT/BQjkGKm0WmIrH3DbCH
-bsH8fJb1wwmudUQO7XLv/X/znlyFp14wmb3wpVAWooeCzm8dYPoIY139TYbr35HF
-+UFQ5HtoA6CsuZOOspjuUSc3GvcDRPEbs1bO3WX3RZVBiBesZsFNiel2Rg33Xlw/
-VsGOKkxAotpZbJA6nYA+O42aizykgL4k29/AHaXGVfDONx7SPLzfHSAE1YFEbqRZ
-g3M0OxVOJFRF0vo4Pw9YVs9lgxwdu6tWSYMVbF5UMROxSX1CDU8hOzgbQhJ1XaV1
-ckJaJNu6E1+1d9dzHydbrgYPZsvAfeeKLjyVaqTroYHfOM4u8ObKNbzpafVFZ9Sw
-GTgOS8k5iwOdQT3Pxp9NXimVmqzcRJqs3VnODz9kuYjhGHHO5gU9dm49J1u0HXVV
-9xuP2wxAjiP9ue9DWs9hW52k4bYj0o2ssrl3oG8LWQvssuZSxo0jXd7Blmm0ygqJ
-FAqH2qOYU8C/Fi/n5iQdPgmSu23BCfS3rnq0cQzit2QjXAiWXKA=
-=7U2U
------END PGP SIGNATURE-----
---=-=-=--
+diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platfo=
+rms/cell/axon_msi.c
+index 28dc86744cac..d243f7fd8982 100644
+--- a/arch/powerpc/platforms/cell/axon_msi.c
++++ b/arch/powerpc/platforms/cell/axon_msi.c
+@@ -112,7 +112,7 @@ static void axon_msi_cascade(struct irq_desc *desc)
+ 		pr_devel("axon_msi: woff %x roff %x msi %x\n",
+ 			  write_offset, msic->read_offset, msi);
+=20
+-		if (msi < nr_irqs && irq_get_chip_data(msi) =3D=3D msic) {
++		if (msi < irq_get_nr_irqs() && irq_get_chip_data(msi) =3D=3D msic) {
+ 			generic_handle_irq(msi);
+ 			msic->fifo_virt[idx] =3D cpu_to_le32(0xffffffff);
+ 		} else {
 
