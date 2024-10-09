@@ -1,77 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-1871-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1872-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12C4995EE4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 07:19:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B42995F00
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 07:38:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNh516K7Kz2xmh;
-	Wed,  9 Oct 2024 16:19:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNhW85pdhz2yVP;
+	Wed,  9 Oct 2024 16:38:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728451141;
-	cv=none; b=TxpJhlF57ns8H+9E3rWAAeABEtmkAE3jaYkWxZl6vqGgFf/o/ejHojsA2X3aZ6bDFAr3KEWQN2dX1uLjV4BLwSJTssEuOHk1y0UdqZTuzXZgxRmXAxAc5yUpvXYBr7pNxZMsUft4pJCmNGydIkFfhftZA3LpXPg0T0d8H0VLpLUHTyRLYIqLw85YmUocGYV/K3mVGgfgv4OR7br654QKfDIquumjzlZMDnxg1LSfEJTy1U1OIbOgVMTtoktZs/rQVuHcc9qsFcWn+O7RFaZCAIhw3e8oOO+tZxU/FAusXMshScNmA+8Kce1dr0H5vW3H7LmhoMJ3sFkHFM39hKjkcw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728452292;
+	cv=none; b=ZbTaJLpc9OJwtFnjSDuLjxDMeJtt97rfkRKPnQxbQcZ0wrz0I+BZN6a5gJH/CNbRXf+JfzPSrYrlsW+41vLybDae82FlOplHQLWd/1iB+20VR7VCHpD/FiSdo+TY7Y1D3vm1qvR4b8Wkix9QQ6fxsqD8/1AQ9TH6kWGQmzqpJS/92ZzWS7z+9ceUMO9bRuil/M17G26N7efoBjQbYJCOBxjH4b1BC/f4hMfw2K/sI+DXMRHsA6eI1GKY8hRqH3bv2gdPjKSxUSt2KHqDMz08b7HDC9mgL8uqGpBpvPX6sx3g7QAALLG3q26rPgPL4IhfOraV2cclhSzmOTH/G+vgWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728451141; c=relaxed/relaxed;
-	bh=53fwvqAc/Wo+RKKWzmHOTNFBuhS2tWsAdnLdzfNm78A=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=mN+k7n3oPIUDpYZmEAd1DoV7iRVLZcsDqwBGBy/15DvjpAJnAwD8Pd7p9g/hka3O0ggSnDfLxA6o+zuQ9MlDH19Mn7tldnShIzDg81zHnL92a0mXqdFIqKDgzurYwmnF8Thg7Enjc+dyhLL8q+xGWoZd9ozs2YDxh/lVqWSmzxb7YwftSG3OVaW7L52kF2YqwA2fma0JS+++Hs5oseoHf09MkrtknsdtQdQznyPtMcWjqjaBZ8uS8XIA0PonXEDUa4hbkjlK5Cc/g9yPusvIeMBMHzg/sco5B3z4TULlgNHei4p/QDsWm2ZbGQhWBfDG3BNDcmL7DiMJ/km9F3Pgqw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NX0MLHSs; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1728452292; c=relaxed/relaxed;
+	bh=QNqrMxCWjFbB1u9R8PQLRcJUnHbswW2NIw7qH4L+Hww=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KCQCOSCfqkfAZofoaOJM5avsL7Cz2CZlrk4uon29W2M5P8kN7ocok/E6CgVohCn0hcAUI+ScfY2beiQbabeYBywxxDJChv8fJYhUb61K8f4BQ0PaQvteewDDUjo175svWvDD4BOcE0Zp+qw5nePusb0P30LYzozik3IbUvtqU0vDyDC/2VU1wFShKNnFimWea8euTxIsHAIdwERKTPPawalbviimAwpTISR9ZY+M+NgTgSfyTV969CX6f4ZqjSrqo29BHhNNfFcX0Pi0Iqeq0yBLu+2Pd9deTwQCY7oDklK/Kvixd8h5tDNnclox1naHzKLLHwIu2ENOydrZrNNJ2w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a93zj4Sd; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NX0MLHSs;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a93zj4Sd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNh5053f9z2xks
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 16:19:00 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 3E0D8A43664;
-	Wed,  9 Oct 2024 05:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25ED0C4CEC5;
-	Wed,  9 Oct 2024 05:18:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728451136;
-	bh=ERGB9NncgBQf8kcSFrM5zk16kRDy8Kirvnqjap9pv/o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NX0MLHSsOzIyJWZ00lOcEd5TiAb0rXF2Y225B003GI1yoCppwJqpG1TK8kj6WMlbd
-	 4bjbUZtJLfF1ug31g1l5K8Z93tIXr+K0iA03Rd9H1ibFSuz2bLDVQPRf4JXsHxyxJZ
-	 vAy4+XLDirV5blZwGa/8icIBAD5J5u+0gwBXar+vBqOX5q4bTfjQNiQUJeC9hVyDgh
-	 emZh6Z4DmmTOWy79lEgVWOnXF7L03pFWYHCja1suJ8MDX4JQhzIorPwxXoTNqRgvop
-	 eg+5xShCFGnxGN/CnbXRot6bMgoqNubSj8GyUt5h3QQvfRH9EbsQGxPMXqUHVF8Zkn
-	 IJp1w/OcpiljA==
-Date: Wed, 9 Oct 2024 14:18:49 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, "linux-arch@vger.kernel.org"
- <linux-arch@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Mark Rutland <mark.rutland@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao
- <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Paul 
- Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas 
- Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, Borislav 
- Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v2 1/2] ftrace: Make ftrace_regs abstract from direct
- use
-Message-Id: <20241009141849.4d4b75fbf274775f75b55033@kernel.org>
-In-Reply-To: <20241008230628.958778821@goodmis.org>
-References: <20241008230527.674939311@goodmis.org>
-	<20241008230628.958778821@goodmis.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNhW76Sbpz2yV3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 16:38:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1728452291;
+	bh=QNqrMxCWjFbB1u9R8PQLRcJUnHbswW2NIw7qH4L+Hww=;
+	h=From:To:Cc:Subject:Date:From;
+	b=a93zj4SdnDWBxPa3pK45EFWsB2n7WQPq6mIqV5d6Jp8fyj2syZJBiBS6JcY7okvUV
+	 J32pbwp5hhIxa+gF3oJR4BUVavBVOPU+ZDbU3TeV7049N8/4S/p+VL+R2Uk3nc7D0q
+	 2jdK10+3AJ2ovsdlPb90lAt7VDRZbbBxoULgVEp3Qt2T/SPcUSO9ECNuO4t57rIXNB
+	 2fNzWml1qlPA0LRwNkCSS0FZ2cJ2eqigBsZPA7LDUWpkOXl1dd0eYPFUkWJWEYilYV
+	 9sFV2zTnU6VtsflD65MZ++L8UIS/mJ5Wo8RFVXkqSLbrKds476ewHKz0VRhCjTMguT
+	 OFwBV3hGGV5Hw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XNhW66Jwsz4wc3;
+	Wed,  9 Oct 2024 16:38:10 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Cc: linux@leemhuis.info
+Subject: [PATCH] powerpc/boot: Remove bogus reference to lilo
+Date: Wed,  9 Oct 2024 16:38:06 +1100
+Message-ID: <20241009053806.135807-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.46.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,762 +57,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 08 Oct 2024 19:05:28 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
+The help text refers to lilo, but the install script does not run lilo
+and never has. The reference to lilo seems to have come originally from
+arch/ppc/Makefile, but it was not true there either.
 
-> From: Steven Rostedt <rostedt@goodmis.org>
-> 
-> ftrace_regs was created to hold registers that store information to save
-> function parameters, return value and stack. Since it is a subset of
-> pt_regs, it should only be used by its accessor functions. But because
-> pt_regs can easily be taken from ftrace_regs (on most archs), it is
-> tempting to use it directly. But when running on other architectures, it
-> may fail to build or worse, build but crash the kernel!
-> 
-> Instead, make struct ftrace_regs an empty structure and have the
-> architectures define __arch_ftrace_regs and all the accessor functions
-> will typecast to it to get to the actual fields. This will help avoid
-> usage of ftrace_regs directly.
-> 
-> Link: https://lore.kernel.org/all/20241007171027.629bdafd@gandalf.local.home/
-> 
+Remove it.
 
-This looks good to me.
+Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
+Link: https://fosstodon.org/@kernellogger/113032940928131612
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-For x86 and generic part.
-
-Thank you,
-
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> ---
-> Changes since v1: https://lore.kernel.org/20241007204743.41314f1d@gandalf.local.home
-> 
-> - Moved the non ftrace args code from asm-generic/ftrace.h to linux/ftrace.h
->   those archs have their own asm/ftrace.h and are not using asm-generic.
->   The default has to be in linux/ftrace.h
-> 
-> - simplified arch_ftrace_get_regs() and made it a static inline function
-> 
->  arch/arm64/include/asm/ftrace.h          | 20 +++++++++--------
->  arch/arm64/kernel/asm-offsets.c          | 22 +++++++++----------
->  arch/arm64/kernel/ftrace.c               | 10 ++++-----
->  arch/loongarch/include/asm/ftrace.h      | 22 ++++++++++---------
->  arch/loongarch/kernel/ftrace_dyn.c       |  2 +-
->  arch/powerpc/include/asm/ftrace.h        | 21 ++++++++++--------
->  arch/powerpc/kernel/trace/ftrace.c       |  4 ++--
->  arch/powerpc/kernel/trace/ftrace_64_pg.c |  2 +-
->  arch/riscv/include/asm/ftrace.h          | 21 ++++++++++--------
->  arch/riscv/kernel/asm-offsets.c          | 28 ++++++++++++------------
->  arch/riscv/kernel/ftrace.c               |  2 +-
->  arch/s390/include/asm/ftrace.h           | 23 ++++++++++---------
->  arch/s390/kernel/asm-offsets.c           |  4 ++--
->  arch/s390/kernel/ftrace.c                |  2 +-
->  arch/s390/lib/test_unwind.c              |  4 ++--
->  arch/x86/include/asm/ftrace.h            | 25 +++++++++++----------
->  arch/x86/kernel/ftrace.c                 |  2 +-
->  include/linux/ftrace.h                   | 21 +++++++++++++++---
->  kernel/trace/ftrace.c                    |  2 +-
->  19 files changed, 134 insertions(+), 103 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/ftrace.h b/arch/arm64/include/asm/ftrace.h
-> index dc9cf0bd2a4c..bbb69c7751b9 100644
-> --- a/arch/arm64/include/asm/ftrace.h
-> +++ b/arch/arm64/include/asm/ftrace.h
-> @@ -56,6 +56,8 @@ unsigned long ftrace_call_adjust(unsigned long addr);
->  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
->  struct dyn_ftrace;
->  struct ftrace_ops;
-> +struct ftrace_regs;
-> +#define arch_ftrace_regs(fregs) ((struct __arch_ftrace_regs *)(fregs))
->  
->  #define arch_ftrace_get_regs(regs) NULL
->  
-> @@ -63,7 +65,7 @@ struct ftrace_ops;
->   * Note: sizeof(struct ftrace_regs) must be a multiple of 16 to ensure correct
->   * stack alignment
->   */
-> -struct ftrace_regs {
-> +struct __arch_ftrace_regs {
->  	/* x0 - x8 */
->  	unsigned long regs[9];
->  
-> @@ -83,47 +85,47 @@ struct ftrace_regs {
->  static __always_inline unsigned long
->  ftrace_regs_get_instruction_pointer(const struct ftrace_regs *fregs)
->  {
-> -	return fregs->pc;
-> +	return arch_ftrace_regs(fregs)->pc;
->  }
->  
->  static __always_inline void
->  ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
->  				    unsigned long pc)
->  {
-> -	fregs->pc = pc;
-> +	arch_ftrace_regs(fregs)->pc = pc;
->  }
->  
->  static __always_inline unsigned long
->  ftrace_regs_get_stack_pointer(const struct ftrace_regs *fregs)
->  {
-> -	return fregs->sp;
-> +	return arch_ftrace_regs(fregs)->sp;
->  }
->  
->  static __always_inline unsigned long
->  ftrace_regs_get_argument(struct ftrace_regs *fregs, unsigned int n)
->  {
->  	if (n < 8)
-> -		return fregs->regs[n];
-> +		return arch_ftrace_regs(fregs)->regs[n];
->  	return 0;
->  }
->  
->  static __always_inline unsigned long
->  ftrace_regs_get_return_value(const struct ftrace_regs *fregs)
->  {
-> -	return fregs->regs[0];
-> +	return arch_ftrace_regs(fregs)->regs[0];
->  }
->  
->  static __always_inline void
->  ftrace_regs_set_return_value(struct ftrace_regs *fregs,
->  			     unsigned long ret)
->  {
-> -	fregs->regs[0] = ret;
-> +	arch_ftrace_regs(fregs)->regs[0] = ret;
->  }
->  
->  static __always_inline void
->  ftrace_override_function_with_return(struct ftrace_regs *fregs)
->  {
-> -	fregs->pc = fregs->lr;
-> +	arch_ftrace_regs(fregs)->pc = arch_ftrace_regs(fregs)->lr;
->  }
->  
->  int ftrace_regs_query_register_offset(const char *name);
-> @@ -143,7 +145,7 @@ static inline void arch_ftrace_set_direct_caller(struct ftrace_regs *fregs,
->  	 * The ftrace trampoline will return to this address instead of the
->  	 * instrumented function.
->  	 */
-> -	fregs->direct_tramp = addr;
-> +	arch_ftrace_regs(fregs)->direct_tramp = addr;
->  }
->  #endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
->  
-> diff --git a/arch/arm64/kernel/asm-offsets.c b/arch/arm64/kernel/asm-offsets.c
-> index 27de1dddb0ab..a5de57f68219 100644
-> --- a/arch/arm64/kernel/asm-offsets.c
-> +++ b/arch/arm64/kernel/asm-offsets.c
-> @@ -84,19 +84,19 @@ int main(void)
->    DEFINE(PT_REGS_SIZE,		sizeof(struct pt_regs));
->    BLANK();
->  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-> -  DEFINE(FREGS_X0,		offsetof(struct ftrace_regs, regs[0]));
-> -  DEFINE(FREGS_X2,		offsetof(struct ftrace_regs, regs[2]));
-> -  DEFINE(FREGS_X4,		offsetof(struct ftrace_regs, regs[4]));
-> -  DEFINE(FREGS_X6,		offsetof(struct ftrace_regs, regs[6]));
-> -  DEFINE(FREGS_X8,		offsetof(struct ftrace_regs, regs[8]));
-> -  DEFINE(FREGS_FP,		offsetof(struct ftrace_regs, fp));
-> -  DEFINE(FREGS_LR,		offsetof(struct ftrace_regs, lr));
-> -  DEFINE(FREGS_SP,		offsetof(struct ftrace_regs, sp));
-> -  DEFINE(FREGS_PC,		offsetof(struct ftrace_regs, pc));
-> +  DEFINE(FREGS_X0,		offsetof(struct __arch_ftrace_regs, regs[0]));
-> +  DEFINE(FREGS_X2,		offsetof(struct __arch_ftrace_regs, regs[2]));
-> +  DEFINE(FREGS_X4,		offsetof(struct __arch_ftrace_regs, regs[4]));
-> +  DEFINE(FREGS_X6,		offsetof(struct __arch_ftrace_regs, regs[6]));
-> +  DEFINE(FREGS_X8,		offsetof(struct __arch_ftrace_regs, regs[8]));
-> +  DEFINE(FREGS_FP,		offsetof(struct __arch_ftrace_regs, fp));
-> +  DEFINE(FREGS_LR,		offsetof(struct __arch_ftrace_regs, lr));
-> +  DEFINE(FREGS_SP,		offsetof(struct __arch_ftrace_regs, sp));
-> +  DEFINE(FREGS_PC,		offsetof(struct __arch_ftrace_regs, pc));
->  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
-> -  DEFINE(FREGS_DIRECT_TRAMP,	offsetof(struct ftrace_regs, direct_tramp));
-> +  DEFINE(FREGS_DIRECT_TRAMP,	offsetof(struct __arch_ftrace_regs, direct_tramp));
->  #endif
-> -  DEFINE(FREGS_SIZE,		sizeof(struct ftrace_regs));
-> +  DEFINE(FREGS_SIZE,		sizeof(struct __arch_ftrace_regs));
->    BLANK();
->  #endif
->  #ifdef CONFIG_COMPAT
-> diff --git a/arch/arm64/kernel/ftrace.c b/arch/arm64/kernel/ftrace.c
-> index a650f5e11fc5..b2d947175cbe 100644
-> --- a/arch/arm64/kernel/ftrace.c
-> +++ b/arch/arm64/kernel/ftrace.c
-> @@ -23,10 +23,10 @@ struct fregs_offset {
->  	int offset;
->  };
->  
-> -#define FREGS_OFFSET(n, field)				\
-> -{							\
-> -	.name = n,					\
-> -	.offset = offsetof(struct ftrace_regs, field),	\
-> +#define FREGS_OFFSET(n, field)					\
-> +{								\
-> +	.name = n,						\
-> +	.offset = offsetof(struct __arch_ftrace_regs, field),	\
->  }
->  
->  static const struct fregs_offset fregs_offsets[] = {
-> @@ -481,7 +481,7 @@ void prepare_ftrace_return(unsigned long self_addr, unsigned long *parent,
->  void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
->  		       struct ftrace_ops *op, struct ftrace_regs *fregs)
->  {
-> -	prepare_ftrace_return(ip, &fregs->lr, fregs->fp);
-> +	prepare_ftrace_return(ip, &arch_ftrace_regs(fregs)->lr, arch_ftrace_regs(fregs)->fp);
->  }
->  #else
->  /*
-> diff --git a/arch/loongarch/include/asm/ftrace.h b/arch/loongarch/include/asm/ftrace.h
-> index c0a682808e07..0e15d36ce251 100644
-> --- a/arch/loongarch/include/asm/ftrace.h
-> +++ b/arch/loongarch/include/asm/ftrace.h
-> @@ -43,38 +43,40 @@ void prepare_ftrace_return(unsigned long self_addr, unsigned long *parent);
->  
->  #ifdef CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS
->  struct ftrace_ops;
-> +struct ftrace_regs;
-> +#define arch_ftrace_regs(fregs) ((struct __arch_ftrace_regs *)(fregs))
->  
-> -struct ftrace_regs {
-> +struct __arch_ftrace_regs {
->  	struct pt_regs regs;
->  };
->  
->  static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *fregs)
->  {
-> -	return &fregs->regs;
-> +	return &arch_ftrace_regs(fregs)->regs;
->  }
->  
->  static __always_inline unsigned long
->  ftrace_regs_get_instruction_pointer(struct ftrace_regs *fregs)
->  {
-> -	return instruction_pointer(&fregs->regs);
-> +	return instruction_pointer(&arch_ftrace_regs(fregs)->regs);
->  }
->  
->  static __always_inline void
->  ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs, unsigned long ip)
->  {
-> -	instruction_pointer_set(&fregs->regs, ip);
-> +	instruction_pointer_set(&arch_ftrace_regs(fregs)->regs, ip);
->  }
->  
->  #define ftrace_regs_get_argument(fregs, n) \
-> -	regs_get_kernel_argument(&(fregs)->regs, n)
-> +	regs_get_kernel_argument(&arch_ftrace_regs(fregs)->regs, n)
->  #define ftrace_regs_get_stack_pointer(fregs) \
-> -	kernel_stack_pointer(&(fregs)->regs)
-> +	kernel_stack_pointer(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_return_value(fregs) \
-> -	regs_return_value(&(fregs)->regs)
-> +	regs_return_value(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_set_return_value(fregs, ret) \
-> -	regs_set_return_value(&(fregs)->regs, ret)
-> +	regs_set_return_value(&arch_ftrace_regs(fregs)->regs, ret)
->  #define ftrace_override_function_with_return(fregs) \
-> -	override_function_with_return(&(fregs)->regs)
-> +	override_function_with_return(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_query_register_offset(name) \
->  	regs_query_register_offset(name)
->  
-> @@ -90,7 +92,7 @@ __arch_ftrace_set_direct_caller(struct pt_regs *regs, unsigned long addr)
->  }
->  
->  #define arch_ftrace_set_direct_caller(fregs, addr) \
-> -	__arch_ftrace_set_direct_caller(&(fregs)->regs, addr)
-> +	__arch_ftrace_set_direct_caller(&arch_ftrace_regs(fregs)->regs, addr)
->  #endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
->  
->  #endif
-> diff --git a/arch/loongarch/kernel/ftrace_dyn.c b/arch/loongarch/kernel/ftrace_dyn.c
-> index bff058317062..18056229e22e 100644
-> --- a/arch/loongarch/kernel/ftrace_dyn.c
-> +++ b/arch/loongarch/kernel/ftrace_dyn.c
-> @@ -241,7 +241,7 @@ void prepare_ftrace_return(unsigned long self_addr, unsigned long *parent)
->  void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
->  		       struct ftrace_ops *op, struct ftrace_regs *fregs)
->  {
-> -	struct pt_regs *regs = &fregs->regs;
-> +	struct pt_regs *regs = &arch_ftrace_regs(fregs)->regs;
->  	unsigned long *parent = (unsigned long *)&regs->regs[1];
->  
->  	prepare_ftrace_return(ip, (unsigned long *)parent);
-> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-> index 559560286e6d..e299fd47d201 100644
-> --- a/arch/powerpc/include/asm/ftrace.h
-> +++ b/arch/powerpc/include/asm/ftrace.h
-> @@ -32,39 +32,42 @@ struct dyn_arch_ftrace {
->  int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec);
->  #define ftrace_init_nop ftrace_init_nop
->  
-> -struct ftrace_regs {
-> +struct ftrace_regs;
-> +#define arch_ftrace_regs(fregs) ((struct __arch_ftrace_regs *)(fregs))
-> +
-> +struct __arch_ftrace_regs {
->  	struct pt_regs regs;
->  };
->  
->  static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *fregs)
->  {
->  	/* We clear regs.msr in ftrace_call */
-> -	return fregs->regs.msr ? &fregs->regs : NULL;
-> +	return arch_ftrace_regs(fregs)->regs.msr ? &arch_ftrace_regs(fregs)->regs : NULL;
->  }
->  
->  static __always_inline void
->  ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
->  				    unsigned long ip)
->  {
-> -	regs_set_return_ip(&fregs->regs, ip);
-> +	regs_set_return_ip(&arch_ftrace_regs(fregs)->regs, ip);
->  }
->  
->  static __always_inline unsigned long
->  ftrace_regs_get_instruction_pointer(struct ftrace_regs *fregs)
->  {
-> -	return instruction_pointer(&fregs->regs);
-> +	return instruction_pointer(&arch_ftrace_regs(fregs)->regs);
->  }
->  
->  #define ftrace_regs_get_argument(fregs, n) \
-> -	regs_get_kernel_argument(&(fregs)->regs, n)
-> +	regs_get_kernel_argument(&arch_ftrace_regs(fregs)->regs, n)
->  #define ftrace_regs_get_stack_pointer(fregs) \
-> -	kernel_stack_pointer(&(fregs)->regs)
-> +	kernel_stack_pointer(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_return_value(fregs) \
-> -	regs_return_value(&(fregs)->regs)
-> +	regs_return_value(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_set_return_value(fregs, ret) \
-> -	regs_set_return_value(&(fregs)->regs, ret)
-> +	regs_set_return_value(&arch_ftrace_regs(fregs)->regs, ret)
->  #define ftrace_override_function_with_return(fregs) \
-> -	override_function_with_return(&(fregs)->regs)
-> +	override_function_with_return(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_query_register_offset(name) \
->  	regs_query_register_offset(name)
->  
-> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-> index d8d6b4fd9a14..df41f4a7c738 100644
-> --- a/arch/powerpc/kernel/trace/ftrace.c
-> +++ b/arch/powerpc/kernel/trace/ftrace.c
-> @@ -421,7 +421,7 @@ int __init ftrace_dyn_arch_init(void)
->  void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
->  		       struct ftrace_ops *op, struct ftrace_regs *fregs)
->  {
-> -	unsigned long sp = fregs->regs.gpr[1];
-> +	unsigned long sp = arch_ftrace_regs(fregs)->regs.gpr[1];
->  	int bit;
->  
->  	if (unlikely(ftrace_graph_is_dead()))
-> @@ -439,6 +439,6 @@ void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
->  
->  	ftrace_test_recursion_unlock(bit);
->  out:
-> -	fregs->regs.link = parent_ip;
-> +	arch_ftrace_regs(fregs)->regs.link = parent_ip;
->  }
->  #endif /* CONFIG_FUNCTION_GRAPH_TRACER */
-> diff --git a/arch/powerpc/kernel/trace/ftrace_64_pg.c b/arch/powerpc/kernel/trace/ftrace_64_pg.c
-> index 12fab1803bcf..d3c5552e4984 100644
-> --- a/arch/powerpc/kernel/trace/ftrace_64_pg.c
-> +++ b/arch/powerpc/kernel/trace/ftrace_64_pg.c
-> @@ -829,7 +829,7 @@ __prepare_ftrace_return(unsigned long parent, unsigned long ip, unsigned long sp
->  void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
->  		       struct ftrace_ops *op, struct ftrace_regs *fregs)
->  {
-> -	fregs->regs.link = __prepare_ftrace_return(parent_ip, ip, fregs->regs.gpr[1]);
-> +	arch_ftrace_regs(fregs)->regs.link = __prepare_ftrace_return(parent_ip, ip, arch_ftrace_regs(fregs)->regs.gpr[1]);
->  }
->  #else
->  unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
-> diff --git a/arch/riscv/include/asm/ftrace.h b/arch/riscv/include/asm/ftrace.h
-> index 2cddd79ff21b..c6bcdff105b5 100644
-> --- a/arch/riscv/include/asm/ftrace.h
-> +++ b/arch/riscv/include/asm/ftrace.h
-> @@ -126,7 +126,10 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec);
->  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
->  #define arch_ftrace_get_regs(regs) NULL
->  struct ftrace_ops;
-> -struct ftrace_regs {
-> +struct ftrace_regs;
-> +#define arch_ftrace_regs(fregs) ((struct __arch_ftrace_regs *)(fregs))
-> +
-> +struct __arch_ftrace_regs {
->  	unsigned long epc;
->  	unsigned long ra;
->  	unsigned long sp;
-> @@ -150,42 +153,42 @@ struct ftrace_regs {
->  static __always_inline unsigned long ftrace_regs_get_instruction_pointer(const struct ftrace_regs
->  									 *fregs)
->  {
-> -	return fregs->epc;
-> +	return arch_ftrace_regs(fregs)->epc;
->  }
->  
->  static __always_inline void ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
->  								unsigned long pc)
->  {
-> -	fregs->epc = pc;
-> +	arch_ftrace_regs(fregs)->epc = pc;
->  }
->  
->  static __always_inline unsigned long ftrace_regs_get_stack_pointer(const struct ftrace_regs *fregs)
->  {
-> -	return fregs->sp;
-> +	return arch_ftrace_regs(fregs)->sp;
->  }
->  
->  static __always_inline unsigned long ftrace_regs_get_argument(struct ftrace_regs *fregs,
->  							      unsigned int n)
->  {
->  	if (n < 8)
-> -		return fregs->args[n];
-> +		return arch_ftrace_regs(fregs)->args[n];
->  	return 0;
->  }
->  
->  static __always_inline unsigned long ftrace_regs_get_return_value(const struct ftrace_regs *fregs)
->  {
-> -	return fregs->a0;
-> +	return arch_ftrace_regs(fregs)->a0;
->  }
->  
->  static __always_inline void ftrace_regs_set_return_value(struct ftrace_regs *fregs,
->  							 unsigned long ret)
->  {
-> -	fregs->a0 = ret;
-> +	arch_ftrace_regs(fregs)->a0 = ret;
->  }
->  
->  static __always_inline void ftrace_override_function_with_return(struct ftrace_regs *fregs)
->  {
-> -	fregs->epc = fregs->ra;
-> +	arch_ftrace_regs(fregs)->epc = arch_ftrace_regs(fregs)->ra;
->  }
->  
->  int ftrace_regs_query_register_offset(const char *name);
-> @@ -196,7 +199,7 @@ void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
->  
->  static inline void arch_ftrace_set_direct_caller(struct ftrace_regs *fregs, unsigned long addr)
->  {
-> -	fregs->t1 = addr;
-> +	arch_ftrace_regs(fregs)->t1 = addr;
->  }
->  #endif /* CONFIG_DYNAMIC_FTRACE_WITH_ARGS */
->  
-> diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-> index e94180ba432f..f6f5a277ba9d 100644
-> --- a/arch/riscv/kernel/asm-offsets.c
-> +++ b/arch/riscv/kernel/asm-offsets.c
-> @@ -498,19 +498,19 @@ void asm_offsets(void)
->  	OFFSET(STACKFRAME_RA, stackframe, ra);
->  
->  #ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-> -	DEFINE(FREGS_SIZE_ON_STACK, ALIGN(sizeof(struct ftrace_regs), STACK_ALIGN));
-> -	DEFINE(FREGS_EPC,	    offsetof(struct ftrace_regs, epc));
-> -	DEFINE(FREGS_RA,	    offsetof(struct ftrace_regs, ra));
-> -	DEFINE(FREGS_SP,	    offsetof(struct ftrace_regs, sp));
-> -	DEFINE(FREGS_S0,	    offsetof(struct ftrace_regs, s0));
-> -	DEFINE(FREGS_T1,	    offsetof(struct ftrace_regs, t1));
-> -	DEFINE(FREGS_A0,	    offsetof(struct ftrace_regs, a0));
-> -	DEFINE(FREGS_A1,	    offsetof(struct ftrace_regs, a1));
-> -	DEFINE(FREGS_A2,	    offsetof(struct ftrace_regs, a2));
-> -	DEFINE(FREGS_A3,	    offsetof(struct ftrace_regs, a3));
-> -	DEFINE(FREGS_A4,	    offsetof(struct ftrace_regs, a4));
-> -	DEFINE(FREGS_A5,	    offsetof(struct ftrace_regs, a5));
-> -	DEFINE(FREGS_A6,	    offsetof(struct ftrace_regs, a6));
-> -	DEFINE(FREGS_A7,	    offsetof(struct ftrace_regs, a7));
-> +	DEFINE(FREGS_SIZE_ON_STACK, ALIGN(sizeof(struct __arch_ftrace_regs), STACK_ALIGN));
-> +	DEFINE(FREGS_EPC,	    offsetof(struct __arch_ftrace_regs, epc));
-> +	DEFINE(FREGS_RA,	    offsetof(struct __arch_ftrace_regs, ra));
-> +	DEFINE(FREGS_SP,	    offsetof(struct __arch_ftrace_regs, sp));
-> +	DEFINE(FREGS_S0,	    offsetof(struct __arch_ftrace_regs, s0));
-> +	DEFINE(FREGS_T1,	    offsetof(struct __arch_ftrace_regs, t1));
-> +	DEFINE(FREGS_A0,	    offsetof(struct __arch_ftrace_regs, a0));
-> +	DEFINE(FREGS_A1,	    offsetof(struct __arch_ftrace_regs, a1));
-> +	DEFINE(FREGS_A2,	    offsetof(struct __arch_ftrace_regs, a2));
-> +	DEFINE(FREGS_A3,	    offsetof(struct __arch_ftrace_regs, a3));
-> +	DEFINE(FREGS_A4,	    offsetof(struct __arch_ftrace_regs, a4));
-> +	DEFINE(FREGS_A5,	    offsetof(struct __arch_ftrace_regs, a5));
-> +	DEFINE(FREGS_A6,	    offsetof(struct __arch_ftrace_regs, a6));
-> +	DEFINE(FREGS_A7,	    offsetof(struct __arch_ftrace_regs, a7));
->  #endif
->  }
-> diff --git a/arch/riscv/kernel/ftrace.c b/arch/riscv/kernel/ftrace.c
-> index 4b95c574fd04..5081ad886841 100644
-> --- a/arch/riscv/kernel/ftrace.c
-> +++ b/arch/riscv/kernel/ftrace.c
-> @@ -214,7 +214,7 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
->  void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
->  		       struct ftrace_ops *op, struct ftrace_regs *fregs)
->  {
-> -	prepare_ftrace_return(&fregs->ra, ip, fregs->s0);
-> +	prepare_ftrace_return(&arch_ftrace_regs(fregs)->ra, ip, arch_ftrace_regs(fregs)->s0);
->  }
->  #else /* CONFIG_DYNAMIC_FTRACE_WITH_ARGS */
->  extern void ftrace_graph_call(void);
-> diff --git a/arch/s390/include/asm/ftrace.h b/arch/s390/include/asm/ftrace.h
-> index 406746666eb7..1498d0a9c762 100644
-> --- a/arch/s390/include/asm/ftrace.h
-> +++ b/arch/s390/include/asm/ftrace.h
-> @@ -51,13 +51,16 @@ static inline unsigned long ftrace_call_adjust(unsigned long addr)
->  	return addr;
->  }
->  
-> -struct ftrace_regs {
-> +struct ftrace_regs;
-> +#define arch_ftrace_regs(fregs) ((struct __arch_ftrace_regs *)(fregs))
-> +
-> +struct __arch_ftrace_regs {
->  	struct pt_regs regs;
->  };
->  
->  static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *fregs)
->  {
-> -	struct pt_regs *regs = &fregs->regs;
-> +	struct pt_regs *regs = &arch_ftrace_regs(fregs)->regs;
->  
->  	if (test_pt_regs_flag(regs, PIF_FTRACE_FULL_REGS))
->  		return regs;
-> @@ -84,26 +87,26 @@ static __always_inline unsigned long fgraph_ret_regs_frame_pointer(struct fgraph
->  static __always_inline unsigned long
->  ftrace_regs_get_instruction_pointer(const struct ftrace_regs *fregs)
->  {
-> -	return fregs->regs.psw.addr;
-> +	return arch_ftrace_regs(fregs)->regs.psw.addr;
->  }
->  
->  static __always_inline void
->  ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
->  				    unsigned long ip)
->  {
-> -	fregs->regs.psw.addr = ip;
-> +	arch_ftrace_regs(fregs)->regs.psw.addr = ip;
->  }
->  
->  #define ftrace_regs_get_argument(fregs, n) \
-> -	regs_get_kernel_argument(&(fregs)->regs, n)
-> +	regs_get_kernel_argument(&arch_ftrace_regs(fregs)->regs, n)
->  #define ftrace_regs_get_stack_pointer(fregs) \
-> -	kernel_stack_pointer(&(fregs)->regs)
-> +	kernel_stack_pointer(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_return_value(fregs) \
-> -	regs_return_value(&(fregs)->regs)
-> +	regs_return_value(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_set_return_value(fregs, ret) \
-> -	regs_set_return_value(&(fregs)->regs, ret)
-> +	regs_set_return_value(&arch_ftrace_regs(fregs)->regs, ret)
->  #define ftrace_override_function_with_return(fregs) \
-> -	override_function_with_return(&(fregs)->regs)
-> +	override_function_with_return(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_query_register_offset(name) \
->  	regs_query_register_offset(name)
->  
-> @@ -117,7 +120,7 @@ ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
->   */
->  static inline void arch_ftrace_set_direct_caller(struct ftrace_regs *fregs, unsigned long addr)
->  {
-> -	struct pt_regs *regs = &fregs->regs;
-> +	struct pt_regs *regs = &arch_ftrace_regs(fregs)->regs;
->  	regs->orig_gpr2 = addr;
->  }
->  #endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
-> diff --git a/arch/s390/kernel/asm-offsets.c b/arch/s390/kernel/asm-offsets.c
-> index 5529248d84fb..db9659980175 100644
-> --- a/arch/s390/kernel/asm-offsets.c
-> +++ b/arch/s390/kernel/asm-offsets.c
-> @@ -184,8 +184,8 @@ int main(void)
->  	OFFSET(__FGRAPH_RET_FP, fgraph_ret_regs, fp);
->  	DEFINE(__FGRAPH_RET_SIZE, sizeof(struct fgraph_ret_regs));
->  #endif
-> -	OFFSET(__FTRACE_REGS_PT_REGS, ftrace_regs, regs);
-> -	DEFINE(__FTRACE_REGS_SIZE, sizeof(struct ftrace_regs));
-> +	OFFSET(__FTRACE_REGS_PT_REGS, __arch_ftrace_regs, regs);
-> +	DEFINE(__FTRACE_REGS_SIZE, sizeof(struct __arch_ftrace_regs));
->  
->  	OFFSET(__PCPU_FLAGS, pcpu, flags);
->  	return 0;
-> diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
-> index 0b6e62d1d8b8..51439a71e392 100644
-> --- a/arch/s390/kernel/ftrace.c
-> +++ b/arch/s390/kernel/ftrace.c
-> @@ -318,7 +318,7 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
->  	if (bit < 0)
->  		return;
->  
-> -	kmsan_unpoison_memory(fregs, sizeof(*fregs));
-> +	kmsan_unpoison_memory(fregs, ftrace_regs_size());
->  	regs = ftrace_get_regs(fregs);
->  	p = get_kprobe((kprobe_opcode_t *)ip);
->  	if (!regs || unlikely(!p) || kprobe_disabled(p))
-> diff --git a/arch/s390/lib/test_unwind.c b/arch/s390/lib/test_unwind.c
-> index 8b7f981e6f34..6e42100875e7 100644
-> --- a/arch/s390/lib/test_unwind.c
-> +++ b/arch/s390/lib/test_unwind.c
-> @@ -270,9 +270,9 @@ static void notrace __used test_unwind_ftrace_handler(unsigned long ip,
->  						      struct ftrace_ops *fops,
->  						      struct ftrace_regs *fregs)
->  {
-> -	struct unwindme *u = (struct unwindme *)fregs->regs.gprs[2];
-> +	struct unwindme *u = (struct unwindme *)arch_ftrace_regs(fregs)->regs.gprs[2];
->  
-> -	u->ret = test_unwind(NULL, (u->flags & UWM_REGS) ? &fregs->regs : NULL,
-> +	u->ret = test_unwind(NULL, (u->flags & UWM_REGS) ? &arch_ftrace_regs(fregs)->regs : NULL,
->  			     (u->flags & UWM_SP) ? u->sp : 0);
->  }
->  
-> diff --git a/arch/x86/include/asm/ftrace.h b/arch/x86/include/asm/ftrace.h
-> index 0152a81d9b4a..87943f7a299b 100644
-> --- a/arch/x86/include/asm/ftrace.h
-> +++ b/arch/x86/include/asm/ftrace.h
-> @@ -33,7 +33,10 @@ static inline unsigned long ftrace_call_adjust(unsigned long addr)
->  }
->  
->  #ifdef CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS
-> -struct ftrace_regs {
-> +struct ftrace_regs;
-> +#define arch_ftrace_regs(fregs) ((struct __arch_ftrace_regs *)(fregs))
-> +
-> +struct __arch_ftrace_regs {
->  	struct pt_regs		regs;
->  };
->  
-> @@ -41,27 +44,27 @@ static __always_inline struct pt_regs *
->  arch_ftrace_get_regs(struct ftrace_regs *fregs)
->  {
->  	/* Only when FL_SAVE_REGS is set, cs will be non zero */
-> -	if (!fregs->regs.cs)
-> +	if (!arch_ftrace_regs(fregs)->regs.cs)
->  		return NULL;
-> -	return &fregs->regs;
-> +	return &arch_ftrace_regs(fregs)->regs;
->  }
->  
->  #define ftrace_regs_set_instruction_pointer(fregs, _ip)	\
-> -	do { (fregs)->regs.ip = (_ip); } while (0)
-> +	do { arch_ftrace_regs(fregs)->regs.ip = (_ip); } while (0)
->  
->  #define ftrace_regs_get_instruction_pointer(fregs) \
-> -	((fregs)->regs.ip)
-> +	arch_ftrace_regs(fregs)->regs.ip)
->  
->  #define ftrace_regs_get_argument(fregs, n) \
-> -	regs_get_kernel_argument(&(fregs)->regs, n)
-> +	regs_get_kernel_argument(&arch_ftrace_regs(fregs)->regs, n)
->  #define ftrace_regs_get_stack_pointer(fregs) \
-> -	kernel_stack_pointer(&(fregs)->regs)
-> +	kernel_stack_pointer(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_return_value(fregs) \
-> -	regs_return_value(&(fregs)->regs)
-> +	regs_return_value(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_set_return_value(fregs, ret) \
-> -	regs_set_return_value(&(fregs)->regs, ret)
-> +	regs_set_return_value(&arch_ftrace_regs(fregs)->regs, ret)
->  #define ftrace_override_function_with_return(fregs) \
-> -	override_function_with_return(&(fregs)->regs)
-> +	override_function_with_return(&arch_ftrace_regs(fregs)->regs)
->  #define ftrace_regs_query_register_offset(name) \
->  	regs_query_register_offset(name)
->  
-> @@ -88,7 +91,7 @@ __arch_ftrace_set_direct_caller(struct pt_regs *regs, unsigned long addr)
->  	regs->orig_ax = addr;
->  }
->  #define arch_ftrace_set_direct_caller(fregs, addr) \
-> -	__arch_ftrace_set_direct_caller(&(fregs)->regs, addr)
-> +	__arch_ftrace_set_direct_caller(&arch_ftrace_regs(fregs)->regs, addr)
->  #endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
->  
->  #ifdef CONFIG_DYNAMIC_FTRACE
-> diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
-> index 8da0e66ca22d..adb09f78edb2 100644
-> --- a/arch/x86/kernel/ftrace.c
-> +++ b/arch/x86/kernel/ftrace.c
-> @@ -647,7 +647,7 @@ void prepare_ftrace_return(unsigned long ip, unsigned long *parent,
->  void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
->  		       struct ftrace_ops *op, struct ftrace_regs *fregs)
->  {
-> -	struct pt_regs *regs = &fregs->regs;
-> +	struct pt_regs *regs = &arch_ftrace_regs(fregs)->regs;
->  	unsigned long *stack = (unsigned long *)kernel_stack_pointer(regs);
->  
->  	prepare_ftrace_return(ip, (unsigned long *)stack, 0);
-> diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
-> index 2ac3b3b53cd0..f7d4f152f84d 100644
-> --- a/include/linux/ftrace.h
-> +++ b/include/linux/ftrace.h
-> @@ -115,8 +115,6 @@ static inline int ftrace_mod_get_kallsym(unsigned int symnum, unsigned long *val
->  
->  extern int ftrace_enabled;
->  
-> -#ifndef CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS
-> -
->  /**
->   * ftrace_regs - ftrace partial/optimal register set
->   *
-> @@ -142,11 +140,28 @@ extern int ftrace_enabled;
->   *
->   * NOTE: user *must not* access regs directly, only do it via APIs, because
->   * the member can be changed according to the architecture.
-> + * This is why the structure is empty here, so that nothing accesses
-> + * the ftrace_regs directly.
->   */
->  struct ftrace_regs {
-> +	/* Nothing to see here, use the accessor functions! */
-> +};
-> +
-> +#define ftrace_regs_size()	sizeof(struct __arch_ftrace_regs)
-> +
-> +#ifndef CONFIG_HAVE_DYNAMIC_FTRACE_WITH_ARGS
-> +
-> +struct __arch_ftrace_regs {
->  	struct pt_regs		regs;
->  };
-> -#define arch_ftrace_get_regs(fregs) (&(fregs)->regs)
-> +
-> +struct ftrace_regs;
-> +#define arch_ftrace_regs(fregs) ((struct __arch_ftrace_regs *)(fregs))
-> +
-> +static inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *fregs)
-> +{
-> +	return &arch_ftrace_regs(fregs)->regs;
-> +}
->  
->  /*
->   * ftrace_regs_set_instruction_pointer() is to be defined by the architecture
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index 5d87dac83b80..1e6251174530 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -7944,7 +7944,7 @@ __ftrace_ops_list_func(unsigned long ip, unsigned long parent_ip,
->  void arch_ftrace_ops_list_func(unsigned long ip, unsigned long parent_ip,
->  			       struct ftrace_ops *op, struct ftrace_regs *fregs)
->  {
-> -	kmsan_unpoison_memory(fregs, sizeof(*fregs));
-> +	kmsan_unpoison_memory(fregs, ftrace_regs_size());
->  	__ftrace_ops_list_func(ip, parent_ip, NULL, fregs);
->  }
->  #else
-> -- 
-> 2.45.2
-> 
-> 
-
-
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index bbfe4a1f06ef..d115834817db 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -359,7 +359,7 @@ define archhelp
+   echo '  install         - Install kernel using'
+   echo '                    (your) ~/bin/$(INSTALLKERNEL) or'
+   echo '                    (distribution) /sbin/$(INSTALLKERNEL) or'
+-  echo '                    install to $$(INSTALL_PATH) and run lilo'
++  echo '                    install to $$(INSTALL_PATH)'
+   echo '  *_defconfig     - Select default config from arch/powerpc/configs'
+   echo ''
+   echo '  Targets with <dt> embed a device tree blob inside the image'
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+2.46.2
+
 
