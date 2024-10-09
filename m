@@ -1,54 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-1872-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1873-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B42995F00
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 07:38:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF5A9961E6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 10:10:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNhW85pdhz2yVP;
-	Wed,  9 Oct 2024 16:38:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNltV5hb2z2ywq;
+	Wed,  9 Oct 2024 19:10:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728452292;
-	cv=none; b=ZbTaJLpc9OJwtFnjSDuLjxDMeJtt97rfkRKPnQxbQcZ0wrz0I+BZN6a5gJH/CNbRXf+JfzPSrYrlsW+41vLybDae82FlOplHQLWd/1iB+20VR7VCHpD/FiSdo+TY7Y1D3vm1qvR4b8Wkix9QQ6fxsqD8/1AQ9TH6kWGQmzqpJS/92ZzWS7z+9ceUMO9bRuil/M17G26N7efoBjQbYJCOBxjH4b1BC/f4hMfw2K/sI+DXMRHsA6eI1GKY8hRqH3bv2gdPjKSxUSt2KHqDMz08b7HDC9mgL8uqGpBpvPX6sx3g7QAALLG3q26rPgPL4IhfOraV2cclhSzmOTH/G+vgWw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728461410;
+	cv=none; b=a4ps4vWeaRtotIXzcROMIBF1FD/JaES4XTrMNbzxInHcmUFXw5btWjWRStpqNJqVxZjIErvOM/Jo6bSg/XPAvmLT5RjmJfEVnz/ezFY6oet/9TSdvp/vOrfHReheu3RxQKKzctoh0B3gfo93w8HxOJHoGpd9iVGzHGqHdi14R+U4j/y4KGaMRjt4fUDT7hKEI+lIQeXcAyLbLpuDA/rxD45kVGPMeNKv9wYhvxu7opzZSsLGSbXmV9HBr19aXxs5NKupaeA9pj8XIrfC/VCphQtnXe1/GeOoi11Dc/HbzrgTgBorlt8l84HpAyx+pq1xC31PcbfLf+UrvTT/+fQvmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728452292; c=relaxed/relaxed;
-	bh=QNqrMxCWjFbB1u9R8PQLRcJUnHbswW2NIw7qH4L+Hww=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KCQCOSCfqkfAZofoaOJM5avsL7Cz2CZlrk4uon29W2M5P8kN7ocok/E6CgVohCn0hcAUI+ScfY2beiQbabeYBywxxDJChv8fJYhUb61K8f4BQ0PaQvteewDDUjo175svWvDD4BOcE0Zp+qw5nePusb0P30LYzozik3IbUvtqU0vDyDC/2VU1wFShKNnFimWea8euTxIsHAIdwERKTPPawalbviimAwpTISR9ZY+M+NgTgSfyTV969CX6f4ZqjSrqo29BHhNNfFcX0Pi0Iqeq0yBLu+2Pd9deTwQCY7oDklK/Kvixd8h5tDNnclox1naHzKLLHwIu2ENOydrZrNNJ2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a93zj4Sd; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a93zj4Sd;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	t=1728461410; c=relaxed/relaxed;
+	bh=HhHjsA8NygWOKooc9/mLe9mcuCkZdT6JzZRHAgrZT9s=;
+	h=From:To:Subject:Date:Message-Id; b=Ayr7zhIHSGL3zhFpeKfQHJGOLKGyWfb4wYP2ObUH14md9UJRcihoEQFKPwdOTExf7TvZYtJ0nj3tjxYk/nGEVlF1rAgiQ8dY4AukBlwtWrpRGn1z37kqim5okKmJkSBmszh0uSqaGzWrGq8jtXcy475BBxOfLMI24KE6YCYOWISgMhOQa+AFRxfw390not3ZaUP2QERVFl8CuSPyRUpu3yQBSt7cCXQqkd1q1BeaB0yvClcYm0NtiRJMnJgPm2NsT91PagEv3EaO8uIECMcnonKH3PGo3/bUMRFLv6rwBr78xVz/9L1sX1oTKerJZdFkzJ0v37McMjPCR+uaAkRWSg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNhW76Sbpz2yV3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 16:38:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1728452291;
-	bh=QNqrMxCWjFbB1u9R8PQLRcJUnHbswW2NIw7qH4L+Hww=;
-	h=From:To:Cc:Subject:Date:From;
-	b=a93zj4SdnDWBxPa3pK45EFWsB2n7WQPq6mIqV5d6Jp8fyj2syZJBiBS6JcY7okvUV
-	 J32pbwp5hhIxa+gF3oJR4BUVavBVOPU+ZDbU3TeV7049N8/4S/p+VL+R2Uk3nc7D0q
-	 2jdK10+3AJ2ovsdlPb90lAt7VDRZbbBxoULgVEp3Qt2T/SPcUSO9ECNuO4t57rIXNB
-	 2fNzWml1qlPA0LRwNkCSS0FZ2cJ2eqigBsZPA7LDUWpkOXl1dd0eYPFUkWJWEYilYV
-	 9sFV2zTnU6VtsflD65MZ++L8UIS/mJ5Wo8RFVXkqSLbrKds476ewHKz0VRhCjTMguT
-	 OFwBV3hGGV5Hw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XNhW66Jwsz4wc3;
-	Wed,  9 Oct 2024 16:38:10 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Cc: linux@leemhuis.info
-Subject: [PATCH] powerpc/boot: Remove bogus reference to lilo
-Date: Wed,  9 Oct 2024 16:38:06 +1100
-Message-ID: <20241009053806.135807-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.46.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNltT50bsz2yFD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 19:10:08 +1100 (AEDT)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id EFB6C20142C;
+	Wed,  9 Oct 2024 10:10:05 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B65A7200874;
+	Wed,  9 Oct 2024 10:10:05 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 00B65183F0C0;
+	Wed,  9 Oct 2024 16:10:03 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	chancel.liu@nxp.com
+Subject: [PATCH 0/2] ASoC: imx-card: add cs42888 codec support
+Date: Wed,  9 Oct 2024 15:46:42 +0800
+Message-Id: <1728460004-364-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,40 +62,17 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The help text refers to lilo, but the install script does not run lilo
-and never has. The reference to lilo seems to have come originally from
-arch/ppc/Makefile, but it was not true there either.
+add cs42888 codec support
 
-Remove it.
+Chancel Liu (2):
+  ASoC: imx-card: Set mclk for codec
+  ASoC: imx-card: Add CS42888 support
 
-Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
-Link: https://fosstodon.org/@kernellogger/113032940928131612
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/imx-card.c | 59 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 52 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index bbfe4a1f06ef..d115834817db 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -359,7 +359,7 @@ define archhelp
-   echo '  install         - Install kernel using'
-   echo '                    (your) ~/bin/$(INSTALLKERNEL) or'
-   echo '                    (distribution) /sbin/$(INSTALLKERNEL) or'
--  echo '                    install to $$(INSTALL_PATH) and run lilo'
-+  echo '                    install to $$(INSTALL_PATH)'
-   echo '  *_defconfig     - Select default config from arch/powerpc/configs'
-   echo ''
-   echo '  Targets with <dt> embed a device tree blob inside the image'
 -- 
-2.46.2
+2.34.1
 
 
