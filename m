@@ -1,61 +1,114 @@
-Return-Path: <linuxppc-dev+bounces-1874-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1876-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4589D9961EA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 10:10:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3E399658A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 11:37:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNltW2rDJz2yFD;
-	Wed,  9 Oct 2024 19:10:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNnph0BLPz2yY1;
+	Wed,  9 Oct 2024 20:37:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728461411;
-	cv=none; b=CofoBJnSiv5pEmejjPdTBfH00+T4nBKNc4j1aThIdcSuaQPf7wvbqd/Arlxp9xx6A1mX34y7FTlvQn6eK+bu8+a8PzHAzJKxvn8aT/NCQxUQ9wH1lSVY3C0N6vsWFVWTDR6nvD4vnC0ahU+CSFms3yv5BCzVilzBs6QDAy/kSCnKZS8xDIltqIP7ifwEWi/+sbFyU/o+wLL6lv2J+aiyJ1vmBLot/cttrvLYzkv6CRuPbg2uYW0W44pYTgC4JT+xoism6/wHG5z/EKL2LM6fWs1gIXkGGvbIc1kL5dHolxybHA7DHkRZCOxqb08rIhUpDIPjC0e24J2GFSY9/YVWXQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728466619;
+	cv=none; b=GXWQetzdP/ELZwM6oyUCEnjMLCBlNLkXpwNU8Y9/7B1nvoFjDfQiKPYarrZmbJXxMz5fVnUQzWX0aw03nwj7sgiDb0WCjV7iF543xk0mlsLqQEvk/bZWKDFa8KIOpN9lpXU1orMY6F9kJPOLpGaHMb8UJCdikaErwA4xUK2XM982pUdotbwNfFqKckkw+ZSOacajln/nqbom9mFPwSFtqeWVaFCBwewR+05KjvFgRPv1Aq8x0Bb7GytRCl3NVsoZe1jnyNRkEKWJ4xJcGLO1CMrhcN53kC4TNdw8D4U4kHTBcFjYtO2CIzOmqSYUFeimZliESyksAASRN67Wm0GssA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728461411; c=relaxed/relaxed;
-	bh=bZAy0ddJdO6/uRUBL9FtOObc7kOePI4TlJKbumHMShc=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References; b=nnEroaALr8gkf3EJlApA+oEgpVkIhKQ7+2UPFaYf1KDQvUA6IqBHoYAgzwmwKhL/Cq0TGGOx7UWcf85Ud+jQnlfOd3tMtCAZiRll8+mU0f87sgdpNZ/nzl51+EWgfd9NEkcxSPvaMbSIxN4AQK3dm7YDBX+fe9JYEadkEknlG5CbYLJY6wkKtT0CQ1Jjt0kmm7Bvm/S9n+6n2ACWztLcnrrYYofkkcadiIuMVCuRdx6UqmkCtkMAtQfSS1i/NNC+LuZ6IVdfbp1kU7PdE7AzG4AD0j/gdjfp19Vffiq3edPMOPxjzVUKkPpgjZR0G147NIZNwU9FbUh0Zlg/HT26JQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+	t=1728466619; c=relaxed/relaxed;
+	bh=/KRpb8zcw131KFpG0zawx6jslbJXCySZOnhN/pbyBoY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kjyGk8gV9BTJ1ZCKaPBSh0SqsKB5aSs4I2p6su9NmXl4Za5rwjhf1FngtQ0uZpP0uDQ1BKPRw0JnGRqhvz/v34Xyx97F6KOpTT7AaQJ9O93F3YFA/t1RzqFm6yegG5PfbYvUpYKTyRGpbXhJ0oxILXDdbMb9/4cV6tIYRibdjS8vICfixx4M5fyLrGcG2nBIK1CSqQNsuXzodXqGlq/QEhG0/ibYft0yJm92Oh7DqkJEOYLZYRhXzg+5yLGUYj22pyvrJ8E1j8ok4Xhl7S/431nx1ANpV3epVGtsjLogsE2F7MEsVSuf6K/YJdW0sLtH3UrLK6e2hCjyK2dn5Dl70Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o1Z1OCDC; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o1Z1OCDC;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNltV3Dy7z2yY1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 19:10:10 +1100 (AEDT)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 124A41A27F8;
-	Wed,  9 Oct 2024 10:10:08 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id CEA541A223E;
-	Wed,  9 Oct 2024 10:10:07 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 71A87183F0C0;
-	Wed,  9 Oct 2024 16:10:06 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	chancel.liu@nxp.com
-Subject: [PATCH 2/2] ASoC: imx-card: Add CS42888 support
-Date: Wed,  9 Oct 2024 15:46:44 +0800
-Message-Id: <1728460004-364-3-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1728460004-364-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1728460004-364-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNnpf4RTWz2yNs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 20:36:57 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4998sjTA001582;
+	Wed, 9 Oct 2024 09:36:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:references:content-type
+	:in-reply-to:mime-version; s=pp1; bh=/KRpb8zcw131KFpG0zawx6jslbJ
+	XCySZOnhN/pbyBoY=; b=o1Z1OCDCy87dqeYp4gOCmTovg+fJc06qUC9TZPqVxYN
+	BpC3WcA02AEKbX0KnpVcRpe1KvGi1JKoU5RYiW8izcIX5d6FuKtfiAkuJkj/GqbS
+	iC4v6X0HwlnsmitRsjSs4EfT0tpO+z1N3QzY4xL+O+qHRblqNb0iFbkDVEvzq+lY
+	xLfleYE0kPm67FWB80KKFjNRGyYk9+CeRTXOF2QRFOhophedOYes7F54OolBsAzQ
+	bNSB301yHb4GiX+gu7m/pfw489Lgf5GUDvJygX7VAmdnVI6p3PQQeVXJoKzqZekW
+	94/4cicQqYt8Fr8Hul4GUOH+Zxb07zZkvAJeaGzkISQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 425pqw85c5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Oct 2024 09:36:15 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4999aE65031934;
+	Wed, 9 Oct 2024 09:36:14 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 425pqw85c1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Oct 2024 09:36:14 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4997SUcV013790;
+	Wed, 9 Oct 2024 09:36:13 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 423fss95x3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Oct 2024 09:36:13 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4999a9Rw56885668
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 9 Oct 2024 09:36:09 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5D6182004B;
+	Wed,  9 Oct 2024 09:36:09 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 956BF20040;
+	Wed,  9 Oct 2024 09:36:08 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.60])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  9 Oct 2024 09:36:08 +0000 (GMT)
+Date: Wed, 9 Oct 2024 11:36:06 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH v2 0/2] ftrace: Make ftrace_regs abstract and consolidate
+ code
+Message-ID: <20241009093606.8007-B-hca@linux.ibm.com>
+References: <20241008230527.674939311@goodmis.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241008230527.674939311@goodmis.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: blRXi90ehFSdmaBi91d1C7PKbODuT15R
+X-Proofpoint-GUID: ts_V-pIkFtxTWzK5FdoMQ7BilExQIxn3
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,133 +117,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-09_08,2024-10-08_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 phishscore=0 bulkscore=0
+ clxscore=1015 malwarescore=0 mlxlogscore=577 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410090061
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Chancel Liu <chancel.liu@nxp.com>
+On Tue, Oct 08, 2024 at 07:05:27PM -0400, Steven Rostedt wrote:
+> 
+> This is based on:
+> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace.git/
+>      ftrace/for-next
+> 
+> ftrace_regs was created to hold registers that store information to save
+> function parameters, return value and stack. Since it is a subset of
+> pt_regs, it should only be used by its accessor functions. But because
+> pt_regs can easily be taken from ftrace_regs (on most archs), it is
+> tempting to use it directly. But when running on other architectures, it
+> may fail to build or worse, build but crash the kernel!
+> 
+> Instead, make struct ftrace_regs an empty structure and have the
+> architectures define __arch_ftrace_regs and all the accessor functions
+> will typecast to it to get to the actual fields. This will help avoid
+> usage of ftrace_regs directly.
+> 
+> I again compiled all the affected architectures (except for 32bit ppc).
+> I got s390 built when disabling bcachefs.
 
-CS42888 codec provides 4 multi-bit ADC and 8 multi-bit DAC.
-Add support for this codec in imx-card ASoC machine driver.
-
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/imx-card.c | 54 ++++++++++++++++++++++++++++++++++------
- 1 file changed, 47 insertions(+), 7 deletions(-)
-
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index 2f3dbbd15791..306168b164d3 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -25,6 +25,7 @@ enum codec_type {
- 	CODEC_AK4458,
- 	CODEC_AK4497,
- 	CODEC_AK5552,
-+	CODEC_CS42888,
- };
- 
- /*
-@@ -185,6 +186,16 @@ static struct imx_akcodec_tdm_fs_mul ak5558_tdm_fs_mul[] = {
- 	{ .min = 512,	.max = 512,	.mul = 1024 },
- };
- 
-+static struct imx_akcodec_fs_mul cs42888_fs_mul[] = {
-+	{ .rmin = 8000,   .rmax = 48000,  .wmin = 256,  .wmax = 1024, },
-+	{ .rmin = 64000,  .rmax = 96000,  .wmin = 128,  .wmax = 512, },
-+	{ .rmin = 176400, .rmax = 192000, .wmin = 64,  .wmax = 256, },
-+};
-+
-+static struct imx_akcodec_tdm_fs_mul cs42888_tdm_fs_mul[] = {
-+	{ .min = 256,	.max = 256,	.mul = 256 },
-+};
-+
- static const u32 akcodec_rates[] = {
- 	8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200,
- 	96000, 176400, 192000, 352800, 384000, 705600, 768000,
-@@ -210,6 +221,14 @@ static const u32 ak5558_tdm_channels[] = {
- 	1, 2, 3, 4, 5, 6, 7, 8,
- };
- 
-+static const u32 cs42888_channels[] = {
-+	1, 2, 4, 6, 8,
-+};
-+
-+static const u32 cs42888_tdm_channels[] = {
-+	1, 2, 3, 4, 5, 6, 7, 8,
-+};
-+
- static bool format_is_dsd(struct snd_pcm_hw_params *params)
- {
- 	snd_pcm_format_t format = params_format(params);
-@@ -241,6 +260,7 @@ static bool codec_is_akcodec(unsigned int type)
- 	case CODEC_AK4497:
- 	case CODEC_AK5558:
- 	case CODEC_AK5552:
-+	case CODEC_CS42888:
- 		return true;
- 	default:
- 		break;
-@@ -340,13 +360,15 @@ static int imx_aif_hw_params(struct snd_pcm_substream *substream,
- 			return ret;
- 		}
- 
--		ret = snd_soc_dai_set_tdm_slot(codec_dai,
--					       BIT(slots) - 1,
--					       BIT(slots) - 1,
--					       slots, slot_width);
--		if (ret && ret != -ENOTSUPP) {
--			dev_err(dev, "failed to set codec dai[%d] tdm slot: %d\n", i, ret);
--			return ret;
-+		if (format_is_tdm(link_data)) {
-+			ret = snd_soc_dai_set_tdm_slot(codec_dai,
-+						       BIT(slots) - 1,
-+						       BIT(slots) - 1,
-+						       slots, slot_width);
-+			if (ret && ret != -ENOTSUPP) {
-+				dev_err(dev, "failed to set codec dai[%d] tdm slot: %d\n", i, ret);
-+				return ret;
-+			}
- 		}
- 	}
- 
-@@ -609,6 +631,8 @@ static int imx_card_parse_of(struct imx_card_data *data)
- 				plat_data->type = CODEC_AK5558;
- 			else if (!strcmp(link->codecs->dai_name, "ak5552-aif"))
- 				plat_data->type = CODEC_AK5552;
-+			else if (!strcmp(link->codecs->dai_name, "cs42888"))
-+				plat_data->type = CODEC_CS42888;
- 
- 		} else {
- 			link->codecs	 = &snd_soc_dummy_dlc;
-@@ -766,6 +790,12 @@ static int imx_card_probe(struct platform_device *pdev)
- 		data->dapm_routes[i].sink = "ASRC-Capture";
- 		data->dapm_routes[i].source = "CPU-Capture";
- 		break;
-+	case CODEC_CS42888:
-+		data->dapm_routes[0].sink = "Playback";
-+		data->dapm_routes[0].source = "CPU-Playback";
-+		data->dapm_routes[1].sink = "CPU-Capture";
-+		data->dapm_routes[1].source = "Capture";
-+		break;
- 	default:
- 		break;
- 	}
-@@ -805,6 +835,16 @@ static int imx_card_probe(struct platform_device *pdev)
- 			plat_data->support_tdm_channels = ak5558_tdm_channels;
- 			plat_data->num_tdm_channels = ARRAY_SIZE(ak5558_tdm_channels);
- 			break;
-+		case CODEC_CS42888:
-+			plat_data->fs_mul = cs42888_fs_mul;
-+			plat_data->num_fs_mul = ARRAY_SIZE(cs42888_fs_mul);
-+			plat_data->tdm_fs_mul = cs42888_tdm_fs_mul;
-+			plat_data->num_tdm_fs_mul = ARRAY_SIZE(cs42888_tdm_fs_mul);
-+			plat_data->support_channels = cs42888_channels;
-+			plat_data->num_channels = ARRAY_SIZE(cs42888_channels);
-+			plat_data->support_tdm_channels = cs42888_tdm_channels;
-+			plat_data->num_tdm_channels = ARRAY_SIZE(cs42888_tdm_channels);
-+			break;
- 		default:
- 			break;
- 		}
--- 
-2.34.1
-
+Build fix for this problem is commit 2007d28ec009 ("bcachefs: rename
+version -> bversion for big endian builds").
 
