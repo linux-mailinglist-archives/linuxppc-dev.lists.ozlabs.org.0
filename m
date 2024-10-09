@@ -1,76 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-1876-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1877-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3E399658A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 11:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBD4996592
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 11:37:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNnph0BLPz2yY1;
-	Wed,  9 Oct 2024 20:37:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNnqN0yRTz2yYf;
+	Wed,  9 Oct 2024 20:37:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728466619;
-	cv=none; b=GXWQetzdP/ELZwM6oyUCEnjMLCBlNLkXpwNU8Y9/7B1nvoFjDfQiKPYarrZmbJXxMz5fVnUQzWX0aw03nwj7sgiDb0WCjV7iF543xk0mlsLqQEvk/bZWKDFa8KIOpN9lpXU1orMY6F9kJPOLpGaHMb8UJCdikaErwA4xUK2XM982pUdotbwNfFqKckkw+ZSOacajln/nqbom9mFPwSFtqeWVaFCBwewR+05KjvFgRPv1Aq8x0Bb7GytRCl3NVsoZe1jnyNRkEKWJ4xJcGLO1CMrhcN53kC4TNdw8D4U4kHTBcFjYtO2CIzOmqSYUFeimZliESyksAASRN67Wm0GssA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728466656;
+	cv=none; b=MQmRF8abUUr6fO0mYcZsOyCz4rF3tgKBLymhadn/GntwgSK57V+UWk4IPiDaOwORB5T5uAD1zPZcUS+bCOA2NIXt8tsT4OLdLC9Dny8QeDEIOHyYSIlwCjVxbdVRNMrXiV9+bBtOLV4zX0UC7x1DynpREJIQie4DBScuzv2vMSssUx+X5Ob5fTBUpq3MnHJZMRujIlAAjU10+Xo8OaZQ1vCOZ6p4t+TyymbhZL9Zi4gY0l7XYQJJHwpUDwP/mVi0Pg4DxPl2a0SnVSSW/SLzL03pL5WJL/EKg2JnQPKNoUvCAlzY1yEXRujErimezS1T5UokeGQmy7ARK4+M8khPjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728466619; c=relaxed/relaxed;
-	bh=/KRpb8zcw131KFpG0zawx6jslbJXCySZOnhN/pbyBoY=;
+	t=1728466656; c=relaxed/relaxed;
+	bh=4ZVfjGhflHfGjMb2cztN4jQiMEIBwPHrnxrWordVKqU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kjyGk8gV9BTJ1ZCKaPBSh0SqsKB5aSs4I2p6su9NmXl4Za5rwjhf1FngtQ0uZpP0uDQ1BKPRw0JnGRqhvz/v34Xyx97F6KOpTT7AaQJ9O93F3YFA/t1RzqFm6yegG5PfbYvUpYKTyRGpbXhJ0oxILXDdbMb9/4cV6tIYRibdjS8vICfixx4M5fyLrGcG2nBIK1CSqQNsuXzodXqGlq/QEhG0/ibYft0yJm92Oh7DqkJEOYLZYRhXzg+5yLGUYj22pyvrJ8E1j8ok4Xhl7S/431nx1ANpV3epVGtsjLogsE2F7MEsVSuf6K/YJdW0sLtH3UrLK6e2hCjyK2dn5Dl70Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o1Z1OCDC; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=iF/LyTz4N0oWrHU8zygCOmozSBULU47tYqxnFcJZ/+GkIlQJYug6mFsl3zvYjdUapOW7//KamTlC87+rUh0uJvBpswcpTaT5jrnqnVzmA4hHxridIpYuCLpH1U1rTdkvbraNgTBtfWOzFp0E2SiXgbJyfrYjUsd1vpslulN1Q+zwHtTF+hXvYVo1aMIVEVfatMlYk2tfEpv78sjVA99wq6bSagVUsXYaPpaW0+J8v0HAYwmPJP8PzSEfF+w2SCo+G/uZm5LKXAhud49Rbfluwpi/+7Xio2fsSkkxJGs3F/9UgfjmRIBMu+feMjDTZ00DB4ToJrP5mtH8j6wXoEQxvg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=U0AoDelL; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o1Z1OCDC;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=U0AoDelL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNnpf4RTWz2yNs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 20:36:57 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4998sjTA001582;
-	Wed, 9 Oct 2024 09:36:15 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNnqM191Bz2yNs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 20:37:34 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4998JupJ031939;
+	Wed, 9 Oct 2024 09:36:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
 	:from:to:cc:subject:message-id:references:content-type
-	:in-reply-to:mime-version; s=pp1; bh=/KRpb8zcw131KFpG0zawx6jslbJ
-	XCySZOnhN/pbyBoY=; b=o1Z1OCDCy87dqeYp4gOCmTovg+fJc06qUC9TZPqVxYN
-	BpC3WcA02AEKbX0KnpVcRpe1KvGi1JKoU5RYiW8izcIX5d6FuKtfiAkuJkj/GqbS
-	iC4v6X0HwlnsmitRsjSs4EfT0tpO+z1N3QzY4xL+O+qHRblqNb0iFbkDVEvzq+lY
-	xLfleYE0kPm67FWB80KKFjNRGyYk9+CeRTXOF2QRFOhophedOYes7F54OolBsAzQ
-	bNSB301yHb4GiX+gu7m/pfw489Lgf5GUDvJygX7VAmdnVI6p3PQQeVXJoKzqZekW
-	94/4cicQqYt8Fr8Hul4GUOH+Zxb07zZkvAJeaGzkISQ==
+	:in-reply-to:mime-version; s=pp1; bh=4ZVfjGhflHfGjMb2cztN4jQiMEI
+	BwPHrnxrWordVKqU=; b=U0AoDelLqaa44EBW6dZqg7AEFYaJPvCLUSy9tLId0aj
+	8JlOE51Kc0a5MDLTOpaQwd4KEqGQiPTv5M1061XfehcubMUVaUdYLT6GlfQFSeQN
+	5Z8zpgxWEIZD/ouh32gWknvVLyjVttNgWGzL+wu/swygksnBBJvmieePN9zg7aNY
+	oLLDiUjOBOdSmTyImlaqZLpkZK5tCVJt1IFWtDkAGEJEz0CXDL4H1mNC7GbyYC10
+	WcWHAl60sy5ONQwo/gbWzpBA45OIXsCWSDmVjh29j9ID1gUeSfplamA/ws9yi1Dp
+	oNcIw3bsqjZnzxpkdwSkU7unRupCKSGanvdR5mS7J8Q==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 425pqw85c5-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 425p7r0be8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Oct 2024 09:36:15 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4999aE65031934;
-	Wed, 9 Oct 2024 09:36:14 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 425pqw85c1-1
+	Wed, 09 Oct 2024 09:36:55 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4999asFg016952;
+	Wed, 9 Oct 2024 09:36:54 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 425p7r0be0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Oct 2024 09:36:14 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4997SUcV013790;
-	Wed, 9 Oct 2024 09:36:13 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 423fss95x3-1
+	Wed, 09 Oct 2024 09:36:54 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4998OOFt022844;
+	Wed, 9 Oct 2024 09:36:53 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 423h9k0whg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Oct 2024 09:36:13 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4999a9Rw56885668
+	Wed, 09 Oct 2024 09:36:53 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4999anT753870968
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 9 Oct 2024 09:36:09 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5D6182004B;
-	Wed,  9 Oct 2024 09:36:09 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 956BF20040;
-	Wed,  9 Oct 2024 09:36:08 +0000 (GMT)
+	Wed, 9 Oct 2024 09:36:49 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 65FDC20040;
+	Wed,  9 Oct 2024 09:36:49 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E7B7220043;
+	Wed,  9 Oct 2024 09:36:48 +0000 (GMT)
 Received: from osiris (unknown [9.152.212.60])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  9 Oct 2024 09:36:08 +0000 (GMT)
-Date: Wed, 9 Oct 2024 11:36:06 +0200
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  9 Oct 2024 09:36:48 +0000 (GMT)
+Date: Wed, 9 Oct 2024 11:36:46 +0200
 From: Heiko Carstens <hca@linux.ibm.com>
 To: Steven Rostedt <rostedt@goodmis.org>
 Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
@@ -98,16 +98,16 @@ Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
         Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v2 0/2] ftrace: Make ftrace_regs abstract and consolidate
- code
-Message-ID: <20241009093606.8007-B-hca@linux.ibm.com>
+Subject: Re: [PATCH v2 1/2] ftrace: Make ftrace_regs abstract from direct use
+Message-ID: <20241009093646.8007-C-hca@linux.ibm.com>
 References: <20241008230527.674939311@goodmis.org>
+ <20241008230628.958778821@goodmis.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241008230527.674939311@goodmis.org>
+In-Reply-To: <20241008230628.958778821@goodmis.org>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: blRXi90ehFSdmaBi91d1C7PKbODuT15R
-X-Proofpoint-GUID: ts_V-pIkFtxTWzK5FdoMQ7BilExQIxn3
+X-Proofpoint-GUID: _7FZ0KvUpdA6UuJ2HyHknE4GFnL1BOSc
+X-Proofpoint-ORIG-GUID: JL2StsfsDLVSiBmGN94Yy7wadDz9WkZF
 X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -121,22 +121,18 @@ MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-09_08,2024-10-08_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- impostorscore=0 suspectscore=0 spamscore=0 phishscore=0 bulkscore=0
- clxscore=1015 malwarescore=0 mlxlogscore=577 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ suspectscore=0 adultscore=0 mlxlogscore=560 impostorscore=0 phishscore=0
+ spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2409260000 definitions=main-2410090061
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Oct 08, 2024 at 07:05:27PM -0400, Steven Rostedt wrote:
-> 
-> This is based on:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace.git/
->      ftrace/for-next
+On Tue, Oct 08, 2024 at 07:05:28PM -0400, Steven Rostedt wrote:
+> From: Steven Rostedt <rostedt@goodmis.org>
 > 
 > ftrace_regs was created to hold registers that store information to save
 > function parameters, return value and stack. Since it is a subset of
@@ -150,9 +146,16 @@ On Tue, Oct 08, 2024 at 07:05:27PM -0400, Steven Rostedt wrote:
 > will typecast to it to get to the actual fields. This will help avoid
 > usage of ftrace_regs directly.
 > 
-> I again compiled all the affected architectures (except for 32bit ppc).
-> I got s390 built when disabling bcachefs.
+> Link: https://lore.kernel.org/all/20241007171027.629bdafd@gandalf.local.home/
+> 
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> ---
+...
+>  arch/s390/include/asm/ftrace.h           | 23 ++++++++++---------
+>  arch/s390/kernel/asm-offsets.c           |  4 ++--
+>  arch/s390/kernel/ftrace.c                |  2 +-
+>  arch/s390/lib/test_unwind.c              |  4 ++--
 
-Build fix for this problem is commit 2007d28ec009 ("bcachefs: rename
-version -> bversion for big endian builds").
+Acked-by: Heiko Carstens <hca@linux.ibm.com> # s390
 
