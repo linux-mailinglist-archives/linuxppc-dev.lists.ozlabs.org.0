@@ -1,51 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-1907-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1908-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79D59975A8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 21:26:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533889975AA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 21:26:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XP2tl1mfrz3bfK;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XP2tl69XHz3bcj;
 	Thu, 10 Oct 2024 06:26:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728501983;
-	cv=none; b=C5qPNfypldPURyQHMFec/KIuZiI09clqn40T3Bwe6zomcfhKeDOxYckovn7qofiVQjFV/pL3XVhuXaq+kyXzAahll7f2EybTMORhVPBg6plvCxod8G8Zc/n+Gka5r9q95w0VtLHPQ8FuFxEuNbY/TFB1cnoN+wZVzS1R9yTSxfsB0tTWlh+V5slyy22xFaCOF1KRNsSGN4aPd+edzrr3rvmFGZ9+/da7TPTPTxukiGr6nf1yMZ+9vtX9WjvNJaeawv2LewO+1OGehqWAG+azbHaz2D3tA2fLKq3mR7Tw0EMlMm6AzQImy/LzlMZMzQUDL3CuRdRyp/ioKv0HGtNZyQ==
+	cv=none; b=cw8NMyH1SifIa8z+Uw2Pau3VbYrvdNTC9FrrbPAMJAj2PEI9p/9IOyfYXiiuBYoQgsKC05f5SCKscpMA1i4nwk0m/TbiqDZQp4h1gseQgrpBgDFTyV7AovjDO4DYndL7eap7tObR2icn9gO5/+oVIMJwSGONotONluK7LqUvme1b5++1/XeZVz74jFTxlwrMoifSucp2Y+/3YeQCicHw9cSKnZCEom1sEEw/M8k0w00zNm5c21Zf9RDxNtoTQdPEjAP07VcwK+/hbzIiAyhl3QfZkFBN9BMXQ57FI/Elt8WxknBPfSrAQW55R7sjSkafq8D++kFV0A5ju0ffkC+alw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1728501983; c=relaxed/relaxed;
-	bh=wuJNp0vgDuVJmhMJCW4Ip/9AYjJE4U/BYzYpONHFi+Q=;
+	bh=JL9xA8RPnvp3Oe1P6yT9eiMIA/VF/YmftCbFnKbTHYA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WdwbVZ5aIRrtYgs8WIaiwtvneU57kHcEk/BJ5b+rrtZ8wDDsXRhWjTo5iyvO1gsfSsPscEWmP/rRb1ZWeb0HYcEFZWREM2DKiZJj69ziTvsua6wbVLnJcKpTfbv30v21wGAB+GQGyzVZ7uIDKx3M44Hf4EzI4ayYmr8czudgsuoSp6wWPdR0cDnladFwSpW8hu/WbWUNMWvrVIoCmQibh+xrkliu2YWa99R7ddnN5LZciewR4a6aoZ06Xsrwz755ZoDBN3mSvd/HimliWTkpcEdTAyS6x+wqMXqRl+phjxroGUnn/c/ufNBx1BPQ0G05oChSXFbLDOP3u6hiRF9S5w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LYt6bc5i; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=ORO62rPRuYZ/6yryV1RsaQD479KRVtVa0Yb68QIzY6YN+oeCLQhC+XjZrtpX7NUTZkjj1zDTSF1HNK8DfcnRlhbHPBdhqbMa2rMyPn4f2w49Hgnu0Ou6OuUzqJWAIcLTZYKxRnIPR/RDrm2QLOF/z4v0cADloNR7pOFFfwmJ6iSw8IhQSGiL7zdLVuUx0f/I6ujrYpfVPNZwQozT5YaAII550fjbg38h471X0H63joR+MwiIzl3SyCyh0VwH7E8OfA0RSGkdWuoPURfjHxoBdcaDa7QzquhrPvW6j33CwCbX1Md9klE4nAxh9y9A5u7kyKqVlww7EfOFzrjkm5ujoQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t+uUmnmx; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LYt6bc5i;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t+uUmnmx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XP2tj5nfNz3bcj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 06:26:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XP2tk3RBNz3bdq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 06:26:22 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 47246A44484;
-	Wed,  9 Oct 2024 19:26:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB489C4CECF;
-	Wed,  9 Oct 2024 19:26:17 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 6724BA44497;
+	Wed,  9 Oct 2024 19:26:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B69C4AF0B;
+	Wed,  9 Oct 2024 19:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728501978;
-	bh=uORjfL4WuGqTOF2X8sPKum4spOOJIstRjqK9q3eytvE=;
+	s=k20201202; t=1728501979;
+	bh=mj4tC05Afjr4W0qf5XiO9k6e8T16uFW78MQG6sHQpQY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=LYt6bc5iO+k49Z/dCb/PqFUKjDJERR8xN3cGKwH+gMFXbV0de42CDElI7NHuS0F/m
-	 w1QSWTG6L1uo8F3Ml4/Zlcn+kxiI1tRqzPlQ3kmx/65aoQX21Z7C/JaqF3O101bax0
-	 3CNzOxikqLs1kBdk9imJsIDDwEDYuSFzbjkJMzkFFt2Jh/g/NCjOaIXkC9pK1/lRfp
-	 /aEIIa51+9S96SRGZn3JnzP1gHwymrlE0LEhoBtmC42VotGLlTDPYeCgKMTyieWPpd
-	 3MS2uZccUf7L3twyIS7ZkCymSePehpkjNJ/wPqC1m4+850F37+94I4hTNu4jeI8pDw
-	 v6IHqbr0Y0Slg==
+	b=t+uUmnmxQyKFIlYgKdT/7gd9p9P+vVf4557pYJH7PGvuMA4HZT4tYoCelXRWBtiPV
+	 Ma8dkiV4TgVqWkh5qveUQdivE+oWm3hcPLZ5GxzZg2nJ943izEkBsq5c+cE8JEht3t
+	 iU+2nWgi2Fn3AvAZ1MPiBYxr38w+tEUM3iciSTljg7+OuiIu5jikpSB1sYX/N0X+f3
+	 sV5cxYMfTZ6Jxh221V+QLS/pLuGETNFU3izpHjsQS/RhcFeQ+MRQL6iL4QnNrpUV/g
+	 uLd3C3EJDonD+LpxJAy5xs+dHD4gXiF+2vaDZK6TH0qI2eg720eEiehWP0OGRw4ylF
+	 EZeYdipUcgR2w==
 From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 09 Oct 2024 12:26:08 -0700
-Subject: [PATCH v2 1/2] powerpc: Fix stack protector Kconfig test for clang
+Date: Wed, 09 Oct 2024 12:26:09 -0700
+Subject: [PATCH v2 2/2] powerpc: Adjust adding stack protector flags to
+ KBUILD_CLAGS for clang
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,7 +58,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241009-powerpc-fix-stackprotector-test-clang-v2-1-12fb86b31857@kernel.org>
+Message-Id: <20241009-powerpc-fix-stackprotector-test-clang-v2-2-12fb86b31857@kernel.org>
 References: <20241009-powerpc-fix-stackprotector-test-clang-v2-0-12fb86b31857@kernel.org>
 In-Reply-To: <20241009-powerpc-fix-stackprotector-test-clang-v2-0-12fb86b31857@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>
@@ -70,12 +71,12 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
  Nathan Chancellor <nathan@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3493; i=nathan@kernel.org;
- h=from:subject:message-id; bh=uORjfL4WuGqTOF2X8sPKum4spOOJIstRjqK9q3eytvE=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDOlsN24ot0yf93LGt8lzD5xTvzZZqUrZcqdp0YZ5e/q8F
- v5ouhDl3lHKwiDGxSArpshS/Vj1uKHhnLOMN05NgpnDygQyhIGLUwAmInaPkWG9uN09g9Wr/zPe
- fejDKrm42ZNbrjhtr9iBo7faVzmWvj7PyPBbQNL2V73qwg/3xa58E+mTDvtiH5n9lfVYkoy539S
- lDUwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2853; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=mj4tC05Afjr4W0qf5XiO9k6e8T16uFW78MQG6sHQpQY=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDOlsN26saTolY5mtmWK72uQd3081W2El+2R99xcT/7hIW
+ 7pn3DvXUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACaixcjIcGr639tKLc56+6Rc
+ xC6WJOd43T7wNFX5efS76ZK3Jd7M02b4p1w0cXf35f9uNZf3fTymkSP2XWy9TtCp4lMv7BXvXJ2
+ 4hhEA
 X-Developer-Key: i=nathan@kernel.org; a=openpgp;
  fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -83,52 +84,20 @@ X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Clang's in-progress per-task stack protector support [1] does not work
-with the current Kconfig checks because '-mstack-protector-guard-offset'
-is not provided, unlike all other architecture Kconfig checks.
+After fixing the HAVE_STACKPROTECTER checks for clang's in-progress
+per-task stack protector support [1], the build fails during prepare0
+because '-mstack-protector-guard-offset' has not been added to
+KBUILD_CFLAGS yet but the other '-mstack-protector-guard' flags have.
 
-  $ fd Kconfig -x rg -l mstack-protector-guard-offset
-  ./arch/arm/Kconfig
-  ./arch/riscv/Kconfig
-  ./arch/arm64/Kconfig
-
-This produces an error from clang, which is interpreted as the flags not
-being supported at all when they really are.
-
-  $ clang --target=powerpc64-linux-gnu \
-          -mstack-protector-guard=tls \
-          -mstack-protector-guard-reg=r13 \
-          -c -o /dev/null -x c /dev/null
   clang: error: '-mstack-protector-guard=tls' is used without '-mstack-protector-guard-offset', and there is no default
+  clang: error: '-mstack-protector-guard=tls' is used without '-mstack-protector-guard-offset', and there is no default
+  make[4]: *** [scripts/Makefile.build:229: scripts/mod/empty.o] Error 1
+  make[4]: *** [scripts/Makefile.build:102: scripts/mod/devicetable-offsets.s] Error 1
 
-This argument will always be provided by the build system, so mirror
-other architectures and use '-mstack-protector-guard-offset=0' for
-testing support, which fixes the issue for clang and does not regress
-support with GCC.
-
-Even with the first problem addressed, the 32-bit test continues to fail
-because Kbuild uses the powerpc64le-linux-gnu target for clang and
-nothing flips the target to 32-bit, resulting in an error about an
-invalid register valid:
-
-  $ clang --target=powerpc64le-linux-gnu \
-          -mstack-protector-guard=tls
-          -mstack-protector-guard-reg=r2 \
-          -mstack-protector-guard-offset=0 \
-          -x c -c -o /dev/null /dev/null
-  clang: error: invalid value 'r2' in 'mstack-protector-guard-reg=', expected one of: r13
-
-While GCC allows arbitrary registers, the implementation of
-'-mstack-protector-guard=tls' in LLVM shares the same code path as the
-user space thread local storage implementation, which uses a fixed
-register (2 for 32-bit and 13 for 62-bit), so the command line parsing
-enforces this limitation.
-
-Use the Kconfig macro '$(m32-flag)', which expands to '-m32' when
-supported, in the stack protector support cc-option call to properly
-switch the target to a 32-bit one, which matches what happens in Kbuild.
-While the 64-bit macro does not strictly need it, add the equivalent
-64-bit option for symmetry.
+Mirror other architectures and add all '-mstack-protector-guard' flags
+to KBUILD_CFLAGS atomically during stack_protector_prepare, which
+resolves the issue and allows clang's implementation to fully work with
+the kernel.
 
 Cc: stable@vger.kernel.org # 6.1+
 Link: https://github.com/llvm/llvm-project/pull/110928 [1]
@@ -136,24 +105,41 @@ Reviewed-by: Keith Packard <keithp@keithp.com>
 Tested-by: Keith Packard <keithp@keithp.com>
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- arch/powerpc/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/Makefile | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 8094a01974cca1d27002720e706f66bec2a2d035..6aaca48955a34b2a38af1415bfa36f74f35c3f3e 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -275,8 +275,8 @@ config PPC
- 	select HAVE_RSEQ
- 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
- 	select HAVE_SOFTIRQ_ON_OWN_STACK
--	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
--	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
-+	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,$(m32-flag) -mstack-protector-guard=tls -mstack-protector-guard-reg=r2 -mstack-protector-guard-offset=0)
-+	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,$(m64-flag) -mstack-protector-guard=tls -mstack-protector-guard-reg=r13 -mstack-protector-guard-offset=0)
- 	select HAVE_STATIC_CALL			if PPC32
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select HAVE_VIRT_CPU_ACCOUNTING
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index bbfe4a1f06ef9db9b2f2e48e02096b1e0500a14b..cbb353ddacb7adc5de28cd1fde893de3efdd8272 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -100,13 +100,6 @@ KBUILD_AFLAGS	+= -m$(BITS)
+ KBUILD_LDFLAGS	+= -m elf$(BITS)$(LDEMULATION)
+ endif
+ 
+-cflags-$(CONFIG_STACKPROTECTOR)	+= -mstack-protector-guard=tls
+-ifdef CONFIG_PPC64
+-cflags-$(CONFIG_STACKPROTECTOR)	+= -mstack-protector-guard-reg=r13
+-else
+-cflags-$(CONFIG_STACKPROTECTOR)	+= -mstack-protector-guard-reg=r2
+-endif
+-
+ LDFLAGS_vmlinux-y := -Bstatic
+ LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) := -pie
+ LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) += -z notext
+@@ -402,9 +395,11 @@ prepare: stack_protector_prepare
+ PHONY += stack_protector_prepare
+ stack_protector_prepare: prepare0
+ ifdef CONFIG_PPC64
+-	$(eval KBUILD_CFLAGS += -mstack-protector-guard-offset=$(shell awk '{if ($$2 == "PACA_CANARY") print $$3;}' include/generated/asm-offsets.h))
++	$(eval KBUILD_CFLAGS += -mstack-protector-guard=tls -mstack-protector-guard-reg=r13 \
++				-mstack-protector-guard-offset=$(shell awk '{if ($$2 == "PACA_CANARY") print $$3;}' include/generated/asm-offsets.h))
+ else
+-	$(eval KBUILD_CFLAGS += -mstack-protector-guard-offset=$(shell awk '{if ($$2 == "TASK_CANARY") print $$3;}' include/generated/asm-offsets.h))
++	$(eval KBUILD_CFLAGS += -mstack-protector-guard=tls -mstack-protector-guard-reg=r2 \
++				-mstack-protector-guard-offset=$(shell awk '{if ($$2 == "TASK_CANARY") print $$3;}' include/generated/asm-offsets.h))
+ endif
+ endif
+ 
 
 -- 
 2.47.0
