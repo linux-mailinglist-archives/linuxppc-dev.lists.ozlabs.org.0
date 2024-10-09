@@ -1,64 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-1867-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1868-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204CD995EB9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 06:48:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC0B995EDF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Oct 2024 07:17:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XNgQB5jRBz2xxr;
-	Wed,  9 Oct 2024 15:48:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XNh2m3hX1z2yFP;
+	Wed,  9 Oct 2024 16:17:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728449330;
-	cv=none; b=JPr4hQxTIGY8fLHGh+JoQVAxMr5Z0akhmbJAvC6j9KVq9CpG7fPw395UPS/IjN+vJChrc60u9gyta2j7dsXnweZupt+HSceDQ1116sj2w/Iyf6bTgjNR60q/ARr0I5umjJjvf1caC71ZXeYUvQ/HCvI7YiaQUf5YJn3YI6maSQH/aiCNFc7kfYTDq+bqdJEQ/WlBLe/V4hzc3kXzmMkukOMMKpweVLKHJ0YZfCC8rdXfaOJS60KUVLEoocLVE1Wuzod7b1BCr3mNsF36ZTNgb1TTcC1RZ4r09BHAIi5RR+jG/L8JL2dbvDA8E0WBBiaRNtZ6Br7e29b7NHhT3zzWnw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728451024;
+	cv=none; b=WJCeIQjV95nbuCCnype3ao8WzRmZYdWU/+1Q0ByDBUvkMBlTxMovBFWZvmOzVsNSc5rxTTOL9jMZOWq+CBnHKA7KymImzOWEpbg+vIuNftPqWrKjQnSLWOoEef6BaCts5Nuj50dGssoyjzsmSuQz4Ui+jhMSaey2Ox+4lgDnGx2EtIOgjOcObLdHugbyG9sNC6FlT3vy1OKCKGHzuQsY6SLupOH+hiKGsyT+L2lZHt/7FmdN/pm5aNYQdbUSPFfrhRwmKNpA8p6M1Xl7bT9SS5O8QPVcm1rL64EAHAyhihFZ6Iv4t4nL045vq3C9cAnh/HysYQ1KBwMz0JQaYqteJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728449330; c=relaxed/relaxed;
-	bh=uMgzHaq2PtarSf76t5H+hReShTblmOAvj1JQqJCeCbE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=de3j7Ygqu1RQursRBI8pE+OLsWihDCX2QJX+XPzRGxOcx0eFPVFN1QTTLI9bFQbrFruHKl8O5cCLUJba/8pctVtNDjA52/N8Go5DSPehgietPFIhouDdrtHDP2WWTuqqsULgN0+1XRT6nVlOqyr9wx/SAq3WWmsDcFyznCenEgVx03iwRUMnt1EAAefdt6CmPvGeq7L5amabqX0bNqefTjV1XyZ+LSGNsCA5SZyvV0k0zQuxvfMjjBf26ZP2To6iaFI3T9T8Slrqa3Yq2KtfmWirvGFZUnXKb2Z1s8Hg96lPM5KGPh4G1VyuZCkIyTr/z+Ax49q7f3O7nzVlYCa4Pw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h75XvDhq; dkim-atps=neutral
+	t=1728451024; c=relaxed/relaxed;
+	bh=Kmp3jv3s3LGlEpsRybldqKct2pe49w18wMUTnR4qC+c=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Tiz5tarBAMsRhtOgX05PFdY4Z+zovDTXr+BxWwcGGz+gIfKt7JRkDSwSzUi0aY5LFpOsahPZNaunUpedANMvTS1O/FyLwIE48QAvRRBtyEsQApr4HlBAcqUjE5IF8aaDi1LhCI/NR0G92AR3XPVifiFjSJD6hlSMXLzKqm7knPGAQpbTiBR5hwPoE/EOb90FH9Ajd7MKj0ealu0fKA9Ey4/Z4eCCdd1XbWcxRcA/9fa7jfp1jRDIDyOIz6wNqnM/wvtUmjFaF6LnTNRXv8m7oHNe8aMYQ6dwXa+vpnAacz2lo0MtTMP8MfjThCqbbORj3omfnVbvB3+MACBu7NQgwA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UhgG/g4p; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h75XvDhq;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UhgG/g4p;
 	dkim-atps=neutral
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNgQ83zqgz2xjv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 15:48:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XNh2l1V7bz2xks
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Oct 2024 16:17:03 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1728449323;
-	bh=uMgzHaq2PtarSf76t5H+hReShTblmOAvj1JQqJCeCbE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=h75XvDhqBZJCnvzjFqZfVOueIrPpfavGyVgtKj2u9a4OeIBCKTJ1gCp1xj0+BlxwN
-	 ppV3gFWMmkaE9WJADlMOSdGAzC0EvDtwYpNRMM+/Uqw2uaYzZiQ1j0H6zaNYFa7ja4
-	 dFSXpdOx5zt6SD0+PtNop/4heFxNFFFqrgbDiMlocS7AQBran98c25ltHeeI7EUbQx
-	 Rnwim5/UJ1n0vAHHQC3H/OIvDpTyPFbZst1zF0GzvUyU+DPAurJn0cD4tiUWcNe19d
-	 4VilVP5dJ5O+i5DjI9DDI+nKbp/Zdp1ePAKAM0MDxxr+BlEChLl6sd04rR7PGV6/ks
-	 TQvSqrdO6kvyw==
+	s=201909; t=1728451022;
+	bh=Kmp3jv3s3LGlEpsRybldqKct2pe49w18wMUTnR4qC+c=;
+	h=From:To:Subject:Date:From;
+	b=UhgG/g4pDM3owWdmhk3DaNz3T349lTSLUEViecO0xdoIHmJeWIs0qQ6SsSljZF0Sn
+	 ugEBZDo7taygYJHiPcFpkngtfWAO4ij3M1uR9oVfYWUu0ft43Wrg5i2XpwiIlbVtnU
+	 ul44T8w0aEOfx2u2Eli2WBkBDsU3xOhppg21LkisX4jpUuq5FZEgZ5HVJlbrWVtfbO
+	 /bBIuPXhd9Rze3OqLFuNZs17tYI1Ho5AgXvqj4z0f9m5GCTPk61OoaMY1Qppbv3lAS
+	 q6KiplYmr7d7c919/Cqfmt2znCaEosTjpX6SjNuUSL2pDwX3LZek5ZJVBDKxhIkbbd
+	 zDVbd77/fZ45g==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XNgQ21zPlz4wnr;
-	Wed,  9 Oct 2024 15:48:42 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XNh2k20cDz4wy9;
+	Wed,  9 Oct 2024 16:17:02 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Markus Elfring
- <Markus.Elfring@web.de>, linuxppc-dev@lists.ozlabs.org, Jani Nikula
- <jani.nikula@intel.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Naveen
- N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Paul
- Mackerras <paulus@samba.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
- Thomas Zimmermann <tzimmermann@suse.de>
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] powermac: Call of_node_put(bk_node) only once in
- pmac_has_backlight_type()
-In-Reply-To: <d9bdc1b6-ea7e-47aa-80aa-02ae649abf72@csgroup.eu>
-References: <b7e69e04-e15c-41ec-b62b-37253debc654@web.de>
- <d9bdc1b6-ea7e-47aa-80aa-02ae649abf72@csgroup.eu>
-Date: Wed, 09 Oct 2024 15:48:42 +1100
-Message-ID: <87cyk97ufp.fsf@mail.lhotse>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/64: Drop IPI_PRIORITY from asm-offsets
+Date: Wed,  9 Oct 2024 16:17:00 +1100
+Message-ID: <20241009051701.132282-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.46.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,41 +57,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 02/10/2024 =C3=A0 22:02, Markus Elfring a =C3=A9crit=C2=A0:
->> From: Markus Elfring <elfring@users.sourceforge.net>
->> Date: Wed, 2 Oct 2024 21:50:27 +0200
->>=20
->> An of_node_put(bk_node) call was immediately used after a pointer check
->> for an of_get_property() call in this function implementation.
->> Thus call such a function only once instead directly before the check.
->
-> It seems pointless to perform a put immediately after a get. Shouldn't=20
-> of_find_property() be used instead ? And then of_property_read_string()=20
-> would probably be better.
->
-> Maybe you can even use of_property_match_string().
+The last use of IPI_PRIORITY in asm was removed in commit 37f55d30df2e
+("KVM: PPC: Book3S HV: Convert kvmppc_read_intr to a C function").
 
-Yes that would clean it up nicely I think, eg:
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/asm-offsets.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-int pmac_has_backlight_type(const char *type)
-{
-        struct device_node* bk_node =3D of_find_node_by_name(NULL, "backlig=
-ht");
-        int i;
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 131a8cc10dbe..256e8c1bbb49 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -597,7 +597,6 @@ int main(void)
+ 	HSTATE_FIELD(HSTATE_DABR, dabr);
+ 	HSTATE_FIELD(HSTATE_DECEXP, dec_expires);
+ 	HSTATE_FIELD(HSTATE_SPLIT_MODE, kvm_split_mode);
+-	DEFINE(IPI_PRIORITY, IPI_PRIORITY);
+ 	OFFSET(KVM_SPLIT_RPR, kvm_split_mode, rpr);
+ 	OFFSET(KVM_SPLIT_PMMAR, kvm_split_mode, pmmar);
+ 	OFFSET(KVM_SPLIT_LDBAR, kvm_split_mode, ldbar);
+-- 
+2.46.2
 
-        i =3D of_property_match_string(bk_node, "backlight-control", type);
-        of_node_put(bk_node);
-
-        return i >=3D 0;
-}
-
-cheers
 
