@@ -1,70 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-1998-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1999-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60463998FF6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:26:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0338E998FF7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:26:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdTt2Rgqz3bkG;
-	Fri, 11 Oct 2024 05:25:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdTw4Sgdz3bsM;
+	Fri, 11 Oct 2024 05:25:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::114a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584722;
-	cv=none; b=Am4/8hX8KyUpih8nX+15Q8POGyrfmt1lz7Emv8OgzPDZcBg+vCT4e+H5wdUsFSuKMRprGm0D/0fN979R2XcT0TNYzqsjXTuL0yD3SqPI+CtCFJl9dMNtg52NyZ1RT7y60mZTJlvyV45VRuNqrcYNtYLc37M6b0HB9Q6j+paCrm76TURyGK7yGsz1mYVLkLRmXjp8K/LNrldRoL1ITD6F3unhI+fZtAx8ditOdL8FUoTnJw0ogAi5b41jW9XmWixAdJyT24bhZrYFznAP4OaJNhaqmwhB10dztNwEqTQW/UlV5O8yyLTj+UCLb2kCjdPioyJHFnXiEKm90RxEJD9K1w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584724;
+	cv=none; b=SB8sFcgwRy78E9d36Jb2K8YsIqvKW3rIx1fSBApFlj1eXwNs3/u95H/4UZ6bAEd62vg1AoqUWvXwo0JwQv4a0PJJXdtrz2f6F6FVRNRTq1qXgPlbTcNTFC2fsX0Gji4NqFeh7ySE8zNhjKcNEKNQvBaxBRtpkTjDuAWqm+vK4I1thdnzPJpAuVnnu22Vfkmt5U3ETZU1AZMK6+sVzAlzrlv92Y16S0u/tU2HE90bTTI5R9PUAHoPtySuT9+/+eLr/a72YygHJWXfhNdNcnguoPbNHPzuFHHbVAp+Gd6ioHd7NqH8p1DwqOOfFNpgf0H3dxtDbnmZ7GmNe1ZNvYSkDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728584722; c=relaxed/relaxed;
-	bh=F0+KYw/6HzWsmGATvSxbQuKdqCcRS3waqcwxHrAen8Y=;
+	t=1728584724; c=relaxed/relaxed;
+	bh=RdgAxVyxp31c7WibHLiyIF43paER00mxZOAIHhsdwhk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OPBNKDhV+PsjpuLvs4pOFhZwxgiAyuE7W50j6fMsaNZTsaQ3ucsrv+YsPPEvVRoIHH6ogz1IMEpJQcqdRSgpVjIJX4qWBgcf7pavZm74MZ0A4Jg927qe1lPgWGMBUvjn6C8djcruQg6TDJ68PFnFCB1Dh82agX1QIHiVBGEwTvvavzAGLAHVxtBkhLlqFULm8sBSoGB0Pci9xofleUJ6Hb1+w2FjLyDOubvEJaaqnU0MaFFrJeUyfbmo7MVlh2qF6oVwcmZp7NFkiY9MqLLue+dttojWJbStNiL+UC3nEugqgts0bj4a8tVN2VrsZiKYsnTBLPYRsynkJ5LPQyBS9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=UP1ENL6R; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3dxwizwykdkyykgtpimuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=Pj11e3nOjQ31jJ310igIwoXTzcgRsvJ/SLaLj/BVVfv87qQIxqNJfKXHUhhLzDasCdm2/FfgHD07jVCN5lS27iHmOzMp9JrXSf3QqYeRUoPVi/8ijakS7/FKORykArGj7OHWXsMpuN+MenoYf7u/d4sLfQqpvp80FQsAZGxSXZ+vlVvPF5qBKP1G0WVvxzmYepkYIbrY7+rEX4wWEdNhQKnXNxKGMPudkHoK7oL+uOInF4b+AbRQuYeppJ+0Fy54c7voY9xs3gI7MwuJV8t9rWqhWlPtZA8OtaV/h8iFl9+vMcv1O+LALHX7rx6Qz9SJG2PIphT4GCZQh9/nXXNA9w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LkUY/3bT; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3ebwizwykdkczlhuqjnvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=UP1ENL6R;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LkUY/3bT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::114a; helo=mail-yw1-x114a.google.com; envelope-from=3dxwizwykdkyykgtpimuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3ebwizwykdkczlhuqjnvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdTs27Qnz3brt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:25:21 +1100 (AEDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-6e3245ed6b8so23826807b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:25:21 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdTv5CgXz3brt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:25:23 +1100 (AEDT)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-2e2ca4fb175so1247621a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:25:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728584719; x=1729189519; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F0+KYw/6HzWsmGATvSxbQuKdqCcRS3waqcwxHrAen8Y=;
-        b=UP1ENL6R/dG8nmn5hkc7RXWtWU1FqNxxW5+vs6KOcU1tppPMApwiFsvcH4YlLAbTvC
-         h4coiY9xfT+wbMizLNQh5Dxl4Cpu9sNBbfbAPQ4JYY9fdMnLCMWwoEwjhsN+yU4OA9jH
-         vrkuF29nLgyJNXhtDbZWB6g2aTKQS6r13D8tUlT8hYFa93DzUDN7PZJtsMXKXxOf1dFj
-         WTL41Vww7o8qY5csHM6kCrir43EURbDf3hZb/NmN9hH4HRDDZ/vNaagj8J2MGxPqoRQb
-         DxfkRwpiSwzp7w3RxpqArOxjYvkp3H5jZCPK6HNd23wSMYzrzY3I7XyOjE1KhXW32myG
-         xhlg==
+        d=google.com; s=20230601; t=1728584722; x=1729189522; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=RdgAxVyxp31c7WibHLiyIF43paER00mxZOAIHhsdwhk=;
+        b=LkUY/3bT5HRDHdt+pKocciMPTDAFMSJQQ8e5Or5aHB4QASp4tfeSgbF790ebtc3acZ
+         xO7jpQf7XPB7ov8c6RQjM0/4kMwiRfvcsLJMrX3OOz++5btVbiwVch4mUwzm/H5jYmKo
+         AtSVQzDb9WDbmZPmQfNjsZPQHXjsbkqM3WsmL7MDsoZfQ9PCnBkVbng8D9og9u23oGAg
+         UdqJP3jieGs6GRNHBAzyafjdz9PRZCCwL0AVQswLnUJREiFyJsv8cS7+D/wFXaKdIPYB
+         dZZojtS2Nes1Bbecede5tNyOMvgb/BJECtXhVY51mbFjjmgZbUZieHyY2DnN1/IexbIu
+         kBGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728584719; x=1729189519;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=F0+KYw/6HzWsmGATvSxbQuKdqCcRS3waqcwxHrAen8Y=;
-        b=Ehdwn3aTE1+X3wYKQKJigNtCGAnTBmPDhuebQYzwK0PE9nGP73H/kg+dVOY2kYaymQ
-         su3HsW6OYz8P2EH4utIHEULhgEG3De9auXtHS3xb+cfvWcOQ7NEOLZNj2hFyXekE/Vye
-         bAh5tQk54ridbkiayycxpsSRxxjOiyhmlbXvdNn2/NF8qG+jNMwksEx+DSgwo4Sw4ES2
-         EE7C8G5dbPfSov9ylNcuAEkuxc6ETqSQ2lYATfOnwgzOofRJZbdzgcfEnEkRtFkAKjr1
-         sMwka7f0furNMpLx4rPQm3enA0Hw4Y/u0PnIFApgZsuxZsiuMc7dj62wXutBE5E7N1yI
-         bUkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwc12hM3jkAbKtnf4Pjslg97o9fp30CJSAo6hAgOWrdalJ2c/M4tsWF8f/+q8OA46ls5CzhrOQJTrHkjI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw1rVcDKthsJ9qgGlBqfw7K98qKOvSUE1IQEDMz05yOkTxsa6tO
-	BX9SjDSqDRErBLixDK3R7ho3XpxdccO6xtY6nFxowt0l3lNLdSZnNW2Yn0IaRoYd4srbFIT2M5B
-	Hkw==
-X-Google-Smtp-Source: AGHT+IEeBu92qjGJ6/8zutZUBi8WOanw4UupdtztXpUfLE+vAeLHZHNkVuFOksmpHMU427MoGYN+Q9YZlwU=
+        d=1e100.net; s=20230601; t=1728584722; x=1729189522;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RdgAxVyxp31c7WibHLiyIF43paER00mxZOAIHhsdwhk=;
+        b=L6C7t4THlO7NRDspDdAvRjzM41kOLgVelPbtLk5vug+KIYQo9mRjDaOOmmpADIk3uB
+         xEEzRZNmhOHSRevl1GD2szu++o70M58uA43dFQ4of1w5La6ZoYjw6rK+kCZTHDHyk8sj
+         986x+zl8fYuvMA/uCkxf55Vl+IN0IqkLWxFTZdPuowPKLbRSezZGQ3XS72vWMBRwDqYi
+         ygNmbzVVukuPQLXjqpfbcQbYTOI+3XyBsoepGq6h5q9XyVztH6p1GxOxMHQZKkOEc0H/
+         nwVaeTpBNO1UXRmvHjT8HJl0TGyBJObnwjRMjLUIONx1FZBD6b6c72ZegcYv1kVCBlZx
+         v0CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWalY+zWUu3OGzfs4+3Z3B6L+r+iua6pzSNPIODARLUeR71N6lJg0JyNz4dPfjpV/6DnBj6ZHRZLID4/LU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzde0+ndpX6vaobZqfMJfWNtsls+ezzCmM55lJcI2ILNy+ABARw
+	18cS+uaa8duYlPiInKRgiLHgcT35GoAHmJ5elkap1nx5wVXkxBVcmEKXfF8B4rFpmcp0UGjmnLb
+	qMg==
+X-Google-Smtp-Source: AGHT+IH031wjBK6zBugJiyQwbgM1S3WkZumhuZG0/47H7WWzE24O4tbIqX0eqBdD0TzKWzHgCchY3qP4ics=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a05:690c:3204:b0:62c:f976:a763 with SMTP id
- 00721157ae682-6e322185b22mr897567b3.1.1728584719334; Thu, 10 Oct 2024
- 11:25:19 -0700 (PDT)
+ (user=seanjc job=sendgmr) by 2002:a17:90a:9a94:b0:2e2:da81:40c1 with SMTP id
+ 98e67ed59e1d1-2e2f09f2280mr107a91.1.1728584720854; Thu, 10 Oct 2024 11:25:20
+ -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 10 Oct 2024 11:23:15 -0700
+Date: Thu, 10 Oct 2024 11:23:16 -0700
 In-Reply-To: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -77,8 +76,9 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241010182427.1434605-14-seanjc@google.com>
-Subject: [PATCH v13 13/85] KVM: Annotate that all paths in hva_to_pfn() might sleep
+Message-ID: <20241010182427.1434605-15-seanjc@google.com>
+Subject: [PATCH v13 14/85] KVM: Return ERR_SIGPENDING from hva_to_pfn() if GUP
+ returns -EGAIN
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -96,47 +96,42 @@ Cc: kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	David Matlack <dmatlack@google.com>, David Stevens <stevensd@chromium.org>, 
 	Andrew Jones <ajones@ventanamicro.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Now that hva_to_pfn() no longer supports being called in atomic context,
-move the might_sleep() annotation from hva_to_pfn_slow() to hva_to_pfn().
+Treat an -EAGAIN return from GUP the same as -EINTR and immediately report
+to the caller that a signal is pending.  GUP only returns -EAGAIN if
+the _initial_ mmap_read_lock_killable() fails, which in turn onnly fails
+if a signal is pending
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Note, rwsem_down_read_slowpath() actually returns -EINTR, so GUP is really
+just making life harder than it needs to be.  And the call to
+mmap_read_lock_killable() in the retry path returns its -errno verbatim,
+i.e. GUP (and thus KVM) is already handling locking failure this way, but
+only some of the time.
+
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/kvm_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ virt/kvm/kvm_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 0bc077213d3e..17acc75990a5 100644
+index 17acc75990a5..ebba5d22db2d 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -2804,8 +2804,6 @@ static int hva_to_pfn_slow(unsigned long addr, bool *=
-async, bool write_fault,
- 	struct page *page;
- 	int npages;
-=20
--	might_sleep();
--
- 	if (writable)
- 		*writable =3D write_fault;
-=20
-@@ -2939,6 +2937,8 @@ kvm_pfn_t hva_to_pfn(unsigned long addr, bool interru=
-ptible, bool *async,
- 	kvm_pfn_t pfn;
- 	int npages, r;
-=20
-+	might_sleep();
-+
- 	if (hva_to_pfn_fast(addr, write_fault, writable, &pfn))
+@@ -2946,7 +2946,7 @@ kvm_pfn_t hva_to_pfn(unsigned long addr, bool interruptible, bool *async,
+ 				 writable, &pfn);
+ 	if (npages == 1)
  		return pfn;
-=20
---=20
+-	if (npages == -EINTR)
++	if (npages == -EINTR || npages == -EAGAIN)
+ 		return KVM_PFN_ERR_SIGPENDING;
+ 
+ 	mmap_read_lock(current->mm);
+-- 
 2.47.0.rc1.288.g06298d1525-goog
 
 
