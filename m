@@ -1,70 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-2025-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2026-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD68999033
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:29:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950FC999036
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:29:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdVy1V6qz3cG5;
-	Fri, 11 Oct 2024 05:26:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdW024Dgz3bpt;
+	Fri, 11 Oct 2024 05:26:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::449"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584778;
-	cv=none; b=BWr2ZX87rO2s9vrP5+X1aJR9kYerdb/NZrLDAdheBTiXQzRzpqjXFMeICoeOYI75D5AGx/s+0rvbBg/iZlesMON2vrEq5As6jv+pab55D6KqU3ZbkAltGg11wZ1cNhe+yT8qdhamGWNsdGUd1UXoRhvQhmi84JopZojAWYiMZ8LixKXBlpoq5lXZ9H9IeVS2JIUoI9CC59GmztrzZnvXpG3wGFGuE/Y9F0jHkvM4iZl2bjnEIdugvlZZU1uY375kg3crKvaPfd3qXDXWQoIsR8074ix9cTsFScfevT19cTFaKwp2tLnSpidF4KxYUOfSyEpDlkRNdPHBsZsOrI/2oA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584780;
+	cv=none; b=gxwEveLWKACoRYuA0SPdEivbkAjUpNEcOBKz9lv6VBmZnjn5xYsWq4HBGaFsJ7bpqWpM4PUjghkS4j7gBeEO1qw4XmA4AWiPl7falKOUh6+5FB8XtXrYQOSlBhRUuEsnYP5B1sr+iGkEZ0GQ2YinOXZv7t9gqK6ZY07eANRutXIuoPnk0tG89Ft7hk3BAX9IQe7wIaETBta+Uck+q4oAhqPIxUGs6yqhBn9gm9Cl01Jc+5+EaPOj7xGAJJjUXFUMhooHPQH5GNGfainZYDnQVBw0IxQnFiIQHmrOSYcCSPewDAJnCAJkRfvFq3dHlJfYpzpYrDBmnI0diHNr1GmRvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728584778; c=relaxed/relaxed;
-	bh=GAJaAoo95YXsHy4joQlb4gblEl3cKLpcYsG4EH0XckI=;
+	t=1728584780; c=relaxed/relaxed;
+	bh=sgK+YcjRpEQ+YhbfYv/o4akq/yPA2qNOXCMP41gc9EY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VQJvSnXd7Nn7p1LvBqHef+W0MB2Fpsd9Ttwlfvl/bs7JRmBf5vKe41TPYt5Sec0a848iiNc99I/gTCDmHg+iTeZ5jUlSQzpbdZ8XVgs2KZn9R5ltJx/rT1fvrAsUMc5gK9rTLodw7dB8/Y3FHCTTJoMt+yL4Ls2xYhCRDDqsH5MzOi5pkqq5p27oIWcBPfkZfwwl40F41ghe8L1S4ZMGkvwv2wHscNkYBLIWKc1nbjh+aM+1KCkwm97Hc3WBGaEgaPIsoL8mojDRbi2tEsyV58JbR+K6+SuE9SjKt0NaDKMj8amFB5fIL79b44BTRzeULvXXw36AQyJTyPEaF1DMYA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=L/lwYQxo; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3rxwizwykdn4seanjcgoogle.comlinuxppc-devlists.ozlabs.org@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=dnefkwyYAGc1Qz2GBtDVQMG79ts89aRbPP1YHgXEc+atI3Rqc9rNedUkIDyntpI6aV5J7kfGloyQxP+PQb+OkTWwg/sAjpLMZjuCxsNTj/jc4X5bdyTGXZAVYVychPmzpQrntOJ8bUsTNmvzTCyT7v8P4ihIswgVelBHuqcVWhxZY6Yn2jw6WAbTuDdhCE/Bd9j16wLXeLel9JDbzTM3BIjYDptDsXrWUcmavXCLcFPSvvKu5IW+rCEt+QECS5UuOUmytW/jHS7e0Au2PpqGtMqKnJ+matqKPHNfPtDuI3Ny3zEzglr3pEOGEo4SC9GGQZii8SNG15SpzE/Bfr1I7A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=AKltLbQH; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3srwizwykdoaugcpleiqqing.eqonkpwzrre-fgxnkuvu.qbncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=L/lwYQxo;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=AKltLbQH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3rxwizwykdn4seanjcgoogle.comlinuxppc-devlists.ozlabs.org@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3srwizwykdoaugcpleiqqing.eqonkpwzrre-fgxnkuvu.qbncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdVx2N8Jz3bkL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:26:17 +1100 (AEDT)
-Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-71e019ab268so1589047b3a.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:26:17 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdVz2jqsz3bkL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:26:19 +1100 (AEDT)
+Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-20b6144cc2aso12174615ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728584776; x=1729189576; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1728584778; x=1729189578; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GAJaAoo95YXsHy4joQlb4gblEl3cKLpcYsG4EH0XckI=;
-        b=L/lwYQxoQqP9/LJ/JAJPbKAO1bgrHV2ujPTu3gOjNS7XBC3G6Ua/Ds8D4A6oMHwtKe
-         GnU7sYUHMT37DbXzpTRSkFH3c2qrkL2I82gmsHvf6McV8W1Dbinx6PZTgsxHWT4Mmrxa
-         dnPlUfZ0BXFXFrut8RILQOjUTYGUVnPsD6UvIXihrREsTO0cdaFGHBWsFf9Sz6/dfX34
-         0Rg+uhtbj0THU0OVwC1IKu5Z99QKO2L8W0gP3m5sxKTUmvUw+nnS15ePFiTH9NuwN1qL
-         tbtpDyDxSZ+3Zbpo5g13QuHbG0qBgWUxZc8Nxj7SDtrVNKm2M5Wm7JmUcb1yN2hcTfNG
-         7lDg==
+        bh=sgK+YcjRpEQ+YhbfYv/o4akq/yPA2qNOXCMP41gc9EY=;
+        b=AKltLbQHQgxvslglyzBqxgWiZ0p18Kzi5cIMdbblS5FCtZvofQAQQGIti1U9jQQU+R
+         rxnLWE7rWAtPibmHisE0ALUg+8A4ynZGGJgSZPle0l8E6rSobdNyk5G8Dt5Ym9UlgGva
+         1c1S3PQQfgsR33FogmQRq9fg3WMjk6Z6lRws84mfK9kKYiqpHUwphAk9Qktvm7MN6Eku
+         dTnLYOcP7PbWwTZ1diUjRoYYojkYTKC8Uywyb/SAxBprszItRJ7WKvVPi9qKKk8al84b
+         /7oEYQdw2AyTi8w8bOw6oL5lSLy4zlhtbtQGF8RQHpdf5ZQm/fZjxSNvihhfAIeoX/3b
+         Y11A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728584776; x=1729189576;
+        d=1e100.net; s=20230601; t=1728584778; x=1729189578;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=GAJaAoo95YXsHy4joQlb4gblEl3cKLpcYsG4EH0XckI=;
-        b=TH7l9LeJBw9Veiy9hrj5RdDG60PVNZiXNjhKSU6CBw3ccuW9NaP+LDmyxZfFm7ctan
-         YlfoMcn1Y1m2t8X5U2T3huXivxhmbYmIikEtXR2aTRxEAmYzrKanPc5jnylDdYnFh7RO
-         ahCtdbZGXo/pCgVmSm3j5UgcYK4e87252y+4Pe04M59bRZIDH9RnMdR8ppA+f6TVlfZX
-         ZrGNGXoYOAhwkfNO5ecrK4dKGn90BHETOerEbzhZnOAIWq7Glw3+FSHp+KXqWScd5g3B
-         S6JSVK/71OhOoZmwOoRMZuGt8GmbmM+s5zX2Ul6NQ8/qhnOA6frTfbbpaS5iO+nVejQO
-         DEEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVU0iJZOqX4/QC24CM0Bf8WCnlEiT7gzLcLuAvCJf/v9YzmJfRYCObt4OgDaTHv+GjpldomNlkQ6/vToac=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyJsXZaB9aTW3PMeV70ORpMnT+rEObeqNjYafajL9MsWjFRk2Cn
-	jEOWNe7NWJYK1enYWevlTEbJLZeVi9DDvwx7o2iRhHP58g/V04VUB2jGKbfCDK7fIwoduqmXJVE
-	vSQ==
-X-Google-Smtp-Source: AGHT+IEXxr/4vsCtgUsUHHkctm5xGRqb6tsNipBtkL7vgMjj75AzVZauqGsQqnffIf336Hhi8e9e6vZrhMQ=
+        bh=sgK+YcjRpEQ+YhbfYv/o4akq/yPA2qNOXCMP41gc9EY=;
+        b=Fk3vExntHbuh4vHeIbA6YbYnExCtgSpovPJXhp1Jjz24+ziAMju9phqo7SRwX8S51B
+         z+IykSMzxaRT/VzrwvDYZFrVAyWXqc5Syj9VdCbyFTRriuITvehwkn2T0/Nf0/LaNBpC
+         lizvREgzM2ypjmgXhL6LEb6gNaMMqVc4GSQ4sHaEHoi1oOdDD6ytNf3adOdGyku+PebF
+         5DMH12P+TlNxTzzZ/hkRq9gdL6vLOd9e8nwv7G23NzimyVAqFNTD7uURMuJxOkbQlaex
+         i2npM74LoexniatWFOg0cS2aH4SRKMULaMClDEfpaY/7U/7pI+uknltZ68vfSa2V49VY
+         7uLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWzmECfVNpo64Y9XxxLAhOcl8UaqImns1FaHs1tVZBcrZnJjpeJtwt7WaMviH420NgXZPhHFW5DV4LM+Nw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxPwSago1QeRJMoqAomEIfDimyWPGIZYxN1s4gVwZVVv+mSsbva
+	EAPRBBBMxNc760d7q9E73BLmA9wgx+5rLrDPXx61viFhFjY2f+MqfmZxQclNtCqNg9Mxe4R2NxW
+	bgg==
+X-Google-Smtp-Source: AGHT+IHgES02wxBmUBuw4MXImaMxOgBvLS6HzbS699NHinso/VI3SIlimd+hdhb5F/AgwxmTSyUtUzYKtBo=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:aa7:9184:0:b0:71d:f7c9:8cb3 with SMTP id
- d2e1a72fcca58-71e1dbf1ab5mr7792b3a.5.1728584775458; Thu, 10 Oct 2024 11:26:15
+ (user=seanjc job=sendgmr) by 2002:a17:902:ec85:b0:20b:7bfa:ac0f with SMTP id
+ d9443c01a7336-20ca037f212mr485ad.1.1728584777475; Thu, 10 Oct 2024 11:26:17
  -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 10 Oct 2024 11:23:42 -0700
+Date: Thu, 10 Oct 2024 11:23:43 -0700
 In-Reply-To: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -77,9 +77,9 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241010182427.1434605-41-seanjc@google.com>
-Subject: [PATCH v13 40/85] KVM: x86/mmu: Add helper to "finish" handling a
- guest page fault
+Message-ID: <20241010182427.1434605-42-seanjc@google.com>
+Subject: [PATCH v13 41/85] KVM: x86/mmu: Mark pages/folios dirty at the origin
+ of make_spte()
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -103,87 +103,111 @@ X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Add a helper to finish/complete the handling of a guest page, e.g. to
-mark the pages accessed and put any held references.  In the near
-future, this will allow improving the logic without having to copy+paste
-changes into all page fault paths.  And in the less near future, will
-allow sharing the "finish" API across all architectures.
-
-No functional change intended.
+Move the marking of folios dirty from make_spte() out to its callers,
+which have access to the _struct page_, not just the underlying pfn.
+Once all architectures follow suit, this will allow removing KVM's ugly
+hack where KVM elevates the refcount of VM_MIXEDMAP pfns that happen to
+be struct page memory.
 
 Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c         | 12 +++++++++---
- arch/x86/kvm/mmu/paging_tmpl.h |  2 +-
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ arch/x86/kvm/mmu/mmu.c         | 30 ++++++++++++++++++++++++++++--
+ arch/x86/kvm/mmu/paging_tmpl.h |  5 +++++
+ arch/x86/kvm/mmu/spte.c        | 11 -----------
+ 3 files changed, 33 insertions(+), 13 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 65d3a602eb2c..31a6ae41a6f4 100644
+index 31a6ae41a6f4..f730870887dd 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4357,6 +4357,12 @@ static u8 kvm_max_private_mapping_level(struct kvm *=
-kvm, kvm_pfn_t pfn,
- 	return max_level;
- }
-=20
-+static void kvm_mmu_finish_page_fault(struct kvm_vcpu *vcpu,
-+				      struct kvm_page_fault *fault, int r)
-+{
-+	kvm_release_pfn_clean(fault->pfn);
-+}
+@@ -2964,7 +2964,17 @@ static bool kvm_mmu_prefetch_sptes(struct kvm_vcpu *=
+vcpu, gfn_t gfn, u64 *sptep,
+ 	for (i =3D 0; i < nr_pages; i++, gfn++, sptep++) {
+ 		mmu_set_spte(vcpu, slot, sptep, access, gfn,
+ 			     page_to_pfn(pages[i]), NULL);
+-		kvm_release_page_clean(pages[i]);
 +
- static int kvm_mmu_faultin_pfn_private(struct kvm_vcpu *vcpu,
- 				       struct kvm_page_fault *fault)
- {
-@@ -4522,7 +4528,7 @@ static int kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
- 	 * mmu_lock is acquired.
- 	 */
- 	if (mmu_invalidate_retry_gfn_unsafe(vcpu->kvm, fault->mmu_seq, fault->gfn=
-)) {
--		kvm_release_pfn_clean(fault->pfn);
-+		kvm_mmu_finish_page_fault(vcpu, fault, RET_PF_RETRY);
- 		return RET_PF_RETRY;
++		/*
++		 * KVM always prefetches writable pages from the primary MMU,
++		 * and KVM can make its SPTE writable in the fast page handler,
++		 * without notifying the primary MMU.  Mark pages/folios dirty
++		 * now to ensure file data is written back if it ends up being
++		 * written by the guest.  Because KVM's prefetching GUPs
++		 * writable PTEs, the probability of unnecessary writeback is
++		 * extremely low.
++		 */
++		kvm_release_page_dirty(pages[i]);
  	}
 =20
-@@ -4598,8 +4604,8 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, s=
-truct kvm_page_fault *fault
- 	r =3D direct_map(vcpu, fault);
-=20
- out_unlock:
-+	kvm_mmu_finish_page_fault(vcpu, fault, r);
- 	write_unlock(&vcpu->kvm->mmu_lock);
+ 	return true;
+@@ -4360,7 +4370,23 @@ static u8 kvm_max_private_mapping_level(struct kvm *=
+kvm, kvm_pfn_t pfn,
+ static void kvm_mmu_finish_page_fault(struct kvm_vcpu *vcpu,
+ 				      struct kvm_page_fault *fault, int r)
+ {
 -	kvm_release_pfn_clean(fault->pfn);
- 	return r;
++	lockdep_assert_once(lockdep_is_held(&vcpu->kvm->mmu_lock) ||
++			    r =3D=3D RET_PF_RETRY);
++
++	/*
++	 * If the page that KVM got from the *primary MMU* is writable, and KVM
++	 * installed or reused a SPTE, mark the page/folio dirty.  Note, this
++	 * may mark a folio dirty even if KVM created a read-only SPTE, e.g. if
++	 * the GFN is write-protected.  Folios can't be safely marked dirty
++	 * outside of mmu_lock as doing so could race with writeback on the
++	 * folio.  As a result, KVM can't mark folios dirty in the fast page
++	 * fault handler, and so KVM must (somewhat) speculatively mark the
++	 * folio dirty if KVM could locklessly make the SPTE writable.
++	 */
++	if (!fault->map_writable || r =3D=3D RET_PF_RETRY)
++		kvm_release_pfn_clean(fault->pfn);
++	else
++		kvm_release_pfn_dirty(fault->pfn);
  }
 =20
-@@ -4685,8 +4691,8 @@ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vc=
-pu,
- 	r =3D kvm_tdp_mmu_map(vcpu, fault);
-=20
- out_unlock:
-+	kvm_mmu_finish_page_fault(vcpu, fault, r);
- 	read_unlock(&vcpu->kvm->mmu_lock);
--	kvm_release_pfn_clean(fault->pfn);
- 	return r;
- }
- #endif
+ static int kvm_mmu_faultin_pfn_private(struct kvm_vcpu *vcpu,
 diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.=
 h
-index a476a5428017..35d0c3f1a789 100644
+index 35d0c3f1a789..f4711674c47b 100644
 --- a/arch/x86/kvm/mmu/paging_tmpl.h
 +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -836,8 +836,8 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, str=
-uct kvm_page_fault *fault
- 	r =3D FNAME(fetch)(vcpu, fault, &walker);
+@@ -954,6 +954,11 @@ static int FNAME(sync_spte)(struct kvm_vcpu *vcpu, str=
+uct kvm_mmu_page *sp, int
+ 		  spte_to_pfn(spte), spte, true, true,
+ 		  host_writable, &spte);
 =20
- out_unlock:
-+	kvm_mmu_finish_page_fault(vcpu, fault, r);
- 	write_unlock(&vcpu->kvm->mmu_lock);
--	kvm_release_pfn_clean(fault->pfn);
- 	return r;
++	/*
++	 * There is no need to mark the pfn dirty, as the new protections must
++	 * be a subset of the old protections, i.e. synchronizing a SPTE cannot
++	 * change the SPTE from read-only to writable.
++	 */
+ 	return mmu_spte_update(sptep, spte);
  }
 =20
+diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
+index 8e8d6ee79c8b..f1a50a78badb 100644
+--- a/arch/x86/kvm/mmu/spte.c
++++ b/arch/x86/kvm/mmu/spte.c
+@@ -277,17 +277,6 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_p=
+age *sp,
+ 		mark_page_dirty_in_slot(vcpu->kvm, slot, gfn);
+ 	}
+=20
+-	/*
+-	 * If the page that KVM got from the primary MMU is writable, i.e. if
+-	 * it's host-writable, mark the page/folio dirty.  As alluded to above,
+-	 * folios can't be safely marked dirty in the fast page fault handler,
+-	 * and so KVM must (somewhat) speculatively mark the folio dirty even
+-	 * though it isn't guaranteed to be written as KVM won't mark the folio
+-	 * dirty if/when the SPTE is made writable.
+-	 */
+-	if (host_writable)
+-		kvm_set_pfn_dirty(pfn);
+-
+ 	*new_spte =3D spte;
+ 	return wrprot;
+ }
 --=20
 2.47.0.rc1.288.g06298d1525-goog
 
