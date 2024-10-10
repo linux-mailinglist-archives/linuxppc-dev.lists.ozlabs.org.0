@@ -1,70 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-2007-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2008-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB50899900C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:27:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB8A99900E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:27:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdVF4rwrz3bjf;
-	Fri, 11 Oct 2024 05:25:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdVH3Kyqz3byP;
+	Fri, 11 Oct 2024 05:25:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b49"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584741;
-	cv=none; b=UYub0HxqFJ3GJb3mzz7iBKmgGbXN/gJ47mMjUdfOffRnkUGOJ/zLriNq41ftyhjB37zfC9VNehyCg+psqH61Rg9c2v5Ako/xN879Zr4oN0qLUoPvVta+b3bKp1CbW2b+TN9lrfekNZNLKXb5GQ8j73JBSqQMZk9gB8hcHH1kR/D4468m2KwWpCnSSqIff9adW58MVaW7PPF5VTA2woTQoD8yvbJE1HJntcUikCTCTbaSrAHd+IT8d4YIVxuMjhQWCggaqKhLr4bSQEYm7O7uymwOjEggEZWf3684ugu7wKpiDn9/oOlfDgIXKEpDOqbJgFcHiarNU5KA+LxC1ML2HQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584743;
+	cv=none; b=GMpQQkTbKLbT6GYbGn4g5kTES4cex47vzTadFcuu3EDVXkrzLit9Q08JZkIcTXITj5L2/9vNza8TaMdXyoFz5B1kJamgv4g0NqAZ4GlaOu5zY9wirZrluMFD/0NccraTRCliyjbi/RNHZg12SZ5Tq8EhTLa2UHt0ZCYbjc4XQFu9eTghT3YoHafl6ygmGtfvDPOzFfzpRRtZvqN+UTtPybMgZbYSxyj3tMyIfrjocVHkVGzr+88hLUhrL+jfQJ5X0c4UpSurO4E2t0Jx1Dj2t+IrfJdHsVRuVSUZDbrf2Vv0HKFIQLild0kr/JjwVfd7p3Qqxj6TJOSfRRbVHEvcew==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728584741; c=relaxed/relaxed;
-	bh=wU+jX/zRq5GV793BchOJ2bBXpO8AjDudJh47DKJg70M=;
+	t=1728584743; c=relaxed/relaxed;
+	bh=UxQVf2h1B1ZgTBX9bfQB+O4u0WEdBy2E8BNaXtNQtEc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Bc2OOC/Gl6VlSWhgQpdqlwl5sabKeKlML2PBmlizns/+V56OT23nBiTIdOV5EaH18Vn1h+YngChQHmeQj0lyfWJc/QnpZr+WZTQSLwDJKWSi/DIuDz1fXNdztX2wthujFaPHhetPLIGcEBZChib5ZAXo/Tzzi7VR5fACmsvdWbiE4Qpff9LCJV9D5+hofJPhLJ+LQWK3IaB8D90wE2NbH7MKaiK6t+mQweaU9LznrTPw8i0+WCvVMa2HEwsGMY6XpKF1CazUJMH2vXXwJPn6IKnXulF2M+NT8KRv6Fsv8NyvYp9MtCvX0osNc0fsXdrsil231kICbWe6BsH5VhQkEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fT3Bf2Wo; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3ihwizwykdlkrdzmibfnnfkd.bnlkhmtwoob-cdukhrsr.nykzar.nqf@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=BSgQ5SPDZ4TJr9DGOcHSBksJ4dpnBco4j3wUO3KUTXirv8WiqzMwBkgkkSF6qy/RtIzZRSlU5aLEf9CxdIga4M9ZUDvF9EWRfPscdwTg7+DZmZ4qi1Q8ayRikur/lLPVmMjKeQ+BunuL2MkfPX4GUO7A03HKDwgIEqQZZXAot09A+tdOMPwDg+Cj9rcCJgswspQWkiNkk0WPo/oBx/648ro/TV7lkJGgVVjViY6iVRQqYSCuhsh/NacntnQaqfkZYYtwei3DRY60uAzLjC09QpW9bEPErqN6RylsZbD2lMI1G0iXLHbNaFFGYxUV9sxMjGLg/0cTs2SIgqWSL2KNow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Wi9eigQa; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3jbwizwykdlstfbokdhpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=fT3Bf2Wo;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Wi9eigQa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com; envelope-from=3ihwizwykdlkrdzmibfnnfkd.bnlkhmtwoob-cdukhrsr.nykzar.nqf@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3jbwizwykdlstfbokdhpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdVD6LF8z3blc
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:25:40 +1100 (AEDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-e2916c47e9fso295462276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:25:40 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdVG43j5z3blc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:25:42 +1100 (AEDT)
+Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-20c8a637b77so13049515ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:25:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728584739; x=1729189539; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1728584741; x=1729189541; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wU+jX/zRq5GV793BchOJ2bBXpO8AjDudJh47DKJg70M=;
-        b=fT3Bf2WoR/3TgLi2jY4/lWtTK7rNKHov7VNwE1vpGiy/G3p7S/gSofX56CXwa8JVGQ
-         aaDEAOcr/3Ddv59vF1VVF3Mq56LEsbz2r5CutLzxzdEnxBaNN26RP3RP6xWLXgINzv1o
-         TAkzoQ8leSO8H+H5/k3ce6kBQOXWV1TMKf6tBij9MLG6gxOxVSYpSn1DjQORU9z/+Gxw
-         0oPhrwcMoQUEPobAIA2IS9OZvAWYJ+aoLJbGMkZa++pYyqRRLOtHHJbjtXKLKXmAbv1h
-         hCjPUXkhJAEnBAqHqEc3E00k6RhI1VV8HSv2UCEsrDekdAqZbyxZjn6LFuApy7Elmgv/
-         v7RA==
+        bh=UxQVf2h1B1ZgTBX9bfQB+O4u0WEdBy2E8BNaXtNQtEc=;
+        b=Wi9eigQa9ohQYNdO9m6NWpGUkgcl1sfwW/COHB6w80FnLx8c5iz4nKlfp4l7AfY2Y2
+         PirLdUKx+FjEL/io4GHkoOiGz7ZTh23OrJb2l6CEkfsg+gpECtESxslld0k9RFtw+07x
+         reqwtJ6tO78Y653JW1pM92kTA+0VIoXeRp+Ghe49WHStVs4ET3GLcshujmo4iO0LjQ9a
+         N9te32LcBE8qDrVITu4LnOuo5YxGLTP3KSP4B0yXhkW69ApMA5/FsnOkLLaPkJ8NXIkP
+         omoF758nkDIVoQQev9yeFbxQ6w4iHk+YwqYSApRJDuEKFA41szzMEgkvFDOT1Bwpbz8j
+         hn+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728584739; x=1729189539;
+        d=1e100.net; s=20230601; t=1728584741; x=1729189541;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=wU+jX/zRq5GV793BchOJ2bBXpO8AjDudJh47DKJg70M=;
-        b=eq3S8USB9L8pZ0FlJ4i6kaFo/k5y5FVI+FY3BMYIkSiavE6eRVOj2nwpzAtH86LOyF
-         YRaKP3yiw5Iv39k9MEUJL5//fBS/gJm4wsIxb4cPQ69jbx4/3HXKHRGL9Uw6XYoxU6wO
-         l5eISDTmuFlu3G6PWQY2gyu5DWRwVRqsyfxKibPJ5HXn6a2/FS6R/Xa4T0HhwT6nGIzs
-         fj1dEFD3Zv7YPSbe43o+80rNhKv9d0ba0x0tnPAAP6Wrqsf3NFeeGRnPdEwLZgvS0Dwm
-         FpzbZnkrULw+XmDeWakuUJH6H6gO0H1HOXmoJi/a6C9TiPZEerkz/tvNWseAX8vCBwv0
-         bFng==
-X-Forwarded-Encrypted: i=1; AJvYcCWfWmjlGdeq5K9um5GJAM88LngxxXBU6sm4v/6jmyHI7prQKFxiMNtpM4nsIooB89q0LR7jexyB8DCdmxY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywh8DKdQrnLwpsrb3F7gjen/W0RdSaqS/Slg4ZVYu/nBRThX/bI
-	S0xWPxgHQd/T7qclctKWevrI8smX0Bz2vCNE2Ecf8hMoWNOHeE3oBzLg2/ZWQ0qnKdZsC1+vdOS
-	oPw==
-X-Google-Smtp-Source: AGHT+IGZ+3mddEgfwOZrB7Mg/yEB+clUKORcl3gwcx/GeFypDRI64NMuGnBtjzJ0gTzObJ64BsofGpKHxtA=
+        bh=UxQVf2h1B1ZgTBX9bfQB+O4u0WEdBy2E8BNaXtNQtEc=;
+        b=nMuqY5vctDqbPbfm59k7jadsEqr+ZqaN1rFGvQnA9cmrphAoDnNCI/GG1rzCuKHNnw
+         3r761uHwc+ZO33NH/DK+EOE6vzLgWCBRB821DQi4XdQN/3TeCGQCyVemMVFtP2t3bd+0
+         1QIFYJxrc3QwJxhRQMg8ctj8LD+LCdWb44dRndtpBFfky31EMEmeW48KFybPW8Y/d3M/
+         sa7lO3CPn8cTemyN3e6PJb2CKiRaxx1gHEUX4f+hou9t8+eVskHmdvyACDO/YHe7QVYX
+         R6nQfuXp6PZBxTowIA2fUf3nnvSkqoDsyamKaxUSMseRqmUsDyLN+bFg1smtH0yBuqi4
+         ZgBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVWgm+EKJpb2iD45q/lYTdh7OmU4fW8P/Z8AvESzcEBdP7ou2m0Og5HYgG+rrtQbcsxxAmp/yL6zH4cy5E=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxOO+RCBTjkpQ1wcaxXtClV5PDYySsvhp/qOly1hnT6f9KLE/fG
+	tYW5pTtLiV8pbgSJ8YdobDb6U5BwuogxfJVMw5QG9ztqpwPLsh+aCp/c7SQm/9EEs/wBYTUw2Su
+	Y0w==
+X-Google-Smtp-Source: AGHT+IFSsaj7YGs0xXvL7KvHpo4OHZS23TfW901WnGn1dNBw4UEq8HUBbyPz7tDSJuBwPv672jv+MkN6+4M=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a25:ab6d:0:b0:e28:f8e6:f4c6 with SMTP id
- 3f1490d57ef6-e28fe465652mr58758276.2.1728584738891; Thu, 10 Oct 2024 11:25:38
- -0700 (PDT)
+ (user=seanjc job=sendgmr) by 2002:a17:903:2349:b0:20b:9365:e6e4 with SMTP id
+ d9443c01a7336-20c63782bdcmr1094885ad.9.1728584740809; Thu, 10 Oct 2024
+ 11:25:40 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 10 Oct 2024 11:23:24 -0700
+Date: Thu, 10 Oct 2024 11:23:25 -0700
 In-Reply-To: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -77,9 +77,9 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241010182427.1434605-23-seanjc@google.com>
-Subject: [PATCH v13 22/85] KVM: Use NULL for struct page pointer to indicate
- mremapped memory
+Message-ID: <20241010182427.1434605-24-seanjc@google.com>
+Subject: [PATCH v13 23/85] KVM: nVMX: Rely on kvm_vcpu_unmap() to track
+ validity of eVMCS mapping
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -103,64 +103,38 @@ X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Drop yet another unnecessary magic page value from KVM, as there's zero
-reason to use a poisoned pointer to indicate "no page".  If KVM uses a
-NULL page pointer, the kernel will explode just as quickly as if KVM uses
-a poisoned pointer.  Never mind the fact that such usage would be a
-blatant and egregious KVM bug.
+Remove the explicit evmptr12 validity check when deciding whether or not
+to unmap the eVMCS pointer, and instead rely on kvm_vcpu_unmap() to play
+nice with a NULL map->hva, i.e. to do nothing if the map is invalid.
+
+Note, vmx->nested.hv_evmcs_map is zero-allocated along with the rest of
+vcpu_vmx, i.e. the map starts out invalid/NULL.
 
 Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- include/linux/kvm_host.h | 4 ----
- virt/kvm/kvm_main.c      | 4 ++--
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/kvm/vmx/nested.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index cbc7b9c04c14..e3c01cbbc41a 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -273,16 +273,12 @@ enum {
- 	READING_SHADOW_PAGE_TABLES,
- };
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index a8e7bc04d9bf..e94a25373a59 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -231,11 +231,8 @@ static inline void nested_release_evmcs(struct kvm_vcp=
+u *vcpu)
+ 	struct kvm_vcpu_hv *hv_vcpu =3D to_hv_vcpu(vcpu);
+ 	struct vcpu_vmx *vmx =3D to_vmx(vcpu);
 =20
--#define KVM_UNMAPPED_PAGE	((void *) 0x500 + POISON_POINTER_DELTA)
+-	if (nested_vmx_is_evmptr12_valid(vmx)) {
+-		kvm_vcpu_unmap(vcpu, &vmx->nested.hv_evmcs_map, true);
+-		vmx->nested.hv_evmcs =3D NULL;
+-	}
 -
- struct kvm_host_map {
- 	/*
- 	 * Only valid if the 'pfn' is managed by the host kernel (i.e. There is
- 	 * a 'struct page' for it. When using mem=3D kernel parameter some memory
- 	 * can be used as guest memory but they are not managed by host
- 	 * kernel).
--	 * If 'pfn' is not managed by the host kernel, this field is
--	 * initialized to KVM_UNMAPPED_PAGE.
- 	 */
- 	struct page *page;
- 	void *hva;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index f1c9a781315c..7acb1a8af2e4 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3067,7 +3067,7 @@ void kvm_release_pfn(kvm_pfn_t pfn, bool dirty)
++	kvm_vcpu_unmap(vcpu, &vmx->nested.hv_evmcs_map, true);
++	vmx->nested.hv_evmcs =3D NULL;
+ 	vmx->nested.hv_evmcs_vmptr =3D EVMPTR_INVALID;
 =20
- int kvm_vcpu_map(struct kvm_vcpu *vcpu, gfn_t gfn, struct kvm_host_map *ma=
-p)
- {
--	map->page =3D KVM_UNMAPPED_PAGE;
-+	map->page =3D NULL;
- 	map->hva =3D NULL;
- 	map->gfn =3D gfn;
-=20
-@@ -3093,7 +3093,7 @@ void kvm_vcpu_unmap(struct kvm_vcpu *vcpu, struct kvm=
-_host_map *map, bool dirty)
- 	if (!map->hva)
- 		return;
-=20
--	if (map->page !=3D KVM_UNMAPPED_PAGE)
-+	if (map->page)
- 		kunmap(map->page);
- #ifdef CONFIG_HAS_IOMEM
- 	else
+ 	if (hv_vcpu) {
 --=20
 2.47.0.rc1.288.g06298d1525-goog
 
