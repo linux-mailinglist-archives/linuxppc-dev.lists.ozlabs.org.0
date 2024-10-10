@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-2037-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2038-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827A899904B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:30:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABB599904D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:30:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdWV0f2jz3cMD;
-	Fri, 11 Oct 2024 05:26:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdWW6TvMz3cMV;
+	Fri, 11 Oct 2024 05:26:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1149"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584806;
-	cv=none; b=AIYokqZ/WNcDI38nGVL/+spJrdomTN2pFqQdetuEa2lv2RCT87epM3KdtCfphIuVZpsY784cVRxJ3ZMhmT+qdtJKDRt8ABY3nJmEvoUjGTOp2dRVRvumPSAcX6qbhD2ow6+WSTtr94as+5rjksRRw08HDF9BEWF31x5DYaT+TpTRtzpyUHeeiXmoKwBxLN9clZfqMRpMe6/vv1WSvdNGCXRzYCRjd1KIwsroAW0CWTP495VQM19YDXdtvLzJY6+hLL0o7ToGPmVK+RKnlG+nZl4kNZhjDUwX1NQaruoPKdsJfUnHKaAmjBVoiuuqhAmDQqm++qtLpuzxDMmRqSvp2w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::549"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584807;
+	cv=none; b=P6BwSHtdA7ygENHwdq1YNeO2A0iiklZBhevVZfZjNwXi8IKtSuvdD5/P1LVX+QPMtl/c8h2WsrTl2aoVz+XO/MBqaL5OtgKuXk8bBh0WdngLcYobWYJV/qkJ6EGLY2rwFUv5LNoBp+c1lMjBONdL6E5FCERy+7YcIzviyWlHot3LP1M9yhu2oVYz54RFt3NQ1l/9IGru0+okgDSfSCdt9udQ2Mp6CDb0l4MM0gPWTSzIWYrIZ+tWfFh3yMkjkBChryVchXdJ/8WPqpV3qzkDPhiW+FTr2Z1UDy16ljVz0QpohXclNXqePfZiJUeXa0vK2J48pbSvh5/rnCL1h+5lCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728584806; c=relaxed/relaxed;
-	bh=/fC7L3Fchvvuu9GyGKk9VEzuiyLOIeBtO2SWEaXDNWE=;
+	t=1728584807; c=relaxed/relaxed;
+	bh=RAEBOjiR86B8MKio5svj+gL/GJb0VtWq7ImNxArS0H8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IhgcCDYrgiuyDJ3Tpt4nVVdWPe+0sdziq8JqbJ1lm06vXM/N0d4Nn+Jy8YT+Xt+pkwfS8IDUeC2iW2eNC9ThcXaw0sghqGLk1XSuq+0FYQARQyyScr5PneVWQ2iQAnL58svta0/VSA8c8ZQ7mBCC3iLboxDgu337i6RnjXZWB8DtBFCNXRj1gzGHuvw3oovOGexyq9E/0P4UOe7+JVvimpCmEX+DY42ot1Zea8qCdw0zBrF7qDxKQCIMc7h9oaOyx0ZR7b4yGi4eXExmun9JMrTbTU0LdVPleav/S8UYWZ2hw46Wo5o47GpmDx10S2Ins2lUjTrkrqniIb4U7NDGGg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZVPcNttl; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3yxwizwykdpougcpleiqqing.eqonkpwzrre-fgxnkuvu.q1ncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=RgMPCmRrVH9R/S4QghrghVuKhmWJ2PGnsOjv2kzUYG9dxXg2qHblIGiPM9QNnValcF2J0E7F92Gc5wdIDHeWIVbrk5HV0tHktNDFUompy0Opp4h1xwKV5MVxUqTvHXdLrb/zuNrYQvzroiaH2lLk0Xe1FJudnAD13jxe7AN5WowjsRalKdpBpXqtQPIPp9HCepkPhBtEopIsaDdvXAtbWaXxKOlHSqkB7VcyeEy7+7XC0Uz2+vV4y8Jp90mQkxIojehWTpdHiFaO/myJ5a84Fu0BIzXl8O4e7frkSSxrBcB76LwNx1TIRG9+B7YAtJ4KneLX/a6krVLsHiAGgL4wFw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=E4vhdseY; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3zrwizwykdpwwierngksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZVPcNttl;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=E4vhdseY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3yxwizwykdpougcpleiqqing.eqonkpwzrre-fgxnkuvu.q1ncdu.qti@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3zrwizwykdpwwierngksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdWT284Pz3cMC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:26:45 +1100 (AEDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-6e29b4f8837so18952247b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:26:45 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdWW0CGCz3cMQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:26:47 +1100 (AEDT)
+Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-7e6af43d0c5so1109095a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:26:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728584803; x=1729189603; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1728584805; x=1729189605; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=/fC7L3Fchvvuu9GyGKk9VEzuiyLOIeBtO2SWEaXDNWE=;
-        b=ZVPcNttlQqNFh8sod9yRa5DyXZkwSb+AG00xk2zMrjkufKv+nHmysj40/mhLsS2PEI
-         to13KUbXxOYif9oNcZ+9DdLgkAQRNuCs6T5Wo8OQHYdYcrp6DAgbl0XaXiTuqoB5TYg8
-         uYjhJiPqnQ3Qs64X57Ng7NbhlkWOdEP9HgSKDml5B4Ef+5bn6gEjNRMqlvq77gWRUmTM
-         1O8vZlp3qe+5lU68lo7yqHmNCJfP5fyiSHmsX9CeCt/9WCd7KRIRISkdKy/y5PWSoVNw
-         2iaiJu6ffso/uSHMtWxD3+MVkY0Siiw5Gs9DKYGKuqCKFCa1BoYtV6kUu21NbNUyEkwX
-         dpMg==
+        bh=RAEBOjiR86B8MKio5svj+gL/GJb0VtWq7ImNxArS0H8=;
+        b=E4vhdseYW2yPHyV+ulIucdQxDK97XMwX5FZjFFdx+4RlHGXQvlr5GLJhQElcfa1qQ9
+         KBLmrwYrwDGkCgw5svrnhRQdgpx9zOwaypS90fc4pmWjz5QV0uKM5qtHUrsWOHHeaV/G
+         w9Rpw4PqJ5WetWdMpqc9YKDMxnE6a5uiXATtrcb83lPxi/Xt+hROWo8cMwR7yf1ibfM4
+         f9N6f5js6350DLu48LDornS/liugVXuFXr6UMdzZ/dXccNME9riuq8sQRWmCs72Klelz
+         /v4R2nVLxbrJy+kEPiFHW7WRD0WWpOOQdb1vbSMI6WQ6eCKlLzvL5DUsTGFLl0FLbrFr
+         ifVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728584803; x=1729189603;
+        d=1e100.net; s=20230601; t=1728584805; x=1729189605;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/fC7L3Fchvvuu9GyGKk9VEzuiyLOIeBtO2SWEaXDNWE=;
-        b=PCi6w+nPQeO/P7+NfRxTbSetohugVWHXYe0e4CcRgRAK37y4euS/beSTXE4Lr326K5
-         oQHdS/Z2VWrNjTjHn1jWRq8UnVQQfSWueRzSsJiT91IBzNwCoFmYCljMY2VmJ2bYadhR
-         /yFFzPCEgcI0lrOHjK7r1z/VYjThuJMcc6No9UEmPKB4FhgAswE7m8cBgUatak4Limh/
-         PkX8GB9UrmaSvSs9hqRpWIg0NlgL7zzctFDOjybDYa5Tr6gZFhhASxAHmzM8UYu5+k78
-         1YdfooApJTBRpX1rPevvSWwSQ8E4/CSzwLCLkJ88p1OCZXG5uKk5s2szWwtMs7LZKpdr
-         QdIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVP46p1yRNs9DNgBbGmGz0Hkz5PkGVjlvL8q5GKnsMA71YbUr1194QgAK2QK4MgJcCN0Lxg+HhzfGay1Gc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxsZ05ErQzTJ5Ef+hLH4lm1ejgQtB1rVvNYKYQtrNX/mJVkprRf
-	XTxHUqgc0Sn55YP+YcM1eBZ+MeKt7IdWJQXRvXaCb7TmfT6YScYcqPaE4KMEt3f+TiRW48wFmKd
-	wLw==
-X-Google-Smtp-Source: AGHT+IF0bQSeBV+k7XDKFBXYzNvC7N99ueMTlOEEH5KNk6JZHzu/00W1ndtLnT51eyBFoV94Bmz3yNyB+P4=
+        bh=RAEBOjiR86B8MKio5svj+gL/GJb0VtWq7ImNxArS0H8=;
+        b=B5MNZn7wPfED4EXbk8Ncm6nc3IPSJ/mfqyIkO2uo5jOUwNXlZm7GhyzaTN509xEfh8
+         1t2J0cijuN9oRfj5kUxfoRUU9g5C/pXhOd8/euTuRaeF5G9HticyE8cOu208nkqAdyVb
+         77HduvKcGXA3oXBSbQIjz5fBkcx1RRtrC5VyK9bzAViUo/uQPh0LP5qBGOewiu/v8AQc
+         l+0j70qgGj8njN42HTZZPOJngAcLD1UqqByKiDqd0m/bZ86Y53vf2tLRfTxAYAFdA2ce
+         LIoGLf7NcdrYOd9lgy9xr9A7IaidB55MsmoPD06I8CLc3BVabsuKQ99+HXs1qwrkkpEH
+         Gvpw==
+X-Forwarded-Encrypted: i=1; AJvYcCWE2iOKQkpW4eNNZn37Kcb807gT/h5ldelRmI0JRzr25Pem/4KAIiD9g65TYM4aBZW4Hdu5rWRcZ5v51Tw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzMq1scmd9Ajl8xYO4EJL2y0XR+W0NneekQog79odKgoeWNsAnF
+	f+/19mOzEbZNmnR+HKBdcvyCB07WMLkM3tW4AcIVwLu2WlxCt/ImfOv1dPRYQtvymt7IcNdciWK
+	EQg==
+X-Google-Smtp-Source: AGHT+IH3g+or1uGKI8zaqA7g6VjAId1uToioip8sNGZo/KyXggeZoODfUOK1q5z450FXHERnWYgwR7EwX2I=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a05:690c:dd1:b0:6db:e464:addc with SMTP id
- 00721157ae682-6e344ce9308mr1337b3.4.1728584803335; Thu, 10 Oct 2024 11:26:43
+ (user=seanjc job=sendgmr) by 2002:a17:90a:5107:b0:2e2:ca3e:10fe with SMTP id
+ 98e67ed59e1d1-2e2f0f88a54mr24a91.8.1728584805241; Thu, 10 Oct 2024 11:26:45
  -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 10 Oct 2024 11:23:54 -0700
+Date: Thu, 10 Oct 2024 11:23:55 -0700
 In-Reply-To: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -76,8 +76,9 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241010182427.1434605-53-seanjc@google.com>
-Subject: [PATCH v13 52/85] KVM: PPC: e500: Mark "struct page" dirty in kvmppc_e500_shadow_map()
+Message-ID: <20241010182427.1434605-54-seanjc@google.com>
+Subject: [PATCH v13 53/85] KVM: PPC: e500: Mark "struct page" pfn accessed
+ before dropping mmu_lock
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -100,64 +101,34 @@ X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Mark the underlying page as dirty in kvmppc_e500_ref_setup()'s sole
-caller, kvmppc_e500_shadow_map(), which will allow converting e500 to
-__kvm_faultin_pfn() + kvm_release_faultin_page() without having to do
-a weird dance between ref_setup() and shadow_map().
-
-Opportunistically drop the redundant kvm_set_pfn_accessed(), as
-shadow_map() puts the page via kvm_release_pfn_clean().
+Mark pages accessed before dropping mmu_lock when faulting in guest memory
+so that shadow_map() can convert to kvm_release_faultin_page() without
+tripping its lockdep assertion on mmu_lock being held.  Marking pages
+accessed outside of mmu_lock is ok (not great, but safe), but marking
+pages _dirty_ outside of mmu_lock can make filesystems unhappy.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/powerpc/kvm/e500_mmu_host.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ arch/powerpc/kvm/e500_mmu_host.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
-index c664fdec75b1..5c2adfd19e12 100644
+index 5c2adfd19e12..334dd96f8081 100644
 --- a/arch/powerpc/kvm/e500_mmu_host.c
 +++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -242,7 +242,7 @@ static inline int tlbe_is_writable(struct kvm_book3e_206_tlb_entry *tlbe)
- 	return tlbe->mas7_3 & (MAS3_SW|MAS3_UW);
- }
+@@ -498,11 +498,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 	kvmppc_mmu_flush_icache(pfn);
  
--static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
-+static inline bool kvmppc_e500_ref_setup(struct tlbe_ref *ref,
- 					 struct kvm_book3e_206_tlb_entry *gtlbe,
- 					 kvm_pfn_t pfn, unsigned int wimg)
- {
-@@ -252,11 +252,7 @@ static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
- 	/* Use guest supplied MAS2_G and MAS2_E */
- 	ref->flags |= (gtlbe->mas2 & MAS2_ATTRIB_MASK) | wimg;
- 
--	/* Mark the page accessed */
--	kvm_set_pfn_accessed(pfn);
+ out:
+-	spin_unlock(&kvm->mmu_lock);
 -
--	if (tlbe_is_writable(gtlbe))
--		kvm_set_pfn_dirty(pfn);
-+	return tlbe_is_writable(gtlbe);
+ 	/* Drop refcount on page, so that mmu notifiers can clear it */
+ 	kvm_release_pfn_clean(pfn);
+-
++	spin_unlock(&kvm->mmu_lock);
+ 	return ret;
  }
  
- static inline void kvmppc_e500_ref_release(struct tlbe_ref *ref)
-@@ -337,6 +333,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 	unsigned int wimg = 0;
- 	pgd_t *pgdir;
- 	unsigned long flags;
-+	bool writable = false;
- 
- 	/* used to check for invalidations in progress */
- 	mmu_seq = kvm->mmu_invalidate_seq;
-@@ -490,7 +487,9 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
- 			goto out;
- 		}
- 	}
--	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
-+	writable = kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
-+	if (writable)
-+		kvm_set_pfn_dirty(pfn);
- 
- 	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
- 				ref, gvaddr, stlbe);
 -- 
 2.47.0.rc1.288.g06298d1525-goog
 
