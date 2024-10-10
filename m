@@ -1,108 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-1983-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1984-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777E6998C9D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 18:02:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59B1998E41
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 19:18:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPZJd0Nkdz3bjt;
-	Fri, 11 Oct 2024 03:02:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPc0t6qskz3bjq;
+	Fri, 11 Oct 2024 04:18:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728576128;
-	cv=none; b=Tgq58cZCPRO5l2e3aVJBiCUCo/b844JAL+pjZYU5H7lCU6LdYsqPeBWBg8NGMsvCRK8a88gnPTS7u7j2kDadEzx6P5xsrn9iD/3TqQoSy5WWT+OqmWlWbLlN0+GBfoXSO5ih7IPoGns/DPuWleZq+07PcrQCcX+eNV8B+IX6OnEElU6+y77kxf7zfsNEdy/sDID9FV9Zpp52HQzimINw13YYKKXyadElcC39HKVTFeEVZRT7PY5n9fXDpmp8CmLjPfvXpJHPwBJK4F+WS6qxv/ayUqbahxujk05WtIwReSTC/gfMwKk+CgvICW2XaQAltDRO3ve068U/14nJbxXCOA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728580718;
+	cv=none; b=QnBQ2EQEss6kLfFZG4MAE01CbLAkmEFhViIJK+B1qkAtbbaE2s/v3XzXyHDoTWmNdt0D6TyrJweSEyANsCo8hUliWzl57kTbCCDHmSWQXLJd+bkldgywPL1DHkS7E1MqNpE9bSVEkqDTw8lnnlpCATSYVh4bGGKLbSZQd5dhgV5ZU6uTRJv9BVDffdY/WD2BGHkrOFHcw75FgPLnzLi72R0UngbzxMKUJuit6VAPRAEEZ5UUZll9xMx+u1LYivOg+dF7C+hasqzfHPHgM0/NEXheYk+6U9LrpL2u6jobqT1litLXXUbaBiI9dsDUfyQzr223oWlW65dgUNMNvW30AA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728576128; c=relaxed/relaxed;
-	bh=aRVSqJeIBM4P/yTtc34+JqyyPgM1QcxniwmaD3Dpay4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n4sKkZphG8fmlRO6hsB08t3Bz+5Zd49Pj8KaY3Fm49fcMZK2moAVUYb35Lsex8ZTnnrNpBbD1eou7hGVxjtDLgwMP4e47uDGmkx3xeRMmN3fY+ncg7ixXDJ1+9fQxep6aNOeSw7TidEkYKaaYI1DwYgrZiJNh3q+njacMcYxTywhdkQ7fvJlO10DTXi2MGiGNRgf+1CMGQNWJTqL2xmR+o2W7BFhZ8kAh8nNZrm6jmludrjkjU4vsVxsGUJUGrQKNT2EYMUb/4mvh8+gIPRPcSTmE6vY4XrkrKITrZDlz9lYcdspV4KkQ7nEoBsppc1FOBz1jq4z3RXgO+W2/udyeg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EABvwbII; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1728580718; c=relaxed/relaxed;
+	bh=YWTfDGJOVIcVIWG5RKfiNKmMCfgGLl0hOHgzmSzW7HE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kl0l4sMHhivgsetnPIEYA4urZKBQ3nH5IgCV68aUaXBYue+wlOP6CJti/rLZFZFDOqtGnS0F9E4u9iu1aRPffjGsVqZflwIeGj9IhaSmslQDxgSKrOLOHuPMtWT5VdDlM25Wsx9fP1MQTcra/2qRQfF4x+ix4MYiivT69jzhIcnm07a3eqPIhP2Ytt+wbqEf6ryAm2pRYEvIXt646EGAvI/cE3V8tZZECIdQA9tB25KwWQmSu3XwJG5sfszFw4dLoHC9iC0rhalyOSSOw3V9Tn9ydYgaogFgIU84HsZAFbiZtX+JHDCByTClRjnI7Zg5QVJ0uO2+vvcgoqV+zgCtuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YGQC3YGT; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EABvwbII;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YGQC3YGT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPZJb3mB0z3bjs
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 03:02:07 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49AFiofe025085;
-	Thu, 10 Oct 2024 16:01:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:references:mime-version
-	:content-type:content-transfer-encoding:in-reply-to; s=pp1; bh=a
-	RVSqJeIBM4P/yTtc34+JqyyPgM1QcxniwmaD3Dpay4=; b=EABvwbIIeQCOinHf6
-	dhCI17lSp0fbVj8kQuVbn0rw5s4+Uc18Wn588QMEZPTa001iSdETDXrELR3UKWhw
-	k3P2aCVvQ0S6MwtWaPCHZVIN9PoyOoyDSeCunj3i/+AQJiJfVP3FJEPNPLg92Aqk
-	zN7+h3A0cSoX1aVAC4ELgqtj/4ENMg06UytQ92VU4KdPr4PBcsbekMUgjM7Cj0h5
-	Xg6z27p16osefzMO++I+9TH4cx93rtA+I1yHghrATeFa/AAVvlxuqV1nCybvzHXD
-	+pQ0uz9w9bttm0a4AJ3jEEyZxFMDpDgQNlPRYVtn7sn3SM+OxGkwNGepokgjrN+U
-	kbEEg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 426hu5g29g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 16:01:14 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49AG1Emf029252;
-	Thu, 10 Oct 2024 16:01:14 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 426hu5g29a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 16:01:14 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49AFi8cF030168;
-	Thu, 10 Oct 2024 16:01:12 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 423gsn0nt5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 16:01:12 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49AG18aT53281078
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Oct 2024 16:01:08 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A2C3120043;
-	Thu, 10 Oct 2024 16:01:08 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B427920040;
-	Thu, 10 Oct 2024 16:01:07 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.60])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 10 Oct 2024 16:01:07 +0000 (GMT)
-Date: Thu, 10 Oct 2024 18:01:06 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-s390@vger.kernel.org, loongarch@lists.linux.dev,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 6/9] s390/vdso: Remove timekeeper includes
-Message-ID: <20241010160106.15346-F-hca@linux.ibm.com>
-References: <20241010-vdso-generic-arch_update_vsyscall-v1-0-7fe5a3ea4382@linutronix.de>
- <20241010-vdso-generic-arch_update_vsyscall-v1-6-7fe5a3ea4382@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPc0r6GNYz3bjg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 04:18:36 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id E7F56A44C1E
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 17:18:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E588CC4CEDC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 17:18:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728580711;
+	bh=vaucBuX2fMrEpT3kygwI4CcFnWG5blOdj+4yYIH1/lc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YGQC3YGTpIM/Tv02Vn7usGJD/6tt+x+KTKu3UxnMO5NCC8+C7ZPh5ezrehFriglwe
+	 0kHT558np8Wr8rw+tHrk6iFdI6TYZzj/XuDQyl1ohCHGBlLvqRKvMY9o2gFo+NuycW
+	 y20uvBOD9Gdu+xnvXvzrx2PBIPwMfqD7Kk74Y5ZM4wURiZxI3kabAPnyXgltKV5Te8
+	 nLgYuMl0XB6UP3CI6ocVV8lyp79EB210TDlqZm0fWRLk96yJAx28fczirFRv8Ok4xn
+	 g28YaYfndtMh2lJkpow1r3uH0m1V9UcGEfvj2KBq6mV0UhVTJerIhIuFum/RTZvtMI
+	 Z12HDd0NC/l1Q==
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3a377534e00so5177055ab.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 10:18:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV8VJHTnp1Km8jjx7ame8jLakG8ladqxxEqR3NBpeTWwLmQnvjiflbpES96dJyEd8puNG2737ceRkAqAZY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YygpaGF0amDNR7tUOTaZKE84O9xnFRQkqDeTd1AoOwHBlh7n4qx
+	A77xmIrXa9Yy62HcqlLJI76B+DkoFpv7QpS0HOm9uHY8gIH5EehtHq6WK29st+xvzNIh0EXQ3MU
+	kbwGjPEK0O65G5+HHmAes1cD7qN8=
+X-Google-Smtp-Source: AGHT+IGszKBBrf1gYsUhslMqcPNpC/f6sAFFbsmL+u+zGmeEd2sYZs3+7Tvb9T+CKCsx/nhk3yidKvoEgysxI18Lmn4=
+X-Received: by 2002:a05:6e02:144d:b0:3a0:92e5:af68 with SMTP id
+ e9e14a558f8ab-3a3b51daa94mr2839515ab.15.1728580710921; Thu, 10 Oct 2024
+ 10:18:30 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,40 +62,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241010-vdso-generic-arch_update_vsyscall-v1-6-7fe5a3ea4382@linutronix.de>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1_f3XWFj058GjuDseAZVwzQNnRq2_S41
-X-Proofpoint-ORIG-GUID: zxhxQjmvWvZNQVEbX_m8_FF8HYH53KWD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-10_11,2024-10-10_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=9 lowpriorityscore=0
- phishscore=0 mlxscore=9 bulkscore=0 priorityscore=1501 adultscore=0
- spamscore=9 suspectscore=0 clxscore=1011 malwarescore=0 mlxlogscore=103
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410100106
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+References: <20241009180816.83591-1-rppt@kernel.org> <20241009180816.83591-5-rppt@kernel.org>
+ <CAPhsuW66etfdU3Fvk0KsELXcgWD6_TkBFjJ-BTHQu5OejDsP2w@mail.gmail.com> <ZwdpnPKKQGF5DtSv@kernel.org>
+In-Reply-To: <ZwdpnPKKQGF5DtSv@kernel.org>
+From: Song Liu <song@kernel.org>
+Date: Thu, 10 Oct 2024 10:18:19 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW6gb76T_75TPzb-AvfyAcYE83iYhDpjJNHJQWDd3Fki_Q@mail.gmail.com>
+Message-ID: <CAPhsuW6gb76T_75TPzb-AvfyAcYE83iYhDpjJNHJQWDd3Fki_Q@mail.gmail.com>
+Subject: Re: [PATCH v5 4/8] module: prepare to handle ROX allocations for text
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andreas Larsson <andreas@gaisler.com>, 
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Christoph Hellwig <hch@infradead.org>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, 
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, 
+	Stafford Horne <shorne@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
+	Uladzislau Rezki <urezki@gmail.com>, Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>, 
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-mm@kvack.org, linux-modules@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
+	linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	loongarch@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Oct 10, 2024 at 05:44:49PM +0200, Thomas Weiﬂschuh wrote:
-> Since the generic VDSO clock mode storage is used, this header file is
-> unused and can be removed.
-> 
-> This avoids including a non-VDSO header while building the VDSO,
-> which can lead to compilation errors.
-> 
-> Also drop the comment which is out of date and in the wrong place.
-> 
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> ---
->  arch/s390/include/asm/vdso/vsyscall.h | 5 -----
->  arch/s390/kernel/time.c               | 1 -
->  2 files changed, 6 deletions(-)
+On Wed, Oct 9, 2024 at 10:47=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> On Wed, Oct 09, 2024 at 03:23:40PM -0700, Song Liu wrote:
+> > On Wed, Oct 9, 2024 at 11:10=E2=80=AFAM Mike Rapoport <rppt@kernel.org>=
+ wrote:
+> > [...]
+> > > diff --git a/include/linux/module.h b/include/linux/module.h
+> > > index 88ecc5e9f523..7039f609c6ef 100644
+> > > --- a/include/linux/module.h
+> > > +++ b/include/linux/module.h
+> > > @@ -367,6 +367,8 @@ enum mod_mem_type {
+> > >
+> > >  struct module_memory {
+> > >         void *base;
+> > > +       void *rw_copy;
+> > > +       bool is_rox;
+> > >         unsigned int size;
+> >
+> > Do we really need to hold the rw_copy all the time?
+>
+> We hold it only during module initialization, it's freed in
+> post_relocation.
 
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Ah, I missed this part. Sorry for the noise.
+
+Song
 
