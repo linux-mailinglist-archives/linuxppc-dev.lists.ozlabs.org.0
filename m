@@ -1,63 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-2075-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2079-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A030E99966E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2024 02:12:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3F39998D6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2024 03:13:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPn9r6rMmz3bfR;
-	Fri, 11 Oct 2024 11:12:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPpXQ0lj8z3bcs;
+	Fri, 11 Oct 2024 12:13:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728605520;
-	cv=none; b=HKVriZ8eVcZkyiMJFt/RrZKOzAUjgW6LN3T2TQ+G0yjltjZrV1IstDw1ybl5dphlKZE14gW01UuCESiXN/tf8m2ZjJo8Eg6t21VU7H9bk9dHpFmT3PPMsZh060P8slIGhSAlyrIKI5GcPAUVC4NDggEQytpnkQAKi3B1xStMMxcOiL+8lfu4yhrcF1L2exOLP+gY0jR5VzBSlUozLmiuaDqmqSbxGe64KwQcb02fMxxfmKaUnoqZuHzgrjQFC9xvtpjY7rt9SIHYRdvNHV7+pAVAV8mrWbj8PpTbnn0LSagn3CYIQz3cjqgHk2c1gDhh2MsR/FhkEHoPcbeicM3ISg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728605520; c=relaxed/relaxed;
-	bh=UvRhhxa/P6kUhZMsun7DjFMKqxX3NGt5tLH0F7hxgfA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GBhVS1fSQnHHeWyUTS5LSHdiobdKvAc4KZ/CU0yVGj7SmSGHvBvvkEROW2xsDocpxhwhRK2jvhL8y9KuozosUyk6BpTlwBn1vWc6grzhVMiNvMiIo6YmyQjEPzx+qgviaRqLDHbWcbCNhoTR88fGNf/qfwYz60CT0Y2srbV2oNdNLnKxtgGkfslUol+LDoW+v4F4lQ76sCe4RL6vhaxv8FVxEPiq2jpgpXsj3FVvSIyGdrCAQWovqmPvh+5fTc7py+kUdKc3q9zc4P/Utp/JkPeTAKwnVVse1KeOcc6mmZzUQO6ryjExNjv0RKoYrAMSLclS0RCC0WyNa7lQVm7eMg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=csxu=rh=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=csxu=rh=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2613::608" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728547914;
+	cv=pass; b=LGPtEt50Sg2W/ElvnsvIyg3a+HDLXuRHm9OU3wvGhOS6rj9+1UAuoKKzFM665ZZWNJZ7uk3YDerGBvXNooAHbLy1Y9uhW5/Li339BBG0GyhjB1XhR6kfE0UvppMcYp1+vXC4sL53zgLQdr3qn6p+zHJGCKRkflYnxrQpJl2pnU0AV8KtBuXtwbvVi1weVKg7X0DUu9tFnR8WTE9EucA3cie0vJ0N1/bssmdOAbP7Yx8rGwjSinILa19CgjYDjhyWf6bsyQzvCqUMmrTDt+czXZqcUAjV3up4K1e9tN19Njki1uzImxBeOKFHSMt7t5ICNleeahdscTANd5Xwg/GT2A==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1728547914; c=relaxed/relaxed;
+	bh=gi6gPWFQQks0QJQ5BOEmhNWKcsM8KIMnch0/LL+Yl54=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=jbCeR7NxmsPd5ZvC9TeC3ONI/rggviKMoy/nIL741jFTwaGoYoNjQDd86XvSKs4+gW1064+kbcWZjmKNdRl/2JUpdleACNcGi9XD82OwNrWCC9hAsKdIvWn1H+Ra0/+XCIjiY+Pp6/P4y6lixSDQIAj3o/dZyYEe4eS86D/7RXRU0jMHusQ1c4nQE0YNSQE9EVyhylblM/VYAx7Vn/Fc/TI//Sq2IcM1xJBfBRkcRaSibmOgkfOq44mMt+QyWgOj/AUkUxM7/dwF/P4fasDy9kquXsFf732BIw6rkhsGHb9/rk3fCkQcqp/9531/tRb03Zi8Yp8w4sZZL8i3mz1BgA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=NzxjFlga; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2613::608; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=iuliana.prodan@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=NzxjFlga;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2613::608; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=iuliana.prodan@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20608.outbound.protection.outlook.com [IPv6:2a01:111:f403:2613::608])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPn9p4kLGz3bdX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 11:11:58 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id BF6A15C5AB4;
-	Fri, 11 Oct 2024 00:11:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F66DC4CECD;
-	Fri, 11 Oct 2024 00:11:52 +0000 (UTC)
-Date: Thu, 10 Oct 2024 20:12:00 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: kernel test robot <lkp@intel.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, Linux Trace Kernel
- <linux-trace-kernel@vger.kernel.org>, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, "x86@kernel.org"
- <x86@kernel.org>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Mark Rutland <mark.rutland@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao
- <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Paul
- Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas
- Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH] ftrace: Make ftrace_regs abstract from direct use
-Message-ID: <20241010201200.729d4fcb@gandalf.local.home>
-In-Reply-To: <202410110707.uHvgl9S7-lkp@intel.com>
-References: <20241007204743.41314f1d@gandalf.local.home>
-	<202410110707.uHvgl9S7-lkp@intel.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPMt03FB6z3bgQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 19:11:51 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k2hrSGRivmaLxzGLVWv7PSVEpH5ipQ89zwUJhA1Qdx44D5dYB1t0AbMzene6/KI/bqSSbqGeDARR/qF57EzUoX/5xRC8VzG2VAshvUTLhWc+oTC19/1WnD8Qn5Xtzv7HVFf8Oy8pgkDR0fsuRZBxlPECKFkKxhFtYbl9kKBAt6IWlmhJa9XIJQR3IEIEYMPPUIKAaNE3Opry/drKhscKMmwY9/C+WkNK8IzR7cNQoTyqPzy3W+mE9kc+TmiI4+dpqXH4931QL0GVY/nzrHKDRut6ts9bwT45eezQyPuKkZe8XibFPt7Bsm5IEfgqu0Cz5WTu3aA4qpX8rRu6mHEORw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gi6gPWFQQks0QJQ5BOEmhNWKcsM8KIMnch0/LL+Yl54=;
+ b=ymzw9v0piY056RLkUGoATLQKRbHT9KHbe6lbzG48gpb36lHAwc5dFSQ2gywvZtNr1SZmr2PvP3NlY4xmg80wmkZr2eGqdZs4N30AqlvIdKaQv9yNwqgOBn4r5aAXyuiv4luaHAtyceTsy4D7FixYE8g4fLAfEBVw2fNhTYwA6axqaVl4nFdN0bdSNpoar6r4aQ7qGx5a5BPLjSxCeV/qm4SIPE7eU6JkKR3sWUeyd59vf9f6jcXF+cFrY/M0GjXj0EqKVSKkwch4NZDmEYddvoZ/jnN5wHfbE2e6bj0vXq79etc0P/lZb5oVo9SCy9Noa12G8SNSoZFo8qcZi4Nphg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gi6gPWFQQks0QJQ5BOEmhNWKcsM8KIMnch0/LL+Yl54=;
+ b=NzxjFlgaWIJDSkmpCJy/LAHNcchRpzcKTDn3rE15Fnv8k/GCSnfmbEMkAgoOcg9/oO+Zbkr5EUA8GKEwhVvWAqxGq/CI/H6dxcRzJREqqs5pBHPuJ6Cn4pS1/diamtiekEB3ATBos8uX2x3q05jPmanAgXBImEtgDgKmoaWyfFOiXVaJGTer/xnYtcEOcCLpHsm99engNlQoIrcpSi4AU/ZbLS6ZKaBblSaFsmGPjXHgzrOs3FSRjry8VNdH2n9z5JilIjJn1xPni7GK4LHWEQrOtrB4piPmjcu1vrw8nrm7A9vabyqW8TVqUQJvPYejqAI0VD7NDuuX5sqY395nYA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com (2603:10a6:10:2e1::21)
+ by PA1PR04MB10397.eurprd04.prod.outlook.com (2603:10a6:102:449::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Thu, 10 Oct
+ 2024 08:11:28 +0000
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1]) by DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1%5]) with mapi id 15.20.8026.020; Thu, 10 Oct 2024
+ 08:11:28 +0000
+Message-ID: <6f2fe091-6436-4b28-a898-33d7939a7736@nxp.com>
+Date: Thu, 10 Oct 2024 11:11:25 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] ASoC: imx-card: add cs42888 codec support
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, shengjiu.wang@gmail.com,
+ Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
+ lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ chancel.liu@nxp.com
+References: <1728460004-364-1-git-send-email-shengjiu.wang@nxp.com>
+Content-Language: en-US
+From: Iuliana Prodan <iuliana.prodan@nxp.com>
+In-Reply-To: <1728460004-364-1-git-send-email-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR02CA0138.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28c::35) To DU2PR04MB8774.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::21)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,233 +80,113 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8774:EE_|PA1PR04MB10397:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc08df73-975b-4e73-0f44-08dce9032409
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?c1BYaGU0RzkraUZwRE1TVGpUTSt3cWxHNXpqZk0wc1BjR0JrTjRzcFJURmNN?=
+ =?utf-8?B?RTg0UzRhYS9BRnR0ejZvUkI1USt3MUN3UXczc2VWKytzSnZHOEVtRGZJMHc5?=
+ =?utf-8?B?aGU0djIvMzJjcmhQL1BkWUt0b3FjQVlCSmhCYnhYSzJxRjVlbDFoUEpaRWR0?=
+ =?utf-8?B?SlBJc21FVmdobWtYUHdqNkhqKy9PWGdFU2tZbFNaRitBNEdxQ0FHekdMK2No?=
+ =?utf-8?B?eVRhRnVYR29xZU5iNlkzdzZGYVJqbDNNbHluNithQk5IWWwvcWF3M3h0djZn?=
+ =?utf-8?B?NHpOay9GSk5vc3pIWU9ZbUY1OWFvc1B0RnZ1VklGWnlteVpWWjdORm1ZYmNR?=
+ =?utf-8?B?UGVBS0RCY1lmMHBDYTRjQjVNRERuZ3J2WkhKN2lvdU1IeDR3NTVleGwrS0Yv?=
+ =?utf-8?B?R3lQR0h6c1NyT3lLRS9XRVdQT2piU1JPdXpWcmZHaEM0dnh3cVM2cy81eXJ3?=
+ =?utf-8?B?aXYranN0VW96Rmp5ZFBhTVVnbHBZeHJPTDdNTFNIbE1icHUvdEN0R0FuUjNm?=
+ =?utf-8?B?YkRSREhrZ0FPczEvNEFKOTNKbXd1RS90U3J5UFpuRlZRZENEZGg0cjJSbVdi?=
+ =?utf-8?B?WncrK3krUkJUNVpIa3pIcTVxeFlXb0ZHL0RyT0VKVXZmL2RoVkhwd0FVMzhB?=
+ =?utf-8?B?Vi9iMy9GTENYZkh2Zm41Q1BUbmpYeDMra2krUmlhQjl4eUJLRFJtV3RhU3Fw?=
+ =?utf-8?B?WVRibzhuRVdOUTh4UTdYck5wclVMWEtDdXVDTDBCOHF4Q1JOVFN3Tnh1Q284?=
+ =?utf-8?B?eE0yWm5weU5qNDk3QjM2TDdDRThhQzR2ZVIrWnNEZHBydFg1UEVFVnE1OEt1?=
+ =?utf-8?B?VmQ1QzJwNHhlRnJwLzBzYkRNaXZXWENUNk1TSFNRTndEeStjSUtOWUg3eDl2?=
+ =?utf-8?B?M0NsQlQvNHFnVStlZFRzaU0relJyTXVrdjF0dWxzcHM3dEVrbmNobnVKSE1O?=
+ =?utf-8?B?VmFUd1ZmS1F2eWV5WnR6eC90ZXd5dlZJOUowMXlMZkNtNG16L29yT1dTNjEy?=
+ =?utf-8?B?QUF0dlZPMlR4RHJNdi9oc0E1bEhLd2pOZm5rV05EeVlWSXA0NmgxMGtQaXl6?=
+ =?utf-8?B?V1RVcWtMQVA3TjRSeUN6ZEM4MnNkYW9wOXBYR0lEbTRGbjhCalJZYVV4YSto?=
+ =?utf-8?B?VnB4a01aRlVDdUZyeGJkTXpkWGpTK2lRaGhUWU9KMzNENWFsdGt6VVlTanZH?=
+ =?utf-8?B?cUF4dlBoUkVza3BEMkx4anNvSFNKLy95ZEl4bUN4QkgwOEtjVmljQjhIbG1q?=
+ =?utf-8?B?ejlWOVcveTh4L0g5S21aRlF5VllscUtBRS8zYk1tbk4yaVpiVE90bFc4Ynk4?=
+ =?utf-8?B?V0Z5eGJ4aVJXR2hyTmRCd29zcFdLeUpjNHh6eWc3VnMySlhoR0ZTNkNkdGxE?=
+ =?utf-8?B?bGZvd2hWYVVEWGlGamVBZTRVcFB3MG0vdFFuaUVNa3BWQVNCUThUU0xZc2sw?=
+ =?utf-8?B?ZmFGTEp1MS8rRllJTTRsTkkxQ2Y5OXdRdURGMGJTNUlnZnI3aDkwT2o4ek5i?=
+ =?utf-8?B?L2s4VzFyaDBEKzZaVzFoYWlRQlQySDZ5MTJMcVgvOG9YMG5reFY2bzVMeXJR?=
+ =?utf-8?B?YkM0V2t3bzJCK1c0NmtvYjNPckNEbmVqTldaeDl0OUR5cVdRSkt0L1Nvc0Rh?=
+ =?utf-8?B?WnFyVkp0dVovcmc4b0pvaWNLVVpQWitJajlaUXFibXpnKzZIRWpUM0c2VUpI?=
+ =?utf-8?B?TnF0KzRnQytRd1ZDcFk3MWNCWXRDekVBdjMvMmpPNW9tSEJpaWt3TG1vN2VF?=
+ =?utf-8?Q?lvcuALFEnPHPqbpwkSsLvxM/0oywf/Y0VJXohEt?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8774.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dzdXOUYrOTFRZHJFR3ZES1Z2anBvWDArMWtscHJrL25xZy82MWpPRmJrOXFK?=
+ =?utf-8?B?L0lnZU9pTi9mTGR5TktEdzlKSlhiTG1hc0FTOW5ZdldCdlRUWmFVTG5wMVN2?=
+ =?utf-8?B?eEpXdW1ndUZoYkRZVHQ1SldlWUJUYU05NW52bXBjNjZqQk84THBVWW1JdmUr?=
+ =?utf-8?B?V1dBd1R2SmllbjhkZkc2SkRzV25oS1N3RHJEZldiKzQyS0habTVPZUc1bHRG?=
+ =?utf-8?B?MExuc21rNHZodzBTQ3FWbEZUT3VHZ1Yxc2trdFg0TDZlY2xKNTBqMk9sMkJo?=
+ =?utf-8?B?dU1OVWZidi9GYlN1czMvSVdvbCtoSnJZZzRUOWNTSVFOY3ZCcXdhbzVmSHlZ?=
+ =?utf-8?B?d1grYUF5Qk5SeGljVlNlQ283SlhIV3krQ2FoVXUzNVRJbzcvSFRMTUQxQ0N6?=
+ =?utf-8?B?RG80Tjc0VE9qb3JsNGZSdU1EMWpycDlZdmhidVRXdkhXbzdZV2Y3VkRBNllu?=
+ =?utf-8?B?V0RTenNxRllOZExlWnpLdi9wcGZvMXZTRTE2Wm5aSERUQXV0NjZmbnJUbExL?=
+ =?utf-8?B?UE9TbFdQR0FQeW5PcEtaQlVZNmJoS2R6L2k3OUZuNG10NFU4UWhMK1JPVGFC?=
+ =?utf-8?B?dXNlejdMM0JvZkJXOXdjcXpwUGwyT2tyMTRQQ29ZeW1CNDF5empmcmJya3I2?=
+ =?utf-8?B?cjhBVk1WNHRwalBSRFVKU2hRVGc3bjNMeW9XN3MzTkFiSXJ4cTNKenZKWE1n?=
+ =?utf-8?B?cXNiOFNidkc2TmtpQ2tIKzZtSmRYSUtlVE52QXUxR3VYbzBGbGNZVk1iayth?=
+ =?utf-8?B?SGpMMFplbnBzWEVSdEtrQU9GdGFJcEpnTWMxM1k2U3U5NW16ZU1BVGlOOTFF?=
+ =?utf-8?B?cUhBZ2gvQkVkVThmRmdaNXMwdkE5T2J4SmhNajdScnRVbndlZGdZUW41SC8z?=
+ =?utf-8?B?YVlZdStsYzVHSWJlem9vOFFpcTlVWnNXMVRrV0haMW1VbkdvZ0UyaldLUUxJ?=
+ =?utf-8?B?MkdyaVhNaWNLeDJXZkhYb0JPMmFaYlFkN3JJalA4WmNYMW81SGJGa3dMZnFa?=
+ =?utf-8?B?Tk9EL2JoZ2NTRkZhY2Q2RW1waDViNEtoNS9IdkxKUjZOL3plRndqV0QvM2lM?=
+ =?utf-8?B?a1JpZXFmc0NKSm91V1h1SXA5dmZKazBRYUcvVUFaQ1pJRkpnUGhnTm5IbTRl?=
+ =?utf-8?B?Ylp6eVJRditFSlpIWk0xeE1BcHdkS0FCYXM2UlJycnJLMURzdS9vOUZRQVZa?=
+ =?utf-8?B?elZSa1lFM2MrbjQ0TzRFcnYvUWI1RDlRdjJ5bTRVT3k1bVVYaVRvdEZmUDJQ?=
+ =?utf-8?B?NThhclJCNC9NeU4wcjdIaFlEc0l3TzV1TkdEMDJqeXpyc2JidlJjMEsyTjVU?=
+ =?utf-8?B?bk95UWt2VTFrNWdycmZaajYxTzNGNko4eERsa01JcHdEUWgyeVp0OEJXdjlZ?=
+ =?utf-8?B?NmlKYjFQeHdxcWdVdHNlVkVTNjQ5cmFtZzBrUVBLUkg4NUl2RjIvejFnVkVx?=
+ =?utf-8?B?Y2ZTYldVV3djaHVLc2VXN0N1Zkh4am5aRUMzR2p4TlVSQkhURTh4V1Y0aDR3?=
+ =?utf-8?B?azBURER3V0VPQW9aam1qWlZLMXRVZ1U1RGI4d3J2RkI1ZG5HcWN6TGZ1SThw?=
+ =?utf-8?B?Zkc1Z1VEU3MrbEVJZnloOUR0TTNkNUJiMUVrSlZ1Q1VSOHBmTEN3MFVNcERM?=
+ =?utf-8?B?cVh4VmR3SGZPK3VTSTgzanpkMzJ1UUh1VW02aXJDRDZUc2tISTltSVRQZ0w5?=
+ =?utf-8?B?WDZ1NWIyUXAwMTBNNWV1S08xWkJBZCtTc0xUcE9OU2U3MWpqdThlNTNUb05n?=
+ =?utf-8?B?VlJFUDloZCtiSXl5WG5JVW14VWQza2Q4NXVOdys4OVovY3BBYndQSEJ1WHoz?=
+ =?utf-8?B?Tjhya3k1U3AvcEhXVXorRC9oYkJjZE5OQnU2UFFEUEVXdWozYWFwYlplMDNS?=
+ =?utf-8?B?amlIejlOUk9vWFNWWVk5QnBSMEpBUG83RzNhbkR6c0gwWk5yQzNMT1JzQmNX?=
+ =?utf-8?B?WUhlZUpBZzk3Z1ROR2pBMi9PRG5sYk1YZVJuWFdPZWR0L2xWSHN3eWlyOTBw?=
+ =?utf-8?B?MXdrdld4c2t1ZjlGcHZTQnRqQUI0ajJwNDJnMktka1JIaUVMZ09qNUJEenlY?=
+ =?utf-8?B?MEpXL3lWSUZqcjFlTUNidE9DbFNyTEZrTCtIY0s0dkpUejdRaW1vcTJ0Uk9X?=
+ =?utf-8?Q?8Y6Jn33qWHLzP8cEJ3cSXCEsR?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc08df73-975b-4e73-0f44-08dce9032409
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8774.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 08:11:28.0263
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vflYbXNjRk/Bz9Kuwww5EILKUR5WwV9WqZRLpUUz5TrqMpkya1rzBn1LA6wvNzzj2vjuJXcMLfs07Wr9p0mudg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10397
+X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, 11 Oct 2024 08:00:21 +0800
-kernel test robot <lkp@intel.com> wrote:
+On 10/9/2024 10:46 AM, Shengjiu Wang wrote:
+> add cs42888 codec support
+>
+> Chancel Liu (2):
+>    ASoC: imx-card: Set mclk for codec
+>    ASoC: imx-card: Add CS42888 support
+For the series:
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
 
-> Hi Steven,
-> 
-> kernel test robot noticed the following build errors:
+Thanks,
+Iulia
 
-Hmm,
-
-I wonder if we can not waste resources if a v2 version of a patch is sent
-out. Not sure when this was picked up, but I sent out an updated version
-with this fixed yesterday.
-
-  https://lore.kernel.org/all/20241008230628.958778821@goodmis.org/
-
--- Steve
-
-
-> 
-> [auto build test ERROR on next-20241004]
-> [cannot apply to s390/features arm64/for-next/core powerpc/next powerpc/fixes linus/master v6.12-rc2 v6.12-rc1 v6.11 v6.12-rc2]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/ftrace-Make-ftrace_regs-abstract-from-direct-use/20241008-084930
-> base:   next-20241004
-> patch link:    https://lore.kernel.org/r/20241007204743.41314f1d%40gandalf.local.home
-> patch subject: [PATCH] ftrace: Make ftrace_regs abstract from direct use
-> config: um-allnoconfig (https://download.01.org/0day-ci/archive/20241011/202410110707.uHvgl9S7-lkp@intel.com/config)
-> compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241011/202410110707.uHvgl9S7-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202410110707.uHvgl9S7-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->    In file included from kernel/time/time.c:31:
->    In file included from include/linux/timekeeper_internal.h:10:
->    In file included from include/linux/clocksource.h:22:
->    In file included from arch/um/include/asm/io.h:24:
->    include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      548 |         val = __raw_readb(PCI_IOBASE + addr);
->          |                           ~~~~~~~~~~ ^
->    include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
->          |                                                         ~~~~~~~~~~ ^
->    include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
->       37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
->          |                                                   ^
->    In file included from kernel/time/time.c:31:
->    In file included from include/linux/timekeeper_internal.h:10:
->    In file included from include/linux/clocksource.h:22:
->    In file included from arch/um/include/asm/io.h:24:
->    include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
->          |                                                         ~~~~~~~~~~ ^
->    include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
->       35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
->          |                                                   ^
->    In file included from kernel/time/time.c:31:
->    In file included from include/linux/timekeeper_internal.h:10:
->    In file included from include/linux/clocksource.h:22:
->    In file included from arch/um/include/asm/io.h:24:
->    include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      585 |         __raw_writeb(value, PCI_IOBASE + addr);
->          |                             ~~~~~~~~~~ ^
->    include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
->          |                                                       ~~~~~~~~~~ ^
->    include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
->          |                                                       ~~~~~~~~~~ ^
->    include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      693 |         readsb(PCI_IOBASE + addr, buffer, count);
->          |                ~~~~~~~~~~ ^
->    include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      701 |         readsw(PCI_IOBASE + addr, buffer, count);
->          |                ~~~~~~~~~~ ^
->    include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      709 |         readsl(PCI_IOBASE + addr, buffer, count);
->          |                ~~~~~~~~~~ ^
->    include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      718 |         writesb(PCI_IOBASE + addr, buffer, count);
->          |                 ~~~~~~~~~~ ^
->    include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      727 |         writesw(PCI_IOBASE + addr, buffer, count);
->          |                 ~~~~~~~~~~ ^
->    include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      736 |         writesl(PCI_IOBASE + addr, buffer, count);
->          |                 ~~~~~~~~~~ ^
->    In file included from kernel/time/time.c:33:
->    In file included from include/linux/syscalls.h:93:
->    In file included from include/trace/syscall.h:7:
->    In file included from include/linux/trace_events.h:10:
->    In file included from include/linux/perf_event.h:52:
->    In file included from include/linux/ftrace.h:23:
->    In file included from ./arch/um/include/generated/asm/ftrace.h:1:
-> >> include/asm-generic/ftrace.h:5:2: error: unterminated conditional directive  
->        5 | #ifndef __ASM_GENERIC_FTRACE_H__
->          |  ^
->    12 warnings and 1 error generated.
-> --
->    In file included from kernel/time/hrtimer.c:30:
->    In file included from include/linux/syscalls.h:93:
->    In file included from include/trace/syscall.h:7:
->    In file included from include/linux/trace_events.h:9:
->    In file included from include/linux/hardirq.h:11:
->    In file included from arch/um/include/asm/hardirq.h:5:
->    In file included from include/asm-generic/hardirq.h:17:
->    In file included from include/linux/irq.h:20:
->    In file included from include/linux/io.h:14:
->    In file included from arch/um/include/asm/io.h:24:
->    include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      548 |         val = __raw_readb(PCI_IOBASE + addr);
->          |                           ~~~~~~~~~~ ^
->    include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
->          |                                                         ~~~~~~~~~~ ^
->    include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
->       37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
->          |                                                   ^
->    In file included from kernel/time/hrtimer.c:30:
->    In file included from include/linux/syscalls.h:93:
->    In file included from include/trace/syscall.h:7:
->    In file included from include/linux/trace_events.h:9:
->    In file included from include/linux/hardirq.h:11:
->    In file included from arch/um/include/asm/hardirq.h:5:
->    In file included from include/asm-generic/hardirq.h:17:
->    In file included from include/linux/irq.h:20:
->    In file included from include/linux/io.h:14:
->    In file included from arch/um/include/asm/io.h:24:
->    include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
->          |                                                         ~~~~~~~~~~ ^
->    include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
->       35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
->          |                                                   ^
->    In file included from kernel/time/hrtimer.c:30:
->    In file included from include/linux/syscalls.h:93:
->    In file included from include/trace/syscall.h:7:
->    In file included from include/linux/trace_events.h:9:
->    In file included from include/linux/hardirq.h:11:
->    In file included from arch/um/include/asm/hardirq.h:5:
->    In file included from include/asm-generic/hardirq.h:17:
->    In file included from include/linux/irq.h:20:
->    In file included from include/linux/io.h:14:
->    In file included from arch/um/include/asm/io.h:24:
->    include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      585 |         __raw_writeb(value, PCI_IOBASE + addr);
->          |                             ~~~~~~~~~~ ^
->    include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
->          |                                                       ~~~~~~~~~~ ^
->    include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
->          |                                                       ~~~~~~~~~~ ^
->    include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      693 |         readsb(PCI_IOBASE + addr, buffer, count);
->          |                ~~~~~~~~~~ ^
->    include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      701 |         readsw(PCI_IOBASE + addr, buffer, count);
->          |                ~~~~~~~~~~ ^
->    include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      709 |         readsl(PCI_IOBASE + addr, buffer, count);
->          |                ~~~~~~~~~~ ^
->    include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      718 |         writesb(PCI_IOBASE + addr, buffer, count);
->          |                 ~~~~~~~~~~ ^
->    include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      727 |         writesw(PCI_IOBASE + addr, buffer, count);
->          |                 ~~~~~~~~~~ ^
->    include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      736 |         writesl(PCI_IOBASE + addr, buffer, count);
->          |                 ~~~~~~~~~~ ^
->    In file included from kernel/time/hrtimer.c:30:
->    In file included from include/linux/syscalls.h:93:
->    In file included from include/trace/syscall.h:7:
->    In file included from include/linux/trace_events.h:10:
->    In file included from include/linux/perf_event.h:52:
->    In file included from include/linux/ftrace.h:23:
->    In file included from ./arch/um/include/generated/asm/ftrace.h:1:
-> >> include/asm-generic/ftrace.h:5:2: error: unterminated conditional directive  
->        5 | #ifndef __ASM_GENERIC_FTRACE_H__
->          |  ^
->    kernel/time/hrtimer.c:121:21: warning: initializer overrides prior initialization of this subobject [-Winitializer-overrides]
->      121 |         [CLOCK_REALTIME]        = HRTIMER_BASE_REALTIME,
->          |                                   ^~~~~~~~~~~~~~~~~~~~~
->    kernel/time/hrtimer.c:119:27: note: previous initialization is here
->      119 |         [0 ... MAX_CLOCKS - 1]  = HRTIMER_MAX_CLOCK_BASES,
->          |                                   ^~~~~~~~~~~~~~~~~~~~~~~
->    kernel/time/hrtimer.c:122:22: warning: initializer overrides prior initialization of this subobject [-Winitializer-overrides]
->      122 |         [CLOCK_MONOTONIC]       = HRTIMER_BASE_MONOTONIC,
->          |                                   ^~~~~~~~~~~~~~~~~~~~~~
->    kernel/time/hrtimer.c:119:27: note: previous initialization is here
->      119 |         [0 ... MAX_CLOCKS - 1]  = HRTIMER_MAX_CLOCK_BASES,
->          |                                   ^~~~~~~~~~~~~~~~~~~~~~~
->    kernel/time/hrtimer.c:123:21: warning: initializer overrides prior initialization of this subobject [-Winitializer-overrides]
->      123 |         [CLOCK_BOOTTIME]        = HRTIMER_BASE_BOOTTIME,
->          |                                   ^~~~~~~~~~~~~~~~~~~~~
->    kernel/time/hrtimer.c:119:27: note: previous initialization is here
->      119 |         [0 ... MAX_CLOCKS - 1]  = HRTIMER_MAX_CLOCK_BASES,
->          |                                   ^~~~~~~~~~~~~~~~~~~~~~~
->    kernel/time/hrtimer.c:124:17: warning: initializer overrides prior initialization of this subobject [-Winitializer-overrides]
->      124 |         [CLOCK_TAI]             = HRTIMER_BASE_TAI,
->          |                                   ^~~~~~~~~~~~~~~~
->    kernel/time/hrtimer.c:119:27: note: previous initialization is here
->      119 |         [0 ... MAX_CLOCKS - 1]  = HRTIMER_MAX_CLOCK_BASES,
->          |                                   ^~~~~~~~~~~~~~~~~~~~~~~
->    16 warnings and 1 error generated.
-> 
-> 
-> vim +5 include/asm-generic/ftrace.h
-> 
-> 38f5bf84bd588a GuanXuetao 2011-01-15 @5  #ifndef __ASM_GENERIC_FTRACE_H__
-> 38f5bf84bd588a GuanXuetao 2011-01-15  6  #define __ASM_GENERIC_FTRACE_H__
-> 38f5bf84bd588a GuanXuetao 2011-01-15  7  
-> 
-
+>   sound/soc/fsl/imx-card.c | 59 +++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 52 insertions(+), 7 deletions(-)
+>
 
