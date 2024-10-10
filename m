@@ -1,58 +1,108 @@
-Return-Path: <linuxppc-dev+bounces-1980-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1983-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442B3998C23
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 17:45:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777E6998C9D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 18:02:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPYwx592nz3bmN;
-	Fri, 11 Oct 2024 02:45:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPZJd0Nkdz3bjt;
+	Fri, 11 Oct 2024 03:02:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728575105;
-	cv=none; b=l5K05AcefuRsdNvgTI6tBK9fAsN6gXZsWKslzzRdkwGSN6fZ1hce4aNLKYTUDIn2xoS26lyaNHc2qnMHTKPkWC9fe2IH43LzUanPU/7klF9qGIrR3TpWwFRiJ++fGYK5PYNvYLVGarqB99yo4PDD4UAOSCvYeRhqvYNZ6Ux0mnNU1lKQ//FxtevPUq36OfimoPXyPwJ/CxcQEWUl/W0Oi5+KT7IUOhm4S4m+zx60LO0xGrHW8+J+DlNABsitpg8r3MnF1ECLPlDtcn68H80ghDr4yNBQamCc1aQ4svO1985MYnGPXpqyNr1wZniknhTBG4UNgjkakLSMR0bxypv4oA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728576128;
+	cv=none; b=Tgq58cZCPRO5l2e3aVJBiCUCo/b844JAL+pjZYU5H7lCU6LdYsqPeBWBg8NGMsvCRK8a88gnPTS7u7j2kDadEzx6P5xsrn9iD/3TqQoSy5WWT+OqmWlWbLlN0+GBfoXSO5ih7IPoGns/DPuWleZq+07PcrQCcX+eNV8B+IX6OnEElU6+y77kxf7zfsNEdy/sDID9FV9Zpp52HQzimINw13YYKKXyadElcC39HKVTFeEVZRT7PY5n9fXDpmp8CmLjPfvXpJHPwBJK4F+WS6qxv/ayUqbahxujk05WtIwReSTC/gfMwKk+CgvICW2XaQAltDRO3ve068U/14nJbxXCOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728575105; c=relaxed/relaxed;
-	bh=a2YqBVOHBfNFQlYc2gfs+s/qyh0QTOeEVhJlFH/p2/E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L8UikwIb/pUciWwIUXv9wnzucjtF9K8U0jnj0Gs3BG2oFVrqCFCclVE3uFTCQF5nQb+4yGgdBVU9I5kSqXpEQPPwmq0wk1GNyvMSIlLPX6s6ooXyceDb5v6R3qI/xzjFPmSSLeHbsAMtTBe3oD05FpkeIORjPHFxxDOw2puicpuI2mUsusmAudrfYY99Y83FvxdDS9AvnYewHKfTJRO6/UU8WMTV3ZGVbNKwntepISSkTv+NCcg5o1jUDEuU24riPVX3v2nFj2D64Qt8YZsp3ponOnDKxNF27dmqVxqrhLCzAuHeJf219NyzRsySg0gKY6uZr0UVDIF2PQ/fPo9adg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=1OiwjVdj; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9vMVf9Cb; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1728576128; c=relaxed/relaxed;
+	bh=aRVSqJeIBM4P/yTtc34+JqyyPgM1QcxniwmaD3Dpay4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n4sKkZphG8fmlRO6hsB08t3Bz+5Zd49Pj8KaY3Fm49fcMZK2moAVUYb35Lsex8ZTnnrNpBbD1eou7hGVxjtDLgwMP4e47uDGmkx3xeRMmN3fY+ncg7ixXDJ1+9fQxep6aNOeSw7TidEkYKaaYI1DwYgrZiJNh3q+njacMcYxTywhdkQ7fvJlO10DTXi2MGiGNRgf+1CMGQNWJTqL2xmR+o2W7BFhZ8kAh8nNZrm6jmludrjkjU4vsVxsGUJUGrQKNT2EYMUb/4mvh8+gIPRPcSTmE6vY4XrkrKITrZDlz9lYcdspV4KkQ7nEoBsppc1FOBz1jq4z3RXgO+W2/udyeg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EABvwbII; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=1OiwjVdj;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9vMVf9Cb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EABvwbII;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPYww4MXkz3blp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 02:45:04 +1100 (AEDT)
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728575098;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a2YqBVOHBfNFQlYc2gfs+s/qyh0QTOeEVhJlFH/p2/E=;
-	b=1OiwjVdjrZF9JLf67Y/LK2PMnwLAF6f41w7jSmYgltcI3k2cD+n7bBb3R7AXe/M5orD3c+
-	jNG47qrWfoeO74dHjhGwcCiplD51Ks4/wT8wVWFsAkjuLH8y+TdThHOIlghS0ejZ7F4aJa
-	fdpD7VdAq91WotwCAmPne8F2NLFwMYZWf5cDB6bRigLRB+bdwIg6emBC7Dyzs8W7a+OKUm
-	xzIv9EKcqqDk6zspMO0Spc74duaQFMTeiUOuvLkj/W4zrG6P7wdxMUk7y1gP4aWoksQl6V
-	TbQmh1ZbbScffPyjmfP0nXGZR3w7Hdnc4ywqwQ0P5zuxX07uFPWXRTvgGEjLCg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728575098;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a2YqBVOHBfNFQlYc2gfs+s/qyh0QTOeEVhJlFH/p2/E=;
-	b=9vMVf9CbfgONWR64KkrCcVV2A6E13/KxqF+wIJ6JAeIgkdde2/u1qMBZ2EVk1IjlQezOJt
-	gT4pUMl2c2fdb5AA==
-Date: Thu, 10 Oct 2024 17:44:52 +0200
-Subject: [PATCH 9/9] MIPS: vdso: Remove timekeeper includes
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPZJb3mB0z3bjs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 03:02:07 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49AFiofe025085;
+	Thu, 10 Oct 2024 16:01:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:references:mime-version
+	:content-type:content-transfer-encoding:in-reply-to; s=pp1; bh=a
+	RVSqJeIBM4P/yTtc34+JqyyPgM1QcxniwmaD3Dpay4=; b=EABvwbIIeQCOinHf6
+	dhCI17lSp0fbVj8kQuVbn0rw5s4+Uc18Wn588QMEZPTa001iSdETDXrELR3UKWhw
+	k3P2aCVvQ0S6MwtWaPCHZVIN9PoyOoyDSeCunj3i/+AQJiJfVP3FJEPNPLg92Aqk
+	zN7+h3A0cSoX1aVAC4ELgqtj/4ENMg06UytQ92VU4KdPr4PBcsbekMUgjM7Cj0h5
+	Xg6z27p16osefzMO++I+9TH4cx93rtA+I1yHghrATeFa/AAVvlxuqV1nCybvzHXD
+	+pQ0uz9w9bttm0a4AJ3jEEyZxFMDpDgQNlPRYVtn7sn3SM+OxGkwNGepokgjrN+U
+	kbEEg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 426hu5g29g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Oct 2024 16:01:14 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49AG1Emf029252;
+	Thu, 10 Oct 2024 16:01:14 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 426hu5g29a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Oct 2024 16:01:14 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49AFi8cF030168;
+	Thu, 10 Oct 2024 16:01:12 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 423gsn0nt5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Oct 2024 16:01:12 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49AG18aT53281078
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Oct 2024 16:01:08 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A2C3120043;
+	Thu, 10 Oct 2024 16:01:08 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B427920040;
+	Thu, 10 Oct 2024 16:01:07 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.60])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 10 Oct 2024 16:01:07 +0000 (GMT)
+Date: Thu, 10 Oct 2024 18:01:06 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-s390@vger.kernel.org, loongarch@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 6/9] s390/vdso: Remove timekeeper includes
+Message-ID: <20241010160106.15346-F-hca@linux.ibm.com>
+References: <20241010-vdso-generic-arch_update_vsyscall-v1-0-7fe5a3ea4382@linutronix.de>
+ <20241010-vdso-generic-arch_update_vsyscall-v1-6-7fe5a3ea4382@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,86 +112,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241010-vdso-generic-arch_update_vsyscall-v1-9-7fe5a3ea4382@linutronix.de>
-References: <20241010-vdso-generic-arch_update_vsyscall-v1-0-7fe5a3ea4382@linutronix.de>
-In-Reply-To: <20241010-vdso-generic-arch_update_vsyscall-v1-0-7fe5a3ea4382@linutronix.de>
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Arnd Bergmann <arnd@arndb.de>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Heiko Carstens <hca@linux.ibm.com>, 
- Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
- WANG Xuerui <kernel@xen0n.name>, Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Russell King <linux@armlinux.org.uk>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-mips@vger.kernel.org, 
- linux-s390@vger.kernel.org, loongarch@lists.linux.dev, 
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728575090; l=1279;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=/bLPps0kAlBRHgd8VurrfZ2wFo+tXRF7XdxLtwWPU+E=;
- b=70spRKqHOmT+bRC0fNPVPL3cOST7P0HmO7QAaigcg8bU87MT4d/jPV/ffmUNPS4FcH3K4ltDk
- qXWF2y4zePwCAnlPQXanKbWKEAG//thS3UqbZsh6pujUgMXZF0G2YYS
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <20241010-vdso-generic-arch_update_vsyscall-v1-6-7fe5a3ea4382@linutronix.de>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1_f3XWFj058GjuDseAZVwzQNnRq2_S41
+X-Proofpoint-ORIG-GUID: zxhxQjmvWvZNQVEbX_m8_FF8HYH53KWD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-10_11,2024-10-10_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=9 lowpriorityscore=0
+ phishscore=0 mlxscore=9 bulkscore=0 priorityscore=1501 adultscore=0
+ spamscore=9 suspectscore=0 clxscore=1011 malwarescore=0 mlxlogscore=103
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410100106
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Since the generic VDSO clock mode storage is used, this header file is
-unused and can be removed.
+On Thu, Oct 10, 2024 at 05:44:49PM +0200, Thomas Weiﬂschuh wrote:
+> Since the generic VDSO clock mode storage is used, this header file is
+> unused and can be removed.
+> 
+> This avoids including a non-VDSO header while building the VDSO,
+> which can lead to compilation errors.
+> 
+> Also drop the comment which is out of date and in the wrong place.
+> 
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> ---
+>  arch/s390/include/asm/vdso/vsyscall.h | 5 -----
+>  arch/s390/kernel/time.c               | 1 -
+>  2 files changed, 6 deletions(-)
 
-This avoids including a non-VDSO header while building the VDSO,
-which can lead to compilation errors.
-
-Signed-off-by: Thomas Wei√üschuh <thomas.weissschuh@linutronix.de>
----
- arch/mips/include/asm/vdso/vsyscall.h | 1 -
- arch/mips/kernel/vdso.c               | 1 -
- 2 files changed, 2 deletions(-)
-
-diff --git a/arch/mips/include/asm/vdso/vsyscall.h b/arch/mips/include/asm/vdso/vsyscall.h
-index 47168aaf1eff051199cf668d584e903b1eb8a3be..a4582870aaea49ac288d62ec4fa1338a98621918 100644
---- a/arch/mips/include/asm/vdso/vsyscall.h
-+++ b/arch/mips/include/asm/vdso/vsyscall.h
-@@ -4,7 +4,6 @@
- 
- #ifndef __ASSEMBLY__
- 
--#include <linux/timekeeper_internal.h>
- #include <vdso/datapage.h>
- 
- extern struct vdso_data *vdso_data;
-diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-index dda36fa26307e27d3de414c811450ed912294a0e..4c8e3c0aa210476d7b8cb349b99e9a5a453aa7ce 100644
---- a/arch/mips/kernel/vdso.c
-+++ b/arch/mips/kernel/vdso.c
-@@ -14,7 +14,6 @@
- #include <linux/random.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
--#include <linux/timekeeper_internal.h>
- 
- #include <asm/abi.h>
- #include <asm/mips-cps.h>
-
--- 
-2.47.0
-
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
