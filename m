@@ -1,114 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-1954-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1956-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841C2997E9A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 09:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 516CE997EA7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 10:04:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPMWw1PcVz3bny;
-	Thu, 10 Oct 2024 18:56:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPMjx12Mjz3bpP;
+	Thu, 10 Oct 2024 19:04:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728546972;
-	cv=none; b=a5HWDiQ/gKkH5hu7yWpOEPyz4KrQZUVEFJv8JPxhxHhMVnmqZ4NDYDB3PaGZzORSWv0q6P0f3CbPV07NCFTv37ZfKaq485IlTqJ/yPHmnJ1iqj+9DhHmYN7HaqCr/NuK313XLPxZ4mU3qMQUiRgGqVu6UJ6DH4+q2v2yderuvOqoBZKxQfnGxlUi+JAX5ohH34YQpa1mfjzth1QX8scVxTgk4XCQ1Ir88iwSnFHD3CVSyugHKZNHPw++4XhcrRVl4NMNInQI0oqxwqHxMWJ2wPkQ851/XMpf0pbtlhILtCAOfvnDVGD0J1IC/S8NPj4CdZ28RtBT0dltpgVBOnpHUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.136
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728547493;
+	cv=none; b=G85KRmPGKGaFf5ZKXaijgibOEC4JUXzYn1T6KUcXKEhw+v/dklFiMSVKvVJ825k18Tr2H732auyEv68WH0Bf7x5QBN+6OQndMHbL3nsYh9K7v+fxacS4NTqPWn5ESWTqqB7aocUOFs8D3VGMXqfQSJCgxQ+Qqg24ov6CWBpIB3Pz5kiZ5Cj5HjF3OnYf6WHlZwNJuqnoNrcpA9DTbNCx5JVc574Mm791brp9+874jJRv2BhJ3ZEe5TkiDMRj8UgGWBdPDJMbK6EQLC+8guMULQ9Ew0/WfheDUdaRtQZiSdYuBvvzjvE1Rpa92MLblDR/9l5/XgINH2Lq5Ptxh+SeAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728546972; c=relaxed/relaxed;
-	bh=0yVn8tI3lyhXM3ZeiBQKCb5kXwilQgq2bp9dwcfLyYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VQrrCLHZYtZkss2Qp6R/GeNWVEkFQVeuazntvX4SVzWUtsnNPa1k6AquG0DAHNl4TcwpOLRY965VIYpzST8tK+svQl6zZGgd/2jpOKE9cEMvVzQrQu2IYYhsJJdhazF3vjrqLHGOozQV3DQXEMPjYRakM6DF15umvSLQC/28jXRfRBUbigo5X8grPwfvvM0XaZ1OgrYdBOm2Sc72h2BEJhRmTzljS57x2ueQCOSd7jjtC8yqCUX+EgbvRioKW3sThA5H6/5QvLRMy6sqqcIUIu2YGsoCTuEat+40LutzaOXKzRmDFsdZs8tipkNIzZY4YWbTcnmpqKi1BdcCiamoAQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q5pjE1ER; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1728547493; c=relaxed/relaxed;
+	bh=NOnTXEDf/afk98+qld6jjp5+THx/CJ1WRioKL/FDWFo=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=O2Fv1Di+Ib0u9UfMUI990CLLg44D+dmHuBzWUVm6PonXwn9bMFVUzERORqJ+HpeOKyyguO8cxgOzxFu7z0Z0fvrdMI3QE+Pps/6hhYOrxIY6O6z59VV7V0fL7M32GLpsC01vFYKPdpCFezjdRqw0jTiY9rTch7o2cAp3PCe5NhRLKxGTvvGoD6NKzJJ++aN75PWrPA/usFRd6rt+anvsaqR5kPaJIBNuUIMBvl+qs7FW6rZEcIyP4Wf5o9vjaTRGSaWKAtpU6fJT4WkPZYn5BIdoEnuONhvyxHztwJUvCAJdryOcy5UjgQLrdctDSC8JokyiM9tB8VkKIYzV6w3vxg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=Uq033xlP; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Nj9Aq3SQ; dkim-atps=neutral; spf=pass (client-ip=103.168.172.136; helo=flow-a1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q5pjE1ER;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=Uq033xlP;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Nj9Aq3SQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.136; helo=flow-a1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPMWt58bfz3bkb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 18:56:10 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49A7YT0q005037;
-	Thu, 10 Oct 2024 07:55:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
-	:from:to:cc:subject:message-id:references:mime-version
-	:content-type:content-transfer-encoding:in-reply-to; s=pp1; bh=0
-	yVn8tI3lyhXM3ZeiBQKCb5kXwilQgq2bp9dwcfLyYI=; b=Q5pjE1ERdXenpwSx9
-	H+3tZabSr8DH7Beyxy8drvLqU3Ht7Ga5XyW6C2PTL3fPAuIoZz3HzJyiSMoG5gdj
-	JjsNnDX89G4/TG2MQ2BW0D7oNe96JjJi5G8uZ9mB/IapFOPGaPI969vLuEtTw6gE
-	D6w8jekAr6Nzp3HaTEja4FUr8tp1ftTFqMfyfMTZNpMqVCBoXY9zpXfp1OYNxpHv
-	kbP2c54yz9Ep1Dqaj3eGZkuA+jhRxDx4QQwAhzA66Rkp22oRkrTbO5vLbuYRFTlL
-	+Pd5u72MCl/j+dMSEbRW7gnpYCpEOaMHPSE7LD2eBuG5IA3bgsjtNp/LMzgsdAiG
-	yYq+A==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 426anb82uq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 07:55:18 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49A7tHik016153;
-	Thu, 10 Oct 2024 07:55:17 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 426anb82uf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 07:55:17 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49A544L3013784;
-	Thu, 10 Oct 2024 07:55:16 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 423fssen8b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 07:55:16 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49A7tCoY59048420
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Oct 2024 07:55:13 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AC8702004B;
-	Thu, 10 Oct 2024 07:55:12 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BCECD2004E;
-	Thu, 10 Oct 2024 07:55:11 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.60])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 10 Oct 2024 07:55:11 +0000 (GMT)
-Date: Thu, 10 Oct 2024 09:55:10 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Guo Ren <guoren@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Russell King <linux@armlinux.org.uk>,
-        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Nam Cao <namcao@linutronix.de>
-Subject: Re: [PATCH 28/28] vdso: Rename struct arch_vdso_data to
- arch_vdso_time_data
-Message-ID: <20241010075510.6997-C-hca@linux.ibm.com>
-References: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
- <20241010-vdso-generic-base-v1-28-b64f0842d512@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPMjr41CYz3blF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 19:04:48 +1100 (AEDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailflow.phl.internal (Postfix) with ESMTP id C3AA3200A98;
+	Thu, 10 Oct 2024 04:04:44 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Thu, 10 Oct 2024 04:04:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1728547484;
+	 x=1728554684; bh=NOnTXEDf/afk98+qld6jjp5+THx/CJ1WRioKL/FDWFo=; b=
+	Uq033xlPTV7M/2uADh7Kio9qjd66ffU4q3GcfraER8vEa/TBgbChQu94tgVW0uaK
+	pXY7jozzVwbQ8Ya36E7u9iUkDuo5YKVHqAZ8bHnde4FQoignkUnpk3n4zM1Ow7W7
+	pqkYrDZJUqyVDWnJ/e/orVEawEFi2NxcxOe913glChgeWvLRHFRCYg7PLmzNjjTS
+	eSePOXQiJ2tCm9PNXyY7XJEA1kK+QuyoayK9ccHLMT9vYJQf1obOma6+WcgoQiTZ
+	rCO/F2/Av72l6mSdBDEcAONo4x3AsOj40QNPpgTyYIxpD0N35b0FMfAq0nEvPIBl
+	9rL8hDdfC/9PQ9TN9ntljg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1728547484; x=
+	1728554684; bh=NOnTXEDf/afk98+qld6jjp5+THx/CJ1WRioKL/FDWFo=; b=N
+	j9Aq3SQVxi0yJVoBcl9i4fPvQOr9zt3y3795lzIArZwRKLf5/Q4w5GwQVfCcJjw2
+	fHBLG+SEwHxA6W6BHiC/PPRnfw/euhehOZaf1xv113bZQ6zyMXXYbDK6HO5DfYdH
+	Eibe00/t7mBIfHVB6NfWSDQPb17/YR6D9/nYP8ncvwtzg1w0SRhao1eVbOXUQoCD
+	BQ+bgHLpleoD/Ofkz0V77beK07p6f9+Z/PpeHiddKV5esYAsuKTALWIUlHtErlpZ
+	nSRNyhpVsNrMAg/4A5we5y/Ae60B3fLfum5QuK2YeIDPuniByaQX2mlXBuk9KrEB
+	oU607EYkl/nEhh1Im4Dyg==
+X-ME-Sender: <xms:mIoHZxVyt1tzNiI4VJY1hNYpmWyw-lXg-LHPAPcu29enEAwaGYpqdA>
+    <xme:mIoHZxmN7IaxN68cMSMreDSNvBHBsgqtLH3A4g9n2w8VJYGvEAjgnDn4AOFyZU_QE
+    vsBIt0UiYw5NwZFtgA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdefgedguddvkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
+    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeeh
+    tddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpd
+    hrtghpthhtohepthhssghoghgvnhgusegrlhhphhgrrdhfrhgrnhhkvghnrdguvgdprhgt
+    phhtthhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtoh
+    epmhgrrhhkrdhruhhtlhgrnhgusegrrhhmrdgtohhmpdhrtghpthhtoheplhhinhhugies
+    rghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegthhhrihhsthhophhhvgdrlh
+    gvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtohepphgrlhhmvghrsegurggssggv
+    lhhtrdgtohhmpdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhrtg
+    hpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomh
+X-ME-Proxy: <xmx:mYoHZ9bh6LF6KTO2BKN2BnO9EXila2P_h8xeEQcBucXDkGl-bl9M-A>
+    <xmx:mYoHZ0XYOQUAKIkavDKienaDsb5i4U1ta4trA0rVHTXe2DqfK7yLqQ>
+    <xmx:mYoHZ7nXzqM8PLVuQ-B9brlPZ_nY2zs1QH5-EF9GuGkQq2-TUCF-GQ>
+    <xmx:mYoHZxesVGLkHmAI7smOEC31KKa8BnCQ7b4ijWZBlvNC6nhTWQi3Ig>
+    <xmx:nIoHZ80_2WZbSEQjfuSnNnJS_LZIqjsOIz7pD44c1pM-ycg_PtUcKHaT>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D17622220071; Thu, 10 Oct 2024 04:04:40 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -118,45 +95,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241010-vdso-generic-base-v1-28-b64f0842d512@linutronix.de>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: txKjIm6oMyh-bYlrWVbJ8zIUfT6c90P5
-X-Proofpoint-GUID: EzJFZF0xHPJktynCv2z269EPy5OXcKam
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-10_04,2024-10-09_02,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 adultscore=0 mlxscore=0 mlxlogscore=644 priorityscore=1501
- clxscore=1011 phishscore=0 suspectscore=0 impostorscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410100049
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Date: Thu, 10 Oct 2024 08:04:19 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Mike Rapoport" <rppt@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "Andreas Larsson" <andreas@gaisler.com>,
+ "Andy Lutomirski" <luto@kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>,
+ "Borislav Petkov" <bp@alien8.de>, "Brian Cain" <bcain@quicinc.com>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Christoph Hellwig" <hch@infradead.org>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Dinh Nguyen" <dinguyen@kernel.org>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>, guoren <guoren@kernel.org>,
+ "Helge Deller" <deller@gmx.de>, "Huacai Chen" <chenhuacai@kernel.org>,
+ "Ingo Molnar" <mingo@redhat.com>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ "Kent Overstreet" <kent.overstreet@linux.dev>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Luis Chamberlain" <mcgrof@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Matt Turner" <mattst88@gmail.com>, "Max Filippov" <jcmvbkbc@gmail.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Michal Simek" <monstr@monstr.eu>, "Oleg Nesterov" <oleg@redhat.com>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Russell King" <linux@armlinux.org.uk>, "Song Liu" <song@kernel.org>,
+ "Stafford Horne" <shorne@gmail.com>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "Thomas Gleixner" <tglx@linutronix.de>,
+ "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+ "Vineet Gupta" <vgupta@kernel.org>, "Will Deacon" <will@kernel.org>,
+ bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+ Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-arm-kernel@lists.infradead.org,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, linux-modules@vger.kernel.org,
+ "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org, x86@kernel.org
+Message-Id: <e1ba5ab2-a7e2-4f2c-8e2d-4788656ef695@app.fastmail.com>
+In-Reply-To: <20241009180816.83591-4-rppt@kernel.org>
+References: <20241009180816.83591-1-rppt@kernel.org>
+ <20241009180816.83591-4-rppt@kernel.org>
+Subject: Re: [PATCH v5 3/8] asm-generic: introduce text-patching.h
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Oct 10, 2024 at 09:01:30AM +0200, Thomas Weißschuh wrote:
-> From: Nam Cao <namcao@linutronix.de>
-> 
-> The struct arch_vdso_data is only about vdso time data. So rename it to
-> arch_vdso_time_data to make it obvious.
-> Non time-related data will be migrated out of these structs soon.
-> 
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> ---
->  arch/Kconfig                                        |  2 +-
->  arch/riscv/Kconfig                                  |  2 +-
->  arch/riscv/include/asm/vdso/{data.h => time_data.h} |  8 ++++----
->  arch/riscv/kernel/sys_hwprobe.c                     |  2 +-
->  arch/riscv/kernel/vdso/hwprobe.c                    |  4 ++--
->  arch/s390/Kconfig                                   |  2 +-
->  arch/s390/include/asm/vdso/data.h                   | 12 ------------
->  arch/s390/include/asm/vdso/time_data.h              | 12 ++++++++++++
->  include/vdso/datapage.h                             |  8 ++++----
->  9 files changed, 26 insertions(+), 26 deletions(-)
+On Wed, Oct 9, 2024, at 18:08, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> Several architectures support text patching, but they name the header
+> files that declare patching functions differently.
+>
+> Make all such headers consistently named text-patching.h and add an empty
+> header in asm-generic for architectures that do not support text patching.
+>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Acked-by: Heiko Carstens <hca@linux.ibm.com> # s390
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
