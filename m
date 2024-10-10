@@ -1,73 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-1914-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1915-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8400C99798B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 02:18:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8D9997B32
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 05:23:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XP9MP5mpjz3bgV;
-	Thu, 10 Oct 2024 11:18:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPFSh2yXyz2yY9;
+	Thu, 10 Oct 2024 14:23:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728519489;
-	cv=none; b=f8INmniXfPnKB88mBbNkFnDI6KODEIL0n2kchuY5FAfiwnwwLqEtg6hNktL46hTov+c82RTOyOWgLhMZg/NnYlyIIS3nUaWmQ09zmMi7s/xcQV0pbMwj09YBs/txK45L0j6iUzppnBQd8ck2oNzlyUNyKMSV0MGOXEnhTOykHVkB6RnhYpmQPCYKgQDAQ579ShCAnWXu8K10ux0iIWDscvBxqqqEfA3G2J9RxZFmQHrIWOJVNFXrwfSJxUfLuIYCrO2ahmhJ6Z1RjRtj718F5kQqUc+wglOOeGbaqF3+WxtGUf4VKMsyptH/5CaxZ28TpXbdO7agagkSVrI/NVyH+A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::434"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728530580;
+	cv=none; b=FRk308rne3OEkXUV461QsXoGXd/EImTSe3K0VKKNqUsJj/AKK6Qn2Fhq3KVWDYU6Xp6si6HtsFEh1jNbylA1rn8HpEU5K6xZ9uFt0SYJ14ahco4U6qduE8bOjvTydUWb7DqH4RbAGzyGKVm43n8D5FkoTyp1oLYrItdQwvM0dqLGmB2NcGrfpyZyL8Wpwxelhlu0SXFHLQWj9Y1xx4MFJzja46BlHrZinHJeL1gy4pwZ5L6JtPpkQfLCcpKhs9BUmo6mjAQS85JX83bVVSuocKvEON/ibnORq/9OOcv1GdRVZrPlco1N/bKSoAKpMbrBuUxjid+F2YKJqPCaq0ahfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728519489; c=relaxed/relaxed;
-	bh=JCKWnvIHgN7NeIxYtThHAhakmq8YAiBt/o4wQGaz8/w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=h8O7uCZlJskr7cyGwSFxBc+iMFkphHeIbdElSkncMKggl9vEMXvU6Avp8KMmfgqFae/SCm6BZTJtceQ9tVHj8aJtikfRosJINPNofdeu6ZCMC7P772F2aqjfy5NWLV96ndqp+t5etVCWxvL/DZVsqdx+28PEvbO8XmHhMuYjRrp9qq7gskSHqoTVJG44rn8oYIpanKBFDK4Wf6yC8dGfiMOLoDBr1hfOhnHZ7C/dr8NNXgeAzsOsbjRBw/rXVpCg8nCuPXgTXfQUaXWufdzYU+fnypi1e3gjjEGTkLjhgHiHUIbzop20Qid2/d9hXWlbjKfHwGTynZTLQ4OqGcclfA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CyV8pAek; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1728530580; c=relaxed/relaxed;
+	bh=pMGHgPkDyEzZscZF6jcbqFePhT4l3FTSkWuwbpzJ1+w=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=j28CYypqRsWrk+KS2es0nZOmanI+11zDuFmMLZu58CHwwFqhpx/5rLKZX+nNEmteAXhs2Io49Wm02suucV+lssI+TIVkfFHC0xnutAvDTQfvTnkXydNiEaQu3TQSXdreJCPXO5SUDlfjbUicZG7Dl3QfHpNt/RdQV1XMXENYEUN1WDI9H1RAcMqcmTUAsE+9wm6U0JhkDBKNT0VBu3C2KDYaFsd9PnvGGDx6ukqoiVv5v6mBNU7jVHIf/DVYnSGLZYQyX4n8p+6l5vcQpV/ZAbU6nLvfCqZJqsVAzh6/52Zjq/tXnEMZtBv3O3u2z0U8kibQQh4N/N7pL5eWfyxJ7w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TXcu/QXw; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CyV8pAek;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TXcu/QXw;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XP9MM3lz7z3bgQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:18:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1728519486;
-	bh=JCKWnvIHgN7NeIxYtThHAhakmq8YAiBt/o4wQGaz8/w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CyV8pAekV/TOve0+yV3IEThJzCD8ee59ddQlBIzCCvWemKc/ImFTYPHIm8jTvew0E
-	 2RDGh4pbUM9m9Jzk1MkSVWzDUKNAGDraYErd4MKcPTf3w8FQhfsKQgv0LWZqH3dPKo
-	 2q+ccE1Ic0uxYQmUxGLyQjXJb9JhGNC9Dc4D/BDfGj7yEuPzFZ7oCUBMNUYklrervk
-	 0rsMC99cZxcDUj+/f+cIqfFiu9qKdmuQGB3SO3eu6awPx3tiAQUhtP+Zq6bQ9xbrH+
-	 Yk3vNRNh4aceCVyFBzMhabgs3VMdOh1hhQtkbXYZ3SxHW966Il1rAHeSFno4GT2GT/
-	 g4EPuh3btN2Mw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XP9MK39qRz4wnw;
-	Thu, 10 Oct 2024 11:18:05 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Hari Bathini
- <hbathini@linux.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf <bpf@vger.kernel.org>,
- linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, Linux Kbuild
- mailing list <linux-kbuild@vger.kernel.org>, LKML
- <linux-kernel@vger.kernel.org>, "Naveen N. Rao" <naveen@kernel.org>, Mark
- Rutland <mark.rutland@arm.com>, Daniel Borkmann <daniel@iogearbox.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Nicholas Piggin
- <npiggin@gmail.com>, Alexei Starovoitov <ast@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, Andrii Nakryiko <andrii@kernel.org>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Vishal Chourasia
- <vishalc@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH v5 17/17] powerpc64/bpf: Add support for bpf trampolines
-In-Reply-To: <CAADnVQJjqnSVqq2n70-uqfrYRHH3n=5s9=t3D2AMooxxAHYfJQ@mail.gmail.com>
-References: <20240915205648.830121-1-hbathini@linux.ibm.com>
- <20240915205648.830121-18-hbathini@linux.ibm.com>
- <CAADnVQL60XXW95tgwKn3kVgSQAN7gr1STy=APuO1xQD7mz-aXA@mail.gmail.com>
- <32249e74-633d-4757-8931-742b682a63d3@linux.ibm.com>
- <CAADnVQKfSH_zkP0-TwOB_BLxCBH9efot9mk03uRuooCTMmWnWA@mail.gmail.com>
- <7afc9cc7-95cd-45c7-b748-28040206d9a0@linux.ibm.com>
- <CAADnVQJjqnSVqq2n70-uqfrYRHH3n=5s9=t3D2AMooxxAHYfJQ@mail.gmail.com>
-Date: Thu, 10 Oct 2024 11:18:05 +1100
-Message-ID: <875xq07qv6.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPFSc1bBFz2yF0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 14:22:55 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-71e038f3835so487038b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Oct 2024 20:22:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728530571; x=1729135371; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pMGHgPkDyEzZscZF6jcbqFePhT4l3FTSkWuwbpzJ1+w=;
+        b=TXcu/QXwpsHkfvCJMm6npegOV1xooLxsKOKUGMFI4PhX74R1tsOFqe/aSkgJ9+ryqo
+         neEcKjd0zKhoZoA7faxEmdGFsiN78qlNDA6nQDKvG20JEUm54gAIwOOmeRjLuabGn1BU
+         RfE/2c97QL50DZcP22h5QIVMYT4fL7GAjP/1ohwnYlAz8MDxCVrNaL0etX5LGhVjmqDq
+         ab1RTgGUCZKjmKK6+TtzMzS+Lsdm163QZNZKgnE6vaLAr1C5mSekb9aL8Oc7+3EeCWRI
+         X8JehhbhfGpEF9cmZ2+cQvweDCCJF82EkhNBAbmLvHIjdUzg+ah5xEG6iS4a3aPhofqE
+         GRmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728530571; x=1729135371;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pMGHgPkDyEzZscZF6jcbqFePhT4l3FTSkWuwbpzJ1+w=;
+        b=Tx+EXYOStoB3Xi20KG6ZPPoz43XAgheyKUqJ5KHmVY9z/ZBK833olKV9u/IyiNgUfx
+         K+0odeIUIl3zxaOUnT+6iuDENMhvn0vkyoxHGOOYU5iXd/TmiF8IXIfViSOTuR8mExeA
+         UsJzMiGLIQJYEY/XtZlqVxiSMnMJgrS8TycfGV24PREbqUVlif5uwhLJWLS05TC0/5oi
+         ekVBzQKqDzQA5Ew8B5anq2K1V9FY3yxx2uyMFITxWdsr8t2UuWHYuY55t+YANc/VqiEV
+         NRfqvl7xsejdpjIrr5v6jxPgD35WGIHwOB39lgFARLnMXp2ClbMzdhqGSPr50q91Yddj
+         oCsw==
+X-Forwarded-Encrypted: i=1; AJvYcCVk63jKgpmutBKrHf7LuriUldqQu/3Bhoj78iiuOuWRgheMH6lapEjKl/KqmmZJZ1hWIIMYIBakA1H29vg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yyv5nMNxeZHMpJAiL3QvjBcIMSW7uH5HsVUfKCW2Kq4d6mKO80d
+	SwDHh2rZDc0b/pMEiSKEV8skVVN0rCcQ141IfrkieJpOqo66xF9Y
+X-Google-Smtp-Source: AGHT+IHbBrqfu0Zcv35UYFiQjcDYlwOYSZxjVbr4xyKtGlQh0hDzWB/1JzAP7WH7yyIXJjNQGa33AQ==
+X-Received: by 2002:a05:6a00:2292:b0:717:87af:fca0 with SMTP id d2e1a72fcca58-71e1daadf11mr7065478b3a.0.1728530571070;
+        Wed, 09 Oct 2024 20:22:51 -0700 (PDT)
+Received: from dw-tp ([171.76.87.188])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e2a9f54b4sm157141b3a.73.2024.10.09.20.22.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Oct 2024 20:22:50 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, Sourabh Jain <sourabhjain@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Madhavan Srinivasan <maddy@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Donet Tom <donettom@linux.vnet.ibm.com>, LKML <linux-kernel@vger.kernel.org>, Sachin P Bappalige <sachinpb@linux.ibm.com>
+Subject: Re: [RFC 1/2] cma: Fix CMA_MIN_ALIGNMENT_BYTES during early_init
+In-Reply-To: <83eb128e-4f06-4725-a843-a4563f246a44@redhat.com>
+Date: Thu, 10 Oct 2024 08:49:20 +0530
+Message-ID: <871q0ofxvr.fsf@gmail.com>
+References: <c1e66d3e69c8d90988c02b84c79db5d9dd93f053.1728386179.git.ritesh.list@gmail.com> <83eb128e-4f06-4725-a843-a4563f246a44@redhat.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,100 +81,62 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
-> On Tue, Oct 1, 2024 at 12:18=E2=80=AFAM Hari Bathini <hbathini@linux.ibm.=
-com> wrote:
->> On 30/09/24 6:25 pm, Alexei Starovoitov wrote:
->> > On Sun, Sep 29, 2024 at 10:33=E2=80=AFPM Hari Bathini <hbathini@linux.=
-ibm.com> wrote:
->> >> On 17/09/24 1:20 pm, Alexei Starovoitov wrote:
->> >>> On Sun, Sep 15, 2024 at 10:58=E2=80=AFPM Hari Bathini <hbathini@linu=
-x.ibm.com> wrote:
->> >>>>
->> >>>> +
->> >>>> +       /*
->> >>>> +        * Generated stack layout:
->> >>>> +        *
->> >>>> +        * func prev back chain         [ back chain        ]
->> >>>> +        *                              [                   ]
->> >>>> +        * bpf prog redzone/tailcallcnt [ ...               ] 64 by=
-tes (64-bit powerpc)
->> >>>> +        *                              [                   ] --
->> >>> ...
->> >>>> +
->> >>>> +       /* Dummy frame size for proper unwind - includes 64-bytes r=
-ed zone for 64-bit powerpc */
->> >>>> +       bpf_dummy_frame_size =3D STACK_FRAME_MIN_SIZE + 64;
->> >>>
->> >>> What is the goal of such a large "red zone" ?
->> >>> The kernel stack is a limited resource.
->> >>> Why reserve 64 bytes ?
->> >>> tail call cnt can probably be optional as well.
->> >>
->> >> Hi Alexei, thanks for reviewing.
->> >> FWIW, the redzone on ppc64 is 288 bytes. BPF JIT for ppc64 was using
->> >> a redzone of 80 bytes since tailcall support was introduced [1].
->> >> It came down to 64 bytes thanks to [2]. The red zone is being used
->> >> to save NVRs and tail call count when a stack is not setup. I do
->> >> agree that we should look at optimizing it further. Do you think
->> >> the optimization should go as part of PPC64 trampoline enablement
->> >> being done here or should that be taken up as a separate item, maybe?
->> >
->> > The follow up is fine.
->> > It just odd to me that we currently have:
->> >
->> > [   unused red zone ] 208 bytes protected
->> >
->> > I simply don't understand why we need to waste this much stack space.
->> > Why can't it be zero today ?
->>
->> The ABI for ppc64 has a redzone of 288 bytes below the current
->> stack pointer that can be used as a scratch area until a new
->> stack frame is created. So, no wastage of stack space as such.
->> It is just red zone that can be used before a new stack frame
->> is created. The comment there is only to show how redzone is
->> being used in ppc64 BPF JIT. I think the confusion is with the
->> mention of "208 bytes" as protected. As not all of that scratch
->> area is used, it mentions the remaining as unused. Essentially
->> 288 bytes below current stack pointer is protected from debuggers
->> and interrupt code (red zone). Note that it should be 224 bytes
->> of unused red zone instead of 208 bytes as red zone usage in
->> ppc64 BPF JIT come down from 80 bytes to 64 bytes since [2].
->> Hope that clears the misunderstanding..
+David Hildenbrand <david@redhat.com> writes:
+
+> On 08.10.24 15:27, Ritesh Harjani (IBM) wrote:
+>> During early init CMA_MIN_ALIGNMENT_BYTES can be PAGE_SIZE,
+>> since pageblock_order is still zero and it gets initialized
+>> later during paging_init() e.g.
+>> paging_init() -> free_area_init() -> set_pageblock_order().
+>> 
+>> One such use case is -
+>> early_setup() -> early_init_devtree() -> fadump_reserve_mem()
+>> 
+>> This causes CMA memory alignment check to be bypassed in
+>> cma_init_reserved_mem(). Then later cma_activate_area() can hit
+>> a VM_BUG_ON_PAGE(pfn & ((1 << order) - 1)) if the reserved memory
+>> area was not pageblock_order aligned.
+>> 
+>> Instead of fixing it locally for fadump case on PowerPC, I believe
+>> this should be fixed for CMA_MIN_ALIGNMENT_BYTES.
 >
-> I see. That makes sense. So it's similar to amd64 red zone,
-> but there we have an issue with irqs, hence the kernel is
-> compiled with -mno-red-zone.
+> I think we should add a way to catch the usage of 
+> CMA_MIN_ALIGNMENT_BYTES before it actually has meaning (before 
+> pageblock_order was set)
 
-I assume that issue is that the interrupt entry unconditionally writes
-some data below the stack pointer, disregarding the red zone?
+Maybe by enforcing that the pageblock_order should not be zero where we
+do the alignment check then?
 
-> I guess ppc always has a different interrupt stack and
-> it's not an issue?
+i.e. in cma_init_reserved_mem() 
 
-No, the interrupt entry allocates a frame that is big enough to cover
-the red zone as well as the space it needs to save registers.
+diff --git a/mm/cma.c b/mm/cma.c
+index 3e9724716bad..36d753e7a0bf 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -182,6 +182,15 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+        if (!size || !memblock_is_region_reserved(base, size))
+                return -EINVAL;
 
-See STACK_INT_FRAME_SIZE which includes KERNEL_REDZONE_SIZE:
++       /*
++        * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement which
++        * needs pageblock_order to be initialized. Let's enforce it.
++        */
++       if (!pageblock_order) {
++               pr_err("pageblock_order not yet initialized. Called during early boot?\n");
++               return -EINVAL;
++       }
++
+        /* ensure minimal alignment required by mm core */
+        if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
+                return -EINVAL;
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/a=
-rch/powerpc/include/asm/ptrace.h?commit=3D8cf0b93919e13d1e8d4466eb4080a4c4d=
-9d66d7b#n165
 
-Which is renamed to INT_FRAME_SIZE in asm-offsets.c and then is used in
-the interrupt entry here:
+> and fix the PowerPC usage by reshuffling the 
+> code accordingly.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/a=
-rch/powerpc/kernel/exceptions-64s.S?commit=3D8cf0b93919e13d1e8d4466eb4080a4=
-c4d9d66d7b#n497
+Ok. I will submit a v2 with the above patch incldued.
 
-cheers
+Thanks for the review!
+-ritesh
 
