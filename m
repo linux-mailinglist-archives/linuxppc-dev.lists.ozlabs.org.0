@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-1935-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-1949-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A88F997E4A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 09:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F01EE997E66
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 09:05:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPLKf6Zqwz3bsJ;
-	Thu, 10 Oct 2024 18:02:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPLKx69xBz3c1Q;
+	Thu, 10 Oct 2024 18:02:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728543734;
-	cv=none; b=EvUFC7eYcydlBX8QF4D/2pyG4JB/c1Juxqh0yTVbsDM1DmiDyCndUaoqRtnEBswwyDOHfVUJRQ6dnIlJ1k/25YWZIRlCrjX1wmGpZnIvH/qETcV9RzgL0GlsUoaJBRyPGEUC6L5krQDjOhjlCsMlQCSWXjG7t0sIDzqSg+Zsl7dW8NJbg1jW6KOiyfwM0C3vQQY3Nh1zX82N2CFoVnS/m6Pk5sA/b1ApIaU3Z0QoOlJMIAp31/W5qZJvF12ZnhME3HAv/lZ3m6/wgyV8EgB+TS6FiXV5vV+vrl2v7bcaIoiHYgieaC6EiIMB0x98QCiMU1n5rHEllv3NE+IcDrMljA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728543749;
+	cv=none; b=nJkYKRpz6RTwTQc4J321b0u7zELRSIWacCDUb0sVbYKUXgkNgCrDjvQOrserPtZF75iu+WHHP9hxXuxYpzexL7B592DMRDgts0/I7hLh4hWROlH8YLIqmSI9yJD3IMhmRduB1KbdRSHIB9l+6yhaDj6UU5jhckHcLKV4bOuarcbvS4dXQ04rY7dkE4Eqghk4xtf1vSZPdlttFuQdZkBQj+IevFUiVoD9NPjWoUw6VF0SQOYyfkOvO9kZoJF262sqYj4tmnVFSH6TVNkc8/GIsA15q+KV+pSq2dz5vg+eavRC+L2mNBrt5OFv276/cqW94yu514YpJeNEg9vBVi3W3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728543734; c=relaxed/relaxed;
-	bh=jm/2CrqDEYeYltPOiqfTVHvM9k41RoVb5XrgMrSt7cU=;
+	t=1728543749; c=relaxed/relaxed;
+	bh=c0jOb+0pBVFtpRBvmlWca4rm6bPz719GqeyVxg9V4Yk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iQRhLQos74sFLnmvP9qI3DrNjdHpjHNVvHkOI4gfKxrW6yOxLCBcYqwVZ8ssKKNDw9dgNbhwx4/cbvtog0jJGKagRCeILoQC08sbjsIVVqAc5n7t3wX32TVIz7P+/48VVwl0JQp/90h/iYEjonFqaG0muio7QBav1SqP5/MJ7daSXmyBgeRmsMZ4xfqcWf6ClQehr7iHuJmEWYTCIgGR3cpsZByihtS8gPmsTdYYUDCvJzSodV5onczJCYGniqttUQ5Vlju721iqfkYw2m0A5ApT7CFD7Q1jg1xK8WL7KtoU+yn1WbZ0m1CTgXTW68yccHl5Fz5s/xtecbPdGPYo4A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=iMS7PJJH; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=TV4unc1u; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=SNNm9VJG59lQKPz3ZvIxmxyn6qZzl4OqWuEyNCR+HnC48qMxabyWItVPDPPKnd6GzUx6HXDR0GPDcXewKqOgyLNracm5Z0mZJoLM0iGGITQOv5wOgMOVnRl+jw0jnIlSMdl8jIxQlPtSZcOCT4uYJnueL3BnCXqMO0B/qcYMEfXqDIa4t0438DqPa9vXJGOdi1bRT5jtzAJ6EgDwqN+UMMUnRRDU5BGYP30eJaptrkGIfYRZuQPPJflnaFlEBJExLIw5pecuiAVo71McA39YfhnhtX496VubhjjMhVVfrfmaMOB44Fmppd0xdc6VJBWnAUqt2Anv648RuK+RHSSu8A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=vcSKL5Ei; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=gtMxsvQW; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=iMS7PJJH;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=TV4unc1u;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=vcSKL5Ei;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=gtMxsvQW;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPLKd6FQ2z3brT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 18:02:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPLKw5JCDz3c0H
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 18:02:28 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728543727;
+	s=2020; t=1728543728;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jm/2CrqDEYeYltPOiqfTVHvM9k41RoVb5XrgMrSt7cU=;
-	b=iMS7PJJHjGGyQAOWkIhx3mGK1ARhnmCDpqbH+A7Ol3abKmvtUbIKI09X8sqoRtM0ZKQ7mx
-	VkqlO+WxdeLwlEadLlMyXEIF6llFbYK2Hwg61Pb5O5A5Q1AKY16r/jM4pX3rF7VSA/DF9y
-	IZwtcrMl2rDxxcWTxMz/yqj7U4R/9tRCBHnPW39lEYu75V26scajMqFl/aK8kDco9B48ax
-	eL2ChHRfRKdTEesLgyw+IkdE0OH5P4818N5UKXA8qVlrfPXHd2AoG1CygP3avo9LH/5iW8
-	ILP/eB0/R/rA4pUVmPPCXr0ktkDqJweoX+/URwLfNXXFsTyEOKjYvlTiPb0NmA==
+	bh=c0jOb+0pBVFtpRBvmlWca4rm6bPz719GqeyVxg9V4Yk=;
+	b=vcSKL5Ei05MaIvwUWEEkh1o2Ks/eorA8eAEJRD0CuQzgOALnIEbeQVOd0f2FLvUuk9711Q
+	tmjQMOz6qR/FSaU590Uhit+apcTIvS6HqZSZBnjaTKGO+jLKVUowkedgLFEeyq4eh5Q57T
+	/sBv5eMaiq5R28QJPg2l8Q/b/b0NPmH0LvedMx9h3Ccjpfv4fUQ6F0RpGgk274N++hnkj5
+	59rLGt0i4dJYnpcuI1c9gDghiHkvBwQDrj48KYgfMgkCsLRgDHBp3cs4nJ5upXJnypV9+l
+	R1g1z2Z2x16M+GL7rp+0QROcQL103T3FYjfOZVs0Y4ucjszEaq1P/PyGDChuKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728543727;
+	s=2020e; t=1728543728;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jm/2CrqDEYeYltPOiqfTVHvM9k41RoVb5XrgMrSt7cU=;
-	b=TV4unc1uGTXtFkaS6TTazfjrGgCVpgn8oa3T0LlB5xj7tiIHkUCT6ic8gdd7YU+gxUremR
-	Fx/l51wAvwr0ydBw==
-Date: Thu, 10 Oct 2024 09:01:15 +0200
-Subject: [PATCH 13/28] x86: vdso: Access rng data from kernel without vvar
+	bh=c0jOb+0pBVFtpRBvmlWca4rm6bPz719GqeyVxg9V4Yk=;
+	b=gtMxsvQWmbQIKGeUBCn063lFjoQTBpOVE8sqGXxcphJb6jAHTMcx0B08jmt1ST+co49ykp
+	nznusCNutY6jRIDw==
+Date: Thu, 10 Oct 2024 09:01:16 +0200
+Subject: [PATCH 14/28] x86: vdso: Allocate vvar page from C code
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241010-vdso-generic-base-v1-13-b64f0842d512@linutronix.de>
+Message-Id: <20241010-vdso-generic-base-v1-14-b64f0842d512@linutronix.de>
 References: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
 In-Reply-To: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
 To: Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
@@ -94,11 +94,11 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
  linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
  linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728543717; l=2500;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728543717; l=4524;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=duktGpmPPCjca1hUrFko89iKyD9xPwp39MHzOJo7rR4=;
- b=WV9xCByoqmjr2WpGGsix0xq+nmoYDqmnBGL1soMUsv5PBqkCJwXCKiSkCvmLtX8v8ZY4rieFc
- b8m03BVeYmVDGGnR2GuimURiEeBvWIXoti102NiyP/UhkqFrnOZTg3K
+ bh=3awjAm9ufpQd1He4UP6AdNApXBAJ0LbyYsxfWiE+63U=;
+ b=lKDP23WVMRWJvIoSEl4GRHapesPFvH7pyf318uwEN73rQnQewl633LJdXV98MCj8D0iG9mp5X
+ j/cHGTbQmCQCoN3JlHegeGrKD9rS1alFnZxIvXe0Z7RMU6pXnx65LOL
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -106,69 +106,143 @@ X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Remove the usage of the vvar _vdso_rng_data from the kernel-space code,
-as the x86 vvar machinery is about to be removed.
-The definition of the structure is unnecessary, as the data lives in a
-page pre-allocated by the linker anyways.
-The vdso user-space access to the rng data will be switched soon.
-
-DEFINE_VVAR_SINGLE() is now unused. It will be removed later togehter
-with the rest of vvar.h.
+Allocate the vvar page through the standard union vdso_data_store
+and remove the custom linker script logic.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/x86/entry/vdso/vma.c            | 1 -
- arch/x86/include/asm/vdso/vsyscall.h | 2 +-
- arch/x86/include/asm/vvar.h          | 4 +++-
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/entry/vdso/vma.c            | 16 +++++-----------
+ arch/x86/include/asm/vdso/vsyscall.h |  6 ++++--
+ arch/x86/kernel/vmlinux.lds.S        | 23 -----------------------
+ arch/x86/tools/relocs.c              |  1 -
+ 4 files changed, 9 insertions(+), 37 deletions(-)
 
 diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
-index b8fed8b8b9ccdb2cdd9912d5ec4cfd6366a6012e..8437906fd4b353ad0fe208d811817a1b6f8f8dcb 100644
+index 8437906fd4b353ad0fe208d811817a1b6f8f8dcb..5731dc35d1d2c0b81c37adf133fc6fa35c41cba1 100644
 --- a/arch/x86/entry/vdso/vma.c
 +++ b/arch/x86/entry/vdso/vma.c
-@@ -39,7 +39,6 @@ struct vdso_data *arch_get_vdso_data(void *vvar_page)
- #undef EMIT_VVAR
+@@ -20,25 +20,19 @@
+ #include <asm/vgtod.h>
+ #include <asm/proto.h>
+ #include <asm/vdso.h>
+-#include <asm/vvar.h>
+ #include <asm/tlb.h>
+ #include <asm/page.h>
+ #include <asm/desc.h>
+ #include <asm/cpufeature.h>
+ #include <clocksource/hyperv_timer.h>
  
- DEFINE_VVAR(struct vdso_data, _vdso_data);
--DEFINE_VVAR_SINGLE(struct vdso_rng_data, _vdso_rng_data);
+-#undef _ASM_X86_VVAR_H
+-#define EMIT_VVAR(name, offset)	\
+-	const size_t name ## _offset = offset;
+-#include <asm/vvar.h>
+-
+ struct vdso_data *arch_get_vdso_data(void *vvar_page)
+ {
+-	return (struct vdso_data *)(vvar_page + _vdso_data_offset);
++	return (struct vdso_data *)vvar_page;
+ }
+-#undef EMIT_VVAR
+ 
+-DEFINE_VVAR(struct vdso_data, _vdso_data);
++static union vdso_data_store vdso_data_store __page_aligned_data;
++struct vdso_data *vdso_data = vdso_data_store.data;
  
  unsigned int vclocks_used __read_mostly;
  
+@@ -153,7 +147,7 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+ 	if (sym_offset == image->sym_vvar_page) {
+ 		struct page *timens_page = find_timens_vvar_page(vma);
+ 
+-		pfn = __pa_symbol(&__vvar_page) >> PAGE_SHIFT;
++		pfn = __pa_symbol(vdso_data) >> PAGE_SHIFT;
+ 
+ 		/*
+ 		 * If a task belongs to a time namespace then a namespace
+@@ -200,7 +194,7 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+ 		if (!timens_page)
+ 			return VM_FAULT_SIGBUS;
+ 
+-		pfn = __pa_symbol(&__vvar_page) >> PAGE_SHIFT;
++		pfn = __pa_symbol(vdso_data) >> PAGE_SHIFT;
+ 		return vmf_insert_pfn(vma, vmf->address, pfn);
+ 	}
+ 
 diff --git a/arch/x86/include/asm/vdso/vsyscall.h b/arch/x86/include/asm/vdso/vsyscall.h
-index 67fedf1698b5e2b710e0504686318949c738bf29..2cbb32a8a45e2f5c7bc02172af0fa09173f33924 100644
+index 2cbb32a8a45e2f5c7bc02172af0fa09173f33924..5d6760746d15b0e12c7bf0eb727241e7576ca9c7 100644
 --- a/arch/x86/include/asm/vdso/vsyscall.h
 +++ b/arch/x86/include/asm/vdso/vsyscall.h
-@@ -22,7 +22,7 @@ struct vdso_data *__x86_get_k_vdso_data(void)
+@@ -9,20 +9,22 @@
+ #include <asm/vgtod.h>
+ #include <asm/vvar.h>
+ 
++extern struct vdso_data *vdso_data;
++
+ /*
+  * Update the vDSO data page to keep in sync with kernel timekeeping.
+  */
+ static __always_inline
+ struct vdso_data *__x86_get_k_vdso_data(void)
+ {
+-	return _vdso_data;
++	return vdso_data;
+ }
+ #define __arch_get_k_vdso_data __x86_get_k_vdso_data
+ 
  static __always_inline
  struct vdso_rng_data *__x86_get_k_vdso_rng_data(void)
  {
--	return &_vdso_rng_data;
-+	return (void *)&__vvar_page + __VDSO_RND_DATA_OFFSET;
+-	return (void *)&__vvar_page + __VDSO_RND_DATA_OFFSET;
++	return (void *)vdso_data + __VDSO_RND_DATA_OFFSET;
  }
  #define __arch_get_k_vdso_rng_data __x86_get_k_vdso_rng_data
  
-diff --git a/arch/x86/include/asm/vvar.h b/arch/x86/include/asm/vvar.h
-index 01e60e0f671e9625669dc8fdacf3cdddf8cbf4fb..fe3434d3b5b1eef806e8328b86650e001b177de2 100644
---- a/arch/x86/include/asm/vvar.h
-+++ b/arch/x86/include/asm/vvar.h
-@@ -19,6 +19,8 @@
- #ifndef _ASM_X86_VVAR_H
- #define _ASM_X86_VVAR_H
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 6726be89b7a663a1554f8f4b297bba65b4ebdf61..e7e19842736a774191142b6ce43bf5567540cb80 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -193,29 +193,6 @@ SECTIONS
  
-+#define __VDSO_RND_DATA_OFFSET  640
-+
- #ifdef EMIT_VVAR
- /*
-  * EMIT_VVAR() is used by the kernel linker script to put vvars in the
-@@ -62,7 +64,7 @@ DECLARE_VVAR(0, struct vdso_data, _vdso_data)
+ 	ORC_UNWIND_TABLE
  
- #if !defined(_SINGLE_DATA)
- #define _SINGLE_DATA
--DECLARE_VVAR_SINGLE(640, struct vdso_rng_data, _vdso_rng_data)
-+DECLARE_VVAR_SINGLE(__VDSO_RND_DATA_OFFSET, struct vdso_rng_data, _vdso_rng_data)
+-	. = ALIGN(PAGE_SIZE);
+-	__vvar_page = .;
+-
+-	.vvar : AT(ADDR(.vvar) - LOAD_OFFSET) {
+-		/* work around gold bug 13023 */
+-		__vvar_beginning_hack = .;
+-
+-		/* Place all vvars at the offsets in asm/vvar.h. */
+-#define EMIT_VVAR(name, offset)				\
+-		. = __vvar_beginning_hack + offset;	\
+-		*(.vvar_ ## name)
+-#include <asm/vvar.h>
+-#undef EMIT_VVAR
+-
+-		/*
+-		 * Pad the rest of the page with zeros.  Otherwise the loader
+-		 * can leave garbage here.
+-		 */
+-		. = __vvar_beginning_hack + PAGE_SIZE;
+-	} :data
+-
+-	. = ALIGN(__vvar_page + PAGE_SIZE, PAGE_SIZE);
+-
+ 	/* Init code and data - will be freed after init */
+ 	. = ALIGN(PAGE_SIZE);
+ 	.init.begin : AT(ADDR(.init.begin) - LOAD_OFFSET) {
+diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
+index c101bed6194000004bd84e1679259cce9977d290..6afe2e5e9102873634c6ad9a3a0b9c66bba5da50 100644
+--- a/arch/x86/tools/relocs.c
++++ b/arch/x86/tools/relocs.c
+@@ -89,7 +89,6 @@ static const char * const	sym_regex_kernel[S_NSYMTYPES] = {
+ 	"init_per_cpu__.*|"
+ 	"__end_rodata_hpage_align|"
  #endif
+-	"__vvar_page|"
+ 	"_end)$"
+ };
  
- #undef DECLARE_VVAR
 
 -- 
 2.47.0
