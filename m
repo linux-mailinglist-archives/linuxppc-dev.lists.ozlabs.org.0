@@ -1,69 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-2063-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2064-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0773999081
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:33:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFF3999085
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Oct 2024 20:33:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdXX3B9Xz3cSv;
-	Fri, 11 Oct 2024 05:27:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPdXb1YZHz3cV1;
+	Fri, 11 Oct 2024 05:27:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::54a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584860;
-	cv=none; b=f3k9SNvvOipYU0cPeWMcfDUebLIUgHIDU20nOfsKtCiuGkey3TSzp62VhNmo4MNtfcLyJjmAizkIALgdjg2vpAVtAamkb0gQZ5yHflkUEkyRlgSqRgpbSrjT7IhYfH5bTOAqo64clOqW3fpkwQtJjUZjqosYedIcWmsZ71ccrK4Utcx/0ZQYwxzqIo8R39PWKoNfKSdFzYSbXoFjQvT1Cui3M8kA260q8cCs5SRhS1DWau+zWuhReOuYtBVrdJ3L+RYRV0xidN7UkGwTrt1bIxuHLk7VgtuMArx0poiyhIvrQuHA2pVJvJgQe7zEtybvli178E9aeiwuVkr38K6CeA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b4a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728584863;
+	cv=none; b=iiifUsHFanlhXYLC0m6QnIXbZhEpcFZiUzWhdIazkPYNUU16YyhZGl9rkQEf3n8t7pDCj1K5UoMmGetJq6tZRcv5rn4/7g8ciNthL74JBA+8pte8MRACY4cNla+VBAIqwAmy6i+8PmO2fee3mQVY3SO08kKyYIA+E+aznJcjA4OfrcF4dY5TpXd+Uye27ghy+VHLB64RCo2weS5ygyiDDWXnsNTA2W6puOmwvTFbycAeUw0aZrzynVE6FtM9oV8xe0C+mI2ei+yecGIcOajEIz5zEB5HrJaAYAv8A34n5OKUlzXX+kyJjpJPQV3REASfnSoCbTQYBFwGf7Kt+oR/Qw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728584860; c=relaxed/relaxed;
-	bh=43Dd+lWRPu/QQcFLGDLhCyyiH7uAqu5vbmltTcj5okg=;
+	t=1728584863; c=relaxed/relaxed;
+	bh=Q1MnEbvSXNK1DBYHKiiPeGTlNBdM3PqCgrnaMRmX38Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kofcEFXWa7T3pJB+oXORlIQsr69ccYULbqJ2079WmJuVsyrALkqvjgXqFNPBEMezQyFwAInx8PxrNJOIeGoM4BJODpZkF6fpbjI+Uv5bPCaZCdj9JWc6ZD0HfzewvcCsxgAIQuK4y/GLmblVBW/z6MD5FKGeWu8+QzMZEcy9WT+DtlguYrUeHmeM7kky55SVVjENlyPmxkKcibiFNeeAjSVw8G7kLwLngoWvg26TD0OqaT4NrteEiBg9pc1VSRVjjU+c6hX1vHKnFT5b9wx8wkIEjsuaSZ6UnOrwOauCfuUzjPwxTQw9Mt5/FPzW2PzOP/Xv6WzN/7zT0UIhDdTZCA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Vop8Izqo; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3mrwizwykddigsobxquccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=ZCvqBLIBhtJqg9U42Rujm5GCnteqmsI3ZYUvR5gyfWuY3H9X8nuHprRjr3y6KQQalY9OYZ/J6PJy60VFeb2d8+VsWZGwiDS+dBBuT7gNNbj52Ox6Va+RE1atm2M6pEIxj58qCiiM3htOpvNC6nrRhTQ4ub/dS0uESqKPLJv0nR2VvGVn3yj/R3BXPy0ICPyd1W8g5z0McEU6l0bI27C9taqbhzQQlWosnfG/cIBpxYKSXjW5D1rZ0jQTN0gFeSEv9O+59jpKrmOtBIIzbjGycZKdgEfaQzTahYNTtP1+qX5eZw/ahSmg0BpIaHNkKNMhuwNlVxaS6zNFZJiv3pMdKA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JGkeeIrf; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3mxwizwykddqiuqdzsweewbu.secbydknffs-tulbyiji.epbqri.ehw@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Vop8Izqo;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JGkeeIrf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3mrwizwykddigsobxquccuzs.qcazwbilddq-rsjzwghg.cnzopg.cfu@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::b4a; helo=mail-yb1-xb4a.google.com; envelope-from=3mxwizwykddqiuqdzsweewbu.secbydknffs-tulbyiji.epbqri.ehw@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdXW42bNz3blH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:27:39 +1100 (AEDT)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-778702b9f8fso1040808a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:27:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPdXZ1Nb0z3blH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 05:27:42 +1100 (AEDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-e28fea2adb6so1488994276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Oct 2024 11:27:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728584858; x=1729189658; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=43Dd+lWRPu/QQcFLGDLhCyyiH7uAqu5vbmltTcj5okg=;
-        b=Vop8Izqo/TvjlWY9Fwk4dIlbrHlGhpFeJN05lUr14fCBvH/Z3U6wV0i4iKRkJpMNqT
-         kUBTx3KjgkyzayE3uezevhhNY2BFMm7wJ7G45UBZyDvTfVSECanUbWQlTJ8FFV99b5cU
-         v8gJxwJPvm9Q4KqCl32kYxvr3ZZKdHtNEvLWimGt74MICTJRzDWQwuu1DUkNlbeaptIb
-         JmlMdTTsSHwbNhMmrfEHwraMWLloWtrwVZrkLzNFJoki2v9rRhK4HW0K77JmJVRR2B8z
-         j2lPKhKnIabqHqM+RFiF0efViCmS7sn+uqw65Yj/wzfTbEszXx6U0VajVrk35V6fCHeF
-         B9Yw==
+        d=google.com; s=20230601; t=1728584860; x=1729189660; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:reply-to:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q1MnEbvSXNK1DBYHKiiPeGTlNBdM3PqCgrnaMRmX38Y=;
+        b=JGkeeIrf3jX+He5OLyZBTyl8tSTthrCYPEvflOn4phkg7AhyPi29Rx0MzJg4pMIBEX
+         VQz/de+Xob4CdIfmrqVNu3IRzdA369eZ72lrKbCYu5ZXckgpvJTrG8fK5qLdl5oI86vi
+         bdH54Y8hwR8UKTFtK3K6v0xSDPfhc8eyHAuka2S7qExqMsOFxIZZ8waJFIm4uaZg//Ha
+         IwiLOflN3Iuj+ZIeZN1zHGr7mQWpA9g6giLv+9ZXXv3jbHJV1gBvQAoKNvp2U1J6f/m9
+         J5EA9Aof+JIQQGlERyQXt+Y/gUI1V+wYuckHEyCkzWeKM2x6myzzAXNcD0qVLuXtWWr6
+         O8eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728584858; x=1729189658;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=43Dd+lWRPu/QQcFLGDLhCyyiH7uAqu5vbmltTcj5okg=;
-        b=lLdqRTHBSbcedtjfLxwBqj12+v3tJXBVIdwMGnC4eULRiNR/odoh7Z3DhBjvO+lx6f
-         HIw/Wbf69kkyHKzDVTdCZHgVXdkjJ23bcDxVg52vFyKanwRJvGOYuLPbEQAG8+BBC8nl
-         LYE299NG/DxNVHMIvSBh1pGuyTs6C4kQB0R+KkV9xI6mcrr6Y6gp6oVRV4Da6wpqEZaf
-         2mBFVoXrhUSPhhCtup/7tVDMP4Xva4sa5TYIBIbFP3oMcosT51HWScVMnk7ubv7M/Qhc
-         fRuOHGCy3UAJb0ZyDtX4NfJTjnUiPwStW91Jm5p9kOUFj+g89whWzl9579WC/3pzv3dp
-         MMUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtP92Q0AcDwxohTzArKNARkacjEX+bCOQtT/DdvAPANfxNSSj/Y/Pe9mdeieArFWgr+GdTsJGlsXIe8CA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyhkGIOEwDi715AlPW5hdU9E+4kQdxUjSiNb/VRQC9jNHsZeHmt
-	gxTuG+2Hb8Vo9sSxmyVmJk2Lram1P1OzB2uW+MN3DyvJCabbLRA3xAC9Ksn3vIYmX/WiRDvpDfP
-	E6Q==
-X-Google-Smtp-Source: AGHT+IGjs5y0lK7jvR8/zbNWJNDHfDWRUWSPa98vwOnU2bZ6sNQJgoH/6j7HDiYxyC+lHu033MhghQMujcY=
+        d=1e100.net; s=20230601; t=1728584860; x=1729189660;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:reply-to:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Q1MnEbvSXNK1DBYHKiiPeGTlNBdM3PqCgrnaMRmX38Y=;
+        b=FFxRzSngdPa+Vt2yBgO5nN3Jj3p/cESR5tMNDc/VJhEZIzHhO9s4wRfAhaXY6v2NWS
+         rnEQhBK/4AI9+zkV1/b3Eb8GgucumTrTAj2vmdXEk+tYSkReFcmDr3WEhp+jgWacDAVb
+         P9xEc3ZDpADjm695mZGUdGlc+DVw3q64XaLDJa6DPwT01gHI5f0gPiR+Vy2CuzWXUURR
+         GfBUKbKnp6E5NdIWT277fTWPG4qhc2iT2j6lW8w+igwQ67ZYjpH/KHT+uW/XUT9blQkL
+         LtFRVH1DSk+P5h5Lu2rw3v4zhI39huR0BMoRcAFsi4oDp75H2ZMiM9gawMTW1GMQ0E2L
+         tp1g==
+X-Forwarded-Encrypted: i=1; AJvYcCV3iMoQBGFrIl3xF2Y8TRSRa1xtFBVtAQr2RlvqaPKgP96iYl0206sIPbBEOWi2zG86FmZuKtrAj9M3hqw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwvsVfklQrV4qmg57xob9PE/AbkP7BM9CL2jxOFgRIR/CN6WsgD
+	MlR9TskiIc/RtU4oJnIepK1aFbGcfJLufvtWP0I6bWmts1xqqsmBvC5nHz4gKwDvTA8y9cDilgA
+	+Lw==
+X-Google-Smtp-Source: AGHT+IGvHgo281GUU728l2kpqfRNdoQ8M4AtWxtMdwK+Sbd/Nmo7aGxeBXrCmxWS+HWzNnhFIgaVqhxkocM=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
- (user=seanjc job=sendgmr) by 2002:a63:b208:0:b0:7e6:c3f2:24c2 with SMTP id
- 41be03b00d2f7-7ea535dce6cmr30a12.6.1728584857741; Thu, 10 Oct 2024 11:27:37
- -0700 (PDT)
+ (user=seanjc job=sendgmr) by 2002:a25:f20e:0:b0:e11:5da7:337 with SMTP id
+ 3f1490d57ef6-e28fe3505c2mr129032276.3.1728584859805; Thu, 10 Oct 2024
+ 11:27:39 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 10 Oct 2024 11:24:20 -0700
+Date: Thu, 10 Oct 2024 11:24:21 -0700
 In-Reply-To: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -76,9 +77,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20241010182427.1434605-1-seanjc@google.com>
 X-Mailer: git-send-email 2.47.0.rc1.288.g06298d1525-goog
-Message-ID: <20241010182427.1434605-79-seanjc@google.com>
-Subject: [PATCH v13 78/85] KVM: PPC: Explicitly require struct page memory for
- Ultravisor sharing
+Message-ID: <20241010182427.1434605-80-seanjc@google.com>
+Subject: [PATCH v13 79/85] KVM: Drop gfn_to_pfn() APIs now that all users are gone
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
@@ -96,100 +96,132 @@ Cc: kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	David Matlack <dmatlack@google.com>, David Stevens <stevensd@chromium.org>, 
 	Andrew Jones <ajones@ventanamicro.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Explicitly require "struct page" memory when sharing memory between
-guest and host via an Ultravisor.  Given the number of pfn_to_page()
-calls in the code, it's safe to assume that KVM already requires that the
-pfn returned by gfn_to_pfn() is backed by struct page, i.e. this is
-likely a bug fix, not a reduction in KVM capabilities.
+Drop gfn_to_pfn() and all its variants now that all users are gone.
 
-Switching to gfn_to_page() will eventually allow removing gfn_to_pfn()
-and kvm_pfn_to_refcounted_page().
+No functional change intended.
 
+Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ include/linux/kvm_host.h | 11 --------
+ virt/kvm/kvm_main.c      | 59 ----------------------------------------
+ 2 files changed, 70 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 92f33115144b..3a6592a31a10 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -879,9 +879,8 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
- {
- 
- 	int ret = H_PARAMETER;
--	struct page *uvmem_page;
-+	struct page *page, *uvmem_page;
- 	struct kvmppc_uvmem_page_pvt *pvt;
--	unsigned long pfn;
- 	unsigned long gfn = gpa >> page_shift;
- 	int srcu_idx;
- 	unsigned long uvmem_pfn;
-@@ -901,8 +900,8 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
- 
- retry:
- 	mutex_unlock(&kvm->arch.uvmem_lock);
--	pfn = gfn_to_pfn(kvm, gfn);
--	if (is_error_noslot_pfn(pfn))
-+	page = gfn_to_page(kvm, gfn);
-+	if (!page)
- 		goto out;
- 
- 	mutex_lock(&kvm->arch.uvmem_lock);
-@@ -911,16 +910,16 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
- 		pvt = uvmem_page->zone_device_data;
- 		pvt->skip_page_out = true;
- 		pvt->remove_gfn = false; /* it continues to be a valid GFN */
--		kvm_release_pfn_clean(pfn);
-+		kvm_release_page_unused(page);
- 		goto retry;
- 	}
- 
--	if (!uv_page_in(kvm->arch.lpid, pfn << page_shift, gpa, 0,
-+	if (!uv_page_in(kvm->arch.lpid, page_to_pfn(page) << page_shift, gpa, 0,
- 				page_shift)) {
- 		kvmppc_gfn_shared(gfn, kvm);
- 		ret = H_SUCCESS;
- 	}
--	kvm_release_pfn_clean(pfn);
-+	kvm_release_page_clean(page);
- 	mutex_unlock(&kvm->arch.uvmem_lock);
- out:
- 	srcu_read_unlock(&kvm->srcu, srcu_idx);
-@@ -1083,21 +1082,21 @@ kvmppc_h_svm_page_out(struct kvm *kvm, unsigned long gpa,
- 
- int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
- {
--	unsigned long pfn;
-+	struct page *page;
- 	int ret = U_SUCCESS;
- 
--	pfn = gfn_to_pfn(kvm, gfn);
--	if (is_error_noslot_pfn(pfn))
-+	page = gfn_to_page(kvm, gfn);
-+	if (!page)
- 		return -EFAULT;
- 
- 	mutex_lock(&kvm->arch.uvmem_lock);
- 	if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, NULL))
- 		goto out;
- 
--	ret = uv_page_in(kvm->arch.lpid, pfn << PAGE_SHIFT, gfn << PAGE_SHIFT,
--			 0, PAGE_SHIFT);
-+	ret = uv_page_in(kvm->arch.lpid, page_to_pfn(page) << PAGE_SHIFT,
-+			 gfn << PAGE_SHIFT, 0, PAGE_SHIFT);
- out:
--	kvm_release_pfn_clean(pfn);
-+	kvm_release_page_clean(page);
- 	mutex_unlock(&kvm->arch.uvmem_lock);
- 	return (ret == U_SUCCESS) ? RESUME_GUEST : -EFAULT;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index af928b59b2ab..4a1eaa40a215 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1274,14 +1274,6 @@ static inline kvm_pfn_t kvm_faultin_pfn(struct kvm_v=
+cpu *vcpu, gfn_t gfn,
+ 				 write ? FOLL_WRITE : 0, writable, refcounted_page);
  }
--- 
+=20
+-kvm_pfn_t gfn_to_pfn(struct kvm *kvm, gfn_t gfn);
+-kvm_pfn_t gfn_to_pfn_prot(struct kvm *kvm, gfn_t gfn, bool write_fault,
+-		      bool *writable);
+-kvm_pfn_t gfn_to_pfn_memslot(const struct kvm_memory_slot *slot, gfn_t gfn=
+);
+-kvm_pfn_t __gfn_to_pfn_memslot(const struct kvm_memory_slot *slot, gfn_t g=
+fn,
+-			       bool interruptible, bool no_wait,
+-			       bool write_fault, bool *writable);
+-
+ void kvm_release_pfn_clean(kvm_pfn_t pfn);
+ void kvm_release_pfn_dirty(kvm_pfn_t pfn);
+ void kvm_set_pfn_dirty(kvm_pfn_t pfn);
+@@ -1356,9 +1348,6 @@ unsigned long kvm_host_page_size(struct kvm_vcpu *vcp=
+u, gfn_t gfn);
+ void mark_page_dirty_in_slot(struct kvm *kvm, const struct kvm_memory_slot=
+ *memslot, gfn_t gfn);
+ void mark_page_dirty(struct kvm *kvm, gfn_t gfn);
+=20
+-
+-kvm_pfn_t kvm_vcpu_gfn_to_pfn(struct kvm_vcpu *vcpu, gfn_t gfn);
+-
+ int __kvm_vcpu_map(struct kvm_vcpu *vcpu, gpa_t gpa, struct kvm_host_map *=
+map,
+ 		   bool writable);
+ void kvm_vcpu_unmap(struct kvm_vcpu *vcpu, struct kvm_host_map *map);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 8f8b2cd01189..b2c8d429442d 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3039,65 +3039,6 @@ static kvm_pfn_t kvm_follow_pfn(struct kvm_follow_pf=
+n *kfp)
+ 	return hva_to_pfn(kfp);
+ }
+=20
+-kvm_pfn_t __gfn_to_pfn_memslot(const struct kvm_memory_slot *slot, gfn_t g=
+fn,
+-			       bool interruptible, bool no_wait,
+-			       bool write_fault, bool *writable)
+-{
+-	struct kvm_follow_pfn kfp =3D {
+-		.slot =3D slot,
+-		.gfn =3D gfn,
+-		.map_writable =3D writable,
+-	};
+-
+-	if (write_fault)
+-		kfp.flags |=3D FOLL_WRITE;
+-	if (no_wait)
+-		kfp.flags |=3D FOLL_NOWAIT;
+-	if (interruptible)
+-		kfp.flags |=3D FOLL_INTERRUPTIBLE;
+-
+-	return kvm_follow_pfn(&kfp);
+-}
+-EXPORT_SYMBOL_GPL(__gfn_to_pfn_memslot);
+-
+-kvm_pfn_t gfn_to_pfn_prot(struct kvm *kvm, gfn_t gfn, bool write_fault,
+-		      bool *writable)
+-{
+-	struct kvm_follow_pfn kfp =3D {
+-		.slot =3D gfn_to_memslot(kvm, gfn),
+-		.gfn =3D gfn,
+-		.flags =3D write_fault ? FOLL_WRITE : 0,
+-		.map_writable =3D writable,
+-	};
+-
+-	return kvm_follow_pfn(&kfp);
+-}
+-EXPORT_SYMBOL_GPL(gfn_to_pfn_prot);
+-
+-kvm_pfn_t gfn_to_pfn_memslot(const struct kvm_memory_slot *slot, gfn_t gfn=
+)
+-{
+-	struct kvm_follow_pfn kfp =3D {
+-		.slot =3D slot,
+-		.gfn =3D gfn,
+-		.flags =3D FOLL_WRITE,
+-	};
+-
+-	return kvm_follow_pfn(&kfp);
+-}
+-EXPORT_SYMBOL_GPL(gfn_to_pfn_memslot);
+-
+-kvm_pfn_t gfn_to_pfn(struct kvm *kvm, gfn_t gfn)
+-{
+-	return gfn_to_pfn_memslot(gfn_to_memslot(kvm, gfn), gfn);
+-}
+-EXPORT_SYMBOL_GPL(gfn_to_pfn);
+-
+-kvm_pfn_t kvm_vcpu_gfn_to_pfn(struct kvm_vcpu *vcpu, gfn_t gfn)
+-{
+-	return gfn_to_pfn_memslot(kvm_vcpu_gfn_to_memslot(vcpu, gfn), gfn);
+-}
+-EXPORT_SYMBOL_GPL(kvm_vcpu_gfn_to_pfn);
+-
+ kvm_pfn_t __kvm_faultin_pfn(const struct kvm_memory_slot *slot, gfn_t gfn,
+ 			    unsigned int foll, bool *writable,
+ 			    struct page **refcounted_page)
+--=20
 2.47.0.rc1.288.g06298d1525-goog
 
 
