@@ -1,60 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-2089-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2088-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93EE6999B24
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2024 05:22:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D9E999ACF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2024 04:57:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XPsPp2Cs2z3bcX;
-	Fri, 11 Oct 2024 14:22:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XPrrd40Z3z3bby;
+	Fri, 11 Oct 2024 13:57:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=205.220.180.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728605879;
-	cv=none; b=evgSM4ImgHMMwaGNoW+jHg8xtuCxA3gHU+7sKaeGg8cvgYmJENQPcEwc3MuFExxlFwlYOJhf0rT40ry2PsZy+TNpBQPwODQfBI/sO2AnpvcggIALn47pgsPaLvWoWO6/8bsYAGiQ6Aufe9Yv/5Iod3vMURTen27/mK7jpB52gxXVTEXjVPeYHviXRFqrKmxszItrMS+OJz1PqpZpH18zrygMo4QSGeYNQslwlNcGxzffHbn/LLJzfOSveoVAU2O3ZpN4b9pmA4fgsULoQF1b5mlSkdjzCvo5gn+SsCXjJyPsujtrbBmZqnfknOtKKZsRxDyTly3lanGEaqZN8OkS6g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728615441;
+	cv=none; b=iK2OBCEAKKLww5w8cMz6o5mW/nsU/1tKPKIx9K4j7GfVlM/8psyIDfngYw2mQbcH23WN2fNikj8LK0QhlTYPZDXKyhaTyr3cdmMgn9BJOhZLyC8GM18q3CXe6fV2GPlaWnd/8jOz6ceXubL1WV6ly1E3CYe1yl6QCinbvxGg6vdDeSiFE39Mr65c5r/+UXw0C8qaaCZWqlc/6GLrdpPr02seKRfUy4GzFysMyPtcxUAcOmcVgoK57t6pmDXeeJI2dt/1vYys/GD6SMIcPbotfZBk/unabSRF/EBWrwWqZjFUkfzr5JGbOvlPthV4G0oCy+8Ow8qTpdov0Ypf66/LNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728605879; c=relaxed/relaxed;
-	bh=qhj9QjPhMY3N3l11uQGEoOZB1Qu4SEZj3Soa9AAkvms=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=D5JdprJQxjKQ+OsCLQx+cKHyoGfSblsOJmlQ/g75SMiKOVqxNIPJWq216scSURBdtgTsa86X4WchiUmRNoPrwnCWTJUu9jBSNy4gDj1zPqJpfZr+SndMnAi06F0ZZ2ybV1aLcCsqC7dLfDrKazzHCy2qJRYm0gAfK39NVSTzNBhJOqs2kFknwVlSAcK9W/afVbKCEEOIL5wt7GFx6x1OIX8uAoOJR69Ewoz3RY22FC3146CamToXajjBRU040bLHWeEQ4NKtf9J8AV8ZOfiCZ+s23ShQLlAEZqpub0XTz2Y3P/8EzakbPt5kuAjZHAJuPTZgnPSzfcbp9r+R3qjj4w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jKaeuRf9; dkim-atps=neutral; spf=pass (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=quicinc.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+	t=1728615441; c=relaxed/relaxed;
+	bh=wpW3iH7IIXlP6/6yKksaYG8NqjTTOAEbPsyVV1ojgxI=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=k7IYBQlfyfXRYCchhadMippzVWjPx6DlgcC7H36y0gPLIY3ta64VXcjU6ZPIIex3a6a1S61XtTzJ3VRTJTGpwBmqedbUSVLMOKagbohLnfeLoFEKBi74OcfXoDMgtQAI0yDv69vFUI8pnSMRLeHFfGtMQd4IM4v1E21UKmmKghm3CWXk80SrRTGsl1jSu898zMJsphbT+LYJz6qsvzh4jI2/781CM+g/h9eBKOWKUGctDHExvCfMmPWlLxKcpVE/rf0bo7EKhb5HZ+wuGOiChFnvazg2vEpQ7e4i2Vew6utiaFbmKAcm9hYbpRB2WHnrsOrS3OH9fkhHZN67vxsRGg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YRzuGY+l; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jKaeuRf9;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YRzuGY+l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1710 seconds by postgrey-1.37 at boromir; Fri, 11 Oct 2024 11:17:57 AEDT
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPnJj0pdvz2xFk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 11:17:56 +1100 (AEDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49AJjQdS000324;
-	Thu, 10 Oct 2024 23:49:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	qhj9QjPhMY3N3l11uQGEoOZB1Qu4SEZj3Soa9AAkvms=; b=jKaeuRf9LdWpnvNB
-	NFBShdRFQXyynqiREd0rHzQ+Q6Wny12zpyza530MXWdtAoxY51M5+cku/u6kEgUV
-	ut5tMr7jRg4DQxjUTevIVJGn5JUV1xT4GVBESuGgYL834lne8tyipLTSqdxSiOy0
-	WPqWjdYuqVMqSqhCoJu4s++8Qt7m4okT+aqPPJVL82OCIKU6UdHi10GtjIF7GAWv
-	a4Hwsy+FFJPy9iht6wnOPEnHMWEQN+mNT+6VypYhz1Mhr3C+opjuaY4ktSH29pFb
-	1UO/yEbd+85bphzvvRJ8SPPLKOg0RM/NhErzZL2oGpcpE9h16+bIN6njo0RiokiJ
-	ISb3iQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 426nc2gdss-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 23:49:05 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49ANn42x026374
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Oct 2024 23:49:04 GMT
-Received: from [10.81.24.74] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 10 Oct
- 2024 16:49:04 -0700
-Message-ID: <b7abd0b6-ac96-48ca-8165-a3b408137007@quicinc.com>
-Date: Thu, 10 Oct 2024 16:49:03 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XPrrb59D2z30VJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Oct 2024 13:57:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1728615438;
+	bh=wpW3iH7IIXlP6/6yKksaYG8NqjTTOAEbPsyVV1ojgxI=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=YRzuGY+lBIuXetsc+qd2jKk7BDPQANtoWEkjLnxJL6R9MnBV1nC2SeOFQ4jhFsYd3
+	 843M0cxhsJohxJGCRyfsOiirw3Uq3n6sB6eG/EEpjFZT5FbT2B0SdKZl4KBRTKvw58
+	 x4NT9sQA4q7z6BsdMW8lAzl7IkYcYgHdCPhkqgJ8r9SVBo5ktMt/nUWgRD07CxF4sf
+	 xIpmhsx1GIX+SX4fQCS2mkg13y/rhZ0OQhGt1MFjRIyZTqftCVobT86Es7hx/iF1CQ
+	 QK5sHnJrSBJiy3pvQ/h7WdDMjm2XtENeV0bdWKMAe0SGKt/tKqdErNDcAUljeK6dOD
+	 XNjvJMSNmZYWw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XPrrZ4VC4z4xPX;
+	Fri, 11 Oct 2024 13:57:18 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Paolo Bonzini <pbonzini@redhat.com>, Vishal Chourasia
+ <vishalc@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC] powerpc/kvm: Fix spinlock member access for PREEMPT_RT
+In-Reply-To: <640d6536-e1b3-4ca8-99f8-676e8905cc3e@redhat.com>
+References: <ZwgYXsCDDwsOBZ4a@linux.ibm.com>
+ <640d6536-e1b3-4ca8-99f8-676e8905cc3e@redhat.com>
+Date: Fri, 11 Oct 2024 13:57:16 +1100
+Message-ID: <8734l373eb.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,73 +64,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHES] drm/radeon issues
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
-        R.T.Dickinson
-	<rtd@a-eon.com>, mad skateman <madskateman@gmail.com>,
-        Darren Stevens
-	<darren@stevens-zone.net>, <hypexed@yahoo.com.au>,
-        linuxppc-dev
-	<linuxppc-dev@lists.ozlabs.org>,
-        Christian Zigotzky <info@xenosoft.de>
-CC: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
-        Hans
- de Goede <hdegoede@redhat.com>, Wu Hoi Pok <wuhoipok@gmail.com>,
-        <amd-gfx@lists.freedesktop.org>, Alex Deucher <alexdeucher@gmail.com>,
-        <alexander.deucher@amd.com>
-References: <EE14413A-3528-4646-A353-DB5131E56BA2@xenosoft.de>
- <6C389917-EF59-444B-9C33-C3F9A9AD3921@xenosoft.de>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <6C389917-EF59-444B-9C33-C3F9A9AD3921@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: tdJz5yjJOWf3Dah3YuI-X5mA9T24VSNu
-X-Proofpoint-GUID: tdJz5yjJOWf3Dah3YuI-X5mA9T24VSNu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=999 lowpriorityscore=0
- malwarescore=0 clxscore=1011 suspectscore=0 impostorscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410100157
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 10/10/24 06:57, Christian Zigotzky wrote:
-> Hi All,
-> 
-> There is another issue with the Radeon DRM driver but there is already a patch available for this issue.
-> 
-> Link: https://lists.freedesktop.org/archives/dri-devel/2024-October/473314.html
-> 
-> I compiled a new RC2 of kernel 6.12 with this patch for the X1000 and X5000 today.
-> 
-> Download: https://github.com/chzigotzky/kernels/releases/tag/v6.12.0-rc2-2
-> 
-> We need 3 patches for the Radeon DRM driver currently.
+Paolo Bonzini <pbonzini@redhat.com> writes:
+> On 10/10/24 20:09, Vishal Chourasia wrote:
+>> Hi,
+>> 
+>> While building the kernel with CONFIG_PREEMPT_RT, I encountered several
+>> compilation errors in the PowerPC KVM code. The issues appear in
+>> book3s_hv_rm_mmu.c where it tries to access the 'rlock' member of struct
+>> spinlock, which doesn't exist in the RT configuration.
+>
+> How was this tested? I suspect that putting to sleep a task that is 
+> running in real mode is a huge no-no.
 
-Can you provide links to all 3 patches?
+Yeah.
 
-6.12-rc2 was back merged to my ath.git project, but then my laptop
-stopped booting correctly and I discovered a few Radeon KASAN reports.
-Based upon my search of lore I found:
+Even without preempt, spin_lock() can end up in debug/tracing code that
+will blow up in real mode.
 
-20241003060650.18454-1-wuhoipok@gmail.com
-[PATCH] drm/radeon: add late_register for connector
+Vishal, if you look at the history of that file you'll see eg:
 
-20241007183241.1584-1-christian.koenig@amd.com
-[PATCH] drm/radeon: always set GEM function pointer
+  87013f9c602c ("powerpc/kvm/book3s: switch from raw_spin_*lock to arch_spin_lock.")
 
-But that is only 2 patches.
+> The actual solution would have to 
+> be to split mmu_lock into a spin_lock and a raw_spin_lock, but that's a 
+> huge amount of work probably.  I'd just add a "depends on !PPC || 
+> !KVM_BOOK3S_64_HV" or something like that, to prevent enabling KVM-HV on 
+> PREEMPT_RT kernels.
 
+Yeah that should work to get something building.
+
+The bulk (or all?) of that file is not used for Radix guests, only for
+hash page table MMU guests.
+
+So I think it should be possible to hide that code behind a new CONFIG
+option that controls support for HPT guests. And then that option could
+be incompatible with PREEMPT_RT. But that will require unstitching some
+of the connections between that code and the other ppc KVM code.
+
+cheers
 
