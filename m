@@ -1,47 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-2134-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2135-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BE099AF87
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 01:45:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A0D99AF88
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 01:46:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XQNYD3VqFz2yNG;
-	Sat, 12 Oct 2024 10:45:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XQNYh6461z3c3W;
+	Sat, 12 Oct 2024 10:46:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728690352;
-	cv=none; b=mveNg19Cm2aqjL4dtWvLwOeCgl1ayXhHBmUWA9kXrbHuIAEtVJhbb+c3+CLjMVXY2P26mlRZwp5ZHmEhdv+8WUpYLUJ/1t2uyJ/WKquLT2nz94VHbIE4y6JL763v/GsoyjBVnpqpd/JIP5uIUI5Nbmqwv9z3mbznXp97SNpf2HZMfOaXW46PXDYvKxg5D+2cMBqXzmMBykfnVxvGJquOe+W3+wHQPuYEkLvLp9r6dVfOvLd4Dzwrur+PUWqa7AFhemxabfIrzJoxEygaHpVqL87ruwU3uLy1hnvA6mTLpGBcFxamhZfyr3vH7+4tCXzKN4qIFuHGmGpVg1xb7LRPCA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728690376;
+	cv=none; b=Nhfj5RTK4ZqPhhAWy8qTyATHqIvMi0g6NrPMOIzewJmAUrWoz77otV1YdoZ04MSdgiTgq3x+u2oM1CaKfGJGSQAm+LnTnMOeh612fr9WipaUSHxyr1RjYWEg7xIkOESnLLCY0KOBIAGSqIl3FqE9DrIgdUl8KPuT4D65L6RtyFIb7vwLIzJjQy4BsfvFGkAT3Pm9AmyM1dt66SL8PJoGOU5+L/f7FPkERu1/PB3AvkHbLY4691PbcY5gZue5eFzKcbQ3rCjVcwCO4S1/+sSSvkxpPzzL/A/ghofcuXGSuYzJtYM/y4pGbek+jKiG/1azHqptwSL5ieZVjWSzKtqjEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728690352; c=relaxed/relaxed;
-	bh=QJk/ha5iYQcTaJTFnJbtmxla+gEA09c4J1vJloM00VQ=;
+	t=1728690376; c=relaxed/relaxed;
+	bh=+bkr9LORWRx0O7dGlBaGEyKOrPTlNXCc6U0HgL4an08=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IbInQjH32btPNfoGP+Vwaxlbye36tHz9rHHx2pFZfN8XhryWDes9dKriyh9nP3Pvm6ZYF6R65njNIuz3rwbWOu437K4J6iBG0FsZxccXCdqkXiG7zeX9+6BSJBbeuZG7hl1wpWAstWLwUHUyC7ChZrFffOQ5NS+hNxm6TGFr2oWawFJHIGGFv4ZEQR62bYsRrjp6XBY0vRZkiv+IhlrW7RSgeQRBGehP33P867PwSQSkHsMdM0gDbLZ3x2ErebvHSlOkoaStkqtSBAFZiIjfHyMSqNXyY1OrIIQ8YousjXXbrTtgl4UkSqZn5ycfioZvsmfOmzMGYKuYpPjF/JIRug==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=aJh2gP+2; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=mcgrof@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=KCbo2jtgHhrMUOIXJ5dhkFPLtf73bh/QzS4AbiJ9LDHCoxz+rRRHwdTU3pOMegTkEeVw0Wit/D5ns30gLtzkJw775XD7BviUEWyCxEFXF/qDf5IwFNijp3QjbiRH+O+R+sIhyScm5k7msBOVT3yXD6hXxIW2bOXMDmSnY1lBP6PpazN5gCLUHF8eHUJcYtqQq6FmRkLqfPntlCQ4xwwQwMuH0o1s+XNh3rA0JYJ2TbAcmdXn01P7sBzDZN82dEdDDbShqWJFP5416vkqD5Qjqy/l5LDs/btSwrkvve4tPI5O1sFaD5OyfWhUXOk4418wPe/T0urfj0lAc37elZ1K/A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=4HK9HCuW; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=mcgrof@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=aJh2gP+2;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=4HK9HCuW;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=mcgrof@infradead.org; receiver=lists.ozlabs.org)
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQNY81Bx6z2yMv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 10:45:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQNYh0LJwz3c30
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 10:46:16 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QJk/ha5iYQcTaJTFnJbtmxla+gEA09c4J1vJloM00VQ=; b=aJh2gP+2rAM0r5tcjBOCtc4ZJ4
-	uEYVqFW7oi3Dsmfh6+nUwQrMO6h/FnEId0G20POgML4PVX3sLj9ymgvU933OtSixbXDQUnOiU8Lnp
-	bYoDaWIypuEM3J9vCOGv2Jj81nBlQrjZm2zYrzM8k5Cp/UHiJtOWjICD5HZxuq3QBpU/1Bm3JdmL/
-	U9Im9Tybsh7SEU/z9bS5J/atfsDU0c7xO1JwSUYfIava/esJTQ461O2XU5/1gTvZ0y32V5Ry7SRhu
-	G6OpvnTdd1cTdqtlgbpc4zkuwfw1n2VGdpjgI2sL15m5pGK15LNPZYWSZQ82T4JKYq3Gw0CjCxD2f
-	mWgQlE9w==;
+	bh=+bkr9LORWRx0O7dGlBaGEyKOrPTlNXCc6U0HgL4an08=; b=4HK9HCuWKP6MdEO6ryZMn88miZ
+	EYOw/m2Fqgbn9N79t+rMb9j+QxnOL8ofNLufXsrPwR1ofvX8u5dTs8tBAYRi5ynQtmhSNMlR8P1pO
+	wNldDHPYRMV06ZHnGI0Ack9ipfb57khEd+KK7YtJ7RsBanGMYp8HxZAfUFcahL+MO+Z3ZJgMl+/uU
+	gCHoBUxX6bKS/okAD52BR5so3L1alT99vRxpFa64DerntZVJiqNinNxK+5EINhl5qyDCblb1Sc3Pg
+	FK/W1NUqiEA76uYmJ7ik3ybWMUQQlrqutXFfRQwoS4ju6kQkC9/9f8K19WnIR7TTfzH/u1vWUeF4m
+	wZJT/fAg==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1szPK1-00000000EfT-0YiM;
-	Fri, 11 Oct 2024 23:45:25 +0000
-Date: Fri, 11 Oct 2024 16:45:25 -0700
+	id 1szPKh-00000000Elc-0TUG;
+	Fri, 11 Oct 2024 23:46:07 +0000
+Date: Fri, 11 Oct 2024 16:46:07 -0700
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: Matthew Maurer <mmaurer@google.com>
 Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org,
@@ -65,12 +65,13 @@ Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
-Message-ID: <Zwm4lXdKB9RfPQ5M@bombadil.infradead.org>
+Message-ID: <Zwm4v_1wh5RwuHxF@bombadil.infradead.org>
 References: <20240925233854.90072-1-mmaurer@google.com>
  <20240925233854.90072-15-mmaurer@google.com>
  <ZwmlEYdS0aPVF32k@bombadil.infradead.org>
  <CAGSQo01o4fWYwSzZHX5dyTUKcaCSZ7z-hPQ8w63tgBPGbM_UCA@mail.gmail.com>
  <ZwmnnMmqVWLaelvQ@bombadil.infradead.org>
+ <Zwm4lXdKB9RfPQ5M@bombadil.infradead.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,17 +83,21 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZwmnnMmqVWLaelvQ@bombadil.infradead.org>
+In-Reply-To: <Zwm4lXdKB9RfPQ5M@bombadil.infradead.org>
 Sender: Luis Chamberlain <mcgrof@infradead.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Fri, Oct 11, 2024 at 04:45:25PM -0700, Luis Chamberlain wrote:
+> 
+> Also, just as I asked Sami, coould you split this up into patch sets?
+> One with all the cleanups and elf validation code shifts. And then the
+> other code. That will let me pick up quickly the first patch set.
 
-Also, just as I asked Sami, coould you split this up into patch sets?
-One with all the cleanups and elf validation code shifts. And then the
-other code. That will let me pick up quickly the first patch set.
+Oh and if you can think of ways to enhance our test covereage on all
+this as I noted to Sami, it would be greatly appreciated.
 
   Luis
 
