@@ -1,53 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-2129-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2130-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B5E99AE07
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Oct 2024 23:25:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C13F99AE99
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 00:22:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XQKRl3rSQz2yfj;
-	Sat, 12 Oct 2024 08:25:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XQLhn4gkLz2yyR;
+	Sat, 12 Oct 2024 09:22:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.17.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728663573;
-	cv=none; b=agPDE9Jsxyakoa/nQwagELpGILIbNC51lVr5uGBj6Y+tk8vKWWH+M/YXZQmCsiTuxoYmiPQ7ngX9ON5q2Li7Fq/8nuOS6NbdeMdEzi89aMbb4Zvi8MTVc4/UPmQyBSFnIC0xRHFhcINChA6vVNzRSa/if1awBm0WY+lF5Uafc71YRwFlKzVBdsAAfZ/e18xUPjy2yhL67B6I7hwWHLfVjRCQ92zJlWYm275iDFY03cycB8SWHbkfpVsN1NRYW4M12vxlwFKqcONlvUDmVYBCOEpW8EGN8C53YDlDlK65b9kfRcbhoZqIQVNRkC/zd9H+qIWy8XWRvRaurjERAfOv2g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728685337;
+	cv=none; b=M6OctaIW39s69QFj7yljzw0JzFeIJvbzzOUtUMCjJN+1dNk5yXfjfjWu3ubsexckB0XLx4ajJZ/GC7d1ywA4ZjAZ+NpGWLCKTi/qpGUxknrx5TPllmVIUb4DIiOEsru0Nx3vFFfvRM0JXHI+pguuwjiwa0Pg/1P1Ts8IvSlNmzhMfLm50FIv191s3ABk28l5/eUDFDiWw6IWzl42vpYEhDlIKW80Jejfs5/H1SqQ06x6hXnvGhIo1BQQ2TnBsUkZ3mpM6rvLmT9uWl0scSVAdSaEQITkg3Or0Iqvs696qdc3Mso3+xXcqbuXGTtgp8TFoeGjkp5JcWt92PD4oMZwDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728663573; c=relaxed/relaxed;
-	bh=DTkx67YeCxz63Ruh6fsf5H//CCWsfbXmJhTRx2qFiaI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mbY3cB3Saa1tWF+CAd069dcUTzn2YSY7PgJ1bU9Y4MFGUC9WbIqZr9kHS4ZCZZISfyR1DIOSwSjsz0G6nvxg5Ma9LEqfV2mI/6W5OE4bR1un8oij9O9eWIO1R/Sdv7GzgG7JUUqAsBurm5Q2uBoT28qwiMwsiJy3VJC545NOoTZK8c07URbzjNAM8c7ZfSm1mnnjWS5Odu2DQkpfSN1qtucP8B1wX64pAOMdjJjUX3cVO+/AGzj9OLdWRqs4blpAIyIQKXZ3RC2bGjVZlyJRgMTmvEtjKSibW8Frji7GwM7irYaPwWqINKMoJL85ANzXIr3Ef4tGvcsfJwZoJEHoTw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=XmJXUbV3; dkim-atps=neutral; spf=pass (client-ip=212.227.17.12; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org) smtp.mailfrom=web.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+	t=1728685337; c=relaxed/relaxed;
+	bh=PYuUckV0Vt7kO7QP3cQhItikolMhImELIUsNrHEBPFA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jl78bLiivsPY/a0zdObDxaEC1h9vvj8NGHsKK5LMlInk0eGKM5xKhV0JpzVwZnkpM4lDV9AZPUmXDJUvrUCnSfBMeOJpJ0+5TjEQGca6iJanFKXq0CCgzfvjNUQGw+yR+HMdV4G5Zcj50sTMhtdQhNIWXOtL6dBWLWMEh7KA5diXJm6CooGqUMQMEAmfH8da4/Hh2ZJmgz6eZok4Odn9RimjoDHtW8m5micLD0khdforeXqD6YGdH0mMeRuJKMSsDtvbe2Gdsd3+oB4ihk++aqMuOYNqTiMxgm7sNWgK8FQy/MoclsVnKVsxJ+K7IKUQZiLkZh7ep/nBxhuBJBI37w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pcN6ikuo; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=XmJXUbV3;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pcN6ikuo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=212.227.17.12; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQBfB63bhz3c1C
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 03:19:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1728663524; x=1729268324; i=markus.elfring@web.de;
-	bh=DTkx67YeCxz63Ruh6fsf5H//CCWsfbXmJhTRx2qFiaI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=XmJXUbV3VomOP2edKb/1Fqm4yHnBb0MUnBt9wwe1Jfvd8OXqh6VN+5JJA9N6klQi
-	 i84vTwOCdwyxriRcZIgsB8X/tObPeQ+RwT1semsJhMMmxw9PjLTFe4ecZoKD6n/lU
-	 5cpPHiCjDCMubMhu3XNHS3Y0WSRBfjyOxNTDKdQvIMtOuxU90PMKoAsHUmF6tH5s4
-	 axlNBEZ+hn3dY1NqfYRm97pbLvPNjm9gv4hkPu9H6zQcdCtX9tjIJGPHai4Yf9Auw
-	 hB/Rrem4hlCSSpm2tQ5YJm/fmu5BdlfQARDXxSwFhDLQrPtIpoOnxeh8joaRXQM1x
-	 rn9a5Hn9l1y9yVM0IA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MLifq-1tGpCW3Awa-00LYIw; Fri, 11
- Oct 2024 18:18:44 +0200
-Message-ID: <ede25e03-7a14-4787-ae1b-4fc9290add5a@web.de>
-Date: Fri, 11 Oct 2024 18:18:42 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQLhm4Sl9z2yLT
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 09:22:16 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 13BFEA44C85;
+	Fri, 11 Oct 2024 22:22:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA63BC4CEC3;
+	Fri, 11 Oct 2024 22:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728685331;
+	bh=5olLXSZ89FpxCn4+GMLE3sVaUDfyIAgUMN4KPakNJ3k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pcN6ikuoLar19vMRfs0vbt+MzJX5NNXLuD0WdJMnsLHRkqKdxaw5UoyC8kkpcQUDG
+	 N/thjtFZnL2R7fry55PrFTl2tvxKrpcvbgK3Lvl1x7uoHDAhBEd4jrNhOOIx3zyp7r
+	 qjLicXuLaqXdQB+xPmq4kkW3y/GX8xDsVq8KafbEBPJBMB7AzjtEzSoBnHUnkridqE
+	 qYESZPVrpeLD5gsbTgyvkoEzEmYtfDN1rBaCbS1CpEPWankb6ObLoapBlyO81PnuM1
+	 QYTRHJ7DJAblD0D9CGz/aZIJ8Tkn+4W1k/ltc7ZY+20gmDhHD7JxIkT2/XND1/Ck+M
+	 nilw1JNGPsIkw==
+Date: Fri, 11 Oct 2024 15:22:09 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org,
+	gary@garyguo.net, Michael Ellerman <mpe@ellerman.id.au>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Benjamin Gray <bgray@linux.ibm.com>,
+	Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	neal@gompa.dev, marcan@marcan.st, j@jannau.net,
+	asahi@lists.linux.dev, linux-modules@vger.kernel.org,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
+Message-ID: <ZwmlEYdS0aPVF32k@bombadil.infradead.org>
+References: <20240925233854.90072-1-mmaurer@google.com>
+ <20240925233854.90072-15-mmaurer@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,92 +79,37 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH] powermac: Use of_property_match_string() in
- pmac_has_backlight_type()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org, Jani Nikula <jani.nikula@intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Naveen N Rao <naveen@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Thomas Zimmermann <tzimmermann@suse.de>
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <b7e69e04-e15c-41ec-b62b-37253debc654@web.de>
- <d9bdc1b6-ea7e-47aa-80aa-02ae649abf72@csgroup.eu>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <d9bdc1b6-ea7e-47aa-80aa-02ae649abf72@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:N8O2e4Yd8E0DvTB9GzAvLxn0nY0sITcEOqSjkIxd8kQmhPZmVqM
- dvk/RIK2R/oB3/C6vH0Za4HMmwzZt+MVAu2T/oW8Orss8Zk5+wW3pmJmLymePZ8QjxEBRgB
- /kUeUyNO1XiNX2igzwPABBHB5m50knkomXDgAOWWQqrRF28FQR+14I465PvgowRK10Jlf4J
- uGm6giXGKwnrulmV0VBkw==
-UI-OutboundReport: notjunk:1;M01:P0:03Wv9VBsxxM=;Emklykv9AV86TehI7jARTBVzWrT
- gmVAPBuaUkIGkzIetN/j9chswkNCMekAnfGMW7UDksYMQDxzknkyAbYVY2glTnAWaJ6SUCdEv
- +ISapxLUpmQ+jSsy7/JOPSGeRaOW9oJ9gT6JozPbkwt3mzjwFGg1kg93q9qKNeZiDb20FQ7Z5
- 7dbMyhRO7IoQUCPFRU2pZONu3UZ+PwYNSNA7N1tGZM7p8qMiOwqRfmUBo2iS8EcFOTrocBiqL
- vR9KrBxbxhFHxFQOntbrB+ofNBY1oMG+mzD2Oi/2mRZTiLus5YtdHlT6VgALTCKzquhq/mBG6
- XdjFGakaU/Stza/9COfiiH5iyPUI6uAAJCttGIVpSUG5z9tkinXh4XvAXjk4urs7M73Vw7KIK
- xE21MPozV9FlUQb3Opkk98YS70fV3YUULDZOU6Qvu2zmUaPY9ixhX5NyzY5SP9odV0PnWxHyr
- BYq2hkAoaS2HU/MBRTsNWelKG3FI9aPBERKHXvuG3E2k5JmOemMYE+BzRONFM5CaCvik5fwGX
- 9sUOEfXXxhh+7RHjfwsJhE0WF+ItPzhXW9OIob5f9tF100PLWUf38y79dHx4IGMkObCdJN5JF
- qfeQ2Ppv8pROtfNg+pv5LEZqmP2DUAz6t1RjssIlq+81k5qhbtsHVza0m9CDqpsQ6F1M4G0oR
- oftcGu5QqkU7IxiFPxZICiHYS6HSlj2Nsbr+NVGBMDgtSY+OVStYecDG6lfmICKYpIbFTZpnQ
- Hz20Ms1RAi6CWFzy13lupfmOZCYYVsrtzxEMVIIkHlh3l9gZc4JNmP+uRiY5alGgAOXJwh3st
- W8Jk6EgV8+Np5xz1nktIgPwg==
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240925233854.90072-15-mmaurer@google.com>
+X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 11 Oct 2024 18:10:06 +0200
+On Wed, Sep 25, 2024 at 11:38:29PM +0000, Matthew Maurer wrote:
+> Adds a new format for MODVERSIONS which stores each field in a separate
+> ELF section. This initially adds support for variable length names, but
+> could later be used to add additional fields to MODVERSIONS in a
+> backwards compatible way if needed. Any new fields will be ignored by
+> old user tooling, unlike the current format where user tooling cannot
+> tolerate adjustments to the format (for example making the name field
+> longer).
+> 
+> Since PPC munges its version records to strip leading dots, we reproduce
+> the munging for the new format. Other architectures do not appear to
+> have architecture-specific usage of this information.
+> 
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-Replace an of_get_property() call by of_property_match_string()
-so that this function implementation can be simplified.
+I'm all for the ELF validation work so far, all that was nice, thanks
+for all that tidying up. This however is not considering when we really
+need all this at all, and not making it specific to the build times when
+such things are needed. That is, yes I'd like to see the need for this
+clearly explicitly defined through Kconfig, a *select FOO_FEATURE* for
+when this is needed. No need to extend a module with bloat if we don't
+need it, likewise if a kernel was built without needing those things,
+why bloat the modules with the extra information?
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/linuxppc-dev/d9bdc1b6-ea7e-47aa-80aa-02ae649=
-abf72@csgroup.eu/
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/linuxppc-dev/87cyk97ufp.fsf@mail.lhotse/
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- arch/powerpc/platforms/powermac/backlight.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
-
-diff --git a/arch/powerpc/platforms/powermac/backlight.c b/arch/powerpc/pl=
-atforms/powermac/backlight.c
-index 12bc01353bd3..79741370c40c 100644
-=2D-- a/arch/powerpc/platforms/powermac/backlight.c
-+++ b/arch/powerpc/platforms/powermac/backlight.c
-@@ -57,18 +57,10 @@ struct backlight_device *pmac_backlight;
- int pmac_has_backlight_type(const char *type)
- {
- 	struct device_node* bk_node =3D of_find_node_by_name(NULL, "backlight");
-+	int i =3D of_property_match_string(bk_node, "backlight-control", type);
-
--	if (bk_node) {
--		const char *prop =3D of_get_property(bk_node,
--				"backlight-control", NULL);
--		if (prop && strncmp(prop, type, strlen(type)) =3D=3D 0) {
--			of_node_put(bk_node);
--			return 1;
--		}
--		of_node_put(bk_node);
--	}
--
--	return 0;
-+	of_node_put(bk_node);
-+	return i >=3D 0;
- }
-
- static void pmac_backlight_key_worker(struct work_struct *work)
-=2D-
-2.46.1
-
+  Luis
 
