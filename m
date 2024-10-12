@@ -1,65 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-2143-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2144-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D9A099B0BE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 06:10:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D9699B13A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 08:15:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XQVQB2xDrz30Bp;
-	Sat, 12 Oct 2024 15:10:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XQYBz636dz2yMt;
+	Sat, 12 Oct 2024 17:15:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728706210;
-	cv=none; b=Z4tH1MOkHFp8giApPHy2lYKCwc84J/rSZaC3aVaFLKXek+iTMOczLI4sKtBwy985IulYOWw+zt1jEsg15OJ+Ky+a+MkkYzKcMCq9Syfaq2K2dZQG0y0pJKUct0rO0v9t6fk5werhxG0kFi3VP7LQ92BChYr+grxCSBYDgwDRtChSz+IqxpbQ+GWnmObxEe+LJFwQwTQjV+ZOOlpt+H1/lcecqk4tyrgd4+TGAQJwUyod0gBed2xRMnKT7cgGLiob3Sza756bMd2xlTTCOL+58cVAYlcQGF/XsT7NkYrRiRTu7c7ySOvvIrkb8PC/YfWIN0ahxJHvguFEbbsTvYsmwQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=92.121.34.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728713739;
+	cv=none; b=A+rf9/15RoQQ6EJPUeybsvwXvdh6WTSrAXiiAhEBx0VorwgvmSNL/4d8k0jHrtGwfv7FxAcLNLG97WkNSFGOXMIBbJb2yIBAZ8Oswoie98u71axU62AhBy5Zqq1BCmaF+/PUalENz9qkhZR5Vw3Mm6U21Mne6Aeel61rDhcRi6Tmq8BCvExf8nDoqRO5JEauSE6pXmtjFyzR6cVrKtVIGblyRAWdGVKd3OJ6KyaDlZgE0SicrNYaiItyOEOmJUCQjBUk42EV6Aqvv0IJnaXr1/3X+DInXyW0nwSn1qNpu9PDelZ/URN5TCAOfSYsPlD0/dzKi4zyAKtIevZQIPJIOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728706210; c=relaxed/relaxed;
-	bh=/VDr4MmjxyOpEqNzwc3cstrC+R1nZ8ssa9d92dUWO5g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=amNTzhIIimPaQ8e+emrfd8flU24iMFnNj/gvjV55KWRtqltAXl94hHrftGf3WZjlibGcBCZ691md3bsFYYqBlECXHZVXzMEq0zfGafG7F5tZJ/LFgQw39iUMOIUUbIksmK6CQok1iL8zZZHcbor9Lq/0b5GlyR5QyK/IQfTntF2WIbcB6lqDqNR+H5yY5kLK31osXxELXoJdMKszrXoiA0J4A2v08SrmqIoVxIjpMnSoILNgHUi6UfXQGeHgfb0d8NmRO5sOHn5X+kbNslQ0wd7WJq5++MaT7ZOuydG2qeC0on0zC1FLF3/SJUBFNW8eyDi98sVpFUYyr1TdY2DmHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T7GcXG6/; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T7GcXG6/;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1728713739; c=relaxed/relaxed;
+	bh=UD819D4o9BTk3wH3NNfg7+lOBOHTGg4CA1/ETTnSre4=;
+	h=From:To:Subject:Date:Message-Id; b=in/x+4Co1xRHnkYW+NrNb6x6CfUg4T8pMIPlRL38Q+B0RZI22AUQ7kvmn77cCSx1GSizlP4YU1uehRDR7fakUe9z3TpDnO7/nP7eyduACGDpAxjg+nLu/aGiVwBlJkUZk1PMvX5jxQVwbgig1foxdHZyn+QbZLYXMeiw9/HX0NupZhDPSktCGC0LovlEeVg25SXmoSOERGcjBfsp7dN4JVYEVGkOTuoKd5xPLmOODkkYLFbEqPhzSFkpRLgXMXWHwsrmcHw/HymQY2P0iDoHl8zqVUHJbwUtoATa09NF7ZArNsWDqd5H00HyWfoW9YLuLDGNQjQOQqE8Yuo0MavQ2A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQVQ90PYCz2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 15:10:09 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 156D3A40112;
-	Sat, 12 Oct 2024 04:09:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FC3C4CEC6;
-	Sat, 12 Oct 2024 04:10:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728706204;
-	bh=b0tdLd6p2Kx9EHk9gTMgvSI+akCuCWB3cnFbSmxwFPU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=T7GcXG6/MEphAKA9ACcQENK/OsvjZTooqo5Q2Kt5IBAH7mFx3d4i9v7teoyGaCKQ8
-	 Fmn2mEvClQtA+AK6nTQPPn2KWpompRGbNs1BA/nTFKYfH0S8+YEs1PDRlOq+h4g+KC
-	 BYqwDRxB6mDjge08euDXriOAilF4u8D6eLaNmI5zgbBoychWSvnKo136jOgk0bNAWJ
-	 KPYFw5E2IBjD6QWSgE60Qb2AmYuCTSVCg9USj9fg57mUNgiIKuYLcRi8SRH+0Rml6R
-	 qFzEBJJlbdNwFOduqtI8Vk11mfwFHerCZLUXOBPur59EjjTYaZtdjG+nggnv9xVgU2
-	 Kpd/L223+d4QA==
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: x86@kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Waiman Long <longman@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQYBx5lrMz2yMD
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 17:15:37 +1100 (AEDT)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 918A2200C27;
+	Sat, 12 Oct 2024 08:15:33 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5929A20067F;
+	Sat, 12 Oct 2024 08:15:33 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id C29D91939EA1;
+	Sat, 12 Oct 2024 14:15:31 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
 	linuxppc-dev@lists.ozlabs.org,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-Date: Fri, 11 Oct 2024 23:09:39 -0500
-Message-ID: <b626840e55d4aa86b4b9b377a4cc2cda7038d33d.1728706156.git.jpoimboe@kernel.org>
-X-Mailer: git-send-email 2.46.2
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: fsl_mqs: Support accessing registers by scmi interface
+Date: Sat, 12 Oct 2024 13:52:10 +0800
+Message-Id: <1728712330-4389-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,126 +60,90 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-For x86-64, the barrier_nospec() in copy_from_user() is overkill and
-painfully slow.  Instead, use pointer masking to force the user pointer
-to a non-kernel value even in speculative paths.
+On i.MX95, the MQS module in Always-on (AON) domain only can
+be accessed by System Controller Management Interface (SCMI)
+MISC Protocol. So define a specific regmap_config for the case.
 
-While at it, harden the x86 implementations of raw_copy_to_user() and
-clear_user(): a write in a mispredicted access_ok() branch to a
-user-controlled kernel address can populate the rest of the affected
-cache line with kernel data.
-
-To avoid regressing powerpc, move the barrier_nospec() to the powerpc
-raw_copy_from_user() implementation so there's no functional change.
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- arch/powerpc/include/asm/uaccess.h | 2 ++
- arch/x86/include/asm/uaccess_64.h  | 4 +++-
- arch/x86/lib/getuser.S             | 2 +-
- arch/x86/lib/putuser.S             | 2 +-
- include/linux/uaccess.h            | 6 ------
- 5 files changed, 7 insertions(+), 9 deletions(-)
+ sound/soc/fsl/fsl_mqs.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 4f5a46a77fa2..12abb8bf5eda 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -7,6 +7,7 @@
- #include <asm/extable.h>
- #include <asm/kup.h>
- #include <asm/asm-compat.h>
-+#include <asm/barrier.h>
+diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
+index 145f9ca15e43..0513e9e8402e 100644
+--- a/sound/soc/fsl/fsl_mqs.c
++++ b/sound/soc/fsl/fsl_mqs.c
+@@ -6,6 +6,7 @@
+ // Copyright 2019 NXP
  
- #ifdef __powerpc64__
- /* We use TASK_SIZE_USER64 as TASK_SIZE is not constant */
-@@ -341,6 +342,7 @@ static inline unsigned long raw_copy_from_user(void *to,
+ #include <linux/clk.h>
++#include <linux/firmware/imx/sm.h>
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+ #include <linux/mfd/syscon.h>
+@@ -74,6 +75,29 @@ struct fsl_mqs {
+ #define FSL_MQS_RATES	(SNDRV_PCM_RATE_44100 | SNDRV_PCM_RATE_48000)
+ #define FSL_MQS_FORMATS	SNDRV_PCM_FMTBIT_S16_LE
+ 
++static int fsl_mqs_sm_read(void *context, unsigned int reg, unsigned int *val)
++{
++	struct fsl_mqs *mqs_priv = context;
++	int num = 1;
++
++	if (IS_ENABLED(CONFIG_IMX_SCMI_MISC_DRV) &&
++	    mqs_priv->soc->ctrl_off == reg)
++		return scmi_imx_misc_ctrl_get(SCMI_IMX_CTRL_MQS1_SETTINGS, &num, val);
++
++	return -EINVAL;
++};
++
++static int fsl_mqs_sm_write(void *context, unsigned int reg, unsigned int val)
++{
++	struct fsl_mqs *mqs_priv = context;
++
++	if (IS_ENABLED(CONFIG_IMX_SCMI_MISC_DRV) &&
++	    mqs_priv->soc->ctrl_off == reg)
++		return scmi_imx_misc_ctrl_set(SCMI_IMX_CTRL_MQS1_SETTINGS, val);
++
++	return -EINVAL;
++};
++
+ static int fsl_mqs_hw_params(struct snd_pcm_substream *substream,
+ 			     struct snd_pcm_hw_params *params,
+ 			     struct snd_soc_dai *dai)
+@@ -188,6 +212,13 @@ static const struct regmap_config fsl_mqs_regmap_config = {
+ 	.cache_type = REGCACHE_NONE,
+ };
+ 
++static const struct regmap_config fsl_mqs_sm_regmap = {
++	.reg_bits = 32,
++	.val_bits = 32,
++	.reg_read = fsl_mqs_sm_read,
++	.reg_write = fsl_mqs_sm_write,
++};
++
+ static int fsl_mqs_probe(struct platform_device *pdev)
  {
- 	unsigned long ret;
- 
-+	barrier_nospec();
- 	allow_read_from_user(from, n);
- 	ret = __copy_tofrom_user((__force void __user *)to, from, n);
- 	prevent_read_from_user(from, n);
-diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
-index afce8ee5d7b7..39199eef26be 100644
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -133,12 +133,14 @@ copy_user_generic(void *to, const void *from, unsigned long len)
- static __always_inline __must_check unsigned long
- raw_copy_from_user(void *dst, const void __user *src, unsigned long size)
- {
-+	src = mask_user_address(src);
- 	return copy_user_generic(dst, (__force void *)src, size);
- }
- 
- static __always_inline __must_check unsigned long
- raw_copy_to_user(void __user *dst, const void *src, unsigned long size)
- {
-+	dst = mask_user_address(dst);
- 	return copy_user_generic((__force void *)dst, src, size);
- }
- 
-@@ -197,7 +199,7 @@ static __always_inline __must_check unsigned long __clear_user(void __user *addr
- static __always_inline unsigned long clear_user(void __user *to, unsigned long n)
- {
- 	if (__access_ok(to, n))
--		return __clear_user(to, n);
-+		return __clear_user(mask_user_address(to), n);
- 	return n;
- }
- #endif /* _ASM_X86_UACCESS_64_H */
-diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
-index d066aecf8aeb..094224ec9dca 100644
---- a/arch/x86/lib/getuser.S
-+++ b/arch/x86/lib/getuser.S
-@@ -39,7 +39,7 @@
- 
- .macro check_range size:req
- .if IS_ENABLED(CONFIG_X86_64)
--	mov %rax, %rdx
-+	mov %rax, %rdx		/* mask_user_address() */
- 	sar $63, %rdx
- 	or %rdx, %rax
- .else
-diff --git a/arch/x86/lib/putuser.S b/arch/x86/lib/putuser.S
-index 975c9c18263d..09b7e37934ab 100644
---- a/arch/x86/lib/putuser.S
-+++ b/arch/x86/lib/putuser.S
-@@ -34,7 +34,7 @@
- 
- .macro check_range size:req
- .if IS_ENABLED(CONFIG_X86_64)
--	mov %rcx, %rbx
-+	mov %rcx, %rbx		/* mask_user_address() */
- 	sar $63, %rbx
- 	or %rbx, %rcx
- .else
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 39c7cf82b0c2..dda9725a9559 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -160,12 +160,6 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
- 	unsigned long res = n;
- 	might_fault();
- 	if (!should_fail_usercopy() && likely(access_ok(from, n))) {
--		/*
--		 * Ensure that bad access_ok() speculation will not
--		 * lead to nasty side effects *after* the copy is
--		 * finished:
--		 */
--		barrier_nospec();
- 		instrument_copy_from_user_before(to, from, n);
- 		res = raw_copy_from_user(to, from, n);
- 		instrument_copy_from_user_after(to, from, n, res);
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -219,6 +250,16 @@ static int fsl_mqs_probe(struct platform_device *pdev)
+ 			dev_err(&pdev->dev, "failed to get gpr regmap\n");
+ 			return PTR_ERR(mqs_priv->regmap);
+ 		}
++	} else if (mqs_priv->soc->type == TYPE_REG_SM) {
++		mqs_priv->regmap = devm_regmap_init(&pdev->dev,
++						    NULL,
++						    mqs_priv,
++						    &fsl_mqs_sm_regmap);
++		if (IS_ERR(mqs_priv->regmap)) {
++			dev_err(&pdev->dev, "failed to init regmap: %ld\n",
++				PTR_ERR(mqs_priv->regmap));
++			return PTR_ERR(mqs_priv->regmap);
++		}
+ 	} else {
+ 		regs = devm_platform_ioremap_resource(pdev, 0);
+ 		if (IS_ERR(regs))
 -- 
-2.46.2
+2.34.1
 
 
