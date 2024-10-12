@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-2145-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2146-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B9899B27A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 11:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C36A99B294
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 11:36:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XQdHK0dwkz2yLg;
-	Sat, 12 Oct 2024 20:19:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XQdf71s4Hz2yMv;
+	Sat, 12 Oct 2024 20:35:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728724781;
-	cv=none; b=mAPnLBZdKEJwl/O69g1M3DS9QQjHF/3lVOX/t5I3jxlaVm5Y6Mc8kNX+ezo0KFpORwJ9Jr/+YL1RVmK2bCy8BrIZkO4NDYicv+RAtQfAprgiPDQBtSfd74JC0Pv+MfuzW3tfSu7w5YNTy9O83ekBbT5qoT42ZRXQcJecmuyJ/7Msa/29spmR1bouuQPwdbJvedb2MR0ipEYIrLtZXSLt01tJXX2aXKWp1lSOh8znvQnMbY5a0yUTpOcIJfODrrmKQjWZGvzNQpbAH+SSjg+gvD+eSSUXer4JMU+G7FY4CHO1rRfmoHIcT5LEPysHaa0WdloOYi8dPhgmeP6u6jS2xA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728725759;
+	cv=none; b=A8r7YIa8R1oCHMdnvTsNARMdpoPGwSC8vVbDHVB42JXhm1Z5S0kVxO/5Mf9FZAACak1brqYS2isWMmgFDQ/jHh6bNOKVyb5X8ywKc6fNjEg3HH7Qcl7FJ9Wk3swWRniNaU0xamCJB/ZjIpFU6IDdPbYr41ccfbyoPD4h9WIEsnZNJSK5pn7LykmQB8j9Wlo9XF3fkoIANE594hNv8vUpACVNp702jm+o+gkyf/KQexEAH9EoKjkY9+loA14lcdDYotW5PHycBBo2yRhbUx76yUkMvKJioTBeZjJxH/O/0vca/1kAXzmEMiQhj9ukJ9O9Pzm+HQn5RswlXMxQsWyXpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728724781; c=relaxed/relaxed;
-	bh=UVIpjP6kWIy7SGdk7H/WQfiX41UeM9GJsr/U4w6IFGk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HdlxWWEpS7bC0QAZt/k36s0JXp8hGJJvcwqNwd9i4/SQL5Gq3h13vCAzxRkh9lzJsX4NMrL3wO1eQnvYvX3k7Bi9UgFmDWMFghPBEPzu0D2jgtEca25HmIJisYFRAKj2hti6uw34q1ahah46LzaxGOxiN8+EoQevsModUPqWc8Q2wScJT1J29nxYf3bbkJKaFK/MO5wxqFwYZY3t/rHnPJa57ILpmr3SUqz0jbGu6GVmnKyoN53d6vtmGanlb8UBVWHy8z1gDrFtLy0mPCVwO8Ak6MRlClLltkg9tHgWTPQ0isaacv6VqZgeA780HGeRKLSUJb9Lcfg6Y8X+36TGzw==
+	t=1728725759; c=relaxed/relaxed;
+	bh=O9TKp7wUJEP7GfPAG22xUGV/6JE5IDdvoMKZE7wghbY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=aGkaqyXFn0/3UTbNM+eW+OmA7YCSHNdHc89F8849nzKQW0wSDl8UGDbeeNJQxGjd2nc6F/6Ce1M9Z4hjNNLClIAZ+c9HlZBYxE95/xYn66yNKToacRZMIZGuxUIRhzsMZkAKHn1l5y990xjPBNIT+BcE2VFw8c17HaG2tksOPL8+EMuOxPOch6qQ1GMIfC8dakO0HgcVVVyUCwgb8sOQBs//0pRSoMNMBcQgTGZKs3giDEHFf1ajW2q0wJn9jEcSCWpjhAdijQWPYwgIb8lqVENjHNsesmgA1GXk9fTR+S4LhQODois75+zH/W2Gh4Eex3JVlcPxRrxgMwb9CUcpwg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
@@ -23,30 +23,30 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQdHH4fSWz2yHj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 20:19:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQdf60Y2xz2yLT
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 20:35:57 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4XQdHB2Lbcz9sPd;
-	Sat, 12 Oct 2024 11:19:34 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4XQdf305Y5z9sPd;
+	Sat, 12 Oct 2024 11:35:55 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 4HiqErU0OKkU; Sat, 12 Oct 2024 11:19:34 +0200 (CEST)
+	with ESMTP id r27Z1httjJ5w; Sat, 12 Oct 2024 11:35:54 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4XQdHB0ydxz9rvV;
-	Sat, 12 Oct 2024 11:19:34 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4XQdf26HGhz9rvV;
+	Sat, 12 Oct 2024 11:35:54 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0EE8C8B765;
-	Sat, 12 Oct 2024 11:19:34 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C54EF8B765;
+	Sat, 12 Oct 2024 11:35:54 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id K4h0ycrJatFU; Sat, 12 Oct 2024 11:19:33 +0200 (CEST)
+	with ESMTP id gZs3AGf8cAno; Sat, 12 Oct 2024 11:35:54 +0200 (CEST)
 Received: from [192.168.232.206] (unknown [192.168.232.206])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 93ED98B764;
-	Sat, 12 Oct 2024 11:19:33 +0200 (CEST)
-Message-ID: <777cca2b-a650-4622-9f96-684c2530794b@csgroup.eu>
-Date: Sat, 12 Oct 2024 11:19:32 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1B9DC8B764;
+	Sat, 12 Oct 2024 11:35:54 +0200 (CEST)
+Message-ID: <d2040f5b-008b-4c45-9cbc-9ea5c25c9149@csgroup.eu>
+Date: Sat, 12 Oct 2024 11:35:53 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,21 +57,16 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] powerpc/vdso: Implement __arch_get_vdso_rng_data()
-To: Michael Ellerman <mpe@ellerman.id.au>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Jason@zx2c4.com
-References: <0557d3ec898c1d0ea2fc59fa8757618e524c5d94.1727858295.git.christophe.leroy@csgroup.eu>
- <a1a9bd0df508f1b5c04684b7366940577dfc6262.1727858295.git.christophe.leroy@csgroup.eu>
- <20241010101449-007991a0-f7c7-4f76-a6cc-413c474b9219@linutronix.de>
- <0a3d0813-e44f-45be-8b9a-957c75aa26cb@csgroup.eu>
- <20241010110927-9688b27e-6048-48ac-a908-5b80ba8da63e@linutronix.de>
- <7c8231ad-683e-4df6-a63f-26985d46316f@csgroup.eu>
- <87r08m6evr.fsf@mail.lhotse>
+Subject: Re: [PATCH 5/7] powerpc/entry: add irqentry_state and generic entry
+ support
+To: Luming Yu <luming.yu@shingroup.cn>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
+ jialong.yang@shingroup.cn, luming.yu@gmail.com
+References: <20241012035621.1245-3-luming.yu@shingroup.cn>
+ <5ADB50C5F6678977+20241012035621.1245-7-luming.yu@shingroup.cn>
 Content-Language: fr-FR
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <87r08m6evr.fsf@mail.lhotse>
+In-Reply-To: <5ADB50C5F6678977+20241012035621.1245-7-luming.yu@shingroup.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
@@ -80,144 +75,192 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
 
-Le 11/10/2024 à 13:46, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> Le 10/10/2024 à 11:12, Thomas Weißschuh a écrit :
->>>
->>> I'll try to see why this doesn't work for ppc32.
->>
->> PC-rel instructions only exist on very very recent powerpc CPUs (power10 ?)
+Le 12/10/2024 à 05:56, Luming Yu a écrit :
+> generic irq entry support via generic irqentry is added for powerpc.
+> There may be duplciate calls and missing callbacks requires further
+> work.
+> 
+> Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+
+This patch doesn't apply.
+
+Applying: powerpc/entry: add irqentry_state and generic entry support
+error: patch failed: arch/powerpc/kernel/interrupt.c:3
+error: arch/powerpc/kernel/interrupt.c: patch does not apply
+Patch failed at 0005 powerpc/entry: add irqentry_state and generic entry 
+support
+
+I tried on v6.11, v6.12-rc2 and next-20241011
+
+> ---
+>   arch/powerpc/include/asm/entry-common.h | 32 ++++++++++++++++
+>   arch/powerpc/kernel/interrupt.c         | 51 +++++--------------------
+>   arch/powerpc/kernel/signal.c            |  7 ++++
+>   arch/powerpc/kernel/syscall.c           |  2 -
+>   4 files changed, 49 insertions(+), 43 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/entry-common.h b/arch/powerpc/include/asm/entry-common.h
+> index 51f1eb767696..faa829e15b5d 100644
+> --- a/arch/powerpc/include/asm/entry-common.h
+> +++ b/arch/powerpc/include/asm/entry-common.h
+> @@ -3,6 +3,7 @@
+>   #define ARCH_POWERPC_ENTRY_COMMON_H
 >   
-> Yeah power10 or later.
-> 
->> On PPC64, ELF ABI v2 requires caller to put called function address in
->> r12 and it looks like GCC uses that:
->>
->> 0000000000000000 <__c_kernel_getrandom>:
->>      0:	3c 4c 00 00 	addis   r2,r12,0
->> 			2: R_PPC64_REL16_HA	.TOC.+0x2
->>      4:	38 42 00 00 	addi    r2,r2,0
->> 			6: R_PPC64_REL16_LO	.TOC.+0x6
->> ...
->>     64:	3d 22 00 00 	addis   r9,r2,0
->> 			66: R_PPC64_TOC16_HA	_vdso_datapage+0x100
->>     68:	89 29 00 00 	lbz     r9,0(r9)
->> 			6a: R_PPC64_TOC16_LO	_vdso_datapage+0x100
-> 
-> Setting up r12 is only required for calls to the global entry point
-> (offset 0), local calls can be made to offset 8 and use/don't require
-> r12 to be set. That's because local calls should already have the
-> correct toc pointer in r2.
-> 
-> But that's not true in VDSO code. >
->> Which after final link results in:
->>
->> 0000000000001060 <__c_kernel_getrandom>:
->>       1060:	3c 4c 00 01 	addis   r2,r12,1
->>       1064:	38 42 8e a0 	addi    r2,r2,-29024
->> ...
->>       10c4:	3d 22 ff fc 	addis   r9,r2,-4
->>       10c8:	89 29 62 00 	lbz     r9,25088(r9)
-> 
-> The call to __c_kernel_getrandom skips over the r2 setup because it's a
-> local call, even though we haven't setup r2 correctly:
-
-Yes indeed I forgot that. So even if the final check doesn't complain, 
-it won't work at the end.
-
-Don't know if we could find a way to detect that and fail the build.
-
-> 
-> 0000000000000758 <__kernel_getrandom>:
->       758:       91 ff 21 f8     stdu    r1,-112(r1)
->       75c:       a6 02 08 7c     mflr    r0
->       760:       91 ff 21 f8     stdu    r1,-112(r1)
->       764:       80 00 01 f8     std     r0,128(r1)
->       768:       88 00 41 f8     std     r2,136(r1)
->       76c:       05 00 9f 42     bcl     20,4*cr7+so,770 <__kernel_getrandom+0x18>
->       770:       a6 02 08 7d     mflr    r8
->       774:       fe ff 08 3d     addis   r8,r8,-2
->       778:       90 f8 08 39     addi    r8,r8,-1904
->       77c:       fc 00 68 81     lwz     r11,252(r8)
->       780:       ff 7f 6b 6d     xoris   r11,r11,32767
->       784:       ff ff 6b 69     xori    r11,r11,65535
->       788:       34 00 6b 7d     cntlzw  r11,r11
->       78c:       de 5b 6b 55     rlwinm  r11,r11,11,15,15
->       790:       14 5a 08 7d     add     r8,r8,r11
->       794:       d8 02 08 39     addi    r8,r8,728
->       798:       41 09 00 48     bl      10d8 <__c_kernel_getrandom+0x8>
-> 
-> We could setup r2, but that would only help 64-bit.
-> 
-> This also makes me notice that we have a mixture of ELF ABI v1 and v2
-> code in the VDSO, depending on whether the kernel is building itself ABI
-> v1 or v2:
-> 
->    arch/powerpc/kernel/vdso/cacheflush-64.o:        ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 (SYSV), not stripped
->    arch/powerpc/kernel/vdso/datapage-64.o:          ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 (SYSV), not stripped
->    arch/powerpc/kernel/vdso/getcpu-64.o:            ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 (SYSV), not stripped
->    arch/powerpc/kernel/vdso/getrandom-64.o:         ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 (SYSV), not stripped
->    arch/powerpc/kernel/vdso/gettimeofday-64.o:      ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 (SYSV), not stripped
->    arch/powerpc/kernel/vdso/note-64.o:              ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 (SYSV), not stripped
->    arch/powerpc/kernel/vdso/sigtramp64-64.o:        ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 (SYSV), not stripped
->    arch/powerpc/kernel/vdso/vgetrandom-64.o:        ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, OpenPOWER ELF V2 ABI, version 1 (SYSV), not stripped
->    arch/powerpc/kernel/vdso/vgetrandom-chacha-64.o: ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 (SYSV), not stripped
->    arch/powerpc/kernel/vdso/vgettimeofday-64.o:     ELF 64-bit LSB relocatable, 64-bit PowerPC or cisco 7500, OpenPOWER ELF V2 ABI, version 1 (SYSV), not stripped
-> 
-> All the asm files are ABI v1 because they historically were, and don't
-> say otherwise. The C code comes out as ABI v1 or v2 depending on what
-> we're building the kernel as. Which is a bit fishy.
-
-That's not related to VDSO it seems. There is the same thing in 
-arch/powerpc/lib for instance:
-
-$ file arch/powerpc/lib/*.o
-arch/powerpc/lib/checksum_64.o:         ELF 64-bit MSB relocatable, 
-64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 
-(SYSV), not stripped
-arch/powerpc/lib/checksum_wrappers.o:   ELF 64-bit MSB relocatable, 
-64-bit PowerPC or cisco 7500, OpenPOWER ELF V2 ABI, version 1 (SYSV), 
-not stripped
-arch/powerpc/lib/code-patching.o:       ELF 64-bit MSB relocatable, 
-64-bit PowerPC or cisco 7500, OpenPOWER ELF V2 ABI, version 1 (SYSV), 
-not stripped
-arch/powerpc/lib/copy_mc_64.o:          ELF 64-bit MSB relocatable, 
-64-bit PowerPC or cisco 7500, Unspecified or Power ELF V1 ABI, version 1 
-(SYSV), not stripped
-arch/powerpc/lib/copypage_64.o:         ELF 64-bit MSB relocatable, 
-64-bit PowerPC or cisco 7500, OpenPOWER ELF V2 ABI, version 1 (SYSV), 
-not stripped
-...
-
-Seems like all .c files result in a ELF V2 while some of .S files are V1 
-et some are V2. That's odd because the build arguments seems to be the same:
-
-# AS      arch/powerpc/lib/checksum_64.o
-   powerpc64-linux-gcc -Wp,-MMD,arch/powerpc/lib/.checksum_64.o.d 
--nostdinc -I./arch/powerpc/include -I./arch/powerpc/include/generated 
--I./include -I./arch/powerpc/include/uapi 
--I./arch/powerpc/include/generated/uapi -I./include/uapi 
--I./include/generated/uapi -include ./include/linux/compiler-version.h 
--include ./include/linux/kconfig.h -D__KERNEL__ -I ./arch/powerpc 
--DHAVE_AS_ATHIGH=1 -D__ASSEMBLY__ -fno-PIE -m64 -mcpu=power8 -mabi=elfv2 
--mlittle-endian -Wa,--fatal-warnings 
--DKBUILD_MODFILE='"arch/powerpc/lib/checksum_64"' 
--DKBUILD_MODNAME='"checksum_64"' -D__KBUILD_MODNAME=kmod_checksum_64 -c 
--o arch/powerpc/lib/checksum_64.o arch/powerpc/lib/checksum_64.S  ; 
-./tools/objtool/objtool --mcount   arch/powerpc/lib/checksum_64.o
-
-# AS      arch/powerpc/lib/copypage_64.o
-   powerpc64-linux-gcc -Wp,-MMD,arch/powerpc/lib/.copypage_64.o.d 
--nostdinc -I./arch/powerpc/include -I./arch/powerpc/include/generated 
--I./include -I./arch/powerpc/include/uapi 
--I./arch/powerpc/include/generated/uapi -I./include/uapi 
--I./include/generated/uapi -include ./include/linux/compiler-version.h 
--include ./include/linux/kconfig.h -D__KERNEL__ -I ./arch/powerpc 
--DHAVE_AS_ATHIGH=1 -D__ASSEMBLY__ -fno-PIE -m64 -mcpu=power8 -mabi=elfv2 
--mlittle-endian -Wa,--fatal-warnings 
--DKBUILD_MODFILE='"arch/powerpc/lib/copypage_64"' 
--DKBUILD_MODNAME='"copypage_64"' -D__KBUILD_MODNAME=kmod_copypage_64 -c 
--o arch/powerpc/lib/copypage_64.o arch/powerpc/lib/copypage_64.S  ; 
-./tools/objtool/objtool --mcount   arch/powerpc/lib/copypage_64.o
-
+>   #include <linux/user-return-notifier.h>
+> +#include <asm/switch_to.h>
+>   
+>   static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
+>   						  unsigned long ti_work)
+> @@ -13,4 +14,35 @@ static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
+>   
+>   #define arch_exit_to_user_mode_prepare arch_exit_to_user_mode_prepare
+>   
+> +static inline void arch_exit_to_user_mode_work(struct pt_regs *regs,
+> +						unsigned long ti_work)
+> +{
+> +
+> +	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && IS_ENABLED(CONFIG_PPC_FPU)) {
+> +		if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
+> +				unlikely((ti_work & _TIF_RESTORE_TM))) {
+> +			restore_tm_state(regs);
+> +		} else {
+> +			unsigned long mathflags = MSR_FP;
+> +
+> +			if (cpu_has_feature(CPU_FTR_VSX))
+> +				mathflags |= MSR_VEC | MSR_VSX;
+> +			else if (cpu_has_feature(CPU_FTR_ALTIVEC))
+> +				mathflags |= MSR_VEC;
+> +
+> +			/*
+> +			 * If userspace MSR has all available FP bits set,
+> +			 * then they are live and no need to restore. If not,
+> +			 * it means the regs were given up and restore_math
+> +			 * may decide to restore them (to avoid taking an FP
+> +			 * fault).
+> +			 */
+> +			if ((regs->msr & mathflags) != mathflags)
+> +				restore_math(regs);
+> +		}
+> +	}
+> +}
+> +
+> +#define arch_exit_to_user_mode_work arch_exit_to_user_mode_work
+> +
+>   #endif
+> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+> index 609ba48034de..42af9217136d 100644
+> --- a/arch/powerpc/kernel/interrupt.c
+> +++ b/arch/powerpc/kernel/interrupt.c
+> @@ -3,6 +3,7 @@
+>   #include <linux/context_tracking.h>
+>   #include <linux/err.h>
+>   #include <linux/compat.h>
+> +#include <linux/entry-common.h>
+>   #include <linux/sched/debug.h> /* for show_regs */
+>   
+>   #include <asm/kup.h>
+> @@ -183,47 +184,11 @@ interrupt_exit_user_prepare_main(unsigned long ret, struct pt_regs *regs)
+>   
+>   again:
+>   	ti_flags = read_thread_flags();
+> -	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
+> -		local_irq_enable();
+> -		if (ti_flags & _TIF_NEED_RESCHED) {
+> -			schedule();
+> -		} else {
+> -			/*
+> -			 * SIGPENDING must restore signal handler function
+> -			 * argument GPRs, and some non-volatiles (e.g., r1).
+> -			 * Restore all for now. This could be made lighter.
+> -			 */
+> -			if (ti_flags & _TIF_SIGPENDING)
+> -				ret |= _TIF_RESTOREALL;
+> -			do_notify_resume(regs, ti_flags);
+> -		}
+> -		local_irq_disable();
+> -		ti_flags = read_thread_flags();
+> -	}
+>   
+> -	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && IS_ENABLED(CONFIG_PPC_FPU)) {
+> -		if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
+> -				unlikely((ti_flags & _TIF_RESTORE_TM))) {
+> -			restore_tm_state(regs);
+> -		} else {
+> -			unsigned long mathflags = MSR_FP;
+> -
+> -			if (cpu_has_feature(CPU_FTR_VSX))
+> -				mathflags |= MSR_VEC | MSR_VSX;
+> -			else if (cpu_has_feature(CPU_FTR_ALTIVEC))
+> -				mathflags |= MSR_VEC;
+> -
+> -			/*
+> -			 * If userspace MSR has all available FP bits set,
+> -			 * then they are live and no need to restore. If not,
+> -			 * it means the regs were given up and restore_math
+> -			 * may decide to restore them (to avoid taking an FP
+> -			 * fault).
+> -			 */
+> -			if ((regs->msr & mathflags) != mathflags)
+> -				restore_math(regs);
+> -		}
+> -	}
+> +	if (ti_flags & _TIF_SIGPENDING)
+> +		ret |= _TIF_RESTOREALL;
+> +	if (unlikely(ti_flags & EXIT_TO_USER_MODE_WORK))
+> +		ti_flags = exit_to_user_mode_loop(regs, ti_flags);
+>   
+>   	check_return_regs_valid(regs);
+>   
+> @@ -297,11 +262,15 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+>   	}
+>   
+>   	local_irq_disable();
+> -	ret = interrupt_exit_user_prepare_main(ret, regs);
+> +	if (ti_flags & _TIF_RESTOREALL)
+> +		ret |= _TIF_RESTOREALL;
+>   
+> +	if (ti_flags & _TIF_SIGPENDING)
+> +		ret |= _TIF_RESTOREALL;
+>   #ifdef CONFIG_PPC64
+>   	regs->exit_result = ret;
+>   #endif
+> +	syscall_exit_to_user_mode(regs);
+>   
+>   	return ret;
+>   }
+> diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+> index aa17e62f3754..da21e7fef46a 100644
+> --- a/arch/powerpc/kernel/signal.c
+> +++ b/arch/powerpc/kernel/signal.c
+> @@ -11,6 +11,7 @@
+>   #include <linux/uprobes.h>
+>   #include <linux/key.h>
+>   #include <linux/context_tracking.h>
+> +#include <linux/entry-common.h>
+>   #include <linux/livepatch.h>
+>   #include <linux/syscalls.h>
+>   #include <asm/hw_breakpoint.h>
+> @@ -368,3 +369,9 @@ void signal_fault(struct task_struct *tsk, struct pt_regs *regs,
+>   		printk_ratelimited(regs->msr & MSR_64BIT ? fm64 : fm32, tsk->comm,
+>   				   task_pid_nr(tsk), where, ptr, regs->nip, regs->link);
+>   }
+> +
+> +void arch_do_signal_or_restart(struct pt_regs *regs)
+> +{
+> +	BUG_ON(regs != current->thread.regs);
+> +	do_signal(current);
+> +}
+> diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.c
+> index e0338bd8d383..97f158d13944 100644
+> --- a/arch/powerpc/kernel/syscall.c
+> +++ b/arch/powerpc/kernel/syscall.c
+> @@ -185,8 +185,6 @@ notrace long system_call_exception(struct pt_regs *regs, unsigned long r0)
+>   	 * So the resulting 6 or 7 bits of entropy is seen in SP[9:4] or SP[9:3].
+>   	 */
+>   	choose_random_kstack_offset(mftb());
+> -	/*common entry*/
+> -	syscall_exit_to_user_mode(regs);
+>   
+>   	return ret;
+>   }
 
