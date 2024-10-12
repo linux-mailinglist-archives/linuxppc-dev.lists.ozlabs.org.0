@@ -1,59 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-2154-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2155-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D2D99B4F5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 14:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB7199B551
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 16:09:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XQjyy3QtLz2yVZ;
-	Sat, 12 Oct 2024 23:50:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XQljr0TC3z2yVb;
+	Sun, 13 Oct 2024 01:09:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728737450;
-	cv=none; b=VFgA2afCXltwhq0VuILNjtlISacGAshXQiEroB256vEvHUUt5pnX3aTCTsg0wjRKIoB6X42Ks3ZtY3TA93ZT/WJUIw0Xu/0ZnNlSvVoghfPoRdGGjOQTt98PwSJkUIjJsdJkJyepADCTaeqCNz6LH/KBtP5f5Jag0mK4+fzxF71emmEg/HVWxyttsBQNE9grPUeUUJNKRoLe6GsFEx6J8TtO6Y/pI2lUx8YdmhlWXt1C+r5o6fZrqlB+y05kea8cEMh2SdSDvnQTY3/5BfACTdVnx9AGaeoOQ5Ib6EqtWERM4lrpLEd1zyGAo6C3GHQjtPvqru2yywX5I3FOiXjuQg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728742175;
+	cv=none; b=KZ97NfzBZBLXHjwzh7YSOcSLYi++2tDdsYDvyTBrkTT5CG0uViYqAcyKqebKsXfa57t08DMa1np/CZSE4fzZ7MFLmjjahZUQfO3U9PN5svDrjBGB2H64Ulo/zegKElbmVu5H58LVW86/sp6+OOGFGc5Jrzg3GcnJ6wG2MtNJijHOHP0gNLB/tb0PVIoUh22kRkZPWkvp7WqWc++MuuNKOho5l/6X5Da5kDwSvaNGChtTEbpVwY/m5Fht85cD7LzMEggidhjiBCGIHnLjRpxA8t5sVy5bEPhWjsCxSuxXqL8fIdgx502tblhv0GHK30XZhQzcipULxUVZKC4OsQRV8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728737450; c=relaxed/relaxed;
-	bh=7Z/3XCgpk5X4886EqbCkyONm1hFk+6Ok7ax8FrTOXZM=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=hH2KpX4PtiizbyhlkShZ7YwJ+rq2gz856zHnE4RxJe7RAmPWpB3EJL2bvck0NISkrCNHc4VaVDIHj993sn9Djrmz4yysy7bMlFWEpf20GdpmEU8g3UEKIxo5k7xI+BQwbBaPDZVQvJKSjdzkoE1nYB1Y/77+LT0OK2v6wHi8GinWZ1aW1D3pGz0AUSGbDGuKSWH/UN4Y6M/G6AiKC+cuKeFd4Y+YtW8rON6Tvsy0AcbLoSSyvWKvgbAE//K9jhCh3RWk2H4c0ARzu5uW77qaDFSNPcipQOJjqdJFHWem+R6mpET0H/cGQQdARqIaSVusElN/o9+mm2DC9EdY9iKumA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EIptPkVk; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1728742175; c=relaxed/relaxed;
+	bh=Cc9/p7ZMHIFR66pVbkffYpA2yy8MTp4mlXKR3LiOyL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ag60edxQ+u+Dfz7tYGSPCjN3mCrndrVd4y0fqfjqTHMmnS1aF4ixN2f8pEM7gDSmHLjTxW+sHJeE94occE4QVOpxJOoXfuEjlOXCS536rRV61CPK5Nh9b061TacsePDGK8aDcq6SSVOe9zzmpDlNy2Jt4bT3pugGCi3jwyaQ6GxNT3SgMnU3ZKlC67ERSFEuNEkKJzh17kClbD0nPlEf8PqSlo/JTr/XLBuy+QqCS8OCM11aU/e/p69Scjm2WDDwL3L/vnXSKDNuHoOg8q4qzwRabF4PgSVG2hYuaiz+fHtfPdod8j/1PMI9Zn9ncVi1smggpsrg8jQRL5jnOwwYmQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FMV0VHn9; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EIptPkVk;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FMV0VHn9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQjyw3Fyxz2yJL
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 23:50:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQljq0H4Gz2yVM
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Oct 2024 01:09:34 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 6DB93A4017D;
-	Sat, 12 Oct 2024 12:50:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E4AC4CEC6;
-	Sat, 12 Oct 2024 12:50:41 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id BFE085C568E;
+	Sat, 12 Oct 2024 14:09:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB64C4CEC6;
+	Sat, 12 Oct 2024 14:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728737444;
-	bh=v8NCU068r9dRn1DQIRAWChXlgs5/3w1Xkzg3alhshIk=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=EIptPkVkRSmm/GUI3d9hQ5wMrt2rbjdH63dw8268TGBhzLxitDTkOFy5aHDLDY5pk
-	 Dn1ZOlGIRRf+S55RhnHmr9W+YDDuUmaiWnSOAnHp6NyYVAiCfk8jJ4UJTupIx08RKM
-	 vbwiZolNs2DVrbm8UmElREWMuIH4quCjSEGpuGg62URhot6Sxp4iKMcMkvj6xHOUCR
-	 5Nw3IrtffKh3gAm0/BtXW3Lz2rt01ZGBtJnjgGOKFWyrnXi9CCmdCgms9wFeUM4yac
-	 RdBrjqb4sUcXSr4en4tI+OdMK+nLb3iB5YxnyGD9e8HWn3oOFMIIBQQBdUSQmh7nLO
-	 TL5AxSfxFoW3Q==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- chancel.liu@nxp.com, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1728460004-364-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1728460004-364-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 0/2] ASoC: imx-card: add cs42888 codec support
-Message-Id: <172873744192.3950734.11628347626617222095.b4-ty@kernel.org>
-Date: Sat, 12 Oct 2024 13:50:41 +0100
+	s=k20201202; t=1728742171;
+	bh=wMgYhYIMjjNRl184Mdw+L/pEncvHcF5jFugwVz5XqwY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FMV0VHn9gnJJRvyTHgnU1zLmy8Gb78WMLXE8ltGtJnUspQ1+lhho1hWiKYeTffQRe
+	 BAL6YSfFU3t89evENRPO2bbh7qo3tFGW6Qg4VBLmQkYRZtbFpqAorczxT7Yqd0mYAw
+	 L85+Ux6DQltkzFssPnghDC/mOFaM0SVEtW+WaLPhZRQ94w46MZcokr2Pk+I0p7Z4V9
+	 p8LIOe98I2myMGgyY2EePCx9gQwM7DlRrzZyWvhn/WQ+uZOjAdKmMtwsQChDCDhAJu
+	 7SWA5w4KlphTYnk3MTWx16rMpERR0jJc3hvh4fK6HPihQ8hQcDJkNQVueUzuHLFSCu
+	 H8TVgwYlG0zVw==
+Date: Sat, 12 Oct 2024 09:09:23 -0500
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Waiman Long <longman@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org, Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
+Message-ID: <20241012140923.kl2evqb6aue2pzfs@treble>
+References: <b626840e55d4aa86b4b9b377a4cc2cda7038d33d.1728706156.git.jpoimboe@kernel.org>
+ <f6ea59b1-eb59-4d1d-81ed-0e5095102c20@citrix.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,54 +69,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-99b12
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <f6ea59b1-eb59-4d1d-81ed-0e5095102c20@citrix.com>
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 09 Oct 2024 15:46:42 +0800, Shengjiu Wang wrote:
-> add cs42888 codec support
+On Sat, Oct 12, 2024 at 09:48:57AM +0100, Andrew Cooper wrote:
+> On 12/10/2024 5:09 am, Josh Poimboeuf wrote:
+> > For x86-64, the barrier_nospec() in copy_from_user() is overkill and
+> > painfully slow.  Instead, use pointer masking to force the user pointer
+> > to a non-kernel value even in speculative paths.
+> >
+> > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 > 
-> Chancel Liu (2):
->   ASoC: imx-card: Set mclk for codec
->   ASoC: imx-card: Add CS42888 support
+> You do realise mask_user_address() is unsafe under speculation on AMD
+> systems?
 > 
-> sound/soc/fsl/imx-card.c | 59 +++++++++++++++++++++++++++++++++++-----
->  1 file changed, 52 insertions(+), 7 deletions(-)
+> Had the mask_user_address() patch been put for review, this feedback
+> would have been given then.
 > 
-> [...]
+> 
+> AMD needs to arrange for bit 47 (bit 58 with LA57) to be the one
+> saturated by shifting, not bit 63.
 
-Applied to
+Ok... why?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/2] ASoC: imx-card: Set mclk for codec
-      commit: 892373e4de626c61e91816e3d3970d82beb50c4b
-[2/2] ASoC: imx-card: Add CS42888 support
-      commit: b39eec95b84d5dc326c3d7c89e4e08b898dbc73c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+Josh
 
