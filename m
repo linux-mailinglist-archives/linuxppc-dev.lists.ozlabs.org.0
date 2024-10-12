@@ -1,73 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-2160-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2161-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A41F999B66D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Oct 2024 19:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B7099B793
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Oct 2024 01:01:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XQrV5340dz2yfm;
-	Sun, 13 Oct 2024 04:44:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XQzWJ6bgzz3bs0;
+	Sun, 13 Oct 2024 10:01:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728755085;
-	cv=none; b=chh3cS4BVLEdmxQpfDCMtYl3XRkddHqnsz0Ira/6I9wr7jWC7QYXjErS2Cgad97yVHgW4pWDuygzEjssWFfTclONdxztz0Ap9hlgGa0WdafToLv4qFfzT8bfKvKT1nnrMZ1OfKVENanL2wsu9wrm1CPhaSctYhgiBp8a0bE2eQiEIHpg/EHXacUbYDYl1ggav/fDBMl3W6TIg6SpwsoCUg5jNfCD/z0HuDULkY5vIJYutQ6Q2GynqxBXY/xb87zo0U5aabVbjjLbIJvIgb/HzUDS1hnrVSrKMq44JUHr3zAFWVWa3v5s5UPQWRyX69ohIF4+ScwwcQuX8s6P1RW/xA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728774076;
+	cv=none; b=meos94fPBT4Wal6y9xOLStVg2TuqkIR+E43xVlK3KJnnwpUC35tnav0hnlNoMnf9w/uvCL9Nvb7BN3R9++wa7TYckZMQtK/l6+vafLLotkyYmv95sGWxUSUcKHtCSCDYQrrXnvbC1LmFezKv5qEVsBvAfP2ibmowryz6GX3aHiLRoOaRLEzRVk9gymic5toUimTtBIIYw3/Tfzy/wF4CfsaPPLO9EqgX4Y+/pX4OGQUNLEQBm+Sj7YxITWAd8yPEO+Dn35DrdqKIe7VeUcWDfStffEgPnI4fYRP6XV5/RBMrkyh818FnlNJRj8Rps5CyGdxvZN3ATbAzkWyoJnY41w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728755085; c=relaxed/relaxed;
-	bh=25gqzX5hBjTaiaIXpJ95pdYdZufrL7FjbwWqGnimT6o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nE2m4gJGKNvP6WPoX0ddRAiZQDH6dQE4A/up3hGfad2NX9u9Qe5rc6HJDoW9nld65AZmT/MyqYm//or6b1XTHjtT1QuyV6LIaqA2FPWotZS5fnRG6JraP7ecH5ugwWqzBkS8dJLdZ5gPz/tPjkpcY9MGjVvfvax3d653RVSXf471wIiIt2dwcT2T1yf8118+Cu8Nfjj15ch4d7eG5lNX3NGHhnU8IFc3/gHgAKRM3UkdcGEQJidjHHs11UXp7XKzwvJXYPDOteQ/wvZNbJMN+WNaozx4P7H/NMzV5v5jIBen/evycF07PhpQLBB31hk0qvdsTwBp/SeUIqCr0uhe+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=YG5lQ+q3; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1728774076; c=relaxed/relaxed;
+	bh=4aU2nl6tLvom+i+sZeM7Uw3RWtjRV1QtoP+sWiq08zY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=a7yoWrIJudicqt7kzlNPDbcAJlS7LXyJQsQ+qQvMBMxt7ZTc73DOqfZvp9v0+up1TlwUtALHpzQv0D95dNzSm1khHAbVWXndX2o1/ioJcRsf56hKCh/5RBe2Bd7llIxfzaDlRld9lE1Ey1xvb6mOeXpKhDni4AyuKb/TCgzD9kcqBxpQItxR7sgP9utZSXoZCWePasmusQh7tfGAmb0qDQ2rvl85pPPQ4ZVqgJ2nZMYlfAOtP8r7hoDXIlMPidRgX/uFoxNQPbYQrG/owAMEvexVHQ5ZlZVeCElvlAU+cPAI8jxyXFxW0hJ5nhLKH3HqbRY0vP/KwIaParoggghHjw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fix23e89; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=YG5lQ+q3;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Fix23e89;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQrV32jc9z2yWK
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Oct 2024 04:44:41 +1100 (AEDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-a99ebb390a5so110319166b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 10:44:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1728755077; x=1729359877; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=25gqzX5hBjTaiaIXpJ95pdYdZufrL7FjbwWqGnimT6o=;
-        b=YG5lQ+q3yRbHvSkBBHz2wQk3TodFRUyk6eg/205tl6VEu+ik77fNVCFoN7LHDHSpwe
-         jJIq9YxVpqBdSPMqff57jXRdLAlCU1qtJjBBHUqW1KjNDORVu6bNHX1andW0KPGXXOn+
-         Zwa53vUpH4/mOBEJsbSAe3BzuhKo9c20HOVsk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728755077; x=1729359877;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=25gqzX5hBjTaiaIXpJ95pdYdZufrL7FjbwWqGnimT6o=;
-        b=O+Mhgw2PFi5i7pSA47eX9i+WgMyxlWMc6p+bR0dSItfVAevr13bHbPff/tBGQIk4Qx
-         aSW/GaL1GEkE0fJ6B9yujlVeVobEd4+3EtJTpj14cTAUTllK/8Vh0VSvLL/BJ6W3C/zn
-         tLAY60ZdWNaUBvm3uBWpmyoHhBoRQYjyCX5aGx3ZbupazJPXSSzOi4K7fUc3YdMQgavm
-         imOiCH6OgLmVhSTB5THmfEb7DVU43GP1zvNAyoekIUQWhl/gaj9wFyITockrep1pjwdO
-         NGoVQrUJo9IUNte7VaEgHqQechfAT4I0uljfN9XDCf7DsbzVQ5wTBFckYXk4K/Tb2ST5
-         xWxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVxeYdggB1DQIVFCX2iS8i8aVzhchu6gGR1ai5Ml3Bn+nMdhUngROnwRFNIYksAlm9DhoO4qjvrijryncw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzcptVyLIvBWdEduvXFbSDdeaKYDRcOThxHCWe+qP6rGS1yLlc5
-	gn71Px1lWG4IIYT/D2X4PFat42kdex9sN5gh3WtyPR9mhbzQbCPDJLj90frNuG95vujndr/h2Ms
-	6iMg=
-X-Google-Smtp-Source: AGHT+IEMA78VwSzUPbjSxF2ddDNqQrbFkSqtGy7eu1WSCG+HFwxVgQJFsjs1Oqu6tp3kmhj+6GO4BA==
-X-Received: by 2002:a17:906:4919:b0:a99:ef65:50e with SMTP id a640c23a62f3a-a99ef651155mr154293466b.11.1728755077063;
-        Sat, 12 Oct 2024 10:44:37 -0700 (PDT)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99a7f24596sm345911766b.48.2024.10.12.10.44.35
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 12 Oct 2024 10:44:36 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a99b1f43aceso373170266b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 10:44:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV4tHI+Dlhl7SyTMiR8rgbRlXKRC9ZFgLeE9unHrv/nQtaOiddtBJyGEShMc7Mx0ItqH62o8ili3vTtD68=@lists.ozlabs.org
-X-Received: by 2002:a17:907:a0c8:b0:a99:6071:688f with SMTP id
- a640c23a62f3a-a99a10ed865mr1076215166b.13.1728755074715; Sat, 12 Oct 2024
- 10:44:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQzWF60xcz3br2
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Oct 2024 10:01:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1728774072;
+	bh=4aU2nl6tLvom+i+sZeM7Uw3RWtjRV1QtoP+sWiq08zY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Fix23e89gyJdW6xHHRlrS3tJfuy1H2o9HEepS+pomfJuTaf4GCjlnk6B3r4hS2kpT
+	 CTI6ZgP9Mvr0cRxVKTlU0ugjoCw264aEYgdl0IdqBE6/hwW+H6gxC7ut4FmVm7h8Ms
+	 a6AYR4p0TPVh5osyW3jwzKe7R5zJHPJx1VhRymgL84+9O7o11NCh3nFnjKo4sEqAVX
+	 Mt71Q665b5G6L0u9sMyjLdG8NGzrDHTqV4Lo93QD7+Cs0W3/KIQ15h13vMOm/QO+Py
+	 WgXCAeb/c5ToOqQyPe2leZ3hQKOT+OR6Qi6xR4k8yNfPqjsndso5oqdBL6Bd7vMHws
+	 OMb20AplXi+8Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XQzWC4jw2z4x8Q;
+	Sun, 13 Oct 2024 10:01:11 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <2b851399bd87e81c6ccb87ea3a7a6b32c7aa04d7.1728118396.git.christophe.leroy@csgroup.eu>
+References: <2b851399bd87e81c6ccb87ea3a7a6b32c7aa04d7.1728118396.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/8xx: Fix kernel DTLB miss on dcbz
+Message-Id: <172877404775.499764.16227434899101631721.b4-ty@ellerman.id.au>
+Date: Sun, 13 Oct 2024 10:00:47 +1100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,64 +60,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <b626840e55d4aa86b4b9b377a4cc2cda7038d33d.1728706156.git.jpoimboe@kernel.org>
- <f6ea59b1-eb59-4d1d-81ed-0e5095102c20@citrix.com> <CAHk-=wg=DovySzKb3=g53DeCwv1ZOa-RebaBpYXNXrdhY=a5Qw@mail.gmail.com>
- <12c18d86-87b3-4418-a0b0-2844197a3315@citrix.com>
-In-Reply-To: <12c18d86-87b3-4418-a0b0-2844197a3315@citrix.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 12 Oct 2024 10:44:18 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
-Message-ID: <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
-	Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, 12 Oct 2024 at 10:23, Andrew Cooper <andrew.cooper3@citrix.com> wrote:
->>
-> This logic is asymmetric.
->
-> For an address in the upper half (canonical or non-canonical), it ORs
-> with -1 and fully replaces the prior address.
+On Sat, 05 Oct 2024 10:53:29 +0200, Christophe Leroy wrote:
+> Following OOPS is encountered while loading test_bpf module
+> on powerpc 8xx:
+> 
+> [  218.835567] BUG: Unable to handle kernel data access on write at 0xcb000000
+> [  218.842473] Faulting instruction address: 0xc0017a80
+> [  218.847451] Oops: Kernel access of bad area, sig: 11 [#1]
+> [  218.852854] BE PAGE_SIZE=16K PREEMPT CMPC885
+> [  218.857207] SAF3000 DIE NOTIFICATION
+> [  218.860713] Modules linked in: test_bpf(+) test_module
+> [  218.865867] CPU: 0 UID: 0 PID: 527 Comm: insmod Not tainted 6.11.0-s3k-dev-09856-g3de3d71ae2e6-dirty #1280
+> [  218.875546] Hardware name: MIAE 8xx 0x500000 CMPC885
+> [  218.880521] NIP:  c0017a80 LR: beab859c CTR: 000101d4
+> [  218.885584] REGS: cac2bc90 TRAP: 0300   Not tainted  (6.11.0-s3k-dev-09856-g3de3d71ae2e6-dirty)
+> [  218.894308] MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 55005555  XER: a0007100
+> [  218.901290] DAR: cb000000 DSISR: c2000000
+> [  218.901290] GPR00: 000185d1 cac2bd50 c21b9580 caf7c030 c3883fcc 00000008 cafffffc 00000000
+> [  218.901290] GPR08: 00040000 18300000 20000000 00000004 99005555 100d815e ca669d08 00000369
+> [  218.901290] GPR16: ca730000 00000000 ca2c004c 00000000 00000000 0000035d 00000311 00000369
+> [  218.901290] GPR24: ca732240 00000001 00030ba3 c3800000 00000000 00185d48 caf7c000 ca2c004c
+> [  218.941087] NIP [c0017a80] memcpy+0x88/0xec
+> [  218.945277] LR [beab859c] test_bpf_init+0x22c/0x3c90 [test_bpf]
+> [  218.951476] Call Trace:
+> [  218.953916] [cac2bd50] [beab8570] test_bpf_init+0x200/0x3c90 [test_bpf] (unreliable)
+> [  218.962034] [cac2bde0] [c0004c04] do_one_initcall+0x4c/0x1fc
+> [  218.967706] [cac2be40] [c00a2ec4] do_init_module+0x68/0x360
+> [  218.973292] [cac2be60] [c00a5194] init_module_from_file+0x8c/0xc0
+> [  218.979401] [cac2bed0] [c00a5568] sys_finit_module+0x250/0x3f0
+> [  218.985248] [cac2bf20] [c000e390] system_call_exception+0x8c/0x15c
+> [  218.991444] [cac2bf30] [c00120a8] ret_from_syscall+0x0/0x28
+> 
+> [...]
 
-Right. The point is that non-canonical addresses will fault, and
-kernel addresses are guaranteed to fault.
+Applied to powerpc/fixes.
 
-And the assumption was that any fault will be sufficient to hide the
-result, because otherwise you have meltdown all over again.
+[1/1] powerpc/8xx: Fix kernel DTLB miss on dcbz
+      https://git.kernel.org/powerpc/c/8956c582ac6b1693a351230179f898979dd00bdf
 
-> When userspace passes in a non-canonical pointer in the low half of the
-> address space but with bit 47 set, it will be considered a high-half
-> pointer when sent for TLB lookup, and the pagetables say it's a
-> supervisor mapping, so the memory access will be permitted to go ahead
-> speculatively.  Only later does the pipeline realise the address was
-> non-canonical and raise #GP.
->
-> This lets userspace directly target and load anything cacheable in the
-> kernel mappings.  It's not as easy to exploit as Meltdown on Intel, but
-> it known behaviour, and been the subject of academic work for 4 years.
-
-It sure was never talked about in kernel circles. I checked my email
-archives, and neither
-
-   CVE-2020-12965
-
-nor that
-
-    https://www.amd.com/en/resources/product-security/bulletin/amd-sb-1010.html
-
-is anywhere in my emails, nor does lore.kernel.org find them anywhere either.
-
-Anyway, what's the speculation window size like?
-
-               Linus
+cheers
 
