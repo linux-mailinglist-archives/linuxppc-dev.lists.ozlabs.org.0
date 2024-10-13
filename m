@@ -1,54 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-2162-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2163-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D3799B7AC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Oct 2024 01:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 089AA99B7D4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Oct 2024 02:53:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XQzwT6dCXz2yGX;
-	Sun, 13 Oct 2024 10:19:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XR2182LLCz3bpp;
+	Sun, 13 Oct 2024 11:53:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728775177;
-	cv=none; b=KvBZVD3Ag7RS0YRDDZdG5kTwIeFU5bbi5y+8qFpyTQsYzFbgAr5E3oaPuAjXxxst3UfDUhTG79CsB7C3gmmhlLefuuVhGDFXjuyQcSXuEaV5BNFQ45RzNq3eZuJORCbrPNjX9Mzkz64TZp/PAJhu8YHNEcsOwbftJe0Xr3ZCJuTECb8eFmfKdubs0Q21DSBFSwcYHgQ2F/tgcq0Pu/zj6+KJ5r+n9eDTj6yDJXj46FB0r4GUt4d/YJYZSpmDWEqEHVo056Ldco66e99f7P9XLfDaRPJEzBEmI56KFoA2tFwsJIOxGk2PCtGecCOpUVvanIeH6ooM2/hsFPl7E7DMww==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::634"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728780828;
+	cv=none; b=LsgSD64W/PBnITXnWDeVzwFCYKk4Q9ZrPcVlk0Knuvp0yl3aVAs8MV8HhUFPBRx9IYVZYYOQMpV0jqJYjgcHIanaxMpPu2shsWilXIYIIM4cQZ/dqw5qHRr9NN4E6qmP7r3wpVfD1Jkuk07bZtjTsai7y1Tm9dD5sfexzGz0/EpeyjY43rlQAFs2+HPqpD/cr15fpKRaQok0MAhv71MJOIcp4H2eBMvJ35WUnJP+0988tA1kkS0csEw/zFx95SDaQCsnZHXekGVOB6Trs/mNhZBtnK/J45CQXOZSb3kbrHzaTsTbyjoHcRbDXEoWS5EXznlIIW0R9/tdmG/ztUoOFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728775177; c=relaxed/relaxed;
-	bh=iPe6bARDbmutmL/3UO+PHaMpdoI/drRBAgwzRmjlJxw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XqHXOtDhjcaZtOvzcgD9+DooV/SNF3bUl/i9jcn/IzaLMvRfTlk/r6sgDrg5vFp9S45Udz9lWK2dmpZ4ec5rOqWOMKL0bcah+0Pop2VleRODUaBmyfhoUZFw2pARLO6oBKQ8fQgmIVnyvGKLO9nwjoiYy+5PVpmwTHoPXt1bcolj619WYG/nD1ZBLmTPlHqxmWAaoZawzwD17ZS7UFMd0RpgmokhDD0eUG4+kn6BAEOlyGhTAPvV2dF3NUINBubB7LXqfGLlJ7zf2M00TCVjSxw80yEeAiKfybLHvRSRyfGqePusJ4vplaobYetWTmOwDKXtkO4ocf4GD5iiKWb9Vw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=INMHSXTR; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1728780828; c=relaxed/relaxed;
+	bh=QLpE5RgoZ+DVzeHgOxcGYuCQZprDuE7hzttC3czAaSM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oCag0Qlv5biGvfQYeihVbFWXymX6rAxfsZknBoH8OpUjZeZw83vQkbA1kKdAhOPwWhqLt7smKxb7keGoL1yPZu0dhSyvAwiMZHS3O7TsGwD6DUO6vUQ+Tv5JNiROH/RL57QAYslmp5LAyhXDTYCzTP5of0f/nnI5stne2yvYwLhWRdnubpw3Yg+1UzlQhoGYdazUa5mmByJVLT4C0aCIZ3pOAYUMK3QBj9knjCil6kbQMh/SFT4zPqKscaOIdkuc2MoiTpew/89hZ8biKoWuk+asUEnEuOjbR2xM6q+iTKt7dTVagCr3iX1v+0Qnn8r3bNmCWEYvzuemp54ergx5Ow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=TSblFLSY; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=INMHSXTR;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=TSblFLSY;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQzwS72RBz2yGN
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Oct 2024 10:19:36 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1728775172;
-	bh=iPe6bARDbmutmL/3UO+PHaMpdoI/drRBAgwzRmjlJxw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=INMHSXTRcx1fU9CHXGZGhH70HQ1sy0kCKGE0AtZJyVnnwhwJu03JaXfh/Rb3apAuI
-	 nJZ7wtjyob94jH6RSzZ2xkcoWgie8SioGYgGoRrxHzofY7gK/tJHlX64ylPd4rm/+X
-	 p4YiCSctCucgN/CeB4e77OnlcPPv0ZeK2vGNJSo9IsIHWIgt+HjHP8+rffBg0YIot6
-	 QNG3eBulue8sfk9C2Oeq5V0Eaw9BaszRawvsCSqSfuW/FrLntg1+To6ZuhFo2lKgY2
-	 ssHiaorVKP7tb4VEJSskNyJ5XPosXEVUd4pL75sUUMY1+V/2Z/nmY0Swl/vw97A0Pc
-	 3TIYrTvbiWB6w==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XQzwN1KN0z4xG8;
-	Sun, 13 Oct 2024 10:19:32 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.12-4 tag
-Date: Sun, 13 Oct 2024 10:19:32 +1100
-Message-ID: <87ldys6ha3.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XR2163Prjz2yGN
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Oct 2024 11:53:44 +1100 (AEDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-a99ffeea60bso30966366b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 17:53:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1728780817; x=1729385617; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=QLpE5RgoZ+DVzeHgOxcGYuCQZprDuE7hzttC3czAaSM=;
+        b=TSblFLSY1TnF6t1OEds83VaoG9XNcQa0rFCKLoeEg25kNxu3xi7vQ/4hUrlvS+fmIe
+         YBEG3RnvEH947actaQPqJJLHZWCGL68EsA6IcQYfG87H8bDWnYSo8WYQiiC/Woe49m7F
+         /MJiqUsNIiwz43aZ+hykH2eDywIdPDsAKCpjY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728780817; x=1729385617;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QLpE5RgoZ+DVzeHgOxcGYuCQZprDuE7hzttC3czAaSM=;
+        b=IKXLuXdSsl0lOPMvEx2nOZvpkIjTTOEqu686VigSuUB9+nLwZB4n3KJFYcXJtmnhzI
+         513rFbFzWJ/WFLaxdvAc2wC7OkVKw9fC23hSO6s1YKAARlBmpIznBlSjo686hIpUiSXx
+         4OzuzAaR0v930RfNFHd09uaDGMxhgT1+qlI3cdKTYV2brO3mHEwQ8P4F5i6JRzvtVI4d
+         dMQOqotYVO/nZhRn3wZwTu+ghfrC1ODvqCmwt93E0QdbY7bZfZ4Fkuzd2QhGcCKlx+jR
+         U4z4ok1oGIWmzs9DK6Wv7kUZNCQuu5SeL6uQnl8ptscE2kzvOnvCfOyubXi++sdDVHJU
+         YmYg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJjj/cacJDSImDNOIiyKJTr+Mf88t86EgXAHVzlMhtQ6Vxpb+kjWdKtiQxuGOSJTNTQEY8lTiJMbqzVO4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyMQs0KCPNoOwTS+lbv69QIjKVAPIwQbqx+jfLcPFk5VQKoQltl
+	tG2Mys4yylAwcn5EzoCtBu80HfUJ/Ps3fVg7QzM2xtuP2nkV1z3R3UIjnCJwyREpa6YDIT6a4bl
+	Kke7tRQ==
+X-Google-Smtp-Source: AGHT+IGWfZ+KN///ETFfvoRdI8ehGQIlFwP3ge8QWwYIUeiFUfdbzv9+3B27v+YVbKxVoxTCX/bi+g==
+X-Received: by 2002:a17:907:9446:b0:a99:6036:90b with SMTP id a640c23a62f3a-a99b9400c6amr692645266b.24.1728780817294;
+        Sat, 12 Oct 2024 17:53:37 -0700 (PDT)
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99f629a849sm88073266b.140.2024.10.12.17.53.36
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 12 Oct 2024 17:53:36 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a994cd82a3bso454943866b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Oct 2024 17:53:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVbrxdRO1Zz9xxpo9awPmzRb34x7BZRwyBw9SSH+1fCfvyUniPR45J3SNva9PxGzhYb7sTNYoSpVfxP1FI=@lists.ozlabs.org
+X-Received: by 2002:a17:907:72c3:b0:a99:faf4:50e4 with SMTP id
+ a640c23a62f3a-a99faf45183mr126559866b.56.1728780815770; Sat, 12 Oct 2024
+ 17:53:35 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,50 +77,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+References: <b626840e55d4aa86b4b9b377a4cc2cda7038d33d.1728706156.git.jpoimboe@kernel.org>
+ <f6ea59b1-eb59-4d1d-81ed-0e5095102c20@citrix.com> <CAHk-=wg=DovySzKb3=g53DeCwv1ZOa-RebaBpYXNXrdhY=a5Qw@mail.gmail.com>
+ <12c18d86-87b3-4418-a0b0-2844197a3315@citrix.com> <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 12 Oct 2024 17:53:19 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
+Message-ID: <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
+Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
+To: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Mark Rutland <mark.rutland@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA512
+On Sat, 12 Oct 2024 at 10:44, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> Anyway, what's the speculation window size like?
 
-Hi Linus,
+Note that this is important basically because we do *NOT* want to
+check the address against TASK_SIZE_MAX like we used to, because not
+only is TASK_SIZE_MAX not a compile-time constant, but with linear
+address masking, people actually *want* to use addresses that are in
+the non-canonical range.
 
-Please pull another powerpc fix for 6.12:
+IOW, see also
 
-The following changes since commit 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b:
+    arch/x86/include/asm/uaccess_64.h
 
-  Linux 6.12-rc2 (2024-10-06 15:32:27 -0700)
+and notice how the x86-64 __access_ok() check *also_ does the whole
+"top bit set" thing (iow, see __access_ok()).
 
-are available in the git repository at:
+IOW, this actually goes even further back than the commit I mentioned
+earlier - it goes back to commit 6014bc27561f ("x86-64: make
+access_ok() independent of LAM") because without the sign bit trick,
+LAM is a complete disaster.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.12-4
+So no, the address masking can not depend on things like
+__VIRTUAL_MASK_SHIFT, it would need to at least take LAM into account
+too. Not that I know if there are any CPU's out there that actually
+have LAM enabled.
 
-for you to fetch changes up to 8956c582ac6b1693a351230179f898979dd00bdf:
-
-  powerpc/8xx: Fix kernel DTLB miss on dcbz (2024-10-11 15:53:06 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.12 #4
-
- - Fix crash in memcpy on 8xx due to dcbz workaround since recent changes.
-
-Thanks to: Christophe Leroy.
-
-- ------------------------------------------------------------------
-Christophe Leroy (1):
-      powerpc/8xx: Fix kernel DTLB miss on dcbz
-
-
- arch/powerpc/kernel/head_8xx.S | 1 +
- 1 file changed, 1 insertion(+)
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQRjvi15rv0TSTaE+SIF0oADX8seIQUCZwsDnwAKCRAF0oADX8se
-IUiFAPwIQZD7X3Mpo3dgmVEJCGf+Nlk2ClikbZYQ4ylWKDt1GwEAplRpNFLhXioN
-J1Jxc6kZ6s42alDWXfj0xVTo1/hsnwI=
-=xWuO
------END PGP SIGNATURE-----
+            Linus
 
