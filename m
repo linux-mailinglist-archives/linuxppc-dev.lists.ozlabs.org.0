@@ -1,85 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-2171-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2172-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C0399BA93
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Oct 2024 19:38:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A19499BB61
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Oct 2024 22:18:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRSJ04q5dz2xps;
-	Mon, 14 Oct 2024 04:38:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRWrh5RmFz2yGF;
+	Mon, 14 Oct 2024 07:18:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728841088;
-	cv=none; b=GZOzWJgClpE8qoKYi5ts2UFOhkSmjZjMR7m8mMSPyCk+7L8PZlmuMggSQzj3YckakW226ZCfgm08qQiJnPGavmK63nQbB3wHJ0Fip5AF4CRlJJqjl4L5sCf580wtK+sccoMP0OyAGw83+JIlpKWxIMmxsRlMPxd1ViGHy45mN4N2mxkZsi361/YV69yuni1ZKYPmEnwhOsblLIFQE297n1F76kUE5r1LB/5sJ0Y+tPvu19pAoMfQHkv+YSfkxoX3OM1ooZPrIBLfm1Ex7KDYI5h5V1WauiLBtlfwd294wEmX94GHQI/MlDMP4EGcmAN/oxkNhJxEes6unZzeXwl/6Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.134.164.104
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728850692;
+	cv=none; b=hQ2tIfqSCtbaryor8E3RW2amn/qFHojnkLjQF2NAW6EjV1bIuU7B6xFkAI/TcU9N2HKUlDMcO6tUFZDhkudB96tjxnxHy2TBaHtPWj/vUpkN3297Yw0TM7ijXutHD5JB2az/xmk06lFnsFqUWHaQ5AA5/rQWvG4qRWaVz6UVYLy9GBci4WgAvdSIaaPRfBY3oYn4CyVzmfz2sqpdvILUNa9A+WcYON+437YMqD5pEWxW+mxWaoR4FV6dq4CLAPkHC8j4xNUd4pG7ktQtAAAqasWUuzdCjOOOXh9FktcJ3L8PldTnZsakmjqyqTvBxM8m4FxBezDnGaBg2V6P7X4Orw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728841088; c=relaxed/relaxed;
-	bh=rTgipmFu3TZdXAFpN2sCqfvMrpztU8Ehx1A5qw47iuA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=jfmgLjIjhcUBPwIjBPAndhh18aSpODLUynj3+KxzFAX/Rd33wTCBHzkZXJjy8Rwq8V547C1GVX2l9t8ED+s2cY5DKWUaL8CIdzKzCpm88UPdijbWp6riEpM6iBqp+teCVqXSviskxJ3S49enJFiflSw+eWFSKbBHK57Nbi2ZfUdcgcS9a7k+iw+Mz9UYAPYPJ4xWtbCQmLj6y+SV/VXv/KnhTdVkAKxq1FE/977oymtOHMmfVvYNdLXHk++SL/TfIhpojMI+i3D8lu4EKuYnTkeouaI9/HU/rrKtMstiRC79LQevTwQhjKUtzjEdIWX8RjmqiWOQG2r/x3/24RK2AQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h5wB9/6I; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1728850692; c=relaxed/relaxed;
+	bh=Sja7FWx2J2pFF7H03F4ldwixL8Qb/r4LwdjP0v1pkNc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BFxXzNz7f9oMIdlhi8vIdl6VHH3JRxDvq8zd05nHqneql2Wr+qpc9OMzf7Aw8Q2eG49Af4fkFKboHrp4rfXueZusQAA0woRRal0kagU1KUFm/fUvGzPj9Kqk13JTiagSckfGW9tn0k8YyKaXCpPDqYd5gzzdWkDRNoZo2NOmtj6fMTw/wFF1l1U/Mb1m9BeRJCC9PRxa/UtCvSIChBv2kwJ7d+RdigJGelpV+BgqwHY6mEg1ykuhcsu5H2Bm5MlBXzkH2HmB6bqi7eeNDK9PnMoS3Wka6/fNYGF7qCHK3rchHTjCs4GBHogY6vp0HRZkBaIoNITdt1eaoJY6UmIyeQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=inria.fr; dkim=pass (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=exIvs+i/; dkim-atps=neutral; spf=pass (client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=lists.ozlabs.org) smtp.mailfrom=inria.fr
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=inria.fr
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h5wB9/6I;
+	dkim=pass (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=exIvs+i/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inria.fr (client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=lists.ozlabs.org)
+Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRSHy4v3Zz2xjh
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 04:38:06 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49DHHYgn021609;
-	Sun, 13 Oct 2024 17:37:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:mime-version:content-type
-	:content-transfer-encoding; s=pp1; bh=rTgipmFu3TZdXAFpN2sCqfvMrp
-	ztU8Ehx1A5qw47iuA=; b=h5wB9/6Ivh6wUwpDU2v4r94o9qpeHHRwDyvrr0J9r/
-	87H37KUQg8PcFeK325nCyxAkS4qN3abqZfCqWLmhvBD35drekw1mL38MYXHrz3x/
-	no1lUcgmQnPiFxjP3CJrCjm0/iXyGeg5/ucVTOINA2F4xauGdzmP+jkF9ATK3tw5
-	fV8wnuNWL4z1yuxtRB1XJlAxNj92zoLb+mBduiPMwUN3zoG6edRjQM4d26cpGodW
-	Oo+4NjZKbG/NS07mBfqOTykXZ/UwMk06TbK+4K12/nRT49wpLrnW96zLT3FcXsJV
-	k1UZw3cmZau9TtCCBz2c+g2UnczoOEY2ONAQ6Qd6JTrg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 428jfcg279-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 13 Oct 2024 17:37:57 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49DHbvGU028041;
-	Sun, 13 Oct 2024 17:37:57 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 428jfcg278-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 13 Oct 2024 17:37:57 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49DGFFiS027499;
-	Sun, 13 Oct 2024 17:37:56 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4283txavvx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 13 Oct 2024 17:37:56 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49DHbqIS56951206
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 13 Oct 2024 17:37:52 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B56AD20049;
-	Sun, 13 Oct 2024 17:37:52 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 67A0120040;
-	Sun, 13 Oct 2024 17:37:46 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.240.55])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 13 Oct 2024 17:37:46 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org
-Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        akanksha@linux.ibm.com, maddy@linux.ibm.com,
-        atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
-        disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Subject: [PATCH] tools/perf/tests: Fix compilation error with strncpy in tests/tool_pmu
-Date: Sun, 13 Oct 2024 23:07:42 +0530
-Message-Id: <20241013173742.71882-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRWrc1vnjz2yF0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 07:18:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=inria.fr; s=dc;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Sja7FWx2J2pFF7H03F4ldwixL8Qb/r4LwdjP0v1pkNc=;
+  b=exIvs+i/vmrrOC1BhG1dWTdYhowcV77JbThYwDdjK0/Wqiaqq9Fr0cce
+   rNzCFJlH0Zl3Gc94qiLI1s9PCSVuCYpsLvZjcvp+ULtzzTXbcfRvMqOYM
+   ncj7g6L1s1poZOa9BL666TBGtZjDcSWk9IcDnPVvWZAmigUTgCebAcAqC
+   Y=;
+Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
+X-IronPort-AV: E=Sophos;i="6.11,201,1725314400"; 
+   d="scan'208";a="98968275"
+Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2024 22:17:57 +0200
+From: Julia Lawall <Julia.Lawall@inria.fr>
+To: linux-nfs@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	vbabka@suse.cz,
+	paulmck@kernel.org,
+	Tom Talpey <tom@talpey.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Neil Brown <neilb@suse.de>,
+	linux-can@vger.kernel.org,
+	bridge@lists.linux.dev,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	linux-kernel@vger.kernel.org,
+	wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org,
+	ecryptfs@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org
+Subject: [PATCH 00/17] replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+Date: Sun, 13 Oct 2024 22:16:47 +0200
+Message-Id: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 2.20.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,68 +78,136 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: YCqQkdpLnZFftOOybjLwWDxi3gTAhA9A
-X-Proofpoint-ORIG-GUID: 1_aLzai0-Te3wfhgSoaFkCcEP93f9-nj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-13_11,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 bulkscore=0 impostorscore=0 spamscore=0
- priorityscore=1501 adultscore=0 mlxscore=0 suspectscore=0 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410130130
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_NONE autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-perf fails to compile on systems with GCC version11
-as below:
+Since SLOB was removed and since
+commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
+it is not necessary to use call_rcu when the callback only performs
+kmem_cache_free. Use kfree_rcu() directly.
 
-In file included from /usr/include/string.h:519,
-                 from /home/athir/perf-tools-next/tools/include/linux/bitmap.h:5,
-                 from /home/athir/perf-tools-next/tools/perf/util/pmu.h:5,
-                 from /home/athir/perf-tools-next/tools/perf/util/evsel.h:14,
-                 from /home/athir/perf-tools-next/tools/perf/util/evlist.h:14,
-                 from tests/tool_pmu.c:3:
-In function ‘strncpy’,
-    inlined from ‘do_test’ at tests/tool_pmu.c:25:3:
-/usr/include/bits/string_fortified.h:95:10: error: ‘__builtin_strncpy’ specified bound 128 equals destination size [-Werror=stringop-truncation]
-   95 |   return __builtin___strncpy_chk (__dest, __src, __len,
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   96 |                                   __glibc_objsize (__dest));
-      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~
+The changes were done using the following Coccinelle semantic patch.
+This semantic patch is designed to ignore cases where the callback
+function is used in another way.
 
-The compile error is from strncpy refernce in do_test:
-	strncpy(str, tool_pmu__event_to_str(ev), sizeof(str));
+// <smpl>
+#spatch --all-includes --include-headers
 
-This behaviour is not observed with GCC version 8, but observed
-with GCC version 11 . This is message from gcc for detecting
-truncation while using strncpu. Use snprintf instead of strncpy
-here to be safe.
+@r@
+expression e;
+local idexpression e2;
+identifier cb,f,g;
+position p;
+@@
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+(
+call_rcu(...,e2)
+|
+call_rcu(&e->f,cb@p)
+|
+call_rcu(&e->f.g,cb@p)
+)
+
+@r1@
+type T,T1;
+identifier x,r.cb;
+@@
+
+ cb(...) {
+(
+   kmem_cache_free(...);
+|
+   T x = ...;
+   kmem_cache_free(...,(T1)x);
+|
+   T x;
+   x = ...;
+   kmem_cache_free(...,(T1)x);
+)
+ }
+
+@s depends on r1@
+position p != r.p;
+identifier r.cb;
+@@
+
+ cb@p
+
+@script:ocaml@
+cb << r.cb;
+p << s.p;
+@@
+
+Printf.eprintf "Other use of %s at %s:%d\n" cb (List.hd p).file (List.hd p).line
+
+@depends on r1 && !s@
+expression e;
+identifier r.cb,f,g;
+position r.p;
+@@
+
+(
+- call_rcu(&e->f,cb@p)
++ kfree_rcu(e,f)
+|
+- call_rcu(&e->f.g,cb@p)
++ kfree_rcu(e,f.g)
+)
+
+@r1a depends on !s@
+type T,T1;
+identifier x,r.cb;
+@@
+
+- cb(...) {
+(
+-  kmem_cache_free(...);
+|
+-  T x = ...;
+-  kmem_cache_free(...,(T1)x);
+|
+-  T x;
+-  x = ...;
+-  kmem_cache_free(...,(T1)x);
+)
+- }
+
+@r2 depends on !r1@
+identifier r.cb;
+@@
+
+cb(...) {
+ ...
+}
+
+@script:ocaml depends on !r1 && !r2@
+cb << r.cb;
+@@
+
+Printf.eprintf "need definition for %s\n" cb
+// </smpl>
+
 ---
- tools/perf/tests/tool_pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/tool_pmu.c b/tools/perf/tests/tool_pmu.c
-index 94d0dd8fd3cb..297cc8c55579 100644
---- a/tools/perf/tests/tool_pmu.c
-+++ b/tools/perf/tests/tool_pmu.c
-@@ -22,7 +22,7 @@ static int do_test(enum tool_pmu_event ev, bool with_pmu)
- 	if (with_pmu)
- 		snprintf(str, sizeof(str), "tool/%s/", tool_pmu__event_to_str(ev));
- 	else
--		strncpy(str, tool_pmu__event_to_str(ev), sizeof(str));
-+		snprintf(str, sizeof(str), "%s", tool_pmu__event_to_str(ev));
- 
- 	parse_events_error__init(&err);
- 	ret = parse_events(evlist, str, &err);
--- 
-2.43.5
-
+ arch/powerpc/kvm/book3s_mmu_hpte.c  |    8 ------
+ block/blk-ioc.c                     |    9 ------
+ drivers/net/wireguard/allowedips.c  |    9 +-----
+ fs/ecryptfs/dentry.c                |    8 ------
+ fs/nfsd/nfs4state.c                 |    9 ------
+ kernel/time/posix-timers.c          |    9 ------
+ net/batman-adv/translation-table.c  |   47 ++----------------------------------
+ net/bridge/br_fdb.c                 |    9 ------
+ net/can/gw.c                        |   13 ++-------
+ net/ipv4/fib_trie.c                 |    8 ------
+ net/ipv4/inetpeer.c                 |    9 +-----
+ net/ipv6/ip6_fib.c                  |    9 ------
+ net/ipv6/xfrm6_tunnel.c             |    8 ------
+ net/kcm/kcmsock.c                   |   10 -------
+ net/netfilter/nf_conncount.c        |   10 -------
+ net/netfilter/nf_conntrack_expect.c |   10 -------
+ net/netfilter/xt_hashlimit.c        |    9 ------
+ 17 files changed, 23 insertions(+), 171 deletions(-)
 
