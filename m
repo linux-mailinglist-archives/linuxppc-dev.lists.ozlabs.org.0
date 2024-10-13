@@ -1,81 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-2165-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2166-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5245C99B7F4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Oct 2024 04:22:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D5D99B8D9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Oct 2024 10:47:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XR3zW3CCVz2yHj;
-	Sun, 13 Oct 2024 13:22:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRDWt28RBz2yDY;
+	Sun, 13 Oct 2024 19:47:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=65.109.113.108
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728743520;
-	cv=none; b=X6QmyPbyrMwPbJRsXYVCilQ7Yv3UQP/Hy4txai6pgXQVn0MsjAtwpOmnurUXZUQJnvbY2FsQb76+sfEhTPScdXjbnyU5jFPK2RZT0tPy1Zm4Jzcoj+1wcjqVOTtYbFSjdWevdsOurl+IziXrb21BCMVxOPKhpSMjeNIn2hpXPez6JizCRKhPGAGlZvWaaYHSsYc7NEK68ez08ZjGqoawWIFkTPfOkk4gAWRgZWgAbVGdbEfOILpIFdt/MOADaJnmemX+kAT6t+mkTgyJjlFGcxxiDsnbngj1qZ71xjrWDpnWplbuTO5qCv5db6gWjg5TtSXPqZMAMkBAII9V7SMXUA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728809258;
+	cv=none; b=L/7usxvhS+3mQyvOqENyid1+HFKeYR7659Caqf1tQM5Na713DqHZNoo9vfSb8mrLYnFNaiQmYcSq9tI6ugr5CkBfMxNSIK6yBSF7Q7qgMNmFjV6iwVZbGZbc4is7XvrWgmLT472k0lOu1WC8iIS48sQiWkFBIvM6wuw2A05YoPtOE41EyAZfx/fKsN2lXhwndPc6jFijr1L4zcTyM6mlwSPmo7GhE8fq1BIWnNt86/y8Nd0NkXlx48zn1p+BAQpsjVGRNRop6Dr8bWnq9TOy9Jcf/EsnshwuTx6/x19RakrGC2ux+1peyCAFwx/pbFe7czNlMdNJqgzeUHs9DwD8Tw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728743520; c=relaxed/relaxed;
-	bh=6NtASxZ+Nh7N9D/0fCi537u/reg/ta06+RNRhtFjJlc=;
+	t=1728809258; c=relaxed/relaxed;
+	bh=IdHkHhUjAfxO8/rqMjtBzvsaF8+JprszM0WexjyZHos=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O4ga+yBx/ODUVEBVB6oD9SEKJkzE0T0Hhq+bpsAmcocq0l5mE729F3QhmTSfy5QEz+xLnPjkhbWi4qEdN7SdfOlzSHSB+2KkmivzheqXiehJ8wXZ3vrXeHRL0zWfvoKXL6inmsWUSPNLW7wr6Gy9FW69GilQMuN/zlHCRSUIzKeQJdF6s8RI2/9+nQwlUvlQXAGX8R5YB/eAdSeUW4k4neMn7+N1p2MeexMungwP8hVZST4tclomEC5dNY1Ad2xe4YPJb1A9VokALVL8+Kp5hU7EJ+TmJ74XMbQTyQEFnKiNW4VCq61KaN/WMkquwo9weBzpt6Q1Rh3NC5e5QLz0Hg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=g8s6GP+S; dkim-atps=neutral; spf=pass (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=FCkwOeTpAP38oqIi9TOHctqw07XeU8gvf5grud9lODtNw7HKfVvRqutAx7DXUYDwcR407PgFCbYQWUVKwdxBooq6Vh3/oaMA3HcoyCMx8/cA8VUyW4I3PX7mmWR0IIXn6Tv0nFe1xqh/jtPZi3yfAW4JCGyE2dCh84SOcaBe68XjGsST4Kw0W5okSw4HMkRcCzsogZQSQjOqzaznSL/brK3h4mPxpsEe1w4baR4VqVEQP1LoxCx/LlKT1zwHX4QiDiE2stGrHwK7C9cVRTRIaQmkaV/S9+WnxrfaO3R3h7sWSLFAhwnuke6VohO0QGB4g7SCoZnhQ2dKS/qTBoSEog==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E8OMxiME; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=g8s6GP+S;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E8OMxiME;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 567 seconds by postgrey-1.37 at boromir; Sun, 13 Oct 2024 01:31:52 AEDT
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XQmCX0jHWz307y
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Oct 2024 01:31:52 +1100 (AEDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DE19F40E0263;
-	Sat, 12 Oct 2024 14:21:31 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id y-0AP6zGpEVP; Sat, 12 Oct 2024 14:21:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1728742886; bh=6NtASxZ+Nh7N9D/0fCi537u/reg/ta06+RNRhtFjJlc=;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRDWs0HDmz2y8F
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Oct 2024 19:47:36 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id DDA245C4CBB;
+	Sun, 13 Oct 2024 08:47:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D61C4CECD;
+	Sun, 13 Oct 2024 08:47:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728809253;
+	bh=oCkJ2115ozRiZPDG4YoFw9nArbpLGJybX01Iv//69uE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g8s6GP+SAj7/RVzXD35YhsODRA56gKaMPUPhsRH0BIe37MXzPZM6+P1gcS2EkxTkb
-	 4Ne8LNawWg92v3Rt+MkRlHedQ65xHsQA3YSGTJpLncT75LCHTFlA12da0Y5lw0FHpA
-	 BxNXM65J9zeW6rYoDZECKK2zsIw6fcIELWiNYnPR/phEY9stWxBtLgv1xBaX9r4ONv
-	 8KptK8t7BL4e2f/TBuev/ypWvQnrqeEwZM1ofI1rnJ70mzU1qow9RU7h/7/e/nq8UJ
-	 /gN3yGYuL5JHx4Re1DOUzVnOhZpyM1rG7NSfwSfqRYB4rJKPtbXETxMU1Cp8juweT0
-	 oMJCTUzNtodjzGSv6gEOoJgb4Ek9Ec5vh6KqvYE7b0PUMVVkPMWRmS3/nWgrkGGbcr
-	 y2n7hHkfjYKC+qsElpaxFPorIJYaNWLscozYkYpKUPJC6KOThjBlahMOWtZ32QWPpE
-	 RUV6yMAR6AIRukTe30+m9XMDiLHCu9+jRu/NrDlu3Sz/SGnBzMU+Fei5s8jcYNuQa7
-	 3YRGK0nFy0kzgJ+6P+OXNBdlFlXr+eowTEXGfu5HrEGRyK6lhOt2yMXdLPANF+iyvG
-	 Gle+7yHXz7oFIb6G7+KyJijJzynqUUH4RvHXKgi6WZCYUP4hQUaaNae4v8tzMumDfV
-	 33VJjlmPw3s4NmkMh+Fglj0U=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 989CD40E0163;
-	Sat, 12 Oct 2024 14:21:13 +0000 (UTC)
-Date: Sat, 12 Oct 2024 16:21:07 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>, x86@kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Waiman Long <longman@redhat.com>,
+	b=E8OMxiMEktF+GQmyT4EDIYDJPag5y6VDyo/Ga7wsRXJJ99cwzji7jLF1sUHlppQrC
+	 kfjLbesywWMnxfXjdxF/ttfJW0S6OCnAeNyYzQJk2u4D3I/IHI9w4eKpfc6/PVtfuE
+	 WndRqsL5ofKVGyFE9G/gSdQ0nGfWKHlQ3BhJP58mfPjvLaZMFmHfTrH7D6YY90Mj1Y
+	 Bf6s6/XciGtUwI6Emh7Lkdsn+ce052geMCuH5U+Tb+yPiRy+C2Qz+9+N2Qx0N42A/1
+	 /daXS+24OOYM/5Gk5f/vkwwYyUK7ykCQAd22G6E+/Xf2yKVuhiVY41QpTSBy6H62Ks
+	 p+MyUT+rRu6SQ==
+Date: Sun, 13 Oct 2024 11:43:41 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org, Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-Message-ID: <20241012142107.GBZwqF01t-TX1J786b@fat_crate.local>
-References: <b626840e55d4aa86b4b9b377a4cc2cda7038d33d.1728706156.git.jpoimboe@kernel.org>
- <f6ea59b1-eb59-4d1d-81ed-0e5095102c20@citrix.com>
- <20241012140923.kl2evqb6aue2pzfs@treble>
+	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v5 7/8] execmem: add support for cache of large ROX pages
+Message-ID: <ZwuIPZkjX0CfzhjS@kernel.org>
+References: <20241009180816.83591-1-rppt@kernel.org>
+ <20241009180816.83591-8-rppt@kernel.org>
+ <Zwd7GRyBtCwiAv1v@infradead.org>
+ <ZwfPPZrxHzQgYfx7@kernel.org>
+ <ZwjXz0dz-RldVNx0@infradead.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,79 +105,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241012140923.kl2evqb6aue2pzfs@treble>
-X-Spam-Status: No, score=0.2 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <ZwjXz0dz-RldVNx0@infradead.org>
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, Oct 12, 2024 at 09:09:23AM -0500, Josh Poimboeuf wrote:
-> On Sat, Oct 12, 2024 at 09:48:57AM +0100, Andrew Cooper wrote:
-> > On 12/10/2024 5:09 am, Josh Poimboeuf wrote:
-> > > For x86-64, the barrier_nospec() in copy_from_user() is overkill and
-> > > painfully slow.  Instead, use pointer masking to force the user pointer
-> > > to a non-kernel value even in speculative paths.
-> > >
-> > > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+On Fri, Oct 11, 2024 at 12:46:23AM -0700, Christoph Hellwig wrote:
+> On Thu, Oct 10, 2024 at 03:57:33PM +0300, Mike Rapoport wrote:
+> > On Wed, Oct 09, 2024 at 11:58:33PM -0700, Christoph Hellwig wrote:
+> > > On Wed, Oct 09, 2024 at 09:08:15PM +0300, Mike Rapoport wrote:
+> > > >  /**
+> > > >   * struct execmem_info - architecture parameters for code allocations
+> > > > + * @fill_trapping_insns: set memory to contain instructions that will trap
+> > > >   * @ranges: array of parameter sets defining architecture specific
+> > > >   * parameters for executable memory allocations. The ranges that are not
+> > > >   * explicitly initialized by an architecture use parameters defined for
+> > > >   * @EXECMEM_DEFAULT.
+> > > >   */
+> > > >  struct execmem_info {
+> > > > +	void (*fill_trapping_insns)(void *ptr, size_t size, bool writable);
+> > > >  	struct execmem_range	ranges[EXECMEM_TYPE_MAX];
+> > > 
+> > > Why is the filler an indirect function call and not an architecture
+> > > hook?
 > > 
-> > You do realise mask_user_address() is unsafe under speculation on AMD
-> > systems?
-> > 
-> > Had the mask_user_address() patch been put for review, this feedback
-> > would have been given then.
-> > 
-> > 
-> > AMD needs to arrange for bit 47 (bit 58 with LA57) to be the one
-> > saturated by shifting, not bit 63.
+> > The idea is to keep everything together and have execmem_info describe all
+> > that architecture needs. 
 > 
-> Ok... why?
+> But why?  That's pretty different from our normal style of arch hooks,
+> and introduces an indirect call in a security sensitive area.
 
-I've been working on a fix for this. Still WIP.
-
-Author: Borislav Petkov (AMD) <bp@alien8.de>
-Date:   Sat Oct 12 00:18:10 2024 +0200
-
-    x86/uaccess: Fix user access masking on AMD
-    
-    Commit
-    
-      2865baf54077 ("x86: support user address masking instead of non-speculative conditional")
-    
-    started doing a data-dependent mask on the user address in order to
-    speed up the fast unsafe user access patterns.
-    
-    However, AMD CPUs would use only 48, or 56 bits respectively when doing
-    transient TLB accesses and a non-canonical kernel address supplied by
-    user can still result in a TLB hit and access kernel data transiently,
-    leading to a potential spectre v1 leak, see bulletin Link below.
-    
-    Therefore, use the most-significant address bit when doing the masking
-    and prevent such transient TLB hits.
-    
-    Fixes: 2865baf54077 ("x86: support user address masking instead of non-speculative conditional")
-    Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-    Link: https://www.amd.com/en/resources/product-security/bulletin/amd-sb-1010.html
-
-diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
-index afce8ee5d7b7..73c7a6bf1468 100644
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -58,7 +58,9 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm,
-  * user_access_begin that can avoid the fencing. This only works
-  * for dense accesses starting at the address.
-  */
--#define mask_user_address(x) ((typeof(x))((long)(x)|((long)(x)>>63)))
-+#define mask_user_address(x) ((typeof(x)) \
-+			((long)(x) | ((long)(x) << (63 - __VIRTUAL_MASK_SHIFT) >> 63)))
-+
- #define masked_user_access_begin(x) ({				\
- 	__auto_type __masked_ptr = (x);				\
- 	__masked_ptr = mask_user_address(__masked_ptr);		\
+Will change to __weak hook. 
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Sincerely yours,
+Mike.
 
