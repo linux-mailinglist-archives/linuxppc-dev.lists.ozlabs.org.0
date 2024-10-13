@@ -1,91 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-2169-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2170-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5240499B9A3
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Oct 2024 15:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E16299BA7C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Oct 2024 19:08:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRM2l6v07z2yN3;
-	Mon, 14 Oct 2024 00:41:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRRdB6p28z2yD8;
+	Mon, 14 Oct 2024 04:07:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::534"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728826879;
-	cv=none; b=dSyCQOnFAuln5djkVL2t2WfZrgWrW2x9O88xtnHzltaBotJtL7CoftE9LvVpI3qm19lPjNuL0rlVRt60tlq9CGbs5/HfMdvTDALosXweuLqhtWDpRNU54lhXXXJ5PSH2BAHuT8HhTqHa4Q081Yq0WFMzQngHO7whFNUImApFlzT2D5A3ArpldyWE+ojLC4WJn5h/4N2I7Qk2mCj0wAcqRWS2pDYlZq4Frkz3o4o5Wt9XETr0ka7mpcMbZi2iBY576MKZCTYDvVy+Xtg33Q0smzqs9fvHrJnIvFads/W1hSecfPTUDH3r1hxen4HpAhBveFWUrMdmjoS19kF4PmCukg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728839278;
+	cv=none; b=nCCECAlpCeUL/fFhoIyblL3RQyYwsyfeoVhAQQU86/LJxyMK9kuFHYNeSJfBtVoi5zJ7QWGpPmdm7uJIF9PyWn99AzEGBJ6ghBUfkSZnk6mt896qmAzZDtWoYV8lOFy2bQy9k7lV7ZifXuP2Ii3xPz5xos77J/mq0ztMbgjjlSBG7XKL9yyRvwCSOT6WMQb/jQoK1aD9y681ia98PoeAGOOXZsDkTbO6ehqB3b1cjwkLQSY2vxwQSftMvn3f/nmuxav8QK8bS+qdVdypKcCXzDJp1uCSd5o/+Dbp+6/2aSr8cRRSzyuLyXUNMpdrE1heMo8iWQIgOEtFEklHnS3JRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728826879; c=relaxed/relaxed;
-	bh=aDIoBQ9YvQk/WPHiA1xukRw9F4LXWDJBsa2YUNZUMcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H77L0S+9kOXzYltw1ej63MCPeX6QKmOPtqRmJVYP1Or7/0SVl+tQv1fPTxB7leCey0/XjJsWN1LFKOnaZVXqfh7bpR8fEG2gtWWUyO38nSk3GPsTjzbik72zgCtlQ71EMvSnBRGS16dkqcYG8JoFLNaV000jZNlcUkHwgwAIPz8ElNeaqN7N8O9te/+1MgZnkPmlhtl1lvl8GLi6eGwMREz75qkyFYu6nok4QM3WZrucqOscsUaDtQz7WpZu18ssdZgsfF0Flq+NXvFL1XIwf6aEGGXCvbcAaFjKIxQ9MvTCai7VleCjZm7H+eFLN9DjO6WxzCPtaXyFDvIP8vTisg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=e0widzNX; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=dan.carpenter@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+	t=1728839278; c=relaxed/relaxed;
+	bh=ngy8XL/JNV4hf5y1lhQ8pjYxcRWa9Xz27R3h2/CL6eg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EygSUCVc1psa7pyZWQ0jXfa0zIW6eAN+2TZ+3rFuEwzi+eTgZ7FFG2WQflW3XKl2rAntc6gt4VFBrKuoBYW1vBtGWgFBQ1pepGF3l5QudwEfpYOuxurbFo7cMSijiFat5N7BUsLZXphMzHS1+sNspynA8ykM347O+U0+VmBShnq8M7i87vsQLqeYsU/phlQmbb7SgAQhjavLtrPEiYsQ5RLhPe6TTqeBkO7ZHWDL8GldIZWjFc+vpfMGH6fcJTefN5HsQsWDs8gOVfJBPczUbI/QqjG8RsZG406ib/y0RA8NYvuwmytP4SCFOlgAROhvSCkVnapk4KEP4tCgwxuJzQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mNMkh/CG; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=e0widzNX;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mNMkh/CG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=dan.carpenter@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRM2k4Wy2z2yN2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 00:41:16 +1100 (AEDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-5c40aea5c40so6598053a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Oct 2024 06:41:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728826873; x=1729431673; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDIoBQ9YvQk/WPHiA1xukRw9F4LXWDJBsa2YUNZUMcA=;
-        b=e0widzNXA5eAdkAFTRo+rgTQ18cCXD0te3bz1SNsSYzMefh2G5vK4qahdvdz6f3c1J
-         75KEDWe4QWCzebAQUG4MxyFDSrDlJBemw4tqov8e1lZG62LjQQURlfixRxL7yGJVAEO8
-         Vfs8i9Zq03pbG4I2IqNTB9kqIm/MumoT/KsOwMhj+VWXIRYxWtSdL8QGNtqS6mfxC2Xs
-         /tgWeu4i+m5NdPKhPC6/zyPsGRTnILZpsz/x8+QFeemSJ+hIBZoJH0qO2/trVxnbnkjh
-         X0eCbPzxSXlhqas9SBRPvG7e62yz/eo6wf1NgDZS9u1Q4thLCf+alIfsFRyYZ4lufKSU
-         AE7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728826873; x=1729431673;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aDIoBQ9YvQk/WPHiA1xukRw9F4LXWDJBsa2YUNZUMcA=;
-        b=NhmOvqds/LOT/JnqYEY23etmU/+/ap1DfbcCxYAX7ww4cIiru4XibVvfOOcUHPakG4
-         pzdK4LttjcwraWF1jkXBxbmtG3CukF1hDxsTFxAFTpJygekIkk7zqyWNzKRraeoAgRmo
-         fu3w1wKFk7vDUA8EsfosoYnilHza1yfnrnFAIDs77cmKYH2Q7MdGvVxNgimucAB/5kll
-         TW0sfWg0/aUTudz6YhNhuqG9Q1HY846UGNS/409h88t8D5tG21MeJ1tD7sxwpB5FdYdc
-         oRMpY1cfFu5OOnJ8E+y9BMy4sROhvPsbmeECTIJHuSNE1rfUfezHNJMXCjq9bt7GLEpl
-         2+Og==
-X-Forwarded-Encrypted: i=1; AJvYcCVsLRXAx56h9a6rLbjjlgv0YJzQU2+N6KeKby0OyI9JzEvvQ5u1e7SugzvRst3yn1xxWOHesGTCjfTX//Y=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzXmJ1uiBkr41VTPwnimXl/5cFJS4YmlcwdC7Ma5yu7iQ+Ud6BX
-	8xm1cP2DFyqEowG4I6eatFOM2EAfUhWC17rBUa0GK+dwMj0mLTXP3WgapszFcQkw3Q3gZFJYnHF
-	U
-X-Google-Smtp-Source: AGHT+IFwr5789q2rbkowSIKm0Pi3d3HKo85MzqqbcL5zX+y8/Sv/FkZN0o1+dV1o6r6DNh6wikURkg==
-X-Received: by 2002:a05:6402:2688:b0:5c8:88f2:adf6 with SMTP id 4fb4d7f45d1cf-5c94754c124mr7916665a12.13.1728826872833;
-        Sun, 13 Oct 2024 06:41:12 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c9370d273fsm3931876a12.16.2024.10.13.06.41.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Oct 2024 06:41:12 -0700 (PDT)
-Date: Sun, 13 Oct 2024 16:41:08 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Markus Elfring <Markus.Elfring@web.de>, linuxppc-dev@lists.ozlabs.org,
-	Jani Nikula <jani.nikula@intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Paul Mackerras <paulus@samba.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	LKML <linux-kernel@vger.kernel.org>,
-	kernel-janitors@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] powermac: Use of_property_match_string() in
- pmac_has_backlight_type()
-Message-ID: <e50907a9-6df7-4cbf-97a6-47acd5d8ce01@stanley.mountain>
-References: <b7e69e04-e15c-41ec-b62b-37253debc654@web.de>
- <d9bdc1b6-ea7e-47aa-80aa-02ae649abf72@csgroup.eu>
- <ede25e03-7a14-4787-ae1b-4fc9290add5a@web.de>
- <c629e544-f768-4063-bd2c-f72382bdf69b@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRRd94YF3z2yD5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 04:07:56 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49DGlRH3003636;
+	Sun, 13 Oct 2024 17:07:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pp1; bh=ngy8XL/JNV4hf5y1lhQ8pjYxcR
+	Wa9Xz27R3h2/CL6eg=; b=mNMkh/CGhCiW/kqL69PG0LjENK7E+Fw5NGAYbxsiuG
+	wnTmnP+6slrfsze5Fu2rzu0KHAcgfceLz70qEiQOKIkMVACXRFcyXqIRP3UIiRI5
+	sp97S9boz4215YmjdelYmL4ax1OMHYHdXN6xDHCM9GTAeHM8ycUjU066cYoDc3Dt
+	IkiFlw2n4HKeMD4mvaPJtZ8OMZ9l2c46v4E/TPs4rCiSBIbWqjSYpp8CiAfLW6Ma
+	NE+ISv2BsC+kjLtAoitaHs1i/Wmcvk/kx86eq+B4fCM7HHycCJ2soUnylZ48FySV
+	BhMJPan9hUzwWFBAOlDwW9nIEYvY+g52qbGRTJNEdLEg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 428j1902m1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Oct 2024 17:07:50 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49DH7oco010734;
+	Sun, 13 Oct 2024 17:07:50 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 428j1902ky-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Oct 2024 17:07:49 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49DGuPkC002408;
+	Sun, 13 Oct 2024 17:07:48 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284eman9k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Oct 2024 17:07:48 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49DH7ib020644154
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 13 Oct 2024 17:07:44 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C975820049;
+	Sun, 13 Oct 2024 17:07:44 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4FB9920040;
+	Sun, 13 Oct 2024 17:07:38 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.240.55])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun, 13 Oct 2024 17:07:37 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        irogers@google.com, namhyung@kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com,
+        maddy@linux.ibm.com, atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
+        disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
+Subject: [PATCH] tools/perf/tests: Remove duplicate evlist__delete in tests/tool_pmu.c
+Date: Sun, 13 Oct 2024 22:37:32 +0530
+Message-Id: <20241013170732.71339-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,58 +89,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c629e544-f768-4063-bd2c-f72382bdf69b@csgroup.eu>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: uoE5nT1M2F5G0dI-f6_3LW0Cus7n1Cp7
+X-Proofpoint-ORIG-GUID: 02IMF8vepvk3d6nVBK1P5Gkv4uL165l5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-13_11,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 spamscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410130125
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_NONE autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Oct 11, 2024 at 06:25:45PM +0200, Christophe Leroy wrote:
-> > diff --git a/arch/powerpc/platforms/powermac/backlight.c b/arch/powerpc/platforms/powermac/backlight.c
-> > index 12bc01353bd3..79741370c40c 100644
-> > --- a/arch/powerpc/platforms/powermac/backlight.c
-> > +++ b/arch/powerpc/platforms/powermac/backlight.c
-> > @@ -57,18 +57,10 @@ struct backlight_device *pmac_backlight;
-> >   int pmac_has_backlight_type(const char *type)
-> >   {
-> >   	struct device_node* bk_node = of_find_node_by_name(NULL, "backlight");
-> > +	int i = of_property_match_string(bk_node, "backlight-control", type);
-> > 
-> > -	if (bk_node) {
-> > -		const char *prop = of_get_property(bk_node,
-> > -				"backlight-control", NULL);
-> > -		if (prop && strncmp(prop, type, strlen(type)) == 0) {
-> > -			of_node_put(bk_node);
-> > -			return 1;
-> > -		}
-> > -		of_node_put(bk_node);
-> > -	}
-> > -
-> > -	return 0;
-> > +	of_node_put(bk_node);
-> > +	return i >= 0;
-> 
-> Could have been:
-> 
-> 	return !IS_ERR_VALUE(i);
-> 
+The testcase for tool_pmu failed in powerpc as below:
 
-IS_ERR_VALUE() macro should only be used when you're dealing with memory
-addresses.  What I mean is there places in mm/ where we pass addresses as
-unsigned long values instead of pointers.  For example, get_unmapped_area()
-returns unsigned long.  The IS_ERR_VALUE() macro is necessary for that.
+ ./perf test -v "Parsing without PMU name"
+  8: Tool PMU                                                        :
+  8.1: Parsing without PMU name                                      : FAILED!
 
-For regular error codes, we can just check for negatives.  we don't have do
-anything fancy.
+This happens when parse_events results in either skip or fail
+of an event. Because the code invokes evlist__delete(evlist)
+and "goto out".
 
-Of course, you can find counter examples, like msm_iommu_attach_dev() or
-st_fdma_of_xlate().  <small joke>But in those cases, it's done to deliberately
-to ensure that the code will never accidentally get built on 64bit systems.
-</small joke>
+	ret = parse_events(evlist, str, &err);
+	if (ret) {
+		 evlist__delete(evlist);
 
-regards,
-dan carpenter
+But in the "out" section also evlist__delete happens.
+
+	out:
+        evlist__delete(evlist);
+        return ret;
+
+Hence remove the duplicate evlist__delete from the first path
+in the testcase
+
+With the change:
+	# ./perf test -v "Parsing without PMU name"
+	  8: Tool PMU                                                        :
+	  8.1: Parsing without PMU name                                      : Ok
+
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ tools/perf/tests/tool_pmu.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tools/perf/tests/tool_pmu.c b/tools/perf/tests/tool_pmu.c
+index 94d0dd8fd3cb..618223654992 100644
+--- a/tools/perf/tests/tool_pmu.c
++++ b/tools/perf/tests/tool_pmu.c
+@@ -27,7 +27,6 @@ static int do_test(enum tool_pmu_event ev, bool with_pmu)
+ 	parse_events_error__init(&err);
+ 	ret = parse_events(evlist, str, &err);
+ 	if (ret) {
+-		evlist__delete(evlist);
+ 		if (tool_pmu__skip_event(tool_pmu__event_to_str(ev))) {
+ 			ret = TEST_OK;
+ 			goto out;
+-- 
+2.27.0
 
 
