@@ -1,67 +1,103 @@
-Return-Path: <linuxppc-dev+bounces-2218-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677A299CADF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 15:00:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB4A99CB2A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 15:11:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRy4h0hWLz3bmk;
-	Tue, 15 Oct 2024 00:00:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRyL1060Fz3brH;
+	Tue, 15 Oct 2024 00:11:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728910804;
-	cv=none; b=LqwdxREc1DnKPd/sXGN+AphsIchuNIYhjsJPCESSjTp0rxjfNXZ7ncGo6RMw5BWATYoJW/aupS1V2a/xQlGYwVgRTxEovr9o17b5YojvnYRhi/GmhW2XgWURujvSExwIFMkqYChdo3ue09/XtPzdccBrkXzFrpL1RUlTt9JOhiGZtZ1CM9SIxHe2/+vyborTwv3fO+1EJnVhIY8lAmGTjr+vG/+TGdojtwV1NyA+UNG9rwv4xnNm/iHjTigVx3E3b20cttAoiX3h7BSkX+t5q7tdaCAD+tF5uuQr9OG4UM2CK+bw2tTGSMNjuH5ek+gM7XIeP+Ay4fnhc4J0sEz9rA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728911496;
+	cv=none; b=Lvj0z3igtZDoZoU+TP4Srpb5KngJ6DzV0O2MV9NtZTWgJgpMy27Y1b0zr1RR/Y7ho9wm+L0pIEP8/X47TwSxc7rjsv1nyiWLoNpUeBj1dyglFGdYnEjON/e7qJoJovX+Dzas/MWfwbHuj7U0eWdACDKIgn4nnQuUDni8T2DQJFcaFTNuru4rFDt1mS/YuN541vfyiUSwwJ+wUiADCHrgnCzjP5fCCar6juWu8wMW3hi3wG+zGqZERKKbqjCQIrdmxGmCIFl2/NUpP9YOEscyYOKvNFx8yxdrA+ecqGxZC0VdxOvv6KaX2A6TSmsti6rP3Plso0tHIRcHhpyPALlUCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728910804; c=relaxed/relaxed;
-	bh=wAMRWz6Ni06FH5Y8K1vQ9Qj2l9tEBktBQKcD7nmm0Is=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RVjAwEM/ZIySudWNt4Sgvx/JOBG8QKk3JiwauXe5/JCfSCew9EP3FW/DbYaVBlH8FB80Go1+JxmfKTyfboCVmZKUOY4NXoVhBiBWSAUvIwwLQo8XexBIUutG3k0cxdyeltJEiuDc3Ut5yJ4m+rfl5n0AfEm8uCTbzlpH0YhPZS0wp7X09Go9iPDfgu70oeEb/9i/2R/UaGnoGV8ft9byCT1Qo4a0YJirF5s3InXbQ/5pHE0FLUMeRyiw+46KWly6CIUAnvidXc7w0dWGPgX55n+dERzjijJ00BWHQAeKyjT7lUSDiqy55hJ1LZoCNXTMHKb2P7Qvnufo2Lzzp7syjw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LlK/hov8; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=alexdeucher@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1728911496; c=relaxed/relaxed;
+	bh=j+BOznowBtN/nii59G4lRfCPThWEa6TNxQ/kRulWlps=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YtOa+EfRuBETiRSDLNCHvvv/ideWOf/K3WoATlhiG2zhMdW2cSZaYLUej9O2UReS8uSbv9bF6KZhqW1kEGc6pWNLQh4enQwMQkJHdYFj1ZcbYNdlAz1xt91OlN42t9cg5PeJ+TPQugKYl86tJl8tk8AT6ZFneKh5EL/EsXB1KBL70Haj8nUGVfwn9AB4N79BgNJwwRIURnt06xS1Jrdg5J5vl6Glqx3PIFwVb3ib7Pe4Ym85kSEqrJWVPGzR//Slf3H8GSbibv9BoWyJS3Orp+9ntGSIDT36HO0BPyZcLSQrdtMqNb+yjtWYMzoXgvSHcbH2rA/iuWS2O0Za4a0hiQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vMvBZJVO; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LlK/hov8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vMvBZJVO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=alexdeucher@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRy4f0DKsz3bgy
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 00:00:01 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-2e2da8529e1so772221a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 06:00:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728910799; x=1729515599; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wAMRWz6Ni06FH5Y8K1vQ9Qj2l9tEBktBQKcD7nmm0Is=;
-        b=LlK/hov8JmxP2smoRyubvsTcQhulibaGS9IPyOo4vyw3Xiq77JUp6uueBkDiSKoueU
-         qpnGW0IK6llT+8x4Z7QM5qm1yiwOGXMRQEjXY5AVSNzaoAulac/viVhg0W8uQkwkyO9F
-         coEoaev99AXoigygRnUcMtbR+qqyZo2lfQJMkZtD/xmoOTM3MaJDtEO35mOf5twNdi03
-         c6D7q55hXhh89sDq1zRUKDOlOS8H4pLNqkedvhR2I7eEmSsWW9DiTKxFAJdwyfXVPDaN
-         LR6f0Lv3k/AYdmpPNv2pRtY3CShblTHxzHa0CPlnf3t0+pZAsLk5K4v8RX0V2N5UFB0P
-         Iqxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728910799; x=1729515599;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wAMRWz6Ni06FH5Y8K1vQ9Qj2l9tEBktBQKcD7nmm0Is=;
-        b=BpTRKPduBp4UZwqS2CpfBnfEH3jh7E5fuzoh524hw+2IzAobNvbJt3CrBwPW1ocM9l
-         MlI1YXfSKlhadEf7wvOhEuwy6RH3mE7SM6XaOuGE0qziDSrHpediAGETxEeM+xB/K3we
-         2Bj38bxj8z3tfzz2ASveh0uU3L0W1ZkMYW2P07GqGoTFfEUUxXUcGKzFEF/7N3uZ8PIt
-         fjuH+++/AjhtDcSnCJrroWUgnRmvdCrAlkmquYg5j+jvoMoUvYnzzvRLq1dcRt+hrr/m
-         lFqUI9RUSx2k6IaiMsDalHOKLKQP1u7YAf1JJl8XH7jw+pJ/XzFDRVPCxgu3FOirkWZe
-         Zscw==
-X-Forwarded-Encrypted: i=1; AJvYcCXMH8irOJD+POQA/MOVi3pa3awr+lkp+apDqwnQArFt41HpJaGP9sPqZxLlLc1mYi9dn2ZDLTDZPCgbUO0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzjtQuHLoMznHO/D3ROFgf26qNrHHvz6pX0+5OQG/XftYtM8sxv
-	UcbbgPrub3AeB8pJCcmjrdvu2D8yYSQrd0DRXgiru5eL/ohfPHBtXdYUGG0tFesyG2MSnpN1ujo
-	7IUqCafrSZUQrkRVrGOXs1+iSOL8=
-X-Google-Smtp-Source: AGHT+IHfIAI1KziMC/DpdOh4Ht7tKvRl7oyBCPkuLH+YiiEzGOEzkHIUZOUW4RIFxrbxcyqit0oMQ6Lffaa8FkPP6P0=
-X-Received: by 2002:a17:90a:6f83:b0:2e2:a667:1a11 with SMTP id
- 98e67ed59e1d1-2e2f0a22892mr5663503a91.1.1728910798760; Mon, 14 Oct 2024
- 05:59:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRyKz69VRz3br7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 00:11:35 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8CAC75C569A;
+	Mon, 14 Oct 2024 13:11:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D95C4CEC3;
+	Mon, 14 Oct 2024 13:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728911492;
+	bh=Rj0DDOED5iD2FdGYxYV+4r4tEXYq4n6Xi/0d9QAVLUc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vMvBZJVOinxsLsrPPXzSxPojzLbDfnzNQ55w0X0QwTjcMMxar0CDAK08E2JThkQpb
+	 4cpioov/cqx2XJwdmLwC1BTnXl3vfXvrgA1ETi3RHPPFn/KFa3uZAW+joXD5HEZg+c
+	 4U5ok631tPzwPd7hoGyNRL5ynGDynUSOamB6K2RiHfHSi/erCk9kHqPS+1U5lBuMVB
+	 r0jU8Sa0yR3rOlG2WDCJ68+YmRHtYreB6qz66TSlQdG0YMQVcdBysszRX2pWrQ1lN4
+	 ziJbkceFmXn8rCIwx79sxsDKS6SGBNY9GisCIBFcBwGbEy+4gMh7VJcsFjn3AG+8KF
+	 uacBBUphpSFpQ==
+Date: Mon, 14 Oct 2024 16:07:40 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v5 7/8] execmem: add support for cache of large ROX pages
+Message-ID: <Zw0XnDHbpHDwFDHy@kernel.org>
+References: <20241009180816.83591-1-rppt@kernel.org>
+ <20241009180816.83591-8-rppt@kernel.org>
+ <Zwd7GRyBtCwiAv1v@infradead.org>
+ <ZwfPPZrxHzQgYfx7@kernel.org>
+ <ZwjXz0dz-RldVNx0@infradead.org>
+ <ZwuIPZkjX0CfzhjS@kernel.org>
+ <ZwyyTetoLX7aXhGg@infradead.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,53 +107,28 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <b7abd0b6-ac96-48ca-8165-a3b408137007@quicinc.com> <14691DD3-987C-4CC7-AA58-D3BF952F6224@xenosoft.de>
-In-Reply-To: <14691DD3-987C-4CC7-AA58-D3BF952F6224@xenosoft.de>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 14 Oct 2024 08:59:47 -0400
-Message-ID: <CADnq5_PUi_2+kDYX8R_eanNF4iYN79MdXJ_PLcQbZKi6e4S8tg@mail.gmail.com>
-Subject: Re: [PATCHES] drm/radeon issues
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, "R.T.Dickinson" <rtd@a-eon.com>, 
-	mad skateman <madskateman@gmail.com>, Darren Stevens <darren@stevens-zone.net>, hypexed@yahoo.com.au, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>, 
-	Hans de Goede <hdegoede@redhat.com>, Wu Hoi Pok <wuhoipok@gmail.com>, amd-gfx@lists.freedesktop.org, 
-	alexander.deucher@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLY,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZwyyTetoLX7aXhGg@infradead.org>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Oct 10, 2024 at 11:54=E2=80=AFPM Christian Zigotzky
-<chzigotzky@xenosoft.de> wrote:
->
-> On 11 October 2024 at 01:49am, Jeff Johnson <quic_jjohnson@quicinc.com> w=
-rote:
->
-> Can you provide links to all 3 patches?
->
-> 6.12-rc2 was back merged to my ath.git project, but then my laptop
-> stopped booting correctly and I discovered a few Radeon KASAN reports.
-> Based upon my search of lore I found:
->
-> 20241003060650.18454-1-wuhoipok@gmail.com
-> [PATCH] drm/radeon: add late_register for connector
->
-> 20241007183241.1584-1-christian.koenig@amd.com
-> [PATCH] drm/radeon: always set GEM function pointer
->
-> But that is only 2 patches.
->
-> - - -
->
-> The third patch: https://github.com/chzigotzky/kernels/blob/main/patches/=
-X1000/radeon_encoders.patch
+On Sun, Oct 13, 2024 at 10:55:25PM -0700, Christoph Hellwig wrote:
+> On Sun, Oct 13, 2024 at 11:43:41AM +0300, Mike Rapoport wrote:
+> > > But why?  That's pretty different from our normal style of arch hooks,
+> > > and introduces an indirect call in a security sensitive area.
+> > 
+> > Will change to __weak hook. 
+> 
+> Isn't the callback required when using the large ROX page?  I.e.
+> shouldn't it be an unconditional callback and not a weak override?
 
-Can whoever wrote this send it out as a proper patch?
+I'll add a Kconfig option to ensure that an architecture that wants to use
+large ROX pages has explicit callback for that.
 
-Alex
+-- 
+Sincerely yours,
+Mike.
 
