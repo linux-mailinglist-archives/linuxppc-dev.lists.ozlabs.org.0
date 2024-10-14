@@ -1,78 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-2211-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2212-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D73399C945
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 13:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ECBF99C98D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 13:56:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRwS10zcdz3bq4;
-	Mon, 14 Oct 2024 22:46:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRwgs0Dmfz3bqB;
+	Mon, 14 Oct 2024 22:56:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728906401;
-	cv=none; b=ozEFARrdOxhzDqBp0erZ4I9WI5BszmUrOivk270OecFmwY5aKrf2QIfjJN0rGoxbHLvWrmhselbZmp8dayy8opWAsCrxWv5jVuKMQGi0UwzAnmfTDdWSMgtmDe0PYQ0/AUVCgkWn9RZtYn8uGegRyMf84iJspzXdQ5GOC0irdR84sz9TtiC8HxO5JDfCuzN2MXNBDUVrtI39lbSfN60/nl2iFE9J8s5hCUge6pumnnMVhXrhkPYVqPK3IyzsFAem3oUesD9FnN97Y3m6PZXEJMSfQpLXj0N+QSTSuhAkraynp3me+97WaMCQUlV/CWX8LhI7Ga/TtmTgkO6MItOekQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.159
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728907016;
+	cv=none; b=lKxzwZeQFXPBKwtyIy5Q+pMpiRoaGFRkxXECrHoNrIlbSpb1ljPiUFWnpt7MhhnaRGRmAns6KfEAYT3alEPm/rgK0XyWomqjgIfN/G/aCDOZVjZFD7/6rtkMyX3klFrMxx0PT9ssswgfhcskbWERtDb2syjTj8oFDEJXHimSvEiAUcLLMoD7Ha9nUlQrFNVPqF9+IfDKNl1uJ/1qtEK5sov5/f3SDOHC2/Mk1wjZUdSt20XKzt+SJD+bEgZ+2sPZQWhnjybhmUmbcUZ9/PrKM+JdxBA1SSa6eJHa2dpj9suVdNbOEjb00B35tQuRClGGvbyjvVv7aZzvf0OjZzAMxw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728906401; c=relaxed/relaxed;
-	bh=aWFh25nJyPJAANz+nHPv+XgVZ4oTsCk51SIBxPDCfHQ=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=U5i0SKmxBZVYOnLPJPrc1/OyuBGTGmNkmEpnTC9qQxqt4HFCD7avzQGH+nfktYehzeKrNb9EHVQmGOpNRwU5jAXGXQTKRH1HQTEhfNlKd1l7c+RMnmeD5sXxgWxanqNO6sQO6tGYpbcU96xkz74jpXncMARxS4UQxavunx+/ynZEWUcazLkBxE8F81UwgHozOhtWaWYZU/PV5ptubnxVp5gKYXrCYddXxCOBDHsWAaI9KzEkvbXPIicpJ+IlvHoECEQZc05a4MzxhbhBtwujSoigOAiUwZ0HrcGRm60SznjuUJx3Zwuu+5J9qIB5MJ1ISB4n+ITILbFV6XWf7b8iaQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aAxhl+uI; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1728907016; c=relaxed/relaxed;
+	bh=Q8Tj2Km+3RRkR81FyQxGHoKLsrVgqbc1oNQBdqAi3Bo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PRwRYfaHm9oRBY9DP92zXT755Iq/hUlulaSznTAlx15SdRC4iUwuRQf/x+qcnBfEurmtKo8Kod3j4ny4vS8k7m5qOft9BeeFjTO2ePvmVNDfZQKWnaXbKe2UqaKv9tFjmtmzaYfx5aENhffFd7upey5GeWetMpYO7ogHavmOiTsd59ipV9druObclwa4H94evruHaZCdM7sjifMAXf3G5WQumLw5OquBbmVJA/91lK9yb8KitWOt1+GGEi2gMi7omCJdXdtZxe+2uRQdnmDBgHT0zmBY11H1lIHFuOwSqDPJiMO9YjTeVRxujss4DHXVpTtQM3lQArtlYG7LehvQ0A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name; dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=EMKmkvP8; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=jRBjaH4F; dkim-atps=neutral; spf=pass (client-ip=103.168.172.159; helo=fhigh-a8-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org) smtp.mailfrom=shutemov.name
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aAxhl+uI;
+	dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=EMKmkvP8;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=jRBjaH4F;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shutemov.name (client-ip=103.168.172.159; helo=fhigh-a8-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org)
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRwRz15WYz3bpS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 22:46:38 +1100 (AEDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-20c803787abso27567005ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 04:46:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728906394; x=1729511194; darn=lists.ozlabs.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aWFh25nJyPJAANz+nHPv+XgVZ4oTsCk51SIBxPDCfHQ=;
-        b=aAxhl+uILTZZFbhEvTbmc2bY538QsO1DbrBuY8lRE2VzwDWuB5ee7F+NHTFZ791Us5
-         370W3D3mvKBsTSnzaAgebYXF6BsB3gbm0hhIj1y4iVRbk8l1rf2vh0jUBhE49rXh3x1R
-         /dd1leMuc7JK5JT91gydqtP/7YKjpCJkovhdUsyhb5uKIqQ88L+Pd9eO+MNz44H8uSII
-         xZEWiBgXTr2uiotZhpjkcgSCnMKZwAFPKnpF1Mq8phXj5aeyWm1EyiM6FM5QiAvAVLOe
-         JdIX0OLBbcsUd+LN1f4HydmrLb8zX/2PyjxoEJ8zYNdnKlE6/POB/FIb1YsdOsmfWODp
-         DakA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728906394; x=1729511194;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aWFh25nJyPJAANz+nHPv+XgVZ4oTsCk51SIBxPDCfHQ=;
-        b=s8WXpz7z0qlts7BUI3M/JskqUtidJwqefV5C7lGwOx8eU0bAa89reVye7sPaTVND07
-         Oq1w7uyxnFfqKxEaQ+WhmHg7QQAprZgoqOZD266LNoO/V4ym709TyddxoUV+IPzKuWUZ
-         ZPDCkxps99iyd+RLgAN5ZGTRA2iexahb1qKLfbqPt+eB+/KbPlUAIPPG47NpC9j4+Svv
-         mdT8Jzu/sOXI99XTRQw+NXOv1Bz9XzyA9XQkhzG2sklI+M/b9Gje5kFW+4XM+Bx8Rvyz
-         oxlJA34n8wbVM3H0EOWLezukd5weUjnQtEMyX3KZbYNI0f2I5MFp9xulx7HzbNK3z3aI
-         RO0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUbCbxFp9M6TRA23I/OoEf8DKvAZvmz6aR9VApfd6ijR3oJFBiybZQ1RIPLmcvQdVQyOufsaTcVIyue28U=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw6kFVsV8ks8KaWJz8EyteSZSERHyx4um7OvqDJTP1LqXDf/4LG
-	cEPuhRnlVhFxVb1PAcA07qqVSD9eEjf+758ZIx3k0CytAj3UlnoU
-X-Google-Smtp-Source: AGHT+IEbzH2rLW7vX0++DAbmN0Cd8+5Z4OH+8mqkENfD5VLnA/+m5ohpTGDY/xnSU5tPiRMckODPdA==
-X-Received: by 2002:a17:903:110e:b0:205:5d71:561e with SMTP id d9443c01a7336-20ca0402291mr172569595ad.26.1728906393559;
-        Mon, 14 Oct 2024 04:46:33 -0700 (PDT)
-Received: from dw-tp ([171.76.85.106])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c8c0eb755sm64431045ad.134.2024.10.14.04.46.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 04:46:32 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org, Sourabh Jain <sourabhjain@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@redhat.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Donet Tom <donettom@linux.vnet.ibm.com>, LKML <linux-kernel@vger.kernel.org>, Sachin P Bappalige <sachinpb@linux.ibm.com>
-Subject: Re: [RFC v3 1/3] fadump: Refactor and prepare fadump_cma_init for late init
-In-Reply-To: <941875f7-0d7f-4ba3-bc7c-7aedc3b20dae@linux.ibm.com>
-Date: Mon, 14 Oct 2024 16:54:56 +0530
-Message-ID: <87bjznyliv.fsf@gmail.com>
-References: <030b6d46fddac126a6cf7e119bea48055338f0ed.1728658614.git.ritesh.list@gmail.com> <941875f7-0d7f-4ba3-bc7c-7aedc3b20dae@linux.ibm.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRwgn0XNwz3bpS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 22:56:52 +1100 (AEDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 1FE9B1140171;
+	Mon, 14 Oct 2024 07:56:49 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Mon, 14 Oct 2024 07:56:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1728907009; x=
+	1728993409; bh=Q8Tj2Km+3RRkR81FyQxGHoKLsrVgqbc1oNQBdqAi3Bo=; b=E
+	MKmkvP8pmb8y1JrBDjuXaXxUBelaOETFMh+NJsKgNj2d8oo2LCxJuyQg7Xc8dj0d
+	VSmUbFaou1B6kh7Hw1fPrPmDwsYsBebcrD2GaRp7QapcyuBacO45f0YI6Hv1H7ta
+	nqHG2Zg2zghpSCQf5zJO4C8XG2qAG/0V3kLUAEPBnrI+h8d2khcBRpklHUjI7hzm
+	kT+bESCdtVxMe0YZt6HSG+r/2/tdiRcQ4Cxfg6wQ1vRGMC+w4JlpcC4Foc5Yk/9C
+	bBpmd0TQfa7Hb3QnETTwCKFjOt1FbGhv1uM/OyAWFSLVsXQek7Qq/ZZhd4vlMrbf
+	21tlEUskRDdiTEN7chwaQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1728907009; x=1728993409; bh=Q8Tj2Km+3RRkR81FyQxGHoKLsrVg
+	qbc1oNQBdqAi3Bo=; b=jRBjaH4FfVb8yjTFj4Yfk7TnJekeW1hqnA2mEDcaGPl1
+	qsmKJlk/agPjXIQoWOYZCsxSzq+c1+qM4S/6YrV89GwaO6r5yEkCSEkeuok4T3W+
+	ZOMpO1fvEaLXiQuN22FQkKOkjiOo63NCM8LtpcqiDp48pal3OVSsCryiETeHIF+E
+	DHd6jSv+C9gr20SJz/UXW+czJozTea5Y/IQ+LNQYXV0MbYQwayogzoCN88zM8QrC
+	Fo/0txtE/nS0hZ3j0Sy6HgtQBEFizX05saNuon176WsM//UxQbxKYwVdCsTr1lcf
+	NafGovIrkVVmgmJ/nB/Xz2FAMghg//2lpBkxFWAdbw==
+X-ME-Sender: <xms:_wYNZyOyO6UmCZQG21xrta7C_ZAbOo2MADKJYxlT5Q7d_YIhrk-0xw>
+    <xme:_wYNZw9nsNaXJ4ekuR7jH8fVVU1x4bKgsC6lDgsD51ok4PjfG4gtPlc7zNSEy0DBv
+    o79iIYY-JYKpv6fCBY>
+X-ME-Received: <xmr:_wYNZ5Sz5-CNAbWTuUfTBP_v-XfxBEpOwAMlKAWAxmaK4jD0FdIiIEJJn5ixsFN67EDGwg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeghedggeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
+    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
+    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeffvdevueetudfhhfff
+    veelhfetfeevveekleevjeduudevvdduvdelteduvefhkeenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhv
+    rdhnrghmvgdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopehtohhrvhgrlhgusheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhr
+    tghpthhtoheprghnughrvgifrdgtohhophgvrhefsegtihhtrhhigidrtghomhdprhgtph
+    htthhopehjphhoihhmsghovgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekiees
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidrug
+    gvpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepphgvthgvrhii
+    sehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepphgrfigrnhdrkhhumhgrrhdrgh
+    huphhtrgeslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehlohhnghhmrghn
+    sehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:_wYNZyvaURdnKiwFstA__EBlbsDfxEGa1NlzhoEh-Y300LVlG_r6gQ>
+    <xmx:_wYNZ6dKxB0Uk7uXqrHtIO8RZKeViEqqUCqe8kbLHu4YqccRUqJ_hA>
+    <xmx:_wYNZ21vgCyF9IH4MnZkNmet9KdKkmjLmzuMBQevXx81yg4PjqS-HA>
+    <xmx:_wYNZ-_w5AcFHTLMbDKlPaoyfVPuKrJrSwep9uU13B6cuXx1VWcQgg>
+    <xmx:AQcNZ13uqXAVkihuJLEs7yNGUaQ3QG58JiNYwWGAVChFJNK64IMKD6pg>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 14 Oct 2024 07:56:43 -0400 (EDT)
+Date: Mon, 14 Oct 2024 14:56:38 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
+	Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
+Message-ID: <4nypzjisje2poptiv2vp4e2dp2hbweumgwrxemm7d6zbzn2p5h@vfhklt25cs37>
+References: <b626840e55d4aa86b4b9b377a4cc2cda7038d33d.1728706156.git.jpoimboe@kernel.org>
+ <f6ea59b1-eb59-4d1d-81ed-0e5095102c20@citrix.com>
+ <CAHk-=wg=DovySzKb3=g53DeCwv1ZOa-RebaBpYXNXrdhY=a5Qw@mail.gmail.com>
+ <12c18d86-87b3-4418-a0b0-2844197a3315@citrix.com>
+ <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
+ <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,124 +112,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Madhavan Srinivasan <maddy@linux.ibm.com> writes:
+On Sat, Oct 12, 2024 at 05:53:19PM -0700, Linus Torvalds wrote:
+> On Sat, 12 Oct 2024 at 10:44, Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+> >
+> > Anyway, what's the speculation window size like?
+> 
+> Note that this is important basically because we do *NOT* want to
+> check the address against TASK_SIZE_MAX like we used to, because not
+> only is TASK_SIZE_MAX not a compile-time constant, but with linear
+> address masking, people actually *want* to use addresses that are in
+> the non-canonical range.
+> 
+> IOW, see also
+> 
+>     arch/x86/include/asm/uaccess_64.h
+> 
+> and notice how the x86-64 __access_ok() check *also_ does the whole
+> "top bit set" thing (iow, see __access_ok()).
+> 
+> IOW, this actually goes even further back than the commit I mentioned
+> earlier - it goes back to commit 6014bc27561f ("x86-64: make
+> access_ok() independent of LAM") because without the sign bit trick,
+> LAM is a complete disaster.
+> 
+> So no, the address masking can not depend on things like
+> __VIRTUAL_MASK_SHIFT, it would need to at least take LAM into account
+> too. Not that I know if there are any CPU's out there that actually
+> have LAM enabled.
 
-> On 10/11/24 8:30 PM, Ritesh Harjani (IBM) wrote:
->> We anyway don't use any return values from fadump_cma_init(). Since
->> fadump_reserve_mem() from where fadump_cma_init() gets called today,
->> already has the required checks.
->> This patch makes this function return type as void. Let's also handle
->> extra cases like return if fadump_supported is false or dump_active, so
->> that in later patches we can call fadump_cma_init() separately from
->> setup_arch().
->
-> Usually patches to this file are posted with title format of
->
-> powerpc/fadump:<>
+Actually LAM is fine with the __VIRTUAL_MASK_SHIFT check. LAM enforces bit
+47 (or 56 for 5-level paging) to be equal to bit 63. Otherwise it is
+canonicality violation.
 
-yes. I guess it is good to do it that way (I might have missed it)
-Although commit history of oldest few patches to fadump shows..
-
-ebaeb5ae2437 fadump: Convert firmware-assisted cpu state dump data into elf notes.
-2df173d9e85d fadump: Initialize elfcore header and add PT_LOAD program headers.
-3ccc00a7e04f fadump: Register for firmware assisted dump.
-eb39c8803d0e fadump: Reserve the memory for firmware assisted dump.
-
->
->
->> 
->> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
->> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> ---
->> v2 -> v3: Separated the series into 2 as discussed in v2.
->> [v2]: https://lore.kernel.org/linuxppc-dev/cover.1728585512.git.ritesh.list@gmail.com/
->> 
->>  arch/powerpc/kernel/fadump.c | 23 +++++++++--------------
->>  1 file changed, 9 insertions(+), 14 deletions(-)
->> 
->> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
->> index a612e7513a4f..162327d66982 100644
->> --- a/arch/powerpc/kernel/fadump.c
->> +++ b/arch/powerpc/kernel/fadump.c
->> @@ -78,27 +78,23 @@ static struct cma *fadump_cma;
->>   * But for some reason even if it fails we still have the memory reservation
->>   * with us and we can still continue doing fadump.
->>   */
->> -static int __init fadump_cma_init(void)
->> +static void __init fadump_cma_init(void)
->>  {
->>  	unsigned long long base, size;
->>  	int rc;
->> 
->> -	if (!fw_dump.fadump_enabled)
->> -		return 0;
->> -
->> +	if (!fw_dump.fadump_supported || !fw_dump.fadump_enabled ||
->> +			fw_dump.dump_active)
->> +		return;
->
-> Is these checks even needed here? fadump_reserve_mem() checked for all
-> these already, also dont see any other caller for fadump_cma_init(). 
->
->
-
-In the next patch we will move fadump_cma_init() call from within
-fadump_reserve_mem() to setup_arch(). Hence we need these extra checks
-in fadump_cma_init() as well. I mentioned the same in the commit msg of
-this patch too.
-
->>  	/*
->>  	 * Do not use CMA if user has provided fadump=nocma kernel parameter.
->> -	 * Return 1 to continue with fadump old behaviour.
->>  	 */
->> -	if (fw_dump.nocma)
->> -		return 1;
->> +	if (fw_dump.nocma || !fw_dump.boot_memory_size)
->> +		return;
->> 
->>  	base = fw_dump.reserve_dump_area_start;
->>  	size = fw_dump.boot_memory_size;
->> 
->> -	if (!size)
->> -		return 0;
->
-> So this is the only place where we return 0, which in turn will make the
-> "ret" in fadump_reserve_mem() as zero forcing to call reserve_crashkernel()
-> in early_init_devtree().
->
-> we are removing it, becos we know "size" here will never be zero?
->
->
-
-yes. Because we already check if boot_memory_size is less than
-bootmem_min in fadump_reserve_mem(). If it is less, then we fail and
-disable fadump (fadump_enabled = 0).
-
-So then there is no need to check for !boot_memory_size in here.
-
-fadump_reseve_mem( ) {
-<...>
-	if (!fw_dump.dump_active) {
-		fw_dump.boot_memory_size =
-			PAGE_ALIGN(fadump_calculate_reserve_size());
-
-		bootmem_min = fw_dump.ops->fadump_get_bootmem_min();
-		if (fw_dump.boot_memory_size < bootmem_min) {
-			pr_err("Can't enable fadump with boot memory size (0x%lx) less than 0x%llx\n",
-			       fw_dump.boot_memory_size, bootmem_min);
-			goto error_out;
-		}
-    <...>    
-    }
-<...>
-error_out:
-	fw_dump.fadump_enabled = 0;
-	fw_dump.reserve_dump_area_size = 0;
-	return 0;
-}
-
-
-Thanks for the review!
--ritesh
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
