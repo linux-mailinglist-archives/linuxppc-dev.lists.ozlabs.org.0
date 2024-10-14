@@ -1,103 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-2219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2220-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB4A99CB2A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 15:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3736F99CB2B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 15:11:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRyL1060Fz3brH;
-	Tue, 15 Oct 2024 00:11:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRyL81Rplz3brt;
+	Tue, 15 Oct 2024 00:11:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728911496;
-	cv=none; b=Lvj0z3igtZDoZoU+TP4Srpb5KngJ6DzV0O2MV9NtZTWgJgpMy27Y1b0zr1RR/Y7ho9wm+L0pIEP8/X47TwSxc7rjsv1nyiWLoNpUeBj1dyglFGdYnEjON/e7qJoJovX+Dzas/MWfwbHuj7U0eWdACDKIgn4nnQuUDni8T2DQJFcaFTNuru4rFDt1mS/YuN541vfyiUSwwJ+wUiADCHrgnCzjP5fCCar6juWu8wMW3hi3wG+zGqZERKKbqjCQIrdmxGmCIFl2/NUpP9YOEscyYOKvNFx8yxdrA+ecqGxZC0VdxOvv6KaX2A6TSmsti6rP3Plso0tHIRcHhpyPALlUCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728911496; c=relaxed/relaxed;
-	bh=j+BOznowBtN/nii59G4lRfCPThWEa6TNxQ/kRulWlps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YtOa+EfRuBETiRSDLNCHvvv/ideWOf/K3WoATlhiG2zhMdW2cSZaYLUej9O2UReS8uSbv9bF6KZhqW1kEGc6pWNLQh4enQwMQkJHdYFj1ZcbYNdlAz1xt91OlN42t9cg5PeJ+TPQugKYl86tJl8tk8AT6ZFneKh5EL/EsXB1KBL70Haj8nUGVfwn9AB4N79BgNJwwRIURnt06xS1Jrdg5J5vl6Glqx3PIFwVb3ib7Pe4Ym85kSEqrJWVPGzR//Slf3H8GSbibv9BoWyJS3Orp+9ntGSIDT36HO0BPyZcLSQrdtMqNb+yjtWYMzoXgvSHcbH2rA/iuWS2O0Za4a0hiQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vMvBZJVO; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.50 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728911504;
+	cv=pass; b=T0oHIT1glZoD2mxzhR0WDgjFsRSu95B1D/0pZVuBDE3KgQAPhXCmBMWnN3QUC6NlW1GsCvXXf8iqhczUFZm/a6o434ou2JQHOUw8WQI16qjexc5kaQEnNmyvr02QbOpGiwdOcDvqM2seHwwQRqfRK08FR26Katt1mxU2chpbmMaD15ZXP5HQuzQbmqbDjcnj3cNQcYa1MPt7o+jPNNsTwG/RG09JCB/+93efyBPlIRgmQafGk0jG8zgqK/942icZr+mxDGqziKyYaOVmOxzVvXlh/sBvysrrXKL7Q+GtGtWb0Ooy5fbf00UrZbwJ2NCm56JIc7jg449h6/HTKf+ntg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1728911504; c=relaxed/relaxed;
+	bh=x1Qjpspgumz3VePVNJKzrHQe41GIS6QOcZEIs3MBhOg=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=FZOzZIiUTowQs6v5XEk6DpetZHgpJzFayAtbvpNzPdeuDS7Z4YmoZb/0xlzHoOt6yFddBroj2FcNgPrEPqxEF9e5FEXtGIsSvZrIPEmE4/fMMbUgLGlkdjqICvp7Untkx9HxT0zd83Vrj6J+PttFLl6N17EzhbTROMKz66q+h2vVqf9j+RQDmJ6nHZLXgH1igaqld/hQ6OLowNmaiL6o0ngvfLwhzuCtbcOvRw26rA9A4j7KxFdupAoTNJ6i/rPvH1+xEeJv93u2fj2I9yb2fAGHEoBL1044jKhfgdnyr1ZPnNFa9aD80FDwPrEVTUtNUhvGeU/UNenZ++WmZzNcKA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=JjribVjJ; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=UxzzAx7P; dkim-atps=neutral; spf=pass (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vMvBZJVO;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=JjribVjJ;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=UxzzAx7P;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRyKz69VRz3br7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 00:11:35 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8CAC75C569A;
-	Mon, 14 Oct 2024 13:11:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D95C4CEC3;
-	Mon, 14 Oct 2024 13:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728911492;
-	bh=Rj0DDOED5iD2FdGYxYV+4r4tEXYq4n6Xi/0d9QAVLUc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vMvBZJVOinxsLsrPPXzSxPojzLbDfnzNQ55w0X0QwTjcMMxar0CDAK08E2JThkQpb
-	 4cpioov/cqx2XJwdmLwC1BTnXl3vfXvrgA1ETi3RHPPFn/KFa3uZAW+joXD5HEZg+c
-	 4U5ok631tPzwPd7hoGyNRL5ynGDynUSOamB6K2RiHfHSi/erCk9kHqPS+1U5lBuMVB
-	 r0jU8Sa0yR3rOlG2WDCJ68+YmRHtYreB6qz66TSlQdG0YMQVcdBysszRX2pWrQ1lN4
-	 ziJbkceFmXn8rCIwx79sxsDKS6SGBNY9GisCIBFcBwGbEy+4gMh7VJcsFjn3AG+8KF
-	 uacBBUphpSFpQ==
-Date: Mon, 14 Oct 2024 16:07:40 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-	Brian Cain <bcain@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
-	Stafford Horne <shorne@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
-	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v5 7/8] execmem: add support for cache of large ROX pages
-Message-ID: <Zw0XnDHbpHDwFDHy@kernel.org>
-References: <20241009180816.83591-1-rppt@kernel.org>
- <20241009180816.83591-8-rppt@kernel.org>
- <Zwd7GRyBtCwiAv1v@infradead.org>
- <ZwfPPZrxHzQgYfx7@kernel.org>
- <ZwjXz0dz-RldVNx0@infradead.org>
- <ZwuIPZkjX0CfzhjS@kernel.org>
- <ZwyyTetoLX7aXhGg@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRyL30vSCz3br7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 00:11:37 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1728911489; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=sC21/wmfDMp305L9jQP14kr9E+u8s5PIhCfiYWFAQ16Ub9pPVASHT4BJXytfgjEPlb
+    CsP781U+1p8gKAvZNfr02nxwT35YW8lwmz57LUVl3jsm/Uc9+8admTuGNrconVYisWIC
+    7IxWuWZcOhqnykD/ZIGwUYqxjMVYIqQRsQZRV3dZMp48qknq6SKwpCfdUiy/knRVx1KP
+    fRQov2omUOnr3KQU5waYafXNZIYQ6jABRmGZXBQ3VuDmLsxLNojCml6T7UxDfWiyAC9i
+    UCxVcME0XpDTDtycEXJh/Sff7l3U6NYcyclfH/8WAHEqFEmfqAfoJ4OwRtzske0Ho7fx
+    BNNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1728911489;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=x1Qjpspgumz3VePVNJKzrHQe41GIS6QOcZEIs3MBhOg=;
+    b=CIlOUKwxWf8NUbeuG+u9jlEB4YbJnVtjJLx2Fawt2BWyma9VHeCWtcYkSniCAbmOQl
+    xbBtRac3iquzcGF/xY//J593HYr4ObfIlZqYJLowazPt20NEd69VKTB+qQkp2KdKK26x
+    PLkyVUpY60rVlMshx0fzljpas5zAcVozhyUr44M3yQfCoqArZn5DWCzYtO87i3UN9x7i
+    YO+4BRapx+CaYJa/41Zuq5JE4bkQpUU/MbAMftOIYEAaEaIek5nR8pvKP+OMn+ykjtND
+    GV72ZxAPrQ+RIaNaQwHxNVvzTZ9uD8tHvAFAF1jXxSmx97wK7OxGYSFNQCYNRv93g+QG
+    QCig==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1728911489;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=x1Qjpspgumz3VePVNJKzrHQe41GIS6QOcZEIs3MBhOg=;
+    b=JjribVjJR5Rshr3DNwzGE1nSepomeSCC4k/xuvB1o5hLRpJRJGlPEUzCz47O2keqOy
+    jQqckjgKxQvF9d2srVmLg4EOBaj+SdVvqsA+csr0JYiV+o42HeDjJdKC5YmJRWEGtRFr
+    /hPd/GgQas3K4QZ7mD+LuY5WVbvR3QMIgTOpTG+xaovhSJfxn3R+71rLqBDmwPW9Byrw
+    +SmKvPF5ZHEPjEam7toNtcCLuzviKhLzq8igbu700V1EMu5bNspqBub+suTVmnQD+QXW
+    RXi+05nObrAa3qW9BVpPgMfDbU7BSWqcfbO+kyutTdQnPPFRjOwVRLKRjZpMyazBpNJS
+    vhQA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1728911489;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=x1Qjpspgumz3VePVNJKzrHQe41GIS6QOcZEIs3MBhOg=;
+    b=UxzzAx7Psbzzt3T9ENpW2YG/P/ebdoOtnjLk0Ih2wnZsq6pAhJRfSn+y9uBSEU7Pno
+    njiO68YE3IviSnVQ7qCw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7Vpmys3mVCXrTP7vRMbGZpP32uUiO4WGM3yoRXUc="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 51.2.8 AUTH)
+    with ESMTPSA id e0da1a09EDBS3rK
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 14 Oct 2024 15:11:28 +0200 (CEST)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,29 +88,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZwyyTetoLX7aXhGg@infradead.org>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (1.0)
+Subject: [PATCHES] drm/radeon issues
+Date: Mon, 14 Oct 2024 15:11:16 +0200
+Message-Id: <87F47F04-EBAC-48D6-AD0A-4BBE39DF43CE@xenosoft.de>
+References: <CADnq5_PUi_2+kDYX8R_eanNF4iYN79MdXJ_PLcQbZKi6e4S8tg@mail.gmail.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ "R.T.Dickinson" <rtd@a-eon.com>, mad skateman <madskateman@gmail.com>,
+ Darren Stevens <darren@stevens-zone.net>, hypexed@yahoo.com.au,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+ Hans de Goede <hdegoede@redhat.com>, Wu Hoi Pok <wuhoipok@gmail.com>,
+ amd-gfx@lists.freedesktop.org, alexander.deucher@amd.com
+In-Reply-To: <CADnq5_PUi_2+kDYX8R_eanNF4iYN79MdXJ_PLcQbZKi6e4S8tg@mail.gmail.com>
+To: Alex Deucher <alexdeucher@gmail.com>
+X-Mailer: iPhone Mail (22A3370)
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Oct 13, 2024 at 10:55:25PM -0700, Christoph Hellwig wrote:
-> On Sun, Oct 13, 2024 at 11:43:41AM +0300, Mike Rapoport wrote:
-> > > But why?  That's pretty different from our normal style of arch hooks,
-> > > and introduces an indirect call in a security sensitive area.
-> > 
-> > Will change to __weak hook. 
-> 
-> Isn't the callback required when using the large ROX page?  I.e.
-> shouldn't it be an unconditional callback and not a weak override?
+On 14 October 2024 at 3:00pm, Alex Deucher <alexdeucher@gmail.com> wrote:
 
-I'll add a Kconfig option to ensure that an architecture that wants to use
-large ROX pages has explicit callback for that.
+Can whoever wrote this send it out as a proper patch?
 
--- 
-Sincerely yours,
-Mike.
+Alex
+
+Patch source: https://lists.freedesktop.org/archives/dri-devel/2024-October/=
+473314.html=
+
 
