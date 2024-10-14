@@ -1,78 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-2233-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2234-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C37B99D3D7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 17:48:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 599F299D488
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 18:22:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XS1pc6Qjcz3bbp;
-	Tue, 15 Oct 2024 02:48:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XS2Zj0THZz3bn8;
+	Tue, 15 Oct 2024 03:22:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728920888;
-	cv=none; b=Ha9d1XBhtIrSaKdRSl+HXqry8A3jOqHmhUHF/qwT9qupeo3wd81aTyl0y2KQryZb9fIn+5zLxVUMKE7MBxHs3c4aLdbBjOnIwFkoFu7alwA5vLEBFyKOafLTtNnLjZyE3ZuYO9Ai+PLiVMDtAaF/GLW6rzW9FusPO3he1z2Ii1HKY/sWlEx6Zh4RO4PYzjSnxbiSjXiWREzX9BDnChzwsr2aXvjQ838/MHaQkFO7MnNVXCWfftvYl+dCs3GXISz4OvM669fCIPbfcIzxIFMPRyZlQy03/27QwQY2SZQJJj/E5sA0ZDyURo58a8t8K06sUVkRBht+fys4OrelmqRNhg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728922973;
+	cv=none; b=LMlutYUupBZvq0OukXVsFTeVaUqjBsXeiqS3Kx3nSh79DzwnqaPxkxH/hfkVBJ2y2ru5gQsdnegSabnmZxDvFu2f5zovIuAlCE181rcOiEEks6iBQvom/rMqtfTSK9vJKPwu/nTd3pbomZ735R6HraicjpEIwlY8GPzqPCLZfn83DMn2f01Je3V/5DM5oPDpna+otFhYadfBfUtLPir8e1i1CA4uZgk8S5fp83O8xdiJoWt21MYGOL8cf41S9opOXQ0kToR/kVg7U96GgImS3nRsCs/Cxo1C4Ds/nZlPSLbjFWq1iC0YSiRoRAMINXpeiY1/tY/XlRH0/hISUS0F0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728920888; c=relaxed/relaxed;
-	bh=mqTXyRWMB3w0HH0XDXzBsU9A4VKm9qePpWykY6DK43Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A5PerCfF+G+rLXZn02jR89gGi7MoGyS5u03zGSfOmcs3KiLoJp+VXR3b+Lnkv4dqvaGlxiCQjJ7xZUahUCuQmPEbNkBMGWmt/BC8KI6AfpjB0G/gxymADSg08t4z7PwO2wlAS/nxPokbc5oayaLHk8LvJOoGngbKfI7iibCOVIp0hl3zy2qOSyedNAK+v29ToFJOT9APfFeyYxMdnv1GPgkEz5NpqZIJiBHO405JZUiVBqzkOd/y8k+nU6dTAh+5jWZ1PPdSSze1d87l6qHPy5F2HLd8oZtpTqfQYgkQ6eK94A63+9sTDEp6MCV9fKTwoZScbQhLrJsrgnZaEL6NEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H4y6RVpg; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1728922973; c=relaxed/relaxed;
+	bh=zZNrU78KdrNv/i9o8oMpP2bwXtuCEDiUCCl5FIT2v/8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=J9XtMz1DFP4KrKk/ihHOpglHtyIcIJ/FEQWentmz+GWL4LFsTOmABV9FzJ8vSmm4ue+DD/c0cZxwPmwei1zproV7foGBbC4yUxZckGr5X5TIjShXq4KCdIHiHuWc9SFK6istspwJuokrbqaCNS+smnYld2S65tPWqNiMG4Z80xQqGWBaEOVcLEYwke5jQBpKgdvkIeOw8SiOLFuqQkZJZJXF4ESJPvcCKhuDc7FM6Vp/iK2W7At43c5dhJmiTeShOtC05Z3vEtLu+aH47ay6R+TTPWANgQ7tsqMexoQocsOjnxcvo/DoqAAbyXt9ky1dO4C0TrGVjTIfgA0SF92VMg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RjvASecr; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H4y6RVpg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RjvASecr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XS1pb6jcrz30gn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 02:48:07 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49EEPArw027489;
-	Mon, 14 Oct 2024 15:47:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=m
-	qTXyRWMB3w0HH0XDXzBsU9A4VKm9qePpWykY6DK43Q=; b=H4y6RVpgiYsGQPpOt
-	gCmJWd1gzeYNZXLvt79UsOUMjRQdZ+WMQ/53slT8i3a38gIhXaFemfkm0zyYL2TS
-	P5P4D3iM0Q+ap9Z4LcjU6eyqcRBcZ+zfIC8wrAmF7z0hjDzPLR68TjQcViLj0m2B
-	6Q+toG7DuodZPn44U974gKIG43fRx55fyfCgtDDULyu/MC0PxKWap7OV1uSc3P/F
-	vfeoOdiNwWBGPMs9ReMQBE/isePJG/b1bepAlYtfgmbL9HAepNZhoTDQlc/tTCBi
-	QOHnn1FGyKqkqYsXGViVAUXQvxWc0kNFXdouKCQ+1D+2uWSDh+vLjMMImLXuX/PQ
-	C9zhg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42951u8d9f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Oct 2024 15:47:05 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49EFggWY013650;
-	Mon, 14 Oct 2024 15:47:05 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42951u8d98-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Oct 2024 15:47:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49ECgom4005930;
-	Mon, 14 Oct 2024 15:47:03 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 428650q0jk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Oct 2024 15:47:03 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49EFl2FM41484626
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Oct 2024 15:47:02 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 43ED75805E;
-	Mon, 14 Oct 2024 15:47:02 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1171758050;
-	Mon, 14 Oct 2024 15:46:41 +0000 (GMT)
-Received: from [9.43.6.16] (unknown [9.43.6.16])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 14 Oct 2024 15:46:40 +0000 (GMT)
-Message-ID: <43eacfd6-e1a3-4d2c-9511-9b5a5707bdcf@linux.ibm.com>
-Date: Mon, 14 Oct 2024 21:16:38 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XS2Zg6Svgz3bkc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 03:22:51 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id A59BA5C5615;
+	Mon, 14 Oct 2024 16:22:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98083C4CEC3;
+	Mon, 14 Oct 2024 16:22:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728922968;
+	bh=bOmZl1NspXLcp+g5lMmcQ+7bUkVBQAQpj9wx9QBEe50=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=RjvASecrxZpOpjKcvFG+IN8xFnp2LLI7I/RQfDEumNR/fQ3dS3+ADtMMRqHsQLGWi
+	 EiXcmJWG9MDl8SGDSw1DA484/IMjM+uzu5CzVDAq1/IZ1dfy10hZAX9QXRftnPsrA6
+	 v7nW9WsF7Me3GHVXmVVLGWhDBdcmlR96zubbrpQBmVXykyz0gLJxLv+tGOX0yPBgaW
+	 wNNbKikiZGTeIOLxImqJAKhdV5na4sITHxDQQ+sWwUK9V8CsgLugxk6mMLUctaJkSS
+	 rhI/oQh4z6V+zVrzmrZ5VVbpUJF+CUwKegliRYJmKRWN42rdZBaGoSPWbfHa9aKxxF
+	 ZN7b3RxDizdUQ==
+From: Mark Brown <broonie@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
+ Alice Ryhl <aliceryhl@google.com>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ damon@lists.linux.dev, linux-mm@kvack.org, SeongJae Park <sj@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Andy Whitcroft <apw@canonical.com>, 
+ Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, netdev@vger.kernel.org, 
+ linux-sound@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
+ Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+In-Reply-To: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
+References: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
+Subject: Re: (subset) [PATCH v3 00/16] timers: Cleanup delay/sleep related
+ mess
+Message-Id: <172892295715.1548.770734377772758528.b4-ty@kernel.org>
+Date: Mon, 14 Oct 2024 17:22:37 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,114 +78,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/5] powerpc: perf: Use perf_arch_instruction_pointer()
-To: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-        Sean Christopherson <seanjc@google.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>, Will Deacon <will@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, linux-perf-users@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
-References: <20240920174740.781614-1-coltonlewis@google.com>
- <20240920174740.781614-4-coltonlewis@google.com>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <20240920174740.781614-4-coltonlewis@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Jwz0y2srETrJq5vnDrTRMrnGUJsrEiit
-X-Proofpoint-ORIG-GUID: ZjFOQbPfI4aepiuQmLev7nPPg0fy7QCF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-14_10,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 clxscore=1015 adultscore=0 impostorscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 mlxlogscore=999 mlxscore=0
- phishscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2410140113
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+X-Mailer: b4 0.15-dev-99b12
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-On 9/20/24 11:17 PM, Colton Lewis wrote:
-> Make sure powerpc uses the arch-specific function now that those have
-> been reorganized.
->
-
-Changes looks fine to me.
-Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-
- 
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
-> ---
->  arch/powerpc/perf/callchain.c    | 2 +-
->  arch/powerpc/perf/callchain_32.c | 2 +-
->  arch/powerpc/perf/callchain_64.c | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+On Mon, 14 Oct 2024 10:22:17 +0200, Anna-Maria Behnsen wrote:
+> a question about which sleeping function should be used in acpi_os_sleep()
+> started a discussion and examination about the existing documentation and
+> implementation of functions which insert a sleep/delay.
 > 
-> diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
-> index 6b4434dd0ff3..26aa26482c9a 100644
-> --- a/arch/powerpc/perf/callchain.c
-> +++ b/arch/powerpc/perf/callchain.c
-> @@ -51,7 +51,7 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
->  
->  	lr = regs->link;
->  	sp = regs->gpr[1];
-> -	perf_callchain_store(entry, perf_instruction_pointer(regs));
-> +	perf_callchain_store(entry, perf_arch_instruction_pointer(regs));
->  
->  	if (!validate_sp(sp, current))
->  		return;
-> diff --git a/arch/powerpc/perf/callchain_32.c b/arch/powerpc/perf/callchain_32.c
-> index ea8cfe3806dc..ddcc2d8aa64a 100644
-> --- a/arch/powerpc/perf/callchain_32.c
-> +++ b/arch/powerpc/perf/callchain_32.c
-> @@ -139,7 +139,7 @@ void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
->  	long level = 0;
->  	unsigned int __user *fp, *uregs;
->  
-> -	next_ip = perf_instruction_pointer(regs);
-> +	next_ip = perf_arch_instruction_pointer(regs);
->  	lr = regs->link;
->  	sp = regs->gpr[1];
->  	perf_callchain_store(entry, next_ip);
-> diff --git a/arch/powerpc/perf/callchain_64.c b/arch/powerpc/perf/callchain_64.c
-> index 488e8a21a11e..115d1c105e8a 100644
-> --- a/arch/powerpc/perf/callchain_64.c
-> +++ b/arch/powerpc/perf/callchain_64.c
-> @@ -74,7 +74,7 @@ void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
->  	struct signal_frame_64 __user *sigframe;
->  	unsigned long __user *fp, *uregs;
->  
-> -	next_ip = perf_instruction_pointer(regs);
-> +	next_ip = perf_arch_instruction_pointer(regs);
->  	lr = regs->link;
->  	sp = regs->gpr[1];
->  	perf_callchain_store(entry, next_ip);
+> The result of the discussion was, that the documentation is outdated and
+> the implemented fsleep() reflects the outdated documentation but doesn't
+> help to reflect reality which in turns leads to the queue which covers the
+> following things:
+> 
+> [...]
+
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+
+Thanks!
+
+[11/16] regulator: core: Use fsleep() to get best sleep mechanism
+        commit: f20669fbcf99d0e15e94fb50929bb1c41618e197
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
