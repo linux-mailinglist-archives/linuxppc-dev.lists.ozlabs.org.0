@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-2207-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2206-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A0099C776
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 12:48:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5155B99C775
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 12:48:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRv8q52ZQz3bpd;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRv8q3nPWz3bnK;
 	Mon, 14 Oct 2024 21:48:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728902907;
-	cv=none; b=molUnonOG2fAglBBFjFz+FtAJABeN8BPkXFssJEavCmC05vnQj481REJvkGPKsMkFlOQDAQ42BP9qIKvvx3qYtirWrk8vDJr265ZYx98mZAzc39r1RFMRvJNSjae85c6V4RwgBtJ1V1NDRBKCBtZ2NxdpaKftHuFAll6FsqXCTHzT+L4CF/fwaqV3FYWTEsCSnsrwyPA30pzVTur7ilJKco6rJnAVbsTL63wNldb/V0JmX5ozD63QQBbftiCNA+Dw26f1kfyxgTNzqkgBSPsNSBoDH5jkv+xfPKb4P//hc7cxSKuChBqXvPsjIFijyqlgn1r/1PcARKMULe0j4TK2w==
+	cv=none; b=burshhVOC3M2hRpHHchSdkSz1AuyHXGuZlLZbQSddTdttz1aL/cKiyLE3syvaIXoJO7pki7YWllncTBD966XWCRnfiprmc4fpa/t89YlC97ER5l0YW127m7m8PMOHrflBb26jfCrH7J4vAT0mCjCph0qNvknZtnsuwSfcQ3FsQOF0PgtA7njNcu28t/nUD/Y+oDszR6LbbGw92zoNAd/vjKXI3IvTpgOLsmX6O2ukY/qV3G4s10RgcGc5oNckOULi/A0QVO5DO4dhEsR/YhxBVtv8oaoHObazlBUd9vK7QWnnCF9suy8S6KL49ZxlFgXzPP9zTLJNdUfs08hlUw3pA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1728902907; c=relaxed/relaxed;
-	bh=AcyEmMVdok+bxnRfwBDJnt6eM4ncRn5lIt6hsSMfQtg=;
+	bh=9C6g7Ed9Tz5VafM3PzYV8kPI7hGqBVVAbjMKqSOhmsQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WUP9PAX+K71GTK73iiBCNnGT8DZZTIYi+HBnVeQW//j7bhtdsEeBPb81Z97Sh7F5FfwMhtGHgtZ2eOpoXpcUcs3aFGqptSR2Km++ZwV2V6lj1szWiXIo60vsIJEzfaKBydvEkHPzhd7IzWvSBpx9NLPqrrgPTVv8JdWcLF6jScLP2PWVzRAUvXaCanywzq+o2eB4vmH5MSUPOpcYJEsBnC0VTqe10fhihbtjsQ0P9TN/tC31btq/EEVYuTTXZTRgqqz5xJXPxutYYnmsJa+edDo+tAUkxpqGKp8UpxTWbsgaYh07PDRCIbAC49FSiZVXC7gC/KncNbUppoS3SERRfg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VkKjUHZS; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=iT5eP/tc36+ZIIjcMqopGJeh4QDziHbMpeLnPr1g1QCn/b1W6huUbIcqhjfPfAh8SX520DZ12BAUPJJc9hXdEDT7xpVvfezCphSRW2k2T60lin8FPfZ6hii3SccryIBcCNWDr4l40g/GdQNvV+NRoce7e5afScZuTnAcwVn4WESA1Quq/5pJs6HdOS4NecZBL+iwFvLWRCyUW5lPEs4ufu5wkvHIXESdhmRL4cHPNsU1w9BALl0lTTsz8jHwjCXOtsY1KjRh3EwtbUI/BgiYXmJU1VnGgFY8mreqka9Jmyk9T70r/0DfYUJyY47QVEEJ38iJx2wPyl9kAalAsA16eQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UOxdL/l6; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VkKjUHZS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UOxdL/l6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRv8p5mLZz3bjK
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRv8p63dBz3bnJ
 	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 21:48:26 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D9109A419DC;
-	Mon, 14 Oct 2024 10:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D82C4CED0;
-	Mon, 14 Oct 2024 10:48:20 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id E1039A419DF;
+	Mon, 14 Oct 2024 10:48:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078D3C4CEC7;
+	Mon, 14 Oct 2024 10:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728902902;
-	bh=/OCNlnab7LfsKEO2VBkimOwewUj/x1P/69LUtdzV8g0=;
+	s=k20201202; t=1728902904;
+	bh=3hLRauEYwJEHZvSFb0NBFQDokIr/VyMCsk6KndYmcGw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=VkKjUHZS/u3NFSC9JvmfosumUNe8X8td95QU+p4SCOlUVIjq/MGZ25TnjcI8mOF46
-	 0+JxRa6Cq5BPpi06vQDSt8huggXNk/227rTcUmA9JZF8vBBwNdoNZPvVvCBxVOxo8K
-	 pTAH3thq1hkoOHL5q8lWqhOiiL9iYwckwBqFtrWGvSDoMfuRXZVy2OXAi7744tt5Eg
-	 zrYXjKOLrqxGc27zGvR25rfzYZd5gZeJTsOFkAivCBSM7UYUdonZ5HzsZI8xcxfd1F
-	 wP42Wa9rnL1c8en/4CZlIKv4Biuvme3qznuyVFEeWnK+N/Pfnjp5Rd5fAZr0P7kXcC
-	 DWpYw7MPrEPOw==
+	b=UOxdL/l6+O2m79yN4Mo15zkbT55iP9G4BYeazux6JHcS0srxQr8YKSiXgDl18+HrU
+	 AvfZHqZn7lyMIABT6GAhK5JiXdf3OTBDM/m4WAdGT8uNcEFKG+z3H+q8EjoRY+wC1B
+	 NJfSWO2i/EhaYtZ7HlHsLuNKZvdHrwcgp29Iu0YnFmXc6QPNgkgx3Zd3clG0M5He7s
+	 lvmX3v/HX33pgX9vxIhhFHzAJ3eAx32gl8o0f3FWZ7ca/hlICnL1ByuOfuiJNegDWW
+	 1YHJjQ9Rr89LffyjCfivU5RmG8lb0kqAoM6ZAw75YfGt54SpVyZDG3pA+/ekT3FYaA
+	 kmyI8fEY4uPTg==
 From: Simon Horman <horms@kernel.org>
-Date: Mon, 14 Oct 2024 11:48:07 +0100
-Subject: [PATCH 1/2] net: fec_mpc52xx_phy: Use %pa to format
+Date: Mon, 14 Oct 2024 11:48:08 +0100
+Subject: [PATCH 2/2] net: ethernet: fs_enet: Use %pa to format
  resource_size_t
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-net-pa-fmt-v1-1-dcc9afb8858b@kernel.org>
+Message-Id: <20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org>
 References: <20241014-net-pa-fmt-v1-0-dcc9afb8858b@kernel.org>
 In-Reply-To: <20241014-net-pa-fmt-v1-0-dcc9afb8858b@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -82,9 +82,9 @@ Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
 
 Flagged by gcc-14 as:
 
-drivers/net/ethernet/freescale/fec_mpc52xx_phy.c: In function 'mpc52xx_fec_mdio_probe':
-drivers/net/ethernet/freescale/fec_mpc52xx_phy.c:97:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-   97 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
       |                                             ~^   ~~~~~~~~~
       |                                              |      |
       |                                              |      resource_size_t {aka long long unsigned int}
@@ -98,22 +98,22 @@ Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
 Signed-off-by: Simon Horman <horms@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_mpc52xx_phy.c | 2 +-
+ drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
-index 2c37004bb0fe..3d073f0fae63 100644
---- a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
-+++ b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
-@@ -94,7 +94,7 @@ static int mpc52xx_fec_mdio_probe(struct platform_device *of)
- 		goto out_free;
- 	}
- 
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+index e6b2d7452fe7..66038e2a4ae3 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+@@ -123,7 +123,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
+ 	 * we get is an int, and the odds of multiple bitbang mdio buses
+ 	 * is low enough that it's not worth going too crazy.
+ 	 */
 -	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
 +	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
- 	bus->priv = priv;
  
- 	bus->parent = dev;
+ 	data = of_get_property(np, "fsl,mdio-pin", &len);
+ 	if (!data || len != 4)
 
 -- 
 2.45.2
