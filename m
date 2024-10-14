@@ -1,61 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-2198-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2199-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B62E99C541
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 11:18:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0844B99C5BB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 11:32:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRs96710Dz2yMF;
-	Mon, 14 Oct 2024 20:18:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRsSv5PM2z3bgs;
+	Mon, 14 Oct 2024 20:32:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.219.173
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728897514;
-	cv=none; b=JU03cOvrOE8QLMKB7XtXqt+4aETavh9DsctbSkTHjBjmISL0iM1AIeP+kALHxx21SUR2RkG6OQhUghOxc4MfjyGzqHTskmlG5FL9wWvt1SNGvS5BrPJ1qmxUTZc5FyPJemntlzKvGkWetR6oj3XvgTNNr2nV9PMRzlMjAqZPaGibufo1+eb/IbZeYLIheFWHZlwjqmDqfc0tYn43620ohafSTnin2sfrVdRzb0yTQPZlVpufWA57aAA8vk+cYbRkAHSptDCJuhO2JT1FKkiutdnCZzXe3z6LFR9J04sV0mJ+5RiJhCw+9SWYwQiYfQ0vsB8mL8f/T1ayJBBkySQ15A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728898335;
+	cv=none; b=RssvFeJCZ9TOYiHWAUty7BGK5e96mLgy0BX9UhDflY1kWA4UCFaF5luZk1b5idBW6sRFXL07+GHR+sMG9UlLBVcB3cZu++EkTQtswMkEOGaG5PSutjCAwApS1OZli4AEPemzO5ge6gZey8JIh3BJjQWBh5tboLT4yIJGkPw5fj2GQhGq/C2MYvvdFsTbiYeBhupD8roEQqMj5Unz9isoZjm62ByxeaqJyiSOdecEd22AD8hqIrTOKMe8vEU/hr2+rWl2JFpY4FAQ1Hu9F7hOd39gCWEUqEs6RtP03LGuf0WS7u+K8AK5V0kSXdER114RkcylZ+BiCqWhZCciiGGPsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728897514; c=relaxed/relaxed;
-	bh=XM7Hx7BDiEIgSKXCd36v4PFuRuWUiWCSpOVzrnoLBC0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FqlmuURaoU7k1CbVtkMbVN0t/EhcvgsxD9ixq9Jtsrme5e4XFnhI4wuWzaTI9HhhO1hZoPzcThyQ8FYuSWXki7mq+hW70hxvTYd7O9+k/+2b5aMFI2DLFVbDlXa30NLSTUUf0Is92YtXABq7AlDtgmoh+T8zi4mJQoyq8xe7hTOnE3uqlpeT4ezyqIZ5OFinv7UcsevcZ7Mru57RTYBIueScDhqbTXvbiJakdB/w5Fh3g4lXACt1ve9iZnPLQ4BDcS0q/dh8zBuAASL9Kyu+jDEi8R4ztuIzJ5SpCFWw01XrSZ4OtlYEKgifCazi8r6chXl62MEtFIezKYHbc4DgkA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.219.173; helo=mail-yb1-f173.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.173; helo=mail-yb1-f173.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	t=1728898335; c=relaxed/relaxed;
+	bh=54OEPTCVAH3B7cz4kg6+MVY3l9aybsbg+IOAzgW/+Vo=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=kaMKfOJTROuD/Tp9e4S8uEcWK4z45UW4xwnm5aN9JJSms4bUQOtqbfKuQY/pYrjPCy3QlO6kf+DAiA1o9qmhUIQRHUmnY9T/l6ah20B/EKB+CCeFgAGpawYdVG52o0DPsMhQAo1Dw7JqbxHxR0Bc74P3W2OUY7QWfB2rSCSLlL4fvkZpLCGC0IzAyawfMzzlp0coVQhejWI6Nx7LqT14FKGK/wGMkZMdyzdSnqNHbt2BGuLUOIjgUUG3VwVhPa4Xb2Eo+cT1UCEG9r2hZMBd/yEkUmSdURcFiiHjIFKPCkQHyG9nN53Kx/pLRajdMQVPOjPMbI2ildQpRhCOXH43vA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M6Zq3N3P; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=kvalo@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M6Zq3N3P;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=kvalo@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRs954FBfz2yFK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 20:18:32 +1100 (AEDT)
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e291cbbf05bso2531393276.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 02:18:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728897508; x=1729502308;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XM7Hx7BDiEIgSKXCd36v4PFuRuWUiWCSpOVzrnoLBC0=;
-        b=oLHCsyg33GTJNiY7AVQOc2+C+27j00qJRDxmut+9dP67QvlwYGZdFGLMvAcTfqjesl
-         0bCPdRgfWg2OXd2DHqiy8pgBk6Zy74oVT35QtkZg5hDRTtw+XXQmb7bAwz2Vc2H3Y+VO
-         GwlDb6vSHU91fCUyJB5FRWjUcmTVlbYaJJMnF/IPJmlNZXDjV6+fkIj/7ukFcMTkFRj+
-         55AEup3AwwIB45KtxnOwETKosBSCn0BVwQ69RJoD42t/mjTXkAB5xeC06/zdr1wlzqJb
-         wwr+UuoZuCtac7bUbf1RFkhopmy+aSoyg9ARoFyZC2X3lmNg4sHe5R7xy8sQeygx/Bre
-         vJQw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNRbHnNVTn8XFEL7H2QMkWaW7l5bMMPbCG9ru1X7HjUXlDfSeV3+SUWkPzeCUmgl9gALKFhvS+LX2Atl0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxSuCIg2BcvIQaFxl3mlCyeVGBRk1/gDgRGKhqjtK8rqwrbYorC
-	1q3H0Kb9+pZcp/SE2sKOqdXS5KNEOzQKRgr4M8ECwrW2M1SBcDxPzKpnmK+J
-X-Google-Smtp-Source: AGHT+IEuV8d1BsD+9S+pbr+qawTskP1YTThph95d67qGy7tqmIralMEWwCZhGnd5GrEP5/1N8uaiJg==
-X-Received: by 2002:a05:6902:2b92:b0:e25:fc6f:9cbf with SMTP id 3f1490d57ef6-e2919ffb24amr8259884276.52.1728897507662;
-        Mon, 14 Oct 2024 02:18:27 -0700 (PDT)
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com. [209.85.128.182])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e290ee007d9sm2221880276.23.2024.10.14.02.18.27
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Oct 2024 02:18:27 -0700 (PDT)
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6e390d9ad1dso6275257b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 02:18:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVJcwgTjud+nMZL8VGxq0W0OuBg9LFaji1bG6HKqBtJqKZezlBriEkK7+mcV4VRmPVpoMmW/SOq+DFN3vA=@lists.ozlabs.org
-X-Received: by 2002:a05:690c:38b:b0:6e2:b263:104a with SMTP id
- 00721157ae682-6e3479ca932mr84287817b3.23.1728897507018; Mon, 14 Oct 2024
- 02:18:27 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRsSt43c5z2ywq
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 20:32:14 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 4DEB4A415FF;
+	Mon, 14 Oct 2024 09:32:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01007C4CEC3;
+	Mon, 14 Oct 2024 09:32:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728898330;
+	bh=H6iAE2LegkHNp+32/yt3whqw8Zq05OwWueCyBd7K+Hw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=M6Zq3N3PCiStt2G83cEgWx8o4bKzMfBezq8TBjf4oGBUTNEwompWn+LQ/C+ofFioi
+	 y7WQ13MM0GVVi0W3B6Hym4d+I3V5V8ZBR2kr+f4jNWmP8gmCgbg/zh815ABruto0MV
+	 VmL6/GEUM7HCmgVVgArGynSv8rRhxFCFyrFyEKYc6rMQjbUSA/zvCZ9t3rmqNOFYve
+	 1HjWL/E+cqCRztuiQXTISR5Dlhj3NfdkZ4qW+GeNqOuaVyTHPMP2oAdjT5MUpJoCC9
+	 EWbTAkigiQZvikWPgvJrMC8qDRSBC/tAEfk22ek16SHNc6FehtMIBFD5/z1eVv1xOo
+	 zUixQub5fHfuA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Cc: linux-kernel@vger.kernel.org,  "David S . Miller" <davem@davemloft.net>,
+  Alexandre Belloni <alexandre.belloni@bootlin.com>,  Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>,  Geert Uytterhoeven <geert@linux-m68k.org>,
+  Geoff Levand <geoff@infradead.org>,  Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  Jakub Kicinski <kuba@kernel.org>,  Jeff
+ Johnson <quic_jjohnson@quicinc.com>,  Johannes Berg
+ <johannes@sipsolutions.net>,  Larry Finger <Larry.Finger@lwfinger.net>,
+  Nicolas Ferre <nicolas.ferre@microchip.com>,  Pavel Machek
+ <pavel@ucw.cz>,  Stanislaw Gruszka <stf_xl@wp.pl>,  Gregory Greenman
+ <gregory.greenman@intel.com>,  linuxppc-dev
+ <linuxppc-dev@lists.ozlabs.org>,  linux-arm-kernel@lists.infradead.org,
+  linux-staging@lists.linux.dev,  linux-wireless@vger.kernel.org,  Arnd
+ Bergmann <arnd@arndb.de>,  Stefan Lippers-Hollmann <s.l-h@gmx.de>
+Subject: Re: [RFC] ipw2100 ipw2200 ps3_gelic rtl8712 --- Are we ready for
+ wext cleanup?
+References: <a7eb3db4-ad0d-451a-9106-90d481bd3231@gmail.com>
+Date: Mon, 14 Oct 2024 12:32:04 +0300
+In-Reply-To: <a7eb3db4-ad0d-451a-9106-90d481bd3231@gmail.com> (Philipp
+	Hortmann's message of "Sun, 13 Oct 2024 22:28:48 +0200")
+Message-ID: <87iktv58tn.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,60 +75,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <CAHk-=wg061j_0+a0wen8E-wxSzKx_TGCkKw-r1tvsp5fLeT0pA@mail.gmail.com>
- <20241014072731.3807160-1-geert@linux-m68k.org> <711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org>
- <20241014085819.GO77519@kernel.org>
-In-Reply-To: <20241014085819.GO77519@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 14 Oct 2024 11:18:14 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWedOgc4S12FwQR8_80aqgRJ2pwrKWsNb5Svt6776ti3Q@mail.gmail.com>
-Message-ID: <CAMuHMdWedOgc4S12FwQR8_80aqgRJ2pwrKWsNb5Svt6776ti3Q@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v6.12-rc3
-To: Simon Horman <horms@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, dmaengine@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.3 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Simon,
+Philipp Hortmann <philipp.g.hortmann@gmail.com> writes:
 
-On Mon, Oct 14, 2024 at 10:58=E2=80=AFAM Simon Horman <horms@kernel.org> wr=
-ote:
-> On Mon, Oct 14, 2024 at 10:38:20AM +0200, Geert Uytterhoeven wrote:
-> >   + /kisskb/src/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: e=
-rror: format '%x' expects argument of type 'unsigned int', but argument 4 h=
-as type 'resource_size_t {aka long long unsigned int}' [-Werror=3Dformat=3D=
-]:  =3D> 126:37
-> >   + /kisskb/src/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: e=
-rror: format '%x' expects argument of type 'unsigned int', but argument 4 h=
-as type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=3Dformat=
-=3D]:  =3D> 126:46
+> origin of this question was the following patch series from Arnd Bergmann
+> [PATCH 00/10] Remove obsolete and orphaned wifi drivers
+> https://lore.kernel.org/linux-staging/20231023131953.2876682-1-arnd@kerne=
+l.org/
 >
-> I wonder what the correct string format is in these cases?
-> I didn't have a good idea the last time I looked.
+> Here the remaining files that use iw_handler_def:
+> drivers/net/ethernet/toshiba/ps3_gelic_wireless.c:static const struct
+> iw_handler_def gelic_wl_wext_handler_def =3D {
+> drivers/net/wireless/intel/ipw2x00/ipw2100.c:static const struct
+> iw_handler_def ipw2100_wx_handler_def;
+> drivers/net/wireless/intel/ipw2x00/ipw2100.c:static const struct
+> iw_handler_def ipw2100_wx_handler_def =3D {
+> drivers/net/wireless/intel/ipw2x00/ipw2200.c:static const struct
+> iw_handler_def ipw_wx_handler_def =3D {
+> drivers/staging/rtl8712/os_intfs.c:     pnetdev->wireless_handlers =3D
+> (struct iw_handler_def *)
+> drivers/staging/rtl8712/rtl871x_ioctl.h:extern struct iw_handler_def
+> r871x_handlers_def;
+> drivers/staging/rtl8712/rtl871x_ioctl_linux.c:struct iw_handler_def
+> r871x_handlers_def =3D {
+>
+>
+> In this Email Greg writes over rtl8192e:
+> https://lore.kernel.org/linux-staging/2024100810-payback-suds-8c15@gregkh/
+> "...
+> No staging driver should ever get in the way of api changes elsewhere in
+> the kernel, that's one of the rules of this part of the tree.  So from
+> my opinion, it's fine to delete it now.  It can always come back in a
+> new way later on.
+> ..."
+>
+> So it should not be an issue to remove rtl8712.
+>
+> Stefan Lippers-Hollmann was one year ago still using the ipw2200.
+> https://lore.kernel.org/linux-staging/20231024014302.0a0b79b0@mir/
+>
+> Here my opinion why I think we should reconsider this:
+>
+> I really like to use old hardware. One of my computers is from trash
+> and the other one is bought for 50=E2=82=AC three years ago. But non of my
+> hardware is from before 2012. Do we as a community really need to
+> support hardware from 2003 in kernel 6.13 for WLAN that evolved so
+> rapidly? I do not think so.
+>
+> People around me are complaining that the 2,4GHz WLAN is difficult to
+> use because so many devices are using it. Such slow devices consume a
+> lot of time to send and receive the data and block therefore other
+> devices.
+>
+> The longterm kernels will still support this hardware for years.
+>
+> Please explain to our very high value resources (Maintainers,
+> Developers with wext and mac80211 expierience) that you cannot find
+> any other solution that is within technical possibility and budget
+> (USB WLAN Stick or exchange of WLAN module) and that they need to
+> invest their time for maintenance.
+> Here the example of invested time from Johannes Berg:
+> https://lore.kernel.org/all/20241007213525.8b2d52b60531.I6a27aaf30bded9a0=
+977f07f47fba2bd31a3b3330@changeid/
+>
+> I cannot ask the Linux kernel community to support my test hardware
+> just because I bought it some time ago. Rather, I have to show that I
+> use it for private or business purposes on a regular basis and that I
+> cannot easily change.
+>
+> Using this hardware is security wise not state of the art as WPA3 is
+> not supported. We put so much effort into security. Why not here?
 
-"%pa" + taking the address of the resource_size_t object.
-
-https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/prin=
-tk-formats.rst#L229
-
-Gr{oetje,eeting}s,
-
-                        Geert
+I didn't quite get what you are saying here, are you proposing that we
+should remove ancient drivers faster?
 
 --=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
