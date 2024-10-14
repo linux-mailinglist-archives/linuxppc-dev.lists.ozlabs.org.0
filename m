@@ -1,93 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-2191-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2193-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0731699C12A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 09:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 559B899C2FA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 10:22:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRpcl39JMz3bk1;
-	Mon, 14 Oct 2024 18:23:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRqws4xvyz3blK;
+	Mon, 14 Oct 2024 19:22:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728890631;
-	cv=none; b=IrigidINWO352uRQx9CmIyMnCT9PA7ga5pB1rk5TYIwk0yr3gn6tQ0ox2f2SCrpUotiNCdbdozGRMS7o6w58E3ZuSNPFX0ufw4sGgsibAC/n8YL1x4575wPfPhDkbQCc+9LocvMeTdk6zGX7yLxhatbBR30ZFIXpm85+iHc8jJnMOdr0QHlSN0qzpj5oBHYD2+DPbM53WQGVU1iLNpolnYQb/XxM63ABjTVcYRLtWoQ35vavKhXSnhQXMuoXomNPzMA5XTxgyUAnzA4Qlq/bJqrXo1tFjjRyL8OqNvFQ3hSRbLRCoabbxtfzvRCi0wGPe02whOFaLONAsrpp6mQB3g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728894173;
+	cv=none; b=FyKYgUMq3z0Q0yBwrkpDk/yXITH7zeHHqKiZ9e+1bL7G2l/os3qnb4tfP6NDy0Gr07CVA7Hbrb3jOVJHneR9xeptPSNa6GdGZdeYQQTirqHV/ZMQ5+jud96PiblHeg2DsuZj64tIHCxuuKpxxq9GqK+JUC+cgTG+wt6ZeuYj2kW0CPg1XOF+X0JxQ+pPM3yrjRu/zpxYTalw2hEfmmTxwTOmyKIIP0t5xQfjm7aQuQrTNEvx8SRG6DV0kABqlFperHEhXfz2vjBEGNs/GQQtnEgHMG7k9BNo5i2wHmSzaXZOVa+f3QoVj60C/e+nCgAYTAlkXEGD6qZ6RicrwXdo0Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728890631; c=relaxed/relaxed;
-	bh=nTA5yF9Sm4WYFWyv5NEJ9W7uWongasQxrKyS3T0wnGY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iE96CFWkA6dEab1oHUrLa8VNvMNYkR8ygvOF0wnVRSQggiqKnta/5tRfOGg03umFNNn8LcAnSUKpHTrv2qMyWNs9nvD95X///LmbmtknmKpdY9e071C3bLwznEyw8qoPgmOhv66rm+AxSOjvHQOTf4DAl/lnRjtePu0JlvcE5wnyDOuBg8xQEb1I2Xrr6jilaaVu6xDkKyDExALmI7Y/lgO/l4ctWn1lSMgLRhUKEuOahPzWsoLzo88TIskWoWVc7mua6vnCvWXkKS81UfNVM4ZxA3j0m+bTc5jVUnTp1DpORTH/IkF2lavEVofwIrWRatQoNlC6WJfTSVfxglfCUQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=wmLzUqry; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8B2uogma; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=QMCwjEci; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=g8B+pbcD; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+	t=1728894173; c=relaxed/relaxed;
+	bh=6HOwNsVm5tP1AF7YCvIKWbMDqeHpS3lPwmHnkUywq/Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=l6PXw7d+6XejWOxznP3HgAd5a4vWxPjOHlS1VlPo5AEXBviuOgD9gY65nSRtJXG68yIMVAMW65qT+do7Lx962TPxAhMWeQ0nPTm817lMg3bcwLaJiNrE+srRPbP8oJewrskhZLRB8DQsjt7kqah42DZxEAjlQpR52uIWN3X4iAr5UfalIvaU30joK7H9eLdtUKktekper0aRLS6mthG+EXpy37IrDSjqNsM7Djj3UYKgC4OpkRKV0dVEfjsGfvHWNHZJTAsluteh00haypywNpz1KxJnuH8XsUwFdyxFUL1HH+LDneJ2XA//tWPJP8kgIgP2NbqcVS7PfSEgI9EzxA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=KFExR3Z0; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=slvvGPaA; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=wmLzUqry;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8B2uogma;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=QMCwjEci;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=g8B+pbcD;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=KFExR3Z0;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=slvvGPaA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=anna-maria@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRpcj4Xq0z3bjH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 18:23:48 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7EC6F1FE70;
-	Mon, 14 Oct 2024 07:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1728890623; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nTA5yF9Sm4WYFWyv5NEJ9W7uWongasQxrKyS3T0wnGY=;
-	b=wmLzUqryu3+nu0aNPmIgUdCxxlbRHOaCJJ4aW9nWIgcapbvVnW74biH9zM3YJkQMjKCHYB
-	hc1jUsv7hXESXivGqRZ4YAnjS5V/Le2fIhz5vODPPjWL4mSH9F9Wdct9PFP+LoIVPPmIEU
-	/SEV9LNH8H0kx2LuAVzK2bgIqUL6RkM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1728890623;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nTA5yF9Sm4WYFWyv5NEJ9W7uWongasQxrKyS3T0wnGY=;
-	b=8B2uogmaifx6kPuAsihSTzWy0QBrq+cF7POR+Pr/Cl9ueWu9m2t9MzfV8wTlTjwt9DYtxg
-	sSnJ+OXT/eVGeaCw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QMCwjEci;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g8B+pbcD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1728890622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nTA5yF9Sm4WYFWyv5NEJ9W7uWongasQxrKyS3T0wnGY=;
-	b=QMCwjEciPq5R0jBPJdRjEpJ/csX3Q7YjoU/85baaqJoQCCcmQ0mE+g4DNyqQvkBpBQ4cmG
-	Ml2ePeKj68qciYOP27ynh5aZSl7EtTm9pXwu9rHzPt9G40DOf0ahiGhog737qaPxm6fGp2
-	AdrsH/opBXRhTcPxhY2gy2rpTxCWnwo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1728890622;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nTA5yF9Sm4WYFWyv5NEJ9W7uWongasQxrKyS3T0wnGY=;
-	b=g8B+pbcDY+qZRoZvnqEkFaX+4cXbtvavIpxDcqX/yUW2vdAoQAO0k1koTozPbfxsP0I1Yr
-	cpc3DFoYSX+4TRCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4D5BD13A51;
-	Mon, 14 Oct 2024 07:23:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id m4WMEv7GDGeZXAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 14 Oct 2024 07:23:42 +0000
-Message-ID: <9312d41b-9d84-4ff1-a33c-e4c2b496bd10@suse.cz>
-Date: Mon, 14 Oct 2024 09:23:41 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRqwq6hCDz2ysv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 19:22:51 +1100 (AEDT)
+From: Anna-Maria Behnsen <anna-maria@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1728894163;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6HOwNsVm5tP1AF7YCvIKWbMDqeHpS3lPwmHnkUywq/Y=;
+	b=KFExR3Z0ch2CGjb8uZF385NycoNtXWJ52MR/i19uWkoHR73ejXuX4GOFPDZJchSNKxN0YH
+	9H09dQgIFLN0XYA0sRa7f+Jg744VoU+FWRipA2zenwRVFWf0noRuToPCIoq/ePHjxWarJ9
+	SqjMIQ2OJJIQc/JlGoQcr7qn+Ztcb5Wog63TpXuR+uMIcDwA7z6B2gog9Q3SVmAY2bikFt
+	mRj2dJa9yDAlHsRKp62fLCoRoJ4uho0BgHGrPNhLu+s/+D79MQkDsckRZ1I3/nd5V/0BHs
+	FuKX3H4yatjIlK09dEr8+nGf1DKjJ0qQxyhRK9NozUQLqHSQ76Lx7voiR0M2tA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1728894163;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6HOwNsVm5tP1AF7YCvIKWbMDqeHpS3lPwmHnkUywq/Y=;
+	b=slvvGPaAqPFHoRdnXnb5CSGotI1RmGRgBCGz97ighCehiyEF+E9aEDo3bB0d+pbkk/R91i
+	aaXfQVNhvqPTH6BA==
+Subject: [PATCH v3 00/16] timers: Cleanup delay/sleep related mess
+Date: Mon, 14 Oct 2024 10:22:17 +0200
+Message-Id: <20241014-devel-anna-maria-b4-timers-flseep-v3-0-dc8b907cb62f@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,119 +60,123 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/17] replace call_rcu by kfree_rcu for simple
- kmem_cache_free callback
-Content-Language: en-US
-To: Julia Lawall <Julia.Lawall@inria.fr>, linux-nfs@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org, paulmck@kernel.org,
- Tom Talpey <tom@talpey.com>, Dai Ngo <Dai.Ngo@oracle.com>,
- Olga Kornievskaia <okorniev@redhat.com>, Neil Brown <neilb@suse.de>,
- linux-can@vger.kernel.org, bridge@lists.linux.dev,
- b.a.t.m.a.n@lists.open-mesh.org, linux-kernel@vger.kernel.org,
- wireguard@lists.zx2c4.com, netdev@vger.kernel.org, ecryptfs@vger.kernel.org,
- linux-block@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org
-References: <20241013201704.49576-1-Julia.Lawall@inria.fr>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
- AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJkBREIBQkRadznAAoJECJPp+fMgqZkNxIQ
- ALZRqwdUGzqL2aeSavbum/VF/+td+nZfuH0xeWiO2w8mG0+nPd5j9ujYeHcUP1edE7uQrjOC
- Gs9sm8+W1xYnbClMJTsXiAV88D2btFUdU1mCXURAL9wWZ8Jsmz5ZH2V6AUszvNezsS/VIT87
- AmTtj31TLDGwdxaZTSYLwAOOOtyqafOEq+gJB30RxTRE3h3G1zpO7OM9K6ysLdAlwAGYWgJJ
- V4JqGsQ/lyEtxxFpUCjb5Pztp7cQxhlkil0oBYHkudiG8j1U3DG8iC6rnB4yJaLphKx57NuQ
- PIY0Bccg+r9gIQ4XeSK2PQhdXdy3UWBr913ZQ9AI2usid3s5vabo4iBvpJNFLgUmxFnr73SJ
- KsRh/2OBsg1XXF/wRQGBO9vRuJUAbnaIVcmGOUogdBVS9Sun/Sy4GNA++KtFZK95U7J417/J
- Hub2xV6Ehc7UGW6fIvIQmzJ3zaTEfuriU1P8ayfddrAgZb25JnOW7L1zdYL8rXiezOyYZ8Fm
- ZyXjzWdO0RpxcUEp6GsJr11Bc4F3aae9OZtwtLL/jxc7y6pUugB00PodgnQ6CMcfR/HjXlae
- h2VS3zl9+tQWHu6s1R58t5BuMS2FNA58wU/IazImc/ZQA+slDBfhRDGYlExjg19UXWe/gMcl
- De3P1kxYPgZdGE2eZpRLIbt+rYnqQKy8UxlszsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
- J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
- /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
- IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
- X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
- wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
- PVAiT6fnzIKmZAUCZAUSmwUJDK5EZgAKCRAiT6fnzIKmZOJGEACOKABgo9wJXsbWhGWYO7mD
- 8R8mUyJHqbvaz+yTLnvRwfe/VwafFfDMx5GYVYzMY9TWpA8psFTKTUIIQmx2scYsRBUwm5VI
- EurRWKqENcDRjyo+ol59j0FViYysjQQeobXBDDE31t5SBg++veI6tXfpco/UiKEsDswL1WAr
- tEAZaruo7254TyH+gydURl2wJuzo/aZ7Y7PpqaODbYv727Dvm5eX64HCyyAH0s6sOCyGF5/p
- eIhrOn24oBf67KtdAN3H9JoFNUVTYJc1VJU3R1JtVdgwEdr+NEciEfYl0O19VpLE/PZxP4wX
- PWnhf5WjdoNI1Xec+RcJ5p/pSel0jnvBX8L2cmniYnmI883NhtGZsEWj++wyKiS4NranDFlA
- HdDM3b4lUth1pTtABKQ1YuTvehj7EfoWD3bv9kuGZGPrAeFNiHPdOT7DaXKeHpW9homgtBxj
- 8aX/UkSvEGJKUEbFL9cVa5tzyialGkSiZJNkWgeHe+jEcfRT6pJZOJidSCdzvJpbdJmm+eED
- w9XOLH1IIWh7RURU7G1iOfEfmImFeC3cbbS73LQEFGe1urxvIH5K/7vX+FkNcr9ujwWuPE9b
- 1C2o4i/yZPLXIVy387EjA6GZMqvQUFuSTs/GeBcv0NjIQi8867H3uLjz+mQy63fAitsDwLmR
- EP+ylKVEKb0Q2A==
-In-Reply-To: <20241013201704.49576-1-Julia.Lawall@inria.fr>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 7EC6F1FE70
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,talpey.com,oracle.com,redhat.com,suse.de,lists.linux.dev,lists.open-mesh.org,lists.zx2c4.com,gmail.com,csgroup.eu,linux.ibm.com,lists.ozlabs.org,netfilter.org];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:email,suse.cz:dkim,suse.cz:mid]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-B4-Tracking: v=1; b=H4sIALnUDGcC/5XNSw6CMBSF4a2Qjr2mD1515D6MgwIXuQkU0mKDI
+ ezdwsjEiQ7/M/jOyjw6Qs8uycocBvI02hjqlLC6M/aBQE1sJrlMueYpNBiwB2OtgcE4MlClMNO
+ AzkPbe8QJSlVmWshK57pk0ZkctrQcH7d77I78PLrXcRnEvv6jBwEcUJdFzmWWq4Jfe7LP2Y2Wl
+ nODbH8I8kMV4hdVRrXijWqVqusWv9Rt295y1hsLLAEAAA==
+To: Frederic Weisbecker <frederic@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
+ Alice Ryhl <aliceryhl@google.com>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+ damon@lists.linux.dev, linux-mm@kvack.org, SeongJae Park <sj@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Andy Whitcroft <apw@canonical.com>, 
+ Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ netdev@vger.kernel.org, linux-sound@vger.kernel.org, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch <nathanl@linux.ibm.com>, 
+ linuxppc-dev@lists.ozlabs.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ linux-media@vger.kernel.org, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 10/13/24 22:16, Julia Lawall wrote:
-> Since SLOB was removed and since
-> commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
-> it is not necessary to use call_rcu when the callback only performs
-> kmem_cache_free. Use kfree_rcu() directly.
-> 
-> The changes were done using the following Coccinelle semantic patch.
-> This semantic patch is designed to ignore cases where the callback
-> function is used in another way.
+Hi,
 
-Thanks, LGTM!
+a question about which sleeping function should be used in acpi_os_sleep()
+started a discussion and examination about the existing documentation and
+implementation of functions which insert a sleep/delay.
 
-For the series:
+The result of the discussion was, that the documentation is outdated and
+the implemented fsleep() reflects the outdated documentation but doesn't
+help to reflect reality which in turns leads to the queue which covers the
+following things:
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+- Split out all timeout and sleep related functions from hrtimer.c and timer.c
+  into a separate file
+
+- Update function descriptions of sleep related functions
+
+- Change fsleep() to reflect reality
+
+- Rework all comments or users which obviously rely on the outdated
+  documentation as they reference "Documentation/timers/timers-howto.rst"
+
+- Update the outdated documentation and move it into a file with a self
+  explaining file name (as there are no more references)
+
+- Remove checkpatch checks which also rely on the outdated documentation
+
+The queue is available here:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/anna-maria/linux-devel.git timers/misc
+
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+---
+Changes in v3:
+- Add review remarks
+- Split checkpatch patch: 1. Remove links to outdated documentation,
+  2. Remove checks in checkpatch which rely on outdated documentation
+- Link to v2: https://lore.kernel.org/r/20240911-devel-anna-maria-b4-timers-flseep-v2-0-b0d3f33ccfe0@linutronix.de
+
+Changes in v2:
+- change udelay() and ndelay() as suggested by Thomas
+- Update some formatting in the new sleep_timeout.c file
+- minor typo changes and other small review remarks
+
+Thanks,
+
+        Anna-Maria
+
+---
+Anna-Maria Behnsen (16):
+      MAINTAINERS: Add missing file include/linux/delay.h
+      timers: Move *sleep*() and timeout functions into a separate file
+      timers: Update schedule_[hr]timeout*() related function descriptions
+      timers: Rename usleep_idle_range() to usleep_range_idle()
+      timers: Update function descriptions of sleep/delay related functions
+      delay: Rework udelay and ndelay
+      timers: Adjust flseep() to reflect reality
+      mm/damon/core: Use generic upper bound recommondation for usleep_range()
+      timers: Add a warning to usleep_range_state() for wrong order of arguments
+      checkpatch: Remove links to outdated documentation
+      regulator: core: Use fsleep() to get best sleep mechanism
+      iopoll/regmap/phy/snd: Fix comment referencing outdated timer documentation
+      powerpc/rtas: Use fsleep() to minimize additional sleep duration
+      media: anysee: Fix and remove outdated comment
+      timers/Documentation: Cleanup delay/sleep documentation
+      checkpatch: Remove broken sleep/delay related checks
+
+ Documentation/dev-tools/checkpatch.rst         |   6 -
+ Documentation/timers/delay_sleep_functions.rst | 121 ++++++++
+ Documentation/timers/index.rst                 |   2 +-
+ Documentation/timers/timers-howto.rst          | 115 --------
+ MAINTAINERS                                    |   2 +
+ arch/powerpc/kernel/rtas.c                     |  21 +-
+ drivers/media/usb/dvb-usb-v2/anysee.c          |  17 +-
+ drivers/regulator/core.c                       |  47 +--
+ include/asm-generic/delay.h                    |  96 +++++--
+ include/linux/delay.h                          |  79 ++++--
+ include/linux/iopoll.h                         |  52 ++--
+ include/linux/phy.h                            |   9 +-
+ include/linux/regmap.h                         |  38 +--
+ kernel/time/Makefile                           |   2 +-
+ kernel/time/hrtimer.c                          | 120 --------
+ kernel/time/sleep_timeout.c                    | 377 +++++++++++++++++++++++++
+ kernel/time/timer.c                            | 192 -------------
+ mm/damon/core.c                                |   5 +-
+ scripts/checkpatch.pl                          |  38 ---
+ sound/soc/sof/ops.h                            |   8 +-
+ 20 files changed, 704 insertions(+), 643 deletions(-)
 
 
