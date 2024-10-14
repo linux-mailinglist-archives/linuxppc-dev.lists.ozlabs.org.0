@@ -1,98 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-2182-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2184-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE40999BF91
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 07:56:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C99399BFD1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 08:10:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRmgd2g3kz2yFP;
-	Mon, 14 Oct 2024 16:56:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRn0P1glRz3bft;
+	Mon, 14 Oct 2024 17:10:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728885373;
-	cv=none; b=Urvnyl60UsrGlepF4KUicAqwJpaYZmgWqyXi+gL9DzFc3HRZovjbGFMB09DNpwMBXNZykYp9kAkT5zfxiZtudijIIroLEZMpSu5e1lVL8VfI1u1z9biHSCUVx0SNCg4PWYTHJN+/klbN20TajRb4D/vYryfNWi8/qVRZsJdTeAGkY/NXHQoSXT3AXMWkYr7xiKct3cuBD0edrMaVumDJW4kkG1olYYS0ck3YBX/BnFPMpamvo6pecb4sA4xlWgYWmJo+EimLno8Tc3NnBqjM7kd4sIZLjltlZ/d9iZu6xGqvM+mlB3hoL+KGroupXS70aU6353tSh3x7T/B/dS7O9w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728886245;
+	cv=none; b=ODEP60gDFTO5JAu8b/dlT3SDstEwCELqR4KluwIJ6D5VSmWKzgpDzv8WYaD/Akuc0/j/Zuf8eWf2U9/K5Y4JgWXe3F7HltsT6pUua3DNbojv81DH9Yer7wXFrnpG1b7ZEqlbl79Qm2GT88u7yUjHLsj5pkXDK7wBGKLDLPpw0VTXguEExOQPBS+BrrN0QVFVEPbXpnb5uR4LYmIijwbuxXhzuTwLa+gzg7oGxIT2eeGPSqrwGqu6gGRKO9brZ1t422n8B0/M/nbaYwFjt5ofX+7txJQDURY9mQqjtJpuv6uy+jsCuxJEf/OihGFiIcdjPGBpqkw3AHrUomhYs10kuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728885373; c=relaxed/relaxed;
-	bh=Go+Bj6RO5KoE/9AfXdF5E8AJBwbpjnqmhBNe3btI6Rc=;
+	t=1728886245; c=relaxed/relaxed;
+	bh=VXl8K9R+AsPQzajgHopX1HC5YVYkDkfG3JHXOUDVO0w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZsKumzhEvcSvA2emcKdPQzrMCr9CjdfeZ4a7sRkcqX4ezkqYozC0kYlTDBHw/iSIcFXTG4jugTumEvHd5sCuYyK6zAqaDEnBa7T8cQfVwE6lbt7gfUhV6OmEgUmJFX+ppoqBllr8FazpAshF1t0Dy2H4rIRgwkG1Q2DHbBte+vD9y1Xflr35CCQs8JG3tB//t47bMaQZ9hb/lkQCi2cRyFmCq4Ij3Qb041OlUNpDSvbY12YQD4nMDM4Kllm+KtCFcbH4KTRZ7m8XFYtkVKGv4SiplTk6OwlANyaqIzmgZJlxfkP17T2RBW2prCi81XRuDxBDaTf4ebOAuCz7h4y0LQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+f913630adc52fe272e7a+7722+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+f913630adc52fe272e7a+7722+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	 Content-Type:Content-Disposition:In-Reply-To; b=JPMNOCJeegoR1UjQM7yQqhHFJ/UJTmepBYp9Gxfxay1pS2YYoxgMXZGmpZiWG+7fKSJbEKcnIeZb/GZsZjL+BmOmzhkZ85zbH5Xgt/2G6Fuub7Ef6R7EyX9wSHv4EA3Ep9FrU4044/VM6Rq/orvWobibd94IcsbL63x8bj7Z5c46soay817LDlPkxhkDSY0eNCZcsHJqejjg5UmE8aqYhMtXiccKJE5dbF1/XAAhDKz9hpZS6HLH2DwYriZ6or7M0JYS1pKhje1/a0SI9esvCGdRiNtc61SGZqzO/1oQZ2IC/mvAP+SpuCvcP6wJTgjKmbO3DOONg0jCUsjuzr2x3g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=e5kxh8wd; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=e5kxh8wd;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRmgT5n00z2yFK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 16:56:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Go+Bj6RO5KoE/9AfXdF5E8AJBwbpjnqmhBNe3btI6Rc=; b=UPElqyPBVcONi79QDgqannuJ8k
-	ekzP13+lCLTRhjd0RsBuUuriQn6L1+7+jerZ1u5Al3QyEt2FMS6WglOqiIYRCPC95h6PrTwqF1ts1
-	PWmrnzZCq2mL/K2dLXqaDd0RIfbpc0hidVHfW0hcI22NMksrAuiLCJAmBG9DiAs7alHiLyDNNsuur
-	7HBzQHoIIH7RZPA4xv39sBtQ8TSlScwbjH674t/7hgNk4DsM7Le91HXSmKrDHUWLH9r8jJFF0mMPK
-	mItE7VNi3UiGgVL10orTJc1Q65Ko0/nDG04GKlm2B+fPRKXh4xsGm9A5xgah8WKUspiWy5w5SGuhw
-	kNW8vO1A==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1t0E3B-00000003o4s-2PYe;
-	Mon, 14 Oct 2024 05:55:25 +0000
-Date: Sun, 13 Oct 2024 22:55:25 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-	Brian Cain <bcain@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRn0M52Bvz3bdX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 17:10:42 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id C73955C5990;
+	Mon, 14 Oct 2024 06:10:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44453C4CEC3;
+	Mon, 14 Oct 2024 06:10:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728886239;
+	bh=vtOULXzKh1W2zjoRRH7MNf2bpYcEKecnN3dY3aNLMSE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e5kxh8wdesQJ0pTug01/NkZeExuwthoVgZUktUVr+s/szlFweo7jeFGN5DGAw641X
+	 1HqC/vulNeN0xjiBXuGBENKV/QLDFKwV/tobl31ROkTUGKA/9r+x/rAa1R/qNGU/b1
+	 mJIYxxMrwmdXVJ2c+gJB78DB7j/keAhi5pGYExM4=
+Date: Mon, 14 Oct 2024 08:10:37 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
 	Palmer Dabbelt <palmer@dabbelt.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
-	Stafford Horne <shorne@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
-	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v5 7/8] execmem: add support for cache of large ROX pages
-Message-ID: <ZwyyTetoLX7aXhGg@infradead.org>
-References: <20241009180816.83591-1-rppt@kernel.org>
- <20241009180816.83591-8-rppt@kernel.org>
- <Zwd7GRyBtCwiAv1v@infradead.org>
- <ZwfPPZrxHzQgYfx7@kernel.org>
- <ZwjXz0dz-RldVNx0@infradead.org>
- <ZwuIPZkjX0CfzhjS@kernel.org>
+	Albert Ou <aou@eecs.berkeley.edu>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH] tty: hvc: riscv_sbi: instantiate the legcay console
+ earlier
+Message-ID: <2024101402-starlet-riverside-02d4@gregkh>
+References: <20241014000857.3032-1-jszhang@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,20 +64,88 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZwuIPZkjX0CfzhjS@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.0
+In-Reply-To: <20241014000857.3032-1-jszhang@kernel.org>
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Oct 13, 2024 at 11:43:41AM +0300, Mike Rapoport wrote:
-> > But why?  That's pretty different from our normal style of arch hooks,
-> > and introduces an indirect call in a security sensitive area.
+On Mon, Oct 14, 2024 at 08:08:57AM +0800, Jisheng Zhang wrote:
+> The hvc_instantiate() is an early console discovery mechanism, it is
+> usually called before allocating hvc terminal devices. In fact, if
+> we check hvc_riscv_sbi's hvc_instantiate() return value, we'll find
+> that it's -1. So the calling hvc_instantiate() is too late.
 > 
-> Will change to __weak hook. 
+> We can remove the hvc_instantiate() to only rely on the hvc_alloc() to
+> register the kernel console. We can also move its calling earlier so
+> the kernel console is registered earlier, so that we can get kernel
+> console msg earlier. We take the 2nd choice in this patch.
+> 
+> Before the patch:
+> [    0.367440] printk: legacy console [hvc0] enabled
+> [    0.401397] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+> 
+> After the patch:
+> 
+> [    0.004665] printk: legacy console [hvc0] enabled
+> [    0.050183] Calibrating delay loop (skipped), value calculated using timer frequency.. 20.00 BogoMIPS (lpj=100000)
+> 
+> As can be seen, now the kernel console is registered much earlier before
+> the BogoMIPS calibrating.
+> 
+> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 
-Isn't the callback required when using the large ROX page?  I.e.
-shouldn't it be an unconditional callback and not a weak override?
+What commit id does this fix?
 
+> ---
+>  drivers/tty/hvc/hvc_riscv_sbi.c | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/tty/hvc/hvc_riscv_sbi.c b/drivers/tty/hvc/hvc_riscv_sbi.c
+> index cede8a572594..d2ecfbf7c84a 100644
+> --- a/drivers/tty/hvc/hvc_riscv_sbi.c
+> +++ b/drivers/tty/hvc/hvc_riscv_sbi.c
+> @@ -68,12 +68,10 @@ static int __init hvc_sbi_init(void)
+>  		err = PTR_ERR_OR_ZERO(hvc_alloc(0, 0, &hvc_sbi_dbcn_ops, 256));
+>  		if (err)
+>  			return err;
+> -		hvc_instantiate(0, 0, &hvc_sbi_dbcn_ops);
+>  	} else if (IS_ENABLED(CONFIG_RISCV_SBI_V01)) {
+>  		err = PTR_ERR_OR_ZERO(hvc_alloc(0, 0, &hvc_sbi_v01_ops, 256));
+>  		if (err)
+>  			return err;
+> -		hvc_instantiate(0, 0, &hvc_sbi_v01_ops);
+>  	} else {
+>  		return -ENODEV;
+>  	}
+> @@ -81,3 +79,18 @@ static int __init hvc_sbi_init(void)
+>  	return 0;
+>  }
+>  device_initcall(hvc_sbi_init);
+> +
+> +static int __init hvc_sbi_console_init(void)
+> +{
+> +	int err;
+> +
+> +	if (sbi_debug_console_available)
+> +		err = hvc_instantiate(0, 0, &hvc_sbi_dbcn_ops);
+> +	else if (IS_ENABLED(CONFIG_RISCV_SBI_V01))
+> +		err = hvc_instantiate(0, 0, &hvc_sbi_v01_ops);
+> +	else
+> +		return -ENODEV;
+> +
+> +	return err < 0 ? -ENODEV : 0;
+
+Please spell out a ? : line, it's not required here.
+
+> +}
+> +console_initcall(hvc_sbi_console_init);
+
+Are you sure this will always work properly?  For some reason the
+original code did not do this, you might want to check the
+lore.kernel.org archives to find out why.
+
+thanks,
+
+greg k-h
 
