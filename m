@@ -1,52 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-2206-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2208-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5155B99C775
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 12:48:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E6899C7AD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 12:55:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRv8q3nPWz3bnK;
-	Mon, 14 Oct 2024 21:48:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRvJh29G7z3bjk;
+	Mon, 14 Oct 2024 21:55:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728902907;
-	cv=none; b=burshhVOC3M2hRpHHchSdkSz1AuyHXGuZlLZbQSddTdttz1aL/cKiyLE3syvaIXoJO7pki7YWllncTBD966XWCRnfiprmc4fpa/t89YlC97ER5l0YW127m7m8PMOHrflBb26jfCrH7J4vAT0mCjCph0qNvknZtnsuwSfcQ3FsQOF0PgtA7njNcu28t/nUD/Y+oDszR6LbbGw92zoNAd/vjKXI3IvTpgOLsmX6O2ukY/qV3G4s10RgcGc5oNckOULi/A0QVO5DO4dhEsR/YhxBVtv8oaoHObazlBUd9vK7QWnnCF9suy8S6KL49ZxlFgXzPP9zTLJNdUfs08hlUw3pA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728903316;
+	cv=none; b=kOrf5JcVXnnyELlSvG9agTZaW8KZbtrIPIyr5QqJ6bpcVWslDQVX5XCz6Bioowq5xci/9hV5OwCRMJCz74S6jvIFBKqzpo15d5F7rRPqraVD1SU43aWquKAuXhjeW6p/a8tKjAngp1rfqLPe7zbz7wqJvxSf+EReXE8d+HX3E+5o4FU8IfryafCKmJTsGGq81DU4EU4RC7Hod6lJ8/vX88d24f6RL3NrCCN20X3g7K/vwbS1/D15uHoaVijFSvL2lJTHjRKBO2n1aeOJVCmZxvbP7kcRj7UH2aMgtudCLi0tUBAU28ki5grG9hhEFHrO9rAq3zxTOy6S5x7FvFfzEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728902907; c=relaxed/relaxed;
-	bh=9C6g7Ed9Tz5VafM3PzYV8kPI7hGqBVVAbjMKqSOhmsQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iT5eP/tc36+ZIIjcMqopGJeh4QDziHbMpeLnPr1g1QCn/b1W6huUbIcqhjfPfAh8SX520DZ12BAUPJJc9hXdEDT7xpVvfezCphSRW2k2T60lin8FPfZ6hii3SccryIBcCNWDr4l40g/GdQNvV+NRoce7e5afScZuTnAcwVn4WESA1Quq/5pJs6HdOS4NecZBL+iwFvLWRCyUW5lPEs4ufu5wkvHIXESdhmRL4cHPNsU1w9BALl0lTTsz8jHwjCXOtsY1KjRh3EwtbUI/BgiYXmJU1VnGgFY8mreqka9Jmyk9T70r/0DfYUJyY47QVEEJ38iJx2wPyl9kAalAsA16eQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UOxdL/l6; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1728903316; c=relaxed/relaxed;
+	bh=CIu0JxHhUec4RbFeJMvbhmilsnzMc5OeXCLuzPxXGKA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FkQyeM3nczqBcR1sFvvm0Z2lV7lYzXNgl1EjJwUBsMgFodXOuKuswzo+HTlTXJLkbt1aQA8qwuQB2vN/g24GhWOlXHQkEexJM8S/uKl3ktjwBCk3rDIWazH53dSw8a65F9/iXQFmYPfOjP8rwCc0C4x1SZXtfFG9oDgr6pgmbvB6P8hQ512Zw6N/PMDQIluGLla72MemBq3PONukUwAEpTnDziITMo9SbQ0Hv4HvXVlKpzw+HuwAMRKPxkt52/lebhufw/kETa5nXid9AY76Z9jAyh+fJsFsSqqQmLid0uSIB4SZCe4mnY4npUHEf33Lk6CLKbpfTuAkvbFGKcNPUg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aFXY5Gvt; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UOxdL/l6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aFXY5Gvt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRv8p63dBz3bnJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 21:48:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRvJg2Z9Dz2xwc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 21:55:15 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id E1039A419DF;
-	Mon, 14 Oct 2024 10:48:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078D3C4CEC7;
-	Mon, 14 Oct 2024 10:48:22 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id B2D8F5C51B4;
+	Mon, 14 Oct 2024 10:55:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BB3C4CEC3;
+	Mon, 14 Oct 2024 10:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728902904;
-	bh=3hLRauEYwJEHZvSFb0NBFQDokIr/VyMCsk6KndYmcGw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=UOxdL/l6+O2m79yN4Mo15zkbT55iP9G4BYeazux6JHcS0srxQr8YKSiXgDl18+HrU
-	 AvfZHqZn7lyMIABT6GAhK5JiXdf3OTBDM/m4WAdGT8uNcEFKG+z3H+q8EjoRY+wC1B
-	 NJfSWO2i/EhaYtZ7HlHsLuNKZvdHrwcgp29Iu0YnFmXc6QPNgkgx3Zd3clG0M5He7s
-	 lvmX3v/HX33pgX9vxIhhFHzAJ3eAx32gl8o0f3FWZ7ca/hlICnL1ByuOfuiJNegDWW
-	 1YHJjQ9Rr89LffyjCfivU5RmG8lb0kqAoM6ZAw75YfGt54SpVyZDG3pA+/ekT3FYaA
-	 kmyI8fEY4uPTg==
+	s=k20201202; t=1728903312;
+	bh=JZRu3YtZSgX6GgIUaKBeJSPONrhupGTupYRFhNECIfc=;
+	h=From:Date:Subject:To:Cc:From;
+	b=aFXY5Gvt/KKjz3WCSRzB+z/ukikO7VrXzszKlgqzHxOT1l0LWTUw32WaIpuLbk65k
+	 Gqmgp4weSDgyalECvAeEFEPmq2tw6M1FaKdXJUi6+NttPkbWmlkPPN1cGOJsr1unD4
+	 7xmYUd0USAHQquuxT0P0s/JJ+Yl/d05lCwWVfbDRkd7DGm6u/4c+pB9OfGL0lvbmt+
+	 xjkKZnDgmG5sjMd03G4tlHEmiKEiC9GN3+Wytk/Pvb/3xunWYt0GoTALEohpUodlPl
+	 bzImFMzr3P4CrylRh4anhIZEkWcUagawwrNvx3o9gmu9NtcpAUpubbsjPE4JScQupy
+	 g+HcfdsFc3Saw==
 From: Simon Horman <horms@kernel.org>
-Date: Mon, 14 Oct 2024 11:48:08 +0100
-Subject: [PATCH 2/2] net: ethernet: fs_enet: Use %pa to format
- resource_size_t
+Date: Mon, 14 Oct 2024 11:55:03 +0100
+Subject: [PATCH] powerpc/ep8248e: Use %pa to format resource_size_t
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,19 +56,20 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org>
-References: <20241014-net-pa-fmt-v1-0-dcc9afb8858b@kernel.org>
-In-Reply-To: <20241014-net-pa-fmt-v1-0-dcc9afb8858b@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Pantelis Antoniou <pantelis.antoniou@gmail.com>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Message-Id: <20241014-ep8248e-pa-fmt-v1-1-009ea0dcc18f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAIb4DGcC/x3MQQ5AMBBA0avIrE3SVsVwFbEopswCTSsiEXfXW
+ L7F/w8kjsIJuuKByJckOfYMXRYwrW5fGGXOBqOM1Upb5EDGEmNw6LcTq5bGph5JteQhRyGyl/s
+ f9sP7fvDVtr1gAAAA
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, 
+ linuxppc-dev@lists.ozlabs.org
 X-Mailer: b4 0.14.0
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 The correct format string for resource_size_t is %pa which
@@ -81,10 +80,9 @@ acts on the address of the variable to be formatted [1].
 Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
 
 Flagged by gcc-14 as:
-
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+arch/powerpc/platforms/82xx/ep8248e.c: In function 'ep8248e_mdio_probe':
+arch/powerpc/platforms/82xx/ep8248e.c:131:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+  131 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
       |                                             ~^   ~~~~~~~~~
       |                                              |      |
       |                                              |      resource_size_t {aka long long unsigned int}
@@ -95,27 +93,24 @@ No functional change intended.
 Compile tested only.
 
 Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Link: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
 Signed-off-by: Simon Horman <horms@kernel.org>
 ---
- drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+ arch/powerpc/platforms/82xx/ep8248e.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-index e6b2d7452fe7..66038e2a4ae3 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-@@ -123,7 +123,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
- 	 * we get is an int, and the odds of multiple bitbang mdio buses
- 	 * is low enough that it's not worth going too crazy.
- 	 */
+diff --git a/arch/powerpc/platforms/82xx/ep8248e.c b/arch/powerpc/platforms/82xx/ep8248e.c
+index 3dc65ce1f175..8f918916e631 100644
+--- a/arch/powerpc/platforms/82xx/ep8248e.c
++++ b/arch/powerpc/platforms/82xx/ep8248e.c
+@@ -128,7 +128,7 @@ static int ep8248e_mdio_probe(struct platform_device *ofdev)
+ 
+ 	bus->name = "ep8248e-mdio-bitbang";
+ 	bus->parent = &ofdev->dev;
 -	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
 +	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
  
- 	data = of_get_property(np, "fsl,mdio-pin", &len);
- 	if (!data || len != 4)
-
--- 
-2.45.2
+ 	ret = of_mdiobus_register(bus, ofdev->dev.of_node);
+ 	if (ret)
 
 
