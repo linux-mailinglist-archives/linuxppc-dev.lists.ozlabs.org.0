@@ -1,60 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-2238-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2239-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43A899D5AB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 19:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFCB899D5B7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 19:43:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XS4GH3VKMz3c20;
-	Tue, 15 Oct 2024 04:38:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XS4MY2mSdz3c2R;
+	Tue, 15 Oct 2024 04:43:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728927527;
-	cv=none; b=PjoC/lZ7BwRlrZW9GUo0DLPK7QIEcrkCtKoTz6f7bdelFCik2GCEOupT6/vIXK1pcG65+kYv0R70oJbttU+Ga60B1U1Z0V6K4SKw3e/uk52utsRFRrHoZpO+MR9wWH6xdlNYqf8YlNyx4+pvdbZ51CXY+fpEPVpsi0SBrsNiGrXZPzT9BT3SjzjbC4PvSfUS2a70yvgZNy04/GvwZ+MnDKjZOt8aoL/cEBjM1HS2r9iud3iZo+2hwjVsuf+9Sa+lpG+Y170uKVVX/Vkj8UjHdQFoPcCidqmJptPRA9PR/97Y2iQI4XXH6+nUzxftEHTCiHWYyLhRjARVTqJNUCc20w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728927801;
+	cv=none; b=WSKUApGn7Qp7BFYaPLUEOH5DsEtTyRdKxBxrSZn6pyexnwpK0H/Rugfkt+lM7A/XiFsh+7X5NQDeZ+Y4qYqKGRmCyJIRrfMLSQQoPGwr59hc/a8/WrBABcNcsxAAB2F5uMlhVeHtaIZUmDyO6H5JOqVUKQ9mVwZHCFRNTSHXWSVoWb4vG1jDrGveNCLoYht/WpS+/OC6wlEUYb1C+DSZk0IpmuYxrQ/cSFbgnph/mhj5U8tQxufZSIonvEuVr7JVfmdiy+oXJkBzVyCqfajvbrj/n+qVqAkRrr4WpJdKw3NRMe32Qt0h4xEUaVH/5Ay013+un6cHvE1uIJT3NAJ0kw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728927527; c=relaxed/relaxed;
-	bh=/L4p0nIt1oR33mhPM0DQ7ujeCnUY4xMuTMr8Nw448w4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DO+4bMw6+7MH03CoBYKoJpG8FosRjUMYXFt5pCiyYCi3XKme9XhAYxiify4nDJzldXyHuqAZfk3IZogB8EkejUnukWNXhb8jUWMdyOakL3oBLnUde7R9YrPD3PKPrNJ7nHuqD00lFGTYtDC50mWfGxNFKmCteWZm5Up12w+PVTAzlJjy1uOwKNWPd6C8J7FJ+nsIcI35Q6I/cAF80W471953hqS7QY2yoRu8VIxD6Q+u9JKxEEE/7PlrsHDcicKqTkF/JYjA/Z0OuJxJZQxIknHB0Rbvy0cCGYn5oNnSl81VgAj2Bwjys3u5zcY7hLAk5FwJ5umCyUjcxma7z8zlog==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LuKrQw1j; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1728927801; c=relaxed/relaxed;
+	bh=+pWpSEvrN7/T0m/z/kjxc9+MdXShwgRoAXLi5Y+0nKg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=UuHkoCGA742nIQtxViR1bG/MZKjVTsCYIwQbnPdZgeph5LLmqf2xhfKkInzhwopVUJU0KntcJ5hlhyixOAzjobreImViS8QuPZ2jfprig1FIPSEF39CLhahNgTig4POhitJXtn/LvyamAWEv7ybUSVGlR5Fi2uwtccgj4NtY1OlVl2HUSchybOoVj+aRSIIfVAkPprwcJ1hyyiEOTHV4bAolkLZ1hUwiSkd+oTm1fb1fpTr4f0W+mtG7IazU9iUchyaE9PIBkNC9nChwZTr56NffqbXw0RlHqmsgKqHHuv8jP8AxjCyoY5iQKrf4IWTi5iRuF3jifpJEhRdB0A7hMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pZyOhDmn; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LuKrQw1j;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pZyOhDmn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XS4GF5ptcz3c1D
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 04:38:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XS4MX1qwtz3c1D
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 04:43:20 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 3896FA41E59;
-	Mon, 14 Oct 2024 17:38:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF80C4CEC3;
-	Mon, 14 Oct 2024 17:38:42 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 6B9CE5C06F4;
+	Mon, 14 Oct 2024 17:43:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237B1C4CEC3;
+	Mon, 14 Oct 2024 17:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728927522;
-	bh=h3AfZDau91v/BeVAnuirS8TjaRO6qVmsdirabWbcECg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LuKrQw1j2XgaIHbLmWq9Ozp6w8vi7gRxJN51BkRIoG4dekTDoeEgXvnatxizpvL2Y
-	 RpcxPiyvPzBQocZQceBwV10qff6gWEsIAmiUWmkYSscBBSBIGc8wBnUkfedHfjwz+S
-	 2VQPd7Lef2Vzi/owZZL/IHaIij6oGRG79icyS2YgUn3TAkYIKcdbC4qvr1qDzTFq8p
-	 Sl2VjFBnX8zeqZ7hP0HnXvoCVHojBeJVPjH/IlIUiOxI8jb2LtakNrqp/GWrS0/C6Z
-	 AsyhGbtMnv3SEYUVc0ZwHTsnKqnKONOCg+uE6IoU97+h/SBhSJ+cHb8pjyrqDXSUge
-	 jWMoVQoGD7Lxw==
-Date: Mon, 14 Oct 2024 10:38:40 -0700
+	s=k20201202; t=1728927797;
+	bh=OSasaQe116lFDU9PKraI9EVMOCCCqghXYmMmz0fe+48=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=pZyOhDmnWNp81UMfMMp4uiLcoiH93kFGcgZ2Wlzs9XHTJROAWcPSTUoZqE2Ny6Hxc
+	 0n2IMhuu8jLL07i1awliZyyEO9yYqcn6wisO6MYam8ldVvtjbfhAhKPOCXbHeq7QVA
+	 Cq8jlZQi+Kq3PEKwME6IDh81nZWkmRHNJf2aajSczYS28bDs8eyNCbXg5mjhu+N2yd
+	 iEnEWYB0oFI+iq2w1BAsW/jL0YPFmVm7tl3rgwWRTDnufOVCXZTtYO+NOFQrmw+LCq
+	 aLepYL5nvzJwAXh6QJX/Zc7CfwjfmwgRH+YZcXXTEe8cuhzN5nYiMBX49/jFhBwjjW
+	 DuFKWfdob6FFg==
 From: Namhyung Kim <namhyung@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-	irogers@google.com, linux-perf-users@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com,
-	maddy@linux.ibm.com, kjain@linux.ibm.com,
-	disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Subject: Re: [PATCH] tools/perf/tests: Fix compilation error with strncpy in
- tests/tool_pmu
-Message-ID: <Zw1XIGML32VaxE0t@google.com>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com, 
+ irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ akanksha@linux.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com, 
+ disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
+In-Reply-To: <20241013173742.71882-1-atrajeev@linux.vnet.ibm.com>
 References: <20241013173742.71882-1-atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] tools/perf/tests: Fix compilation error with strncpy
+ in tests/tool_pmu
+Message-Id: <172892779710.897882.14949543082561189584.b4-ty@kernel.org>
+Date: Mon, 14 Oct 2024 10:43:17 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,59 +64,38 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241013173742.71882-1-atrajeev@linux.vnet.ibm.com>
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.14-dev-d4707
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Oct 13, 2024 at 11:07:42PM +0530, Athira Rajeev wrote:
+On Sun, 13 Oct 2024 23:07:42 +0530, Athira Rajeev wrote:
+
 > perf fails to compile on systems with GCC version11
 > as below:
+> 
+> In file included from /usr/include/string.h:519,
+>                  from /home/athir/perf-tools-next/tools/include/linux/bitmap.h:5,
+>                  from /home/athir/perf-tools-next/tools/perf/util/pmu.h:5,
+>                  from /home/athir/perf-tools-next/tools/perf/util/evsel.h:14,
+>                  from /home/athir/perf-tools-next/tools/perf/util/evlist.h:14,
+>                  from tests/tool_pmu.c:3:
+> In function ‘strncpy’,
+>     inlined from ‘do_test’ at tests/tool_pmu.c:25:3:
+> /usr/include/bits/string_fortified.h:95:10: error: ‘__builtin_strncpy’ specified bound 128 equals destination size [-Werror=stringop-truncation]
+>    95 |   return __builtin___strncpy_chk (__dest, __src, __len,
+>       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    96 |                                   __glibc_objsize (__dest));
+>       |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~
+> 
+> [...]
 
-I have one more build failure on 32 bit systems.  I'll carry this as
-well.
+Applied to perf-tools-next, thanks!
 
-Thanks,
+Best regards,
 Namhyung
-
----8<---
-From 2e2c7ca3691d223d94ea383a6b688e35579d14d5 Mon Sep 17 00:00:00 2001
-From: Namhyung Kim <namhyung@kernel.org>
-Date: Mon, 14 Oct 2024 10:34:17 -0700
-Subject: [PATCH] perf tools: Fix compiler error in util/tool_pmu.c
-
-  util/tool_pmu.c: In function 'evsel__tool_pmu_read':
-  util/tool_pmu.c:419:55: error: passing argument 2 of 'tool_pmu__read_event' from incompatible pointer type [-Werror=incompatible-pointer-types]
-    419 |                         if (!tool_pmu__read_event(ev, &val)) {
-        |                                                       ^~~~
-        |                                                       |
-        |                                                       long unsigned int *
-  util/tool_pmu.c:335:56: note: expected 'u64 *' {aka 'long long unsigned int *'} but argument is of type 'long unsigned int *'
-    335 | bool tool_pmu__read_event(enum tool_pmu_event ev, u64 *result)
-        |                                                   ~~~~~^~~~~~
-
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
- tools/perf/util/tool_pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
-index ea9d50f0252023dc..bd1cee643eb506df 100644
---- a/tools/perf/util/tool_pmu.c
-+++ b/tools/perf/util/tool_pmu.c
-@@ -394,7 +394,7 @@ bool tool_pmu__read_event(enum tool_pmu_event ev, u64 *result)
- int evsel__tool_pmu_read(struct evsel *evsel, int cpu_map_idx, int thread)
- {
- 	__u64 *start_time, cur_time, delta_start;
--	unsigned long val;
-+	u64 val;
- 	int fd, err = 0;
- 	struct perf_counts_values *count, *old_count = NULL;
- 	bool adjust = false;
--- 
-2.47.0.rc1.288.g06298d1525-goog
 
 
