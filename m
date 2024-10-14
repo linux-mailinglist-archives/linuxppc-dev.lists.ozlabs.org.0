@@ -1,73 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-2225-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2226-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E2699CE35
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 16:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 781C699CE94
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 16:45:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XS0Kq1ddzz2xy0;
-	Tue, 15 Oct 2024 01:41:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XS0Q70xrgz3bgy;
+	Tue, 15 Oct 2024 01:45:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.58.85.151
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728916895;
-	cv=none; b=ILJWziDJIwr7RPvVG4IcTjH/eRQPTyusNdL04sGcO9o6UzJVByE2h0PEqjsO4OPgx64WQY8e7UkHSwUxgs5rsfDu/LnJ0zwzap9wpuK5so62Ls9VubClJh1FcEK6O4TpCjMRY9hhPa3Hhw+WWv23EE1K5aTQi3Lc0/kIm6ptojycC5nvdDO85xHPZnsnvtirFkJA0C8f7Yo6F+Kd/Bn5AfCpGB0cD1sofrOwojXZUtTUsiGSSvtGG2yo/TQdhQJnua3i6xs5SkRMjn47OLEr8vwki2qMmK6FRXVyUkaCPk23SE9LZPcCrEmbcMDsntV9fzPOvn0RhcSuyidJOftMEw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728917119;
+	cv=none; b=YlGHBYY1+ZvFUxjWYbsK70Ct+XY3lrTEmq0N3Av2KmRAyl7492gSWH8cpg36Csx2K9JSQBRMUQX1HfurOQO+QjIFavawRrHSlVgRtwzwuxQRtKdZlzEL0kXgeUgbdsuGVTVlNwoaMZDieOY5WhdZFQBfE+B3NKiT1EnmpQkz+/Ms+WmfO2RzKvK9n+DohFNxEFmo4/XQMNcDOJxjgiBD+uQyUvPSQoOGaPtM4uBcEiyVeC+A21qYWFSzSUKaQ0l3Y6zYLMbtKB2bMcqCH53fIlIX9cyY/na8quTFd41x35CGYJMCzoaIeePLmaPAiDGVk/d5LuxAx1KhydeQlV3n5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728916895; c=relaxed/relaxed;
-	bh=JWXi6joH4S1jh4BdszOjLTH2UgTWsHuw5cNjxW5zvOA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=ELKiUwA6AyNd9R8SNkwYvC2mHc5l9IapuUVHslP/ExAMjxw5d21RG06V3gS6VUOEEU2DDCCc7g5fZ6Xa654nrnMHb00PkworS+adfsXQBU6v2Q0y4VHPpabdDTnm5mqgUxK4sPImQSEIvYRz9Cw5Ka0ECP2w3uVHX2CckcP33Lvv13BLSFYAReMZgxzVeCK0XX48bhcj1ttUMI8MfFfRfjihATVex9XbFLBxifrjy+rbkQ11/AdqKromuK/RI4Z3qdDcDncha+dNHJaXaRjYdpux/Oyw2Prl+GSIdWwqT+zWexCdN8L3wt+Smtpg6+0kNB8+kgu163Brm9D8xn1WXw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org) smtp.mailfrom=aculab.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Tue, 15 Oct 2024 01:41:33 AEDT
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+	t=1728917119; c=relaxed/relaxed;
+	bh=JoE9ZLXQHasCpAyzCryklYyAUInrPL5J/td+VUG8jMM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N/nI1Z38CB+iAubE0mffBDj49izegnLho5si1dSY9kKkMK+1JHaL4NKi7PN8eH73HEIlgmHKMMSXCdQl4nEysc78oH+tFe80Kv3rgKNTQXD3279OASBLbBy+bRl3DwpR+55ZWTEyqcmeky65uSrj2NDbxK0ybUL340PcNGvI8i8HBvA6IdkOHRF2XwcahiZ4oThIYJjovMFnVPWe3CiO2IclgAB+gCrbUFlHAPEbaZKF4bCrAAXQ4dTNr1xkXMp0qP514HztpAFBxyb577V6nFZIwOU/icL9Z/6kUy1xYRDcjX09dKJcgERXJ0HJL7B808rQC1wfNwvcZdcYB1qPwQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=lst.de; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=zjgp4OV1; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+f913630adc52fe272e7a+7722+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=zjgp4OV1;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+f913630adc52fe272e7a+7722+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XS0Kn3KQ8z2xlF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 01:41:33 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mtapsc-2-uKUfMmd2PfGJmfOMTTqC3w-1; Mon, 14 Oct 2024 15:40:21 +0100
-X-MC-Unique: uKUfMmd2PfGJmfOMTTqC3w-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 14 Oct
- 2024 15:40:20 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Mon, 14 Oct 2024 15:40:20 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Linus Torvalds' <torvalds@linux-foundation.org>
-CC: Josh Poimboeuf <jpoimboe@kernel.org>, Andrew Cooper
-	<andrew.cooper3@citrix.com>, "x86@kernel.org" <x86@kernel.org>, "Thomas
- Gleixner" <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Peter
- Zijlstra <peterz@infradead.org>, Pawan Gupta
-	<pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, Dave
- Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Michael
- Ellerman <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, Mark Rutland <mark.rutland@arm.com>
-Subject: RE: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-Thread-Topic: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-Thread-Index: AQHbHgaP91ePeQzD7kuMOmNvhY/yFbKGAECQgAAJJwCAAEY/4A==
-Date: Mon, 14 Oct 2024 14:40:20 +0000
-Message-ID: <83284833db3248deaf07b606457e3e8f@AcuMS.aculab.com>
-References: <b626840e55d4aa86b4b9b377a4cc2cda7038d33d.1728706156.git.jpoimboe@kernel.org>
- <f6ea59b1-eb59-4d1d-81ed-0e5095102c20@citrix.com>
- <CAHk-=wg=DovySzKb3=g53DeCwv1ZOa-RebaBpYXNXrdhY=a5Qw@mail.gmail.com>
- <12c18d86-87b3-4418-a0b0-2844197a3315@citrix.com>
- <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
- <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
- <CAHk-=wgDrG-aKVGrd-9gQsC0pMs936oo8XEFmEn6ciaT9=nfDg@mail.gmail.com>
- <20241014035436.nsleqolyj3xxysrr@treble>
- <CAHk-=widMFN2wDeS2K65f8FnW8L6gPZa6CNO4OWkv--0G2LXhw@mail.gmail.com>
- <5eef501ab10649c7823e34354dda401b@AcuMS.aculab.com>
- <CAHk-=wgtwBkgKbvshy4AnW+2+5OYHCOuTDdtZBWwE42qfu79Uw@mail.gmail.com>
-In-Reply-To: <CAHk-=wgtwBkgKbvshy4AnW+2+5OYHCOuTDdtZBWwE42qfu79Uw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XS0Q21Ncsz2xwH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 01:45:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=JoE9ZLXQHasCpAyzCryklYyAUInrPL5J/td+VUG8jMM=; b=zjgp4OV182malEVjeuLfhFAUAR
+	xmTaQT0HuCKSDx2IeDd/JBjTrHhqfkl+Szn05qpqjKrNvmUj8/JaHpK4FQPUoWvdby2QX+YDppFJa
+	fnVcfeymjbZ+yecTEh2dm6XsNLVzI5ocOjktQESgNxyVQvf/SXfGcfj0WOu3VujjnpBn73fMAqL+W
+	EY565OnheiCX/9V1yI1if+1b6NMtjJahWCqdR9GQsw1Cmsiob/nR6QE1ApdS1HOXhB84T3t0hTNqY
+	nqzVIESwCP4qeX4nf2DTEium4B9G5m9Aho7sQY9luxIGrSRJicrUhobTxscGaEVZSz5dyzs4FThd6
+	p88G2Leg==;
+Received: from 2a02-8389-2341-5b80-350d-7b06-b28a-173d.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:350d:7b06:b28a:173d] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1t0MJq-00000005Wvb-2tip;
+	Mon, 14 Oct 2024 14:45:11 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org
+Subject: provide generic page_to_phys and phys_to_page implementations v2
+Date: Mon, 14 Oct 2024 16:44:57 +0200
+Message-ID: <20241014144506.51754-1-hch@lst.de>
+X-Mailer: git-send-email 2.45.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,29 +74,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=0.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-RnJvbTogTGludXMgVG9ydmFsZHMNCj4gU2VudDogMTQgT2N0b2JlciAyMDI0IDEyOjIxDQo+IA0K
-PiBPbiBNb24sIDE0IE9jdCAyMDI0IGF0IDAyOjU5LCBEYXZpZCBMYWlnaHQgPERhdmlkLkxhaWdo
-dEBhY3VsYWIuY29tPiB3cm90ZToNCj4gPg0KPiA+IElzbid0IExBTSBqdXN0IHBsYWluIHN0dXBp
-ZCB1bmxlc3MgdGhlIGhhcmR3YXJlIHZhbGlkYXRlcyB0aGUgYml0cw0KPiA+IGFnYWluc3QgdGhl
-IFRMQj8NCj4gDQo+IFdoYXQ/IE5vLiBZb3UgY2FuJ3QgZG8gdGhhdC4gQXQgc29tZSBwb2ludCwg
-dGhlIFRMQiBpc24ndCBmaWxsZWQsIGFuZA0KPiB0aGVuIHlvdSBoYXZlIHRvIGRvIHRoZSBhY2Nl
-c3Mgd2l0aCBsb3RzIG9mIGxpbmVhciBhZGRyZXNzIGJpdHMNCj4gbWFza2VkLg0KDQpBbmQgdGhl
-ICdoaWdoJyBiaXRzIGdldCByZWxvYWRlZCBmcm9tIHRoZSBQVEUuDQooQWx0aG91Z2ggSSBzdXNw
-ZWN0IHRoZXJlIGlzbid0IHNwYWNlIGZvciB0aGVtLikNCg0KUmVsb2FkaW5nIHRoZSBoaWdoIGJp
-dHMgZnJvbSB0aGUgVkEgdGhhdCBjYXVzZWQgdGhlIGZhdWx0IHdvdWxkDQpiZSAnaW50ZXJlc3Rp
-bmcnIC0gY2VydGFpbmx5IGJldHRlciB0aGFuIGp1c3QgaWdub3JpbmcgdGhlbS4NCg0KCURhdmlk
-DQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBG
-YXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2
-IChXYWxlcykNCg==
+page_to_phys is duplicated by all architectures, and from some strange
+reason placed in <asm/io.h> where it doesn't fit at all.  
 
+phys_to_page is only provided by a few architectures despite having a lot 
+of open coded users.
+
+Provide generic versions in <asm-generic/memory_model.h> to make these
+helpers more easily usable.
+
+Changes since v1:
+ - use slightly less nested macros
+ - port a debug check from the old powerpc version to the generic code
+
+Diffstat:
+ arch/alpha/include/asm/io.h         |    1 -
+ arch/arc/include/asm/io.h           |    3 ---
+ arch/arm/include/asm/memory.h       |    6 ------
+ arch/arm64/include/asm/memory.h     |    6 ------
+ arch/csky/include/asm/page.h        |    3 ---
+ arch/hexagon/include/asm/page.h     |    6 ------
+ arch/loongarch/include/asm/page.h   |    3 ---
+ arch/m68k/include/asm/virtconvert.h |    3 ---
+ arch/microblaze/include/asm/page.h  |    1 -
+ arch/mips/include/asm/io.h          |    5 -----
+ arch/nios2/include/asm/io.h         |    3 ---
+ arch/openrisc/include/asm/page.h    |    2 --
+ arch/parisc/include/asm/page.h      |    1 -
+ arch/powerpc/include/asm/io.h       |   12 ------------
+ arch/riscv/include/asm/page.h       |    3 ---
+ arch/s390/include/asm/page.h        |    2 --
+ arch/sh/include/asm/page.h          |    1 -
+ arch/sparc/include/asm/page.h       |    2 --
+ arch/um/include/asm/pgtable.h       |    2 --
+ arch/x86/include/asm/io.h           |    5 -----
+ arch/xtensa/include/asm/page.h      |    1 -
+ include/asm-generic/memory_model.h  |   13 +++++++++++++
+ 22 files changed, 13 insertions(+), 71 deletions(-)
 
