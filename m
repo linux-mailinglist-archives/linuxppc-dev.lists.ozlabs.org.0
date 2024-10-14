@@ -1,58 +1,104 @@
-Return-Path: <linuxppc-dev+bounces-2202-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2203-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9BF99C6D4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 12:10:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C5A99C717
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 12:24:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRtKQ2PJSz3bjH;
-	Mon, 14 Oct 2024 21:10:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRtdM297Zz30MR;
+	Mon, 14 Oct 2024 21:24:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728900650;
-	cv=none; b=NisdIPdOKL1B+o/1zOG1WpMdalOmVt4ZIcSwGAj7k8631VjX5NFNjo61+/FIvvuE/BukhVotaPTxZ/11KnAU6liC7zP2qvTqBYMTUXYndm5HEGB0YBcIHCpOABJVEZv8I4UrFKKZlmKAknuIqouVC03LullbVy+m/awRsie8G3RPx1XuCxtbKQQI991HyuMVnrCZMVIknxpeT8IW0vHSkw5VgdCjuWpZsHdp6Z3hR4OXSmmYGBSgext18daonRzF/HEhfCTgCkAgDavM83cT7NSSDYPjqt2miee9SinX7dpqznbmNTOSp3pN8VeCm0ZhToz4tQBD3UmHUGj1lMAGPQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728901479;
+	cv=none; b=YXhp9bWqFS+l/ZSHvWP4TkDm9zHaMzVX9qCWx4Yl6l7O1PI8wISX3M/h/tvpK91lb2khbN5WYvAJ3dm5wS+PW4pW7Sa1igfpg6XJE3X9ibXHtrCqKxmlbVhGpMhTdDRsAXTmt4ApmE5Q6D3P4f7B6bwdCHcIFheaWgSBHuNHaFHwI2ngPvHfnIU5vccPmXBoU0c15B6/kU3R5HyejEi7y5dRfUBJI0yizOuTrbMVWHlIJGItvNhIuFvwwiUbNJ47LBbHpndqzRRaP8Duz6P/bcOZ9MIgR3rTn70CSBJpwtKpz/0KEh7cC+JK75YRDKcjvQDNC0FUhHVMJWvLHeLLEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728900650; c=relaxed/relaxed;
-	bh=0o1NINh/+wBe6kYVagKHzevIHa4M2xlTq+vTRXr322E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lJnQFJq/SQrE5QcGSfER2TyX/thpf8YWRE+mcDYzXhhXysGtopH9N8ttDdFawJe0ek8UobHnb/N07Dgneh8pqQ+AbbU3PUDOy5YONUW6IrZRnCXa3BS3yvrdu7r4QIc0kCA6Ntl6gCypPLw26knb5U+U1nQzuqe462KDOBh6wg3kK4X+Gc/FA2rAys2ZZbj6RU/qni2QXEX32uFfpZmFTQrlqsLdPezmtJsUSUQ9kYDuHoKXh1kb0IAC1n+k/BqvmtLhg/RXRF2EIfgRjXaqTTQ1D6NkdD1PbCb7bGvnoz9eRIktJAJ9GDnbsC7y0Yzo4/oPTrkRzxFljAZjpoZnSA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lRFtOwLG; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1728901479; c=relaxed/relaxed;
+	bh=Ocg3L0BVPJRwxCJcj03WGBFydvcJyY9Nl2aza3CZevs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=i1AjpgoncyaG/yYXwjOJ6bkiaVG9wJGHXaXB50oh7i+Wf5PisEpgUZJD7E2GA/UPDfgO6hQdatA4ts2A+UkVSUJtFBvwT4uunY+MMm28JjdMprKAEv5h10Py4SgZyJc6d7i8Syz0Ayob35ezIZYDJTQXvsBLMrddcU16yVW8pbDaWZY0YDNEib8EmicIiTJtJ4Fz4uMj6v+aOdCUScLNx0xOL4BkuB6eujz+egxBIrkMMu2P4VHG3piV76q3XPbc3U3C9BzYUIj9J+HkO5mkNLhenXmiayaVk5e8mwOCZ4yu0ceZQfu5SXB/w7t1e/WAaN4OMPj9XdNZb9oT4m6j4w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J1zI4/kG; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lRFtOwLG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J1zI4/kG;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRtKN2xgDz30MR
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 21:10:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1728900646;
-	bh=0o1NINh/+wBe6kYVagKHzevIHa4M2xlTq+vTRXr322E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lRFtOwLG553+wMwRyTQJRzTX0Sx3Tsd5z7650f6KXw8VrUpiPSKTyE79OaylqfofD
-	 YFvVKbAprk5a0txEneOnVuk8DHVlarZ5ap8D74qd4dnsBpfkA8wzVMWon4VHZ7X1Q/
-	 XjwRuy57ZdrTaPGACtl2SjSPXRupDRLlPmzOzGrda4DU7IYtvrq0+rKvZKSv2V/A9b
-	 unQlIe9G4ozVF54tGHzXmBJ1I1j4WZB13uI/4wB9o3vrbXv02s0F0oGegFPzP8xOl2
-	 EErTNd0tG7MZtjQPeVmMqxLe7Px83A4kjYmi426aVPKaFp+tvbRF+fY+SCew6XRKko
-	 bs9upbplByYTA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XRtKL2K8cz4wnw;
-	Mon, 14 Oct 2024 21:10:46 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Gaurav Batra <gbatra@linux.ibm.com>
-Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, Gaurav Batra
- <gbatra@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries/iommu: Wait until all TCEs are unmapped
- before deleting DDW
-In-Reply-To: <20240916183558.89919-1-gbatra@linux.ibm.com>
-References: <20240916183558.89919-1-gbatra@linux.ibm.com>
-Date: Mon, 14 Oct 2024 21:10:46 +1100
-Message-ID: <87cyk35715.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRtdK5VNxz2yVG
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 21:24:36 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49E7ogVF006067;
+	Mon, 14 Oct 2024 10:24:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	Ocg3L0BVPJRwxCJcj03WGBFydvcJyY9Nl2aza3CZevs=; b=J1zI4/kGhDXyQYNQ
+	NA7cBd8+RsnpSRlMo1C0pL6EU/LHnfnDNcuAgEjbLeVHIfyT5ty91FurHJhH6MIC
+	CM7EdPy/l4Us0hNVQ4bdol5g7xx1EDj2WuGRIGtN3SIKx1mE6Jgj9R7WAF0Gk/+E
+	wCAo4EIFYuFSVK2njxE8QuoAKBLWTapagLyvYHhbjibgAUtz+FdxKR9YlzwKb4Zf
+	8Kjq8OHdwXgkgDLSlfDOuO9eagXIpotBYeMhTtL1dA3qaAHC6PtrsWhbo1+1O9sy
+	QOfYl/9c0O5GjhpnxquVQGZjXe0iT8FOPA8J7nvnBvdCaDIiMOc8ZmxySjnnAzhU
+	aIH8wA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 428y8w0nmf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Oct 2024 10:24:20 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49EAOJHY029579;
+	Mon, 14 Oct 2024 10:24:19 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 428y8w0nmb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Oct 2024 10:24:19 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49E74jbO027452;
+	Mon, 14 Oct 2024 10:24:19 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4283txe1hf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Oct 2024 10:24:19 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49EAOIme27198058
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Oct 2024 10:24:18 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0551F5804E;
+	Mon, 14 Oct 2024 10:24:18 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E25D65803F;
+	Mon, 14 Oct 2024 10:24:09 +0000 (GMT)
+Received: from [9.43.116.47] (unknown [9.43.116.47])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 14 Oct 2024 10:24:09 +0000 (GMT)
+Message-ID: <941875f7-0d7f-4ba3-bc7c-7aedc3b20dae@linux.ibm.com>
+Date: Mon, 14 Oct 2024 15:54:06 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v3 1/3] fadump: Refactor and prepare fadump_cma_init for
+ late init
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
+        David Hildenbrand <david@redhat.com>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+        Donet Tom <donettom@linux.vnet.ibm.com>,
+        LKML
+ <linux-kernel@vger.kernel.org>,
+        Sachin P Bappalige <sachinpb@linux.ibm.com>
+References: <030b6d46fddac126a6cf7e119bea48055338f0ed.1728658614.git.ritesh.list@gmail.com>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <030b6d46fddac126a6cf7e119bea48055338f0ed.1728658614.git.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: vCjybacVMoVYpyuqbebMZr5tU5ddzP-S
+X-Proofpoint-GUID: HKCPcImhC0WCwjRQTgK8ZuBP0V1vbSTr
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,110 +108,128 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-14_08,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 phishscore=0 malwarescore=0 adultscore=0 mlxscore=0
+ priorityscore=1501 clxscore=1011 suspectscore=0 mlxlogscore=999
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410140073
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Gaurav,
 
-Gaurav Batra <gbatra@linux.ibm.com> writes:
-> Some of the network drivers, like Mellanox, use core linux page_pool APIs
-> to manage DMA buffers. These page_pool APIs cache DMA buffers with
-> infrequent map/unmap calls for DMA mappings, thus increasing performance.
 
-Can you please resend this and Cc the netdev list, lkml, maybe the IOMMU
-list (iommu@lists.linux.dev) and the page_pool maintainers:
+On 10/11/24 8:30 PM, Ritesh Harjani (IBM) wrote:
+> We anyway don't use any return values from fadump_cma_init(). Since
+> fadump_reserve_mem() from where fadump_cma_init() gets called today,
+> already has the required checks.
+> This patch makes this function return type as void. Let's also handle
+> extra cases like return if fadump_supported is false or dump_active, so
+> that in later patches we can call fadump_cma_init() separately from
+> setup_arch().
 
-PAGE POOL
-M:	Jesper Dangaard Brouer <hawk@kernel.org>
-M:	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Usually patches to this file are posted with title format of
 
-Perhaps they'll have some ideas on how to solve the issue. And at least
-we don't want to add a workaround for their APIs without informing the
-maintainers that we're doing so.
+powerpc/fadump:<>
 
-> When a device is initialized, the drivers makes a call to the page_pool API
-> to create a DMA buffer pool. Hence forth DMA buffers are allocated and
-> freed from this pool by the driver. The DMA map/unmap is done by the core
-> page_pool infrastructure.
->
-> These DMA buffers could be allocated for RX/TX buffer rings for the device
-> or could be in-process by the network stack.
->
-> When a network device is closed, driver will release all DMA mapped
-> buffers. All the DMA buffers allocated to the RX/TX rings are released back
-> to the page_pool by the driver. Some of the DMA mapped buffers could still
-> be allocated and in-process by the network stack.
->
-> DMA buffers that are relased by the Network driver are synchronously
-> unmapped by the page_pool APIs. But, DMA buffers that are passed to the
-> network stack and still in-process are unmapped later asynchronously by the
-> page_pool infrastructure.
->
-> This asynchronous unmapping of the DMA buffers, by the page_pool, can lead
-> to issues when a network device is dynamically removed in PowerPC
-> architecture.  When a network device is DLPAR removed, the driver releases
-> all the mapped DMA buffers and stops using the device. Driver returns
-> successfully. But, at this stage there still could be mapped DMA buffers
-> which are in-process by the network stack.
->
-> DLPAR code proceeds to remove the device from the device tree, deletes
-> Dynamic DMA Window (DDW) and associated IOMMU tables. DLPAR of the device
-> succeeds.
 
-Are we missing a call to synchronize_net() somewhere in the DLPAR code?
+> 
+> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> ---
+> v2 -> v3: Separated the series into 2 as discussed in v2.
+> [v2]: https://lore.kernel.org/linuxppc-dev/cover.1728585512.git.ritesh.list@gmail.com/
+> 
+>  arch/powerpc/kernel/fadump.c | 23 +++++++++--------------
+>  1 file changed, 9 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index a612e7513a4f..162327d66982 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -78,27 +78,23 @@ static struct cma *fadump_cma;
+>   * But for some reason even if it fails we still have the memory reservation
+>   * with us and we can still continue doing fadump.
+>   */
+> -static int __init fadump_cma_init(void)
+> +static void __init fadump_cma_init(void)
+>  {
+>  	unsigned long long base, size;
+>  	int rc;
+> 
+> -	if (!fw_dump.fadump_enabled)
+> -		return 0;
+> -
+> +	if (!fw_dump.fadump_supported || !fw_dump.fadump_enabled ||
+> +			fw_dump.dump_active)
+> +		return;
 
-Though I would have thought the network core would do that somewhere.
+Is these checks even needed here? fadump_reserve_mem() checked for all
+these already, also dont see any other caller for fadump_cma_init(). 
 
-The ideal solution would be that we don't have to do any wait loop, and
-instead explicitly wait for the network stack to finish any outstanding
-packets.
 
-> Later, when network stack release some of the DMA buffers, page_pool
-> proceeds to unmap them. The page_pool relase path calls into PowerPC TCE
-> management to release the TCE. This is where the LPAR OOPses since the DDW
-> and associated resources for the device are already free'ed.
+>  	/*
+>  	 * Do not use CMA if user has provided fadump=nocma kernel parameter.
+> -	 * Return 1 to continue with fadump old behaviour.
+>  	 */
+> -	if (fw_dump.nocma)
+> -		return 1;
+> +	if (fw_dump.nocma || !fw_dump.boot_memory_size)
+> +		return;
+> 
+>  	base = fw_dump.reserve_dump_area_start;
+>  	size = fw_dump.boot_memory_size;
+> 
+> -	if (!size)
+> -		return 0;
 
-Can you post the oops for reference please.
+So this is the only place where we return 0, which in turn will make the
+"ret" in fadump_reserve_mem() as zero forcing to call reserve_crashkernel()
+in early_init_devtree().
 
-> This issue was exposed during LPM from a Power9 to Power10 machine with HNV
- 
-Please expand what LPM means for non-IBM folks - Live Partition Migration.
+we are removing it, becos we know "size" here will never be zero?
 
-> configuration. The bonding device is Virtual Ethernet with SR-IOV. During
-> LPM, I/O is switched from SR-IOV to passive Virtual Ethernet and DLPAR
-> remove of SR-IOV is initiated. This lead to the above mentioned scenario.
->
-> It is possible to hit this issue by just Dynamically removing SR-IOV device
-> which is under heavy I/O load, a scenario where some of the mapped DMA
-> buffers are in-process somewhere in the network stack and not mapped to the
-> RX/TX ring of the device.
->
-> The issue is only encountered when TCEs are dynamically managed. In this
-> scenario map/unmap of TCEs goes into the PowerPC TCE management path as and
-> when DMA bufffers are mapped/unmaped and accesses DDW resources. When RAM
-> is directly mapped during device initialization, this dynamic TCE
-> management is by-passed and LPAR doesn't OOPses.
->
-> Solution:
->
-> During DLPAR remove of the device, before deleting the DDW and associated
-> resources, check to see if there are any outstanding TCEs. If there are
-> outstanding TCEs, sleep for 50ms and check again, until all the TCEs are
-> unmapped.
->
-> Once all the TCEs are unmapped, DDW is removed and DLPAR succeeds. This
-> ensures there will be no reference to the DDW after it is deleted.
 
-That description doesn't quite match the code, which has a 120 second
-timeout after which it just continues along in hope :)
+> -
+>  	rc = cma_init_reserved_mem(base, size, 0, "fadump_cma", &fadump_cma);
+>  	if (rc) {
+>  		pr_err("Failed to init cma area for firmware-assisted dump,%d\n", rc);
+> @@ -108,7 +104,7 @@ static int __init fadump_cma_init(void)
+>  		 * blocked from production system usage.  Hence return 1,
+>  		 * so that we can continue with fadump.
+>  		 */
+> -		return 1;
+> +		return;
+>  	}
+> 
+>  	/*
+> @@ -125,10 +121,9 @@ static int __init fadump_cma_init(void)
+>  		cma_get_size(fadump_cma),
+>  		(unsigned long)cma_get_base(fadump_cma) >> 20,
+>  		fw_dump.reserve_dump_area_size);
+> -	return 1;
+>  }
+>  #else
+> -static int __init fadump_cma_init(void) { return 1; }
+> +static void __init fadump_cma_init(void) { }
+>  #endif /* CONFIG_CMA */
+> 
+>  /*
+> @@ -638,7 +633,7 @@ int __init fadump_reserve_mem(void)
+>  		pr_info("Reserved %lldMB of memory at %#016llx (System RAM: %lldMB)\n",
+>  			(size >> 20), base, (memblock_phys_mem_size() >> 20));
+> 
+> -		ret = fadump_cma_init();
+> +		fadump_cma_init();
+>  	}
+> 
+>  	return ret;
+> --
+> 2.46.0
+> 
 
-It's good that the code doesn't block forever, but it's bad that it
-leaves open the possibility that it will still oops.
-
-Is it possible to detect the double-free and prevent the oops there?
-
-cheers
 
