@@ -1,106 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-2213-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2217-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A9499C9F6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 14:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B204C99CA65
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 14:39:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRxDL606fz3bjK;
-	Mon, 14 Oct 2024 23:21:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRxcg3yyBz3bmy;
+	Mon, 14 Oct 2024 23:39:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728908498;
-	cv=none; b=NCvLHgHx6RheT6BaXyfGwIvaWGrJC6JUe5rpsgsILSWStrTEGi5HePwcvaifp8KuS0EO3yHl25C9hxZM7ib3rpl6L8zyn2G5tphCcTkz78BNQjumPIYmI8oXyBLx9K53hxP4FHT1j9WelDxSztj20JGACutLmG6kSEEWwiLcHz4/QUCdzReods9VWdr3tsrbK5kOB99RrwR1EsXPnlcY+ERFTMXKvEZdfdVzA6BAsfMqmKDvWn4nJGuqJB0lI8eB/boZwkjUHOzK2RplKJIJIO1EWh34hFaxyT3d3ApijpKp4WlZOdk89emo+0mYpvDORnCQfR9b2GjFpFF6iCXfXA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728909555;
+	cv=none; b=Mm2P/oXnaUEUNgzJwfVSe8wZO9sNLF7ei27Yl4m2DhyKFbR/6FdI9m/tGyg19ISdKz7tZWZb90EIFD6Zf7PrDTH9G0PJVWojkKlcDqPjrAq9ogkpxKJN1e/8KXej9aFG3cV6FCAI4fDm+GNiasaMU/AjyfNFCKTvon0SqSxlEf/5rHrzyeHeDQmjZ0QCY/j3zwLB+xh5RMshaAa4Zdsfqbn9TtBSl/JBYijYIawVNi11Lwj0VVtT3icoBBPJcsGvUaJZln/Td+/sRMubB7VYD3Q+5cafZ+Sbw656+4KWOH3LZKpj5sxWXYPFIDwNhZsZrjhVCjZZlJ9haP5lC6aM1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728908498; c=relaxed/relaxed;
-	bh=nYUq7adz2xqCBl+Ga8oFU+DVr40SauuZOQ0GZ3ecydE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=YvrQNXcbD2jFAhRu8HyMr1uqG3gOIWAvL+3BQKeowTZ+NtpmkIIOA500T40xd/+BTu22mEimcvuj7Blq9FpYnOxzU1b6SuQmmMZaLvEqkFH3hQ6VGNyp5g30VIR9NbJgOUmN8Y1TOHGv73fysHktYnFOQy1SGqTYM5roEH/lkHLiA8xV6ZZ2tTSHqKMyVxqRLAfSUe4pkEeOSnaSJ7zCV7yB802qp67uiJL/vQVzpAbx7WIbYMy4EyBvhl1HczaPR4q20/pF5380Xgi4lqTfXfzkLwOZ6o+QpTVfU/Oa1imlJbfgTKxiNTnagh9q5bU5+eJdnfjt41wkcsfabnWHvQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XJSAPzJ7; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1728909555; c=relaxed/relaxed;
+	bh=JrKFn42xuc1H7J8Te5llpeV6Qi1vNIgovxPBFsGJQa8=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=J23NqTGni7UK9257lKQTLXR6Se9em9R4+3jeiV63tBkSFKy1z7ZvV7CQLFeznqGIx5STLlguIqpRhA+H6Ao9Jt7NiYYAFH1LLuYBkbE3UcNhBneQ6ErJjay7oFA6UwQepjxBOXDnUCar4q15pz3iA2gE4LlrYlTNDT6XFhpPg35KhDH6yyn4smeJyGE4ME93gy6ShLis6/SQbXR8gL4Pzqw9TBYkycQJLERAkzHBW9xVmMw6PeQeWcp6djtRrXZkAV7JmVAbp19guROIShCQj19uYJRAMGiZwCjc+78lA6/MUU4q/6WBQbiNTkdYI1UQH6R9OVzl/ehRlalEbh/X2w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GDJvVzUF; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XJSAPzJ7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GDJvVzUF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRxDK49wvz3bgy
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 23:21:36 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49E9ssNT005734;
-	Mon, 14 Oct 2024 12:21:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:subject:to:cc:references:from:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
-	nYUq7adz2xqCBl+Ga8oFU+DVr40SauuZOQ0GZ3ecydE=; b=XJSAPzJ7NFg0Uy47
-	Xou3n60PadCbcr/cXU7mKzHF9sAUDXVYmwteHAaayXNJKeG2u7gv+pL5wL6Odfa2
-	QcnH4+miDCNKpZdK0Oojvght6xZIF4w0s/ieNsCj5YDmqyZ0YKgQvsgr6yKTPJqe
-	qGYPLeVlYP7hI/HOBW3ZE280q5j1kpG6IcpfcxmJqyZ5pN17NxuwN66l8SYnIWkb
-	rNs8U1Fomb9EIVJK5SFUivJMtUyrI77KSm+4/z1zbTEloEJzgh7KgXPRQ52COMJ3
-	0nXgXXS8+OfJcYoRhDxWKtpMwi421MsmEC/Pn3EMCcqVbs8Qt994vz6QpmnZNIOa
-	k/Va6A==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4291330pex-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Oct 2024 12:21:27 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49ECJgRj002720;
-	Mon, 14 Oct 2024 12:21:27 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4291330pet-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Oct 2024 12:21:27 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49EBVSJu006401;
-	Mon, 14 Oct 2024 12:21:26 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4284xjxb7p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Oct 2024 12:21:26 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49ECLOrq45351440
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Oct 2024 12:21:25 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D913D5804B;
-	Mon, 14 Oct 2024 12:21:24 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5CD3D58065;
-	Mon, 14 Oct 2024 12:21:16 +0000 (GMT)
-Received: from [9.43.116.47] (unknown [9.43.116.47])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 14 Oct 2024 12:21:15 +0000 (GMT)
-Message-ID: <55c554a2-fdf9-4a1b-acf4-c227786624ce@linux.ibm.com>
-Date: Mon, 14 Oct 2024 17:51:13 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v3 1/3] fadump: Refactor and prepare fadump_cma_init for
- late init
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org, Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
-        David Hildenbrand <david@redhat.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-        Donet Tom <donettom@linux.vnet.ibm.com>,
-        LKML
- <linux-kernel@vger.kernel.org>,
-        Sachin P Bappalige <sachinpb@linux.ibm.com>
-References: <030b6d46fddac126a6cf7e119bea48055338f0ed.1728658614.git.ritesh.list@gmail.com>
- <941875f7-0d7f-4ba3-bc7c-7aedc3b20dae@linux.ibm.com>
- <87bjznyliv.fsf@gmail.com>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <87bjznyliv.fsf@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0qMBKVP7s2lJ0nmJZBXSfyMPAbPytZn_
-X-Proofpoint-GUID: utFw1S-hiIhm1HWZkMo502AomZsmQ6d5
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRxcf39NQz3bgy
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 23:39:13 +1100 (AEDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-20cbca51687so17072355ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 05:39:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728909552; x=1729514352; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JrKFn42xuc1H7J8Te5llpeV6Qi1vNIgovxPBFsGJQa8=;
+        b=GDJvVzUFuFpWcRtL5XUfx96R79fVM9ZLiKdW0GP/E6IFWw3uKy+Qo1XkLMkuXyVeEZ
+         RXjxJUkKT6pt6BjZwvqc063z4uUDaHaL76ua74e805w8ceSiiy6iIRmgTRWbGuh0cyhw
+         xM7cwZJg4CbAVhMll/vNVQauR/QPBZoxU8vHyXUs8a4DFUOYX5oV9Qn7IfAT8CBhtJ5e
+         ppTYBzLKGHcu6xxmzfP1hcp4b6Qkdt4hBl4vLgvrQVHWurOblxvYtF1Hy6JeOjJSOzmE
+         CUsmwJDwEnHZviDDrgOZA9BZ3xWEO20PaTN4W3tiL7yTUNM6UixnFscJxIe1+cXo7mkP
+         zQYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728909552; x=1729514352;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JrKFn42xuc1H7J8Te5llpeV6Qi1vNIgovxPBFsGJQa8=;
+        b=hZUWihasnebF+T/UbjvPkNYqPkjTfEnPxqNu7sn7GaiZzD7aaT+/ZLNtkznvqd3Z42
+         gLUGxQvn1yEX7Oz37b/UjzVk8i2RHMjlSLsVGzk7+H1qO6iEuF35XwQhdhq8gOr+yfpk
+         b3VpWEm/bjRe46StRg8gtSseDjF3JqrPJ+N6SjxktuGfBCy9rKOjLLKe11TPMHrvWmqu
+         AbHYy03tEpUgRvTAkxFMf5UIpw88g+pK1ROctY1ZeOpk67dVwHgLJoBpDK1nXD1VN3qC
+         teVGnflUh6wt80dfK+XidyLJyvEHCcbGMaPrNt9oAJzWIXPQhuAV4P4BagbOa9CkIwzd
+         5wpw==
+X-Gm-Message-State: AOJu0YyeUB40XqRQs1W6d4V5qPQ75mqQpWA26RmrLOZPtqKMNXm/UFPx
+	AJ/oIUpBlyVX/5iqQTkenkB7y7HvrmWePHtcCpghxKDYmGjxPEK5
+X-Google-Smtp-Source: AGHT+IE+bM7+WY+9RLsixhECD+emhDXilhTCLtkjvV3sehkEtjOAqtlL8CRTc0dajOpGcaehvXLwtQ==
+X-Received: by 2002:a17:902:f708:b0:20c:79bf:6793 with SMTP id d9443c01a7336-20cbb1a9697mr111971195ad.3.1728909551714;
+        Mon, 14 Oct 2024 05:39:11 -0700 (PDT)
+Received: from dw-tp ([171.76.85.106])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7ea748b036bsm3396987a12.0.2024.10.14.05.39.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2024 05:39:11 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Vishal Chourasia <vishalc@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: drivers/nx: Invalid wait context issue when rebooting
+In-Reply-To: <ZwkbOJN5Jmjy_wkJ@linux.ibm.com>
+Date: Mon, 14 Oct 2024 17:54:44 +0530
+Message-ID: <87a5f6zxbn.fsf@gmail.com>
+References: <ZwjjXJ5UtZ28FH6s@linux.ibm.com> <87wmif53iw.fsf@mail.lhotse> <ZwkbOJN5Jmjy_wkJ@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,150 +80,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-14_10,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- phishscore=0 mlxscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999
- spamscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410140089
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Vishal Chourasia <vishalc@linux.ibm.com> writes:
 
+> On Fri, Oct 11, 2024 at 09:37:27PM +1100, Michael Ellerman wrote:
+>> 
+>> I don't see why of_reconfig_notifier_unregister() needs to be called
+>> with the devdata_mutext held, but I haven't looked that closely at it.
+>> 
+>> So the change below might work.
+>> 
+>> cheers
+>> 
+>> diff --git a/drivers/crypto/nx/nx-common-pseries.c b/drivers/crypto/nx/nx-common-pseries.c
+>> index 35f2d0d8507e..a2050c5fb11d 100644
+>> --- a/drivers/crypto/nx/nx-common-pseries.c
+>> +++ b/drivers/crypto/nx/nx-common-pseries.c
+>> @@ -1122,10 +1122,11 @@ static void nx842_remove(struct vio_dev *viodev)
+>>  
+>>  	crypto_unregister_alg(&nx842_pseries_alg);
+>>  
+>> +	of_reconfig_notifier_unregister(&nx842_of_nb);
+>> +
+>>  	spin_lock_irqsave(&devdata_mutex, flags);
+>>  	old_devdata = rcu_dereference_check(devdata,
+>>  			lockdep_is_held(&devdata_mutex));
+>> -	of_reconfig_notifier_unregister(&nx842_of_nb);
+>>  	RCU_INIT_POINTER(devdata, NULL);
+>>  	spin_unlock_irqrestore(&devdata_mutex, flags);
+>>  	synchronize_rcu();
+>> 
+> With above changes, I see another similar bug, but what's strange is
+> swapper does not hold any lock and still this bug is being triggered
 
-On 10/14/24 4:54 PM, Ritesh Harjani (IBM) wrote:
-> Madhavan Srinivasan <maddy@linux.ibm.com> writes:
-> 
->> On 10/11/24 8:30 PM, Ritesh Harjani (IBM) wrote:
->>> We anyway don't use any return values from fadump_cma_init(). Since
->>> fadump_reserve_mem() from where fadump_cma_init() gets called today,
->>> already has the required checks.
->>> This patch makes this function return type as void. Let's also handle
->>> extra cases like return if fadump_supported is false or dump_active, so
->>> that in later patches we can call fadump_cma_init() separately from
->>> setup_arch().
->>
->> Usually patches to this file are posted with title format of
->>
->> powerpc/fadump:<>
-> 
-> yes. I guess it is good to do it that way (I might have missed it)
-> Although commit history of oldest few patches to fadump shows..
-> 
-> ebaeb5ae2437 fadump: Convert firmware-assisted cpu state dump data into elf notes.
-> 2df173d9e85d fadump: Initialize elfcore header and add PT_LOAD program headers.
-> 3ccc00a7e04f fadump: Register for firmware assisted dump.
-> eb39c8803d0e fadump: Reserve the memory for firmware assisted dump.
-> 
->>
->>
->>>
->>> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
->>> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->>> ---
->>> v2 -> v3: Separated the series into 2 as discussed in v2.
->>> [v2]: https://lore.kernel.org/linuxppc-dev/cover.1728585512.git.ritesh.list@gmail.com/
->>>
->>>  arch/powerpc/kernel/fadump.c | 23 +++++++++--------------
->>>  1 file changed, 9 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
->>> index a612e7513a4f..162327d66982 100644
->>> --- a/arch/powerpc/kernel/fadump.c
->>> +++ b/arch/powerpc/kernel/fadump.c
->>> @@ -78,27 +78,23 @@ static struct cma *fadump_cma;
->>>   * But for some reason even if it fails we still have the memory reservation
->>>   * with us and we can still continue doing fadump.
->>>   */
->>> -static int __init fadump_cma_init(void)
->>> +static void __init fadump_cma_init(void)
->>>  {
->>>  	unsigned long long base, size;
->>>  	int rc;
->>>
->>> -	if (!fw_dump.fadump_enabled)
->>> -		return 0;
->>> -
->>> +	if (!fw_dump.fadump_supported || !fw_dump.fadump_enabled ||
->>> +			fw_dump.dump_active)
->>> +		return;
->>
->> Is these checks even needed here? fadump_reserve_mem() checked for all
->> these already, also dont see any other caller for fadump_cma_init(). 
->>
->>
-> 
-> In the next patch we will move fadump_cma_init() call from within
-> fadump_reserve_mem() to setup_arch(). Hence we need these extra checks
-> in fadump_cma_init() as well. I mentioned the same in the commit msg of
-> this patch too.
-> 
+Looking at the below stack, it looks like you discovered a new problem
+after the above problem was fixed with the above changes.
+(So maybe you could submit this fix along with [1])
+Also looking at the history of changes, seems the above problem always
+existed. Not sure why it wasn't caught earlier then?
 
-yes, just saw that when looking at the patch 3, sorry for the noise.
+[1]: https://lore.kernel.org/linuxppc-dev/ZwyqD-w5hEhrnqTB@linux.ibm.com/T/#u
 
+I am not much aware of the below code paths. Nor it is evident from the
+stack on why "Invalid wait context". Maybe you can give git bisect a try
+for below issue (or can also wait for someone to comment on below stack).
+(But you might have to keep the nx-common-pseries driver disabled for git bisect to work). 
 
->>>  	/*
->>>  	 * Do not use CMA if user has provided fadump=nocma kernel parameter.
->>> -	 * Return 1 to continue with fadump old behaviour.
->>>  	 */
->>> -	if (fw_dump.nocma)
->>> -		return 1;
->>> +	if (fw_dump.nocma || !fw_dump.boot_memory_size)
->>> +		return;
->>>
->>>  	base = fw_dump.reserve_dump_area_start;
->>>  	size = fw_dump.boot_memory_size;
->>>
->>> -	if (!size)
->>> -		return 0;
->>
->> So this is the only place where we return 0, which in turn will make the
->> "ret" in fadump_reserve_mem() as zero forcing to call reserve_crashkernel()
->> in early_init_devtree().
->>
->> we are removing it, becos we know "size" here will never be zero?
->>
->>
-> 
-> yes. Because we already check if boot_memory_size is less than
-> bootmem_min in fadump_reserve_mem(). If it is less, then we fail and
-> disable fadump (fadump_enabled = 0).
 >
+> =============================
+> [ BUG: Invalid wait context ]
+> 6.12.0-rc2-fix-invalid-wait-context-00222-g7d2910da7039-dirty #84 Not tainted
+> -----------------------------
+> swapper/2/0 is trying to lock:
+> c000000004062128 (&xibm->lock){....}-{3:3}, at: xive_spapr_put_ipi+0xb8/0x120
+> other info that might help us debug this:
+> context-{2:2}
+> no locks held by swapper/2/0.
+> stack backtrace:
+> CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 6.12.0-rc2-fix-invalid-wait-context-00222-g7d2910da7039-dirty #84
+> Hardware name: IBM,9080-HEX POWER10 (architected) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_012) hv:phyp pSeries
+> Call Trace:
+> [c000000004ac3420] [c00000000130d2e4] dump_stack_lvl+0xc8/0x130 (unreliable)
+> [c000000004ac3460] [c000000000312ca8] __lock_acquire+0xb68/0xf00
+> [c000000004ac3570] [c000000000313130] lock_acquire.part.0+0xf0/0x2a0
+> [c000000004ac3690] [c0000000013955b8] _raw_spin_lock_irqsave+0x78/0x130
+> kexec: waiting for cpu 2 (physical 2) to enter 2 state
+> [c000000004ac36d0] [c000000000194798] xive_spapr_put_ipi+0xb8/0x120
+> [c000000004ac3710] [c000000001383728] xive_cleanup_cpu_ipi+0xc8/0xf0
+> [c000000004ac3750] [c0000000013837f4] xive_teardown_cpu+0xa4/0x100
+> [c000000004ac3780] [c0000000001d2cc4] pseries_kexec_cpu_down+0x54/0x1e0
+> [c000000004ac3800] [c000000000213674] kexec_smp_down+0x124/0x1f0
+> [c000000004ac3890] [c0000000003c9ddc] __flush_smp_call_function_queue+0x28c/0xad0
+> [c000000004ac3950] [c00000000005fb64] smp_ipi_demux_relaxed+0xe4/0xf0
+> [c000000004ac3990] [c0000000000593d8] doorbell_exception+0x108/0x2f0
+> [c000000004ac3a20] [c00000000000a26c] doorbell_super_common_virt+0x28c/0x290
+> --- interrupt: a00 at plpar_hcall_norets_notrace+0x18/0x2c
+> NIP:  c0000000001bee18 LR: c0000000013867a8 CTR: 0000000000000000
+> REGS: c000000004ac3a50 TRAP: 0a00   Not tainted  (6.12.0-rc2-fix-invalid-wait-context-00222-g7d2910da7039-dirty)
+> MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 22000242  XER: 00000001
+> CFAR: 0000000000000000 IRQMASK: 0
+> GPR00: 0000000000000000 c000000004ac3cf0 c000000001e37600 0000000000000000
+> GPR04: 0000000000000000 0000000000000000 0001dc4f97750361 0000000000010000
+> GPR08: 00000000000000c0 0000000000000080 0001dc4f97750554 0000000000000080
+> GPR12: 0000000000000000 c0000007fffee480 0000000000000000 0000000000000000
+> GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> GPR20: 0000000000000000 c000000002ebf778 0000000000000000 00000043a215d824
+> GPR24: 0000000000000000 c000000000ec0f80 c000000002ebf778 0000000000000000
+> GPR28: 0000000000000000 0000000000000001 c0000000021a2300 c0000000021a2308
+> NIP [c0000000001bee18] plpar_hcall_norets_notrace+0x18/0x2c
+> LR [c0000000013867a8] check_and_cede_processor+0x48/0x80
+> --- interrupt: a00
+> [c000000004ac3cf0] [0000000000982538] 0x982538 (unreliable)
+> [c000000004ac3d50] [c000000001386874] dedicated_cede_loop+0x94/0x1a0
+> [c000000004ac3da0] [c00000000138584c] cpuidle_enter_state+0x10c/0x8a8
+> [c000000004ac3e50] [c000000000ec0f80] cpuidle_enter+0x50/0x80
+> [c000000004ac3e90] [c0000000002ba9c8] call_cpuidle+0x48/0xa0
+> [c000000004ac3eb0] [c0000000002cec54] cpuidle_idle_call+0x164/0x250
+> [c000000004ac3f00] [c0000000002cee74] do_idle+0x134/0x1d0
+> [c000000004ac3f50] [c0000000002cf34c] cpu_startup_entry+0x4c/0x50
+> [c000000004ac3f80] [c0000000000607d0] start_secondary+0x280/0x2b0
+> [c000000004ac3fe0] [c00000000000e058] start_secondary_prolog+0x10/0x14
 
-Thanks for the clarification.
-
-
- 
-> So then there is no need to check for !boot_memory_size in here.
-> 
-> fadump_reseve_mem( ) {
-> <...>
-> 	if (!fw_dump.dump_active) {
-> 		fw_dump.boot_memory_size =
-> 			PAGE_ALIGN(fadump_calculate_reserve_size());
-> 
-> 		bootmem_min = fw_dump.ops->fadump_get_bootmem_min();
-> 		if (fw_dump.boot_memory_size < bootmem_min) {
-> 			pr_err("Can't enable fadump with boot memory size (0x%lx) less than 0x%llx\n",
-> 			       fw_dump.boot_memory_size, bootmem_min);
-> 			goto error_out;
-> 		}
->     <...>    
->     }
-> <...>
-> error_out:
-> 	fw_dump.fadump_enabled = 0;
-> 	fw_dump.reserve_dump_area_size = 0;
-> 	return 0;
-> }
-> 
-> 
-> Thanks for the review!
-> -ritesh
-
+-ritesh
 
