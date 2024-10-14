@@ -1,61 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-2204-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2205-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8CB99C729
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 12:29:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BF399C772
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Oct 2024 12:48:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XRtkY19LYz3bgd;
-	Mon, 14 Oct 2024 21:29:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XRv8n1M2yz3bjM;
+	Mon, 14 Oct 2024 21:48:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728901749;
-	cv=none; b=NkO2hwDaEYM/gaOJDjdpLcQumEHe7wqifdvyQbGTXvwyDeTLU9geDnqVft/x23WWKh3QaPRp82H5Dow7vGurpZb54UzAN7viar8cxs1Pe26Cv4PUlVn/tSf1KQl0mpH2T/WpHbiOxNXAX1WCdxkXoupMtB1whlWudBq+/oTg/mskkmQ40p/8eNxfNq5/aOY3wrVVCKi8BEazhnUuaxVq/qGId7KvhdbcR6xBA5TgLCGne2tqyAWQ8uYdz181shAQCGOzyfu+4rV5b/bvFmlwdBGCzjQxid/X8FYSY2CaD8N6p/zqMgekoOmlRXvUvm8gamH8s7uX2NYZTEol4ooNww==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728902904;
+	cv=none; b=AHdj6LRFBTiSNu7Q0tc3wiAYGUi3JvJ00zjef9zgYdnLMi89YHJcKmNIB/U27s5IsFJR7PMQT3wn3/UDj6ZoeZtWBeV8X+piS1VPHNKvyISTl5Q9V4u43D/M9pAKt4IgO5H04RtXQCSr8qdObm4Xlwnsyk/6bTSqVYCVPH2aOQ7gm1+rmmO2+o5LzMfYkZxrD8QDsvZNpR/octxdOftgx3SW8nwWYJAChE4Y9NorM6mJDgdoGCLmrJVXE0pE6CqjxFIT3Zu7kfuvPpEHHjyfyaycRafqv6QfOOOiTaB+eeGMjH7mxffN0uBQzBn4xr3D+KjTFUSreQYG3zOEXCZT1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728901749; c=relaxed/relaxed;
-	bh=Y345l0RrYu3JPihAF01AIOvjFsHH9rbfLkTByPcu57U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QVu8dt8ofI/kEeIbyTXyG7RcBzmSZcy4prNDsZoe1SDR3vGhLJ/Z8OtML/AlG0RTF4Ze7sjHud6fpknKkHHmcRD5Or8oZI8W6brdh9hITalSUuFnwCfQtPDMgSHc6eahj92cMK45XG/o813aEHIi8CK4KZ+v/GRaymGaWq7LuVkFJM0/cB+KKm1Q6UrxPAvu/xtsHsjW4tsvEPglRp1B5Z6fjCm3PegEp9qMHKiT2259vTyX8EC75WwCEHj9RttvZF/9MuSPr1Fbq82174alLp9ouMuU16w/XPVvsP4kR7MKK1dcjjcHzXaL0G4AYNdGUqm8EJgO58MFiBjVSRkOCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ikZEIJ/q; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1728902904; c=relaxed/relaxed;
+	bh=RYS+du93+69GukdtgxG4LqQci0I/RXZpcu8Hj5WKYEk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kr1bHFavf/80Z5MA3KwDTaSVtKgSCVJNudBsymMDA4N5c05LZjGmjaIXXVaVrs9Tde7MJYgBslwOsxwwjMlVblMh+s5M7BpKnMVOfdSKg4wdM31mvDrriYvysI5bZz8Vw0rMUcad/pAEHD89ucgIVXqWVxGlM5JYlM7ISQ4Oprb3zJ262i+hsKqgzwh4TKtvyemvPz8UDH1O98NP/cmSgc0QAPDsgfQGW/0Ydzks3H9avX0B4W4JphB8kXToLOMwhnQcC5/LnxLEzhcZTc5t9bO0PxIj7XGMJEIDVn6pWTkrAqbmspAPPKQ9MSQpA/jLo2eZiv72W6LQwdK8sEIkQg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lDehbRUi; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ikZEIJ/q;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lDehbRUi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRtkX1JFmz2y64
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 21:29:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XRv8l1cWQz3bjK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 21:48:23 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5C6AE5C4CA6;
-	Mon, 14 Oct 2024 10:29:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30349C4CEC6;
-	Mon, 14 Oct 2024 10:29:03 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id F0E32A419D3;
+	Mon, 14 Oct 2024 10:48:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AF4C4CEC3;
+	Mon, 14 Oct 2024 10:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728901744;
-	bh=sV4Rp0TPVdzNhXz3lQhbAY5z63glc6lEzRRa41dAlHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ikZEIJ/q02U0sgjPnYZhDgFSO09fOvHPApoO/qznd/NsKTgq3fuYKg+kXdQTGNoEZ
-	 ZdFP15gv+6ZSyxLOY2vpWe0MBh7ZPpkBcKv3Tb8GreZmO9kMzaoI9uwelL2IjjNl1K
-	 jD+ZzMqTMRAlNrfljDijm7JGdgsjeAji5YeZ9YYpK5UaHToAZIvGR693yNbzd9d0Xr
-	 QPawXFjCLH4+C1hfbNJuxRoa1chGFiuBxqD4qAa77jUYwF+rR5fGD54Qx8MvXtm6j5
-	 uHpxIbm+YJW4fX2DBOBHsPjR/Q7mpg942cp4wID2LsxrsUMfgq1PY70kbK8DN5Fjbn
-	 Hdfns0E4XIb0A==
-Date: Mon, 14 Oct 2024 11:29:00 +0100
+	s=k20201202; t=1728902900;
+	bh=nyk7KmsjJVeX09LhsxjDfvCwzgNz1+vfkwwUVY+0C/g=;
+	h=From:Subject:Date:To:Cc:From;
+	b=lDehbRUijHK3VViD/M4SotvPenvFUgbjHygLq7PtTA+4wUYOFk0PYzWJ3MPsh1XdR
+	 Z2jBi7HUs+M2OXVJrZYFSU/dpy+BV+wt35g2d15fDTqBzi9lqYZDZf61gnw4NeSwA+
+	 Sdyrxe7Ch/to8A+VconinXXUYSzz4Fv1mieeWg8Hysqj7w7ftZbHJsZ8NthDT1Mrkn
+	 kf4Rj+LbgbHT1738OkBBqjo7VLFeOPUHVklgbNzDR6ap3b77Ht/Nj/lGmvsqR/tsrh
+	 RYSDTKLHsFbyuQ3ZB7OLPWylJ3J6RMFNNc8pWBn0HkvDiWUWersbpfsUOaBeLcJsXC
+	 Jloo1d4yj+BIQ==
 From: Simon Horman <horms@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, dmaengine@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.12-rc3
-Message-ID: <20241014102900.GS77519@kernel.org>
-References: <CAHk-=wg061j_0+a0wen8E-wxSzKx_TGCkKw-r1tvsp5fLeT0pA@mail.gmail.com>
- <20241014072731.3807160-1-geert@linux-m68k.org>
- <711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org>
- <20241014085819.GO77519@kernel.org>
- <CAMuHMdWedOgc4S12FwQR8_80aqgRJ2pwrKWsNb5Svt6776ti3Q@mail.gmail.com>
+Subject: [PATCH 0/2] net: ethernet: freescale: Use %pa to format
+ resource_size_t
+Date: Mon, 14 Oct 2024 11:48:06 +0100
+Message-Id: <20241014-net-pa-fmt-v1-0-dcc9afb8858b@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,34 +56,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMuHMdWedOgc4S12FwQR8_80aqgRJ2pwrKWsNb5Svt6776ti3Q@mail.gmail.com>
-X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOb2DGcC/x3MQQqAIBBA0avErBtQGQi6SrTQGmsWmahEIN49a
+ fkW/1fInIQzzEOFxI9kuUOHHgfYThsORtm7wShDWmnCwAWjRX8VZOccaTsReYIexMRe3n+2rK1
+ 94+9cQVwAAAA=
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Pantelis Antoniou <pantelis.antoniou@gmail.com>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+X-Mailer: b4 0.14.0
+X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Oct 14, 2024 at 11:18:14AM +0200, Geert Uytterhoeven wrote:
-> Hi Simon,
-> 
-> On Mon, Oct 14, 2024 at 10:58 AM Simon Horman <horms@kernel.org> wrote:
-> > On Mon, Oct 14, 2024 at 10:38:20AM +0200, Geert Uytterhoeven wrote:
-> > >   + /kisskb/src/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: error: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t {aka long long unsigned int}' [-Werror=format=]:  => 126:37
-> > >   + /kisskb/src/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: error: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Werror=format=]:  => 126:46
-> >
-> > I wonder what the correct string format is in these cases?
-> > I didn't have a good idea the last time I looked.
-> 
-> "%pa" + taking the address of the resource_size_t object.
-> 
-> https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+Hi,
 
-Thanks,
+This short series addersses the formatting of variables of
+type resource_size_t in freescale drivers.
 
-These format problems seem to have been introduced quite some time ago
-by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string").
-I'll send some patches to address the ones introduced by that patch
-that I was able to still find in-tree.
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
+
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+
+These problems were introduced by
+commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+
+---
+Simon Horman (2):
+      net: fec_mpc52xx_phy: Use %pa to format resource_size_t
+      net: ethernet: fs_enet: Use %pa to format resource_size_t
+
+ drivers/net/ethernet/freescale/fec_mpc52xx_phy.c     | 2 +-
+ drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+base-commit: 6aac56631831e1386b6edd3c583c8afb2abfd267
+
 
