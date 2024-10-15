@@ -1,65 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-2291-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2292-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B846C99F19E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 17:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 459FA99F451
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 19:44:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XSdf42mtgz3bkL;
-	Wed, 16 Oct 2024 02:42:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XShKv3rvYz2xJy;
+	Wed, 16 Oct 2024 04:44:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729006972;
-	cv=none; b=fyaTicJe9Ro6ccNqldsXWhnAPVC8V+C/bV7FyFFr2P1c5uwLfoAsrnNmVaNhY7W6Re7K+wiYZcmJmS4OjtxlhVQ8n9GYOpxh3ysU1Jd5RS78LW250FaUynJ7UiBGo/xEybdn3shQQT9Q8JmA+6eX2omJp4JdxZqxDGqVqRe7a0MzIrFLpw0FIabymVxuV6AQBed3UTrdGuw2qQJNE7ShKuXfmTxo0eivRfx8d8eJjzgNAD1qS1WN0cwQbcjlcZCZiKUVaf7J+8gKsFjgyQYehptaQwkHhQVerPfeH0r7UVnQ19+/u4/H9FSmni8FQ5bBiW6iUi/pCZWSlnNkrnqckA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729014243;
+	cv=none; b=E/eL81+5LoBydVxqXC4nQpsKtcz8tQGsu41iD+yPdeVvJjpHNdq7KIPEfykaPrOfmhVTlBPMjcV9QCNKRSEPjTtGgWDVPH63MrnZRf/20Gt7P+xqES/srqkkXl/qbvdB1is4YpOP0CkP6b27ykmpMFQiWPR2R4D2yBTB3mCDCRJSOBuMF3PaCZPwTOfGAyym/tqtJb1vGRVDUxJYtGhVGKLjKrMff3SohDlPFpaIWBTpzaAjuL6RHXHeLbfYA0HMA6yHBgyjhgh53hiBpt2/oexwaTKkgwtbAg9Z+CSlg20A6DVDlUkoo3plbVWVoXxlUjSuliOMc6FvvyPGjaNHtQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729006972; c=relaxed/relaxed;
-	bh=5H/4jrpzEyuEt3kkgW2rzE95+U5CN+zHY8J92IEceQs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RnVt/ygcwvoI/kLxflE/kdNszFiNOdH6x+wdTJesx48ur7j3dH73uR1kL3FYjhsIzAz31PC76Iv1vsYtHvUSZpPcTLaNIwQTpqiJZ29/f2srG5I/NZwbQoZjcArTEWDQxxTAhUFwgE58CuhBDchmhRz0bnNXp6HUhOkx+PczM/Tty5AwJmCo5WwvhKZrMy4x607lS4YjrBA/v/dAh0TdTV88+ysNjwES7k7zqn7VJGaTeAP/0eQ4OJpl1R4KypfN7VvzXST+omE83fd5yi/QS2bbWJ6SPm3TqQTbF7DpR5vI9+Yu7rR7fIk3kKobOcYg+xUWr7TOmuekSpIDjcN7yg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=GiXQec4K; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jFaXijGn; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=GiXQec4K;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jFaXijGn;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	t=1729014243; c=relaxed/relaxed;
+	bh=y37FJa8rEcwjL6PRTwqZw4s0uQYGUoOLL+aOsV5ACJs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=QeAZN4RLEnm3O2hv2PnXQTiGbhScwXumva20uQiDRkEF6j6E2sVlu7Ot0ucu89peM+rVX3XddBQik/H9X6l/8/+vm4i0FwwF2AsaJ26ysrmVlOmA9QEwq2MrCgbsTog51tW3B1+QHMAkN8D13LeeTdug4vnnJ2nbuNTXGmmsfurmWrhZlIGijAqupVMfZxZt3UrhxeXIUM/d/aKnGr7nXL5o5GzLjE4NTwuI+oCTDcf03lx8hSlM9wZZUtEVw+yCfR8ioAfufs3yC0lGjpWCsTSG2xZKGkNAGqMnol8Hw8exkMav/N4ppa/XFCf31x60IqRgWCd1t71uselhe7WxSA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSdf26jYgz3bdV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 02:42:50 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1729006965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5H/4jrpzEyuEt3kkgW2rzE95+U5CN+zHY8J92IEceQs=;
-	b=GiXQec4KIUemYmVODSScu73AVombrDmG8VUbAJKZShgmdIAdcfs2J+YVBKJKYi3RZcc+bC
-	qHkUKgdfbIxUBbXweF6uq8x83c2lLLOesPzggE0g5GDfw9UoJF2QfNzPSqo/4fO+i9wPhw
-	Ts3KTs88ILz55bFF+T/uXspaK++r2xVEEdPnwiVKWwZzT+PrkK2N2o4WPiS+o5+U3fQNW6
-	bzy2MveXPXQ7EgKejHvPAQUIem/p9bMRaCX8SAQoB0gZ3qKt+NsQqtuHFx2R5rYoUpBTiT
-	1yPHZQx7q61zLq8Jq130AQq6Tf6yALBVtegj7ah1ElyUf0MkI2USS926DT4HiA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1729006965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5H/4jrpzEyuEt3kkgW2rzE95+U5CN+zHY8J92IEceQs=;
-	b=jFaXijGnUW7agtJYmEaw7GIwMRCW0DOWvFkos7ahgGegcTj32/ZgxAMlBgYwFQBmcqrGzr
-	q05ZtNoF7tAtDBBg==
-To: Luming Yu <luming.yu@shingroup.cn>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, jialong.yang@shingroup.cn,
- luming.yu@gmail.com
-Cc: Luming Yu <luming.yu@shingroup.cn>
-Subject: Re: [PATCH 6/7] powerpc/entry: factout irqentry-state
-In-Reply-To: <E6FB8D32FAAFC3BE+20241012035621.1245-8-luming.yu@shingroup.cn>
-References: <20241012035621.1245-3-luming.yu@shingroup.cn>
- <E6FB8D32FAAFC3BE+20241012035621.1245-8-luming.yu@shingroup.cn>
-Date: Tue, 15 Oct 2024 17:42:45 +0200
-Message-ID: <87ed4he5je.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XShKs4wsvz2xH1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 04:44:00 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4XShKn2M7jz9sPd;
+	Tue, 15 Oct 2024 19:43:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id TVYtcATzovDT; Tue, 15 Oct 2024 19:43:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4XShKn0mffz9rvV;
+	Tue, 15 Oct 2024 19:43:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C58078B770;
+	Tue, 15 Oct 2024 19:43:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id Jsl9_4vQLh1r; Tue, 15 Oct 2024 19:43:56 +0200 (CEST)
+Received: from [192.168.233.89] (unknown [192.168.233.89])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5FFCA8B764;
+	Tue, 15 Oct 2024 19:43:56 +0200 (CEST)
+Message-ID: <e9595d8b-d1e2-4c6a-b097-6f4f08d29866@csgroup.eu>
+Date: Tue, 15 Oct 2024 19:43:56 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,83 +56,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] powerpc/entry: convert to common and generic entry
+To: Luming Yu <luming.yu@shingroup.cn>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
+ jialong.yang@shingroup.cn, luming.yu@gmail.com
+References: <88E2581B1D024E9A+20241012035621.1245-3-luming.yu@shingroup.cn>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <88E2581B1D024E9A+20241012035621.1245-3-luming.yu@shingroup.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, Oct 12 2024 at 11:56, Luming Yu wrote:
 
-> To have lowlevel paca.h include high level entry-common.h cause
-> include file dependency mess. Split irqentry-state.h to have
-> the irqentry_state.h can be included in low level paca.h
 
-What's the rationale for this?
-
+Le 12/10/2024 à 05:56, Luming Yu a écrit :
+> convert powerpc entry code in syscall and fault to use syscall_work
+> and irqentry_state as well as common calls implemented in generic
+> entry infrastructure.
+> 
 > Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
 > ---
->  arch/powerpc/include/asm/paca.h |  2 ++
->  arch/powerpc/kernel/interrupt.c |  2 ++
->  include/linux/entry-common.h    | 24 ------------------------
->  include/linux/irqentry-state.h  | 28 ++++++++++++++++++++++++++++
+>   arch/powerpc/Kconfig                   | 1 +
+>   arch/powerpc/include/asm/hw_irq.h      | 5 +++++
+>   arch/powerpc/include/asm/processor.h   | 6 ++++++
+>   arch/powerpc/include/asm/syscall.h     | 5 +++++
+>   arch/powerpc/include/asm/thread_info.h | 1 +
+>   arch/powerpc/kernel/syscall.c          | 5 ++++-
+>   arch/powerpc/mm/fault.c                | 3 +++
+>   7 files changed, 25 insertions(+), 1 deletion(-)
+> 
 
-This is not how it works. Split the include file in a first step and
-then make changes to the PPC side.
+...
 
-> diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
-> index d95ab85f96ba..6521171469f2 100644
-> --- a/include/linux/entry-common.h
-> +++ b/include/linux/entry-common.h
-> @@ -352,30 +352,6 @@ void irqentry_enter_from_user_mode(struct pt_regs *regs);
->   */
->  void irqentry_exit_to_user_mode(struct pt_regs *regs);
->  
-> -#ifndef irqentry_state
-> -/**
-> - * struct irqentry_state - Opaque object for exception state storage
-> - * @exit_rcu: Used exclusively in the irqentry_*() calls; signals whether the
-> - *            exit path has to invoke ct_irq_exit().
-> - * @lockdep: Used exclusively in the irqentry_nmi_*() calls; ensures that
-> - *           lockdep state is restored correctly on exit from nmi.
-> - *
-> - * This opaque object is filled in by the irqentry_*_enter() functions and
-> - * must be passed back into the corresponding irqentry_*_exit() functions
-> - * when the exception is complete.
-> - *
-> - * Callers of irqentry_*_[enter|exit]() must consider this structure opaque
-> - * and all members private.  Descriptions of the members are provided to aid in
-> - * the maintenance of the irqentry_*() functions.
-> - */
-> -typedef struct irqentry_state {
-> -	union {
-> -		bool	exit_rcu;
-> -		bool	lockdep;
-> -	};
-> -} irqentry_state_t;
-> -#endif
-> -
->  /**
->   * irqentry_enter - Handle state tracking on ordinary interrupt entries
->   * @regs:	Pointer to pt_regs of interrupted context
-> diff --git a/include/linux/irqentry-state.h b/include/linux/irqentry-state.h
-> new file mode 100644
-> index 000000000000..d4ddeb1c6ab6
-> --- /dev/null
-> +++ b/include/linux/irqentry-state.h
-> @@ -0,0 +1,28 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __LINUX_IRQENTRYCOMMON_H
-> +#define __LINUX_IRQENTRYCOMMON_H
+> diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.c
+> index 77fedb190c93..e0338bd8d383 100644
+> --- a/arch/powerpc/kernel/syscall.c
+> +++ b/arch/powerpc/kernel/syscall.c
+> @@ -3,6 +3,7 @@
+>   #include <linux/compat.h>
+>   #include <linux/context_tracking.h>
+>   #include <linux/randomize_kstack.h>
+> +#include <linux/entry-common.h>
+>   
+>   #include <asm/interrupt.h>
+>   #include <asm/kup.h>
+> @@ -131,7 +132,7 @@ notrace long system_call_exception(struct pt_regs *regs, unsigned long r0)
+>   		 * and the test against NR_syscalls will fail and the return
+>   		 * value to be used is in regs->gpr[3].
+>   		 */
+> -		r0 = do_syscall_trace_enter(regs);
+> +		r0 = syscall_enter_from_user_mode(regs, r0);
 
-The guards reflect the header file name and are not randomly chosen strings.
+Can you provide details on how this works ?
 
-But aside of that. How is any of this supposed to compile?
+For instance, do_syscall_trace_enter() was calling do_seccomp().
+do_seccomp() sets regs->r3 to -ENOSYS then calls __secure_computing().
 
-You move the typedef into a separate header and then nothing (except
-powerpc) includes it. Oh well.
+Now you call syscall_enter_from_user_mode() instead which calls 
+syscall_enter_from_user_mode_work() which calls syscall_trace_enter() 
+which calls  __secure_computing() but without seting regs->r3 to -ENOSYS.
 
-Thanks,
+So what will be returned by the below return when 
+syscall_enter_from_user_mode returns -1 ?
 
-        tglx
+>   		if (unlikely(r0 >= NR_syscalls))
+>   			return regs->gpr[3];
+>   
+> @@ -184,6 +185,8 @@ notrace long system_call_exception(struct pt_regs *regs, unsigned long r0)
+>   	 * So the resulting 6 or 7 bits of entropy is seen in SP[9:4] or SP[9:3].
+>   	 */
+>   	choose_random_kstack_offset(mftb());
+> +	/*common entry*/
+> +	syscall_exit_to_user_mode(regs);
+>   
+>   	return ret;
+>   }
 
