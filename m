@@ -1,71 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-2282-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2283-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3220299E654
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 13:41:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AE699E8E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 14:10:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XSXHX6SHGz3bnc;
-	Tue, 15 Oct 2024 22:41:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XSXxX2Drgz3bn4;
+	Tue, 15 Oct 2024 23:10:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728992488;
-	cv=none; b=Osnj4N/NfC0CrGxfE2Tvs8BbwCvYPo5WoA9sdnAQoESpcgXrYZWBrHpirEN1LNjRSF/c/WL6SIKwr9dqVeviZ/hw+ii2dCm3WUXWGqAYMY1Hg9/H/HGBb4cQEbUpXTptaKXGsnRBdYpzWbEFh1LuXvzN/QNLOLcaoptq6cW9sQbL41pPej2KGGDY33863gxetvt/B+P13Xc5fazzijMMakqIinUtxTIpKDE446+lpOrcP0YgChORo0oHOEUySJrmFXKdoPuoLDOOsjkbDS2yPod9DaTGWg+5KQYm8+P3yCmIm4uUKh3tviCrfLAKhH1qo3sxQgQxH6Bv05pgNkCN2w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728994256;
+	cv=none; b=Oq91zF23Ct0JnxKet12jWsnWLre39HpW6M7dtb9l8MRGVqs5+MXOAstoz3kXNIzrS8twnEuA3+Us0RF/DO+ttwQAT52tYVogxbBatc74uNwA1urLMqTfHUSBVlgRPjOf2zR/8PjvHjV6e7AiZPQhlgP0oFh5rPGxZKi7u6LhoToT3JRWp6ZIkBdgNHwWB0kqYNp1UzzmjDcw2e5PNWEjS4HqLCuAkOb7hBjKejwaH35lCmDidaZlK+dOBQDSBL4iAbGAlbt/gVVzybK781KEaIdB3ps1TXJkFOmVn6f3ZwQubssHU81kyRG+54+32joL0v7C+gpbger3xvrUW5pYhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728992488; c=relaxed/relaxed;
-	bh=MrJHQArAiuDbpB+jYLmra0DhH1iSL+p/MwXOTL9XyvA=;
+	t=1728994256; c=relaxed/relaxed;
+	bh=TqaisbRYUNuIJTtDdcsMc/KX537f+XPwg8SJ7MtncJ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=llWgIu0Z0E1hGqiNd/Il82Aeux417XcBvYh7V0iousY2U4V3VAw+tkY4tLA3VBR+OBIagoMERodgWPS3IPRIp2IxVaN8GRwSIhUnNam0dJvLPSBwh5IbvelVosp+YIt5RSXR0kE79Hx0YEK2Yi54L7wb3WtqqnuOHbBDrctw799r995L2r6wkiFHw8tcTrCK0DvcffMxVkNHxEqwK5DcwEKmWDyzlL/0ngFwJrfl0OALKx35NTOzFAs7YehDDNEcHKjNao4+ENJ0rXp1CC+P5QytdYRARjHxoJ+TIYGUVxhKlzDbZGho4SWNeSSZGu301CeDayBe7tsWQmlbhKh7ig==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BKWuWFQq; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=CslPvhvrvHmCsarIYkSXae0D5kXkFtwvOPmbtHxXCQt17kc9EgiBuY+FyPlmQlt1ZyjRj5KoCT5GYDLLMoT7Ag8xGjJc41iTjbZMzW+ZkEisq2Usb7B4/KazE117/13YXS7dJfJhhsXDFctd1KeyDtIMk8iy20Dojoy1dN0Q/kQI/E0NcsIlGS4vjl3QKe7W/ZhMkpPHhEaDTWAYTr0oT/8CWQBAP3A7RuJV6+dghU1isOnpXhl2W8evvp0BKo/NW8veotcDVHJ8lOYVZbmseGPLEjySkrQeZAk+WL2kcgkRhjJXHqoxktwdCXrnM+sD4x7eFtWU6uoN9BYABgmYZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RaN+i4Qs; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BKWuWFQq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RaN+i4Qs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSXHW5xkjz3bkf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 22:41:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSXxW0rxPz3bkY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 23:10:55 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 84EB5A42603;
-	Tue, 15 Oct 2024 11:41:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21911C4CECF;
-	Tue, 15 Oct 2024 11:41:19 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 3F5D15C58C6;
+	Tue, 15 Oct 2024 12:10:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463DEC4CEC6;
+	Tue, 15 Oct 2024 12:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728992485;
-	bh=MMLGYJ3ppH3zesWUxVBPsvLY3G0bLj+ulqZ3MXv+H+0=;
+	s=k20201202; t=1728994251;
+	bh=y+TgaiI7J/jSSYzxAw22Eb8Kte8Q1JyRu7C9LHRxYNU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BKWuWFQqTVTJynGPE8DqW8n/xI73kLFPuoP5rh/c5kK1CSzjaiF8IYtd8kopRff3K
-	 XzdLUQpCs229QH3XbN6uW7uDFcld9GU4lQqyeSLikLmD2AArAbPqViBkORonVwi/F1
-	 meo0nTDrGhQM/7o0bBVbjaX75lXFKFGpwWTYxfaZ1Q51KRZgYksDHYD54yqRhojHGr
-	 lKXOeOPfylHxDC0UYfMvK4LV2v0EDh5S3knmX5cyQ9SV2mj0M5ieWdUUod7sj74EvF
-	 xwI17jNouAEf7oIY/BXMWY8jbY8LGd8gPfdfvjZD8Bwi29mydpctt42T4rNrYJkSng
-	 80ZuatKj9mzjg==
-Date: Tue, 15 Oct 2024 12:41:16 +0100
-From: Will Deacon <will@kernel.org>
-To: Joey Gouly <joey.gouly@arm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
-	linux-arm-kernel@lists.infradead.org, nd@arm.com,
-	akpm@linux-foundation.org, aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
-	broonie@kernel.org, catalin.marinas@arm.com,
-	christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
-	hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
-	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
-	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
-	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
-	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 19/30] arm64: add POE signal support
-Message-ID: <20241015114116.GA19334@willie-the-truck>
-References: <20240822151113.1479789-1-joey.gouly@arm.com>
- <20240822151113.1479789-20-joey.gouly@arm.com>
- <47e1537f-5b60-4541-aed1-a20e804c137d@arm.com>
- <20241009144301.GA12453@willie-the-truck>
- <20241014171023.GA18295@willie-the-truck>
- <20241015095911.GA3777204@e124191.cambridge.arm.com>
+	b=RaN+i4Qsf+ngZdxNJefPuqntIcEuA6A2ATjaapyVQA0uknJ48fWgfnDpbaI2GwRgY
+	 JLCSHppy/NGNEEvQwVG/KPco3oCyA+wRadCCHpUxug0BXsS260Q6ERi64dJDw47QhV
+	 b3RKAVWX6xnxVzQkGFkGAF/Fy97xy3VyHBj4TTiSPffpYs0qomYBvL306UYltxIiIF
+	 v1AgitFso53aumLsDp1o9OWeFMOYcpX2s6gavzYnTpevCys4cgFgl+d6PvfRFwjw15
+	 1WVlvIiAgrVk9RYfBhsT5eBhUg07LkxjHpGL7GyQj9WXO0ntZ05qW7CB+9RyMYPOLA
+	 yAhxyYnvloLGA==
+Date: Tue, 15 Oct 2024 13:10:47 +0100
+From: Simon Horman <horms@kernel.org>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 0/2] net: ethernet: freescale: Use %pa to format
+ resource_size_t
+Message-ID: <20241015121047.GE569285@kernel.org>
+References: <20241014-net-pa-fmt-v1-0-dcc9afb8858b@kernel.org>
+ <20241015072448.6ssv6vsyjpv4vnhi@DEN-DL-M70577>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,91 +68,53 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241015095911.GA3777204@e124191.cambridge.arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <20241015072448.6ssv6vsyjpv4vnhi@DEN-DL-M70577>
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Oct 15, 2024 at 10:59:11AM +0100, Joey Gouly wrote:
-> On Mon, Oct 14, 2024 at 06:10:23PM +0100, Will Deacon wrote:
-> > Kevin, Joey,
+On Tue, Oct 15, 2024 at 07:24:48AM +0000, Daniel Machon wrote:
+> > Hi,
 > > 
-> > On Wed, Oct 09, 2024 at 03:43:01PM +0100, Will Deacon wrote:
-> > > On Tue, Sep 24, 2024 at 01:27:58PM +0200, Kevin Brodsky wrote:
-> > > > On 22/08/2024 17:11, Joey Gouly wrote:
-> > > > > @@ -1178,6 +1237,9 @@ static void setup_return(struct pt_regs *regs, struct k_sigaction *ka,
-> > > > >  		sme_smstop();
-> > > > >  	}
-> > > > >  
-> > > > > +	if (system_supports_poe())
-> > > > > +		write_sysreg_s(POR_EL0_INIT, SYS_POR_EL0);
-> > > > 
-> > > > At the point where setup_return() is called, the signal frame has
-> > > > already been written to the user stack. In other words, we write to the
-> > > > user stack first, and then reset POR_EL0. This may be problematic,
-> > > > especially if we are using the alternate signal stack, which the
-> > > > interrupted POR_EL0 may not grant access to. In that situation uaccess
-> > > > will fail and we'll end up with a SIGSEGV.
-> > > > 
-> > > > This issue has already been discussed on the x86 side, and as it happens
-> > > > patches to reset PKRU early [1] have just landed. I don't think this is
-> > > > a blocker for getting this series landed, but we should try and align
-> > > > with x86. If there's no objection, I'm planning to work on a counterpart
-> > > > to the x86 series (resetting POR_EL0 early during signal delivery).
-> > > 
-> > > Did you get a chance to work on that? It would be great to land the
-> > > fixes for 6.12, if possible, so that the first kernel release with POE
-> > > support doesn't land with known issues.
+> > This short series addersses the formatting of variables of
+> > type resource_size_t in freescale drivers.
 > > 
-> > Looking a little more at this, I think we have quite a weird behaviour
-> > on arm64 as it stands. It looks like we rely on the signal frame to hold
-> > the original POR_EL0 so, if for some reason we fail to allocate space
-> > for the POR context, I think we'll return back from the signal with
-> > POR_EL0_INIT. That seems bad?
+> > The correct format string for resource_size_t is %pa which
+> > acts on the address of the variable to be formatted [1].
+> > 
+> > [1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+> > 
+> > These problems were introduced by
+> > commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+> > 
+> > Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> > Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+> > 
+> > ---
+> > Simon Horman (2):
+> >       net: fec_mpc52xx_phy: Use %pa to format resource_size_t
+> >       net: ethernet: fs_enet: Use %pa to format resource_size_t
+> > 
+> >  drivers/net/ethernet/freescale/fec_mpc52xx_phy.c     | 2 +-
+> >  drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > base-commit: 6aac56631831e1386b6edd3c583c8afb2abfd267
+> > 
 > 
-> If we don't allocate space for POR_EL0, I think the program recieves SIGSGEV?
+> Hi Simon,
 > 
-> setup_sigframe_layout()
->         if (system_supports_poe()) {
->                 err = sigframe_alloc(user, &user->poe_offset,
->                                      sizeof(struct poe_context));
->                 if (err)
->                         return err;
->         }
-> 
-> Through get_sigframe() and setup_rt_frame(), that eventually hets here:
-> 
-> handle_signal()
-> 	ret = setup_rt_frame(usig, ksig, oldset, regs);
-> 
-> 	[..]
-> 
->         signal_setup_done(ret, ksig, test_thread_flag(TIF_SINGLESTEP));
-> 
-> void signal_setup_done(int failed, struct ksignal *ksig, int stepping)                                                                                                                         
-> {                                                                                                                                                                                              
->         if (failed)                                                                                                                                                                            
->                 force_sigsegv(ksig->sig);                                                                                                                                                      
->         else                                                                                                                                                                                   
->                 signal_delivered(ksig, stepping);                                                                                                                                              
-> }  
-> 
-> So I think it's "fine"?
+> Is this for net-next? I dont see a target tree name :-)
 
-Ah, yes, sorry about that. I got confused by the conditional push in
-setup_sigframe():
+Hi Daniel,
 
-	if (system_supports_poe() && err == 0 && user->poe_offset) {
-		...
+Yes, it is. Sorry for forgetting to include that in the subject.
 
-which gives the wrong impression that the POR is somehow optional, even
-if the CPU supports POE. So we should drop that check of
-'user->poe_offset' as it cannot be NULL here.
-
-We also still need to resolve Kevin's concern, which probably means
-keeping the thread's original POR around someplace.
-
-Will
+> Looking at the docs, %pa seems correct to me.
+> 
+> For the series:
+> 
+> Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+> 
 
