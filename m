@@ -1,68 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-2257-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2258-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE19F99DBAE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 03:35:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0153C99DBAF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 03:35:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XSGqY4Hlzz3cF6;
-	Tue, 15 Oct 2024 12:34:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XSGqd4Qhbz2xBb;
+	Tue, 15 Oct 2024 12:34:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::436"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728956089;
-	cv=none; b=AZF7uO85lRapRmhSSStKsT5mEM9VZrDd9QGk/t+UqjwseYp8nCtaBbt6fciPDVd6xP8BHl7hhenRykaAO/cnJC0D2UpE4+gklsyBbRtZcsD9prlGA2PBMeqHMqnjykVZ3HV/UfTv7Aql8bCEuDW4VQFZVhJCm29tiEU+FWe77YQW/jKd8XLNEzLF5F9lYE/N26LQ88kMkpDtUC/SYuN4HAEirMxkNRMYaHI29FGwIUKXFxX7gCd2qOhVkfjCIbfUUbBhT4iBglnkHKJ38kFgxrEMkwIMdshAlWvNYptAy5PbP8gJ/Ct+A3H3p/2rvc8CATzmg4+hoeiFOsJx0bmOkw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728956093;
+	cv=none; b=H+SgMg0xURpgyirr9/9wM9ASE25i1tQVl1iDclfCRjuDA2IfGIrxn+9P/ixkNjPZEaBaUq+4PGC4PzNZfwB62xrLz3gTH3o/xXa90RWITfFWwvOeA9ZhX5NzfKNIWJ9NZaSB/WYczuy4dotnARtAaWWoNqCJx6QyTIrK0KkOO+EzTw6cvg6OBashdaaZgskBEP7qh6A1TLEVkLIAbe9GlmlsGeln2685upFYAEGToDzR2SGWLl7bmNeWnYW+kEXYeJRvynRG6WXlExohE4eakmmE9AU0JJCoEQngN3DZf3IiPJ6zUtluGfULq9ZIKRi91Ci23kdq06M0F70zzIFjcw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728956089; c=relaxed/relaxed;
-	bh=t5daj1tikBz1GmvjDxbc2gCsvgSNJoz/zYutj+6dtSk=;
+	t=1728956093; c=relaxed/relaxed;
+	bh=rG0rlJ7RpNnGy840avhtCY+OIP6FbV4qxEoUkbOoVC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyO/u1KKe46JLcWtOW1hAibQnITyn3JTE0rNjkP/u0jB1xNcJbUS6oNBkLxcjl/OCdkTVYfPkxP3IxHzXlNWwqutYr4LUSW1ZJ8MaGwLydykxIASs2IA1St2sgH/QgOBZcksNBRCV6LWxioIjmOS5MCPSVtx+dLwTEPGUlh9laFa84RShJORkmipoD3l38+aiWcQbYpNETsJXlDnPvnkLxaYU5TIOUS/na0rocDbOgZShWA7bnmvqGwl6dygnW/Iz5t4oHmJR1e3R0ghwcpKZn8p66TP4STlrun8asvIEDIqqYxHuj2uZtw7HQjwMhmce1FJgBPwKH98piF3eD4N0Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=e9GXboeh; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=buaTnzFlSgIcqlTVJAF+zmPNOQTsNsKr8nyFf9KWmrt2IJEZWiemeA5sDMihlPHYNpXgQTnTyAGN+84ib1TFZOzjhCFCGt1IYmcRpVJlhyDgFA/7EVDhOtBIu8I3hCjZlgvULpp0pUwN8Z2hof4FN2wvelVm1/TQB+k3vD3TnEqMW1dLktGaUL+GwWRKvjHB6xvlrVcq5iBWKfMrtD3VsVbQKl7rl2HOl3LY5RWOqGa1bMuLLvGCTaXI4FXMCSamzUlrD29ZrEEheTHePb0FvB157e8H7ZbqfsIjk3soqpQCeEzTRFzi97a1ZZtRWEOl8+Q5Bak8SIuyM0DhTq6GrQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=K3iChlCn; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=e9GXboeh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=K3iChlCn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSGqX4mZgz3bps
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 12:34:48 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-71e4fa3ea7cso2089950b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 18:34:48 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSGqc4rGsz3bps
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Oct 2024 12:34:52 +1100 (AEDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-71e70c32cd7so717921b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Oct 2024 18:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728956085; x=1729560885; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1728956090; x=1729560890; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=t5daj1tikBz1GmvjDxbc2gCsvgSNJoz/zYutj+6dtSk=;
-        b=e9GXboehu4X5+DuW5nOWju4/KwchatNdw1E3VHkObevzHk53YKiYfQBUp3c/SoC7kV
-         Z6oDH5h8W4duyV+9DUx8ULzP9Ks3WMQRcJn4NiMLifJyGhkDBOZR0nUxW9AJKyAhtJwS
-         l5uhujOVTAnc50tz1o0aeCHMFbEYKssUm+cp6C12Oa/p18i6nZPlHWivSOcHIQYKDNlA
-         x2pWYpszEuTq+aEwZVaQewQFnMxDv+cOzuIkp70k3AdSYh8lqrjKA5alyfRbmtJNguo+
-         581liMAQMclczwkwyTkE+WYxZot6NPaFDpzenBOysbHejwH64IYA74R1T0D6d50Ncpgv
-         odxw==
+        bh=rG0rlJ7RpNnGy840avhtCY+OIP6FbV4qxEoUkbOoVC0=;
+        b=K3iChlCnLxGG9tWcyYCrmnPYz7uql1SGq/vLIWZtuSpiQA4H++mT4DGaq0FxBM4cmb
+         0qXkisZPvmjR4Gb6N0rq3nOnbcz6/bK43XE5J6LCcyF4b9XVGfIMeHkFghPdj7pwb1bp
+         e+eZCebSwbCKtFcuoUQ5cPWzlUFv8FfGT8b5HtjKHu3LucuplQFs8QkKnQIx4+0OetCB
+         2CS/dY1i3RlY1CO3eEhdRV40K5zfgOyoOL7AIT4O+jnv/MSYTFfKkjGjPb+v4K9IX5UM
+         j3b1qIWcT9hESh+Eux4Ft5FS0j0DfDRHf5u1a3wmN+pzFGoaUro71Z+ANxQtp5NTU1iL
+         Kj7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728956085; x=1729560885;
+        d=1e100.net; s=20230601; t=1728956090; x=1729560890;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=t5daj1tikBz1GmvjDxbc2gCsvgSNJoz/zYutj+6dtSk=;
-        b=GBSKYpcycBKc6vCkbP0bgJdx4KlBgvUxV7V2BDej9BQ2KJqzY+TdgREGvqs8iYffbk
-         /4R2kIPtRxCSw9FzBWiGyJb38s8aPmpYSETGzc8AThR0aLVYq4v9kZiq0nOlOyYbVAB7
-         rG3X6gaHATQpoun+G/DE2xetu6buU5Lf3fPjv9BNLe5fwMYNFpit9/fLw7CqOlFOEVIl
-         C6cMQlt8GL+Yyfo/UHFNplFE7y50OW09N8gZxVJKfyu0RqbTGs/Kt5hd7RWOxUd4gulv
-         qG9aSrSuTKlCih5N7IBdC43VDdM4t4QgIB8cRPSDChADfGVw6H8rPJ5wAnHh4dSS3Yrk
-         O2kw==
-X-Gm-Message-State: AOJu0Yy1b0aq71k3rShTcgYFq4RyPB3TSldIZRUgJFQaqbV0ir3uASEz
-	oZlIO8JGoKuIALi4H2Iy5ZNOqtqsTMzWw/2ntL49mpVzbC8WLjqjjqSCxw==
-X-Google-Smtp-Source: AGHT+IEs2IxrBsPT6YXEgz2epQyHoorcOdT0d4hm7NYr74rGWRI5/0uchu7H7p2tlDXCJav5W/E8eg==
-X-Received: by 2002:a05:6a00:3e03:b0:71e:3eed:95c9 with SMTP id d2e1a72fcca58-71e4c1bfba9mr15531178b3a.22.1728956085196;
-        Mon, 14 Oct 2024 18:34:45 -0700 (PDT)
+        bh=rG0rlJ7RpNnGy840avhtCY+OIP6FbV4qxEoUkbOoVC0=;
+        b=e9IWJlgqzRc6ros5XIKEqyb3C2KMQZLC66O93rmRZtuZH+gJJL58ZxlBo+d4t90Bms
+         RAzrhh5pNTsZ1YQ12CBZRXDcJMj1lzzgmpsudXYAJ4HRqM8QtO2j1FKymwrZ6VX/73V3
+         K/u8vzWqIgM32dpGg7QudakL8+Q51sjDU32fbXkttu0cIMNMvpQNn4/bRWWXG9ncfNp4
+         olozeEt2ql0hjpEGBFcvE52riu41vCM4m5N2Z3oX8SSC+MlSdFyOybEMZIhmwcyZs3Hw
+         Je2OVV6IDYNZ1eWoMNmrh14NYg3gwHWygIpGxZIqy3BwSdi5NRTDWx3BosiEFKeE35b+
+         RQDA==
+X-Gm-Message-State: AOJu0Yx6OEU98glW56bkbWiUzBvlKN0ERiFeepPP+CXQ1bu1UhgiNOSB
+	R9bCA+xrAJU70R6cnbJGzVigVO+B/FFtke0Fg8VTYX0XMlQUbT8QsMnBVQ==
+X-Google-Smtp-Source: AGHT+IFvESYA3zS1GBFZJxbiWhM237fiGLHeDy47xUMjk/AhsGWJAlSSfmCDieCeQukhtrPpShvuWQ==
+X-Received: by 2002:a05:6a00:1404:b0:71e:5033:c5 with SMTP id d2e1a72fcca58-71e50330377mr13492824b3a.14.1728956090001;
+        Mon, 14 Oct 2024 18:34:50 -0700 (PDT)
 Received: from dw-tp.. ([171.76.80.151])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e77508562sm189349b3a.186.2024.10.14.18.34.40
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71e77508562sm189349b3a.186.2024.10.14.18.34.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Oct 2024 18:34:44 -0700 (PDT)
+        Mon, 14 Oct 2024 18:34:49 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: kasan-dev@googlegroups.com,
@@ -80,9 +80,9 @@ Cc: kasan-dev@googlegroups.com,
 	Pavithra Prakash <pavrampu@linux.vnet.ibm.com>,
 	LKML <linux-kernel@vger.kernel.org>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC RESEND v2 12/13] book3s64/hash: Disable kfence if not early init
-Date: Tue, 15 Oct 2024 07:03:35 +0530
-Message-ID: <29cca55915a923d1823644b37fa571234f9ea549.1728954719.git.ritesh.list@gmail.com>
+Subject: [RFC RESEND v2 13/13] book3s64/hash: Early detect debug_pagealloc size requirement
+Date: Tue, 15 Oct 2024 07:03:36 +0530
+Message-ID: <6b5deb16494e80703577e20fbb150789c83076a9.1728954719.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <cover.1728954719.git.ritesh.list@gmail.com>
 References: <cover.1728954719.git.ritesh.list@gmail.com>
@@ -101,45 +101,68 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Enable kfence on book3s64 hash only when early init is enabled.
-This is because, kfence could cause the kernel linear map to be mapped
-at PAGE_SIZE level instead of 16M (which I guess we don't want).
+Add hash_supports_debug_pagealloc() helper to detect whether
+debug_pagealloc can be supported on hash or not. This checks for both,
+whether debug_pagealloc config is enabled and the linear map should
+fit within rma_size/4 region size.
 
-Also currently there is no way to -
-1. Make multiple page size entries for the SLB used for kernel linear
-   map.
-2. No easy way of getting the hash slot details after the page table
-   mapping for kernel linear setup. So even if kfence allocate the
-   pool in late init, we won't be able to get the hash slot details in
-   kfence linear map.
-
-Thus this patch disables kfence on hash if kfence early init is not
-enabled.
+This can then be used early during htab_init_page_sizes() to decide
+linear map pagesize if hash supports either debug_pagealloc or
+kfence.
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/book3s64/hash_utils.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
 diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 53e6f3a524eb..b6da25719e37 100644
+index b6da25719e37..3ffc98b3deb1 100644
 --- a/arch/powerpc/mm/book3s64/hash_utils.c
 +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -410,6 +410,8 @@ static phys_addr_t kfence_pool;
+@@ -329,25 +329,26 @@ static void kernel_unmap_linear_page(unsigned long vaddr, unsigned long idx,
+ }
+ #endif
  
- static inline void hash_kfence_alloc_pool(void)
++static inline bool hash_supports_debug_pagealloc(void)
++{
++	unsigned long max_hash_count = ppc64_rma_size / 4;
++	unsigned long linear_map_count = memblock_end_of_DRAM() >> PAGE_SHIFT;
++
++	if (!debug_pagealloc_enabled() || linear_map_count > max_hash_count)
++		return false;
++	return true;
++}
++
+ #ifdef CONFIG_DEBUG_PAGEALLOC
+ static u8 *linear_map_hash_slots;
+ static unsigned long linear_map_hash_count;
+ static DEFINE_RAW_SPINLOCK(linear_map_hash_lock);
+ static void hash_debug_pagealloc_alloc_slots(void)
  {
-+	if (!kfence_early_init_enabled())
-+		goto err;
+-	unsigned long max_hash_count = ppc64_rma_size / 4;
+-
+-	if (!debug_pagealloc_enabled())
+-		return;
+-	linear_map_hash_count = memblock_end_of_DRAM() >> PAGE_SHIFT;
+-	if (unlikely(linear_map_hash_count > max_hash_count)) {
+-		pr_info("linear map size (%llu) greater than 4 times RMA region (%llu). Disabling debug_pagealloc\n",
+-			((u64)linear_map_hash_count << PAGE_SHIFT),
+-			ppc64_rma_size);
+-		linear_map_hash_count = 0;
++	if (!hash_supports_debug_pagealloc())
+ 		return;
+-	}
  
- 	// allocate linear map for kfence within RMA region
- 	linear_map_kf_hash_count = KFENCE_POOL_SIZE >> PAGE_SHIFT;
-@@ -1074,7 +1076,7 @@ static void __init htab_init_page_sizes(void)
++	linear_map_hash_count = memblock_end_of_DRAM() >> PAGE_SHIFT;
+ 	linear_map_hash_slots = memblock_alloc_try_nid(
+ 			linear_map_hash_count, 1, MEMBLOCK_LOW_LIMIT,
+ 			ppc64_rma_size,	NUMA_NO_NODE);
+@@ -1076,7 +1077,7 @@ static void __init htab_init_page_sizes(void)
  	bool aligned = true;
  	init_hpte_page_sizes();
  
--	if (!debug_pagealloc_enabled_or_kfence()) {
-+	if (!debug_pagealloc_enabled() && !kfence_early_init_enabled()) {
+-	if (!debug_pagealloc_enabled() && !kfence_early_init_enabled()) {
++	if (!hash_supports_debug_pagealloc() && !kfence_early_init_enabled()) {
  		/*
  		 * Pick a size for the linear mapping. Currently, we only
  		 * support 16M, 1M and 4K which is the default
