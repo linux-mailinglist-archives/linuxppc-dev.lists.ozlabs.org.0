@@ -1,57 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-2288-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2287-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E39699EDE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 15:40:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E4999EDE5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 15:40:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XSZwz29XDz3bqM;
-	Wed, 16 Oct 2024 00:40:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XSZwt215Nz3bpP;
+	Wed, 16 Oct 2024 00:40:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728999635;
-	cv=none; b=VVLVFMOM8j3/ipHgvE3xDH3QEYGUB3gl0qw4Nsc9ZR07aDcbRQwIa8E6OtLvj6iKjeQwN/dr0VI/XBFY4xomy2473RjyYbyJoVi/5ffz9H1uR9kOJadzwG6NU39fK5mqCHTp4rkH4QI3VgJwUFdtNOmbnJEVhUeBxZ4ZdkjSqOLkLTY5deQ4fQL7B2axWUzFH7jPjYnxQuTVohyVmndFF+5L5k+C1XQMocOLInhZS5qmRNEZiPDMGf69iu43/Iko5w0qg8UXHEAG1GtLmtkKSJjVJo03KoMDSgDJE7NTObI/hKu06lf1hWKpiurqI44/LuWmw3NpZcd1ZDuDtr4ugw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1728999630;
+	cv=none; b=c0oJcohXW9rLrwNO8tW3UVrdpbd7uOJ/Ts8SaxmklnwLKiPADBdGeLHxL0Gg93G9LmMTzuUK6EW0yzFZOWU7DK9bVvnf1MBtN8ihFRpXJW+sEHdQQw9XhyWtN5AA12uxFS5vrdyNcrYW+YHjq1ZLyEOnd9qr+16yAKUPsjv1DEdPdu1tzIRTOVjKAFQwzwU0Jan6M0kX81j9LYe/yQyA+6xui4iETc/EGQOnQlPz018eZ6p4E3pk3l0rk252G5jJoHeXcffXfOEjS2m2eI2mdZl7pm2HWXqV2Sk22vZ80tER6iA5v91RkUhAdKLxJPoN2WaQgFXlbqYk+xXnhChP1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1728999635; c=relaxed/relaxed;
-	bh=hwhgeRMk4jyYgedHBOUOc/6CODzmYlrjcK+trw2k++w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bjtl1ShVGexbo+7y6Z4OSFh96cFEE7wAFfYSWoCJdDlIcR6T5F2jgVwX+VlUZfpub2kGhDnBtfeQjon0X7DG1CUwewV/652YHOqlSC7pjet6dV/kPz1tyIQ5hYap0lXKIjruLFcNR6jsVZs6dPL+bSLdDC80Z1en/8qXYI121D4ONbfAgoU3cIEShw6aL44R8SC6qQlHKcWiKi/lLTTIfLriigC+Tx+FbxZqBz4QRlrecYAWfs6N0yJ8EvZ747/wTSCvnGvvIbBRYUYq/zNPzwqEx3aaCybr5oySw/m7/SUaY5bmMP12XUMT7g1tuso0wAVkSM2S5om7u166gW1ruQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XSZwx2Ylzz3bnm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 00:40:31 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 911ABFEC;
-	Tue, 15 Oct 2024 06:40:28 -0700 (PDT)
-Received: from e133380.arm.com (e133380.arm.com [10.1.197.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C40753F51B;
-	Tue, 15 Oct 2024 06:39:54 -0700 (PDT)
-Date: Tue, 15 Oct 2024 14:39:49 +0100
-From: Dave Martin <Dave.Martin@arm.com>
-To: Will Deacon <will@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>, Kevin Brodsky <kevin.brodsky@arm.com>,
-	linux-arm-kernel@lists.infradead.org, nd@arm.com,
-	akpm@linux-foundation.org, aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
-	broonie@kernel.org, catalin.marinas@arm.com,
-	christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
-	hpa@zytor.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
-	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
-	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
-	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
-	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 19/30] arm64: add POE signal support
-Message-ID: <Zw5wpTWgNC+aC+Vk@e133380.arm.com>
-References: <20240822151113.1479789-1-joey.gouly@arm.com>
- <20240822151113.1479789-20-joey.gouly@arm.com>
- <47e1537f-5b60-4541-aed1-a20e804c137d@arm.com>
- <20241009144301.GA12453@willie-the-truck>
- <20241014171023.GA18295@willie-the-truck>
- <20241015095911.GA3777204@e124191.cambridge.arm.com>
- <20241015114116.GA19334@willie-the-truck>
+	t=1728999630; c=relaxed/relaxed;
+	bh=y+sDwZCNM90KYt/soAlpYgBe1DdAWGrVEXxeOWfj4Jg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=nBi1vmX9QloocmpsvwJyTRUbWrCFIXPtyjamjEVm7NR6+ytQGTBtKiTxsKImWT7G2+ZiDW73uFzCVBOY0sSSAw5tkzUX9i/w9bi6i9biaQylA9J64hq3PjnJeT1TABqUfQoa64rOahck6F30+D0SgmsC0uL9HBBEL5/2UHcv/0ygzJxP2OsgaNIDFpO20d2Hr5g6KwLTpx83KL9jS0UZiIaLJNvk7VDACY2cR/iIjjFWFHmRswFoP9UtU3+yS7/vHl7nk1VIzii96xFtbFlnT8lDBU5vPnFc+mDy2c2I42R8lP+BF/LYZMPejxdklvRc7cbu3G/iX0kjEOaTbJAo8w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uX00nqRb; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uX00nqRb;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSZws15ttz3bnm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 00:40:29 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id E51EB5C58C6;
+	Tue, 15 Oct 2024 13:40:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D07C4CEC6;
+	Tue, 15 Oct 2024 13:40:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728999626;
+	bh=+eg5Ogets9SiLlYwP2uE1cyuHarfu0eMJpCc1LNOyZk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=uX00nqRbj0TEG1Tz8shbGOT2WxuN/MzsJ0/O8D6fMk7nTY7nynwkrPoV5Izq1912G
+	 MCNxilzGTiCcfUAS5pjSXwW6q3cRG/BW6D6YbtnmlO0q+fhZtWAV8iW5Tl912r9gZP
+	 jE929Z//XzSjfIYVBdbbV+yN6bRsMcoaXu9P5SmP/HpGUsX8oWRvpS3y/CHIagsxmZ
+	 wSs02+S5+DmmcEkoZwbxu00ArbFRTvF91bDqH9pPk66sN6FjSlgd1oE0CGyqAvnLq/
+	 xoAmzPiMCVa7yA7fqt68pGzpMEomnxnAVW+/H1RaLmsld8vRk3GlFiM5j84R4We9bm
+	 NTYamxloL6Fqw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B943809A8A;
+	Tue, 15 Oct 2024 13:40:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,116 +56,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015114116.GA19334@willie-the-truck>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 00/17] replace call_rcu by kfree_rcu for simple
+ kmem_cache_free callback
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172899963173.1165800.13282848624565322990.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Oct 2024 13:40:31 +0000
+References: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+In-Reply-To: <20241013201704.49576-1-Julia.Lawall@inria.fr>
+To: Julia Lawall <julia.lawall@inria.fr>
+Cc: linux-nfs@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ vbabka@suse.cz, paulmck@kernel.org, tom@talpey.com, Dai.Ngo@oracle.com,
+ okorniev@redhat.com, neilb@suse.de, linux-can@vger.kernel.org,
+ bridge@lists.linux.dev, b.a.t.m.a.n@lists.open-mesh.org,
+ linux-kernel@vger.kernel.org, wireguard@lists.zx2c4.com,
+ netdev@vger.kernel.org, ecryptfs@vger.kernel.org,
+ linux-block@vger.kernel.org, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ naveen@kernel.org, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Oct 15, 2024 at 12:41:16PM +0100, Will Deacon wrote:
-> On Tue, Oct 15, 2024 at 10:59:11AM +0100, Joey Gouly wrote:
-> > On Mon, Oct 14, 2024 at 06:10:23PM +0100, Will Deacon wrote:
-> > > Kevin, Joey,
-> > > 
-> > > On Wed, Oct 09, 2024 at 03:43:01PM +0100, Will Deacon wrote:
-> > > > On Tue, Sep 24, 2024 at 01:27:58PM +0200, Kevin Brodsky wrote:
-> > > > > On 22/08/2024 17:11, Joey Gouly wrote:
-> > > > > > @@ -1178,6 +1237,9 @@ static void setup_return(struct pt_regs *regs, struct k_sigaction *ka,
-> > > > > >  		sme_smstop();
-> > > > > >  	}
-> > > > > >  
-> > > > > > +	if (system_supports_poe())
-> > > > > > +		write_sysreg_s(POR_EL0_INIT, SYS_POR_EL0);
-> > > > > 
-> > > > > At the point where setup_return() is called, the signal frame has
-> > > > > already been written to the user stack. In other words, we write to the
-> > > > > user stack first, and then reset POR_EL0. This may be problematic,
-> > > > > especially if we are using the alternate signal stack, which the
-> > > > > interrupted POR_EL0 may not grant access to. In that situation uaccess
-> > > > > will fail and we'll end up with a SIGSEGV.
-> > > > > 
-> > > > > This issue has already been discussed on the x86 side, and as it happens
-> > > > > patches to reset PKRU early [1] have just landed. I don't think this is
-> > > > > a blocker for getting this series landed, but we should try and align
-> > > > > with x86. If there's no objection, I'm planning to work on a counterpart
-> > > > > to the x86 series (resetting POR_EL0 early during signal delivery).
-> > > > 
-> > > > Did you get a chance to work on that? It would be great to land the
-> > > > fixes for 6.12, if possible, so that the first kernel release with POE
-> > > > support doesn't land with known issues.
-> > > 
-> > > Looking a little more at this, I think we have quite a weird behaviour
-> > > on arm64 as it stands. It looks like we rely on the signal frame to hold
-> > > the original POR_EL0 so, if for some reason we fail to allocate space
-> > > for the POR context, I think we'll return back from the signal with
-> > > POR_EL0_INIT. That seems bad?
-> > 
-> > If we don't allocate space for POR_EL0, I think the program recieves SIGSGEV?
-> > 
-> > setup_sigframe_layout()
-> >         if (system_supports_poe()) {
-> >                 err = sigframe_alloc(user, &user->poe_offset,
-> >                                      sizeof(struct poe_context));
-> >                 if (err)
-> >                         return err;
-> >         }
-> > 
-> > Through get_sigframe() and setup_rt_frame(), that eventually hets here:
-> > 
-> > handle_signal()
-> > 	ret = setup_rt_frame(usig, ksig, oldset, regs);
-> > 
-> > 	[..]
-> > 
-> >         signal_setup_done(ret, ksig, test_thread_flag(TIF_SINGLESTEP));
-> > 
-> > void signal_setup_done(int failed, struct ksignal *ksig, int stepping)                                                                                                                         
-> > {                                                                                                                                                                                              
-> >         if (failed)                                                                                                                                                                            
-> >                 force_sigsegv(ksig->sig);                                                                                                                                                      
-> >         else                                                                                                                                                                                   
-> >                 signal_delivered(ksig, stepping);                                                                                                                                              
-> > }  
-> > 
-> > So I think it's "fine"?
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Simon Wunderlich <sw@simonwunderlich.de>:
+
+On Sun, 13 Oct 2024 22:16:47 +0200 you wrote:
+> Since SLOB was removed and since
+> commit 6c6c47b063b5 ("mm, slab: call kvfree_rcu_barrier() from kmem_cache_destroy()"),
+> it is not necessary to use call_rcu when the callback only performs
+> kmem_cache_free. Use kfree_rcu() directly.
 > 
-> Ah, yes, sorry about that. I got confused by the conditional push in
-> setup_sigframe():
+> The changes were done using the following Coccinelle semantic patch.
+> This semantic patch is designed to ignore cases where the callback
+> function is used in another way.
 > 
-> 	if (system_supports_poe() && err == 0 && user->poe_offset) {
-> 		...
-> 
-> which gives the wrong impression that the POR is somehow optional, even
-> if the CPU supports POE. So we should drop that check of
-> 'user->poe_offset' as it cannot be NULL here.
+> [...]
 
-From memory and a quick glance at the code:
+Here is the summary with links:
+  - [01/17] wireguard: allowedips: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [02/17] ipv4: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [03/17] inetpeer: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [04/17] ipv6: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [05/17] xfrm6_tunnel: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [06/17] batman-adv: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    https://git.kernel.org/netdev/net-next/c/356c81b6c494
+  - [08/17] net: bridge: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [10/17] can: gw: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [14/17] kcm: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [15/17] netfilter: nf_conncount: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [16/17] netfilter: expect: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
+  - [17/17] netfilter: xt_hashlimit: replace call_rcu by kfree_rcu for simple kmem_cache_free callback
+    (no matching commit)
 
-For other "conditionally unconditional" things, we don't have a
-corresponding check on user->foo.
-
-For conditional stuff, non-NULLness of user->foo is used to track
-whether we decided to dump the corresponding record; for consistency
-here, if we have system_supports_poe() && err == 0, then that's
-sufficient (though in prior versions of this code, POR_EL0 dumping was
-conditional and so the extra check did do something...)
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-In any case, if some allocation fails then we splat out with a SIGSEGV
-before modifying the user task state to deliver the signal (in
-setup_return() etc.)
-
-If The user's POR_EL0 value is being clobbered before we get here, we
-would save the wrong value -- so the code would be broken anyway.
-
-
-So, as Joey says, this is probably fine, but the user->poe_offset check
-looks superfluous.  The kernel will splat on us here and kill the thread
-if it's NULL anyway.
-
-[...]
-
-Cheers
----Dave
 
