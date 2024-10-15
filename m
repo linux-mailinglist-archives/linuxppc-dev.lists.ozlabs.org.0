@@ -1,59 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-2290-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2291-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE7399F086
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 17:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B846C99F19E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Oct 2024 17:42:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XSckx4LvJz3bpm;
-	Wed, 16 Oct 2024 02:02:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XSdf42mtgz3bkL;
+	Wed, 16 Oct 2024 02:42:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729004521;
-	cv=none; b=V2RvO9tecebjUivnky2JB+fDnCDZ00babqw7NsRunNJxQRBSXpKrvZiJCabe9/coGSYHBzKQMDB+RGjHX5MYBBWrG8n+s6xKES5mK9cHt2aSZwW8xuGmSVx6+arBoY13MuC/QwBZTnuJXpx4FgL4LSA4RBjXJ/4XWnUPa2szpQUR7G4PnQNjGGSf3ucCTUYlGSr82f5ZqxJe1L7zw4P0x93wJwf8l6KDRuy9zjmXO8hI8ghcyPlD76VSUfXrKz3EDCrAgPIIvbX02OE+ORQGKE/5F3z079UIGgN5pvHMokk41mxXQQs2FP02dQj3B7VjPG1qXN7CaH1QVWYBmC3WzA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729006972;
+	cv=none; b=fyaTicJe9Ro6ccNqldsXWhnAPVC8V+C/bV7FyFFr2P1c5uwLfoAsrnNmVaNhY7W6Re7K+wiYZcmJmS4OjtxlhVQ8n9GYOpxh3ysU1Jd5RS78LW250FaUynJ7UiBGo/xEybdn3shQQT9Q8JmA+6eX2omJp4JdxZqxDGqVqRe7a0MzIrFLpw0FIabymVxuV6AQBed3UTrdGuw2qQJNE7ShKuXfmTxo0eivRfx8d8eJjzgNAD1qS1WN0cwQbcjlcZCZiKUVaf7J+8gKsFjgyQYehptaQwkHhQVerPfeH0r7UVnQ19+/u4/H9FSmni8FQ5bBiW6iUi/pCZWSlnNkrnqckA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729004521; c=relaxed/relaxed;
-	bh=iHG/Gbx4wxyz4XiKAHoTWGclnCcTepNBq2ZEGp4DCJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dEOk1AkEhBC5Eg6KuJVT9Wh2Y6giw2WaoHwq/G0VqTBGYdlB5k74Q7d8na9beBU1lwhi+Gx4I9Bgdyc3A95eY12Ug9phrD1WBT+7xU4PSLEUc32Xw9soKr6zPbJBdNCddsyz7/3I93XTBVXePL+L5Z+OZI7JRlwePkZeIREEQvF/rJgAI17PUs7eHFqm56/fo4OzH6XQsMRzbgxzigABt3b1zZHNNHB8R1eyNWzIa53SMBcYvJ+I1Or+/umk+udqOBQ+W8ue243sJ5P03IVzIe12kh9i/DhAmmbINHP1s27WgXDRtw6hYLHhTIP45GrJR0K+W108njsHYHNo+R7XgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	t=1729006972; c=relaxed/relaxed;
+	bh=5H/4jrpzEyuEt3kkgW2rzE95+U5CN+zHY8J92IEceQs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RnVt/ygcwvoI/kLxflE/kdNszFiNOdH6x+wdTJesx48ur7j3dH73uR1kL3FYjhsIzAz31PC76Iv1vsYtHvUSZpPcTLaNIwQTpqiJZ29/f2srG5I/NZwbQoZjcArTEWDQxxTAhUFwgE58CuhBDchmhRz0bnNXp6HUhOkx+PczM/Tty5AwJmCo5WwvhKZrMy4x607lS4YjrBA/v/dAh0TdTV88+ysNjwES7k7zqn7VJGaTeAP/0eQ4OJpl1R4KypfN7VvzXST+omE83fd5yi/QS2bbWJ6SPm3TqQTbF7DpR5vI9+Yu7rR7fIk3kKobOcYg+xUWr7TOmuekSpIDjcN7yg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=GiXQec4K; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jFaXijGn; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=GiXQec4K;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jFaXijGn;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSckv2XVxz3bpS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 02:01:59 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 45DD8A43252;
-	Tue, 15 Oct 2024 15:01:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18141C4CEC6;
-	Tue, 15 Oct 2024 15:01:49 +0000 (UTC)
-Date: Tue, 15 Oct 2024 16:01:47 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Will Deacon <will@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>, Kevin Brodsky <kevin.brodsky@arm.com>,
-	linux-arm-kernel@lists.infradead.org, nd@arm.com,
-	akpm@linux-foundation.org, aneesh.kumar@kernel.org,
-	aneesh.kumar@linux.ibm.com, anshuman.khandual@arm.com, bp@alien8.de,
-	broonie@kernel.org, christophe.leroy@csgroup.eu,
-	dave.hansen@linux.intel.com, hpa@zytor.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, maz@kernel.org, mingo@redhat.com,
-	mpe@ellerman.id.au, naveen.n.rao@linux.ibm.com, npiggin@gmail.com,
-	oliver.upton@linux.dev, shuah@kernel.org, skhan@linuxfoundation.org,
-	szabolcs.nagy@arm.com, tglx@linutronix.de, x86@kernel.org,
-	kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 19/30] arm64: add POE signal support
-Message-ID: <Zw6D2waVyIwYE7wd@arm.com>
-References: <20240822151113.1479789-1-joey.gouly@arm.com>
- <20240822151113.1479789-20-joey.gouly@arm.com>
- <47e1537f-5b60-4541-aed1-a20e804c137d@arm.com>
- <20241009144301.GA12453@willie-the-truck>
- <20241014171023.GA18295@willie-the-truck>
- <20241015095911.GA3777204@e124191.cambridge.arm.com>
- <20241015114116.GA19334@willie-the-truck>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSdf26jYgz3bdV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 02:42:50 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1729006965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5H/4jrpzEyuEt3kkgW2rzE95+U5CN+zHY8J92IEceQs=;
+	b=GiXQec4KIUemYmVODSScu73AVombrDmG8VUbAJKZShgmdIAdcfs2J+YVBKJKYi3RZcc+bC
+	qHkUKgdfbIxUBbXweF6uq8x83c2lLLOesPzggE0g5GDfw9UoJF2QfNzPSqo/4fO+i9wPhw
+	Ts3KTs88ILz55bFF+T/uXspaK++r2xVEEdPnwiVKWwZzT+PrkK2N2o4WPiS+o5+U3fQNW6
+	bzy2MveXPXQ7EgKejHvPAQUIem/p9bMRaCX8SAQoB0gZ3qKt+NsQqtuHFx2R5rYoUpBTiT
+	1yPHZQx7q61zLq8Jq130AQq6Tf6yALBVtegj7ah1ElyUf0MkI2USS926DT4HiA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1729006965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5H/4jrpzEyuEt3kkgW2rzE95+U5CN+zHY8J92IEceQs=;
+	b=jFaXijGnUW7agtJYmEaw7GIwMRCW0DOWvFkos7ahgGegcTj32/ZgxAMlBgYwFQBmcqrGzr
+	q05ZtNoF7tAtDBBg==
+To: Luming Yu <luming.yu@shingroup.cn>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, jialong.yang@shingroup.cn,
+ luming.yu@gmail.com
+Cc: Luming Yu <luming.yu@shingroup.cn>
+Subject: Re: [PATCH 6/7] powerpc/entry: factout irqentry-state
+In-Reply-To: <E6FB8D32FAAFC3BE+20241012035621.1245-8-luming.yu@shingroup.cn>
+References: <20241012035621.1245-3-luming.yu@shingroup.cn>
+ <E6FB8D32FAAFC3BE+20241012035621.1245-8-luming.yu@shingroup.cn>
+Date: Tue, 15 Oct 2024 17:42:45 +0200
+Message-ID: <87ed4he5je.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,83 +69,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015114116.GA19334@willie-the-truck>
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Oct 15, 2024 at 12:41:16PM +0100, Will Deacon wrote:
-> On Tue, Oct 15, 2024 at 10:59:11AM +0100, Joey Gouly wrote:
-> > On Mon, Oct 14, 2024 at 06:10:23PM +0100, Will Deacon wrote:
-> > > Looking a little more at this, I think we have quite a weird behaviour
-> > > on arm64 as it stands. It looks like we rely on the signal frame to hold
-> > > the original POR_EL0 so, if for some reason we fail to allocate space
-> > > for the POR context, I think we'll return back from the signal with
-> > > POR_EL0_INIT. That seems bad?
-> > 
-> > If we don't allocate space for POR_EL0, I think the program recieves SIGSGEV?
-> > 
-> > setup_sigframe_layout()
-> >         if (system_supports_poe()) {
-> >                 err = sigframe_alloc(user, &user->poe_offset,
-> >                                      sizeof(struct poe_context));
-> >                 if (err)
-> >                         return err;
-> >         }
-> > 
-> > Through get_sigframe() and setup_rt_frame(), that eventually hets here:
-> > 
-> > handle_signal()
-> > 	ret = setup_rt_frame(usig, ksig, oldset, regs);
-> > 
-> > 	[..]
-> > 
-> >         signal_setup_done(ret, ksig, test_thread_flag(TIF_SINGLESTEP));
-> > 
-> > void signal_setup_done(int failed, struct ksignal *ksig, int stepping)
-> > {
-> >         if (failed)
-> >                 force_sigsegv(ksig->sig);
-> >         else
-> >                 signal_delivered(ksig, stepping);
-> > }  
-> > 
-> > So I think it's "fine"?
-> 
-> Ah, yes, sorry about that. I got confused by the conditional push in
-> setup_sigframe():
-> 
-> 	if (system_supports_poe() && err == 0 && user->poe_offset) {
-> 		...
-> 
-> which gives the wrong impression that the POR is somehow optional, even
-> if the CPU supports POE. So we should drop that check of
-> 'user->poe_offset' as it cannot be NULL here.
+On Sat, Oct 12 2024 at 11:56, Luming Yu wrote:
 
-I agree, we should remove this check as it's confusing.
+> To have lowlevel paca.h include high level entry-common.h cause
+> include file dependency mess. Split irqentry-state.h to have
+> the irqentry_state.h can be included in low level paca.h
 
-> We also still need to resolve Kevin's concern, which probably means
-> keeping the thread's original POR around someplace.
+What's the rationale for this?
 
-If we fail to allocate context for POR_EL0 (or anything else), we'll
-deliver a SIGSEGV. I think it's quite likely that the SIGSEGV will also
-fail to allocate context we end up with a fatal SIGSEGV. Not sure the
-user can affect the allocation/layout, though it can change stack
-attributes where the frame is written.
+> Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+> ---
+>  arch/powerpc/include/asm/paca.h |  2 ++
+>  arch/powerpc/kernel/interrupt.c |  2 ++
+>  include/linux/entry-common.h    | 24 ------------------------
+>  include/linux/irqentry-state.h  | 28 ++++++++++++++++++++++++++++
 
-Assuming that the user tricks the kernel into failing to write the
-context but allows it to succeed on the resulting SIGSEGV, POR_EL0
-wouldn't have been reset and the SIGSEGV context will still have the
-original value. I don't think we need to do anything here for 6.12.
+This is not how it works. Split the include file in a first step and
+then make changes to the PPC side.
 
-However, in for-next/core, we have gcs_signal_entry() called after
-resetting POR_EL0. If this fails, we can end up with a new POR_EL0 on
-sigreturn (subject to the above user toggling permissions). I think this
-needs to be fixed, POR_EL0 only reset when we know we are going to
-deliver the signal.
+> diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
+> index d95ab85f96ba..6521171469f2 100644
+> --- a/include/linux/entry-common.h
+> +++ b/include/linux/entry-common.h
+> @@ -352,30 +352,6 @@ void irqentry_enter_from_user_mode(struct pt_regs *regs);
+>   */
+>  void irqentry_exit_to_user_mode(struct pt_regs *regs);
+>  
+> -#ifndef irqentry_state
+> -/**
+> - * struct irqentry_state - Opaque object for exception state storage
+> - * @exit_rcu: Used exclusively in the irqentry_*() calls; signals whether the
+> - *            exit path has to invoke ct_irq_exit().
+> - * @lockdep: Used exclusively in the irqentry_nmi_*() calls; ensures that
+> - *           lockdep state is restored correctly on exit from nmi.
+> - *
+> - * This opaque object is filled in by the irqentry_*_enter() functions and
+> - * must be passed back into the corresponding irqentry_*_exit() functions
+> - * when the exception is complete.
+> - *
+> - * Callers of irqentry_*_[enter|exit]() must consider this structure opaque
+> - * and all members private.  Descriptions of the members are provided to aid in
+> - * the maintenance of the irqentry_*() functions.
+> - */
+> -typedef struct irqentry_state {
+> -	union {
+> -		bool	exit_rcu;
+> -		bool	lockdep;
+> -	};
+> -} irqentry_state_t;
+> -#endif
+> -
+>  /**
+>   * irqentry_enter - Handle state tracking on ordinary interrupt entries
+>   * @regs:	Pointer to pt_regs of interrupted context
+> diff --git a/include/linux/irqentry-state.h b/include/linux/irqentry-state.h
+> new file mode 100644
+> index 000000000000..d4ddeb1c6ab6
+> --- /dev/null
+> +++ b/include/linux/irqentry-state.h
+> @@ -0,0 +1,28 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __LINUX_IRQENTRYCOMMON_H
+> +#define __LINUX_IRQENTRYCOMMON_H
 
--- 
-Catalin
+The guards reflect the header file name and are not randomly chosen strings.
+
+But aside of that. How is any of this supposed to compile?
+
+You move the typedef into a separate header and then nothing (except
+powerpc) includes it. Oh well.
+
+Thanks,
+
+        tglx
 
