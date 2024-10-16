@@ -1,73 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-2331-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2332-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB169A15D2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 00:32:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE849A15D5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 00:34:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XTQhm6S92z2ym2;
-	Thu, 17 Oct 2024 09:32:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XTQkh5bBXz301w;
+	Thu, 17 Oct 2024 09:34:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::129"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729117976;
-	cv=none; b=JDj+o4YFY8YPkS3qyY46MbYJK4wTUJ4QqDt6pwDGHd1Bo1sZmkpSd2bP2AehFMyhsAZnlzsqwwS7Ck6Jf4gqk1LUZXrjnYoJZ25zz1fksHYJFc9LISqq738oD5Yk+3LS7Qlzx46+BQNRhbFX1zgQfT+zTGo5/hQ5Ywz/LG9O31rGAsKMT0IBPt5osRaWf78xObcRlUgLtWnQAcUYERqP2f5WT16wDQkvNdl0hSrLLLaRdYkXU7dg1eeNpdOQhlXmAyLK7Wip9TuSWexflhnNyY5aE6/iAnAE15UijWQP7ATMquoQxwjhOVmDXQbkiqKzhsUXTjcIPloL1UvJxJ51hA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::134"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729118076;
+	cv=none; b=BsWjM4kBgpMqSiPROe/iXPnd0Ct2vdK3qgfypHHn+I9LZK/g9qmODyeK1pRO5d8MJHvWvBI/zxGyht8Cdzc3gRwutNaSd07KMJIm44TxqKyEkVR9T5aTN1GwZmAkDOIKE7XGx9IsUw8UGmZPIv8Zs6Vy2srausgQ/KTdlkxuH1vMlqu9J3s5pWq9zq2f6CYpIfc/QgTV4r6K9NPVHXNBWpi0amMprJAhSfVJquyezZQGXPoKcBWeBWv/hlui3q2UBy4MLe2JI6cBNDyitXuq/wvBuhap67UwHtMwwdHPyx65JqUyqYWqT0Ha3jYAhbENponrJAjfwnUsiJd7kZaqXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729117976; c=relaxed/relaxed;
-	bh=HPiPBCg+jomo1HnGbpn4dHjGdfF+vO85KkIfj0zyTcg=;
+	t=1729118076; c=relaxed/relaxed;
+	bh=BSfTu0xXagbzDTjnYntynnJQdRLNmw1kAFARZuiBlt4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=maT5y3tyGRmeKuPuP2Hj8LHtuKFR76slzvPaKbY4//jkXL7hJ7OOyMXUHHtvclPQkk0MbodusXM/Ry2d7+Z0JQLkP/D6oa0S1CoHytndA9vGDEp7KJwnXuKe6D1wtgN5Tv3UwTq7M9oDoGu/gypPlR5+Bfbt0daJLDzhCU0ZtUdWv4E9inaigMlIv3QD5moCispmPBtZLsIpoB169zDSvubRsNCyx4BlUmLYU6k7bqWA2sToV5VJ+dEiLuHtG442AAfHlJXhH/f+VDtqI90oqsgZufPnE4Re8XYehSYDEg8kMdOfeZJ493mPkWsiWV/2x1BLA8Vs4ve9W7bRUJzRvg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=c++k2V0k; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+	 To:Cc:Content-Type; b=MJkgQYQ/0Vo8j4zWOjXy229UaTwBXDE8d3nS6jsVETxitQnvLgxFCo9XO7pcBEoYtCj1zdaal6Vt0ITTDGO/2hwOEgCwy+vp64ZVh4aXrfNN9wJoM4FBeYNJuEkpBW2NQKp1rpPBPdSpgj89LeCJnaC5lh+OsI2ZUi/38PnrX1Z0iltiFoo/v4lrPtTMgwT1cYs+IkQy41MXreSVPmqxgNfjIUf4+awd4HNUR1CwKE3KqXj+06LuIoMHf1dovFCL0Sw7sl1nT/Baf2Vb739yxFkdbJLXykgtuudfpzxJY6yvHW4/uEWpCSd9dvV7DiwxJvMNyEOPqklzNsYTe4j4fA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=Go4DHoA8; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::134; helo=mail-lf1-x134.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=c++k2V0k;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=Go4DHoA8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::134; helo=mail-lf1-x134.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTQhl0k8Lz2yQj
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 09:32:54 +1100 (AEDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-539f1292a9bso404277e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 15:32:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTQkg3Mvpz2yQj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 09:34:34 +1100 (AEDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-539fe76e802so422855e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 15:34:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1729117970; x=1729722770; darn=lists.ozlabs.org;
+        d=linux-foundation.org; s=google; t=1729118070; x=1729722870; darn=lists.ozlabs.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HPiPBCg+jomo1HnGbpn4dHjGdfF+vO85KkIfj0zyTcg=;
-        b=c++k2V0k+f/Xaz0MWQ6SQtwCDWh4vmdN10s11izZ7sTGn8YW/GqQKYyQqH6XcmTyW1
-         Xyr4jZ9bfWX45J7lCpVL0qdEWJhaq/FNI9IQnkf5ijoDgrrXrQFncWUahn0+Xe+eC0dX
-         OBfYDOeELcsfSKyTe1Uw2gIjuyQOcs/WuLS64=
+        bh=BSfTu0xXagbzDTjnYntynnJQdRLNmw1kAFARZuiBlt4=;
+        b=Go4DHoA8sDwGPL0TGrepvjTuMZZl4xkKxrPaj/fzR4dykE3+be3qJZqhcUoEsARr8e
+         pA6MSI3hzYJgu6rwBj8RyIMoE7XoGN6X7scIHTv7IFPOmCNZxih+MQhF+ikR9QL+SX+X
+         2pQ6X4qRvPeD98bBPKgeeDgYIkcej9Vh5WVDk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729117970; x=1729722770;
+        d=1e100.net; s=20230601; t=1729118070; x=1729722870;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HPiPBCg+jomo1HnGbpn4dHjGdfF+vO85KkIfj0zyTcg=;
-        b=rzXaqefvp1kq3h1r/o22q4+Z93grox6jm6d5sr49v+9w/4qo57hKTZ9gLMzci/H0Kx
-         vGFajmCv5JAuV26J7OBvZK5HhBjO7LiP32Imj6UJT4pjqroNEPXBGvqbshKflzRPqGDR
-         EOBIi8fjsjOMwOEuQfQKfhp8W3uuyB4K9/l5PPBy9hocyjrV9ALerZza8v9sEuZnCXUH
-         c64HWELWxmJDGEeuKBYlS3yfKiD8FF0DVRRQ9sdMCVTI72FxxrNUDUCkQ381TpaR0LlV
-         SAC2Iup3aFjp1LR7esHur6o2wwNvVZz6+f5uPRbS4RXq77PLyRlWJS18Ys5wOTanqwbh
-         8g8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVVuL1SzFC7cMJGjuyBDpvHPE5FIpeYnTt4dUEMDnfa92MiWrwlY1kpCVtltgyDEH670QOSEn3Ah+iKDkg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxN+arj7ZadgqSyNvaE/NxSlU6x/lucEdrIhQjzkcHL30FHU6sn
-	4m5l1MQuMZOlGON6nscBo5GQN1u0WE3mSGHyG5V4ZDEpOrrbdWXWgCtKe3jidRl/CwY/Hv3JKb7
-	kI+7eGA==
-X-Google-Smtp-Source: AGHT+IG3P27ZQ0q3cV73XZ2f0dNL1fbSip3beQzFYFRnBXZWP661i/14iGew+lV2nyyTDEcK3WjzvA==
-X-Received: by 2002:a05:6512:108f:b0:534:3cdc:dbef with SMTP id 2adb3069b0e04-53a03f77cf1mr3871581e87.43.1729117970324;
-        Wed, 16 Oct 2024 15:32:50 -0700 (PDT)
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a298474dfsm225376566b.145.2024.10.16.15.32.49
+        bh=BSfTu0xXagbzDTjnYntynnJQdRLNmw1kAFARZuiBlt4=;
+        b=uY01pZWpGO0E8omlU5jJaRIKjK83XCb940RNaqTSC0TnlAouipZGoTt99f45SvAIq6
+         kNredLEmcEFeYz0cGsqVBvcskiGzmuBd8mCS9blS66mgjVWwC3z6hJf9np2c4yVbLik3
+         cKguczVAsyS4B0aMY3hEYw6iEcfBjO7YvcEoOzsWxnDkWjZcaHdVRSqW0VhU0Sx47sN1
+         dayK9Qc9SaElY5vhGcH2CelkSHgk+bVFKXKIs/sU9u15gCiIw2BRFxddr0cYhyBXOxHp
+         inqkBAbuXmAImDAOxrAc82mwepq17V1XVBZ4v6eFgOO65EyflnEMZspBSBo7lzP6FYb/
+         2mRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXtJR22Dl30DMppKMgBAKLH+4ib3XExaI0vJa2D2QxK64ZU9BP4LW6Z3M050kwuso+DxNC7VKuUUymKlvM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyWVzKRaeHcQtR/Eqal5TMw7WXYGxY4JJx0oTazQM0ui7kLe2iW
+	CP8Y+B9rjopiT662LpeSn+8jP1LfaEfxHNFRlMIAiuQ6V217Eu/GRdSgpXIDRdAxUszvwoZi7wR
+	DeUJcSQ==
+X-Google-Smtp-Source: AGHT+IEYZOQEbBnlisK87t95n3MkBVoMZDC+GOcGCa/YCz72zh7/0oqN1n/KaGoSkQUr6dvT/bWCeQ==
+X-Received: by 2002:a05:6512:e9d:b0:535:6aa9:9855 with SMTP id 2adb3069b0e04-539e54051famr9097216e87.0.1729118069990;
+        Wed, 16 Oct 2024 15:34:29 -0700 (PDT)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a29844fd2sm223225666b.183.2024.10.16.15.34.28
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Oct 2024 15:32:49 -0700 (PDT)
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c9850ae22eso410435a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 15:32:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWQqr6eKFLvTQcwdJUIIk0HutBGK08jB9r0DPJCu5tW0mo2uKRNeU/k6V4DoTbwoszXWpjZ95MAiitrumo=@lists.ozlabs.org
-X-Received: by 2002:a17:907:930b:b0:a99:e4a2:1cda with SMTP id
- a640c23a62f3a-a9a34e29901mr465023266b.56.1729117969443; Wed, 16 Oct 2024
- 15:32:49 -0700 (PDT)
+        Wed, 16 Oct 2024 15:34:29 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9a0f198d38so47627266b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 15:34:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWPBJVK79j4rMaX3dmhZcVx32M11fIdKTMjtYd231ZJcD3Wk1bLoM9NGgM/8ztD8jdWX+YcqGm7ME3MBtw=@lists.ozlabs.org
+X-Received: by 2002:a17:907:7ea0:b0:a77:c95e:9b1c with SMTP id
+ a640c23a62f3a-a99e3b700b8mr1639872866b.27.1729118068029; Wed, 16 Oct 2024
+ 15:34:28 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,23 +77,23 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <b626840e55d4aa86b4b9b377a4cc2cda7038d33d.1728706156.git.jpoimboe@kernel.org>
- <f6ea59b1-eb59-4d1d-81ed-0e5095102c20@citrix.com> <CAHk-=wg=DovySzKb3=g53DeCwv1ZOa-RebaBpYXNXrdhY=a5Qw@mail.gmail.com>
- <12c18d86-87b3-4418-a0b0-2844197a3315@citrix.com> <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
+References: <12c18d86-87b3-4418-a0b0-2844197a3315@citrix.com>
+ <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
  <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
  <CAHk-=wgDrG-aKVGrd-9gQsC0pMs936oo8XEFmEn6ciaT9=nfDg@mail.gmail.com>
  <20241014035436.nsleqolyj3xxysrr@treble> <CAHk-=widMFN2wDeS2K65f8FnW8L6gPZa6CNO4OWkv--0G2LXhw@mail.gmail.com>
  <r5ruxmop7vewd7aq6gu2zve4hfmcu4byhlebygswbqkgz43qfq@rsajyfiypcsd>
  <CAHk-=wj8v4BcD7f3pObq1wav_mJO_naisYGg6HQUcphSc-U0zA@mail.gmail.com>
- <CAHk-=wiVE1QCwnP98Hw0GfjrEKiZsvsaqgzC02zJj-BYp4-khg@mail.gmail.com> <81444391-9e59-4744-bbf0-2220a3042da6@citrix.com>
-In-Reply-To: <81444391-9e59-4744-bbf0-2220a3042da6@citrix.com>
+ <CAHk-=wiVE1QCwnP98Hw0GfjrEKiZsvsaqgzC02zJj-BYp4-khg@mail.gmail.com>
+ <81444391-9e59-4744-bbf0-2220a3042da6@citrix.com> <p6jzuqlphu5va5rroybfmofxaxcveyj6mc724xunzdm6ocwk23@jv7bemzdczg2>
+In-Reply-To: <p6jzuqlphu5va5rroybfmofxaxcveyj6mc724xunzdm6ocwk23@jv7bemzdczg2>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 16 Oct 2024 15:32:32 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgqfdRHEOdS5getruouT7N_ZT4i4gHMcwJYzcKw-s_cFA@mail.gmail.com>
-Message-ID: <CAHk-=wgqfdRHEOdS5getruouT7N_ZT4i4gHMcwJYzcKw-s_cFA@mail.gmail.com>
+Date: Wed, 16 Oct 2024 15:34:11 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wh-PjG_cF7ujBFmG7G6qGL3hzC-6ged+mbSECkp72wHVw@mail.gmail.com>
+Message-ID: <CAHk-=wh-PjG_cF7ujBFmG7G6qGL3hzC-6ged+mbSECkp72wHVw@mail.gmail.com>
 Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: "Kirill A. Shutemov" <kirill@shutemov.name>, Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org, 
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org, 
 	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
 	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
@@ -105,44 +105,15 @@ X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 16 Oct 2024 at 15:03, Andrew Cooper <andrew.cooper3@citrix.com> wrote:
+On Wed, 16 Oct 2024 at 15:13, Kirill A. Shutemov <kirill@shutemov.name> wrote:
 >
-> That doesn't have the same semantics, does it?
+> It is worse than that. If we get LAM_SUP enabled (there's KASAN patchset
+> in works) this check will allow arbitrary kernel addresses.
 
-Correct. It just basically makes all positive addresses be force-canonicalized.
+Ugh. I haven't seen the LAM_SUP patches.
 
-> If AMD think it's appropriate, then what you probably want is the real
-> branch as per before (to maintain architectural user behaviour), and
-> then use a trick such as this one in place of the LFENCE for speed in
-> the common case.
+But yeah, I assume any LAM_SUP model would basically then make the GP
+fault due to non-canonical addresses go away.
 
-The problem with the branch is that it really can only branch on the
-sign bit - because of LAM.
-
-So with LAM, those bits are pretty much ignored anyway.
-
-> > So that barrier really *is* very expensive. Surprisingly so.
->
-> 7% performance is what it costs to maintain the security barrier we were
-> sold originally.
-
-Absolutely. And the masking was something that basically says "we get
-it all back" (with "all" being just this part, of course - never mind
-all the other workarounds).
-
-> Forgive me if I think that we (the SW people) are getting the raw end of
-> the deal here, while vendors keep selling more and more expensive chips
-> that don't work safely.
-
-I'm 100% with you.
-
-My preference would actually be to do nothing, on the assumption that
-the AMD issue is actually impossible to trigger (due to CLAC/STAC
-serializing memory address checks - which the timings certainly imply
-they do).
-
-But if we have to do magic bit masking, I'd rather it be *fast* magic
-bit masking.
-
-               Linus
+          Linus
 
