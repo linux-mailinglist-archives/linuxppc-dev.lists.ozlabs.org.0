@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-2309-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2310-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572BB9A0954
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 14:25:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676919A0960
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 14:25:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XT9CW1fYhz2yJL;
-	Wed, 16 Oct 2024 23:25:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XT9Cp1pr9z2yGf;
+	Wed, 16 Oct 2024 23:25:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729081511;
-	cv=none; b=S9WFZTGUSsKd49NwsjFLjUm1w7bb12RloFjqsIAzefCpxWt4YZsq4vM3WZ+rcHx3L7faWlSu24FLeB8RFdkRqG/pTisCPzufnHgR58c8hedxaP9aXOvccX929+jahUKQs6u9GVLTA9EJcTV/N50aSFp4rxkZW59fi5lFwyMKOYqS4ZAroqHo+tv6Fpaat/VGA/Y28taUwa7pRlc02baxtsg6+dQDvH6LHBHnsjDXBfpyAVmiX5dhW5ODvCf6waNZZWcc5LaqZWe0slyiEVvvHVaGQk4Vx9zyBbT8nPe2VOPZbygRXDoqwr8oAOgh5rWS9y7wXqA3AaIXpQeRbHbH8g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729081526;
+	cv=none; b=cflElIpA2FQU9FldDXshptiDv9563rAxg1GTuwImM8izocAoAZhTIBc5gbNO0t403ldmlydjiQSJ6E5B3XmPwwGUE3HqaTWBQfmDa67cRAx7Tb4rh0ViDz98eTosrDsfcEWlT4OYiTYKEElJzMd5tcJu2Ao6hieDhmN29JkrcF4uaFl59nM1aQaTWi83PjAbSCHRP72uB6LgqDGSW0Aon4q0/39B7+pWseB7O2rP5/t+b/uCQy576jgDkxX93ZhFZDPyCBH3OUyVdKZ6V8uD/pKtFWytrlDoQHnNQFc4RPtjnL5aYKqTq2uA+te3DNBv7ANRYgg2rXGrLHkv67WuhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729081511; c=relaxed/relaxed;
-	bh=7iUEgLxXdj5GoIVN2DF9yn4luTvHsrglzb6yo8KsCNY=;
+	t=1729081526; c=relaxed/relaxed;
+	bh=z91ntDsVwdZpjEjKfVCxnJdh7uWomOInGMEWm4OJYtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtFcMMKLhHZb3N2daiE2+UOV4tjMPV4N7FEsAY/tPERTLbhP44JG4eLceyyCBEQU96KwNK1hrMSOas6tcCyr1JYuhKG7ddvvT2pAjpY0sih9Qy/A7mf19J7agC9pmqpMYdOCg7+dUcN54dwIhnpbWiq2/lZ9LowQjtsqHSRPNGO7KgqCNnQGnUnlhLUtHd7OJ3/KCThdxjabWDwLf3SpYecfdCD9o34rRnDbILgZLB9yQJuo/rnezwG7GsJ1yEOINL8FiWrM0TU/XdEBVSDevu5/KLLF+4uR3OuXGPrONSht3C+uUysSdEhFXaaGJCKEi4Nkwp3pnZQcPcoj+HFtDA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BcH3WvKo; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=X7C3tNNnDwB67+I2OKzalFThWdi/PeVkI89xGiW3TS8QAOq+I0rszRPTF3/hUFI+Nv/gBBxGKT7ZC3q1VQoo993OBJqOrfqY7jc9wJ+ozXukNboxYU2ngOsV9pJWL6faCO0ERb07CCgbk7L+AHexbcvD91BZBfgV0YTp6dcOgs8J5wL81Njm6S2pm+WZwgoggl/lek4Yyjx3SApsagbb2kzyjaow6rUik7hycGIYcdH6TVYHKndYpk9EuvkoBJeyhyX/bmCG5wEH192S9Q29B5kOtE553JuI9u0RdxlZErovrefVc0g7Cb0iXDVwWqtfhpeo5h4cJ1JRfLF6V5VHLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g6T+kZiF; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BcH3WvKo;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g6T+kZiF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XT9CV0Vzkz2yGf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 23:25:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XT9Cm41XBz2y8F
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 23:25:24 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 5462EA43CE7;
-	Wed, 16 Oct 2024 12:24:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63D7C4CEC7;
-	Wed, 16 Oct 2024 12:24:49 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4B4E05C076C;
+	Wed, 16 Oct 2024 12:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED4DC4CECF;
+	Wed, 16 Oct 2024 12:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729081506;
-	bh=FhExyBVsAa8DlJgV7GRUKfpMvTFVrG7J2kadpMHGjFg=;
+	s=k20201202; t=1729081522;
+	bh=qY1WKPuZvKCisJh16UHTZvWAJ6UH0NTYbU6n2itLRWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcH3WvKoF6eSdLcu4KIL/oX1Tn7Y00nHxcTsKKWYyMhF9lKJ5Rzy/RniwiJvC5IzN
-	 8ZlFCX8WzT5Wb0kNFn8LgRpXf1T8rscmfk4ykinUu2pKTXxkoRcKsXCFa3dLeOOfAG
-	 JpGLnl/bccMCxeT6gmfx7cWriUR2ynzwEcFbGe1Kg3+JJGrZvDWhsXGf3IT/OxPscB
-	 uD9d2jKY4rQJ6OXg6WCpLiKcrlefvCl+X5uJ5pyBZbdhHrwyI8cqmgKIvAG/pJZCDM
-	 cN+rAjVtvS3z38VZ7RG7nnyqR3iHZvGmgdDqgMwHTHZaGcdacC/fgISxxq+Mq5rM/a
-	 HYujkF/kPCdxA==
+	b=g6T+kZiFSqZ4TagPYf5fsDWvIwMyVmc/rIpDws8S1OTo0y6QOWVDc5qC6gaV/ISqU
+	 UWlanIBJ5xIZe2Hfv4/v0MqxDUNOgWAOXwgGWmBdRJpC/JalXiouJtn/fWY3w9FMAu
+	 YAl7mmk+yrsbAAifUZMtOv0J1PkjMyPcGQpYYkgmYpzxRH1LefTbW+/1SlTNXu+vDF
+	 oPK7kX3o+IaknOAiReieijE3AL3ZCi1UWISEgHd3zgq0Lp6iWu3VZEAd0URT/qaF3I
+	 p+yJd1kdNmQPktmGeRMXsX6zNcmMgDX9IOZWUoJjxQ2GpJsz+2qtsgktFeijZ740Ln
+	 BTeUsUsoJGaXg==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Luis Chamberlain <mcgrof@kernel.org>
@@ -110,9 +110,9 @@ Cc: Andreas Larsson <andreas@gaisler.com>,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org,
 	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH v6 1/8] mm: vmalloc: group declarations depending on CONFIG_MMU together
-Date: Wed, 16 Oct 2024 15:24:17 +0300
-Message-ID: <20241016122424.1655560-2-rppt@kernel.org>
+Subject: [PATCH v6 2/8] mm: vmalloc: don't account for number of nodes for HUGE_VMAP allocations
+Date: Wed, 16 Oct 2024 15:24:18 +0300
+Message-ID: <20241016122424.1655560-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241016122424.1655560-1-rppt@kernel.org>
 References: <20241016122424.1655560-1-rppt@kernel.org>
@@ -126,128 +126,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-There are a couple of declarations that depend on CONFIG_MMU in
-include/linux/vmalloc.h spread all over the file.
+vmalloc allocations with VM_ALLOW_HUGE_VMAP that do not explicitly
+specify node ID will use huge pages only if size_per_node is larger than
+a huge page.
+Still the actual allocated memory is not distributed between nodes and
+there is no advantage in such approach.
+On the contrary, BPF allocates SZ_2M * num_possible_nodes() for each
+new bpf_prog_pack, while it could do with a single huge page per pack.
 
-Group them all together to improve code readability.
-
-No functional changes.
+Don't account for number of nodes for VM_ALLOW_HUGE_VMAP with
+NUMA_NO_NODE and use huge pages whenever the requested allocation size
+is larger than a huge page.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
- include/linux/vmalloc.h | 60 +++++++++++++++++------------------------
- 1 file changed, 24 insertions(+), 36 deletions(-)
+ mm/vmalloc.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-index ad2ce7a6ab7a..27408f21e501 100644
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -134,12 +134,6 @@ extern void vm_unmap_ram(const void *mem, unsigned int count);
- extern void *vm_map_ram(struct page **pages, unsigned int count, int node);
- extern void vm_unmap_aliases(void);
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 634162271c00..86b2344d7461 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3763,8 +3763,6 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+ 	}
  
--#ifdef CONFIG_MMU
--extern unsigned long vmalloc_nr_pages(void);
--#else
--static inline unsigned long vmalloc_nr_pages(void) { return 0; }
--#endif
+ 	if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
+-		unsigned long size_per_node;
 -
- extern void *vmalloc_noprof(unsigned long size) __alloc_size(1);
- #define vmalloc(...)		alloc_hooks(vmalloc_noprof(__VA_ARGS__))
+ 		/*
+ 		 * Try huge pages. Only try for PAGE_KERNEL allocations,
+ 		 * others like modules don't yet expect huge pages in
+@@ -3772,13 +3770,10 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+ 		 * supporting them.
+ 		 */
  
-@@ -266,12 +260,29 @@ static inline bool is_vm_area_hugepages(const void *addr)
- #endif
- }
+-		size_per_node = size;
+-		if (node == NUMA_NO_NODE)
+-			size_per_node /= num_online_nodes();
+-		if (arch_vmap_pmd_supported(prot) && size_per_node >= PMD_SIZE)
++		if (arch_vmap_pmd_supported(prot) && size >= PMD_SIZE)
+ 			shift = PMD_SHIFT;
+ 		else
+-			shift = arch_vmap_pte_supported_shift(size_per_node);
++			shift = arch_vmap_pte_supported_shift(size);
  
-+/* for /proc/kcore */
-+long vread_iter(struct iov_iter *iter, const char *addr, size_t count);
-+
-+/*
-+ *	Internals.  Don't use..
-+ */
-+__init void vm_area_add_early(struct vm_struct *vm);
-+__init void vm_area_register_early(struct vm_struct *vm, size_t align);
-+
-+int register_vmap_purge_notifier(struct notifier_block *nb);
-+int unregister_vmap_purge_notifier(struct notifier_block *nb);
-+
- #ifdef CONFIG_MMU
-+#define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
-+
-+unsigned long vmalloc_nr_pages(void);
-+
- int vm_area_map_pages(struct vm_struct *area, unsigned long start,
- 		      unsigned long end, struct page **pages);
- void vm_area_unmap_pages(struct vm_struct *area, unsigned long start,
- 			 unsigned long end);
- void vunmap_range(unsigned long addr, unsigned long end);
-+
- static inline void set_vm_flush_reset_perms(void *addr)
- {
- 	struct vm_struct *vm = find_vm_area(addr);
-@@ -279,24 +290,14 @@ static inline void set_vm_flush_reset_perms(void *addr)
- 	if (vm)
- 		vm->flags |= VM_FLUSH_RESET_PERMS;
- }
-+#else  /* !CONFIG_MMU */
-+#define VMALLOC_TOTAL 0UL
- 
--#else
--static inline void set_vm_flush_reset_perms(void *addr)
--{
--}
--#endif
--
--/* for /proc/kcore */
--extern long vread_iter(struct iov_iter *iter, const char *addr, size_t count);
--
--/*
-- *	Internals.  Don't use..
-- */
--extern __init void vm_area_add_early(struct vm_struct *vm);
--extern __init void vm_area_register_early(struct vm_struct *vm, size_t align);
-+static inline unsigned long vmalloc_nr_pages(void) { return 0; }
-+static inline void set_vm_flush_reset_perms(void *addr) {}
-+#endif /* CONFIG_MMU */
- 
--#ifdef CONFIG_SMP
--# ifdef CONFIG_MMU
-+#if defined(CONFIG_MMU) && defined(CONFIG_SMP)
- struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
- 				     const size_t *sizes, int nr_vms,
- 				     size_t align);
-@@ -311,22 +312,9 @@ pcpu_get_vm_areas(const unsigned long *offsets,
- 	return NULL;
- }
- 
--static inline void
--pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
--{
--}
--# endif
--#endif
--
--#ifdef CONFIG_MMU
--#define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
--#else
--#define VMALLOC_TOTAL 0UL
-+static inline void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms) {}
- #endif
- 
--int register_vmap_purge_notifier(struct notifier_block *nb);
--int unregister_vmap_purge_notifier(struct notifier_block *nb);
--
- #if defined(CONFIG_MMU) && defined(CONFIG_PRINTK)
- bool vmalloc_dump_obj(void *object);
- #else
+ 		align = max(real_align, 1UL << shift);
+ 		size = ALIGN(real_size, 1UL << shift);
 -- 
 2.43.0
 
