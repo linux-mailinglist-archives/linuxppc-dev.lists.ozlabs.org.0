@@ -1,71 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-2327-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2328-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07FE9A152E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 23:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1761E9A1536
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 23:54:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XTPrF3Zg3z2xpn;
-	Thu, 17 Oct 2024 08:54:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XTPrh08SYz2y8F;
+	Thu, 17 Oct 2024 08:54:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::232"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729089679;
-	cv=none; b=b3rJ8nlEXsCqTidQMNYU00Tg9b+6ucmx/VxD5Kfls8geW7WVUrlPQkv+TUCx3Z25gRX2UoRrElI1AS7CayvjiGfBINylvK+XODgJlVLsamebbSLpyHnWzYFsctD8XofpDim4nC/cMlZleZrQPRCb5RZUCzc54WUWsqUWi2sPX0BU9Dd3rSBfbIIgBH2vkd96qvRseTJsGDWLCcasvLgrVCm+hrsZGKPlIXCc6UyVO2KlPZYrdknfqb3N2EEBLvxt5SGK3BVp8TsgQOqHDUKmCePmnM+W9xCObGcrsQQwUFliB7PzQgzVkhX9QYOabmRtwFsnCm1MeyAiIkgnpSmhvg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::130"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729099279;
+	cv=none; b=H+nkcXVY48Fm1+a5uLcDICt4eWP/R9jEioXEWB6jc99i4dI4QqioXqC1LR2Ceeeo/fAOtrz5GmnZ2dt/GsKf/AKDJinR94auVmVwZu9YRtjBiObsARzZVlUD20dbw4nnIb75DoFgqsI0DIyrV1FMJVcDTZlSCmb5rpXq3SkMdzOycHyM29CfTL3PK9yOj+UvppeGaR/IKHFbXWQw62AnqMm1xzo3Q4ndQYfBUOvBqiBZyXUA4OPm+DwzBhNoNvRAUJv164roRJDb2AmATET8YVEQ2P5pCY8dEKtPWsuJAbcp/TRG5/1JobVQtv4ptU5+Ka7MsCYK91KMTSJvHKLECg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729089679; c=relaxed/relaxed;
-	bh=xNOEBHIW89c1j/jhsHn9BJm63iz+XQaKnsI8oRx93vU=;
+	t=1729099279; c=relaxed/relaxed;
+	bh=1GP0B75uZXvlMdPMs8sxWFWqOcAn6bbZYSntM7zvNeg=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HmB/4Jyn9Kg4RryEIxpHimgJBOR1v28Qilo43XRsm64KVuMg6foufmWUJInVyr3iNM0nH3OW20HR0CDapfqQ5DeXRkaoPqWFb1UTC7+kak+uwO+QBz9gqxXsNpjLpyv0t8rUauX9/Fk2yCgD6E/ABKmWuNZIjnEP59h0LMte7qqHr9xUMSoN6MaEf4aC4pzE+KLtBitjdBxc6wryrfdwXbKapHathlpoMnvb4qLSos0lW5oRhS+JAlIQxuhDyHk04XFTiFRIosjtscjcNLzJISKSIQ/y7THAyNgSz5Dz/BUWeM7y0OmVnff8UWrhMcd0wjhSbFo79WVI3LipI3OdiA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KHw1e9mq; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::232; helo=mail-lj1-x232.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=S6+MQP7nVwPRj8VR2E+xAJ4TTJ42CinzdKFVjOJtSFzc+wiInnU8wTXzY/m22W6lxGOTV6JQAgTYQ6rqPdFcDCp7/SyxIcvOpSRWNJmCvg+xGtb7ljBWIA58o3mlHFdYhMMpRFcPu7kOL4+cHLyIr5Q+wQ9JMOhLpf/1/slnFu8coCFys01stasL9Zh5kiZHhX8I8EAojYY8NUgd3vHSbbWvx1q2pNL5IhjyoM75GjPIaKCdK1xOoqGGm3L4Sg6nwPzJ15sQGBd2LC1BNuMumrdsFrEhoH/DMMn/HsYasrMxBrEJCkVIi8/uik2B9bdJow3Vpldp1c1zT3AAIQF8Mg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DfYOPuc6; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::130; helo=mail-lf1-x130.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KHw1e9mq;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DfYOPuc6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::232; helo=mail-lj1-x232.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::130; helo=mail-lf1-x130.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTDDX5F52z2xk7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 01:41:15 +1100 (AEDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2fb5638dd57so31652431fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 07:41:15 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTHn76Rd0z2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 04:21:15 +1100 (AEDT)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-539e13375d3so52447e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 10:21:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729089669; x=1729694469; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1729099269; x=1729704069; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xNOEBHIW89c1j/jhsHn9BJm63iz+XQaKnsI8oRx93vU=;
-        b=KHw1e9mq7CWQ0yTol4gM7aZFJTtGEx9kiqlPEuU8o9mI373dzgYydggQKVKsqnaehG
-         ozVjr3iKdbCB7F7YCDGiWJuhdSO6sPwuhxcsu1VLFvszyKNFKxLSYTl0fbquE2ZT98+a
-         DpL2Qg8bOJVZy7ALUl2Vl3HLdUwvIIY1Ew1To+wSnu0EVpYMkAM3fTosV5/n2oLcT6l2
-         6fkwvL7sTT+0P6VnP54wazZb4/6Bzva9vp6HNDD+QOL1Z2sL4uhRMb23cjbothZw9LU/
-         k5sf+7U5mcbU4EYe+DRzDJP4bnV0ztCynA4jyj94fVutug/GVttPVz4gfGrspLbYk6sb
-         szaw==
+        bh=1GP0B75uZXvlMdPMs8sxWFWqOcAn6bbZYSntM7zvNeg=;
+        b=DfYOPuc69b9toLV3Rw1LfSquk/DgVVAbQgoz6eM3eRiGYIXpNriYj1rdbCO9MPJLdh
+         bVfHIjcM3v3M6XdVGg2vQqTJxfi6t605uJbDc8ZdZpWAUBkP01wH0hNgdDIWmVr0sAtN
+         z/hDP/OlnkF81FO0oOG0VJddGBf1Ownfu4g0WqS+pjY/A6+IGTDuTDvKkMK2AAN/eG9X
+         vo4aWYLZqk3gqh2tJniikB2k4Pr7tOWUqU4ZdPuvBm0zhsFtUBXTM9p9Rt2IWebsWalD
+         1bIdk/oVMo1XGbz7MmYtcmzaAMAv0pBAtvNd7u4Mb7saPm1f9Nuh5l8p5adw8HcnFWKT
+         X41Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729089669; x=1729694469;
+        d=1e100.net; s=20230601; t=1729099269; x=1729704069;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xNOEBHIW89c1j/jhsHn9BJm63iz+XQaKnsI8oRx93vU=;
-        b=Td696yX5qkqf3WihEMwE/B3IWhQxEVOzNivPIvysC9U9U+DPLmno4RSWaU1YUEhlMQ
-         65PA5MXUCMZUxZ+6FvTH42EdlTRc+zODWfZKuvO35aliKUrRoQsTeaTSudleCfTjqWkh
-         yOzEE9hbWZLD+vkdOPpIQ+y5MFCdySbRw6gNK9opZZFajT0eXBVT6hrr20coXZ8iTZ5Y
-         gJBmKfcRKUF1DscyBct7lQxPPXWBobphiOJi7QoaXivO7/jOwdHHcLDXCLoelLHpLwQY
-         hHRaqbDUT5CYXdLqXOvF1hP8xcbejhuhmGscNNMKZ2Ktq3OvHeCTP3kn/n5ZCacFE2sp
-         GdBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUcSkA2WMKh6hoJmTmB5pC6ixXRz12AHljLJcvcPHCcSlvFiXvIfVeKL1MPkStR1jQliqHqfLDwXqXWMYo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwU2X21WlKx1LZft85A1xgeSWzP2CnI7qa8xK/RmVRbBp+3J88F
-	SPjykcDFgL0puonEr5q2ZNGP7Q/HgQlax79PpjAsJ450hrTSahLC
-X-Google-Smtp-Source: AGHT+IEQ2b77do+Ei5H+uRLYrEtNQq0NK3oK0wCc+2cFtuWRuK/aQBOOdJJvL1LeKTNOBzUMcJr/yQ==
-X-Received: by 2002:a05:651c:1989:b0:2fb:6181:8ca1 with SMTP id 38308e7fff4ca-2fb61b37a76mr33036831fa.6.1729089669341;
-        Wed, 16 Oct 2024 07:41:09 -0700 (PDT)
+        bh=1GP0B75uZXvlMdPMs8sxWFWqOcAn6bbZYSntM7zvNeg=;
+        b=MKE+QUNg9/t//VxZ73YpW4747ud7YhSyi5nvTvsXfG1rJEsho+9Zwc105IsUhpK6GA
+         9woUrQ4ZoW47bOncm9S4/oCO54+reD+ZSJ4gy9HPr2tJjQ9tzf9fSl/m2fClxgMIhb0z
+         OQTRr+yd1mQZ0ad6/J2qdxXkiCJuHp97colAXo3x2cEcsF9bZ1hfa6NOhRvEFFWBv5QC
+         f7YMbiK2lVokbXmwQHljLS8ije/wGegn/guKSSZsL2IDvKRxxdH6Lz+KQ5m3RG5WchVD
+         1w4arBRfmCmJ3rhJP0Rs65LG9/6wv3QJAYrY/zPfnGFyynviQjcOgu0w1/iG5YpjJbAe
+         Oo0A==
+X-Forwarded-Encrypted: i=1; AJvYcCWRS6JnESsIqlM9uSu8+xLpMaVok3bgLLyfQS3APymyA1pXZB81J9H37kTFAha1EasMj36dwPXrJo+1kio=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzsvL9u4rHJBTTsv8aAGiIzbAcagnt9PrJTABhHf0YRCt3xjEUa
+	NAG8g3WIf/DGD6UHC4ZZsU801vKZbmzJwZCro8hrjRRjJOxHZQhZ
+X-Google-Smtp-Source: AGHT+IE3BOIzolDg/ircoXlrXALD+U8X6mjirKNd/VoSdJ8ZQKv3Aj0k5T5yFcByNzOByKxATFiOdw==
+X-Received: by 2002:a05:6512:402a:b0:539:f619:b458 with SMTP id 2adb3069b0e04-539f619b4cbmr6540423e87.22.1729099268652;
+        Wed, 16 Oct 2024 10:21:08 -0700 (PDT)
 Received: from pc636 (host-95-203-1-67.mobileonline.telia.com. [95.203.1.67])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb5d1d0244sm4327361fa.139.2024.10.16.07.41.04
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539fffa8a5fsm512819e87.26.2024.10.16.10.21.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2024 07:41:08 -0700 (PDT)
+        Wed, 16 Oct 2024 10:21:08 -0700 (PDT)
 From: Uladzislau Rezki <urezki@gmail.com>
 X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Wed, 16 Oct 2024 16:41:03 +0200
+Date: Wed, 16 Oct 2024 19:21:02 +0200
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Luis Chamberlain <mcgrof@kernel.org>,
@@ -113,11 +113,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org, x86@kernel.org,
 	Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v6 1/8] mm: vmalloc: group declarations depending on
- CONFIG_MMU together
-Message-ID: <Zw_QfzopOv7pCZc_@pc636>
+Subject: Re: [PATCH v6 2/8] mm: vmalloc: don't account for number of nodes
+ for HUGE_VMAP allocations
+Message-ID: <Zw_1_ln440eHTjGt@pc636>
 References: <20241016122424.1655560-1-rppt@kernel.org>
- <20241016122424.1655560-2-rppt@kernel.org>
+ <20241016122424.1655560-3-rppt@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -129,133 +129,90 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241016122424.1655560-2-rppt@kernel.org>
+In-Reply-To: <20241016122424.1655560-3-rppt@kernel.org>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Oct 16, 2024 at 03:24:17PM +0300, Mike Rapoport wrote:
+On Wed, Oct 16, 2024 at 03:24:18PM +0300, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> There are a couple of declarations that depend on CONFIG_MMU in
-> include/linux/vmalloc.h spread all over the file.
+> vmalloc allocations with VM_ALLOW_HUGE_VMAP that do not explicitly
+> specify node ID will use huge pages only if size_per_node is larger than
+> a huge page.
+> Still the actual allocated memory is not distributed between nodes and
+> there is no advantage in such approach.
+> On the contrary, BPF allocates SZ_2M * num_possible_nodes() for each
+> new bpf_prog_pack, while it could do with a single huge page per pack.
 > 
-> Group them all together to improve code readability.
-> 
-> No functional changes.
+> Don't account for number of nodes for VM_ALLOW_HUGE_VMAP with
+> NUMA_NO_NODE and use huge pages whenever the requested allocation size
+> is larger than a huge page.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > Reviewed-by: Christoph Hellwig <hch@lst.de>
 > ---
->  include/linux/vmalloc.h | 60 +++++++++++++++++------------------------
->  1 file changed, 24 insertions(+), 36 deletions(-)
+>  mm/vmalloc.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
 > 
-> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-> index ad2ce7a6ab7a..27408f21e501 100644
-> --- a/include/linux/vmalloc.h
-> +++ b/include/linux/vmalloc.h
-> @@ -134,12 +134,6 @@ extern void vm_unmap_ram(const void *mem, unsigned int count);
->  extern void *vm_map_ram(struct page **pages, unsigned int count, int node);
->  extern void vm_unmap_aliases(void);
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 634162271c00..86b2344d7461 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3763,8 +3763,6 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>  	}
 >  
-> -#ifdef CONFIG_MMU
-> -extern unsigned long vmalloc_nr_pages(void);
-> -#else
-> -static inline unsigned long vmalloc_nr_pages(void) { return 0; }
-> -#endif
+>  	if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
+> -		unsigned long size_per_node;
 > -
->  extern void *vmalloc_noprof(unsigned long size) __alloc_size(1);
->  #define vmalloc(...)		alloc_hooks(vmalloc_noprof(__VA_ARGS__))
+>  		/*
+>  		 * Try huge pages. Only try for PAGE_KERNEL allocations,
+>  		 * others like modules don't yet expect huge pages in
+> @@ -3772,13 +3770,10 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>  		 * supporting them.
+>  		 */
 >  
-> @@ -266,12 +260,29 @@ static inline bool is_vm_area_hugepages(const void *addr)
->  #endif
->  }
+> -		size_per_node = size;
+> -		if (node == NUMA_NO_NODE)
+> -			size_per_node /= num_online_nodes();
+> -		if (arch_vmap_pmd_supported(prot) && size_per_node >= PMD_SIZE)
+> +		if (arch_vmap_pmd_supported(prot) && size >= PMD_SIZE)
+>  			shift = PMD_SHIFT;
+>  		else
+> -			shift = arch_vmap_pte_supported_shift(size_per_node);
+> +			shift = arch_vmap_pte_supported_shift(size);
 >  
-> +/* for /proc/kcore */
-> +long vread_iter(struct iov_iter *iter, const char *addr, size_t count);
-> +
-> +/*
-> + *	Internals.  Don't use..
-> + */
-> +__init void vm_area_add_early(struct vm_struct *vm);
-> +__init void vm_area_register_early(struct vm_struct *vm, size_t align);
-> +
-> +int register_vmap_purge_notifier(struct notifier_block *nb);
-> +int unregister_vmap_purge_notifier(struct notifier_block *nb);
-> +
->  #ifdef CONFIG_MMU
-> +#define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
-> +
-> +unsigned long vmalloc_nr_pages(void);
-> +
->  int vm_area_map_pages(struct vm_struct *area, unsigned long start,
->  		      unsigned long end, struct page **pages);
->  void vm_area_unmap_pages(struct vm_struct *area, unsigned long start,
->  			 unsigned long end);
->  void vunmap_range(unsigned long addr, unsigned long end);
-> +
->  static inline void set_vm_flush_reset_perms(void *addr)
->  {
->  	struct vm_struct *vm = find_vm_area(addr);
-> @@ -279,24 +290,14 @@ static inline void set_vm_flush_reset_perms(void *addr)
->  	if (vm)
->  		vm->flags |= VM_FLUSH_RESET_PERMS;
->  }
-> +#else  /* !CONFIG_MMU */
-> +#define VMALLOC_TOTAL 0UL
->  
-> -#else
-> -static inline void set_vm_flush_reset_perms(void *addr)
-> -{
-> -}
-> -#endif
-> -
-> -/* for /proc/kcore */
-> -extern long vread_iter(struct iov_iter *iter, const char *addr, size_t count);
-> -
-> -/*
-> - *	Internals.  Don't use..
-> - */
-> -extern __init void vm_area_add_early(struct vm_struct *vm);
-> -extern __init void vm_area_register_early(struct vm_struct *vm, size_t align);
-> +static inline unsigned long vmalloc_nr_pages(void) { return 0; }
-> +static inline void set_vm_flush_reset_perms(void *addr) {}
-> +#endif /* CONFIG_MMU */
->  
-> -#ifdef CONFIG_SMP
-> -# ifdef CONFIG_MMU
-> +#if defined(CONFIG_MMU) && defined(CONFIG_SMP)
->  struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
->  				     const size_t *sizes, int nr_vms,
->  				     size_t align);
-> @@ -311,22 +312,9 @@ pcpu_get_vm_areas(const unsigned long *offsets,
->  	return NULL;
->  }
->  
-> -static inline void
-> -pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
-> -{
-> -}
-> -# endif
-> -#endif
-> -
-> -#ifdef CONFIG_MMU
-> -#define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
-> -#else
-> -#define VMALLOC_TOTAL 0UL
-> +static inline void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms) {}
->  #endif
->  
-> -int register_vmap_purge_notifier(struct notifier_block *nb);
-> -int unregister_vmap_purge_notifier(struct notifier_block *nb);
-> -
->  #if defined(CONFIG_MMU) && defined(CONFIG_PRINTK)
->  bool vmalloc_dump_obj(void *object);
->  #else
-> -- 
-> 2.43.0
-> 
+>  		align = max(real_align, 1UL << shift);
+>  		size = ALIGN(real_size, 1UL << shift);
+>
+Looking at this place, i see that an overwriting a "size" approach seems as
+something that is a bit hard to follow. Below we have following code:
+
+<snip>
+...
+again:
+	area = __get_vm_area_node(real_size, align, shift, VM_ALLOC |
+	  VM_UNINITIALIZED | vm_flags, start, end, node,
+	  gfp_mask, caller);
+...
+<snip>
+
+where we pass a "real_size", whereas there is only one place in the
+__vmalloc_node_range_noprof() function where a "size" is used. It is
+in the end of function:
+
+<snip>
+...
+	size = PAGE_ALIGN(size);
+	if (!(vm_flags & VM_DEFER_KMEMLEAK))
+		kmemleak_vmalloc(area, size, gfp_mask);
+
+	return area->addr;
+<snip>
+
+As fro this patch:
+
 Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
 --
