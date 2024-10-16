@@ -1,81 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-2302-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2303-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9041899FF18
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 05:04:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7189A0075
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 07:12:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XSwmr3FMGz2xrJ;
-	Wed, 16 Oct 2024 14:04:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XSzcG5ZTkz2xt7;
+	Wed, 16 Oct 2024 16:12:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729047884;
-	cv=none; b=KA0gAvkDNAa4Tuyk2jdmbMUaHE1XrpV0XT9qHkUCPqoCuB1pNqO6mSM04JOXheTCYC7Q9UPhcolKfh+EUu/h39dpGQaSuAoDB7YaKN9vHg2Ji5CmwQTwThryboqatbYMOIPHjuleq9PUcv7UapBuqexor9MC+jc9g1pYauA71qtDz9KZzfGcJfJEVWt6A4bVVfCiTnuEOphKGoigaftxmN/UbXlg8V7++X4xQSm0HAst5m6zTlQ11o1dXkP+GJ/oUCdPiysKvXqifBGNP4szKe7PNHq9SIpEMpIQyMBz0itUmW/ErIKl6KnVpC7Ez94RAwB4iRB5yLeuN5nzEFweBg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729055550;
+	cv=none; b=OlIsCj+eYoleJoPY6YReDD5MkLpgVxLT4Cv+ShFZB/nc+s3OH7xP7rT7MU4xvMPvUfIc9YIqPNBaefa1/vXDUr8ox8Cq5rCqYU/jrqaTYDkWDQG86p1jJgJRKmg3XVjY4vzzyy/r8wqox6lhA1aME8XdXJnH6joJGXn9kcbobVGCiHvxDJSmojR+2VFlY3yZW8kctlfFRaAh7sb9K8ITuXGaIOK4jp69/EOEvrXDxeBj6/dgRmiHfqRI2o6XTUOTa91DGYs19bSAUXgPOiqnGsr3Z6hFAmky96dLojqw4zLFoPreXzx6sFS2R9ldlikQgIEEDFy7IRGQT6qIcHYZlw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729047884; c=relaxed/relaxed;
-	bh=9D3euhH+vsKCoGfj48IdTyzq9+B7g/QXhHlVv743pkM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FTU7bCwdhU3OiaGj92M6IOjxx4NdyIs0OJJzqe5BmKJIO5CY3mOIkJqjGnnaJF4b4sAQ55kwTo+1lqNwX0+l9JJPQVWcU7s9j+4o5s7gjDsZ7zCMI72PgDQtI4eor+IBA15+AFj5CGShk6qMisB+AAOROGen7qAZQLC7JdboIKIlHJ3KBxs1pAQbS5myyFY2PMlX5zwkyCuoczCO5M2OsQGUTnwWV7R+ulVjF23qTja5ZSjEmdJanGuyFiRBwAW5FHdULTJSskzZuMV0KDGmXtCks22ZZw1EnTTQTCjfWHA7jRs+UZwynqdF9vC1se0co62+HlGXAKu3dvyrnWFhHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZqqEgWS4; dkim-atps=neutral; spf=pass (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1729055550; c=relaxed/relaxed;
+	bh=zpuXYVy7p2Vv1O5MWhG2f+F7Dms7BhGQ3R9irG9puoM=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=GULRysADsDpaJwORjOnLC/bLTCpCqEsEyB3qxivnHJ5uECVgZrDxZhQf+128ripJZXECAmkLsIm13oNWUkAbkLtlvMoe9shl/tiaAIyiVD9aivrmFp0Nkvooon+oIKA1yaBzeUmFfH4ecCX6Z4l43e65OHtt3FnGKH78ydGzPsO+MvbE+0/Np3PJ1Vuc/gpc2kHNhOiqGxbCYCnjuR6smfhz/0H/dwRVIc2sAr+fvYwcI9qi+Y3YNhl1bH0BxTHVQ1sZEvCetctYzHJTpBADlNZau9mle4oYo2xUzkBGS1e0gZEUhsgMKemad4F2GvNKK5M+kODN8kE3ePHYAfgfFw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EnLsTHCV; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZqqEgWS4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EnLsTHCV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSwmn2hv4z2xpx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 14:04:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729047882; x=1760583882;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4iNh84o83ZQH4Z4x2bLRWS6mJj3EonFvkfgivqaPnFs=;
-  b=ZqqEgWS4CGEGz6gJ/cPNaseESDjK+iTiCq3c3tmiNhdrbv+jfVh4mre1
-   4u4uqd06nnenSTQaqRTpi4UGeGcX0ka9aszKdnVf0ss1UwLZkrClDTlmC
-   kJb29hqf4YJhECn+Ydh8SM8yQr5HbVDYQgSRLZyzRiYUaDYqPDnAdejrS
-   A4X4X9JLwPJ8cCoLmYpOAkQIeo4+FbH29idJ+momPsrNbw2nEA2S2CI1y
-   6D3XoYp09QVrtbqZ62C2R/ftlviuhdEDBPqOFhUL5xNSg5Zbew8LQrcAz
-   N7w49datGWd98cPcj9v9PiWn44rHHBuFcElFJdB7/uaJprQAAcl+Laqlj
-   A==;
-X-CSE-ConnectionGUID: TCdCE6fgQ+yWhG0OFz07Kg==
-X-CSE-MsgGUID: RJD5I1EKT5K3EuB2ZJh1xg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="32395548"
-X-IronPort-AV: E=Sophos;i="6.11,206,1725346800"; 
-   d="scan'208";a="32395548"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2024 20:04:35 -0700
-X-CSE-ConnectionGUID: fx3FGI0wTgGQWYVIDfOung==
-X-CSE-MsgGUID: NHHcDv0ZT/qJqXahQpOP+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,206,1725346800"; 
-   d="scan'208";a="83168145"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 15 Oct 2024 20:04:30 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t0uKo-000KCh-2I;
-	Wed, 16 Oct 2024 03:04:26 +0000
-Date: Wed, 16 Oct 2024 11:03:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yicong Yang <yangyicong@huawei.com>, catalin.marinas@arm.com,
-	will@kernel.org, sudeep.holla@arm.com, tglx@linutronix.de,
-	mpe@ellerman.id.au, linux-arm-kernel@lists.infradead.org,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	pierre.gondois@arm.com, dietmar.eggemann@arm.com
-Cc: oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	x86@kernel.org, linux-kernel@vger.kernel.org,
-	morten.rasmussen@arm.com, msuchanek@suse.de,
-	gregkh@linuxfoundation.org, rafael@kernel.org,
-	jonathan.cameron@huawei.com, prime.zeng@hisilicon.com,
-	linuxarm@huawei.com, yangyicong@hisilicon.com, xuwei5@huawei.com,
-	guohanjun@huawei.com
-Subject: Re: [PATCH v6 2/4] arch_topology: Support SMT control for OF based
- system
-Message-ID: <202410161038.WVTopMNt-lkp@intel.com>
-References: <20241015021841.35713-3-yangyicong@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XSzcF12R6z2xnc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 16:12:28 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49G3vnbp027554;
+	Wed, 16 Oct 2024 05:12:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=zpuXYV
+	y7p2Vv1O5MWhG2f+F7Dms7BhGQ3R9irG9puoM=; b=EnLsTHCViJZPU4vKPzLxCw
+	U9KnBvW2zqrxFOws4XUEb/NCf+q1lcJ1S8ah1uCOyMnNlbApoq9CW/fJRh0Md2kf
+	6WMZ9g6OMKeLqhXjxMm8q978t1MrxQRdos9ry7m3RZoaYLgBgnbYwjutZrWE27tw
+	A1BExnq6ZamdXlCVTTjezap5bOYLO8N0KVj7g9jdpnjjCeyZhq/bEPjDoBp1Xih/
+	XGCjACDCb14M/jlfq8Lu28401+J9plRa6wDToe/BuBdX4Dd9H8rTK8n6Msel0uGj
+	FwiCU0uqoyLdSbxwlxzgTbxB2+TQR1xP+7PNa1fWF+SbIqX6znruWwNw7cR90NGg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42a60a87ah-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Oct 2024 05:12:21 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49G59Z7b006341;
+	Wed, 16 Oct 2024 05:12:20 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42a60a87af-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Oct 2024 05:12:20 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49G164So027452;
+	Wed, 16 Oct 2024 05:12:19 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4283txqh08-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Oct 2024 05:12:19 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49G5CFpq30277898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Oct 2024 05:12:16 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E17D120040;
+	Wed, 16 Oct 2024 05:12:15 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E29722004B;
+	Wed, 16 Oct 2024 05:12:09 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.246.127])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 16 Oct 2024 05:12:09 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,57 +81,152 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015021841.35713-3-yangyicong@huawei.com>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH] tools/perf/tests/base_probe: Fix check for the count of
+ existing probes in test_adding_kernel
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20241014153910.85536-1-atrajeev@linux.vnet.ibm.com>
+Date: Wed, 16 Oct 2024 10:41:54 +0530
+Cc: jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
+        namhyung@kernel.org, linux-perf-users@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com,
+        maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com,
+        hbathini@linux.ibm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5267822A-8384-4B9A-817F-B764E24F0116@linux.vnet.ibm.com>
+References: <20241014153910.85536-1-atrajeev@linux.vnet.ibm.com>
+To: Namhyung Kim <namhyung@kernel.org>, vmolnaro@redhat.com,
+        Arnaldo Carvalho de Melo <acme@kernel.org>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nYKh2bQzL_ruitaihCt48o0XMnDss4Dt
+X-Proofpoint-ORIG-GUID: FC33Hutp5N2QSTDffGWPknApqv7WkLfM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ clxscore=1015 mlxscore=0 adultscore=0 priorityscore=1501 mlxlogscore=999
+ malwarescore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410160031
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_NONE autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Yicong,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on arm64/for-next/core]
-[also build test WARNING on powerpc/next powerpc/fixes driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus linus/master tip/x86/core v6.12-rc3 next-20241015]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Yicong-Yang/cpu-SMT-Provide-a-default-topology_is_primary_thread/20241015-102147
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
-patch link:    https://lore.kernel.org/r/20241015021841.35713-3-yangyicong%40huawei.com
-patch subject: [PATCH v6 2/4] arch_topology: Support SMT control for OF based system
-config: arm-randconfig-001-20241016 (https://download.01.org/0day-ci/archive/20241016/202410161038.WVTopMNt-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241016/202410161038.WVTopMNt-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410161038.WVTopMNt-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/base/arch_topology.c:32:21: warning: 'max_smt_thread_num' defined but not used [-Wunused-variable]
-      32 | static unsigned int max_smt_thread_num;
-         |                     ^~~~~~~~~~~~~~~~~~
 
 
-vim +/max_smt_thread_num +32 drivers/base/arch_topology.c
+> On 14 Oct 2024, at 9:09=E2=80=AFPM, Athira Rajeev =
+<atrajeev@linux.vnet.ibm.com> wrote:
+>=20
+> perftool-testsuite_probe fails in test_adding_kernel as below:
+> Regexp not found: "probe:inode_permission_11"
+> -- [ FAIL ] -- perf_probe :: test_adding_kernel :: force-adding probes =
+::
+> second probe adding (with force) (output regexp parsing)
+> event syntax error: 'probe:inode_permission_11'
+>  \___ unknown tracepoint
+>=20
+> Error:  File /sys/kernel/tracing//events/probe/inode_permission_11
+> not found.
+> Hint:   Perhaps this kernel misses some CONFIG_ setting to
+> enable this feature?.
+>=20
+> The test does the following:
+> 1) Adds a probe point first using :
+>    $CMD_PERF probe --add $TEST_PROBE
+> 2) Then tries to add same probe again without =E2=80=94force
+> and expects it to fail. Next tries to add same probe again
+> with =E2=80=94force. In this case, perf probe succeeds and adds
+> the probe with a suffix number. Example:
+>=20
+> ./perf probe --add inode_permission
+> Added new event:
+>  probe:inode_permission (on inode_permission)
+>=20
+> ./perf probe --add inode_permission --force
+> Added new event:
+>  probe:inode_permission_1 (on inode_permission)
+>=20
+>  ./perf probe --add inode_permission --force
+> Added new event:
+>  probe:inode_permission_2 (on inode_permission)
+>=20
+> Each time, suffix is added to existing probe name.
+> To get the suffix number, test cases uses :
+> NO_OF_PROBES=3D`$CMD_PERF probe -l | wc -l`
+>=20
+> This will work if there is no other probe existing
+> in the system. If there are any other probes other than
+> kernel probes or inode_permission, ( example: any probe),
+> "perf probe -l" will include count for other probes too.
+>=20
+> Example, in the system where this failed, already some
+> probes were default added. So count became 10
+>  ./perf probe -l | wc -l
+>  10
+>=20
+> So to be specific for "inode_permission", restrict the
+> probe count check to that probe point alone using :
+> NO_OF_PROBES=3D`$CMD_PERF probe -l $TEST_PROBE| wc -l`
+>=20
+> Similarly while removing the probe using "probe --del *",
+> ( removing all probes ), check uses:
+>=20
+> ../common/check_all_lines_matched.pl "Removed event: =
+probe:$TEST_PROBE"
+>=20
+> But if there are other probes in the system, the log will
+> contain reference to other existing probe too. Hence change
+> usage of check_all_lines_matched.pl to check_all_patterns_found.pl
+> This will make sure expecting string comes in the result
+>=20
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-    28	
-    29	static DEFINE_PER_CPU(struct scale_freq_data __rcu *, sft_data);
-    30	static struct cpumask scale_freq_counters_mask;
-    31	static bool scale_freq_invariant;
-  > 32	static unsigned int max_smt_thread_num;
-    33	DEFINE_PER_CPU(unsigned long, capacity_freq_ref) = 1;
-    34	EXPORT_PER_CPU_SYMBOL_GPL(capacity_freq_ref);
-    35	
+Adding Veronika in the mail. Sorry missed to add initially. Please share =
+review comments on this fix.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks
+Athira
+> ---
+> tools/perf/tests/shell/base_probe/test_adding_kernel.sh | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh =
+b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
+> index d541ffd44a93..f8b5f096d0d7 100755
+> --- a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
+> +++ b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
+> @@ -169,7 +169,7 @@ print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE =
+"force-adding probes :: second pr
+> (( TEST_RESULT +=3D $? ))
+>=20
+> # adding existing probe with '--force' should pass
+> -NO_OF_PROBES=3D`$CMD_PERF probe -l | wc -l`
+> +NO_OF_PROBES=3D`$CMD_PERF probe -l $TEST_PROBE| wc -l`
+> $CMD_PERF probe --force --add $TEST_PROBE 2> =
+$LOGS_DIR/adding_kernel_forceadd_03.err
+> PERF_EXIT_CODE=3D$?
+>=20
+> @@ -205,7 +205,7 @@ print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE =
+"using doubled probe"
+> $CMD_PERF probe --del \* 2> =
+$LOGS_DIR/adding_kernel_removing_wildcard.err
+> PERF_EXIT_CODE=3D$?
+>=20
+> -../common/check_all_lines_matched.pl "Removed event: =
+probe:$TEST_PROBE" "Removed event: probe:${TEST_PROBE}_1" < =
+$LOGS_DIR/adding_kernel_removing_wildcard.err
+> +../common/check_all_patterns_found.pl "Removed event: =
+probe:$TEST_PROBE" "Removed event: probe:${TEST_PROBE}_1" < =
+$LOGS_DIR/adding_kernel_removing_wildcard.err
+> CHECK_EXIT_CODE=3D$?
+>=20
+> print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "removing multiple =
+probes"
+> --=20
+> 2.43.5
+>=20
+>=20
+
 
