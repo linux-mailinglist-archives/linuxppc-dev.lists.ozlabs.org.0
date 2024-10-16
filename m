@@ -1,67 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-2320-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2321-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0119A0DA1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 17:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD6F9A0F66
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 18:11:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XTDp84B8Mz2yLJ;
-	Thu, 17 Oct 2024 02:06:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XTGDM2vPJz2xy6;
+	Thu, 17 Oct 2024 03:11:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::832"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729091216;
-	cv=none; b=BGVX4quBXQrDwhxKbmYz8h1b3U79GIOdCEh8VBtQA1Ez4LfuAbe+qkHbSK2jvOC0WaRzF1ko1BgVYeFHG1yched9XWFCuLDUqhfSzhwLSHX49yrWjp/5m9nzakUhPsnHKVrqwHMFuJRZ703UJa27YZODPOtVAZzvUz/DLnSnFyZLuzDXmTxOiAAMe/ihFYuGU7PLb/Vg3J77b/Jwahq6gnFKzOauV/PlDSXADFLoMudm8yqteTr8Du8NxH3glvyEsT+1MQEPxf1mGJRujp/JSeyQemezKqB8/R4E34AKnV8BKKK7zG94WMh9z6dgsxwb27iuNO4EO3C0ofmz0QTzyg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::632"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729095075;
+	cv=none; b=BVMbNziUde61f5iwCxB4nmOMfizQs5k5GuopL4i7hlduQjaTuHnDHwmypb4Q5hEC2cC59enV015Lpnro6Ny2F3nTPvWEYINsF3hc56+iyY7m+ijlJRDN9/cKu8p3enj5TQk7La3qU/unnkiBFdc202mRK1BYlvcOvhA2RCk1Gdyj9sv3jYBpPjMRffmDbOnSOgVCvd5iDDU7YClLPvQaztYKmZXwJU+g2ivB05LfO+JTBSZiLYtT/rb0K6k0ddDmX12RCUCnmQuEE44+QH9ntBqnlsf9BZMhrfrhFZkAPL8drwROX5JKkRvGK3s1V9NtXkrsjSdsjyoV5hdXSLsLzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729091216; c=relaxed/relaxed;
-	bh=6K4x8bphATLlXhelHBdtpzDtj/LNGp0/65nra7sovmg=;
+	t=1729095075; c=relaxed/relaxed;
+	bh=SyZ2QyMbyYQQaniYfUs6X1DWti3UANh7lWe64H5ofAs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OrIHBpJKpa3GW1+bvXlT3OVmBVuVhx1+40RMV7G4JUm8b6xrhDx3ncsgj/uxa2id6Zhm6qC5WpT2b3TKEcW7eQMVx69tFbcnWC9KHkS12Uqe9HMiDkCoU+EvA+oefX+XxKBJ1MsaXCwxNZL1r7N5fLU8QzSI3lRIYCga8KDSk7ua12O0gjnxEQaUbSogUCHBv1xtU9UyCzEuiiqDG/Ff7CL0MF2biAGxHqiJmd45WxiK15cTTcpcvt0RhNMTBC8+NOTT2WOdqwZcGjcDvuUTTZOtpcoUdAWiQSKSD+7lsAp1E0vl68222LWFaUmdR/59tDLn0EgcpGmDG71aJMEezg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=2k9JQhwV; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::832; helo=mail-qt1-x832.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	 To:Cc:Content-Type; b=h0RUMegYrvmNOuOXbcY1CUY+4PD7EDey45eOWT5nhHYewRU7uULG4/vGplm4pZ35Xr39ik8Nd4A2FEnw4LBsU5kxY76VoPrhNeDLi6FUHlXZiSbnZKtOzLbm7RZszd/sQ4QAzKz+ZZLvyVqrEomU8uj/Q1jp0jg10z/NTrSjcWeRfIGgpQDc31PlYG2QGF4QBXDkTJO4qHWT30GErtoXXoA/0xdBDwHfBvAoEP27sOT9YZSIHmhq10U6z+6qShgsaVFIL6GCRnJYNYkYuOjS9wCnDQvaSEGOu2876E/V4KiXfMvRtpkZ4smL8s49xKa69WbZ6ajhXnv46iGJv0pn3g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=SNUtcNgc; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=2k9JQhwV;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=SNUtcNgc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::832; helo=mail-qt1-x832.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTDp63MkCz2yJ5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 02:06:53 +1100 (AEDT)
-Received: by mail-qt1-x832.google.com with SMTP id d75a77b69052e-460969c49f2so204301cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 08:06:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTGDJ3B0tz2xrC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 03:11:10 +1100 (AEDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-a99ebb390a5so211944166b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 09:11:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729091207; x=1729696007; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6K4x8bphATLlXhelHBdtpzDtj/LNGp0/65nra7sovmg=;
-        b=2k9JQhwVm2H9qH27n1PdCaocyDZ/NOUj52AmTT48wv5xQlhfqiFjY2SIxJu/bdNzvo
-         Iu3K02gimZE97GoUUq04N07qm0EDRXo/Hmuu11zzuoxwUZ3aU29OTqKCpDh0NMnUz4TW
-         oiqzdMPkZd2EgvaW9Z6edVU9utQ32AmICaOUEIj4u1uh6E+Y2I77YcYAfc4AWM80me4q
-         F5XKhQsAvBkry1ROCNwQXido0MmQsLDtoPIMCQKLr8ZoyjyOzwIaGyQBAMKG2R0+f3RO
-         u53GU0Hbw9lYLWLbF14k1VInPLwgiZgI+TDPSyLVCIyb9RDLJB6qEDFEK+j4hWaFwpw9
-         Vz3w==
+        d=linux-foundation.org; s=google; t=1729095066; x=1729699866; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=SyZ2QyMbyYQQaniYfUs6X1DWti3UANh7lWe64H5ofAs=;
+        b=SNUtcNgcuQMH18MAo+k21uBIVWRku7ei+YY2Gah2HKMb924q5CY6P0auRozoKnNxAT
+         I5pg+MvwnkmGzYSakS23jc6h6Txbb8BJvL+UpdQwbmAhMStR5YLeOvsQFIom6qGzr/sQ
+         Y2aZXrZSTQsTC2rEGwonYV/mOENReiZIjdBws=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729091207; x=1729696007;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6K4x8bphATLlXhelHBdtpzDtj/LNGp0/65nra7sovmg=;
-        b=S3Z4Jpyc4micEaSeHEkECdOTGBb+/ANyXb0Mp6t12/FRrCjbBfo5OqIg1VA42UGTe3
-         MnPn/N1mYyu33q7z8XDD4uOczs7e6SC1S1Mn6p+3wFZdFn9dkQe6ACb5EjM4KIdJJSve
-         5bbsunO9GJdA8pBz7cyKt8nEcCmMZzyTyeckm9JKdgJmpEe8BJnQVS3ZgIWiPTrvZbCn
-         cAJDADkbGyIpEtrEX8M5Q35NY851U1O7T6FFXpPSSA54HmDrd7TfYXVfKckXOJmm/Lia
-         /N94rm5I0EP2sv5KTNx17gMkH7Rpt0HEH3zBSujc8omGskv4T6E9gAJ8dhJ86sG/QzE8
-         Ax9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUWotvVTujyi4T+Ol0aZLDoN0QHSQoATXvF0mFNvzEGlsNNb8LCR7/vVzQXTsCvsuvSirSN8fPkut9lPFc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzliCQrgiyocpxsczAdGwzfebuZ84LagcjmcjqzEr8SQh6Ycl00
-	bOlSFcT2P3bnP5Z0HLfoIfQe/cGgG1ZfQKJawvhWU9rVwFDJmYZlogh3GKBdgp3+ySwE2StBHPM
-	8rco5RVhFDHjeGADaIuInC29/iLDNtqdOJ2Pm
-X-Google-Smtp-Source: AGHT+IHoJmRL6Rr/b848g5lwqp2hwHbpRFYxfZOHmo4MfEhx8DYqRyOLQGFNUtgMz7WYW9kZ8oqR/5cdGwmeVpfYiOg=
-X-Received: by 2002:a05:622a:7a88:b0:460:4638:78c0 with SMTP id
- d75a77b69052e-4608db520e4mr4965651cf.14.1729091206890; Wed, 16 Oct 2024
- 08:06:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729095066; x=1729699866;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SyZ2QyMbyYQQaniYfUs6X1DWti3UANh7lWe64H5ofAs=;
+        b=bv2PhE4yGecqzv4M6A15iHTV/LWgqToYe5PiUVirtZALPmVnLh0HYKoLAHbtjjQYro
+         /I6y87JyzNB6i/GGp1+XvKocHMIVz/f5ceZjgv7694kvhZrWc36CxJmiDECAFZ1m10OU
+         6MIS2bwnMnrKJR0HjXmdkj4G5rHRqyXjD6TPL9w9lDagoxdeKd/cZy4JUONoWpx4fKbl
+         B1gAQPDfCbR6FUqduC/yEtbYmHJMO0oBTdTAwYQM4yHyNFzk7fScg87BmO66fWwcfvQq
+         wc+gBFGzbE4424QVCwMheigPnota3QKdVnY7drLBoqTPASPgmAbMFuPSDyv3zFVJvv7H
+         6zHw==
+X-Forwarded-Encrypted: i=1; AJvYcCXd/+2PcZCMH5mm1Cqf2o1snLxndQQxZTQIMrXW+UcCg4DSpYGNzcj1WOlr2gkpWue0IOEEfL+T+Nj7Ffs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw7DvIcDjhBfIKNwCUWcvRP+u+muZ4wSRARojMpele6seNbfWul
+	TAI4x7KZRRv51ZUmM7tTWOGj4fFnSHUTBKJne7rJeACwoKytglddTdZl6N7zOEEekTRA15vWle5
+	DERBPeA==
+X-Google-Smtp-Source: AGHT+IGQuK9QByA/s6w3+K3zxChiH3iS57iH4DJtAcDC280GkD9V604PJkkXIQShbz7Hme8iaUjTNA==
+X-Received: by 2002:a17:907:2da3:b0:a99:f722:2dde with SMTP id a640c23a62f3a-a9a4c2c5f38mr15409066b.1.1729095065965;
+        Wed, 16 Oct 2024 09:11:05 -0700 (PDT)
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com. [209.85.218.48])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a2971a48csm198742866b.6.2024.10.16.09.11.04
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Oct 2024 09:11:04 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a99e3b3a411so187050966b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 09:11:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXgLCussCHZbjfzVbpCWLDWuF4Sqxvv3i7HUE12M6m2n99dk/qnxQcQojKYo74pRt/V99aFZQPVeSNK5CM=@lists.ozlabs.org
+X-Received: by 2002:a17:907:3a96:b0:a9a:eeb:b26a with SMTP id
+ a640c23a62f3a-a9a4c2c9a13mr11865666b.1.1729095063890; Wed, 16 Oct 2024
+ 09:11:03 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,113 +77,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241013173742.71882-1-atrajeev@linux.vnet.ibm.com>
- <Zw1UXbWTS9Gk3lmw@google.com> <8B5B2251-E41E-4584-881E-61A468AFB222@linux.vnet.ibm.com>
-In-Reply-To: <8B5B2251-E41E-4584-881E-61A468AFB222@linux.vnet.ibm.com>
-From: Ian Rogers <irogers@google.com>
-Date: Wed, 16 Oct 2024 08:06:35 -0700
-Message-ID: <CAP-5=fWQsQp3WgJcLvZWsBsiJ2VzxP6j2kOfd5Hrzi0oBUNy2g@mail.gmail.com>
-Subject: Re: [PATCH] tools/perf/tests: Fix compilation error with strncpy in tests/tool_pmu
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>, acme@kernel.org, jolsa@kernel.org, 
-	adrian.hunter@intel.com, linux-perf-users@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com, maddy@linux.ibm.com, 
-	kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
+References: <b626840e55d4aa86b4b9b377a4cc2cda7038d33d.1728706156.git.jpoimboe@kernel.org>
+ <f6ea59b1-eb59-4d1d-81ed-0e5095102c20@citrix.com> <CAHk-=wg=DovySzKb3=g53DeCwv1ZOa-RebaBpYXNXrdhY=a5Qw@mail.gmail.com>
+ <12c18d86-87b3-4418-a0b0-2844197a3315@citrix.com> <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
+ <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
+ <CAHk-=wgDrG-aKVGrd-9gQsC0pMs936oo8XEFmEn6ciaT9=nfDg@mail.gmail.com>
+ <20241014035436.nsleqolyj3xxysrr@treble> <CAHk-=widMFN2wDeS2K65f8FnW8L6gPZa6CNO4OWkv--0G2LXhw@mail.gmail.com>
+ <r5ruxmop7vewd7aq6gu2zve4hfmcu4byhlebygswbqkgz43qfq@rsajyfiypcsd> <CAHk-=wj8v4BcD7f3pObq1wav_mJO_naisYGg6HQUcphSc-U0zA@mail.gmail.com>
+In-Reply-To: <CAHk-=wj8v4BcD7f3pObq1wav_mJO_naisYGg6HQUcphSc-U0zA@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 16 Oct 2024 09:10:47 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiVE1QCwnP98Hw0GfjrEKiZsvsaqgzC02zJj-BYp4-khg@mail.gmail.com>
+Message-ID: <CAHk-=wiVE1QCwnP98Hw0GfjrEKiZsvsaqgzC02zJj-BYp4-khg@mail.gmail.com>
+Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Andrew Cooper <andrew.cooper3@citrix.com>, x86@kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Mark Rutland <mark.rutland@arm.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Oct 16, 2024 at 5:30=E2=80=AFAM Athira Rajeev
-<atrajeev@linux.vnet.ibm.com> wrote:
+On Mon, 14 Oct 2024 at 09:55, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
->
->
-> > On 14 Oct 2024, at 10:56=E2=80=AFPM, Namhyung Kim <namhyung@kernel.org>=
- wrote:
+> On Mon, 14 Oct 2024 at 05:30, Kirill A. Shutemov <kirill@shutemov.name> wrote:
 > >
-> > Hello Athira,
+> > Given that LAM enforces bit 47/56 to be equal to bit 63 I think we can do
+> > this unconditionally instead of masking:
 > >
-> > On Sun, Oct 13, 2024 at 11:07:42PM +0530, Athira Rajeev wrote:
-> >> perf fails to compile on systems with GCC version11
-> >> as below:
-> >>
-> >> In file included from /usr/include/string.h:519,
-> >>                 from /home/athir/perf-tools-next/tools/include/linux/b=
-itmap.h:5,
-> >>                 from /home/athir/perf-tools-next/tools/perf/util/pmu.h=
-:5,
-> >>                 from /home/athir/perf-tools-next/tools/perf/util/evsel=
-.h:14,
-> >>                 from /home/athir/perf-tools-next/tools/perf/util/evlis=
-t.h:14,
-> >>                 from tests/tool_pmu.c:3:
-> >> In function =E2=80=98strncpy=E2=80=99,
-> >>    inlined from =E2=80=98do_test=E2=80=99 at tests/tool_pmu.c:25:3:
-> >> /usr/include/bits/string_fortified.h:95:10: error: =E2=80=98__builtin_=
-strncpy=E2=80=99 specified bound 128 equals destination size [-Werror=3Dstr=
-ingop-truncation]
-> >>   95 |   return __builtin___strncpy_chk (__dest, __src, __len,
-> >>      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >>   96 |                                   __glibc_objsize (__dest));
-> >>      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~
-> >>
-> >> The compile error is from strncpy refernce in do_test:
-> >> strncpy(str, tool_pmu__event_to_str(ev), sizeof(str));
-> >>
-> >> This behaviour is not observed with GCC version 8, but observed
-> >> with GCC version 11 . This is message from gcc for detecting
-> >> truncation while using strncpu. Use snprintf instead of strncpy
-> >> here to be safe.
-> >>
-> >> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> > diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
+> > index d066aecf8aeb..86d4511520b1 100644
+> > --- a/arch/x86/lib/getuser.S
+> > +++ b/arch/x86/lib/getuser.S
+> > @@ -37,9 +37,14 @@
 > >
-> > I found this issue now and thanks for the quick fix.  I will push to
-> > perf-tools-next soon.
+> >  #define ASM_BARRIER_NOSPEC ALTERNATIVE "", "lfence", X86_FEATURE_LFENCE_RDTSC
 > >
-> > Thanks,
-> > Namhyung
-> >
+> > +#define SHIFT_LEFT_TO_MSB ALTERNATIVE \
+> > +       "shl $(64 - 48), %rdx", \
+> > +       "shl $(64 - 57), %rdx", X86_FEATURE_LA57
 >
-> Sure
->
-> Thanks Namhyung for pulling in the change
->
-> Athira
+> That's certainly a lot smaller than the big constant, which is good.
 
-Thanks for the fixes. As this is test code I don't think performance,
-style, etc. matter much. The GCC strncpy warnings are annoying imo,
-I'm not sure it makes sense for them to be enabled. I see in the
-kernel lots of "sizeof(foo)-1" as a workaround. strlcpy looks like a
-better alternative but it gets a checkpatch warning as in the kernel
-strscpy is preferred. Perhaps we should create a strscpy shim.
+Actually, having thought this over, I think we can simplify things
+more, and not do any shifts AT ALL.
 
-Thanks,
-Ian
+IOW, the whole "mask non-canonical bits" model I think works on its
+own even without the "shift sign bit and or" logic.
 
-> >> ---
-> >> tools/perf/tests/tool_pmu.c | 2 +-
-> >> 1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/tools/perf/tests/tool_pmu.c b/tools/perf/tests/tool_pmu.c
-> >> index 94d0dd8fd3cb..297cc8c55579 100644
-> >> --- a/tools/perf/tests/tool_pmu.c
-> >> +++ b/tools/perf/tests/tool_pmu.c
-> >> @@ -22,7 +22,7 @@ static int do_test(enum tool_pmu_event ev, bool with=
-_pmu)
-> >> if (with_pmu)
-> >> snprintf(str, sizeof(str), "tool/%s/", tool_pmu__event_to_str(ev));
-> >> else
-> >> - strncpy(str, tool_pmu__event_to_str(ev), sizeof(str));
-> >> + snprintf(str, sizeof(str), "%s", tool_pmu__event_to_str(ev));
-> >>
-> >> parse_events_error__init(&err);
-> >> ret =3D parse_events(evlist, str, &err);
-> >> --
-> >> 2.43.5
->
->
+So it can replace all the shifting entirely (much less the double
+shifting), and we can have something like this:
+
+  --- a/arch/x86/lib/getuser.S
+  +++ b/arch/x86/lib/getuser.S
+  @@ -37,11 +37,14 @@
+
+   #define ASM_BARRIER_NOSPEC ALTERNATIVE "", "lfence", X86_FEATURE_LFENCE_RDTSC
+
+  +#define X86_CANONICAL_MASK ALTERNATIVE \
+  +     "movq $0x80007fffffffffff,%rdx", \
+  +     "movq $0x80ffffffffffffff,%rdx", X86_FEATURE_LA57
+  +
+   .macro check_range size:req
+   .if IS_ENABLED(CONFIG_X86_64)
+  -     mov %rax, %rdx
+  -     sar $63, %rdx
+  -     or %rdx, %rax
+  +     X86_CANONICAL_MASK      /* mask into %rdx */
+  +     and %rdx,%rax
+   .else
+        cmp $TASK_SIZE_MAX-\size+1, %eax
+        jae .Lbad_get_user
+
+Yes, it does end up having that big constant (not great), but makes up
+for it by avoiding the register move instruction (3 bytes) and two
+shift instructions (4 bytes each), so while the "load big constant"
+instruction is a big 10-byte instruction, it's actually one byte
+shorter than the old code was.
+
+It also avoids a couple of data dependencies, so it's both smaller and simpler.
+
+An invalid address with the high bit set will become non-canonical, so
+it will cause an exception as expected.
+
+But it avoids the AMD issue, because while it's non-canonical, it
+always clears that bit 48 (or 57), so it will never hit a kernel
+TLB/cache tag.
+
+Of course, if some other core then does the sane thing, and uses  bit
+#63 (instead of #48/57), and still has the pseudo-meltdown behavior,
+then the non-canonical address generated by the plain 'and' will end
+up having the same old issue.
+
+But in (related) news, the address masking trick really does matter:
+
+   https://lore.kernel.org/all/202410161557.5b87225e-oliver.sang@intel.com/
+
+which reports that ridiculous 6.8% improvement just from avoiding the
+barrier in user_access_begin().
+
+So that barrier really *is* very expensive. Surprisingly so.
+
+                 Linus
 
