@@ -1,120 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-2316-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2317-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67929A099D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 14:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0149A09D2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Oct 2024 14:30:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XT9Fm04dYz3bcs;
-	Wed, 16 Oct 2024 23:27:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XT9KJ2lTvz2yst;
+	Wed, 16 Oct 2024 23:30:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729081627;
-	cv=none; b=mBQYspvdL+AUL558rIgJB8/TbDs8ZcJ4q567KrwFdcHduzMn+NPmPHxZX6LiJtK5v9eM/pIJkC2a2sfC0PWD5M3r7qr8lZ3hcM6ueoCW0/Ro9owKDOg7jVZGq4K+6qr1XlubeK97Z8Wl1ULC1h9WAtTBgoOP069b9f2ewtNOfuuVOCGAe3L8U+0qbYfRTyDy+fLijpYdmbt89wps6L2c0FsJMof6bhbYSnzRu7lWlNGxS50M5VBjwso5zeqjnDifJnWknm7QUDfYcom1Vgv86rdaVZNlintsFjqq5bqmFRP0Ftynwv5ENQcfk4TQ0UvkyoKqNNLhRzBAT/Smtpq5yA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729081812;
+	cv=none; b=FYkrPo+eqQVTC98JNb+vBGOGqmN7+RSWH1mcrL2boulIH09PyiZbhEno9HvWLdJy2J8MLQwWwW1SktR/C19WpLyKp8YgfjwyCY7RIY24afp5lNioaAQ5r2yAMKn2ImQKP3rkylKyHB+l8F+xHl7JGg2Sb7rljYnEZAsGYJcP6JmesMKn/v6MujDzq+Oo16LAyH+bLMtEZZDE+9aqxM0RanA3HIrzrbauD2wdZ7q9tOwm2I1JUwrj5CTVTBehhTFGw2lgxi2BMGlM9MdRJHwaLrQnjISyc1j68Zw5Pkx0xeYukMNCubnHSTrN41mGWNCw5JXmZth+SYFDaW9fDa6Tow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729081627; c=relaxed/relaxed;
-	bh=yHnNtzpe4A7HBhM1JHCXKLDO71zzjAKRfmgOfZQgIGY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GY4BbUxIaXySNb9knWqSVVunOkcUtm63ruC/b9iTNtngAw0/An6YVszIfuuTB3R6QboF5KA+SnJZSBF0oEaSU6vsPA2u8L0utZMSlfbgDCWN26+K37B85COynsl3iY8WPdNAOFeknJTk1GhfMZvHMN5jbH8i56cciyXb+iQ2bpFxvPfQZF8Sz8XHJmeI8c1g1QwJGJDi2UiaTzn58scBAycdHUATIedGFU79XtxnZt7LGm1PWY2cYi9XmhNcHODzfbTXiX/5hQ4p4Kh0LgFwf6J/O8cd99M8hHXLaPGPSJXAJXuHBmfmjIqFvH97kmCn37rmeGBJJNg8bZ9FMV6TFQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ewgSS7JQ; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1729081812; c=relaxed/relaxed;
+	bh=aiUeGk+hwdjG29xRD5MljY+A1mdGiwdWe9aACfJUrrA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=D0bHyScey2nJCVBtxcbn3Dr+o7G7lThhrmUt7v5OZ2XcdULAndZJoJSv5ERQHEGDOdqE/yPM7ID4LqyDNLos4CjbYYvJSrnLkB/7kBjQYvz0Kc3J5SP6haS0Gt5qmuxknrx2pa04yxtLrnn37UsQB7c7g+XO/anLjZWBteECQnBwJOVla5snr5aBON2YuQgdWlMaqMKVW9XyYQQxsaZFBXRRyA1jwYUSkHnPXzkdecmcq4AtyM7KljEVzuDmL2ugPYHxv+dUx/PLqX1XUWX55DhIoZl/BmJKcY++PnS5JcplTpN6RZFD+ydm6dcTbqthH+vj+h6o/HnxBdE7mRupbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iVoLq4tZ; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ewgSS7JQ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iVoLq4tZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XT9Fl02vvz3bby
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 23:27:06 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id B8A1F5C4ADF;
-	Wed, 16 Oct 2024 12:27:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4677BC4CECF;
-	Wed, 16 Oct 2024 12:26:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729081624;
-	bh=eY6kLN8OlN+AhPSjfqE9l5XEI+8YBmb961qfGDylvwo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewgSS7JQnctq7Hgrv3uuVnVef5NJ6/W1nB36pkS9n4SMtyIyVrElKtKyFF1q0jkpP
-	 EsFcTPX0SKB8iugJZ8fG/3GbaKQ9JTTxiSf0x8Je0VGHSki/f8KCPFSVhlw3IAbCgq
-	 dHZxxLb3XDQt5YWY63oWKwfSJfIRrZ4ETnxR7W4suuZEwzrS9kg5Y5qEjXIsmjEAIc
-	 d+qNLfS/dkDTekE3774d/xn4huY0MjrfXRLRM5fT0pICnGA4BMmSBqBpOwDvhxDH7h
-	 lEAtUAvDJvuqN4dGETbbq15U4XHTm20JcFbizm6eRWYoC4wDxNk9mafVHZRkNrpKww
-	 GhffryNbJ3RBQ==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>
-Cc: Andreas Larsson <andreas@gaisler.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Brian Cain <bcain@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>,
-	Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>,
-	Mike Rapoport <rppt@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Song Liu <song@kernel.org>,
-	Stafford Horne <shorne@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	bpf@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-modules@vger.kernel.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org,
-	x86@kernel.org
-Subject: [PATCH v6 8/8] x86/module: enable ROX caches for module text on 64 bit
-Date: Wed, 16 Oct 2024 15:24:24 +0300
-Message-ID: <20241016122424.1655560-9-rppt@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241016122424.1655560-1-rppt@kernel.org>
-References: <20241016122424.1655560-1-rppt@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XT9KG23Xjz2xQC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Oct 2024 23:30:09 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49GAK5wj022175;
+	Wed, 16 Oct 2024 12:30:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=aiUeGk
+	+hwdjG29xRD5MljY+A1mdGiwdWe9aACfJUrrA=; b=iVoLq4tZHwI4vrCekeJIzb
+	D734bvlWs8bMyXNyJ/Qfps+sbYnwiHrI5GH205zsT4hRyaML/B4rVEML7eOlsQIy
+	oFNazcsv4yD4nR8f7VmcXBoz8LzPYkd/BHryC1OC+uwMQLn/QfdckLyUuC9vshIT
+	V1anHb0iY5zhc6M+NAgyYP07sXZPRfbdVgsU7syAB/KDJR6NKp0bTtz6eu7+Hh8I
+	FVLWt2wyJNu0QImJquKvKsZlPDyHwIVESBB662OczkjbKWM/4zasakBHjrwMOSVj
+	ofNj8oZ20UzDAwEtE2zjMKR39XyYNwXYAj2kpS7H3ZSvwvduwrM5koO24dyE3cqg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42abn0gksu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Oct 2024 12:30:02 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49GCU2nS021931;
+	Wed, 16 Oct 2024 12:30:02 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42abn0gksh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Oct 2024 12:30:02 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49G9WV2B006663;
+	Wed, 16 Oct 2024 12:30:01 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4283es1hhy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Oct 2024 12:30:01 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49GCTv7A56885682
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Oct 2024 12:29:57 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B3F612004B;
+	Wed, 16 Oct 2024 12:29:57 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AB7F820043;
+	Wed, 16 Oct 2024 12:29:52 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.244.19])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 16 Oct 2024 12:29:52 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -123,96 +81,113 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH] tools/perf/tests: Fix compilation error with strncpy in
+ tests/tool_pmu
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <Zw1UXbWTS9Gk3lmw@google.com>
+Date: Wed, 16 Oct 2024 17:59:38 +0530
+Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        irogers@google.com, linux-perf-users@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com,
+        maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com,
+        hbathini@linux.ibm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8B5B2251-E41E-4584-881E-61A468AFB222@linux.vnet.ibm.com>
+References: <20241013173742.71882-1-atrajeev@linux.vnet.ibm.com>
+ <Zw1UXbWTS9Gk3lmw@google.com>
+To: Namhyung Kim <namhyung@kernel.org>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AeZNnQnQtUJIn2eVam4w1166aIGkbFDd
+X-Proofpoint-ORIG-GUID: oo4sG4uSbvgG9k-VfJ-VJJmHLsoBQc2r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
+ mlxscore=0 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 malwarescore=0 spamscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410160077
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_NONE autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Enable execmem's cache of PMD_SIZE'ed pages mapped as ROX for module
-text allocations on 64 bit.
 
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- arch/x86/Kconfig   |  1 +
- arch/x86/mm/init.c | 37 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 37 insertions(+), 1 deletion(-)
+> On 14 Oct 2024, at 10:56=E2=80=AFPM, Namhyung Kim =
+<namhyung@kernel.org> wrote:
+>=20
+> Hello Athira,
+>=20
+> On Sun, Oct 13, 2024 at 11:07:42PM +0530, Athira Rajeev wrote:
+>> perf fails to compile on systems with GCC version11
+>> as below:
+>>=20
+>> In file included from /usr/include/string.h:519,
+>>                 from =
+/home/athir/perf-tools-next/tools/include/linux/bitmap.h:5,
+>>                 from =
+/home/athir/perf-tools-next/tools/perf/util/pmu.h:5,
+>>                 from =
+/home/athir/perf-tools-next/tools/perf/util/evsel.h:14,
+>>                 from =
+/home/athir/perf-tools-next/tools/perf/util/evlist.h:14,
+>>                 from tests/tool_pmu.c:3:
+>> In function =E2=80=98strncpy=E2=80=99,
+>>    inlined from =E2=80=98do_test=E2=80=99 at tests/tool_pmu.c:25:3:
+>> /usr/include/bits/string_fortified.h:95:10: error: =
+=E2=80=98__builtin_strncpy=E2=80=99 specified bound 128 equals =
+destination size [-Werror=3Dstringop-truncation]
+>>   95 |   return __builtin___strncpy_chk (__dest, __src, __len,
+>>      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>   96 |                                   __glibc_objsize (__dest));
+>>      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~
+>>=20
+>> The compile error is from strncpy refernce in do_test:
+>> strncpy(str, tool_pmu__event_to_str(ev), sizeof(str));
+>>=20
+>> This behaviour is not observed with GCC version 8, but observed
+>> with GCC version 11 . This is message from gcc for detecting
+>> truncation while using strncpu. Use snprintf instead of strncpy
+>> here to be safe.
+>>=20
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>=20
+> I found this issue now and thanks for the quick fix.  I will push to
+> perf-tools-next soon.
+>=20
+> Thanks,
+> Namhyung
+>=20
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2852fcd82cbd..ff71d18253ba 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -83,6 +83,7 @@ config X86
- 	select ARCH_HAS_DMA_OPS			if GART_IOMMU || XEN
- 	select ARCH_HAS_EARLY_DEBUG		if KGDB
- 	select ARCH_HAS_ELF_RANDOMIZE
-+	select ARCH_HAS_EXECMEM_ROX		if X86_64
- 	select ARCH_HAS_FAST_MULTIPLIER
- 	select ARCH_HAS_FORTIFY_SOURCE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index eb503f53c319..c2e4f389f47f 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -1053,18 +1053,53 @@ unsigned long arch_max_swapfile_size(void)
- #ifdef CONFIG_EXECMEM
- static struct execmem_info execmem_info __ro_after_init;
- 
-+#ifdef CONFIG_ARCH_HAS_EXECMEM_ROX
-+void execmem_fill_trapping_insns(void *ptr, size_t size, bool writeable)
-+{
-+	/* fill memory with INT3 instructions */
-+	if (writeable)
-+		memset(ptr, INT3_INSN_OPCODE, size);
-+	else
-+		text_poke_set(ptr, INT3_INSN_OPCODE, size);
-+}
-+#endif
-+
- struct execmem_info __init *execmem_arch_setup(void)
- {
- 	unsigned long start, offset = 0;
-+	enum execmem_range_flags flags;
-+	pgprot_t pgprot;
- 
- 	if (kaslr_enabled())
- 		offset = get_random_u32_inclusive(1, 1024) * PAGE_SIZE;
- 
- 	start = MODULES_VADDR + offset;
- 
-+	if (IS_ENABLED(CONFIG_ARCH_HAS_EXECMEM_ROX)) {
-+		pgprot = PAGE_KERNEL_ROX;
-+		flags = EXECMEM_KASAN_SHADOW | EXECMEM_ROX_CACHE;
-+	} else {
-+		pgprot = PAGE_KERNEL;
-+		flags = EXECMEM_KASAN_SHADOW;
-+	}
-+
- 	execmem_info = (struct execmem_info){
- 		.ranges = {
--			[EXECMEM_DEFAULT] = {
-+			[EXECMEM_MODULE_TEXT] = {
-+				.flags	= flags,
-+				.start	= start,
-+				.end	= MODULES_END,
-+				.pgprot	= pgprot,
-+				.alignment = MODULE_ALIGN,
-+			},
-+			[EXECMEM_KPROBES ... EXECMEM_BPF] = {
-+				.flags	= EXECMEM_KASAN_SHADOW,
-+				.start	= start,
-+				.end	= MODULES_END,
-+				.pgprot	= PAGE_KERNEL,
-+				.alignment = MODULE_ALIGN,
-+			},
-+			[EXECMEM_MODULE_DATA] = {
- 				.flags	= EXECMEM_KASAN_SHADOW,
- 				.start	= start,
- 				.end	= MODULES_END,
--- 
-2.43.0
+Sure
+
+Thanks Namhyung for pulling in the change
+
+Athira
+>> ---
+>> tools/perf/tests/tool_pmu.c | 2 +-
+>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>=20
+>> diff --git a/tools/perf/tests/tool_pmu.c =
+b/tools/perf/tests/tool_pmu.c
+>> index 94d0dd8fd3cb..297cc8c55579 100644
+>> --- a/tools/perf/tests/tool_pmu.c
+>> +++ b/tools/perf/tests/tool_pmu.c
+>> @@ -22,7 +22,7 @@ static int do_test(enum tool_pmu_event ev, bool =
+with_pmu)
+>> if (with_pmu)
+>> snprintf(str, sizeof(str), "tool/%s/", tool_pmu__event_to_str(ev));
+>> else
+>> - strncpy(str, tool_pmu__event_to_str(ev), sizeof(str));
+>> + snprintf(str, sizeof(str), "%s", tool_pmu__event_to_str(ev));
+>>=20
+>> parse_events_error__init(&err);
+>> ret =3D parse_events(evlist, str, &err);
+>> --=20
+>> 2.43.5
+
 
 
