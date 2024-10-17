@@ -1,79 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-2344-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2342-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99FE9A2088
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 13:04:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5519A206C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 13:01:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XTlNB5jQPz3bgV;
-	Thu, 17 Oct 2024 22:04:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XTlJc4DZkz3bcJ;
+	Thu, 17 Oct 2024 22:01:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729160560;
-	cv=none; b=LvjgK6hAvGvF+IGpUSaqGTp1YlMojg12YP6dr2uTAmtxPzIM3bDmgyoOjWHJmwC79mwJFJ+ZUiqwzfwKlbY2R76m7yLDoZzuTJMaEcdgBF1Vhy94ZpoRQ2rLo6msvM07w2dL/gaOTcZOhnynrK7oEaVAzQ3+43ZES5QmHBLTrfi/Q4RGt4I/cCyRNDalWJusf241TFhAoJIJiYFLC6Or2xS82nBVWJWSunvIv14688e5G6JAovffP2NH917FR0kbFDR4rO0ut26GGMnDhWREBs6C2Fq4OT4yOTwaWgGFr0bYsbomXzIwGpdj2OpeC8se768xoLoxZgz971mIkgWMRA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=65.109.113.108
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729162896;
+	cv=none; b=WSWno0IxCxgZ4nGBxcMum/pt+GFX1va/L4Gqy0eEZKjIC42GaeEpNVfZkgQ9nh1f55sItT6ovXJDHmmnadc+1o3hlF87ctSzxoL3Xw771Or4U9p1d8wo7AxoBNtyy5bf/0SlDHkeKJBP8bxSKc3QdAN0CwZjEMpXBaPh9wSb6EJP3AenTs/bImiCLsjFDodsJZTjSZsbCsnZaLUmStGNKINB0JpssGaLnu1f9x2Okj2lKdXxBGKuqmnavfDcwt1xd7ArYe5HJZNHe3i6KjvTdX47Y/VE7yUoar9Wu2hoIqswg/TVhvvH2WQXi0z8XAq9LQP4iElbfyXgO2cxmS+SQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729160560; c=relaxed/relaxed;
-	bh=jeCnWl19vc+4E0BG770O0FIIXbyDF4QWNdeyt9jEPmQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=My8GPJ2Aou82z56ygzSeyEByhrwP4ZlYThEhdBhs2JksFRJ3cwr0FlvU86jnzNhQSX9J0vFPHFfL2tcLgs2dNKgGQutV+Uv3uoou3jn3ANeJ66MNVreCke5rrPYXy4E9DkeC2lQHI38vBz+G5AweDKUknz4Hy7Me/pt6iGGv9+Rk9f5bmVtEQPoKSSfYG7DqKYW63KUMAvBolrtoq3uSMEiFbihGTUIh/NlQ/7CMJ3joyxiyzo/+R2hAdZyiJTlGYCROojQo3Xcr9gzgdHdXQGySHf6lJqwrxk+QKBG72gK5WzLlvvLMDW+GI3Yw5hyosMOAEuCO0//XUQiyh/P41g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BoCcaf0y; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BoCcaf0y; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpetlan@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1729162896; c=relaxed/relaxed;
+	bh=Pd/nzyF9akbpng6TPqzu39jms953P8St88qWyc0EyJQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HLnVWY6n2dU2/SMMV61dw8tHvzXk5svJGQUKCgQbJ5SUdsKRmlOWt0zvKSLfUDJtN2Xaiwgp+LxoCa5y8LVdxtxeo0HDk+5uXQeTXH5iel21aKULJS8B3DsPpqwQnJjPl9J/0gOSS0p/Qw4l3T3xdx2+szbf19rScCrIsmwmkRWXqrlvHGhHCdfxx7Y259+ksJNHvi6zG1HiDBooB+NYCHSF4+SEw+b1wZ1cd+dgTpPbVg64v4VEsGMeAginvFpzuYZe4M+LancRVsAhAZEP+AvZUq58WP3LX0xPtznPrHxZMqusU+u3+6mOJBUkUHkmp0FHSt38/ylqAxe1nV1atw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=kDOPqLQw; dkim-atps=neutral; spf=pass (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BoCcaf0y;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BoCcaf0y;
+	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=kDOPqLQw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpetlan@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTkRg1XbLz2xfq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 21:22:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729160554;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jeCnWl19vc+4E0BG770O0FIIXbyDF4QWNdeyt9jEPmQ=;
-	b=BoCcaf0yFcHILOGKOqJPon4BpBnrvpni0n2racl3V+UGYtzdkv1cTLstopUj1vlUYR3kD9
-	HGaXKuP29KgFRscADTFBCa3O1Z8zzKAk5tNtNY5hnGG0EA3Oegra/ca3dorRjf9UwoWQEG
-	fqx6r2gZXpp5UU6hnLjy75nw6+AW93s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729160554;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jeCnWl19vc+4E0BG770O0FIIXbyDF4QWNdeyt9jEPmQ=;
-	b=BoCcaf0yFcHILOGKOqJPon4BpBnrvpni0n2racl3V+UGYtzdkv1cTLstopUj1vlUYR3kD9
-	HGaXKuP29KgFRscADTFBCa3O1Z8zzKAk5tNtNY5hnGG0EA3Oegra/ca3dorRjf9UwoWQEG
-	fqx6r2gZXpp5UU6hnLjy75nw6+AW93s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-tUDJYfdmNweuPub9n2KkFw-1; Thu,
- 17 Oct 2024 06:22:29 -0400
-X-MC-Unique: tUDJYfdmNweuPub9n2KkFw-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTlJY0cVSz3bbn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 22:01:29 +1100 (AEDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A7EE140E015F;
+	Thu, 17 Oct 2024 11:01:23 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id sdVDBS_ar7nX; Thu, 17 Oct 2024 11:01:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1729162873; bh=Pd/nzyF9akbpng6TPqzu39jms953P8St88qWyc0EyJQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kDOPqLQwfd01tdUo+Hf4OVXgxuo46pJKP7oORLtdbIraDydDe/prjCeMrxH4Y1uan
+	 9CjAXq+yELAxpK/SurLmBrpAg4pLnNKZTzIgLwbZZuXm7s6qvwX6c94cG41we8npV3
+	 Z8lGeIbQw0mXOIZCY2DenKvQRnRCfOir/KixRDc3OPLcUmnNImv4aiokylotFqc0eA
+	 W5HXEEi8Db40pDY7CPNQzxe8BV1pGawBzf9Nd2Q93GL0k5h+gCMWYo1DJguYOdoNtW
+	 YX4TFhJAB6V78QiSMKJjIM0m2P/rKL4O7Zy5bX/hmjUv6u7qUIBpdMNIGAL4y8wTm8
+	 jESmim6rKOLDOsMvESyc+Q7Bp5CXohehMONdJ5gwHWoaJ5rhtPWr/94SlmYbTimo2j
+	 5DPq+0xR2UhTqYvs7o1t0y4V2SHtWARoB7OoIPY0FtZ78ptz4PHoy51S8mjVEJOfsl
+	 8npF9DnqQuhw0+m6OoUbOLhktQneHmtxSNUqDlO33+Dby1VDl0102c7c3acCmw+Fv6
+	 wiV71l+9Ka2wcoGSrIp3uouR8yXOpKRO9qgrid3iIgJy+olMK29uPm6SEYbgoHkPrt
+	 15ir/S7Z4YlTO2stpWTN1tRehceefiVeJ08wAkG22D1N7e0J5hpHlYlCkf5TTMiei+
+	 Zs5n26rDVNed+b8j6OLO22fg=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0D5421955F07;
-	Thu, 17 Oct 2024 10:22:27 +0000 (UTC)
-Received: from Carbon (unknown [10.60.6.32])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3CAC219560A3;
-	Thu, 17 Oct 2024 10:22:22 +0000 (UTC)
-Date: Thu, 17 Oct 2024 12:22:19 +0200 (CEST)
-From: Michael Petlan <mpetlan@redhat.com>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com, 
-    irogers@google.com, namhyung@kernel.org, linux-perf-users@vger.kernel.org, 
-    linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com, maddy@linux.ibm.com, 
-    kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Subject: Re: [PATCH] tools/perf/tests/shell/base_probe: Enhance print_overall_results
- to print summary information
-In-Reply-To: <20241014154025.85564-1-atrajeev@linux.vnet.ibm.com>
-Message-ID: <d7c34f4f-692e-4c1b-c268-582c645a6c33@redhat.com>
-References: <20241014154025.85564-1-atrajeev@linux.vnet.ibm.com>
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 566A840E0219;
+	Thu, 17 Oct 2024 11:00:59 +0000 (UTC)
+Date: Thu, 17 Oct 2024 13:00:53 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Kirill A. Shutemov" <kirill@shutemov.name>,
+	Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Waiman Long <longman@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org, Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
+Message-ID: <20241017110053.GBZxDuZakoxqvvITC8@fat_crate.local>
+References: <CAHk-=wg341Na_hXFFkc582beXJNi+_tcDu=oMxVPTks-JoQXkQ@mail.gmail.com>
+ <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
+ <CAHk-=wgDrG-aKVGrd-9gQsC0pMs936oo8XEFmEn6ciaT9=nfDg@mail.gmail.com>
+ <20241014035436.nsleqolyj3xxysrr@treble>
+ <CAHk-=widMFN2wDeS2K65f8FnW8L6gPZa6CNO4OWkv--0G2LXhw@mail.gmail.com>
+ <r5ruxmop7vewd7aq6gu2zve4hfmcu4byhlebygswbqkgz43qfq@rsajyfiypcsd>
+ <CAHk-=wj8v4BcD7f3pObq1wav_mJO_naisYGg6HQUcphSc-U0zA@mail.gmail.com>
+ <CAHk-=wiVE1QCwnP98Hw0GfjrEKiZsvsaqgzC02zJj-BYp4-khg@mail.gmail.com>
+ <81444391-9e59-4744-bbf0-2220a3042da6@citrix.com>
+ <CAHk-=wgqfdRHEOdS5getruouT7N_ZT4i4gHMcwJYzcKw-s_cFA@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,116 +92,25 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Spam-Status: No, score=3.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Level: ***
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wgqfdRHEOdS5getruouT7N_ZT4i4gHMcwJYzcKw-s_cFA@mail.gmail.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 14 Oct 2024, Athira Rajeev wrote:
-> Currently print_overall_results prints the number of
-> fails in the summary, example from base_probe tests in
-> testsuite_probe:
-> 
->  ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
-> 	11 failures found
-> 
-> test_invalid_options contains multiple tests and out
-> of that 11 failed. Sometimes it could happen that it
-> is due to missing dependency in the build or environment
-> dependency.
-> 
-> Example, perf probe -L requires DWARF enabled. otherwise
-> it fails as below:
->  ./perf probe -L
->   Error: switch `L' is not available because NO_DWARF=1
-> 
-> "-L" is tested as one of the option in :
->    for opt in '-a' '-d' '-L' '-V'; do
->    <<perf probe test>>
->    print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "missing argument
-> 	for $opt"
-> 
-> Here -a and -d doesn't require DWARF. Similarly there
-> are few other tests requiring DWARF. To hint the user that
-> missing dwarf could be one issue, update print_overall_results
-> to print a comment string along with summary hinting the possible
-> cause. Update test_invalid_options.sh and test_line_semantics.sh
-> to pass the info about dwarf requirement since these tests
-> failed when perf is built without DWARF.
-> 
-> With the change:
->  ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
->  11 failures found :: Some of the tests need DWARF to run
+On Wed, Oct 16, 2024 at 03:32:32PM -0700, Linus Torvalds wrote:
+> My preference would actually be to do nothing, on the assumption that
+> the AMD issue is actually impossible to trigger (due to CLAC/STAC
+> serializing memory address checks - which the timings certainly imply
+> they do).
 
-Hello Athira,
+I'm verifying that assumption...
 
-I admit that the idea of some hint why the test failed
-might be useful, however a static hint that might or
-might not be related to the particular failure seems to
-be rather misleading to me. If the test fails for any
-other reason, the user is still told about DWARF which
-might not be true.
+-- 
+Regards/Gruss,
+    Boris.
 
-I think that such hints would need some test result post-
-processing to determine the actual reason.
-
-Michael
-
-> 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->  tools/perf/tests/shell/base_probe/test_invalid_options.sh | 2 +-
->  tools/perf/tests/shell/base_probe/test_line_semantics.sh  | 2 +-
->  tools/perf/tests/shell/common/init.sh                     | 3 ++-
->  3 files changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tools/perf/tests/shell/base_probe/test_invalid_options.sh b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
-> index 1fedfd8b0d0d..e133bb0aa949 100755
-> --- a/tools/perf/tests/shell/base_probe/test_invalid_options.sh
-> +++ b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
-> @@ -75,5 +75,5 @@ done
->  
->  
->  # print overall results
-> -print_overall_results "$TEST_RESULT"
-> +print_overall_results "$TEST_RESULT" "Some of the tests need DWARF to run"
->  exit $?
-> diff --git a/tools/perf/tests/shell/base_probe/test_line_semantics.sh b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
-> index d8f4bde0f585..99f4f56a3292 100755
-> --- a/tools/perf/tests/shell/base_probe/test_line_semantics.sh
-> +++ b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
-> @@ -51,5 +51,5 @@ done
->  
->  
->  # print overall results
-> -print_overall_results "$TEST_RESULT"
-> +print_overall_results "$TEST_RESULT" "Some of the tests need DWARF to run"
->  exit $?
-> diff --git a/tools/perf/tests/shell/common/init.sh b/tools/perf/tests/shell/common/init.sh
-> index 075f17623c8e..0862cbc1c6f7 100644
-> --- a/tools/perf/tests/shell/common/init.sh
-> +++ b/tools/perf/tests/shell/common/init.sh
-> @@ -46,10 +46,11 @@ print_results()
->  print_overall_results()
->  {
->  	RETVAL="$1"; shift
-> +	TASK_COMMENT="$*"
->  	if [ $RETVAL -eq 0 ]; then
->  		_echo "$MALLPASS## [ PASS ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY"
->  	else
-> -		_echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY :: $RETVAL failures found"
-> +		_echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY :: $RETVAL failures found :: $TASK_COMMENT"
->  	fi
->  	return $RETVAL
->  }
-> -- 
-> 2.43.5
-> 
-> 
-> 
-
+https://people.kernel.org/tglx/notes-about-netiquette
 
