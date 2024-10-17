@@ -1,84 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-2352-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2353-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0EE29A2B27
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 19:40:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CE99A2F1D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 23:01:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XTw8t6Gmsz3bdV;
-	Fri, 18 Oct 2024 04:40:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XV0cd4LhBz2xjv;
+	Fri, 18 Oct 2024 08:01:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729186830;
-	cv=none; b=WvLxab/wmULIsCwv2N1l/fnhhCRIpJokB8AiPEqK8akvn2MhFyH4hOhX+3oW7uxVqYiUDTz1hE6767F89nMgXg2XdB2tppbrc7ZJlC5+QLxxbyRkp8D9w+pZnGI07PrksBJiUv4hQtyYVqGah2KXyBrOnotkC55Y86MGef15lK75u7DWI9Wpe7MYruWuIvx+Ra1wn+JXnRbkyRVqIr4g+wjjx/2c2EhRC2lrCTnk8pdQauRWOOG7Dful1TKW2ag5/V71rJm7zqiuzLpJjRGwNy0INzbZDV0vc/mvLmzhgGKYaDqm4pVCjEs0cxiSLO3R0Wt7Z7rXGN1Ua/Hkln9WKg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729174321;
+	cv=none; b=TZDjBIB703fNU3qqokXBXeC8B1oZ6hO3ejoj+jWI0pkiSe5bk+2K6XdzEH/qp57nVuyPcrs/gH3KlevqkEW22MbUv6SdHMRyMUGt6aNvbmvkowMNn8xbVN9gRqHaOX+ML7X4x4rlNK9W4az6gx0dSyHZNpzWAipT2RBPxj3k2zr4enNh7vEAGC9YT1WMaKaeX/73OASiBkl9Ik1LKDFiEoXj272JIwNPGlMJLZ8yrU40xbJADwyu5485c+pBNEChXLr8yck5BzjefJUT8tn5U3X0J5Nzsp8YpUW1f/zyYmwdgntJ/eiKNGCbVJGk3GgGG4/lFaI/j1VsCGiHcTqNoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729186830; c=relaxed/relaxed;
-	bh=Me+6kqYD5L+igZgkevVfUHfhQZBz6G5zZyQw2Dfa0gs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CNtspeA4pyiz7uFQF2FY1oFntKzeU4rfd7OJ0Q6lLrC2M2F61dASRx8SvwA58obZY70ThvTsUKGTtKmfvCVNjyoZXIJfxk2TR4hX3LRLczxkHKfcSxX+FxYm3vOt4wZAv8tB4QCr4pYapwzJSxgRzdWWJtTqghNyBzBryXKVDNOv1oAGT36ZHeLGZO2zUgJsWjT+G9TFBe8e80OId2IU9qEXcJRJlsRgr4Os1nvSikiBsbiiMKC/TGrhLFK42TWhlpkMYevK8xTVvCvVQ/ZMFwEgmR5iuZQomBFBCjihl+kNrNqqFD3hVHtYHy+4TKr7Fytky3Rz7ijCdY3C5nnCkw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JfDKBTN7; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JfDKBTN7; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1729174321; c=relaxed/relaxed;
+	bh=T7H4u2aenkwuBgJYTWb5ohJ8FMfKVJpa3khkvy8w2yU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bEZAFz4nR0THygmWpueUWtfy8+yfl5zdrXD1UdbcaXluLyY6pbskE2Z/eAfZwevBhfnubcWXj4R2e6OB6GXIiAVWm0jSz1h+NagTrR2Fb72HeX/ilhZvv6mpOl/lEUyM5kQx+0RVLsagXW/sb++uPoKi4nApkha5r4R1iL5e4Tw0PU8vlDpJClXvll2MvnkrAYuGXIz4ajXOKSu+vHXbdXDQXJIcq/DcaipumBEMshsSUNDbOKR4W1TcpZJNSc+YXBYdZnaLSnWFUhxGgmkJhjaXYXyCzPQ9cIGUuSYEyB/vdsAr5JdZ5oqH5Yc+yK6OQQM91QEhSMvwX3qEOw7jpA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YTsIBuoU; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=disgoel@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JfDKBTN7;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JfDKBTN7;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YTsIBuoU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=disgoel@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTw8p3N4pz2yZZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 04:40:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729186820;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Me+6kqYD5L+igZgkevVfUHfhQZBz6G5zZyQw2Dfa0gs=;
-	b=JfDKBTN7EKK/7g00ZbFVAOFGAj+sX09EJtPKbT1THPVZu04ZswRCfPXhcSzgAHfWsJdEmo
-	+7We6LKORBxOOwyFJOnzKJqG4ivYQ08lR1n3IEFl+JuOni0sHCZqcDyWTjNRj2eVqB6vOa
-	xwMQ/v1Rer+86A6jIrUtOByGNFJNPmQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729186820;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Me+6kqYD5L+igZgkevVfUHfhQZBz6G5zZyQw2Dfa0gs=;
-	b=JfDKBTN7EKK/7g00ZbFVAOFGAj+sX09EJtPKbT1THPVZu04ZswRCfPXhcSzgAHfWsJdEmo
-	+7We6LKORBxOOwyFJOnzKJqG4ivYQ08lR1n3IEFl+JuOni0sHCZqcDyWTjNRj2eVqB6vOa
-	xwMQ/v1Rer+86A6jIrUtOByGNFJNPmQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-FKqTcMnzNTyjU3Lb9bRdNg-1; Thu, 17 Oct 2024 13:40:18 -0400
-X-MC-Unique: FKqTcMnzNTyjU3Lb9bRdNg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4314a22ed8bso8402175e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 10:40:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729186817; x=1729791617;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Me+6kqYD5L+igZgkevVfUHfhQZBz6G5zZyQw2Dfa0gs=;
-        b=CpoW1ULfaL0qid2xhkPBfb5Ug/uDeZX9BwN9MpUZNDh1mj4h4oTKEPwQOI/51AMOku
-         ow/jfeom2wdCNVX2xStmelZQeC6CCTD0OKpXxja5sFTa+J1hzVBkARaPAcHvGy9+NK2f
-         kMHJ6TRVihKVVkDsFOHK+c3UWI+sfAjzRTZOD6qyIJJ00OxXOjy3iv4Q2sk+C28sdB7G
-         3atm3767txpnzbArUeWTyLJel3W7ybIpxD9k/c1ttqvnAzwykrFZp9JqyDnaDhXePlcr
-         Y2MkS47l0loRjWixZ/QeyLbwzSIBeIKiFvQKr3RapH0DfgxPXv9Kb+j6quKH6U3GFSHN
-         LrDA==
-X-Forwarded-Encrypted: i=1; AJvYcCVU0QZQPadPZINnAIp9DTFINNuP+uAnTkf+DNO2dlwone0282SOVrAQQXpSFXxIgP2fHchc+79jw8YmVwQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx1Ux5wyoXN04kETvO/vaTSFGrGCIhj/uEziLSJ2MY8L6URMFwA
-	WdZb36Fan04jo/yzTKNiHuNYH6XDPfLAWsmjy84GwZKZbnQ3uRDi0G+n0olSsQJAfmZK4Xtx/dh
-	jxejYEEx9rQ+L4mPYs+lw1oa3cjAPcd3goDOMBsy1OysgReQobfrcIbX3Un4DMH+FVexMXVBbKa
-	eJs+kdF5gF0Rg+3ozUU+3n3ZkwGHATmR0M7OXAeQ==
-X-Received: by 2002:a05:600c:1d8e:b0:431:57d2:d7b4 with SMTP id 5b1f17b1804b1-43157d2d7b9mr36507075e9.26.1729186817335;
-        Thu, 17 Oct 2024 10:40:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGJXjIUBFBzWhc81QoCH/SVoEivw8XmjKVFXrcy86zA+s4Bvx/9zH7hnQ9Z4/zbRof1LT4xgUF82luj5UeBHDI=
-X-Received: by 2002:a05:600c:1d8e:b0:431:57d2:d7b4 with SMTP id
- 5b1f17b1804b1-43157d2d7b9mr36506735e9.26.1729186816975; Thu, 17 Oct 2024
- 10:40:16 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTqXH5zHfz2xfR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 01:11:58 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HBnqMc002639;
+	Thu, 17 Oct 2024 14:11:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=T7H4u2
+	aenkwuBgJYTWb5ohJ8FMfKVJpa3khkvy8w2yU=; b=YTsIBuoU7RjVZDFADOc4Um
+	4TGLGjlzvISwQ/bjSI/anbUFtj4jETSAIBxkaM3P/lpFbvUnXvvBt6x8OY/hBLsG
+	KrMRCrmYxlnClQSCoSP0ISVRdEhp26rc7MZcKbuv8dGxyqX7TDmFVkKLnD2Qmsm+
+	DUgZ/Ppp1eH3lZUyqDTT/d47AroELm3n9ah0SWe7vpQ6Y5SHRDaUkjDazgy6IZJg
+	cp7VbOcdtsHWVOYb3MxV5J7+6k5H+sq9qwXeUn3LJLT6vMxpoXVroQNVGV0sQfZa
+	aK0zbHLMrssH5VYKuGW3cWf/gUnevhBt52cFq8rrqPHDFpZRqjrhUSzo8VbNJHzg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42ar0u3bxt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Oct 2024 14:11:45 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49HE8oSV018126;
+	Thu, 17 Oct 2024 14:11:45 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42ar0u3bxn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Oct 2024 14:11:45 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49HDae84005374;
+	Thu, 17 Oct 2024 14:11:44 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4285njf2ve-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Oct 2024 14:11:44 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49HEBeAF22807104
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Oct 2024 14:11:40 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 94E4F2004B;
+	Thu, 17 Oct 2024 14:11:40 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2ED5520043;
+	Thu, 17 Oct 2024 14:11:35 +0000 (GMT)
+Received: from [9.61.240.109] (unknown [9.61.240.109])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 17 Oct 2024 14:11:34 +0000 (GMT)
+Message-ID: <f9d3e1ce-9b43-4e12-8d0c-6e30a12174d8@linux.ibm.com>
+Date: Thu, 17 Oct 2024 19:41:33 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,77 +82,213 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241010182427.1434605-1-seanjc@google.com>
-In-Reply-To: <20241010182427.1434605-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 17 Oct 2024 19:40:04 +0200
-Message-ID: <CABgObfbQW-3vp=mNcR4giUGZ_gxhuRykvKj8gzBDY7pOg6xdBQ@mail.gmail.com>
-Subject: Re: [PATCH v13 00/85] KVM: Stop grabbing references to PFNMAP'd pages
-To: Sean Christopherson <seanjc@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
-	Yan Zhao <yan.y.zhao@intel.com>, David Matlack <dmatlack@google.com>, 
-	David Stevens <stevensd@chromium.org>, Andrew Jones <ajones@ventanamicro.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 1/2] tools/perf/pmu-events/powerpc: Add support for
+ compat events in json
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+        jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
+        namhyung@kernel.org, hbathini@linux.ibm.com
+Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com,
+        maddy@linux.ibm.com, kjain@linux.ibm.com
+References: <20241010145107.51211-1-atrajeev@linux.vnet.ibm.com>
+Content-Language: en-GB
+From: Disha Goel <disgoel@linux.ibm.com>
+In-Reply-To: <20241010145107.51211-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: BtHeLm8IZStEeRWZEcfiThbb-aaO-liC
+X-Proofpoint-ORIG-GUID: Q5jCgTE8keNmh0JEKGZWAZNTElHQWOGu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ spamscore=0 bulkscore=0 adultscore=0 mlxlogscore=999 phishscore=0
+ suspectscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410170096
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Oct 10, 2024 at 8:24=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
-> v13:
->  - Rebased onto v6.12-rc2
->  - Collect reviews. [Alex and others]
->  - Fix a transient bug in arm64 and RISC-V where KVM would leak a page
->    refcount. [Oliver]
->  - Fix a dangling comment. [Alex]
->  - Drop kvm_lookup_pfn(), as the x86 that "needed" it was stupid and is (=
-was?)
->    eliminated in v6.12.
->  - Drop check_user_page_hwpoison(). [Paolo]
->  - Drop the arm64 MTE fixes that went into 6.12.
->  - Slightly redo the guest_memfd interaction to account for 6.12 changes.
+On 10/10/24 8:21 pm, Athira Rajeev wrote:
 
-Here is my own summary of the changes:
+> perf list picks the events supported for specific platform
+> from pmu-events/arch/powerpc/<platform>. Example power10 events
+> are in pmu-events/arch/powerpc/power10, power9 events are part
+> of pmu-events/arch/powerpc/power9. The decision of which
+> platform to pick is determined based on PVR value in powerpc.
+> The PVR value is matched from pmu-events/arch/powerpc/mapfile.csv
+>
+> Example:
+>
+> Format:
+>          PVR,Version,JSON/file/pathname,Type
+>
+> 0x004[bcd][[:xdigit:]]{4},1,power8,core
+> 0x0066[[:xdigit:]]{4},1,power8,core
+> 0x004e[[:xdigit:]]{4},1,power9,core
+> 0x0080[[:xdigit:]]{4},1,power10,core
+> 0x0082[[:xdigit:]]{4},1,power10,core
+>
+> The code gets the PVR from system using get_cpuid_str function
+> in arch/powerpc/util/headers.c ( from SPRN_PVR ) and compares
+> with value from mapfile.csv
+>
+> In case of compat mode, say when partition is booted in a power9
+> mode when the system is a power10, add an entry to pick the
+> ISA architected events from "pmu-events/arch/powerpc/compat".
+> Add json file generic-events.json which will contain these
+> events which is supported in compat mode.
+>
+> Suggested-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-patches removed from v12:
-01/02 - already upstream
-09 - moved to separate A/D series [1]
-34 - not needed due to new patch 36
-35 - gone after 620525739521376a65a690df899e1596d56791f8
+I have tested the patch on PowerPC by booting in different compat modes and
+at base also, and it's working as expected.
 
-patches added or substantially changed in v13:
-05/06/07 - new, suggested by Yan Zhao
-08 - code was folded from mmu_spte_age into kvm_rmap_age_gfn_range
-14 - new, suggested by me in reply to 84/84 (yuck)
-15 - new, suggested by me in reply to 84/84
-19 - somewhat rewritten for new follow_pfnmap API
-27 - smaller changes due to new follow_pfnmap API
-36 - rewritten, suggested by me
-45 - new, cleanup
-46 - much simplified due to new patch 45
+For the series:
+Tested-by: Disha Goel<disgoel@linux.ibm.com>
 
-Looks good to me, thanks and congratulations!! Should we merge it in
-kvm/next asap?
-
-Paolo
-
-[1] https://patchew.org/linux/20241011021051.1557902-1-seanjc@google.com/20=
-241011021051.1557902-5-seanjc@google.com/
-
+> ---
+>
+>   .../arch/powerpc/compat/generic-events.json   | 117 ++++++++++++++++++
+>   .../perf/pmu-events/arch/powerpc/mapfile.csv  |   1 +
+>   2 files changed, 118 insertions(+)
+>   create mode 100644 tools/perf/pmu-events/arch/powerpc/compat/generic-events.json
+>
+> diff --git a/tools/perf/pmu-events/arch/powerpc/compat/generic-events.json b/tools/perf/pmu-events/arch/powerpc/compat/generic-events.json
+> new file mode 100644
+> index 000000000000..6f5e8efcb098
+> --- /dev/null
+> +++ b/tools/perf/pmu-events/arch/powerpc/compat/generic-events.json
+> @@ -0,0 +1,117 @@
+> +[
+> +  {
+> +    "EventCode": "0x600F4",
+> +    "EventName": "PM_CYC",
+> +    "BriefDescription": "Processor cycles."
+> +  },
+> +  {
+> +    "EventCode": "0x100F2",
+> +    "EventName": "PM_CYC_INST_CMPL",
+> +    "BriefDescription": "1 or more ppc insts finished"
+> +  },
+> +  {
+> +    "EventCode": "0x100f4",
+> +    "EventName": "PM_FLOP_CMPL",
+> +    "BriefDescription": "Floating Point Operations Finished."
+> +  },
+> +  {
+> +    "EventCode": "0x100F6",
+> +    "EventName": "PM_L1_ITLB_MISS",
+> +    "BriefDescription": "Number of I-ERAT reloads."
+> +  },
+> +  {
+> +    "EventCode": "0x100F8",
+> +    "EventName": "PM_NO_INST_AVAIL",
+> +    "BriefDescription": "Number of cycles the ICT has no itags assigned to this thread."
+> +  },
+> +  {
+> +    "EventCode": "0x100fc",
+> +    "EventName": "PM_LD_CMPL",
+> +    "BriefDescription": "Load instruction completed."
+> +  },
+> +  {
+> +    "EventCode": "0x200F0",
+> +    "EventName": "PM_ST_CMPL",
+> +    "BriefDescription": "Stores completed from S2Q (2nd-level store queue)."
+> +  },
+> +  {
+> +    "EventCode": "0x200F2",
+> +    "EventName": "PM_INST_DISP",
+> +    "BriefDescription": "PowerPC instruction dispatched."
+> +  },
+> +  {
+> +    "EventCode": "0x200F4",
+> +    "EventName": "PM_RUN_CYC",
+> +    "BriefDescription": "Processor cycles gated by the run latch."
+> +  },
+> +  {
+> +    "EventCode": "0x200F6",
+> +    "EventName": "PM_L1_DTLB_RELOAD",
+> +    "BriefDescription": "DERAT Reloaded due to a DERAT miss."
+> +  },
+> +  {
+> +    "EventCode": "0x200FA",
+> +    "EventName": "PM_BR_TAKEN_CMPL",
+> +    "BriefDescription": "Branch Taken instruction completed."
+> +  },
+> +  {
+> +    "EventCode": "0x200FC",
+> +    "EventName": "PM_L1_ICACHE_MISS",
+> +    "BriefDescription": "Demand instruction cache miss."
+> +  },
+> +  {
+> +    "EventCode": "0x200FE",
+> +    "EventName": "PM_L1_RELOAD_FROM_MEM",
+> +    "BriefDescription": "L1 Dcache reload from memory"
+> +  },
+> +  {
+> +    "EventCode": "0x300F0",
+> +    "EventName": "PM_ST_MISS_L1",
+> +    "BriefDescription": "Store Missed L1"
+> +  },
+> +  {
+> +    "EventCode": "0x300FC",
+> +    "EventName": "PM_DTLB_MISS",
+> +    "BriefDescription": "Data PTEG reload"
+> +  },
+> +  {
+> +    "EventCode": "0x300FE",
+> +    "EventName": "PM_DATA_FROM_L3MISS",
+> +    "BriefDescription": "Demand LD - L3 Miss (not L2 hit and not L3 hit)"
+> +  },
+> +  {
+> +    "EventCode": "0x400F0",
+> +    "EventName": "PM_LD_MISS_L1",
+> +    "BriefDescription": "L1 Dcache load miss"
+> +  },
+> +  {
+> +    "EventCode": "0x400F2",
+> +    "EventName": "PM_CYC_INST_DISP",
+> +    "BriefDescription": "Cycle when instruction(s) dispatched."
+> +  },
+> +  {
+> +    "EventCode": "0x400F6",
+> +    "EventName": "PM_BR_MPRED_CMPL",
+> +    "BriefDescription": "A mispredicted branch completed. Includes direction and target."
+> +  },
+> +  {
+> +    "EventCode": "0x400FA",
+> +    "EventName": "PM_RUN_INST_CMPL",
+> +    "BriefDescription": "PowerPC instruction completed while the run latch is set."
+> +  },
+> +  {
+> +    "EventCode": "0x400FC",
+> +    "EventName": "PM_ITLB_MISS",
+> +    "BriefDescription": "Instruction TLB reload (after a miss), all page sizes. Includes only demand misses."
+> +  },
+> +  {
+> +    "EventCode": "0x400fe",
+> +    "EventName": "PM_LD_NOT_CACHED",
+> +    "BriefDescription": "Load data not cached."
+> +  },
+> +  {
+> +    "EventCode": "0x500fa",
+> +    "EventName": "PM_INST_CMPL",
+> +    "BriefDescription": "Instructions."
+> +  }
+> +]
+> diff --git a/tools/perf/pmu-events/arch/powerpc/mapfile.csv b/tools/perf/pmu-events/arch/powerpc/mapfile.csv
+> index 4d5e9138d4cc..cbd3cb443784 100644
+> --- a/tools/perf/pmu-events/arch/powerpc/mapfile.csv
+> +++ b/tools/perf/pmu-events/arch/powerpc/mapfile.csv
+> @@ -16,3 +16,4 @@
+>   0x004e[[:xdigit:]]{4},1,power9,core
+>   0x0080[[:xdigit:]]{4},1,power10,core
+>   0x0082[[:xdigit:]]{4},1,power10,core
+> +0x00ffffff,1,compat,core
 
