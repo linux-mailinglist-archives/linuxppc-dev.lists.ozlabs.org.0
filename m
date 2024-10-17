@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-2343-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2344-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3400D9A207C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 13:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D99FE9A2088
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 13:04:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XTlMH12Rhz3bfS;
-	Thu, 17 Oct 2024 22:03:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XTlNB5jQPz3bgV;
+	Thu, 17 Oct 2024 22:04:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729160096;
-	cv=none; b=cmevefBMos9FV4hD23JQ2CE1qwhz9nTMXJeIDJ0qnYRlTygY5cjzi7z8MS7ErBFGGiAKCxVhZqcIlvOANkCH3vceZ4nz/Eqq8+2jdzXcRDg+p0plIexhgozcxVUNddTpB7vJubXGx454bgx5BNTcTuVe4xb84K435GmQAAya8b6z4vyf/BQSz9lbHYdQIiW1ZpSYp77gtpycYYQ2ozFZ/PCRhIZBbFLdYwba+geHjvyl5962ssfjsewFpmYnbu6h3pmFkdOtsOEtL3TAFfy7gIgAqdqCl95chByYy/nM8gyigBKUz4/eO7wDoSAhFuRiOqWaKd1HPLFUn6j5n6sdsA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729160560;
+	cv=none; b=LvjgK6hAvGvF+IGpUSaqGTp1YlMojg12YP6dr2uTAmtxPzIM3bDmgyoOjWHJmwC79mwJFJ+ZUiqwzfwKlbY2R76m7yLDoZzuTJMaEcdgBF1Vhy94ZpoRQ2rLo6msvM07w2dL/gaOTcZOhnynrK7oEaVAzQ3+43ZES5QmHBLTrfi/Q4RGt4I/cCyRNDalWJusf241TFhAoJIJiYFLC6Or2xS82nBVWJWSunvIv14688e5G6JAovffP2NH917FR0kbFDR4rO0ut26GGMnDhWREBs6C2Fq4OT4yOTwaWgGFr0bYsbomXzIwGpdj2OpeC8se768xoLoxZgz971mIkgWMRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729160096; c=relaxed/relaxed;
-	bh=I2BVGxp4811cavk/DhWjzQDx3j5CmnbN69dvL/+Ga1Q=;
+	t=1729160560; c=relaxed/relaxed;
+	bh=jeCnWl19vc+4E0BG770O0FIIXbyDF4QWNdeyt9jEPmQ=;
 	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Jixvl5+J+qDrgEBbpRqpyTv5+PBHuCy7+MMEk07H8upR0wsjpOCkGyqk+jOMMSJJ6mcarovOvyXvmdZTqOK/yyHyx5TCyzKxDZVyrxRln0UkxJxKBE9wyUF/lzKU1NTBpxb2CLiQ7pkoAWVPEC8hZQB97eE6WbZ0vB2PbUNA1X7xjzRMPAJnR4lEuXt4vJxDq44M0Q33NumdZrkh8SgfRSogRSRIRcK/IXTLARutX73PUF/Jh/xWBmXdHCa+17eEcgijwdtzvSsOLJe+KCnHA3hUQmYBmixtYzgd8iL5zYNaYNaKEUqKUlvZwG7Nqy6zEcnSv3XiT9snn34AuzwsjA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YCTD7fRx; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CcnDCdgx; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpetlan@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:Content-Type; b=My8GPJ2Aou82z56ygzSeyEByhrwP4ZlYThEhdBhs2JksFRJ3cwr0FlvU86jnzNhQSX9J0vFPHFfL2tcLgs2dNKgGQutV+Uv3uoou3jn3ANeJ66MNVreCke5rrPYXy4E9DkeC2lQHI38vBz+G5AweDKUknz4Hy7Me/pt6iGGv9+Rk9f5bmVtEQPoKSSfYG7DqKYW63KUMAvBolrtoq3uSMEiFbihGTUIh/NlQ/7CMJ3joyxiyzo/+R2hAdZyiJTlGYCROojQo3Xcr9gzgdHdXQGySHf6lJqwrxk+QKBG72gK5WzLlvvLMDW+GI3Yw5hyosMOAEuCO0//XUQiyh/P41g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BoCcaf0y; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BoCcaf0y; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpetlan@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YCTD7fRx;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CcnDCdgx;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BoCcaf0y;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BoCcaf0y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpetlan@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpetlan@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTkGl0hyfz2xfq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 21:14:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTkRg1XbLz2xfq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 21:22:38 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729160088;
+	s=mimecast20190719; t=1729160554;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I2BVGxp4811cavk/DhWjzQDx3j5CmnbN69dvL/+Ga1Q=;
-	b=YCTD7fRxL5H6TJN6PGROmi+9S8DnAVjbUfykiz2zr6GsSvxt3GKmvYyWndROL2cLvgwg3q
-	9h4Cxftn+zAbJ8/aozH/fYrx47FN8s0MH5tVpSNNJCMgUc+VizuHKFzRuOgx35fndqVdzw
-	3Xydw3WezDJsZZuPQTXQdysTjeUFRAI=
+	bh=jeCnWl19vc+4E0BG770O0FIIXbyDF4QWNdeyt9jEPmQ=;
+	b=BoCcaf0yFcHILOGKOqJPon4BpBnrvpni0n2racl3V+UGYtzdkv1cTLstopUj1vlUYR3kD9
+	HGaXKuP29KgFRscADTFBCa3O1Z8zzKAk5tNtNY5hnGG0EA3Oegra/ca3dorRjf9UwoWQEG
+	fqx6r2gZXpp5UU6hnLjy75nw6+AW93s=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729160089;
+	s=mimecast20190719; t=1729160554;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=I2BVGxp4811cavk/DhWjzQDx3j5CmnbN69dvL/+Ga1Q=;
-	b=CcnDCdgxybRA3Qy7udxmp1Cyz436tP63dcSSDTM7j0LNvHAWFHfnnm0YlvL2Me28xH8hU+
-	bZ9brl2mcFvuXsvWgsK/BdgS1EqlBtN33HOBTRjTwJ+KpLvwRnSrfCM2pO/4RjE4Qxfnuf
-	7QCcv1PU7NRVYDZsXNc3v9NLdZFNpHU=
+	bh=jeCnWl19vc+4E0BG770O0FIIXbyDF4QWNdeyt9jEPmQ=;
+	b=BoCcaf0yFcHILOGKOqJPon4BpBnrvpni0n2racl3V+UGYtzdkv1cTLstopUj1vlUYR3kD9
+	HGaXKuP29KgFRscADTFBCa3O1Z8zzKAk5tNtNY5hnGG0EA3Oegra/ca3dorRjf9UwoWQEG
+	fqx6r2gZXpp5UU6hnLjy75nw6+AW93s=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-ze9r9s_-MBCj1am54BUe-w-1; Thu,
- 17 Oct 2024 06:14:43 -0400
-X-MC-Unique: ze9r9s_-MBCj1am54BUe-w-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-tUDJYfdmNweuPub9n2KkFw-1; Thu,
+ 17 Oct 2024 06:22:29 -0400
+X-MC-Unique: tUDJYfdmNweuPub9n2KkFw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E8F1E1956088;
-	Thu, 17 Oct 2024 10:14:40 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0D5421955F07;
+	Thu, 17 Oct 2024 10:22:27 +0000 (UTC)
 Received: from Carbon (unknown [10.60.6.32])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 427C819560A3;
-	Thu, 17 Oct 2024 10:14:35 +0000 (UTC)
-Date: Thu, 17 Oct 2024 12:14:33 +0200 (CEST)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3CAC219560A3;
+	Thu, 17 Oct 2024 10:22:22 +0000 (UTC)
+Date: Thu, 17 Oct 2024 12:22:19 +0200 (CEST)
 From: Michael Petlan <mpetlan@redhat.com>
 To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com, 
     irogers@google.com, namhyung@kernel.org, linux-perf-users@vger.kernel.org, 
     linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com, maddy@linux.ibm.com, 
     kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Subject: Re: [PATCH] tools/perf/tests/base_probe: Fix check for the count of
- existing probes in test_adding_kernel
-In-Reply-To: <20241014153910.85536-1-atrajeev@linux.vnet.ibm.com>
-Message-ID: <941c3d6a-fc2-3fcf-5ab2-597dcf712c16@redhat.com>
-References: <20241014153910.85536-1-atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] tools/perf/tests/shell/base_probe: Enhance print_overall_results
+ to print summary information
+In-Reply-To: <20241014154025.85564-1-atrajeev@linux.vnet.ibm.com>
+Message-ID: <d7c34f4f-692e-4c1b-c268-582c645a6c33@redhat.com>
+References: <20241014154025.85564-1-atrajeev@linux.vnet.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,8 +83,8 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463776256-121464021-1729160080=:5192"
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Spam-Status: No, score=3.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
 	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
@@ -92,135 +92,107 @@ X-Spam-Status: No, score=3.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
----1463776256-121464021-1729160080=:5192
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-
 On Mon, 14 Oct 2024, Athira Rajeev wrote:
-> perftool-testsuite_probe fails in test_adding_kernel as below:
-> 	Regexp not found: "probe:inode_permission_11"
-> 	-- [ FAIL ] -- perf_probe :: test_adding_kernel :: force-adding probes ::
-> 	second probe adding (with force) (output regexp parsing)
-> 	event syntax error: 'probe:inode_permission_11'
-> 	  \___ unknown tracepoint
+> Currently print_overall_results prints the number of
+> fails in the summary, example from base_probe tests in
+> testsuite_probe:
 > 
-> 	Error:  File /sys/kernel/tracing//events/probe/inode_permission_11
-> 	not found.
-> 	Hint:   Perhaps this kernel misses some CONFIG_ setting to
-> 	enable this feature?.
+>  ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
+> 	11 failures found
 > 
-> The test does the following:
-> 1) Adds a probe point first using :
->     $CMD_PERF probe --add $TEST_PROBE
-> 2) Then tries to add same probe again without —force
-> and expects it to fail. Next tries to add same probe again
-> with —force. In this case, perf probe succeeds and adds
-> the probe with a suffix number. Example:
+> test_invalid_options contains multiple tests and out
+> of that 11 failed. Sometimes it could happen that it
+> is due to missing dependency in the build or environment
+> dependency.
 > 
->  ./perf probe --add inode_permission
->  Added new event:
->   probe:inode_permission (on inode_permission)
+> Example, perf probe -L requires DWARF enabled. otherwise
+> it fails as below:
+>  ./perf probe -L
+>   Error: switch `L' is not available because NO_DWARF=1
 > 
->  ./perf probe --add inode_permission --force
->  Added new event:
->   probe:inode_permission_1 (on inode_permission)
+> "-L" is tested as one of the option in :
+>    for opt in '-a' '-d' '-L' '-V'; do
+>    <<perf probe test>>
+>    print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "missing argument
+> 	for $opt"
 > 
->   ./perf probe --add inode_permission --force
->  Added new event:
->   probe:inode_permission_2 (on inode_permission)
+> Here -a and -d doesn't require DWARF. Similarly there
+> are few other tests requiring DWARF. To hint the user that
+> missing dwarf could be one issue, update print_overall_results
+> to print a comment string along with summary hinting the possible
+> cause. Update test_invalid_options.sh and test_line_semantics.sh
+> to pass the info about dwarf requirement since these tests
+> failed when perf is built without DWARF.
 > 
-> Each time, suffix is added to existing probe name.
-> To get the suffix number, test cases uses :
-> NO_OF_PROBES=`$CMD_PERF probe -l | wc -l`
-> 
-> This will work if there is no other probe existing
-> in the system. If there are any other probes other than
-> kernel probes or inode_permission, ( example: any probe),
-> "perf probe -l" will include count for other probes too.
+> With the change:
+>  ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
+>  11 failures found :: Some of the tests need DWARF to run
 
-Hello.
+Hello Athira,
 
-When designing this test, I was relying on the fact that
-there are no existing probes, because all should have been
-removed at line 43 of the same test:
+I admit that the idea of some hint why the test failed
+might be useful, however a static hint that might or
+might not be related to the particular failure seems to
+be rather misleading to me. If the test fails for any
+other reason, the user is still told about DWARF which
+might not be true.
 
-	40 ### basic probe adding
-	41
-	42 for opt in "" "-a" "--add"; do
--->	43 	   clear_all_probes
-	44 	   $CMD_PERF probe $opt $TEST_PROBE 2> $LOGS_DIR/adding_kernel_add$opt.err
-	45 	   PERF_EXIT_CODE=$?
-	46
-	47	../common/check_all_patterns_found.pl "Added new events?:" "probe:$TEST_PROBE" "on $TEST_PROBE" < $LOGS_DIR/adding_kernel_add$opt.err
-	48 	CHECK_EXIT_CODE=$?
-	49
-	50	print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "adding probe $TEST_PROBE :: $opt"
-	51 	(( TEST_RESULT += $? ))
-	52 done
-	53
-
-I am wondering how it could happen that there were other
-probes in the system?
-
-Cheers,
+I think that such hints would need some test result post-
+processing to determine the actual reason.
 
 Michael
 
 > 
-> Example, in the system where this failed, already some
-> probes were default added. So count became 10
->   ./perf probe -l | wc -l
->   10
-> 
-> So to be specific for "inode_permission", restrict the
-> probe count check to that probe point alone using :
-> NO_OF_PROBES=`$CMD_PERF probe -l $TEST_PROBE| wc -l`
-> 
-> Similarly while removing the probe using "probe --del *",
-> ( removing all probes ), check uses:
-> 
->  ../common/check_all_lines_matched.pl "Removed event: probe:$TEST_PROBE"
-> 
-> But if there are other probes in the system, the log will
-> contain reference to other existing probe too. Hence change
-> usage of check_all_lines_matched.pl to check_all_patterns_found.pl
-> This will make sure expecting string comes in the result
-> 
 > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
->  tools/perf/tests/shell/base_probe/test_adding_kernel.sh | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  tools/perf/tests/shell/base_probe/test_invalid_options.sh | 2 +-
+>  tools/perf/tests/shell/base_probe/test_line_semantics.sh  | 2 +-
+>  tools/perf/tests/shell/common/init.sh                     | 3 ++-
+>  3 files changed, 4 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
-> index d541ffd44a93..f8b5f096d0d7 100755
-> --- a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
-> +++ b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
-> @@ -169,7 +169,7 @@ print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "force-adding probes :: second pr
->  (( TEST_RESULT += $? ))
+> diff --git a/tools/perf/tests/shell/base_probe/test_invalid_options.sh b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
+> index 1fedfd8b0d0d..e133bb0aa949 100755
+> --- a/tools/perf/tests/shell/base_probe/test_invalid_options.sh
+> +++ b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
+> @@ -75,5 +75,5 @@ done
 >  
->  # adding existing probe with '--force' should pass
-> -NO_OF_PROBES=`$CMD_PERF probe -l | wc -l`
-> +NO_OF_PROBES=`$CMD_PERF probe -l $TEST_PROBE| wc -l`
->  $CMD_PERF probe --force --add $TEST_PROBE 2> $LOGS_DIR/adding_kernel_forceadd_03.err
->  PERF_EXIT_CODE=$?
 >  
-> @@ -205,7 +205,7 @@ print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "using doubled probe"
->  $CMD_PERF probe --del \* 2> $LOGS_DIR/adding_kernel_removing_wildcard.err
->  PERF_EXIT_CODE=$?
+>  # print overall results
+> -print_overall_results "$TEST_RESULT"
+> +print_overall_results "$TEST_RESULT" "Some of the tests need DWARF to run"
+>  exit $?
+> diff --git a/tools/perf/tests/shell/base_probe/test_line_semantics.sh b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
+> index d8f4bde0f585..99f4f56a3292 100755
+> --- a/tools/perf/tests/shell/base_probe/test_line_semantics.sh
+> +++ b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
+> @@ -51,5 +51,5 @@ done
 >  
-> -../common/check_all_lines_matched.pl "Removed event: probe:$TEST_PROBE" "Removed event: probe:${TEST_PROBE}_1" < $LOGS_DIR/adding_kernel_removing_wildcard.err
-> +../common/check_all_patterns_found.pl "Removed event: probe:$TEST_PROBE" "Removed event: probe:${TEST_PROBE}_1" < $LOGS_DIR/adding_kernel_removing_wildcard.err
->  CHECK_EXIT_CODE=$?
 >  
->  print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "removing multiple probes"
+>  # print overall results
+> -print_overall_results "$TEST_RESULT"
+> +print_overall_results "$TEST_RESULT" "Some of the tests need DWARF to run"
+>  exit $?
+> diff --git a/tools/perf/tests/shell/common/init.sh b/tools/perf/tests/shell/common/init.sh
+> index 075f17623c8e..0862cbc1c6f7 100644
+> --- a/tools/perf/tests/shell/common/init.sh
+> +++ b/tools/perf/tests/shell/common/init.sh
+> @@ -46,10 +46,11 @@ print_results()
+>  print_overall_results()
+>  {
+>  	RETVAL="$1"; shift
+> +	TASK_COMMENT="$*"
+>  	if [ $RETVAL -eq 0 ]; then
+>  		_echo "$MALLPASS## [ PASS ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY"
+>  	else
+> -		_echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY :: $RETVAL failures found"
+> +		_echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY :: $RETVAL failures found :: $TASK_COMMENT"
+>  	fi
+>  	return $RETVAL
+>  }
 > -- 
 > 2.43.5
 > 
 > 
 > 
----1463776256-121464021-1729160080=:5192--
 
 
