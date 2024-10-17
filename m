@@ -1,68 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-2339-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2340-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8A09A1ECC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 11:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FE69A1EDB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 11:48:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XTjfy2zFsz3bcy;
-	Thu, 17 Oct 2024 20:47:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XTjh200RZz3bdS;
+	Thu, 17 Oct 2024 20:48:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729158442;
-	cv=none; b=h3b0kgZZgoYRCVgHgY/z3yS8lLtYsRBg4j74pdzf6KG2at9uP9XYCzw7a/TjaNoPsPlYV+Khx2Bw73OeqBgeaNL20lHxk62WUWlWSqDGGrbUeyPfj5wyskYVv/kLSFlb8MmcyEbcwIRxv7CuASm+8e9wjGJJNrF/tSjn98Udns57OqxkZzzbdNKFA9C1GdL5IWbLYdHcKc0JmXZHTLKVvwtgvDE7lZh8ELTeoWjBRAxIb9251MLWq2xY3s6p5Wzcy7iWki5NS9Z7pg9oSjmejjYuB318wt1iaJFhICtEV2fY+MJ2aaSgkv+PcDC6VIkxoK5uDGgRRWb8EYKsXzcLww==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.8
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729158497;
+	cv=none; b=fmgqk6M0tQ8v4e7I+yWhI38acEiMPCQICuGndFgMA7I24qxWs82hyGsd1XX9VY5wrcV/EDBeaJBo3zh1a1t3VmHIqySGyRT7W3On2SRvLmvynWO9g5ccNBjSdVuseCIrg0RT9WPe7QZ6DasrRhAWohZr3AynAevVOXBWEnNvPghwXxcy7fj1KvAd2leWRLcbMr/+Qame2dGdNbTaYOMuGj2esqn0od6MxVFwFmFgiVNO6zDwF98Qhtt1cqiNt/4eD6TZjz0CQUD9IJnhi/w/hOWUY8pVdPLZBGKZaYwtUQduDPoYsF6Ye+SR+UM0DrrnhmvRWcKod5Vg7uRhHP8Bpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729158442; c=relaxed/relaxed;
-	bh=GkYBjXq2N82bpSFi37zDwRag0AAj6URE7VcOWvSvFTY=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=XmwyA+oOUKr2zOmwbaPG/ftQVRgLL6vV/l+psvaNgWbHonCeTS7hPgmSX9ez9YaTqg5OTKuzGqoW09WspONnnqGb79MPpBcEMNPlorblS9ud7w0UfIGZvoWqoAlB1p2+GaApDzegO9HxmeX0EuUwrQoxmYEmn7vvQxtqZLogVaEG4G2VrmRiKNBQgQGjJTcKB22m87RltzRfIa1aZ6vbwA0YiFrqxZd8NlaqpmDjh5fw7H2+Om2qL5h5xTYkPSY6x22Lk4xCwfjdv2CY+ZbwBEgbZTAc1l44ZrMexMaAw+FnStO+AIwSdswTNEwBKJ3vkFfprUz5UMt5beGicymUvw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lWlrs5F/; dkim-atps=neutral; spf=pass (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	t=1729158497; c=relaxed/relaxed;
+	bh=ANVcqo0JUqFM5NYnbnJc0xb2DJhQ5TOJXlOQAU1u8R4=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=mIn6Irmx3JoPl28/FckViYU7O0WnYzHc9lZRKVBrHIbeQ4UunrJO4UpysfyUvCSZ1+iwYOIpdwzI4lr/ctYBM34NxHPgkbiGL5KveFJ+LrZ+7iceMpmdpdO+EMkEXQNDdLKtZdQqGb2ZMcQvz80KAnzJUqZ27W/QDAlru+/saiTJ6rnboDVbTwafFj/vD++mTTBbhWFRZmvF7zFDlsNn6uUMLGYWTkbYPm2I9hvdlpDIOhH+2fCeeV8TFarwxdWPCkSRdNTJRcbDi/H9ASFC3vWlXVbhp1/YFdhUgA0HMVHnw0PN29g7qJTGIGWwVO4CRyUpi4hNhzPO9saJ/zXe3A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a7750hak; dkim-atps=neutral; spf=pass (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lWlrs5F/;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a7750hak;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTjfv0QRrz3bcP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 20:47:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTjh04YPjz3bcP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Oct 2024 20:48:16 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729158440; x=1760694440;
+  t=1729158496; x=1760694496;
   h=date:from:to:cc:subject:message-id;
-  bh=1krwuzNi5X1Yc8YwSBfN2yM4vxqqAJOVs9T05UIl0qw=;
-  b=lWlrs5F/Wavu3OoIfwL7bHvN3PXqE+r78Q0flu8HKBl9M1mLfEU1psCC
-   VGm7SyKxXgw+711hk0hBW1XJn5GBD1xjbu+/YcqBPO4I9VfFnNGqfRmdd
-   VN5ytLd6x7msZv4cMsoKtmQwHM60QtPz1lnQ9g6rXyMQJt+2W+Cz6tL9w
-   ZOoBNh26J5h6+Safr3MYMjr4UdID3saEQB7G32qd+5yMtiDLhA8vWMz7m
-   tDWLgjPgNm3Lz3Z0wJxldqcPP59CP/+l1HAQr977U2D0/9uK0jWcdl4Fk
-   BLUVWXYGI3qmKHusr+LDIW/FzL1L0vVTkjbYlsvZO8ShOe+QU5keTpTeg
-   w==;
-X-CSE-ConnectionGUID: I+COAlW4SB2rJR1DnjrZ0Q==
-X-CSE-MsgGUID: MDx87OjMS9OgWJ8VVLaouQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28734372"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="28734372"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 02:47:13 -0700
-X-CSE-ConnectionGUID: FYxJIDufTgKuxZiFLlpvhQ==
-X-CSE-MsgGUID: atYvZPYqR3ilTdqlhd7szA==
+  bh=/JBprVP+sRdXQNwvvi9O6zuQvwWFYYyrJjgBPIH7Mzk=;
+  b=a7750hakQEX9xvDFz8zs7ssisLtGcN86OiFz/4U5qNaoZufaFLQ4cbWe
+   LVyrvsdBUVZrVh9qlLfSr0DkooXPqKJ0TwGXHKM4yuHoDqwO1HI5bwjsY
+   qFz3fUslxleEhNoW6CDHlhz12t/ln2rN2pwpHd+wl8VZxnDFG2ywigw0y
+   hyVbrZF39kVLnMOsqb7i1mru7nMdXxJBw6IqMDYNQVW4Cx3AyCnXTchAq
+   TLD1X5PjILucUGrN2CrY5UPJQJER2ggROBTt/ENy8M7/Vn0KS5T2QriMN
+   nSazS08dQ8qapJCbP+sHSJowjQVvEtuJ7bV6u3+jHwCYMZ9egBzOOD47M
+   A==;
+X-CSE-ConnectionGUID: UxsiZfafRr2pmxqnVmOuPg==
+X-CSE-MsgGUID: uvxA+FSnQgq3+/JBdiTFtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11227"; a="46131359"
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
+   d="scan'208";a="46131359"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2024 02:48:12 -0700
+X-CSE-ConnectionGUID: ClqWOuTVRC2311VX2Ybdjw==
+X-CSE-MsgGUID: SPmj2ymLSE6lWgFovLpZig==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
-   d="scan'208";a="78521719"
+   d="scan'208";a="78156065"
 Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 17 Oct 2024 02:47:12 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 17 Oct 2024 02:48:11 -0700
 Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1t1N65-000M8N-2I;
-	Thu, 17 Oct 2024 09:47:09 +0000
-Date: Thu, 17 Oct 2024 17:47:09 +0800
+	id 1t1N73-000M8R-2M;
+	Thu, 17 Oct 2024 09:48:09 +0000
+Date: Thu, 17 Oct 2024 17:47:44 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
 Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- cf8989d20d64ad702a6210c11a0347ebf3852aa7
-Message-ID: <202410171701.yP3dO7vk-lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 99e7a16007479504d952db810d5d9aba34f038ec
+Message-ID: <202410171736.uccdVlK5-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -77,31 +77,43 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: cf8989d20d64ad702a6210c11a0347ebf3852aa7  powerpc/powernv: Free name on error in opal_event_init()
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 99e7a16007479504d952db810d5d9aba34f038ec  Automatic merge of 'master' into merge (2024-10-14 14:45)
 
 elapsed time: 1296m
 
-configs tested: 106
-configs skipped: 151
+configs tested: 130
+configs skipped: 5
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
 
 tested configs:
+alpha                             allnoconfig    gcc-14.1.0
 alpha                            allyesconfig    clang-20
+alpha                               defconfig    gcc-14.1.0
 arc                              allmodconfig    clang-20
+arc                               allnoconfig    gcc-14.1.0
 arc                              allyesconfig    clang-20
+arc                                 defconfig    gcc-14.1.0
 arc                            hsdk_defconfig    gcc-14.1.0
 arc                    vdk_hs38_smp_defconfig    gcc-14.1.0
 arm                              allmodconfig    clang-20
+arm                               allnoconfig    gcc-14.1.0
 arm                              allyesconfig    clang-20
 arm                         axm55xx_defconfig    gcc-14.1.0
+arm                                 defconfig    gcc-14.1.0
 arm                            mmp2_defconfig    gcc-14.1.0
 arm                       spear13xx_defconfig    gcc-14.1.0
 arm64                            allmodconfig    clang-20
+arm64                             allnoconfig    gcc-14.1.0
+arm64                               defconfig    gcc-14.1.0
+csky                              allnoconfig    gcc-14.1.0
+csky                                defconfig    gcc-14.1.0
 hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    gcc-14.1.0
 hexagon                          allyesconfig    clang-20
+hexagon                             defconfig    gcc-14.1.0
 i386                             allmodconfig    clang-18
 i386                              allnoconfig    clang-18
 i386                             allyesconfig    clang-18
@@ -125,14 +137,23 @@ i386                  randconfig-014-20241017    clang-18
 i386                  randconfig-015-20241017    clang-18
 i386                  randconfig-016-20241017    clang-18
 loongarch                        allmodconfig    gcc-14.1.0
+loongarch                         allnoconfig    gcc-14.1.0
+loongarch                           defconfig    gcc-14.1.0
 m68k                             allmodconfig    gcc-14.1.0
+m68k                              allnoconfig    gcc-14.1.0
 m68k                             allyesconfig    gcc-14.1.0
 m68k                       bvme6000_defconfig    gcc-14.1.0
+m68k                                defconfig    gcc-14.1.0
 m68k                        m5407c3_defconfig    gcc-14.1.0
 microblaze                       allmodconfig    gcc-14.1.0
+microblaze                        allnoconfig    gcc-14.1.0
 microblaze                       allyesconfig    gcc-14.1.0
+microblaze                          defconfig    gcc-14.1.0
+mips                              allnoconfig    gcc-14.1.0
 mips                           ip28_defconfig    gcc-14.1.0
 mips                          rb532_defconfig    gcc-14.1.0
+nios2                             allnoconfig    gcc-14.1.0
+nios2                               defconfig    gcc-14.1.0
 openrisc                          allnoconfig    clang-20
 openrisc                         allyesconfig    gcc-14.1.0
 openrisc                            defconfig    gcc-12
@@ -140,6 +161,7 @@ parisc                           allmodconfig    gcc-14.1.0
 parisc                            allnoconfig    clang-20
 parisc                           allyesconfig    gcc-14.1.0
 parisc                              defconfig    gcc-12
+parisc64                            defconfig    gcc-14.1.0
 powerpc                          allmodconfig    gcc-14.1.0
 powerpc                           allnoconfig    clang-20
 powerpc                          allyesconfig    gcc-14.1.0
@@ -152,6 +174,7 @@ s390                              allnoconfig    clang-20
 s390                             allyesconfig    gcc-14.1.0
 s390                                defconfig    gcc-12
 sh                               allmodconfig    gcc-14.1.0
+sh                                allnoconfig    gcc-14.1.0
 sh                               allyesconfig    gcc-14.1.0
 sh                                  defconfig    gcc-12
 sh                      rts7751r2d1_defconfig    gcc-14.1.0
@@ -194,6 +217,7 @@ x86_64                randconfig-074-20241017    gcc-12
 x86_64                randconfig-075-20241017    gcc-12
 x86_64                randconfig-076-20241017    gcc-12
 x86_64                               rhel-8.3    gcc-12
+xtensa                            allnoconfig    gcc-14.1.0
 xtensa                         virt_defconfig    gcc-14.1.0
 
 --
