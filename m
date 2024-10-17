@@ -1,80 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-2349-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D269A24C9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 16:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F289A24D9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Oct 2024 16:20:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XTqf66XFSz2yMt;
-	Fri, 18 Oct 2024 01:17:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XTqjf1nLFz2yQL;
+	Fri, 18 Oct 2024 01:20:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729174622;
-	cv=none; b=YG5ZM4DaQWeg0kMtH0CT9iJCqFvufTNpCnMOhxc+pYHOSpeDXNvr3x2Kjc3KG+it2WItGkKdH1of9WCRhriqE3hqzyvz1LYWD5zVmjsUOx0Hw38JbhjYXKmVcUBY/YSf43vVLJoVnc9Tapi5uTALVtkbw9rH9mC/cCS2gbVeLYH2KsJQ7H5OQC7APYY7fs6IHy1acwvUiP4BHuN+OEjGOr/Rtv/YhMXM5PKDSe+7Bhe2ITT62MYY45Vs+eqP1avjNUX0TQgBUQQVuwyX6V0axlNR5i3fwFZBhWXbpSyQfXl96YxCYEhTRvXOYXOIZXvJcRfz/timHbLUrE1E2EFf0g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729174806;
+	cv=none; b=NHMk8KBUuEOl69IBGuJShkzmKMV+MbHPjHNOEid6bLuL06jjBmbhd9wxP/MJ5mY3m38YjpiwY8h/zgV89YxAOd1CHvWmDDIafTGJVCRUUFQqaXiDsB5J7MHrzDFxCf83ICF+B/cR1ipVX3wbQcx0SlcLB1z7vXbB4XSZY+rrpiyBCrJSUO1bQxlOR5Fgjnp0vwJkdwu2Il9suYzhJTqPRAZ5Wf5zNk4X7kADnyiGFr/yzaUNC6GHEFulpK6Zj/VCTxYMyARyTmov84sQVh/sTPV4JYMplGMNYLNfJhqA7iy0aMOa8R+TQlgV5HRnYumHcxStLou2Ctkkt2ocQnd0vg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729174622; c=relaxed/relaxed;
-	bh=0RENO6sDDMYvvOCfRHws5B4+D5uhU/+pdf+qOzKG6CE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N2jiu05HYj+8ja7sWFjtNJao77PMp/CD32JuSjz0W2NbnjTKxvBmGmXjOCCMjEX6xEXWHiRfz+VC7FAPnQcou9nZt03FjyqTGn8govd0sUCa+iiDx6+p/bDwicb+yZl5Fo+WMeGv6j/sf2/VuHhQLvB1McCxIMdPC8W9lhFXq5tuNN2PWHrZuvDf37/Flm6TrOfBnYfpu3ttqfaPmpeHbFMriyCiylrcd33fDr+lo57ZQyqFGqlfz2h8mLzQG/LZ/h5aIJmtSR1O52F7HiKq9Boau+R08pBVm9QTK+DSjIZUYFVfAXucfyZVCDDkmE83hJrYiiJaFDUwCOX13mKq1Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=o9tl=rn=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=o9tl=rn=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
+	t=1729174806; c=relaxed/relaxed;
+	bh=oxTIqgByle40c0qgSyRRPWealLOb7gjozDp4ZfY8n8Y=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=O1JD/EMwidvYIp16WPjB7A9BUPL3Wivm/r/donpTdcL30JjUREyECME3f+fwiM94Xy1A/QCpyWXr3XMoPXG8x/FaM/1L/GktBcFamFJivKhtK1PeOfae/U3O8l/1WR8DvK8s6ZNLCP83OR+bpfUc96tImSm3/1TnXebX+aHfYth2uhVKbNif6sEomMdYg0lQUbPeMc2Hd3MXT988rSAhWPKjWi7z6N0lB+XkWPWuSJ3fZjYnhvef2Ruk8Tgzf9sl6wFI5d/ACAg9HLX/Hwbw8naypRaFLASk5YAXTXK/fcr0p50nlrGwsriRii6hl77Aqme7uD/uss4h5jX9OdGmdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cJPU1l5K; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cJPU1l5K;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTqf43zccz2xfR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 01:17:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XTqjd1kD7z2xfR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 01:20:05 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id AEE875C4F0A;
-	Thu, 17 Oct 2024 14:16:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E652CC4CEC3;
-	Thu, 17 Oct 2024 14:16:49 +0000 (UTC)
-Date: Thu, 17 Oct 2024 10:17:12 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain
- <mcgrof@kernel.org>, Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski
- <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann
- <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Brian Cain
- <bcain@quicinc.com>, Catalin Marinas <catalin.marinas@arm.com>, Christoph
- Hellwig <hch@infradead.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>,
- Dinh Nguyen <dinguyen@kernel.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Helge Deller
- <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Kent Overstreet
- <kent.overstreet@linux.dev>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Mark Rutland <mark.rutland@arm.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Matt Turner <mattst88@gmail.com>, Max Filippov
- <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Simek
- <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>, Richard
- Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, Song Liu
- <song@kernel.org>, Stafford Horne <shorne@gmail.com>, Suren Baghdasaryan
- <surenb@google.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Thomas Gleixner <tglx@linutronix.de>, Uladzislau Rezki <urezki@gmail.com>,
- Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
- bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v6 6/8] x86/module: prepare module loading for ROX
- allocations of text
-Message-ID: <20241017101712.5a052712@gandalf.local.home>
-In-Reply-To: <20241016170128.7afeb8b0@gandalf.local.home>
-References: <20241016122424.1655560-1-rppt@kernel.org>
-	<20241016122424.1655560-7-rppt@kernel.org>
-	<20241016170128.7afeb8b0@gandalf.local.home>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by dfw.source.kernel.org (Postfix) with ESMTP id D0B805C6120;
+	Thu, 17 Oct 2024 14:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855DFC4CEC7;
+	Thu, 17 Oct 2024 14:19:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729174803;
+	bh=GLCrs3Dovv1NiZDErsK/6Wy5iJ7ydSzeUdxuxMzzEbc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=cJPU1l5Kps56v8mtpHDahoOu/sesVEsbfkxPxTBjZJUFVPTfhquqJmMWgfV57Mzxr
+	 g1rd1vIx0qWhbCmkzM6IbOU0nOCP1F0T68LieQMKCfZIshfUbktERB0aoZhno+uJIB
+	 A5o+vNmH35gCfzcJ1QOdrFU13evRECzSwE6VGCf7j0zJO0BnRmoebOmEkEyOrIn/Fv
+	 R89L1k8bbBzfwhnKPHRNxgVxbKJcHvuhl0Yv/hVpD8djyoy1qYZwYfCn3aQs2Yl9av
+	 VvVxXTl2yNmlJn7lkLhFj8V6hfAEtpxPJ6+iyN7zNxSED2vaeBmgGrG4sDBsIoQhrm
+	 +AHc8oQp8Nn9g==
+From: Mark Brown <broonie@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, SeongJae Park <sj@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+ linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>, 
+ linux-arch@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Andy Whitcroft <apw@canonical.com>, 
+ Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ netdev@vger.kernel.org, linux-sound@vger.kernel.org, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nathan Lynch <nathanl@linux.ibm.com>, 
+ linuxppc-dev@lists.ozlabs.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ linux-media@vger.kernel.org
+In-Reply-To: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
+References: <20240904-devel-anna-maria-b4-timers-flseep-v1-0-e98760256370@linutronix.de>
+Subject: Re: (subset) [PATCH 00/15] timers: Cleanup delay/sleep related
+ mess
+Message-Id: <172917479725.89568.14288418643818666155.b4-ty@kernel.org>
+Date: Thu, 17 Oct 2024 15:19:57 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,72 +76,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Mailer: b4 0.15-dev-9b746
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 16 Oct 2024 17:01:28 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
-
-> If this is only needed for module load, can we at least still use the
-> text_poke_early() at boot up?
+On Wed, 04 Sep 2024 15:04:50 +0200, Anna-Maria Behnsen wrote:
+> a question about which sleeping function should be used in acpi_os_sleep()
+> started a discussion and examination about the existing documentation and
+> implementation of functions which insert a sleep/delay.
 > 
->  	if (ftrace_poke_late) {
->  		text_poke_queue((void *)ip, new_code, MCOUNT_INSN_SIZE, NULL);
-> 	} else if (system_state == SYSTEM_BOOTING) {
-> 		text_poke_early((void *)ip, new_code, MCOUNT_INSN_SIZE);
->  	} else {
->  		mutex_lock(&text_mutex);
->  		text_poke((void *)ip, new_code, MCOUNT_INSN_SIZE);
->  		mutex_unlock(&text_mutex);
->  	}
+> The result of the discussion was, that the documentation is outdated and
+> the implemented fsleep() reflects the outdated documentation but doesn't
+> help to reflect reality which in turns leads to the queue which covers the
+> following things:
 > 
-> ?
-> 
-> The above if statement looks to slow things down just slightly, but only by
-> 2ms, which is more reasonable.
+> [...]
 
-I changed the above to this (yes it's a little hacky) and got my 2ms back!
+Applied to
 
--- Steve
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-DEFINE_STATIC_KEY_TRUE(ftrace_modify_boot);
+Thanks!
 
-static int __init ftrace_boot_init_done(void)
-{
-	static_branch_disable(&ftrace_modify_boot);
-	return 0;
-}
-/* Ftrace updates happen before core init */
-core_initcall(ftrace_boot_init_done);
+[11/15] regulator: core: Use fsleep() to get best sleep mechanism
+        commit: f20669fbcf99d0e15e94fb50929bb1c41618e197
 
-/*
- * Marked __ref because it calls text_poke_early() which is .init.text. That is
- * ok because that call will happen early, during boot, when .init sections are
- * still present.
- */
-static int __ref
-ftrace_modify_code_direct(unsigned long ip, const char *old_code,
-			  const char *new_code)
-{
-	int ret = ftrace_verify_code(ip, old_code);
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-	if (ret)
-		return ret;
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-	/* replace the text with the new text */
-	if (static_branch_unlikely(&ftrace_modify_boot)) {
-		text_poke_early((void *)ip, new_code, MCOUNT_INSN_SIZE);
-	} else if (ftrace_poke_late) {
-		text_poke_queue((void *)ip, new_code, MCOUNT_INSN_SIZE, NULL);
-	} else {
-		mutex_lock(&text_mutex);
-		text_poke((void *)ip, new_code, MCOUNT_INSN_SIZE);
-		mutex_unlock(&text_mutex);
-	}
-	return 0;
-}
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
