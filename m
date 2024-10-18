@@ -1,78 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-2364-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2365-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAE29A345C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 07:35:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89BEF9A3767
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 09:40:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XVD1b3RYYz3bl5;
-	Fri, 18 Oct 2024 16:35:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XVGpD5clfz3blb;
+	Fri, 18 Oct 2024 18:40:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729229715;
-	cv=none; b=L/B8bY11Hq5occ8TAa+mGa7gk9GCuOvLvAnmoUzUW6mcryJPKnDrljTOwJFQX3quHVAtGBKzYE/AClQjNnnbi1UfgSG4tZBAGkUO8Jm+YufC8UB7+fcF7PFD5cPJzVHFNqqzi31HPbNMlKfC6H9iKMUU/8l/8snprmdmf/skJJ4prc4ox1QSYg7MJYlOcprFAQFiStZdBL0riRrj8H5bKx0D9vOzDFaFFl4CIsHoPRsWRPYUhBZdp45Rs3ZStSnGZIsRHteqldJPMct5S9jT3Na9MxYTWjeS0nZJZ5ObeLETg5y+Bwe3IKq9tcW2LVuU40egm49qUGBIIB7RX6N2zA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729237236;
+	cv=none; b=GIUA44d/+oxqZp2G8hALUusLTAb4HviO93ZqDq6xczyHDT8kfu0aIQNxdoAV2r/FUUAuwUw/30SBbjOsbnj42Gg3SZlAmyoTbhF/cbu+z+ILebXeQjPNd31D1p/f1BlCHOEuguwCPZk5RlI6kxBqjl1HsAueIdVSCnFkppVFQ+hLeC7hyMYxgTn9qLAWWvwr5dWvBdtirBKCaHlozvp12eERRMUNSwf1jJonLu8lhksSMLU/aX63G5rfueGSOwXZ/qKt3xng+YT42eaRTCJ0Y9YmDQ2M2Cum6aQtHYiMjuuAvR04tysHkwQAsBquOP+Xd2OUGCQTPgjMfA5mGduTZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729229715; c=relaxed/relaxed;
-	bh=GfK7bPi6IdCB7ex8oq6M7wTtKsPVoKOrfFT7oK1qN0A=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=l+IYEXz6oWb1y02ob7pyGmAzyJCf+kojJH0k0VcmXEX1ziG1tcmYkOP5UAN8RxIJho/P4EN0dT4pczvdcm7M5tZMY7E/LAwzYPnO/xxF4lIUGnEjnsSPMznS/rmal+Xt7toHk60nPu6db0ij/6xC3pWANljxBmee8p6HeA+q8vmPEgCsipE/MOpwqdTp4qlnngrPQ6Q8crYnuC7g0aavOI2QfOtLjydO0Jvjr+Nt9EkO+Mcog8WyOR98x5Uyq0PhRe10FSK1eTXER6lVxbM6HJQAb0JaqSKX262M5I4eJs2qxR2XbPCBoKhHVFmw0fUandRO+Wq3v6o3j7me6zXTxg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q6a+WAbL; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1729237236; c=relaxed/relaxed;
+	bh=aB4+XUWJxp+dZ02JgErKT/qQEJA9r3SbzM+17IkQ7Yw=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=kAOKfkYvzEDpoOsdYK/i/5SdUGBCOR30nKsHfwVcQtx8VRn7EdPRDNd/ZwdTMO5J/URuxUBy7I8Fc3ke3s3sP1fuTd+n2wWUGEgV2KIRmOQWB89+kIcq88azySwgaw6lTmdUwEeNjix7F12F7NcrV/poCFlNM306sq+azjDB0aL9WHDC9X5IZXe1jbM/LI8wRaBCWsdhyTxiJ9X1+ybRsNkK3GwygqB1aREhghmEASKNWkt0ArA4w9X/mNO8IrWsbjDKsW1Omx1RKkiAF5uHLDsh0C8BzlJ0msuYhVTCeDGWRU601anxLuJ9KWGKISIGUPjeisipymo45+RovXbFpQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lLcg+raO; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q6a+WAbL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lLcg+raO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVD1Y6c8Gz3bkd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 16:35:13 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HJSAVO017544;
-	Fri, 18 Oct 2024 05:35:06 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVGpC10hVz3bkc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 18:40:34 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HJS9Bs025117;
+	Fri, 18 Oct 2024 07:40:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=GfK7bP
-	i6IdCB7ex8oq6M7wTtKsPVoKOrfFT7oK1qN0A=; b=q6a+WAbLEev4UJrwWOQUbu
-	Kxmluoov3GfdvGGDZ39rWaVRF/Gy1yhkjW6jz0S6ZTX6TjL3iP+D18eT9PlUeSIb
-	L+NoUwXQTWz/RYTv+MNsg4WyRJyA+e05GdfdwwpCB35sKxv/1zRZxTH/32X6cxVd
-	KuCuq0WfweoFY7k+KmeWsr+I/AlQlfJVuk6eSpiOetR60hF81slduBBrHdhtmWh2
-	wCYqUbSzogS+sIX63Cpo7Er0Ouy7r86MiNVynY2zlxa6zWGnF762Rc5zFEdI9y7X
-	Y9nTYQVuX4kT33HkFnb2cRPCjAgw3MC8GBY3ZqKQ21vn5Opgzx3xf12pUzvIqetA
-	==
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=aB4+XUWJxp+dZ02JgErKT/qQEJA9
+	r3SbzM+17IkQ7Yw=; b=lLcg+raOhpkvOZUH182ts0atCRmjXpOpQcjMjNOkWDlA
+	LKdeSszPq7xTMN9fBlDz35YMQpiyzi0j5vXl+/x4EM344rhIh16E4uE2735rRMd3
+	kvB9X/yS3WMGoR9m4WIdUyK35v+yWSLni9dSvAqlSdUYMI0jX1paWUei+Dyad3Vl
+	RhboiYo4vi768L0GhCs+0TuSTXwD/QYLfMA7f70KZsFRXANTi3Oc4Qg00UqGvPhr
+	GUO6ZnmQnkQ1zkQq9dVqqKb3rcUmE3rxCOp6KHR0GychReABSm4vA3es2vqpgbBx
+	+Ehsm0vcxj9E+VX9Gia3CXOtWuyepp/GAe26IYO+wQ==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42ar0u6t08-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42asbd7kmc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Oct 2024 05:35:06 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49I5Z6G8001275;
-	Fri, 18 Oct 2024 05:35:06 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42ar0u6t05-1
+	Fri, 18 Oct 2024 07:40:22 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49I7eLO8011160;
+	Fri, 18 Oct 2024 07:40:21 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42asbd7km8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Oct 2024 05:35:05 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49I4f4N7005218;
-	Fri, 18 Oct 2024 05:35:05 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4285njjdmc-1
+	Fri, 18 Oct 2024 07:40:21 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49I6Spkl005946;
+	Fri, 18 Oct 2024 07:40:20 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 428651atnq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Oct 2024 05:35:05 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49I5Z15L51642662
+	Fri, 18 Oct 2024 07:40:20 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49I7eJKl20841106
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Oct 2024 05:35:01 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8718920049;
-	Fri, 18 Oct 2024 05:35:01 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B927C20040;
-	Fri, 18 Oct 2024 05:34:54 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.241.172])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 18 Oct 2024 05:34:54 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	Fri, 18 Oct 2024 07:40:20 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D2BEB58058;
+	Fri, 18 Oct 2024 07:40:19 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 105CD58057;
+	Fri, 18 Oct 2024 07:40:16 +0000 (GMT)
+Received: from [9.43.51.48] (unknown [9.43.51.48])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 18 Oct 2024 07:40:15 +0000 (GMT)
+Message-ID: <56940325-8474-42f7-97b4-fabbd3ea0da0@linux.ibm.com>
+Date: Fri, 18 Oct 2024 13:10:13 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,162 +79,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: [PATCH] tools/perf/tests/shell/base_probe: Enhance
- print_overall_results to print summary information
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <d7c34f4f-692e-4c1b-c268-582c645a6c33@redhat.com>
-Date: Fri, 18 Oct 2024 11:04:39 +0530
-Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org,
-        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        akanksha@linux.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com,
-        disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <42B1CAD9-C932-4D96-B249-5305049C2D90@linux.vnet.ibm.com>
-References: <20241014154025.85564-1-atrajeev@linux.vnet.ibm.com>
- <d7c34f4f-692e-4c1b-c268-582c645a6c33@redhat.com>
-To: Michael Petlan <mpetlan@redhat.com>
-X-Mailer: Apple Mail (2.3818.100.11.1.3)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: torvalds@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, naveen@kernel.org
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.12-5 tag
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: niwwMTSra3zxbGqzC9O5ngW1Grbcy2Lh
-X-Proofpoint-ORIG-GUID: buif0MqBx7wpT1mNE1DqnuRMAPYFE12m
+X-Proofpoint-ORIG-GUID: fjd9GPTKh4Q1PJa0jkezPHKo29pJuN8m
+X-Proofpoint-GUID: XQT0JPKv-g7xJhvfE-TsIWA-TeiKoc2C
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- spamscore=0 bulkscore=0 adultscore=0 mlxlogscore=999 phishscore=0
- suspectscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410180032
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
+ malwarescore=0 spamscore=0 lowpriorityscore=0 phishscore=0 mlxscore=0
+ clxscore=1011 adultscore=0 priorityscore=1501 mlxlogscore=660
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410180045
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_NONE autolearn=disabled version=4.0.0
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-> On 17 Oct 2024, at 3:52=E2=80=AFPM, Michael Petlan =
-<mpetlan@redhat.com> wrote:
->=20
-> On Mon, 14 Oct 2024, Athira Rajeev wrote:
->> Currently print_overall_results prints the number of
->> fails in the summary, example from base_probe tests in
->> testsuite_probe:
->>=20
->> ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
->> 11 failures found
->>=20
->> test_invalid_options contains multiple tests and out
->> of that 11 failed. Sometimes it could happen that it
->> is due to missing dependency in the build or environment
->> dependency.
->>=20
->> Example, perf probe -L requires DWARF enabled. otherwise
->> it fails as below:
->> ./perf probe -L
->>  Error: switch `L' is not available because NO_DWARF=3D1
->>=20
->> "-L" is tested as one of the option in :
->>   for opt in '-a' '-d' '-L' '-V'; do
->>   <<perf probe test>>
->>   print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "missing argument
->> for $opt"
->>=20
->> Here -a and -d doesn't require DWARF. Similarly there
->> are few other tests requiring DWARF. To hint the user that
->> missing dwarf could be one issue, update print_overall_results
->> to print a comment string along with summary hinting the possible
->> cause. Update test_invalid_options.sh and test_line_semantics.sh
->> to pass the info about dwarf requirement since these tests
->> failed when perf is built without DWARF.
->>=20
->> With the change:
->> ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
->> 11 failures found :: Some of the tests need DWARF to run
->=20
-> Hello Athira,
->=20
-> I admit that the idea of some hint why the test failed
-> might be useful, however a static hint that might or
-> might not be related to the particular failure seems to
-> be rather misleading to me. If the test fails for any
-> other reason, the user is still told about DWARF which
-> might not be true.
->=20
-> I think that such hints would need some test result post-
-> processing to determine the actual reason.
+Hi Linus,
 
-Sure, agree to your point. I will add post-processing check for dwarf =
-and accordingly add the summary information
-Will post a V2=20
+Please pull my first pullrequest for powerpc tree.
 
-Thanks
-Athira
->=20
-> Michael
->=20
->>=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> tools/perf/tests/shell/base_probe/test_invalid_options.sh | 2 +-
->> tools/perf/tests/shell/base_probe/test_line_semantics.sh  | 2 +-
->> tools/perf/tests/shell/common/init.sh                     | 3 ++-
->> 3 files changed, 4 insertions(+), 3 deletions(-)
->>=20
->> diff --git =
-a/tools/perf/tests/shell/base_probe/test_invalid_options.sh =
-b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
->> index 1fedfd8b0d0d..e133bb0aa949 100755
->> --- a/tools/perf/tests/shell/base_probe/test_invalid_options.sh
->> +++ b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
->> @@ -75,5 +75,5 @@ done
->>=20
->>=20
->> # print overall results
->> -print_overall_results "$TEST_RESULT"
->> +print_overall_results "$TEST_RESULT" "Some of the tests need DWARF =
-to run"
->> exit $?
->> diff --git a/tools/perf/tests/shell/base_probe/test_line_semantics.sh =
-b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
->> index d8f4bde0f585..99f4f56a3292 100755
->> --- a/tools/perf/tests/shell/base_probe/test_line_semantics.sh
->> +++ b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
->> @@ -51,5 +51,5 @@ done
->>=20
->>=20
->> # print overall results
->> -print_overall_results "$TEST_RESULT"
->> +print_overall_results "$TEST_RESULT" "Some of the tests need DWARF =
-to run"
->> exit $?
->> diff --git a/tools/perf/tests/shell/common/init.sh =
-b/tools/perf/tests/shell/common/init.sh
->> index 075f17623c8e..0862cbc1c6f7 100644
->> --- a/tools/perf/tests/shell/common/init.sh
->> +++ b/tools/perf/tests/shell/common/init.sh
->> @@ -46,10 +46,11 @@ print_results()
->> print_overall_results()
->> {
->> RETVAL=3D"$1"; shift
->> + TASK_COMMENT=3D"$*"
->> if [ $RETVAL -eq 0 ]; then
->> _echo "$MALLPASS## [ PASS ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME =
-SUMMARY"
->> else
->> - _echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME =
-SUMMARY :: $RETVAL failures found"
->> + _echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME =
-SUMMARY :: $RETVAL failures found :: $TASK_COMMENT"
->> fi
->> return $RETVAL
->> }
->> --=20
->> 2.43.5
->>=20
->>=20
->>=20
->=20
+My gpg key is available in pgpkeys.git and it is signed by Michael Ellerman and others.
 
+https://git.kernel.org/pub/scm/docs/kernel/pgpkeys.git/commit/?id=5931604633197aa5cdbf6c4c9de0f08ab931615f
+
+Please pull some more powerpc fixes for 6.12:
+
+The following changes since commit 8956c582ac6b1693a351230179f898979dd00bdf:
+
+  powerpc/8xx: Fix kernel DTLB miss on dcbz (2024-10-11 15:53:06 +1100)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.12-5
+
+for you to fetch changes up to cf8989d20d64ad702a6210c11a0347ebf3852aa7:
+
+  powerpc/powernv: Free name on error in opal_event_init() (2024-10-16 09:26:50 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 6.12 #5
+
+ - To prevent possible memory leak, free "name" on error in opal_event_init()
+
+Thanks to: Michael Ellerman, 2639161967.
+
+- ------------------------------------------------------------------
+Michael Ellerman (1):
+      powerpc/powernv: Free name on error in opal_event_init()
+
+
+ arch/powerpc/platforms/powernv/opal-irqchip.c | 1 +
+ 1 file changed, 1 insertion(+)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEqX2DNAOgU8sBX3pRpnEsdPSHZJQFAmcSCXYACgkQpnEsdPSH
+ZJQUwRAAjPQqxLvWlexOaz8Q+bIW04WxENK9t2ke4njWuBJsh7N2k4F+hphGtTjU
+qLBU+MeawQoAIjMptcSLoruxIQsYdGqN/oFp+u5+kKEVwC2aTDJBHAw4FnjxUJQ4
+ztZk5vc9/PuvrafRfEuIsujIvmuCHFh9gzflgQbgArXZ2NFKKdy+CyBonryO0/DQ
+5IXO8S91PCx20xhveLWwIdUIpK1bBZQmttwx4QWLNmB7ZtbOv05h2tlDo0Fwv1eC
+oAWitl6r85ISBcSXGKu6teIIhxMSi4l2/LJl1cuhl4v37r6JXi1EPkAtvMQQK40P
+tahvl3/8Oxb8QRO/cvDS23jM588AJ5zIassRlYucRWrJJ4G32MvK/4Ftz+Hs0kF9
+ioADX1tl416w9wpMtGanSao1fieNQF2RnuTm55DFtSEzZOETxayPjDK2hg3s/iy1
+qp2sFKRdSx+Ljbm/WDDGN2o6PlwWUS3HOu9d/CJEwpGu9Sv0zyOlxLHDteRR5fho
+BYLTBRI10T92pFMFCG1/gli27fx7OiPud44vc9gk9a9ymO8oF4+/IVLDSX6gpFiY
+uuM5s/P6sGkKCuIH85nUQZQPgK0z3T8zdt4hqUTepBsoBd24BRf0abOzwUkENXdB
+UxWylfW9jbhYAZtqhSXYFBSKOzXpz3vGBRuUKQ5GG+3lA+fIjng=
+=Xm97
+-----END PGP SIGNATURE-----
 
