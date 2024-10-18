@@ -1,89 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-2379-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2380-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8419A438A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 18:18:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397B39A449D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 19:30:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XVVHl1sPJz3br5;
-	Sat, 19 Oct 2024 03:18:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XVWtp3pz7z2yD8;
+	Sat, 19 Oct 2024 04:30:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729268307;
-	cv=none; b=bGAPtnuZK4yCcCmdXEut7gc+Ne6P/ILcR8TtNo+mf1Q50feuuyf4eF6umWynmMOBsadEvO8X4EkKJTuuZvgge0EatG4edw5dnZgJutczKiLv67cSPeJus8f+XF9YeJLG4EdWwLVWI8L8FgICk396WQa32r1KzNmvFtXFMcezn6fJq51F2PuVpbOuLPK82T/729WU774NNVXtVvqEoHRr+12GkGgCoN92mncm89KQ+DTEY8B4/dQdSke54285q0Voo/ye6Yo6Fd56TawzFbGkXLUYQvZKIQermGeVPOlO0MW7SQlLREZRDxAfFqFIIqcoxXC8wZUILoN/c8QmFBq1Bw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::529"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729272626;
+	cv=none; b=nF7p0LgGYuHM8BCVvIhWmvmODBz0o/6mSEtclVZdXAWsMD5JPMeYmDRVCgbA52VPrtcruWUqOUE/7MOfkWplGEqLagfGcda+pX2di+XxaqLJJxiDWAjveChAzMBTr57cKpaHInsmUn/836txAs4uMtrIz5UEJ01JzbJjkR1eGSzGt6ro9YuqSNIXBd2GCrXUpXs+e91pz4xfsHIj4L8fEL+V20vm+Qj+5j71/Sy82w8RjD25gSmscG4dppDo3sUQhAyUM4hRdENkWsg9TRdxUFz+QVQRCCNBtnlGdPYzbr6CkwauAypVKcEfFos9+/2GgiZ7oi5wq61wp+qRr2BdkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729268307; c=relaxed/relaxed;
-	bh=uLmZcdH3+iUB7uSULBBt8ADH32xOpUfbglYzjMZPi2A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPxuuUQ5auqxfw2Tu5LNZQwMXoD6vxzr4VCsgj2N7Wx8VoD2BmDigdi3g8Fb9TPcsrrCJqquA1PVf8tDHIpU/Ca452guHggku4cpiCex2Qq0pcD/445se+qNiXNrA5ymcmnRC2F+pSDH/1Cv/6qcMC9cIvDLxF2UyD7+ZjPU30ZW3AXHNkJwiM64Y54WD2Y3asqBOzamU2RmbmIVDvJI49zg+0d8ZFLzRipbVauZN9zpX+Iwv1hvHcJuf+DnFhvXIpm60c41YeQGVRj0zKndJ+bjrbdQleHmXftonUo1LfardEbAOiRhO77Gs4e4aiSr3vQF257kcHQl5ZHfmV9VPQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nLznE0Cx; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52c; helo=mail-pg1-x52c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1729272626; c=relaxed/relaxed;
+	bh=/kexGPHg7BP7JEy0b70rSKtUMi9zN66ceCEdb7Ha4D0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OrcCdZuiOFpkheYVvOpPOL4S1tphbVZdbwI+0uThNZ2XILnn/CFgY6lsZgiqL22cMtGoYxb9lbqQsL/NbQVKOietJIoQWzAlA2Dy9Ygt5Y2FXKXaSj/0B+QBhbW+ng0cnugo9+Tyk1KupiGEwDkyGApf1HA4OrKFkOsA6Mf1Fg2VT7sdHCzlgVeLXLrhg8bf5KF4CFRPd+si2KaTPGyARujG1DmgOF10xjrK9JWwTUPnFn19ya8fChARJ0SYyIGUeKV/CPb1jKLBzFIY4WC1hrm7SowFtGvWggFzg62syJTp8iGJ/yO8Z0llDJkCybPegJvMK9IZ8IepzFkYqzOI3w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=K1xWhROV; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::529; helo=mail-pg1-x529.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nLznE0Cx;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=K1xWhROV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c; helo=mail-pg1-x52c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529; helo=mail-pg1-x529.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVVHk2Dnvz2yHj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 03:18:26 +1100 (AEDT)
-Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-7ea8ecacf16so1680216a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 09:18:25 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVWtm1nCfz2xxt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 04:30:22 +1100 (AEDT)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-7db637d1e4eso2452997a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 10:30:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729268303; x=1729873103; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uLmZcdH3+iUB7uSULBBt8ADH32xOpUfbglYzjMZPi2A=;
-        b=nLznE0Cx/a2/YjSIqLABeg8vE2aivn6GzvTbgDCsJajRNyyalLVhHe5a3mtmfE0QI1
-         2ndF60OEQoQ0nScjmNCUcVrIFuWI6VvtwJ4WXW3rwcpEWNYqqkUHMgkQ4SPi24TGyv/W
-         wS2jSIjsX131foN25wLBbb0vOmjf1xCLuh06pXmt/XeLK0+MfRQ6GnwkiwB5FpnFPrS9
-         vmXbH0nazatEMEZLk3CpTWlAbuiTDrn/IwqELRZEIshW+Pquc9iA14sLddOvGOfH7bGv
-         9oSMmqzDHbP7zRI5pgKlC83myBKc9HSDUs5O5G9Y10XweFvsV2Nwor670+rKBz6U6fVh
-         BtKA==
+        d=gmail.com; s=20230601; t=1729272619; x=1729877419; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/kexGPHg7BP7JEy0b70rSKtUMi9zN66ceCEdb7Ha4D0=;
+        b=K1xWhROVapvsIuAOVb1EIoYwu4RJFoAs9oiSJTETWFg6klk+AsNgQJA+Lb+IlTpCaJ
+         tEage1TeUv7KS3t6sBWH4ZnIHHCuwWwrEK90gvl3oHciHtfHeKmLAXi1wFUy0tSzJkhw
+         Mk7nCDIYYfkEI4qxb2mXIcPjytmbceQYQXzUpI7qaQZ082Zu93W3bTyaC1Owp6H17g1z
+         UrCs+b85dvJ/8Ih92rlfLBxwXydZyxY0tn8ecQ3Iz9uB8YAV9V7oCvvD/U1T06pQeCVd
+         VoSDCLhJbVLQbq2Zwd4PK6AD7I/HXr1CnVYvr81W0VJBgy34K+Lkz7pzRigRmcQ77Ct6
+         aCjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729268303; x=1729873103;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uLmZcdH3+iUB7uSULBBt8ADH32xOpUfbglYzjMZPi2A=;
-        b=aMzWUAC3pC0AHtRAr9RtEGOj8f8f4CDQ2NuofWr7cTDTXVKvmLkzPUIe5FncHOmyY0
-         1NSkIWj394Olp0jGSORFbWy0BIJ7nBQSjulvZ4P2wD5znMitW0XWmcUYFBS4JEPo8c4s
-         bm1Zxm/E1SXQGVoHhlZZ+Ang2Ldoq5SFPwdNGdf0QYxLSQRYGDY75isAGYqSsfbRrx6e
-         8hNqTdsNlmdtLC6BvvVs2wO5r/ru+2N7nDicBSxNzarXO7nJIG2KA7UAEZARN9jliRlq
-         bKrC77Q4I8RNjjgDNmHpg796z1H+xpk5HyURzzsEKNlPKVMEEoHQGT8B8kvJ+s+WI15Y
-         JTNw==
-X-Gm-Message-State: AOJu0YwYHhbq5bVNzo0V4vjpPTp9hB/Rq1WvaX+QNlfm6v2uJP/pwMYm
-	AQf8EOtn7tHF9Nl7Atu5ORWedHpn1A86RTNtLRTVxsX8oixRZxzf85s0wTm+
-X-Google-Smtp-Source: AGHT+IFFH2dXD4/u8KGoMcsdlAu0XJqAkbNBFR0eSBy3BkBtBCA1KnsX++lMxG2V+BFH8gOUwBq8xQ==
-X-Received: by 2002:a05:6300:668a:b0:1d9:2992:d6c2 with SMTP id adf61e73a8af0-1d92c49fc95mr3759338637.2.1729268303039;
-        Fri, 18 Oct 2024 09:18:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729272619; x=1729877419;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/kexGPHg7BP7JEy0b70rSKtUMi9zN66ceCEdb7Ha4D0=;
+        b=ehgfiTQL6T5PLreDCO6UtDLoW+wYlR0Vd54M9baKpmd2Ke0wipHJW/zf5c6/d76jrd
+         MFKvQyhhI4x7xPDZTA9v9dPewNuFrK2as0RFaq17vOgcTIOLFaVq73jbWAsctWJZu8Z/
+         ew6OG/kTItPcFH0ScJidIUi7Un1tb4E2Ov6bnLDaf4MXNX5MympucXhxuFLRVfXBDoOr
+         7nvtEWO34h0VOFb7YqTWo1qwEbBnJo22KYmNk1TZ4f/AlS7L1HjFCPeupeDy4RqEsW+g
+         ls9SxQ0F5iKedEIwjv9XLMyMxveeggxBLr05nvljeTYe6kSx9fmsko9y7iZouUPxR647
+         OaiA==
+X-Gm-Message-State: AOJu0YyxtCU3bdOVnLDAqOZPXtaN7Vy+KalT/y7/pj94v/hS4dlW7KMw
+	oyKRJwsP4eS9gMl13oRQYpVKTo+6ywH5RFLPSMvAFQgG5OXsSfm1rHM3+3Nh
+X-Google-Smtp-Source: AGHT+IEbOGLNKLJrJFImzQpsiOOXU0drvvKYT531il5KzE7IqW3k2drNkmi6NFk+P7Ia/vyxbbkhgQ==
+X-Received: by 2002:a05:6a21:164a:b0:1d6:e6b1:120f with SMTP id adf61e73a8af0-1d92c4dffb5mr4996670637.11.1729272619178;
+        Fri, 18 Oct 2024 10:30:19 -0700 (PDT)
 Received: from dw-tp.ibmuc.com ([171.76.80.151])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ea345677asm1692140b3a.147.2024.10.18.09.18.18
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ea3311f51sm1725242b3a.36.2024.10.18.10.30.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 09:18:22 -0700 (PDT)
+        Fri, 18 Oct 2024 10:30:16 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+Cc: kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Hari Bathini <hbathini@linux.ibm.com>,
 	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Donet Tom <donettom@linux.ibm.com>,
+	Donet Tom <donettom@linux.vnet.ibm.com>,
+	Pavithra Prakash <pavrampu@linux.vnet.ibm.com>,
 	LKML <linux-kernel@vger.kernel.org>,
-	Sachin P Bappalige <sachinpb@linux.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v4 3/3] powerpc/fadump: Move fadump_cma_init to setup_arch() after initmem_init()
-Date: Fri, 18 Oct 2024 21:47:57 +0530
-Message-ID: <3ae208e48c0d9cefe53d2dc4f593388067405b7d.1729146153.git.ritesh.list@gmail.com>
+Subject: [PATCH v3 00/12] powerpc/kfence: Improve kfence support (mainly Hash)
+Date: Fri, 18 Oct 2024 22:59:41 +0530
+Message-ID: <cover.1729271995.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <a2afc3d6481a87a305e89cfc4a3f3d2a0b8ceab3.1729146153.git.ritesh.list@gmail.com>
-References: <a2afc3d6481a87a305e89cfc4a3f3d2a0b8ceab3.1729146153.git.ritesh.list@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,120 +97,113 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-During early init CMA_MIN_ALIGNMENT_BYTES can be PAGE_SIZE,
-since pageblock_order is still zero and it gets initialized
-later during initmem_init() e.g.
-setup_arch() -> initmem_init() -> sparse_init() -> set_pageblock_order()
+v2 -> v3:
+============
+1. Addressed review comments from Christophe in patch-1: To check for
+   is_kfence_address before doing search in exception tables.
+   (Thanks for the review!)
 
-One such use case where this causes issue is -
-early_setup() -> early_init_devtree() -> fadump_reserve_mem() -> fadump_cma_init()
+2. Separate out patch-1, which will need a separate tree for inclusion and
+   review from kfence/kasan folks since it's a kfence kunit test.
 
-This causes CMA memory alignment check to be bypassed in
-cma_init_reserved_mem(). Then later cma_activate_area() can hit
-a VM_BUG_ON_PAGE(pfn & ((1 << order) - 1)) if the reserved memory
-area was not pageblock_order aligned.
+[v2]: https://lore.kernel.org/linuxppc-dev/cover.1728954719.git.ritesh.list@gmail.com/
 
-Fix it by moving the fadump_cma_init() after initmem_init(),
-where other such cma reservations also gets called.
+Not much of the change from last revision. I wanted to split this series up
+and drop the RFC tag so that this starts to look ready for inclusion before the
+merge window opens for powerpc-next testing.
 
-<stack trace>
-==============
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10010
-flags: 0x13ffff800000000(node=1|zone=0|lastcpupid=0x7ffff) CMA
-raw: 013ffff800000000 5deadbeef0000100 5deadbeef0000122 0000000000000000
-raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: VM_BUG_ON_PAGE(pfn & ((1 << order) - 1))
-------------[ cut here ]------------
-kernel BUG at mm/page_alloc.c:778!
+Kindly let me know if anything is needed for this.
 
-Call Trace:
-__free_one_page+0x57c/0x7b0 (unreliable)
-free_pcppages_bulk+0x1a8/0x2c8
-free_unref_page_commit+0x3d4/0x4e4
-free_unref_page+0x458/0x6d0
-init_cma_reserved_pageblock+0x114/0x198
-cma_init_reserved_areas+0x270/0x3e0
-do_one_initcall+0x80/0x2f8
-kernel_init_freeable+0x33c/0x530
-kernel_init+0x34/0x26c
-ret_from_kernel_user_thread+0x14/0x1c
+-ritesh
 
-Fixes: 11ac3e87ce09 ("mm: cma: use pageblock_order as the single alignment")
-Suggested-by: David Hildenbrand <david@redhat.com>
-Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
-Acked-by: Hari Bathini <hbathini@linux.ibm.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- arch/powerpc/include/asm/fadump.h  | 7 +++++++
- arch/powerpc/kernel/fadump.c       | 6 +-----
- arch/powerpc/kernel/setup-common.c | 6 ++++--
- 3 files changed, 12 insertions(+), 7 deletions(-)
+Summary:
+==========
+This patch series addresses following to improve kfence support on Powerpc.
 
-diff --git a/arch/powerpc/include/asm/fadump.h b/arch/powerpc/include/asm/fadump.h
-index ef40c9b6972a..3638f04447f5 100644
---- a/arch/powerpc/include/asm/fadump.h
-+++ b/arch/powerpc/include/asm/fadump.h
-@@ -34,4 +34,11 @@ extern int early_init_dt_scan_fw_dump(unsigned long node, const char *uname,
- 				      int depth, void *data);
- extern int fadump_reserve_mem(void);
- #endif
-+
-+#if defined(CONFIG_FA_DUMP) && defined(CONFIG_CMA)
-+void fadump_cma_init(void);
-+#else
-+static inline void fadump_cma_init(void) { }
-+#endif
-+
- #endif /* _ASM_POWERPC_FADUMP_H */
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index ffaec625b7a8..c42f89862893 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -78,7 +78,7 @@ static struct cma *fadump_cma;
-  * But for some reason even if it fails we still have the memory reservation
-  * with us and we can still continue doing fadump.
-  */
--static void __init fadump_cma_init(void)
-+void __init fadump_cma_init(void)
- {
- 	unsigned long long base, size, end;
- 	int rc;
-@@ -139,8 +139,6 @@ static void __init fadump_cma_init(void)
- 		fw_dump.boot_memory_size >> 20);
- 	return;
- }
--#else
--static void __init fadump_cma_init(void) { }
- #endif /* CONFIG_CMA */
+1. Usage of copy_from_kernel_nofault() within kernel, such as read from
+   /proc/kcore can cause kfence to report false negatives.
 
- /*
-@@ -642,8 +640,6 @@ int __init fadump_reserve_mem(void)
+   This is similar to what was reported on s390. [1]
+   [1]: https://lore.kernel.org/all/20230213183858.1473681-1-hca@linux.ibm.com/
 
- 		pr_info("Reserved %lldMB of memory at %#016llx (System RAM: %lldMB)\n",
- 			(size >> 20), base, (memblock_phys_mem_size() >> 20));
--
--		fadump_cma_init();
- 	}
+   Patch-1, thus adds a fix to handle this case in ___do_page_fault() for
+   powerpc.
 
- 	return ret;
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 943430077375..b6b01502e504 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -997,9 +997,11 @@ void __init setup_arch(char **cmdline_p)
- 	initmem_init();
+2. (book3s64) Kfence depends upon debug_pagealloc infrastructure on Hash.
+   debug_pagealloc allocates a linear map based on the size of the DRAM i.e.
+   1 byte for every 64k page. That means for a 16TB DRAM, it will need 256MB
+   memory for linear map. Memory for linear map on pseries comes from
+   RMA region which has size limitation. On P8 RMA is 512MB, in which we also
+   fit crash kernel at 256MB, paca allocations and emergency stacks.
+   That means there is not enough memory in the RMA region for the linear map
+   based on DRAM size (required by debug_pagealloc).
 
- 	/*
--	 * Reserve large chunks of memory for use by CMA for KVM and hugetlb. These must
--	 * be called after initmem_init(), so that pageblock_order is initialised.
-+	 * Reserve large chunks of memory for use by CMA for fadump, KVM and
-+	 * hugetlb. These must be called after initmem_init(), so that
-+	 * pageblock_order is initialised.
- 	 */
-+	fadump_cma_init();
- 	kvm_cma_reserve();
- 	gigantic_hugetlb_cma_reserve();
+   Now kfence only requires memory for it's kfence objects. kfence by default
+   requires only (255 + 1) * 2 i.e. 32 MB for 64k pagesize.
+
+Summary of patches
+==================
+Patch-1 adds a fix to handle this false negatives from copy_from_kernel_nofault().
+
+Patch[2-8] removes the direct dependency of kfence on debug_pagealloc
+infrastructure. We make Hash kernel linear map functions to take linear map array
+as a parameter so that it can support debug_pagealloc and kfence individually.
+That means we don't need to keep the size of the linear map to be
+DRAM_SIZE >> PAGE_SHIFT anymore for kfence.
+
+Patch-9: Adds kfence support with above (abstracted out) kernel linear map
+infrastructure. With it, this also fixes, the boot failure problem when kfence
+gets enabled on Hash with >=16TB of RAM.
+
+Patch-10 & Patch-11: Ensure late initialization of kfence is disabled for both
+Hash and Radix due to linear mapping size limiations. Commit gives more
+description.
+
+Patch-12: Early detects if debug_pagealloc cannot be enabled (due to RMA size
+limitation) so that the linear mapping size can be set correctly during init.
+
+Testing:
+========
+It passes kfence kunit tests with Hash and Radix.
+[   44.355173][    T1] # kfence: pass:27 fail:0 skip:0 total:27
+[   44.358631][    T1] # Totals: pass:27 fail:0 skip:0 total:27
+[   44.365570][    T1] ok 1 kfence
+
+
+Future TODO:
+============
+When kfence on Hash gets enabled, the kernel linear map uses PAGE_SIZE mapping
+rather than 16MB mapping. This should be improved in future.
+
+v1 -> v2:
+=========
+1. Added a kunit testcase patch-1.
+2. Fixed a false negative with copy_from_kernel_nofault() in patch-2.
+3. Addressed review comments from Christophe Leroy.
+4. Added patch-13.
+
+
+Ritesh Harjani (IBM) (12):
+  powerpc: mm/fault: Fix kfence page fault reporting
+  book3s64/hash: Remove kfence support temporarily
+  book3s64/hash: Refactor kernel linear map related calls
+  book3s64/hash: Add hash_debug_pagealloc_add_slot() function
+  book3s64/hash: Add hash_debug_pagealloc_alloc_slots() function
+  book3s64/hash: Refactor hash__kernel_map_pages() function
+  book3s64/hash: Make kernel_map_linear_page() generic
+  book3s64/hash: Disable debug_pagealloc if it requires more memory
+  book3s64/hash: Add kfence functionality
+  book3s64/radix: Refactoring common kfence related functions
+  book3s64/hash: Disable kfence if not early init
+  book3s64/hash: Early detect debug_pagealloc size requirement
+
+ arch/powerpc/include/asm/kfence.h        |   8 +-
+ arch/powerpc/mm/book3s64/hash_utils.c    | 364 +++++++++++++++++------
+ arch/powerpc/mm/book3s64/pgtable.c       |  13 +
+ arch/powerpc/mm/book3s64/radix_pgtable.c |  12 -
+ arch/powerpc/mm/fault.c                  |  11 +-
+ arch/powerpc/mm/init-common.c            |   1 +
+ 6 files changed, 301 insertions(+), 108 deletions(-)
 
 --
 2.46.0
