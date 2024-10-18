@@ -1,61 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-2373-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2374-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580799A422C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 17:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 427709A42B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 17:42:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XVT0Y0qMMz3bZs;
-	Sat, 19 Oct 2024 02:20:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XVTVV65Csz3blF;
+	Sat, 19 Oct 2024 02:42:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729264813;
-	cv=none; b=JDGADwxKLmsvvbT0RGo1kQKz9RQwciAmOmJnWdJgIkKzD8fxExbgqywrzACBaKiLWdNKdX0SsUx6uevtB7BwSrWwcHUqRPOWR5BSXWbStbv7BBpFwglavzpkTr8i/yH7Aoauyis1EULtJcfGrcyM/r5dE92lCFoPNURf0BcOQRiCavhzuQkgjAInzth1F303mxBZPhfEQy8cfP6qRgvJG3MU7Pik+hRVlRsK+IK7uknNsoImMaZYzjfbBrpRpfP1kUD+RhHyGwnc/V1WZBWgxfMUUAMtzKBo8h9qClpZaU32a32mZ/6kRiCBHlxoX6RnWwXUIj2FHWOJjtBW2rewlQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729266162;
+	cv=none; b=ft2VlXbppWXJ+HFMLEdC5XP6SXN6dfOOdjRo+X0iCXIMVFNdwMkjIra9vLDjBwXSkQixXAQZgvUNP4dOwry15BTqowd7ui65UcooZavz34Bk/wZ6jQqVvtaBJVFNpNGFlhy4l/UbZ37DpGBeAFV58zwY2a32y0uWzJT4BtXgIr1nOkCZ8fcIjqNEKsU0BMzTLZmd3jAKFxnsfMUjkT2Ptu6rWjxIzduGb44vGWWaUqVgmsGISHqRQQZt4y2gjgNaaccH94Lm73PefOUjLwwD6gn3WGrvSvS8yXObhmHCzuAKrBXNkPGV762K8SJ4R/tmbwV7we2EJvt9/0FDkFnKug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729264813; c=relaxed/relaxed;
-	bh=lV42bYtWbNfI/HBeAg5JKgc40oxcnI4hhCxS5HmSKpM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MyCO0RlFVndIEyGqmPyRF2kRz8BoPTCuTOFQvnONAJAUl5PE+sFBSNssg3xHuuNkK2Fv7vtmvimdwj5LfluDbY0txnkOi7ZMWUJBcJZqKWme553zlM+4HNtVhXM0Fn5772Baw4Lnhd1briNiuXHnIEPur/NWR6jHoQFdkFsHe03tdvKZs4jjdOrqJ0a9Rs2xwxbY8hnWeCEwkiQtSxquHAH2m0QWvuUUXiPNm7HCuM6fxOTe6qZH2RQK2KcReC7uN+HzoQFfnz8EjdrsghP6eZqDhLK9mrEvF6F6MNIgR+HrBTupgQCpPFeAKoumOVm8hJNMmdDXNY2Ic8u6gJdbXw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rPEIufVF; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rPEIufVF;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVT0X1D3Cz2ydW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 02:20:12 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 3846AA40186;
-	Fri, 18 Oct 2024 15:20:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905CDC4CEC3;
-	Fri, 18 Oct 2024 15:20:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729264808;
-	bh=dYgNxH1KAZzJc6ZxlPcZAP/+GEwZCh9Os7i+9GyR4d4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=rPEIufVFvVle4/hC2CotZ+UlZBgPEYWocFgsbfUR8kAoE5OvZ7o7IDFQj23hLpBmR
-	 jHfUUfSOqhhSlOvRMNCl6yf/yXEOebgbLyhubypDljvYJd7Yj0Vo0UgZUMHa2Xub4c
-	 8KL3dnkKcBSq1JYM/R+dfoWGIMp1MoKAm0wPQjSYWIvtikr1OJJvWXWagXDethSbI1
-	 jzF3e6p6ABhjkQZQNN++aEhDwixxl9VATp+0Icx45+DCL5NWRFGvkRp2lXE+Ylryc6
-	 0gTehoePjWHfYi7sw8Fbu53zQYVGJkcp2NadIBa8AG35Emcem3TOvVUystVxkjltcy
-	 IODv7J7Lvg/CQ==
-From: Namhyung Kim <namhyung@kernel.org>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com, 
- irogers@google.com, hbathini@linux.ibm.com, 
- Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com, maddy@linux.ibm.com, 
- kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com
-In-Reply-To: <20241010145107.51211-1-atrajeev@linux.vnet.ibm.com>
-References: <20241010145107.51211-1-atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2 1/2] tools/perf/pmu-events/powerpc: Add support for
- compat events in json
-Message-Id: <172926480855.1381973.17233939395641584642.b4-ty@kernel.org>
-Date: Fri, 18 Oct 2024 08:20:08 -0700
+	t=1729266162; c=relaxed/relaxed;
+	bh=PNHbKgQoTdI2HvVwv1DgCkNig4pcKJSmLd5MwaR3TnI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WndtITRtVjkpe/BuoHeOtm1F5Dc9Md+obha1Q8wuGhT6C5eczZkInkjnyCxcZ6CpG52NX529XAF4cnuaWRIfmWbhcpd7wkT0vGKq9NA6F+R+FfzTqn5HyCvOt4WIJJ/BLLkdVX1A8TC/OsHI8NTNsQzKzBAVjNaDwryy3bF4QsDyokg20Lig5C56ev8SGfXCZZJfeSAMzViGSpTWy9PAs4GZXG57epg70+JQIxWYd+SspMNSch5dSieh8YXPeN0OTuDnOsmpvlv/gLy6tnLUgybtFclGUnNkpkjO6JOHh0n+hTlkj6CwVspWK2safs4qvlVZHFU6zQXM6EpIiR+KuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XVTVR1jtkz2yGN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 02:42:38 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 49IFck73006368;
+	Fri, 18 Oct 2024 10:38:46 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 49IFchtv006361;
+	Fri, 18 Oct 2024 10:38:43 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Fri, 18 Oct 2024 10:38:43 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
+Cc: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        naveen@kernel.org, maddy@linux.ibm.com, arnd@arndb.de,
+        chentao@kylinos.cn, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.com
+Subject: Re: [PATCH][next] powerpc/spufs: Replace snprintf() with the safer scnprintf() variant
+Message-ID: <20241018153843.GJ29862@gate.crashing.org>
+References: <ZxIcI0QRFGZLCNRl@mail.google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,29 +47,24 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-c04d2
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZxIcI0QRFGZLCNRl@mail.google.com>
+User-Agent: Mutt/1.4.2.3i
+X-Spam-Status: No, score=-0.0 required=5.0 tests=SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, 10 Oct 2024 20:21:06 +0530, Athira Rajeev wrote:
+On Fri, Oct 18, 2024 at 09:28:19PM +1300, Paulo Miguel Almeida wrote:
+> The C99 standard specifies that {v}snprintf() returns the length of the
+> data that *would have been* written if there were enough space.
 
-> perf list picks the events supported for specific platform
-> from pmu-events/arch/powerpc/<platform>. Example power10 events
-> are in pmu-events/arch/powerpc/power10, power9 events are part
-> of pmu-events/arch/powerpc/power9. The decision of which
-> platform to pick is determined based on PVR value in powerpc.
-> The PVR value is matched from pmu-events/arch/powerpc/mapfile.csv
-> 
-> [...]
+Not including the trailing zero byte, and it can also return negative if
+there was an encoding error.  Yes.
 
-Applied to perf-tools-next, thanks!
+Not that this matters at all for your patch, so why mention it?
 
-Best regards,
-Namhyung
 
+Segher
 
