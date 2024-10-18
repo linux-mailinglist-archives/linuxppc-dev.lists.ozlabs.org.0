@@ -1,79 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-2414-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2416-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D469A4656
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 20:58:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D929A4977
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2024 00:06:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XVYrJ4g2rz3c2C;
-	Sat, 19 Oct 2024 05:58:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XVf1R3dwzz3bpt;
+	Sat, 19 Oct 2024 09:06:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729277904;
-	cv=none; b=edKQY0YcOgNMah9R0l85QFhwj3YuQ5aIzLtWh+wmOA7bPwR1I8UYnHP002soSf6+819Sp94LkN/SdfPFPhBzvbiunQTlwyjtF/Twc4qrxZLP+RZuhb5I6ODBGPVIBsuXcr2KVMkEvMrcQdDxrqXiIl0Hf1JE7p9mv0W3wgQHg9jdhzHnEtQYDiPmrU05ksBe5dMNNJSHywrkwlx23Bx4EZy51tAG7eJSGk3ng3wqcpGFJAnraQotAYCfkrEiZbjcvntrYsYmIQr5S1JYzdTNUjkP3cQFJUeXX97m34kT+uhmfXvTGVo+piR1+4pdukDbOBPEaCtesfxY62t1VERLFQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729285418;
+	cv=none; b=ckPvhRASpvNHx/xCZSEYI+IhFvGYWiszBcVZ2eygx7D93aYfyDRUw1WC+qIx9zNh33GeYDYeNgEmn21q+DOOBeBzkEYTavMofgeNFaBuWTPcbOaI+h+L72rOgWTppA8kqAye7ZDbOsPGK7ow1fmylXJHTM/VMv1vdugCwGOaU/EW+ZHTgCipd8e3h+MU9sWrzqPsApUK2h3kLSswIty+1qfc/4mfTObTVE21QHZxwLF91s3OjDOz61GGpsWyhacJEgvMTQXeqeUZ7yCZqwyqXZY8INBLST6Y+IHPpwU3sXCMKcE1c6y6+W9lxHnJDl1MdJwTvvWwipmgVsQLCyw0mQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729277904; c=relaxed/relaxed;
-	bh=CYqC2h4NLHyR+o/7MNIAz+vw9QnRHlBDOZXnP3K4b04=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K5h82ZWdp9VKzjq3UWwjgq9CbG1W2AKhhVA1j6ll8fBmGm5mQI7Ijt341paKiE011anvH74Q2oGRWj6Ij6l2k9u8v5hJXAapSJWA+5hH++g69T1XZY97g98Q8inCxVOjZrAnipg4gPdCch/faEPiYy1tcazecmk0/iFdLO8QMREZ1tRl4oeLNTd/+d5BOmfd30NuUbZ7QuOMlqmifUWySdy33SflvRRunRoSi1G1TiWLcG5EW7WjQLMmiWXC1Zqkt9Plotl4eIGL2dxn0+CXCBPRRvl4gtqZ46W3Tt83gY0kWaTQi4jPpya4diDNF0K/BY8ZOU/VGFmigGoinbb3zA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eLMksYF2; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1729285418; c=relaxed/relaxed;
+	bh=nt+dAjhuzZ5n+ygaPAn3gZpiBolEQtWHa7Naom0sNUY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JEfJk33zdEvzbL99N/6j8onIcnsM6nUiUzgxswM+SCYQSPqK1Y0iQ4cejL3WhxGDlj8MdXV5wBQzFwPujYfqFySs+Hbzrh5G+lq+YCKou0KsvF151G7NS1x5GJfHFMcKs/0xaetvtZ99BGa8A4hYrGauVseQqd7WUhP533X6kW3loZdGrtK2D/P1ugkYZUJ4nAiMNjcfYR9ya79zbFYT1KtroMts7+hkaiKkeJm8Aa+sDA/AeJvkpNuLtyoEjSczD9k/Rp7kwzz8OJiAYkKRZP39g6GYt+I24ZEAfcFqvhAqq1waH5rTOJzzv8tbcMERfmuBWBASYgwCvlUSYhD7qg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=149Fzrn3; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=elver@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eLMksYF2;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=149Fzrn3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=elver@google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVYrH61LKz3c1g
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 05:58:23 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 8B68B5C53A2;
-	Fri, 18 Oct 2024 18:58:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212B1C4CEC3;
-	Fri, 18 Oct 2024 18:58:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729277901;
-	bh=uNlY1sb7BVVXCcsMVu8Ynjn1FGT7oBovqYRNZBeSUEk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eLMksYF2A44sAVvXMLLc1QTO05aMjS+OBbVmUBAl+DMijULjAXZurx2DG/2ulaJIR
-	 JoRrmGIMHs433yhhly72II6CWLzqRAVpX7aKU1mtpg6T0fpj7F2CGdBFMTHC73KR0M
-	 8F7jBP38fFa63M2huQVX1hUtG6EE6PmoyBn8r99Au5V51HZQG1wKGt+XBJra9oGAv2
-	 SEVoy+pa4Wl38FEIXcpvG6eG7DIbtbR/zHF0Hi6hn5WADwn4Sigjjt6iAGl732xv2+
-	 HCewKfZmlZHMdZYDLFUn/NN8FFYPEobIhZ6ZTRSLzI73wByX7vcPT488drJ+4JFOBO
-	 GIYxXYQDKHcTw==
-Date: Fri, 18 Oct 2024 19:58:12 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
-	Len Brown <len.brown@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
-	linux-mm@kvack.org, SeongJae Park <sj@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	netdev@vger.kernel.org, linux-sound@vger.kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	linux-media@vger.kernel.org,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: (subset) [PATCH v3 00/16] timers: Cleanup delay/sleep related
- mess
-Message-ID: <8e079f25-658e-4671-9b3e-c3e46f36405b@sirena.org.uk>
-References: <172892295715.1548.770734377772758528.b4-ty@kernel.org>
- <877ca5al86.fsf@somnus>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVccm5wdDz2xrC
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 08:03:36 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2e2bd347124so1903144a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 14:03:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729285412; x=1729890212; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=nt+dAjhuzZ5n+ygaPAn3gZpiBolEQtWHa7Naom0sNUY=;
+        b=149Fzrn3QPc6ZcPu1dEj9txH7bEs48w6Wc3mNEnTkCX6UpDgoNljZD3F8ryUC2YGMX
+         E1uA/aoCImFmCOESATtkALn3ZwOIjZs4j4/jA9FAqBbsig2p8DA/xuN4rzmWg1eseCEa
+         GLPFoQFyskFH5X7lR/mSBxSMapV6yN6ySn+SOR2gMt5zaRJ2S/ohkjFF/ol6bY7ot6jD
+         +Qo2W625JwrxH59cHn//yCiC8u+JVbg9eY3AfLmIUsKPFc6oGd/uy5Ll3TXXyRGfXNky
+         BH/oIAKFlvKt5dKwPFzsv7rkRg7pxRsqHa2r4gMsYrmECyk6DxrR5Ja5aO1BeJPN8DZo
+         RKIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729285412; x=1729890212;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nt+dAjhuzZ5n+ygaPAn3gZpiBolEQtWHa7Naom0sNUY=;
+        b=EbEs474diBIMXcS4koBQTkq8X6YU1wMUfG5yLShziK33KIj1UZpFXrlnrteQ/wNaF9
+         GzAi7RPuJhHDGI4jJC/Hxy4UJYR1R9nhczoKjv5stzW6Lpog8OyDLyivc7Alq+klRvWu
+         FGHivfoKp2BgLGTIOcdIpOijRGR5UcJWd1L02UMUvFZ8QzlRs2cK6WKsoKvweC/45nYu
+         U1SH4VHyp0zvVC1EppGLGKKv3FpgjTF/y5j1LzQOeQn/bFJ2QohnS+kzldPdRNJV3JEF
+         fcZEIYNfQDi2xfYTK5zz1ub6QlI2Y7XthpznuEHiBP4/2rEyMP5HBRMup+2DMuR8WQzO
+         lQkw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNdZNrzDcNxqwhHQASa54jGtdjNtU0v70D8hUoEECakhRZiQpa9RDCKV/Z2IJzO2MrZTCvb9nFFhXWLSE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YynfexWJG6hAJkF/mjJkAzv4MGWSn3LIEHB7kQnnBLdRjJdrWg1
+	o8cxadDoPkEJPrYnmL3tbns85SsSwewLJTSdhbbyYVTjk8NPmP6SZzDAxYFyEusep1smBlEYDSt
+	5UDRQKROzLzPsyVnRpgpnE5y0JcSeXoFXps2N
+X-Google-Smtp-Source: AGHT+IEqtDiQGQ2m97dC1U/b6tmKS9G4+mhtsocnFyilcn7/D2jeuhNf+cYw3AyGzhurPX7BfICfIrDLSl6qK1QdU/s=
+X-Received: by 2002:a17:90b:f87:b0:2e2:d821:1b77 with SMTP id
+ 98e67ed59e1d1-2e5616509b4mr4435772a91.24.1729285412125; Fri, 18 Oct 2024
+ 14:03:32 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,47 +70,102 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="P8JRaMzcXswSHEtS"
-Content-Disposition: inline
-In-Reply-To: <877ca5al86.fsf@somnus>
-X-Cookie: What is the sound of one hand clapping?
-X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+References: <210e561f7845697a32de44b643393890f180069f.1729272697.git.ritesh.list@gmail.com>
+In-Reply-To: <210e561f7845697a32de44b643393890f180069f.1729272697.git.ritesh.list@gmail.com>
+From: Marco Elver <elver@google.com>
+Date: Fri, 18 Oct 2024 23:02:51 +0200
+Message-ID: <CANpmjNPQtAMbF2BZbUVOL+Sx2+VSOwxgxzXR8yFvDBH4Euu7Ew@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/kfence: Add a new kunit test test_use_after_free_read_nofault()
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: kasan-dev@googlegroups.com, linuxppc-dev@lists.ozlabs.org, 
+	linux-mm@kvack.org, Dmitry Vyukov <dvyukov@google.com>, 
+	Alexander Potapenko <glider@google.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Nirjhar Roy <nirjhar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Fri, 18 Oct 2024 at 19:46, Ritesh Harjani (IBM)
+<ritesh.list@gmail.com> wrote:
+>
+> From: Nirjhar Roy <nirjhar@linux.ibm.com>
+>
+> Faults from copy_from_kernel_nofault() needs to be handled by fixup
+> table and should not be handled by kfence. Otherwise while reading
+> /proc/kcore which uses copy_from_kernel_nofault(), kfence can generate
+> false negatives. This can happen when /proc/kcore ends up reading an
+> unmapped address from kfence pool.
+>
+> Let's add a testcase to cover this case.
+>
+> Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Signed-off-by: Nirjhar Roy <nirjhar@linux.ibm.com>
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> ---
+>
+> Will be nice if we can get some feedback on this.
 
---P8JRaMzcXswSHEtS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+There was some discussion recently how sanitizers should behave around
+these nofault helpers when accessing invalid memory (including freed
+memory):
+https://lore.kernel.org/all/CANpmjNMAVFzqnCZhEity9cjiqQ9CVN1X7qeeeAp_6yKjwKo8iw@mail.gmail.com/
 
-On Fri, Oct 18, 2024 at 10:06:33AM +0200, Anna-Maria Behnsen wrote:
+It should be similar for KFENCE, i.e. no report should be generated.
+Definitely a good thing to test.
 
-> Would it be ok for you, if the patch is routed through tip tree? kernel
-> test robot triggers a warning for htmldoc that there is a reference to
-> the no longer existing file 'timer-howto.rst':
+Tested-by: Marco Elver <elver@google.com>
+Reviewed-by: Marco Elver <elver@google.com>
 
->   https://lore.kernel.org/r/202410161059.a0f6IBwj-lkp@intel.com
-
-Oh, and for that:
-
-Reviewed-by: Mark Brown <broonie@kernel.org>
-
---P8JRaMzcXswSHEtS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcSr8MACgkQJNaLcl1U
-h9DpWgf/c8OCSZtN0/AmetsDqa/zvYT//zsqcY10Jl3YSsQgCEAIwkc0GWEdl0Bv
-mAY3s/r8vi5dSXK1YARWoSlvYA0h0R7ysi9oKy/2HyZ4fo6uVT/S95tSH90rL8UD
-IUtMu6N43Pak52+2hhGl4glVX5yDjXT4+8rMZjL8G9F07fXblzftyGP2G/HfkuJS
-FJ36afHCl/AMmoe1TkGpHHOaOXVbPlukUtX6ZQFepWJjUiv/4YgoFxH8SVoyqP8W
-ROEq86SWvagekQ5nzr8Jgn2DaWiFSN/e520uN6Qz8kELdR+fV/NquTsUmszeaZ+z
-tnB/CGQgVUWV17Pn7WAs3w+eDCRuVQ==
-=RPH6
------END PGP SIGNATURE-----
-
---P8JRaMzcXswSHEtS--
+> v2 -> v3:
+> =========
+> 1. Separated out this kfence kunit test from the larger powerpc+kfence+v3 series.
+> 2. Dropped RFC tag
+>
+> [v2]: https://lore.kernel.org/linuxppc-dev/cover.1728954719.git.ritesh.list@gmail.com
+> [powerpc+kfence+v3]: https://lore.kernel.org/linuxppc-dev/cover.1729271995.git.ritesh.list@gmail.com
+>
+>  mm/kfence/kfence_test.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+>
+> diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
+> index 00fd17285285..f65fb182466d 100644
+> --- a/mm/kfence/kfence_test.c
+> +++ b/mm/kfence/kfence_test.c
+> @@ -383,6 +383,22 @@ static void test_use_after_free_read(struct kunit *test)
+>         KUNIT_EXPECT_TRUE(test, report_matches(&expect));
+>  }
+>
+> +static void test_use_after_free_read_nofault(struct kunit *test)
+> +{
+> +       const size_t size = 32;
+> +       char *addr;
+> +       char dst;
+> +       int ret;
+> +
+> +       setup_test_cache(test, size, 0, NULL);
+> +       addr = test_alloc(test, size, GFP_KERNEL, ALLOCATE_ANY);
+> +       test_free(addr);
+> +       /* Use after free with *_nofault() */
+> +       ret = copy_from_kernel_nofault(&dst, addr, 1);
+> +       KUNIT_EXPECT_EQ(test, ret, -EFAULT);
+> +       KUNIT_EXPECT_FALSE(test, report_available());
+> +}
+> +
+>  static void test_double_free(struct kunit *test)
+>  {
+>         const size_t size = 32;
+> @@ -780,6 +796,7 @@ static struct kunit_case kfence_test_cases[] = {
+>         KFENCE_KUNIT_CASE(test_out_of_bounds_read),
+>         KFENCE_KUNIT_CASE(test_out_of_bounds_write),
+>         KFENCE_KUNIT_CASE(test_use_after_free_read),
+> +       KFENCE_KUNIT_CASE(test_use_after_free_read_nofault),
+>         KFENCE_KUNIT_CASE(test_double_free),
+>         KFENCE_KUNIT_CASE(test_invalid_addr_free),
+>         KFENCE_KUNIT_CASE(test_corruption),
+> --
+> 2.46.0
+>
 
