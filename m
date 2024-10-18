@@ -1,69 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-2375-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2376-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B08D9A4300
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 17:55:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D369A4337
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 18:07:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XVTn30FHvz3bn9;
-	Sat, 19 Oct 2024 02:55:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XVV2f742qz3bpp;
+	Sat, 19 Oct 2024 03:07:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729266918;
-	cv=none; b=RN7y8M48k8ou4TUlbMML/nEwuKOoIzU1DH5H9weEvTvV8w87wII4opVR7cnkZFYj8tABMuPtQRX8eDZDnjTUrSP9vJkzzt81aWSrePJJUobBQvkREVCAkoZZASowALfFaW/5Gi+76JLUzBw/AFLggIEq2whZvwKaIlziuMl/J6IFJebiOMyG6KRjCP1fLgAMtAucaLVzrMOOLFWEtWeR5lxKJiuHmV4UmU2TZsPt2Xdn8zbXaK/XjU3XBvJhMUAYf7bLi9e2lqt49ppcKJEKhbh3VoiocnpKzvJvHqtHjNlIi70mJmgRaOoseBicYo2dB3hoKN9iv1PxYr3sN0t4BQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729267626;
+	cv=none; b=FehLPedS4Ztu91UBIT02FiwTU9KDVI2aVYoJ745c9aqB5SFtkkkxd7Wg1ClQRJ+NAV5X+ntiWfotHC39TTb6d3RBZX2JYKXML98AvpDjSuL6weu13Ix1jMhnU1ZbfFhXeYzlmtmArSbZ95VHyhoJxdvB0sgcrpl8RPGtVrVS8vT/36WaRCZI0kZ+9k6uB+W2HIMuujMLHPA20Hut6//OCPX2CLSyMZweLw8YpHP/UOIBLXSWvEZ2ncvR988YZFjPwrCSCDYqrlHun+RfIymfX/RCBxDEx8L/DN4Aciml1XDz1S60qaKJzLaflWP19Cn/bApWdn4g2fwvHzBLkJ6b9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729266918; c=relaxed/relaxed;
-	bh=qN491zR5Aog1DsYzRi+rFh0EPj81SgGZBJkoxYqSaak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X77++TJ97D+RBzjImJzxL6bVfACsPx+t6OUT4pllv53jIamFk2rjuuDr3do5lviX8todek4V1pEIlpr3v5Bp1s/eqvbbbjO/q6M7zJKfFAEbWLXQEpCZFp2YS4P4EmHSP3UtM881Ai8CHEGcv26fNGPnXD5IQuUEIfscBjsAD/t9VT+TlR2LMAy3hFGPdzvJoBu/4Q3SZ1xZTwJTcH0cl1wSnSMxS3HVbY2we6S+gMM3QALF1KB7GHIi8npwoRAerbk1LzGkRYdVwsh32R8ac6r83W5z3yozBLEMxjjj+G1JsGH6Lla1iSsUoM1s8UHivwbz6Rz2M/6D0bl86z7wxQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CgeeZh71; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1729267626; c=relaxed/relaxed;
+	bh=2oxb/SAQUrEM+BNO0w0IMGwQpA+53ixNq+VSmsiWddk=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=CmNqr18dVHgscWl/b7AwJjkH6mwgXiI+6Opja2THyqoydP+f/xygWgQ+MvA6cVT3zxhDJnEVthPG/7DFk104m9lBb1vA/c/M+NE0pIysbWctUyrFhqMp0HJ0e+e7yAs8nst6wyGZGj2CrTo5wGoPjEeUgjxn1+VKEwX9iYDIrn/yd499r48FUQZVOK1Ls8/A3sRYE8HDskehVuv+cEBxkiJ//Dqr7gXTD4NV8xOxwAzNDK65IL0bg5FKzRY+VuGK26E/Xcegb28gjG/Z1yo6t7PwIQKui3HNHPQDyJ1MfWBS5OC5bTNdNF87ZO6uQ0RYynrl36aEU7u2BwhD0iTS9w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bz7vFkmw; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CgeeZh71;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bz7vFkmw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVTn209Rpz2yGN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 02:55:17 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 995CCA44523;
-	Fri, 18 Oct 2024 15:55:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71F2C4CEC3;
-	Fri, 18 Oct 2024 15:55:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729266915;
-	bh=htHCVl3dLq19V8wPIxFnR3ZwPaftOj2Ne5i0C7AnREY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CgeeZh71kHHVa+cdIml4FAaHnIyZWEzgZRfuxPxxCs+RFgod+LNwbqICcNdi7yKjG
-	 QG1DB6W5hM6ZVIvhWravyOF6IJevy+fGh8ntBge476UHqWIqXRDvOPzREa0THkkj74
-	 Tc1xt0ykVx00t7JDcJObK37GMAXrH6vxy6QQB7M6CLaveixPdN5FuLclDcwS9RLUYG
-	 ZPlR65HSH+C7UTrMN/lgWv8zpB2FXtMTM+LdBKsUJyWILobAbQNZoc3LeDI8+RljKY
-	 oT1t72OoDDbv7tLUqEuj/7Vqg8AltGdVRJc2brKLDUmuMc0dPgOcJR5Gtplahxz4FA
-	 QTr93f8rHUetg==
-Date: Fri, 18 Oct 2024 08:55:13 -0700
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: "Kirill A . Shutemov" <kirill@shutemov.name>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Waiman Long <longman@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v2 3/6] x86/uaccess: Rearrange putuser.S
-Message-ID: <20241018155513.zaufdhi7p5mrz2bp@treble>
-References: <cover.1729201904.git.jpoimboe@kernel.org>
- <7818233ecd726628a3eb9cbb5ed0ba831e69af4b.1729201904.git.jpoimboe@kernel.org>
- <srdcfvwgmm4aiyny5ex24puhi7u4rohy2sjb2htrzqhr7igekx@bh3c22loauzb>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVV2c6yhGz2ywq
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 03:07:02 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-20cf6eea3c0so18755505ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 09:07:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729267618; x=1729872418; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2oxb/SAQUrEM+BNO0w0IMGwQpA+53ixNq+VSmsiWddk=;
+        b=bz7vFkmw8gD45MNsNjKMXK/Ji+sYD0nTUkNKa17MYlFePc2mMXl7UCRjZI/5R+rP4y
+         9v7e+FHovFnSGXqv7KrVgUjzXA/Nms1U+cx/05Mvegxr9SJpFpUnkrEgr9nYp2kuJiKl
+         y/lSBKbuCCpcroYVRwOwP1RSK9JOPwtBxjkUBGfakn/RKBAM3jUi1q0+e7bw5XvXk18R
+         sb93WnobmwK/SuvW0N4R3PZuHelGJP0j6r5nrMwn1zPG3mQu8Cc1W/QhIapn+Do+uwHN
+         GL+u7D3A3Ag3AckJspJkmCeT1C7lXo4c7CPvIR8BGCf0aFuYyCaRvn+hCdMoruWawM4d
+         0BAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729267618; x=1729872418;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2oxb/SAQUrEM+BNO0w0IMGwQpA+53ixNq+VSmsiWddk=;
+        b=K9NV68f538t+Lu3qY8+WuobjuEz13bNUoihdMr08cRCvdauSc2AfKMfbbHsDOTO2m8
+         5Iw3aWzYs07ACkYiFTkZ/OnHe47BCyrP+Q5/jjYz0tT2keydzM1j8rPDlOxj07+Vq4gY
+         DrSvk4CRbYoUKELyAN1oV2dLz3fQWLoUplE/WkNtUVq3Co1Zvb3pYu3XTkJ271GbCrtC
+         cNU0DhcGGzEOqBkDivSVs4YjG71BcQ57dYVfrzS7PjKL8xaMwOT1bzZsvQddEfSj7JAN
+         9dOlaaNSlL21B5qFeunh21ccmR5vQmmp0Ujysc17Vy7b/sUUS0Tfqp2Pkjf/gZJKqAef
+         r62A==
+X-Forwarded-Encrypted: i=1; AJvYcCVXey84Q35IxX2faH88koHzxaSGV0EB28PSwbbr/USKsIUJf7m3bKKa97wcg4uQrYr4EplGgYWgSQKzK44=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzPJBQ+1T5Jab4EP1ULxodJ7zWIsXGU17m95j8KIneA3D8n8bfj
+	V+fdPGnQdlP4Aq7bYV07olmDHdAROWw8npNqSOmKD1as1AtuiSyn
+X-Google-Smtp-Source: AGHT+IHH+8mnLv/RNwmJofMZH1/UlAGTE95HlSmIfUGjBIn/0P3/HWerod9ADou0u6dLHFU/8kiQBQ==
+X-Received: by 2002:a17:902:ccc8:b0:20c:c704:629e with SMTP id d9443c01a7336-20e5a93e82amr47973845ad.56.1729267618038;
+        Fri, 18 Oct 2024 09:06:58 -0700 (PDT)
+Received: from dw-tp ([171.76.80.151])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e5a8fe68asm14345345ad.237.2024.10.18.09.06.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2024 09:06:57 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, Sourabh Jain <sourabhjain@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@redhat.com>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Donet Tom <donettom@linux.vnet.ibm.com>, LKML <linux-kernel@vger.kernel.org>, Sachin P Bappalige <sachinpb@linux.ibm.com>
+Subject: Re: [RFC v3 1/3] fadump: Refactor and prepare fadump_cma_init for late init
+In-Reply-To: <b66e69a9-7098-44f6-822d-f19bfe85117d@linux.ibm.com>
+Date: Fri, 18 Oct 2024 21:34:23 +0530
+Message-ID: <87zfn1gzy0.fsf@gmail.com>
+References: <030b6d46fddac126a6cf7e119bea48055338f0ed.1728658614.git.ritesh.list@gmail.com> <941875f7-0d7f-4ba3-bc7c-7aedc3b20dae@linux.ibm.com> <87bjznyliv.fsf@gmail.com> <b66e69a9-7098-44f6-822d-f19bfe85117d@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,50 +81,17 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <srdcfvwgmm4aiyny5ex24puhi7u4rohy2sjb2htrzqhr7igekx@bh3c22loauzb>
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Oct 18, 2024 at 11:51:06AM +0300, Kirill A . Shutemov wrote:
-> On Thu, Oct 17, 2024 at 02:55:22PM -0700, Josh Poimboeuf wrote:
-> >  SYM_FUNC_START(__put_user_2)
-> >  	check_range size=2
-> >  	ASM_STAC
-> > -3:	movw %ax,(%_ASM_CX)
-> > +2:	movw %ax,(%_ASM_CX)
-> >  	xor %ecx,%ecx
-> >  	ASM_CLAC
-> >  	RET
-> >  SYM_FUNC_END(__put_user_2)
-> >  EXPORT_SYMBOL(__put_user_2)
-> 
-> This patch provides an opportunity to give these labels more meaningful
-> names, so that future rearrangements do not require as much boilerplate.
+Madhavan Srinivasan <maddy@linux.ibm.com> writes:
 
-Yeah, I can add a patch like Linus' patch to getuser.S which
-encapsulates it all in a macro:
+>
+> Patchset looks fine to me. 
+>
+> Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com> for the series.
+>
 
-.macro UACCESS op src dst
-1:	\op \src,\dst
-	_ASM_EXTABLE_UA(1b, __get_user_handle_exception)
-.endm
+Thanks Maddy for the reviews! 
+I will spin PATCH v4 with these minor suggested changes (No code changes)
 
-	.text
-SYM_FUNC_START(__get_user_1)
-	check_range size=1
-	ASM_STAC
-	UACCESS movzbl (%_ASM_AX),%edx
-	xor %eax,%eax
-	ASM_CLAC
-	RET
-SYM_FUNC_END(__get_user_1)
-EXPORT_SYMBOL(__get_user_1)
-
--- 
-Josh
+-ritesh
 
