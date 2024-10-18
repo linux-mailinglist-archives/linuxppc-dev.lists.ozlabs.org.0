@@ -1,77 +1,105 @@
-Return-Path: <linuxppc-dev+bounces-2368-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2369-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA039A38CB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 10:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ADED9A391E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 10:51:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XVJ7H5F6cz3bmY;
-	Fri, 18 Oct 2024 19:40:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XVJMw6kczz3bm7;
+	Fri, 18 Oct 2024 19:51:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729240117;
-	cv=none; b=jIx2kyPdyaoxnDxXVBEMKvPtxrtLn99lIODe6TB0l9SXZuk9S0jqyMFyqaLGjiPlPQzywQfYgKpAwLqbEhUyj963cQy/Do7zaYqeANg/uy1c9ZP29EyIxBOeJrbOx4z42XLTHz6WFfTK3tsQJZcNh6ozW49M8Gw+0RHflh5MdiSN9A4ZPmIfC8d3rDU9mZtNd1w30SmrGXBku6/zuoSThRFvC6fmJF6LJV6Sltms2XnGuoippJZxB0TMnTfcpluaO6uOCBOxNShmr3gbPEXb7e8g0RZjBMiTdlY7iDgodfcsLKf9G+PdcLtGGpUXwRyFz/Ly9dCblPAeHWfaVRp1vA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.152
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729241484;
+	cv=none; b=PpeKvlH2F1Exm7O5NE/9ixlNsDKI8DNxgB3/2qX7XxOBxBzZXxONC7Auq+l00szQwVjI9qlGUZxMBXs4BsvHm2R7ixB98MGsK46IrLTWmN4t4URa0oEUpY6Gz0oYpsWpU/P0e5bS4bM7BcYlOfHqUNhosNvneldTpZtCMv2qoOi1epXB1dIX3gsi25tfNQOvgAIcFrLQe98tv/e10TR3qIgg5PK0CZKlo8rOl21dpba1mqOVYJzn0qa06aBXsLGDvTcG5DGXjINHjP77fMYa0iOOWVYE1ZuSEoaexPnwAsVzBYb02EHyofTX2Z1AlS8XaHR7uCFC037jv9RJwa2iCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729240117; c=relaxed/relaxed;
-	bh=w3R+DG0W9j/rrWWMMX7Q5Mr3+2LO1x036RhMhClSpMc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=d1j2nCOANzIxbAm5rUpfkwsR4Fk3XZhkPt5iXLnSBsh8vGgfQ5AzxawOxpHl2sfDuPV0fdS2/KMb69F+iPGVVX7MEouvyrt6cEkByBdxiUX9WEhqj40VcwCAJwFmgy6yOhSku2A/R33R6iJLgfuke58zkseEmka7hC4z8ctxISYHt3lrOZza+S22JFowcbvcMYsqb8etYg7aenDZ0Ktyco/f6wSRkPfxD4p4M/3P98cIz0paoWxI82BFVfwSlFBccuKOvnZ4Crhkf+RuzzyLcU8PNhjd6F/Yi4C2D1D7LF8pENpw0hSfRfjxl4ZvQL3PR5A1YdTyfPA3b6YWqpF7ig==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=A4NJep0p; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=paulo.miguel.almeida.rodenas@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1729241484; c=relaxed/relaxed;
+	bh=ujq12Rn1ZYuFrl0E2Y4gVr1fgaquKynz6QQkqj20W+0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GIFbosHxu4gozjfD3phHmvafBV2YbX1bIGR0KvsY+YT8DJbWHxVCuVTpDRfCKmr0fPDNaj1kQEU8pYYGULVyBynx8Dp0wwPWq4m568e1sduXMqKgCyswtfcVhhqGqAd+Gl6xjiwqi2ih+xrJByEoFhqe+kydDoCYvURU2tFjlE5RP0DoT8Fbw4NOpLhtD5bro36XtoSyoRQrFcDYmjeU8xUss5MiYTBUwGp4Pxc9PfBAiLCy29RUlPBGxDizCl8lktSDbNwZgaXh/VZSiCC6YDcd9qlZkcCrCuL4iX5PXeMOYC0m9r++qBs/OB+ZqJ4l7cjYgroGdgS7nWdBXqYnyA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name; dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=Z3dLR58s; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=ejJML6iW; dkim-atps=neutral; spf=pass (client-ip=103.168.172.152; helo=fhigh-a1-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org) smtp.mailfrom=shutemov.name
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=A4NJep0p;
+	dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=Z3dLR58s;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=ejJML6iW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=paulo.miguel.almeida.rodenas@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shutemov.name (client-ip=103.168.172.152; helo=fhigh-a1-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org)
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVHsX6xXQz3bmH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 19:28:31 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-20cdb889222so19266755ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 01:28:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729240108; x=1729844908; darn=lists.ozlabs.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w3R+DG0W9j/rrWWMMX7Q5Mr3+2LO1x036RhMhClSpMc=;
-        b=A4NJep0pj5E9rpTZY5sZew4+l/HUZad++KR8RmEpf7dbkRkCVL9th9tmbjfNQebTEd
-         8YXt8R23fUg3XsMw8Xd84+nq/Uuzu+JjaxJl5K6/9/71g3Swa34nl3+oU7K9XaZYVTYu
-         XOecYPN4wHYO1AcmDwGuwvuDnVydEEnLGiREMHoycS9enr0r1i4sNY8BbnnVXEY4MWPy
-         YSJsvfa8IJ2jyCHP76Fn5asZ3EUrclOIQ/o3Qi+gEsWK1VVh6RLII4evj1vKSPWxtsbp
-         Nn5qlcoBUW0Bnw8ky3UOJJNr7NGq/lJZgUrA5hpv5DXKfgefrznucN632wfKEVwH8Xcc
-         0Hug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729240108; x=1729844908;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w3R+DG0W9j/rrWWMMX7Q5Mr3+2LO1x036RhMhClSpMc=;
-        b=PrlQ75Z7b+uwCQWv/9itv7MTXyx4LP/12cRFGP8N+IMuTp4O3z3y5ZQ4lRQ/0CMmyl
-         MKhhJfdPHnPbTv079vVf9ejG9dl5UABUiRwXjPQx7I7vR3fXPQ92vwlG6nPCmdTDsDyY
-         8iOCqU1OOmGf0xmZQkxpptsCLbtT1ZfcAocq13HY7bHctUcW2U/ifS1vZEMmWWGHhhSG
-         DmdbLQKM3JLkO8qpeNk9KDupiw0/kN0abhn3Xn8U3wVXw/TWvvtavBtg40u+00XzQ+F5
-         VrhJz38Kk5HLVq+xn5zkOtqanKSDuKVQ2ABdiRbdWK2+lve3jMv+zenveKKmD4HooCW3
-         YfWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxIMbuxCMEYiy92498Gq/D7CfTDqrKmuNpR6pYxe2RoD6UET2J1e4B6CAzDgdz/lBkGn3DZpOf4Fhx2d4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz+lR1UBn9VoaNPmZ1hpfzPtrntMf/6WHVwsU3kteh63DkqOzQg
-	CLRYoVVHvNnQ5toBnU13lTLxtbFM3wghYh+uXqCXIfrhPDWqJBCi
-X-Google-Smtp-Source: AGHT+IG6iaZBZPpJWzw7Y9WwIiStxX0vWeUl7cQ3qA8msS64tetUPmBTp8/tEJ+3U+xyeA10M9cozw==
-X-Received: by 2002:a17:903:990:b0:20c:d428:adf4 with SMTP id d9443c01a7336-20e5a8f3e51mr25219225ad.38.1729240107661;
-        Fri, 18 Oct 2024 01:28:27 -0700 (PDT)
-Received: from mail.google.com (125-239-144-11-fibre.sparkbb.co.nz. [125.239.144.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20e5a8f75dbsm7976085ad.195.2024.10.18.01.28.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 01:28:27 -0700 (PDT)
-Date: Fri, 18 Oct 2024 21:28:19 +1300
-From: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-	naveen@kernel.org, maddy@linux.ibm.com, arnd@arndb.de,
-	chentao@kylinos.cn, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: paulo.miguel.almeida.rodenas@gmail.com, linux-hardening@vger.kernel.com
-Subject: [PATCH][next] powerpc/spufs: Replace snprintf() with the safer
- scnprintf() variant
-Message-ID: <ZxIcI0QRFGZLCNRl@mail.google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVJMs3Wk0z3blF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 19:51:20 +1100 (AEDT)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 971D01140193;
+	Fri, 18 Oct 2024 04:51:17 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Fri, 18 Oct 2024 04:51:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1729241477; x=
+	1729327877; bh=ujq12Rn1ZYuFrl0E2Y4gVr1fgaquKynz6QQkqj20W+0=; b=Z
+	3dLR58snKKcCJZgZI3xeVE1wHwQdEhFcXogbDo3AZ9gydToFBWoKlvMNdW3k/uW6
+	jCbmBS6p5qc3MNzRv9O0MH4FbMWnATsWlYwT/xu+NMD8Vy3206zBov19LsihtNoA
+	5G7Qfo1A7R8SrUTivKRMGUsl917LkD2L0MC5Lc1WNScOM0WADNJlaoY8rzRFq0/t
+	YydyrvyCUyRAjGTgjRhczBmGBSCEAcTowEjesgUcB/Cq8POTzcZgiFvXMHZ5SnpO
+	SRsjVToGLmjHGCnE/DHje9zIw+qomL2+D3aQNC5D7wgNzuQMBLfaBnc6eblMXDTb
+	4AryKgbnxwj0YKPNuiJMw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1729241477; x=1729327877; bh=ujq12Rn1ZYuFrl0E2Y4gVr1fgaqu
+	Kynz6QQkqj20W+0=; b=ejJML6iWBsqgueuBT4fZuvsdujksEjLlVtrckefdgsrI
+	Xa3bvEDZBt9GiFTgDWQK7q4AZuwIztZCiCo9PwMKcp33lokDnrIvsjtdcJoqAMme
+	XdkKdIozTOxgDYolF4GlFiaFFPH89luiGJHwP6arft65XLKccD1chVmcTMsqnevL
+	7HpBJEDDCMw6rJdyswhxup7SxIXrxuxD6wh1t9dqnSlTGbybyPJF3c/ezFtoVPhM
+	DpVaYHXpErwN5stUMXGAOOuwkCmDXmezctQ3HlItD1ZhyvUT6tr9B9TnJq1cOYt2
+	XURzh+eN50Mt2nAXAhOWiPuzyfXDkbjc+egK4gsAMQ==
+X-ME-Sender: <xms:gyESZ6XSXpFEmaS-7geuqxyPc7tEhjHMImlRe461ajghgIdeWRQwEA>
+    <xme:gyESZ2kKsqTZ3ESMyubcy5HTU4ObhKnCt37BkbE_8e6b1Zz73h6fsecWhSj0MigDw
+    I3cJ5JPNUgxCqXbBX0>
+X-ME-Received: <xmr:gyESZ-YcVbPyquP6e-_F1TyzjTV2ly6RhLx_pbLwIIbco9IbF4sbQTRVYYDn60dQOw5blA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehfedgtdejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
+    ucfhrhhomhepfdfmihhrihhllhcutecurdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
+    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnhepuefhkeeiveegheev
+    ledukeffheejfeeivdfgjeeukeehkefgvdeifeehvefggffhnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
+    vhdrnhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtohepjhhpohhimhgsohgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeei
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvg
+    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihig
+    rdguvgdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopehpvghtvg
+    hriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehprgifrghnrdhkuhhmrghr
+    rdhguhhpthgrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhonhhgmh
+    grnhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhi
+    nhhugidrihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:gyESZxVeHzCRD6MAiqT2S6T207Wd3kzCe8Zfc5Ej44QKsFKILE-PXA>
+    <xmx:gyESZ0mxgdkcEWjNKUEIx2l89WdjgL35BSRXD0HtleLh5TfcPMCBYg>
+    <xmx:gyESZ2eusl9wn4Upuji7Eayx0BuCyhXnOirBUWRzJ4HorabHAperlg>
+    <xmx:gyESZ2FdVtPX2R5ogsOIA_tr5uYKdf5owyjz2umGDCOl1wos0dbeuQ>
+    <xmx:hSESZ4lkrKXKaV_5i95opjMMhO4ccmSeRUZGg3GphxIwdeo7Q1ziXh2k>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 18 Oct 2024 04:51:10 -0400 (EDT)
+Date: Fri, 18 Oct 2024 11:51:06 +0300
+From: "Kirill A . Shutemov" <kirill@shutemov.name>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
+	Waiman Long <longman@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Ingo Molnar <mingo@redhat.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Andrew Cooper <andrew.cooper3@citrix.com>, Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v2 3/6] x86/uaccess: Rearrange putuser.S
+Message-ID: <srdcfvwgmm4aiyny5ex24puhi7u4rohy2sjb2htrzqhr7igekx@bh3c22loauzb>
+References: <cover.1729201904.git.jpoimboe@kernel.org>
+ <7818233ecd726628a3eb9cbb5ed0ba831e69af4b.1729201904.git.jpoimboe@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,52 +111,29 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <7818233ecd726628a3eb9cbb5ed0ba831e69af4b.1729201904.git.jpoimboe@kernel.org>
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The C99 standard specifies that {v}snprintf() returns the length of the
-data that *would have been* written if there were enough space. In some
-cases, this misunderstanding led to buffer-overruns in the past. It's
-generally considered better/safer to use the {v}scnprintf() variants in
-their place.
+On Thu, Oct 17, 2024 at 02:55:22PM -0700, Josh Poimboeuf wrote:
+>  SYM_FUNC_START(__put_user_2)
+>  	check_range size=2
+>  	ASM_STAC
+> -3:	movw %ax,(%_ASM_CX)
+> +2:	movw %ax,(%_ASM_CX)
+>  	xor %ecx,%ecx
+>  	ASM_CLAC
+>  	RET
+>  SYM_FUNC_END(__put_user_2)
+>  EXPORT_SYMBOL(__put_user_2)
 
-While at it, fix some style issues pointed out by checkpatch.pl
+This patch provides an opportunity to give these labels more meaningful
+names, so that future rearrangements do not require as much boilerplate.
 
-Link: https://lwn.net/Articles/69419/
-Link: https://github.com/KSPP/linux/issues/105
-Signed-off-by: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
----
- arch/powerpc/platforms/cell/spufs/file.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+For example, we can rename this label 2: to .Luser_2 or something similar.
 
-diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
-index d5a2c77bc908..f766821fe3bf 100644
---- a/arch/powerpc/platforms/cell/spufs/file.c
-+++ b/arch/powerpc/platforms/cell/spufs/file.c
-@@ -2320,13 +2320,13 @@ static int switch_log_sprint(struct spu_context *ctx, char *tbuf, int n)
- 
- 	p = ctx->switch_log->log + ctx->switch_log->tail % SWITCH_LOG_BUFSIZE;
- 
--	return snprintf(tbuf, n, "%llu.%09u %d %u %u %llu\n",
--			(unsigned long long) p->tstamp.tv_sec,
--			(unsigned int) p->tstamp.tv_nsec,
--			p->spu_id,
--			(unsigned int) p->type,
--			(unsigned int) p->val,
--			(unsigned long long) p->timebase);
-+	return scnprintf(tbuf, n, "%llu.%09u %d %u %u %llu\n",
-+			 (unsigned long long)p->tstamp.tv_sec,
-+			 (unsigned int)p->tstamp.tv_nsec,
-+			 p->spu_id,
-+			 (unsigned int)p->type,
-+			 (unsigned int)p->val,
-+			 (unsigned long long)p->timebase);
- }
- 
- static ssize_t spufs_switch_log_read(struct file *file, char __user *buf,
 -- 
-2.47.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
