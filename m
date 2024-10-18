@@ -1,80 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-2412-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2413-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0825C9A4546
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 19:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D0E9A4651
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Oct 2024 20:57:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XVXF46v7hz3byj;
-	Sat, 19 Oct 2024 04:46:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XVYqR2vWrz3c1w;
+	Sat, 19 Oct 2024 05:57:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::434"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729273576;
-	cv=none; b=hZlx8MOAswDUhOkZScTJTQKVSFqM5+EFveAn0544fEn0iAZXoDJE/jBJW40srhUW5QIQaGWOinupUIHIQG7j//gFWJdarWmW7gZyL+Fx5HmTDqLvxAksNWsuHeR/75rxDchQHaYNU6lAD9xvrra8Ey8Qu1L2m0PAoQYZx1bmM0rupkTx3lsm3M6FPQB6I3pWh78rDCKyrVnvJ7sOHtrjWKJdFFp3xwniMYOsljS5SNQWUL0mFYBR07spc/KMZV7YDzVxzBgeATIs8taOttndqMbsWrFn4h8PlE0C8U5gEYOnIpOjOsnejH3uuVxgfBHGPYLOhq3keoz1KZOjc+76Zg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729277859;
+	cv=none; b=dQ4RNOl+fJTg3i7G54AtIk+54sG/twLdUMgOrEOdiNiYRxS6ixfivFtIHGj3j2xKX96qxvk6hHm5cPeAKXhoPUNVzO6kaGFrAyYnF+LZmMEElvYFJf/zTLMU4IqPoS9LTeU07wPw4AAgHhcZKTPNeQGqX/e8+7YAAI8UCg+clURF6tcL8bv2UzSe3EnNseCLXR0Y1x8Prl0pg3OoTYJVfooGkIiVE13NWz6K8wn8RNG1g6nW/bp5dEb7cSg8FRm5O4QYNJ1wmvZDEc+Er1PJqs1xiX3t9HRqNHkfNcSuRDXcEJZGYtcAIjmHimrSAXGxjek42qwOohyrY5vTVmi75w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729273576; c=relaxed/relaxed;
-	bh=qaM5T4CJ19PBW8+xMVASp9taX+sewdJcY3azhiQ9zoE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ru3sQr4Jki/wZzS66NeGmeMuTPOmbraiYH/5FezAtupUtndB/FoBlC4r8FOv7wbCVFPEA9j9hQDC303KUNhA6FAsNTomJ/nfCA/g5LhyxkYoUZ8vbq+lN6veVCj2C5/yeUzKHAtskoKyUodcsVzYTiecSZ/8PSov/cg8WqoFxnFlcSD3HKvH1om1l++wql/nst2O8OzqV4cayvyxfIGp61yzIvnAUkuoh51wvSy2SCdtubBD57hthmiRK3IfILlB+Mm6zm/enjY7njYctKvLPX/HWzipeZwm2NPW17ro2P15WhD5+ma8JU6dAEHZ7qjG76pFj1iAyjQhrpCbmDnFhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dLWmjvdX; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1729277859; c=relaxed/relaxed;
+	bh=itkQr6sVEG+us5vyb5jwpQiVqIBiB8rMLrG2VHUprOE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JuTSSLS5bxZodS3jf51oMVETz3w4W+yZPDh/A24vL2Y9BfyQDtdFNUCbd04efk0sl98E7lm0Rw+cI38nxvpObUYz22cgtVrmR3nBA+jb3+FgDTPQ9AcZiVNn2zh9aKPqDD5JoT3Jpp2oSsM5hilK/3iu0RczM4UbKbhV1exEEfSDcAVRw2eGqjGc+VeWxbAbh4Ww4E2lvY9WjRckzF8CcgNxrG2VjP0ElRQuHvEz8HzK0APbmqXbMdJkq08mNXHx+Y3qUQ4lqloV0qeVpeazOSAS8Ad4A4OQR5EVbaaash7YgY0UTd6ZBKkevVFj68qY0aOEHej7NplVzGwChVrb2A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d8p/V7BV; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dLWmjvdX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d8p/V7BV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVXF34Zkpz3byP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 04:46:15 +1100 (AEDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-71e70c32cd7so2009055b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Oct 2024 10:46:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729273573; x=1729878373; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qaM5T4CJ19PBW8+xMVASp9taX+sewdJcY3azhiQ9zoE=;
-        b=dLWmjvdXAVQ+ivWy1qMluoAcrqvrTY/5rhTGuvDMuLKyJZOsBB8UlH9sWRs2lQ3e3I
-         Cy+XuNGwiKgICpOhgzZxseYIFVLszmFkLdsrqiSM4hmWQ6SCqzFNqagZfLtFlFDjU49T
-         ARE9eMRv6xvw6p13YRUZD0RvWyfU8t4oVW8ckjsJqaL0OXJM2wEDQsDI3KF1P+wLXILY
-         60ocwcQy8UTpXuTMX5ltFll+2gNsAIGPIvPzrydkcLUAcJ/6C63dYIQQujb2edy7EtW+
-         udBHoqYstGk6mOv10FGx7tsTL3clTr/XajaJenUJ2c94bGm6QCHmuyNBgwQWTy9jJO5G
-         mk+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729273573; x=1729878373;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qaM5T4CJ19PBW8+xMVASp9taX+sewdJcY3azhiQ9zoE=;
-        b=tO2RjynfSY2cMlMnTax68LSJA7uZe7CgipvU2DMwcPvPsB1khiMl1wMShestSvqHdD
-         5OSxGKC0JXwO8vJnr8ksiFFsFPkSBWlPvASQ6N0oXbyy0Sp+LcA8usAupElyxA72HJjU
-         XDdE0SWdf0TQsMkt5risr84i4jorydZmOne/9+UkMkRwlhDrY+0E0nfaVgKn5Sj5xcSS
-         8zloNssXqlvEdMAAuAUsg3t2gk3Vx7b7sxVr2I6OriJn3mFCyOEr5noIYqb7ifzGSzQC
-         yjnDG/XUE0GpTVAPFCNMlzAbRTYKUNGmQW+kBLS011DgDJqsya/vAyn/bE+gy4FstX4B
-         FJVw==
-X-Gm-Message-State: AOJu0YxKWGOwxR4xaSc01MvpTVzE37E0tUxX++/oMN6tgjkV2nOspQaJ
-	k5JMq31/CkLEoXacPozW3EpwrRoJUAf3dzB5JlHmwNkXFOblFYV+
-X-Google-Smtp-Source: AGHT+IGSSI7jEYC7xY7ckeIela+JOOPhw5yI7WHvEbCADCnIxcJvFhDyLOcRwdwjOsLHqTB2hn2gxw==
-X-Received: by 2002:a05:6a00:18a2:b0:71e:1722:d02c with SMTP id d2e1a72fcca58-71ea3117050mr4572391b3a.3.1729273573297;
-        Fri, 18 Oct 2024 10:46:13 -0700 (PDT)
-Received: from dw-tp.ibmuc.com ([171.76.80.151])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71ea333e939sm1731148b3a.82.2024.10.18.10.46.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Oct 2024 10:46:12 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: kasan-dev@googlegroups.com
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-mm@kvack.org,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Marco Elver <elver@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Nirjhar Roy <nirjhar@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v3] mm/kfence: Add a new kunit test test_use_after_free_read_nofault()
-Date: Fri, 18 Oct 2024 23:16:01 +0530
-Message-ID: <210e561f7845697a32de44b643393890f180069f.1729272697.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.46.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XVYqQ1mN0z3c1g
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 05:57:38 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9E88D5C4D68;
+	Fri, 18 Oct 2024 18:57:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E839C4CED4;
+	Fri, 18 Oct 2024 18:57:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729277854;
+	bh=USwZBd/rmQ4xGvXvT/P1fJ09lLr7kVzbXZdNBQ3+LQ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d8p/V7BV9R5bv/BfDflLo5c3tZfdN++v+8FDLdPwvRIUNhpVdCKrwfx3ZhzYIBBoL
+	 0ysAxmqq6VxKdnMDowczfEE4iLFgRsjBQ2sg7WpucVGrtlDKJF0dDwHAJstYJYOyrU
+	 DwG9HYrZlXnxXvd17vXwqMU5sBdF4IuvNJKEFJq2BTtGPe2hPSji38r6iqSmctgecG
+	 gekuuMP9GT54JXpLCT/hfZ0YED63bGLsxe+SCoelsauWdYjywYupTIiojk1hK7yABg
+	 pvsG3iqbQ42lBLN/swfRU9WaiT3IwJcXkruF3m/hBbMZWz6fGlPM68cvZL0eb7Q52Y
+	 exWIiOd0e8KhA==
+Date: Fri, 18 Oct 2024 19:57:25 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+	Len Brown <len.brown@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+	linux-mm@kvack.org, SeongJae Park <sj@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	netdev@vger.kernel.org, linux-sound@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: (subset) [PATCH v3 00/16] timers: Cleanup delay/sleep related
+ mess
+Message-ID: <104a3bf5-97ee-4c48-832f-df6c6e219576@sirena.org.uk>
+References: <172892295715.1548.770734377772758528.b4-ty@kernel.org>
+ <877ca5al86.fsf@somnus>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,76 +83,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="0RRAV7MzKbX8/czK"
+Content-Disposition: inline
+In-Reply-To: <877ca5al86.fsf@somnus>
+X-Cookie: What is the sound of one hand clapping?
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Nirjhar Roy <nirjhar@linux.ibm.com>
 
-Faults from copy_from_kernel_nofault() needs to be handled by fixup
-table and should not be handled by kfence. Otherwise while reading
-/proc/kcore which uses copy_from_kernel_nofault(), kfence can generate
-false negatives. This can happen when /proc/kcore ends up reading an
-unmapped address from kfence pool.
+--0RRAV7MzKbX8/czK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Let's add a testcase to cover this case.
+On Fri, Oct 18, 2024 at 10:06:33AM +0200, Anna-Maria Behnsen wrote:
 
-Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Nirjhar Roy <nirjhar@linux.ibm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
+> Would it be ok for you, if the patch is routed through tip tree? kernel
+> test robot triggers a warning for htmldoc that there is a reference to
+> the no longer existing file 'timer-howto.rst':
 
-Will be nice if we can get some feedback on this.
+>   https://lore.kernel.org/r/202410161059.a0f6IBwj-lkp@intel.com
 
-v2 -> v3:
-=========
-1. Separated out this kfence kunit test from the larger powerpc+kfence+v3 series.
-2. Dropped RFC tag
+It should be fine, worst case we just get a duplicate patch which
+doesn't super matter.
 
-[v2]: https://lore.kernel.org/linuxppc-dev/cover.1728954719.git.ritesh.list@gmail.com
-[powerpc+kfence+v3]: https://lore.kernel.org/linuxppc-dev/cover.1729271995.git.ritesh.list@gmail.com
+--0RRAV7MzKbX8/czK
+Content-Type: application/pgp-signature; name="signature.asc"
 
- mm/kfence/kfence_test.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
-index 00fd17285285..f65fb182466d 100644
---- a/mm/kfence/kfence_test.c
-+++ b/mm/kfence/kfence_test.c
-@@ -383,6 +383,22 @@ static void test_use_after_free_read(struct kunit *test)
- 	KUNIT_EXPECT_TRUE(test, report_matches(&expect));
- }
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcSr5QACgkQJNaLcl1U
+h9C6LAf/Qbwvy9NL2Gez+H9VVFae3GlPM9asUcMBaxp+uO7dhCUt0jnpy4Rf+uhV
+aRnDHjTLb+zTbBwpy96DsJWJPVsRkJobSsCa/FwibRcFeIheFZBo0REddV9DuMst
+/au9J4kG1E1c34bFhrulonNSkF8ebaVYLPfMH69+35eENFwXmFho5dT5usAsr/oP
+vDK6Dll8oW1XdvTqbw3CPv8TCPLze4UN799DWoWtS96MCxKR7lNOI0X01GsSUMl5
+GrYacHh5QPJICOAGcu7hqSds9wsAGz3zMSAQ9lrX+bZAOiCoDk0KcyIKLF3Pg7de
+RcnbwA6aEI+sETc/tSshLKzUVeX5FQ==
+=Qqcc
+-----END PGP SIGNATURE-----
 
-+static void test_use_after_free_read_nofault(struct kunit *test)
-+{
-+	const size_t size = 32;
-+	char *addr;
-+	char dst;
-+	int ret;
-+
-+	setup_test_cache(test, size, 0, NULL);
-+	addr = test_alloc(test, size, GFP_KERNEL, ALLOCATE_ANY);
-+	test_free(addr);
-+	/* Use after free with *_nofault() */
-+	ret = copy_from_kernel_nofault(&dst, addr, 1);
-+	KUNIT_EXPECT_EQ(test, ret, -EFAULT);
-+	KUNIT_EXPECT_FALSE(test, report_available());
-+}
-+
- static void test_double_free(struct kunit *test)
- {
- 	const size_t size = 32;
-@@ -780,6 +796,7 @@ static struct kunit_case kfence_test_cases[] = {
- 	KFENCE_KUNIT_CASE(test_out_of_bounds_read),
- 	KFENCE_KUNIT_CASE(test_out_of_bounds_write),
- 	KFENCE_KUNIT_CASE(test_use_after_free_read),
-+	KFENCE_KUNIT_CASE(test_use_after_free_read_nofault),
- 	KFENCE_KUNIT_CASE(test_double_free),
- 	KFENCE_KUNIT_CASE(test_invalid_addr_free),
- 	KFENCE_KUNIT_CASE(test_corruption),
---
-2.46.0
-
+--0RRAV7MzKbX8/czK--
 
