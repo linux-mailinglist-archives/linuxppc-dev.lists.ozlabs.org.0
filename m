@@ -1,85 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-2421-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2422-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3DA9A50CD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2024 22:45:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464A49A5139
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Oct 2024 00:17:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XWD9c3686z2xRm;
-	Sun, 20 Oct 2024 07:45:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XWGCL627Kz2yLg;
+	Sun, 20 Oct 2024 09:17:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729370740;
-	cv=none; b=Pe8d4xiRZqJ9DgM1oc7YXzKyhwyO+khzlu1vYpUGwEYT2hxWyeLx5VWbjqoa50qtRt2RWDVKe/W/LLEInlqZ+LTxtbT/iH0QbsfccvbpVooKdFgZP/A5lWXzM0zXmGCFWgNGlZ3d4/u9FDqEkjobAR2GDWER7BrOTCisC3QJXdjIMfok+ls0ZxzwyXYytV1qEEwGu1wnGVc78zFIXzUtLg/lTp0mht2QRTsJrHYca3SEBBF6yMqzVrL6GiLYCUBXmGfjQDNnd58dgkgsY7zz4GwxNiezkVXB/zfWbYy8sIK+/LP4DN7il/KjOtKf5nWM6bFItrB5oUxAOuqqWCHCtg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729376238;
+	cv=none; b=oLYuRZfHr6NlycVtAjwxh3oCPv/x4yot2IWVxCW0ZtkWhafrnHbIDojev3/M6xpfh0RlLCeRUhdF8FI6tv2pZo5JVTjv7cgZt8pQqLT0MoJ7Najo1HDGSXpsEbG7F96wlmCbyqStTqQpg04BqJ2efah6OneVTspfJuQUlX6j2A9AuxrpDFLGayVX/avN0HRhLvs/DKRg6Mwc0NNgCiUNR8leXjK0xJTX75emwpdtV9cQ7TGJc2OhvrDpxd+9ZveGbINNYRkFn8acgpvljKDj0rEkV9Mgtc2214T4lvhvFbOvmMAQ+ZCHGcKtJnmBm128LkNDIjcR9HEdKvPL4Ox+NA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729370740; c=relaxed/relaxed;
-	bh=ZC4gP/UPw2ubiHb0IvPbS/oEtoet/unyQZvm0Ol/hcc=;
+	t=1729376238; c=relaxed/relaxed;
+	bh=J8neFLH65vUyWmWIgY7wipZgUu3sVyGFmmQDvuZjGWo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U1LsLgS16U7431OATMMgxir3pkkh3VmXq5BOstRKGuS/0adUHNTSAVqqLhBawpF5RDp3qiJkMeeWTzDrf6U1J3HimAwaTwish4GwfIWADmL2JI103DP+1yPJa4Mzeh4ipb43ECB3+bdhX+D7gO+8vaEpjCzHT5a8G7AoNGmmscALSPWyRc2aee8QpW6Lh4i1H4NAt7Z8aQMzkFr1yhejZStXOC0N+GP7FK2uvTDXQvveocn5tIt2X4JOnqt6pRKXMExW37B84U5Uf4VdRWH2StZTc7QDAXJQ6kegVlKsGo13O2R151nfxXqFHaJYDnYh3yWa5WrG6or82JeYO1S7Ww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gUrB6OvU; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=IWN9tvTANfLQnir1jdXQOtIkZ39Ta7Pm48MPFW+QDGnkb7AfeFW02dv6I7azrQ2DGtwZwoRhEwdRKnsDtK48WGOtXT4EH5pFVNdzyp3vHBCziKpo9ZPcrcq3YETt7mDLNhc0xBVaG7L9ysqR5h931eqN/zY0fVTxSx/UQ0qe4zdOcm/Kgr8LnsHDnouLL/ZybKBt49opRH305WoxrTJbul/4heHEaIf5Av4B5qJrHS/+sAUE0APTkC5dVajdu5nxMqyrZ2ukpikpWdgLCgyUE2n+QHr1NPHQTqgnofXAPf/zWECLUNX1KspzSV28qQwGXoOC0f5O7i+jq8BoMUxK3g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y3/Gl4uf; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gUrB6OvU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y3/Gl4uf;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XWD9Z5mtXz2xMQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2024 07:45:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XWGCK4Dwrz2xdZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Oct 2024 09:17:17 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 52FA1A402D9;
-	Sat, 19 Oct 2024 20:45:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3166CC4CEC5;
-	Sat, 19 Oct 2024 20:45:34 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 01DECA40448;
+	Sat, 19 Oct 2024 22:17:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BF9C4CEC5;
+	Sat, 19 Oct 2024 22:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729370735;
-	bh=gmwDQ6No3ct9TKBBHTtT4Yw2AFEeVWE9FZaRD6OcRhU=;
+	s=k20201202; t=1729376233;
+	bh=Z2c0wsfmuX1zi8SflpbS251BcU2hxlDOujSruYyu/d0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gUrB6OvUzAE3AfRej4jnJKDKbxYWz+cZRF2tn/UZIEQYCHBDOXpBVYbDfJraR7l8n
-	 gQHPGSDOLU6fVoOcnonflRVT6kmlZLGBMcBzFjGdoU/5eToXxY3a2X6/CoWL8Y6Blw
-	 vKtGYWIsOvdhlXC92kFcqafZsLC9tpLm7bpbk3P2Skg4OChT+D7E4n3UBt7xZTHfsB
-	 ThVIQ4MslwI+4PFogaRVcMfc7eHKw/pCuD9frmWslk5PHbQLkDb3S+jXyJ1ktn0C0+
-	 mYdgaWvRjSyREVgG2REjeZMLJkqmzh0Pzohff1f2PBtHLM/G7NDMxg99n+rxReWrI4
-	 CLsyhOwQepJiQ==
-Date: Sat, 19 Oct 2024 13:45:32 -0700
+	b=Y3/Gl4ufOW+DMjq3rv6lYuhhIdTKFTpnYyq9HW3K85Fpw/HAzL0vMrW4IM6WgA6ot
+	 bjEzE8mPv3G48TEzrc49STj8tErEueRnWJWErlpFGCRDNYXxf9im+wvXTmSV4zaKV0
+	 ldRIuiJMSPHK7+jcRgJoan6AukGaTfuRN0fLb0k4bEoOLO4bzzu30c0zr4xQe5rqsB
+	 ele2dWq5/Lat3gCmSxFXcXRfJdqOONJR5Y9PAtRblqYiPb3tzG5o6SkuYpbslQB3Wg
+	 ZrBARuLjQoY8sKdBblenF5FJQAR6rsrhvv/Ra8Vcs8mcf/tC+y4RqwTBTJVaeAg57/
+	 Qr4B5j9wt3E/A==
+Date: Sat, 19 Oct 2024 15:17:10 -0700
 From: Luis Chamberlain <mcgrof@kernel.org>
-To: Helge Deller <deller@gmx.de>
-Cc: Matthew Maurer <mmaurer@google.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>, masahiroy@kernel.org,
-	ndesaulniers@google.com, ojeda@kernel.org, gary@garyguo.net,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	neal@gompa.dev, marcan@marcan.st, j@jannau.net,
-	asahi@lists.linux.dev, linux-modules@vger.kernel.org,
-	Nicholas Piggin <npiggin@gmail.com>,
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@infradead.org>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 14/16] modules: Support extended MODVERSIONS info
-Message-ID: <ZxQabNukxBo3utbh@bombadil.infradead.org>
-References: <20240925233854.90072-1-mmaurer@google.com>
- <20240925233854.90072-15-mmaurer@google.com>
- <ZwmlEYdS0aPVF32k@bombadil.infradead.org>
- <CAGSQo01o4fWYwSzZHX5dyTUKcaCSZ7z-hPQ8w63tgBPGbM_UCA@mail.gmail.com>
- <ZwmnnMmqVWLaelvQ@bombadil.infradead.org>
- <Zwm4lXdKB9RfPQ5M@bombadil.infradead.org>
- <Zwm4v_1wh5RwuHxF@bombadil.infradead.org>
- <CAGSQo03df-tnmwcz4nh3qtuQPKQ2zLHW0juQyKUXGsdeS7QkLA@mail.gmail.com>
- <ZxBKkJu-XPOGs-NG@bombadil.infradead.org>
- <9f3f6bd9-47d1-45fa-aa6b-9e0a80a5ebc6@gmx.de>
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v6 1/8] mm: vmalloc: group declarations depending on
+ CONFIG_MMU together
+Message-ID: <ZxQv5vUuaFBT6Kxd@bombadil.infradead.org>
+References: <20241016122424.1655560-1-rppt@kernel.org>
+ <20241016122424.1655560-2-rppt@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,56 +107,26 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9f3f6bd9-47d1-45fa-aa6b-9e0a80a5ebc6@gmx.de>
+In-Reply-To: <20241016122424.1655560-2-rppt@kernel.org>
 X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Oct 17, 2024 at 02:08:19PM +0200, Helge Deller wrote:
-> Hi Luis,
+On Wed, Oct 16, 2024 at 03:24:17PM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> On 10/17/24 01:21, Luis Chamberlain wrote:
-> > That sounds great. Yeah, the above would be great to test. A while ago
-> > I wrote a new modules selftests in order to test possible improvements
-> > on find_symbol() but I also did this due to push the limits of the
-> > numbers of symbols we could support. I wrote all this to also test the
-> > possible 64-bit alignment benefits of __ksymtab_ sections on
-> > architectures without CONFIG_HAVE_ARCH_PREL32_RELOCATIONS (e.g. ppc64,
-> > ppc64le, parisc, s390x,...). [....]
-> > 
-> > I forget what we concluded on Helge Deller's alignement patches, I think
-> > there was an idea on how to address the alignment through other means.
-> > 
-> > [0] https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/log/?h=20241016-modules-symtab
+> There are a couple of declarations that depend on CONFIG_MMU in
+> include/linux/vmalloc.h spread all over the file.
 > 
-> I stumbled upon the unaligned-memory-access.rst document [1].
-> Please read it, as it is a really good document, and the section
-> "Why unaligned access is bad" states:
-> It should be obvious from the above that if your code causes unaligned
-> memory accesses to happen, your code will not work correctly on certain
-> platforms and will cause performance problems on others.
+> Group them all together to improve code readability.
 > 
-> With this in mind, you really should apply both of my alignment
-> patches which you currently carry in [0].
+> No functional changes.
 > 
-> For parisc I partly solved the issue by fixing the arch-specific kernel unalignment
-> handler, but every time module sections are stored unaligned, it triggers
-> performance degregation on parisc (and other sensitive platforms).
-> 
-> I suggest you apply them unconditionally.
-> 
-> Helge
-> 
-> [1]  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/core-api/unaligned-memory-access.rst
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-You're right, I've just referred to that doc and pushed to the new
-linux modules [2] modules-next branch. This is also great timing so
-that the work that is ongoing for Rust will take this into
-consideration as well. I'll just post the test I wrote as separate
-thing but it surely can be used to help test some of this later.
-
-[2] git://git.kernel.org/pub/scm/linux/kernel/git/modules/linux.git
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
 
   Luis
 
