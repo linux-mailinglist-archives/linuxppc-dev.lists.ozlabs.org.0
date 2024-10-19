@@ -1,44 +1,102 @@
-Return-Path: <linuxppc-dev+bounces-2419-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2420-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4739A4B2C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2024 06:17:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 965289A4DBC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Oct 2024 14:11:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XVpDz0Z99z30PD;
-	Sat, 19 Oct 2024 15:17:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XW0lx07pqz2xyG;
+	Sat, 19 Oct 2024 23:11:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729311427;
-	cv=none; b=geTeWXixa+KEUCjE/+RmWGLc4l6daOPcEaflsuFvi06W/r+R5p9FqgMpO8FhRuj9m5zxL9MZKXSlwVEagaCqMFcakGBW6HgTL9THYzSZd34Jkb8LhJJXVPhV+1REB+NgHAw1QcIwQZ6VpGq325oRdMTG7w+kzHqiIzeoVU73cRBvS0p9JV+j6bfJpWBnLdMZw5OChz4IbdsrYeBf3uoQaizbOHI/u+OODu2KVqH9QGT8Bif7JLACMfKYnTVX4XnhxSNMAI7HhYeZCkzjlr2jojz3Je74keILQEaR4aaLKreLnpfSnkJ1lBpZDnpsKZRAwT0AfKdEEUCS949BEam+wA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729339868;
+	cv=none; b=awDf8jXvvWHb9Q6fAEeychRwDwW4hXNHyM3pkqodskx09D3X84g9K38kXfJMM2UjoHDbOXHOI8gTu5Bzwan2ZrTau3BrdAPoQ6/aGCYFK+mB6y9U76Aj8j5kViAFsfrs016qbfW44kqWKYorALW5k0wszFjS2sBbp0AGFjLb9Gxw+rvjGr97BptBKvxilB/tw5PIKgeTS8HsByC14S/X9Se4hTS2FXlzOqLEaY0Q9bkTxNVuuJyYU2MXZZw8mf/zHx8HKIqvP/3qAHplVzQknQPgvTHFCYcui63PwFlKWREv6LQcOFRvKFTVyaw/9xioENPqdgzcz5oiKSxUdXdpkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729311427; c=relaxed/relaxed;
-	bh=K0VfTJEjJnsRHN+/435BXLvwgNk09EuZPOANkRBxmhs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q613hNjwI79JQIs2C/uFeVGpruEQWydBJiXaDPuG8LGwsIEj5zdmfbSd6nTcMkZEYg+/ZmOaKyWpVT/RYeCSDC4CLxtI2VWUGAmYSkadAQlB9sW4q8nec7BpbZrkMIowbDbL59wsBq6dHZfz9bw096f+23jEclZA1yPg+3brMb1WqmErzfA6aXdyvI4ibDP2vECSDNtRPCReRyK2wZNuLFpTunrHP3iZV09Gua56GN1kafggjC5ktdZ/T2EeEWsvSTC2W+MWPqx9l7HVqsZFxl7ycPxvl8irijrtJ30nJx/yPlwiOQbA+pYm3vazpNVFvLBCiwMVwR+v3RbHGFhMXA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XVpDx0gRkz2y8X
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 15:17:03 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 49J4DXwK031623;
-	Fri, 18 Oct 2024 23:13:33 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 49J4DTL3031612;
-	Fri, 18 Oct 2024 23:13:29 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Fri, 18 Oct 2024 23:13:29 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Paulo Miguel Almeida <paulo.miguel.almeida.rodenas@gmail.com>
-Cc: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        naveen@kernel.org, maddy@linux.ibm.com, arnd@arndb.de,
-        chentao@kylinos.cn, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] powerpc/spufs: Replace snprintf() with the safer scnprintf() variant
-Message-ID: <20241019041329.GL29862@gate.crashing.org>
-References: <ZxIcI0QRFGZLCNRl@mail.google.com> <20241018153843.GJ29862@gate.crashing.org> <ZxL0U6bziCxhySUO@mail.google.com>
+	t=1729339868; c=relaxed/relaxed;
+	bh=ewdrroxFiAygB0WZp3b0IKE5tVJl7cLRD8sB4bftnQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YS91GArTGu8ceVkV/Ro7IQqVuj8edWqIaK0zU7dJ35deV1mRy/VQv87AI67VA4y02pYneFGiNinY1Tp/a0b2KOwA8Z1LfetTbzX4pjor1HjYL3GaNhhpwklIrlLQskgzaCdpE+/ppDjPffhLvo+41BbZc+gZD6HKjqXp4DaMwrT5Q4kkxVMwOTYEdLQBwRv6h5o9Hupbqbf+MmrPT+iqQ2o9HWrZm8DpBt7h2uvoCQ6SzRnryeQDKxsn2F97Lpl35klqqKGXXbHo5Ys7dWwzRHKej/zViMx5+lhdy7i6aqzPIM2bi/8Ennz/q97dYYnBZzvd7xHYIGrwhYVxhvQadg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ji+u5mIf; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ji+u5mIf;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XW0lv06Jlz2xJ5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Oct 2024 23:11:06 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id EE9435C5C74;
+	Sat, 19 Oct 2024 12:10:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C444C4CEC5;
+	Sat, 19 Oct 2024 12:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729339862;
+	bh=FSuVpxp8ZC8+I9iOSenx9AlHNi52QSz7zz+w4xwBZFU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ji+u5mIf1nBg2Nj6gLisAF5MRqi/wx3vBw5aJxxyqXCZq6i3mNEIjudfG3JajAqFI
+	 WJRVPOIUQSQMsfw+JO35XVRk0koV9Zi9I3YAvvjqBLsmrQOq5ay1ac5pdb0lvGGzR1
+	 j08uXL+V5r/xzvXwZInMDzkCPiTd8EFrbVzmdTCt/13Ip6ENRmE+El1EXUc14T5/hg
+	 fuuSACJI10Sa/jG2tlc11AxV3tkbudw+OnnTaatlKtiS8TlF8dKP0jJBWpV4zxhOjz
+	 kxntgxyzd/tCBOSTcO89LQ6Xv/hweCp+LHVMbTjkYPRC9v5XPDgpwR4Gn2FpyhtFiC
+	 QsF+azFAwnoMg==
+Date: Sat, 19 Oct 2024 15:07:00 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v6 6/8] x86/module: prepare module loading for ROX
+ allocations of text
+Message-ID: <ZxOg5MEXzH4qPq-s@kernel.org>
+References: <20241016122424.1655560-1-rppt@kernel.org>
+ <20241016122424.1655560-7-rppt@kernel.org>
+ <20241016170128.7afeb8b0@gandalf.local.home>
+ <20241017101712.5a052712@gandalf.local.home>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -47,53 +105,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZxL0U6bziCxhySUO@mail.google.com>
-User-Agent: Mutt/1.4.2.3i
-X-Spam-Status: No, score=-0.0 required=5.0 tests=SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <20241017101712.5a052712@gandalf.local.home>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi!
-
-On Sat, Oct 19, 2024 at 12:50:43PM +1300, Paulo Miguel Almeida wrote:
-> On Fri, Oct 18, 2024 at 10:38:43AM -0500, Segher Boessenkool wrote:
-> > On Fri, Oct 18, 2024 at 09:28:19PM +1300, Paulo Miguel Almeida wrote:
-> > > The C99 standard specifies that {v}snprintf() returns the length of the
-> > > data that *would have been* written if there were enough space.
-> > 
-> > Not including the trailing zero byte, and it can also return negative if
-> > there was an encoding error.  Yes.
-> > 
-> > Not that this matters at all for your patch, so why mention it?
-> > 
-> > 
-> > Segher
+On Thu, Oct 17, 2024 at 10:17:12AM -0400, Steven Rostedt wrote:
+> On Wed, 16 Oct 2024 17:01:28 -0400
+> Steven Rostedt <rostedt@goodmis.org> wrote:
 > 
-> Thanks for taking the time to review this patch.
+> > If this is only needed for module load, can we at least still use the
+> > text_poke_early() at boot up?
+> > 
+> >  	if (ftrace_poke_late) {
+> >  		text_poke_queue((void *)ip, new_code, MCOUNT_INSN_SIZE, NULL);
+> > 	} else if (system_state == SYSTEM_BOOTING) {
+> > 		text_poke_early((void *)ip, new_code, MCOUNT_INSN_SIZE);
+> >  	} else {
+> >  		mutex_lock(&text_mutex);
+> >  		text_poke((void *)ip, new_code, MCOUNT_INSN_SIZE);
+> >  		mutex_unlock(&text_mutex);
+> >  	}
+> > 
+> > ?
+> > 
+> > The above if statement looks to slow things down just slightly, but only by
+> > 2ms, which is more reasonable.
 > 
-> Is the objection with the change in itself or just the commit message?
+> I changed the above to this (yes it's a little hacky) and got my 2ms back!
+> 
+> -- Steve
+> 
+> DEFINE_STATIC_KEY_TRUE(ftrace_modify_boot);
+> 
+> static int __init ftrace_boot_init_done(void)
+> {
+> 	static_branch_disable(&ftrace_modify_boot);
+> 	return 0;
+> }
+> /* Ftrace updates happen before core init */
+> core_initcall(ftrace_boot_init_done);
 
-Mostly the commit message.  But because it is confusing, it makes the
-patch itself uncertain as well.
+We can also pass mod to ftrace_modify_code_direct() and use that to
+distinguish early boot and ftrace_module_init.
+With this I get very similar numbers like with the static branch
 
-The patch is probably fine fwiw, as far as I can see.  But the commit
-message is not. And the commit message is by far the most important
-part of any patch!
+diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+index 8da0e66ca22d..859902dd06fc 100644
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -111,17 +111,22 @@ static int ftrace_verify_code(unsigned long ip, const char *old_code)
+  */
+ static int __ref
+ ftrace_modify_code_direct(unsigned long ip, const char *old_code,
+-			  const char *new_code)
++			  const char *new_code, struct module *mod)
+ {
+ 	int ret = ftrace_verify_code(ip, old_code);
+ 	if (ret)
+ 		return ret;
+ 
+ 	/* replace the text with the new text */
+-	if (ftrace_poke_late)
++	if (ftrace_poke_late) {
+ 		text_poke_queue((void *)ip, new_code, MCOUNT_INSN_SIZE, NULL);
+-	else
++	} else if (!mod) {
+ 		text_poke_early((void *)ip, new_code, MCOUNT_INSN_SIZE);
++	} else {
++		mutex_lock(&text_mutex);
++		text_poke((void *)ip, new_code, MCOUNT_INSN_SIZE);
++		mutex_unlock(&text_mutex);
++	}
+ 	return 0;
+ }
+ 
+@@ -142,7 +147,7 @@ int ftrace_make_nop(struct module *mod, struct dyn_ftrace *rec, unsigned long ad
+ 	 * just modify the code directly.
+ 	 */
+ 	if (addr == MCOUNT_ADDR)
+-		return ftrace_modify_code_direct(ip, old, new);
++		return ftrace_modify_code_direct(ip, old, new, mod);
+ 
+ 	/*
+ 	 * x86 overrides ftrace_replace_code -- this function will never be used
+@@ -161,7 +166,7 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ 	new = ftrace_call_replace(ip, addr);
+ 
+ 	/* Should only be called when module is loaded */
+-	return ftrace_modify_code_direct(rec->ip, old, new);
++	return ftrace_modify_code_direct(rec->ip, old, new, NULL);
+ }
+ 
+ /*
+ 
 
-> If it's the later, I'm happy to tweak it to what you would like see.
-
-It is not about what I want to see.  It is about what you want to say
-to justify the patch!
-
-In this case, just leave out all the irrelevant stuff, just say why you
-think scnprintf is better than what you replace?
-
-Everythihng you did say is about why what you are removing was good.
-Not a great patch justification :-)
-
-
-Segher
+-- 
+Sincerely yours,
+Mike.
 
