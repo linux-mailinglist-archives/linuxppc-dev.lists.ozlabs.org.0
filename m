@@ -1,71 +1,166 @@
-Return-Path: <linuxppc-dev+bounces-2472-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2470-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3B39A930C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2024 00:11:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9914C9A90DD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2024 22:18:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XXTzc1rx3z2yNR;
-	Tue, 22 Oct 2024 09:11:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XXRT90g9Pz2yT0;
+	Tue, 22 Oct 2024 07:18:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729527730;
-	cv=none; b=i3rsG7TZmBDJQD66TeiJx1Ys2huXAjfnNImuWjhsTwB9D4A42+fctzhY1XGTKiR6lVWfRyaJTJ5Gn9wmvNXLVQh2+VtVDyh8QRTzJzOMzEs6xBJjSJW+PI/a2pNYTzZziAKXa+CKD+q1gr5Vev83gVL8DOhpzJhza4GSk7rn+CxWhG29fO3HJmWyb3xrcLtbEfgpBxGAGsPY3HDVaXB6FrDdGbCSqj5LFw6Rne4iRxj7gaTvPEGzmGWlJ7MPyhTyCB0iRw0L33lBVPWxM7mQOzQ0opGhNPKcOIV7HXmJeoeghvXZR19gbVvCWVxm3NnfaX6ST3xMfkAnvUltYMEAnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729527730; c=relaxed/relaxed;
-	bh=SkYtr7pn2JG2itofY99ImXF2puZ7hGJei8s9vBda418=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RQBnBIQllQCxTNEPXvx2u2E9ASLF0sCzDyE2E7f6K99mzrYJbeJg5sTsNLe09MoQi19Eq0kGAx/G+szvqUp8q5YM8A+nMeY+JdZq9yV2AghMLwXkdpDEWP0wdtjuYxUpFYCJ4jyFHVzykOzVN0fRf0UAOyD78FNza/Fbtm1+nCG7Ivakca9rKWtAkWXXzaQLqRw+vIrave/D4gr0pe26QTKKLTDXnN6DyGP/9+v4gq5ysPovwbHka8k3VxL6on2Curu5EDiozXrl+qL5ufdZer1htnbKl41xO7kyD91PdyR36f8MmfNzNZU9iINDaUrCEwMy1HlOuq8lzIIR+bUqmA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TZJHkajo; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=eli.billauer@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729541901;
+	cv=pass; b=H6rHinuACoPyUKFbVhxkyQMIlLGNhEHrfTYKAV6D2JWbkBvt2BH0zxxYAxYeRJME9fsSYNjhnd9k7ESNeOQgHDc3g9e7nYBq3i9O4l1isZRKhLbHtnUkdfbvLq1SUGhkNYzPY5btQtyevqQUak0PmChg3S+ov9TIyfqH+IXcmkKom2sFlR4mWcaGJ8h3/yIMys9ekjjBqHAP2IRxxLTDkqVs3l1IwSie2afHsseUe+Vk6I25zI7KuOGn1iseLXp8qEny+hhm56uRL1OQBKgWUJkgViE9HvYPhcihJHlN8u7tp/2u9uNXRQXZ04Dm5s2W+/Uda87o12rLMWx45UNHxQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1729541901; c=relaxed/relaxed;
+	bh=y+9k8KBp68GO/Zp8YMU/qq3QRdCcMVlwrezYiyMCtRQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RR3nzaLPHHm5g8z2QyeEf4l/1NZqNdsLTMZkD38FyputMBkkBIO/m2voDBSQomQr6NqGkqklVkYw3Cis4tg+ApYL13+qn70BUhbMkqTKlBAW5kvrJozS7DzQOs0xsz0sdpY+k2mMHr2QWXCDk3Nqywy/rXwK1s3IRaYAAVmZ53S5cxABobvzySdkW4f1oEzcm05SOtO30+D68nL5G9LrQrqZ4etsBx7Ps3JilDGt9hVKXsHQjs+eOAAX84909YRu6BsgkyYfk1LPqBUcRMswbaCvPzEyEAW1/ZuyTrsSm0H11ZmabqQbhfbtgjhZ/lMg1S/xGaSyxlBQX+0YCP2cig==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=HIXDo2HQ; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=CoAtjeqO; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TZJHkajo;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=HIXDo2HQ;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=CoAtjeqO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=eli.billauer@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=liam.howlett@oracle.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1680 seconds by postgrey-1.37 at boromir; Tue, 22 Oct 2024 07:18:18 AEDT
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXLDd18dJz2xrJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2024 03:22:07 +1100 (AEDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-4315baa51d8so46076605e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 09:22:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXRT7029Zz2yRG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2024 07:18:17 +1100 (AEDT)
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49LJBbYM001339;
+	Mon, 21 Oct 2024 19:48:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2023-11-20; bh=y+9k8KBp68GO/Zp8YM
+	U/qq3QRdCcMVlwrezYiyMCtRQ=; b=HIXDo2HQVum3mF0LGr1Vb7DvUxS7ls0w4L
+	ZzBlHA/X6D/0IQAtuV3PQHKavy2JxVUfzCrc4x6WOKU56a4WC3ko/2hvr9lmjMXt
+	BMJcoy0r6n0JJ6aLPtzxjzEb6KBVMl62uszxWF9HvheiATmVZg8graIKqYnWUU04
+	Nj+mS1roJroXzgxFU9G1Do9Icyg1qpH/gCgySZv2SmLUMI3OhfvuadIdztxIBg1A
+	kseB1mQBfbHdbyhoxCWb8zZeMx30utwQVn4r2q7ME1EK8iZ+nsElKNp7tJGK2QO9
+	du73MneGJ+WljYE70MlyM/UBe6wJYoGLbsiwzqvDwFgpcTnoRoeg==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42c545417n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 21 Oct 2024 19:48:57 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49LIs3tX019768;
+	Mon, 21 Oct 2024 19:48:57 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2045.outbound.protection.outlook.com [104.47.58.45])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42c37cxetq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 21 Oct 2024 19:48:57 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LQKWiItybMpyao+dxd5UAoUxI12A3Dqz23ZCwkURiwZmuHuDe9mH2sF0EsKGxIjEruowhg9p4oK7ZO+lpY+WZ7+GJlApPTJ1tIx28mdHolulVBfdSeLjt7KEKbSXwK2YrizaXpZgxs8JIZVzvo837ZgA17ReCshxLSfEea9WQWpWXd9cYVBIwIMaZNmDtD8KmspmdSWfb92ZnmWAW0OWaIP+F2tyyakVKh/kpXf5/rbJt4Uts+CbRNsWmnlqNMfeA2KtqLdDJTh9XMLd3CgCmnXKJqxTq6/u3wcAVuncvNZFw0B2eX4PARchDVSkh83dzsj7qIiQh1JtuD+wm9Y/4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=y+9k8KBp68GO/Zp8YMU/qq3QRdCcMVlwrezYiyMCtRQ=;
+ b=f+0mYztFtb+3GnXSuaicAAZWjI/sYx+mTbzEUJAJvvteeU6rMsxEZpjzQZ9i6SkRX4ggOgrrez0jOQEKdK/aAOMNJ/iuJ8qe5lPSX3y1+Jw0t7j59BUk5/yftNf2BUhUc4k0UevJAhrdpvtyoHKfCMOfZQX2va60semTpFzoopXqmrGq0Vlftkbyb7WpRELm1Ky8SEAZteLw+mX1lPlYdgTdTx2+OHqgYwSppAdlzck0uI78tJoaLqNRS2ur9uoyAL5SDW96or/Hjd1Rgq2m4X83nDsvjREF79hG9IRB/Pbn2/7euLJCTRlpo/dJpyeaifl0+AdoE9vAxGS6FarllA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729527721; x=1730132521; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SkYtr7pn2JG2itofY99ImXF2puZ7hGJei8s9vBda418=;
-        b=TZJHkajoIhoJz1HF68ybgY6xixRarCjp9xJIJ8DBciv0CDDzIga6jbbTfpe6tSXZbI
-         qqEtnAByWGjiqdZYERDgqdaGvx+1vSafH7bY4311D2ixnJrXZiMXrws1KrmoXpl7HhF4
-         nASiEUJ1h+rzofwPBQ3nApGp8pxFtb2ssmpJfNoOgksGbTkPgzgDiaec2hmJUjJqqhhA
-         nePwLiZ9FIQeUYnHyr+568KLeUiWP0+2PH1bl5+dLL9Smipulc3fZ/GKich866Hqs8da
-         x1TpJyZCA3niViIN5WLmYo5yeZkWRffk112OQIlcMx7kS9C9oAbTaxD3yGDzX+dnTN0Q
-         BTrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729527721; x=1730132521;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SkYtr7pn2JG2itofY99ImXF2puZ7hGJei8s9vBda418=;
-        b=Ttk/WCaJSdyJeQwa1rDBFba8fYVVti6DABFOFOc74gj3IisfWFBcGy3bWdvJ5IgE5i
-         dkXlPjoaBj0QhYzxOY+LvUVCbqyzhQGzhuyap+54MLQejJeYIWCNSuJtPehq0gu6YTLQ
-         jAFAmmhfroAq+s34oFCswP3ds5hxZJAigFiDllSrLy3rJxgKWSRJK2TT1lWGA2dr7lOi
-         FGqMVGD9b8nNigcUW/sbRZKSV1UENjdNgxcZwSTCi9F3RtvlJokh0u4Jk6rwzB6YZ+eO
-         efIJDbLlKLZCTHrN7zB3PY98xQYrC/vJsd1CWPbzHKshZ2rS2dGGmijHJqmMmXhgDv/Z
-         wwdA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOY5AzLWNtSTAqHss00zy5NvBonC6wTF51ndKm0hdwUVzhIV6A++dv9LpkDakIt6L6UWjRxXxDqcc/Hj0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzptacYalMt0savNZvEqmJDLV7BqAnn3x11o2SNrpi0SC5GwDPd
-	mWFZMCtQdWdIiFyX4BCIvQ6QuUPiRPdi8PF7aNSC3o2t3WFxQEkF
-X-Google-Smtp-Source: AGHT+IG/G4pnevziazcEE6yb0lEv7rA3+D30JnmHzQovUaRt1On42hhF8Vy1euEwCBGzVoLz0DLWwA==
-X-Received: by 2002:a05:600c:474e:b0:42c:b52b:4335 with SMTP id 5b1f17b1804b1-4316162875bmr97112055e9.10.1729527721163;
-        Mon, 21 Oct 2024 09:22:01 -0700 (PDT)
-Received: from [85.64.140.6] (85.64.140.6.dynamic.barak-online.net. [85.64.140.6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4316f58f2c3sm62284305e9.27.2024.10.21.09.21.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Oct 2024 09:22:00 -0700 (PDT)
-Message-ID: <0ba9356c-63fb-2ec6-59a8-fd7bccff7bb8@outbound.gmail.com>
-Date: Mon, 21 Oct 2024 19:21:30 +0300
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y+9k8KBp68GO/Zp8YMU/qq3QRdCcMVlwrezYiyMCtRQ=;
+ b=CoAtjeqO+7VL4g73dFxNujgHYTJEN/DRAnVivTMu3/YwVXk0WN1WDW/99dON/NEBRXKO5m5ZE/278+gdLU6BYRNF3iukZDZi0pT5JbQajwnMaiiRH71IFiQhSVCcwGSw6YFEZWeikDMp+DimWMdKUkdo0hDQAP+EMFIt/libi08=
+Received: from DS0PR10MB7933.namprd10.prod.outlook.com (2603:10b6:8:1b8::15)
+ by IA1PR10MB6784.namprd10.prod.outlook.com (2603:10b6:208:428::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Mon, 21 Oct
+ 2024 19:48:53 +0000
+Received: from DS0PR10MB7933.namprd10.prod.outlook.com
+ ([fe80::2561:85b0:ae8f:9490]) by DS0PR10MB7933.namprd10.prod.outlook.com
+ ([fe80::2561:85b0:ae8f:9490%7]) with mapi id 15.20.8069.024; Mon, 21 Oct 2024
+ 19:48:53 +0000
+Date: Mon, 21 Oct 2024 15:48:48 -0400
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Steven Price <steven.price@arm.com>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
+        Charlie Jenkins <charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+        Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org,
+        linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC v2 0/4] mm: Introduce MAP_BELOW_HINT
+Message-ID: <5u7xntjdye5ejjmkgpp7m3ogpzblxcztrwngulejdft63fzuwf@xcxfcbaccqtw>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Steven Price <steven.price@arm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, 
+	Charlie Jenkins <charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Shuah Khan <shuah@kernel.org>, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
+ <yu7um2tcxg2apoz372rmzpkrfgbb42ndvabvrsp4usb2e3bkrf@huaucjsp5vlj>
+ <Ztnp3OAIRz/daj7s@ghost>
+ <pbotlphw77fkfacldtpxfjcs2w5nhb2uvxszv5rmlrhjm42akd@4pvcqb7ojq4v>
+ <b6ca55b7-4de2-4085-97bd-619f91d9fcb8@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b6ca55b7-4de2-4085-97bd-619f91d9fcb8@arm.com>
+User-Agent: NeoMutt/20240425
+X-ClientProxiedBy: YT4PR01CA0499.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10c::12) To DS0PR10MB7933.namprd10.prod.outlook.com
+ (2603:10b6:8:1b8::15)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,36 +170,204 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] char: Switch back to struct platform_driver::remove()
-Content-Language: en-US
-To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@baylibre.com>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Mattia Dongili <malattia@linux.it>, Michal Simek <michal.simek@amd.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Dan Carpenter <dan.carpenter@linaro.org>, linuxppc-dev@lists.ozlabs.org,
- platform-driver-x86@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20241021104511.405661-2-u.kleine-koenig@baylibre.com>
-From: Eli Billauer <eli.billauer@gmail.com>
-In-Reply-To: <20241021104511.405661-2-u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR10MB7933:EE_|IA1PR10MB6784:EE_
+X-MS-Office365-Filtering-Correlation-Id: d7573188-9cfa-49c4-ea2c-08dcf2096459
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?bBJX3O83yfTKVlIRLShv+/qybkfGhyu1ytQ6M9thX4cSntxfsrP73YcS2TNq?=
+ =?us-ascii?Q?bShtRTjjTEZsQTM7WQiKPj84bWwGHjdUkH/XFofKgV5I6EsGqPmR/exWeFVj?=
+ =?us-ascii?Q?geKpfRT/891yxHrk0g0ofsdSw8VgayccTyRTTbrl6bBMLnk7Yu4JbYh+9LIV?=
+ =?us-ascii?Q?EcmOMMSw1S5QPHAiya3N2n7G1gFOSxmzZh9ciqkl49tNOBkMQUXi7MnrNhlj?=
+ =?us-ascii?Q?D1fuNokTo/H474QEv3lubtKwxVPDr/6VyflV2EDZKiA47oAUJlCOj9ot7THf?=
+ =?us-ascii?Q?yr+I5iuBdKF2VPkWHzc7viA/BvOptZ9eh3mhUB9A7IVirS7UhVuevOR5Qw+M?=
+ =?us-ascii?Q?m+ZAYFCFnGTED8dAWFKgn/im0Uyt7bsQyCnvSqEaBcHvG4V9WNMNrn5duGyZ?=
+ =?us-ascii?Q?4Wpjlg/+6Mj1GyEo3p5bW5ZYxuCTM8m7nAzQuPhTeNwzYXGRR/TQMOHsiEjL?=
+ =?us-ascii?Q?LRy2eP3YEsrxBqLtawVEkJq3MIwgqbySphMLPO4tGNDV4+CR6rXD9lta0v5d?=
+ =?us-ascii?Q?6QN+X5I9F8pGpAqrtlz97hCp2wLgXAQIhiY018b9kQ+LltzHeUnQwEqS4mMn?=
+ =?us-ascii?Q?uxkz8LwuwyyaA0y39nZx1sMHjsR+g/zlFQboSl3TYLWd4sYBRshWVeOvoXBk?=
+ =?us-ascii?Q?arDDC7cGGd/O1PzsZoch1L5PKCXgs9EEmPwFQkR8vJi90pSVZLj2NwAXWLez?=
+ =?us-ascii?Q?KgWBMW4IDPqmfUO6MTD9Ziu5N0eQT9NQHEgOzz0cqyJAS+4AD1ukO8GIkmlB?=
+ =?us-ascii?Q?2IkDB2OGEBLS5nAR++fRx/V8PABLaTMg1t+Kq3WYNf4NrJ5fDB0XqIE/e2Fk?=
+ =?us-ascii?Q?1/0HEMYs3mhox0JRq+ufRXq/dOMh9LyXNsMPxJ4J2qlKDcfyKzyvEYvvOy0v?=
+ =?us-ascii?Q?1BKMGpfm9pOrOmXN49y8VtrBnsUXJ7jmc3Jp4KYcupsarFHsFPCSLPz7ZdmU?=
+ =?us-ascii?Q?ELYUkqzFUA3XrBNRiFhaiXwsyH15pKr3pop/sfGgdJ7tGwJHyIXS5RqneIL7?=
+ =?us-ascii?Q?dUraptDpf/aM6gU2b+9v3uerBitIAwCx9pbY35TAbUh55n1zzCxetjvzK7Kx?=
+ =?us-ascii?Q?CT+vZvBeGgX9ufNfpa7K73alNZ/WGA99OwLEWJG06cAKo+Aop6rVSu6lsnhU?=
+ =?us-ascii?Q?YENTkmc0kAYzvHr5m+qY+Byh1BA3ST/agQu5q82jnKheoPYUOcGHosHCPSdQ?=
+ =?us-ascii?Q?eXfOxJkX16cuOpKxdn8Oo/b9tVBYZPpNKAaIs4BP9P66/GKZcA2RlAcnATTR?=
+ =?us-ascii?Q?xQ/rFfUJM4cB0aZAVc1UZljOIXxRb2AH3vKwKGqjrw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7933.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?eJSYJmj67fMJognDz1w0YhevPtDDzK7N8Nd7VpZYlaDM7x9PSfKe05XbnbhF?=
+ =?us-ascii?Q?6XCHnEj1cpEpt/uHWV2/MneOXBXTFoQAyuRMTtnpupZsx913mvIH4gRVZ4DU?=
+ =?us-ascii?Q?msNzAs/G7D5bgnc64dvpwr0fI1/yt0xrbIv79nvwn6nSjsD7SgzFZ3NCN7Na?=
+ =?us-ascii?Q?K92hrx7sVKiRzUgq77DwvbfbqU607sBTRONRkZRao0o3sJT/OTa9H+wAPDHW?=
+ =?us-ascii?Q?7tBa6hW1TWp0JMSNk2kdJQSbUXLqURfKjD/49T5BpNcEgM9bgMpy7dzIRjH0?=
+ =?us-ascii?Q?NVcV5StbErz3jfytPdMZCAsV7EaBlNEzNZ31WEIF5o2Y+OvmUO96lTSGirUp?=
+ =?us-ascii?Q?pMdGaDzp2l5ZVjp2dk/tcouY6uW0BqcEebi3Xdy61sLQgJ1UeDOYkMURXMkg?=
+ =?us-ascii?Q?yiDwwINm4Toz1N/G/ro40CYuf1c2EDiu5N1P4ZpP6gYp0OactKxMAVnMBeOT?=
+ =?us-ascii?Q?dfeiuBEnIqxf7eVfH8GjpmSZGgSPAxye6m7DLuvxUIYZpsVbQmtUUfIKKTwt?=
+ =?us-ascii?Q?NDj/WuGyKwipVLxP8ZD/V0WCTFs8Ki3d5P2B4TfOvJ/d8SoeRW/eyMgr21fR?=
+ =?us-ascii?Q?qa4sxXCg3I6wTXfn6Wt8HWIjp/sGLRtm3nDeEna27EMqdtcamwEDus7Mu7ot?=
+ =?us-ascii?Q?X8I8/+SX7kuNm238nOZctPQ2IqScrRbXZRCwb3/ytJGHoZlV0+xwvI2NYVwv?=
+ =?us-ascii?Q?J0F6U/C64qK+fR4IJXKuaXI+FKg2Gg8IzESEOWekkHBCDb36rRRiEUMflJO+?=
+ =?us-ascii?Q?GEI6yVaQJ+LUmV1rQWtATVUw4xyPPv6ZIQ4vNWDnsDvxkz2sIdYR1Up96QjH?=
+ =?us-ascii?Q?Sb6NYWApIj9RC1HkKekdgPk1FfRaiHqCgOQwIl5uNVYqYTd9xP/dudcMtufE?=
+ =?us-ascii?Q?PxYde/STpKyuFvqsdZtw6v0BEr8ucFONTvCYVICLAEBtcxMQdipJtL2omgGP?=
+ =?us-ascii?Q?+84vBY1Mtr/7crw2srWnzLzBb4GVNvQoihT+39n/MyXUFxDWtp0WMxyDD0bq?=
+ =?us-ascii?Q?7QSCxemyhsV8/NsmjtCVTXg7wcSG9X601YqNFVGzYVwgfRiMKEwB9QVQgFlM?=
+ =?us-ascii?Q?vDAEwm9HzC7VDRbwNdSpJwhI7rooVEVuWAPq9wTDS+qmw9wjNBlqainrwYAJ?=
+ =?us-ascii?Q?58qIWTVMvTKT+NOiLf5d9s9uEXMd/iEuxYWa0u/+MIPF/KPOBebpZlwG04yT?=
+ =?us-ascii?Q?z3oZo2rTteonSemO2N1huoZUJBj4vrAcPHCuMHyeAh9S5HkKLSkFJzRxtgIe?=
+ =?us-ascii?Q?gJFEVtjiMSGljSFSeh6nISlTI/6z3v6BPTmkBJbRda5R259Uhc1+WPnbDMak?=
+ =?us-ascii?Q?FAe0terPEVLzarDIZD0NvFv6ERjDS/xxU+W1PqhqOKFNFOKC+6R6sK+tKVIA?=
+ =?us-ascii?Q?RqYEjeM5Xb988dRyoNlYEBTQ09OHqml331hFsfwFUtkSyz5gqzBKhQ6wJZKK?=
+ =?us-ascii?Q?vsID1jH43EBF3Sai3UpuObw3ZU2j3EqJe7FyyISLywdyuplby/gSFdma+Gtq?=
+ =?us-ascii?Q?1xUMt7ai9GYPXwjt32a3bfV0H8XguPWAZbMhVg3Zl/r6asIQEr4j2cbmuxAi?=
+ =?us-ascii?Q?ElHsniS31dIdTvnSzMxRvrrOWzQBDdIUeGraTQz8ZHV2nHA3LUC0mdJcQ0db?=
+ =?us-ascii?Q?nw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	nVVjn1rzQfjl63RD708q44/gPW6cndDkJr2NcP1Djvtk0AUCExmjmAyZb3MN0qUcl+04D/DtuLcIdOH4AUEGPtczdO/iyaCgmv53QIf5kQSKI3lC4UQZTwtBdFc5kaPexOCWbj5qeO62rmuhc5U52rukw+7LFbIGAth/BmUkj5u/rK/dhJe5kjWgcf2aK9yYzMVrMWeH3X+TuCiDHi8WSximf+agKK9lwxl46oFBlvsBePn1KY50T8arEqZbUTgPO3FnLcWBSi4Dg0eypWfqJkreOllyHn6V+r0XlCk5IRXw/X1DMElqr0EE2+U07w15yWKGkD76HzEeeZhF+gfZEZqPhm3afshmE8ZyBL5U/MrT6tTiZfe3dZenIXVZ30IMqRXWTwqZzasa36rs6rg7WeryDwmzuBpcDIIWpS30A9kvoFfDT20lTUInZi779U1uaof7hXm7Z4UtSGequ8501r99Ib9k0CXO8tVYtaSUhsnAxGIoLqfXVy4HKTtc9xJq3QFPnSxD6POiOJTu6hDpuRfsoEtl3RJcWkSon/kwYLGQNt3C5P2DQXdV9ldZ3I47vN2J5dnEMDVQW+dUvJIFhn6kBBYEc8gfTxifeUgsGMk=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7573188-9cfa-49c4-ea2c-08dcf2096459
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7933.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2024 19:48:53.4582
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: larPSMRO2YcYGSqz3KRg+6dehzaXRj10Mbxty2dWpE/Y5W55k3Tm9aKmW+MJRoIGTJVjVzvT++WPX75dDre0rQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6784
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-21_18,2024-10-21_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0
+ mlxlogscore=999 spamscore=0 malwarescore=0 mlxscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2409260000 definitions=main-2410210142
+X-Proofpoint-ORIG-GUID: 23o6x68UfvssW20Sjgfs19ta02z80H7a
+X-Proofpoint-GUID: 23o6x68UfvssW20Sjgfs19ta02z80H7a
+X-Spam-Status: No, score=-0.9 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Who am I to object? :)
+* Steven Price <steven.price@arm.com> [241021 09:23]:
+> On 09/09/2024 10:46, Kirill A. Shutemov wrote:
+> > On Thu, Sep 05, 2024 at 10:26:52AM -0700, Charlie Jenkins wrote:
+> >> On Thu, Sep 05, 2024 at 09:47:47AM +0300, Kirill A. Shutemov wrote:
+> >>> On Thu, Aug 29, 2024 at 12:15:57AM -0700, Charlie Jenkins wrote:
+> >>>> Some applications rely on placing data in free bits addresses allocated
+> >>>> by mmap. Various architectures (eg. x86, arm64, powerpc) restrict the
+> >>>> address returned by mmap to be less than the 48-bit address space,
+> >>>> unless the hint address uses more than 47 bits (the 48th bit is reserved
+> >>>> for the kernel address space).
+> >>>>
+> >>>> The riscv architecture needs a way to similarly restrict the virtual
+> >>>> address space. On the riscv port of OpenJDK an error is thrown if
+> >>>> attempted to run on the 57-bit address space, called sv57 [1].  golang
+> >>>> has a comment that sv57 support is not complete, but there are some
+> >>>> workarounds to get it to mostly work [2].
+> > 
+> > I also saw libmozjs crashing with 57-bit address space on x86.
+> > 
+> >>>> These applications work on x86 because x86 does an implicit 47-bit
+> >>>> restriction of mmap() address that contain a hint address that is less
+> >>>> than 48 bits.
+> >>>>
+> >>>> Instead of implicitly restricting the address space on riscv (or any
+> >>>> current/future architecture), a flag would allow users to opt-in to this
+> >>>> behavior rather than opt-out as is done on other architectures. This is
+> >>>> desirable because it is a small class of applications that do pointer
+> >>>> masking.
+> > 
+> > You reiterate the argument about "small class of applications". But it
+> > makes no sense to me.
+> 
+> Sorry to chime in late on this - I had been considering implementing
+> something like MAP_BELOW_HINT and found this thread.
+> 
+> While the examples of applications that want to use high VA bits and get
+> bitten by future upgrades is not very persuasive. It's worth pointing
+> out that there are a variety of somewhat horrid hacks out there to work
+> around this feature not existing.
+> 
+> E.g. from my brief research into other code:
+> 
+>   * Box64 seems to have a custom allocator based on reading 
+>     /proc/self/maps to allocate a block of VA space with a low enough 
+>     address [1]
+> 
+>   * PHP has code reading /proc/self/maps - I think this is to find a 
+>     segment which is close enough to the text segment [2]
+> 
+>   * FEX-Emu mmap()s the upper 128TB of VA on Arm to avoid full 48 bit
+>     addresses [3][4]
+
+Can't the limited number of applications that need to restrict the upper
+bound use an LD_PRELOAD compatible library to do this?
+
+> 
+>   * pmdk has some funky code to find the lowest address that meets 
+>     certain requirements - this does look like an ALSR alternative and 
+>     probably couldn't directly use MAP_BELOW_HINT, although maybe this 
+>     suggests we need a mechanism to map without a VA-range? [5]
+> 
+>   * MIT-Scheme parses /proc/self/maps to find the lowest mapping within 
+>     a range [6]
+> 
+>   * LuaJIT uses an approach to 'probe' to find a suitable low address 
+>     for allocation [7]
+> 
+
+Although I did not take a deep dive into each example above, there are
+some very odd things being done, we will never cover all the use cases
+with an exact API match.  What we have today can be made to work for
+these users as they have figured ways to do it.
+
+Are they pretty? no.  Are they common? no.  I'm not sure it's worth
+plumbing in new MM code in for these users.
+
+> The biggest benefit I see of MAP_BELOW_HINT is that it would allow a
+> library to get low addresses without causing any problems for the rest
+> of the application. The use case I'm looking at is in a library and 
+> therefore a personality mode wouldn't be appropriate (because I don't 
+> want to affect the rest of the application). Reading /proc/self/maps
+> is also problematic because other threads could be allocating/freeing
+> at the same time.
+
+As long as you don't exhaust the lower limit you are trying to allocate
+within - which is exactly the issue riscv is hitting.
+
+I understand that you are providing examples to prove that this is
+needed, but I feel like you are better demonstrating the flexibility
+exists to implement solutions in different ways using todays API.
+
+I think it would be best to use the existing methods and work around the
+issue that was created in riscv while future changes could mirror amd64
+and arm64.
+
+...
+> 
+> 
+> [1] https://sources.debian.org/src/box64/0.3.0+dfsg-1/src/custommem.c/
+> [2] https://sources.debian.org/src/php8.2/8.2.24-1/ext/opcache/shared_alloc_mmap.c/#L62
+> [3] https://github.com/FEX-Emu/FEX/blob/main/FEXCore/Source/Utils/Allocator.cpp
+> [4] https://github.com/FEX-Emu/FEX/commit/df2f1ad074e5cdfb19a0bd4639b7604f777fb05c
+> [5] https://sources.debian.org/src/pmdk/1.13.1-1.1/src/common/mmap_posix.c/?hl=29#L29
+> [6] https://sources.debian.org/src/mit-scheme/12.1-3/src/microcode/ux.c/#L826
+> [7] https://sources.debian.org/src/luajit/2.1.0+openresty20240815-1/src/lj_alloc.c/
+> 
+...
 
 Thanks,
-    Eli
-
-Acked-by: Eli Billauer <eli.billauer@gmail.com>
+Liam
 
