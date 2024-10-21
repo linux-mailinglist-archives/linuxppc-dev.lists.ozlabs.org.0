@@ -1,75 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-2467-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2468-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE639A7291
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2024 20:44:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C7C9A72BF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2024 20:57:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XXPP20xhjz2xy6;
-	Tue, 22 Oct 2024 05:44:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XXPhH13fvz2yDS;
+	Tue, 22 Oct 2024 05:57:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729536278;
-	cv=none; b=BLsZa1x0e0OG/9mAYJQzb4qod4pYzauI5BvgjOg/15SkpXJxlzvxO6iiK1UL6x5vadcrcuo1OlsPOg16wgXPUHSUZkKoi3vwXPcNaFK2lYxDxrPuJgewgFvezkO+TUFMe58zN+f2yLVFTBX50oUGtSt6NHghwiCgdblLBhXCHy4RnNjigj4B3I+oMgW3pjFKueVY0ixz3NrkJ3zi7FFvJK1Ze2QCgE/wDZI/TKOJwnuBDD16j/MDQTk/t52RgYoeV9kvT03klN8hCchxHCNDjgh0CP6Bh3+p8Abpl1p428vuetyXAjVB/m9O/VpgaSCDktVyfOfhWLKboEqdOmnwtg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::549"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729537071;
+	cv=none; b=dmBfVEB2pSnAHWqzc/8k+7e0eQBvOao+bLCW2sAqiH4NSHRzfQt9lfI+BkTwqrKvnpWrEfUxznE1tkLqbMJglrXA3T9sYafmqDFmr4CJ6F/Q4WgVWURSb5eEMBjOADu5PmiecdhaOHm677Wk1et1vZ3ZzUzdBwIB7rk9muWI0ymWN0+YlE7+NKXPy/jpHTuDHO0W0dy9vHVlzs+RKcX9lpMOoG1QunSeLGVSVpApIITW7eqlE6gOJsMVxa96bipOYKelTzfalNCZkb0Owx4JFwmorB4eJumQDnUvtXhsb+6lWIzwyHzyL8HmASOtLJu3LGxBpd84airSLK2QXtsXCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729536278; c=relaxed/relaxed;
-	bh=LXs4kPrcJruBKCChQeSJhGbS/oLr3Re5bD3RxfHm+ko=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NVyVkyH/DFLU133hECEqKq8+iT8HeVvU+99M8ntF8zYCSbGxxtwwyLFxTSpGqkl+ZDL/im8WBcK33LvzRxmmtCJXcgEaD0Avepra1wVb2LHP8LBJOaekL6cPc33l8BbLB1wr+0DRFpbqm7hzctbiZalgE1CtrXE5UirwbTL0IK7lcQeF4FGVozWpDbad+OnHZq0mRdTZEeDMU69w9R9ByHtr0VRJ/u/MaeFJ+avaihPulvgt1FH7iFGpWQKc+XzP49yKZZd4lBlUesxoA5fbBQIMIksTr+JVILdz0ajAxcase5MzLisuvDJQ8B+vWUuHRwZ6oQ0vp7Uw5JtI3xT9PA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QQm8I2/m; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1729537071; c=relaxed/relaxed;
+	bh=TRc3VGGNkUkUR9ifA4nNeX0hRZiSdlXeerhUJQ+tYBo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=B1ufiyi4pe3fOwL1KplHlCemAG/MOWBsP8c9eS3Z7NUyeTjs6Qml/7ZkQnIMNQ/bBrG5etCRYXhRTfiwY/pz+bZsD5JVUFs+GMbBvxdW5LZteNOcV1jeG/5rES+QtzOwSS7kc5AUZPV5prLtiFwa7oZJ+X1jcBoWb/pqGqmrX7ItUTh1I8dXqG6DpZK69VhL670SkKugbnIeiyHU7PLghC1ac6wbifuZZSoMOJtc/63f4AXk8N3H++K896thoiggfO8vBEF+XrX2aeed6DtEzg33oozf2yc4Pqqf8t0bZsPsQZiccr4aLzbQ7utrcTmbluS2+fU/cLWKAf/K33/Jnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=U0gW4d6L; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3kkqwzwykdas3plyunrzzrwp.nzxwty5800n-op6wt343.zawlm3.z2r@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QQm8I2/m;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=U0gW4d6L;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com; envelope-from=3kkqwzwykdas3plyunrzzrwp.nzxwty5800n-op6wt343.zawlm3.z2r@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXPP11M4vz2xpf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2024 05:44:37 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E7F545C56D7;
-	Mon, 21 Oct 2024 18:44:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCD8C4CEC3;
-	Mon, 21 Oct 2024 18:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729536273;
-	bh=bm05TRGC4RzzFpXYGxFW46MniU6yPe/nV2EgssZ3oV0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QQm8I2/mGJAKd+fCK87nrxLPiQDaK4ssWWSN8AtsVfJfsZJYBETTy4TD4Lg9/gmSH
-	 hoiL21kW+o/XAmDSTQ8tNq342QOM8lPrS6tuYDDikI9LJiS296jvO0p4cvpYt7UuvU
-	 nAVor0ZqKOABGHFQihYG8Et7bzB7HIzG6RbybOz45oW4ovc6dWgfe96VTJeImuwY94
-	 ZQm3dWCJ3sSaH+wwG7NmLAqwgF1e5p9D5RVrxWPxdapsYML2sFSpXy8cXJube3o23e
-	 MI7iV280bp9k2Mt69U8gqMfZZJAM7taEhTBc8T496Tyq7JsgnoYn8cUEZuxCUd/6tC
-	 jUcC4dayGgF4Q==
-Date: Mon, 21 Oct 2024 11:44:30 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>, linuxppc-dev@lists.ozlabs.org
-Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org,
-	gary@garyguo.net, Michael Ellerman <mpe@ellerman.id.au>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Benjamin Gray <bgray@linux.ibm.com>, rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	neal@gompa.dev, marcan@marcan.st, j@jannau.net,
-	asahi@lists.linux.dev, linux-modules@vger.kernel.org,
-	samitolvanen@google.com, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v6 2/5] modules: Support extended MODVERSIONS info
-Message-ID: <ZxahDv5ZKdM__0sZ@bombadil.infradead.org>
-References: <20241015231925.3854230-1-mmaurer@google.com>
- <20241015231925.3854230-3-mmaurer@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXPhF5JHnz2xpf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2024 05:57:48 +1100 (AEDT)
+Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-7ea6ebdf5d3so2431967a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 11:57:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729537065; x=1730141865; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TRc3VGGNkUkUR9ifA4nNeX0hRZiSdlXeerhUJQ+tYBo=;
+        b=U0gW4d6LE1yJIBSrshUygEFC0zyT8rT+pLlIMi4+ln3OLp3tvL1XKJKm1mJ4TXb4oF
+         bn7pvOf34kC6wUugjvEem5wjH8yCgbJfHqGuByqC+30zRdWN3BCygzPhx+vb0MMgSApS
+         30CIItjOX3gASEzC2OvMUaboFM2ZX3DyRdcFPJzVRWZhZTFxuB6HI96eQOFyFDfaSMt5
+         YSVluqetNMGbR+41ABfhwYN8G4wjMfiAlNoaRA+7FIyU6NxgiLtucyqRLfX75H/5UV1v
+         mWDMW0Hiwlp/1zJ3jSNkV0vZlk3+l7RIwfr0K4arB7GNfNgqHddPBQJm/E1+7858LBiW
+         Nung==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729537065; x=1730141865;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TRc3VGGNkUkUR9ifA4nNeX0hRZiSdlXeerhUJQ+tYBo=;
+        b=SYtJwxtOuFQaT6rUNeI73JvkokeG7+H1+rBplVgxOYySTc+XsdLe9hF+ISDd5bQEyC
+         vnfXELJA0vO2NAqISGXsqUl7SodwktTDiSa6kaFVyuPDtGjzgmTYd5zwmAACF5tSXJwS
+         aNkYVwGP1OfEHw7BG1xPha0N9eBo6of/UkBs9pY4kY/mfN6OvDF+XGPzHWEVmkufr7On
+         qcv5c0utkl7ztcrERvi6mbj7clSyr6U7gjqMQFqROc9CjwJH/5DCD6X4Fs6VFvj3S21I
+         HyMdn4mdjQrMPaFa4G2oZ0xYFfF7fYcOSSTPrMPjPoLqpHibdFb1Z+CvPMxXBCGjKBAt
+         gDJg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6BCwRTIEoRSkRE1+qUaEOEX9QllhUNOwtl1fieYZQkTFzA8/g66Pry06lGdzH7aqMhuJcfWpKm3zMeRk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YysUyAnEJ0ztcl4DYgOMmXNkA4fX0+dZpcgXRajvcQGHZHan/7k
+	8JncI3UqNV7nNsT4aCj7I8uPKJ8Rw4+4rAzHg3oI1TnDwaIZHxlil2I7DPyus92xCmoWlqWtPGY
+	bUA==
+X-Google-Smtp-Source: AGHT+IHRYlBrX6M+NH4TUGVEqm9BFtB7q+VVhXD5EoRBvSsXa42IiMZxJc+hXyxs+ZPnB8HLQQfXC/cdu0E=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:9d:3983:ac13:c240])
+ (user=seanjc job=sendgmr) by 2002:a63:3858:0:b0:7e9:f93c:22b9 with SMTP id
+ 41be03b00d2f7-7eacc895cf2mr12508a12.10.1729537064143; Mon, 21 Oct 2024
+ 11:57:44 -0700 (PDT)
+Date: Mon, 21 Oct 2024 11:57:42 -0700
+In-Reply-To: <ZxYrYe/WN8XoB+fI@yzhao56-desk.sh.intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,30 +73,93 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015231925.3854230-3-mmaurer@google.com>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0
+References: <20241010182427.1434605-1-seanjc@google.com> <20241010182427.1434605-52-seanjc@google.com>
+ <ZxYrYe/WN8XoB+fI@yzhao56-desk.sh.intel.com>
+Message-ID: <ZxakJr_jWkU-Y54e@google.com>
+Subject: Re: [PATCH v13 51/85] KVM: VMX: Use __kvm_faultin_page() to get APIC
+ access page/pfn
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Anup Patel <anup@brainfault.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	"Alex =?utf-8?Q?Benn=C3=A9e?=" <alex.bennee@linaro.org>, David Matlack <dmatlack@google.com>, 
+	David Stevens <stevensd@chromium.org>, Andrew Jones <ajones@ventanamicro.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Oct 15, 2024 at 11:18:57PM +0000, Matthew Maurer wrote:
-> Adds a new format for MODVERSIONS which stores each field in a separate
-> ELF section. This initially adds support for variable length names, but
-> could later be used to add additional fields to MODVERSIONS in a
-> backwards compatible way if needed. Any new fields will be ignored by
-> old user tooling, unlike the current format where user tooling cannot
-> tolerate adjustments to the format (for example making the name field
-> longer).
-> 
-> Since PPC munges its version records to strip leading dots, we reproduce
-> the munging for the new format. Other architectures do not appear to
-> have architecture-specific usage of this information.
+On Mon, Oct 21, 2024, Yan Zhao wrote:
+> On Thu, Oct 10, 2024 at 11:23:53AM -0700, Sean Christopherson wrote:
+> > Use __kvm_faultin_page() get the APIC access page so that KVM can
+> > precisely release the refcounted page, i.e. to remove yet another user
+> > of kvm_pfn_to_refcounted_page().  While the path isn't handling a guest
+> > page fault, the semantics are effectively the same; KVM just happens to
+> > be mapping the pfn into a VMCS field instead of a secondary MMU.
+> >=20
+> > Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
 
-I'd like some PPC person to review this, and also please document
-this under dedotify_ext_version_names().
+...
 
-  Luis
+> > @@ -6838,10 +6840,13 @@ void vmx_set_apic_access_page_addr(struct kvm_v=
+cpu *vcpu)
+> >  		vmcs_write64(APIC_ACCESS_ADDR, pfn_to_hpa(pfn));
+> > =20
+> >  	/*
+> > -	 * Do not pin apic access page in memory, the MMU notifier
+> > -	 * will call us again if it is migrated or swapped out.
+> > +	 * Do not pin the APIC access page in memory so that it can be freely
+> > +	 * migrated, the MMU notifier will call us again if it is migrated or
+> > +	 * swapped out.  KVM backs the memslot with anonymous memory, the pfn
+> > +	 * should always point at a refcounted page (if the pfn is valid).
+> >  	 */
+> > -	kvm_release_pfn_clean(pfn);
+> > +	if (!WARN_ON_ONCE(!refcounted_page))
+> > +		kvm_release_page_clean(refcounted_page);
+> Why it's not
+> if (!WARN_ON_ONCE(!refcounted_page)) {
+> 	if (writable)
+> 		kvm_release_page_dirty(refcounted_page)
+> 	else
+> 		kvm_release_page_clean(refcounted_page)
+> }
+>=20
+> or simply not pass "writable" to __kvm_faultin_pfn() as we know the slot =
+is
+> not read-only and then set dirty ?
+
+__kvm_faultin_pfn() requires a non-NULL @writable.  The intent is to help e=
+nsure
+the caller is actually checking whether a readable vs. writable mapping was
+acquired.  For cases that explicitly pass FOLL_WRITE, it's awkward, but tho=
+se
+should be few and far between.
+
+> if (!WARN_ON_ONCE(!refcounted_page))
+> 	kvm_release_page_dirty(refcounted_page)
+
+Ya, this is probably more correct?  Though I would strongly prefer to make =
+any
+change in behavior on top of this series.  The use of kvm_release_page_clea=
+n()
+was added by commit 878940b33d76 ("KVM: VMX: Retry APIC-access page reload =
+if
+invalidation is in-progress"), and I suspect the only reason it added the
+kvm_set_page_accessed() call is because there was no "unused" variant.  I.e=
+. there
+was no concious decision to set Accessed but not Dirty.
 
