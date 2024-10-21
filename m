@@ -1,82 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-2458-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2459-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184069A63E3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2024 12:40:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81589A644F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2024 12:45:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XXBfL6XKQz2yVD;
-	Mon, 21 Oct 2024 21:40:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XXBmG4421z2yVG;
+	Mon, 21 Oct 2024 21:45:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729507226;
-	cv=none; b=YzlFVPZJh9hPjx/ckyY4R65/hk/gL3IX4CpVtW7/1i3jjT59RsnPJ7lveec7BJsRohZMrWLpzNnq5Vs2kAIpzDF91oqQATQSgS/jXSgt0tZlA6gMJMFnmROGJWNh/MZ0VZbrUihaOObVlIQcqQKp3u3y1JBE+dJCJ1DWNHfhS9dbj8pHfMqHMNqSROAUzUyP79Kx07KMnZn4meu+Z2HFPAnes7Alc83tPLlBFsU6Rw4D/0SSiCI3681NqSu1Q0vg9NuLY7rE5pc2GJvDb8zV++SODh4QmIQxRRdAIBdphHlSPIuxQ7I9Ypn24JvsgHhVuPUJiJ1FWyG3Mf4egxfHMQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729507534;
+	cv=none; b=miGdHW0NcYaOmbx8pNN01iNMj2vRUi860HOvcIJgkmuCuGns9vXEw5sIs2J8cs3yECTvOzKUTOHTdCSb/l4UlmYslzmVzN56kKI61SwopET47y++JrSPHPAXEIEv3MbLKArUPycy4oGa4TcwQVJAhIv1oH2ZM1MrCcTL5Aj/XCddRXmsAjZbPWQl7kzxujjG17+mrAzQtD+GsnrAEDhaBbOjDZKLlLRveOTpoMqdHcsrVfgGr/1HNupsxdXQJF4fyck1jPT3HbRil063egPjiOgG89+f0Bw6UaNDJydSsEOGS4Abjp7Wf0Qmc8iyWjbxGk+7REdDN8BOlvbHLW1vpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729507226; c=relaxed/relaxed;
-	bh=92knE4jiltiV907EhRGLVYeamkXayI7j0BwYX0ZH1JA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cdKrW+fSmNEEgIJecMJcuqZFqnJiD/cMD1i4OZIJjxtLpClPAVa2QWVEHtduXrm1JuKQhfQVm5LNmTWvMhdNXCib+cWFdxQcYj1cXHuFAonJbAjM3W91D9Y+tBDLycANJKi+2+DsfpzSdTZ05i66OJX9v01/6EDZyw/2bgzZsov9Wh/1veiBXucg6WUNvvJbxgpmsWXu61BSyZil+4r4uqJ/M49ONCJsoNffMb6qfadrBE+DFZJXo/cCqKrlkCnF+GaCQ2MrfCYkhk17KA6fPmBQyB5HeZ1rFO2JA45mBBwO21XBbjr0Hlt9yAkuk9W3sL09jBv6CWEdSaDK3JCg/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WL4D7lJN; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1729507534; c=relaxed/relaxed;
+	bh=k3Cby4XV9gflu8W/UxOMiO5p42AshZvdOYCZUKwbt7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n4VsDtvuU4UCE3DbitYEZBNep34vK0rNb59T2IrgwYpHdgMsPg9oEm8ehE3RlglRbOPi5F/Ah3N++dQJNgH2f84VBoKux9oVwujOYej9QvtqAssh6xUibagBZNYr3y1INhn0pVrASvJJhzKMQHNq9lMaDfyDKcfbfv66bQpfhfmQy5buf8AFKZN4l9FQcDt0FhRJfVIZ4hHsQ9umDuqQvw7gdhuZjAU/LNSux6eA4ufb//9eV4mXlc7viNcLiV8MISM3egV4YRn2WFqJYilB9CUIAlgnxn4OWXemrtxZCHvuOX/gHNxbmR1hxvVvwNw1zCWYDFYN482ur2SF9FzU9w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com; dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=d6/CjXvN; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org) smtp.mailfrom=baylibre.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WL4D7lJN;
+	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=d6/CjXvN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXBfK1q0Yz2y83
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 21:40:24 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49L2KH3K032533;
-	Mon, 21 Oct 2024 10:40:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=92knE4jiltiV907EhRGLVYeamkXayI
-	7j0BwYX0ZH1JA=; b=WL4D7lJNas37Nzdhxi9rX+lx/0u/7ytK48q3TqjJR++gKt
-	r7ueMht7alDtgQ7pasPryEpqoYRd0OWJqyszZwZ+SpNOF2LJ1isSitDYhyMC/LAS
-	FwERDIOSqxtV94TGFg/XwPocGXOJNG9slT3/uBhOpxWpILgE6aPOyXK2xUh7rTpF
-	iZSfIsmznUv35ep6vlQ2EA5avKOIqsYrhOQyes8ee48qcQRT99bJpKxarFGhHfc/
-	Sf1AmAC4Lua0AKvgB9CPRIHyiQxUS0kOC4/Q4iiF3ywr7qQlDkQN+CyvM61jpuW4
-	hTkpnbK13JKGJKjwKEuAWROXZpMXdSctg6J3mWmA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42c5hm8my5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Oct 2024 10:40:13 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49L9CWB9018605;
-	Mon, 21 Oct 2024 10:40:12 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42csaj5kvs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Oct 2024 10:40:12 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49LAe94P24249044
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Oct 2024 10:40:10 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 389B320043;
-	Mon, 21 Oct 2024 10:40:09 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7F0602004B;
-	Mon, 21 Oct 2024 10:40:08 +0000 (GMT)
-Received: from osiris (unknown [9.171.37.192])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 21 Oct 2024 10:40:08 +0000 (GMT)
-Date: Mon, 21 Oct 2024 12:40:07 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        loongarch@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org,
-        Hendrik Brueckner <brueckner@linux.ibm.com>
-Subject: Re: [PATCH 07/15] s390/crc32: expose CRC32 functions through lib
-Message-ID: <20241021104007.6950-E-hca@linux.ibm.com>
-References: <20241021002935.325878-1-ebiggers@kernel.org>
- <20241021002935.325878-8-ebiggers@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXBmD0tVGz2yLT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 21:45:28 +1100 (AEDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-a9a977d6cc7so80633166b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 03:45:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1729507520; x=1730112320; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=k3Cby4XV9gflu8W/UxOMiO5p42AshZvdOYCZUKwbt7o=;
+        b=d6/CjXvNnS3tK2Yq9Bc3SiMeXjVwwBEI4ADM6NJly7aNY1WkmyIdM2IF3DCAfZdgzo
+         B2AePVhH/VjD9ck1icNXZL+chEkuyWrZWkhFLYDuyNwOEvUyLsG2/boM6T8tEGYJ6qwF
+         ozfKMIoWlucgY07/IfRpWdA5GYlLMI/qazj/hpT4SGksRfMuuJudidIoOtpG9rjha7Dq
+         Ek7H2w8xLmumY+Q6oifYk+saNni7QcatxDjCd0M7FPrSg3yjo491ryObvdYg1KNMBCGV
+         9LU0VScxMcHF0e2JERuH9SNAASmggcIidAMwZQnIAL4446OWSDW7v9NY5utXLXCSvygN
+         TQkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729507520; x=1730112320;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=k3Cby4XV9gflu8W/UxOMiO5p42AshZvdOYCZUKwbt7o=;
+        b=maNGq7tMD2PQGe6A0NX2SXEXE1YHq5LBK51+kkBDGWrgfICQtqMLnofBwdU69PYV+t
+         y5BytI3IwGqx2GUvzqcS33NMAgcfmv/XrTO+kFYtGzg6eBLuoeCqC2BSxXahvbcPYrhj
+         BqyTkuzw/F9pcs9YxlrQs9tp6OtZ9jhOBnh0FDebmSsHvJBubQWbfDmDikCSXRoR86q8
+         eqxmZp62By5I2FtY5OW/4rAdDs+9cBJMzvmh1QVDW4ggxwmsKzJtHQcOe+KWuiRdTVVy
+         wnY12LHSnCoIEewTr9pxU/zFMD7qYrqDpcEHHduD28uIoKDnW3Do5tk1Gc7pkV8Eo3I1
+         B0ug==
+X-Forwarded-Encrypted: i=1; AJvYcCVnLNnqU0n/tVX7NxDXS42qA/W4hDTriF5Qy1V/G7R0hjGrbEREmrQSQwPK1sqngfrUfO6dVOsxdouMlQM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxoM5PBgDduBWSzR1F7MjuD25JJgqGY/bJOrdsPcRmU3VbPF4oP
+	A9rsx2I2l7jBCstp/9zkHGlOaop2skseMyVa6WIwlNkzKesz4Cmkq1Vcs4AJAgE=
+X-Google-Smtp-Source: AGHT+IEhQ3lbc8bcTJ8PlVXWeGqp6K4dGB5VDI8ZZrvz+LFlAzQU+b1XSNKxL45fg2rsrolynjs5Iw==
+X-Received: by 2002:a05:6402:51ca:b0:5c9:5928:970 with SMTP id 4fb4d7f45d1cf-5ca0ac61c0bmr12512201a12.19.1729507520113;
+        Mon, 21 Oct 2024 03:45:20 -0700 (PDT)
+Received: from localhost (p50915d2d.dip0.t-ipconnect.de. [80.145.93.45])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb6696b4dcsm1900917a12.4.2024.10.21.03.45.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Oct 2024 03:45:19 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Suraj Jitindar Singh <sjitindarsingh@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mattia Dongili <malattia@linux.it>,
+	Michal Simek <michal.simek@amd.com>,
+	Eli Billauer <eli.billauer@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] char: Switch back to struct platform_driver::remove()
+Date: Mon, 21 Oct 2024 12:45:10 +0200
+Message-ID: <20241021104511.405661-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,102 +92,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021002935.325878-8-ebiggers@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: f0A5vIL1iLbWasgVAUuToCuIbQMCR4iX
-X-Proofpoint-GUID: f0A5vIL1iLbWasgVAUuToCuIbQMCR4iX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
- phishscore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
- bulkscore=0 mlxscore=0 adultscore=0 mlxlogscore=730 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410210076
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2801; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=WF27qBqFlxa47fR6RZgi2nrHC+6rRe7/Ai9CV0XlLus=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnFjC3w6Kl7S70XmAcoWOq+It3bPB4+g2z0+2EQ UtyssaTcPmJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZxYwtwAKCRCPgPtYfRL+ TpT2B/46n9Xt4qU9Wegsv/T7RB51fpED9noRiefgHo+uEsifrm2IjxEOl7NfbxZ1GEvbx2QRl5t zUHmzaViAgRoGfCHyBR6RIC6a5ckq8ybHJPzSJVlooIaghhldpod0/yXf0ge1mwIDJ/YTti8pVR RvDv2uKKLc3GYlg3Zf2amGdXucKqjVyMBECi81cHSWHjqRMsIcWozcyMfYEe1Kl9nWX44oRawC7 JqfJC5sLZKcmEtpGorzapBcnpoLp2CtJPb/9sp14y9GuLKiCwsOo8KuZbLXmBfhTnFd13QUYz7y ll/KDOfBPY2cAyoXl1jq/7tC8FXXuph8AGLiUnUKRfFZRuKO
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Oct 20, 2024 at 05:29:27PM -0700, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> Move the s390 CRC32 assembly code into the lib directory and wire it up
-> to the library interface.  This allows it to be used without going
-> through the crypto API.  It remains usable via the crypto API too via
-> the shash algorithms that use the library interface.  Thus all the
-> arch-specific "shash" code becomes unnecessary and is removed.
-> 
-> Note: to see the diff from arch/s390/crypto/crc32-vx.c to
-> arch/s390/lib/crc32-glue.c, view this commit with 'git show -M10'.
-> 
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
->  arch/s390/Kconfig                      |   1 +
->  arch/s390/configs/debug_defconfig      |   1 -
->  arch/s390/configs/defconfig            |   1 -
->  arch/s390/crypto/Kconfig               |  12 -
->  arch/s390/crypto/Makefile              |   2 -
->  arch/s390/crypto/crc32-vx.c            | 306 -------------------------
->  arch/s390/lib/Makefile                 |   3 +
->  arch/s390/lib/crc32-glue.c             |  82 +++++++
->  arch/s390/{crypto => lib}/crc32-vx.h   |   0
->  arch/s390/{crypto => lib}/crc32be-vx.c |   0
->  arch/s390/{crypto => lib}/crc32le-vx.c |   0
->  11 files changed, 86 insertions(+), 322 deletions(-)
->  delete mode 100644 arch/s390/crypto/crc32-vx.c
->  create mode 100644 arch/s390/lib/crc32-glue.c
->  rename arch/s390/{crypto => lib}/crc32-vx.h (100%)
->  rename arch/s390/{crypto => lib}/crc32be-vx.c (100%)
->  rename arch/s390/{crypto => lib}/crc32le-vx.c (100%)
+After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+return void") .remove() is (again) the right callback to implement for
+platform drivers.
 
-...
+Convert all platform drivers matched by the "CHAR and MISC DRIVERS"
+maintainer's entry to use .remove(), with the eventual goal to drop
+struct platform_driver::remove_new(). As .remove() and .remove_new()
+have the same prototypes, conversion is done by just changing the
+structure member name in the driver initializer.
 
-> -static int __init crc_vx_mod_init(void)
-> -{
-> -	return crypto_register_shashes(crc32_vx_algs,
-> -				       ARRAY_SIZE(crc32_vx_algs));
-> -}
-> -
-> -static void __exit crc_vx_mod_exit(void)
-> -{
-> -	crypto_unregister_shashes(crc32_vx_algs, ARRAY_SIZE(crc32_vx_algs));
-> -}
-> -
-> -module_cpu_feature_match(S390_CPU_FEATURE_VXRS, crc_vx_mod_init);
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+ drivers/char/powernv-op-panel.c            | 2 +-
+ drivers/char/sonypi.c                      | 2 +-
+ drivers/char/xilinx_hwicap/xilinx_hwicap.c | 2 +-
+ drivers/char/xillybus/xillybus_of.c        | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-What makes sure that all of the code is available automatically if the
-CPU supports the instructions like before? I can see that all CRC32
-related config options support also module build options.
+diff --git a/drivers/char/powernv-op-panel.c b/drivers/char/powernv-op-panel.c
+index f2cff1a6fed5..53467b0a6187 100644
+--- a/drivers/char/powernv-op-panel.c
++++ b/drivers/char/powernv-op-panel.c
+@@ -213,7 +213,7 @@ static struct platform_driver oppanel_driver = {
+ 		.of_match_table	= oppanel_match,
+ 	},
+ 	.probe	= oppanel_probe,
+-	.remove_new = oppanel_remove,
++	.remove	= oppanel_remove,
+ };
+ 
+ module_platform_driver(oppanel_driver);
+diff --git a/drivers/char/sonypi.c b/drivers/char/sonypi.c
+index 0f8185e541ed..f887569fd3d0 100644
+--- a/drivers/char/sonypi.c
++++ b/drivers/char/sonypi.c
+@@ -1467,7 +1467,7 @@ static struct platform_driver sonypi_driver = {
+ 		.pm	= SONYPI_PM,
+ 	},
+ 	.probe		= sonypi_probe,
+-	.remove_new	= sonypi_remove,
++	.remove		= sonypi_remove,
+ 	.shutdown	= sonypi_shutdown,
+ };
+ 
+diff --git a/drivers/char/xilinx_hwicap/xilinx_hwicap.c b/drivers/char/xilinx_hwicap/xilinx_hwicap.c
+index 4f6c3cb8aa41..34a345dc5e72 100644
+--- a/drivers/char/xilinx_hwicap/xilinx_hwicap.c
++++ b/drivers/char/xilinx_hwicap/xilinx_hwicap.c
+@@ -738,7 +738,7 @@ MODULE_DEVICE_TABLE(of, hwicap_of_match);
+ 
+ static struct platform_driver hwicap_platform_driver = {
+ 	.probe = hwicap_drv_probe,
+-	.remove_new = hwicap_drv_remove,
++	.remove = hwicap_drv_remove,
+ 	.driver = {
+ 		.name = DRIVER_NAME,
+ 		.of_match_table = hwicap_of_match,
+diff --git a/drivers/char/xillybus/xillybus_of.c b/drivers/char/xillybus/xillybus_of.c
+index 8802e2a6fd20..1a1e64133315 100644
+--- a/drivers/char/xillybus/xillybus_of.c
++++ b/drivers/char/xillybus/xillybus_of.c
+@@ -74,7 +74,7 @@ static void xilly_drv_remove(struct platform_device *op)
+ 
+ static struct platform_driver xillybus_platform_driver = {
+ 	.probe = xilly_drv_probe,
+-	.remove_new = xilly_drv_remove,
++	.remove = xilly_drv_remove,
+ 	.driver = {
+ 		.name = xillyname,
+ 		.of_match_table = xillybus_of_match,
 
-Before this patch, this module and hence the fast crc32 variants were
-loaded automatically when required CPU features were present.
-Right now I don't how this is happening with this series.
+base-commit: 63b3ff03d91ae8f875fe8747c781a521f78cde17
+-- 
+2.45.2
 
-> -MODULE_ALIAS_CRYPTO("crc32");
-> -MODULE_ALIAS_CRYPTO("crc32-vx");
-> -MODULE_ALIAS_CRYPTO("crc32c");
-> -MODULE_ALIAS_CRYPTO("crc32c-vx");
-
-...
-
-> +static int __init crc32_s390_init(void)
-> +{
-> +	if (cpu_have_feature(S390_CPU_FEATURE_VXRS))
-> +		static_branch_enable(&have_vxrs);
-> +	return 0;
-> +}
-> +arch_initcall(crc32_s390_init);
-
-I guess this should be changed to:
-
-module_cpu_feature_match(S390_CPU_FEATURE_VXRS, ...);
-
-Which would make at least the library functions available if cpu
-features are present. But this looks only like a partial solution of
-the above described problem.
-
-But maybe I'm missing something.
 
