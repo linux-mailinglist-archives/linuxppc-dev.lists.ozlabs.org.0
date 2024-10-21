@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-2451-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2441-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06579A57EF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2024 02:31:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DFF9A57C9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2024 02:30:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XWx6C6dvkz30DR;
-	Mon, 21 Oct 2024 11:30:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XWx634G6bz2yVt;
+	Mon, 21 Oct 2024 11:30:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729470611;
-	cv=none; b=dblwL12LUeOduVBG5WRVpm69nrNwa45a83RkQxLe96yYTqQ3jlgrZP2bRzbYfOJ52yagJOGR/0Cwr2B1l6id/qOvsFmi3NxB4wKHR7OsGay3KT41xm52pIDkrtxpCxcBD3rU87Vm7/aaQWqgqG8Pv2TvI+NhNVd6TfCl0f6O/Kp+mY/4M8HorHZbhdBoi/A2IFwm6Cl1XoDFqyAyfaoNxKFFs1vhpZ1VB+kqYq7khrKCPmpzdwraRxLtWsJLqUIEMd5En7KrprwaR4Cv0UI8STty9xW7jrm9+GWoO+ty2bdck5yV7SfMw58PjJ90j+v6cSwuJrr7vZIAmf/NFbCuJQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729470603;
+	cv=none; b=gA4ekprPuiwpdVNejBJP/WT1vApJO0eUnSukdel6iEuKcc58D9txDbbIBOnVUjp53UyQ5zfpb6b39dy2/gpJg+Z5fDl7nE9cwBgETVYd95l5mzIsrHD1fvLSzbGtf6RdN2lfJI8BDUTXRB4uwecqYbPMYu5TK5RH//tDaVQJ8/mQcqFk97IflnhFPyHnRsHzTiKtx528kn+20Vy8PhCIYhImPN4LXxo87FJZ9c6ZtLIrLm6Hk77TgkcImlohs00nFbpOppfLDdbNHXc6FCz7B3ekTZQM5pybRZdzgGn6SOxAAfesST8v1l7TVQwA5/LiBKlYl8AmsmqbkZIaqOYf9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729470611; c=relaxed/relaxed;
-	bh=ROWei38DhlLZDYredTbVAm43GoyAX6cIJhcUBGY+NrE=;
+	t=1729470603; c=relaxed/relaxed;
+	bh=OnCGOUVHzZ58A32REd9Bb8UIrzgTCIgRZpQ0LWkkbe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e807qHnsYfGasuT/OdPqncIHwEEiMzXyAoYmQ70hSuFa2JIdvHe7WxpQflb83IVlYZH5qhY1qlub+UoMKevRlNJLap18cBwO52MJOtpghOKwk1pGagqn6hYWeJR6Y8UqHV6zTtdW+iv4e6FVDsaj6sHBv76G++Nd99j44QSNVfIYX0PJqa+FS6tJQNaCJR8eSA/dC7MPjdAyUzOVSgNKZF7hLvRRltUu3ItATCBmfhVbndmfQ0ksGPURp65tDEEEUMCl4dNYi942rHkjGAyf9GnyGGKzLDmEYTBQCGBAntUlnIEYgNBrvr6zOKQmTXEja6RdDWprmdhRzXHcUoxaQA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VTNr9Iy+; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=gZsIxXWDfOo99/HDqACK4vDqv5cqmeLp+9D8HmMeyVwcdtMjb7aZlugOWZaZGiff6OY5c6nmnP3E6gR6ee9MXEtpIpXdGXC0cMa0NAYiHL/7bbAxgGjldfkt/xb5rPDwmC+hz153Drsr+DGvAQkU/g75tu/4FQl6OQ55a2+RGTfjTepo/sKVCx9ANJPxMbzIsHU+Eah4XAHJI5WvrD5CeBmRN0GhisfFefpJmVmcGNyIu38/FQUgNjeW7lzsoRG28inlwwJtEV0iBF0fGHKRaMcSWD8powKJHZMNWap1BMYlz01jh48BphtR9H8H83y04I8aTYU04Ngc9Qkai0Ogag==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oimnqgwb; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VTNr9Iy+;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oimnqgwb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XWx612NRMz2yVX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 11:30:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XWx5y1mDSz2xs4
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 11:29:58 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id DBDFEA40CD9;
-	Mon, 21 Oct 2024 00:29:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9DCC4CEF8;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 98EBD5C581F;
+	Mon, 21 Oct 2024 00:29:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F51C4AF52;
 	Mon, 21 Oct 2024 00:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729470594;
-	bh=oHN4Jm8KAp+40wEWTPzgeuvgj07tFEJ9e7R5m6FX/oQ=;
+	s=k20201202; t=1729470595;
+	bh=rHVPCVk2HcUuwbwJdIJiYtVAk/DIw6qPFcDDLFcj+/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VTNr9Iy+61iOYLM3FA1i9/px61Rl+8yq33ofmvw43Lts03dEvrJF89F5yrpAThjT+
-	 z1OeNMtray6VYJehHbOQ0cgSFExYuI+rAOjwvEoCnupSxkh57l3bVixVpDqFN4mJvW
-	 K8rSCD9z8DqO8L+WH38POcwcqya/HVOHn4rDOniVMcIj5/6TThna0w9igpHk8JvZk+
-	 FI2K5BaQDDL3ABLQ89KXTB1h2SszCm6RNS9GYKhPO/WpOr0mvhvee/9XMbJ9xrtSrj
-	 Js81xp7GkFh4PlxZB/7jF40VjlLzW4s66eY0dMS2UXHC3mpeW0iwt9xYK2yr26ZZgI
-	 yYQpVghFxOGnA==
+	b=oimnqgwblTl4P7ykphakIn/6ohauWWoNYpiucv9VSHcP0rxQt12ClLANt9RUZgGBo
+	 ulCKpFBa0z+FKjaRCSOXh8a+aT/TqjBgKHn+2oSmKkLLTtzFV00fbjWic8J9HWHpCn
+	 Hc7lOAEAsQn4BT4Lnp7X3PmY722dqJAbqNvRL6cWPHWlpWxpJ/L3XD9Tt7x+q7xX6x
+	 PbvKTmcU3kG6rd9F+gdF7duMpk//vuhib47IxODYjKSQFWiC6C62x5GEZ0robLZxGQ
+	 0QCNJvjmTGKo66OG3GQkrQeM6d86VWl4TLI7m9sMEv0sBxCZoLZSelcpwoIYbtotpm
+	 VEJTU43g2h2FA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-arch@vger.kernel.org,
@@ -57,9 +57,9 @@ Cc: linux-arch@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH 07/15] s390/crc32: expose CRC32 functions through lib
-Date: Sun, 20 Oct 2024 17:29:27 -0700
-Message-ID: <20241021002935.325878-8-ebiggers@kernel.org>
+Subject: [PATCH 08/15] sparc/crc32: expose CRC32 functions through lib
+Date: Sun, 20 Oct 2024 17:29:28 -0700
+Message-ID: <20241021002935.325878-9-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241021002935.325878-1-ebiggers@kernel.org>
 References: <20241021002935.325878-1-ebiggers@kernel.org>
@@ -73,558 +73,412 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=2.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.0
-X-Spam-Level: **
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS,SUSPICIOUS_RECIPS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Move the s390 CRC32 assembly code into the lib directory and wire it up
-to the library interface.  This allows it to be used without going
+Move the sparc CRC32C assembly code into the lib directory and wire it
+up to the library interface.  This allows it to be used without going
 through the crypto API.  It remains usable via the crypto API too via
 the shash algorithms that use the library interface.  Thus all the
 arch-specific "shash" code becomes unnecessary and is removed.
 
-Note: to see the diff from arch/s390/crypto/crc32-vx.c to
-arch/s390/lib/crc32-glue.c, view this commit with 'git show -M10'.
+Note: to see the diff from arch/sparc/crypto/crc32c_glue.c to
+arch/sparc/lib/crc32_glue.c, view this commit with 'git show -M10'.
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/s390/Kconfig                      |   1 +
- arch/s390/configs/debug_defconfig      |   1 -
- arch/s390/configs/defconfig            |   1 -
- arch/s390/crypto/Kconfig               |  12 -
- arch/s390/crypto/Makefile              |   2 -
- arch/s390/crypto/crc32-vx.c            | 306 -------------------------
- arch/s390/lib/Makefile                 |   3 +
- arch/s390/lib/crc32-glue.c             |  82 +++++++
- arch/s390/{crypto => lib}/crc32-vx.h   |   0
- arch/s390/{crypto => lib}/crc32be-vx.c |   0
- arch/s390/{crypto => lib}/crc32le-vx.c |   0
- 11 files changed, 86 insertions(+), 322 deletions(-)
- delete mode 100644 arch/s390/crypto/crc32-vx.c
- create mode 100644 arch/s390/lib/crc32-glue.c
- rename arch/s390/{crypto => lib}/crc32-vx.h (100%)
- rename arch/s390/{crypto => lib}/crc32be-vx.c (100%)
- rename arch/s390/{crypto => lib}/crc32le-vx.c (100%)
+ arch/sparc/Kconfig                      |   1 +
+ arch/sparc/crypto/Kconfig               |  10 --
+ arch/sparc/crypto/Makefile              |   4 -
+ arch/sparc/crypto/crc32c_glue.c         | 184 ------------------------
+ arch/sparc/lib/Makefile                 |   2 +
+ arch/sparc/lib/crc32_glue.c             |  85 +++++++++++
+ arch/sparc/{crypto => lib}/crc32c_asm.S |   2 +-
+ 7 files changed, 89 insertions(+), 199 deletions(-)
+ delete mode 100644 arch/sparc/crypto/crc32c_glue.c
+ create mode 100644 arch/sparc/lib/crc32_glue.c
+ rename arch/sparc/{crypto => lib}/crc32c_asm.S (92%)
 
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index d339fe4fdedf8..d1fde8b941d2f 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -63,10 +63,11 @@ config S390
- 	select ARCH_BINFMT_ELF_STATE
- 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE
- 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index dcfdb7f1dae97..0f88123925a4f 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -108,10 +108,11 @@ config SPARC64
+ 	select ARCH_HAS_GIGANTIC_PAGE
+ 	select HAVE_SOFTIRQ_ON_OWN_STACK
+ 	select HAVE_SETUP_PER_CPU_AREA
+ 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+ 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
 +	select ARCH_HAS_CRC32
- 	select ARCH_HAS_CURRENT_STACK_POINTER
- 	select ARCH_HAS_DEBUG_VIRTUAL
- 	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DEBUG_WX
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
-diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_defconfig
-index fb0e9a1d9be25..fd83d8958f0bb 100644
---- a/arch/s390/configs/debug_defconfig
-+++ b/arch/s390/configs/debug_defconfig
-@@ -792,11 +792,10 @@ CONFIG_CRYPTO_ZSTD=m
- CONFIG_CRYPTO_ANSI_CPRNG=m
- CONFIG_CRYPTO_USER_API_HASH=m
- CONFIG_CRYPTO_USER_API_SKCIPHER=m
- CONFIG_CRYPTO_USER_API_RNG=m
- CONFIG_CRYPTO_USER_API_AEAD=m
--CONFIG_CRYPTO_CRC32_S390=y
- CONFIG_CRYPTO_SHA512_S390=m
- CONFIG_CRYPTO_SHA1_S390=m
- CONFIG_CRYPTO_SHA256_S390=m
- CONFIG_CRYPTO_SHA3_256_S390=m
- CONFIG_CRYPTO_SHA3_512_S390=m
-diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
-index 88be0a734b60f..3bdeb6d5cbd95 100644
---- a/arch/s390/configs/defconfig
-+++ b/arch/s390/configs/defconfig
-@@ -779,11 +779,10 @@ CONFIG_CRYPTO_ANSI_CPRNG=m
- CONFIG_CRYPTO_JITTERENTROPY_OSR=1
- CONFIG_CRYPTO_USER_API_HASH=m
- CONFIG_CRYPTO_USER_API_SKCIPHER=m
- CONFIG_CRYPTO_USER_API_RNG=m
- CONFIG_CRYPTO_USER_API_AEAD=m
--CONFIG_CRYPTO_CRC32_S390=y
- CONFIG_CRYPTO_SHA512_S390=m
- CONFIG_CRYPTO_SHA1_S390=m
- CONFIG_CRYPTO_SHA256_S390=m
- CONFIG_CRYPTO_SHA3_256_S390=m
- CONFIG_CRYPTO_SHA3_512_S390=m
-diff --git a/arch/s390/crypto/Kconfig b/arch/s390/crypto/Kconfig
-index d3eb3a2336932..b760232537f1c 100644
---- a/arch/s390/crypto/Kconfig
-+++ b/arch/s390/crypto/Kconfig
-@@ -1,21 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0
  
- menu "Accelerated Cryptographic Algorithms for CPU (s390)"
+ config ARCH_PROC_KCORE_TEXT
+ 	def_bool y
  
--config CRYPTO_CRC32_S390
--	tristate "CRC32c and CRC32"
--	depends on S390
+ config CPU_BIG_ENDIAN
+diff --git a/arch/sparc/crypto/Kconfig b/arch/sparc/crypto/Kconfig
+index cfe5102b1c683..e858597de89db 100644
+--- a/arch/sparc/crypto/Kconfig
++++ b/arch/sparc/crypto/Kconfig
+@@ -14,20 +14,10 @@ config CRYPTO_DES_SPARC64
+ 	  Length-preserving ciphers: DES with ECB and CBC modes
+ 	  Length-preserving ciphers: Tripe DES EDE with ECB and CBC modes
+ 
+ 	  Architecture: sparc64
+ 
+-config CRYPTO_CRC32C_SPARC64
+-	tristate "CRC32c"
+-	depends on SPARC64
 -	select CRYPTO_HASH
 -	select CRC32
 -	help
--	  CRC32c and CRC32 CRC algorithms
+-	  CRC32c CRC algorithm with the iSCSI polynomial (RFC 3385 and RFC 3720)
 -
--	  Architecture: s390
+-	  Architecture: sparc64
 -
--	  It is available with IBM z13 or later.
--
- config CRYPTO_SHA512_S390
- 	tristate "Hash functions: SHA-384 and SHA-512"
- 	depends on S390
+ config CRYPTO_MD5_SPARC64
+ 	tristate "Digests: MD5"
+ 	depends on SPARC64
+ 	select CRYPTO_MD5
  	select CRYPTO_HASH
- 	help
-diff --git a/arch/s390/crypto/Makefile b/arch/s390/crypto/Makefile
-index a0cb96937c3de..14dafadbcbed4 100644
---- a/arch/s390/crypto/Makefile
-+++ b/arch/s390/crypto/Makefile
-@@ -12,11 +12,9 @@ obj-$(CONFIG_CRYPTO_DES_S390) += des_s390.o
- obj-$(CONFIG_CRYPTO_AES_S390) += aes_s390.o
- obj-$(CONFIG_CRYPTO_PAES_S390) += paes_s390.o
- obj-$(CONFIG_CRYPTO_CHACHA_S390) += chacha_s390.o
- obj-$(CONFIG_S390_PRNG) += prng.o
- obj-$(CONFIG_CRYPTO_GHASH_S390) += ghash_s390.o
--obj-$(CONFIG_CRYPTO_CRC32_S390) += crc32-vx_s390.o
- obj-$(CONFIG_CRYPTO_HMAC_S390) += hmac_s390.o
- obj-y += arch_random.o
+diff --git a/arch/sparc/crypto/Makefile b/arch/sparc/crypto/Makefile
+index d257186c27d12..a2d7fca40cb4b 100644
+--- a/arch/sparc/crypto/Makefile
++++ b/arch/sparc/crypto/Makefile
+@@ -10,17 +10,13 @@ obj-$(CONFIG_CRYPTO_MD5_SPARC64) += md5-sparc64.o
  
--crc32-vx_s390-y := crc32-vx.o crc32le-vx.o crc32be-vx.o
- chacha_s390-y := chacha-glue.o chacha-s390.o
-diff --git a/arch/s390/crypto/crc32-vx.c b/arch/s390/crypto/crc32-vx.c
+ obj-$(CONFIG_CRYPTO_AES_SPARC64) += aes-sparc64.o
+ obj-$(CONFIG_CRYPTO_DES_SPARC64) += des-sparc64.o
+ obj-$(CONFIG_CRYPTO_CAMELLIA_SPARC64) += camellia-sparc64.o
+ 
+-obj-$(CONFIG_CRYPTO_CRC32C_SPARC64) += crc32c-sparc64.o
+-
+ sha1-sparc64-y := sha1_asm.o sha1_glue.o
+ sha256-sparc64-y := sha256_asm.o sha256_glue.o
+ sha512-sparc64-y := sha512_asm.o sha512_glue.o
+ md5-sparc64-y := md5_asm.o md5_glue.o
+ 
+ aes-sparc64-y := aes_asm.o aes_glue.o
+ des-sparc64-y := des_asm.o des_glue.o
+ camellia-sparc64-y := camellia_asm.o camellia_glue.o
+-
+-crc32c-sparc64-y := crc32c_asm.o crc32c_glue.o
+diff --git a/arch/sparc/crypto/crc32c_glue.c b/arch/sparc/crypto/crc32c_glue.c
 deleted file mode 100644
-index 89a10337e6ea9..0000000000000
---- a/arch/s390/crypto/crc32-vx.c
+index 913b9a09e885d..0000000000000
+--- a/arch/sparc/crypto/crc32c_glue.c
 +++ /dev/null
-@@ -1,306 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * Crypto-API module for CRC-32 algorithms implemented with the
-- * z/Architecture Vector Extension Facility.
+@@ -1,184 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/* Glue code for CRC32C optimized for sparc64 crypto opcodes.
 - *
-- * Copyright IBM Corp. 2015
-- * Author(s): Hendrik Brueckner <brueckner@linux.vnet.ibm.com>
+- * This is based largely upon arch/x86/crypto/crc32c-intel.c
+- *
+- * Copyright (C) 2008 Intel Corporation
+- * Authors: Austin Zhang <austin_zhang@linux.intel.com>
+- *          Kent Liu <kent.liu@intel.com>
 - */
--#define KMSG_COMPONENT	"crc32-vx"
--#define pr_fmt(fmt)	KMSG_COMPONENT ": " fmt
 -
+-#define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
+-
+-#include <linux/init.h>
 -#include <linux/module.h>
--#include <linux/cpufeature.h>
+-#include <linux/string.h>
+-#include <linux/kernel.h>
 -#include <linux/crc32.h>
+-
 -#include <crypto/internal/hash.h>
--#include <asm/fpu.h>
--#include "crc32-vx.h"
 -
--#define CRC32_BLOCK_SIZE	1
--#define CRC32_DIGEST_SIZE	4
+-#include <asm/pstate.h>
+-#include <asm/elf.h>
+-#include <linux/unaligned.h>
 -
--#define VX_MIN_LEN		64
--#define VX_ALIGNMENT		16L
--#define VX_ALIGN_MASK		(VX_ALIGNMENT - 1)
--
--struct crc_ctx {
--	u32 key;
--};
--
--struct crc_desc_ctx {
--	u32 crc;
--};
+-#include "opcodes.h"
 -
 -/*
-- * DEFINE_CRC32_VX() - Define a CRC-32 function using the vector extension
-- *
-- * Creates a function to perform a particular CRC-32 computation. Depending
-- * on the message buffer, the hardware-accelerated or software implementation
-- * is used.   Note that the message buffer is aligned to improve fetch
-- * operations of VECTOR LOAD MULTIPLE instructions.
-- *
+- * Setting the seed allows arbitrary accumulators and flexible XOR policy
+- * If your algorithm starts with ~0, then XOR with ~0 before you set
+- * the seed.
 - */
--#define DEFINE_CRC32_VX(___fname, ___crc32_vx, ___crc32_sw)		    \
--	static u32 __pure ___fname(u32 crc,				    \
--				unsigned char const *data, size_t datalen)  \
--	{								    \
--		unsigned long prealign, aligned, remaining;		    \
--		DECLARE_KERNEL_FPU_ONSTACK16(vxstate);			    \
--									    \
--		if (datalen < VX_MIN_LEN + VX_ALIGN_MASK)		    \
--			return ___crc32_sw(crc, data, datalen);		    \
--									    \
--		if ((unsigned long)data & VX_ALIGN_MASK) {		    \
--			prealign = VX_ALIGNMENT -			    \
--				  ((unsigned long)data & VX_ALIGN_MASK);    \
--			datalen -= prealign;				    \
--			crc = ___crc32_sw(crc, data, prealign);		    \
--			data = (void *)((unsigned long)data + prealign);    \
--		}							    \
--									    \
--		aligned = datalen & ~VX_ALIGN_MASK;			    \
--		remaining = datalen & VX_ALIGN_MASK;			    \
--									    \
--		kernel_fpu_begin(&vxstate, KERNEL_VXR_LOW);		    \
--		crc = ___crc32_vx(crc, data, aligned);			    \
--		kernel_fpu_end(&vxstate, KERNEL_VXR_LOW);		    \
--									    \
--		if (remaining)						    \
--			crc = ___crc32_sw(crc, data + aligned, remaining);  \
--									    \
--		return crc;						    \
--	}
--
--DEFINE_CRC32_VX(crc32_le_vx, crc32_le_vgfm_16, crc32_le)
--DEFINE_CRC32_VX(crc32_be_vx, crc32_be_vgfm_16, crc32_be)
--DEFINE_CRC32_VX(crc32c_le_vx, crc32c_le_vgfm_16, __crc32c_le)
--
--
--static int crc32_vx_cra_init_zero(struct crypto_tfm *tfm)
+-static int crc32c_sparc64_setkey(struct crypto_shash *hash, const u8 *key,
+-				 unsigned int keylen)
 -{
--	struct crc_ctx *mctx = crypto_tfm_ctx(tfm);
+-	u32 *mctx = crypto_shash_ctx(hash);
 -
--	mctx->key = 0;
--	return 0;
--}
--
--static int crc32_vx_cra_init_invert(struct crypto_tfm *tfm)
--{
--	struct crc_ctx *mctx = crypto_tfm_ctx(tfm);
--
--	mctx->key = ~0;
--	return 0;
--}
--
--static int crc32_vx_init(struct shash_desc *desc)
--{
--	struct crc_ctx *mctx = crypto_shash_ctx(desc->tfm);
--	struct crc_desc_ctx *ctx = shash_desc_ctx(desc);
--
--	ctx->crc = mctx->key;
--	return 0;
--}
--
--static int crc32_vx_setkey(struct crypto_shash *tfm, const u8 *newkey,
--			   unsigned int newkeylen)
--{
--	struct crc_ctx *mctx = crypto_shash_ctx(tfm);
--
--	if (newkeylen != sizeof(mctx->key))
+-	if (keylen != sizeof(u32))
 -		return -EINVAL;
--	mctx->key = le32_to_cpu(*(__le32 *)newkey);
+-	*mctx = get_unaligned_le32(key);
 -	return 0;
 -}
 -
--static int crc32be_vx_setkey(struct crypto_shash *tfm, const u8 *newkey,
--			     unsigned int newkeylen)
+-static int crc32c_sparc64_init(struct shash_desc *desc)
 -{
--	struct crc_ctx *mctx = crypto_shash_ctx(tfm);
+-	u32 *mctx = crypto_shash_ctx(desc->tfm);
+-	u32 *crcp = shash_desc_ctx(desc);
 -
--	if (newkeylen != sizeof(mctx->key))
--		return -EINVAL;
--	mctx->key = be32_to_cpu(*(__be32 *)newkey);
+-	*crcp = *mctx;
+-
 -	return 0;
 -}
 -
--static int crc32le_vx_final(struct shash_desc *desc, u8 *out)
+-extern void crc32c_sparc64(u32 *crcp, const u64 *data, unsigned int len);
+-
+-static u32 crc32c_compute(u32 crc, const u8 *data, unsigned int len)
 -{
--	struct crc_desc_ctx *ctx = shash_desc_ctx(desc);
+-	unsigned int n = -(uintptr_t)data & 7;
 -
--	*(__le32 *)out = cpu_to_le32p(&ctx->crc);
--	return 0;
--}
--
--static int crc32be_vx_final(struct shash_desc *desc, u8 *out)
--{
--	struct crc_desc_ctx *ctx = shash_desc_ctx(desc);
--
--	*(__be32 *)out = cpu_to_be32p(&ctx->crc);
--	return 0;
--}
--
--static int crc32c_vx_final(struct shash_desc *desc, u8 *out)
--{
--	struct crc_desc_ctx *ctx = shash_desc_ctx(desc);
--
--	/*
--	 * Perform a final XOR with 0xFFFFFFFF to be in sync
--	 * with the generic crc32c shash implementation.
--	 */
--	*(__le32 *)out = ~cpu_to_le32p(&ctx->crc);
--	return 0;
--}
--
--static int __crc32le_vx_finup(u32 *crc, const u8 *data, unsigned int len,
--			      u8 *out)
--{
--	*(__le32 *)out = cpu_to_le32(crc32_le_vx(*crc, data, len));
--	return 0;
--}
--
--static int __crc32be_vx_finup(u32 *crc, const u8 *data, unsigned int len,
--			      u8 *out)
--{
--	*(__be32 *)out = cpu_to_be32(crc32_be_vx(*crc, data, len));
--	return 0;
--}
--
--static int __crc32c_vx_finup(u32 *crc, const u8 *data, unsigned int len,
--			     u8 *out)
--{
--	/*
--	 * Perform a final XOR with 0xFFFFFFFF to be in sync
--	 * with the generic crc32c shash implementation.
--	 */
--	*(__le32 *)out = ~cpu_to_le32(crc32c_le_vx(*crc, data, len));
--	return 0;
--}
--
--
--#define CRC32_VX_FINUP(alg, func)					      \
--	static int alg ## _vx_finup(struct shash_desc *desc, const u8 *data,  \
--				   unsigned int datalen, u8 *out)	      \
--	{								      \
--		return __ ## alg ## _vx_finup(shash_desc_ctx(desc),	      \
--					      data, datalen, out);	      \
+-	if (n) {
+-		/* Data isn't 8-byte aligned.  Align it. */
+-		n = min(n, len);
+-		crc = __crc32c_le(crc, data, n);
+-		data += n;
+-		len -= n;
 -	}
--
--CRC32_VX_FINUP(crc32le, crc32_le_vx)
--CRC32_VX_FINUP(crc32be, crc32_be_vx)
--CRC32_VX_FINUP(crc32c, crc32c_le_vx)
--
--#define CRC32_VX_DIGEST(alg, func)					      \
--	static int alg ## _vx_digest(struct shash_desc *desc, const u8 *data, \
--				     unsigned int len, u8 *out)		      \
--	{								      \
--		return __ ## alg ## _vx_finup(crypto_shash_ctx(desc->tfm),    \
--					      data, len, out);		      \
+-	n = len & ~7U;
+-	if (n) {
+-		crc32c_sparc64(&crc, (const u64 *)data, n);
+-		data += n;
+-		len -= n;
 -	}
+-	if (len)
+-		crc = __crc32c_le(crc, data, len);
+-	return crc;
+-}
 -
--CRC32_VX_DIGEST(crc32le, crc32_le_vx)
--CRC32_VX_DIGEST(crc32be, crc32_be_vx)
--CRC32_VX_DIGEST(crc32c, crc32c_le_vx)
+-static int crc32c_sparc64_update(struct shash_desc *desc, const u8 *data,
+-				 unsigned int len)
+-{
+-	u32 *crcp = shash_desc_ctx(desc);
 -
--#define CRC32_VX_UPDATE(alg, func)					      \
--	static int alg ## _vx_update(struct shash_desc *desc, const u8 *data, \
--				     unsigned int datalen)		      \
--	{								      \
--		struct crc_desc_ctx *ctx = shash_desc_ctx(desc);	      \
--		ctx->crc = func(ctx->crc, data, datalen);		      \
--		return 0;						      \
+-	*crcp = crc32c_compute(*crcp, data, len);
+-	return 0;
+-}
+-
+-static int __crc32c_sparc64_finup(const u32 *crcp, const u8 *data,
+-				  unsigned int len, u8 *out)
+-{
+-	put_unaligned_le32(~crc32c_compute(*crcp, data, len), out);
+-	return 0;
+-}
+-
+-static int crc32c_sparc64_finup(struct shash_desc *desc, const u8 *data,
+-				unsigned int len, u8 *out)
+-{
+-	return __crc32c_sparc64_finup(shash_desc_ctx(desc), data, len, out);
+-}
+-
+-static int crc32c_sparc64_final(struct shash_desc *desc, u8 *out)
+-{
+-	u32 *crcp = shash_desc_ctx(desc);
+-
+-	put_unaligned_le32(~*crcp, out);
+-	return 0;
+-}
+-
+-static int crc32c_sparc64_digest(struct shash_desc *desc, const u8 *data,
+-				 unsigned int len, u8 *out)
+-{
+-	return __crc32c_sparc64_finup(crypto_shash_ctx(desc->tfm), data, len,
+-				      out);
+-}
+-
+-static int crc32c_sparc64_cra_init(struct crypto_tfm *tfm)
+-{
+-	u32 *key = crypto_tfm_ctx(tfm);
+-
+-	*key = ~0;
+-
+-	return 0;
+-}
+-
+-#define CHKSUM_BLOCK_SIZE	1
+-#define CHKSUM_DIGEST_SIZE	4
+-
+-static struct shash_alg alg = {
+-	.setkey			=	crc32c_sparc64_setkey,
+-	.init			=	crc32c_sparc64_init,
+-	.update			=	crc32c_sparc64_update,
+-	.final			=	crc32c_sparc64_final,
+-	.finup			=	crc32c_sparc64_finup,
+-	.digest			=	crc32c_sparc64_digest,
+-	.descsize		=	sizeof(u32),
+-	.digestsize		=	CHKSUM_DIGEST_SIZE,
+-	.base			=	{
+-		.cra_name		=	"crc32c",
+-		.cra_driver_name	=	"crc32c-sparc64",
+-		.cra_priority		=	SPARC_CR_OPCODE_PRIORITY,
+-		.cra_flags		=	CRYPTO_ALG_OPTIONAL_KEY,
+-		.cra_blocksize		=	CHKSUM_BLOCK_SIZE,
+-		.cra_ctxsize		=	sizeof(u32),
+-		.cra_module		=	THIS_MODULE,
+-		.cra_init		=	crc32c_sparc64_cra_init,
 -	}
--
--CRC32_VX_UPDATE(crc32le, crc32_le_vx)
--CRC32_VX_UPDATE(crc32be, crc32_be_vx)
--CRC32_VX_UPDATE(crc32c, crc32c_le_vx)
--
--
--static struct shash_alg crc32_vx_algs[] = {
--	/* CRC-32 LE */
--	{
--		.init		=	crc32_vx_init,
--		.setkey		=	crc32_vx_setkey,
--		.update		=	crc32le_vx_update,
--		.final		=	crc32le_vx_final,
--		.finup		=	crc32le_vx_finup,
--		.digest		=	crc32le_vx_digest,
--		.descsize	=	sizeof(struct crc_desc_ctx),
--		.digestsize	=	CRC32_DIGEST_SIZE,
--		.base		=	{
--			.cra_name	 = "crc32",
--			.cra_driver_name = "crc32-vx",
--			.cra_priority	 = 200,
--			.cra_flags	 = CRYPTO_ALG_OPTIONAL_KEY,
--			.cra_blocksize	 = CRC32_BLOCK_SIZE,
--			.cra_ctxsize	 = sizeof(struct crc_ctx),
--			.cra_module	 = THIS_MODULE,
--			.cra_init	 = crc32_vx_cra_init_zero,
--		},
--	},
--	/* CRC-32 BE */
--	{
--		.init		=	crc32_vx_init,
--		.setkey		=	crc32be_vx_setkey,
--		.update		=	crc32be_vx_update,
--		.final		=	crc32be_vx_final,
--		.finup		=	crc32be_vx_finup,
--		.digest		=	crc32be_vx_digest,
--		.descsize	=	sizeof(struct crc_desc_ctx),
--		.digestsize	=	CRC32_DIGEST_SIZE,
--		.base		=	{
--			.cra_name	 = "crc32be",
--			.cra_driver_name = "crc32be-vx",
--			.cra_priority	 = 200,
--			.cra_flags	 = CRYPTO_ALG_OPTIONAL_KEY,
--			.cra_blocksize	 = CRC32_BLOCK_SIZE,
--			.cra_ctxsize	 = sizeof(struct crc_ctx),
--			.cra_module	 = THIS_MODULE,
--			.cra_init	 = crc32_vx_cra_init_zero,
--		},
--	},
--	/* CRC-32C LE */
--	{
--		.init		=	crc32_vx_init,
--		.setkey		=	crc32_vx_setkey,
--		.update		=	crc32c_vx_update,
--		.final		=	crc32c_vx_final,
--		.finup		=	crc32c_vx_finup,
--		.digest		=	crc32c_vx_digest,
--		.descsize	=	sizeof(struct crc_desc_ctx),
--		.digestsize	=	CRC32_DIGEST_SIZE,
--		.base		=	{
--			.cra_name	 = "crc32c",
--			.cra_driver_name = "crc32c-vx",
--			.cra_priority	 = 200,
--			.cra_flags	 = CRYPTO_ALG_OPTIONAL_KEY,
--			.cra_blocksize	 = CRC32_BLOCK_SIZE,
--			.cra_ctxsize	 = sizeof(struct crc_ctx),
--			.cra_module	 = THIS_MODULE,
--			.cra_init	 = crc32_vx_cra_init_invert,
--		},
--	},
 -};
 -
--
--static int __init crc_vx_mod_init(void)
+-static bool __init sparc64_has_crc32c_opcode(void)
 -{
--	return crypto_register_shashes(crc32_vx_algs,
--				       ARRAY_SIZE(crc32_vx_algs));
+-	unsigned long cfr;
+-
+-	if (!(sparc64_elf_hwcap & HWCAP_SPARC_CRYPTO))
+-		return false;
+-
+-	__asm__ __volatile__("rd %%asr26, %0" : "=r" (cfr));
+-	if (!(cfr & CFR_CRC32C))
+-		return false;
+-
+-	return true;
 -}
 -
--static void __exit crc_vx_mod_exit(void)
+-static int __init crc32c_sparc64_mod_init(void)
 -{
--	crypto_unregister_shashes(crc32_vx_algs, ARRAY_SIZE(crc32_vx_algs));
+-	if (sparc64_has_crc32c_opcode()) {
+-		pr_info("Using sparc64 crc32c opcode optimized CRC32C implementation\n");
+-		return crypto_register_shash(&alg);
+-	}
+-	pr_info("sparc64 crc32c opcode not available.\n");
+-	return -ENODEV;
 -}
 -
--module_cpu_feature_match(S390_CPU_FEATURE_VXRS, crc_vx_mod_init);
--module_exit(crc_vx_mod_exit);
+-static void __exit crc32c_sparc64_mod_fini(void)
+-{
+-	crypto_unregister_shash(&alg);
+-}
 -
--MODULE_AUTHOR("Hendrik Brueckner <brueckner@linux.vnet.ibm.com>");
--MODULE_DESCRIPTION("CRC-32 algorithms using z/Architecture Vector Extension Facility");
+-module_init(crc32c_sparc64_mod_init);
+-module_exit(crc32c_sparc64_mod_fini);
+-
 -MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION("CRC32c (Castagnoli), sparc64 crc32c opcode accelerated");
 -
--MODULE_ALIAS_CRYPTO("crc32");
--MODULE_ALIAS_CRYPTO("crc32-vx");
 -MODULE_ALIAS_CRYPTO("crc32c");
--MODULE_ALIAS_CRYPTO("crc32c-vx");
-diff --git a/arch/s390/lib/Makefile b/arch/s390/lib/Makefile
-index f43f897d3fc02..14bbfe50033c7 100644
---- a/arch/s390/lib/Makefile
-+++ b/arch/s390/lib/Makefile
-@@ -22,5 +22,8 @@ obj-$(CONFIG_S390_MODULES_SANITY_TEST) += test_modules.o
- obj-$(CONFIG_S390_MODULES_SANITY_TEST_HELPERS) += test_modules_helpers.o
+-
+-#include "crop_devid.c"
+diff --git a/arch/sparc/lib/Makefile b/arch/sparc/lib/Makefile
+index ee5091dd67ed7..5724d0f356eb5 100644
+--- a/arch/sparc/lib/Makefile
++++ b/arch/sparc/lib/Makefile
+@@ -51,5 +51,7 @@ lib-$(CONFIG_SPARC64) += copy_in_user.o memmove.o
+ lib-$(CONFIG_SPARC64) += mcount.o ipcsum.o xor.o hweight.o ffs.o
  
- lib-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
- 
- obj-$(CONFIG_EXPOLINE_EXTERN) += expoline.o
-+
-+obj-$(CONFIG_CRC32_ARCH) += crc32-s390.o
-+crc32-s390-y := crc32-glue.o crc32le-vx.o crc32be-vx.o
-diff --git a/arch/s390/lib/crc32-glue.c b/arch/s390/lib/crc32-glue.c
+ obj-$(CONFIG_SPARC64) += iomap.o
+ obj-$(CONFIG_SPARC32) += atomic32.o
+ obj-$(CONFIG_SPARC64) += PeeCeeI.o
++obj-$(CONFIG_CRC32_ARCH) += crc32-sparc.o
++crc32-sparc-y := crc32_glue.o crc32c_asm.o
+diff --git a/arch/sparc/lib/crc32_glue.c b/arch/sparc/lib/crc32_glue.c
 new file mode 100644
-index 0000000000000..6243132633aab
+index 0000000000000..ef2eadf4a303e
 --- /dev/null
-+++ b/arch/s390/lib/crc32-glue.c
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * CRC-32 implemented with the z/Architecture Vector Extension Facility.
++++ b/arch/sparc/lib/crc32_glue.c
+@@ -0,0 +1,85 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Glue code for CRC32C optimized for sparc64 crypto opcodes.
 + *
-+ * Copyright IBM Corp. 2015
-+ * Author(s): Hendrik Brueckner <brueckner@linux.vnet.ibm.com>
++ * This is based largely upon arch/x86/crypto/crc32c-intel.c
++ *
++ * Copyright (C) 2008 Intel Corporation
++ * Authors: Austin Zhang <austin_zhang@linux.intel.com>
++ *          Kent Liu <kent.liu@intel.com>
 + */
-+#define KMSG_COMPONENT	"crc32-vx"
-+#define pr_fmt(fmt)	KMSG_COMPONENT ": " fmt
 +
++#define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
++
++#include <linux/init.h>
 +#include <linux/module.h>
-+#include <linux/cpufeature.h>
++#include <linux/kernel.h>
 +#include <linux/crc32.h>
-+#include <asm/fpu.h>
-+#include "crc32-vx.h"
++#include <asm/pstate.h>
++#include <asm/elf.h>
 +
-+#define VX_MIN_LEN		64
-+#define VX_ALIGNMENT		16L
-+#define VX_ALIGN_MASK		(VX_ALIGNMENT - 1)
++static DEFINE_STATIC_KEY_FALSE(have_crc32c_opcode);
 +
-+static DEFINE_STATIC_KEY_FALSE(have_vxrs);
-+
-+/*
-+ * DEFINE_CRC32_VX() - Define a CRC-32 function using the vector extension
-+ *
-+ * Creates a function to perform a particular CRC-32 computation. Depending
-+ * on the message buffer, the hardware-accelerated or software implementation
-+ * is used.   Note that the message buffer is aligned to improve fetch
-+ * operations of VECTOR LOAD MULTIPLE instructions.
-+ */
-+#define DEFINE_CRC32_VX(___fname, ___crc32_vx, ___crc32_sw)		    \
-+	u32 ___fname(u32 crc, const u8 *data, size_t datalen)		    \
-+	{								    \
-+		unsigned long prealign, aligned, remaining;		    \
-+		DECLARE_KERNEL_FPU_ONSTACK16(vxstate);			    \
-+									    \
-+		if (datalen < VX_MIN_LEN + VX_ALIGN_MASK ||		    \
-+		    !static_branch_likely(&have_vxrs))			    \
-+			return ___crc32_sw(crc, data, datalen);		    \
-+									    \
-+		if ((unsigned long)data & VX_ALIGN_MASK) {		    \
-+			prealign = VX_ALIGNMENT -			    \
-+				  ((unsigned long)data & VX_ALIGN_MASK);    \
-+			datalen -= prealign;				    \
-+			crc = ___crc32_sw(crc, data, prealign);		    \
-+			data = (void *)((unsigned long)data + prealign);    \
-+		}							    \
-+									    \
-+		aligned = datalen & ~VX_ALIGN_MASK;			    \
-+		remaining = datalen & VX_ALIGN_MASK;			    \
-+									    \
-+		kernel_fpu_begin(&vxstate, KERNEL_VXR_LOW);		    \
-+		crc = ___crc32_vx(crc, data, aligned);			    \
-+		kernel_fpu_end(&vxstate, KERNEL_VXR_LOW);		    \
-+									    \
-+		if (remaining)						    \
-+			crc = ___crc32_sw(crc, data + aligned, remaining);  \
-+									    \
-+		return crc;						    \
-+	}								    \
-+	EXPORT_SYMBOL(___fname);
-+
-+DEFINE_CRC32_VX(crc32_le_arch, crc32_le_vgfm_16, crc32_le_base)
-+DEFINE_CRC32_VX(crc32_be_arch, crc32_be_vgfm_16, crc32_be_base)
-+DEFINE_CRC32_VX(crc32c_le_arch, crc32c_le_vgfm_16, crc32c_le_base)
-+
-+static int __init crc32_s390_init(void)
++u32 crc32_le_arch(u32 crc, const u8 *data, size_t len)
 +{
-+	if (cpu_have_feature(S390_CPU_FEATURE_VXRS))
-+		static_branch_enable(&have_vxrs);
++	return crc32_le_base(crc, data, len);
++}
++EXPORT_SYMBOL(crc32_le_arch);
++
++void crc32c_sparc64(u32 *crcp, const u64 *data, size_t len);
++
++u32 crc32c_le_arch(u32 crc, const u8 *data, size_t len)
++{
++	size_t n = -(uintptr_t)data & 7;
++
++	if (!static_branch_likely(&have_crc32c_opcode))
++		return crc32c_le_base(crc, data, len);
++
++	if (n) {
++		/* Data isn't 8-byte aligned.  Align it. */
++		n = min(n, len);
++		crc = crc32c_le_base(crc, data, n);
++		data += n;
++		len -= n;
++	}
++	n = len & ~7U;
++	if (n) {
++		crc32c_sparc64(&crc, (const u64 *)data, n);
++		data += n;
++		len -= n;
++	}
++	if (len)
++		crc = crc32c_le_base(crc, data, len);
++	return crc;
++}
++EXPORT_SYMBOL(crc32c_le_arch);
++
++u32 crc32_be_arch(u32 crc, const u8 *data, size_t len)
++{
++	return crc32_be_base(crc, data, len);
++}
++EXPORT_SYMBOL(crc32_be_arch);
++
++static int __init crc32_sparc_init(void)
++{
++	unsigned long cfr;
++
++	if (!(sparc64_elf_hwcap & HWCAP_SPARC_CRYPTO))
++		return 0;
++
++	__asm__ __volatile__("rd %%asr26, %0" : "=r" (cfr));
++	if (!(cfr & CFR_CRC32C))
++		return 0;
++
++	static_branch_enable(&have_crc32c_opcode);
++	pr_info("Using sparc64 crc32c opcode optimized CRC32C implementation\n");
 +	return 0;
 +}
-+arch_initcall(crc32_s390_init);
++arch_initcall(crc32_sparc_init);
 +
-+static void __exit crc32_s390_exit(void)
++static void __exit crc32_sparc_exit(void)
 +{
 +}
-+module_exit(crc32_s390_exit);
++module_exit(crc32_sparc_exit);
 +
-+MODULE_AUTHOR("Hendrik Brueckner <brueckner@linux.vnet.ibm.com>");
-+MODULE_DESCRIPTION("CRC-32 algorithms using z/Architecture Vector Extension Facility");
 +MODULE_LICENSE("GPL");
-diff --git a/arch/s390/crypto/crc32-vx.h b/arch/s390/lib/crc32-vx.h
-similarity index 100%
-rename from arch/s390/crypto/crc32-vx.h
-rename to arch/s390/lib/crc32-vx.h
-diff --git a/arch/s390/crypto/crc32be-vx.c b/arch/s390/lib/crc32be-vx.c
-similarity index 100%
-rename from arch/s390/crypto/crc32be-vx.c
-rename to arch/s390/lib/crc32be-vx.c
-diff --git a/arch/s390/crypto/crc32le-vx.c b/arch/s390/lib/crc32le-vx.c
-similarity index 100%
-rename from arch/s390/crypto/crc32le-vx.c
-rename to arch/s390/lib/crc32le-vx.c
++MODULE_DESCRIPTION("CRC32c (Castagnoli), sparc64 crc32c opcode accelerated");
+diff --git a/arch/sparc/crypto/crc32c_asm.S b/arch/sparc/lib/crc32c_asm.S
+similarity index 92%
+rename from arch/sparc/crypto/crc32c_asm.S
+rename to arch/sparc/lib/crc32c_asm.S
+index b8659a479242d..ee454fa6aed68 100644
+--- a/arch/sparc/crypto/crc32c_asm.S
++++ b/arch/sparc/lib/crc32c_asm.S
+@@ -1,11 +1,11 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #include <linux/linkage.h>
+ #include <asm/visasm.h>
+ #include <asm/asi.h>
+ 
+-#include "opcodes.h"
++#include "../crypto/opcodes.h"
+ 
+ ENTRY(crc32c_sparc64)
+ 	/* %o0=crc32p, %o1=data_ptr, %o2=len */
+ 	VISEntryHalf
+ 	lda	[%o0] ASI_PL, %f1
 -- 
 2.47.0
 
