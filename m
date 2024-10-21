@@ -1,89 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-2461-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2462-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C3C9A67AC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2024 14:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF799A6854
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Oct 2024 14:28:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XXDhC3SkGz2y3Z;
-	Mon, 21 Oct 2024 23:12:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XXF2R1j41z2yRC;
+	Mon, 21 Oct 2024 23:27:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729512731;
-	cv=none; b=DAVWnHzvju1HbGHjwYVXj+dTTA0CEznx7h50vk2U0l58WDdkLRHi5uwMd5dtF+07TXV8Hw5OsJyWmvTrXBhsW5omJdr50mVAvSLxZIuAV+pGSEySdMFZlM3cS7aG58F6HutbACRmRcHIvsLSPl7zQQWRnVirfxx3gkrhhlbUf7n8u3uSBCgjA+Y6SxERwJufQnsS0ZiluoVhUsI0YZem5mLFRhSWTLAscoUHDGm0lQN1XzosUFDXkWCpdbt3staZcAOv3mhVPS0AmOUAwwK7KE/2gJ7k9JT360W7xLvqFcm33b+8H7LvH8ZE7WlcQGgbU8gCzq1c6rQiRatSC/AXUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729513679;
+	cv=none; b=okTsa9QCz22URXLjsv3fCjSyb9L4dSuYrVLaj+OkGuXo5UcoC3bDG+2lOefZfQTHv6ILGFy6GdJqFzv7QSGQDzOSuYsBxKnKO+50C5uUZP3JdzVf7U5+C8xiqnyWVOivQyS7uiVUgDq24mrb/aLOQhqZcFIizj0+p1NDDqJFN4sZlx3+FCm0P5BxmzM4luyiiniNjo54L69a8vpV+PubC/y9CLgran2vUeeoC5uSb+4gIWyjQZnf8cQTEqqYHdUSeElsJtnGmHZQHyRH957vAHsHoP3INr9AtYNqN0ywLOjbBSyyCIowEX67Cv3MpDPmusqtFJNNl+pEKZLIYCXvLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729512731; c=relaxed/relaxed;
-	bh=xF6/Ic9v6OJ/Y6A3E/2TG5AwOYv4mf/4nXJ6EAwvg4o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T2OZQX1jDi/rHcqeyM0le53XUfQjpBcGm++MT3CLCrUz+OqhmIc7LG2xPJlSP3XNOWWWKPKpoF5IIu/56jtJVoDz8fw2yj7rJzmkMXKHT6n1eLYBDAPN9yzjzI+FtkukKX4dMBZ1DNV2rjJm14Wut78utT/PCrsr7y3UaZuMV8CwVx3ihx8uQ7GyL6XYJ546BZJxVZD4t58WpTISV8w1OAz8OeDBw5+ZMQslp5r3AzTRRRkE+58RQxOkPxy7wnzVB7oaW/tbOIOf9T3vCCBGVvfqWs5OW5Gkt000KKSV0Dca4S98bXZs/FL9pb3aPYDSBDqUgFNAKTInX3nC7401Uw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=X9pTxouH; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ryotkkr98@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1729513679; c=relaxed/relaxed;
+	bh=99jFXW/CwdyRcK8sGANnfyq1NG9lVOM4bAuwhhPMZ3Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ug3Yo91UMKaWjshgjXbzpIHfo768zf9tedZ1izW7RQhTAtBSf4qNm9b5kFFm43ZRty6IDXLbaqLvSPh812MQLLQBfNE8u4c9ptNpQnSXZMN1ia5KnROlhExAzJJKLxHriV5r0xDGBhaJooUJJvvtqWU4N2JEB5o6YOynUpRv620YBAr9dE7NsLGT6nruWZ+DESYQpaG7GB3zw7Jw1kMAe7wuUNvMFngWMowu4+CIb8TeZydFA5eGFokrvV8pZamfTBGa247fFNfZFbjc9JbbUcp23PNqQQHY5xuoDbQf7aYJ9p7JWN6dwZEYZI5UAmmjzhJlgzdT5njL2L3fmSTxPA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=FTfTwZiv; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jrFA/5hQ; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=X9pTxouH;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=FTfTwZiv;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jrFA/5hQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=ryotkkr98@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=john.ogness@linutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 56778 seconds by postgrey-1.37 at boromir; Mon, 21 Oct 2024 23:27:58 AEDT
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXDh95z5yz2xg3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 23:12:09 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2e2c6bc4840so3164630a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 05:12:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729512725; x=1730117525; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xF6/Ic9v6OJ/Y6A3E/2TG5AwOYv4mf/4nXJ6EAwvg4o=;
-        b=X9pTxouHzHZYOAAh+x1absPXGMrP3KAOBOyCZ/SO+hFsAR+VaD4QLKzwXh23SQ51OD
-         njP9oGeQSPfs5qLnxz1pjel7cEZibCEU6F40PEooFIIbIZ+goILXGMVPAly3VBwiQ2Hm
-         EO9SHHfbju8xQvC6YvWgq6RMjYxAzz4odWdI20W5rcBGQvaIcgabDD3KI01JsN31UMjh
-         zRC4qdviRY6J0LrbmaGmmbuEBXfF9BJLvnsqVFLHwazqos9LfzosuJ9a6rFI/9jEt0TG
-         Y3RWxWwbzf83pp4ZMvea9tCikk/crgj7k9cKWnMywcw5ybPGtKkpMqtmLHb/qTWC7dHc
-         iElQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729512725; x=1730117525;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xF6/Ic9v6OJ/Y6A3E/2TG5AwOYv4mf/4nXJ6EAwvg4o=;
-        b=Se4qptDdj3dEwtCe46QAyHrszSM3eNu7YN0eRUO9GD294AbPdzplFFImbr/t/o6bll
-         Xnep9YQboegjyl7LhL+aQRRWtpv4de/UqdUR66g/wcAzENkJctfs/tE06UgmY72s5rX7
-         /jFPvC6y8jCjgBMYU7XbONJ4z0LmFqGp2k3/JI8QiNVOEyUNfhKI+cTDuNfzjcydgfUM
-         FcEXLm90OUCURbyQfIDpxwLMDjJmcvCSAMmmgD91kXTyJu0IkmHoe40ZTUs2XgloKrs9
-         2nHTgm+HMptCXX/8SwJBT2yBoj9WdKs1f+yFoSfpKTaVP2gKkH8hK/qHTLssGy4ONXTS
-         hKNg==
-X-Forwarded-Encrypted: i=1; AJvYcCWcda5sM5OuP4CkB4GGOdIvRQextutKk6Jw/DMDDOKoFlGjfbohif/KMtvce4NAkksCTbZe9gTV4VEc9YY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxZWyEMNgLKKaujS0GLQZLpnOKmuFefhdo4XuW1CAH/JnfKt6Tm
-	DLS3Hv/fgLxVlRaoPQBeD64wfZHgV1YdCly78ix7lpT9AiKA55Kw
-X-Google-Smtp-Source: AGHT+IERztfGYJvtlKj55iQq8SK7tQD+rxLE3qOHXPCkCobZKQZqc3te3Y1jB7vqkAQvBSzXe1OIaQ==
-X-Received: by 2002:a17:90b:1088:b0:2e2:e769:dffe with SMTP id 98e67ed59e1d1-2e5618da95amr14134329a91.30.1729512724821;
-        Mon, 21 Oct 2024 05:12:04 -0700 (PDT)
-Received: from DESKTOP-NBGHJ1C.local.valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e5ad4ed7f3sm3538944a91.38.2024.10.21.05.12.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 05:12:04 -0700 (PDT)
-From: Ryo Takakura <ryotkkr98@gmail.com>
-To: john.ogness@linutronix.de
-Cc: christophe.leroy@csgroup.eu,
-	hbathini@linux.ibm.com,
-	leobras.c@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	naveen@kernel.org,
-	npiggin@gmail.com,
-	pmladek@suse.com,
-	ryotkkr98@gmail.com,
-	sourabhjain@linux.ibm.com
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXF2Q1l21z2yLT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 23:27:58 +1100 (AEDT)
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1729513667;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=99jFXW/CwdyRcK8sGANnfyq1NG9lVOM4bAuwhhPMZ3Q=;
+	b=FTfTwZivkJNNhVUSQLAGwI4zc3HGwCHeWIQA0KRcXWbxaIpgYlngv319X4Uv76M05mAzUF
+	22eCKrIOuqvbcI7TaLpvYlkfncXaP3jLvoqqnuQeQEySbVqszPIhZgfAT3okHPkbOJUSbK
+	IbAUIHTGs/UFQt+u8h2Dq2WY1lQY3mFC2kashseP/IUONO/GBVhPx/44NC/XeP8TRmY+sA
+	rPvhpqHjdwUpCecLlwkzAQsIoTbLBz4IvJZD9/MN+/ESx2TCDXQwX5cOK9K5nNKizzSr8K
+	cB8CTiksFaTuKECBpLrjbUpPCt37kSF7zqnqDK7iVzwxrDubIe7ybOm/S5EeuA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1729513667;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=99jFXW/CwdyRcK8sGANnfyq1NG9lVOM4bAuwhhPMZ3Q=;
+	b=jrFA/5hQfVqm9mel2IJlzbl//WFQCYPiYzZVO8TNDBHkNTn0/XLklq6P50n5V5eh1cGQiz
+	7OE84fab6r5wXfBA==
+To: Ryo Takakura <ryotkkr98@gmail.com>
+Cc: christophe.leroy@csgroup.eu, hbathini@linux.ibm.com,
+ leobras.c@gmail.com, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ naveen@kernel.org, npiggin@gmail.com, pmladek@suse.com,
+ ryotkkr98@gmail.com, sourabhjain@linux.ibm.com
 Subject: Re: [PATCH] powerpc/crash: Allow direct printing on kexec
-Date: Mon, 21 Oct 2024 21:11:59 +0900
-Message-Id: <20241021121159.331940-1-ryotkkr98@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <844j56v75z.fsf@jogness.linutronix.de>
+In-Reply-To: <20241021121159.331940-1-ryotkkr98@gmail.com>
 References: <844j56v75z.fsf@jogness.linutronix.de>
+ <20241021121159.331940-1-ryotkkr98@gmail.com>
+Date: Mon, 21 Oct 2024 14:33:46 +0206
+Message-ID: <847ca1fxod.fsf@jogness.linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,55 +71,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,INVALID_DATE_TZ_ABSURD,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi John!
-
-On 2024-10-20, John Ogness <john.ogness@linutronix.de> wrote:
->On 2024-10-20, Ryo Takakura <ryotkkr98@gmail.com> wrote:
->> Let legacy consoles print directly so that we can see messages on kexec, as
->> the commit b6cf8b3f3312 ("printk: add lockless ringbuffer") turned printk
->> ring buffer lockless and there should be no worries panicked CPU 
->> deadlocking writing into ringbuffer after shutting down non-panicked CPU.
+On 2024-10-21, Ryo Takakura <ryotkkr98@gmail.com> wrote:
+>> Rather than removing the deferring, it would be better to convert the
+>> console you are using to the new NBCON API. Then it would be able to
+>> print direct and safe during panic. (printk_deferred does not affect
+>> NBCON consoles.) What console driver are you using that you want to
+>> see the messages on?
 >
->It is correct that the ringbuffer is now lockless. But the legacy
->console drivers are not. Allowing them to print directly in panic can
->lead to similar effects that commit af2876b501e4 ("powerpc/crash: Use
->NMI context for printk when starting to crash") was working around.
+> I was working on qemu ppc64 this time but I am usually working on 
+> Raspberry Pi 4 (mostly for fun and study) which uses either of 
+> bcm2835-aux-uart or amba-pl011. It would be really nice to see them 
+> working as nbcon!
+> I am thinking of taking a look at [0] but If there were any other 
+> references, I would really like to look into as well.
+>
+> [0] https://lore.kernel.org/lkml/87wn3zsz5x.fsf@jogness.linutronix.de/
 
-Oh I see.
-I wasn't taking the locks acquired by console drivers into account...
-Thanks once again for the feedback!
+The lastest version of the series is here [1]. The series is still
+undergoing revisions, however the changes are 8250-specific. The API for
+nbcon consoles is already available since 6.12-rc1. You are certainly
+welcome to try to convert one of those Raspi 4 drivers to the nbcon
+interface. I would be happy to review it.
 
->Note that although printk is deferred, it is only the printing that is
->deferred. The messages are landing in the ringbuffer immediately. So
->they would be available to kdump and crash kernels.
+John Ogness
 
-I also agree to rather skip printing and leave it to kdump and 
-crash kernels considering the chance of pointed out risk on panic.
-
->Rather than removing the deferring, it would be better to convert the
->console you are using to the new NBCON API. Then it would be able to
->print direct and safe during panic. (printk_deferred does not affect
->NBCON consoles.) What console driver are you using that you want to see
->the messages on?
-
-I was working on qemu ppc64 this time but I am usually working on 
-Raspberry Pi 4 (mostly for fun and study) which uses either of 
-bcm2835-aux-uart or amba-pl011. It would be really nice to see them 
-working as nbcon!
-I am thinking of taking a look at [0] but If there were any other 
-references, I would really like to look into as well.
-
->John Ogness
-
-Sincerely,
-Ryo Takakura
-
-[0] https://lore.kernel.org/lkml/87wn3zsz5x.fsf@jogness.linutronix.de/
+[1] https://lore.kernel.org/lkml/20240913140538.221708-1-john.ogness@linutronix.de
 
