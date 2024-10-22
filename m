@@ -1,42 +1,115 @@
-Return-Path: <linuxppc-dev+bounces-2481-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8289A980E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2024 06:52:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F129AA039
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2024 12:41:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XXft12n5dz2yS0;
-	Tue, 22 Oct 2024 15:52:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XXpcn3zZMz2yVM;
+	Tue, 22 Oct 2024 21:41:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=54.243.244.52
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729572729;
-	cv=none; b=T4bN2wlkO6+rma5JY6VIGdERaXLe1u1ujV65fFZCIkcWdPoqN+Pz/OkniYKWfNe6Ws8Vw4g4lEvM9d60owGQUm8BylWlTBY5tliLQwYfvewXdRlaH8FcU0LAKdkpA/l+cRg5qnLDu5WN0zi/K/zV8KCYYyPjSDrUrJ4fAgQqq6GkgZKcBIZe3bqNYl+jkY3zWUNxj9HuJCi6fWZx76YiiI3TzsddTDol10m71ncOouS9fKQl2zy7bmII5EPenRYbm7hx/XyA+GlcDP1S1TpsDjv6psGDSibzRERzNelzhV+hh1PV5l9NMLMcrp01LYnO4+E2+yTLu5YLibWM9zK3RA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.149
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729593673;
+	cv=none; b=B9rch2DsHvPc/krc62oH/mz2sV76xfygG6pr2gQGrMU/OgpPQso4KkMA2Nk5fA1quuJQBnoJdd4BlgICwUOFXETRSRoiRD0b9IPXpgyyZTY/CpsiO7x0ZcD2nZ14QVIGxmp4blBEmlbzJHnzGozhWBHWAEaulR7SuDeI4R3uZ2+X1RT99UO5D1rLunHqnVHwlvKi6kuENlTageMA00gqTc7+7/K+nEdvTfmKNSOjV+msNIBLnA2+p/HVOGdJKZ4808c/8KvBzwcCRPPHuYZ5e89GkwqOizSQJMe2Mv10S0FVFwHRI5hXPCKAoep7ZNdB6eDZL+kYhVk2m/Z74hDX2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729572729; c=relaxed/relaxed;
-	bh=vFnMMCXlPqjWR/jnxeFdZHoUu936YlMulc6HV3LIs2E=;
-	h=From:To:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=h0sPDzSkkK8782lrqx+r6JSznIxAiWvte7q3h54RVc2JRqxV7TiFOxAJbIQMJtmYb2pY3ggqakQU9TMe7wrL41GuPOu3Qq6nY0AjCPGe0/bZ1Nu3paaD2gwR2A4MMmSGm8RWTpsb+Iv+hHGlGxnU1teg9fZsKFFY56LUg2f7lwE9X+afen90YgvmUllRizGNYfNtPSU3VGZnAo0lfYp/+vtrO9+ut9xNB2k2+D0npqd7aO5nKcpZC+nsb+wbBwlP9DKHtVbPdCembVjW54XDLbUB2u4r8RvdBY2osp7AllonQPVdQv3O4I4EhGekjZlmmuuvxGiohUA+3sRGr/s+WA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass (client-ip=54.243.244.52; helo=smtpbguseast3.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org) smtp.mailfrom=shingroup.cn
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=54.243.244.52; helo=smtpbguseast3.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1729593673; c=relaxed/relaxed;
+	bh=FNfJ8dUmJg5X+LCsJgXshGfEo2a7ZO2pnQnnpHUMjCA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dpXCbkw4M01fTAwzAnf4W2ERpxCINGFAqNzUbT4lW3gopm5k/hwUyAr9b6WWkHX/K9aHsLRbBXWlYlFGWPGN9cOd/94kEM4IrzOc8LIG5QZF3k1lSuUytorW5FGw5bu2aJpAcmNirAF9W2h8LfsCZHifMLejoWM5JkNu9bWXwrLZPXsupadLUxmAckR/bftXGFK1CJecXfbRMF/slbFnH3oz1GgEppWKZtKnJqeu8isyhaJvfUQsONB45oGrTt2AZTNdMa+kwmqEk98LiLmgpGtPBAsXo7sTxxRrFieP80pylkGNQtkQJzGPHQfL0hmKxJR03+Heyx/wvNOPrzS1fg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name; dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=f2/ytXxs; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=EFm7jnLf; dkim-atps=neutral; spf=pass (client-ip=202.12.124.149; helo=fout-b6-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org) smtp.mailfrom=shutemov.name
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=f2/ytXxs;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=EFm7jnLf;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shutemov.name (client-ip=202.12.124.149; helo=fout-b6-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org)
+X-Greylist: delayed 444 seconds by postgrey-1.37 at boromir; Tue, 22 Oct 2024 21:41:08 AEDT
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXfsy5GS1z2xZK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2024 15:51:53 +1100 (AEDT)
-X-QQ-GoodBg: 2
-X-BAN-DOWNLOAD: 1
-X-BAN-SHARE: 1
-X-QQ-SSF: 0040000000000060
-X-QQ-FEAT: D4aqtcRDiqQpBpTnjIJt3/f21w9WO3enREO5ZSgO7MU=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: 6OknCajsr0V6SHUI4fdE11uCBtvd2djKoj+0O98d75A=
-X-Originating-IP: 180.171.169.129
-X-QQ-STYLE: 
-X-QQ-mid: t6gz5a-0t1729572647t2240862
-From: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>
-To: "=?utf-8?B?Q2hyaXN0b3BoZSBMZXJveQ==?=" <christophe.leroy@csgroup.eu>, "=?utf-8?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bXBl?=" <mpe@ellerman.id.au>, "=?utf-8?B?bnBpZ2dpbg==?=" <npiggin@gmail.com>, "=?utf-8?B?amlhbG9uZy55YW5n?=" <jialong.yang@shingroup.cn>, "=?utf-8?B?bHVtaW5nLnl1?=" <luming.yu@gmail.com>
-Subject: Re: [PATCH 1/7] powerpc/entry: convert to common and generic entry
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXpch23fJz2yTy
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2024 21:41:08 +1100 (AEDT)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 9E35011400A8;
+	Tue, 22 Oct 2024 06:33:40 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 22 Oct 2024 06:33:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1729593220; x=1729679620; bh=FNfJ8dUmJg5X+LCsJgXshGfEo2a7ZO2p
+	nQnnpHUMjCA=; b=f2/ytXxs+eas3Oz+HRWWi29ecN4AGKW2HMc5PP5qR75DbReU
+	JU+ubEpyDWQXCecIJxeXIj/XnMXiIFL5nWOFpmr/pRqW0x01eMBCvZx/Jrt6R/6E
+	6ayQ3egYAEuQvC/ouxOArvBaxi1kCeJzdQgLb3y/Bm7dhyBcEO4ytMElf7gBkZkZ
+	0DCic8vhTp0lRnEyLgEaC5RFAlD4oAFS0ovDl/tJB4Y2tuDWhKgJZjrPR3Rt2BZc
+	EIxotsprhty8oWH3274QhEK1L/KcIKRBpHKpEx8E5bZIJyvcjUsI9uW6GHOSuevS
+	pHPnRlAsUf6yVo3sb7dw2wnXTtnGxrKPoHaiqg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1729593220; x=
+	1729679620; bh=FNfJ8dUmJg5X+LCsJgXshGfEo2a7ZO2pnQnnpHUMjCA=; b=E
+	Fm7jnLfFn2VQu4Sdt4xe3n3W7h7LXuEhQBSmrx24DZ0qtPiOwqW3ZXOJlwm+XTGN
+	4AhGw7VyJw3K/LZmogcswUKq1rEZ5Int1WmA4V+JQkX6rN5dX2pSGrdZIY7LvXP5
+	l3e/RSox4TXpPioSU5Jee+UFLQV82IH1KeDi7KgIZorCAc+qNi+/hUsmmFTBDVCf
+	VhyTVKKqsIipkkfn8UBzi4MRft3mxoSKlliLCZlYevZXs/Jx3pbPeBQ6cURq20WL
+	hLxUBXSWbmUM53Yw+EIaCOtMkzyTeRNwq9Mp52chyQ9iaYElEJkE+bDZB+WqZv7p
+	HuVbNUlx6VoiJqWTbZ04A==
+X-ME-Sender: <xms:g38XZ3KQZ8zFvZ8fG56bQInt6d167EiekdMhmwtN-soJCqEuPh-z6A>
+    <xme:g38XZ7II7WB9NiPBEcv7_j-6diqnlHgFdywH_vgKKlPzv7VzPmURkCo-mPKmeMa2i
+    KpgjvaZqC51mQqF8bk>
+X-ME-Received: <xmr:g38XZ_v3NJKeMrrCjrOZrQ9fBO13hzl7N8sGPF2kRvtpFRS2TzbTeYpFZWS8H-dEgcy16g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdeihedgvdekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkefstddttddu
+    necuhfhrohhmpedfmfhirhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
+    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnhepueejuedvudduudef
+    vdeutdehgffhgeelvdejjedutefhgfeludffvddtjefgkeetnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhho
+    vhdrnhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtg
+    hpthhtohepthhorhhvrghlughssehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdp
+    rhgtphhtthhopehjphhoihhmsghovgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprg
+    hnughrvgifrdgtohhophgvrhefsegtihhtrhhigidrtghomhdprhgtphhtthhopeigkeei
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrd
+    guvgdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopehpvghtvghr
+    iiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehprgifrghnrdhkuhhmrghrrd
+    hguhhpthgrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhonhhgmhgr
+    nhesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:g38XZwaEoGHK47KRx0MQyxvB4JcTPAfvVzGMtvgG4aKYN07zUjAiWw>
+    <xmx:g38XZ-Zewe1N2SdvUSBuxt6d6CGx1D4gjeq9MHFV8Ohuc18DODFe5A>
+    <xmx:g38XZ0CohmfxqM0SPAl8NDBf_4Ztws4l8-E75cRw4TNLogbDuABqvQ>
+    <xmx:g38XZ8a0HB03DWER7ohAes51F4NC7cV8ob17Yf8oMuzfmT0dwQkr3g>
+    <xmx:hH8XZzLvW8CJ4i2foOnxwVv2oZWH7nPcMYhrlc3E2-XVDTSeleBZ0On->
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 22 Oct 2024 06:33:34 -0400 (EDT)
+Date: Tue, 22 Oct 2024 13:33:29 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Andrew Cooper <andrew.cooper3@citrix.com>, x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
+	Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
+Message-ID: <w57vga52m3qyocwupwyvvscumdw47ajyvryys5id6afkqxbtkg@yxf2e4ky4ssj>
+References: <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
+ <CAHk-=wgDrG-aKVGrd-9gQsC0pMs936oo8XEFmEn6ciaT9=nfDg@mail.gmail.com>
+ <20241014035436.nsleqolyj3xxysrr@treble>
+ <CAHk-=widMFN2wDeS2K65f8FnW8L6gPZa6CNO4OWkv--0G2LXhw@mail.gmail.com>
+ <r5ruxmop7vewd7aq6gu2zve4hfmcu4byhlebygswbqkgz43qfq@rsajyfiypcsd>
+ <064d7068-c666-49f0-b7df-774c2e281abc@citrix.com>
+ <20241020224444.zhoscljpe7di5yv3@treble>
+ <CAHk-=wikKPKDECP=zBEEnxBB44n-uLsnMoOG=aCy6FwDNc9mxA@mail.gmail.com>
+ <4fvuiq7h3zay3ios6kpyqye4x2igixew4k44k5nkq2ywbu5lig@ybpx5fowgy7x>
+ <CAHk-=whPey51gZ1N_pBGAOfc=7uRf6vq9vxPFhYSCOT7Sc_Ogg@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -48,98 +121,38 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Tue, 22 Oct 2024 12:50:47 +0800
-X-Priority: 3
-Message-ID: <tencent_381ACB160B890CC46678170E@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <88E2581B1D024E9A+20241012035621.1245-3-luming.yu@shingroup.cn>
-	<e9595d8b-d1e2-4c6a-b097-6f4f08d29866@csgroup.eu>
-In-Reply-To: <e9595d8b-d1e2-4c6a-b097-6f4f08d29866@csgroup.eu>
-X-QQ-ReplyHash: 303108142
-X-BIZMAIL-ID: 11601653849768611381
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Tue, 22 Oct 2024 12:50:48 +0800 (CST)
-Feedback-ID: t:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
-X-QQ-XMAILINFO: OZg1hzYlSoBDCGRAhYCo+fXUlA/Zx9NevcNO13CuAuM+kIn254STmw9G
-	/rT+wYfihb0Iq2IGzdeUVjx9jq/5k2KOruvfcqWMLHKXLq2ubPOAz9OVxtv8vohMuPKQsC3
-	uII71gfmyvJtZifTByVn4cvWzNewovRszi6Czvr3geIAeNVI2n+QyEDDCeHBJ7JC8LnzjRJ
-	olRBQ72kHrJP5y+I1zUVRd01cHk7jEmNNux6sK55xzaiW5IQRor+bZoADzTnCWE65BypxxL
-	tsmMTnYtBiDKtI5YgBRwt+Q+v9VIYt/7zLAnT5kFjgqjzFg2XIp3bZqkSX073NJq1bVWwFt
-	Mp7Nk4M41mMPSdKcRrtme5CNaTm/hHTqMTzOKAZz3LxKN7Y6VrTkjeVExNT5eE9niq6n5P1
-	hHpOIz04XGnWMuxiwa+6PQPevHnEFS0mFSdfjsZdIKpYZfc3KM8u4PAKbwxV6QG8eRiGYj9
-	Tvkw82oUsnm6R/HvElmvtGBLK4Vjp3gSf9qZ9n4dKdE6N5RjJ2ODUvbdsb0/5F6VsOQct01
-	nXkyfLQcG64YuKwPXZDYDosxwUGdiVpEL4+0KNU/JYuatYcuumzHZ8J4OxUQD3wc17ju5dz
-	rAIghbJdSxRWo/fbl/1AknbkVXIf66sdrMWaRNHyPG/91+HZhlThqzxcLRpfawL7wMix5Ny
-	C9fvykcv1epT5OX/q6nz3VF6gkFKPKQiSuQ4uHF7B9HkBT67TFgIVniqm3Q8G93rmX/q36u
-	6KvlU/zH/i/yj9jo8UEZhIpx5Oi0lWCJPtKzkY8cqGrTYYBpPwvC4e66oBrseAGeijPl93T
-	VG5mAoWIHA2FGqHST8vPlQoZEadnm9UPEqZStC3Aaftn6JCvF0ug7EWp8essE+d7ExlTsYB
-	74ytYkWVnojaPfpEsr/hNjwuP9C9nUNIhC4HXuQeFt3+Q4dXO3/2+Q==
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
-X-Spam-Status: No, score=0.0 required=5.0 tests=MSGID_FROM_MTA_HEADER,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-	SPF_PASS autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHk-=whPey51gZ1N_pBGAOfc=7uRf6vq9vxPFhYSCOT7Sc_Ogg@mail.gmail.com>
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-PkxlIDEyLzEwLzIwMjQgw6AgMDU6NTYsIEx1bWluZyBZdSBhIMOpY3JpdCA6DQo+PiBjb252
-ZXJ0IHBvd2VycGMgZW50cnkgY29kZSBpbiBzeXNjYWxsIGFuZCBmYXVsdCB0byB1c2Ugc3lz
-Y2FsbF93b3JrDQo+PiBhbmQgaXJxZW50cnlfc3RhdGUgYXMgd2VsbCBhcyBjb21tb24gY2Fs
-bHMgaW1wbGVtZW50ZWQgaW4gZ2VuZXJpYw0KPj4gZW50cnkgaW5mcmFzdHJ1Y3R1cmUuDQo+
-PiANCj4+IFNpZ25lZC1vZmYtYnk6IEx1bWluZyBZdSA8bHVtaW5nLnl1QHNoaW5ncm91cC5j
-bj4NCj4+IC0tLQ0KPj4gICBhcmNoL3Bvd2VycGMvS2NvbmZpZyAgICAgICAgICAgICAgICAg
-ICB8IDEgKw0KPj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vaHdfaXJxLmggICAgICB8
-IDUgKysrKysNCj4+ICAgYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3Byb2Nlc3Nvci5oICAg
-fCA2ICsrKysrKw0KPj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vc3lzY2FsbC5oICAg
-ICB8IDUgKysrKysNCj4+ICAgYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3RocmVhZF9pbmZv
-LmggfCAxICsNCj4+ICAgYXJjaC9wb3dlcnBjL2tlcm5lbC9zeXNjYWxsLmMgICAgICAgICAg
-fCA1ICsrKystDQo+PiAgIGFyY2gvcG93ZXJwYy9tbS9mYXVsdC5jICAgICAgICAgICAgICAg
-IHwgMyArKysNCj4+ICAgNyBmaWxlcyBjaGFuZ2VkLCAyNSBpbnNlcnRpb25zKCspLCAxIGRl
-bGV0aW9uKC0pDQo+PiANCj4NCj4uLi4NCj4NCj4+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2Vy
-cGMva2VybmVsL3N5c2NhbGwuYyBiL2FyY2gvcG93ZXJwYy9rZXJuZWwvc3lzY2FsbC5jDQo+
-PiBpbmRleCA3N2ZlZGIxOTBjOTMuLmUwMzM4YmQ4ZDM4MyAxMDA2NDQNCj4+IC0tLSBhL2Fy
-Y2gvcG93ZXJwYy9rZXJuZWwvc3lzY2FsbC5jDQo+PiArKysgYi9hcmNoL3Bvd2VycGMva2Vy
-bmVsL3N5c2NhbGwuYw0KPj4gQEAgLTMsNiArMyw3IEBADQo+PiAgICNpbmNsdWRlIDxsaW51
-eC9jb21wYXQuaD4NCj4+ICAgI2luY2x1ZGUgPGxpbnV4L2NvbnRleHRfdHJhY2tpbmcuaD4N
-Cj4+ICAgI2luY2x1ZGUgPGxpbnV4L3JhbmRvbWl6ZV9rc3RhY2suaD4NCj4+ICsjaW5jbHVk
-ZSA8bGludXgvZW50cnktY29tbW9uLmg+DQo+PiAgIA0KPj4gICAjaW5jbHVkZSA8YXNtL2lu
-dGVycnVwdC5oPg0KPj4gICAjaW5jbHVkZSA8YXNtL2t1cC5oPg0KPj4gQEAgLTEzMSw3ICsx
-MzIsNyBAQCBub3RyYWNlIGxvbmcgc3lzdGVtX2NhbGxfZXhjZXB0aW9uKHN0cnVjdCBwdF9y
-ZWdzICpyZWdzLCB1bnNpZ25lZCBsb25nIHIwKQ0KPj4gICAJCSAqIGFuZCB0aGUgdGVzdCBh
-Z2FpbnN0IE5SX3N5c2NhbGxzIHdpbGwgZmFpbCBhbmQgdGhlIHJldHVybg0KPj4gICAJCSAq
-IHZhbHVlIHRvIGJlIHVzZWQgaXMgaW4gcmVncy0+Z3ByWzNdLg0KPj4gICAJCSAqLw0KPj4g
-LQkJcjAgPSBkb19zeXNjYWxsX3RyYWNlX2VudGVyKHJlZ3MpOw0KPj4gKwkJcjAgPSBzeXNj
-YWxsX2VudGVyX2Zyb21fdXNlcl9tb2RlKHJlZ3MsIHIwKTsNCj4NCj5DYW4geW91IHByb3Zp
-ZGUgZGV0YWlscyBvbiBob3cgdGhpcyB3b3JrcyA/DQpJIGFzc3VtZSB0aGUgY29tbW9uIGVu
-dHJ5IHdvdWxkIHRha2Ugb3ZlciB0aCBkZXRhaWxzLg0KU28gSSBqdXN0IG1hZGUgdGhlIHN3
-aXRjaCBmcm9tIHRoZSBoaWdoIGxldmVsIGNhbGwuDQoNCkFzIHlvdSBzYWlkIGFzIHRoZSBz
-dWJ0bGUgQUJJIHJlcXVpcmVtZW50IGFib3V0IHJlZ3MtPnIzIG5lZWRzIHRvDQpiZSByZXN0
-b3JlZCwgSSdtIHdvbmRlcmluZyB3aGljaCB0ZXN0IGNhbiBjYXB0dXJlIHRoZSBsb3N0DQpB
-QkkgZmVhdHVyZS4gQXMgc2ltcGxlIEJvb3QgdGVzdCBpcyBpbnN1ZmZpY2llbnQsIHdoYXQg
-aXMgdGhlIHRlc3Qgc2V0DQp0aGF0IGNhbiBjYXB0dXJlIGl0Pw0KDQpJIHdpbGwgbG9vayBp
-bnRvIHRoZSBkZXRhaWxzIGxhdGUgdGhpcyB3ZWVrLg0KDQo+DQo+Rm9yIGluc3RhbmNlLCBk
-b19zeXNjYWxsX3RyYWNlX2VudGVyKCkgd2FzIGNhbGxpbmcgZG9fc2VjY29tcCgpLg0KPmRv
-X3NlY2NvbXAoKSBzZXRzIHJlZ3MtPnIzIHRvIC1FTk9TWVMgdGhlbiBjYWxscyBfX3NlY3Vy
-ZV9jb21wdXRpbmcoKS4NCj4NCj5Ob3cgeW91IGNhbGwgc3lzY2FsbF9lbnRlcl9mcm9tX3Vz
-ZXJfbW9kZSgpIGluc3RlYWQgd2hpY2ggY2FsbHMgDQo+c3lzY2FsbF9lbnRlcl9mcm9tX3Vz
-ZXJfbW9kZV93b3JrKCkgd2hpY2ggY2FsbHMgc3lzY2FsbF90cmFjZV9lbnRlcigpIA0KPndo
-aWNoIGNhbGxzICBfX3NlY3VyZV9jb21wdXRpbmcoKSBidXQgd2l0aG91dCBzZXRpbmcgcmVn
-cy0+cjMgdG8gLUVOT1NZUy4NCj4NCj5TbyB3aGF0IHdpbGwgYmUgcmV0dXJuZWQgYnkgdGhl
-IGJlbG93IHJldHVybiB3aGVuIA0KPnN5c2NhbGxfZW50ZXJfZnJvbV91c2VyX21vZGUgcmV0
-dXJucyAtMSA/DQo+DQo+PiAgIAkJaWYgKHVubGlrZWx5KHIwID49IE5SX3N5c2NhbGxzKSkN
-Cj4+ICAgCQkJcmV0dXJuIHJlZ3MtPmdwclszXTsNCj4+ICAgDQo+PiBAQCAtMTg0LDYgKzE4
-NSw4IEBAIG5vdHJhY2UgbG9uZyBzeXN0ZW1fY2FsbF9leGNlcHRpb24oc3RydWN0IHB0X3Jl
-Z3MgKnJlZ3MsIHVuc2lnbmVkIGxvbmcgcjApDQo+PiAgIAkgKiBTbyB0aGUgcmVzdWx0aW5n
-IDYgb3IgNyBiaXRzIG9mIGVudHJvcHkgaXMgc2VlbiBpbiBTUFs5OjRdIG9yIFNQWzk6M10u
-DQo+PiAgIAkgKi8NCj4+ICAgCWNob29zZV9yYW5kb21fa3N0YWNrX29mZnNldChtZnRiKCkp
-Ow0KPj4gKwkvKmNvbW1vbiBlbnRyeSovDQo+PiArCXN5c2NhbGxfZXhpdF90b191c2VyX21v
-ZGUocmVncyk7DQo+PiAgIA0KPj4gICAJcmV0dXJuIHJldDsNCj4+ICAgfQ==
+On Mon, Oct 21, 2024 at 07:36:50PM -0700, Linus Torvalds wrote:
+> On Mon, 21 Oct 2024 at 03:48, Kirill A. Shutemov <kirill@shutemov.name> wrote:
+> >
+> > LAM brings own speculation issues[1] that is going to be addressed by
+> > LASS[2]. There was a patch[3] to disable LAM until LASS is landed, but it
+> > never got applied for some reason.
+> 
+> Bah., I think the reason was that nobody knew what - if any - any hardware.
+> 
+> I did find an Intel "Product Brief" for "Intel® Xeon® 6 processors
+> with E-cores" that claim both LASS and LAM, but that one puts LAM as a
+> "security feature", so that seems a bit confused. That's Redwood Cove
+> cores, I think.
+> 
+> I guess that should mean that Meteor Lake ("Core Ultra") should also
+> have it? Or is it then turned off because the E cores don't do it?
 
+No, Meteor Lake doesn't support neither LAM nor LASS.
+
+So far, according to SDM, it is supported by Sierra Forest (E-core based
+Xeons) and Lunar Lake.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
