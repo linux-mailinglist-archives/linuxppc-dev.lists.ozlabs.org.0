@@ -1,58 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-2487-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2488-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E5F9AB81B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2024 23:00:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B98D9AB81D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2024 23:00:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XY4MP0C4Pz2xlF;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XY4MP4t92z2xHW;
 	Wed, 23 Oct 2024 08:00:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729630832;
-	cv=none; b=S2xXPsmURGzOzRFKIB03swU/lGNvQ5SMWBYLd6GeKc8TU30uoyYj/dqJv/44dcrPigjMm6DlLJtLx+NUc/W/RWyAGfmyV0C6ZDHQaTuQofoSllSH6b+cZxjfT1g348Q/Kn1aK9+PN2YtDlvNuCkQnJzCyb48fQlV41uevRGE/INwZkOi1WCpUdIcGgLF/eK51rzc9wGpDMT2ny3NLMFxlKLeYEQwc19orgt/RxWnHmiJ5Z/b7tOdTl62VVf6wMbjKLupxdC/NUcVNNO+n0OIEqpRDTu4yBGdGnBaElMa89hacqpU52FcNFDvm/sSmJ30Tw6ZTY3MLugtqjN0O0fAag==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729630833;
+	cv=none; b=Ep3M9J2x89QV6mZ7HZ8OZee/PNX1qHj0FEZ11HEBBNy+JodSEoc6ZTxkozP+XBEpkJTQxX1Yq0pZDFUSqBg9fGHICTHuT4wABOVZ7yTi4+AUO3KxRNpdeMcr5Dwp0db1ErHGVySvdmKH35E2/0Q+EZ5CeednnocnuaDYDrZLXTDy/tr5iX1OZMucH+N7ZLmiqupAZz6H7WiGX4JhsXUVPx3mw2CH/E5+fPYyiTWTO695hkRq9PsBRPzxQYzzJYaM791O3NJcCQm1JP+UcS8wl8Fe872GchVxrHZLiVOoxe/yaGom9HnCaaWA17fcvCd7civNCuu+EHHM6W1BG8msvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729630832; c=relaxed/relaxed;
-	bh=T2p1rNDmwJwD8dLUxYplivy+XINCoTIN5/yAE9W1Qlg=;
+	t=1729630833; c=relaxed/relaxed;
+	bh=SgupZW4ZrXxlqQVYaItaC7AY4yvNs9wYDzGkWPOY29g=;
 	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=jccpXYk7Cano1Bm2vMdPI2xPP4RdaG36kfDepbCQyoJOuF6Gjd/u49Y3e+XcUifTVZgJ2XZlPWPrvhK9sxnA5T7hrHZTSMAoLk6binCr2vHsgNz1ka87nPwtABot/P236CuFs4SXV4XIs+2mgogpBpmUjw8bb5ygrp/eP/f3Vg4UsV19fD22JHwEur8rmHA6OddCyFqFvnjfx70xn9P3OpPeUzUMo7zo0RtW4YAJKs/EJ2PS5U2vfehor8V4PlrMFXSG8S2cTVIUjrvH/WqViJGmRJCkQeP60qxoG1Yz57slVT5vx4yTghVT8DrP/o7JAGy1hmkEAz5Ie1IidOWcqg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bF3kPAPs; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type; b=DzhhLZFz4Nvm4s79kqqCdi+3ptiUvXqsNJRrkxF/9SDPIMm/Z/FFdBGxLktbLTlK9h8Q1+vlB9V2YG42PS5zLGLnlvPLCq73cD5Api0W/xWg7k6KwAadsPOyrmWJwACql98bW6mpx2JvCr7xn703NKzuIt1Wo+OFuMzZYueArHq5Nd3t2VFysOIxZh44OSjbpZdlx7VUB9CVvu/PqRB5j+RSfZM0QNe6aCP8DnHYCILIQIL/CTZb7zMR6HwDIiAw0SlMTECgOOLwc/Th06Mcf7Ep39YKC5n3AehJRmuRarmpWnxLvcGLT8H6tfXt4efsFMYQyU+NFkFsrSzM+6pEwQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sRySlJva; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bF3kPAPs;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sRySlJva;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XY4MM4xt5z2xHW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2024 08:00:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XY4MN6k8cz2xdZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2024 08:00:32 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0A7AB5C5755;
-	Tue, 22 Oct 2024 21:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD627C4CEC7;
-	Tue, 22 Oct 2024 21:00:25 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 92B345C5CDB;
+	Tue, 22 Oct 2024 21:00:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAFDC4CEE3;
+	Tue, 22 Oct 2024 21:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729630828;
-	bh=gPLFmUbd/s1xG1U0lhSkTgFdqgBBXgJWtCXko/8udOY=;
+	s=k20201202; t=1729630830;
+	bh=xqtlUhw8rmrDSpNkrqtyPtQIJUIMIG4Xa/kCuAim9xs=;
 	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=bF3kPAPsTJRgfQID5/10+n24ujJRtJlC4eEp7qOzfLgmJECivgijTTted45XGIOqT
-	 gYe+OIII3QChKjIcJ4/+lyKCpBcbbd8DPkYdWg+uadMXNk7M08WJg202plQH9VQo5Q
-	 /+hF5W/SqAmOyAGEK4wAO1N4ilP5twLW03Qe4IdiXQe4c3J/epCy/3DIepuJwqJlv1
-	 KaK4PasoRafzpJKSMB9TOPCQBKxYVobp2GLtoRbWG0bcaNQX4dNdj2geIvLARvuQo+
-	 dXeemevA1ffmdKEo+4NdD3ixLVzKYEyqzhIWMW4T2ZLHUGSdhkG7xu+v+cK/9qLGGX
-	 FIsQ7iTo/4y9Q==
+	b=sRySlJvaDIgA7CqpeVCHlCjQ9N3IDeVH64OWYdmvNY7+5xl4VEWoVhw9/MPcuQgnf
+	 CjEVJa21+IvZCM5NRpxh0eVky+wFMAVGZXkeixfxhlUvDW1I2bD9aTb2AXSGn4j2Su
+	 tGtIkgCGfsoOg8lzflkZsZ93+pv5E69x6WOT6W7KHZvdy3vopi8SEAuqkgTR2FdIg/
+	 aXPBI0WTQZ8L6vy3jDSa1XU2b1OeSx/koxQx95XBW/S/CM+VfiJMPkzYvchVKvBv0l
+	 DI2zIFB51RfszhjbrHuyL5KorFUaGmputCN/bdy+V9ohn61/BV5Ra5CEVSs7E6NxW6
+	 PLR67TCUEBhAQ==
 From: Mark Brown <broonie@kernel.org>
 To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
  nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1728884313-6778-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1728884313-6778-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_micfil: Add sample rate constraint
-Message-Id: <172963082563.164184.10497538395371277879.b4-ty@kernel.org>
-Date: Tue, 22 Oct 2024 22:00:25 +0100
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <1728368873-31379-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1728368873-31379-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 0/2] ASoC: fsl_xcvr: enable some interrupts
+Message-Id: <172963082823.164184.11756068817626809151.b4-ty@kernel.org>
+Date: Tue, 22 Oct 2024 22:00:28 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,15 +74,13 @@ X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 14 Oct 2024 13:38:33 +0800, Shengjiu Wang wrote:
-> On some platforms, for example i.MX93, there is only one
-> audio PLL source, so some sample rate can't be supported.
-> If the PLL source is used for 8kHz series rates, then 11kHz
-> series rates can't be supported.
+On Tue, 08 Oct 2024 14:27:51 +0800, Shengjiu Wang wrote:
+> Enable interrupt of cmdc status update and the interrupts for
+> wrong preamble received.
 > 
-> So add constraints according to the frequency of available
-> clock sources, then alsa-lib will help to convert the
-> unsupported rate for the driver.
+> Shengjiu Wang (2):
+>   ASoC: fsl_xcvr: enable interrupt of cmdc status update
+>   ASoC: fsl_xcvr: reset RX dpath after wrong preamble
 > 
 > [...]
 
@@ -91,8 +90,10 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: fsl_micfil: Add sample rate constraint
-      commit: b9a8ecf81066e01e8a3de35517481bc5aa0439e5
+[1/2] ASoC: fsl_xcvr: enable interrupt of cmdc status update
+      commit: 06461e288abcd6d67d0a870cd25731c79ebe66ab
+[2/2] ASoC: fsl_xcvr: reset RX dpath after wrong preamble
+      commit: 1e5d0f106164d2089826c16bb521891d1d06d3ad
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
