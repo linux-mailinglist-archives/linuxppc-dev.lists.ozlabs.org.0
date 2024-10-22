@@ -1,80 +1,42 @@
-Return-Path: <linuxppc-dev+bounces-2480-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2481-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE479A972F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2024 05:40:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8289A980E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2024 06:52:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XXdGh4Nqcz2xnS;
-	Tue, 22 Oct 2024 14:39:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XXft12n5dz2yS0;
+	Tue, 22 Oct 2024 15:52:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1029"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729568396;
-	cv=none; b=KpCS6OjyVhcGvQHkTfM9vy6nArLPatqT0ayND3bIwccKaaFoRUmP+bBDhtryDNjurG4lxt5mM8ZehSZ3RKrccDLvr+xqdad69P0Z9PTbAFNd21xXtkPKiZpZOZmy97XgUdvdEKODDDjTl0iCLf3JumhUDxWBhZAGrE96bs1eAY90pqiYv+ugiSsbk7JDFS6jvnnqJD9A9Pvesk08eoP/Y+oqRHiB1bD6pLZyohbKvpny1EGzxRNfEfXl4i/DPVEZwfU9WxGremy4W9WVa0Sszyejf6s34Cbk8DYphsGAL8cku3bCroILhccCSCR/+zvZdgj1EJWv5AtKp6EVxJf1nQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=54.243.244.52
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729572729;
+	cv=none; b=T4bN2wlkO6+rma5JY6VIGdERaXLe1u1ujV65fFZCIkcWdPoqN+Pz/OkniYKWfNe6Ws8Vw4g4lEvM9d60owGQUm8BylWlTBY5tliLQwYfvewXdRlaH8FcU0LAKdkpA/l+cRg5qnLDu5WN0zi/K/zV8KCYYyPjSDrUrJ4fAgQqq6GkgZKcBIZe3bqNYl+jkY3zWUNxj9HuJCi6fWZx76YiiI3TzsddTDol10m71ncOouS9fKQl2zy7bmII5EPenRYbm7hx/XyA+GlcDP1S1TpsDjv6psGDSibzRERzNelzhV+hh1PV5l9NMLMcrp01LYnO4+E2+yTLu5YLibWM9zK3RA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729568396; c=relaxed/relaxed;
-	bh=spsaMZsKCVaR6klXBbr2ISPdVYP/2QLSe1/E8O7xM2w=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=JQ1jt3+I+wlcpoYAEx276+ltOdKOgUn+/C+P+ClKhzVShzToHIyhhnscDflG48dSs77VzaOrjjaO94XSL9LOgJI3FlodjMVRkM7s7z8QyS7WlhdkyRx+0t4Za3TtaQNC7zC7XlAll3pnWlxfrvzlYWjl5v2Y3Wi3cHzS/uC6CQMIQ0h9h543/yB4YTLe92DPyA/nV18LRXhKjzLv1BEBy9TkBXq9c8CnVPl3zsAz3LgaE/trOe4aqF/53oAZsAQXO7OH1KiRiGuruuQtKh0nqnNFFpIw5LJhQnkoiRuIxNWcIQ6lP3RO9DOsba5yd6mDm2IS9vVYTHvp608gpOmydA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Qr4LkvIu; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Qr4LkvIu;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1729572729; c=relaxed/relaxed;
+	bh=vFnMMCXlPqjWR/jnxeFdZHoUu936YlMulc6HV3LIs2E=;
+	h=From:To:Subject:Mime-Version:Content-Type:Date:Message-ID:
+	 References:In-Reply-To; b=h0sPDzSkkK8782lrqx+r6JSznIxAiWvte7q3h54RVc2JRqxV7TiFOxAJbIQMJtmYb2pY3ggqakQU9TMe7wrL41GuPOu3Qq6nY0AjCPGe0/bZ1Nu3paaD2gwR2A4MMmSGm8RWTpsb+Iv+hHGlGxnU1teg9fZsKFFY56LUg2f7lwE9X+afen90YgvmUllRizGNYfNtPSU3VGZnAo0lfYp/+vtrO9+ut9xNB2k2+D0npqd7aO5nKcpZC+nsb+wbBwlP9DKHtVbPdCembVjW54XDLbUB2u4r8RvdBY2osp7AllonQPVdQv3O4I4EhGekjZlmmuuvxGiohUA+3sRGr/s+WA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass (client-ip=54.243.244.52; helo=smtpbguseast3.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org) smtp.mailfrom=shingroup.cn
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=54.243.244.52; helo=smtpbguseast3.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXdGf41wlz2xgQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2024 14:39:52 +1100 (AEDT)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-2e2a999b287so3939969a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Oct 2024 20:39:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729568390; x=1730173190; darn=lists.ozlabs.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=spsaMZsKCVaR6klXBbr2ISPdVYP/2QLSe1/E8O7xM2w=;
-        b=Qr4LkvIu1I3XuUlAa4Lxk+4DmHh9rT8bX6LX1+fBJWOw4kVMzyE52Euz5nt4D3PRxi
-         HBcq0zGBtsH084J2bUGkRk09ZRD9SaQ917oYGf38JbabI+8p5IUGNDygqPMrXC2km48j
-         zHBpjo/OXtOfTEkMLxCCQEompJR6CtHljv8REiPdl1utqNNcSs3l4rN4bV0TRZYIo9b6
-         zs/wCcAXlUzW7QWNQYcuN8Yo9S6xuesxhBobOd2Wjmluo6iOByIHbP9HQLsOGvGeiCh4
-         RkCT4hynDK9BdiRmiUIoXsD5ApCXVxeDMYppKjlN5XTDn4C2kBYgCpASpY0Wjo1WuJhb
-         l9ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729568390; x=1730173190;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=spsaMZsKCVaR6klXBbr2ISPdVYP/2QLSe1/E8O7xM2w=;
-        b=r8HanRa9wSh984iMyPbDa+bJokobFwg33F6aJziovptcBNr3agxHIkQ4s18gAV5wCy
-         4eYS0cS2yTQ30utOUO/8cz5+ww9N7INFOFmmx1HlFSk497HB+jMWgS06Wfx0DlZ2PjBw
-         15j9x26zve5IttyLDma17nDBfKg4LpQ5pAUJn7JLvnPqg02ZubC0AnyXz28B9tRHtfat
-         JVrmBvfq3+w0ZzU1BCRrq8hOPqtrFwD+DzTos+wgW2XE8AxyH01KIhS+F4qG0BfmcKwM
-         EZKurERxsuXrWd9o8mCiNGd2UpVZjHLDnYPXSBQd42E1/hdueYCTIhdApqTx6dfOtWjv
-         AVGg==
-X-Forwarded-Encrypted: i=1; AJvYcCXfMxHkRHzlg5g8R++P+b09eU40Jb86Dja+1aRCyBk3QGceqO1mSydND6n8O/0WkRnAkLj/XdSV+tkCRWQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyh1uWvhVsNrXzoYQsujoNp6Xd5fZxXVTr2hceuT+iU8ne44PdS
-	7bcPhxlyMtR233EeIRuMF0vwxCKDIhjMidNhWx7v9QYEP3GBrvSv
-X-Google-Smtp-Source: AGHT+IGddUf1mPCsPCWffBNPDtLWSUehvxpbptM8hcCGx+md9aZqciN7QKYEXR3bow3OQyfazrO4aw==
-X-Received: by 2002:a17:90a:ac1:b0:2e5:e43a:1413 with SMTP id 98e67ed59e1d1-2e5e43a16dcmr348166a91.9.1729568390362;
-        Mon, 21 Oct 2024 20:39:50 -0700 (PDT)
-Received: from dw-tp ([171.76.85.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e5ad25cb7asm4873339a91.9.2024.10.21.20.39.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 20:39:49 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Cc: kasan-dev@googlegroups.com, linux-mm@kvack.org, Marco Elver <elver@google.com>, Alexander Potapenko <glider@google.com>, Heiko
- Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Hari Bathini <hbathini@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Donet Tom <donettom@linux.vnet.ibm.com>, Pavithra Prakash <pavrampu@linux.vnet.ibm.com>, LKML <linux-kernel@vger.kernel.org>, Disha Goel <disgoel@linux.ibm.com>
-Subject: Re: [PATCH v3 01/12] powerpc: mm/fault: Fix kfence page fault reporting
-In-Reply-To: <87plnsoo2y.fsf@mail.lhotse>
-Date: Tue, 22 Oct 2024 08:39:05 +0530
-Message-ID: <87o73cygtq.fsf@gmail.com>
-References: <cover.1729271995.git.ritesh.list@gmail.com> <a411788081d50e3b136c6270471e35aba3dfafa3.1729271995.git.ritesh.list@gmail.com> <87plnsoo2y.fsf@mail.lhotse>
-X-Spam-Status: No, score=3.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Level: ***
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XXfsy5GS1z2xZK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Oct 2024 15:51:53 +1100 (AEDT)
+X-QQ-GoodBg: 2
+X-BAN-DOWNLOAD: 1
+X-BAN-SHARE: 1
+X-QQ-SSF: 0040000000000060
+X-QQ-FEAT: D4aqtcRDiqQpBpTnjIJt3/f21w9WO3enREO5ZSgO7MU=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: 6OknCajsr0V6SHUI4fdE11uCBtvd2djKoj+0O98d75A=
+X-Originating-IP: 180.171.169.129
+X-QQ-STYLE: 
+X-QQ-mid: t6gz5a-0t1729572647t2240862
+From: "=?utf-8?B?6Jme6ZmG6ZOt?=" <luming.yu@shingroup.cn>
+To: "=?utf-8?B?Q2hyaXN0b3BoZSBMZXJveQ==?=" <christophe.leroy@csgroup.eu>, "=?utf-8?B?bGludXhwcGMtZGV2?=" <linuxppc-dev@lists.ozlabs.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bXBl?=" <mpe@ellerman.id.au>, "=?utf-8?B?bnBpZ2dpbg==?=" <npiggin@gmail.com>, "=?utf-8?B?amlhbG9uZy55YW5n?=" <jialong.yang@shingroup.cn>, "=?utf-8?B?bHVtaW5nLnl1?=" <luming.yu@gmail.com>
+Subject: Re: [PATCH 1/7] powerpc/entry: convert to common and generic entry
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,80 +48,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Tue, 22 Oct 2024 12:50:47 +0800
+X-Priority: 3
+Message-ID: <tencent_381ACB160B890CC46678170E@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <88E2581B1D024E9A+20241012035621.1245-3-luming.yu@shingroup.cn>
+	<e9595d8b-d1e2-4c6a-b097-6f4f08d29866@csgroup.eu>
+In-Reply-To: <e9595d8b-d1e2-4c6a-b097-6f4f08d29866@csgroup.eu>
+X-QQ-ReplyHash: 303108142
+X-BIZMAIL-ID: 11601653849768611381
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Tue, 22 Oct 2024 12:50:48 +0800 (CST)
+Feedback-ID: t:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-0
+X-QQ-XMAILINFO: OZg1hzYlSoBDCGRAhYCo+fXUlA/Zx9NevcNO13CuAuM+kIn254STmw9G
+	/rT+wYfihb0Iq2IGzdeUVjx9jq/5k2KOruvfcqWMLHKXLq2ubPOAz9OVxtv8vohMuPKQsC3
+	uII71gfmyvJtZifTByVn4cvWzNewovRszi6Czvr3geIAeNVI2n+QyEDDCeHBJ7JC8LnzjRJ
+	olRBQ72kHrJP5y+I1zUVRd01cHk7jEmNNux6sK55xzaiW5IQRor+bZoADzTnCWE65BypxxL
+	tsmMTnYtBiDKtI5YgBRwt+Q+v9VIYt/7zLAnT5kFjgqjzFg2XIp3bZqkSX073NJq1bVWwFt
+	Mp7Nk4M41mMPSdKcRrtme5CNaTm/hHTqMTzOKAZz3LxKN7Y6VrTkjeVExNT5eE9niq6n5P1
+	hHpOIz04XGnWMuxiwa+6PQPevHnEFS0mFSdfjsZdIKpYZfc3KM8u4PAKbwxV6QG8eRiGYj9
+	Tvkw82oUsnm6R/HvElmvtGBLK4Vjp3gSf9qZ9n4dKdE6N5RjJ2ODUvbdsb0/5F6VsOQct01
+	nXkyfLQcG64YuKwPXZDYDosxwUGdiVpEL4+0KNU/JYuatYcuumzHZ8J4OxUQD3wc17ju5dz
+	rAIghbJdSxRWo/fbl/1AknbkVXIf66sdrMWaRNHyPG/91+HZhlThqzxcLRpfawL7wMix5Ny
+	C9fvykcv1epT5OX/q6nz3VF6gkFKPKQiSuQ4uHF7B9HkBT67TFgIVniqm3Q8G93rmX/q36u
+	6KvlU/zH/i/yj9jo8UEZhIpx5Oi0lWCJPtKzkY8cqGrTYYBpPwvC4e66oBrseAGeijPl93T
+	VG5mAoWIHA2FGqHST8vPlQoZEadnm9UPEqZStC3Aaftn6JCvF0ug7EWp8essE+d7ExlTsYB
+	74ytYkWVnojaPfpEsr/hNjwuP9C9nUNIhC4HXuQeFt3+Q4dXO3/2+Q==
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-RECHKSPAM: 0
+X-Spam-Status: No, score=0.0 required=5.0 tests=MSGID_FROM_MTA_HEADER,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+PkxlIDEyLzEwLzIwMjQgw6AgMDU6NTYsIEx1bWluZyBZdSBhIMOpY3JpdCA6DQo+PiBjb252
+ZXJ0IHBvd2VycGMgZW50cnkgY29kZSBpbiBzeXNjYWxsIGFuZCBmYXVsdCB0byB1c2Ugc3lz
+Y2FsbF93b3JrDQo+PiBhbmQgaXJxZW50cnlfc3RhdGUgYXMgd2VsbCBhcyBjb21tb24gY2Fs
+bHMgaW1wbGVtZW50ZWQgaW4gZ2VuZXJpYw0KPj4gZW50cnkgaW5mcmFzdHJ1Y3R1cmUuDQo+
+PiANCj4+IFNpZ25lZC1vZmYtYnk6IEx1bWluZyBZdSA8bHVtaW5nLnl1QHNoaW5ncm91cC5j
+bj4NCj4+IC0tLQ0KPj4gICBhcmNoL3Bvd2VycGMvS2NvbmZpZyAgICAgICAgICAgICAgICAg
+ICB8IDEgKw0KPj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vaHdfaXJxLmggICAgICB8
+IDUgKysrKysNCj4+ICAgYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3Byb2Nlc3Nvci5oICAg
+fCA2ICsrKysrKw0KPj4gICBhcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vc3lzY2FsbC5oICAg
+ICB8IDUgKysrKysNCj4+ICAgYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3RocmVhZF9pbmZv
+LmggfCAxICsNCj4+ICAgYXJjaC9wb3dlcnBjL2tlcm5lbC9zeXNjYWxsLmMgICAgICAgICAg
+fCA1ICsrKystDQo+PiAgIGFyY2gvcG93ZXJwYy9tbS9mYXVsdC5jICAgICAgICAgICAgICAg
+IHwgMyArKysNCj4+ICAgNyBmaWxlcyBjaGFuZ2VkLCAyNSBpbnNlcnRpb25zKCspLCAxIGRl
+bGV0aW9uKC0pDQo+PiANCj4NCj4uLi4NCj4NCj4+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2Vy
+cGMva2VybmVsL3N5c2NhbGwuYyBiL2FyY2gvcG93ZXJwYy9rZXJuZWwvc3lzY2FsbC5jDQo+
+PiBpbmRleCA3N2ZlZGIxOTBjOTMuLmUwMzM4YmQ4ZDM4MyAxMDA2NDQNCj4+IC0tLSBhL2Fy
+Y2gvcG93ZXJwYy9rZXJuZWwvc3lzY2FsbC5jDQo+PiArKysgYi9hcmNoL3Bvd2VycGMva2Vy
+bmVsL3N5c2NhbGwuYw0KPj4gQEAgLTMsNiArMyw3IEBADQo+PiAgICNpbmNsdWRlIDxsaW51
+eC9jb21wYXQuaD4NCj4+ICAgI2luY2x1ZGUgPGxpbnV4L2NvbnRleHRfdHJhY2tpbmcuaD4N
+Cj4+ICAgI2luY2x1ZGUgPGxpbnV4L3JhbmRvbWl6ZV9rc3RhY2suaD4NCj4+ICsjaW5jbHVk
+ZSA8bGludXgvZW50cnktY29tbW9uLmg+DQo+PiAgIA0KPj4gICAjaW5jbHVkZSA8YXNtL2lu
+dGVycnVwdC5oPg0KPj4gICAjaW5jbHVkZSA8YXNtL2t1cC5oPg0KPj4gQEAgLTEzMSw3ICsx
+MzIsNyBAQCBub3RyYWNlIGxvbmcgc3lzdGVtX2NhbGxfZXhjZXB0aW9uKHN0cnVjdCBwdF9y
+ZWdzICpyZWdzLCB1bnNpZ25lZCBsb25nIHIwKQ0KPj4gICAJCSAqIGFuZCB0aGUgdGVzdCBh
+Z2FpbnN0IE5SX3N5c2NhbGxzIHdpbGwgZmFpbCBhbmQgdGhlIHJldHVybg0KPj4gICAJCSAq
+IHZhbHVlIHRvIGJlIHVzZWQgaXMgaW4gcmVncy0+Z3ByWzNdLg0KPj4gICAJCSAqLw0KPj4g
+LQkJcjAgPSBkb19zeXNjYWxsX3RyYWNlX2VudGVyKHJlZ3MpOw0KPj4gKwkJcjAgPSBzeXNj
+YWxsX2VudGVyX2Zyb21fdXNlcl9tb2RlKHJlZ3MsIHIwKTsNCj4NCj5DYW4geW91IHByb3Zp
+ZGUgZGV0YWlscyBvbiBob3cgdGhpcyB3b3JrcyA/DQpJIGFzc3VtZSB0aGUgY29tbW9uIGVu
+dHJ5IHdvdWxkIHRha2Ugb3ZlciB0aCBkZXRhaWxzLg0KU28gSSBqdXN0IG1hZGUgdGhlIHN3
+aXRjaCBmcm9tIHRoZSBoaWdoIGxldmVsIGNhbGwuDQoNCkFzIHlvdSBzYWlkIGFzIHRoZSBz
+dWJ0bGUgQUJJIHJlcXVpcmVtZW50IGFib3V0IHJlZ3MtPnIzIG5lZWRzIHRvDQpiZSByZXN0
+b3JlZCwgSSdtIHdvbmRlcmluZyB3aGljaCB0ZXN0IGNhbiBjYXB0dXJlIHRoZSBsb3N0DQpB
+QkkgZmVhdHVyZS4gQXMgc2ltcGxlIEJvb3QgdGVzdCBpcyBpbnN1ZmZpY2llbnQsIHdoYXQg
+aXMgdGhlIHRlc3Qgc2V0DQp0aGF0IGNhbiBjYXB0dXJlIGl0Pw0KDQpJIHdpbGwgbG9vayBp
+bnRvIHRoZSBkZXRhaWxzIGxhdGUgdGhpcyB3ZWVrLg0KDQo+DQo+Rm9yIGluc3RhbmNlLCBk
+b19zeXNjYWxsX3RyYWNlX2VudGVyKCkgd2FzIGNhbGxpbmcgZG9fc2VjY29tcCgpLg0KPmRv
+X3NlY2NvbXAoKSBzZXRzIHJlZ3MtPnIzIHRvIC1FTk9TWVMgdGhlbiBjYWxscyBfX3NlY3Vy
+ZV9jb21wdXRpbmcoKS4NCj4NCj5Ob3cgeW91IGNhbGwgc3lzY2FsbF9lbnRlcl9mcm9tX3Vz
+ZXJfbW9kZSgpIGluc3RlYWQgd2hpY2ggY2FsbHMgDQo+c3lzY2FsbF9lbnRlcl9mcm9tX3Vz
+ZXJfbW9kZV93b3JrKCkgd2hpY2ggY2FsbHMgc3lzY2FsbF90cmFjZV9lbnRlcigpIA0KPndo
+aWNoIGNhbGxzICBfX3NlY3VyZV9jb21wdXRpbmcoKSBidXQgd2l0aG91dCBzZXRpbmcgcmVn
+cy0+cjMgdG8gLUVOT1NZUy4NCj4NCj5TbyB3aGF0IHdpbGwgYmUgcmV0dXJuZWQgYnkgdGhl
+IGJlbG93IHJldHVybiB3aGVuIA0KPnN5c2NhbGxfZW50ZXJfZnJvbV91c2VyX21vZGUgcmV0
+dXJucyAtMSA/DQo+DQo+PiAgIAkJaWYgKHVubGlrZWx5KHIwID49IE5SX3N5c2NhbGxzKSkN
+Cj4+ICAgCQkJcmV0dXJuIHJlZ3MtPmdwclszXTsNCj4+ICAgDQo+PiBAQCAtMTg0LDYgKzE4
+NSw4IEBAIG5vdHJhY2UgbG9uZyBzeXN0ZW1fY2FsbF9leGNlcHRpb24oc3RydWN0IHB0X3Jl
+Z3MgKnJlZ3MsIHVuc2lnbmVkIGxvbmcgcjApDQo+PiAgIAkgKiBTbyB0aGUgcmVzdWx0aW5n
+IDYgb3IgNyBiaXRzIG9mIGVudHJvcHkgaXMgc2VlbiBpbiBTUFs5OjRdIG9yIFNQWzk6M10u
+DQo+PiAgIAkgKi8NCj4+ICAgCWNob29zZV9yYW5kb21fa3N0YWNrX29mZnNldChtZnRiKCkp
+Ow0KPj4gKwkvKmNvbW1vbiBlbnRyeSovDQo+PiArCXN5c2NhbGxfZXhpdF90b191c2VyX21v
+ZGUocmVncyk7DQo+PiAgIA0KPj4gICAJcmV0dXJuIHJldDsNCj4+ICAgfQ==
 
-> Hi Ritesh,
->
-> "Ritesh Harjani (IBM)" <ritesh.list@gmail.com> writes:
->> copy_from_kernel_nofault() can be called when doing read of /proc/kcore.
->> /proc/kcore can have some unmapped kfence objects which when read via
->> copy_from_kernel_nofault() can cause page faults. Since *_nofault()
->> functions define their own fixup table for handling fault, use that
->> instead of asking kfence to handle such faults.
->>
->> Hence we search the exception tables for the nip which generated the
->> fault. If there is an entry then we let the fixup table handler handle the
->> page fault by returning an error from within ___do_page_fault().
->>
->> This can be easily triggered if someone tries to do dd from /proc/kcore.
->> dd if=/proc/kcore of=/dev/null bs=1M
->>
->> <some example false negatives>
->> ===============================
->> BUG: KFENCE: invalid read in copy_from_kernel_nofault+0xb0/0x1c8
->> Invalid read at 0x000000004f749d2e:
->>  copy_from_kernel_nofault+0xb0/0x1c8
->>  0xc0000000057f7950
->>  read_kcore_iter+0x41c/0x9ac
->>  proc_reg_read_iter+0xe4/0x16c
->>  vfs_read+0x2e4/0x3b0
->>  ksys_read+0x88/0x154
->>  system_call_exception+0x124/0x340
->>  system_call_common+0x160/0x2c4
->
-> I haven't been able to reproduce this. Can you give some more details on
-> the exact machine/kernel-config/setup where you saw this?
-
-w/o this patch I am able to hit this on book3s64 with both Radix and
-Hash. I believe these configs should do the job. We should be able to
-reproduce it on qemu and/or LPAR or baremetal.
-
-root-> cat .out-ppc/.config |grep -i KFENCE
-CONFIG_HAVE_ARCH_KFENCE=y
-CONFIG_KFENCE=y
-CONFIG_KFENCE_SAMPLE_INTERVAL=100
-CONFIG_KFENCE_NUM_OBJECTS=255
-# CONFIG_KFENCE_DEFERRABLE is not set
-# CONFIG_KFENCE_STATIC_KEYS is not set
-CONFIG_KFENCE_STRESS_TEST_FAULTS=0
-CONFIG_KFENCE_KUNIT_TEST=y
-
-root-> cat .out-ppc/.config |grep -i KCORE
-CONFIG_PROC_KCORE=y
-
-root-> cat .out-ppc/.config |grep -i KUNIT
-CONFIG_KFENCE_KUNIT_TEST=y
-CONFIG_KUNIT=y
-CONFIG_KUNIT_DEFAULT_ENABLED=y
-
-
-Then doing running dd like below can hit the issue. Maybe let it run for
-few mins and see?
-
-~ # dd if=/proc/kcore of=/dev/null bs=1M
-
-Otherwise running this kfence kunit test also can reproduce the same
-bug [1]. Above configs have kfence kunit config shown as well which will
-run during boot time itself.
-
-[1]: https://lore.kernel.org/linuxppc-dev/210e561f7845697a32de44b643393890f180069f.1729272697.git.ritesh.list@gmail.com/
-
-Note: This was originally reported internally in which the tester was
-doing - perf test 'Object code reading'  [2]
-[2]: https://github.com/torvalds/linux/blob/master/tools/perf/tests/code-reading.c#L737
-
-Thanks for looking into this. Let me know if this helped.
-
--ritesh
 
