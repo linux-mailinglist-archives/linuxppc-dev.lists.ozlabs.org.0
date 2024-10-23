@@ -1,59 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-2488-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2489-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B98D9AB81D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Oct 2024 23:00:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6349ABA66
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Oct 2024 02:09:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XY4MP4t92z2xHW;
-	Wed, 23 Oct 2024 08:00:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XY8YZ147tz2yFQ;
+	Wed, 23 Oct 2024 11:09:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729630833;
-	cv=none; b=Ep3M9J2x89QV6mZ7HZ8OZee/PNX1qHj0FEZ11HEBBNy+JodSEoc6ZTxkozP+XBEpkJTQxX1Yq0pZDFUSqBg9fGHICTHuT4wABOVZ7yTi4+AUO3KxRNpdeMcr5Dwp0db1ErHGVySvdmKH35E2/0Q+EZ5CeednnocnuaDYDrZLXTDy/tr5iX1OZMucH+N7ZLmiqupAZz6H7WiGX4JhsXUVPx3mw2CH/E5+fPYyiTWTO695hkRq9PsBRPzxQYzzJYaM791O3NJcCQm1JP+UcS8wl8Fe872GchVxrHZLiVOoxe/yaGom9HnCaaWA17fcvCd7civNCuu+EHHM6W1BG8msvA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729642178;
+	cv=none; b=JneUoVXRvFGpJuRhGU5ilJGHulHtWoJI7ZfMDCRYR1ZJHq35zr2P+DTXgeLdjFMM3WavBdT/gzLfSXO2LvXfes+JHl2dSeF25JwokOuDmEEzTzNsR0pgJl+GTpepa9bkuBWmbskBoAqAxADBQYMGnfMFG1oonVhshYchHSAOLg/Uu+UMOYezkVLASln/z7UPiSQ9CcW2jwok1NOrGuY3Zn4kZgktteolfxq+c/ys/ZQ2bdII7E4rIl5PLbroMWY21gaZoHok2xfvGSJF/rWqmei0P5af2bIqzGONkQuFlBEMoJHvlTnhpVhqLHPYywfsNP/jKvIPE1eUCOxAwbsN3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729630833; c=relaxed/relaxed;
-	bh=SgupZW4ZrXxlqQVYaItaC7AY4yvNs9wYDzGkWPOY29g=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=DzhhLZFz4Nvm4s79kqqCdi+3ptiUvXqsNJRrkxF/9SDPIMm/Z/FFdBGxLktbLTlK9h8Q1+vlB9V2YG42PS5zLGLnlvPLCq73cD5Api0W/xWg7k6KwAadsPOyrmWJwACql98bW6mpx2JvCr7xn703NKzuIt1Wo+OFuMzZYueArHq5Nd3t2VFysOIxZh44OSjbpZdlx7VUB9CVvu/PqRB5j+RSfZM0QNe6aCP8DnHYCILIQIL/CTZb7zMR6HwDIiAw0SlMTECgOOLwc/Th06Mcf7Ep39YKC5n3AehJRmuRarmpWnxLvcGLT8H6tfXt4efsFMYQyU+NFkFsrSzM+6pEwQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sRySlJva; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1729642178; c=relaxed/relaxed;
+	bh=Hrh9iR1AfgqzOwavxU1qbfTiS2/c/nnElWEMaxwfxxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Mf8m+ZQqAq3VxDDqGH6GPssu0S2nZTpgIbVL3RDn2IEE+lPi6g/dmkrAnjXVCpCJv78psLHkcLJSxVMUnpdKFvOkQRYvJyb+Np2JfZrCfCNUxMFHlZaFPtDYZRH52VICmk586vGDP9sv2NR/ApjQCI1F4Jc9ZWnKdlGL6BbwRpPmxAOql5Ozud9Wlgw9jKn5NxVFXchtOA0hI6QE3MwhwTPUySHq/ydsBCh+n9t0JMoJ1ctznCftg9tfoa22o5Qq3q4oUYtHZT+w8oPOMnLZAh1I9d2CRx67xD0mDUIFUYL84ZLQBQ21+rryPDBuSge7xBusjTxMYmYf3gbtJwNzDg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d8NpyZs+; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sRySlJva;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d8NpyZs+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XY4MN6k8cz2xdZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2024 08:00:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XY8YY0hfqz2xpx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Oct 2024 11:09:37 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 92B345C5CDB;
-	Tue, 22 Oct 2024 21:00:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BAFDC4CEE3;
-	Tue, 22 Oct 2024 21:00:28 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 43955A444AE;
+	Wed, 23 Oct 2024 00:09:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3034C4CEE7;
+	Wed, 23 Oct 2024 00:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729630830;
-	bh=xqtlUhw8rmrDSpNkrqtyPtQIJUIMIG4Xa/kCuAim9xs=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=sRySlJvaDIgA7CqpeVCHlCjQ9N3IDeVH64OWYdmvNY7+5xl4VEWoVhw9/MPcuQgnf
-	 CjEVJa21+IvZCM5NRpxh0eVky+wFMAVGZXkeixfxhlUvDW1I2bD9aTb2AXSGn4j2Su
-	 tGtIkgCGfsoOg8lzflkZsZ93+pv5E69x6WOT6W7KHZvdy3vopi8SEAuqkgTR2FdIg/
-	 aXPBI0WTQZ8L6vy3jDSa1XU2b1OeSx/koxQx95XBW/S/CM+VfiJMPkzYvchVKvBv0l
-	 DI2zIFB51RfszhjbrHuyL5KorFUaGmputCN/bdy+V9ohn61/BV5Ra5CEVSs7E6NxW6
-	 PLR67TCUEBhAQ==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1728368873-31379-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1728368873-31379-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 0/2] ASoC: fsl_xcvr: enable some interrupts
-Message-Id: <172963082823.164184.11756068817626809151.b4-ty@kernel.org>
-Date: Tue, 22 Oct 2024 22:00:28 +0100
+	s=k20201202; t=1729642172;
+	bh=19tEuIYfqiZ31nw60wQoKj/BrMPUXOXCbGkABPMtDio=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=d8NpyZs+nIvTORI8b9ezVmcZhx5k/19f3THU1Sz6tPdDk4bJpoc3q9iqoCQ+DczyZ
+	 AuVWeHu8DrHMUK+x3jRTWXnXfXxj9L+7D0z7NC8UdLDs7/It8qwoLcFx4RHJ6cR4F1
+	 s0Fl8VcOfNnfSTO58/4NWU6keFxoTjgES1UISVCQYkPZgckQhPa2uKs6Mu4WAzZrqY
+	 w3VvD8Xubfjk3QZH0iZdFillQA+aFfgA53Sxs/s5QpDSR9hmsTXnSG1SZ4RmhhAxCc
+	 bxDBQ5Lu5U47eKZw3oE8jvvZ65p92T0keU+oXZlHxAHzQ0tip9XComAdE/mm3LBl9P
+	 weMgJOwI2r1zA==
+From: Namhyung Kim <namhyung@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Stephane Eranian <eranian@google.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 4/5] perf/powerpc: Count dropped samples in core-book3s PMU
+Date: Tue, 22 Oct 2024 17:09:27 -0700
+Message-ID: <20241023000928.957077-5-namhyung@kernel.org>
+X-Mailer: git-send-email 2.47.0.105.g07ac214952-goog
+In-Reply-To: <20241023000928.957077-1-namhyung@kernel.org>
+References: <20241023000928.957077-1-namhyung@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,52 +80,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-9b746
-X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 08 Oct 2024 14:27:51 +0800, Shengjiu Wang wrote:
-> Enable interrupt of cmdc status update and the interrupts for
-> wrong preamble received.
-> 
-> Shengjiu Wang (2):
->   ASoC: fsl_xcvr: enable interrupt of cmdc status update
->   ASoC: fsl_xcvr: reset RX dpath after wrong preamble
-> 
-> [...]
+Due to the hardware limitation, sometimes it could sample kernel address
+while attr.exclude_kernel is set.  In that case it silently drops the
+sample.  Let's count that case in the new dropped_samples counter.
 
-Applied to
+Reviewed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+---
+ arch/powerpc/perf/core-book3s.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/2] ASoC: fsl_xcvr: enable interrupt of cmdc status update
-      commit: 06461e288abcd6d67d0a870cd25731c79ebe66ab
-[2/2] ASoC: fsl_xcvr: reset RX dpath after wrong preamble
-      commit: 1e5d0f106164d2089826c16bb521891d1d06d3ad
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 42867469752d73cf..553e288b9f113836 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2287,8 +2287,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 	 */
+ 	if (event->attr.exclude_kernel &&
+ 	    (event->attr.sample_type & PERF_SAMPLE_IP) &&
+-	    is_kernel_addr(mfspr(SPRN_SIAR)))
++	    is_kernel_addr(mfspr(SPRN_SIAR))) {
++		atomic64_inc(&event->dropped_samples);
+ 		record = 0;
++	}
+ 
+ 	/*
+ 	 * Finally record data if requested.
+-- 
+2.47.0.105.g07ac214952-goog
 
 
