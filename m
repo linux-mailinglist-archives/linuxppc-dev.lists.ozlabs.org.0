@@ -1,85 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-2555-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2556-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A1C9AF41C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 22:53:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1359AF5A0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 01:00:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZJ5s52jjz3bZs;
-	Fri, 25 Oct 2024 07:53:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZLwk6cjtz2xjv;
+	Fri, 25 Oct 2024 10:00:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::c2d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729803185;
-	cv=none; b=F62qcZ5jSGwme22y+RPQ9S6Xyp/qDww3CbrgyrCB5717xsMB0UmovLMgz4KSemFIVRk1ZBpaDWclKpPgjiKXv8xcxQIabutihtxYIhiTB2b056Od3rT91+8PQ9Kx/zQCtkzkDuU1s+ybPa3xG3bCWeMM6bd6LIIiq8bqd5YPoNBiRkreMOnPw5f4eltZl2+U47qvzIq62wpqCzMfaENsNkMIbqg9ZN47Zeh5Cmn65t4CbQwZv9oOz8dTSzezI1Er1H1RBsvZa4fylGHMLt5QBr4+j5JkQgC2CcVhN32in0QH8vmA3GHe+TTVME04mAh/ykCTjVLb+KGupf/F2F3Hgg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729810822;
+	cv=none; b=QO8bKwBlh5ReTn1x8NPxG7pBwNl7KBEbIrdF1Ocx/NKsZnl/jZyHHYB69EfB/lXQ26gueH1uRRKcbY46Vw3wwrUausTmVYrR6p9IXysNOmnFaZ4L4bUfSEaTUS7eguc4NaLZ5/7b60j6TfzoosAVr0lVh3+rOeIAEhJSc5krBvuB1vQ/6E5Y+iFm8XL1twPQ6lttnDcAhRN8Kbst9g8xcqSFmwn2F3KQU7HcvEgPBA5TYyPcyTPPVL/KvjsOQh/02MqhGHvhHNefs7WNB9GRjfuZ5avSlczHMNTSMjMpokGBevrLnHXpInvDRWdHClWt3mpGqmP3+cTr/WiJ/TOlHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729803185; c=relaxed/relaxed;
-	bh=hY+ADBkdKrw8rogh6XPTp8lQ9D2YsO/t/WvfK9oXDeM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BgxN1Cs5l8bnzL7J2x1j6mS6VVarxCxZxVCzPEkxdiDbCN0qtR66HNLokkEg1pWTyhCJ2miK0gStvndG/Rga51KLiVVYczuusWUaNY079PBG5yjlvLzbvWi377LcYx8cbkKUftFS79BdZjSJ3j/sCH6cPNQd/2S5gWeESPxOCVvt4OU283qLOucf/r5sZ4ATSOcNurz7ays8hEn6Gj9U7bmxt8xFb9pWkHDpt/p4XamVh91ohAFXTnV+cJ3MWR7UkKhGajnmf4YmaTjRocbd7nOYwLTaBPy7GD1087p/4YglDMydQ3sJVSLVNodZvdRgP70U9VZZXWdZKYlTiD/t6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ToWaQZTs; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::c2d; helo=mail-oo1-xc2d.google.com; envelope-from=rosenp@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1729810822; c=relaxed/relaxed;
+	bh=1N/YHxtexapkwEa/KzhGq9uJiSxlgwwlfK/Xn4dDvz8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ukp+k0atgp4DdcKFNxkgfWxhGNc9WUpy+kZxEL+7ezTaX5dYN8BRp+xfYSUOvrz4dwUjy2llQ+ezFasRasb90lIID7CKRjz/9FUy7iFUxBQaP5QUSKKc4Gn51SyUR/pZqyjrXT4lNRhsQrJsq9X28u6YgZMbqPzUDWNH6ornEUEVEazS0k0WK7k+WpcULy0akCHr2qzRnsS/ilyh475pauGdMdZlYuYMuxgZZ0Pck3sFzJsFYaZ7xRgUhhs0bxqntI8SLusQXZiDQG/2XLaRmuuHuqh6ufGJtaOVlxDSJjcbSvRPjZDkgomhWyFDG3xngGSuTmJQg4V+gTuegQRMyA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=4X5S3Uff; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=samitolvanen@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ToWaQZTs;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=4X5S3Uff;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c2d; helo=mail-oo1-xc2d.google.com; envelope-from=rosenp@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=samitolvanen@google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZJ5q6BvDz30Ns
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 07:53:03 +1100 (AEDT)
-Received: by mail-oo1-xc2d.google.com with SMTP id 006d021491bc7-5ebbed44918so949014eaf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 13:53:03 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZLwj2hhxz2xjd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 10:00:20 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-20ca4877690so34965ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 16:00:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729803180; x=1730407980; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hY+ADBkdKrw8rogh6XPTp8lQ9D2YsO/t/WvfK9oXDeM=;
-        b=ToWaQZTsgl2uvvPXKsb2Fn0/ETHG83z3kjUQBMhE79crUac0oWdfc0zB+VpO0/ZC7Y
-         t4PfyxgJkaW+1jQHsYllKT+OkKaVreU5X7srJWvU/0T+BQyE+/QBxCclrK3ywLmzVmLY
-         a63LbpO2ie6N3r+OALB9Fm3+jc+dDwufDFNOOsqeRWKPS+5uJzss6QFn9RNkoejYd9ch
-         3o6lukULAvZxAlAowhEqWsLlxDeO2DBuBAoBYE6xg5xrzbVYvxSVDMA3KYOOeG+zBfGz
-         69q6SnWpnuX+RUpB57IsBNnUmE07YpPjyoE/JDqt7GsKG7orP+ysaJIiWzzbOGuAO0vT
-         QWjQ==
+        d=google.com; s=20230601; t=1729810815; x=1730415615; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1N/YHxtexapkwEa/KzhGq9uJiSxlgwwlfK/Xn4dDvz8=;
+        b=4X5S3UffH7eFBrLVDqsL+4XTfR6IfbfvRETA15udi8t7l09lrI7v3SVE0VucPy6MkP
+         e+otvmr2wWp0WGzx/EVvJSnnE0ZArYV6aDN5iVHfaWyYIOglADd4+LbBLIrrTgnHeINn
+         ahbGMkeC1Gc4rUVKCJTGkke18ZehI6AC7xu7dVwGeg4ykoAdxPN4Mn7WJglpx2Tybbi1
+         NZTgi1Y/0mDPmXQwuXlOYBQeHlViMa4ipwc9hAn7IRSum73LhfQBIacFCTPq8ZuDbESr
+         CnlG06iftQ8sU2KKLO66WKR6euW8wnyMpGkg0U5jaPv+yaxg06JrFvjSH0cWmLQiax7K
+         MEsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729803180; x=1730407980;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hY+ADBkdKrw8rogh6XPTp8lQ9D2YsO/t/WvfK9oXDeM=;
-        b=GeuOL2QkzsetXiOKK69TXL4Wu86LFdL/bjD4MUdhnNRERHMc6Sa4UGljf/WpLqr38z
-         J+Vt4ewK4CLqgYWSzaf7N6WDDba6MDAviD/YtZda0igko9fe8RrxkzFqt3lyH8h5oNl1
-         M8NcYpZkVJJkjXspQg2RjnzTXDtbv7djSgNUUgPI9cJhpN+b8vYKD9LSTW6dyP2Q69O+
-         OaFPl4Z9u4RVNtxoGRv85xQg4I8zm0UZofuZQPLy8WFEuWVxb4ZdouJ6it/mb8t2/fK3
-         trBdd6ZFraHf3u09APMxdN9DXg/m5o0IhOHq6PKlqUGqYBOwTfO2R/l+NyVqlcvY7eer
-         h+Zw==
-X-Forwarded-Encrypted: i=1; AJvYcCV/t/12TsyRS3pVeDgWoaxCbNrLhPpI2dvCyV+cRWcr258mGK1bA3nginMB/5Qukv/tpl6sdL7ac3Gw5N4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzEtBBTObzJZe+N4c/Mxi93WfeRlbjsMk9Zin9hbCLABhR1xhh1
-	3ZmmaXEif+kjzFWAWCxsyy1KlS5KQfR6UrKXTKEFdeHiKUpIxrWc
-X-Google-Smtp-Source: AGHT+IHdMbp3i3HbP3R3LasrH5g+p6K06Cq3lshvlhP40J7GZunkcV9Vn+vdpgz8CCfHJO5fbN/vXA==
-X-Received: by 2002:a05:6870:470a:b0:284:ff51:58ad with SMTP id 586e51a60fabf-28ccb52d823mr7353934fac.27.1729803180165;
-        Thu, 24 Oct 2024 13:53:00 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8200:dab8::a86])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7eaeab1dc5esm9132231a12.25.2024.10.24.13.52.58
+        d=1e100.net; s=20230601; t=1729810815; x=1730415615;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1N/YHxtexapkwEa/KzhGq9uJiSxlgwwlfK/Xn4dDvz8=;
+        b=ejJsWqkDS9zTC3H/UithLkjCNZZLpCsfDy5MSVSlQG/t3ednuFqfkw5nIUrlBPAByr
+         9Pimvfo1d/2youdkHyz48DiOXMD8AWBfUjwcQYXfHqlwU3jevuNNM+CvfTwzstWLuAWI
+         HV5k+uuANrta3PMaZ6cH3BKxn4J1SEJK2VN0q5xbGdmrR8RJaGX3VqgCW9D+TDvlr/QR
+         r7FGAUaWcnbtYnTJRgE9NGE2A4iE0y5bNZlcaotgylB06F5euQFnL0gBwzjDYmHZmpuG
+         0R7oCAroFWLjxMLaFWRxyjo81UicG/SG7Cl35Gh6D2PUya260/00U+ItTiEgV8VKYDX+
+         TyNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJiGdiy4hdngdPHgZ0CpPRqwmQIyef1rQHs1MFDoKrw2O2v/oOz4w4kCwWtycwW+N5Y47YhtSE1RZirvA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyM50l/f0oa9XC0fKqsllsWuvLopXXQ9wmqtjdXVJUlfUhj8Qlf
+	piwhpx9n9xve+BV7kOFCVrGOTMtgPQMi78QuaREf64kuPhtZ7atNOpwnFTszKA==
+X-Google-Smtp-Source: AGHT+IF/Dyf8ydqbgus1FTEPKZm1RYCxf83AYTE17X2EEDE3xOS0BfMauJXXQXefEKpmi0ZHk/dmfQ==
+X-Received: by 2002:a17:902:d4cb:b0:20c:6c50:dc80 with SMTP id d9443c01a7336-2105b1ccb2amr461955ad.9.1729810815119;
+        Thu, 24 Oct 2024 16:00:15 -0700 (PDT)
+Received: from google.com (254.80.82.34.bc.googleusercontent.com. [34.82.80.254])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e8e3555c1dsm29218a91.4.2024.10.24.16.00.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 13:52:59 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Madalin Bucur <madalin.bucur@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Rosen Penev <rosenp@gmail.com>,
-	linux-kernel@vger.kernel.org (open list),
-	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE QUICC ENGINE UCC ETHERNET DRIVER)
-Subject: [PATCH net-next] net: freescale: use ethtool string helpers
-Date: Thu, 24 Oct 2024 13:52:57 -0700
-Message-ID: <20241024205257.574836-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.47.0
+        Thu, 24 Oct 2024 16:00:12 -0700 (PDT)
+Date: Thu, 24 Oct 2024 23:00:08 +0000
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v7 1/3] modules: Support extended MODVERSIONS info
+Message-ID: <20241024230008.GA1382412@google.com>
+References: <20241023-extended-modversions-v7-0-339787b43373@google.com>
+ <20241023-extended-modversions-v7-1-339787b43373@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,270 +102,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241023-extended-modversions-v7-1-339787b43373@google.com>
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The latter is the preferred way to copy ethtool strings.
+On Wed, Oct 23, 2024 at 02:31:28AM +0000, Matthew Maurer wrote:
+> Adds a new format for MODVERSIONS which stores each field in a separate
+> ELF section. This initially adds support for variable length names, but
+> could later be used to add additional fields to MODVERSIONS in a
+> backwards compatible way if needed. Any new fields will be ignored by
+> old user tooling, unlike the current format where user tooling cannot
+> tolerate adjustments to the format (for example making the name field
+> longer).
+> 
+> Since PPC munges its version records to strip leading dots, we reproduce
+> the munging for the new format. Other architectures do not appear to
+> have architecture-specific usage of this information.
+> 
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-Avoids manually incrementing the pointer. Cleans up the code quite well.
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- .../ethernet/freescale/dpaa/dpaa_ethtool.c    | 40 ++++++-------------
- .../ethernet/freescale/dpaa2/dpaa2-ethtool.c  | 15 +++----
- .../net/ethernet/freescale/dpaa2/dpaa2-mac.c  |  7 +---
- .../freescale/dpaa2/dpaa2-switch-ethtool.c    |  9 ++---
- .../ethernet/freescale/enetc/enetc_ethtool.c  | 35 +++++-----------
- .../net/ethernet/freescale/gianfar_ethtool.c  |  8 ++--
- .../net/ethernet/freescale/ucc_geth_ethtool.c | 21 +++++-----
- 7 files changed, 49 insertions(+), 86 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-index b0060cf96090..10c5fa4d23d2 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-@@ -243,38 +243,24 @@ static void dpaa_get_ethtool_stats(struct net_device *net_dev,
- static void dpaa_get_strings(struct net_device *net_dev, u32 stringset,
- 			     u8 *data)
- {
--	unsigned int i, j, num_cpus, size;
--	char string_cpu[ETH_GSTRING_LEN];
--	u8 *strings;
-+	unsigned int i, j, num_cpus;
- 
--	memset(string_cpu, 0, sizeof(string_cpu));
--	strings   = data;
--	num_cpus  = num_online_cpus();
--	size      = DPAA_STATS_GLOBAL_LEN * ETH_GSTRING_LEN;
-+	num_cpus = num_online_cpus();
- 
- 	for (i = 0; i < DPAA_STATS_PERCPU_LEN; i++) {
--		for (j = 0; j < num_cpus; j++) {
--			snprintf(string_cpu, ETH_GSTRING_LEN, "%s [CPU %d]",
--				 dpaa_stats_percpu[i], j);
--			memcpy(strings, string_cpu, ETH_GSTRING_LEN);
--			strings += ETH_GSTRING_LEN;
--		}
--		snprintf(string_cpu, ETH_GSTRING_LEN, "%s [TOTAL]",
--			 dpaa_stats_percpu[i]);
--		memcpy(strings, string_cpu, ETH_GSTRING_LEN);
--		strings += ETH_GSTRING_LEN;
--	}
--	for (j = 0; j < num_cpus; j++) {
--		snprintf(string_cpu, ETH_GSTRING_LEN,
--			 "bpool [CPU %d]", j);
--		memcpy(strings, string_cpu, ETH_GSTRING_LEN);
--		strings += ETH_GSTRING_LEN;
-+		for (j = 0; j < num_cpus; j++)
-+			ethtool_sprintf(&data, "%s [CPU %d]",
-+					dpaa_stats_percpu[i], j);
-+
-+		ethtool_sprintf(&data, "%s [TOTAL]", dpaa_stats_percpu[i]);
- 	}
--	snprintf(string_cpu, ETH_GSTRING_LEN, "bpool [TOTAL]");
--	memcpy(strings, string_cpu, ETH_GSTRING_LEN);
--	strings += ETH_GSTRING_LEN;
-+	for (i = 0; j < num_cpus; i++)
-+		ethtool_sprintf(&data, "bpool [CPU %d]", i);
-+
-+	ethtool_puts(&data, "bpool [TOTAL]");
- 
--	memcpy(strings, dpaa_stats_global, size);
-+	for (i = 0; i < DPAA_STATS_GLOBAL_LEN; i++)
-+		ethtool_puts(&data, dpaa_stats_global[i]);
- }
- 
- static int dpaa_get_hash_opts(struct net_device *dev,
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
-index 7f476519b7ad..fd05dd12f107 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
-@@ -217,20 +217,15 @@ static int dpaa2_eth_set_pauseparam(struct net_device *net_dev,
- static void dpaa2_eth_get_strings(struct net_device *netdev, u32 stringset,
- 				  u8 *data)
- {
--	u8 *p = data;
- 	int i;
- 
- 	switch (stringset) {
- 	case ETH_SS_STATS:
--		for (i = 0; i < DPAA2_ETH_NUM_STATS; i++) {
--			strscpy(p, dpaa2_ethtool_stats[i], ETH_GSTRING_LEN);
--			p += ETH_GSTRING_LEN;
--		}
--		for (i = 0; i < DPAA2_ETH_NUM_EXTRA_STATS; i++) {
--			strscpy(p, dpaa2_ethtool_extras[i], ETH_GSTRING_LEN);
--			p += ETH_GSTRING_LEN;
--		}
--		dpaa2_mac_get_strings(p);
-+		for (i = 0; i < DPAA2_ETH_NUM_STATS; i++)
-+			ethtool_puts(&data, dpaa2_ethtool_stats[i]);
-+		for (i = 0; i < DPAA2_ETH_NUM_EXTRA_STATS; i++)
-+			ethtool_puts(&data, dpaa2_ethtool_extras[i]);
-+		dpaa2_mac_get_strings(data);
- 		break;
- 	}
- }
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
-index a69bb22c37ea..892ed2f91084 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
-@@ -560,13 +560,10 @@ int dpaa2_mac_get_sset_count(void)
- 
- void dpaa2_mac_get_strings(u8 *data)
- {
--	u8 *p = data;
- 	int i;
- 
--	for (i = 0; i < DPAA2_MAC_NUM_STATS; i++) {
--		strscpy(p, dpaa2_mac_ethtool_stats[i], ETH_GSTRING_LEN);
--		p += ETH_GSTRING_LEN;
--	}
-+	for (i = 0; i < DPAA2_MAC_NUM_STATS; i++)
-+		ethtool_puts(&data, dpaa2_mac_ethtool_stats[i]);
- }
- 
- void dpaa2_mac_get_ethtool_stats(struct dpaa2_mac *mac, u64 *data)
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch-ethtool.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch-ethtool.c
-index 6bc1988be311..cdcf03c8c552 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch-ethtool.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch-ethtool.c
-@@ -170,17 +170,16 @@ dpaa2_switch_ethtool_get_sset_count(struct net_device *netdev, int sset)
- static void dpaa2_switch_ethtool_get_strings(struct net_device *netdev,
- 					     u32 stringset, u8 *data)
- {
--	u8 *p = data;
-+	const char *str;
- 	int i;
- 
- 	switch (stringset) {
- 	case ETH_SS_STATS:
- 		for (i = 0; i < DPAA2_SWITCH_NUM_COUNTERS; i++) {
--			memcpy(p, dpaa2_switch_ethtool_counters[i].name,
--			       ETH_GSTRING_LEN);
--			p += ETH_GSTRING_LEN;
-+			str = dpaa2_switch_ethtool_counters[i].name;
-+			ethtool_puts(&data, str);
- 		}
--		dpaa2_mac_get_strings(p);
-+		dpaa2_mac_get_strings(data);
- 		break;
- 	}
- }
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-index 2563eb8ac7b6..e1745b89362d 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-@@ -247,38 +247,25 @@ static int enetc_get_sset_count(struct net_device *ndev, int sset)
- static void enetc_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
- {
- 	struct enetc_ndev_priv *priv = netdev_priv(ndev);
--	u8 *p = data;
- 	int i, j;
- 
- 	switch (stringset) {
- 	case ETH_SS_STATS:
--		for (i = 0; i < ARRAY_SIZE(enetc_si_counters); i++) {
--			strscpy(p, enetc_si_counters[i].name, ETH_GSTRING_LEN);
--			p += ETH_GSTRING_LEN;
--		}
--		for (i = 0; i < priv->num_tx_rings; i++) {
--			for (j = 0; j < ARRAY_SIZE(tx_ring_stats); j++) {
--				snprintf(p, ETH_GSTRING_LEN, tx_ring_stats[j],
--					 i);
--				p += ETH_GSTRING_LEN;
--			}
--		}
--		for (i = 0; i < priv->num_rx_rings; i++) {
--			for (j = 0; j < ARRAY_SIZE(rx_ring_stats); j++) {
--				snprintf(p, ETH_GSTRING_LEN, rx_ring_stats[j],
--					 i);
--				p += ETH_GSTRING_LEN;
--			}
--		}
-+		for (i = 0; i < ARRAY_SIZE(enetc_si_counters); i++)
-+			ethtool_puts(&data, enetc_si_counters[i].name);
-+		for (i = 0; i < priv->num_tx_rings; i++)
-+			for (j = 0; j < ARRAY_SIZE(tx_ring_stats); j++)
-+				ethtool_sprintf(&data, tx_ring_stats[j], i);
-+		for (i = 0; i < priv->num_rx_rings; i++)
-+			for (j = 0; j < ARRAY_SIZE(rx_ring_stats); j++)
-+				ethtool_sprintf(&data, rx_ring_stats[j], i);
- 
- 		if (!enetc_si_is_pf(priv->si))
- 			break;
- 
--		for (i = 0; i < ARRAY_SIZE(enetc_port_counters); i++) {
--			strscpy(p, enetc_port_counters[i].name,
--				ETH_GSTRING_LEN);
--			p += ETH_GSTRING_LEN;
--		}
-+		for (i = 0; i < ARRAY_SIZE(enetc_port_counters); i++)
-+			ethtool_puts(&data, enetc_port_counters[i].name);
-+
- 		break;
- 	}
- }
-diff --git a/drivers/net/ethernet/freescale/gianfar_ethtool.c b/drivers/net/ethernet/freescale/gianfar_ethtool.c
-index a99b95c4bcfb..781d92e703cb 100644
---- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
-+++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
-@@ -115,12 +115,14 @@ static const char stat_gstrings[][ETH_GSTRING_LEN] = {
- static void gfar_gstrings(struct net_device *dev, u32 stringset, u8 * buf)
- {
- 	struct gfar_private *priv = netdev_priv(dev);
-+	int i;
- 
- 	if (priv->device_flags & FSL_GIANFAR_DEV_HAS_RMON)
--		memcpy(buf, stat_gstrings, GFAR_STATS_LEN * ETH_GSTRING_LEN);
-+		for (i = 0; i < GFAR_STATS_LEN; i++)
-+			ethtool_puts(&buf, stat_gstrings[i]);
- 	else
--		memcpy(buf, stat_gstrings,
--		       GFAR_EXTRA_STATS_LEN * ETH_GSTRING_LEN);
-+		for (i = 0; i < GFAR_EXTRA_STATS_LEN; i++)
-+			ethtool_puts(&buf, stat_gstrings[i]);
- }
- 
- /* Fill in an array of 64-bit statistics from various sources.
-diff --git a/drivers/net/ethernet/freescale/ucc_geth_ethtool.c b/drivers/net/ethernet/freescale/ucc_geth_ethtool.c
-index 601beb93d3b3..699f346faf5c 100644
---- a/drivers/net/ethernet/freescale/ucc_geth_ethtool.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth_ethtool.c
-@@ -287,20 +287,17 @@ static void uec_get_strings(struct net_device *netdev, u32 stringset, u8 *buf)
- {
- 	struct ucc_geth_private *ugeth = netdev_priv(netdev);
- 	u32 stats_mode = ugeth->ug_info->statisticsMode;
-+	int i;
- 
--	if (stats_mode & UCC_GETH_STATISTICS_GATHERING_MODE_HARDWARE) {
--		memcpy(buf, hw_stat_gstrings, UEC_HW_STATS_LEN *
--			       	ETH_GSTRING_LEN);
--		buf += UEC_HW_STATS_LEN * ETH_GSTRING_LEN;
--	}
--	if (stats_mode & UCC_GETH_STATISTICS_GATHERING_MODE_FIRMWARE_TX) {
--		memcpy(buf, tx_fw_stat_gstrings, UEC_TX_FW_STATS_LEN *
--			       	ETH_GSTRING_LEN);
--		buf += UEC_TX_FW_STATS_LEN * ETH_GSTRING_LEN;
--	}
-+	if (stats_mode & UCC_GETH_STATISTICS_GATHERING_MODE_HARDWARE)
-+		for (i = 0; i < UEC_HW_STATS_LEN; i++)
-+			ethtool_puts(&buf, hw_stat_gstrings[i]);
-+	if (stats_mode & UCC_GETH_STATISTICS_GATHERING_MODE_FIRMWARE_TX)
-+		for (i = 0; i < UEC_TX_FW_STATS_LEN; i++)
-+			ethtool_puts(&buf, tx_fw_stat_gstrings[i]);
- 	if (stats_mode & UCC_GETH_STATISTICS_GATHERING_MODE_FIRMWARE_RX)
--		memcpy(buf, rx_fw_stat_gstrings, UEC_RX_FW_STATS_LEN *
--			       	ETH_GSTRING_LEN);
-+		for (i = 0; i < UEC_RX_FW_STATS_LEN; i++)
-+			ethtool_puts(&buf, rx_fw_stat_gstrings[i]);
- }
- 
- static void uec_get_ethtool_stats(struct net_device *netdev,
--- 
-2.47.0
-
+Sami
 
