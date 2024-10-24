@@ -1,73 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-2536-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2537-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D567A9ADB19
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 06:44:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B02A9ADB3E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 07:12:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XYtcY70NWz2yMt;
-	Thu, 24 Oct 2024 15:44:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XYvDs1tsYz2yNn;
+	Thu, 24 Oct 2024 16:12:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729745085;
-	cv=none; b=cSuPdFLBnbw8bgY+eoySgUip85kQBTi2DsFBqfb+IVylheaANixhvVNIWnIl8p7i19wMwtgrtuRYqKnQ8a2OqaJDIOy7XOJxtM4wuWMCUMdxvVw6YjFLtmvD/ssOMP3EDCIdcGgAlBVnumtH4ae7AsKIEArPn5lnL/uPGz5VK7zgPzABGzmT61UfPCFYH7HeBDkxbw5QNuRcQWKYSlbzOhz5MZCg/IwohB7e9aI5iZabXa4ZaeFqiGGJzur6qCFsqkHOhngT3Q7EavwXmSjtY/hSaFtociVfOe9/s1sQUV2d5KJclSigs6tBBX/0Nb4kKxwJt8CmYiBz+2yK4CCxcw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729746765;
+	cv=none; b=YQPu4W63XyaOszjxsHp9rxxFM9fd7fK06B8gaxRwEkc4LFYQcs/bPnvu7mg6m9pURLLORh0rVj4+h5nupxLDUANlPn79Z/1CE+ful3aVL0T6nHFy3dUQLQTGu+JRaz65C6Siq33PBPmgliXu80e38YrkiTuC4irZdot+v+k/ZCrXLHs00iBjyFIT4+gHyi8+B/3TCjcDOZWWFDVO8MGkmPaxLWo86CWXc9FLV/whI3X5LbQI+9tM5+iuBEKEwNwLfdgI9wsOQftFgk/HkmKtFG4fTlMhB4k7JJike6Imt/aVnK4yLoPP8MrlQ0mWXBX2Ip0IT2kslOjFz93Tlw4JEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729745085; c=relaxed/relaxed;
-	bh=e47vuNkgUQeyDBjn/s7Wd4sH9r+wla9A5YMiPpwqSRM=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=AlX2LiMgLB+gxocYkTvFEtNMozSjAeEwH/qEvQQ0J0ksPE7sLp0A7fzvemjzZu9qvgsTtq3bwTg91wvOTSPuJSqmbTscNiwnAJMXI78Dj3NfyU42Ap7ReO2YPN9MVUAdZEnZyK1CRxM8+UHPYxeMc7Zcz0pFDZ5vVAYqU6FQcgMMr8dJqLVYaR8CffpfoO3BdaoPVo19rbnojXhl+/eOnftDRe17yXJMhKC4IFuRZ3jZ+tGCur4347MrjVNgDEjPoAP7UAWrctXGluRrWh7VPE5YPtJ5QVHoGtLbO4QfgyrpouTE8gKW83P86FfBzffjIV8wFRizEQP+0csxeJ+5NA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DPyFS/KZ; dkim-atps=neutral; spf=pass (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1729746765; c=relaxed/relaxed;
+	bh=TXFrdIm5p9Wa64yKLDT0F/rOY1g3HYH3e1sYJFUmAdM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KY49dy3xv5BoNdJL/l9mpBA/YzptLL7OVkvkquPVFmd69sCaqrK5eqT+I1nXu1kJCVppErZ9Fu1lcHoTDaTOuTFgF0FOPpiN8DWOyRLjszM6ujSuLKc9vFn9pGbe8aS9H9Jb1F/Mbudx9qUIzCHquj2g2Z4qxG8lJcJW1mw9Vyrj2iF8JyPR+aF6Jchhm4+VgwE76f6LaAZSpCMYCsr1wcu+kdGzlLW4p94FUxW8Yvl7C2PpkNjnIas7BdYD7S9StNtzmOeE8VF3z49eIVSXUSLui6ByrldbKyjfakW2VL/SJiRGfqbePqtlj6wHy7+3clpzpRLBtVmJblRriMq9Og==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JXdMcrVX; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DPyFS/KZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JXdMcrVX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XYtcV50Wwz2yF4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 15:44:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729745083; x=1761281083;
-  h=date:from:to:cc:subject:message-id;
-  bh=vAs8zQ/yI1OtiDX2MQP2VnajenVQDJPUhmdecfk7wo8=;
-  b=DPyFS/KZCbxYMBdZYXhq45LBTwCTSUetT3gQloZ9cj8tpf7Lf8W2JtcT
-   F6K80hM2GLN5H8rszVZMmHc4Qqw2IlmSgSW5WuOkeizAbzdAtTel6HLrZ
-   2goarxh9VAi6s6H6dM/hy9HV8oNaTU0cNA4FXY2PKp4vQkqqrLc0uEnT0
-   OIZzWxLHJo1zS0ac+MxP6pBMBI4W1DsIkh4SKNeFnXmTJGYhFrzGK1Qp/
-   5whpoC4cVMfxPiSZhHD5RkXGFyd1CABTm51selAoML3Wt9D5/uWxGbqFP
-   +aRlhuEkMqstwhvP0hw49yYBApKCztSSIz/IZf+BM5GnlJZa1VgP412jM
-   g==;
-X-CSE-ConnectionGUID: YsJH0aMsRq2Y0hotmAbgfA==
-X-CSE-MsgGUID: sMT1MWX5Q3aln2Ysq2J/fA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="33161992"
-X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; 
-   d="scan'208";a="33161992"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 21:44:36 -0700
-X-CSE-ConnectionGUID: CA+n4cabR2+BvxtDheklKg==
-X-CSE-MsgGUID: MD4yxpZ+SfW7LJBq3eDv3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; 
-   d="scan'208";a="85262239"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 23 Oct 2024 21:44:34 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t3pi4-000Vx8-18;
-	Thu, 24 Oct 2024 04:44:32 +0000
-Date: Thu, 24 Oct 2024 12:43:57 +0800
-From: kernel test robot <lkp@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XYvDq4Sbzz2yNJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 16:12:43 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49O0dowS011407;
+	Thu, 24 Oct 2024 05:12:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=TXFrdIm5p9Wa64yKLDT0F/rOY1g3HY
+	H3e1sYJFUmAdM=; b=JXdMcrVXFhZDRxOcZMJTimxjatGyOBHlC2IZdccze1GpLe
+	q5+cawG8r0oEVkTiUJgf9hPCFB5LgT/L1XdwNJEYm127C3O5wbVPLqbhwkd6zT6n
+	UE9LUeDJt9Ki4ILfDX5/viaJvvZsHySnzkL3mZ8ker/Q4sZpUAiFN6Sz/ClF4rF8
+	Hk5mbiJoE9ujzappVUgtgKO6R+aRMAPQBaxlLrMAZQKKuCNrywBhuTnb32tbYOlT
+	weq4a3DwnASDr3e0kx4UZTqhdo14O+eMLtyLa0UX42DOFvQ5T4rFas0VCjC/DgIN
+	3zZG/dbmaZBKGwp/kqOtc9TpQnq9bk6CuHFq4aWQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42fbw40srm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 05:12:24 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49O5CNXi027273;
+	Thu, 24 Oct 2024 05:12:23 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42fbw40srh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 05:12:23 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49O2x3AI001557;
+	Thu, 24 Oct 2024 05:12:22 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42emk9ep1m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 05:12:22 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49O5CJpg53215552
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Oct 2024 05:12:19 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 373C42004B;
+	Thu, 24 Oct 2024 05:12:19 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5D9EE2004D;
+	Thu, 24 Oct 2024 05:12:17 +0000 (GMT)
+Received: from li-e1dea04c-3555-11b2-a85c-f57333552245.ibm.com (unknown [9.109.206.223])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 24 Oct 2024 05:12:17 +0000 (GMT)
+Date: Thu, 24 Oct 2024 10:42:12 +0530
+From: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:next-test] BUILD SUCCESS
- bee08a9e6ab03caf14481d97b35a258400ffab8f
-Message-ID: <202410241249.qgfChKuH-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
+        maddy@linux.ibm.com, peterx@redhat.com, groug@kaod.org,
+        sshegde@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/xmon: symbol lookup length fixed
+Message-ID: <nxdkjwqtd7s3fcxebwod6lrfu7rngrj7fa4kk433hgypha66w5@6ahbuz7o2qmu>
+References: <20241023212225.1306609-2-mchauras@linux.ibm.com>
+ <878que2u2i.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,119 +92,85 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <878que2u2i.fsf@mail.lhotse>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: S4k4vbJKJ1uQiIHCG4BnOcFlWjM9nE9x
+X-Proofpoint-GUID: orM-ET8bwJOf1MPkLNUECZ6RZVGrJ22t
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ bulkscore=0 suspectscore=0 spamscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 clxscore=1015 lowpriorityscore=0 malwarescore=0
+ mlxlogscore=931 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410240034
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: bee08a9e6ab03caf14481d97b35a258400ffab8f  powerpc: Adjust adding stack protector flags to KBUILD_CLAGS for clang
+On Thu, Oct 24, 2024 at 12:00:53PM +1100, Michael Ellerman wrote:
+> Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com> writes:
+> > Currently xmon cannot lookup symbol beyond 64 characters in some cases.
+> 
+> Can you mention which commands? It looks like it's "ls" and "lp".
+Sure.
+> 
+> > Fix this by using KSYM_NAME_LEN instead of fixed 64 characters.
+> >
+> > Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+> > ---
+> >  arch/powerpc/xmon/xmon.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+> > index e6cddbb2305f..22b8b5cc4df0 100644
+> > --- a/arch/powerpc/xmon/xmon.c
+> > +++ b/arch/powerpc/xmon/xmon.c
+> > @@ -3662,7 +3662,7 @@ symbol_lookup(void)
+> >  	int type = inchar();
+> >  	unsigned long addr, cpu;
+> >  	void __percpu *ptr = NULL;
+> > -	static char tmp[64];
+> > +	static char tmp[KSYM_NAME_LEN];
+>   
+> I think you could use the existing tmpstr buffer.
+> 
+> It is global so it's a little hard to track down all the users, but I
+> think it's only used briefly in get_function_bounds(),
+> xmon_print_symbol() and scanhex(). ie. none of the uses persist across
+> function calls.
+> 
+> We don't want to have two 512 byte static arrays lying around if we can
+> get by with one.
+> 
+> cheers
+Sure.
 
-elapsed time: 1095m
-
-configs tested: 98
-configs skipped: 1
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-13.3.0
-alpha                             allnoconfig    gcc-14.1.0
-alpha                            allyesconfig    clang-20
-arc                              allmodconfig    clang-20
-arc                               allnoconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-14.1.0
-arc                              allyesconfig    clang-20
-arc                    vdk_hs38_smp_defconfig    gcc-14.1.0
-arm                              allmodconfig    clang-20
-arm                               allnoconfig    clang-20
-arm                               allnoconfig    gcc-14.1.0
-arm                              allyesconfig    clang-20
-arm                        spear3xx_defconfig    gcc-14.1.0
-arm                           stm32_defconfig    gcc-14.1.0
-arm64                            allmodconfig    clang-20
-arm64                             allnoconfig    gcc-14.1.0
-csky                             alldefconfig    gcc-14.1.0
-csky                              allnoconfig    gcc-14.1.0
-csky                                defconfig    gcc-14.1.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    clang-20
-hexagon                           allnoconfig    gcc-14.1.0
-hexagon                          allyesconfig    clang-20
-i386                             allmodconfig    clang-18
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    clang-18
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    clang-18
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20241024    clang-18
-i386        buildonly-randconfig-002-20241024    clang-18
-i386        buildonly-randconfig-003-20241024    clang-18
-i386        buildonly-randconfig-004-20241024    clang-18
-i386        buildonly-randconfig-005-20241024    clang-18
-i386        buildonly-randconfig-006-20241024    clang-18
-i386                                defconfig    clang-18
-i386                  randconfig-001-20241024    clang-18
-i386                  randconfig-002-20241024    clang-18
-i386                  randconfig-003-20241024    clang-18
-i386                  randconfig-004-20241024    clang-18
-i386                  randconfig-005-20241024    clang-18
-i386                  randconfig-006-20241024    clang-18
-i386                  randconfig-011-20241024    clang-18
-i386                  randconfig-012-20241024    clang-18
-i386                  randconfig-013-20241024    clang-18
-i386                  randconfig-014-20241024    clang-18
-i386                  randconfig-015-20241024    clang-18
-i386                  randconfig-016-20241024    clang-18
-loongarch                        allmodconfig    gcc-14.1.0
-loongarch                         allnoconfig    gcc-14.1.0
-m68k                             allmodconfig    gcc-14.1.0
-m68k                              allnoconfig    gcc-14.1.0
-m68k                             allyesconfig    gcc-14.1.0
-m68k                        m5272c3_defconfig    gcc-14.1.0
-m68k                       m5275evb_defconfig    gcc-14.1.0
-m68k                           virt_defconfig    gcc-14.1.0
-microblaze                       allmodconfig    gcc-14.1.0
-microblaze                        allnoconfig    gcc-14.1.0
-microblaze                       allyesconfig    gcc-14.1.0
-mips                              allnoconfig    gcc-14.1.0
-nios2                             allnoconfig    gcc-14.1.0
-openrisc                          allnoconfig    clang-20
-openrisc                         allyesconfig    gcc-14.1.0
-parisc                           allmodconfig    gcc-14.1.0
-parisc                            allnoconfig    clang-20
-parisc                           allyesconfig    gcc-14.1.0
-powerpc                          allmodconfig    gcc-14.1.0
-powerpc                           allnoconfig    clang-20
-powerpc                          allyesconfig    gcc-14.1.0
-powerpc                      mgcoge_defconfig    gcc-14.1.0
-powerpc               mpc834x_itxgp_defconfig    gcc-14.1.0
-riscv                            allmodconfig    gcc-14.1.0
-riscv                             allnoconfig    clang-20
-riscv                            allyesconfig    gcc-14.1.0
-s390                             allmodconfig    gcc-14.1.0
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.1.0
-sh                               allmodconfig    gcc-14.1.0
-sh                                allnoconfig    gcc-14.1.0
-sh                               allyesconfig    gcc-14.1.0
-sh                ecovec24-romimage_defconfig    gcc-14.1.0
-sh                        edosk7760_defconfig    gcc-14.1.0
-sh                           se7712_defconfig    gcc-14.1.0
-sh                           se7751_defconfig    gcc-14.1.0
-sh                   sh7724_generic_defconfig    gcc-14.1.0
-sparc                            allmodconfig    gcc-14.1.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-20
-um                               allyesconfig    clang-20
-x86_64                            allnoconfig    clang-18
-x86_64                           allyesconfig    clang-18
-x86_64                              defconfig    clang-18
-x86_64                              defconfig    gcc-11
-x86_64                                  kexec    clang-18
-x86_64                                  kexec    gcc-12
-x86_64                               rhel-8.3    gcc-12
-xtensa                            allnoconfig    gcc-14.1.0
-xtensa                  cadence_csp_defconfig    gcc-14.1.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Will send out V2.
+> >  	switch (type) {
+> >  	case 'a':
+> > @@ -3671,7 +3671,7 @@ symbol_lookup(void)
+> >  		termch = 0;
+> >  		break;
+> >  	case 's':
+> > -		getstring(tmp, 64);
+> > +		getstring(tmp, KSYM_NAME_LEN);
+> >  		if (setjmp(bus_error_jmp) == 0) {
+> >  			catch_memory_errors = 1;
+> >  			sync();
+> > @@ -3686,7 +3686,7 @@ symbol_lookup(void)
+> >  		termch = 0;
+> >  		break;
+> >  	case 'p':
+> > -		getstring(tmp, 64);
+> > +		getstring(tmp, KSYM_NAME_LEN);
+> >  		if (setjmp(bus_error_jmp) == 0) {
+> >  			catch_memory_errors = 1;
+> >  			sync();
+> > -- 
+> > 2.47.0
 
