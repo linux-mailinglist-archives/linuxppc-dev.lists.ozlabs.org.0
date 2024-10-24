@@ -1,83 +1,102 @@
-Return-Path: <linuxppc-dev+bounces-2539-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2540-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C719ADE3C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 09:53:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F679ADEC7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 10:17:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XYyp551Hsz2yNJ;
-	Thu, 24 Oct 2024 18:53:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XYzL75drwz2xCC;
+	Thu, 24 Oct 2024 19:17:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2407::62e" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729756397;
-	cv=pass; b=gaOeLfttafp4wO2msmj0fmtfsefrQvIHUL+wxHapd7Enzrw35JMzNSy2w2TVwASwXdvDFHwbL6C8BXzy3PW2LguCRL/zy1VWhMUmKyckcF9prrBhdOv3kOM5ouNMNV+YklhHxTSgX9n4KxjKOkD36M7WUrjCjMyMVQmv88tVKnBNVM3PoCJ8RFDBr4r9vidO8qlPqsKolXGts4K2s8A2YW+eaDShBjx75KV+vEOmzV3FHTcKtNdlMX5AGlvQVghuOFZjRFeXwTUIvn+brCima+LnsqGfu4Pzuf28p68XXkFyTHvdI4fU4E2xhfKzSQe/tbaD6seluT/ldKVNgHu5UQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729756397; c=relaxed/relaxed;
-	bh=0s1qBagrf6SdFe4M1Fl25yO+qDQiiBIPtuBRBTp9Sis=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 Content-Type:MIME-Version; b=QdREkqP5jo6/NHgi2kudNFJtOLDdisEzd3raqdmXRRWrXZmyPRqqGyvEJcyq7dfOBLCB0ztjA1Av6QN5bqQlxTyABKhiLhMCAnD0PIFAT2Kml0s2+vD/G+iI8GphNS56UOYKRx9uKn0oi1vj4WqI0KFA4kF64SEoRYG/kkPvyxBi3NLFjiKSU4w4wjubojT+YwYajki5/80NV2NagbUCFNNGRAWvD6yIL/BORPwtB3IFSIYpC0ZXwMZ8LN2HDbeZX2x4mYb39Mz7kMbpUMkHL3Rs3mcx/1igsxUOHkfufHNcSFYoD1PAyud90tgEe3RfmPMkjbBUKeQRojqxtSQygQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=qa1LKxnO; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2407::62e; helo=nam02-bn1-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729757855;
+	cv=none; b=Un1mPVQfboSpI3eiKHyaVi/WE55ZwDfePP657hPfk2X71R5MqnBRGLUO+5wVh4JrCVvksYL5sdbcl/JvXAixQxEsWTdm6N3v+8EIhSGrXUEqJyqn4uBWDSaXHIOx5TkAmopLqvtn0y8/OA1GGS02ggkRnzXfu2h8XCIPoH5I8o4Xur5LcI75cKokpv0CINnqrfy/CbGm3tExdaFOCmT2IR5zVCIAEBHUcK5UuPHwPcdpWo+pB+ji+TwQTRqPUkjvMcwu65dAuL4q++8f3O5H8pWB7chLqW2a+fIURabeSlz+N3xJTjWb9moolPdx5G9izoJLgLnJirVw8DPxnRbHdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1729757855; c=relaxed/relaxed;
+	bh=g3K4ef/KmpkfeKFv5ppF+rs6b1B8g+A5uc3pZ2O6WU0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=akAbjmCO1tW9or2Ag3iCEvbkivCZr3bKxgu+38eVpHrcBrO9i35vRJUabMP38dmcYPK3fcsIbN2viVdFrRYbE6g9TqIbrU03afdCkL1xUSAm87ncPXwnzxB6CyFSFkxg/V66bsGy0xzbt3FKdcv+MBvU9mIn96SagzPgAa+JmUPFi/pdTcVfu3Hnc54EUbGieAJHmjDMyCTMnnsJtUPah0ZUAAWFWGFuWeABuipMHzK/Dp7EdMrr/H5kVb+pWrVtpyN2Blj5VoHDXOM0A/WT5Jfi9u6niizfeEVOZYyX1XHNn9tVHiTp2a+trnDqPbXp1G4TWusftD46oH64HgkYSA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kUYTT8Tx; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=qa1LKxnO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kUYTT8Tx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2407::62e; helo=nam02-bn1-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2062e.outbound.protection.outlook.com [IPv6:2a01:111:f403:2407::62e])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XYyp372Mzz2yF4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 18:53:14 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oM6Agh0DGGbkbw0DOVBTrYeRCeLwVm8jmwNSdtx3zVR12QNKTUvg8n/J9TCZToa8Mz/d3peXVxofxhXaNG3A9y5719p6vasemHnBLNXBvkmOJTCWSujGY1wVlUKiv6xIILXx/KU11+6Fjq7S7tZlE1tE0Y+zDyQTOH4ClOyBHCKcZEilwO1MQJl7Yp+pRWP7TAF/i4XFTZMBCE2SdHc6MWyl9nGAofMN8Dkyzl2RTdllHHLJdOwThbCCPY4JLYLvcYnuKSosNCzlvU7mzaADACj/vMrbZGePZ9d2w3B5BqHLSFC2UGGW11alnYWqzQoEdBTb8vULWemgnnsPiSx19g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0s1qBagrf6SdFe4M1Fl25yO+qDQiiBIPtuBRBTp9Sis=;
- b=NVZVtkNt56143fNmspFsHo5w6QA2IoQWLqBV5mObbMnXnPb1f5gBltc7mL1OBpzO8KOPVRgdbGya+6meN45jwsMA5hhOIkhY6wywPyU8mGmlFgTphPjXFjkoVHjpPqu3M0yw0V1vme+eFfd3Ou8ksP4Q55tE6iK3fqbqpIF1NgVip1Ee1NO+HVKB2GwjfTKFGuwSUnUWGwwmY7HavrN7ulodVAK9YMXjdYl3N4BUH68rDLjN8VASy/hB3ozdaY5M5aFi29r1W+duvOKTWkFrj+QzBk4Bas2e8Rb0gihRr+MD2wbcU+q1kLwivYsJCQRzTwJyOysTmVoROHD8UnNtvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0s1qBagrf6SdFe4M1Fl25yO+qDQiiBIPtuBRBTp9Sis=;
- b=qa1LKxnO9JsPBIbLEOaTym7w9IDIzel8nJnMi5FvcFdfNB8DqbhEJmVqjthT29Vw+NUXXsyT9o2M95XAJOB9kE8u89v8CHkBVdjg+5JYPibv6kXwbF0UVRvkd/ErRw2VqeLkfUBmHhr56ZW9tzvaLIRkjuykwcYOp3EKxvjTOmfaOffuF84TKjuaP8FXCzfxo9ypjU+2ocBppTWxKQ6InnAqSVnjff+bAuKfiFNmbC+uhVw5iLUV7bZTOg8ubH0NYtHLfhCsAYlxMDfr3hoXrSV69DN6smn27zOzLZVgHcoXL/0qqJqWB011I8O/0djz33pNPZsJCHFK9Qy9aJt1EQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- CH3PR12MB9431.namprd12.prod.outlook.com (2603:10b6:610:1c1::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.16; Thu, 24 Oct 2024 07:52:49 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%3]) with mapi id 15.20.8069.027; Thu, 24 Oct 2024
- 07:52:49 +0000
-References: <cover.9f0e45d52f5cff58807831b6b867084d0b14b61c.1725941415.git-series.apopple@nvidia.com>
- <9f4ef8eaba4c80230904da893018ce615b5c24b2.1725941415.git-series.apopple@nvidia.com>
- <66f665d084aab_964f22948c@dwillia2-xfh.jf.intel.com.notmuch>
-User-agent: mu4e 1.10.8; emacs 29.4
-From: Alistair Popple <apopple@nvidia.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-mm@kvack.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
- logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca,
- catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
- npiggin@gmail.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
- willy@infradead.org, djwong@kernel.org, tytso@mit.edu,
- linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
- david@fromorbit.com
-Subject: Re: [PATCH 10/12] fs/dax: Properly refcount fs dax pages
-Date: Thu, 24 Oct 2024 18:52:23 +1100
-In-reply-to: <66f665d084aab_964f22948c@dwillia2-xfh.jf.intel.com.notmuch>
-Message-ID: <871q06c4z7.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: SY5PR01CA0109.ausprd01.prod.outlook.com
- (2603:10c6:10:246::17) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XYzL62Szdz2x9T
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 19:17:34 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5129A5C53EF;
+	Thu, 24 Oct 2024 08:17:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612D5C4CEC7;
+	Thu, 24 Oct 2024 08:16:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729757849;
+	bh=Ox/ZYsBrrmbPK3A2QSUcQ8QfXoa69FGJYXDNNRcdBnE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kUYTT8Tx/x5v0ueXFlaIbTgM/tC1LFzcQH/Bk/9E/G27ofyIbDJ7VnB94NYJst0cv
+	 rwM3dJS8U0ddWOUUXyYJ5U2DbjwqikH39DsU8Z9vNeIPIaGV5iltmAX+1Y07CtyHuu
+	 qjH8xAIYsTm3k2jYsPE3Yg78rgh4kjznfSO7VPR6GqKUwnNvv6GGqa5UsKhK6x1lWv
+	 w5QasDDvCUMmBgmW/lX8F5rn9hH0iBupLlusSquog8hp4ocLfovmnzNHmy5eiFqmmK
+	 d1E2Of3Az/DoYE4MNq3gGFDCWEofW+6fRLAOpgssfQgrtruzoRtxJno9OxgV2pJlkI
+	 Cl6tQ0r75+5yg==
+Date: Thu, 24 Oct 2024 11:13:11 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v6 6/8] x86/module: prepare module loading for ROX
+ allocations of text
+Message-ID: <ZxoBlwkh528r-vef@kernel.org>
+References: <20241016122424.1655560-1-rppt@kernel.org>
+ <20241016122424.1655560-7-rppt@kernel.org>
+ <20241021221519.GA3567210@thelio-3990X>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,368 +109,132 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CH3PR12MB9431:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79288846-09d7-4f76-bb08-08dcf400dae3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?s41AXCno/zWEc8P4VEDDImdFImGKpTlZthretlMmI8AYfg9E7Mnf8tPdrsvp?=
- =?us-ascii?Q?2Ap2TArqSt5bKrud1aikydCZc+fnKM9CPJUG6HNGGA1U86POO7ZC0WzqWqkl?=
- =?us-ascii?Q?rLQaRXGUeCyo4jMmi0Fj4RqVFcfGkctEav0Bjd4TlA+g1Y4E1HcopKMR1GMm?=
- =?us-ascii?Q?9tyW2leQK2AxzvAQ/G+2lIUFXE/FNaqaap3W3y/CpR7Z82RJwbEnwL2DYSoe?=
- =?us-ascii?Q?JEV+4ikE+Tgxijl5FNss2ba3+oxtYUAhBE0fVixH+syWRqtXzjiMPZNQeP/W?=
- =?us-ascii?Q?LGy5ctd3oZBkzoFWLFFgdDlbBz+CqaYkFefJIhqGg0C5kCvx0kRdjHuYVbpW?=
- =?us-ascii?Q?HUCIAY6DR/PSpM1z4EiSBKbmTo1tD13FSyi0WaZB7OQERnOFSo/8DKfYTkUk?=
- =?us-ascii?Q?A9zv+Nq0avuU7meaEy/nsfQ9NnNKz2yyXRPWEtHtjgtAUlntbQU07m+NeC2V?=
- =?us-ascii?Q?qpi7L9p0+BDj0xlKVRgH44hpOPyUGdCBdMQ4XKBJc9seUq5YJwBDUiyG8JEj?=
- =?us-ascii?Q?8owvj6wfGpxyJHej6ZARmBELD5dzPv/uwoL/+i1QCXapnN3yM3ptjSw/ZThy?=
- =?us-ascii?Q?ceNjmN+etrZjR/AahNBQpihSp9jsq6gQYMlJHUxK2axC3j45Ps+SlaQ8IeEB?=
- =?us-ascii?Q?RreHQz0bYq3L6BQEx3KsZe6zJN0cc8ustXRo7/fQpgES1NnRA+e5KjxnvAOO?=
- =?us-ascii?Q?guJxrcIC7+7MKjiB57Llpk4jgQORS3qoAB+1VuqBM4uSECZSqyAZiWz+MkUc?=
- =?us-ascii?Q?2S+y6mXekPYpkOREAP4T4BVtWrcnpvy4MXLlIri/v3hdw7au4gJd3mszJXrb?=
- =?us-ascii?Q?6yUt13Gck6QDFWwXyHUvYL3eu3oD9maFID5fk87S0g2KIey8kvnYRPJzkwqw?=
- =?us-ascii?Q?zY0ltgMi6qV0z+QMSFEJW8uDGQBn0xmeS95Ok2M2gHBH+pSW+j5rzXqPTzcH?=
- =?us-ascii?Q?6ekuIF7dxQ2eUmLo0BlvhF1/zFPVCs+mtpsEyMZDsgr3LmcW1xEIEEupuD4i?=
- =?us-ascii?Q?LTW2v7ImmSWjkvz/XxzIhFYOFkTaB/8gt2/NFFrJHQh/WSxVUSfb8U7FXQjq?=
- =?us-ascii?Q?WNrdXOUCyh6oxvVyQxc5QCQKbNUvpjJ+oVIZt/4DrAJxeST+RZ+se4shVQFm?=
- =?us-ascii?Q?xlw9iOtt9xAkiCAWqj3nUNjfnYzg7ZEjpsn/gVKgUJ5UalpwERkHib8PXQSI?=
- =?us-ascii?Q?QbfHRlX3iPvvt1wu8H71aPvsC4kaibXXdo8ZWK5TUdV5BC67Nq5XSkp+3q1w?=
- =?us-ascii?Q?mUqI8x9ULPq2HJmCRk4SDzC7UbQOCfFQ3Iaz0y0taMMMaPVvduiZw8tzFpBh?=
- =?us-ascii?Q?jEqvS/W2u1Fnhp3LsLZW23fU?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bI4z6hSK+kmLTFYbqBVE/3XTChMcYLBxFbCkDiVaD8bRwsDLRoH1CDro84Z/?=
- =?us-ascii?Q?VqTzkHEhs3znQHOyvz8M1cszMT/rva8A144x9EKpHf6BquvupIBoFqk8ifx/?=
- =?us-ascii?Q?XRDMeO2c03XJHi436FDdwwFxe8mOZZbV/LY2fwnfLv9pi+e1S8+tCUGIduup?=
- =?us-ascii?Q?YUpzbpby9KQQkmV4oE/AwrcVOLYD1wSme/6urfB6xSaOAPsk742/lJGXXNrB?=
- =?us-ascii?Q?1sNO7LTWyYriYwzdpQlRWdtmy5YPQYb7NBRudOqR73z1cZ30KA0bhqpA7X8b?=
- =?us-ascii?Q?CCPlNsLd1qxrvDNBDBktbJaY+Jx2alfm2whfUOgG7KRe877oszOb9q+ymm4T?=
- =?us-ascii?Q?kYMhyGk1EzF/67v4ytP4FY4u9+Y6/5qmAwi/K+ax1JH4WM3pVFXb2ec6/1mB?=
- =?us-ascii?Q?oXakCZGitL4tx9rRyK+3Gm+gartfI9KtdbBTeC07JIuB4tEUTzagvvFP9BRY?=
- =?us-ascii?Q?6YSZ3ACl3iUnSyBOzmBBxrzCkSC7MDVuyvRfwunvNNWR1l1OdUBBY+qoYxH8?=
- =?us-ascii?Q?ycLUs+gqMoAReZj04vITkIvSoP2q9LwM5HMdT06XRO2GorvAOQhpy4Cv4HI7?=
- =?us-ascii?Q?khvctqZXfJvRQS1YvJmTjNXHMkKxebuZDK5PpvOLzlUW79o+uJOtLNsMwDXU?=
- =?us-ascii?Q?ryO6RMLupxRbboqlkpw5q+g30ZO622hYeR0a89OlhpKhkmqI5mUOe0VKGn5p?=
- =?us-ascii?Q?/zIvksHXe8IJm+gIyWMIGrFKbgC/dl8xSZdkRuCWJJK+00YMzB3HPjhQPHTy?=
- =?us-ascii?Q?QLxqjN5/eIjF6BkU4gpCXO9LbiJCXiIaKkPodBHLYQ0e/+Uk2DDO3W+4jPgJ?=
- =?us-ascii?Q?46JyluJke1krQa5DA6+thBRWyetP1ImkmqXye7RQ/6mSBWHIm1w6g5+rxeJD?=
- =?us-ascii?Q?cuh7z/a8XGXW/fn+5eFv6cOgWru8ElAGg06votbVxwlfJwHEK7i2CilRK1bL?=
- =?us-ascii?Q?LEaSNw8iuAoJc0V3YpsK73aCTbeSL+nYGzqFMJPRdf5f9NHIVaMVVdIREuK1?=
- =?us-ascii?Q?bZyaMgbfOojAPUDlpVN3dTGPf97vMwjQDWH2AGKRT/2Cfrrx5CKO4Y/RNkre?=
- =?us-ascii?Q?WlsxOIhH9XHaSgSVQkLRI0wUoBnvBkU7N2E4uE9d/TpALqxbPMAOC0cRXIIJ?=
- =?us-ascii?Q?xsSJ6E0j4Bx+yA0i5XBKhVTbGvxLbruL7S22M2sSm8HMSOT6dWc6Up0kG3x1?=
- =?us-ascii?Q?gUD+MrAT9Ru1lMr3Ov4ZFk5kpDwJbOy3xesNXYUDtudiQvbS/bhrXib2UjW+?=
- =?us-ascii?Q?hFKpJUwCTWNE2bh+h+yah8FXwdMzU1D1AR7ksDOzF0Z0xRTmEV7x4nnulghJ?=
- =?us-ascii?Q?Vy6vSHlovmtGI0B3Juf+2BbUIRASdjwvFJZZVnGIhcSNlZLRAKWFn5iQqr2M?=
- =?us-ascii?Q?1GIU4aG0xygNsWzIJQgMXRPedOLJHN+ORz1R6HX0+FdfKL2aJx7QMm75qZwc?=
- =?us-ascii?Q?lGJ802gCeDedABFBEiiZI79xyF+KvgVjGtfVChEWUxxUEBmYruonwKTV6XWw?=
- =?us-ascii?Q?VKq4PXaAINx4OAeVguaSO/ZwU5k7zTdT2MVgWyJVB6xLx71IMETDK3823QxZ?=
- =?us-ascii?Q?u5Rm2G44dVy4qkZUe1HWWCC0mvxg5b80pyJNumth?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79288846-09d7-4f76-bb08-08dcf400dae3
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 07:52:49.2827
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 96GJJa4QqIFQ4AjrmDWlWqvdaS9iRDvuU2sOoDmqCGz7lvUc4tZORi2Oi82LsjpOb4sFR3T6F2qtoiDdlE6JNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9431
-X-Spam-Status: No, score=-0.3 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241021221519.GA3567210@thelio-3990X>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hi Nathan,
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> Alistair Popple wrote:
-
-[...]
-
->> @@ -318,85 +323,58 @@ static unsigned long dax_end_pfn(void *entry)
->>   */
->>  #define for_each_mapped_pfn(entry, pfn) \
->>  	for (pfn = dax_to_pfn(entry); \
->> -			pfn < dax_end_pfn(entry); pfn++)
->> +		pfn < dax_end_pfn(entry); pfn++)
->>  
->> -static inline bool dax_page_is_shared(struct page *page)
->> +static void dax_device_folio_init(struct folio *folio, int order)
->>  {
->> -	return page->mapping == PAGE_MAPPING_DAX_SHARED;
->> -}
->> +	int orig_order = folio_order(folio);
->> +	int i;
->>  
->> -/*
->> - * Set the page->mapping with PAGE_MAPPING_DAX_SHARED flag, increase the
->> - * refcount.
->> - */
->> -static inline void dax_page_share_get(struct page *page)
->> -{
->> -	if (page->mapping != PAGE_MAPPING_DAX_SHARED) {
->> -		/*
->> -		 * Reset the index if the page was already mapped
->> -		 * regularly before.
->> -		 */
->> -		if (page->mapping)
->> -			page->share = 1;
->> -		page->mapping = PAGE_MAPPING_DAX_SHARED;
->> -	}
->> -	page->share++;
->> -}
->> +	if (orig_order != order) {
->> +		struct dev_pagemap *pgmap = page_dev_pagemap(&folio->page);
+On Mon, Oct 21, 2024 at 03:15:19PM -0700, Nathan Chancellor wrote:
+> Hi Mike,
+> 
+> On Wed, Oct 16, 2024 at 03:24:22PM +0300, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > When module text memory will be allocated with ROX permissions, the
+> > memory at the actual address where the module will live will contain
+> > invalid instructions and there will be a writable copy that contains the
+> > actual module code.
+> > 
+> > Update relocations and alternatives patching to deal with it.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+> Sorry that you have to hear from me again :) It seems that module
+> loading is still broken with this version of the patch, which is
+> something that I missed in my earlier testing since I only test a
+> monolithic kernel with my regular virtual machine testing. If I build
+> and install the kernel and modules in the VM via a distribution package,
+> I get the following splat at boot:
 >
-> Was there a discussion I missed about why the conversion to typical
-> folios allows the page->share accounting to be dropped.
-
-The problem with keeping it is we now treat DAX pages as "normal"
-pages according to vm_normal_page(). As such we use the normal paths
-for unmapping pages.
-
-Specifically page->share accounting relies on PAGE_MAPPING_DAX_SHARED
-aka PAGE_MAPPING_ANON which causes folio_test_anon(), PageAnon(),
-etc. to return true leading to all sorts of issues in at least the
-unmap paths.
-
-There hasn't been a previous discussion on this, but given this is
-only used to print warnings it seemed easier to get rid of it. I
-probably should have called that out more clearly in the commit
-message though.
-
-> I assume this is because the page->mapping validation was dropped, which
-> I think might be useful to keep at least for one development cycle to
-> make sure this conversion is not triggering any of the old warnings.
->
-> Otherwise, the ->share field of 'struct page' can also be cleaned up.
-
-Yes, we should also clean up the ->share field, unless you have an
-alternate suggestion to solve the above issue.
-
->> -static inline unsigned long dax_page_share_put(struct page *page)
->> -{
->> -	return --page->share;
->> -}
->> +		for (i = 0; i < (1UL << orig_order); i++) {
->> +			struct page *page = folio_page(folio, i);
->>  
->> -/*
->> - * When it is called in dax_insert_entry(), the shared flag will indicate that
->> - * whether this entry is shared by multiple files.  If so, set the page->mapping
->> - * PAGE_MAPPING_DAX_SHARED, and use page->share as refcount.
->> - */
->> -static void dax_associate_entry(void *entry, struct address_space *mapping,
->> -		struct vm_area_struct *vma, unsigned long address, bool shared)
->> -{
->> -	unsigned long size = dax_entry_size(entry), pfn, index;
->> -	int i = 0;
->> +			ClearPageHead(page);
->> +			clear_compound_head(page);
->>  
->> -	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
->> -		return;
->> -
->> -	index = linear_page_index(vma, address & ~(size - 1));
->> -	for_each_mapped_pfn(entry, pfn) {
->> -		struct page *page = pfn_to_page(pfn);
->> +			/*
->> +			 * Reset pgmap which was over-written by
->> +			 * prep_compound_page().
->> +			 */
->> +			page_folio(page)->pgmap = pgmap;
->>  
->> -		if (shared) {
->> -			dax_page_share_get(page);
->> -		} else {
->> -			WARN_ON_ONCE(page->mapping);
->> -			page->mapping = mapping;
->> -			page->index = index + i++;
->> +			/* Make sure this isn't set to TAIL_MAPPING */
->> +			page->mapping = NULL;
->>  		}
->>  	}
->> +
->> +	if (order > 0) {
->> +		prep_compound_page(&folio->page, order);
->> +		if (order > 1)
->> +			INIT_LIST_HEAD(&folio->_deferred_list);
->> +	}
->>  }
->>  
->> -static void dax_disassociate_entry(void *entry, struct address_space *mapping,
->> -		bool trunc)
->> +static void dax_associate_new_entry(void *entry, struct address_space *mapping,
->> +				pgoff_t index)
->
-> Lets call this dax_create_folio(), to mirror filemap_create_folio() and
-> have it transition the folio refcount from 0 to 1 to indicate that it is
-> allocated.
->
-> While I am not sure anything requires that, it seems odd that page cache
-> pages have an elevated refcount at map time and dax pages do not.
-
-The refcount gets elevated further up the call stack, but I agree it
-would be clearer to move it here.
-
-> It does have implications for the dax dma-idle tracking thought, see
-> below.
->
->>  {
->> -	unsigned long pfn;
->> +	unsigned long order = dax_entry_order(entry);
->> +	struct folio *folio = dax_to_folio(entry);
->>  
->> -	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
->> +	if (!dax_entry_size(entry))
->>  		return;
->>  
->> -	for_each_mapped_pfn(entry, pfn) {
->> -		struct page *page = pfn_to_page(pfn);
->> -
->> -		WARN_ON_ONCE(trunc && page_ref_count(page) > 1);
->> -		if (dax_page_is_shared(page)) {
->> -			/* keep the shared flag if this page is still shared */
->> -			if (dax_page_share_put(page) > 0)
->> -				continue;
->> -		} else
->> -			WARN_ON_ONCE(page->mapping && page->mapping != mapping);
->> -		page->mapping = NULL;
->> -		page->index = 0;
->> -	}
->> +	/*
->> +	 * We don't hold a reference for the DAX pagecache entry for the
->> +	 * page. But we need to initialise the folio so we can hand it
->> +	 * out. Nothing else should have a reference either.
->> +	 */
->> +	WARN_ON_ONCE(folio_ref_count(folio));
->
-> Per above I would feel more comfortable if we kept the paranoia around
-> to ensure that all the pages in this folio have dropped all references
-> and cleared ->mapping and ->index.
->
-> That paranoia can be placed behind a CONFIG_DEBUB_VM check, and we can
-> delete in a follow-on development cycle, but in the meantime it helps to
-> prove the correctness of the conversion.
-
-I'm ok with paranoia, but as noted above the issue is that at a minimum
-page->mapping (and probably index) now needs to be valid for any code
-that might walk the page tables.
-
-> [..]
->> @@ -1189,11 +1165,14 @@ static vm_fault_t dax_load_hole(struct xa_state *xas, struct vm_fault *vmf,
->>  	struct inode *inode = iter->inode;
->>  	unsigned long vaddr = vmf->address;
->>  	pfn_t pfn = pfn_to_pfn_t(my_zero_pfn(vaddr));
->> +	struct page *page = pfn_t_to_page(pfn);
->>  	vm_fault_t ret;
->>  
->>  	*entry = dax_insert_entry(xas, vmf, iter, *entry, pfn, DAX_ZERO_PAGE);
->>  
->> -	ret = vmf_insert_mixed(vmf->vma, vaddr, pfn);
->> +	page_ref_inc(page);
->> +	ret = dax_insert_pfn(vmf, pfn, false);
->> +	put_page(page);
->
-> Per above I think it is problematic to have pages live in the system
-> without a refcount.
-
-I'm a bit confused by this - the pages have a reference taken on them
-when they are mapped. They only live in the system without a refcount
-when the mm considers them free (except for the bit between getting
-created in dax_associate_entry() and actually getting mapped but as
-noted I will fix that).
-
-> One scenario where this might be needed is invalidate_inode_pages() vs
-> DMA. The invaldation should pause and wait for DMA pins to be dropped
-> before the mapping xarray is cleaned up and the dax folio is marked
-> free.
-
-I'm not really following this scenario, or at least how it relates to
-the comment above. If the page is pinned for DMA it will have taken a
-refcount on it and so the page won't be considered free/idle per
-dax_wait_page_idle() or any of the other mm code.
-
-> I think this may be a gap in the current code. I'll attempt to write a
-> test for this to check.
-
-Ok, let me know if you come up with anything there as it might help
-explain the problem more clearly.
-
-> [..]
->> @@ -1649,9 +1627,10 @@ static vm_fault_t dax_fault_iter(struct vm_fault *vmf,
->>  	loff_t pos = (loff_t)xas->xa_index << PAGE_SHIFT;
->>  	bool write = iter->flags & IOMAP_WRITE;
->>  	unsigned long entry_flags = pmd ? DAX_PMD : 0;
->> -	int err = 0;
->> +	int ret, err = 0;
->>  	pfn_t pfn;
->>  	void *kaddr;
->> +	struct page *page;
->>  
->>  	if (!pmd && vmf->cow_page)
->>  		return dax_fault_cow_page(vmf, iter);
->> @@ -1684,14 +1663,21 @@ static vm_fault_t dax_fault_iter(struct vm_fault *vmf,
->>  	if (dax_fault_is_synchronous(iter, vmf->vma))
->>  		return dax_fault_synchronous_pfnp(pfnp, pfn);
->>  
->> -	/* insert PMD pfn */
->> +	page = pfn_t_to_page(pfn);
->
-> I think this is clearer if dax_insert_entry() returns folios with an
-> elevated refrence count that is dropped when the folio is invalidated
-> out of the mapping.
-
-I presume this comment is for the next line:
-
-+	page_ref_inc(page);
+>   Starting systemd-udevd version 256.7-1-arch
+>   [    0.882312] SMP alternatives: Something went horribly wrong trying to rewrite the CFI implementation.
+>   [    0.883526] CFI failure at do_one_initcall+0x128/0x380 (target: init_module+0x0/0xff0 [crc32c_intel]; expected type: 0x0c7a3a22)
+>   [    0.884802] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+>   [    0.885434] CPU: 3 UID: 0 PID: 157 Comm: modprobe Tainted: G        W          6.12.0-rc3-debug-next-20241021-06324-g63b3ff03d91a #1 291f0fd70f293827edec681d3c5304f5807a3c7b
+>   [    0.887084] Tainted: [W]=WARN
+>   [    0.887409] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022
+>   [    0.888241] RIP: 0010:do_one_initcall+0x128/0x380
+>   [    0.888720] Code: f3 0f 1e fa 41 be ff ff ff ff e9 0f 01 00 00 0f 1f 44 00 00 41 81 e7 ff ff ff 7f 49 89 db 41 ba de c5 85 f3 45 03 53 f1 74 02 <0f> 0b 41 ff d3 0f 1f 00 41 89 c6 0f 1f 44 00 00 c6 04 24 00 65 8b
+>   [    0.890598] RSP: 0018:ff3f93e5c052f970 EFLAGS: 00010217
+>   [    0.891129] RAX: ffffffffb4c105b8 RBX: ffffffffc0602010 RCX: 0000000000000000
+>   [    0.891850] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffc0602010
+>   [    0.892588] RBP: ff3f93e5c052fc88 R08: 0000000000000020 R09: 0000000000000000
+>   [    0.893305] R10: 000000002a378b84 R11: ffffffffc0602010 R12: 00000000000069c6
+>   [    0.894003] R13: ff1f0090c5596900 R14: ff1f0090c15a55c0 R15: 0000000000000000
+>   [    0.894693] FS:  00007ffb712c0740(0000) GS:ff1f00942fb80000(0000) knlGS:0000000000000000
+>   [    0.895453] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>   [    0.896020] CR2: 00007ffffc4424c8 CR3: 0000000100af4002 CR4: 0000000000771ef0
+>   [    0.896698] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+>   [    0.897391] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+>   [    0.898077] PKRU: 55555554
+>   [    0.898337] Call Trace:
+>   [    0.898577]  <TASK>
+>   [    0.898784]  ? __die_body+0x6a/0xb0
+>   [    0.899132]  ? die+0xa4/0xd0
+>   [    0.899413]  ? do_trap+0xa6/0x180
+>   [    0.899740]  ? do_one_initcall+0x128/0x380
+>   [    0.900130]  ? do_one_initcall+0x128/0x380
+>   [    0.900523]  ? handle_invalid_op+0x6a/0x90
+>   [    0.900917]  ? do_one_initcall+0x128/0x380
+>   [    0.901311]  ? exc_invalid_op+0x38/0x60
+>   [    0.901679]  ? asm_exc_invalid_op+0x1a/0x20
+>   [    0.902081]  ? __cfi_init_module+0x10/0x10 [crc32c_intel 5331566c5540f82df397056699bc4ddac8be1306]
+>   [    0.902933]  ? __cfi_init_module+0x10/0x10 [crc32c_intel 5331566c5540f82df397056699bc4ddac8be1306]
+>   [    0.903781]  ? __cfi_init_module+0x10/0x10 [crc32c_intel 5331566c5540f82df397056699bc4ddac8be1306]
+>   [    0.904634]  ? do_one_initcall+0x128/0x380
+>   [    0.905028]  ? idr_alloc_cyclic+0x139/0x1d0
+>   [    0.905437]  ? security_kernfs_init_security+0x54/0x190
+>   [    0.905958]  ? __kernfs_new_node+0x1ba/0x240
+>   [    0.906377]  ? sysfs_create_dir_ns+0x8f/0x140
+>   [    0.906795]  ? kernfs_link_sibling+0xf2/0x110
+>   [    0.907211]  ? kernfs_activate+0x2c/0x110
+>   [    0.907599]  ? kernfs_add_one+0x108/0x150
+>   [    0.907981]  ? __kernfs_create_file+0x75/0xa0
+>   [    0.908407]  ? sysfs_create_bin_file+0xc6/0x120
+>   [    0.908853]  ? __vunmap_range_noflush+0x347/0x420
+>   [    0.909313]  ? _raw_spin_unlock+0xe/0x30
+>   [    0.909692]  ? free_unref_page+0x22c/0x4c0
+>   [    0.910097]  ? __kmalloc_cache_noprof+0x1a8/0x360
+>   [    0.910546]  do_init_module+0x60/0x250
+>   [    0.910910]  __se_sys_finit_module+0x316/0x420
+>   [    0.911351]  do_syscall_64+0x88/0x170
+>   [    0.911699]  ? __x64_sys_lseek+0x68/0xb0
+>   [    0.912077]  ? syscall_exit_to_user_mode+0x97/0xc0
+>   [    0.912538]  ? do_syscall_64+0x94/0x170
+>   [    0.912902]  ? syscall_exit_to_user_mode+0x97/0xc0
+>   [    0.913353]  ? do_syscall_64+0x94/0x170
+>   [    0.913709]  ? clear_bhb_loop+0x45/0xa0
+>   [    0.914071]  ? clear_bhb_loop+0x45/0xa0
+>   [    0.914428]  ? clear_bhb_loop+0x45/0xa0
+>   [    0.914767]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>   [    0.915089] RIP: 0033:0x7ffb713dc1fd
+>   [    0.915316] Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e3 fa 0c 00 f7 d8 64 89 01 48
+>   [    0.916491] RSP: 002b:00007ffffc4454a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+>   [    0.916964] RAX: ffffffffffffffda RBX: 000055f28c6a5420 RCX: 00007ffb713dc1fd
+>   [    0.917413] RDX: 0000000000000000 RSI: 000055f26c40cc03 RDI: 0000000000000003
+>   [    0.917858] RBP: 00007ffffc445560 R08: 0000000000000001 R09: 00007ffffc4454f0
+>   [    0.918302] R10: 0000000000000040 R11: 0000000000000246 R12: 000055f26c40cc03
+>   [    0.918748] R13: 0000000000060000 R14: 000055f28c6a4b50 R15: 000055f28c6ac5b0
+>   [    0.919211]  </TASK>
+>   [    0.919356] Modules linked in: crc32c_intel(+)
+>   [    0.919661] ---[ end trace 0000000000000000 ]---
+> 
+> I also see some other WARNs interleaved along the lines of
+> 
+>   [    0.982759] no CFI hash found at: 0xffffffffc0608000 ffffffffc0608000 cc cc cc cc cc
+>   [    0.982767] WARNING: CPU: 5 PID: 170 at arch/x86/kernel/alternative.c:1204 __apply_fineibt+0xa6d/0xab0
+> 
+> The console appears to be a bit of a mess after that initial message.
+> 
+> If there is any more information I can provide or patches I can test, I
+> am more than happy to do so.
  
-I can move that into dax_insert_entry(), but we would still need to
-drop it after calling vmf_insert_*() to ensure we get the 1 -> 0
-transition when the page is unmapped and therefore
-freed. Alternatively we can make it so vmf_insert_*() don't take
-references on the page, and instead ownership of the reference is
-transfered to the mapping. Personally I prefered having those
-functions take their own reference but let me know what you think.
+I've got similar report from kbuild bot a few days ago:
+https://lore.kernel.org/all/202410202257.b7edc376-lkp@intel.com
 
-> [..]
->> @@ -519,21 +529,3 @@ void zone_device_page_init(struct page *page)
->>  	lock_page(page);
->>  }
->>  EXPORT_SYMBOL_GPL(zone_device_page_init);
->> -
->> -#ifdef CONFIG_FS_DAX
->> -bool __put_devmap_managed_folio_refs(struct folio *folio, int refs)
->> -{
->> -	if (folio->pgmap->type != MEMORY_DEVICE_FS_DAX)
->> -		return false;
->> -
->> -	/*
->> -	 * fsdax page refcounts are 1-based, rather than 0-based: if
->> -	 * refcount is 1, then the page is free and the refcount is
->> -	 * stable because nobody holds a reference on the page.
->> -	 */
->> -	if (folio_ref_sub_return(folio, refs) == 1)
->> -		wake_up_var(&folio->_refcount);
->> -	return true;
->
-> It follow from the refcount disvussion above that I think there is an
-> argument to still keep this wakeup based on the 2->1 transitition.
-> pagecache pages are refcount==1 when they are dma-idle but still
-> allocated. To keep the same semantics for dax a dax_folio would have an
-> elevated refcount whenever it is referenced by mapping entry.
+I fixed fineibt handling in v7:
+https://lore.kernel.org/linux-mm/20241023162711.2579610-1-rppt@kernel.org
 
-I'm not sold on keeping it as it doesn't seem to offer any benefit
-IMHO. I know both Jason and Christoph were keen to see it go so it be
-good to get their feedback too. Also one of the primary goals of this
-series was to refcount the page normally so we could remove the whole
-"page is free with a refcount of 1" semantics.
+> Cheers,
+> Nathan
+> 
 
-  - Alistair
+-- 
+Sincerely yours,
+Mike.
 
