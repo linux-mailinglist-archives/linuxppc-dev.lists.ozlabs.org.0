@@ -1,64 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-2547-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2548-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702009AE9C0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 17:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A63BF9AE9F0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 17:10:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZ8Ns0MPMz30PD;
-	Fri, 25 Oct 2024 02:05:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZ8Vp24dTz3bLS;
+	Fri, 25 Oct 2024 02:10:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::32b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729782332;
-	cv=none; b=k1TdxK2mZyQNZacYnypYQF/nrJ4Os8lUn1w06fqsofEB3vtL8nWR0ajPvjX5n1X78dRnFcbYuxxIF0fE+nqMlekgdFZTWTFo2I3dnn+RiINEjaaQDhhYRI0+fzDlYKsOOT63toTBMJqW5CT0W5Pp4a3yy20U5UdzIH9CtlrS2omBYf65L4I/Wiq9tjxzBaca+jpeyg2FKOMGjuzbTqdr5QJliur38iXHVbuAp3Zr0wusCMgzWqkHTBkL0Bu/c9I6zKoIfM4bQW2ifXAz+jHa2+7XifeSwSzAtUsAzbUBQk6mZq2A41Cjya6g/OySzqEbyr7R/nskFBgLsdVfaDnUWA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729782642;
+	cv=none; b=CF7kiIEg/dcXdHj491oLbg6ZgwgXw4FvUX74xGvkvnN7olQ1vrhrNDs2gHL4P/CaDM4EpdtCWBeugDWijmZyzYBgyHRCnDR4zsmC8wT3JMihgfmQlBGx8IZnV9NeCGvH1ty9hjuUNJmnhVKO5ByjtvJcB/dFvKcMXYpNjHTLWrSTnYLbYSdvn9AarVM/59irYa0lkBMi17Hg/Rbdu2LSbtV6f8uUscjo3XRdhRjGC1Pd/Z1ijSvRuv5DtGFCpdxoVLOkLg0i/8XFYG3zEMgipwtdypzX3xmUQUNpaM083qF6wZvtTbyIF9DJIHUBTHUmY4e86u/Y0YJqoYQB+hhfUA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729782332; c=relaxed/relaxed;
-	bh=jyarlQ6i7toXdr4KNns6qkdDvM4HB4Mkf28BveorRBE=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=U3OYOjT6T40ZLQZs9nYoDe5K8EseeI8rzzXB80V4ksqHa5JVoNi6di1/krzeIoobIHOlDBJozZvkBG/98bcG1EGO7aNOQUR0KsEhDkztzHmi8jZM6MNr5tVYjHrVqpJo7sf3eEePI9eS2P2QtPcMeUwdaftQ+9HKn9CyIDloVMdXuLNIG1A2ptyv1qmlxKxK9rZkTy/n7ZOIInP+Okak1w4X1fdVV/if5bmP9m/8Qzb4qviD/axqx027oxk/Y2dav3T7SVBEnl8ERFGq1WRf1x0aVpKrpPv9Ua2kWS3PU+4ElgvkQ5lHRQmw3kLGd/zcnlKAbKA328ml6p03o0heSg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=A300j6Z5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::32b; helo=mail-ot1-x32b.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=A300j6Z5;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::32b; helo=mail-ot1-x32b.google.com; envelope-from=naresh.kamboju@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1729782642; c=relaxed/relaxed;
+	bh=0NEROD9SoptjaH6z4ZaBOxf64L1Sc5rI203o1wBOxJ8=;
+	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=i8yTco+8vaY9BOhs8vJ+2yFe0CVkRy1vGwlpndlANYA5dodkkz6XkttybhQOy3mWvh37VnJ3oiA3K7iRwh25F3zW+Xpg9PGOA13bS3ui5BHBv1l+Gf32O6TNHXCmZiZkIwyVFS4E9zcGNY/PElZglPKIV+MipJko0amJwcB1iLFS+JRVMcYHNuGQqvW7VR3x3CFRUaOvEd0+kG5bITidIyJE+2+dyMy35pVS4FdGMnhXRCe6s1vCnJELnx7/WsEjV50DjO8Ikh1SDaNrxGha0Ig0hIT69BtcaFKOcNT5JlcGjoqStuHM+klRLtoDyzmNzg1J80w1dbCFey8i3cOnbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZ8Np6Fjkz2yj3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 02:05:28 +1100 (AEDT)
-Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-7180c7a4e02so609993a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 08:05:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729782323; x=1730387123; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jyarlQ6i7toXdr4KNns6qkdDvM4HB4Mkf28BveorRBE=;
-        b=A300j6Z5BN9NOCy+6NEQWSTX1kdRXkjV9k1XNKpm4ZQc/zOejaRrU/mHrqauSfyUZS
-         BgG6ZxxXUDPV/5YXyCbaYYEpXxMPGXTk4yU8NymZW36MA7n0dMzudsbwEmjbHTY1e+l+
-         3BdK6YsLzM+cPwGCQtpY4X8SKLAnMOs4vyUCRvE+BinENrq9P1ABb7SdahAsr9mT7xOn
-         72+BRk2uH1PT219oId2ulEfLoVoJ/+XEsIRbx3/JDAUqMs4kor8acTczn7Z2NCaFyHbq
-         NhvbK6afY58OplDcJCHw8oi5oLlqt3ymSEA/5dWuwvzyc2gb31TatMVmsmWKnWVwB2D4
-         JWqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729782323; x=1730387123;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jyarlQ6i7toXdr4KNns6qkdDvM4HB4Mkf28BveorRBE=;
-        b=KHDhl159OhBvQsbY7M7KVNQhueWneUyazExyNvp/9jrM44lPPrb6hQqklO4fsVRTM9
-         yzzTneissgVn5GuHFNnDIpT/fxrV8HQI3P5vbPzpH+BG1QUQLmG2aXYHLkZdPAWY4MMu
-         l8FYxFl5GpU44pop29ZFto8lYAF/zWPZHpfbgxK0KY/t+SqaLXyJXuYwTMja1hWmvn1q
-         RdAuLPpyjk2HourLPb/eGr6rh9i9DfLsJh2LTufUs0WlLYRmTh046kea6F83cFvoHmqa
-         xLhA32DbML+uEYXd/UzcVk4xBAqoo1cbuXno1y8+i6vM+12NMDT9jymsjbah8ROGU9AL
-         g9hw==
-X-Forwarded-Encrypted: i=1; AJvYcCWaXxdqqtCYx9T6h7LE+ZVNTi5r/5Exzf5baDcPQOdb/DkkBUg1DK3csDhU6IB+3Bs04gl7Gkwecx62RXE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyUveCiPvLQKM5sXIVA8Y3vi0hjn8A+gwPrp9f1zrLrhJNfhbyW
-	BnGKfnhJb4LRbSicB94dnB1Usx7DrxQi0dsKcrT/uvpnCxhwGKvu+nwAU2tCfCOMtRxJgSTVBg0
-	NIQaaxHZ3o4Z1U8aF7qdHS17TJPrl+UXicE8IWQ==
-X-Google-Smtp-Source: AGHT+IEnz1GyTZlftdGpHX3jgxo2wK87KPVx/FAo2DYee8GCdaaTRp24nxaWxYg0SRPKd77LClU0CJyCAJ3uZe9macc=
-X-Received: by 2002:a05:6808:180b:b0:3e6:769:b042 with SMTP id
- 5614622812f47-3e62cbe6ef9mr2185584b6e.29.1729782323029; Thu, 24 Oct 2024
- 08:05:23 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZ8Vl4JpYz2yj3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 02:10:36 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4XZ8Rf1Mv4z10N2T;
+	Thu, 24 Oct 2024 23:07:58 +0800 (CST)
+Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id A77E51401E9;
+	Thu, 24 Oct 2024 23:10:01 +0800 (CST)
+Received: from [10.67.121.177] (10.67.121.177) by
+ kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Thu, 24 Oct 2024 23:10:00 +0800
+CC: <catalin.marinas@arm.com>, <will@kernel.org>, <sudeep.holla@arm.com>,
+	<tglx@linutronix.de>, <peterz@infradead.org>, <mpe@ellerman.id.au>,
+	<linux-arm-kernel@lists.infradead.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <dietmar.eggemann@arm.com>,
+	<yangyicong@hisilicon.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<x86@kernel.org>, <linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
+	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
+	<linuxarm@huawei.com>, <xuwei5@huawei.com>, <guohanjun@huawei.com>
+Subject: Re: [PATCH v6 3/4] arm64: topology: Support SMT control on ACPI based
+ system
+To: Pierre Gondois <pierre.gondois@arm.com>
+References: <20241015021841.35713-1-yangyicong@huawei.com>
+ <20241015021841.35713-4-yangyicong@huawei.com>
+ <896f9bb7-7053-4835-8db4-1ff063c268c1@arm.com>
+From: Yicong Yang <yangyicong@huawei.com>
+Message-ID: <3181577e-d6dd-fd91-f51f-ae6ca0413687@huawei.com>
+Date: Thu, 24 Oct 2024 23:09:59 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,72 +66,199 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 24 Oct 2024 20:35:11 +0530
-Message-ID: <CA+G9fYs2G_4jyv-V7f85oE53rw5rX0Tnf2V8RQ=O9CuPcbfb2A@mail.gmail.com>
-Subject: powerpc: clang-nightly: fatal error: error in backend: Trying to
- obtain a reserved register "r2".
-To: clang-built-linux <llvm@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>, 
-	lkft-triage@lists.linaro.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Anders Roxell <anders.roxell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <896f9bb7-7053-4835-8db4-1ff063c268c1@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.121.177]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemd200014.china.huawei.com (7.221.188.8)
+X-Spam-Status: No, score=-3.0 required=5.0 tests=NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The powerpc clang-nightly version 20.0.0 build warnings / errors noticed on
-the Today's Linux next-20241024 tag.
+On 2024/10/24 16:44, Pierre Gondois wrote:
+> Hello Yicong,
+> 
+> On 10/15/24 04:18, Yicong Yang wrote:
+>> From: Yicong Yang <yangyicong@hisilicon.com>
+>>
+>> For ACPI we'll build the topology from PPTT and we cannot directly
+>> get the SMT number of each core. Instead using a temporary xarray
+>> to record the heterogeneous information (from ACPI_PPTT_ACPI_IDENTICAL)
+>> and SMT information of the first core in its heterogeneous CPU cluster
+>> when building the topology. Then we can know the largest SMT number
+>> in the system.
+> 
+> Is it possible to also state that the logic only work for PPTT versions
+> prior to 6.2. Otherwise find_acpi_cpu_topology_hetero_id() will return
+> the id of the root node of the PPTT, and all the CPUs of the platform
+> will be assumed to be identical.
+> 
 
-powerpc:
-  build:
-    * clang-nightly-maple_defconfig
-    * clang-nightly-tinyconfig
-    * clang-nightly-tqm8xx_defconfig
-    * clang-nightly-mpc83xx_defconfig
-    * clang-nightly-defconfig
-    * clang-nightly-cell_defconfig
-    * clang-nightly-ppc64e_defconfig
-    * clang-nightly-allnoconfig
+sure. of course.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>>
+>> The core's SMT control provides two interface to the users [1]:
+>> 1) enable/disable SMT by writing on/off
+>> 2) enable/disable SMT by writing thread number 1/max_thread_number
+>>
+>> If a system have more than one SMT thread number the 2) may
+>> not handle it well, since there're multiple thread numbers in the
+>> system and 2) only accept 1/max_thread_number. So issue a warning
+>> to notify the users if such system detected.
+>>
+>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-devices-system-cpu#n542
+>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+>> ---
+>>   arch/arm64/kernel/topology.c | 61 ++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 61 insertions(+)
+>>
+>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+>> index 1a2c72f3e7f8..2fa584b932ee 100644
+>> --- a/arch/arm64/kernel/topology.c
+>> +++ b/arch/arm64/kernel/topology.c
+>> @@ -15,8 +15,10 @@
+>>   #include <linux/arch_topology.h>
+>>   #include <linux/cacheinfo.h>
+>>   #include <linux/cpufreq.h>
+>> +#include <linux/cpu_smt.h>
+>>   #include <linux/init.h>
+>>   #include <linux/percpu.h>
+>> +#include <linux/xarray.h>
+>>     #include <asm/cpu.h>
+>>   #include <asm/cputype.h>
+>> @@ -37,17 +39,29 @@ static bool __init acpi_cpu_is_threaded(int cpu)
+>>       return !!is_threaded;
+>>   }
+>>   +struct cpu_smt_info {
+>> +    int thread_num;
+>> +    int core_id;
+>> +    int cpu;
+> 
+> It doesn't seem that the 'cpu' is used. Maybe this should be removed,
+> or used in the error message (I think this could be removed).
+> 
 
-Build errors:
-----------
-fatal error: error in backend: Trying to obtain a reserved register "r2".
-clang: error: clang frontend command failed with exit code 70 (use -v
-to see invocation)
-Debian clang version 20.0.0
-(++20241023112211+699ce16b6284-1~exp1~20241023112229.1038)
-Target: powerpc-unknown-linux-gnu
+sure. will remove..
 
-metadata:
-----------
-kernel: 6.12.0-rc4
-git_repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-git_sha: fd21fa4a912ebbf8a6a341c31d8456f61e7d4170
-git_describe: next-20241024
-Test details: https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241024
-config:  https://storage.tuxsuite.com/public/linaro/lkft/builds/2ns7sv9TltSifV46KaGs3BxlB85/config
-download_url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2ns7sv9TltSifV46KaGs3BxlB85/
-arch: powerpc
-toolchain: Clang-nightly (version 20.0.0)
+>> +};
+>> +
+>>   /*
+>>    * Propagate the topology information of the processor_topology_node tree to the
+>>    * cpu_topology array.
+>>    */
+>>   int __init parse_acpi_topology(void)
+>>   {
+>> +    int max_smt_thread_num = 0;
+>> +    struct cpu_smt_info *entry;
+>> +    struct xarray hetero_cpu;
+>> +    unsigned long hetero_id;
+>>       int cpu, topology_id;
+>>         if (acpi_disabled)
+>>           return 0;
+>>   +    xa_init(&hetero_cpu);
+>> +
+>>       for_each_possible_cpu(cpu) {
+>>           topology_id = find_acpi_cpu_topology(cpu, 0);
+>>           if (topology_id < 0)
+>> @@ -57,6 +71,30 @@ int __init parse_acpi_topology(void)
+>>               cpu_topology[cpu].thread_id = topology_id;
+>>               topology_id = find_acpi_cpu_topology(cpu, 1);
+>>               cpu_topology[cpu].core_id   = topology_id;
+>> +
+>> +            /*
+>> +             * Build up the XArray using the heterogeneous ID of
+>> +             * the CPU cluster. Store the CPU and SMT information
+>> +             * of the first appeared CPU in the CPU cluster of this
+>> +             * heterogeneous ID since the SMT information should be
+>> +             * the same in this CPU cluster. Then we can know the
+>> +             * SMT information of each heterogeneous CPUs in the
+>> +             * system.
+>> +             */
+> 
+> A suggestion just in case:
+> /*
+>  * In the PPTT, CPUs below a node with the 'identical
+>  * implementation' flag have the same number of threads.
+>  * Count the number of threads for only one CPU (i.e.
+>  * one core_id) among those with the same hetero_id.
+>  *
+>  * One entry is created for each node having:
+>  * - the 'identical implementation' flag
+>  * - its parent not having the flag
+>  */
+> 
 
-build log link:
-------
- - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241024/testrun/25530243/suite/build/test/clang-nightly-defconfig/log
-  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2ns7sv9TltSifV46KaGs3BxlB85/
+ok maybe we can also refer to the comments of find_acpi_cpu_topology_hetero_id() [1] to lead
+reader there if they want more details.
 
-steps to reproduce:
-------
-# tuxmake --runtime podman --target-arch powerpc --toolchain
-clang-nightly --kconfig defconfig LLVM=1 LLVM_IAS=0
-LD=powerpc64le-linux-gnu-ld
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/pptt.c#n794
+
+> 
+>> +            hetero_id = find_acpi_cpu_topology_hetero_id(cpu);
+>> +            entry = (struct cpu_smt_info *)xa_load(&hetero_cpu, hetero_id);
+>> +            if (!entry) {
+>> +                entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+>> +                WARN_ON(!entry);
+>> +
+>> +                entry->cpu = cpu;
+>> +                entry->core_id = topology_id;
+>> +                entry->thread_num = 1;
+>> +                xa_store(&hetero_cpu, hetero_id,
+>> +                     entry, GFP_KERNEL);
+>> +            } else if (entry->core_id == topology_id) {
+>> +                entry->thread_num++;
+>> +            }
+>>           } else {
+>>               cpu_topology[cpu].thread_id  = -1;
+>>               cpu_topology[cpu].core_id    = topology_id;
+>> @@ -67,6 +105,29 @@ int __init parse_acpi_topology(void)
+>>           cpu_topology[cpu].package_id = topology_id;
+>>       }
+>>   +    /*
+>> +     * This should be a short loop depending on the number of heterogeneous
+>> +     * CPU clusters. Typically on a homogeneous system there's only one
+>> +     * entry in the XArray.
+>> +     */
+> 
+> I think it should be ok to remove the above/below comments
+> 
+
+I'd leave the above comment since this won't make people who are awared of the efficiency feel
+nervous about the loop here...
+
+will drop the below comment.
+
+>> +    xa_for_each(&hetero_cpu, hetero_id, entry) {
+>> +        /*
+>> +         * If max_smt_thread_num has been initialized and doesn't match
+>> +         * the thread number of this entry, then the system has
+>> +         * heterogeneous SMT topology.
+>> +         */
+>> +        if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)
+>> +            pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
+>> +
+>> +        if (entry->thread_num > max_smt_thread_num)
+>> +            max_smt_thread_num = entry->thread_num;
+>> +
+>> +        xa_erase(&hetero_cpu, hetero_id);
+>> +        kfree(entry);
+>> +    }
+>> +
+>> +    cpu_smt_set_num_threads(max_smt_thread_num, max_smt_thread_num);
+>> +    xa_destroy(&hetero_cpu);
+>>       return 0;
+>>   }
+>>   #endif
+> 
+> Otherwise I tested the SMT detection and it worked well
+> 
+
+appreciated for the tests!
+
+Thanks.
 
 
---
-Linaro LKFT
-https://lkft.linaro.org
+
 
