@@ -1,75 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-2544-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2545-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A9C9AE07C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 11:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D5F9AE31E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 12:53:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZ0mc6rxTz2yDY;
-	Thu, 24 Oct 2024 20:22:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZ2p022JCz30Bp;
+	Thu, 24 Oct 2024 21:53:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.58.86.151
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729761728;
-	cv=none; b=Bw6sqRm84+INIr6a3N/lsfXi4O6KVgJN/VpSsr1Aw0LgSXMD0FCRaBovn1UjJN1jvurFXjOWNzpA60LK2Zh3wyXkXVcXpcvJV43Z+RFEl9mbOpvSyanGMfBFwHYud84nP576OZlgFjQrnBcXYHoI8Ogdd1JvW0qj4g/f9vebYMgCTn1eqFrNqITojFeT4XoH+oIziwVbL6KwKh3BgLymJZ2G58lCyy4Mpz8fNfEGCzMt5vuk3ImFeGtBgRMYve1FTECwBukGWqARsWkLrNe9TJISZQRg7D/U4JU+gytr0z31ktPsBnC3+qTwrRKhuYj2M9RWhI4PSYvkfIegEpFl3A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729767208;
+	cv=none; b=oQ9eg9lLG752eh6T7rtBiaspiWMxzNUcJQqgJUouwj0905bhUtHLWr7mlv1N5af0WSleEk4n4+vxJ+LWON6UWXZ+IPNCQmunKr6LsliHBT8GhGATAnReuoJt89nyVGtgiHnIPbxXb2deE+MM4G5VFdZzE66+B1VBzB1GHEuxrLzmjFSI+r9Ds/f3vvU9PwKvtd432tLW57r2GUdYsHO2ui1kl3Nc9G6K9sThAm/JzD9x0M5+7qwBElnDsup3n/LUS/GCC254jxez2fdX184XyinWU8pkFAPk8KSYN8FxsIa+yXadocDHWk+6rA9/MP2x04fhQO2BMAKmCTEijExv8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729761728; c=relaxed/relaxed;
-	bh=ot4w3c9hBKlBKby8ZYf/0ibdMapkWvbdHhmI2aM9mvU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=Mlbq/lhD76zAFdU4n44Anlo2xSP6I8y/oVhz2RL/JE8sfLD981vyF5rDuE5gBL5yFqNjkRiVw5jcWe9jhVVrYooV5ywT95htFIgUr8L4IVfWuONE9aO4aRsKe1n2c8MoYvwLtIMwsHSuCbiY03RMlYCer60cMAR0pQVQqRB8JDuT6FIgb5wlpsc6+9v/FwDGib/gWNh/Bjb083grWP34AsiGSiUSTZB/L8aLwmfGSEVUfW7jtttXHTK8BscSFovCiBGeCDgqKU23kaSWTuz1skFASZBBkEA4A0p1XpxN5RiEJbjBB55mu4sB8qMYfsAEWAg7YgZfco/EIhrvIgTG9Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org) smtp.mailfrom=aculab.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZ0mb17zHz2xjv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 20:22:05 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-149-T2Y4QON1NB2bSsVP32ehsQ-1; Thu, 24 Oct 2024 10:21:57 +0100
-X-MC-Unique: T2Y4QON1NB2bSsVP32ehsQ-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 24 Oct
- 2024 10:21:56 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Thu, 24 Oct 2024 10:21:56 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Linus Torvalds' <torvalds@linux-foundation.org>, Borislav Petkov
-	<bp@alien8.de>
-CC: Josh Poimboeuf <jpoimboe@kernel.org>, Andrew Cooper
-	<andrew.cooper3@citrix.com>, "Kirill A. Shutemov" <kirill@shutemov.name>,
-	"x86@kernel.org" <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>, Pawan Gupta
-	<pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, "Dave
- Hansen" <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
-	"Michael Ellerman" <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, Mark Rutland <mark.rutland@arm.com>
-Subject: RE: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-Thread-Topic: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-Thread-Index: AQHbJYiO0jpEiXw2TU+KrR/vXcxF6bKVniVg
-Date: Thu, 24 Oct 2024 09:21:56 +0000
-Message-ID: <c40199a2a319440d89bfcc5c06ec4b3a@AcuMS.aculab.com>
-References: <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
- <CAHk-=wgDrG-aKVGrd-9gQsC0pMs936oo8XEFmEn6ciaT9=nfDg@mail.gmail.com>
- <20241014035436.nsleqolyj3xxysrr@treble>
- <CAHk-=widMFN2wDeS2K65f8FnW8L6gPZa6CNO4OWkv--0G2LXhw@mail.gmail.com>
- <r5ruxmop7vewd7aq6gu2zve4hfmcu4byhlebygswbqkgz43qfq@rsajyfiypcsd>
- <064d7068-c666-49f0-b7df-774c2e281abc@citrix.com>
- <20241020224444.zhoscljpe7di5yv3@treble>
- <CAHk-=wikKPKDECP=zBEEnxBB44n-uLsnMoOG=aCy6FwDNc9mxA@mail.gmail.com>
- <20241020231112.erso2jzqwkbin4kh@treble>
- <CAHk-=wiUaWnHGgusaMOodypgm7bVztMVQkB6JUvQ0HoYJqDNYA@mail.gmail.com>
- <20241023094448.GAZxjFkEOOF_DM83TQ@fat_crate.local>
- <CAHk-=wgDKPt554sAyzHvW1U+Opx_2Ofu4znjjroMWr1x90SU7A@mail.gmail.com>
- <CAHk-=wjpE4hgOs0q7-jZ+=RsCD=YX9R=V3SCprzg0GOUQfCHNw@mail.gmail.com>
-In-Reply-To: <CAHk-=wjpE4hgOs0q7-jZ+=RsCD=YX9R=V3SCprzg0GOUQfCHNw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	t=1729767208; c=relaxed/relaxed;
+	bh=RfmFflToJijtDwvPY5GHNgt2LQkXCFOyeFjmggRuLtM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=T1wKP+YtWFnlPVjpTkZmnsaqvuDaUu1B3JVZRciAS9Sgc+GeHYzXepwS65Ea/OLQhiTB5HX9g+0yTAubNNbPQwON4qtQmhOcn50PCHZsgvibkQBvGDQ1VJT6h6IcZ2koWaLCnYZozbdRNP4B1re8AbmRJLZg3z2DAK9dBAJhcL51Nq/2bDVBlBUgXdMsYuPCjiS9taA3woKRZXRsYi2SKTdmSjP4DHbw5VyjZrMXMUiY4i4MUE8nVoloza6DMNuNKCaodO333qjC0TX+kfbHJQZQFEjc8Z9XhVAcP1rSlZkw1UnKMxHFnsGTNPzrzfGE/F0GB5YoLG142Qb+UDoPLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=steven.price@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=steven.price@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZ2ny2Lzcz2xjv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 21:53:24 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D23C339;
+	Thu, 24 Oct 2024 03:53:21 -0700 (PDT)
+Received: from [10.1.30.45] (e122027.cambridge.arm.com [10.1.30.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 67C983F71E;
+	Thu, 24 Oct 2024 03:52:42 -0700 (PDT)
+Message-ID: <b11631ba-224f-41fb-b82e-59f1b258aea1@arm.com>
+Date: Thu, 24 Oct 2024 11:52:40 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,38 +42,276 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 0/4] mm: Introduce MAP_BELOW_HINT
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Charlie Jenkins <charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
+ <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Shuah Khan <shuah@kernel.org>,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
+ <yu7um2tcxg2apoz372rmzpkrfgbb42ndvabvrsp4usb2e3bkrf@huaucjsp5vlj>
+ <Ztnp3OAIRz/daj7s@ghost>
+ <pbotlphw77fkfacldtpxfjcs2w5nhb2uvxszv5rmlrhjm42akd@4pvcqb7ojq4v>
+ <b6ca55b7-4de2-4085-97bd-619f91d9fcb8@arm.com>
+ <5u7xntjdye5ejjmkgpp7m3ogpzblxcztrwngulejdft63fzuwf@xcxfcbaccqtw>
+ <07c5e292-5218-43ee-a167-da09d108a663@arm.com>
+ <gcyxymiqvxgkkhn76a6ksvevzcq36rridwakgyjsa24obcab3t@leqlqjcx3va3>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <gcyxymiqvxgkkhn76a6ksvevzcq36rridwakgyjsa24obcab3t@leqlqjcx3va3>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-RnJvbTogTGludXMgVG9ydmFsZHMNCj4gU2VudDogMjMgT2N0b2JlciAyMDI0IDIxOjA4DQo+IA0K
-PiBPbiBXZWQsIDIzIE9jdCAyMDI0IGF0IDEyOjE3LCBMaW51cyBUb3J2YWxkcw0KPiA8dG9ydmFs
-ZHNAbGludXgtZm91bmRhdGlvbi5vcmc+IHdyb3RlOg0KPiA+DQo+ID4gTk9URSEgVGhpcyBpcyBv
-YnZpb3VzbHkgdW50ZXN0ZWQgYW5kIEkgZGlkbid0IGNoZWNrIHRoYXQgaXQgZG9lcyB0aGUNCj4g
-PiBjbXAvc2JiL29yIHRoZSByaWdodCB3YXkgYXJvdW5kLg0KPiANCj4gV2VsbCwgaXQgYm9vdHMu
-IFRoZSBjb2RlIGdlbmVyYXRpb24gKGZyb20gc3RybmNweV9mcm9tX3VzZXIoKSkgc2VlbXMgb2s6
-DQo+IA0KPiAgICAgICBtb3ZhYnMgJDB4MTIzNDU2Nzg5YWJjZGVmLCVyY3gNCj4gICAgICAgY21w
-ICAgICVyc2ksJXJjeA0KPiAgICAgICBzYmIgICAgJWVjeCwlZWN4DQo+ICAgICAgIG9yICAgICAl
-cnNpLCVyY3gNCj4gDQo+IHdoZXJlIG9idmlvdXNseSB0aGF0IGNvbnN0YW50IGlzIHRoZSBib2d1
-cyBwcmUtaW5pdGlhbGl6ZWQgdmFsdWUsIG5vdA0KPiB0aGUgYWN0dWFsIHJ1bnRpbWUgdmFsdWUu
-DQoNCldvdWxkIGl0IGJlIGJldHRlciB0byBtYWtlIHRoZSAnYm9ndXMnIGNvbnN0YW50IG9uZSB0
-aGF0IG1ha2VzDQphbGwgYWNjZXNzZXMgZmFpbD8NClNvIHlvdSBzb29uIGZpbmQgb3V0IGl0IGFu
-eSBjb2RlIGRvZXNuJ3QgZ2V0IHBhdGNoZWQuDQoNCkkgYWxzbyB3b25kZXIgaG93IGJpZyB0aGUg
-dGFibGUgb2YgYWRkcmVzc2VzIHRvIHBhdGNoIGlzLg0KSWYgdGhhdCBnZXRzIGludG8gaW5saW5l
-ZCBmdW5jdGlvbnMgaXQgY291bGQgYmUgYmlnLg0KDQpPVE9IIGhhdmluZyBhIHJlYWwgZnVuY3Rp
-b24gdGhhdCBkb2VzIGFjY2Vzc19vaygpLCBjbGFjIGFuZCBhZGRyZXNzDQptYXNraW5nIG1heSBu
-b3QgcHJvYmxlbS4NCg0KRXNwZWNpYWxseSBpZiB0aGVyZSBpcyBhbHdheXMgYSAoUEFHRSBzaXpl
-ZCkgZ2FwIGJldHdlZW4gdGhlIGhpZ2hlc3QNCnVzZXIgYWRkcmVzcyBhbmQgdGhlIGxvd2VzdCBr
-ZXJuZWwgYWRkcmVzcyBzbyB0aGUgJ3NpemUnIGFyZ3VtZW50DQp0byBhY2Nlc3Nfb2soKSBjYW4g
-YmUgaWdub3JlZCBvbiB0aGUgYXNzdW1wdGlvbiB0aGF0IHRoZSBhY2Nlc3Nlcw0KYXJlIChyZWFz
-b25hYmx5KSBsaW5lYXIuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNp
-ZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsN
-ClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
+On 23/10/2024 19:10, Liam R. Howlett wrote:
+> * Steven Price <steven.price@arm.com> [241023 05:31]:
+>>>>   * Box64 seems to have a custom allocator based on reading 
+>>>>     /proc/self/maps to allocate a block of VA space with a low enough 
+>>>>     address [1]
+>>>>
+>>>>   * PHP has code reading /proc/self/maps - I think this is to find a 
+>>>>     segment which is close enough to the text segment [2]
+>>>>
+>>>>   * FEX-Emu mmap()s the upper 128TB of VA on Arm to avoid full 48 bit
+>>>>     addresses [3][4]
+>>>
+>>> Can't the limited number of applications that need to restrict the upper
+>>> bound use an LD_PRELOAD compatible library to do this?
+>>
+>> I'm not entirely sure what point you are making here. Yes an LD_PRELOAD
+>> approach could be used instead of a personality type as a 'hack' to
+>> preallocate the upper address space. The obvious disadvantage is that
+>> you can't (easily) layer LD_PRELOAD so it won't work in the general case.
+> 
+> My point is that riscv could work around the limited number of
+> applications that requires this.  It's not really viable for you.
+
+Ah ok - thanks for the clarification.
+
+>>
+>>>>
+>>>>   * pmdk has some funky code to find the lowest address that meets 
+>>>>     certain requirements - this does look like an ALSR alternative and 
+>>>>     probably couldn't directly use MAP_BELOW_HINT, although maybe this 
+>>>>     suggests we need a mechanism to map without a VA-range? [5]
+>>>>
+>>>>   * MIT-Scheme parses /proc/self/maps to find the lowest mapping within 
+>>>>     a range [6]
+>>>>
+>>>>   * LuaJIT uses an approach to 'probe' to find a suitable low address 
+>>>>     for allocation [7]
+>>>>
+>>>
+>>> Although I did not take a deep dive into each example above, there are
+>>> some very odd things being done, we will never cover all the use cases
+>>> with an exact API match.  What we have today can be made to work for
+>>> these users as they have figured ways to do it.
+>>>
+>>> Are they pretty? no.  Are they common? no.  I'm not sure it's worth
+>>> plumbing in new MM code in for these users.
+>>
+>> My issue with the existing 'solutions' is that they all seem to be fragile:
+>>
+>>  * Using /proc/self/maps is inherently racy if there could be any other
+>> code running in the process at the same time.
+> 
+> Yes, it is not thread safe.  Parsing text is also undesirable.
+> 
+>>
+>>  * Attempting to map the upper part of the address space only works if
+>> done early enough - once an allocation arrives there, there's very
+>> little you can robustly do (because the stray allocation might be freed).
+>>
+>>  * LuaJIT's probing mechanism is probably robust, but it's inefficient -
+>> LuaJIT has a fallback of linear probing, following by no hint (ASLR),
+>> followed by pseudo-random probing. I don't know the history of the code
+>> but it looks like it's probably been tweaked to try to avoid performance
+>> issues.
+>>
+>>>> The biggest benefit I see of MAP_BELOW_HINT is that it would allow a
+>>>> library to get low addresses without causing any problems for the rest
+>>>> of the application. The use case I'm looking at is in a library and 
+>>>> therefore a personality mode wouldn't be appropriate (because I don't 
+>>>> want to affect the rest of the application). Reading /proc/self/maps
+>>>> is also problematic because other threads could be allocating/freeing
+>>>> at the same time.
+>>>
+>>> As long as you don't exhaust the lower limit you are trying to allocate
+>>> within - which is exactly the issue riscv is hitting.
+>>
+>> Obviously if you actually exhaust the lower limit then any
+>> MAP_BELOW_HINT API would also fail - there's really not much that can be
+>> done in that case.
+> 
+> Today we reverse the search, so you end up in the higher address
+> (bottom-up vs top-down) - although the direction is arch dependent.
+> 
+> If the allocation is too high/low then you could detect, free, and
+> handle the failure.
+
+Agreed, that's fine.
+
+>>
+>>> I understand that you are providing examples to prove that this is
+>>> needed, but I feel like you are better demonstrating the flexibility
+>>> exists to implement solutions in different ways using todays API.
+>>
+>> My intention is to show that today's API doesn't provide a robust way of
+>> doing this. Although I'm quite happy if you can point me at a robust way
+>> with the current API. As I mentioned my goal is to be able to map memory
+>> in a (multithreaded) library with a (ideally configurable) number of VA
+>> bits. I don't particularly want to restrict the whole process, just
+>> specific allocations.
+> 
+> If you don't need to restrict everything, won't the hint work for your
+> usecase?  I must be missing something from your requirements.
+
+The hint only works if the hint address is actually free. Otherwise
+mmap() falls back to as if the hint address wasn't specified.
+
+E.g.
+
+> 	for(int i = 0; i < 2; i++) {
+> 		void *addr = mmap((void*)(1UL << 32), PAGE_SIZE, PROT_NONE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+> 		printf("%p\n", addr);
+> 	}
+
+Prints something like:
+
+0x100000000
+0x7f20d21e0000
+
+The hint is ignored for the second mmap() because there's already a VMA
+at the hint address.
+
+So the question is how to generate a hint value that is (or has a high
+likelihood of being) empty? This AFAICT is the LuaJIT approach, but
+their approach is to pick random values in the hope of getting a free
+address (and then working linearly up for subsequent allocations). Which
+doesn't meet my idea of "robust".
+
+>>
+>> I had typed up a series similar to this one as a MAP_BELOW flag would
+>> fit my use-case well.
+>>
+>>> I think it would be best to use the existing methods and work around the
+>>> issue that was created in riscv while future changes could mirror amd64
+>>> and arm64.
+>>
+>> The riscv issue is a different issue to the one I'm trying to solve. I
+>> agree MAP_BELOW_HINT isn't a great fix for that because we already have
+>> differences between amd64 and arm64 and obviously no software currently
+>> out there uses this new flag.
+>>
+>> However, if we had introduced this flag in the past (e.g. if MAP_32BIT
+>> had been implemented more generically, across architectures and with a
+>> hint value, like this new flag) then we probably wouldn't be in this
+>> situation. Applications that want to restrict the VA space would be able
+>> to opt-in and be portable across architectures.
+> 
+> I don't think that's true.  Some of the applications want all of the
+> allocations below a certain threshold and by the time they are adding
+> flags to allocations, it's too late.  What you are looking for is a
+> counterpart to mmap_min_addr, but for higher addresses?  This would have
+> to be set before any of the allocations occur for a specific binary (ie:
+> existing libraries need to be below that threshold too), I think?
+
+Well that's not what *I* am looking for. A mmap_max_addr might be useful
+for others for the purpose of restricting all allocations.
+
+I think there are roughly three classes of application:
+
+ 1. Applications which do nothing special with pointers. This is most
+applications and they could benefit from any future expansions to the VA
+size without any modification. E.g. if 64 bit VA addresses were somehow
+available they could deal with them today (without recompilation).
+
+ 2. Applications which need VA addresses to meet certain requirements.
+They might be emulating another architecture (e.g. FEX) and want
+pointers that can be exposed to the emulation. They might be aware of
+restrictions in JIT code (e.g. PHP). Or they might want to store
+pointers in 'weird' ways which involve fewer bits - AFAICT that's the
+LuaJIT situation. These applications are usually well aware that they
+are doing something "unusual" and would likely use a Linux API if it
+existed.
+
+ 3. Applications which abuse the top bits of a VA because they've read
+the architecture documentation and they "know" that the VA space is limited.
+
+Class 3 would benefit from mmap_max_addr - either because the
+architecture has been extended (although that's been worked around by
+requiring the hint value to allocate into the top address space) or
+because they get ported to another architecture (which I believe is the
+RiscV issue). There is some argument these applications are buggy but
+"we don't break userspace" so we deal with them in kernel until they get
+ported and then ideally the bugs are fixed.
+
+Class 1 is the applications we know and love, they don't need anything
+special.
+
+Class 2 is the case I care about. The application knows it wants special
+addresses, and in the cases I've detailed there has been significant
+code written to try to achieve this. But the kernel isn't currently
+providing a good mechanism to do this.
+
+>>
+>> Another potential option is a mmap3() which actually allows the caller
+>> to place constraints on the VA space (e.g. minimum, maximum and
+>> alignment). There's plenty of code out there that has to over-allocate
+>> and munmap() the unneeded part for alignment reasons. But I don't have a
+>> specific need for that, and I'm guessing you wouldn't be in favour.
+> 
+> You'd probably want control of the direction of the search too.
+
+Very true, and one of the reasons I don't want to do a mmap3() is that
+I'm pretty I'd miss something.
+
+> I think mmap3() would be difficult to have accepted as well.
+
+And that's the other major reason ;)
+
+Thanks,
+
+Steve
+
+> ...
+> 
+> Thanks,
+> Liam
+> 
 
 
