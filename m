@@ -1,73 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-2550-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2551-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9E59AECB4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 18:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E0259AEDC2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Oct 2024 19:21:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZBpJ2p4vz2yPR;
-	Fri, 25 Oct 2024 03:54:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZCPn0920z3bbS;
+	Fri, 25 Oct 2024 04:21:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::131"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729788856;
-	cv=none; b=YDNjs+XA0SU03dg4LbqNJ0OjbcJUic6iYEjhZbBADPW9Onmo4ODRpwwdneoib9wRf/VLOQDVZgJ4zjt/TVbQvQQQHw3/iZwSLu4LeDNv8PS+b98sEnfK9Qd8p5aNj4zUXRSPPQlEdgU3Jy2paBlzazwucUNzEFkmAeW8Fc3YOBY5iroBVwc1hAWvl15Fd/X/uwusjxwU5L3DyIY2Z7KYfdXT8x0OeIYlUTw8eE/yExwzfIoALbeCKwxI00iiWBNfY0djYdmfY9gsGYImcrEf+jZJ61S8/Y4QK1zbdPTMTwJ4K4jv2wd7RPkEfUXj2hPPdXjhQP+L9Sjb1fsGIqc+rg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729790492;
+	cv=none; b=U5Y7bKyBGg0cMGKiiH1XDjFZOnA1wx7KSe8X7IXNKYvHHScZdDCwWZvlxZ0unUe38of5E96Bup3AiDOy2NXWmmhij4UL1wZVJ+PT5f8kF8t0GhwxGcCk62W/UMRj58G7FjjQ9FSyuUGdzHh8fnN0SFc1Cg/BSmySjCcw0oME5tY0k/xklu8t2iOT453Y5ATrjN2q2W0qoRGumsKbrStYR8iYTpeFh84YTUjOqGn8lS9yOtJ65MVNbas7MoJb1O2eUGknUiW0OBCxg6K+SUfxFnezdyo0SNEJgqi9ptBlC6qr/jF89xjMai5GIyu2jc7K0qUL+XJlxLmEbR4eI/vubw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729788856; c=relaxed/relaxed;
-	bh=8vZtlZMqnSKGUtBusgEAIWSnXvv6eiXaLwXYqGf4G/U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m48Ioe4KqIj1H1QUSaRUq7HQ2DM5i0fa2wfzAdFKuag96D45vMca6mz9a2bVZl3ccXI/ME+I8QgTgN+ZjnMlexF8KXemWKgVX1SVkrElpDVSYh9aVTHgoiciZ3661N5tyxz07GX/1cOnXbznxZZ7yO+xR81npbEC3WGVVJKqgKV46wKNutfUiCCvV+QzwW4H7+tlAgoevdt0vZG1m5iHrsMLRaqwkWQPMHyPc52D9uUiq8bEHWRUlGajVJX/p0NJi1hgqnanqrD6QIj5Hon5ztzW7z4A4H5es2/i4rzen01IIDxzbGvY+yady5ZbXpdA1IYwRAYHx2UQKRDCAqDzvg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=dzRiC4Mq; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1729790492; c=relaxed/relaxed;
+	bh=H+g2opzh46Svkhzx4LlHfQsurYnKEQ+tiYaR6erOphc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kSy+EX337cdmDVFcCPXklDhBZXcJex30flIlMCA1icwRTkw1vBD7KxKVBd5a13vNTlBm4jGO8R+11JfzheOd08PKv4SpzATUmNxZQM7dq6PFdPDkseDeHsuy0TqLJeTQtQYlrRQwJKTIL7osWAtECGv6qsAyFQC93o4Uj9NhD+V0td7gBzoJpTE4hevYa/wP8dgRQDMSHYbXf0aecb7TWx0QQpYYz8FbM8/XZUK/n7uhx1OUfa80TJXQeS635dczyJDJAE42mSItZ81WAnMuiuwUEtukRPnKS8zvQP3UbCOYZuOqhPYhMldNUpqTw4GrO0EupaZ4j9ltKTdn9p1SVQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MWj6hVty; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=dzRiC4Mq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MWj6hVty;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZBpG58vYz2xrJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 03:54:13 +1100 (AEDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-539f84907caso1322087e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 09:54:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1729788849; x=1730393649; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8vZtlZMqnSKGUtBusgEAIWSnXvv6eiXaLwXYqGf4G/U=;
-        b=dzRiC4MqsTbtnORmAMObC8vEO22v24FRWardV0y1Zw7Cmg7/tXipPtDgKKzro96TEn
-         OIez2oyM4+GSymNGSCi+F1Yp5jRrdsOc+zJhKXRU9nsoEJZ8uiTZpmV3cKaboR6EZ6F2
-         3VF26E3R/Jzazjii5SbbXWZr3bBVHdZAUTULI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729788849; x=1730393649;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8vZtlZMqnSKGUtBusgEAIWSnXvv6eiXaLwXYqGf4G/U=;
-        b=prxPLECB8dUT0+daHW5muPMPCgBZqiFA+EWmNX1nxb4zQo9ZFLzI2BF1a4c8bXnNGb
-         E+47VEcXrdBBD8+XYqWH4KyF5EW7TUT8lp5vSONXEB1XFddco7w/xAP/LhjYzN4G5cDG
-         +yVvZwzuZbuwYet87JmWMS2o5yWLMC/Md5wVmCBaB/QqzUz9wl0Hno7T2PiIOSqU1dnM
-         Ih6gs1tIZZ2gr7+O89GS+oONPzd0YJG1AKDCmcDvlrxh5H15BQ/R1TszMXrKvGs/IFWU
-         rpY/nYzou7/wZ1YocqOTB51AyWuMNt0vPDZcVbVvRMNtEiM2EyNc4qMa4n7zBSbvJ3xO
-         pt3A==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ6dDyUkqKKJlt9Mbj/zQgT6048ld5wEjQFZf79q5pemMkMs3c1x3e+FO4QTrKNHXIgF4Hhrwa5qzT0tQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzRTf9GzSeXsaIyHvVRBaphBvBV0oCWjov7uEz23DV9YfcUOe0C
-	YCALht2GJ9deQG5mNRFD8if9qplIVKI6qW9mh4w03qFRTQAAI3a46d7ALzMU1NI9HYBt58w9xY8
-	5aXkMDQ==
-X-Google-Smtp-Source: AGHT+IGgZhb5e8y/iL6Ljlzrvb6ePFreEt7tKZ0puF4Hpl7KNAzRWUqkajISiCCsT6txrT1cbwmiKw==
-X-Received: by 2002:a05:6512:e92:b0:535:6892:3be3 with SMTP id 2adb3069b0e04-53b23e857edmr1688779e87.41.1729788848917;
-        Thu, 24 Oct 2024 09:54:08 -0700 (PDT)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb66a6545csm6157166a12.39.2024.10.24.09.54.07
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Oct 2024 09:54:07 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a99cc265e0aso158150066b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Oct 2024 09:54:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWYPw9la1AH4ej0nXhhmPf1iZusrLmlGBKNV8JfFMZqya2BYl3o0DJUPZHCwI3b8wQw7Sbn0ROAepdFmdo=@lists.ozlabs.org
-X-Received: by 2002:a17:907:3d91:b0:a9a:3459:6b63 with SMTP id
- a640c23a62f3a-a9ad286b954mr238585966b.56.1729788847320; Thu, 24 Oct 2024
- 09:54:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZCPl1w9Cz3bZs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 04:21:30 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49OFF8vO016293;
+	Thu, 24 Oct 2024 17:21:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=H+g2op
+	zh46Svkhzx4LlHfQsurYnKEQ+tiYaR6erOphc=; b=MWj6hVtyT94abuEvDKwRzg
+	vEzfIuRErN0hnAwbRY/TUvt5E34H4VjrsGar4t7xWhlMnz2E9gJrgOepzd1o/DDK
+	rxf88/mhlQ6sVC8spJ3dz7FEbULlLMZ8P0XnstAaqA7tca1j7aM5i24B/u7Scai+
+	fTey4tJzmOww45iKPwzaYJW4wtd34fatd/6LTAYkcz457PTHbx57ig4y77L3CdiS
+	bEk3ZOCFJgAemvfgRLNqfkwlWYokA3redirlvEzgcxP0C3oIIJMHQAUJTRkxGRaC
+	yQgd/ucLMXlDwcNRLvrgvTgeNNwV2KDkKbSH+2BjnMPwuhM9T3/q1xjpssqF7qaw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emae23px-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 17:21:08 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49OHL7LF030187;
+	Thu, 24 Oct 2024 17:21:07 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emae23ps-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 17:21:07 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49OEFldL014303;
+	Thu, 24 Oct 2024 17:21:06 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42emhfsgyh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 17:21:06 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49OHL2LZ46793140
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Oct 2024 17:21:02 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4978420049;
+	Thu, 24 Oct 2024 17:21:02 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AB36C2004B;
+	Thu, 24 Oct 2024 17:20:58 +0000 (GMT)
+Received: from [9.43.42.125] (unknown [9.43.42.125])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 24 Oct 2024 17:20:58 +0000 (GMT)
+Message-ID: <dce0a201-7e73-44e2-9228-f28973cdd639@linux.ibm.com>
+Date: Thu, 24 Oct 2024 22:50:57 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 11/17] kbuild: Add generic hook for architectures to
+ use before the final vmlinux link
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, "Naveen N. Rao" <naveen@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Vishal Chourasia <vishalc@linux.ibm.com>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+References: <20240915205648.830121-1-hbathini@linux.ibm.com>
+ <20240915205648.830121-12-hbathini@linux.ibm.com>
+ <CAK7LNAS9LPPxVOU55t2C_vkXYXK-8_2bHCVPWVxYdwrSrxCduw@mail.gmail.com>
+ <beeea05a-7dfc-4506-9f20-7c8a4d1f4c85@linux.ibm.com>
+ <CAK7LNATFVmhfQv5Rb=Gkq=fST9+SmSFo_uPi4pB2ckC1qHdkqw@mail.gmail.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <CAK7LNATFVmhfQv5Rb=Gkq=fST9+SmSFo_uPi4pB2ckC1qHdkqw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tPOOaHwjgKOcLfv7t_BLtF8m_99ykuMc
+X-Proofpoint-GUID: NsEgD9dkkLJ1l8cofoEq6NuK79WRkVpe
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,125 +116,131 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
- <CAHk-=wgDrG-aKVGrd-9gQsC0pMs936oo8XEFmEn6ciaT9=nfDg@mail.gmail.com>
- <20241014035436.nsleqolyj3xxysrr@treble> <CAHk-=widMFN2wDeS2K65f8FnW8L6gPZa6CNO4OWkv--0G2LXhw@mail.gmail.com>
- <r5ruxmop7vewd7aq6gu2zve4hfmcu4byhlebygswbqkgz43qfq@rsajyfiypcsd>
- <064d7068-c666-49f0-b7df-774c2e281abc@citrix.com> <20241020224444.zhoscljpe7di5yv3@treble>
- <CAHk-=wikKPKDECP=zBEEnxBB44n-uLsnMoOG=aCy6FwDNc9mxA@mail.gmail.com>
- <20241020231112.erso2jzqwkbin4kh@treble> <CAHk-=wiUaWnHGgusaMOodypgm7bVztMVQkB6JUvQ0HoYJqDNYA@mail.gmail.com>
- <20241023094448.GAZxjFkEOOF_DM83TQ@fat_crate.local> <CAHk-=wgDKPt554sAyzHvW1U+Opx_2Ofu4znjjroMWr1x90SU7A@mail.gmail.com>
- <CAHk-=wjpE4hgOs0q7-jZ+=RsCD=YX9R=V3SCprzg0GOUQfCHNw@mail.gmail.com> <c40199a2a319440d89bfcc5c06ec4b3a@AcuMS.aculab.com>
-In-Reply-To: <c40199a2a319440d89bfcc5c06ec4b3a@AcuMS.aculab.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 24 Oct 2024 09:53:50 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whY3P=hH1SV2LV8C3-A=ZjOJ1Sd+qLJQaai+Tiy2vHVvg@mail.gmail.com>
-Message-ID: <CAHk-=whY3P=hH1SV2LV8C3-A=ZjOJ1Sd+qLJQaai+Tiy2vHVvg@mail.gmail.com>
-Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-To: David Laight <David.Laight@aculab.com>
-Cc: Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Andrew Cooper <andrew.cooper3@citrix.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, 
-	"x86@kernel.org" <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Peter Zijlstra <peterz@infradead.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	Waiman Long <longman@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Ingo Molnar <mingo@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mark Rutland <mark.rutland@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 phishscore=0 mlxlogscore=999 adultscore=0 spamscore=0
+ malwarescore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410240143
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, 24 Oct 2024 at 02:22, David Laight <David.Laight@aculab.com> wrote:
->
-> Would it be better to make the 'bogus' constant one that makes
-> all accesses fail?
+Hello Masahiro,
 
-Well, the bogus constant is actually used for other runtime cases too
-(well, right now that's only the dentry pointer, but could be more),
-it's not some kind of "just for the max user address".
+On 10/10/24 5:07 pm, Masahiro Yamada wrote:
+> On Thu, Oct 10, 2024 at 6:57 PM Hari Bathini <hbathini@linux.ibm.com> wrote:
+>>
+>>
+>> On 09/10/24 8:53 pm, Masahiro Yamada wrote:
+>>> On Mon, Sep 16, 2024 at 5:58 AM Hari Bathini <hbathini@linux.ibm.com> wrote:
+>>>>
+>>>> From: Naveen N Rao <naveen@kernel.org>
+>>>>
+>>>> On powerpc, we would like to be able to make a pass on vmlinux.o and
+>>>> generate a new object file to be linked into vmlinux. Add a generic pass
+>>>> in Makefile.vmlinux that architectures can use for this purpose.
+>>>>
+>>>> Architectures need to select CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX and must
+>>>> provide arch/<arch>/tools/Makefile with .arch.vmlinux.o target, which
+>>>> will be invoked prior to the final vmlinux link step.
+>>>>
+>>>> Signed-off-by: Naveen N Rao <naveen@kernel.org>
+>>>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+>>>> ---
+>>>>
+>>>> Changes in v5:
+>>>> * Intermediate files named .vmlinux.arch.* instead of .arch.vmlinux.*
+>>>>
+>>>>
+>>>>    arch/Kconfig             | 6 ++++++
+>>>>    scripts/Makefile.vmlinux | 7 +++++++
+>>>>    scripts/link-vmlinux.sh  | 7 ++++++-
+>>>>    3 files changed, 19 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/arch/Kconfig b/arch/Kconfig
+>>>> index 975dd22a2dbd..ef868ff8156a 100644
+>>>> --- a/arch/Kconfig
+>>>> +++ b/arch/Kconfig
+>>>> @@ -1643,4 +1643,10 @@ config CC_HAS_SANE_FUNCTION_ALIGNMENT
+>>>>    config ARCH_NEED_CMPXCHG_1_EMU
+>>>>           bool
+>>>>
+>>>> +config ARCH_WANTS_PRE_LINK_VMLINUX
+>>>> +       def_bool n
+>>>
+>>>
+>>> Redundant default. This line should be "bool".
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>> +       help
+>>>> +         An architecture can select this if it provides arch/<arch>/tools/Makefile
+>>>> +         with .arch.vmlinux.o target to be linked into vmlinux.
+>>>> +
+>>>>    endmenu
+>>>> diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
+>>>> index 49946cb96844..edf6fae8d960 100644
+>>>> --- a/scripts/Makefile.vmlinux
+>>>> +++ b/scripts/Makefile.vmlinux
+>>>> @@ -22,6 +22,13 @@ targets += .vmlinux.export.o
+>>>>    vmlinux: .vmlinux.export.o
+>>>>    endif
+>>>>
+>>>> +ifdef CONFIG_ARCH_WANTS_PRE_LINK_VMLINUX
+>>>> +vmlinux: arch/$(SRCARCH)/tools/.vmlinux.arch.o
+>>>
+>>> If you move this to arch/*/tools/, there is no reason
+>>> to make it a hidden file.
+>>
+>> Thanks for reviewing and the detailed comments, Masahiro.
+>>
+>>>
+>>>
+>>> vmlinux: arch/$(SRCARCH)/tools/vmlinux.arch.o
+>>>
+>>>
+>>>
+>>>
+>>>> +arch/$(SRCARCH)/tools/.vmlinux.arch.o: vmlinux.o
+>>>
+>>> FORCE is missing.
+>>
+>>
+>> I dropped FORCE as it was rebuilding vmlinux on every invocation
+>> of `make` irrespective of whether vmlinux.o changed or not..
+> 
+> 
+> It is because you did not add vmlinux.arch.S to 'targets'
+> 
+> See my comment in 12/17.
+> 
+>    targets += vmlinux.arch.S
+> 
+> 
+>> Just curious if the changes you suggested makes FORCE necessary
+>> or FORCE was expected even without the other changes you suggested?
+> 
+> 
+> FORCE is necessary.
+> 
+> arch/powerpc/tools/Makefile must be checked every time.
+> 
+> 
+> When arch/powerpc/tools/ftrace-gen-ool-stubs.sh is changed,
+> vmlinux must be relinked.
 
-And for things like profiling, where the tools use the original object
-code, making the bogus constant really obvious is actually helpful.
+Thanks for the review and clarifications!
+Posted v6 with the changes. Please review:
 
-So I do think that "standing out" is more important than having some
-value that has semantic meaning, when that value is going to be
-overwritten at boot time.
+  
+https://lore.kernel.org/all/20241018173632.277333-1-hbathini@linux.ibm.com/
 
-> So you soon find out it any code doesn't get patched.
-
-Yes, that would be nice, but if the simple patching logic is broken,
-you have worse problems. The patching logic really is just a couple of
-lines of code, and the location where we set this particular value is
-literally next to the place we do all our other alternatives, so if
-there's something wrong there, you basically have a broken system.
-
-> I also wonder how big the table of addresses to patch is.
-> If that gets into inlined functions it could be big.
-
-It's 4 bytes per location, so yes, it grows linearly by use - but not very much.
-
-And the patch table is in the init section that gets discarded after
-boot, along with all the other things like the altinstructions and
-things like the return sites for retpolines. Which are *much* bigger
-and more common.
-
-So yes, there's a table, and yes it grows, but at least in my personal
-config, the USER_PTR_MAX table is 424 bytes - and we free it after
-boot.  90% of that comes from 'access_ok()' sprinkled around and
-inlined.
-
-Just as a comparison, the altinstruction tables (both the pointers and
-the actual replacement instructions) is 25kB in that config. Also a
-drop in the ocean, and also something that gets free'd after init.
-
-> OTOH having a real function that does access_ok(), clac and address
-> masking may not problem.
-
-access_ok() itself is so rarely used these days that we could out-line
-it.  But the code cost of a function call is likely higher than
-inlining the 8-byte constant and a couple of instructions: not because
-the call instruction itself, but because of the code generation pain
-around it (register save/restore etc).
-
-IOW, the call instruction is just five bytes, but it will typically
-cause spills and forced register choices for argument and return
-value. It will obviously depend a lot on the context of the function
-call, but to save 4 bytes for the table that gets freed, and have the
-8-byte constant only once? That's a very false economy.
-
-Eg an example code sequence (from a random place in the kernel that I
-looked at with objdump is
-
-        movabs $0x123456789abcdef,%rax
-        cmp    %rsi,%rax
-        jb     <__x64_sys_rt_sigreturn+0x20e>
-
-and that's 19 bytes. But I tried it with a function call, and that
-same function grew from 1320 bytes to 1324 bytes.
-
-So the function call version generated 4 bytes bigger code. I didn't
-figure out why, because register allocation was so different, but I do
-think it's exactly that: function calls cause limits on register use.
-
-So even if we didn't free the 4 byte entry after init, making
-access_ok() a function call would actually not be a win.
-
-And with how slow 'ret' instructions can be, we really don't want
-small function calls.
-
-In fact, it really makes me wonder if we should inline 'get_user()' entirely.
-
-> Especially if there is always a (PAGE sized) gap between the highest
-> user address and the lowest kernel address so the 'size' argument
-> to access_ok() can be ignored on the assumption that the accesses
-> are (reasonably) linear.
-
-Yes, that's what we do right now for the inline code generation anyway.
-
-(Ok, we actually do take the 'size' value into account when it's not
-constant, or when it's huge, but even that is just out of a silly
-abundance of caution and not a very common case).
-
-                Linus
+- Hari
 
