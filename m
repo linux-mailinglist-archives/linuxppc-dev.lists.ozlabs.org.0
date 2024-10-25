@@ -1,73 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-2584-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2585-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14A89B0A0A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 18:36:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDD99B0BF4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 19:42:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZpLl3s2hz2y8k;
-	Sat, 26 Oct 2024 03:35:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZqq60J3Dz2xrb;
+	Sat, 26 Oct 2024 04:42:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::635"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729874159;
-	cv=none; b=oXPKQ2H8JpnZbtr+pR4yaQP1adONB8jE+/KIe+fHs7gk+4L6wGWKMLW1zwFbLHC03SmL0gtkRyv85LnjR+zZtP2Jw2AJSwmTXS+M19ivQEoGXsC7j1yq+yU/VGgNs58axw7lvAjU9Gcrr8tyovsolwFH3AIxR476kV1izTLJmvjpi9eB1hI7I2r84Ukn3SnGDkJpdpIpQ46z1LFkyHAqMWZi9HTKT/GscJurP9cS6tJI6HXfQDBnq4vVMDt3TUX51T8ybAMiQE8OAbMjLd8Aj4GGULOP2+xXpplwLwjwawr6TIw8KdqU07PBxhas4mEkQbXHeS8OA4Lzh+tIL6RLDA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729878129;
+	cv=none; b=iVbO3scvmgXa0FV2N3+gKcPGflZXN3E+fL3YGiCYBdoiVec4b9CxV3Jxn1S04NRIH+MNKAD2IgaA9ldJKE3q2vL67cQHPK5LNOTa0H2OT+Xj+Nk5SKFd3qMMDSIev7UTrN4qUM5YBmDOAJkdka1thgCkGUv/OtgCohoKAniIPhtV0cENoRd4pAqP9NLBu+NU3lBHXj6MkQZZHEX5PuQPZVa90MAv2JyHxtvl2tktr4DnJOwYcjpRwY9jIOH4hQxExaqKjI0c8mizfmMO/uISipwlecZ1s8yJofFZ8r4pnnEEVvjd21my/+0KRXIRPc80gu70Z3qxKeZKqsQRj5UJmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729874159; c=relaxed/relaxed;
-	bh=GLDOSgLpz6WPEciFTMmOUcnN16cSDB3QdbhwmKyjEOQ=;
+	t=1729878129; c=relaxed/relaxed;
+	bh=luHPkXcmkzXARAD1k+1siQ/blVliFRMh2F/pQQLu2Pw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XZzQJQv9mwNQLdLU4wgw7BHC+HG3kfD8Pg8MBe78PwFhzgNybyfvd/EI2Sh/JGSGGyeAtFodYdixCR8i158+VDh3OOSwNxZ+vYIy8/cnkFFPWCRQn8Y+5GClD/evK9VMNHgH6spPMc4Z8ejN6HI1IRN9eSGLdlTmGJG764Lrs54YT/E4jy2gfYsu1g2PCnhjn0t6uQhOSnTnQK9OnocUZeJ/zZN+hcSS472kWoG/KqlLltoDW683Q90BcwRhuqNWiNqthUTzH2ESO/3v6jE27RaKaA54A76R+IG9SVzZ42IsL1HF7k/bhODofxMVF4RpPAj8dEpdTDdKR0fk73XZIg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=YXdlpVXY; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	 To:Cc:Content-Type; b=kKaYvH6MPs1rhCp+9p5w6WXqU/raBXWbHmXHmVPQGfij9moJ7zV0cyMMEXj0SLGyjJQgpE46356ocmFc1bPXiVJwSFaidhgSugeLvQv+FK1b0bUSx8cfhENo3xogY1ovqAwJG6bxFSo41ED8P0aqPnrgZ40tprpqBfEJ1egZOTN8fzTmsPPnAJ1RB+uXoZVFv4LJ5uNWe/HvQZzXJKX4CDWv3GgVLqJ4oEwaky3YQiZFqtSBgr3BfmQRDWiTAqGn427iG9fU24vmWqU5UDfFzXggeSH9VJoTw7XrGcVwL1mJ7zEc3zVbjtSAg2xSH7ZONZ520tvQUrBUZpHdKc/vqg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQGGVJXe; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQGGVJXe; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=YXdlpVXY;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQGGVJXe;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQGGVJXe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZpLj2LdSz2y8g
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 03:35:55 +1100 (AEDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-a9a26a5d6bfso324437766b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 09:35:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1729874150; x=1730478950; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GLDOSgLpz6WPEciFTMmOUcnN16cSDB3QdbhwmKyjEOQ=;
-        b=YXdlpVXYIfg2YxOh4l9WrFHLEL9Mk24dAKDF06WPfhWcz+6aU5l4nQnS6NNuYwlCNF
-         DJDy05/o/56P6ymj3CTuAW2svHKLbU/RfKWQpB56NCIG+4/HbzUa1AcZBOS5Vvf+8hwY
-         jxu+utJy6IpQyrKO6FJRgMoyqpdvUO4vEYaXQ=
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZqq43rPKz2xqp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 04:42:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729878121;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=luHPkXcmkzXARAD1k+1siQ/blVliFRMh2F/pQQLu2Pw=;
+	b=XQGGVJXeAqgRjC3t0U6B0LMNCdt5GhZVZ2bLsaP1SlUZO2pdkbcocWjW59I9Lt2mao9VeW
+	iDxGVx310gWIbkxW7TOWuq0ThGCfh3vbfdldMFqMTmb6f7BXD+4Jpy7yB2hqFQbt0xo+o8
+	Bfez7gpa1CaXOLMdEzaE8XwHePNMOQI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729878121;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=luHPkXcmkzXARAD1k+1siQ/blVliFRMh2F/pQQLu2Pw=;
+	b=XQGGVJXeAqgRjC3t0U6B0LMNCdt5GhZVZ2bLsaP1SlUZO2pdkbcocWjW59I9Lt2mao9VeW
+	iDxGVx310gWIbkxW7TOWuq0ThGCfh3vbfdldMFqMTmb6f7BXD+4Jpy7yB2hqFQbt0xo+o8
+	Bfez7gpa1CaXOLMdEzaE8XwHePNMOQI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-228-4P6KtcVZO3S_izVexzhjTQ-1; Fri, 25 Oct 2024 13:41:59 -0400
+X-MC-Unique: 4P6KtcVZO3S_izVexzhjTQ-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4315c1b5befso15958215e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 10:41:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729874150; x=1730478950;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GLDOSgLpz6WPEciFTMmOUcnN16cSDB3QdbhwmKyjEOQ=;
-        b=CDtskIwSPT2CJLVvlh1FDlo0/GG5kU9NoZKKQJegLRTM3h5x8b8kUUTNqL31jnY3su
-         jVobeC1kx9Sav5JL9oy4M+N2G8ieabVXDfIyHZ3h+fyFmMiYzP2fEPg0rzwF73klJMIb
-         HNIpBOnPd+Ut9LQdPZqUc6mkpOQvHGCR3M0xeI/gGVf61V59CIgdaRHhloI58JLfQu8U
-         6gNZ+q9noZO4VgP4j/Xt1n3whBFy7VwIFkY4JTuggLOjFSecxSWjW55RDMcS0uyC6hwq
-         Xz3lFdZ6nz9HDdZc0Bjf7c/y+1IFcAH9iJSfQWpDL+h8u7CRepOVS7SGuafVLk/wXiIC
-         4o9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVz4m4pRynnypLj9O0jB7ic6RQEM2ed9RooX12UIip3aqaBxxfX2SWoXoCPZm4CwepYWAktTXi1gZ8xtCM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwOHXsLu2Ovb1qzNKCygGil0l7i1hnT5MDoX1ZvP2ZyJy4577zC
-	fnh3UmZNHfvKjmY7RQKXy0Sx5umRZSEytO1pcIHtaDm8X0M8D1pRv6k6s8Mb9CuFfofeyOMfLpX
-	bivNj1A==
-X-Google-Smtp-Source: AGHT+IEHqCKN9UcdTawpWrB2z4dVyol2AThnKT3qq999wrtthrIa+uIfxvldq+tvTr6MVLTsXbcYOQ==
-X-Received: by 2002:a17:907:9496:b0:a99:ebbb:1307 with SMTP id a640c23a62f3a-a9abf96d0fbmr849808166b.59.1729874150085;
-        Fri, 25 Oct 2024 09:35:50 -0700 (PDT)
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1dec7feasm87034866b.38.2024.10.25.09.35.49
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Oct 2024 09:35:49 -0700 (PDT)
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a9a850270e2so367023666b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 09:35:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUkh7uLRTpX0fDFjzfdY0tcekjRH+wArluz73rbidQxUMYIZOngruEsScdbLcOLUkfyj/ywliqE4StjZE8=@lists.ozlabs.org
-X-Received: by 2002:a17:907:7fa7:b0:a9a:f84:fefd with SMTP id
- a640c23a62f3a-a9abf8b06b0mr1066907666b.36.1729874148732; Fri, 25 Oct 2024
- 09:35:48 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729878118; x=1730482918;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=luHPkXcmkzXARAD1k+1siQ/blVliFRMh2F/pQQLu2Pw=;
+        b=MBQwFNztA6jJ53o71fiAKQ9G3FF+eczr2YfpHhgKp5JrwWXyk+QQaI1WEY4z3MIKiA
+         sH6AgGU67ec1ude9XThqRcn16D2qEDuB8niTl5sygeXcz3ca4qYXlev2FBNhJU6ZUagV
+         M++rxYs7MPITUmkgepLl+sIxP0LIGTLJBXfGNA/0elSKdv91he+r0RiSTdFjN+2W74qP
+         y8NLqEHixOP8hoGkR0x7XUKTQaPODMrx5gknHkF0Q3XZZl4ZdIjO8Njdltq2+ALpSSZg
+         rOLQfTWG8Dz/dD7zcupuJyTqO0HVn6iI8Tqh91/VcgHEiycMu178hthp1GsYKGqIW5E1
+         CsoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXsPA+dk3x21K+1m+nu6QR8c7DaW99J1dO+CrzcFyUBttMV6i9bJIauCSp6YC1o4q+zLfbj2fig5dp3kEo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxllY2ANWg6xOwOUE/JQVNCwLYlRkkna2uw2xlS5O2KHfvKsIiz
+	2QwAMl9I4i2Ue8yNdvA/aHINhdCs6m0q8frbshVVV7MqUySi3PamJrqhgOBNwmAFhoO6KA9vlQo
+	7FS/HOIGEdLhVfYQS94YVyCxguiRdYJd0uiZLBPi8xV4VhuKgkH8uoR4kp4Yc5+xwPZVMykuRyP
+	Y/6hWXF5C81sLsoeY8P/NsK00haY7Kpsc10SaN+Q==
+X-Received: by 2002:a5d:410d:0:b0:37d:5436:49b with SMTP id ffacd0b85a97d-3806113a07emr163672f8f.13.1729878118153;
+        Fri, 25 Oct 2024 10:41:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFJirsSaLOjUEz6kn7HmxOjIyhE9ZfBrB9GAGHgNcgNSBUFOeNbcRoyDDrANp8n6mxM4gCIddwEWDqpYot15qQ=
+X-Received: by 2002:a5d:410d:0:b0:37d:5436:49b with SMTP id
+ ffacd0b85a97d-3806113a07emr163639f8f.13.1729878117761; Fri, 25 Oct 2024
+ 10:41:57 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,50 +91,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
- <CAHk-=wgDrG-aKVGrd-9gQsC0pMs936oo8XEFmEn6ciaT9=nfDg@mail.gmail.com>
- <20241014035436.nsleqolyj3xxysrr@treble> <CAHk-=widMFN2wDeS2K65f8FnW8L6gPZa6CNO4OWkv--0G2LXhw@mail.gmail.com>
- <r5ruxmop7vewd7aq6gu2zve4hfmcu4byhlebygswbqkgz43qfq@rsajyfiypcsd>
- <064d7068-c666-49f0-b7df-774c2e281abc@citrix.com> <20241020224444.zhoscljpe7di5yv3@treble>
- <CAHk-=wikKPKDECP=zBEEnxBB44n-uLsnMoOG=aCy6FwDNc9mxA@mail.gmail.com>
- <20241020231112.erso2jzqwkbin4kh@treble> <CAHk-=wiUaWnHGgusaMOodypgm7bVztMVQkB6JUvQ0HoYJqDNYA@mail.gmail.com>
- <20241023094448.GAZxjFkEOOF_DM83TQ@fat_crate.local> <CAHk-=wgDKPt554sAyzHvW1U+Opx_2Ofu4znjjroMWr1x90SU7A@mail.gmail.com>
- <CAHk-=wjpE4hgOs0q7-jZ+=RsCD=YX9R=V3SCprzg0GOUQfCHNw@mail.gmail.com>
- <c40199a2a319440d89bfcc5c06ec4b3a@AcuMS.aculab.com> <CAHk-=whY3P=hH1SV2LV8C3-A=ZjOJ1Sd+qLJQaai+Tiy2vHVvg@mail.gmail.com>
- <4a43ca4f0f28412fbdca4accb1719663@AcuMS.aculab.com>
-In-Reply-To: <4a43ca4f0f28412fbdca4accb1719663@AcuMS.aculab.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 25 Oct 2024 09:35:30 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh6nvHVevpaF0VHgOQR_tM3gcsiUo2i3zGRAYSMSgZTJg@mail.gmail.com>
-Message-ID: <CAHk-=wh6nvHVevpaF0VHgOQR_tM3gcsiUo2i3zGRAYSMSgZTJg@mail.gmail.com>
-Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-To: David Laight <David.Laight@aculab.com>
-Cc: Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Andrew Cooper <andrew.cooper3@citrix.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, 
-	"x86@kernel.org" <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Peter Zijlstra <peterz@infradead.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	Waiman Long <longman@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Ingo Molnar <mingo@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mark Rutland <mark.rutland@arm.com>
+References: <20241010182427.1434605-1-seanjc@google.com> <CABgObfbQW-3vp=mNcR4giUGZ_gxhuRykvKj8gzBDY7pOg6xdBQ@mail.gmail.com>
+ <Zxbw9XcFCHYR1Ald@google.com>
+In-Reply-To: <Zxbw9XcFCHYR1Ald@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 25 Oct 2024 19:41:45 +0200
+Message-ID: <CABgObfayH1x3qFjOiM=rQjxiui5tXJXObgR_qOGV5Hn_2QLEJQ@mail.gmail.com>
+Subject: Re: [PATCH v13 00/85] KVM: Stop grabbing references to PFNMAP'd pages
+To: Sean Christopherson <seanjc@google.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+	Yan Zhao <yan.y.zhao@intel.com>, David Matlack <dmatlack@google.com>, 
+	David Stevens <stevensd@chromium.org>, Andrew Jones <ajones@ventanamicro.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, 25 Oct 2024 at 01:56, David Laight <David.Laight@aculab.com> wrote:
+On Tue, Oct 22, 2024 at 2:25=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+> > Looks good to me, thanks and congratulations!! Should we merge it in
+> > kvm/next asap?
 >
-> > > Especially if there is always a (PAGE sized) gap between the highest
-> > > user address and the lowest kernel address so the 'size' argument
-> > > to access_ok() can be ignored on the assumption that the accesses
-> > > are (reasonably) linear.
-> >
-> > Yes, that's what we do right now for the inline code generation anyway.
->
-> Is that gap there on all architectures?
+> That has my vote, though I'm obvious extremely biased :-)
 
-All of the address checks are architecture-specific, so this page-size
-gap is purely about x86-64.
+Your wish is my command... Merged.
 
-             Linus
+Paolo
+
 
