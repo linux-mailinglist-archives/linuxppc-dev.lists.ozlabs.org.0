@@ -1,93 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-2586-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2587-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464679B0D52
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 20:31:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44FC9B0E11
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 21:15:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZrvj35ydz2yD4;
-	Sat, 26 Oct 2024 05:31:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZsv90rQJz2yFK;
+	Sat, 26 Oct 2024 06:15:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729881073;
-	cv=none; b=jc1E1ep9zoan80jxJtkLB0xowzDBP8ikfrYZRJkQQ3OMKlU218NPi4R93EvyVbY/RrMUAjoG5v1cf7LKc9pWe4AoiovrhAsp2YzG+Hf5eEaO85UJAmEa8XXI5CPt3Wsy8SnFjJxO5Zwp+aF64e18EX0xU7rgYjTfdKDZ3xzSuBM7vbrbMXtxNRj1rX1ZfJETuaZzVAys4HSdzfjyFzrwWCfQ+QOMa9FMLZPILh3AIvQ2hqp4WSJ+vZUAnIIufpliowmHWoLY3dsbcpQ7HxiAkXIq1au5XkPLM5XuCdDzc4+xwZCogXScl6MtBJ8U5+gKbd53/bZqNufJNx5nJM1H3Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729883749;
+	cv=none; b=FtE4+r5fdbsFSS5IFiNF6AOE1jA9GFD1ApVMMkx4UdyI2DVrs54N6UAwH+1AMP2XMxdIO6SeDUVA8OVfTVbedxaBajHsljPN13GxEA8c7SrWsb/gByMs0SIDTGabRFbHYjKUUjc6AzuH1CCCpkJ+hX9Jkpu2y1YQieop5uowvHDOda1t8SZwdFWWj8q1NhHqXvwe5gtNXeLRoP+kYi6sE0SNjjmxHIdclOKiSCo21wTA9mg+HrI6QcUojCNjqLdj/1QFKXoAX1MtwtOhibpN/nLUiriZFV+QKnizs0UVH4ajX27EkCKncslQVEAaFHoWLikh98Q4X9JLH6GvHiNV7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729881073; c=relaxed/relaxed;
-	bh=bCYg3WI36eTA+yA5LQzfw/1BaodCD9Je+3uqP+670Ns=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I1bCmGheNkD9xl2MhE8CzXuZL+xqleYsQenZULwGkhC2KdDy+LE6c1lV8ChKUSDAsgp07drE9zninr3xykCcCJAizJX93sakpg5MTPY/963B8FbEPyvDlz4O5kdpvMDeaWxAUdBkk5itIPL/SRtpp4eQ+p3l9Ko3oHyPMW4XVkro1LRLCMbxrBrxP4m0lQxT9++wZutwwyAHWG+/aizMxg5tefrSqesFTgDZaf1qHaaXaEA0L2syH4wn/knPpgodqGD1x9rA4/4Diz5FvbQJHhOUln2JKtgS2Nr/PP9uhQ30P/ObFb8bZHzQIDyvTfnTiI8IkRmpLJ3d8VdcsUzTQg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L4JBP6u5; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1729883749; c=relaxed/relaxed;
+	bh=gUD0JLQy8tP5Fw9hKaruBFI07YFmoZewbrA21ci4eMg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RZ6sZfzh//114YYkA1w1pVLtOaLyVnm5hRhdJhBXC35WG6U5Olw1snFRiKF5U2Iq0qZTdtiQgnbFydnRhqLsQPYnmt91Ht6nF1DfyRFIl1Eiq4g7MdBPgoRBkwkSaWzMVPcdQqrQsKHJeroYy7MhM+8tR4yMDi7gxyUCpFQpKmajHIawBO+rRHmdj/cwO/SPHXEVZaGzj1mr5SRID0OfMZeevFEx2WFWipLkN7fdDFj/QJrA8IiXSKwMaUYAE9MgL8hGiKGERwresz6pfG94ftdfzLNduJWilBxtpeifYUYdtudiyloBteDfcU7rAT8iDtu6nbcQdrW2PTO8NSzJLQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y0JN0wkw; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L4JBP6u5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y0JN0wkw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZrvh0Spkz2y6G
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 05:31:11 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PEeSoi032573;
-	Fri, 25 Oct 2024 18:30:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=bCYg3WI36eTA+yA5LQzfw/1BaodCD9
-	Je+3uqP+670Ns=; b=L4JBP6u5Q6DXkamufc4+3XtZ1LIvxy7KA02HHWnMgLigt/
-	/1qWBo6o+qQAV5pkWUKkTjnMNLq5BwQR9zJJTw0HvD4lc37cPSqK0DaSymmYGIzf
-	Qmaxfl/bly8lNmJ2jumL1zxgEcKZ1nSRiAAjgrhy6jtJmxUylLwAmlgtNLB1uEYj
-	9VdlGAflHyXYQpGdwjD3SSEQBbW9DtBsKEF6JAMVVVZN7BZuluITJVG9GmA8KPu7
-	rzEy+lYmeYDpEgLsSfj/KrNZ15BrYOLKGm5MB6ySYTy2bB3k5CPlDBQOgaROibbv
-	BiR89l1QcwwsJF0/qaDMDUFkBR4sZClC0mpsKhkA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42g246v9ex-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 18:30:42 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49PIUfrt004272;
-	Fri, 25 Oct 2024 18:30:41 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42g246v9et-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 18:30:41 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49PHpv67008754;
-	Fri, 25 Oct 2024 18:30:40 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42emkay4pw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 18:30:40 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49PIUcJ918743588
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Oct 2024 18:30:38 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 909152004B;
-	Fri, 25 Oct 2024 18:30:38 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2DD0220040;
-	Fri, 25 Oct 2024 18:30:38 +0000 (GMT)
-Received: from localhost (unknown [9.43.62.211])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Oct 2024 18:30:37 +0000 (GMT)
-Date: Sat, 26 Oct 2024 00:00:37 +0530
-From: "Nysal Jan K.A." <nysal@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] sched/membarrier: Fix redundant load of membarrier_state
-Message-ID: <nszn2c226bf6xslp7r5axmiov4fuhmwqqyzap7b2lysuch7fnl@uhgtmsaxttf3>
-References: <20241007053936.833392-1-nysal@linux.ibm.com>
- <87frolja8d.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZsv73yNQz2yF7
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 06:15:47 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id A6020A42B5F;
+	Fri, 25 Oct 2024 19:13:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475E8C4CEC3;
+	Fri, 25 Oct 2024 19:15:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729883743;
+	bh=LZGDCp6OlDYJbJtHkdL+6H+pJYptArgs+2dHiDwITZc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Y0JN0wkwmr6zmfPhz4zcMXdXSOIJbvpOQK3aM+nPrlr7L/tFCk8os9NBxtFpg4vn0
+	 dLFBc416VqXGWtM9r9ov1yFLzdJ7tDKGM3DTCm8C1XP9h3pn2R5oHv8i37yCEgNrJm
+	 jYd7oy404MvLPHIfNzBnLjpTzFYm0NWzCQkNZVQfFpxZEqMgh8fzPSDEFy8pzvFM8E
+	 4KZ9a1M2IYILzjlFTs/Xmryv9MzjfXWbQQ7IPSnK/QrKO0u1MI4GWcbTM+oT+2ekdq
+	 6x6BQv/pD0QnVl3anqQ1StDrNgn9Gl/i37yoAyrCsV09En0oO+DVPJWjdzHdFCLW5G
+	 IjXRhBohyIqoQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org
+Subject: [PATCH v2 00/18] Wire up CRC32 library functions to arch-optimized code
+Date: Fri, 25 Oct 2024 12:14:36 -0700
+Message-ID: <20241025191454.72616-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,158 +73,241 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87frolja8d.fsf@mail.lhotse>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gQkqUtvd0_hSqnkwwp8fiBBQGQjBbqR7
-X-Proofpoint-GUID: SMcGweBVNA9QTr_rEIeG2qZ-BNAshwUZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 adultscore=0
- mlxlogscore=999 clxscore=1011 impostorscore=0 mlxscore=0 phishscore=0
- bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2410250140
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=2.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.0
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Oct 25, 2024 at 11:29:38AM +1100, Michael Ellerman wrote:
-> [To += Mathieu]
-> 
-> "Nysal Jan K.A." <nysal@linux.ibm.com> writes:
-> > From: "Nysal Jan K.A" <nysal@linux.ibm.com>
-> >
-> > On architectures where ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
-> > is not selected, sync_core_before_usermode() is a no-op.
-> > In membarrier_mm_sync_core_before_usermode() the compiler does not
-> > eliminate redundant branches and the load of mm->membarrier_state
-> > for this case as the atomic_read() cannot be optimized away.
-> 
-> I was wondering if this was caused by powerpc's arch_atomic_read() which
-> uses asm volatile.
-> 
+This patchset is also available in git via:
 
-Yes, that's my understanding as well
+    git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git crc32-lib-v2
 
-> But replacing arch_atomic_read() with READ_ONCE() makes no difference,
-> presumably because the compiler still can't see that the READ_ONCE() is
-> unnecessary (which is kind of by design).
-> 
+CRC32 is a family of common non-cryptographic integrity check algorithms
+that are fairly fast with a portable C implementation and become far
+faster still with the CRC32 or carryless multiplication instructions
+that most CPUs have.  9 architectures already have optimized code for at
+least some CRC32 variants; however, except for arm64 this optimized code
+was only accessible through the crypto API, not the library functions.
 
-In READ_ONCE() we cast to a volatile pointer, I think the compiler cannot eliminate
-the code in that case.
+This patchset fixes that so that the CRC32 library functions use the
+optimized code.  This allows users to just use the library instead of
+the crypto API.  This is much simpler and also improves performance due
+to eliminating the crypto API overhead including an indirect call.  Some
+examples of updating users are included at the end of the patchset.
 
-> > Here's a snippet of the code generated for finish_task_switch() on powerpc:
-> >
-> > 1b786c:   ld      r26,2624(r30)   # mm = rq->prev_mm;
-> > .......
-> > 1b78c8:   cmpdi   cr7,r26,0
-> > 1b78cc:   beq     cr7,1b78e4 <finish_task_switch+0xd0>
-> > 1b78d0:   ld      r9,2312(r13)    # current
-> > 1b78d4:   ld      r9,1888(r9)     # current->mm
-> > 1b78d8:   cmpd    cr7,r26,r9
-> > 1b78dc:   beq     cr7,1b7a70 <finish_task_switch+0x25c>
-> > 1b78e0:   hwsync
-> > 1b78e4:   cmplwi  cr7,r27,128
-> > .......
-> > 1b7a70:   lwz     r9,176(r26)     # atomic_read(&mm->membarrier_state)
-> > 1b7a74:   b       1b78e0 <finish_task_switch+0xcc>
-> >
-> > This was found while analyzing "perf c2c" reports on kernels prior
-> > to commit c1753fd02a00 ("mm: move mm_count into its own cache line")
-> > where mm_count was false sharing with membarrier_state.
-> 
-> So it was causing a noticable performance blip? But isn't anymore?
-> 
+Note: crc32c() was a weird case.  It was a library function layered on
+top of the crypto API, which in turn is layered on top of the real
+library functions.  So while it was easy to use, it was still subject to
+the crypto API overhead.  This patchset provides CRC32C acceleration in
+the real library functions directly.
 
-It was noticeable in that it showed up amongst the top entries in perf c2c reports.
-There was similar false sharing with other fields that share the cache line with
-mm_count, so the gains were minimal with just this patch. c1753fd02a00 addresses
-these cases too.
+The updated CRC32 library design is:
 
-> > There is a minor improvement in the size of finish_task_switch().
-> > The following are results from bloat-o-meter:
-> >
-> > GCC 7.5.0:
-> > ----------
-> > add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-32 (-32)
-> > Function                                     old     new   delta
-> > finish_task_switch                           884     852     -32
-> >
-> > GCC 12.2.1:
-> > -----------
-> > add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-32 (-32)
-> > Function                                     old     new   delta
-> > finish_task_switch.isra                      852     820     -32
-> 
-> GCC 12 is a couple of years old, I assume GCC 14 behaves similarly?
-> 
+- Each arch's CRC32 code (all variants) is in arch/$ARCH/lib/crc32*.
+  This adopts what arm64 and riscv already did.  Note, the crypto
+  directory is not used because CRC32 is not a cryptographic algorithm.
 
-I cross compiled for aarch64 with gcc 14.1.1 and see similar results:
+- Weak symbols are no longer used.  Instead there are crc32*_base() and
+  crc32*_arch(), and the appropriate ones are called based on the
+  kconfig.  This is similar to how the ChaCha20 library code works.
 
-add/remove: 0/2 grow/shrink: 1/1 up/down: 4/-60 (-56)
-Function                                     old     new   delta
-get_nohz_timer_target                        352     356      +4
-e843419@0b02_0000d7e7_408                      8       -      -8
-e843419@01bb_000021d2_868                      8       -      -8
-finish_task_switch.isra                      592     548     -44
-Total: Before=31013792, After=31013736, chg -0.00%
+- Each arch's CRC32 code is enabled by default when CRC32 is enabled,
+  but it can now be disabled, controlled by the choice that previously
+  controlled the base implementation only.  It can also now be built as
+  a module if CRC32 is a module too, in which case it will be
+  automatically loaded via direct symbol dependency when appropriate.
 
-> > LLVM 17.0.6:
-> > ------------
-> > add/remove: 0/0 grow/shrink: 0/2 up/down: 0/-36 (-36)
-> > Function                                     old     new   delta
-> > rt_mutex_schedule                            120     104     -16
-> > finish_task_switch                           792     772     -20
-> >
-> > Signed-off-by: Nysal Jan K.A <nysal@linux.ibm.com>
-> > ---
-> >  include/linux/sched/mm.h | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-> > index 07bb8d4181d7..042e60ab853a 100644
-> > --- a/include/linux/sched/mm.h
-> > +++ b/include/linux/sched/mm.h
-> > @@ -540,6 +540,8 @@ enum {
-> >  
-> >  static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
-> >  {
-> > +	if (!IS_ENABLED(CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE))
-> > +		return;
-> >  	if (current->mm != mm)
-> >  		return;
-> >  	if (likely(!(atomic_read(&mm->membarrier_state) &
-> 
-> The other option would be to have a completely separate stub, eg:
-> 
->   #ifdef CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
->   static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
->   {
->           if (current->mm != mm)
->                   return;
->           if (likely(!(atomic_read(&mm->membarrier_state) &
->                        MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE)))
->                   return;
->           sync_core_before_usermode();
->   }
->   #else
->   static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm) { }
->   #endif
-> 
-> Not sure what folks prefer.
-> 
-> In either case I think it's probably worth a short comment explaining
-> why it's worth the trouble (ie. that the atomic_read() prevents the
-> compiler from doing DCE).
->
+- Instead of lots of pointless glue code that wires up each CRC32
+  variant to the crypto API for each architecture, we now just rely on
+  the existing shash algorithms that use the library functions.
 
-I'll send a v2 with a comment added in there. Thanks for the review.
+- As before, the library functions don't provide access to off-CPU
+  crypto accelerators.  But these appear to have very little, if any,
+  real-world relevance for CRC32 which is very fast on CPUs.
 
---Nysal
+Future work should apply a similar cleanup to crct10dif which is a
+variant of CRC16.
+
+I tested all arches in QEMU using CONFIG_CRC32_SELFTEST and the crypto
+self-tests, except for mips which I couldn't figure out how to do.
+
+This patchset has the following dependencies on recent patches, which
+hopefully will be merged soon through the appropriate trees:
+
+- "crypto - move crypto_simd_disabled_for_test to lib"
+  (https://lore.kernel.org/linux-crypto/20241018235343.425758-1-ebiggers@kernel.org/)
+- "crypto: x86/crc32c - jump table elimination and other cleanups"
+  (https://lore.kernel.org/linux-crypto/20241014042447.50197-1-ebiggers@kernel.org/)
+- "arm64: Speed up CRC-32 using PMULL instructions"
+  (https://lore.kernel.org/linux-crypto/20241018075347.2821102-5-ardb+git@google.com/)
+- "crypto: Enable fuzz testing for arch code"
+  (https://lore.kernel.org/linux-crypto/20241016185722.400643-4-ardb+git@google.com/)
+- "crypto: mips/crc32 - fix the CRC32C implementation"
+  (https://lore.kernel.org/linux-crypto/20241020180258.8060-1-ebiggers@kernel.org/)
+- "bcachefs: Explicitly select CRYPTO from BCACHEFS_FS"
+  (https://lore.kernel.org/linux-bcachefs/20241023183521.3752681-1-ebiggers@kernel.org/)
+
+Everything can be retrieved from git using the command given earlier.
+
+Since this patchset touches many areas, getting it merged may be
+difficult.  One option is a pull request with the whole patchset
+directly to Linus.  Another is to have at least patches 1-4 taken
+through the crypto tree in v6.13; then the arch patches can land
+separately afterwards, followed by the rest.
+
+Changed in v2:
+  - Added a way to determine if the arch-optimized code is actually
+    being used at runtime, and used this to register the appropriate
+    shash algorithms with crypto API.
+  - Added a patch that converts iSCSI to use the library.
+  - Listed a bcachefs patch as a dependency.
+  - Added Ard's Reviewed-by.
+
+Eric Biggers (18):
+  lib/crc32: drop leading underscores from __crc32c_le_base
+  lib/crc32: improve support for arch-specific overrides
+  lib/crc32: expose whether the lib is really optimized at runtime
+  crypto: crc32 - don't unnecessarily register arch algorithms
+  arm/crc32: expose CRC32 functions through lib
+  loongarch/crc32: expose CRC32 functions through lib
+  mips/crc32: expose CRC32 functions through lib
+  powerpc/crc32: expose CRC32 functions through lib
+  s390/crc32: expose CRC32 functions through lib
+  sparc/crc32: expose CRC32 functions through lib
+  x86/crc32: update prototype for crc_pcl()
+  x86/crc32: update prototype for crc32_pclmul_le_16()
+  x86/crc32: expose CRC32 functions through lib
+  lib/crc32: make crc32c() go directly to lib
+  ext4: switch to using the crc32c library
+  jbd2: switch to using the crc32c library
+  f2fs: switch to using the crc32 library
+  scsi: target: iscsi: switch to using the crc32c library
+
+ arch/arm/Kconfig                              |   1 +
+ arch/arm/configs/milbeaut_m10v_defconfig      |   1 -
+ arch/arm/configs/multi_v7_defconfig           |   1 -
+ arch/arm/crypto/Kconfig                       |  14 -
+ arch/arm/crypto/Makefile                      |   2 -
+ arch/arm/crypto/crc32-ce-glue.c               | 247 ------------
+ arch/arm/lib/Makefile                         |   3 +
+ .../crc32-ce-core.S => lib/crc32-core.S}      |   0
+ arch/arm/lib/crc32-glue.c                     | 118 ++++++
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/lib/Makefile                       |   3 +-
+ arch/arm64/lib/crc32-glue.c                   |  30 +-
+ arch/loongarch/Kconfig                        |   1 +
+ arch/loongarch/configs/loongson3_defconfig    |   1 -
+ arch/loongarch/crypto/Kconfig                 |   9 -
+ arch/loongarch/crypto/Makefile                |   2 -
+ arch/loongarch/crypto/crc32-loongarch.c       | 300 ---------------
+ arch/loongarch/lib/Makefile                   |   2 +
+ arch/loongarch/lib/crc32-loongarch.c          | 130 +++++++
+ arch/mips/Kconfig                             |   5 +-
+ arch/mips/configs/eyeq5_defconfig             |   1 -
+ arch/mips/configs/eyeq6_defconfig             |   1 -
+ arch/mips/configs/generic/32r6.config         |   2 -
+ arch/mips/configs/generic/64r6.config         |   1 -
+ arch/mips/crypto/Kconfig                      |   9 -
+ arch/mips/crypto/Makefile                     |   2 -
+ arch/mips/crypto/crc32-mips.c                 | 354 ------------------
+ arch/mips/lib/Makefile                        |   2 +
+ arch/mips/lib/crc32-mips.c                    | 187 +++++++++
+ arch/powerpc/Kconfig                          |   1 +
+ arch/powerpc/configs/powernv_defconfig        |   1 -
+ arch/powerpc/configs/ppc64_defconfig          |   1 -
+ arch/powerpc/crypto/Kconfig                   |  15 +-
+ arch/powerpc/crypto/Makefile                  |   2 -
+ arch/powerpc/crypto/crc32c-vpmsum_glue.c      | 173 ---------
+ arch/powerpc/crypto/crct10dif-vpmsum_asm.S    |   2 +-
+ arch/powerpc/lib/Makefile                     |   3 +
+ arch/powerpc/lib/crc32-glue.c                 |  86 +++++
+ .../{crypto => lib}/crc32-vpmsum_core.S       |   0
+ .../{crypto => lib}/crc32c-vpmsum_asm.S       |   0
+ arch/riscv/Kconfig                            |   1 +
+ arch/riscv/lib/Makefile                       |   3 +-
+ arch/riscv/lib/{crc32.c => crc32-riscv.c}     |  30 +-
+ arch/s390/Kconfig                             |   1 +
+ arch/s390/configs/debug_defconfig             |   1 -
+ arch/s390/configs/defconfig                   |   1 -
+ arch/s390/crypto/Kconfig                      |  12 -
+ arch/s390/crypto/Makefile                     |   2 -
+ arch/s390/crypto/crc32-vx.c                   | 306 ---------------
+ arch/s390/lib/Makefile                        |   3 +
+ arch/s390/lib/crc32-glue.c                    |  86 +++++
+ arch/s390/{crypto => lib}/crc32-vx.h          |   0
+ arch/s390/{crypto => lib}/crc32be-vx.c        |   0
+ arch/s390/{crypto => lib}/crc32le-vx.c        |   0
+ arch/sparc/Kconfig                            |   1 +
+ arch/sparc/crypto/Kconfig                     |  10 -
+ arch/sparc/crypto/Makefile                    |   4 -
+ arch/sparc/crypto/crc32c_glue.c               | 184 ---------
+ arch/sparc/lib/Makefile                       |   2 +
+ arch/sparc/lib/crc32_glue.c                   |  86 +++++
+ arch/sparc/{crypto => lib}/crc32c_asm.S       |   2 +-
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/crypto/Kconfig                       |  22 --
+ arch/x86/crypto/Makefile                      |   7 -
+ arch/x86/crypto/crc32-pclmul_glue.c           | 202 ----------
+ arch/x86/crypto/crc32c-intel_glue.c           | 250 -------------
+ arch/x86/lib/Makefile                         |   4 +
+ arch/x86/lib/crc32-glue.c                     | 116 ++++++
+ .../crc32-pclmul_asm.S => lib/crc32-pclmul.S} |  19 +-
+ .../crc32c-3way.S}                            |  63 ++--
+ crypto/crc32_generic.c                        |   8 +-
+ crypto/crc32c_generic.c                       |  12 +-
+ drivers/target/iscsi/Kconfig                  |   3 +-
+ drivers/target/iscsi/iscsi_target.c           | 153 +++-----
+ drivers/target/iscsi/iscsi_target_login.c     |  50 ---
+ drivers/target/iscsi/iscsi_target_login.h     |   1 -
+ drivers/target/iscsi/iscsi_target_nego.c      |  21 +-
+ fs/ext4/Kconfig                               |   3 +-
+ fs/ext4/ext4.h                                |  25 +-
+ fs/ext4/super.c                               |  15 -
+ fs/f2fs/Kconfig                               |   3 +-
+ fs/f2fs/f2fs.h                                |  19 +-
+ fs/f2fs/super.c                               |  15 -
+ fs/jbd2/Kconfig                               |   2 -
+ fs/jbd2/journal.c                             |  25 +-
+ include/linux/crc32.h                         |  50 ++-
+ include/linux/crc32c.h                        |   7 +-
+ include/linux/jbd2.h                          |  31 +-
+ include/target/iscsi/iscsi_target_core.h      |   3 -
+ lib/Kconfig                                   |  80 ++--
+ lib/Makefile                                  |   1 -
+ lib/crc32.c                                   |  29 +-
+ lib/crc32test.c                               |   2 +-
+ lib/libcrc32c.c                               |  74 ----
+ 94 files changed, 1128 insertions(+), 2637 deletions(-)
+ delete mode 100644 arch/arm/crypto/crc32-ce-glue.c
+ rename arch/arm/{crypto/crc32-ce-core.S => lib/crc32-core.S} (100%)
+ create mode 100644 arch/arm/lib/crc32-glue.c
+ delete mode 100644 arch/loongarch/crypto/crc32-loongarch.c
+ create mode 100644 arch/loongarch/lib/crc32-loongarch.c
+ delete mode 100644 arch/mips/crypto/crc32-mips.c
+ create mode 100644 arch/mips/lib/crc32-mips.c
+ delete mode 100644 arch/powerpc/crypto/crc32c-vpmsum_glue.c
+ create mode 100644 arch/powerpc/lib/crc32-glue.c
+ rename arch/powerpc/{crypto => lib}/crc32-vpmsum_core.S (100%)
+ rename arch/powerpc/{crypto => lib}/crc32c-vpmsum_asm.S (100%)
+ rename arch/riscv/lib/{crc32.c => crc32-riscv.c} (90%)
+ delete mode 100644 arch/s390/crypto/crc32-vx.c
+ create mode 100644 arch/s390/lib/crc32-glue.c
+ rename arch/s390/{crypto => lib}/crc32-vx.h (100%)
+ rename arch/s390/{crypto => lib}/crc32be-vx.c (100%)
+ rename arch/s390/{crypto => lib}/crc32le-vx.c (100%)
+ delete mode 100644 arch/sparc/crypto/crc32c_glue.c
+ create mode 100644 arch/sparc/lib/crc32_glue.c
+ rename arch/sparc/{crypto => lib}/crc32c_asm.S (92%)
+ delete mode 100644 arch/x86/crypto/crc32-pclmul_glue.c
+ delete mode 100644 arch/x86/crypto/crc32c-intel_glue.c
+ create mode 100644 arch/x86/lib/crc32-glue.c
+ rename arch/x86/{crypto/crc32-pclmul_asm.S => lib/crc32-pclmul.S} (95%)
+ rename arch/x86/{crypto/crc32c-pcl-intel-asm_64.S => lib/crc32c-3way.S} (92%)
+ delete mode 100644 lib/libcrc32c.c
+
+-- 
+2.47.0
 
 
