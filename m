@@ -1,84 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-2585-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2586-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDD99B0BF4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 19:42:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464679B0D52
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 20:31:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZqq60J3Dz2xrb;
-	Sat, 26 Oct 2024 04:42:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZrvj35ydz2yD4;
+	Sat, 26 Oct 2024 05:31:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729878129;
-	cv=none; b=iVbO3scvmgXa0FV2N3+gKcPGflZXN3E+fL3YGiCYBdoiVec4b9CxV3Jxn1S04NRIH+MNKAD2IgaA9ldJKE3q2vL67cQHPK5LNOTa0H2OT+Xj+Nk5SKFd3qMMDSIev7UTrN4qUM5YBmDOAJkdka1thgCkGUv/OtgCohoKAniIPhtV0cENoRd4pAqP9NLBu+NU3lBHXj6MkQZZHEX5PuQPZVa90MAv2JyHxtvl2tktr4DnJOwYcjpRwY9jIOH4hQxExaqKjI0c8mizfmMO/uISipwlecZ1s8yJofFZ8r4pnnEEVvjd21my/+0KRXIRPc80gu70Z3qxKeZKqsQRj5UJmA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729881073;
+	cv=none; b=jc1E1ep9zoan80jxJtkLB0xowzDBP8ikfrYZRJkQQ3OMKlU218NPi4R93EvyVbY/RrMUAjoG5v1cf7LKc9pWe4AoiovrhAsp2YzG+Hf5eEaO85UJAmEa8XXI5CPt3Wsy8SnFjJxO5Zwp+aF64e18EX0xU7rgYjTfdKDZ3xzSuBM7vbrbMXtxNRj1rX1ZfJETuaZzVAys4HSdzfjyFzrwWCfQ+QOMa9FMLZPILh3AIvQ2hqp4WSJ+vZUAnIIufpliowmHWoLY3dsbcpQ7HxiAkXIq1au5XkPLM5XuCdDzc4+xwZCogXScl6MtBJ8U5+gKbd53/bZqNufJNx5nJM1H3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729878129; c=relaxed/relaxed;
-	bh=luHPkXcmkzXARAD1k+1siQ/blVliFRMh2F/pQQLu2Pw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kKaYvH6MPs1rhCp+9p5w6WXqU/raBXWbHmXHmVPQGfij9moJ7zV0cyMMEXj0SLGyjJQgpE46356ocmFc1bPXiVJwSFaidhgSugeLvQv+FK1b0bUSx8cfhENo3xogY1ovqAwJG6bxFSo41ED8P0aqPnrgZ40tprpqBfEJ1egZOTN8fzTmsPPnAJ1RB+uXoZVFv4LJ5uNWe/HvQZzXJKX4CDWv3GgVLqJ4oEwaky3YQiZFqtSBgr3BfmQRDWiTAqGn427iG9fU24vmWqU5UDfFzXggeSH9VJoTw7XrGcVwL1mJ7zEc3zVbjtSAg2xSH7ZONZ520tvQUrBUZpHdKc/vqg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQGGVJXe; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQGGVJXe; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1729881073; c=relaxed/relaxed;
+	bh=bCYg3WI36eTA+yA5LQzfw/1BaodCD9Je+3uqP+670Ns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I1bCmGheNkD9xl2MhE8CzXuZL+xqleYsQenZULwGkhC2KdDy+LE6c1lV8ChKUSDAsgp07drE9zninr3xykCcCJAizJX93sakpg5MTPY/963B8FbEPyvDlz4O5kdpvMDeaWxAUdBkk5itIPL/SRtpp4eQ+p3l9Ko3oHyPMW4XVkro1LRLCMbxrBrxP4m0lQxT9++wZutwwyAHWG+/aizMxg5tefrSqesFTgDZaf1qHaaXaEA0L2syH4wn/knPpgodqGD1x9rA4/4Diz5FvbQJHhOUln2JKtgS2Nr/PP9uhQ30P/ObFb8bZHzQIDyvTfnTiI8IkRmpLJ3d8VdcsUzTQg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L4JBP6u5; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQGGVJXe;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQGGVJXe;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L4JBP6u5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nysal@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZqq43rPKz2xqp
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 04:42:06 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729878121;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=luHPkXcmkzXARAD1k+1siQ/blVliFRMh2F/pQQLu2Pw=;
-	b=XQGGVJXeAqgRjC3t0U6B0LMNCdt5GhZVZ2bLsaP1SlUZO2pdkbcocWjW59I9Lt2mao9VeW
-	iDxGVx310gWIbkxW7TOWuq0ThGCfh3vbfdldMFqMTmb6f7BXD+4Jpy7yB2hqFQbt0xo+o8
-	Bfez7gpa1CaXOLMdEzaE8XwHePNMOQI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729878121;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=luHPkXcmkzXARAD1k+1siQ/blVliFRMh2F/pQQLu2Pw=;
-	b=XQGGVJXeAqgRjC3t0U6B0LMNCdt5GhZVZ2bLsaP1SlUZO2pdkbcocWjW59I9Lt2mao9VeW
-	iDxGVx310gWIbkxW7TOWuq0ThGCfh3vbfdldMFqMTmb6f7BXD+4Jpy7yB2hqFQbt0xo+o8
-	Bfez7gpa1CaXOLMdEzaE8XwHePNMOQI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-4P6KtcVZO3S_izVexzhjTQ-1; Fri, 25 Oct 2024 13:41:59 -0400
-X-MC-Unique: 4P6KtcVZO3S_izVexzhjTQ-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4315c1b5befso15958215e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 10:41:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729878118; x=1730482918;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=luHPkXcmkzXARAD1k+1siQ/blVliFRMh2F/pQQLu2Pw=;
-        b=MBQwFNztA6jJ53o71fiAKQ9G3FF+eczr2YfpHhgKp5JrwWXyk+QQaI1WEY4z3MIKiA
-         sH6AgGU67ec1ude9XThqRcn16D2qEDuB8niTl5sygeXcz3ca4qYXlev2FBNhJU6ZUagV
-         M++rxYs7MPITUmkgepLl+sIxP0LIGTLJBXfGNA/0elSKdv91he+r0RiSTdFjN+2W74qP
-         y8NLqEHixOP8hoGkR0x7XUKTQaPODMrx5gknHkF0Q3XZZl4ZdIjO8Njdltq2+ALpSSZg
-         rOLQfTWG8Dz/dD7zcupuJyTqO0HVn6iI8Tqh91/VcgHEiycMu178hthp1GsYKGqIW5E1
-         CsoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXsPA+dk3x21K+1m+nu6QR8c7DaW99J1dO+CrzcFyUBttMV6i9bJIauCSp6YC1o4q+zLfbj2fig5dp3kEo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxllY2ANWg6xOwOUE/JQVNCwLYlRkkna2uw2xlS5O2KHfvKsIiz
-	2QwAMl9I4i2Ue8yNdvA/aHINhdCs6m0q8frbshVVV7MqUySi3PamJrqhgOBNwmAFhoO6KA9vlQo
-	7FS/HOIGEdLhVfYQS94YVyCxguiRdYJd0uiZLBPi8xV4VhuKgkH8uoR4kp4Yc5+xwPZVMykuRyP
-	Y/6hWXF5C81sLsoeY8P/NsK00haY7Kpsc10SaN+Q==
-X-Received: by 2002:a5d:410d:0:b0:37d:5436:49b with SMTP id ffacd0b85a97d-3806113a07emr163672f8f.13.1729878118153;
-        Fri, 25 Oct 2024 10:41:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJirsSaLOjUEz6kn7HmxOjIyhE9ZfBrB9GAGHgNcgNSBUFOeNbcRoyDDrANp8n6mxM4gCIddwEWDqpYot15qQ=
-X-Received: by 2002:a5d:410d:0:b0:37d:5436:49b with SMTP id
- ffacd0b85a97d-3806113a07emr163639f8f.13.1729878117761; Fri, 25 Oct 2024
- 10:41:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZrvh0Spkz2y6G
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 05:31:11 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PEeSoi032573;
+	Fri, 25 Oct 2024 18:30:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=bCYg3WI36eTA+yA5LQzfw/1BaodCD9
+	Je+3uqP+670Ns=; b=L4JBP6u5Q6DXkamufc4+3XtZ1LIvxy7KA02HHWnMgLigt/
+	/1qWBo6o+qQAV5pkWUKkTjnMNLq5BwQR9zJJTw0HvD4lc37cPSqK0DaSymmYGIzf
+	Qmaxfl/bly8lNmJ2jumL1zxgEcKZ1nSRiAAjgrhy6jtJmxUylLwAmlgtNLB1uEYj
+	9VdlGAflHyXYQpGdwjD3SSEQBbW9DtBsKEF6JAMVVVZN7BZuluITJVG9GmA8KPu7
+	rzEy+lYmeYDpEgLsSfj/KrNZ15BrYOLKGm5MB6ySYTy2bB3k5CPlDBQOgaROibbv
+	BiR89l1QcwwsJF0/qaDMDUFkBR4sZClC0mpsKhkA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42g246v9ex-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Oct 2024 18:30:42 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49PIUfrt004272;
+	Fri, 25 Oct 2024 18:30:41 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42g246v9et-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Oct 2024 18:30:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49PHpv67008754;
+	Fri, 25 Oct 2024 18:30:40 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42emkay4pw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Oct 2024 18:30:40 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49PIUcJ918743588
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Oct 2024 18:30:38 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 909152004B;
+	Fri, 25 Oct 2024 18:30:38 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2DD0220040;
+	Fri, 25 Oct 2024 18:30:38 +0000 (GMT)
+Received: from localhost (unknown [9.43.62.211])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 25 Oct 2024 18:30:37 +0000 (GMT)
+Date: Sat, 26 Oct 2024 00:00:37 +0530
+From: "Nysal Jan K.A." <nysal@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Bill Wendling <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] sched/membarrier: Fix redundant load of membarrier_state
+Message-ID: <nszn2c226bf6xslp7r5axmiov4fuhmwqqyzap7b2lysuch7fnl@uhgtmsaxttf3>
+References: <20241007053936.833392-1-nysal@linux.ibm.com>
+ <87frolja8d.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,47 +100,158 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241010182427.1434605-1-seanjc@google.com> <CABgObfbQW-3vp=mNcR4giUGZ_gxhuRykvKj8gzBDY7pOg6xdBQ@mail.gmail.com>
- <Zxbw9XcFCHYR1Ald@google.com>
-In-Reply-To: <Zxbw9XcFCHYR1Ald@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 25 Oct 2024 19:41:45 +0200
-Message-ID: <CABgObfayH1x3qFjOiM=rQjxiui5tXJXObgR_qOGV5Hn_2QLEJQ@mail.gmail.com>
-Subject: Re: [PATCH v13 00/85] KVM: Stop grabbing references to PFNMAP'd pages
-To: Sean Christopherson <seanjc@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
-	Yan Zhao <yan.y.zhao@intel.com>, David Matlack <dmatlack@google.com>, 
-	David Stevens <stevensd@chromium.org>, Andrew Jones <ajones@ventanamicro.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87frolja8d.fsf@mail.lhotse>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: gQkqUtvd0_hSqnkwwp8fiBBQGQjBbqR7
+X-Proofpoint-GUID: SMcGweBVNA9QTr_rEIeG2qZ-BNAshwUZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 adultscore=0
+ mlxlogscore=999 clxscore=1011 impostorscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2409260000 definitions=main-2410250140
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Oct 22, 2024 at 2:25=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
-> > Looks good to me, thanks and congratulations!! Should we merge it in
-> > kvm/next asap?
+On Fri, Oct 25, 2024 at 11:29:38AM +1100, Michael Ellerman wrote:
+> [To += Mathieu]
+> 
+> "Nysal Jan K.A." <nysal@linux.ibm.com> writes:
+> > From: "Nysal Jan K.A" <nysal@linux.ibm.com>
+> >
+> > On architectures where ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+> > is not selected, sync_core_before_usermode() is a no-op.
+> > In membarrier_mm_sync_core_before_usermode() the compiler does not
+> > eliminate redundant branches and the load of mm->membarrier_state
+> > for this case as the atomic_read() cannot be optimized away.
+> 
+> I was wondering if this was caused by powerpc's arch_atomic_read() which
+> uses asm volatile.
+> 
+
+Yes, that's my understanding as well
+
+> But replacing arch_atomic_read() with READ_ONCE() makes no difference,
+> presumably because the compiler still can't see that the READ_ONCE() is
+> unnecessary (which is kind of by design).
+> 
+
+In READ_ONCE() we cast to a volatile pointer, I think the compiler cannot eliminate
+the code in that case.
+
+> > Here's a snippet of the code generated for finish_task_switch() on powerpc:
+> >
+> > 1b786c:   ld      r26,2624(r30)   # mm = rq->prev_mm;
+> > .......
+> > 1b78c8:   cmpdi   cr7,r26,0
+> > 1b78cc:   beq     cr7,1b78e4 <finish_task_switch+0xd0>
+> > 1b78d0:   ld      r9,2312(r13)    # current
+> > 1b78d4:   ld      r9,1888(r9)     # current->mm
+> > 1b78d8:   cmpd    cr7,r26,r9
+> > 1b78dc:   beq     cr7,1b7a70 <finish_task_switch+0x25c>
+> > 1b78e0:   hwsync
+> > 1b78e4:   cmplwi  cr7,r27,128
+> > .......
+> > 1b7a70:   lwz     r9,176(r26)     # atomic_read(&mm->membarrier_state)
+> > 1b7a74:   b       1b78e0 <finish_task_switch+0xcc>
+> >
+> > This was found while analyzing "perf c2c" reports on kernels prior
+> > to commit c1753fd02a00 ("mm: move mm_count into its own cache line")
+> > where mm_count was false sharing with membarrier_state.
+> 
+> So it was causing a noticable performance blip? But isn't anymore?
+> 
+
+It was noticeable in that it showed up amongst the top entries in perf c2c reports.
+There was similar false sharing with other fields that share the cache line with
+mm_count, so the gains were minimal with just this patch. c1753fd02a00 addresses
+these cases too.
+
+> > There is a minor improvement in the size of finish_task_switch().
+> > The following are results from bloat-o-meter:
+> >
+> > GCC 7.5.0:
+> > ----------
+> > add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-32 (-32)
+> > Function                                     old     new   delta
+> > finish_task_switch                           884     852     -32
+> >
+> > GCC 12.2.1:
+> > -----------
+> > add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-32 (-32)
+> > Function                                     old     new   delta
+> > finish_task_switch.isra                      852     820     -32
+> 
+> GCC 12 is a couple of years old, I assume GCC 14 behaves similarly?
+> 
+
+I cross compiled for aarch64 with gcc 14.1.1 and see similar results:
+
+add/remove: 0/2 grow/shrink: 1/1 up/down: 4/-60 (-56)
+Function                                     old     new   delta
+get_nohz_timer_target                        352     356      +4
+e843419@0b02_0000d7e7_408                      8       -      -8
+e843419@01bb_000021d2_868                      8       -      -8
+finish_task_switch.isra                      592     548     -44
+Total: Before=31013792, After=31013736, chg -0.00%
+
+> > LLVM 17.0.6:
+> > ------------
+> > add/remove: 0/0 grow/shrink: 0/2 up/down: 0/-36 (-36)
+> > Function                                     old     new   delta
+> > rt_mutex_schedule                            120     104     -16
+> > finish_task_switch                           792     772     -20
+> >
+> > Signed-off-by: Nysal Jan K.A <nysal@linux.ibm.com>
+> > ---
+> >  include/linux/sched/mm.h | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+> > index 07bb8d4181d7..042e60ab853a 100644
+> > --- a/include/linux/sched/mm.h
+> > +++ b/include/linux/sched/mm.h
+> > @@ -540,6 +540,8 @@ enum {
+> >  
+> >  static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
+> >  {
+> > +	if (!IS_ENABLED(CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE))
+> > +		return;
+> >  	if (current->mm != mm)
+> >  		return;
+> >  	if (likely(!(atomic_read(&mm->membarrier_state) &
+> 
+> The other option would be to have a completely separate stub, eg:
+> 
+>   #ifdef CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+>   static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
+>   {
+>           if (current->mm != mm)
+>                   return;
+>           if (likely(!(atomic_read(&mm->membarrier_state) &
+>                        MEMBARRIER_STATE_PRIVATE_EXPEDITED_SYNC_CORE)))
+>                   return;
+>           sync_core_before_usermode();
+>   }
+>   #else
+>   static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm) { }
+>   #endif
+> 
+> Not sure what folks prefer.
+> 
+> In either case I think it's probably worth a short comment explaining
+> why it's worth the trouble (ie. that the atomic_read() prevents the
+> compiler from doing DCE).
 >
-> That has my vote, though I'm obvious extremely biased :-)
 
-Your wish is my command... Merged.
+I'll send a v2 with a comment added in there. Thanks for the review.
 
-Paolo
+--Nysal
 
 
