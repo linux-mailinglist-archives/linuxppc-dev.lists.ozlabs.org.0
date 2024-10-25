@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-2607-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2608-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFC09B0FD0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 22:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 887449B1069
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 22:47:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZvbh3hpMz2xCd;
-	Sat, 26 Oct 2024 07:32:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZvx122jJz2yMX;
+	Sat, 26 Oct 2024 07:47:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729888352;
-	cv=none; b=oxlUsYe+KAlPTZv1lVIgBVpIVknBStH1ueALYKVQM3gI+Tivjj7K7YewUzzidlUoZlRntsneZdJJ6SR7VmWbQiTEM4rBMTn3gsUJ4FWjx/S2LWOYLxXgUN9s6hFOY5SgaeNa9YnXYhNTsC0vPOSkilXWi0RsmJ/4Usb4DO1RKgSYyG3feMW1dOEvhKuqe5Ql8bD0gCG1ocBXIa6HvFvjhneVJcWHIJWzFUx7JitqFvs2O2lYeaKvuISroKCcu9YM62KznG2qsx4VFAicHgtOLIwpKslLOguQtjF2PnF2yBl9QwbvwFTX4jQ2KN6Ovz0MbLGJ+Pbun5/H0F3ctPh3ZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729889253;
+	cv=none; b=RSNYdXWCq/hnS5DavGwa/ZTH6NE083uG53Ysz9KDvWykl9rUrsarXsEz4OBCR39H9O9e/kmNLjf0JuASc75872Jd/hBPO5TE2S0g7v+SJtRRPcQR2iThhhHlwNHz/1bs4LTw7wndVLnaELEnBnSI1tEQXlF9OKcliArAPPKltF8gw/7LrnHD/qJmXTjOZJo0CsCuon4JFDqGWbI0+WjYQxuICwu0ZJ1F5Vm7BGEMor4vQVyjVnK1lu11zXq/p3BHSthq9eZfXVZGJYYFP3F6Cd4PvIV5RWmve5yErXGjfaDHzHSPU69sLPzkk6kweZM6bbI+aL70TxLMdMYLwzrf7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729888352; c=relaxed/relaxed;
-	bh=cTUERFsy8K5/pl07EUDBeFnq3I9Zkbo0oaQDqVJpurU=;
+	t=1729889253; c=relaxed/relaxed;
+	bh=zd5Anit6yA3HTeMzXbpU7mXaEYKhVeL/IUZRK50Rwjk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i1Wfe4VD7WK9s/xCxAqXEbFR/zCDPBAm5JtHMHWMwZQNqSuqmzUdkMX04N/xg/UTBJwD5iMl1uGwFxLXpR+7CW6DzF7pkH7frV/bjVLfBvR5p/bciJgEwOXeqN4AsGlaDEwssaGiNW3Xt17rTn3iY+EPjpoJ/GfcWU66oJ9JC2BSjdGspuJUl0btPzXlC0vdQABdQAdZx49EuDTcYaImVSFe61VODJZrVb/3K5yhksm/y7Sx/SO5LXIxyuErElIMNgtjG5AIbBio84FVvd2pjjUFe+w1fYu3zoZucP7DWbo5cSaemesiorvvrsDd98T8wm9f5EFV5/Ve/SiEgPjLtg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qQe2ZQ+t; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 To:Cc:Content-Type; b=H/kgqo85Na9Zzjy3UMvnp1qlTx/VB+q/mdQT03t5+q3UPfNMRrZAjP5nP6+uCSgFRpNWbWYrvDnU5SgWv14ckc0GMohErkeGrgyYlr0dyot9s2ASAZjdxxJlSAkVkXvaC1gSeeF2ZPfYpJ79DlDpu3bdyhyu7dFnYYWyDqLSdrkcTJQK5b64g0SsklBVipc/Au+oCqi9iptyEmNxe5kFjI7gb0hJnUmwS2lAECJYOrWnfXujYYKyZo3vB8BJZjA11ODgC4WohhcnbyDcljzIHIvnKaqV2yT4Lhfw+cc4iMvLzemZ82PeI4HQ7PtnJz5G+YdH+fY6At+R/MkK+kw32w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gekfskCv; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qQe2ZQ+t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gekfskCv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZvbf3QJQz2xBk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 07:32:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZvwz6H7cz2yGT
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 07:47:31 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D3E6E5C53A7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 20:31:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52BDC4AF09
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 20:32:27 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id A5202A430C4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 20:45:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF5DC4AF09
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 20:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729888347;
-	bh=ZOwjJ8kzzckhcIYE8j5hMZsSJUKc5cYu8yXf20E0HuM=;
+	s=k20201202; t=1729889248;
+	bh=Tfo5X6uc3w/hrU+iP8PZcK2t41JlU/D+FAY3HHNYJHM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qQe2ZQ+tSWetaoVGslaOuLKxN45AkmR2qZL3ILBwg0inR1U0Bmqzc2I/H0SPNy1q+
-	 xqhvZ1lVsaUgvK+i94ztGpOyctfsh9xsUmDl7oWGF8DsRY0dU+ALpo3kC2CFzgTRCs
-	 d1Gn2syKnR1u3PGOMFPA5PNTxrRkzCzY8B16NsRjasHVCOlyrTHAR42WYFBMOtUfdG
-	 GuwI0SitSv5h2cI0j6gOREAiw+lsj8YMWu7ap7hTnjYpP9sp1h+2oosiZ+DKa4ioms
-	 DkdlTrqAnhayaHpQbacjuHAxvBZczD1BLzN5cmfWkxHDMqhlulxn98YRbq9P+Xq7+2
-	 Z2GT/dJ3wtK6A==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f7657f9f62so23763081fa.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 13:32:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWBUug0manHH4xCIlcIERbm1Bqe9cxXcK3kJj7TfhjoUAXd4KDl/Ugad5/owoGijPW4zxSuARqI2A6Jobw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx7M8OpsXuisI3yRyAZb2Lu8HB8Zrf5C8jfactaqeuKjF7LsAFN
-	Wgf5iImE/rg9Fc79XpyEm/lv13ecG4ZTNhAUNWGsNmQyNFLFpbownJASr3pj0B470CadEKFl6tE
-	o1jwMAS4MB3asbQB9OwO80A9/ScI=
-X-Google-Smtp-Source: AGHT+IHWDYSNqGzTxA1yucLBJm6V+3waey3TQHM3kNvlUas/obIoVX4SuU3pAE8hqdaCjuOs8zy+d7cgGIIryFN5WyY=
-X-Received: by 2002:a05:651c:50b:b0:2f9:cc40:6afe with SMTP id
- 38308e7fff4ca-2fcbdfae574mr3209411fa.14.1729888345976; Fri, 25 Oct 2024
- 13:32:25 -0700 (PDT)
+	b=gekfskCvWOfIqlAZ/aSuuXFxlPUBLAq/1J8u7BRk+K9IG78a6VWhRP79Fdow15YPf
+	 44uCMphVFXEm62CFfo0bnfd3n1CW10JYtALJafsVUKuPU3z4maXZ5sT1Bb2UV9pycN
+	 TGG3d8+d3WVZMhgB/k7H5BucarzeptU7ro6s0+7jd2rjHTv2j/nmLH6oV/WpNORUDA
+	 xnh/zY6v5NxPpq11QA6EDyZllc/Y/OnW+6atxbqNYXt6wo/B0emCq9krojm4qbnglg
+	 hOSv/XbGNEBeJM/x1STwgIFbH8+hKzyAcfr+T2d5ym7TYHf4gr/dfs1497Uiengm5Q
+	 UWHjgLfRLSMlw==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2fb518014b9so20319091fa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 13:47:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWfhG7d6+zDZ9TbAVSV0ZTGYXJQoJ7sT1StWHciifXjMYB0RogfRjgASvOxth8Bwx9vJj0lTEpTxJud2mo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxP4Iiel+pUicWBvem6xIesZqm5/UTm9oETfdq8E7Io+BA7mRVv
+	PAo5x6Wm1N43fIH2hleFmZ0O8moDGvmd/8R2jRPMsg56Igabiw9UDo/Pet50DNrWzPLe+JdBJS+
+	rF30ZYPsA4f64JDJ8xvIJ0PbqiSs=
+X-Google-Smtp-Source: AGHT+IEp6Dx2HlT+U0iGzL8ulgjfv3Yq0fFTV7/qQsnbI5MKZCd6PlYP7CAgGzk4GX/wuTuxR8r9WXnoQ2sPlcjTw1A=
+X-Received: by 2002:a05:651c:2123:b0:2fb:45cf:5eef with SMTP id
+ 38308e7fff4ca-2fcbe04dc90mr3314601fa.30.1729889246941; Fri, 25 Oct 2024
+ 13:47:26 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,14 +65,14 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241025191454.72616-1-ebiggers@kernel.org> <20241025191454.72616-4-ebiggers@kernel.org>
-In-Reply-To: <20241025191454.72616-4-ebiggers@kernel.org>
+References: <20241025191454.72616-1-ebiggers@kernel.org> <20241025191454.72616-5-ebiggers@kernel.org>
+In-Reply-To: <20241025191454.72616-5-ebiggers@kernel.org>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 25 Oct 2024 22:32:14 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFoer+_yZJWtqBVYfYnzqL9X9bbBRomCL3LDqRcYJ6njQ@mail.gmail.com>
-Message-ID: <CAMj1kXFoer+_yZJWtqBVYfYnzqL9X9bbBRomCL3LDqRcYJ6njQ@mail.gmail.com>
-Subject: Re: [PATCH v2 03/18] lib/crc32: expose whether the lib is really
- optimized at runtime
+Date: Fri, 25 Oct 2024 22:47:15 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEsq7iJThqZ7WA00ei4m59vpC23wPM+Mrj9W+HXfk-aSg@mail.gmail.com>
+Message-ID: <CAMj1kXEsq7iJThqZ7WA00ei4m59vpC23wPM+Mrj9W+HXfk-aSg@mail.gmail.com>
+Subject: Re: [PATCH v2 04/18] crypto: crc32 - don't unnecessarily register
+ arch algorithms
 To: Eric Biggers <ebiggers@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org, 
@@ -82,82 +82,115 @@ Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
 	sparclinux@vger.kernel.org, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 On Fri, 25 Oct 2024 at 21:15, Eric Biggers <ebiggers@kernel.org> wrote:
 >
 > From: Eric Biggers <ebiggers@google.com>
 >
-> Make the CRC32 library export some flags that indicate which CRC32
-> functions are actually executing optimized code at runtime.  Set these
-> correctly from the architectures that implement the CRC32 functions.
+> Instead of registering the crc32-$arch and crc32c-$arch algorithms if
+> the arch-specific code was built, only register them when that code was
+> built *and* is not falling back to the base implementation at runtime.
 >
-> This will be used to determine whether the crc32[c]-$arch shash
-> algorithms should be registered in the crypto API.  btrfs could also
-> start using these flags instead of the hack that it currently uses where
-> it parses the crypto_shash_driver_name.
+> This avoids confusing users like btrfs which checks the shash driver
+> name to determine whether it is crc32c-generic.
 >
+
+I think we agree that 'generic' specifically means a C implementation
+that is identical across all architectures, which is why I updated my
+patch to export -arch instead of wrapping the C code in yet another
+driver just for the fuzzing tests.
+
+So why is this a problem? If no optimizations are available at
+runtime, crc32-arch and crc32-generic are interchangeable, and so it
+shouldn't matter whether you use one or the other.
+
+You can infer from the driver name whether the C code is being used,
+not whether or not the implementation is 'fast', and the btrfs hack is
+already broken on arm64.
+
+> (It would also make sense to change btrfs to test the crc32_optimization
+> flags itself, so that it doesn't have to use the weird hack of parsing
+> the driver name.  This change still makes sense either way though.)
+>
+
+Indeed. That hack is very dubious and I'd be inclined just to ignore
+this. On x86 and arm64, it shouldn't make a difference, given that
+crc32-arch will be 'fast' in the vast majority of cases. On other
+architectures, btrfs may use the C implementation while assuming it is
+something faster, and if anyone actually notices the difference, we
+can work with the btrfs devs to do something more sensible here.
+
+
 > Signed-off-by: Eric Biggers <ebiggers@google.com>
 > ---
->  arch/arm64/lib/crc32-glue.c  | 15 +++++++++++++++
->  arch/riscv/lib/crc32-riscv.c | 15 +++++++++++++++
->  include/linux/crc32.h        | 15 +++++++++++++++
->  lib/crc32.c                  |  5 +++++
->  4 files changed, 50 insertions(+)
+>  crypto/crc32_generic.c  | 8 ++++++--
+>  crypto/crc32c_generic.c | 8 ++++++--
+>  2 files changed, 12 insertions(+), 4 deletions(-)
 >
-...
-> diff --git a/include/linux/crc32.h b/include/linux/crc32.h
-> index 58c632533b08..bf26d454b60d 100644
-> --- a/include/linux/crc32.h
-> +++ b/include/linux/crc32.h
-> @@ -35,10 +35,25 @@ static inline u32 __pure __crc32c_le(u32 crc, const u8 *p, size_t len)
->         if (IS_ENABLED(CONFIG_CRC32_ARCH))
->                 return crc32c_le_arch(crc, p, len);
->         return crc32c_le_base(crc, p, len);
->  }
+> diff --git a/crypto/crc32_generic.c b/crypto/crc32_generic.c
+> index cc064ea8240e..cecd01e4d6e6 100644
+> --- a/crypto/crc32_generic.c
+> +++ b/crypto/crc32_generic.c
+> @@ -155,19 +155,23 @@ static struct shash_alg algs[] = {{
+>         .base.cra_ctxsize       = sizeof(u32),
+>         .base.cra_module        = THIS_MODULE,
+>         .base.cra_init          = crc32_cra_init,
+>  }};
 >
-> +/*
-> + * crc32_optimizations contains flags that indicate which CRC32 library
-> + * functions are using architecture-specific optimizations.  Unlike
-> + * IS_ENABLED(CONFIG_CRC32_ARCH) it takes into account the different CRC32
-> + * variants and also whether any needed CPU features are available at runtime.
-> + */
-> +#define CRC32_LE_OPTIMIZATION  BIT(0) /* crc32_le() is optimized */
-> +#define CRC32_BE_OPTIMIZATION  BIT(1) /* crc32_be() is optimized */
-> +#define CRC32C_OPTIMIZATION    BIT(2) /* __crc32c_le() is optimized */
-> +#if IS_ENABLED(CONFIG_CRC32_ARCH)
-> +extern u32 crc32_optimizations;
-> +#else
-> +#define crc32_optimizations 0
-> +#endif
+> +static int num_algs;
 > +
-
-Wouldn't it be cleaner to add a new library function for this, instead
-of using a global variable?
-
->  /**
->   * crc32_le_combine - Combine two crc32 check values into one. For two
->   *                   sequences of bytes, seq1 and seq2 with lengths len1
->   *                   and len2, crc32_le() check values were calculated
->   *                   for each, crc1 and crc2.
-> diff --git a/lib/crc32.c b/lib/crc32.c
-> index 47151624332e..194de73f30f8 100644
-> --- a/lib/crc32.c
-> +++ b/lib/crc32.c
-> @@ -336,5 +336,10 @@ u32 __pure crc32_be_base(u32 crc, const u8 *p, size_t len)
+>  static int __init crc32_mod_init(void)
 >  {
->         return crc32_be_generic(crc, p, len, crc32table_be, CRC32_POLY_BE);
->  }
->  #endif
->  EXPORT_SYMBOL(crc32_be_base);
+>         /* register the arch flavor only if it differs from the generic one */
+> -       return crypto_register_shashes(algs, 1 + IS_ENABLED(CONFIG_CRC32_ARCH));
+> +       num_algs = 1 + ((crc32_optimizations & CRC32_LE_OPTIMIZATION) != 0);
 > +
-> +#if IS_ENABLED(CONFIG_CRC32_ARCH)
-> +u32 crc32_optimizations;
-> +EXPORT_SYMBOL(crc32_optimizations);
-> +#endif
+> +       return crypto_register_shashes(algs, num_algs);
+>  }
+>
+>  static void __exit crc32_mod_fini(void)
+>  {
+> -       crypto_unregister_shashes(algs, 1 + IS_ENABLED(CONFIG_CRC32_ARCH));
+> +       crypto_unregister_shashes(algs, num_algs);
+>  }
+>
+>  subsys_initcall(crc32_mod_init);
+>  module_exit(crc32_mod_fini);
+>
+> diff --git a/crypto/crc32c_generic.c b/crypto/crc32c_generic.c
+> index 04b03d825cf4..47d694da9d4a 100644
+> --- a/crypto/crc32c_generic.c
+> +++ b/crypto/crc32c_generic.c
+> @@ -195,19 +195,23 @@ static struct shash_alg algs[] = {{
+>         .base.cra_ctxsize       = sizeof(struct chksum_ctx),
+>         .base.cra_module        = THIS_MODULE,
+>         .base.cra_init          = crc32c_cra_init,
+>  }};
+>
+> +static int num_algs;
+> +
+>  static int __init crc32c_mod_init(void)
+>  {
+>         /* register the arch flavor only if it differs from the generic one */
+> -       return crypto_register_shashes(algs, 1 + IS_ENABLED(CONFIG_CRC32_ARCH));
+> +       num_algs = 1 + ((crc32_optimizations & CRC32C_OPTIMIZATION) != 0);
+> +
+> +       return crypto_register_shashes(algs, num_algs);
+>  }
+>
+>  static void __exit crc32c_mod_fini(void)
+>  {
+> -       crypto_unregister_shashes(algs, 1 + IS_ENABLED(CONFIG_CRC32_ARCH));
+> +       crypto_unregister_shashes(algs, num_algs);
+>  }
+>
+>  subsys_initcall(crc32c_mod_init);
+>  module_exit(crc32c_mod_fini);
+>
 > --
 > 2.47.0
 >
