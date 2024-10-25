@@ -1,63 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-2562-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2563-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571939AF6A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 03:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C12F9AF768
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 04:32:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZQ511bj9z2xsd;
-	Fri, 25 Oct 2024 12:22:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZRd01mDTz2xY0;
+	Fri, 25 Oct 2024 13:32:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729819365;
-	cv=none; b=KcXwaBmRoHfbUWmbKdgog//bmQItkXEg5Wuds4Il1EBq1uBJ236AIcYNqD+rIoqtYlBAGithtNRig+iuyPHmVOCKqRBTjwk0mzSrNEz4vL/fZFbnM2pPRxTrVjiFF0M17oicyvr2Pd4mzN9dMlmZvdYB06AQ0fD1l1Z3ZF51Btrsbh7g3A8O+vzuoxRAeCfLT3EUrqtq/mRAAyhpUULWX/5fWYTYOBYl24k4oGugvzpIdAbCEiD9ahY29MlgsGrIBBC0zow3SaHoCYJoRVa7ksF7d6FL/l3tdJIDb4QHW2vdMkmJiBcja9UJxDmlTwXz/slsZhFLd4dcQG2ZXwPRwQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729823524;
+	cv=none; b=es8ohsZTI6covSmH2qOPkRVV27VkO8h8VJvDtZ1eRulHvKMxupFgckAxRc/Ch2sBibsrRq4M3pXVtsN814RhGmQDtGi1o0tIqK9sS1Bu80fp06J1Ekxv6mqad9Uke0/TetmP5bVmtdlSWPFNA0MH+CdKlSelxazBLhiMHEyBOWFn+f207xyv9CKfNyFS7ewcS1w2P1pTy/Hy7SYkhxQLBdIlgt1fZhOEHRIlgzJilNGMn31H5XEKjFwfhKl22nKbpZjN6/3JlhX/hjcp7w678sJQY+bEl2BKnzDpx5a8MNnXkawBxgqxfVcXqKEXmB+LS+guBLNawgIghN0D35dX4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729819365; c=relaxed/relaxed;
-	bh=PHk+f02gxxCH78JZbRAia+WbVbQ0AJGC2OCKGNTcjio=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y7UMQlKU+kXDOqioFeS8WjaCENPOs+2feg+pa/3JjEbedeubDwmh2xvxeT9N1idME/+0rwc+zMyvx5RpUVS9IT9Fma1LA3/mwwhO9JMx4CnSlSWPCX7cqAOi1xSeUt+WxxzsIRWC0y+ppsHZ7CVjfgXQQ2qRXe5qPHPH/0igJMtxcEoncbrDSmyOrQxVlPPTM+Zr1K14dfGBUKicG0inRIZM8RHEZuNlNzDTgwbggaAHL2UmYGMLkNZx3YzDteVn09HKQjCsUH5V0LBq41utBXVL1t5YlGPhMjx9IWKJYldLALZOVulPAe8kDJJN/hvT+dcg6uFRMHYsPR769rYtfg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bc3a5qD4; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1729823524; c=relaxed/relaxed;
+	bh=DLqU6vLdekjlRZZCwD9gnIJ2B6/IvBjWioyusl6prfI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=IfbtNI0r3I9lhYHXmbgZVYzCXvj+ZAv5QfSZXpUCu3FRC3ayViMHe30eoY4qJnsOpY586vRvZzW9DLf5VjjXbwTRyx438mPnj5OamN1E6V2qw6je/OZ1faT060V2y/mqei5YLQTMjMJlOXC1raLCcXnY8T71SZjR4vXvvIW/PNqzdnZTQnTaKQjacjkChEeqCipdXZ4KwQWQ72qAnjtDCIICTU+cyWkHIgWIo7WvHrTN9xUvIyVrqyfKunZBGwb/io+/c1oay4Wa/iSXrHvvs1A1HJN6jOqmJnXkYc173CvGO6mwgMXrpJkwmFeGkQEoPq6/yGoTODQ3+KjL8+nv6Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qwZfTYwt; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bc3a5qD4;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qwZfTYwt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZQ501jMkz2xs8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 12:22:44 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id B7566A42AF6;
-	Fri, 25 Oct 2024 01:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E6DC4CEC7;
-	Fri, 25 Oct 2024 01:22:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729819359;
-	bh=PHk+f02gxxCH78JZbRAia+WbVbQ0AJGC2OCKGNTcjio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bc3a5qD4OqjSXdFp0YC/YQR9lx762k8SHCwE/zwZhxpyXyv48dUIt717zB96aKR7+
-	 SbtSj8MwlVbEqKW6C26c2Gv6o2zrqmo5IcAdf9trqDWBrMN/JvUjo92s26V3q3ucWi
-	 SwVTMP6SfuQ2T5YNj8O3yup9tLtPg6g55ljJSSSjBxw7k6gXkQa7QfiMG9awCkDHQD
-	 4gwwY+qWszL0lQR6wpzSm5d2Y2wu3LFG30dKdvTnS3bFB7J/TTDGEYJ3awBZVLKiC5
-	 ccRmySNrAF1EkoMB+XET2jpjv2HIDPApBSDm1XnR6mUqYlDl43boiMQwrU+Fj4sUuh
-	 LLqYU6N14X0ow==
-Date: Thu, 24 Oct 2024 18:22:37 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: clang-built-linux <llvm@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>,
-	lkft-triage@lists.linaro.org,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: powerpc: clang-nightly: fatal error: error in backend: Trying to
- obtain a reserved register "r2".
-Message-ID: <20241025012237.GC740745@thelio-3990X>
-References: <CA+G9fYs2G_4jyv-V7f85oE53rw5rX0Tnf2V8RQ=O9CuPcbfb2A@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZRcx164bz2xXL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 13:32:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1729823519;
+	bh=DLqU6vLdekjlRZZCwD9gnIJ2B6/IvBjWioyusl6prfI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=qwZfTYwt5+TDD7JV1w1VeSXVFG4at6tB2CJKZfLFDHiuL+8Tj/HdLd3uvgNl2lUjb
+	 qNdvLa+SjqmKhoN/dZwYs5ioQ2nbPg7CAm07MX6k/f8e+tfKYJJnZ2+72P9HvFpw3Z
+	 l1vY6FuN0zooFJdb24eKQ1OpGUI1DspLYEnqMrGjTFR1JrHtV0gAsOIveR6maiCxQh
+	 DssoSvCHTOdb/SkSscMzA2YlyfnX8HFR5jU69Q2GV98bQVQuYhUAedqrA+yGtWfy7I
+	 rdZaNIuG95vmcEHAjVKbB+QYR2xqpFZdifpMZuSloLYs4i2GFegjHmUrsVy3e5yZHj
+	 uRV4nKHCoMZ2A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XZRcv1wQGz4wb1;
+	Fri, 25 Oct 2024 13:31:59 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
+ maddy@linux.ibm.com, peterx@redhat.com, groug@kaod.org,
+ sshegde@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/xmon: symbol lookup length fixed
+In-Reply-To: <zkm6fcxaef4gnvvsvykv7po7joytakyhqnmt2j72ej3r4wffn2@j5p6h6h2bwnw>
+References: <20241023212225.1306609-2-mchauras@linux.ibm.com>
+ <878que2u2i.fsf@mail.lhotse>
+ <nxdkjwqtd7s3fcxebwod6lrfu7rngrj7fa4kk433hgypha66w5@6ahbuz7o2qmu>
+ <zkm6fcxaef4gnvvsvykv7po7joytakyhqnmt2j72ej3r4wffn2@j5p6h6h2bwnw>
+Date: Fri, 25 Oct 2024 13:32:00 +1100
+Message-ID: <87a5eskj4v.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,30 +69,62 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYs2G_4jyv-V7f85oE53rw5rX0Tnf2V8RQ=O9CuPcbfb2A@mail.gmail.com>
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Naresh,
+Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com> writes:
+> On Thu, Oct 24, 2024 at 10:42:12AM +0530, Mukesh Kumar Chaurasiya wrote:
+>> On Thu, Oct 24, 2024 at 12:00:53PM +1100, Michael Ellerman wrote:
+>> > Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com> writes:
+>> > > Currently xmon cannot lookup symbol beyond 64 characters in some cases.
+>> > 
+>> > Can you mention which commands? It looks like it's "ls" and "lp".
+>> Sure.
+>> > 
+>> > > Fix this by using KSYM_NAME_LEN instead of fixed 64 characters.
+>> > >
+>> > > Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+>> > > ---
+>> > >  arch/powerpc/xmon/xmon.c | 6 +++---
+>> > >  1 file changed, 3 insertions(+), 3 deletions(-)
+>> > >
+>> > > diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+>> > > index e6cddbb2305f..22b8b5cc4df0 100644
+>> > > --- a/arch/powerpc/xmon/xmon.c
+>> > > +++ b/arch/powerpc/xmon/xmon.c
+>> > > @@ -3662,7 +3662,7 @@ symbol_lookup(void)
+>> > >  	int type = inchar();
+>> > >  	unsigned long addr, cpu;
+>> > >  	void __percpu *ptr = NULL;
+>> > > -	static char tmp[64];
+>> > > +	static char tmp[KSYM_NAME_LEN];
+>> >   
+>> > I think you could use the existing tmpstr buffer.
+>> > 
+>> > It is global so it's a little hard to track down all the users, but I
+>> > think it's only used briefly in get_function_bounds(),
+>> > xmon_print_symbol() and scanhex(). ie. none of the uses persist across
+>> > function calls.
+>> > 
+>> > We don't want to have two 512 byte static arrays lying around if we can
+>> > get by with one.
+>> > 
+>> > cheers
+>> Sure.
 
-On Thu, Oct 24, 2024 at 08:35:11PM +0530, Naresh Kamboju wrote:
-> The powerpc clang-nightly version 20.0.0 build warnings / errors noticed on
-> the Today's Linux next-20241024 tag.
-...
-> Build errors:
-> ----------
-> fatal error: error in backend: Trying to obtain a reserved register "r2".
+> For now i don't think so we can get by with only one. There is a lookup being
+> done when the scanhex is using the tmpstr for another lookup.
 
-Thanks for the report. I reported this upstream earlier, it should be
-resolved now but it will take a little bit for that to filter into
-clang-nightly from Debian.
+Yeah I see it, when handling `lp <symbol> <cpu>`.
 
-https://github.com/llvm/llvm-project/pull/112603#issuecomment-2430709704
+That's a bit annoying because for that command the CPU number is only
+meant to be a number, it never makes sense to do a $symbol lookup there.
 
-Cheers,
-Nathan
+But I agree with the way the code is structured it's best not to reuse
+tmpstr there.
+
+cheers
 
