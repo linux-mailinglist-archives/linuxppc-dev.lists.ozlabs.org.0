@@ -1,94 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-2579-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2580-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF6B9B0457
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 15:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC849B05A7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 16:22:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZkTf5zP5z2xjd;
-	Sat, 26 Oct 2024 00:41:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZlP51RCWz2y8P;
+	Sat, 26 Oct 2024 01:22:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.159
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729863702;
-	cv=none; b=JhJWMdWrUvM5ONnHjL/A+w4Gw+0vfvLc+/iXk8GjDZ1iDKn3a9QTkoDk+eyupHdzNVwv8bV48g6TUdsHiY6ad8krJffMDnXTI+7BC4tqqDfAiodiQgRIPs3SBmge4bL5Fi1tkpOYnkTdZ7zfDNuWllkl3xLPvjYmzn+aRlOJt/xU5bJxfrP89n4WBtCbMHLK/uJNyK9i2/wzJfa5qp8tSblGhqjJkD5IZIKBOGQ9NgCaIONgIBpzPynjIdaFdAs3s8AFIVjmu6wVQOUVVa1pfD5azdh7jxgdmdR1y2tl0dLQxTTioKRaeIObcOrOHGKeUnbbesybCCYmy8WyF4xFfg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729866169;
+	cv=none; b=JN7MLROLO6Ha7nHzinvDcmq2gmlX5SQcsh4oe/6v+w01AYTnslsTtus/Tx4FeeiKlQ3h6IA7aLvCBhiXj+6dvFUMMxteIedhYRNocre3czBEQmycefs8WK7y5zkoIXeCBRp8KYL2moa50IphRGHkjRgMz8aUFV1tTNOuSiiuXO/y70i6wrKVdZ8NFaV30n+u9+7nQVJ2hB612vf7O7UV4eXOym7eBGSmVeunb30n5YDJwybBNNEedEINZibK9QIgXJkC3zaT63srHaOr885i0wzuYApYMOVYPJcOrJFA8f/lubexjBvpdOgXP5H7nz7JfqHENshIahyqvr8EVDobuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729863702; c=relaxed/relaxed;
-	bh=mTD/E8mUSNoNp+vtjeW8NYfb5u7ndnKHIytXzDhahwE=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=kCqfH4pM5tKveCrwJtDdJLWmKnBXbN1/iWVrd8CxA9sKwuDxIwxWpmTzWhHSOkEU8rYUWzyjKpEFBGTP2WGQrdf/Vepkeq+vj0gi8QSWkk16Sh76rhgyUxCeH+ruuFzrJLuTDtakJOUyvPI7N/JBZuYpKjujCIxfzqOTVN4QpW/QJWCm60bwY6TBJFwOCme0q87tBU1sUhsJ0bvOKBBtC93ewc9jukm1ZS3unTb+nkgotzZVLTnVdz4gng8JAfK7cvq6/gB4fRAa5lHH6R5tcfDuXZQmdPAPkNdU6ARAUSPw2xYYVyILHcslmLopWKt0KoNx60CEcTmVaFzWrYlm5Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nTq77u+Y; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YYd+CaNQ; dkim-atps=neutral; spf=pass (client-ip=202.12.124.159; helo=fhigh-b8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1729866169; c=relaxed/relaxed;
+	bh=ZeVnIZsZ+W6LZTALEEW0rV0SpWEyEKWMjQtAarasrAs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OazBY9Ihh1l30EN/cD6wgQstLGVLuPf34FRl35fIOVSTl2HDYBb33SOCpRdqUtiIe32rqaAhxF9FkHK6K+59UR7i1vUXfuDdVtfBGi/khTFPr6JJHSp6KWShceu82qaOETYf6yVDvnAbMlAOyFyslkexn32UoOsOu2EbzlGQ3jn4rmyLGSYOOmtFtomgFbmnoVekSV8uKf+1v5LkmOPofE7FCwJkql2caLr6xt6j7sxHOWxAoJwkI24TbyHeiUsY5jXmdba1h0E3f4pxBpvNVTTOlDjq61m4a7oQBU9R0mlGbWcSDQGqJBJ70tziCdelW16iU0208ADEcaCJDkfTZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VFmXHLSi; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=nTq77u+Y;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=YYd+CaNQ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VFmXHLSi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.159; helo=fhigh-b8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 236 seconds by postgrey-1.37 at boromir; Sat, 26 Oct 2024 00:41:37 AEDT
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZkTY5bklz2xYk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 00:41:37 +1100 (AEDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 54D1325400C4;
-	Fri, 25 Oct 2024 09:37:37 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Fri, 25 Oct 2024 09:37:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1729863457;
-	 x=1729949857; bh=mTD/E8mUSNoNp+vtjeW8NYfb5u7ndnKHIytXzDhahwE=; b=
-	nTq77u+YbjEK1oOGqWOEMss4pavBeea5xmfNB5v8n1RQ22NxJIlmfp2TzT4IKpOx
-	caApVTp1/TP1+2AFsH+6DaC7B1jXPpi59lVd0QmK1g4cyigLCbwCjjCU5UZejO28
-	8c3d8AGT1CdV1FpUSe8Ohc2JPaB0EAv7X1aw4eGMMqsDN9QNF4MBCkY7XT7NWXhL
-	O/OEAgSYzhCEctYt3/dxus3LsMgxjvtStf4TUCEi3KDe+iRqYuAwvWG/ws/9TCTb
-	91Febe33d87M4u4RsAc2PSDoS2l7TEXW3ZHH0N9mqk4H/wIO2sYqmM++nNVpXfOu
-	l8mVjbE2Y3ckzB0U2VTGjA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1729863457; x=
-	1729949857; bh=mTD/E8mUSNoNp+vtjeW8NYfb5u7ndnKHIytXzDhahwE=; b=Y
-	Yd+CaNQUnHw9YsFM/xsr4EEUnyKUrgtD2vti8QGZood/Hu9648OKjYo4bH7A6Neg
-	jnJDKNvwBYkFvlybTuqF2bH/KaZKDCsMPx9nvXzHCWTKjsCUnllyUHCbFyKAeDhX
-	YNkya00Lwsz0+acBTk9P7pZOFNJx3BvJUubdQClXQQcfFmAJOHzcSMDEsFGYeUz+
-	Jg9HE+6A7ymczxjo7UpkNZEyk9ue5mso6y8MDn4M5ldn8ZNSI/lsZrOwKW2qGN95
-	SK1C5a5uk//QbB1mqxfMZZhPvCEMy7uIU9Opdu0mHCbXfdkyJRO6uRsr50PfJcTO
-	dO3S1hvvUj92Ys457iJAw==
-X-ME-Sender: <xms:IJ8bZxsuj29dJ1vr5lHn5cEFvY6c8AEcCMtZGM1az7Jp64ZRgbF05Q>
-    <xme:IJ8bZ6f_PFYR1VPWQ6NunpU9GXYmb8uTFHK2WzhvwLuyhGpOciB1CBT9pvUeu8GH4
-    UYBuOr6HJ-I4-vOr1Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejvddgieeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
-    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudel
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnh
-    gvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhig
-    qdhrihhstghvsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplh
-    hinhhugidqshhnphhsqdgrrhgtsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhr
-    tghpthhtoheplhhinhhugidquhhmsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpd
-    hrtghpthhtoheplhhinhhugidqmheikehksehlihhsthhsrdhlihhnuhigqdhmieekkhdr
-    ohhrghdprhgtphhtthhopehlohhonhhgrghrtghhsehlihhsthhsrdhlihhnuhigrdguvg
-    hvpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdr
-    ohhrghdprhgtphhtthhopehhtghhsehlshhtrdguvgdprhgtphhtthhopehlihhnuhigqd
-    grlhhphhgrsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:IJ8bZ0w8_fyzDu0Dhxg43egcOQd9fPmeL9IF1HbPQzAPODUmdkywqg>
-    <xmx:IJ8bZ4Ng8v61LIOz9Z6hcNW7TrkYDvZ9-QsNLZ7fNM7Okgrh7sPTiA>
-    <xmx:IJ8bZx-O8B7MlF4JofybzIynmnGJvvLwnq8RLzH_1fknLv9ZsqMu1w>
-    <xmx:IJ8bZ4X5lrN7iDkKbGm85k7BOBq5kmsTovQZ6V9cVszatdT146tmOA>
-    <xmx:IZ8bZ02QO2wzbQXTtXh5NJPoq2r5QyMwBKYu4QPUoTFRk_k35DiZGUWq>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3B9352220071; Fri, 25 Oct 2024 09:37:36 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZlP32tnsz2y89
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 01:22:46 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49P20eTu016724;
+	Fri, 25 Oct 2024 14:22:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=ZeVnIZsZ+W6LZTALEEW0rV0SpWEyEK
+	WMjQtAarasrAs=; b=VFmXHLSi18rIA3bfaHj6q8I5FMWL1CMHjA7Za2xDW8tmdc
+	NImQmyWh2aUPAn6C8Q9ouVGlm9p42bBGsq6jVMzFUe4wxl8QLJIbCMqZbboK4XJE
+	NBE/1tidihamMyGO9raVN9kBAQsyGizUaIPdxfeMYPW7NOLpuICEc73/2Br671N+
+	Q969V41NIiksVvpZ0YUI8leCc++eeMdz6Yg5jdeugLutJApyw3CrjKW3zWXM+Bq9
+	Kl381Uv4kZhm3l25WcQu+Z1ktu0OJP6OFYP8jaWLZbvuxd5OtKQPgqPfZMQkrCY7
+	nMw5fGkfL3E/LenIxuOrNwmKyQDgBkps1wZhB8kA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emajxgtp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Oct 2024 14:22:31 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49PEMUpv029480;
+	Fri, 25 Oct 2024 14:22:30 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42emajxgtk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Oct 2024 14:22:30 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49PAbv44008796;
+	Fri, 25 Oct 2024 14:22:30 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42emkax34j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Oct 2024 14:22:30 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49PEMSYC32440840
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Oct 2024 14:22:28 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 636EB2004B;
+	Fri, 25 Oct 2024 14:22:28 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 790ED20043;
+	Fri, 25 Oct 2024 14:22:26 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.39.31.149])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 25 Oct 2024 14:22:26 +0000 (GMT)
+Date: Fri, 25 Oct 2024 19:52:23 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Mask off LPCR_MER for a vCPU
+ before running it to avoid spurious interrupts
+Message-ID: <x4sx3g3as4xzhby6gyonh73z54y6z7d5s37yferz3ybbyc6skd@fjwoxrgz6rds>
+References: <20241024173417.95395-1-gautam@linux.ibm.com>
+ <877c9wkf8q.fsf@mail.lhotse>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,45 +93,149 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Fri, 25 Oct 2024 13:37:15 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christoph Hellwig" <hch@lst.de>
-Cc: linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org, Linux-Arch <linux-arch@vger.kernel.org>
-Message-Id: <c9f10ee9-697f-4f45-8c82-a6dc61e5a74e@app.fastmail.com>
-In-Reply-To: <20241023053644.311692-1-hch@lst.de>
-References: <20241023053644.311692-1-hch@lst.de>
-Subject: Re: provide generic page_to_phys and phys_to_page implementations v3
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=1.6 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS,
-	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.0
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877c9wkf8q.fsf@mail.lhotse>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: KOMBPlvXuVQ2ggS1xN5NnXnFwyFOY6Iw
+X-Proofpoint-GUID: jdzenZ0xq_9A_mSgMqBUxBZxed7KPAIe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ mlxscore=0 phishscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410250110
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Oct 23, 2024, at 05:36, Christoph Hellwig wrote:
-> page_to_phys is duplicated by all architectures, and from some strange
-> reason placed in <asm/io.h> where it doesn't fit at all.  
->
-> phys_to_page is only provided by a few architectures despite having a lot 
-> of open coded users.
->
-> Provide generic versions in <asm-generic/memory_model.h> to make these
-> helpers more easily usable.
->
+On Fri, Oct 25, 2024 at 02:56:05PM +1100, Michael Ellerman wrote:
+> Hi Gautam,
+> 
+> A few comments below ...
+> 
+> Gautam Menghani <gautam@linux.ibm.com> writes:
+> > Mask off the LPCR_MER bit before running a vCPU to ensure that it is not
+> > set if there are no pending interrupts.
+> 
+> I would typically leave this until the end of the change log. ie.
+> describe the bug and how it happens first, then the fix at the end.
+> 
+> But it's not a hard rule, so up to you.
 
-I've applied this to the asm-generic tree now.
+Yes agreed, that would make more sense.
 
-Thanks for the cleanup!
+> 
+> > Running a vCPU with LPCR_MER bit
+>             ^
+>         "an L2 vCPU"
+> 
+> In general if you can qualify L0 vs L1 vs L2 everywhere it would help
+> folks follow the description.
 
-     Arnd
+yes will add it in v3
+> 
+> > set and no pending interrupts results in L2 vCPU getting an infinite flood
+> > of spurious interrupts. The 'if check' in kvmhv_run_single_vcpu() sets
+> > the LPCR_MER bit if there are pending interrupts.
+> >
+> > The spurious flood problem can be observed in 2 cases:
+> > 1. Crashing the guest while interrupt heavy workload is running
+> >   a. Start a L2 guest and run an interrupt heavy workload (eg: ipistorm)
+> >   b. While the workload is running, crash the guest (make sure kdump
+> >      is configured)
+> >   c. Any one of the vCPUs of the guest will start getting an infinite
+> >      flood of spurious interrupts.
+> >
+> > 2. Running LTP stress tests in multiple guests at the same time
+> >    a. Start 4 L2 guests.
+> >    b. Start running LTP stress tests on all 4 guests at same time.
+> >    c. In some time, any one/more of the vCPUs of any of the guests will
+> >       start getting an infinite flood of spurious interrupts.
+> >
+> > The root cause of both the above issues is the same:
+> > 1. A NMI is sent to a running vCPU that has LPCR_MER bit set.
+> > 2. In the NMI path, all registers are refreshed, i.e, H_GUEST_GET_STATE
+> >    is called for all the registers.
+> > 3. When H_GUEST_GET_STATE is called for lpcr, the vcpu->arch.vcore->lpcr
+> >    of that vCPU at L1 level gets updated with LPCR_MER set to 1, and this
+> >    new value is always used whenever that vCPU runs, regardless of whether
+> >    there was a pending interrupt.
+> > 4. Since LPCR_MER is set, the vCPU in L2 always jumps to the external
+> >    interrupt handler, and this cycle never ends.
+> >
+> > Fix the spurious flood by making sure a vCPU's LPCR_MER is always masked
+> > before running a vCPU.
+> 
+> I think your original sentence at the top of the change log is actually more
+> accurate. ie. it's not that LPCR_MER is always cleared, it's cleared
+> *unless there's a pending interrupt*.
+
+Yes agreed
+> 
+> > Fixes: ec0f6639fa88 ("KVM: PPC: Book3S HV nestedv2: Ensure LPCR_MER bit is passed to the L0")
+> > Cc: stable@vger.kernel.org # v6.8+
+> > Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> > ---
+> > V1 -> V2:
+> > 1. Mask off the LPCR_MER in vcpu->arch.vcore->lpcr instead of resetting
+> > it so that we avoid grabbing vcpu->arch.vcore->lock. (Suggested by
+> > Ritesh in an internal review)
+> 
+> Did v1 take the vcore->lock? I don't remember it.
+
+No v1 did not take a lock, but ideally was supposed to take a lock. I
+missed the locking part there.
+> 
+> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> > index 8f7d7e37bc8c..b8701b5dde50 100644
+> > --- a/arch/powerpc/kvm/book3s_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_hv.c
+> > @@ -5089,9 +5089,19 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
+> >  
+> >  	do {
+> >  		accumulate_time(vcpu, &vcpu->arch.guest_entry);
+> > +		/*
+> > +		 * L1's copy of L2's lpcr (vcpu->arch.vcore->lpcr) can get its MER bit
+>                                      ^
+>                                      LPCR
+
+Ack. 
+> > +		 * unexpectedly set - for e.g. during NMI handling when all register
+> > +		 * states are synchronized from L0 to L1. L1 needs to inform L0 about
+> > +		 * MER=1 only when there are pending external interrupts.
+> > +		 * kvmhv_run_single_vcpu() anyway sets MER bit if there are pending
+> > +		 * external interrupts. Hence, mask off MER bit when passing vcore->lpcr
+> > +		 * here as otherwise it may generate spurious interrupts in L2 KVM
+> > +		 * causing an endless loop, which results in L2 guest getting hung.
+> > +		 */
+> >  		if (cpu_has_feature(CPU_FTR_ARCH_300))
+> >  			r = kvmhv_run_single_vcpu(vcpu, ~(u64)0,
+> > -						  vcpu->arch.vcore->lpcr);
+> > +						  vcpu->arch.vcore->lpcr & ~LPCR_MER);
+>  
+> This is much better than v1 which hid the clearing of LPCR_MER in a macro.
+> 
+> But I still wonder if it would be better to clear it in
+> kvmhv_run_single_vcpu() itself.
+> 
+> The logic to set LPCR_MER is already in there, so why not ensure
+> LPCR_MER is cleared as part of that some block?
+> 
+> I realise there's another caller of kvmhv_run_single_vcpu() from the
+> nested code, but that's OK because there's already a nested check in
+> kvmhv_run_single_vcpu(), so you can still isolate this change to just
+> the non-nested case.
+> 
+
+Yes it would be better to mask off LPCR_MER inside
+kvmhv_run_single_vcpu(), will make that change and send v3. 
+
+> cheers
+
+Thanks,
+Gautam
 
