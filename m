@@ -1,58 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-2613-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2614-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76ACD9B1271
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2024 00:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 587119B1299
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2024 00:32:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZxvS37G9z301w;
-	Sat, 26 Oct 2024 09:16:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZyFV0nLcz3bby;
+	Sat, 26 Oct 2024 09:31:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729894580;
-	cv=none; b=I1SFUuLeIc0TyaTNiOLIvfGO6kK42NOv3P9HaJE+bkxnOG3LLMZ0W1BDW/vVQgJUn8+PCCgdjOOVQw9E2NeiaH/8BpUKwV03bmz/4bsh3cKjLTKGNv+6M5PxUCnk8d6aUliDEOm2W6cca1ZQjcSwMv2lrN7KeWb2umDSi7wY43nvTveBVv9y7Wz/69Dx19Mzbz2st5a+eLjVTAU0S8vYX7AHdUG8lGr/xfwcBMzl0eTPO9b74ExAd+yQbqEiMkrIgLAMO7mVo0ijMlMqxvsek3l3iOVX1oHwoKqowzazeFfsFUj1M1oy+bdAe9q6yE8XB6o2HFsTBNeC9krr+zNyZg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729895518;
+	cv=none; b=eo6NA1FAMMhkgwEJP1pKv+2L0KUgE+eHTe88qRUpiOIObUSObBcMzd/XAAxlwRAvrzADAJfO3Bk2kR+vjvLLdnYL4pJcakLJudO49nJH9tHETy+5lZnIIDIk5IRdEQhaiO3M1++T/92aXx4tuU3VdWQAD6x1ulrsgMa0VX2xah5RL3OfEUN5FKbxpFKSj6DZ0ACaHXkBh1NPhwhMUSt79mt7W4vBcdxcQSE0Hj7t+8PgWDmGxQgCwqG9pCKiyiQGWUkqU+NrdavpDjPYU8LQiFUSRrInVilk/rbDDQ4EZ5MX9Cxvz3Y0VlayDt5OchDGe882/8cwTA7GRaQS/dO+rg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729894580; c=relaxed/relaxed;
-	bh=i0gN4lzQDHYSJ5VLFJlwQdonngrbWjkk6VPysWjKkhY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VE9UPgbCutX5chKh1GJ304RZfSqETqTnmt4ySZRVDfU8faA3DlZWsBVUCLfz+sZ6Ku6RRmoKX//eqoZaSoqFqsXG5wxdNXWv2/DOdPbqOBdcImfz2h7arusyAW/KPYsUmvh+98AuLZaqQy3oCy0L88eVms47YlmZ7xE3wFGNAluZmLc4BDgeAcGoLoeBjLaJ2j+0vsq8cRYb0GlM4s9I0k9IkQCb1/mkTUu7MJ1EG4Freq2vf9F6PPSUoZQI1Y7McQGzeQdmhUfjAtMV+x6gNTR4mVWT+ZjKMLQgORm3fk8FI3oCfoUUon0cahFJoNtts7wp934izkkT9I2QpXueIA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nnsUCoKs; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1729895518; c=relaxed/relaxed;
+	bh=pmMrJRYzrtx0eulT7RJiLZMuZUhbX4LJa/Dc4U1fcrE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XoWu+T0h+hJ3kqHC4CMHlF4fU7SDfxZr8BmcQjv8Gfjr7V/QI9wsxzJJa29QGg1JxAvxSO7z/qfo9GQdSYrxrf/7EmJ9Lacx+KztSyVMuCflsh1PTrokagFEpH5BkYPqazA9rHuV/5BwsC3RyXenPwlGfh6w+zhWY5MgAr+3jV/H97qxeZe3f8MMKU+RF7yWv9UnCweKadiEiYHgoKnRradIyQtmSpv0Wwv+UHl5LAen7Ri7IpO9ehYROaD6r0ysQcx02UnOGhgIcjmJVbRbHr/qpCuFy71DAqCiw3lgrmL2ZgLoSMrJ+cWcVKG9C3aj/haf69FeIYrdeQ5wSwIwTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=de2ooFjp; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nnsUCoKs;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=de2ooFjp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZxvR1z7Qz2yF7
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 09:16:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZyFS45Nwz2xfK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 09:31:56 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0F9C65C00CE
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 22:15:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39E7C4CEE7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 22:16:16 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2D6DF5C51BA;
+	Fri, 25 Oct 2024 22:31:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE278C4CEC3;
+	Fri, 25 Oct 2024 22:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729894576;
-	bh=uJTuxxbpUOhYgzs5WgqjZ9oJKXZ+IXXPP0S1EvdK364=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nnsUCoKsPy331Chn2UUcsngk6k5T9x6sJ5x/vQCqmf50lgps9XEwpgmo4ieWnMh2v
-	 hKKhwmyShVPTqg/aa8W1r73marKoLDlVeVlofleUY/xPKgT1+9Mj3gW7tRebb1/J0Z
-	 0Nb8Myml3Mh8xhW6GxZCRVqJQI9a0IlZxwhIb/FFLjWW7zb3vS5IAOKR5P46cuH1bX
-	 6HIe2Fv9Hy8qoXg6BWAQLe1RwZxXCtspPILf7Beo+xbCY0Zov9G0Zr+tfys0Y9cjmm
-	 B8TBd0ZUpDH1lyus/5Zn/fUtOn0w957/BJ7tJ0vN45wzDau2TLxE75xt0/m5uLMVPd
-	 35fr3Z21N4TFw==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-539e63c8678so2708779e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 15:16:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV4td/nRaBuvXHqkDvqiTa6WfHpA8A6GByb7YikE1bGYpH/4TFwsHGh2cAoskHUAf5rs6f2pRENdZTqzzg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzsWpJwo5A85gcmX0Q7cwUew990P/xH6PNv6LuxAGyEcvwRbPxv
-	Qy8NG8f23Nvn6+jFno4SvwXHSK0npBHAqMS2Gufa9t8nI/5+1CqjB8juRo6+meU5eBK/9ziMDYq
-	jlo12hfeDDy7FIElDM9Q6om4g+Q==
-X-Google-Smtp-Source: AGHT+IFDzz30e4eepxmp8y9NIgcU0ohK45V4obAXv/vuq7kDznzhS/1RZo0KUZFB2KLhRb/lyUfqMvvtY4COXI6AOVA=
-X-Received: by 2002:a05:6512:3d8b:b0:539:d0ef:b3f9 with SMTP id
- 2adb3069b0e04-53b3491dfc0mr415910e87.40.1729894575274; Fri, 25 Oct 2024
- 15:16:15 -0700 (PDT)
+	s=k20201202; t=1729895514;
+	bh=mVLVxjwpOT42Kb7f4O3vXqKoUSnuXxrku5/kKxjIyIQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=de2ooFjpzQqfyvs6eWpep/LU6bZMauqxFRrPPIOcoo6RLnaqtZhiBAtYfGHHWnscC
+	 dF2y5c896ibxWAiYOAVTj7IgcnlKP5L75BhK0Tc8wjgHsq9xSq4k1kTDEtU1VCVpVV
+	 KnGgdBnEQWIoO/2j34UM4IMNdYaajjOueVlox5Cf9Q4R746AKJSlNaQMSFchAMua3K
+	 xtNbR4CRre/5BmANz4U4u0zWkBsw0zpk3Hxas9iQsUUMtnzMnCcn+DJ54uFulKs2BJ
+	 SwTm/+DeTIx0AxPhIDiLCAroqEegH6HVTKiWTZ/RBPNhDys5MIq020g5RWnq0r3QWN
+	 +fqhDOV967kMA==
+Date: Fri, 25 Oct 2024 22:31:52 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v2 03/18] lib/crc32: expose whether the lib is really
+ optimized at runtime
+Message-ID: <20241025223152.GC2637569@google.com>
+References: <20241025191454.72616-1-ebiggers@kernel.org>
+ <20241025191454.72616-4-ebiggers@kernel.org>
+ <CAMj1kXFoer+_yZJWtqBVYfYnzqL9X9bbBRomCL3LDqRcYJ6njQ@mail.gmail.com>
+ <20241025213243.GA2637569@google.com>
+ <CAMj1kXHZy3yPvonS5ZVof0qa0V_Lxhv5Q7i1UVf5P6D3d+=KRw@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,48 +73,92 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241023171426.452688-1-usamaarif642@gmail.com>
-In-Reply-To: <20241023171426.452688-1-usamaarif642@gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 25 Oct 2024 17:15:53 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLBuzRYgnYHCdbdO4wneFNPe5_iEfbehvKK5M7bBuiyfA@mail.gmail.com>
-Message-ID: <CAL_JsqLBuzRYgnYHCdbdO4wneFNPe5_iEfbehvKK5M7bBuiyfA@mail.gmail.com>
-Subject: Re: [PATCH v2] of/fdt: add dt_phys arg to early_init_dt_scan and early_init_dt_verify
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: mark.rutland@arm.com, will@kernel.org, leitao@debian.org, 
-	catalin.marinas@arm.com, tglx@linutronix.de, chris@zankel.net, 
-	saravanak@google.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	kexec@lists.infradead.org, loongarch@lists.linux.dev, 
-	linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-openrisc@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-csky@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHZy3yPvonS5ZVof0qa0V_Lxhv5Q7i1UVf5P6D3d+=KRw@mail.gmail.com>
 X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Oct 23, 2024 at 12:14=E2=80=AFPM Usama Arif <usamaarif642@gmail.com=
-> wrote:
->
->  __pa() is only intended to be used for linear map addresses and using
-> it for initial_boot_params which is in fixmap for arm64 will give an
-> incorrect value. Hence save the physical address when it is known at
-> boot time when calling early_init_dt_scan for arm64 and use it at kexec
-> time instead of converting the virtual address using __pa().
->
-> Reported-by: Breno Leitao <leitao@debian.org>
-> Suggested-by: Mark Rutland <mark.rutland@arm.com>
-> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-> Fixes: ac10be5cdbfa ("arm64: Use common of_kexec_alloc_and_setup_fdt()")
+On Fri, Oct 25, 2024 at 11:37:45PM +0200, Ard Biesheuvel wrote:
+> On Fri, 25 Oct 2024 at 23:32, Eric Biggers <ebiggers@kernel.org> wrote:
+> >
+> > On Fri, Oct 25, 2024 at 10:32:14PM +0200, Ard Biesheuvel wrote:
+> > > On Fri, 25 Oct 2024 at 21:15, Eric Biggers <ebiggers@kernel.org> wrote:
+> > > >
+> > > > From: Eric Biggers <ebiggers@google.com>
+> > > >
+> > > > Make the CRC32 library export some flags that indicate which CRC32
+> > > > functions are actually executing optimized code at runtime.  Set these
+> > > > correctly from the architectures that implement the CRC32 functions.
+> > > >
+> > > > This will be used to determine whether the crc32[c]-$arch shash
+> > > > algorithms should be registered in the crypto API.  btrfs could also
+> > > > start using these flags instead of the hack that it currently uses where
+> > > > it parses the crypto_shash_driver_name.
+> > > >
+> > > > Signed-off-by: Eric Biggers <ebiggers@google.com>
+> > > > ---
+> > > >  arch/arm64/lib/crc32-glue.c  | 15 +++++++++++++++
+> > > >  arch/riscv/lib/crc32-riscv.c | 15 +++++++++++++++
+> > > >  include/linux/crc32.h        | 15 +++++++++++++++
+> > > >  lib/crc32.c                  |  5 +++++
+> > > >  4 files changed, 50 insertions(+)
+> > > >
+> > > ...
+> > > > diff --git a/include/linux/crc32.h b/include/linux/crc32.h
+> > > > index 58c632533b08..bf26d454b60d 100644
+> > > > --- a/include/linux/crc32.h
+> > > > +++ b/include/linux/crc32.h
+> > > > @@ -35,10 +35,25 @@ static inline u32 __pure __crc32c_le(u32 crc, const u8 *p, size_t len)
+> > > >         if (IS_ENABLED(CONFIG_CRC32_ARCH))
+> > > >                 return crc32c_le_arch(crc, p, len);
+> > > >         return crc32c_le_base(crc, p, len);
+> > > >  }
+> > > >
+> > > > +/*
+> > > > + * crc32_optimizations contains flags that indicate which CRC32 library
+> > > > + * functions are using architecture-specific optimizations.  Unlike
+> > > > + * IS_ENABLED(CONFIG_CRC32_ARCH) it takes into account the different CRC32
+> > > > + * variants and also whether any needed CPU features are available at runtime.
+> > > > + */
+> > > > +#define CRC32_LE_OPTIMIZATION  BIT(0) /* crc32_le() is optimized */
+> > > > +#define CRC32_BE_OPTIMIZATION  BIT(1) /* crc32_be() is optimized */
+> > > > +#define CRC32C_OPTIMIZATION    BIT(2) /* __crc32c_le() is optimized */
+> > > > +#if IS_ENABLED(CONFIG_CRC32_ARCH)
+> > > > +extern u32 crc32_optimizations;
+> > > > +#else
+> > > > +#define crc32_optimizations 0
+> > > > +#endif
+> > > > +
+> > >
+> > > Wouldn't it be cleaner to add a new library function for this, instead
+> > > of using a global variable?
+> >
+> > The architecture crc32 modules need to be able to write to this.  There could be
+> > a setter function and a getter function, but just using a variable is simpler.
+> >
+> 
+> If we just add 'u32 crc32_optimizations()', there is no need for those
+> modules to have init/exit hooks, the only thing they need to export is
+> this routine.
+> 
+> Or perhaps it could even be a static inline, with the right plumbing
+> of header files. At least on arm64,
+> 
+> static inline u32 crc32_optimizations() {
+>   if (!alternative_have_const_cap_likely(ARM64_HAS_CRC32))
+>     return 0;
+>   return CRC32_LE_OPTIMIZATION | CRC32_BE_OPTIMIZATION | CRC32C_OPTIMIZATION;
+> }
+> 
+> should be all we need.
 
-This looks fine, but what is the symptom without this compared to
-before the above change? The original code in the referenced commit
-above didn't remove the reservation at all. Unless the current code
-does something worse, this is new functionality more than a fix (for
-stable).
+In 7 of the 9 affected arches, I already have a module_init function that checks
+the CPU features in order to set up static keys.  (arm64 and riscv already used
+alternatives patching, so I kept that.)  It's slightly convenient to set these
+flags at the same time, but yes the above solution would work too.
 
-Rob
+- Eric
 
