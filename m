@@ -1,87 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-2565-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2566-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343CB9AF7AC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 04:51:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A5E9AF7AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Oct 2024 04:51:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XZS3962DBz2xb3;
-	Fri, 25 Oct 2024 13:51:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XZS3N0zmkz2xg9;
+	Fri, 25 Oct 2024 13:51:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2418::624" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729824677;
-	cv=pass; b=WiWdu2Yn/+xU78NngceIdcLzbWzPtGM4E5Te6nWUjsr7o/S1dP6IYa50TBZCaHdhhNpEs+h2fhol8laURtKoUppXbtU119gpotoG2sajw1S8yKgRLFQomGn5QO4WsoqbNUGi72LgxKVqmZk5VRN3wZFnJECDwz9oaFSnSFBy3fD018yXj36+9PQb3XK58hY8xppYAZb1ZiplkfVQOa0s8/M4fBrKOcqx+ejjEobQsFuWsqEoXHLYMJ//uqgHwUDENWId0HtdQr/v3985ma23FhzRmIKXYvPwU71ah8/Kcbhf6+qwZA2+H2D6mm/41aaL+Cym1qCW27vaohndrAzF6A==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729824677; c=relaxed/relaxed;
-	bh=lkG+uVth1OoTxfyLLPuX5muDMO7tVMEALUwB4D2e6dI=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 Content-Type:MIME-Version; b=i9Zc43VzY/cZ/CqpRcaQfptoSsk3IkMsZ96wVR0wJwniTM/JwVozgjzOwWyHR9kayp3jPhvfbxLPp2GUbsV5PmUavITnd3y2rouZ0n/YiPTmmnxQVLIKLAiKD0bLrrzlWyiTRH1uxQ433vdXfgwSkStubvH46G5+AePro5PTLIx6VfWNj/6aPLyfqwAiBndamtgpK7rhma4SFh9uzQwYX577re9/wkfJQBwjH/ik8tiXJyC1plhJW5GaKSFketTz9bunTH0fFhoSwNPSqJVwYI7u3B2KbZAdYTF6o3NddUtU2aVa3+tB5eyfywieduDiLFowFsqZ477hGjJGkPQIfQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=JYzKzjKj; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2418::624; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=JYzKzjKj;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2418::624; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on20624.outbound.protection.outlook.com [IPv6:2a01:111:f403:2418::624])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=43.154.197.177
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729824688;
+	cv=none; b=TVzajfV+lKgY4VudFYIR/OwpzmyLFdSUVzKWPUscZ/XV3OLpgf6tsWAt9gPWunPs10qIKd/PUzYgmWQU5+zrsB0S8xy5QXsKPZqpaseTNRaiR+jYmC1EErocotHT7uIwWNPYx2N/QbgOKXj/9kN4yfDbjw+XmjXA6GLmijk4KgQ8bWudYj1RD1O5PAPVfTbAB60+EChbttm0KXv1y5Z+G3TzjQG3DvUUV4SG1JQ3LfB/LAoD9GT5TrbsB2ij0oeDQ1vbUj1KpKjCW73iYDgRIPPuWBMRUk1VUAStxJnyaqfzi5CggexodYISIG11g+Rz+NeOLZWscupcQ/uLOjHbCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1729824688; c=relaxed/relaxed;
+	bh=3gt4xx3jfUtKIE8l6IB6TeCTB8vB88q2kXKT2tw3Cjc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SnZwI+aVrSTFX/mVP4WLwfxA/z0gCID7cB68tfTLAaSGB+8z8Ifnrh1yVTbE8f1oI3GVJYMbrq04Nj9o+7iV2W+Hw3c4aHSOulaxnKB24LHTV/gPd8l+CJzwjtOMVNQMVsBu6LktDNqHj/zjZZ67XtGaJDjWW8+ZV7WC8YAllJJEJAog3/KXoDTA6iJ+UF9dE373yHMdKjEWienxZvBcxreKDOpJ1MoYiwdqY9UQPRamhLKvsaC3o8C/BNCteDRCTzOrkjO/0X6woMCccX7Jm5RdCMkHnBPrCc0WZEtKrxzZGuZy3L7ldAymvRs7obddtBBoGmA2+7M1WCOEBXXlaw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org) smtp.mailfrom=shingroup.cn
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shingroup.cn (client-ip=43.154.197.177; helo=bg5.exmail.qq.com; envelope-from=luming.yu@shingroup.cn; receiver=lists.ozlabs.org)
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZS383LGyz2xYw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 13:51:14 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tUCKl88CkkGpf6nm+f9j87XPL+aYXwEf7lqYJXoGJB7eXWDfQQdJnVB9CdGf6+4wBEA2WMN5ETWZ7Y0qaCpPbFYPJIvad++scSrf0Xb7UeZppwabaeFI0UfVGlg9qD2vQjRELqwwc/dfV2PgTiCafor7FPqupvGbTTr8YzatOchiYb0hiu2B4m9k4uFsG9/EIOT76JIbAF5hhuLk9K8BPMV2ZxESN8l00cKnOfy0DHIhD5biliTr8RlXfp/a+H/TgnXSyeWfk6iBevIdlPGO3ZJ4AQiy/udPBp0xjhd3YwfP+sBeEuw61t0QaboozXq29LuFoi7+uy3UyweaOERJ2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lkG+uVth1OoTxfyLLPuX5muDMO7tVMEALUwB4D2e6dI=;
- b=NxHu3iMyrFekKfMkgObBLj4fucAzMM7987O5jaKpCKDUWqxY8zRLIoTb/J26WQOreC48NnumxZNIh39zTXrgqzaAAr76kCX8h5S8M/3J4d0P+2IilqRzOHiwOkxaqAlPYg/R1Mo8flet/vnz4Hpv3LcvyDgVmK84gyyRmppHB7+xT4mCamvIIelXGGoGMDmiFq46qUx2fFDjD4lGt4JBhTWmybseUneYDzw65cnaTmtmJuovBL3GKTEGAje3w3qhpZxrJ+p/R3dbyH2xUNVc1YmTRfmF73PWiHXWKoguJBWsfygdn6ipozdDQnuvLSWZ0ABz26rABlzH/OUiXCySIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lkG+uVth1OoTxfyLLPuX5muDMO7tVMEALUwB4D2e6dI=;
- b=JYzKzjKjv6uUET4XvGl9+nqgTBNe8Uy5xXWU93Fl8UsjogIhPmaPx8i/5HOG9UTamHGqbsLw4eaVYwx62RX0Jyvp+MYWLBHMEs/cFJsYFmC3ovxIj0FWL19K7ookTIp5rd1FnIjGav+2Oi4Ycs5esTuHgowaEEBB7NATYBDsbre5mmZ72eXAlSj01RbVAqLdbCbLaqZnu26XJUs8aVnCKPdsH6JGXGKdouc2Gcf7evJaziNaognuSPbXxZwPNJkrcSQok/gCxgTCR04uCm5XjslW8a+tOtJARdrir49ZT2A1c0guNVkwaLop6UyeknQD1iYAmd/j9wtnKpy5sgoGzQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- MW4PR12MB5666.namprd12.prod.outlook.com (2603:10b6:303:188::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.18; Fri, 25 Oct
- 2024 02:50:54 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%3]) with mapi id 15.20.8069.027; Fri, 25 Oct 2024
- 02:50:54 +0000
-References: <cover.9f0e45d52f5cff58807831b6b867084d0b14b61c.1725941415.git-series.apopple@nvidia.com>
- <9f4ef8eaba4c80230904da893018ce615b5c24b2.1725941415.git-series.apopple@nvidia.com>
- <66f665d084aab_964f22948c@dwillia2-xfh.jf.intel.com.notmuch>
- <871q06c4z7.fsf@nvdebian.thelocal>
- <671addd27198f_10e5929472@dwillia2-xfh.jf.intel.com.notmuch>
-User-agent: mu4e 1.10.8; emacs 29.4
-From: Alistair Popple <apopple@nvidia.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-mm@kvack.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
- logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca,
- catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
- npiggin@gmail.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
- willy@infradead.org, djwong@kernel.org, tytso@mit.edu,
- linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
- david@fromorbit.com
-Subject: Re: [PATCH 10/12] fs/dax: Properly refcount fs dax pages
-Date: Fri, 25 Oct 2024 13:46:30 +1100
-In-reply-to: <671addd27198f_10e5929472@dwillia2-xfh.jf.intel.com.notmuch>
-Message-ID: <87seskvqt2.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: SY6PR01CA0032.ausprd01.prod.outlook.com
- (2603:10c6:10:eb::19) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XZS3L0q64z2xYw
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Oct 2024 13:51:23 +1100 (AEDT)
+X-QQ-mid: bizesmtpsz3t1729824616tmgra6v
+X-QQ-Originating-IP: JPCh8RJUlPJI1gUx6M4hEolXdKT+EW6o7gi92O+TrMw=
+Received: from HX09040029.powercore.com.cn ( [116.233.136.127])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 25 Oct 2024 10:50:13 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 14314361465991043063
+Date: Fri, 25 Oct 2024 10:50:05 +0800
+From: Luming Yu <luming.yu@shingroup.cn>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	npiggin <npiggin@gmail.com>, "luming.yu" <luming.yu@gmail.com>
+Subject: Re: [PATCH 1/7] powerpc/entry: convert to common and generic entry
+Message-ID: <6137D77B4C650804+ZxsHXYSWt6fzL-zu@HX09040029.powercore.com.cn>
+References: <88E2581B1D024E9A+20241012035621.1245-3-luming.yu@shingroup.cn>
+ <e9595d8b-d1e2-4c6a-b097-6f4f08d29866@csgroup.eu>
+ <tencent_381ACB160B890CC46678170E@qq.com>
+ <87o73b37pw.fsf@mail.lhotse>
+ <55B30F12C81A25B9+ZxoGx55aKtK7pSNx@HX09040029.powercore.com.cn>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,438 +58,638 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MW4PR12MB5666:EE_
-X-MS-Office365-Filtering-Correlation-Id: 89c4c59a-1eb4-4fec-c6e5-08dcf49fd804
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wFiyYVcfpQXhCopRMqbzrF/8BDui77QmaZWzFYssmfAZ1TUiBHcyW+2xskqP?=
- =?us-ascii?Q?pdbGJ5le4If642wIdmGRM7vzNbS0qmvTQfvryMIsUydHtjJ72nnvf0kW2e8Q?=
- =?us-ascii?Q?5YRKKMUXW74JV99tof0XLYzCEmLxjfO3D9Q1IClJoofabxbmFw6LQ1AHCMsc?=
- =?us-ascii?Q?0rKaoMVh7mojs77sJFqkTKLf1wua0U8G9tCtVBrdyxlM3F7BPowF5hBfIqSX?=
- =?us-ascii?Q?TO/leKF8DSTWaCBnid36D6sMmcSyKrXOOfJH2l7M0X0ONvvMeiPkleF9wIOs?=
- =?us-ascii?Q?RzJl8TayCFq1ExQMZtrWludndCsr4STzU2GROiJtVVlYcjNbORxBonGxWK4Z?=
- =?us-ascii?Q?oXu5e2KWz45WJBJyQoHwknPn9v8XI+87LLrTSm8zyGYiMVxUa1QQ1um4U72+?=
- =?us-ascii?Q?qMBAngumFwz1Z9fvL1T6K29QWplRVi/Eq5Z23ledNg+v8DQAHg2cu4aZczRy?=
- =?us-ascii?Q?glb8ufxa8g70C+1CgzopnMNYCLNnp30JHMwfTRmzjUA1s4lQ0aNABueAmdgn?=
- =?us-ascii?Q?0K/wn7YZ4/e3wjeExoOdXpbv2jT+GGSwYjJxTNcf1vy2U1BGkpdKlADwA1yZ?=
- =?us-ascii?Q?ZnApfAlyLoMWGrQXKiN+RIqBLpP9MDy7jheYD9m883Q9liV/6OFP9mbJcJEb?=
- =?us-ascii?Q?6lrY86cFrwfMupJroLu8DOTTPcZS1PxFMzs1ADBXMNfb1nJN7/NXNSa3L10G?=
- =?us-ascii?Q?1LM93P2DaQddmMxoHSCFmtkZ3MRYCRlY5WR3aH7o4Cb9I/fRm07O4Kl6dCbG?=
- =?us-ascii?Q?MYsExgVbHfSyNpoh3g6GY+EW1tQsda0qXpGSXzlFKVxhMUIUd7EABEMJwgrH?=
- =?us-ascii?Q?2OXm9O34xh8KvEDGZaWA6hknEIDJf37VvMqtS1dl2X16KwLry7L7gcSI64l5?=
- =?us-ascii?Q?8ubFZ0GnwsDEJDLrcwBALbh7y2o5zC6uZtHqe4N4TaIWZi5aXhgxbQ6jGtRH?=
- =?us-ascii?Q?NW3yJFE/lGq2MV66TFF+BgWEvW2NM7pyVrtGR23H8iB0w6ew3K3C+lV2yHk8?=
- =?us-ascii?Q?cK85OZLWulyzkgqYuUKd0FNA05XKsZKxRWUsQRcMeONkQ9yp+/3de6IpsRC2?=
- =?us-ascii?Q?79/r28mveMK6CrT+WfhzLguLc6MjqrqQwnPcXZkHmO9p7rDOCvj3vWIbpzhg?=
- =?us-ascii?Q?49qANHJ8BoAbUVV62wJIc0TMAlKjkt9Lkn5GnID4TAK1yZQmoXborKMTywRe?=
- =?us-ascii?Q?QP6Qo2Mzp+DqtSOcBtwdhZ672Fbos1F+NXb04knYXfv/tyEodew+8hyu0bLk?=
- =?us-ascii?Q?EnIc5zYeBRa/N6+NhOR4rOZSV4hluCJTwdhsDIH223NZcVuIXTONQUsCoTtG?=
- =?us-ascii?Q?+cpuv2tESx5tsSZcn0po7a4p?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?muvGc1lHuFXH11dUwhS5/Lddz9uYwWAhyJPOwnrXCH3Ox5NV3VnLKgpyBquA?=
- =?us-ascii?Q?9I+p+/yR95vnWGUwW9zL1O9ODi86HJZMokP6zjAa87rPvfOOCL+wCqWDRtmt?=
- =?us-ascii?Q?dDzRMAYEvjA/4ImRZT9UmgQVyGQTo1Ir8jPtLj2YQCr6Z9k27LC0XGttdr1C?=
- =?us-ascii?Q?kcfnFYkHbq3HAncOaaPkuy0QZ9uCgSt7X+7avvQQO9WMAaj7FzEVxwe8IcM1?=
- =?us-ascii?Q?3K5LGY5U9nS9BReAA2Av25Mi7dQ8tYVyEEXd7kPalQwVh4aYP0XgeM6WaRHz?=
- =?us-ascii?Q?PjOr0pc1rTQaed9ovmAHYn4qrjFGQrOF0vWm/XrHav9R1eBUtH78rVWG4eLD?=
- =?us-ascii?Q?LM6UQ6jY8T1RJ9LziZMPG4XqcpyuethMKREiN6nxbAhSDgZk9dGG/j46+fbG?=
- =?us-ascii?Q?w7ajDoTiDCA+3+nvMGGxMzAzTsR9bUY56E97snIDsn5EqlgMwn2Rv5glE8V+?=
- =?us-ascii?Q?uyN+TrJfIz9JfFuRlRQ5Y6lyngt6IRe/Mj+6h9mDZFLPH8YBoIG/vW7BAWvj?=
- =?us-ascii?Q?/H7jadWhZLOtZjS6xvE+4iJoTlSZyZ/w9H+BBBuMjZkQJD+9sCY46+s0959L?=
- =?us-ascii?Q?7B3SoYicEXQGIESBEa2JZbmhS90BqXMD/nQS8nCFPvWajZBaelkY0suBQ4Vc?=
- =?us-ascii?Q?YoPNqxXktWH5M4mX0j2W+XunGC7aMwmocmflXUHeHEaIqsUeE+k2b+TE0yQn?=
- =?us-ascii?Q?LGgl0uquCsokeXcI5PfXCDY++T59jEMdGb5TvlhdInvLI/fKa1Zwd9J2p2PL?=
- =?us-ascii?Q?8plBwTQvnbzN/NFrmq6TaxeHdNEVMWA5ERSlNmNtpdCjp+fkHHpIFo2fsfbS?=
- =?us-ascii?Q?K7GIUL1QuaXqR1iBiAjbLE+f8VNpCs86xtotYgqBtRWx0RVY6ncFDWob5P6m?=
- =?us-ascii?Q?Hg0BGcyRdm7PJ4xz/kgNvR0rQUUQA/sKXIf9T81XN2+qynrlLv5p/p4iNlLW?=
- =?us-ascii?Q?UGS95Wq6XeaWaydOfmXF8nlS2kNPrCjgRPzeLvhSlldhK/CUuUcg4xHZsUh2?=
- =?us-ascii?Q?yVBY+uZ7CL6ezUu9Zle+efoase97kRRYjsXA7bkAM89ERxnFPPSmekquegqU?=
- =?us-ascii?Q?3IBAmL5D8kk8k/ez3ujONUd+FnCoHxo03LN4X9cu4BoAgLfS6wEyVG/Bx/mB?=
- =?us-ascii?Q?0PDFaui8byTlozIRIHPi5gzxAoq01vwGXkQL/vqBnmty5HJuBfGhIbOmuhnW?=
- =?us-ascii?Q?Ja42LpxLmPgHdqGUxY28ncr062cU30pPgqwx5fXgS0fBA0nAiQjRCNjSM9FF?=
- =?us-ascii?Q?JA40FO3gP/OH2y2qyG4W/kjYBbaOw4O1NwWVVSzhp/rJs/dqzkCMzOQ41g9h?=
- =?us-ascii?Q?PlaDKVu2lyi9IiBslOFcPxNBIMKPmwTfWsc0JJ+Urv46eydsy9yJrtKUe6rw?=
- =?us-ascii?Q?DYD/RpI1WABIUYgea5oHw5PVr1RruH6w1RFzC+sfQ1hA3VEGUr0wgJ+nlxSa?=
- =?us-ascii?Q?wnsDTMI+zczdaEC04sJznXfSURbhVQuhsgQ/yumYHFQGc6my1uwRBjWducQQ?=
- =?us-ascii?Q?bjazoEV8jTuGRFXX512yGwpg5hXTtiJIuzGrjK6Nps4d6L/XzDoOasKtTyOF?=
- =?us-ascii?Q?IukLV10CTcPWXyGW43WghkfD9Fq5MCfRn9GJOELc?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89c4c59a-1eb4-4fec-c6e5-08dcf49fd804
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2024 02:50:54.2943
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MVcbTI1QCpFpmxUyFycy/QZyd6tJdMTBuwZDrBG3S0DtWuJepMAyIwX3wzO33ek12haK6fcOsMVvMP0JMWk7cg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5666
-X-Spam-Status: No, score=-0.3 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <55B30F12C81A25B9+ZxoGx55aKtK7pSNx@HX09040029.powercore.com.cn>
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MPyU0B5eC9RqIc57Hww8zKiQoAXM5fj9saoU3sn+q8uvYWePGgWgURhH
+	CeJNyMniIgJ54wQSAvJ1UEOdyipCpnMgQGK7BJUjRA45orxWB+VzYoM+mfPiZJmUbdNwmgJ
+	X2qZ0cZvVoq4BpQp439x5gEXPLdz326pzfRFjRJG5lCa+CyXFHHwGPAZzBRLwi+zChutUH/
+	sxoULCKKxsZw4PMzYTYYl4223d4EdgqPejMbBd1uafP5FfYfXw55qW03ZTvOtXvnyZ1czqG
+	XYH/het30hYxxtp7wOSOQNNzEfqTANZwhwo+aQU0xM6TtuWJabyNOhJWziS3aPoHI9DXa4S
+	cgkhl5A0lUz5X5eH6O/qswMOhMlIRaBwFA039UL0oRos5Rvg2psmWG17/pPdkfcdQEOVB5b
+	dKWkV0Xh5xgM2/yQ56SJlUXDC0fjnpNOYBB4Pr5P8UByGsuap4SnnV5lPbboO5qrZ42vTy1
+	pCaxMSjvJCt8fmuO2aBQ4/A8irC65e/zc5PFnRrR94ndtOngvT4UTqQgEL6LPLOr8GSgHgN
+	nZy3p+1hbzwIDY1AaQb9acRjBQmvYnlYSFV61uiF8KZgCkv3zyWHdcTY82vT2xHiulSJT+K
+	6ipd3K1IDW1GnETJHckwfQ/EGajkAXdInKRn66md+/yDDhonFVowgXHd/0M5TH2HXHtxGfO
+	RIBvtuKIsuFIOsYewj7rMm4AQyBZNwJWuPbZvrQltTdwO16egYyG7Dqp7XmiFDRfelTN2Jn
+	/4fNtzbM+LT6bwo61aHjUzkX0aF9XMw1lQg0vBWJzNoTTd2ybQeNiCYdVc23XJ83rHfAk3w
+	RuPRJdCVuRJjC2f0htse0N3HB2TyxixjlNp5XFBDKHCriXB/DZosJliYW6u8Mq4EzqBUd1l
+	qQjp06nFn3b1A1nikhTCkQ6KZyo3VDz8HWDgfpDUVXOFdxn7H4Jqn0JyxIuuHJ1jHDqpK/T
+	Wpcc=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-RECHKSPAM: 0
+X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Thu, Oct 24, 2024 at 04:43:04PM +0800, Luming Yu wrote:
+> On Wed, Oct 23, 2024 at 12:53:47PM +1100, Michael Ellerman wrote:
+> > "虞陆铭" <luming.yu@shingroup.cn> writes:
+> > >>Le 12/10/2024 à 05:56, Luming Yu a écrit :
+> > >>> convert powerpc entry code in syscall and fault to use syscall_work
+> > >>> and irqentry_state as well as common calls implemented in generic
+> > >>> entry infrastructure.
+> > >>> 
+> > >>> Signed-off-by: Luming Yu <luming.yu@shingroup.cn>
+> > >>> ---
+> > >>>   arch/powerpc/Kconfig                   | 1 +
+> > >>>   arch/powerpc/include/asm/hw_irq.h      | 5 +++++
+> > >>>   arch/powerpc/include/asm/processor.h   | 6 ++++++
+> > >>>   arch/powerpc/include/asm/syscall.h     | 5 +++++
+> > >>>   arch/powerpc/include/asm/thread_info.h | 1 +
+> > >>>   arch/powerpc/kernel/syscall.c          | 5 ++++-
+> > >>>   arch/powerpc/mm/fault.c                | 3 +++
+> > >>>   7 files changed, 25 insertions(+), 1 deletion(-)
+> > >>> 
+> > >>
+> > >>...
+> > >>
+> > >>> diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.c
+> > >>> index 77fedb190c93..e0338bd8d383 100644
+> > >>> --- a/arch/powerpc/kernel/syscall.c
+> > >>> +++ b/arch/powerpc/kernel/syscall.c
+> > >>> @@ -3,6 +3,7 @@
+> > >>>   #include <linux/compat.h>
+> > >>>   #include <linux/context_tracking.h>
+> > >>>   #include <linux/randomize_kstack.h>
+> > >>> +#include <linux/entry-common.h>
+> > >>>   
+> > >>>   #include <asm/interrupt.h>
+> > >>>   #include <asm/kup.h>
+> > >>> @@ -131,7 +132,7 @@ notrace long system_call_exception(struct pt_regs *regs, unsigned long r0)
+> > >>>   		 * and the test against NR_syscalls will fail and the return
+> > >>>   		 * value to be used is in regs->gpr[3].
+> > >>>   		 */
+> > >>> -		r0 = do_syscall_trace_enter(regs);
+> > >>> +		r0 = syscall_enter_from_user_mode(regs, r0);
+> > >>
+> > >>Can you provide details on how this works ?
+> > > I assume the common entry would take over th details.
+> > > So I just made the switch from the high level call.
+> > >
+>  > As you said as the subtle ABI requirement about regs->r3 needs to
+> > > be restored, I'm wondering which test can capture the lost
+> > > ABI feature. As simple Boot test is insufficient, what is the test set
+> > > that can capture it?
+> > 
+> > The seccomp selftest did exercise it back when I originally wrote that
+> > code. I don't know for sure that it still does, but that would be a good
+> > start.
+> > 
+> > It's in tools/testing/selftests/seccomp/
+> Thanks for the hint.
+> It seems to be running into some not ok cases the way hits the bpf test that doesn't return. 
+> I will re-run with the same kernel w/o the patch-set to sort out the cases that could be
+> caused by the patch Then I will try to debug out the root cause.
+w/o the patch set, all ok, as below. So, it would great if the test of feature can be used in
+linux-ci github workflow. And I'm clear what needs to be done in v2 now.
+[root@10 linux-ci]# make -C tools/testing/selftests TARGETS=seccomp run_tests
+make: Entering directory '/root/linux-ci/tools/testing/selftests'
+make[1]: Nothing to be done for 'all'.
+TAP version 13
+1..2
+# timeout set to 180
+# selftests: seccomp: seccomp_bpf
+# TAP version 13
+# 1..98
+# # Starting 98 tests from 8 test cases.
+# #  RUN           global.kcmp ...
+# #            OK  global.kcmp
+# ok 1 global.kcmp
+# #  RUN           global.mode_strict_support ...
+# #            OK  global.mode_strict_support
+# ok 2 global.mode_strict_support
+# #  RUN           global.mode_strict_cannot_call_prctl ...
+# #            OK  global.mode_strict_cannot_call_prctl
+# ok 3 global.mode_strict_cannot_call_prctl
+# #  RUN           global.no_new_privs_support ...
+# #            OK  global.no_new_privs_support
+# ok 4 global.no_new_privs_support
+# #  RUN           global.mode_filter_support ...
+# #            OK  global.mode_filter_support
+# ok 5 global.mode_filter_support
+# #  RUN           global.mode_filter_without_nnp ...
+# #            OK  global.mode_filter_without_nnp
+# ok 6 global.mode_filter_without_nnp
+# #  RUN           global.filter_size_limits ...
+# #            OK  global.filter_size_limits
+# ok 7 global.filter_size_limits
+# #  RUN           global.filter_chain_limits ...
+# #            OK  global.filter_chain_limits
+# ok 8 global.filter_chain_limits
+# #  RUN           global.mode_filter_cannot_move_to_strict ...
+# #            OK  global.mode_filter_cannot_move_to_strict
+# ok 9 global.mode_filter_cannot_move_to_strict
+# #  RUN           global.mode_filter_get_seccomp ...
+# #            OK  global.mode_filter_get_seccomp
+# ok 10 global.mode_filter_get_seccomp
+# #  RUN           global.ALLOW_all ...
+# #            OK  global.ALLOW_all
+# ok 11 global.ALLOW_all
+# #  RUN           global.empty_prog ...
+# #            OK  global.empty_prog
+# ok 12 global.empty_prog
+# #  RUN           global.log_all ...
+# #            OK  global.log_all
+# ok 13 global.log_all
+# #  RUN           global.unknown_ret_is_kill_inside ...
+# #            OK  global.unknown_ret_is_kill_inside
+# ok 14 global.unknown_ret_is_kill_inside
+# #  RUN           global.unknown_ret_is_kill_above_allow ...
+# #            OK  global.unknown_ret_is_kill_above_allow
+# ok 15 global.unknown_ret_is_kill_above_allow
+# #  RUN           global.KILL_all ...
+# #            OK  global.KILL_all
+# ok 16 global.KILL_all
+# #  RUN           global.KILL_one ...
+# #            OK  global.KILL_one
+# ok 17 global.KILL_one
+# #  RUN           global.KILL_one_arg_one ...
+# #            OK  global.KILL_one_arg_one
+# ok 18 global.KILL_one_arg_one
+# #  RUN           global.KILL_one_arg_six ...
+# #            OK  global.KILL_one_arg_six
+# ok 19 global.KILL_one_arg_six
+# #  RUN           global.KILL_thread ...
+# #            OK  global.KILL_thread
+# ok 20 global.KILL_thread
+# #  RUN           global.KILL_process ...
+# #            OK  global.KILL_process
+# ok 21 global.KILL_process
+# #  RUN           global.KILL_unknown ...
+# #            OK  global.KILL_unknown
+# ok 22 global.KILL_unknown
+# #  RUN           global.arg_out_of_range ...
+# #            OK  global.arg_out_of_range
+# ok 23 global.arg_out_of_range
+# #  RUN           global.ERRNO_valid ...
+# #            OK  global.ERRNO_valid
+# ok 24 global.ERRNO_valid
+# #  RUN           global.ERRNO_zero ...
+# #            OK  global.ERRNO_zero
+# ok 25 global.ERRNO_zero
+# #  RUN           global.ERRNO_capped ...
+# #            OK  global.ERRNO_capped
+# ok 26 global.ERRNO_capped
+# #  RUN           global.ERRNO_order ...
+# #            OK  global.ERRNO_order
+# ok 27 global.ERRNO_order
+# #  RUN           global.negative_ENOSYS ...
+# #            OK  global.negative_ENOSYS
+# ok 28 global.negative_ENOSYS
+# #  RUN           global.seccomp_syscall ...
+# #            OK  global.seccomp_syscall
+# ok 29 global.seccomp_syscall
+# #  RUN           global.seccomp_syscall_mode_lock ...
+# #            OK  global.seccomp_syscall_mode_lock
+# ok 30 global.seccomp_syscall_mode_lock
+# #  RUN           global.detect_seccomp_filter_flags ...
+# #            OK  global.detect_seccomp_filter_flags
+# ok 31 global.detect_seccomp_filter_flags
+# #  RUN           global.TSYNC_first ...
+# #            OK  global.TSYNC_first
+# ok 32 global.TSYNC_first
+# #  RUN           global.syscall_restart ...
+# #            OK  global.syscall_restart
+# ok 33 global.syscall_restart
+# #  RUN           global.filter_flag_log ...
+# #            OK  global.filter_flag_log
+# ok 34 global.filter_flag_log
+# #  RUN           global.get_action_avail ...
+# #            OK  global.get_action_avail
+# ok 35 global.get_action_avail
+# #  RUN           global.get_metadata ...
+# #            OK  global.get_metadata
+# ok 36 global.get_metadata
+# #  RUN           global.user_notification_basic ...
+# #            OK  global.user_notification_basic
+# ok 37 global.user_notification_basic
+# #  RUN           global.user_notification_with_tsync ...
+# #            OK  global.user_notification_with_tsync
+# ok 38 global.user_notification_with_tsync
+# #  RUN           global.user_notification_kill_in_middle ...
+# #            OK  global.user_notification_kill_in_middle
+# ok 39 global.user_notification_kill_in_middle
+# #  RUN           global.user_notification_signal ...
+# #            OK  global.user_notification_signal
+# ok 40 global.user_notification_signal
+# #  RUN           global.user_notification_closed_listener ...
+# #            OK  global.user_notification_closed_listener
+# ok 41 global.user_notification_closed_listener
+# #  RUN           global.user_notification_child_pid_ns ...
+# #            OK  global.user_notification_child_pid_ns
+# ok 42 global.user_notification_child_pid_ns
+# #  RUN           global.user_notification_sibling_pid_ns ...
+# #            OK  global.user_notification_sibling_pid_ns
+# ok 43 global.user_notification_sibling_pid_ns
+# #  RUN           global.user_notification_fault_recv ...
+# #            OK  global.user_notification_fault_recv
+# ok 44 global.user_notification_fault_recv
+# #  RUN           global.seccomp_get_notif_sizes ...
+# #            OK  global.seccomp_get_notif_sizes
+# ok 45 global.seccomp_get_notif_sizes
+# #  RUN           global.user_notification_continue ...
+# #            OK  global.user_notification_continue
+# ok 46 global.user_notification_continue
+# #  RUN           global.user_notification_filter_empty ...
+# #            OK  global.user_notification_filter_empty
+# ok 47 global.user_notification_filter_empty
+# #  RUN           global.user_ioctl_notification_filter_empty ...
+# #            OK  global.user_ioctl_notification_filter_empty
+# ok 48 global.user_ioctl_notification_filter_empty
+# #  RUN           global.user_notification_filter_empty_threaded ...
+# #            OK  global.user_notification_filter_empty_threaded
+# ok 49 global.user_notification_filter_empty_threaded
+# #  RUN           global.user_notification_addfd ...
+# #            OK  global.user_notification_addfd
+# ok 50 global.user_notification_addfd
+# #  RUN           global.user_notification_addfd_rlimit ...
+# #            OK  global.user_notification_addfd_rlimit
+# ok 51 global.user_notification_addfd_rlimit
+# #  RUN           global.user_notification_sync ...
+# #            OK  global.user_notification_sync
+# ok 52 global.user_notification_sync
+# #  RUN           global.user_notification_fifo ...
+# #            OK  global.user_notification_fifo
+# ok 53 global.user_notification_fifo
+# #  RUN           global.user_notification_wait_killable_pre_notification ...
+# #            OK  global.user_notification_wait_killable_pre_notification
+# ok 54 global.user_notification_wait_killable_pre_notification
+# #  RUN           global.user_notification_wait_killable ...
+# #            OK  global.user_notification_wait_killable
+# ok 55 global.user_notification_wait_killable
+# #  RUN           global.user_notification_wait_killable_fatal ...
+# #            OK  global.user_notification_wait_killable_fatal
+# ok 56 global.user_notification_wait_killable_fatal
+# #  RUN           global.tsync_vs_dead_thread_leader ...
+# #            OK  global.tsync_vs_dead_thread_leader
+# ok 57 global.tsync_vs_dead_thread_leader
+# #  RUN           TRAP.dfl ...
+# #            OK  TRAP.dfl
+# ok 58 TRAP.dfl
+# #  RUN           TRAP.ign ...
+# #            OK  TRAP.ign
+# ok 59 TRAP.ign
+# #  RUN           TRAP.handler ...
+# #            OK  TRAP.handler
+# ok 60 TRAP.handler
+# #  RUN           precedence.allow_ok ...
+# #            OK  precedence.allow_ok
+# ok 61 precedence.allow_ok
+# #  RUN           precedence.kill_is_highest ...
+# #            OK  precedence.kill_is_highest
+# ok 62 precedence.kill_is_highest
+# #  RUN           precedence.kill_is_highest_in_any_order ...
+# #            OK  precedence.kill_is_highest_in_any_order
+# ok 63 precedence.kill_is_highest_in_any_order
+# #  RUN           precedence.trap_is_second ...
+# #            OK  precedence.trap_is_second
+# ok 64 precedence.trap_is_second
+# #  RUN           precedence.trap_is_second_in_any_order ...
+# #            OK  precedence.trap_is_second_in_any_order
+# ok 65 precedence.trap_is_second_in_any_order
+# #  RUN           precedence.errno_is_third ...
+# #            OK  precedence.errno_is_third
+# ok 66 precedence.errno_is_third
+# #  RUN           precedence.errno_is_third_in_any_order ...
+# #            OK  precedence.errno_is_third_in_any_order
+# ok 67 precedence.errno_is_third_in_any_order
+# #  RUN           precedence.trace_is_fourth ...
+# #            OK  precedence.trace_is_fourth
+# ok 68 precedence.trace_is_fourth
+# #  RUN           precedence.trace_is_fourth_in_any_order ...
+# #            OK  precedence.trace_is_fourth_in_any_order
+# ok 69 precedence.trace_is_fourth_in_any_order
+# #  RUN           precedence.log_is_fifth ...
+# #            OK  precedence.log_is_fifth
+# ok 70 precedence.log_is_fifth
+# #  RUN           precedence.log_is_fifth_in_any_order ...
+# #            OK  precedence.log_is_fifth_in_any_order
+# ok 71 precedence.log_is_fifth_in_any_order
+# #  RUN           TRACE_poke.read_has_side_effects ...
+# #            OK  TRACE_poke.read_has_side_effects
+# ok 72 TRACE_poke.read_has_side_effects
+# #  RUN           TRACE_poke.getpid_runs_normally ...
+# #            OK  TRACE_poke.getpid_runs_normally
+# ok 73 TRACE_poke.getpid_runs_normally
+# #  RUN           TRACE_syscall.ptrace.negative_ENOSYS ...
+# #            OK  TRACE_syscall.ptrace.negative_ENOSYS
+# ok 74 TRACE_syscall.ptrace.negative_ENOSYS
+# #  RUN           TRACE_syscall.ptrace.syscall_allowed ...
+# #            OK  TRACE_syscall.ptrace.syscall_allowed
+# ok 75 TRACE_syscall.ptrace.syscall_allowed
+# #  RUN           TRACE_syscall.ptrace.syscall_redirected ...
+# #            OK  TRACE_syscall.ptrace.syscall_redirected
+# ok 76 TRACE_syscall.ptrace.syscall_redirected
+# #  RUN           TRACE_syscall.ptrace.syscall_errno ...
+# #            OK  TRACE_syscall.ptrace.syscall_errno
+# ok 77 TRACE_syscall.ptrace.syscall_errno
+# #  RUN           TRACE_syscall.ptrace.syscall_faked ...
+# #            OK  TRACE_syscall.ptrace.syscall_faked
+# ok 78 TRACE_syscall.ptrace.syscall_faked
+# #  RUN           TRACE_syscall.ptrace.kill_immediate ...
+# #            OK  TRACE_syscall.ptrace.kill_immediate
+# ok 79 TRACE_syscall.ptrace.kill_immediate
+# #  RUN           TRACE_syscall.ptrace.skip_after ...
+# #            OK  TRACE_syscall.ptrace.skip_after
+# ok 80 TRACE_syscall.ptrace.skip_after
+# #  RUN           TRACE_syscall.ptrace.kill_after ...
+# #            OK  TRACE_syscall.ptrace.kill_after
+# ok 81 TRACE_syscall.ptrace.kill_after
+# #  RUN           TRACE_syscall.seccomp.negative_ENOSYS ...
+# #            OK  TRACE_syscall.seccomp.negative_ENOSYS
+# ok 82 TRACE_syscall.seccomp.negative_ENOSYS
+# #  RUN           TRACE_syscall.seccomp.syscall_allowed ...
+# #            OK  TRACE_syscall.seccomp.syscall_allowed
+# ok 83 TRACE_syscall.seccomp.syscall_allowed
+# #  RUN           TRACE_syscall.seccomp.syscall_redirected ...
+# #            OK  TRACE_syscall.seccomp.syscall_redirected
+# ok 84 TRACE_syscall.seccomp.syscall_redirected
+# #  RUN           TRACE_syscall.seccomp.syscall_errno ...
+# #            OK  TRACE_syscall.seccomp.syscall_errno
+# ok 85 TRACE_syscall.seccomp.syscall_errno
+# #  RUN           TRACE_syscall.seccomp.syscall_faked ...
+# #            OK  TRACE_syscall.seccomp.syscall_faked
+# ok 86 TRACE_syscall.seccomp.syscall_faked
+# #  RUN           TRACE_syscall.seccomp.kill_immediate ...
+# #            OK  TRACE_syscall.seccomp.kill_immediate
+# ok 87 TRACE_syscall.seccomp.kill_immediate
+# #  RUN           TRACE_syscall.seccomp.skip_after ...
+# #            OK  TRACE_syscall.seccomp.skip_after
+# ok 88 TRACE_syscall.seccomp.skip_after
+# #  RUN           TRACE_syscall.seccomp.kill_after ...
+# #            OK  TRACE_syscall.seccomp.kill_after
+# ok 89 TRACE_syscall.seccomp.kill_after
+# #  RUN           TSYNC.siblings_fail_prctl ...
+# #            OK  TSYNC.siblings_fail_prctl
+# ok 90 TSYNC.siblings_fail_prctl
+# #  RUN           TSYNC.two_siblings_with_ancestor ...
+# #            OK  TSYNC.two_siblings_with_ancestor
+# ok 91 TSYNC.two_siblings_with_ancestor
+# #  RUN           TSYNC.two_sibling_want_nnp ...
+# #            OK  TSYNC.two_sibling_want_nnp
+# ok 92 TSYNC.two_sibling_want_nnp
+# #  RUN           TSYNC.two_siblings_with_no_filter ...
+# #            OK  TSYNC.two_siblings_with_no_filter
+# ok 93 TSYNC.two_siblings_with_no_filter
+# #  RUN           TSYNC.two_siblings_with_one_divergence ...
+# #            OK  TSYNC.two_siblings_with_one_divergence
+# ok 94 TSYNC.two_siblings_with_one_divergence
+# #  RUN           TSYNC.two_siblings_with_one_divergence_no_tid_in_err ...
+# #            OK  TSYNC.two_siblings_with_one_divergence_no_tid_in_err
+# ok 95 TSYNC.two_siblings_with_one_divergence_no_tid_in_err
+# #  RUN           TSYNC.two_siblings_not_under_filter ...
+# #            OK  TSYNC.two_siblings_not_under_filter
+# ok 96 TSYNC.two_siblings_not_under_filter
+# #  RUN           O_SUSPEND_SECCOMP.setoptions ...
+# #            OK  O_SUSPEND_SECCOMP.setoptions
+# ok 97 O_SUSPEND_SECCOMP.setoptions
+# #  RUN           O_SUSPEND_SECCOMP.seize ...
+# #            OK  O_SUSPEND_SECCOMP.seize
+# ok 98 O_SUSPEND_SECCOMP.seize
+# # PASSED: 98 / 98 tests passed.
+# # Totals: pass:98 fail:0 xfail:0 xpass:0 skip:0 error:0
+ok 1 selftests: seccomp: seccomp_bpf
+# timeout set to 180
+# selftests: seccomp: seccomp_benchmark
+# TAP version 13
+# 1..7
+# # Running on:
+# # Linux 10.0.2.15 6.12.0-rc1-gf85c105361db #6 SMP Thu Oct 24 12:16:15 UTC 2024 ppc64le GNU/Linux
+# # Current BPF sysctl settings:
+# # /proc/sys/net/core/bpf_jit_enable:1
+# # /proc/sys/net/core/bpf_jit_harden:0
+# Pinned to CPU 16 of 16
+# # Calibrating sample size for 15 seconds worth of syscalls ...
+# # Benchmarking 56397315 syscalls...
+[  263.908829][   C15] sched: DL replenish lagged too much
+# # 12.720538528 - 0.000000000 = 12720538528 (12.7s)
+# # getpid native: 225 ns
+# # 31.362959638 - 12.720723906 = 18642235732 (18.6s)
+# # getpid RET_ALLOW 1 filter (bitmap): 330 ns
+# # 50.202651764 - 31.363058760 = 18839593004 (18.8s)
+# # getpid RET_ALLOW 2 filters (bitmap): 334 ns
+# # 73.073719578 - 50.202778500 = 22870941078 (22.9s)
+# # getpid RET_ALLOW 3 filters (full): 405 ns
+# # 97.560580500 - 73.073834670 = 24486745830 (24.5s)
+# # getpid RET_ALLOW 4 filters (full): 434 ns
+# # Estimated total seccomp overhead for 1 bitmapped filter: 105 ns
+# # Estimated total seccomp overhead for 2 bitmapped filters: 109 ns
+# # Estimated total seccomp overhead for 3 full filters: 180 ns
+# # Estimated total seccomp overhead for 4 full filters: 209 ns
+# # Estimated seccomp entry overhead: 101 ns
+# # Estimated seccomp per-filter overhead (last 2 diff): 29 ns
+# # Estimated seccomp per-filter overhead (filters / 4): 27 ns
+# # Expectations:
+# #     native ≤ 1 bitmap (225 ≤ 330): ✔️
+# ok 1 native ≤ 1 bitmap
+# #     native ≤ 1 filter (225 ≤ 405): ✔️
+# ok 2 native ≤ 1 filter
+# #     per-filter (last 2 diff) ≈ per-filter (filters / 4) (29 ≈ 27): ✔️
+# ok 3 per-filter (last 2 diff) ≈ per-filter (filters / 4)
+# #     1 bitmapped ≈ 2 bitmapped (105 ≈ 109): ✔️
+# ok 4 1 bitmapped ≈ 2 bitmapped
+# #     entry ≈ 1 bitmapped (101 ≈ 105): ✔️
+# ok 5 entry ≈ 1 bitmapped
+# #     entry ≈ 2 bitmapped (101 ≈ 109): ✔️
+# ok 6 entry ≈ 2 bitmapped
+# #     native + entry + (per filter * 4) ≈ 4 filters total (442 ≈ 434): ✔️
+# ok 7 native + entry + (per filter * 4) ≈ 4 filters total
+# # Totals: pass:7 fail:0 xfail:0 xpass:0 skip:0 error:0
+ok 2 selftests: seccomp: seccomp_benchmark
+make: Leaving directory '/root/linux-ci/tools/testing/selftests'
 
-Dan Williams <dan.j.williams@intel.com> writes:
 
-> Alistair Popple wrote:
-> [..]
->> >
->> > Was there a discussion I missed about why the conversion to typical
->> > folios allows the page->share accounting to be dropped.
->> 
->> The problem with keeping it is we now treat DAX pages as "normal"
->> pages according to vm_normal_page(). As such we use the normal paths
->> for unmapping pages.
->> 
->> Specifically page->share accounting relies on PAGE_MAPPING_DAX_SHARED
->> aka PAGE_MAPPING_ANON which causes folio_test_anon(), PageAnon(),
->> etc. to return true leading to all sorts of issues in at least the
->> unmap paths.
->
-> Oh, I missed that PAGE_MAPPING_DAX_SHARED aliases with
-> PAGE_MAPPING_ANON.
->
->> There hasn't been a previous discussion on this, but given this is
->> only used to print warnings it seemed easier to get rid of it. I
->> probably should have called that out more clearly in the commit
->> message though.
->> 
->> > I assume this is because the page->mapping validation was dropped, which
->> > I think might be useful to keep at least for one development cycle to
->> > make sure this conversion is not triggering any of the old warnings.
->> >
->> > Otherwise, the ->share field of 'struct page' can also be cleaned up.
->> 
->> Yes, we should also clean up the ->share field, unless you have an
->> alternate suggestion to solve the above issue.
->
-> kmalloc mininimum alignment is 8, so there is room to do this?
+> [root@10 linux-ci]# make -C tools/testing/selftests TARGETS=seccomp run_tests
+> make: Entering directory '/root/linux-ci/tools/testing/selftests'
+> make[1]: Nothing to be done for 'all'.
+> TAP version 13
+> 1..2
+> # timeout set to 180
+> # selftests: seccomp: seccomp_bpf
+> # TAP version 13
+> # 1..98
+> # # Starting 98 tests from 8 test cases.
+> # #  RUN           global.kcmp ...
+> # #            OK  global.kcmp
+> # ok 1 global.kcmp
+> # #  RUN           global.mode_strict_support ...
+> # #            OK  global.mode_strict_support
+> # ok 2 global.mode_strict_support
+> # #  RUN           global.mode_strict_cannot_call_prctl ...
+> # # seccomp_bpf.c:359:mode_strict_cannot_call_prctl:Expected 0 (0) == true (1)
+> # # seccomp_bpf.c:360:mode_strict_cannot_call_prctl:Unreachable!
+> # # mode_strict_cannot_call_prctl: Test exited normally instead of by signal (code: 1)
+> # #          FAIL  global.mode_strict_cannot_call_prctl
+> # not ok 3 global.mode_strict_cannot_call_prctl
+> # #  RUN           global.no_new_privs_support ...
+> # #            OK  global.no_new_privs_support
+> # ok 4 global.no_new_privs_support
+> # #  RUN           global.mode_filter_support ...
+> # #            OK  global.mode_filter_support
+> # ok 5 global.mode_filter_support
+> # #  RUN           global.mode_filter_without_nnp ...
+> # #            OK  global.mode_filter_without_nnp
+> # ok 6 global.mode_filter_without_nnp
+> # #  RUN           global.filter_size_limits ...
+> # #            OK  global.filter_size_limits
+> # ok 7 global.filter_size_limits
+> # #  RUN           global.filter_chain_limits ...
+> # #            OK  global.filter_chain_limits
+> # ok 8 global.filter_chain_limits
+> # #  RUN           global.mode_filter_cannot_move_to_strict ...
+> # #            OK  global.mode_filter_cannot_move_to_strict
+> # ok 9 global.mode_filter_cannot_move_to_strict
+> # #  RUN           global.mode_filter_get_seccomp ...
+> # #            OK  global.mode_filter_get_seccomp
+> # ok 10 global.mode_filter_get_seccomp
+> # #  RUN           global.ALLOW_all ...
+> # #            OK  global.ALLOW_all
+> # ok 11 global.ALLOW_all
+> # #  RUN           global.empty_prog ...
+> # #            OK  global.empty_prog
+> # ok 12 global.empty_prog
+> # #  RUN           global.log_all ...
+> # #            OK  global.log_all
+> # ok 13 global.log_all
+> # #  RUN           global.unknown_ret_is_kill_inside ...
+> # # seccomp_bpf.c:621:unknown_ret_is_kill_inside:Expected 0 (0) == syscall(__NR_getpid) (1406)
+> # # seccomp_bpf.c:622:unknown_ret_is_kill_inside:getpid() shouldn't ever return
+> # # unknown_ret_is_kill_inside: Test exited normally instead of by signal (code: 1)
+> # #          FAIL  global.unknown_ret_is_kill_inside
+> # not ok 14 global.unknown_ret_is_kill_inside
+> # #  RUN           global.unknown_ret_is_kill_above_allow ...
+> # # seccomp_bpf.c:643:unknown_ret_is_kill_above_allow:Expected 0 (0) == syscall(__NR_getpid) (1407)
+> # # seccomp_bpf.c:644:unknown_ret_is_kill_above_allow:getpid() shouldn't ever return
+> # # unknown_ret_is_kill_above_allow: Test exited normally instead of by signal (code: 1)
+> # #          FAIL  global.unknown_ret_is_kill_above_allow
+> # not ok 15 global.unknown_ret_is_kill_above_allow
+> # #  RUN           global.KILL_all ...
+> # # KILL_all: Test exited normally instead of by signal (code: 0)
+> # #          FAIL  global.KILL_all
+> # not ok 16 global.KILL_all
+> # #  RUN           global.KILL_one ...
+> # # seccomp_bpf.c:690:KILL_one:Expected 0 (0) == syscall(__NR_getpid) (1409)
+> # # KILL_one: Test exited normally instead of by signal (code: 1)
+> # #          FAIL  global.KILL_one
+> # not ok 17 global.KILL_one
+> # #  RUN           global.KILL_one_arg_one ...
+> # # seccomp_bpf.c:726:KILL_one_arg_one:Expected 0 (0) == syscall(__NR_times, &fatal_address) (4295224651)
+> # # KILL_one_arg_one: Test exited normally instead of by signal (code: 1)
+> # #          FAIL  global.KILL_one_arg_one
+> # not ok 18 global.KILL_one_arg_one
+> # #  RUN           global.KILL_one_arg_six ...
+> # # KILL_one_arg_six: Test exited normally instead of by signal (code: 0)
+> # #          FAIL  global.KILL_one_arg_six
+> # not ok 19 global.KILL_one_arg_six
+> # #  RUN           global.KILL_thread ...
+> # # seccomp_bpf.c:856:KILL_thread:Expected SIBLING_EXIT_FAILURE (195951310) != (unsigned long)status (195951310)
+> # # seccomp_bpf.c:881:KILL_thread:Expected 0 (0) != WIFEXITED(status) (0)
+> # # KILL_thread: Test terminated by assertion
+> # #          FAIL  global.KILL_thread
+> # not ok 20 global.KILL_thread
+> # #  RUN           global.KILL_process ...
+> # # seccomp_bpf.c:856:KILL_process:Expected SIBLING_EXIT_FAILURE (195951310) != (unsigned long)status (195951310)
+> # # seccomp_bpf.c:901:KILL_process:Expected SIGSYS (31) == WTERMSIG(status) (6)
+> # # KILL_process: Test terminated by assertion
+> # #          FAIL  global.KILL_process
+> # not ok 21 global.KILL_process
+> # #  RUN           global.KILL_unknown ...
+> # # seccomp_bpf.c:856:KILL_unknown:Expected SIBLING_EXIT_FAILURE (195951310) != (unsigned long)status (195951310)
+> # # seccomp_bpf.c:922:KILL_unknown:Expected SIGSYS (31) == WTERMSIG(status) (6)
+> # # KILL_unknown: Test terminated by assertion
+> # #          FAIL  global.KILL_unknown
+> # not ok 22 global.KILL_unknown
+> # #  RUN           global.arg_out_of_range ...
+> # #            OK  global.arg_out_of_range
+> # ok 23 global.arg_out_of_range
+> # #  RUN           global.ERRNO_valid ...
+> # # seccomp_bpf.c:974:ERRNO_valid:Expected E2BIG (7) == errno (9)
+> # # ERRNO_valid: Test failed
+> # #          FAIL  global.ERRNO_valid
+> # not ok 24 global.ERRNO_valid
+> # #  RUN           global.ERRNO_zero ...
+> # # seccomp_bpf.c:992:ERRNO_zero:Expected 0 (0) == read(-1, NULL, 0) (-1)
+> # # ERRNO_zero: Test failed
+> # #          FAIL  global.ERRNO_zero
+> # not ok 25 global.ERRNO_zero
+> # #  RUN           global.ERRNO_capped ...
+> # # seccomp_bpf.c:1014:ERRNO_capped:Expected 4095 (4095) == errno (9)
+> # # ERRNO_capped: Test failed
+> # #          FAIL  global.ERRNO_capped
+> # not ok 26 global.ERRNO_capped
+> # #  RUN           global.ERRNO_order ...
+> # # seccomp_bpf.c:1045:ERRNO_order:Expected 12 (12) == errno (9)
+> # # ERRNO_order: Test failed
+> # #          FAIL  global.ERRNO_order
+> # not ok 27 global.ERRNO_order
+> # #  RUN           global.negative_ENOSYS ...
+> # #            OK  global.negative_ENOSYS
+> # ok 28 global.negative_ENOSYS
+> # #  RUN           global.seccomp_syscall ...
+> # #            OK  global.seccomp_syscall
+> # ok 29 global.seccomp_syscall
+> # #  RUN           global.seccomp_syscall_mode_lock ...
+> # #            OK  global.seccomp_syscall_mode_lock
+> # ok 30 global.seccomp_syscall_mode_lock
+> # #  RUN           global.detect_seccomp_filter_flags ...
+> # #            OK  global.detect_seccomp_filter_flags
+> # ok 31 global.detect_seccomp_filter_flags
+> # #  RUN           global.TSYNC_first ...
+> # #            OK  global.TSYNC_first
+> # ok 32 global.TSYNC_first
+> # #  RUN           global.syscall_restart ...
+> # # syscall_restart: Test terminated by timeout
+> # #          FAIL  global.syscall_restart
+> # not ok 33 global.syscall_restart
+> # #  RUN           global.filter_flag_log ...
+> # # seccomp_bpf.c:3239:filter_flag_log:Expected 0 (0) == syscall(__NR_getpid) (1482)
+> # # filter_flag_log: Test exited normally instead of by signal (code: 1)
+> # #          FAIL  global.filter_flag_log
+> # not ok 34 global.filter_flag_log
+> # #  RUN           global.get_action_avail ...
+> # #            OK  global.get_action_avail
+> # ok 35 global.get_action_avail
+> # #  RUN           global.get_metadata ...
+> # #            OK  global.get_metadata
+> # ok 36 global.get_metadata
+> # #  RUN           global.user_notification_basic ...
+> # # seccomp_bpf.c:3397:user_notification_basic:Expected 0 (0) == WEXITSTATUS(status) (1)
+> # # user_notification_basic: Test terminated by timeout
+> # #          FAIL  global.user_notification_basic
+> # not ok 37 global.user_notification_basic
+> # #  RUN           global.user_notification_with_tsync ...
+> # #            OK  global.user_notification_with_tsync
+> # ok 38 global.user_notification_with_tsync
+> # #  RUN           global.user_notification_kill_in_middle ...
+> # # user_notification_kill_in_middle: Test terminated by timeout
+> # #          FAIL  global.user_notification_kill_in_middle
+> # not ok 39 global.user_notification_kill_in_middle
+> # #  RUN           global.user_notification_signal ...
+> # # user_notification_signal: Test terminated by timeout
+> # #          FAIL  global.user_notification_signal
+> # not ok 40 global.user_notification_signal
+> # #  RUN           global.user_notification_closed_listener ...
+> # # seccomp_bpf.c:3647:user_notification_closed_listener:Expected 0 (0) == WEXITSTATUS(status) (1)
+> # # user_notification_closed_listener: Test failed
+> # #          FAIL  global.user_notification_closed_listener
+> # not ok 41 global.user_notification_closed_listener
+> # #  RUN           global.user_notification_child_pid_ns ...
+> # # user_notification_child_pid_ns: Test terminated by timeout
+> # #          FAIL  global.user_notification_child_pid_ns
+> # not ok 42 global.user_notification_child_pid_ns
+> # #  RUN           global.user_notification_sibling_pid_ns ...
+> # # seccomp_bpf.c:3728:user_notification_sibling_pid_ns:Expected 0 (0) == WEXITSTATUS(status) (1)
+> # # seccomp_bpf.c:3764:user_notification_sibling_pid_ns:Expected 0 (0) == WEXITSTATUS(status) (1)
+> 
+> 
+> > 
+> > cheers
+> > 
+> 
 
-Oh right, given the aliasing I had assumed there wasn't room.
-
-> ---
-> diff --git a/fs/dax.c b/fs/dax.c
-> index c62acd2812f8..a70f081c32cb 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -322,7 +322,7 @@ static unsigned long dax_end_pfn(void *entry)
->  
->  static inline bool dax_page_is_shared(struct page *page)
->  {
-> -	return page->mapping == PAGE_MAPPING_DAX_SHARED;
-> +	return folio_test_dax_shared(page_folio(page));
->  }
->  
->  /*
-> @@ -331,14 +331,14 @@ static inline bool dax_page_is_shared(struct page *page)
->   */
->  static inline void dax_page_share_get(struct page *page)
->  {
-> -	if (page->mapping != PAGE_MAPPING_DAX_SHARED) {
-> +	if (!dax_page_is_shared(page)) {
->  		/*
->  		 * Reset the index if the page was already mapped
->  		 * regularly before.
->  		 */
->  		if (page->mapping)
->  			page->share = 1;
-> -		page->mapping = PAGE_MAPPING_DAX_SHARED;
-> +		page->mapping = (void *)PAGE_MAPPING_DAX_SHARED;
->  	}
->  	page->share++;
->  }
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 1b3a76710487..21b355999ce0 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -666,13 +666,14 @@ PAGEFLAG_FALSE(VmemmapSelfHosted, vmemmap_self_hosted)
->  #define PAGE_MAPPING_ANON	0x1
->  #define PAGE_MAPPING_MOVABLE	0x2
->  #define PAGE_MAPPING_KSM	(PAGE_MAPPING_ANON | PAGE_MAPPING_MOVABLE)
-> -#define PAGE_MAPPING_FLAGS	(PAGE_MAPPING_ANON | PAGE_MAPPING_MOVABLE)
-> +/* to be removed once typical page refcounting for dax proves stable */
-> +#define PAGE_MAPPING_DAX_SHARED	0x4
-> +#define PAGE_MAPPING_FLAGS	(PAGE_MAPPING_ANON | PAGE_MAPPING_MOVABLE | PAGE_MAPPING_DAX_SHARED)
->  
->  /*
->   * Different with flags above, this flag is used only for fsdax mode.  It
->   * indicates that this page->mapping is now under reflink case.
->   */
-> -#define PAGE_MAPPING_DAX_SHARED	((void *)0x1)
->  
->  static __always_inline bool folio_mapping_flags(const struct folio *folio)
->  {
-> @@ -689,6 +690,11 @@ static __always_inline bool folio_test_anon(const struct folio *folio)
->  	return ((unsigned long)folio->mapping & PAGE_MAPPING_ANON) != 0;
->  }
->  
-> +static __always_inline bool folio_test_dax_shared(const struct folio *folio)
-> +{
-> +	return ((unsigned long)folio->mapping & PAGE_MAPPING_DAX_SHARED) != 0;
-> +}
-> +
->  static __always_inline bool PageAnon(const struct page *page)
->  {
->  	return folio_test_anon(page_folio(page));
-> ---
->
-> ...and keep the validation around at least for one post conversion
-> development cycle?
-
-Looks reasonable, will add that back for at least a development
-cycle. In reality it will probably stay forever and I will add a comment
-to the PAGE_MAPPING_DAX_SHARED definition saying it can be easily
-removed if more flags are needed.
-
->> > It does have implications for the dax dma-idle tracking thought, see
->> > below.
->> >
->> >>  {
->> >> -	unsigned long pfn;
->> >> +	unsigned long order = dax_entry_order(entry);
->> >> +	struct folio *folio = dax_to_folio(entry);
->> >>  
->> >> -	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
->> >> +	if (!dax_entry_size(entry))
->> >>  		return;
->> >>  
->> >> -	for_each_mapped_pfn(entry, pfn) {
->> >> -		struct page *page = pfn_to_page(pfn);
->> >> -
->> >> -		WARN_ON_ONCE(trunc && page_ref_count(page) > 1);
->> >> -		if (dax_page_is_shared(page)) {
->> >> -			/* keep the shared flag if this page is still shared */
->> >> -			if (dax_page_share_put(page) > 0)
->> >> -				continue;
->> >> -		} else
->> >> -			WARN_ON_ONCE(page->mapping && page->mapping != mapping);
->> >> -		page->mapping = NULL;
->> >> -		page->index = 0;
->> >> -	}
->> >> +	/*
->> >> +	 * We don't hold a reference for the DAX pagecache entry for the
->> >> +	 * page. But we need to initialise the folio so we can hand it
->> >> +	 * out. Nothing else should have a reference either.
->> >> +	 */
->> >> +	WARN_ON_ONCE(folio_ref_count(folio));
->> >
->> > Per above I would feel more comfortable if we kept the paranoia around
->> > to ensure that all the pages in this folio have dropped all references
->> > and cleared ->mapping and ->index.
->> >
->> > That paranoia can be placed behind a CONFIG_DEBUB_VM check, and we can
->> > delete in a follow-on development cycle, but in the meantime it helps to
->> > prove the correctness of the conversion.
->> 
->> I'm ok with paranoia, but as noted above the issue is that at a minimum
->> page->mapping (and probably index) now needs to be valid for any code
->> that might walk the page tables.
->
-> A quick look seems to say the confusion is limited to aliasing
-> PAGE_MAPPING_ANON.
-
-Correct. Looks like we can solve that though.
-
->> > [..]
->> >> @@ -1189,11 +1165,14 @@ static vm_fault_t dax_load_hole(struct xa_state *xas, struct vm_fault *vmf,
->> >>  	struct inode *inode = iter->inode;
->> >>  	unsigned long vaddr = vmf->address;
->> >>  	pfn_t pfn = pfn_to_pfn_t(my_zero_pfn(vaddr));
->> >> +	struct page *page = pfn_t_to_page(pfn);
->> >>  	vm_fault_t ret;
->> >>  
->> >>  	*entry = dax_insert_entry(xas, vmf, iter, *entry, pfn, DAX_ZERO_PAGE);
->> >>  
->> >> -	ret = vmf_insert_mixed(vmf->vma, vaddr, pfn);
->> >> +	page_ref_inc(page);
->> >> +	ret = dax_insert_pfn(vmf, pfn, false);
->> >> +	put_page(page);
->> >
->> > Per above I think it is problematic to have pages live in the system
->> > without a refcount.
->> 
->> I'm a bit confused by this - the pages have a reference taken on them
->> when they are mapped. They only live in the system without a refcount
->> when the mm considers them free (except for the bit between getting
->> created in dax_associate_entry() and actually getting mapped but as
->> noted I will fix that).
->> 
->> > One scenario where this might be needed is invalidate_inode_pages() vs
->> > DMA. The invaldation should pause and wait for DMA pins to be dropped
->> > before the mapping xarray is cleaned up and the dax folio is marked
->> > free.
->> 
->> I'm not really following this scenario, or at least how it relates to
->> the comment above. If the page is pinned for DMA it will have taken a
->> refcount on it and so the page won't be considered free/idle per
->> dax_wait_page_idle() or any of the other mm code.
->
-> [ tl;dr: I think we're ok, analysis below, but I did talk myself into
-> the proposed dax_busy_page() changes indeed being broken and needing to
-> remain checking for refcount > 1, not > 0 ]
->
-> It's not the mm code I am worried about. It's the filesystem block
-> allocator staying in-sync with the allocation state of the page.
->
-> fs/dax.c is charged with converting idle storage blocks to pfns to
-> mapped folios. Once they are mapped, DMA can pin the folio, but nothing
-> in fs/dax.c pins the mapping. In the pagecache case the page reference
-> is sufficient to keep the DMA-busy page from being reused. In the dax
-> case something needs to arrange for DMA to be idle before
-> dax_delete_mapping_entry().
-
-Ok. How does that work today? My current mental model is that something
-has to call dax_layout_busy_page() whilst holding the correct locks to
-prevent a new mapping being established prior to calling
-dax_delete_mapping_entry(). Is that correct?
-
-> However, looking at XFS it indeed makes that guarantee. First it does
-> xfs_break_dax_layouts() then it does truncate_inode_pages() =>
-> dax_delete_mapping_entry().
->
-> It follows that that the DMA-idle condition still needs to look for the
-> case where the refcount is > 1 rather than 0 since refcount == 1 is the
-> page-mapped-but-DMA-idle condition.
-
-Sorry, but I'm still not following this line of reasoning. If the
-refcount == 1 the page is either mapped xor DMA-busy. So a refcount >= 1
-is enough to conclude that the page cannot be reused because it is
-either being accessed from userspace via a CPU mapping or from some
-device DMA or some other in kernel user.
-
-The current proposal is that dax_busy_page() returns true if refcount >=
-1, and dax_wait_page_idle() will wait until the refcount ==
-0. dax_busy_page() will try and force the refcount == 0 by unmapping it,
-but obviously can't force other pinners to release their reference hence
-the need to wait. Callers should already be holding locks to ensure new
-mappings can't be established and hence can't become DMA-busy after the
-unmap.
-
-> [..]
->> >> @@ -1649,9 +1627,10 @@ static vm_fault_t dax_fault_iter(struct vm_fault *vmf,
->> >>  	loff_t pos = (loff_t)xas->xa_index << PAGE_SHIFT;
->> >>  	bool write = iter->flags & IOMAP_WRITE;
->> >>  	unsigned long entry_flags = pmd ? DAX_PMD : 0;
->> >> -	int err = 0;
->> >> +	int ret, err = 0;
->> >>  	pfn_t pfn;
->> >>  	void *kaddr;
->> >> +	struct page *page;
->> >>  
->> >>  	if (!pmd && vmf->cow_page)
->> >>  		return dax_fault_cow_page(vmf, iter);
->> >> @@ -1684,14 +1663,21 @@ static vm_fault_t dax_fault_iter(struct vm_fault *vmf,
->> >>  	if (dax_fault_is_synchronous(iter, vmf->vma))
->> >>  		return dax_fault_synchronous_pfnp(pfnp, pfn);
->> >>  
->> >> -	/* insert PMD pfn */
->> >> +	page = pfn_t_to_page(pfn);
->> >
->> > I think this is clearer if dax_insert_entry() returns folios with an
->> > elevated refrence count that is dropped when the folio is invalidated
->> > out of the mapping.
->> 
->> I presume this comment is for the next line:
->> 
->> +	page_ref_inc(page);
->>  
->> I can move that into dax_insert_entry(), but we would still need to
->> drop it after calling vmf_insert_*() to ensure we get the 1 -> 0
->> transition when the page is unmapped and therefore
->> freed. Alternatively we can make it so vmf_insert_*() don't take
->> references on the page, and instead ownership of the reference is
->> transfered to the mapping. Personally I prefered having those
->> functions take their own reference but let me know what you think.
->
-> Oh, the model I was thinking was that until vmf_insert_XXX() succeeds
-> then the page was never allocated because it was never mapped. What
-> happens with the code as proposed is that put_page() triggers page-free
-> semantics on vmf_insert_XXX() failures, right?
-
-Right. And actually that means I can't move the page_ref_inc(page) into
-what will be called dax_create_folio(), because an entry may have been
-created previously that had a failed vmf_insert_XXX() which will
-therefore have a zero refcount folio associated with it.
-
-But I think that model is wrong. I think the model needs to be the page
-gets allocated when the entry is first created (ie. when
-dax_create_folio() is called). A subsequent free (ether due to
-vmf_insert_XXX() failing or the page being unmapped or becoming
-DMA-idle) should then delete the entry.
-
-I think that makes the semantics around dax_busy_page() nicer as well -
-no need for the truncate to have a special path to call
-dax_delete_mapping_entry().
-
-> There is no need to invoke the page-free / final-put path on
-> vmf_insert_XXX() error because the storage-block / pfn never actually
-> transitioned into a page / folio.
-
-It's not mapping a page/folio that transitions a pfn into a page/folio
-it is the allocation of the folio that happens in dax_create_folio()
-(aka. dax_associate_new_entry()). So we need to delete the entry (as
-noted above I don't do that currently) if the insertion fails.
-
->> > [..]
->> >> @@ -519,21 +529,3 @@ void zone_device_page_init(struct page *page)
->> >>  	lock_page(page);
->> >>  }
->> >>  EXPORT_SYMBOL_GPL(zone_device_page_init);
->> >> -
->> >> -#ifdef CONFIG_FS_DAX
->> >> -bool __put_devmap_managed_folio_refs(struct folio *folio, int refs)
->> >> -{
->> >> -	if (folio->pgmap->type != MEMORY_DEVICE_FS_DAX)
->> >> -		return false;
->> >> -
->> >> -	/*
->> >> -	 * fsdax page refcounts are 1-based, rather than 0-based: if
->> >> -	 * refcount is 1, then the page is free and the refcount is
->> >> -	 * stable because nobody holds a reference on the page.
->> >> -	 */
->> >> -	if (folio_ref_sub_return(folio, refs) == 1)
->> >> -		wake_up_var(&folio->_refcount);
->> >> -	return true;
->> >
->> > It follow from the refcount disvussion above that I think there is an
->> > argument to still keep this wakeup based on the 2->1 transitition.
->> > pagecache pages are refcount==1 when they are dma-idle but still
->> > allocated. To keep the same semantics for dax a dax_folio would have an
->> > elevated refcount whenever it is referenced by mapping entry.
->> 
->> I'm not sold on keeping it as it doesn't seem to offer any benefit
->> IMHO. I know both Jason and Christoph were keen to see it go so it be
->> good to get their feedback too. Also one of the primary goals of this
->> series was to refcount the page normally so we could remove the whole
->> "page is free with a refcount of 1" semantics.
->
-> The page is still free at refcount 0, no argument there. But, by
-> introducing a new "page refcount is elevated while mapped" (as it
-> should), it follows that "page is DMA idle at refcount == 1", right?
-
-No. The page is either mapped xor DMA-busy - ie. not free. If we want
-(need?) to tell the difference we can use folio_maybe_dma_pinned(),
-assuming the driver doing DMA has called pin_user_pages() as it should.
-
-That said I'm not sure why we care about the distinction between
-DMA-idle and mapped? If the page is not free from the mm perspective the
-block can't be reallocated by the filesystem.
-
-> Otherwise, the current assumption that fileystems can have
-> dax_layout_busy_page_range() poll on the state of the pfn in the mapping
-> is broken because page refcount == 0 also means no page to mapping
-> association.
-
-And also means nothing from the mm (userspace mapping, DMA-busy, etc.)
-is using the page so the page isn't busy and is free to be reallocated
-right?
-
- - Alistair
 
