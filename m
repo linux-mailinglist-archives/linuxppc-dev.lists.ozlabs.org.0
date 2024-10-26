@@ -1,61 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-2616-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2617-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC199B1597
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2024 08:55:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D2C9B18F3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Oct 2024 17:07:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xb9Qy4QGmz2yDT;
-	Sat, 26 Oct 2024 17:55:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XbNKp0WXpz2xsW;
+	Sun, 27 Oct 2024 02:07:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729925754;
-	cv=none; b=i+5+rQIipSJ/3dJZ33bQq/UBoYBk48aG2KIANYO+qNBCaVd/7DSWiWiQT1pM2/lvxzR+YsBascf6fUJ0sr4oVt3UrkoRg6SzyzBBFuteZFrRaFGQyiJH3X4xuDNo07ug1NiXtO8phbyoWhOHROz5Fludm71erOhTd5H60RJwXZdwTrz9gV9xDd/R28KRtN2y+bJ7h7Ri/1+kFecANZ4O3MOmB4sfFACJM6uS4NGkZtWlwsTjfnkzv+fjP15glo4Fyvby7tEPUkNYgob8vWxWWUGT728hLY5uH+dBb5WBnxL78aRtVbRX/kyQNmvNti1PBX8gCEdJsYsAMKD9TUkLJQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1729955230;
+	cv=none; b=V1dUFdVSfPwjhdLKDY4HGTLHeTUIacj+1sa0qyTZ/EmAEnULS2K4B7MMLtPbOOjsEKlqFW3zoTYmzDS0Pb3CetXBq4OufP6vdgfJcF4s4bJnFRyusrv+buiYq/p8a6niCq2MGvROcW1Mpo6HXBdTCkrqyhZJ8hYr8tTkkJIdzIXBn51zZisjodPZJ/2mcr3+PmcM7/9Gux5sRM1oybPZw+/BuAU3FUhCS1G4Ki5limw8H9hemRQDZXdbQw+SlaqlBua3R2XOQYZdmF444nx5J7y1WdEWmJOpm914SdWY+HbZAp98W7WiNVfiJY7GnVIIzEcglXdk1usjapmhA/x1VA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1729925754; c=relaxed/relaxed;
-	bh=/Mq3fud90KAWp1yqh9QXH/sTcs1XrXUsNMckN2BVMGw=;
+	t=1729955230; c=relaxed/relaxed;
+	bh=9+99BhMvwxv3gY64WQxCtjY2LtNJDXuuOC+bOMCPeLM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HmCzWK1qOCrLjogoi6gNthb+kST8RCPKvnpmTBCJ59dhPLQSryW2svWf1/Q9LkVSx2jwm1eIX7wmFQt/iuEgMcz1A0E7Si3tCsavFMv8n8XTPuEwWlBxu08Lca0GJPqBsvTFE4ISUk7NMT/DWOEnkel6M51enVGxAokY4YgH/3H/0rYerBt4aoJ1x+XLnDP6ncBFDyOj24bNqvouKh9FwnD4P3HaZ588G9r0nVQbhsWV6esYrfn+Do2RqKEuA6udoC/lI5PCfIQ8FukdYgVXqVgGQ2Pn0K2qLHGYeZZ8zU0mdWMdop5xyUd/OtAMghzW2i2BU6ZXhSJ7VmVeVPFr3A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=qx3meZGc; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+	 Content-Type:Content-Disposition:In-Reply-To; b=B+K9J5KPDPmfR/vKxLbLijPBxvsHdsWvGq6/ijJutJli+pUyO17shmdiK88x5lSavEwXJ73+JwjnmclaBxE9g0frJeoActrnPBilVQ+rNPQOBnqVyN27XWOJIHp1yWoIB8SlBWbwAoJYh1rh4uvPYg0lv+LH+XSmgQqwrRX6rugASnhUJogLIAcw13sNoDTFfsWZ40AeA6QeevHkMBgseswT/vB/HlygZrY3RRT6angEgPkfwA3tPn5wxsrwDDki/Amu8APUkpQxr9qrfnFEjhz8SSxQZmrDteNkILcEREzKugexv62ZVKjF9fckePnBcj9b/q/PxBFGFpLy0g3Rxg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bo63wzwn; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=qx3meZGc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bo63wzwn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xb9Qw0cbgz2yDH
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Oct 2024 17:55:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=/Mq3fud90KAWp1yqh9QXH/sTcs1XrXUsNMckN2BVMGw=; b=qx3meZGcBwRoHwOlHVMgHrrgvN
-	AJPbYh9meTvbVeR5qDNMcePSFbWG87dwcx9b3y2Ra/H7kiy5xQwmCUzqI5BY2zZanyYSjU76g7jpJ
-	6f3LxhSd7o+LthEj2doAk7D5FfkNMP85y5CB8cbk2MVDHSIzTVzLBYlUijopFwo/4oRyTgXQ1PESa
-	N2ffY+FLh4FzjgwlvDN02hpGXrwTXFehNZtkNPtN74VGkyzR3VNwZ1a7gcgXIn2t8yo2iMpE9Y6I+
-	MEHR09FVSXPs0jPU1SyB6OTJiCCEXUm2TI+akR4abQ78x8Ll2KUwX9glwKXRUIu09e3RDBLBLv1me
-	O3EAZxig==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1t4ai9-00CFur-1c;
-	Sat, 26 Oct 2024 14:55:46 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 26 Oct 2024 14:55:45 +0800
-Date: Sat, 26 Oct 2024 14:55:45 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Vishal Chourasia <vishalc@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, mpe@ellerman.id.au,
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
-	maddy@linux.ibm.com, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [v2 PATCH 1/2] crypto/nx: Rename devdata_mutex to
- devdata_spinlock
-Message-ID: <ZxyScR5z4uvJ0g6r@gondor.apana.org.au>
-References: <20241015105551.1817348-2-vishalc@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XbNKm73Cfz2xn5
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Oct 2024 02:07:08 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 82D705C5480;
+	Sat, 26 Oct 2024 15:06:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8BEC4CEC6;
+	Sat, 26 Oct 2024 15:07:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729955225;
+	bh=nyrEPnPVL6CfiOximMToOwsXo5hX9hDKi37RpbH3KDI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bo63wzwn4LbzEfNYwEJKtpL/2DlkYa9XTRF9HYO32eIMsd879HBZ3n7oyvJJam347
+	 hc1cfPOK+FmOUk88Pcs+RTXwLFTi8hB2tdUewbI6QVGYFWugr8e9lsDf+voB27VlK/
+	 2kZyT2Ue+khHEDfdL7L2oKl+ZIpZLwHtxiM0LC6PvUOA06pi/blWSlD1lvO5rspohf
+	 ZPqDVBNrcB5p4bNf8pIwTQAXItXhWp15oBTIXbdv7Zg66vOwhNRAYX3R2ocixb5s5r
+	 1znwOcMjeeufsfWcnbyYWjwLeue4+yIZxxtPzFHPlWLfCY+MXhQsCQkdrVccG/ZhdH
+	 DAWEuI8VF+kQA==
+Date: Sat, 26 Oct 2024 16:07:00 +0100
+From: Simon Horman <horms@kernel.org>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:FREESCALE QUICC ENGINE UCC ETHERNET DRIVER" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH net-next] net: freescale: use ethtool string helpers
+Message-ID: <20241026150700.GF1507976@kernel.org>
+References: <20241024205257.574836-1-rosenp@gmail.com>
+ <20241025125704.GT1202098@kernel.org>
+ <CAKxU2N98hnVAE9WF72HhxzVEfhnRAgMykVgBErL9b3gupqqrxQ@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,27 +73,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241015105551.1817348-2-vishalc@linux.ibm.com>
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKxU2N98hnVAE9WF72HhxzVEfhnRAgMykVgBErL9b3gupqqrxQ@mail.gmail.com>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Oct 15, 2024 at 04:25:51PM +0530, Vishal Chourasia wrote:
-> Rename devdata_mutex to devdata_spinlock to accurately reflect its
-> implementation as a spinlock.
-> 
-> [1] v1 https://lore.kernel.org/all/ZwyqD-w5hEhrnqTB@linux.ibm.com
-> 
-> Signed-off-by: Vishal Chourasia <vishalc@linux.ibm.com>
-> ---
->  drivers/crypto/nx/nx-common-pseries.c | 34 +++++++++++++--------------
->  1 file changed, 17 insertions(+), 17 deletions(-)
+On Fri, Oct 25, 2024 at 12:32:27PM -0700, Rosen Penev wrote:
+> On Fri, Oct 25, 2024 at 5:57 AM Simon Horman <horms@kernel.org> wrote:
+> >
+> > On Thu, Oct 24, 2024 at 01:52:57PM -0700, Rosen Penev wrote:
+> > > The latter is the preferred way to copy ethtool strings.
+> > >
+> > > Avoids manually incrementing the pointer. Cleans up the code quite well.
+> > >
+> > > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> >
+> > ...
+> >
+> > > diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+> > > index b0060cf96090..10c5fa4d23d2 100644
+> > > --- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+> > > +++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+> > > @@ -243,38 +243,24 @@ static void dpaa_get_ethtool_stats(struct net_device *net_dev,
+> > >  static void dpaa_get_strings(struct net_device *net_dev, u32 stringset,
+> > >                            u8 *data)
+> > >  {
+> > > -     unsigned int i, j, num_cpus, size;
+> > > -     char string_cpu[ETH_GSTRING_LEN];
+> > > -     u8 *strings;
+> > > +     unsigned int i, j, num_cpus;
+> > >
+> > > -     memset(string_cpu, 0, sizeof(string_cpu));
+> > > -     strings   = data;
+> > > -     num_cpus  = num_online_cpus();
+> > > -     size      = DPAA_STATS_GLOBAL_LEN * ETH_GSTRING_LEN;
+> > > +     num_cpus = num_online_cpus();
+> > >
+> > >       for (i = 0; i < DPAA_STATS_PERCPU_LEN; i++) {
+> > > -             for (j = 0; j < num_cpus; j++) {
+> > > -                     snprintf(string_cpu, ETH_GSTRING_LEN, "%s [CPU %d]",
+> > > -                              dpaa_stats_percpu[i], j);
+> > > -                     memcpy(strings, string_cpu, ETH_GSTRING_LEN);
+> > > -                     strings += ETH_GSTRING_LEN;
+> > > -             }
+> > > -             snprintf(string_cpu, ETH_GSTRING_LEN, "%s [TOTAL]",
+> > > -                      dpaa_stats_percpu[i]);
+> > > -             memcpy(strings, string_cpu, ETH_GSTRING_LEN);
+> > > -             strings += ETH_GSTRING_LEN;
+> > > -     }
+> > > -     for (j = 0; j < num_cpus; j++) {
+> > > -             snprintf(string_cpu, ETH_GSTRING_LEN,
+> > > -                      "bpool [CPU %d]", j);
+> > > -             memcpy(strings, string_cpu, ETH_GSTRING_LEN);
+> > > -             strings += ETH_GSTRING_LEN;
+> > > +             for (j = 0; j < num_cpus; j++)
+> > > +                     ethtool_sprintf(&data, "%s [CPU %d]",
+> > > +                                     dpaa_stats_percpu[i], j);
+> > > +
+> > > +             ethtool_sprintf(&data, "%s [TOTAL]", dpaa_stats_percpu[i]);
+> > >       }
+> > > -     snprintf(string_cpu, ETH_GSTRING_LEN, "bpool [TOTAL]");
+> > > -     memcpy(strings, string_cpu, ETH_GSTRING_LEN);
+> > > -     strings += ETH_GSTRING_LEN;
+> > > +     for (i = 0; j < num_cpus; i++)
+> >
+> > Perhaps this should consistently use i, rather than i and j:
+> >
+> >         for (i = 0; i < num_cpus; i++)
+> >
+> > Flagged by W=1 builds with clang-18.
+> I really need to compile test this on a PPC system.
 
-All applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Depending on your aims and hardware availability,
+cross compiling may be easier.
+
+But in any case, I don't think this problem relates to PPC.
+
+> >
+> > > +             ethtool_sprintf(&data, "bpool [CPU %d]", i);
+> > > +
+> > > +     ethtool_puts(&data, "bpool [TOTAL]");
+> > >
+> > > -     memcpy(strings, dpaa_stats_global, size);
+> > > +     for (i = 0; i < DPAA_STATS_GLOBAL_LEN; i++)
+> > > +             ethtool_puts(&data, dpaa_stats_global[i]);
+> > >  }
+> > >
+> > >  static int dpaa_get_hash_opts(struct net_device *dev,
+> >
+> > ...
+> 
 
