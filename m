@@ -1,114 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-2642-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2643-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806D89B2EE3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2024 12:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A84789B2FDE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2024 13:12:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XcWPg6nRdz2xy8;
-	Mon, 28 Oct 2024 22:29:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XcXLv33XZz2yNv;
+	Mon, 28 Oct 2024 23:12:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730114967;
-	cv=none; b=IvF+xAsmyKPBOlmQXuiTip1wapHSosTp19xRIko7llf9ckEwhjuAinexbNcELuuC5CoXHGeTYobZARq3CpwVTR1aLyLGOXENVOPstxxnWgM4YWXkfiTFzBoeEorZoPZGkRtVQg/yV7If7S1sBG7bsTPfs6HyAOEBWm1/Y6pDK/iSi1LI51NCkbl5YwUrFsDbTINPHohm8N/YM+cyiVD0r6h8VxFbY0Hugmgb3UGxxomFjz/RFsMOPnluC3w1gH80EhzrLGYWPK3zwQly/An5Z5xnZjr+ae+NFu2SxBTSirHakm51nGbB3UaSdhS0/OEN/TLUiK8630fiGr4HeToFMw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730117527;
+	cv=none; b=WTRzidOCGDnXDoHYDxmT9px2DuVD6fCt+pEJ/wolsphIn/aDu2PNANeYaESHY5lfybSnz2kkS0yf2XmX4PEaRr2EwQ9V1IO+OvHyJ6ONbJb/4BwShRNoayODEQhD1yem0AEGsZ5kSGwA+D1pkXma/P4cCRZRfQ2U7O/69FIXlz+IIJmg7mvkASn+dT70JsOsG0bzYwD0K+98V7R6SDB3yVcj3Da/SV0HaVjPmOB4pRZQu2KkGVRDCLCgXcvmhsP+zhMS8/OP1S1o2+4C9HcQqrCYWGAnMzzpiRZmeBDqopE1fKTUYIxtqVvJtZnXZLY/wOSYKaMmJxpB2jfOlAuzvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730114967; c=relaxed/relaxed;
-	bh=qweeu+5IiYtQa7OyRW7ZjYmUI9p5diO6hCID4dNNfoI=;
+	t=1730117527; c=relaxed/relaxed;
+	bh=NAZkhhTeYWBcCRnnAZH+eZCWBsmCMSLDc9mRceexjgU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lcFqsP8nqFVuKJ//l7ZV7a1MTzTFvDLK2DM0rjTx43vtXy9DJ0wKfgRx25cOrcvqld2W/KWYoW06KzVwfvMlQZ/E279xe+M4tugFmzMWc89GHWZUSvlQpaK4HOgJJGDEkZtuj2nG8OILgU4xboXZ2HZo1k+DE5iI5ppM4WR+lrujvESN5EU1pdb9bhKr57aDXIXapNC8gj/EGkSeHJ/bBU7xf1AUZqlFBRimCbTkW80SHUnTqqGDVilE2MdCkom8aUyWonHqqbdcsuodksatJAqR9vxiDfSMQUG+y+ynmYTRXEGeVDQK4obcWG2LG3DdP5mwrClvU5AA4FOblvkC6g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name; dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=cfHO0jvb; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=HM62LJ3F; dkim-atps=neutral; spf=pass (client-ip=103.168.172.157; helo=fhigh-a6-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org) smtp.mailfrom=shutemov.name
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+	 Content-Type:Content-Disposition:In-Reply-To; b=l+GjGwzgjDgHcTdSQ1qwrVbbl+fFikEa3rgdwu0eXMpo0sWlwtshIqLo/yrCrjs3d3sT7H2qRTog1NPbnQwd0I8xrepiXfzS5hbf8ezbvJ6CTD6dVLHGcuZOlmTA4+W0keDCn7XHXbZEtmlns5Qih1QUnmCQHI+pZd9ZW81nbKA5yiw5Wb6qXFGfPfxYagl0PUT3CIC/LPjuxlmPQ4WOnH2oC3yZimsTvViejkS3xbGDDxxkHs5tCrDSqsUgjy4x8fIi/B59P62TYeUYr63/2sinMQRvdxHTKhiU4GOsBzwaqiUpqfkPWOfWInFAlQLfJvgazvGuQ4EPXeLrUjfB2g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uTA10aeL; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=cfHO0jvb;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=HM62LJ3F;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uTA10aeL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=shutemov.name (client-ip=103.168.172.157; helo=fhigh-a6-smtp.messagingengine.com; envelope-from=kirill@shutemov.name; receiver=lists.ozlabs.org)
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XcWPb5nYdz2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2024 22:29:22 +1100 (AEDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 82C2C114011F;
-	Mon, 28 Oct 2024 07:29:19 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 28 Oct 2024 07:29:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1730114959; x=
-	1730201359; bh=qweeu+5IiYtQa7OyRW7ZjYmUI9p5diO6hCID4dNNfoI=; b=c
-	fHO0jvbh8Mp7bNk55870N4ROSP5UZ1IZMMI+B7XFK+BjCXKxLv96WUGTa9Xzc09i
-	RcEGL4fOCXqIuBUPuuBmYMFNWmSRlSzoiS+JzxBnpgWln2mxjmh38uX9z8oDFTO6
-	RzoGX7AZMK3qBR3KOtAAFguJ2NCKs9f+r9Znjkzjx5jVEBjdh8DguinTFMo7VUQF
-	lsw8qyI/oB2YkDd6T1kz8p/eowhopvo0VkqV0L4Qox1u4T+hvBC2bY/ZmyhSp5fj
-	GMvMkZO8lLmlXgiTdGUwRogLMcjeW78eZBvIqRw73bHg5/vwvZpYBVzdnINSSTbK
-	GgYfNZ5kFQ3Rt3SvQ8HOw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1730114959; x=1730201359; bh=qweeu+5IiYtQa7OyRW7ZjYmUI9p5
-	diO6hCID4dNNfoI=; b=HM62LJ3F+c+XMD1HH/35nCkBNTUYDNMgPofFLna8qh3I
-	bS/U9sP54HPoNSeNxHa7vYsiSXO5qSWFn6ucwCTH1vm9BiRy/QCRyCT/lw07s2RZ
-	4GLUcuuIQln2zbahfvjQmKJ274xN9tUsp1oPg9ZWxMru1mYEjAuOihGgsNVn9T0v
-	nJoiPsPD4zfApx+6sN8uZgHkveTB/OKJ9d1jT0Cd1DO+mycfVlkAYr/yuPkGuBRc
-	Q8EzszB/yYTf50hq9mO87V3t+Hbq67h7FUOuCQaI2Od+xw6/6PIkvTzcu+F7BxeO
-	vwxMj4iWZTf8X2wSbojBB1TCHvQSLshsdoK6t0tlLQ==
-X-ME-Sender: <xms:jnUfZ6imqZ4sPFX3v7NdZYCtUKUuFcIO8rtsdOxaRng7zP2vBIPZgg>
-    <xme:jnUfZ7ABzZSuhwN5CZepQyO3LAh0LXU2ENsWATJdB9cnj0_f9UNp-oD3uDgRgh83I
-    A1x6L35z4sVJNfm42E>
-X-ME-Received: <xmr:jnUfZyEwbrCYst-B84RueUO2Gm5OMr9GfVyIWUSI8paokuCqi5Xwa9VEpZpDbTs2Wty3Ug>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejledgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
-    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
-    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpefhkedvhfehveefkedt
-    vedvjeeuudevkeetiedtkeetteffgefhleduffffudehueenucffohhmrghinheplhgush
-    drshgspdhgvghtuhhsvghrrdhssgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgr
-    mhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspg
-    hrtghpthhtohepudegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtohhrvhgr
-    lhgusheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghnug
-    hrvgifrdgtohhophgvrhefsegtihhtrhhigidrtghomhdprhgtphhtthhopehjphhoihhm
-    sghovgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohep
-    sghpsegrlhhivghnkedruggvpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrg
-    gurdhorhhgpdhrtghpthhtohepphgrfigrnhdrkhhumhgrrhdrghhuphhtrgeslhhinhhu
-    gidrihhnthgvlhdrtghomhdprhgtphhtthhopehlohhnghhmrghnsehrvgguhhgrthdrtg
-    homh
-X-ME-Proxy: <xmx:jnUfZzSQd191KoXtkA6nYGRe7Y_SKeOcyhVAm12DjH1Gl72aBhN0zw>
-    <xmx:jnUfZ3ziqlU3s_aoKtNsSmrYmxlaY6O8FhzU8iijDj6YqbcsK2o6FA>
-    <xmx:jnUfZx5zdNRI95KeLA5UfIl_Sept437Evt-SsJLJWQj0yy10KS0CKw>
-    <xmx:jnUfZ0yJR6vhn2HsCJDpY74K3IR5OpcanQ-YdHlMh2Xr75bWcdXx4A>
-    <xmx:j3UfZ8Jh-t7PHjzVKXZwpgG-6mo2E0VJkPEXghda6sOdidTIi1B39wlg>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Oct 2024 07:29:14 -0400 (EDT)
-Date: Mon, 28 Oct 2024 13:29:09 +0200
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
-	Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
-	Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH] x86/uaccess: Avoid barrier_nospec() in copy_from_user()
-Message-ID: <rjjwtpbxal4glznnkp6a65rtbynn3plrrcgwdg2ucaacmjrnqd@5otngejwtuzu>
-References: <CAHk-=wjAoiCmPSi1OwrJofifmtRYEzecjUeu3UUUELMbJHopUA@mail.gmail.com>
- <CAHk-=wgDrG-aKVGrd-9gQsC0pMs936oo8XEFmEn6ciaT9=nfDg@mail.gmail.com>
- <20241014035436.nsleqolyj3xxysrr@treble>
- <CAHk-=widMFN2wDeS2K65f8FnW8L6gPZa6CNO4OWkv--0G2LXhw@mail.gmail.com>
- <r5ruxmop7vewd7aq6gu2zve4hfmcu4byhlebygswbqkgz43qfq@rsajyfiypcsd>
- <CAHk-=wj8v4BcD7f3pObq1wav_mJO_naisYGg6HQUcphSc-U0zA@mail.gmail.com>
- <CAHk-=wiVE1QCwnP98Hw0GfjrEKiZsvsaqgzC02zJj-BYp4-khg@mail.gmail.com>
- <81444391-9e59-4744-bbf0-2220a3042da6@citrix.com>
- <p6jzuqlphu5va5rroybfmofxaxcveyj6mc724xunzdm6ocwk23@jv7bemzdczg2>
- <CAHk-=wh-PjG_cF7ujBFmG7G6qGL3hzC-6ged+mbSECkp72wHVw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XcXLt3FnQz2yMP
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2024 23:12:06 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id CDEB75C42B7;
+	Mon, 28 Oct 2024 12:11:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB9FC4CEC3;
+	Mon, 28 Oct 2024 12:12:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730117523;
+	bh=NAZkhhTeYWBcCRnnAZH+eZCWBsmCMSLDc9mRceexjgU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uTA10aeL4xtGd63PUIPx4KhhP7HDf7HveJCfWaAvK3qMB3bC8jLKkEhFESanGKbGf
+	 uhuDju3v8m3q6ieocv7/yEBPF18Cm83bCKgYPTn2qye5/6F6nwYL+lAxM0hDQ1du8V
+	 Dh/ZPyGjrWiPXyKtiTxIol4e2/k0WxJX+/8AtT6n40dTRWQ6cmbQyboWn5RSmZglPA
+	 IbMxrtYqDvMPSdSB2BvEZtP6NHs/n63XsT/dRKP97i6mPmFZuEeHcDLhqQx9yYFICM
+	 PkHz47nn0gx8oL6zQVXRROwud3Sjg/7pm75NIrx5uhJzzS+wGzJ9liRCwrMSQ+e+/y
+	 8X53OSDt6bqxw==
+Date: Mon, 28 Oct 2024 12:11:58 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>, shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com, lgirdwood@gmail.com, perex@perex.cz,
+	tiwai@suse.com, linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH AUTOSEL 6.11 05/32] ASoC: fsl_esai: change dev_warn to
+ dev_dbg in irq handler
+Message-ID: <1ad8216d-c24d-4d35-9562-4106e2aafa34@sirena.org.uk>
+References: <20241028105050.3559169-1-sashal@kernel.org>
+ <20241028105050.3559169-5-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -121,178 +69,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Jw04mRIq6Tcvx3ro"
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wh-PjG_cF7ujBFmG7G6qGL3hzC-6ged+mbSECkp72wHVw@mail.gmail.com>
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <20241028105050.3559169-5-sashal@kernel.org>
+X-Cookie: Remember the... the... uhh.....
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Oct 16, 2024 at 03:34:11PM -0700, Linus Torvalds wrote:
-> On Wed, 16 Oct 2024 at 15:13, Kirill A. Shutemov <kirill@shutemov.name> wrote:
-> >
-> > It is worse than that. If we get LAM_SUP enabled (there's KASAN patchset
-> > in works) this check will allow arbitrary kernel addresses.
-> 
-> Ugh. I haven't seen the LAM_SUP patches.
-> 
-> But yeah, I assume any LAM_SUP model would basically then make the GP
-> fault due to non-canonical addresses go away.
 
-Actually, I've got this wrong.
+--Jw04mRIq6Tcvx3ro
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I based my comment about incompatibility with LAM_SUP on the approach
-description that stated zeroing bits 48/57, but actual masks zeroing bits
-47/56 which is compatible with all LAM modes. It will trigger #GP for
-LAM_SUP too for kernel addresses: bit 63 has to be equal to bit 47/56.
+On Mon, Oct 28, 2024 at 06:49:47AM -0400, Sasha Levin wrote:
+> From: Shengjiu Wang <shengjiu.wang@nxp.com>
+>=20
+> [ Upstream commit 54c805c1eb264c839fa3027d0073bb7f323b0722 ]
+>=20
+> Irq handler need to be executed as fast as possible, so
+> the log in irq handler is better to use dev_dbg which needs
+> to be enabled when debugging.
 
-I think it is worth looking at this approach again as it gets better
-code: removes two instructions from get_user() and doesn't get flags
-involved.
+This is very marginal for stable material.
 
-Below is patch on top of current mainline.
+--Jw04mRIq6Tcvx3ro
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The mask only clears bit 47/56. It gets us stronger canonicality check on
-machines with LAM off.
+-----BEGIN PGP SIGNATURE-----
 
-I am not entirely sure about my take on valid_user_address() here.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcff40ACgkQJNaLcl1U
+h9CXwAf/dKgisn32gugwOj7kv0kcdBJdUWmANJAOcx1EOHgkOSaJivv+5thFldfv
+7oqPwtMJ7fY3dgB+F9mBaeEme5UEhSHLoawxHLf4C5paoOTr4z3YcXrdwYgwrF3Q
+n+sGIw5qXOgLhuHyOaGLyaMsGaHuI4yB4PfFi/muoWK98SQex0M6iC3+WbAY41D+
+0ghy0A9fIIAy/xK9Q309x9hV6dwfUE4Sg4+DHC2kH9E5JBD9sY4EaGmkdZ7azV2A
+tqwaPUgw34Hip+veM7UMb4m/G3jM6BwAUJporndNYVBmo3O06bDGvZulrRDsUkEi
+7PvclJ+x+hhfc90E9zZn2mCpDj9trg==
+=yJsI
+-----END PGP SIGNATURE-----
 
-Any comments?
-
-diff --git a/arch/x86/include/asm/runtime-const.h b/arch/x86/include/asm/runtime-const.h
-index 6652ebddfd02..8d983cfd06ea 100644
---- a/arch/x86/include/asm/runtime-const.h
-+++ b/arch/x86/include/asm/runtime-const.h
-@@ -2,6 +2,18 @@
- #ifndef _ASM_RUNTIME_CONST_H
- #define _ASM_RUNTIME_CONST_H
- 
-+#ifdef __ASSEMBLY__
-+
-+.macro RUNTIME_CONST_PTR sym reg
-+	movq	$0x0123456789abcdef, %\reg
-+	1:
-+	.pushsection runtime_ptr_\sym, "a"
-+	.long	1b - 8 - .
-+	.popsection
-+.endm
-+
-+#else /* __ASSEMBLY__ */
-+
- #define runtime_const_ptr(sym) ({				\
- 	typeof(sym) __ret;					\
- 	asm_inline("mov %1,%0\n1:\n"				\
-@@ -58,4 +70,5 @@ static inline void runtime_const_fixup(void (*fn)(void *, unsigned long),
- 	}
- }
- 
-+#endif /* __ASSEMBLY__ */
- #endif
-diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
-index b0a887209400..77acef272b0d 100644
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -16,9 +16,9 @@
- 
- /*
-  * Virtual variable: there's no actual backing store for this,
-- * it can purely be used as 'runtime_const_ptr(USER_PTR_MAX)'
-+ * it can purely be used as 'runtime_const_ptr(USER_CANONICAL_MASK)'
-  */
--extern unsigned long USER_PTR_MAX;
-+extern unsigned long USER_CANONICAL_MASK;
- 
- #ifdef CONFIG_ADDRESS_MASKING
- /*
-@@ -54,7 +54,7 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm,
- #endif
- 
- #define valid_user_address(x) \
--	((__force unsigned long)(x) <= runtime_const_ptr(USER_PTR_MAX))
-+	(!((__force unsigned long)(x) & ~runtime_const_ptr(USER_CANONICAL_MASK)))
- 
- /*
-  * Masking the user address is an alternative to a conditional
-@@ -63,13 +63,8 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm,
-  */
- static inline void __user *mask_user_address(const void __user *ptr)
- {
--	unsigned long mask;
--	asm("cmp %1,%0\n\t"
--	    "sbb %0,%0"
--		:"=r" (mask)
--		:"r" (ptr),
--		 "0" (runtime_const_ptr(USER_PTR_MAX)));
--	return (__force void __user *)(mask | (__force unsigned long)ptr);
-+	unsigned long mask = runtime_const_ptr(USER_CANONICAL_MASK);
-+	return (__force void __user *)(mask & (__force unsigned long)ptr);
- }
- #define masked_user_access_begin(x) ({				\
- 	__auto_type __masked_ptr = (x);				\
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index a5f221ea5688..9d25f4f146f4 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2390,14 +2390,9 @@ void __init arch_cpu_finalize_init(void)
- 	alternative_instructions();
- 
- 	if (IS_ENABLED(CONFIG_X86_64)) {
--		unsigned long USER_PTR_MAX = TASK_SIZE_MAX-1;
-+		unsigned long USER_CANONICAL_MASK = ~(1UL << __VIRTUAL_MASK_SHIFT);
- 
--		/*
--		 * Enable this when LAM is gated on LASS support
--		if (cpu_feature_enabled(X86_FEATURE_LAM))
--			USER_PTR_MAX = (1ul << 63) - PAGE_SIZE - 1;
--		 */
--		runtime_const_init(ptr, USER_PTR_MAX);
-+		runtime_const_init(ptr, USER_CANONICAL_MASK);
- 
- 		/*
- 		 * Make sure the first 2MB area is not mapped by huge pages
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index b8c5741d2fb4..65d2f4cad0aa 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -358,7 +358,7 @@ SECTIONS
- #endif
- 
- 	RUNTIME_CONST_VARIABLES
--	RUNTIME_CONST(ptr, USER_PTR_MAX)
-+	RUNTIME_CONST(ptr, USER_CANONICAL_MASK)
- 
- 	. = ALIGN(PAGE_SIZE);
- 
-diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
-index 4357ec2a0bfc..b93f0282c6c9 100644
---- a/arch/x86/lib/getuser.S
-+++ b/arch/x86/lib/getuser.S
-@@ -32,6 +32,7 @@
- #include <asm/errno.h>
- #include <asm/asm-offsets.h>
- #include <asm/thread_info.h>
-+#include <asm/runtime-const.h>
- #include <asm/asm.h>
- #include <asm/smap.h>
- 
-@@ -39,14 +40,8 @@
- 
- .macro check_range size:req
- .if IS_ENABLED(CONFIG_X86_64)
--	movq $0x0123456789abcdef,%rdx
--  1:
--  .pushsection runtime_ptr_USER_PTR_MAX,"a"
--	.long 1b - 8 - .
--  .popsection
--	cmp %rax, %rdx
--	sbb %rdx, %rdx
--	or %rdx, %rax
-+	RUNTIME_CONST_PTR sym=USER_CANONICAL_MASK reg=rdx
-+	and %rdx, %rax
- .else
- 	cmp $TASK_SIZE_MAX-\size+1, %eax
- 	jae .Lbad_get_user
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+--Jw04mRIq6Tcvx3ro--
 
