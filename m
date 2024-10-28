@@ -1,53 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-2633-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2634-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831D49B2D56
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2024 11:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6FC9B2D5B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2024 11:51:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XcVYb3bR6z2yJ5;
-	Mon, 28 Oct 2024 21:51:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XcVZM5dzJz2yLT;
+	Mon, 28 Oct 2024 21:51:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730112675;
-	cv=none; b=I5QhH0N6h9zrubQBb4pAjxSaD+3P3b6esmD1YOc88yD2qFydeiinqOdP/n20YqDDr5pagQtoHC2gyLOg0wB8NasqddgOa8ibCQO+rYBtD2d//onONsayXiLr+ZiH7sA3oGmlDb2EIgdSEfpewa/lxz58NCXL2w5eHPhG0hWBFWWTojJ1AYymdhsR4bszYY9FbGt3iC6E31xyaQ4kI/SG0obOfMlarVBBwbcr0CUFWZF1oA9xkAQvvV0yFrViQhu/9rLFNjegEJVnZJmqfaM0so6p6JL3m8J1b+unvFQ+RdJliEhl3M0smRsyiWOiIqQs7wy9TQY2PtVHRcbeng1m/A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730112715;
+	cv=none; b=h4QMhn1grUdEZfrUrmb1R0DC6aV/Df2dGU83jh1ViK8JzVF7Kuc8rhdmifXBzzE4znTBEVIrKg2f5bh1in/mISRbhKW/Uz83HEnoDRsuB8s5I1C8G8xWbzbFfMHw5xeVYrSLIWW/X//9orhnH42dWgaJIaULv63ZsynyAxtcdU2j2Ded6jM9ujfD0ldpBUanH8SbW3+gzCc2ijs5CAe89FTBSvCV0HJUxIg04q9edFaxnfqC++vPW/cQa7el28p9S4gHQsosQ+SCXozfjp5HSIZZq8nAxpKhGxORJ9ul4IRQt4uFoh8UGOjuCW4u0Pq/IyZi+gATAFjT15TqyoHpDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730112675; c=relaxed/relaxed;
-	bh=gVbssboAnkGtxt2Pg3oKgJ9jGBAjwnqlZpdGI2LMyt8=;
+	t=1730112715; c=relaxed/relaxed;
+	bh=NLs4ZGGpNBJmmAr5JSyOAP0IMZqIe9bZ7O4zoczEuiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QS054e70WDlWksv0Yrt2N1VL5iMNVdC2zfP9f4S1XuDy5y51PzJP2keAkiUw7VwB3dPweCquZ9mMtIydMnBAHmES/NHfFD2LggpbbQAQmKs7S08OOGBw20eObedqOOGf1tLCY9AA/273J/HgaJsXAj94j9Dz+3RPJOy+u/x+n5oXbYOc7aRssbl4IBpYhXXig+dhXFvagGTFoFlDq7gBUTVZNKrfPK0w2yfV3w6/6DrnPKL71PmTF+lhcqa2fDSBfLhFTkg9Ng6Wipn4tHF/ulffnGW7rH9xELSJWgqKl6zvPK2uvySJtJIUC4vhARMQ0n/xY9GZAfZATrsah5SbgA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bFzqSECV; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=GHSW9mfSH2EmDac6b3r+vqA8BpAqVp/UhaOGuBypC+e7Z6ipGzNDE2jCwDDnr9jD2l3HshMGP4hSMCg43DpwbOMq6WVBURPLuOhggbieQ+RwmsXAKPqKvyJCsQZ6GtAGokG8l1nPhxXbxR0rHnt3I0EEAf9AhsDb6UL5JYVVDux2M+6ExTsxw3RcG7KjSdZQtiNer4qipNHKF614VSXT9f8cS/9W+T/QWniPoj/y6Nw/UdzroEKrQ3XStkkNzegkTk/f7Hu9h8EpM1rPxsiYBYl+/iNtWOohu3XfFcwQsVWRYoN+mNCVl1S0EB/TGJTM+aG4sgm5St9owGga3GIrmA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dzB1h5uo; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bFzqSECV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dzB1h5uo;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XcVYY4ncpz2yHj
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2024 21:51:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XcVZL5B9fz2yLB
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2024 21:51:54 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 495E6A41BF9;
-	Mon, 28 Oct 2024 10:49:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B76C4CEE8;
-	Mon, 28 Oct 2024 10:51:07 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id A1039A41BF8;
+	Mon, 28 Oct 2024 10:49:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15C3C4CEE3;
+	Mon, 28 Oct 2024 10:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730112669;
-	bh=7lam01olvUb3QSFzRWm5ouSmAo57fVc3EtizsiBcnsQ=;
+	s=k20201202; t=1730112712;
+	bh=7CXEDfxOh5O+u15aWw6ujchv9sh90OKuVDVKVuAf0sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFzqSECVcqWowTN2vTltnRV/Oyxyg9LNCwpgEtv16bkNeK53zzb/0Z5M19CUwGBKb
-	 gvqo++yzNZGLVv0dn0C6hmoRVKChatWBkrG8JWNq2j18whCtaPmsccAz5ID1+Et8w8
-	 QGYlQMTd0Gvs4Vqi8FrEgd16R7jUxOC7vNzoOO8IwMsQyq7mUW9/dEkBumf8MQkOJn
-	 JJx7w+1lycK+vyNDkLGTcu3pz193sAvNxL5MlSq914A4CxzihOosEHDAsZS5N1glqj
-	 guOHV8rDIDHsTizXvwmsPTuKx1kO+OAuPsqupKcz+MBah1LjV0O95fNwPR+Qx7lNsS
-	 cKPkFZhhuVP2Q==
+	b=dzB1h5uofJgYDGfH8KpVDMU6Ka+cCd0x0Razm8fr29FkcmM3DQysrrnOpr3hs2Pxm
+	 K6Y49AE/uzKZir+uO5ScycMbu5AlMwxT+RAAiuDj7qKP1B6IyLIozPNa83brFJTwVt
+	 IMW56idwCJ2R9eEyE19SS+JDgabpl/hKcOg+nvQu0D4qzBJ47ZSwp/AiRXMDJQJK5F
+	 INJRZtstSOCXZUZeMklLcgs8TjpstnOyU9ry9OBQN+0R+U9S5RbsvogNW5yDahvwKY
+	 MCqZ7ouYTlhH5wAX+WqeJYxFGFFayKvvxeM+9v7xKoENyh6PXH+zrv2ropYTYVU/84
+	 hpWhyQpytQ2Ew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	shengjiu.wang@gmail.com,
@@ -57,9 +56,9 @@ Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
 	tiwai@suse.com,
 	linux-sound@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.11 05/32] ASoC: fsl_esai: change dev_warn to dev_dbg in irq handler
-Date: Mon, 28 Oct 2024 06:49:47 -0400
-Message-ID: <20241028105050.3559169-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 24/32] ASoC: fsl_micfil: Add sample rate constraint
+Date: Mon, 28 Oct 2024 06:50:06 -0400
+Message-ID: <20241028105050.3559169-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241028105050.3559169-1-sashal@kernel.org>
 References: <20241028105050.3559169-1-sashal@kernel.org>
@@ -86,38 +85,104 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 54c805c1eb264c839fa3027d0073bb7f323b0722 ]
+[ Upstream commit b9a8ecf81066e01e8a3de35517481bc5aa0439e5 ]
 
-Irq handler need to be executed as fast as possible, so
-the log in irq handler is better to use dev_dbg which needs
-to be enabled when debugging.
+On some platforms, for example i.MX93, there is only one
+audio PLL source, so some sample rate can't be supported.
+If the PLL source is used for 8kHz series rates, then 11kHz
+series rates can't be supported.
+
+So add constraints according to the frequency of available
+clock sources, then alsa-lib will help to convert the
+unsupported rate for the driver.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Link: https://patch.msgid.link/1728622433-2873-1-git-send-email-shengjiu.wang@nxp.com
+Link: https://patch.msgid.link/1728884313-6778-1-git-send-email-shengjiu.wang@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_esai.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-index d0d8a01da9bdd..0cf9484183d43 100644
---- a/sound/soc/fsl/fsl_esai.c
-+++ b/sound/soc/fsl/fsl_esai.c
-@@ -119,10 +119,10 @@ static irqreturn_t esai_isr(int irq, void *devid)
- 		dev_dbg(&pdev->dev, "isr: Transmission Initialized\n");
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 22b240a70ad48..49afc59ed4ed9 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -28,6 +28,13 @@
  
- 	if (esr & ESAI_ESR_RFF_MASK)
--		dev_warn(&pdev->dev, "isr: Receiving overrun\n");
-+		dev_dbg(&pdev->dev, "isr: Receiving overrun\n");
+ #define MICFIL_OSR_DEFAULT	16
  
- 	if (esr & ESAI_ESR_TFE_MASK)
--		dev_warn(&pdev->dev, "isr: Transmission underrun\n");
-+		dev_dbg(&pdev->dev, "isr: Transmission underrun\n");
++#define MICFIL_NUM_RATES	7
++#define MICFIL_CLK_SRC_NUM	3
++/* clock source ids */
++#define MICFIL_AUDIO_PLL1	0
++#define MICFIL_AUDIO_PLL2	1
++#define MICFIL_CLK_EXT3		2
++
+ enum quality {
+ 	QUALITY_HIGH,
+ 	QUALITY_MEDIUM,
+@@ -45,9 +52,12 @@ struct fsl_micfil {
+ 	struct clk *mclk;
+ 	struct clk *pll8k_clk;
+ 	struct clk *pll11k_clk;
++	struct clk *clk_src[MICFIL_CLK_SRC_NUM];
+ 	struct snd_dmaengine_dai_dma_data dma_params_rx;
+ 	struct sdma_peripheral_config sdmacfg;
+ 	struct snd_soc_card *card;
++	struct snd_pcm_hw_constraint_list constraint_rates;
++	unsigned int constraint_rates_list[MICFIL_NUM_RATES];
+ 	unsigned int dataline;
+ 	char name[32];
+ 	int irq[MICFIL_IRQ_LINES];
+@@ -449,12 +459,34 @@ static int fsl_micfil_startup(struct snd_pcm_substream *substream,
+ 			      struct snd_soc_dai *dai)
+ {
+ 	struct fsl_micfil *micfil = snd_soc_dai_get_drvdata(dai);
++	unsigned int rates[MICFIL_NUM_RATES] = {8000, 11025, 16000, 22050, 32000, 44100, 48000};
++	int i, j, k = 0;
++	u64 clk_rate;
  
- 	if (esr & ESAI_ESR_TLS_MASK)
- 		dev_dbg(&pdev->dev, "isr: Just transmitted the last slot\n");
+ 	if (!micfil) {
+ 		dev_err(dai->dev, "micfil dai priv_data not set\n");
+ 		return -EINVAL;
+ 	}
+ 
++	micfil->constraint_rates.list = micfil->constraint_rates_list;
++	micfil->constraint_rates.count = 0;
++
++	for (j = 0; j < MICFIL_NUM_RATES; j++) {
++		for (i = 0; i < MICFIL_CLK_SRC_NUM; i++) {
++			clk_rate = clk_get_rate(micfil->clk_src[i]);
++			if (clk_rate != 0 && do_div(clk_rate, rates[j]) == 0) {
++				micfil->constraint_rates_list[k++] = rates[j];
++				micfil->constraint_rates.count++;
++				break;
++			}
++		}
++	}
++
++	if (micfil->constraint_rates.count > 0)
++		snd_pcm_hw_constraint_list(substream->runtime, 0,
++					   SNDRV_PCM_HW_PARAM_RATE,
++					   &micfil->constraint_rates);
++
+ 	return 0;
+ }
+ 
+@@ -1134,6 +1166,12 @@ static int fsl_micfil_probe(struct platform_device *pdev)
+ 	fsl_asoc_get_pll_clocks(&pdev->dev, &micfil->pll8k_clk,
+ 				&micfil->pll11k_clk);
+ 
++	micfil->clk_src[MICFIL_AUDIO_PLL1] = micfil->pll8k_clk;
++	micfil->clk_src[MICFIL_AUDIO_PLL2] = micfil->pll11k_clk;
++	micfil->clk_src[MICFIL_CLK_EXT3] = devm_clk_get(&pdev->dev, "clkext3");
++	if (IS_ERR(micfil->clk_src[MICFIL_CLK_EXT3]))
++		micfil->clk_src[MICFIL_CLK_EXT3] = NULL;
++
+ 	/* init regmap */
+ 	regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(regs))
 -- 
 2.43.0
 
