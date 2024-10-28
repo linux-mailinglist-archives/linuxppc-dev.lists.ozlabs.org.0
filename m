@@ -1,66 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-2623-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2624-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38139B22AA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2024 03:23:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D97629B22C0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2024 03:32:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XcHHh5Xt0z2xWS;
-	Mon, 28 Oct 2024 13:23:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XcHTX3llKz2xpn;
+	Mon, 28 Oct 2024 13:32:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730082208;
-	cv=none; b=YuB44OjVtU+MkLEfltRgCLhhXIo/J48av+MHjyI/mHU0j4S/h/Ls1qwzkGD6qmVbXeEvRjugcnSKf7DzLHqw4V7pFPTVG5537ZMYYbBr/qH58ctg6yLEg66Hzrxos+1XjF4r/H0utgoWz+mhyKSGOm1bDL0oagVIHtN/4vKVWNBwcM0r9CMgBnVc98riGIq0iy6IJT32MYHgJHjnE9nD13PmKxDlFAxhqv0QX5xIu9j7YFCZf9ZDYziRH06NaDDkN4hAPsXYOMFfZqePPCs8qpUNCU+l5npgTSuILxRw0dv4Y2ZskU7m4ygq6S0ydOzzHqSA2tT7I/b7aesZCjw/nw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730082720;
+	cv=none; b=Q++hggDjIPeudCb6VriH78B7ooJLm30Yvtp3f65yQgV9BfofPpNZjJH5MB47i+8807eIa0zf6gX7xOb8A0P76Oo5O0N9WvJJUai4MPOSXtfftA0OguwROj3PanGyvwFq8uXFup9dpvDhWOnOGWno+1Lb46y6AoscTSl9YchGlrBl+hvhctkXC+SqNBojpz7a9hrfTJQjiaATbMQYCXnJeMCrMw/h61MtBSdlicxUeLF8ngUrAELBUEgyjgZek8bmNvzKFsl4ihS961E0BuUVx94lKDXbh4ezYaUqWCyOdeqf9S4D27Qk2hjbc2ENujespFb0oqYR12iEi/MQVJG1ww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730082208; c=relaxed/relaxed;
-	bh=wVzoc2YabnIij5HP3bkYWkQB3e64c7slt7BMmOIG3vk=;
+	t=1730082720; c=relaxed/relaxed;
+	bh=akZfa4aGK9EQ5cduCJCgwynTCyBliCAq7gIFjV4NH30=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TBU331WEM1/kUyhdYEF3NBlHQrmPYyQ3uFpOqRio41ohRE6gR2dQg+V7Q76pR0cnPnsGbYtG0jJl21ASC54DAyZj/U5abvuUUz3lyxTkb1uczylYNoqFL/HvP5uzZrTwwYm/92l6/vy9wl7xeJCZltnqW2NwNFPNSQp29KwyXyYtGn7VnNdRzmjFbJ+MmIJElcCr3FYP5Lho4ev3MCPrwJN3rb040BavYsK6Of7nWeg0e/quNMsjZip8NCYu3DDMxJlLuVhkDsioqtXnKH4Qe9hd0FT/1j8iL7WQkcwhZYiY9T9lvCqhw7VT/n/bGEciv/qPNnlr+WKVHmeNJdbf/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OZIawUAV; dkim-atps=neutral
+	 MIME-Version:Content-Type; b=aOol+d/q7SkD0/wbp5g+fWmv8cZhnONoMe2LMON0bUkHBeWQoMCoxAXNsqFkQFoQz0xQ8yVZOnFwuPw4rrlTwVpBgCprmbqag8E87Q3GaBxyQJFveLJIkWQxQPxpmcRaX3Tse1lpYLxdRwZgo4FGrq4NaJ0SWZavZJ8/itrNXhMwp2vBCKjss+M1ZjJaCPXv6Vo0kV4oBgRLLNWp6KM1rdg9ZCrjKMzQUlElX+eJsJ2ITQqw8Si+19aOofqdPjF/hzO6iW9qCKTqHq/v3OZ7JzyULDpmPOP9afdECFUsLwJjPsWAQsosJn/sgZTPRwNvhB9kKhGetXkCFZmw3SXKyw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TdF522ug; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OZIawUAV;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TdF522ug;
 	dkim-atps=neutral
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XcHHg3PNZz2xRm
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2024 13:23:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XcHTW4Qg2z2xRm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2024 13:31:59 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1730082202;
-	bh=wVzoc2YabnIij5HP3bkYWkQB3e64c7slt7BMmOIG3vk=;
+	s=201909; t=1730082717;
+	bh=akZfa4aGK9EQ5cduCJCgwynTCyBliCAq7gIFjV4NH30=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=OZIawUAVvihaiXSwIbUZzcTz/tSg3C1U5LEaVYgOz4QoVISgtL6WviXd3+smevP7j
-	 R/hVpxpqQA2czH0OgbOsdZ/XN9oOlY7sbOzvWwnvGYYyYJsAuLhD8D2cGXk3zQ3Qcf
-	 Xlmo8LCM81g3VdyYneWeZi52VsFp2ozQKki9ZSVwqAf7xk8cYqaSwqlX4Mipqjed6a
-	 eYbw3SKM3H8Y7R3CxIjshRL1I3sLTmewm9KYFwOuMGXWKXrkByPLjplT3Ne2Vy4WLv
-	 oS3+EntGWYqofeVy/dSgM+jb9ZxRrfbS0RYyedkF7axBWtyZppZ+q42fJGbmWcXti8
-	 0jDbtveRkr5HQ==
+	b=TdF522ug+3gW8cmYOk+/ZAjjjG+WOfWMV2jSQEF+A+/zEys1VXWINkJNcK8FUKeoj
+	 wdv58PU3zWDJlTkU0suSUsiKBxSH9U5l1l3olFE1t6V2JaXUEfsUEhZGAM/5wf47WR
+	 vxqX8Wgr3/RT85Lcl23VXMv3s63+/AWiZOHNUcAuNs9Emhql6TE17s2PyT04smlHil
+	 aeY4HUOXJImGhdkqumhfukTggocpXV3bhgXKCTfMgdPkngqvc5U/okQQrqVW0LgRPO
+	 jqjld6cZFIeLaYsh79Wq5h0gPNCZ01zKqhtIi8h3sPLUFINBBJYFe0z7F2UpGCVrby
+	 jYF3tCSg8YznQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XcHHX4W29z4x89;
-	Mon, 28 Oct 2024 13:23:20 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XcHTS49Plz4x6k;
+	Mon, 28 Oct 2024 13:31:56 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev
- <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: "Naveen N. Rao" <naveen@kernel.org>, Mark Rutland
- <mark.rutland@arm.com>, Daniel Borkmann <daniel@iogearbox.net>, Masahiro
- Yamada <masahiroy@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Alexei
- Starovoitov <ast@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Vishal Chourasia
- <vishalc@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-Subject: Re: [PATCH v6 17/17] powerpc64/bpf: Add support for bpf trampolines
-In-Reply-To: <20241018173632.277333-18-hbathini@linux.ibm.com>
-References: <20241018173632.277333-1-hbathini@linux.ibm.com>
- <20241018173632.277333-18-hbathini@linux.ibm.com>
-Date: Mon, 28 Oct 2024 13:23:13 +1100
-Message-ID: <87wmhtrmni.fsf@mpe.ellerman.id.au>
+To: Rosen Penev <rosenp@gmail.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, open list <linux-kernel@vger.kernel.org>, "open
+ list:FREESCALE QUICC ENGINE UCC ETHERNET DRIVER"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH net-next] net: freescale: use ethtool string helpers
+In-Reply-To: <CAKxU2N98hnVAE9WF72HhxzVEfhnRAgMykVgBErL9b3gupqqrxQ@mail.gmail.com>
+References: <20241024205257.574836-1-rosenp@gmail.com>
+ <20241025125704.GT1202098@kernel.org>
+ <CAKxU2N98hnVAE9WF72HhxzVEfhnRAgMykVgBErL9b3gupqqrxQ@mail.gmail.com>
+Date: Mon, 28 Oct 2024 13:31:57 +1100
+Message-ID: <87ttcxrm8y.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,92 +72,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hari Bathini <hbathini@linux.ibm.com> writes:
-> From: Naveen N Rao <naveen@kernel.org>
->
-> Add support for bpf_arch_text_poke() and arch_prepare_bpf_trampoline()
-> for 64-bit powerpc. While the code is generic, BPF trampolines are only
-> enabled on 64-bit powerpc. 32-bit powerpc will need testing and some
-> updates.
+Rosen Penev <rosenp@gmail.com> writes:
+> On Fri, Oct 25, 2024 at 5:57=E2=80=AFAM Simon Horman <horms@kernel.org> w=
+rote:
+>>
+>> On Thu, Oct 24, 2024 at 01:52:57PM -0700, Rosen Penev wrote:
+>> > The latter is the preferred way to copy ethtool strings.
+>> >
+>> > Avoids manually incrementing the pointer. Cleans up the code quite wel=
+l.
+>> >
+>> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+>>
+>> ...
+>>
+>> > diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c b/driv=
+ers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+>> > index b0060cf96090..10c5fa4d23d2 100644
+>> > --- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+>> > +++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+>> > @@ -243,38 +243,24 @@ static void dpaa_get_ethtool_stats(struct net_de=
+vice *net_dev,
+>> >  static void dpaa_get_strings(struct net_device *net_dev, u32 stringse=
+t,
+>> >                            u8 *data)
+>> >  {
+>> > -     unsigned int i, j, num_cpus, size;
+>> > -     char string_cpu[ETH_GSTRING_LEN];
+>> > -     u8 *strings;
+>> > +     unsigned int i, j, num_cpus;
+>> >
+>> > -     memset(string_cpu, 0, sizeof(string_cpu));
+>> > -     strings   =3D data;
+>> > -     num_cpus  =3D num_online_cpus();
+>> > -     size      =3D DPAA_STATS_GLOBAL_LEN * ETH_GSTRING_LEN;
+>> > +     num_cpus =3D num_online_cpus();
+>> >
+>> >       for (i =3D 0; i < DPAA_STATS_PERCPU_LEN; i++) {
+>> > -             for (j =3D 0; j < num_cpus; j++) {
+>> > -                     snprintf(string_cpu, ETH_GSTRING_LEN, "%s [CPU %=
+d]",
+>> > -                              dpaa_stats_percpu[i], j);
+>> > -                     memcpy(strings, string_cpu, ETH_GSTRING_LEN);
+>> > -                     strings +=3D ETH_GSTRING_LEN;
+>> > -             }
+>> > -             snprintf(string_cpu, ETH_GSTRING_LEN, "%s [TOTAL]",
+>> > -                      dpaa_stats_percpu[i]);
+>> > -             memcpy(strings, string_cpu, ETH_GSTRING_LEN);
+>> > -             strings +=3D ETH_GSTRING_LEN;
+>> > -     }
+>> > -     for (j =3D 0; j < num_cpus; j++) {
+>> > -             snprintf(string_cpu, ETH_GSTRING_LEN,
+>> > -                      "bpool [CPU %d]", j);
+>> > -             memcpy(strings, string_cpu, ETH_GSTRING_LEN);
+>> > -             strings +=3D ETH_GSTRING_LEN;
+>> > +             for (j =3D 0; j < num_cpus; j++)
+>> > +                     ethtool_sprintf(&data, "%s [CPU %d]",
+>> > +                                     dpaa_stats_percpu[i], j);
+>> > +
+>> > +             ethtool_sprintf(&data, "%s [TOTAL]", dpaa_stats_percpu[i=
+]);
+>> >       }
+>> > -     snprintf(string_cpu, ETH_GSTRING_LEN, "bpool [TOTAL]");
+>> > -     memcpy(strings, string_cpu, ETH_GSTRING_LEN);
+>> > -     strings +=3D ETH_GSTRING_LEN;
+>> > +     for (i =3D 0; j < num_cpus; i++)
+>>
+>> Perhaps this should consistently use i, rather than i and j:
+>>
+>>         for (i =3D 0; i < num_cpus; i++)
+>>
+>> Flagged by W=3D1 builds with clang-18.
 
-Hi Hari,
+> I really need to compile test this on a PPC system.
 
-This is breaking the PCREL build for me:
+Cross compiling should be sufficient.
 
-  ERROR: 11:49:18: Failed building ppc64le_defconfig+pcrel@fedora
-  INFO: 11:49:18: (skipped 41 lines) ...
-  INFO: 11:49:18: /linux/arch/powerpc/net/bpf_jit.h:90:9: note: in expansion of macro 'EMIT'
-     90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
-        |         ^~~~
-  /linux/arch/powerpc/include/asm/ppc-opcode.h:473:88: note: in expansion of macro 'IMM_DS'
-    473 | #define PPC_RAW_LD(r, base, i)          (0xe8000000 | ___PPC_RT(r) | ___PPC_RA(base) | IMM_DS(i))
-        |                                                                                        ^~~~~~
-  /linux/arch/powerpc/net/bpf_jit.h:90:14: note: in expansion of macro 'PPC_RAW_LD'
-     90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
-        |              ^~~~~~~~~~
-  /linux/arch/powerpc/net/bpf_jit.h:90:36: note: in expansion of macro 'offsetof'
-     90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
-        |                                    ^~~~~~~~
-  /linux/arch/powerpc/net/bpf_jit_comp.c:791:17: note: in expansion of macro 'PPC64_LOAD_PACA'
-    791 |                 PPC64_LOAD_PACA();
-        |                 ^~~~~~~~~~~~~~~
-  /linux/arch/powerpc/net/bpf_jit.h:90:65: error: 'struct paca_struct' has no member named 'kernel_toc'; did you mean 'kernel_msr'?
-     90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
-        |                                                                 ^~~~~~~~~~
-  /linux/arch/powerpc/net/bpf_jit.h:29:34: note: in definition of macro 'PLANT_INSTR'
-     29 |         do { if (d) { (d)[idx] = instr; } idx++; } while (0)
-        |                                  ^~~~~
-  /linux/arch/powerpc/net/bpf_jit.h:90:9: note: in expansion of macro 'EMIT'
-     90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
-        |         ^~~~
-  /linux/arch/powerpc/include/asm/ppc-opcode.h:473:88: note: in expansion of macro 'IMM_DS'
-    473 | #define PPC_RAW_LD(r, base, i)          (0xe8000000 | ___PPC_RT(r) | ___PPC_RA(base) | IMM_DS(i))
-        |                                                                                        ^~~~~~
-  /linux/arch/powerpc/net/bpf_jit.h:90:14: note: in expansion of macro 'PPC_RAW_LD'
-     90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
-        |              ^~~~~~~~~~
-  /linux/arch/powerpc/net/bpf_jit.h:90:36: note: in expansion of macro 'offsetof'
-     90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
-        |                                    ^~~~~~~~
-  /linux/arch/powerpc/net/bpf_jit_comp.c:882:25: note: in expansion of macro 'PPC64_LOAD_PACA'
-    882 |                         PPC64_LOAD_PACA();
-        |                         ^~~~~~~~~~~~~~~
-  make[5]: *** [/linux/scripts/Makefile.build:229: arch/powerpc/net/bpf_jit_comp.o] Error 1
+There's some pointers here:
+  https://github.com/linuxppc/wiki/wiki/Building-powerpc-kernels
 
+Or there's also libc-less cross compilers on kernel.org, eg:
+  https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/14.2=
+.0/x86_64-gcc-14.2.0-nolibc-powerpc64-linux.tar.xz
 
-To test it you need to enable CONFIG_POWER10_CPU, eg:
-
-  CONFIG_POWERPC64_CPU=n
-  CONFIG_POWER10_CPU=y
-  CONFIG_PPC_KERNEL_PCREL=y
-
-This diff gets it building, but I haven't tested it actually works:
-
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index 2d04ce5a23da..af6ff3eb621a 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -86,9 +86,14 @@
-                                                        0xffff));             \
-                } } while (0)
- #define PPC_LI_ADDR    PPC_LI64
-+
-+#ifndef CONFIG_PPC_KERNEL_PCREL
- #define PPC64_LOAD_PACA()                                                    \
-        EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
- #else
-+#define PPC64_LOAD_PACA() do {} while (0)
-+#endif
-+#else
- #define PPC_LI64(d, i) BUILD_BUG()
- #define PPC_LI_ADDR    PPC_LI32
- #define PPC64_LOAD_PACA() BUILD_BUG()
 
 cheers
 
