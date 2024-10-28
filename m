@@ -1,62 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-2643-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2644-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84789B2FDE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2024 13:12:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068309B3524
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Oct 2024 16:41:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XcXLv33XZz2yNv;
-	Mon, 28 Oct 2024 23:12:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xcd043HZrz2xjH;
+	Tue, 29 Oct 2024 02:41:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730117527;
-	cv=none; b=WTRzidOCGDnXDoHYDxmT9px2DuVD6fCt+pEJ/wolsphIn/aDu2PNANeYaESHY5lfybSnz2kkS0yf2XmX4PEaRr2EwQ9V1IO+OvHyJ6ONbJb/4BwShRNoayODEQhD1yem0AEGsZ5kSGwA+D1pkXma/P4cCRZRfQ2U7O/69FIXlz+IIJmg7mvkASn+dT70JsOsG0bzYwD0K+98V7R6SDB3yVcj3Da/SV0HaVjPmOB4pRZQu2KkGVRDCLCgXcvmhsP+zhMS8/OP1S1o2+4C9HcQqrCYWGAnMzzpiRZmeBDqopE1fKTUYIxtqVvJtZnXZLY/wOSYKaMmJxpB2jfOlAuzvQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730130068;
+	cv=none; b=EWU1Re1NXVQPsy+EL2Qqmnjw5cs4TO4L8CaW9kQeMVLVpDzRUy9rlO/7STYbB0xUjSqVvToMx/Vu+X4GQ/Hrhiggur6EXs6Yk4O56iX0nW8QLlxWWNYJlpuk0XyCz1uJlbdcfnmK7F17D15KsyCaTq0DX87yaIw0AOYWpiCKmCgRtPvvQ4KYbS12VJ526wZamgdn5jWcDfzlaFotpqnpk1ewKyN8aD8wlZtoO93oQ64rHA15fpxEfanPb2pPxJfd4eAsCw0lKjkwsM5uQE1vm2IeSg9sYBw7gOojDp0JWnwhxcuAsff0fgFOjUIjdGiBTfDD33ez1f7+XIGI1NmIjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730117527; c=relaxed/relaxed;
-	bh=NAZkhhTeYWBcCRnnAZH+eZCWBsmCMSLDc9mRceexjgU=;
+	t=1730130068; c=relaxed/relaxed;
+	bh=JmodkLtS/XYD6QZM7LmJmXh4F9FYhEXNq73oZR86uq4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+GjGwzgjDgHcTdSQ1qwrVbbl+fFikEa3rgdwu0eXMpo0sWlwtshIqLo/yrCrjs3d3sT7H2qRTog1NPbnQwd0I8xrepiXfzS5hbf8ezbvJ6CTD6dVLHGcuZOlmTA4+W0keDCn7XHXbZEtmlns5Qih1QUnmCQHI+pZd9ZW81nbKA5yiw5Wb6qXFGfPfxYagl0PUT3CIC/LPjuxlmPQ4WOnH2oC3yZimsTvViejkS3xbGDDxxkHs5tCrDSqsUgjy4x8fIi/B59P62TYeUYr63/2sinMQRvdxHTKhiU4GOsBzwaqiUpqfkPWOfWInFAlQLfJvgazvGuQ4EPXeLrUjfB2g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uTA10aeL; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=kFe9yQvsaCWFQFg0DEPnrrFkGTGy+c7ka6qi/Ui+MRxMRMuqRKe7EIJ8MYRygi9nHv/iXh+mZRDsBLJuFPx9+HNSx/CePgbQY55m6sUF30FS/NeA4z6dB1Jk14a568iib9FkctCVWbgrbFs7CZSQeK3H83gC6migtzUBe7yFYex5IX6QDtS82ShWAKcSgYO+ubzhpMLffqrZX2dljpaoPzH0zQAZ12OsWGODfVY+YN2Fa9czYD2SCsjp4pyXpvADKayOSyBGrLauDNX2KQJKkZgDVk5cCzgoxsMYOewcyEim+p4dRGk9wq5FjwoR8F0X+mZ9APrEFXhMePgim6JPVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p+bslp5n; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uTA10aeL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p+bslp5n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XcXLt3FnQz2yMP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Oct 2024 23:12:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xcd012p62z2xPc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 02:41:05 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id CDEB75C42B7;
-	Mon, 28 Oct 2024 12:11:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB9FC4CEC3;
-	Mon, 28 Oct 2024 12:12:00 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id E3FD25C5B61;
+	Mon, 28 Oct 2024 15:40:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0E1C4CEC3;
+	Mon, 28 Oct 2024 15:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730117523;
-	bh=NAZkhhTeYWBcCRnnAZH+eZCWBsmCMSLDc9mRceexjgU=;
+	s=k20201202; t=1730130062;
+	bh=1OnKnskO1uPXHT57ko80fWNSrAKlqsEB3xePdsqM5Vs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uTA10aeL4xtGd63PUIPx4KhhP7HDf7HveJCfWaAvK3qMB3bC8jLKkEhFESanGKbGf
-	 uhuDju3v8m3q6ieocv7/yEBPF18Cm83bCKgYPTn2qye5/6F6nwYL+lAxM0hDQ1du8V
-	 Dh/ZPyGjrWiPXyKtiTxIol4e2/k0WxJX+/8AtT6n40dTRWQ6cmbQyboWn5RSmZglPA
-	 IbMxrtYqDvMPSdSB2BvEZtP6NHs/n63XsT/dRKP97i6mPmFZuEeHcDLhqQx9yYFICM
-	 PkHz47nn0gx8oL6zQVXRROwud3Sjg/7pm75NIrx5uhJzzS+wGzJ9liRCwrMSQ+e+/y
-	 8X53OSDt6bqxw==
-Date: Mon, 28 Oct 2024 12:11:58 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>, shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com, lgirdwood@gmail.com, perex@perex.cz,
-	tiwai@suse.com, linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH AUTOSEL 6.11 05/32] ASoC: fsl_esai: change dev_warn to
- dev_dbg in irq handler
-Message-ID: <1ad8216d-c24d-4d35-9562-4106e2aafa34@sirena.org.uk>
-References: <20241028105050.3559169-1-sashal@kernel.org>
- <20241028105050.3559169-5-sashal@kernel.org>
+	b=p+bslp5nYFB5IdzYlqcPXUe0Deg2tPLvvs4TWlciZJnyPqj4C7msUDWod/mZ74Wbi
+	 V+npdeWkLAM2YaCU68ORi88AWKUdk+SexkhRmxohs3rLk/42hVRfWw3lmcgEXhKfmW
+	 l+9bfe1QEI3TUsTCQUmiCfe1cOZzdBeIsDmI24fTFiyKZwDu9f4TeXEh9Tmi9Z7A4g
+	 RQuSC3lG7y94YkqEIK4qkURF8Scn98uwTY1D6XvZn72zlsfH7cHelHDCN5wkvgpceU
+	 yWqXIdxX1dAjLGXoC7cRczTCjM1LzpGhlbBh2ntrVJVtMMwopnozbfMsplC2SfLpCE
+	 /bnM2cMZeJadg==
+Date: Mon, 28 Oct 2024 15:40:55 +0000
+From: Will Deacon <will@kernel.org>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: robh@kernel.org, mark.rutland@arm.com, leitao@debian.org,
+	catalin.marinas@arm.com, tglx@linutronix.de, chris@zankel.net,
+	saravanak@google.com, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	kexec@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-openrisc@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-csky@vger.kernel.org
+Subject: Re: [PATCH v2] of/fdt: add dt_phys arg to early_init_dt_scan and
+ early_init_dt_verify
+Message-ID: <20241028154054.GE2484@willie-the-truck>
+References: <20241023171426.452688-1-usamaarif642@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,47 +70,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Jw04mRIq6Tcvx3ro"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241028105050.3559169-5-sashal@kernel.org>
-X-Cookie: Remember the... the... uhh.....
+In-Reply-To: <20241023171426.452688-1-usamaarif642@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Wed, Oct 23, 2024 at 06:14:26PM +0100, Usama Arif wrote:
+>  __pa() is only intended to be used for linear map addresses and using
+> it for initial_boot_params which is in fixmap for arm64 will give an
+> incorrect value. Hence save the physical address when it is known at
+> boot time when calling early_init_dt_scan for arm64 and use it at kexec
+> time instead of converting the virtual address using __pa().
+> 
+> Reported-by: Breno Leitao <leitao@debian.org>
+> Suggested-by: Mark Rutland <mark.rutland@arm.com>
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> Fixes: ac10be5cdbfa ("arm64: Use common of_kexec_alloc_and_setup_fdt()")
+> ---
+> v1 -> 2:
+> - pass dt_phys in early_init_dt_scan instead of creating
+>   anorther arch->dt function (Rob Herring)
+> ---
+>  arch/arc/kernel/devtree.c              |  2 +-
+>  arch/arm/kernel/devtree.c              |  2 +-
+>  arch/arm64/kernel/setup.c              |  6 +++++-
+>  arch/csky/kernel/setup.c               |  4 ++--
+>  arch/loongarch/kernel/setup.c          |  2 +-
+>  arch/microblaze/kernel/prom.c          |  2 +-
+>  arch/mips/kernel/prom.c                |  2 +-
+>  arch/mips/kernel/relocate.c            |  2 +-
+>  arch/nios2/kernel/prom.c               |  4 ++--
+>  arch/openrisc/kernel/prom.c            |  2 +-
+>  arch/powerpc/kernel/dt_cpu_ftrs.c      |  2 +-
+>  arch/powerpc/kernel/prom.c             |  2 +-
+>  arch/powerpc/platforms/pseries/plpks.c |  2 +-
+>  arch/riscv/kernel/setup.c              |  2 +-
+>  arch/sh/kernel/setup.c                 |  2 +-
+>  arch/um/kernel/dtb.c                   |  2 +-
+>  arch/x86/kernel/devicetree.c           |  2 +-
+>  arch/xtensa/kernel/setup.c             |  2 +-
+>  drivers/of/fdt.c                       | 14 ++++++++------
+>  drivers/of/kexec.c                     |  2 +-
+>  include/linux/of_fdt.h                 |  5 +++--
+>  21 files changed, 36 insertions(+), 29 deletions(-)
+> 
+> diff --git a/arch/arc/kernel/devtree.c b/arch/arc/kernel/devtree.c
+> index 4c9e61457b2f..cc6ac7d128aa 100644
+> --- a/arch/arc/kernel/devtree.c
+> +++ b/arch/arc/kernel/devtree.c
+> @@ -62,7 +62,7 @@ const struct machine_desc * __init setup_machine_fdt(void *dt)
+>  	const struct machine_desc *mdesc;
+>  	unsigned long dt_root;
+>  
+> -	if (!early_init_dt_scan(dt))
+> +	if (!early_init_dt_scan(dt, __pa(dt)))
+>  		return NULL;
+>  
+>  	mdesc = of_flat_dt_match_machine(NULL, arch_get_next_mach);
+> diff --git a/arch/arm/kernel/devtree.c b/arch/arm/kernel/devtree.c
+> index fdb74e64206a..3b78966e750a 100644
+> --- a/arch/arm/kernel/devtree.c
+> +++ b/arch/arm/kernel/devtree.c
+> @@ -200,7 +200,7 @@ const struct machine_desc * __init setup_machine_fdt(void *dt_virt)
+>  
+>  	mdesc_best = &__mach_desc_GENERIC_DT;
+>  
+> -	if (!dt_virt || !early_init_dt_verify(dt_virt))
+> +	if (!dt_virt || !early_init_dt_verify(dt_virt, __pa(dt_virt)))
+>  		return NULL;
+>  
+>  	mdesc = of_flat_dt_match_machine(mdesc_best, arch_get_next_mach);
+> diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
+> index b22d28ec8028..177262739c49 100644
+> --- a/arch/arm64/kernel/setup.c
+> +++ b/arch/arm64/kernel/setup.c
+> @@ -175,7 +175,11 @@ static void __init setup_machine_fdt(phys_addr_t dt_phys)
+>  	if (dt_virt)
+>  		memblock_reserve(dt_phys, size);
+>  
+> -	if (!dt_virt || !early_init_dt_scan(dt_virt)) {
+> +	/*
+> +	 * dt_virt is a fixmap address, hence __pa(dt_virt) can't be used.
+> +	 * Pass dt_phys directly.
+> +	 */
+> +	if (!dt_virt || !early_init_dt_scan(dt_virt, dt_phys)) {
 
---Jw04mRIq6Tcvx3ro
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+nit: It looks like early_init_dt_verify() will now return false if
+!dt_virt, so we can drop the additional check here.
 
-On Mon, Oct 28, 2024 at 06:49:47AM -0400, Sasha Levin wrote:
-> From: Shengjiu Wang <shengjiu.wang@nxp.com>
->=20
-> [ Upstream commit 54c805c1eb264c839fa3027d0073bb7f323b0722 ]
->=20
-> Irq handler need to be executed as fast as possible, so
-> the log in irq handler is better to use dev_dbg which needs
-> to be enabled when debugging.
-
-This is very marginal for stable material.
-
---Jw04mRIq6Tcvx3ro
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcff40ACgkQJNaLcl1U
-h9CXwAf/dKgisn32gugwOj7kv0kcdBJdUWmANJAOcx1EOHgkOSaJivv+5thFldfv
-7oqPwtMJ7fY3dgB+F9mBaeEme5UEhSHLoawxHLf4C5paoOTr4z3YcXrdwYgwrF3Q
-n+sGIw5qXOgLhuHyOaGLyaMsGaHuI4yB4PfFi/muoWK98SQex0M6iC3+WbAY41D+
-0ghy0A9fIIAy/xK9Q309x9hV6dwfUE4Sg4+DHC2kH9E5JBD9sY4EaGmkdZ7azV2A
-tqwaPUgw34Hip+veM7UMb4m/G3jM6BwAUJporndNYVBmo3O06bDGvZulrRDsUkEi
-7PvclJ+x+hhfc90E9zZn2mCpDj9trg==
-=yJsI
------END PGP SIGNATURE-----
-
---Jw04mRIq6Tcvx3ro--
+Will
 
