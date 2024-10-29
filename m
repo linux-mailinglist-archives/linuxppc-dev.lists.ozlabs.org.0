@@ -1,83 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-2687-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2688-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E1A9B4FAA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 17:44:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E7D9B4FF3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 17:57:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XdGL05cZyz2yYd;
-	Wed, 30 Oct 2024 03:43:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XdGdq0FCTz2yY0;
+	Wed, 30 Oct 2024 03:57:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2608::609" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730220232;
-	cv=pass; b=fB+lJ89sBOXUKz0xNeCVH5CTsZ3iMdHUfdhfr8+3YHNdetPnmLtPNPVVFgRw6XHqhuDdI2KisZfsJ9IR51CIOhKgadKosBMSmG7DfJPmYtWHo3vO59YSlLAtqzvmkQfYlOu5RKb0WeppVJ57A+YZVB+dOHtLXU0DZaBeKX6CDqWYj2W/D6bnscBytciO/TrTU/2UVIQccX1mkL/GWJbwldVnYy5C2kkCLQuhXC4w/RK7wiGpJ2uxncIcgP6YKq3j2OeYFTYrREa0nJ1JfKTaCpgeWLE6rb5byStCf+bYx3/aQFLiAnINka3XpBm0ZQ/LvSEOq2eioASYH9+oKT6I+g==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730220232; c=relaxed/relaxed;
-	bh=UlX4tvx4PX6V1MC1MexVEXQxjIgRjTUSiiDURBbT6pc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DcM1N3T1kc78xecPDjdAjqpqClG454473Dyu+4d3GTKg/WpQihviLGfkCGJYgjdw+FITnTz5cCrJ+MsqKKXPe90xmieZNwdCinAOz7t+G5+577vdkwhjID6HFyad4AATE4GFcy4lXwFU618PQ/cnxGcz0UqUOBMAmIiYsfAr5k6rIcvz4ln2JtEuMkcnoN8KTMljWZEOPfPbbAwceu1YFLQ020df6M6auLTd8DzLQl3DGq5G9OhoPOsoPdHKyvlzT3Z00/j15Z0hQxdEM2ZSl951zW4tyFB0dJfSS20dgekDAyYU5XoaDLjcGn6C1d/VUOJkaqy+azbaS8hV2OGRcw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=ay2QwBnz; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2608::609; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730221054;
+	cv=none; b=BchgtGvEGVfMUbD/GtLGy4yT+u/71htof42xEZkMSiIm8x3NGeAFpzti1I+NLVzcEq4f0pR08JZ9wFSlrH7Bd0HZT3mRLbvm0QH9LD4TGaY/VZLmV0saPMjRsmT4M9OhJyTwN9LvbOg6uk816cVlzMirs4AU6nec383W/namQQwxFzBK1wnKRO2fmxmSr+3XuSLqjEP81xdfFP8Mi8u1kL7PNZ081KNrUMHdT1CHbU4s8wZgssIvgRHD4Xonn65kjZgSVcg/r5FMJjhzZE0KCB+xXwXPqe2i5ZwigF/yxBUS5UL9TxsZSF8AiWccj76N+C3/E7QMV71RhYXhJBI3FA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1730221054; c=relaxed/relaxed;
+	bh=WrGZOKUjRc+2pcLK32A/65sDR1Y1URfA+MqUgtN9IhY=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=gYDHCQVnaN9JfPF5WFfgdHalWYKEp7km+6oE+Rb89ebSfANnLbKchInVAp0SX6Vb/2cWuxxjFR5WfjVaByU7qkwrzk+PcWR/nRcKWzNQNNCYgl//tEkOF4Zm6cyZlKh9sqclChodxi7u5ZVNg4Tqa+yJWdue0PjrTVY+LIgF1mBc6O/JO6SfbXxQHN64isNFmdaQU2CHtDX1ufJunNh2iPjfTz1i9BQ3gBUfcRwftiqj9U5VmqRiyz//Lqrb7pR0j9BYXvlb9QbdQXwUOvn5xuphfLQGki7Z8nYbtWp9lS/deOvw1/KXsl4MrGV00bFqHO5FhuhEEJPDo6PhPW27Ig==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GN43dFgc; dkim-atps=neutral; spf=pass (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=ay2QwBnz;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GN43dFgc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2608::609; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on20609.outbound.protection.outlook.com [IPv6:2a01:111:f403:2608::609])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdGL00CdXz2yZ6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 03:43:52 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aTJTdkRUqe2mC5wY15sC+e4tLrLdWTwwy7eOidfeocEJDvdV1ry6Ae7afERh3VdRmCesnxcxJNjBhQYTcF4IKJ9pxEwBn09/XGwFQhAu8o5NA7AIs4Tk5FaJKSmvug3rHNhLx6dorCnscDJu5WrYwRqaMxqKdEtd6p89RQWhMhpjgKRwXnHafP6M8GE/giYcNA0Od8F5jJ3HMMqd2viRPIUqZW1EWzUQ1Fd6PQnPKd/SHxbn7zOy+1x5/TGZEW1Bf4HgrTHRvlepk8ght0kmmRTljrPlcPBcE9QfsZDzmI9tGI9zRsZXomu5ufnQ2tV1O0ThgNWLi9vGvuYOi2lB9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UlX4tvx4PX6V1MC1MexVEXQxjIgRjTUSiiDURBbT6pc=;
- b=olt/jf3x1wL5eJfdDkZSSwAOPOUzytQINjIiqZY/6NMR4sACqn4Rgp3m/XtpbCE9Oh6IgxJCweYRH5vSVBcaw5rdAHHP0OwYE1Yl5sx0SfQVoVIF4VkaDZiCA+awh0l1A0of3UzryqfdgOvg/QdltDwP1WtF82BdY7PRe6pb999ftcBJwmoHfxxVGESpclEku7fAZ9FxpRpeb/lCegDd6VARyAoK3VdrJ/iSkeHSuVJJ9f8/eNpMnrM7GAnIBlleoqWSmJ/Gn3O77HDOuLmH2C4o1slcXkSLIHIO0F7mKp9q6sOiZbYKsFxM4FLe7vX6iHv5F03dS+tdCI5x5L88Sg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UlX4tvx4PX6V1MC1MexVEXQxjIgRjTUSiiDURBbT6pc=;
- b=ay2QwBnzl8+Fj7g/37bBoKz8vTE9oOzF4YLFv3pAiFVNoil3GJcr87Y97r8Tq+nnxfhyHg9SmlfKbQvh4J3TuUxCgIeLmEGwbOSBbtTQEPOc9qp0EvwtZwX6EB+1B2P1to1Grt/Ker19Rpyfpr6fuO7Gr/1P1RXn0FZMHitDqAtixVrUDR+HCHv2p1uFI0iMtHxVeflXiJoV+pDxNSMs/cMW68f3ucW4HPUx0JmF9MBovMrltN1SLW0quc5uKySZQsdZ2I5BbCHnkxZNJkpsG+H4hKgutlCLrKP7pl1hC/WosDKJlUJmu7WSMSVsOwZ6qvtbzJ7ZW54u9JOf/kqgyQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by DUZPR04MB9871.eurprd04.prod.outlook.com (2603:10a6:10:4b1::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24; Tue, 29 Oct
- 2024 16:43:33 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8093.027; Tue, 29 Oct 2024
- 16:43:33 +0000
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Madalin Bucur <madalin.bucur@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Radu Bulie <radu-andrei.bulie@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH net-next 3/3] net: dpaa_eth: extract hash using __be32 pointer in rx_default_dqrr()
-Date: Tue, 29 Oct 2024 18:43:17 +0200
-Message-Id: <20241029164317.50182-4-vladimir.oltean@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241029164317.50182-1-vladimir.oltean@nxp.com>
-References: <20241029164317.50182-1-vladimir.oltean@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AS4PR09CA0010.eurprd09.prod.outlook.com
- (2603:10a6:20b:5e0::14) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdGdm2K9Dz2yXm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 03:57:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730221052; x=1761757052;
+  h=date:from:to:cc:subject:message-id;
+  bh=Vw0fe1TBXYx4XXB+j0K2Pl6ePWLjD0kC4iE89ZtoboI=;
+  b=GN43dFgcIpArRJZZGL6I6ELGDdZpwJt7Eh+7/kRN7FIA2E2PcZNOq3lT
+   7LsvQSlpBfmomU/jsALHhzytjScpaZOMG4cg3UG3s9qXmzNCPndtFCvDi
+   IIUxS7BTLoslcAXIxbDP9mE9jxql9Ee+3DC+GnmiCxnpuSGHC18+uTxju
+   xOMN+9zDR7T98vF6iOid44gY3gSR9DD27dxEdYzu5Eed1KTjwaexz3GSX
+   E0LLVc3f14fCWVCz21gKa2g7iZL8DBDK+GQHc4DBr7mQYt2QYyJN2702q
+   7E5y9q6CBDj8GntqZbv5R3hJSuEl7MWosIskmFWekO8ug37BCF+qM0ElG
+   w==;
+X-CSE-ConnectionGUID: 29CvBkDcRQWInE2NymxBWQ==
+X-CSE-MsgGUID: m6uGlg+GQoybwOM+jDczvQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11240"; a="41279305"
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
+   d="scan'208";a="41279305"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2024 09:57:21 -0700
+X-CSE-ConnectionGUID: U4HHBEu5Rq6YkHJgYnLUVw==
+X-CSE-MsgGUID: PGy6k3NuQna1Bzex5uRCbw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,241,1725346800"; 
+   d="scan'208";a="86796769"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 29 Oct 2024 09:57:18 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t5pWt-000duu-2m;
+	Tue, 29 Oct 2024 16:57:15 +0000
+Date: Wed, 30 Oct 2024 00:56:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:merge] BUILD SUCCESS
+ f2535cf29e1a1aa8ffb1690e1d6257b48af2b21a
+Message-ID: <202410300030.PBLucSPY-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,115 +79,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|DUZPR04MB9871:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3a3d34d-d44c-4574-862c-08dcf838d341
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UZ/yN0JVvZX13KsGOwJEeWXkbnGSY4wpBaA/cfCNl4NINaEOtV9uvl4Ona21?=
- =?us-ascii?Q?bfjNY3WS2JXu/M7bHBxFlOKeNAjsRnGPX/qs/ubWWI8NLoeYB+BONqoLA8d4?=
- =?us-ascii?Q?/rCvTdhgoovsDdi/ezt83Pw1GfsdB93/1eySWN8RUcX6Pm+R9LEjbmLLgUiq?=
- =?us-ascii?Q?0hBVTO7L9eJmGEC3RImQ1JhFWlqJXoamAoBJZ6qODFbaHNoYw0dB8gind2kb?=
- =?us-ascii?Q?P3PTYA3VzX1UliTqLbVF2i2FZN2Jqq+D24JBDcjRxsF0/aaCFT6Ku6G7uzVv?=
- =?us-ascii?Q?cBptBq0yiPBAYC9f46NzDJFbaWBXPst931ed/Gau/e2zOmcT/86hYkibM1Em?=
- =?us-ascii?Q?yYuMJl4Z+1CtYA5Qxr9KkqNetrmDpmCrRqXQ/thg+TwRpqxpBqEiqaPgsEFs?=
- =?us-ascii?Q?YRXf1nU9TfMj9k095to1Dnd0sOOZpyAXulSUYuxjPmoZIJEoD462dN+rOX1W?=
- =?us-ascii?Q?zU2/QUSsMWdiDPm1vhba0qXzSHjtcSuzPECe5Beyk3g6q1l6cHIeRHzVVYQi?=
- =?us-ascii?Q?99NdmDgMgyQ2jY/o8N2W79598IKIQsYsZFeYleqawR2A8vezQSCYnKp5g896?=
- =?us-ascii?Q?1uJ/9fRloiqvAVY8VzlmHpmTL5ybo6udPfGKixtZA6vvX9Y1cPFpFXB29ucf?=
- =?us-ascii?Q?gvJKd71BEnNJBd/4I+wGJXnBz1MIY9kAuuqruqj2iVm5iafIc/gaBF9PYhcZ?=
- =?us-ascii?Q?8JdgzL7iz8LFHvKrSo4ZegegAJCNLe9ajQ3/a2oyA78ueZbALe3xMoIS8+Vp?=
- =?us-ascii?Q?FYOXiq31folp2a/weXAkbeSdzMthG/7SiLdBwFJAKblpgaSbEbIIPLJdSPFF?=
- =?us-ascii?Q?/2UKvI5Ei6rCqYibiRlHQM7aniBB7Zb1CuSKSyBYk4h7KEmY6AUfUVEIS4TA?=
- =?us-ascii?Q?YrwAf6z3bgyItoR6H54qNYdm7+2yA2KCwWc0vaZWjZVWZ7JUwfzyFdJazUUt?=
- =?us-ascii?Q?TK/LYycCXhWqYou/O8waWaFHoD+vz3ZH4bCoyJOlsb4WnYzuxD6Fy315eDDR?=
- =?us-ascii?Q?ZM5GJ8Bg5o9c1Cbk/JkoqXdxoNvxcq9fiSjYlI27Zcjet4Wd0cq4mSvEFh71?=
- =?us-ascii?Q?xG0vMqTa+OqP6UKD5cJxW9xqyqFw1dqGnE+0wMVstOmpFfcR3vc5vdVt0uR+?=
- =?us-ascii?Q?N0IxhcD7Y+4XzsNCCjIjn7g8Ge9sZdQGR8eQAD2yMUA2i2LH4cg5SRA/J1in?=
- =?us-ascii?Q?6JN0KgvK8lI1Lvs5aH4iCvpVrwwm78vqF4ZlezagZokaaB+XPs6Lw7cAF2JC?=
- =?us-ascii?Q?nNsh4NUD2BAKUOqCnJhJGK/NFzBaJmS6bIVdr8A7r4REGlbZuPBNPS+5CD9n?=
- =?us-ascii?Q?uYmPXwK5u9jDeE8eJKnCZkrtx0WRWInfwrvcft3i3y95bSpv/QiE2NgYPKLb?=
- =?us-ascii?Q?oJPcfj4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?V/P1oTBXVOMphf3eI3UPuyJVkv+2ohljAcMVb5NOMn9jR1j1V/nuAcwd43JP?=
- =?us-ascii?Q?S5DHyzkw4d0Fo7ux+dlXYmR5E6ilWKiXYIeXm8oibmvUPy0aY2PmOiYgkADP?=
- =?us-ascii?Q?8Ag1wSpFJEUbEmGjIto0LGCaClHXVFr/cpHlr/gBfsmPPrVfhu19nsGiDfeg?=
- =?us-ascii?Q?EU4VbL2nFWV1hkn6CoTni9tVACCci+qnYig0DyygasC339gNnZpueLT3cRE9?=
- =?us-ascii?Q?qRyvZlAcTASqeaYVTZzIWfa1gvJuSTBeWM0AZz9YxoAZuV3L6vfyveJTbp3G?=
- =?us-ascii?Q?MUe3u84V14GsAF5CewW9aM62NOc1YcgGFWjf80/t/qBV1PAtLCXZIfvVphCY?=
- =?us-ascii?Q?cA/durxWhDM/h6cmqGuC1f52EBM0Oz8Iru9Ang8QXMGeZdITlUX2ZeDZ5/+u?=
- =?us-ascii?Q?T8HfJsUr7pjh3BD39XJSjM6qNfZFiKaKh3GPNqNR9dS4jqJb4q0yBrFGxes0?=
- =?us-ascii?Q?D9uLf/LIfYr57/mPtrJU2wU/dnmuUrkrspP9o8YPAKw0rfIK7Zk1avAiTR1c?=
- =?us-ascii?Q?AvMQ1267x8Qc6rZpgJv0AAfByUJFkUSdFJdd9tfp3qo9zfupjNQs70tXpMSq?=
- =?us-ascii?Q?1MhSHVs83GP4AEGlozIxtE9MZNtJOCjGpQ8eQxUaCZguAesoRzks3kY2T2vL?=
- =?us-ascii?Q?nspUq3t07ax5tbfFFXlDcZUi7AskYMfAqpoM/llBegQkBWwNqQcukjs++9mF?=
- =?us-ascii?Q?gw8brnlLVNUDa2SWyOC1sFX4qMX20bKw2qE0CCsYL35ag9wGYbnrCWy2W67T?=
- =?us-ascii?Q?MW7s2b4xTytn+OCgydXXSt3Lh25edZxMg0B/FTiiCKsgKODyaPwY765FNNoI?=
- =?us-ascii?Q?DinVXtQC7lbTi+emvjmcPQGA+D1PZhHsE2fM5LeDVxnTfXUIhN/6iehXkEVn?=
- =?us-ascii?Q?VtPXZ6fe1klzi2hwjdFB+BT7SgMdVjWr5x+/yRv4T2qBfmlL325EbVw1mkfq?=
- =?us-ascii?Q?YYRmMQN/14sHZ2Kb7OckTnHN0K03Xl+v5AG+jSIGNZcC5ZAABfJSwepXrZDq?=
- =?us-ascii?Q?tmdskp35oJOxWwaqlU3A7GSDn6NsiTqEPJBGCc+HIkbtEhSPccoFn16kXYIp?=
- =?us-ascii?Q?3yzuaJC7iw/h8Te6FzDClyc39UvXbrGq9Z7ZpnHcY99mHwpJ9W3N+f1/dn4v?=
- =?us-ascii?Q?oLQdgzpj9JrOuLfMxYAT0yBzkcuq+XYc6p76nheB9QyIIjk8bB3mz7CqgXFl?=
- =?us-ascii?Q?gjPvapgEW47aXljoXx3TCftToUN1Y9l0oR5bjZnjaDCdDyikEUCSjrrIJiwr?=
- =?us-ascii?Q?Zl0aQ/aCPjDXOUEj+cWnLG3o79e9rW4o/HLsFwWCQeMZUNEdQKhHHEegGUvv?=
- =?us-ascii?Q?+3TVhbuT8APMA0PO3lbEreRD9ivsMEwlPxZlqmlrGYZFiRQm1Xz2S9Mb+iBZ?=
- =?us-ascii?Q?bjitBgt/+NLrYtp5cYALzXvk6bJrxq6ths4KDAELX1KaTpTo830bMDKX4/AQ?=
- =?us-ascii?Q?65kAl7DbEQ09QIcb+siZhUO0gIPPKWY2445pz1RlqdnUY+LK39H2BTC+h9+3?=
- =?us-ascii?Q?8eNUvNi5iyU4Q/2j3WmzQ9EPSOV3tZ9lfYM+oT522PmrIATaDsGe8rkKMrb4?=
- =?us-ascii?Q?LA8TCeVr0SmboV2yEbrcUenGxkwS6DvlZLoR2R3f96mjovKpsWvus6FMpA2I?=
- =?us-ascii?Q?hA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3a3d34d-d44c-4574-862c-08dcf838d341
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2024 16:43:32.9899
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xwx3zVYtpcLVaQjU8lO2kz3576C2gXphFgZfWkCPo98zoEPuNO793D3zxvWOgIKt1d23Srvddbgklmqw9SgCjw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9871
-X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Sparse provides the following output:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: f2535cf29e1a1aa8ffb1690e1d6257b48af2b21a  Automatic merge of 'next' into merge (2024-10-29 13:24)
 
-warning: cast to restricted __be32
+elapsed time: 833m
 
-This is a harmless warning due to the fact that we dereference the hash
-stored in the FD using an incorrect type annotation. Suppress the
-warning by using the correct __be32 type instead of u32. No functional
-change.
+configs tested: 65
+configs skipped: 1
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- drivers/net/ethernet/freescale/dpaa/dpaa_eth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-index e280013afa63..bf5baef5c3e0 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -2772,7 +2772,7 @@ static enum qman_cb_dqrr_result rx_default_dqrr(struct qman_portal *portal,
- 	if (net_dev->features & NETIF_F_RXHASH && priv->keygen_in_use &&
- 	    !fman_port_get_hash_result_offset(priv->mac_dev->port[RX],
- 					      &hash_offset)) {
--		hash = be32_to_cpu(*(u32 *)(vaddr + hash_offset));
-+		hash = be32_to_cpu(*(__be32 *)(vaddr + hash_offset));
- 		hash_valid = true;
- 	}
- 
--- 
-2.34.1
+tested configs:
+alpha          allnoconfig    gcc-14.1.0
+alpha         allyesconfig    clang-20
+arc           allmodconfig    clang-20
+arc            allnoconfig    gcc-14.1.0
+arc           allyesconfig    clang-20
+arm           allmodconfig    clang-20
+arm            allnoconfig    gcc-14.1.0
+arm           allyesconfig    clang-20
+arm64         allmodconfig    clang-20
+arm64          allnoconfig    gcc-14.1.0
+csky           allnoconfig    gcc-14.1.0
+hexagon       allmodconfig    clang-20
+hexagon        allnoconfig    gcc-14.1.0
+hexagon       allyesconfig    clang-20
+i386          allmodconfig    clang-19
+i386          allmodconfig    gcc-12
+i386           allnoconfig    clang-19
+i386           allnoconfig    gcc-12
+i386          allyesconfig    clang-19
+i386          allyesconfig    gcc-12
+i386             defconfig    clang-19
+loongarch     allmodconfig    gcc-14.1.0
+loongarch      allnoconfig    gcc-14.1.0
+m68k          allmodconfig    gcc-14.1.0
+m68k           allnoconfig    gcc-14.1.0
+m68k          allyesconfig    gcc-14.1.0
+microblaze    allmodconfig    gcc-14.1.0
+microblaze     allnoconfig    gcc-14.1.0
+microblaze    allyesconfig    gcc-14.1.0
+mips           allnoconfig    gcc-14.1.0
+nios2          allnoconfig    gcc-14.1.0
+openrisc       allnoconfig    clang-20
+openrisc      allyesconfig    gcc-14.1.0
+parisc        allmodconfig    gcc-14.1.0
+parisc         allnoconfig    clang-20
+parisc        allyesconfig    gcc-14.1.0
+powerpc       allmodconfig    gcc-14.1.0
+powerpc        allnoconfig    clang-20
+powerpc       allyesconfig    gcc-14.1.0
+riscv         allmodconfig    gcc-14.1.0
+riscv          allnoconfig    clang-20
+riscv         allyesconfig    gcc-14.1.0
+s390          allmodconfig    clang-20
+s390          allmodconfig    gcc-14.1.0
+s390           allnoconfig    clang-20
+s390          allyesconfig    gcc-14.1.0
+sh            allmodconfig    gcc-14.1.0
+sh             allnoconfig    gcc-14.1.0
+sh            allyesconfig    gcc-14.1.0
+sparc         allmodconfig    gcc-14.1.0
+um            allmodconfig    clang-20
+um             allnoconfig    clang-20
+um            allyesconfig    clang-20
+x86_64         allnoconfig    clang-19
+x86_64        allyesconfig    clang-19
+x86_64           defconfig    clang-19
+x86_64           defconfig    gcc-11
+x86_64               kexec    clang-19
+x86_64               kexec    gcc-12
+x86_64            rhel-8.3    gcc-12
+x86_64        rhel-8.3-bpf    clang-19
+x86_64      rhel-8.3-kunit    clang-19
+x86_64        rhel-8.3-ltp    clang-19
+x86_64       rhel-8.3-rust    clang-19
+xtensa         allnoconfig    gcc-14.1.0
 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
