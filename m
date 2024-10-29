@@ -1,57 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-2685-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2686-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566299B4FA7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 17:43:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9BDE9B4FA8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 17:44:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XdGKy5Ztmz2yT0;
-	Wed, 30 Oct 2024 03:43:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XdGKz5RmPz2yWK;
+	Wed, 30 Oct 2024 03:43:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2608::609" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730220230;
-	cv=pass; b=BeYVk5lL7kcfw0g5F2A1nouYQpSEasQB9jVmM26bc6dOcgy3wg+c165bT09MNe4vtpqtTCp1b8iSp3IKJajgP5wmrDdwYntzw5SyLARfj42zOxWDdNjMdYbf5y6mSyHCrDe82eu7N10d7G/M/FuWInXRl0hICmTlp2ewKPmjs6aXH+BLA6U/wkF7GwQ+Y3FDYge/O87By0XGbsV5TDwtk/OgOqBVWuwi4j7dlTN9WE8Rrl2V/rMd6zOT8jC/UiOYOc7kPZMqG78oEqKencQMrbenkTTP/zmBU0o78xNxZkw/Oe4ob1EnoV89ubMksWYJsF5JhAa3DCgwoaEQpQLaOQ==
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730220231;
+	cv=pass; b=mxZVUV3UbY8TQlIGB+zw6qKEoBubIgLi1Bsl/llnrCFrWGtFCy3vT20adJFP7a4fki71X1MSvk/yAeINV28CDcBqL410LB/frG/dxX5/AQlQr5AIWnCXnn6KpRS/UDnEGDQsmwT0n3zEU/y9KW9+ttVZn/G9XQ27O+KEsanQMx6OmTJjpmgOXfKivmhXWwDGdHZlnXZj98dG+/DR2Ubmfy29EKHjEGRk+IDqRZOp+aWtAN21pGTYU4e0KyKTydbe1oZxt2z7HsOWd6vvhtsjoPj2e/J4O+qO1UqJSiJymZ+/NRkZIBAJKXK7P5Nl2cJas8lAFsR1tcPVEnCAB0m8cQ==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730220230; c=relaxed/relaxed;
-	bh=VkApmrDbUSPp71WaQrlawAii4CZ/z02WBYhBpQyQIh4=;
+	t=1730220231; c=relaxed/relaxed;
+	bh=gU+A3vZeuAqIH7gthqJEyKYJuMsoDymMbrRMU4WfFVQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=X9zSCsZmusihP+ph+KbhYmg822v2Dx9jybDh5S6W1qVi8ZVjQr8HhOkHWuKsY7jh5K/FWZqN9B2sbB1PqpojPFZRUmvbILCj++5jvRWhayVRi2/hNR5CLb4WYdN2qjjaXeNM82pWxhcDXudTbXYSchXmhtEOAQuzlnHKOfZQC6CJr7xDi4/lH6B1w7w6ICu9I4zSMChevVS3/GRoxOpsoeI8ROaATQNW/V3f+1Okv/k1q9n35hfafb18QU1lX8TTqRdYIKsnDoE8eKHmib7ib6od/2+t87TIkLeItylFBcooFPlG14tmO7FDqOeJm0kyba1oc/s/H8Om0j6mCk3NxA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=VwhvtTvA; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2608::609; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+	 Content-Type:MIME-Version; b=mxZtHV3ew4mPQdaro24hkquC0aVZh8VWP+W7MdohF+2M4pbQiQBCl3UmNn9vqN872vav30jA7pIv2G/rd+rcYhu6+9fjPwAP1wZHX7e5G1tCEpxR7E1q7XWZrDpipXCx2gACER/4BCM/wZrgnF/Qf4MGU5WQhaETINloYNQY9zZgF4pEmcA4YdPMYkSAtWM0K151yiFaAAm2pbi093bjM6AgATyPoR4wzAwyiEcSPG5vReBSwSASiefti1qYfxpu/EQr4HY6wm4nmhjlOOXHx9X1FtX5waxvNxKr0ma3az4tqG2GgCJT03qkq+pF/0X7UHB0kfvnsPvJSVb0QcDjXg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=bElhZhDP; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2608::609; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=VwhvtTvA;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=bElhZhDP;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2608::609; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org)
 Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on20609.outbound.protection.outlook.com [IPv6:2a01:111:f403:2608::609])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdGKy0NYYz2yWK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 03:43:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdGKz0JPDz2yYd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 03:43:51 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wRViAvulY3o+f3ZWFivmVbGq8usjapnlOeAsZWM76cTKIDL5htkoP2fBZBfNLBQbzq7OJe4Y7jyDrcO4NUUMgl6IA/ogZLneD3brmkd57cmHox2S25gEWJpS0xh7oFRZqsh+TTag+6G2GndEM9tOJorRe3pDNkeuQjWJdQ6obbHucwVkLrmnU3SP05jDt0g8joVI4jYZdrYXpTvNIVGm11/s5D6zJqJFIFjyYZvBVDg9J9IXRUlKoyfA3PkrEMSS4vx4NrBMWKw+OiLQlbLVRloX4Bpi6klvrmxK39mZ0djaY6nojYjw8VqLe0Er0MCBmXN3TwoDsQC0FJ0gruH49A==
+ b=NOxzMl+kxnh0NcFlrSRewKZmHH7YgEAUNEplN8y889cdpKwdRPapaQbRzx+8YelMYkFCYSBYAYxSneSO3/VdIiKcPQ7xmqnt190DcUqYaW36bYqK3vTH5PWVUt6jjjL0tzlxDN9m/1VVxMeCax/hFUCEY+ripBDOTcnlbyqycGakIDaT4TMqG29PzE+0kUBCxIza8sH8zMwVb6za5DjYSdolCi2eh6DYRKzhZJipM4qYbM3KRe9kQb1icw1nIRFlPxvp8pZNvvGd6B0OXLjNuki9JRr/Y9dTgZlFkzUwf9+2f/4//o0YW/AOBwJ8r6sekR8Ij8scNMhNN3TD+/2JmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VkApmrDbUSPp71WaQrlawAii4CZ/z02WBYhBpQyQIh4=;
- b=qCDEaeQBZ741Q9gTFVjBD/VzVBI3EzEKT1HSrUtVhuRmGOB7Jm2sCIwBq4hch/owwWpVwashXHIawDJirbs0vG1KITASF6ycM9bsrUy4JMhBZ49lOsojehN6lds+b1IZ774wJAHizVn4ntGfIeS5oImkWSidlHiSIorYLGNVQukTXuCRA6D7SA4mwpZjNHByITLIeI0E2ZSpA8vHWA6OxPhWDXjRbCT9Y/FzSwu6Yuv22434DDkGFUJXYOsfS7iTzYeu1knZtCrhFkdT1h6aGmpJBx8U7f492lAKQY+2DHMC6w+XwXfRXkS1gbx8J5V0wgVBvh45KAGoe99SapfQVA==
+ bh=gU+A3vZeuAqIH7gthqJEyKYJuMsoDymMbrRMU4WfFVQ=;
+ b=BTlJfaeycnPkFYiunDix6IVx3ziCu/nbWXn5hefvasvEek4lOFU336lt0Xm/dphKbGMddDLSHDcnNm5eODbQNNXwQvJdfj7qPdYTG4RjpO/5ZGHxGRYE+yquMsu6KSjSOsV6SCIW72EjaxXEDHEg9+KeK62FZz6hOZ/K8FK8HQFs9nC85Q7l/D4D7OoJk6rU9/m6pnH5V1cevBo1hAXQFLJuTJ3qTb4BpC2gl8f4dKh2xQThzFkvtW4k1qkYuwsuxe0utueOfZnkPFt3DyfQIeTqloaIrpYslNy8eUf5yrk65i8kAZJp6fY4NhlcBShzcMXB2IwH4tFIZuTE35h4CQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VkApmrDbUSPp71WaQrlawAii4CZ/z02WBYhBpQyQIh4=;
- b=VwhvtTvAP1uBCtpDVG9+IQurw4LDN+oYJv+iDwdrIPGIytfK/uWPcmPuddyiYne7ceonk/eaCpNTGIw64OHiLGiG8tgalrtqBHlABN+YqbIH8yz6YXHMFeoKI8gnNzDne0p0NulN/pubnewc48b+k1mb1MKt7XXU7J+OdHliA/vQL885usuL4WS53TalVpJSpoR7SY7Hul9UyAxf1rBKrwaXPyDO+au5Jj6Pm7AD+McOCqvQtrA3cQexKInUZDukqPqDg2n5J/RBR9UYafyR2LMAjIrXPMILFvn8h16UFA7zdDDnETKj6PLu/5kJHhm4XqeuNrqI/grAekG3Bouzdg==
+ bh=gU+A3vZeuAqIH7gthqJEyKYJuMsoDymMbrRMU4WfFVQ=;
+ b=bElhZhDPwTctpc9OmUxi+0SK/hq9JEgVy80qi1hJl6Nn6GcxKY/or6Mxs3A8F+QRmlkNVeKJRU70qIZlojCvOw19HPjjVg7fi39AbNNVTm/krF+oxQECHVkQIal4FribvLY/Qk2rpB7/RfnYXNsdWEynEdkE1og4qC3xNVUGb/n+z2IGCeLQQUth81WzOuGrLpiWzUqSuwFAam5SbyLZsNMiKsMFO4/oliG1a0RqVSi5EnZPbqcz3CNIFds/3A18cRUN/aEHVXPBtsEvTepdf34khFSZoR0bVhhJmT9n2EwiY7cO6xnPwasjQG29gUOVxvMZjC679JiySI0rK2tc9w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
  by DUZPR04MB9871.eurprd04.prod.outlook.com (2603:10a6:10:4b1::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.24; Tue, 29 Oct
- 2024 16:43:30 +0000
+ 2024 16:43:31 +0000
 Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
  ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
  ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8093.027; Tue, 29 Oct 2024
- 16:43:30 +0000
+ 16:43:31 +0000
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -67,9 +67,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH net-next 1/3] soc: fsl_qbman: use be16_to_cpu() in qm_sg_entry_get_off()
-Date: Tue, 29 Oct 2024 18:43:15 +0200
-Message-Id: <20241029164317.50182-2-vladimir.oltean@nxp.com>
+Subject: [PATCH net-next 2/3] net: dpaa_eth: add assertions about SGT entry offsets in sg_fd_to_skb()
+Date: Tue, 29 Oct 2024 18:43:16 +0200
+Message-Id: <20241029164317.50182-3-vladimir.oltean@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241029164317.50182-1-vladimir.oltean@nxp.com>
 References: <20241029164317.50182-1-vladimir.oltean@nxp.com>
@@ -92,125 +92,215 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|DUZPR04MB9871:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b7fc9cd-f088-42af-1959-08dcf838d1a8
+X-MS-Office365-Filtering-Correlation-Id: 62df47c5-94fd-40cc-e72f-08dcf838d27b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9qug7P3Pwze1ZPTn9k+xlKv2NDiiEMgWOZTP0LsplsVOrbfSzrBw7fOOEx/L?=
- =?us-ascii?Q?z01QA5+nDuL41XnAvYJrVCHUbTf5eKzERu9OXkGKgPACgtJK2hOLQWQRzo76?=
- =?us-ascii?Q?l/hXKFPPTyJXm8yDcUrEs6wDrR/1Q8VJCFel1KH82O43FdGPbBlBQu7smal6?=
- =?us-ascii?Q?+dl9pkBej5RU3iWG5T3meO3aaucBwYOQUb0Z/VeuOB7g9GExvYD+6bAebj3Z?=
- =?us-ascii?Q?UIOLZau3mZ8DNnyMlXoJlvd6r8KElPuE1wLZKg7uADGfzSkggK8hTW9KqbRZ?=
- =?us-ascii?Q?XqdcRF5H0N6LpwM9+FdhGITWuBQsgVT8zxoB9MwJ4gMRaeOVitrEaYiiZ1gD?=
- =?us-ascii?Q?JZu1fa5K4CVmfDsQQfUGvkkBYUqnMY90JXjBaUMOoWl9rRkbdERraG8CoQwe?=
- =?us-ascii?Q?4wVh9fH7ivg0vWtZgg6dMYO6yeoeaWNHt1aW/KlM6RwjQOMjdAnwShxkHYW5?=
- =?us-ascii?Q?b0RU2Jif3RJWYa4Qg8ADx44VhOuXwbNUJ4Ckj/f/M6HB64ch1TDDwuVCe6Qi?=
- =?us-ascii?Q?EuVzLErDX2futbEcEfrU9i+HAIvLSEvB0QUjCPWLcwbjjOrGopUXvLQz/UPt?=
- =?us-ascii?Q?Kcf8EWBLhULHn8957qadrmZUaN//AsgzoIg9BlQc+E/dRgs3EofaWH8obhlq?=
- =?us-ascii?Q?GbM3jaQn5clWaBaeI/bURt5353pyyjwwiSINSttV0juKqm/SbPbLz75ZE3XT?=
- =?us-ascii?Q?nq1a1uo5fAmuNBoyrNDhqnaxmzRPHb2ycfHrj0wycvSSadKbh+RvuKPFOtZB?=
- =?us-ascii?Q?VDUxIXRKAay2haFgXvGeUFjqMGhrbhb9MjkmqY3lZXRDx73FvoegM6zNWyfN?=
- =?us-ascii?Q?Y4d+1bDmPBEqgv7jMLOua3WyL9juvHUJ6MnSXsa1UkggON+QE62c13ywA3Qs?=
- =?us-ascii?Q?Ish1yIHA8g5kbEH2VH+QnpF8Oq5WJVKl5z6VNOucReZilMJ/6FYcyvdL+S9f?=
- =?us-ascii?Q?BzdIoWDnYOrcBKdXrzvsOpHGcUtAO8UnZrvuSLSBchnMeqelWl1p4xfkYxCn?=
- =?us-ascii?Q?/3zbJlLbtjB2W0Wf9EVbKdZ7DmtFa5qYaMvoNRoAYoY9idVFXVZYZYRSbAoR?=
- =?us-ascii?Q?59jtE3+fy7tD9UQfdIK12lh0P9YKTCw+tL/myKDaokh6KNPMapREZ4XrjQKU?=
- =?us-ascii?Q?w1I6DMLiLqLyXFVOjWiCKjKWEu7JbECcJpjcUizS0qgh6yYIQKqIZ5pMFD8z?=
- =?us-ascii?Q?m++QY/bdjwQfW0ldW4FPZtn8mp2J3Bw7RT18AIE95zRNNv+UJT1Lq6n0Pem1?=
- =?us-ascii?Q?a2bN6jZsZtoQr5+CGiGiUv9CRFIRmqA9TI2VnMcTiS+hjScMPdCO6+VBSvP0?=
- =?us-ascii?Q?y/ftux3np/iWlq1126tIQasLDSy8BySXFtC9vfhIbMtXqUXm+0oB69nB43Sk?=
- =?us-ascii?Q?c8AMus4=3D?=
+	=?us-ascii?Q?RpCZhjFdga1MOQ4ByjJhqawS1l0Urj2Y9Q94/u40nyWqK7H3zuX7trofIXL2?=
+ =?us-ascii?Q?XGMExGfA9Yqmva/xAdMrjADhzTS498cgP/ujvx3cIrF8oqNCMsFdWiLbHrC/?=
+ =?us-ascii?Q?F8zU6H0tF6WD0eTqGbZniIz6kTgUy1twOLyNPfphAJnsMPfCBoujTfGFCLm9?=
+ =?us-ascii?Q?9yzH/G0hWUQ1rqGO6K7XkughiwBNvr7cf292Jh4IzkLuv/HJVM9k7/9BzJSw?=
+ =?us-ascii?Q?0TP45IiNI/9BcDWnf75B9Up6DW5esK+ZC/ptK6Yf9EgjV3V6yTR/W+rWljtJ?=
+ =?us-ascii?Q?QI2v8tkHCrxVKtLaEe+28u/l+fRejBoqb6yaEeUC/xVnyCbY76REmKT+l656?=
+ =?us-ascii?Q?qNkVlV5gCI2Fg90OMuT93dAIGXWfR8+O6TNP3DvnjsNUKT4ptzZ7bfz3cfl+?=
+ =?us-ascii?Q?iceGwVJA+9TKuHj4qh4m891fxrxSFdn+TC3QzvS3LYqXC1Au7UgZLFwT/NQb?=
+ =?us-ascii?Q?8CsV3+wfSfi8rv2NVgfVFvhO/Z5hpBcrYrH0cQGG1JMmTt70qf6ZdUVM2BIm?=
+ =?us-ascii?Q?FAD2s/CJxZ1vJ8bgn6x6ivy9VZ4LePb477CoOfj9BYAv39yKYxVAnSYbAa7T?=
+ =?us-ascii?Q?PxG6gIL7l8E4tYbBIIfRbkriHoYIrsrK2sHTQhMRTgBnpfQxQKeCI9P/tD8f?=
+ =?us-ascii?Q?99hvROHVVNcwoaMUdd3nGknQA2jEvrFh5p1l5PG/IKpdHAqz2bq/NoSXV/up?=
+ =?us-ascii?Q?S2fFzYzpoTlpxYJ4yg9SmOQdFM8lh2Dk//Ojg6lSIYWmxiSr4UOUXDgcVx15?=
+ =?us-ascii?Q?GVSoPBKEvsCkvBes7OV5uZ6O1nXexXTF4xNV+JesroiPJSUWZuLqGBSeBlg4?=
+ =?us-ascii?Q?wP3nAGogH0jV0q9oQDmLAZH9j1gaAsRZNfBnTtHTxfwnYaCHydnIsxKjiB0l?=
+ =?us-ascii?Q?6LJjXPTExR96NTLZE041F1z5TzTNfP0EQLziFD3e84uxzrNzlaht6pxLNr9e?=
+ =?us-ascii?Q?38GTKHfunux8nlAcsieuGGWXCxvrbmNI6mxfdB5lIKiL+/bGL4x/zNp1kLq1?=
+ =?us-ascii?Q?0sXL/Gon3agxKXGlazVzcJduRki0E9fvXFMimLSp8MydCBS7119YTey96Pkt?=
+ =?us-ascii?Q?l39QDizXj8vAV8vpPgXjtiDd4VDiHsLWeay0HuOndYQ5C9l2YzxLdVXQgGMk?=
+ =?us-ascii?Q?+WuxEM03yUmMUEVZHLxK0/P9DQqIWevQN+4iexlAy2i68AO+PsqMOlZ4EHP8?=
+ =?us-ascii?Q?8/LoZbnpA4e1Sbp4pyIHuTW0cV2+DA1aqVLFF2sdjuzZMqre1V28UIoiu1cE?=
+ =?us-ascii?Q?wlgdPoy834GG1ZPoofLiqz3r2xxThPGsEbn7UjL/3il2DMX1fAuySV6EaKBy?=
+ =?us-ascii?Q?gHnFZecoejJDGGENCSmDJU3C1yGbZlXsDX3gs5V7gbiN6tZ/yaYO8JOTTCcW?=
+ =?us-ascii?Q?FzVJjB0=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mdK2O1TMY7Y1UWu3WhQF7o9KmpJIqdVqTtRrZA1jrKLiDHioIGgLJcmgia7P?=
- =?us-ascii?Q?k/Ex7BIyLNBzGufu3lBbalGbd5BO/ZCVB2x0jV/0IzCAVUjv8kBtZ1d7hXjQ?=
- =?us-ascii?Q?NfQUKVVrbNaQR549ja+Lju2hrSOW55riHS/hzXaR4goYrrSeM4BKZRc2Yvpc?=
- =?us-ascii?Q?5Dr5ZdHICR6N0UPF2rwmzHT8E5x2EVqnV5l2Cn6d+l8FY8kKyGuWcnM0O+ZU?=
- =?us-ascii?Q?a5t+O0tiqU/K2nWtuxkcRoQQt74/XFdpASYIb7grnuLX4tPn8PiQy9/VsNxd?=
- =?us-ascii?Q?1+2v7lYtcFPm4HtVz8HX7CsigSDpuj8W3CeL/yyoi1Xzbp/bXUwEfe8GfmYB?=
- =?us-ascii?Q?X+m8KRakmI0LTOxnu+VH3TaGxKjLjXq0Q3paTZ/jtEMqqTbVvZzZWPJv8AC4?=
- =?us-ascii?Q?S0mirB/w0TEoLxXQg/EF0nQMSoRtw+vMsV0qoDhFYS589zm98CxiakJ+hlZH?=
- =?us-ascii?Q?3N0Idb43/SX+5p17zJohjZNsya/bRxPIfaZ0WpgmFBo/QPiHPZk93tOL1HxF?=
- =?us-ascii?Q?KjIViAZWE2okgRpmcetrGB9OmF6BHUyNsN+9Iz9nPYPZoRw5qFENdSM7jFzW?=
- =?us-ascii?Q?77JA4mkpPAsO02vkoO4m2qYhFioDdJkwTy0ANRDLRfhht096WrB3FA/bQIBC?=
- =?us-ascii?Q?/zZv6MBijKwwhTagtaptS9/54iUm3X0wCBrDFoiVcvJwtqEuSKgfIp7UnkpZ?=
- =?us-ascii?Q?MC2MINapR+sYWTb837+nw7BBhkpg/SRmL3tu/2faFZTpc64wvuo2+t6hWFv8?=
- =?us-ascii?Q?5FNfd8BbaZxOxv9Vx+Od8sR6gBzULQ8Z7AoWiGK14p+9IVQ1blvj+4HVz4GL?=
- =?us-ascii?Q?iMsY0tMJGkzuv0oxYpqhxauexOLGQmlDhqGME4wR9yunVj2PWZ0QREMYkMSj?=
- =?us-ascii?Q?Kzyn8o3OPLJql9qn95RQ4pdASPum+CsYC/ZGy1vqT36fc59Hmv1GSUSSUKre?=
- =?us-ascii?Q?+6/aaqAE0N7+i2ejU3WoM1/hltvYVtWL8+QZWm+aWDhSnBTZqqHleLOUksc6?=
- =?us-ascii?Q?UlK5Kj0MQ0ULoP2bOBQZhPK6XA0xgTMYL5dVWeNxawp2fdh1L/XyoN1RRxM4?=
- =?us-ascii?Q?OjYo8Sq4UJmlUWkG9dSUqLjlPDl5rH8hEgYwcAQCeoKgKlsUPoeQjEvg7+32?=
- =?us-ascii?Q?JB6bGbKboz4/1uuyGOiCyXNtOqmv8KgSfkTTMdi3e4c52ltiZCbxZc9rysl+?=
- =?us-ascii?Q?t83+zw0mH/tENXruUSJDWl71DNO3Jp5pusXVFG5LguB2d7nd34WRXQoH58LW?=
- =?us-ascii?Q?aCS+VIurlrv4QEULIiycxG0BA7kqVbkiINbk+sZXitF5yf+u6gEDNy9FL84x?=
- =?us-ascii?Q?Q8g3hxMs9Vw8A6hDpFKhfSWbLnz9PdnAMqTwrw7L/lJ1Zb82xNwNC/0wSQPT?=
- =?us-ascii?Q?DTaAyK2MQDDe1sHKKNwXqucPVyd9AuqsiuonkiRZOam09DR6kN0uXtGLa5Dc?=
- =?us-ascii?Q?x0V7067tXt+/gybdbDqyYiO3xiaszUkZF9H3TlABwdE4XjOOf+ua+a7RRTa9?=
- =?us-ascii?Q?X8CxUwCAAPy7TeMJrCz67MAq5cpCDdZdZDYXfZ98Xu7f6OyG5WhzCFAsrg/o?=
- =?us-ascii?Q?0/fPeeDChNET8P4uOBpV4sO++c2PK4bEAzyFa4DGZkTc/13dmY+F8chFXqCj?=
- =?us-ascii?Q?4A=3D=3D?=
+	=?us-ascii?Q?Z1+pMNd573o8DyGqsjYHzuAnIwoBFnA4Sb0rACkaAIVaJY3XomlvsBexjDdD?=
+ =?us-ascii?Q?C9m17zdwG77sg9WvDF9s0KrZXv+AYBj+svRP+z2T4PDR33wTuzIJsC7APOtV?=
+ =?us-ascii?Q?fAXZxncZ2I0rrheuKKXKSddtesN/FK305DBAT1slTvc3ht+oLxIDiSz0lnfA?=
+ =?us-ascii?Q?gSfxWJyLvSCM6GCQAmO8FZIu93Oe9+dj26n+XBbOJXjzRlKfHHS14wCZKfds?=
+ =?us-ascii?Q?J/9Dmvb6qNXXWj6QNSODmpLRm97AxAYStQisnefdMNfYzi605fWWMVJteGkH?=
+ =?us-ascii?Q?K0YjGdhDvTC0jv554NJzCyvuXzCyctL77Jr6s2CLame184zWn2uldtUG15Ih?=
+ =?us-ascii?Q?qUUYx6NP28mmiraLzj/K0L4L/dtXF6O8hYpeXFCS5C/0nKCbFr9dCa7qlYBY?=
+ =?us-ascii?Q?AYVdP6sbMrTNizUM/HKmbTc1qpjVn0fsv1SwGyOZBNdwe4ngmPNZW+2f1wSD?=
+ =?us-ascii?Q?2CxOw1cY1UAs/BtQNCAqupwULn7MLnjHYauU5B0H0kXCzv17Ip9kT3GUaoRI?=
+ =?us-ascii?Q?B0yI0Ax2FqO4mFNUjNRj9+eJ00SxT+mYIMiMUkbNx4yLhdSgjEqlJTrhbv7/?=
+ =?us-ascii?Q?iaGP5XHE0CWNzi3f/J5/BjbV6sNWlST2VCk7K7K3hW9SzqAJsRFYTYHwPiyB?=
+ =?us-ascii?Q?bu5YB3sg50dh5pLDvORsqrVS6Tbri/eE6QdvdNnn2qxMPvCWjQTjoUSoGh68?=
+ =?us-ascii?Q?QqHmUnBEtrhJhCEZDCYBLZFMUz2AIIKDJRBkoM+Ydxl6ZJtbnHnbLS1azPrL?=
+ =?us-ascii?Q?dNqwt1aBungbYRvheXEyPVWqk3kWwE5G/jjJpWFmdh0jUDvq9WPcSBQXHGKk?=
+ =?us-ascii?Q?j9Hq08DMnOK2h/tSi712RCtl0kGBwJ/WVuRBTKcrkniJT/oeUmVEO5oGrVSF?=
+ =?us-ascii?Q?Dkdybd+onooXUOvzgqx40o+zSxWNeF5t8Qsv7Wgfxd/fZSyznmFJ9p1K4rm9?=
+ =?us-ascii?Q?Pxy+NZgV/Aq+RKKKsI7N08ecZ1Fu435N00NTSJe+9Y9+Te0QLYE5Hjc1J2lG?=
+ =?us-ascii?Q?tU9kA83NjgpwBKKWVGCSfBVHCLTyXGTEJFU7aoD95f4Q8/dfkeOLOXQQkTTd?=
+ =?us-ascii?Q?lsMkM1UTcoKaWL+QnLhrqreg/2ReUw8kFpZ0PAvPwFuLGv0L5BbFkZ7RIHmg?=
+ =?us-ascii?Q?77N/FiCPWm9qzcBrlstqG3QYcfE9qfwNLiRNycv1WH78U2yN5DnJn1IufNX1?=
+ =?us-ascii?Q?6ZqZ50jLDQ74Ql3N8RuUKlEs5pJA3OolKhv61+DousKjOCvy+aQU4YLWenqb?=
+ =?us-ascii?Q?iF8D5TnYEpM/ewu1nvKsGlqE/uLo5Td8WwzwUwYNsWFdiaZkueyd1e7jE9iO?=
+ =?us-ascii?Q?/rebFbXgUDIz+wwRj2dd+qMc6BlfpcR6qB7JdVYjiZciN2okE5fZQchCwY7w?=
+ =?us-ascii?Q?pfATTJzh7gdXHt2vQtF5sWahKdy2XFg0A/nfXkHRDdURcpZwrTjbKpU6BXkD?=
+ =?us-ascii?Q?UBWf8ACSlQt40CNXVnaW8ZPE4eScL2yYiJlAysPhaXjftn2ZnRpRWmpESvIl?=
+ =?us-ascii?Q?KWcI7NaD1Xws7QGZHiiWfwiIkUHGoWtxtGcxwlQvBSmradOQQ+7uOGFa5pxO?=
+ =?us-ascii?Q?bkSqfG434XlbrlWHUn8GzuHCnueoN2mLpeusO1ZGGTOKbPE0TicEi/XlNBF4?=
+ =?us-ascii?Q?Yw=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b7fc9cd-f088-42af-1959-08dcf838d1a8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62df47c5-94fd-40cc-e72f-08dcf838d27b
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2024 16:43:30.3440
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2024 16:43:31.6016
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lk/KlnCkv7eyyTI8yLsFvYiET+jwIPi9KDjsf8QtcGekzwdoBfGBFu62Xttqv8YRgGxBBE/PhiV5uSK6k5/P6A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: xminaAuOe/XnaYsUGatFEUHloyICglhK2NbfzZO7THzhc0IUJjKm039HxmILIAtkRE4ZKc+ci9bIYLZjhqVfcg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9871
 X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
 	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-struct qm_sg_entry :: offset is a 13-bit field, declared as __be16.
+Multi-buffer frame descriptors (FDs) point to a buffer holding a
+scatter/gather table (SGT), which is a finite array of fixed-size
+entries, the last of which has qm_sg_entry_is_final(&sgt[i]) == true.
 
-When using be32_to_cpu(), a wrong value will be calculated on little
-endian systems (Arm), because type promotion from 16-bit to 32-bit,
-which is done before the byte swap and always in the CPU native
-endianness, changes the value of the scatter/gather list entry offset in
-big-endian interpretation (adds two zero bytes in the LSB interpretation).
-The result of the byte swap is ANDed with GENMASK(12, 0), so the result
-is always zero, because only those bytes added by type promotion remain
-after the application of the bit mask.
+Each SGT entry points to a buffer holding pieces of the frame.
+DPAARM.pdf explains in the figure called "Internal and External Margins,
+Scatter/Gather Frame Format" that the SGT table is located within its
+buffer at the same offset as the frame data start is located within the
+first packet buffer.
 
-The impact of the bug is that scatter/gather frames with a non-zero
-offset into the buffer are treated by the driver as if they had a zero
-offset. This is all in theory, because in practice, qm_sg_entry_get_off()
-has a single caller, where the bug is inconsequential, because at that
-call site the buffer offset will always be zero, as will be explained in
-the subsequent change.
+                                 +------------------------+
+    Scatter/Gather Buffer        |        First Buffer    |   Last Buffer
+      ^ +------------+ ^       +-|---->^ +------------+   +->+------------+
+      | |            | | ICEOF | |     | |            |      |////////////|
+      | +------------+ v       | |     | |            |      |////////////|
+ BSM  | |/ part of //|         | |BSM  | |            |      |////////////|
+      | |/ Internal /|         | |     | |            |      |////////////|
+      | |/ Context //|         | |     | |            |      |// Frame ///|
+      | +------------+         | |     | |            | ...  |/ content //|
+      | |            |         | |     | |            |      |////////////|
+      | |            |         | |     | |            |      |////////////|
+      v +------------+         | |     v +------------+      |////////////|
+        | Scatter/ //| sgt[0]--+ |       |// Frame ///|      |////////////|
+        | Gather List| ...       |       |/ content //|      +------------+ ^
+        |////////////| sgt[N]----+       |////////////|      |            | | BEM
+        |////////////|                   |////////////|      |            | |
+        +------------+                   +------------+      +------------+ v
 
-Flagged by sparse:
+BSM = Buffer Start Margin, BEM = Buffer End Margin, both are configured
+by dpaa_eth_init_rx_port() for the RX FMan port relevant here.
 
-warning: cast to restricted __be32
-warning: cast from restricted __be16
+sg_fd_to_skb() runs in the calling context of rx_default_dqrr() -
+the NAPI receive callback - which only expects to receive contiguous
+(qm_fd_contig) or scatter/gather (qm_fd_sg) frame descriptors.
+Everything else is irrelevant codewise.
+
+The processing done by sg_fd_to_skb() is weird because it does not
+conform to the expectations laid out by the aforementioned figure.
+Namely, it parses the OFFSET field only for SGT entries with i != 0
+(codewise, skb != NULL). In those cases, OFFSET should always be 0.
+Also, it does not parse the OFFSET field for the sgt[0] case, the only
+case where the buffer offset is meaningful in this context. There, it
+uses the fd_off, aka the offset to the Scatter/Gather List in the
+Scatter/Gather Buffer from the figure. By equivalence, they should both
+be equal to the BSM (in turn, equal to priv->rx_headroom).
+
+This can actually be explained due to the bug which we had in
+qm_sg_entry_get_off() until the previous change:
+
+- qm_sg_entry_get_off() did not actually _work_ for sgt[0]. It returned
+  zero even with a non-zero offset, so fd_off had to be used as a fill-in.
+
+- qm_sg_entry_get_off() always returned zero for sgt[i>0], and that
+  resulted in no user-visible bug, because the buffer offset _was
+  supposed_ to be zero for those buffers. So remove it from calculations.
+
+Add assertions about the OFFSET field in both cases (first or subsequent
+SGT entries) to make it absolutely obvious when something is not well
+handled.
+
+Similar logic can be seen in the driver for the architecturally similar
+DPAA2, where dpaa2_eth_build_frag_skb() calls dpaa2_sg_get_offset() only
+for i == 0. For the rest, there is even a comment stating the same thing:
+
+	 * Data in subsequent SG entries is stored from the
+	 * beginning of the buffer, so we don't need to add the
+	 * sg_offset.
+
+Tested on LS1046A.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- include/soc/fsl/qman.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/freescale/dpaa/dpaa_eth.c    | 24 ++++++++++++-------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
-index 0d3d6beb7fdb..7f7a4932d7f1 100644
---- a/include/soc/fsl/qman.h
-+++ b/include/soc/fsl/qman.h
-@@ -242,7 +242,7 @@ static inline void qm_sg_entry_set_f(struct qm_sg_entry *sg, int len)
+diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+index ac06b01fe934..e280013afa63 100644
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+@@ -1820,7 +1820,6 @@ static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
+ 	struct page *page, *head_page;
+ 	struct dpaa_bp *dpaa_bp;
+ 	void *vaddr, *sg_vaddr;
+-	int frag_off, frag_len;
+ 	struct sk_buff *skb;
+ 	dma_addr_t sg_addr;
+ 	int page_offset;
+@@ -1863,6 +1862,11 @@ static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
+ 			 * on Tx, if extra headers are added.
+ 			 */
+ 			WARN_ON(fd_off != priv->rx_headroom);
++			/* The offset to data start within the buffer holding
++			 * the SGT should always be equal to the offset to data
++			 * start within the first buffer holding the frame.
++			 */
++			WARN_ON_ONCE(fd_off != qm_sg_entry_get_off(&sgt[i]));
+ 			skb_reserve(skb, fd_off);
+ 			skb_put(skb, qm_sg_entry_get_len(&sgt[i]));
+ 		} else {
+@@ -1876,21 +1880,23 @@ static struct sk_buff *sg_fd_to_skb(const struct dpaa_priv *priv,
+ 			page = virt_to_page(sg_vaddr);
+ 			head_page = virt_to_head_page(sg_vaddr);
  
- static inline int qm_sg_entry_get_off(const struct qm_sg_entry *sg)
- {
--	return be32_to_cpu(sg->offset) & QM_SG_OFF_MASK;
-+	return be16_to_cpu(sg->offset) & QM_SG_OFF_MASK;
- }
+-			/* Compute offset in (possibly tail) page */
++			/* Compute offset of sg_vaddr in (possibly tail) page */
+ 			page_offset = ((unsigned long)sg_vaddr &
+ 					(PAGE_SIZE - 1)) +
+ 				(page_address(page) - page_address(head_page));
+-			/* page_offset only refers to the beginning of sgt[i];
+-			 * but the buffer itself may have an internal offset.
++
++			/* Non-initial SGT entries should not have a buffer
++			 * offset.
+ 			 */
+-			frag_off = qm_sg_entry_get_off(&sgt[i]) + page_offset;
+-			frag_len = qm_sg_entry_get_len(&sgt[i]);
++			WARN_ON_ONCE(qm_sg_entry_get_off(&sgt[i]));
++
+ 			/* skb_add_rx_frag() does no checking on the page; if
+ 			 * we pass it a tail page, we'll end up with
+-			 * bad page accounting and eventually with segafults.
++			 * bad page accounting and eventually with segfaults.
+ 			 */
+-			skb_add_rx_frag(skb, i - 1, head_page, frag_off,
+-					frag_len, dpaa_bp->size);
++			skb_add_rx_frag(skb, i - 1, head_page, page_offset,
++					qm_sg_entry_get_len(&sgt[i]),
++					dpaa_bp->size);
+ 		}
  
- /* "Frame Dequeue Response" */
+ 		/* Update the pool count for the current {cpu x bpool} */
 -- 
 2.34.1
 
