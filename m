@@ -1,77 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-2680-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2681-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8487A9B46F7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 11:34:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C349B4DD0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 16:24:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xd68F1Cddz2xt7;
-	Tue, 29 Oct 2024 21:34:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XdDZ62Yscz2yQL;
+	Wed, 30 Oct 2024 02:24:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=130.133.4.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730198093;
-	cv=none; b=bwjiWSYmr2aBijRTHMfvfWmCyJojd4I2aY8W9J0vqQi2iR4hmMSoDx1jStAs4llkNjYyV++F05tJQ2lwPaLLqT5udEBIrY7mUTqMYtuIp6rYJQMHx6udBDyCsWwio3/QGkJP9E3WoOI5X9Yprp2zS5ri+VQiwU7YOPHc6wYx272CC3AMOCtuK+lFINUeLP2QXj7y28VGdF7oDFVjw9Ll06Aw4LMgjqbOy9IIZIxZE9pKH3X2gWG2TmneNaw+Mh8uXNGh9mO1ZZc+2kYJMCk/9KQpTs2+5cqzrIzYP0D83zwwgZv1AOk3f+unXlfgN/XMXfQbglkBdYv9s8yUEaibXg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730215454;
+	cv=none; b=cUIigSkp5rE6i89I7eEJ2T4fLmZVXkiIVrZtsA3qJIR0b73GB12cyLSZVeVoYyB86LVN7VdO+sgbMLu4lKzxqAOTrtopkPZm2lxRz9UzxUAV2KZkPa6yaloBw+orxY1uuClQ9ItLmCsJ5FxaxXkUGN87wkD7MjtCZQRDnIy2Gx8mY8MGU3dN3/L5VPq4pabBK+ntw86QTD+4na4ek5ewIK0WAebcCOh2aODBDWeAG9/9zxR0418sYgFovoQ5ksPlppZSpNU5l010QuGuxe4il6lkOlCeqdD8E+OmR5E2qDJgnuUMXxIu1xKX1kDfISoMlM8knQS5UVX4/PIFwV25mg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730198093; c=relaxed/relaxed;
-	bh=2+H9NX81ixCjYAfT7N4DoTKgLlJZv3MD1n13tjXfSCM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SuHoxXfKatBiYX6y80pOcVT7w6NFwmOvlq+COJKVthF2bhVcJyO3l7nm6AKepFNWOP9sk274+r7iPzCHshIcF9/LfgHMwoLA1cphq59Up44CMHCH+xiKMk1yDiF/NMzzhiEhF52it3V1YnrLlPcmqmRHvycBbBNKr26eiQoK5oTO4axOl1o//uELOhNM26s08/mICGCx5gQ6idYNmqaxCd96ttcqhX63AOw8D7rjXQjLxYc3xG0yTCJKowX+jUhK4G3RkVa8QpxuUjbiOcOgl1qwm3OD+m1rEOqMO+TqbvRG7cm/QmGXKOzTgsWWqqZiwA3NdCpegupzAQalgFGzIA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=DU62FGFl; dkim-atps=neutral; spf=pass (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org) smtp.mailfrom=zedat.fu-berlin.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
+	t=1730215454; c=relaxed/relaxed;
+	bh=ZkWZGKb51lNq5GXpAPgw2PWMYs1TWirtQYaIbVCFreI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BVbB+gMTV7ogWSjuTtm9eehrIyHUS66NMDtQmuH9qqwrN9BHWGeMI6rqeY80AndteFAgKykWGeP3dbcyoXoFIi1SyPDtKNxtUi3JhqlPZY7PYVx7TQxo+3I3gz0jiywoHUkR/toPVko/0WuVLtc6VMMKqqi6o55yqcFq3zs285ru2GM/sUAC9hwnJOCmhmsRAekJaLHYC9oOFmLTPH7Hcoo2fjGaYcrggrZKbpxKx8NUGoFv+exmweNOvCOoDbmiixOBKMTojn4Z/Z2HZ91nErDPhlJExdVvgapcGUBZcwtMtYeTbJrkNXlO09HG9j0VcPMgekbbGL57X1TceHO87g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E31i4+n2; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=andersson@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=fu-berlin.de header.i=@fu-berlin.de header.a=rsa-sha256 header.s=fub01 header.b=DU62FGFl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E31i4+n2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66; helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 249 seconds by postgrey-1.37 at boromir; Tue, 29 Oct 2024 21:34:48 AEDT
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=andersson@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xd6883F7yz2xpx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 21:34:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=2+H9NX81ixCjYAfT7N4DoTKgLlJZv3MD1n13tjXfSCM=; t=1730198088; x=1730802888; 
-	b=DU62FGFls/NKQwWvfKdnduuBRLlFVPvWbZjZqP3OchUD2HZW6OtfpkfeYZvpeuadXUAAQKs++5b
-	oy4AMHpoWKPde5obrt7pgDn5+JiM1w3eEzNB6WRysJOwB0N8ZOVArJHJg+C10ksAU4ZHyuLAxB28E
-	KjtERb/9fYLZma6bGDz9UVn8C0/XIovazypaPdDYrgZDOvCZv10nz9uiPrzs78e2UoTZggwjAFRCW
-	wJtiLwVgPuzN4JHW3WK7KEGgTCBIaLwp8mFlY8jGcffqKLaoi6aep2d8yT4SM+pgu0B11zab8qTBY
-	yrpCT/bd1osMh+1z9sQVdGPkI4awOBEbk46Q==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1t5jUc-000000018h2-1TRD; Tue, 29 Oct 2024 11:30:30 +0100
-Received: from p57bd904e.dip0.t-ipconnect.de ([87.189.144.78] helo=[192.168.178.20])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1t5jUc-00000002h91-0ZAr; Tue, 29 Oct 2024 11:30:30 +0100
-Message-ID: <fa44eaa5610b3d7e0fe4e38f64b0634359bb0ff7.camel@physik.fu-berlin.de>
-Subject: Re: Boot failure with ppc64 port on iMacs G5
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Michael Ellerman <mpe@ellerman.id.au>, tuxayo <victor@tuxayo.net>
-Cc: debian-powerpc@lists.debian.org, linuxppc-dev	
- <linuxppc-dev@lists.ozlabs.org>, Claudia Neumann
- <dr.claudia.neumann@gmx.de>,  Aditi Mishra <aditi@linux.ibm.com>
-Date: Tue, 29 Oct 2024 11:30:29 +0100
-In-Reply-To: <871q8op1g1.fsf@mail.lhotse>
-References: <fc93d03b-581d-40cd-8ab1-762a9ee2c20c@tuxayo.net>
-	 <42e9a15f6733dd48c64cbceeb3ad27349ca8c3e4.camel@physik.fu-berlin.de>
-	 <87r0gvg49s.fsf@mail.lhotse>
-	 <be7a1a66e9cc4789704d2c93f0b770ea391a4c28.camel@physik.fu-berlin.de>
-	 <87frxag1ew.fsf@mail.lhotse>
-	 <1768836b7e6895f3c2fb0cb4a01a40fee7473dd5.camel@physik.fu-berlin.de>
-	 <871q8op1g1.fsf@mail.lhotse>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.1 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdDZ45xWPz2xlF;
+	Wed, 30 Oct 2024 02:24:12 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id A19205C55E2;
+	Tue, 29 Oct 2024 15:23:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C660FC4CECD;
+	Tue, 29 Oct 2024 15:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730215448;
+	bh=OnfPNjPFcprKl1sN97TkhOv/xNK+Q/zpiKD+oNhDMSk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E31i4+n2VfP73VqUtiK+gGGwGyJPG/gqLdz1F/Xn8gtzgIte2GFbSrzS2tWamSxWl
+	 9Zw0YDHmBYpciQUj3b95NnqAHMns0WZL/efHJoyMUe+TT5Av6j75+LIOn2d10jG2Sa
+	 Y/wGc+s3uqYoxSChwozTI4vlkJhehj9XoxmAnsXi9m/WRyrUAexAyJpLI7kZGMq9cI
+	 Jv7t9zvjRKrRJHu6S4D0XxbuREDxDww2gja2p+62K9u14TvqnkkJV5ZTCLzYcENc29
+	 ekLAvwOCsdlxLy8apvJqWVnUINaro65w+MkYq8mkZm8f4/4hV8Vcja9W6w98QyEBGi
+	 YG75XcuK7bCvw==
+Date: Tue, 29 Oct 2024 10:24:02 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>, 
+	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>, 
+	Qiang Zhao <qiang.zhao@nxp.com>, Hitomi Hasegawa <hasegawa-hitomi@fujitsu.com>, 
+	Huisong Li <lihuisong@huawei.com>, Linus Walleij <linusw@kernel.org>, 
+	Imre Kaloz <kaloz@openwrt.org>, Karol Gugala <kgugala@antmicro.com>, 
+	Mateusz Holenko <mholenko@antmicro.com>, Gabriel Somlo <gsomlo@gmail.com>, 
+	Yinbo Zhu <zhuyinbo@loongson.cn>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Conor Dooley <conor.dooley@microchip.com>, 
+	Daire McNamara <daire.mcnamara@microchip.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Nishanth Menon <nm@ti.com>, 
+	Santosh Shilimkar <ssantosh@kernel.org>, Michal Simek <michal.simek@amd.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, 
+	Mark Brown <broonie@kernel.org>, David Wu <david.wu@rock-chips.com>, 
+	Jianqun Xu <jay.xu@rock-chips.com>, Jay Buddhabhatti <jay.buddhabhatti@amd.com>, 
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Izhar Ameer Shaikh <izhar.ameer.shaikh@amd.com>, 
+	Naman Trivedi Manojbhai <naman.trivedimanojbhai@amd.com>, linux-arm-kernel@lists.infradead.org, soc@lists.linux.dev, 
+	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	loongarch@lists.linux.dev, linux-mediatek@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH] soc: Switch back to struct platform_driver::remove()
+Message-ID: <7iufjf4cnoofq63vtzrnlxneyjhmuhuaq2tqflzw6nc6xpixiu@dnyh4etii2vz>
+References: <20241029074859.509587-2-u.kleine-koenig@baylibre.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,68 +85,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.144.78
-X-ZEDAT-Hint: PO
-X-Spam-Status: No, score=-2.3 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241029074859.509587-2-u.kleine-koenig@baylibre.com>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Michael,
+On Tue, Oct 29, 2024 at 08:48:58AM GMT, Uwe Kleine-König wrote:
+> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+> return void") .remove() is (again) the right callback to implement for
+> platform drivers.
+> 
+> Convert all platform drivers below drivers/soc to use .remove(), with
+> the eventual goal to drop struct platform_driver::remove_new(). As
+> .remove() and .remove_new() have the same prototypes, conversion is done
+> by just changing the structure member name in the driver initializer.
+> 
+> On the way do a few whitespace changes to make indention consistent.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-On Wed, 2024-03-06 at 12:57 +1100, Michael Ellerman wrote:
-> > Yep, the second, older image works as expected. However, the recent one=
- does not
-> > and I have absolutely no clue why.
->=20
-> I actually tested both, and both work, but then I cited the wrong one in
-> my email >_<
->=20
-> So at least on qemu that newer kernel is OK:
->=20
->   Preparing to boot Linux version 6.6.15-powerpc64 (debian-kernel@lists.d=
-ebian.org) (gcc-13 (Debian 13.2.0-13) 13.2.0, GNU ld (GNU Binutils for Debi=
-an) 2.42) #1 SMP Debian 6.6.15-2 (2024-02-04)
->   ...
->   Booting Linux via __start() @ 0x0000000004800000 ...
->   Hello World !
->   smp_core99_probe
->   smp_core99_bringup_done
->   Starting system log daemon: syslogd, klogd.
+Acked-by: Bjorn Andersson <andersson@kernel.org> # qcom parts
 
-Just as a heads-up: This particular issue is related to this patch in the D=
-ebian kernel package:
-
-> https://salsa.debian.org/kernel-team/linux/-/blob/master/debian/patches/b=
-ugfix/powerpc/fbdev-offb-Update-expected-device-name.patch?ref_type=3Dheads
-
-Removing this patch unbreaks the console on PowerMac G5.
-
-I could also reproduce this issue with the latest ppc64el image on PowerKVM=
-:
-
-> https://cdimage.debian.org/cdimage/daily-builds/daily/current/ppc64el/iso=
--cd/debian-testing-ppc64el-netinst.iso
-
-Here is a video demonstrating the issue:
-
-> https://people.debian.org/~glaubitz/debian-bug-1033058.mp4
-
-And here is the corresponding bug report:
-
-> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1085949
-
-This issue can be easily reproduced with QEMU.
-
-Aditi Mishra (CC'ed) is trying to reproduce the issue as well, but so far h=
-as been unsuccessful.
-
-Adrian
-
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Regards,
+Bjorn
 
