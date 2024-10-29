@@ -1,118 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-2678-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2679-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567719B4537
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 10:04:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FB19B459D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 10:23:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xd47x23Mnz2yVM;
-	Tue, 29 Oct 2024 20:04:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xd4Z66t5Tz2yNn;
+	Tue, 29 Oct 2024 20:23:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730192669;
-	cv=none; b=afjZpyL9RL37dg7kU0SpL136ff2lWJKLGJ1+95sNvLBv0SoqgK0rRBwtqgRJO98rq23v1wm/HG1Ktn2srU0k79+6VIjEdofdKX4b5RYE94N5Fi1J1UXVTtzAKP7Qqovc50Ov+Y/SYCKqN4dYyf5QwMlJFRzU9IF798g9IvTfJcKnVmO6rTrtipXY+jrQLtnDwOIX6atso1r6Yhej3RKmSatdji6fsdSEMweYDFeE+NZVmFJusQL+msJn+PlOG+3PGCbql1XWVRHz6WrQ/qBeXzaz3YcqvWWjB3BWbE3RxYQWUoW7SiwhcaUAaWEbbm6wQvjaGFvWQLz4Mxv8FXrzNw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730193822;
+	cv=none; b=KtZXHV9qzO1Luvn11oCI3Rtf0t2CpS63k3LLyRG7pRgq61s6Ogihe6k809f4XkEofBM3YFmgqnG4G9WHqUwywsV9NdGeFQ50YioMIx8iSvrC0XOoL59gXd6kuG81l7MNWMMDESeRDbpCwr74jSy7qR0YZ/Yt8yInav83iPW801MCy6AykY3OyRuIavkZUvb9TJgGb399RCmCBxNn2J9Vati2ffYwuJZBRqJlsTEhAECQKHSsbpLb9mKh/VJJdu4pvGTp3W3FZm7HJ1NSyZFLPRkY+feMA9yYf9wgSSQuBh3k7VRpidq0TQeC7qr09d0Wxt3Uz8NVKHnSoct//1NjHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730192669; c=relaxed/relaxed;
-	bh=4ku1JDYDBZT1obUivRyskSGSTDf0mktYxN5N3bIXkWQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c/tVGkyAVe4qlXAsdYOrW0fAnQi3eLigoYxOfaoorPuMrQ9f0y1RNJV1CMITBiYzEp1MMwzYGXKH9BT9dFReQ15OIE/z8saAvEI4WQzLMfGe3dVknJUzyUZ+RwjPO8cdBw02by4CQg4tz+o6blmGI7rk38HHL6/seAqrEJpErw4AfO62j/LacXsEkjgPgPqcpm5Um/syz9RBPRn6jkQ1e0um71JhA7xJIgTuGyBjV0LDY3YgkJizJ94yxVimiF9NSxB8/vwghd7c0VWeqkGmBNyAWFOSz7BK6EZ6siEv+p8rru/RAX3BCZGeWuGMGI3uD6QwS/ej/JLq+Uf0Fmj6NQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o7QAkV3O; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ip+QCFtc; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o7QAkV3O; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ip+QCFtc; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	t=1730193822; c=relaxed/relaxed;
+	bh=CQnjdf1BvZTH4XhAxhOmXjNSVP+htdTUSRHZ+NtHwTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CqYyLOQobdyNPObbD35UzCaxcEaN+I6U9HiXCGLC6w8mOmQsmvAs5dKZDMkid2FoJNqDQIjB4CXbd8NdSYXWxhS1MUcaI22r4K3a8CkS5nJKkNWro5q18QRRBcYp2PUGhOFqp8xPR5ZvbSA1yB+YBVX59nTIrCoY3x8Y0AT98wI2m9EJCr6AGREUUigJKy9WcOAtyKRGrGq+ZcR1kIhKYjl2gg0bugZMeb2w+dQRvwNFjOpTuZrKAjL3AXkQkAFhaLkFJ8zKHa2nfmAwR9Okh0GGt0PL/w0DM4E2igNdNpaIFe9U5TndkcoP4C1T8SiqXIWwO2YIDTuUDBzXm1qqFw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com; dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=JyMn09qb; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org) smtp.mailfrom=baylibre.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o7QAkV3O;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ip+QCFtc;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=o7QAkV3O;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Ip+QCFtc;
+	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=JyMn09qb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xd47v5mjDz2xFn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 20:04:27 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5DB1B21F9D;
-	Tue, 29 Oct 2024 09:04:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1730192658; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4ku1JDYDBZT1obUivRyskSGSTDf0mktYxN5N3bIXkWQ=;
-	b=o7QAkV3OXmTT4WcSZ+R25zlyM1IeRZveLYKgyLF1hV5HQ0vtI6NOGIWp9C75NbmNewNnWD
-	WoMolsPR3gXdD0PXa0IeOJ+R7EHEWAXS/x7pJ4ogoqxZbm/FbvtcXOkhnkcJmEAy3PLiqC
-	oU3RM11Dp2TSyEk6tHT6yaLppx+oaX8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1730192658;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4ku1JDYDBZT1obUivRyskSGSTDf0mktYxN5N3bIXkWQ=;
-	b=Ip+QCFtcCOSAqB3TcPjiOdaFnve+Diu6aAPyR06YsHf0Rl2vbV7/0QSSrmrbuY+EYEnvKB
-	ENZQeSyGpWp41rAA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1730192658; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4ku1JDYDBZT1obUivRyskSGSTDf0mktYxN5N3bIXkWQ=;
-	b=o7QAkV3OXmTT4WcSZ+R25zlyM1IeRZveLYKgyLF1hV5HQ0vtI6NOGIWp9C75NbmNewNnWD
-	WoMolsPR3gXdD0PXa0IeOJ+R7EHEWAXS/x7pJ4ogoqxZbm/FbvtcXOkhnkcJmEAy3PLiqC
-	oU3RM11Dp2TSyEk6tHT6yaLppx+oaX8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1730192658;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4ku1JDYDBZT1obUivRyskSGSTDf0mktYxN5N3bIXkWQ=;
-	b=Ip+QCFtcCOSAqB3TcPjiOdaFnve+Diu6aAPyR06YsHf0Rl2vbV7/0QSSrmrbuY+EYEnvKB
-	ENZQeSyGpWp41rAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CE9BA136A5;
-	Tue, 29 Oct 2024 09:04:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id htNSMRGlIGf3FAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Tue, 29 Oct 2024 09:04:17 +0000
-Date: Tue, 29 Oct 2024 10:05:21 +0100
-Message-ID: <8734kf2sa6.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sound@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xd4Z41T5pz2yGf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 20:23:38 +1100 (AEDT)
+Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-37d4b0943c7so3506776f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 02:23:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730193813; x=1730798613; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CQnjdf1BvZTH4XhAxhOmXjNSVP+htdTUSRHZ+NtHwTM=;
+        b=JyMn09qbHrVWCCf1uJXs7AbVvo47L8WiIE2XOfVcPYjGReNwcf8kOM7JSB9p2L2ibZ
+         4+jHWiKqQKl6O1nsOT0THyaknnR61O/HoAqIDOBwK4hyN7vA5YtZqP0E8mswZqulIUaK
+         E696MZ6ZO6aHEi1z7TRhMzuJLou6zISslGGlTup4jJkFALYyUR+LApRiC97ZygvuhAo7
+         c7Z5oTCikT9D+3ucAhsB47JDYpsi93gjCp4sy8hzkAP7FAxZAT04Nhrj8h8q2J8BOtle
+         2v8hf7Rp7hLjO/JUjRHO4l+18lf3zFL6lkitKdYdATPp9eZb3mcGMzAg2PbfA8lNPBOu
+         uyGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730193813; x=1730798613;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CQnjdf1BvZTH4XhAxhOmXjNSVP+htdTUSRHZ+NtHwTM=;
+        b=Q5cEl29PV+nfTQfMujiq41xYMGU8aJcDt9f46CTGRz7fT0y4QLKV7iZ56y8QuMjHG2
+         Nrdm27O1UBlRBiiV9MTnzv9oVMuLVXSugCH8CF5o8g3NUwzWWRY4sywhXYlKYTfQDXtI
+         srFwQ9Xjby+Tw1mgThbHSEoU2hVjxEOerDhUS88RZa6h4qNYI8JqYyzyY4RHaq7bOLWz
+         g8tBSikarFQfFoqqc1NZLi0PpV2ovCWmmnbmkT4Nv3M3bZcKCGjxgpVzuGWUG1j4XWXp
+         Ju1iZAHRtRE0E6eAhtVc8emRDegIgV4533HgxRF/JrS1REcoC2BZzDFHKccyCaxdI7qY
+         gjIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUtnnOBHCTnBdZ0NcC73NGplMj9voAOett1lJJ+eRv7QJ77fSpBX9hBENzGz44GAuP/Zi89y0HEzPppH/c=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy0NBXreQ5VrSbQhGTIMiA/WZwpF4lztY21dfRcQ0CDsO1jQLSY
+	CTkfUN7zZ6p1QqpjbiFeVvyjQDDliojQKFI+i8hOvvHpd8vQ3TjRFLciWJ68N3U=
+X-Google-Smtp-Source: AGHT+IH1aaCnWxJ+190B4X3rRtI27v+kXSCMfEXtrprcgTAAwyxSHjsuSln+B4lGQpKN2Z0UMJ9hgw==
+X-Received: by 2002:a05:6000:104a:b0:37e:f4ae:987d with SMTP id ffacd0b85a97d-38061159141mr7795045f8f.29.1730193813087;
+        Tue, 29 Oct 2024 02:23:33 -0700 (PDT)
+Received: from localhost (p50915d2d.dip0.t-ipconnect.de. [80.145.93.45])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b71479sm11836108f8f.69.2024.10.29.02.23.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 02:23:32 -0700 (PDT)
+Date: Tue, 29 Oct 2024 10:23:31 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Ivan Orlov <ivan.orlov0322@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-sound@vger.kernel.org, linux-tegra@vger.kernel.org, 
 	linuxppc-dev@lists.ozlabs.org
 Subject: Re: [PATCH] sound: Switch back to struct platform_driver::remove()
-In-Reply-To: <20241029073748.508077-2-u.kleine-koenig@baylibre.com>
+Message-ID: <mr7tjtqtmblum57yirmvfhzqg5rhyqdotlzn6kvjk4nlixyqrn@uyne6x2vefp6>
 References: <20241029073748.508077-2-u.kleine-koenig@baylibre.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+ <8734kf2sa6.wl-tiwai@suse.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -124,72 +91,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-5.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FREEMAIL_ENVRCPT(0.00)[free.fr,gmail.com];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[perex.cz,suse.com,zonque.org,gmail.com,free.fr,microchip.com,bootlin.com,tuxon.dev,nvidia.com,ellerman.id.au,csgroup.eu,kernel.org,linux.ibm.com,lists.infradead.org,vger.kernel.org,lists.ozlabs.org];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-X-Spam-Score: -5.80
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="e4aa3yd6q5uca44q"
+Content-Disposition: inline
+In-Reply-To: <8734kf2sa6.wl-tiwai@suse.de>
+X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 29 Oct 2024 08:37:47 +0100,
-Uwe Kleine-König wrote:
-> 
-> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-> return void") .remove() is (again) the right callback to implement for
-> platform drivers.
-> 
-> Convert all platform drivers below sound to use .remove(), with
-> the eventual goal to drop struct platform_driver::remove_new(). As
-> .remove() and .remove_new() have the same prototypes, conversion is done
-> by just changing the structure member name in the driver initializer.
-> 
-> On the way do a few whitespace changes to make indention consistent.
-> 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> ---
-> Hello,
-> 
-> I did a single patch for all of sound. sound/soc was already converted
-> separately, so isn't mixed in here. While I usually prefer to do one
-> logical change per patch, this seems to be overengineering here as the
-> individual changes are really trivial and shouldn't be much in the way
-> for stable backports. But I'll happily split the patch if you prefer it
-> split.
 
-It's fine to do this in a single shot.
+--e4aa3yd6q5uca44q
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] sound: Switch back to struct platform_driver::remove()
+MIME-Version: 1.0
 
-I suppose this can be applied for 6.13, not necessarily to be merged
-for 6.12-rc?
+Hello Takashi,
 
+On Tue, Oct 29, 2024 at 10:05:21AM +0100, Takashi Iwai wrote:
+> On Tue, 29 Oct 2024 08:37:47 +0100,
+> Uwe Kleine-K=F6nig wrote:
+> >=20
+> > After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+> > return void") .remove() is (again) the right callback to implement for
+> > platform drivers.
+> >=20
+> > Convert all platform drivers below sound to use .remove(), with
+> > the eventual goal to drop struct platform_driver::remove_new(). As
+> > .remove() and .remove_new() have the same prototypes, conversion is done
+> > by just changing the structure member name in the driver initializer.
+> >=20
+> > On the way do a few whitespace changes to make indention consistent.
+> >=20
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+> > ---
+> > Hello,
+> >=20
+> > I did a single patch for all of sound. sound/soc was already converted
+> > separately, so isn't mixed in here. While I usually prefer to do one
+> > logical change per patch, this seems to be overengineering here as the
+> > individual changes are really trivial and shouldn't be much in the way
+> > for stable backports. But I'll happily split the patch if you prefer it
+> > split.
+>=20
+> It's fine to do this in a single shot.
+>=20
+> I suppose this can be applied for 6.13, not necessarily to be merged
+> for 6.12-rc?
 
-thanks,
+Right, this is not critical and I consider this merge window material.
+6.13-rc1 is fine.
 
-Takashi
+Thanks
+Uwe
+
+--e4aa3yd6q5uca44q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmcgqZEACgkQj4D7WH0S
+/k7PTwf/RuQE2So+Bj2/unZ19jDNVY04i3Yaa0IrSvWShbO7Nv/nsVzANSVA6jUU
+RRVMKI8AUoBJfFn4R+ZodJnwtjckrihdYHVIBnfB4krigFCmPCydnq1ANy0qMX+E
+EbsWx9Q49q5Q7IQayl1BQA/PzL0GzKAase8VT+A9VlrJ5EHgz06aeEJtZTwutQKK
+Q11L0Y0rkv/9abSCq1eyEDYvISb38m8iGr9J2iY7gAWVVuUmEkMqR816qixk7n2m
+kPdT7cDib074IgZeN0ir30E+t4pT+IsIEDaelPwGia+A3iatvvG/D65jcThdIC9D
+7GxxrOXjxiYz1IZcAJwESz+aYyScmA==
+=w7Ha
+-----END PGP SIGNATURE-----
+
+--e4aa3yd6q5uca44q--
 
