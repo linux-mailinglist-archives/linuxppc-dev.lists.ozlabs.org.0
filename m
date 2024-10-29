@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-2659-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2657-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E06D9B3FFB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 02:57:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1AF9B3FF8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 02:57:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XctfN6ty9z2yQj;
-	Tue, 29 Oct 2024 12:56:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XctfM5HX8z2yRG;
+	Tue, 29 Oct 2024 12:56:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730167004;
-	cv=none; b=NDV/jkI+V21C0u7mmRe6lH0eCN/uS6RMrT6jjBpllyInYvh1emmwzwLZNQYxQQDKQP2kgAcGEEZbMWuTppUO3zb8FjXhTPIAx9UhmHxHsVk4TG8BeI+i353ADAUdTpYqmGp4WX+CZh9PVNXV4In5/VtWyIPt+1Rc8jaFm1QZpar9hxwYuhhliy76BjaGiURtsUuXrxSERSS4dFSOpysxS+xSp+0Ws23vdosjeuYK1C5Jg75zdeqjYnhYvreO0s+ZP9wZQBQaS+enYPiG6dZggDYp6zyPwsTL5RJJcTfjQ8jZ7B7mMPXqK1aU5Huu1tGw+3PVBIkN1atbpGuslWcVNA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730167003;
+	cv=none; b=mRc8OljZCbyU/X9Ji8+QGbFAdNo1ZC69d/NzZVtKAjA9+SSEkPs63n5fo3vHW3jvMKvhgB9smqwN1fuTffJAgkiFchm61xBhHhexTelzltEB655EpLW5lCNDOYKJz3vqqgny5UHQrtwPxVJfESG+/MW3nlcqjeKe1RFuoA/SbsEQzNtvtW2641WkQFIr60NClaBugjFye4axLpe86G5ATTjBvNCzymUJtG/EBvuQUHn+RB/3XEejtFFcBSNLN0JWIEGliYsja0mymZ2F9Izlwp+6wEmS6JFhSTFIWc2Zt507ZN2Z/hrrYWdYLB96FfFB6ZlEqwHzHxj+Gg0m1PBdbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730167004; c=relaxed/relaxed;
-	bh=N/EholqtKx+zv6sn/eKIFQuXL6mRtX46aga53aJtY9g=;
+	t=1730167003; c=relaxed/relaxed;
+	bh=lgS9tTl1x2VY8Ji/gmMgyNrR3r3Mg5RErO5Cb1VYpZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFxtgzGeKcnykSpvlc2e9kYmT6+I5wR10I3c+dWo/56+9s5EdVthuaLQJl6icRLYJtcLqpARWlTeMeDTLAaVZ9Rby7KDQ3e/xJtN/LInZ1J/zfhgIxtgYpb6f4ef39epfIdFen/9i5uuJdDBXaKEH4Poi5Mxm3SlMlcw/s3V8yHtuqujOR2OOSMJ/nBkzhyQINhFk3Wf45tNxjwSZCJMnhB0y+7xDuduhXWcn/mQG8JYLwXaIHAxR1aCJoDIp36Kz14C1C9zyfXaXWpYbUYwoTs/ziXYN93OtByJFhwMAv8glZzkO/nMLRFGnkFatkqjBC9MbwdcMX4ecUliuzmsLQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=idHj/cGY; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=ZsXtWEbB/JqMh3AHSP7qmxuem1a89iyUCnNyaCD0XK7RX74ZY3CndTmIRWinqhiY1pLqd1GVDmTjBRsXvCDeWZV3GEesMrBUxqbXLgOZfeHJCHJGdG4RDxC1UzcBh5m5zF5tWzeZ2706hb4EHXluMPz5rvU0Kq/YeZq0+KZsAhadEs51ifXPlxqxY7l7/9peP3RWL+eBW+Hr3Aa8HmWjjilNyIT9A0m4ClXm2mhABTaP5bIx7fY+9t5HVA28qULxJ+w1vRxt4aJ3hNAAN18DUVu/UM8UiIis1jqb/kpmPKsr4dYYEQkDwccsPX7DqAeG4QMB+F0vkUCHgRe7IWQOfw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p/i3rg0+; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=idHj/cGY;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p/i3rg0+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XctfL3SL7z2xpl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 12:56:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XctfL2GM0z2yJL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 12:56:41 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 8AA2AA41346;
-	Tue, 29 Oct 2024 01:54:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B512EC4CEEA;
-	Tue, 29 Oct 2024 01:56:38 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 32BA25C596B;
+	Tue, 29 Oct 2024 01:55:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773E1C4CEED;
+	Tue, 29 Oct 2024 01:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730166999;
-	bh=9rAK2frXr102qAp2BxkbEMrPlcwloGU9JexTUWLRWdk=;
+	s=k20201202; t=1730167000;
+	bh=QREw5gInShg8RlBYBO/KbmEW/aIWpa9O4n4WwbznW28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idHj/cGYvZmY39VLR4VVUqKkiqy6kvzvZH4FIxdWPrCXtEM8XkhEBWtz0W5vUjmcY
-	 Uz7OsUN4oOijkx+PlGoDF7atcx1MhS+kXwGQ7y6mntpPB8xZMZnJ+rNbRaIeB2kaa6
-	 4BLj0AfzgiecryPuzJehIRehKDq9smwxIQxpSasBkYh4YHbN0mfzUgzRevi8YCSAgt
-	 E1Fxa4uPv8fcd9vuYnzljzzk6A4uXXCpSBNamPPouBwGH5fPh6zckII8kjApbMxF5E
-	 nRKe8pFkbrMkTTRO8g9u3z530B5CpnSBbckZ6UYsHHmeJdiKfAnuf9zjeKbopUxkJa
-	 LDFX/7CcQfPpA==
+	b=p/i3rg0+GcboI8N2njvDewhf3Lx5tOneAJUvhe41ZjYhpb3nvfEGe6J3McphwC/wh
+	 bXu7gyst9fK9MmRzhBOwhUEQrC6FOuzH6CnEuN8wQSqFWo2/WRywMbL+VzO/FRGbLW
+	 ruB6Rjg1NFeygp1gYm7/HQlDhoFVS/XpgBROvm6Do1otTwtq8YuaZxpd0subXgDJz3
+	 11hyZ4dzXXR0XUdgzdSSqCWzENIO6taqHERFvTQ/J6twLdZqbzaZcj5NxQsetiRRMj
+	 yWKT9T/MdJ7VfBPmNVGTY+WcV56uJuL7FEOpFa6d3BwaSk6y2OBZmcUPD8+Yn327At
+	 5QxKLc3K+1nEQ==
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 To: x86@kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -59,9 +59,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Andrew Cooper <andrew.cooper3@citrix.com>,
 	Mark Rutland <mark.rutland@arm.com>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>
-Subject: [PATCH v3 3/6] x86/uaccess: Avoid barrier_nospec() in 32-bit copy_from_user()
-Date: Mon, 28 Oct 2024 18:56:16 -0700
-Message-ID: <5abde43491039b577294b0b94877f3a1db1235d7.1730166635.git.jpoimboe@kernel.org>
+Subject: [PATCH v3 4/6] x86/uaccess: Convert 32-bit get_user() to unconditional pointer masking
+Date: Mon, 28 Oct 2024 18:56:17 -0700
+Message-ID: <088fc8f27c278791f3af29f94e09278b5fa07bea.1730166635.git.jpoimboe@kernel.org>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <cover.1730166635.git.jpoimboe@kernel.org>
 References: <cover.1730166635.git.jpoimboe@kernel.org>
@@ -78,127 +78,131 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The barrier_nospec() in 32-bit copy_from_user() is slow.  Instead use
-pointer masking to force the user pointer to all 1's if a previous
-access_ok() mispredicted true for an invalid address.
+Convert the 32-bit get_user() implementations to use the new
+unconditional masking scheme for consistency with 64-bit.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- arch/x86/include/asm/uaccess.h    | 34 +++++++++++++++++++++++++++++++
- arch/x86/include/asm/uaccess_32.h |  2 +-
- arch/x86/include/asm/uaccess_64.h | 29 +-------------------------
- 3 files changed, 36 insertions(+), 29 deletions(-)
+ arch/x86/lib/getuser.S | 33 ++++++++++++++-------------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 3a7755c1a441..e7ac97d42bc2 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -15,6 +15,40 @@
- #include <asm/smap.h>
- #include <asm/extable.h>
- #include <asm/tlbflush.h>
-+#include <asm/runtime-const.h>
-+
-+#ifdef CONFIG_X86_64
-+/*
-+ * Virtual variable: there's no actual backing store for this,
-+ * it can purely be used as 'runtime_const_ptr(USER_PTR_MAX)'
-+ */
-+extern unsigned long USER_PTR_MAX;
-+# define USER_PTR_MAX_CONST runtime_const_ptr(USER_PTR_MAX)
-+#else
-+# define USER_PTR_MAX_CONST TASK_SIZE_MAX-1
-+#endif
-+
-+/*
-+ * Masking the user address is an alternative to a conditional
-+ * user_access_begin that can avoid the fencing. This only works
-+ * for dense accesses starting at the address.
-+ */
-+static inline void __user *mask_user_address(const void __user *ptr)
-+{
-+	unsigned long mask;
-+	asm("cmp %1,%0\n\t"
-+	    "sbb %0,%0"
-+		:"=r" (mask)
-+		:"r" (ptr),
-+		 "0" (USER_PTR_MAX_CONST));
-+	return (__force void __user *)(mask | (__force unsigned long)ptr);
-+}
-+
-+#define masked_user_access_begin(x) ({				\
-+	__auto_type __masked_ptr = (x);				\
-+	__masked_ptr = mask_user_address(__masked_ptr);		\
-+	__uaccess_begin(); __masked_ptr; })
-+
+diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
+index 998d5be6b794..5bce27670baa 100644
+--- a/arch/x86/lib/getuser.S
++++ b/arch/x86/lib/getuser.S
+@@ -37,22 +37,19 @@
  
- #ifdef CONFIG_X86_32
- # include <asm/uaccess_32.h>
-diff --git a/arch/x86/include/asm/uaccess_32.h b/arch/x86/include/asm/uaccess_32.h
-index 8393ba104b2c..6ec2d73f8bba 100644
---- a/arch/x86/include/asm/uaccess_32.h
-+++ b/arch/x86/include/asm/uaccess_32.h
-@@ -23,7 +23,7 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
- static __always_inline unsigned long
- raw_copy_from_user(void *to, const void __user *from, unsigned long n)
- {
--	barrier_nospec();
-+	from = mask_user_address(from);
- 	return __copy_user_ll(to, (__force const void *)from, n);
- }
+ #define ASM_BARRIER_NOSPEC ALTERNATIVE "", "lfence", X86_FEATURE_LFENCE_RDTSC
  
-diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
-index 7ce84090f0ec..dfb78154ac26 100644
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -12,13 +12,6 @@
- #include <asm/cpufeatures.h>
- #include <asm/page.h>
- #include <asm/percpu.h>
--#include <asm/runtime-const.h>
--
--/*
-- * Virtual variable: there's no actual backing store for this,
-- * it can purely be used as 'runtime_const_ptr(USER_PTR_MAX)'
-- */
--extern unsigned long USER_PTR_MAX;
+-.macro check_range size:req
++.macro mask_user_address size:req
+ .if IS_ENABLED(CONFIG_X86_64)
+ 	movq $0x0123456789abcdef,%rdx
+   1:
+   .pushsection runtime_ptr_USER_PTR_MAX,"a"
+ 	.long 1b - 8 - .
+   .popsection
+-	cmp %rax, %rdx
+-	sbb %rdx, %rdx
+-	or %rdx, %rax
+ .else
+-	cmp $TASK_SIZE_MAX-\size+1, %eax
+-	jae .Lbad_get_user
+-	sbb %edx, %edx		/* array_index_mask_nospec() */
+-	and %edx, %eax
++	mov $TASK_SIZE_MAX-\size, %edx
+ .endif
++	cmp %_ASM_AX, %_ASM_DX
++	sbb %_ASM_DX, %_ASM_DX
++	or  %_ASM_DX, %_ASM_AX
+ .endm
  
- #ifdef CONFIG_ADDRESS_MASKING
- /*
-@@ -54,27 +47,7 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm,
+ .macro UACCESS op src dst
+@@ -63,7 +60,7 @@
+ 
+ 	.text
+ SYM_FUNC_START(__get_user_1)
+-	check_range size=1
++	mask_user_address size=1
+ 	ASM_STAC
+ 	UACCESS movzbl (%_ASM_AX),%edx
+ 	xor %eax,%eax
+@@ -73,7 +70,7 @@ SYM_FUNC_END(__get_user_1)
+ EXPORT_SYMBOL(__get_user_1)
+ 
+ SYM_FUNC_START(__get_user_2)
+-	check_range size=2
++	mask_user_address size=2
+ 	ASM_STAC
+ 	UACCESS movzwl (%_ASM_AX),%edx
+ 	xor %eax,%eax
+@@ -83,7 +80,7 @@ SYM_FUNC_END(__get_user_2)
+ EXPORT_SYMBOL(__get_user_2)
+ 
+ SYM_FUNC_START(__get_user_4)
+-	check_range size=4
++	mask_user_address size=4
+ 	ASM_STAC
+ 	UACCESS movl (%_ASM_AX),%edx
+ 	xor %eax,%eax
+@@ -93,14 +90,12 @@ SYM_FUNC_END(__get_user_4)
+ EXPORT_SYMBOL(__get_user_4)
+ 
+ SYM_FUNC_START(__get_user_8)
+-#ifndef CONFIG_X86_64
+-	xor %ecx,%ecx
+-#endif
+-	check_range size=8
++	mask_user_address size=8
+ 	ASM_STAC
+ #ifdef CONFIG_X86_64
+ 	UACCESS movq (%_ASM_AX),%rdx
+ #else
++	xor %ecx,%ecx
+ 	UACCESS movl (%_ASM_AX),%edx
+ 	UACCESS movl 4(%_ASM_AX),%ecx
  #endif
+@@ -113,7 +108,7 @@ EXPORT_SYMBOL(__get_user_8)
+ /* .. and the same for __get_user, just without the range checks */
+ SYM_FUNC_START(__get_user_nocheck_1)
+ #ifdef CONFIG_X86_64
+-	check_range size=1
++	mask_user_address size=1
+ #else
+ 	ASM_BARRIER_NOSPEC
+ #endif
+@@ -127,7 +122,7 @@ EXPORT_SYMBOL(__get_user_nocheck_1)
  
- #define valid_user_address(x) \
--	((__force unsigned long)(x) <= runtime_const_ptr(USER_PTR_MAX))
--
--/*
-- * Masking the user address is an alternative to a conditional
-- * user_access_begin that can avoid the fencing. This only works
-- * for dense accesses starting at the address.
-- */
--static inline void __user *mask_user_address(const void __user *ptr)
--{
--	unsigned long mask;
--	asm("cmp %1,%0\n\t"
--	    "sbb %0,%0"
--		:"=r" (mask)
--		:"r" (ptr),
--		 "0" (runtime_const_ptr(USER_PTR_MAX)));
--	return (__force void __user *)(mask | (__force unsigned long)ptr);
--}
--#define masked_user_access_begin(x) ({				\
--	__auto_type __masked_ptr = (x);				\
--	__masked_ptr = mask_user_address(__masked_ptr);		\
--	__uaccess_begin(); __masked_ptr; })
-+	((__force unsigned long)(x) <= USER_PTR_MAX_CONST)
+ SYM_FUNC_START(__get_user_nocheck_2)
+ #ifdef CONFIG_X86_64
+-	check_range size=2
++	mask_user_address size=2
+ #else
+ 	ASM_BARRIER_NOSPEC
+ #endif
+@@ -141,7 +136,7 @@ EXPORT_SYMBOL(__get_user_nocheck_2)
  
- /*
-  * User pointers can have tag bits on x86-64.  This scheme tolerates
+ SYM_FUNC_START(__get_user_nocheck_4)
+ #ifdef CONFIG_X86_64
+-	check_range size=4
++	mask_user_address size=4
+ #else
+ 	ASM_BARRIER_NOSPEC
+ #endif
+@@ -155,7 +150,7 @@ EXPORT_SYMBOL(__get_user_nocheck_4)
+ 
+ SYM_FUNC_START(__get_user_nocheck_8)
+ #ifdef CONFIG_X86_64
+-	check_range size=8
++	mask_user_address size=8
+ #else
+ 	ASM_BARRIER_NOSPEC
+ #endif
 -- 
 2.47.0
 
