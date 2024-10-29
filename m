@@ -1,69 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-2692-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2693-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A473C9B56ED
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 00:29:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2309B581E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 01:00:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XdRKq25Mlz2yLB;
-	Wed, 30 Oct 2024 10:29:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XdS1D3kKrz2xmk;
+	Wed, 30 Oct 2024 11:00:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730244559;
-	cv=none; b=BWhFk1JgfUGLQUpy/AdmAMvoT6EpJbgHgFhUhqwpob4+yxn8TDqmliA7BBdEAWtqWySHgyCDPQPdfuf0Sfjz+CNBb3yyVDwURDmQLSP7Sy6jORx86LFi4qwYqkcq9ofmjtO5YlKJ7QDCSUDGZkCCQWbKTMQtKICrgoQ0Dcl9wC8u/9gUjpIQcwNsHxijJeUX4pjNlxcZO2ukpe+qk/gfkqTSLh/eyFp06WvAPlQVwDmlc6aQLUYQhjf+mJn6VjTgrcOQpJcM183IR4bxe0V9YwmLshlOi8Hw4kpc5XC3M/sDJsRNi3hluMgV+wibwhkapWHyCaj/z7QF9EOzSREAJQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730246400;
+	cv=none; b=Dgj1d6kCGQphE+xr04Q3rTb3L9TnyTA6n1Q/DHOMa8CJALiJMjk7thDdFAHxubvtR2rDeTdVX8YMtDrHc2PjXVt8+h50P5Rv0OUiArvUJkK89oD4PQHiWt16ZxMmzky1fkAo053H6NoBOo2WimudiiYT4gelHIbkjGwAbgEvd5+HuMZ9PhQHcVAxj/NuMr5lFIYQnUDeI2lvaNjTARCAAz0MdR1F26OtDb5fy9a9kMiYgCVXBMGPYP/hWnV51F2ILZTrDep401iA3tNBUrlwGG/z/GDWlkafvRZoOFb/K9/W38gDBnCauJEjwHhQxaRmC5eP5Pr0FA0jfkLE4wBf3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730244559; c=relaxed/relaxed;
-	bh=KNeYgmMAGPIyHDJl3QbZDwIGpEYDsMZZ+DjYHgkmPyo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=E/qnNV/AhuNFJ89zCrhL3d2zSzcGCsXPjRzOFyLvLxhjDDcwyOSkfunqAkF9+Ug3FezWDC5OAVW3gnwwC3Kc4riud4/SMW0dFMILZi0pKVDMY391Ele34wcs/LEBzxNLkxL5FpHx8jZEEam7A4heAYmElt79yuN+XCv1rneVjK6b2+nkqVa26VEhS/bjN60BF8VFKUElmJ+DUMh5pmvkAwKnLZ3aF9SUoWGXYZo9szBANMEzfAanaimCNOTN3aTC+MPOq7+9Mt415qW//Kdj053nfqStbtuF/qrAzBdlWINjIHdblFGN5mhfTRyieosBgRwLXcROcaJqG0l8yRVi0A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ernYnpst; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1730246400; c=relaxed/relaxed;
+	bh=s2ENhSuEqrog1uHDDbEyVVmY22VURV3KOt3jlfpKgU0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bw4UmCO6zwpw8y8uci7xeyZK4Nb7f/mevFdAnYBHwu5wCN9LGzKTK7mU9u9msTlX7j75yOG5TwJq0mA9+hPafoJmGf41pSYL5XBPZZWTPHcdG2FgXAczttW1v+pE22cNTXn7Z/lbGmpQ5tljShMdixrIoCmf7hVlDz/otpnmECk0ocaF7JIqo+ZdMOMPacfnsrnMwkOvCJsAS1J6bFY7F8pzQMTebm/cAlXiFps4pqhT50gBwA6n7RPAtciv+bL0spEBrIfaG+XKx0M0lVVljqPM3hQIBVRvABg8c4WGiLtW1IROJksJqWYWy2wsm8m5sgHlPDxO69PUbBodGfB0rw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DQlFkpVL; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ernYnpst;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DQlFkpVL;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdRKp26Vbz2xHx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 10:29:18 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1730244554;
-	bh=KNeYgmMAGPIyHDJl3QbZDwIGpEYDsMZZ+DjYHgkmPyo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ernYnpstgOY9FLJSuqniQzAK5V9UK8eyHKkWmNM4PA0t1dXeQPGjlTfwrDZyFezT6
-	 iWLk7Uzn33TOfEKmxjdQLqISv24MCjpXIGy2CpU1pth39D9hnEAzGOR1gAdsl6rP/K
-	 zfVpxz5QZOskQls+r7skNA9V5l4p2Gv5wBp0mvqWANGsMluS/LAP5XojKbgbXF4aOb
-	 Q3amzWjyJMHnLbjz0bxLDWaNzBwtFXJifVzYyo8thrdKZoeWAumsu4z0RGhHObz615
-	 M+KLPFUVKK99SbzPqtWEQ96785m4MMf33J465wGEiVwzPkpht0lGYnXXrop/PAJYlC
-	 BlDqr1AK0lwvQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XdRKc4hCzz4wbR;
-	Wed, 30 Oct 2024 10:29:08 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Nysal Jan K.A." <nysal@linux.ibm.com>, Andrew Morton
- <akpm@linux-foundation.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>
-Cc: Segher Boessenkool <segher@kernel.crashing.org>, Stephen Rothwell
- <sfr@canb.auug.org.au>, Peter Zijlstra <peterz@infradead.org>,
- linuxppc-dev@lists.ozlabs.org, "Nysal Jan K.A." <nysal@linux.ibm.com>,
- Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
- <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
- <justinstitt@google.com>, Vlastimil Babka <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@Oracle.com>, Mark Brown <broonie@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Kent Overstreet
- <kent.overstreet@linux.dev>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2] sched/membarrier: Fix redundant load of
- membarrier_state
-In-Reply-To: <20241029055133.121418-1-nysal@linux.ibm.com>
-References: <20241007053936.833392-1-nysal@linux.ibm.com>
- <20241029055133.121418-1-nysal@linux.ibm.com>
-Date: Wed, 30 Oct 2024 10:29:09 +1100
-Message-ID: <87ed3yebei.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdS1B6njJz2xGQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 10:59:58 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 7D5B85C5620;
+	Tue, 29 Oct 2024 23:59:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2253C4CEE3;
+	Tue, 29 Oct 2024 23:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730246395;
+	bh=3PGjG05cL0ib9NjJ+m7Zaogil8o/zoAM1qJXs34+Osw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DQlFkpVL86I8W/Qkkhs89NgOwBqRFkbkYxuZ2284KfOH+pIyfrLm7MEyh+tojwlZ5
+	 jSkCVNeVDDv4KV6VA0Edpi3esGjjos0qicuIWlhKsQd8hP5PyLCfhREv1LTLRjrAJ9
+	 u8KKrCqsOaYSUcm55ifenkmlf17Dvpk9lTXHhNo599Jm/zFfIQcXQtl2AFcAsYKj+N
+	 ZdPfQcjg8XUlXDtm8/2McpxeYfSJuM3Dj7uLraIxC9tFFE9Br+ThX7waHLqb65YH3l
+	 Ci7d9pJ4yu7Lmb9lYhlUH20vEEWk+DokQsQWVoKtUV2m62HnVhf4IG4LCbhixL7mgZ
+	 SO01mdlmm5luw==
+Date: Tue, 29 Oct 2024 16:59:53 -0700
+From: Namhyung Kim <namhyung@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, irogers@google.com
+Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+	linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	akanksha@linux.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com,
+	disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
+Subject: Re: [PATCH] tools/perf/tests/expr: Make the system_tsc_freq test
+ only for intel
+Message-ID: <ZyF2-XNUh38p_5Gg@google.com>
+References: <20241022140156.98854-1-atrajeev@linux.vnet.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,37 +66,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241022140156.98854-1-atrajeev@linux.vnet.ibm.com>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-"Nysal Jan K.A." <nysal@linux.ibm.com> writes:
-> On architectures where ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
-> is not selected, sync_core_before_usermode() is a no-op.
-> In membarrier_mm_sync_core_before_usermode() the compiler does not
-> eliminate redundant branches and load of mm->membarrier_state
-> for this case as the atomic_read() cannot be optimized away.
->
-> Here's a snippet of the code generated for finish_task_switch() on powerpc
-> prior to this change:
->
-> 1b786c:   ld      r26,2624(r30)   # mm = rq->prev_mm;
-> .......
-> 1b78c8:   cmpdi   cr7,r26,0
-> 1b78cc:   beq     cr7,1b78e4 <finish_task_switch+0xd0>
-> 1b78d0:   ld      r9,2312(r13)    # current
-> 1b78d4:   ld      r9,1888(r9)     # current->mm
-> 1b78d8:   cmpd    cr7,r26,r9
-> 1b78dc:   beq     cr7,1b7a70 <finish_task_switch+0x25c>
-> 1b78e0:   hwsync
-> 1b78e4:   cmplwi  cr7,r27,128
-> .......
-> 1b7a70:   lwz     r9,176(r26)     # atomic_read(&mm->membarrier_state)
-> 1b7a74:   b       1b78e0 <finish_task_switch+0xcc>
+Hello,
 
-Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+On Tue, Oct 22, 2024 at 07:31:56PM +0530, Athira Rajeev wrote:
+> The "Simple expression parser" test fails on powerpc
+> as below:
+> 
+>  parsing metric: #system_tsc_freq
+>  Unrecognized literal '#system_tsc_freq'literal: #system_tsc_freq = nan
+>  syntax error
+>  FAILED tests/expr.c:247 #system_tsc_freq
+>  ---- end(-1) ----
+>  7: Simple expression parser  : FAILED!
+> 
+> In the test, system_tsc_freq is checked as below:
+> 
+>  if (is_intel)
+>     TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
+>  else
+> 
+> But commit 609aa2667f67 ("perf tool_pmu: Switch to standard
+> pmu functions and json descriptions")' changed condition in
 
-cheers
+Probably need to put it as Fixes: tag.
+
+
+> tool_pmu__skip_event so that system_tsc_freq event should
+> only appear on x86
+> 
+>  +#if !defined(__i386__) && !defined(__x86_64__)
+>  +       /* The system_tsc_freq event should only appear on x86. */
+>  +       if (strcasecmp(name, "system_tsc_freq") == 0)
+>  +               return true;
+>  +#endif
+> 
+> After this commit, the testcase breaks for expr__parse of
+> system_tsc_freq in powerpc case. Fix the testcase to have
+> complete system_tsc_freq test within "is_intel" check.
+
+Ian, are you ok with this?
+
+Thanks,
+Namhyung
+
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  tools/perf/tests/expr.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
+> index e3aa9d4fcf3a..eb3bd68fc4ce 100644
+> --- a/tools/perf/tests/expr.c
+> +++ b/tools/perf/tests/expr.c
+> @@ -244,11 +244,10 @@ static int test__expr(struct test_suite *t __maybe_unused, int subtest __maybe_u
+>  	if (num_dies) // Some platforms do not have CPU die support, for example s390
+>  		TEST_ASSERT_VAL("#num_dies >= #num_packages", num_dies >= num_packages);
+>  
+> -	TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, "#system_tsc_freq") == 0);
+> -	if (is_intel)
+> +	if (is_intel) {
+> +		TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, "#system_tsc_freq") == 0);
+>  		TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
+> -	else
+> -		TEST_ASSERT_VAL("#system_tsc_freq == 0", fpclassify(val) == FP_ZERO);
+> +	}
+>  
+>  	/*
+>  	 * Source count returns the number of events aggregating in a leader
+> -- 
+> 2.43.5
+> 
 
