@@ -1,78 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-2672-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2673-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2899B4285
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 07:45:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A52B69B4339
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Oct 2024 08:38:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xd13j3Jp5z2xy7;
-	Tue, 29 Oct 2024 17:45:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xd2DR19SGz2yJL;
+	Tue, 29 Oct 2024 18:38:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730184337;
-	cv=none; b=nrjpruHPTTUftPUSX70FyYUdpEwDiPxRrfSXw9YhO58AzNGXFhqmUlRyVQKYRbjlvXN5Xzra84z5Hwkoffc6Pc4O9KfCgutaYhd1USaql2VRWI3WpG7bwdD1yS2UQQBxp8mT29X98X/JEplBN0G6mkqkqPWDyemmxA5Z93hHNcRaRfo/GNwP7POdH+AFABgw013gkKNYfhvMOFSR/n0DDDmELl7S3NTpnhTzFHfi7eIP46wEDc6FeVyWcM8OnwJAMIzwz5a4QC6YLkgzctGMMtPEzxmCaLafnpIQ/obb7gIRVP6gvBTTISD/K1mcSSZayI6eb7H/7Oj3l+rXECqJ/A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730187495;
+	cv=none; b=ZNuM0SeA1JKQqBzQsjwmlXXkB9wfI3Uu15sbL9cegPFuCF8Wi5K3ljWzgpqmPbuveqDNjVMWxa9/ix8mq7e6VVPqf+PLPI8js0KX7dvmkbzT47HiCT0JXxA279E5j8tYXmZ+ExQbQBCUjuHMUWzVXL1rt2gZrn7gZ/WhuD86qYqZXYlnWStdo2UdjZ0j9A0lOB0PseRJAc0mwRT9FTqcb7aJjaAwRRZf65kQqP73C3G+as8VYr5lBm9KsJPm5DnQrfOA2VTXPge57YDdtW7aPNr0ckdZXMMhYh9l+46LSHmTuBwgWz2Bpnr8AvlONDYUO8TCmupkIuZbPWWhpPJ+Yw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730184337; c=relaxed/relaxed;
-	bh=wpMMtUT/7iLSb1CPes2U6yH2Knc2kYorBmqmySojMfw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L50HGiyyhX8rPf7Mb60FNGsyXkqgnVD309bi+oxxaFaCCplZYTSKDk6JOtKMP6oHA9AlkNNlvWCfxcmRgFBOoytVzdLBRG2/hjmkKuFWtvmEGbBNi83Paiwk0l5HqUpQpH958iEjnCGzbwkskzQ+r+vmpun+hhXjYzAKT98MYlNwpGe2CWC3kn6qNppobsUMNAyiRkpi0WgtFNeUKbjvoERxB64q1hlLBefA9vuhuGR4PYtA0M1bJYWRdd71g+3EaVRhuTkP4gCz46x6GLWd4+2YSh1Nii7zw+UzJLbPmUihXdI8KMSyGYlc+Z7PljNVAhdRJItfMmbK8AI/KaTpSg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iJAGDJX0; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1730187495; c=relaxed/relaxed;
+	bh=kRBCS21xbUg+ZtyrX+0216a9IgyvQrvSGGoh4bdg5Wo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AqdNf2YTxf2qWMaqFnS7tHLG3X10Bf4UD7TsBxJGMjisL6LfvKp+rbUE/4+rKO6K89S1+Xh+a23O6nFjsgosRaAZsrQPbLEi0HPjmnp5cOvean47hiVJ7CDl0/Ab2Bl40yOe/2ZJhrc0EYtT3lFia7dXPWKhpF6g3s9H455TOmETfcIiXDODSRakxhzCGRANGD2HSl9/302BAqjn6blZ9dZ5ph74r/tBAO8uiWhUKDphc3ny6X4iE+JkpPstQ7szoO5NgdNUq0z9y/yDLe2bXli4klmis9plse7CoejvX3lUi3Tgni8gzVS5SjiJZFzay6uJkWQkSaakQwrW9CsbDg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com; dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=xkEA/+hA; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org) smtp.mailfrom=baylibre.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iJAGDJX0;
+	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=xkEA/+hA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xd13h2BH6z2xy0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 17:45:35 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49T25Ta3007263;
-	Tue, 29 Oct 2024 06:44:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=wpMMtU
-	T/7iLSb1CPes2U6yH2Knc2kYorBmqmySojMfw=; b=iJAGDJX0zp7I8wnDmOxnwR
-	nsM832ucdpVHkqQlx2nmn3aDhYFrvERJXw+QFNKGd0H1UhMEw6AIZDhCEjEexTAI
-	guKsHOoqJguJX/7T0/zQZAK+VWxiqz9f3CchJR+AXAmbWu3MJQC581JSC2+woml5
-	wu4gC23D4KkJH74McGOquG3CMMc2mmS+7vem9H1FJ2TbLKQmXSvskdWJa/iu90p4
-	0kpLJ8LHaYEpm2681wNPdpOFRtuVAAYCFr/xX16m5/yk5yQhxw+p8EF+TdfG3nR3
-	9ObEqtjhVEPKZWfz9X5implw3U26UFo9ZQNNGrlLtysJVwIYYNIg8BUynlDR1Gng
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42jb65bm7n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Oct 2024 06:44:40 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49T6idbf015515;
-	Tue, 29 Oct 2024 06:44:39 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42jb65bm7h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Oct 2024 06:44:39 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49T55BI6017313;
-	Tue, 29 Oct 2024 06:44:38 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42harsa1gc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Oct 2024 06:44:38 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49T6iZ7M40370472
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Oct 2024 06:44:35 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4555820043;
-	Tue, 29 Oct 2024 06:44:35 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BBCF820040;
-	Tue, 29 Oct 2024 06:44:31 +0000 (GMT)
-Received: from [9.203.115.143] (unknown [9.203.115.143])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 29 Oct 2024 06:44:31 +0000 (GMT)
-Message-ID: <841804f7-d634-4d8c-8585-04a2e4ea40f0@linux.ibm.com>
-Date: Tue, 29 Oct 2024 12:14:30 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xd2DN4Rqqz2xpx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 18:38:09 +1100 (AEDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-431688d5127so50031645e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Oct 2024 00:38:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730187486; x=1730792286; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kRBCS21xbUg+ZtyrX+0216a9IgyvQrvSGGoh4bdg5Wo=;
+        b=xkEA/+hAWiwVozVVzuU1bcQQBSrJsntukdoA1/5weIohqElsiENksLzFs9QcJHsg+x
+         7ZfCyBETlnDG13mBevNA7bwGueyWRmXCvFjIgKqOdVi6zvrxZMYEi9S2XnuJnyBZ70u4
+         xNl0yJrCdqsHZYAiLkzsH5sU1Bi3yMWUfY/L+MrOwM7ucAE5XlTsjlCGC0SJzwB501xG
+         5AxPnJYe2iNhs+VdMYRrVqofhhTZSfl+tNR7+IfLd4cr+w/FywQzWBbQB3WvcI2g5ecj
+         3A/xGwK5bN4UQuHjGF4ok9Bf1DO/d1twakJ3JMhJrkgUFxZrtdEYvuV/et5pHCHNHYBt
+         5zlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730187486; x=1730792286;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kRBCS21xbUg+ZtyrX+0216a9IgyvQrvSGGoh4bdg5Wo=;
+        b=ABHto5jw91x2qDQs/mSbGTIxJGoQWXU8vC8YpwdzEkh6DQbtWdIRrVXFrf6IXxF19l
+         8b989Z1uE1/kHswmtKVGQBbHsE42nWvUX4BnC811rRStQGrL5PKI6RoBHFI2p8GALi56
+         wE7HK45wt7SMI5Z0i+jJ5CAByWlytO6l3t+6FB1m+DlW3J1QQSbRl95AqHQB+YSsqDES
+         Rsf7wex1Lgbjmg+We9E4MVZa6zLvhaMePuQK1Ah/5UJgxsa46WRX1ak5ZUnjO/hcZFnW
+         T2MX5KOgSS6IeK+MfCrcwHpeZp/NEDhd4LOif1t8MBvrbm4+Y4jJGKim/X9qtv1vYiHK
+         AyIw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrY5pSWV6zyzhUquLkx2Jtn7OPqzNjXjM6Vaq5CfFg5L3mNaxpld1bT0E1sGfBymRsJdypm9QEC18VH4U=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyhQmf4byeZxPj0V7f1m79VuedOJC3besGj6/kd6B+ktE7nAcDb
+	kfpe9A3mnpJeLIHnOW8BcSH3Bl6+dN4GNAAREMRx3/ueKVtivdgKyiu46K82TIg=
+X-Google-Smtp-Source: AGHT+IE/QTlrTfqOXWM8zSxaY+sQmjccOShgerlk9HjJclBzVZ62XYIIe6dba6vKrd4PnXhBaOl1zQ==
+X-Received: by 2002:a05:600c:4e0f:b0:431:12d0:746b with SMTP id 5b1f17b1804b1-4319ad294a4mr81325345e9.35.1730187484985;
+        Tue, 29 Oct 2024 00:38:04 -0700 (PDT)
+Received: from localhost (p50915d2d.dip0.t-ipconnect.de. [80.145.93.45])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b5706c3sm164752335e9.34.2024.10.29.00.38.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Oct 2024 00:38:04 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sound@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] sound: Switch back to struct platform_driver::remove()
+Date: Tue, 29 Oct 2024 08:37:47 +0100
+Message-ID: <20241029073748.508077-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,137 +99,250 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 17/17] powerpc64/bpf: Add support for bpf trampolines
-To: Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: "Naveen N. Rao" <naveen@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Vishal Chourasia <vishalc@linux.ibm.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-References: <20241018173632.277333-1-hbathini@linux.ibm.com>
- <20241018173632.277333-18-hbathini@linux.ibm.com>
- <87wmhtrmni.fsf@mpe.ellerman.id.au>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <87wmhtrmni.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -iB9zBHmU6GGaR0CrGda44FqrDjFKDqK
-X-Proofpoint-GUID: 57WHYjnIt4dw8lVBHWWBue558w_N7zEI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 adultscore=0 phishscore=0 bulkscore=0 mlxlogscore=999
- impostorscore=0 spamscore=0 suspectscore=0 mlxscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410290052
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8427; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=bofb0GXHAy72+VfSg4Mly92y7jtyu1u1iViJjOuNI8o=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnIJDMDMnZBV7DocFNxEnCFbvqTaMWTOgrRJ9/c IbcL2jDvQmJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZyCQzAAKCRCPgPtYfRL+ Tu98B/4gJo9q/Fgct6hluhXw8q+tQ5dF1BSpJ6nHeqplYujtgo382D7jTSdgvdP966ghu0jLNZW 3YS2mOsukJil3wG1Lz0PhuS+BlSNQKUB+fPty+hhAZIABLcgmmvrUDP0iM2slhEO32pKl6qcEXV fikATTb1hjzZTvc18EECgkaxjM+ZDES2vxXFQlXkph0b4WYlvgZPOvvAGrpDfgE6UXIIPbb05Iz 7D8QaBk5d0/dVI01H0vTnV8EBiwSVCF+KtehiUNLAXm82iqpENvT2DocfWKmPcFk0czA+osxSpe VsHmtxbe1pesSbw3cJrdPFf+3SdmUdnOCeXOtRUck/Bxz30j
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+return void") .remove() is (again) the right callback to implement for
+platform drivers.
 
+Convert all platform drivers below sound to use .remove(), with
+the eventual goal to drop struct platform_driver::remove_new(). As
+.remove() and .remove_new() have the same prototypes, conversion is done
+by just changing the structure member name in the driver initializer.
 
-On 28/10/24 7:53 am, Michael Ellerman wrote:
-> Hari Bathini <hbathini@linux.ibm.com> writes:
->> From: Naveen N Rao <naveen@kernel.org>
->>
->> Add support for bpf_arch_text_poke() and arch_prepare_bpf_trampoline()
->> for 64-bit powerpc. While the code is generic, BPF trampolines are only
->> enabled on 64-bit powerpc. 32-bit powerpc will need testing and some
->> updates.
-> 
-> Hi Hari,
-> 
-> This is breaking the PCREL build for me:
-> 
->    ERROR: 11:49:18: Failed building ppc64le_defconfig+pcrel@fedora
->    INFO: 11:49:18: (skipped 41 lines) ...
->    INFO: 11:49:18: /linux/arch/powerpc/net/bpf_jit.h:90:9: note: in expansion of macro 'EMIT'
->       90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
->          |         ^~~~
->    /linux/arch/powerpc/include/asm/ppc-opcode.h:473:88: note: in expansion of macro 'IMM_DS'
->      473 | #define PPC_RAW_LD(r, base, i)          (0xe8000000 | ___PPC_RT(r) | ___PPC_RA(base) | IMM_DS(i))
->          |                                                                                        ^~~~~~
->    /linux/arch/powerpc/net/bpf_jit.h:90:14: note: in expansion of macro 'PPC_RAW_LD'
->       90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
->          |              ^~~~~~~~~~
->    /linux/arch/powerpc/net/bpf_jit.h:90:36: note: in expansion of macro 'offsetof'
->       90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
->          |                                    ^~~~~~~~
->    /linux/arch/powerpc/net/bpf_jit_comp.c:791:17: note: in expansion of macro 'PPC64_LOAD_PACA'
->      791 |                 PPC64_LOAD_PACA();
->          |                 ^~~~~~~~~~~~~~~
->    /linux/arch/powerpc/net/bpf_jit.h:90:65: error: 'struct paca_struct' has no member named 'kernel_toc'; did you mean 'kernel_msr'?
->       90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
->          |                                                                 ^~~~~~~~~~
->    /linux/arch/powerpc/net/bpf_jit.h:29:34: note: in definition of macro 'PLANT_INSTR'
->       29 |         do { if (d) { (d)[idx] = instr; } idx++; } while (0)
->          |                                  ^~~~~
->    /linux/arch/powerpc/net/bpf_jit.h:90:9: note: in expansion of macro 'EMIT'
->       90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
->          |         ^~~~
->    /linux/arch/powerpc/include/asm/ppc-opcode.h:473:88: note: in expansion of macro 'IMM_DS'
->      473 | #define PPC_RAW_LD(r, base, i)          (0xe8000000 | ___PPC_RT(r) | ___PPC_RA(base) | IMM_DS(i))
->          |                                                                                        ^~~~~~
->    /linux/arch/powerpc/net/bpf_jit.h:90:14: note: in expansion of macro 'PPC_RAW_LD'
->       90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
->          |              ^~~~~~~~~~
->    /linux/arch/powerpc/net/bpf_jit.h:90:36: note: in expansion of macro 'offsetof'
->       90 |         EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
->          |                                    ^~~~~~~~
->    /linux/arch/powerpc/net/bpf_jit_comp.c:882:25: note: in expansion of macro 'PPC64_LOAD_PACA'
->      882 |                         PPC64_LOAD_PACA();
->          |                         ^~~~~~~~~~~~~~~
->    make[5]: *** [/linux/scripts/Makefile.build:229: arch/powerpc/net/bpf_jit_comp.o] Error 1
-> 
-> 
-> To test it you need to enable CONFIG_POWER10_CPU, eg:
-> 
->    CONFIG_POWERPC64_CPU=n
->    CONFIG_POWER10_CPU=y
->    CONFIG_PPC_KERNEL_PCREL=y
-> 
-> This diff gets it building, but I haven't tested it actually works:
+On the way do a few whitespace changes to make indention consistent.
 
-Thanks, Michael. Yeah, the below snippet will be sufficient as
-PPC64_LOAD_PACA() is used with !IS_ENABLED(CONFIG_PPC_KERNEL_PCREL)
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
 
-- Hari
+I did a single patch for all of sound. sound/soc was already converted
+separately, so isn't mixed in here. While I usually prefer to do one
+logical change per patch, this seems to be overengineering here as the
+individual changes are really trivial and shouldn't be much in the way
+for stable backports. But I'll happily split the patch if you prefer it
+split.
 
-> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-> index 2d04ce5a23da..af6ff3eb621a 100644
-> --- a/arch/powerpc/net/bpf_jit.h
-> +++ b/arch/powerpc/net/bpf_jit.h
-> @@ -86,9 +86,14 @@
->                                                          0xffff));             \
->                  } } while (0)
->   #define PPC_LI_ADDR    PPC_LI64
-> +
-> +#ifndef CONFIG_PPC_KERNEL_PCREL
->   #define PPC64_LOAD_PACA()                                                    \
->          EMIT(PPC_RAW_LD(_R2, _R13, offsetof(struct paca_struct, kernel_toc)))
->   #else
-> +#define PPC64_LOAD_PACA() do {} while (0)
-> +#endif
-> +#else
->   #define PPC_LI64(d, i) BUILD_BUG()
->   #define PPC_LI_ADDR    PPC_LI32
->   #define PPC64_LOAD_PACA() BUILD_BUG()
-> 
-> cheers
-> 
+This is based on today's next, if conflicts arise when you apply it at
+some later time and don't want to resolve them, feel free to just drop
+the changes to the conflicting files. I'll notice and followup at a
+later time then. Or ask me for a fixed resend. (Having said that, I
+recommend b4 am -3 + git am -3 which should resolve most conflicts just
+fine.)
+
+Best regards
+Uwe
+
+ sound/arm/pxa2xx-ac97.c             | 2 +-
+ sound/atmel/ac97c.c                 | 2 +-
+ sound/drivers/mts64.c               | 2 +-
+ sound/drivers/pcmtest.c             | 2 +-
+ sound/drivers/portman2x4.c          | 2 +-
+ sound/mips/hal2.c                   | 2 +-
+ sound/mips/sgio2audio.c             | 4 ++--
+ sound/oss/dmasound/dmasound_paula.c | 2 +-
+ sound/pci/hda/hda_tegra.c           | 2 +-
+ sound/ppc/powermac.c                | 2 +-
+ sound/sh/aica.c                     | 2 +-
+ sound/sh/sh_dac_audio.c             | 2 +-
+ sound/sparc/cs4231.c                | 2 +-
+ sound/sparc/dbri.c                  | 2 +-
+ 14 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/sound/arm/pxa2xx-ac97.c b/sound/arm/pxa2xx-ac97.c
+index 4c367e73b2c9..77b11616a7ee 100644
+--- a/sound/arm/pxa2xx-ac97.c
++++ b/sound/arm/pxa2xx-ac97.c
+@@ -271,7 +271,7 @@ static void pxa2xx_ac97_remove(struct platform_device *dev)
+ 
+ static struct platform_driver pxa2xx_ac97_driver = {
+ 	.probe		= pxa2xx_ac97_probe,
+-	.remove_new	= pxa2xx_ac97_remove,
++	.remove		= pxa2xx_ac97_remove,
+ 	.driver		= {
+ 		.name	= "pxa2xx-ac97",
+ 		.pm	= &pxa2xx_ac97_pm_ops,
+diff --git a/sound/atmel/ac97c.c b/sound/atmel/ac97c.c
+index 402b5f66dcc3..d8f8e08f1bb7 100644
+--- a/sound/atmel/ac97c.c
++++ b/sound/atmel/ac97c.c
+@@ -861,7 +861,7 @@ static void atmel_ac97c_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver atmel_ac97c_driver = {
+ 	.probe		= atmel_ac97c_probe,
+-	.remove_new	= atmel_ac97c_remove,
++	.remove		= atmel_ac97c_remove,
+ 	.driver		= {
+ 		.name	= "atmel_ac97c",
+ 		.pm	= ATMEL_AC97C_PM_OPS,
+diff --git a/sound/drivers/mts64.c b/sound/drivers/mts64.c
+index 6fc255a6754d..17f215bad0ec 100644
+--- a/sound/drivers/mts64.c
++++ b/sound/drivers/mts64.c
+@@ -1008,7 +1008,7 @@ static void snd_mts64_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver snd_mts64_driver = {
+ 	.probe  = snd_mts64_probe,
+-	.remove_new = snd_mts64_remove,
++	.remove = snd_mts64_remove,
+ 	.driver = {
+ 		.name = PLATFORM_DRIVER,
+ 	}
+diff --git a/sound/drivers/pcmtest.c b/sound/drivers/pcmtest.c
+index 21cefaf5419a..72378f354fd0 100644
+--- a/sound/drivers/pcmtest.c
++++ b/sound/drivers/pcmtest.c
+@@ -640,7 +640,7 @@ static struct platform_device pcmtst_pdev = {
+ 
+ static struct platform_driver pcmtst_pdrv = {
+ 	.probe =	pcmtst_probe,
+-	.remove_new =	pdev_remove,
++	.remove =	pdev_remove,
+ 	.driver =	{
+ 		.name = "pcmtest",
+ 	},
+diff --git a/sound/drivers/portman2x4.c b/sound/drivers/portman2x4.c
+index 54d818d2f53d..5e4ef25a83a4 100644
+--- a/sound/drivers/portman2x4.c
++++ b/sound/drivers/portman2x4.c
+@@ -794,7 +794,7 @@ static void snd_portman_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver snd_portman_driver = {
+ 	.probe  = snd_portman_probe,
+-	.remove_new = snd_portman_remove,
++	.remove = snd_portman_remove,
+ 	.driver = {
+ 		.name = PLATFORM_DRIVER,
+ 	}
+diff --git a/sound/mips/hal2.c b/sound/mips/hal2.c
+index 3c26334227bb..991793e6bda9 100644
+--- a/sound/mips/hal2.c
++++ b/sound/mips/hal2.c
+@@ -886,7 +886,7 @@ static void hal2_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver hal2_driver = {
+ 	.probe	= hal2_probe,
+-	.remove_new = hal2_remove,
++	.remove = hal2_remove,
+ 	.driver = {
+ 		.name	= "sgihal2",
+ 	}
+diff --git a/sound/mips/sgio2audio.c b/sound/mips/sgio2audio.c
+index a8551ccdd1bf..4e2ff954ff59 100644
+--- a/sound/mips/sgio2audio.c
++++ b/sound/mips/sgio2audio.c
+@@ -917,8 +917,8 @@ static void snd_sgio2audio_remove(struct platform_device *pdev)
+ 
+ static struct platform_driver sgio2audio_driver = {
+ 	.probe	= snd_sgio2audio_probe,
+-	.remove_new = snd_sgio2audio_remove,
+-	.driver = {
++	.remove	= snd_sgio2audio_remove,
++	.driver	= {
+ 		.name	= "sgio2audio",
+ 	}
+ };
+diff --git a/sound/oss/dmasound/dmasound_paula.c b/sound/oss/dmasound/dmasound_paula.c
+index b8fad12f9e5f..8d443a3663d3 100644
+--- a/sound/oss/dmasound/dmasound_paula.c
++++ b/sound/oss/dmasound/dmasound_paula.c
+@@ -732,7 +732,7 @@ static void __exit amiga_audio_remove(struct platform_device *pdev)
+  * triggering a section mismatch warning.
+  */
+ static struct platform_driver amiga_audio_driver __refdata = {
+-	.remove_new = __exit_p(amiga_audio_remove),
++	.remove = __exit_p(amiga_audio_remove),
+ 	.driver = {
+ 		.name	= "amiga-audio",
+ 	},
+diff --git a/sound/pci/hda/hda_tegra.c b/sound/pci/hda/hda_tegra.c
+index d967e70a7058..b1e30a83dfb0 100644
+--- a/sound/pci/hda/hda_tegra.c
++++ b/sound/pci/hda/hda_tegra.c
+@@ -606,7 +606,7 @@ static struct platform_driver tegra_platform_hda = {
+ 		.of_match_table = hda_tegra_match,
+ 	},
+ 	.probe = hda_tegra_probe,
+-	.remove_new = hda_tegra_remove,
++	.remove = hda_tegra_remove,
+ 	.shutdown = hda_tegra_shutdown,
+ };
+ module_platform_driver(tegra_platform_hda);
+diff --git a/sound/ppc/powermac.c b/sound/ppc/powermac.c
+index 8e29c92830ad..f1b0cf9ea555 100644
+--- a/sound/ppc/powermac.c
++++ b/sound/ppc/powermac.c
+@@ -160,7 +160,7 @@ static SIMPLE_DEV_PM_OPS(snd_pmac_pm, snd_pmac_driver_suspend, snd_pmac_driver_r
+ 
+ static struct platform_driver snd_pmac_driver = {
+ 	.probe		= snd_pmac_probe,
+-	.remove_new	= snd_pmac_remove,
++	.remove		= snd_pmac_remove,
+ 	.driver		= {
+ 		.name	= SND_PMAC_DRIVER,
+ 		.pm	= SND_PMAC_PM_OPS,
+diff --git a/sound/sh/aica.c b/sound/sh/aica.c
+index 66b33623549f..39bf51ff43a1 100644
+--- a/sound/sh/aica.c
++++ b/sound/sh/aica.c
+@@ -599,7 +599,7 @@ static int snd_aica_probe(struct platform_device *devptr)
+ 
+ static struct platform_driver snd_aica_driver = {
+ 	.probe = snd_aica_probe,
+-	.remove_new = snd_aica_remove,
++	.remove = snd_aica_remove,
+ 	.driver = {
+ 		.name = SND_AICA_DRIVER,
+ 	},
+diff --git a/sound/sh/sh_dac_audio.c b/sound/sh/sh_dac_audio.c
+index e7b6ce7bd086..e7b80328f0ef 100644
+--- a/sound/sh/sh_dac_audio.c
++++ b/sound/sh/sh_dac_audio.c
+@@ -383,7 +383,7 @@ static int snd_sh_dac_probe(struct platform_device *devptr)
+  */
+ static struct platform_driver sh_dac_driver = {
+ 	.probe	= snd_sh_dac_probe,
+-	.remove_new = snd_sh_dac_remove,
++	.remove = snd_sh_dac_remove,
+ 	.driver = {
+ 		.name = "dac_audio",
+ 	},
+diff --git a/sound/sparc/cs4231.c b/sound/sparc/cs4231.c
+index a1339f9ef12a..1b44119edfbc 100644
+--- a/sound/sparc/cs4231.c
++++ b/sound/sparc/cs4231.c
+@@ -2107,7 +2107,7 @@ static struct platform_driver cs4231_driver = {
+ 		.of_match_table = cs4231_match,
+ 	},
+ 	.probe		= cs4231_probe,
+-	.remove_new	= cs4231_remove,
++	.remove		= cs4231_remove,
+ };
+ 
+ module_platform_driver(cs4231_driver);
+diff --git a/sound/sparc/dbri.c b/sound/sparc/dbri.c
+index b5d53c5550d3..69f1c9e37f4b 100644
+--- a/sound/sparc/dbri.c
++++ b/sound/sparc/dbri.c
+@@ -2682,7 +2682,7 @@ static struct platform_driver dbri_sbus_driver = {
+ 		.of_match_table = dbri_match,
+ 	},
+ 	.probe		= dbri_probe,
+-	.remove_new	= dbri_remove,
++	.remove		= dbri_remove,
+ };
+ 
+ module_platform_driver(dbri_sbus_driver);
+
+base-commit: 6fb2fa9805c501d9ade047fc511961f3273cdcb5
+-- 
+2.45.2
 
 
