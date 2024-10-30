@@ -1,59 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-2693-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2694-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2309B581E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 01:00:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F23B89B58CF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 01:46:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XdS1D3kKrz2xmk;
-	Wed, 30 Oct 2024 11:00:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XdT3P0KNyz2xgr;
+	Wed, 30 Oct 2024 11:46:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730246400;
-	cv=none; b=Dgj1d6kCGQphE+xr04Q3rTb3L9TnyTA6n1Q/DHOMa8CJALiJMjk7thDdFAHxubvtR2rDeTdVX8YMtDrHc2PjXVt8+h50P5Rv0OUiArvUJkK89oD4PQHiWt16ZxMmzky1fkAo053H6NoBOo2WimudiiYT4gelHIbkjGwAbgEvd5+HuMZ9PhQHcVAxj/NuMr5lFIYQnUDeI2lvaNjTARCAAz0MdR1F26OtDb5fy9a9kMiYgCVXBMGPYP/hWnV51F2ILZTrDep401iA3tNBUrlwGG/z/GDWlkafvRZoOFb/K9/W38gDBnCauJEjwHhQxaRmC5eP5Pr0FA0jfkLE4wBf3g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=203.29.241.158
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730248226;
+	cv=none; b=CR/SxGp5OHej1VWFFwCe1V4C6gfsWgjACmzV3l/WAy2UzkD6ZsR8fACbFFJAVgdre0qlxslihbX0zFyg0h3Ax/nxLx2+PjaK63CBs5uF6t5Lpu7pUh6rssUwPGtAmqcnl6MFFgRfB3UG7RkrPYKN8516SMkihxF2scumUADwSZK0zIIw1c71W522vdd5uZGhADi5VsDC5hNfYw4uAPFbQz8HFBaVGckep9umCH4XNrMHuEoWtY6YY/a95xaIWY+HMCxVdMrjCf556zxPLBguc6gKvyvYqTX+bRfRdgrKIRESeYFfjTRhK+asGotvUISuQIAaKT/5YkKx96DuaN2rgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730246400; c=relaxed/relaxed;
-	bh=s2ENhSuEqrog1uHDDbEyVVmY22VURV3KOt3jlfpKgU0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bw4UmCO6zwpw8y8uci7xeyZK4Nb7f/mevFdAnYBHwu5wCN9LGzKTK7mU9u9msTlX7j75yOG5TwJq0mA9+hPafoJmGf41pSYL5XBPZZWTPHcdG2FgXAczttW1v+pE22cNTXn7Z/lbGmpQ5tljShMdixrIoCmf7hVlDz/otpnmECk0ocaF7JIqo+ZdMOMPacfnsrnMwkOvCJsAS1J6bFY7F8pzQMTebm/cAlXiFps4pqhT50gBwA6n7RPAtciv+bL0spEBrIfaG+XKx0M0lVVljqPM3hQIBVRvABg8c4WGiLtW1IROJksJqWYWy2wsm8m5sgHlPDxO69PUbBodGfB0rw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DQlFkpVL; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1730248226; c=relaxed/relaxed;
+	bh=g97qSBk0nfVaTQ4nSQz7mm5l86i31AAhLyCvLjCxnwg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Z2unEcSPwuAJQgVIFGeKJoT+u0y9Te9Y2zYsOkh2pMG6uyit74ls4k7rGgMYboIDUpnCMnPVTTw+qY7KKzmmV7vpQxoiq7XriVrAFOrdvJDiJT1FdZ9lvnCxm2QKGoU2/b4uWFd1CbDL0iRfbx8erUTQhKjOmExRCuhy9mbugElUPqoaOqWh6wEdYZ7+8oxkPLNQiQURrhS6toWwsZiN02tiJ70GyNklMyo3Deeih3Bm3Xb9u04TazkIdcDv4NVwQhedJZN1qtpG/cTPSpdhWNeOF9UiRi6thdsyIoMbLqidM2bBNKbHLR5K45APYdyIxkQ1fSksZROGW7gYldXOOA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; dkim=pass (2048-bit key; unprotected) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=di+ZrdRm; dkim-atps=neutral; spf=pass (client-ip=203.29.241.158; helo=codeconstruct.com.au; envelope-from=andrew@codeconstruct.com.au; receiver=lists.ozlabs.org) smtp.mailfrom=codeconstruct.com.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DQlFkpVL;
+	dkim=pass (2048-bit key; unprotected) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=di+ZrdRm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=codeconstruct.com.au (client-ip=203.29.241.158; helo=codeconstruct.com.au; envelope-from=andrew@codeconstruct.com.au; receiver=lists.ozlabs.org)
+X-Greylist: delayed 421 seconds by postgrey-1.37 at boromir; Wed, 30 Oct 2024 11:30:25 AEDT
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdS1B6njJz2xGQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 10:59:58 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7D5B85C5620;
-	Tue, 29 Oct 2024 23:59:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2253C4CEE3;
-	Tue, 29 Oct 2024 23:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730246395;
-	bh=3PGjG05cL0ib9NjJ+m7Zaogil8o/zoAM1qJXs34+Osw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DQlFkpVL86I8W/Qkkhs89NgOwBqRFkbkYxuZ2284KfOH+pIyfrLm7MEyh+tojwlZ5
-	 jSkCVNeVDDv4KV6VA0Edpi3esGjjos0qicuIWlhKsQd8hP5PyLCfhREv1LTLRjrAJ9
-	 u8KKrCqsOaYSUcm55ifenkmlf17Dvpk9lTXHhNo599Jm/zFfIQcXQtl2AFcAsYKj+N
-	 ZdPfQcjg8XUlXDtm8/2McpxeYfSJuM3Dj7uLraIxC9tFFE9Br+ThX7waHLqb65YH3l
-	 Ci7d9pJ4yu7Lmb9lYhlUH20vEEWk+DokQsQWVoKtUV2m62HnVhf4IG4LCbhixL7mgZ
-	 SO01mdlmm5luw==
-Date: Tue, 29 Oct 2024 16:59:53 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, irogers@google.com
-Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-	linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	akanksha@linux.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com,
-	disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Subject: Re: [PATCH] tools/perf/tests/expr: Make the system_tsc_freq test
- only for intel
-Message-ID: <ZyF2-XNUh38p_5Gg@google.com>
-References: <20241022140156.98854-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdShK2Nsvz2xgr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 11:30:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1730247801;
+	bh=g97qSBk0nfVaTQ4nSQz7mm5l86i31AAhLyCvLjCxnwg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=di+ZrdRmCd/lQns/8eExuvjbnZpOwlfJZqQhT0vk6A4dWQSREGaSjYA1NUpuSXq/9
+	 zLOKIqOjor7p9tE0dyGfw4ybWiryzyo+iipRVF2kM5VpPdFA3d+3Ou9jXOVP2gRjYg
+	 nxhaMgbcn/2U32y5829iQGbhb4KxNznUA2+K/2a0+EQ2SswvR0VQC5IX3R2gM1Hc5H
+	 qIqUDA2Y9Sx6OWg9iXKjz7Q61ZLM8qzV89E79bImydBlZ3cYU8OsnRBo4eKdTRLt29
+	 HKUqM1u67bcl+f74e72B6y7/Ev8hL3bEW1/AqAaeVkze+VI+uRfQfKCa7B551KThzG
+	 ud9Ehgxe8s9Jw==
+Received: from [192.168.68.112] (ppp118-210-190-243.adl-adc-lon-bras34.tpg.internode.on.net [118.210.190.243])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id A1A9067E6D;
+	Wed, 30 Oct 2024 08:23:10 +0800 (AWST)
+Message-ID: <3c7893f5186f0c6d64c063dc0a609ec8d6c8bcf1.camel@codeconstruct.com.au>
+Subject: Re: [PATCH] soc: Switch back to struct platform_driver::remove()
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>, 
+	Arnd Bergmann
+	 <arnd@arndb.de>, Olof Johansson <olof@lixom.net>
+Cc: Joel Stanley <joel@jms.id.au>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>, 
+ Qiang Zhao <qiang.zhao@nxp.com>, Hitomi Hasegawa
+ <hasegawa-hitomi@fujitsu.com>, Huisong Li <lihuisong@huawei.com>, Linus
+ Walleij <linusw@kernel.org>, Imre Kaloz <kaloz@openwrt.org>, Karol Gugala
+ <kgugala@antmicro.com>, Mateusz Holenko <mholenko@antmicro.com>, Gabriel
+ Somlo <gsomlo@gmail.com>, Yinbo Zhu <zhuyinbo@loongson.cn>, Matthias
+ Brugger <matthias.bgg@gmail.com>,  AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, Conor Dooley
+ <conor.dooley@microchip.com>, Daire McNamara
+ <daire.mcnamara@microchip.com>, Krzysztof Kozlowski
+ <krzysztof.kozlowski@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Alim Akhtar <alim.akhtar@samsung.com>,  Thierry Reding
+ <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>,
+ Nishanth Menon <nm@ti.com>,  Santosh Shilimkar <ssantosh@kernel.org>,
+ Michal Simek <michal.simek@amd.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Duje =?UTF-8?Q?Mihanovi=C4=87?=
+ <duje.mihanovic@skole.hr>, Mark Brown <broonie@kernel.org>, David Wu
+ <david.wu@rock-chips.com>, Jianqun Xu <jay.xu@rock-chips.com>, Jay
+ Buddhabhatti <jay.buddhabhatti@amd.com>, Radhey Shyam Pandey
+ <radhey.shyam.pandey@amd.com>,  Izhar Ameer Shaikh
+ <izhar.ameer.shaikh@amd.com>, Naman Trivedi Manojbhai
+ <naman.trivedimanojbhai@amd.com>,  linux-arm-kernel@lists.infradead.org,
+ soc@lists.linux.dev,  linux-aspeed@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,  linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev,  linux-mediatek@lists.infradead.org,
+ linux-riscv@lists.infradead.org,  linux-arm-msm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org,  linux-samsung-soc@vger.kernel.org,
+ linux-tegra@vger.kernel.org,  linux-pm@vger.kernel.org
+Date: Wed, 30 Oct 2024 10:53:09 +1030
+In-Reply-To: <20241029074859.509587-2-u.kleine-koenig@baylibre.com>
+References: <20241029074859.509587-2-u.kleine-koenig@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,83 +96,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241022140156.98854-1-atrajeev@linux.vnet.ibm.com>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello,
-
-On Tue, Oct 22, 2024 at 07:31:56PM +0530, Athira Rajeev wrote:
-> The "Simple expression parser" test fails on powerpc
-> as below:
-> 
->  parsing metric: #system_tsc_freq
->  Unrecognized literal '#system_tsc_freq'literal: #system_tsc_freq = nan
->  syntax error
->  FAILED tests/expr.c:247 #system_tsc_freq
->  ---- end(-1) ----
->  7: Simple expression parser  : FAILED!
-> 
-> In the test, system_tsc_freq is checked as below:
-> 
->  if (is_intel)
->     TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
->  else
-> 
-> But commit 609aa2667f67 ("perf tool_pmu: Switch to standard
-> pmu functions and json descriptions")' changed condition in
-
-Probably need to put it as Fixes: tag.
-
-
-> tool_pmu__skip_event so that system_tsc_freq event should
-> only appear on x86
-> 
->  +#if !defined(__i386__) && !defined(__x86_64__)
->  +       /* The system_tsc_freq event should only appear on x86. */
->  +       if (strcasecmp(name, "system_tsc_freq") == 0)
->  +               return true;
->  +#endif
-> 
-> After this commit, the testcase breaks for expr__parse of
-> system_tsc_freq in powerpc case. Fix the testcase to have
-> complete system_tsc_freq test within "is_intel" check.
-
-Ian, are you ok with this?
-
-Thanks,
-Namhyung
-
-> 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+On Tue, 2024-10-29 at 08:48 +0100, Uwe Kleine-K=C3=B6nig wrote:
+> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+> return void") .remove() is (again) the right callback to implement
+> for
+> platform drivers.
+>=20
+> Convert all platform drivers below drivers/soc to use .remove(), with
+> the eventual goal to drop struct platform_driver::remove_new(). As
+> .remove() and .remove_new() have the same prototypes, conversion is
+> done
+> by just changing the structure member name in the driver initializer.
+>=20
+> On the way do a few whitespace changes to make indention consistent.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
 > ---
->  tools/perf/tests/expr.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
-> index e3aa9d4fcf3a..eb3bd68fc4ce 100644
-> --- a/tools/perf/tests/expr.c
-> +++ b/tools/perf/tests/expr.c
-> @@ -244,11 +244,10 @@ static int test__expr(struct test_suite *t __maybe_unused, int subtest __maybe_u
->  	if (num_dies) // Some platforms do not have CPU die support, for example s390
->  		TEST_ASSERT_VAL("#num_dies >= #num_packages", num_dies >= num_packages);
->  
-> -	TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, "#system_tsc_freq") == 0);
-> -	if (is_intel)
-> +	if (is_intel) {
-> +		TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, "#system_tsc_freq") == 0);
->  		TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
-> -	else
-> -		TEST_ASSERT_VAL("#system_tsc_freq == 0", fpclassify(val) == FP_ZERO);
-> +	}
->  
->  	/*
->  	 * Source count returns the number of events aggregating in a leader
-> -- 
-> 2.43.5
-> 
+> Hello,
+>=20
+> I did a single patch for all of drivers/soc. While I usually prefer
+> to
+> do one logical change per patch, this seems to be overengineering
+> here
+> as the individual changes are really trivial and shouldn't be much in
+> the way for stable backports.
+>=20
+> There is no dedicated maintainer for all of drivers/soc, but I'd
+> expect
+> it to be ok to be picked up by the arm soc team.
+>=20
+> This is based on today's next, if conflicts arise when you apply it
+> at
+> some later time and don't want to resolve them, feel free to just
+> drop
+> the changes to the conflicting files. I'll notice and followup at a
+> later time then. Or ask me for a fixed resend.
+>=20
+> Best regards
+> Uwe
+>=20
+> =C2=A0drivers/soc/aspeed/aspeed-lpc-ctrl.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 2 +-
+> =C2=A0drivers/soc/aspeed/aspeed-lpc-snoop.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 2 +-
+> =C2=A0drivers/soc/aspeed/aspeed-p2a-ctrl.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 2 +-
+> =C2=A0drivers/soc/aspeed/aspeed-uart-routing.c=C2=A0=C2=A0=C2=A0 | 2 +-
+
+Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au> # aspeed
 
