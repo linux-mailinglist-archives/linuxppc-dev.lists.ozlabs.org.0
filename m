@@ -1,90 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-2698-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2700-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFF49B5B88
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 06:57:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489B59B5C4A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 08:09:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xdby44jptz2xdg;
-	Wed, 30 Oct 2024 16:57:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XddXy2hP9z2xk1;
+	Wed, 30 Oct 2024 18:09:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2413::618" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730267868;
-	cv=pass; b=kD0eqf2Cd9I7y81s/ndV2sK3DyuIjU8IB04bsT5qGAfLQCw7V0U8bnJQf3R3l3oT3FEMvGEcfQZFaRRztmlS78yDcFPqtLgQ06efx9g4VjojnJ7I/HgsnPL9suUMFJg+AiWUhv07dTVgDHlSTS81zjF+owQvjRuenCGcnVtPqXI3EXur5ZQS0ilXb0OzbxdzWEa2EA7WY5EfodfLlXFIoQ4OwHqdvUa2gjOybU6aLhevbBUDMzzjnlMH0P24k0yvinBjMJMIqZpezR8sa7SAV0osmeblUtK14HHpFZaWQ7UwPrqxpj3xtbEbCFqW5bHMMJuQvWSJVnOJ+j8I68cp1Q==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730267868; c=relaxed/relaxed;
-	bh=seoVHYzLrsCW+6bU9RbsrFMQ0zCQasTQubkEw4NFg8w=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 Content-Type:MIME-Version; b=AUseXa8nHO76kePbLRsbsSE0z5dI+lupXpxtxT24HZ7TkWAyUnmErdTOZA1VuQIovCir+Bs3fX1ZipYgsZMSjhOwZTvexD+VBZcFVw9lCE9B+HelDC5PIRQA5nKi0H2l5DSuR7R+sGOwFSTul6S9uK16M9BkX/WH96NgFjkO0urNYh3mrfnG6O5e21TyTSaOTAwoqbKRUBcuH0qrLb43gm3wr/mxdeOTUUpybND5K0aFqdA2tmKTIfUWZmj1f7MaECioTPaj8BZRKvPylbpw4dwZFOuxPfCaepi6nV4r3igCeneazaNsBB72wRKl2Z5EoHY6DItIodIZIux+yMGFGA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=riMv1qcJ; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2413::618; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730272178;
+	cv=none; b=lbRdLnTYmRR+X5vPpYRaSDnQWqWqP2rNqsuQRH3nFIvzvgEgHzYdImmlmkOuDEpw4YiIVDHqeXq6G8X/rXBnM5QOTCHpE5g4YNbidVwbh8DQ68PQxPz2+sCRFDCQzscpfet51/r/Uph4UVI/vHyWqigxV2QD9wysmM40PdvDo9OmlZz84+E3/pXCCWPi6+pRwdbAc5agC+IB/AMj5qdX73Ww6qC7B8LZ0d4x781tOJlLP2qEM4RyU8ylcyJWuxqwXvvs29qfInX64fZGO+kg9My29wv+7mGBNuAWAa7paDeInTIFcQYwTEA+3FQhAggXxnzlg5AfhDt6GxfewusuSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1730272178; c=relaxed/relaxed;
+	bh=LftNx6hiTtEwvQYBqJ87AysvaLELZSDfv14gxXieGLM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xv1fahm02gnXfy37Au4f+CUb3b+2sK76UxRTk8kLVWJmzucZFGRkXqEuEdkI8XElJLeZlYB/EVvL8Rs4We+Ull106aqWGzBUqZkqBKqG9z90l12RccuedUIaVCgnmM50IDMxR4gm2dOIIRGeOgbHUEUfhaP2GltUKmTe64ldKGx7+FBMRp/HtWcCImVsFNtekd2qglHfuvVRIZ+UQs88Q59vElyW0upBo+hP8GOB1vNMm8FUI1L+pNXGZFx9kBFgoeTrNxh21URqu7W7AjhXF6KVgJETbZlkNHWIEqSVDxP/NfLx+PNCPe+qjALQQez6v0BLNunrMK51GwfF0XNwNg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PUouqrvG; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=riMv1qcJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PUouqrvG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2413::618; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on20618.outbound.protection.outlook.com [IPv6:2a01:111:f403:2413::618])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xdby30G34z2xYw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 16:57:45 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CpuokDLG0VKJeEXE3MiuBSwWsKYwk4nM1TVQj9OWBcXFiU0m8ouXSOoIHZ2X83d37ccoBbSVhr1QPVTTPF54ugJw6sZsANLhWuE5UwhaJOu8R5dotoUCgNrgwFZIbSXtjqk6KUAc7Ary5VceqXtupWpW8YeSlmo0xMW6PLfrTvTGJcyxXS4f6eRA6Bg2kSpoOoiCxNYYXesSxF3VHZE6HmstqXeZ1QryPlM+8Tqoabhit8bmBEpAqLNyMnXpdq2Y7YkMy0AZy15f2OO5tRf/qYzC5ZHGzTILnlc1m8Mde+uu+C3j5cG0E8bTdXPJUH5aIqmi8c6vHizpidD61eVCyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=seoVHYzLrsCW+6bU9RbsrFMQ0zCQasTQubkEw4NFg8w=;
- b=J09n/Eyo9DNvHvutDpeP9xNh+CJrgorbwSz9ifyOCO2zT1Lx2UYAwNChw6BQi7x7PWb7eDQl8IUsLUuebBbI0WCJAY0mGpEXuYWCRp4WSkcKn0vfk9AWYxdBKaxa0xYuLym4hFVfa71boyh2u/0kNrlrlGOPj4ZYSUi0QfceyhwQV3gJ4KLrlsNmVee0JRm6KVhwin6ecBCgNt708Bqt6AQayhbUyQ/p1JxXMkYuuF4kfZkbibELnMaiJHFvs3KMUhHXHB+1CJOR0WUXKodzz1JJDaablzumStHCkfElaugyBv52mNddlS3Ba/6gZSZz2/4nPOx1BoD2gMtIK/X5hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=seoVHYzLrsCW+6bU9RbsrFMQ0zCQasTQubkEw4NFg8w=;
- b=riMv1qcJuwAA+bNdS/oTcnF0Mej4FdyXX/H3/SFSwJHmUQcuyRZeucJVAlFgRsjfDghj1ZQAN8cekvHIeYfkfrIU+nmHKNmlMiwXNrkZ6QXMALTr53ipIIeMDRiU2cebIqLN8Ns+KzvShvrGe7HnOyPyfE9JV9FnNmVUQIzCO40IprhT6T+3q9F3iR/TMmKlH5eve5nKh1naazMIcOsmOvLtQglfqYwJyy+KgF4FE4990LZH8WfGRM2pF0LGW72yV2gChGhCd1rgu97W/C3CkjmyAoJbAZ0SZ9M+Gt+IXjCRf5bCYzC52J74Zy7pClhZ+OZXhYAx7tBKo8TE7WlHag==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- CYXPR12MB9386.namprd12.prod.outlook.com (2603:10b6:930:de::20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8093.27; Wed, 30 Oct 2024 05:57:21 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.8114.015; Wed, 30 Oct 2024
- 05:57:21 +0000
-References: <cover.9f0e45d52f5cff58807831b6b867084d0b14b61c.1725941415.git-series.apopple@nvidia.com>
- <9f4ef8eaba4c80230904da893018ce615b5c24b2.1725941415.git-series.apopple@nvidia.com>
- <66f665d084aab_964f22948c@dwillia2-xfh.jf.intel.com.notmuch>
- <871q06c4z7.fsf@nvdebian.thelocal>
- <671addd27198f_10e5929472@dwillia2-xfh.jf.intel.com.notmuch>
- <87seskvqt2.fsf@nvdebian.thelocal>
- <671b1ff62c64d_10e5929465@dwillia2-xfh.jf.intel.com.notmuch>
- <87a5eon8v3.fsf@nvdebian.thelocal>
- <6720428aa1fcc_bc6a929439@dwillia2-xfh.jf.intel.com.notmuch>
-User-agent: mu4e 1.10.8; emacs 29.4
-From: Alistair Popple <apopple@nvidia.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-mm@kvack.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
- logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca,
- catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
- npiggin@gmail.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
- willy@infradead.org, djwong@kernel.org, tytso@mit.edu,
- linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
- david@fromorbit.com
-Subject: Re: [PATCH 10/12] fs/dax: Properly refcount fs dax pages
-Date: Wed, 30 Oct 2024 16:57:09 +1100
-In-reply-to: <6720428aa1fcc_bc6a929439@dwillia2-xfh.jf.intel.com.notmuch>
-Message-ID: <87zfmmp1z7.fsf@nvdebian.thelocal>
-Content-Type: text/plain
-X-ClientProxiedBy: SY8P282CA0027.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:29b::25) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XddXx0Mqdz2xb3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 18:09:36 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49U2d1Fd029914;
+	Wed, 30 Oct 2024 07:09:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=LftNx6hiTtEwvQYBqJ87AysvaLELZSDfv14gxXieG
+	LM=; b=PUouqrvGAxH5I7hig9Y9sfUDNkh+75ewCx82WrmdsDT+8zu5VHfEGUzCj
+	bIim5wDngdxtdBGtAWurkOHGCoHqDk46DvZ9CnzKAVh3a5QFCOuVlmLJUANvYvw2
+	DT6PgeWwDbobOEMq6TuZQ/yNkFLYl7M2Z6m0VTOylPh0rJlgZLHX/oAyAK6/JxND
+	JLFfNvQg0sKVDonr/4t5hdiddrECC+oB+HG9pZIRX9Bp+k1h4MF6jWM3ZxPjJPuT
+	PunT4n6vyjvUr0weBY8zjGq+anl8qgQZt2JycrwEBhn7YJD0xl5vpFm7cvfue7gl
+	mHC2CfwRKhhlT3y9F8sy55fKINykA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42js0h740m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 07:09:01 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49U7907Y030809;
+	Wed, 30 Oct 2024 07:09:00 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42js0h740g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 07:09:00 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49U6kFSv017307;
+	Wed, 30 Oct 2024 07:08:59 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42harsf3mu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 30 Oct 2024 07:08:59 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49U78uMp58917160
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 30 Oct 2024 07:08:56 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2EDB20043;
+	Wed, 30 Oct 2024 07:08:55 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D518A2004D;
+	Wed, 30 Oct 2024 07:08:51 +0000 (GMT)
+Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.in.ibm.com (unknown [9.203.115.143])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 30 Oct 2024 07:08:51 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>, "Naveen N. Rao" <naveen@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Vishal Chourasia <vishalc@linux.ibm.com>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+Subject: [PATCH v7 00/17] powerpc: Core ftrace rework, support for ftrace direct and bpf trampolines
+Date: Wed, 30 Oct 2024 12:38:33 +0530
+Message-ID: <20241030070850.1361304-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5BDp5Xcj1bPaExoq2UF0eLvwIEeM1ONO
+X-Proofpoint-ORIG-GUID: VY57FNGPImFqUPbSfFOsu53LvE_YBHcX
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,239 +106,146 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CYXPR12MB9386:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe4f5d63-fee8-484e-3633-08dcf8a7b802
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3pSkkE9WmgnebbFkEm4Jziap/vr8AJm0QeoQ1l9M9RupyI/Xm+5AQH819ty9?=
- =?us-ascii?Q?pJsFmmsNwVx9RLvpj4rfbsPh+ysMaLiwBd2qxVD64WSFyQlPlZ8UY7dJUoe1?=
- =?us-ascii?Q?bNj3JPCk888bvIYijzTasCnD6001odTjJ/xXtlAa6B451BGDhKImgZqBI1LL?=
- =?us-ascii?Q?PHAslwIDYZp7rKiiYi77rcM4Yevh/x48oN37gYBrjB7ew+bJImtf7AG/d1cO?=
- =?us-ascii?Q?sCXvO+ajztMY8Xv3j2vetDP8/5YHuy4rBhtMB88tMPvn30OgtliefngHu3K9?=
- =?us-ascii?Q?zja4c+sLGMqlG3qU8QcBtil1wqmt6WfmEa3ZaiO8HfNHGiDVBrFvI37+kLgu?=
- =?us-ascii?Q?jYz+eDo5Ib2lVnbyf1YbkBYyA1FDo77K7Z8wHSVMfJ9nJHSF4yC/YvBjDmjr?=
- =?us-ascii?Q?C+gGgR3KCjgSkLyeJuljpIvtVudjFywi8cQXTADeKGRPMMARDTPi0y2Z3T9g?=
- =?us-ascii?Q?lorM1omO/skJgQEIy9+dqtRhxzVMOXZkukdDoMmGsyJTZ4VZHRhAZzXqaJcc?=
- =?us-ascii?Q?5/6r45n1Ejh2RbLpqatV0e/dXXf1FxNIU7uzndEE9NvTjRWAeB2NCAsPWQ9R?=
- =?us-ascii?Q?SzSQpLO09ZSJzepE0zpd+FyZA/azYgBXgxylyKc/jKxXpKlCI66N/WWaVQtg?=
- =?us-ascii?Q?Z8PZtrNFr4FOicl+j5SzYd/P3lLZA/MoHS3j1HqN/87Qz9Xi4Su/irYUBkFt?=
- =?us-ascii?Q?uviEK5DTh19q8WRLV1W8sNN7PkZqkzJf3Hk/+lNxDprYaRuxTlED1aR0JIsE?=
- =?us-ascii?Q?iGSI0g3uMQdQSppOjEdWBPPKy7NW7G3oPKgj0aM81ICuvQJLYvx7cE3rOy5m?=
- =?us-ascii?Q?8SY6PqFbqtvwb0PQRLsxloYl3VyChtZgOTHGbTVV4rzdrN3UEpqls+sI+/Xz?=
- =?us-ascii?Q?jaQUEUTpI5wvZ85wEtdEMrHRSvfA0GuwDsUFA8pBT5iBWg6gidnZMctH1hEi?=
- =?us-ascii?Q?jXgQgGH818RkIK1BH7g2WZlh3AEDF7/bCsSqRgdT/bqSyJ5qxNfhJxE/bccl?=
- =?us-ascii?Q?EMH1Wk7XASed9z3al54Q5TPnINTspmzydiTbwXbA6yvamNCejB73odD7Spyw?=
- =?us-ascii?Q?lNT2ZZsqjIzYHdPs0Ovk21/tKqWuiRUAFr/FRDzNFMhwoFtkA7TqPMxd/qjt?=
- =?us-ascii?Q?dh5iTikecWByzqsjC6PQ+3DioK2JrpXeVHZEwGGdMkO9XO0IsA6/VCdHiuqI?=
- =?us-ascii?Q?QvPTKIIhpyeD8C/DUPaXVIXHWc/Rq1hygizQpI+S4ya7ZfcuJ/uPBkQk9yAw?=
- =?us-ascii?Q?wl7T/wM1ZmJ9HUbwzpAWR02kHsRObJ4HaCKlGfXOYRqul7zznhSYwgI46dEh?=
- =?us-ascii?Q?rNXMxl+gwh1CPe8DHMG6sTuY?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3gfd6XYUTKqMTSVds+yQCxCs1h/waGqBMZMyKheHrkSbaUVWKijZB2wpnKv3?=
- =?us-ascii?Q?EmeEhQSApJxj8qjhzDgxRHKDNOPxMLlrz1nXce+4JPf5EXJOYIC0JUT0Os7/?=
- =?us-ascii?Q?EX6OW+vpM5M21U2h0tHDuvLa2LxWSFsPpZqynUHWVq9rZn5nB66ZSInvOjy2?=
- =?us-ascii?Q?FNmcax5NiVUy0gy0m0se+9SX/QCKQi+of7g10Gf+RbM5Xr3u5SkBj6gZbfGK?=
- =?us-ascii?Q?pWnMFFIK4CIVThe4eW/ZFEpzYDeyALayldmnGSr3f69Z59k/qwBMdiSaFc+x?=
- =?us-ascii?Q?biAt5ZPyBQcjgQrbwt8P8mar42AuWCQTiFN5kExvfsRCY2rRX1z+WpFI8wSy?=
- =?us-ascii?Q?kjHYrQh66SokxhD1woWnHyO+3aqMpdWpKZ+v861yHhY+G4dA+LxaLuWceSDV?=
- =?us-ascii?Q?trqrPy5MsNt6QohcHJmGJzTYcKAn9JzRfMaBFWe3kIcV8EiWiNbTRr1o41RX?=
- =?us-ascii?Q?e7WTqMLT+IrBkMMmbtf46GA7vFSm71mB+RhgBr4UF2mXL3+zjPCdOCHQPvH/?=
- =?us-ascii?Q?CZTrxsaHlurBBm0XZO8TxWY0mJQVVTQWE2JI+8jRa5Mzt6vxV4BZN7fVF2gA?=
- =?us-ascii?Q?k+8XKJx2dK/eIiEk1ZJZ3R32JnKAm5nlXsbRaibTC/bCWdOsT1n0patetQSv?=
- =?us-ascii?Q?5Cvid6qqqDR6c/a+3fiSRY/32GPFIGk2Nv6Nrc5FsjlLb3PvGBxCkIk78xVC?=
- =?us-ascii?Q?eTxw1BRnstQfZCvLhvfM1Hj1VDLupp5NT+7J9sMvUUef0XDeurCL49QZ/lVB?=
- =?us-ascii?Q?X0oyuTHigEpZu0PoN3GCssjiyVZ2Su02jyvIL4rwA7d/9hOkTYCbP4DnByrv?=
- =?us-ascii?Q?w87QFteQBtPMlh0+EDHw6ztomJHgo5KFafBji06t7CvUbiSpA9ucd1rvW/FW?=
- =?us-ascii?Q?lR8FsOUDI47TndpfrGzFc82LJCRTTB4sBfNfiD0RporO1C4gNLn3aLZNH4ri?=
- =?us-ascii?Q?NDwFJqrMkJ7/N9s1ToTB+c5M40QrFwsvuI/t/9O/OGinGD3Nmo5LyqJ+axq5?=
- =?us-ascii?Q?lTIncbKfQVY6s7QXDF/wMBitC4v57LF0p6A4afsUn1LP1/nb7OFUJo+1+bHE?=
- =?us-ascii?Q?fG81jwfjP16DMH1sHQCWoGz+eSL1JrgBpQn/1PiTFEE3vMazllmLdPG+H+/s?=
- =?us-ascii?Q?5Yei/igI048e1sjSsU4ASjpZxBvFt89NGlvTH4HB1d+SwVq5mscA9PZvQzGW?=
- =?us-ascii?Q?y8b5TfIaHkLlcNKs4nybxs2sULpF5/bwZUEcrrfCgAUzeZruyNGZd6e8LcNd?=
- =?us-ascii?Q?ChR0f29rXZtfeTlauToxCylYJ4KkzDvCx93Ouva+bLvxMCwfnDEDwuwho+HG?=
- =?us-ascii?Q?xLtaw0wpX8F08lAEsHYeoyYFOV8bxa6ToVnZQIet9B7JUuj35SdH4CQs+RjF?=
- =?us-ascii?Q?gAi/86D7+n+T0PhJrEeujCObiqfk370L9EwgNKzEEs0LMcDM2R+ZY3+8VHQW?=
- =?us-ascii?Q?sAE5iOFJ2C499J/nu2q1gdy4v2vLIHqRrkbOTb7jy5nYXkl7M/7eGghFJHWC?=
- =?us-ascii?Q?uyrQss3aYDHrGWPJRDOsa8GU5jICRd9vsLe4rpb/g6O19pccGPt2SHXbkKsV?=
- =?us-ascii?Q?m4kTQ5rbbKyHMmOA5gakRr4XiVAZ8nbdMwwvCrmQ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe4f5d63-fee8-484e-3633-08dcf8a7b802
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2024 05:57:21.3518
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ErY3DDaOBqKHKa/awD/i1QRNjgfXhEi2rpUpl+sjLfAEah6ReENrlnND16SJV9Ws8iw5U1iTqOkq6p7D0wToMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9386
-X-Spam-Status: No, score=-0.3 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
+ phishscore=0 impostorscore=0 adultscore=0 clxscore=1015 mlxlogscore=999
+ bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410300051
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+This is v7 of the series posted here:
+https://lore.kernel.org/all/20241018173632.277333-1-hbathini@linux.ibm.com/
 
-Dan Williams <dan.j.williams@intel.com> writes:
+This series reworks core ftrace support on powerpc to have the function
+profiling sequence moved out of line. This enables us to have a single
+nop at kernel function entry virtually eliminating effect of the
+function tracer when it is not enabled. The function profile sequence is
+moved out of line and is allocated at two separate places depending on a
+new config option.
 
-> Alistair Popple wrote:
-> [..]
->
->> >> > It follows that that the DMA-idle condition still needs to look for the
->> >> > case where the refcount is > 1 rather than 0 since refcount == 1 is the
->> >> > page-mapped-but-DMA-idle condition.
->> 
->> Because if the DAX page-cache holds a reference the refcount won't go to
->> zero until dax_delete_mapping_entry() is called. However this interface
->> seems really strange to me - filesystems call
->> dax_layout_busy_page()/dax_wait_page_idle() to make sure both user-space
->> and DMA[1] have finished with the page, but not the DAX code which still
->> has references in it's page-cache.
->
-> First, I appreciate the clarification that I was mixing up "mapped"
-> (elevated map count) with, for lack of a better term, "tracked" (mapping
-> entry valid).
->
-> So, to repeat back to you what I understand now, the proposal is to
-> attempt to allow _count==0 as the DMA idle condition, but still have the
-> final return of the block to the allocator (fs allocator) occur after
-> dax_delete_mapping_entry().
+For 64-bit powerpc, the function profiling sequence is also updated to
+include an additional instruction 'mtlr r0' after the usual
+two-instruction sequence to fix link stack imbalance (return address
+predictor) when ftrace is enabled. This showed an improvement of ~10%
+in null_syscall benchmark (NR_LOOPS=10000000) on a Power 10 system
+with ftrace enabled.
 
-Right, that is what I would like to achieve if possible. The outstanding
-question I think is "should the DAX page-cache have a reference on the
-page?". Or to use your terminology below "if a pfn is tracked should
-pfn_to_page(pfn)->_refcount == 0 or 1?"
+Finally, support for ftrace direct calls is added based on support for
+DYNAMIC_FTRACE_WITH_CALL_OPS. BPF Trampoline support is added atop this.
 
-This version implements it as being zero because altering that requires
-re-ordering all the existing filesystem and mm users of
-dax_layout_busy_range() and dax_delete_mapping_entry(). Based on this
-discussion though I'm beginning to think it probably should be one, but
-I haven't been able to make that work yet.
+Support for ftrace direct calls is added for 32-bit powerpc. There is
+some code to enable bpf trampolines for 32-bit powerpc, but it is not
+complete and will need to be pursued separately.
 
->> Is there some reason for this? In order words why can't the interface to
->> the filesystem be something like calling dax_break_layouts() which
->> ensures everything, including core FS DAX code, has finished with the
->> page(s) in question? I don't see why that wouldn't work for at least
->> EXT4 and XFS (FUSE seemed a bit different but I haven't dug too deeply).
->> 
->> If we could do that dax_break_layouts() would essentially:
->> 1. unmap userspace via eg. unmap_mapping_pages() to drive the refcount
->>    down.
->
-> Am I missing where unmap_mapping_pages() drops the _count? I can see
-> where it drops _mapcount. I don't think that matters for the proposal,
-> but that's my last gap in tracking the proposed refcount model.
+Patches 1 to 10 are independent of this series and can go in separately
+though. Rest of the patches depend on the series from Benjamin Gray
+adding support for patch_uint() and patch_ulong():
+https://lore.kernel.org/all/172474280311.31690.1489687786264785049.b4-ty@ellerman.id.au/
 
-It is suitably obtuse due to MMU_GATHER. unmap_mapping_pages() drops the
-folio/page reference after flushing the TLB. Ie:
+Changelog v7:
+* Changed 'arch_vmlinux_o=""' to 'arch_vmlinux_o='.
+* Added Masahiro's Acked-by.
+* Added change to avoid ".space repeat count is zero, ignored" warning.
+* Fixed PCREL build failure.
 
-=> tlb_finish_mmu
-    => tlb_flush_mmu
-        => __tlb_batch_free_encoded_pages
-            => free_pages_and_swap_cache
-                => folios_put_refs
+Changelog v6:
+* Shellcheck warnings fixed for arch/powerpc/tools/ftrace_check.sh
+* Masahiro's suggestions incorporated in appropriate patches:
+    - https://lore.kernel.org/all/CAK7LNATzqVAJHFg6OyVR1+YgNKo7S=nN1M7w5GJVG1Ygn0QhUA@mail.gmail.com/
+* Shellcheck warnings fixed for arch/powerpc/tools/ftrace-gen-ool-stubs.sh
+* Fixed https://lore.kernel.org/all/202409170544.6d1odaN2-lkp@intel.com/
+* Updated the stale comment describing redzone usage in ppc64 BPF JIT
 
->> 2. delete the DAX page-cache entry to remove its refcount.
->> 3. wait for DMA to complete by waiting for the refcount to hit zero.
->> 
->> The problem with the filesystem truncate code at the moment is steps 2
->> and 3 are reversed so step 3 has to wait for a refcount of 1 as you
->> pointed out previously. But does that matter? Are there ever cases when
->> a filesystem needs to wait for the page to be idle but maintain it's DAX
->> page-cache entry?
->
-> No, not that I can think of. The filesystem just cares that the page was
-> seen as part of the file at some point and that it is holding locks to
-> keep the block associated with that page allocated to the file until it
-> can complete its operation.
->
-> I think what we are talking about is a pfn-state not a page state. If
-> the block-pfn-page lifecycle from allocation to free is deconstructed as:
->
->     block free
->     block allocated
->     pfn untracked
->     pfn tracked
->     page free
->     page busy
->     page free
->     pfn untracked
->     block free
->
-> ...then I can indeed see cases where there is pfn metadata live even
-> though the page is free.
->
-> So I think I was playing victim to the current implementation that
-> assumes that "pfn tracked" means the page is allocated and that
-> pfn_to_folio(pfn)->mapping is valid and not NULL.
->
-> All this to say I am at least on the same page as you that _count == 0
-> can be used as the page free state even if the pfn tracking goes through
-> delayed cleanup.
+Changelog v5:
+* Intermediate files named .vmlinux.arch.* instead of .arch.vmlinux.*
+* Fixed ftrace stack tracer failure due to inadvertent use of
+  'add r7, r3, MCOUNT_INSN_SIZE' instruction instead of
+  'addi r7, r3, MCOUNT_INSN_SIZE'
+* Fixed build error for !CONFIG_MODULES case.
+* .vmlinux.arch.* files compiled under arch/powerpc/tools
+* Resolved checkpatch.pl warnings.
+* Dropped RFC tag.
 
-Great, and I like this terminology of pfn tracked, etc.
+Changelog v4:
+- Patches 1, 10 and 13 are new.
+- Address review comments from Nick. Numerous changes throughout the 
+  patch series.
+- Extend support for ftrace ool to vmlinux text up to 64MB (patch 13).
+- Address remaining TODOs in support for BPF Trampolines.
+- Update synchronization when patching instructions during trampoline 
+  attach/detach.
 
-> However, if vmf_insert_XXX is increasing _count then, per my
-> unmap_mapping_pages() question above, I think dax_wait_page_idle() needs
-> to call try_to_unmap() to drop that _count, right?
 
-At the moment filesystems open-code their own version of
-XXXX_break_layouts() which typically calls dax_layout_busy_page()
-followed by dax_wait_page_idle(). The former will call
-unmap_mapping_range(), which for shared mappings I thought should be
-sufficient to find and unmap all page table references (and therefore
-folio/page _refcounts) based on the address space / index.
+Naveen N Rao (17):
+  powerpc/trace: Account for -fpatchable-function-entry support by
+    toolchain
+  powerpc/kprobes: Use ftrace to determine if a probe is at function
+    entry
+  powerpc64/ftrace: Nop out additional 'std' instruction emitted by gcc
+    v5.x
+  powerpc32/ftrace: Unify 32-bit and 64-bit ftrace entry code
+  powerpc/module_64: Convert #ifdef to IS_ENABLED()
+  powerpc/ftrace: Remove pointer to struct module from dyn_arch_ftrace
+  powerpc/ftrace: Skip instruction patching if the instructions are the
+    same
+  powerpc/ftrace: Move ftrace stub used for init text before _einittext
+  powerpc64/bpf: Fold bpf_jit_emit_func_call_hlp() into
+    bpf_jit_emit_func_call_rel()
+  powerpc/ftrace: Add a postlink script to validate function tracer
+  kbuild: Add generic hook for architectures to use before the final
+    vmlinux link
+  powerpc64/ftrace: Move ftrace sequence out of line
+  powerpc64/ftrace: Support .text larger than 32MB with out-of-line
+    stubs
+  powerpc/ftrace: Add support for DYNAMIC_FTRACE_WITH_CALL_OPS
+  powerpc/ftrace: Add support for DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+  samples/ftrace: Add support for ftrace direct samples on powerpc
+  powerpc64/bpf: Add support for bpf trampolines
 
-I think try_to_unmap() would only be neccessary if we only had the folio
-and not the address space / index and therefore needed to find them from
-the mm (not fs!) rmap.
+ arch/Kconfig                                |   6 +
+ arch/powerpc/Kbuild                         |   2 +-
+ arch/powerpc/Kconfig                        |  22 +-
+ arch/powerpc/Makefile                       |   8 +
+ arch/powerpc/Makefile.postlink              |   8 +
+ arch/powerpc/include/asm/ftrace.h           |  33 +-
+ arch/powerpc/include/asm/module.h           |   5 +
+ arch/powerpc/include/asm/ppc-opcode.h       |  14 +
+ arch/powerpc/kernel/asm-offsets.c           |  11 +
+ arch/powerpc/kernel/kprobes.c               |  18 +-
+ arch/powerpc/kernel/module_64.c             |  66 +-
+ arch/powerpc/kernel/trace/Makefile          |  11 +-
+ arch/powerpc/kernel/trace/ftrace.c          | 298 ++++++-
+ arch/powerpc/kernel/trace/ftrace_64_pg.c    |  69 +-
+ arch/powerpc/kernel/trace/ftrace_entry.S    | 244 ++++--
+ arch/powerpc/kernel/vmlinux.lds.S           |   3 +-
+ arch/powerpc/net/bpf_jit.h                  |  17 +
+ arch/powerpc/net/bpf_jit_comp.c             | 847 +++++++++++++++++++-
+ arch/powerpc/net/bpf_jit_comp32.c           |   7 +-
+ arch/powerpc/net/bpf_jit_comp64.c           |  72 +-
+ arch/powerpc/tools/.gitignore               |   2 +
+ arch/powerpc/tools/Makefile                 |  10 +
+ arch/powerpc/tools/ftrace-gen-ool-stubs.sh  |  51 ++
+ arch/powerpc/tools/ftrace_check.sh          |  50 ++
+ samples/ftrace/ftrace-direct-modify.c       |  85 +-
+ samples/ftrace/ftrace-direct-multi-modify.c | 101 ++-
+ samples/ftrace/ftrace-direct-multi.c        |  79 +-
+ samples/ftrace/ftrace-direct-too.c          |  83 +-
+ samples/ftrace/ftrace-direct.c              |  69 +-
+ scripts/Makefile.vmlinux                    |   7 +
+ scripts/link-vmlinux.sh                     |   7 +-
+ 31 files changed, 2103 insertions(+), 202 deletions(-)
+ create mode 100644 arch/powerpc/tools/.gitignore
+ create mode 100644 arch/powerpc/tools/Makefile
+ create mode 100755 arch/powerpc/tools/ftrace-gen-ool-stubs.sh
+ create mode 100755 arch/powerpc/tools/ftrace_check.sh
 
-> Similar observation for the memory_failure_dev_pagemap() path, I think
-> that path only calls unmap_mapping_range() not try_to_unmap() and
-> leaves _count elevated.
+-- 
+2.47.0
 
-As noted above unmap_mapping_range() will drop the refcount whenever it
-clears a pte/pmd mapping the folio and I think it should find all the
-pte's mapping it.
-
-> Lastly walking through the code again I think this fix is valid today:
->
-> diff --git a/fs/dax.c b/fs/dax.c
-> index fcbe62bde685..48f2c85690e1 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -660,7 +660,7 @@ struct page *dax_layout_busy_page_range(struct address_space *mapping,
->         pgoff_t end_idx;
->         XA_STATE(xas, &mapping->i_pages, start_idx);
->  
-> -       if (!dax_mapping(mapping) || !mapping_mapped(mapping))
-> +       if (!dax_mapping(mapping))
->                 return NULL;
->  
->         /* If end == LLONG_MAX, all pages from start to till end of file */
->
->
-> ...because unmap_mapping_pages() will mark the mapping as unmapped even
-> though there are "pfn tracked + page busy" entries to clean up.
-
-Yep, I noticed this today when I was trying to figure out why my
-re-ordering of the unmap/wait/untrack pfn wasn't working as expected. It
-still isn't for some other reason, and I'm still figuring out if the
-above is correct/valid, but it is on my list of things to look more
-closely at.
-
-> Appreciate you grappling this with me!
-
-Not at all! And thank you as well ... I feel like this has helped me a
-lot in getting a slightly better understanding of the problems. Also
-unless you react violently to anything I've said here I think I have
-enough material to post (and perhaps even explain!) the next version of
-this series.
-
- - Alistair
 
