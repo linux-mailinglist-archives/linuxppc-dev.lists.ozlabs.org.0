@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-2713-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7779B5C6E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 08:11:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0052C9B5C74
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 08:11:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XddYq5q6hz2yFD;
-	Wed, 30 Oct 2024 18:10:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XddZb0mtkz2yN3;
+	Wed, 30 Oct 2024 18:11:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730272223;
-	cv=none; b=EqEJGpjBxrbmDRzPXd7AVmcSK+L0ns32ZRhblY5WD2KZ57zrutZjXE+MZcbgiB/PtETauWuHp1x9yeZhZ/Troj0OOc44dG1PnqsJQqS1og6+SbbrDeYRLPl4YDje+6f/BEwIltGWcMP+ZMCkfZAW7+FmLjKRhSeanBXhGqm6/eB4TKEIkhjFJLtoeXm8VfRTSKZ1i2Jrqdw3b7WNg71uhl36Y41hL73xvFWXczZdb4AA2lrG5YgE+cis6XEAxtQ6WUM1VMpRE4NXAz2/BIWwJgLqLIUvCS1ZfLURVunDp6NzxeoMMtN/u349Q8fZbRFsxr8mS14KGave0hdcyS/7/A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730272263;
+	cv=none; b=E5UU9CzGSTAmMR+JaGRi6WuzEJGkM1Y3csS7mZxISfuACp0coGHbMsDkv49M2AtMsR/HnE8Be3dczFCsW2s4m/pLfIkbk+OKaKeoPh6a3druxL2tBoG22ZOf4VqAczfTtCwNpw5v1Y8qUg8FbSPVQMyPT5S2nGeJI/PVAeRo3W2cFEyCz7c+0Wh9Gd89OyAu7hjMA0wq5e6oQtt/Uvxu4LD4A5RqAk7pN8e+3D6U96o52YqXZPJX2MokCGBPQTQk7cvMuFJKi4RFde++G9H4j8NMeWWpkdubM09MsSrR5iHBoEVXXe9+WqNYRnzf93oIzkzwpLfBau2nJvUD9lj4Eg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730272223; c=relaxed/relaxed;
-	bh=fMuf6/3u2oFMwPE6xiUD3raoVscdjVmrSAh3qaEUcyo=;
+	t=1730272263; c=relaxed/relaxed;
+	bh=FKMSLshbHdxa+6YhvL2f8RGy8sOar0wmC/rzw/CEz1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9XVbuwoCtokoRWVgNZfUQw0nvlc0HJXL+DPsCt7eQafMHWUeJpa5rbEFg5kD5mLwEWySwxZIryc62Sh7OrFR/5Qjp9HYib62GSF9y7PcFxotTL+frpQ3jsC33ifCnMwuaEBfWVY06j5NURdXTAxdFLMKX/CDW6wMU+YSVODeg5cYb6Rjhd9xxHPkSr/GhJBVY3NseHkE2F9WHhG+zh0+OO8e5nCFqKWzKI59kkwi1er+47+i2e0zMDu00WexDzVhJqLidlz75Pi9K3VlFw+5n/rkMXR84Le8LWc68d2mdrJ3XLxdBlL+HcGcAOTuwQBahHfgGBVUovXjbFM6az6yw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KDZPl+Or; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=HQ5ojZ1CRACNP7t7PddyeCwXJWutEvnuS8SKOxslLQLrQk4oUM/vbL0oivu3TOG0apOLJvx2q1H5Es1TfW3OHwCdKTb3qY4yNRUd33gNUHr8m2ZIoon7qA1TcodTn4mrbPXbdNdmfa/jka/+v0nB6H3nAKy0/v1YqYdkot5e2zPLceu3tYtkBC+tIWHbBwguhTocx+jpLA8tAuFDIBB2HOWYrZS2Lw2t0DRvz08ucoCGDhO5IRDfd7LVudbf6q0TUEVAxKeFbnYhHe8S6GCE8QcWfTyvJyCvagfKfFPTLVokDfBE2ZK1tX9n7tRjhkDs1Vx5kG1SmVHnjz2FU9UCJA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tshZbF+I; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KDZPl+Or;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tshZbF+I;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XddYp5sqRz2yF0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 18:10:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XddZZ0q1Dz2yF0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 18:11:01 +1100 (AEDT)
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49U2d3D6030042;
-	Wed, 30 Oct 2024 07:09:57 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49U2d3GW030034;
+	Wed, 30 Oct 2024 07:10:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=fMuf6/3u2oFMwPE6x
-	iUD3raoVscdjVmrSAh3qaEUcyo=; b=KDZPl+OrDzc9cfb4/jQZwF73c3Lrc5098
-	i4vIJGFknpHlYy1p08wjM3pLsiOejG8487n8veU+FLJ1IZnG3h2oqwsmAoJAaP2p
-	sxvnT+vDy6ra7ygpWTDu5R3BM1pcJ6Ikvf/1V5EgOF6UM6dJG9CD78uClgRkIFGy
-	geiRAa34kaXabzSgveu35egSBWcpuopaqYcKiwa+7IciQOynAM702TVD/RRclGs7
-	fM3K1wJhMmpEoSF4n2REDDPPSlFmSOOij8Ncq7+CB0+CdJ0P0/1WbAjoyC3n7Gnr
-	V/vKFFixnsViv68O+gydg8I+wcDoAFcCASErm3IHobVQutGoRFlDA==
+	:mime-version:references:subject:to; s=pp1; bh=FKMSLshbHdxa+6Yhv
+	L2f8RGy8sOar0wmC/rzw/CEz1M=; b=tshZbF+ID1lW6PV6mHPvoCSBuUTve+LgB
+	PEt+/ZQQqIjxPuHuklWpgbMZnr4X6tAiUIt0yItBMC+elGFtAOyde9w+F4nj5qrm
+	6x2wtBXedlxCo/CtU3ofF7DIunriCFgNeNg5h7wjVPc0gXgBIZC/vP7UKqtSzj9J
+	SHoX06s4o852KYe0qXymgH+8/Hn7MxuVXMHelFx772vQ/fhgNmfXk2Xi0oVlbj+e
+	v2xw4AeSJaH2BFVwVLTFsi9QhT36Yp3CNzFOq78w7dIVzolAqZooziuyWOTvo0Wp
+	AifkkshVKkG+h8kkGN1Bo65kFKNnbCTw+BLdOTPiTOSNS9upODF2A==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42js0h744k-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42js0h747d-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Oct 2024 07:09:57 +0000 (GMT)
+	Wed, 30 Oct 2024 07:10:36 +0000 (GMT)
 Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49U79uRf000986;
-	Wed, 30 Oct 2024 07:09:56 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42js0h744d-1
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 49U7AaV1002210;
+	Wed, 30 Oct 2024 07:10:36 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42js0h744v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Oct 2024 07:09:56 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49U5LUYx015843;
-	Wed, 30 Oct 2024 07:09:55 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 42hdf1ej0f-1
+	Wed, 30 Oct 2024 07:10:36 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 49U6nqRh028181;
+	Wed, 30 Oct 2024 07:10:00 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42hb4xy13y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Oct 2024 07:09:55 +0000
+	Wed, 30 Oct 2024 07:10:00 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49U79qw552953386
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 49U79uMc20971788
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 30 Oct 2024 07:09:52 GMT
+	Wed, 30 Oct 2024 07:09:56 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 506FB2004D;
+	by IMSVA (Postfix) with ESMTP id 44FBD2004D;
+	Wed, 30 Oct 2024 07:09:56 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AD07520043;
 	Wed, 30 Oct 2024 07:09:52 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 882D420043;
-	Wed, 30 Oct 2024 07:09:48 +0000 (GMT)
 Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.in.ibm.com (unknown [9.203.115.143])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 30 Oct 2024 07:09:48 +0000 (GMT)
+	Wed, 30 Oct 2024 07:09:52 +0000 (GMT)
 From: Hari Bathini <hbathini@linux.ibm.com>
 To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org,
         linux-trace-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
@@ -86,9 +86,9 @@ Cc: Michael Ellerman <mpe@ellerman.id.au>, "Naveen N. Rao" <naveen@kernel.org>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
         Vishal Chourasia <vishalc@linux.ibm.com>,
         Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-Subject: [PATCH v7 14/17] powerpc/ftrace: Add support for DYNAMIC_FTRACE_WITH_CALL_OPS
-Date: Wed, 30 Oct 2024 12:38:47 +0530
-Message-ID: <20241030070850.1361304-15-hbathini@linux.ibm.com>
+Subject: [PATCH v7 15/17] powerpc/ftrace: Add support for DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+Date: Wed, 30 Oct 2024 12:38:48 +0530
+Message-ID: <20241030070850.1361304-16-hbathini@linux.ibm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241030070850.1361304-1-hbathini@linux.ibm.com>
 References: <20241030070850.1361304-1-hbathini@linux.ibm.com>
@@ -106,16 +106,16 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EqxInnDuzbu8zld6mP9s_v_IP0JcYDER
-X-Proofpoint-ORIG-GUID: rYYMwgmRybuIpLnRSrw5y0tIPpAG6n0n
+X-Proofpoint-GUID: zVzGgbxzWCKBP9_0ETtAUOfgmETQ7fMM
+X-Proofpoint-ORIG-GUID: 5_4uo_vGaXEVgQrWeh8qtMkUxXAS7H1P
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
- phishscore=0 impostorscore=0 adultscore=0 clxscore=1015 mlxlogscore=664
+ phishscore=0 impostorscore=0 adultscore=0 clxscore=1015 mlxlogscore=720
  bulkscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
  priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410300051
+ engine=8.19.0-2409260000 definitions=main-2410300055
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
@@ -123,320 +123,342 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: Naveen N Rao <naveen@kernel.org>
 
-Implement support for DYNAMIC_FTRACE_WITH_CALL_OPS similar to the
-arm64 implementation.
+Add support for DYNAMIC_FTRACE_WITH_DIRECT_CALLS similar to the arm64
+implementation.
 
-This works by patching-in a pointer to an associated ftrace_ops
-structure before each traceable function. If multiple ftrace_ops are
-associated with a call site, then a special ftrace_list_ops is used to
-enable iterating over all the registered ftrace_ops. If no ftrace_ops
-are associated with a call site, then a special ftrace_nop_ops structure
-is used to render the ftrace call as a no-op. ftrace trampoline can then
-read the associated ftrace_ops for a call site by loading from an offset
-from the LR, and branch directly to the associated function.
+ftrace direct calls allow custom trampolines to be called into directly
+from function ftrace call sites, bypassing the ftrace trampoline
+completely. This functionality is currently utilized by BPF trampolines
+to hook into kernel function entries.
 
-The primary advantage with this approach is that we don't have to
-iterate over all the registered ftrace_ops for call sites that have a
-single ftrace_ops registered. This is the equivalent of implementing
-support for dynamic ftrace trampolines, which set up a special ftrace
-trampoline for each registered ftrace_ops and have individual call sites
-branch into those directly.
+Since we have limited relative branch range, we support ftrace direct
+calls through support for DYNAMIC_FTRACE_WITH_CALL_OPS. In this
+approach, ftrace trampoline is not entirely bypassed. Rather, it is
+re-purposed into a stub that reads direct_call field from the associated
+ftrace_ops structure and branches into that, if it is not NULL. For
+this, it is sufficient if we can ensure that the ftrace trampoline is
+reachable from all traceable functions.
 
-A secondary advantage is that this gives us a way to add support for
-direct ftrace callers without having to resort to using stubs. The
-address of the direct call trampoline can be loaded from the ftrace_ops
-structure.
-
-To support this, we reserve a nop before each function on 32-bit
-powerpc. For 64-bit powerpc, two nops are reserved before each
-out-of-line stub. During ftrace activation, we update this location with
-the associated ftrace_ops pointer. Then, on ftrace entry, we load from
-this location and call into ftrace_ops->func().
-
-For 64-bit powerpc, we ensure that the out-of-line stub area is
-doubleword aligned so that ftrace_ops address can be updated atomically.
+When multiple ftrace_ops are associated with a call site, we utilize a
+call back to set pt_regs->orig_gpr3 that can then be tested on the
+return path from the ftrace trampoline to branch into the direct caller.
 
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
 ---
- arch/powerpc/Kconfig                       |  1 +
- arch/powerpc/Makefile                      |  4 ++
- arch/powerpc/include/asm/ftrace.h          |  5 +-
- arch/powerpc/kernel/asm-offsets.c          |  4 ++
- arch/powerpc/kernel/trace/ftrace.c         | 59 +++++++++++++++++++++-
- arch/powerpc/kernel/trace/ftrace_entry.S   | 36 ++++++++++---
- arch/powerpc/tools/ftrace-gen-ool-stubs.sh |  5 +-
- 7 files changed, 102 insertions(+), 12 deletions(-)
+ arch/powerpc/Kconfig                     |   1 +
+ arch/powerpc/include/asm/ftrace.h        |  16 ++++
+ arch/powerpc/kernel/asm-offsets.c        |   3 +
+ arch/powerpc/kernel/trace/ftrace.c       |  11 +++
+ arch/powerpc/kernel/trace/ftrace_entry.S | 114 +++++++++++++++++------
+ 5 files changed, 116 insertions(+), 29 deletions(-)
 
 diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 50d418f72ee8..79bd5a375527 100644
+index 79bd5a375527..73e9e42b2e75 100644
 --- a/arch/powerpc/Kconfig
 +++ b/arch/powerpc/Kconfig
-@@ -234,6 +234,7 @@ config PPC
- 	select HAVE_DEBUG_STACKOVERFLOW
+@@ -235,6 +235,7 @@ config PPC
  	select HAVE_DYNAMIC_FTRACE
  	select HAVE_DYNAMIC_FTRACE_WITH_ARGS	if ARCH_USING_PATCHABLE_FUNCTION_ENTRY || MPROFILE_KERNEL || PPC32
-+	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS if PPC_FTRACE_OUT_OF_LINE || (PPC32 && ARCH_USING_PATCHABLE_FUNCTION_ENTRY)
+ 	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS if PPC_FTRACE_OUT_OF_LINE || (PPC32 && ARCH_USING_PATCHABLE_FUNCTION_ENTRY)
++	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS if HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS
  	select HAVE_DYNAMIC_FTRACE_WITH_REGS	if ARCH_USING_PATCHABLE_FUNCTION_ENTRY || MPROFILE_KERNEL || PPC32
  	select HAVE_EBPF_JIT
  	select HAVE_EFFICIENT_UNALIGNED_ACCESS
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index c9e0fa1ebbfa..f9219510b810 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -151,8 +151,12 @@ KBUILD_CPPFLAGS	+= -DCC_USING_PATCHABLE_FUNCTION_ENTRY
- ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
- CC_FLAGS_FTRACE := -fpatchable-function-entry=1
- else
-+ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS # PPC32 only
-+CC_FLAGS_FTRACE := -fpatchable-function-entry=3,1
-+else
- CC_FLAGS_FTRACE := -fpatchable-function-entry=2
- endif
-+endif
- else
- CC_FLAGS_FTRACE := -pg
- ifdef CONFIG_MPROFILE_KERNEL
 diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index 28f3590ca780..1ad1328cf4e3 100644
+index 1ad1328cf4e3..5eb7631355a1 100644
 --- a/arch/powerpc/include/asm/ftrace.h
 +++ b/arch/powerpc/include/asm/ftrace.h
-@@ -136,8 +136,11 @@ static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
- extern unsigned int ftrace_tramp_text[], ftrace_tramp_init[];
- #ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
- struct ftrace_ool_stub {
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+	struct ftrace_ops *ftrace_op;
-+#endif
- 	u32	insn[4];
--};
-+} __aligned(sizeof(unsigned long));
- extern struct ftrace_ool_stub ftrace_ool_stub_text_end[], ftrace_ool_stub_text[],
- 			      ftrace_ool_stub_inittext[];
- extern unsigned int ftrace_ool_stub_text_end_count, ftrace_ool_stub_text_count,
+@@ -148,6 +148,22 @@ extern unsigned int ftrace_ool_stub_text_end_count, ftrace_ool_stub_text_count,
+ #endif
+ void ftrace_free_init_tramp(void);
+ unsigned long ftrace_call_adjust(unsigned long addr);
++
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++/*
++ * When an ftrace registered caller is tracing a function that is also set by a
++ * register_ftrace_direct() call, it needs to be differentiated in the
++ * ftrace_caller trampoline so that the direct call can be invoked after the
++ * other ftrace ops. To do this, place the direct caller in the orig_gpr3 field
++ * of pt_regs. This tells ftrace_caller that there's a direct caller.
++ */
++static inline void arch_ftrace_set_direct_caller(struct ftrace_regs *fregs, unsigned long addr)
++{
++	struct pt_regs *regs = &fregs->regs;
++
++	regs->orig_gpr3 = addr;
++}
++#endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
+ #else
+ static inline void ftrace_free_init_tramp(void) { }
+ static inline unsigned long ftrace_call_adjust(unsigned long addr) { return addr; }
 diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 9f27ea489cd4..557abe800470 100644
+index 557abe800470..11b83d6788a2 100644
 --- a/arch/powerpc/kernel/asm-offsets.c
 +++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -680,5 +680,9 @@ int main(void)
- 	DEFINE(FTRACE_OOL_STUB_SIZE, sizeof(struct ftrace_ool_stub));
+@@ -682,6 +682,9 @@ int main(void)
+ 
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
+ 	OFFSET(FTRACE_OPS_FUNC, ftrace_ops, func);
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	OFFSET(FTRACE_OPS_DIRECT_CALL, ftrace_ops, direct_call);
++#endif
  #endif
  
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+	OFFSET(FTRACE_OPS_FUNC, ftrace_ops, func);
-+#endif
-+
  	return 0;
- }
 diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index bee2c54a8c04..9090d1a21600 100644
+index 9090d1a21600..051f3db14606 100644
 --- a/arch/powerpc/kernel/trace/ftrace.c
 +++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -38,8 +38,11 @@ unsigned long ftrace_call_adjust(unsigned long addr)
- 		return 0;
+@@ -150,6 +150,17 @@ static int ftrace_get_call_inst(struct dyn_ftrace *rec, unsigned long addr, ppc_
+ 	else
+ 		ip = rec->ip;
  
- 	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY) &&
--	    !IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
-+	    !IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
- 		addr += MCOUNT_INSN_SIZE;
-+		if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS))
-+			addr += MCOUNT_INSN_SIZE;
-+	}
- 
- 	return addr;
- }
-@@ -264,6 +267,46 @@ static int ftrace_init_ool_stub(struct module *mod, struct dyn_ftrace *rec)
- #endif
- }
- 
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+static const struct ftrace_ops *powerpc_rec_get_ops(struct dyn_ftrace *rec)
-+{
-+	const struct ftrace_ops *ops = NULL;
-+
-+	if (rec->flags & FTRACE_FL_CALL_OPS_EN) {
-+		ops = ftrace_find_unique_ops(rec);
-+		WARN_ON_ONCE(!ops);
++	if (!is_offset_in_branch_range(addr - ip) && addr != FTRACE_ADDR &&
++	    addr != FTRACE_REGS_ADDR) {
++		/* This can only happen with ftrace direct */
++		if (!IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS)) {
++			pr_err("0x%lx (0x%lx): Unexpected target address 0x%lx\n",
++			       ip, rec->ip, addr);
++			return -EINVAL;
++		}
++		addr = FTRACE_ADDR;
 +	}
 +
-+	if (!ops)
-+		ops = &ftrace_list_ops;
-+
-+	return ops;
-+}
-+
-+static int ftrace_rec_set_ops(struct dyn_ftrace *rec, const struct ftrace_ops *ops)
-+{
-+	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
-+		return patch_ulong((void *)(ftrace_get_ool_stub(rec) - sizeof(unsigned long)),
-+				   (unsigned long)ops);
-+	else
-+		return patch_ulong((void *)(rec->ip - MCOUNT_INSN_SIZE - sizeof(unsigned long)),
-+				   (unsigned long)ops);
-+}
-+
-+static int ftrace_rec_set_nop_ops(struct dyn_ftrace *rec)
-+{
-+	return ftrace_rec_set_ops(rec, &ftrace_nop_ops);
-+}
-+
-+static int ftrace_rec_update_ops(struct dyn_ftrace *rec)
-+{
-+	return ftrace_rec_set_ops(rec, powerpc_rec_get_ops(rec));
-+}
-+#else
-+static int ftrace_rec_set_nop_ops(struct dyn_ftrace *rec) { return 0; }
-+static int ftrace_rec_update_ops(struct dyn_ftrace *rec) { return 0; }
-+#endif
-+
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
- int ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr, unsigned long addr)
- {
-@@ -294,6 +337,10 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 	if (!ret)
- 		ret = ftrace_modify_code(ip, old, new);
- 
-+	ret = ftrace_rec_update_ops(rec);
-+	if (ret)
-+		return ret;
-+
- 	if (!ret && IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
- 		ret = ftrace_modify_code(rec->ip, ppc_inst(PPC_RAW_NOP()),
- 			 ppc_inst(PPC_RAW_BRANCH((long)ftrace_get_ool_stub(rec) - (long)rec->ip)));
-@@ -345,16 +392,19 @@ void ftrace_replace_code(int enable)
- 		case FTRACE_UPDATE_MODIFY_CALL:
- 			ret = ftrace_get_call_inst(rec, new_addr, &new_call_inst);
- 			ret |= ftrace_get_call_inst(rec, addr, &call_inst);
-+			ret |= ftrace_rec_update_ops(rec);
- 			old = call_inst;
- 			new = new_call_inst;
- 			break;
- 		case FTRACE_UPDATE_MAKE_NOP:
- 			ret = ftrace_get_call_inst(rec, addr, &call_inst);
-+			ret |= ftrace_rec_set_nop_ops(rec);
- 			old = call_inst;
- 			new = nop_inst;
- 			break;
- 		case FTRACE_UPDATE_MAKE_CALL:
- 			ret = ftrace_get_call_inst(rec, new_addr, &call_inst);
-+			ret |= ftrace_rec_update_ops(rec);
- 			old = nop_inst;
- 			new = call_inst;
- 			break;
-@@ -470,6 +520,13 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
- 	ppc_inst_t old, new;
- 	int ret;
- 
-+	/*
-+	 * When using CALL_OPS, the function to call is associated with the
-+	 * call site, and we don't have a global function pointer to update.
-+	 */
-+	if (IS_ENABLED(CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS))
-+		return 0;
-+
- 	old = ppc_inst_read((u32 *)&ftrace_call);
- 	new = ftrace_create_branch_inst(ip, ppc_function_entry(func), 1);
- 	ret = ftrace_modify_code(ip, old, new);
+ 	if (is_offset_in_branch_range(addr - ip))
+ 		/* Within range */
+ 		stub = addr;
 diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-index a6bf7f841040..ff376c990308 100644
+index ff376c990308..2c1b24100eca 100644
 --- a/arch/powerpc/kernel/trace/ftrace_entry.S
 +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-@@ -85,11 +85,21 @@
+@@ -33,14 +33,38 @@
+  * and then arrange for the ftrace function to be called.
+  */
+ .macro	ftrace_regs_entry allregs
+-	/* Save the original return address in A's stack frame */
+-	PPC_STL		r0, LRSAVE(r1)
+ 	/* Create a minimal stack frame for representing B */
+ 	PPC_STLU	r1, -STACK_FRAME_MIN_SIZE(r1)
+ 
+ 	/* Create our stack frame + pt_regs */
+ 	PPC_STLU	r1,-SWITCH_FRAME_SIZE(r1)
+ 
++	.if \allregs == 1
++	SAVE_GPRS(11, 12, r1)
++	.endif
++
++	/* Get the _mcount() call site out of LR */
++	mflr	r11
++
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	/* Load the ftrace_op */
++	PPC_LL	r12, -(MCOUNT_INSN_SIZE*2 + SZL)(r11)
++
++	/* Load direct_call from the ftrace_op */
++	PPC_LL	r12, FTRACE_OPS_DIRECT_CALL(r12)
++	PPC_LCMPI r12, 0
++	.if \allregs == 1
++	bne	.Lftrace_direct_call_regs
++	.else
++	bne	.Lftrace_direct_call
++	.endif
++#endif
++
++	/* Save the previous LR in pt_regs->link */
++	PPC_STL	r0, _LINK(r1)
++	/* Also save it in A's stack frame */
++	PPC_STL	r0, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE+LRSAVE(r1)
++
+ 	/* Save all gprs to pt_regs */
+ 	SAVE_GPR(0, r1)
+ 	SAVE_GPRS(3, 10, r1)
+@@ -54,7 +78,7 @@
+ 
+ 	.if \allregs == 1
+ 	SAVE_GPR(2, r1)
+-	SAVE_GPRS(11, 31, r1)
++	SAVE_GPRS(13, 31, r1)
+ 	.else
+ #if defined(CONFIG_LIVEPATCH_64) || defined(CONFIG_PPC_FTRACE_OUT_OF_LINE)
+ 	SAVE_GPR(14, r1)
+@@ -67,20 +91,15 @@
+ 
+ 	.if \allregs == 1
+ 	/* Load special regs for save below */
++	mfcr	r7
+ 	mfmsr   r8
+ 	mfctr   r9
+ 	mfxer   r10
+-	mfcr	r11
+ 	.else
+ 	/* Clear MSR to flag as ftrace_caller versus frace_regs_caller */
+ 	li	r8, 0
+ 	.endif
+ 
+-	/* Get the _mcount() call site out of LR */
+-	mflr	r7
+-	/* Save the read LR in pt_regs->link */
+-	PPC_STL	r0, _LINK(r1)
+-
+ #ifdef CONFIG_PPC64
  	/* Save callee's TOC in the ABI compliant location */
  	std	r2, STK_GOT(r1)
- 	LOAD_PACA_TOC()		/* get kernel TOC in r2 */
-+#endif
-+
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+	/* r7 points to the instruction following the call to ftrace */
-+	PPC_LL	r5, -(MCOUNT_INSN_SIZE*2 + SZL)(r7)
-+	PPC_LL	r12, FTRACE_OPS_FUNC(r5)
-+	mtctr	r12
-+#else /* !CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS */
-+#ifdef CONFIG_PPC64
- 	LOAD_REG_ADDR(r3, function_trace_op)
- 	ld	r5,0(r3)
- #else
- 	lis	r3,function_trace_op@ha
- 	lwz	r5,function_trace_op@l(r3)
-+#endif
+@@ -88,8 +107,8 @@
  #endif
  
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
+-	/* r7 points to the instruction following the call to ftrace */
+-	PPC_LL	r5, -(MCOUNT_INSN_SIZE*2 + SZL)(r7)
++	/* r11 points to the instruction following the call to ftrace */
++	PPC_LL	r5, -(MCOUNT_INSN_SIZE*2 + SZL)(r11)
+ 	PPC_LL	r12, FTRACE_OPS_FUNC(r5)
+ 	mtctr	r12
+ #else /* !CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS */
+@@ -105,45 +124,51 @@
  	/* Save special regs */
-@@ -205,20 +215,30 @@
+ 	PPC_STL	r8, _MSR(r1)
+ 	.if \allregs == 1
++	PPC_STL	r7, _CCR(r1)
+ 	PPC_STL	r9, _CTR(r1)
+ 	PPC_STL	r10, _XER(r1)
+-	PPC_STL	r11, _CCR(r1)
+ 	.endif
+ 
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	/* Clear orig_gpr3 to later detect ftrace_direct call */
++	li	r7, 0
++	PPC_STL	r7, ORIG_GPR3(r1)
++#endif
++
+ #ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
+ 	/* Save our real return address in nvr for return */
+ 	.if \allregs == 0
+ 	SAVE_GPR(15, r1)
+ 	.endif
+-	mr	r15, r7
++	mr	r15, r11
+ 	/*
+-	 * We want the ftrace location in the function, but our lr (in r7)
++	 * We want the ftrace location in the function, but our lr (in r11)
+ 	 * points at the 'mtlr r0' instruction in the out of line stub.  To
+ 	 * recover the ftrace location, we read the branch instruction in the
+ 	 * stub, and adjust our lr by the branch offset.
+ 	 *
+ 	 * See ftrace_init_ool_stub() for the profile sequence.
+ 	 */
+-	lwz	r8, MCOUNT_INSN_SIZE(r7)
++	lwz	r8, MCOUNT_INSN_SIZE(r11)
+ 	slwi	r8, r8, 6
+ 	srawi	r8, r8, 6
+-	add	r3, r7, r8
++	add	r3, r11, r8
+ 	/*
+ 	 * Override our nip to point past the branch in the original function.
+ 	 * This allows reliable stack trace and the ftrace stack tracer to work as-is.
+ 	 */
+-	addi	r7, r3, MCOUNT_INSN_SIZE
++	addi	r11, r3, MCOUNT_INSN_SIZE
+ #else
+ 	/* Calculate ip from nip-4 into r3 for call below */
+-	subi    r3, r7, MCOUNT_INSN_SIZE
++	subi    r3, r11, MCOUNT_INSN_SIZE
  #endif
+ 
+ 	/* Save NIP as pt_regs->nip */
+-	PPC_STL	r7, _NIP(r1)
++	PPC_STL	r11, _NIP(r1)
+ 	/* Also save it in B's stackframe header for proper unwind */
+-	PPC_STL	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
++	PPC_STL	r11, LRSAVE+SWITCH_FRAME_SIZE(r1)
+ #if defined(CONFIG_LIVEPATCH_64) || defined(CONFIG_PPC_FTRACE_OUT_OF_LINE)
+-	mr	r14, r7		/* remember old NIP */
++	mr	r14, r11	/* remember old NIP */
+ #endif
+ 
+ 	/* Put the original return address in r4 as parent_ip */
+@@ -154,14 +179,32 @@
  .endm
  
--_GLOBAL(ftrace_regs_caller)
--	ftrace_regs_entry 1
--	/* ftrace_call(r3, r4, r5, r6) */
-+.macro ftrace_regs_func allregs
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS
-+	bctrl
-+#else
-+	.if \allregs == 1
- .globl ftrace_regs_call
- ftrace_regs_call:
-+	.else
-+.globl ftrace_call
-+ftrace_call:
-+	.endif
-+	/* ftrace_call(r3, r4, r5, r6) */
- 	bl	ftrace_stub
+ .macro	ftrace_regs_exit allregs
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	/* Check orig_gpr3 to detect ftrace_direct call */
++	PPC_LL	r3, ORIG_GPR3(r1)
++	PPC_LCMPI cr1, r3, 0
++	mtctr	r3
 +#endif
-+.endm
 +
-+_GLOBAL(ftrace_regs_caller)
-+	ftrace_regs_entry 1
-+	ftrace_regs_func 1
- 	ftrace_regs_exit 1
++	/* Restore possibly modified LR */
++	PPC_LL	r0, _LINK(r1)
++
+ #ifndef CONFIG_PPC_FTRACE_OUT_OF_LINE
+ 	/* Load ctr with the possibly modified NIP */
+ 	PPC_LL	r3, _NIP(r1)
+-	mtctr	r3
+-
+ #ifdef CONFIG_LIVEPATCH_64
+ 	cmpd	r14, r3		/* has NIP been altered? */
+ #endif
++
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	beq	cr1,2f
++	mtlr	r3
++	b	3f
++#endif
++2:	mtctr	r3
++	mtlr	r0
++3:
++
+ #else /* !CONFIG_PPC_FTRACE_OUT_OF_LINE */
+ 	/* Load LR with the possibly modified NIP */
+ 	PPC_LL	r3, _NIP(r1)
+@@ -185,12 +228,6 @@
+ #endif
+ 	.endif
  
- _GLOBAL(ftrace_caller)
- 	ftrace_regs_entry 0
--	/* ftrace_call(r3, r4, r5, r6) */
--.globl ftrace_call
--ftrace_call:
--	bl	ftrace_stub
-+	ftrace_regs_func 0
- 	ftrace_regs_exit 0
- 
- _GLOBAL(ftrace_stub)
-@@ -377,7 +397,7 @@ _GLOBAL(return_to_handler)
+-	/* Restore possibly modified LR */
+-	PPC_LL	r0, _LINK(r1)
+-#ifndef CONFIG_PPC_FTRACE_OUT_OF_LINE
+-	mtlr	r0
+-#endif
+-
+ #ifdef CONFIG_PPC64
+ 	/* Restore callee's TOC */
+ 	ld	r2, STK_GOT(r1)
+@@ -203,8 +240,12 @@
+         /* Based on the cmpd above, if the NIP was altered handle livepatch */
+ 	bne-	livepatch_handler
+ #endif
++
+ 	/* jump after _mcount site */
  #ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
- SYM_DATA(ftrace_ool_stub_text_count, .long CONFIG_PPC_FTRACE_OUT_OF_LINE_NUM_RESERVE)
- 
--SYM_CODE_START(ftrace_ool_stub_text)
-+SYM_START(ftrace_ool_stub_text, SYM_L_GLOBAL, .balign SZL)
- 	.space CONFIG_PPC_FTRACE_OUT_OF_LINE_NUM_RESERVE * FTRACE_OOL_STUB_SIZE
- SYM_CODE_END(ftrace_ool_stub_text)
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++	bnectr	cr1
++#endif
+ 	/*
+ 	 * Return with blr to keep the link stack balanced. The function profiling sequence
+ 	 * uses 'mtlr r0' to restore LR.
+@@ -260,6 +301,21 @@ ftrace_no_trace:
  #endif
-diff --git a/arch/powerpc/tools/ftrace-gen-ool-stubs.sh b/arch/powerpc/tools/ftrace-gen-ool-stubs.sh
-index 6a201df83524..950a7778324b 100755
---- a/arch/powerpc/tools/ftrace-gen-ool-stubs.sh
-+++ b/arch/powerpc/tools/ftrace-gen-ool-stubs.sh
-@@ -28,12 +28,13 @@ fi
- 
- cat > "$arch_vmlinux_S" <<EOF
- #include <asm/asm-offsets.h>
-+#include <asm/ppc_asm.h>
- #include <linux/linkage.h>
- 
- .pushsection .tramp.ftrace.text,"aw"
- SYM_DATA(ftrace_ool_stub_text_end_count, .long $num_ool_stubs_text_end)
- 
--SYM_CODE_START(ftrace_ool_stub_text_end)
-+SYM_START(ftrace_ool_stub_text_end, SYM_L_GLOBAL, .balign SZL)
- #if $num_ool_stubs_text_end
- 	.space $num_ool_stubs_text_end * FTRACE_OOL_STUB_SIZE
  #endif
-@@ -43,7 +44,7 @@ SYM_CODE_END(ftrace_ool_stub_text_end)
- .pushsection .tramp.ftrace.init,"aw"
- SYM_DATA(ftrace_ool_stub_inittext_count, .long $num_ool_stubs_inittext)
  
--SYM_CODE_START(ftrace_ool_stub_inittext)
-+SYM_START(ftrace_ool_stub_inittext, SYM_L_GLOBAL, .balign SZL)
- 	.space $num_ool_stubs_inittext * FTRACE_OOL_STUB_SIZE
- SYM_CODE_END(ftrace_ool_stub_inittext)
- .popsection
++#ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
++.Lftrace_direct_call_regs:
++	mtctr	r12
++	REST_GPRS(11, 12, r1)
++	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
++	bctr
++.Lftrace_direct_call:
++	mtctr	r12
++	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
++	bctr
++SYM_FUNC_START(ftrace_stub_direct_tramp)
++	blr
++SYM_FUNC_END(ftrace_stub_direct_tramp)
++#endif
++
+ #ifdef CONFIG_LIVEPATCH_64
+ 	/*
+ 	 * This function runs in the mcount context, between two functions. As
 -- 
 2.47.0
 
