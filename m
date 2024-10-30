@@ -1,72 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-2719-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2720-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234D99B605C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 11:40:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC769B620C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Oct 2024 12:40:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XdkCp58RGz2ydW;
-	Wed, 30 Oct 2024 21:40:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XdlXy1wSQz2xxx;
+	Wed, 30 Oct 2024 22:40:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.208.176
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730284806;
-	cv=none; b=i4ICMtryyp5hFn/HCvQkpFkbpJp18AVH5My6JvXB5/deGNfjzMwj5agHjNzxGMu6Bi4J/SCvJmi6769bmY7vPXCSVqVb+V5dkCeR6FX9ePzbW4mth7gZvx7IdMEKrTX4lCbtqg0jRkdB3DwAysy2sUp54xYNxUG16vqnXeCvRfwWmpsAcr4yZXa62EqAO1vTwC213ziwMBppdLX2Joom7SDbSpPJwGcSJuKAUuogrsxVmZ79YVLheUt2XozP7HRI1D0B3MvVfJk1bls22PrnKKf5Jf6R+29t6altNnxNxbxUOq2yAwl1GVa4iGaWnDBvYuu1uo/OSwFCgwRR8GSySQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730288402;
+	cv=none; b=YiwrscJd3xqBzXcCvvAJOE1SN2mlyPnol1ps89L9qMEVIb7oPaVlUwqYKA9Z8GxN1UU+NligI8bDJmzavP+dTSGTSbQiv0AiIXyqGSalIR/vnbbuccdj2GngJ70RwZavjqTsbDf0RoD+lZE6klzBFFj9cm55+UxGTTDkccHLewCVSDCl4c4fzcJMqfb7nAudjwUm4ULWjTkVgSdixL4L3OinhfZWQCKQ7BE/4dzwejYvA0cCF3LrQnTe2sd4YzcT3+TeyJq6I4bal7pLdda3TPZQ7bB/cL99NyQLcya4DapPMJoAWCplZSRppqHMBXA4MeWJRUELdoWyMbwbZlfkNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730284806; c=relaxed/relaxed;
-	bh=Z5zeClzjkLB2fwj5NuKVJcICjOwHMYB7WeUASTb/YtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DiY/x9qsUWIDriuuBrkG3+8kjturmPKJtuClcg/HyZ5WZtW8t4i4XlyvCbqZCVbij+cAXWRzMkkCM+Rv9PpvBfaNukkWQl9SVXqcZhsuH5VkF22oOKEPerUBUm2mjJXOpbO9GDQa4BzAKbTErf/vBi8beqQ1Fo6sE682XGAd5cid1boPTZc2FQfZuvPn7D77pg5Xk8i5acTQqS5UsUAeQxKujaxD0SDcpwMRY15mDZ4mW+GUxiW03+9dcFRWTz2eRuGNkQVb/GQYOlpr0Crk45mVaqsCXvRDpexFy+NKZuHM196iWlnoCnkWEVGodtP61kpqJC23OOXN1IryDB99kA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.208.176; helo=mail-lj1-f176.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.176; helo=mail-lj1-f176.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	t=1730288402; c=relaxed/relaxed;
+	bh=VeIG/ZcqI3p+nLl4RvpoP3/dtuBOLvCoB03RCodl0P0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HGwyJjWUML9qAQiL+Be81jU1v8Icp5UdsHjzxE3od/lJ8n+heyw2xUuQUqMJrgora18awC7pagJ3msljLskcAOWc5hNgieWHERLRKBgzzPd7U6BF8C05fV4uMaFRT7mjnNIkqht0XfAsolzmbpfvhmxlnzh/t6a7cRY5IMExlgaXrsWnljgsmHsRvTm3sfFT0JnRFQQVvjTjip/N8GCP8s965bo7zBrb1tJPfaepBZoXw005yq0Z+0VZXoObS2FJNc51nvJY750cPm4xw3AC2YB01Kp+xa0abSoTvgq6mmolk/N4NCyQ9kBkrJNhR1T5MIQ8pNf1xZiQoSlkcVbcRQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rhEg0d1z; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Sf9t6VjH; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rhEg0d1z;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Sf9t6VjH;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (unknown [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdkCn3tTZz2yZ4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 21:40:05 +1100 (AEDT)
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2fb5fa911aaso90559511fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 03:40:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730284802; x=1730889602;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z5zeClzjkLB2fwj5NuKVJcICjOwHMYB7WeUASTb/YtI=;
-        b=Dm/GtCPJ9UhyZTMJA29wm4Jz+EDRf/7wZQT0OlHeKwukcQqSL0AbcJQHDxindUsaeq
-         4fxfVWlHMeDde6FktnqErvliWmb/tI4OjjfzpDWuHbhTuBfI9Bge74WamdfazjVYO0hq
-         pQMeLrNcsHGrcK9OH4eaNo+QNO1PYKLelOYyU8BFsJQgwtptdz8th++dw3qG0bozN0rx
-         FVRSuNgWkyffSHxXZX0JzkH7gsn+C5aIt8Df/rkHnlecs91yuOqO7/0jQUMjZP11RRj+
-         CmCRuYMKXJKHXk7VJmsCbqIS6VxWL6zXarfM3bkplqqMui0svPHxSDWFVAVglpqW8pw/
-         KRcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTHA09Eb7gFDz5ysjZ43u2Imi+uJLPcZcnTVorAwphxSCQDS1nCvuA9CEXMDQoQ8WBiEcGGy1qfDGVNuY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzkiv3acZq8uDTsH6aUFR2dMFAfGOpfwOIY/Kz5aiDV2tXx0zbK
-	P3S0ucqCsbAM9u1r6vSpUrM/6dUQd+pBjvEianX8WpDLdkY6Mw6r
-X-Google-Smtp-Source: AGHT+IF1BeMOioe7t/P4H3j1JzkGprhgTWXKnwqJJVpJqtv4+UpyysQM6plM71Gz04mozafT9jF6YA==
-X-Received: by 2002:a05:651c:211c:b0:2fb:63b5:c0bc with SMTP id 38308e7fff4ca-2fcbdf60dfdmr108666691fa.3.1730284801674;
-        Wed, 30 Oct 2024 03:40:01 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-115.fbsv.net. [2a03:2880:30ff:73::face:b00c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b3a0887besm558559566b.207.2024.10.30.03.40.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 03:40:01 -0700 (PDT)
-Date: Wed, 30 Oct 2024 03:39:58 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Madalin Bucur <madalin.bucur@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Radu Bulie <radu-andrei.bulie@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next 1/3] soc: fsl_qbman: use be16_to_cpu() in
- qm_sg_entry_get_off()
-Message-ID: <20241030-enigmatic-mayfly-of-triumph-d571bb@leitao>
-References: <20241029164317.50182-1-vladimir.oltean@nxp.com>
- <20241029164317.50182-2-vladimir.oltean@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XdlXw1cbzz2xs8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Oct 2024 22:40:00 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1730288386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VeIG/ZcqI3p+nLl4RvpoP3/dtuBOLvCoB03RCodl0P0=;
+	b=rhEg0d1z87PUbjnSMEsHa2ZTMjm4V7As2oyILf5i4K2VK/32cI0L1o8550RHGdp6sqGjh3
+	ErfD1VAW2o++iRalLhw8wi1ciSvnXToQPU/7Dqz5Wlnc51fuF7yZtMempbYTt2HzLBGqx0
+	Y9YSzHbUO+IR24Yjq+Ny338RBqa0jzNLUw2m9Vrr52kzfVeGJB4+uj1JaJRYCIo3DE6Lly
+	bobxafA+CuOfJYFL3jZUIAtXVESnMTctTppzVthR6fn1ijnvzGIvSfDwZ8yFMWE8zMh75v
+	CjtAzrsY5JQC46+IYsUu5faYS3U6XCuR8hSr6G0+pno9IQ0T9vFbLX0np3OHDQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1730288386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VeIG/ZcqI3p+nLl4RvpoP3/dtuBOLvCoB03RCodl0P0=;
+	b=Sf9t6VjHntegt94+/ZST48Lk206fyTt9ZFie/7zblKXgaCtLwerDU5H5dAAiGuPUAe0Y5b
+	9F1eFOTF9JGc5hBw==
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Guo
+ Ren
+ <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
+ <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Russell
+ King <linux@armlinux.org.uk>, Huacai Chen <chenhuacai@kernel.org>, WANG
+ Xuerui <kernel@xen0n.name>, Theodore Ts'o <tytso@mit.edu>, "Jason A.
+ Donenfeld" <Jason@zx2c4.com>, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe
+ Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Vincenzo Frascino
+ <vincenzo.frascino@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Thomas
+ =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Nam Cao
+ <namcao@linutronix.de>
+Subject: Re: [PATCH 00/28] vdso: Preparations for generic data storage
+In-Reply-To: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
+References: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
+Date: Wed, 30 Oct 2024 12:39:45 +0100
+Message-ID: <871pzxzuny.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,40 +94,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241029164317.50182-2-vladimir.oltean@nxp.com>
-X-Spam-Status: No, score=0.3 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RDNS_NONE,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Oct 29, 2024 at 06:43:15PM +0200, Vladimir Oltean wrote:
-> struct qm_sg_entry :: offset is a 13-bit field, declared as __be16.
-> 
-> When using be32_to_cpu(), a wrong value will be calculated on little
-> endian systems (Arm), because type promotion from 16-bit to 32-bit,
-> which is done before the byte swap and always in the CPU native
-> endianness, changes the value of the scatter/gather list entry offset in
-> big-endian interpretation (adds two zero bytes in the LSB interpretation).
-> The result of the byte swap is ANDed with GENMASK(12, 0), so the result
-> is always zero, because only those bytes added by type promotion remain
-> after the application of the bit mask.
-> 
-> The impact of the bug is that scatter/gather frames with a non-zero
-> offset into the buffer are treated by the driver as if they had a zero
-> offset. This is all in theory, because in practice, qm_sg_entry_get_off()
-> has a single caller, where the bug is inconsequential, because at that
-> call site the buffer offset will always be zero, as will be explained in
-> the subsequent change.
-> 
-> Flagged by sparse:
-> 
-> warning: cast to restricted __be32
-> warning: cast from restricted __be16
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Folks!
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+On Thu, Oct 10 2024 at 09:01, Thomas Wei=C3=9Fschuh wrote:
+> Historically each architecture defined their own datapage to store the
+> VDSO data. This stands in contrast to the generic nature of the VDSO
+> code itself.
+> We plan to introduce a generic framework for the management of the VDSO
+> data storage that can be used by all architectures and which works
+> together with the existing generic VDSO code.
+>
+> Before that is possible align the different architectures by
+> standardizing on the existing generic infrastructure and moving things
+> out of the VDSO data page which does not belong there.
+>
+> Patches	 1- 2:	csky
+> Patch	    3:	s390
+> Patches	 4- 5:	arm64
+> Patch	    6:	riscv
+> Patch	    7:	arm
+> Patch	    8:	LoongArch
+> Patch	    9:	MIPS
+> Patches 10-20:	x86
+> Patches 21-27:	powerpc
+> Patch      28: 	Renamings to avoid a name clash with the new code.
+
+As this has been sitting for two weeks now without major comments, I'm
+planning to merge that through the tip tree tomorrow.
+
+Thanks,
+
+        tglx
 
