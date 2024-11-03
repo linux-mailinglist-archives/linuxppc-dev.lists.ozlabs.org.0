@@ -1,43 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-2785-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2789-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2C89BA735
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Nov 2024 18:13:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2020A9BA739
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Nov 2024 18:14:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XhLlQ2VRBz2yS0;
-	Mon,  4 Nov 2024 04:13:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XhLlS6dcbz2yYf;
+	Mon,  4 Nov 2024 04:13:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730653986;
-	cv=none; b=TTymaqmUXIzWFK3sd3G8xeqDAL0OlKiRYeyFbRZcm1SkunOuVvHbn5RiPQjt9YGfkBh+i2wXZjl+ZtSWUhyKQxaIY+gIU2i9lwrbB17eIdo2khKW7oTgx4gsP0NbIg0BSnbpoFdMAVY2yan+6kUX6dVGSCR/BZGpAKkOzK6UeNoCDcoZwQ+TEF2PbpVPU6pE5SEccCmQIa99juNXwBYy8JBoRvJ1slphg985H+lP1GINt8hp6/E0gXd+a3dPav6O7BI9wqxUy5Vdh6R9w11cvkEh0TVNGQKVzOLica6CJCB6E1EshTCc2DNUZpUKBGNuUuHgThCqkX7uT64Dzmp3Dg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730653988;
+	cv=none; b=MFqtwylyrx/M1ti0fWJRFXJ5G0+rkvYTPH5mwie3voVfPaLR19cDM/HUFgssoLA+h7WvUvXaHPBBiZaVgy4ahxTzHxYdBj//FOuq+Gowxpvk58wJhMycW/ts9QcKQqKeA1sxC1dl86Xr6DtKi95X36YwBuBzvu7e76xSiP207gvLvdV5UGjhY5ZArqHU9h2UGD0xR/ILtAjdVHoYOtbSPQXNpcK9k3IRC+ErZCLJTFVCD4nbiAqXAp1d9rNOdYQUCuLtlvs+aiHOQaas0m5KAAhFoLb6oYV61NVba9FSPDOHIDplpeac8z7yZkUlJFwygvwUqwTxVJNW0PVH20CR+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730653986; c=relaxed/relaxed;
-	bh=Sqi+9yPBwnc52qxKzE5d0ZY2IIwQxedd5SqkbLgj8uw=;
+	t=1730653988; c=relaxed/relaxed;
+	bh=OC1/gS2rf5Or/2WdYeL90JPWXf8fLxRuLPCnMi6T5Ms=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CGD9zpwDEzK5v6YWW/L0a1wDvHfCLw525fx5flRsPhmSdiz4ZoFXdqFWuf+RWuESqPU+N5PuNzKfuU8n5rtBTSlO3mAZkVLppb7bcHcekc6LTXIr8vV8xbIhlyyHGhAz/VIBHhVBhWTN01GdmkdAHblJM0pp5jRyawWTBxyBoM83VMBsf6JhsfeFrfDZkqOk72d3h/7N8u+HOJWDhKO7PK0OtcK7EhLi9WnaDmY5pJO2cCrBqw4ptwVjaDV/uizCIislSDgD05nZR9Pgqu+DM1Anx4Ic3AcM/XUyE4pmH7ADdouXQUaYPCvaV8dY+RrzghfxurWtbzG1jC9kDd50XQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=gAex2VJy; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	 In-Reply-To:To:Cc; b=ofiwemkMQnwBqyYHhbDMU9cflLZWlrGnD9dEr95XPP+MTlv0FkS6Ov1RQVNaNKY0jlre0ZCL5aXDOprBJMp8wFGf/qtV4dQJkxgF4BloQFtfPjqlobyEPIyb6zp4ILJFuT8P7Ru3d8BgB//By7j6JvpjaEGfoNvMUwEyec+RTrw3zkezNsPsOAL0tN0SAxMywOMFoS5KlUiumy2HRcBr/VbQk9QMbdf/IYOWDE/Q42kGDzFzMqePZA2jX2j7mf1IEN7Eo7ojIJJivJWFOqohA70jBlacPBtmmqFeMY7/JGXSrPhwwpi2RmaCu4mJeOm4iP870OG98EF2Vlp8czCdZw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=H75YdV+k; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=gAex2VJy;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=H75YdV+k;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhLlM4Wwhz2yNv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2024 04:13:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhLlP4gJQz2yR9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2024 04:13:04 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1730653482;
-	bh=omnzY7OVUHnekZ/bUX8pXaM2rzeR5oe1Izmsxqjd69Q=;
+	bh=zDhPVchfMys7HnsVtwZsrXjRXhl5fZsRZ1XGARPtegE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gAex2VJyMV+OiFkklrV8IrICkrh78EMUGYE6sgF6izsK/E9bdOLP+ue1pMfx65KEP
-	 daDJhG0bHjOZvxSIVoZOVufQPlLYRdXOaAnYLf8bMNfx7N7rX5CM0q0eWD9GRIOclJ
-	 PZ80lLezOY62im86G8xcV8ntzX7D+eMJVrF5nUUY=
+	b=H75YdV+k9aKMbCg3vYqkrITc/NSui5xg9ZVSt864cTzcQxw90svfufktDmLA8a2lW
+	 /dbglWlZm61tUtLow1Q3tyjkRdeCmG3i5aMEWTFNazRPqYODgYZJAsPEMnIPlThVwG
+	 y4spMmomoO7OqL8jTcXa0IsoXpoF9GwL6a0t8T0c=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Sun, 03 Nov 2024 17:03:32 +0000
-Subject: [PATCH v2 03/10] PCI/sysfs: Calculate bin_attribute size through
+Date: Sun, 03 Nov 2024 17:03:33 +0000
+Subject: [PATCH v2 04/10] nvmem: core: calculate bin_attribute size through
  bin_size()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241103-sysfs-const-bin_attr-v2-3-71110628844c@weissschuh.net>
+Message-Id: <20241103-sysfs-const-bin_attr-v2-4-71110628844c@weissschuh.net>
 References: <20241103-sysfs-const-bin_attr-v2-0-71110628844c@weissschuh.net>
 In-Reply-To: <20241103-sysfs-const-bin_attr-v2-0-71110628844c@weissschuh.net>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -98,11 +98,11 @@ Cc: Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1730653468; l=2359;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1730653468; l=1407;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=omnzY7OVUHnekZ/bUX8pXaM2rzeR5oe1Izmsxqjd69Q=;
- b=QEHmCC4IyJCPeU5OBXq34EhCHkpPKQglOlOaOSow6b0xRNSB6n8UoneN+GL6/CGyBOY6ZhYUm
- LOb4xWNOB8AC0VTvIPxtVY0ZKdQGGSIFQEaRXg1966rzLgUpCbB+31p
+ bh=zDhPVchfMys7HnsVtwZsrXjRXhl5fZsRZ1XGARPtegE=;
+ b=LIJoZnee0F8KxWypgifoxx5C03UWzUsfKRD3mTuXEg8GZQDzU4bKngbG7gE6mho+vvHyDPpYb
+ T0csHWK0CZAA7NKHFKir+h35XqhjNK7+x/o8Rk9YXpQi/8Q7SU3s9Ua
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -115,73 +115,43 @@ size. Instead use the new, dedicated bin_size() one.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- drivers/pci/pci-sysfs.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ drivers/nvmem/core.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index 5d0f4db1cab78674c5e5906f321bf7a57b742983..040f01b2b999175e8d98b05851edc078bbabbe0d 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -818,21 +818,20 @@ static struct bin_attribute *pci_dev_config_attrs[] = {
- 	NULL,
- };
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 33ffa2aa4c1152398ec66b8dd7b30384c5346a6e..63370c76394ee9b8d514da074779617cef67c311 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -303,11 +303,19 @@ static umode_t nvmem_bin_attr_is_visible(struct kobject *kobj,
+ 	struct device *dev = kobj_to_dev(kobj);
+ 	struct nvmem_device *nvmem = to_nvmem_device(dev);
  
--static umode_t pci_dev_config_attr_is_visible(struct kobject *kobj,
--					      struct bin_attribute *a, int n)
-+static size_t pci_dev_config_attr_bin_size(struct kobject *kobj,
-+					   const struct bin_attribute *a,
-+					   int n)
- {
- 	struct pci_dev *pdev = to_pci_dev(kobj_to_dev(kobj));
- 
--	a->size = PCI_CFG_SPACE_SIZE;
- 	if (pdev->cfg_size > PCI_CFG_SPACE_SIZE)
--		a->size = PCI_CFG_SPACE_EXP_SIZE;
+-	attr->size = nvmem->size;
 -
--	return a->attr.mode;
-+		return PCI_CFG_SPACE_EXP_SIZE;
-+	return PCI_CFG_SPACE_SIZE;
+ 	return nvmem_bin_attr_get_umode(nvmem);
  }
  
- static const struct attribute_group pci_dev_config_attr_group = {
- 	.bin_attrs = pci_dev_config_attrs,
--	.is_bin_visible = pci_dev_config_attr_is_visible,
-+	.bin_size = pci_dev_config_attr_bin_size,
- };
- 
- /*
-@@ -1330,21 +1329,26 @@ static umode_t pci_dev_rom_attr_is_visible(struct kobject *kobj,
- 					   struct bin_attribute *a, int n)
- {
- 	struct pci_dev *pdev = to_pci_dev(kobj_to_dev(kobj));
--	size_t rom_size;
- 
- 	/* If the device has a ROM, try to expose it in sysfs. */
--	rom_size = pci_resource_len(pdev, PCI_ROM_RESOURCE);
--	if (!rom_size)
-+	if (!pci_resource_end(pdev, PCI_ROM_RESOURCE))
- 		return 0;
- 
--	a->size = rom_size;
--
- 	return a->attr.mode;
- }
- 
-+static size_t pci_dev_rom_attr_bin_size(struct kobject *kobj,
-+					const struct bin_attribute *a, int n)
++static size_t nvmem_bin_attr_size(struct kobject *kobj,
++				  const struct bin_attribute *attr,
++				  int i)
 +{
-+	struct pci_dev *pdev = to_pci_dev(kobj_to_dev(kobj));
++	struct device *dev = kobj_to_dev(kobj);
++	struct nvmem_device *nvmem = to_nvmem_device(dev);
 +
-+	return pci_resource_len(pdev, PCI_ROM_RESOURCE);
++	return nvmem->size;
 +}
 +
- static const struct attribute_group pci_dev_rom_attr_group = {
- 	.bin_attrs = pci_dev_rom_attrs,
- 	.is_bin_visible = pci_dev_rom_attr_is_visible,
-+	.bin_size = pci_dev_rom_attr_bin_size,
+ static umode_t nvmem_attr_is_visible(struct kobject *kobj,
+ 				     struct attribute *attr, int i)
+ {
+@@ -383,6 +391,7 @@ static const struct attribute_group nvmem_bin_group = {
+ 	.bin_attrs	= nvmem_bin_attributes,
+ 	.attrs		= nvmem_attrs,
+ 	.is_bin_visible = nvmem_bin_attr_is_visible,
++	.bin_size	= nvmem_bin_attr_size,
+ 	.is_visible	= nvmem_attr_is_visible,
  };
  
- static ssize_t reset_store(struct device *dev, struct device_attribute *attr,
 
 -- 
 2.47.0
