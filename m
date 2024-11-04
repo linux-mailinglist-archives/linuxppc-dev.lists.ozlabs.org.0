@@ -1,50 +1,105 @@
-Return-Path: <linuxppc-dev+bounces-2814-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2815-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E6C9BAB10
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 04:01:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 989469BAB11
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 04:01:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xhbnr0qSYz2xX3;
-	Mon,  4 Nov 2024 14:01:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XhbpG46B4z2yDp;
+	Mon,  4 Nov 2024 14:01:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=15.184.82.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730687747;
-	cv=none; b=amnz3SXlusPuaLEWDihn0bRVRUPh2aeu59gy1KfahfCs8AImf3qJg9aanJAPJ/5J6bQTQOBlePfNtS0M+xNAwSYlXA9C8S7b+VAQXESGiX30xIqmxYzEvKqufXqZsxQhv92WVxBudzkwMSH4KvlB89/uTSl7d1kIhzpcy03SuBufkuifReV7de1NLUH/MH82gBm4EKBun4HzgYsgZt1H2ZIn3u7EMuYbxfSBT8aA191RFuMLcDf2oAF2XiMXMrPNt/RAFQvU1kWA/ZVtRT/EQmKYCS2/QPtFvkC5hJQ0WT5Waz0B8TLcKisWs6Tvlg6E704u7dX+2ghID/vf4z6q6w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.119
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730688340;
+	cv=none; b=GLAy6TVRijUOVYxfCGV4HZDXLEw6/Phsr595kFUQUV9mB3SOtqiuhT/SG1cULwYU+3mT4MOKOJhOmS8FNNEJAEx/C8Td12MACnWlaZiDz3riyADd2do/XQErv6PGgFQSq7OSW4EHAt1ngnd9Lrqirjh9t2t9ba+wjFt77RRqY60atN59cZMGaLQiO9Ln8m5ehIwdrZc+mqicAoCWeEBANkqw9f8QF79hg3W4qfDZH8C+R9B3G5SL9Sj6nqBlh3QuVxYtl4cCTrGqXo8rFoPDAFPqHRNt7NJv9UWmcSdMARi8TzS44JQX11ANFi2p3kFYKUzHQUbvor1su8XBijNbkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730687747; c=relaxed/relaxed;
-	bh=LBnwjIu01qb3uMzu5oQLZ1sXef4WJoJ8ZJ5HXkRpTng=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QXkmfgs4CZAJLDEgPyG+ddfpYkcOTHcdOAoL17yg85tBGOa/gokbW+om++cEegxgLbfOjutGfdU6t6wY4sqOoNGxhX1f2wVh8PpYGrWbNgW8e6kC/qa4w9rNgNB/FkttowJO1q6F3ohHNu/sbCic2tCLrJ7skXOYPBJTYAWlOuelTuJ6U6WRGu76r9rNdZEClcwKYS+Aohd69f4zJ8sp1Cy4iFcEoYX+bN+lWrx7A0LFDHp5bdI77QB5Ip+IyC3Qy+mlBgwzLmJvF44b8FuNo1O6annMgICVuu9CtKJtrLsbkM4YY1IT+LTqtxpjZNMzK8LATYg/wxliJWPZhxJK0Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; dkim=pass (1024-bit key; unprotected) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=I0gkvfMV; dkim-atps=neutral; spf=pass (client-ip=15.184.82.18; helo=smtpbg156.qq.com; envelope-from=wangyuli@uniontech.com; receiver=lists.ozlabs.org) smtp.mailfrom=uniontech.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+	t=1730688340; c=relaxed/relaxed;
+	bh=VMJ0qNC7D3RhewOuf4cdyfmebiUIbRwkpgu9S0MsSDk=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=aU+rUBOKtpbLCXjUR1m09f2rR5Lfm4qkbrLyEVISNXx6HuLIh172J6QBqRtAPRI1EyH3eQ+L1pQJUGfF1UxU/ovefiabRXoSxbNTOvF5F0omIkgVeDl8YNC/XOE26x7IfP+SNiRy2k9pdGleHFOuVw71vGcbmo2VROW4/1ty7M7TWFzZNv9o0+M4Y78Qb0Q7+nlEnyKuJzYBhOVE810Y//LLfSu990jnJZWZsuJqShOLKw5/g+ZkecrIg/jgqO3NZ4VzUHJFKOp6fQWIDPZTZ39QEVrkfq3oz7JWET5QEq18zVaFxhz9tQBtr0ddvt0KFN6I/OwAOd7DaK9cVwmTeQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=TTpnZdIE; dkim-atps=neutral; spf=pass (client-ip=115.124.30.119; helo=out30-119.freemail.mail.aliyun.com; envelope-from=xuanzhuo@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=I0gkvfMV;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=TTpnZdIE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=uniontech.com (client-ip=15.184.82.18; helo=smtpbg156.qq.com; envelope-from=wangyuli@uniontech.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 46615 seconds by postgrey-1.37 at boromir; Mon, 04 Nov 2024 13:35:44 AEDT
-Received: from smtpbg156.qq.com (smtpbg156.qq.com [15.184.82.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.119; helo=out30-119.freemail.mail.aliyun.com; envelope-from=xuanzhuo@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhbDc4Kqmz2xHQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2024 13:35:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1730687664;
-	bh=LBnwjIu01qb3uMzu5oQLZ1sXef4WJoJ8ZJ5HXkRpTng=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=I0gkvfMVE/MguKNe6G+/LMNLVFqz7dkh0IDG0vDntK4CNMqCoz50Tqhzb3M0pX6yE
-	 GsMB3HypNccbL/ypubSF6JPJFS7ckgk4c83b82I4kXeEhlwYuJQ9JJSgbhKj4ZgSzt
-	 6AVc0wlL51Wy3m4xPQdNrps/E4wW0CWhuFCKwvFc=
-X-QQ-mid: bizesmtp90t1730687661tfnba8nb
-X-QQ-Originating-IP: zCt886bJnOZxcI98vSCU01cM2iwZOisAeH5BvJ3W5y4=
-Received: from [10.20.6.66] ( [61.183.83.60])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 04 Nov 2024 10:34:18 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 13360692648225194716
-Message-ID: <E7AED86A89FD886F+263304da-0529-4b4c-9e23-ea2e5e3cef2c@uniontech.com>
-Date: Mon, 4 Nov 2024 10:34:18 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhbS125M2z2xHp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2024 13:45:34 +1100 (AEDT)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1730688328; h=Message-ID:Subject:Date:From:To;
+	bh=VMJ0qNC7D3RhewOuf4cdyfmebiUIbRwkpgu9S0MsSDk=;
+	b=TTpnZdIEhQmNJfmGQHF2L+0E28itDFF1ZcLBNaADSfzCsoSUBaQYMGD2D6zqyA3w7i7+eGZ5NKPpeLJoS6JaJbDpsTesZLZJM+qoICuOTFClKXpPg3wNzHLZK0l5cOVCCcyAiPFhapaRE2fLEfMsmrBCWrLDCqs7lMwr7Qxx0QE=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WIZlEgZ_1730688325 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 04 Nov 2024 10:45:25 +0800
+Message-ID: <1730688315.6177652-4-xuanzhuo@linux.alibaba.com>
+Subject: Re: [resend PATCH 1/2] dim: make dim_calc_stats() inputs const pointers
+Date: Mon, 4 Nov 2024 10:45:15 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Caleb Sander Mateos <csander@purestorage.com>
+Cc: Caleb Sander Mateos <csander@purestorage.com>,
+ intel-wired-lan@lists.osuosl.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-mediatek@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-rdma@vger.kernel.org,
+ netdev@vger.kernel.org,
+ oss-drivers@corigine.com,
+ virtualization@lists.linux.dev,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Arthur Kiyanovski <akiyano@amazon.com>,
+ Brett Creeley <brett.creeley@amd.com>,
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ David Arinzon <darinzon@amazon.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Doug Berger <opendmb@gmail.com>,
+ Eric Dumazet <edumazet@google.com>,
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Felix Fietkau <nbd@nbd.name>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Geetha sowjanya <gakula@marvell.com>,
+ hariprasad <hkelam@marvell.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Jason Wang <jasowang@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Leon Romanovsky <leon@kernel.org>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Louis Peens <louis.peens@corigine.com>,
+ Mark Lee <Mark-MC.Lee@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Michael Chan <michael.chan@broadcom.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Noam Dagan <ndagan@amazon.com>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Roy Pledge <Roy.Pledge@nxp.com>,
+ Saeed Bishara <saeedb@amazon.com>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Sean Wang <sean.wang@mediatek.com>,
+ Shannon Nelson <shannon.nelson@amd.com>,
+ Shay Agroskin <shayagr@amazon.com>,
+ Simon Horman <horms@kernel.org>,
+ Subbaraya Sundeep <sbhatta@marvell.com>,
+ Sunil Goutham <sgoutham@marvell.com>,
+ Tal Gilboa <talgi@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+References: <20241031002326.3426181-1-csander@purestorage.com>
+In-Reply-To: <20241031002326.3426181-1-csander@purestorage.com>
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,157 +111,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/18] loongarch/crc32: expose CRC32 functions through
- lib
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: ardb@kernel.org, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- loongarch@lists.linux.dev, kernel@xen0n.name, chenhuacai@kernel.org,
- xry111@xry111.site, sparclinux@vger.kernel.org, x86@kernel.org
-References: <20241025191454.72616-7-ebiggers@kernel.org>
- <DA8BCDFFEACDA1C6+20241103133655.217375-1-wangyuli@uniontech.com>
- <20241103135730.GA813@quark.localdomain>
-Content-Language: en-US
-From: WangYuli <wangyuli@uniontech.com>
-Autocrypt: addr=wangyuli@uniontech.com; keydata=
- xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSKP+nX39DN
- IVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAxFiEEa1GMzYeuKPkg
- qDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMBAAAKCRDF2h8wRvQL7g0UAQCH
- 3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfPbwD/SrncJwwPAL4GiLPEC4XssV6FPUAY
- 0rA68eNNI9cJLArOOARmgSyJEgorBgEEAZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7
- VTL0dvPDofBTjFYDAQgHwngEGBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIb
- DAAKCRDF2h8wRvQL7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkU
- o9ERi7qS/hbUdUgtitI89efbY0TVetgDsyeQiwU=
-In-Reply-To: <20241103135730.GA813@quark.localdomain>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------yPwlqMleUVPPs6iT7orBXJ4O"
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MxHu/stL3hVPTyQKEN1I9xOGN+BWMXbxaMOS0j7W+ohxt+jGBkhBGwZ4
-	mKISKoLBEd9DlDyAzvD8Xb+Ak/ELvHSM++rLK6y5TzF3Hf/17WFfm4pm9/k9mLloUcGW+NL
-	8qZ+6cZzrdyjqSgcP1Xp/i5pEffVubQ2dMkyTuu3UHXF84Ui38G5dAI/uAmL5APJ4umWUjs
-	JAlTTcK/ZnDz/dXBv4ZI87pL43bv608+HDpuFePggpjxgGa1kVYzobU5eUZ6LO/uv2RowEK
-	uhKq8QAeAPI+IMf1b6aLSu6P/Fs/km10//7pfxHG6dA+7Km3UUBoxHlM6u2nyaXKFibw80s
-	t4nTGxp0efQ3Pfm9Sz2/C3rkybvwsRFVPfwxyAn/VgcfSodJAMgcZKgqSNpASPGkZXP4lL/
-	k3H1h1FOKBoqUmyu7jUmymrjsrywBPtV49f5MFmBnQwrkwKQHK2oaFRwHbmLcnsoIOHE8Z/
-	deJsmZLHkJlnAaYVaPf54mh8UQNn52S4MGXd5Yk5vLu5eU3kZqeA32eOGldP7Mb0CmmSAS6
-	gtMsyTXIALbDLKcwPkPsXrS6tqgYJTgEau2ZzAxsNWrQjl0sRSIrHUxJSdhmubmgeXccIdZ
-	r1vHGhdkaGTJkGJqM22umnfJNPXVtOLMQ6X5hKtTi5BYe9LhRtqHfXvmVj4p1Vl5eT9hXi2
-	3DIJkAQUebz9E3jx1FLgXjJMHocjcNcEVdhImvslnERXJE1DLgArhO3UEsYiCJtmJYfPDD2
-	aS/b2i0B2kduRaSa48Cb0Of/cdn84PSGqXDObVcHjWZSBNvZ2dpru68Uwhr99TVEG4IGgF1
-	9eOXjq5Z4MrGfy6pZlOmaz4wPAryxd9VvG7ei7E5Aki854L1tCLeSXuBZ3DcVwlhBgs7ZE8
-	TEjRNHBoYPk7hwnmmTNksvuvkSlftSKfeFFGhvbMd9a4Kj8wnwhazWqvsD5X+cHxHbX2zIA
-	QuFp0GZUngV4M0SsIHIumND1dfxBkdyInuyK4vGBQSxCdodYauHuTByUkblV8feBGpEUYBV
-	78cet9pPs1EBpoInNb8RBGGAIOcBBODfCC27xPiQ==
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
-X-Spam-Status: No, score=1.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FORGED_MUA_MOZILLA,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
-X-Spam-Level: *
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------yPwlqMleUVPPs6iT7orBXJ4O
-Content-Type: multipart/mixed; boundary="------------cIiC60yt0DtrRFabfn26CCc3";
- protected-headers="v1"
-From: WangYuli <wangyuli@uniontech.com>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: ardb@kernel.org, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- loongarch@lists.linux.dev, kernel@xen0n.name, chenhuacai@kernel.org,
- xry111@xry111.site, sparclinux@vger.kernel.org, x86@kernel.org
-Message-ID: <263304da-0529-4b4c-9e23-ea2e5e3cef2c@uniontech.com>
-Subject: Re: [PATCH v2 06/18] loongarch/crc32: expose CRC32 functions through
- lib
-References: <20241025191454.72616-7-ebiggers@kernel.org>
- <DA8BCDFFEACDA1C6+20241103133655.217375-1-wangyuli@uniontech.com>
- <20241103135730.GA813@quark.localdomain>
-In-Reply-To: <20241103135730.GA813@quark.localdomain>
+On Wed, 30 Oct 2024 18:23:25 -0600, Caleb Sander Mateos <csander@purestorage.com> wrote:
+> Make the start and end arguments to dim_calc_stats() const pointers
+> to clarify that the function does not modify their values.
+>
+> Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
 
---------------cIiC60yt0DtrRFabfn26CCc3
-Content-Type: multipart/mixed; boundary="------------YiihG54060SCpWIarDHBVU6V"
 
---------------YiihG54060SCpWIarDHBVU6V
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-DQpPbiAyMDI0LzExLzMgMjE6NTcsIEVyaWMgQmlnZ2VycyB3cm90ZToNCj4gT24gU3VuLCBO
-b3YgMDMsIDIwMjQgYXQgMDk6MzY6NTVQTSArMDgwMCwgV2FuZ1l1bGkgd3JvdGU6DQo+PiBF
-dmVuIHRob3VnaCB0aGUgbmFycm93ZXIgQ1JDIGluc3RydWN0aW9ucyBkb2Vzbid0IHJlcXVp
-cmUgR1JMRU49NjQsIHRoZXkgc3RpbGwgKmFyZW4ndCogcGFydCBvZiBMQTMyIChMb29uZ0Fy
-Y2ggcmVmZXJlbmNlIG1hbnVhbCB2MS4xMCwgVm9sdW1lIDEsIFRhYmxlIDItMSkuDQo+PiBM
-aW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMGE3ZDBhOWUtYzU2ZS00ZWUyLWE4
-M2ItMDAxNjRhNDUwYWJlQHhlbjBuLm5hbWUvDQo+Pg0KPj4gVGhlcmVmb3JlLCB3ZSBjb3Vs
-ZCBub3QgZGlyZWN0bHkgYWRkIEFSQ0hfSEFTX0NSQzMyIHRvIGNvbmZpZyBMT09OR0FSQ0gu
-DQo+Pg0KPiBUaGVyZSdzIHN0aWxsIGEgcnVudGltZSBDUFUgZmVhdHVyZSBjaGVjayBvZiBj
-cHVfaGFzKENQVV9GRUFUVVJFX0NSQzMyKS4NCj4gU2VlIGFyY2gvbG9vbmdhcmNoL2xpYi9j
-cmMzMi1sb29uZ2FyY2guYy4gIFNvIGl0J3MgdGhlIHNhbWUgYXMgYmVmb3JlLg0KPiBBUkNI
-X0hBU19DUkMzMiBqdXN0IG1lYW5zIHRoYXQgdGhlIGZpbGUgd2lsbCBiZSBjb21waWxlZC4N
-Cj4NCj4gSWYgeW91J3JlIHRyeWluZyB0byBzYXkgdGhhdCB5b3UgdGhpbmsgdGhpcyBmaWxl
-IHNob3VsZCBiZSBidWlsdCBvbmx5IHdoZW4NCj4gQ09ORklHXzY0QklUPXksIHRoZW4gdGhh
-dCB3b3VsZCBiZSBhbiBleGlzdGluZyBidWcgc2luY2UgdGhlIGV4aXN0aW5nIGZpbGUNCj4g
-YXJjaC9sb29uZ2FyY2gvY3J5cHRvL2NyYzMyLWxvb25nYXJjaC5jIHdhcyBidWlsdCBmb3Ig
-Ym90aCAzMi1iaXQgYW5kIDY0LWJpdC4NCj4gQnV0IGlmIHlvdSB0aGluayB0aGlzIGlzIGEg
-YnVnLCBJIGNhbiBmaXggdGhpcyB0b28uDQo+DQo+IC0gRXJpYw0KPg0KDQpBY3R1YWxseSwg
-bXkgb3JpZ2luYWxseSBtZWFuIGlzIHRoYXQgZGlyZWN0bHkgZGVjbGFyaW5nIExvb25nQXJj
-aCANCkFSQ0hfSEFTX0NSQzMyIHdpdGhvdXQgZGlzdGluZ3Vpc2hpbmcgYmV0d2VlbiAzMi1i
-aXQgYW5kIDY0LWJpdCBtaWdodCANCm1pc2xlYWQgdGhvc2UgcmVhZGluZyB0aGUgY29kZS4g
-QW5kIGl0J3Mgbm90IHJpZ29yb3VzLg0KSG93ZXZlciwgYWNjb3JkaW5nIHRvIEh1YWNhaSBD
-aGVuJ3MgcmVjZW50IHJlcGx5LCB0aGVyZSBhcmUgbWFueSBzaW1pbGFyIA0KaXNzdWVzIGFu
-ZCB0aGV5IHdvbid0IGNhdXNlIGJ1aWxkIGVycm9ycyBmb3Igbm93Lg0KTGluazogDQpodHRw
-czovL2xvcmUua2VybmVsLm9yZy9hbGwvQ0FBaFYtSDVLYVhCci1UZHBEYkp3Y3JfTDBfbWJT
-dz00SjMwdXdRMnhuMllEcz1IZzJRQG1haWwuZ21haWwuY29tLw0KU28sIHRoaXMgY2hhbmdl
-IHNob3VsZCBiZSBmaW5lIGZvciBub3cuDQoNClJldmlld2VkLWJ5OiBXYW5nWXVsaSA8d2Fu
-Z3l1bGlAdW5pb250ZWNoLmNvbT4NCg0KVGhhbmtzLA0KLS0gDQpXYW5nWXVsaQ0K
---------------YiihG54060SCpWIarDHBVU6V
-Content-Type: application/pgp-keys; name="OpenPGP_0xC5DA1F3046F40BEE.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xC5DA1F3046F40BEE.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
-
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSK
-P+nX39DNIVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAx
-FiEEa1GMzYeuKPkgqDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMB
-AAAKCRDF2h8wRvQL7g0UAQCH3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfP
-bwD/SrncJwwPAL4GiLPEC4XssV6FPUAY0rA68eNNI9cJLArOOARmgSyJEgorBgEE
-AZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7VTL0dvPDofBTjFYDAQgHwngE
-GBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIbDAAKCRDF2h8wRvQL
-7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkUo9ERi7qS
-/hbUdUgtitI89efbY0TVetgDsyeQiwU=3D
-=3DBlkq
------END PGP PUBLIC KEY BLOCK-----
-
---------------YiihG54060SCpWIarDHBVU6V--
-
---------------cIiC60yt0DtrRFabfn26CCc3--
-
---------------yPwlqMleUVPPs6iT7orBXJ4O
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZygyqgUDAAAAAAAKCRDF2h8wRvQL7u9/
-AQCzme1hyYUbPe1s4tK4FtfJbQ1qS/eQ5ZNWEjUnEivrLwEA0UMghFUFO/92QNK3/a3a7O8QrCGS
-Ov5jILXFpAVfTgw=
-=fG9N
------END PGP SIGNATURE-----
-
---------------yPwlqMleUVPPs6iT7orBXJ4O--
+> ---
+>  include/linux/dim.h | 3 ++-
+>  lib/dim/dim.c       | 3 ++-
+>  2 files changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/dim.h b/include/linux/dim.h
+> index 1b581ff25a15..84579a50ae7f 100644
+> --- a/include/linux/dim.h
+> +++ b/include/linux/dim.h
+> @@ -349,11 +349,12 @@ void dim_park_tired(struct dim *dim);
+>   *
+>   * Calculate the delta between two samples (in data rates).
+>   * Takes into consideration counter wrap-around.
+>   * Returned boolean indicates whether curr_stats are reliable.
+>   */
+> -bool dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
+> +bool dim_calc_stats(const struct dim_sample *start,
+> +		    const struct dim_sample *end,
+>  		    struct dim_stats *curr_stats);
+>
+>  /**
+>   *	dim_update_sample - set a sample's fields with given values
+>   *	@event_ctr: number of events to set
+> diff --git a/lib/dim/dim.c b/lib/dim/dim.c
+> index 83b65ac74d73..97c3d084ebf0 100644
+> --- a/lib/dim/dim.c
+> +++ b/lib/dim/dim.c
+> @@ -52,11 +52,12 @@ void dim_park_tired(struct dim *dim)
+>  	dim->steps_left   = 0;
+>  	dim->tune_state   = DIM_PARKING_TIRED;
+>  }
+>  EXPORT_SYMBOL(dim_park_tired);
+>
+> -bool dim_calc_stats(struct dim_sample *start, struct dim_sample *end,
+> +bool dim_calc_stats(const struct dim_sample *start,
+> +		    const struct dim_sample *end,
+>  		    struct dim_stats *curr_stats)
+>  {
+>  	/* u32 holds up to 71 minutes, should be enough */
+>  	u32 delta_us = ktime_us_delta(end->time, start->time);
+>  	u32 npkts = BIT_GAP(BITS_PER_TYPE(u32), end->pkt_ctr, start->pkt_ctr);
+> --
+> 2.45.2
+>
 
