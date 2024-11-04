@@ -1,86 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-2818-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2819-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA90F9BAD1D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 08:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 954FA9BAE3D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 09:36:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xhjlq50xkz2xGQ;
-	Mon,  4 Nov 2024 18:29:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XhlFB38RTz2xb3;
+	Mon,  4 Nov 2024 19:36:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730705383;
-	cv=none; b=XvdtBm2un5z3oRZ1fK/aOIJ6lrGrtBOBZRBo1MXW8Jxs+/GSJZsjlIdVdknuNL7MolbM4/RFR+K+wrSt44L654a4wnN6wboxweR5v59rK4xbxg3lSZmCNd7quNW3JFN4o3WodkhDOaQrwqJlKcNd3WVhUoDti9Ii3HKnL4XY20nN2uc0j08kZpVvQm95Y94f4b3CJSN2MqTJ0l+WN5WMIj2cVh+p/85+s6G8WY46HZeX55w74ylwiJprhuGk/xPCBMy8Ud35F3ff4GYgqoZJXdodC/H06U5ORkw209REtHK+0WyqLxmAQP8djHkiRjtqkS5rVngRaGfT7mP29zPpKQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730709406;
+	cv=none; b=Rq+uCvJmgSNIxvmjRT7SYLJN2hpZlTSSWNo4CVQE5Ke6YJORTWhbuAoe6HqAtNo7xAayinRTNkCitJ4AO9nvbvHlrKvGU16kYPRhGfg/w50qutW6UYV+C/+1Oa5qvd9KflPNAwsetGI/IoF+Twyk+dPkjkSIM7sYkxmI43RVdc7ADWi2GDP2oTcUSyKAXNyFVpmDD4/0T3+iU6Zd3fdBqxNooiszhar8bAIrO6qdVQgh7TmpCAu57Evtf24q4GWP7R70SDX1G2QdEg8CfYR50az6T71lEpUvaKolEvZzM8cgq8JLH7RGgOPw6eqzoRZw5fggFDc7SwwJMDKW9I5CAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730705383; c=relaxed/relaxed;
-	bh=nLkYmtBtDHpw5HrNqvFnObaxUKs9S56IrfEc9MjTFYM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jwOy7o7PBfVa0kRYfhzkjAiza9XZ5ZeyzdyHcr4Ay5VPdOSPnSEHaXG/2Yx1nisss7zNAOdhWc23sYfVH2qkkTqo9fO9zZaQHMVas2FgIxjZQA+vKiAgrfwiemeo10E6fXxl/Onm5Sjd5Ae6F3NdsD01kAAmrJFT8GRglUWKhB4GKJfmjgJtARhdirnSlMH2KqlxQFa4z9td36iynH7aJ1LsxXTI9W7O9PjkyRS+k0Cdi0yPwPwsoxrlpDt4yYBQQUAdbsWHGypf9Y4EPU0hkqaayY8/PWSxx3+GuS22ZW75Xh2m7Ff7Q937oScGrbdxKX2VNvGvZ1V1kRarCbp7UA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bmqOAw7r; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1730709406; c=relaxed/relaxed;
+	bh=t9jyRlrZkCDIkkHgATAK9H78at6NJAEg456qhfFvlQ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nIDvwVttHTzlyd4+eP/Wper++wAyowTJSNOiT9gweeNry994YqFE0+p+LW7EaYgZF/gaYW95VpdZRw4eanjL31zzDvUBHctCkyQePg1NHGixRdkE1Ry4kfnK2tFOeVEqG9liwQDRpbnRn6fNvzlaS2Mgv602eYk1EHS2dJIH6CrSGWTLjFbyL6Ba/mKI5ewkDDH9N+G1FW8HAfwtr4J3SOnD9Y2AlKQqgiewKpLtHCgRjoYOWAmeefpAUjm8QZHsTKxO90TXpZaL5o1U+r5dEz9NnxFlNeZ6A8jG2xzB8JHXL9xoYano26nHEmbb6eVbGjHxONCnR3eCt22E5g2a4g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SBWb1nz1; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bmqOAw7r;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SBWb1nz1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xhjln3h0Zz2xDM
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2024 18:29:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhlF90t7Dz2xQD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2024 19:36:44 +1100 (AEDT)
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A47ARJa027925;
-	Mon, 4 Nov 2024 07:29:32 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A48AYlo021750;
+	Mon, 4 Nov 2024 08:36:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=nLkYmtBtDHpw5HrNqvFnObaxUKs9S56IrfEc9MjTF
-	YM=; b=bmqOAw7rMQGlZZEQsIj8lgWzXPM8n2SH27rugvAO3kj9kdej1hiEg6dpd
-	Dt4MKRfQX0WIMH9dvpbP6CIJtgYw2EA3tnX9MFAP2bLIUt5uHPzhx2eyRsuVql4d
-	OuvCp4QhD3Tn0H+IIbHyBZQV965rE9q6+U1WKBaNyJBCIdM4VUJTcWYe/NpRy78B
-	AXX6rDVemj/p9OVZ6Izyi6dvEB3UgBrWto8Xivsk1hCXDWlBx5fSH0kM4i3tGHdx
-	AeDUVuJxmJ4sFbuddWmq4aewrDHGnOUCOdr4DdnFahGPaJvh8bd6rJaqfJpojgjC
-	cXzTLEpLmSq5enPC6w0Quyjlzp2SA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42psn382hp-1
+	:subject:to; s=pp1; bh=t9jyRlrZkCDIkkHgATAK9H78at6NJAEg456qhfFvl
+	Q8=; b=SBWb1nz12rHhvHFAxFRFZ5JjjA3E3ZFvpZYPf5pOToQr4ZgQhPNCrLkRA
+	JQ+rQ/I5d6VwbxxE2jKw1U6aEp8AIgb93k/QNhePZh8yN8F7re0V7ixukAoDsmVV
+	8jiHDqhPh9Shx5ZNN9L63gctrqO47O9rImgwrZUrfoSnQuEDfEJo05RaibSRBWn8
+	aK1n62EJX9+ne9wctLubIybxSzPyIVuluonjTphtZm2H0qSvTUdef/OpmZacaDFD
+	NXHC0/zVu3FSIBuzLkQuYwc22dGYUAdTL893ESBpz5EOJidTLFjt26Ctp8B4UpB2
+	tDvUdMc32vdtELxXDHriFRVsJHpRA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42pth702er-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Nov 2024 07:29:31 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4A47TVI9004558;
-	Mon, 4 Nov 2024 07:29:31 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42psn382hn-1
+	Mon, 04 Nov 2024 08:36:30 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A48L8ju024174;
+	Mon, 4 Nov 2024 08:35:37 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nxsxug27-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Nov 2024 07:29:31 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A47Sfum008439;
-	Mon, 4 Nov 2024 07:29:30 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nywk2hb7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Nov 2024 07:29:30 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A47TQd227591278
+	Mon, 04 Nov 2024 08:35:36 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A48ZXVn57999762
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 4 Nov 2024 07:29:26 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C271D20040;
-	Mon,  4 Nov 2024 07:29:26 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A775B2004B;
-	Mon,  4 Nov 2024 07:29:20 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.251.57])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  4 Nov 2024 07:29:20 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org
-Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        akanksha@linux.ibm.com, maddy@linux.ibm.com,
-        atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
-        disgoel@linux.vnet.ibm.com, mpetlan@redhat.com, hbathini@linux.ibm.com,
-        vmolnaro@redhat.com
-Subject: [PATCH V2] tools/perf/tests/shell/base_probe: Enhance print_overall_results to print summary information
-Date: Mon,  4 Nov 2024 12:59:14 +0530
-Message-Id: <20241104072914.15196-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
+	Mon, 4 Nov 2024 08:35:33 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1EF5220043;
+	Mon,  4 Nov 2024 08:35:33 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D47F2004D;
+	Mon,  4 Nov 2024 08:35:31 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.in.ibm.com (unknown [9.109.204.94])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  4 Nov 2024 08:35:31 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Hari Bathini <hbathini@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>
+Subject: [PATCH 1/2] powerpc/fadump: allocate memory for additional parameters early
+Date: Mon,  4 Nov 2024 14:05:27 +0530
+Message-ID: <20241104083528.99520-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.46.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0NuM4_Hsh38fB9q2Mxg3N0p63k6X-TGx
+X-Proofpoint-GUID: 0NuM4_Hsh38fB9q2Mxg3N0p63k6X-TGx
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,132 +90,136 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: pVk7GQDBCzbM2ZGIi_BXwaRz0xX4W3VR
-X-Proofpoint-ORIG-GUID: tSeJ-X5kw_Q-aO8JITQmfOhyQvtEfFBC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- lowpriorityscore=0 adultscore=0 impostorscore=0 malwarescore=0 spamscore=0
- clxscore=1015 mlxscore=0 mlxlogscore=999 priorityscore=1501 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411040062
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 phishscore=0 mlxlogscore=740 spamscore=0
+ suspectscore=0 mlxscore=0 lowpriorityscore=0 clxscore=1011 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411040076
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_NONE autolearn=disabled version=4.0.0
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Currently print_overall_results prints the number of
-fails in the summary, example from base_probe tests in
-testsuite_probe:
+From: Hari Bathini <hbathini@linux.ibm.com>
 
- ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
-	11 failures found
+Memory for passing additional parameters to fadump capture kernel
+is allocated during subsys_initcall level, using memblock. But
+as slab is already available by this time, allocation happens via
+the buddy allocator. This may work for radix MMU but is likely to
+fail in most cases for hash MMU as hash MMU needs this memory in
+the first memory block for it to be accesible in real mode in the
+capture kernel (second boot). So, allocate memory for additional
+parameters area as soon as MMU mode is obvious.
 
-test_invalid_options contains multiple tests and out
-of that 11 failed. Sometimes it could happen that it
-is due to missing dependency in the build or environment
-dependency.
-
-Example, perf probe -L requires DWARF enabled. otherwise
-it fails as below:
- ./perf probe -L
-  Error: switch `L' is not available because NO_DWARF=1
-
-"-L" is tested as one of the option in :
-   for opt in '-a' '-d' '-L' '-V'; do
-   <<perf probe test>>
-   print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "missing argument
-	for $opt"
-
-Here -a and -d doesn't require DWARF. Similarly there
-are few other tests requiring DWARF. To hint the user that
-missing dwarf could be one issue, update print_overall_results
-to print a comment string along with summary hinting the possible
-cause. Update test_invalid_options.sh and test_line_semantics.sh
-to pass the info about dwarf requirement since these tests
-failed when perf is built without DWARF. Use the check for
-presence of dwarf with "perf check feature" and append the
-hint message based on the result.
-
-With the change:
- ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
- 11 failures found :: Some of the tests need DWARF to run
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Fixes: 683eab94da75 ("powerpc/fadump: setup additional parameters for dump capture kernel")
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Closes: https://lore.kernel.org/lkml/a70e4064-a040-447b-8556-1fd02f19383d@linux.vnet.ibm.com/T/#u
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
-Changelog:
- v1 -> v2:
- Check presence of dwarf using "perf check feature". Add
- failure hint message for dwarf based on this check
+ arch/powerpc/include/asm/fadump.h |  2 ++
+ arch/powerpc/kernel/fadump.c      | 15 ++++++++++-----
+ arch/powerpc/kernel/prom.c        |  3 +++
+ 3 files changed, 15 insertions(+), 5 deletions(-)
 
- tools/perf/tests/shell/base_probe/test_invalid_options.sh | 5 ++++-
- tools/perf/tests/shell/base_probe/test_line_semantics.sh  | 5 ++++-
- tools/perf/tests/shell/common/init.sh                     | 3 ++-
- 3 files changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/tools/perf/tests/shell/base_probe/test_invalid_options.sh b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
-index 1fedfd8b0d0d..c51d8d9bfdb7 100755
---- a/tools/perf/tests/shell/base_probe/test_invalid_options.sh
-+++ b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
-@@ -22,6 +22,9 @@ if ! check_kprobes_available; then
- 	exit 0
- fi
+diff --git a/arch/powerpc/include/asm/fadump.h b/arch/powerpc/include/asm/fadump.h
+index ef40c9b6972a..978102c5129e 100644
+--- a/arch/powerpc/include/asm/fadump.h
++++ b/arch/powerpc/include/asm/fadump.h
+@@ -19,6 +19,7 @@ extern int is_fadump_active(void);
+ extern int should_fadump_crash(void);
+ extern void crash_fadump(struct pt_regs *, const char *);
+ extern void fadump_cleanup(void);
++extern void fadump_setup_param_area(void);
+ extern void fadump_append_bootargs(void);
  
-+# Check for presence of dwarf
-+$CMD_PERF check feature -q dwarf
-+[ $? -ne 0 ] && HINT_FAIL="Some of the tests need DWARF to run"
+ #else	/* CONFIG_FA_DUMP */
+@@ -26,6 +27,7 @@ static inline int is_fadump_active(void) { return 0; }
+ static inline int should_fadump_crash(void) { return 0; }
+ static inline void crash_fadump(struct pt_regs *regs, const char *str) { }
+ static inline void fadump_cleanup(void) { }
++static inline void fadump_setup_param_area(void) { }
+ static inline void fadump_append_bootargs(void) { }
+ #endif /* !CONFIG_FA_DUMP */
  
- ### missing argument
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index a612e7513a4f..4a3f80f42118 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1586,6 +1586,12 @@ static void __init fadump_init_files(void)
+ 		return;
+ 	}
  
-@@ -75,5 +78,5 @@ done
++	if (fw_dump.param_area) {
++		rc = sysfs_create_file(fadump_kobj, &bootargs_append_attr.attr);
++		if (rc)
++			pr_err("unable to create bootargs_append sysfs file (%d)\n", rc);
++	}
++
+ 	debugfs_create_file("fadump_region", 0444, arch_debugfs_dir, NULL,
+ 			    &fadump_region_fops);
  
- 
- # print overall results
--print_overall_results "$TEST_RESULT"
-+print_overall_results "$TEST_RESULT" $HINT_FAIL
- exit $?
-diff --git a/tools/perf/tests/shell/base_probe/test_line_semantics.sh b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
-index d8f4bde0f585..f5d3b6e8d0d6 100755
---- a/tools/perf/tests/shell/base_probe/test_line_semantics.sh
-+++ b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
-@@ -23,6 +23,9 @@ if ! check_kprobes_available; then
- 	exit 0
- fi
- 
-+# Check for presence of dwarf
-+$CMD_PERF check feature -q dwarf
-+[ $? -ne 0 ] && HINT_FAIL="Some of the tests need DWARF to run"
- 
- ### acceptable --line descriptions
- 
-@@ -51,5 +54,5 @@ done
- 
- 
- # print overall results
--print_overall_results "$TEST_RESULT"
-+print_overall_results "$TEST_RESULT" $HINT_FAIL
- exit $?
-diff --git a/tools/perf/tests/shell/common/init.sh b/tools/perf/tests/shell/common/init.sh
-index 075f17623c8e..0862cbc1c6f7 100644
---- a/tools/perf/tests/shell/common/init.sh
-+++ b/tools/perf/tests/shell/common/init.sh
-@@ -46,10 +46,11 @@ print_results()
- print_overall_results()
+@@ -1740,7 +1746,7 @@ static void __init fadump_process(void)
+  * Reserve memory to store additional parameters to be passed
+  * for fadump/capture kernel.
+  */
+-static void __init fadump_setup_param_area(void)
++void __init fadump_setup_param_area(void)
  {
- 	RETVAL="$1"; shift
-+	TASK_COMMENT="$*"
- 	if [ $RETVAL -eq 0 ]; then
- 		_echo "$MALLPASS## [ PASS ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY"
- 	else
--		_echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY :: $RETVAL failures found"
-+		_echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY :: $RETVAL failures found :: $TASK_COMMENT"
- 	fi
- 	return $RETVAL
+ 	phys_addr_t range_start, range_end;
+ 
+@@ -1748,7 +1754,7 @@ static void __init fadump_setup_param_area(void)
+ 		return;
+ 
+ 	/* This memory can't be used by PFW or bootloader as it is shared across kernels */
+-	if (radix_enabled()) {
++	if (early_radix_enabled()) {
+ 		/*
+ 		 * Anywhere in the upper half should be good enough as all memory
+ 		 * is accessible in real mode.
+@@ -1776,12 +1782,12 @@ static void __init fadump_setup_param_area(void)
+ 						       COMMAND_LINE_SIZE,
+ 						       range_start,
+ 						       range_end);
+-	if (!fw_dump.param_area || sysfs_create_file(fadump_kobj, &bootargs_append_attr.attr)) {
++	if (!fw_dump.param_area) {
+ 		pr_warn("WARNING: Could not setup area to pass additional parameters!\n");
+ 		return;
+ 	}
+ 
+-	memset(phys_to_virt(fw_dump.param_area), 0, COMMAND_LINE_SIZE);
++	memset(__va(fw_dump.param_area), 0, COMMAND_LINE_SIZE);
  }
+ 
+ /*
+@@ -1807,7 +1813,6 @@ int __init setup_fadump(void)
+ 	}
+ 	/* Initialize the kernel dump memory structure and register with f/w */
+ 	else if (fw_dump.reserve_dump_area_size) {
+-		fadump_setup_param_area();
+ 		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
+ 		register_fadump();
+ 	}
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 0be07ed407c7..47db1b1aef25 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -908,6 +908,9 @@ void __init early_init_devtree(void *params)
+ 
+ 	mmu_early_init_devtree();
+ 
++	/* Setup param area for passing additional parameters to fadump capture kernel. */
++	fadump_setup_param_area();
++
+ #ifdef CONFIG_PPC_POWERNV
+ 	/* Scan and build the list of machine check recoverable ranges */
+ 	of_scan_flat_dt(early_init_dt_scan_recoverable_ranges, NULL);
 -- 
-2.43.5
+2.46.2
 
 
