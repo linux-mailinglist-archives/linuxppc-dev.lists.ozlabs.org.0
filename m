@@ -1,55 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-2836-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2837-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39A339BB8F9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 16:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E7D9BB9A3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 16:59:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XhwLm3j8pz2xg8;
-	Tue,  5 Nov 2024 02:27:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xhx3Y5kXMz2yMD;
+	Tue,  5 Nov 2024 02:59:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730734032;
-	cv=none; b=mA+Zcz1pbRPBeXmV50hlywVLnbuErvAFTEnTBiTY6lxd4TaPQ4sCUlMWxP9eq52NQs7m8CGiCMjVwUpjB+OLRUPm8JWPYGlo6HbnUguYOPfjWK4r8eB/W5ZGP0It3o0qxA3qktrLKECIT9OAikLjRXsb2Mc/R99MObphA2hAy69oQGrR0JsG1dPfbi8hIidqgEfDUjotMSjmmaHPEmQK2RX9PCaam799eDUcdray3lNa5bxBfPmfz6LUt879ig6TCJCFV9+PuPNdJ4jBlSWcKoToGx8HarKStalPgNRzxDkzKY0b4dry+AQyC6aDEmbCcjKfWXhSGQRXItuKDe8uAg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730735945;
+	cv=none; b=ITRQd7QUpEifxm2X3tg06/fuxSBo729kL2jO1POUibe1gikrNOu3IOKh3orTgItq56bvsFbr9fwxK94oeU41YFdzOGHfTAlfJS7SRkiQ18dA8LcCw7MBV4NbfaoDLH7aOHl2ObWWCnpb7m2LR8laTifwC4WsmJdB1j7E3GfEPyY5Car1YecgBqoy1LEyfNpLO923AR/mPyQnaXrrxFeVEQsTOJLexCrbX6c3wI2b1NlVuXoj8TX2Z9YNwbtWDDg1Ll0H0AVrVdmL4l9wyIuK30zsEGdatFIToWR/FRZXZFuE5Ue2+nJGLQYWDiVocWGrugTouI8kimTHavltE+P43A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730734032; c=relaxed/relaxed;
-	bh=sDFZ6fp/QdVOoKJpDogesWlhibNJlNmtmRyi/bO+WeM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fKe/K1w7mQaxZqevP7sxOIO/530gAi40+roKk4xCAolCrit9ZJOFeqCR/b5bXE/kupyJsMvn1cyIPUtv59Ni1BPlZvA1+IocsONur9++87GLQzbGPflBtbiqbnb/IB9vklUqQmhu3MrZOR+03fJPR2CmKsux/u8hKT7nFpXUv9QjgDhkl/1NjbZsEoeY5DQeNYkbAyBqB+DphqfxsfgpYFcDMmMeHD7AGnZo8Pj02etG3rbuxrV36fygoA3evbtb0KyKqYfaUGeLRCnchdHIZQYVmHCzJTFvnHG2waWCG9EXbyqHXfgvGURDrpEG1+8R9DEaj9/rIStQZfMjKRgv+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=sarb=r7=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=sarb=r7=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	t=1730735945; c=relaxed/relaxed;
+	bh=pJptDhYhT0sFPxBpBJU9AGO646gsVtKnaZPvasjTwGo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kurm+PIGPKptR2ktCqMD6nbGLYv3AKFyLp7pIPY+y9dQ5jW1SItkHsQbcuYRH/++tCQKTzqWNFLWxah1d2A+/CcggpidX0Xex6BmTNYAQ8rTvkLySKuFW8WM1PGG7nSorwpPSjc60qlkrNTbiqqEvVTfOTPmgDSApkImi4qaTnBuCrgUlYrJQu7qhL8pOpPHsgPHFhjxQJ6YnqmnD+dNbaMYRCRsChO1ON2kccnGVEZVCOyu9mxpBPrL/3t+NUWzY6jJiZF+GOusHwjDh9spx3lW1Dimggb5VdtMgw4t0viuBjijjSI0BtJ0B50ZbImAA9IWueT+DsEYnhKwkvgruA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L+r634Er; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=djwong@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L+r634Er;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=djwong@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhwLk0wHzz2xfR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 02:27:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xhx3X4ppfz2yFD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 02:59:04 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id A8583A43048;
-	Mon,  4 Nov 2024 15:25:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6E8C4CECE;
-	Mon,  4 Nov 2024 15:27:06 +0000 (UTC)
-Date: Mon, 4 Nov 2024 10:27:04 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, "Naveen N. Rao" <naveen@kernel.org>, lkml
- <linux-kernel@vger.kernel.org>, linux-trace-kernel@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] selftests/ftrace: update kprobe syntax error test for
- ppc64le
-Message-ID: <20241104102704.7c20dc0b@gandalf.local.home>
-In-Reply-To: <20241104103615.GZ29862@gate.crashing.org>
-References: <20241101191925.1550493-1-hbathini@linux.ibm.com>
-	<20241101205948.GW29862@gate.crashing.org>
-	<1916cb5c-cb3d-427c-bcf0-2c1b905fd6d1@linux.ibm.com>
-	<20241104094431.GY29862@gate.crashing.org>
-	<245fed6f-5fb4-4925-ba0a-fb2f32e650d0@linux.ibm.com>
-	<20241104103615.GZ29862@gate.crashing.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2228C5C10E0;
+	Mon,  4 Nov 2024 15:58:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93956C4CECE;
+	Mon,  4 Nov 2024 15:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730735941;
+	bh=nfbYyjxKn/6I7KeeEZRpVU1jWeaAip9FWL9OkYwgvck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L+r634Erl+WncXlEz4rsmMXCY8pHbVcHBzX48fyrMeKPL0TKRWGO+wiqFNNk2+bG3
+	 +EpXJQRdYvygLy9/3ELIAb/8ofnXplEM6wi31doRQhPpma9mFRpzKmtc8jteqnIuuQ
+	 y2hUCBnfM2JitLA7URtD/EpPbu2C3HrK6XK+ZsPGzQczgr5Ywo4JZ4LkH1xj3Rlsvd
+	 cnObx/9CHx2OljMMP4/ygK8PuiYs7OjnWWXkoHfXClw6C6fM35CEVlbxx3SdrDa+kG
+	 mKkn8iOJFfd3EOnWuF6R5QB2V6M0bDB2CQXbwqP5lD5+gYZVgejmFCy0JGPvPxHlu1
+	 YJOPQwrbsGUyg==
+Date: Mon, 4 Nov 2024 07:59:00 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v3 15/18] ext4: switch to using the crc32c library
+Message-ID: <20241104155900.GH21832@frogsfrogsfrogs>
+References: <20241103223154.136127-1-ebiggers@kernel.org>
+ <20241103223154.136127-16-ebiggers@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,96 +70,201 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241103223154.136127-16-ebiggers@kernel.org>
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 4 Nov 2024 04:36:15 -0600
-Segher Boessenkool <segher@kernel.crashing.org> wrote:
-
-> > >>Querying for function arguments is supported on kprobes only at function
-> > >>entry. This is a negative test case where the offset is intentionally
-> > >>set beyond function entry while querying for function arguments.
-> > >>I guess, simply setting the offset to 20 (vfs_read is anyway
-> > >>going to be beyond 5 instructions) instead of 8 for powerpc would
-> > >>make all platforms and ABI variants happy?  
-> > >
-> > >I have no idea.  What is this "offset" anyway?  
-> > 
-> > offset (in bytes) from function start address..  
+On Sun, Nov 03, 2024 at 02:31:51PM -0800, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
 > 
-> But what is there?
-
-Function start address is what kallsyms returns. That is:
-
-  grep function /proc/kallsyms
-
+> Now that the crc32c() library function directly takes advantage of
+> architecture-specific optimizations, it is unnecessary to go through the
+> crypto API.  Just use crc32c().  This is much simpler, and it improves
+> performance due to eliminating the crypto API overhead.
 > 
-> > >This is just the ELFv2 ABI.  No platform can make up its own thing at
-> > >all (well, none decided to be gratuitously incompatible, so far).  And
-> > >there are no "ABI variants"!  
-> > 
-> > The test case applies for ABIv1 & ABIv2. All ppc32 & ppc64 platforms..  
+> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ---
+>  fs/ext4/Kconfig |  3 +--
+>  fs/ext4/ext4.h  | 25 +++----------------------
+>  fs/ext4/super.c | 15 ---------------
+>  3 files changed, 4 insertions(+), 39 deletions(-)
 > 
-> Hrm.  So you allow essentially random entry points on other ABIs to
-> work?
+> diff --git a/fs/ext4/Kconfig b/fs/ext4/Kconfig
+> index e20d59221fc0..c9ca41d91a6c 100644
+> --- a/fs/ext4/Kconfig
+> +++ b/fs/ext4/Kconfig
+> @@ -29,12 +29,11 @@ config EXT3_FS_SECURITY
+>  config EXT4_FS
+>  	tristate "The Extended 4 (ext4) filesystem"
+>  	select BUFFER_HEAD
+>  	select JBD2
+>  	select CRC16
+> -	select CRYPTO
+> -	select CRYPTO_CRC32C
+> +	select CRC32
+
+Hmm.  Looking at your git branch (which was quite helpful to link to!) I
+think for XFS we don't need to change the crc32c() calls, and the only
+porting work that needs to be done is mirroring this Kconfig change?
+And that doesn't even need to be done until someone wants to get rid of
+CONFIG_LIBCRC32C, right?
+
+>  	select FS_IOMAP
+>  	select FS_ENCRYPTION_ALGS if FS_ENCRYPTION
+>  	help
+>  	  This is the next generation of the ext3 filesystem.
+>  
+> diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+> index 44b0d418143c..99aa512a7de1 100644
+> --- a/fs/ext4/ext4.h
+> +++ b/fs/ext4/ext4.h
+> @@ -31,11 +31,11 @@
+>  #include <linux/wait.h>
+>  #include <linux/sched/signal.h>
+>  #include <linux/blockgroup_lock.h>
+>  #include <linux/percpu_counter.h>
+>  #include <linux/ratelimit.h>
+> -#include <crypto/hash.h>
+> +#include <linux/crc32c.h>
+>  #include <linux/falloc.h>
+>  #include <linux/percpu-rwsem.h>
+>  #include <linux/fiemap.h>
+>  #ifdef __KERNEL__
+>  #include <linux/compat.h>
+> @@ -1660,13 +1660,10 @@ struct ext4_sb_info {
+>  	struct task_struct *s_mmp_tsk;
+>  
+>  	/* record the last minlen when FITRIM is called. */
+>  	unsigned long s_last_trim_minblks;
+>  
+> -	/* Reference to checksum algorithm driver via cryptoapi */
+> -	struct crypto_shash *s_chksum_driver;
+> -
+>  	/* Precomputed FS UUID checksum for seeding other checksums */
+>  	__u32 s_csum_seed;
+>  
+>  	/* Reclaim extents from extent status tree */
+>  	struct shrinker *s_es_shrinker;
+> @@ -2465,23 +2462,11 @@ static inline __le16 ext4_rec_len_to_disk(unsigned len, unsigned blocksize)
+>  #define DX_HASH_LAST 			DX_HASH_SIPHASH
+>  
+>  static inline u32 ext4_chksum(struct ext4_sb_info *sbi, u32 crc,
+>  			      const void *address, unsigned int length)
+>  {
+> -	struct {
+> -		struct shash_desc shash;
+> -		char ctx[4];
+> -	} desc;
+> -
+> -	BUG_ON(crypto_shash_descsize(sbi->s_chksum_driver)!=sizeof(desc.ctx));
+> -
+> -	desc.shash.tfm = sbi->s_chksum_driver;
+> -	*(u32 *)desc.ctx = crc;
+> -
+> -	BUG_ON(crypto_shash_update(&desc.shash, address, length));
+> -
+> -	return *(u32 *)desc.ctx;
+> +	return crc32c(crc, address, length);
+>  }
+>  
+>  #ifdef __KERNEL__
+>  
+>  /* hash info structure used by the directory hash */
+> @@ -3278,15 +3263,11 @@ extern void ext4_group_desc_csum_set(struct super_block *sb, __u32 group,
+>  extern int ext4_register_li_request(struct super_block *sb,
+>  				    ext4_group_t first_not_zeroed);
+>  
+>  static inline int ext4_has_metadata_csum(struct super_block *sb)
+>  {
+> -	WARN_ON_ONCE(ext4_has_feature_metadata_csum(sb) &&
+> -		     !EXT4_SB(sb)->s_chksum_driver);
+> -
+> -	return ext4_has_feature_metadata_csum(sb) &&
+> -	       (EXT4_SB(sb)->s_chksum_driver != NULL);
+> +	return ext4_has_feature_metadata_csum(sb);
+>  }
+
+Nit: Someone might want to
+s/ext4_has_metadata_csum/ext4_has_feature_metadata_csum/ here to get rid
+of the confusingly named trivial helper.
+
+Otherwise this logic looks ok to me, so
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+
+--D
+
+
+>  
+>  static inline int ext4_has_group_desc_csum(struct super_block *sb)
+>  {
+>  	return ext4_has_feature_gdt_csum(sb) || ext4_has_metadata_csum(sb);
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index 16a4ce704460..1a821093cc0d 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -1371,12 +1371,10 @@ static void ext4_put_super(struct super_block *sb)
+>  	 * Now that we are completely done shutting down the
+>  	 * superblock, we need to actually destroy the kobject.
+>  	 */
+>  	kobject_put(&sbi->s_kobj);
+>  	wait_for_completion(&sbi->s_kobj_unregister);
+> -	if (sbi->s_chksum_driver)
+> -		crypto_free_shash(sbi->s_chksum_driver);
+>  	kfree(sbi->s_blockgroup_lock);
+>  	fs_put_dax(sbi->s_daxdev, NULL);
+>  	fscrypt_free_dummy_policy(&sbi->s_dummy_enc_policy);
+>  #if IS_ENABLED(CONFIG_UNICODE)
+>  	utf8_unload(sb->s_encoding);
+> @@ -4586,19 +4584,10 @@ static int ext4_init_metadata_csum(struct super_block *sb, struct ext4_super_blo
+>  		return -EINVAL;
+>  	}
+>  	ext4_setup_csum_trigger(sb, EXT4_JTR_ORPHAN_FILE,
+>  				ext4_orphan_file_block_trigger);
+>  
+> -	/* Load the checksum driver */
+> -	sbi->s_chksum_driver = crypto_alloc_shash("crc32c", 0, 0);
+> -	if (IS_ERR(sbi->s_chksum_driver)) {
+> -		int ret = PTR_ERR(sbi->s_chksum_driver);
+> -		ext4_msg(sb, KERN_ERR, "Cannot load crc32c driver.");
+> -		sbi->s_chksum_driver = NULL;
+> -		return ret;
+> -	}
+> -
+>  	/* Check superblock checksum */
+>  	if (!ext4_superblock_csum_verify(sb, es)) {
+>  		ext4_msg(sb, KERN_ERR, "VFS: Found ext4 filesystem with "
+>  			 "invalid superblock checksum.  Run e2fsck?");
+>  		return -EFSBADCRC;
+> @@ -5638,13 +5627,10 @@ failed_mount8: __maybe_unused
+>  	flush_work(&sbi->s_sb_upd_work);
+>  	ext4_stop_mmpd(sbi);
+>  	del_timer_sync(&sbi->s_err_report);
+>  	ext4_group_desc_free(sbi);
+>  failed_mount:
+> -	if (sbi->s_chksum_driver)
+> -		crypto_free_shash(sbi->s_chksum_driver);
+> -
+>  #if IS_ENABLED(CONFIG_UNICODE)
+>  	utf8_unload(sb->s_encoding);
+>  #endif
+>  
+>  #ifdef CONFIG_QUOTA
+> @@ -7433,8 +7419,7 @@ static void __exit ext4_exit_fs(void)
+>  }
+>  
+>  MODULE_AUTHOR("Remy Card, Stephen Tweedie, Andrew Morton, Andreas Dilger, Theodore Ts'o and others");
+>  MODULE_DESCRIPTION("Fourth Extended Filesystem");
+>  MODULE_LICENSE("GPL");
+> -MODULE_SOFTDEP("pre: crc32c");
+>  module_init(ext4_init_fs)
+>  module_exit(ext4_exit_fs)
+> -- 
+> 2.47.0
 > 
-> > >You're just making assumptions here that are based on nothing else but
-> > >observations of what is done most of the time.  That might work for a
-> > >while -- maybe a long while even! -- but it can easily break down.  
-> > 
-> > Hmmm.. I understand that you want the test case to read st_other field
-> > but would you rather suggest an offset of 64?  
 > 
-> I have no idea what "offset" means here.
-
-The offset is the number of bytes from the address that is returned by
-kallsyms.
-
-
-> 
-> > Is a GEP of 8/16 instructions going to be true anytime soon or is it
-> > true already for some cases? The reason I ask that is some kprobe/ftrace
-> > code in the kernel might need a bit of re-look if that is the case.  
-> 
-> An entry point has no instructions at all.  Oh, you mean the code at
-> the GEP.
-> 
-> The LEP can already be all the allowed distances after the GEP.  And
-> the .localentry GAS directive already supports all those distances
-> always.  Not a lot of code written in assembler does use that, and
-> certainly GCC does not use a lot of the freedom it has here, but it
-> could (and so could assembler programmers).  Typically people will want
-> to make the code here as short as possible, and there are restrictions
-> on what is *allowed* to be done here anyway (ld, the link editor, can
-> change this code after all!), so it is not too likely you will ever see
-> big code at the GEP often, but times change, etc.
-
-
-This is all determined by the kernel. It's considered a function entry by
-the function:
-
-   arch_kprobe_on_func_entry()
-
-Which on PowerPC has:
-
-static bool arch_kprobe_on_func_entry(unsigned long offset)
-{
-#ifdef CONFIG_PPC64_ELF_ABI_V2
-#ifdef CONFIG_KPROBES_ON_FTRACE
-        return offset <= 16;
-#else
-        return offset <= 8;
-#endif
-#else
-        return !offset;
-#endif  
-}
-
-So, being greater than 16 on powerpc with config CONFIG_PPC64_ELF_ABI_V2
-set, would work. If that function changes, then the test needs to change.
-
--- Steve
 
