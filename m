@@ -1,126 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-2830-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2831-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2CF9BB6BD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 14:52:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9C49BB795
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 15:23:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XhtFh4tvKz2xHT;
-	Tue,  5 Nov 2024 00:52:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XhtxR4Q19z2xwD;
+	Tue,  5 Nov 2024 01:23:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::92c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730728360;
-	cv=none; b=N2W4jg7/eQUh9P58MvFsUzHdve3UosbUKcqQiU4eQ4Pr28hfdnTdU66c/lpv+SADVJ2CtY2syYLdfbgtq3iwL/eRDUutjZMLn+JCBi+1KhkoABM7WtgPSayPYeQdwsvYMBkxM6Y7/IVHYVSgeaPaa5O+SmABFsXsvTxiQpvPimUz1jjy04fE4rjuE3FBoMCWsDiSZDdQZ5M0j+nD6J5E/pWvpicjxKEq6KFMI5S6nMozyIS+IN0xeOFNVI8JzRBSLwB9WKlfoHEvaX4bkvxyssky0gdlunlMvQH346DSkuCFXapK8v9vSbxnTAPfWUBP5SNuUPF0WrAtwOXmxe9egw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730730219;
+	cv=none; b=j2JMKfmNwbZepvdHnVKc7T4Tw7KNqsq0kapzW11BIORDZJl3pY9T2zefwF5QH4ruT5fBVQ7X7zPFTmUeuhugRcxp6NW1DsHkXMfi1SQVqYA8MFlhy0khuEn6bFHGPqMXyg5wVrIN8+qNaine100EPgRtjeJ+Ix2P9x+kX3z0usx1nYkEIbV+125Byy9tNCBmUZcYTGi1FCnKIZik4GqJ7z+ElBXdivuvd4t+bTPUHnm4B18hcuX9sAZc7x9lf53erYMYqSFcfU6aMseGr/xqPafRHhu+ecRFcJbEVzqFZ58srBYjhRLr/usy4Zh3ZOVT9eX8fXD4EtZUmeV+SAnzAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730728360; c=relaxed/relaxed;
-	bh=EkBaJUaQmNlDT9UG7F3IUEDB61PJd1lepS1O8vS2Df4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GRcbkVseB1di+JosO7OaHj4RdUsLbH7WeEbITX/8bBrV2xb7lmOBkPFut4ke+pUxSTIoQvyUclBwIvJWF42Teb6FLRHH+1C/gTmzq76s0lCjwde7g66QupuMdw35eRNPx/TccJQ4AGy5DIL1H/6rOy49YVi3/kz/HyF4iA65ahdjLesSDqlHeOnokzQIizxiI5rWCGCsT6+Y8CxJ87hTvxSQPuP6ZwE8ST7DrRtD2E+qZ4djKiPnNL8Kp2cuK81uXZqk2JazimLT0zDwJ5tWtbl0XqABhci5Pxav9z7FwJjDAe5upl73zQsd+2rz/4eeDXhSvhm7+OdLkCC5QrSQAA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=cxQVkWFa; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::92c; helo=mail-ua1-x92c.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org) smtp.mailfrom=ziepe.ca
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+	t=1730730219; c=relaxed/relaxed;
+	bh=j4zN/ElscuerA//rJUqf/4KurcEwyLi6zSlvuwt93ss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Wzkg97H1aD7aR9HgS1CTLYloFFmqS8n+AwmhndE0lnb6frVtFkPuTXupf9To7sh7F9k4nMFT6r/i7sUts3akMqe1Rb5vFtr1LtVVo4BaEJGr8c+BDw4itxymtUrcpf9ZIX2hEZ3rodyFemhP+1v7kpHLGTk+5PShUxHk5MtyxHZXd0XIiKCSv3D5ulosR31VfKJYMwwdUDFoOsxuCppok0Dvhxt2rl56YiWwQO8+tmwlXPRKbIW1N/3aGtvLPW45/i9RdWcebHiTlAQlulwhsCYSS+P2vUDbRrcnRXbyusvpV4ntWnQOXk2KCsKJjhNTYRBnefh0daRqCbk1wprj8w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J1bWFqfn; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BcNPvv8f; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=herton@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=cxQVkWFa;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J1bWFqfn;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BcNPvv8f;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::92c; helo=mail-ua1-x92c.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=herton@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhtFf6LDNz2xH1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 00:52:37 +1100 (AEDT)
-Received: by mail-ua1-x92c.google.com with SMTP id a1e0cc1a2514c-84fc9005dccso1252071241.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2024 05:52:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1730728349; x=1731333149; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EkBaJUaQmNlDT9UG7F3IUEDB61PJd1lepS1O8vS2Df4=;
-        b=cxQVkWFaRwN8Dc7g/cxJTT/W3gi4Au4TSO/1ZLgbQ6a04b/Z/xdogLwpo07zFil9As
-         tENFoVTp9KcKuphJzApriTei516aOXt5Vbm3VPXibeWdi0SxK199Xvz2N/h8PSy7kZcj
-         LRLtZSUR0WFr2k+C1LpAfKO7pUIsay6FMY1Vy97cMsyWytnR33aT1LR/bZcMefonjYKI
-         WLKrOVhujQGecY3bU8g9gp5aviBX5n1gW+zZCwfcURb9HMsUKXDRHXdSWGEGMykDk9r/
-         eM2y1FWShqWzM9VN01HJtE867LmNCvIN3jI60aAH7eyjaXv+qcX9Tkfx1L0msZGj0dQG
-         MOEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730728349; x=1731333149;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EkBaJUaQmNlDT9UG7F3IUEDB61PJd1lepS1O8vS2Df4=;
-        b=Q9i6pg5XDEWOtL8SNiD2s41WEUsR3TaOwrgoCNnWIFa/DO6r2ghsouvFWupH86qknu
-         HxVhM/+dM5xiXNeGZVYt0+sQjDY9inmex7f9G4+giXytkpHwIENIOulyTdw7jXQA8Wd9
-         N0HtSjQICQCbPC7RfIkRx89bkSNZtPJdDNp36zzIQMUCRra3c+xNKdYwdJjex5DHb39F
-         GlsmS9urVFkMla7rQguH1zkZMq6R8OohmhFxgjMul+U0CmuqmBq3i6y4dc4V7LFEzE3I
-         RXe/+QxZsiXqfSx12DY1yfrznTg64to91oRmr4Mv0VJB/RQ1UZMNuRUwxru8BIrBITAX
-         UWdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVNFhm01bRGPXCGLdoIVp9kgnocH0WUFqSaaYfrX0tKsmSkf4y5kpte8Sgh04wpczAN6AWGrHrv3YKfoos=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxQtP0dUBKqtDZK5W11AVHfaBkw0LckKqcxj3y6zMIzW4URgMyx
-	eYBPjdPLGaY2nuguhIqvFjmcPntc4JcMycuAHl4VABVMX1gn6yjXSkKVak1gVMA=
-X-Google-Smtp-Source: AGHT+IFmlPTEulo8PrBSa4hLGepjHWucd1eo0mnO56qT1Ydh9XheeGVoeKHcAHFWhX+avIDDQrBpSQ==
-X-Received: by 2002:a05:6102:3753:b0:4a4:8756:d899 with SMTP id ada2fe7eead31-4a9543ece24mr15248394137.29.1730728348895;
-        Mon, 04 Nov 2024 05:52:28 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ad0adffesm47192441cf.32.2024.11.04.05.52.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 05:52:28 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1t7xVL-00000000hsn-2kgO;
-	Mon, 04 Nov 2024 09:52:27 -0400
-Date: Mon, 4 Nov 2024 09:52:27 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Xinhui Pan <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
-	Carlos Bilbao <carlos.bilbao.osdev@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Frederic Barrat <fbarrat@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-cxl@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
-	linux-mtd@lists.infradead.org, platform-driver-x86@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH v2 05/10] sysfs: treewide: constify attribute callback of
- bin_is_visible()
-Message-ID: <20241104135227.GE35848@ziepe.ca>
-References: <20241103-sysfs-const-bin_attr-v2-0-71110628844c@weissschuh.net>
- <20241103-sysfs-const-bin_attr-v2-5-71110628844c@weissschuh.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhtxP6j5yz2xt7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 01:23:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730730209;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=j4zN/ElscuerA//rJUqf/4KurcEwyLi6zSlvuwt93ss=;
+	b=J1bWFqfnRMDdjuOOiYW8SD3ytXQEn3JfU2z0VM9NMaW9sGLgyh5aFgMnih0c05xBC7S6c3
+	GRUC6X0v0HJzcSHk3gFZiZl780lpVruMNDUxGZhZCkp1XYTqdqigSOcXdw7sIDBaZ2Vomm
+	lFYsScw0cHEuae9Q0/85bVjdXL/sDmA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730730210;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=j4zN/ElscuerA//rJUqf/4KurcEwyLi6zSlvuwt93ss=;
+	b=BcNPvv8fWPLcVUF6+qGNLiOisGXwUmlnXgQhxRvIOTzl1PgE6x7yVQrsdfaZAHI7iSJIg1
+	OfCYsShXWOWz8MWtZhSjM0J6a2wH32jmWqFzjLmYsX6fG2u7cbKgbBghgQTrQlEKRUCDnh
+	L8l3F+MZa47mznP5i0BC/wCUWzMgzKI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-t7I83Uq_PpO99z-09uYBSA-1; Mon,
+ 04 Nov 2024 09:23:24 -0500
+X-MC-Unique: t7I83Uq_PpO99z-09uYBSA-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A30011955DCD;
+	Mon,  4 Nov 2024 14:23:21 +0000 (UTC)
+Received: from redhat.com (unknown [10.96.134.12])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 04B571956089;
+	Mon,  4 Nov 2024 14:23:19 +0000 (UTC)
+From: "Herton R. Krzesinski" <herton@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-mm@kvack.org,
+	herton@redhat.com
+Subject: [PATCH v2] lazy tlb: fix hotplug exit race with MMU_LAZY_TLB_SHOOTDOWN
+Date: Mon,  4 Nov 2024 11:23:18 -0300
+Message-ID: <20241104142318.3295663-1-herton@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -133,40 +86,168 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241103-sysfs-const-bin_attr-v2-5-71110628844c@weissschuh.net>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
+X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Nov 03, 2024 at 05:03:34PM +0000, Thomas Weißschuh wrote:
-> The is_bin_visible() callbacks should not modify the struct
-> bin_attribute passed as argument.
-> Enforce this by marking the argument as const.
-> 
-> As there are not many callback implementers perform this change
-> throughout the tree at once.
-> 
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> ---
->  drivers/cxl/port.c                      |  2 +-
->  drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c |  2 +-
->  drivers/infiniband/hw/qib/qib_sysfs.c   |  2 +-
->  drivers/mtd/spi-nor/sysfs.c             |  2 +-
->  drivers/nvmem/core.c                    |  3 ++-
->  drivers/pci/pci-sysfs.c                 |  2 +-
->  drivers/pci/vpd.c                       |  2 +-
->  drivers/platform/x86/amd/hsmp.c         |  2 +-
->  drivers/platform/x86/intel/sdsi.c       |  2 +-
->  drivers/scsi/scsi_sysfs.c               |  2 +-
->  drivers/usb/core/sysfs.c                |  2 +-
->  include/linux/sysfs.h                   | 30 +++++++++++++++---------------
->  12 files changed, 27 insertions(+), 26 deletions(-)
+From: Nicholas Piggin <npiggin@gmail.com>
 
-For infiniband:
+CPU unplug first calls __cpu_disable(), and that's where powerpc calls
+cleanup_cpu_mmu_context(), which clears this CPU from mm_cpumask() of all
+mms in the system.
 
-Acked-by: Jason Gunthorpe <jgg@nvidia.com>
+However this CPU may still be using a lazy tlb mm, and its mm_cpumask bit
+will be cleared from it.  The CPU does not switch away from the lazy tlb
+mm until arch_cpu_idle_dead() calls idle_task_exit().
+
+If that user mm exits in this window, it will not be subject to the lazy
+tlb mm shootdown and may be freed while in use as a lazy mm by the CPU
+that is being unplugged.
+
+cleanup_cpu_mmu_context() could be moved later, but it looks better to
+move the lazy tlb mm switching earlier.  The problem with doing the lazy
+mm switching in idle_task_exit() is explained in commit bf2c59fce4074
+("sched/core: Fix illegal RCU from offline CPUs"), which added a wart to
+switch away from the mm but leave it set in active_mm to be cleaned up
+later.
+
+So instead, switch away from the lazy tlb mm at sched_cpu_wait_empty(),
+which is the last hotplug state before teardown (CPUHP_AP_SCHED_WAIT_EMPTY).
+This CPU will never switch to a user thread from this point, so it has no
+chance to pick up a new lazy tlb mm.  This removes the lazy tlb mm handling
+wart in CPU unplug.
+
+With this, idle_task_exit() is not needed anymore and can be cleaned up.
+This leaves the prototype alone, to be cleaned after this change.
+
+herton: took the suggestions from https://lore.kernel.org/all/87jzvyprsw.ffs@tglx/
+and made adjustments on the initial patch proposed by Nicholas.
+
+Link: https://lkml.kernel.org/r/20230524060455.147699-1-npiggin@gmail.com
+Link: https://lore.kernel.org/all/20230525205253.E2FAEC433EF@smtp.kernel.org/
+Fixes: 2655421ae69fa ("lazy tlb: shoot lazies, non-refcounting lazy tlb mm reference handling scheme")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
+---
+ include/linux/sched/hotplug.h |  4 ----
+ kernel/cpu.c                  | 11 ++++++-----
+ kernel/sched/core.c           | 22 +++++++++++++++-------
+ 3 files changed, 21 insertions(+), 16 deletions(-)
+
+Herton: I contacted Nicholas by email, he was ok with me going ahead
+and posting this, I saw the original patch was stalled/didn't went forward. Thus 
+I'm posting this but keeping his From/authorship, since he is original
+author of the patch, so we can have this moving forward. I have a report
+and also reproduced the warning similar to the one reported at
+https://github.com/linuxppc/issues/issues/469 - which can be triggered
+doing cpu offline/online loop with CONFIG_DEBUG_VM enabled. This patch fixes
+the problem. I updated the changelog/patch based on the suggestions given and to
+the best of my knowledge/investigation on this issue, thorough review is
+appreciated.
+
+If this is ok then I can submit a followup for this to cleanup idle_task_exit().
+
+v2: fix warning reported by kernel test robot
+https://lore.kernel.org/oe-kbuild-all/202411022220.0u2CXCAM-lkp@intel.com/
+- sched_force_init_mm is only used under CONFIG_HOTPLUG_CPU at
+sched_cpu_wait_empty, so we don't need to define it for !CONFIG_HOTPLUG_CPU
+
+diff --git a/include/linux/sched/hotplug.h b/include/linux/sched/hotplug.h
+index 412cdaba33eb..17e04859b9a4 100644
+--- a/include/linux/sched/hotplug.h
++++ b/include/linux/sched/hotplug.h
+@@ -18,10 +18,6 @@ extern int sched_cpu_dying(unsigned int cpu);
+ # define sched_cpu_dying	NULL
+ #endif
+ 
+-#ifdef CONFIG_HOTPLUG_CPU
+-extern void idle_task_exit(void);
+-#else
+ static inline void idle_task_exit(void) {}
+-#endif
+ 
+ #endif /* _LINUX_SCHED_HOTPLUG_H */
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index d293d52a3e00..fb4f46885cb2 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -904,13 +904,14 @@ static int finish_cpu(unsigned int cpu)
+ 	struct task_struct *idle = idle_thread_get(cpu);
+ 	struct mm_struct *mm = idle->active_mm;
+ 
+-	/*
+-	 * idle_task_exit() will have switched to &init_mm, now
+-	 * clean up any remaining active_mm state.
++	/* 
++	 * sched_force_init_mm() ensured the use of &init_mm,
++	 * drop that refcount now that the CPU has stopped.
+ 	 */
+-	if (mm != &init_mm)
+-		idle->active_mm = &init_mm;
++	WARN_ON(mm != &init_mm);
++	idle->active_mm = NULL;
+ 	mmdrop_lazy_tlb(mm);
++
+ 	return 0;
+ }
+ 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index dbfb5717d6af..7d8f47a8f000 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7826,19 +7826,26 @@ void sched_setnuma(struct task_struct *p, int nid)
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+ /*
+- * Ensure that the idle task is using init_mm right before its CPU goes
+- * offline.
++ * Invoked on the outgoing CPU in context of the CPU hotplug thread
++ * after ensuring that there are no user space tasks left on the CPU.
++ *
++ * If there is a lazy mm in use on the hotplug thread, drop it and
++ * switch to init_mm.
++ *
++ * The reference count on init_mm is dropped in finish_cpu().
+  */
+-void idle_task_exit(void)
++static void sched_force_init_mm(void)
+ {
+ 	struct mm_struct *mm = current->active_mm;
+ 
+-	BUG_ON(cpu_online(smp_processor_id()));
+-	BUG_ON(current != this_rq()->idle);
+-
+ 	if (mm != &init_mm) {
+-		switch_mm(mm, &init_mm, current);
++		mmgrab_lazy_tlb(&init_mm);
++		local_irq_disable();
++		current->active_mm = &init_mm;
++		switch_mm_irqs_off(mm, &init_mm, current);
++		local_irq_enable();
+ 		finish_arch_post_lock_switch();
++		mmdrop_lazy_tlb(mm);
+ 	}
+ 
+ 	/* finish_cpu(), as ran on the BP, will clean up the active_mm state */
+@@ -8240,6 +8247,7 @@ int sched_cpu_starting(unsigned int cpu)
+ int sched_cpu_wait_empty(unsigned int cpu)
+ {
+ 	balance_hotplug_wait();
++	sched_force_init_mm();
+ 	return 0;
+ }
+ 
+-- 
+2.47.0
+
 
