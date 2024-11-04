@@ -1,106 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-2816-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2817-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E919BAB12
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 04:01:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E9B9BABCE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 05:18:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XhbpQ5x6pz2yMP;
-	Mon,  4 Nov 2024 14:01:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XhdVX0C5Lz2yGs;
+	Mon,  4 Nov 2024 15:17:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.111
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730688747;
-	cv=none; b=lifNxPOCAX3q+oF99hrZXAoho9XzCtmz1qx6N/mZaM7rIOAznkR9nusGE090NJ8c+vSZCW6aOBrJAzoDttYSfLTeSmAVRKxmCZ+xslhJgntczmuOF1mQo3wxk3JpncvHDDiLksInYOO7b32o6OQFPUVreQVywnf4Jc/3Hp6P8M5tEF07UHrFg29Y8ronwyUA07mRo5XTXwgNTswaublNpyuuYi8fajYaaQ+zGeT14XaX6aumxSIhG2e9jHpfLUISG3g5O7RcyKWNNho1bVaxs2Kd50ItMMHIZOSs0p4V6YSUtYV1hHN8FuGaqTsN7G8E1ORfEWNy0JnvqgXOsZdb8A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730693875;
+	cv=none; b=N7XYqnon2ds82RsogB++ic9pW9vHPgzv0D6BtlmGmUlKPMKN/PUSPUFcqHb2VO2vtvOUeoqNLH2VnDFLoOa2LWtyaft0/66iwWhLiETEW7VLd3+pvSIJg4QXKwxT0e3TDh9ekVALDUFmXN/1d+zjZ3RhFAlCfxni0TKe8cnTghCmMEOenQrbKTkABnkqE7gWFLQmtZtZMSdw+n0EPYMfW6Hr0pzMjQH103DjaGSoc+lzeQx5Lz4Oks1LZWskl+ohnyIu8ITX+OSzTWNEQzvrSufOIMZNN5Qxc2UpMkMDuRHQKCKy9OAyaTYyznZquhTQSR4GeCeQbdLYjAQjIfrEhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730688747; c=relaxed/relaxed;
-	bh=wk8LyHWtMu8L87/2eeYa33MmxCMRwkuycxwL7Q1RHjk=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=Mgh8nJYj8vpVUspZvwwMmy5iXmskZ/r/8eFN2YYGk3NNCWUiB14x0plI91XEU/hahxZKmujC1UwKawFxeU/7NU+7bCp+HbGstJKQwOk7P3TBPtiZTiLcXqG+2LzPGKtbtSeR//R6JePWdOfduPvaYURC/AlmaVULvBjZ/12F75zXZvzA7gLsu/kKuNkKrpGW/wE0p92vz8vxxJTAMcgkIAdEGqg6qU5GYYKSxvNDjkmhvmxw8IXZ3IU4B403vQ4xCwVjf/N6jXl3QU2EX2ieqFFWduW9VsvK5dwMHfFJX8GflICFhC00wBP0n+y0g0lMfl4iJmVuoNXiJrJGXpmlHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=nlJji580; dkim-atps=neutral; spf=pass (client-ip=115.124.30.111; helo=out30-111.freemail.mail.aliyun.com; envelope-from=xuanzhuo@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+	t=1730693875; c=relaxed/relaxed;
+	bh=p0n8bncX8QjVKzC1C67rzfzC2d7vddEvGtx6OqnXO9M=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=IB2QIRT1y0FgO+Q4EiIzmUl2lqCHiXHbDNOITCxQ7VIkTzJcRJC7b1zLLwl+fWO233jA/Pwsg8NGg/sv0pvafRTnVRp311DlEgq41m/LqSEizQA8dAxgKHVwVewG8/Yl0rdo/sg48zx0ejQUYe8RVLWr5D1ikVrF4oH4PnIbWrwNqRXUndg5/sfhrW7C6nd4XySa0CAX0USn4u/GwqB7wrsKTYUCHe5FnNUvXiADoTQGwJCHvGAYCa0W5GKvXaJ/dbmXbVakRdkw3MeqHWvasquO31LmyYrWObXHVsbyxtIzFXNNiGFqjuY9LEpy9hjz9+NEgIVBoJ+yCBoM4Tz8rQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HEJrNcHs; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=nlJji580;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HEJrNcHs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.111; helo=out30-111.freemail.mail.aliyun.com; envelope-from=xuanzhuo@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xhbbr68TDz2xG6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2024 13:52:23 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1730688738; h=Message-ID:Subject:Date:From:To;
-	bh=wk8LyHWtMu8L87/2eeYa33MmxCMRwkuycxwL7Q1RHjk=;
-	b=nlJji580RyeDQ0V5/Jzeu4jNpkdiT3M+JZfwMietHDPXzIXQAiv8CQXkCGktLHHJbjNXVfBdKX+fGY7a6AoWLUG5oqGXKyoEkHUJBSTyQK1ttLXMlc/PrzP0/9xNLP/vAOQPHKRDFUwxPve4flUxVEKUeF+P4gXkFdcQpqTBARg=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WIZn7Ws_1730688734 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 04 Nov 2024 10:52:15 +0800
-Message-ID: <1730688721.0028145-5-xuanzhuo@linux.alibaba.com>
-Subject: Re: [resend PATCH 2/2] dim: pass dim_sample to net_dim() by reference
-Date: Mon, 4 Nov 2024 10:52:01 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Caleb Sander Mateos <csander@purestorage.com>
-Cc: Caleb Sander Mateos <csander@purestorage.com>,
- intel-wired-lan@lists.osuosl.org,
- linux-arm-kernel@lists.infradead.org,
- linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-mediatek@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-rdma@vger.kernel.org,
- netdev@vger.kernel.org,
- oss-drivers@corigine.com,
- virtualization@lists.linux.dev,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Arthur Kiyanovski <akiyano@amazon.com>,
- Brett Creeley <brett.creeley@amd.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- David Arinzon <darinzon@amazon.com>,
- "David S. Miller" <davem@davemloft.net>,
- Doug Berger <opendmb@gmail.com>,
- Eric Dumazet <edumazet@google.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Felix Fietkau <nbd@nbd.name>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Geetha sowjanya <gakula@marvell.com>,
- hariprasad <hkelam@marvell.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Jason Wang <jasowang@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>,
- Leon Romanovsky <leon@kernel.org>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Louis Peens <louis.peens@corigine.com>,
- Mark Lee <Mark-MC.Lee@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Michael Chan <michael.chan@broadcom.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Noam Dagan <ndagan@amazon.com>,
- Paolo Abeni <pabeni@redhat.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Roy Pledge <Roy.Pledge@nxp.com>,
- Saeed Bishara <saeedb@amazon.com>,
- Saeed Mahameed <saeedm@nvidia.com>,
- Sean Wang <sean.wang@mediatek.com>,
- Shannon Nelson <shannon.nelson@amd.com>,
- Shay Agroskin <shayagr@amazon.com>,
- Simon Horman <horms@kernel.org>,
- Subbaraya Sundeep <sbhatta@marvell.com>,
- Sunil Goutham <sgoutham@marvell.com>,
- Tal Gilboa <talgi@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>
-References: <20241031002326.3426181-1-csander@purestorage.com>
- <20241031002326.3426181-2-csander@purestorage.com>
-In-Reply-To: <20241031002326.3426181-2-csander@purestorage.com>
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhdVW0CHXz2y3Z
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Nov 2024 15:17:54 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A436k8G030694;
+	Mon, 4 Nov 2024 04:17:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=p0n8bn
+	cX8QjVKzC1C67rzfzC2d7vddEvGtx6OqnXO9M=; b=HEJrNcHs4gIsRRei6jp5NR
+	4id7xyVL/VejgeVW45GFnLbEo9Hnze5zIFlJA22S2gRWmC8x+DjoZhc7S4n3awtt
+	XPdJla7l41H/QTLet7aEbXJ741JztaQI1xDUcXoBNGLBtsNHl1DSlPaeGfitFVFs
+	Xt6XbIfACiOEcH+Btw3I15RLw+7iWnpVl2z83VpxQZ2lr4S1BqYy9lQyTncsiS0o
+	3qGgCPHbNy9FB8jelM5/udACGdOXLfA/ZrTZWcagT90K6p/iGbDeqhHYdrmyVKlW
+	r9FE+Z6GQuKM1mow7TX6iHWBsc9RyLmLQEmV4pm4nJ71MCM0oEzf7fzCVzHoYChQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42pjku8jcn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Nov 2024 04:17:48 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4A44HmCr026975;
+	Mon, 4 Nov 2024 04:17:48 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42pjku8jck-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Nov 2024 04:17:48 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A3GsIbu024200;
+	Mon, 4 Nov 2024 04:17:47 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42nxds1h7s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Nov 2024 04:17:47 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A44HhYL57016712
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 4 Nov 2024 04:17:43 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 75DA420043;
+	Mon,  4 Nov 2024 04:17:43 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6DDD220040;
+	Mon,  4 Nov 2024 04:17:37 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.251.57])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  4 Nov 2024 04:17:37 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,517 +84,135 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-
-On Wed, 30 Oct 2024 18:23:26 -0600, Caleb Sander Mateos <csander@purestorage.com> wrote:
-> net_dim() is currently passed a struct dim_sample argument by value.
-> struct dim_sample is 24 bytes. Since this is greater 16 bytes, x86-64
-> passes it on the stack. All callers have already initialized dim_sample
-> on the stack, so passing it by value requires pushing a duplicated copy
-> to the stack. Either witing to the stack and immediately reading it, or
-> perhaps dereferencing addresses relative to the stack pointer in a chain
-> of push instructions, seems to perform quite poorly.
->
-> In a heavy TCP workload, mlx5e_handle_rx_dim() consumes 3% of CPU time,
-> 94% of which is attributed to the first push instruction to copy
-> dim_sample on the stack for the call to net_dim():
-> // Call ktime_get()
->   0.26 |4ead2:   call   4ead7 <mlx5e_handle_rx_dim+0x47>
-> // Pass the address of struct dim in %rdi
->        |4ead7:   lea    0x3d0(%rbx),%rdi
-> // Set dim_sample.pkt_ctr
->        |4eade:   mov    %r13d,0x8(%rsp)
-> // Set dim_sample.byte_ctr
->        |4eae3:   mov    %r12d,0xc(%rsp)
-> // Set dim_sample.event_ctr
->   0.15 |4eae8:   mov    %bp,0x10(%rsp)
-> // Duplicate dim_sample on the stack
->  94.16 |4eaed:   push   0x10(%rsp)
->   2.79 |4eaf1:   push   0x10(%rsp)
->   0.07 |4eaf5:   push   %rax
-> // Call net_dim()
->   0.21 |4eaf6:   call   4eafb <mlx5e_handle_rx_dim+0x6b>
->
-> To allow the caller to reuse the struct dim_sample already on the stack,
-> pass the struct dim_sample by reference to net_dim().
->
-> Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH] tools/perf/tests/expr: Make the system_tsc_freq test only
+ for intel
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <ZyF2-XNUh38p_5Gg@google.com>
+Date: Mon, 4 Nov 2024 09:47:23 +0530
+Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        akanksha@linux.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com,
+        disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B72F330F-2A56-41B0-ABED-FCA7DC9EE711@linux.vnet.ibm.com>
+References: <20241022140156.98854-1-atrajeev@linux.vnet.ibm.com>
+ <ZyF2-XNUh38p_5Gg@google.com>
+To: Namhyung Kim <namhyung@kernel.org>, James Clark <james.clark@linaro.org>,
+        tmricht@linux.ibm.com, Ian Rogers <irogers@google.com>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: YbCAwbGDlmK4g8GeLpvleU4OkshRM1HF
+X-Proofpoint-ORIG-GUID: 2QnViu_OFeVxv6AmYMCZR_uzxm4-a-fC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 impostorscore=0 mlxlogscore=999
+ mlxscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411040034
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_NONE autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
-For virtio-net:
 
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> On 30 Oct 2024, at 5:29=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> =
+wrote:
+>=20
+> Hello,
+>=20
+> On Tue, Oct 22, 2024 at 07:31:56PM +0530, Athira Rajeev wrote:
+>> The "Simple expression parser" test fails on powerpc
+>> as below:
+>>=20
+>> parsing metric: #system_tsc_freq
+>> Unrecognized literal '#system_tsc_freq'literal: #system_tsc_freq =3D =
+nan
+>> syntax error
+>> FAILED tests/expr.c:247 #system_tsc_freq
+>> ---- end(-1) ----
+>> 7: Simple expression parser  : FAILED!
+>>=20
+>> In the test, system_tsc_freq is checked as below:
+>>=20
+>> if (is_intel)
+>>    TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
+>> else
+>>=20
+>> But commit 609aa2667f67 ("perf tool_pmu: Switch to standard
+>> pmu functions and json descriptions")' changed condition in
+>=20
+> Probably need to put it as Fixes: tag.
+>=20
+>=20
+>> tool_pmu__skip_event so that system_tsc_freq event should
+>> only appear on x86
+>>=20
+>> +#if !defined(__i386__) && !defined(__x86_64__)
+>> +       /* The system_tsc_freq event should only appear on x86. */
+>> +       if (strcasecmp(name, "system_tsc_freq") =3D=3D 0)
+>> +               return true;
+>> +#endif
+>>=20
+>> After this commit, the testcase breaks for expr__parse of
+>> system_tsc_freq in powerpc case. Fix the testcase to have
+>> complete system_tsc_freq test within "is_intel" check.
+>=20
+> Ian, are you ok with this?
+>=20
+> Thanks,
+> Namhyung
+>=20
+
+Hi Ian
+
+If the change looks good to you, I will send a V2 with Fixes tag added. =
+Please share your review comments
+
+Hi James, Thomas
+
+Looking for help to test since in non-intel platform, this test will =
+fail without the patch
+
+Thanks
+Athira
+
+>>=20
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> ---
+>> tools/perf/tests/expr.c | 7 +++----
+>> 1 file changed, 3 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
+>> index e3aa9d4fcf3a..eb3bd68fc4ce 100644
+>> --- a/tools/perf/tests/expr.c
+>> +++ b/tools/perf/tests/expr.c
+>> @@ -244,11 +244,10 @@ static int test__expr(struct test_suite *t =
+__maybe_unused, int subtest __maybe_u
+>> if (num_dies) // Some platforms do not have CPU die support, for =
+example s390
+>> TEST_ASSERT_VAL("#num_dies >=3D #num_packages", num_dies >=3D =
+num_packages);
+>>=20
+>> - TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, =
+"#system_tsc_freq") =3D=3D 0);
+>> - if (is_intel)
+>> + if (is_intel) {
+>> + TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, =
+"#system_tsc_freq") =3D=3D 0);
+>> TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
+>> - else
+>> - TEST_ASSERT_VAL("#system_tsc_freq =3D=3D 0", fpclassify(val) =3D=3D =
+FP_ZERO);
+>> + }
+>>=20
+>> /*
+>>  * Source count returns the number of events aggregating in a leader
+>> --=20
+>> 2.43.5
 
 
-> ---
->  Documentation/networking/net_dim.rst                   |  2 +-
->  drivers/net/ethernet/amazon/ena/ena_netdev.c           |  2 +-
->  drivers/net/ethernet/broadcom/bcmsysport.c             |  2 +-
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c              |  4 ++--
->  drivers/net/ethernet/broadcom/genet/bcmgenet.c         |  2 +-
->  drivers/net/ethernet/freescale/enetc/enetc.c           |  2 +-
->  drivers/net/ethernet/hisilicon/hns3/hns3_enet.c        |  4 ++--
->  drivers/net/ethernet/intel/ice/ice_txrx.c              |  4 ++--
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c            |  4 ++--
->  drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c |  2 +-
->  drivers/net/ethernet/mediatek/mtk_eth_soc.c            |  4 ++--
->  drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c      |  4 ++--
->  drivers/net/ethernet/netronome/nfp/nfd3/dp.c           |  4 ++--
->  drivers/net/ethernet/netronome/nfp/nfdk/dp.c           |  4 ++--
->  drivers/net/ethernet/pensando/ionic/ionic_txrx.c       |  2 +-
->  drivers/net/virtio_net.c                               |  2 +-
->  drivers/soc/fsl/dpio/dpio-service.c                    |  2 +-
->  include/linux/dim.h                                    |  2 +-
->  lib/dim/net_dim.c                                      | 10 +++++-----
->  19 files changed, 31 insertions(+), 31 deletions(-)
->
-> diff --git a/Documentation/networking/net_dim.rst b/Documentation/networking/net_dim.rst
-> index 8908fd7b0a8d..4377998e6826 100644
-> --- a/Documentation/networking/net_dim.rst
-> +++ b/Documentation/networking/net_dim.rst
-> @@ -154,11 +154,11 @@ usage is not complete but it should make the outline of the usage clear.
->  	dim_update_sample(my_entity->events,
->  		          my_entity->packets,
->  		          my_entity->bytes,
->  		          &dim_sample);
->  	/* Call net DIM */
-> -	net_dim(&my_entity->dim, dim_sample);
-> +	net_dim(&my_entity->dim, &dim_sample);
->  	...
->    }
->
->    /* My entity's initialization function (my_entity was already allocated) */
->    int my_driver_init_my_entity(struct my_driver_entity *my_entity, ...)
-> diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> index 96df20854eb9..63c8a2328142 100644
-> --- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> +++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> @@ -1381,11 +1381,11 @@ static void ena_adjust_adaptive_rx_intr_moderation(struct ena_napi *ena_napi)
->  	dim_update_sample(rx_ring->non_empty_napi_events,
->  			  rx_ring->rx_stats.cnt,
->  			  rx_ring->rx_stats.bytes,
->  			  &dim_sample);
->
-> -	net_dim(&ena_napi->dim, dim_sample);
-> +	net_dim(&ena_napi->dim, &dim_sample);
->
->  	rx_ring->per_napi_packets = 0;
->  }
->
->  void ena_unmask_interrupt(struct ena_ring *tx_ring,
-> diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-> index caff6e87a488..031e9e0cca53 100644
-> --- a/drivers/net/ethernet/broadcom/bcmsysport.c
-> +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-> @@ -1027,11 +1027,11 @@ static int bcm_sysport_poll(struct napi_struct *napi, int budget)
->  	}
->
->  	if (priv->dim.use_dim) {
->  		dim_update_sample(priv->dim.event_ctr, priv->dim.packets,
->  				  priv->dim.bytes, &dim_sample);
-> -		net_dim(&priv->dim.dim, dim_sample);
-> +		net_dim(&priv->dim.dim, &dim_sample);
->  	}
->
->  	return work_done;
->  }
->
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index 6dd6541d8619..ca42b81133d7 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -3100,11 +3100,11 @@ static int bnxt_poll(struct napi_struct *napi, int budget)
->
->  		dim_update_sample(cpr->event_ctr,
->  				  cpr->rx_packets,
->  				  cpr->rx_bytes,
->  				  &dim_sample);
-> -		net_dim(&cpr->dim, dim_sample);
-> +		net_dim(&cpr->dim, &dim_sample);
->  	}
->  	return work_done;
->  }
->
->  static int __bnxt_poll_cqs(struct bnxt *bp, struct bnxt_napi *bnapi, int budget)
-> @@ -3231,11 +3231,11 @@ static int bnxt_poll_p5(struct napi_struct *napi, int budget)
->
->  		dim_update_sample(cpr->event_ctr,
->  				  cpr_rx->rx_packets,
->  				  cpr_rx->rx_bytes,
->  				  &dim_sample);
-> -		net_dim(&cpr->dim, dim_sample);
-> +		net_dim(&cpr->dim, &dim_sample);
->  	}
->  	return work_done;
->  }
->
->  static void bnxt_free_tx_skbs(struct bnxt *bp)
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index 10966ab15373..53a949eb9180 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> @@ -2403,11 +2403,11 @@ static int bcmgenet_rx_poll(struct napi_struct *napi, int budget)
->  	}
->
->  	if (ring->dim.use_dim) {
->  		dim_update_sample(ring->dim.event_ctr, ring->dim.packets,
->  				  ring->dim.bytes, &dim_sample);
-> -		net_dim(&ring->dim.dim, dim_sample);
-> +		net_dim(&ring->dim.dim, &dim_sample);
->  	}
->
->  	return work_done;
->  }
->
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index c09370eab319..05dedea6185a 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -716,11 +716,11 @@ static void enetc_rx_net_dim(struct enetc_int_vector *v)
->
->  	dim_update_sample(v->comp_cnt,
->  			  v->rx_ring.stats.packets,
->  			  v->rx_ring.stats.bytes,
->  			  &dim_sample);
-> -	net_dim(&v->rx_dim, dim_sample);
-> +	net_dim(&v->rx_dim, &dim_sample);
->  }
->
->  static int enetc_bd_ready_count(struct enetc_bdr *tx_ring, int ci)
->  {
->  	int pi = enetc_rd_reg_hot(tx_ring->tcir) & ENETC_TBCIR_IDX_MASK;
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> index 4cbc4d069a1f..43377a7b2426 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> @@ -4446,11 +4446,11 @@ static void hns3_update_rx_int_coalesce(struct hns3_enet_tqp_vector *tqp_vector)
->  	if (!rx_group->coal.adapt_enable)
->  		return;
->
->  	dim_update_sample(tqp_vector->event_cnt, rx_group->total_packets,
->  			  rx_group->total_bytes, &sample);
-> -	net_dim(&rx_group->dim, sample);
-> +	net_dim(&rx_group->dim, &sample);
->  }
->
->  static void hns3_update_tx_int_coalesce(struct hns3_enet_tqp_vector *tqp_vector)
->  {
->  	struct hns3_enet_ring_group *tx_group = &tqp_vector->tx_group;
-> @@ -4459,11 +4459,11 @@ static void hns3_update_tx_int_coalesce(struct hns3_enet_tqp_vector *tqp_vector)
->  	if (!tx_group->coal.adapt_enable)
->  		return;
->
->  	dim_update_sample(tqp_vector->event_cnt, tx_group->total_packets,
->  			  tx_group->total_bytes, &sample);
-> -	net_dim(&tx_group->dim, sample);
-> +	net_dim(&tx_group->dim, &sample);
->  }
->
->  static int hns3_nic_common_poll(struct napi_struct *napi, int budget)
->  {
->  	struct hns3_nic_priv *priv = netdev_priv(napi->dev);
-> diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-> index 8208055d6e7f..5d2d7736fd5f 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-> @@ -1350,18 +1350,18 @@ static void ice_net_dim(struct ice_q_vector *q_vector)
->
->  	if (ITR_IS_DYNAMIC(tx)) {
->  		struct dim_sample dim_sample;
->
->  		__ice_update_sample(q_vector, tx, &dim_sample, true);
-> -		net_dim(&tx->dim, dim_sample);
-> +		net_dim(&tx->dim, &dim_sample);
->  	}
->
->  	if (ITR_IS_DYNAMIC(rx)) {
->  		struct dim_sample dim_sample;
->
->  		__ice_update_sample(q_vector, rx, &dim_sample, false);
-> -		net_dim(&rx->dim, dim_sample);
-> +		net_dim(&rx->dim, &dim_sample);
->  	}
->  }
->
->  /**
->   * ice_buildreg_itr - build value for writing to the GLINT_DYN_CTL register
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index d4e6f0e10487..da2a5becf62f 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> @@ -3677,11 +3677,11 @@ static void idpf_net_dim(struct idpf_q_vector *q_vector)
->  		} while (u64_stats_fetch_retry(&txq->stats_sync, start));
->  	}
->
->  	idpf_update_dim_sample(q_vector, &dim_sample, &q_vector->tx_dim,
->  			       packets, bytes);
-> -	net_dim(&q_vector->tx_dim, dim_sample);
-> +	net_dim(&q_vector->tx_dim, &dim_sample);
->
->  check_rx_itr:
->  	if (!IDPF_ITR_IS_DYNAMIC(q_vector->rx_intr_mode))
->  		return;
->
-> @@ -3696,11 +3696,11 @@ static void idpf_net_dim(struct idpf_q_vector *q_vector)
->  		} while (u64_stats_fetch_retry(&rxq->stats_sync, start));
->  	}
->
->  	idpf_update_dim_sample(q_vector, &dim_sample, &q_vector->rx_dim,
->  			       packets, bytes);
-> -	net_dim(&q_vector->rx_dim, dim_sample);
-> +	net_dim(&q_vector->rx_dim, &dim_sample);
->  }
->
->  /**
->   * idpf_vport_intr_update_itr_ena_irq - Update itr and re-enable MSIX interrupt
->   * @q_vector: q_vector for which itr is being updated and interrupt enabled
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-> index 933e18ba2fb2..7aaf32e9aa95 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-> @@ -525,11 +525,11 @@ static void otx2_adjust_adaptive_coalese(struct otx2_nic *pfvf, struct otx2_cq_p
->
->  	dim_update_sample(pfvf->napi_events,
->  			  rx_frames + tx_frames,
->  			  rx_bytes + tx_bytes,
->  			  &dim_sample);
-> -	net_dim(&cq_poll->dim, dim_sample);
-> +	net_dim(&cq_poll->dim, &dim_sample);
->  }
->
->  int otx2_napi_handler(struct napi_struct *napi, int budget)
->  {
->  	struct otx2_cq_queue *rx_cq = NULL;
-> diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-> index f01ceee5f02d..53485142938c 100644
-> --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-> +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-> @@ -2225,11 +2225,11 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
->
->  	eth->rx_packets += done;
->  	eth->rx_bytes += bytes;
->  	dim_update_sample(eth->rx_events, eth->rx_packets, eth->rx_bytes,
->  			  &dim_sample);
-> -	net_dim(&eth->rx_dim, dim_sample);
-> +	net_dim(&eth->rx_dim, &dim_sample);
->
->  	if (xdp_flush)
->  		xdp_do_flush();
->
->  	return done;
-> @@ -2375,11 +2375,11 @@ static int mtk_poll_tx(struct mtk_eth *eth, int budget)
->  	if (state.txq)
->  		netdev_tx_completed_queue(state.txq, state.done, state.bytes);
->
->  	dim_update_sample(eth->tx_events, eth->tx_packets, eth->tx_bytes,
->  			  &dim_sample);
-> -	net_dim(&eth->tx_dim, dim_sample);
-> +	net_dim(&eth->tx_dim, &dim_sample);
->
->  	if (mtk_queue_stopped(eth) &&
->  	    (atomic_read(&ring->free_count) > ring->thresh))
->  		mtk_wake_queue(eth);
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> index 5873fde65c2e..417098f0b2bb 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> @@ -53,11 +53,11 @@ static void mlx5e_handle_tx_dim(struct mlx5e_txqsq *sq)
->
->  	if (unlikely(!test_bit(MLX5E_SQ_STATE_DIM, &sq->state)))
->  		return;
->
->  	dim_update_sample(sq->cq.event_ctr, stats->packets, stats->bytes, &dim_sample);
-> -	net_dim(sq->dim, dim_sample);
-> +	net_dim(sq->dim, &dim_sample);
->  }
->
->  static void mlx5e_handle_rx_dim(struct mlx5e_rq *rq)
->  {
->  	struct mlx5e_rq_stats *stats = rq->stats;
-> @@ -65,11 +65,11 @@ static void mlx5e_handle_rx_dim(struct mlx5e_rq *rq)
->
->  	if (unlikely(!test_bit(MLX5E_RQ_STATE_DIM, &rq->state)))
->  		return;
->
->  	dim_update_sample(rq->cq.event_ctr, stats->packets, stats->bytes, &dim_sample);
-> -	net_dim(rq->dim, dim_sample);
-> +	net_dim(rq->dim, &dim_sample);
->  }
->
->  void mlx5e_trigger_irq(struct mlx5e_icosq *sq)
->  {
->  	struct mlx5_wq_cyc *wq = &sq->wq;
-> diff --git a/drivers/net/ethernet/netronome/nfp/nfd3/dp.c b/drivers/net/ethernet/netronome/nfp/nfd3/dp.c
-> index d215efc6cad0..f1c6c47564b1 100644
-> --- a/drivers/net/ethernet/netronome/nfp/nfd3/dp.c
-> +++ b/drivers/net/ethernet/netronome/nfp/nfd3/dp.c
-> @@ -1177,11 +1177,11 @@ int nfp_nfd3_poll(struct napi_struct *napi, int budget)
->  			pkts = r_vec->rx_pkts;
->  			bytes = r_vec->rx_bytes;
->  		} while (u64_stats_fetch_retry(&r_vec->rx_sync, start));
->
->  		dim_update_sample(r_vec->event_ctr, pkts, bytes, &dim_sample);
-> -		net_dim(&r_vec->rx_dim, dim_sample);
-> +		net_dim(&r_vec->rx_dim, &dim_sample);
->  	}
->
->  	if (r_vec->nfp_net->tx_coalesce_adapt_on && r_vec->tx_ring) {
->  		struct dim_sample dim_sample = {};
->  		unsigned int start;
-> @@ -1192,11 +1192,11 @@ int nfp_nfd3_poll(struct napi_struct *napi, int budget)
->  			pkts = r_vec->tx_pkts;
->  			bytes = r_vec->tx_bytes;
->  		} while (u64_stats_fetch_retry(&r_vec->tx_sync, start));
->
->  		dim_update_sample(r_vec->event_ctr, pkts, bytes, &dim_sample);
-> -		net_dim(&r_vec->tx_dim, dim_sample);
-> +		net_dim(&r_vec->tx_dim, &dim_sample);
->  	}
->
->  	return pkts_polled;
->  }
->
-> diff --git a/drivers/net/ethernet/netronome/nfp/nfdk/dp.c b/drivers/net/ethernet/netronome/nfp/nfdk/dp.c
-> index dae5af7d1845..ebeb6ab4465c 100644
-> --- a/drivers/net/ethernet/netronome/nfp/nfdk/dp.c
-> +++ b/drivers/net/ethernet/netronome/nfp/nfdk/dp.c
-> @@ -1287,11 +1287,11 @@ int nfp_nfdk_poll(struct napi_struct *napi, int budget)
->  			pkts = r_vec->rx_pkts;
->  			bytes = r_vec->rx_bytes;
->  		} while (u64_stats_fetch_retry(&r_vec->rx_sync, start));
->
->  		dim_update_sample(r_vec->event_ctr, pkts, bytes, &dim_sample);
-> -		net_dim(&r_vec->rx_dim, dim_sample);
-> +		net_dim(&r_vec->rx_dim, &dim_sample);
->  	}
->
->  	if (r_vec->nfp_net->tx_coalesce_adapt_on && r_vec->tx_ring) {
->  		struct dim_sample dim_sample = {};
->  		unsigned int start;
-> @@ -1302,11 +1302,11 @@ int nfp_nfdk_poll(struct napi_struct *napi, int budget)
->  			pkts = r_vec->tx_pkts;
->  			bytes = r_vec->tx_bytes;
->  		} while (u64_stats_fetch_retry(&r_vec->tx_sync, start));
->
->  		dim_update_sample(r_vec->event_ctr, pkts, bytes, &dim_sample);
-> -		net_dim(&r_vec->tx_dim, dim_sample);
-> +		net_dim(&r_vec->tx_dim, &dim_sample);
->  	}
->
->  	return pkts_polled;
->  }
->
-> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-> index 0eeda7e502db..2ac59564ded1 100644
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-> @@ -926,11 +926,11 @@ static void ionic_dim_update(struct ionic_qcq *qcq, int napi_mode)
->  	}
->
->  	dim_update_sample(qcq->cq.bound_intr->rearm_count,
->  			  pkts, bytes, &dim_sample);
->
-> -	net_dim(&qcq->dim, dim_sample);
-> +	net_dim(&qcq->dim, &dim_sample);
->  }
->
->  int ionic_tx_napi(struct napi_struct *napi, int budget)
->  {
->  	struct ionic_qcq *qcq = napi_to_qcq(napi);
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index 792e9eadbfc3..869586c17ffd 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -2802,11 +2802,11 @@ static void virtnet_rx_dim_update(struct virtnet_info *vi, struct receive_queue
->  	dim_update_sample(rq->calls,
->  			  u64_stats_read(&rq->stats.packets),
->  			  u64_stats_read(&rq->stats.bytes),
->  			  &cur_sample);
->
-> -	net_dim(&rq->dim, cur_sample);
-> +	net_dim(&rq->dim, &cur_sample);
->  	rq->packets_in_napi = 0;
->  }
->
->  static int virtnet_poll(struct napi_struct *napi, int budget)
->  {
-> diff --git a/drivers/soc/fsl/dpio/dpio-service.c b/drivers/soc/fsl/dpio/dpio-service.c
-> index b811446e0fa5..0b60ed16297c 100644
-> --- a/drivers/soc/fsl/dpio/dpio-service.c
-> +++ b/drivers/soc/fsl/dpio/dpio-service.c
-> @@ -889,10 +889,10 @@ void dpaa2_io_update_net_dim(struct dpaa2_io *d, __u64 frames, __u64 bytes)
->
->  	d->bytes += bytes;
->  	d->frames += frames;
->
->  	dim_update_sample(d->event_ctr, d->frames, d->bytes, &dim_sample);
-> -	net_dim(&d->rx_dim, dim_sample);
-> +	net_dim(&d->rx_dim, &dim_sample);
->
->  	spin_unlock(&d->dim_lock);
->  }
->  EXPORT_SYMBOL(dpaa2_io_update_net_dim);
-> diff --git a/include/linux/dim.h b/include/linux/dim.h
-> index 84579a50ae7f..06543fd40fcc 100644
-> --- a/include/linux/dim.h
-> +++ b/include/linux/dim.h
-> @@ -423,11 +423,11 @@ struct dim_cq_moder net_dim_get_def_tx_moderation(u8 cq_period_mode);
->   *
->   * Called by the consumer.
->   * This is the main logic of the algorithm, where data is processed in order
->   * to decide on next required action.
->   */
-> -void net_dim(struct dim *dim, struct dim_sample end_sample);
-> +void net_dim(struct dim *dim, const struct dim_sample *end_sample);
->
->  /* RDMA DIM */
->
->  /*
->   * RDMA DIM profile:
-> diff --git a/lib/dim/net_dim.c b/lib/dim/net_dim.c
-> index d7e7028e9b19..d6aa09a979b3 100644
-> --- a/lib/dim/net_dim.c
-> +++ b/lib/dim/net_dim.c
-> @@ -345,33 +345,33 @@ static bool net_dim_decision(struct dim_stats *curr_stats, struct dim *dim)
->  		dim->prev_stats = *curr_stats;
->
->  	return dim->profile_ix != prev_ix;
->  }
->
-> -void net_dim(struct dim *dim, struct dim_sample end_sample)
-> +void net_dim(struct dim *dim, const struct dim_sample *end_sample)
->  {
->  	struct dim_stats curr_stats;
->  	u16 nevents;
->
->  	switch (dim->state) {
->  	case DIM_MEASURE_IN_PROGRESS:
->  		nevents = BIT_GAP(BITS_PER_TYPE(u16),
-> -				  end_sample.event_ctr,
-> +				  end_sample->event_ctr,
->  				  dim->start_sample.event_ctr);
->  		if (nevents < DIM_NEVENTS)
->  			break;
-> -		if (!dim_calc_stats(&dim->start_sample, &end_sample, &curr_stats))
-> +		if (!dim_calc_stats(&dim->start_sample, end_sample, &curr_stats))
->  			break;
->  		if (net_dim_decision(&curr_stats, dim)) {
->  			dim->state = DIM_APPLY_NEW_PROFILE;
->  			schedule_work(&dim->work);
->  			break;
->  		}
->  		fallthrough;
->  	case DIM_START_MEASURE:
-> -		dim_update_sample(end_sample.event_ctr, end_sample.pkt_ctr,
-> -				  end_sample.byte_ctr, &dim->start_sample);
-> +		dim_update_sample(end_sample->event_ctr, end_sample->pkt_ctr,
-> +				  end_sample->byte_ctr, &dim->start_sample);
->  		dim->state = DIM_MEASURE_IN_PROGRESS;
->  		break;
->  	case DIM_APPLY_NEW_PROFILE:
->  		break;
->  	}
-> --
-> 2.45.2
->
 
