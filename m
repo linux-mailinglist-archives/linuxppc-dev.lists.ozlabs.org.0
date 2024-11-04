@@ -1,108 +1,126 @@
-Return-Path: <linuxppc-dev+bounces-2829-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2830-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA79F9BB5F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 14:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2CF9BB6BD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Nov 2024 14:52:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xhsgt5PbYz2yMk;
-	Tue,  5 Nov 2024 00:26:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XhtFh4tvKz2xHT;
+	Tue,  5 Nov 2024 00:52:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730726810;
-	cv=none; b=Qg95q5PhOGgOhQv5pBW6qYBqiDY88l8VjFh4zkmViNA/2XybiJCDmlS2IOArDF3aJ73hnfPIYIIaKcSqK+4t73ZIYBg7ju/juE31+h/lx3Ab4eLs+jXNFP5I5qseCknup2oYnBimIr056l5FCigOOfkO5dCheUQLsnBn/m3N1F8yg7RXC07tpFQfyAN990qawwAhKmQeKyUd5tI84RKtaVCsM5uvy6+H8ZUrUTEeEE+UMc8oDVvL3zdgqhtTnIUDlDfYFUfft4TbPGY4CZg/A6A3Zug3E9wT0qqCTvV817TovMVJlfBc/deWK0+9jLcGhxJIk9TaPoKYxRxS6ie86g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::92c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730728360;
+	cv=none; b=N2W4jg7/eQUh9P58MvFsUzHdve3UosbUKcqQiU4eQ4Pr28hfdnTdU66c/lpv+SADVJ2CtY2syYLdfbgtq3iwL/eRDUutjZMLn+JCBi+1KhkoABM7WtgPSayPYeQdwsvYMBkxM6Y7/IVHYVSgeaPaa5O+SmABFsXsvTxiQpvPimUz1jjy04fE4rjuE3FBoMCWsDiSZDdQZ5M0j+nD6J5E/pWvpicjxKEq6KFMI5S6nMozyIS+IN0xeOFNVI8JzRBSLwB9WKlfoHEvaX4bkvxyssky0gdlunlMvQH346DSkuCFXapK8v9vSbxnTAPfWUBP5SNuUPF0WrAtwOXmxe9egw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730726810; c=relaxed/relaxed;
-	bh=fBu4LSRH1Ek1Kbk8PE5B4m+YFkf2qbk/d9bb550qHQ0=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=HqBOBrUeaTBAUKIWIJOVmbRLldgF6u3+/tDk033PA2oNHKoqlu5gu5fy78vnEKZID4qLEINJa4VoMN1tRRC6+sWVhb/eMZbyre+7U59gpnAnUt+TpRRmBYaJ36a1lWfaVDdb69r2r7ql28Xfp+X5lJE3jEAGei/o7NsRxf7Gd1wdO3glOxF6AZzr4agC/Wz28CDN9MEUj/z0YUoYtDmHmuIsQ7mf6hJ9OXdy39FOcEvILN7bS8CJiDkY9nVG106BEU6df3+R4GFALcQ0xn0tmYWFbtCjEHjIpP3kfj0nHALq1wJsCLAJantT3bXPKQA4uMFnIttQZQqtQESb03eCPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TJzT92Jh; dkim-atps=neutral; spf=none (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1730728360; c=relaxed/relaxed;
+	bh=EkBaJUaQmNlDT9UG7F3IUEDB61PJd1lepS1O8vS2Df4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GRcbkVseB1di+JosO7OaHj4RdUsLbH7WeEbITX/8bBrV2xb7lmOBkPFut4ke+pUxSTIoQvyUclBwIvJWF42Teb6FLRHH+1C/gTmzq76s0lCjwde7g66QupuMdw35eRNPx/TccJQ4AGy5DIL1H/6rOy49YVi3/kz/HyF4iA65ahdjLesSDqlHeOnokzQIizxiI5rWCGCsT6+Y8CxJ87hTvxSQPuP6ZwE8ST7DrRtD2E+qZ4djKiPnNL8Kp2cuK81uXZqk2JazimLT0zDwJ5tWtbl0XqABhci5Pxav9z7FwJjDAe5upl73zQsd+2rz/4eeDXhSvhm7+OdLkCC5QrSQAA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=cxQVkWFa; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::92c; helo=mail-ua1-x92c.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org) smtp.mailfrom=ziepe.ca
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TJzT92Jh;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=cxQVkWFa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Tue, 05 Nov 2024 00:26:46 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::92c; helo=mail-ua1-x92c.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
+Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xhsgp2gNpz2yMb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 00:26:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730726806; x=1762262806;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=oPBklUbvKL8bSKRIlaEBq6Ena9N6JHRIUOBA6mqrZ6c=;
-  b=TJzT92JhKyeWcW9ztAqoAbnpIS2wqMUTItj7n07Gijj8mDkrUUqoQN5X
-   3Sl5ZUZr2GESUoWGxV2HLwuzBdPECxAaUB2EkrVcbq4xWdFoNaSYnGuF/
-   hFBzFRw4UYrdX43yh0wdOYmPFovWFRhMy4HNGyJqahH7KENXhOMTjJnXW
-   0ykgKE0aZdbUqf4ISGwrdgrzgy521K7VV4HVVJkQSQx3FA0o4e324qYs0
-   v/FlBgM9gvAJIRKl2fyYQ+cIyj3Yfv2Zg1mAxRyHS3DGy5jqy86/x/nIe
-   GHTP5krzmFoWkhdtPs1BJYm7xQ68SyVJK/f1bZsVat3T4n+7gXVz+fi7R
-   w==;
-X-CSE-ConnectionGUID: aXDtl+o/RvKcip3SdjfGnw==
-X-CSE-MsgGUID: qXavgt7DQMashG9LMmqxKw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30275418"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30275418"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 05:25:33 -0800
-X-CSE-ConnectionGUID: v9JmlMoUQFaNhWF7H45gGQ==
-X-CSE-MsgGUID: 4K1oV5FuTuelLKT3nBONXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,257,1725346800"; 
-   d="scan'208";a="83542204"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.33])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 05:25:17 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 4 Nov 2024 15:25:13 +0200 (EET)
-To: =?ISO-8859-15?Q?Thomas_Wei=DFschuh?= <linux@weissschuh.net>
-cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    "Rafael J. Wysocki" <rafael@kernel.org>, 
-    Bjorn Helgaas <bhelgaas@google.com>, 
-    Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
-    Davidlohr Bueso <dave@stgolabs.net>, 
-    Jonathan Cameron <jonathan.cameron@huawei.com>, 
-    Dave Jiang <dave.jiang@intel.com>, 
-    Alison Schofield <alison.schofield@intel.com>, 
-    Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-    Alex Deucher <alexander.deucher@amd.com>, 
-    =?ISO-8859-15?Q?Christian_K=F6nig?= <christian.koenig@amd.com>, 
-    Xinhui Pan <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, 
-    Simona Vetter <simona@ffwll.ch>, 
-    Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
-    Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-    Tudor Ambarus <tudor.ambarus@linaro.org>, 
-    Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
-    Miquel Raynal <miquel.raynal@bootlin.com>, 
-    Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
-    Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>, 
-    Carlos Bilbao <carlos.bilbao.osdev@gmail.com>, 
-    Hans de Goede <hdegoede@redhat.com>, 
-    =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-    "David E. Box" <david.e.box@linux.intel.com>, 
-    "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
-    "Martin K. Petersen" <martin.petersen@oracle.com>, 
-    Richard Henderson <richard.henderson@linaro.org>, 
-    Matt Turner <mattst88@gmail.com>, Frederic Barrat <fbarrat@linux.ibm.com>, 
-    Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
-    Logan Gunthorpe <logang@deltatee.com>, 
-    "K. Y. Srinivasan" <kys@microsoft.com>, 
-    Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-    Dexuan Cui <decui@microsoft.com>, Dan Williams <dan.j.williams@intel.com>, 
-    LKML <linux-kernel@vger.kernel.org>, linux-pci@vger.kernel.org, 
-    linux-cxl@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-    dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
-    linux-mtd@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
-    linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org, 
-    linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-    linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH v2 05/10] sysfs: treewide: constify attribute callback
- of bin_is_visible()
-In-Reply-To: <20241103-sysfs-const-bin_attr-v2-5-71110628844c@weissschuh.net>
-Message-ID: <65f4dc4e-3b48-2baa-a13b-3cc34dd51ce1@linux.intel.com>
-References: <20241103-sysfs-const-bin_attr-v2-0-71110628844c@weissschuh.net> <20241103-sysfs-const-bin_attr-v2-5-71110628844c@weissschuh.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XhtFf6LDNz2xH1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 00:52:37 +1100 (AEDT)
+Received: by mail-ua1-x92c.google.com with SMTP id a1e0cc1a2514c-84fc9005dccso1252071241.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2024 05:52:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1730728349; x=1731333149; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EkBaJUaQmNlDT9UG7F3IUEDB61PJd1lepS1O8vS2Df4=;
+        b=cxQVkWFaRwN8Dc7g/cxJTT/W3gi4Au4TSO/1ZLgbQ6a04b/Z/xdogLwpo07zFil9As
+         tENFoVTp9KcKuphJzApriTei516aOXt5Vbm3VPXibeWdi0SxK199Xvz2N/h8PSy7kZcj
+         LRLtZSUR0WFr2k+C1LpAfKO7pUIsay6FMY1Vy97cMsyWytnR33aT1LR/bZcMefonjYKI
+         WLKrOVhujQGecY3bU8g9gp5aviBX5n1gW+zZCwfcURb9HMsUKXDRHXdSWGEGMykDk9r/
+         eM2y1FWShqWzM9VN01HJtE867LmNCvIN3jI60aAH7eyjaXv+qcX9Tkfx1L0msZGj0dQG
+         MOEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730728349; x=1731333149;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EkBaJUaQmNlDT9UG7F3IUEDB61PJd1lepS1O8vS2Df4=;
+        b=Q9i6pg5XDEWOtL8SNiD2s41WEUsR3TaOwrgoCNnWIFa/DO6r2ghsouvFWupH86qknu
+         HxVhM/+dM5xiXNeGZVYt0+sQjDY9inmex7f9G4+giXytkpHwIENIOulyTdw7jXQA8Wd9
+         N0HtSjQICQCbPC7RfIkRx89bkSNZtPJdDNp36zzIQMUCRra3c+xNKdYwdJjex5DHb39F
+         GlsmS9urVFkMla7rQguH1zkZMq6R8OohmhFxgjMul+U0CmuqmBq3i6y4dc4V7LFEzE3I
+         RXe/+QxZsiXqfSx12DY1yfrznTg64to91oRmr4Mv0VJB/RQ1UZMNuRUwxru8BIrBITAX
+         UWdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNFhm01bRGPXCGLdoIVp9kgnocH0WUFqSaaYfrX0tKsmSkf4y5kpte8Sgh04wpczAN6AWGrHrv3YKfoos=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxQtP0dUBKqtDZK5W11AVHfaBkw0LckKqcxj3y6zMIzW4URgMyx
+	eYBPjdPLGaY2nuguhIqvFjmcPntc4JcMycuAHl4VABVMX1gn6yjXSkKVak1gVMA=
+X-Google-Smtp-Source: AGHT+IFmlPTEulo8PrBSa4hLGepjHWucd1eo0mnO56qT1Ydh9XheeGVoeKHcAHFWhX+avIDDQrBpSQ==
+X-Received: by 2002:a05:6102:3753:b0:4a4:8756:d899 with SMTP id ada2fe7eead31-4a9543ece24mr15248394137.29.1730728348895;
+        Mon, 04 Nov 2024 05:52:28 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-462ad0adffesm47192441cf.32.2024.11.04.05.52.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2024 05:52:28 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1t7xVL-00000000hsn-2kgO;
+	Mon, 04 Nov 2024 09:52:27 -0400
+Date: Mon, 4 Nov 2024 09:52:27 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Xinhui Pan <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
+	Carlos Bilbao <carlos.bilbao.osdev@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Frederic Barrat <fbarrat@linux.ibm.com>,
+	Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-cxl@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
+	linux-mtd@lists.infradead.org, platform-driver-x86@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-hyperv@vger.kernel.org
+Subject: Re: [PATCH v2 05/10] sysfs: treewide: constify attribute callback of
+ bin_is_visible()
+Message-ID: <20241104135227.GE35848@ziepe.ca>
+References: <20241103-sysfs-const-bin_attr-v2-0-71110628844c@weissschuh.net>
+ <20241103-sysfs-const-bin_attr-v2-5-71110628844c@weissschuh.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -115,29 +133,24 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-559502379-1730726713=:989"
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241103-sysfs-const-bin_attr-v2-5-71110628844c@weissschuh.net>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323328-559502379-1730726713=:989
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-
-On Sun, 3 Nov 2024, Thomas Wei=C3=9Fschuh wrote:
-
+On Sun, Nov 03, 2024 at 05:03:34PM +0000, Thomas Weißschuh wrote:
 > The is_bin_visible() callbacks should not modify the struct
 > bin_attribute passed as argument.
 > Enforce this by marking the argument as const.
->=20
+> 
 > As there are not many callback implementers perform this change
 > throughout the tree at once.
->=20
-> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+> 
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 > ---
 >  drivers/cxl/port.c                      |  2 +-
 >  drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c |  2 +-
@@ -150,51 +163,10 @@ On Sun, 3 Nov 2024, Thomas Wei=C3=9Fschuh wrote:
 >  drivers/platform/x86/intel/sdsi.c       |  2 +-
 >  drivers/scsi/scsi_sysfs.c               |  2 +-
 >  drivers/usb/core/sysfs.c                |  2 +-
->  include/linux/sysfs.h                   | 30 +++++++++++++++------------=
----
+>  include/linux/sysfs.h                   | 30 +++++++++++++++---------------
 >  12 files changed, 27 insertions(+), 26 deletions(-)
 
-> diff --git a/drivers/platform/x86/amd/hsmp.c b/drivers/platform/x86/amd/h=
-smp.c
-> index 8fcf38eed7f00ee01aade6e3e55e20402458d5aa..8f00850c139fa8d419bc1c140=
-c1832bf84b2c3bd 100644
-> --- a/drivers/platform/x86/amd/hsmp.c
-> +++ b/drivers/platform/x86/amd/hsmp.c
-> @@ -620,7 +620,7 @@ static int hsmp_get_tbl_dram_base(u16 sock_ind)
->  }
-> =20
->  static umode_t hsmp_is_sock_attr_visible(struct kobject *kobj,
-> -=09=09=09=09=09 struct bin_attribute *battr, int id)
-> +=09=09=09=09=09 const struct bin_attribute *battr, int id)
+For infiniband:
 
-Hi Thomas,
-
-This driver is reworked in pdx86/for-next.
-
---=20
- i.
-
-
->  {
->  =09if (plat_dev.proto_ver =3D=3D HSMP_PROTO_VER6)
->  =09=09return battr->attr.mode;
-> diff --git a/drivers/platform/x86/intel/sdsi.c b/drivers/platform/x86/int=
-el/sdsi.c
-> index 9d137621f0e6e7a23be0e0bbc6175c51c403169f..33f33b1070fdc949c1373251c=
-3bca4234d9da119 100644
-> --- a/drivers/platform/x86/intel/sdsi.c
-> +++ b/drivers/platform/x86/intel/sdsi.c
-> @@ -541,7 +541,7 @@ static struct bin_attribute *sdsi_bin_attrs[] =3D {
->  };
-> =20
->  static umode_t
-> -sdsi_battr_is_visible(struct kobject *kobj, struct bin_attribute *attr, =
-int n)
-> +sdsi_battr_is_visible(struct kobject *kobj, const struct bin_attribute *=
-attr, int n)
->  {
->  =09struct device *dev =3D kobj_to_dev(kobj);
->  =09struct sdsi_priv *priv =3D dev_get_drvdata(dev);
-
---8323328-559502379-1730726713=:989--
+Acked-by: Jason Gunthorpe <jgg@nvidia.com>
 
