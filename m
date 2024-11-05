@@ -1,68 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-2888-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F919BD9B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 00:30:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 736AD9BD9BC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 00:31:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjl1T28PXz2yFJ;
-	Wed,  6 Nov 2024 10:30:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjl2V2zx0z2yFP;
+	Wed,  6 Nov 2024 10:30:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.20
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730849405;
-	cv=none; b=jK+fgwrY5IT4YxvQTH/L1VICFq+iombnpAvtNzT+z07l02Z0BQ9zEiE05y1y5RAEagGJR9MA2oD4ArUmpo0rcBUy4zXAa8i164TSQstL/rVP6NLRlUZsVl+luM/Kpgm46kSAuG/NsQGRQWivKjBDzIn+irWUWstXYcn2bu+Z4/hq5NsQwNzBGso/Um+0ejJHbEaOSJbEXWhWA7zWt7xtL5v4pAWrQn126r+DmIWCihJXN81bYuBOhBPcgWV8/5AjgVH/DXbvEC8LwxOPVoZoC03OqCHsBma8viAdrRdUy+CDjXSCRu4od3Iru1b8VAfXBnWiIghFKzCfRi0Biyb/Bw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730849458;
+	cv=none; b=SvPSuQw73g60QP0fb1xAZWLTmBYL3zzYdWGeaveGMiBX/swkX9eNdaTH42TPqVCLZg3f+5GD7H7Kskh5vsx5384Z0SLxj6XmAgIYzgTsyroweJGjJ3AcbIa6zUNWq2e5jBzvpkk6o8qm/ni54H1PxAhWe5fO83G8P37FuTXQzPHZRzzRc0QVsLjpXiCeG+68EY1FACRWfHY/8gRcltdVus0mfQnmXCNG8NNTeCC8NZ3yde49Q4Fj28dTZtn9YRjg2R+1Gw1DTxfoVWkHj7/xDopAjlcLru8nXKuHnec3hM69yDXPiigIXNARDVEuw7AR8F42pnJBUwU0vr94gXjRMw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730849405; c=relaxed/relaxed;
-	bh=pXyOEoklnazXlO5zGZyn6EAApoJXnV2nkmGa/Vn+oTE=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=RVIaNXlyvldixUn92ZayOa+nnwAmZDW1Ma6so8ydr0bpFKUqNjnp1E0O2JU+u4Mzl5rZPMMjmwkZuXcNVIYEfBB0gHf5x7EveFtuJr1/R5jv4pM/NP7IEDUaBtCTL1gbkj63I6Scyf2ZgKlPftnK9TEeNUKGr8scVed32bHKniXA/5dRHomBR0Keiz37doL0Wau/RvdjgFf0DPoxwRIXN4rKGUFeAqlfI5Z1HX4gbMV3+yg7pkm70WCZ9ZRV/g5ppK4WtAONaKoUuBt6BZaxzwnH1jQUvi8+vav2NeGVs+mS+AiarvV8EovgEvNztx6o5+AuipNAyde1ECRzGyiyrg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G68rb16E; dkim-atps=neutral; spf=pass (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	t=1730849458; c=relaxed/relaxed;
+	bh=LoBU4fDtUqjWdQuxDeeNyzRPZABX9yNfvyaSqkN6758=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=W2eHt2oilE5iGKh6oHPSPyTM67I+okLxCJm9CVS3iJZ3CcOL2T4ni0jChRqS+65xCkVJgND+4vYsDztUB2RYvlKiDoBYnknje4YkLfOf5w0LFDueVCacE6qCpBlFpjnut+1SQbYtmdRnrmIj7BwEOOKA62pQpwJ9AEau2bGuZAyODc/roA2232JcjUIqmamskIkvjBY+F7Az1HcsHgAxKQvxAs0++CD+xeyYa2vsU0vaTfFbqfLbxVIDJ9YI/75R/BSvA8FtHQdOLS8C0rTjG5eTphRirsXImxGtPtlYMDNWuNE4UBdLtZwx6WEECGkdV3RmF07/Vj38dTLL2DDORA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lrhXye/b; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G68rb16E;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lrhXye/b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjl1P68vfz2xgv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 10:29:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjl2T04Fbz2xjJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 10:30:56 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730849402; x=1762385402;
+  t=1730849457; x=1762385457;
   h=date:from:to:cc:subject:message-id;
-  bh=cdMzYiCw6SEnSgX2yQYmka4hrqE+tQsvy0+xYEKco34=;
-  b=G68rb16Elt7X/mLVcj1k/mLDA24fXUZTf4BFcNiJYxI3zFb/2fGSECuy
-   xGjisWIar0bhH09o/CO8jXgy5bxCwgk0s3jfwJtyunDzBUqYnViXXjUWM
-   Dcu+n64XEIHXCPaw2Iglvp98pagUAm1B8I15XTGZRbV2clJuNFzHEwSRi
-   L3Fbx5NVQw28IKtA6/zMhAm7RI7Piyz8c8BH1HcOS1tY9+Sui/1kkwlsi
-   XUeWonuItrEfZ3uXeL6zY0fN4WTeWPXI3CMYSdqZ/FjeP/PjOKHHYA+OU
-   N9ItbwlpDn6/srNlPebwnrQmbfcRHB1d/Op+kcjgkcgJBlXXHxyFyQgae
-   g==;
-X-CSE-ConnectionGUID: uNSARxryR1yGbixjaiIoGA==
-X-CSE-MsgGUID: VzRKrFI2SwaIsk08az1kvQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30399369"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="30399369"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 15:29:53 -0800
-X-CSE-ConnectionGUID: ICs0Ro3fQYWeZye2YEjNJQ==
-X-CSE-MsgGUID: buFo5PW5QDSkm8atTRk3Ow==
+  bh=Tr1aj8vMDXQ7cTZPm6zx8f8bLd426G+289GYECSGFEI=;
+  b=lrhXye/bFr9mvb3Ax49S0+fixKl04u20lak4qbywx2g3gxOrpoDAaLT0
+   SbO96hlilHKuabfb5qQclGu4Fq/wgfjufC5waIm3Gdxu8co9VgpobTzFR
+   oN9wAgSb1ivHSgXBUmfggia40dpIOyWnax8DjKsApAXEyV7UOMiMnecq4
+   PJTbTxQegL4JiovvWPn4hOjYrdM1r9qn2REwPbNQCaNf0hvzJm6JA30a5
+   qJhMdPSY4casb2JBChS3yDR2iqizPwIEgRshk0ihIX8mjalWG1JLcFFO6
+   Pzphno8N+CKfthQEzhsDhp4cVMigukF2QBpT/VPd8WYHkrY5wAJebMBDz
+   A==;
+X-CSE-ConnectionGUID: +sPGweP2Stye/hZHYgUyMg==
+X-CSE-MsgGUID: K/o4OWwuQDS+ER2/LpRf9w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="30053173"
+X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
+   d="scan'208";a="30053173"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 15:30:54 -0800
+X-CSE-ConnectionGUID: oWeZE0s3SEyB2hFbE+b0zA==
+X-CSE-MsgGUID: tz0xJ0wPScOvlt0tXbJXAw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
-   d="scan'208";a="84611624"
+   d="scan'208";a="84126727"
 Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 05 Nov 2024 15:29:53 -0800
+  by orviesa009.jf.intel.com with ESMTP; 05 Nov 2024 15:30:53 -0800
 Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1t8Sze-000mb1-0f;
-	Tue, 05 Nov 2024 23:29:50 +0000
-Date: Wed, 06 Nov 2024 07:29:49 +0800
+	id 1t8T0c-000mb5-0l;
+	Tue, 05 Nov 2024 23:30:50 +0000
+Date: Wed, 06 Nov 2024 07:30:12 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
 Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 74f02dbcaa622a8fa4171dcc6e12f86d2cb007d0
-Message-ID: <202411060742.TRR1XeR0-lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS
+ ad0be02f7009e3388de94b35d56336de22d79afc
+Message-ID: <202411060706.z4xcqBRt-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -80,13 +80,13 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 74f02dbcaa622a8fa4171dcc6e12f86d2cb007d0  KVM: PPC: Book3S HV: Mask off LPCR_MER for a vCPU before running it to avoid spurious interrupts
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: ad0be02f7009e3388de94b35d56336de22d79afc  Automatic merge of 'next' into merge (2024-11-04 17:04)
 
 elapsed time: 735m
 
-configs tested: 252
-configs skipped: 110
+configs tested: 254
+configs skipped: 11
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -267,6 +267,7 @@ riscv                 randconfig-001-20241105    gcc-14.1.0
 riscv                 randconfig-001-20241106    gcc-14.1.0
 riscv                 randconfig-002-20241105    gcc-14.1.0
 riscv                 randconfig-002-20241106    gcc-14.1.0
+s390                             allmodconfig    clang-20
 s390                             allmodconfig    gcc-14.1.0
 s390                              allnoconfig    clang-20
 s390                             allyesconfig    gcc-14.1.0
@@ -317,6 +318,7 @@ x86_64      buildonly-randconfig-004-20241105    gcc-12
 x86_64      buildonly-randconfig-005-20241105    gcc-12
 x86_64      buildonly-randconfig-006-20241105    gcc-12
 x86_64                              defconfig    clang-19
+x86_64                                  kexec    clang-19
 x86_64                                  kexec    gcc-12
 x86_64                randconfig-001-20241105    gcc-12
 x86_64                randconfig-002-20241105    gcc-12
