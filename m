@@ -1,71 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-2856-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2857-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF0D9BC359
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2024 03:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0BB9BC3AA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2024 04:10:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XjCVh5vhRz2yLB;
-	Tue,  5 Nov 2024 13:50:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XjCyB2Ltlz2xt7;
+	Tue,  5 Nov 2024 14:10:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730775004;
-	cv=none; b=XhuEjCQBNSViBsnEOiPMSjUyIVdqg5cRBF24TX9A/s6Xa1nukEah7ROrrksrPP77glYgWvRM9vl6/FDc8oQmWljZkVe1mJW8pyM44MoGaBRW0aq8swyilIFidfDRVm4F9UedUGYzq4yCbWXp0WgFsFaPgDdnpqImCVEftIFnIspi/CP4W6Ou3UckyxW6yLzJY3cvaDimrmuYWLFq+lECatL+tACUKTO3c+qJx5L6mjwp9b1BpJBW2J4tsC7eGOU1uFM/1lZ98ZKHotFVE7YvF68xRjRIdbfA5LrQJijnyH2UGXY58GkbnmN5orD3SC+p16p4byB65bfh3VcZa6l+wQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730776226;
+	cv=none; b=aqI8/9gKQ3T5wqL35z590rg/mgrqTx8yGZ7fruapfjBNUS2+RitTBbxJlnCTRNoGyjQiGnIYKliWyPT6g10WxL/Za1zyid+/ll+Iv3bD7LrsJoJJL6jwuX9iEwIV9nNvlGTE0luLjlexP5p3C+4Vym8QhHda+VdwIaonZ1rDQ15lllB5E60bUGyF7RdCsKDVMS0qTiZFZcMmS0p8PW3RyLVlr67H6A2DY2zW+NvElD3Ai83MEWZm2RNAvchtGfXN6Vn6/wRHeVy0tXZVZYMzlMsch04FBgHtqstMDdBoljnopHxvQhahhKL2HutNTnNfaIF+C3flveppvaPrKRS4sw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730775004; c=relaxed/relaxed;
-	bh=axp2GaQehnja73xKX12S2JgnASGJkuw1ISq6I7w/yE4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZHnlVOVOXnQ+wrqUqZinz8n7n8r8NbcXe5AnCAv4zW7LPy8rGgGKxhBvc/3Sk8F5AMIn+fS+olQ9HyPEowTOXOcorXUCXvUpIi6J06eHM+oE+fsuvNnAxnG+FcLxeV01NGshOJ3we/YVYqWbDs4BtaDoZ7U9gLEjWYYSu4lSv5ArIzYCS57CjhKaFRL3QYiHv4gYr2ImVFg0PllPFiZOuN/4Qju+Zr+tmQlUch416rNlve3rJjmhxp1I+6TfxWSF8/oeHTLs3WbXjUZ5Due+Nx9+tjBP6E7Mui7whaInImKDtyslkikJXjhCZdXCZ31lppc/8j4EBU47nxAZZ8mhhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ro6skYPp; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1730776226; c=relaxed/relaxed;
+	bh=sJG6dQ+n8RgJB507eGbqHTNCrPhm5/7WuF2UnhAHnCQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=bzgEu0PhHbD3bUbwR24aMDAg2jXBQtiP2qVKhYLc/NED4reeH2qya5DcUxbwDn4YGhbapjXyuUEyavhhenlzSUow95C8ALNNKiTSQlcKFfbSiWDFuu2JbQNqBlh8mEIUx6xxZl2JnW906rJfRfvwNhYXy4yOPkZIj86TbyMbnpVk3QFOoH3e22TY72ITUrY7MsUZAumExiDSE85pxnOkXxjOOeZDfhtto/O6EfUkeYoiloVhQPLYQxks96+Yt4s8U8Y0n9UC6RBQun3HSavMQFlyVSvOBDhV5Ovxp9wv94xAl741TcUUKXAZ6bFmfiWnqHHAV541qYTaIiq3IJCoSA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SiHh+TMZ; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ro6skYPp;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SiHh+TMZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjCVf5rPPz2xt7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 13:50:02 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A52ffOv017873;
-	Tue, 5 Nov 2024 02:49:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=axp2Ga
-	Qehnja73xKX12S2JgnASGJkuw1ISq6I7w/yE4=; b=Ro6skYPp61ZKfeSg6c1Lrp
-	UHnR77VqfmPci8lJlpwKXPSft9SOgSuHDWnQZ/aDNz8bqjVbxMIq6nC7/UMuSqhU
-	ll62EWfezrmZoY1jFLczOvaTM2MD2iUwEeOL3i+9oxGVleQnuKumnfYuWhu8CyBF
-	OAAT4kVaURQ75XRdcV6gHSR2s2FAe9igyp7SVILAGPnk+NmMMMn9GPH93VvyVrHf
-	EFqxSFgbz1QQZvv0JlfsjIbpVE+lLSrsLLXaHRGVr6yMFJZoZLGfXxJj75/nuuse
-	UlWIUoJxkZD9oN5mK5OEu51hTGAEPvupeHjXXHxKP9ht4PeZNsrADUpEceaUC6BA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qasug13c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Nov 2024 02:49:51 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4LSFiu019080;
-	Tue, 5 Nov 2024 02:49:51 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj3853-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Nov 2024 02:49:51 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A52nlGV46268858
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 Nov 2024 02:49:47 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9F96520043;
-	Tue,  5 Nov 2024 02:49:47 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A50DA20040;
-	Tue,  5 Nov 2024 02:49:46 +0000 (GMT)
-Received: from [9.109.204.94] (unknown [9.109.204.94])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  5 Nov 2024 02:49:46 +0000 (GMT)
-Message-ID: <f4def3a5-727e-4eff-95cd-ece99d133ca5@linux.ibm.com>
-Date: Tue, 5 Nov 2024 08:19:44 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjCy84NPdz2xgM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 14:10:24 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 950315C56D4;
+	Tue,  5 Nov 2024 03:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085E5C4CECE;
+	Tue,  5 Nov 2024 03:10:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730776221;
+	bh=9LDC91LMilMxXjCTP/fsGGlz+9VFe99Gy7W8ZsIgP18=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=SiHh+TMZhp30Fvgu5Hk5vbLHACsRQ9BkRex/T1O0xiHydSasP+8fwv8v8ktwQyJhr
+	 JsfOKAnXNwOIJuTFBppn5NLBFYquL2ol7OjUMdkUKoGsrN69WfMsKO935qgOiunpzc
+	 99wuKGhMnFGzlYjvDC+ZQ0HfqT8AN7KCDkQU5cbRtPSWq3WMPfgmtIXMBee85c+FlP
+	 Fa5zlaYycskdvds6wYxO3rtBuVRJCm7iLaZ3eBizT09MxFhkD+wGAj5mVv/omNfOdz
+	 ZqzMsZ2NYw2w/uGoGgEBCJCAPjEzTKGqqiSL7B2sds8Puz8NH0Eso0BM5QdqtAzZKc
+	 zW5A6/S522uiQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB3733809A80;
+	Tue,  5 Nov 2024 03:10:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,86 +59,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] fadump: reserve param area if below boot_mem_top
-To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-References: <20241104083528.99520-1-sourabhjain@linux.ibm.com>
- <20241104083528.99520-2-sourabhjain@linux.ibm.com>
- <b7350dd0-b835-42fe-8970-da5b0ce16ba6@linux.ibm.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <b7350dd0-b835-42fe-8970-da5b0ce16ba6@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: QKbfqnPnE7BqNxG-Sw30kWlRgHqkbvOq
-X-Proofpoint-ORIG-GUID: QKbfqnPnE7BqNxG-Sw30kWlRgHqkbvOq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- lowpriorityscore=0 malwarescore=0 spamscore=0 mlxscore=0 adultscore=0
- impostorscore=0 priorityscore=1501 mlxlogscore=999 clxscore=1015
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411050019
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+Subject: Re: [PATCH net-next 0/3] Fix sparse warnings in dpaa_eth driver
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173077622975.100940.17453964424124667340.git-patchwork-notify@kernel.org>
+Date: Tue, 05 Nov 2024 03:10:29 +0000
+References: <20241029164317.50182-1-vladimir.oltean@nxp.com>
+In-Reply-To: <20241029164317.50182-1-vladimir.oltean@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, leitao@debian.org, madalin.bucur@nxp.com,
+ ioana.ciornei@nxp.com, radu-andrei.bulie@nxp.com,
+ christophe.leroy@csgroup.eu, sean.anderson@linux.dev,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello Hari,
+Hello:
 
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On 04/11/24 15:50, Hari Bathini wrote:
->
->
-> On 04/11/24 2:05 pm, Sourabh Jain wrote:
->> The param area is a memory region where the kernel places additional
->> command-line arguments for fadump kernel. Currently, the param memory
->> area is reserved in fadump kernel if it is above boot_mem_top. However,
->> it should be reserved if it is below boot_mem_top because the fadump
->> kernel already reserves memory from boot_mem_top to the end of DRAM.
->>
->> Currently, there is no impact from not reserving param memory if it is
->> below boot_mem_top, as it is not used after the early boot phase of the
->> fadump kernel. However, if this changes in the future, it could lead t
->> issues in the fadump kernel.
->>
->
-> Looks good to me.
->
-> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+On Tue, 29 Oct 2024 18:43:14 +0200 you wrote:
+> This is a follow-up of the discussion at:
+> https://lore.kernel.org/oe-kbuild-all/20241028-sticky-refined-lionfish-b06c0c@leitao/
+> where I said I would take care of the sparse warnings uncovered by
+> Breno's COMPILE_TEST change for the dpaa_eth driver.
+> 
+> There was one warning that I decided to treat as an actual bug:
+> https://lore.kernel.org/netdev/20241029163105.44135-1-vladimir.oltean@nxp.com/
+> and what remains here are those warnings which I consider harmless.
+> 
+> [...]
 
-Thanks for Ack.
+Here is the summary with links:
+  - [net-next,1/3] soc: fsl_qbman: use be16_to_cpu() in qm_sg_entry_get_off()
+    https://git.kernel.org/netdev/net-next/c/a12fcef429e1
+  - [net-next,2/3] net: dpaa_eth: add assertions about SGT entry offsets in sg_fd_to_skb()
+    https://git.kernel.org/netdev/net-next/c/81f8ee2823f3
+  - [net-next,3/3] net: dpaa_eth: extract hash using __be32 pointer in rx_default_dqrr()
+    https://git.kernel.org/netdev/net-next/c/0a746cf8bb6d
 
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-- Sourabh Jain
-
->
->> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->> Cc: Hari Bathini <hbathini@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> ---
->>   arch/powerpc/kernel/fadump.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
->> index 4a3f80f42118..35a8a107e16b 100644
->> --- a/arch/powerpc/kernel/fadump.c
->> +++ b/arch/powerpc/kernel/fadump.c
->> @@ -143,7 +143,7 @@ void __init fadump_append_bootargs(void)
->>       if (!fw_dump.dump_active || !fw_dump.param_area_supported || 
->> !fw_dump.param_area)
->>           return;
->>   -    if (fw_dump.param_area >= fw_dump.boot_mem_top) {
->> +    if (fw_dump.param_area < fw_dump.boot_mem_top) {
->>           if (memblock_reserve(fw_dump.param_area, COMMAND_LINE_SIZE)) {
->>               pr_warn("WARNING: Can't use additional parameters 
->> area!\n");
->>               fw_dump.param_area = 0;
->
 
 
