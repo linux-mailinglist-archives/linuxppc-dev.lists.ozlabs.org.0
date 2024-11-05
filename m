@@ -1,52 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-2874-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2875-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7D79BCE9B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2024 15:04:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE9E9BCFDA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2024 15:57:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XjVT80xfCz2yPD;
-	Wed,  6 Nov 2024 01:04:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XjWdS6Wt0z2xGr;
+	Wed,  6 Nov 2024 01:57:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730815484;
-	cv=none; b=kAunR9JjrzSRhnuHkhPuhdvCfMn0IXG9FTWWJWULXmfpYq09+mqRfEWg8y6qWLSifQJhzkHXA9eJB3UJbebt9UM+VNxqs7IC66gVhvk8VRQN36i62McY8K0K/kdYGbPp2OV2Ez6/q2CrUYwds9iPzSjO2SmFpGAIYYqtfTudL2qhrISUFuUYUhddKUogBwy+RHDZT80fhZAQwl4QhgTe5C0zjOBX9c4zb59nODA0gIRDW/ittq+VwSTqkQu/gcUD3bs7HQEYiMsUjeP3GQX+4HPNWDzCKVdDOqsskSzZDs6Zje6fwMuZo1afRaCHRrteU9tAI4nfce0NzCvMFcD9Vw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.194
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730818620;
+	cv=none; b=Gl+ZUwTPxW3Gv3vfvZkGzC0f+/47cslWm6b84Mj5yODX04qquz5TYchUzUEEdV4ewH+nYwXaYGXOiP6w/LOokrh12O0C/ccFbrzqBmC6YFyw0C9gZReYfh0w2ydY85fepMsCa1WqzUElD+FJYwiXxwiPpow1nUo+/pxKouv8anWJ/bX8i+w9bqfO2y9anoK1Ja0kPliST71Kx1YuUZvk/6Q1VDcw4R+WET3z6SrVq6AQRv+KgErVZX0aci7iapFztHA8oTXdP6QHUysILRJ9sCa7XoN7xhCY66nx2LAaBzRSqPeYoWDlfp4N5kSjcZBzFRES0zAh1QFremeyn8+hqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730815484; c=relaxed/relaxed;
-	bh=SEQmByjsZ7JmVvgpNHihNtVhTaz+UQIWRJMkAOd264I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CTjT11WRo/6+WVZ4kvaGUECJAMnD+ctuGEfDeekzdwWmolJ8L0wBB5A/uZ3QWG6JDOBYP+OTtShz+IUjKZ0oy6LBK+XrNyEZp8JRlI7fZb+GsxsnIiP95quUgC5MSFoNSEGJUUnb/9DgdtPm2O1R3I6z3eRkU/PNWVRdgMHsiTlkhcJDOpwUwSISN+UYLwXvAjS+y2VqX12t/UWJVDgBxDuiaYixTo3sbBcCuuwRwXp0/DFfOJkF03QPziXRa22e0lAvuYl7gR7H69IzjFJg9zYy18+ZF50au3puYKC8D/7Pqgt37H5hHa6mIx3AgcVVhR7Qkeqsz1IOOmCaXULE0g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1730818620; c=relaxed/relaxed;
+	bh=QA9Z6DlABQAh/zHFAwCMIMgA9gtG670bOQgehg6enAk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LsqhLhVXyFJX/aKiekKhU9UMZv17UxUchMDYZWkwJ06S9l02vF3IYMK143PsfIAwRfJcltrO79uBPV1yDOSW8IBptgt162mPsrZv9fXR41nMRABA0XFhxLsKLlHDEzugS8BbGcDUWJTfH56AaK2MajBHyY/mc/9GSp3y6TlC4y+ZYDX+lOR5V0LKPVfSorqpULgx5cShSt6gfsqSsoXQULwCqtFEzU3dnpiWLn6dMcAR69KnXv5fKt/w37jHzb9r5wL5VmgkhhmC7cIlEu4hn6trDRDc4TTtsOJlcRn/8n9aYENnmWHM5IHYEsbcAw6KSUn+0/Ao3kHRZr6Y3yHjzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KWaTZyu3; dkim-atps=neutral; spf=pass (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KWaTZyu3;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjVT61wcbz2xs4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 01:04:41 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4XjVT20D0Vz9sRr;
-	Tue,  5 Nov 2024 15:04:38 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id LoXpUD9JBUwx; Tue,  5 Nov 2024 15:04:37 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4XjVSw68fmz9rvV;
-	Tue,  5 Nov 2024 15:04:32 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BC0698B763;
-	Tue,  5 Nov 2024 15:04:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id DUJhllzpqdGg; Tue,  5 Nov 2024 15:04:32 +0100 (CET)
-Received: from [192.168.232.44] (unknown [192.168.232.44])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 228F48B770;
-	Tue,  5 Nov 2024 15:04:32 +0100 (CET)
-Message-ID: <e33569c8-1591-462c-9388-4a514e156bfa@csgroup.eu>
-Date: Tue, 5 Nov 2024 15:04:31 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjWdR2nn4z2xBm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 01:56:56 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 200CE40010;
+	Tue,  5 Nov 2024 14:56:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1730818609;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QA9Z6DlABQAh/zHFAwCMIMgA9gtG670bOQgehg6enAk=;
+	b=KWaTZyu3vLcDyz9FWyowSmBHC3XiZrmKJULGPtt9hzaqj0+xJODq0QR1ihReN61VqnwxCk
+	cyoakzjNknp34vXM3mBZCHBYo0gmRejGd4PWdqrQoDSwYqgeQGazh5ofxOpKDGc6x7zm8X
+	kSgyKuZ0UDNSmVFqo+CFEGNa+MY+IsX8tKInCVCBVJh6Y73IoUTL2hHCZUv5yZeg+3gDmY
+	CP5ktynlkskg3ruNt8nCELLrlhibV7PF6UGal945LwEqulLbG5vGsWom8qQx5vINJf/c9s
+	QAXF8i1kCKMsokbKbWKwXiIEQqqY6emQ3dSvWkcVoiJ0juZ/S7e689/sACCY+g==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Mark Brown <broonie@kernel.org>,
+	Li Yang <leoyang.li@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] soc: fsl: cpm1: qmc: Set the ret error code on platform_get_irq() failure
+Date: Tue,  5 Nov 2024 15:56:23 +0100
+Message-ID: <20241105145623.401528-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.46.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,78 +68,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/28] vdso: Preparations for generic data storage
-To: Thomas Gleixner <tglx@linutronix.de>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Russell King <linux@armlinux.org.uk>, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, Theodore Ts'o <tytso@mit.edu>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Nam Cao <namcao@linutronix.de>
-References: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
- <871pzxzuny.ffs@tglx>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <871pzxzuny.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-GND-Sasl: herve.codina@bootlin.com
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+A kernel test robot detected a missing error code:
+   qmc.c:1942 qmc_probe() warn: missing error code 'ret'
 
+Indeed, the error returned by platform_get_irq() is checked and the
+operation is aborted in case of failure but the ret error code is
+not set in that case.
 
-Le 30/10/2024 à 12:39, Thomas Gleixner a écrit :
-> Folks!
-> 
-> On Thu, Oct 10 2024 at 09:01, Thomas Weißschuh wrote:
->> Historically each architecture defined their own datapage to store the
->> VDSO data. This stands in contrast to the generic nature of the VDSO
->> code itself.
->> We plan to introduce a generic framework for the management of the VDSO
->> data storage that can be used by all architectures and which works
->> together with the existing generic VDSO code.
->>
->> Before that is possible align the different architectures by
->> standardizing on the existing generic infrastructure and moving things
->> out of the VDSO data page which does not belong there.
->>
->> Patches	 1- 2:	csky
->> Patch	    3:	s390
->> Patches	 4- 5:	arm64
->> Patch	    6:	riscv
->> Patch	    7:	arm
->> Patch	    8:	LoongArch
->> Patch	    9:	MIPS
->> Patches 10-20:	x86
->> Patches 21-27:	powerpc
->> Patch      28: 	Renamings to avoid a name clash with the new code.
-> 
-> As this has been sitting for two weeks now without major comments, I'm
-> planning to merge that through the tip tree tomorrow.
+Set the ret error code.
 
-To avoid any future conflicts with powerpc tree, I suggest you merge 
-https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git 
-topic/vdso into your tree before applying this series.
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202411051350.KNy6ZIWA-lkp@intel.com/
+Fixes: 3178d58e0b97 ("soc: fsl: cpm1: Add support for QMC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+ drivers/soc/fsl/qe/qmc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Christophe
+diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+index 19cc581b06d0..b3f773e135fd 100644
+--- a/drivers/soc/fsl/qe/qmc.c
++++ b/drivers/soc/fsl/qe/qmc.c
+@@ -2004,8 +2004,10 @@ static int qmc_probe(struct platform_device *pdev)
+ 
+ 	/* Set the irq handler */
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0)
++	if (irq < 0) {
++		ret = irq;
+ 		goto err_exit_xcc;
++	}
+ 	ret = devm_request_irq(qmc->dev, irq, qmc_irq_handler, 0, "qmc", qmc);
+ 	if (ret < 0)
+ 		goto err_exit_xcc;
+-- 
+2.46.2
+
 
