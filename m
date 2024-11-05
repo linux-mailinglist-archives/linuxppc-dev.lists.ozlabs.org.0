@@ -1,67 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-2852-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2856-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6439BC2AF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2024 02:35:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF0D9BC359
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2024 03:50:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xj9rc5hgLz2xrb;
-	Tue,  5 Nov 2024 12:35:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XjCVh5vhRz2yLB;
+	Tue,  5 Nov 2024 13:50:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::112d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730770528;
-	cv=none; b=LMVI40aBpBUlByV7tKn/pFQjxEiGeh4y3LZe/k8xUP094e8aptK53YX4xm74VkAMiP5hKkqMW5GjlGoBiXFd1lF/NlnplXBXqIIEzfwd6K/suSgLBRH+AUPgoqRoDLpim2eJSk3CNGcXlBF8s81VGiPqo8+8ueVGoHOQl4f+3nMoSa9Rs+jPcdeI2ADtVxO27hyLTTqVRH8QAof9LqhOLck9QejPboz4D5qN8k3BoDRxkymK4Ic6fs4Ve9Y+tUcHAyMpdLew9BnWvKmZFmDWXytH3ZLDVq94h7Me/lPLH9VeIEc0UAPNTd2FKWGpq56AAB4wFy3y04jSYPODcRdTkg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730775004;
+	cv=none; b=XhuEjCQBNSViBsnEOiPMSjUyIVdqg5cRBF24TX9A/s6Xa1nukEah7ROrrksrPP77glYgWvRM9vl6/FDc8oQmWljZkVe1mJW8pyM44MoGaBRW0aq8swyilIFidfDRVm4F9UedUGYzq4yCbWXp0WgFsFaPgDdnpqImCVEftIFnIspi/CP4W6Ou3UckyxW6yLzJY3cvaDimrmuYWLFq+lECatL+tACUKTO3c+qJx5L6mjwp9b1BpJBW2J4tsC7eGOU1uFM/1lZ98ZKHotFVE7YvF68xRjRIdbfA5LrQJijnyH2UGXY58GkbnmN5orD3SC+p16p4byB65bfh3VcZa6l+wQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730770528; c=relaxed/relaxed;
-	bh=1olVdcYdpbzAU58yRsPEPtreJytP/ErwpPoWbC/4Weo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SFB43DkQVcf1UZh/fE49lwJKNa5ayU1xdET85scf1cN7me84s8rfUlgy5rVU9ZxcQf75uYmvQbAf9fAOsIN4uY+Qk2UMpysmFr/dnfFVj6CB/4VOA/R1aYGOtRoQM1copyRGyZVk6RsyOKnyWl48nXUMHAqQOsIf2VZcr1jhdDEmyOid2Oy06mildgIMk9NUyRfkyu2sz5wqawCvoyKydCvVtvvfoEcTvBZDYP1zOfDcgBYm6AZFT6nX5AhkEHb5QnO7rJe+8UE/KzvBJFlGy0GNfVCyka321k+KKhgAgTXrC6geIY7hWVlWNgPOxqditLyLmKtopFPod2eO1gxVaQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iuHDM3rD; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::112d; helo=mail-yw1-x112d.google.com; envelope-from=rosenp@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1730775004; c=relaxed/relaxed;
+	bh=axp2GaQehnja73xKX12S2JgnASGJkuw1ISq6I7w/yE4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZHnlVOVOXnQ+wrqUqZinz8n7n8r8NbcXe5AnCAv4zW7LPy8rGgGKxhBvc/3Sk8F5AMIn+fS+olQ9HyPEowTOXOcorXUCXvUpIi6J06eHM+oE+fsuvNnAxnG+FcLxeV01NGshOJ3we/YVYqWbDs4BtaDoZ7U9gLEjWYYSu4lSv5ArIzYCS57CjhKaFRL3QYiHv4gYr2ImVFg0PllPFiZOuN/4Qju+Zr+tmQlUch416rNlve3rJjmhxp1I+6TfxWSF8/oeHTLs3WbXjUZ5Due+Nx9+tjBP6E7Mui7whaInImKDtyslkikJXjhCZdXCZ31lppc/8j4EBU47nxAZZ8mhhQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ro6skYPp; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iuHDM3rD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ro6skYPp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112d; helo=mail-yw1-x112d.google.com; envelope-from=rosenp@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xj9rb1p6qz2xk7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 12:35:25 +1100 (AEDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-6e5cec98cceso39009937b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Nov 2024 17:35:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730770519; x=1731375319; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1olVdcYdpbzAU58yRsPEPtreJytP/ErwpPoWbC/4Weo=;
-        b=iuHDM3rDLhujVe6sE662zGYyu+EG2JyTaSeFoWrwtQ6kl9WtK25RnNheJc3jD4NGWo
-         DyTuBHkWuRLY/Xf2MuS2QGWAyqfsh68DWKmnzc6MBglF5vjy1LLdjB8vsq0L4fEAnst5
-         SmgBlZlNouN7PGXVuphmQ0JCGbBwDjzrs9XwdbZ0QwiXxCD/gicAXu0JUYDhCWf00E0x
-         HzMLE7y4xnKiY3fczBLE6KJK9rj6Vuvy0+GRVq9ZfuGF0yB6EonCFtum1Gb+jVnbrmNG
-         3L6cs1BlR2YIfjF7A7ysGyXykfKhl7Ro4oWxJ3/RjuQDRZknnHjS21p5ECMY2+zoXdzL
-         GZjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730770519; x=1731375319;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1olVdcYdpbzAU58yRsPEPtreJytP/ErwpPoWbC/4Weo=;
-        b=vS0uN3/Oq6T2TFgAvzDVuJdkzZxBL9Rq+mfjC2fZrIOlKrhB+3pDgo3o4Y4dQomfZY
-         fknPjDn+DxdwPdARZ5nc4Agu4VoH8F3sjWQEH+L4ESixkmgClY1/D37INd05pEN6Tmtw
-         m/FoDnL60gaGzcl0SJ4z8sn6XGxhHehbCcHmHITSiE+tghve6LsPxLBP3dHCxYNK/XiH
-         fthHY1Xe1rPQsvb2LeEG1VFEJPIj5QO7Cw8wYktot4kwqSdyzMgJkZHNsDu25WXfVAbR
-         kr1BQJysiU6Opq71B8bqiUqKY1yjxJ2gxM6fI4So/2rpDkSmh39J5BoZnyvcy6Q2+PtE
-         3/Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCUj+m3S8tdEWUfiz2e7jBn6M4P5oslMZIr4obKYTfIhqW2b4I6kpQtWaAVt1BSDJn+NwiS1PVzJEr2aWjA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy3whVWMoGwJbApesCWx8bvWe5caS4X3PErpRWx0M81TsbQG9Hx
-	WtdsZhxE16SMf+IFO9754jlz5JRJBJzP5DvNdklV23zeead/ZgX8JSmH44uduH8ouT5Vo3+pmuC
-	LS4Sh/8Q4iaLrpsTx/kFmY5ogcrg=
-X-Google-Smtp-Source: AGHT+IHumg29ZCvANUFmdwzLHDkWQb+pLrpZmept1M1Rh2XLyhWlPjqmDFclS/BZdxG49yfm/f+VICBmuMl/EwbpAlM=
-X-Received: by 2002:a05:690c:64c6:b0:6e2:1a56:bff8 with SMTP id
- 00721157ae682-6ea52525bb1mr153943557b3.36.1730770519634; Mon, 04 Nov 2024
- 17:35:19 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjCVf5rPPz2xt7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 13:50:02 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A52ffOv017873;
+	Tue, 5 Nov 2024 02:49:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=axp2Ga
+	Qehnja73xKX12S2JgnASGJkuw1ISq6I7w/yE4=; b=Ro6skYPp61ZKfeSg6c1Lrp
+	UHnR77VqfmPci8lJlpwKXPSft9SOgSuHDWnQZ/aDNz8bqjVbxMIq6nC7/UMuSqhU
+	ll62EWfezrmZoY1jFLczOvaTM2MD2iUwEeOL3i+9oxGVleQnuKumnfYuWhu8CyBF
+	OAAT4kVaURQ75XRdcV6gHSR2s2FAe9igyp7SVILAGPnk+NmMMMn9GPH93VvyVrHf
+	EFqxSFgbz1QQZvv0JlfsjIbpVE+lLSrsLLXaHRGVr6yMFJZoZLGfXxJj75/nuuse
+	UlWIUoJxkZD9oN5mK5OEu51hTGAEPvupeHjXXHxKP9ht4PeZNsrADUpEceaUC6BA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42qasug13c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Nov 2024 02:49:51 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4LSFiu019080;
+	Tue, 5 Nov 2024 02:49:51 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj3853-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Nov 2024 02:49:51 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A52nlGV46268858
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 Nov 2024 02:49:47 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9F96520043;
+	Tue,  5 Nov 2024 02:49:47 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A50DA20040;
+	Tue,  5 Nov 2024 02:49:46 +0000 (GMT)
+Received: from [9.109.204.94] (unknown [9.109.204.94])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 Nov 2024 02:49:46 +0000 (GMT)
+Message-ID: <f4def3a5-727e-4eff-95cd-ece99d133ca5@linux.ibm.com>
+Date: Tue, 5 Nov 2024 08:19:44 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,45 +78,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241104210127.307420-1-rosenp@gmail.com>
-In-Reply-To: <20241104210127.307420-1-rosenp@gmail.com>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Mon, 4 Nov 2024 17:35:08 -0800
-Message-ID: <CAKxU2N_wxh+31VkZAAczVUUVt5duLv=yBj9zyLMDfoYGPq=G5Q@mail.gmail.com>
-Subject: Re: [PATCH net-next 0/4] net: ucc_geth: devm cleanups
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, maxime.chevallier@bootlin.com, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"open list:FREESCALE QUICC ENGINE UCC ETHERNET DRIVER" <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] fadump: reserve param area if below boot_mem_top
+To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <20241104083528.99520-1-sourabhjain@linux.ibm.com>
+ <20241104083528.99520-2-sourabhjain@linux.ibm.com>
+ <b7350dd0-b835-42fe-8970-da5b0ce16ba6@linux.ibm.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <b7350dd0-b835-42fe-8970-da5b0ce16ba6@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QKbfqnPnE7BqNxG-Sw30kWlRgHqkbvOq
+X-Proofpoint-ORIG-GUID: QKbfqnPnE7BqNxG-Sw30kWlRgHqkbvOq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ lowpriorityscore=0 malwarescore=0 spamscore=0 mlxscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 mlxlogscore=999 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411050019
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Nov 4, 2024 at 1:01=E2=80=AFPM Rosen Penev <rosenp@gmail.com> wrote=
-:
->
-> Also added a small fix for NVMEM mac addresses.
->
-> This was tested as working on a Watchguard T10 device.
->
-> Rosen Penev (4):
->   net: ucc_geth: use devm for kmemdup
->   net: ucc_geth: use devm for alloc_etherdev
->   net: ucc_geth: use devm for register_netdev
->   net: ucc_geth: fix usage with NVMEM MAC address
-oh this is interesting
+Hello Hari,
 
-_remove calls platform_get_drvdata but platform_set_drvdata never gets
-called. I believe that means _remove is operating on a NULL pointer.
+
+On 04/11/24 15:50, Hari Bathini wrote:
 >
->  drivers/net/ethernet/freescale/ucc_geth.c | 34 ++++++++++-------------
->  1 file changed, 14 insertions(+), 20 deletions(-)
 >
-> --
-> 2.47.0
+> On 04/11/24 2:05 pm, Sourabh Jain wrote:
+>> The param area is a memory region where the kernel places additional
+>> command-line arguments for fadump kernel. Currently, the param memory
+>> area is reserved in fadump kernel if it is above boot_mem_top. However,
+>> it should be reserved if it is below boot_mem_top because the fadump
+>> kernel already reserves memory from boot_mem_top to the end of DRAM.
+>>
+>> Currently, there is no impact from not reserving param memory if it is
+>> below boot_mem_top, as it is not used after the early boot phase of the
+>> fadump kernel. However, if this changes in the future, it could lead t
+>> issues in the fadump kernel.
+>>
 >
+> Looks good to me.
+>
+> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+
+Thanks for Ack.
+
+
+- Sourabh Jain
+
+>
+>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>> Cc: Hari Bathini <hbathini@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> ---
+>>   arch/powerpc/kernel/fadump.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+>> index 4a3f80f42118..35a8a107e16b 100644
+>> --- a/arch/powerpc/kernel/fadump.c
+>> +++ b/arch/powerpc/kernel/fadump.c
+>> @@ -143,7 +143,7 @@ void __init fadump_append_bootargs(void)
+>>       if (!fw_dump.dump_active || !fw_dump.param_area_supported || 
+>> !fw_dump.param_area)
+>>           return;
+>>   -    if (fw_dump.param_area >= fw_dump.boot_mem_top) {
+>> +    if (fw_dump.param_area < fw_dump.boot_mem_top) {
+>>           if (memblock_reserve(fw_dump.param_area, COMMAND_LINE_SIZE)) {
+>>               pr_warn("WARNING: Can't use additional parameters 
+>> area!\n");
+>>               fw_dump.param_area = 0;
+>
+
 
