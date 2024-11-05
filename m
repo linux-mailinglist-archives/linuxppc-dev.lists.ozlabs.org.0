@@ -1,71 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-2864-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2865-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC869BC8EC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2024 10:18:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C48F69BC900
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Nov 2024 10:22:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XjN6H5WYgz2y1W;
-	Tue,  5 Nov 2024 20:17:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XjND134jsz2yLJ;
+	Tue,  5 Nov 2024 20:22:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730798279;
-	cv=none; b=mFiAQaYfxC2YHZvxlbQb9TxWYKevtpg+yMJvrBh+oHGdlZzciWqRbqi8PgIOSbp2XTqo5BbepnY5ASUn7Y7LbPekBuxIWh4CfSAltYevb9hdLqHnnHBdQnXrNnOgQFo/M+MiYCulkmiyCjMYWv7FOCwdDcEqJiO85zvzT1miP8QDXkxQYl4GEJB3c669sDjS0u16aZXjoKcKJPuaq8BS/QFtFjxnTxoCrtHQNlxs2dVflYvLv6VUbKb3wXgbVuIMIEpsoMoAf4FAHCF+z/dE3ghiyOFELt/5nYhpXCgJlIp8m1lBe9B2o2YlIAm+uB7AtF7kDJoNQNbuIkPMIL9JdA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730798577;
+	cv=none; b=WI2jatRv8PWSBrRVu7DqneBhXj5dIrXNTp1A5PcDpGg64xBr+SsNBDp9TJZv9XP+MY/uBtQXJvIoN/BzgUQz8sd0xthfwyNn+Lobo+PXw02ysqKr2rIHqzQjauRJ8kwHTgCPueqWwoJ2CpiEB9dR0Zj7rdFwNkBNZxqV6+dBCIImhMXkHBHBuK6ruod27Vj8FgzPyWF5kTcdSDzCJLqQyGQsvpvW3ShwHLynsOQAg/uiD+xJ1tY1Ncr6bs709s3LIQ++Ao7ZzfYq6oYkSWxEzjp9dHEHErR9oP9vDcaIv2uTRsALOY3UROG+ZwuTAwRIf/eS7u+8BX0iKKLFYww6jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730798279; c=relaxed/relaxed;
-	bh=Z8Nll3lLrT1N0+W04gASr+RDfjURmYBaVTCmG+mDo1o=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=EiVo99lgR/YOGlkEBnUKXGrjuXpFD+Au0F18nbsqwsXYhanxxp4qP+0hjDoTSrjbA1qWqCwKG8ysgh76cHDv5n+SGcC1nil8rCgMBEbxiyYuHPdQnP2CjzqHk302i93tGxcwxs3Gp8ZB81rJMHGdxXDeUeOATgOB27qiPdEQlZcJYcGvH6bS/niLLPs9Pkr3IIshTxerI92S8j0UD+rRKX3TjVROio17xfi2ZoPr0gTUVcTzKyBwK2Gy6WFN6xEGGszyhqWcZh4lD2LT1ZUFt0X/Ss0r8Y5mNBmXKmIT8Q/mZZ6aseiSnef2q2xW5JvxfXVoRPbCf45zfJAatbNPoA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hfi6RspQ; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1730798577; c=relaxed/relaxed;
+	bh=xG1HQhXTKL81M9467zhA4KonLLpV3fuL2upt5lJSShY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FtUyB7AP2nNDgohzdquZDdDOsZD1btwkssYlgoecrtTJ5bxJH/ftFcQ3NnlLbEidQ2zQ8gpNldo2/7gmImK1L+oKeD/zxjrkMPULePTeno8un2vdqakVkpCsEc38OUe2ZZUibMTwzgq8+ywCk34wCHGkC7LMKzzocHFngRQJ/tMutDZHFWpr0G2sG8oG/ATVyG10BK6ddpxhoboLYXMtXJ/6bIKO3sXxSh83Esg3OTMc4+KKnOS5n20HDGqWs0VPfddz/4TQ3WLjitzhlpKR57r57Os55+91UVJfRo0ram7oB6ORz4+LgSuTKSIS93hxJ6s5H83qlYZow/u6CbHnuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=abc102v8; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hfi6RspQ;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=abc102v8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjN6G3y80z2xHQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 20:17:58 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 49BE9A42A4B;
-	Tue,  5 Nov 2024 09:16:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5951EC4CECF;
-	Tue,  5 Nov 2024 09:17:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730798275;
-	bh=PppMPuX1IoJiZXzC2Ga3sdmBITXwwbZAdf5ssbDPqgA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hfi6RspQ9yzPHxU4Z8SstdLhGN/rnX6LAJkaiieADqbpMl6HVGczLaaHYh2XBp0ds
-	 tu/4r3fnI7rhU1tmk0uxR5mJsIIHka1X/K75aHrbtdonRXnK1Isad4xsKyh2EJAVEI
-	 Xl4Y6crMBZ4iHL7OvaDuEOeJU/PoLMOpeHHlVQcRzjrkd9oMhUlL0f+WOLDd2iAEaK
-	 hBhglLxLlklDAgShVUy+l6B9308mTp/dT7nN99BOdDeavHnHYlq6UOAK+dNM41nTok
-	 L7JiDXnkvSt6UiIFg/D6FbPW/WVSa+hzSJk16dh7ZRdumhjdSs8cPsseIWBDyFKVIN
-	 IFyBATBHX2IpA==
-Date: Tue, 5 Nov 2024 18:17:51 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, Michael Ellerman
- <mpe@ellerman.id.au>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Naveen N. Rao" <naveen@kernel.org>, lkml <linux-kernel@vger.kernel.org>,
- linux-trace-kernel@vger.kernel.org, linuxppc-dev
- <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH] selftests/ftrace: update kprobe syntax error test for
- ppc64le
-Message-Id: <20241105181752.74a3d6fa2f06d0adfdf85322@kernel.org>
-In-Reply-To: <20241105082018.GA29862@gate.crashing.org>
-References: <20241101191925.1550493-1-hbathini@linux.ibm.com>
-	<20241101205948.GW29862@gate.crashing.org>
-	<1916cb5c-cb3d-427c-bcf0-2c1b905fd6d1@linux.ibm.com>
-	<20241104094431.GY29862@gate.crashing.org>
-	<245fed6f-5fb4-4925-ba0a-fb2f32e650d0@linux.ibm.com>
-	<20241104103615.GZ29862@gate.crashing.org>
-	<f7e8243a-a4c8-44ce-ad03-7d232df461ed@linux.ibm.com>
-	<20241105082018.GA29862@gate.crashing.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjNCz2Nv0z2xHQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Nov 2024 20:22:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1730798571;
+	bh=xG1HQhXTKL81M9467zhA4KonLLpV3fuL2upt5lJSShY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=abc102v8sCEc4rZgo2gcKLbXmwgvq4GWFHOVFO2bCqlfFdeKKcRV4prB0lNuFM+1J
+	 +nLMWJEv9C6S0GLYT8NTq4cofEwz+d0GOszV9URcE2cm6ZF5AylDoN/Z59rll0g/Oq
+	 7WsqGbok2W4NpvuKkzkrDPAQmPNPSM6PFvziT+2hwmqDnVmGWCUcte8UycWZO0fqBM
+	 8/j6kLdVKhMd+2mHPE+WS4RXiOWy1ZCSKS371LN4mAvJuEGSKgRrakUz5kUENSDU9q
+	 PGCTVxGOMH7TPanX3MVM/rMyBsqI05mZE6yiJdVSS0qPm3mWfbV8Bv8MQn/EFJHce9
+	 0DvIPNJTjgI8A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XjNCv5y3Wz4wcl;
+	Tue,  5 Nov 2024 20:22:51 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Eric Biggers <ebiggers@kernel.org>, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-crypto@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-mips@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org, Ard
+ Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v3 08/18] powerpc/crc32: expose CRC32 functions through lib
+In-Reply-To: <20241103223154.136127-9-ebiggers@kernel.org>
+References: <20241103223154.136127-1-ebiggers@kernel.org>
+ <20241103223154.136127-9-ebiggers@kernel.org>
+Date: Tue, 05 Nov 2024 20:22:53 +1100
+Message-ID: <87zfme826q.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,100 +69,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi,
+Eric Biggers <ebiggers@kernel.org> writes:
+> From: Eric Biggers <ebiggers@google.com>
+>
+> Move the powerpc CRC32C assembly code into the lib directory and wire it
+> up to the library interface.  This allows it to be used without going
+> through the crypto API.  It remains usable via the crypto API too via
+> the shash algorithms that use the library interface.  Thus all the
+> arch-specific "shash" code becomes unnecessary and is removed.
+>
+> Note: to see the diff from arch/powerpc/crypto/crc32c-vpmsum_glue.c to
+> arch/powerpc/lib/crc32-glue.c, view this commit with 'git show -M10'.
+>
+> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ---
+>  arch/powerpc/Kconfig                          |   1 +
+>  arch/powerpc/configs/powernv_defconfig        |   1 -
+>  arch/powerpc/configs/ppc64_defconfig          |   1 -
+>  arch/powerpc/crypto/Kconfig                   |  15 +-
+>  arch/powerpc/crypto/Makefile                  |   2 -
+>  arch/powerpc/crypto/crc32c-vpmsum_glue.c      | 173 ------------------
+>  arch/powerpc/crypto/crct10dif-vpmsum_asm.S    |   2 +-
+>  arch/powerpc/lib/Makefile                     |   3 +
+>  arch/powerpc/lib/crc32-glue.c                 |  92 ++++++++++
+>  .../{crypto => lib}/crc32-vpmsum_core.S       |   0
+>  .../{crypto => lib}/crc32c-vpmsum_asm.S       |   0
+>  11 files changed, 98 insertions(+), 192 deletions(-)
+>  delete mode 100644 arch/powerpc/crypto/crc32c-vpmsum_glue.c
+>  create mode 100644 arch/powerpc/lib/crc32-glue.c
+>  rename arch/powerpc/{crypto => lib}/crc32-vpmsum_core.S (100%)
+>  rename arch/powerpc/{crypto => lib}/crc32c-vpmsum_asm.S (100%)
 
-On Tue, 5 Nov 2024 02:20:18 -0600
-Segher Boessenkool <segher@kernel.crashing.org> wrote:
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-> Hi!
-> 
-> On Mon, Nov 04, 2024 at 11:06:23PM +0530, Hari Bathini wrote:
-> > Seems like a bit of misunderstanding there. Function entry here intends
-> > to mean the actual start of function code (function prologue) - after
-> > GEP and function profiling sequence (mflr r0; bl mcount).
-> 
-> What you call "function entry" here simply does not exist.  The compiler
-> can -- and ***WILL***, ***DOES*** -- mix up all of that.
+...
+> deleted file mode 100644
+> index 63760b7dbb76..000000000000
+> --- a/arch/powerpc/crypto/crc32c-vpmsum_glue.c
+> +++ /dev/null
+> @@ -1,173 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0-only
+> -
+...
+> -static int __init crc32c_vpmsum_mod_init(void)
+> -{
+> -	if (!cpu_has_feature(CPU_FTR_ARCH_207S))
+> -		return -ENODEV;
+> -
+> -	return crypto_register_shash(&alg);
+> -}
+> -
+> -static void __exit crc32c_vpmsum_mod_fini(void)
+> -{
+> -	crypto_unregister_shash(&alg);
+> -}
+> -
+> -module_cpu_feature_match(PPC_MODULE_FEATURE_VEC_CRYPTO, crc32c_vpmsum_mod_init);
+> -module_exit(crc32c_vpmsum_mod_fini);
+> -
+> -MODULE_AUTHOR("Anton Blanchard <anton@samba.org>");
+> -MODULE_DESCRIPTION("CRC32C using vector polynomial multiply-sum instructions");
+> -MODULE_LICENSE("GPL");
+> -MODULE_ALIAS_CRYPTO("crc32c");
+> -MODULE_ALIAS_CRYPTO("crc32c-vpmsum");
+...
+> new file mode 100644
+> index 000000000000..e9730f028afb
+> --- /dev/null
+> +++ b/arch/powerpc/lib/crc32-glue.c
+> @@ -0,0 +1,92 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+...
+> +
+> +static int __init crc32_powerpc_init(void)
+> +{
+> +	if (cpu_has_feature(CPU_FTR_ARCH_207S) &&
+> +	    (cur_cpu_spec->cpu_user_features2 & PPC_FEATURE2_VEC_CRYPTO))
+> +		static_branch_enable(&have_vec_crypto);
 
-Here is the "function entry" means the function address.
-Not the prologue. On some architecture, we are sure fixed sequences
-right after the function address for ftrace/security. For example,
-x86 has an `ENDBR` for security. Thus, even if we tend to put a
-probe on the "function entry", kprobes shifts the probe point
-forcibly skipping the `ENDBR`. So from the probe callback, the
-probed address does not look like the function address (shift
-the sizeof(ENDBR)).
+For any other reviewers, this looks like a new cpu feature check, but
+it's not. In the old code there was a module feature check:
 
-However, the ENDBR does nothing from the program point of view, we
-can still think of that address as the address of the function.
-That is the reason why I introduced arch_kprobe_on_func_entry().
+  module_cpu_feature_match(PPC_MODULE_FEATURE_VEC_CRYPTO, crc32c_vpmsum_mod_init);
 
-For the other architecture, it might be misunderstood and
-could be miss-implemented. In that case, we should fix that.
+And PPC_MODULE_FEATURE_VEC_CRYPTO maps to PPC_FEATURE2_VEC_CRYPTO, so
+the logic is equivalent.
 
->  In particular,
-> "function prologue" does not exist at all (on any architecture worth
-> its salt, including PowerPC), and all instructions you consider part of
-> a function prologue might end up anywhere.  The "profiling sequence" is
-> part of that btw, and that typically ends up *not* the first thing in
-> the function, not the first thing after the LEP (register saves are
-> earlier often, they are generated in that order in the first place,
-> but they can (and will) be moved if that schedules better).
-> 
-> > Function arguments can be accessed with kprobe only while setting a
-> > probe at an address the kernel treats as function start address.
-> 
-> That is a silly assumption to make.  There is no guarantee you can
-> access function arguments *at all*, we're not in 1975 anymore.  You
-> *need* to look at debug information if you want to deal with anything
-> about your high-level language program.  Looking at the machine code
-> can only tell you about the machine state, whatever is in registers
-> etc.
-
-Yeah, understood. So the `$arg*` here does not guarantee to access
-arguments, but the best effort to do that. And it fully depends on
-regs_get_kernel_argument(). Thus `$arg*` works only where the
-regs_get_kernel_argument() can return most likely function argument
-value from `pt_regs`. That is where we call "function entry" in
-this context.
-
-And since it checks the function entry by arch_kprobe_on_func_entry()
-this test fails on powerpc because it returns true if the offset from
-the kallsyms symbol address is less than 8/16 bytes.
-
-
-> 
-> > Note that the test case pass criteria here is setting probe to fail by
-> > providing an address (sym+offset) beyond the function start address.
-> > 
-> > And in this specific test case (with "vfs_read+8", where vfs_read is
-> > the symbol and '8' is the offset), the test case was failing on powerpc
-> > because setting the probe at 'sym+8' was succeeding, as anywhere between
-> > 'sym' to 'sym+16' is treated as function start address on powerpc:
-> 
-> Yeah, fragile tests sometimes break.  Changing a randomly chosen number
-> to some other randomly chosen number will not fix the problem (but you
-> can postpone having to deal with it, sure!)
-
-Yeah, sorry about the test case. Actually `+8` is also not a good number
-for x86 too since we are not sure whether the address is an instruction
-boundary or not. In that case it may report another error and failed.
-
-Thank you,
-
-> 
-> 
-> Segher
-
-
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+cheers
 
