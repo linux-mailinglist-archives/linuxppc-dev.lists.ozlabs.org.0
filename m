@@ -1,68 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-2890-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2891-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F20F9BD9BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 00:32:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8969BD9C0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 00:33:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjl3f6bkdz2yN3;
-	Wed,  6 Nov 2024 10:31:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjl4q4FQlz2yNn;
+	Wed,  6 Nov 2024 10:32:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730849518;
-	cv=none; b=UzM3b5F0+YdtraJWmGNzENVV/AlAlGKpqRx+nY7Kn5IkRGEqdAK4qQeqf5UGVF1fr4UWWpxNCdTrMQOZVMU8OdRDe7wQDXzhg26/HlKFmAPei4QtOGlDqKPMtYj3XHTTC9hf02Pr9cIfvk4iBtbVoNLyDadRBcanH+WZMAS5x9h1ur67mtAz/nro+irgnhpt1wXbizuxuGj6BNPtCQkDvWknQOKa16RyvEKZHaGQuQyQ3G20uuIQfRssUozZsf6/ykgGq2aTWW67QevIp7ZSxUb+ZkFokqS8UpjklMFDsvMUhLUo6uE91A2v/hyG9lCDquA+CSmSwqR2YauRJexsYA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730849579;
+	cv=none; b=gKWCNbh1ZAXGntR4MKHT4LKzsEdQI5Iy/KpGZ7kUdmIBFh1uwIQdmR3J1Yy6sOSZ8MLo2tjiUkOEvZMdX3nAjBNOmhyjtHVQPNIUq1UIPMhLujZa/y8mfC7uGCBczx2XsP4GT8QN+9Hw1r9fJ+LclrkHdWxbn7VVxquyzLSHghSFCzzQydsHb6vlNflAA8wsHGbnZJPYbFJiDLNAefkNsNItXlMWJR8z82eUt4kU7992MRJb4FSGU+6V8Co7fGQGoixhmUgYfcRYN8toLPowAsl4GB/dSW6Zr6POsnnt8HSb/0CvQsYys4sZy4FW4TgKLbjSIy+YEFnOK+LGu/DpuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730849518; c=relaxed/relaxed;
-	bh=6nFw5bngA1TZ1lC03sJFsfokjbotFUwWp+Ikm8ilN14=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=TCKEg05IzWqhWEJCUFN31MkMzBpo8KozozkQqTY3bWfjFAJ5Jj/Rnp3Uwzbq0+BvJr+coeapMUMeJpMMw3GbrXm7Pcq1tS9EFBQvzmkcJSPQjR31cp1xpv1WztcJ8AvpomNjpJxv1SqavJhnv7Xv33RxEVR5ZDcUSXBquyVFXPUP5BjTWqn3bG8C9FiPjbvFLPDWQSQQfivtQzQYm0MPDx9dAvTo2YpbtPaTG56+XcJHkjMM7zRhThdlI6/AtEEGsaFG35m/Mrml06LjXmQWXYmFZSviWXDAjTX1jrKNKblT81Ai0LRV57xBPAToPdIb4cHzgzd9WE8cz0klrTyY8Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bRvLvrtn; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	t=1730849579; c=relaxed/relaxed;
+	bh=8cqZCEp7eNJ2OfxL1r/ADjYFb0+EUlA5qAAzz8dl9Ms=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=K0rd7REhTzDdqebpSvIZV2DYxAUaU8BFCM+vGiNH+htKkXBQHYpmFtOY2I3UMbd4LS2VHF8Z0/fkK+OMN5iFr+Dec6CyYK5GHvnBBmZqk37CYxmazZk14ybsO1M0RlYM5mkJK/zvCdxeZYksnoiS56jhQCGfjktYg747GHmiObXiaDLNtE68lIcOl9cuUWZp8v8WQ29H1RJrjMrU4nZQW49MstfdYE/nrKwFWPwyWWGTzFH49k1aRCXOsUI/Occ4ObWIlhtywRegDkISrje7BrKpQnPfUVPECXnB1KaIkvhNwCHW9GVyb6/oCyyu/bIgIZfxNbdX/BwjzTd9EjoQqg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Af4tqGey; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bRvLvrtn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Af4tqGey;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjl3d4CJYz2yMv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 10:31:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjl4m6WGQz2yMv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 10:32:56 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730849517; x=1762385517;
+  t=1730849578; x=1762385578;
   h=date:from:to:cc:subject:message-id;
-  bh=iRsWHo8H1mG5Jjq+a6Q2PaUfHYPYj/1/6l38ZErGUjo=;
-  b=bRvLvrtn00OUCMtsDIV6ZVV8sI8E+sTHpggz6cQok5U6hgU/O7FK6X+2
-   QnoZft56EwyyW5pqQC8AAdT1rDTRe6rvbx+rrfZoNRmDcDmiZgBWt0pJf
-   FKEyzQKOD9E5FfkIXFomBm17GmOOFy6O7znxOxBEZ33s9SZv4kcoYpVJa
-   Y1z349bj1K0vmns46eVFI79M3HlYbz5VReO9ANnQHuRQpfSjFSjjWeqyI
-   FT8vnXs5YxMCRJ1t90RS5yu+XzFP1uFMbeuumdv68EuwBfWykbVfI3KdH
-   KlWwMmhFZMFWEVUeTxLhjkOmqfyoY/lGP2BMv4NhpA/pSYmpUy0L9PD9O
+  bh=rN6FNgV1Q0zqBbFVHA2qcsLAg7t+ieoop2JOEB04Cxk=;
+  b=Af4tqGeykZ8TvboMTfUJuff3gc2B5DlnbKEtIrGcgVSVXLrY9TQ5UYnv
+   RsRf5IW95A2X/BAslZzsQVmwaWbnDvqKoBAcFd3d8mCVtwm8Eth56Ru/O
+   dTBRAhIF98zRz/AVHEUuBJKzUWxx0WXnpxh3s5NhJ4bZKMfM5dbhvrKjl
+   jK+54ozvTIVTnH+ktwVsyreOnB7UyfvGeQyYNgrR9hEn8i3aPR/WVUpIb
+   VrO6bZ37AYFGGxviX2rEcM5zRh9bh07fJ8yXrTNsrKqE5lqDOaoV1EWQH
+   Mg13cUNsLLXxgVJNDjNodXP+ixAepShgHoilWqbnSIrNF95UlRB/iml3c
    Q==;
-X-CSE-ConnectionGUID: yY11Uj94Qemfh7rZzChSDQ==
-X-CSE-MsgGUID: m5PxUyi4SdOVuZyBaNlTbA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="30053244"
-X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
-   d="scan'208";a="30053244"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 15:31:54 -0800
-X-CSE-ConnectionGUID: YKSGa9OdSaq+Yrgc3XV4Cw==
-X-CSE-MsgGUID: bG4tLTViRDir5KwXhcynxg==
+X-CSE-ConnectionGUID: L4sevXHnRbq458ILpTxQ0w==
+X-CSE-MsgGUID: eGuSc8DyR4+CNkokuwvUkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="48088567"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="48088567"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 15:32:53 -0800
+X-CSE-ConnectionGUID: iK9exlA3T4yZgm6QWjzaQQ==
+X-CSE-MsgGUID: C0lFJhgfSu2x8qxHHOdFQA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
-   d="scan'208";a="84127288"
+   d="scan'208";a="115007077"
 Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 05 Nov 2024 15:31:53 -0800
+  by orviesa002.jf.intel.com with ESMTP; 05 Nov 2024 15:32:53 -0800
 Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1t8T1a-000mbE-10;
-	Tue, 05 Nov 2024 23:31:50 +0000
-Date: Wed, 06 Nov 2024 07:31:45 +0800
+	id 1t8T2Y-000mbZ-1c;
+	Tue, 05 Nov 2024 23:32:50 +0000
+Date: Wed, 06 Nov 2024 07:32:49 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
 Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:next] BUILD SUCCESS
- d677ce521334d8f1f327cafc8b1b7854b0833158
-Message-ID: <202411060740.2Wjze9CS-lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 19e0a70e6c3c1bf800b8ce9eb45864aa9e1e2781
+Message-ID: <202411060744.PZnz5eRb-lkp@intel.com>
 User-Agent: s-nail v14.9.24
 X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -80,8 +80,8 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: d677ce521334d8f1f327cafc8b1b7854b0833158  powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 19e0a70e6c3c1bf800b8ce9eb45864aa9e1e2781  powerpc: Use str_enabled_disabled() helper function
 
 elapsed time: 736m
 
