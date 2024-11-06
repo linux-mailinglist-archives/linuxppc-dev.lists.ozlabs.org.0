@@ -1,60 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-2924-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2925-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36E39BF362
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 17:39:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBE09BF40F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 18:11:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xk9sS1SScz3bdV;
-	Thu,  7 Nov 2024 03:39:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkBYr61MXz3bdX;
+	Thu,  7 Nov 2024 04:11:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730911180;
-	cv=none; b=MWMraz8c7Zoocfyu4iDuXVjPgOyDP31E3TAB+XlYliucXtrPcNl+XCsBhTKoPah3FR6CFiE48BV7vK0CJm5a6MFjlFfm86ouWUHPaIFaoYx+2OmTInyvXlvFocUhYU2odMtjdO8V6l6d5KE8gy0ADn/AEKxQB5veA9iJ9zLvsKGeNV8Uht5nVL+So0KmoIVvL6fTq8v8CNeVGhI8+/Hx7O/yTYupqPqt8Vzb7mBzKzh5xsOg/cd3NKXRuyVdIjnlys/ZPmpF7KPcO41C7XeWVCNveqN3WY3jK9FI2gfmC99705qcCucl/7dcuGb800TvO/c4uU8dCzWbJMGp0bGNYw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730913072;
+	cv=none; b=cP17EL4L+Owm7/QiYbGHcCIX9idZtbhPW6V6VSzNfjQoc4qi761fTm9UjEpOIokjm5SC4Ek88l8BempQLvAceKim1k0+IKRI+tzI1zXLMttiyIQsPg0IQP6dsP3t2F5Ipjr1ICKN01AChBblprU39OvoBisaG9KfJL93K3QPMG6qbjdgjS9EQPBkgIty6w6Y6ZT6gIYNGaKmXl0DRrepk4hA6yYOXr/z0XCcjsLy28B3+D929YX9qQojHJDHzdDwlr5kWWWabdJ7XkWZ+M3itpiy4nVC8FsAfxg5PQfKK4ugTB0BgqO/KHQ9FscVenxtttIm6UzY4gtkZb5ER6Obuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730911180; c=relaxed/relaxed;
-	bh=zL0LZ76Dnshsa6UJn+1fVSAXF61E1L0hb8wceq55udA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PJ4r3aqGu/msudyN07SUy2e9Jo84DcgeiATg/Mg6bPaaKday5eXslYdRCn+0tLSY5tUG0oQN+5ZQA9zRclbzYYANrj4ALmj4hu9fkLFt6HYMXA0/Wz+S+xT+NtVKzK92xHkY8FbpNMVtXLrLB4WIPVfy7N8cqkF+76cORwJYyhAO/3AT50zz5gAbuPf15HwM2Z+vgxNUYjdD79HMj91W1QyJawQg932bYRus7m/OdpQPxm4s3bSGlmiuB+tvhC5Rbxos+KE05ONaPYuSvbgPhH/WS5juAbaQCwZy1C+y7L3tprSWFAsubU/Lf8AKJevORBda+wtQJG0FIBH6j+2cZQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LhGoVNcM; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1730913072; c=relaxed/relaxed;
+	bh=uH//ZT3t90HXi65kvHV2aag96qELbsw8055V8cBsltM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HV1b9nJKOthI+SXENADx/7oBS35YFIp9l9OTiZED4wLI4F67cxucucMHbOTs0aBoAUojshdzq/CY5tHTOoiAH1LrvMvURH4lzLNxudfd/1CmwSVVZNOSiMgLZ6O3OhRYRPJm2vBoV6DulUfHCrhMg+FbjXMB6KLoRaQANSN/yWOUxWokOGV1jNmb7Nq3IK9p3AaX+cVFLaxhFpk+MlBX/Nz2Z5SSjw1rkgn3P1bGkHZaMD7V413edOiVRj+v26ZlIYT8RguJQXpzZMoEbUIrZPavRF77UC0P1m+YcEMcLa4xniAO2Gx3y1sqDdXhvvxuo7lAXHbkEBXyl/M0swCLWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IWoz4v9u; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LhGoVNcM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IWoz4v9u;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xk9sR1Xv3z3bdS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 03:39:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkBYm2lMvz3bdS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 04:11:08 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id A3EF3A44046;
-	Wed,  6 Nov 2024 16:37:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AABC1C4CEC6;
-	Wed,  6 Nov 2024 16:39:34 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 78E11A43F1B;
+	Wed,  6 Nov 2024 17:09:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8359C4CEC6;
+	Wed,  6 Nov 2024 17:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730911175;
-	bh=qgyfwsgI0NGyv3rTn5MDG6QtmrGNHZk4smbSHtOhvkU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LhGoVNcMYeHEA4ME2kQFjw1bmyNAIEA2RYwH55JxP901y/PHC72sdYajCH6JQjjtO
-	 zyApsTGwQYYdBNjLScNkKrFHAH8m6c6jDBOijF36PL/NewB3xFe21DIajIWk22hIVE
-	 S+RjiJ0b9/FSGt8IkgN1KjVpPFdw3C2+o3wbfAXFrLMvY4MvAJ3lbcU1+ldUZQuppL
-	 9CJHiGk3BUEZDi+kNQlMpZheWyKV+kj5LR07o644tWRMARQDHYdQqQu9cjsazEaFxv
-	 njgVulySb9zQBHq+ZwkrRal5sl5/m6I6ybq54vN5dcWq/G4joas37wisZ6X3ykhmIB
-	 xkwBtrZpi1vKQ==
-Date: Wed, 6 Nov 2024 09:39:32 -0700
-From: Keith Busch <kbusch@kernel.org>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com,
-	mahesh@linux.ibm.com, oohall@gmail.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [RFC PATCH v1 2/2] PCI/AER: report fatal errors of RCiEP and EP
- if link recoverd
-Message-ID: <ZyubxGBL7TvchZI_@kbusch-mbp>
-References: <20241106090339.24920-1-xueshuai@linux.alibaba.com>
- <20241106090339.24920-3-xueshuai@linux.alibaba.com>
+	s=k20201202; t=1730913065;
+	bh=FXUgqm5DxwD9CzDMHLka46QpAIfBGKbwRgNSxv+cqeY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IWoz4v9ur/yXAyLT90tQC+L1/PgVVa+DSIlQWPmYdFFye1Vn+H/hmeIIihMyB9syE
+	 1A7Gbv33l46RHJPaoPH8mR7iO2bqwYZxTrbH6xgrU4kE0IXJeMoI+n/z9SQJV09nwT
+	 aqO1SYXdgTv+en5ohoLp0CiLbVVwNuxDA1UzoS5jINUUkJTqdSOsC/MJ6bz0VX8XhQ
+	 VFp1x4aj01rj1fwhjIXAzbIBW8A6b1CC6aWdIwtXM91r6H61a3GqfNux2yT9Si9amt
+	 XYLUq+02QzVHHrqpXlTNdSPJksT5ZBhETEtOqLgSZBfmRjMznHEG9sLVEQgMXrjK4I
+	 Xq/cJBzUuVFxQ==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Saravana Kannan <saravanak@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org,
+	Conor Dooley <conor@kernel.org>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] of: WARN on deprecated #address-cells/#size-cells handling
+Date: Wed,  6 Nov 2024 11:10:27 -0600
+Message-ID: <20241106171028.3830266-1-robh@kernel.org>
+X-Mailer: git-send-email 2.45.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,86 +64,107 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241106090339.24920-3-xueshuai@linux.alibaba.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Nov 06, 2024 at 05:03:39PM +0800, Shuai Xue wrote:
-> +int aer_get_device_fatal_error_info(struct pci_dev *dev, struct aer_err_info *info)
-> +{
-> +	int type = pci_pcie_type(dev);
-> +	int aer = dev->aer_cap;
-> +	u32 aercc;
-> +
-> +	pci_info(dev, "type :%d\n", type);
-> +
-> +	/* Must reset in this function */
-> +	info->status = 0;
-> +	info->tlp_header_valid = 0;
-> +	info->severity = AER_FATAL;
-> +
-> +	/* The device might not support AER */
-> +	if (!aer)
-> +		return 0;
-> +
-> +
-> +	if (type == PCI_EXP_TYPE_ENDPOINT || type == PCI_EXP_TYPE_RC_END) {
-> +		/* Link is healthy for IO reads now */
-> +		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
-> +			&info->status);
-> +		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
-> +			&info->mask);
-> +		if (!(info->status & ~info->mask))
-> +			return 0;
-> +
-> +		/* Get First Error Pointer */
-> +		pci_read_config_dword(dev, aer + PCI_ERR_CAP, &aercc);
-> +		info->first_error = PCI_ERR_CAP_FEP(aercc);
-> +
-> +		if (info->status & AER_LOG_TLP_MASKS) {
-> +			info->tlp_header_valid = 1;
-> +			pcie_read_tlp_log(dev, aer + PCI_ERR_HEADER_LOG, &info->tlp);
-> +		}
+While OpenFirmware originally allowed walking parent nodes and default
+root values for #address-cells and #size-cells, FDT has long required
+explicit values. It's been a warning in dtc for the root node since the
+beginning (2005) and for any parent node since 2007. Of course, not all
+FDT uses dtc, but that should be the majority by far. The various
+extracted OF devicetrees I have dating back to the 1990s (various
+PowerMac, OLPC, PASemi Nemo) all have explicit root node properties. The
+warning is disabled for Sparc as there are known systems relying on
+default root node values.
 
-This matches the uncorrectable handling in aer_get_device_error_info, so
-perhaps a helper to reduce duplication.
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+v2:
+ - Add a define for excluded platforms to help clarify the intent
+   is to have an exclude list and make adding platforms easier.
+ - Also warn when walking parent nodes.
+---
+ drivers/of/base.c | 28 ++++++++++++++++++++++------
+ drivers/of/fdt.c  |  4 ++--
+ 2 files changed, 24 insertions(+), 8 deletions(-)
 
-> +	}
-> +
-> +	return 1;
-> +}
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 20603d3c9931..39fb59b666f3 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -87,15 +87,25 @@ static bool __of_node_is_type(const struct device_node *np, const char *type)
+ 	return np && match && type && !strcmp(match, type);
+ }
+ 
++#define EXCLUDED_DEFAULT_CELLS_PLATFORMS ( \
++	IS_ENABLED(CONFIG_SPARC) \
++)
++
+ int of_bus_n_addr_cells(struct device_node *np)
+ {
+ 	u32 cells;
+ 
+-	for (; np; np = np->parent)
++	for (; np; np = np->parent) {
+ 		if (!of_property_read_u32(np, "#address-cells", &cells))
+ 			return cells;
+-
+-	/* No #address-cells property for the root node */
++		/*
++		 * Default root value and walking parent nodes for "#address-cells"
++		 * is deprecated. Any platforms which hit this warning should
++		 * be added to the excluded list.
++		 */
++		WARN_ONCE(!EXCLUDED_DEFAULT_CELLS_PLATFORMS,
++			  "Missing '#address-cells' in %pOF\n", np);
++	}
+ 	return OF_ROOT_NODE_ADDR_CELLS_DEFAULT;
+ }
+ 
+@@ -112,11 +122,17 @@ int of_bus_n_size_cells(struct device_node *np)
+ {
+ 	u32 cells;
+ 
+-	for (; np; np = np->parent)
++	for (; np; np = np->parent) {
+ 		if (!of_property_read_u32(np, "#size-cells", &cells))
+ 			return cells;
+-
+-	/* No #size-cells property for the root node */
++		/*
++		 * Default root value and walking parent nodes for "#size-cells"
++		 * is deprecated. Any platforms which hit this warning should
++		 * be added to the excluded list.
++		 */
++		WARN_ONCE(!EXCLUDED_DEFAULT_CELLS_PLATFORMS,
++			  "Missing '#size-cells' in %pOF\n", np);
++	}
+ 	return OF_ROOT_NODE_SIZE_CELLS_DEFAULT;
+ }
+ 
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 4d528c10df3a..d79707fb2eb1 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -938,12 +938,12 @@ int __init early_init_dt_scan_root(void)
+ 	dt_root_addr_cells = OF_ROOT_NODE_ADDR_CELLS_DEFAULT;
+ 
+ 	prop = of_get_flat_dt_prop(node, "#size-cells", NULL);
+-	if (prop)
++	if (!WARN(!prop, "No '#size-cells' in root node\n"))
+ 		dt_root_size_cells = be32_to_cpup(prop);
+ 	pr_debug("dt_root_size_cells = %x\n", dt_root_size_cells);
+ 
+ 	prop = of_get_flat_dt_prop(node, "#address-cells", NULL);
+-	if (prop)
++	if (!WARN(!prop, "No '#address-cells' in root node\n"))
+ 		dt_root_addr_cells = be32_to_cpup(prop);
+ 	pr_debug("dt_root_addr_cells = %x\n", dt_root_addr_cells);
+ 
+-- 
+2.45.2
 
-Returning '1' even if type is root or downstream port?
-
->  static inline void aer_process_err_devices(struct aer_err_info *e_info)
->  {
->  	int i;
-> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-> index 31090770fffc..a74ae6a55064 100644
-> --- a/drivers/pci/pcie/err.c
-> +++ b/drivers/pci/pcie/err.c
-> @@ -196,6 +196,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->  	struct pci_dev *bridge;
->  	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
->  	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
-> +	struct aer_err_info info;
->  
->  	/*
->  	 * If the error was detected by a Root Port, Downstream Port, RCEC,
-> @@ -223,6 +224,10 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->  			pci_warn(bridge, "subordinate device reset failed\n");
->  			goto failed;
->  		}
-> +
-> +		/* Link recovered, report fatal errors on RCiEP or EP */
-> +		if (aer_get_device_fatal_error_info(dev, &info))
-> +			aer_print_error(dev, &info);
-
-This will always print the error info even for root and downstream
-ports, but you initialize "info" status and mask only if it's an EP or
-RCiEP.
 
