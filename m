@@ -1,78 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-2897-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2898-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E899A9BDF1C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 08:06:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8FC9BDF36
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 08:17:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjx8b1cDbz2yh1;
-	Wed,  6 Nov 2024 18:06:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XjxND0KQ9z2yl1;
+	Wed,  6 Nov 2024 18:17:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730876815;
-	cv=none; b=JiT3tNa/gPazBtdSB1Eq0EiJrwr6ErvcfMih/QTV3uduy/OvtGzI0mwZOtdGrjXcD4m8Kd3YyxlNmHqDASvw+nXIf1amnDotidvZ3uyRzi9K/yX1lHdIg/uoicjtfHvkX5uvLFJ4D3wnm4PSLmDJOqwp7cqlpb+3IfZHoqzBqDq/v1Q4nnN1+lu44Yy4/piVQZmqsKJA+LDskxvD3zgJD8cQWyXxHHqiMgiqkDbBMfKOxxStF31rXUO+XBit3TDCCY1tFZ6DATCKPvQKJ7czxzAZSgYrzaUgL1jgBhth5/YbWDlgX326qYQX51Zttgk80kWqEz9qNX304AlGT19oYQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.35
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730877419;
+	cv=none; b=llKgzim5qbPbYiZHh62ouzFpBmcuxiLfykZUWfrRyVEiA91acC2z0eLQt673iS47n+sbDsRKESWYPRyuFu8U5i5jyD7f8XPc+Vzc9QnsIP5C8Cax5TQZOmZcmTiUkRMqKyG3cHZEnC6Gs5oFcJOji2YZcT2nXdC7+qByGyyNLSFpLmhf6Tv9s3AKsvKepUDkiT1csn+g0DFNxVRr5mKz4fvoqMV9ZTdCABKcblkd+kq8NJKaaWumrimjTy78s4Eo66ccBBpG/om9Ky9Lc9jvIO9DYbuFE/J4YWlpo+Cp+sEmZHa7eHsuHKn2R4P+gHd9NibHolTPxqPsR2rNsAsmTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730876815; c=relaxed/relaxed;
-	bh=yAUFaVAsNQ/ccJyGlmMcytG2+Qr2oEjByXJHlP+rk68=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ke+WkWHrITTSCW7QCa8nQue9AlMs2aM1JADFqu9OOWftDp/9UJP5rRDciK+b7fu732ShaAq2E+zoa2YIpsK5kSblaZEDYyHZOeIrfAJOzi6EWJNouhkeDBNSAcRCM1p2bIDHprtADzdjic2T62asqn/bbEy4F/7pDzCfgc7wO+p1CGsR4HXZT97/ivGtVHGJk9uuxPn38zmmd92fSzW/AfGFHDwMz9fDi/51nVKgVZqgwpbDNPLU7yV806lOrKSWVeXTCubMZTXg2xgFdaNxZb87VLjwUHbh1IQaE5OxOn+O20nLJl2HRCxWDR70dFnI7TV3UYXpc0EjDLBUlDtvLw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h80rEgtJ; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h80rEgtJ;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1730877419; c=relaxed/relaxed;
+	bh=z1tOzpGJUDoMGmHPMzCssNo7wfSI9QEDd1Z01auK1A4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dxvUEPed95IQ21hRzXb3XT4uxFZ9IzATyFIu6uIBzaXBykwIUgw6jtJ/BoIRiYyXlqX6uYhhx9lcGZAgXCa7tTSUPBBNOy1Jfp9SeszaorkP2mbec0BUI6BLKGhJoRgOp2+etIQz5u9Fd0a0q3RMZL/FM+jAUdrBqbGRdjmC4VPn7dus3NGzwBbWTwrzA5uWaOsUmKOwWX7TSxQ3VIIOlcKieP5YnQybz1Kx2PRuoEiODyFtqrfWoUiCtgBZ1jMptgAZfKo2xj8Ol33yjBXbvc7LMJaBZzDR5StLCIGY1tjlY2w9HGXrIOiaK7T4vxuk+b7bkYLoN0Azw+7gZt3xFQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjx8X35h0z2ygx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 18:06:52 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1730876806;
-	bh=yAUFaVAsNQ/ccJyGlmMcytG2+Qr2oEjByXJHlP+rk68=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=h80rEgtJ7qD9jyDyLJcISbRk3INZH8ZPcYosK4VrHHZVogREXxmMdnucgdz5uGIVq
-	 2FKIvnwHaCmTCM5h2wCPV5BHvVPqGtTkGb8EMAQ3QpqRcFOIuuN9J+N+f2mo7sMJe/
-	 dU4VVqU+Z1FcyNgWJiu6rzNqueMfO3e6FKKNop6UZT1IVzPlW79wIw8rl8ikKnhRpJ
-	 +n1/bbdRaP9EQPbjeaxIqHG5JuYMBpoWql3abi4yDgJ1tGm3FhgLFRk5m7yklMr2OW
-	 JsGlZDD1354L3XGFFlQ4dOrEE1hpvtyE9IKa50nyhPWS+nOpSyzlxB/+3KkxmrZtK5
-	 AOEEtdbWDj8jw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xjx8D1mmSz4x11;
-	Wed,  6 Nov 2024 18:06:36 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Thomas Gleixner
- <tglx@linutronix.de>, Thomas =?utf-8?Q?Wei=C3=9Fschuh?=
- <thomas.weissschuh@linutronix.de>,
- Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
- <svens@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, Will
- Deacon <will@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Russell
- King <linux@armlinux.org.uk>, Huacai Chen <chenhuacai@kernel.org>, WANG
- Xuerui <kernel@xen0n.name>, Theodore Ts'o <tytso@mit.edu>, "Jason A.
- Donenfeld" <Jason@zx2c4.com>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Nicholas Piggin
- <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nam Cao
- <namcao@linutronix.de>
-Subject: Re: [PATCH 00/28] vdso: Preparations for generic data storage
-In-Reply-To: <e33569c8-1591-462c-9388-4a514e156bfa@csgroup.eu>
-References: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
- <871pzxzuny.ffs@tglx> <e33569c8-1591-462c-9388-4a514e156bfa@csgroup.eu>
-Date: Wed, 06 Nov 2024 18:06:35 +1100
-Message-ID: <877c9glu2s.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjxN95N5Bz2ygx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 18:16:54 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4XjxKq72VMz1SF1L;
+	Wed,  6 Nov 2024 15:14:55 +0800 (CST)
+Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6F4DE180019;
+	Wed,  6 Nov 2024 15:16:37 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by kwepemf500003.china.huawei.com
+ (7.202.181.241) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 6 Nov
+ 2024 15:16:36 +0800
+From: Zhang Zekun <zhangzekun11@huawei.com>
+To: <christophe.leroy@csgroup.eu>, <biwen.li@nxp.com>, <leoyang.li@nxp.com>,
+	<ran.wang_1@nxp.com>, <linuxppc-dev@lists.ozlabs.org>
+CC: <chenjun102@huawei.com>, <liuyongqiang13@huawei.com>,
+	<zhangzekun11@huawei.com>
+Subject: [PATCH] soc: fsl: Add missing of_node_put() after using device_node
+Date: Wed, 6 Nov 2024 15:11:23 +0800
+Message-ID: <20241106071123.49678-1-zhangzekun11@huawei.com>
+X-Mailer: git-send-email 2.17.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,53 +54,37 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.208]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemf500003.china.huawei.com (7.202.181.241)
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 30/10/2024 =C3=A0 12:39, Thomas Gleixner a =C3=A9crit=C2=A0:
->> Folks!
->>=20
->> On Thu, Oct 10 2024 at 09:01, Thomas Wei=C3=9Fschuh wrote:
->>> Historically each architecture defined their own datapage to store the
->>> VDSO data. This stands in contrast to the generic nature of the VDSO
->>> code itself.
->>> We plan to introduce a generic framework for the management of the VDSO
->>> data storage that can be used by all architectures and which works
->>> together with the existing generic VDSO code.
->>>
->>> Before that is possible align the different architectures by
->>> standardizing on the existing generic infrastructure and moving things
->>> out of the VDSO data page which does not belong there.
->>>
->>> Patches	 1- 2:	csky
->>> Patch	    3:	s390
->>> Patches	 4- 5:	arm64
->>> Patch	    6:	riscv
->>> Patch	    7:	arm
->>> Patch	    8:	LoongArch
->>> Patch	    9:	MIPS
->>> Patches 10-20:	x86
->>> Patches 21-27:	powerpc
->>> Patch      28: 	Renamings to avoid a name clash with the new code.
->>=20
->> As this has been sitting for two weeks now without major comments, I'm
->> planning to merge that through the tip tree tomorrow.
->
-> To avoid any future conflicts with powerpc tree, I suggest you merge=20
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git=20
-> topic/vdso into your tree before applying this series.
+of_find_compatible_node() will increase the refcount of the device_node.
+Decrease the refcount once finish using it.
 
-I thought the same, but there actually isn't any conflict at the moment
-between the two trees.
+Fixes: e95f287deed2 ("soc: fsl: handle RCPM errata A-008646 on SoC LS1021A")
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+---
+ drivers/soc/fsl/rcpm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Some of Thomas W's later changes to convert arches to generic VDSO
-storage do conflict, but they look to be destined for the next merge
-window.
+diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
+index 3d0cae30c769..06bd94b29fb3 100644
+--- a/drivers/soc/fsl/rcpm.c
++++ b/drivers/soc/fsl/rcpm.c
+@@ -36,6 +36,7 @@ static void copy_ippdexpcr1_setting(u32 val)
+ 		return;
+ 
+ 	regs = of_iomap(np, 0);
++	of_node_put(np);
+ 	if (!regs)
+ 		return;
+ 
+-- 
+2.17.1
 
-cheers
 
