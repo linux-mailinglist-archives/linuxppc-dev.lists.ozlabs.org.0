@@ -1,107 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-2936-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2937-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BD19BF7C4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 21:05:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E53369BF805
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 21:33:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkGQm5dHgz3bgd;
-	Thu,  7 Nov 2024 07:05:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkH3b4kRCz3bg1;
+	Thu,  7 Nov 2024 07:33:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.215.177
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730923520;
-	cv=none; b=A+H7EswYwrbJ/FmWf/fhdgfG+1cpRfebPQVerYBqCuqDEyJjxUmme3WDKQPsIly2GmFdHy/5UCDZEq4ldeM3wsSpHUTANS91GEPZ1zHgbJUF7jCJkdc2Aap7ADTwSGWwHhaiokfPXNvvKiTXFBEco5ZiOPRZm8FTaZD7SVOjJlM/YKIqdWtAeDs9UgiEAO9kifPdCduj439kYtiNx1S9cAXtceZZSJO+fi7rtX8QMaw77Xesw+01imaj3VDUfpt5J40/l0VZF/B72T+XKklscoNAT59YqkhWjFar0p6sBmpRUlOTCCEq3P23FxhV9vVaN77WCyKwnR6HxtNugHc4mQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730925227;
+	cv=none; b=DQEA2OavypyishO337iYwjf+8s9TDA0h7lnVZuvXYXMSm+MJMGkrllpWA+1klUrPtNXMXiHAls0Mi8FWJ7k579r5c/z0QId2ZJ+qz3oRvrUOdX6NQXtuGvGjR8yTBllphEyCosk5dfXXK/KjrjCNE4OPFqet5rRsEW0AjrFIPcQpyOVWJo3Scw0zcOV/ab5gOj7F0J8L/Ny9+8gqit11rY+qyPbRq60xgHIxMsfBeOYDYhCGePJB1fC6UnfSYeJmsgDQEWViz/+3SByOar1kf44YQ7SK5E4tQpFA4wnjvem3hsMrBqvM+xXTOBWoTJ7E5PdtmYD+befqHSAJ1gRJ2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730923520; c=relaxed/relaxed;
-	bh=57haWgxVK3Bhz2CTFQJdY/J31Debho+HXpt9b6frcmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mjuH5awzDzFOZBKW0u5VIW3nl9vl3PG+AIM7Q67zy+t5LbXmxUFU5jcyE3DwIIfnvwDoENHuQppuerBa4pYt+1moNM9lr1LYIkI4sjbhu2zNmmU5JzRSjlpTfEgVHeDMZL21hp2RMCR5TRMSHxRJCfDcC34R2SE9eGXkjBcthX14dBseS9FkA/f50HR3eWKtuvhpQSZgjWNaiJN2ftt+g4YvMJ0z9DbY9Cyv2qVlK+TSmDc3Uxwz1NdAf6BfJI1RPSulwqjppPeM/lEy2QeCWBeSygmfjyin/d18tVdp1IKf2RHKQn1VO033qmh9sRbMtUn32lXrEOpttv4orRVW+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass (client-ip=209.85.215.177; helo=mail-pg1-f177.google.com; envelope-from=kswilczynski@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.215.177; helo=mail-pg1-f177.google.com; envelope-from=kswilczynski@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1730925227; c=relaxed/relaxed;
+	bh=UO/fsunJcLHUv7ogKKQJZR3TGi/Dgpu/xOl2VgUzdS8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V3crkJrO8jRF2GMQUc1YTTo3zLpwPevEW3ZKi4iWF/DHjjt+YivCfLQTc31t2BST1xKONEmipnHLEQtvbNq7v4YaZRkjnZksNT2IuJ2W04AFXPBGD5fj9RYrikAjGOdIu9RQtG+J3C25Am1IAgZo9YW6mV5CPRXtiOGCB1+ivEpDFcsO+pEm7HP4nKLBG4QkInCzUOvXkNQoWJpWKgh2zzixbe7bobE/sX0ztB8HpNMQLYfWfHR38fNBBgZMX8ZsDzgi5Rmc5jai//xeBcSi2RzjAEvT3fjbnBNa+X3P6uxuHtQrt4Zn4ggzcNgUzVgoqLchYge79qIjd9HIQcYGpw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nyFxnnSX; dkim-atps=neutral; spf=none (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nyFxnnSX;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkGQl1PL5z3bd2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 07:05:18 +1100 (AEDT)
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7f3da2c2cb5so200586a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2024 12:05:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730923516; x=1731528316;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=57haWgxVK3Bhz2CTFQJdY/J31Debho+HXpt9b6frcmw=;
-        b=hc1g7gq9disVuN7O6WjBpZWLG1dDGg8gtm9JkEFecX76RtsLGp4q6OWSBp4vZIZvjv
-         Ea/vK+7TFrZiNddom2JFhWQpy6ztNVqL8pgt+pISd9S5O4PnsVDpA6ujAt9m5TReAUC9
-         M/8ru4W3UqwIlxpCrfz5+BbUyNBr2H9WuCamQFNZfytlDshEj/6AxLiT6GZkDj32YCRT
-         O1lc4mFLu9uQLFXFC3dU+M4CuwVvuE5N0H3WzXV35tmwucOoXULoc8sosfWTBgdYvhAw
-         osOV6bdK2a742XTBk9lOFOsPa6jSXMWD0+P1V2RzUgx8fdXhBOjXL/YvLeH3pX1VdBPp
-         Okew==
-X-Forwarded-Encrypted: i=1; AJvYcCW4h2OTWvr4WuOvXR1goVRCoWSy6SfWPt6bstj2JdqMIC6h+SfORDrgjWIa8ursfQ1fQmPaHV23ewB2Gbs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxPBre8Mx2pFMTYIA88kA2W81FJd39QbWhCU5aMzoYqD+4VJu+S
-	5HK0iPtcjNEKOFGCwdBBUXo5Ta4qo1LOLt8W87hu2X1j49NosEyO
-X-Google-Smtp-Source: AGHT+IFmoIbZw8g1IipDn3Lp+ri/9C7OdJSPor3hPH1pRa7RYRF3y6lGuH/8ZaeEQ1eFo8eAFPaCWQ==
-X-Received: by 2002:a17:902:cecd:b0:20c:a97d:cc7f with SMTP id d9443c01a7336-210c6c3ec78mr567878865ad.41.1730923515866;
-        Wed, 06 Nov 2024 12:05:15 -0800 (PST)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211057c076bsm99997795ad.197.2024.11.06.12.05.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 12:05:15 -0800 (PST)
-Date: Thu, 7 Nov 2024 05:05:13 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Xinhui Pan <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
-	Carlos Bilbao <carlos.bilbao.osdev@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Frederic Barrat <fbarrat@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-cxl@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
-	linux-mtd@lists.infradead.org, platform-driver-x86@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH v2 02/10] sysfs: introduce callback
- attribute_group::bin_size
-Message-ID: <20241106200513.GB174958@rocinante>
-References: <20241103-sysfs-const-bin_attr-v2-0-71110628844c@weissschuh.net>
- <20241103-sysfs-const-bin_attr-v2-2-71110628844c@weissschuh.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkH3W6w3cz3bd2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 07:33:41 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730925224; x=1762461224;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zoRLMKW55o98JRmgTawjT4yCHMdI37JhvZnILfOLqRQ=;
+  b=nyFxnnSXa8QT/iHXLUU7R0Z36LnisVClGvQiFQmLv+Xp1ruKBOlhE4Rx
+   M4qEhkCrsZq6bOrRJg4lr5rSZzBj1emExdnWiejWufOTmRPBEOUPAi0Hm
+   u0QB5NcFDXuPqGfVzmkp7kzyYJuqZUUljIn52LflfzRDvh5Jn2ZHfDjZT
+   f2aD1xIcksGtki3t8+qlZtzFpRajXZSczwZYxkN3zr/7uyZOSN5EYMdJC
+   OqhQNMKjHNEb5SNXraRB7YBDGEbmhBxRqBvztgSVNGas9V71nTIDl+uX1
+   ZiXz38APL0keNfn9yfZV21v8B0zuefHBV8gahwN+9Vs7DqBlBhQwE4lT6
+   Q==;
+X-CSE-ConnectionGUID: nhPetH2JT+iGnFxjUBYYrg==
+X-CSE-MsgGUID: jxae4AxhR4ODDe4agcrtlg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30705988"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="30705988"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 12:33:37 -0800
+X-CSE-ConnectionGUID: V8XizmLPQ5C6WPxTiJI6TA==
+X-CSE-MsgGUID: oNVXimYpTpmteoMQVxNatg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,263,1725346800"; 
+   d="scan'208";a="84355097"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 12:33:37 -0800
+Received: from [10.212.82.230] (kliang2-mobl1.ccr.corp.intel.com [10.212.82.230])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by linux.intel.com (Postfix) with ESMTPS id 560D920B5703;
+	Wed,  6 Nov 2024 12:33:32 -0800 (PST)
+Message-ID: <597dbcf6-8169-4084-881c-8942ed363189@linux.intel.com>
+Date: Wed, 6 Nov 2024 15:33:30 -0500
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -114,43 +74,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241103-sysfs-const-bin_attr-v2-2-71110628844c@weissschuh.net>
-X-Spam-Status: No, score=0.3 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/5] x86: perf: Refactor misc flag assignments
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org,
+ Sean Christopherson <seanjc@google.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, Will Deacon <will@kernel.org>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
+ linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org
+References: <20241105195603.2317483-1-coltonlewis@google.com>
+ <20241105195603.2317483-5-coltonlewis@google.com>
+ <65675ed8-e569-47f8-b1eb-40c853751bfb@linux.intel.com>
+ <ZyvLOjy8Vfvai5cG@linux.dev>
+Content-Language: en-US
+From: "Liang, Kan" <kan.liang@linux.intel.com>
+In-Reply-To: <ZyvLOjy8Vfvai5cG@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello,
 
-> Several drivers need to dynamically calculate the size of an binary
-> attribute. Currently this is done by assigning attr->size from the
-> is_bin_visible() callback.
+
+On 2024-11-06 3:02 p.m., Oliver Upton wrote:
+> On Wed, Nov 06, 2024 at 11:03:10AM -0500, Liang, Kan wrote:
+>>> +static unsigned long common_misc_flags(struct pt_regs *regs)
+>>> +{
+>>> +	if (regs->flags & PERF_EFLAGS_EXACT)
+>>> +		return PERF_RECORD_MISC_EXACT_IP;
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>> +unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
+>>> +{
+>>> +	unsigned long guest_state = perf_guest_state();
+>>> +	unsigned long flags = common_misc_flags(regs);
+>>> +
+>>> +	if (guest_state & PERF_GUEST_USER)
+>>> +		flags |= PERF_RECORD_MISC_GUEST_USER;
+>>> +	else if (guest_state & PERF_GUEST_ACTIVE)
+>>> +		flags |= PERF_RECORD_MISC_GUEST_KERNEL;
+>>> +
+>>
+>> The logic of setting the GUEST_KERNEL flag is implicitly changed here.
+>>
+>> For the current code, the GUEST_KERNEL flag is set for !PERF_GUEST_USER,
+>> which include both guest_in_kernel and guest_in_NMI.
 > 
-> This has drawbacks:
-> * It is not documented.
-> * A single attribute can be instantiated multiple times, overwriting the
->   shared size field.
-> * It prevents the structure to be moved to read-only memory.
-> 
-> Introduce a new dedicated callback to calculate the size of the
-> attribute.
+> Where is the "guest_in_NMI" state coming from? KVM only reports user v.
+> kernel mode.
 
-Would it be possible to have a helper that when run against a specific
-kobject reference, then it would refresh or re-run the size callbacks?
+I may understand the kvm_arch_pmi_in_guest() wrong.
+However, the kvm_guest_state() at least return 3 states.
+0
+PERF_GUEST_ACTIVE
+PERF_GUEST_ACTIVE | PERF_GUEST_USER
 
-We have an use case where we resize BARs on demand via sysfs, and currently
-the only way to update the size of each resource sysfs object is to remove
-and added them again, which is a bit crude, and can also be unsafe.
+The existing code indeed assumes two modes. If it's not user mode, it
+must be kernel mode.
+However, the proposed code behave differently, or at least implies there
+are more modes.
+If it's not user mode and sets PERF_GUEST_ACTIVE, it's kernel mode.
 
-Hence the question.
+Thanks,
+Kan
 
-There exist the sysfs_update_groups(), but the BAR resource sysfs objects
-are currently, at least not yet, added to any attribute group.
 
-Thank you!
-
-	Krzysztof
 
