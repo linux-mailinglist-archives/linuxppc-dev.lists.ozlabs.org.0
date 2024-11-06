@@ -1,57 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-2925-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2926-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBE09BF40F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 18:11:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0071F9BF48E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 18:48:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkBYr61MXz3bdX;
-	Thu,  7 Nov 2024 04:11:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkCNk58KWz3bfB;
+	Thu,  7 Nov 2024 04:48:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730913072;
-	cv=none; b=cP17EL4L+Owm7/QiYbGHcCIX9idZtbhPW6V6VSzNfjQoc4qi761fTm9UjEpOIokjm5SC4Ek88l8BempQLvAceKim1k0+IKRI+tzI1zXLMttiyIQsPg0IQP6dsP3t2F5Ipjr1ICKN01AChBblprU39OvoBisaG9KfJL93K3QPMG6qbjdgjS9EQPBkgIty6w6Y6ZT6gIYNGaKmXl0DRrepk4hA6yYOXr/z0XCcjsLy28B3+D929YX9qQojHJDHzdDwlr5kWWWabdJ7XkWZ+M3itpiy4nVC8FsAfxg5PQfKK4ugTB0BgqO/KHQ9FscVenxtttIm6UzY4gtkZb5ER6Obuw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730915302;
+	cv=none; b=T8K0Y5B+DB6sQQdgaZU2ooO9N63X4RTZ942uH52C/mfJcEwxgs+7lB4/iC956lzO601B2bFpfXAEaTq+BnzZz/UCgxddYUgAWIy9//dBnffxSUmZSG9UZU3TNS+N/UPyZxsqMI0vq3CJ9xfXmqzvQeQt7YdxxZpVgP8U2ye0+ijthfrCvY3ZbcEe0YppZ+pLfb7jSS3utCXhTzDF2hptJJdqsyeaWLJ7Ext4EXRZXK1hdSbMxe+OKDuR25jH34r7i6R3QLimNn5Zfo3nFlQtCcaYuP/gR8wbqpW2abZ0KdBHBm059W58CZLPJfwXsI9D0+UQOlySg4HWLwni00dGpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730913072; c=relaxed/relaxed;
-	bh=uH//ZT3t90HXi65kvHV2aag96qELbsw8055V8cBsltM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HV1b9nJKOthI+SXENADx/7oBS35YFIp9l9OTiZED4wLI4F67cxucucMHbOTs0aBoAUojshdzq/CY5tHTOoiAH1LrvMvURH4lzLNxudfd/1CmwSVVZNOSiMgLZ6O3OhRYRPJm2vBoV6DulUfHCrhMg+FbjXMB6KLoRaQANSN/yWOUxWokOGV1jNmb7Nq3IK9p3AaX+cVFLaxhFpk+MlBX/Nz2Z5SSjw1rkgn3P1bGkHZaMD7V413edOiVRj+v26ZlIYT8RguJQXpzZMoEbUIrZPavRF77UC0P1m+YcEMcLa4xniAO2Gx3y1sqDdXhvvxuo7lAXHbkEBXyl/M0swCLWg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IWoz4v9u; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1730915302; c=relaxed/relaxed;
+	bh=kSRDhdffu4e2+4oYE1K3ibBkFCx+1qf9H7kDEjsKsEc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B50xb9VwehJdEhTcjmYeRerayBpe0OwMExVMzPKWsxKAh9aR1u93fQ3MCDqWnJQ1a7ikWPEJy//lcw52GCCVqZ5dwm7dKb51peyPZXdol0VDfR3hXzPZ14NTJH6a7jBGs2akELltN3IsqwpipThEOE9H1E31RrhqiBeMfJ47ALwR9rfF64L0XECjEwjbeV7yhLVkxwf9JkAZxHuSY2imveV+HNbu8nW0rNUlOKAirOuWUyAzM/4jZczjzSODgtja1M+TJtG3pWyhTjiGnACs3iVZb1lQOsFoe9al+P4j7n8pANKdowdg034+C/i3R/A+pCI4GmmMcAgsUaX0Y/5YQw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=FZ6Urs6M; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IWoz4v9u;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=FZ6Urs6M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkBYm2lMvz3bdS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 04:11:08 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 78E11A43F1B;
-	Wed,  6 Nov 2024 17:09:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8359C4CEC6;
-	Wed,  6 Nov 2024 17:11:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730913065;
-	bh=FXUgqm5DxwD9CzDMHLka46QpAIfBGKbwRgNSxv+cqeY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IWoz4v9ur/yXAyLT90tQC+L1/PgVVa+DSIlQWPmYdFFye1Vn+H/hmeIIihMyB9syE
-	 1A7Gbv33l46RHJPaoPH8mR7iO2bqwYZxTrbH6xgrU4kE0IXJeMoI+n/z9SQJV09nwT
-	 aqO1SYXdgTv+en5ohoLp0CiLbVVwNuxDA1UzoS5jINUUkJTqdSOsC/MJ6bz0VX8XhQ
-	 VFp1x4aj01rj1fwhjIXAzbIBW8A6b1CC6aWdIwtXM91r6H61a3GqfNux2yT9Si9amt
-	 XYLUq+02QzVHHrqpXlTNdSPJksT5ZBhETEtOqLgSZBfmRjMznHEG9sLVEQgMXrjK4I
-	 Xq/cJBzUuVFxQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Saravana Kannan <saravanak@google.com>
-Cc: linuxppc-dev@lists.ozlabs.org,
-	Conor Dooley <conor@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] of: WARN on deprecated #address-cells/#size-cells handling
-Date: Wed,  6 Nov 2024 11:10:27 -0600
-Message-ID: <20241106171028.3830266-1-robh@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkCNj10cKz30DR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 04:48:19 +1100 (AEDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-a99eb8b607aso1234266b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2024 09:48:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1730915291; x=1731520091; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kSRDhdffu4e2+4oYE1K3ibBkFCx+1qf9H7kDEjsKsEc=;
+        b=FZ6Urs6Mf0q0B2P66yx0jtCz9jD0ZA0BLOSfyDv0uYwcnF1KYqaJlU8Z7bP9s3k8Q7
+         WS9L7JPOpy80tlDySqG2/Zu2Q12QvWS+EAoSm0TvdcQ3+c4k7mtDTkUc3yqekyUl4oTn
+         KxXtDjKFNYW2DrVhrY8XfHXjaGL5ZgWEd0uDA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730915291; x=1731520091;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kSRDhdffu4e2+4oYE1K3ibBkFCx+1qf9H7kDEjsKsEc=;
+        b=b8YYX74yLEhJzAQoEPjtAS90yNzYe26f4U7ZGTSkGB9flnWLR2MiVn6uk3xm8s9Zb3
+         qp4YbzoVkE7777HCWJSr4zo7MDwIEhxYBts8mBm1uwItd8KUW/LdAc+4Sv3eY3BbE9Oo
+         Ds8CiToKpDkFdo2Z5rDpkNlE4WhRJHhUcpW+k5DReNrTmFzFhzWQz4iXAyFKMtkbtJIw
+         Oz7bluOA86vL6uXP/TLjY+CoKX4rXSB112j5xccQ2SCqspm65eVWVFGsN2qWu0FdJdMr
+         0IFawaOkJOSMan1x4GaSeB4CekPvR+OqPruoeZOJ54VlvOhma0s8210B0gsRpuLzfBRU
+         PKfA==
+X-Forwarded-Encrypted: i=1; AJvYcCUoZ2vl9aEN21hdopsdLiekn/H7nFYYO4YrN9rjoC+1oBbclIuU/oqpahO2eLzJlKdjX5rIpyjhxS4B4hw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzooTBSb+dTO5UYp+/weke6U/FFtEPciMeqIwvnuDKag+T62R9N
+	7QXK28gACduwvGK5cmDYBU32/lzrt3xE6uVUUALDFw739hOSQ9wtlbYkgyByYHv4BQvlw9jH2IB
+	e
+X-Google-Smtp-Source: AGHT+IHC8NeeSuO6Qz3vIvRxpEmN8D0YR0KP2alP++aV5WxjhdIoQxkdAhYDu8DbhS1VupijpAsdNA==
+X-Received: by 2002:a17:907:2d28:b0:a9e:c442:2c15 with SMTP id a640c23a62f3a-a9ec4423328mr355606566b.38.1730915291195;
+        Wed, 06 Nov 2024 09:48:11 -0800 (PST)
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9eb16a324fsm318143466b.23.2024.11.06.09.48.09
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Nov 2024 09:48:09 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a99cc265e0aso990866b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2024 09:48:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUhMJcvnSolLJgxausKk4XbnBego2ZghOOlW7txDGW00BrnFzaij5xa0txma4zc1WjWuSaq6um+/fPaRcI=@lists.ozlabs.org
+X-Received: by 2002:a17:907:9405:b0:a9a:1792:f24 with SMTP id
+ a640c23a62f3a-a9de5ee19acmr4107136066b.24.1730915289172; Wed, 06 Nov 2024
+ 09:48:09 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,107 +80,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+References: <20241106140414.760b502c@canb.auug.org.au> <20241106100234.189029a5@gandalf.local.home>
+In-Reply-To: <20241106100234.189029a5@gandalf.local.home>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 6 Nov 2024 07:47:52 -1000
+X-Gmail-Original-Message-ID: <CAHk-=wjSKCbbQHr7gm9G0z_hdjBSprCyMidi4LhYL7YECdRfqw@mail.gmail.com>
+Message-ID: <CAHk-=wjSKCbbQHr7gm9G0z_hdjBSprCyMidi4LhYL7YECdRfqw@mail.gmail.com>
+Subject: Re: linux-next: build failure after merge of the ftrace tree
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Naveen N Rao <naveen@kernel.org>, 
+	PowerPC <linuxppc-dev@lists.ozlabs.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux Next Mailing List <linux-next@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-While OpenFirmware originally allowed walking parent nodes and default
-root values for #address-cells and #size-cells, FDT has long required
-explicit values. It's been a warning in dtc for the root node since the
-beginning (2005) and for any parent node since 2007. Of course, not all
-FDT uses dtc, but that should be the majority by far. The various
-extracted OF devicetrees I have dating back to the 1990s (various
-PowerMac, OLPC, PASemi Nemo) all have explicit root node properties. The
-warning is disabled for Sparc as there are known systems relying on
-default root node values.
+On Wed, 6 Nov 2024 at 05:02, Steven Rostedt <rostedt@goodmis.org> wrote:
+>
+> This fix looks fine to me. How should we handle this when we send our pull
+> requests to Linus? I may forgot about this issue, and it also matters who's
+> tree goes first.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
-v2:
- - Add a define for excluded platforms to help clarify the intent
-   is to have an exclude list and make adding platforms easier.
- - Also warn when walking parent nodes.
----
- drivers/of/base.c | 28 ++++++++++++++++++++++------
- drivers/of/fdt.c  |  4 ++--
- 2 files changed, 24 insertions(+), 8 deletions(-)
+So just mention the issue in the pull request - preferably on both
+sides. Particularly for something like this that won't show up as an
+actual conflict, and that I won't catch in my build test because it's
+ppc-specific, I'd really like both trees to note this, so that
+regardless of ordering I'll be aware.
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 20603d3c9931..39fb59b666f3 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -87,15 +87,25 @@ static bool __of_node_is_type(const struct device_node *np, const char *type)
- 	return np && match && type && !strcmp(match, type);
- }
- 
-+#define EXCLUDED_DEFAULT_CELLS_PLATFORMS ( \
-+	IS_ENABLED(CONFIG_SPARC) \
-+)
-+
- int of_bus_n_addr_cells(struct device_node *np)
- {
- 	u32 cells;
- 
--	for (; np; np = np->parent)
-+	for (; np; np = np->parent) {
- 		if (!of_property_read_u32(np, "#address-cells", &cells))
- 			return cells;
--
--	/* No #address-cells property for the root node */
-+		/*
-+		 * Default root value and walking parent nodes for "#address-cells"
-+		 * is deprecated. Any platforms which hit this warning should
-+		 * be added to the excluded list.
-+		 */
-+		WARN_ONCE(!EXCLUDED_DEFAULT_CELLS_PLATFORMS,
-+			  "Missing '#address-cells' in %pOF\n", np);
-+	}
- 	return OF_ROOT_NODE_ADDR_CELLS_DEFAULT;
- }
- 
-@@ -112,11 +122,17 @@ int of_bus_n_size_cells(struct device_node *np)
- {
- 	u32 cells;
- 
--	for (; np; np = np->parent)
-+	for (; np; np = np->parent) {
- 		if (!of_property_read_u32(np, "#size-cells", &cells))
- 			return cells;
--
--	/* No #size-cells property for the root node */
-+		/*
-+		 * Default root value and walking parent nodes for "#size-cells"
-+		 * is deprecated. Any platforms which hit this warning should
-+		 * be added to the excluded list.
-+		 */
-+		WARN_ONCE(!EXCLUDED_DEFAULT_CELLS_PLATFORMS,
-+			  "Missing '#size-cells' in %pOF\n", np);
-+	}
- 	return OF_ROOT_NODE_SIZE_CELLS_DEFAULT;
- }
- 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 4d528c10df3a..d79707fb2eb1 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -938,12 +938,12 @@ int __init early_init_dt_scan_root(void)
- 	dt_root_addr_cells = OF_ROOT_NODE_ADDR_CELLS_DEFAULT;
- 
- 	prop = of_get_flat_dt_prop(node, "#size-cells", NULL);
--	if (prop)
-+	if (!WARN(!prop, "No '#size-cells' in root node\n"))
- 		dt_root_size_cells = be32_to_cpup(prop);
- 	pr_debug("dt_root_size_cells = %x\n", dt_root_size_cells);
- 
- 	prop = of_get_flat_dt_prop(node, "#address-cells", NULL);
--	if (prop)
-+	if (!WARN(!prop, "No '#address-cells' in root node\n"))
- 		dt_root_addr_cells = be32_to_cpup(prop);
- 	pr_debug("dt_root_addr_cells = %x\n", dt_root_addr_cells);
- 
--- 
-2.45.2
+And hey, sometimes people forget, and we'll see this issue (again) in
+mainline. It happens. Particularly with these kinds of semantic
+conflicts that are so easy to miss.
 
+I've seen this report, of course, but I will have lots of pull
+requests the next merge window, so the likelihood of me forgetting
+this detail is probably higher than the likelihood of individual
+maintainers forgetting about it when they generate their one (or few)
+pull request.
+
+                  Linus
 
