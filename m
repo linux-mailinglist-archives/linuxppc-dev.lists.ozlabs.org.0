@@ -1,52 +1,98 @@
-Return-Path: <linuxppc-dev+bounces-2905-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2907-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BD99BE2D6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 10:39:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D449BE7A3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 13:16:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xk0Y23h24z2ysD;
-	Wed,  6 Nov 2024 20:39:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xk41Q3TGlz2yTy;
+	Wed,  6 Nov 2024 23:16:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730885990;
-	cv=none; b=j2/jr2RHe7PFzNyEn1jv7KaJqjEGOCAlBtXoFTzmr4mHpTZqsqyGhckXgbrXe7kYJgK/t1JcqVKnRhAxWDfnLN0N1PYmawHcmn5dco+7AqG3y1E6OEq6cqnhjNNLBvOztowtrQny7iLWv6zD2Z8NdwIDUrhJz8txvMi3C1cz2WnAr+7FK8hwI129FkTzbgYICWEVY80D15tT/vLwcSA+JPhi3ZOphkpjQNg0/ZlwaNIA+6gyjTgX82Xe3j6wtyOLAtLfyEvjgTB+Ht6eAy89Rh2BV2pRGCzCKg0ASxrsEAxWENJW2oMRYNleN+BUVtLyz3/hX92tjyNuFuIefoiOTw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730895370;
+	cv=none; b=cx1C3FlmtF5DkTBIDwZlddWDk5PmtmI3tc1IM/krn5Ljj/EaJfpm+naGeuzOwnMV/IwB5gTHYKjvdNbNPWlHpEfYwgEl1exaHVLyvqrlWg8y+MjIBsWWhAgYCAO2tN3ajcwKpg8teseUR5Bi9yLr/ov9aSisoeGUHjSddFvPxJaSxQAeoInpxUQqSr+jg1LF6d/tjL4E14Yd6VwfyuiJvxdyyUcMANMuhRC3fAET6C4F1Rf5uE8kA4r3WNqfzE8zWPKO6Ht1aYPwWRwUjnh3Ue+ing35vINo3RaiADfOTpqAR5ZGITOdMqteP43h4rJvH8zi7ZFZoXCvV29yuQBUnQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730885990; c=relaxed/relaxed;
-	bh=M1tJzKkoB9B2qT3BgQky1W/VyndbztB1eQQN3W+iits=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SKRf4QIU3WaV7gSnbn0iMAMY8pKR8WTqJsc4M3LN9mZwiaqXgwFUYigJ9bXRyILBM47BaEHE8sBZ3kPhtIMCZFifyEXhDWBfvavXHhEpsi3o/Lue24PBuMk9Z9KwRgDzuDDBfRopa+pAef0mN7lSoyIYm2uRgieBxuVk1PG2WMVHEA52paP2aKvIYb2knMFpYmwph802hV+4pheRS++GJHF9viVXogBD85jNOjLQvcXcOQChbeujrEGFqNGtFGYvKT+QG/PPKxnC71XPyHNmIVkBuoQm4YBoF7JTHrx+Q8xBVleKQOxliRZE+IZ2F/HTDj4e1iaHMLhRP8dtuoelFA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1730895370; c=relaxed/relaxed;
+	bh=8ohwiTc+yZhDyRvRbtXG6pJM+owozZa197xSwSi956s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nwnAsKRV2+on8ApPfnj4ehYoHX/3LAxgP6baqiObTkciU5xAcOMD/Bcw5tUE7NE42gTqgkkL7ylPI8d4Uf2l5/14Rl3vgQsNzRDcWqRwqgBrhGrQDOId+r47h21ogEXaBwuDJ3xMVzpKlPBqDDsPflUtzk+MZvFrPNyCMuLhQCeE8Exd/VQIMOTv7A4VgsZlZ9ISKQuzdzApOZEwpu8BweJWhRGeyfe4NB2ihMq0ddE2WgFXQecLds+gotIhenB153TGPPFK9HsEUu1Rbw//RmJqWiKQe7V1TSzSOFWUZ9KpE5bZnsAtgQYv0Xf7yRK/S5lzREaxCXreJcJfPSrJQQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=pLpXnFk/; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hNLG7Mek; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=pLpXnFk/; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hNLG7Mek; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=pLpXnFk/;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hNLG7Mek;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=pLpXnFk/;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hNLG7Mek;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 332 seconds by postgrey-1.37 at boromir; Wed, 06 Nov 2024 23:16:05 AEDT
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xk0Xz1yHQz2y89
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 20:39:46 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Xk0Xv5Scnz9sRr;
-	Wed,  6 Nov 2024 10:39:43 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id HlDylVDbi0Jl; Wed,  6 Nov 2024 10:39:43 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Xk0Xv48Vfz9sRk;
-	Wed,  6 Nov 2024 10:39:43 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7965A8B77B;
-	Wed,  6 Nov 2024 10:39:43 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id FLvIR2VzFJTV; Wed,  6 Nov 2024 10:39:43 +0100 (CET)
-Received: from [192.168.232.102] (unknown [192.168.232.102])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 436038B77A;
-	Wed,  6 Nov 2024 10:39:43 +0100 (CET)
-Message-ID: <8dcc739a-3fd4-434c-995c-1dce33cefe6f@csgroup.eu>
-Date: Wed, 6 Nov 2024 10:39:43 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xk41K4S3wz2yGM
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 23:16:05 +1100 (AEDT)
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	by smtp-out1.suse.de (Postfix) with ESMTP id B212D21CB9;
+	Wed,  6 Nov 2024 12:10:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1730895022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ohwiTc+yZhDyRvRbtXG6pJM+owozZa197xSwSi956s=;
+	b=pLpXnFk/ycD+ULfoIakRcKlvXI5oUXDANOX4VJs3LOyoEWXt2wCuNjXLXwEs0fYddQUEcm
+	kVFqrE/cm1N4XnPWdKHxXzbUFmdSxItvKEx8psbvDrxsug35o0yPtAw+o2X2MAdu1mQGuL
+	3or5unDeqOGozBmIXbB0W4o4x3WxAFw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1730895022;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ohwiTc+yZhDyRvRbtXG6pJM+owozZa197xSwSi956s=;
+	b=hNLG7MekLxD2oSy9GQ81JHS6Syztv0ET2URzJ2oIrG4qJ9W8/DIHAItGY+v0gWuZ2CsF8Y
+	IP/1fWptmtgTdGBg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1730895022; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ohwiTc+yZhDyRvRbtXG6pJM+owozZa197xSwSi956s=;
+	b=pLpXnFk/ycD+ULfoIakRcKlvXI5oUXDANOX4VJs3LOyoEWXt2wCuNjXLXwEs0fYddQUEcm
+	kVFqrE/cm1N4XnPWdKHxXzbUFmdSxItvKEx8psbvDrxsug35o0yPtAw+o2X2MAdu1mQGuL
+	3or5unDeqOGozBmIXbB0W4o4x3WxAFw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1730895022;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ohwiTc+yZhDyRvRbtXG6pJM+owozZa197xSwSi956s=;
+	b=hNLG7MekLxD2oSy9GQ81JHS6Syztv0ET2URzJ2oIrG4qJ9W8/DIHAItGY+v0gWuZ2CsF8Y
+	IP/1fWptmtgTdGBg==
+From: Michal Suchanek <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Michal Suchanek <msuchanek@suse.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Danny Tsen <dtsen@linux.ibm.com>,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nicolai Stange <nstange@suse.com>
+Subject: [PATCH] aes-gcm-p10: Use the correct bit to test for P10
+Date: Wed,  6 Nov 2024 13:09:33 +0100
+Message-ID: <20241106121019.25629-1-msuchanek@suse.de>
+X-Mailer: git-send-email 2.46.1
+In-Reply-To: <20240923133040.4630-3-dtsen@linux.ibm.com>
+References: <20240923133040.4630-3-dtsen@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,112 +105,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Add __must_check to set_memory_...()
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Kees Cook <kees@kernel.org>, linux-hardening@vger.kernel.org
-References: <775dae48064a661554802ed24ed5bdffe1784724.1725723351.git.christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <775dae48064a661554802ed24ed5bdffe1784724.1725723351.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_ZERO(0.00)[0];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.de,gondor.apana.org.au,davemloft.net,ellerman.id.au,gmail.com,csgroup.eu,kernel.org,linux.ibm.com,vger.kernel.org,suse.com];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.de:mid,suse.de:email];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Michael,
+A hwcap feature bit is passed to cpu_has_feature, resulting in testing
+for CPU_FTR_MMCRA instead of the 3.1 platform revision.
 
-Le 07/09/2024 à 17:40, Christophe Leroy a écrit :
-> After the following powerpc commits, all calls to set_memory_...()
-> functions check returned value.
-> - Commit 8f17bd2f4196 ("powerpc: Handle error in mark_rodata_ro() and
-> mark_initmem_nx()")
-> - Commit f7f18e30b468 ("powerpc/kprobes: Handle error returned by
-> set_memory_rox()")
-> - Commit 009cf11d4aab ("powerpc: Don't ignore errors from
-> set_memory_{n}p() in __kernel_map_pages()")
-> - Commit 9cbacb834b4a ("powerpc: Don't ignore errors from
-> set_memory_{n}p() in __kernel_map_pages()")
-> - Commit 78cb0945f714 ("powerpc: Handle error in mark_rodata_ro() and
-> mark_initmem_nx()")
-> 
-> All calls in core parts of the kernel also always check returned value,
-> can be looked at with following query:
-> 
->    $ git grep -w -e set_memory_ro -e set_memory_rw -e set_memory_x -e set_memory_nx -e set_memory_rox `find . -maxdepth 1 -type d | grep -v arch | grep /`
-> 
-> It is now possible to flag those functions with __must_check to make
-> sure no new unchecked call it added.
-> 
-> Link: https://github.com/KSPP/linux/issues/7
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: c954b252dee9 ("crypto: powerpc/p10-aes-gcm - Register modules as SIMD")
+Reported-by: Nicolai Stange <nstange@suse.com>
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+ arch/powerpc/crypto/aes-gcm-p10-glue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Do you plan to take this patch anytime soon ?
+diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+index e52629334cf8..1f8b67775658 100644
+--- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
++++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+@@ -414,7 +414,7 @@ static int __init p10_init(void)
+ {
+ 	int ret;
+ 
+-	if (!cpu_has_feature(PPC_FEATURE2_ARCH_3_1))
++	if (!cpu_has_feature(CPU_FTR_ARCH_31))
+ 		return 0;
+ 
+ 	ret = simd_register_aeads_compat(gcm_aes_algs,
+-- 
+2.46.1
 
-The generic part of the same was already applied in previous cycle, see 
-https://github.com/torvalds/linux/commit/82ce8e2f31a1eb05b1527c3d807bea40031df913
-
-Discussion at 
-https://lore.kernel.org/all/b0fe75b4-c1bb-47f7-a7c3-2534b31c1780@csgroup.eu/T/ 
-suggests that it would be beneficial to enforce return checking.
-
-Christophe
-
-
-> ---
->   arch/powerpc/include/asm/set_memory.h | 14 +++++++-------
->   1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/asm/set_memory.h
-> index 9a025b776a4b..9c8d5747755d 100644
-> --- a/arch/powerpc/include/asm/set_memory.h
-> +++ b/arch/powerpc/include/asm/set_memory.h
-> @@ -12,37 +12,37 @@
->   
->   int change_memory_attr(unsigned long addr, int numpages, long action);
->   
-> -static inline int set_memory_ro(unsigned long addr, int numpages)
-> +static inline int __must_check set_memory_ro(unsigned long addr, int numpages)
->   {
->   	return change_memory_attr(addr, numpages, SET_MEMORY_RO);
->   }
->   
-> -static inline int set_memory_rw(unsigned long addr, int numpages)
-> +static inline int __must_check set_memory_rw(unsigned long addr, int numpages)
->   {
->   	return change_memory_attr(addr, numpages, SET_MEMORY_RW);
->   }
->   
-> -static inline int set_memory_nx(unsigned long addr, int numpages)
-> +static inline int __must_check set_memory_nx(unsigned long addr, int numpages)
->   {
->   	return change_memory_attr(addr, numpages, SET_MEMORY_NX);
->   }
->   
-> -static inline int set_memory_x(unsigned long addr, int numpages)
-> +static inline int __must_check set_memory_x(unsigned long addr, int numpages)
->   {
->   	return change_memory_attr(addr, numpages, SET_MEMORY_X);
->   }
->   
-> -static inline int set_memory_np(unsigned long addr, int numpages)
-> +static inline int __must_check set_memory_np(unsigned long addr, int numpages)
->   {
->   	return change_memory_attr(addr, numpages, SET_MEMORY_NP);
->   }
->   
-> -static inline int set_memory_p(unsigned long addr, int numpages)
-> +static inline int __must_check set_memory_p(unsigned long addr, int numpages)
->   {
->   	return change_memory_attr(addr, numpages, SET_MEMORY_P);
->   }
->   
-> -static inline int set_memory_rox(unsigned long addr, int numpages)
-> +static inline int __must_check set_memory_rox(unsigned long addr, int numpages)
->   {
->   	return change_memory_attr(addr, numpages, SET_MEMORY_ROX);
->   }
 
