@@ -1,47 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-2940-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2941-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FAF29BF876
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 22:26:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FAA9BF878
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 22:27:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkJDv5SKPz2y8V;
-	Thu,  7 Nov 2024 08:26:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkJDx6sX7z2yKD;
+	Thu,  7 Nov 2024 08:26:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730928415;
-	cv=none; b=F6OcIP6GQTr9ug4pQUu9tYMcL/EeU6dtLgf4ruhNw4DlL56QNOPz0l3LMa5+ehPjGgLnCtUoN8CbP3era1Xu48SRBN59yk6x7Ur9W2B6iEbHY9H9w0XAJBn5raAUI6sa3frILLOPMfMWaJy3brPsROhUTHmaXgW+V22dt85iEuohvca1WcmyBsU2xb4hISw0D+GmgII+n2mGQ6ZavRzF+vrhkIraAykNU8GsaZx/ihICZ9lznbY9Ad2Ka41KFQvS9dRPo6am9N2C8wMeBx6DKOfU4tkrEAjn81FOHpLeIBTifE015wRyY9WvK6dErqCTgcvBBWSo+tt4ksczCFWB7A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730928417;
+	cv=none; b=Oq5DJhh6/3Vopm+qnM3MmcJfmJPfHjhMj8YohepgiuB589fK5AAO6Eu4+ybubijsAPt357879fwPsyIrgwzr50AmfnFYEfVrmF/ms+AQDwbX2eUkG+z60/JyjkPz1f1HDyJJg2qc2Nx5L4veFwpYE6vr2NhIvg1wd5/FMR40Bw7N+XPZtbDid2M/6+1cyUqKIMLwtFwMlNJbOZWY9hOQLcgoXZYlPgyl97mxelT1egyoGH3rJQM5CBpaZWZ64+JTgt1XfzoJtZd4AxRShoLv6bfFFWECgPxHcIgf00V666qxi1nHZF8uza2x59Zez3EZQadMKUB0BGS7IpuvnYow8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730928415; c=relaxed/relaxed;
-	bh=F+dagBU0nmezbLilw4BEggYRYfOkcVWVFzb8sbAaHjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nLtGvgRX5rYOYBVtTMKNLPGkydEZWxsvLaJ7Q3+LDt4a6KqTaVrj0qocWT6lJI+soGGPXWeEWDc/TIJ9TYUVM2S3mKJwC9nvKlGGWZdRws3NABLB1BR8u1Qgcuo/wbQjdKV+Xk3ScCSEwR0qWyhxqyWTynsgquhieCwpxGBcA8cvZf9RIRC1MnS1ZGuwqc5w3awZ+uGbbq+xxlLCqT0VSnRp4eyMRkMhc3lWDq+qmo/W/pCo8AF8wWUJ9UVbRiT9FpJlRHB9egBRzu8eOuKEZV+sezNwA3cakQ9ckQIj+Cm7ltwlet/qKvDXBK4PXO1otNvKuSb8Ld5wkJJNLiMqRw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T7v38/3y; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1730928417; c=relaxed/relaxed;
+	bh=F8eRgNWrNr7HLGadjnBEU6xuLP+Vgz1AkN4VqCx3kW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eJfxBqX0NONqBuMvn+JcBeu9Bk3zjf5UIP3sTO74xf2l50gKAiBr632xc5bHuG/jNiwnuzhV7ZDJTF9UU3LMYQfek+XTgr/Ovzg0GKQJNbj3Es/8hVpLZuyz63XgHyP/nHESEN331+jfBWtqtq5Gf+oTJTn/kCMAiPJ7Y7r32ZxO9iOkAeygSqAd+uuYvpSiVYoqPmj43hrLHS9gx4ri7WhUkdM+BA3dWvFqpZnczn/Ao0plgg5Lxx6pJ+OPaBUm0Bs5WvftaP5LWZoGDIjbVx8eQtMsYWf88h7/u2bSFW0K9Rno/BLR1a+F+bgcqR5E+Ez9cdoK8gD9Yt90HkB21A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f8mqV7ur; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T7v38/3y;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f8mqV7ur;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkJDt0lMtz2y8F
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 08:26:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkJDx0SSXz2y8F
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 08:26:57 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D3EADA444C2;
-	Wed,  6 Nov 2024 21:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FE7C4CEC6;
-	Wed,  6 Nov 2024 21:26:43 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 2EE81A444C4;
+	Wed,  6 Nov 2024 21:24:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89974C4CEC6;
+	Wed,  6 Nov 2024 21:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730928403;
-	bh=LHBtxJhLBykWSxx00mtqWlXXjjjtzn2Hz6+h64j7m6A=;
+	s=k20201202; t=1730928413;
+	bh=hiA2YZ1vGHtJnoyVlnCwmx+UZjZfmGxI/JLLYuDClGY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=T7v38/3yK0uSWHnVsgInKyiUPs+SoGDfDPS9DuPtSPQ3dGIA8wEZtXFqy8s6jRAL1
-	 Ak7OmesWGEaHpDhd8mXGc0RjoTFXacEY5YbTl3raPkiit9zeH07hIdh2NMuoiRGOF6
-	 aikkXNa/qOM5zRMj1a1TnU+/gdpO+OPCDE4Ft/buVRDMTXQ9Ga1xx8RqSmhxADC29n
-	 DuvGFUz2L0vYfYTAezQnErDB3Tl8Pl9CLkEQDkAxkdcpyF+zwGoShooHBpoCgeKy94
-	 AhuXpGKLgCkR2noXIOCI1jiIr2DaeMmTGXzAcLypbbV7aE0O87GO2Z8sWVF2MkfkSa
-	 Qi6xIiNF6Oyng==
+	b=f8mqV7urJNd6E2NJ6F1Q//xrKBhNdMS5JBULN/RiaUEgmF7IT70A+l2rOIq6eAuU4
+	 0bzESHpWqfeYw/M0ZRm7JYVXrErrhky4NrtrOSh4HhYM1FNG5yn1yegjbYXYAvAPlO
+	 kmuv1k1tRhB1TaoxGeA7E+JUUrDxW6w+QB61xZ0GEGPk69t0hVFKj19fr5bz6P/4+q
+	 kwZAkyKZXy/H82jsjUlW3QMR0VnhpHtJZx1t/rHh6rMtU7iA32YgClxaYqPlD+nW1m
+	 6TScWI1kurcrmtvDcvD5cZC83lmMUKGFUUJdZjgpwWMMDvZe6ANHrKEJThIpJtf3JY
+	 DLNU2Xctw5pzg==
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -50,9 +50,9 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: 44x: Use for_each_of_range() iterator
-Date: Wed,  6 Nov 2024 15:26:39 -0600
-Message-ID: <20241106212640.341677-1-robh@kernel.org>
+Subject: [PATCH] powerpc: cell: Use for_each_of_range() iterator
+Date: Wed,  6 Nov 2024 15:26:46 -0600
+Message-ID: <20241106212647.341857-1-robh@kernel.org>
 X-Mailer: git-send-email 2.45.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -72,57 +72,93 @@ X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Simplify the ppc44x PCI dma-ranges parsing to use the for_each_of_range()
-iterator.
+Simplify the cell_iommu_get_fixed_address() dma-ranges parsing to use the
+for_each_of_range() iterator.
 
 Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- arch/powerpc/platforms/44x/pci.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ arch/powerpc/platforms/cell/iommu.c | 49 ++++++++++-------------------
+ 1 file changed, 16 insertions(+), 33 deletions(-)
 
-diff --git a/arch/powerpc/platforms/44x/pci.c b/arch/powerpc/platforms/44x/pci.c
-index db6d33ca753f..364aeb86ab64 100644
---- a/arch/powerpc/platforms/44x/pci.c
-+++ b/arch/powerpc/platforms/44x/pci.c
-@@ -94,10 +94,8 @@ static int __init ppc4xx_parse_dma_ranges(struct pci_controller *hose,
- 					  struct resource *res)
+diff --git a/arch/powerpc/platforms/cell/iommu.c b/arch/powerpc/platforms/cell/iommu.c
+index 4cd9c0de22c2..62c9679b8ca3 100644
+--- a/arch/powerpc/platforms/cell/iommu.c
++++ b/arch/powerpc/platforms/cell/iommu.c
+@@ -779,58 +779,41 @@ static int __init cell_iommu_init_disabled(void)
+ 
+ static u64 cell_iommu_get_fixed_address(struct device *dev)
  {
- 	u64 size;
--	const u32 *ranges;
--	int rlen;
--	int pna = of_n_addr_cells(hose->dn);
--	int np = pna + 5;
+-	u64 cpu_addr, size, best_size, dev_addr = OF_BAD_ADDR;
++	u64 best_size, dev_addr = OF_BAD_ADDR;
+ 	struct device_node *np;
+-	const u32 *ranges = NULL;
+-	int i, len, best, naddr, nsize, pna, range_size;
 +	struct of_range_parser parser;
 +	struct of_range range;
  
- 	/* Default */
- 	res->start = 0;
-@@ -105,18 +103,15 @@ static int __init ppc4xx_parse_dma_ranges(struct pci_controller *hose,
- 	res->end = size - 1;
- 	res->flags = IORESOURCE_MEM | IORESOURCE_PREFETCH;
- 
--	/* Get dma-ranges property */
--	ranges = of_get_property(hose->dn, "dma-ranges", &rlen);
--	if (ranges == NULL)
-+	if (of_pci_dma_range_parser_init(&parser, hose->dn))
+ 	/* We can be called for platform devices that have no of_node */
+ 	np = of_node_get(dev->of_node);
+ 	if (!np)
  		goto out;
  
--	/* Walk it */
--	while ((rlen -= np * 4) >= 0) {
--		u32 pci_space = ranges[0];
--		u64 pci_addr = of_read_number(ranges + 1, 2);
--		u64 cpu_addr = of_translate_dma_address(hose->dn, ranges + 3);
--		size = of_read_number(ranges + pna + 3, 2);
--		ranges += np;
-+	for_each_of_range(&parser, &range) {
-+		u32 pci_space = range.flags;
-+		u64 pci_addr = range.bus_addr;
-+		u64 cpu_addr = range.cpu_addr;
-+		size = range.size;
-+
- 		if (cpu_addr == OF_BAD_ADDR || size == 0)
- 			continue;
+-	while (1) {
+-		naddr = of_n_addr_cells(np);
+-		nsize = of_n_size_cells(np);
+-		np = of_get_next_parent(np);
+-		if (!np)
+-			break;
+-
+-		ranges = of_get_property(np, "dma-ranges", &len);
++	while ((np = of_get_next_parent(np))) {
++		if (of_pci_dma_range_parser_init(&parser, np))
++			continue;
  
+-		/* Ignore empty ranges, they imply no translation required */
+-		if (ranges && len > 0)
++		if (of_range_count(&parser))
+ 			break;
+ 	}
+ 
+-	if (!ranges) {
++	if (!np) {
+ 		dev_dbg(dev, "iommu: no dma-ranges found\n");
+ 		goto out;
+ 	}
+ 
+-	len /= sizeof(u32);
+-
+-	pna = of_n_addr_cells(np);
+-	range_size = naddr + nsize + pna;
+-
+-	/* dma-ranges format:
+-	 * child addr	: naddr cells
+-	 * parent addr	: pna cells
+-	 * size		: nsize cells
+-	 */
+-	for (i = 0, best = -1, best_size = 0; i < len; i += range_size) {
+-		cpu_addr = of_translate_dma_address(np, ranges + i + naddr);
+-		size = of_read_number(ranges + i + naddr + pna, nsize);
++	best_size = 0;
++	for_each_of_range(&parser, &range) {
++		if (!range.cpu_addr)
++			continue;
+ 
+-		if (cpu_addr == 0 && size > best_size) {
+-			best = i;
+-			best_size = size;
++		if (range.size > best_size) {
++			best_size = range.size;
++			dev_addr = range.bus_addr;
+ 		}
+ 	}
+ 
+-	if (best >= 0) {
+-		dev_addr = of_read_number(ranges + best, naddr);
+-	} else
++	if (!best_size)
+ 		dev_dbg(dev, "iommu: no suitable range found!\n");
+ 
+ out:
 -- 
 2.45.2
 
