@@ -1,81 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-2894-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2895-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE699BDC2C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 03:16:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 122F69BDD64
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 04:04:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjpj92stqz2yF7;
-	Wed,  6 Nov 2024 13:16:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjqmf4BHDz2yGZ;
+	Wed,  6 Nov 2024 14:04:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730859373;
-	cv=none; b=chNgxP3kIFCBVuimkyi+3TYvEUJEdGyArhO39OzMQ0rt5oqYV1p4xDfAutaetoWLrNqDi5zVwMx//a4QdKerOV68zE42jpLTSh7gyyycn1lo4vXz9gVvOxsCgdaAJM6ELmNK2RI6v/WdeEvGQllIzaK6iyex/Ppily4Y4ceoZHNtO06ynVd1oIZsBHM5UN+m182yCfrAx7ctpqqHV2Nu4hvSGzzcZDQAC0FG9qK3lbAQgRlPpFN1itbZGVd4x2gDBqvwmVFGkzZZJ8EkKYNrHMfZVwo4aJVex8kVT9GgK2ZuH7tOuJj4nbHlE9rbF9N1FwToz6LI9H7fsDzNVroR+w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730862258;
+	cv=none; b=Be+zoG8Pc6vI6co8RR5mLUXPKAJwzAkKVEJeBn/4X6UgfasWx9mcH5wT0CrJVT8MYLJHYJK2PThARNQdNasDgIPHzgdpnGGicleis3Fqno6tf60BOZiMkgPiMgz3aYzYO8A81xlFOXoy4V3j06SZ7utItcamUxDlIn6mn2XChFdwlRPo90S67MGUICaeoQ0biV4yKPwfsqunH4gW3Gq30VBN6OQnSlKgIFjlxfY6urUNykCw4UEvEKVZPJR2mlnRD3MiPXLaaCs4QGiRnHfm/zgLSOeYkdhTWMIW/60k4caz4OvU/oP0NF0xjm11X6auDC++pkzEylCSe34nf/PSVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730859373; c=relaxed/relaxed;
-	bh=xK0KY8i8zC+5m7XjN1KGWENonmZR14U5NHbmNmLDZU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TjemSarxNux2+O0YaGIoIbJhB5K5CH1HPhC2gg98/VDlYtvidfbA+4tccWl+MWFCiBTwNRFBlHmuXm/hiCXw8jt0cakFpNPkwBtPSswx7W30sPUaI/0K3jMvNqt+q9PQEOPhoolwnArcjjMXDiuCKYMd+vffsPi3HwFSWeQ1vhl3Ea0l+Oqc5hLqugoHyPHdk1dKmU2ARFwvYHwJf+U5//nqE948gn4Nc/twKGPMoj6BjrfsZJW2EBHm9pUdkSVy8CeFtWfA5RgsbzlgGVOeRyfhBLPr6k/c2ClxuL/ZhHHl63pSwotBBTiho8Cpz71vUuozGTmD7ITuEKIEM7p3Tg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MIhBZjsk; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1730862258; c=relaxed/relaxed;
+	bh=s9b01BRLDdx+kydfCLwn4XCUIydahSsmU7oeUYqYYTY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=iIrt3jLO+3j0qy5VMhT2/mI/KCy/RW23z5eUFW6NMT5YIp+PzQywiUC1MzArZvoKp0yvO5uoz/GmpC+cz7JM3Y+idNds9utXTRr7AbdiCsy+TWvGyJTX+0qPvkfdRf5p33C5ADp8yVS34g2Nq+LlukskuYlUsozqBHCdYwM2lOfkZiuX0Bx4z/0rk3914ZN4WnS50GP83A2xwchYAqHQ9e6RE4R6h1F5TiTpybhu3iPE7osBRsUJ+u8L8Ao3W1SSE4PLfbWtiKDj2sdNR65CAhRmwZIao1grVHSVurs7mAE0/SfieNcgE44uwV8frcFNZkR1TRFce3bsJvmwnhMucw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=ASsBZCc8; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MIhBZjsk;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=ASsBZCc8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjpj70ZBBz2xjd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 13:16:11 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 226A2A41AFF;
-	Wed,  6 Nov 2024 02:14:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CBAC4CED1;
-	Wed,  6 Nov 2024 02:16:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730859363;
-	bh=2ceZS9atdvYQglPAeHWkMwFTe23RRaA6HdpaUHEf2oE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MIhBZjsktrtesO5k1TPXMbC8XTanJSHPKWNM0vGLuOl1bFPdHdk7n8gm3zZowb5Ms
-	 j32tLEsR3+YyNkxm9OWTUhs7yOStVihPojeRZG93G5LdAjLCsQVHrDmvnr1qTrY/lG
-	 kc2RqvxU50wYh5cftvuGAdvuETv7RcoLj1Yu6lhwk63mW3Gqm9g/K7awIsb6HzCJ+T
-	 dt8VZUHl0IFsTdAlEyuWyTf4FtZKW7jvUZsdMPvJqLQxG/S90yQP4FkYKIwQJ04qUd
-	 Rh3b8+Ahy00Sir0NK1AIlbFhCBlWKtC9bHag0/Jg8Qbmx1K4OKxKSfj0c0tSPNC9K1
-	 7OPXYta84teZQ==
-Date: Tue, 5 Nov 2024 18:16:01 -0800
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
-	Lucas De Marchi <lucas.de.marchi@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
-Message-ID: <ZyrRYUD0K1f7SwWg@bombadil.infradead.org>
-References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
- <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
- <ZyNr--iMz_6Fj4yq@bombadil.infradead.org>
- <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
- <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org>
- <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjqmb4cJPz2y8k
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 14:04:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1730862253;
+	bh=s9b01BRLDdx+kydfCLwn4XCUIydahSsmU7oeUYqYYTY=;
+	h=Date:From:To:Cc:Subject:From;
+	b=ASsBZCc8TzsAp7qXjbYNsz7PBkvTpDSMiN2C7d9onxvhX5UDPq6PPHCMrFHtM5HsI
+	 L3EOVz2OMqt9X+RTnHQypBagY0xKe0ilgsF8gOGr51aTfp/p9fteWIjYUsXKvnIWtr
+	 VELWK/5iY7YkD0J2Tn9e0bHkZ1/wj8bi6xtp/EZ3iTeM3SJ+ac3cAlpJ/IhL3Nce5V
+	 RGSV5ObhVWA7GR4UpZecMsb5MdMImtLK2gqjuL4/sfgsV6WuyTztQnmQ6aVUt1FXPi
+	 BsTD+4DYNHlbO9xupcd9OglgedffGBbgjSDlO+4E5r4ElTmi/N/iNR/ChvFIJXbEQ0
+	 J2UjtRmWab9lg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XjqmY0lBsz4x7D;
+	Wed,  6 Nov 2024 14:04:12 +1100 (AEDT)
+Date: Wed, 6 Nov 2024 14:04:14 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
+Cc: Naveen N Rao <naveen@kernel.org>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: build failure after merge of the ftrace tree
+Message-ID: <20241106140414.760b502c@canb.auug.org.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,95 +64,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: multipart/signed; boundary="Sig_/DAq6YdHv5B=ZCDY1RGE2RU.";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Nov 05, 2024 at 04:26:51PM -0800, Matthew Maurer wrote:
-> On Fri, Nov 1, 2024 at 2:10 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
-> >
-> > On Thu, Oct 31, 2024 at 01:00:28PM -0700, Matthew Maurer wrote:
-> > > > The question is, if only extended moversions are used, what new tooling
-> > > > requirements are there? Can you test using only extended modversions?
-> > > >
-> > > >   Luis
-> > >
-> > > I'm not sure precisely what you're asking for. Do you want:
-> > > 1. A kconfig that suppresses the emission of today's MODVERSIONS
-> > > format?
-> >
-> > Yes that's right, a brave new world, and with the warning of that.
-> 
-> OK, I can send another revision with a suppression config, perhaps
-> CONFIG_NO_BASIC_MODVERSIONS
+--Sig_/DAq6YdHv5B=ZCDY1RGE2RU.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Great.
+Hi all,
 
-> > > This would be fairly easy to do, but I was leaving it enabled
-> > > for compatibility's sake, at least until extended modversions become
-> > > more common. This way existing `kmod` tools and kernels would continue
-> > > to be able to load new-style modules.
-> >
-> > Sure, understood why we'd have both.
-> >
-> > > 2. libkmod support for parsing the new format? I can do that fairly
-> > > easily too, but wanted the format actually decided on and accepted
-> > > before I started modifying things that read modversions.
-> >
-> > This is implied, what I'd like is for an A vs B comparison to be able to
-> > be done on even without rust modules, so that we can see if really
-> > libkmod changes are all that's needed. Does boot fail without a new
-> > libkmod for this? If so the Kconfig should specificy that for this new
-> > brave new world.
-> 
-> libkmod changes are not needed for boot - the userspace tools do not
-> examine this data for anything inline with boot at the moment, libkmod
-> only looks at it for kmod_module_get_versions, and modprobe only looks
-> at that with --show-modversions or --dump-modversions, which are not
-> normally part of boot.
-> 
-> With the code as is, the only change will be that if a module with
-> EXTENDED_MODVERSIONS set contains an over-length symbol (which
-> wouldn't have been possible before), the overlong symbol's modversion
-> data will not appear in --show-modversions. After patching `libkmod`
-> in a follow-up patch, long symbols would appear as well. If booted
-> against an old kernel, long symbols will not have their CRCs in the
-> list to be checked. However, the old kernel could not export these
-> symbols, so it will fail to resolve the symbol and fail the load
-> regardless.
+After merging the ftrace tree, today's linux-next build (powerpc
+ppc64_defconfig) failed like this:
 
-Thanks for checking all this. It is exactly what I was looking for.
-All this should be part of the cover letter and Kconfig documentation.
+In file included from include/linux/ftrace.h:23,
+                 from include/linux/kvm_host.h:32,
+                 from arch/powerpc/include/asm/kvm_ppc.h:19,
+                 from arch/powerpc/include/asm/dbell.h:17,
+                 from arch/powerpc/kernel/asm-offsets.c:36:
+arch/powerpc/include/asm/ftrace.h: In function 'arch_ftrace_set_direct_call=
+er':
+arch/powerpc/include/asm/ftrace.h:141:38: error: invalid use of undefined t=
+ype 'struct ftrace_regs'
+  141 |         struct pt_regs *regs =3D &fregs->regs;
+      |                                      ^~
 
-> If we add and enable NO_BASIC_MODVERSIONS like you suggested above,
-> today's --show-modversions will claim there is no modversions data.
-> Applying a libkmod patch will result in modversions info being
-> displayed by that command again. If booted against a new kernel,
-> everything will be fine.
+Caused by commit
 
-*This* is is the sort of information I was also looking for and I think
-it would be good to make it clear for the upcoming NO_BASIC_MODVERSIONS.
+  7888af4166d4 ("ftrace: Make ftrace_regs abstract from direct use")
 
-> If booted against an old kernel, it will
-> behave as though there is no modversions information.
+interacting with commit
 
-Huh? This I don't get. If you have the new libkmod and boot
-an old kernel, that should just not break becauase well, long
-symbols were not ever supported properly anyway, so no regression.
+  a52f6043a223 ("powerpc/ftrace: Add support for DYNAMIC_FTRACE_WITH_DIRECT=
+_CALLS")
 
-I'm not quite sure I understood your last comment here though,
-can you clarify what you meant?
+from the powerpc tree.
 
-Anyway, so now that this is all cleared up, the next question I have
-is, let's compare a NO_BASIC_MODVERSIONS world now, given that the
-userspace requirements aren't large at all, what actual benefits does
-using this new extended mod versions have? Why wouldn't a distro end
-up preferring this for say a future release for all modules?
+I have applied the following merge fix patch for today.
 
-  Luis
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Date: Wed, 6 Nov 2024 13:33:53 +1100
+Subject: [PATCH] fix up for "ftrace: Make ftrace_regs abstract from direct =
+use"
+
+from the ftrace tree interacting with "powerpc/ftrace: Add support for
+DYNAMIC_FTRACE_WITH_DIRECT_CALLS" from the powerpc tree
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ arch/powerpc/include/asm/ftrace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/f=
+trace.h
+index bb2c90997618..db481b336bca 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -138,7 +138,7 @@ unsigned long ftrace_call_adjust(unsigned long addr);
+  */
+ static inline void arch_ftrace_set_direct_caller(struct ftrace_regs *fregs=
+, unsigned long addr)
+ {
+-	struct pt_regs *regs =3D &fregs->regs;
++	struct pt_regs *regs =3D &arch_ftrace_regs(fregs)->regs;
+=20
+ 	regs->orig_gpr3 =3D addr;
+ }
+--=20
+2.45.2
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/DAq6YdHv5B=ZCDY1RGE2RU.
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmcq3K4ACgkQAVBC80lX
+0Gw0JAf7Bq9qv+tbPiKn8tlsulBba4WywVS6jwuTJH64TQY2YwCql1EcSviO8v/E
++6rw8LM0Xx0lljiKx38noD4SJghE34EGMO0w5/X6SFUengJ10pMu/3mihJM681r9
+BVlfSqqxR3PMNBQ45oYxTb5zz8yM9rKf/uWzTcumEx824K3Apx3Kd3vG5go6P4sd
+gj9b9YOV6tM46s70zfIJJiarINvA5pbteoMPa20C//GSk5nyj993AVBlQxYarYTn
+dRSekAWryp9OhN+R5FzgTWyy6cpD6fGssnNRmGnB76DuHdYdvxy2NYLmFlGv0ZGS
+9Rj+q+p9bVVvNjqzPjlVbgfzp8zJ7w==
+=J8sY
+-----END PGP SIGNATURE-----
+
+--Sig_/DAq6YdHv5B=ZCDY1RGE2RU.--
 
