@@ -1,71 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-2896-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2897-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8DD9BDE5F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 06:55:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E899A9BDF1C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 08:06:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XjvYZ66scz2yhD;
-	Wed,  6 Nov 2024 16:54:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjx8b1cDbz2yh1;
+	Wed,  6 Nov 2024 18:06:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730872498;
-	cv=none; b=C0Y5oqIBesLJ9In79gUrc5QOq68nKdjqXYNCve1nebZLNXtEX+traA/2ugaUvUEUAydv9IQ14Mw7WW2f8ESlbqyWesAw1nf92KaAmZmQxB+Ifkya/YWTyRmI9YVvUQujl7nzOKb8QwurERQODxe/r9RPkurdo3I6xMPZ3KvrDTLCAka9Iwf2KoFXBoE+qgzzcQCDS3hREJyL4mzU6n00HDq7xYaf9HPMOdKdFQdS39ZOwYonKKgIpHaKCLrwlFNzyeNcxUqLai/BBcC9ZItwmdTTgaJ+gyD5iUPz84f9qadLugrn7uUEip5S60X80gmr9dhP4qzdfXiRraFBIXTCAQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730876815;
+	cv=none; b=JiT3tNa/gPazBtdSB1Eq0EiJrwr6ErvcfMih/QTV3uduy/OvtGzI0mwZOtdGrjXcD4m8Kd3YyxlNmHqDASvw+nXIf1amnDotidvZ3uyRzi9K/yX1lHdIg/uoicjtfHvkX5uvLFJ4D3wnm4PSLmDJOqwp7cqlpb+3IfZHoqzBqDq/v1Q4nnN1+lu44Yy4/piVQZmqsKJA+LDskxvD3zgJD8cQWyXxHHqiMgiqkDbBMfKOxxStF31rXUO+XBit3TDCCY1tFZ6DATCKPvQKJ7czxzAZSgYrzaUgL1jgBhth5/YbWDlgX326qYQX51Zttgk80kWqEz9qNX304AlGT19oYQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730872498; c=relaxed/relaxed;
-	bh=ysSqMGtbwbmFOqT1XRY+kGYi4gISugGgiIjpkXQ26zE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Df1jrsmEAvkyO1cxcIQCAVSFTSI0s57YoKDMtnH5qKG2GxJkRJEQ/CWYeTfrYFFL0sxgcFO3tpoArHrO20ZlLfkO1kgIGv8147ej24hvWrQc47xO126osThXPvuRDpzzl3JvmG0O9YjPSlFlTFH+ke+3+d5iTBq60+h4UwZXkW662ka8Xo/maBGiGPQMIZVI/W/VsExk41UK8ebuag3QidyAQLTp6RZ4+GjBGDez1uSYpdzDhh4eM5tDyWrUNHm0YQaTSQqvkS8rzq53xujeJ+FGMTvsuCzCENjeui0Echdm3hKm8JCNfxAjSj2qxXlTJs3XIOhhPl1Ri7YLXgDHZw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W+2cJHzS; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1730876815; c=relaxed/relaxed;
+	bh=yAUFaVAsNQ/ccJyGlmMcytG2+Qr2oEjByXJHlP+rk68=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ke+WkWHrITTSCW7QCa8nQue9AlMs2aM1JADFqu9OOWftDp/9UJP5rRDciK+b7fu732ShaAq2E+zoa2YIpsK5kSblaZEDYyHZOeIrfAJOzi6EWJNouhkeDBNSAcRCM1p2bIDHprtADzdjic2T62asqn/bbEy4F/7pDzCfgc7wO+p1CGsR4HXZT97/ivGtVHGJk9uuxPn38zmmd92fSzW/AfGFHDwMz9fDi/51nVKgVZqgwpbDNPLU7yV806lOrKSWVeXTCubMZTXg2xgFdaNxZb87VLjwUHbh1IQaE5OxOn+O20nLJl2HRCxWDR70dFnI7TV3UYXpc0EjDLBUlDtvLw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h80rEgtJ; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W+2cJHzS;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h80rEgtJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjvYX4dmnz2yh1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 16:54:55 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A65eR0j031806;
-	Wed, 6 Nov 2024 05:54:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ysSqMG
-	tbwbmFOqT1XRY+kGYi4gISugGgiIjpkXQ26zE=; b=W+2cJHzSxKStqNEMsCJ6oE
-	oo4PRwZMT3VaXlB60G0+ql//qGBpP/dIRa8vvca2UVpU8ceiBC0w2R0YHBPVtqTg
-	AGTK65/PgYIWa8sq+ePofqXUYZUAhH6jo4rZ8m4FFCHMy4NgJRk8HFZCYKpeDEqH
-	Mw0panYRRr2Z3XGJyv2D7rLvMT/PcA9enRq6mwpxZMTrUm2GPRgiSzq3buYCapg1
-	Lpns4YFX2GhurjfD06WorpPEcY5O3Uh9BaSF3bNzFffo+YiC6oD5njQWOSnM12nD
-	+hmB/2mVG8ufb3rhigiHPJ23XVk14KUZVxQ3TP1LgAefH4th/gZK+iqwJ5NG8TXQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42r2gq0164-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Nov 2024 05:54:39 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A65WLMT008430;
-	Wed, 6 Nov 2024 05:54:39 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42nywkqwav-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Nov 2024 05:54:39 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A65sbAX58655144
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 6 Nov 2024 05:54:37 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 430FE20043;
-	Wed,  6 Nov 2024 05:54:37 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 36E5E20040;
-	Wed,  6 Nov 2024 05:54:35 +0000 (GMT)
-Received: from [9.203.115.143] (unknown [9.203.115.143])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  6 Nov 2024 05:54:35 +0000 (GMT)
-Message-ID: <e6ba6084-e224-44c8-86e6-f3ae408209c1@linux.ibm.com>
-Date: Wed, 6 Nov 2024 11:24:34 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjx8X35h0z2ygx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 18:06:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1730876806;
+	bh=yAUFaVAsNQ/ccJyGlmMcytG2+Qr2oEjByXJHlP+rk68=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=h80rEgtJ7qD9jyDyLJcISbRk3INZH8ZPcYosK4VrHHZVogREXxmMdnucgdz5uGIVq
+	 2FKIvnwHaCmTCM5h2wCPV5BHvVPqGtTkGb8EMAQ3QpqRcFOIuuN9J+N+f2mo7sMJe/
+	 dU4VVqU+Z1FcyNgWJiu6rzNqueMfO3e6FKKNop6UZT1IVzPlW79wIw8rl8ikKnhRpJ
+	 +n1/bbdRaP9EQPbjeaxIqHG5JuYMBpoWql3abi4yDgJ1tGm3FhgLFRk5m7yklMr2OW
+	 JsGlZDD1354L3XGFFlQ4dOrEE1hpvtyE9IKa50nyhPWS+nOpSyzlxB/+3KkxmrZtK5
+	 AOEEtdbWDj8jw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xjx8D1mmSz4x11;
+	Wed,  6 Nov 2024 18:06:36 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Thomas Gleixner
+ <tglx@linutronix.de>, Thomas =?utf-8?Q?Wei=C3=9Fschuh?=
+ <thomas.weissschuh@linutronix.de>,
+ Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily
+ Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Russell
+ King <linux@armlinux.org.uk>, Huacai Chen <chenhuacai@kernel.org>, WANG
+ Xuerui <kernel@xen0n.name>, Theodore Ts'o <tytso@mit.edu>, "Jason A.
+ Donenfeld" <Jason@zx2c4.com>, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Nicholas Piggin
+ <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Nam Cao
+ <namcao@linutronix.de>
+Subject: Re: [PATCH 00/28] vdso: Preparations for generic data storage
+In-Reply-To: <e33569c8-1591-462c-9388-4a514e156bfa@csgroup.eu>
+References: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
+ <871pzxzuny.ffs@tglx> <e33569c8-1591-462c-9388-4a514e156bfa@csgroup.eu>
+Date: Wed, 06 Nov 2024 18:06:35 +1100
+Message-ID: <877c9glu2s.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,86 +85,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/ftrace: update kprobe syntax error test for
- ppc64le
-Content-Language: en-US
-To: Segher Boessenkool <segher@kernel.crashing.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        "Naveen N. Rao"
- <naveen@kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        linux-trace-kernel@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <20241101191925.1550493-1-hbathini@linux.ibm.com>
- <20241101205948.GW29862@gate.crashing.org>
- <1916cb5c-cb3d-427c-bcf0-2c1b905fd6d1@linux.ibm.com>
- <20241104094431.GY29862@gate.crashing.org>
- <245fed6f-5fb4-4925-ba0a-fb2f32e650d0@linux.ibm.com>
- <20241104103615.GZ29862@gate.crashing.org>
- <f7e8243a-a4c8-44ce-ad03-7d232df461ed@linux.ibm.com>
- <20241105082018.GA29862@gate.crashing.org>
- <20241105181752.74a3d6fa2f06d0adfdf85322@kernel.org>
- <20241105195208.GC29862@gate.crashing.org>
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20241105195208.GC29862@gate.crashing.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: l3aRu8tgKptju9-xOMLrFcnp-sMl082c
-X-Proofpoint-GUID: l3aRu8tgKptju9-xOMLrFcnp-sMl082c
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0 phishscore=0
- clxscore=1015 mlxlogscore=841 adultscore=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411060043
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-On 06/11/24 1:22 am, Segher Boessenkool wrote:
-> Hi!
-> 
-> On Tue, Nov 05, 2024 at 06:17:51PM +0900, Masami Hiramatsu wrote:
->> On Tue, 5 Nov 2024 02:20:18 -0600
->> Segher Boessenkool <segher@kernel.crashing.org> wrote:
->>> On Mon, Nov 04, 2024 at 11:06:23PM +0530, Hari Bathini wrote:
->>>> Seems like a bit of misunderstanding there. Function entry here intends
->>>> to mean the actual start of function code (function prologue) - after
->>>> GEP and function profiling sequence (mflr r0; bl mcount).
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 30/10/2024 =C3=A0 12:39, Thomas Gleixner a =C3=A9crit=C2=A0:
+>> Folks!
+>>=20
+>> On Thu, Oct 10 2024 at 09:01, Thomas Wei=C3=9Fschuh wrote:
+>>> Historically each architecture defined their own datapage to store the
+>>> VDSO data. This stands in contrast to the generic nature of the VDSO
+>>> code itself.
+>>> We plan to introduce a generic framework for the management of the VDSO
+>>> data storage that can be used by all architectures and which works
+>>> together with the existing generic VDSO code.
 >>>
->>> What you call "function entry" here simply does not exist.  The compiler
->>> can -- and ***WILL***, ***DOES*** -- mix up all of that.
->>
->> Here is the "function entry" means the function address.
-> 
-> "Function entry point".  "Function entry" can mean whatever nebulous
-> thing done at the start of a function :-)
-> 
-> You're free to use your own terminology of course, but it help to use
-> standard names for standard things!
-> 
->> Not the prologue.
-> 
-> But that is literally what Hari said, so it confused me.
+>>> Before that is possible align the different architectures by
+>>> standardizing on the existing generic infrastructure and moving things
+>>> out of the VDSO data page which does not belong there.
+>>>
+>>> Patches	 1- 2:	csky
+>>> Patch	    3:	s390
+>>> Patches	 4- 5:	arm64
+>>> Patch	    6:	riscv
+>>> Patch	    7:	arm
+>>> Patch	    8:	LoongArch
+>>> Patch	    9:	MIPS
+>>> Patches 10-20:	x86
+>>> Patches 21-27:	powerpc
+>>> Patch      28: 	Renamings to avoid a name clash with the new code.
+>>=20
+>> As this has been sitting for two weeks now without major comments, I'm
+>> planning to merge that through the tip tree tomorrow.
+>
+> To avoid any future conflicts with powerpc tree, I suggest you merge=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git=20
+> topic/vdso into your tree before applying this series.
 
-Sorry about that. I should have said.. maybe prologue or whatever
-nebulous thing at the start of a function :-)
+I thought the same, but there actually isn't any conflict at the moment
+between the two trees.
 
-Basically, the address provided to test case can be any insn in the
-function code expect what the kernel considers function entry address..
+Some of Thomas W's later changes to convert arches to generic VDSO
+storage do conflict, but they look to be destined for the next merge
+window.
 
-Thanks
-Hari
-
+cheers
 
