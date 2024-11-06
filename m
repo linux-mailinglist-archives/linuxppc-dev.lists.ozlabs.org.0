@@ -1,73 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-2891-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2892-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8969BD9C0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 00:33:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 714D29BDA49
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 01:27:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjl4q4FQlz2yNn;
-	Wed,  6 Nov 2024 10:32:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XjmHT6jJ4z2yRF;
+	Wed,  6 Nov 2024 11:27:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730849579;
-	cv=none; b=gKWCNbh1ZAXGntR4MKHT4LKzsEdQI5Iy/KpGZ7kUdmIBFh1uwIQdmR3J1Yy6sOSZ8MLo2tjiUkOEvZMdX3nAjBNOmhyjtHVQPNIUq1UIPMhLujZa/y8mfC7uGCBczx2XsP4GT8QN+9Hw1r9fJ+LclrkHdWxbn7VVxquyzLSHghSFCzzQydsHb6vlNflAA8wsHGbnZJPYbFJiDLNAefkNsNItXlMWJR8z82eUt4kU7992MRJb4FSGU+6V8Co7fGQGoixhmUgYfcRYN8toLPowAsl4GB/dSW6Zr6POsnnt8HSb/0CvQsYys4sZy4FW4TgKLbjSIy+YEFnOK+LGu/DpuQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730852837;
+	cv=none; b=jC1DpVtXJbI4x1HyetiM88pNHfaPZumdes8HxdEZZ8e6yjb23NYtiEsZCc8Swu+cQlPWMrhLX9f9gLanmMN9b0FANgIsiEQY5C3iYfncdV5hLub+wOLbxA32LDb6nBqehgOkHZA9rJw3OEgz3O3LIWI7TAy7zux3WY2Xzyz8LQ6U8Y/ysH2kcZyXOk9eLHz2/1V5JumV64fwxj48pgCZpNfsBnDxE0MtQRPPqEmJDrSf6lLcF9b2LrhXsoJiCy68T75IrOIptGitmjGSLQrikAbNdHKmoYhHHLpRLZW6r+fp4qlDCndUoAigXcEEtdzEhS2gqVY7NZdrSzPwWqnHBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730849579; c=relaxed/relaxed;
-	bh=8cqZCEp7eNJ2OfxL1r/ADjYFb0+EUlA5qAAzz8dl9Ms=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=K0rd7REhTzDdqebpSvIZV2DYxAUaU8BFCM+vGiNH+htKkXBQHYpmFtOY2I3UMbd4LS2VHF8Z0/fkK+OMN5iFr+Dec6CyYK5GHvnBBmZqk37CYxmazZk14ybsO1M0RlYM5mkJK/zvCdxeZYksnoiS56jhQCGfjktYg747GHmiObXiaDLNtE68lIcOl9cuUWZp8v8WQ29H1RJrjMrU4nZQW49MstfdYE/nrKwFWPwyWWGTzFH49k1aRCXOsUI/Occ4ObWIlhtywRegDkISrje7BrKpQnPfUVPECXnB1KaIkvhNwCHW9GVyb6/oCyyu/bIgIZfxNbdX/BwjzTd9EjoQqg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Af4tqGey; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1730852837; c=relaxed/relaxed;
+	bh=pRO9xQlklRvT0E69gUtfh5sNxBrWxd3DuFYUq1k3Ijw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dwmwGc8CoicKQiOpzBGRdgtHsh0k/iTmrLPYbKkcGkY7hCMMQR/Fh58SUZvyVoZKszpO2Nz6Hi/Qv4dcOtCjA+vOJxuidwSgsBOwFYB77JXZb4dKL0wilIycUlFres+JJnMo2G2exRARzkopvC3ZTWGm45B+tPdPmIWPRt00z6OuCM+l8zqKHozuasLqt3UygKY+ifAm3bu9IPecw6YulApnTLmU8M5PWUe4lWtfVGqDC6e27rXk/+g4NmeUbE549tVlEE23nHWLKR78KIFCsJtGhrobCNbFKzD7+tYZfc+/GaPKVf3A4iJgZg2Toz52N8n4NXwkNsUsHfIfOy7UQQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=o3s57fQd; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12f; helo=mail-lf1-x12f.google.com; envelope-from=mmaurer@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Af4tqGey;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=o3s57fQd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::12f; helo=mail-lf1-x12f.google.com; envelope-from=mmaurer@google.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjl4m6WGQz2yMv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 10:32:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730849578; x=1762385578;
-  h=date:from:to:cc:subject:message-id;
-  bh=rN6FNgV1Q0zqBbFVHA2qcsLAg7t+ieoop2JOEB04Cxk=;
-  b=Af4tqGeykZ8TvboMTfUJuff3gc2B5DlnbKEtIrGcgVSVXLrY9TQ5UYnv
-   RsRf5IW95A2X/BAslZzsQVmwaWbnDvqKoBAcFd3d8mCVtwm8Eth56Ru/O
-   dTBRAhIF98zRz/AVHEUuBJKzUWxx0WXnpxh3s5NhJ4bZKMfM5dbhvrKjl
-   jK+54ozvTIVTnH+ktwVsyreOnB7UyfvGeQyYNgrR9hEn8i3aPR/WVUpIb
-   VrO6bZ37AYFGGxviX2rEcM5zRh9bh07fJ8yXrTNsrKqE5lqDOaoV1EWQH
-   Mg13cUNsLLXxgVJNDjNodXP+ixAepShgHoilWqbnSIrNF95UlRB/iml3c
-   Q==;
-X-CSE-ConnectionGUID: L4sevXHnRbq458ILpTxQ0w==
-X-CSE-MsgGUID: eGuSc8DyR4+CNkokuwvUkQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="48088567"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="48088567"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 15:32:53 -0800
-X-CSE-ConnectionGUID: iK9exlA3T4yZgm6QWjzaQQ==
-X-CSE-MsgGUID: C0lFJhgfSu2x8qxHHOdFQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,261,1725346800"; 
-   d="scan'208";a="115007077"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 05 Nov 2024 15:32:53 -0800
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t8T2Y-000mbZ-1c;
-	Tue, 05 Nov 2024 23:32:50 +0000
-Date: Wed, 06 Nov 2024 07:32:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:next-test] BUILD SUCCESS
- 19e0a70e6c3c1bf800b8ce9eb45864aa9e1e2781
-Message-ID: <202411060744.PZnz5eRb-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XjmHR51Htz2yLV
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 11:27:14 +1100 (AEDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-539e66ba398so8662e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Nov 2024 16:27:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1730852823; x=1731457623; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pRO9xQlklRvT0E69gUtfh5sNxBrWxd3DuFYUq1k3Ijw=;
+        b=o3s57fQdcfyEAy/URqe2DzGw8QVL2jqnZkRDDJBuBnwsOAJch08tM3HhZcZ67Ciygl
+         McZ2XYTeyudUacpVDtl2g9ePqRaQmrPK9PKdMAyZJC/jvxOoi45LdAqOVgQcvIzbXuG3
+         q0D65GoExBCZe3xoqHhPrme7prToffnREjTmjbadimB4NqeURFtz9YpgGTQEZxrA1uYL
+         XY2XMxBcHbzfVXEKgKGylNQdD0YQz5smbxJgmPg4rMCkIp36KZ1xBRFknUYlS5dOVWUY
+         u9rMzJZ4+wlt5mmDT+/UF2EMIBfbtqe0TkfkuVnbkxoSYhbTwBMZ/IJBJpqxr8BGHBen
+         PX3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730852823; x=1731457623;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pRO9xQlklRvT0E69gUtfh5sNxBrWxd3DuFYUq1k3Ijw=;
+        b=Bwr+uh0+TPEOAgtiJycauRyiyQgbHXVRiCsh/J7t2YVgTEi0VkKY/bKxe11Z1EwAF7
+         LEzDxbPsb+4pFw3yMJU6nvTU/EBS176wyweyXb5x7OzgHlP9xDxSJNKz/6pbVmSopWao
+         Wy7zObRi/sMjckESnBvXs9XO31QLMzjpPHr0to7N7uW91BSvxJ5tRxhFGGt5tljpbvlm
+         7gt7n/buy8I2T1f4do9latz2QKK77FQBMpRfJx3F2dhAWUcwDjYTZBglXYD2zgXA8L+4
+         NH3Ad44ZrAPpSmDN4x+A4vPJSanmSZvaRHFiaRJcjagjB8fJDWSnjRtcz7cxb4o3F6ME
+         GGKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmsbg+JxavvvFAshzW0dYrcTfCDoUpRTik9IlG7nVDdG9fhO9E7OB6nKOi6uuifFejfRTjlJqAIB4fD08=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwOe968Pjzp3Nla/rXV7T08b4j7eVkXmkI4/aDQ613IWmD1dZrb
+	n1nG/CcK8y4WD02j4oqday9Kp5YoQHp8adk+TrfuI0oiCFvXHbhGnLHEyhd+Qe2ANmhuM6JD1X7
+	hoxFBaKRVrdlaemz6NLTIne+Jh9GB9PxAjv4/
+X-Gm-Gg: ASbGncuZ5ntn4nOe3uMsQVXPzewOVG62XYw6V5NclQqn//hLFFTI1+MRhTCJnOYPSZO
+	uUsq+0BvptCeeF+Axt81ECyKh1+NWBKVLua1DGfJBFeP0Etq79gZKHR2HlgOn7w==
+X-Google-Smtp-Source: AGHT+IE+Ve5zkLIG/2ctO+hgokTHSdkzeAFtePIoGq4t8jD3ad7SdLQ0XlUXXaSH2Lu/eahr3Xg9xbPc7h0Nl+t5HbI=
+X-Received: by 2002:a05:6512:4ca:b0:533:49ab:780e with SMTP id
+ 2adb3069b0e04-53d7cc42facmr199195e87.2.1730852823031; Tue, 05 Nov 2024
+ 16:27:03 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,275 +75,115 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
+ <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
+ <ZyNr--iMz_6Fj4yq@bombadil.infradead.org> <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
+ <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org>
+In-Reply-To: <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Tue, 5 Nov 2024 16:26:51 -0800
+Message-ID: <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
+Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
+To: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>, Lucas De Marchi <lucas.de.marchi@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 19e0a70e6c3c1bf800b8ce9eb45864aa9e1e2781  powerpc: Use str_enabled_disabled() helper function
+On Fri, Nov 1, 2024 at 2:10=E2=80=AFPM Luis Chamberlain <mcgrof@kernel.org>=
+ wrote:
+>
+> On Thu, Oct 31, 2024 at 01:00:28PM -0700, Matthew Maurer wrote:
+> > > The question is, if only extended moversions are used, what new tooli=
+ng
+> > > requirements are there? Can you test using only extended modversions?
+> > >
+> > >   Luis
+> >
+> > I'm not sure precisely what you're asking for. Do you want:
+> > 1. A kconfig that suppresses the emission of today's MODVERSIONS
+> > format?
+>
+> Yes that's right, a brave new world, and with the warning of that.
 
-elapsed time: 736m
+OK, I can send another revision with a suppression config, perhaps
+CONFIG_NO_BASIC_MODVERSIONS
 
-configs tested: 254
-configs skipped: 11
+>
+>
+> > This would be fairly easy to do, but I was leaving it enabled
+> > for compatibility's sake, at least until extended modversions become
+> > more common. This way existing `kmod` tools and kernels would continue
+> > to be able to load new-style modules.
+>
+> Sure, understood why we'd have both.
+>
+> > 2. libkmod support for parsing the new format? I can do that fairly
+> > easily too, but wanted the format actually decided on and accepted
+> > before I started modifying things that read modversions.
+>
+> This is implied, what I'd like is for an A vs B comparison to be able to
+> be done on even without rust modules, so that we can see if really
+> libkmod changes are all that's needed. Does boot fail without a new
+> libkmod for this? If so the Kconfig should specificy that for this new
+> brave new world.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+libkmod changes are not needed for boot - the userspace tools do not
+examine this data for anything inline with boot at the moment, libkmod
+only looks at it for kmod_module_get_versions, and modprobe only looks
+at that with --show-modversions or --dump-modversions, which are not
+normally part of boot.
 
-tested configs:
-alpha                             allnoconfig    gcc-14.1.0
-alpha                            allyesconfig    clang-20
-alpha                               defconfig    gcc-14.1.0
-arc                              allmodconfig    clang-20
-arc                               allnoconfig    gcc-14.1.0
-arc                              allyesconfig    clang-20
-arc                                 defconfig    gcc-14.1.0
-arc                        nsim_700_defconfig    gcc-14.1.0
-arc                   randconfig-001-20241105    gcc-14.1.0
-arc                   randconfig-001-20241106    gcc-14.1.0
-arc                   randconfig-002-20241105    gcc-14.1.0
-arc                   randconfig-002-20241106    gcc-14.1.0
-arc                    vdk_hs38_smp_defconfig    gcc-14.1.0
-arm                              allmodconfig    clang-20
-arm                               allnoconfig    gcc-14.1.0
-arm                              allyesconfig    clang-20
-arm                       aspeed_g5_defconfig    gcc-14.1.0
-arm                        clps711x_defconfig    clang-20
-arm                        clps711x_defconfig    gcc-14.1.0
-arm                                 defconfig    gcc-14.1.0
-arm                       imx_v4_v5_defconfig    gcc-14.1.0
-arm                           imxrt_defconfig    gcc-14.1.0
-arm                          ixp4xx_defconfig    clang-20
-arm                             mxs_defconfig    gcc-14.1.0
-arm                           omap1_defconfig    gcc-14.1.0
-arm                   randconfig-001-20241105    gcc-14.1.0
-arm                   randconfig-001-20241106    gcc-14.1.0
-arm                   randconfig-002-20241105    gcc-14.1.0
-arm                   randconfig-002-20241106    gcc-14.1.0
-arm                   randconfig-003-20241105    gcc-14.1.0
-arm                   randconfig-003-20241106    gcc-14.1.0
-arm                   randconfig-004-20241105    gcc-14.1.0
-arm                   randconfig-004-20241106    gcc-14.1.0
-arm                         socfpga_defconfig    gcc-14.1.0
-arm                           spitz_defconfig    gcc-14.1.0
-arm64                            allmodconfig    clang-20
-arm64                             allnoconfig    gcc-14.1.0
-arm64                               defconfig    gcc-14.1.0
-arm64                 randconfig-001-20241105    gcc-14.1.0
-arm64                 randconfig-001-20241106    gcc-14.1.0
-arm64                 randconfig-002-20241105    gcc-14.1.0
-arm64                 randconfig-002-20241106    gcc-14.1.0
-arm64                 randconfig-003-20241105    gcc-14.1.0
-arm64                 randconfig-003-20241106    gcc-14.1.0
-arm64                 randconfig-004-20241105    gcc-14.1.0
-arm64                 randconfig-004-20241106    gcc-14.1.0
-csky                              allnoconfig    gcc-14.1.0
-csky                                defconfig    gcc-14.1.0
-csky                  randconfig-001-20241105    gcc-14.1.0
-csky                  randconfig-001-20241106    gcc-14.1.0
-csky                  randconfig-002-20241105    gcc-14.1.0
-csky                  randconfig-002-20241106    gcc-14.1.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    gcc-14.1.0
-hexagon                          allyesconfig    clang-20
-hexagon                             defconfig    gcc-14.1.0
-hexagon               randconfig-001-20241105    gcc-14.1.0
-hexagon               randconfig-001-20241106    gcc-14.1.0
-hexagon               randconfig-002-20241105    gcc-14.1.0
-hexagon               randconfig-002-20241106    gcc-14.1.0
-i386                             allmodconfig    clang-19
-i386                              allnoconfig    clang-19
-i386                             allyesconfig    clang-19
-i386        buildonly-randconfig-001-20241105    clang-19
-i386        buildonly-randconfig-001-20241106    gcc-12
-i386        buildonly-randconfig-002-20241105    clang-19
-i386        buildonly-randconfig-002-20241106    gcc-12
-i386        buildonly-randconfig-003-20241105    clang-19
-i386        buildonly-randconfig-003-20241106    gcc-12
-i386        buildonly-randconfig-004-20241105    clang-19
-i386        buildonly-randconfig-004-20241106    gcc-12
-i386        buildonly-randconfig-005-20241105    clang-19
-i386        buildonly-randconfig-005-20241106    gcc-12
-i386        buildonly-randconfig-006-20241105    clang-19
-i386        buildonly-randconfig-006-20241106    gcc-12
-i386                                defconfig    clang-19
-i386                  randconfig-001-20241105    clang-19
-i386                  randconfig-001-20241106    gcc-12
-i386                  randconfig-002-20241105    clang-19
-i386                  randconfig-002-20241106    gcc-12
-i386                  randconfig-003-20241105    clang-19
-i386                  randconfig-003-20241106    gcc-12
-i386                  randconfig-004-20241105    clang-19
-i386                  randconfig-004-20241106    gcc-12
-i386                  randconfig-005-20241105    clang-19
-i386                  randconfig-005-20241106    gcc-12
-i386                  randconfig-006-20241105    clang-19
-i386                  randconfig-006-20241106    gcc-12
-i386                  randconfig-011-20241105    clang-19
-i386                  randconfig-011-20241106    gcc-12
-i386                  randconfig-012-20241105    clang-19
-i386                  randconfig-012-20241106    gcc-12
-i386                  randconfig-013-20241105    clang-19
-i386                  randconfig-013-20241106    gcc-12
-i386                  randconfig-014-20241105    clang-19
-i386                  randconfig-014-20241106    gcc-12
-i386                  randconfig-015-20241105    clang-19
-i386                  randconfig-015-20241106    gcc-12
-i386                  randconfig-016-20241105    clang-19
-i386                  randconfig-016-20241106    gcc-12
-loongarch                        allmodconfig    gcc-14.1.0
-loongarch                         allnoconfig    gcc-14.1.0
-loongarch                           defconfig    gcc-14.1.0
-loongarch             randconfig-001-20241105    gcc-14.1.0
-loongarch             randconfig-001-20241106    gcc-14.1.0
-loongarch             randconfig-002-20241105    gcc-14.1.0
-loongarch             randconfig-002-20241106    gcc-14.1.0
-m68k                             allmodconfig    gcc-14.1.0
-m68k                              allnoconfig    gcc-14.1.0
-m68k                             allyesconfig    gcc-14.1.0
-m68k                                defconfig    gcc-14.1.0
-m68k                       m5275evb_defconfig    clang-20
-m68k                        mvme147_defconfig    clang-20
-m68k                        mvme16x_defconfig    clang-20
-microblaze                       allmodconfig    gcc-14.1.0
-microblaze                        allnoconfig    gcc-14.1.0
-microblaze                       allyesconfig    gcc-14.1.0
-microblaze                          defconfig    gcc-14.1.0
-microblaze                      mmu_defconfig    gcc-14.1.0
-mips                              allnoconfig    gcc-14.1.0
-mips                         bigsur_defconfig    gcc-14.1.0
-mips                           gcw0_defconfig    gcc-14.1.0
-mips                        maltaup_defconfig    clang-20
-nios2                         10m50_defconfig    clang-20
-nios2                             allnoconfig    gcc-14.1.0
-nios2                               defconfig    gcc-14.1.0
-nios2                 randconfig-001-20241105    gcc-14.1.0
-nios2                 randconfig-001-20241106    gcc-14.1.0
-nios2                 randconfig-002-20241105    gcc-14.1.0
-nios2                 randconfig-002-20241106    gcc-14.1.0
-openrisc                          allnoconfig    clang-20
-openrisc                         allyesconfig    gcc-14.1.0
-openrisc                            defconfig    gcc-12
-openrisc                       virt_defconfig    clang-20
-parisc                           allmodconfig    gcc-14.1.0
-parisc                            allnoconfig    clang-20
-parisc                           allyesconfig    gcc-14.1.0
-parisc                              defconfig    gcc-12
-parisc                randconfig-001-20241105    gcc-14.1.0
-parisc                randconfig-001-20241106    gcc-14.1.0
-parisc                randconfig-002-20241105    gcc-14.1.0
-parisc                randconfig-002-20241106    gcc-14.1.0
-parisc64                            defconfig    gcc-14.1.0
-powerpc                          allmodconfig    gcc-14.1.0
-powerpc                           allnoconfig    clang-20
-powerpc                          allyesconfig    gcc-14.1.0
-powerpc                      cm5200_defconfig    gcc-14.1.0
-powerpc                        fsp2_defconfig    clang-20
-powerpc                       holly_defconfig    clang-20
-powerpc                      mgcoge_defconfig    gcc-14.1.0
-powerpc                 mpc832x_rdb_defconfig    gcc-14.1.0
-powerpc                 mpc834x_itx_defconfig    gcc-14.1.0
-powerpc                      ppc44x_defconfig    gcc-14.1.0
-powerpc               randconfig-001-20241105    gcc-14.1.0
-powerpc               randconfig-001-20241106    gcc-14.1.0
-powerpc               randconfig-002-20241105    gcc-14.1.0
-powerpc               randconfig-002-20241106    gcc-14.1.0
-powerpc               randconfig-003-20241105    gcc-14.1.0
-powerpc               randconfig-003-20241106    gcc-14.1.0
-powerpc                     skiroot_defconfig    gcc-14.1.0
-powerpc64             randconfig-001-20241105    gcc-14.1.0
-powerpc64             randconfig-001-20241106    gcc-14.1.0
-powerpc64             randconfig-002-20241105    gcc-14.1.0
-powerpc64             randconfig-002-20241106    gcc-14.1.0
-powerpc64             randconfig-003-20241105    gcc-14.1.0
-powerpc64             randconfig-003-20241106    gcc-14.1.0
-riscv                            allmodconfig    gcc-14.1.0
-riscv                             allnoconfig    clang-20
-riscv                            allyesconfig    gcc-14.1.0
-riscv                               defconfig    gcc-12
-riscv             nommu_k210_sdcard_defconfig    clang-20
-riscv                 randconfig-001-20241105    gcc-14.1.0
-riscv                 randconfig-001-20241106    gcc-14.1.0
-riscv                 randconfig-002-20241105    gcc-14.1.0
-riscv                 randconfig-002-20241106    gcc-14.1.0
-s390                             allmodconfig    clang-20
-s390                             allmodconfig    gcc-14.1.0
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.1.0
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20241105    gcc-14.1.0
-s390                  randconfig-001-20241106    gcc-14.1.0
-s390                  randconfig-002-20241105    gcc-14.1.0
-s390                  randconfig-002-20241106    gcc-14.1.0
-sh                               allmodconfig    gcc-14.1.0
-sh                                allnoconfig    gcc-14.1.0
-sh                               allyesconfig    gcc-14.1.0
-sh                         ap325rxa_defconfig    gcc-14.1.0
-sh                                  defconfig    gcc-12
-sh                        edosk7705_defconfig    gcc-14.1.0
-sh                    randconfig-001-20241105    gcc-14.1.0
-sh                    randconfig-001-20241106    gcc-14.1.0
-sh                    randconfig-002-20241105    gcc-14.1.0
-sh                    randconfig-002-20241106    gcc-14.1.0
-sh                      rts7751r2d1_defconfig    gcc-14.1.0
-sh                          sdk7786_defconfig    gcc-14.1.0
-sh                           se7724_defconfig    gcc-14.1.0
-sh                   secureedge5410_defconfig    gcc-14.1.0
-sh                           sh2007_defconfig    gcc-14.1.0
-sh                   sh7724_generic_defconfig    gcc-14.1.0
-sparc                            allmodconfig    gcc-14.1.0
-sparc64                             defconfig    gcc-12
-sparc64               randconfig-001-20241105    gcc-14.1.0
-sparc64               randconfig-001-20241106    gcc-14.1.0
-sparc64               randconfig-002-20241105    gcc-14.1.0
-sparc64               randconfig-002-20241106    gcc-14.1.0
-um                               alldefconfig    clang-20
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-20
-um                               allyesconfig    clang-20
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20241105    gcc-14.1.0
-um                    randconfig-001-20241106    gcc-14.1.0
-um                    randconfig-002-20241105    gcc-14.1.0
-um                    randconfig-002-20241106    gcc-14.1.0
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20241105    gcc-12
-x86_64      buildonly-randconfig-002-20241105    gcc-12
-x86_64      buildonly-randconfig-003-20241105    gcc-12
-x86_64      buildonly-randconfig-004-20241105    gcc-12
-x86_64      buildonly-randconfig-005-20241105    gcc-12
-x86_64      buildonly-randconfig-006-20241105    gcc-12
-x86_64                              defconfig    clang-19
-x86_64                                  kexec    clang-19
-x86_64                                  kexec    gcc-12
-x86_64                randconfig-001-20241105    gcc-12
-x86_64                randconfig-002-20241105    gcc-12
-x86_64                randconfig-003-20241105    gcc-12
-x86_64                randconfig-004-20241105    gcc-12
-x86_64                randconfig-005-20241105    gcc-12
-x86_64                randconfig-006-20241105    gcc-12
-x86_64                randconfig-011-20241105    gcc-12
-x86_64                randconfig-012-20241105    gcc-12
-x86_64                randconfig-013-20241105    gcc-12
-x86_64                randconfig-014-20241105    gcc-12
-x86_64                randconfig-015-20241105    gcc-12
-x86_64                randconfig-016-20241105    gcc-12
-x86_64                randconfig-071-20241105    gcc-12
-x86_64                randconfig-072-20241105    gcc-12
-x86_64                randconfig-073-20241105    gcc-12
-x86_64                randconfig-074-20241105    gcc-12
-x86_64                randconfig-075-20241105    gcc-12
-x86_64                randconfig-076-20241105    gcc-12
-x86_64                               rhel-8.3    gcc-12
-xtensa                            allnoconfig    gcc-14.1.0
-xtensa                       common_defconfig    clang-20
-xtensa                generic_kc705_defconfig    gcc-14.1.0
-xtensa                randconfig-001-20241105    gcc-14.1.0
-xtensa                randconfig-001-20241106    gcc-14.1.0
-xtensa                randconfig-002-20241105    gcc-14.1.0
-xtensa                randconfig-002-20241106    gcc-14.1.0
+With the code as is, the only change will be that if a module with
+EXTENDED_MODVERSIONS set contains an over-length symbol (which
+wouldn't have been possible before), the overlong symbol's modversion
+data will not appear in --show-modversions. After patching `libkmod`
+in a follow-up patch, long symbols would appear as well. If booted
+against an old kernel, long symbols will not have their CRCs in the
+list to be checked. However, the old kernel could not export these
+symbols, so it will fail to resolve the symbol and fail the load
+regardless.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+If we add and enable NO_BASIC_MODVERSIONS like you suggested above,
+today's --show-modversions will claim there is no modversions data.
+Applying a libkmod patch will result in modversions info being
+displayed by that command again. If booted against a new kernel,
+everything will be fine. If booted against an old kernel, it will
+behave as though there is no modversions information.
+
+>
+>
+> If a distribution can leverage just one format, why would they not
+> consider it if they can ensure the proper tooling is in place. We
+> haven't itemized the differences in practice and this could help
+> with this. One clear difference so far is the kabi stuff, but that's
+
+The kabi stuff is at least partially decoupled - you can (and it
+sounds like from the responses to Sami's change, occasionally might
+want to) enable debug symbol based modversions even without extended
+modversions. You can also enable extended modversions without the
+debug symbol based modversions, though there are less clear use-cases
+for that.
+
+> just evaluating one way of doing things so far, I suspect we'll get
+> more review on that from Petr soon.
+>
+>   Luis
 
