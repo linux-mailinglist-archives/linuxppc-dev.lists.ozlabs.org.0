@@ -1,56 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-2904-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2906-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25609BE1A1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 10:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0476E9BE3B7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 11:09:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xjzlj437zz30Bp;
-	Wed,  6 Nov 2024 20:04:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xk1Bw4f6Lz2yN8;
+	Wed,  6 Nov 2024 21:09:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.132
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730883841;
-	cv=none; b=nxmjcAZUKqfPQi8vR/820uR2o88A4Ji2eFk0kvzvApaMu04Mxr+P+woLu2VYU4ZOa8fZJX05DtA6JCIY1/Nf8aAbe+sUsAS3HOXksVJe/Yl4+9bYfZGQf+vS462bTObyFkurT8Io296Tzvwf/fdtgFfU2XjYlwI6EKo2ccA8nOKS4d5dTnBV68+DbU7wBTxhGoTEwU6l+G9fTSD/QLkVtx953T+m+v1+dyMNv9eNHSy5ACLDv4ujLrMexqSLyxddPeIZqL3c8qV0cgreDdOo+gfr7WuQDYVqXJ3HWMpc1JUft1P2bKerkFOQlS2MtcjqUOkEO0+b4m8vMnNQUqVRLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730887752;
+	cv=none; b=QaBC70FQdBWk4GT+Loge55NKs6CTdiQeD7G68htaZof5pemgeSNxdWrCy2HS5YJL6Hm8lkoHCwl/i21zUGQ6S41Ncj0TJOfs9YT7Pw9ViQKt5QUjhGbkF6bPwU1o+EezMsAaeQbDwMEQsdLrTjQAW1S92CwNC8mcUSNRTVSA3J3Aq53LVVSyPQvRmCg9bvE92JCW+JiytJRzo2pbyJEUv1mRGNC7tnNuGDQZhoEbv6HkfEd7VYEuxJ28KGAEogFqPVn+Ze42INgbN5TF2aYR+UBG58b0s9SkDaJ/21lhcQ7UnV53R3UtK90lfy/1GkYTm83eIReapRRcmSkqrLubkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730883841; c=relaxed/relaxed;
-	bh=Z+sxZ++Zk/sXquFko87mDs4djKewv/tiZai6wAuYD2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqxvghjhO753yEiBOtj7KezWUttr3xf0LRxOi2Qhs/fwkFirMpMg1AjdY57jqzKo6BxWF5sV1Q/17g2zwWhTj7RCFzfp61O/3YjjoGIF2O84YYXKlYYKxgYEQOAJeTK2ABajpHqINQhD2vp9emcTkFYoPchvAQJQYfXI8aV1/gtHXxa2gV9ETc/jRyZlcqJIzUpW7RNqm6VSeg99mEtWY516Q8Q/nJaWUWokR+8R28gCRP1ZA7Cx+WsXzvSEqlxWETQFreYzpYUu/pC0FVRT6g37/N0d0jVQ39ModWS045wRaYOW34TE+xbCa5W7OgWPL1BADC3iWaiP8RuMWcFSow==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=dA+D8MA+; dkim-atps=neutral; spf=pass (client-ip=115.124.30.132; helo=out30-132.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+	t=1730887752; c=relaxed/relaxed;
+	bh=uzAxsW9qe7LGL5fm8R1C+c+yvZP1tPYHwYmHN3cXmH8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=V4MObewe2Fjglr1zO8etqV3Iv3otNkP1mtCnwg8xS5YGqeOiMa2kjqe8Iw6gFkRuzeqE0hQzsbPPzEuws0a8wriq1PR29S0M9P/q8dZHu+Skzs020RFLhRYEMoTXgUCsWCn6vaOCOe00vn2L+5LQdygyS/nMA24ySL2DajOGa9S6rdj3qYUXDDNqpunC2tvSGLJf6iuEygC4TZE0iK09nsFAVT8X86qC45QYKczgLkCovclx41D7mNnOdmARh3GrXTKSPr9qDg1NY5D0WoIL9h/yhcM2OVTMxX/QEFy70p34x+mXYB/yyredMO+vgJ3P1mt6nVi2MetIvEU+ILIsCw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KAlykOW8; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=dA+D8MA+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KAlykOW8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132; helo=out30-132.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xjzlf5YWZz2yxj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 20:03:57 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1730883833; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=Z+sxZ++Zk/sXquFko87mDs4djKewv/tiZai6wAuYD2I=;
-	b=dA+D8MA+u1EivGpXdqXtyxoSMEr7sdEvK2Q91Iw0WLcnsqZBnMtDo+EMXdhtPVduAuG79J2riXn4LwiQkWU2hyGraoQ6RvYa3PKabkN76WXW3iul17I183rhjUOJWm31cYBIg0PMqkyZS15Ne/qV2OQsXiQUodp5sLmo84V5VmM=
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WIqmpDn_1730883831 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 06 Nov 2024 17:03:52 +0800
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: bhelgaas@google.com,
-	mahesh@linux.ibm.com,
-	oohall@gmail.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	xueshuai@linux.alibaba.com
-Subject: [RFC PATCH v1 2/2] PCI/AER: report fatal errors of RCiEP and EP if link recoverd
-Date: Wed,  6 Nov 2024 17:03:39 +0800
-Message-ID: <20241106090339.24920-3-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20241106090339.24920-1-xueshuai@linux.alibaba.com>
-References: <20241106090339.24920-1-xueshuai@linux.alibaba.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xk1Bv0tFVz2y89
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Nov 2024 21:09:10 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A69eNHG028661;
+	Wed, 6 Nov 2024 10:09:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=uzAxsW
+	9qe7LGL5fm8R1C+c+yvZP1tPYHwYmHN3cXmH8=; b=KAlykOW8xJAEvp+Sz+CbwW
+	D+g+I2CeHXH85klys6MQEp0WyOWAyQw4oo4LOjZ+Up+w7YKOnGCj6XBmopj/UaDV
+	wCUV2XDj3N3ATicul0IWw5m+HesOYD4Af35udkWGna57NTOoVDOREBOKfHrUHVqL
+	1skxUawCkIu5O/wIViL4BRGc9knSjQYvjkYU7c5Plnespaew5rpocl8E/e5TeaRO
+	6E4mQyPZOr2nAUOBBeZzc8sWOAIhTjA8/Gmyxf3fRhIy9urWNxX7tdYjMjyFCBsf
+	MmrMoNLOyTgI2s2o9w1dNNDFVeLM7zO+yRu2wuKlP9vnA7kvPX+iVvlvPAWpecSQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42r61a03d9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Nov 2024 10:09:01 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4A6A91KX019771;
+	Wed, 6 Nov 2024 10:09:01 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42r61a03d4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Nov 2024 10:09:01 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A64C8ux024707;
+	Wed, 6 Nov 2024 09:35:24 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42nxds5xqs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Nov 2024 09:35:24 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A69ZLY949545682
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 6 Nov 2024 09:35:21 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1620420043;
+	Wed,  6 Nov 2024 09:35:21 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3147920040;
+	Wed,  6 Nov 2024 09:35:12 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.245.90])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  6 Nov 2024 09:35:11 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,157 +84,207 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH] tools/perf/tests/expr: Make the system_tsc_freq test only
+ for intel
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <CAP-5=fXCYURva6Q8ktRVmnf2QCcsr-E3fPn327k0JRCw_9fn3A@mail.gmail.com>
+Date: Wed, 6 Nov 2024 15:04:57 +0530
+Cc: Namhyung Kim <namhyung@kernel.org>, James Clark <james.clark@linaro.org>,
+        tmricht@linux.ibm.com, acme@kernel.org, jolsa@kernel.org,
+        adrian.hunter@intel.com, linux-perf-users@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, akanksha@linux.ibm.com,
+        maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com,
+        hbathini@linux.ibm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BBF1A4DC-3BD9-4377-BE2F-CBEFE55F0497@linux.vnet.ibm.com>
+References: <20241022140156.98854-1-atrajeev@linux.vnet.ibm.com>
+ <ZyF2-XNUh38p_5Gg@google.com>
+ <B72F330F-2A56-41B0-ABED-FCA7DC9EE711@linux.vnet.ibm.com>
+ <CAP-5=fXCYURva6Q8ktRVmnf2QCcsr-E3fPn327k0JRCw_9fn3A@mail.gmail.com>
+To: Ian Rogers <irogers@google.com>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vCs21PnQ_Yy-cy98M-4_ISc85Rw7ajqW
+X-Proofpoint-ORIG-GUID: wh0OOK27BzqAMJwFkxzJpS0din53RmeJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ suspectscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ lowpriorityscore=0 spamscore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411060082
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_NONE autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The AER driver has historically avoided reading the configuration space of an
-endpoint or RCiEP that reported a fatal error, considering the link to that
-device unreliable. Consequently, when a fatal error occurs, the AER and DPC
-drivers do not report specific error types, resulting in logs like:
 
-[  245.281980] pcieport 0000:30:03.0: EDR: EDR event received
-[  245.287466] pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
-[  245.295372] pcieport 0000:30:03.0: DPC: ERR_FATAL detected
-[  245.300849] pcieport 0000:30:03.0: AER: broadcast error_detected message
-[  245.307540] nvme nvme0: frozen state error detected, reset controller
-[  245.722582] nvme 0000:34:00.0: ready 0ms after DPC
-[  245.727365] pcieport 0000:30:03.0: AER: broadcast slot_reset message
 
-But, if the link recovered after hot reset, we can safely access AER status of
-the error device. In such case, report fatal error which helps to figure out the
-error root case.
+> On 5 Nov 2024, at 2:14=E2=80=AFAM, Ian Rogers <irogers@google.com> =
+wrote:
+>=20
+> On Sun, Nov 3, 2024 at 8:17=E2=80=AFPM Athira Rajeev
+> <atrajeev@linux.vnet.ibm.com> wrote:
+>>=20
+>>=20
+>>=20
+>>> On 30 Oct 2024, at 5:29=E2=80=AFAM, Namhyung Kim =
+<namhyung@kernel.org> wrote:
+>>>=20
+>>> Hello,
+>>>=20
+>>> On Tue, Oct 22, 2024 at 07:31:56PM +0530, Athira Rajeev wrote:
+>>>> The "Simple expression parser" test fails on powerpc
+>>>> as below:
+>>>>=20
+>>>> parsing metric: #system_tsc_freq
+>>>> Unrecognized literal '#system_tsc_freq'literal: #system_tsc_freq =3D =
+nan
+>>>> syntax error
+>>>> FAILED tests/expr.c:247 #system_tsc_freq
+>>>> ---- end(-1) ----
+>>>> 7: Simple expression parser  : FAILED!
+>>>>=20
+>>>> In the test, system_tsc_freq is checked as below:
+>>>>=20
+>>>> if (is_intel)
+>>>>   TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
+>>>> else
+>>>>=20
+>>>> But commit 609aa2667f67 ("perf tool_pmu: Switch to standard
+>>>> pmu functions and json descriptions")' changed condition in
+>>>=20
+>>> Probably need to put it as Fixes: tag.
+>>>=20
+>>>=20
+>>>> tool_pmu__skip_event so that system_tsc_freq event should
+>>>> only appear on x86
+>>>>=20
+>>>> +#if !defined(__i386__) && !defined(__x86_64__)
+>>>> +       /* The system_tsc_freq event should only appear on x86. */
+>>>> +       if (strcasecmp(name, "system_tsc_freq") =3D=3D 0)
+>>>> +               return true;
+>>>> +#endif
+>>>>=20
+>>>> After this commit, the testcase breaks for expr__parse of
+>>>> system_tsc_freq in powerpc case. Fix the testcase to have
+>>>> complete system_tsc_freq test within "is_intel" check.
+>>>=20
+>>> Ian, are you ok with this?
+>>>=20
+>>> Thanks,
+>>> Namhyung
+>>>=20
+>>=20
+>> Hi Ian
+>>=20
+>> If the change looks good to you, I will send a V2 with Fixes tag =
+added. Please share your review comments
+>>=20
+>> Hi James, Thomas
+>>=20
+>> Looking for help to test since in non-intel platform, this test will =
+fail without the patch
+>=20
+>=20
+> Hi Athira,
+>=20
+> sorry for the breakage and thank you for the detailed explanation. As
+> the code will run on AMD I think your change will break that - . It is
+> probably safest to keep the ".. else { .." for this case but guard it
+> in the ifdef.
+>=20
 
-After this patch, the logs like:
+Hi Ian
 
-[  414.356755] pcieport 0000:30:03.0: EDR: EDR event received
-[  414.362240] pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
-[  414.370148] pcieport 0000:30:03.0: DPC: ERR_FATAL detected
-[  414.375642] pcieport 0000:30:03.0: AER: broadcast error_detected message
-[  414.382335] nvme nvme0: frozen state error detected, reset controller
-[  414.645413] pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
-[  414.788016] nvme 0000:34:00.0: ready 0ms after DPC
-[  414.796975] nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
-[  414.807312] nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
-[  414.815305] nvme 0000:34:00.0:    [ 4] DLP                    (First)
-[  414.821768] pcieport 0000:30:03.0: AER: broadcast slot_reset message
+Thanks for your comments. Does the below change looks good ?
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/pci/pci.h      |  1 +
- drivers/pci/pcie/aer.c | 50 ++++++++++++++++++++++++++++++++++++++++++
- drivers/pci/pcie/err.c |  6 +++++
- 3 files changed, 57 insertions(+)
+diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
+index e3aa9d4fcf3a..f5b2d96bb59b 100644
+--- a/tools/perf/tests/expr.c
++++ b/tools/perf/tests/expr.c
+@@ -74,14 +74,12 @@ static int test__expr(struct test_suite *t =
+__maybe_unused, int subtest __maybe_u
+    double val, num_cpus_online, num_cpus, num_cores, num_dies, =
+num_packages;
+    int ret;
+    struct expr_parse_ctx *ctx;
+-    bool is_intel =3D false;
+    char strcmp_cpuid_buf[256];
+    struct perf_pmu *pmu =3D perf_pmus__find_core_pmu();
+    char *cpuid =3D perf_pmu__getcpuid(pmu);
+    char *escaped_cpuid1, *escaped_cpuid2;
+=20
+    TEST_ASSERT_VAL("get_cpuid", cpuid);
+-    is_intel =3D strstr(cpuid, "Intel") !=3D NULL;
+=20
+    TEST_ASSERT_EQUAL("ids_union", test_ids_union(), 0);
+=20
+@@ -244,11 +242,13 @@ static int test__expr(struct test_suite *t =
+__maybe_unused, int subtest __maybe_u
+    if (num_dies) // Some platforms do not have CPU die support, for =
+example s390
+        TEST_ASSERT_VAL("#num_dies >=3D #num_packages", num_dies >=3D =
+num_packages);
+=20
++#if defined(__i386__) && defined(__x86_64__)
+    TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, =
+"#system_tsc_freq") =3D=3D 0);
+-    if (is_intel)
++    if (strstr(cpuid, "Intel") !=3D NULL)
+        TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
+    else
+        TEST_ASSERT_VAL("#system_tsc_freq =3D=3D 0", fpclassify(val) =3D=3D=
+ FP_ZERO);
++#endif
+=20
+    /*
+     * Source count returns the number of events aggregating in a leader
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 0866f79aec54..143f960a813d 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -505,6 +505,7 @@ struct aer_err_info {
- };
- 
- int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
-+int aer_get_device_fatal_error_info(struct pci_dev *dev, struct aer_err_info *info);
- void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
- #endif	/* CONFIG_PCIEAER */
- 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 13b8586924ea..0c1e382ce117 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1252,6 +1252,56 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
- 	return 1;
- }
- 
-+/**
-+ * aer_get_device_fatal_error_info - read fatal error status from EP or RCiEP
-+ * and store it to info
-+ * @dev: pointer to the device expected to have a error record
-+ * @info: pointer to structure to store the error record
-+ *
-+ * Return 1 on success, 0 on error.
-+ *
-+ * Note that @info is reused among all error devices. Clear fields properly.
-+ */
-+int aer_get_device_fatal_error_info(struct pci_dev *dev, struct aer_err_info *info)
-+{
-+	int type = pci_pcie_type(dev);
-+	int aer = dev->aer_cap;
-+	u32 aercc;
-+
-+	pci_info(dev, "type :%d\n", type);
-+
-+	/* Must reset in this function */
-+	info->status = 0;
-+	info->tlp_header_valid = 0;
-+	info->severity = AER_FATAL;
-+
-+	/* The device might not support AER */
-+	if (!aer)
-+		return 0;
-+
-+
-+	if (type == PCI_EXP_TYPE_ENDPOINT || type == PCI_EXP_TYPE_RC_END) {
-+		/* Link is healthy for IO reads now */
-+		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
-+			&info->status);
-+		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
-+			&info->mask);
-+		if (!(info->status & ~info->mask))
-+			return 0;
-+
-+		/* Get First Error Pointer */
-+		pci_read_config_dword(dev, aer + PCI_ERR_CAP, &aercc);
-+		info->first_error = PCI_ERR_CAP_FEP(aercc);
-+
-+		if (info->status & AER_LOG_TLP_MASKS) {
-+			info->tlp_header_valid = 1;
-+			pcie_read_tlp_log(dev, aer + PCI_ERR_HEADER_LOG, &info->tlp);
-+		}
-+	}
-+
-+	return 1;
-+}
-+
- static inline void aer_process_err_devices(struct aer_err_info *e_info)
- {
- 	int i;
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index 31090770fffc..a74ae6a55064 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -196,6 +196,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	struct pci_dev *bridge;
- 	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
- 	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
-+	struct aer_err_info info;
- 
- 	/*
- 	 * If the error was detected by a Root Port, Downstream Port, RCEC,
-@@ -223,6 +224,10 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 			pci_warn(bridge, "subordinate device reset failed\n");
- 			goto failed;
- 		}
-+
-+		/* Link recovered, report fatal errors on RCiEP or EP */
-+		if (aer_get_device_fatal_error_info(dev, &info))
-+			aer_print_error(dev, &info);
- 	} else {
- 		pci_walk_bridge(bridge, report_normal_detected, &status);
- 	}
-@@ -259,6 +264,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	if (host->native_aer || pcie_ports_native) {
- 		pcie_clear_device_status(dev);
- 		pci_aer_clear_nonfatal_status(dev);
-+		pci_aer_clear_fatal_status(dev);
- 	}
- 
- 	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
--- 
-2.39.3
+
+Thanks
+Athira
+> Thanks,
+> Ian
+>=20
+>> Thanks
+>> Athira
+>>=20
+>>>>=20
+>>>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>>>> ---
+>>>> tools/perf/tests/expr.c | 7 +++----
+>>>> 1 file changed, 3 insertions(+), 4 deletions(-)
+>>>>=20
+>>>> diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
+>>>> index e3aa9d4fcf3a..eb3bd68fc4ce 100644
+>>>> --- a/tools/perf/tests/expr.c
+>>>> +++ b/tools/perf/tests/expr.c
+>>>> @@ -244,11 +244,10 @@ static int test__expr(struct test_suite *t =
+__maybe_unused, int subtest __maybe_u
+>>>> if (num_dies) // Some platforms do not have CPU die support, for =
+example s390
+>>>> TEST_ASSERT_VAL("#num_dies >=3D #num_packages", num_dies >=3D =
+num_packages);
+>>>>=20
+>>>> - TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, =
+"#system_tsc_freq") =3D=3D 0);
+>>>> - if (is_intel)
+>>>> + if (is_intel) {
+>>>> + TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, =
+"#system_tsc_freq") =3D=3D 0);
+>>>> TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
+>>>> - else
+>>>> - TEST_ASSERT_VAL("#system_tsc_freq =3D=3D 0", fpclassify(val) =3D=3D=
+ FP_ZERO);
+>>>> + }
+>>>>=20
+>>>> /*
+>>>> * Source count returns the number of events aggregating in a leader
+>>>> --
+>>>> 2.43.5
+
 
 
