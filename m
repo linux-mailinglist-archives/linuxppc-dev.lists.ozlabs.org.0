@@ -1,59 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-2916-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2917-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68949BEF2B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 14:36:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF8E9BEF3C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Nov 2024 14:40:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xk5np6zBQz2yxN;
-	Thu,  7 Nov 2024 00:36:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xk5tS3mg6z30CD;
+	Thu,  7 Nov 2024 00:40:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.130.132.49
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730900174;
-	cv=none; b=PJdD2rIVFwkxozGg+IoMwHd4a1+M61r/vh7jQN0Q71GLrl2Lm/nXhjHPBEBROc/kEB6AIGqLbpf/jbC7525FHMpUroNDkxSKGX675VSM8XLnjOaS9bukHlmSoYFfDMNyTiHFuDO3A5rOA3R7B3Ds6u4iOM6pAEfn61+5qQdtBhMsTv+hvY3t6tbn+i4yZ8JqAF84AexbnB/FYgpyRiQa094cOPVL6tsumJAukIUVb9txskXbeqrGpEafLLyeyosmViCBN8zrmVEWOtHVeACm0iQAV4ejMFGKFX5UXgtjsunDgdYVFpJ+Rh2RpORzu8dvGHVKoF5EW4W7D5g/AG9V6g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730900416;
+	cv=none; b=L1f6MazV22jV/k4AoNr04vYRWBw0znuCwNH1l4aHn9psrKUqCSCbf4fECCzOdAn4tvxsEn8BBp7prz+irY1CRE5S3BM6r7WhFtADicy6jo5ID/SiMJTlGPxQmk5zQCIrd+HTrTFLrwYTXP/dJ7VEet3DjMdq7zskBKJB2gQ1NAieih4R0oCUDlOgLt5+V9rXUwgI4TyP4UphOehU402ZGbZMknERYgR9D1xRDBelZiwlN6i11wHrfPEaNoeBDFlyI06nYFIqABiD0j260IXaK1WgO/qWjaJUVqXL5l3NhEEtepcEl4FfOfCluxWOdoc53eq2QuCPGAsWEQSmMqzbKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730900174; c=relaxed/relaxed;
-	bh=20jwimtIOlnS8RZTK/cESqk4DxFFHkZL/aLaDxatl+4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mXmdeAKs8OQeigpUDzOu6Kp0hmR+Rk6D1n4tcuSWnll5EbHltQ/tzfZ5zXXfHc/yKZl1eNmTpB911H7joKhrgnFXBCn5CxoQgZqdBsjMlFe1s+210uFSpSAKY9K1WBf5LNuyW4q3Mn8auLS4gJ2WlG62xapr7uMRm8LK+zmrCbSQ2lcHuCzQucbVF0rszrb0FN58iuo/ly/tAQl9pHJOBgu/YSJ5ZFjnbRPjrlsctm1vgpjj84ktzJMKd8xRfO1cmwKRDxJjRiYQhyTQTb7V9DQd7pZwNufNVNvDK9zWu1OO98ZjXqmB40JAU7NejNHLgYTpeZYF8QVAQC1E/aRv8g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=pass (client-ip=195.130.132.49; helo=gauss.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=gauss.telenet-ops.be
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=glider.be
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=gauss.telenet-ops.be (client-ip=195.130.132.49; helo=gauss.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 575 seconds by postgrey-1.37 at boromir; Thu, 07 Nov 2024 00:36:13 AEDT
-Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [195.130.132.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xk5nn1Hqrz2yV6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 00:36:12 +1100 (AEDT)
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4Xk5ZY3LNNz4x2wW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2024 14:26:29 +0100 (CET)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:2473:2222:191a:9acf])
-	by baptiste.telenet-ops.be with cmsmtp
-	id ZRSS2D00e52sj0y01RSTcZ; Wed, 06 Nov 2024 14:26:28 +0100
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1t8g2x-006MWd-2p;
-	Wed, 06 Nov 2024 14:26:26 +0100
-Received: from geert by rox.of.borg with local (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1t8g3G-006VYZ-OI;
-	Wed, 06 Nov 2024 14:26:26 +0100
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Geoff Levand <geoff@infradead.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] powerpc/ps3: Mark ps3_setup_uhc_device() __init
-Date: Wed,  6 Nov 2024 14:26:25 +0100
-Message-Id: <31fe9435056fcfbf82c3a01693be278d5ce4ad0f.1730899557.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.34.1
+	t=1730900416; c=relaxed/relaxed;
+	bh=s3JjyiDANRtUDiiAHTzxURPxsEIC0ZstHL6fBpbkgpU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VLNsTjdcXJoSKhFZy2vwjKFiUiOPYwVfGEsABIcj+p6YP5B3sXwMZP5qwC+yGFn+Rvr4lZIyaV8XCA+0yOPdn2gRtuDdgDl42aXoJX5MVIEcWTDQXmjhO/8/D3Tp2O7Xeg/PH7qhBN0CiaXc3j1/dDwZgrpuHqIZNbMuc2HJdOhr2h+huSE6pU5ZAXrMLSj9e2+mjRImAPxIe3vGnNsZJWN45NaqfJYFuviz5PLG83IW1w1lNvw4K6baH/e1dEOMm9mqPHeYBrqcMOICFrU50K+T3X+DXjTVHue5/5lO3i0rqxuPsAS6A6AB+YTPpPLHsPrISYBwz1Tq9vVXQ2kljw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xk5tQ49BNz2yV6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 00:40:14 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 4A6DbrZA029304;
+	Wed, 6 Nov 2024 07:37:53 -0600
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 4A6Dbqdj029302;
+	Wed, 6 Nov 2024 07:37:52 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Wed, 6 Nov 2024 07:37:52 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+        llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
+Message-ID: <20241106133752.GG29862@gate.crashing.org>
+References: <20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org> <884cf694-09c7-4082-a6b1-6de987025bf8@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,39 +49,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.0
+In-Reply-To: <884cf694-09c7-4082-a6b1-6de987025bf8@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
+X-Spam-Status: No, score=-0.0 required=5.0 tests=SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-ps3_setup_uhc_device() is only called from ps3_setup_ehci_device() and
-ps3_setup_ohci_device(), which are both marked __init.  Hence replace
-the former's __ref marker by __init.
+Hi!
 
-Note that before commit bd721ea73e1f9655 ("treewide: replace obsolete
-_refok by __ref"), the function was marked __init_refok, which probably
-should have been __init in the first place.
+On Wed, Nov 06, 2024 at 09:55:58AM +0100, Christophe Leroy wrote:
+> Le 30/10/2024 à 19:41, Nathan Chancellor a écrit :
+> >Under certain conditions, the 64-bit '-mstack-protector-guard' flags may
+> >end up in the 32-bit vDSO flags, resulting in build failures due to the
+> >structure of clang's argument parsing of the stack protector options,
+> >which validates the arguments of the stack protector guard flags
+> >unconditionally in the frontend, choking on the 64-bit values when
+> >targeting 32-bit:
+> >
+> >   clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', 
+> >   expected one of: r2
+> >   clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', 
+> >   expected one of: r2
+> >   make[3]: *** [arch/powerpc/kernel/vdso/Makefile:85: 
+> >   arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
+> >   make[3]: *** [arch/powerpc/kernel/vdso/Makefile:87: 
+> >   arch/powerpc/kernel/vdso/vgetrandom-32.o] Error 1
+> >
+> >Remove these flags by adding them to the CC32FLAGSREMOVE variable, which
+> >already handles situations similar to this. Additionally, reformat and
+> >align a comment better for the expanding CONFIG_CC_IS_CLANG block.
+> 
+> Is the problem really exclusively for 32-bit VDSO on 64-bit kernel ?
+> In any case, it is just wrong to have anything related to stack 
+> protection in VDSO, for this reason we have the following in Makefile:
+> 
+> ccflags-y += $(call cc-option, -fno-stack-protector)
+> 
+> If it is not enough, should we have more complete ?
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- arch/powerpc/platforms/ps3/device-init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The -mstack-protector-guard-reg= doesn't do anything if you aren't
+doing stack protection.  It allows any base register (so, r1..r31).
+Setting it to any valid reg should be fine and not do anything harmful,
+unless perhaps you *do* enable stack protector, then it better be the
+expected stuff ;-)
 
-diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
-index b18e1c92e554ce87..61722133eb2d3f99 100644
---- a/arch/powerpc/platforms/ps3/device-init.c
-+++ b/arch/powerpc/platforms/ps3/device-init.c
-@@ -178,7 +178,7 @@ static int __init ps3_setup_gelic_device(
- 	return result;
- }
- 
--static int __ref ps3_setup_uhc_device(
-+static int __init ps3_setup_uhc_device(
- 	const struct ps3_repository_device *repo, enum ps3_match_id match_id,
- 	enum ps3_interrupt_type interrupt_type, enum ps3_reg_type reg_type)
- {
--- 
-2.34.1
+Apparently clang does not implement it correctly?  This is just a clang
+bug, please report it with them?
 
+(r2 is the default for -m32, r13 is the default for -m64, it appears
+that clang does not implement this option at all, it simply checks if
+you set the default, and explodes if not).
+
+
+Segher
 
