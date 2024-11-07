@@ -1,99 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-2989-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2992-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA119C0B8B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 17:27:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C242B9C0C88
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 18:10:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XknXg41Mvz3bnJ;
-	Fri,  8 Nov 2024 03:27:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkpV349BWz3bqM;
+	Fri,  8 Nov 2024 04:10:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730996835;
-	cv=none; b=esL8RROlmij3fi8KffY6R2ER95NCTtBHxdHlH1LmcEXj8OTrlfw4SzXpK0+GZZm1VfmJ7O/vSv3VgfSzTzJ4Ch4kCS9zdHOrNMMs55Nl/6xDs+tHnx7Ln5QvPwdM3uTX0elO+H8tRkFAozSvAFY8z7TPJsOsGYN19osLv2us2JXT7PrSVvFf6558bEC60+Yf3m6ECvf8u4gQA+BFAF1F0nVzChLSiEvUPCnQJVpp5W6LWeweVJK1F//eGIckkTV694XcMyZxJ1A8MzF3fEhUsvotrg4N4b1rj5jpd0rajjhLffoUMcvEPgS8++gmWrDbvcm+hP4IWDEe3gBbKeH22g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.178.240
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730999403;
+	cv=none; b=A4yeyH018T41UHpRHt+qOd0MTN+D1tZ96xWN57fBfXmDkWxzGit7JiIDZIINDfsaw87HNAbz9aDVcbaEqgI8oPep/kVC1wyzWAczwUiBRUsIeS274hPE/rOClt21QNxcgsOnlNINggq3CQK/4seUBfHy4Ef0ZFcrgpFRGbomrlfLN9N+3+zc+tuPgl00CE1G4pJkeA4NwKV9xkZAnDe+h3YS7foUU1pn6rr5TOGWZ5h4HPH2zj9H5/SERfBs7/Quawo3NLiJMOTw0EUnqooH9KJpQJBe1DSa9+itqg7Xk9G4uoOrxv2zXg3NizQ/IM3n8qi6k1fdEhJGOyj9PumBMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730996835; c=relaxed/relaxed;
-	bh=H/GsFyEdfZ1v/a1wfltSIW1+9f0RjngAROMHCtg2cAA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=nNbUbsbWpncYl71GGggB0HD8M3+/wg0cS3x+2f+eVJ3E9odkxaQlpYt0iqeURp9uKDZpxnkGhCFEtsHaBKsHz05sRA9GOqNg/rbtzp/ZZ8AX6AfT6JQ67P65li1uPwixCOunFLmGkUKEkQa7IX9Yx4ZeRr4DN1ZpZ96AhNDzHd7ZpH/uBWjNF4+Z3EPSH/aoFvWxde4o9jP3XuYrlvUX2mHx6paOBaInTwMJEbwiKR1cIuGgDCsxIlBuRt8GDJHA/gsoUzJ/mhwvkFpsAJO1s23FbgoBZ/0c8l2Cs8jteqrEaIAZxvvBkqbbqeYcZ1QiarYFXJ2GcdA8KytejPO8wQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sgq9DuN9; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1730999403; c=relaxed/relaxed;
+	bh=Cp1IlwuXxuG3hVq1umEFzCMyS7Q+bM6rBW7jwZeMmgI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bZ3IkxSL5+iM/UMiKp/6tZs5V9soPHnjDgQqf5LwlMda4p+qI/PNim4yG5kA1CV2RbsFIy9KOGfvKL+8EMH1ZyfeebQQJG/41qXi7jMOC0Ia8fgR3OrjURv6PsYpGMzG4fl1qiIWwgg0/olBFR1OCwsG+f0pIa9GjGxzpJUJdrX0lv1Vps+dTPlY7l87f9RoMQH8vB13uUZH4X+7GNIrSDZkih5rKjuQ+yKfadOAUJg/DWTlBh6LA8pRgF4Xei8Fzd6gp61GUzBfzvA3WJnA6Lz2ayVNUnWwmtPDmXIhFyrMlnVHVB6d4C0ypzUa0uB02/91QJjwBrajwVc1EBJ2pg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=hCMAkpqu; dkim-atps=neutral; spf=pass (client-ip=217.70.178.240; helo=mslow1.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sgq9DuN9;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=hCMAkpqu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.178.240; helo=mslow1.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XknXf3N3wz3bnB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 03:27:14 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id E2BFAA41F1A;
-	Thu,  7 Nov 2024 16:25:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3AFC4CECC;
-	Thu,  7 Nov 2024 16:27:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730996829;
-	bh=RaF/yzDkwC/xI3JHS3wDYezLNgto4gJR15z4QCLcIec=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=sgq9DuN999fo+gF31O1Sog3B6QwMV6OvcPe7VPqi8sJ1TCzU/W1Ez/tliuLSn6HZv
-	 H6WJr617Z9ho3vOtVhPzMb0TyqS+gb2SI7mq/C0wytQj+BYrK8SHegywRApVWEjefm
-	 VrP+Uq41/kYqyiwmALEKXPYG2sF+9dXoP558MEULT3X9CJ2qlfOgYo5XQQ/akQ/Li+
-	 8PC//m2NPppcQqPE5AwaE9VZUm8GEStHJrNdsbBXQj3zX2/Uw70Eqzdl18ZXk0ykpu
-	 Nv3hNeVLx2kThS8Iy5jvLz2TwdYaK/p8look0JzKdaIO94mqldL4oshBd2UJ53q8QV
-	 LBGXXQk7Ujmww==
-Date: Thu, 7 Nov 2024 10:27:07 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Xinhui Pan <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
-	Carlos Bilbao <carlos.bilbao.osdev@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Frederic Barrat <fbarrat@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-cxl@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
-	linux-mtd@lists.infradead.org, platform-driver-x86@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH v2 03/10] PCI/sysfs: Calculate bin_attribute size through
- bin_size()
-Message-ID: <20241107162707.GA1618544@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkpTz02HKz3bp7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 04:09:57 +1100 (AEDT)
+Received: from relay1-d.mail.gandi.net (unknown [217.70.183.193])
+	by mslow1.mail.gandi.net (Postfix) with ESMTP id 0D744C38F2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 17:03:21 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BBB50240007;
+	Thu,  7 Nov 2024 17:03:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1730998984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Cp1IlwuXxuG3hVq1umEFzCMyS7Q+bM6rBW7jwZeMmgI=;
+	b=hCMAkpqulm8WFtwNz9p/rJ6c5xyIR6Yt5pwkQVIQEvKoehCjYKLmaI2KMeC5YScXVkGK/Y
+	4NYd/fMztQeBdkO9mv4nrEkULHwWlneZWnGmb9PGpDJ0GHxm/vRqIhCaYN6QTTjBG+X0Oj
+	scxVELlEWOUEAsaalcEBe20LsxUW+gEceXA/+6bUFog+C/GZ1AiewiiZc8AsktcgIKll/L
+	p9GURarjdeovSV44Sa/tJSDkksKWsLZNh4ZOZ+nghk9jhMxs2if4hbS9Z22nEoZX55hBYn
+	Sb2Ksun51D0DOfrVf2l7vp9dd/Zru8vA/krrQP8IK2yKFc8pJimj03R/QqWHIQ==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Herve Codina <herve.codina@bootlin.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH net-next 0/7] net: freescale: ucc_geth: Phylink conversion
+Date: Thu,  7 Nov 2024 18:02:47 +0100
+Message-ID: <20241107170255.1058124-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,95 +74,67 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241103-sysfs-const-bin_attr-v2-3-71110628844c@weissschuh.net>
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-GND-Sasl: maxime.chevallier@bootlin.com
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Nov 03, 2024 at 05:03:32PM +0000, Thomas Weißschuh wrote:
-> Stop abusing the is_bin_visible() callback to calculate the attribute
-> size. Instead use the new, dedicated bin_size() one.
-> 
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Hello everyone,
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+This series aims at converting ucc_geth to phylink, one one part for
+better SFP handling, and on the other hand as a preparation for complex
+topology support with multiple PHYs being attached, which could involve
+phylink. Even without considering the multi-phy case, this series brings
+proper SFP support for that driver.
 
-Thanks for doing this!
+This driver is pretty old, which shows in the coding style. I did not
+include a cleanup pass to get checkpatch happy, so a few patches will
+complain about the CamelCase used in some internal structure
+attrubutes...
 
-> ---
->  drivers/pci/pci-sysfs.c | 28 ++++++++++++++++------------
->  1 file changed, 16 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-> index 5d0f4db1cab78674c5e5906f321bf7a57b742983..040f01b2b999175e8d98b05851edc078bbabbe0d 100644
-> --- a/drivers/pci/pci-sysfs.c
-> +++ b/drivers/pci/pci-sysfs.c
-> @@ -818,21 +818,20 @@ static struct bin_attribute *pci_dev_config_attrs[] = {
->  	NULL,
->  };
->  
-> -static umode_t pci_dev_config_attr_is_visible(struct kobject *kobj,
-> -					      struct bin_attribute *a, int n)
-> +static size_t pci_dev_config_attr_bin_size(struct kobject *kobj,
-> +					   const struct bin_attribute *a,
-> +					   int n)
->  {
->  	struct pci_dev *pdev = to_pci_dev(kobj_to_dev(kobj));
->  
-> -	a->size = PCI_CFG_SPACE_SIZE;
->  	if (pdev->cfg_size > PCI_CFG_SPACE_SIZE)
-> -		a->size = PCI_CFG_SPACE_EXP_SIZE;
-> -
-> -	return a->attr.mode;
-> +		return PCI_CFG_SPACE_EXP_SIZE;
-> +	return PCI_CFG_SPACE_SIZE;
->  }
->  
->  static const struct attribute_group pci_dev_config_attr_group = {
->  	.bin_attrs = pci_dev_config_attrs,
-> -	.is_bin_visible = pci_dev_config_attr_is_visible,
-> +	.bin_size = pci_dev_config_attr_bin_size,
->  };
->  
->  /*
-> @@ -1330,21 +1329,26 @@ static umode_t pci_dev_rom_attr_is_visible(struct kobject *kobj,
->  					   struct bin_attribute *a, int n)
->  {
->  	struct pci_dev *pdev = to_pci_dev(kobj_to_dev(kobj));
-> -	size_t rom_size;
->  
->  	/* If the device has a ROM, try to expose it in sysfs. */
-> -	rom_size = pci_resource_len(pdev, PCI_ROM_RESOURCE);
-> -	if (!rom_size)
-> +	if (!pci_resource_end(pdev, PCI_ROM_RESOURCE))
->  		return 0;
->  
-> -	a->size = rom_size;
-> -
->  	return a->attr.mode;
->  }
->  
-> +static size_t pci_dev_rom_attr_bin_size(struct kobject *kobj,
-> +					const struct bin_attribute *a, int n)
-> +{
-> +	struct pci_dev *pdev = to_pci_dev(kobj_to_dev(kobj));
-> +
-> +	return pci_resource_len(pdev, PCI_ROM_RESOURCE);
-> +}
-> +
->  static const struct attribute_group pci_dev_rom_attr_group = {
->  	.bin_attrs = pci_dev_rom_attrs,
->  	.is_bin_visible = pci_dev_rom_attr_is_visible,
-> +	.bin_size = pci_dev_rom_attr_bin_size,
->  };
->  
->  static ssize_t reset_store(struct device *dev, struct device_attribute *attr,
-> 
-> -- 
-> 2.47.0
-> 
+The first 6 patches are preparation for the phylink conversion that's
+done in patch 7.
+
+The first patch removes support for the "interface" DT property which
+has been deprecated for 17 years, allowing to simplify the phy mode
+parsing.
+
+The second patch splits the adjust_link function, as advised in the
+phylink porting guide. This makes patch 7 easier to process.
+
+Patches 3, 5 and 6 perform some cleanup on unsued or leftover constructs
+to again make patch 7 easier to process.
+
+Patch 5 addresses the WoL configuration in that driver.
+
+Finally, patch 7 does the phylink conversion.
+
+Note that there are some things that I wasn't able to test, namely the
+TBI/RTBI handling. I did my best to replicate the existing logic, but I
+don't have the hardware to test it.
+
+Thanks,
+
+Maxime
+
+Maxime Chevallier (7):
+  net: freescale: ucc_geth: Drop support for the "interface" DT property
+  net: freescale: ucc_geth: split adjust_link for phylink conversion
+  net: freescale: ucc_geth: Use netdev->phydev to access the PHY
+  net: freescale: ucc_geth: Fix WOL configuration
+  net: freescale: ucc_geth: Simplify frame length check
+  net: freescale: ucc_geth: Hardcode the preamble length to 7 bytes
+  net: freescale: ucc_geth: phylink conversion
+
+ drivers/net/ethernet/freescale/Kconfig        |   3 +-
+ drivers/net/ethernet/freescale/ucc_geth.c     | 600 +++++++-----------
+ drivers/net/ethernet/freescale/ucc_geth.h     |  19 +-
+ .../net/ethernet/freescale/ucc_geth_ethtool.c |  57 +-
+ 4 files changed, 247 insertions(+), 432 deletions(-)
+
+-- 
+2.47.0
+
 
