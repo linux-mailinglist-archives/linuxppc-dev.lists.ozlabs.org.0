@@ -1,97 +1,127 @@
-Return-Path: <linuxppc-dev+bounces-2957-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2958-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9339BFE61
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 07:18:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ADDE9BFE71
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 07:28:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkX2T0pMXz3bjt;
-	Thu,  7 Nov 2024 17:18:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkXFr3QBrz3bjf;
+	Thu,  7 Nov 2024 17:28:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::632"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730959897;
-	cv=none; b=LBl8A2mDbfD9P2yKyfysAb4ORvazQDqiHMiNuqEsFw7C/9GB6bB2CmXV88X1f3SSn0V2TCmMLK8J3u+kHCNf835LtrjYhXGbthz2HvF+7z5C9O/SD6FYKkSF98xSZC9FMo6RUYj3rDkr+MrYBULpf3sXL9WXYyJ3Q5NMa8zH9q+jZzxzcI9iSARqko97o7UfA/UluZSxehCVplhEt9TMK9rl+SKNNMC8s6FwMfrP2Z3yY4T+M5Z7puYQoXE/DRAmLdSub8riZfSmToHvPsabcQrl+m2N3bpu8frIwcmY/99RAqZWH45vzzDtryka9ObrtTSU4b7QOeeGke09QwPQyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730959897; c=relaxed/relaxed;
-	bh=cXBEpFmFzi8INkB2Bb0DSvGG6kE3LNqjdEC99i0wI3w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O9WA/w4jWn2p6DHBKDzPthnQ2evDbl9r2tjaI7rC8Mk+L/wc1uMwU0/ggjzR/A1X6e+70oMqgcWzPg+Al8whXbxOtqEwCfRPxl7Z2j+NtCT1nU6FW4ktZwCsMI3Q7yPZPCDgHKljjAcT9QRQrZ7CyT+ByuLwIwWcvMzvoOeisE12U/Q8yZli7pqSM7kXPEhQiQPlLE9rCN7KY0JOE+rufrJwrDVlWSAtjpoiSQ9dOawg1OnVN3GdwB6dMx2P5u1DzgFxp0EU4f2Q2D/FlI3JsMayOZ5qlELDKhyf6D0LnLsLa654Qr51s5DeCpRSmcsPhUIZvn3wtPfWQW1z2Z3xmg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dR1qWSdS; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=xandfury@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.16
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730960912;
+	cv=fail; b=EOQiNKbQcP7/RxMekhF4vS1JRgcmsM+CL6CEzj8zVQ7I4pE5yyWLO/OKNyq6bd1tN370ABE1Xc6jZv2fSw4cF8MuQHhxWyiY9iWLrdo3kb8BegQxQRCve83FGrV8QXb7OOEO8ZejK00mNEajJNQZgfjL1JzTTMl4WWR84SeeU18/N4HSkA0P3ShsRzZc/uHjb7hCXe7Z7POK0PsP4zyV+HE2NEpUL+u5zj76hVkQxyMvvHnMT+C8NWpP58yjXc7rlFj/beCERAQiavH0mJgpdsGLOGupcfN2Ls7KgvyXg3oQxgCXw49zUp137mgEIpgWuAQdpnR2mviHoZXSIbfwaw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1730960912; c=relaxed/relaxed;
+	bh=Lzbiy4dgvBuUKU/ngGPcQWS5zP84MriMlZDZMJYhvqw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=cbzaltwprVIZlt3QytpQ1PH50WNVoCpGCVG9gjU++3xd2QFVO9wvl6PkIxH3M3NK0N4MZBmT9ADpE8DpXdKsMAhTu+yavpU6bJc69se7VtPPZmf9AQln4VovJO7y3Z9W2qsVo8ZVKRsf5pOYFoR9Bk8gAluS2tgfw8kNc13m91HMMYrf0LwHMJjxfCgKSOUdj/JGkaW5xjULDS/SyRtei8cje+Z98MkD0hHPyBHbHLmm583qw+Bmlqg1RhKV4dmdOh080aZPo7FrgjThAkVt9B3J9rs8t0EuIhrqgo0W5yWT/3az+5ywhn7ZmkU56jkzRgCUHiivSrESqnMhk+wCtQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DBTiJQRM; dkim-atps=neutral; spf=pass (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lucas.demarchi@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dR1qWSdS;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DBTiJQRM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=xandfury@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lucas.demarchi@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Thu, 07 Nov 2024 17:28:29 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkWtJ5wc1z3bjf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 17:11:36 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-20cf3e36a76so6336315ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2024 22:11:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730959893; x=1731564693; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cXBEpFmFzi8INkB2Bb0DSvGG6kE3LNqjdEC99i0wI3w=;
-        b=dR1qWSdSYMegedeiTqrVi8IRdDghN7fSKJgFOwoMvrmbo86MM3J2ritETyLrM2YgKs
-         HhKChODiE4nQb9GOxfmgobmD3fi64zeLFiDwnudGOQih7nzH3d99EzTz2U8lbDwxwaMx
-         n19E/EI8pbOizRpOwZgr1gd9JdcKv/e1P6VhYPjJ/t90iFfjeLBQ8hrqSOIOolYF/L9Z
-         g1frmg1hoQVY1osEJ/BbqPZ8blFSB65d3EE5dBqi2sBmfR4PY3Zvww4/Zf6gVWWhfV4H
-         blHrxgaRwZwIneRZiMZi0GlTwL/h2YfaggtyffG5KY38aHT4DbIhG1VMa6Vk/gtN93qK
-         sCrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730959893; x=1731564693;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cXBEpFmFzi8INkB2Bb0DSvGG6kE3LNqjdEC99i0wI3w=;
-        b=UHhYFjWLuaNJlg6V8ORK+NaKRxvd2+T3qAb0Z5sAiMxRHQw6ekkJGfrxgDQ4EKLp7P
-         K3HOBdG6PGenuHK8U3LHdV8Yk1Hft/H75nWsLy89a+XuQ1AI/mIL+eTdv+PQPxhtB2+z
-         gDuMnM6Dv1Fcvtb7MPQk7VYx1vqMgrckRXz1eDAyOE9iDEoCCq8laxx+9g3lg2Fndc4f
-         oXEScsdgyV+DdMCztxCoXYxMo9HGz2Jn1cu4UtwYZ3ITkp6onJ3fq8F2bqzlpHEc2v9w
-         Qc3GYDCtRp0JMQlsYgUtm2KDLpM4Am81y+jFxbmxzOnpB3Dk/GUIyKhFxsaIk0N2QEOv
-         AK6A==
-X-Forwarded-Encrypted: i=1; AJvYcCX7rgLvaiOB3XFGjJwr13Y8HAkd9WyZ4rkwx+ZUUNo4oRj/AbYpstlGA9F5YcZQvULUgB5O2f4U1yg7vn8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx4kg4It8h9mIGwY7pWGgAkWvbw4jpZ1JL6hjpDkHlBuYhKMaiy
-	u+iJlUy9lV4r9ufTqZa2cObligkKsYrIttlQd52TlIGyQG1rHoAT
-X-Google-Smtp-Source: AGHT+IEhLX1Ix3kvbnhGTk3oM5FNMOle9lT4S2S6mmMGQXogZWZm53W55lSd+4P4hV9Wykx6SDq4ig==
-X-Received: by 2002:a17:902:ec88:b0:20b:8ef3:67a with SMTP id d9443c01a7336-211785b1234mr10045595ad.7.1730959893349;
-        Wed, 06 Nov 2024 22:11:33 -0800 (PST)
-Received: from 1337.tail8aa098.ts.net (ms-studentunix-nat0.cs.ucalgary.ca. [136.159.16.20])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc7cf8sm4652465ad.34.2024.11.06.22.11.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 22:11:32 -0800 (PST)
-From: Abhinav Saxena <xandfury@gmail.com>
-To: linux-kernel-mentees@lists.linuxfoundation.org,
-	linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Abhinav Saxena <xandfury@gmail.com>
-Subject: [PATCH 2/2] Documentation: dt-bindings: Remove trailing whitespace
-Date: Wed,  6 Nov 2024 23:11:24 -0700
-Message-Id: <20241107061124.105930-3-xandfury@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241107061124.105930-1-xandfury@gmail.com>
-References: <20241107061124.105930-1-xandfury@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkXFn3jBVz2yxP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 17:28:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730960909; x=1762496909;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Hoh+0S0hd0eJ2Etmjrb2mnMTyhRoDvd5qjGWHoWIge0=;
+  b=DBTiJQRM3VvfIVwu9IyvdmaBjoc/sErQbpz29PN8Pp2lQRLvweqH5+PW
+   UcCEyVSO9Q4OgDwscGQyr8AmWIGUtsLMENVbxEr1p15Sjo9KbptfZ9jx4
+   L25vel89fMGxg+BqVqMgPvoAXD+/cVxRfw/nziwYIoiFsyjBPBqkaqsV9
+   AZWp66+LVrUIjbKY6dtnGrmRMXUHnUsDZG6PKsddxLKslINnHTzXOhoNQ
+   9hNJgQ5gCWF1QFBAo7jcYcWOUqYs/EZgFHxXyahwY4V2TnxQsTLG5QfOR
+   e8J5URCAnUAiQFbtHETC+t4W+N3LlQtmbIuaf35dK3eQWM/6PUnkazYwd
+   A==;
+X-CSE-ConnectionGUID: YaNK04LkRGqiwteIX8FCqQ==
+X-CSE-MsgGUID: bAqSkKy4TqSMN7PjMoRg4g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11248"; a="18411181"
+X-IronPort-AV: E=Sophos;i="6.11,265,1725346800"; 
+   d="scan'208";a="18411181"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2024 22:27:18 -0800
+X-CSE-ConnectionGUID: o0ZpHOgiR2af0rWcQc8Jig==
+X-CSE-MsgGUID: MP42oc16SHq1zSjoRtHMyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,265,1725346800"; 
+   d="scan'208";a="85280531"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Nov 2024 22:27:17 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 6 Nov 2024 22:27:17 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 6 Nov 2024 22:27:17 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.175)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 6 Nov 2024 22:27:16 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vkBNKCTXbMxO75A0CTNm8TJwOe552xs2QQn5orX06JgTwRmkqomLCTJo9ImfCgvF7qNMGnrOUJ9Wa75djpKPl4g+uqhKNvvEoygTdroiz0U0+UQw2k1ZlMHR0cOYINjTe0oYnD45BGB6tSfHBHGPmCN1l3oKxUKsO4hN6VIkGjSyvQCv6PTaP2UNB2w/OCZIp+xrfI7v9pQzSqNsiKACbYIbq3Cu6Ik2xe1PrLVg0IDu1Kz6cQfZJI9+2H1w+O5ZYkTqISZ+PMO8acy+OCUorghTpEDzib7Li8H/nV2D3OAgdIC4ncDRUDFUElvVbKyyhYf25VXkwvflfZ51RkLKHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Lzbiy4dgvBuUKU/ngGPcQWS5zP84MriMlZDZMJYhvqw=;
+ b=FDpSxkHL+GtW8awd2prJ63CATbZHmfYr52w7yWujj570Ii23JT7i/PuCQPPxwJXtKmmL4lWzf8UOiqR4WFLvqr33M+ccPxlkJJZjxgCMJjNo0jr7Y0sqwmK7CtWz7y2U6wFYOGnAkOL1+A3Ju11X/SzL4VJW7I5O5avbXGfoyG9Zl11bVng1u+RI8kyhOGKL4BKp7FpEPMdoiWRhF9tNW/UgLeeZ1B+rJbpxgZ7qTrcgiRLM4Myzw9g+8e6DFhj+21H19+weMfReNhXmLiT8kVPy9TjkQPdR9dbAcvhhHa9TMqn/tS5oTzTxNCHAlWSqIxn8ofQo1/nseZXUuJbuMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by LV3PR11MB8727.namprd11.prod.outlook.com (2603:10b6:408:20d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.19; Thu, 7 Nov
+ 2024 06:27:13 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44%6]) with mapi id 15.20.8137.018; Thu, 7 Nov 2024
+ 06:27:13 +0000
+Date: Thu, 7 Nov 2024 00:27:07 -0600
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Matthew Maurer <mmaurer@google.com>
+CC: Luis Chamberlain <mcgrof@kernel.org>, Lucas De Marchi
+	<lucas.de.marchi@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Nicholas
+ Piggin" <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>, Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+	<linux-modules@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
+	<rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
+Message-ID: <hs5fxluchiconuonhziu3qh2ol5bsdxva3cuny2mit4i3equzt@ieueiius5x4w>
+References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
+ <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
+ <ZyNr--iMz_6Fj4yq@bombadil.infradead.org>
+ <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
+ <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org>
+ <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
+ <ZyrRYUD0K1f7SwWg@bombadil.infradead.org>
+ <CAGSQo03+1WjUVj-iQ6zdOST6z=p+=OqS2Xk_c4ZUdHOsxa7g2w@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAGSQo03+1WjUVj-iQ6zdOST6z=p+=OqS2Xk_c4ZUdHOsxa7g2w@mail.gmail.com>
+X-ClientProxiedBy: MW4PR03CA0308.namprd03.prod.outlook.com
+ (2603:10b6:303:dd::13) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,104 +134,120 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|LV3PR11MB8727:EE_
+X-MS-Office365-Filtering-Correlation-Id: 559a3601-7d9c-4894-acec-08dcfef5374d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?RTDRr5P0mPE709fus6wsU+HoJ7yh/Vh5f1kHmObi0CD1Fw9WPfl4hnpxyVxJ?=
+ =?us-ascii?Q?bnhL7w7+h51b/hoFArBiCCgCx6GLpGkuXnDdSLbcfipisqatyDIs+WyETFuA?=
+ =?us-ascii?Q?WhnifpTnAPCLwXycSqYXD3mh4GXSF9kl8qxYNDx6K1cuEv49u+U5Gj3sn0MP?=
+ =?us-ascii?Q?uf2Apf5ay2d8uBwunZrOlBdwN3ck0W3pkaUe1/hMnazYgRwHj1e9B82VPNJ8?=
+ =?us-ascii?Q?/GHtgL8LcrZU/aCwz9nrKC0xXG9hHoE3QXCpAsgz7b/dq8OvG9xUIddJRmic?=
+ =?us-ascii?Q?nxdNLh6MsiO2mCT58PbJPjtnqSwFHsbs8ffaAq0a4gkc6nwCUozqYsdJ/444?=
+ =?us-ascii?Q?RtGBS98Cq1mBrL6l4VQX/RGb+DwY19+Wh2kgYjbE2SSlxQGqdBQLR/Dysohp?=
+ =?us-ascii?Q?c1RCF8SalSgDVAPASyH5CFZr3Ua/Hw5Ap0q0Ej/B670hsxu2HH0KXOjFj72k?=
+ =?us-ascii?Q?V2T4QhoN0OoyxkmlUban1hqhopuCPIKGx96noXfKPL9EIvISnBJiyMW/4PjN?=
+ =?us-ascii?Q?WgoAT31rm5G1QRTd6W2tolFRnbsZ0c7O1ky6mmbQFbqWfdvn4eE7FBtLeMzp?=
+ =?us-ascii?Q?fYooUv7pS3ZZ0NnS5cSZao9R98TIYqT9XePaXg3M7TWcWcsVhpAMOt6KAJL5?=
+ =?us-ascii?Q?bELAVjS8A3NQUDLARVvTixP8DC4GqOaHQWdW+c47oAzUyHRrdxUnAZs2QNS8?=
+ =?us-ascii?Q?BS9QvULYXy4Go8gAyagcrfJl99Bwz6Oqp1LqowCnTjSAQ7tLe+AGYIP2amB8?=
+ =?us-ascii?Q?fPWS5/6WE7VjPbqdKfnCt0m20/nYICxsdaJS8qLqaXbCwXFG0O2eoDRG4xRQ?=
+ =?us-ascii?Q?g/31mMHxVjjH4vm3Udi0BFGd6jboVH4gGsMWntPmUnbPOgMpIFAKth/6gxpM?=
+ =?us-ascii?Q?9LlPJg4PYVD22LvxgV5FnXu+nMnIu6z/553p96ycvgxPbgsePRtj5qBQFwsj?=
+ =?us-ascii?Q?jZ+wH5umlSffuL8eUn34M3iqMB2db44FDKCNUpw3VbJ7WSLMSIc0SI4hthsC?=
+ =?us-ascii?Q?0e1lQie6NuTNCOpJ0nxv8MyJbjf/DCHPDHcUTVrpFEQtY9OebM9O6NTJHyr0?=
+ =?us-ascii?Q?7FSgiARkQmxn3r3E7JfyquNmpmRWSAe3aX35kuKKgjg9p0dGLqnOWJvtP/dQ?=
+ =?us-ascii?Q?CeMbpX0CJAkLiqUlRod2hM4yD50GTaqdGojDNtkDEC39uSTukXkdl9PYGFt+?=
+ =?us-ascii?Q?TlR7o0n+Cb+BHlEIZsYV8Ysc6lIRBfuVJamUljNbUp/GmwGu4HTkD/l+HtYk?=
+ =?us-ascii?Q?LL/Ir146w14T+AYoG4+bd5JLLiA9rMQhiyv8pjok9yutvhEhxUalYsdaaP0e?=
+ =?us-ascii?Q?AIc=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6139.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Cm5W3CJV9jic75EXXALC9rTvYILbebLpZZR82SR6kM4sZppachlcvUELIiMc?=
+ =?us-ascii?Q?5rMIEnUDD5hu2AsJzcCHgyshuL5NxiGNE3EwyvyLI/JHvRqXIb3856N/p9hv?=
+ =?us-ascii?Q?rdtEEN3GjNvyeS1RuLBdg+kLIp5M4UcFANdmBRWYJ/y1Ah7GM/BT1OCOTPU5?=
+ =?us-ascii?Q?znUqpmdKYOtYhE7eHMenkof8DO8rPnVZdTrYPEZavJWLCxllRVvURM5rh+ae?=
+ =?us-ascii?Q?2TT5sHD5s5VxQN+eAgakZGhGDTOxyVUW6EPkQD825y6yPGKf4exVh2AEvBrF?=
+ =?us-ascii?Q?j3iVo+i2iHFGIY7Oa/4BRq0BJJU5DrgtLTu/n5urTqLDgXLr77zvZQYF1BS8?=
+ =?us-ascii?Q?gag2JCMTtrecUgi0UQfjHqGpHh6mAQ8raLRNCR39fD79NEKYYgwhmyHcdqYM?=
+ =?us-ascii?Q?ByKxHyTS4D76UIoyQK88miOyx7Setlw/6o/lVejOfCri4S94eLd4Y1IUncHz?=
+ =?us-ascii?Q?+jgaNeF/NHoD4yZTlt2GbwqL0zznGFt8ydKIALOExLWXCKM8PeQASkHnyA2A?=
+ =?us-ascii?Q?Zp7SpgE5P98KS9t8X+FsHsbzSzgoDDviBKm0wBzkzxuqsbRs1+LxC7I/xs5s?=
+ =?us-ascii?Q?havgNjQxIn7OhmO7bhlm/QQ1Zc+sG7ZNtSOGMz1Osap1k70a9kFivV5JKhBH?=
+ =?us-ascii?Q?fejaGN6pYY1qALwjrEJXV2+hoazOQ+YUqsJMGPUxucEZgjKrbG3phUxy90wn?=
+ =?us-ascii?Q?MGYMxWjOLZgACoRid78APB1JMcfIWBfp1MS22oRLzV9lN4g2iCKB4S61xxhU?=
+ =?us-ascii?Q?LvWmrKpD7NeVPmEWf4pKS7XQu4xmE2AttXXdz7wnvpEe/rL27i9XYmY1ujtl?=
+ =?us-ascii?Q?MY2Nn00E//OcZ8ydNNXdRdBBTb9polZ4hGCMh8yfORqvulfYQ2dg8KmApPa/?=
+ =?us-ascii?Q?VuV6DJ0RYTQOUg2QT1qxJQwdQhMmUHVb+zQHS4onW8T8clWsvjm7rMWcqJZu?=
+ =?us-ascii?Q?2hmaVtFpz0h1ji5B3hYC5YuMfTK059vFcjx1VYHTJ9He8hmK0uQAoJ5Rr06B?=
+ =?us-ascii?Q?klSMbdEX7MF5GgUibhFs++Dy+qagBdcZXcT2PmBEnbukl7y5C+shVkhDDmex?=
+ =?us-ascii?Q?zmMWMjOlxxA8GuofYnSlw5+UI6t++IGFn7TvkVejLUqg7LWOX4qbT6btI9+d?=
+ =?us-ascii?Q?OptVPXz1kjIAtRy0QUpEgJoELqjN+nywdmEAbGM2Zgmtf0gy1lqCfs1Ykh09?=
+ =?us-ascii?Q?Ii3LO4Ji9rasoRHJ3s9Kq5kZZ0bPoTOLFTynv84kRUX/CMZndJrmUQ+Nyhae?=
+ =?us-ascii?Q?BGHClWZY5I7M4pFe6PuPYx+V65ybSdYHOyPBDpxY3H/+F3vTfDQqOSvvM9DB?=
+ =?us-ascii?Q?xCCeNCSYdnDpBsrzgO0uN9e9ebeqT2Hbb/AZ6ykzAvxX6RygJB4gDzZzsZag?=
+ =?us-ascii?Q?7UJvFHMhaeL+ioF7GQe+pPfz8ETvj8zMdM6kEJCdjL+eu1+8O+weVP1TdeK5?=
+ =?us-ascii?Q?ieNeyphf/r3QVwXGZcQOpptnDN20GS5VgJ1P8fj9t21TWh+bhlYVYGL15cBI?=
+ =?us-ascii?Q?Tvm79dg98oYpjKVqsvUEeA3dsfBTx0/lPNNcOpfx7yfo8P/gknKPEoux4SOD?=
+ =?us-ascii?Q?0jYqK9pMqHEhshlSNMhh1Kn8mc1E5HkrWxb8cqud4ar/87mVAhZiKJG0228j?=
+ =?us-ascii?Q?9w=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 559a3601-7d9c-4894-acec-08dcfef5374d
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2024 06:27:12.9617
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kzipivz/qjyrHVWwOmg3jMXt9wJaOCk+Sg6QQvafiy/P8uNmZ1SIOYwda/qy2CnrQ8flaoLOAqQZy7UEKSUh781a9LASJJ9f91omUx8ZA+o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8727
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.6 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Remove trailing whitespace from devicetree binding documentation files:
-- regulator/regulator-max77620.txt
-- interrupt-controller/nvidia,tegra20-ictlr.txt
-- interrupt-controller/msi.txt
+On Wed, Nov 06, 2024 at 02:19:38PM -0800, Matthew Maurer wrote:
+>>
+>> > If booted against an old kernel, it will
+>> > behave as though there is no modversions information.
+>>
+>> Huh? This I don't get. If you have the new libkmod and boot
+>> an old kernel, that should just not break becauase well, long
+>> symbols were not ever supported properly anyway, so no regression.
+>
+>Specifically, if you set NO_BASIC_MODVERSIONS, build a module, and
 
-No functional changes. Issues detected using checkpatch.pl script.
+how are you setting NO_BASIC_MODVERSIONS and loading it in a kernel
+that still doesn't have that, i.e. before EXTENDED_MODVERSIONS?
 
-Signed-off-by: Abhinav Saxena <xandfury@gmail.com>
----
- .../devicetree/bindings/interrupt-controller/msi.txt   | 10 +++++-----
- .../interrupt-controller/nvidia,tegra20-ictlr.txt      |  2 +-
- .../bindings/regulator/regulator-max77620.txt          |  4 ++--
- 3 files changed, 8 insertions(+), 8 deletions(-)
+Please Cc me on the format change and if possible submit the libkmod
+support.
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/msi.txt b/Documentation/devicetree/bindings/interrupt-controller/msi.txt
-index c20b51df7138..2109a3454cf6 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/msi.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/msi.txt
-@@ -12,17 +12,17 @@ potentially including additional information.
- MSIs are distinguished by some combination of:
- 
- - The doorbell (the MMIO address written to).
--  
-+
-   Devices may be configured by software to write to arbitrary doorbells which
-   they can address. An MSI controller may feature a number of doorbells.
- 
- - The payload (the value written to the doorbell).
--  
-+
-   Devices may be configured to write an arbitrary payload chosen by software.
-   MSI controllers may have restrictions on permitted payloads.
- 
- - Sideband information accompanying the write.
--  
-+
-   Typically this is neither configurable nor probeable, and depends on the path
-   taken through the memory system (i.e. it is a property of the combination of
-   MSI controller and device rather than a property of either in isolation).
-@@ -48,7 +48,7 @@ Optional properties:
-   not encode doorbells or payloads as these can be configured dynamically.
- 
-   The meaning of the msi-specifier is defined by the device tree binding of
--  the specific MSI controller. 
-+  the specific MSI controller.
- 
- 
- MSI clients
-@@ -117,7 +117,7 @@ Example
- 		reg = <0x1 0xf00>;
- 		compatible = "vendor-c,some-device";
- 
--		/* 
-+		/*
- 		 * Can generate MSIs to either A or B.
- 		 */
- 		msi-parent = <&msi_a>, <&msi_b 0x17>;
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt b/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt
-index 2ff356640100..0c37e569e6f3 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt
-+++ b/Documentation/devicetree/bindings/interrupt-controller/nvidia,tegra20-ictlr.txt
-@@ -12,7 +12,7 @@ Required properties:
- - compatible : should be: "nvidia,tegra<chip>-ictlr". The LIC on
-   subsequent SoCs remained backwards-compatible with Tegra30, so on
-   Tegra generations later than Tegra30 the compatible value should
--  include "nvidia,tegra30-ictlr".	
-+  include "nvidia,tegra30-ictlr".
- - reg : Specifies base physical address and size of the registers.
-   Each controller must be described separately (Tegra20 has 4 of them,
-   whereas Tegra30 and later have 5).
-diff --git a/Documentation/devicetree/bindings/regulator/regulator-max77620.txt b/Documentation/devicetree/bindings/regulator/regulator-max77620.txt
-index bcf788897e44..7484c0728e27 100644
---- a/Documentation/devicetree/bindings/regulator/regulator-max77620.txt
-+++ b/Documentation/devicetree/bindings/regulator/regulator-max77620.txt
-@@ -65,14 +65,14 @@ Following are additional properties:
- 					Valid values are 0 to 7.
- 					This is applicable if FPS source is
- 					selected as FPS0, FPS1 or FPS2.
--			
-+
- - maxim,active-fps-power-down-slot:	Sequencing event slot number on which
- 					the regulator get disabled when master
- 					FPS input event set to LOW.
- 					Valid values are 0 to 7.
- 					This is applicable if FPS source is
- 					selected as FPS0, FPS1 or FPS2.
--			
-+
- - maxim,suspend-fps-source:		This is same as property
- 					"maxim,active-fps-source" but value
- 					get configured when system enters in
--- 
-2.34.1
+thanks
+Lucas De Marchi
 
+>then load said module with a kernel *before* EXTENDED_MODVERSIONS
+>existed, it will see no modversion info on the module to check. This
+>will be true regardless of symbol length.
+>
+>>
+>> I'm not quite sure I understood your last comment here though,
+>> can you clarify what you meant?
+>>
+>> Anyway, so now that this is all cleared up, the next question I have
+>> is, let's compare a NO_BASIC_MODVERSIONS world now, given that the
+>> userspace requirements aren't large at all, what actual benefits does
+>> using this new extended mod versions have? Why wouldn't a distro end
+>> up preferring this for say a future release for all modules?
+>
+>I think a distro will end up preferring using this for all modules,
+>but was intending to put both in for a transitional period until the
+>new format was more accepted.
+>
+>>
+>>   Luis
 
