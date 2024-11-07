@@ -1,64 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-3009-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3010-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38719C0D6F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 19:04:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A33E89C0DA4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 19:16:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkqhT26Q9z3bpx;
-	Fri,  8 Nov 2024 05:04:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkqyc29k3z3bqB;
+	Fri,  8 Nov 2024 05:16:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8::227"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731002649;
-	cv=none; b=ilNm2Wedsjt+REjDgSqv5deuTNWXv2CIj7mpIv7fRxN/glxm0OjQZh1v9P8uNVdF8vWtAyAZXLmv+O2OMf7sEqOHY/xOoRQjmzrHNquCw5MP9FDDuQcrg5cUJxUQchxIN4+UHyN70/x1nzpXRUosfmwBYx3TpqPl/9hJgh6YXsegUga1ky3GFimA/2Y6EPiu+2xciIv10ZfcRyMESk+v4jRt+iDpkePRIoulXRahmqOOA9FLCx+RaFaubzPVbHpklNGP46HeRi35WKblFiXjJFWRvWeCay9baLndL4yJqYRREvMKatfIihp4ky2NCDmNj40xaTl9cYt6h9ltPusESQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731003384;
+	cv=none; b=fJAoa3TtLoVehzb0xyQQgRgEY2LwTvoCQ9pohNE/LLC70ShtJtc4bXgTbiJcvAp3fxybTWQUv6ruHps20VKgXMfiqHZCBxAR9HKKPbcJexsEsWpa4Ic/N81S8Dvr4Vr+rkuLwOtZEuZcpOqW0Qe6HyQKjTsAMEsiEFwz6O7CrgfQBH35DSC8kTASCq5TMUu50c7QLcHFR8ktyE3XkMO+4qLSEFIn5ECrkkJfHaje/zpNEtn3X+VqIAbP0eFbQPipIduZUo92LcJlrpnwjLQvgEG/kc3ZfkcHhK8BYoLOSaMN9bSDMwpjoRqpXyIQmeSku2npnwY5zRsQiKGLM+GW6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731002649; c=relaxed/relaxed;
-	bh=v9XGExYP+FD5xVE83+PPloi9X/IUrzdreygul4BmLSg=;
+	t=1731003384; c=relaxed/relaxed;
+	bh=7aH+YamaB5+L+7dV8UCOYyw7UnZu/8epHdr5FqD/+g8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H7Jca0davHgJ3WTOrzlndt0HuI4MyFDA/a/ahk6ey44Go4fukC3LB3iFZU/5DBkEYe+4W0oSmR1AgmH3ghOrHEe5phmgima+vf3Miapq4tcmIzr8uLkwpz0Vv73qpt2/8+iwkVTMDqAI+YJDa4H23WJO+JWSl8u8wo3BNdDVA3CngwiCxG4acc9yzmtZdqbYKESDrP+YQy4JYnEujfneRpLDZHCHBQBbPhFItXIbom5mE6ps17PAAoLWXgl/7x8E++1+DCa2Te41bI3QWzMFt5WvcNUk3HQ78EjMz+B6wcVlRDwF1g86zt+iE/QTo0svtnvOT5mcmDxOhOZGKMuv7w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KB4eO8qI; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+	 MIME-Version:Content-Type; b=ar3/hOkOMK0+YrutlHmrMwRK7ih+QVtzHAs6vMwF6rk0CT9g2S+Hl9s16+MH8cZY/ScI5TfY8BTdAbZCOiNL6DwXiMLOOVfKh/O7tLFcxXJCpCl06DNV5GpX0P+Jnk4u3TQo/reLhZEOATOXcg19l9W2BmHydQjV3MpuQBmRtocd6OgYUZGyt23kA3ukk+OGBMjvcAHgIrMbYAJSPqo+uRs3PPad+5vT1KJT7B8rhqA5v1oHFEt2anGVUpOKDhmEw+jeE8pp0wjw9ZR2mz+zYFMfc+0SDmgo13yLufKYKu13CWvVehVMKDyZpQAFr+3/B9rH8Ld2LwXmjB1UTvLj/A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=pGQCKrzF; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=KB4eO8qI;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=pGQCKrzF;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 3650 seconds by postgrey-1.37 at boromir; Fri, 08 Nov 2024 05:04:07 AEDT
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkqhR5YxTz3bps
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 05:04:06 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 06FB520007;
-	Thu,  7 Nov 2024 18:03:56 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkqyZ279Sz3bq4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 05:16:21 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C9DFC20005;
+	Thu,  7 Nov 2024 18:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731002638;
+	t=1731003378;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=v9XGExYP+FD5xVE83+PPloi9X/IUrzdreygul4BmLSg=;
-	b=KB4eO8qIa2MRgT2At0Bdgd+UcoRM2YYL9KjNKlbF8yXXtpwRizS70pLAYRkcXi8dLVomi+
-	3omDI4Zr3vVMcPvLVcYxQ8+dMMa5t10R8cBe9Yn9E7jBEFoH+5uLrgKqxowz/g08KGIVnq
-	WG8rbEYxIS1P/nD20TGfDGuNX8ghZ4kEzMUuPhar1AIPyH5h0vEn9QTWhc5QGh3Tm+Y43M
-	qTlgd9H7dMtGCTJIYWCpnh+zxOwoQNEUmgYqOP39Zs0ojXN3ofFZ2xvMsdQQEx1Buzpq7L
-	vUrs/k/aXYhmd/k4PtLr3lhYTjmzCbSD6QJNoWPQySRXM4U1YzbaMq8WATpgeQ==
-Date: Thu, 7 Nov 2024 19:03:55 +0100
+	bh=7aH+YamaB5+L+7dV8UCOYyw7UnZu/8epHdr5FqD/+g8=;
+	b=pGQCKrzFC4Tjz/QbNUrWfas+lfJ3l8p0TO7a+cS3Gul4L9PmHWkojBPeePUxqTIJ/5vZAn
+	OI2nE0iQF6m/GX8JOHjO7uJ6l+5pYUD8TBv1t9X9Tnu/HZIE8u1AvZlLADNHO8LL52BYkz
+	PPliKyEPVRFd5ozDa+i4qYFJDKcw4OPHMVfL3HmBe/sk1Dcbb1BoIDoUZ9cwpfq4yhlGRL
+	AQ8o8YKibuEqD18udqEyR1c37RkMjKGSvtmy5NLSMb5Jo/AYJB0B+kHBynMUCqszF1FW9r
+	9Wz+STl+q0eTekgOIUwiIzhK+IoDBfD/Cj5CYOSer3yqGJIcUBmnEPQlkvSQjQ==
+Date: Thu, 7 Nov 2024 19:16:17 +0100
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski
- <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Heiner
- Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
+ <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com, Herve Codina
  <herve.codina@bootlin.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
  <u.kleine-koenig@baylibre.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next 2/7] net: freescale: ucc_geth: split
- adjust_link for phylink conversion
-Message-ID: <20241107190355.7daafc3d@fedora.home>
-In-Reply-To: <Zyz-CcO1inN06mtm@shell.armlinux.org.uk>
+Subject: Re: [PATCH net-next 4/7] net: freescale: ucc_geth: Fix WOL
+ configuration
+Message-ID: <20241107191617.00e0584a@fedora.home>
+In-Reply-To: <83151aa4-62e9-4be9-ae64-a728be004dae@lunn.ch>
 References: <20241107170255.1058124-1-maxime.chevallier@bootlin.com>
-	<20241107170255.1058124-3-maxime.chevallier@bootlin.com>
-	<Zyz-CcO1inN06mtm@shell.armlinux.org.uk>
+	<20241107170255.1058124-5-maxime.chevallier@bootlin.com>
+	<83151aa4-62e9-4be9-ae64-a728be004dae@lunn.ch>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -81,33 +80,34 @@ X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello Russell,
+Hello Andrew,
 
-On Thu, 7 Nov 2024 17:51:05 +0000
-"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+On Thu, 7 Nov 2024 18:49:00 +0100
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-> On Thu, Nov 07, 2024 at 06:02:49PM +0100, Maxime Chevallier wrote:
-> > Preparing the phylink conversion, split the adjust_link callbaclk, by
-> > clearly separating the mac configuration, link_up and link_down phases.  
+> > +	if (phydev)
+> > +		phy_ethtool_get_wol(phydev, wol);
+> > +
+> >  	if (qe_alive_during_sleep())
+> >  		wol->supported |= WAKE_MAGIC;  
 > 
-> I'm not entirely sure what the point of this patch is, given that in
-> patch 7, all this code gets deleted, or maybe moved?
+> So get WoL will return whatever methods the PHY supports, plus
+> WAKE_MAGIC is added because i assume the MAC can do that. So depending
+> on the PHY, it could be the full list:
+
+> > +	if (wol->wolopts & WAKE_PHY)
+> > +		ret = phy_ethtool_set_wol(phydev, wol);  
 > 
-> If it's moved, it may be better in patch 7 to ensure that doesn't
-> happen, and move it in a separate patch - right now patch 7 is horrible
-> to review as there's no way to see what the changes are in these
-> link_up()/link_down() functions.
+> Here, the code only calls into the PHY for WAKE_PHY, when in fact the
+> PHY could be handling WAKE_UCAST, WAKE_MCAST, WAKE_ARP etc.
+> 
+> So these conditions are wrong. It could we be that X years ago when
+> this code was added only WAKE_PHY and WAKE_MAGIC existed?
 
-I agree that it's hard to review indeed... I followed the documented
-approach of splitting-up the adjust_link callback then performing the
-conversion, but it's true that it doesn't really make patch 7 more
-readable.
+Ah that's right indeed. So yeah my changes aren't enough, I'll go over
+that patch again.
 
-I can try to move things around and make patch 7 a bit more
-straightforward.
-
-Thanks,
+Thanks for spotting this,
 
 Maxime
-
 
