@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-2959-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2960-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A659BFECB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 08:10:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0D49BFECE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 08:11:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkYBD3KYjz3bjk;
-	Thu,  7 Nov 2024 18:10:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkYCX4t5Lz3bk1;
+	Thu,  7 Nov 2024 18:11:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730963428;
-	cv=none; b=BJr2m9LPDDT17dYiuZHm5H+RCOn+s9VLqZw8efjmIFgPiLhlNdJoDXwDzjMcLYh/oKfLiGr9QQAi/ezEPD6O8TBDtuJmts8cnj4rhQt5V4EJlb5PTHt8Xh1j0e3XwTO3Vg9TQ8Iy0K0LiL+0Z799wdZTEE3QHylQmgLylqxaKorKNGzwEi/FSDb35oC9qI7v8D3Sv9hfWIrTtVtjw26+UuR1hH5o1roJLmNDhLgVXgYcoRuX2VhNBEiUB92+Zqj/w/bAsXkpcjjxIo4VuS00Jy9G8J2S/3kpWgTIO8e0kVXVInEUG4pEr4rynLdpUxH5WYCv2rCr8LD2CdmFK4iUWw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730963496;
+	cv=none; b=QOzxhTvMTF6iqE/+C9bwUhgTBe6VDCQ/C9Vt0+A33+Xqlu3bxE/Raneq9aQkI8GTONQ9Qazw7e8eqR51E6AKN/+Eo7bIpjd6/c+o/7tM8JkIc45LVHHSIC4haOeXUS4DVkz597JiEFxVXVMKFZGNXnQ9GWKtS1gMFWnRIDT3aIvBUAvU7hLDbWUvVKuM7Jf/njSNZ/Gw8raurHTzG2Nkv6qyufY3dkn/KpqUkNp98tpaUz/szSEPaQgCZjNwGJeV8OxxWWc07DSviZtTFg2bC7Z9a+2pVf760l5Ran9pDPI3+YZpq/yKcIiKGK1a3WMJM0r9VXIV7sseQh4EakAuxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730963428; c=relaxed/relaxed;
-	bh=gXkKb76cQHh7wOHG00gK/2SD+GYrEI7IIjGn1NIid+I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S7HtCW72675F2IsT7oMT4ZF2VuY7HANIBFYug0mrR0aSnD9QU6XKX7fSBzXVvi2FEDN8TW9ck/4Gs+Z8cmKD01hd+OdjGpBZixV3gcWer59H0rqoGe5tJjHAt2njE0NlueIopwu+VLrvqlmceES/74DCbuKhzDx96/gXSHX08h3VGeEFEZx5aK/jX/m5kO72uI7Jp8t/dmK42ROnQSosYjlbM9opdAq/E+Qs9UoD/KRZ2Vtzlfn2rN+594TTC5pOoPcbKpFXNEVawO/gKHFkEFMZxRquvJR4iJkV6bDJ9skkisBO1Yh/SXZF+2+VdHf7KVWJVjoZTMefBRiojfg2CQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q6P7DB8t; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1730963496; c=relaxed/relaxed;
+	bh=GpLIFVWN5gATLV42VRAls+WEd25FgordcYXrWIv/Y2s=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=no6Pjj9ysoqmD+wMzJ35zU/aVdOxSHqQK/2vh7cPhuyuvltHCmlECpruQoUIo6DVj5pirh9rudjzTsRhh7CsCf5Wb1V0DeTj0f9qnMXmYu+2o/h1W8I3lo8pKfc1o8HlWT+OPfBeLQGF9dEQDMu5NuXVqko7En0JVpkFAkRrJb+7w8rxxxZcL3qyUtWWi4pEa+FEdyIKTQUW/d7I7bpggtq/yYpCTY5HPDC4MuErpoBDytVuuCC6++hQ903tK9O9jgPp3XD8q5KPyN1F9ZuwqhXkaNoN7vovkSuSC/V3zzWPDjxAPikHrL/F4cMfZlLpz3KBstN48hx52dbLhnXf2w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OvlLcUC8; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q6P7DB8t;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OvlLcUC8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkYBB463mz30f4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 18:10:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkYCW45tZz30f4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 18:11:35 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 923BFA41BD1;
-	Thu,  7 Nov 2024 07:08:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125C8C4CECC;
-	Thu,  7 Nov 2024 07:10:17 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2C8EE5C20F1;
+	Thu,  7 Nov 2024 07:10:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8657FC4CECC;
+	Thu,  7 Nov 2024 07:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730963420;
-	bh=YxO7O986VmLXhCSW4uofNGfPD1MSNmH02mKHd0zlHfo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q6P7DB8t9+L0QN9Buu4U7R8NuRP/4e9lZHMZsr1z/zUi3thmlbyvrMxexWufxQAuS
-	 imAWYYZkNb0EekIjq+A8n7LECNMLX5jVwtU11S6al+RpJWHtNwFkElRhRPF2w6pTcL
-	 4lKzhdgSTvanZpzLeEbdIkNgcD8dADF5OiAD/5h84K5fIelnQwIpPTmjXHZQXw6wz/
-	 iGy8iNIL//DidITaBfgpsxbLmqrn5mXQDHAJQUB2wfIoQKpuor4kBvAOhLDAYYtUqC
-	 EyasTdmw3iWnN6msrmxB1jATv9EABnvp0UwbstCDaXwWTb1avJwrKiO2r7l2rCBn0U
-	 5dLJmmT1xXM6A==
-Message-ID: <bc49f1de-8cce-404d-927a-ebe606c99026@kernel.org>
-Date: Thu, 7 Nov 2024 08:10:15 +0100
+	s=k20201202; t=1730963491;
+	bh=Azs9pasN3x08hUEU2+s+v/pYHL4/7i1ADPdf0X65eZ0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=OvlLcUC8BJcDPd9trNaPvUnHzWZZjTZs2zO3o6wdhnNl3LYw579jbROt1ZQKJHQS/
+	 Cr4QFh1KEFk6BId0hdq0f0W1Sw9NhdKoY4Ao4T9yu7t/GDXULg/ai/RDIN4jc0s33r
+	 Ovm7B3d2/yglQkxD5h5oY3eYMF1DwOhtj05xK/i3dIwK+AEmGUaVuM6GMqu1aQpntf
+	 9lmmJ93IwaQukeXA73uOft1bW4eCXg1q5mR7MZN6SJm0j0WW1pIuTE+aqa3vqNGNTP
+	 HQs7tzLxI9mPs3r5TzIieVvyDfC5HbzK7x9HriS9QSJYtekmo0vtkmKU7IPI1uFtFF
+	 2kpQEdGzXHzKw==
+Message-ID: <6fa97654-19f6-4c5b-8db5-e76aafcf4227@kernel.org>
+Date: Thu, 7 Nov 2024 08:11:27 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,14 +59,15 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] tty:hvc:Fix incorrect formatted output
+From: Jiri Slaby <jirislaby@kernel.org>
 To: liujing <liujing@cmss.chinamobile.com>, mpe@ellerman.id.au
 Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
  maddy@linux.ibm.com, gregkh@linuxfoundation.org,
  linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  linux-serial@vger.kernel.org
 References: <20241107054704.3247-1-liujing@cmss.chinamobile.com>
+ <bc49f1de-8cce-404d-927a-ebe606c99026@kernel.org>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
  xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
  rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
@@ -109,47 +110,56 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20241107054704.3247-1-liujing@cmss.chinamobile.com>
+In-Reply-To: <bc49f1de-8cce-404d-927a-ebe606c99026@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 07. 11. 24, 6:47, liujing wrote:
-> The termno parameter is defined as an unsigned int
-> in hvc_opal_probe function,
+Also please fix the subject. See:
+git log --oneline drivers/tty/hvc/hvc_opal.c
 
-"The termno parameter is defined as an unsigned int in hvc_opal_probe()."
-
-We place () after function names, then "function" is not needed.
-
- > So when it output should be modified to %u format.
-
-I cannot parse this. Perhaps:
-"So when it is output, a %u specifier should be used for formatting."
-? But feel free to use your own words, but somehow spell (or chatgpt) 
-check it.
-
-> Signed-off-by: liujing <liujing@cmss.chinamobile.com>
+On 07. 11. 24, 8:10, Jiri Slaby wrote:
+> On 07. 11. 24, 6:47, liujing wrote:
+>> The termno parameter is defined as an unsigned int
+>> in hvc_opal_probe function,
 > 
-> diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
-> index 095c33ad10f8..1d2e7f2ce088 100644
-> --- a/drivers/tty/hvc/hvc_opal.c
-> +++ b/drivers/tty/hvc/hvc_opal.c
-> @@ -199,7 +199,7 @@ static int hvc_opal_probe(struct platform_device *dev)
->   		/* Instanciate now to establish a mapping index==vtermno */
->   		hvc_instantiate(termno, termno, ops);
->   	} else {
-> -		pr_err("hvc_opal: Device %pOF has duplicate terminal number #%d\n",
-> +		pr_err("hvc_opal: Device %pOF has duplicate terminal number #%u\n",
->   		       dev->dev.of_node, termno);
+> "The termno parameter is defined as an unsigned int in hvc_opal_probe()."
+> 
+> We place () after function names, then "function" is not needed.
+> 
+>  > So when it output should be modified to %u format.
+> 
+> I cannot parse this. Perhaps:
+> "So when it is output, a %u specifier should be used for formatting."
+> ? But feel free to use your own words, but somehow spell (or chatgpt) 
+> check it.
+> 
+>> Signed-off-by: liujing <liujing@cmss.chinamobile.com>
+>>
+>> diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
+>> index 095c33ad10f8..1d2e7f2ce088 100644
+>> --- a/drivers/tty/hvc/hvc_opal.c
+>> +++ b/drivers/tty/hvc/hvc_opal.c
+>> @@ -199,7 +199,7 @@ static int hvc_opal_probe(struct platform_device 
+>> *dev)
+>>           /* Instanciate now to establish a mapping index==vtermno */
+>>           hvc_instantiate(termno, termno, ops);
+>>       } else {
+>> -        pr_err("hvc_opal: Device %pOF has duplicate terminal number 
+>> #%d\n",
+>> +        pr_err("hvc_opal: Device %pOF has duplicate terminal number 
+>> #%u\n",
+>>                  dev->dev.of_node, termno);
+> 
+> There are more occurrences of this. Care to fix them all?
+> 
+> thanks,
 
-There are more occurrences of this. Care to fix them all?
-
-thanks,
 -- 
 js
 suse labs
+
 
