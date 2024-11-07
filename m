@@ -1,67 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-3022-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3025-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345479C0F41
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 20:46:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C739C11EA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 23:38:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xksyd6CtDz3brR;
-	Fri,  8 Nov 2024 06:46:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkxmr6swzz3bqD;
+	Fri,  8 Nov 2024 09:38:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.7
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731008793;
-	cv=none; b=DyTlQRAwUW/MIpg2XXy/uQ4JrEAKrUqtrLi21q0bsUTOT5NCX8skAg/ZaHn8eGkGo7vtajqunpPbXjAjKFmaIafDt5SUu2LgY8T642YBM2YXuNB6f2WpfNSaVxfikT2nKLzuqg9qAc13fdlo/V9Fk5fj1/AUZe1nfcUeNSAxy43etSBBR4/9LTLxljjP/epigiw2LzRhy+/2Qnb5WtEA+5/BMhp6Hcp8KzJz4+WYAnXYsj19IEFkJ9bgYiT0bD4r0mFqXgKUvMXF5qToL40MOepxoRHLhmlkScNILBQVijSNF98hpQq6d+jbVvcv8BcEV5/Riru/hyCH03TfBCoZwg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731019100;
+	cv=none; b=SOtpOkh3bDG0PTw4P3wjO9SeEsIwwSk5bZLvHzQTqSryXm92Vus3k07/cSKVI3y1BIev+hZaQPE9zWhs+b3bUeXBr7W/zAUNssJHFCKWW9SaDr0IGea6g0JqDb7xBa84mq8O02HL0mMlhbA/Lu3d2nlr87nAgtDb8P+5uXsdGzmmomrm66gYV+JQxy8Vvw9C1fbMenIW+U4C93eqgvKRPX+TZNQL+pW16f4NsmVb72Ag7E0zN4q0gIOWeLLh6YkuEdGERvbaQ2n+WCCNz/pBiWOQgQHdpVp/Q04EXirtd/ZLaYMKgg2nuLS4kMVGZiqoEeD2cDfUpY4/I9cW1vJw+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731008793; c=relaxed/relaxed;
-	bh=QiOu+EQVKG03gvmRIfVQE8W01nc3nP8eWslregCdscU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OrTHRXSBjg8aaF8arpptMQgzs5GA3B6uByGLhPQEZ1bvaSEtMtCr4pwf2OO5LjXIXmO9+CvCIMWcYsUIVuJ26p2Wc/kAW8KtaKl1QdV8vA20A0aAKU6KlKl5jDAgrv8gEm3wT8oAjJNQ74x4xOJ0Hl/jMNQzqmSJQ5/Jky+1dF47/hB30pYVyQC9Drip4i0xLeuclw75xisb/WADTzJFW4kQisxhO1QvgyJbMtbfgHKlEZtEGvKxwLEyElHPb0WlI6Sl9lQRozD24Lhx0GZ85zXmzUGqytvXQYaBDLbbvNQo23tZJ//MGRjcm7o9sGi3Qqs84kkcamXC7xTdSYE6Hg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aas+U3ZX; dkim-atps=neutral; spf=none (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1731019100; c=relaxed/relaxed;
+	bh=XtY0CMX+eQzJ6bn37JkC0TFW1jUDE6STEsjCGv6T4mE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oPwLF0SfqixbPZyvTSAZAoLt4SJmfHEiDTOJXhh7TaPEhYarEr3/ks5lBgiKvH3ClUVKXLK1P1CwokWzG8HKnRLkDLSD/SiBzcnQPtv9lnTh0F8ngClNRiYUBeauPDDCFshL8KRTUuaAsPOlRtk0jbvilaCmoIbUYWWPpp79+pplzCqNk3BETLFvcD2+SnP2Xxk+soJtwrzDfvkczlwLYBTxS2tr6Q9Z9WfglC6CBd8YvfyKtEcb7AWCtd2p4PqNDd0EPUIwi0JYDp/bCBZ1Y3Ytk/+IB4vtv7lqpxH4QzB26DLgLydN41xNuqEGLcPeDCd/kXZkChMDhkWa1uc9lQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T6fjrNRK; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aas+U3ZX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T6fjrNRK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xksyc4TmXz3brN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 06:46:32 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731008793; x=1762544793;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nU6wUyehaIMnSMsUf0IiJjEAD3owJ/kov/ScS7TWAgg=;
-  b=aas+U3ZXF788ls7BQxpCDkony4Qxcbb3jEHJgcH3czH6dvTnNzArMows
-   1+5U4jUdZpaPMhATU3UU4KrH8WbkA/5GoFrvkN6wmXfOkSmDeFuFGhnmQ
-   YPMZs3VSjVQebL9i89yDEsbIOPYdWTSnFZw+kgp+pmpGvMGwXQYUX8yeO
-   G/WUrDWP6H01R/yDjIK7Mte8Wzf9zyScsmHfgI0eFOQyXHF2s+VGma8sy
-   +DaFnSu8L3Wkk/SYqnJouOUjjkUINNbvW7KLFn0m57sYmPv4TqozQPPAa
-   PYNqDMlsebGz848HJcWIdU8+07IAOqKpU9DcG07ABERJWtjH2RBpd2Vxh
-   w==;
-X-CSE-ConnectionGUID: XX8MgV73T6+vtQL0JApczA==
-X-CSE-MsgGUID: VOTLMi54QS+f/yoRyhHMXw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="56272339"
-X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; 
-   d="scan'208";a="56272339"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 11:46:30 -0800
-X-CSE-ConnectionGUID: BfFncz9rRIGYCasq2Q9UMA==
-X-CSE-MsgGUID: B3tQBkvxRlmhhDfctrP1yQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,135,1728975600"; 
-   d="scan'208";a="84729818"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2024 11:46:29 -0800
-Received: from [10.212.68.83] (kliang2-mobl1.ccr.corp.intel.com [10.212.68.83])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by linux.intel.com (Postfix) with ESMTPS id 34C2720B5703;
-	Thu,  7 Nov 2024 11:46:25 -0800 (PST)
-Message-ID: <655de93b-26cf-4588-aec5-9d0eba997c4e@linux.intel.com>
-Date: Thu, 7 Nov 2024 14:46:24 -0500
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xkxmq1j3jz3bpp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 09:38:19 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id F0D4A5C4B87;
+	Thu,  7 Nov 2024 22:37:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B13FC4CECC;
+	Thu,  7 Nov 2024 22:38:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731019095;
+	bh=1vresE0L3Nh3fHiQZbFLwAwAhjoMFFb+bTLtc7rSuxI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T6fjrNRK0H7rMGmtghlNMki/7KUUA3JkXKRGsBeHjc8CCMykYE+gcyamhcLzNFUT1
+	 TPYgWtKUP50fWbzpvceAl/y5Ye4PI2/vVF6v7d6Pl7Rht23wGL+oFVUf+kZhHuu/IV
+	 ZH8w2RYM443JXE4j0c8o+9E4dp8pF0UsmJ7MqlFMQ2yfFxsVDPfqDvcJf1SeEyEToy
+	 qrfZ3HAy0D1q7aqZraUuZCbf8JBqF9MW2YrBZ+AWwcSlYW7d5pitli87r1Hw4CzJnZ
+	 E6F8nkrNVLvi3VEEhCM5zPRItjpua5G9swipPx81U9fpAJbRA43qT1QJTXvjO14r6h
+	 XJ5/Mq96LOcZQ==
+Date: Thu, 7 Nov 2024 14:38:13 -0800
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+	Lucas De Marchi <lucas.de.marchi@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
+Message-ID: <Zy1BVXgnT72Jt_HE@bombadil.infradead.org>
+References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
+ <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
+ <ZyNr--iMz_6Fj4yq@bombadil.infradead.org>
+ <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
+ <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org>
+ <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
+ <ZyrRYUD0K1f7SwWg@bombadil.infradead.org>
+ <CAGSQo03+1WjUVj-iQ6zdOST6z=p+=OqS2Xk_c4ZUdHOsxa7g2w@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,252 +90,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 5/5] perf: Correct perf sampling with guest VMs
-To: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org
-Cc: Oliver Upton <oliver.upton@linux.dev>,
- Sean Christopherson <seanjc@google.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, Will Deacon <will@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org
-References: <20241107190336.2963882-1-coltonlewis@google.com>
- <20241107190336.2963882-6-coltonlewis@google.com>
-Content-Language: en-US
-From: "Liang, Kan" <kan.liang@linux.intel.com>
-In-Reply-To: <20241107190336.2963882-6-coltonlewis@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGSQo03+1WjUVj-iQ6zdOST6z=p+=OqS2Xk_c4ZUdHOsxa7g2w@mail.gmail.com>
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-On 2024-11-07 2:03 p.m., Colton Lewis wrote:
-> Previously any PMU overflow interrupt that fired while a VCPU was
-> loaded was recorded as a guest event whether it truly was or not. This
-> resulted in nonsense perf recordings that did not honor
-> perf_event_attr.exclude_guest and recorded guest IPs where it should
-> have recorded host IPs.
+On Wed, Nov 06, 2024 at 02:19:38PM -0800, Matthew Maurer wrote:
+> >
+> > > If booted against an old kernel, it will
+> > > behave as though there is no modversions information.
+> >
+> > Huh? This I don't get. If you have the new libkmod and boot
+> > an old kernel, that should just not break becauase well, long
+> > symbols were not ever supported properly anyway, so no regression.
 > 
-> Rework the sampling logic to only record guest samples for events with
-> exclude_guest = 0. This way any host-only events with exclude_guest
-> set will never see unexpected guest samples. The behaviour of events
-> with exclude_guest = 0 is unchanged.
-> 
-> Note that events configured to sample both host and guest may still
-> misattribute a PMI that arrived in the host as a guest event depending
-> on KVM arch and vendor behavior.
-> 
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
-> Acked-by: Mark Rutland <mark.rutland@arm.com>
-> Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-> ---
+> Specifically, if you set NO_BASIC_MODVERSIONS, build a module, and
+> then load said module with a kernel *before* EXTENDED_MODVERSIONS
+> existed, it will see no modversion info on the module to check. This
+> will be true regardless of symbol length.
 
-Acked-by: Kan Liang <kan.liang@linux.intel.com>
+Isn't that just the same as disabling modverisons?
 
-Thanks,
-Kan
->  arch/arm64/include/asm/perf_event.h |  4 ----
->  arch/arm64/kernel/perf_callchain.c  | 28 ----------------------------
->  arch/x86/events/core.c              | 16 ++++------------
->  include/linux/perf_event.h          | 21 +++++++++++++++++++--
->  kernel/events/core.c                | 21 +++++++++++++++++----
->  5 files changed, 40 insertions(+), 50 deletions(-)
+If you select modversions, you get the options to choose:
+
+  - old modversions
+  - old modversions + extended modversions
+  - extended modversions only
+
+> > I'm not quite sure I understood your last comment here though,
+> > can you clarify what you meant?
+> >
+> > Anyway, so now that this is all cleared up, the next question I have
+> > is, let's compare a NO_BASIC_MODVERSIONS world now, given that the
+> > userspace requirements aren't large at all, what actual benefits does
+> > using this new extended mod versions have? Why wouldn't a distro end
+> > up preferring this for say a future release for all modules?
 > 
-> diff --git a/arch/arm64/include/asm/perf_event.h b/arch/arm64/include/asm/perf_event.h
-> index 31a5584ed423..ee45b4e77347 100644
-> --- a/arch/arm64/include/asm/perf_event.h
-> +++ b/arch/arm64/include/asm/perf_event.h
-> @@ -10,10 +10,6 @@
->  #include <asm/ptrace.h>
->  
->  #ifdef CONFIG_PERF_EVENTS
-> -struct pt_regs;
-> -extern unsigned long perf_arch_instruction_pointer(struct pt_regs *regs);
-> -extern unsigned long perf_arch_misc_flags(struct pt_regs *regs);
-> -#define perf_arch_misc_flags(regs)	perf_misc_flags(regs)
->  #define perf_arch_bpf_user_pt_regs(regs) &regs->user_regs
->  #endif
->  
-> diff --git a/arch/arm64/kernel/perf_callchain.c b/arch/arm64/kernel/perf_callchain.c
-> index 01a9d08fc009..9b7f26b128b5 100644
-> --- a/arch/arm64/kernel/perf_callchain.c
-> +++ b/arch/arm64/kernel/perf_callchain.c
-> @@ -38,31 +38,3 @@ void perf_callchain_kernel(struct perf_callchain_entry_ctx *entry,
->  
->  	arch_stack_walk(callchain_trace, entry, current, regs);
->  }
-> -
-> -unsigned long perf_arch_instruction_pointer(struct pt_regs *regs)
-> -{
-> -	if (perf_guest_state())
-> -		return perf_guest_get_ip();
-> -
-> -	return instruction_pointer(regs);
-> -}
-> -
-> -unsigned long perf_arch_misc_flags(struct pt_regs *regs)
-> -{
-> -	unsigned int guest_state = perf_guest_state();
-> -	int misc = 0;
-> -
-> -	if (guest_state) {
-> -		if (guest_state & PERF_GUEST_USER)
-> -			misc |= PERF_RECORD_MISC_GUEST_USER;
-> -		else
-> -			misc |= PERF_RECORD_MISC_GUEST_KERNEL;
-> -	} else {
-> -		if (user_mode(regs))
-> -			misc |= PERF_RECORD_MISC_USER;
-> -		else
-> -			misc |= PERF_RECORD_MISC_KERNEL;
-> -	}
-> -
-> -	return misc;
-> -}
-> diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-> index 9fdc5fa22c66..d85e12ca4263 100644
-> --- a/arch/x86/events/core.c
-> +++ b/arch/x86/events/core.c
-> @@ -3005,9 +3005,6 @@ static unsigned long code_segment_base(struct pt_regs *regs)
->  
->  unsigned long perf_arch_instruction_pointer(struct pt_regs *regs)
->  {
-> -	if (perf_guest_state())
-> -		return perf_guest_get_ip();
-> -
->  	return regs->ip + code_segment_base(regs);
->  }
->  
-> @@ -3035,17 +3032,12 @@ unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
->  
->  unsigned long perf_arch_misc_flags(struct pt_regs *regs)
->  {
-> -	unsigned int guest_state = perf_guest_state();
->  	unsigned long misc = common_misc_flags(regs);
->  
-> -	if (guest_state) {
-> -		misc |= perf_arch_guest_misc_flags(regs);
-> -	} else {
-> -		if (user_mode(regs))
-> -			misc |= PERF_RECORD_MISC_USER;
-> -		else
-> -			misc |= PERF_RECORD_MISC_KERNEL;
-> -	}
-> +	if (user_mode(regs))
-> +		misc |= PERF_RECORD_MISC_USER;
-> +	else
-> +		misc |= PERF_RECORD_MISC_KERNEL;
->  
->  	return misc;
->  }
-> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-> index 772ad352856b..368ea0e9577c 100644
-> --- a/include/linux/perf_event.h
-> +++ b/include/linux/perf_event.h
-> @@ -1655,8 +1655,9 @@ extern void perf_tp_event(u16 event_type, u64 count, void *record,
->  			  struct task_struct *task);
->  extern void perf_bp_event(struct perf_event *event, void *data);
->  
-> -extern unsigned long perf_misc_flags(struct pt_regs *regs);
-> -extern unsigned long perf_instruction_pointer(struct pt_regs *regs);
-> +extern unsigned long perf_misc_flags(struct perf_event *event, struct pt_regs *regs);
-> +extern unsigned long perf_instruction_pointer(struct perf_event *event,
-> +					      struct pt_regs *regs);
->  
->  #ifndef perf_arch_misc_flags
->  # define perf_arch_misc_flags(regs) \
-> @@ -1667,6 +1668,22 @@ extern unsigned long perf_instruction_pointer(struct pt_regs *regs);
->  # define perf_arch_bpf_user_pt_regs(regs) regs
->  #endif
->  
-> +#ifndef perf_arch_guest_misc_flags
-> +static inline unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
-> +{
-> +	unsigned long guest_state = perf_guest_state();
-> +
-> +	if (!(guest_state & PERF_GUEST_ACTIVE))
-> +		return 0;
-> +
-> +	if (guest_state & PERF_GUEST_USER)
-> +		return PERF_RECORD_MISC_GUEST_USER;
-> +	else
-> +		return PERF_RECORD_MISC_GUEST_KERNEL;
-> +}
-> +# define perf_arch_guest_misc_flags(regs)	perf_arch_guest_misc_flags(regs)
-> +#endif
-> +
->  static inline bool has_branch_stack(struct perf_event *event)
->  {
->  	return event->attr.sample_type & PERF_SAMPLE_BRANCH_STACK;
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index 2c44ffd6f4d8..c62164a2ff23 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -7022,13 +7022,26 @@ void perf_unregister_guest_info_callbacks(struct perf_guest_info_callbacks *cbs)
->  EXPORT_SYMBOL_GPL(perf_unregister_guest_info_callbacks);
->  #endif
->  
-> -unsigned long perf_misc_flags(struct pt_regs *regs)
-> +static bool should_sample_guest(struct perf_event *event)
->  {
-> +	return !event->attr.exclude_guest && perf_guest_state();
-> +}
-> +
-> +unsigned long perf_misc_flags(struct perf_event *event,
-> +			      struct pt_regs *regs)
-> +{
-> +	if (should_sample_guest(event))
-> +		return perf_arch_guest_misc_flags(regs);
-> +
->  	return perf_arch_misc_flags(regs);
->  }
->  
-> -unsigned long perf_instruction_pointer(struct pt_regs *regs)
-> +unsigned long perf_instruction_pointer(struct perf_event *event,
-> +				       struct pt_regs *regs)
->  {
-> +	if (should_sample_guest(event))
-> +		return perf_guest_get_ip();
-> +
->  	return perf_arch_instruction_pointer(regs);
->  }
->  
-> @@ -7849,7 +7862,7 @@ void perf_prepare_sample(struct perf_sample_data *data,
->  	__perf_event_header__init_id(data, event, filtered_sample_type);
->  
->  	if (filtered_sample_type & PERF_SAMPLE_IP) {
-> -		data->ip = perf_instruction_pointer(regs);
-> +		data->ip = perf_instruction_pointer(event, regs);
->  		data->sample_flags |= PERF_SAMPLE_IP;
->  	}
->  
-> @@ -8013,7 +8026,7 @@ void perf_prepare_header(struct perf_event_header *header,
->  {
->  	header->type = PERF_RECORD_SAMPLE;
->  	header->size = perf_sample_data_size(data, event);
-> -	header->misc = perf_misc_flags(regs);
-> +	header->misc = perf_misc_flags(event, regs);
->  
->  	/*
->  	 * If you're adding more sample types here, you likely need to do
+> I think a distro will end up preferring using this for all modules,
+> but was intending to put both in for a transitional period until the
+> new format was more accepted.
 
+The only thing left I think to test is the impact at runtime, and the
+only thing I can think of is first we use find_symbol() on resolve_symbol() 
+which it took me a while to review and realize that this just uses a
+completely different ELF section, the the ksymtab sections which are split up
+between the old and the gpl section. But after that we use check_version().
+I suspect the major overhead here is in find_symbol() and that's in no way shape
+or form affected by your changes, and I also suspect that since the
+way you implemented for_each_modversion_info_ext() is just *one* search
+there shouldn't be any penalty here at all. Given it took *me* a while
+to review all this, I think it would be good for you to also expand your
+cover letter to be crystal clear on these expectations to users and
+developers and if anything expand on the Kconfig / and add documentation
+if we don't document any of this.
+
+I'd still like to see you guys test all this with the new TEST_KALLSYMS.
+
+  Luis
 
