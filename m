@@ -1,66 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-2975-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2976-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D0A9C0365
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 12:07:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EB79C03AA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 12:16:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkfSC65HQz3blK;
-	Thu,  7 Nov 2024 22:07:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkffR0Sf9z3bdj;
+	Thu,  7 Nov 2024 22:16:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730977675;
-	cv=none; b=BLZ126RDGkndcVhlNj7T1xmORoVhTE6BIWbbBxu9jCHZ9wPbmU5VfEW5lyTPdTVe4xnO33h2PuiYSbJh/jy3nJV5jzZjwA5YTbMs/FZPDSwMn7UAWkYJq1UHU4u4bzu0jA0DJSeyIevxCz69IZR/5gOkHWTY2roLPP65dTTcHGQgR50kmdAI3TImIVJ3eHdKam6csDkvalZfvPVql2kyjfWUeDFNDI2VKKjR4CQJspARI6p4HDFbtwFfl+twR+8JhW0Kkdbsi4CGjU326QLWvCATg1qdt9YXoAja4FpYFpRtunTtYFCoaxkRX+Y89jaVFpp55OBHiTPR78qBDzsf/w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730978207;
+	cv=none; b=hKM+myNqik/asK/5Bhb+s7PVMz/ZZ6UZ9iWvIvJdxuIvlOPArbv2/wnBUp1wP+ucXE18YGjWbmkfpJDJZ5FP5w6FBFDfQS/47BEntj2NwmwB8Ahc0Mg/F8yN9mn+nnr/qMzQjRcVDf2qVp8Pw0aXnQffmQidb1oQRsCep4qqUQRTjJxYfWgn43zUUYH4gcF1MwRBDEwHUk47N9+SXHh6O03216mUzYQbJciYWearacI8wIHQikPVCVK0OqTd8OFOJNz4rxybIPOr1TcrjB2YFk7jevs1r2u0Pqu92fGEjqfVKlrGoaUf8u17WDQxKzwvixBqwNAuaoaDUfrtm10UlA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730977675; c=relaxed/relaxed;
-	bh=crOUcDlEzUR3DZ0n6a2QmAqKobcrOvKf5Agt2Wh69jA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MB0LN9tY0aUrh4QQugTsv4WZhKDUpZMvqfFEIX8McKHZyf9pcDhYngZwzcxEvfe/ZaLXBjQChwSasKVmT5wRETZrJG79x64xgNHTwAmHC6rQfUqPqRolVcq2FwVGfUOE1qn/yD+4NxXAllv190DNKkFJ+bpN9W81Yig1gpDYohGsvMup09jmVmGOGcSUJO7uC97t7JE/U2MvywU6P/QdAEOppR0caNUiqQmhZFCCtWtcwp/Zp1e8u8XffvgNv8AE2bEzNOBWSb4KPXy0l2sMt0EH5lFNqSo/qSI5odHN0QRDQmrCXm5y1oSrcj1MutnIVBh9hV4o4ECTyCKj2r76dA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CEkUUHT2; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1730978207; c=relaxed/relaxed;
+	bh=hQwIr2Rl4epcCCtzI38xeQIq6RcKA3ikE/JHmSvIq2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l+H+wfIrA5/G3GB2UuFI/Q16RtSoZD/p60HBnvrqhIsRIu60p6zyqhgV14GdomhJxN4/p3sPvWMHE7x+XnsiI7Tof0j0f93HAm2goMTiVIaLiUIiT6wA2ytZLz/7PrCw9EIA4bHUNgK7LRAVcJYCjD/24kky+1JtE6iDiSkTYgyRCdMOsKeD4mIHyPPFyfIoHWfCglApKjK9vtlqWbWiw+ANSByBNRzNZqzJ3WgTpUgetbvY3WltswNiCicxP8IGepD+90egCbFLk8D9MaMj3IXtCH/PjycKAPUUqcOFznDD9Gs7+0nQj0Rswh/NvlYaWFArGCpw6PMUivoh6K4WKQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bboYeFlT; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CEkUUHT2;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bboYeFlT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkfSB6dLpz3blC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 22:07:54 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 951715C0496;
-	Thu,  7 Nov 2024 11:07:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504A7C4CECC;
-	Thu,  7 Nov 2024 11:07:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730977672;
-	bh=3RDsctzj+jKcHyPmCDmgDEvkYRZVjj3F2h2JnfN6XYg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CEkUUHT2AyhLlnl5b5Kr1aHQP+HLUSQogHUG19q1+lqDySaWJ0NwDuaoCr01ID9vp
-	 ErMXgC7nML7+V9kF1Mp0H2Dz1RPL/xYpcwwUr1eyHZWAw+R8FB8t7L2730xLblaMnp
-	 W4H5RJYM2bn2TSm1bIAOHaonkfGI/TxTIj6+fxZZ69fnVmt5EFUWD0jBE1DVkzottY
-	 LW91NKPMxk3T3e2WcVXGU0x7L64WnT80R2SpOoNMeAgUln7KQEKgcDTpKOOBRkHtxa
-	 xaOyhJt+VrQA7oR8749NarQRcwH42e7ilCnd6UWg8cdc2/eWVMHqtvQvuMsaqadkam
-	 dECzA0PDtrbSg==
-Date: Thu, 7 Nov 2024 12:07:46 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Abhinav Saxena <xandfury@gmail.com>
-Cc: linux-kernel-mentees@lists.linuxfoundation.org, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 2/2] Documentation: dt-bindings: Remove trailing
- whitespace
-Message-ID: <gjxevyovxhymwm2ps37hfq3vmpmmr4pqmohq67llxrb2plb5zz@pvsmkqmhemx7>
-References: <20241107061124.105930-1-xandfury@gmail.com>
- <20241107061124.105930-3-xandfury@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkffP39sPz30f5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 22:16:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1730978197;
+	bh=hQwIr2Rl4epcCCtzI38xeQIq6RcKA3ikE/JHmSvIq2s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bboYeFlTGGwiC52fEjjLqBhYczSVWWGqes/3ueoLfPus+b6UPHTl7vLqMReNjPFDP
+	 yIcthKfo8invjbIFROHXw2094cJxttgg03vfN+XHBVY6LaucHJOFHxyWo/FWKQHYkG
+	 HEORzsisHqmIXO51fPq4m/TWvYRpzzRhzmunM7gu663JY3GyP/VvUw8UgFBOD6fj3c
+	 6pHWZPUDHHoCiHka0Ai5Xx14dzIu71QeUhIF2ajhW0shS2A2H0w/Btitzgxp17u3DO
+	 ohOKwjt9hcLyYPzAMssj/RmWjonx0x1Y0OiQUyyibqDXBDt20L3LyS5JNjUCNE2Nqp
+	 v4g7gk/lJzDug==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XkffF4WLHz4wcj;
+	Thu,  7 Nov 2024 22:16:37 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Cc: <naveen@kernel.org>,
+	hbathini@linux.ibm.com
+Subject: [PATCH] powerpc/ftrace: Fix ftrace bug with KASAN=y
+Date: Thu,  7 Nov 2024 22:16:30 +1100
+Message-ID: <20241107111630.31068-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,26 +62,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241107061124.105930-3-xandfury@gmail.com>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Nov 06, 2024 at 11:11:24PM -0700, Abhinav Saxena wrote:
-> Remove trailing whitespace from devicetree binding documentation files:
-> - regulator/regulator-max77620.txt
-> - interrupt-controller/nvidia,tegra20-ictlr.txt
-> - interrupt-controller/msi.txt
-> 
-> No functional changes. Issues detected using checkpatch.pl script.
+Booting a KASAN=y kernel with the recently added ftrace out-of-line
+support causes a warning at boot:
 
-Instead I would prefer these files to be converted to DT schema which
-would result in their full removal.
+  ------------[ cut here ]------------
+  Stub index overflow (1729 > 1728)
+  WARNING: CPU: 0 PID: 0 at arch/powerpc/kernel/trace/ftrace.c:209 ftrace_init_nop+0x408/0x444
+  ...
+  NIP ftrace_init_nop+0x408/0x444
+  LR  ftrace_init_nop+0x404/0x444
+  Call Trace:
+    ftrace_init_nop+0x404/0x444 (unreliable)
+    ftrace_process_locs+0x544/0x8a0
+    ftrace_init+0xb4/0x22c
+    start_kernel+0x1dc/0x4d4
+    start_here_common+0x1c/0x20
+  ...
+  ftrace failed to modify
+  [<c0000000030beddc>] _sub_I_65535_1+0x8/0x3c
+   actual:   00:00:00:60
+  Initializing ftrace call sites
+  ftrace record flags: 0
+   (0)
+   expected tramp: c00000000008b418
+  ------------[ cut here ]------------
 
-Best regards,
-Krzysztof
+The function in question, _sub_I_65535_1 is some sort of trampoline
+generated for KASAN, and is in the .text.startup section. That section
+is part of INIT_TEXT, meaning is_kernel_inittext() returns true for it.
+
+But the script that determines how many out-of-line ftrace stubs are
+needed isn't doesn't consider .text.startup as inittext, leading to
+there not being enough space for the init stubs.
+
+Conversely the logic to calculate how many stubs are needed for the text
+section isn't filtering out the symbols in .text.startup and so ends up
+over counting.
+
+Fix both problems by calculating the total number of stubs first, then
+the number that count as inittext, and then subtract the latter from the
+former to get the count for the text section.
+
+Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/tools/ftrace-gen-ool-stubs.sh | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/tools/ftrace-gen-ool-stubs.sh b/arch/powerpc/tools/ftrace-gen-ool-stubs.sh
+index 950a7778324b..bac186bdf64a 100755
+--- a/arch/powerpc/tools/ftrace-gen-ool-stubs.sh
++++ b/arch/powerpc/tools/ftrace-gen-ool-stubs.sh
+@@ -15,10 +15,11 @@ if [ -z "$is_64bit" ]; then
+ 	RELOCATION=R_PPC_ADDR32
+ fi
+ 
+-num_ool_stubs_text=$($objdump -r -j __patchable_function_entries "$vmlinux_o" |
+-		     grep -v ".init.text" | grep -c "$RELOCATION")
++num_ool_stubs_total=$($objdump -r -j __patchable_function_entries "$vmlinux_o" |
++		      grep -c "$RELOCATION")
+ num_ool_stubs_inittext=$($objdump -r -j __patchable_function_entries "$vmlinux_o" |
+-			 grep ".init.text" | grep -c "$RELOCATION")
++			 grep -e ".init.text" -e ".text.startup" | grep -c "$RELOCATION")
++num_ool_stubs_text=$((num_ool_stubs_total - num_ool_stubs_inittext))
+ 
+ if [ "$num_ool_stubs_text" -gt "$num_ool_stubs_text_builtin" ]; then
+ 	num_ool_stubs_text_end=$((num_ool_stubs_text - num_ool_stubs_text_builtin))
+-- 
+2.47.0
 
 
