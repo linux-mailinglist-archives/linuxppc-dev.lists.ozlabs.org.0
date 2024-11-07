@@ -1,55 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-2964-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46009C0043
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 09:45:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 398E19C0360
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 12:07:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkbHM6znXz3bjs;
-	Thu,  7 Nov 2024 19:45:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkfRS2nVWz3blF;
+	Thu,  7 Nov 2024 22:07:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730969103;
-	cv=none; b=BiBqo1v+D7qLJOjKaUPMenB2JEq5pa1ayq125KW8WM2ZYE3rSebYUUVN4IQfHU2TijU68h2kBy3Ld14RPZIxTlZGddNlRZzqv+bWwzRCcZbxcdZJpLOsF1QONxlhSMcEF5TB2YKQDn2bgQ+E1l/Yhb1ZiBATEHElvi16GIS0r5Bw2wUlX+Z5qYEQ8kwMOHgafWhAlQrqZXe0Twf+tAMPaM1YMjvIHKJfVELKorbIG/ChmUQLXyNZsEjGgx6BxPn3en5VUOcARJQjmcWcqcwFjDkqBRhI0K2R99J+W1SG+bFhqSzVUbT//OA/Wg1esASnJjb26+hM9A+3LgYJZid+6w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730977636;
+	cv=none; b=R93xk6v9dzT4XzAk4I+hlgrOmzHqfFsEm8AkMRQjgFhyQapMBbTyG1xaEq8spD77+fgw8zJghbMyc7/BY3nKLZI8qNrLjb0kaMwwCOFA3D1rUHTG+j1tOiLkWXlL4SDo6d7xDO+xHYK583NQwVFcM+f6jJBzkkRMHhstYEpeP7Y/oZIVyz4LsmJUSrlnPaDxhXJCTaeRslfN22NLZc5UzLFPeMLdNjJv6kFNxIZGeiyybu1GbCv7gvoNZZKQu8VwEL0ptHxlpII7ujVaxCFL7mlwWyW5O0bU+wfDiT4RaGYZrHwLrTOwDX5aDY5TfTYtRQoekD/x/tQrnArI2/9MKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730969103; c=relaxed/relaxed;
-	bh=ueCptTh3dBLcX8F/o4XfV7ZiTYKauBNPyYqtGSJyBAY=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=h71duaI7dZBJ6aIm/FX9vbpjIuQYaOGGweNh4orfBZhk7A1HgCwLKIn43xTutH30TPI+mMr+QsSDfgX+d3WKVaOGoyeLp4PBiUMTCLnM7PA2uqWR1lqLwxhf8I51yZO5+c/lbk1jd41y9bo486a5lNbcto7ZITy7yOgU4VTTzBjGFlInnibFDXoqK7igUHyG8VoQLUL6nc7h72hPEftOhZx67Nu4ddTLvKWv1QmUzd5+f5L+ExPPmN17v87efREj7HoE52krH10/7K937PUejY1F2oGN3SE2unDeCwftQokYZII2f0quzh9/eUa5H6rXiEUWfgKOZmOt+PiScumYnQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=O3iIyIse; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1730977636; c=relaxed/relaxed;
+	bh=wWy454JTOGwB3Dt5B8irjoHMNnCGPA3U2n8E8e3Bk0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZGez6xPvtiUVDZqTk6WN972l6ZlzsTM/CeVLH6Vrvydjzi9dQj7lqjmJLqjM1ADsIz+2jxSMI4e73AuqB7tN4V/e1pXr0qeHpQrS+5GPjQnw/C7gmMmebc53AozdrAnUmlGxwTJlW/x13zKRTyNZHcXxuOszqK/tlJaLZ2C4CQH8SmtZWftPhhXbb1Vuj5pHT6MjoMkGQpMqRL46OTo1TeodvKFZVVjf479ODNAQmm8Zq1alnkETye9zxKZw38H/oTuQIPneD90RID8azGsiZIE4MlHlzI/lMZSNfVs1UakiMupATMHX2e2atA0DQMSfiK8rB27PkifPj0vwfLrhQw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CWZa3o68; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=O3iIyIse;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CWZa3o68;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkbHK42dlz3bjb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 19:45:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1730969099;
-	bh=ueCptTh3dBLcX8F/o4XfV7ZiTYKauBNPyYqtGSJyBAY=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=O3iIyIseJXn4VnZW1VyaHkyChUGR9Imj5exJ31gjm1VJZJFegCF1KS7b8C1/Mm6wH
-	 RhKDlQ12U8Lp3M1l1Nzdrh4SCf+qNTBQDZ3vAI1HMn9Gg41ZhcR2pdaTCQlmprAuks
-	 FEVvtmU2xRmDR5c0aKcyF9jsn+1SIykadO/TUDSYMxXvcV8SlWdklpFvHEjfAfrwo/
-	 FLsAC2abhdHTrYdV9LvEfyffkLZfNvHwMIJk33dyRoZfxONYOuWuQ6h761Dx7XOEv0
-	 sXopdWRcVOjlqiaCTD2SUme2Ab2vdDjWIlm68evPwBsMcvWKMe0+uaA+dw3j64GZnK
-	 WHepf26UjtwLw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XkbHH0RDhz4x21;
-	Thu,  7 Nov 2024 19:44:59 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20241009051826.132805-1-mpe@ellerman.id.au>
-References: <20241009051826.132805-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/2] powerpc/machdep: Drop include of seq_file.h
-Message-Id: <173096894647.18315.7490654927516414876.b4-ty@ellerman.id.au>
-Date: Thu, 07 Nov 2024 19:42:26 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkfRR0mHSz3blC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 22:07:15 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 61344A4378D;
+	Thu,  7 Nov 2024 11:05:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3D8C4CECC;
+	Thu,  7 Nov 2024 11:07:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730977624;
+	bh=wWy454JTOGwB3Dt5B8irjoHMNnCGPA3U2n8E8e3Bk0M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CWZa3o68QMtmlz5POUfbiLm5sYgt9IukvYZXN97Djjp9HIdmseiG15pDIVmBC6RiA
+	 m2POD/vZ4N06dRngbW2hegsUAdIFmM/r86xPqXoLUPY4D0BTkQ7Y/W8jjnxYLKRadn
+	 6pvdun9SekcnvlcAE/R/faCsTcDAueuGZXcpO2ZLfG8SL4eFlNWtJWzUnykueK3CFa
+	 0WJ23Z+8RlCz9+fPUa1uNv2z6pXpFbOUj+9ORYnifzISrGxwQEEuhJ+OC3ft2fv0DD
+	 4asM8n3W0BkaqI4fbNgICo9Og/FQv+ZgLBWjyjAJwyR6vibJrt85QY2gVIiO4Mq1oC
+	 H5F67hRkq2pOw==
+Date: Thu, 7 Nov 2024 12:07:01 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Abhinav Saxena <xandfury@gmail.com>
+Cc: linux-kernel-mentees@lists.linuxfoundation.org, 
+	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 1/2] Documentation: dt-bindings: Fix repeated words
+Message-ID: <huswmfhrf4mfewxchalts4chpddo4z67bg3kmsr3cfhhstob75@pzzuwfcvoiay>
+References: <20241107061124.105930-1-xandfury@gmail.com>
+ <20241107061124.105930-2-xandfury@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,29 +72,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241107061124.105930-2-xandfury@gmail.com>
+X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 09 Oct 2024 16:18:25 +1100, Michael Ellerman wrote:
-> Drop the include of seq_file.h in machdep.h, replace it with a forward
-> declaration of struct seq_file, which is all that's required.
-> 
-> Add direct includes of seq_file.h to some files that were getting
-> seq_file.h via machdep.h.
-> 
-> 
-> [...]
+On Wed, Nov 06, 2024 at 11:11:23PM -0700, Abhinav Saxena wrote:
+> Fix unintentional word repetitions in devicetree binding documentation:
+> - usb.txt: Fix repeated "two"
+> - mvebu-devbus.txt: Fix repeated "from"
+> - gpio.txt: Fix repeated "Both"
+> - pinctrl-bindings.txt: Fix repeated "device"
+> - cavium/bootbus.txt: Fix repeated "one"
 
-Applied to powerpc/next.
+This we see from the diff. This is trivial commit, so rather write
+concise commit msg.
 
-[1/2] powerpc/machdep: Drop include of seq_file.h
-      https://git.kernel.org/powerpc/c/3c9670df7f7e871f0d2c2208d2ce79f6cfbca0f6
-[2/2] powerpc/machdep: Drop include of dma-mapping.h
-      https://git.kernel.org/powerpc/c/b23b9edf64b6387334aa2f8687cca6792b0d9d6c
+Please use subject prefixes matching the subsystem. You can get them for
+example with 'git log --oneline -- DIRECTORY_OR_FILE' on the directory
+your patch is touching. For bindings, the preferred subjects are
+explained here:
+https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
 
-cheers
+With changes above:
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+
 
