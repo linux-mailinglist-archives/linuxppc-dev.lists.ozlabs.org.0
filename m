@@ -1,83 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-3025-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3026-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C739C11EA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 23:38:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0F39C1288
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 00:38:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkxmr6swzz3bqD;
-	Fri,  8 Nov 2024 09:38:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkz6d1w2tz3bmY;
+	Fri,  8 Nov 2024 10:38:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731019100;
-	cv=none; b=SOtpOkh3bDG0PTw4P3wjO9SeEsIwwSk5bZLvHzQTqSryXm92Vus3k07/cSKVI3y1BIev+hZaQPE9zWhs+b3bUeXBr7W/zAUNssJHFCKWW9SaDr0IGea6g0JqDb7xBa84mq8O02HL0mMlhbA/Lu3d2nlr87nAgtDb8P+5uXsdGzmmomrm66gYV+JQxy8Vvw9C1fbMenIW+U4C93eqgvKRPX+TZNQL+pW16f4NsmVb72Ag7E0zN4q0gIOWeLLh6YkuEdGERvbaQ2n+WCCNz/pBiWOQgQHdpVp/Q04EXirtd/ZLaYMKgg2nuLS4kMVGZiqoEeD2cDfUpY4/I9cW1vJw+w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731022729;
+	cv=none; b=fO87z8x/wFnH8kTiUmjluSUrtUg4Lv+Y2iBqFtSIKnewAFaEucQmsiBaODj0f5JYphgv7OWl0m1+Hlo0nYs5J+EOUbbv2KwL83ktd7RbNgZ/JxLtxt1nXexbNmjEnhBwDB35mj3g2SPAPpeE78WAd8PmDHVVGqNYWOn9ZUqgVQBSo50z0ZGeYw4puNhmBYLfYoJPRbllPmskTG06qeN3uJue+0NQPnhpMXsOdUuLRyK4L4P5IU9FabioZLgGY7CBMF8xaXqLrY/7EEy/MqgY+aCO/UewZ45fu0P91GpauI1U94j1UQa7UtJP68LAsZ/OjYB2B19ri6iXvHt7k8YT9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731019100; c=relaxed/relaxed;
-	bh=XtY0CMX+eQzJ6bn37JkC0TFW1jUDE6STEsjCGv6T4mE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oPwLF0SfqixbPZyvTSAZAoLt4SJmfHEiDTOJXhh7TaPEhYarEr3/ks5lBgiKvH3ClUVKXLK1P1CwokWzG8HKnRLkDLSD/SiBzcnQPtv9lnTh0F8ngClNRiYUBeauPDDCFshL8KRTUuaAsPOlRtk0jbvilaCmoIbUYWWPpp79+pplzCqNk3BETLFvcD2+SnP2Xxk+soJtwrzDfvkczlwLYBTxS2tr6Q9Z9WfglC6CBd8YvfyKtEcb7AWCtd2p4PqNDd0EPUIwi0JYDp/bCBZ1Y3Ytk/+IB4vtv7lqpxH4QzB26DLgLydN41xNuqEGLcPeDCd/kXZkChMDhkWa1uc9lQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T6fjrNRK; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1731022729; c=relaxed/relaxed;
+	bh=ZzWkR0GOngNSUwjx4cfHDpPa+S6pHkHSoGBdXkewqpY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OcTajRgpvEAwb2oY2sRAxZTdOToGxzZYa7a/oADdpJhaHIp2sMDSsYSCTJ72nbxIJxtHzt0pDMT2iK5PD4i1mMy6bQKsuUl4pHsLECe2zb3pvc1+ehtk+RciNHjz82lZDcliVv61bpqBn3+HfQM7is98cSx3axoLO3u9cIaDv8DQcpt1faNTr0G/dKsDsNFL6jn8FZUUNOPM3YYFpsN8gcXEDBkOOsu3jlTXUHF8+DonLHv8wbRI1leA0rh1+PXuNWbO/lM3f7PW/eFvkRc+bxvb16lpRvaqI9BZ9L2ByF9i9PufO9XDH9c4+fWEVpPPYP199bb6xYGswyZFsROmjg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TUPLNbxo; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T6fjrNRK;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TUPLNbxo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mcgrof@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xkxmq1j3jz3bpp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 09:38:19 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id F0D4A5C4B87;
-	Thu,  7 Nov 2024 22:37:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B13FC4CECC;
-	Thu,  7 Nov 2024 22:38:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731019095;
-	bh=1vresE0L3Nh3fHiQZbFLwAwAhjoMFFb+bTLtc7rSuxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T6fjrNRK0H7rMGmtghlNMki/7KUUA3JkXKRGsBeHjc8CCMykYE+gcyamhcLzNFUT1
-	 TPYgWtKUP50fWbzpvceAl/y5Ye4PI2/vVF6v7d6Pl7Rht23wGL+oFVUf+kZhHuu/IV
-	 ZH8w2RYM443JXE4j0c8o+9E4dp8pF0UsmJ7MqlFMQ2yfFxsVDPfqDvcJf1SeEyEToy
-	 qrfZ3HAy0D1q7aqZraUuZCbf8JBqF9MW2YrBZ+AWwcSlYW7d5pitli87r1Hw4CzJnZ
-	 E6F8nkrNVLvi3VEEhCM5zPRItjpua5G9swipPx81U9fpAJbRA43qT1QJTXvjO14r6h
-	 XJ5/Mq96LOcZQ==
-Date: Thu, 7 Nov 2024 14:38:13 -0800
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
-	Lucas De Marchi <lucas.de.marchi@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
-Message-ID: <Zy1BVXgnT72Jt_HE@bombadil.infradead.org>
-References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
- <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
- <ZyNr--iMz_6Fj4yq@bombadil.infradead.org>
- <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
- <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org>
- <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
- <ZyrRYUD0K1f7SwWg@bombadil.infradead.org>
- <CAGSQo03+1WjUVj-iQ6zdOST6z=p+=OqS2Xk_c4ZUdHOsxa7g2w@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xkz6Z2TH7z2yVt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 10:38:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1731022716;
+	bh=ZzWkR0GOngNSUwjx4cfHDpPa+S6pHkHSoGBdXkewqpY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=TUPLNbxonwdujxVvjGiB9u3JX5yMx2bSI7r2PEI3wl/8STSxyFRJiaJSul3H3+OE6
+	 D/ETUYjuL9vVMb8LqpIL0LoYs5VWEo4oQ2BHEoahj5KKLxrEjOWM1dOJvjXEh3grXR
+	 o5Gk7Dh1/LczHZ2usP5wjNpFYgahMsd+0vkBMkW2lYc1EupHChirwWYnYDv4vLH55v
+	 FWXirblpQpd8nS3UAqaZo10sKqHusY56PQ1LoiJJavzCNu8Eqb8EGMedkdCzP+hZ7U
+	 qkigV4cA5xgodFFf6+jSY5R4+5eCCKkYlpVdKuV4NqZb3yTlY4846cd44BLwIx3g+S
+	 BIs8M7u9+SJOg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xkz6N35JYz4wcy;
+	Fri,  8 Nov 2024 10:38:36 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Gautam Menghani <gautam@linux.ibm.com>
+Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
+ maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arch/powerpc/pseries: Fix KVM guest detection for
+ disabling hardlockup detector
+In-Reply-To: <2kkln3emctf7ewsh3eysujid2e7jel7yjtscfxmqeymeo5bjxf@7yzi5eye2n5j>
+References: <20241105132734.499506-1-gautam@linux.ibm.com>
+ <87ed3ncl8q.fsf@mpe.ellerman.id.au>
+ <2kkln3emctf7ewsh3eysujid2e7jel7yjtscfxmqeymeo5bjxf@7yzi5eye2n5j>
+Date: Fri, 08 Nov 2024 10:38:36 +1100
+Message-ID: <87bjyqd37n.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,64 +68,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGSQo03+1WjUVj-iQ6zdOST6z=p+=OqS2Xk_c4ZUdHOsxa7g2w@mail.gmail.com>
-X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Nov 06, 2024 at 02:19:38PM -0800, Matthew Maurer wrote:
-> >
-> > > If booted against an old kernel, it will
-> > > behave as though there is no modversions information.
-> >
-> > Huh? This I don't get. If you have the new libkmod and boot
-> > an old kernel, that should just not break becauase well, long
-> > symbols were not ever supported properly anyway, so no regression.
-> 
-> Specifically, if you set NO_BASIC_MODVERSIONS, build a module, and
-> then load said module with a kernel *before* EXTENDED_MODVERSIONS
-> existed, it will see no modversion info on the module to check. This
-> will be true regardless of symbol length.
+Gautam Menghani <gautam@linux.ibm.com> writes:
+> On Thu, Nov 07, 2024 at 10:54:29PM +1100, Michael Ellerman wrote:
+>> Gautam Menghani <gautam@linux.ibm.com> writes:
+>> > As per the kernel documentation[1], hardlockup detector should be
+>> > disabled in KVM guests as it may give false positives. On PPC, hardlockup
+>> > detector is broken inside KVM guests because disable_hardlockup_detector()
+>>  
+>> Isn't it the opposite? Inside KVM guests, the hardlockup detector should
+>> be *disabled*, but it's not it's *enabled*, due to this bug.
+>> 
+>> ie. it's not broken, it's working, but that's the bug.
+>
+> Yes right, will change the description in v2.
 
-Isn't that just the same as disabling modverisons?
+Thanks.
 
-If you select modversions, you get the options to choose:
+>> > is marked as early_initcall and it uses is_kvm_guest(), which is
+>> > initialized by check_kvm_guest() later during boot as it is a
+>> > core_initcall. check_kvm_guest() is also called in pSeries_smp_probe(),
+>> > which is called before initcalls, but it is skipped if KVM guest does
+>> > not have doorbell support or if the guest is launched with SMT=1.
+>> 
+>> I'm wondering how no one has noticed. Most KVM guests have SMT=1.
+>
+> Looking at the commit history, code around hardlockups and
+> pSeries_smp_probe() was changed around 2021/2022 timeframe, and I
+> believe KVM wasn't being actively tested at the time. 
+> Even I noticed this only after coming across the documentation that said
+> hardlockups should be disabled. So probably this feature decision isn't
+> widely known.
 
-  - old modversions
-  - old modversions + extended modversions
-  - extended modversions only
+I do test KVM but probably not under enough load to notice something
+like that.
 
-> > I'm not quite sure I understood your last comment here though,
-> > can you clarify what you meant?
-> >
-> > Anyway, so now that this is all cleared up, the next question I have
-> > is, let's compare a NO_BASIC_MODVERSIONS world now, given that the
-> > userspace requirements aren't large at all, what actual benefits does
-> > using this new extended mod versions have? Why wouldn't a distro end
-> > up preferring this for say a future release for all modules?
-> 
-> I think a distro will end up preferring using this for all modules,
-> but was intending to put both in for a transitional period until the
-> new format was more accepted.
+>> > Move the check_kvm_guest() call in pSeries_smp_probe() to the initial
+>> > part of function before doorbell/SMT checks so that "kvm_guest" static
+>> > key is initialized by the time disable_hardlockup_detector() runs.
+>> 
+>> check_kvm_guest() is safe to be called multiple times so
+>> disable_hardlockup_detector() should just call it before it calls
+>> is_kvm_guest(). That should avoid future breakage when the order of
+>> calls changes, or someone refactors pSeries_smp_probe().
+>
+> Yeah I did that initially but in the worst case, that results in 3 calls
+> to check_kvm_guest() - the core_initcall, pseries_smp_probe() call and 
+> then disable_hardlockup_detector(). Will that be fine?
 
-The only thing left I think to test is the impact at runtime, and the
-only thing I can think of is first we use find_symbol() on resolve_symbol() 
-which it took me a while to review and realize that this just uses a
-completely different ELF section, the the ksymtab sections which are split up
-between the old and the gpl section. But after that we use check_version().
-I suspect the major overhead here is in find_symbol() and that's in no way shape
-or form affected by your changes, and I also suspect that since the
-way you implemented for_each_modversion_info_ext() is just *one* search
-there shouldn't be any penalty here at all. Given it took *me* a while
-to review all this, I think it would be good for you to also expand your
-cover letter to be crystal clear on these expectations to users and
-developers and if anything expand on the Kconfig / and add documentation
-if we don't document any of this.
+Yeah it's fine. It's not pretty, maybe we can come up with something
+cleaner in future, but it's fine for a bug fix.
 
-I'd still like to see you guys test all this with the new TEST_KALLSYMS.
-
-  Luis
+cheers
 
