@@ -1,83 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-2978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2979-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758559C03EA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 12:27:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62CAD9C03FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 12:29:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkftj2TfRz2xy6;
-	Thu,  7 Nov 2024 22:27:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkfxB2Whtz3blk;
+	Thu,  7 Nov 2024 22:29:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730978845;
-	cv=none; b=mH9tuDiUMtXCF99Yv5tD+rXHzqvLb4P7iTelgaykfUkMZ0DzIUR7k/YZGGuMcYGiBi0eXga6Yr0hOHELVmfdiVl0XxB0C4UuAaoIvlfvIxq3CcEk06P7kIAZ75x5KCnCdcha/t7QiUgIuzJibg1oLzUAtvHmrDlZWF3SdcJnUO5hCa3B2BeaBeCQKPhsQYsX1CbaoD9/g0BUrIbeuCLVC2fIaw2Rpn4/1y5MbplOsACILqsBOcA44RiECqc/ZtPPoLvyhRXkdceiCrRx8L4u3BSqm4QmxkQxJkV0sbW021i9sNe7T7qqBMUx5KHKz8DtqFDN/dv7NVqknlapNTomxw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730978974;
+	cv=none; b=eyA/p81C4OffgkLz2nZObJ1ywQO+z5LJyzYCylr9dtJ+cfkXsKrjF1njvVB0nJW1Y3GJJFxwkvJ7tmMQClcB1ytrqrA7Xurrf48VyIkXcR0DViVNL/d9pYg2NfGRxieERCuW1evzsXcwBm0b53PG2nQdQ2aWEyrQuAAHnKM0bq0XZpwpDti/xIMA1MNePWpXwFF86lByvlFOGW2h4Vtld8Y2YPzFdTjB3Tce24v/+vdJRPnsg751pfBz0DKMKm+a+wlKL7/ts+wP1Kgmt1cyf7bredcJKmg4BZBDObAB0VkIY2YZtf57t8XT9oo5+xNCKkoFkxcOxlhaq3lnRrtT6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730978845; c=relaxed/relaxed;
-	bh=EGWEtzyJ3mpnGrJvn7StfDxulLgKk/n+RAvps6Y02c0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IGS7DIlVdBy3gMzLpXwXZx9k94JpwwkbJFhmloGaoaDrDrdYQlphMSyIrLGChBd43yqfMNp1hwuIKf1Hy2BhFXpI8Zm2d44xGc72kkjAviy+gQMgAkJMx4n+NvXaUDtffGx3QXjNZLQLv30qIfzPZbp+7xFCjI+zb8xTiTENN8WTcJMvT45xg9IyxWpebf17yc0wk6+WfcNAXClyPNt/lWNA5kJGY33JQM47nVGBrReticfbHgUY8rhf4JtszIzX9Nd/sXF2BPI7suwGv8YNJQUFRj5R//NoIcXVGJxxxSLg/jwLnn9zIkpKaSSFxYngomyQTmxrpTYytlI1nA5+6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UAau52Nw; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1730978974; c=relaxed/relaxed;
+	bh=nrjbtAPdhIcAlgAV7NujXI6QsiUwiA3bnjCu+yPjnXY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FVSFmSF0RIk/Ai0SqW9tXO7lETDhm671KvpFLw5ve9fokQ2zo+ElSmdKNDfvizhKjfA8hZD/hDL+PBItRwUn9DUhvi3rQw+Ff0OjDPnBlLNkAbL8aNmtfcyD/x6GNxOx9U3nEtYY9o9D1oqlQ9lsWBxagu6lmmfLkhf1r+J0+phd1GzSxz7/HzsB5X47gAEEtta7tDpTIysCVyknCJ73Nx+gqgJEcKb+HW5ejNjLuVzIoNTqW7ndfWQ0Is0aOdNI4Q8NSMKq+3vM0OrZP3TBWLryH+aOvUorqhcqm3DRMjxYowl3Rl2DanQaEneMZkWPqO9kA1O2XYn5QzwyCNX/Ug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lIEIxhXW; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UAau52Nw;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lIEIxhXW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xkfth2t19z2xYg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 22:27:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 5AA95A43BB6;
-	Thu,  7 Nov 2024 11:25:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D3BC4CED0;
-	Thu,  7 Nov 2024 11:27:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730978840;
-	bh=7gqbQk8bplGmcvfUPSUYFL1na1ktG3G6Z6rLbPzXwNs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UAau52Nwe+uRAGcTn3tag5sZ2IjE2Y+7UqVk5YyUwm2HNDwzSKSk/xybWw6oJs1xH
-	 aw6tom+24uo5mAYQR5DzWVwT2yW34ukMfw+9AHsd7P2SLJTQAZSYi9tAAit/WRZGxa
-	 QmzVc4YoqXwop7JFKLxOht5phOc/6HTbt1uqpCR90f+huMY/5DXKA9mgk6zHUcuK6S
-	 VEVz9HkKvEsADS/IQb1wRyV1rcj/Zm9/g6PlsD3SyjwlbH8DY8Xwhe8rksxoG65u9E
-	 CHsWN3QDdzsjCbbirD9NkeAngtYhhQuh+bBBSwr2WLO75iChdkRMddYYodWx5tzFED
-	 BR8m340iXt1qA==
-Date: Thu, 7 Nov 2024 11:27:11 +0000
-From: Will Deacon <will@kernel.org>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: kvm@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>,
-	Sean Christopherson <seanjc@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v6 1/5] arm: perf: Drop unused functions
-Message-ID: <20241107112710.GC15424@willie-the-truck>
-References: <20241105195603.2317483-1-coltonlewis@google.com>
- <20241105195603.2317483-2-coltonlewis@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xkfx93VZ8z2xYg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 22:29:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1730978971;
+	bh=nrjbtAPdhIcAlgAV7NujXI6QsiUwiA3bnjCu+yPjnXY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=lIEIxhXWsTbljLBFi7X0QovZJjQVTZ26Df6phbYHs3YG380sHO08erH3WYcn4Mw9V
+	 2MGy44pxqPNu61obgb+FVTsxZ0bTMPgE7OlLcj8b5d69BzS2N37o+euibIQyxSlFC4
+	 +wtVWFN0o8hqkyuf6dtRIPl6bnerOS0WGJeknORV+r5x0dsJ6iHmgXXO/77etoOeDu
+	 nspWpHHIgQx/CXiKiwWHeZDYTU7jIcLF5m9ALYokd3n/U5LUVsS5OtjPLx/SkQ/RKK
+	 2yHARHBPE3OkbFtPRnUrmMwI+kZtSdlFgc0jXWDDqshkRHLD/sm73EiJKb+1rAAQBm
+	 rnhVtwfjOZpPg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xkfx66dngz4wcj;
+	Thu,  7 Nov 2024 22:29:30 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Yang Li <yang.lee@linux.alibaba.com>, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Yang Li
+ <yang.lee@linux.alibaba.com>, Abaci Robot <abaci@linux.alibaba.com>
+Subject: Re: [PATCH -next] powerpc/machdep: Remove duplicated include in svm.c
+In-Reply-To: <20241107010259.46308-1-yang.lee@linux.alibaba.com>
+References: <20241107010259.46308-1-yang.lee@linux.alibaba.com>
+Date: Thu, 07 Nov 2024 22:29:32 +1100
+Message-ID: <87msibcmeb.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,29 +65,43 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241105195603.2317483-2-coltonlewis@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Nov 05, 2024 at 07:55:58PM +0000, Colton Lewis wrote:
-> For arm's implementation, perf_instruction_pointer() and
-> perf_misc_flags() are equivalent to the generic versions in
-> include/linux/perf_event.h so arch/arm doesn't need to provide its
-> own versions. Drop them here.
-> 
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
-> Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Yang Li <yang.lee@linux.alibaba.com> writes:
+> The header files linux/mem_encrypt.h is included twice in svm.c,
+> so one inclusion of each can be removed.
+>
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11750
+> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
 > ---
->  arch/arm/include/asm/perf_event.h |  7 -------
->  arch/arm/kernel/perf_callchain.c  | 17 -----------------
->  2 files changed, 24 deletions(-)
+>  arch/powerpc/platforms/pseries/svm.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-Acked-by: Will Deacon <will@kernel.org>
+The two includes only appear in linux-next, and they both come from
+different trees. They are required in each tree to avoid breaking the
+build.
 
-Will
+So no one can merge this patch until the two trees are merged into mainline.
+
+cheers
+
+> diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platforms/pseries/svm.c
+> index c5d0f92c7969..384c9dc1899a 100644
+> --- a/arch/powerpc/platforms/pseries/svm.c
+> +++ b/arch/powerpc/platforms/pseries/svm.c
+> @@ -10,7 +10,6 @@
+>  #include <linux/memblock.h>
+>  #include <linux/mem_encrypt.h>
+>  #include <linux/cc_platform.h>
+> -#include <linux/mem_encrypt.h>
+>  #include <asm/machdep.h>
+>  #include <asm/svm.h>
+>  #include <asm/swiotlb.h>
+> -- 
+> 2.32.0.3.g01195cf9f
 
