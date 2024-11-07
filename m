@@ -1,97 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-2998-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3003-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001D49C0CBB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 18:20:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E49E9C0D36
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 18:48:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkpkV41HKz3bnx;
-	Fri,  8 Nov 2024 04:20:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkqLm1nNkz30f4;
+	Fri,  8 Nov 2024 04:48:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731000050;
-	cv=none; b=i2sBnn9SnfbxoIdzTpEwoOLeccC77HdWXD1lubT2n6QZMmFqFm6QwqN2ubChzsVzTu+FSq8cojwZsPj7hXlO7OlPbs0rgMR3n2k+zv706N/La9d2iSwv2HmxEMkhtfE7mN+1d8dCrSJXjrB+cc4HJPVcRmbmc3YVI7mYTjZEojInL5be1L4aFi1pZ0Q2xRVU0RJZaRgUq3d7iuNMf59NYkmOuBPHdtqxnBDKVVqvwNe9WIPXPKc0zloV9w749vpyEC0Qt9QvkoxFJKa3SnjFsFEzC2EtBwnSu7RPL+sb9Y/SIU6VM3GiMKJmJNnnZots+UhfN63q/kahAN9IUi2Bxw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=156.67.10.101
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731001728;
+	cv=none; b=QwIaSJ4e/c317noaK2vYnnhswCDhBp/REiiMu4b+H1Rbb9Q/ZRpz9yrUuugpdIseQuDxe84sdRi2dicuW6husyYOb5F/kOaS4jRJsRPdWgy7orGklcFKXl0zUPu2KcL76vBqr2xwcdVgbCrdW/+PaVvPEibn2bwZLtDfigjtIoSPqqjYHLM3SWzJk6yqKMIoUrCUO5E9+JIdc41zm7PP67doEd/ZxaaXT4nVX5SeWiNJiOCVDwTR5THYeBAx78nefPr96gHc8nEQ42b3+vDcBEkMCJ2UxSzYUddhOMn0CKMwfWYN808w9QhQ5ijCpsGIzvvfiuqT3QQ4eDQ5vbwGOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731000050; c=relaxed/relaxed;
-	bh=1znY6XKKQK8t+pe6zGbt91oO7ilftLtE+6Za3bEgxNc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CvT6MX6v5RoxXBe0cMI5IVfwjK9I4ohpWWSvclq9XElY9ckSM7MbmvOTvuWSBm4EOdsCao9TY98wff0taZuCRDbFmrcmpdwPy4BBKRS7Nt86S0bx0ZcuaLQlZg02abo+qj5R4TBLdMtE9EygOAoZZ6NSDrarQl2KKNOKtTiEuZPz8yQRJTMEvsXF6kN3vukSvPC217KM2I7KuFhLr0c32gb0hZEdKMJFXSCrVYYW837CjMbuGT0MDWxDLa0EBG+nMUS4keguxQD9HW5q9phuW+4Y+jZCPYedmnzCu41/1KGFbdqgwDv9U0KfXFYv5j0HSJglFCmgsmhTeWwK1zDR7A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uirXLcMy; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pratyush@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1731001728; c=relaxed/relaxed;
+	bh=Pkgq+RY7AQPvFR+4KdxNeNkDDn55db16uRcxckizCKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hq0Cft28Ll2dRFhXk3NlHVYb3UKOBeoB2Y7K9aKUo0WhsTECiFbqEFw+Lu2XMwOP27zrsAdLjXBl6jw5RH3DT2Ojn/HSumt1O2+Ur8HYYXWNiTlpgOagjWSavbu+5vQ2fbl9C6n8VEePeoqoonZVBjSKu832Ua0TrnQX1cPLbg7xowObttW3G+i76sEv06FslgM+zMpKOaR2NOFody+hcWTcOiHONr3KC82m5brqr18tnUyq1thNQUBJ7hHOHDirBLlVGRftOw80Pc+PDO3+l79M+JycFTgOhahwUZXyI27G786AV0HYhTEAuBNcMy3luFJ50EOp3QTaFKel8I7bUg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=fcuL6baI; dkim-atps=neutral; spf=pass (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org) smtp.mailfrom=lunn.ch
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uirXLcMy;
+	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=fcuL6baI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pratyush@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkpkS600Mz3bnL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 04:20:48 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 76D2F5C0C36;
-	Thu,  7 Nov 2024 17:20:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DA9C4CECC;
-	Thu,  7 Nov 2024 17:20:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731000045;
-	bh=cADn4ARQkTOhflqlIHhNxtca9L54H5LHvOrTgQwQP8c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=uirXLcMy1Qn//p7lSBnbOlzSbCL5aIT0TqEnGpIZm6Rx23BQJKj1JIwJAP4R6CQ3Y
-	 BGW5ysKmLw5HxKe9TW2Kb0/MrhrtH+FEMuRdl+3jaHMQQkHCavjZQ9xWr31Ghy5ARf
-	 J2TiGOLT8c6IMr+E/gnELx0660oj7VCoNS9utcB0Gb41g2oymp/+1G/7KVgOzIPwxq
-	 q5/0lzC969ZrJFg9aKvlY1ckSKQVQp4pt0o8irIOJAq56q9MDR85uEDv3iCGEqltvk
-	 QeOfANjQFk8pt3o4hyDqn3DINTzEn9s+ZnpBLM2/xaYcEN2lpP63yM+3MX3zh3CiMr
-	 Amp7lQpjSOJ2g==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"
- <rafael@kernel.org>,  Bjorn Helgaas <bhelgaas@google.com>,  Srinivas
- Kandagatla <srinivas.kandagatla@linaro.org>,  Davidlohr Bueso
- <dave@stgolabs.net>,  Jonathan Cameron <jonathan.cameron@huawei.com>,
-  Dave Jiang <dave.jiang@intel.com>,  Alison Schofield
- <alison.schofield@intel.com>,  Vishal Verma <vishal.l.verma@intel.com>,
-  Ira Weiny <ira.weiny@intel.com>,  Alex Deucher
- <alexander.deucher@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>,
-  Xinhui Pan <Xinhui.Pan@amd.com>,  David Airlie <airlied@gmail.com>,
-  Simona Vetter <simona@ffwll.ch>,  Dennis Dalessandro
- <dennis.dalessandro@cornelisnetworks.com>,  Jason Gunthorpe
- <jgg@ziepe.ca>,  Leon Romanovsky <leon@kernel.org>,  Tudor Ambarus
- <tudor.ambarus@linaro.org>,  Pratyush Yadav <pratyush@kernel.org>,
-  Michael Walle <mwalle@kernel.org>,  Miquel Raynal
- <miquel.raynal@bootlin.com>,  Richard Weinberger <richard@nod.at>,
-  Vignesh Raghavendra <vigneshr@ti.com>,  Naveen Krishna Chatradhi
- <naveenkrishna.chatradhi@amd.com>,  Carlos Bilbao
- <carlos.bilbao.osdev@gmail.com>,  Hans de Goede <hdegoede@redhat.com>,
-  Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,  "David E.
- Box"
- <david.e.box@linux.intel.com>,  "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>,  "Martin K. Petersen"
- <martin.petersen@oracle.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Matt Turner <mattst88@gmail.com>,
-  Frederic Barrat <fbarrat@linux.ibm.com>,  Andrew Donnellan
- <ajd@linux.ibm.com>,  Arnd Bergmann <arnd@arndb.de>,  Logan Gunthorpe
- <logang@deltatee.com>,  "K. Y. Srinivasan" <kys@microsoft.com>,  Haiyang
- Zhang <haiyangz@microsoft.com>,  Wei Liu <wei.liu@kernel.org>,  Dexuan Cui
- <decui@microsoft.com>,  Dan Williams <dan.j.williams@intel.com>,
-  linux-kernel@vger.kernel.org,  linux-pci@vger.kernel.org,
-  linux-cxl@vger.kernel.org,  amd-gfx@lists.freedesktop.org,
-  dri-devel@lists.freedesktop.org,  linux-rdma@vger.kernel.org,
-  linux-mtd@lists.infradead.org,  platform-driver-x86@vger.kernel.org,
-  linux-scsi@vger.kernel.org,  linux-usb@vger.kernel.org,
-  linux-alpha@vger.kernel.org,  linuxppc-dev@lists.ozlabs.org,
-  linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH v2 05/10] sysfs: treewide: constify attribute callback
- of bin_is_visible()
-In-Reply-To: <20241103-sysfs-const-bin_attr-v2-5-71110628844c@weissschuh.net>
-	("Thomas =?utf-8?Q?Wei=C3=9Fschuh=22's?= message of "Sun, 03 Nov 2024
- 17:03:34 +0000")
-References: <20241103-sysfs-const-bin_attr-v2-0-71110628844c@weissschuh.net>
-	<20241103-sysfs-const-bin_attr-v2-5-71110628844c@weissschuh.net>
-Date: Thu, 07 Nov 2024 17:20:37 +0000
-Message-ID: <mafs08qtv7yfu.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkqLk2Pngz2ywR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 04:48:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Pkgq+RY7AQPvFR+4KdxNeNkDDn55db16uRcxckizCKs=; b=fcuL6baIaAxRq26mnxgBtCe6ga
+	YpGmAWy6fOBBWxtoCARbREs+MQnMmsPmOaxRn4F0W176w3I6JONIcWfZYIVL8ZV+D/CZgQsL61QaZ
+	fW+EEd42GoN/Inf9s7zdd0vQwlg4rC6Id2GR91KWmBjdwO9bYg8DMSoWMa0Ibr0QJaM4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1t96OP-00CUOy-KK; Thu, 07 Nov 2024 18:34:01 +0100
+Date: Thu, 7 Nov 2024 18:34:01 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Herve Codina <herve.codina@bootlin.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next 1/7] net: freescale: ucc_geth: Drop support for
+ the "interface" DT property
+Message-ID: <d3b999f1-5e6b-444e-a579-b0af4a39caa6@lunn.ch>
+References: <20241107170255.1058124-1-maxime.chevallier@bootlin.com>
+ <20241107170255.1058124-2-maxime.chevallier@bootlin.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,44 +68,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241107170255.1058124-2-maxime.chevallier@bootlin.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Nov 03 2024, Thomas Wei=C3=9Fschuh wrote:
+On Thu, Nov 07, 2024 at 06:02:48PM +0100, Maxime Chevallier wrote:
+> In april 2007, ucc_geth was converted to phylib with :
+> 
+> commit 728de4c927a3 ("ucc_geth: migrate ucc_geth to phylib").
+> 
+> In that commit, the device-tree property "interface", that could be used to
+> retrieve the PHY interface mode was deprecated.
+> 
+> DTS files that still used that property were converted along the way, in
+> the following commit, also dating from april 2007 :
+> 
+> commit 0fd8c47cccb1 ("[POWERPC] Replace undocumented interface properties in dts files")
+> 
+> 17 years later, there's no users of that property left and I hope it's
+> safe to say we can remove support from that in the ucc_geth driver,
+> making the probe() function a bit simpler.
 
-> The is_bin_visible() callbacks should not modify the struct
-> bin_attribute passed as argument.
-> Enforce this by marking the argument as const.
->
-> As there are not many callback implementers perform this change
-> throughout the tree at once.
->
-> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> ---
-> diff --git a/drivers/mtd/spi-nor/sysfs.c b/drivers/mtd/spi-nor/sysfs.c
-> index 96064e4babf01f6950c81586764386e7671cbf97..5e9eb268073d18e0a46089000=
-f18a3200b4bf13d 100644
-> --- a/drivers/mtd/spi-nor/sysfs.c
-> +++ b/drivers/mtd/spi-nor/sysfs.c
-> @@ -87,7 +87,7 @@ static umode_t spi_nor_sysfs_is_visible(struct kobject =
-*kobj,
->  }
->=20=20
->  static umode_t spi_nor_sysfs_is_bin_visible(struct kobject *kobj,
-> -					    struct bin_attribute *attr, int n)
-> +					    const struct bin_attribute *attr, int n)
+17 years seems reasonable.
 
-Acked-by: Pratyush Yadav <pratyush@kernel.org> # for spi-nor
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
->  {
->  	struct spi_device *spi =3D to_spi_device(kobj_to_dev(kobj));
->  	struct spi_mem *spimem =3D spi_get_drvdata(spi);
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
---=20
-Regards,
-Pratyush Yadav
+    Andrew
 
