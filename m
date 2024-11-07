@@ -1,50 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-3024-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3017-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A559E9C0FDE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 21:40:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB579C0EB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 20:17:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkv8P3lKgz3bsL;
-	Fri,  8 Nov 2024 07:40:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XksJq15p0z3bqW;
+	Fri,  8 Nov 2024 06:17:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730987805;
-	cv=none; b=NRnQa3YcubiKJPUGll3EECZRHx4TNTXIvulRX1wU8B6ZevM3mnW1athn+WxBUbonmf6sUK5+2Rkh0+4b6H7NkHy2UkGqD0MVzZpgpoMpF7M3K51TbZNb3N4fQr2YRO/pK54Ep6b1DVAATlARsLXGceaMEQAqhuJQVfmxNicWKMn19b5WYLin/z+wj+9gP6aTb3oRK4MFD/BoWFOaXMwHmJ84phPuEeQ6vIzdK89UaFLcDLXqrZMRxgQ6dRuWtPMnIV/K1Yd+fTv8WhWSYga43fkY2Rex1iDxqxU6UPUo5uL30Ni/iAMSIRLiPeDIqhsnsT2noxTWPedpoWkrdrZwCA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731007035;
+	cv=none; b=o3Z3w+rl/04VmIqlQogAXOnIYVbPkjCaVa4swBMoINBJTUa2UcAa1UiWtPu6xfAljMFDsqFm/kpc8Pt3bYEnZv7ELRRqWCb/Be7fQlYpQ7J0AUZubTkA7NbxI7UWyiW2fE1rnA+I6s9KQsoH62JLxrvIpmFYAiPDV45VtiOLFTTEMOLn1A+LY7MrDU8QNqpe6U1D6iiKq4hLJLF7p99SsigCTMDLIiH7PKcejmUEJBu/HnMxlR88jWF30rZy02fW4UIIjQN3rnhv39x61kl2yJz9iLMDlymFZcVfiVUSGlJM4kmzDOQbCQdbkeNR+KMpAHpcVNwEDSK96gSV5U4GYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730987805; c=relaxed/relaxed;
-	bh=8QQVkafZcCRpDQpWhpOVq7SfsMWPxQ+ZlRFAONCk4rM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PJT4fdq/WAujIvIu9fhwHJAmztSofg/eTWF3KtpinSPyNNQoSRpWyGNs8ejrGqzwYBxxNKG1slxV6JtFY2z7c9U2Tmqh01hbFp7z0Fjf55+JDzdE8rvKBFW8etVVMPdT2Czq71wNz9fmAgHyeuIfU9SEjkCYX2uk360McaRIFjgLpCt3Wlk49D/KqMYlyhl1TtJpCU1vRJQJdrB5imDwOD3CqQhk2G18wWZnz6ISQ8TJQPiPw3s8P8CPzv7/d0Wyv1IURY28yJrpK5j81pBq+RBsg6b3DiCa6TOu2RuBNroHAUotiVKFCLQag8swq19/PQNT5qSWEuwcdcrlIGzVPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=leo.yan@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=leo.yan@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkkBz4RSnz3bmQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 00:56:41 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D8323497;
-	Thu,  7 Nov 2024 05:56:38 -0800 (PST)
-Received: from localhost (e132581.arm.com [10.2.76.71])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97AB93F6A8;
-	Thu,  7 Nov 2024 05:56:08 -0800 (PST)
-Date: Thu, 7 Nov 2024 13:56:06 +0000
-From: Leo Yan <leo.yan@arm.com>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
-	James Clark <james.clark@linaro.org>, tmricht@linux.ibm.com,
-	acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-	linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	akanksha@linux.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com,
-	disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Subject: Re: [PATCH] tools/perf/tests/expr: Make the system_tsc_freq test
- only for intel
-Message-ID: <20241107135606.GA47850@e132581.arm.com>
-References: <20241022140156.98854-1-atrajeev@linux.vnet.ibm.com>
- <ZyF2-XNUh38p_5Gg@google.com>
- <B72F330F-2A56-41B0-ABED-FCA7DC9EE711@linux.vnet.ibm.com>
- <CAP-5=fXCYURva6Q8ktRVmnf2QCcsr-E3fPn327k0JRCw_9fn3A@mail.gmail.com>
- <BBF1A4DC-3BD9-4377-BE2F-CBEFE55F0497@linux.vnet.ibm.com>
+	t=1731007035; c=relaxed/relaxed;
+	bh=u01eU9oveAdZwMiXkX5Lhok/poXFlGe3WZ/pvoCQx2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KqN5eRyLjoBdff8Yktf5O0y1CaSI8lxlq/urkEnvxaFZeIad6oMB1lYuZNs15pTbGAsQ53MlldDHDqWqdsd+tqZ8VMR03kvq9EoGB662tE/DVN4zkTyjCedNPxyIsZB8uwkX57qjFyaFNSEicp6mnAkq9Ej3p6E4DmSlGeSa4pym7upfYGOMTUoRW9U6DfKW90xC/sLja0W1F4l0jT2LDYEjcNc80yLH6n9q0Z1/asiB1KTgm3mHiw8l5AbtmH96CLUpq+ZLOaYYGJY+jvMXU1tpBL8UW0PJjoK35Lrm6gHGreZgg86uaHIHjBj7kzlmnrYLSxnEGyJRaKaqPjNyNA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XksJm5PFKz2ywR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 06:17:12 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 4A7JEnsX024637;
+	Thu, 7 Nov 2024 13:14:50 -0600
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 4A7JEnn2024636;
+	Thu, 7 Nov 2024 13:14:49 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Thu, 7 Nov 2024 13:14:49 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, arnd@arndb.de, nathan@kernel.org
+Subject: Re: [PATCH] powerpc/Makefile: Allow overriding CPP
+Message-ID: <20241107191449.GJ29862@gate.crashing.org>
+References: <20241107112646.32401-1-mpe@ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,68 +47,28 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BBF1A4DC-3BD9-4377-BE2F-CBEFE55F0497@linux.vnet.ibm.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <20241107112646.32401-1-mpe@ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
+X-Spam-Status: No, score=-0.0 required=5.0 tests=SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Athira,
+On Thu, Nov 07, 2024 at 10:26:46PM +1100, Michael Ellerman wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Unlike all other arches, powerpc doesn't allow the user to override CPP,
+> because it sets it unconditionally in the arch Makefile. This can lead
+> to strange build failures.
+> 
+> Instead add the required flags to KBUILD_CPPFLAGS, which are passed
+> to CPP, CC and AS invocations by the generic Makefile logic.
 
-On Wed, Nov 06, 2024 at 03:04:57PM +0530, Athira Rajeev wrote:
+You can also use "CPP ?=" instead of "CPP =".  Your solution is better
+I think, but, FYI, FFR :-)
 
-[...]
 
-> > Hi Athira,
-> >
-> > sorry for the breakage and thank you for the detailed explanation. As
-> > the code will run on AMD I think your change will break that - . It is
-> > probably safest to keep the ".. else { .." for this case but guard it
-> > in the ifdef.
-> >
-> 
-> Hi Ian
-> 
-> Thanks for your comments. Does the below change looks good ?
-> 
-> diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
-> index e3aa9d4fcf3a..f5b2d96bb59b 100644
-> --- a/tools/perf/tests/expr.c
-> +++ b/tools/perf/tests/expr.c
-> @@ -74,14 +74,12 @@ static int test__expr(struct test_suite *t __maybe_unused, int subtest __maybe_u
->     double val, num_cpus_online, num_cpus, num_cores, num_dies, num_packages;
->     int ret;
->     struct expr_parse_ctx *ctx;
-> -    bool is_intel = false;
->     char strcmp_cpuid_buf[256];
->     struct perf_pmu *pmu = perf_pmus__find_core_pmu();
->     char *cpuid = perf_pmu__getcpuid(pmu);
->     char *escaped_cpuid1, *escaped_cpuid2;
-> 
->     TEST_ASSERT_VAL("get_cpuid", cpuid);
-> -    is_intel = strstr(cpuid, "Intel") != NULL;
-> 
->     TEST_ASSERT_EQUAL("ids_union", test_ids_union(), 0);
-> 
-> @@ -244,11 +242,13 @@ static int test__expr(struct test_suite *t __maybe_unused, int subtest __maybe_u
->     if (num_dies) // Some platforms do not have CPU die support, for example s390
->         TEST_ASSERT_VAL("#num_dies >= #num_packages", num_dies >= num_packages);
-> 
-> +#if defined(__i386__) && defined(__x86_64__)
->     TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, "#system_tsc_freq") == 0);
-> -    if (is_intel)
-> +    if (strstr(cpuid, "Intel") != NULL)
->         TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
->     else
->         TEST_ASSERT_VAL("#system_tsc_freq == 0", fpclassify(val) == FP_ZERO);
-> +#endif
-> 
->     /*
->      * Source count returns the number of events aggregating in a leader
-
-I confirmed the change above fixes the failure on Arm64.
-
-Tested-by: Leo Yan <leo.yan@arm.com>
+Segher
 
