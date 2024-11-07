@@ -1,59 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-2981-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2982-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953069C0434
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 12:36:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B968E9C045D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 12:43:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkg4d1cPGz3blv;
-	Thu,  7 Nov 2024 22:36:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkgF53bc8z3blN;
+	Thu,  7 Nov 2024 22:43:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730979361;
-	cv=none; b=CxL2hTYzwrt4tH9h/M9HD7SkNTIxGpHfKuapWL7rHVnF+KEwx1aHUs7rH4mD6YMfF5d+YtFOLgWNO4jEPIGGybR7a1U1t1en23GAF35Ei4m9rd6o6EIJr3xQiPJV25WwxCotv1Hitj79ZeGrmlftl+unZxnimtBuMQZUHVrVL8TyVoTaodO9rTQmxw+OdvH0GhZ9n2W5BLUXl1OGhAgoXc/CBjtA8zdLkPc94GyMDFyeY3knWNcRlCahBsUuHBR33r8uJaholizdV0gX8SVPh0gJFh+QJdZgjcenlYIwSZMHU3xLrOwxduSZpJ0hUojcscvxMJJUXm+TfFxFa88U6A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730979801;
+	cv=none; b=e+ULt97s4E+8rrSR1GSKF+5+T8i3EIvOLU38Qm/TMIGnPhG4IUJmuCzUL/ofU71S5VNd1fhkfTBtWtUxrR424Atk1PFsUUSjMSHuceicYng2R+bL3FFQRq8YSPAZiBYW+x+Wpft40unAbvcf72DR5lbbegkf1ud096lq5JHqswdUEfhJah0W0rzOVD0FSWdFZzkzhO20n+bqWOk5VniDaJMtiIbM9BN9VnNuAfJ3jB5hQilezwR7dbpDwGxTGDwJDcjm9eUn88+3s7AZcNXH20EHp43KpZI5tdb/Zl8PyY/vRztMOOS37ASX5tqlKGU2HCFHiGoVDSzSNl6J5Ei4cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730979361; c=relaxed/relaxed;
-	bh=Qu3sLBuA2l/huyDUtQbZTBU6aoM9vYd0HPB2dAFL//0=;
+	t=1730979801; c=relaxed/relaxed;
+	bh=4Okfvzd2eQr6dRNHt7yCDBwWw5/wg/dsUal/yL3Sw/Q=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kg+HdN1jW4XWBtryN941C9/2dQhPk1l/Ni8dn5gfpAIpuDzAa49dsAfIBzqH16c7BFInl1URJaf5D2UAhtRk5ozP+togrFIxH7rYd8YLYwM6lh8RNKlIcdeBXgKRkosVu0sSM8ipghMvN+P6N5/DNEFUonwqUQegecl82wDZULf3ZjPsQ6gUsBPZ4f+cY7QmJp2/F+2aQQZfmZjirGXtodEwdkNrd4WbI9S3KWI6Odwl0cHsWqomhWB6lHaSaSZSeaACXguP/UKKkKrxT9PgDtATt9MQ5Ghpg0SjUqT0CPKTW74/IkZac2IsqVkEs9ioBJV33SnZYuNNog32DXDRIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Natq8Mpc; dkim-atps=neutral
+	 MIME-Version:Content-Type; b=Lydlve5MsuguvdgNs+N9lBpuisfR/HafhUmqqoQ5qLw8IfYzsURLhvDt9a87uV/HYLOXuCAO9qJsrescO2WpA+sqilkDTAp5Fk6L1bcEuZ/Vo0IGJXy6AgAff9NPR3xinRj9ZrgS2UlqB9FFJXgV55x+VWnWDYCHFd3jiJaCiXzxxM3vuxB1zGgH+JXVEykLgPcMwcKNlnWk+6ojN55apSihHj793WwL+gbkrX7tLO2Kmwf4bf6TW7qRk/yyUe/N2A1SfM8te8n+BLz5idSZJEwY9QT0hnagJA/7gmM8S+92bpt5Wl7zDKEYCrxHg9HhfYq3Njz9xG2/ZEai4BDY9Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BiEwpqK0; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Natq8Mpc;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BiEwpqK0;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xkg4c1x1Xz3blN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 22:36:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkgF43RpXz2yGD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 22:43:20 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1730979357;
-	bh=Qu3sLBuA2l/huyDUtQbZTBU6aoM9vYd0HPB2dAFL//0=;
+	s=201909; t=1730979798;
+	bh=4Okfvzd2eQr6dRNHt7yCDBwWw5/wg/dsUal/yL3Sw/Q=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Natq8MpcvRLo8792rq10uzgXADLxKDmvQR4WmIHLsNxlKVbDwwFth3TYqjZr4rF4f
-	 gbBSMOgDumUl8QS5BAsImk31g+X1EIm7PcQ7W1hQf3D5i/bZWR0wEiH1qNLjHIOD89
-	 sb6MEmnQXSOUhDinrRe0qAMVoeR7Mbf+mqXGn2upl0UP93H8E36bVAS9UNDw8U6ykS
-	 7lLZyEqWobbNGobltBU3x358guCheZHNAlhYLEq4lLNDuOhDlRvYYGhVneQWCbEkVV
-	 LIxlox5M6HKta8CaHTeKnEy0FEzFicWDFg4P1t2Mcs0P4mN32rBKNBEKLHNWb1UWw8
-	 tCwLk+K4i2zeg==
+	b=BiEwpqK0s4x0OUCGOD+kvoaKS9tuCWyAZUnpNV+P05pY47FA+NDLfZ/JWKZp6/PeK
+	 LPiJEMlpsFmhZgbLj+pEAU9H/nqekHkImAjNmt9grjgLaFNs7JUGP9HkNorncmuHx/
+	 AZp4AlFzI9YMvuzlyB1EMBaFnxG0S2CllABXenX1m6YqEFeypKN3+u1YUFnmMfwNtg
+	 xJWlA+ULvM64H9YSotQPBK3I+svyN6uMFBK/8axmH0XDREP0LvfJESv7I5akm96VCI
+	 ujNar4HQrlP1e8LDBiJB9dmNthjjdZ3aDAgGlqI58SIdn9gkdBAG9x1ry5DnVm6lPY
+	 LM7Hgj+n5bn6Q==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xkg4Y5S1pz4x1w;
-	Thu,  7 Nov 2024 22:35:57 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XkgF02sDzz4wcj;
+	Thu,  7 Nov 2024 22:43:16 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Rob Herring (Arm)" <robh@kernel.org>, Saravana Kannan
- <saravanak@google.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] of: WARN on deprecated #address-cells/#size-cells
- handling
-In-Reply-To: <20241106171028.3830266-1-robh@kernel.org>
-References: <20241106171028.3830266-1-robh@kernel.org>
-Date: Thu, 07 Nov 2024 22:35:58 +1100
-Message-ID: <87jzdfcm3l.fsf@mpe.ellerman.id.au>
+To: Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org,
+ Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Michal Suchanek <msuchanek@suse.de>, "David S. Miller"
+ <davem@davemloft.net>, Nicholas Piggin <npiggin@gmail.com>, Christophe
+ Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Danny Tsen
+ <dtsen@linux.ibm.com>, linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Nicolai Stange <nstange@suse.com>
+Subject: Re: [PATCH] aes-gcm-p10: Use the correct bit to test for P10
+In-Reply-To: <20241106121019.25629-1-msuchanek@suse.de>
+References: <20240923133040.4630-3-dtsen@linux.ibm.com>
+ <20241106121019.25629-1-msuchanek@suse.de>
+Date: Thu, 07 Nov 2024 22:43:17 +1100
+Message-ID: <87h68jclre.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,20 +76,42 @@ X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-"Rob Herring (Arm)" <robh@kernel.org> writes:
-> While OpenFirmware originally allowed walking parent nodes and default
-> root values for #address-cells and #size-cells, FDT has long required
-> explicit values. It's been a warning in dtc for the root node since the
-> beginning (2005) and for any parent node since 2007. Of course, not all
-> FDT uses dtc, but that should be the majority by far. The various
-> extracted OF devicetrees I have dating back to the 1990s (various
-> PowerMac, OLPC, PASemi Nemo) all have explicit root node properties.
+Michal Suchanek <msuchanek@suse.de> writes:
+> A hwcap feature bit is passed to cpu_has_feature, resulting in testing
+> for CPU_FTR_MMCRA instead of the 3.1 platform revision.
 
-I have various old device trees that have been given to me over the
-years, and as far as I can tell they all have these properties (some of
-them are partial trees so it's hard to be 100% sure).
+Ouch. Good find.
 
-So LGTM.
+Notably all IBM Power CPUs have MMCRA set, so the feature test is
+essentially a nop.
+
+> Fixes: c954b252dee9 ("crypto: powerpc/p10-aes-gcm - Register modules as SIMD")
+
+^ which is only in linux-next so no stable tag needed.
+
+> Reported-by: Nicolai Stange <nstange@suse.com>
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> ---
+>  arch/powerpc/crypto/aes-gcm-p10-glue.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
 cheers
+
+> diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> index e52629334cf8..1f8b67775658 100644
+> --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> @@ -414,7 +414,7 @@ static int __init p10_init(void)
+>  {
+>  	int ret;
+>  
+> -	if (!cpu_has_feature(PPC_FEATURE2_ARCH_3_1))
+> +	if (!cpu_has_feature(CPU_FTR_ARCH_31))
+>  		return 0;
+>  
+>  	ret = simd_register_aeads_compat(gcm_aes_algs,
+> -- 
+> 2.46.1
 
