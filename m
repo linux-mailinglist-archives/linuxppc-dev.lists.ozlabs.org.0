@@ -1,43 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-2946-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2947-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DB19BFB6F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 02:27:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5A69BFC16
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 03:00:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkPZ72ZlXz3bgf;
-	Thu,  7 Nov 2024 12:27:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkQJf6qjSz3bgs;
+	Thu,  7 Nov 2024 13:00:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.119
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730942831;
-	cv=none; b=GmTsSyo7SkjdSEpsMRun9lsBa75AMG9DoCMUrWJa52xtpKsfw3oRF3Axhg3sB2d04RNFDoL+ZKGQtv0RagFO+WbUuWa84CnFyBm7zZ5ot8Nq2sVrRc7ar/rR1nrt5MhTy8z5Qg99jdftYSSRU14EXVtELP0o5BYn2O0KSElX45RMtgl9dIq/Ah4j9pr7lsmzRJ+F3Wafw+DSUijx2QD1LlHXuaohP29QRMTW6qKRUrVQM0vSwoHTbEWviolVSWzBOwgZHmaA75+/7a/KGMOvsWMOZxXbe3AruX2UbApGVJxfxV+sbWyqQ/abiHNJT5dBXqlj5Gd4j2WLT3wJ4RsoNg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730944834;
+	cv=none; b=TYJ23Gw8tg3Nzx4w0h9VW2SJIm2emkfvolT/EE6XoBqLt15+fJD6JqEPvSLtVy0s2dMeHAokmWY3qrglW01QKsxCFSjan4NUV1tXMEoWJva6lUyaAXcxegIT+VSBW2jIKYDYZXwnkwgQyWy4qW0CqJQmfBTk3U21Iks3AjFyNaZbYhqjvLFxuZ9g31dFDr2DrsC3HLbULVWdm8hYy6SZ7IV+JEumrlES95hMg+mXFgwp95aIQxwSqk2ZfaDnt066aDK0uDBFwpPEHJZAJZKoEk2nJ8P2X7u4al59jvy0VqJR2CJqgx5ejHrQir2qG170Kzamz0Bn3VZT9J8oYhqSNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730942831; c=relaxed/relaxed;
-	bh=7QNN7aZqhxMw37PStTVFSWANIXY78tjXFWsam9auhZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N45TVHVR/a2HOAWEtZ+D34X/RXlnrR85Rq2u0ovcYFPJUUte9CPEIFPG8bre1khVCnt1KCpuAErtK9zO47FhoPRuQNPnso1MB9f82aJ6cx2cSXyUkxMiegh6LCcPWg/i8YD4OoAi+CdTDB71D6y9pRHnOaLnFXVm5XJ5dBKZRigSxxX6PAMwgQtGcccJFHtfaKDO5R7byPJE54UoStCaFLTyvmybg9Ss8QPbA22VGosbol4ohm0udYb1ReTXa+hdm5ArHM0amLlARfdM4XDu3ws1F+VuIVgH0fkGhkhC1RTvIB7u5E5Llvc4ooMLHjcsH43kuwuta8mc5AR+rk4jeQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=b8WRgGEr; dkim-atps=neutral; spf=pass (client-ip=115.124.30.119; helo=out30-119.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+	t=1730944834; c=relaxed/relaxed;
+	bh=0EdutC03yjwFQkwXCG2tQZxwMxGac24zSXBtnBi05P0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=HEx7Rso2VtN01LxtjtlwXDpQY1DXZLgEIWNQe0zomS+QvRbzaHVyvMn+w3KsQU4KwKDgCkvQMze8/GjX4dSiGvKU7yQjvkTYa/27sWnUXPLqMTl8RJrNUQp5u/S2zIOhoAhu2hsdc0r2Nhac9FFX6FbXDJX76lvyCdcyL8HPFUENeRpx+5aXUJ93x5XY+jLGoWyM0TfEi2kT+s9p9lRSIl0bRAoYw3F+20afg9/rKkU1k51HqMyR8atwiVvJz01/6BJIDxSsXLBqPzIuQaTwKYoRPxZ0wAi0BzEng081u1kdDPSC7JUwm7Wfe8TP22a9WHeSI7PZvJDmOxVtgbMRpw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JOePNEfH; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=b8WRgGEr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JOePNEfH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.119; helo=out30-119.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkPZ612vVz2ygy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 12:27:09 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1730942825; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=7QNN7aZqhxMw37PStTVFSWANIXY78tjXFWsam9auhZE=;
-	b=b8WRgGEr9MyYiiJgr6XzsX2WWQmRTMmZLTs0PF1vgH2QsLmJ5lTIUN4IGBf7zX0TRFz5ijXgwgDmvYQkjKnntVc22JCahNNylEmmZDweWQabb7sFSsHT4xCIAfu6Q4CGI+OQxYGGHhekHjPv9dKj5xuTI+VVbNURk3NkF6WXlf4=
-Received: from 30.246.162.170(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WIthnFt_1730942823 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 07 Nov 2024 09:27:04 +0800
-Message-ID: <736d94be-fad9-445e-acce-81cae1a05d46@linux.alibaba.com>
-Date: Thu, 7 Nov 2024 09:27:02 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkQJb5zRXz30PD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 13:00:31 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 873F15C5461;
+	Thu,  7 Nov 2024 01:59:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF8FC4CECC;
+	Thu,  7 Nov 2024 02:00:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730944827;
+	bh=1BUDSPoeb+/qQeqYnnF7CsVsbkJqooWgE1ax/Juomq8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=JOePNEfHKy27IoxmW8tn3U3WcpHvwyoJN2uP8RkH0ekIX1IOBVA6UvqHpDZrlcjFK
+	 /Qr12rqZx3c9/HKA2i0nByh1VO88ZwjR2hxTnHjfTq2WSZDgr2EW8yYwyxU7gPe7ST
+	 AIdoSzmAhDVoxgGIV6rqdPnpROmU0Nbz+Pja+VGBT0tgpeeomcUdDOUxasJuItWg+Z
+	 mphtLiACVPQ4GwGNucKCTuI82MXYqkyCcWQncQwg6Tg+muouHf7sBLZqxdOo7LwN8y
+	 qlFSzwmvpwJmx2wmESRG3BFCglSogmnSbnhoilWP+puEdm/UdNCM2TwDX6rC5gOmu0
+	 wKwaliaZw2Kfg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C3A3809A80;
+	Thu,  7 Nov 2024 02:00:38 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -50,112 +59,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 2/2] PCI/AER: report fatal errors of RCiEP and EP
- if link recoverd
-To: Keith Busch <kbusch@kernel.org>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, mahesh@linux.ibm.com,
- oohall@gmail.com, sathyanarayanan.kuppuswamy@linux.intel.com
-References: <20241106090339.24920-1-xueshuai@linux.alibaba.com>
- <20241106090339.24920-3-xueshuai@linux.alibaba.com>
- <ZyubxGBL7TvchZI_@kbusch-mbp>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <ZyubxGBL7TvchZI_@kbusch-mbp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+Subject: Re: [PATCH net-next 0/4] net: ucc_geth: devm cleanups
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173094483699.1489169.1489956594032005327.git-patchwork-notify@kernel.org>
+Date: Thu, 07 Nov 2024 02:00:36 +0000
+References: <20241104210127.307420-1-rosenp@gmail.com>
+In-Reply-To: <20241104210127.307420-1-rosenp@gmail.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ maxime.chevallier@bootlin.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hello:
 
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-在 2024/11/7 00:39, Keith Busch 写道:
-> On Wed, Nov 06, 2024 at 05:03:39PM +0800, Shuai Xue wrote:
->> +int aer_get_device_fatal_error_info(struct pci_dev *dev, struct aer_err_info *info)
->> +{
->> +	int type = pci_pcie_type(dev);
->> +	int aer = dev->aer_cap;
->> +	u32 aercc;
->> +
->> +	pci_info(dev, "type :%d\n", type);
->> +
->> +	/* Must reset in this function */
->> +	info->status = 0;
->> +	info->tlp_header_valid = 0;
->> +	info->severity = AER_FATAL;
->> +
->> +	/* The device might not support AER */
->> +	if (!aer)
->> +		return 0;
->> +
->> +
->> +	if (type == PCI_EXP_TYPE_ENDPOINT || type == PCI_EXP_TYPE_RC_END) {
->> +		/* Link is healthy for IO reads now */
->> +		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
->> +			&info->status);
->> +		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
->> +			&info->mask);
->> +		if (!(info->status & ~info->mask))
->> +			return 0;
->> +
->> +		/* Get First Error Pointer */
->> +		pci_read_config_dword(dev, aer + PCI_ERR_CAP, &aercc);
->> +		info->first_error = PCI_ERR_CAP_FEP(aercc);
->> +
->> +		if (info->status & AER_LOG_TLP_MASKS) {
->> +			info->tlp_header_valid = 1;
->> +			pcie_read_tlp_log(dev, aer + PCI_ERR_HEADER_LOG, &info->tlp);
->> +		}
+On Mon,  4 Nov 2024 13:01:23 -0800 you wrote:
+> Also added a small fix for NVMEM mac addresses.
 > 
-> This matches the uncorrectable handling in aer_get_device_error_info, so
-> perhaps a helper to reduce duplication.
-
-Yes, will do.
-
+> This was tested as working on a Watchguard T10 device.
 > 
->> +	}
->> +
->> +	return 1;
->> +}
+> Rosen Penev (4):
+>   net: ucc_geth: use devm for kmemdup
+>   net: ucc_geth: use devm for alloc_etherdev
+>   net: ucc_geth: use devm for register_netdev
+>   net: ucc_geth: fix usage with NVMEM MAC address
 > 
-> Returning '1' even if type is root or downstream port?
-> 
->>   static inline void aer_process_err_devices(struct aer_err_info *e_info)
->>   {
->>   	int i;
->> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
->> index 31090770fffc..a74ae6a55064 100644
->> --- a/drivers/pci/pcie/err.c
->> +++ b/drivers/pci/pcie/err.c
->> @@ -196,6 +196,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->>   	struct pci_dev *bridge;
->>   	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
->>   	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
->> +	struct aer_err_info info;
->>   
->>   	/*
->>   	 * If the error was detected by a Root Port, Downstream Port, RCEC,
->> @@ -223,6 +224,10 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->>   			pci_warn(bridge, "subordinate device reset failed\n");
->>   			goto failed;
->>   		}
->> +
->> +		/* Link recovered, report fatal errors on RCiEP or EP */
->> +		if (aer_get_device_fatal_error_info(dev, &info))
->> +			aer_print_error(dev, &info);
-> 
-> This will always print the error info even for root and downstream
-> ports, but you initialize "info" status and mask only if it's an EP or
-> RCiEP.
+> [...]
 
-Got it. Will fix it.
+Here is the summary with links:
+  - [net-next,1/4] net: ucc_geth: use devm for kmemdup
+    https://git.kernel.org/netdev/net-next/c/2246f5b2e982
+  - [net-next,2/4] net: ucc_geth: use devm for alloc_etherdev
+    https://git.kernel.org/netdev/net-next/c/edf0e374e446
+  - [net-next,3/4] net: ucc_geth: use devm for register_netdev
+    https://git.kernel.org/netdev/net-next/c/85d05befbbfc
+  - [net-next,4/4] net: ucc_geth: fix usage with NVMEM MAC address
+    https://git.kernel.org/netdev/net-next/c/257589764032
 
-Thank you for valuable comments.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Best Regards,
-Shuai
 
 
