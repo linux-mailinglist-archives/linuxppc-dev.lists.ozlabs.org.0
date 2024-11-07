@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-2971-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2964-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC9F9C004F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 09:45:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E46009C0043
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 09:45:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkbHW5BfKz3bn8;
-	Thu,  7 Nov 2024 19:45:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkbHM6znXz3bjs;
+	Thu,  7 Nov 2024 19:45:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730969111;
-	cv=none; b=iYg7yPI5Y63kpjR2qS4FxragmbmuAx8plTe8eljTfPMpuvgF7WBZS9Vtyr0AfwS3tW0YpF5qm6Ge8QYeVxym1Y17+nJmluUryVxLlbdlWlJOmdCXPteiTAmmvn7OgMxaCjB/5n5/Aty+lVCXuxWWhx4jja/2lqkjBdGy922O8wjVqxpNo5ohn1eGx+gWmMbKWlnlkewxtBWbXY+p3gJA5XbwWH5KWSwi1+l21OZQ1US2+rKV/oDAn+UHh8VAUxuJO0IK/gKnqKHi+WcM7U1OmdG6a8qlTaKZs5AL1wIXxYuw1t+mORQDkYfU9+ockjkEbKvg72COcEFND3AqyNiG8A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730969103;
+	cv=none; b=BiBqo1v+D7qLJOjKaUPMenB2JEq5pa1ayq125KW8WM2ZYE3rSebYUUVN4IQfHU2TijU68h2kBy3Ld14RPZIxTlZGddNlRZzqv+bWwzRCcZbxcdZJpLOsF1QONxlhSMcEF5TB2YKQDn2bgQ+E1l/Yhb1ZiBATEHElvi16GIS0r5Bw2wUlX+Z5qYEQ8kwMOHgafWhAlQrqZXe0Twf+tAMPaM1YMjvIHKJfVELKorbIG/ChmUQLXyNZsEjGgx6BxPn3en5VUOcARJQjmcWcqcwFjDkqBRhI0K2R99J+W1SG+bFhqSzVUbT//OA/Wg1esASnJjb26+hM9A+3LgYJZid+6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730969111; c=relaxed/relaxed;
-	bh=xuCkB4IT45fiDSen6HBmo5m24raNgR0WbBheuYXHj48=;
+	t=1730969103; c=relaxed/relaxed;
+	bh=ueCptTh3dBLcX8F/o4XfV7ZiTYKauBNPyYqtGSJyBAY=;
 	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dcLOoDC7Ht2oMsimE/nN7pEFsorB7C2Ivu7Twb4KyEqGSRTuKWWYDvMrKGUUbIohJ089SrPVvf93/Snr+ogkoZpRfFqzVzly5p++sGhllHytDdx4wrMJ1IQ1E68Vp3evkyEEzXZePsHrJ12xuIcKB1jqGKYA3VNsyLbby4HXOId024DLLAGrKH5kx/emupM74aWNQll0cnF93z4d1WOQjR/FX0ZhVwP7bxLZQEITCKlJwWT4yf2rgLxM/EYDqfwe4AgfLgwRk1lpjXX6o9gK6gvo1NnAsQqMMDpEfZdFA16SLISYexvlAhKP+bN5dizNZRDF5ZymGt4/c2/rkkWLnw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=C1cGx6WA; dkim-atps=neutral
+	 MIME-Version:Content-Type; b=h71duaI7dZBJ6aIm/FX9vbpjIuQYaOGGweNh4orfBZhk7A1HgCwLKIn43xTutH30TPI+mMr+QsSDfgX+d3WKVaOGoyeLp4PBiUMTCLnM7PA2uqWR1lqLwxhf8I51yZO5+c/lbk1jd41y9bo486a5lNbcto7ZITy7yOgU4VTTzBjGFlInnibFDXoqK7igUHyG8VoQLUL6nc7h72hPEftOhZx67Nu4ddTLvKWv1QmUzd5+f5L+ExPPmN17v87efREj7HoE52krH10/7K937PUejY1F2oGN3SE2unDeCwftQokYZII2f0quzh9/eUa5H6rXiEUWfgKOZmOt+PiScumYnQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=O3iIyIse; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=C1cGx6WA;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=O3iIyIse;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkbHW06S1z3bmf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 19:45:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkbHK42dlz3bjb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 19:45:01 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
 	s=201909; t=1730969099;
-	bh=xuCkB4IT45fiDSen6HBmo5m24raNgR0WbBheuYXHj48=;
+	bh=ueCptTh3dBLcX8F/o4XfV7ZiTYKauBNPyYqtGSJyBAY=;
 	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=C1cGx6WA2WXIbxxPWljmss5H/ehl5/wsZCreilGCT2r1R4zjDYFGIUR055+yop2yW
-	 hb4QjTjddYAkqDXUc9Er4C6ovWNKKgjRMWi4EAXDbxyitGBshec3/NAAvSVCJHFE/4
-	 3Z5/jcV3MCYRQ2LMRqXk/wuJKXsInjvhDkw0jvQ46kBRpny6T0iY64CQ+RG9f9ky+u
-	 X3/nWaqTzJTmz8EwOWVCkz4ZBXAvvRYb82Cxp2PrjkkjxLYLe5UJiWe2h7WD89elIh
-	 bHYWvCVxiPzxixOWE7JKfAqfz2rpA43mLB6vJBE5tyDgS7Tr6XXvF7Jeel5/BSajmP
-	 ZYWiJSmAqvOyw==
+	b=O3iIyIseJXn4VnZW1VyaHkyChUGR9Imj5exJ31gjm1VJZJFegCF1KS7b8C1/Mm6wH
+	 RhKDlQ12U8Lp3M1l1Nzdrh4SCf+qNTBQDZ3vAI1HMn9Gg41ZhcR2pdaTCQlmprAuks
+	 FEVvtmU2xRmDR5c0aKcyF9jsn+1SIykadO/TUDSYMxXvcV8SlWdklpFvHEjfAfrwo/
+	 FLsAC2abhdHTrYdV9LvEfyffkLZfNvHwMIJk33dyRoZfxONYOuWuQ6h761Dx7XOEv0
+	 sXopdWRcVOjlqiaCTD2SUme2Ab2vdDjWIlm68evPwBsMcvWKMe0+uaA+dw3j64GZnK
+	 WHepf26UjtwLw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XkbHH3whTz4x8f;
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XkbHH0RDhz4x21;
 	Thu,  7 Nov 2024 19:44:59 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20241009051701.132282-1-mpe@ellerman.id.au>
-References: <20241009051701.132282-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64: Drop IPI_PRIORITY from asm-offsets
-Message-Id: <173096894646.18315.14561851107667021729.b4-ty@ellerman.id.au>
+In-Reply-To: <20241009051826.132805-1-mpe@ellerman.id.au>
+References: <20241009051826.132805-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/2] powerpc/machdep: Drop include of seq_file.h
+Message-Id: <173096894647.18315.7490654927516414876.b4-ty@ellerman.id.au>
 Date: Thu, 07 Nov 2024 19:42:26 +1100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -69,16 +69,22 @@ X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 09 Oct 2024 16:17:00 +1100, Michael Ellerman wrote:
-> The last use of IPI_PRIORITY in asm was removed in commit 37f55d30df2e
-> ("KVM: PPC: Book3S HV: Convert kvmppc_read_intr to a C function").
+On Wed, 09 Oct 2024 16:18:25 +1100, Michael Ellerman wrote:
+> Drop the include of seq_file.h in machdep.h, replace it with a forward
+> declaration of struct seq_file, which is all that's required.
+> 
+> Add direct includes of seq_file.h to some files that were getting
+> seq_file.h via machdep.h.
 > 
 > 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/64: Drop IPI_PRIORITY from asm-offsets
-      https://git.kernel.org/powerpc/c/5e296fc37e1afa3fb38b886fe2bf7737777d0f61
+[1/2] powerpc/machdep: Drop include of seq_file.h
+      https://git.kernel.org/powerpc/c/3c9670df7f7e871f0d2c2208d2ce79f6cfbca0f6
+[2/2] powerpc/machdep: Drop include of dma-mapping.h
+      https://git.kernel.org/powerpc/c/b23b9edf64b6387334aa2f8687cca6792b0d9d6c
 
 cheers
 
