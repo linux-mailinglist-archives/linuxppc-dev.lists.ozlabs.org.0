@@ -1,52 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-2980-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2981-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706E39C0421
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 12:33:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 953069C0434
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 12:36:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkg1Y2RGFz3bjq;
-	Thu,  7 Nov 2024 22:33:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkg4d1cPGz3blv;
+	Thu,  7 Nov 2024 22:36:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730979201;
-	cv=none; b=luiihdcdN+m+0OD+LMIwSY85f72kOViId62EQTs1w7g93UjdNKsWjGEhVvpV2iTX/UdCuwnklhEQmNG7xen2ltCBEiTjADXYYb2VEgTdzbYJrFYSR5YHIIBw/9FwTy8a48CJ46NHF+FrRGCEAnpFTtmQ+nNsrNVLDBhY2K7b64uzuW1KKBb5pFrnyX4ynbYi/SD8wEn4p+9kscn4AgmQsdBsaGWd2FD6RoNbHkJfRounYe7SRwKEogWIcIdA8xheRRxFaxzLrsOYKKvm8U7iOVl8LFL1tIxdfxU8pjrzfVOg+fNhpWA6j0tpT8tPjZXSAFymHQCOlIvIaRPsWbvwzg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730979361;
+	cv=none; b=CxL2hTYzwrt4tH9h/M9HD7SkNTIxGpHfKuapWL7rHVnF+KEwx1aHUs7rH4mD6YMfF5d+YtFOLgWNO4jEPIGGybR7a1U1t1en23GAF35Ei4m9rd6o6EIJr3xQiPJV25WwxCotv1Hitj79ZeGrmlftl+unZxnimtBuMQZUHVrVL8TyVoTaodO9rTQmxw+OdvH0GhZ9n2W5BLUXl1OGhAgoXc/CBjtA8zdLkPc94GyMDFyeY3knWNcRlCahBsUuHBR33r8uJaholizdV0gX8SVPh0gJFh+QJdZgjcenlYIwSZMHU3xLrOwxduSZpJ0hUojcscvxMJJUXm+TfFxFa88U6A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730979201; c=relaxed/relaxed;
-	bh=iL3mXwOzRJMGYTrIBbmMA0dc++2KLzludX/mlvGVKMs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UZp2LjjilZlcJbFt06guCB2VTnoqmyk4AOP5vQB0DfRSM+8CaABhyMMGFamJvvRJYAV7e4WZbQLIu23k907wj0zlbuXdQVrZUH2k1qzP7LQpFsyzMrFR1rTnZ41jjHBZ2CbvsQyJ+6Z1wRolLGPDO2KUu2RDOs26OO6UlD6vpnqAv+9mIrPvNDXerxPlIbjskekV6Re8Z82mMfbxLOsPsBczey/Hd1FKTv2RGIjgOsp1v6MjPPxiYe4IRyA+r3SvOZoetQ24nTZtDgIG0aVkw/DecqKM4mjmbh7LiH02iEuKVhcuescX75qV9HAWAa03bfvb8EK7IlulLmC2ienFNA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1730979361; c=relaxed/relaxed;
+	bh=Qu3sLBuA2l/huyDUtQbZTBU6aoM9vYd0HPB2dAFL//0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=kg+HdN1jW4XWBtryN941C9/2dQhPk1l/Ni8dn5gfpAIpuDzAa49dsAfIBzqH16c7BFInl1URJaf5D2UAhtRk5ozP+togrFIxH7rYd8YLYwM6lh8RNKlIcdeBXgKRkosVu0sSM8ipghMvN+P6N5/DNEFUonwqUQegecl82wDZULf3ZjPsQ6gUsBPZ4f+cY7QmJp2/F+2aQQZfmZjirGXtodEwdkNrd4WbI9S3KWI6Odwl0cHsWqomhWB6lHaSaSZSeaACXguP/UKKkKrxT9PgDtATt9MQ5Ghpg0SjUqT0CPKTW74/IkZac2IsqVkEs9ioBJV33SnZYuNNog32DXDRIw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Natq8Mpc; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Natq8Mpc;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xkg1X1ztCz2yMv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 22:33:19 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Xkg1Q1hLcz9sSL;
-	Thu,  7 Nov 2024 12:33:14 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 5xrcSFGIfoJs; Thu,  7 Nov 2024 12:33:14 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Xkg1Q0p7cz9sSK;
-	Thu,  7 Nov 2024 12:33:14 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0C3108B77B;
-	Thu,  7 Nov 2024 12:33:14 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id OMnLZ6-ruVde; Thu,  7 Nov 2024 12:33:13 +0100 (CET)
-Received: from [192.168.232.148] (unknown [192.168.232.148])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9F2208B77A;
-	Thu,  7 Nov 2024 12:33:13 +0100 (CET)
-Message-ID: <ed3a5d53-af06-498f-a8fe-0fe1e3a293bc@csgroup.eu>
-Date: Thu, 7 Nov 2024 12:33:12 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xkg4c1x1Xz3blN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 22:36:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1730979357;
+	bh=Qu3sLBuA2l/huyDUtQbZTBU6aoM9vYd0HPB2dAFL//0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Natq8MpcvRLo8792rq10uzgXADLxKDmvQR4WmIHLsNxlKVbDwwFth3TYqjZr4rF4f
+	 gbBSMOgDumUl8QS5BAsImk31g+X1EIm7PcQ7W1hQf3D5i/bZWR0wEiH1qNLjHIOD89
+	 sb6MEmnQXSOUhDinrRe0qAMVoeR7Mbf+mqXGn2upl0UP93H8E36bVAS9UNDw8U6ykS
+	 7lLZyEqWobbNGobltBU3x358guCheZHNAlhYLEq4lLNDuOhDlRvYYGhVneQWCbEkVV
+	 LIxlox5M6HKta8CaHTeKnEy0FEzFicWDFg4P1t2Mcs0P4mN32rBKNBEKLHNWb1UWw8
+	 tCwLk+K4i2zeg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xkg4Y5S1pz4x1w;
+	Thu,  7 Nov 2024 22:35:57 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Rob Herring (Arm)" <robh@kernel.org>, Saravana Kannan
+ <saravanak@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] of: WARN on deprecated #address-cells/#size-cells
+ handling
+In-Reply-To: <20241106171028.3830266-1-robh@kernel.org>
+References: <20241106171028.3830266-1-robh@kernel.org>
+Date: Thu, 07 Nov 2024 22:35:58 +1100
+Message-ID: <87jzdfcm3l.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,46 +66,26 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next] powerpc/machdep: Remove duplicated include in svm.c
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Yang Li <yang.lee@linux.alibaba.com>, npiggin@gmail.com, naveen@kernel.org,
- maddy@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Abaci Robot <abaci@linux.alibaba.com>
-References: <20241107010259.46308-1-yang.lee@linux.alibaba.com>
- <87msibcmeb.fsf@mpe.ellerman.id.au>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <87msibcmeb.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+"Rob Herring (Arm)" <robh@kernel.org> writes:
+> While OpenFirmware originally allowed walking parent nodes and default
+> root values for #address-cells and #size-cells, FDT has long required
+> explicit values. It's been a warning in dtc for the root node since the
+> beginning (2005) and for any parent node since 2007. Of course, not all
+> FDT uses dtc, but that should be the majority by far. The various
+> extracted OF devicetrees I have dating back to the 1990s (various
+> PowerMac, OLPC, PASemi Nemo) all have explicit root node properties.
 
+I have various old device trees that have been given to me over the
+years, and as far as I can tell they all have these properties (some of
+them are partial trees so it's hard to be 100% sure).
 
-Le 07/11/2024 à 12:29, Michael Ellerman a écrit :
-> Yang Li <yang.lee@linux.alibaba.com> writes:
->> The header files linux/mem_encrypt.h is included twice in svm.c,
->> so one inclusion of each can be removed.
->>
->> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
->> Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11750
->> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
->> ---
->>   arch/powerpc/platforms/pseries/svm.c | 1 -
->>   1 file changed, 1 deletion(-)
-> 
-> The two includes only appear in linux-next, and they both come from
-> different trees. They are required in each tree to avoid breaking the
-> build.
-> 
-> So no one can merge this patch until the two trees are merged into mainline.
+So LGTM.
 
-But can't those two trees coordinate the patches so that the include 
-goes at the same place avoiding duplication at merge ?
-
-Christophe
+cheers
 
