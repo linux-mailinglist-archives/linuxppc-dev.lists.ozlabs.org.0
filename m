@@ -1,78 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-2949-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-2950-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6409B9BFD58
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 05:21:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAF79BFD59
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 05:21:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XkTQj0kBfz3bhg;
-	Thu,  7 Nov 2024 15:21:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkTQv1K23z3bjL;
+	Thu,  7 Nov 2024 15:21:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730953260;
-	cv=none; b=UFIdiO0p5SXlhb7KFndzN9o95ZWfIJbVMUrI5SNtOQXzQ/eMMqjP5srm6Uxx7K4zfdK2I/3G+3kAwTsKuET8qBY++/GwOcYE788Ewbr98Q8opCQ8bclM40XaRSbrc2qRlW7a1KOPLSNyMyP3o8pT2fIqXFsIX/xGNpkrKbydqPi8F58UtNo3wArnoZbs5c65+KmUQ3r6g1Z58uJKqNWivzSdUl7e+gNMco1WolbE0RG3nUI7B03VPw+0iKgPUH1qg0m+Qp32r/wTMafM8WbKRZkcNnIA9/u2XirbXu/KgHIg8hRSjhwaAqJaq2mUG4jB43Jxn+LcBzFV5wm6T7g1yg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730953271;
+	cv=none; b=U/Jqy4Xqp8BPyhibWQUVg6de0IaOuB5os1KinzR33huOE6H5jB379iUsMcPyLiRwlkYD92fEEeXFZNFV8Xx3nzyCZqKUPnF4jESRrXp1LhMjF4D5EbXTbN0QDPAQlCxvj2R+053lY4msbCshsMOGVKU2SUk2ahlZMi3wJXVHL9WV4DqEXQefDMfyasbkjPfJipvb9VuJXZhnFMeZ+ZroDsza5296kjj+y6QqRTntKrQvv5axJE8XdclZqTfBZZUSyjORRcMqzrbXCVE1hyhnKNga6icAgInBg/u9fbGxL66mKpuSOK9G5zyqAWLmHb4WmjSmf/9Rkxr1EekeNW3WfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730953260; c=relaxed/relaxed;
-	bh=P+IQhpL4e5Uo9lQJ0o9uzJmHF+9L3o1PKgI9OcfzQkk=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Ou997WOJXsLQr0KTfbIArkC62toIkBPHTxJUno9StwNh3nAMSoRVDixAebBp/jnfjo2ekONQ4Bq2x7ZzelrIOoVHW7c7w1eD3FupKi1J6pgQhqNobiA2a1nVfTRpZ/yAuTaGDbJ+9/myp3+jChju4w403vpzjdWnk/wVkNAWmSkF7mx9jFfqgyeBd8qMLDKMlzSsv5f8o1C1RKGoo1ShmwY49gnawDx+FT4NFRcGqdrZD6NWKPqrWY1wcoqRoVivhLHD3GTyKHKLfj+H5YcPuC77cRJc0geo5lVC20RNnSunOlG3VHSp1d9HqBy2uvC8aenbFZTGYbGAY3uU0s74xA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jEjpFc1I; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1730953271; c=relaxed/relaxed;
+	bh=G500xfm2jOBkULiRFKYuziqZWRhAOk2Dm8/VcpPcTxw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m7UZzYNsqMnQoKv38mb2hajJblGvJPPvVVbX9OP53hdkY8tfo+m4HKq5t9pjCLib7NbnF42rGCLQEn1cmGGzIUjbvBQfWk+bO4QD9gswdVp42yF5M30JQmRBE5/7U1Zc1Mlilfh2LrKtbH16/UASvEwoaAgwdecNjHnPmzsdWDS8blrOqJwyFUoFgWkTR3Ung+GdxuevuXRM8tlEPfjoEoFVLKKCg3BLBzXxWDF/Bl/sCKm4sZn9yaF22yoBFKu1Okl7iQ7TfYATQLvgf5Zi0wKnWbdP/77kqBEMVjSTno6aiISpChTuRtneD6BbKHOd8ZE1fFWHke527arCVF0MtA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UjXXwFec; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nnmlinux@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jEjpFc1I;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UjXXwFec;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nnmlinux@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkTQf4M31z3bby
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 15:20:56 +1100 (AEDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-20c805a0753so5828485ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Nov 2024 20:20:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730953248; x=1731558048; darn=lists.ozlabs.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=P+IQhpL4e5Uo9lQJ0o9uzJmHF+9L3o1PKgI9OcfzQkk=;
-        b=jEjpFc1Izy1u3kCH+0EbpIuHJ3vAvTEVAv5NeE94L4p71wno7gB8lKO6mQU3/p6r1V
-         6H2wVvzBcmP12JPusEFKsQZsusYJuHHzmkL31NN1BYOE4ZfXK5YdvTS7xX9tqigb3ROj
-         QLvd6lekfpo+x+T5J7SBxE/ORhDGuzXSO/W28hGbPuj0VVTyu8x7p4oZJBqSASQ1O1UM
-         HkyGa+oi7qhkBZiXoPfhxsaStPjiFRcqv5GbiG9KcWMTwLA433XpI2LMhm1ccm8GvCZ8
-         NVcdv/KmYB+BZP/aB2sfY2TEW8wFiUJK4QdU5oKeADUDqKun7TpZfuvjurSjXO5W3T1P
-         lLxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730953248; x=1731558048;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P+IQhpL4e5Uo9lQJ0o9uzJmHF+9L3o1PKgI9OcfzQkk=;
-        b=I1iNJXBlr9nv5wkdTRTr2ZldDQ+GXRLSDnVOCqYNot76nW0CqFZGgB8+1JMjWhR4J5
-         vhb/hf3Y3Tm7Mf0blSQMYaCyPONC2pa2kILLMq/yzHk37nNGiLrGg0TZaeBnZimvjScQ
-         sZPzyxnGKpfbTJPaYffjewJGfGLZ3om8X80PKlOZKPE4wEiT5nGQEDH8ALVGkCOrqoNa
-         GYcsYbLjIZGAx0m7XG70A/Hkt4/GZSqAgbW2U6rFcseKUWXz4El3AQ+q5FnbDV/rgVQi
-         29YPk9aLsF8bAtM5oOe3O9KVbQYKHsYgQAPv6ECSmusljSFRTsuDk0Pvvbx7bx4qCemr
-         FSrw==
-X-Forwarded-Encrypted: i=1; AJvYcCW2GHQxglxLXQoyC4OVviCWSU251LHkR+4oRpOEfLSghXYqJE3jVFNVuwljEzEXbObNucR17Zws619ZLVw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwhtfO1OXifTQDA3m2TSRie8Mcat7WZnBjzoQ1yDgNbaG2F3QSl
-	HOPkI/c4RF6NK85EDM/O0DX8PDgoWP+OKHW6CrajfY9GJmP946L1
-X-Google-Smtp-Source: AGHT+IG79uYcUwF9lFYUeqaifpaRzERnIc8rQuJ5hk5cLFMMa1tPt4Z2qXs9P2uWg0OS8aU5m7Ue1w==
-X-Received: by 2002:a17:902:ea0d:b0:210:f69c:bebe with SMTP id d9443c01a7336-210f69cc47cmr459585375ad.38.1730953247999;
-        Wed, 06 Nov 2024 20:20:47 -0800 (PST)
-Received: from dw-tp ([129.41.58.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177dc826fsm2926855ad.11.2024.11.06.20.20.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 20:20:47 -0800 (PST)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: Gautam Menghani <gautam@linux.ibm.com>, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] KVM: PPC: Book3S HV: Mask off LPCR_MER for a vCPU before running it to avoid spurious interrupts
-In-Reply-To: <20241028090411.34625-1-gautam@linux.ibm.com>
-Date: Thu, 07 Nov 2024 09:46:40 +0530
-Message-ID: <87ttcjwudz.fsf@gmail.com>
-References: <20241028090411.34625-1-gautam@linux.ibm.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XkTQs2Swwz3bby
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Nov 2024 15:21:09 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A73fG4j009789;
+	Thu, 7 Nov 2024 04:20:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=G500xfm2jOBkULiRFKYuziqZWRhAOk2Dm8/VcpPcT
+	xw=; b=UjXXwFecKD+zQO2Emf58D6m3sQaMc4m/0zw/bXGKDlX2Br8zMjRwt+eNg
+	an8H5xOv4tPSMMXRbh8/jebBe6PK+pCfNWNige2WCB5xvfzTB4lNInT3lRBOSbE9
+	GuxIAJ1m46idlRCv9yKIjlg9B7yu6SPVTZW1o4+EX1c93NqdWTQZ9Gc9TDqpDOgk
+	vc3LDdZxzN9tEAkTeWwPnyUaPBILvbepSPcgbCIfU/bGKwcJOl6yRAunY6cIDNaE
+	0gkbs9qLs31N7ZXERw2mOrOap3Wdy/LcDvb1Wd4a8Cq8PdIuQ7+cdekN/CrfrT9J
+	yMBl8vUhXGE0JefE3O5pFHw5N+WeA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rnudg56h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 04:20:52 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4A74KpLj020832;
+	Thu, 7 Nov 2024 04:20:51 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rnudg56e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 04:20:51 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A71oVlQ019096;
+	Thu, 7 Nov 2024 04:20:50 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj7dtw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 04:20:50 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A74Klfc57934216
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 Nov 2024 04:20:47 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 281602004B;
+	Thu,  7 Nov 2024 04:20:47 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2867420043;
+	Thu,  7 Nov 2024 04:20:45 +0000 (GMT)
+Received: from ltcrain34-lp2.aus.stglabs.ibm.com (unknown [9.3.101.41])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  7 Nov 2024 04:20:44 +0000 (GMT)
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+        linux-kernel@vger.kernel.org
+Cc: mahesh@linux.ibm.com, oohall@gmail.com, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, maddy@linux.ibm.com, naveen@kernel.org,
+        vaibhav@linux.ibm.com, ganeshgr@linux.ibm.com, sbhat@linux.ibm.com
+Subject: [PATCH] powerpc/pseries/eeh: Fix get PE state translation
+Date: Wed,  6 Nov 2024 22:20:27 -0600
+Message-ID: <20241107042027.338065-1-nnmlinux@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,95 +90,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mK7DeQXtkOlVp490AQDdrD9OdMNEByH0
+X-Proofpoint-GUID: g2t97kBqqIh4sRjtkjPa6LFTvW37jXDJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1011 bulkscore=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=962 phishscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411070030
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Gautam Menghani <gautam@linux.ibm.com> writes:
+The PE Reset State "0" obtained from RTAS calls
+ibm_read_slot_reset_[state|state2] indicates that
+the Reset is deactivated and the PE is not in the MMIO
+Stopped or DMA Stopped state.
 
-> Running a L2 vCPU (see [1] for terminology) with LPCR_MER bit set and no
-> pending interrupts results in that L2 vCPU getting an infinite flood of
-> spurious interrupts. The 'if check' in kvmhv_run_single_vcpu() sets the
-> LPCR_MER bit if there are pending interrupts.
->
-> The spurious flood problem can be observed in 2 cases:
-> 1. Crashing the guest while interrupt heavy workload is running
->   a. Start a L2 guest and run an interrupt heavy workload (eg: ipistorm)
->   b. While the workload is running, crash the guest (make sure kdump
->      is configured)
->   c. Any one of the vCPUs of the guest will start getting an infinite
->      flood of spurious interrupts.
->
-> 2. Running LTP stress tests in multiple guests at the same time
->    a. Start 4 L2 guests.
->    b. Start running LTP stress tests on all 4 guests at same time.
->    c. In some time, any one/more of the vCPUs of any of the guests will
->       start getting an infinite flood of spurious interrupts.
->
-> The root cause of both the above issues is the same:
-> 1. A NMI is sent to a running vCPU that has LPCR_MER bit set.
-> 2. In the NMI path, all registers are refreshed, i.e, H_GUEST_GET_STATE
->    is called for all the registers.
-> 3. When H_GUEST_GET_STATE is called for LPCR, the vcpu->arch.vcore->lpcr
->    of that vCPU at L1 level gets updated with LPCR_MER set to 1, and this
->    new value is always used whenever that vCPU runs, regardless of whether
->    there was a pending interrupt.
-> 4. Since LPCR_MER is set, the vCPU in L2 always jumps to the external
->    interrupt handler, and this cycle never ends.
->
-> Fix the spurious flood by masking off the LPCR_MER bit before running a
-> L2 vCPU to ensure that it is not set if there are no pending interrupts.
->
-> [1] Terminology:
-> 1. L0 : PAPR hypervisor running in HV mode
-> 2. L1 : Linux guest (logical partition) running on top of L0
-> 3. L2 : KVM guest running on top of L1
->
-> Fixes: ec0f6639fa88 ("KVM: PPC: Book3S HV nestedv2: Ensure LPCR_MER bit is passed to the L0")
-> Cc: stable@vger.kernel.org # v6.8+
-> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> ---
-> v1 -> v2:
-> 1. Removed the macro which was silently clearing LPCR_MER bit from vcore->lpcr
-> and instead just masked it off while sending it to kvmhv_run_single_vcpu().
-> Added an inline comment describing the reason to avoid anyone tipping
-> it over. (Suggested by Ritesh in an internal review)
->
-> v2 -> v3:
-> 1. Moved the masking of LPCR_MER from kvmppc_vcpu_run_hv() to
-> kvmhv_run_single_vcpu() (Suggested by Michael Ellerman)
->
->  arch/powerpc/kvm/book3s_hv.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 8f7d7e37bc8c..0ed5c5c7a350 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4892,6 +4892,18 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->  							   BOOK3S_INTERRUPT_EXTERNAL, 0);
->  			else
->  				lpcr |= LPCR_MER;
-> +		} else {
-> +			/*
-> +			 * L1's copy of L2's LPCR (vcpu->arch.vcore->lpcr) can get its MER bit
-> +			 * unexpectedly set - for e.g. during NMI handling when all register
-> +			 * states are synchronized from L0 to L1. L1 needs to inform L0 about
-> +			 * MER=1 only when there are pending external interrupts.
-> +			 * In the above if check, MER bit is set if there are pending
-> +			 * external interrupts. Hence, explicity mask off MER bit
-> +			 * here as otherwise it may generate spurious interrupts in L2 KVM
-> +			 * causing an endless loop, which results in L2 guest getting hung.
-> +			 */
-> +			lpcr &= ~LPCR_MER;
->  		}
+With PE Reset State "0", the MMIO and DMA is allowed for
+the PE. The function pseries_eeh_get_state() is currently
+not indicating that to the caller because of  which the
+drivers are unable to resume the MMIO and DMA activity.
+The patch fixes that by reflecting what is actually allowed.
 
-I think we had enough discussions on v1 internally and v2 on mailing
-list. So I am comfortable giving... 
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/eeh_pseries.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-LGTM. Please feel free to add - 
+diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+index 1893f66371fa..b12ef382fec7 100644
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct eeh_pe *pe, int *delay)
+ 
+ 	switch(rets[0]) {
+ 	case 0:
+-		result = EEH_STATE_MMIO_ACTIVE |
+-			 EEH_STATE_DMA_ACTIVE;
++		result = EEH_STATE_MMIO_ACTIVE	|
++			 EEH_STATE_DMA_ACTIVE	|
++			 EEH_STATE_MMIO_ENABLED	|
++			 EEH_STATE_DMA_ENABLED;
+ 		break;
+ 	case 1:
+ 		result = EEH_STATE_RESET_ACTIVE |
+-- 
+2.45.2
 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-
->  	} else if (vcpu->arch.pending_exceptions ||
->  		   vcpu->arch.doorbell_request ||
-> -- 
-> 2.47.0
 
