@@ -1,89 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-3023-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3024-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57749C0FDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 21:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A559E9C0FDE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Nov 2024 21:40:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkv7m4dhsz3brN;
-	Fri,  8 Nov 2024 07:39:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xkv8P3lKgz3bsL;
+	Fri,  8 Nov 2024 07:40:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730987213;
-	cv=none; b=owaQpDgMXyGqcVni1xZjE4rasQ8R2rq0qzyhe2RXt0FDQ6QMHB42vSde48YK4mAmqX/U04NJQWuISfi4lH00Vp+7yR3t700LHV8fpPkh6Fkxy6AOW9uR4A6Au8KRIlkjhj3lLAxmQ9b7TkoDrH7LzLDKTyBy0sMBOpTCooF+RdFAGsw/fKviTDsK1wFdkWPfUF0VH/0nQxA5o20zAJgvAtS/9EE5jNc0bxiK5I3iew1ImExTD0jjmL9uzI/Yl9ZWEVGVumVs9/9SNAYExRby5TZNTLFc7Y2pqAEyOY70ZnGCR+gJNLth7YxA5yBAGq65hvVMC5g4K3ld4vmMAZ5Z3Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1730987805;
+	cv=none; b=NRnQa3YcubiKJPUGll3EECZRHx4TNTXIvulRX1wU8B6ZevM3mnW1athn+WxBUbonmf6sUK5+2Rkh0+4b6H7NkHy2UkGqD0MVzZpgpoMpF7M3K51TbZNb3N4fQr2YRO/pK54Ep6b1DVAATlARsLXGceaMEQAqhuJQVfmxNicWKMn19b5WYLin/z+wj+9gP6aTb3oRK4MFD/BoWFOaXMwHmJ84phPuEeQ6vIzdK89UaFLcDLXqrZMRxgQ6dRuWtPMnIV/K1Yd+fTv8WhWSYga43fkY2Rex1iDxqxU6UPUo5uL30Ni/iAMSIRLiPeDIqhsnsT2noxTWPedpoWkrdrZwCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1730987213; c=relaxed/relaxed;
-	bh=6UoKJQhxJqwGgnUzP9A/Tk+WRO+Phuf/yiWZCE/3pMw=;
-	h=Content-Type:Subject:From:In-Reply-To:Date:Cc:Message-Id:
-	 References:To:MIME-Version; b=WSWrN7rYZ872q6MY2rW2NB6YUC3WwxsIcK9qtD99yzZeCyqBhGdwuDPrR0wYA21XJP/BMMHbj1rG0D17W97KD3mypT3K1slatQFdgezUHliyDd4qdyo0/DQwVGc43EAR7AVv1leh8vB8UmiSpgToggThvEbpJYgY5NjqynS+zERVbBwLyIL8q4JkbQJynR7qLyvHE6TXKX+pSMEojwX8Fs+yuiKtvBPGYn96QngQdu/XtAfTNJpRZAiB+cPH1fxnaRPCbxKQIOXpVLIVgqxIUAcNXAvkIf1sS7ulRgzQ+r4LoXbzppGbGrDh9+oy3wKY9hHhZLLy+iXT1KnR5aPZ/g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=guvl25Y9; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=guvl25Y9;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xkjzc1Tk3z3bcB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 00:46:51 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7Cefdu018118;
-	Thu, 7 Nov 2024 13:46:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=6UoKJQ
-	hxJqwGgnUzP9A/Tk+WRO+Phuf/yiWZCE/3pMw=; b=guvl25Y9EU2ZQoMak7zHUi
-	UOeS6lRoP1j0OF6s5CWHXXzSmDW/jKrj/j+aCIHjrGUBEa7RdAS/5lixUK2K3J/J
-	4bvWBgCxB8c+QQFioPX6w9ZxOXuSOCVxbaDthTZL8CkKCQY0koFsn/OGlc/vsxU1
-	TiiUx8Diia5AEb9rhIx2ixpI5tBYmvKen6A/OfoS2seU4bfMPrZ+vcn/12JUTAVd
-	JRi4ZV2u/aZLSJHABuwaOCo0onBZhe9kE8Qw+VjTSVvSLJ9dtb5qxYYk/Q3P0zS7
-	eU14uUo5BE2kPITL9NqI1i2rIHiLIvaObDNeIATLvQPUaCIm8V3CGFCHTnMl/V8Q
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42rwrk895s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 13:46:40 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A7D4rpb019414;
-	Thu, 7 Nov 2024 13:46:39 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj86k7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 13:46:39 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A7DkcEN19399350
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Nov 2024 13:46:38 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3ACB35804B;
-	Thu,  7 Nov 2024 13:46:38 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4654158055;
-	Thu,  7 Nov 2024 13:46:36 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.254.137])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  7 Nov 2024 13:46:35 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Subject: Re: [PATCH v2 1/2] powerpc/fadump: allocate memory for additional
- parameters early
-From: Venkat <venkat88@linux.ibm.com>
-In-Reply-To: <20241107055817.489795-1-sourabhjain@linux.ibm.com>
-Date: Thu, 7 Nov 2024 19:15:56 +0530
-Cc: linuxppc-dev@lists.ozlabs.org, Hari Bathini <hbathini@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Message-Id: <885550F0-5EAF-4BAC-B2F2-8ABA31F40038@linux.ibm.com>
-References: <20241107055817.489795-1-sourabhjain@linux.ibm.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-X-Mailer: Apple Mail (2.3774.600.62)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: eNyWWuIj_Y5Lpjv5br2IVDo1D0WPldE5
-X-Proofpoint-GUID: eNyWWuIj_Y5Lpjv5br2IVDo1D0WPldE5
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	t=1730987805; c=relaxed/relaxed;
+	bh=8QQVkafZcCRpDQpWhpOVq7SfsMWPxQ+ZlRFAONCk4rM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PJT4fdq/WAujIvIu9fhwHJAmztSofg/eTWF3KtpinSPyNNQoSRpWyGNs8ejrGqzwYBxxNKG1slxV6JtFY2z7c9U2Tmqh01hbFp7z0Fjf55+JDzdE8rvKBFW8etVVMPdT2Czq71wNz9fmAgHyeuIfU9SEjkCYX2uk360McaRIFjgLpCt3Wlk49D/KqMYlyhl1TtJpCU1vRJQJdrB5imDwOD3CqQhk2G18wWZnz6ISQ8TJQPiPw3s8P8CPzv7/d0Wyv1IURY28yJrpK5j81pBq+RBsg6b3DiCa6TOu2RuBNroHAUotiVKFCLQag8swq19/PQNT5qSWEuwcdcrlIGzVPA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=leo.yan@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=leo.yan@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XkkBz4RSnz3bmQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 00:56:41 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D8323497;
+	Thu,  7 Nov 2024 05:56:38 -0800 (PST)
+Received: from localhost (e132581.arm.com [10.2.76.71])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97AB93F6A8;
+	Thu,  7 Nov 2024 05:56:08 -0800 (PST)
+Date: Thu, 7 Nov 2024 13:56:06 +0000
+From: Leo Yan <leo.yan@arm.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
+	James Clark <james.clark@linaro.org>, tmricht@linux.ibm.com,
+	acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+	linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	akanksha@linux.ibm.com, maddy@linux.ibm.com, kjain@linux.ibm.com,
+	disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
+Subject: Re: [PATCH] tools/perf/tests/expr: Make the system_tsc_freq test
+ only for intel
+Message-ID: <20241107135606.GA47850@e132581.arm.com>
+References: <20241022140156.98854-1-atrajeev@linux.vnet.ibm.com>
+ <ZyF2-XNUh38p_5Gg@google.com>
+ <B72F330F-2A56-41B0-ABED-FCA7DC9EE711@linux.vnet.ibm.com>
+ <CAP-5=fXCYURva6Q8ktRVmnf2QCcsr-E3fPn327k0JRCw_9fn3A@mail.gmail.com>
+ <BBF1A4DC-3BD9-4377-BE2F-CBEFE55F0497@linux.vnet.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,171 +57,67 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1011 impostorscore=0 adultscore=0 phishscore=0 suspectscore=0
- spamscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411070106
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BBF1A4DC-3BD9-4377-BE2F-CBEFE55F0497@linux.vnet.ibm.com>
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Applied the below patch to 6.12.0-rc6-next20241106 and issue is not seen. R=
-esults look good to me.
+Hi Athira,
 
-[root@ltcden8-lp5 ~]# uname -r
-6.12.0-rc6-next-20241106-00002-gf374fbb4ee1a
-[root@ltcden8-lp5 ~]# =20
+On Wed, Nov 06, 2024 at 03:04:57PM +0530, Athira Rajeev wrote:
 
-Please add below tag.
+[...]
 
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+> > Hi Athira,
+> >
+> > sorry for the breakage and thank you for the detailed explanation. As
+> > the code will run on AMD I think your change will break that - . It is
+> > probably safest to keep the ".. else { .." for this case but guard it
+> > in the ifdef.
+> >
+> 
+> Hi Ian
+> 
+> Thanks for your comments. Does the below change looks good ?
+> 
+> diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
+> index e3aa9d4fcf3a..f5b2d96bb59b 100644
+> --- a/tools/perf/tests/expr.c
+> +++ b/tools/perf/tests/expr.c
+> @@ -74,14 +74,12 @@ static int test__expr(struct test_suite *t __maybe_unused, int subtest __maybe_u
+>     double val, num_cpus_online, num_cpus, num_cores, num_dies, num_packages;
+>     int ret;
+>     struct expr_parse_ctx *ctx;
+> -    bool is_intel = false;
+>     char strcmp_cpuid_buf[256];
+>     struct perf_pmu *pmu = perf_pmus__find_core_pmu();
+>     char *cpuid = perf_pmu__getcpuid(pmu);
+>     char *escaped_cpuid1, *escaped_cpuid2;
+> 
+>     TEST_ASSERT_VAL("get_cpuid", cpuid);
+> -    is_intel = strstr(cpuid, "Intel") != NULL;
+> 
+>     TEST_ASSERT_EQUAL("ids_union", test_ids_union(), 0);
+> 
+> @@ -244,11 +242,13 @@ static int test__expr(struct test_suite *t __maybe_unused, int subtest __maybe_u
+>     if (num_dies) // Some platforms do not have CPU die support, for example s390
+>         TEST_ASSERT_VAL("#num_dies >= #num_packages", num_dies >= num_packages);
+> 
+> +#if defined(__i386__) && defined(__x86_64__)
+>     TEST_ASSERT_VAL("#system_tsc_freq", expr__parse(&val, ctx, "#system_tsc_freq") == 0);
+> -    if (is_intel)
+> +    if (strstr(cpuid, "Intel") != NULL)
+>         TEST_ASSERT_VAL("#system_tsc_freq > 0", val > 0);
+>     else
+>         TEST_ASSERT_VAL("#system_tsc_freq == 0", fpclassify(val) == FP_ZERO);
+> +#endif
+> 
+>     /*
+>      * Source count returns the number of events aggregating in a leader
 
+I confirmed the change above fixes the failure on Arm64.
 
-
-
-
-
-> On 7 Nov 2024, at 11:28=E2=80=AFAM, Sourabh Jain <sourabhjain@linux.ibm.c=
-om> wrote:
->=20
-> From: Hari Bathini <hbathini@linux.ibm.com>
->=20
-> Memory for passing additional parameters to fadump capture kernel
-> is allocated during subsys_initcall level, using memblock. But
-> as slab is already available by this time, allocation happens via
-> the buddy allocator. This may work for radix MMU but is likely to
-> fail in most cases for hash MMU as hash MMU needs this memory in
-> the first memory block for it to be accessible in real mode in the
-> capture kernel (second boot). So, allocate memory for additional
-> parameters area as soon as MMU mode is obvious.
->=20
-> Fixes: 683eab94da75 ("powerpc/fadump: setup additional parameters for dum=
-p capture kernel")
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-> Closes: https://lore.kernel.org/lkml/a70e4064-a040-447b-8556-1fd02f19383d=
-@linux.vnet.ibm.com/T/#u
-> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> ---
->=20
-> Changelog:
->=20
-> Since v1: https://lore.kernel.org/all/20241104083528.99520-1-sourabhjain@=
-linux.ibm.com/
->  - Drop extern keyword from fadump_setup_param_area function declaration
->  - Don't use __va() while resetting param memory area
->=20
-> ---
-> arch/powerpc/include/asm/fadump.h |  2 ++
-> arch/powerpc/kernel/fadump.c      | 15 ++++++++++-----
-> arch/powerpc/kernel/prom.c        |  3 +++
-> 3 files changed, 15 insertions(+), 5 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/fadump.h b/arch/powerpc/include/asm=
-/fadump.h
-> index ef40c9b6972a..7b3473e05273 100644
-> --- a/arch/powerpc/include/asm/fadump.h
-> +++ b/arch/powerpc/include/asm/fadump.h
-> @@ -19,6 +19,7 @@ extern int is_fadump_active(void);
-> extern int should_fadump_crash(void);
-> extern void crash_fadump(struct pt_regs *, const char *);
-> extern void fadump_cleanup(void);
-> +void fadump_setup_param_area(void);
-> extern void fadump_append_bootargs(void);
->=20
-> #else /* CONFIG_FA_DUMP */
-> @@ -26,6 +27,7 @@ static inline int is_fadump_active(void) { return 0; }
-> static inline int should_fadump_crash(void) { return 0; }
-> static inline void crash_fadump(struct pt_regs *regs, const char *str) { }
-> static inline void fadump_cleanup(void) { }
-> +static inline void fadump_setup_param_area(void) { }
-> static inline void fadump_append_bootargs(void) { }
-> #endif /* !CONFIG_FA_DUMP */
->=20
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index a612e7513a4f..3a2863307863 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -1586,6 +1586,12 @@ static void __init fadump_init_files(void)
-> return;
-> }
->=20
-> + if (fw_dump.param_area) {
-> + rc =3D sysfs_create_file(fadump_kobj, &bootargs_append_attr.attr);
-> + if (rc)
-> + pr_err("unable to create bootargs_append sysfs file (%d)\n", rc);
-> + }
-> +
-> debugfs_create_file("fadump_region", 0444, arch_debugfs_dir, NULL,
->    &fadump_region_fops);
->=20
-> @@ -1740,7 +1746,7 @@ static void __init fadump_process(void)
->  * Reserve memory to store additional parameters to be passed
->  * for fadump/capture kernel.
->  */
-> -static void __init fadump_setup_param_area(void)
-> +void __init fadump_setup_param_area(void)
-> {
-> phys_addr_t range_start, range_end;
->=20
-> @@ -1748,7 +1754,7 @@ static void __init fadump_setup_param_area(void)
-> return;
->=20
-> /* This memory can't be used by PFW or bootloader as it is shared across =
-kernels */
-> - if (radix_enabled()) {
-> + if (early_radix_enabled()) {
-> /*
-> * Anywhere in the upper half should be good enough as all memory
-> * is accessible in real mode.
-> @@ -1776,12 +1782,12 @@ static void __init fadump_setup_param_area(void)
->       COMMAND_LINE_SIZE,
->       range_start,
->       range_end);
-> - if (!fw_dump.param_area || sysfs_create_file(fadump_kobj, &bootargs_app=
-end_attr.attr)) {
-> + if (!fw_dump.param_area) {
-> pr_warn("WARNING: Could not setup area to pass additional parameters!\n");
-> return;
-> }
->=20
-> - memset(phys_to_virt(fw_dump.param_area), 0, COMMAND_LINE_SIZE);
-> + memset((void *)fw_dump.param_area, 0, COMMAND_LINE_SIZE);
-> }
->=20
-> /*
-> @@ -1807,7 +1813,6 @@ int __init setup_fadump(void)
-> }
-> /* Initialize the kernel dump memory structure and register with f/w */
-> else if (fw_dump.reserve_dump_area_size) {
-> - fadump_setup_param_area();
-> fw_dump.ops->fadump_init_mem_struct(&fw_dump);
-> register_fadump();
-> }
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 0be07ed407c7..47db1b1aef25 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -908,6 +908,9 @@ void __init early_init_devtree(void *params)
->=20
-> mmu_early_init_devtree();
->=20
-> + /* Setup param area for passing additional parameters to fadump capture=
- kernel. */
-> + fadump_setup_param_area();
-> +
-> #ifdef CONFIG_PPC_POWERNV
-> /* Scan and build the list of machine check recoverable ranges */
-> of_scan_flat_dt(early_init_dt_scan_recoverable_ranges, NULL);
-> --=20
-> 2.46.2
->=20
-
+Tested-by: Leo Yan <leo.yan@arm.com>
 
