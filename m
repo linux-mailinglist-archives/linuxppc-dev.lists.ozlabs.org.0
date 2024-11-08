@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-3035-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3036-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFB49C1882
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 09:55:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8229C1884
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 09:55:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XlCST1lTRz3bsZ;
-	Fri,  8 Nov 2024 19:55:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XlCSm0xWnz3bsY;
+	Fri,  8 Nov 2024 19:55:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731056105;
-	cv=none; b=VpPQVlPXpa5/POhOUboD1+6bfJkgTLwXAkwh3lbj+/m6ZuLM6fFkeuXdJOPYo66n0PnzGd/g3HLKDwlTgSDzlqDVAfSZRryBLJVIC7aoIqG+Wsa9QEwUnq8PiuEDSGtNI1+jwEyyqiFlQF55aaekz3J7rxo3SfAc4CWhT3M6qy9ByfbkIG3V0ceuk4y5Mx2ZuQj1+Wdb9Vxmc5kcN2ULyXnlMV70CfXO/VvDU+cqSXV9rvEQ54yXMHgmqECk3JjKn9zA0uITx5DnoLfpEfHVd9YSzF5BT/QgJXQgRYT/pHJTheR0bPJNinEQizctCPv0o8FyXj7T0Zgdj2UYy/MCNQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731056120;
+	cv=none; b=QPDg04jcRDTM+o5ev2cYj9+LJsRKJDLz2FuBcQpRTbX/wVFsAmXEm7GK6IuTZWo+HaYSu5qmA9LYbkfczhgm9NIq3Q8kMAKWysZunqaSfL9GPfRXsr4+1RRDSBm4Kk6NsJkYL0pOoqE9eCfDAW6EYcYEz9raef8fLqKaCGTGjgV7hQLrv2OYZ1ltL1pW7ZEiAdk+UPH8IWWQgha7uxHkEGagYRUpGCTfxgAf2YMBdC3THXtkebESAAvRK94JGGIEhq6mUILfGJabjuGrA+vXEvwqLs8SGG0ypBCa0KFsb0iCwfYlbR/QKzQRHwLh8rRVOMgubGRQZXRsY259EJqNaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731056105; c=relaxed/relaxed;
-	bh=gdBvhGgwT7J9BqqwWuvbIr961kRp60TDvUtegkTxbbI=;
+	t=1731056120; c=relaxed/relaxed;
+	bh=VtQJmD+1+BoGjJFdDmnjU3yAVzvMU4gkRfxJpUpmJVI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gJ/NVtWabxLn+kScIilTF71noX0BX1lWVpA4Q+pjfVyAsY9w/jIHBZmPpFngLFxwcQXz+r1P7vqdwjMsXwJrrB7tuBf9yKssFgFScU2T2GjpW/6mR35EMCo2w4BKGzCxEbZUr3HeJdfLBzY6VEp/Ok2HfHGP0DKzXiXTgzL/nnMPG4IKXhBm0/H/nf59hIq7pdv4qW23u7q4NzWdx31pJRiAwEW93pX/6huosfqXmuXMpawCo9RZRBn0G3jYAjT7h5SI2+ohPlxxqid2/fEe0xuinZye8oY4ZhXExh3vMdYcOLbaymhNkcx0sYsU0/3FZADiJDphtBDaLoW3juXBFw==
+	 MIME-Version; b=Mp2DnsBe3C1m5h1fbTFYs3GCCY4+V72r5IrhlTopd7FbzSgweNvuuytJd6wKQp80kZbTI2bcP2QiolsDgcGJIZ5urQ59/UqtsNOWvGQuEUt+fGoVoc/YmRBugYNpXZ/NXZYWHJzBDXdZ/TZVoNen9HNgR/ijxx0YRJDZ5p/v1gtbSbejOCFUpH2LVB2WQb8JzhLrGPI5bNbuHtHmd3DOPixhiu/yKM82Wvl9PFHIqtZHr9UStfwHZErYVcSbfS69qn4R+/RUw1JkHlisqWfNHG0otVn3WhW4nbfVg/UAIuh1kzDCYp9U/aRCRy4geIbRNVViiyEH5O7T4v3HoxfQKg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=yury.khrustalev@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=yury.khrustalev@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XlCSS32Ttz2yVD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 19:55:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XlCSl0w9Pz2yVD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 19:55:18 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B90D1007;
-	Fri,  8 Nov 2024 00:55:03 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF5DC1063;
+	Fri,  8 Nov 2024 00:55:17 -0800 (PST)
 Received: from udebian.localdomain (unknown [10.57.26.225])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E64A93F66E;
-	Fri,  8 Nov 2024 00:54:31 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C1BC93F66E;
+	Fri,  8 Nov 2024 00:54:45 -0800 (PST)
 From: Yury Khrustalev <yury.khrustalev@arm.com>
 To: linux-arch@vger.kernel.org
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -39,9 +39,9 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linuxppc-dev@lists.ozlabs.org,
 	nd@arm.com,
 	Yury Khrustalev <yury.khrustalev@arm.com>
-Subject: [PATCH v4 1/3] mm/pkey: Add PKEY_UNRESTRICTED macro
-Date: Fri,  8 Nov 2024 08:53:56 +0000
-Message-Id: <20241108085358.777687-2-yury.khrustalev@arm.com>
+Subject: [PATCH v4 2/3] selftests/mm: Use PKEY_UNRESTRICTED macro
+Date: Fri,  8 Nov 2024 08:53:57 +0000
+Message-Id: <20241108085358.777687-3-yury.khrustalev@arm.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241108085358.777687-1-yury.khrustalev@arm.com>
 References: <20241108085358.777687-1-yury.khrustalev@arm.com>
@@ -62,38 +62,105 @@ X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Memory protection keys (pkeys) uapi has two macros for pkeys restrictions:
-
- - PKEY_DISABLE_ACCESS 0x1
- - PKEY_DISABLE_WRITE  0x2
-
-with implicit literal value of 0x0 that means "unrestricted". Code that
-works with pkeys has to use this literal value when implying that a pkey
-imposes no restrictions. This may reduce readability because 0 can be
-written in various ways (e.g. 0x0 or 0) and also because 0 in the context
-of pkeys can be mistaken for "no permissions" (akin PROT_NONE) while it
-actually means "no restrictions". This is important because pkeys are
-oftentimes used near mprotect() that uses PROT_ macros.
-
-This patch adds PKEY_UNRESTRICTED macro defined as 0x0.
+Replace literal 0 with macro PKEY_UNRESTRICTED where pkey_*() functions
+are used in mm selftests for memory protection keys.
 
 Signed-off-by: Yury Khrustalev <yury.khrustalev@arm.com>
+Suggested-by: Joey Gouly <joey.gouly@arm.com>
 ---
- include/uapi/asm-generic/mman-common.h | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/mm/mseal_test.c            | 6 +++---
+ tools/testing/selftests/mm/pkey-helpers.h          | 3 ++-
+ tools/testing/selftests/mm/pkey_sighandler_tests.c | 4 ++--
+ tools/testing/selftests/mm/protection_keys.c       | 2 +-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/include/uapi/asm-generic/mman-common.h b/include/uapi/asm-generic/mman-common.h
-index 6ce1f1ceb432..ea40e27e6dea 100644
---- a/include/uapi/asm-generic/mman-common.h
-+++ b/include/uapi/asm-generic/mman-common.h
-@@ -82,6 +82,7 @@
- /* compatibility flags */
- #define MAP_FILE	0
+diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
+index 01675c412b2a..30ea37e8ecf8 100644
+--- a/tools/testing/selftests/mm/mseal_test.c
++++ b/tools/testing/selftests/mm/mseal_test.c
+@@ -218,7 +218,7 @@ bool seal_support(void)
+ bool pkey_supported(void)
+ {
+ #if defined(__i386__) || defined(__x86_64__) /* arch */
+-	int pkey = sys_pkey_alloc(0, 0);
++	int pkey = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
  
-+#define PKEY_UNRESTRICTED	0x0
- #define PKEY_DISABLE_ACCESS	0x1
- #define PKEY_DISABLE_WRITE	0x2
- #define PKEY_ACCESS_MASK	(PKEY_DISABLE_ACCESS |\
+ 	if (pkey > 0)
+ 		return true;
+@@ -1671,7 +1671,7 @@ static void test_seal_discard_ro_anon_on_pkey(bool seal)
+ 	setup_single_address_rw(size, &ptr);
+ 	FAIL_TEST_IF_FALSE(ptr != (void *)-1);
+ 
+-	pkey = sys_pkey_alloc(0, 0);
++	pkey = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
+ 	FAIL_TEST_IF_FALSE(pkey > 0);
+ 
+ 	ret = sys_mprotect_pkey((void *)ptr, size, PROT_READ | PROT_WRITE, pkey);
+@@ -1683,7 +1683,7 @@ static void test_seal_discard_ro_anon_on_pkey(bool seal)
+ 	}
+ 
+ 	/* sealing doesn't take effect if PKRU allow write. */
+-	set_pkey(pkey, 0);
++	set_pkey(pkey, PKEY_UNRESTRICTED);
+ 	ret = sys_madvise(ptr, size, MADV_DONTNEED);
+ 	FAIL_TEST_IF_FALSE(!ret);
+ 
+diff --git a/tools/testing/selftests/mm/pkey-helpers.h b/tools/testing/selftests/mm/pkey-helpers.h
+index 9ab6a3ee153b..e7fb0fcfcb05 100644
+--- a/tools/testing/selftests/mm/pkey-helpers.h
++++ b/tools/testing/selftests/mm/pkey-helpers.h
+@@ -12,6 +12,7 @@
+ #include <stdlib.h>
+ #include <ucontext.h>
+ #include <sys/mman.h>
++#include <linux/mman.h>
+ 
+ #include "../kselftest.h"
+ 
+@@ -217,7 +218,7 @@ static inline u32 *siginfo_get_pkey_ptr(siginfo_t *si)
+ static inline int kernel_has_pkeys(void)
+ {
+ 	/* try allocating a key and see if it succeeds */
+-	int ret = sys_pkey_alloc(0, 0);
++	int ret = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
+ 	if (ret <= 0) {
+ 		return 0;
+ 	}
+diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+index a8088b645ad6..76e85d2cf698 100644
+--- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
++++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
+@@ -260,7 +260,7 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
+ 	__write_pkey_reg(0x55555550);
+ 
+ 	/* Protect the new stack with MPK 1 */
+-	pkey = pkey_alloc(0, 0);
++	pkey = pkey_alloc(0, PKEY_UNRESTRICTED);
+ 	pkey_mprotect(stack, STACK_SIZE, PROT_READ | PROT_WRITE, pkey);
+ 
+ 	/* Set up alternate signal stack that will use the default MPK */
+@@ -421,7 +421,7 @@ static void test_pkru_sigreturn(void)
+ 	__write_pkey_reg(0x55555544);
+ 
+ 	/* Protect the stack with MPK 2 */
+-	pkey = pkey_alloc(0, 0);
++	pkey = pkey_alloc(0, PKEY_UNRESTRICTED);
+ 	pkey_mprotect(stack, STACK_SIZE, PROT_READ | PROT_WRITE, pkey);
+ 
+ 	/* Set up alternate signal stack that will use the default MPK */
+diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
+index 4990f7ab4cb7..cca7435a7bc5 100644
+--- a/tools/testing/selftests/mm/protection_keys.c
++++ b/tools/testing/selftests/mm/protection_keys.c
+@@ -491,7 +491,7 @@ int sys_pkey_alloc(unsigned long flags, unsigned long init_val)
+ int alloc_pkey(void)
+ {
+ 	int ret;
+-	unsigned long init_val = 0x0;
++	unsigned long init_val = PKEY_UNRESTRICTED;
+ 
+ 	dprintf1("%s()::%d, pkey_reg: 0x%016llx shadow: %016llx\n",
+ 			__func__, __LINE__, __read_pkey_reg(), shadow_pkey_reg);
 -- 
 2.39.5
 
