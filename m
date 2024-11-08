@@ -1,88 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-3042-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3043-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939989C1A52
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 11:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BC89C1A70
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 11:30:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XlFLJ1VJTz3bs2;
-	Fri,  8 Nov 2024 21:19:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XlFZB5965z3btP;
+	Fri,  8 Nov 2024 21:30:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731061192;
-	cv=none; b=afx05LceLSt9/yDT/F6u863fskiFGqLyP4vcg1K0jJzeoT4BUeaUmbWtM3Lvs3WxoGe1FpTsOtgtOJI1bpP39GFbjDcnT0ghyFqVgafhTj6SWq2+HFO4jmvclKs7t6KV2tSChshwP3VLT6AYd8FbStdPBIA3H6RIb7b0OVfMxOK7w8+z7vjeIdNHdgFvSTKYMCtlHvFOHVS/qKezJLSuBq+YcbNPVE9NanTH69i4oac5uQ6G4hciZyQxNpvZMCaaqedhoiG5LwgghZlxsKaRqwNacdJW8DR2DSAUSpi8herk6L/XqtTx3jBUATPCoapB4tHG7Ai6ZlokqrO9L1kOMg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731061810;
+	cv=none; b=e9j8yAtblKdHi6+R5ftr0VF1O5njVpt43nWMj02WWNjsPBrL6jys0/Uu6FpR+HepIJb4H7z1CLVZdNqzgKxKjOkWlz7FfAxu5Kr7TDjpL2AtVFEpGjHLXGoSQRmMEIY62VE1joMN3szSXo6qKOOlCjhF1arJBtLKMNE0r44x2k5OdySjfL0FcdKlWquxOKbUKeKEBHcuLpO7oVE3sXn0jjN01Ha9ETV2GpJmt+M125S9LPdhMQQXNcxmTzMedwTNXPp2CKfM+Tt2yPBZ8XrUZhPPXXYk63hqoQxxx0wg6dqhKKMWbGU55H8iNvVQVwjHKBFjvQzFmH0iQ/0Uh/HAiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731061192; c=relaxed/relaxed;
-	bh=ZmZbDuVNdsB6rfHoU1gG+RQPOpr0AllDOPKLUkMQ6As=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fSEvW4XDST+4Gc5/Q38MsiQr9H6WYu/HyjLMvfZTbQB0YY7XS8S2CyuAE53mV6I99UcfEkbnTQJ86yanF4wZ3wWpSR9YtaQN4ac/eXfFGj5WQFSrBeejsXh3lU1hIFu/zJNNpiFhJmnsvweeRdQYYugX5mbyh3rBoRtypNe8MeNOSfHvmlv7pfekwjYER3A2VY29oNLdTFp+As5xmJcWFLFfXMVXg7wKSAHRqIUTUrUJaQl6j4Mcfjiw2UXchriuFngViVyaaFXTQRn5OvE0UNK3dJlzuBoElgNzNq2jPK4NMsx/5X3tD7EPgY4tih3gavoufh335fjvM04oFiwOzA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DoUu8d+B; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DoUu8d+B;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1731061810; c=relaxed/relaxed;
+	bh=Jd3Tzh4DhNuNlp8FHczsMLB0F+lGlS+M9oMpTJZ41zY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f7ljtawayV/wYMf0BbkyrG/a3Gwi+UOkwRfjvgdQ/YtWEPVZ2gbk8GxzfX5Jnin3BYsFOZJSPGXVHtaA8NFARZqEEj2PE/d1TfVCfsPiBPsW9Md1A6p5CJJsnvcXrp1ebKBRbBooYCXYsiy4kxDemOMhl/h5UdEaaRAt2Up3w5t6D4JX3qyi+HKrM9uqYmK36n8CDm4SPl4Gx18hrShrMorlh4Q22ER1FzfE/htMUYIznmpOOh6tu8ol3c3Mi/ekZKRm8iToWKqlp1JS9ne0MZwGbcn+LTj0IwtYvqpFRHKmj2vjch3hzRFC7kQTJXtDGqtZ95CpjT8FY9tWVXJhXQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XlFLG6R0Tz300M
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 21:19:49 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A8AA6hp000754;
-	Fri, 8 Nov 2024 10:19:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=ZmZbDuVNdsB6rfHoU1gG+RQPOpr0AllDOPKLUkMQ6
-	As=; b=DoUu8d+BRiz15KfrTJoZeSrkzQdbJxWQLHHYP8ka+1Ah8+75/AWtCiif5
-	e1Eb1+ExOHRhSL24TvQnvOTL5uav4BZigRBak+JWiXf+gvece5oTo8wCd8jP7gv9
-	GHOm/igmtKbZPQvhKHWuGsFODfyXRM4CWzKRStaGHppOhe+vhdDfy4xKKbxZDxiV
-	CK4wjuCCXXY5uxTDjd/8pnnmud6OGB+u3AzQYDP/KUTgHPfjJHTidedl1PaSs3QB
-	JKCoahRG5BhPztB7OglErSYjMfrjWUyNg7O74FhmvasIfE8YsxjdesXlsxEOe3qa
-	7WiNl+5sU6QROl7Nf4QbSkZn9CnDA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42sgn7r14b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Nov 2024 10:19:21 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4A8AJL25020337;
-	Fri, 8 Nov 2024 10:19:21 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42sgn7r149-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Nov 2024 10:19:21 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A87F8P3005873;
-	Fri, 8 Nov 2024 10:19:20 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 42p0mj9xcg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 Nov 2024 10:19:20 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4A8AJG1E46989742
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 Nov 2024 10:19:16 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A724A2006E;
-	Fri,  8 Nov 2024 10:19:16 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F4272006A;
-	Fri,  8 Nov 2024 10:19:14 +0000 (GMT)
-Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.ibm.com.com (unknown [9.124.214.182])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  8 Nov 2024 10:19:14 +0000 (GMT)
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: mpe@ellerman.id.au
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, maddy@linux.ibm.com,
-        christophe.leroy@csgroup.eu, peterz@infradead.org,
-        bigeasy@linutronix.de, ankur.a.arora@oracle.com, sshegde@linux.ibm.com
-Subject: [PATCH] powerpc: Add preempt lazy support
-Date: Fri,  8 Nov 2024 15:48:53 +0530
-Message-ID: <20241108101853.277808-1-sshegde@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jw__p7IwxvXTVHuRhr1Q_mu4oDDaLeSy
-X-Proofpoint-GUID: pW8ybG_FRUvz7ZIX3PhoKQDM7q88Gsvf
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XlFZ842kNz3bcW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 21:30:07 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4XlFZ20sT5z9sSR;
+	Fri,  8 Nov 2024 11:30:02 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id v0IgesT6yvwB; Fri,  8 Nov 2024 11:30:02 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4XlFZ14LVSz9rvV;
+	Fri,  8 Nov 2024 11:30:01 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5B07E8B781;
+	Fri,  8 Nov 2024 11:30:01 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id ff_n68pslpCE; Fri,  8 Nov 2024 11:30:01 +0100 (CET)
+Received: from [192.168.232.253] (unknown [192.168.232.253])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D7FE48B77A;
+	Fri,  8 Nov 2024 11:30:00 +0100 (CET)
+Message-ID: <2010cc7a-7f49-4c5b-b684-8e08ff8d17ed@csgroup.eu>
+Date: Fri, 8 Nov 2024 11:30:00 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,111 +59,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=319 spamscore=0 phishscore=0 malwarescore=0 mlxscore=0
- bulkscore=0 impostorscore=0 clxscore=1011 priorityscore=1501
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2411080082
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: drivers/net/ethernet/freescale/ucc_geth.c:2454:64: sparse:
+ sparse: incorrect type in argument 1 (different address spaces)
+To: Linus Walleij <linus.walleij@linaro.org>,
+ kernel test robot <lkp@intel.com>,
+ "linuxppc-dev@lists.ozlabs.org list" <linuxppc-dev@lists.ozlabs.org>,
+ netdev <netdev@vger.kernel.org>
+Cc: Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>,
+ oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <202410301531.7Vr9UkCn-lkp@intel.com>
+ <CACRpkdbW5kheaWPzKip9ucEwK2uv+Cmf5SwT1necfa3Ynct6Ag@mail.gmail.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <CACRpkdbW5kheaWPzKip9ucEwK2uv+Cmf5SwT1necfa3Ynct6Ag@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Define preempt lazy bit for Powerpc. Use bit 9 which is free and within
-16 bit range of NEED_RESCHED, so compiler can issue single andi. 
 
-Since Powerpc doesn't use the generic entry/exit, add lazy check at exit
-to user. CONFIG_PREEMPTION is defined for lazy/full/rt so use it for 
-return to kernel. 
 
-Ran a few benchmarks and db workload on Power10. Performance is close to
-preempt=none/voluntary. It is possible that some patterns would
-differ in lazy[2]. More details of preempt lazy is here [1]
+Le 08/11/2024 à 09:18, Linus Walleij a écrit :
+> On Wed, Oct 30, 2024 at 8:05 AM kernel test robot <lkp@intel.com> wrote:
+> 
+>> tree:   https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C5a1ff6cef1f642fba00a08dcffce0903%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638666507603442752%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=2dgpku3%2BPjovwZxpedYowAAB%2BR%2FeyxOc0Ys3kE0KK6E%3D&reserved=0 master
+>> head:   c1e939a21eb111a6d6067b38e8e04b8809b64c4e
+>> commit: b28d1ccf921a4333be14017d82066386d419e638 powerpc/io: Expect immutable pointer in virt_to_phys() prototype
+> 
+> Ugh Stanislav do you have ideas around this one?
+> 
+>>     drivers/net/ethernet/freescale/ucc_geth.c:244:21: sparse:     got restricted __be32 [noderef] __iomem *
+>>     drivers/net/ethernet/freescale/ucc_geth.c:405:22: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned short volatile [noderef] [usertype] __iomem *addr @@     got restricted __be16 [noderef] [usertype] __iomem * @@
+> 
+> They all look the same, it's from this:
+> 
+> static void set_mac_addr(__be16 __iomem *reg, u8 *mac)
+> {
+>      out_be16(&reg[0], ((u16)mac[5] << 8) | mac[4]);
+>      out_be16(&reg[1], ((u16)mac[3] << 8) | mac[2]);
+>      out_be16(&reg[2], ((u16)mac[1] << 8) | mac[0]);
+> }
+> 
+> Is it simply that we need a paranthesis extra around the thing casted
+> to (u16) else it becomes u32?
 
-Since Powerpc system can have large core count and large memory, 
-preempt lazy is going to be helpful in avoiding soft lockup issues. 
+Not at all. The one you point here are:
 
-[1]: https://lore.kernel.org/lkml/20241007074609.447006177@infradead.org/
-[2]: https://lore.kernel.org/all/1a973dda-c79e-4d95-935b-e4b93eb077b8@linux.ibm.com/
+drivers/net/ethernet/freescale/ucc_geth.c:405:22: warning: incorrect 
+type in argument 1 (different base types)
+drivers/net/ethernet/freescale/ucc_geth.c:405:22:    expected unsigned 
+short volatile [noderef] [usertype] __iomem *addr
+drivers/net/ethernet/freescale/ucc_geth.c:405:22:    got restricted 
+__be16 [noderef] [usertype] __iomem *
+drivers/net/ethernet/freescale/ucc_geth.c:406:22: warning: incorrect 
+type in argument 1 (different base types)
+drivers/net/ethernet/freescale/ucc_geth.c:406:22:    expected unsigned 
+short volatile [noderef] [usertype] __iomem *addr
+drivers/net/ethernet/freescale/ucc_geth.c:406:22:    got restricted 
+__be16 [noderef] [usertype] __iomem *
+drivers/net/ethernet/freescale/ucc_geth.c:407:22: warning: incorrect 
+type in argument 1 (different base types)
+drivers/net/ethernet/freescale/ucc_geth.c:407:22:    expected unsigned 
+short volatile [noderef] [usertype] __iomem *addr
+drivers/net/ethernet/freescale/ucc_geth.c:407:22:    got restricted 
+__be16 [noderef] [usertype] __iomem *
+drivers/net/ethernet/freescale/ucc_geth.c:449:23: warning: incorrect 
+type in argument 1 (different base types)
+drivers/net/ethernet/freescale/ucc_geth.c:449:23:    expected restricted 
+__be16 [noderef] [usertype] __iomem *reg
+drivers/net/ethernet/freescale/ucc_geth.c:449:23:    got unsigned short 
+[noderef] __iomem *
 
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
----
- arch/powerpc/Kconfig                   | 1 +
- arch/powerpc/include/asm/thread_info.h | 9 ++++++---
- arch/powerpc/kernel/interrupt.c        | 4 ++--
- 3 files changed, 9 insertions(+), 5 deletions(-)
+The problem is the __be16 in the function prototype.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 8094a01974cc..2f625aecf94b 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -145,6 +145,7 @@ config PPC
- 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_PHYS_TO_DMA
- 	select ARCH_HAS_PMEM_API
-+	select ARCH_HAS_PREEMPT_LAZY
- 	select ARCH_HAS_PTE_DEVMAP		if PPC_BOOK3S_64
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index 6ebca2996f18..2785c7462ebf 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -103,6 +103,7 @@ void arch_setup_new_exec(void);
- #define TIF_PATCH_PENDING	6	/* pending live patching update */
- #define TIF_SYSCALL_AUDIT	7	/* syscall auditing active */
- #define TIF_SINGLESTEP		8	/* singlestepping active */
-+#define TIF_NEED_RESCHED_LAZY	9       /* Scheduler driven lazy preemption */
- #define TIF_SECCOMP		10	/* secure computing */
- #define TIF_RESTOREALL		11	/* Restore all regs (implies NOERROR) */
- #define TIF_NOERROR		12	/* Force successful syscall return */
-@@ -122,6 +123,7 @@ void arch_setup_new_exec(void);
- #define _TIF_SYSCALL_TRACE	(1<<TIF_SYSCALL_TRACE)
- #define _TIF_SIGPENDING		(1<<TIF_SIGPENDING)
- #define _TIF_NEED_RESCHED	(1<<TIF_NEED_RESCHED)
-+#define _TIF_NEED_RESCHED_LAZY	(1<<TIF_NEED_RESCHED_LAZY)
- #define _TIF_NOTIFY_SIGNAL	(1<<TIF_NOTIFY_SIGNAL)
- #define _TIF_POLLING_NRFLAG	(1<<TIF_POLLING_NRFLAG)
- #define _TIF_32BIT		(1<<TIF_32BIT)
-@@ -142,9 +144,10 @@ void arch_setup_new_exec(void);
- 				 _TIF_SYSCALL_EMU)
- 
- #define _TIF_USER_WORK_MASK	(_TIF_SIGPENDING | _TIF_NEED_RESCHED | \
--				 _TIF_NOTIFY_RESUME | _TIF_UPROBE | \
--				 _TIF_RESTORE_TM | _TIF_PATCH_PENDING | \
--				 _TIF_NOTIFY_SIGNAL)
-+				 _TIF_NEED_RESCHED_LAZY | _TIF_NOTIFY_RESUME | \
-+				 _TIF_UPROBE | _TIF_RESTORE_TM | \
-+				 _TIF_PATCH_PENDING | _TIF_NOTIFY_SIGNAL)
-+
- #define _TIF_PERSYSCALL_MASK	(_TIF_RESTOREALL|_TIF_NOERROR)
- 
- /* Bits in local_flags */
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index af62ec974b97..8f4acc55407b 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -185,7 +185,7 @@ interrupt_exit_user_prepare_main(unsigned long ret, struct pt_regs *regs)
- 	ti_flags = read_thread_flags();
- 	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
- 		local_irq_enable();
--		if (ti_flags & _TIF_NEED_RESCHED) {
-+		if (ti_flags & (_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY)) {
- 			schedule();
- 		} else {
- 			/*
-@@ -396,7 +396,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
- 		/* Returning to a kernel context with local irqs enabled. */
- 		WARN_ON_ONCE(!(regs->msr & MSR_EE));
- again:
--		if (IS_ENABLED(CONFIG_PREEMPT)) {
-+		if (IS_ENABLED(CONFIG_PREEMPTION)) {
- 			/* Return to preemptible kernel context */
- 			if (unlikely(read_thread_flags() & _TIF_NEED_RESCHED)) {
- 				if (preempt_count() == 0)
--- 
-2.43.5
+	set_mac_addr(&p_82xx_addr_filt->taddr.h, p_enet_addr);
+
+p_82xx_addr_filt->taddr.h is a u16
+and out_be16() expects a u16*
+
+So the following fixes the above warnings:
+
+diff --git a/drivers/net/ethernet/freescale/ucc_geth.c 
+b/drivers/net/ethernet/freescale/ucc_geth.c
+index ab421243a419..bbfc289dd73c 100644
+--- a/drivers/net/ethernet/freescale/ucc_geth.c
++++ b/drivers/net/ethernet/freescale/ucc_geth.c
+@@ -400,7 +400,7 @@ static void put_enet_addr_container(struct 
+enet_addr_container *enet_addr_cont)
+  	kfree(enet_addr_cont);
+  }
+
+-static void set_mac_addr(__be16 __iomem *reg, u8 *mac)
++static void set_mac_addr(u16 __iomem *reg, u8 *mac)
+  {
+  	out_be16(&reg[0], ((u16)mac[5] << 8) | mac[4]);
+  	out_be16(&reg[1], ((u16)mac[3] << 8) | mac[2]);
+
+
+
+For the other ones, most of them are because out_beXX() expects uXX* not 
+__beXX *.
+
+It looks like the warnings go away if you replace out_be32() by 
+iowrite32be(), which has been possible since commit 894fa235eb4c 
+("powerpc: inline iomap accessors") (out_beXX/in_beXX should anyway not 
+be used outside arch/powerpc/):
+
+diff --git a/drivers/net/ethernet/freescale/ucc_geth.c 
+b/drivers/net/ethernet/freescale/ucc_geth.c
+index ab421243a419..625b58b3efc8 100644
+--- a/drivers/net/ethernet/freescale/ucc_geth.c
++++ b/drivers/net/ethernet/freescale/ucc_geth.c
+@@ -241,12 +241,12 @@ static struct sk_buff *get_new_skb(struct 
+ucc_geth_private *ugeth,
+  		    (((unsigned)skb->data) & (UCC_GETH_RX_DATA_BUF_ALIGNMENT -
+  					      1)));
+
+-	out_be32(&((struct qe_bd __iomem *)bd)->buf,
++	iowrite32be(
+  		      dma_map_single(ugeth->dev,
+  				     skb->data,
+  				     ugeth->ug_info->uf_info.max_rx_buf_length +
+  				     UCC_GETH_RX_DATA_BUF_ALIGNMENT,
+-				     DMA_FROM_DEVICE));
++				     DMA_FROM_DEVICE), &((struct qe_bd __iomem *)bd)->buf);
+
+  	out_be32((u32 __iomem *)bd,
+  			(R_E | R_I | (in_be32((u32 __iomem*)bd) & R_W)));
+
+
+Christophe
 
