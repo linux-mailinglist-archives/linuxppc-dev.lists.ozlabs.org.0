@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-3060-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3061-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B46E9C2373
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 18:39:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE91F9C2545
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 20:01:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XlR5M1lB4z3bxR;
-	Sat,  9 Nov 2024 04:39:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XlSwB6mz7z30MR;
+	Sat,  9 Nov 2024 06:01:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731087559;
-	cv=none; b=hqLGtQqwFiszMQLItKj94od+N48f7o+snM2MkOAcDHjTXYrXyBI3pNHTQMB0+Vv2UeQ+yIaZobLsioHlsqqfodp5gYTd7wpYjPThSXQv+5WlPVzUfrgcB9GqTBU9igj+kQJTluArsFz0imN7T8qL35ke86ggAdAX8X2cLfRqLWLpHQJtvYz/SiMc/i/7YRo7xud4e0/T/yzi5+USSldvGrPah+ZjqZeQ+xOMNdHjX6ogE+2OiwJye2B3tefVmj9oBsjlS+vwCoSi5ClBQlNRM2J3UAJyj96MS9dEOQpI8UiC2NGsiPWZAtLNY11HmuCWNzKTtTT9aG4fmk0hjqGS4A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1149"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731092490;
+	cv=none; b=ZBJux0Qk0WVKmgNHoRihxKaAAWn8ADsRT+az9XjfC6HFVx0ZcPHSKg709e5h4VJZsjR8+YZAy4RWwF1+HdonL8j2wBYi0I5o85UmhFb4idkun5DdgYiR6op3rmHmLUQoRwqvuKz1WodBf0x/MNOJvZBXp9W6siUQZhFY720FE+HrBG49lStCPxuFO5Mc8ElFI9OYyAHlFoWvZ0rAclOM++TctrlYNuoXU9bkj2kkBauDbjLJ9bKE5BZp6SRW6FBXrG/lUY9V5/kaW3wv6VkLmjfUOPQOJ8y6RTFFcpIdBPHjtrHkhNWT8fVvKoOpBprsgy1AY97H2fTVuHVMSiDdUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731087559; c=relaxed/relaxed;
-	bh=aUe1G1e+4g8CjnccdCT9XgUXClyZVMCuANEQyD+t/Js=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Nz+fMHF8IAainSTqe8aNa1TTTYGreJsEtIHpTbBGHJKyKUxnd1l0+WD7gIjQ5+UQlvPnxUB3zQ8R84J+qMreUwXTa43oqI5pd/Tlvx74K0V9RkohHipe3gfdBXnXwGL6yp40lmyu8wdoph1veG3s5u96RY9Cw/ZmZWJdAnbedHt2wQ9ybEKuEtFbOpL5Q4/bg3LI4u4GMP+dx0l3K7WvDEOmaBsrYfMkBxlqPMAcHyhq3x3IIUrZkk47xWFhVLa0c/IbPVgws6mofuznFx6PFAwkLiIJvR/jXI6j9xYcvSctT1qonA0gWt998BIIzaDoECDctgmeVCHPF6/x7tedAA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WQv3My95; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1731092490; c=relaxed/relaxed;
+	bh=X/YH5u+uVD0X+IYthPhg6GmXA/jaE5JARCEDgbJjUV8=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=ITMPr/0lB0KjOR2REyGMJ1jkJecdWJMQ7z47uNXLTnxUv1Ex2W+niC6UDPAgnFtQyWIAW2bWEA+XBqtOUoRISjcv6D/WKBjB5Um3tuflVqRgo2ISPWacjblt5vdsWkvhsQJHgKMCnFqQCeq3fp4DZwJIz01RoTLHs+1F5csz8rDuP/nMaaQ72z+BMCJFVWnkNnh75nle8ZjUKnIkY9Ykt0tJmDpg39MLyNv9fqXzYPrwH2CRhyjTcT/N0qdGFm5I4UNubW3ssgw5Ch9dN2phPkVV1TiUkYXtc5RuNvpM/GFZ4aeQSFHTXGtkE1CjEXc1kFYGLz7x7hBs69ydyuLCVg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LK+X/3Um; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3_v8uzwskdlyykhpkjhaseockkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--coltonlewis.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--coltonlewis.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WQv3My95;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=LK+X/3Um;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--coltonlewis.bounces.google.com (client-ip=2607:f8b0:4864:20::1149; helo=mail-yw1-x1149.google.com; envelope-from=3_v8uzwskdlyykhpkjhaseockkcha.ykihejqtlly-zarheopo.kvhwxo.knc@flex--coltonlewis.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XlR5K44Nwz3bkc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2024 04:39:17 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 166495C5A5F;
-	Fri,  8 Nov 2024 17:38:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2B3C4CECD;
-	Fri,  8 Nov 2024 17:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731087553;
-	bh=FBA1UHsrJLyViXGSn/Ke5BMq01F452+XsuBz/VNu1Po=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=WQv3My95Sd0PTGhU1Dlr13/6F7dZND5Roq900EdNeZAsSR/XG5cQiIZixflfRIwVp
-	 O4uLVlEOgUJCg8TRilF7ImkGKwpWxVxOW0l8BPrsGFKwIyky/A6AVqYZ3ygxC0HAUI
-	 170MHV93ACZ/FNhsMNKYLFqjXOOGpwxh9Lv76iJ4Yvre1FR2XAOy8zVBRjsCN00H77
-	 YBYCALlh3zZblcuNaRNE44baUhAKIsOSOfJKrUHxIi3GDoTUop2fjgFB/yPzCzCOnA
-	 cmnNe2Kc7F/kHlhhXcHoebIVBCG76fpwemQC7ojph0dPAIKvZS6qb4aiDQ0je6u0yG
-	 rSMFTku54tqNQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE4E3809A80;
-	Fri,  8 Nov 2024 17:39:23 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.12-6 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <375850de-155a-40cb-819b-fe21733e3cb0@linux.ibm.com>
-References: <375850de-155a-40cb-819b-fe21733e3cb0@linux.ibm.com>
-X-PR-Tracked-List-Id: <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <375850de-155a-40cb-819b-fe21733e3cb0@linux.ibm.com>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.12-6
-X-PR-Tracked-Commit-Id: a373830f96db288a3eb43a8692b6bcd0bd88dfe1
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 51b47860ad8058ae54e4789b5f9b253fd555d2e9
-Message-Id: <173108756275.2704280.5311647402414328585.pr-tracker-bot@kernel.org>
-Date: Fri, 08 Nov 2024 17:39:22 +0000
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Gautam Menghani <gautam@linux.ibm.com>
-X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XlSw81YKVz2ywR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2024 06:01:26 +1100 (AEDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-6ea6aa3b68bso46485507b3.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Nov 2024 11:01:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1731092477; x=1731697277; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=X/YH5u+uVD0X+IYthPhg6GmXA/jaE5JARCEDgbJjUV8=;
+        b=LK+X/3Um5Cvqb+splmHtxUQ7deDcDo3f+qZS6MIZyoTufj9KzzH+aWYtEHZ1fY24lB
+         B9JHx9t3mD0zQ9/Gei4cXZJunKefFItwAmc1PoZfGs0EAxMq0uvEMR0aAg4rH0DlizCE
+         arVR2nlt2CacphBqCph+oJDGn+s5VUM6+grbewV/bIbCSsGEx7S5XDvEcb5Sgeb0b8sy
+         onPycpZ0Ll/XjlaTXgmuCz+GScknZoJcyGKFCdZUyggJZTslXlL1YoJkskVStiPYKNjY
+         W5TE999TX5+QCnSGz1NQtkhhAjqBnGRxk+s5hzDuDM+1H6Y29joIfeg5Z1p8tBXl7PJ3
+         nSXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731092477; x=1731697277;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X/YH5u+uVD0X+IYthPhg6GmXA/jaE5JARCEDgbJjUV8=;
+        b=IFYi3fRRegEpDirBZ2Pkxj06anIUKn6J9oDfqkz6iVBga9eXAB75eQTnQc2BzjE12L
+         RoAyDwcEZW0aQLFJ9iruqHgDFqjJRrMqYA0AZ8Z1nz147lVuXlhILxm2XqkNG39fi8TS
+         pr/JmIQ2sLFXOmQB+cr/C661yvQCviRoDVHgP+dnCFcWHOkql5BZO3pVgC6SVCe4/Pd5
+         kBw/uywEmsMgXCwBRrnm8vTJLoxFzltAXuMKg9KhEDiONV1PqZoWJxV4OnZEqxNjEx6R
+         v641RGwBVC+1NuqJMvzvonkI/JxG40xEN78VrXdGUI7KwHO2ZasA7A2LtKAock52IaVu
+         Il8A==
+X-Forwarded-Encrypted: i=1; AJvYcCW0M9YcuZKu3vUB4dKdFsTCfsPXVb0CIDDOaJqTBI2u7IFHc2xPZczpQ+4xjzjUFaHVP/2Q3hHe3uQ9z/E=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yyt5J/XjcEmMUD7VwMdASPW4kDoimqw4v99EB01E5KvdfDUPlXN
+	jhf4pJjKnJlmwG7d+QZmcyON7OJvae9BJe9DZciFT8gJKHM1eZlms0YluwQlnZoS+3JmUkVWAlo
+	IG4PORqucQdPOOAMO94BnHw==
+X-Google-Smtp-Source: AGHT+IHf5E46yE8Goi3JQ3NCwqhgizTTCCoxt5IIbUtqVWxYQ8qv+MmQFEFlUtd8c2orQuarK4c0d4RFcTxIc3XLxg==
+X-Received: from coltonlewis-kvm.c.googlers.com ([fda3:e722:ac3:cc00:11b:3898:ac11:fa18])
+ (user=coltonlewis job=sendgmr) by 2002:a05:690c:25c3:b0:6e3:d670:f62a with
+ SMTP id 00721157ae682-6eadde333e0mr258367b3.3.1731092477590; Fri, 08 Nov 2024
+ 11:01:17 -0800 (PST)
+Date: Fri, 08 Nov 2024 19:01:16 +0000
+In-Reply-To: <20241108153411.GF38786@noisy.programming.kicks-ass.net> (message
+ from Peter Zijlstra on Fri, 8 Nov 2024 16:34:11 +0100)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,17 +75,128 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+Mime-Version: 1.0
+Message-ID: <gsntbjypft37.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v7 4/5] x86: perf: Refactor misc flag assignments
+From: Colton Lewis <coltonlewis@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org, oliver.upton@linux.dev, seanjc@google.com, 
+	mingo@redhat.com, acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com, 
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com, 
+	adrian.hunter@intel.com, kan.liang@linux.intel.com, will@kernel.org, 
+	linux@armlinux.org.uk, catalin.marinas@arm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@linutronix.de, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The pull request you sent on Fri, 8 Nov 2024 10:54:41 +0530:
+Peter Zijlstra <peterz@infradead.org> writes:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.12-6
+> On Thu, Nov 07, 2024 at 07:03:35PM +0000, Colton Lewis wrote:
+>> Break the assignment logic for misc flags into their own respective
+>> functions to reduce the complexity of the nested logic.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/51b47860ad8058ae54e4789b5f9b253fd555d2e9
+>> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+>> Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+>> ---
+>>   arch/x86/events/core.c            | 32 +++++++++++++++++++++++--------
+>>   arch/x86/include/asm/perf_event.h |  2 ++
+>>   2 files changed, 26 insertions(+), 8 deletions(-)
 
-Thank you!
+>> diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+>> index d19e939f3998..9fdc5fa22c66 100644
+>> --- a/arch/x86/events/core.c
+>> +++ b/arch/x86/events/core.c
+>> @@ -3011,16 +3011,35 @@ unsigned long  
+>> perf_arch_instruction_pointer(struct pt_regs *regs)
+>>   	return regs->ip + code_segment_base(regs);
+>>   }
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+>> +static unsigned long common_misc_flags(struct pt_regs *regs)
+>> +{
+>> +	if (regs->flags & PERF_EFLAGS_EXACT)
+>> +		return PERF_RECORD_MISC_EXACT_IP;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
+>> +{
+>> +	unsigned long guest_state = perf_guest_state();
+>> +	unsigned long flags = common_misc_flags(regs);
+
+> This is double common_misc and makes no sense
+
+I'm confused what you mean. Are you referring to starting with
+common_misc_flags in both perf_arch_misc_flags and
+perf_arch_guest_misc_flags so possibly the common_msic_flags are set
+twice?
+
+That seems like a good thing that common flags are set wherever they
+apply. You can't guarantee where perf_arch_guest_misc_flags may be
+called in the future.
+>> +
+>> +	if (!(guest_state & PERF_GUEST_ACTIVE))
+>> +		return flags;
+>> +
+>> +	if (guest_state & PERF_GUEST_USER)
+>> +		return flags & PERF_RECORD_MISC_GUEST_USER;
+>> +	else
+>> +		return flags & PERF_RECORD_MISC_GUEST_KERNEL;
+
+> And this is just broken garbage, right?
+
+>> +}
+
+> Did you mean to write:
+
+> unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
+> {
+> 	unsigned long guest_state = perf_guest_state();
+> 	unsigned long flags = 0;
+
+> 	if (guest_state & PERF_GUEST_ACTIVE) {
+> 		if (guest_state & PERF_GUEST_USER)
+> 			flags |= PERF_RECORD_MISC_GUEST_USER;
+> 		else
+> 			flags |= PERF_RECORD_MISC_GUEST_KERNEL;
+> 	}
+
+> 	return flags;
+> }
+
+Ok, my mistake was using & instead of |, but the branches are
+functionally the same.
+
+I'll use something closer to your suggestion.
+
+>>   unsigned long perf_arch_misc_flags(struct pt_regs *regs)
+>>   {
+>>   	unsigned int guest_state = perf_guest_state();
+>> -	int misc = 0;
+>> +	unsigned long misc = common_misc_flags(regs);
+
+> Because here you do the common thing..
+
+
+>>   	if (guest_state) {
+>> -		if (guest_state & PERF_GUEST_USER)
+>> -			misc |= PERF_RECORD_MISC_GUEST_USER;
+>> -		else
+>> -			misc |= PERF_RECORD_MISC_GUEST_KERNEL;
+>> +		misc |= perf_arch_guest_misc_flags(regs);
+
+> And here you mix in the guest things.
+
+>>   	} else {
+>>   		if (user_mode(regs))
+>>   			misc |= PERF_RECORD_MISC_USER;
 
