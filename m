@@ -1,70 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-3063-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3064-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2EE89C2594
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 20:32:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA3B9C27B4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 23:45:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XlTbj4PlYz3bsJ;
-	Sat,  9 Nov 2024 06:32:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XlYt82wDJz2y8d;
+	Sat,  9 Nov 2024 09:45:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731094337;
-	cv=none; b=F4G4Vk/Cx+EvBH8ZdEB3fyS5pAeiSWQDzlvy3+AWLRmYDAqPUI6+O2T9Uxqw9g/1Yh45d7eLKRKo6HklbLV94DAA5lV5NcM3yhX4iG4q3yIAtStr/ablI1/k3IGHV5PY3eoT0zgSrNQK8IxjsO7PqqsW5VTfzkwz2oP6azDWVfvFZOY0F7As5ahyPlBAg3qzgNRRA1vQdk6BwszCck6b7tzg8x4GrQ96qcPExELgez5cnHE6i1etglJVc4sKYjYn6LOGjWGq4NTim9ISPPUfd86aqSaSqJ29HgXJ1mKMTPRreseCbv7XFu7ucOlnApSseSFsQeGZnk43oTfg1D3fEQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=220.197.31.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731079930;
+	cv=none; b=MHX17rmCPnENP7BgSkgO1aTm9K0i1cnvSTNxaXqMxhcryS+TG5TpBg7e5yetQ3aORCYlwyJ/N1VOcSf7WCBAI4o6+qQTYvMKTR3x64unJRMLYIDiRi2FKZuivNOKtJWXVmRGxy5viX+vIMJ7nP0LjoYwLGvrG3Otal0VRC2mmEW5gYhrKdmOP9sdXcoFtvTFgG2+n+u78tdHroeh40MlH7er/Fn9VMGjG/euGiQN3c2GgNSIG4jODXIR9xR+Um7ve+46911vPerRMuzc8aOppoPrSA28WKpOKRStZ6HWh82wxY/zFQr36mz1I9rkjkh+IniW+Mngd20GgRTyDqe57g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731094337; c=relaxed/relaxed;
-	bh=qFRzNI5DfFiu+JYAcGStf7GLEGzYk/QY4lQcntQCySg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ODPPaywFz31nySb4QEv9Q4wPpk5sBQODmgIPRIn2/91dHCkO95SwNsI76Bbw3j37KBI46eFKIOkiJCav7+EGhz2HnvKgny3gQG78u04YCAyTVG1lbBmQ2LwyWu1m5m+giX5LIj8cPyGzwd1pvL/bYmvSEyhtzaMwvuseOwadTqyCClxvt+YEz+gfwSKPaZon4xGCDKtt4Oi0/V+bL3bVaBSAVKQ2VbUeg8t7C6AnmC7c4zsciKdINHm5p+vcEQqg5y7tK9FHzO/rHiRMhFRay0YFYnnFLYA3lr+dCrWO7m1/QMKqgJ4Jk4DKWwYV1PTwAQ+Ze0Ywoidi1TlPsOm4dQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=lGL3ULaR; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+	t=1731079930; c=relaxed/relaxed;
+	bh=YBes01HIGxCY9uAMUwOSqshjVdaMRIIeY82NB1cajGY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=R4GvWszAVvI/U+rowtH28xKP7Wyrp055O0N4tG3/WGg5Nj9pNqo2cNhWDJ4eiCPfS/vsSug5aslEM/9RgBLOLBGJv8UfvERfAi93KXYSgmjdRaou4CvX+7056GukZ3fRBiM9WmJleBTkKJYJhg013MDAEM6n03vfCSWRogrwGC4P3eKy26TwrUhCUSfOcfp9WeJgSq/viM6U6d1y1hUd7DIPbndkW1fr9gFYiJ/7i6QmT6YWGdE2nZlUsE1dVBhx4RI7KlH5uxzK77VmmSbsEFYTzAOr5xHiWG0PFCHpev1RkixtcHNZF6CWoRZii1N4P4gR4YcrsAldyKM6F1iYJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=fail (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=HaUjtcWH reason="signature verification failed"; dkim-atps=neutral; spf=pass (client-ip=220.197.31.5; helo=m16.mail.163.com; envelope-from=00107082@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=lGL3ULaR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=HaUjtcWH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XlTbh3ygmz3brZ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2024 06:32:16 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qFRzNI5DfFiu+JYAcGStf7GLEGzYk/QY4lQcntQCySg=; b=lGL3ULaRWdu2Akw/Y19it6Q3jM
-	KWv9cmjXIpe6/WiQu6YsBZMXv1uaS0zwkhcynAZrHTwSFJOVBPXXo4c1X29Xy6tueMv5xE/uyvVqz
-	UUSk1AybdlMyGzga//U4/q11RBKsGYyVkcwtgTxpd2ugk+q6M/ObL7CiLXI9GFqWJcBf8KpUFVOor
-	JJisCsf4ptpseER9AR99Dkmj1EgzlqpFgyC0qMHZ4omO+cZsK9k4iXYv0egBdueiNadO6BtpC9Aej
-	W6Gz7heyDXFtfAz87U4uAKFlERlD81b6510jyZ8GCPYKZtiq96hg42aJgYQILimrMa8cGlF8yhANA
-	J3K6+ybA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1t9UiC-00000009EL1-1dYM;
-	Fri, 08 Nov 2024 19:32:05 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 9556130049D; Fri,  8 Nov 2024 20:32:04 +0100 (CET)
-Date: Fri, 8 Nov 2024 20:32:04 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: kvm@vger.kernel.org, oliver.upton@linux.dev, seanjc@google.com,
-	mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
-	mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, will@kernel.org, linux@armlinux.org.uk,
-	catalin.marinas@arm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, naveen@kernel.org, hca@linux.ibm.com,
-	gor@linux.ibm.com, agordeev@linux.ibm.com,
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@linutronix.de,
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v7 4/5] x86: perf: Refactor misc flag assignments
-Message-ID: <20241108193204.GC38972@noisy.programming.kicks-ass.net>
-References: <20241108153411.GF38786@noisy.programming.kicks-ass.net>
- <gsntbjypft37.fsf@coltonlewis-kvm.c.googlers.com>
- <20241108192043.GA22801@noisy.programming.kicks-ass.net>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.197.31.5; helo=m16.mail.163.com; envelope-from=00107082@163.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 112 seconds by postgrey-1.37 at boromir; Sat, 09 Nov 2024 02:32:06 AEDT
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XlNGZ5wBSz3bsS
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2024 02:32:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=iQMcJa4BmFPVqKmXobn4cIhRx4UhLAzJDxklpcxlLI8=; b=H
+	aUjtcWHDFt1bKqSXkqJGs1dRc5kfURcXD/snEVL02VfzHVmJDJvgfdNFSH25sFJS
+	e/QmXTeDXcuNeFVAyRIvkZptmIV0qg/a2iU0Q4ogCM+qEHNRN03W89MpCkKtr4sE
+	EYlKvW6V2O6HdedRW0CAf+PWbdmw0x1Jl4G7mFEXQs=
+Received: from 00107082$163.com ( [111.35.191.191] ) by
+ ajax-webmail-wmsvr-40-148 (Coremail) ; Fri, 8 Nov 2024 23:28:00 +0800 (CST)
+X-Originating-IP: [111.35.191.191]
+Date: Fri, 8 Nov 2024 23:28:00 +0800 (CST)
+From: "David Wang" <00107082@163.com>
+To: "Thomas Gleixner" <tglx@linutronix.de>
+Cc: richard.henderson@linaro.org, linux@armlinux.org.uk, catalin.marinas@arm.com, 
+	will@kernel.org, guoren@kernel.org, chenhuacai@kernel.org, 
+	kernel@xen0n.name, James.Bottomley@HansenPartnership.com, 
+	deller@gmx.de, mpe@ellerman.id.au, paul.walmsley@sifive.com, 
+	ysato@users.sourceforge.jp, dalias@libc.org, 
+	glaubitz@physik.fu-berlin.de, davem@davemloft.net, 
+	andreas@gaisler.com, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, chris@zankel.net, 
+	jcmvbkbc@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH] kernel/irq/proc: performance: replace seq_printf with
+ seq_put_decimal_ull_width
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
+ Copyright (c) 2002-2024 www.mailtech.cn 163com
+In-Reply-To: <87r07lol9y.ffs@tglx>
+References: <20241103080552.4787-1-00107082@163.com> <87r07lol9y.ffs@tglx>
+X-NTES-SC: AL_Qu2YA/yctk4j5iSfbOkZnEYQheY4XMKyuPkg1YJXOp80uSbP/wc5cnBJEkHY4sOvLTmSvxeqUTR3+8t1RrNYQqbBTxgILkv4stMHL//JBWTB
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,93 +74,41 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241108192043.GA22801@noisy.programming.kicks-ass.net>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.0
+Message-ID: <3319cd6e.b980.1930c63b1e5.Coremail.00107082@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:lCgvCgD3fwoBLi5nnLAiAA--.7283W
+X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiqQKRqmcuF0eQdwACss
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-Spam-Status: No, score=0.5 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Nov 08, 2024 at 08:20:44PM +0100, Peter Zijlstra wrote:
-
-> Isn't the below more or less what you want?
-> 
-> static unsigned long misc_flags(struct pt_regs *regs)
-> {
-> 	unsigned long flags = 0;
-> 
-> 	if (regs->flags & PERF_EFLAGS_EXACT)
-> 		flags |= PERF_RECORD_MISC_EXACT_IP;
-> 
-> 	return flags;
-> }
-> 
-> static unsigned long native_flags(struct pt_regs *regs)
-> {
-> 	unsigned long flags = 0;
-> 
-> 	if (user_mode(regs))
-> 		flags |= PERF_RECORD_MISC_USER;
-> 	else
-> 		flags |= PERF_RECORD_MISC_KERNEL;
-> 
-> 	return flags;
-> }
-> 
-> static unsigned long guest_flags(struct pt_regs *regs)
-> {
-> 	unsigned long guest_state = perf_guest_state();
-> 	unsigned long flags = 0;
-> 
-> 	if (guest_state & PERF_GUEST_ACTIVE) {
-> 		if (guest_state & PERF_GUEST_USER)
-> 			flags |= PERF_RECORD_MISC_GUEST_USER;
-> 		else
-> 			flags |= PERF_RECORD_MISC_GUEST_KERNEL;
-> 	}
-> 
-> 	return flags;
-> }
-> 
-> unsigned long perf_arch_guest_misc_flags(struct pt_regs *regs)
-> {
-> 	unsigned long flags;
-> 
-> 	flags = misc_flags(regs);
-> 	flags |= guest_flags(regs);
-> 
-> 	return flags;
-> }
-> 
-> unsigned long perf_arch_misc_flags(struct pt_regs *regs)
-> {
-> 	unsigned long flags;
-> 	unsigned long guest;
-> 
-> 	flags = misc_flags(regs);
-> 	guest = guest_flags(regs);
-> 	if (guest)
-> 		flags |= guest;
-> 	else
-> 		flags |= native_flags(regs);
-> 
-> 	return flags;
-> }
-
-This last can be written more concise:
-
-unsigned long perf_arch_misc_flags(struct pt_regs *regs)
-{
-	unsigned long flags;
-
-	flags = guest_flags(regs);
-	if (!flags)
-		flags |= native_flags(regs);
-
-	flgs |= misc_flags(regs);
-
-	return flags;
-}
-
+SGksICAKCkF0IDIwMjQtMTEtMDggMjI6MjU6MTMsICJUaG9tYXMgR2xlaXhuZXIiIDx0Z2x4QGxp
+bnV0cm9uaXguZGU+IHdyb3RlOgo+RGF2aWQhCj4KPk9uIFN1biwgTm92IDAzIDIwMjQgYXQgMTY6
+MDUsIERhdmlkIFdhbmcgd3JvdGU6Cj4KPiRTdWJqZWN0OiBbUEFUQ0hdIGtlcm5lbC9pcnEvcHJv
+YzogcGVyZm9ybWFuY2U6IC4uLgo+Cj5UaGF0J3Mgbm90IGEgdmFsaWQgc3Vic3lzdGVtIHByZWZp
+eC4KCmNvcHkgdGhhdH4KCj4KPj4gc2VxX3ByaW50ZiBpcyBjb3N0eSwgd2hlbiBzdHJlc3MgcmVh
+ZGluZyAvcHJvYy9pbnRlcnJ1cHRzLCBwcm9maWxpbmcgaW5kaWNhdGVzCj4+IHNlcV9wcmludGYg
+dGFrZXMgYWJvdXQgfjQ3JSBvZiBzaG93X2ludGVycnVwdHMgc2FtcGxlczoKPgo+QWxzbyBwbGVh
+c2UgZm9sbG93IHRoZSBkb2N1bWVudGF0aW9uIGZvciBkZW5vdGluZyBmdW5jdGlvbnMgaW4gY2hh
+bmdlCj5sb2dzOgo+Cj5odHRwczovL3d3dy5rZXJuZWwub3JnL2RvYy9odG1sL2xhdGVzdC9wcm9j
+ZXNzL21haW50YWluZXItdGlwLmh0bWwjZnVuY3Rpb24tcmVmZXJlbmNlcy1pbi1jaGFuZ2Vsb2dz
+Cj4KCmNvcHkgdGhhdH4KCj4+ICBhcmNoL2FscGhhL2tlcm5lbC9pcnEuYyAgICAgfCAgIDggKy0t
+Cj4+ICBhcmNoL2FybS9rZXJuZWwvc21wLmMgICAgICAgfCAgIDQgKy0KPj4gIGFyY2gvYXJtNjQv
+a2VybmVsL3NtcC5jICAgICB8ICAgMyArLQo+PiAgYXJjaC9jc2t5L2tlcm5lbC9zbXAuYyAgICAg
+IHwgICA0ICstCj4+ICBhcmNoL2xvb25nYXJjaC9rZXJuZWwvc21wLmMgfCAgIDIgKy0KPj4gIGFy
+Y2gvcGFyaXNjL2tlcm5lbC9pcnEuYyAgICB8ICAzNCArKysrKystLS0tLS0KPj4gIGFyY2gvcG93
+ZXJwYy9rZXJuZWwvaXJxLmMgICB8ICA0NCArKysrKysrKy0tLS0tLS0tCj4+ICBhcmNoL3Jpc2N2
+L2tlcm5lbC9zbXAuYyAgICAgfCAgIDMgKy0KPj4gIGFyY2gvc2gva2VybmVsL2lycS5jICAgICAg
+ICB8ICAgNCArLQo+PiAgYXJjaC9zcGFyYy9rZXJuZWwvaXJxXzMyLmMgIHwgIDEyICsrLS0tCj4+
+ICBhcmNoL3NwYXJjL2tlcm5lbC9pcnFfNjQuYyAgfCAgIDQgKy0KPj4gIGFyY2gveDg2L2tlcm5l
+bC9pcnEuYyAgICAgICB8IDEwMCArKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0K
+Pj4gIGFyY2gveHRlbnNhL2tlcm5lbC9pcnEuYyAgICB8ICAgMiArLQo+PiAgYXJjaC94dGVuc2Ev
+a2VybmVsL3NtcC5jICAgIHwgICA0ICstCj4+ICBrZXJuZWwvaXJxL3Byb2MuYyAgICAgICAgICAg
+fCAgIDYgKystCj4KPlRoZXJlIGlzIG5vIGRlcGVuZGVuY3kgb24gdGhlc2UgY2hhbmdlcy4gU28g
+cGxlYXNlIHNwbGl0IHRoZW0gdXAgaW50bwo+c2VwZXJhdGUgcGF0Y2hlcyBmb3IgY29yZSBhbmQg
+dGhlIGluZGl2aWR1YWwgYXJjaGl0ZWN0dXJlcy5hbgoKVGhhbmtzIGZvciBhbGwgdGhlIHJldmll
+dywgSSB3aWxsIG1ha2UgYSBwYXRjaHNldCBmb3IgdGhpcy4KPgo+VGhhbmtzLAo+Cj4gICAgICAg
+IHRnbHgKCgpEYXZpZA==
 
