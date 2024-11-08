@@ -1,67 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-3064-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3065-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA3B9C27B4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 23:45:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCC19C27BE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 23:47:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XlYt82wDJz2y8d;
-	Sat,  9 Nov 2024 09:45:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XlYx82ygNz2yN1;
+	Sat,  9 Nov 2024 09:47:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=220.197.31.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731079930;
-	cv=none; b=MHX17rmCPnENP7BgSkgO1aTm9K0i1cnvSTNxaXqMxhcryS+TG5TpBg7e5yetQ3aORCYlwyJ/N1VOcSf7WCBAI4o6+qQTYvMKTR3x64unJRMLYIDiRi2FKZuivNOKtJWXVmRGxy5viX+vIMJ7nP0LjoYwLGvrG3Otal0VRC2mmEW5gYhrKdmOP9sdXcoFtvTFgG2+n+u78tdHroeh40MlH7er/Fn9VMGjG/euGiQN3c2GgNSIG4jODXIR9xR+Um7ve+46911vPerRMuzc8aOppoPrSA28WKpOKRStZ6HWh82wxY/zFQr36mz1I9rkjkh+IniW+Mngd20GgRTyDqe57g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=220.197.31.3
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731083058;
+	cv=none; b=lEWvIqEavJstmwFzEFcTj26wk1rzfLzL5Q2RwtVzGw7n25bzTkp06MZVyeF+ZkdxMVAF8+Ta6/zTdv6tIfXbys6X5ovri56vYGI0G2CQLO7aczaFFfmavB+F2Bu90wbTKBukDG6Zl/oVCaiJ2s/ww/2/iF46hkK4hYcn0WNhlpIVFOTE2pscj/LQLtvBr8u3YsULYP9mrWzzrhgb4NNfaWnPq0szFW0tEi+G1RAL8ZboAMpUH9dhz5mgxFcOsFoIlk3/ZLmIbZzn79/2S1pI8CymAoV3Rxei8hyFqEi6N4rQUfkzoSA4iwKeemHhLc3n/zXG/8qu0uzsvQDrSlZrnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731079930; c=relaxed/relaxed;
-	bh=YBes01HIGxCY9uAMUwOSqshjVdaMRIIeY82NB1cajGY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=R4GvWszAVvI/U+rowtH28xKP7Wyrp055O0N4tG3/WGg5Nj9pNqo2cNhWDJ4eiCPfS/vsSug5aslEM/9RgBLOLBGJv8UfvERfAi93KXYSgmjdRaou4CvX+7056GukZ3fRBiM9WmJleBTkKJYJhg013MDAEM6n03vfCSWRogrwGC4P3eKy26TwrUhCUSfOcfp9WeJgSq/viM6U6d1y1hUd7DIPbndkW1fr9gFYiJ/7i6QmT6YWGdE2nZlUsE1dVBhx4RI7KlH5uxzK77VmmSbsEFYTzAOr5xHiWG0PFCHpev1RkixtcHNZF6CWoRZii1N4P4gR4YcrsAldyKM6F1iYJg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=fail (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=HaUjtcWH reason="signature verification failed"; dkim-atps=neutral; spf=pass (client-ip=220.197.31.5; helo=m16.mail.163.com; envelope-from=00107082@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
+	t=1731083058; c=relaxed/relaxed;
+	bh=zMKR9m10pMGgPA2owiS0OIe8hUhnak/8WG7bNyYEFK4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ANjgt97w8BXF8rj6HJqP1ytDVFHcs/aijl8RacSiERAgXLX4oRvDH3qC3gPhwNKmh/1hhr3jaW6OVlV+i7oUB+CsCTC5uo+KJPRnl2NdsOjiucQ9S+jWzsU+pKIoUStdmcBrCF3gxA17koHZNXKVf+mQehd34uzO/aYj6qGiyL5a+77fLTu56D6cTOONXaxhBrECH2YD0+jhSZAucl+hPh9V0PPSFDKplRbig8xO6LX/yMBJcVgCerPLCQ643oOKStLvuY84GyiKOjcDChc/qA8NKmBW/aJPdHLt3/+q0uuW9u/AOILeViUDVS8NpXRVChLVXN863gvr8Se8X/L34g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=oJd+CIvE; dkim-atps=neutral; spf=pass (client-ip=220.197.31.3; helo=m16.mail.163.com; envelope-from=00107082@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=HaUjtcWH;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=oJd+CIvE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.197.31.5; helo=m16.mail.163.com; envelope-from=00107082@163.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 112 seconds by postgrey-1.37 at boromir; Sat, 09 Nov 2024 02:32:06 AEDT
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XlNGZ5wBSz3bsS
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2024 02:32:03 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.197.31.3; helo=m16.mail.163.com; envelope-from=00107082@163.com; receiver=lists.ozlabs.org)
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XlPQl1FN3z3bxR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Nov 2024 03:24:10 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=iQMcJa4BmFPVqKmXobn4cIhRx4UhLAzJDxklpcxlLI8=; b=H
-	aUjtcWHDFt1bKqSXkqJGs1dRc5kfURcXD/snEVL02VfzHVmJDJvgfdNFSH25sFJS
-	e/QmXTeDXcuNeFVAyRIvkZptmIV0qg/a2iU0Q4ogCM+qEHNRN03W89MpCkKtr4sE
-	EYlKvW6V2O6HdedRW0CAf+PWbdmw0x1Jl4G7mFEXQs=
-Received: from 00107082$163.com ( [111.35.191.191] ) by
- ajax-webmail-wmsvr-40-148 (Coremail) ; Fri, 8 Nov 2024 23:28:00 +0800 (CST)
-X-Originating-IP: [111.35.191.191]
-Date: Fri, 8 Nov 2024 23:28:00 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Thomas Gleixner" <tglx@linutronix.de>
-Cc: richard.henderson@linaro.org, linux@armlinux.org.uk, catalin.marinas@arm.com, 
-	will@kernel.org, guoren@kernel.org, chenhuacai@kernel.org, 
-	kernel@xen0n.name, James.Bottomley@HansenPartnership.com, 
-	deller@gmx.de, mpe@ellerman.id.au, paul.walmsley@sifive.com, 
-	ysato@users.sourceforge.jp, dalias@libc.org, 
-	glaubitz@physik.fu-berlin.de, davem@davemloft.net, 
-	andreas@gaisler.com, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, chris@zankel.net, 
-	jcmvbkbc@gmail.com, linux-kernel@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org
-Subject: Re: [PATCH] kernel/irq/proc: performance: replace seq_printf with
- seq_put_decimal_ull_width
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2024 www.mailtech.cn 163com
-In-Reply-To: <87r07lol9y.ffs@tglx>
-References: <20241103080552.4787-1-00107082@163.com> <87r07lol9y.ffs@tglx>
-X-NTES-SC: AL_Qu2YA/yctk4j5iSfbOkZnEYQheY4XMKyuPkg1YJXOp80uSbP/wc5cnBJEkHY4sOvLTmSvxeqUTR3+8t1RrNYQqbBTxgILkv4stMHL//JBWTB
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=zMKR9
+	m10pMGgPA2owiS0OIe8hUhnak/8WG7bNyYEFK4=; b=oJd+CIvEa/55hazHPJ3DY
+	bcNQIR+/A1KqOjtfxtKFv0tLatgzA7+qNCVH/4TIsNGuyYZIBp4rZufhzmBJjETc
+	Nq7S/ItEWl0KXjpwO8WwalkGKo5JIAJ/UGsjkKp63P6MfsmDxbbjRz6asRvxq0l1
+	xrq+KSjV+RyPCOk42rzaH8=
+Received: from localhost.localdomain (unknown [111.35.191.191])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgCHpzEAOy5nKkoCBg--.1049S4;
+	Sat, 09 Nov 2024 00:23:34 +0800 (CST)
+From: David Wang <00107082@163.com>
+To: mpe@ellerman.id.au
+Cc: linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	David Wang <00107082@163.com>
+Subject: [PATCH 11/13] powerpc/irq: use seq_put_decimal_ull_width() for decimal values
+Date: Sat,  9 Nov 2024 00:23:27 +0800
+Message-Id: <20241108162327.9887-1-00107082@163.com>
+X-Mailer: git-send-email 2.39.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,41 +54,124 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Message-ID: <3319cd6e.b980.1930c63b1e5.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:lCgvCgD3fwoBLi5nnLAiAA--.7283W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiqQKRqmcuF0eQdwACss
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Spam-Status: No, score=0.5 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgCHpzEAOy5nKkoCBg--.1049S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxur47Xw18WFykAF1ktFWrKrg_yoWrCF4rp3
+	ySkF17Xw4fZr1Yq3W3AanFvwn8KFn0ya4Ygwn3Gr4rAa1DurWkWFnIvF47XFW7Gry2qrsa
+	9r9agr18Kr98Gw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUjD7cUUUUU=
+X-Originating-IP: [111.35.191.191]
+X-CM-SenderInfo: qqqrilqqysqiywtou0bp/xtbB0hmRqmcuN-cU9QAGse
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-SGksICAKCkF0IDIwMjQtMTEtMDggMjI6MjU6MTMsICJUaG9tYXMgR2xlaXhuZXIiIDx0Z2x4QGxp
-bnV0cm9uaXguZGU+IHdyb3RlOgo+RGF2aWQhCj4KPk9uIFN1biwgTm92IDAzIDIwMjQgYXQgMTY6
-MDUsIERhdmlkIFdhbmcgd3JvdGU6Cj4KPiRTdWJqZWN0OiBbUEFUQ0hdIGtlcm5lbC9pcnEvcHJv
-YzogcGVyZm9ybWFuY2U6IC4uLgo+Cj5UaGF0J3Mgbm90IGEgdmFsaWQgc3Vic3lzdGVtIHByZWZp
-eC4KCmNvcHkgdGhhdH4KCj4KPj4gc2VxX3ByaW50ZiBpcyBjb3N0eSwgd2hlbiBzdHJlc3MgcmVh
-ZGluZyAvcHJvYy9pbnRlcnJ1cHRzLCBwcm9maWxpbmcgaW5kaWNhdGVzCj4+IHNlcV9wcmludGYg
-dGFrZXMgYWJvdXQgfjQ3JSBvZiBzaG93X2ludGVycnVwdHMgc2FtcGxlczoKPgo+QWxzbyBwbGVh
-c2UgZm9sbG93IHRoZSBkb2N1bWVudGF0aW9uIGZvciBkZW5vdGluZyBmdW5jdGlvbnMgaW4gY2hh
-bmdlCj5sb2dzOgo+Cj5odHRwczovL3d3dy5rZXJuZWwub3JnL2RvYy9odG1sL2xhdGVzdC9wcm9j
-ZXNzL21haW50YWluZXItdGlwLmh0bWwjZnVuY3Rpb24tcmVmZXJlbmNlcy1pbi1jaGFuZ2Vsb2dz
-Cj4KCmNvcHkgdGhhdH4KCj4+ICBhcmNoL2FscGhhL2tlcm5lbC9pcnEuYyAgICAgfCAgIDggKy0t
-Cj4+ICBhcmNoL2FybS9rZXJuZWwvc21wLmMgICAgICAgfCAgIDQgKy0KPj4gIGFyY2gvYXJtNjQv
-a2VybmVsL3NtcC5jICAgICB8ICAgMyArLQo+PiAgYXJjaC9jc2t5L2tlcm5lbC9zbXAuYyAgICAg
-IHwgICA0ICstCj4+ICBhcmNoL2xvb25nYXJjaC9rZXJuZWwvc21wLmMgfCAgIDIgKy0KPj4gIGFy
-Y2gvcGFyaXNjL2tlcm5lbC9pcnEuYyAgICB8ICAzNCArKysrKystLS0tLS0KPj4gIGFyY2gvcG93
-ZXJwYy9rZXJuZWwvaXJxLmMgICB8ICA0NCArKysrKysrKy0tLS0tLS0tCj4+ICBhcmNoL3Jpc2N2
-L2tlcm5lbC9zbXAuYyAgICAgfCAgIDMgKy0KPj4gIGFyY2gvc2gva2VybmVsL2lycS5jICAgICAg
-ICB8ICAgNCArLQo+PiAgYXJjaC9zcGFyYy9rZXJuZWwvaXJxXzMyLmMgIHwgIDEyICsrLS0tCj4+
-ICBhcmNoL3NwYXJjL2tlcm5lbC9pcnFfNjQuYyAgfCAgIDQgKy0KPj4gIGFyY2gveDg2L2tlcm5l
-bC9pcnEuYyAgICAgICB8IDEwMCArKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0K
-Pj4gIGFyY2gveHRlbnNhL2tlcm5lbC9pcnEuYyAgICB8ICAgMiArLQo+PiAgYXJjaC94dGVuc2Ev
-a2VybmVsL3NtcC5jICAgIHwgICA0ICstCj4+ICBrZXJuZWwvaXJxL3Byb2MuYyAgICAgICAgICAg
-fCAgIDYgKystCj4KPlRoZXJlIGlzIG5vIGRlcGVuZGVuY3kgb24gdGhlc2UgY2hhbmdlcy4gU28g
-cGxlYXNlIHNwbGl0IHRoZW0gdXAgaW50bwo+c2VwZXJhdGUgcGF0Y2hlcyBmb3IgY29yZSBhbmQg
-dGhlIGluZGl2aWR1YWwgYXJjaGl0ZWN0dXJlcy5hbgoKVGhhbmtzIGZvciBhbGwgdGhlIHJldmll
-dywgSSB3aWxsIG1ha2UgYSBwYXRjaHNldCBmb3IgdGhpcy4KPgo+VGhhbmtzLAo+Cj4gICAgICAg
-IHRnbHgKCgpEYXZpZA==
+Performance improvement for reading /proc/interrupts on arch powerpc
+
+Signed-off-by: David Wang <00107082@163.com>
+---
+ arch/powerpc/kernel/irq.c | 44 +++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
+
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 2e1600a8bbbb..a0e8b998c9b5 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -89,69 +89,69 @@ int arch_show_interrupts(struct seq_file *p, int prec)
+ 
+ #if defined(CONFIG_PPC32) && defined(CONFIG_TAU_INT)
+ 	if (tau_initialized) {
+-		seq_printf(p, "%*s: ", prec, "TAU");
++		seq_printf(p, "%*s:", prec, "TAU");
+ 		for_each_online_cpu(j)
+-			seq_printf(p, "%10u ", tau_interrupts(j));
++			seq_put_decimal_ull_width(p, " ", tau_interrupts(j), 10);
+ 		seq_puts(p, "  PowerPC             Thermal Assist (cpu temp)\n");
+ 	}
+ #endif /* CONFIG_PPC32 && CONFIG_TAU_INT */
+ 
+-	seq_printf(p, "%*s: ", prec, "LOC");
++	seq_printf(p, "%*s:", prec, "LOC");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", per_cpu(irq_stat, j).timer_irqs_event);
++		seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, j).timer_irqs_event, 10);
+         seq_printf(p, "  Local timer interrupts for timer event device\n");
+ 
+-	seq_printf(p, "%*s: ", prec, "BCT");
++	seq_printf(p, "%*s:", prec, "BCT");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", per_cpu(irq_stat, j).broadcast_irqs_event);
++		seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, j).broadcast_irqs_event, 10);
+ 	seq_printf(p, "  Broadcast timer interrupts for timer event device\n");
+ 
+-	seq_printf(p, "%*s: ", prec, "LOC");
++	seq_printf(p, "%*s:", prec, "LOC");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", per_cpu(irq_stat, j).timer_irqs_others);
++		seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, j).timer_irqs_others, 10);
+         seq_printf(p, "  Local timer interrupts for others\n");
+ 
+-	seq_printf(p, "%*s: ", prec, "SPU");
++	seq_printf(p, "%*s:", prec, "SPU");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", per_cpu(irq_stat, j).spurious_irqs);
++		seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, j).spurious_irqs, 10);
+ 	seq_printf(p, "  Spurious interrupts\n");
+ 
+-	seq_printf(p, "%*s: ", prec, "PMI");
++	seq_printf(p, "%*s:", prec, "PMI");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", per_cpu(irq_stat, j).pmu_irqs);
++		seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, j).pmu_irqs, 10);
+ 	seq_printf(p, "  Performance monitoring interrupts\n");
+ 
+-	seq_printf(p, "%*s: ", prec, "MCE");
++	seq_printf(p, "%*s:", prec, "MCE");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", per_cpu(irq_stat, j).mce_exceptions);
++		seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, j).mce_exceptions, 10);
+ 	seq_printf(p, "  Machine check exceptions\n");
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	if (cpu_has_feature(CPU_FTR_HVMODE)) {
+-		seq_printf(p, "%*s: ", prec, "HMI");
++		seq_printf(p, "%*s:", prec, "HMI");
+ 		for_each_online_cpu(j)
+-			seq_printf(p, "%10u ", paca_ptrs[j]->hmi_irqs);
++			seq_put_decimal_ull_width(p, " ", paca_ptrs[j]->hmi_irqs, 10);
+ 		seq_printf(p, "  Hypervisor Maintenance Interrupts\n");
+ 	}
+ #endif
+ 
+-	seq_printf(p, "%*s: ", prec, "NMI");
++	seq_printf(p, "%*s:", prec, "NMI");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", per_cpu(irq_stat, j).sreset_irqs);
++		seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, j).sreset_irqs, 10);
+ 	seq_printf(p, "  System Reset interrupts\n");
+ 
+ #ifdef CONFIG_PPC_WATCHDOG
+-	seq_printf(p, "%*s: ", prec, "WDG");
++	seq_printf(p, "%*s:", prec, "WDG");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", per_cpu(irq_stat, j).soft_nmi_irqs);
++		seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, j).soft_nmi_irqs, 10);
+ 	seq_printf(p, "  Watchdog soft-NMI interrupts\n");
+ #endif
+ 
+ #ifdef CONFIG_PPC_DOORBELL
+ 	if (cpu_has_feature(CPU_FTR_DBELL)) {
+-		seq_printf(p, "%*s: ", prec, "DBL");
++		seq_printf(p, "%*s:", prec, "DBL");
+ 		for_each_online_cpu(j)
+-			seq_printf(p, "%10u ", per_cpu(irq_stat, j).doorbell_irqs);
++			seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, j).doorbell_irqs, 10);
+ 		seq_printf(p, "  Doorbell interrupts\n");
+ 	}
+ #endif
+-- 
+2.39.2
+
 
