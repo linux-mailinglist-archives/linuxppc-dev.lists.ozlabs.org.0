@@ -1,52 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-3046-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3047-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF4B9C1C06
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 12:17:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C659C1C6E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Nov 2024 12:49:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XlGcs6KmJz3btp;
-	Fri,  8 Nov 2024 22:17:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XlHKl0dDTz3bv8;
+	Fri,  8 Nov 2024 22:49:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731064653;
-	cv=none; b=EqTUH0HXAi/4+m3w1O66MUbMhSHmlLKE69kw+qVoK1ePNB3zz6X2y8v3Zw9D8uhM9AkYTnFXRJ35ZMTpSb8U0/AZrcuIzxtksG+RPOOKzxMGZ0nwVy5DELiV2cVEmNocH27tqCFDNMAmCepVmobJyZLnM2OGps0DAPkPUDv5E3bmxqThZwuUfCzw6wbRkRno/x187CtomvbHOTBmOtd16ZGDgawsWOR8rw3lGYNxuxWdOIk//BHyIkbOBXErQzMM22yoREtKKtTqbYHDxYU3gjo1gPaayFFep7/NsoiqG3RLuZhRz/+HWkL1aupJup8H6gh/7bCcKaGpFJRJtFno5w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::530"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731066571;
+	cv=none; b=MUOVRSHlkaIUefbNr6Zfa705ggO589nPl5G2fPWGB2G5TzsDr+8t9os/E63Kzx9TCr9GL2NkzEGadNeQ7rRE3VEL4jO8dh466ghUqFr55r71cFtRRSCQZJeiCAl47XMUTkGbfGSuO4J6bviphpT66GiacT8hckID0A/1/LbJkpJC3CfQ57B1oX9Rbb7Na9+eYk4t8VfoFwHCjKQ/IjKUN4GmtEKHGtXHmERUFEr2Ygw01Go+BFyvoker8c68D2znI3b0/45/VDvymQMyP9gyGb02nvA31+LZxpOhb/glqa+9iOvX2I8FJBmdp+U/0b8iMh1A0EekS19nnpxCS5CS8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731064653; c=relaxed/relaxed;
-	bh=mAL3Q0x3xHcCLw+vQCWWuleKRmNj/JvTFn7z/D8K7HI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=G24YZqFkjjbgE/MSVuZAqJ5+TCB8EsWnVGGyygbqL52iok0ntt7w9AcnGZiUgIUB2dSv5f/rvCWd6b3u7WNONUyc2V2KdMzxgRn+XlDbQwTadkXSrQkqlEkKFoKkY7SOZhg7GkkksCw4U+HWdXqW9QNIIkK2QY+FE3xDG7V12B5kWpiH1yg2s+JEWSt5NzMg0WGGCSJ4DaaR7Fm3JMAYUr58B4M3G7xyr1WrcL7+6HhuCBPmrTv9hskBZXrFr2sQXxkPhJI08rhKXQeaoPHPmXp7QsuXMb07Hpd6RCIdHkUV2VJ0a4mcsr31ua+xG1ims8r+p7wN0+x39AVAtgWeHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1731066571; c=relaxed/relaxed;
+	bh=CXSvbTMRrcj6fCxF0ufHCuWCloLz1hIjGxoKK8AG/+o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WX98GQL+rnFfkUwKDra1Rsi7PIzPizP5PAa1Dww5kyKwMrKoHU9bOQiGpb5E7z09B48Pl39M8dc126dE8oT/UoKGnEShIHrtaE3Ba2HuJgwB6O2FaPolNph8n/JkHQhL82FX/6feIKuoQSXv6SEc6WipsTFqWcsTr0CZDQ3bA3KfxsaQRoc0P8LP7VZI0SiW4EbsCrLUhohSWOTqRwwkqlMSi9NJH1RkB9A+WU+XXGS3iDX8pkf1noVy3qJYYeQqtnHxukucOdLCjUCzOpydEcGgzWtpUqaZckIljaap+uoWmU2uMDyXBfF8ZXlFhwgx9K39wu5vlqtObsxADbXILQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=crO4kIAY; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=crO4kIAY;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XlGcr6CwFz2yVb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 22:17:32 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4XlGcn3jX0z9sSL;
-	Fri,  8 Nov 2024 12:17:29 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id jedhCAK4NTvb; Fri,  8 Nov 2024 12:17:29 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4XlGcn2v6Rz9rvV;
-	Fri,  8 Nov 2024 12:17:29 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4F1248B780;
-	Fri,  8 Nov 2024 12:17:29 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id s51MEc62SJBS; Fri,  8 Nov 2024 12:17:29 +0100 (CET)
-Received: from [192.168.232.253] (PO25383.IDSI0.si.c-s.fr [192.168.232.253])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DF8D88B77A;
-	Fri,  8 Nov 2024 12:17:28 +0100 (CET)
-Message-ID: <98b8084f-8f66-4e87-b182-dda6bf0c3d57@csgroup.eu>
-Date: Fri, 8 Nov 2024 12:17:28 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XlHKh6nNmz3btt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Nov 2024 22:49:26 +1100 (AEDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-5ceca7df7f0so2393051a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Nov 2024 03:49:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1731066563; x=1731671363; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CXSvbTMRrcj6fCxF0ufHCuWCloLz1hIjGxoKK8AG/+o=;
+        b=crO4kIAY2ermQnrT62DSZonZLheG7PbaZ7o58wFWVryOnn+x8CpN+HMfNl3ehrkdqh
+         b6eWMAp3txDbem6YvGMLsbNjHAfFD3yqMImwJIE51YdmocyNH33YLWGZIire6N7KVK/A
+         Um90i7Mw5UCwnzbjxSjNbm2f1PUxck4vCQZPTnSeZfRhtAXOiwm16SeEHMjv9u7YRiB2
+         Q850P7fKe9IC1c6O1sclJwZBNaXHjQTOOVFrtjG0UioHCxxMUO1o9I9jgKMSCMNYGePj
+         gUvbMtIihfIhsxlP4C9sVJ/NnJ2389q/WHNcFesQc0er1XgmXqDaNhldq/uthGdWFlai
+         Q2Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731066563; x=1731671363;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CXSvbTMRrcj6fCxF0ufHCuWCloLz1hIjGxoKK8AG/+o=;
+        b=ZDv9298q1clybGdrdColbO2byOTnQ926lIaC/+Krg+2oC0lMFRPPvO7hCNOKBLCr4P
+         lb5DYZi7iHbYolY8cq/MwjPVG5o8Is36YsG9MSWnyAHNfdHjaQOdJeTPo+ozDTYXNcL5
+         ABoEyX6WHGrIcXzKUwJB3LvH1yOj1+y3GhMgiLr2GBZWdgkFjP8RHeC7SViOG/D8DEqE
+         Ujej8SsXMFF5V3jCjPw3BGsYXyMbHb8h+O6YlrTxcGH/6lE3EQeMVQb4L4hXRtz/aRl5
+         85qifBboolgd3lhsGMlZ0ta4SVRRcRATS2pXyOEgrzCqLM2VAPg6Ph/ZdUMA/y3yFBmX
+         HfCA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0CZ9m0GGqapG6KOluIs7j8P3YntbVV+R8+AFEmmUUSi/6M0BVlQRznovb4zWDrN7rPEzpcusTTE0pL58=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwvvBUZVF2f1H7vo/gIurX1aQk3y+LLDWOSZ4/smuK4jEn8EvkX
+	3eWnyVOUgTnU3y4shP7kkZYpDcg+lTgdfBSaaHAH8wcl694S7cTtwL2tl7r2GUI9hymPcxvOw3y
+	IavX8CtDb4oJE4xWvXUwdTFNuDq5bd9kl0R7CB0uwbxaWbyYJDvU=
+X-Google-Smtp-Source: AGHT+IG6dsbVHDy06kTkj5zAs70A2/MyWRJqE/mKAm1qvOYLwYQg1hL1cr+88CsDKtRlIRo2uCMtTHRVmKF8kaDiYQk=
+X-Received: by 2002:a05:651c:1515:b0:2ef:243b:6dce with SMTP id
+ 38308e7fff4ca-2ff20185abfmr11928261fa.10.1731066088370; Fri, 08 Nov 2024
+ 03:41:28 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,71 +74,44 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <202410301531.7Vr9UkCn-lkp@intel.com> <CACRpkdbW5kheaWPzKip9ucEwK2uv+Cmf5SwT1necfa3Ynct6Ag@mail.gmail.com>
+ <2010cc7a-7f49-4c5b-b684-8e08ff8d17ed@csgroup.eu>
+In-Reply-To: <2010cc7a-7f49-4c5b-b684-8e08ff8d17ed@csgroup.eu>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 8 Nov 2024 12:41:17 +0100
+Message-ID: <CACRpkdYQ6Pfn_Y7FJh7MV2Mb8etDXFCJEUrgq=c3JDxkSPOndA@mail.gmail.com>
 Subject: Re: drivers/net/ethernet/freescale/ucc_geth.c:2454:64: sparse:
  sparse: incorrect type in argument 1 (different address spaces)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Linus Walleij <linus.walleij@linaro.org>,
- kernel test robot <lkp@intel.com>,
- "linuxppc-dev@lists.ozlabs.org list" <linuxppc-dev@lists.ozlabs.org>,
- netdev <netdev@vger.kernel.org>
-Cc: Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>,
- oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <202410301531.7Vr9UkCn-lkp@intel.com>
- <CACRpkdbW5kheaWPzKip9ucEwK2uv+Cmf5SwT1necfa3Ynct6Ag@mail.gmail.com>
- <2010cc7a-7f49-4c5b-b684-8e08ff8d17ed@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <2010cc7a-7f49-4c5b-b684-8e08ff8d17ed@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: kernel test robot <lkp@intel.com>, 
+	"linuxppc-dev@lists.ozlabs.org list" <linuxppc-dev@lists.ozlabs.org>, netdev <netdev@vger.kernel.org>, 
+	Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>, oe-kbuild-all@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Fri, Nov 8, 2024 at 11:30=E2=80=AFAM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 
 
-Le 08/11/2024 à 11:30, Christophe Leroy a écrit :
-> 
-> 
-> Le 08/11/2024 à 09:18, Linus Walleij a écrit :
->> On Wed, Oct 30, 2024 at 8:05 AM kernel test robot <lkp@intel.com> wrote:
->>
->>> tree:   
->>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C5a1ff6cef1f642fba00a08dcffce0903%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638666507603442752%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=2dgpku3%2BPjovwZxpedYowAAB%2BR%2FeyxOc0Ys3kE0KK6E%3D&reserved=0 master
->>> head:   c1e939a21eb111a6d6067b38e8e04b8809b64c4e
->>> commit: b28d1ccf921a4333be14017d82066386d419e638 powerpc/io: Expect 
->>> immutable pointer in virt_to_phys() prototype
->>
->> Ugh Stanislav do you have ideas around this one?
->>
->>>     drivers/net/ethernet/freescale/ucc_geth.c:244:21: sparse:     got 
->>> restricted __be32 [noderef] __iomem *
->>>     drivers/net/ethernet/freescale/ucc_geth.c:405:22: sparse: sparse: 
->>> incorrect type in argument 1 (different base types) @@     expected 
->>> unsigned short volatile [noderef] [usertype] __iomem *addr @@     got 
->>> restricted __be16 [noderef] [usertype] __iomem * @@
->>
->> They all look the same, it's from this:
->>
->> static void set_mac_addr(__be16 __iomem *reg, u8 *mac)
->> {
->>      out_be16(&reg[0], ((u16)mac[5] << 8) | mac[4]);
->>      out_be16(&reg[1], ((u16)mac[3] << 8) | mac[2]);
->>      out_be16(&reg[2], ((u16)mac[1] << 8) | mac[0]);
->> }
->>
->> Is it simply that we need a paranthesis extra around the thing casted
->> to (u16) else it becomes u32?
-> 
-> Not at all. The one you point here are:
-> 
+> The problem is the __be16 in the function prototype.
+>
+>         set_mac_addr(&p_82xx_addr_filt->taddr.h, p_enet_addr);
+>
+> p_82xx_addr_filt->taddr.h is a u16
+> and out_be16() expects a u16*
+>
+> So the following fixes the above warnings:
 
-...
+Ah you are right of course, thanks! :)
 
-Note however that there is work in progress on this driver that will 
-impact hundreds of lines, so maybe wait until that is done ? See 
-https://patchwork.kernel.org/project/netdevbpf/cover/20241107170255.1058124-1-maxime.chevallier@bootlin.com/
+Let's wait to the big rework you mentioned to land and I will try
+to remember to revisit this in the v6.13 kernel cycle.
 
-Christophe
+Yours,
+Linus Walleij
 
