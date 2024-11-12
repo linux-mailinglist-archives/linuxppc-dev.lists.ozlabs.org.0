@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-3110-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3111-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1497D9C53ED
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2024 11:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D899C53F0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2024 11:35:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XnjTx4jtBz2yVG;
-	Tue, 12 Nov 2024 21:35:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XnjTz1dSvz2yVj;
+	Tue, 12 Nov 2024 21:35:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::1" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731407701;
-	cv=pass; b=cgdwtQTeeQhs+40WJW6GasmzFmKe10+4w/7zuf+oBSrPLl41UI7UiQ1o9wmvM/YsPEY4/Y7Xpe9JQnmBc+t4OgTVfBQjYCDdm0au4SjsTpSkc4eKBDosqedKcWpNh/5TWVo+cbsXQQk4nntxxv9Leed2TxJAud+lYwP7ZE6mlx9fahiDQdTS3XhOtYPqvQw2FQ4nTvRGE71W8Y0+vfSSTHMEah/7m49yVr6SRsE80vXhyNQ386NIPfrfdRlpck0h5jBYVHB3CgFuIgzWaX279WkD1bNaayM43D7WHoody9MAfkAwNoHp72lvO4viJ5m3uqnszZSmb4AbnaPfq9mL7g==
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731407703;
+	cv=pass; b=DXddiM5OHBvkPUbFnYUJTcqLvLcRfUA2gyp6JueERWf2gcZDvXQY7GKSkUMCGK7Rql+/sXu8jVf+TAUPjMO3UmTl0JyRNCu/k24KCHEQOz6ElMIoM6/w0K+E3Pw1gF7deEinCJ/R8e6yr7KEkj37kJBIWfgrSVDNjBPtW67AvVbifgH/gK+goaaP0nl9rjIKci1YvOknbu4z3O3O8THPqrS/zq4/HfGYC73ZndZ7CDtg16viiuD30qfoDBLx+7dG3/FzVhIBDpFKnDLyhRCDkcLFErEyDfRhzTszr+9Mkvc5uVHK35LI3Q8HHWJzgfeJM9dakF74tMqhNm6EY/w+mA==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731407701; c=relaxed/relaxed;
-	bh=asHgnuhLl7u97cA8ELXln78RhYt/mxLwaxyHgw0InHM=;
+	t=1731407703; c=relaxed/relaxed;
+	bh=bGPb+mdKrZt2tU75PNwV+UeH06NumTCOB8hjqlF8OMA=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nN0j24deyFD77A+I82Q1P1teRp+O7wN29FM47leFTL/G2/owne5lCUG9+tu0W4EhJcxl9sDzC2Bl67G2Tjkeef9DPa7nwCcaYVUo0A2lS18iBGDyjtwetPoIIfZqyZQegbi/vTlWt83YWjO9zVygt9OkUz4vgvhY7FCneF5TGiaJFtAvaaw00RwmDiP3xixj5dd28xzxImyLWcbO5QmUEQhpPnZ0BKelhRx4eO85aCkjawIhgqBLO1iT5WiIOQi10cmGAvCP0fjHmIpD5AalQkqSD0cxffwBSgXi5t8mbLAE1qBm0wTOSb7s/KNPXBPWkX/eUrXEMI+J1LheEIe42A==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=H3MSp4As; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::1; helo=db3pr0202cu003.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+	 Content-Type:MIME-Version; b=WTmHlTWI0gcQwQCqfowudVQGMafvt+A9Hsat/65pAjfjdV6QFwfO38qMy/vWLhsL4e+sUUZU+yskMRSOpTkIbLl/YY5ynrZXhpp558+JCgu19agFqFiwsS91F3fIFoFy77ZAJ4DQQmDa/MwNSvW81KvGcdV1sFuhBFIkGROS7zhwa+P3YAjiFbCrCmMHc1GfZI9aquMPjF8AauzgkOFN7UR8CIjAwBMkDkegFQhYgYaRmi0zei6d/SnTX1BodmOxNyWunGi+X06fmQA3lLTbIDo9UkWf+exhOzN4WwTf9MjlPAIZV5qPfaQw0xtF8VD1yr+lxrgm6mqazfXC4NLoNw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=hqzNc03M; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::1; helo=db3pr0202cu003.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=H3MSp4As;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=hqzNc03M;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::1; helo=db3pr0202cu003.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
 Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazlp170110001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XnjTw75R1z2yVj
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2024 21:35:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XnjTy0Z10z2yYJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2024 21:35:01 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q+EQjw68E9XWU7o5vejt9HaCUqRL+oNyWB/BdwjEGu55psRBo4ByloSLmhnBQzrNaxvNm8TtktRKmgVlrKyJns8pyIIaCpi8NuxLthLUmkHqSlND6L6vyJsCIIDTHJx8Ngv5bDYMBamVBaAAjll/OlkJ//tBQ6kNAEoVwmBGxnoUnYiyYfKWHX8xm2yCL89JtpMqzXI1j6+7deFWBZdJNmlvbGPRVtHpdpdioGCkN6LQPNFZ1CftUR3KMC8qh+9sWIDPSUjSirtwJfs76uqN5oyNVpdM/SvtjbEmYK4IQnVj3O5E1EX4P0SIzPfmkPlAMDA2bMHaOeOS97BrxsMKcg==
+ b=OnAQKSga7PPufe/7t+nCamZVOnlb0N3w3KH2diWii4bbCCMQo9mR/SrNI6VNtrbye8UmAxzecF5Pdm4gnEDmHUkZ81GWyUWQVGfS1Dfa871jMZIF3kKzL8zUFf25EvJY3avzJr7i+2v+dVaC3iagwBOVo+24svA8HlB2t++7Ltim8H6Ul7QfethR5Nd3EOH4+ms6Vjmur9wRCtNxHV564oqr7HTAYrK9qriZpiQ6OiL2jrZ/9CxL6mXtkdMDXJjfwOFGK6ODMLlYYudqzAtTA7P/LyF4AKhProxUnE26xY2Zc6PDLL72SfV6tMn1elKo6Sunvmnw/2CsQvOZP/xnyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=asHgnuhLl7u97cA8ELXln78RhYt/mxLwaxyHgw0InHM=;
- b=ZnvbpYGcZc8G94Ha0CVFwHYsYWQG2OD2E2NP1mEsAO1IjGBSVIyyugIc0jRhqLV1jnUeoGwXGZfohpYZ1DYMcv6a1MWVWO55bxk/Dl8Ua23BeRBGvrDCnU6PqmEjqhj2BSEzRl4YRCTm2z3P8KqwAHrkZ1KYhtjjea4M3p65nqF7o80fSzU+HRWcOWDeHGzAXrpB75k2kxp70H4iuMLQSLnS5uvGKniYwDimC7Q5O4isr1Rx22Q/81ZXCfnsxwRVakiFWyAq2wrcEK1uU93095YC/4woPrtWjFsEawpwlaCi4Q+vosqJbufAWr3J8PyTPuX967cb3kV0uR46YbOvNg==
+ bh=bGPb+mdKrZt2tU75PNwV+UeH06NumTCOB8hjqlF8OMA=;
+ b=HUwlR5QwL2t1R5ee+p3seHkXv9o9MFNnUV/t6mo56TZf1hhmUximtBgffIVR0lFCzzDunExHFQ+mj1L9h5dEL3fxbcFFcf54rpM9JM+QoHtfzV/IMW8e/rBbuwHuJ8Vy5rpAmvz6Uq7XbIiBhtAcqkz2eMzlieHcpRguxkMnj9g567uItZ2QvTA49PeLQd+0QxvMsZyQ0RVPDuHHQ7bYxauB+y326O7NTkFt9fSKVcb3d7kXIbmjhsdoh79JIGYFQtLCwvaRYs3ZB5kjvRw3Zmb040rmaXPjvmNaK6+yOXJ4agA/XJ65IxNNeZcO3Yi6G7tH2lIqY/Lvvxm/ssDXyg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=asHgnuhLl7u97cA8ELXln78RhYt/mxLwaxyHgw0InHM=;
- b=H3MSp4As77kErRkyi+frno9dYJqscxiNEMbV81ceEppmQBQ9Tq2AIZjCvbcQS3oXRsn/C0t5NicqQ9fQUofVtyB3X6LFjuOJWvPfA7Gequay0riqAJp9o3wc5fxC+Ek17+wnupJpCiHZE/P/2XsnnIeeZLhXTDsf+059rKtWGM8c3PhIohZC1rS4RSKuLT4eHNMbM+3U69ZT70LfBcgEZiiSQcDBJ9iyXs2eeA0Nc+OhI7nYxGDj0A0NjlETTmFpu6H0Ch7Joi3QKyoG3oynQMUuW7bXHsm4gLWvAYRHUYpsWfJNyNnF58/uSJNijUFx4HedGibSECa8syKJm87ixg==
+ bh=bGPb+mdKrZt2tU75PNwV+UeH06NumTCOB8hjqlF8OMA=;
+ b=hqzNc03MTl1bl6z7uFGsPNIceIWLbILBX+OatzJTlF0HOSAJ52VybouYdUU30u23/bFjIiFSw69nGakq+0iw7YEas99/Qo7ezQ5g0+02AyfKmmgpAC6R3IhLSAGz8307EqPyDESXCqPWu2KTW/rdD0uR/2uqOYu6msWia9yYUuZApm5IQZ8A3WZxjbGu1nDAWY4dmXBYKX9yl6OufGGv2+CARVoZ7qdobY1E1p/UUXqqs/gVrR34KoxsmxnKPKYj2gpRn8PKflDRhGSBD75uVVXTpCH9MMM3RwzRU9ncy40B3jTIkYp0HoUnpspNDLagc0c/vqDGkPcXdx5UQ1/8Iw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
  by VI0PR04MB10757.eurprd04.prod.outlook.com (2603:10a6:800:26a::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Tue, 12 Nov
- 2024 10:34:43 +0000
+ 2024 10:34:48 +0000
 Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
  ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
  ([fe80::7be0:296:768c:e891%6]) with mapi id 15.20.8137.027; Tue, 12 Nov 2024
- 10:34:43 +0000
+ 10:34:48 +0000
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: vkoul@kernel.org,
 	perex@perex.cz,
@@ -67,9 +67,9 @@ To: vkoul@kernel.org,
 	lgirdwood@gmail.com,
 	broonie@kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [RESEND PATCH v5 3/6] ASoC: fsl_easrc: define functions for memory to memory usage
-Date: Tue, 12 Nov 2024 18:34:01 +0800
-Message-Id: <20241112103404.3565675-4-shengjiu.wang@nxp.com>
+Subject: [RESEND PATCH v5 4/6] ASoC: fsl_asrc_m2m: Add memory to memory function
+Date: Tue, 12 Nov 2024 18:34:02 +0800
+Message-Id: <20241112103404.3565675-5-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20241112103404.3565675-1-shengjiu.wang@nxp.com>
 References: <20241112103404.3565675-1-shengjiu.wang@nxp.com>
@@ -92,77 +92,77 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|VI0PR04MB10757:EE_
-X-MS-Office365-Filtering-Correlation-Id: 833dbfb7-8024-42cb-c483-08dd03059e87
+X-MS-Office365-Filtering-Correlation-Id: 9da6245e-e44d-4934-7039-08dd0305a10c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|1800799024|7416014|52116014|376014|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c75y06nanCWY0TsDXfROwN40jq8L52Snu6OnHk8O7N4bBOXEG9SM9KKIrSpQ?=
- =?us-ascii?Q?CGUpY20sa8gWR0XCyOpNhHHAj8TzTiw2zGzJsQ/7nRRsLge4fTYzlDs56JZe?=
- =?us-ascii?Q?/pLqiuudF/0n9LEr9gqNfI1rnozjnadFeVI7fZYXO5AYitTlR4CeQyibP5i9?=
- =?us-ascii?Q?8JReAH4z8V/6kyulHlPijZpWcIAursjkQjX7rloCJ6cJ39k+BVKrPq/RPeJC?=
- =?us-ascii?Q?rW//IZTZsurdmQnMx+5gl//kQBxdH8qLlpWXJuvbPGGyR/1JOTDlvh+AsJl5?=
- =?us-ascii?Q?LL6nUFz9HI5pum/P90SJeqLE43Y8yHJwa9GNRQTfHUhd86bk7yTQvqA523hl?=
- =?us-ascii?Q?4ghIf/l7ggxMPdDfc43b30K/ndLRSyLyddjz1zKcA+8tZhTCI4xmr08eniY3?=
- =?us-ascii?Q?NMs7cmXDYYpUKDQaUqGbqTXM0Di+sn6t8+f3UTM03LSF/dwF1U3cMPc+11Z3?=
- =?us-ascii?Q?TM+7W7VulnaVgSAHXxPcWS7vXi/f85PCYhmG2M31/TE+Sg+AIMQmH9GbPHzj?=
- =?us-ascii?Q?Jqh1ezueT1+i7g0WCeMkCxV1gzKWfisHzn+OcnuTjWUrZR7nmChnT+v5nGLZ?=
- =?us-ascii?Q?aFW29int5g+KHrD23jgdUB00PPvVnvBqRN48R5KRw+Bz8dKPYeoogkE4F5Lg?=
- =?us-ascii?Q?5u/ji0iu5QA590m6nzrxtDbaI2dbp9mKfGacRSPopVt3IkG3UJ+d8gcaZ9xP?=
- =?us-ascii?Q?02b05uH7qvfYa2RA1HEW7lvz/UELehy5KBvXJnj20JWqDcbQjn5wE4gKmCg8?=
- =?us-ascii?Q?FnpYGqKq5hn8wZzmj7cRAdmUky6SSaa1AdyEsRqkxQPG6xNdXinHfM9m+qbh?=
- =?us-ascii?Q?4G1epLvh/9lRq8xh9KTYN4xlNVhAL+k7/0gYkJ5iCF0jW3+oA2b2CmBpmluZ?=
- =?us-ascii?Q?UXjpZx+wC/tX1dO0QdPHr//7juTui+NJith79K1zr+qqtiwamxqJeJA2D1pa?=
- =?us-ascii?Q?0cAKkEmboUGz2zpw31pECLi1yWEgwds96UR43uEVxdu1tOut6BTgDtdktc8W?=
- =?us-ascii?Q?/P39yNxsZCnodAOoSm8ci8iTok1zUWpGaQ3/1av9A3IaEqfgWOZ69Uodk27b?=
- =?us-ascii?Q?RySC9F/zWvOdbVq8voAhHVYxzztYjRinOyKeYzYCpHY+xSeZaJ8eyOlEpeu0?=
- =?us-ascii?Q?qawtJoistqzLm66jgiUfhyAzAIXnqDq1ptshFk5uVDr+8HS3ikI6je3TkKJ9?=
- =?us-ascii?Q?m6YNWP2M9qLkwmiZ63NO9eSbWzWp3m/HBDzzIfi8z88nhI0m4O0rHBeJYPhm?=
- =?us-ascii?Q?z30oPYaHtY9pNzqgaCd7av5c+tqWFgGnEvWRMyI0jSxL8M+xmUZTSRQr8bEE?=
- =?us-ascii?Q?meemtQjkFOyj2wc9n/D/hXprQjcjcsks9yP1ti9KJ2sBZxufnNl5/Sv89syE?=
- =?us-ascii?Q?38urG0rH7OZw8xddIPyBz6Ev5oO9?=
+	=?us-ascii?Q?CEAkCkk7LwkE4MS3w+YPcVlaJ9pvHIUvHGK6cNrQBdZL3YNWTuSJYfBkC1sa?=
+ =?us-ascii?Q?TNpOYs1kxJUKtLk0ANVMu6gK9VELdtYU5L37AfEYLcBTmtE/T9nWupi9+Mdv?=
+ =?us-ascii?Q?2CKAV3QO+ICAh+hkDTXtyuaHZ8bTqNOllTDwJiWbci3Tc6DQPPoRiO9QwqEl?=
+ =?us-ascii?Q?eW6xOzICsEbtuNWRG9PMC0ibPgQqvCmqgoMprb+SKqge0MBN2B3CafyXgrC4?=
+ =?us-ascii?Q?/nmuoiy2qU4BuhWpTQDQUNxg/vuJD8znRdYvKCRhriJO3CObdLhMvBsSu+/b?=
+ =?us-ascii?Q?BJu5GrQHTayUhhxV2DOlz68Ma90Yrn8pKIs+vA36zipjO/8FB2m0VMt62bQ/?=
+ =?us-ascii?Q?RM7P62Unzncj2IKS/jNMoYO+UVd0uv7gY3hyU5pHQ269Lc2EEn8NDtjqnhk0?=
+ =?us-ascii?Q?ZsH4L5iM5TJ2g+cS/726NRY7OjK3j4rs8c8avceV5Hh9qrGaN8mvVqHDcLI1?=
+ =?us-ascii?Q?jNiRMMMY5WAlSa44XNyQb1gYecRk5t96Vm1hgFhFxSgyDG3epJrjS03Ulzyx?=
+ =?us-ascii?Q?1bt5YVxAb2fJ1akroRL1/HXiJIXn5+m5+kYH9vKYOxYToQePQFeaCnkwPsNB?=
+ =?us-ascii?Q?KjmXC6FCGFilpc5MOaiLpz98nhAQiIUY7kXRdT15TfEk+SdYopDgAbXtmLQ0?=
+ =?us-ascii?Q?zKoJofBRl4ffs9EAen8Gg0RNIDQ3JmoBmZVsJyjFlgezQbLZqiwH07VMTIYK?=
+ =?us-ascii?Q?T3qjT3p5i9olpU4rnc3fk6CEfs3aAaCHPUsnJQV6OPR1GKh8n+RVH9XkO/PJ?=
+ =?us-ascii?Q?ezwGjhli4FBPgewiNVSz7OqT9Y5RzwVHFt5Q6x8fnVH1QN/acov+fsuev9Cn?=
+ =?us-ascii?Q?3v+WJGfkuTlQHn8GubSnFn4ZZpqDfiCL9dzsb3vXecPClqqUOixyQMahQO7Y?=
+ =?us-ascii?Q?B2s5YsgKnOW4UV2CIN6QIqelACGK3cAgxL02QmU/YVxFS/mU83chEiC5CZdE?=
+ =?us-ascii?Q?P9sxtrKzJ20mi8qkv3Hko9kJFFFYCR6snHK3f9+zf50/alGuNYp0xQKnlYak?=
+ =?us-ascii?Q?exVixliHJn9mGqLw0RJ0y1nEMaPXD5BYAIhUsU0UU1RVidSjZO+IOgtmjF0A?=
+ =?us-ascii?Q?OOvSjwuh1/VpBzjaQtP6HbVuqAnGtVfJpH29PfUqgXmTzH+FPkQKENht4U4Q?=
+ =?us-ascii?Q?In9JrT6YBNFbUrjhM203YGIZC41e1qqInizEBU2jKZUt01UEJAX2L3MxxjEO?=
+ =?us-ascii?Q?Wllz13HMfnBBFoFbJUWaWtAuw9dkHbK50EFS0VOObzsb4/kiLCMfjLiGcQ1N?=
+ =?us-ascii?Q?4iwN/frz7r698ir/X4gUUpglfwluaW7XVU04HE3wMN7OEEXGoMQM3AwKA+5a?=
+ =?us-ascii?Q?dRoJPOyK2qsw3eMd2Flyxz0cg7IzK84E7NjkCVoOTt/WLjYfJhyKint2dtDW?=
+ =?us-ascii?Q?u2FlFwxaAGh6U+tolXYI1dOHPTjF?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(52116014)(376014)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZpUWuvGfGBR5GOMLI/ozoLMGw0uTl7FLjUIfpvUR2LAbDVbNGaqdbj54q4u5?=
- =?us-ascii?Q?yJkZcxIO2btKSXiMjWJw7rOR5hPreWO9qVbNtFalxzgwasa2RO+FKjPWFknn?=
- =?us-ascii?Q?Jy8ehaGBTG25Chkp8OGzujINtFMLRXrja2qoma62GCmESpMLXfxPjBZw/8/G?=
- =?us-ascii?Q?WegHQwL+5Vbo3yP0KknIW7SAwLYFxSmh+qk03STkfNEksrvEZNTa3BaF88Zs?=
- =?us-ascii?Q?Mug9exQZp7oX10f1Mkkgho5c3xb+wxeUZEuTRXm/AtbIgTmKzGUuAc6vRuHj?=
- =?us-ascii?Q?DbnCDu72EGw2ZR1jyyNsQyoYEAHPyJ+G+FiC1ZsmKjodx30KKNLRlTBao8Nt?=
- =?us-ascii?Q?Z62IP7fhYxOgvPS+sgMV3MTVTNKifnkT1sGQVAyHayK6l/0ZoyZjT/Qo/MnV?=
- =?us-ascii?Q?rT4edUB4Mc8pvmiJVsGDLo1Pdw+EcaIl8sbPCeMFWBQTSPME4Yg2X0BpIbxJ?=
- =?us-ascii?Q?FhPx9IjIU4ymSD+qVYdIL2iy/fiNVzipQispnlwEk6G5LukUQ1NaKYiL2BYi?=
- =?us-ascii?Q?m2/0WLwTzdEWCCJpNg4rmM6+yf52QLhJvDZxfscrg8OxBdJA1aMKUSfdo82f?=
- =?us-ascii?Q?hr2WM+LIM+wVGDfbZU6r7W4AXDcb+KF2Sm1/+NWo1HOHtC+2hAQ+oeITKxFU?=
- =?us-ascii?Q?mryvTX2S3DgRQ2MjuUcW/W5aUrl6ivBULRTe13yM5VnydVrBCRt3BVDSRSaK?=
- =?us-ascii?Q?VYAI8UNaH/HYnTpaBmEveWJrkH0oNQ5eq0JWYsQSfQ0gFWh9BeU2EAdr+hcE?=
- =?us-ascii?Q?wcz8z9HOJu/xd3AHphbcnygqoXo/LUmANx0+TH5C4ZM9CvEuTjkgSdVNOkBX?=
- =?us-ascii?Q?gKIXV0AYlRKewyuDrdrrlNo2YRxzUfj2WupJ9y9gpiE7iC3mUMXe+/pZ13/y?=
- =?us-ascii?Q?jid81obgMBKaVS4JGeRcsR2UNPoLPGA0wAo0DbM8SRjPWGmAgfXfAdNlzqSE?=
- =?us-ascii?Q?KPJYnheBOrkXq91/tv7zNseBufQDjx4mjKpLz5aQ3+0FnQPNRUIhSJC6TtKJ?=
- =?us-ascii?Q?rZDVYA0loa3SK1AfX/OUTpLeFXe9jClqbUI60mItRnwHG3EwQXhoFnNResIc?=
- =?us-ascii?Q?l/93romDlZ2TxL0bXfpqF6bomDrTHXioc5qNU9E/NaRJAojx+PJemGfx3pS4?=
- =?us-ascii?Q?2BhVjYXtiBD/TMph9CcZ7C8Vtaq52STqhoCPqSiDqkIkgkY9znkTvF3GrfOE?=
- =?us-ascii?Q?O/LGNMMiypXwjQqlu4xsLvKMB1jPCngevKowO0J+kwzRG5kkQIS7DbJl6TBP?=
- =?us-ascii?Q?ThtuWVvpN/Z4FTDhcgM4RVoiUyZXXq6PhNVR5OrMQZIm/CdVT1UB27baV6Hm?=
- =?us-ascii?Q?P9u/bQrislrLqF6VHvpglzRJ4JpHRjZ3HeGbtZv42nViiNs7Wf9zBckCaRs6?=
- =?us-ascii?Q?ndSylt7tD661DZH+HtrK9MllrT5hMxk2jO9PZ8ayGiUfoeq0jZHFJZpuMyz1?=
- =?us-ascii?Q?SpTU8jF4EQvAi2n8L68cwHFJRVBlC5fSJVoqzrrEIpzFMe24UnN7DyUBcPHn?=
- =?us-ascii?Q?qjn2bRJGQUZcAG+uCKOlYXgE4rZnyCzW1T6l36WIzPXseuC1s33H1NJ16afu?=
- =?us-ascii?Q?BbkWs6J1BtrmN7PAkmP8nx8uS9k2meDp5b6D5CQ8?=
+	=?us-ascii?Q?UQChjbMihg5ma0d0hwz3KraDqgzAJijMilE76nn0WxinrEQFTcSWiWb9AMIj?=
+ =?us-ascii?Q?y8YwQGalXhprRM3qlosGjZJZ9D1IjLj778+ItmFy64WZemO4org6pJhpTydw?=
+ =?us-ascii?Q?TFeHssT99OWRJLuyBfV2MYKgO6gL3TlZE8WJYgjmFAtRs/Igj8VXrW9boOI2?=
+ =?us-ascii?Q?iLA0koXD/8ou49gxyYUDg3JAgQyOLn1JuWIOt6650MpPLkE3RC/ToBXo4+fZ?=
+ =?us-ascii?Q?NodCNzRIxYYqZZtF1K3gNUtTfe2rO5n0DjjAFgY8NOe0KGKxy30PH6L4bYDs?=
+ =?us-ascii?Q?dxv+xM7Q+tdicoWeIOKuBM3CUZXK7pCsZ0Dp9M2D1uv90jXVzsMyMT5DDKdM?=
+ =?us-ascii?Q?HcKJG5qT9OGHKEXKfhBYZJNDK4Ca87cfxjf3KaNKt3LL++zmpnvTpk2/RN6R?=
+ =?us-ascii?Q?+JwrosNOayW4zSu2gat+mRqP7EtAZxYY0lJWaFXrwyyceUuNPRQxB4iFabil?=
+ =?us-ascii?Q?trjQQ2rQ1bHcEhspRSphKCcwbgF/XoKcsnDVJlNPorkuZWyqvd+sQckaICtM?=
+ =?us-ascii?Q?u3qdZQjViAw0SAPoMQQ2cZn5y52pvpOaPMEVDd/QilaugRSk0QdDzG+EXgGk?=
+ =?us-ascii?Q?TUs7M0zEogD4z4jo6Ah/MJ4pIE3wjM5SBu/2dPr7ILvWHgn8jm5kFCbH7PyM?=
+ =?us-ascii?Q?uvvZq2AyzPGu7wTrEjXo4aHY7ohGeuY8+VeX04GaUWGQKqUIa55pWCCceesB?=
+ =?us-ascii?Q?havQjaroTnQ5rmwkiZpSjWD50L1P/aPS9W2gDQatrHpZY3GFZB8NdHBCFY1m?=
+ =?us-ascii?Q?hXBnPeRRrp4SWSxVU2tjoq8RshJnKS+qiAm5q90M8ylrFUqWTvaMrSL1fBf1?=
+ =?us-ascii?Q?tSI/F9Uy2JVI0n4a+tcIwUofbz5D3gNGl+5MA1Acm3t5ESKLt2HTNbQWAVMQ?=
+ =?us-ascii?Q?u5u5hx2hiApB3dSCz878tVrtiLiLQSEAUorBbkQkswF0CWAg+ErVO8e7oC5B?=
+ =?us-ascii?Q?4SpqDifztPuVWndjont/eEIV3BM+4aMtAhc7qPQd1Spw/qj2Q3jcNDmqEkS7?=
+ =?us-ascii?Q?/lCMoX/HklipI7F+r1RTxeB5QdjC9lZ1k+HXdTv3JhciOoP8rRmuKTKA/a32?=
+ =?us-ascii?Q?pU4hwdrBM0+P8PIOspmm+OYdCOBaZ8vD9kk6NHwptisDnQyE/a4q8gFOEPP4?=
+ =?us-ascii?Q?2ONk/pis7jKXy8+uyohub9Trx8W570Di0uKrLhTUg7cwooLqcrXdeYE1y3yk?=
+ =?us-ascii?Q?2M98z5JK6Uhv0VcInY2cSWJEsbyN5zqOkytF63JVYuUr1WF3FrDDZeqazi61?=
+ =?us-ascii?Q?XmHNKTOW7ncBvTcFUYBzC6wak+gcdSATQnxPyniNPfM4G/4ewjVXQMxqnOwy?=
+ =?us-ascii?Q?nJZ6ZmHB/gucGO/W1cm8s05iuZvGx1dLC+q4g0+NprzUyYXGXMKJybkzL1Fj?=
+ =?us-ascii?Q?CjgkcjRsYXWOtloY6NewKiVCfGRWza86Sbxg7oVFn7SXdyWdxJ9u17jaXvM+?=
+ =?us-ascii?Q?Q3wREcEPx8M9ZFv2QpeTCJSnAOUNm/Vs/lKqYHTmk83XVy4WhluUJiGwiE88?=
+ =?us-ascii?Q?e/9588WWvkAM6ukzbWo71+ugy1WybvUw3Hinr+BuIv7zEn6mQT5/zBoCTICR?=
+ =?us-ascii?Q?OxKfjpjXzAhPWVUky5uyg1e6Kxgl9pa2mba5ZO/5?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 833dbfb7-8024-42cb-c483-08dd03059e87
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9da6245e-e44d-4934-7039-08dd0305a10c
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 10:34:42.9600
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 10:34:48.4902
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: It4piUhJiI2B9pCobzwMBB5Pt6PKJoKBHx1r8ok0wGbuEnIQ5sOfwJtSIiAsU4+UQHMk1qcvUib9KvTyDzJomg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: N9EH4e2V8YyVplIa3pi6vXZ2GFXfdxjvlBkI37tsjA+KaeZj9Xk8RspEDEWBSPva1nxjVATNVHX406oP7iYRBg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10757
 X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
@@ -170,284 +170,826 @@ X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-ASRC can be used on memory to memory case, define several
-functions for m2m usage and export them as function pointer.
+Implement the ASRC memory to memory function using
+the compress framework, user can use this function with
+compress ioctl interface.
+
+This feature can be shared by ASRC and EASRC drivers
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 Acked-by: Jaroslav Kysela <perex@perex.cz>
 ---
- sound/soc/fsl/fsl_easrc.c | 228 ++++++++++++++++++++++++++++++++++++++
- sound/soc/fsl/fsl_easrc.h |   4 +
- 2 files changed, 232 insertions(+)
+ sound/soc/fsl/Kconfig           |   1 +
+ sound/soc/fsl/Makefile          |   2 +-
+ sound/soc/fsl/fsl_asrc_common.h |   9 +
+ sound/soc/fsl/fsl_asrc_m2m.c    | 727 ++++++++++++++++++++++++++++++++
+ 4 files changed, 738 insertions(+), 1 deletion(-)
+ create mode 100644 sound/soc/fsl/fsl_asrc_m2m.c
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index d22f0621c465..f17a185a1910 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -1861,6 +1861,224 @@ static int fsl_easrc_get_fifo_addr(u8 dir, enum asrc_pair_index index)
- 	return REG_EASRC_FIFO(dir, index);
- }
+diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
+index 8e88830e8e57..698afae46918 100644
+--- a/sound/soc/fsl/Kconfig
++++ b/sound/soc/fsl/Kconfig
+@@ -8,6 +8,7 @@ config SND_SOC_FSL_ASRC
+ 	depends on HAS_DMA
+ 	select REGMAP_MMIO
+ 	select SND_SOC_GENERIC_DMAENGINE_PCM
++	select SND_COMPRESS_ACCEL
+ 	help
+ 	  Say Y if you want to add Asynchronous Sample Rate Converter (ASRC)
+ 	  support for the Freescale CPUs.
+diff --git a/sound/soc/fsl/Makefile b/sound/soc/fsl/Makefile
+index ad97244b5cc3..d656a9ab54e3 100644
+--- a/sound/soc/fsl/Makefile
++++ b/sound/soc/fsl/Makefile
+@@ -10,7 +10,7 @@ obj-$(CONFIG_SND_SOC_P1022_RDK) += snd-soc-p1022-rdk.o
+ # Freescale SSI/DMA/SAI/SPDIF Support
+ snd-soc-fsl-audmix-y := fsl_audmix.o
+ snd-soc-fsl-asoc-card-y := fsl-asoc-card.o
+-snd-soc-fsl-asrc-y := fsl_asrc.o fsl_asrc_dma.o
++snd-soc-fsl-asrc-y := fsl_asrc.o fsl_asrc_dma.o fsl_asrc_m2m.o
+ snd-soc-fsl-lpc3xxx-y := lpc3xxx-pcm.o lpc3xxx-i2s.o
+ snd-soc-fsl-sai-y := fsl_sai.o
+ snd-soc-fsl-ssi-y := fsl_ssi.o
+diff --git a/sound/soc/fsl/fsl_asrc_common.h b/sound/soc/fsl/fsl_asrc_common.h
+index 3bdd6ea07c09..0cd595b0f629 100644
+--- a/sound/soc/fsl/fsl_asrc_common.h
++++ b/sound/soc/fsl/fsl_asrc_common.h
+@@ -60,6 +60,7 @@ struct fsl_asrc_m2m_cap {
+  * @buf_len: buffer length of m2m
+  * @dma_buffer: buffer pointers
+  * @first_convert: start of conversion
++ * @ratio_mod_flag: flag for new ratio modifier
+  * @ratio_mod: ratio modification
+  */
+ struct fsl_asrc_pair {
+@@ -84,6 +85,7 @@ struct fsl_asrc_pair {
+ 	unsigned int buf_len[2];
+ 	struct snd_dma_buffer dma_buffer[2];
+ 	unsigned int first_convert;
++	bool ratio_mod_flag;
+ 	unsigned int ratio_mod;
+ };
  
-+/* Get sample numbers in FIFO */
-+static unsigned int fsl_easrc_get_output_fifo_size(struct fsl_asrc_pair *pair)
+@@ -98,6 +100,7 @@ struct fsl_asrc_pair {
+  * @mem_clk: clock source to access register
+  * @ipg_clk: clock source to drive peripheral
+  * @spba_clk: SPBA clock (optional, depending on SoC design)
++ * @card: compress sound card
+  * @lock: spin lock for resource protection
+  * @pair: pair pointers
+  * @channel_avail: non-occupied channel numbers
+@@ -131,6 +134,7 @@ struct fsl_asrc {
+ 	struct clk *mem_clk;
+ 	struct clk *ipg_clk;
+ 	struct clk *spba_clk;
++	struct snd_card *card;
+ 	spinlock_t lock;      /* spin lock for resource protection */
+ 
+ 	struct fsl_asrc_pair *pair[PAIR_CTX_NUM];
+@@ -166,4 +170,9 @@ struct fsl_asrc {
+ #define DRV_NAME "fsl-asrc-dai"
+ extern struct snd_soc_component_driver fsl_asrc_component;
+ 
++int fsl_asrc_m2m_init(struct fsl_asrc *asrc);
++void fsl_asrc_m2m_exit(struct fsl_asrc *asrc);
++int fsl_asrc_m2m_resume(struct fsl_asrc *asrc);
++int fsl_asrc_m2m_suspend(struct fsl_asrc *asrc);
++
+ #endif /* _FSL_ASRC_COMMON_H */
+diff --git a/sound/soc/fsl/fsl_asrc_m2m.c b/sound/soc/fsl/fsl_asrc_m2m.c
+new file mode 100644
+index 000000000000..693ec0a477a4
+--- /dev/null
++++ b/sound/soc/fsl/fsl_asrc_m2m.c
+@@ -0,0 +1,727 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Copyright (C) 2014-2016 Freescale Semiconductor, Inc.
++// Copyright (C) 2019-2024 NXP
++//
++// Freescale ASRC Memory to Memory (M2M) driver
++
++#include <linux/dma/imx-dma.h>
++#include <linux/dma-buf.h>
++#include <linux/dma-mapping.h>
++#include <linux/pm_runtime.h>
++#include <sound/asound.h>
++#include <sound/dmaengine_pcm.h>
++#include <sound/initval.h>
++
++#include "fsl_asrc_common.h"
++
++#define DIR_STR(dir) (dir) == IN ? "in" : "out"
++
++#define ASRC_xPUT_DMA_CALLBACK(dir) \
++	(((dir) == IN) ? asrc_input_dma_callback \
++	: asrc_output_dma_callback)
++
++/* Maximum output and capture buffer size */
++#define ASRC_M2M_BUFFER_SIZE (512 * 1024)
++
++/* Maximum output and capture period size */
++#define ASRC_M2M_PERIOD_SIZE (48 * 1024)
++
++/* dma complete callback */
++static void asrc_input_dma_callback(void *data)
++{
++	struct fsl_asrc_pair *pair = (struct fsl_asrc_pair *)data;
++
++	complete(&pair->complete[IN]);
++}
++
++/* dma complete callback */
++static void asrc_output_dma_callback(void *data)
++{
++	struct fsl_asrc_pair *pair = (struct fsl_asrc_pair *)data;
++
++	complete(&pair->complete[OUT]);
++}
++
++/**
++ *asrc_read_last_fifo: read all the remaining data from FIFO
++ *@pair: Structure pointer of fsl_asrc_pair
++ *@dma_vaddr: virtual address of capture buffer
++ *@length: payload length of capture buffer
++ */
++static void asrc_read_last_fifo(struct fsl_asrc_pair *pair, void *dma_vaddr, u32 *length)
 +{
 +	struct fsl_asrc *asrc = pair->asrc;
 +	enum asrc_pair_index index = pair->index;
-+	u32 val;
++	u32 i, reg, size, t_size = 0, width;
++	u32 *reg32 = NULL;
++	u16 *reg16 = NULL;
++	u8  *reg24 = NULL;
 +
-+	regmap_read(asrc->regmap, REG_EASRC_SFS(index), &val);
-+	val &= EASRC_SFS_NSGO_MASK;
++	width = snd_pcm_format_physical_width(pair->sample_format[OUT]);
++	if (width == 32)
++		reg32 = dma_vaddr + *length;
++	else if (width == 16)
++		reg16 = dma_vaddr + *length;
++	else
++		reg24 = dma_vaddr + *length;
++retry:
++	size = asrc->get_output_fifo_size(pair);
++	if (size + *length > ASRC_M2M_BUFFER_SIZE)
++		goto end;
 +
-+	return val >> EASRC_SFS_NSGO_SHIFT;
++	for (i = 0; i < size * pair->channels; i++) {
++		regmap_read(asrc->regmap, asrc->get_fifo_addr(OUT, index), &reg);
++		if (reg32) {
++			*reg32++ = reg;
++		} else if (reg16) {
++			*reg16++ = (u16)reg;
++		} else {
++			*reg24++ = (u8)reg;
++			*reg24++ = (u8)(reg >> 8);
++			*reg24++ = (u8)(reg >> 16);
++		}
++	}
++	t_size += size;
++
++	/* In case there is data left in FIFO */
++	if (size)
++		goto retry;
++end:
++	/* Update payload length */
++	if (reg32)
++		*length += t_size * pair->channels * 4;
++	else if (reg16)
++		*length += t_size * pair->channels * 2;
++	else
++		*length += t_size * pair->channels * 3;
 +}
 +
-+static int fsl_easrc_m2m_prepare(struct fsl_asrc_pair *pair)
++/* config dma channel */
++static int asrc_dmaconfig(struct fsl_asrc_pair *pair,
++			  struct dma_chan *chan,
++			  u32 dma_addr, dma_addr_t buf_addr, u32 buf_len,
++			  int dir, int width)
 +{
-+	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
 +	struct fsl_asrc *asrc = pair->asrc;
++	struct device *dev = &asrc->pdev->dev;
++	struct dma_slave_config slave_config;
++	enum dma_slave_buswidth buswidth;
++	unsigned int sg_len, max_period_size;
++	struct scatterlist *sg;
++	int ret, i;
++
++	switch (width) {
++	case 8:
++		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
++		break;
++	case 16:
++		buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
++		break;
++	case 24:
++		buswidth = DMA_SLAVE_BUSWIDTH_3_BYTES;
++		break;
++	case 32:
++		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
++		break;
++	default:
++		dev_err(dev, "invalid word width\n");
++		return -EINVAL;
++	}
++
++	memset(&slave_config, 0, sizeof(slave_config));
++	if (dir == IN) {
++		slave_config.direction = DMA_MEM_TO_DEV;
++		slave_config.dst_addr = dma_addr;
++		slave_config.dst_addr_width = buswidth;
++		slave_config.dst_maxburst = asrc->m2m_get_maxburst(IN, pair);
++	} else {
++		slave_config.direction = DMA_DEV_TO_MEM;
++		slave_config.src_addr = dma_addr;
++		slave_config.src_addr_width = buswidth;
++		slave_config.src_maxburst = asrc->m2m_get_maxburst(OUT, pair);
++	}
++
++	ret = dmaengine_slave_config(chan, &slave_config);
++	if (ret) {
++		dev_err(dev, "failed to config dmaengine for %s task: %d\n",
++			DIR_STR(dir), ret);
++		return -EINVAL;
++	}
++
++	max_period_size = rounddown(ASRC_M2M_PERIOD_SIZE, width * pair->channels / 8);
++	/* scatter gather mode */
++	sg_len = buf_len / max_period_size;
++	if (buf_len % max_period_size)
++		sg_len += 1;
++
++	sg = kmalloc_array(sg_len, sizeof(*sg), GFP_KERNEL);
++	if (!sg)
++		return -ENOMEM;
++
++	sg_init_table(sg, sg_len);
++	for (i = 0; i < (sg_len - 1); i++) {
++		sg_dma_address(&sg[i]) = buf_addr + i * max_period_size;
++		sg_dma_len(&sg[i]) = max_period_size;
++	}
++	sg_dma_address(&sg[i]) = buf_addr + i * max_period_size;
++	sg_dma_len(&sg[i]) = buf_len - i * max_period_size;
++
++	pair->desc[dir] = dmaengine_prep_slave_sg(chan, sg, sg_len,
++						  slave_config.direction,
++						  DMA_PREP_INTERRUPT);
++	kfree(sg);
++	if (!pair->desc[dir]) {
++		dev_err(dev, "failed to prepare dmaengine for %s task\n", DIR_STR(dir));
++		return -EINVAL;
++	}
++
++	pair->desc[dir]->callback = ASRC_xPUT_DMA_CALLBACK(dir);
++	pair->desc[dir]->callback_param = pair;
++
++	return 0;
++}
++
++/* main function of converter */
++static void asrc_m2m_device_run(struct fsl_asrc_pair *pair, struct snd_compr_task_runtime *task)
++{
++	struct fsl_asrc *asrc = pair->asrc;
++	struct device *dev = &asrc->pdev->dev;
++	enum asrc_pair_index index = pair->index;
++	struct snd_dma_buffer *src_buf, *dst_buf;
++	unsigned int in_buf_len;
++	unsigned int out_dma_len;
++	unsigned int width;
++	u32 fifo_addr;
++	int ret;
++
++	/* set ratio mod */
++	if (asrc->m2m_set_ratio_mod) {
++		if (pair->ratio_mod_flag) {
++			asrc->m2m_set_ratio_mod(pair, pair->ratio_mod);
++			pair->ratio_mod_flag = false;
++		}
++	}
++
++	src_buf = &pair->dma_buffer[IN];
++	dst_buf = &pair->dma_buffer[OUT];
++
++	width = snd_pcm_format_physical_width(pair->sample_format[IN]);
++	fifo_addr = asrc->paddr + asrc->get_fifo_addr(IN, index);
++
++	in_buf_len = task->input_size;
++
++	if (in_buf_len < width * pair->channels / 8 ||
++	    in_buf_len > ASRC_M2M_BUFFER_SIZE ||
++	    in_buf_len % (width * pair->channels / 8)) {
++		dev_err(dev, "out buffer size is error: [%d]\n", in_buf_len);
++		goto end;
++	}
++
++	/* dma config for output dma channel */
++	ret = asrc_dmaconfig(pair,
++			     pair->dma_chan[IN],
++			     fifo_addr,
++			     src_buf->addr,
++			     in_buf_len, IN, width);
++	if (ret) {
++		dev_err(dev, "out dma config error\n");
++		goto end;
++	}
++
++	width = snd_pcm_format_physical_width(pair->sample_format[OUT]);
++	fifo_addr = asrc->paddr + asrc->get_fifo_addr(OUT, index);
++	out_dma_len = asrc->m2m_calc_out_len(pair, in_buf_len);
++	if (out_dma_len > 0 && out_dma_len <= ASRC_M2M_BUFFER_SIZE) {
++		/* dma config for capture dma channel */
++		ret = asrc_dmaconfig(pair,
++				     pair->dma_chan[OUT],
++				     fifo_addr,
++				     dst_buf->addr,
++				     out_dma_len, OUT, width);
++		if (ret) {
++			dev_err(dev, "cap dma config error\n");
++			goto end;
++		}
++	} else if (out_dma_len > ASRC_M2M_BUFFER_SIZE) {
++		dev_err(dev, "cap buffer size error\n");
++		goto end;
++	}
++
++	reinit_completion(&pair->complete[IN]);
++	reinit_completion(&pair->complete[OUT]);
++
++	/* Submit DMA request */
++	dmaengine_submit(pair->desc[IN]);
++	dma_async_issue_pending(pair->desc[IN]->chan);
++	if (out_dma_len > 0) {
++		dmaengine_submit(pair->desc[OUT]);
++		dma_async_issue_pending(pair->desc[OUT]->chan);
++	}
++
++	asrc->m2m_start(pair);
++
++	if (!wait_for_completion_interruptible_timeout(&pair->complete[IN], 10 * HZ)) {
++		dev_err(dev, "out DMA task timeout\n");
++		goto end;
++	}
++
++	if (out_dma_len > 0) {
++		if (!wait_for_completion_interruptible_timeout(&pair->complete[OUT], 10 * HZ)) {
++			dev_err(dev, "cap DMA task timeout\n");
++			goto end;
++		}
++	}
++
++	/* read the last words from FIFO */
++	asrc_read_last_fifo(pair, dst_buf->area, &out_dma_len);
++	/* update payload length for capture */
++	task->output_size = out_dma_len;
++end:
++	return;
++}
++
++static int fsl_asrc_m2m_comp_open(struct snd_compr_stream *stream)
++{
++	struct fsl_asrc *asrc = stream->private_data;
++	struct snd_compr_runtime *runtime = stream->runtime;
++	struct device *dev = &asrc->pdev->dev;
++	struct fsl_asrc_pair *pair;
++	int size, ret;
++
++	pair = kzalloc(sizeof(*pair) + asrc->pair_priv_size, GFP_KERNEL);
++	if (!pair)
++		return -ENOMEM;
++
++	pair->private = (void *)pair + sizeof(struct fsl_asrc_pair);
++	pair->asrc = asrc;
++
++	init_completion(&pair->complete[IN]);
++	init_completion(&pair->complete[OUT]);
++
++	runtime->private_data = pair;
++
++	size = ASRC_M2M_BUFFER_SIZE;
++	ret = snd_dma_alloc_pages(SNDRV_DMA_TYPE_DEV, dev, size, &pair->dma_buffer[IN]);
++	if (ret)
++		goto error_alloc_in_buf;
++
++	ret = snd_dma_alloc_pages(SNDRV_DMA_TYPE_DEV, dev, size, &pair->dma_buffer[OUT]);
++	if (ret)
++		goto error_alloc_out_buf;
++
++	ret = pm_runtime_get_sync(dev);
++	if (ret < 0) {
++		dev_err(dev, "Failed to power up asrc\n");
++		goto err_pm_runtime;
++	}
++
++	return 0;
++
++err_pm_runtime:
++	snd_dma_free_pages(&pair->dma_buffer[OUT]);
++error_alloc_out_buf:
++	snd_dma_free_pages(&pair->dma_buffer[IN]);
++error_alloc_in_buf:
++	kfree(pair);
++	return ret;
++}
++
++static int fsl_asrc_m2m_comp_release(struct snd_compr_stream *stream)
++{
++	struct fsl_asrc *asrc = stream->private_data;
++	struct snd_compr_runtime *runtime = stream->runtime;
++	struct fsl_asrc_pair *pair = runtime->private_data;
++	struct device *dev = &asrc->pdev->dev;
++
++	pm_runtime_put_sync(dev);
++
++	snd_dma_free_pages(&pair->dma_buffer[IN]);
++	snd_dma_free_pages(&pair->dma_buffer[OUT]);
++
++	kfree(runtime->private_data);
++
++	return 0;
++}
++
++static int fsl_asrc_m2m_comp_set_params(struct snd_compr_stream *stream,
++					struct snd_compr_params *params)
++{
++	struct fsl_asrc *asrc = stream->private_data;
++	struct snd_compr_runtime *runtime = stream->runtime;
++	struct fsl_asrc_pair *pair = runtime->private_data;
++	struct fsl_asrc_m2m_cap cap;
++	int ret, i;
++
++	ret = asrc->m2m_get_cap(&cap);
++	if (ret)
++		return -EINVAL;
++
++	if (pcm_format_to_bits(params->codec.format) & cap.fmt_in)
++		pair->sample_format[IN] = params->codec.format;
++	else
++		return -EINVAL;
++
++	if (pcm_format_to_bits(params->codec.pcm_format) & cap.fmt_out)
++		pair->sample_format[OUT] = params->codec.pcm_format;
++	else
++		return -EINVAL;
++
++	/* check input rate is in scope */
++	for (i = 0; i < cap.rate_in_count; i++)
++		if (params->codec.sample_rate == cap.rate_in[i]) {
++			pair->rate[IN] = params->codec.sample_rate;
++			break;
++		}
++	if (i == cap.rate_in_count)
++		return -EINVAL;
++
++	/* check output rate is in scope */
++	for (i = 0; i < cap.rate_out_count; i++)
++		if (params->codec.options.src_d.out_sample_rate == cap.rate_out[i]) {
++			pair->rate[OUT] = params->codec.options.src_d.out_sample_rate;
++			break;
++		}
++	if (i == cap.rate_out_count)
++		return -EINVAL;
++
++	if (params->codec.ch_in != params->codec.ch_out ||
++	    params->codec.ch_in < cap.chan_min ||
++	    params->codec.ch_in > cap.chan_max)
++		return -EINVAL;
++
++	pair->channels = params->codec.ch_in;
++	pair->buf_len[IN] = params->buffer.fragment_size;
++	pair->buf_len[OUT] = params->buffer.fragment_size;
++
++	return 0;
++}
++
++static int fsl_asrc_m2m_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
++{
++	struct snd_dma_buffer *dmab = dmabuf->priv;
++
++	return snd_dma_buffer_mmap(dmab, vma);
++}
++
++static struct sg_table *fsl_asrc_m2m_map_dma_buf(struct dma_buf_attachment *attachment,
++						 enum dma_data_direction direction)
++{
++	struct snd_dma_buffer *dmab = attachment->dmabuf->priv;
++	struct sg_table *sgt;
++
++	sgt = kmalloc(sizeof(*sgt), GFP_KERNEL);
++	if (!sgt)
++		return NULL;
++
++	if (dma_get_sgtable(attachment->dev, sgt, dmab->area, dmab->addr, dmab->bytes) < 0)
++		goto free;
++
++	if (dma_map_sgtable(attachment->dev, sgt, direction, 0))
++		goto free;
++
++	return sgt;
++
++free:
++	sg_free_table(sgt);
++	kfree(sgt);
++	return NULL;
++}
++
++static void fsl_asrc_m2m_unmap_dma_buf(struct dma_buf_attachment *attachment,
++				       struct sg_table *table,
++				       enum dma_data_direction direction)
++{
++	dma_unmap_sgtable(attachment->dev, table, direction, 0);
++}
++
++static void fsl_asrc_m2m_release(struct dma_buf *dmabuf)
++{
++	/* buffer is released by fsl_asrc_m2m_comp_release() */
++}
++
++static const struct dma_buf_ops fsl_asrc_m2m_dma_buf_ops = {
++	.mmap = fsl_asrc_m2m_mmap,
++	.map_dma_buf = fsl_asrc_m2m_map_dma_buf,
++	.unmap_dma_buf = fsl_asrc_m2m_unmap_dma_buf,
++	.release = fsl_asrc_m2m_release,
++};
++
++static int fsl_asrc_m2m_comp_task_create(struct snd_compr_stream *stream,
++					 struct snd_compr_task_runtime *task)
++{
++	DEFINE_DMA_BUF_EXPORT_INFO(exp_info_in);
++	DEFINE_DMA_BUF_EXPORT_INFO(exp_info_out);
++	struct fsl_asrc *asrc = stream->private_data;
++	struct snd_compr_runtime *runtime = stream->runtime;
++	struct fsl_asrc_pair *pair = runtime->private_data;
 +	struct device *dev = &asrc->pdev->dev;
 +	int ret;
 +
-+	ctx_priv->in_params.sample_rate = pair->rate[IN];
-+	ctx_priv->in_params.sample_format = pair->sample_format[IN];
-+	ctx_priv->out_params.sample_rate = pair->rate[OUT];
-+	ctx_priv->out_params.sample_format = pair->sample_format[OUT];
-+
-+	ctx_priv->in_params.fifo_wtmk = FSL_EASRC_INPUTFIFO_WML;
-+	ctx_priv->out_params.fifo_wtmk = FSL_EASRC_OUTPUTFIFO_WML;
-+	/* Fill the right half of the re-sampler with zeros */
-+	ctx_priv->rs_init_mode = 0x2;
-+	/* Zero fill the right half of the prefilter */
-+	ctx_priv->pf_init_mode = 0x2;
-+
-+	ret = fsl_easrc_set_ctx_format(pair,
-+				       &ctx_priv->in_params.sample_format,
-+				       &ctx_priv->out_params.sample_format);
-+	if (ret) {
-+		dev_err(dev, "failed to set context format: %d\n", ret);
++	exp_info_in.ops = &fsl_asrc_m2m_dma_buf_ops;
++	exp_info_in.size = ASRC_M2M_BUFFER_SIZE;
++	exp_info_in.flags = O_RDWR;
++	exp_info_in.priv = &pair->dma_buffer[IN];
++	task->input = dma_buf_export(&exp_info_in);
++	if (IS_ERR(task->input)) {
++		ret = PTR_ERR(task->input);
 +		return ret;
 +	}
 +
-+	ret = fsl_easrc_config_context(asrc, pair->index);
-+	if (ret) {
-+		dev_err(dev, "failed to config context %d\n", ret);
++	exp_info_out.ops = &fsl_asrc_m2m_dma_buf_ops;
++	exp_info_out.size = ASRC_M2M_BUFFER_SIZE;
++	exp_info_out.flags = O_RDWR;
++	exp_info_out.priv = &pair->dma_buffer[OUT];
++	task->output = dma_buf_export(&exp_info_out);
++	if (IS_ERR(task->output)) {
++		ret = PTR_ERR(task->output);
 +		return ret;
 +	}
 +
-+	ctx_priv->in_params.iterations = 1;
-+	ctx_priv->in_params.group_len = pair->channels;
-+	ctx_priv->in_params.access_len = pair->channels;
-+	ctx_priv->out_params.iterations = 1;
-+	ctx_priv->out_params.group_len = pair->channels;
-+	ctx_priv->out_params.access_len = pair->channels;
-+
-+	ret = fsl_easrc_set_ctx_organziation(pair);
++	/* Request asrc pair/context */
++	ret = asrc->request_pair(pair->channels, pair);
 +	if (ret) {
-+		dev_err(dev, "failed to set fifo organization\n");
-+		return ret;
++		dev_err(dev, "failed to request pair: %d\n", ret);
++		goto err_request_pair;
 +	}
 +
-+	/* The context start flag */
-+	pair->first_convert = 1;
-+	return 0;
-+}
-+
-+static int fsl_easrc_m2m_start(struct fsl_asrc_pair *pair)
-+{
-+	/* start context once */
-+	if (pair->first_convert) {
-+		fsl_easrc_start_context(pair);
-+		pair->first_convert = 0;
++	ret = asrc->m2m_prepare(pair);
++	if (ret) {
++		dev_err(dev, "failed to start pair part one: %d\n", ret);
++		goto err_start_part_one;
 +	}
 +
-+	return 0;
-+}
++	/* Request dma channels */
++	pair->dma_chan[IN] = asrc->get_dma_channel(pair, IN);
++	if (!pair->dma_chan[IN]) {
++		dev_err(dev, "[ctx%d] failed to get input DMA channel\n", pair->index);
++		ret = -EBUSY;
++		goto err_dma_channel_in;
++	}
 +
-+static int fsl_easrc_m2m_stop(struct fsl_asrc_pair *pair)
-+{
-+	/* Stop pair/context */
-+	if (!pair->first_convert) {
-+		fsl_easrc_stop_context(pair);
-+		pair->first_convert = 1;
++	pair->dma_chan[OUT] = asrc->get_dma_channel(pair, OUT);
++	if (!pair->dma_chan[OUT]) {
++		dev_err(dev, "[ctx%d] failed to get output DMA channel\n", pair->index);
++		ret = -EBUSY;
++		goto err_dma_channel_out;
 +	}
 +
 +	return 0;
++
++err_dma_channel_out:
++	dma_release_channel(pair->dma_chan[IN]);
++err_dma_channel_in:
++	if (asrc->m2m_unprepare)
++		asrc->m2m_unprepare(pair);
++err_start_part_one:
++	asrc->release_pair(pair);
++err_request_pair:
++	return ret;
 +}
 +
-+/* calculate capture data length according to output data length and sample rate */
-+static int fsl_easrc_m2m_calc_out_len(struct fsl_asrc_pair *pair, int input_buffer_length)
++static int fsl_asrc_m2m_comp_task_start(struct snd_compr_stream *stream,
++					struct snd_compr_task_runtime *task)
 +{
-+	struct fsl_asrc *easrc = pair->asrc;
-+	struct fsl_easrc_priv *easrc_priv = easrc->private;
-+	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
-+	unsigned int in_rate = ctx_priv->in_params.norm_rate;
-+	unsigned int out_rate = ctx_priv->out_params.norm_rate;
-+	unsigned int channels = pair->channels;
-+	unsigned int in_samples, out_samples;
-+	unsigned int in_width, out_width;
-+	unsigned int out_length;
-+	unsigned int frac_bits;
-+	u64 val1, val2;
++	struct snd_compr_runtime *runtime = stream->runtime;
++	struct fsl_asrc_pair *pair = runtime->private_data;
 +
-+	switch (easrc_priv->rs_num_taps) {
-+	case EASRC_RS_32_TAPS:
-+		/* integer bits = 5; */
-+		frac_bits = 39;
-+		break;
-+	case EASRC_RS_64_TAPS:
-+		/* integer bits = 6; */
-+		frac_bits = 38;
-+		break;
-+	case EASRC_RS_128_TAPS:
-+		/* integer bits = 7; */
-+		frac_bits = 37;
-+		break;
-+	default:
++	asrc_m2m_device_run(pair, task);
++
++	return 0;
++}
++
++static int fsl_asrc_m2m_comp_task_stop(struct snd_compr_stream *stream,
++				       struct snd_compr_task_runtime *task)
++{
++	return 0;
++}
++
++static int fsl_asrc_m2m_comp_task_free(struct snd_compr_stream *stream,
++				       struct snd_compr_task_runtime *task)
++{
++	struct fsl_asrc *asrc = stream->private_data;
++	struct snd_compr_runtime *runtime = stream->runtime;
++	struct fsl_asrc_pair *pair = runtime->private_data;
++
++	/* Stop & release pair/context */
++	if (asrc->m2m_stop)
++		asrc->m2m_stop(pair);
++
++	if (asrc->m2m_unprepare)
++		asrc->m2m_unprepare(pair);
++	asrc->release_pair(pair);
++
++	/* Release dma channel */
++	if (pair->dma_chan[IN])
++		dma_release_channel(pair->dma_chan[IN]);
++	if (pair->dma_chan[OUT])
++		dma_release_channel(pair->dma_chan[OUT]);
++
++	return 0;
++}
++
++static int fsl_asrc_m2m_get_caps(struct snd_compr_stream *cstream,
++				 struct snd_compr_caps *caps)
++{
++	caps->num_codecs = 1;
++	caps->min_fragment_size = 4096;
++	caps->max_fragment_size = 4096;
++	caps->min_fragments = 1;
++	caps->max_fragments = 1;
++	caps->codecs[0] = SND_AUDIOCODEC_PCM;
++
++	return 0;
++}
++
++static int fsl_asrc_m2m_fill_codec_caps(struct fsl_asrc *asrc,
++					struct snd_compr_codec_caps *codec)
++{
++	struct fsl_asrc_m2m_cap cap;
++	snd_pcm_format_t k;
++	int j = 0;
++	int ret;
++
++	ret = asrc->m2m_get_cap(&cap);
++	if (ret)
 +		return -EINVAL;
++
++	pcm_for_each_format(k) {
++		if (pcm_format_to_bits(k) & cap.fmt_in) {
++			codec->descriptor[j].max_ch = cap.chan_max;
++			memcpy(codec->descriptor[j].sample_rates,
++			       cap.rate_in,
++			       cap.rate_in_count * sizeof(__u32));
++			codec->descriptor[j].num_sample_rates = cap.rate_in_count;
++			codec->descriptor[j].formats = k;
++			codec->descriptor[j].pcm_formats = cap.fmt_out;
++			codec->descriptor[j].src.out_sample_rate_min = cap.rate_out[0];
++			codec->descriptor[j].src.out_sample_rate_max =
++				cap.rate_out[cap.rate_out_count - 1];
++			j++;
++		}
 +	}
 +
-+	val1 = (u64)in_rate << frac_bits;
-+	do_div(val1, out_rate);
-+	val1 += (s64)ctx_priv->ratio_mod << (frac_bits - 31);
++	codec->codec = SND_AUDIOCODEC_PCM;
++	codec->num_descriptors = j;
++	return 0;
++}
 +
-+	in_width = snd_pcm_format_physical_width(ctx_priv->in_params.sample_format) / 8;
-+	out_width = snd_pcm_format_physical_width(ctx_priv->out_params.sample_format) / 8;
++static int fsl_asrc_m2m_get_codec_caps(struct snd_compr_stream *stream,
++				       struct snd_compr_codec_caps *codec)
++{
++	struct fsl_asrc *asrc = stream->private_data;
 +
-+	ctx_priv->in_filled_len += input_buffer_length;
-+	if (ctx_priv->in_filled_len <= ctx_priv->in_filled_sample * in_width * channels) {
-+		out_length = 0;
-+	} else {
-+		in_samples = ctx_priv->in_filled_len / (in_width * channels) -
-+			     ctx_priv->in_filled_sample;
++	return fsl_asrc_m2m_fill_codec_caps(asrc, codec);
++}
 +
-+		/* right shift 12 bit to make ratio in 32bit space */
-+		val2 = (u64)in_samples << (frac_bits - 12);
-+		val1 = val1 >> 12;
-+		do_div(val2, val1);
-+		out_samples = val2;
++static struct snd_compr_ops fsl_asrc_m2m_compr_ops = {
++	.open = fsl_asrc_m2m_comp_open,
++	.free = fsl_asrc_m2m_comp_release,
++	.set_params = fsl_asrc_m2m_comp_set_params,
++	.get_caps = fsl_asrc_m2m_get_caps,
++	.get_codec_caps = fsl_asrc_m2m_get_codec_caps,
++	.task_create = fsl_asrc_m2m_comp_task_create,
++	.task_start = fsl_asrc_m2m_comp_task_start,
++	.task_stop = fsl_asrc_m2m_comp_task_stop,
++	.task_free = fsl_asrc_m2m_comp_task_free,
++};
 +
-+		out_length = out_samples * out_width * channels;
-+		ctx_priv->in_filled_len = ctx_priv->in_filled_sample * in_width * channels;
++int fsl_asrc_m2m_suspend(struct fsl_asrc *asrc)
++{
++	struct fsl_asrc_pair *pair;
++	int i;
++
++	for (i = 0; i < PAIR_CTX_NUM; i++) {
++		pair = asrc->pair[i];
++		if (!pair)
++			continue;
++		if (!completion_done(&pair->complete[IN])) {
++			if (pair->dma_chan[IN])
++				dmaengine_terminate_all(pair->dma_chan[IN]);
++			asrc_input_dma_callback((void *)pair);
++		}
++		if (!completion_done(&pair->complete[OUT])) {
++			if (pair->dma_chan[OUT])
++				dmaengine_terminate_all(pair->dma_chan[OUT]);
++			asrc_output_dma_callback((void *)pair);
++		}
++
++		if (asrc->m2m_pair_suspend)
++			asrc->m2m_pair_suspend(pair);
 +	}
 +
-+	return out_length;
-+}
-+
-+static int fsl_easrc_m2m_get_maxburst(u8 dir, struct fsl_asrc_pair *pair)
-+{
-+	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
-+
-+	if (dir == IN)
-+		return ctx_priv->in_params.fifo_wtmk * pair->channels;
-+	else
-+		return ctx_priv->out_params.fifo_wtmk * pair->channels;
-+}
-+
-+static int fsl_easrc_m2m_pair_suspend(struct fsl_asrc_pair *pair)
-+{
-+	fsl_easrc_stop_context(pair);
-+
 +	return 0;
 +}
++EXPORT_SYMBOL_GPL(fsl_asrc_m2m_suspend);
 +
-+static int fsl_easrc_m2m_pair_resume(struct fsl_asrc_pair *pair)
++int fsl_asrc_m2m_resume(struct fsl_asrc *asrc)
 +{
-+	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
++	struct fsl_asrc_pair *pair;
++	int i;
 +
-+	pair->first_convert = 1;
-+	ctx_priv->in_filled_len = 0;
-+
-+	return 0;
-+}
-+
-+/* val is Q31 */
-+static int fsl_easrc_m2m_set_ratio_mod(struct fsl_asrc_pair *pair, int val)
-+{
-+	struct fsl_easrc_ctx_priv *ctx_priv = pair->private;
-+	struct fsl_asrc *easrc = pair->asrc;
-+	struct fsl_easrc_priv *easrc_priv = easrc->private;
-+	unsigned int frac_bits;
-+
-+	ctx_priv->ratio_mod += val;
-+
-+	switch (easrc_priv->rs_num_taps) {
-+	case EASRC_RS_32_TAPS:
-+		/* integer bits = 5; */
-+		frac_bits = 39;
-+		break;
-+	case EASRC_RS_64_TAPS:
-+		/* integer bits = 6; */
-+		frac_bits = 38;
-+		break;
-+	case EASRC_RS_128_TAPS:
-+		/* integer bits = 7; */
-+		frac_bits = 37;
-+		break;
-+	default:
-+		return -EINVAL;
++	for (i = 0; i < PAIR_CTX_NUM; i++) {
++		pair = asrc->pair[i];
++		if (!pair)
++			continue;
++		if (asrc->m2m_pair_resume)
++			asrc->m2m_pair_resume(pair);
 +	}
 +
-+	val <<= (frac_bits - 31);
-+	regmap_write(easrc->regmap, REG_EASRC_RUC(pair->index), EASRC_RSUC_RS_RM(val));
-+
 +	return 0;
 +}
++EXPORT_SYMBOL_GPL(fsl_asrc_m2m_resume);
 +
-+static int fsl_easrc_m2m_get_cap(struct fsl_asrc_m2m_cap *cap)
++int fsl_asrc_m2m_init(struct fsl_asrc *asrc)
 +{
-+	cap->fmt_in = FSL_EASRC_FORMATS;
-+	cap->fmt_out = FSL_EASRC_FORMATS | SNDRV_PCM_FMTBIT_IEC958_SUBFRAME_LE;
-+	cap->rate_in = easrc_rates;
-+	cap->rate_in_count = ARRAY_SIZE(easrc_rates);
-+	cap->rate_out = easrc_rates;
-+	cap->rate_out_count = ARRAY_SIZE(easrc_rates);
-+	cap->chan_min = 1;
-+	cap->chan_max = 32;
-+	return 0;
-+}
++	struct device *dev = &asrc->pdev->dev;
++	struct snd_card *card;
++	struct snd_compr *compr;
++	int ret;
 +
- static const struct of_device_id fsl_easrc_dt_ids[] = {
- 	{ .compatible = "fsl,imx8mn-easrc",},
- 	{}
-@@ -1926,6 +2144,16 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 	easrc->release_pair = fsl_easrc_release_context;
- 	easrc->get_fifo_addr = fsl_easrc_get_fifo_addr;
- 	easrc->pair_priv_size = sizeof(struct fsl_easrc_ctx_priv);
-+	easrc->m2m_prepare = fsl_easrc_m2m_prepare;
-+	easrc->m2m_start = fsl_easrc_m2m_start;
-+	easrc->m2m_stop = fsl_easrc_m2m_stop;
-+	easrc->get_output_fifo_size = fsl_easrc_get_output_fifo_size;
-+	easrc->m2m_calc_out_len = fsl_easrc_m2m_calc_out_len;
-+	easrc->m2m_get_maxburst = fsl_easrc_m2m_get_maxburst;
-+	easrc->m2m_pair_suspend = fsl_easrc_m2m_pair_suspend;
-+	easrc->m2m_pair_resume = fsl_easrc_m2m_pair_resume;
-+	easrc->m2m_set_ratio_mod = fsl_easrc_m2m_set_ratio_mod;
-+	easrc->m2m_get_cap = fsl_easrc_m2m_get_cap;
- 
- 	easrc_priv->rs_num_taps = EASRC_RS_32_TAPS;
- 	easrc_priv->const_coeff = 0x3FF0000000000000;
-diff --git a/sound/soc/fsl/fsl_easrc.h b/sound/soc/fsl/fsl_easrc.h
-index 7c70dac52713..c9f770862662 100644
---- a/sound/soc/fsl/fsl_easrc.h
-+++ b/sound/soc/fsl/fsl_easrc.h
-@@ -601,6 +601,8 @@ struct fsl_easrc_slot {
-  * @out_missed_sample: sample missed in output
-  * @st1_addexp: exponent added for stage1
-  * @st2_addexp: exponent added for stage2
-+ * @ratio_mod: update ratio
-+ * @in_filled_len: input filled length
-  */
- struct fsl_easrc_ctx_priv {
- 	struct fsl_easrc_io_params in_params;
-@@ -618,6 +620,8 @@ struct fsl_easrc_ctx_priv {
- 	int out_missed_sample;
- 	int st1_addexp;
- 	int st2_addexp;
-+	int ratio_mod;
-+	unsigned int in_filled_len;
- };
- 
- /**
++	ret = snd_card_new(dev, SNDRV_DEFAULT_IDX1, SNDRV_DEFAULT_STR1,
++			   THIS_MODULE, 0, &card);
++	if (ret < 0)
++		return ret;
++
++	strscpy(card->driver, "fsl-asrc-m2m", sizeof(card->driver));
++	strscpy(card->shortname, "ASRC-M2M", sizeof(card->shortname));
++	strscpy(card->longname, "ASRC-M2M", sizeof(card->shortname));
++
++	asrc->card = card;
++
++	compr = devm_kzalloc(dev, sizeof(*compr), GFP_KERNEL);
++	if (!compr) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	compr->ops = &fsl_asrc_m2m_compr_ops;
++	compr->private_data = asrc;
++
++	ret = snd_compress_new(card, 0, SND_COMPRESS_ACCEL, "ASRC M2M", compr);
++	if (ret < 0)
++		goto err;
++
++	ret = snd_card_register(card);
++	if (ret < 0)
++		goto err;
++
++	return 0;
++err:
++	snd_card_free(card);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(fsl_asrc_m2m_init);
++
++void fsl_asrc_m2m_exit(struct fsl_asrc *asrc)
++{
++	struct snd_card *card = asrc->card;
++
++	snd_card_free(card);
++}
++EXPORT_SYMBOL_GPL(fsl_asrc_m2m_exit);
++
++MODULE_IMPORT_NS(DMA_BUF);
++MODULE_AUTHOR("Shengjiu Wang <Shengjiu.Wang@nxp.com>");
++MODULE_DESCRIPTION("Freescale ASRC M2M driver");
++MODULE_LICENSE("GPL");
 -- 
 2.34.1
 
