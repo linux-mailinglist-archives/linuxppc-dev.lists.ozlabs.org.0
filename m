@@ -1,78 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-3101-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3102-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393E59C4F64
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2024 08:25:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 969439C5052
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2024 09:11:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XndHg691fz2yF7;
-	Tue, 12 Nov 2024 18:25:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XnfJR294Nz2xpk;
+	Tue, 12 Nov 2024 19:11:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731396351;
-	cv=none; b=oFd65f82f11i/rqAVzdx5GTSuWvgU5fDuoY5VjNvRF7u5/DoP7I3mzo9rrd8iKQvZXUglfYUuIt3qIqriL+FmteQLFWhZVDeOHz7Lwuxon9APpvWl1HIihamnsEI/d/eUt3ZZaP8j9+8NugZZr3eHI6xj6LMq8b5E8Lmw673v0VVNjSNgo2eC04iUMhkiJjaM2LNWQu62vKOV989joWlADa/3O0KtNogHsyt5ecuo7Lurhy7MQUK0wWklXv+f8eoHzqeGhS0T22/MnqpHJ5BvrFCnYeb0EBAlQf0K05m+WMdVotr4yhgojRTd1yeZtp2jIGKc3sxJxsMh85wU8X90Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:edc0:2:b01:1d::104"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731399095;
+	cv=none; b=an6kd3I29eCetbLLK1kS2rXjMeQ1xy+gmDqSOxoj9gsjYcvzG15gVILG43yd4FFM7ZaN677A+EAOEs/ixYEFosyHJpqLTLpYpZDHRP2jdonHmepZq4T2bHDAIED1Cmj3UaJcNTQPQs8pAdCx/yFZUyyuIiudk/dIcuwDHTHT5Q+AJKhGacx0nbZnWMw6BAVjN+UgqlkRl8gi9XemwWAdM83+SOXeJ9oaskihtF3M1rrqiL/1MErs+TzSVOnfUA2lg+ZspvLL/DRmj0DlQSSN7qj4z7wMyQlwRc/ZjKPdEL8H+iq5t7C8pigAUfMf3oGlL3Ik4s9v0IQ1xdZGNeUKSg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731396351; c=relaxed/relaxed;
-	bh=un+IzsWXUIQ4YEvVAR5/8jl+eO4zaFaxLMNh/WulKmc=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=GSdDAcYydDgAmXWYZeJ+7U9YUZmQq3+s4pQuJQ0r+2pNLa1LsGLzxmvOfMa6NtonqwdAXbv75/59XP3aWOc6764l4VGegtH8q8JN3SR2EwNsDrCY5NOFn45wRIaLvpYYQDy4g6um2DMa1hmzv7OfJODp5HFuWXMwIyz17ultlEhSSYrlUtcBQTUwJQ8I6w9DN1baOhm+4BUz2RQdenTjd7Id5Ie+w+GGSnftG9Glx73SgrOKT+aSc6umbP2NHXCYeGZrqf1FhswwV/PlUoiPKLUpJHKCeG2s4fP9TttQOpP/iXPOwQSa+FeHGce3Nm/eWE9ucYD7X6KD0qUUCMO1hA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b0M+K8QJ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=b0M+K8QJ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+	t=1731399095; c=relaxed/relaxed;
+	bh=jbCEbJtigEzrfzyGdDfeYhf12Y+BqR/lK0AjwtgVJuM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F3KF3451oekNvoPsIjkJQwu45GMPoVflQ3SnZSpp4scBLieN0QH3ktEBa+28hcGnicZW4Pvrenm0efNBsBuRw7qAkAJst7Xz8NC7q7QHZ58accuJmR0ZooiAuwzULSEJ+8P/f0zXQltqZ5p8WOjfFWAtesP7m3F3MPF2AI/UsqfLYb7e7mXswK9CWVLpqcVJQ7SbOmN0vmu0oT/u76yE0npyxNlgKz3oHiINsTkMo2FALZ1695ijd4S7rfvIVEG1yRpVxtGodW4SSTnHYixQg7BUz9vX6hxYepOXfzS/LLDqRbZhZeuqH4KWbLIlnqSoyu9q+NYfpvR+edauat850Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=mkl@pengutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=pengutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=mkl@pengutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 961 seconds by postgrey-1.37 at boromir; Tue, 12 Nov 2024 19:11:33 AEDT
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XndHf55B2z2y8q
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2024 18:25:48 +1100 (AEDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-20c70abba48so51207005ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Nov 2024 23:25:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731396345; x=1732001145; darn=lists.ozlabs.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=un+IzsWXUIQ4YEvVAR5/8jl+eO4zaFaxLMNh/WulKmc=;
-        b=b0M+K8QJjzCCPw5GqjWjjervDdb/LVtAsnMwgDbz6bWBFCdTbZQOiVWwKH04szqrEO
-         11mtXSmDxmZDzWbIvC5YZNmvhpszbbfS4K43uQ8TqLqtOi28lLuiAo2sQb/Xn5pl/mPg
-         Iwg96AOBNdjWduEGBbcgPcWf+7dPcxpsC02uW/DKImDeWNxSRBENgGbL+S+Z8Plyjcxw
-         FK+3mebKWMtY+TpGXNvhBJSj4jhMd7meMUNJxU9bUaQ4gSW0J/xR+PCJZ7nDj4BFENWN
-         8XjbwRS9UC63bnP27/eLl7abNorIwvo0HBgzfWgC5RsnzurXRdeTFi+/UtJUEdiVeGnr
-         BRqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731396345; x=1732001145;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=un+IzsWXUIQ4YEvVAR5/8jl+eO4zaFaxLMNh/WulKmc=;
-        b=nkCuDwMYAuS25U0Y9OK/l4J1ugJQjXDdN7r9UpNfHWlY9lW1ZKIEVvaXMccuz1Q51o
-         tDYxFbmmzDni/8RobJDNiIDzfeMxMoCS2uLsQKQwL2sGZh684YVKNaoH/XNtFTTYEQFI
-         P9Cpcc6fU81dXAYrO61RkzyWaKYf5R5hIo7g1R1+uwpJz4M4SvzrbMRSVoc19D//VRmd
-         Sy1r44NWJjr2kkeT8apxlT3vtjaAIWrONyliFeER4gKD4/Lds260Trhw62SajHeA/2wD
-         yNuA4v/UEq1Hr6DBlXWwlI4aLpGBGD2siE8J83Cc/I2MIbxefeHzkZbq1tEibWz86Txo
-         FlLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWAI3J2dbz6qvdplMNo6smQyOJmuGQHv13wHSwmUb8I1f8zX49Y3rUj9GhCp/UtqB6pCTvDZwfBcDIZUM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwrVcqB7pgSBrSoGwdy6tGsWYLDMbVHh8KcTdhaPLnzmqN06dBd
-	3/tFir///3rEiP23omMmn3NH1a6e7V27xEj7zdL1u3KvlnKukVdF
-X-Google-Smtp-Source: AGHT+IGe5XrvFAoGampFWuhi/1aDwogoDdc7nKI232jh/XFNGsDMY4V8oPgHxDll106z08ZcF2ASUA==
-X-Received: by 2002:a17:90b:1c92:b0:2e2:d3f6:6efc with SMTP id 98e67ed59e1d1-2e9b177bdbemr21616056a91.28.1731396345108;
-        Mon, 11 Nov 2024 23:25:45 -0800 (PST)
-Received: from dw-tp ([171.76.87.84])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e99a5f95e4sm11912773a91.33.2024.11.11.23.25.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Nov 2024 23:25:44 -0800 (PST)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Hari Bathini <hbathini@linux.ibm.com>, Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Sourabh Jain <sourabhjain@linux.ibm.com>
-Subject: Re: [PATCH v2 1/2] powerpc/fadump: allocate memory for additional parameters early
-In-Reply-To: <20241107055817.489795-1-sourabhjain@linux.ibm.com>
-Date: Tue, 12 Nov 2024 12:33:22 +0530
-Message-ID: <87y11plyrp.fsf@gmail.com>
-References: <20241107055817.489795-1-sourabhjain@linux.ibm.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XnfJP17Rpz2xk1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2024 19:11:33 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tAljt-000840-0J; Tue, 12 Nov 2024 08:55:05 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tAljp-000NFm-0Y;
+	Tue, 12 Nov 2024 08:55:01 +0100
+Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id A90A23712AA;
+	Tue, 12 Nov 2024 07:55:00 +0000 (UTC)
+Date: Tue, 12 Nov 2024 08:55:00 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Vladimir Oltean <olteanv@gmail.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Pantelis Antoniou <pantelis.antoniou@gmail.com>, Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
+	Byungho An <bh74.an@samsung.com>, Kevin Brace <kevinbrace@bracecomputerlab.com>, 
+	Francois Romieu <romieu@fr.zoreil.com>, Michal Simek <michal.simek@amd.com>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Zhao Qiang <qiang.zhao@nxp.com>, "open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>, 
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>, 
+	"open list:FREESCALE SOC FS_ENET DRIVER" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCHv2 net-next] net: use pdev instead of OF funcs
+Message-ID: <20241112-lush-beneficial-chicken-9a31f5-mkl@pengutronix.de>
+References: <20241111210316.15357-1-rosenp@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,147 +76,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wiafd67i2wzywtxu"
+Content-Disposition: inline
+In-Reply-To: <20241111210316.15357-1-rosenp@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Sourabh Jain <sourabhjain@linux.ibm.com> writes:
 
-> From: Hari Bathini <hbathini@linux.ibm.com>
->
-> Memory for passing additional parameters to fadump capture kernel
-> is allocated during subsys_initcall level, using memblock. But
-> as slab is already available by this time, allocation happens via
-> the buddy allocator. This may work for radix MMU but is likely to
-> fail in most cases for hash MMU as hash MMU needs this memory in
-> the first memory block for it to be accessible in real mode in the
-> capture kernel (second boot). So, allocate memory for additional
-> parameters area as soon as MMU mode is obvious.
+--wiafd67i2wzywtxu
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCHv2 net-next] net: use pdev instead of OF funcs
+MIME-Version: 1.0
 
-But looks like this was only caught due to the WARN_ON_ONCE emitted from
-mm/memblock.c which detected accidental use of memblock APIs when slab is
-available. That begs a question on why didn't we see the issue on Hash? 
-Are we not using the "param_area_supported" feature that often is it?
+On 11.11.2024 13:03:16, Rosen Penev wrote:
+> np here is the node coming from platform_device. No children are used.
+>=20
+> I changed irq_of_parse_and_map to platform_get_irq to pass it directly.
+>=20
+> I changed of_address_to_resource to platform_get_resource for the same
+> reason.
+>=20
+> It ends up being the same.
 
->
-> Fixes: 683eab94da75 ("powerpc/fadump: setup additional parameters for dump capture kernel")
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-> Closes: https://lore.kernel.org/lkml/a70e4064-a040-447b-8556-1fd02f19383d@linux.vnet.ibm.com/T/#u
-> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+You should describe in an imperative way your changes. Something like:
+
+Modernize IRQ resource acquisition.
+
+Replace irq_of_parse_and_map() by platform_get_irq()
+
+=2E..and list the other changes, too.
+
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
 > ---
->
-> Changelog:
->
-> Since v1: https://lore.kernel.org/all/20241104083528.99520-1-sourabhjain@linux.ibm.com/
->   - Drop extern keyword from fadump_setup_param_area function declaration
->   - Don't use __va() while resetting param memory area
->
-> ---
->  arch/powerpc/include/asm/fadump.h |  2 ++
->  arch/powerpc/kernel/fadump.c      | 15 ++++++++++-----
->  arch/powerpc/kernel/prom.c        |  3 +++
->  3 files changed, 15 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/fadump.h b/arch/powerpc/include/asm/fadump.h
-> index ef40c9b6972a..7b3473e05273 100644
-> --- a/arch/powerpc/include/asm/fadump.h
-> +++ b/arch/powerpc/include/asm/fadump.h
-> @@ -19,6 +19,7 @@ extern int is_fadump_active(void);
->  extern int should_fadump_crash(void);
->  extern void crash_fadump(struct pt_regs *, const char *);
->  extern void fadump_cleanup(void);
-> +void fadump_setup_param_area(void);
->  extern void fadump_append_bootargs(void);
->  
->  #else	/* CONFIG_FA_DUMP */
-> @@ -26,6 +27,7 @@ static inline int is_fadump_active(void) { return 0; }
->  static inline int should_fadump_crash(void) { return 0; }
->  static inline void crash_fadump(struct pt_regs *regs, const char *str) { }
->  static inline void fadump_cleanup(void) { }
-> +static inline void fadump_setup_param_area(void) { }
->  static inline void fadump_append_bootargs(void) { }
->  #endif /* !CONFIG_FA_DUMP */
->  
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index a612e7513a4f..3a2863307863 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -1586,6 +1586,12 @@ static void __init fadump_init_files(void)
->  		return;
->  	}
->  
-> +	if (fw_dump.param_area) {
-> +		rc = sysfs_create_file(fadump_kobj, &bootargs_append_attr.attr);
-> +		if (rc)
-> +			pr_err("unable to create bootargs_append sysfs file (%d)\n", rc);
-> +	}
-> +
->  	debugfs_create_file("fadump_region", 0444, arch_debugfs_dir, NULL,
->  			    &fadump_region_fops);
->  
-> @@ -1740,7 +1746,7 @@ static void __init fadump_process(void)
->   * Reserve memory to store additional parameters to be passed
->   * for fadump/capture kernel.
->   */
-> -static void __init fadump_setup_param_area(void)
-> +void __init fadump_setup_param_area(void)
->  {
->  	phys_addr_t range_start, range_end;
->  
-> @@ -1748,7 +1754,7 @@ static void __init fadump_setup_param_area(void)
->  		return;
->  
->  	/* This memory can't be used by PFW or bootloader as it is shared across kernels */
-> -	if (radix_enabled()) {
-> +	if (early_radix_enabled()) {
->  		/*
->  		 * Anywhere in the upper half should be good enough as all memory
->  		 * is accessible in real mode.
-> @@ -1776,12 +1782,12 @@ static void __init fadump_setup_param_area(void)
->  						       COMMAND_LINE_SIZE,
->  						       range_start,
->  						       range_end);
-> -	if (!fw_dump.param_area || sysfs_create_file(fadump_kobj, &bootargs_append_attr.attr)) {
-> +	if (!fw_dump.param_area) {
->  		pr_warn("WARNING: Could not setup area to pass additional parameters!\n");
->  		return;
->  	}
->  
-> -	memset(phys_to_virt(fw_dump.param_area), 0, COMMAND_LINE_SIZE);
-> +	memset((void *)fw_dump.param_area, 0, COMMAND_LINE_SIZE);
->  }
->  
->  /*
-> @@ -1807,7 +1813,6 @@ int __init setup_fadump(void)
->  	}
->  	/* Initialize the kernel dump memory structure and register with f/w */
->  	else if (fw_dump.reserve_dump_area_size) {
-> -		fadump_setup_param_area();
->  		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
->  		register_fadump();
->  	}
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 0be07ed407c7..47db1b1aef25 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -908,6 +908,9 @@ void __init early_init_devtree(void *params)
->  
->  	mmu_early_init_devtree();
->  
-> +	/* Setup param area for passing additional parameters to fadump capture kernel. */
-> +	fadump_setup_param_area();
-> +
+>  v2: fixed compilation errors. Also removed non devm transformations.
+>  Those will be handled separately. Also reworded description.
+>  drivers/net/can/grcan.c                          |  2 +-
+>  drivers/net/can/mscan/mpc5xxx_can.c              |  2 +-
 
-Maybe we should add a comment here saying this needs to be done after
-mmu_early_init_devtree() because for pseries LPARs we need to be able to
-reliably use early_radix_enabled() helper within fadump_setup_param_area().
+Reviewed by: Marc Kleine-Budde <mkl@pengutronix.de> # for CAN
 
-Either ways the patch looks good to me. So please feel free to add - 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+regards,
+Marc
 
->  #ifdef CONFIG_PPC_POWERNV
->  	/* Scan and build the list of machine check recoverable ranges */
->  	of_scan_flat_dt(early_init_dt_scan_recoverable_ranges, NULL);
-> -- 
-> 2.46.2
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--wiafd67i2wzywtxu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmczCdEACgkQKDiiPnot
+vG9P5Qf9GHBDogv141w23Ql4QYhPyQNOFBbAjfAmSaXZJQjwjI2/PT9uMOtwx1N3
+xkyyFSufM0a+sr9Mn7vC+liJrlzO9Xmqq+53eTAvq2e2RPKAdVT/aPa21s05sWUI
+u1r/6bgaTgg9stZMDtivo6HAYr69FexPGYKdk9bAcm4gANpW/Ih+NpLB4IwzqKv6
+EHXEtt4AfiBCLNkq4BUwBO4D1CHsDbICmSZbC2RRZ5Jc85R9u+YYqwj7RN3EbDfL
+fWarhFuRuoGubmHPg8gaauKa5/Cxjo9fsjn93QTzRbgEgLJEsii3Y85oI0LaN0U8
+e9/zBSWu8p/gXjqOGAwOOYQ1WVxswA==
+=3yO+
+-----END PGP SIGNATURE-----
+
+--wiafd67i2wzywtxu--
 
