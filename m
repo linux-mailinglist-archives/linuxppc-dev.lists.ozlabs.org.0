@@ -1,83 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-3113-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3114-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6189C53F7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2024 11:35:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA43E9C5552
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Nov 2024 12:04:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XnjV95F0Zz2yYJ;
-	Tue, 12 Nov 2024 21:35:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xnk8M3rGKz2yT0;
+	Tue, 12 Nov 2024 22:04:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2607::609" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731407713;
-	cv=pass; b=PP7jQ2r85dBw/pb3youlNJixXXwiH9KpSbFoF4voQODecYjsTZAc7Fsg3cKzjk60Jz2T3KqVKVZFeYJsrc2Wq5F1+Z5bzmHaLqTgCwt1IJr8U7v1z/pVY3OkNGYjpJAnuk6RH8iTX1MzNEumEGMxd/6C2lYwddyXS2b46I7osJOXzEzCl00GZAD340WLdcYPQJG5WOhdSY8plVVLeyqT2uLomGP9H5D2j9llUrGCk6YHhkW46EA2184MBhOsaNMurmJNdMdZPWX7zcJIBDpAjG+9QevGgnsQ6GcCTo1r7XQ/hLrUlwwkg/WTfSxNLHGOmzg5HmOHEUpWQlhF1L2W1g==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731407713; c=relaxed/relaxed;
-	bh=mJK8WWOvDdKnJn03HGc+yupP/YXIOxc9ngBNgUkeoqw=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PfbQLHpWw853HafpYAtyVW4C/xwGywriVn3zge4eskq8e8dQe2fmaS+tQfFw89qSubL1BYkWnUYb6CfNlL+p9hwJSComhcMaqKUe80KFLFOTEBRMydwvicJqKeo2w56an6ihlZMvEkQI8O+540GTtX1DVboSFH5x1VhWPRDpHstyOcvmLajWcb8PohJkZ41frEfObMpAco7t3yk4eLDxEJ4AG4/hjitHK9/4Iq+HvgXOHXb1wNvGDHZ3iGVQWFCJnCx1f5+ObjYsDL4Avlfkn1AlsQOb//P9xY2tYfX06LUjPZ5WUidQWVzhVkUvnKS4Qp4884Wq8fnZaEHlWs3BMA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=NRk6L0Ga; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2607::609; helo=eur02-vi1-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731409491;
+	cv=none; b=O6yTqk7ksGQs/yLck56BrI5P064SG8/vF7ArZbYdDTvOHlOmQ4smj5AHZc5tPeaqaJjtN9Hq4GGzdP0PhdpT7VWMVUIFLnIqU7RA2pgtdk0VBEZ2qUHjz+vb321YcJdSFhiMYme3zCFe7ZS0bnJbXOsfqVzTHyXJ36QpbSVdOk7J76z2Hw9lc7ZqY71o/BRMZ7OGeYOiroqr6t2N3bT12OjfzaFgxIIkcWaqVedOGDnykTwD/yGS5ltmgrDCjT08UVvGOEuKHFrPAamUvmmye6PfxllVoBw+arnTtFjMAgjfShPKy4usHrapy+EwdbzFW0EtY3eEeCvAk6raI9whuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1731409491; c=relaxed/relaxed;
+	bh=4rZUozDViK93X5bNTyuCtpnrFwp+p50YTiTl+cmuUD0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fg7XS8i9zitNfKSNXtzi7YRttAnkfr6h8mHPCJg1qY5Cp3JsnHBbcEIZUtk7m6gsNv4xG2ULBXGz+FAblW4/H214KIRy7E18Mm5hCXzW1ZpoG7nqrKCRfc0Psj+h+hzM/NHy7Lr0gawE58D/QisPm2BKCYfsom2fgIEPoXFtpljwX+rpdSgjghi3TEqlb09QH1afCeUuW7vHpLqhM3AgGo5AC9p+l41NdvD1YiL9MiRGNX5h2iqHVbNl83rnnXLf5ZNLgioV6uLPbUmb8Xi1K9R9ntPJ8T08f0hYEab6KUEjByep4J3+6S0GHQTKFpSMcMiKfO9W3UPRQOOcxoeS3Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rR0Fly7l; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=NRk6L0Ga;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rR0Fly7l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2607::609; helo=eur02-vi1-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on20609.outbound.protection.outlook.com [IPv6:2a01:111:f403:2607::609])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XnjV90fnBz2yZZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2024 21:35:13 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aM+GyKJtjCGZZQS/qD/c99saHQSMN1jT+QLLLLkF9X499QDpmjAA0CNtbZl5FDns5LJ9Ikq5SqvJmgR5rHDijmiAV1EJnsntSk+Eegt1UQE6dSH5U6lDcoi5nT/M9Ct3EsMEmzNodr1BCpfUU6FEe+qabMmS2gEStRzNnY/Sx9Do22/4bESuUGKKF9exR7MyLGp5y8ExhN9ysDMdmMuo4DbSU0z5RmlSis/Fnh9WmVLp70I+QSoFtIsTxgCiVRa4lzrJ8UkS7ZnIj1BlqqrXaQsF/MMfgtKEpYWhoN6QhwmD3M2pymfeizYVVWRusi7wTTlSdph1tksqPCaOKLlGGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mJK8WWOvDdKnJn03HGc+yupP/YXIOxc9ngBNgUkeoqw=;
- b=ElZXc4NCQg6xLYgYw6C3ewa0o1VLc5V8ooQlljNjW0wdjU07iiM0aMmmxZCxDb3AiGL1+Td2Gr0aJ6LW9GHpcoMnrVAzmE9yOshDR6mm0wsMX9y5PQbXCC5GTquMUHUw13PA9QuXl/FAR/hz4IXCyr8KH2UvTfqbIayz+ILR3Xo1ouxD2bdV5ZEmn9ck25QpYfMFABRopEqS7uP0db6JQaBpzZgbmwMYCQ9VLrHukYDpNCYRVO+nA6Bh+//fF3ki4V4C7DZD3WnFefOHm5d3S78n/ze8wpZnCuQjRMLoCBTcnfLON4iJGUTj60sTU8kTCcOZCX29w45SPN1Odo5X8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mJK8WWOvDdKnJn03HGc+yupP/YXIOxc9ngBNgUkeoqw=;
- b=NRk6L0GaTex3erCOw3kQ7zsvQkvJO0WcZjtWwyo7mHyEdGGMRH2/uARGjFFs4iZg/oCklw7j0nj8jlzBSFtzeH3Xi0OKU8C/vNZc41GwRm0CA5Z9MVR9Vn2+1y+S0MAcFWkzO+DXY7N/yKWQBZOVlrTYHfy+JnaMAaRh76J4GV83F5n3vvXpGfnCBCw2/QSxzO/TDh4PchfSz1L+hs1Dj+J1RwuGZkeMPsVQQz5LjaPWBvCYGnITXVYmLXLTgexPHpBBdqLl7EpJPqgZBBE1Q+ND3iW0pZ/Z9BLPO9S2oXuTzv0Tmaj1gHePk/glq31MAjd+GWR1OKkWvIezjJMPCA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
- by DU2PR04MB8598.eurprd04.prod.outlook.com (2603:10a6:10:2d9::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8137.28; Tue, 12 Nov
- 2024 10:34:57 +0000
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891%6]) with mapi id 15.20.8137.027; Tue, 12 Nov 2024
- 10:34:57 +0000
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: vkoul@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [RESEND PATCH v5 6/6] ASoC: fsl_easrc: register m2m platform device
-Date: Tue, 12 Nov 2024 18:34:04 +0800
-Message-Id: <20241112103404.3565675-7-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20241112103404.3565675-1-shengjiu.wang@nxp.com>
-References: <20241112103404.3565675-1-shengjiu.wang@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xnk8K5sHmz2yRP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Nov 2024 22:04:49 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AC7eSXp024343;
+	Tue, 12 Nov 2024 11:04:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=4rZUoz
+	DViK93X5bNTyuCtpnrFwp+p50YTiTl+cmuUD0=; b=rR0Fly7lFkS5Bg5KeeUlyC
+	fNKQLK2E9f7qjFZ3ppwpmUMVGBRvCD6MFaaTmiSMJQIggADfngSOEZzEN8eLkG6t
+	qpQDaiZgwGnzTGi8idzNIg2zRsIIeSrK4JN1BIfKE+f0YtrPhDwfCyW2GNF/Kfpv
+	Lwmx6o9DVmybjVdBSI+34KY22uHb2visi7PsWcDDLoKB+7sKh05LsoIT1UHqw3Q9
+	+iuSqhgI/CGhYUNYZvorOC4SUM071P0nC/EWYfDBuQpKBDn23bcr9YyV7TvOFQl0
+	86JDQoPGrrrgTo+EXVLJtqEHBFvvCs2S1xqhIF0NQS64o/clWzhk7ESI5NKsJ7LA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42v2tx8q3v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Nov 2024 11:04:39 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4ACB4cof010013;
+	Tue, 12 Nov 2024 11:04:38 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42v2tx8q3s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Nov 2024 11:04:38 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AC5AA3Y017511;
+	Tue, 12 Nov 2024 11:04:38 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42tk2mv3c8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Nov 2024 11:04:38 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4ACB4Yo350266490
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Nov 2024 11:04:34 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3217520040;
+	Tue, 12 Nov 2024 11:04:34 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 777E520043;
+	Tue, 12 Nov 2024 11:04:32 +0000 (GMT)
+Received: from [9.43.111.219] (unknown [9.43.111.219])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 12 Nov 2024 11:04:32 +0000 (GMT)
+Message-ID: <b2047c3b-ec84-456f-8f95-734bcb9a0cd1@linux.ibm.com>
+Date: Tue, 12 Nov 2024 16:34:31 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] fadump: reserve param area if below boot_mem_top
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        linuxppc-dev@lists.ozlabs.org
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Hari Bathini <hbathini@linux.ibm.com>
+References: <20241107055817.489795-1-sourabhjain@linux.ibm.com>
+ <20241107055817.489795-2-sourabhjain@linux.ibm.com>
+ <87zfm5m0p5.fsf@gmail.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <87zfm5m0p5.fsf@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GUZsTg4kD1uLQVZ4qIlL8h_w8e1Mu17Z
+X-Proofpoint-ORIG-GUID: 6_MZ7mMtYYMC6_-JndPun1l2KTlHrsKT
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0008.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::14) To AM0PR04MB7044.eurprd04.prod.outlook.com
- (2603:10a6:208:191::20)
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,155 +104,116 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|DU2PR04MB8598:EE_
-X-MS-Office365-Filtering-Correlation-Id: fea32b8a-671c-4a02-5d6a-08dd0305a736
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|366016|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?08iqkw6LXXBhm+VaxPe9tLt3RCfOuKFRdSqVL3I27l+wCeoe1SMjjgfzllva?=
- =?us-ascii?Q?GdXYNKQ71R3YMsfr30CundZKuYvuNNWBRKLk6XX09wRFgmETGaTP44RD6E5q?=
- =?us-ascii?Q?QY+BhBhcIjQL0PqnbrlnkXO7COSBuYQ6vtaNtGG21oV8eIqmE50kOeHo6Im0?=
- =?us-ascii?Q?7Rb95zD1Ph7HCurIm5GElTtWhjQS5CYmONs+y+vwfek54y/R1gtz41BX8s0r?=
- =?us-ascii?Q?/ebdv1JSMDNVzumPLsFvZZUkw2ePWinL3nOWUjCahcYbwS0h3PdA7EGs5pB1?=
- =?us-ascii?Q?6mI2hWx84x39XyKurm51trnK/ISwKibR+5UetKE3tXd1a4uj9XUA9scMaDeM?=
- =?us-ascii?Q?B6W+F6tWqkUdT2Ap4UENmssFJpzxi3MJdHzKDGvzgdFJ0xlHepLOAlgO85PF?=
- =?us-ascii?Q?ctuT/9IyPKvAVefqVzDDLZujcYR9pughRLKn4hI/QfGdc3oi1yFAvCdBdV86?=
- =?us-ascii?Q?+bST0i3RtyRk4aTTgNNSys890YQMiIvsRL8+HJSfOnoXPkRbkk7DRDJjNzDo?=
- =?us-ascii?Q?088U2uZgppXs9jadAjkbQynRP5eJgFoYEmmHZTBXJb3geQxTS+fTrySpuQ6i?=
- =?us-ascii?Q?KhwqzCT1ZEj5kWraokwDmXOS2eMajF/77oh2cK21T9JmiLWsa0N4kwl04HIk?=
- =?us-ascii?Q?WeXR6LnHovDR72tAd/hE1rZH0Mx6khlgAUMQnS/EuGERFPZZz4M1khFLgnD1?=
- =?us-ascii?Q?tqGY093aKf4G8IJghfgZYAIlIChTEp3yJ86ocRCmiCFCmFZ3h+e0UWZrV/nx?=
- =?us-ascii?Q?oWpwq1JMzxcKCNRB+ZYKlsjKf8hLSk8PQmgQ6C2JZqdwmPPXA29T77T5uOMj?=
- =?us-ascii?Q?kAilIP/8MG0LbU8vJUQQt33zIJGniKDiem12x5Ph56oQjQC/T/UOXapohaGD?=
- =?us-ascii?Q?de8uVZFzj0rJLKLPYdMgKp4uAqVsk9AmPNiqDZsJrP+47WBgjZaTzXBYqtpD?=
- =?us-ascii?Q?IUaEDeVc0jLysIgRhvcBHYySitPbWL+LxUuuAG2m/67GvBiBX4h2hgGvK90a?=
- =?us-ascii?Q?uwQ3+ybWtNh5GCJkJxUFL3OLAaaPj/Ht7gt1fBCBuL+9EhGdkW0mpVQFaEFq?=
- =?us-ascii?Q?SZD+riiN67qO0gC80ZQxhI0lQnK0ZuXNWqiUvP3NvJzXW8qf7I897NuwyOfY?=
- =?us-ascii?Q?YXJ24jg2D2Jdo37AFIVGcVd2H4gJP8haVvwLssheTPkv/EIrXNeisL+daLBf?=
- =?us-ascii?Q?wWet/LR9P/UbLxLtRhyitVgr4hLwAslZDa8FFLMhz3dVdUWhPz6YNZ6nxwNe?=
- =?us-ascii?Q?coa+AeDrDjal7XoXWE0OuTHRtwH38dFrofeRnTMyS04Yx0PXA3heikZJQIzw?=
- =?us-ascii?Q?2acTUgyf9kFQ3CcO66Px82GUANTyYY0AtUDah88gPtoWPzyCpMqmdjAkBAuO?=
- =?us-ascii?Q?Rp22dtemgASv7lJLvhD5t+MRY+DE?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BuRrEtPRIxInbM5JqkhSzF3c1nM/oZZ+3hZxuDe0lUp16DcxGVkjTZGC2DxQ?=
- =?us-ascii?Q?Z3xJBzb6BR/MyI6FyvepTEtOjit9Jv2gdLf30ShyivRMQzB4uKSDWW0iTQvc?=
- =?us-ascii?Q?2kN1jL6fnQVcyeOcJENZl2UL8klgG5C2FPeZPxwwJcvsU495gVWkuzhda2d/?=
- =?us-ascii?Q?YtCIQBSc15T2c/EZsf0HLfIaD8qJ1/YlT72VV7rGcb4oOLODaotYFnm5yXka?=
- =?us-ascii?Q?XA+3nwdEHZ4B2JCUIlcI8yoFJMOghb1gWhoeJezxCJjn6z+aEHxXYu46G6FE?=
- =?us-ascii?Q?mlUAyCAv8bbuMaKVO8THiBG3nru/2xhD+IjEfqCmwQoZeTavbhhhH1cE5rGm?=
- =?us-ascii?Q?yeD+cCVMKJS9xMH50cZzThHJF79JwcsiXcQ0UBpwbLXk90BicBLmmrFPv6hH?=
- =?us-ascii?Q?FwdztxAHfgE6WpRVEoSyafsbqhoeAHjgr0V5wVV27x3kxPiCx6bZC2FjqVb0?=
- =?us-ascii?Q?cXHFniamfkIVbiymi+OV4YLuq9Ic1N+Q7URyyFSiRlbPH/29yX72KXbQ4rX5?=
- =?us-ascii?Q?HAN4SnQyNtdD8RKjP1bCWra6yV4MayjphUbjCHpOQTBjmlemTVEJCI6SgHy1?=
- =?us-ascii?Q?dYjCXzJPjEazTH71Jjs1G4Npaz8ZHZs2G3sQhbqofVnOvXdgMO0N3OR6nExK?=
- =?us-ascii?Q?09rM4hkE6boH4a3vbVZxQrNbbBPxRo0dspajf95JHc2Zy2YBYIOjSCTWZLhO?=
- =?us-ascii?Q?Mi5Y2oznVoyH+Bl2KTM35jgOtC2sUsRp2LZrXcxKgrSloGgD5epBf6tWOIa4?=
- =?us-ascii?Q?Wp9Sli1os8gFHXSEn6XkJnIImngJP66HAIrJFJMwkEDJ/URtB+n3NZb++hiM?=
- =?us-ascii?Q?qvIGXsuAQRmJe2qcoSHvctQ8zmdY9wQ+tDZNBVOesBoy/r7P1Ct0RegRk4Ze?=
- =?us-ascii?Q?tmea6WpXMUskGDspL53C7QB7kitk43VAG9laCHR9AnlYweWm+F6uAnHnAYTZ?=
- =?us-ascii?Q?GbYTPVZO6pU9ve9/odCsX3gmIgcjJLF8r5uJ075hTJra6gLKUoDqb8GMSawS?=
- =?us-ascii?Q?GhzZvEolXOmOjhFpCeFkUmwhsDxHRC8jrQ1RWdNaJ+c8q3D7rXIPrG5i0ZKi?=
- =?us-ascii?Q?rXAF48CugYwHY2XJCDudx8ox6J0xpPU+qKzcFn7OACns8/5tqOGSyu4jnTXw?=
- =?us-ascii?Q?CXBBymz1FFfPjinfSbDeAvTF7Jan7CsbmwTh3hrVgf2DKaIvIU/L/H6SP/s6?=
- =?us-ascii?Q?7H+mqVXYah3YL7ZfyiBeVYObAzEAGQbKKvYNmTLKGSuXG+7lGegVJ98VL8A+?=
- =?us-ascii?Q?OdWBwHyioGHAa68KO9lmXh9xrG/m0O0xaCmREoOHNMhUlzaB14dJDzU6QpRu?=
- =?us-ascii?Q?dVFuz1ol84VQf6sAu/wIkOZbQcsDdf25ji8TjwrccVEDzWhCV5gV5bWHe2/r?=
- =?us-ascii?Q?+XdVxGRjc8+BR1T/yzZPDqvSCcEOuMg8AaAE/A6I8vAHUbv7csXuYb+ULOg6?=
- =?us-ascii?Q?eNe1okDwwEbXrkap92T4jHbPXhQAFCF/8iOnYP4rt38p8cPJsnbRh0ZNCON5?=
- =?us-ascii?Q?KmTpObvuo/o0L0ZeFQAo1b7AHc75iDkWHAlCWJI7+Firkl46re4MQn4ofBj8?=
- =?us-ascii?Q?9A/CKPHD+3gz7ybf/sDn5nlS2iPCVI2SZLY5nKhP?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fea32b8a-671c-4a02-5d6a-08dd0305a736
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2024 10:34:57.3980
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /e9rB9C6YoBf14w8/45HflvU39ksrcMt7wGsHpy3XMK9QpbiV4qh7JvxERc45LlZkr78bJcFO0jiWCSC2LiETQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8598
-X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ phishscore=0 adultscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
+ impostorscore=0 bulkscore=0 spamscore=0 mlxlogscore=999 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411120090
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Register m2m platform device,that user can
-use M2M feature.
+Hello Ritesh,
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Acked-by: Jaroslav Kysela <perex@perex.cz>
----
- sound/soc/fsl/fsl_easrc.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index f17a185a1910..f404a39009e1 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -2204,6 +2204,12 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 		goto err_pm_disable;
- 	}
- 
-+	ret = fsl_asrc_m2m_init(easrc);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to init m2m device %d\n", ret);
-+		return ret;
-+	}
-+
- 	return 0;
- 
- err_pm_disable:
-@@ -2213,6 +2219,10 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 
- static void fsl_easrc_remove(struct platform_device *pdev)
- {
-+	struct fsl_asrc *easrc = dev_get_drvdata(&pdev->dev);
-+
-+	fsl_asrc_m2m_exit(easrc);
-+
- 	pm_runtime_disable(&pdev->dev);
- }
- 
-@@ -2313,10 +2323,29 @@ static int fsl_easrc_runtime_resume(struct device *dev)
- 	return ret;
- }
- 
-+static int fsl_easrc_suspend(struct device *dev)
-+{
-+	struct fsl_asrc *easrc = dev_get_drvdata(dev);
-+	int ret;
-+
-+	fsl_asrc_m2m_suspend(easrc);
-+	ret = pm_runtime_force_suspend(dev);
-+	return ret;
-+}
-+
-+static int fsl_easrc_resume(struct device *dev)
-+{
-+	struct fsl_asrc *easrc = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = pm_runtime_force_resume(dev);
-+	fsl_asrc_m2m_resume(easrc);
-+	return ret;
-+}
-+
- static const struct dev_pm_ops fsl_easrc_pm_ops = {
- 	RUNTIME_PM_OPS(fsl_easrc_runtime_suspend, fsl_easrc_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				pm_runtime_force_resume)
-+	SYSTEM_SLEEP_PM_OPS(fsl_easrc_suspend, fsl_easrc_resume)
- };
- 
- static struct platform_driver fsl_easrc_driver = {
--- 
-2.34.1
+On 12/11/24 11:51, Ritesh Harjani (IBM) wrote:
+> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>
+>> The param area is a memory region where the kernel places additional
+>> command-line arguments for fadump kernel. Currently, the param memory
+>> area is reserved in fadump kernel if it is above boot_mem_top. However,
+>> it should be reserved if it is below boot_mem_top because the fadump
+>> kernel already reserves memory from boot_mem_top to the end of DRAM.
+> did you mean s/reserves/preserves ?
+
+Yeah, preserves is better.
+
+>
+>> Currently, there is no impact from not reserving param memory if it is
+>> below boot_mem_top, as it is not used after the early boot phase of the
+>> fadump kernel. However, if this changes in the future, it could lead to
+>> issues in the fadump kernel.
+> This will only affect Hash and not radix correct? Because for radix your
+> param_area is somewhere within [memblock_end_of_DRAM() / 2, memblock_end_of_DRAM()]
+> which is anyway above boot_mem_top so it is anyway preserved as is...
+
+Yes.
+
+>
+> ... On second thoughts since param_area during normal kernel boot anyway
+> comes from memblock now. And irrespective of where it falls (above or below
+> boot_mem_top), we anyway append the bootargs to that. So we don't really
+> preserve the original contents :) right?
+
+Sorry I didn't get it. We append strings from param_area to 
+boot_command_line
+not the other way.
+
+
+> So why not just always call for
+> memblock_reserve() on param_area during capture kernel run?
+>
+> Thoughts?
+
+Yes, there is no harm in calling memblock_reserve regardless of whether 
+param_area
+is below or above boot_mem_top. However, calling it when param_area is 
+higher than
+boot_mem_top is redundant, as we know fadump preserves memory from 
+boot_mem_top
+to the end of DRAM during early boot.
+
+According to the memblock documentation, when reserving memory regions, 
+the new
+regions can overlap with existing ones, but I don't see any advantage in 
+calling memblock_reserve
+for param_area if it falls above boot_mem_top.
+
+Regardless, I don’t have a strong opinion. If you think we should call 
+memblock_reserve regardless
+of where param_area is placed, I can do that. Please let me know your 
+opinion.
+
+Sourabh Jain
+
+
+
+>
+>> Fixes: 3416c9daa6b1 ("powerpc/fadump: pass additional parameters when fadump is active")
+>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> ---
+>>
+>> Changelog:
+>>
+>> Since v1: https://lore.kernel.org/all/20241104083528.99520-1-sourabhjain@linux.ibm.com/
+>>    - Include Fixes and Acked-by tag in the commit message
+>>    - No functional changes
+>>
+>> ---
+>>   arch/powerpc/kernel/fadump.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+>> index 3a2863307863..3f3674060164 100644
+>> --- a/arch/powerpc/kernel/fadump.c
+>> +++ b/arch/powerpc/kernel/fadump.c
+>> @@ -143,7 +143,7 @@ void __init fadump_append_bootargs(void)
+>>   	if (!fw_dump.dump_active || !fw_dump.param_area_supported || !fw_dump.param_area)
+>>   		return;
+>>   
+>> -	if (fw_dump.param_area >= fw_dump.boot_mem_top) {
+>> +	if (fw_dump.param_area < fw_dump.boot_mem_top) {
+>>   		if (memblock_reserve(fw_dump.param_area, COMMAND_LINE_SIZE)) {
+>>   			pr_warn("WARNING: Can't use additional parameters area!\n");
+>>   			fw_dump.param_area = 0;
+>> -- 
+>> 2.46.2
 
 
