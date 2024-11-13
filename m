@@ -1,52 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-3146-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3147-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712D69C6CB7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2024 11:20:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A619C7363
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2024 15:20:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XpK740vRDz2yNv;
-	Wed, 13 Nov 2024 21:20:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XpQRM4847z2yGd;
+	Thu, 14 Nov 2024 01:20:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731493248;
-	cv=none; b=ALCuPfizdExy5QFFq0XXBdm4ubvyjcP88SzugUnYz1rWosV4WW2abrckV4jQUXbIqyT0cg1lrUgdEjW5E6PbDrY/pIdf2dG9v74/ilF1stpN9AXaFgtTX+mvLXe6nlsZbTwR2sSRKPiycY6/mS4jcuMYdL97K/jrP0NMr9vczZL6XVQZiaA1eqLV1CB9CP1mmn/tG8r8dh3DGsfT6pi83Q23lhI9VcAx0EcrOr0allz+r/OJo7FmNn8zwmYXEDbF8ptK2W5TFyzDckLa4/9xW7yHH37ktiOEutthMiVMMyYznmkM+kX4iQKg/Rt+6bDqjMa8mqJrrbMnrTrUUz3UQw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731507615;
+	cv=none; b=M+DcC1dq3GwpxKnbPIC/0KRtAJQwmEb5j9Phm87DcIOKOBT0pmjxslvG1npsGtr+O2z2UD7xeTqyGE2fKXaSokdfPkAzQW3ICdzXXuWEAAqzo+QwY4uVZbXUIKFAYUbHVaEIgjJ1X2ozy8oQMDcbkXJsA9/qdkYW5HPDPztLAGsOZjqIqpu01DKe7RX5nNNv8muyGSGWEzupqHz73DGJPyA37s6nigTGMR/P7Lcv9waTUc6l3zdmShDcCWTSlzKWwXQpVvs+vr3rbmutnaNZF7pPpQ6IjefzdYES911qcpguLDqmOuIgXLFxl5bdITEaLqcN34ZkhNM2hxdD/+MHkg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731493248; c=relaxed/relaxed;
-	bh=vUGg883Vi8JqLYcW4L6semwKxPTWsEWg7W/GES8IQF8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d1MtJah4k/zlk3BDfUA0TqUAIlziujnqDhUg5mFIh6405UBraURj2rGuDcHGtguWf54c5sCyC0LH8RODXtKUXwzRg3wR5BXba6p7N/1wj51V/KgBSZd6OOOUuRq7ykra7zw5GLs4bSZZvNVPn4Aob+AZ4h+yY3lquXinKS2PJS9LiIWrneU5dMhAjVpG7ML6/DK5DPQg62w50wYnOIKwFRq2x6BFlUKKAvn3F6a1wRak/Se9wvHwaUPh1ilBAOwsCLCHrReUiNLu2REgRIZVikWbMdNR+OOSsUK2Bc7O7p2pII8XHB7NDqYBpSR9aW0lI8Nn/MICejAdOCE4fKvafQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1731507615; c=relaxed/relaxed;
+	bh=E+W5/1/yBRnzApluXvmZS6wnEL9+HSsK6+2J6aji4ic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l/JyTIk+i5eTkBh/QCaV1FD8mK+KYAhtFXyqAdWss9oc2XLvnAexF9F20ujDfx/DV+7ztepMackC9wtqWH+Gw62/RLq95Plr1W5TWi8jHdtczX3B3yB/Awjrf6+ad3P43QthgBH1Mxu7to+N62xu7XdSpbd0RjrrZdZeulM7YWjaqz78HdbrIcp7+rArZ4ob7jAKvdefoK0IMiKGUUkuoPPBbCDzT+Pw3AxOsRlaN1ytw68EsMc3JI9NwjgMDlSt2YTdXVoxi38r6xlXgqAoflH5nnsijmdvV42yDDxprtWulrzvFq5tQQF5vHMOzHZ6FrSLrfA8+hdFoHDvxVIdYQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QpM4DxI5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QpM4DxI5;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XpK721mQ0z2xBx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2024 21:20:45 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4XpK6w47Zvz9sSX;
-	Wed, 13 Nov 2024 11:20:40 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id YNBYsjjOOxZq; Wed, 13 Nov 2024 11:20:40 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4XpK6w3MQmz9sSV;
-	Wed, 13 Nov 2024 11:20:40 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 618348B79F;
-	Wed, 13 Nov 2024 11:20:40 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 4OzcVFT7nyHT; Wed, 13 Nov 2024 11:20:40 +0100 (CET)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3A15F8B763;
-	Wed, 13 Nov 2024 11:20:40 +0100 (CET)
-Message-ID: <b4d3084c-aa26-4d35-a330-8ba55589b89e@csgroup.eu>
-Date: Wed, 13 Nov 2024 11:20:40 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XpQRL07NTz2yG9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2024 01:20:12 +1100 (AEDT)
+Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-7f450f7f11dso2752579a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2024 06:20:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731507608; x=1732112408; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E+W5/1/yBRnzApluXvmZS6wnEL9+HSsK6+2J6aji4ic=;
+        b=QpM4DxI5x5WTpeFWyAUQHMs185bKeKdfSOwTTrMpYBtrtfBYwEP9/k6BDiNPyE+K5F
+         sA98W6nKjEk8LUpQZ59y7Beka28BLYwm8AA5576CxrhhVCZPrFjVOfr/5gLoRs06Pj6d
+         ygMIPp/A6fo45pDJjpt+fVBn31KvwGEm5TSVXsLAKTBZ7JVh5VhWxn04jaTfQibq3Zt/
+         xkxOf/FMfHStgkigU955sNa2wJd2X8LLCjke00EQrboeRkjIX3y5a1/kKqwjJyP1MW/A
+         r0PrYYphFS5faft4KRZFuSh/pwOdKktwF9edzQhYH8si8l011NTxKlVmSzZ/fBp9BgIJ
+         Kq1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731507608; x=1732112408;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E+W5/1/yBRnzApluXvmZS6wnEL9+HSsK6+2J6aji4ic=;
+        b=Mypk4SJzGfkzk0Dee4DxH+AEkynBeLBi2ys3biKRqyBCXiwAs1AtPpsKqzAr+B18wf
+         8gkmrN4FVEbz8VCYPQxeUNpzfimMgtLrC6+Es27uAP1xSM5MD/b7XxyBGst/NeVflgQD
+         pzxHcAh4q/IpTlCB8allxqgtACQgUyQUk96JFyi3kUTA72BtRopoVIKRzIgErHR1vMgu
+         2L3KlzHcB3AHNl+TEaPcd4V7VC1Nob2+XNxhQvdRS0uQjNlLSvdVbC7Rcj1bzMFbJWTS
+         w1rFw5ssoUTRHR9Bq7XsD9PbPo5b0zBmT6G8wZ90WCoDRS1HopluYofUUTFcjHjCNYsb
+         iquw==
+X-Forwarded-Encrypted: i=1; AJvYcCVdvDZK3DDyoHTK40ktdURj3M5keKFkRh+SOdxbmjtx3YMNP5MZ1V8sCRCGoQ/Tu23Y+p66wKwPzQusEKQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyLrwbGMnVrnHeDP+Mw3YsGuuvQ2f7+QVYSUZqMctmFa1x4ucs5
+	XQWquYyqDonm7y/qPtxP2yrJL5Xte6D0/hlcTALFZg28UIH/wmSe
+X-Google-Smtp-Source: AGHT+IGeOAmmIL3JeGd2B/FeYzTlCYu440XfiAvTwoYmEtolyVkG9FqkwR5NzpR2JeHhiVjtarSHuQ==
+X-Received: by 2002:a17:902:ea02:b0:20c:5c13:732e with SMTP id d9443c01a7336-21183e11d8bmr278709445ad.38.1731507607853;
+        Wed, 13 Nov 2024 06:20:07 -0800 (PST)
+Received: from dw-tp.ibmuc.com ([171.76.87.84])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e6ab8fsm110636045ad.226.2024.11.13.06.20.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2024 06:20:07 -0800 (PST)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Donet Tom <donettom@linux.vnet.ibm.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Sachin P Bappalige <sachinpb@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: [PATCH v4 -next] cma: Enforce non-zero pageblock_order during cma_init_reserved_mem()
+Date: Wed, 13 Nov 2024 19:49:54 +0530
+Message-ID: <e274344b44d5f80fa54c52f530387257fe99ec65.1731505681.git.ritesh.list@gmail.com>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,56 +96,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/vdso: Remove unused clockmode asm offsets
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20241113-vdso-powerpc-asm-offsets-v1-1-3f7e589f090d@linutronix.de>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20241113-vdso-powerpc-asm-offsets-v1-1-3f7e589f090d@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+cma_init_reserved_mem() checks base and size alignment with
+CMA_MIN_ALIGNMENT_BYTES. However, some users might call this during
+early boot when pageblock_order is 0. That means if base and size does
+not have pageblock_order alignment, it can cause functional failures
+during cma activate area.
 
+So let's enforce pageblock_order to be non-zero during
+cma_init_reserved_mem() to catch such wrong usages.
 
-Le 13/11/2024 à 09:06, Thomas Weißschuh a écrit :
-> These offsets are not used anymore, delete them.
-> 
-> Fixes: c39b1dcf055d ("powerpc/vdso: Add a page for non-time data")
-> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+---
+RFCv3 -> v4:
+1. Dropped RFC tagged as requested by Andrew.
+2. Updated the changelog & added background as requested by Andrew [RFCv3]
+3. Added acked-by and RBs tags.
+4. Small commit msg update.
+5. No functional changes.
+[RFCv3]: https://lore.kernel.org/all/20241112225902.f20215e5015f4d7cdf502302@linux-foundation.org/
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Background -
+============
+1. This was seen with fadump on PowerPC which was calling
+   cma_init_reserved_mem() before the pageblock_order was initialized.
+   This is now fixed in the fadump on PowerPC itself. The details of that
+   can be found in the patch including the userspace-visible effect of the issue [1].
+2. However it was also decided that we should add a stronger enforcement check
+   within cma_init_reserved_mem() to catch such wrong usages [2]. Hence this
+   patch. This is ok to be in -next and there is no "Fixes" tag required for
+   this patch.
 
-> ---
-> This is based on powerpc/topic/vdso.
-> Feel free to fold this change into the original commit.
-> ---
->   arch/powerpc/kernel/asm-offsets.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-> index 7b3feb6bc2103bc89ea14fbaac6937f1c97d4ff8..23733282de4d9f975aa9450b26c1049688e6663e 100644
-> --- a/arch/powerpc/kernel/asm-offsets.c
-> +++ b/arch/powerpc/kernel/asm-offsets.c
-> @@ -346,8 +346,6 @@ int main(void)
->   #else
->   	OFFSET(CFG_SYSCALL_MAP32, vdso_arch_data, syscall_map);
->   #endif
-> -	OFFSET(VDSO_CLOCKMODE_OFFSET, vdso_arch_data, data[0].clock_mode);
-> -	DEFINE(VDSO_CLOCKMODE_TIMENS, VDSO_CLOCKMODE_TIMENS);
->   
->   #ifdef CONFIG_BUG
->   	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
-> 
-> ---
-> base-commit: 0161bd38c24312853ed5ae9a425a1c41c4ac674a
-> change-id: 20241113-vdso-powerpc-asm-offsets-056016f80174
-> 
-> Best regards,
+[1]: https://lore.kernel.org/all/3ae208e48c0d9cefe53d2dc4f593388067405b7d.1729146153.git.ritesh.list@gmail.com/
+[2]: https://lore.kernel.org/all/83eb128e-4f06-4725-a843-a4563f246a44@redhat.com/
+
+ mm/cma.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/mm/cma.c b/mm/cma.c
+index 3e9724716bad..36d753e7a0bf 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -182,6 +182,15 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+ 	if (!size || !memblock_is_region_reserved(base, size))
+ 		return -EINVAL;
+
++	/*
++	 * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement which
++	 * needs pageblock_order to be initialized. Let's enforce it.
++	 */
++	if (!pageblock_order) {
++		pr_err("pageblock_order not yet initialized. Called during early boot?\n");
++		return -EINVAL;
++	}
++
+ 	/* ensure minimal alignment required by mm core */
+ 	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
+ 		return -EINVAL;
+--
+2.46.0
+
 
