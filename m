@@ -1,93 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-3141-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3142-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60879C69AB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2024 08:06:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 418D79C69BB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2024 08:15:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XpDq42TR1z2yb9;
-	Wed, 13 Nov 2024 18:06:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XpF1K6T5mz2yZN;
+	Wed, 13 Nov 2024 18:15:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731481600;
-	cv=none; b=SomOvbAh4gY+YVR9KI3VM4Am3OQA0vYM1D3htKqyr9PtrDBfOb/8Syb6nX94pb3Q1oKg5cE9YJN0BG/vaBAl7ofIIZMjRYY6+xy54YF+oiV6o2FPVXKDwDS7Jc1tLYCNryicOLlxHO/NfN+IlYjhkC5zeVs2j3/0/OQMwIB0doRQ7STFBZter8AlQb3rw3kL86hXHiasTWxNsQegeMp6VUgFk0XRA6Q369pNsO6VH79+xKKyqCSdwZr3iWBGpSfPY6ughH6V4aDPCaCfmc04sb4k9NYs3xlwi6zG6e60UPVJlr9ptXrF91INahRUx/9Z4efWwArwpOjzQ1IqOy14Zw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:edc0:2:b01:1d::104"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731482133;
+	cv=none; b=fN032Trxy/o2f3D841VPNYx/aoH7ru4vQAEt7U9/98rCPqD7o20swUud9xr7mVkjyKS2j2NgAEpNSY1CzzhaInpaGLQdxilvEVnDpgsJboFJwLKffcrSxytIzwHNye+rWr9udcEPch9qcl6ft10tD08mu1coLI4hDhj1K0QemAvxRqfIMojhZoE5+6law4Y3f0Y8OibrBvEDnfub4MLO+A28Mb1AxvP5HMYgnf57IWwrLO+dYMltlwGF9K8qfYXI5qA4uSlw7KQocHcZ3V5Tom15HVUmhUo8ObNo4TiNEmPdTjHhS9P/5wCmdHDW2Qm+EGaviFXey2zFQIHQ9/Px/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731481600; c=relaxed/relaxed;
-	bh=k8MTudT9GVifSJAhJTq9ohv0PU8dUNr5hJviPlzoAMw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxPpB31ck6/bTPSSpMjfsNXzsmVSG/ro6LeXtmW6OwU7ksEoKKdMZ2nLtuRwpmXyKHz/a9Uh+eUUHR/KkgD3JY8kkXy0sNjDGXfxYtQMysQNgYM8Hvmg3qKU0i/EMUH+x6m+heD9aTCciLXHj/jhkqNNk7tVCP8D6wbKAnpPb84NAIEdmkaljVgt7yjyfJuRCOo2uhO2iku4h2pcREIk8sOmwYm1gvMRUb3LzzinwBm1hbIVBnbj3+mIofpu8q39l87JV5FoYJsK50w6mOwOzNPYQH72eL/WHSb89HPiUc2xqdiezWuvqCIym1zPO0nu29WXVH7/lN6NzoLS0zXTxg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=K1cPRceF; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=K1cPRceF;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1731482133; c=relaxed/relaxed;
+	bh=+2ywtLUzcEwfRnZvQwy7PCCoQoHJQTyH+/W3goY8WDk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RCAxk2U6i0VyUuIb9K9tsFrmwIfc0tsi9cQchmGHLGvViTKR3vtD5oscyAwLGwACKgOOLG8xTDIPNvhILUs/VWodW0QkeHs076C+hNoC7A6ocaEv9VWgqocwDcxagpl7yMbrx4OPxx3eENyl4r670fHad5O/F3MsjSiyZNShYow8ue95Hepa4E+oh1dQv+R0dGKNr54WVWenS/tobE1pLq2Xc/wNHUcd6j9ws7RtOAgMv2NBu9R9FkCHrLVnTFFEB8G1elqivpi/huU4FMLLLgEx2PLzqj8qxv3OTZ+mLcDIawq5Ak7qr4tBQGL2/RZNL8UVnTMvqbh2/lf4J/0GSw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=mkl@pengutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=pengutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=mkl@pengutronix.de; receiver=lists.ozlabs.org)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XpDq34hwMz2yY9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2024 18:06:39 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AD4dvtK020826;
-	Wed, 13 Nov 2024 07:06:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=k8MTudT9GVifSJAhJ
-	Tq9ohv0PU8dUNr5hJviPlzoAMw=; b=K1cPRceFCznqrwEyq/PiebIL1dc5PYC6l
-	VbPQUdCjkHx1gOcxBuUEqaUv6HusDsZOwrVXPdtfTs8z0CjmzPZM+474Lvp5h/P1
-	vhmZg2DUTgfWDlNKmiWm4Ld+Kru0G8qep+6VNXEGWnT8VjYpsUyhjEzycnBe/9Fb
-	OyLmGpIctSsOj3v5FZljBpokCuwMLfASpY7zdo07+XixZRz+HEtjh4SlrU9dvWLr
-	7pIXOfA1mn495jQozUhpdraOYqKiN527+WA0vZ+0oSCLRAfInOS829+MwBZgksOc
-	t4FyR0ye0Ca18dYYmOd4uhDE69cTZYNY1JPdET2saBEt27VRbpqGQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42vn9h0fek-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Nov 2024 07:06:31 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4AD76UIg016090;
-	Wed, 13 Nov 2024 07:06:30 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42vn9h0fef-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Nov 2024 07:06:30 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AD35jsh010526;
-	Wed, 13 Nov 2024 07:06:29 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 42tj2s5sv1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Nov 2024 07:06:29 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4AD76PqB35389960
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 13 Nov 2024 07:06:26 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AD1C12004B;
-	Wed, 13 Nov 2024 07:06:25 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4402920049;
-	Wed, 13 Nov 2024 07:06:24 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.in.ibm.com (unknown [9.109.204.94])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 13 Nov 2024 07:06:24 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Hari Bathini <hbathini@linux.ibm.com>
-Subject: [PATCH v3 2/2] fadump: reserve param area if below boot_mem_top
-Date: Wed, 13 Nov 2024 12:36:18 +0530
-Message-ID: <20241113070618.75744-2-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241113070618.75744-1-sourabhjain@linux.ibm.com>
-References: <20241113070618.75744-1-sourabhjain@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: kOdcqkCiefEbsMxFhtvH5Szko-asNBcl
-X-Proofpoint-GUID: PBPZwpoFB5snMApsgWCNKvUAsn6hlpBd
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XpF1J0KB2z2yZ7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2024 18:15:30 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tB7aT-0007QT-1e; Wed, 13 Nov 2024 08:14:49 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1tB7aN-000XUv-0p;
+	Wed, 13 Nov 2024 08:14:43 +0100
+Received: from pengutronix.de (pd9e59fec.dip0.t-ipconnect.de [217.229.159.236])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id C3AE03721A3;
+	Wed, 13 Nov 2024 07:14:42 +0000 (UTC)
+Date: Wed, 13 Nov 2024 08:14:41 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Vladimir Oltean <olteanv@gmail.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Pantelis Antoniou <pantelis.antoniou@gmail.com>, Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
+	Byungho An <bh74.an@samsung.com>, Kevin Brace <kevinbrace@bracecomputerlab.com>, 
+	Francois Romieu <romieu@fr.zoreil.com>, Michal Simek <michal.simek@amd.com>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Zhao Qiang <qiang.zhao@nxp.com>, "open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"moderated list:ARM/Allwinner sunXi SoC support" <linux-arm-kernel@lists.infradead.org>, 
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>, 
+	"open list:FREESCALE SOC FS_ENET DRIVER" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCHv3 net-next] net: modernize IRQ resource acquisition
+Message-ID: <20241113-nonchalant-spaniel-of-contentment-83978a-mkl@pengutronix.de>
+References: <20241112211442.7205-1-rosenp@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,66 +76,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- impostorscore=0 spamscore=0 priorityscore=1501 phishscore=0 bulkscore=0
- clxscore=1015 mlxlogscore=851 lowpriorityscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411130061
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yqpx5eyx2zhvpvlt"
+Content-Disposition: inline
+In-Reply-To: <20241112211442.7205-1-rosenp@gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The param area is a memory region where the kernel places additional
-command-line arguments for fadump kernel. Currently, the param memory
-area is reserved in fadump kernel if it is above boot_mem_top. However,
-it should be reserved if it is below boot_mem_top because the fadump
-kernel already preserves memory from boot_mem_top to the end of DRAM.
 
-Currently, there is no impact from not reserving param memory if it is
-below boot_mem_top, as it is not used after the early boot phase of the
-fadump kernel. However, if this changes in the future, it could lead to
-issues in the fadump kernel.
+--yqpx5eyx2zhvpvlt
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCHv3 net-next] net: modernize IRQ resource acquisition
+MIME-Version: 1.0
 
-Fixes: 3416c9daa6b1 ("powerpc/fadump: pass additional parameters when fadump is active")
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Acked-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
+On 12.11.2024 13:14:42, Rosen Penev wrote:
+> In probe, np =3D=3D pdev->dev.of_node. It's easier to pass pdev directly.
+>=20
+> Replace irq_of_parse_and_map() by platform_get_irq() to do so. Requires
+> removing the error message as well as fixing the return type.
+>=20
+> Replace of_address_to_resource() with platform_get_resource() for the
+> same reason.
+>=20
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> (for CAN)
+> Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-Changelog:
+Please write this as:
 
-Since v1: https://lore.kernel.org/all/20241104083528.99520-1-sourabhjain@linux.ibm.com/
-  - Include Fixes and Acked-by tag in the commit message
-  - No functional changes
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de> # for CAN
 
-Since v2: https://lore.kernel.org/all/20241107055817.489795-1-sourabhjain@linux.ibm.com/
- - Add Reviewed-by tag
- - No functional change
+regards,
+Marc
 
----
- arch/powerpc/kernel/fadump.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 3a2863307863..3f3674060164 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -143,7 +143,7 @@ void __init fadump_append_bootargs(void)
- 	if (!fw_dump.dump_active || !fw_dump.param_area_supported || !fw_dump.param_area)
- 		return;
- 
--	if (fw_dump.param_area >= fw_dump.boot_mem_top) {
-+	if (fw_dump.param_area < fw_dump.boot_mem_top) {
- 		if (memblock_reserve(fw_dump.param_area, COMMAND_LINE_SIZE)) {
- 			pr_warn("WARNING: Can't use additional parameters area!\n");
- 			fw_dump.param_area = 0;
--- 
-2.46.2
+--yqpx5eyx2zhvpvlt
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmc0Ud0ACgkQKDiiPnot
+vG9ixwf+MRErFbP8EBNYW4KiknVHSCJqliQuxtMgRc5LE54Iz/W8AKqAbKIjgzTv
+XVCnuSSPn5hWw85VK1YrC2romqZQMmkjFDeaDAf27emw1tYQC5DkAg7DfdasiaFw
+ZUNWdDjmY3lm3YwXCupckUARjWB9VEXNsLca8eti0+gmBWR16gwNbd7lBeXHm+Qf
+mDzxiz9SQG5P/1V6GYCnHUgqw4yC6yxgNim60jfDfbD7t52x/C1EQylcG0Wzx3Uz
+H1irShtJQNqXv0j63qMX0K3NQOkUKy0/yfNUS5gqHefjAT5YnEqUHKReldiPq0JB
+IvRUsw91n6EDC2kPZwOR1gOkgMzKZA==
+=7118
+-----END PGP SIGNATURE-----
+
+--yqpx5eyx2zhvpvlt--
 
