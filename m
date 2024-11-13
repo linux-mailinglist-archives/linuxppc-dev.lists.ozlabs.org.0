@@ -1,89 +1,116 @@
-Return-Path: <linuxppc-dev+bounces-3147-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3148-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A619C7363
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2024 15:20:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FE19C7905
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Nov 2024 17:39:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XpQRM4847z2yGd;
-	Thu, 14 Nov 2024 01:20:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XpTXN0Vy1z2yG9;
+	Thu, 14 Nov 2024 03:39:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731507615;
-	cv=none; b=M+DcC1dq3GwpxKnbPIC/0KRtAJQwmEb5j9Phm87DcIOKOBT0pmjxslvG1npsGtr+O2z2UD7xeTqyGE2fKXaSokdfPkAzQW3ICdzXXuWEAAqzo+QwY4uVZbXUIKFAYUbHVaEIgjJ1X2ozy8oQMDcbkXJsA9/qdkYW5HPDPztLAGsOZjqIqpu01DKe7RX5nNNv8muyGSGWEzupqHz73DGJPyA37s6nigTGMR/P7Lcv9waTUc6l3zdmShDcCWTSlzKWwXQpVvs+vr3rbmutnaNZF7pPpQ6IjefzdYES911qcpguLDqmOuIgXLFxl5bdITEaLqcN34ZkhNM2hxdD/+MHkg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731515988;
+	cv=none; b=k5fiTOwk5TGy+fu2TUh6I2f7BZcDJH1a9uUEYL7C49PXWUl9+ghK+jmaLHS+ZgH1XnqYjpM9P2UHucFxX8XDlf6f4AhJnyaN9LwBGN9yRRopVrVzzWZVoFyqzf9/DrwdzUyb2rKCsMT+3veq1eBpadVOhZrw8NS8E9XHmpyinjt1TR3+itNn1CE3tVq9XcG8M3Q0uCGsa7f9D6qPIUW1xnLdcgd6dSdIsqRXmf/YhcoGyXgEuvY5mNtXHXfa+OtCLqaULs376/1Rq+hQaiESZsfolOCkkVKJFzv8RAPQeWjkWrkSqco7QEF/B6ltSyDuECM8w5Qx7lMmD/nHH38Ohw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731507615; c=relaxed/relaxed;
-	bh=E+W5/1/yBRnzApluXvmZS6wnEL9+HSsK6+2J6aji4ic=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l/JyTIk+i5eTkBh/QCaV1FD8mK+KYAhtFXyqAdWss9oc2XLvnAexF9F20ujDfx/DV+7ztepMackC9wtqWH+Gw62/RLq95Plr1W5TWi8jHdtczX3B3yB/Awjrf6+ad3P43QthgBH1Mxu7to+N62xu7XdSpbd0RjrrZdZeulM7YWjaqz78HdbrIcp7+rArZ4ob7jAKvdefoK0IMiKGUUkuoPPBbCDzT+Pw3AxOsRlaN1ytw68EsMc3JI9NwjgMDlSt2YTdXVoxi38r6xlXgqAoflH5nnsijmdvV42yDDxprtWulrzvFq5tQQF5vHMOzHZ6FrSLrfA8+hdFoHDvxVIdYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QpM4DxI5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1731515988; c=relaxed/relaxed;
+	bh=32X9w96j/6luUoMGo5UFRFt7UJIdq29Ups7kfYJnJ7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=iX/3jsi+aqtpqBhxb2CjYn7rRlKY5vEUi3czMJOwmDsu2dVeH6e46zpT7lxCgH8MIU2F7qy9ucK72SEUfIZShV2W6GjHcP6QYvY69FLJrHsmKiweI2jyWoUGM/Su3XW4+GrA0Rt2oS/Ki/3ianwEh1ZYYq49WzuGbvVzk9PcgVTGAIZ76Tqf9VbM47F4VDWPVcQYRrMR49cwDS7WftqGEkf96kEa/1mkofzlPkgoCRhPK8AgneeHHJIZxnOFJPv/PSJ7Uza0ERz37XVF5yuPCJU5NjOhHnDKs1UYXlYpoqSZNG27tXW+S6QKbLqdpX+IlPAwlWoSBjxz2v5LZXt5JQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S4WeUCSG; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S4WeUCSG; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QpM4DxI5;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S4WeUCSG;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=S4WeUCSG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XpQRL07NTz2yG9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2024 01:20:12 +1100 (AEDT)
-Received: by mail-pg1-x52e.google.com with SMTP id 41be03b00d2f7-7f450f7f11dso2752579a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2024 06:20:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731507608; x=1732112408; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E+W5/1/yBRnzApluXvmZS6wnEL9+HSsK6+2J6aji4ic=;
-        b=QpM4DxI5x5WTpeFWyAUQHMs185bKeKdfSOwTTrMpYBtrtfBYwEP9/k6BDiNPyE+K5F
-         sA98W6nKjEk8LUpQZ59y7Beka28BLYwm8AA5576CxrhhVCZPrFjVOfr/5gLoRs06Pj6d
-         ygMIPp/A6fo45pDJjpt+fVBn31KvwGEm5TSVXsLAKTBZ7JVh5VhWxn04jaTfQibq3Zt/
-         xkxOf/FMfHStgkigU955sNa2wJd2X8LLCjke00EQrboeRkjIX3y5a1/kKqwjJyP1MW/A
-         r0PrYYphFS5faft4KRZFuSh/pwOdKktwF9edzQhYH8si8l011NTxKlVmSzZ/fBp9BgIJ
-         Kq1g==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XpTXK5SxPz2xjY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2024 03:39:43 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731515978;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=32X9w96j/6luUoMGo5UFRFt7UJIdq29Ups7kfYJnJ7Q=;
+	b=S4WeUCSGvAJmb00Ikb2pNcYnRWftBF1iEINm+NM9xMJHWmdduiOjjwV4lU+1L4Med3M7je
+	UlgQFnDMQg3ZtbM4XyWqTBnMXzJk/xL45lF2icBjfWmGmRfDlXrGbeq7qwOt4qHo5tFBob
+	7u3SvIAvqVomw+EEUwnFVINLiCflSKo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731515978;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=32X9w96j/6luUoMGo5UFRFt7UJIdq29Ups7kfYJnJ7Q=;
+	b=S4WeUCSGvAJmb00Ikb2pNcYnRWftBF1iEINm+NM9xMJHWmdduiOjjwV4lU+1L4Med3M7je
+	UlgQFnDMQg3ZtbM4XyWqTBnMXzJk/xL45lF2icBjfWmGmRfDlXrGbeq7qwOt4qHo5tFBob
+	7u3SvIAvqVomw+EEUwnFVINLiCflSKo=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-575-CaOZrUoRNoiWXqlLE9maNg-1; Wed, 13 Nov 2024 11:39:35 -0500
+X-MC-Unique: CaOZrUoRNoiWXqlLE9maNg-1
+X-Mimecast-MFC-AGG-ID: CaOZrUoRNoiWXqlLE9maNg
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6d37778b40eso103762236d6.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Nov 2024 08:39:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731507608; x=1732112408;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E+W5/1/yBRnzApluXvmZS6wnEL9+HSsK6+2J6aji4ic=;
-        b=Mypk4SJzGfkzk0Dee4DxH+AEkynBeLBi2ys3biKRqyBCXiwAs1AtPpsKqzAr+B18wf
-         8gkmrN4FVEbz8VCYPQxeUNpzfimMgtLrC6+Es27uAP1xSM5MD/b7XxyBGst/NeVflgQD
-         pzxHcAh4q/IpTlCB8allxqgtACQgUyQUk96JFyi3kUTA72BtRopoVIKRzIgErHR1vMgu
-         2L3KlzHcB3AHNl+TEaPcd4V7VC1Nob2+XNxhQvdRS0uQjNlLSvdVbC7Rcj1bzMFbJWTS
-         w1rFw5ssoUTRHR9Bq7XsD9PbPo5b0zBmT6G8wZ90WCoDRS1HopluYofUUTFcjHjCNYsb
-         iquw==
-X-Forwarded-Encrypted: i=1; AJvYcCVdvDZK3DDyoHTK40ktdURj3M5keKFkRh+SOdxbmjtx3YMNP5MZ1V8sCRCGoQ/Tu23Y+p66wKwPzQusEKQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyLrwbGMnVrnHeDP+Mw3YsGuuvQ2f7+QVYSUZqMctmFa1x4ucs5
-	XQWquYyqDonm7y/qPtxP2yrJL5Xte6D0/hlcTALFZg28UIH/wmSe
-X-Google-Smtp-Source: AGHT+IGeOAmmIL3JeGd2B/FeYzTlCYu440XfiAvTwoYmEtolyVkG9FqkwR5NzpR2JeHhiVjtarSHuQ==
-X-Received: by 2002:a17:902:ea02:b0:20c:5c13:732e with SMTP id d9443c01a7336-21183e11d8bmr278709445ad.38.1731507607853;
-        Wed, 13 Nov 2024 06:20:07 -0800 (PST)
-Received: from dw-tp.ibmuc.com ([171.76.87.84])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21177e6ab8fsm110636045ad.226.2024.11.13.06.20.03
+        d=1e100.net; s=20230601; t=1731515974; x=1732120774;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=32X9w96j/6luUoMGo5UFRFt7UJIdq29Ups7kfYJnJ7Q=;
+        b=d9nMa17kAyBgVTF5YeOZBMXfs7CRwZd2oXnYGU/w9xNF1si5s5rVkCKp3sErKrIk37
+         LNUPLDfWuUqUKB1r2z637cIBfVJm/zmfHrwaGJnOgO0PmN6VABQOIXsWoN3PcCRp0QOH
+         X8lhLQkZ6No22iob7cv8gx3MRdVIPqDWJt9Mo7v0JXTvszr5lTtbhPZtFj+VZwpLTaV+
+         j+5/NIEiZLgw8KmjKomT6BZ/NKJp0ndDdYC1uiiDfPThJVW2Fc8L77qRXhqSuCOJeHG4
+         alAktdU94bKYyPsyUf+/3EdcOoUyHcjWvPfVeAXRE9ed8C/4KvK9CiGI14pemJKGqNNG
+         jpqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVe5c8yl6MbPRHsndoR7p2aOlGcqFDe3S1utW9hqX9zzurdGQQvobvJ5XeGkuqCnXpgQ0oa7I5t9s8WTwI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxS85zC5O5XjSOl/xontslPWtoRh5ezVI8IjDLV4ndBoY+Gxl1q
+	CUEosZbrjNeroCVTPESXCKgNSqTNrYlG9bG36oWm/yXbs6hm9bTBmbkng36pbGHqX4I+Dnmk/Qs
+	BTQPhdSUu6h5JC904l8f9zRSb+CRiONCdeJ0DP4apiQbA5a3O8WrePNaA47xSWYw=
+X-Received: by 2002:a05:6214:3987:b0:6ce:34d5:8882 with SMTP id 6a1803df08f44-6d39e19e2a1mr283778436d6.39.1731515974478;
+        Wed, 13 Nov 2024 08:39:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGDKo6Iqu9xjWDgAQhCuGtni17bdPjeCzIpnbYgct2pKE70TzMw5IDOMnCe9a1WfloQWLLrHw==
+X-Received: by 2002:a05:6214:3987:b0:6ce:34d5:8882 with SMTP id 6a1803df08f44-6d39e19e2a1mr283777986d6.39.1731515974173;
+        Wed, 13 Nov 2024 08:39:34 -0800 (PST)
+Received: from x1n (pool-99-254-114-190.cpe.net.cable.rogers.com. [99.254.114.190])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d3961dfad2sm86443686d6.1.2024.11.13.08.39.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Nov 2024 06:20:07 -0800 (PST)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Zi Yan <ziy@nvidia.com>,
+        Wed, 13 Nov 2024 08:39:33 -0800 (PST)
+Date: Wed, 13 Nov 2024 11:39:30 -0500
+From: Peter Xu <peterx@redhat.com>
+To: Jann Horn <jannh@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Nicholas Piggin <npiggin@gmail.com>,
 	David Hildenbrand <david@redhat.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Houghton <jthoughton@google.com>,
+	Huang Ying <ying.huang@intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+	Hugh Dickins <hughd@google.com>, Borislav Petkov <bp@alien8.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Donet Tom <donettom@linux.vnet.ibm.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Sachin P Bappalige <sachinpb@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: [PATCH v4 -next] cma: Enforce non-zero pageblock_order during cma_init_reserved_mem()
-Date: Wed, 13 Nov 2024 19:49:54 +0530
-Message-ID: <e274344b44d5f80fa54c52f530387257fe99ec65.1731505681.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.46.0
+	Rik van Riel <riel@surriel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Mel Gorman <mgorman@techsingularity.net>, x86@kernel.org,
+	Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v5 0/7] mm/mprotect: Fix dax puds
+Message-ID: <ZzTWQqr-zFQz0HHY@x1n>
+References: <20240812181225.1360970-1-peterx@redhat.com>
+ <CAG48ez0NNph0Zp2aZ+c1T+U940CvwxcQ+jyEhp3KYZLSWPSrNw@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,72 +123,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+In-Reply-To: <CAG48ez0NNph0Zp2aZ+c1T+U940CvwxcQ+jyEhp3KYZLSWPSrNw@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: x2C5UTb2qsj7IvueprTfru46teWUGCKuNRTDSIBKaJo_1731515974
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-cma_init_reserved_mem() checks base and size alignment with
-CMA_MIN_ALIGNMENT_BYTES. However, some users might call this during
-early boot when pageblock_order is 0. That means if base and size does
-not have pageblock_order alignment, it can cause functional failures
-during cma activate area.
+On Mon, Nov 11, 2024 at 10:20:59PM +0100, Jann Horn wrote:
+> On Mon, Aug 12, 2024 at 8:12 PM Peter Xu <peterx@redhat.com> wrote:
+> > Dax supports pud pages for a while, but mprotect on puds was missing since
+> > the start.  This series tries to fix that by providing pud handling in
+> > mprotect().  The goal is to add more types of pud mappings like hugetlb or
+> > pfnmaps.  This series paves way for it by fixing known pud entries.
+> 
+> Do people actually use hardware where they can use PUD THP mappings
+> for DAX? I thought that was just some esoteric feature that isn't
+> actually usable on almost any system.
+> Was I wrong about that?
 
-So let's enforce pageblock_order to be non-zero during
-cma_init_reserved_mem() to catch such wrong usages.
+I did run it with a qemu emulated nvdimm device.  Though in reality I've no
+idea on how many people are using it..
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
-RFCv3 -> v4:
-1. Dropped RFC tagged as requested by Andrew.
-2. Updated the changelog & added background as requested by Andrew [RFCv3]
-3. Added acked-by and RBs tags.
-4. Small commit msg update.
-5. No functional changes.
-[RFCv3]: https://lore.kernel.org/all/20241112225902.f20215e5015f4d7cdf502302@linux-foundation.org/
+> 
+> I think another example that probably doesn't play entirely nice with
+> PUD THP mappings is mremap()'s move_page_tables(). If
+> dax_get_unmapped_area() allows creating a VMA at an unaligned start
+> address (which I think it does?), move_page_tables() can probably end
+> up copying from an aligned address mapped with a huge PUD entry to an
+> unaligned address that needs to be mapped at the PTE level, and I
+> think that will probably cause it to call into get_old_pmd() while a
+> huge PUD entry is still present, which will probably get us a
+> pud_bad() error or such?
 
-Background -
-============
-1. This was seen with fadump on PowerPC which was calling
-   cma_init_reserved_mem() before the pageblock_order was initialized.
-   This is now fixed in the fadump on PowerPC itself. The details of that
-   can be found in the patch including the userspace-visible effect of the issue [1].
-2. However it was also decided that we should add a stronger enforcement check
-   within cma_init_reserved_mem() to catch such wrong usages [2]. Hence this
-   patch. This is ok to be in -next and there is no "Fixes" tag required for
-   this patch.
+I think you're probably right, that we have other places that may not work
+well with pud mappings.
 
-[1]: https://lore.kernel.org/all/3ae208e48c0d9cefe53d2dc4f593388067405b7d.1729146153.git.ritesh.list@gmail.com/
-[2]: https://lore.kernel.org/all/83eb128e-4f06-4725-a843-a4563f246a44@redhat.com/
+I also wonder whether dax_get_unmapped_area() needs to properly handle
+MAP_FIXED, even for PMD mappings.
 
- mm/cma.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+It looks like it always fallbacks to the default mm_get_unmapped_area()
+with FIXED, which have no idea on dax->alignment so it'll always allow
+it.. The issue is I'm not sure dax pmd can be split at all, while I think
+split-able is needed when mremap from a pmd-aligned address to a
+!pmd-aligned address.
 
-diff --git a/mm/cma.c b/mm/cma.c
-index 3e9724716bad..36d753e7a0bf 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -182,6 +182,15 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
- 	if (!size || !memblock_is_region_reserved(base, size))
- 		return -EINVAL;
+Thanks,
 
-+	/*
-+	 * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement which
-+	 * needs pageblock_order to be initialized. Let's enforce it.
-+	 */
-+	if (!pageblock_order) {
-+		pr_err("pageblock_order not yet initialized. Called during early boot?\n");
-+		return -EINVAL;
-+	}
-+
- 	/* ensure minimal alignment required by mm core */
- 	if (!IS_ALIGNED(base | size, CMA_MIN_ALIGNMENT_BYTES))
- 		return -EINVAL;
---
-2.46.0
+-- 
+Peter Xu
 
 
