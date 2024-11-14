@@ -1,63 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-3221-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3222-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A74A9C8D8B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 16:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DE09C8DD9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 16:24:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq3MM16msz2ysb;
-	Fri, 15 Nov 2024 02:03:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq3qF2VJVz3013;
+	Fri, 15 Nov 2024 02:24:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.117.254.33
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731596639;
-	cv=none; b=EFbl1RRLOuOWAzXAf5ej4ibEI2YaSuInUYv1tBKuzgSMxWoCvnWJOQKBIjHWaUBPUsGAeHxuThUkJrwAnJTL1Y6So/DaoaxBktxvNwKoSmJ04gSRSS/T647DhRFRrtde+GedDWPdRDifAuxIS5slxW1+HHm8KiojRGr3kL5vuORNb8/aMHZyaR/Nhbgcn9D5uBlji1aufnRkZtQxVGuQ1spK4vhbmEU7G/22S1X7mBg3JlWMrfL5SaIoAcWF2Wjc2XPd+TwLEcvnVU51sUXNWBoYaIRTndSYQzGxkzOhqm9KkxIFDCFy3CmkqLKZIERtBl4DFajqND2SdjB/bN0qDg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.150
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731597881;
+	cv=none; b=FfwsvFcRPEXRhrPPPtV90hr02HtFZJKD0dKyRedmFouYr/qRfKTWeCTgbjeDQP3aqRbW9CtOkzwath7rIrgkgdImnKoW6S7XButZUUwLAk4FDMTCx1amoUSsZz+7JsAc4WA25q2CGRkJke8lpk2nhykvG8PTww4dskq/DuyVSmkJ01VyZLGjvRyUPigWVGMi0VFAvO4I7WWO1CLXQx6qOtKfvAuVFHM4Ua+fL9OtDxo1if+3WIFD4e9SUWi/xKRBIabwZwa7TIhXQnlfvye9apcR1InT4V1jqkVxTZp3GxgIhWXUagxSmR8n2YrqOhbYPqwIamUN7eMEt8QkPuH5cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731596639; c=relaxed/relaxed;
-	bh=dRsJqeYZfBgIesQfn/MHcP7T/a2QWpqLVvkqC7gdriE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S5m/YtHJyXKOzObA+BMA0cu4WVaJuom/YZV//OJYjeg0IpSqwOEQuQ+1xwC35MY1CTFXxFXExoWBnhE2hriWYm7CcwAw2Ht1pB7EtB+pw5x2Ob5MtxTn73cfoiI7OcLIvqoEINX3E7BS+X9H5+yxSoG9ThOyKlSykPTAs3epOME98hkxOJKooIpLiBXZNCiaNn5p5NagxHbuXeyXmkHH7MkE/fO+xxPGF1nN9QwHsWlMCPAU6NPGfOKaViAN6woeGQ878TXQrcEUggDcjYNHY8PAe4E90X1JRDg7kToXa+IE+JzjFEgF0AqPkB1a4wwuDlHHYUYt0rcJsat+06Vavg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=TPg2wrns; dkim-atps=neutral; spf=pass (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=sang-engineering.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+	t=1731597881; c=relaxed/relaxed;
+	bh=sEKG2KJM22+jKSTHPnbchUezEDrqO6zc31mntUBERxU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=DeHjqvToCnF/xSmwFM0k9dKeo5oLS+EtXlxue2oSdDTbRpJitqVxiQbZzSXZOVPgLKbApzllXqtoboLuoyjxu7J+JfQCnVoxWtI9DQxjrQd2NZOGmW1WMB6ntx85aAwx0ZQ2Zo1sdAI7cij71R7C5PD9Q5CZPfLhTOZ32t+7TACgtoFO8b6PqWO5MXPd64SZKfS2LsWjoLgQpsGuh4W2c6mqR3XhBpvFCPTqrMElNfInhEnpneWnOOHJcR2YUczHhtHF/RyP1F0TKFlDu2YXYYNw+axIL7a3bnkRb1BsKc4bKh2ocg4Iw3tx7i5Ys5NbQ4ly6SHJ5kQvq0mELXykMA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=Y52RVQ0x; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=SycmBeHD; dkim-atps=neutral; spf=pass (client-ip=103.168.172.150; helo=fout-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=TPg2wrns;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=Y52RVQ0x;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=SycmBeHD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sang-engineering.com (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 396 seconds by postgrey-1.37 at boromir; Fri, 15 Nov 2024 02:03:53 AEDT
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.150; helo=fout-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq3MF3Ldwz2ynL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 02:03:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq3qD2l27z2ysX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 02:24:40 +1100 (AEDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id 17F411380588;
+	Thu, 14 Nov 2024 10:24:38 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Thu, 14 Nov 2024 10:24:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1731597878;
+	 x=1731684278; bh=sEKG2KJM22+jKSTHPnbchUezEDrqO6zc31mntUBERxU=; b=
+	Y52RVQ0xIbfPhhKXYgHeja0MKfUI4AG1CCfZvZJFJw5UTCSO+filZbg1oSb4JA9M
+	KRlBDyQ1PgYlusBE0tF4ZnpLOVpVtbVpSJmFVKbS3yYeHK8PCLk57sMt4gspeIGQ
+	XwOI3vqx65r4kZIug77LQKOohlSEkoTem/uP8xc4AD990Pe6IHTXKkWT4953RItu
+	ADDO901HVq3wiAvUKYDPB7iIt/uFvf9NFiKV2yZmOWGGz5Q5V03JpJgA6Z94WA/u
+	PBw+h78QUgl3i90yl/xP5HaCEOVpZeROWqjigiSHNvua6tk+IBzTIxmFHF4sV07B
+	2TgrKDsXZBh/tNU8r8Vgsw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=dRsJ
-	qeYZfBgIesQfn/MHcP7T/a2QWpqLVvkqC7gdriE=; b=TPg2wrnsiZu1NYDo0UWQ
-	WWGaj67MS0s9qoeBXwcUmvL6YpuoQuDzh409d61LeLTl02dCuil29KbG0ReeCImf
-	P9vm6WmT4lHb1ArPYSJL2G4kbgTB9kaknO+ZhDjpwn1PTO0KyPQADDYyrvAxBnqb
-	eCgDHKrpqdAnkswYs4xbS6IZxfwXImZrg4MfcX8wB+JbsoDI42pK7QfUlrFX1h8r
-	cC2qFgUG3JVv2bExD0BeLSbVGmm0A4P7cuxQ6r9/s/3vAxV8gi2+aKcXCZe0OYz1
-	2Tvcv1v5UWcNuO6oMtOXOuBshikV0regki5T0UFd/WPDZ44w4u/rNN8dsjiSxqpn
-	Pw==
-Received: (qmail 3195118 invoked from network); 14 Nov 2024 15:57:08 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Nov 2024 15:57:08 +0100
-X-UD-Smtp-Session: l3s3148p1@nFYUquAmstJehhtH
-Date: Thu, 14 Nov 2024 15:57:08 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, arnd@arndb.de,
-	Linux I2C <linux-i2c@vger.kernel.org>
-Subject: Re: [RFC PATCH 09/10] i2c: Remove I2C_HYDRA
-Message-ID: <ZzYPxBvZ44pMzeJN@ninjato>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	arnd@arndb.de, Linux I2C <linux-i2c@vger.kernel.org>
-References: <20241114131114.602234-1-mpe@ellerman.id.au>
- <20241114131114.602234-9-mpe@ellerman.id.au>
- <CAMuHMdXLM-eeAa9=YwkU6gcwmD60Wba5v=F6PU20QMqzxRbM4w@mail.gmail.com>
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1731597878; x=
+	1731684278; bh=sEKG2KJM22+jKSTHPnbchUezEDrqO6zc31mntUBERxU=; b=S
+	ycmBeHD6XvRQkl/3pixfFvOojf4RTjmSUxWC6VcUMhFgmD2jW5GHrkp3ycRbsNu6
+	sBkLAORexbuh8QgtxCmg/jWLQ1I7bWUidNtx6pORjoSZuE1qPjh5yVDPEo1a0Gj6
+	AA5UpwroUYfRx9i+hiNA8G7m9w/mQfPvD4CmxYhygozZD1JEXczEfEP0axnb6Pg7
+	zJkBgX3+m0dhqglMTvL0RLCrJFYE1QEOWxJ4+xncIE7B4rHsNNh+XFqZbUtqB/Z9
+	NEALEzewsvFwexOuYD3nHUcgE4K8DrSRZGidAwqQ2laPXA1MQi/PMdl12gN38U+M
+	TZkDO2lTD8go82u8HmhsQ==
+X-ME-Sender: <xms:NRY2Z1lQlkAonugTOHvHY-1BktHEABFzGjHLJI0WSoh6p9FKWxxClg>
+    <xme:NRY2Zw1IMhRyYGygTw31F9_wSAiOclAm6KtrplVC009WudyUkw6qqKVa-2mxUT1zF
+    N53-XLpbU18qI1CLxw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrvddvgdejhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredttden
+    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
+    gvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffg
+    vedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeehpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrihgurd
+    gruhdprhgtphhtthhopehgvghofhhfsehinhhfrhgruggvrggurdhorhhgpdhrtghpthht
+    oheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtph
+    htthhopehjkhesohiilhgrsghsrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:NRY2Z7qzgG_ajSoFqwLoSxb6B0u6vy9flx0HGLTcxLCVqjS8dAtSjQ>
+    <xmx:NRY2Z1kOoVsH2gRUka_KWSaVkGZw8EiRER11q_53_qsPN-ViJleZZQ>
+    <xmx:NRY2Zz3WxlpF0XTlI293HTTuhBjS1nG2g8-S6tLULTZIRUV5o_gQmg>
+    <xmx:NRY2Z0uiRjJ2rjzTRwfK4dH8NUobEnONQadzWmwV3uZfXU2KDqikDA>
+    <xmx:NhY2Z-T1W8IPpq-MpyJp1NB0iz-44721XI5rIb3rdCNwLu43YFUlWdQE>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 981222220071; Thu, 14 Nov 2024 10:24:37 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,57 +95,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="b3oYDcQCh8M8X+Z5"
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXLM-eeAa9=YwkU6gcwmD60Wba5v=F6PU20QMqzxRbM4w@mail.gmail.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+Date: Thu, 14 Nov 2024 16:24:16 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, "Jeremy Kerr" <jk@ozlabs.org>,
+ "Geoff Levand" <geoff@infradead.org>
+Message-Id: <e34e2353-5818-408f-ab04-ce289bf418af@app.fastmail.com>
+In-Reply-To: <20241114125111.599093-13-mpe@ellerman.id.au>
+References: <20241114125111.599093-1-mpe@ellerman.id.au>
+ <20241114125111.599093-13-mpe@ellerman.id.au>
+Subject: Re: [RFC PATCH 13/20] powerpc/io: Remove unnecessary indirection
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Thu, Nov 14, 2024, at 13:51, Michael Ellerman wrote:
+> Some of the __do_xxx() defines do nothing useful, they just existed to
+> make the previous hooking macros work. So remove them.
+>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
---b3oYDcQCh8M8X+Z5
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-On Thu, Nov 14, 2024 at 03:37:15PM +0100, Geert Uytterhoeven wrote:
-> CC linux-i2c
->=20
-> On Thu, Nov 14, 2024 at 2:11=E2=80=AFPM Michael Ellerman <mpe@ellerman.id=
-=2Eau> wrote:
-> > The i2c-hydra driver depends on PPC_CHRP which has now been removed,
-> > remove the driver also.
-> >
-> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->=20
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
->=20
-> > ---
+> @@ -607,27 +600,27 @@ static inline u32 readl_be(const PCI_IO_ADDR addr)
+> 
+>  static inline void writeb(u8 val, PCI_IO_ADDR addr)
+>  {
+> -	__do_writeb(val, addr);
+> +	out_8(addr, val);
+>  }
 
-Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+I would open-code PCI_IO_ADDR here.
 
+Also, at this point the writeb() etc functions are close enough
+to the asm-generic/io.h version that we could try to go the next
+few steps. One problem doing this is the definition of the
+*_relaxed() accessors. Ideally the inline asm would go
+into the __raw_*() helpers, with the "sync" and "twi;isync"
+going into __io_br(), __io_bw() and __io_aw(), at which point
+these can all use the generic versions, and out_*/in_*() can
+be defined on top of those.
 
---b3oYDcQCh8M8X+Z5
-Content-Type: application/pgp-signature; name="signature.asc"
+What I'm not sure about here is the __io_br() (sync before
+readl()), since most other architectures don't do this.
+Any idea why powerpc does it, and if the relaxed() version
+needs it as well? Is this for spinlocks serialization?
 
------BEGIN PGP SIGNATURE-----
+I think the sync before write and twi;isync after read() is
+needed mainly for synchronizing against concurrent DMA, so
+it should be fine to leave those out of the relaxed
+versions, but it's possible that there is something
+more going on than I remember.
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmc2D8AACgkQFA3kzBSg
-KbYpqQ//cTHdKtv+OT5iUTvVPKKtfZLUlFRc3Sf4Y0Ui+JFxjueaUVzQ16CzDyy8
-VcRTIJHL2t4AjIpp1LSAVp8Tcc7xJTEiksfx6ycdnIXgnvvgk/RaCz5gwMH+1W+j
-U6QMG1b1tVoFZF69zHn7G6XU84cvqPO8JdUuZB0WGbzAKZcbsIKoagg2LykuZa5h
-BWC21WX9Ze+Vkao46dtUKvrkWA63u89a3xlv4yoFjlkEVwCd1fXYqoLMFEjiVtk+
-2ouXqCX73imUI66OWlBnoNGuhwuh+RAnuHlnu8eskko6ggILkRUZ87SZWd1WR4x2
-fkduX62y8/B+qVFuKPqmWV+2lR38fwEU2CY72Ild4XtgPaBX5wyFAAdVDGaE14er
-94saEMP2pHWJXNTa/AuH/PV4cSZcRUVzDm5kcRaEj2hQkn4u8YTPlCCIvyJ8Dnjr
-TpxKl4PxmSYaVGYlyLwbD8oM5JsTiyOcZNBshLCvJE1IHdgKsJZiIMSiBs6Itazl
-/mRksfIhshodHSS/ebydCbHQTWp1LAKTJDeqxvw2fuq2W0ZAigtkc67qisWJEQ53
-p7r0iccjMim8QrhGROyxZCE+50JxuqVoKRgsgTuG53jIYjETzGcumqrqAVhskxWR
-vZljCognLV9cSah+JDPKZ9oovcJ2pfxSjyL314DQF4hvkMgGmIQ=
-=t0n4
------END PGP SIGNATURE-----
-
---b3oYDcQCh8M8X+Z5--
+      Arnd
 
