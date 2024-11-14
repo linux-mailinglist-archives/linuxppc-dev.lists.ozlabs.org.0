@@ -1,57 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-3177-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3176-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2726D9C8B0C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 13:51:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8600D9C8B09
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 13:51:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq0QM149tz2ytT;
-	Thu, 14 Nov 2024 23:51:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq0QL1NtFz2yvs;
+	Thu, 14 Nov 2024 23:51:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731588683;
-	cv=none; b=OaZefpH4Ef4hbWa2JdgY4KLXa+2n84Iz4wDoHitmX6kttKGqi2Ih/78cL7UFGnuCPKtlAQYqM7lejH0kfVVEqYBjUCnihv9vPLtLCBo/Dp1im7AGXJnnewmTa8reG90+wftk+qCbhb7j/AOQaJRn7ZqTYcjJSTBULOyiLrVEWnmhscHz/rDaN9N5ziMFZrz7L9AwN4ODJOKorcIdhOgHrJLzLLYtZk2EVwBrYELFD1RSH755yy8ohze1oL/Wo/I67znvS92rE+mw40bbHe8Zjm2bSMPs7mgmSbMNZF5k0db+WD/rB1N8BslTas/Sl7yIR+69bi8/7K+A9vYj/eC6fA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731588682;
+	cv=none; b=o2rReWUyY69vuevNymXNFJ37jphnkUWFjJcmWlA0GnrSroWSisGDhCn/pz4bkqajB2JHlP0q6bIl+sQU3u7bzh3ht0sdYMtkrONmfEWmfMVNpqC/onBUYwmptaYI+TPcK3Yd0VHLTrClEuQfFYKvFu78yWn0/BYR6cQSQKgss1OVX8qF11e62SsZiULlBrBPycAXw0uwc9oTeRX74JVW3oGpmV4NVaO+CrgNq2Ecyvk/Jqff39XyJdQcxfiNr5ECw39aR3DOBAqiMSP0MrLXUdsnFUUt4jKX1f5HE2pGzVV8csSg/pHzkk0dsIRZLdlPt+FV62QXlkV+3gzkLHwqug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731588683; c=relaxed/relaxed;
-	bh=vjWVmIzrzecRAdw0e45UvGpGZnvkStlN4cYjwiHA+hI=;
+	t=1731588682; c=relaxed/relaxed;
+	bh=nIDTNg0/wpMBXxSLFWFsRWRp9EMw+4e2Gw2pkD5xRsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oje9dZmBdY5Xrpcj3XIWNGatCaLnrEc4YcxrgYubiubgE+ioj4GNKpKMSJKqb480W80JiD7pJS39oa2j0W/YWZD1buuKGyewXO7CjxPzCUhJ6ZRbfA12seTc50aHQXrKxTNqlOGlMJrsVHZh0UvxuLh8jibW+oGTSoaB3dUUAQVvUsonh0SPGSoVpSZXyRYoPv5vUKEpi7Qf1PFVsgWgiRruzV9Zo5B4DijXf1fd+53TU05+aUR82ML2EnB0m6HDTm8yMuUS8DeIFFs6GtLJYZxH6AmH2vuXM69431S/tfYncjbjLLIsxnoHQ/JGn4kgd7u78SjLFvoCDEjXCemfww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YhRRwXPX; dkim-atps=neutral
+	 MIME-Version; b=mSF40ljnKWibqY9iTKEmVsE/Jk0MNRyJ9Qj93hvVfzAmx7QiprZzumGSnGx9NXRZ+0c8lv7VjW/Jk/82AnyJTf6RmheFNq6K5lAMQQTGbg9Jz6FBNYJyhtKjrekFjQJhDu006Zr9bPUmifot2ChA4bosobuRga76UQv3mVh30amCUsFxkiD+gE+EHLTdLcO8ihLYKKogIZdfNlr6ijXc8/1oNq12Nqtt1vlDY31jZIza9lTPIgGtSph0KlK5Yokt6s3FxjosxHe1RHjUBkxgnM5e83J5Dl3vD/jK1Ugj+PAQIvqjAFVjLVJts1q/0qVTQ8l+b6RjXVsMarqoUqMyhQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HvHqLv2s; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YhRRwXPX;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HvHqLv2s;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq0QJ4LhFz2xwc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2024 23:51:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq0QK0zFPz2ytT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2024 23:51:21 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1731588677;
-	bh=vjWVmIzrzecRAdw0e45UvGpGZnvkStlN4cYjwiHA+hI=;
+	s=201909; t=1731588678;
+	bh=nIDTNg0/wpMBXxSLFWFsRWRp9EMw+4e2Gw2pkD5xRsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhRRwXPXdfLhJdcBWfbNTkucAbvE53+MpUwrSdezZytaLa8FWUzy5xGgwx/5QtwbD
-	 zSbOzBqMLH6N1mmEYgF9OqvjK7qZU/OuffT6G9B8NznQL/gZ1VzZzOkOhMCgkGGO8f
-	 oEKZjQQXbKYI+O9HkMxw1dAm0RPyQYhz4Vd4H4x59LuwpxdQoLKj/chQnOebqwZJvE
-	 2WOiaUr9LdPuGv1niL9w77XsUcN9Zpsyt3yjTInrmjRxXOfXPekpZ+CKSMK2amYTMO
-	 +NX9b1yIlenvMFRLJOv7d9bnlJF4L8e3+Psz98sHDSucn6X1ch75jZu38nS23hGlU2
-	 8J66U6ZxSQ3wA==
+	b=HvHqLv2sjBHMNLLbhq745meUC/9GgDIpiSeJ5WkyCBuF3fOb/OxmhZUgnCkbvWlM5
+	 +V8nrGu4yfVBqqC75nZJXs0zToznb2Di1xrrvCxQ5And1hwdRY0kGmy7rGl/FdLTln
+	 BgJhhrsZI7yEeg7zjuMehTsfK5WQFR7RWKKUu+ix5L9QCEkDLZVu6nr303FRit1q7o
+	 iN1OFf6Y0U7aZaTy4yC+4XYEmo9a/lXoKcCdzhpas5spDO9NGv9kKSMglN238FNBjK
+	 7miiR1Nm6MG16ZtZTzxwJ2J8JhPBM1GAJelNeI4D45pFIxpyaXnc1MpmlHUrj3Z/cp
+	 iRwkVPGevJSgw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xq0QF5D0Gz4x3q;
-	Thu, 14 Nov 2024 23:51:17 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xq0QG1RT0z4x6k;
+	Thu, 14 Nov 2024 23:51:18 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
 Cc: <linux-kernel@vger.kernel.org>,
 	<jk@ozlabs.org>,
 	<arnd@arndb.de>,
 	<geoff@infradead.org>
-Subject: [RFC PATCH 02/20] powerpc: Remove some Cell leftovers
-Date: Thu, 14 Nov 2024 23:50:51 +1100
-Message-ID: <20241114125111.599093-2-mpe@ellerman.id.au>
+Subject: [RFC PATCH 03/20] powerpc: Remove PPC_PMI and driver
+Date: Thu, 14 Nov 2024 23:50:52 +1100
+Message-ID: <20241114125111.599093-3-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241114125111.599093-1-mpe@ellerman.id.au>
 References: <20241114125111.599093-1-mpe@ellerman.id.au>
@@ -73,71 +73,386 @@ X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Now that CONFIG_PPC_CELL_NATIVE is removed, iommu_fixed_is_weak will
-always be false, so remove it entirely.
+CONFIG_PPC_PMI is no longer selectable now that PPC_IBM_CELL_BLADE has
+been removed, via the dependency on PPC_IBM_CELL_POWERBUTTON.
 
-Also remove a hack/quirk in the HTAB code that was only used on Cell.
+So remove it and the driver, and the pmi.h header which it was the only
+user of.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/include/asm/iommu.h      |  6 ------
- arch/powerpc/kernel/dma-iommu.c       |  2 +-
- arch/powerpc/mm/book3s64/hash_utils.c | 12 ------------
- 3 files changed, 1 insertion(+), 19 deletions(-)
+ arch/powerpc/include/asm/pmi.h      |  53 ------
+ arch/powerpc/platforms/cell/Kconfig |   9 -
+ arch/powerpc/sysdev/Makefile        |   1 -
+ arch/powerpc/sysdev/pmi.c           | 267 ----------------------------
+ 4 files changed, 330 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/pmi.h
+ delete mode 100644 arch/powerpc/sysdev/pmi.c
 
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index 04072b5f8962..b410021ad4c6 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -317,12 +317,6 @@ extern void iommu_flush_tce(struct iommu_table *tbl);
- extern enum dma_data_direction iommu_tce_direction(unsigned long tce);
- extern unsigned long iommu_direction_to_tce_perm(enum dma_data_direction dir);
- 
--#ifdef CONFIG_PPC_CELL_NATIVE
--extern bool iommu_fixed_is_weak;
--#else
--#define iommu_fixed_is_weak false
--#endif
+diff --git a/arch/powerpc/include/asm/pmi.h b/arch/powerpc/include/asm/pmi.h
+deleted file mode 100644
+index 478f0a2fe7f4..000000000000
+--- a/arch/powerpc/include/asm/pmi.h
++++ /dev/null
+@@ -1,53 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-#ifndef _POWERPC_PMI_H
+-#define _POWERPC_PMI_H
 -
- extern const struct dma_map_ops dma_iommu_ops;
- 
- #endif /* __KERNEL__ */
-diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
-index f0ae39e77e37..4d64a5db50f3 100644
---- a/arch/powerpc/kernel/dma-iommu.c
-+++ b/arch/powerpc/kernel/dma-iommu.c
-@@ -136,7 +136,7 @@ static bool dma_iommu_bypass_supported(struct device *dev, u64 mask)
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct pci_controller *phb = pci_bus_to_host(pdev->bus);
- 
--	if (iommu_fixed_is_weak || !phb->controller_ops.iommu_bypass_supported)
-+	if (!phb->controller_ops.iommu_bypass_supported)
- 		return false;
- 	return phb->controller_ops.iommu_bypass_supported(pdev, mask);
- }
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index c8b4fa71d4a7..734610052cf4 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1358,18 +1358,6 @@ static void __init htab_initialize(void)
- 	} else {
- 		unsigned long limit = MEMBLOCK_ALLOC_ANYWHERE;
- 
--#ifdef CONFIG_PPC_CELL
--		/*
--		 * Cell may require the hash table down low when using the
--		 * Axon IOMMU in order to fit the dynamic region over it, see
--		 * comments in cell/iommu.c
--		 */
--		if (fdt_subnode_offset(initial_boot_params, 0, "axon") > 0) {
--			limit = 0x80000000;
--			pr_info("Hash table forced below 2G for Axon IOMMU\n");
--		}
--#endif /* CONFIG_PPC_CELL */
+-/*
+- * Definitions for talking with PMI device on PowerPC
+- *
+- * PMI (Platform Management Interrupt) is a way to communicate
+- * with the BMC (Baseboard Management Controller) via interrupts.
+- * Unlike IPMI it is bidirectional and has a low latency.
+- *
+- * (C) Copyright IBM Deutschland Entwicklung GmbH 2005
+- *
+- * Author: Christian Krafft <krafft@de.ibm.com>
+- */
 -
- 		table = memblock_phys_alloc_range(htab_size_bytes,
- 						  htab_size_bytes,
- 						  0, limit);
+-#ifdef __KERNEL__
+-
+-#define PMI_TYPE_FREQ_CHANGE	0x01
+-#define PMI_TYPE_POWER_BUTTON	0x02
+-#define PMI_READ_TYPE		0
+-#define PMI_READ_DATA0		1
+-#define PMI_READ_DATA1		2
+-#define PMI_READ_DATA2		3
+-#define PMI_WRITE_TYPE		4
+-#define PMI_WRITE_DATA0		5
+-#define PMI_WRITE_DATA1		6
+-#define PMI_WRITE_DATA2		7
+-
+-#define PMI_ACK			0x80
+-
+-#define PMI_TIMEOUT		100
+-
+-typedef struct {
+-	u8	type;
+-	u8	data0;
+-	u8	data1;
+-	u8	data2;
+-} pmi_message_t;
+-
+-struct pmi_handler {
+-	struct list_head node;
+-	u8 type;
+-	void (*handle_pmi_message) (pmi_message_t);
+-};
+-
+-int pmi_register_handler(struct pmi_handler *);
+-void pmi_unregister_handler(struct pmi_handler *);
+-
+-int pmi_send_message(pmi_message_t);
+-
+-#endif /* __KERNEL__ */
+-#endif /* _POWERPC_PMI_H */
+diff --git a/arch/powerpc/platforms/cell/Kconfig b/arch/powerpc/platforms/cell/Kconfig
+index ee43d6092e31..758dc08a6dde 100644
+--- a/arch/powerpc/platforms/cell/Kconfig
++++ b/arch/powerpc/platforms/cell/Kconfig
+@@ -21,15 +21,6 @@ config SPU_BASE
+ 	bool
+ 	select PPC_COPRO_BASE
+ 
+-config PPC_PMI
+-	tristate
+-	default y
+-	depends on CPU_FREQ_CBE_PMI || PPC_IBM_CELL_POWERBUTTON
+-	help
+-	  PMI (Platform Management Interrupt) is a way to
+-	  communicate with the BMC (Baseboard Management Controller).
+-	  It is used in some IBM Cell blades.
+-
+ config CBE_CPUFREQ_SPU_GOVERNOR
+ 	tristate "CBE frequency scaling based on SPU usage"
+ 	depends on SPU_FS && CPU_FREQ
+diff --git a/arch/powerpc/sysdev/Makefile b/arch/powerpc/sysdev/Makefile
+index 24a177d164f1..0834a9a12600 100644
+--- a/arch/powerpc/sysdev/Makefile
++++ b/arch/powerpc/sysdev/Makefile
+@@ -12,7 +12,6 @@ obj-$(CONFIG_PPC_MSI_BITMAP)	+= msi_bitmap.o
+ 
+ obj-$(CONFIG_PPC_MPC106)	+= grackle.o
+ obj-$(CONFIG_PPC_DCR_NATIVE)	+= dcr-low.o
+-obj-$(CONFIG_PPC_PMI)		+= pmi.o
+ obj-$(CONFIG_U3_DART)		+= dart_iommu.o
+ obj-$(CONFIG_MMIO_NVRAM)	+= mmio_nvram.o
+ obj-$(CONFIG_FSL_SOC)		+= fsl_soc.o fsl_mpic_err.o
+diff --git a/arch/powerpc/sysdev/pmi.c b/arch/powerpc/sysdev/pmi.c
+deleted file mode 100644
+index 2511e586fe31..000000000000
+--- a/arch/powerpc/sysdev/pmi.c
++++ /dev/null
+@@ -1,267 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * pmi driver
+- *
+- * (C) Copyright IBM Deutschland Entwicklung GmbH 2005
+- *
+- * PMI (Platform Management Interrupt) is a way to communicate
+- * with the BMC (Baseboard Management Controller) via interrupts.
+- * Unlike IPMI it is bidirectional and has a low latency.
+- *
+- * Author: Christian Krafft <krafft@de.ibm.com>
+- */
+-
+-#include <linux/interrupt.h>
+-#include <linux/slab.h>
+-#include <linux/completion.h>
+-#include <linux/spinlock.h>
+-#include <linux/module.h>
+-#include <linux/mod_devicetable.h>
+-#include <linux/workqueue.h>
+-#include <linux/of_address.h>
+-#include <linux/of_irq.h>
+-#include <linux/platform_device.h>
+-
+-#include <asm/io.h>
+-#include <asm/pmi.h>
+-
+-struct pmi_data {
+-	struct list_head	handler;
+-	spinlock_t		handler_spinlock;
+-	spinlock_t		pmi_spinlock;
+-	struct mutex		msg_mutex;
+-	pmi_message_t		msg;
+-	struct completion	*completion;
+-	struct platform_device	*dev;
+-	int			irq;
+-	u8 __iomem		*pmi_reg;
+-	struct work_struct	work;
+-};
+-
+-static struct pmi_data *data;
+-
+-static irqreturn_t pmi_irq_handler(int irq, void *dev_id)
+-{
+-	u8 type;
+-	int rc;
+-
+-	spin_lock(&data->pmi_spinlock);
+-
+-	type = ioread8(data->pmi_reg + PMI_READ_TYPE);
+-	pr_debug("pmi: got message of type %d\n", type);
+-
+-	if (type & PMI_ACK && !data->completion) {
+-		printk(KERN_WARNING "pmi: got unexpected ACK message.\n");
+-		rc = -EIO;
+-		goto unlock;
+-	}
+-
+-	if (data->completion && !(type & PMI_ACK)) {
+-		printk(KERN_WARNING "pmi: expected ACK, but got %d\n", type);
+-		rc = -EIO;
+-		goto unlock;
+-	}
+-
+-	data->msg.type = type;
+-	data->msg.data0 = ioread8(data->pmi_reg + PMI_READ_DATA0);
+-	data->msg.data1 = ioread8(data->pmi_reg + PMI_READ_DATA1);
+-	data->msg.data2 = ioread8(data->pmi_reg + PMI_READ_DATA2);
+-	rc = 0;
+-unlock:
+-	spin_unlock(&data->pmi_spinlock);
+-
+-	if (rc == -EIO) {
+-		rc = IRQ_HANDLED;
+-		goto out;
+-	}
+-
+-	if (data->msg.type & PMI_ACK) {
+-		complete(data->completion);
+-		rc = IRQ_HANDLED;
+-		goto out;
+-	}
+-
+-	schedule_work(&data->work);
+-
+-	rc = IRQ_HANDLED;
+-out:
+-	return rc;
+-}
+-
+-
+-static const struct of_device_id pmi_match[] = {
+-	{ .type = "ibm,pmi", .name = "ibm,pmi" },
+-	{ .type = "ibm,pmi" },
+-	{},
+-};
+-
+-MODULE_DEVICE_TABLE(of, pmi_match);
+-
+-static void pmi_notify_handlers(struct work_struct *work)
+-{
+-	struct pmi_handler *handler;
+-
+-	spin_lock(&data->handler_spinlock);
+-	list_for_each_entry(handler, &data->handler, node) {
+-		pr_debug("pmi: notifying handler %p\n", handler);
+-		if (handler->type == data->msg.type)
+-			handler->handle_pmi_message(data->msg);
+-	}
+-	spin_unlock(&data->handler_spinlock);
+-}
+-
+-static int pmi_of_probe(struct platform_device *dev)
+-{
+-	struct device_node *np = dev->dev.of_node;
+-	int rc;
+-
+-	if (data) {
+-		printk(KERN_ERR "pmi: driver has already been initialized.\n");
+-		rc = -EBUSY;
+-		goto out;
+-	}
+-
+-	data = kzalloc(sizeof(struct pmi_data), GFP_KERNEL);
+-	if (!data) {
+-		printk(KERN_ERR "pmi: could not allocate memory.\n");
+-		rc = -ENOMEM;
+-		goto out;
+-	}
+-
+-	data->pmi_reg = of_iomap(np, 0);
+-	if (!data->pmi_reg) {
+-		printk(KERN_ERR "pmi: invalid register address.\n");
+-		rc = -EFAULT;
+-		goto error_cleanup_data;
+-	}
+-
+-	INIT_LIST_HEAD(&data->handler);
+-
+-	mutex_init(&data->msg_mutex);
+-	spin_lock_init(&data->pmi_spinlock);
+-	spin_lock_init(&data->handler_spinlock);
+-
+-	INIT_WORK(&data->work, pmi_notify_handlers);
+-
+-	data->dev = dev;
+-
+-	data->irq = irq_of_parse_and_map(np, 0);
+-	if (!data->irq) {
+-		printk(KERN_ERR "pmi: invalid interrupt.\n");
+-		rc = -EFAULT;
+-		goto error_cleanup_iomap;
+-	}
+-
+-	rc = request_irq(data->irq, pmi_irq_handler, 0, "pmi", NULL);
+-	if (rc) {
+-		printk(KERN_ERR "pmi: can't request IRQ %d: returned %d\n",
+-				data->irq, rc);
+-		goto error_cleanup_iomap;
+-	}
+-
+-	printk(KERN_INFO "pmi: found pmi device at addr %p.\n", data->pmi_reg);
+-
+-	goto out;
+-
+-error_cleanup_iomap:
+-	iounmap(data->pmi_reg);
+-
+-error_cleanup_data:
+-	kfree(data);
+-
+-out:
+-	return rc;
+-}
+-
+-static void pmi_of_remove(struct platform_device *dev)
+-{
+-	struct pmi_handler *handler, *tmp;
+-
+-	free_irq(data->irq, NULL);
+-	iounmap(data->pmi_reg);
+-
+-	spin_lock(&data->handler_spinlock);
+-
+-	list_for_each_entry_safe(handler, tmp, &data->handler, node)
+-		list_del(&handler->node);
+-
+-	spin_unlock(&data->handler_spinlock);
+-
+-	kfree(data);
+-	data = NULL;
+-}
+-
+-static struct platform_driver pmi_of_platform_driver = {
+-	.probe		= pmi_of_probe,
+-	.remove		= pmi_of_remove,
+-	.driver = {
+-		.name = "pmi",
+-		.of_match_table = pmi_match,
+-	},
+-};
+-module_platform_driver(pmi_of_platform_driver);
+-
+-int pmi_send_message(pmi_message_t msg)
+-{
+-	unsigned long flags;
+-	DECLARE_COMPLETION_ONSTACK(completion);
+-
+-	if (!data)
+-		return -ENODEV;
+-
+-	mutex_lock(&data->msg_mutex);
+-
+-	data->msg = msg;
+-	pr_debug("pmi_send_message: msg is %08x\n", *(u32*)&msg);
+-
+-	data->completion = &completion;
+-
+-	spin_lock_irqsave(&data->pmi_spinlock, flags);
+-	iowrite8(msg.data0, data->pmi_reg + PMI_WRITE_DATA0);
+-	iowrite8(msg.data1, data->pmi_reg + PMI_WRITE_DATA1);
+-	iowrite8(msg.data2, data->pmi_reg + PMI_WRITE_DATA2);
+-	iowrite8(msg.type, data->pmi_reg + PMI_WRITE_TYPE);
+-	spin_unlock_irqrestore(&data->pmi_spinlock, flags);
+-
+-	pr_debug("pmi_send_message: wait for completion\n");
+-
+-	wait_for_completion_interruptible_timeout(data->completion,
+-						  PMI_TIMEOUT);
+-
+-	data->completion = NULL;
+-
+-	mutex_unlock(&data->msg_mutex);
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(pmi_send_message);
+-
+-int pmi_register_handler(struct pmi_handler *handler)
+-{
+-	if (!data)
+-		return -ENODEV;
+-
+-	spin_lock(&data->handler_spinlock);
+-	list_add_tail(&handler->node, &data->handler);
+-	spin_unlock(&data->handler_spinlock);
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(pmi_register_handler);
+-
+-void pmi_unregister_handler(struct pmi_handler *handler)
+-{
+-	if (!data)
+-		return;
+-
+-	pr_debug("pmi: unregistering handler %p\n", handler);
+-
+-	spin_lock(&data->handler_spinlock);
+-	list_del(&handler->node);
+-	spin_unlock(&data->handler_spinlock);
+-}
+-EXPORT_SYMBOL_GPL(pmi_unregister_handler);
+-
+-MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("Christian Krafft <krafft@de.ibm.com>");
+-MODULE_DESCRIPTION("IBM Platform Management Interrupt driver");
 -- 
 2.47.0
 
