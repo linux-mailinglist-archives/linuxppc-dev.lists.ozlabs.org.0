@@ -1,59 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-3216-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3217-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A5EB9C8CFC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 15:37:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEB79C8D17
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 15:42:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq2ms1C02z305P;
-	Fri, 15 Nov 2024 01:37:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq2td1kNcz305S;
+	Fri, 15 Nov 2024 01:42:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.177
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731595053;
-	cv=none; b=jUAgQDBOMzQDONnpFo60kBNc7u2mjmwKUdxUd2yUQFzuL5K5tIsrkgaZSNRYYlXid4VTWMzBgNPythNDUAA61RHadmToeA2E1AE+2dH+eIWnxEM8MaLv3iq5qAuOTw/xutG6Xmqui3KLpZJ3o7OXZa/zcXPk8NmULdHsd3I+UneW4S/NiMauhbncA/UmpvFJZanvCVCxAZJzQk4fj8mwaU3lvZJjuUUAV8j7hqmnZaiGDPZkGH24MEuyQbKzkOqKTUsa9oB4nmxlNU7Fh7nPJqaMX456YIflBQl6wnXA5p+ws8IeXnMNBq6wpLt/Kp/3qLHMeThdXceJtefZiguNuA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.150
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731595353;
+	cv=none; b=ePB6sEgIQ2XmqO5oy9REM6k5wN+/RyOhOPu8sZBoqXo4N5Hmcg/vVjPBp0FeRV89SWd8MZdS341Fo1qUeEgl9r5FBKXVYcCxEF8j7ciLh6G46Ihk/VhJtJoHfe3qsSb54H4EfnlPOak9FVPrQ0N4R1w+FFFBbKbDOOeOWzX3kmneNrz62jikr12/pf/600aNO66JHmod/dybag5+5VnK+0o+ma6LSxPUKnI/nKuKQgBa5CfRk2NJKt25q2ux0y59u+Jwv4lhb6V6mSuv4+GCE+iZoS85QlJsYVWOlXv/kt4hswfRUjsastVGppNZ5G6cfeIgXOJ1dP+DUkOE4uV+pw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731595053; c=relaxed/relaxed;
-	bh=8XkQAk9rlU0ipIFuZq7Z3F+TVNbmBiyHocTwUGKdmYA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OiX8kUKAWndmaKAcO7tiSI5eevXLv9TfXFrqdY1HZL+7eMd0Fya/SGlQMuZSbqbbvrUBxAK+wVSJWGcPbXHSgg1HzfqtrWRrKj7YsiQt1VeVBu870NDmUSdu+v+rWFGtgYl0+Gr4BwxutuQOV/Xyp03D4MokvPQ2h+9WU0Asc5/CzUJmB7fgog1027DuR06kB02GZhEP7T9LzHL2JAbLxSFsGa2bg1f/fVkopkjtcr6Xsw88ZXnjxGXO4OAZctEGUcd2vsddelCvvUxpy9sYPRUdPFEmWtCkdxeL51DmGftoo2+Tvt14Dykj0RvLtE1FDoQVO+cao1VBUBZ/w0ipxQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.128.177; helo=mail-yw1-f177.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.177; helo=mail-yw1-f177.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	t=1731595353; c=relaxed/relaxed;
+	bh=d+Ikno+ZFVKYWdZ3jjxaqVwVRHUcpIv7yzpK/oJR0I4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=K8Qztdu0cul9Djkl3vkB2UIFraKGi1Rmno1i9N7A+mP6AR0kumgonU07f45I8jWUVFyXCo/5jXPZXqwb4Gq+Wg3NZHDUb+KFdXInVQcuXKnofW3buQm39YWyrhaUxYbWTCsFReNQSlm4BHPi9WXGQxGqnJnXbW0UX7JBg56dNlfWB3YnQJzZqIRE6Qnv3jfNllOOCILqSGo1z1iiXcZTutrvS8eM+1/oF3VZ7se0BQRscpj+qxULskFT4J/1ErGoG4gkhOyCwT1kdhqdp4tiZzxqFauq8biuQiqaBUMrr5AYhzO3emWUyfJYPhVXGI8aqr46ErBCdiL26IjVrhwhZw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=CaW4KMyA; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Qhnb5ZCW; dkim-atps=neutral; spf=pass (client-ip=103.168.172.150; helo=fout-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=CaW4KMyA;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Qhnb5ZCW;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.150; helo=fout-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq2mr16KCz305G
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 01:37:30 +1100 (AEDT)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6ee4460fd7bso5432527b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2024 06:37:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731595048; x=1732199848;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8XkQAk9rlU0ipIFuZq7Z3F+TVNbmBiyHocTwUGKdmYA=;
-        b=AnW7ODZ4OtoIlGqkxvspk3Go25Jk1UpdXjbJXgVsQ9hfrgR/WXwhXmquOSfghmr5qG
-         Ys1D61v9w4yDdw3ZvyiLLfUpIC4Qgi7plMyFh9zsiweoLFnkXcY6+W2MomfevdROh1BM
-         j5pXvZCMxWNOeATTOlx556caNbDjmOL2hPjDK1Ai789BTbBMVXAEMQuiei8xXg+I3EFy
-         /waHQT8dEH2z6omMRJIKQmpfdc5JE8OwRRJv+jRJOMGP70u26NEm3mTozDpVgryn5EOI
-         58qfYXIJ19zVXEbZs7I0L9R5G0FRGpzAVT4AGGGO5Q6znIJKW00Pdl77FVFhdO0ak+x0
-         NbDQ==
-X-Gm-Message-State: AOJu0YxGyizzMKzLSk0XgT8Pl/tTmAs1Cp4gKhSQas6INd5PLiXFb0iY
-	QhncyMQj/YXVq/i661TDbyZJUCWIkxpN+WcDBk90E5nd9CHYX/+QD55FHVOP
-X-Google-Smtp-Source: AGHT+IFrGnDFwR434SvQtOhWfXuBZEPs34NKvRM285LF6obWdjnxMw0HY81DlDPSZtayx8C7Yww8iQ==
-X-Received: by 2002:a05:690c:7a1:b0:6dd:d0fa:159e with SMTP id 00721157ae682-6ee4362731dmr23720057b3.30.1731595048362;
-        Thu, 14 Nov 2024 06:37:28 -0800 (PST)
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6ee4400c6e6sm2630227b3.9.2024.11.14.06.37.28
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 06:37:28 -0800 (PST)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6ea1407e978so6713767b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2024 06:37:28 -0800 (PST)
-X-Received: by 2002:a05:690c:6410:b0:6dd:ce14:a245 with SMTP id
- 00721157ae682-6ee43375cb0mr27009127b3.6.1731595047941; Thu, 14 Nov 2024
- 06:37:27 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq2tX0lcfz305G
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 01:42:27 +1100 (AEDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id 5136413801F8;
+	Thu, 14 Nov 2024 09:42:24 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Thu, 14 Nov 2024 09:42:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1731595344;
+	 x=1731681744; bh=d+Ikno+ZFVKYWdZ3jjxaqVwVRHUcpIv7yzpK/oJR0I4=; b=
+	CaW4KMyAOGexXYhGpffvrReReIhm0wvgihJCAkrScp94Z9LDpcGs1h06PiCw7zeo
+	dtP3HDsZT3TBI82JdTSd4hHeEqTliaPNA03MLBZcPWt+b1IWxwWu1fR9AN06hlhs
+	p2BKSpdrZzOeh2Xz1HJdj14bPz4ec2bt1W6bkga7h2tTb8flmr65vN0pLYZzTNO1
+	OdvmBeUgqrDhFwTgJWew7a9rFUpxHXjW6M30JFaaLT1Oqj8YtROCGQaaobhfoprI
+	m8s5F1sJXpXUQiGMcz1GVGAom1Y6yHOytZaeRuyCzWxC2moN8TMZps0zFzMAMcPI
+	Nw9cS48zdpEo36SyHgLGHA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1731595344; x=
+	1731681744; bh=d+Ikno+ZFVKYWdZ3jjxaqVwVRHUcpIv7yzpK/oJR0I4=; b=Q
+	hnb5ZCWyhF2Oc0DW3sC1a7LGVY/Z+P4E6sTsCsgP8tWavkdi+nGixvVYGSvHsfQ5
+	ktGD8ydDdIuJCxC93OtapQuBsrWYxYBZrQdr43h0dyYzfNGWigYe+2B4u1DXgzDo
+	ZyXJvkxj8JcX0y32DAtZim4m9gyFAeM0vmDk9R9n+VeUMMNwV9N3eTDmpnBgeBBW
+	C6zwTMAFPkrAJOQ7K9grxGTBHBLP1fyQyNaJQvdCMFTb8oX1KaqnLV5R/nCep1cV
+	rB7NhV9DagU4CewTn/8gaQyqeM7jcV6P90US1rYgA3NBFoHvXQZ9EgPLYYoNm/2X
+	0zR6yOFZljbdBfHJ5Lz2w==
+X-ME-Sender: <xms:Tww2Z3HFksmytPVQJoRMCgtMLEb4S2nr7HY847_983uOWrtwaviUvw>
+    <xme:Tww2Z0WzA_uJ9-isnsrQuJ3yfVurZNqOnGT9Cg4kmw1eBuSOVTav9yECUU1rJ90oj
+    EQeY8XTfTQgkqARW-M>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrvddvgdeijecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredttden
+    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
+    gvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffg
+    vedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeehpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrihgurd
+    gruhdprhgtphhtthhopehgvghofhhfsehinhhfrhgruggvrggurdhorhhgpdhrtghpthht
+    oheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtph
+    htthhopehjkhesohiilhgrsghsrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:UAw2Z5Kqn0SHidYWTQdmc2h_b-e2b3eocJUNG9k8tN2KTFuKJlhK4Q>
+    <xmx:UAw2Z1E4tspN3hJyR8iwVnDdo2Mb1qJ6FbM5QjXDPhLZDFweRqtH7A>
+    <xmx:UAw2Z9WEHmurer65EKYEDKwam8VHM6Cas6II_RsqUZgYz4NvksBnCA>
+    <xmx:UAw2ZwOJmLKNNIFZ4m21fI2i1lQCYpjMNhaG87gGsz4eirpesJhmsg>
+    <xmx:UAw2Zzy1GPXJrNeBKWk5TenjwbQKlM2fxqRLgzJrmDN9gnc6aFvHm-tC>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id DDAC2222006F; Thu, 14 Nov 2024 09:42:23 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,95 +95,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241114131114.602234-1-mpe@ellerman.id.au> <20241114131114.602234-9-mpe@ellerman.id.au>
-In-Reply-To: <20241114131114.602234-9-mpe@ellerman.id.au>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 14 Nov 2024 15:37:15 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXLM-eeAa9=YwkU6gcwmD60Wba5v=F6PU20QMqzxRbM4w@mail.gmail.com>
-Message-ID: <CAMuHMdXLM-eeAa9=YwkU6gcwmD60Wba5v=F6PU20QMqzxRbM4w@mail.gmail.com>
-Subject: Re: [RFC PATCH 09/10] i2c: Remove I2C_HYDRA
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, arnd@arndb.de, 
-	Linux I2C <linux-i2c@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Date: Thu, 14 Nov 2024 15:41:26 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Michael Ellerman" <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, "Jeremy Kerr" <jk@ozlabs.org>,
+ "Geoff Levand" <geoff@infradead.org>
+Message-Id: <e16f8cd7-aa46-4f43-926d-21f2b77eb213@app.fastmail.com>
+In-Reply-To: <20241114125111.599093-10-mpe@ellerman.id.au>
+References: <20241114125111.599093-1-mpe@ellerman.id.au>
+ <20241114125111.599093-10-mpe@ellerman.id.au>
+Subject: Re: [RFC PATCH 10/20] powerpc/io: Remove PPC_INDIRECT_MMIO
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-CC linux-i2c
-
-On Thu, Nov 14, 2024 at 2:11=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.a=
-u> wrote:
-> The i2c-hydra driver depends on PPC_CHRP which has now been removed,
-> remove the driver also.
+On Thu, Nov 14, 2024, at 13:50, Michael Ellerman wrote:
+> The Cell blade support was the last user of PPC_INDIRECT_MMIO, so it can
+> now be removed.
+>
+> PPC_INDIRECT_PIO is still used by Power8 powernv, so it needs to remain.
 >
 > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+I think the powernv side only uses parts of PPC_INDIRECT_PIO,
+so there is a good chance of simplifying that code further if
+we want to.
 
-> ---
->  drivers/i2c/busses/Kconfig     |  12 ---
->  drivers/i2c/busses/Makefile    |   1 -
->  drivers/i2c/busses/i2c-hydra.c | 150 ---------------------------------
->  3 files changed, 163 deletions(-)
->  delete mode 100644 drivers/i2c/busses/i2c-hydra.c
->
-> diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-> index 6b3ba7e5723a..cbd072955e45 100644
-> --- a/drivers/i2c/busses/Kconfig
-> +++ b/drivers/i2c/busses/Kconfig
-> @@ -373,18 +373,6 @@ endif # ACPI
->  comment "Mac SMBus host controller drivers"
->         depends on PPC_CHRP || PPC_PMAC
->
-> -config I2C_HYDRA
-> -       tristate "CHRP Apple Hydra Mac I/O I2C interface"
-> -       depends on PCI && PPC_CHRP
-> -       select I2C_ALGOBIT
-> -       help
-> -         This supports the use of the I2C interface in the Apple Hydra M=
-ac
-> -         I/O chip on some CHRP machines (e.g. the LongTrail).  Say Y if =
-you
-> -         have such a machine.
-> -
-> -         This support is also available as a module.  If so, the module
-> -         will be called i2c-hydra.
-> -
->  config I2C_POWERMAC
->         tristate "Powermac I2C interface"
->         depends on PPC_PMAC
-> diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
-> index ecc07c50f2a0..ab366ce6f15c 100644
-> --- a/drivers/i2c/busses/Makefile
-> +++ b/drivers/i2c/busses/Makefile
-> @@ -32,7 +32,6 @@ obj-$(CONFIG_I2C_VIAPRO)      +=3D i2c-viapro.o
->  obj-$(CONFIG_I2C_ZHAOXIN)      +=3D i2c-viai2c-zhaoxin.o i2c-viai2c-comm=
-on.o
->
->  # Mac SMBus host controller drivers
-> -obj-$(CONFIG_I2C_HYDRA)                +=3D i2c-hydra.o
->  obj-$(CONFIG_I2C_POWERMAC)     +=3D i2c-powermac.o
->
->  # Embedded system I2C/SMBus host controller drivers
-> diff --git a/drivers/i2c/busses/i2c-hydra.c b/drivers/i2c/busses/i2c-hydr=
-a.c
-> deleted file mode 100644
+This bit looks great so far.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
