@@ -1,46 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-3224-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3231-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7139C8E47
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 16:36:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E169C8E50
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 16:37:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq44j5ZNjz307f;
-	Fri, 15 Nov 2024 02:36:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq44n3yMrz30RN;
+	Fri, 15 Nov 2024 02:36:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8::228"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731598581;
-	cv=none; b=jt8EYDWMd+u9TYQ6cLV3wk943jmsArv3j3Iypdy88I8xIogB8ZVXPBq0YBjojFdDU85hYh2p115MYwnYwIj7/wTBX7zptma/e1v46n7ZK+imyCCOSrY8hweME5iHyFqhzSOnoU+mgCy9yaaZgWuTbO9sOVqaiFqweL+6sBXw5Bjon2Aay6KqzttzlnNtEG7FYF1CrsTCzis8O3nPY7CNHEjDtKsLuGFYc1FDx/YXbY7cYs8qYpf1RP7KxtZSsSbaI/5CsjhSrNyK8QHRIFH5DvOJorfMdYgsp6jop/p9GC6AkXm7Qjgvwc3VB1gSIvk0v64R1xY/MU3EEuEdmiYfbQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731598585;
+	cv=none; b=McPmb0X83nTSSDQvN6pHfn5pUxEZH9WqxsSE8agzOasu/Tl+YJh3DBE65gtU1hWasW4aXxCQE+fwSbT/ALuXkunvuScT63uSK2YEQnDC9TzKxR46U4PcxWZbbTzSNMkfu8vsK63pxlZawC6NFc4cThpeMC5F3OVg8XUX1Ks2ShctWAcmkrX4VlSpfVthjBVwi8A4UjkLwyWp82K80zBHQRNKjROYqoZl3zXxLw33/WcL0/r+XLVnE/GbaeP7N6gHUZqDE4982vQKZfG9tZgL3cMO7EUTSTaygVx+ReIufjnWmxXXP4AAd+Z8Rn/Ow7nPDVUFu4PwzL7OD+4NgMO1cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731598581; c=relaxed/relaxed;
-	bh=vOe5I5RV009/ewvKsTnVJ8v2QKmxpVyy8K9Vn3nWYhQ=;
+	t=1731598585; c=relaxed/relaxed;
+	bh=GX711hqSGvX8B43wBtgMdev5PFTCzhCgQ+es8CQApoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtqrA3uwlIAacSjm0aCJ51LwPPB4C8K70QioBbN/v5I3XZEbxjQcmsMGCTNmVYMalF2Kag27eQEjJX/OqLu21IvgvNNYFv+ZIJraxZl+UeRD4pbam8S4z80SJ3A2EwPxTuqq5UYjpvUC4TelZrk0R8kkgby7RVcEYA04v+2sQFWQ54soptbN9LIE7ZDtrkcKyvFVljBbHw8VIUj5rQfZmYiWNQLnLXoWCBvs3zp/QJBp0WiaRMJcDRg8vAu769BLTLH0ImBr99SZSs34bFtmzNLdKEV0LJyvsrKgk0CNzhDlwX2Ac0h+A1yzTTv3BVBL/mLijvHuueIdVKbtY6T0Ow==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=FhIZd88T; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::228; helo=relay8-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+	 MIME-Version; b=GX2FtxDVjAf8TNlRdqrrlCVoSvmOACDlpi8StKlSp2vIWA6qk84SIqDP8K6ax0XeXkboBaUoLWiFq9adxhe13FCfNN630BwkhnoSzQTsfMncqX1BuwGpRHR7vxNnmZCvXXK6vWhVIY3a09X2G99jgrIOj5BCeskdFzplQPSgpkAqCwOm4+3MAQ7B1ijK22jRqHLWQJl6OXNTsE/3vQEym1uFyaHbs/ufMesWKXRUAW7StYUaVW9aPeUXC/iO1eWqsvi/vm45mIcxlLwwIQPVAoKpQXkvFjToiMMZLI3WhF9fR7ulE9xTR6CA9jcux/rnoNLt0IFjBd4a56P9xE/kjA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=QYahOLiF; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::228; helo=relay8-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=FhIZd88T;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=QYahOLiF;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::228; helo=relay8-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq44g67q7z2yxY
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq44g6rr8z306x
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 02:36:19 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A8F971BF210;
-	Thu, 14 Nov 2024 15:36:08 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8831D1BF20B;
+	Thu, 14 Nov 2024 15:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731598569;
+	t=1731598570;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vOe5I5RV009/ewvKsTnVJ8v2QKmxpVyy8K9Vn3nWYhQ=;
-	b=FhIZd88TTOZcqjc0guKQCBJMu2N4P6TeOLSV0DXGYcjgtbVGT7jfK3B49OveA0CQdnbVlF
-	Btjvo5r+wgNRn45asVSf8II6FMlqDNNcsGiEqCen5vYvXLUhbGUMimV+ZOSe5Rdw5r+wdB
-	lG3x66GXT373VkmtNgU7O//RjSYHxaHoJjckcLtnyQzwovz5UVEQFj4aGRNIjjrHoP0PWb
-	+BMe6H44oXDl4r8nfQ6ky4YzSRTfq0wXH96DmfqqxyGokLEQmldFhirtMUrW9GX61XCtmj
-	Q7qKbJDiWwDfxz4NXId9R7+aR5Yxcy3Fo5ozQaDIxzodB7yOlZjUZ2CWyL2x+A==
+	bh=GX711hqSGvX8B43wBtgMdev5PFTCzhCgQ+es8CQApoM=;
+	b=QYahOLiFcVLSUhzjgCAI1G1Nyic5CJH+jyEQOacbF/zwOwRNJwTmk6BiywGOyNptPyp0XB
+	HL9bskRPwMaPJFqHvvyR8d4ZWfJAxRN+bEx/Ihsf5h2QjKlcPlFxEYcXdfb3yQtXXxvttw
+	/sQy7i0zLdf2AIRLGKidrsiApliygkWFL8uDsy34cZ2a5APN7sq+9S/RemVjH6uPXHUodk
+	hcCtMMNJ7PTerj4mCUzhkEgNIqMhBsHBlCoUuh84yvRqsbxo2f9Zn7ISf7Nk3KToGHo3a4
+	OLeG2K4xIkZOalQTXG6kYHLxgvU+xUUhtLdTGVHLCpF8IhvP6Lst69AQ5TBSHg==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -57,9 +57,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>,
 	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH net-next v2 04/10] net: freescale: ucc_geth: Fix WOL configuration
-Date: Thu, 14 Nov 2024 16:35:55 +0100
-Message-ID: <20241114153603.307872-5-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v2 05/10] net: freescale: ucc_geth: Use the correct type to store WoL opts
+Date: Thu, 14 Nov 2024 16:35:56 +0100
+Message-ID: <20241114153603.307872-6-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241114153603.307872-1-maxime.chevallier@bootlin.com>
 References: <20241114153603.307872-1-maxime.chevallier@bootlin.com>
@@ -82,111 +82,30 @@ X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The get/set_wol ethtool ops rely on querying the PHY for its WoL
-capabilities, checking for the presence of a PHY and a PHY interrupts
-isn't enough. Address that by cleaning up the WoL configuration
-sequence.
+The WoL opts are represented through a bitmask stored in a u32. As this
+mask is copied as-is in the driver, make sure we use the exact same type
+to store them internally.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
-V2: Reworked the whole configuration sequence, and introduced an
-internal attribute to store the PHY wol capabilities
+V2: New patch
 
- drivers/net/ethernet/freescale/ucc_geth.c     |  4 +--
- drivers/net/ethernet/freescale/ucc_geth.h     |  1 +
- .../net/ethernet/freescale/ucc_geth_ethtool.c | 36 +++++++++++++++----
- 3 files changed, 32 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/freescale/ucc_geth.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 13b8f8401c81..42254ee64a35 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -3413,11 +3413,11 @@ static int ucc_geth_suspend(struct platform_device *ofdev, pm_message_t state)
- 	 */
- 	ugeth_disable(ugeth, COMM_DIR_RX_AND_TX);
- 
--	if (ugeth->wol_en & WAKE_MAGIC) {
-+	if (ugeth->wol_en & WAKE_MAGIC && !ugeth->phy_wol_en) {
- 		setbits32(ugeth->uccf->p_uccm, UCC_GETH_UCCE_MPD);
- 		setbits32(&ugeth->ug_regs->maccfg2, MACCFG2_MPE);
- 		ucc_fast_enable(ugeth->uccf, COMM_DIR_RX_AND_TX);
--	} else if (!(ugeth->wol_en & WAKE_PHY)) {
-+	} else if (!ugeth->phy_wol_en) {
- 		phy_stop(ndev->phydev);
- 	}
- 
 diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethernet/freescale/ucc_geth.h
-index c08a56b7c9fe..e08cfc8d8904 100644
+index e08cfc8d8904..60fd804a616a 100644
 --- a/drivers/net/ethernet/freescale/ucc_geth.h
 +++ b/drivers/net/ethernet/freescale/ucc_geth.h
-@@ -1217,6 +1217,7 @@ struct ucc_geth_private {
+@@ -1216,7 +1216,7 @@ struct ucc_geth_private {
+ 	int oldspeed;
  	int oldduplex;
  	int oldlink;
- 	int wol_en;
-+	u32 phy_wol_en;
+-	int wol_en;
++	u32 wol_en;
+ 	u32 phy_wol_en;
  
  	struct device_node *node;
- };
-diff --git a/drivers/net/ethernet/freescale/ucc_geth_ethtool.c b/drivers/net/ethernet/freescale/ucc_geth_ethtool.c
-index fb5254d7d1ba..89b323ef8145 100644
---- a/drivers/net/ethernet/freescale/ucc_geth_ethtool.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth_ethtool.c
-@@ -346,26 +346,48 @@ static void uec_get_wol(struct net_device *netdev, struct ethtool_wolinfo *wol)
- 	struct ucc_geth_private *ugeth = netdev_priv(netdev);
- 	struct phy_device *phydev = netdev->phydev;
- 
--	if (phydev && phydev->irq)
--		wol->supported |= WAKE_PHY;
-+	wol->supported = 0;
-+	wol->wolopts = 0;
-+
-+	if (phydev)
-+		phy_ethtool_get_wol(phydev, wol);
-+
- 	if (qe_alive_during_sleep())
- 		wol->supported |= WAKE_MAGIC;
- 
--	wol->wolopts = ugeth->wol_en;
-+	wol->wolopts |= ugeth->wol_en;
- }
- 
- static int uec_set_wol(struct net_device *netdev, struct ethtool_wolinfo *wol)
- {
- 	struct ucc_geth_private *ugeth = netdev_priv(netdev);
- 	struct phy_device *phydev = netdev->phydev;
-+	int ret = 0;
- 
--	if (wol->wolopts & ~(WAKE_PHY | WAKE_MAGIC))
--		return -EINVAL;
--	else if (wol->wolopts & WAKE_PHY && (!phydev || !phydev->irq))
-+	if (phydev) {
-+		ret = phy_ethtool_set_wol(phydev, wol);
-+		if (ret == -EOPNOTSUPP) {
-+			ugeth->phy_wol_en = 0;
-+		} else if (ret) {
-+			return ret;
-+		} else {
-+			ugeth->phy_wol_en = wol->wolopts;
-+			goto out;
-+		}
-+	}
-+
-+	/* If the PHY isn't handling the WoL and the MAC is asked to more than
-+	 * WAKE_MAGIC, error-out
-+	 */
-+	if (!ugeth->phy_wol_en &&
-+	    wol->wolopts & ~WAKE_MAGIC)
- 		return -EINVAL;
--	else if (wol->wolopts & WAKE_MAGIC && !qe_alive_during_sleep())
-+
-+	if (wol->wolopts & WAKE_MAGIC &&
-+	    !qe_alive_during_sleep())
- 		return -EINVAL;
- 
-+out:
- 	ugeth->wol_en = wol->wolopts;
- 	device_set_wakeup_enable(&netdev->dev, ugeth->wol_en);
- 
 -- 
 2.47.0
 
