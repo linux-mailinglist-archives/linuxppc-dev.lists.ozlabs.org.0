@@ -1,61 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-3237-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3238-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DDF9C8FE5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 17:36:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6802C9C92CE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Nov 2024 21:01:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq5PN3wLYz306S;
-	Fri, 15 Nov 2024 03:35:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xq9yn3MxBz30CB;
+	Fri, 15 Nov 2024 07:01:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.128.173
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731602152;
-	cv=none; b=F9OnATtLVpDHSExDQXXvYOrRwZaQUREbtCY9LH4n7T0ASlkcDJA1HHWE/u4dUDnQ1v+406JSq0dnLnI5oKF9Q5vtQCPikbfj0pUDwZUg3wvKURAbKvfi093T/uR1dKiFTa4hl1MIZQ3vsaIbv5mcBR+Pjp6/WtzDhXlRHA5ponpZH94UEDJST50gmW6Lz4AB+Y+cwN8gB8Bmn7fZAfUvIxnaDseGBOIohqHdHJ60ked5kq7hZRAxbfBNQcMQ4zp1EphAA4WqfrIpn0Iq3wcZd+6zkMvWu38LWIZWsRNiXzcpdmjG7Ex1K5uy+Skqa0p1Hgd3M5dGMyekpv6CvWx0/A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731614497;
+	cv=none; b=XnnH5KQeEfKfLjb9mFp7GNvFG/I9jDyEzLYR4nJ3izbpttdaTt03spxM7XQWlDLJcyjrB9jvefBU5bl7o/JY8ZskEJZuFmOVpiZvqdHhaug9UEsf60QQTQ1cySqpjoR4nYUh5hyiPdPsL4SfK4ZvY4Xy3y8ro1t4P77P8qdXSCVUiWp0PWTcbcsmVDFX37469uvSrFW/Txpef4uVoHEzu1+iT9sDcHx6jz4UsXBMinyvneygTxwP/t/17cAEIcFcMbG0RhVIdhBrqMieZD33omQ5BrlSODlWaoOyqtB1xySD1j6xB95S+Ie56AvfGLxuMyswd9J2wT548uQS2LUjRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731602152; c=relaxed/relaxed;
-	bh=IkTsD4p17KtYX2Naw41InyqJWAq7hOuOapsF7fXl/og=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a4k+YMhR+uJf7pAmZwNbWghIts/Xk7R5+TH42HIwSyBMkLY4kjXcygJBnit8D8vly/z8gI7uXrR4rpVb7Ck4dnE7T+JQutYDHooBIToCexhgIsrzh3VmWRBvP63qc8ln06XghjFlhC+PgMc36OsW+Iz+Yn5HHsHxO7gKz+NRiOa+VK+RdZFUm3zYx1kV+CvUbC29ggIQx5gpu9vOZuiALmAHLzuwve+P0+sF8FhwkSCm0QT8TJMXpYMJ0pjA9ghaKs3MHTRVm0Y6ljcAOw9vC/JD64/Wh8oAv9lJXSrypW9+LxsSt/jc/C9Hz5v8VRB4lVlOSgQMFgOBP4/iMcmX/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.128.173; helo=mail-yw1-f173.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.173; helo=mail-yw1-f173.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	t=1731614497; c=relaxed/relaxed;
+	bh=VWz5sCQ5z+GdY4O5saurQxhltkqAWeh87WpSHdVQSB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iyqiKbDfciq4wYsllc2i/HWkTX2SzHGMH+HvwuTHEJt2nuuH4A5BQosp6KcbSIo8v7o/mPb9KpoROczbinnPivztfXz1DJzER69C6vN3ydGpf/TWUhf4LUphZP5/G9LiEHCIOqDZ82jcHGBcZGxX6eDgW6hB+BTlLqIeFMP32yJV1FkIHD3ePaUbt2TNnyrZN76pBajPfD9xwKfSvKRZ/M2l4f91carYQVzlyfgd1xdcLJ5eC8Os8DBcZET4w8R0BDttZXmms8lrRbmNUvRc6M7PkAZh7Cysbx/lqzy/ADA8waCzdj3HUvY3lGiknT9NO4H0ywF3NKMMNfQ53Ut6VQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I635dSjA; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I635dSjA;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq5PL6B8qz2yyR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 03:35:49 +1100 (AEDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6e9f69cc576so7216667b3.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2024 08:35:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731602146; x=1732206946;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IkTsD4p17KtYX2Naw41InyqJWAq7hOuOapsF7fXl/og=;
-        b=ZyP52Qjru+rwBjRgmdxAhyEOlddRmoa8sWKNle8wfXcCcTQZiNLiJ0wDTxaXYdUnv3
-         PbfcAbWT0aCiQD2pfDAhDDNYzIWABe2ktH7Ya6rFcowQhwOjSaExs5V5sYkbrJH0ryxw
-         pbTogFOSWYtVKWsFlxp40GDAtlZwIPyO3Oy/zujzqdHjLBS6r5+zbIr8jOihU1UGIvu2
-         66deLtT/+gh5m74npHO1iy4OnH5tloyOjrPzreMjQ9of2P4C7jBp9OUrmBo3KvfC9EbG
-         dVFV535iYiZ9znQBH96drkmB9YiUeQbCvkNAonXIFVGdNT1pIr6h2KJwfv0fXV8D5KlT
-         C7sg==
-X-Forwarded-Encrypted: i=1; AJvYcCWhHOognRZZSoenLU+RE7QlI8i2DHBk0vm7t0LSw68V/9GKa7zzW3zevIFo9K3PH8fd0ATPQ57idtZzP9s=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzg0cmMm4BI09Kan0DBijkFvatOECLfewwiMsNoSKBy0NjXMOuG
-	9f0fBa4izAbCJHtlA7u9xxsMTqM6wjXErvhcX1sZPek81b1WJpttGB+r6oGN
-X-Google-Smtp-Source: AGHT+IHXDsp7DNwRgaGkNbDCBC+MtYyorlkvZwwrjokMmPaxWaqZlqdNWTHkGpPmTYgjtTms3F1AJg==
-X-Received: by 2002:a05:690c:6502:b0:6e7:e493:2da8 with SMTP id 00721157ae682-6eaddfd101fmr267907147b3.36.1731602146270;
-        Thu, 14 Nov 2024 08:35:46 -0800 (PST)
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com. [209.85.128.177])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6ee4441322csm3073057b3.91.2024.11.14.08.35.45
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 08:35:45 -0800 (PST)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6ea7c9227bfso9458457b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Nov 2024 08:35:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWApGHWEzd0W5CtZ7/qE5nUNrCbGYR527LppPisgTo6X2AbrV9Y74O/A4k1NZugwmOv9ymavEPZxp6DtQc=@lists.ozlabs.org
-X-Received: by 2002:a05:690c:7487:b0:6ea:bfbd:5511 with SMTP id
- 00721157ae682-6eaddf9703fmr271941207b3.33.1731602145354; Thu, 14 Nov 2024
- 08:35:45 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xq9ym2JKNz3051
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 07:01:36 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4A1C25C5FBF;
+	Thu, 14 Nov 2024 20:00:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E10DC4CECD;
+	Thu, 14 Nov 2024 20:01:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731614492;
+	bh=VWz5sCQ5z+GdY4O5saurQxhltkqAWeh87WpSHdVQSB0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I635dSjAnKKMVpTevwE3oP4UacKi1Yjjb2bBYkCes6s6ebjTGyqdcBF2BMyKn4BDh
+	 RujBYwS6TiHSe2L+C+eqL1BFovRlIFtD5Qxai1Kt2P8RXHl8TLyuGB70dBHEiW4Iem
+	 gGPDpWEg1F0rmNxojPbYL50vzvvDjmhNWWF5xSAEE530VKRLHVSIxSqhWMY4C8Ww71
+	 ta9cKABHiUYmvMypAYfJbEm94wbUnd9p8fgvdhedLAVoIQ2f6Vo7uPb17YnrBjhxbo
+	 oplQZQcY2KCbrxBwQevspMt84ivecQzWmJZD84hbtJK04HknEn+vWve1T+hM1RAgaX
+	 5XXxd5davnOeQ==
+Date: Thu, 14 Nov 2024 20:01:27 +0000
+From: Conor Dooley <conor@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Frank Li <Frank.Li@nxp.com>, linux-crypto@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: Unify "fsl,liodn" type definitions
+Message-ID: <20241114-obligate-thinness-204e7edbac77@spud>
+References: <20241113225614.1782862-1-robh@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,45 +72,41 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241114131114.602234-1-mpe@ellerman.id.au> <20241114131114.602234-8-mpe@ellerman.id.au>
- <ecb9d449-85dd-4ca5-a58b-43244b7c0765@app.fastmail.com>
-In-Reply-To: <ecb9d449-85dd-4ca5-a58b-43244b7c0765@app.fastmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 14 Nov 2024 17:35:33 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUxY7YErDa8OzxemnwJ=j+tcoXGs-Gma+eD0i7bPWYB9w@mail.gmail.com>
-Message-ID: <CAMuHMdUxY7YErDa8OzxemnwJ=j+tcoXGs-Gma+eD0i7bPWYB9w@mail.gmail.com>
-Subject: Re: [RFC PATCH 08/10] macintosh: Remove ADB_MACIO
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="LBgC8kDFmZGaqIfM"
+Content-Disposition: inline
+In-Reply-To: <20241113225614.1782862-1-robh@kernel.org>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Arnd,
 
-On Thu, Nov 14, 2024 at 4:42=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
-> I also found the promotional video from 1996 at
-> https://www.youtube.com/watch?v=3DNrvrIEPeSNA .
+--LBgC8kDFmZGaqIfM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Amazing to finally see this, 20y after mine died...
+On Wed, Nov 13, 2024 at 04:56:13PM -0600, Rob Herring (Arm) wrote:
+> The type definition of "fsl,liodn" is defined as uint32 in
+> crypto/fsl,sec-v4.0.yaml and uint32-array in soc/fsl/fsl,bman.yaml,
+> soc/fsl/fsl,qman-portal.yaml, and soc/fsl/fsl,qman.yaml. Unify the type to
+> be uint32-array and constraint the single entry cases.
+>=20
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-Gr{oetje,eeting}s,
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-                        Geert
+--LBgC8kDFmZGaqIfM
+Content-Type: application/pgp-signature; name="signature.asc"
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+-----BEGIN PGP SIGNATURE-----
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZzZXFwAKCRB4tDGHoIJi
+0kYGAP9Wme55iNVWUdF0JCfZsdd/dSXawb3Xp/9hcFkAFPL+1wD+JyfKr1/0r859
+g2MAxCrI6eo9mzcsXHJ6NGT7mvH0DQs=
+=7ofP
+-----END PGP SIGNATURE-----
+
+--LBgC8kDFmZGaqIfM--
 
