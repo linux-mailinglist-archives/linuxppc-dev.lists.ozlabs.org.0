@@ -1,80 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-3253-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3254-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C979CE75B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 16:02:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341FB9CF05F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 16:41:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XqgGf4kDKz30PD;
-	Sat, 16 Nov 2024 02:02:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqh8B67wMz308Z;
+	Sat, 16 Nov 2024 02:41:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731682922;
-	cv=none; b=POwDE9IlsdF42gQdd/U9yuQodEsPj++CVXg7OueKIV3lh9VGDWx+ansclefVlKQ6ypt0kFmcLAN2UFPQo7aN3Uhw5wPFgIjKphVXLT+k0QJ5KQfc0CGsaDL0JZeVTDS4B6DaR36aqSMKVYHHM5moMh7u520mHtbEPagIxvNYWVa+LB0QwQOK1PmJXXnYgz1UC+kDa02F58Tkk8OFdlB5bJTQxP5mHH75dyNnFFd9rFDt/kqIRhyq2G94sD6kOnAPr5TsT8pYZyM6ihNuJidTfulpyGrqNKBCaF9jCumvyWQLsldF1EHbg1WhsImkZLIbX7QX/evYk0y0OKsKtr0ICw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1098:5b::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731685290;
+	cv=none; b=bEI3/s7eenwe8j0oO7AoK9gFA+iUPC+P3oc3FqyjslJ52Hl5fbWhehj5w0v8UBspc+Qyk2dTT0BoLMHV5+BMPZSOOtmBKqIAIfia5jZvRuJr7Axe2KJbDPWCCyKSpARxPufq1pFhlcqjaTr2M9mW/d7p1A8tyuDfRRFO5liTY36KGDW/rz5ID8V3EjTR1mpT8TguvtkoqnwAvqGbwDcEFFbn/0Jodggw3PF1+8KvEWCZw7tQHLcp7lIqD7b52bUgFv8JD4IPWQYHaFqGTY9uXgTZJ4Tl8T6SiFkD/QTtNxvrH8jYA67vdhk5JfbghoO/yn7DCQ+X3nINV7pkfVo6Rg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731682922; c=relaxed/relaxed;
-	bh=D2FKaoiwY2mfiK/eCo1qaJWV79rWuXXZrs0onoCnNZ0=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=jiIyEWpaLIv0IlOguR8i90n5d36OKRHuAKGxVPO+0QTVw+8MoRy2T5h0MZcsDhheDnjkZkdMPh2XDDzyqU6JZDKpIxql0+OjYfmJoQTWWLT8MtySvi5xp5vaTGgcZ/TqBIasJ4vwINfLMUnBXZ2ENE198An4E+79tJCXbMzz/Fhvatns5wqMcWHALpKU9kf9Fs2REBoQ5nNORZKISQ8RiNM/ckcEOB4Xmw1ohNe/L69NIY3RWpNqG+31N+DGRSVpGZDO1xNmGXB+0XSmcX40f6UsevRJ5+jL8sBM/fTUxwb5Aqpn2x497/c0XyRGmTd0RgKEnitQllX6yGjq7Bs2ng==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QPgm5Mjj; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1731685290; c=relaxed/relaxed;
+	bh=f6mRNT+3cEEBFBqNnfm9nrFBEqUKrx55F3XWxjHMxiY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mBbyjPSjEIp2zCVJy5ZdoVLAO+7akaHmX/asBGDe6j05sG6z8TxmZKVe7Vx5P2ezODKTT7zJxlRm1Dxa5buBWtTOW6O/GrZEC5paz2Att/5wyZ4JvDfMZDxSfaIVhFpnkDpfuQYLsU1B+AThIPolw891Qtoy6n2jEbieWFxgOKFYzeTe5kmfcC7lOxCkEl00LuCxuyUfQZn1rmSR9qL/7bi1PznMG0OB6dcRNvPtH19pYSdW/4Gpfefaj0QWjtD2fcViOTH5prNrrow0HGuyOBbsPZ3vSc6iMw++hjD6Nu7RpKEo9ummKQ+uZoIvV7eFh1VHd880EIWOBxXek1XPKQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=treblig.org; dkim=pass (2048-bit key; unprotected) header.d=treblig.org header.i=@treblig.org header.a=rsa-sha256 header.s=bytemarkmx header.b=BgqBMXtN; dkim-atps=neutral; spf=pass (client-ip=2a00:1098:5b::1; helo=mx.treblig.org; envelope-from=linux@treblig.org; receiver=lists.ozlabs.org) smtp.mailfrom=treblig.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QPgm5Mjj;
+	dkim=pass (2048-bit key; unprotected) header.d=treblig.org header.i=@treblig.org header.a=rsa-sha256 header.s=bytemarkmx header.b=BgqBMXtN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=treblig.org (client-ip=2a00:1098:5b::1; helo=mx.treblig.org; envelope-from=linux@treblig.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1220 seconds by postgrey-1.37 at boromir; Sat, 16 Nov 2024 02:41:27 AEDT
+Received: from mx.treblig.org (mx.treblig.org [IPv6:2a00:1098:5b::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XqgGd0cxjz30NN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 02:01:59 +1100 (AEDT)
-Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-2ea12c1c78dso964353a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 07:01:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731682915; x=1732287715; darn=lists.ozlabs.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=D2FKaoiwY2mfiK/eCo1qaJWV79rWuXXZrs0onoCnNZ0=;
-        b=QPgm5Mjj+TFyw55hbJigpg+RxdYlKEq5fhycmoeW+5nohUwOFOCZOx8LqU3yUqjqY3
-         2//Lfdlb/dXHIA3leKEiL6f1Xg6C1iG87nIT2LBSod5zHoehZ/xH6Z5v1Plbydbi6ztJ
-         YZ1NqGbSpENkTw5Ce+pJVKeFkNuHriuHV8NYyfL3OkesUWQ7SA2tgGAnfwrv7AcY4Jqg
-         Z8zq2nJehahsY/wWwRZe0s7AnbeaF6kyfym5cUj9oNg3wyEtVzc2nMQYqDoyoFvNTDnh
-         VxsOO1CHUsbKCleSrhA4RotdvXzXGVuIXAnJC5VS5rUTa3P26rrGJJVr4F9NStnmy1AC
-         yQeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731682915; x=1732287715;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D2FKaoiwY2mfiK/eCo1qaJWV79rWuXXZrs0onoCnNZ0=;
-        b=EeT9ljs5U0v8qD5nWcmZRbk9cEe2FvErJGtpb/WbCbfS9JY26eu1LHc4GCmGS/ShnA
-         0wPiZZUNCjuBmcoMr0sRq9ueOYVgnpx7LgXLzKqpPRIUEX8E1RfjgX/1KuBuI/bq1Por
-         kuXPIcoEmYFvIlQk4DOTrMerO3nNoyv0BXxJh+SlktF7bw5Y9zo1MDZHyybjHurJAhRk
-         7ASJw9BuC0fCQgvkQc0olWQo28mlonoPgRTCRTrf0W2H0IUDUyFqtzUm/vP1cnQmF5Dw
-         xMdP90L7WSZoNe92i0nJOrYarknsMdNSAEN72q1kMmQvP1ZYv3kEbdNtDWAkrGxVTKlX
-         yexw==
-X-Forwarded-Encrypted: i=1; AJvYcCXeU2Msd+GZ3KWpeOsDwn2VcW0iphppIKFViRpgAyYvBvtIIKZ9IUthZpNpP75ly6rfBuU6e+YCDCuF82o=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz7uwved9Whvi6HuzSiV+/HmOu0C6B9o0AowGZvrKUBNBnO+KVR
-	gyq7Ruj8BxvxNUz+rPrJK4J6e6iaRUkEkgOwsmUqGFN7meKC8wG/
-X-Google-Smtp-Source: AGHT+IFF2Q7DDqTNLmh5BnAWYLBYmDo5Jo3WT8cy7DmLwoCWZ86DI74hImRwZEDcl86A8cSxwL7Pww==
-X-Received: by 2002:a17:90a:e70c:b0:2e0:ab57:51ec with SMTP id 98e67ed59e1d1-2ea1557e7aemr3544553a91.30.1731682913530;
-        Fri, 15 Nov 2024 07:01:53 -0800 (PST)
-Received: from dw-tp ([171.76.87.84])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ea02495969sm3016300a91.19.2024.11.15.07.01.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 07:01:52 -0800 (PST)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com> 
-To: Narayana Murty N <nnmlinux@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, linux-kernel@vger.kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com, npiggin@gmail.com, christophe.leroy@csgroup.eu, maddy@linux.ibm.com, naveen@kernel.org, vaibhav@linux.ibm.com, ganeshgr@linux.ibm.com, sbhat@linux.ibm.com
-Subject: Re: [PATCH] powerpc/pseries/eeh: Fix get PE state translation
-In-Reply-To: <20241107042027.338065-1-nnmlinux@linux.ibm.com>
-Date: Fri, 15 Nov 2024 20:01:48 +0530
-Message-ID: <87ttc8d0vf.fsf@gmail.com>
-References: <20241107042027.338065-1-nnmlinux@linux.ibm.com>
-X-Spam-Status: No, score=1.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_BL_SPAMCOP_NET,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
-X-Spam-Level: *
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xqh8767sFz305G
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 02:41:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=f6mRNT+3cEEBFBqNnfm9nrFBEqUKrx55F3XWxjHMxiY=; b=BgqBMXtNDTMuQkKC
+	sV+s8ZTrZbXSIoSC2Eu9uS0ojjn6VNVMK8pFpzkrJpm+fEyl9WDGT54akTB/hJ0d97xnRnKndP+VG
+	9JdTQCHTLx7Ti20VYEbjGIiVbqQMHRxEPCBi4CSMa8cChA6vQ6QjBztFTcsTWCk8w087eKJ6Tg8cf
+	d1jxWTmKiAijSffIgLcdVRp/e45SfuHZON7mt9iQJDR1DV5PZQZ1pHfwfb9p4CLzTs/AbBxgfcK/I
+	kEg9Gzr0mO13y2nmRgC1VV1K1xqiA19UL60ydL4i5qJ0GAlY48oBrcDaEST38lnZKsYaewCTp6kyQ
+	4tqXHFCjgZ9FFLWD5Q==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1tBy80-00098y-2k;
+	Fri, 15 Nov 2024 15:20:56 +0000
+From: linux@treblig.org
+To: ioana.ciornei@nxp.com,
+	stuyoder@gmail.com,
+	christophe.leroy@csgroup.eu
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH] bus: fsl-mc: Remove deadcode
+Date: Fri, 15 Nov 2024 15:20:55 +0000
+Message-ID: <20241115152055.279732-1-linux@treblig.org>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,74 +64,149 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Narayana Murty N <nnmlinux@linux.ibm.com> writes:
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-> The PE Reset State "0" obtained from RTAS calls
-> ibm_read_slot_reset_[state|state2] indicates that
-> the Reset is deactivated and the PE is not in the MMIO
-> Stopped or DMA Stopped state.
->
-> With PE Reset State "0", the MMIO and DMA is allowed for
-> the PE.
+fsl_mc_allocator_driver_exit() was added explicitly by
+commit 1e8ac83b6caf ("bus: fsl-mc: add fsl_mc_allocator cleanup function")
+but was never used.
 
-Looking at the PAPR spec - I do agree that it states the same. i.e.
-The "0" Initial PE state means the "Not Reset", "Load/Store allowed" &
-"DMA allowed" (Normal Operations). 
+Remove it.
 
-> The function pseries_eeh_get_state() is currently
-> not indicating that to the caller because of  which the
-> drivers are unable to resume the MMIO and DMA activity.
+fsl_mc_portal_reset() was added in 2015 by
+commit 197f4d6a4a00 ("staging: fsl-mc: fsl-mc object allocator driver")
+but was never used.
 
-It's new to me, but could you help explain the user visible effect
-of what gets broken. Since this looks like pseries_eeh_get_state() has
-always been like this when it got first implemented.
-Is there also a unit test somewhere which you are testing?
+Remove it.
 
-IIUC eeh_pe_get_state() was implemented[1] for supporting EEH for VFIO PCI
-devices. i.e. the VFIO_EEH_PE_GET_STATE operation of VFIO EEH PE ioctl op
-uses pseries_eeh_get_state() helper to query PE state on pseries LPAR.
-So are you suggesting that EEH functionality for VFIO PCI device was
-never enabled/tested before on pseries?  
+fsl_mc_portal_reset() was the only caller of dpmcp_reset().
 
-[1]: https://lore.kernel.org/all/1402364517-28561-3-git-send-email-gwshan@linux.vnet.ibm.com/
+Remove it.
 
-Checking the powernv side of implementation I do see that it does
-enables the EEH_STATE_[MMIO|DMA]_ENABLED flags in the result mask for
-the callers. So doing the same for pseries eeh get state implementation
-does look like the right thing to do here IMO.
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+---
+ drivers/bus/fsl-mc/dpmcp.c            | 22 ----------------------
+ drivers/bus/fsl-mc/fsl-mc-allocator.c |  5 -----
+ drivers/bus/fsl-mc/fsl-mc-private.h   |  6 ------
+ drivers/bus/fsl-mc/mc-io.c            | 20 --------------------
+ include/linux/fsl/mc.h                |  2 --
+ 5 files changed, 55 deletions(-)
 
-> The patch fixes that by reflecting what is actually allowed.
+diff --git a/drivers/bus/fsl-mc/dpmcp.c b/drivers/bus/fsl-mc/dpmcp.c
+index 5fbd0dbde24a..7816c0a728ef 100644
+--- a/drivers/bus/fsl-mc/dpmcp.c
++++ b/drivers/bus/fsl-mc/dpmcp.c
+@@ -75,25 +75,3 @@ int dpmcp_close(struct fsl_mc_io *mc_io,
+ 	/* send command to mc*/
+ 	return mc_send_command(mc_io, &cmd);
+ }
+-
+-/**
+- * dpmcp_reset() - Reset the DPMCP, returns the object to initial state.
+- * @mc_io:	Pointer to MC portal's I/O object
+- * @cmd_flags:	Command flags; one or more of 'MC_CMD_FLAG_'
+- * @token:	Token of DPMCP object
+- *
+- * Return:	'0' on Success; Error code otherwise.
+- */
+-int dpmcp_reset(struct fsl_mc_io *mc_io,
+-		u32 cmd_flags,
+-		u16 token)
+-{
+-	struct fsl_mc_command cmd = { 0 };
+-
+-	/* prepare command */
+-	cmd.header = mc_encode_cmd_header(DPMCP_CMDID_RESET,
+-					  cmd_flags, token);
+-
+-	/* send command to mc*/
+-	return mc_send_command(mc_io, &cmd);
+-}
+diff --git a/drivers/bus/fsl-mc/fsl-mc-allocator.c b/drivers/bus/fsl-mc/fsl-mc-allocator.c
+index b5e8c021fa1f..6c3beb82dd1b 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-allocator.c
++++ b/drivers/bus/fsl-mc/fsl-mc-allocator.c
+@@ -656,8 +656,3 @@ int __init fsl_mc_allocator_driver_init(void)
+ {
+ 	return fsl_mc_driver_register(&fsl_mc_allocator_driver);
+ }
+-
+-void fsl_mc_allocator_driver_exit(void)
+-{
+-	fsl_mc_driver_unregister(&fsl_mc_allocator_driver);
+-}
+diff --git a/drivers/bus/fsl-mc/fsl-mc-private.h b/drivers/bus/fsl-mc/fsl-mc-private.h
+index b3520ea1b9f4..e1b7ec3ed1a7 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-private.h
++++ b/drivers/bus/fsl-mc/fsl-mc-private.h
+@@ -66,10 +66,6 @@ int dpmcp_close(struct fsl_mc_io *mc_io,
+ 		u32 cmd_flags,
+ 		u16 token);
+ 
+-int dpmcp_reset(struct fsl_mc_io *mc_io,
+-		u32 cmd_flags,
+-		u16 token);
+-
+ /*
+  * Data Path Resource Container (DPRC) API
+  */
+@@ -631,8 +627,6 @@ int dprc_scan_objects(struct fsl_mc_device *mc_bus_dev,
+ 
+ int __init fsl_mc_allocator_driver_init(void);
+ 
+-void fsl_mc_allocator_driver_exit(void);
+-
+ void fsl_mc_init_all_resource_pools(struct fsl_mc_device *mc_bus_dev);
+ 
+ void fsl_mc_cleanup_all_resource_pools(struct fsl_mc_device *mc_bus_dev);
+diff --git a/drivers/bus/fsl-mc/mc-io.c b/drivers/bus/fsl-mc/mc-io.c
+index 95b10a6cf307..a0ad7866cbfc 100644
+--- a/drivers/bus/fsl-mc/mc-io.c
++++ b/drivers/bus/fsl-mc/mc-io.c
+@@ -263,23 +263,3 @@ void fsl_mc_portal_free(struct fsl_mc_io *mc_io)
+ 	dpmcp_dev->consumer_link = NULL;
+ }
+ EXPORT_SYMBOL_GPL(fsl_mc_portal_free);
+-
+-/**
+- * fsl_mc_portal_reset - Resets the dpmcp object for a given fsl_mc_io object
+- *
+- * @mc_io: Pointer to the fsl_mc_io object that wraps the MC portal to free
+- */
+-int fsl_mc_portal_reset(struct fsl_mc_io *mc_io)
+-{
+-	int error;
+-	struct fsl_mc_device *dpmcp_dev = mc_io->dpmcp_dev;
+-
+-	error = dpmcp_reset(mc_io, 0, dpmcp_dev->mc_handle);
+-	if (error < 0) {
+-		dev_err(&dpmcp_dev->dev, "dpmcp_reset() failed: %d\n", error);
+-		return error;
+-	}
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL_GPL(fsl_mc_portal_reset);
+diff --git a/include/linux/fsl/mc.h b/include/linux/fsl/mc.h
+index c90ec889bfc2..37316a58d2ed 100644
+--- a/include/linux/fsl/mc.h
++++ b/include/linux/fsl/mc.h
+@@ -417,8 +417,6 @@ int __must_check fsl_mc_portal_allocate(struct fsl_mc_device *mc_dev,
+ 
+ void fsl_mc_portal_free(struct fsl_mc_io *mc_io);
+ 
+-int fsl_mc_portal_reset(struct fsl_mc_io *mc_io);
+-
+ int __must_check fsl_mc_object_allocate(struct fsl_mc_device *mc_dev,
+ 					enum fsl_mc_pool_type pool_type,
+ 					struct fsl_mc_device **new_mc_adev);
+-- 
+2.47.0
 
-You say this is "fixes" so I am also assuming you are also looking for
-stable backports of this? If yes - could you please also add the "Fixes"
-tag and cc stable? 
-
--ritesh
-
->
-> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/eeh_pseries.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> index 1893f66371fa..b12ef382fec7 100644
-> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> @@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct eeh_pe *pe, int *delay)
->  
->  	switch(rets[0]) {
->  	case 0:
-> -		result = EEH_STATE_MMIO_ACTIVE |
-> -			 EEH_STATE_DMA_ACTIVE;
-> +		result = EEH_STATE_MMIO_ACTIVE	|
-> +			 EEH_STATE_DMA_ACTIVE	|
-> +			 EEH_STATE_MMIO_ENABLED	|
-> +			 EEH_STATE_DMA_ENABLED;
->  		break;
->  	case 1:
->  		result = EEH_STATE_RESET_ACTIVE |
-> -- 
-> 2.45.2
 
