@@ -1,44 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-3286-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3289-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217849CF965
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 23:13:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F139CF971
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 23:14:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XqrrW0jtxz3bs2;
-	Sat, 16 Nov 2024 09:13:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XqrsZ62Fyz3btj;
+	Sat, 16 Nov 2024 09:14:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731706064;
-	cv=none; b=i+La3mNsngA3RXlqCFmGyZmIviwBMSerRjNd3av+xWBsRY/SNMyPbso0hycQ8AWg+mecIjHu6WO53VwbPuIOoV9z0bJiJBmv5mvrSH+JIVkqOxVj5atJVEWGvcgjpUpK0iNiQPQGPRXLVBVOJ6DrqUojAqndaqQGllej+quUcuu/4IvZQpetZm7h9u4gGHxv7YE9bYN5KnW+60+Pe6PcUyJHLJtMf8d4Ct6UVTeyPYCa0Lq9lK7vNgvDDn0OWIokM9YizfBGVqAfosv7t63vd29s0UB9lU3f8fa5SSC5D5lIPNvbck5j3RZcxK2PU/qKAVCSeS7kDlKgy/WZYPNZwA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731706065;
+	cv=none; b=HBx9KQW6b7XODiOdoQTC2lsO+QWWEXIYGevmUyR/ojVCw6D+HcLEBEtYPzcbDapFY7YwFkmGDVFLxTbWnXhi+Gk2kvClmhQin3CczMhzja0Lxgh7jdNsYmJM8zRCnFPDjLKLB3jI+pasKycMCNRzHa6LKyU5TwZSPwXQHrv782qhVGkwVf+4m2MwpMt1ondxNycUx+MBxkiK87UIvRYPXYeK6kXR/duDOiikzyv3Q5OQlZG+Z/FixJt63gPme7cw20WKe/H2YiqceppPDSj9CLwe6DCKmoPawCxFSR22//1k90xInCu+nrbK13laTHa7oV6lOb0+2VvFzeKPKVpSyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731706064; c=relaxed/relaxed;
-	bh=7RgevXzVOF2wd0QHaqg8sKSXBh3tNnxEZNLAJYHO4/0=;
+	t=1731706065; c=relaxed/relaxed;
+	bh=94UWkQUgIE+TIBJCr3TB9bjXju243wFFlCrw1pjugTo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VDPElVjf/ikUdVafjf5VZ7AtIWW8UEcBJzjBDid2oWceiK5w5AAXRnM92EUzBf7+ZBPMaXjFcLwnxTU2GqXHe07RGOtqEPJhIPH7qseIwDA9Lul7Rgm0UmtlAQv2KfVCttzefr0ffLOeolNsTJYKn9hsbuCfyEDa95hmiQ5KeAQPgBa2rAROpnUZhpLGvrvV9qUY9IL4s5YuRpdqiUogtEKt4gtiSW+ZDRI6U9NFt6LrvtzSv8VAbonSP7oW3QComvUYTuoe9lNTCu/QQau+tWKitlnB7uPjrUl2K5E1Z/M0ccFe9BvwKxyijP2k0lM8N3OFHtpk3sh+N9FSyPv9ow==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=UMDCxiMF; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+	 In-Reply-To:To:Cc; b=TY4DKCK8rOQABLGj7tX9p/MSm7c2c2sEVqBmehscQnViuoEesiNjeSGVSfrgys5ed9aPqo/U/zhzvkWRUv/0FJIw5s4zPKTi27SJZdn4sewjaZPyFGNIZkVl3MjjSQ7FMJmTRA7cRk21pd0vW9tsHJQcGvTsLDUhXTO9A/9MVSkChMSOwj3A2Mpb8nVfU2D1Be4x0ee3FBNMrCeK0XQz/J2FPeCUMR+LGuGZVZ3zoIdthXQz2M12fJXtxTdsmF1GBq2UmlubRiElgAwo/xNRVBO8B3neiTL+vdbcf63nS7hnfrL1XnPL5Ge9ziXLwhge8Un+R3cHSDb4QBHC1R2SPQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=mNHdIox5; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=UMDCxiMF;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=mNHdIox5;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqqqg5TR2z2yD8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 08:27:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqqqh2c5xz2yDt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 08:27:44 +1100 (AEDT)
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 25F9B2064AE0;
+	by linux.microsoft.com (Postfix) with ESMTPSA id 956492064AE3;
 	Fri, 15 Nov 2024 13:26:45 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 25F9B2064AE0
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 956492064AE3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1731706005;
-	bh=7RgevXzVOF2wd0QHaqg8sKSXBh3tNnxEZNLAJYHO4/0=;
+	bh=94UWkQUgIE+TIBJCr3TB9bjXju243wFFlCrw1pjugTo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=UMDCxiMFhqj3OlDob3LYx0iO5XeNyfLgAMK6ZmPOVPjyLP8LbvBk/4clux5a7IhZf
-	 SUaWunrnwv/PJO3csx5OWc8mNOgOiHWkD1xkNHfyawuJ/x53ffFQkcrJhZT2Q2aLBA
-	 ECLfhBVQizunL7YqKMclkNruWg4koe1sEVlXuTiY=
+	b=mNHdIox58am1vKiSlapYyQSd/IB/puFk5Gi1H5FYHJ3c7VwmewWXtYwpq8qZgM5VC
+	 FsoAzIfa/5Dmw/g1Wnz5pM6x92x9pSsv8KUjV1VC6j6e14jtQDSlKdd0OQNegI9M/0
+	 o4hIDKt2X5QgI0I8DrdvAcv+VpyUUXxnbDtHt4Jg=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Fri, 15 Nov 2024 21:26:35 +0000
-Subject: [PATCH v2 18/21] ceph: Convert timeouts to secs_to_jiffies()
+Date: Fri, 15 Nov 2024 21:26:37 +0000
+Subject: [PATCH v2 20/21] ALSA: line6: Convert timeouts to
+ secs_to_jiffies()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,7 +54,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241115-converge-secs-to-jiffies-v2-18-911fb7595e79@linux.microsoft.com>
+Message-Id: <20241115-converge-secs-to-jiffies-v2-20-911fb7595e79@linux.microsoft.com>
 References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
 In-Reply-To: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, 
@@ -141,22 +142,22 @@ Changes made with the following Coccinelle rules:
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- fs/ceph/quota.c | 2 +-
+ sound/usb/line6/toneport.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ceph/quota.c b/fs/ceph/quota.c
-index 06ee397e0c3a6172592e62dba95cd267cfff0db1..d90eda19bcc4618f98bfed833c10a6071cf2e2ac 100644
---- a/fs/ceph/quota.c
-+++ b/fs/ceph/quota.c
-@@ -166,7 +166,7 @@ static struct inode *lookup_quotarealm_inode(struct ceph_mds_client *mdsc,
- 	if (IS_ERR(in)) {
- 		doutc(cl, "Can't lookup inode %llx (err: %ld)\n", realm->ino,
- 		      PTR_ERR(in));
--		qri->timeout = jiffies + msecs_to_jiffies(60 * 1000); /* XXX */
-+		qri->timeout = jiffies + secs_to_jiffies(60); /* XXX */
- 	} else {
- 		qri->timeout = 0;
- 		qri->inode = in;
+diff --git a/sound/usb/line6/toneport.c b/sound/usb/line6/toneport.c
+index ca2c6f5de407ece21ab69a39ed603e3f10069039..c073b38cd6738176fc6a276d05ed553526573341 100644
+--- a/sound/usb/line6/toneport.c
++++ b/sound/usb/line6/toneport.c
+@@ -386,7 +386,7 @@ static int toneport_setup(struct usb_line6_toneport *toneport)
+ 		toneport_update_led(toneport);
+ 
+ 	schedule_delayed_work(&toneport->line6.startup_work,
+-			      msecs_to_jiffies(TONEPORT_PCM_DELAY * 1000));
++			      secs_to_jiffies(TONEPORT_PCM_DELAY));
+ 	return 0;
+ }
+ 
 
 -- 
 2.34.1
