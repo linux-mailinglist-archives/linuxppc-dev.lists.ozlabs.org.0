@@ -1,59 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-3307-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3308-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2C59CFAA0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 00:00:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B34B9CFAD7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 00:07:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqsts04Fwz3c5B;
-	Sat, 16 Nov 2024 10:00:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqt2F3lnXz3c9w;
+	Sat, 16 Nov 2024 10:07:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=205.220.168.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731711636;
-	cv=none; b=ZmEsmz7iR0cXXGMbgOe60SXLSUAxV6zbdKy1nitWXlm/JGVz/Nr80fEhoxxTjsMKe1SQCEBTMBlCCHTwnW3TbhKXNUwz3/BD87A5Z5w/1nvXwkLBw5AERb0aVn3xU8go+LJAp7m6jOTKJI/iX9rON/qyZU3GsINZRaJPb3KtRNh3YhZHgVf6e7r3OFCmp0fN/G4YanHpTN/sCO4yisqzc5QGXNDfBf+gZIRlObyTKS3GVEsKdml47s28yRUHWu5Y7cauiX7cfxf0jPDQ/zsUJ9GLJrsqJKDeACHLC5JvtifUb3mIxCvhMVo8o4XZJitJ9bww98FgE1iJbUigOQGLEw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731712021;
+	cv=none; b=N2Fvu7XzXPSytw9LiBfuG0BukKUyBDge7LRAhP4ysOY9JtGl8RFJzsjgXz0/uWGjI7KlRgpsQSADV3RFiI5sMeTitwcm11MKVdksAbe/mvzrdSDvEixxyDhILlvsYtXQx11Jp+PuvB46b4ezkAc8oOpXKF3lKZckXvZS+kx+qZOyneroVvUjxbtA+SsgCmuOb35C4ra4Pg7O5mhUZixVof+0x0h8UbfMhxn/tHyiT88uT40WDW99RYTPo7JUsZ/qvQpo+SyCFGyScFJRT7A9iX2lxMn90nz1uxXoUa45Qt/SayczYib1tcwgf8Ah59RZ2W2Tm9bGNtfEYndkseZF4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731711636; c=relaxed/relaxed;
-	bh=qNk0UpPCfP9jVOvfKBxvQukY6QfemQfuOfHWSW3FEps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=HmuT5e1sRKV+yaUvwdHIXuzWhFP8kIAXBOUbi7+hWfti5KMakezprWOafX9n0b658ftHMp+a4oPGvLp3T9jeSkk6qcj5gqKpvcQtU2UtdVMJD4A4t52KqveVGfb2cIH5kr7EB+svGQYk8cZ582Ov9JHBzYfDKW0gGj51lUTryJ4adDjNlIbEqqIkOXH36Xpnfu7OuVJQHmdZ4g0qNqfmhx7RYexH/n289GxBUpY9LAQDAS5f3ZjWhWFADAsc1Dca81+HhL+zYyehy7w28HNOthhYxbEhSKmQPoT8pnXrPSSlyQMNUnKivVTofrcRNPfK8G1dvhatV2L80BXG7JBubw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=XgPHjXXU; dkim-atps=neutral; spf=pass (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org) smtp.mailfrom=quicinc.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+	t=1731712021; c=relaxed/relaxed;
+	bh=O2b6SQKDGCTDaWI7zM3wBlzVvKv6BpSCpo7XXu0XVQI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QPHk2UL633gXRJZG5RlrdF1gF30ijlL/1b38M5PEW+2BFSPKy0SvbsV85Ohj3LCQyUa+wvi2s4uApqFUXq1Erfx1XzBDPVb1vKhO9GOjX6sy/WeaXAuPjRjd3sTPqvtj6gHS/LviC6bCKywup4DgIRxbRbdjddM94tEpCV7S49UFJSQ4v0talNQ9XGMnxIzz3+BsWYLdFaFMZpL+bKqNehPs/ZnqgX2ssLvquRVKOkSdgwPb7VPV/XfnunfvuCsMUeP6t1GeWFw9+mE4BBwk91yHHqzqlVatV2UX6aOcqVPX20HqnOHE75+2ghO2OQycWb+EKZ6sNfsSpUZt/qHD+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G9mcKu5p; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=XgPHjXXU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G9mcKu5p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=quic_jjohnson@quicinc.com; receiver=lists.ozlabs.org)
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xqstp0cjvz3bxL
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 10:00:32 +1100 (AEDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AFGrkEN010333;
-	Fri, 15 Nov 2024 22:59:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	qNk0UpPCfP9jVOvfKBxvQukY6QfemQfuOfHWSW3FEps=; b=XgPHjXXU5/THf7Zv
-	KSmEXbUKuVLvM2dvj9amuR/JpE4K7+0IZR+xH9KidBF9+O9FKfr4/RUa/5gBJ298
-	8bu5+Pifed2F8BrM6Oj34ss7B6Y5ixfwwTCGx3ktfPO3tYNyIm+GzJX1Har9+TZ4
-	4wo2SothME4kGgPVm+iavuzfNOA1bUUjgotBOhuR+MSwdpD83jTCA42dW+fTyNsK
-	0Y7MINWD+oYbpCz6GaMvi+6nMNjQF5NolpB3yUFR7K5UpAeriFXlTu2nWQWaBMqt
-	XRR46sptjfsXIH4xCJQEeuBlwiD0DiBQ6ykoF2SjYaU/c5KX5zmumxMdD4uA+akh
-	YLxA7A==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42xa7ngs0a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Nov 2024 22:59:56 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AFMxttC025526
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Nov 2024 22:59:55 GMT
-Received: from [10.111.176.23] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 15 Nov
- 2024 14:59:51 -0800
-Message-ID: <d2d2c07b-666d-4b37-a428-2d73ce8aeb5b@quicinc.com>
-Date: Fri, 15 Nov 2024 14:59:51 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xqt2C5CzWz3c8w
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 10:06:59 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id B889AA41DE8;
+	Fri, 15 Nov 2024 23:05:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931C0C4CECF;
+	Fri, 15 Nov 2024 23:06:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731712016;
+	bh=cjtwl0gGLi5MSlCyLv07Q+lWF52r2XQCMliJF3VOZDc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G9mcKu5pi9ubrMvJHG/FOv0+CJuVSkiPA+ZjL+u4TAzs1YScuoISsPqL2Rn1s1NtP
+	 pg9gtVw3yENCC8pGssa+sJVTz/1g13Y4Yg3XP6jLseFdqUrMWAjX12mN7D9PpHgdid
+	 j8MDI7ItYrOiAB7sjRqm3rlKO86nBEBPRScXP58/vDV0S/dDCLI+vC4vk+HsjwYK8u
+	 oaRmIKxuQPkHnkCpjcq5ZRVvM7A9fVHBfyfInCgGPdYk2EcSY/KuMWEnZHFDymZRpJ
+	 9WbnUBP0YT5+xnipx4Uiwbo78LeY9+dG9YrDhgqkQbXtilqfqNM4mhiAUk76yD6ivX
+	 nbvGqPJKvG0sg==
+Date: Fri, 15 Nov 2024 15:06:53 -0800
+From: 'Josh Poimboeuf' <jpoimboe@kernel.org>
+To: David Laight <David.Laight@ACULAB.COM>
+Cc: "x86@kernel.org" <x86@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Waiman Long <longman@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>
+Subject: Re: [PATCH v3 2/6] x86/uaccess: Avoid barrier_nospec() in 64-bit
+ __get_user()
+Message-ID: <20241115230653.hfvzyf3aqqntgp63@jpoimboe>
+References: <cover.1730166635.git.jpoimboe@kernel.org>
+ <82cbb9983fef5ecf6f1cb33661e977172d40a7e6.1730166635.git.jpoimboe@kernel.org>
+ <20241029032735.pw3bg64bpneqnfhk@treble.attlocal.net>
+ <76bb85ceeb854e3ab68d87f846515306@AcuMS.aculab.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,175 +80,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/21] wifi: ath11k: Convert timeouts to
- secs_to_jiffies()
-To: Easwar Hariharan <eahariha@linux.microsoft.com>,
-        Pablo Neira Ayuso
-	<pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        "David S.
- Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        Nicolas Palix
-	<nicolas.palix@imag.fr>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang
-	<haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Russell
- King <linux@armlinux.org.uk>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle
-	<svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>,
-        Oded Gabbay
-	<ogabbay@kernel.org>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-        Rodrigo
- Vivi <rodrigo.vivi@intel.com>,
-        Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jeroen de Borst <jeroendb@google.com>,
-        Praveen Kaligineedi <pkaligineedi@google.com>,
-        Shailend Chand
-	<shailend@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        James Smart
-	<james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James
- E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        "Martin K. Petersen"
-	<martin.petersen@oracle.com>,
-        =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
-	<roger.pau@citrix.com>,
-        Jens Axboe <axboe@kernel.dk>, Kalle Valo
-	<kvalo@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Catalin Marinas
-	<catalin.marinas@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jack
- Wang <jinpu.wang@cloud.ionos.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz
-	<luiz.dentz@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Ray Jui
-	<rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-        Broadcom internal
- kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Xiubo Li
-	<xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-        Josh Poimboeuf
-	<jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes
-	<mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence
-	<joe.lawrence@redhat.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
-	<tiwai@suse.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Russell King
-	<linux+etnaviv@armlinux.org.uk>,
-        Christian Gmeiner
-	<christian.gmeiner@gmail.com>,
-        Louis Peens <louis.peens@corigine.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao
-	<naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-CC: <netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <cocci@inria.fr>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-s390@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <intel-xe@lists.freedesktop.org>, <linux-scsi@vger.kernel.org>,
-        <xen-devel@lists.xenproject.org>, <linux-block@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <linux-mm@kvack.org>, <linux-bluetooth@vger.kernel.org>,
-        <linux-staging@lists.linux.dev>,
-        <linux-rpi-kernel@lists.infradead.org>, <ceph-devel@vger.kernel.org>,
-        <live-patching@vger.kernel.org>, <linux-sound@vger.kernel.org>,
-        <etnaviv@lists.freedesktop.org>, <oss-drivers@corigine.com>,
-        <linuxppc-dev@lists.ozlabs.org>,
-        Anna-Maria Behnsen
-	<anna-maria@linutronix.de>
-References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
- <20241115-converge-secs-to-jiffies-v2-15-911fb7595e79@linux.microsoft.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241115-converge-secs-to-jiffies-v2-15-911fb7595e79@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 9NJi18BY7F7RS1ijvJie2T9SzXH5WHC4
-X-Proofpoint-GUID: 9NJi18BY7F7RS1ijvJie2T9SzXH5WHC4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- adultscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 mlxscore=0 clxscore=1015 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411150193
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <76bb85ceeb854e3ab68d87f846515306@AcuMS.aculab.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 11/15/2024 1:26 PM, Easwar Hariharan wrote:
-> Changes made with the following Coccinelle rules:
-> 
-> @@ constant C; @@
-> 
-> - msecs_to_jiffies(C * 1000)
-> + secs_to_jiffies(C)
-> 
-> @@ constant C; @@
-> 
-> - msecs_to_jiffies(C * MSEC_PER_SEC)
-> + secs_to_jiffies(C)
-> 
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+On Fri, Nov 08, 2024 at 05:12:53PM +0000, David Laight wrote:
+> From: Josh Poimboeuf
+> > On Mon, Oct 28, 2024 at 06:56:15PM -0700, Josh Poimboeuf wrote:
+> > > The barrier_nospec() in 64-bit __get_user() is slow.  Instead use
+> > > pointer masking to force the user pointer to all 1's if a previous
+> > > access_ok() mispredicted true for an invalid address.
+> > 
+> > Linus pointed out that __get_user() may be used by some code to access
+> > both kernel and user space and in fact I found one such usage in
+> > vc_read_mem()....
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+.. which sucks because I got a "will-it-scale.per_process_ops 1.9%
+improvement" report for this patch.
 
-> ---
->  drivers/net/wireless/ath/ath11k/debugfs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-> index 57281a135dd7fa6b8610636f47873c8bba21053c..bf192529e3fe26a91e72105a77b4c6f849b905ec 100644
-> --- a/drivers/net/wireless/ath/ath11k/debugfs.c
-> +++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-> @@ -178,7 +178,7 @@ static int ath11k_debugfs_fw_stats_request(struct ath11k *ar,
->  	 * received 'update stats' event, we keep a 3 seconds timeout in case,
->  	 * fw_stats_done is not marked yet
->  	 */
-> -	timeout = jiffies + msecs_to_jiffies(3 * 1000);
-> +	timeout = jiffies + secs_to_jiffies(3);
->  
->  	ath11k_debugfs_fw_stats_reset(ar);
->  
-> 
+It's sad that __get_user() is now slower than get_user() on x86, it kind
+of defeats the whole point!
 
+I know at least the "coco" code is misusing __get_user().  Unless
+somebody wants to audit all the other callers, we could do something
+horrific:
+
+.macro __get_user_nocheck_nospec
+#ifdef CONFIG_X86_64
+	movq $0x0123456789abcdef, %rdx
+ 1:
+.pushsection runtime_ptr_USER_PTR_MAX, "a"
+	.long 1b - 8 - .
+.popsection
+	cmp %rax, %rdx
+	jb 10f
+	sbb %rdx, %rdx
+	or %rdx, %rax
+	jmp 11f
+10:	/*
+	 * Stop access_ok() branch misprediction -- both of them ;-)
+	 *
+	 * As a benefit this also punishes callers who intentionally call this
+	 * with a kernel address.  Once they're rooted out, __get_user() can
+	 * just become an alias of get_user().
+	 *
+	 * TODO: Add WARN_ON()
+	 */
+#endif
+	ASM_BARRIER_NOSPEC
+11:
+.endm
+
+/* .. and the same for __get_user, just without the range checks */
+SYM_FUNC_START(__get_user_nocheck_1)
+	__get_user_nocheck_nospec
+	ASM_STAC
+	UACCESS movzbl (%_ASM_AX),%edx
+	xor %eax,%eax
+	ASM_CLAC
+	RET
+SYM_FUNC_END(__get_user_nocheck_1)
+EXPORT_SYMBOL(__get_user_nocheck_1)
+
+Yes, I know adding another access_ok() is bad, but it would be a
+definite speedup.  And adding a WARN_ON() would root out any other bad
+callers pretty quick.
+
+> But I've wondered if access_ok() ought to be implemented using an
+> 'asm goto with output' - much like get_user().
+> 
+> Then the use would be:
+> 	masked_address = access_ok(maybe_bad_address, size, jump_label);
+> with later user accesses using the masked_address.
+> 
+> Once you've done that __get_user() doesn't need to contain address masking.
+
+Sure, we just need a volunteer to change all the access_ok() implementations
+and callers tree-wide ;-)
+
+> Given that clac/stac iare so slow should there are be something that
+> combines stac with access_ok() bracketed with a 'user_access_end'
+> or an actual fault.
+> 
+> I've sure there is code (maybe reading iovec[] or in sys_poll())
+> that wants to do multiple get/put_user in a short loop rather that
+> calling copy_to/from_user().
+
+We already have this with user_access_begin() + unsafe_get_user().
+There's also a version which masks the address: masked_user_access_begin().
+
+We just need to start porting things over.
+
+-- 
+Josh
 
