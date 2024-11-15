@@ -1,44 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-3301-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3291-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7649CF993
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 23:16:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9EB9CF979
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 23:15:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqrw86sLrz3c81;
-	Sat, 16 Nov 2024 09:16:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XqrtL3Khmz3bwL;
+	Sat, 16 Nov 2024 09:15:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731706096;
-	cv=none; b=Roduw4sB/Ci7A1T51ebzvNc4EhbsQwy3/kkmHXGsEgWccQ7F4IhznI9bF5hBMv32tVCrx1T2aQqT1QPCLnE2O7g56AXfB8ZavK9ZQqJIehhx3xlD47h1hBWZ7F3A2rtu1yvLZWTIn/eFfJTq1jNj7xvuS2vKZgLoOmFBKwfS3VTDfVabXDoZoWXGCOnChdgUaqzF1IOVE7ganDdvPq7L0RWnP1wbQD1PhExBqYQhHIJgKchnviNiPZ6g/KMieUE/UTqFEenqhZ73JRn2Id3vfRWR8+MzNQTdj8Xj6YvAg+OL5UjWUdzfZBZkGgm21KNysYHJzV9QJpeUGGOBcvW06w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731706066;
+	cv=none; b=JJsIpx1Cx1zjin/3ILouTgRIBKCjEyPUhiWsoUOlEn6mpOJy4rrbOd/xgqJWOblfRgjDpnQwmzHvR3FDtmJ3e1yDavJPOaRlOWJxKmR42d/5Rb+v3F/CGJMZfXNnBVcy9SuCp4AbZ+NrxE2Z2+Cnm4vdvshN36y4vRsrUFHZ+2zMUZzItua7di9bHAgH9pYepXdU9d0aoQWkWkGx+f1Kdu/dqY7DJq1bAcIup/mjzllUcy3l3L9KDaLhdQ3mt02qeAed6WXJ7I7yY5kCTGEVL39VqEsy2OzSw5N2EwJ62j3q3u7xvjyse1xJF+Z5Fq+tFnZQNhZxqhOtKpKeCxMQAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731706096; c=relaxed/relaxed;
-	bh=GmA2v8FrQkDc3PawrRu1NLBJUu3qRf/naCkvRhlPz0Q=;
+	t=1731706066; c=relaxed/relaxed;
+	bh=z5d0KiQ+mxHfS/dtMsbc4ttBd/lyUqPHYPOKqCM1B/M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=APmY+Ra/sYorbjWP6wPGvNyA2H6quSnzvQz3cazoN6fwQy9JnMaKZ4q5l0gnjxsaiOwLzBtWfms6a9zs5pSpMs2BH4HUEEW1cVStN5X9v1Ur5hO26K25FL5cISRpdmSpwSJoZRmGIs4r7q9IKFtqpSSsKtgEZjMsZNgIOt8PWEdHWNiw5Xnhr7pZF1L1bmQtOv9JsOx8h2OU3UDaugd93lVLJRFMQR+U9GuQkcacI0AaBzwK2HT74ltcoZf3Eo5w9jbunjJlc5GK2Dj7sStiqeXN6TEmyK0qU11xGHvZrl8cevIJFBNXCmMLsz5dr8JV6wR+xx1FENICCqL26Ll3bA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=PLg1Ut3p; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+	 In-Reply-To:To:Cc; b=niCK0W0i5c3rjxbAnQYkzEaHTfKPLOMEuYAHdogAWZcJMcd8TogO670r/uHqs/DHqpM4GWp3ZccBS2s9TmMY2tivoOnVBOOf1PeGVpbtDgj8DGmEN5xkSYxg1xpJvysL2ONepjK7qMj+kWGXs+QJ0UhhIDupUdDaMyk9jJqt0nUFM4kGeXeDLFIDeVCzgxXb+J3ZSiKvZDM1wEKiuBF34cMfgRRcLMA4CmZ67ZbgsM+m1TvnJ4+J2IxPfvKNXteu2P2EHcuokAvPioBYfIYT463Vy+8dU6kV0VXOslmYzio4ipiDaEoakcwHyOLWyk9MRI28PzuU1qheF4m5pROqQw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=Qzjy8jhT; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=PLg1Ut3p;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=Qzjy8jhT;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XqqrH3fybz2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 08:28:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqqqj1PY5z2yGf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 08:27:45 +1100 (AEDT)
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id D434E206BCFD;
-	Fri, 15 Nov 2024 13:26:42 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D434E206BCFD
+	by linux.microsoft.com (Postfix) with ESMTPSA id 17E88206BCFE;
+	Fri, 15 Nov 2024 13:26:43 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 17E88206BCFE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1731706003;
-	bh=GmA2v8FrQkDc3PawrRu1NLBJUu3qRf/naCkvRhlPz0Q=;
+	bh=z5d0KiQ+mxHfS/dtMsbc4ttBd/lyUqPHYPOKqCM1B/M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=PLg1Ut3pMX8AIAjCAjy4bw02khMtlTmOdJICyDZ1qYDkIIeJUIA/Jl8Ax7qK0nzXA
-	 69WpHciXaLS10XUYziHT/1hEXLH04lMhVot2lJeh/b4MNSDj4bBTIfL48/xVYbcOQX
-	 4FHRZuPnT+9sZJ5HuVZVrIr57njKWIxmoNEf7/uw=
+	b=Qzjy8jhTqEhPkpbtMzhjO4pQ41WosaCc3rHXK7isQANvdHykkDrpnsXw2iEyDYrKZ
+	 bivctPWn2ufOhidk0VIZ+JFuRb3AziKQEhYq/E0XKlSC0nh99MCwSAdmHtPz39M16d
+	 mbtSMAjjgTqYd5iB3/X8WKQ1SIjBJafcvQ4z4Hts=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Fri, 15 Nov 2024 21:26:25 +0000
-Subject: [PATCH v2 08/21] drm/xe: Convert timeout to secs_to_jiffies()
+Date: Fri, 15 Nov 2024 21:26:26 +0000
+Subject: [PATCH v2 09/21] drm/etnaviv: Convert timeouts to
+ secs_to_jiffies()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,7 +54,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241115-converge-secs-to-jiffies-v2-8-911fb7595e79@linux.microsoft.com>
+Message-Id: <20241115-converge-secs-to-jiffies-v2-9-911fb7595e79@linux.microsoft.com>
 References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
 In-Reply-To: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, 
@@ -141,22 +142,22 @@ Changes made with the following Coccinelle rules:
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- drivers/gpu/drm/xe/xe_device.c | 2 +-
+ drivers/gpu/drm/etnaviv/etnaviv_cmdbuf.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index a1987b554a8d2aa42b29301f2853edddfda7fda5..bb3338ef4191e76128611eeb9531c9d2089db85a 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -502,7 +502,7 @@ static int wait_for_lmem_ready(struct xe_device *xe)
- 	drm_dbg(&xe->drm, "Waiting for lmem initialization\n");
- 
- 	start = jiffies;
--	timeout = start + msecs_to_jiffies(60 * 1000); /* 60 sec! */
-+	timeout = start + secs_to_jiffies(60); /* 60 sec! */
- 
- 	do {
- 		if (signal_pending(current))
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_cmdbuf.c b/drivers/gpu/drm/etnaviv/etnaviv_cmdbuf.c
+index 721d633aece9d4c81f0019e4c55884f26ee61c60..0f5a2c885d0ab7029c7248e15d6ea3c31823b782 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_cmdbuf.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_cmdbuf.c
+@@ -100,7 +100,7 @@ int etnaviv_cmdbuf_init(struct etnaviv_cmdbuf_suballoc *suballoc,
+ 		mutex_unlock(&suballoc->lock);
+ 		ret = wait_event_interruptible_timeout(suballoc->free_event,
+ 						       suballoc->free_space,
+-						       msecs_to_jiffies(10 * 1000));
++						       secs_to_jiffies(10));
+ 		if (!ret) {
+ 			dev_err(suballoc->dev,
+ 				"Timeout waiting for cmdbuf space\n");
 
 -- 
 2.34.1
