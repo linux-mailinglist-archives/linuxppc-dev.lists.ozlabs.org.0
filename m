@@ -1,66 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-3249-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3250-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF779CDE28
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 13:19:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D1B9CE041
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 14:39:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqbfz72Wvz301w;
-	Fri, 15 Nov 2024 23:19:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XqdRF5hxLz2yNP;
+	Sat, 16 Nov 2024 00:39:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731673163;
-	cv=none; b=NZMAISLFzSr//SzFDiipJJa8AP6R/2AtFZ9UTdso4yS6C9JybD1aEMnO6M7RUMN09gru14cOQ/EEqC3pHze3JqGdm0RxtWQAq/sS2axZBeGtoDeO1gE+pyrf8/nlTpERCUmBYDBGhk5OqGDFEFqXz9WeHgALHd1WIglB12GRNzxYVJ2bXWvBniSbUDewdy23Yw2sfXEM/RBL3QOyuT6EqUOxSCHvx60JtPychnAn2fHW5/JPeC/3VpAJkvKOkiqCXa5RQ5vUiAw56XvgqmftWCQv5bWJLQoQT4D+aTxDL8XioRr5f22P8jLt2HS3v3JmS7GWo3W4kUmooPSjEn0w7w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731677961;
+	cv=none; b=Wv25ZoRZtWYYwcJo+b5KsAWx+i3Jom5/BSVAF+lY19d2tgJpzJoYAVr2PowjRh9KX/rc2l1aszUopSsm0hrnhKQnyivP7rmVpqS7ViIbXu+UyRHoLPeAmNBu9JeVmlZ7ZS39Cx5ygxHuobHYRSk9XqMdfbTuR1qizGgrpIjOHkJepbcTWXxn9VInQZ0QxyFnR55QVcUpRPhfWndaH1UEpy7TXHraQps8d6NQGdPtiPmSZFq2MA7k8Gzj5mz9rfKokhks099AbA1hCx7S/tAhxDl5NrfiblLqFInfWxxv6h+5bLIJJrj4DGpS3n8ZrR7LNXx4nB3JqI54KYOWZdqK8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731673163; c=relaxed/relaxed;
-	bh=lieZ2BaJSbYb2YjrQK5pVbn/qvdQhFj1UGUa8nbqXIk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HLfOyM6Vw0lDcjZ6ZZEEeryhAuq66d0Oxi0QhTr8TS18Gkx2wQPpPGMEeTuuD6th82+UUN8LpJX2EX+u9j0XkNvRY5YEsaz8OK+OUcIxXEp4sYlt1kKLQYJneaEaDVacnV75i5rQQv7ejJqggEZCn3v+SgcISerKz1KE8zQhVFxOiaMuCRACIDYC2m0L47kd1vJ7VTk6JmhUTcPxnI9K8G3VlLoE41OLx7yW4b+PXdTs4zu7+6+V7yJHLptSvfaGGnSwwHCAMywUx+eP03UmwDUj+RxzQUR9itqV7a83g6RseU3T+hM/LqkHUtAb6rgd3zajYTbjqLuQwDLORYr0zQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hgp2erme; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1731677961; c=relaxed/relaxed;
+	bh=4hZFBVUDXTE1f5H+tmc3cmRjPtqHB8sOspzk6f0/V14=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b0u8HzX0PsPvoCxPAeYFBJR66ON3GTfX/Gm6sR9cA5j7JSGszM+5J8PU1AL20ntUBV+pSh3eWb+juGW4V4h/+KqkVAliG9F9DKxuVci21x5vFP8k53lpWbsAuGqgXgyEDhvvsbuKh9tmc6kNg+KpWQn/QN3ucSxZngkM/zvUUBwLZKzHo/YcNdaK4dkd1BcXByPFW1gk+tvwLarta3J9MB193oq9ukbY+pHcq6YyuNYK8hbaL/ENz0iaIRLlF22xf+XZaj0IzlXYXDGw6dWnploIQOFaQef49/Ow8dIeDaFD3g3rOaISsLuQcc0hwrR90rpkOZIqq/9bmNbfVLxfmw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F0KF1NGn; dkim-atps=neutral; spf=none (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hgp2erme;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F0KF1NGn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Sat, 16 Nov 2024 00:39:17 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xqbfy4jJ9z2yNP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 23:19:22 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id B3C415C6259;
-	Fri, 15 Nov 2024 12:18:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D463EC4CECF;
-	Fri, 15 Nov 2024 12:19:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731673159;
-	bh=xYQ9TNp9p5kYBx3sWMGmhMUu5MqStfTQnH3N5bBDZJc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hgp2ermerQoEtA7rDHw8fmjZvMztpbM6wzYhbqM2dYdaYgpB3s7A2zNC5RUoQUExz
-	 EWON/IPsj0QzBO0ybOKrRxgw7bgnE5FrwLJ969oQFLtmAiCWTyxblXbsnBgnXBEwDD
-	 KV2XdzQ0Mjfo0DisVOxFYLAVidMOxlVPpJX9P/ruVUaefgrxnm9bWc9WVUSZEPWOzW
-	 tFZQbG9M083rPlm8lnCUzkoa7tXVuqzvA3MyGheGxFQMxbtpGKjBniaL659U2akiQC
-	 kxwl+CVy45uP7aIZUqT+wynK25ye9nFWmWqai+3yguXZzNZf9g9PGuYzBMzCkWnYwK
-	 OAyU/ogCBDf7w==
-Date: Fri, 15 Nov 2024 12:19:14 +0000
-From: Simon Horman <horms@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	Herve Codina <herve.codina@bootlin.com>,
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v2 01/10] net: freescale: ucc_geth: Drop support
- for the "interface" DT property
-Message-ID: <20241115121914.GL1062410@kernel.org>
-References: <20241114153603.307872-1-maxime.chevallier@bootlin.com>
- <20241114153603.307872-2-maxime.chevallier@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XqdR95glrz2xs8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 00:39:17 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731677958; x=1763213958;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SaCvmvm1dX7B3GgbWp5rq3frToIghtvV1+crqdVMNyw=;
+  b=F0KF1NGnlFtONWLiGXzfiiO5lOJd6J5J6gdpAfmrgqT9YLbSZIWqYobs
+   /fJTXCgap/JSqMRNElTXOIXo79HnPOHfB5pc5PuQ83IOVZ5Gn9xXpApsQ
+   JvCBTNKrYf708sOmdF5jPHEgf25BupgG7uQyJvaurkAIqte92VB34fxpB
+   OXoXA0hDfnpF85vgaajbUJauaagOEOnNhT+fp+BX0aHNfwKsRwoDHAh7p
+   o+vea8lU1m+x3Z+oFChdQXu7jEAzD49C/JMGmhpE5Yw3xo+u2QJ2XJxjl
+   n0KOq7ExkZkZmGgIenhfrgX3MhhkXj8/2RlhUeqDWkqTLxQykL6X8pp25
+   w==;
+X-CSE-ConnectionGUID: z4FZ09zMTuS3RfMDqyATSg==
+X-CSE-MsgGUID: UZcIrHKlQkuVzVfD+2v96g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11257"; a="49113667"
+X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; 
+   d="scan'208";a="49113667"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2024 05:38:08 -0800
+X-CSE-ConnectionGUID: 8SgzhYtBSae0467tKzjbaQ==
+X-CSE-MsgGUID: nfMsRzJrQGGphTo5MDVWvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,156,1728975600"; 
+   d="scan'208";a="89319831"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa008.jf.intel.com with ESMTP; 15 Nov 2024 05:38:07 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 8A7F21AC; Fri, 15 Nov 2024 15:38:05 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH v1 1/1] powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
+Date: Fri, 15 Nov 2024 15:38:02 +0200
+Message-ID: <20241115133802.3919003-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,99 +81,317 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241114153603.307872-2-maxime.chevallier@bootlin.com>
-X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Nov 14, 2024 at 04:35:52PM +0100, Maxime Chevallier wrote:
-> In april 2007, ucc_geth was converted to phylib with :
-> 
-> commit 728de4c927a3 ("ucc_geth: migrate ucc_geth to phylib").
-> 
-> In that commit, the device-tree property "interface", that could be used to
-> retrieve the PHY interface mode was deprecated.
-> 
-> DTS files that still used that property were converted along the way, in
-> the following commit, also dating from april 2007 :
-> 
-> commit 0fd8c47cccb1 ("[POWERPC] Replace undocumented interface properties in dts files")
-> 
-> 17 years later, there's no users of that property left and I hope it's
-> safe to say we can remove support from that in the ucc_geth driver,
-> making the probe() function a bit simpler.
-> 
-> Should there be any users that have a DT that was generated when 2.6.21 was
-> cutting-edge, print an error message with hints on how to convert the
-> devicetree if the 'interface' property is found.
-> 
-> With that property gone, we can greatly simplify the parsing of the
-> phy-interface-mode from the devicetree by using of_get_phy_mode(),
-> allowing the removal of the open-coded parsing in the driver.
-> 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> ---
-> V2: No changes
-> 
->  drivers/net/ethernet/freescale/ucc_geth.c | 63 +++++------------------
->  1 file changed, 12 insertions(+), 51 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
+Remove legacy-of-mm-gpiochip.h header file, replace of_* functions
+and structs with appropriate alternatives.
 
-...
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ arch/powerpc/platforms/8xx/cpm1.c | 119 +++++++++++++++---------------
+ 1 file changed, 60 insertions(+), 59 deletions(-)
 
-> @@ -3627,18 +3588,17 @@ static int ucc_geth_probe(struct platform_device* ofdev)
->  	/* Find the TBI PHY node.  If it's not there, we don't support SGMII */
->  	ug_info->tbi_node = of_parse_phandle(np, "tbi-handle", 0);
->  
-> -	/* get the phy interface type, or default to MII */
-> -	prop = of_get_property(np, "phy-connection-type", NULL);
-> -	if (!prop) {
-> -		/* handle interface property present in old trees */
-> -		prop = of_get_property(ug_info->phy_node, "interface", NULL);
-> -		if (prop != NULL) {
-> -			phy_interface = enet_to_phy_interface[*prop];
-> -			max_speed = enet_to_speed[*prop];
-> -		} else
-> -			phy_interface = PHY_INTERFACE_MODE_MII;
-> -	} else {
-> -		phy_interface = to_phy_interface((const char *)prop);
-> +	prop = of_get_property(ug_info->phy_node, "interface", NULL);
-> +	if (prop) {
-> +		dev_err(&ofdev->dev,
-> +			"Device-tree property 'interface' is no longer supported. Please use 'phy-connection-type' instead.");
-> +		goto err_put_tbi;
+diff --git a/arch/powerpc/platforms/8xx/cpm1.c b/arch/powerpc/platforms/8xx/cpm1.c
+index b24d4102fbf6..1262bff5ba2e 100644
+--- a/arch/powerpc/platforms/8xx/cpm1.c
++++ b/arch/powerpc/platforms/8xx/cpm1.c
+@@ -45,7 +45,7 @@
+ #include <sysdev/fsl_soc.h>
+ 
+ #ifdef CONFIG_8xx_GPIO
+-#include <linux/gpio/legacy-of-mm-gpiochip.h>
++#include <linux/gpio/driver.h>
+ #endif
+ 
+ #define CPM_MAP_SIZE    (0x4000)
+@@ -376,7 +376,8 @@ int __init cpm1_clk_setup(enum cpm_clk_target target, int clock, int mode)
+ #ifdef CONFIG_8xx_GPIO
+ 
+ struct cpm1_gpio16_chip {
+-	struct of_mm_gpio_chip mm_gc;
++	struct gpio_chip gc;
++	void __iomem *regs;
+ 	spinlock_t lock;
+ 
+ 	/* shadowed data register to clear/set bits safely */
+@@ -386,19 +387,17 @@ struct cpm1_gpio16_chip {
+ 	int irq[16];
+ };
+ 
+-static void cpm1_gpio16_save_regs(struct of_mm_gpio_chip *mm_gc)
++static void cpm1_gpio16_save_regs(struct cpm1_gpio16_chip *cpm1_gc)
+ {
+-	struct cpm1_gpio16_chip *cpm1_gc =
+-		container_of(mm_gc, struct cpm1_gpio16_chip, mm_gc);
+-	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
++	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
+ 
+ 	cpm1_gc->cpdata = in_be16(&iop->dat);
+ }
+ 
+ static int cpm1_gpio16_get(struct gpio_chip *gc, unsigned int gpio)
+ {
+-	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
+-	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
++	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
++	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
+ 	u16 pin_mask;
+ 
+ 	pin_mask = 1 << (15 - gpio);
+@@ -406,11 +405,9 @@ static int cpm1_gpio16_get(struct gpio_chip *gc, unsigned int gpio)
+ 	return !!(in_be16(&iop->dat) & pin_mask);
+ }
+ 
+-static void __cpm1_gpio16_set(struct of_mm_gpio_chip *mm_gc, u16 pin_mask,
+-	int value)
++static void __cpm1_gpio16_set(struct cpm1_gpio16_chip *cpm1_gc, u16 pin_mask, int value)
+ {
+-	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
+-	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
++	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
+ 
+ 	if (value)
+ 		cpm1_gc->cpdata |= pin_mask;
+@@ -422,38 +419,35 @@ static void __cpm1_gpio16_set(struct of_mm_gpio_chip *mm_gc, u16 pin_mask,
+ 
+ static void cpm1_gpio16_set(struct gpio_chip *gc, unsigned int gpio, int value)
+ {
+-	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
+-	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
++	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
+ 	unsigned long flags;
+ 	u16 pin_mask = 1 << (15 - gpio);
+ 
+ 	spin_lock_irqsave(&cpm1_gc->lock, flags);
+ 
+-	__cpm1_gpio16_set(mm_gc, pin_mask, value);
++	__cpm1_gpio16_set(cpm1_gc, pin_mask, value);
+ 
+ 	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
+ }
+ 
+ static int cpm1_gpio16_to_irq(struct gpio_chip *gc, unsigned int gpio)
+ {
+-	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
+-	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
++	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
+ 
+ 	return cpm1_gc->irq[gpio] ? : -ENXIO;
+ }
+ 
+ static int cpm1_gpio16_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
+ {
+-	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
+-	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
+-	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
++	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
++	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
+ 	unsigned long flags;
+ 	u16 pin_mask = 1 << (15 - gpio);
+ 
+ 	spin_lock_irqsave(&cpm1_gc->lock, flags);
+ 
+ 	setbits16(&iop->dir, pin_mask);
+-	__cpm1_gpio16_set(mm_gc, pin_mask, val);
++	__cpm1_gpio16_set(cpm1_gc, pin_mask, val);
+ 
+ 	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
+ 
+@@ -462,9 +456,8 @@ static int cpm1_gpio16_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
+ 
+ static int cpm1_gpio16_dir_in(struct gpio_chip *gc, unsigned int gpio)
+ {
+-	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
+-	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
+-	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
++	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
++	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
+ 	unsigned long flags;
+ 	u16 pin_mask = 1 << (15 - gpio);
+ 
+@@ -481,11 +474,10 @@ int cpm1_gpiochip_add16(struct device *dev)
+ {
+ 	struct device_node *np = dev->of_node;
+ 	struct cpm1_gpio16_chip *cpm1_gc;
+-	struct of_mm_gpio_chip *mm_gc;
+ 	struct gpio_chip *gc;
+ 	u16 mask;
+ 
+-	cpm1_gc = kzalloc(sizeof(*cpm1_gc), GFP_KERNEL);
++	cpm1_gc = devm_kzalloc(dev, sizeof(*cpm1_gc), GFP_KERNEL);
+ 	if (!cpm1_gc)
+ 		return -ENOMEM;
+ 
+@@ -499,10 +491,8 @@ int cpm1_gpiochip_add16(struct device *dev)
+ 				cpm1_gc->irq[i] = irq_of_parse_and_map(np, j++);
+ 	}
+ 
+-	mm_gc = &cpm1_gc->mm_gc;
+-	gc = &mm_gc->gc;
+-
+-	mm_gc->save_regs = cpm1_gpio16_save_regs;
++	gc = &cpm1_gc->gc;
++	gc->base = -1;
+ 	gc->ngpio = 16;
+ 	gc->direction_input = cpm1_gpio16_dir_in;
+ 	gc->direction_output = cpm1_gpio16_dir_out;
+@@ -512,30 +502,39 @@ int cpm1_gpiochip_add16(struct device *dev)
+ 	gc->parent = dev;
+ 	gc->owner = THIS_MODULE;
+ 
+-	return of_mm_gpiochip_add_data(np, mm_gc, cpm1_gc);
++	g->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
++	if (!gc->label)
++		return -ENOMEM;
++
++	cpm1_gc->regs = devm_of_iomap(dev, np, 0);
++	if (IS_ERR(cpm1_gc->regs))
++		return PTR_ERR(cpm1_gc->regs);
++
++	cpm1_gpio16_save_regs(cpm1_gc);
++
++	return devm_gpiochip_add_data(dev, gc, cpm1_gc);
+ }
+ 
+ struct cpm1_gpio32_chip {
+-	struct of_mm_gpio_chip mm_gc;
++	struct gpio_chip gc;
++	void __iomem *regs;
+ 	spinlock_t lock;
+ 
+ 	/* shadowed data register to clear/set bits safely */
+ 	u32 cpdata;
+ };
+ 
+-static void cpm1_gpio32_save_regs(struct of_mm_gpio_chip *mm_gc)
++static void cpm1_gpio32_save_regs(struct cpm1_gpio32_chip *cpm1_gc)
+ {
+-	struct cpm1_gpio32_chip *cpm1_gc =
+-		container_of(mm_gc, struct cpm1_gpio32_chip, mm_gc);
+-	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
++	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
+ 
+ 	cpm1_gc->cpdata = in_be32(&iop->dat);
+ }
+ 
+ static int cpm1_gpio32_get(struct gpio_chip *gc, unsigned int gpio)
+ {
+-	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
+-	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
++	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(gc);
++	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
+ 	u32 pin_mask;
+ 
+ 	pin_mask = 1 << (31 - gpio);
+@@ -543,11 +542,9 @@ static int cpm1_gpio32_get(struct gpio_chip *gc, unsigned int gpio)
+ 	return !!(in_be32(&iop->dat) & pin_mask);
+ }
+ 
+-static void __cpm1_gpio32_set(struct of_mm_gpio_chip *mm_gc, u32 pin_mask,
+-	int value)
++static void __cpm1_gpio32_set(cpm1_gpio32_chip *cpm1_gc, u32 pin_mask, int value)
+ {
+-	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
+-	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
++	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
+ 
+ 	if (value)
+ 		cpm1_gc->cpdata |= pin_mask;
+@@ -559,30 +556,28 @@ static void __cpm1_gpio32_set(struct of_mm_gpio_chip *mm_gc, u32 pin_mask,
+ 
+ static void cpm1_gpio32_set(struct gpio_chip *gc, unsigned int gpio, int value)
+ {
+-	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
+-	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
++	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(gc);
+ 	unsigned long flags;
+ 	u32 pin_mask = 1 << (31 - gpio);
+ 
+ 	spin_lock_irqsave(&cpm1_gc->lock, flags);
+ 
+-	__cpm1_gpio32_set(mm_gc, pin_mask, value);
++	__cpm1_gpio32_set(cpm1_gc, pin_mask, value);
+ 
+ 	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
+ }
+ 
+ static int cpm1_gpio32_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
+ {
+-	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
+-	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
+-	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
++	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(gc);
++	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
+ 	unsigned long flags;
+ 	u32 pin_mask = 1 << (31 - gpio);
+ 
+ 	spin_lock_irqsave(&cpm1_gc->lock, flags);
+ 
+ 	setbits32(&iop->dir, pin_mask);
+-	__cpm1_gpio32_set(mm_gc, pin_mask, val);
++	__cpm1_gpio32_set(cpm1_gc, pin_mask, val);
+ 
+ 	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
+ 
+@@ -591,9 +586,8 @@ static int cpm1_gpio32_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
+ 
+ static int cpm1_gpio32_dir_in(struct gpio_chip *gc, unsigned int gpio)
+ {
+-	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
+-	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
+-	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
++	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(gc);
++	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
+ 	unsigned long flags;
+ 	u32 pin_mask = 1 << (31 - gpio);
+ 
+@@ -610,19 +604,16 @@ int cpm1_gpiochip_add32(struct device *dev)
+ {
+ 	struct device_node *np = dev->of_node;
+ 	struct cpm1_gpio32_chip *cpm1_gc;
+-	struct of_mm_gpio_chip *mm_gc;
+ 	struct gpio_chip *gc;
+ 
+-	cpm1_gc = kzalloc(sizeof(*cpm1_gc), GFP_KERNEL);
++	cpm1_gc = devm_kzalloc(dev, sizeof(*cpm1_gc), GFP_KERNEL);
+ 	if (!cpm1_gc)
+ 		return -ENOMEM;
+ 
+ 	spin_lock_init(&cpm1_gc->lock);
+ 
+-	mm_gc = &cpm1_gc->mm_gc;
+-	gc = &mm_gc->gc;
+-
+-	mm_gc->save_regs = cpm1_gpio32_save_regs;
++	gc = &cpm1_gc->gc;
++	gc->base = -1;
+ 	gc->ngpio = 32;
+ 	gc->direction_input = cpm1_gpio32_dir_in;
+ 	gc->direction_output = cpm1_gpio32_dir_out;
+@@ -631,7 +622,17 @@ int cpm1_gpiochip_add32(struct device *dev)
+ 	gc->parent = dev;
+ 	gc->owner = THIS_MODULE;
+ 
+-	return of_mm_gpiochip_add_data(np, mm_gc, cpm1_gc);
++	g->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
++	if (!gc->label)
++		return -ENOMEM;
++
++	cpm1_gc->regs = devm_of_iomap(dev, np, 0);
++	if (IS_ERR(cpm1_gc->regs))
++		return PTR_ERR(cpm1_gc->regs);
++
++	cpm1_gpio32_save_regs(cpm1_gc);
++
++	return devm_gpiochip_add_data(dev, gc, cpm1_gc);
+ }
+ 
+ #endif /* CONFIG_8xx_GPIO */
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-Hi Maxime,
-
-This goto will result in err being returned by this function.
-But here err is 0. Should it be set to an error value instead?
-
-Flagged by Smatch.
-
-> +	}
-> +
-> +	err = of_get_phy_mode(np, &phy_interface);
-> +	if (err) {
-> +		dev_err(&ofdev->dev, "Invalid phy-connection-type");
-> +		goto err_put_tbi;
->  	}
->  
->  	/* get speed, or derive from PHY interface */
-> @@ -3746,6 +3706,7 @@ static int ucc_geth_probe(struct platform_device* ofdev)
->  err_deregister_fixed_link:
->  	if (of_phy_is_fixed_link(np))
->  		of_phy_deregister_fixed_link(np);
-> +err_put_tbi:
->  	of_node_put(ug_info->tbi_node);
->  	of_node_put(ug_info->phy_node);
->  	return err;
-> -- 
-> 2.47.0
-> 
-> 
 
