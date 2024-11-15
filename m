@@ -1,58 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-3252-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3253-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081F69CE0F7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 15:10:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C979CE75B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 16:02:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqf7F333Zz30Gf;
-	Sat, 16 Nov 2024 01:10:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XqgGf4kDKz30PD;
+	Sat, 16 Nov 2024 02:02:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731679833;
-	cv=none; b=O4Ac2Lk4DyUcXmBKR4i401DvIjRtYFNnynWxlDSTGdy/TQWfjvhkAPAyxVNLHQif+qJUWNrecvqjiYpUdMUSx4n05jr/JkXw1ZrZRh1ocIetzj+YO6juNJsiuhgnfTPWYUkHnCaaBUQkDv5WnkoWAgaMpBY61aFfEJL3MZ8UeAhUUCDK4Xor7r8QFUI2J83Us/4T0jD/VEtPcMnDef0/428ZlhgmQyY1GHzTdJxCFYicRqH7W3+LqcCv+6gQmZJbEUEtFDxqwcKfKwL1eq2pVA0Y2HfKfd9pk+b+wJ9T8uiKIDC+cZ/6IldfyjoJVWyXC+ttbteL5DA2BfOfBG85qQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731682922;
+	cv=none; b=POwDE9IlsdF42gQdd/U9yuQodEsPj++CVXg7OueKIV3lh9VGDWx+ansclefVlKQ6ypt0kFmcLAN2UFPQo7aN3Uhw5wPFgIjKphVXLT+k0QJ5KQfc0CGsaDL0JZeVTDS4B6DaR36aqSMKVYHHM5moMh7u520mHtbEPagIxvNYWVa+LB0QwQOK1PmJXXnYgz1UC+kDa02F58Tkk8OFdlB5bJTQxP5mHH75dyNnFFd9rFDt/kqIRhyq2G94sD6kOnAPr5TsT8pYZyM6ihNuJidTfulpyGrqNKBCaF9jCumvyWQLsldF1EHbg1WhsImkZLIbX7QX/evYk0y0OKsKtr0ICw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731679833; c=relaxed/relaxed;
-	bh=Azw1mPi5RTAs/z/WphJ5T0OvsAFn4DtEwlfly20R5OM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cd5KoohXgyDLIFnNRuaMxdT9OEDcxgb63VOKi7/Lj3rGG23oGh3Y4folUQVVHjchFGWDbE0UKGcHaCN5FySo8bKwFm2zOvk9S6uF2McAlwOvbJtKj413zeGuvq6yF6I1kMh7fXOg+q0kL/yW1Z3zcs8uCnefPyHIyeygLyay28Tvy1Ukgg1CrGRpqrcerKWkOhn21g4GPb6qXKcwsyDFfdVJ8Gfz3sx8naEmQk6UL93zC8vGJ6UHG7WdUREFcojPAiQayIQ/aDC9+7ey16S7UJgFtLFiiAqrpkoETCRlyI0YLhi+rpXjlEyubgHQcpgUEgMTl5NPFbJjASNK0D4UAA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F4LGXIKQ; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1731682922; c=relaxed/relaxed;
+	bh=D2FKaoiwY2mfiK/eCo1qaJWV79rWuXXZrs0onoCnNZ0=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=jiIyEWpaLIv0IlOguR8i90n5d36OKRHuAKGxVPO+0QTVw+8MoRy2T5h0MZcsDhheDnjkZkdMPh2XDDzyqU6JZDKpIxql0+OjYfmJoQTWWLT8MtySvi5xp5vaTGgcZ/TqBIasJ4vwINfLMUnBXZ2ENE198An4E+79tJCXbMzz/Fhvatns5wqMcWHALpKU9kf9Fs2REBoQ5nNORZKISQ8RiNM/ckcEOB4Xmw1ohNe/L69NIY3RWpNqG+31N+DGRSVpGZDO1xNmGXB+0XSmcX40f6UsevRJ5+jL8sBM/fTUxwb5Aqpn2x497/c0XyRGmTd0RgKEnitQllX6yGjq7Bs2ng==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QPgm5Mjj; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F4LGXIKQ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QPgm5Mjj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xqf7D0lHJz2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 01:10:32 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D0F58A4291F
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 14:08:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B03C4CED7
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 14:10:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731679827;
-	bh=8CSwi+zLM3ewH0q5v5yP7A9xGFhlcIhP7HN+w9H2H84=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=F4LGXIKQnejA/xtyDR+CZAuDhnASsY/r7MFj28/Q50y5I/BIOT3N6+t7VWbBMGOT8
-	 4P46s4uf3LW/HD5irCXeQJr7iAqGWkWlvDVrxhthCiZTMz479sWgAilGub1OWcCXTZ
-	 hBDZqwNuNPx7kTfVypIADM01/zVb5cAVk0p8BoxLbsgiQHWJmUJJZUQrpXI9lL/d4P
-	 KHs8rqYZk9wpDPZ7RpSKnFEf7WkJNrmhBQgxSZjCFpIvjKYyMWMaMW4311dOqcthwy
-	 gZJawSiE2nlKmzKx3LjG5p3M6zB+Y5nTmEShxpcqHzPKcrFOTLCjoEk7PH4XRB8dmh
-	 CNnQ2YFK9X1ag==
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e3808e94734so1834701276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 06:10:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVk/2wphOUqecE1zUU+Tj1xsvW8XadDdDNmadE+S9KzYgKdn1OWSb995Xao1SP2imtr2qLYZIi/aK8/6MA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzZ5Up02/NW3xhbL67VTvIMG1IyheJq0Wo4qGH7rpGCY/YssjRv
-	w5oLHaUr0MydZjj/s1kdw+2dxvchKw2h0D2jHAiHzpOkjGmgePlWh3+KWf61Ioy18kTu2au4mJH
-	kk8uHkB9BIT9QCrHkDRA7b3wTTg==
-X-Google-Smtp-Source: AGHT+IHryldJ3ukfy6/K9XYjT+zG+pVX4OOyz2cm6ONsY6VlQexu1ggrxHZf21CfHDkABwxYg58gi7ylStJXS609Zfc=
-X-Received: by 2002:a05:690c:6707:b0:6de:a3:a7ca with SMTP id
- 00721157ae682-6ee55cbc10cmr35436367b3.32.1731679826592; Fri, 15 Nov 2024
- 06:10:26 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XqgGd0cxjz30NN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 02:01:59 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-2ea12c1c78dso964353a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 07:01:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731682915; x=1732287715; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=D2FKaoiwY2mfiK/eCo1qaJWV79rWuXXZrs0onoCnNZ0=;
+        b=QPgm5Mjj+TFyw55hbJigpg+RxdYlKEq5fhycmoeW+5nohUwOFOCZOx8LqU3yUqjqY3
+         2//Lfdlb/dXHIA3leKEiL6f1Xg6C1iG87nIT2LBSod5zHoehZ/xH6Z5v1Plbydbi6ztJ
+         YZ1NqGbSpENkTw5Ce+pJVKeFkNuHriuHV8NYyfL3OkesUWQ7SA2tgGAnfwrv7AcY4Jqg
+         Z8zq2nJehahsY/wWwRZe0s7AnbeaF6kyfym5cUj9oNg3wyEtVzc2nMQYqDoyoFvNTDnh
+         VxsOO1CHUsbKCleSrhA4RotdvXzXGVuIXAnJC5VS5rUTa3P26rrGJJVr4F9NStnmy1AC
+         yQeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731682915; x=1732287715;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D2FKaoiwY2mfiK/eCo1qaJWV79rWuXXZrs0onoCnNZ0=;
+        b=EeT9ljs5U0v8qD5nWcmZRbk9cEe2FvErJGtpb/WbCbfS9JY26eu1LHc4GCmGS/ShnA
+         0wPiZZUNCjuBmcoMr0sRq9ueOYVgnpx7LgXLzKqpPRIUEX8E1RfjgX/1KuBuI/bq1Por
+         kuXPIcoEmYFvIlQk4DOTrMerO3nNoyv0BXxJh+SlktF7bw5Y9zo1MDZHyybjHurJAhRk
+         7ASJw9BuC0fCQgvkQc0olWQo28mlonoPgRTCRTrf0W2H0IUDUyFqtzUm/vP1cnQmF5Dw
+         xMdP90L7WSZoNe92i0nJOrYarknsMdNSAEN72q1kMmQvP1ZYv3kEbdNtDWAkrGxVTKlX
+         yexw==
+X-Forwarded-Encrypted: i=1; AJvYcCXeU2Msd+GZ3KWpeOsDwn2VcW0iphppIKFViRpgAyYvBvtIIKZ9IUthZpNpP75ly6rfBuU6e+YCDCuF82o=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz7uwved9Whvi6HuzSiV+/HmOu0C6B9o0AowGZvrKUBNBnO+KVR
+	gyq7Ruj8BxvxNUz+rPrJK4J6e6iaRUkEkgOwsmUqGFN7meKC8wG/
+X-Google-Smtp-Source: AGHT+IFF2Q7DDqTNLmh5BnAWYLBYmDo5Jo3WT8cy7DmLwoCWZ86DI74hImRwZEDcl86A8cSxwL7Pww==
+X-Received: by 2002:a17:90a:e70c:b0:2e0:ab57:51ec with SMTP id 98e67ed59e1d1-2ea1557e7aemr3544553a91.30.1731682913530;
+        Fri, 15 Nov 2024 07:01:53 -0800 (PST)
+Received: from dw-tp ([171.76.87.84])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ea02495969sm3016300a91.19.2024.11.15.07.01.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2024 07:01:52 -0800 (PST)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com> 
+To: Narayana Murty N <nnmlinux@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, linux-kernel@vger.kernel.org
+Cc: mahesh@linux.ibm.com, oohall@gmail.com, npiggin@gmail.com, christophe.leroy@csgroup.eu, maddy@linux.ibm.com, naveen@kernel.org, vaibhav@linux.ibm.com, ganeshgr@linux.ibm.com, sbhat@linux.ibm.com
+Subject: Re: [PATCH] powerpc/pseries/eeh: Fix get PE state translation
+In-Reply-To: <20241107042027.338065-1-nnmlinux@linux.ibm.com>
+Date: Fri, 15 Nov 2024 20:01:48 +0530
+Message-ID: <87ttc8d0vf.fsf@gmail.com>
+References: <20241107042027.338065-1-nnmlinux@linux.ibm.com>
+X-Spam-Status: No, score=1.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_BL_SPAMCOP_NET,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
+X-Spam-Level: *
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,55 +86,74 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-References: <20241106171028.3830266-1-robh@kernel.org> <87jzdfcm3l.fsf@mpe.ellerman.id.au>
- <20241114125436.GL29862@gate.crashing.org>
-In-Reply-To: <20241114125436.GL29862@gate.crashing.org>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 15 Nov 2024 08:10:15 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+OCMa1P_AAxL7LxRjo7iJ368wwYFOhZ_-rSYbs=0QbWA@mail.gmail.com>
-Message-ID: <CAL_Jsq+OCMa1P_AAxL7LxRjo7iJ368wwYFOhZ_-rSYbs=0QbWA@mail.gmail.com>
-Subject: Re: [PATCH v2] of: WARN on deprecated #address-cells/#size-cells handling
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Saravana Kannan <saravanak@google.com>, 
-	linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Nov 14, 2024 at 6:59=E2=80=AFAM Segher Boessenkool
-<segher@kernel.crashing.org> wrote:
+Narayana Murty N <nnmlinux@linux.ibm.com> writes:
+
+> The PE Reset State "0" obtained from RTAS calls
+> ibm_read_slot_reset_[state|state2] indicates that
+> the Reset is deactivated and the PE is not in the MMIO
+> Stopped or DMA Stopped state.
 >
-> On Thu, Nov 07, 2024 at 10:35:58PM +1100, Michael Ellerman wrote:
-> > "Rob Herring (Arm)" <robh@kernel.org> writes:
-> > > While OpenFirmware originally allowed walking parent nodes and defaul=
-t
-> > > root values for #address-cells and #size-cells, FDT has long required
-> > > explicit values. It's been a warning in dtc for the root node since t=
-he
-> > > beginning (2005) and for any parent node since 2007. Of course, not a=
-ll
-> > > FDT uses dtc, but that should be the majority by far. The various
-> > > extracted OF devicetrees I have dating back to the 1990s (various
-> > > PowerMac, OLPC, PASemi Nemo) all have explicit root node properties.
-> >
-> > I have various old device trees that have been given to me over the
-> > years, and as far as I can tell they all have these properties (some of
-> > them are partial trees so it's hard to be 100% sure).
+> With PE Reset State "0", the MMIO and DMA is allowed for
+> the PE.
+
+Looking at the PAPR spec - I do agree that it states the same. i.e.
+The "0" Initial PE state means the "Not Reset", "Load/Store allowed" &
+"DMA allowed" (Normal Operations). 
+
+> The function pseries_eeh_get_state() is currently
+> not indicating that to the caller because of  which the
+> drivers are unable to resume the MMIO and DMA activity.
+
+It's new to me, but could you help explain the user visible effect
+of what gets broken. Since this looks like pseries_eeh_get_state() has
+always been like this when it got first implemented.
+Is there also a unit test somewhere which you are testing?
+
+IIUC eeh_pe_get_state() was implemented[1] for supporting EEH for VFIO PCI
+devices. i.e. the VFIO_EEH_PE_GET_STATE operation of VFIO EEH PE ioctl op
+uses pseries_eeh_get_state() helper to query PE state on pseries LPAR.
+So are you suggesting that EEH functionality for VFIO PCI device was
+never enabled/tested before on pseries?  
+
+[1]: https://lore.kernel.org/all/1402364517-28561-3-git-send-email-gwshan@linux.vnet.ibm.com/
+
+Checking the powernv side of implementation I do see that it does
+enables the EEH_STATE_[MMIO|DMA]_ENABLED flags in the result mask for
+the callers. So doing the same for pseries eeh get state implementation
+does look like the right thing to do here IMO.
+
+> The patch fixes that by reflecting what is actually allowed.
+
+You say this is "fixes" so I am also assuming you are also looking for
+stable backports of this? If yes - could you please also add the "Fixes"
+tag and cc stable? 
+
+-ritesh
+
 >
-> Many SUN systems won't have such superfluous properties.  But does
-> anyone use such systems at all anymore, and do people use dtc with
-> those :-)
-
-There's still a few presumably. Sparc is omitted from this warning
-already because I suspected a problem which was confirmed on v1 thanks
-to the DT dumps here[1].
-
-Rob
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/davem/prtconfs.git/
+> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/eeh_pseries.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+> index 1893f66371fa..b12ef382fec7 100644
+> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
+> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+> @@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct eeh_pe *pe, int *delay)
+>  
+>  	switch(rets[0]) {
+>  	case 0:
+> -		result = EEH_STATE_MMIO_ACTIVE |
+> -			 EEH_STATE_DMA_ACTIVE;
+> +		result = EEH_STATE_MMIO_ACTIVE	|
+> +			 EEH_STATE_DMA_ACTIVE	|
+> +			 EEH_STATE_MMIO_ENABLED	|
+> +			 EEH_STATE_DMA_ENABLED;
+>  		break;
+>  	case 1:
+>  		result = EEH_STATE_RESET_ACTIVE |
+> -- 
+> 2.45.2
 
