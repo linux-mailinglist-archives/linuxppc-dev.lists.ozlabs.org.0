@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-3269-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3268-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 541D79CF941
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 23:10:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5B79CF940
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 23:10:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XqrnG2CHZz3bfK;
-	Sat, 16 Nov 2024 09:10:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqrn634vTz3bd2;
+	Sat, 16 Nov 2024 09:10:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731705828;
-	cv=none; b=fms3rvag2AdLuQFj6oQTX3ES2y5+iCHiagSE7m7fnIxOS2LjkrKeUuT+QZ5guD2OUiZwaNySnGEnlFvA82aQlV96ToHpn/J7ImcUon0jL4AjU2GdUFGkbCRm6WsNrUSFEAWaHBoCHkyWq14dlVu/T89uu/In6PWJbymMXym8sSuH/KG9LWckkTIEbAEaGfDuiwWAv+xlBLOYLbUBjJmWaX0Q0K5cuN8JjmJWq9msnNH0CR3Osy/VixAeciORjYI+AWSLZ2qp3gMc8rQDh8ASnzDrUiGyEfC1f/5OvP+oajpZ10AScg+RnHGfG/OAz6hHsaC3AjjJq5j+/xWMm4939w==
+	cv=none; b=WAjVh97kV1l6ZTc6o7F7YSdlCBDPku1vkjQyI//72Da312BoXvJBO3n25fPuQmTljqPTdW1WbE1wD0uVfLP+CF5l37ymbcSzisKhpcTcS77Oj56uhtw1G/Phc0q5OTa7k0N7m9pjkjWt8SrexhaWopkJkvh7DDYVYAVq7Qe3YxEN8y9eoG1eWF+f14KD3aYfvCSVJ9hVm7cYYtviga8PqBT9bXsNen8c/xApzqYHA+wAf0Z7M/CXlCK4GKRXPi6bqi8bpu1TO/Q2RjY47B5f8dH7MkoVlsqAUgWhFGfjkm+nBB3oaJTzZZHkUyt58GEgsnhOCKPN7YW1h0j1knIBNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1731705828; c=relaxed/relaxed;
-	bh=94UWkQUgIE+TIBJCr3TB9bjXju243wFFlCrw1pjugTo=;
+	bh=C//qZdfJfhN40N7nu/AQ5wmq+hj+onzvFzX2KrlsiOc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=P0j+zG09Rv+k8qK+QaZMlvsuyj9AIv2MGK5YkhjVVfZRScUBWPGmhU5JzA3PTBOrWuHy4ogbHl9KlqabUjNeO28Pd4gVQtyTsvM5F1V3YtgRP5WH/MgPwIvaXGHS7NNCQy+s7zBp0xkYgikK6UU6JoZ/rsc51nED7aS8/y+Q+blM5Y320PJ8Z/5FEDMbBEbV3IX9azVYf+iyOjVoIDT70odGJN1tN7w+i0G4gsd9nmkahQn1sgxZRghaI4vWCLMvaMrhrtIcePAIV4Xcdfof1ZCA5x7VSZqrHbQmb4a6FjXoVvZEBB3nUeUZcomC3LyhI167as0tcCNmgEBd7riV2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=SFgsUzV2; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+	 In-Reply-To:To:Cc; b=bYqQ9bLasGrI++b+dUYdQbHwpymNWWaaCApqlko1GdgUJGO/YpeJJqcDQzdaZQ/WUp2neDHEJ3qIBFCGNCQYdAUmkshSss+qmxAKKCGn2SQSu+QWO5rb9mDmFXg0E3eFD5vTa5KVjLsQ03/yXExawrPQ548xHyHdeqjqaxUp2ofPSWh48ZHqe1oCOrZWtMRynndOE+Gwy1vXQNih0kb3j8O8lYd2gP+L0N+w3FJuNtKAJmV3zInzQ9T/B+OMeHl+IgRm7eVnLM6O9cGtKVT40CIamg9gOHOy9u0BH5E2aVZtoL7A6HLbs0XFIiz4ml35uIql1lz5NzV/4yfsIdmsLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=PgOujrsx; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=SFgsUzV2;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=PgOujrsx;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqql66lJ8z2yDt
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqql65ZzVz2yDp
 	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 08:23:46 +1100 (AEDT)
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 391A4206BCED;
+	by linux.microsoft.com (Postfix) with ESMTPSA id 6D0F7206BCEF;
 	Fri, 15 Nov 2024 13:22:46 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 391A4206BCED
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6D0F7206BCEF
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1731705766;
-	bh=94UWkQUgIE+TIBJCr3TB9bjXju243wFFlCrw1pjugTo=;
+	bh=C//qZdfJfhN40N7nu/AQ5wmq+hj+onzvFzX2KrlsiOc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SFgsUzV2pr+7sgkN9ckclI41KlvZ5rbgTJNvcYfQiJkXt/zfibxMELK/nTIaeiHDO
-	 ea+s5uVXRp6XFAaIO7MmvRCgTW3Xe5hl6IpUNHPKOVjiYfv0tTkJJCNkRHRjEL8vOu
-	 pgAUpMsv2jfhmvY7krwkZWjWRsRmTp18YKKkcVMM=
+	b=PgOujrsxbS3CIW2HtLS/dd5ya7VtRG8QHhCZQdBAsTM3cx+kDkUAOUPnWwMnerztw
+	 8X+Y81upKcxyh16cr7IomUwsyHP2XT7qOxm2nnfHsDBJOEcmEz0gtoHQc1mKP3Fi67
+	 1u154eT7RN/hsmnSsi2wJWAYt//zpJk5MiSg9/YM=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Fri, 15 Nov 2024 21:22:50 +0000
-Subject: [PATCH 20/22] ALSA: line6: Convert timeouts to secs_to_jiffies()
+Date: Fri, 15 Nov 2024 21:22:51 +0000
+Subject: [PATCH 21/22] nfp: Convert timeouts to secs_to_jiffies()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241115-converge-secs-to-jiffies-v1-20-19aadc34941b@linux.microsoft.com>
+Message-Id: <20241115-converge-secs-to-jiffies-v1-21-19aadc34941b@linux.microsoft.com>
 References: <20241115-converge-secs-to-jiffies-v1-0-19aadc34941b@linux.microsoft.com>
 In-Reply-To: <20241115-converge-secs-to-jiffies-v1-0-19aadc34941b@linux.microsoft.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, 
@@ -141,22 +141,22 @@ Changes made with the following Coccinelle rules:
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- sound/usb/line6/toneport.c | 2 +-
+ drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/line6/toneport.c b/sound/usb/line6/toneport.c
-index ca2c6f5de407ece21ab69a39ed603e3f10069039..c073b38cd6738176fc6a276d05ed553526573341 100644
---- a/sound/usb/line6/toneport.c
-+++ b/sound/usb/line6/toneport.c
-@@ -386,7 +386,7 @@ static int toneport_setup(struct usb_line6_toneport *toneport)
- 		toneport_update_led(toneport);
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+index 6e0929af0f725b2b3855c69bbe894e6626c566b3..6925ad985fc9e2d5641feea41ff277107a8dee9c 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+@@ -2779,7 +2779,7 @@ static void nfp_net_netdev_init(struct nfp_net *nn)
+ 		break;
+ 	}
  
- 	schedule_delayed_work(&toneport->line6.startup_work,
--			      msecs_to_jiffies(TONEPORT_PCM_DELAY * 1000));
-+			      secs_to_jiffies(TONEPORT_PCM_DELAY));
- 	return 0;
- }
+-	netdev->watchdog_timeo = msecs_to_jiffies(5 * 1000);
++	netdev->watchdog_timeo = secs_to_jiffies(5);
  
+ 	/* MTU range: 68 - hw-specific max */
+ 	netdev->min_mtu = ETH_MIN_MTU;
 
 -- 
 2.34.1
