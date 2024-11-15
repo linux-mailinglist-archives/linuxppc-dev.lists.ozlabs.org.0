@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-3251-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3252-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072B09CE051
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 14:41:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081F69CE0F7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Nov 2024 15:10:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XqdTc6f8nz2yng;
-	Sat, 16 Nov 2024 00:41:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqf7F333Zz30Gf;
+	Sat, 16 Nov 2024 01:10:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731678084;
-	cv=none; b=kDohl3Oo/tcfAA3SOMYvJQV94yqzTrXBUG8i91oJ7kz1cgatGnEk9K44Gsgo3KGo+/yZBne6t7xhFDK6kr2CDpMOc9hzksEJsXfN42iPlHRfQKjD8MXE5WWTOXngUwAKrqo5EkTX4Z4Y6tbQVxEWUtqFV4gcz/j01BtipI3LHWkHmGU8ggyTax/gkIqMo/RrYs82K3ZzehElZmhR8zoxb+wSlt0ECKbbGMo/+73wdUlt3d1ugKOg2UGg0XCdEciaXjwKii5nWWuk5c0yQNAQ5oOznmE5UR6rHr7iey2bd9SRAVSN/2Uurun47pkVdrk4UpEVryqKKkY3NiapzMVQJQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731679833;
+	cv=none; b=O4Ac2Lk4DyUcXmBKR4i401DvIjRtYFNnynWxlDSTGdy/TQWfjvhkAPAyxVNLHQif+qJUWNrecvqjiYpUdMUSx4n05jr/JkXw1ZrZRh1ocIetzj+YO6juNJsiuhgnfTPWYUkHnCaaBUQkDv5WnkoWAgaMpBY61aFfEJL3MZ8UeAhUUCDK4Xor7r8QFUI2J83Us/4T0jD/VEtPcMnDef0/428ZlhgmQyY1GHzTdJxCFYicRqH7W3+LqcCv+6gQmZJbEUEtFDxqwcKfKwL1eq2pVA0Y2HfKfd9pk+b+wJ9T8uiKIDC+cZ/6IldfyjoJVWyXC+ttbteL5DA2BfOfBG85qQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731678084; c=relaxed/relaxed;
-	bh=CWUey5ewpa0QOwduayBJGtFMN1WGhVsVPHWEh62bV1U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iHUB1oD+RDWSbOGlOmZzdY24tDDIMatvNo25C2kandYTwpX68pmSSvDtunp9CUMf9us+9gZ4XhFzIDParBnrOwc2IOc5V4icA2SzrZ0vyFOzgXFRImcxHN5XMER9FhB8XY6Q5xlRmtetrfuQEQm5rkg1sG5cTrGpnaUkUiw5Y66q+Gi6tjKEiWTOPGh7n0cGYAJQV0WpAQA6Ul+n/d6KnOh3973H3ohhA34GUGl6I8BtCn6sEl/AISnTcf9k4XHFdtRh+iCbMU1L/7yP8RgBwBeuyY5YsZ9eBOeB0Zyia0TwGkeHSf3b0mDDfvRmXZF48ZTnjVcwvKJzmmBLCy/w/g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=boPmHIT2; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1731679833; c=relaxed/relaxed;
+	bh=Azw1mPi5RTAs/z/WphJ5T0OvsAFn4DtEwlfly20R5OM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cd5KoohXgyDLIFnNRuaMxdT9OEDcxgb63VOKi7/Lj3rGG23oGh3Y4folUQVVHjchFGWDbE0UKGcHaCN5FySo8bKwFm2zOvk9S6uF2McAlwOvbJtKj413zeGuvq6yF6I1kMh7fXOg+q0kL/yW1Z3zcs8uCnefPyHIyeygLyay28Tvy1Ukgg1CrGRpqrcerKWkOhn21g4GPb6qXKcwsyDFfdVJ8Gfz3sx8naEmQk6UL93zC8vGJ6UHG7WdUREFcojPAiQayIQ/aDC9+7ey16S7UJgFtLFiiAqrpkoETCRlyI0YLhi+rpXjlEyubgHQcpgUEgMTl5NPFbJjASNK0D4UAA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F4LGXIKQ; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=boPmHIT2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F4LGXIKQ;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XqdTZ1Fv2z2xs8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 00:41:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1731678077;
-	bh=CWUey5ewpa0QOwduayBJGtFMN1WGhVsVPHWEh62bV1U=;
-	h=From:To:Cc:Subject:Date:From;
-	b=boPmHIT2e8MSBzjaB3CU3MYrzSHuf+jieypvN7zjgkVmG94kSQhdWt2uc9Fde18Uh
-	 j7RmIdj9gvpawaprZ1iFPb9aj7925BCQ+7yDAYWTwITg90aG8y/JRXU1ABHXBZKIf/
-	 4RCR5aTHx/8BptsQAQmBVqv3qOkJkQKWY8l5aSEudeUYF7xphfP66K0HZoMswRmDww
-	 /DttRaryn1a7gZW2vbitOcGEm4lTwtKjjjBPaQ7VFLnUluX5Ni0u7AAeP9Q++wMOV0
-	 cDuYw1ONvtL5NWR9GVSCpA0+mh95tlWGiW3NWpKZ7A7A+m4A06HXA0vEtgH00qBqXm
-	 OdVbpQS1rI7tA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XqdTT32Lcz4x6k;
-	Sat, 16 Nov 2024 00:41:17 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: brauner@kernel.org
-Cc: sforshee@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	<linuxppc-dev@lists.ozlabs.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH] selftests/mount_setattr: Fix failures on 64K PAGE_SIZE kernels
-Date: Sat, 16 Nov 2024 00:41:14 +1100
-Message-ID: <20241115134114.1219555-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.47.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xqf7D0lHJz2yLB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 01:10:32 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id D0F58A4291F
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 14:08:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B03C4CED7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 14:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731679827;
+	bh=8CSwi+zLM3ewH0q5v5yP7A9xGFhlcIhP7HN+w9H2H84=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=F4LGXIKQnejA/xtyDR+CZAuDhnASsY/r7MFj28/Q50y5I/BIOT3N6+t7VWbBMGOT8
+	 4P46s4uf3LW/HD5irCXeQJr7iAqGWkWlvDVrxhthCiZTMz479sWgAilGub1OWcCXTZ
+	 hBDZqwNuNPx7kTfVypIADM01/zVb5cAVk0p8BoxLbsgiQHWJmUJJZUQrpXI9lL/d4P
+	 KHs8rqYZk9wpDPZ7RpSKnFEf7WkJNrmhBQgxSZjCFpIvjKYyMWMaMW4311dOqcthwy
+	 gZJawSiE2nlKmzKx3LjG5p3M6zB+Y5nTmEShxpcqHzPKcrFOTLCjoEk7PH4XRB8dmh
+	 CNnQ2YFK9X1ag==
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e3808e94734so1834701276.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 06:10:27 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVk/2wphOUqecE1zUU+Tj1xsvW8XadDdDNmadE+S9KzYgKdn1OWSb995Xao1SP2imtr2qLYZIi/aK8/6MA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzZ5Up02/NW3xhbL67VTvIMG1IyheJq0Wo4qGH7rpGCY/YssjRv
+	w5oLHaUr0MydZjj/s1kdw+2dxvchKw2h0D2jHAiHzpOkjGmgePlWh3+KWf61Ioy18kTu2au4mJH
+	kk8uHkB9BIT9QCrHkDRA7b3wTTg==
+X-Google-Smtp-Source: AGHT+IHryldJ3ukfy6/K9XYjT+zG+pVX4OOyz2cm6ONsY6VlQexu1ggrxHZf21CfHDkABwxYg58gi7ylStJXS609Zfc=
+X-Received: by 2002:a05:690c:6707:b0:6de:a3:a7ca with SMTP id
+ 00721157ae682-6ee55cbc10cmr35436367b3.32.1731679826592; Fri, 15 Nov 2024
+ 06:10:26 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,64 +65,54 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+References: <20241106171028.3830266-1-robh@kernel.org> <87jzdfcm3l.fsf@mpe.ellerman.id.au>
+ <20241114125436.GL29862@gate.crashing.org>
+In-Reply-To: <20241114125436.GL29862@gate.crashing.org>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 15 Nov 2024 08:10:15 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+OCMa1P_AAxL7LxRjo7iJ368wwYFOhZ_-rSYbs=0QbWA@mail.gmail.com>
+Message-ID: <CAL_Jsq+OCMa1P_AAxL7LxRjo7iJ368wwYFOhZ_-rSYbs=0QbWA@mail.gmail.com>
+Subject: Re: [PATCH v2] of: WARN on deprecated #address-cells/#size-cells handling
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Saravana Kannan <saravanak@google.com>, 
+	linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Currently the mount_setattr_test fails on machines with a 64K PAGE_SIZE,
-with errors such as:
+On Thu, Nov 14, 2024 at 6:59=E2=80=AFAM Segher Boessenkool
+<segher@kernel.crashing.org> wrote:
+>
+> On Thu, Nov 07, 2024 at 10:35:58PM +1100, Michael Ellerman wrote:
+> > "Rob Herring (Arm)" <robh@kernel.org> writes:
+> > > While OpenFirmware originally allowed walking parent nodes and defaul=
+t
+> > > root values for #address-cells and #size-cells, FDT has long required
+> > > explicit values. It's been a warning in dtc for the root node since t=
+he
+> > > beginning (2005) and for any parent node since 2007. Of course, not a=
+ll
+> > > FDT uses dtc, but that should be the majority by far. The various
+> > > extracted OF devicetrees I have dating back to the 1990s (various
+> > > PowerMac, OLPC, PASemi Nemo) all have explicit root node properties.
+> >
+> > I have various old device trees that have been given to me over the
+> > years, and as far as I can tell they all have these properties (some of
+> > them are partial trees so it's hard to be 100% sure).
+>
+> Many SUN systems won't have such superfluous properties.  But does
+> anyone use such systems at all anymore, and do people use dtc with
+> those :-)
 
-  #  RUN           mount_setattr_idmapped.invalid_fd_negative ...
-  mkfs.ext4: No space left on device while writing out and closing file system
-  # mount_setattr_test.c:1055:invalid_fd_negative:Expected system("mkfs.ext4 -q /mnt/C/ext4.img") (256) == 0 (0)
-  # invalid_fd_negative: Test terminated by assertion
-  #          FAIL  mount_setattr_idmapped.invalid_fd_negative
-  not ok 12 mount_setattr_idmapped.invalid_fd_negative
+There's still a few presumably. Sparc is omitted from this warning
+already because I suspected a problem which was confirmed on v1 thanks
+to the DT dumps here[1].
 
-The code creates a 100,000 byte tmpfs:
+Rob
 
-	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
-			"size=100000,mode=700"), 0);
-
-And then a little later creates a 2MB ext4 filesystem in that tmpfs:
-
-	ASSERT_EQ(ftruncate(img_fd, 1024 * 2048), 0);
-	ASSERT_EQ(system("mkfs.ext4 -q /mnt/C/ext4.img"), 0);
-
-At first glance it seems like that should never work, after all 2MB is
-larger than 100,000 bytes. However the filesystem image doesn't actually
-occupy 2MB on "disk" (actually RAM, due to tmpfs). On 4K kernels the
-ext4.img uses ~84KB of actual space (according to du), which just fits.
-
-However on 64K PAGE_SIZE kernels the ext4.img takes at least 256KB,
-which is too large to fit in the tmpfs, hence the errors.
-
-It seems fraught to rely on the ext4.img taking less space on disk than
-the allocated size, so instead create the tmpfs with a size of 2MB. With
-that all 21 tests pass on 64K PAGE_SIZE kernels.
-
-Fixes: 01eadc8dd96d ("tests: add mount_setattr() selftests")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- tools/testing/selftests/mount_setattr/mount_setattr_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/mount_setattr/mount_setattr_test.c b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
-index 68801e1a9ec2..70f65eb320a7 100644
---- a/tools/testing/selftests/mount_setattr/mount_setattr_test.c
-+++ b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
-@@ -1026,7 +1026,7 @@ FIXTURE_SETUP(mount_setattr_idmapped)
- 			"size=100000,mode=700"), 0);
- 
- 	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
--			"size=100000,mode=700"), 0);
-+			"size=2m,mode=700"), 0);
- 
- 	ASSERT_EQ(mkdir("/mnt/A", 0777), 0);
- 
--- 
-2.47.0
-
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/davem/prtconfs.git/
 
