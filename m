@@ -1,86 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-3338-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3339-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2C99D00A8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 20:25:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35009D0105
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 22:38:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XrP3X35Jdz2yhG;
-	Sun, 17 Nov 2024 06:24:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XrS2157LXz2y7M;
+	Sun, 17 Nov 2024 08:38:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731785096;
-	cv=none; b=nA5FSemds2tQjtSL6EVHauYl6tpaCndHHd15nM1kuKrXwl+74vjOgpr3qJ1dbRq8yMUEr/tA6+9XwbqU2wM7ifyS0QNA7YBLc7iQMuF02nn6hFeGuRSmYt4+dJpHyKEoPXTcbjkm3378Kg3AFgKtmC1L4HpgKozp6C/Db2hKHfM9tm04yoHuW7q/ikZpe5DNcF5YIwI42AYwLz/OsV4+dKkMVefcV6CrLNFX5NtLkCAZT0e+bIPphAmkjis21MPokNi6ZWATmKT+Ah3mjQRnTSVDMa4MKQ6z8kTWSpeOTfnNDhBd0h40tj+kXY365DYs8EU/HDXuN8mciyfAIjfKQQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.58.86.151
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731793129;
+	cv=none; b=llc0gdSgpfCwHLtUP0ZLrGdQn6ZwBeQKKOekqTa5x+nfV/Syex5WN/zWAY8EvnMMJDOsnoLcZDKX62d2qC5qFwZ0vp+/5ZRkqoR8731N+/lqgoJL8QD2sL56pdRaWNv2a4j8dY+xAYuOeCtFxJLErWHlCgvpwSmux1lEp4zwp/q90Ht7i2ibJsRAegCO7WKsn4xWOezX0R5k9yXkQotssVWravZepV1IXKQxjsveKa11Ko/zIckqfLs2d8sV2g/N9Mn59pQ0iH4M55HTMLm2saAAa5UdL/eQR8dcfwWyBWf4qDCJLbMHu4GGYyO36RoO07iCmzEdK0SFolVYjrgYgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731785096; c=relaxed/relaxed;
-	bh=VrXm4CcyPZMofJB5rtl6eM3KG+92o/0fEeQSzM6etFs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUK5h544gOhj/PUYYzt+yp/HYXGHhgFEaQRl1vpdO/LOS4XZ5wsvDJ8szRvsFt7tZWZDYBQXJsrhHq9/M6wcK96m7MaAbI/j4EeRQiVc7Xu/fIVgaAP3APVSFtG7ltOo7ICgB0vNWBUlYDMIGFFZarvSp2fZOmGaNvtA3qOv1qP8Ln2pRPH+e8V8FJupMfjhqKowpjzsUjtLz61qxpioz561sbncALB9plOoAkdlClqaY1jjNxAL4eqDzGYPtQqr8HRlT3N/JOhE4dJsiNj5VQVmWBmvHP3xQk27DX8dtmnzDgMeqgDu+Lytp6f5d4Q/avHMrRGcIYJfyjpBAoQBHg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pQpo47wX; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pQpo47wX;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1731793129; c=relaxed/relaxed;
+	bh=Hc2XGFjuXeJ15jPzV6P+/r18QrW8HZSQd8bGKAujwus=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=ouJdzfWsZ2HpcDx0YzM73ryHiXo2df3SEy1wF/aTKnbxRW6sbE7D7+H867KXCDwQtz4dkwUV2O2pFixK8MW74LoKERKsGasdkhjLrdoYyeAqe7t4Of+7RwZzn6DsmUygubIA3m57iqlPmfNkqyZtZ42Fc1nwmh065iopCuH8vSvNawCc9N2tzeh5Kp+zSlqDnf1jcTf25GHJT0BHM6cMuyCawsVai2ZOwomV3Xvh8X84Ycx9nN8Rax0+AZKhpH1a458OlpmFxfNOn5+wjPyu9+FhY6F5jBlo5pbOISW+NjcXcXYDzXImJMhbZcWDOD8jNuCiE9Hv2xQR21QZp1fRBg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org) smtp.mailfrom=aculab.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.86.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=lists.ozlabs.org)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XrP3W33m4z2ygx
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2024 06:24:55 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AGHTUjs023793;
-	Sat, 16 Nov 2024 19:24:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=VrXm4CcyPZMofJB5r
-	tl6eM3KG+92o/0fEeQSzM6etFs=; b=pQpo47wXALyEOOOKSd7JCZodJRCH1EJKB
-	Pozagr59R9uczuih6FsJg3w/GGg38Y3YSY4TSgHseUlDsynzPMnBhUKwBaHqFnYA
-	N4OWbLgHJN19aS90WVBDDb+KgnhRCPK2OZAA48oDFeP5NIzKqeGEFPfZjkByZl+R
-	UVWsxSc/HlcMYwmF7ErNBo2zBQG9smUxPxM/9UluvvFqD4GvngfV/5UaYI8dgbZk
-	BLpp6MUz16H/Ord4ajOEi+aTj2U4g3B/9oqLQ/cGJtWWYq/1F/ifNBbCqNKwfSWj
-	TNP9PUxtLcD3ee64RaPw+o87QArPGRO5PODSeDuJFo+dQ7OxesrDg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xyu18ag9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Nov 2024 19:24:34 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4AGJK7ZL032457;
-	Sat, 16 Nov 2024 19:24:33 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xyu18ag7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Nov 2024 19:24:33 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AGHwjVa008392;
-	Sat, 16 Nov 2024 19:24:32 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42tjf0y5hc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 16 Nov 2024 19:24:32 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4AGJOTmb53412138
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 16 Nov 2024 19:24:29 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 03D3520043;
-	Sat, 16 Nov 2024 19:24:29 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BAC4120040;
-	Sat, 16 Nov 2024 19:24:26 +0000 (GMT)
-Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.ibm.com.com (unknown [9.124.220.93])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 16 Nov 2024 19:24:26 +0000 (GMT)
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Cc: sshegde@linux.ibm.com, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        maddy@linux.ibm.com, bigeasy@linutronix.de, ankur.a.arora@oracle.com,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] powerpc: Large user copy aware of full:rt:lazy preemption
-Date: Sun, 17 Nov 2024 00:53:06 +0530
-Message-ID: <20241116192306.88217-3-sshegde@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241116192306.88217-1-sshegde@linux.ibm.com>
-References: <20241116192306.88217-1-sshegde@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XrS1z10Xtz2xvR
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2024 08:38:44 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-141-h79k7KFOPgSvZ4dAolKOUQ-1; Sat, 16 Nov 2024 21:38:36 +0000
+X-MC-Unique: h79k7KFOPgSvZ4dAolKOUQ-1
+X-Mimecast-MFC-AGG-ID: h79k7KFOPgSvZ4dAolKOUQ
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sat, 16 Nov
+ 2024 21:38:35 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Sat, 16 Nov 2024 21:38:35 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Linus Torvalds' <torvalds@linux-foundation.org>, Josh Poimboeuf
+	<jpoimboe@kernel.org>
+CC: "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, "Pawan
+ Gupta" <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, Andrew Cooper <andrew.cooper3@citrix.com>,
+	Mark Rutland <mark.rutland@arm.com>, "Kirill A . Shutemov"
+	<kirill@shutemov.name>
+Subject: RE: [PATCH v3 2/6] x86/uaccess: Avoid barrier_nospec() in 64-bit
+ __get_user()
+Thread-Topic: [PATCH v3 2/6] x86/uaccess: Avoid barrier_nospec() in 64-bit
+ __get_user()
+Thread-Index: AQHbKc6je06svG7vU0mpJNDFnNBsh7Ktq5PQgAuONbKAAUs+QA==
+Date: Sat, 16 Nov 2024 21:38:35 +0000
+Message-ID: <4055e18be7ff4f1f83fb9a4b6a8bc312@AcuMS.aculab.com>
+References: <cover.1730166635.git.jpoimboe@kernel.org>
+ <82cbb9983fef5ecf6f1cb33661e977172d40a7e6.1730166635.git.jpoimboe@kernel.org>
+ <20241029032735.pw3bg64bpneqnfhk@treble.attlocal.net>
+ <76bb85ceeb854e3ab68d87f846515306@AcuMS.aculab.com>
+ <20241115230653.hfvzyf3aqqntgp63@jpoimboe>
+ <CAHk-=wgLCzEwa=S4hZFGeOPjix-1_fDrsqR-QLaBcDM-fgkvhw@mail.gmail.com>
+In-Reply-To: <CAHk-=wgLCzEwa=S4hZFGeOPjix-1_fDrsqR-QLaBcDM-fgkvhw@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,51 +79,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EdNCyaoVO74elOKg6CZ6IappUiebcywk
-X-Proofpoint-ORIG-GUID: -mJAzlN_T8nOW_D2ZgQuWCuNhBTMAScI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
- bulkscore=0 spamscore=0 mlxlogscore=999 adultscore=0 mlxscore=0
- clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411160165
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 2rVQB96dpPUeZk5SZH6OQILYomgstTbrvvDfKScc3_0_1731793115
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Large user copy_to/from (more than 16 bytes) uses vmx instructions to 
-speed things up. Once the copy is done, it makes sense to try schedule 
-as soon as possible for preemptible kernels. So do this for 
-preempt=full/lazy and rt kernel. 
-
-Not checking for lazy bit here, since it could lead to unnecessary 
-context switches.
-
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
----
- arch/powerpc/lib/vmx-helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
-index d491da8d1838..58ed6bd613a6 100644
---- a/arch/powerpc/lib/vmx-helper.c
-+++ b/arch/powerpc/lib/vmx-helper.c
-@@ -45,7 +45,7 @@ int exit_vmx_usercopy(void)
- 	 * set and we are preemptible. The hack here is to schedule a
- 	 * decrementer to fire here and reschedule for us if necessary.
- 	 */
--	if (IS_ENABLED(CONFIG_PREEMPT) && need_resched())
-+	if (IS_ENABLED(CONFIG_PREEMPTION) && need_resched())
- 		set_dec(1);
- 	return 0;
- }
--- 
-2.43.5
+RnJvbTogTGludXMgVG9ydmFsZHMNCj4gU2VudDogMTYgTm92ZW1iZXIgMjAyNCAwMToyNw0KPiAN
+Cj4gT24gRnJpLCAxNSBOb3YgMjAyNCBhdCAxNTowNiwgSm9zaCBQb2ltYm9ldWYgPGpwb2ltYm9l
+QGtlcm5lbC5vcmc+IHdyb3RlOg0KPiA+DQo+ID4gSXQncyBzYWQgdGhhdCBfX2dldF91c2VyKCkg
+aXMgbm93IHNsb3dlciB0aGFuIGdldF91c2VyKCkgb24geDg2LCBpdCBraW5kDQo+ID4gb2YgZGVm
+ZWF0cyB0aGUgd2hvbGUgcG9pbnQhDQo+IA0KPiBXZWxsLCBob25lc3RseSwgd2UndmUgYmVlbiB0
+cnlpbmcgdG8gZ2V0IGF3YXkgZnJvbSBfX2dldF91c2VyKCkgYW5kDQo+IF9fcHV0X3VzZXIoKSBm
+b3IgYSBsb25nIGxvbmcgdGltZS4NCj4gDQo+IFdpdGggQ0xBQy9TVEFDLCBpdCdzIGJlZW4gcHJv
+YmFibHkgYSBkZWNhZGUgb3IgdHdvIHNpbmNlIF9fZ2V0X3VzZXIoKQ0KPiBhbmQgZnJpZW5kcyB3
+ZXJlIGFjdHVhbGx5IGEgd29ydGh3aGlsZSBvcHRpbWl6YXRpb24sIHNvIGxldCdzIGp1c3QNCj4g
+c3RyaXZlIHRvIGdldCByaWQgb2YgdGhlIG9uZXMgdGhhdCBtYXR0ZXIuDQoNClRoaW5rcy4uLi4N
+Cg0KSWYgX19nZXRfdXNlcigpIGlzIHRoZSBzYW1lIGFzIGdldF91c2VyKCkgdGhlbiBhbGwgdGhl
+IGFjY2Vzc19vaygpDQpvdXRzaWRlIG9mIGdldC9wdXRfdXNlcigpIGFuZCBjb3B5X3RvL2Zyb21f
+dXNlcigpIGNhbiBiZSByZW1vdmVkDQpiZWNhdXNlIHRoZXkgYXJlIHBvaW50bGVzcyAoYW55b25l
+IHRoYXQgYnJhdmU/KS4NClRoZXJlIGlzIG5vIHBvaW50IG9wdGltaXNpbmcgdGhlIGNvZGUgdG8g
+ZmFzdC1wYXRoIGJhZCB1c2VyIHBvaW50ZXJzLg0KDQo+IFdlIGFscmVhZHkgaGF2ZSB0aGlzIHdp
+dGggdXNlcl9hY2Nlc3NfYmVnaW4oKSArIHVuc2FmZV9nZXRfdXNlcigpLg0KPiBUaGVyZSdzIGFs
+c28gYSB2ZXJzaW9uIHdoaWNoIG1hc2tzIHRoZSBhZGRyZXNzOiBtYXNrZWRfdXNlcl9hY2Nlc3Nf
+YmVnaW4oKS4NCg0KVGhhdCBzb3VuZHMgYXMgdGhvdWdoIGl0IGlzIGJlZ2dpbmcgZm9yIGEgc2lt
+cGxlIHRvIHVzZToNCgltYXNrZWRfYWRkciA9IHVzZXJfYWNjZXNzX2JlZ2luKGFkZHIsIHNpemUs
+IGVycm9yX2xhYmVsKTsNCmFuZA0KCXZhbCA9IHVuc2FmZV9nZXRfdXNlcihtYXNrZWRfYWRkciwg
+ZXJyb3JfbGFiZWwpOw0KZm9ybT8NClByb2JhYmx5IHdpdGggb2JqdG9vbCBjaGVja2luZyB0aGV5
+IGFyZSBhbGwgaW4gYSB2YWxpZCBzZXF1ZW5jZQ0Kd2l0aCBubyBmdW5jdGlvbnMgY2FsbHMgKGV0
+YykuDQoNCklmIGFkZHJlc3MgbWFza2luZyBpc24ndCBuZWVkZWQgKGJ5IGFuIGFyY2hpdGVjdHVy
+ZSkgdGhlIGFkZHJlc3MgY2FuIGJlIGxlZnQNCnVuY2hhbmdlZC4NCg0KQSBxdWljayBncmVwIHNo
+b3dzIGFjY2Vzc19vaygpIGluIDY2IC5jIGFuZCA4IC5oIGZpbGVzIG91dHNpZGUgdGhlIGFyY2gg
+Y29kZS4NCkFuZCA2OSAuYyBmaWxlIGluIGFyY2gsIG1vc3Qgb2YgdGhlIGFyY2ggLmggYXJlIHVh
+Y2Nlc3MuaCBhbmQgZnV0ZXguaC4NCkkgc3VzcGVjdCB0aGUgYXVkaXQgd291bGRuJ3QgdGFsZSB0
+aGF0IGxvbmcuDQpHZXR0aW5nIGFueSBwYXRjaGVzIGFjY2VwdGVkIGlzIGFub3RoZXIgbWF0dGVy
+Lg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJv
+YWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24g
+Tm86IDEzOTczODYgKFdhbGVzKQ0K
 
 
