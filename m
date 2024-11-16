@@ -1,49 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-3329-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3330-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2740A9CFE6D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 12:25:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 438989CFED2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 13:34:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XrBPv23dsz3005;
-	Sat, 16 Nov 2024 22:25:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XrCy24HBtz3bWr;
+	Sat, 16 Nov 2024 23:34:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.134.164.104
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731756307;
-	cv=none; b=fE+DrR4P1h0O4It7xcalo8OemZOJ4MDSgPwu4kTdPKCRh0vfVHJrtKqo+0S+oiuR3pTRqt9lSaLJavB+LF3VgOJLkiOxQ2irxYarfW4P6XD+dujBIdg47splSgOdKwLHPu9cF9+5OnCuLW5IlqISsnUxWNidH2ob6v/RyZo+wyXtAeMzz3yCDLS6fPLE1WQHub5Ge5dJQlpkKy+dPANUjziuiPDLYWNmA65wDjOEbX4yzyKxU0c0F+Z4kXdAxqXs+VpCqb9bs8HVbgfjYeRh8bcgMXLb5DRR+bH8Gvk7M7833T/FoVcCGqfARi1qJOztMHbb4hKBVljVSqGau80YOg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731760474;
+	cv=none; b=od/4vZyxKretFljWt/VTHqXTZT49uaeufcDIunjph0e8WVg5CE7q7tBE09ebOGKvdUVwM2dehyjgRtmo6G5UJNO1BDL/rJTjHht6xhYUIC+bF5IR0llWcGt6+LVJe09lJrS8zi046BVVCAki5mhfBPO5TbddGpGHL2FmjMf5XfVasiKL+wc/wBK+oMc2xv9V2ZLtupqHX1zQbHwJMJFPRLg4g2av/gSRkrLBA5DX+K/xsGgjEqsXMN/Sloylkk+m6dSZYrmcoaLuuhQhQPmBfLc1kOIT5S+53mL/vZCkfiIFuG/QvVp/4APYhFwY/aNtmWwLkx4fk36QeH2+ULmulQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731756307; c=relaxed/relaxed;
-	bh=anlUiHWGDGyJ8xswjmMdLXKoB6PZ+VXioMuGFa77dbg=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=G5WHHes0HZvSwj+oxO1WwOcgkelO3SQ1zDcDwiVtCXRvMTlilHH85ZFjOXGYBphiXF4XZ/n1vB+tjS54zWnwbnUslSx2g9mNsQCylSgPUPtShoCrYzoUB/YzM0d+15vP//WT9GBYhCR0FY4wkjzrH/jVCsRxFXXYFQu7HgVRZh8mO/rX2AcgZMeV/K0ZCOTD2GnD++IZ0sSZMi1fh0LH57hgSs6envizH0TYRvvGuANGhF9LDSYnqVwn2GCezIlFPgQIFKeQS71H0MYl+UDreycJrnYyU692ni01QkVWwrULPNKmMOw8k/8sF87Q0oBNECv5I99G7etc2FtnnTEj4w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=inria.fr; dkim=pass (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=e6HMrvPi; dkim-atps=neutral; spf=pass (client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=lists.ozlabs.org) smtp.mailfrom=inria.fr
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=inria.fr
+	t=1731760474; c=relaxed/relaxed;
+	bh=fEtJp9SSOayGK+bhR6rbytlyGbW7N5dlpS26wnCneKg=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=AK3v4HvRZFTatuBittZu/j7cce9MghQwJVZ2Gt/UlfqjsZdW7oTuSAPnbA070BKHhyVw/B0JlhMZqnF6CcmE3jXDrTs+Db2RNv/uWeGhrNnzZXHO4zy6m++fpNKIwBwvrUElzjSh6gpCmCv76QDO21Gt+pw7L/JCgS3x5B0D5du5BxA60ulPZ9b/QlVhgKQwqLCvNQ6SF7155HaBj2SSEKdbJ7DbueImbwknnZyPEjKDrk7NCgwD3SP6DSzDqz1X0IhlYsWRM14nuks/bag36Hu9pWSQiXSCIx8SUZYg88yo07spPkRsJgSP/w0kZLrFpJAScqXHqdZZxF7xPpjPOw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UdxujRjB; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=e6HMrvPi;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UdxujRjB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inria.fr (client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=lists.ozlabs.org)
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XrBPq1dbPz2yyR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 22:24:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XrCy01gkSz308V
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 23:34:31 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-20caea61132so3623225ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 04:34:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=content-transfer-encoding:from:mime-version:subject:date:
-   message-id:references:cc:in-reply-to:to;
-  bh=anlUiHWGDGyJ8xswjmMdLXKoB6PZ+VXioMuGFa77dbg=;
-  b=e6HMrvPibM0Fbpr/ONm0hFVcMKT8wC0+mQJzKmTLL/6XVEyPLKe8HZWV
-   9C9LRPkcO6Hd6rCjzjqag+sCK6WeODO+KGVznFmYkAs5A6UnqgiSZB6Nc
-   xXNWMuA+9KGLx3MmUi1yOamiphAXkkAK5LOz38Lay2oYzEJOtPfPHDOwT
-   E=;
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.12,159,1728943200"; 
-   d="scan'208";a="101793166"
-Received: from 105.39.22.93.rev.sfr.net (HELO smtpclient.apple) ([93.22.39.105])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2024 12:24:33 +0100
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Julia Lawall <Julia.Lawall@inria.fr>
+        d=gmail.com; s=20230601; t=1731760467; x=1732365267; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fEtJp9SSOayGK+bhR6rbytlyGbW7N5dlpS26wnCneKg=;
+        b=UdxujRjBjH4PcWsPplijYQ6tTI9QjvUS4HN0LHy7ofrSFWeYYJULmYn+31MoX4mMcK
+         lsqKSC88Dg021pUHE343xAMqwP0R/w2LzOpOv3XIuBYzcVQqWCpHBYaoeWF0D38scFvG
+         130ackII/IJEE0f2QtMD3DnYWuWS/Z4fAIKUmhXq5ZHYr8br3GutJYbypxQof4oWNBNr
+         aunVsXa/NgZhau378U6PcZKS1mVr83pKVjaWvRjISXS657mqcXuOqMr3S8WkPxyTrMa6
+         E1FHVkR/OeynVRYGCM+BJcBcfqx8mAVHeKfF5eiyPXZAPKcX1p0vDjTQNQrKo/Ru6Y8E
+         JR8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731760467; x=1732365267;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fEtJp9SSOayGK+bhR6rbytlyGbW7N5dlpS26wnCneKg=;
+        b=g1Wle/b+xL07okaQ8QPj1LWEdj3WKDaTk91LXz9GCoU4l4XBQbXATCm31qC2+4I9wl
+         rzopweeFD7BEaIMokVqex/rDqCqxqr9XHm2B0Y+p8lbR3N6/m0XUm/d26ArkXaDSxJQB
+         80WrRjuRDhArNQP90TP3kK3GnVhnFwXlWlqImoCwqf3FnktTmyRxot+0NoR4+YLYisqu
+         MjlsR22Lee8AYIYVj0BaJV5UNHuT0hd229tdHKEEfCgJmukDV0fgckR7SLXVrnmOuQgo
+         V2oIq/5Eq4Dr4XyA67esmGsCqrAeKy6IrizWqlREWc/xDpT7xo730m5/jqxIyn0+j6JO
+         83FA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+lTv13MryIP8oD+spn4c8Q/L3wyaPwRX4awTkLY74hvLv1Qq0cBnYtiW+ppJIK69w6fCICar72aTRJb4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy8g+wy7V9mCjiYR5OyFHZBi3yfUNvrcD9WneyF0dliDRexaO/l
+	U/N4jnvyh0DjPpW/ueLFbdusBsPeB7LE4EKv5ZBzZPnUmGMtqeUF
+X-Google-Smtp-Source: AGHT+IGMIdd0MVq9ycS0BwfPAQWlm2CmDCHtZs+52Ag/FtZcI3X0AMiqJ588rNWYIzfyalFel19UQw==
+X-Received: by 2002:a17:902:d50a:b0:20c:8331:cb6e with SMTP id d9443c01a7336-211d0d818c6mr91611965ad.19.1731760466885;
+        Sat, 16 Nov 2024 04:34:26 -0800 (PST)
+Received: from dw-tp ([49.205.218.89])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f34903sm27031255ad.158.2024.11.16.04.34.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Nov 2024 04:34:26 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, brauner@kernel.org
+Cc: sforshee@kernel.org, linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mount_setattr: Fix failures on 64K PAGE_SIZE kernels
+In-Reply-To: <20241115134114.1219555-1-mpe@ellerman.id.au>
+Date: Sat, 16 Nov 2024 17:12:34 +0530
+Message-ID: <87o72fcslx.fsf@gmail.com>
+References: <20241115134114.1219555-1-mpe@ellerman.id.au>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -55,133 +84,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v2 05/21] powerpc/papr_scm: Convert timeouts to secs_to_jiffies()
-Date: Sat, 16 Nov 2024 06:24:20 -0500
-Message-Id: <272B86FC-5CC9-4A3A-ACE0-F268E4E61C3D@inria.fr>
-References: <e4872a15-ff3d-4619-9b03-c7f0b6230934@stanley.mountain>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Easwar Hariharan <eahariha@linux.microsoft.com>,
- Pablo Neira Ayuso <pablo@netfilter.org>,
- Jozsef Kadlecsik <kadlec@netfilter.org>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>,
- Oded Gabbay <ogabbay@kernel.org>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Jeroen de Borst <jeroendb@google.com>,
- Praveen Kaligineedi <pkaligineedi@google.com>,
- Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- James Smart <james.smart@broadcom.com>,
- Dick Kennedy <dick.kennedy@broadcom.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- =?utf-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jack Wang <jinpu.wang@cloud.ionos.com>,
- Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>,
- Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
- Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Lucas Stach <l.stach@pengutronix.de>,
- Russell King <linux+etnaviv@armlinux.org.uk>,
- Christian Gmeiner <christian.gmeiner@gmail.com>,
- Louis Peens <louis.peens@corigine.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- cocci@inria.fr, linux-arm-kernel@lists.infradead.org,
- linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- linux-mm@kvack.org, linux-bluetooth@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org,
- ceph-devel@vger.kernel.org, live-patching@vger.kernel.org,
- linux-sound@vger.kernel.org, etnaviv@lists.freedesktop.org,
- oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org,
- Anna-Maria Behnsen <anna-maria@linutronix.de>
-In-Reply-To: <e4872a15-ff3d-4619-9b03-c7f0b6230934@stanley.mountain>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-X-Mailer: iPhone Mail (21E236)
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-Sent from my iPhone
+> Currently the mount_setattr_test fails on machines with a 64K PAGE_SIZE,
+> with errors such as:
+>
+>   #  RUN           mount_setattr_idmapped.invalid_fd_negative ...
+>   mkfs.ext4: No space left on device while writing out and closing file system
+>   # mount_setattr_test.c:1055:invalid_fd_negative:Expected system("mkfs.ext4 -q /mnt/C/ext4.img") (256) == 0 (0)
+>   # invalid_fd_negative: Test terminated by assertion
+>   #          FAIL  mount_setattr_idmapped.invalid_fd_negative
+>   not ok 12 mount_setattr_idmapped.invalid_fd_negative
+>
+> The code creates a 100,000 byte tmpfs:
+>
+> 	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
+> 			"size=100000,mode=700"), 0);
+>
+> And then a little later creates a 2MB ext4 filesystem in that tmpfs:
+>
+> 	ASSERT_EQ(ftruncate(img_fd, 1024 * 2048), 0);
+> 	ASSERT_EQ(system("mkfs.ext4 -q /mnt/C/ext4.img"), 0);
+>
+> At first glance it seems like that should never work, after all 2MB is
+> larger than 100,000 bytes. However the filesystem image doesn't actually
+> occupy 2MB on "disk" (actually RAM, due to tmpfs). On 4K kernels the
+> ext4.img uses ~84KB of actual space (according to du), which just fits.
+>
+> However on 64K PAGE_SIZE kernels the ext4.img takes at least 256KB,
+> which is too large to fit in the tmpfs, hence the errors.
 
-> On 16 Nov 2024, at 05:40, Dan Carpenter <dan.carpenter@linaro.org> wrote:
->=20
-> =EF=BB=BFOn Sat, Nov 16, 2024 at 11:06:55AM +0100, Christophe Leroy wrote:=
+Even though ext4 will use by default 4k blocksize on both kernels but
+the backing file here belongs to tmpfs (RAM) which operates at 64k page.
+Hence the difference in the size of the image between 4k and 64k kernels
+looks expected.
 
->>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/pl=
-atforms/pseries/papr_scm.c
->>> index 9e297f88adc5d97d4dc7b267b0bfebd58e5cf193..9e8086ec66e0f0e555ac2793=
-3854c06cfcf91a04 100644
->>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->>> @@ -543,7 +543,7 @@ static int drc_pmem_query_health(struct papr_scm_pri=
-v *p)
->>>=20
->>>         /* Jiffies offset for which the health data is assumed to be sam=
-e */
->>>         cache_timeout =3D p->lasthealth_jiffies +
->>> -               msecs_to_jiffies(MIN_HEALTH_QUERY_INTERVAL * 1000);
->>> +               secs_to_jiffies(MIN_HEALTH_QUERY_INTERVAL);
->>=20
->> Wouldn't it now fit on a single line ?
->>=20
->=20
-> Some maintainers still prefer to put a line break at 80 characters. =20
+# 64k kernel
+du -sh /run/ext4
+256K    /run/ext4
 
-Coccinelle tries for 80 chars. It may have a command line option to specify s=
-omething else.
+# 4k kernel
+du -sh /run/ext4
+84K     /run/ext4
 
-Julia
+>
+> It seems fraught to rely on the ext4.img taking less space on disk than
+> the allocated size, so instead create the tmpfs with a size of 2MB. With
+> that all 21 tests pass on 64K PAGE_SIZE kernels.
 
-> It's kind
-> of a nightmare for an automated script like this to figure out everyone's
-> preferences.  In this particular
-> file, there are some lines which go over 80
-> characters so sure.  Earlier in the patchset one of these introduced a lin=
-e
-> break that wasn't there before so I think maybe Coccinelle is applying the=
- 80
-> character line break rule?
->=20
-> There are sometimes where the 80 character rule really hurts readability, b=
-ut
-> here it doesn't make any difference.
->=20
-> regards,
-> dan carpenter
->=20
+That looks like the right thing to do here. 
 
+Please feel free to add - 
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
+>
+> Fixes: 01eadc8dd96d ("tests: add mount_setattr() selftests")
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  tools/testing/selftests/mount_setattr/mount_setattr_test.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tools/testing/selftests/mount_setattr/mount_setattr_test.c b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
+> index 68801e1a9ec2..70f65eb320a7 100644
+> --- a/tools/testing/selftests/mount_setattr/mount_setattr_test.c
+> +++ b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
+> @@ -1026,7 +1026,7 @@ FIXTURE_SETUP(mount_setattr_idmapped)
+>  			"size=100000,mode=700"), 0);
+>  
+>  	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
+> -			"size=100000,mode=700"), 0);
+> +			"size=2m,mode=700"), 0);
+>  
+>  	ASSERT_EQ(mkdir("/mnt/A", 0777), 0);
+>  
+> -- 
+> 2.47.0
 
