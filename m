@@ -1,52 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-3328-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3329-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE0F9CFE4F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 11:44:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2740A9CFE6D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 12:25:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xr9WG4cMbz3bY4;
-	Sat, 16 Nov 2024 21:44:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XrBPv23dsz3005;
+	Sat, 16 Nov 2024 22:25:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731753882;
-	cv=none; b=kCDSUeD+8nxCTZLF+IyQ6tpUadKEWKGWTLmoZ4U/RbxylWySNOERJBCQPciO/F+9o1ncxAu2Ayljmqaf9DsB5JL9HD1Ctv/XwX0SMxbR4SspsG9ITRNS6FphhrQ6l2jv7nptA26wrVkyI6lbC6m/z4KQTIxvsxRPsjuU221P9G8Lg/kgxiAMejoR+rh0NeRrKa14mRe910rQkhEOJohRBHuUzKFktUeFD4+RNiH9TGgDP8dCNzS6TnmObeaRo8GK+4sK4v9YjnTsEbXb0cBvI5GGy8mjk56vCWwKru4xCiSkPs2LplHM4Mvbcu+ZD08wEGI4ywQ9AWLQpjOSKlXrKw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.134.164.104
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731756307;
+	cv=none; b=fE+DrR4P1h0O4It7xcalo8OemZOJ4MDSgPwu4kTdPKCRh0vfVHJrtKqo+0S+oiuR3pTRqt9lSaLJavB+LF3VgOJLkiOxQ2irxYarfW4P6XD+dujBIdg47splSgOdKwLHPu9cF9+5OnCuLW5IlqISsnUxWNidH2ob6v/RyZo+wyXtAeMzz3yCDLS6fPLE1WQHub5Ge5dJQlpkKy+dPANUjziuiPDLYWNmA65wDjOEbX4yzyKxU0c0F+Z4kXdAxqXs+VpCqb9bs8HVbgfjYeRh8bcgMXLb5DRR+bH8Gvk7M7833T/FoVcCGqfARi1qJOztMHbb4hKBVljVSqGau80YOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731753882; c=relaxed/relaxed;
-	bh=LSaFRoDlMsIK6TTZSaRb86ZxNKMecFISv8PT/3JEISc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W/tFpVDzkuzoYKpl7Pk+atk9vKQCwTmCj2mJGFWJUoyimMjQcWVFAbQI+YcFMUG1HpR7b+sUOePAYpULfI8t4rDikds2L2xOLBKzCexmgXI9enTyLA6OcP5/0g3QQ/K+mG9ksovumf0y+cklzw17XfhT939UBzPEfZgLn7EA1t13paqjAzTsNKeyma/NQQtIoBnEwYoI9uaGCmr2IiG8m6HOGBvewxHJssP+sPii3sF6wrRkcgQUwH1A3WCrh/O5QuiYATyQOAaxAyE2kxz6Z/bJFoaZ25ltHcilfR0Zy8ukC7e/RDPz3BiF2U9vrGdCz148vXZR3x94wWjSqHPJKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	t=1731756307; c=relaxed/relaxed;
+	bh=anlUiHWGDGyJ8xswjmMdLXKoB6PZ+VXioMuGFa77dbg=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=G5WHHes0HZvSwj+oxO1WwOcgkelO3SQ1zDcDwiVtCXRvMTlilHH85ZFjOXGYBphiXF4XZ/n1vB+tjS54zWnwbnUslSx2g9mNsQCylSgPUPtShoCrYzoUB/YzM0d+15vP//WT9GBYhCR0FY4wkjzrH/jVCsRxFXXYFQu7HgVRZh8mO/rX2AcgZMeV/K0ZCOTD2GnD++IZ0sSZMi1fh0LH57hgSs6envizH0TYRvvGuANGhF9LDSYnqVwn2GCezIlFPgQIFKeQS71H0MYl+UDreycJrnYyU692ni01QkVWwrULPNKmMOw8k/8sF87Q0oBNECv5I99G7etc2FtnnTEj4w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=inria.fr; dkim=pass (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=e6HMrvPi; dkim-atps=neutral; spf=pass (client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=lists.ozlabs.org) smtp.mailfrom=inria.fr
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=inria.fr
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=e6HMrvPi;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inria.fr (client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=lists.ozlabs.org)
+Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xr9WF27Xnz3bWr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 21:44:40 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Xr9W84fDjz9sSV;
-	Sat, 16 Nov 2024 11:44:36 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Yp4BJPltr9UO; Sat, 16 Nov 2024 11:44:36 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Xr9W83DqBz9sST;
-	Sat, 16 Nov 2024 11:44:36 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 53FC48B7A0;
-	Sat, 16 Nov 2024 11:44:36 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 4zkTht-Dnt66; Sat, 16 Nov 2024 11:44:36 +0100 (CET)
-Received: from [192.168.232.159] (POS169858.IDSI0.si.c-s.fr [192.168.232.159])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C77298B763;
-	Sat, 16 Nov 2024 11:44:35 +0100 (CET)
-Message-ID: <5b44abcc-f629-4250-9edf-7f173b78172c@csgroup.eu>
-Date: Sat, 16 Nov 2024 11:44:35 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XrBPq1dbPz2yyR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 22:24:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=inria.fr; s=dc;
+  h=content-transfer-encoding:from:mime-version:subject:date:
+   message-id:references:cc:in-reply-to:to;
+  bh=anlUiHWGDGyJ8xswjmMdLXKoB6PZ+VXioMuGFa77dbg=;
+  b=e6HMrvPibM0Fbpr/ONm0hFVcMKT8wC0+mQJzKmTLL/6XVEyPLKe8HZWV
+   9C9LRPkcO6Hd6rCjzjqag+sCK6WeODO+KGVznFmYkAs5A6UnqgiSZB6Nc
+   xXNWMuA+9KGLx3MmUi1yOamiphAXkkAK5LOz38Lay2oYzEJOtPfPHDOwT
+   E=;
+Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
+X-IronPort-AV: E=Sophos;i="6.12,159,1728943200"; 
+   d="scan'208";a="101793166"
+Received: from 105.39.22.93.rev.sfr.net (HELO smtpclient.apple) ([93.22.39.105])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2024 12:24:33 +0100
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Julia Lawall <Julia.Lawall@inria.fr>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,387 +55,133 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-References: <20241115133802.3919003-1-andriy.shevchenko@linux.intel.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20241115133802.3919003-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v2 05/21] powerpc/papr_scm: Convert timeouts to secs_to_jiffies()
+Date: Sat, 16 Nov 2024 06:24:20 -0500
+Message-Id: <272B86FC-5CC9-4A3A-ACE0-F268E4E61C3D@inria.fr>
+References: <e4872a15-ff3d-4619-9b03-c7f0b6230934@stanley.mountain>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>,
+ Jozsef Kadlecsik <kadlec@netfilter.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>,
+ Oded Gabbay <ogabbay@kernel.org>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Jeroen de Borst <jeroendb@google.com>,
+ Praveen Kaligineedi <pkaligineedi@google.com>,
+ Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ James Smart <james.smart@broadcom.com>,
+ Dick Kennedy <dick.kennedy@broadcom.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ =?utf-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jack Wang <jinpu.wang@cloud.ionos.com>,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Johan Hedberg <johan.hedberg@gmail.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+ Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+ Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>,
+ Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Lucas Stach <l.stach@pengutronix.de>,
+ Russell King <linux+etnaviv@armlinux.org.uk>,
+ Christian Gmeiner <christian.gmeiner@gmail.com>,
+ Louis Peens <louis.peens@corigine.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ cocci@inria.fr, linux-arm-kernel@lists.infradead.org,
+ linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ linux-mm@kvack.org, linux-bluetooth@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org,
+ ceph-devel@vger.kernel.org, live-patching@vger.kernel.org,
+ linux-sound@vger.kernel.org, etnaviv@lists.freedesktop.org,
+ oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>
+In-Reply-To: <e4872a15-ff3d-4619-9b03-c7f0b6230934@stanley.mountain>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+X-Mailer: iPhone Mail (21E236)
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
+Sent from my iPhone
 
-Le 15/11/2024 à 14:38, Andy Shevchenko a écrit :
-> Remove legacy-of-mm-gpiochip.h header file, replace of_* functions
-> and structs with appropriate alternatives.
+> On 16 Nov 2024, at 05:40, Dan Carpenter <dan.carpenter@linaro.org> wrote:
+>=20
+> =EF=BB=BFOn Sat, Nov 16, 2024 at 11:06:55AM +0100, Christophe Leroy wrote:=
 
-Looks like you don't really have an alternative to 
-of_mm_gpiochip_add_data(), you are replacing one single line by 11 new 
-ones, and that is done twice (once for cpm1_gpiochip_add16(), once for 
-cpm1_gpiochip_add32()).
+>>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/pl=
+atforms/pseries/papr_scm.c
+>>> index 9e297f88adc5d97d4dc7b267b0bfebd58e5cf193..9e8086ec66e0f0e555ac2793=
+3854c06cfcf91a04 100644
+>>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+>>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+>>> @@ -543,7 +543,7 @@ static int drc_pmem_query_health(struct papr_scm_pri=
+v *p)
+>>>=20
+>>>         /* Jiffies offset for which the health data is assumed to be sam=
+e */
+>>>         cache_timeout =3D p->lasthealth_jiffies +
+>>> -               msecs_to_jiffies(MIN_HEALTH_QUERY_INTERVAL * 1000);
+>>> +               secs_to_jiffies(MIN_HEALTH_QUERY_INTERVAL);
+>>=20
+>> Wouldn't it now fit on a single line ?
+>>=20
+>=20
+> Some maintainers still prefer to put a line break at 80 characters. =20
 
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->   arch/powerpc/platforms/8xx/cpm1.c | 119 +++++++++++++++---------------
+Coccinelle tries for 80 chars. It may have a command line option to specify s=
+omething else.
 
-Does not build:
+Julia
 
-   CC      arch/powerpc/platforms/8xx/cpm1.o
-arch/powerpc/platforms/8xx/cpm1.c: In function 'cpm1_gpiochip_add16':
-arch/powerpc/platforms/8xx/cpm1.c:505:2: error: 'g' undeclared (first 
-use in this function); did you mean 'gc'?
-   g->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
-   ^
-   gc
-arch/powerpc/platforms/8xx/cpm1.c:505:2: note: each undeclared 
-identifier is reported only once for each function it appears in
-arch/powerpc/platforms/8xx/cpm1.c:509:18: error: too few arguments to 
-function 'devm_of_iomap'
-   cpm1_gc->regs = devm_of_iomap(dev, np, 0);
-                   ^~~~~~~~~~~~~
-In file included from ./include/linux/dma-mapping.h:8:0,
-                  from arch/powerpc/platforms/8xx/cpm1.c:27:
-./include/linux/device.h:372:15: note: declared here
-  void __iomem *devm_of_iomap(struct device *dev,
-                ^~~~~~~~~~~~~
-arch/powerpc/platforms/8xx/cpm1.c: At top level:
-arch/powerpc/platforms/8xx/cpm1.c:545:31: error: unknown type name 
-'cpm1_gpio32_chip'
-  static void __cpm1_gpio32_set(cpm1_gpio32_chip *cpm1_gc, u32 pin_mask, 
-int value)
-                                ^~~~~~~~~~~~~~~~
-arch/powerpc/platforms/8xx/cpm1.c: In function 'cpm1_gpio32_set':
-arch/powerpc/platforms/8xx/cpm1.c:565:2: error: implicit declaration of 
-function '__cpm1_gpio32_set'; did you mean 'cpm1_gpio32_set'? 
-[-Werror=implicit-function-declaration]
-   __cpm1_gpio32_set(cpm1_gc, pin_mask, value);
-   ^~~~~~~~~~~~~~~~~
-   cpm1_gpio32_set
-arch/powerpc/platforms/8xx/cpm1.c: In function 'cpm1_gpiochip_add32':
-arch/powerpc/platforms/8xx/cpm1.c:625:2: error: 'g' undeclared (first 
-use in this function); did you mean 'gc'?
-   g->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
-   ^
-   gc
-arch/powerpc/platforms/8xx/cpm1.c:629:18: error: too few arguments to 
-function 'devm_of_iomap'
-   cpm1_gc->regs = devm_of_iomap(dev, np, 0);
-                   ^~~~~~~~~~~~~
-In file included from ./include/linux/dma-mapping.h:8:0,
-                  from arch/powerpc/platforms/8xx/cpm1.c:27:
-./include/linux/device.h:372:15: note: declared here
-  void __iomem *devm_of_iomap(struct device *dev,
-                ^~~~~~~~~~~~~
+> It's kind
+> of a nightmare for an automated script like this to figure out everyone's
+> preferences.  In this particular
+> file, there are some lines which go over 80
+> characters so sure.  Earlier in the patchset one of these introduced a lin=
+e
+> break that wasn't there before so I think maybe Coccinelle is applying the=
+ 80
+> character line break rule?
+>=20
+> There are sometimes where the 80 character rule really hurts readability, b=
+ut
+> here it doesn't make any difference.
+>=20
+> regards,
+> dan carpenter
+>=20
 
-
-
->   1 file changed, 60 insertions(+), 59 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/8xx/cpm1.c b/arch/powerpc/platforms/8xx/cpm1.c
-> index b24d4102fbf6..1262bff5ba2e 100644
-> --- a/arch/powerpc/platforms/8xx/cpm1.c
-> +++ b/arch/powerpc/platforms/8xx/cpm1.c
-> @@ -45,7 +45,7 @@
->   #include <sysdev/fsl_soc.h>
->   
->   #ifdef CONFIG_8xx_GPIO
-> -#include <linux/gpio/legacy-of-mm-gpiochip.h>
-> +#include <linux/gpio/driver.h>
->   #endif
->   
->   #define CPM_MAP_SIZE    (0x4000)
-> @@ -376,7 +376,8 @@ int __init cpm1_clk_setup(enum cpm_clk_target target, int clock, int mode)
->   #ifdef CONFIG_8xx_GPIO
->   
->   struct cpm1_gpio16_chip {
-> -	struct of_mm_gpio_chip mm_gc;
-> +	struct gpio_chip gc;
-> +	void __iomem *regs;
->   	spinlock_t lock;
->   
->   	/* shadowed data register to clear/set bits safely */
-> @@ -386,19 +387,17 @@ struct cpm1_gpio16_chip {
->   	int irq[16];
->   };
->   
-> -static void cpm1_gpio16_save_regs(struct of_mm_gpio_chip *mm_gc)
-> +static void cpm1_gpio16_save_regs(struct cpm1_gpio16_chip *cpm1_gc)
->   {
-> -	struct cpm1_gpio16_chip *cpm1_gc =
-> -		container_of(mm_gc, struct cpm1_gpio16_chip, mm_gc);
-> -	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
-> +	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
->   
->   	cpm1_gc->cpdata = in_be16(&iop->dat);
->   }
->   
->   static int cpm1_gpio16_get(struct gpio_chip *gc, unsigned int gpio)
->   {
-> -	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-> -	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
-> +	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
-> +	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
->   	u16 pin_mask;
->   
->   	pin_mask = 1 << (15 - gpio);
-> @@ -406,11 +405,9 @@ static int cpm1_gpio16_get(struct gpio_chip *gc, unsigned int gpio)
->   	return !!(in_be16(&iop->dat) & pin_mask);
->   }
->   
-> -static void __cpm1_gpio16_set(struct of_mm_gpio_chip *mm_gc, u16 pin_mask,
-> -	int value)
-> +static void __cpm1_gpio16_set(struct cpm1_gpio16_chip *cpm1_gc, u16 pin_mask, int value)
->   {
-> -	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
-> -	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
-> +	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
->   
->   	if (value)
->   		cpm1_gc->cpdata |= pin_mask;
-> @@ -422,38 +419,35 @@ static void __cpm1_gpio16_set(struct of_mm_gpio_chip *mm_gc, u16 pin_mask,
->   
->   static void cpm1_gpio16_set(struct gpio_chip *gc, unsigned int gpio, int value)
->   {
-> -	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-> -	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
-> +	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
->   	unsigned long flags;
->   	u16 pin_mask = 1 << (15 - gpio);
->   
->   	spin_lock_irqsave(&cpm1_gc->lock, flags);
->   
-> -	__cpm1_gpio16_set(mm_gc, pin_mask, value);
-> +	__cpm1_gpio16_set(cpm1_gc, pin_mask, value);
->   
->   	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
->   }
->   
->   static int cpm1_gpio16_to_irq(struct gpio_chip *gc, unsigned int gpio)
->   {
-> -	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-> -	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
-> +	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
->   
->   	return cpm1_gc->irq[gpio] ? : -ENXIO;
->   }
->   
->   static int cpm1_gpio16_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
->   {
-> -	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-> -	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
-> -	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
-> +	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
-> +	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
->   	unsigned long flags;
->   	u16 pin_mask = 1 << (15 - gpio);
->   
->   	spin_lock_irqsave(&cpm1_gc->lock, flags);
->   
->   	setbits16(&iop->dir, pin_mask);
-> -	__cpm1_gpio16_set(mm_gc, pin_mask, val);
-> +	__cpm1_gpio16_set(cpm1_gc, pin_mask, val);
->   
->   	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
->   
-> @@ -462,9 +456,8 @@ static int cpm1_gpio16_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
->   
->   static int cpm1_gpio16_dir_in(struct gpio_chip *gc, unsigned int gpio)
->   {
-> -	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-> -	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
-> -	struct cpm_ioport16 __iomem *iop = mm_gc->regs;
-> +	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
-> +	struct cpm_ioport16 __iomem *iop = cpm1_gc->regs;
->   	unsigned long flags;
->   	u16 pin_mask = 1 << (15 - gpio);
->   
-> @@ -481,11 +474,10 @@ int cpm1_gpiochip_add16(struct device *dev)
->   {
->   	struct device_node *np = dev->of_node;
->   	struct cpm1_gpio16_chip *cpm1_gc;
-> -	struct of_mm_gpio_chip *mm_gc;
->   	struct gpio_chip *gc;
->   	u16 mask;
->   
-> -	cpm1_gc = kzalloc(sizeof(*cpm1_gc), GFP_KERNEL);
-> +	cpm1_gc = devm_kzalloc(dev, sizeof(*cpm1_gc), GFP_KERNEL);
->   	if (!cpm1_gc)
->   		return -ENOMEM;
->   
-> @@ -499,10 +491,8 @@ int cpm1_gpiochip_add16(struct device *dev)
->   				cpm1_gc->irq[i] = irq_of_parse_and_map(np, j++);
->   	}
->   
-> -	mm_gc = &cpm1_gc->mm_gc;
-> -	gc = &mm_gc->gc;
-> -
-> -	mm_gc->save_regs = cpm1_gpio16_save_regs;
-> +	gc = &cpm1_gc->gc;
-> +	gc->base = -1;
->   	gc->ngpio = 16;
->   	gc->direction_input = cpm1_gpio16_dir_in;
->   	gc->direction_output = cpm1_gpio16_dir_out;
-> @@ -512,30 +502,39 @@ int cpm1_gpiochip_add16(struct device *dev)
->   	gc->parent = dev;
->   	gc->owner = THIS_MODULE;
->   
-> -	return of_mm_gpiochip_add_data(np, mm_gc, cpm1_gc);
-> +	g->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
-> +	if (!gc->label)
-> +		return -ENOMEM;
-> +
-> +	cpm1_gc->regs = devm_of_iomap(dev, np, 0);
-> +	if (IS_ERR(cpm1_gc->regs))
-> +		return PTR_ERR(cpm1_gc->regs);
-> +
-> +	cpm1_gpio16_save_regs(cpm1_gc);
-> +
-> +	return devm_gpiochip_add_data(dev, gc, cpm1_gc);
->   }
->   
->   struct cpm1_gpio32_chip {
-> -	struct of_mm_gpio_chip mm_gc;
-> +	struct gpio_chip gc;
-> +	void __iomem *regs;
->   	spinlock_t lock;
->   
->   	/* shadowed data register to clear/set bits safely */
->   	u32 cpdata;
->   };
->   
-> -static void cpm1_gpio32_save_regs(struct of_mm_gpio_chip *mm_gc)
-> +static void cpm1_gpio32_save_regs(struct cpm1_gpio32_chip *cpm1_gc)
->   {
-> -	struct cpm1_gpio32_chip *cpm1_gc =
-> -		container_of(mm_gc, struct cpm1_gpio32_chip, mm_gc);
-> -	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
-> +	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
->   
->   	cpm1_gc->cpdata = in_be32(&iop->dat);
->   }
->   
->   static int cpm1_gpio32_get(struct gpio_chip *gc, unsigned int gpio)
->   {
-> -	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-> -	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
-> +	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(gc);
-> +	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
->   	u32 pin_mask;
->   
->   	pin_mask = 1 << (31 - gpio);
-> @@ -543,11 +542,9 @@ static int cpm1_gpio32_get(struct gpio_chip *gc, unsigned int gpio)
->   	return !!(in_be32(&iop->dat) & pin_mask);
->   }
->   
-> -static void __cpm1_gpio32_set(struct of_mm_gpio_chip *mm_gc, u32 pin_mask,
-> -	int value)
-> +static void __cpm1_gpio32_set(cpm1_gpio32_chip *cpm1_gc, u32 pin_mask, int value)
->   {
-> -	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
-> -	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
-> +	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
->   
->   	if (value)
->   		cpm1_gc->cpdata |= pin_mask;
-> @@ -559,30 +556,28 @@ static void __cpm1_gpio32_set(struct of_mm_gpio_chip *mm_gc, u32 pin_mask,
->   
->   static void cpm1_gpio32_set(struct gpio_chip *gc, unsigned int gpio, int value)
->   {
-> -	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-> -	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
-> +	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(gc);
->   	unsigned long flags;
->   	u32 pin_mask = 1 << (31 - gpio);
->   
->   	spin_lock_irqsave(&cpm1_gc->lock, flags);
->   
-> -	__cpm1_gpio32_set(mm_gc, pin_mask, value);
-> +	__cpm1_gpio32_set(cpm1_gc, pin_mask, value);
->   
->   	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
->   }
->   
->   static int cpm1_gpio32_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
->   {
-> -	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-> -	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
-> -	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
-> +	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(gc);
-> +	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
->   	unsigned long flags;
->   	u32 pin_mask = 1 << (31 - gpio);
->   
->   	spin_lock_irqsave(&cpm1_gc->lock, flags);
->   
->   	setbits32(&iop->dir, pin_mask);
-> -	__cpm1_gpio32_set(mm_gc, pin_mask, val);
-> +	__cpm1_gpio32_set(cpm1_gc, pin_mask, val);
->   
->   	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
->   
-> @@ -591,9 +586,8 @@ static int cpm1_gpio32_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
->   
->   static int cpm1_gpio32_dir_in(struct gpio_chip *gc, unsigned int gpio)
->   {
-> -	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
-> -	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(&mm_gc->gc);
-> -	struct cpm_ioport32b __iomem *iop = mm_gc->regs;
-> +	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(gc);
-> +	struct cpm_ioport32b __iomem *iop = cpm1_gc->regs;
->   	unsigned long flags;
->   	u32 pin_mask = 1 << (31 - gpio);
->   
-> @@ -610,19 +604,16 @@ int cpm1_gpiochip_add32(struct device *dev)
->   {
->   	struct device_node *np = dev->of_node;
->   	struct cpm1_gpio32_chip *cpm1_gc;
-> -	struct of_mm_gpio_chip *mm_gc;
->   	struct gpio_chip *gc;
->   
-> -	cpm1_gc = kzalloc(sizeof(*cpm1_gc), GFP_KERNEL);
-> +	cpm1_gc = devm_kzalloc(dev, sizeof(*cpm1_gc), GFP_KERNEL);
->   	if (!cpm1_gc)
->   		return -ENOMEM;
->   
->   	spin_lock_init(&cpm1_gc->lock);
->   
-> -	mm_gc = &cpm1_gc->mm_gc;
-> -	gc = &mm_gc->gc;
-> -
-> -	mm_gc->save_regs = cpm1_gpio32_save_regs;
-> +	gc = &cpm1_gc->gc;
-> +	gc->base = -1;
->   	gc->ngpio = 32;
->   	gc->direction_input = cpm1_gpio32_dir_in;
->   	gc->direction_output = cpm1_gpio32_dir_out;
-> @@ -631,7 +622,17 @@ int cpm1_gpiochip_add32(struct device *dev)
->   	gc->parent = dev;
->   	gc->owner = THIS_MODULE;
->   
-> -	return of_mm_gpiochip_add_data(np, mm_gc, cpm1_gc);
-> +	g->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
-> +	if (!gc->label)
-> +		return -ENOMEM;
-> +
-> +	cpm1_gc->regs = devm_of_iomap(dev, np, 0);
-> +	if (IS_ERR(cpm1_gc->regs))
-> +		return PTR_ERR(cpm1_gc->regs);
-> +
-> +	cpm1_gpio32_save_regs(cpm1_gc);
-> +
-> +	return devm_gpiochip_add_data(dev, gc, cpm1_gc);
->   }
->   
->   #endif /* CONFIG_8xx_GPIO */
 
