@@ -1,73 +1,152 @@
-Return-Path: <linuxppc-dev+bounces-3313-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3314-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFD99CFBF9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 02:27:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F66E9CFCE9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Nov 2024 07:38:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xqx8N0Wk5z3bbT;
-	Sat, 16 Nov 2024 12:27:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xr43B52j4z30PJ;
+	Sat, 16 Nov 2024 17:38:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731720451;
-	cv=none; b=kIHNXC76Ah/7NlAOhYtk2AvoZ4kK+pwAc2V5g6QMWgrUDwtGDsM1SMi9sktSzLz/mq6nK5ogJcZTiq6SUA4FNSsJ5QQ6O/mj/6qqVejLYObr7znM7L06tu1iJ3ppkAJ9FP74+yUDsRua40fZhj7/sn7CuCn+vnymQFmj4T/wtREntc0GL0NebfK7fXcehHNAcrfT/gV7Sq3MnfHPqgmFra2oqC+rJPcJ8yTatXK+W/43DoN3L+AvaTDwq1LQ/qedVt+YnkKDDZsTihWClRONgEL2guhi4ndyz/zrHEE2AH74cICzWPej9hRUu0pQZUU9RQhjj+Z+gr8gaGyhLTOzvQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.12.242.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731739110;
+	cv=none; b=O9Q/g/RBRXx8knGZcE8OE6TN1nXZv9UiFXgJanYGwsiXN0jb0mQNkbCSVapbndFIZ6LokhZJlJ4fwtUzHhzFPg82o6KQfuY4vDrDuCZCSiPXFGlD1ojTdlSxAS85EmMAGONW8x1cs3XGcF8URY0pJZ7Tz8fApDbxVKZ8y6hFTnn9NTFjONmYV+Dn1CIRdum7IM4YYw0X4lwjouj9TiTWw4CoW+DvH4rvVCzRvF3gf9eYj/kpdmFrOZqipt3v1Ddnd5z7a5ei82bC59z7EO5ykbXMVbe7uyeaTv9B28+I9kWxFtmBQlpKB5i3ibZllPTilSdJcpjXTVFnWzKvDvbxYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731720451; c=relaxed/relaxed;
-	bh=CVYMo6RE4YtZC72bkP/PJmu2mQS4HXZjPFfcPWBRsOU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Czcu6wjd5HEwkprZbQAIYEcYPDuMmzAV8AGO3/pzDGY9j0Qd2d6Y8NHr0K5iDdxgCUEWp9a5pZDfdU2VubW5i1k9efqaCSryuOL3d2KXjE1icBxqxY9Zvjv5ZOHBEM5/+WRfTbVxemRLTEhoWEkgMheWoKeMrMDIFjw5go0eTn9aMB50WL2Z5P0+ieYJ0WVupWg1jR5c6UtTzR1+14RaQLXntJRvVVVNeEF4Xktw6Zo4v55z4oH9BE+q8HuFmqTdhkRwdUqSVlZDVJa3MipbbO2tojvizzCCm0yjssvifSdcF8jA8UmgDAB9d6dH/beKHPFXduByyE9IcBbxAiShwA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=O40tbmew; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1731739110; c=relaxed/relaxed;
+	bh=1GOO379j5kHelQgT13xeDCIW+pFPJCeiM7WSIuvag78=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y4xZjkBSg9LiqdDEzZv2mMpf0OdQTM/Kw5lVJheV4Pr8XAHClE3T2wPXyC1gMmbHj8xjqnZIhuPJgwIOKcUVwQ+ugUYuex9DdcbWYnRm2C3XtFdhhK93XjBu4BWoNJmqngeVB9JoY/3JeN59LPaiOEwyliCCYnbMULWUDYYTKT7NBYRH2jTAapTd23iELtwrXP57xllAop+t1Z4uw3Dwl+1tRIscQcQu9JJJzjMdqMiRjElWnfZTeM2QluQW3lGyMtD1nD9orKKVuWy/eo7saajKjGBO3UWDSKzepRMzL3S3RPaOJYYWfsBxaFpYuwh09ZFJs1iQbf7L9J+VNrWv+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=mL98MjzV; dkim-atps=neutral; spf=pass (client-ip=80.12.242.18; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org) smtp.mailfrom=wanadoo.fr
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=O40tbmew;
+	dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=mL98MjzV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.18; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1878 seconds by postgrey-1.37 at boromir; Sat, 16 Nov 2024 17:38:27 AEDT
+Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xqx8L2tqNz3bZR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 12:27:29 +1100 (AEDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-a9ef275b980so223053566b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 17:27:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1731720444; x=1732325244; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CVYMo6RE4YtZC72bkP/PJmu2mQS4HXZjPFfcPWBRsOU=;
-        b=O40tbmew1urMk6RQ74R2K0YFNXMno4N1svxBOTqCJ/4XEgvBZ/V+DvAeyLidXYKwqL
-         U64P6b++towAzBOEQwwfAJ2hZ70CQtsVqWUYJX9D/ta6neVM47KLbjgpxymoAW35xhWM
-         76Ef85c7gcSiI12oEYbxOE/29xaT9YqaJL1OY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731720444; x=1732325244;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CVYMo6RE4YtZC72bkP/PJmu2mQS4HXZjPFfcPWBRsOU=;
-        b=F4pHeIwqRE7rdHoU2ODCpQl5iJFZ5UKCygPIURYE5PvuirRHV7U+aBYciDTcN+ddKc
-         txZU1klcLDyv4j/faveanisXPs0N4rCNOxG3gE1+4E0KcPMDnHudI9WRDIOf62jcfctN
-         3gAJtz11bJUHYckU6lf6Kkkg7OhsBXN45GknsSWXvNtG/8vQE5P1rjtZ5kjlqlxjsypi
-         Lf2ca9DJvwBGkg+vtTi/m1xRUOSPaQPmyLzkLctSCfZ/MXcMH+EMmwMMO0lbDpkI/oJx
-         mB4ua28pDHf3KPNJ3P5RqJTt2ezVC4eigSdMykKZF+7YqIseeIP8boL8AukbmShXHMsb
-         xfyw==
-X-Forwarded-Encrypted: i=1; AJvYcCUE1ccGdTgU1M0VezeMgHHxHVu2i3ornKbSlnTWv7ir/AiQNuM+ruJz+SdqIH8LGknK5p2Hol6FCczqtko=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwQ0DHyaVbzTepBTWwfbEVWObR8EZtEFhmo5SeKSuRrfn6lk9Vs
-	J9kQdg43r4dlrWu1tscRekY4TpHn/mXbYv0+zBg94+T1Ie7OL71iWobPXTMoXpDFLBP6DLPd7is
-	tpRY=
-X-Google-Smtp-Source: AGHT+IEmWJByJlWcwtDHr0HBWabij54HEoTf27CEdPG0ZS/ceDuVH3FQ3jHXu0V9pdijIY1sJMj+yA==
-X-Received: by 2002:a17:907:9623:b0:a9e:b093:2422 with SMTP id a640c23a62f3a-aa483508b15mr389104566b.48.1731720443670;
-        Fri, 15 Nov 2024 17:27:23 -0800 (PST)
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20dfffc2esm241018366b.124.2024.11.15.17.27.22
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Nov 2024 17:27:23 -0800 (PST)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9e44654ae3so201218566b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Nov 2024 17:27:22 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVhNFqO76tODiMtK85YeP1u4y18NU9dK80rfcE4RPLZibW26tiQvz2FXa0/ZgMYdKu1U90XY43+v44fTHw=@lists.ozlabs.org
-X-Received: by 2002:a17:907:7f8a:b0:a9a:e91:68c5 with SMTP id
- a640c23a62f3a-aa483454536mr357189766b.33.1731720442701; Fri, 15 Nov 2024
- 17:27:22 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xr43750QCz30DL
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Nov 2024 17:38:26 +1100 (AEDT)
+Received: from localhost.localdomain ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id CBwItlkEVyQmhCBwItrt0n; Sat, 16 Nov 2024 07:06:02 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1731737162;
+	bh=1GOO379j5kHelQgT13xeDCIW+pFPJCeiM7WSIuvag78=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=mL98MjzVZSShtzisX9zbjDjIb7KE72buAzIx9jorkgCEIlxacBGBiKDqnznYupede
+	 vEhaEvssP8Otw+abSwd4UipThVl5qw3v6w8RixuAXgrl/p9FBRiYmldRfZZljgK0OD
+	 FX0UB9px2S9OjhfpAHnQggpK1elWNH8UBNVIvO5x+AsAiYtyf4oGwInz8jFtqh7DDu
+	 OMNwG4GURPpChqfcVzLVhpacwz+NEqWf9xIvmwF/gxmCGy7nRrRkaf4TeGrlu6c0Ll
+	 o9NHONgP90fIf7c6ZsyFFLJ/v2i9NFywx5+jxHfxBiA3eBfpU5DKAu5obNXbrUQywu
+	 rI95zY+eQlUcg==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 16 Nov 2024 07:06:02 +0100
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: eahariha@linux.microsoft.com
+Cc: James.Bottomley@HansenPartnership.com,
+	Julia.Lawall@inria.fr,
+	agordeev@linux.ibm.com,
+	airlied@gmail.com,
+	akpm@linux-foundation.org,
+	andrew+netdev@lunn.ch,
+	anna-maria@linutronix.de,
+	ath11k@lists.infradead.org,
+	axboe@kernel.dk,
+	bcm-kernel-feedback-list@broadcom.com,
+	borntraeger@linux.ibm.com,
+	catalin.marinas@arm.com,
+	ceph-devel@vger.kernel.org,
+	christian.gmeiner@gmail.com,
+	christophe.leroy@csgroup.eu,
+	cocci@inria.fr,
+	coreteam@netfilter.org,
+	daniel@zonque.org,
+	davem@davemloft.net,
+	dick.kennedy@broadcom.com,
+	dri-devel@lists.freedesktop.org,
+	edumazet@google.com,
+	etnaviv@lists.freedesktop.org,
+	florian.fainelli@broadcom.com,
+	gor@linux.ibm.com,
+	gregkh@linuxfoundation.org,
+	haojian.zhuang@gmail.com,
+	hca@linux.ibm.com,
+	horms@kernel.org,
+	idryomov@gmail.com,
+	intel-xe@lists.freedesktop.org,
+	james.smart@broadcom.com,
+	jeroendb@google.com,
+	jikos@kernel.org,
+	jinpu.wang@cloud.ionos.com,
+	jjohnson@kernel.org,
+	joe.lawrence@redhat.com,
+	johan.hedberg@gmail.com,
+	jpoimboe@kernel.org,
+	kadlec@netfilter.org,
+	kuba@kernel.org,
+	kvalo@kernel.org,
+	l.stach@pengutronix.de,
+	linux+etnaviv@armlinux.org.uk,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-wireless@vger.kernel.org,
+	linux@armlinux.org.uk,
+	linuxppc-dev@lists.ozlabs.org,
+	live-patching@vger.kernel.org,
+	louis.peens@corigine.com,
+	lucas.demarchi@intel.com,
+	luiz.dentz@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	maddy@linux.ibm.com,
+	marcel@holtmann.org,
+	martin.petersen@oracle.com,
+	mbenes@suse.cz,
+	mpe@ellerman.id.au,
+	mripard@kernel.org,
+	naveen@kernel.org,
+	netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	nicolas.palix@imag.fr,
+	npiggin@gmail.com,
+	obitton@habana.ai,
+	ogabbay@kernel.org,
+	oss-drivers@corigine.com,
+	pabeni@redhat.com,
+	pablo@netfilter.org,
+	perex@perex.cz,
+	pkaligineedi@google.com,
+	pmladek@suse.com,
+	rjui@broadcom.com,
+	robert.jarzmik@free.fr,
+	rodrigo.vivi@intel.com,
+	roger.pau@citrix.com,
+	sbranden@broadcom.com,
+	shailend@google.com,
+	simona@ffwll.ch,
+	svens@linux.ibm.com,
+	thomas.hellstrom@linux.intel.com,
+	tiwai@suse.com,
+	tzimmermann@suse.de,
+	xen-devel@lists.xenproject.org,
+	xiubli@redhat.com
+Subject: Re: [PATCH v2 02/21] coccinelle: misc: Add secs_to_jiffies script
+Date: Sat, 16 Nov 2024 07:05:40 +0100
+Message-ID: <20241116060541.5798-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241115-converge-secs-to-jiffies-v2-2-911fb7595e79@linux.microsoft.com>
+References: <20241115-converge-secs-to-jiffies-v2-2-911fb7595e79@linux.microsoft.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,61 +159,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <cover.1730166635.git.jpoimboe@kernel.org> <82cbb9983fef5ecf6f1cb33661e977172d40a7e6.1730166635.git.jpoimboe@kernel.org>
- <20241029032735.pw3bg64bpneqnfhk@treble.attlocal.net> <76bb85ceeb854e3ab68d87f846515306@AcuMS.aculab.com>
- <20241115230653.hfvzyf3aqqntgp63@jpoimboe>
-In-Reply-To: <20241115230653.hfvzyf3aqqntgp63@jpoimboe>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 15 Nov 2024 17:27:06 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgLCzEwa=S4hZFGeOPjix-1_fDrsqR-QLaBcDM-fgkvhw@mail.gmail.com>
-Message-ID: <CAHk-=wgLCzEwa=S4hZFGeOPjix-1_fDrsqR-QLaBcDM-fgkvhw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/6] x86/uaccess: Avoid barrier_nospec() in 64-bit __get_user()
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: David Laight <David.Laight@aculab.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Andrew Cooper <andrew.cooper3@citrix.com>, 
-	Mark Rutland <mark.rutland@arm.com>, "Kirill A . Shutemov" <kirill@shutemov.name>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, 15 Nov 2024 at 15:06, Josh Poimboeuf <jpoimboe@kernel.org> wrote:
->
-> It's sad that __get_user() is now slower than get_user() on x86, it kind
-> of defeats the whole point!
+Le 15/11/2024 à 22:26, Easwar Hariharan a écrit :
+> Suggested-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>   scripts/coccinelle/misc/secs_to_jiffies.cocci | 21 +++++++++++++++++++++
+>   1 file changed, 21 insertions(+)
+> 
+> diff --git a/scripts/coccinelle/misc/secs_to_jiffies.cocci b/scripts/coccinelle/misc/secs_to_jiffies.cocci
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..af762b1c0aac8f044f21150bfaafd9efc834ee87
+> --- /dev/null
+> +++ b/scripts/coccinelle/misc/secs_to_jiffies.cocci
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +///
+> +/// Find usages of:
+> +/// - msecs_to_jiffies(value*1000)
+> +/// - msecs_to_jiffies(value*MSEC_PER_SEC)
+> +///
+> +// Confidence: High
+> +// Copyright: (C) 2024 Easwar Hariharan Microsoft
+> +//
+> +// Keywords: secs, seconds, jiffies
+> +//
+> +
+> +@@ constant C; @@
+> +
+> +- msecs_to_jiffies(C * 1000)
+> ++ secs_to_jiffies(C)
+> +
+> +@@ constant C; @@
+> +
+> +- msecs_to_jiffies(C * MSEC_PER_SEC)
+> ++ secs_to_jiffies(C)
+> 
+Hi,
 
-Well, honestly, we've been trying to get away from __get_user() and
-__put_user() for a long long time.
+	@@ constant C =~ "000"; @@
 
-With CLAC/STAC, it's been probably a decade or two since __get_user()
-and friends were actually a worthwhile optimization, so let's just
-strive to get rid of the ones that matter.
+	* msecs_to_jiffies(C)
 
-So I think the thing to do is
+also spots things like msecs_to_jiffies(1000)
 
- (a) find out which __get_user() it is that matters so much for that load
+I'm not sure that coccinelle is enable to capture part of the regex to automate the removal of the 000 when converting from ms to s.
 
-Do you have a profile somewhere?
+Just my 2c,
 
- (b) convert them to use "unsafe_get_user()", with that whole
-
-                if (can_do_masked_user_access())
-                        from = masked_user_access_begin(from);
-                else if (!user_read_access_begin(from, sizeof(*from)))
-                        return -EFAULT;
-
-     sequence before it.
-
-And if it's just a single __get_user() (rather than a sequence of
-them), just convert it to get_user().
-
-Hmm?
-
-                Linus
+CJ
 
