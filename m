@@ -1,56 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-3355-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3359-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 085539D0362
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2024 13:04:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5AE9D0379
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2024 13:08:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XrqDg5LY4z2yD5;
-	Sun, 17 Nov 2024 23:04:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XrqKg3rmXz2yDr;
+	Sun, 17 Nov 2024 23:08:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731845059;
-	cv=none; b=OSztysuQuvlF+/yoOycMh9fzG2uyMXYtSAtQTrXFkL+GDSRGzLjFrOSyKjPYqSA62o3yzgzsrUDpoFt8fwy3jjFvMywrz5gw4eD8xkrXiuBizbm+IXy/YmXqFMNEOyOmYnqFtrZU/DE0qcy539NMOC0EFy9gVQVq9jZQRxsu/buzHz5yzybbGdoxh5QZob+3/+6ecMCyS7ccI2eO6VXQBLt6JzQkKvUcXPVGDdg9ooMmOiH48SWqhfE360stXbljEoKk1d5TzOVOmZ169Lns5YYpWKuQCMvhT0Va4pQN7CSoWS7wIkF9YXCYwxHbSno+rNMAhXlamBMmlRqCbQw3ZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731845319;
+	cv=none; b=eXd1SWW1v6iTY6CZVn30Et39TBd4yK/XTHydb7gSesTonBM6gIzRFj96izYJz8t4pwT1kGSBd1JfZpSFCLzpqazvm8VXZ1zk90AfqvGaK0TCs3R3XukDRqOmYnYLm5Za+/DIRP97NxEIDmc2MOSYtOytuK2xLaA2k2+I4FH6cIATlA7MiHzySzvhSJDCGvwB/6TsdfMXlcWRWwak1lolxtftSbNOTaf/6Tj35B6tfPgRL/tJiFOVpawVD7QFcf8xtQCer0OGzQ5GcECg+hUxURW5OaKQZ2e/CZl9mlRrO1vNIEe/3cVcEIKE7NVXp2MhBUvRxjG4gY9cMerOrKtENA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731845059; c=relaxed/relaxed;
-	bh=ZjP95IJGwmeLHgHQzxXL+JxzJejZMHgkGif9iRHizLk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=oAm6BrnB9axbSwxQj2YBxvEJImSrCcDUUOdI1XbrgsnEljXWmWuJwnDD4diAM7T8WLxILB5+HZ10pdXmn8a4T2IAXP05bB+93d6Zj1HDTxXOffKCeosDD2wVWZ50nPs8yN92AOQZh1sMiYHAKqFDbFHMxRtzPVwxfJwUGRYaB7L3RyLemaNC/8HXiBmCaiQBB8YesXZFHdbCm8LPfAPYFn3R0SpkVoAHU7m3SeHr/MEu/lXmFEkOvTI8xPhRQC8pSEzCKEC5UoMuEDNJJzNkOumqppEHP12eL16ZL/zcI3PGyw82q//RM21VcxAoVe2OJwCCRDE29GtBm9z3SKYfbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NB4RgANg; dkim-atps=neutral
+	t=1731845319; c=relaxed/relaxed;
+	bh=ZxjmofktqP+h19RoqLD80A6n6Rgg6iMYO3CZ43bpgOQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GrrS6chkfbhbYZXYRV6XnH0UeVcnVZXhU6mCe2p28bgGwm4hb/7ktJ225RvTH1IW5Qv8r4IIA0h/Y609ccAIc9Ib2cPqraXk4mUbTfeKqy9GiK+Czc2gzpz2nR+EP1gN5BbPfsPbwybDsoXINMeVI9RTF0oIUvHiyiZE9yVpgQiAlMJGlZDZRhns4m0CL970UH8UjosYvhrO3FzuZxsw1e51NxTiWZAZAa53pq/ccsgqOtPfshaI4hPmukjnPLGqPc6Y6vv/XMFjNRNzEn97u1BfiupFoeb3BRpt33xskm2le7NkorJzSRsgrMuWOyIozu4TmQtmMM5ApPyqHZIxmw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Vyj/UwD4; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NB4RgANg;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Vyj/UwD4;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XrqDf3hgLz2xs0
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2024 23:04:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XrqKf5879z2yDj
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2024 23:08:38 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1731845055;
-	bh=ZjP95IJGwmeLHgHQzxXL+JxzJejZMHgkGif9iRHizLk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=NB4RgANg1E582fTLRZTFf1d/OmbfljMvX5BWOnX2VH6LC6sVQbfbOdqLFSzJOzCd9
-	 RSrUQYQZFdnEVLERVCpwUrbdk12XQtkk/XQMrg4OtYUWu4R9RfbfznBygC1qohu3Qh
-	 SnPchaAiYjGFjPMM2i9y5MhKEXsFRfIcTBSW9biurEb5KNhhl8Gb0MFUl2jfWFWSs8
-	 a2AK3HyD73H5N8SgmH7dUi8EHOBlh68g0d5aXyWGSxG3dQAAx1NgChyhnzPzTVQjwn
-	 Nu7RVpkEkGHmQu8pTHH/iO+eUdGnLK5QZQxXtbDqX7mQiEHF+NVkm0hi0kjdqgOD70
-	 l/AJFlE20QlOw==
+	s=201909; t=1731845315;
+	bh=ZxjmofktqP+h19RoqLD80A6n6Rgg6iMYO3CZ43bpgOQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Vyj/UwD4q1XzhdVaQ8hX5LCKvemZxst/sv3OhOht9p714Z5/TOM8+D+tSCMdfxLN1
+	 DN4QDmA0TPqEbdq9Qa7ZKFwittBMlYOyVBDif+o7U39XGOiwpnkDxZddLeOAlBuZth
+	 LFElXNFkRMXig/XecEFxqnEdjlpcThQkYVXqXMyi+MHAn+/O1IrNzzWiM+J+4s7Srv
+	 0dG1GEGBEqaHVg961dBhgWS9XCnr4oD1B/G9u/7C98Sz8s+wxw6RdUaCHaVknrUNaM
+	 dpiyYrXU4G+KeovwuWDpkxepWRC8qiIDfU0906OAr1JULUYyqqQh6E2tEIC3pdWcB9
+	 YwlpLtf4KKmvQ==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XrqDb1yprz4xcw;
-	Sun, 17 Nov 2024 23:04:15 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Amit Machhiwal <amachhiw@linux.ibm.com>
-Cc: kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Vaibhav Jain <vaibhav@linux.ibm.com>, linux-kernel@vger.kernel.org
-In-Reply-To: <20241028101622.741573-1-amachhiw@linux.ibm.com>
-References: <20241028101622.741573-1-amachhiw@linux.ibm.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Add Power11 capability support for Nested PAPR guests
-Message-Id: <173184457525.887714.6106755723297073390.b4-ty@ellerman.id.au>
-Date: Sun, 17 Nov 2024 22:56:15 +1100
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XrqKb4j4cz4wbr;
+	Sun, 17 Nov 2024 23:08:35 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Gautam Menghani <gautam@linux.ibm.com>, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] KVM: PPC: Book3S HV: Mask off LPCR_MER for a vCPU
+ before running it to avoid spurious interrupts
+In-Reply-To: <20241028090411.34625-1-gautam@linux.ibm.com>
+References: <20241028090411.34625-1-gautam@linux.ibm.com>
+Date: Sun, 17 Nov 2024 23:08:38 +1100
+Message-ID: <87jzd2xdtl.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,29 +66,22 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 28 Oct 2024 15:46:22 +0530, Amit Machhiwal wrote:
-> The Power11 architected and raw mode support in Linux was merged via [1]
-> and the corresponding support in QEMU is pending in [2], which is
-> currently in its V6.
-> 
-> Currently, booting a KVM guest inside a pseries LPAR (Logical Partition)
-> on a kernel without [1] results the guest boot in a Power10
-> compatibility mode (i.e., with logical PVR of Power10). However, booting
-> a KVM guest on a kernel with [1] causes the following boot crash.
-> 
-> [...]
+Gautam Menghani <gautam@linux.ibm.com> writes:
+> Running a L2 vCPU (see [1] for terminology) with LPCR_MER bit set and no
+> pending interrupts results in that L2 vCPU getting an infinite flood of
+> spurious interrupts. The 'if check' in kvmhv_run_single_vcpu() sets the
+> LPCR_MER bit if there are pending interrupts.
 
-Applied to powerpc/topic/ppc-kvm.
+Applied to powerpc/fixes.
 
-[1/1] KVM: PPC: Book3S HV: Add Power11 capability support for Nested PAPR guests
-      https://git.kernel.org/powerpc/c/96e266e3bcd6ed03f0be62c2fcf92bf1e3dc8a6a
+[1/1] KVM: PPC: Book3S HV: Mask off LPCR_MER for a vCPU before running it to avoid spurious interrupts
+      https://git.kernel.org/powerpc/c/a373830f96db288a3eb43a8692b6bcd0bd88dfe1
 
 cheers
 
