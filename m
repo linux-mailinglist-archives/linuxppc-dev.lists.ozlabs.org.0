@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-3360-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3372-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B18F9D0383
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2024 13:25:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D89019D0397
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2024 13:26:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xrqhn2jFyz2yGT;
-	Sun, 17 Nov 2024 23:25:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xrqj66fdLz2yVV;
+	Sun, 17 Nov 2024 23:25:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731846313;
-	cv=none; b=OL6iDveNcRxZY8voyhBXPZNtgvnp6A4ZdCwGVr9ND4uYd4lv7r63R5sZhZDXmt4raJxqxABI4VRDHJ6JPuk++3vVfePoWNAHUdmXj4gJxHqFOFVp+Jp/Sis/kLRWiuFVoFsnQAjg0l5dsUEBWVJ0jp8f6QKKi1pkgVlj2rHv/anZLt1kwVB9jSUW7EhAr686/MRc4SSAzzaNYW+K17lVuNvgKrd6eBe1RWdimpzGP5VuvvAPjHeHdUgPz665niqv/HYMOw2eQSI67qOyAGq4krDl3/6OQW65uamLpP4qDNhg/XgeDDWYyafke84Yr17URCXZX8ldVw2j/jrJDS0+QQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731846330;
+	cv=none; b=V+NWVN/mPHNZxPHQSXw4YTJTHQXEjf7Xnm+nDtNAJrbgvmK/V767azUDXf9QcwavPW8UAsZgFhujusk1IggLlblQAGchHTQ4hxtWGUCPvtMDeYyz/wP3S3iI9vTn+BTSAjzeOvMLQNpBj2G+KoGg+YPy4h9qJuxNrFfYleTMioqavZeTcIiv9gAbTPjXUxWDmBKxHBPyA4vl64hkJKsHxnWP7qGakC84JpkY8HVnNrpmM3d5E36XucH/HdKUQRmXpTjTC6tgl1RaIZnI4kq9JluOILWkHoU2uebYaE8jK8sQgAHolxksBlxSDVcBm3Ld1V5h1RWDeL67/gg4X/RvHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731846313; c=relaxed/relaxed;
-	bh=ZwnTGlAOhqOsDts/gSmhFHjUFoMKSdv4VzJ6Hwaq0no=;
+	t=1731846330; c=relaxed/relaxed;
+	bh=s1pfaH78Q4Z5nTxYQuW66jgoyL6wLcHOJH/KOWNhcEs=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=bet11LhGXyKaC9j+0Ml0/uqlTqyFXRmY7DJwU5AyYOkWHjfPWh4otZ1YWvnZEZUTDnMM4Tv1EqgKF1aj2Gn8iEzcfvjmR0R8C4Q2O+59JwPS7FELOT0jJYlq7oIyKqa+pdbOdHwypQ/0+fSqdPJ0HoaHTq+aBeS0Ljh0znirnyCPPVkRfiOpER11FGJk1mT6bi6rm3RWU9uLKL1rtccFBvxbVPvO1wEwAqwsiTPPE2LHi5XTPT8zTnPUoWpHDb9yciCY+jErLXLMHRr9GQ5f/79Sbt14+IXxfJjcZ4CRXHamNuNROp+PHyochnX2X5FDIP+8HF//eEicCX+LnabS3w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fD9cObO+; dkim-atps=neutral
+	 MIME-Version:Content-Type; b=hpf2+EqGdsCLgQgwa/V5klJjF/K/x2hfIqwF05vNXRVwLAzdfKsevO3KO44qVzU4qQH8Nvfg2ViIMeHhwiBd8XReD02ieeoi+9ITEalsQQZACI+dSulenWcIsJmsTGFQlL2EU45G122n8tr1dSJiQaOgEjsGwcX3WFOmtXGG7/AOBq5eB8Q8n0tmKixtW+SoZbvxXfcH4oMaCetXluIySlzBt1g/ErroWzaaZ8Pe4Fespp9d4Gg0gsiTpdr6h/9wFaX6ue4aMoW1di6oFnBQtVPjhRAx4q0B8dbHq3wf0Iv9HksSqJHce9AGZZSJ/NxvtlGw1PB+DkYlrUdr20MgzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=m6AEAp4/; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=fD9cObO+;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=m6AEAp4/;
 	dkim-atps=neutral
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xrqhm3NcBz2yF7
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2024 23:25:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xrqj63jFTz3bhs
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2024 23:25:30 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1731846309;
-	bh=ZwnTGlAOhqOsDts/gSmhFHjUFoMKSdv4VzJ6Hwaq0no=;
+	s=201909; t=1731846327;
+	bh=s1pfaH78Q4Z5nTxYQuW66jgoyL6wLcHOJH/KOWNhcEs=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=fD9cObO+kvzMnKLLcjXuemEJL1Jgv/Eek7eh4bLSECXhKgl4lMnVoJM2ix+7ipnLn
-	 jlGKdluyz83UDCpkTn2xxOlu8CYKQnn0pYhAqeoLlhp7FGT/MpSI8KEPgPlsh0X3BY
-	 Wq+OfImBZyB6i8TO41Vq0g7WGGv6WANqD3E48kjF+yQ2gd8Qlxdgls8dpRi60WgOpY
-	 TB0d5n29yUPjiTN1kUvYNjoM6fpaCcuLod4noJpHUrSv9UeHb4QR22O3u0egG08LU8
-	 VpjrWTDakzk9s9cozEH9QeA/q15BQf6gqpcvj0JxqaUV313++vQARpSfiENgcw7LRm
-	 m0MR0VNmP+bwA==
+	b=m6AEAp4/cGF+UAYnFVvSmfXDnNlhkYWEh+RyaC89VBTaRl/4Co/F2iFC8QcEkCmF0
+	 JjaX/Jh6NhqQArpyjbEs8gp3vdjmMaVNlJmsGGVW1B/mktIssBNx6NHVdNYfcWbKMM
+	 RtWEMJZIgw/CMAC7Ziuog0jODSqFoTmsSYUbWjGWbUQ6B4Mv3Z/A5Jmx8v9/oR+hqT
+	 a0AfSFCjPGQUbLLFnp1/z9NKTCeDxMcNYfdevnW078kQPA4bwNNGTX4sb4J8X2NMei
+	 MtVbgqFA43yPRGHk010xk5T6l+bMfCp6TUKJGNdrNAqjlM8qw1Ju+s/NC3U7ktoUYv
+	 qnlGhrHH8WZYg==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xrqhj2NKmz4xdT;
-	Sun, 17 Nov 2024 23:25:09 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xrqj33JF2z4xf0;
+	Sun, 17 Nov 2024 23:25:27 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, David Wang <00107082@163.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20241108162327.9887-1-00107082@163.com>
-References: <20241108162327.9887-1-00107082@163.com>
-Subject: Re: [PATCH 11/13] powerpc/irq: use seq_put_decimal_ull_width() for decimal values
-Message-Id: <173184539748.890800.13994461316487371816.b4-ty@ellerman.id.au>
+To: mpe@ellerman.id.au, Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com, peterx@redhat.com, groug@kaod.org, sshegde@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241024191232.1570894-2-mchauras@linux.ibm.com>
+References: <20241024191232.1570894-2-mchauras@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/xmon: symbol lookup length fixed
+Message-Id: <173184539762.890800.10077987479160659193.b4-ty@ellerman.id.au>
 Date: Sun, 17 Nov 2024 23:09:57 +1100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -70,15 +70,18 @@ X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, 09 Nov 2024 00:23:27 +0800, David Wang wrote:
-> Performance improvement for reading /proc/interrupts on arch powerpc
+On Fri, 25 Oct 2024 00:42:33 +0530, Mukesh Kumar Chaurasiya wrote:
+> Currently this cannot lookup symbol beyond 64 characters in some cases
+> like "ls", "lp" and "t"
+> 
+> Fix this by using KSYM_NAME_LEN instead of fixed 64 characters
 > 
 > 
 
 Applied to powerpc/next.
 
-[11/13] powerpc/irq: use seq_put_decimal_ull_width() for decimal values
-        https://git.kernel.org/powerpc/c/5b881c1f83792f5db421124171b06f1b8f1fe075
+[1/1] powerpc/xmon: symbol lookup length fixed
+      https://git.kernel.org/powerpc/c/b196db2f536645eda7684655f3fae913e33fda4b
 
 cheers
 
