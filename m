@@ -1,56 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-3363-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3391-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B6A9D0388
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2024 13:25:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400319D041D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2024 14:36:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xrqhp6SJCz2ywM;
-	Sun, 17 Nov 2024 23:25:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XrsH43NZbz2yXY;
+	Mon, 18 Nov 2024 00:36:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731846314;
-	cv=none; b=FP4Iphn5c+M29jJqkrRdMBjxmUtmPsyXY18zwYujn7iVhoqseF5G3kHAFYNBgbY8l2blE1pofPhXkxZqRp+naoBanmAHUl0Jz+TB/tj7codRZCyKg5Xy71AN/wjD+D/8sFnROW1uw9G/aNdZzzMinKjvscIlkCL0tq4zb0kp7lkWzU2zHFW1gHu/4qRgMYF2PB0Et7xBSaN6KzicNzTcbuDEVSg5iu9ce1jWJUAMPVI/4eB169Nf3m6KDPEkp6nZqBuA3Vm+t2PVVVIwhc7n/EkR1iS3x5gegWZxYNfw8vXTEcqWM7hvs6DnmV5dd8qkZw6a6pzK9aoeg27xU/sDxg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731850592;
+	cv=none; b=m4HO+5mr+MJYZUfW/u3z+W/8a9p6oUOh7RuYKukrzUoRWGRcGoLl4frJpVGAoxpPlnn6ejndIqldEC8RzqpJlu0q6lat5baMBg3rt6Lca6xiPNV7aurs1aVB8VSaOlEAJig9Zb5VEB88ON8ABM055SCB/LO+JLX1eZJoDzWyxknGg1/1e/henD4r+3+BmCTGXLJjtLKxaBWY3pTyVuCh8NqR0WkoFeHejUQUHUGY+n/X4VdgULSSIAa5KY/OWrZ01ROnh6o5u5T/a557Gk9ra5ohbPccrhpoVzEwwQoP3ErzWwm8jD85CHlWJQo/kSpaUTe4cu0kaXH5gjw+1IUsfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731846314; c=relaxed/relaxed;
-	bh=ZtVZjHZpNMLRUjQi5h35hHsNEqKCZhuH0S+3ozdVAic=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ldqHqGG0h61JXOW0nEkYZtfcLyxw60lqrYeuKVxGgTUVsAyviOf4oG0RC4xn47dnFUG94h/hyVXjHmA4mSA7FTpNv3+K/gBG0TUMSVgbevggG6fGdeV1rDmDYzEqRLMutI6Q36UHXfKc+VfKkIrt4FVuEOlO+7YOw3CQwz9X7318mugRhRtgL/ba8vPY5w6ZxFjzaUmj0L2T9IouhjoTopRkVXAAQbxh+DJzGq4WIcobnviawG0CISf4P6cQat4Ws4kqNXfo8CriZ5mmpFrnmdd5RHcXQPB8nSNmIT0J/WO4IgM9r/3jyz9utuOZpWEGzg9MsmdkWdyQAXyjNX1PNw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hSDV47H0; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1731850592; c=relaxed/relaxed;
+	bh=sPrf19kc7+LO7xSLmSlRMhOGFVSZNNSI0hI3auZl73k=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=RRY71XC3lPHMNkOsDu+XyyMnx2TweJc+l7iwfJsCFgzodEwdYmNyksfugNo0VysMt9VQtywUuV2u05ld4TvYiJZRL306hkrxLF4Tfn1E+vsTlFhN+0Qbu+BsR5Fg7DLjcMU20c0PYbSo8aRTVDMC5C44Ka54dS68530uSLfWyPlvITLYBOhhlHi3SydlpNSkqAfkAo2U25nJcOEaRJqRDAsLSa1zS83X3gOw0dr7LSXlNxR3LizPsrn4/8lX+bx0x27DDebj3FHLLTEZ+UmwFK8oIi0YDfxw31oXBQ4Zde+VEMZ0ut1Lrivaa8WygNMff8dA+tXAWHYXl5MDMVlmIA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=hSCYkGEz; dkim-atps=neutral; spf=pass (client-ip=115.124.30.131; helo=out30-131.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hSDV47H0;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=hSCYkGEz;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.131; helo=out30-131.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xrqhp0hK6z2yVj
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2024 23:25:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1731846311;
-	bh=ZtVZjHZpNMLRUjQi5h35hHsNEqKCZhuH0S+3ozdVAic=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=hSDV47H0eD+7XS/3nGedPptWFN9AhomQxWk2sNvmdaeUi5uvsKpJcOSDj6II2JPos
-	 Xua/MldRgW+De/0LMIn1cW7+mCyZuCI4rtTNooLvXMALcEHH33zb5hRmGLgmE1REXQ
-	 onMQEoQU8IqiKQ9M9EiAzxeUQbV7YOzpC800mG/esXdW+c148ufAHxLls/oR02x6YB
-	 fncbmELipMtjqabvH9U6Kt3x5Mei5UqTlfXtNzSNZ/O/h7rUDwP/OW7dNrFdlZvJfj
-	 1daXFx3yfbMgWD7AMzBkrNXOMFtY56fXINBItNbuL+TGfgtZFsIE+BwXqZueH3wHEc
-	 bwsLBlRPz/IZQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xrqhk73vWz4xdm;
-	Sun, 17 Nov 2024 23:25:10 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Naveen N Rao <naveen@kernel.org>, David Hunter <david.hunter.linux@gmail.com>
-Cc: julia.lawall@inria.fr, skhan@linuxfoundation.org, javier.carrasco.cruz@gmail.com
-In-Reply-To: <20240709143553.117053-1-david.hunter.linux@gmail.com>
-References: <20240709143553.117053-1-david.hunter.linux@gmail.com>
-Subject: Re: [PATCH] powerpc-km82xx.c: replace of_node_put with __free improves cleanup
-Message-Id: <173184539769.890800.11654652895579463795.b4-ty@ellerman.id.au>
-Date: Sun, 17 Nov 2024 23:09:57 +1100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XrsGx1QQQz2yGN
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 00:36:17 +1100 (AEDT)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1731850572; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
+	bh=sPrf19kc7+LO7xSLmSlRMhOGFVSZNNSI0hI3auZl73k=;
+	b=hSCYkGEzRulp+Te4QQd4RCLWpcVhgVP2qtQw+WxreIm4j3mWO43Y/Ul3s2HgVgsG3HrXCharUyeKg/PzAh9xcJD+ynvdSHanfZuL0tXuCxIUz3H1IJpbxIaHMSaSpcukk/NHHeE4rxKtWz+HWftovffYVbylXtPeljYu2u6CmMU=
+Received: from 30.246.162.170(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WJZaXPt_1731850569 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sun, 17 Nov 2024 21:36:10 +0800
+Message-ID: <9810fadd-2b0b-410b-a8a6-89ddf7a103b9@linux.alibaba.com>
+Date: Sun, 17 Nov 2024 21:36:08 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,27 +50,170 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] PCI/AER: Report fatal errors of RCiEP and EP if
+ link recoverd
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+To: "Bowman, Terry" <terry.bowman@amd.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ bhelgaas@google.com, kbusch@kernel.org, Lukas Wunner <lukas@wunner.de>
+Cc: mahesh@linux.ibm.com, oohall@gmail.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com
+References: <20241112135419.59491-1-xueshuai@linux.alibaba.com>
+ <20241112135419.59491-3-xueshuai@linux.alibaba.com>
+ <a76394c4-8746-46c0-9cb5-bf0e2e0aa9b5@amd.com>
+ <22d27575-fc68-4a7f-9bce-45b91c7dfb98@linux.alibaba.com>
+In-Reply-To: <22d27575-fc68-4a7f-9bce-45b91c7dfb98@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 09 Jul 2024 10:35:53 -0400, David Hunter wrote:
-> The use of the __free function allows the cleanup to be based on scope
-> instead of on another function called later. This makes the cleanup
-> automatic and less susceptible to errors later.
-> 
-> This code was compiled without errors or warnings.
+
+
+在 2024/11/16 20:44, Shuai Xue 写道:
 > 
 > 
-> [...]
+> 在 2024/11/16 04:20, Bowman, Terry 写道:
+>> Hi Shuai,
+>>
+>>
+>> On 11/12/2024 7:54 AM, Shuai Xue wrote:
+>>> The AER driver has historically avoided reading the configuration space of
+>>> an endpoint or RCiEP that reported a fatal error, considering the link to
+>>> that device unreliable. Consequently, when a fatal error occurs, the AER
+>>> and DPC drivers do not report specific error types, resulting in logs like:
+>>>
+>>>    pcieport 0000:30:03.0: EDR: EDR event received
+>>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
+>>>    nvme nvme0: frozen state error detected, reset controller
+>>>    nvme 0000:34:00.0: ready 0ms after DPC
+>>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+>>>
+>>> AER status registers are sticky and Write-1-to-clear. If the link recovered
+>>> after hot reset, we can still safely access AER status of the error device.
+>>> In such case, report fatal errors which helps to figure out the error root
+>>> case.
+>>>
+>>> After this patch, the logs like:
+>>>
+>>>    pcieport 0000:30:03.0: EDR: EDR event received
+>>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
+>>>    nvme nvme0: frozen state error detected, reset controller
+>>>    pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
+>>>    nvme 0000:34:00.0: ready 0ms after DPC
+>>>    nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
+>>>    nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
+>>>    nvme 0000:34:00.0:    [ 4] DLP                    (First)
+>>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+>>>
+>>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>>> ---
+>>>   drivers/pci/pci.h      |  3 ++-
+>>>   drivers/pci/pcie/aer.c | 11 +++++++----
+>>>   drivers/pci/pcie/dpc.c |  2 +-
+>>>   drivers/pci/pcie/err.c |  9 +++++++++
+>>>   4 files changed, 19 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+>>> index 0866f79aec54..6f827c313639 100644
+>>> --- a/drivers/pci/pci.h
+>>> +++ b/drivers/pci/pci.h
+>>> @@ -504,7 +504,8 @@ struct aer_err_info {
+>>>       struct pcie_tlp_log tlp;    /* TLP Header */
+>>>   };
+>>> -int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
+>>> +int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
+>>> +                  bool link_healthy);
+>>>   void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
+>>>   #endif    /* CONFIG_PCIEAER */
+>>> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+>>> index 13b8586924ea..97ec1c17b6f4 100644
+>>> --- a/drivers/pci/pcie/aer.c
+>>> +++ b/drivers/pci/pcie/aer.c
+>>> @@ -1200,12 +1200,14 @@ EXPORT_SYMBOL_GPL(aer_recover_queue);
+>>>    * aer_get_device_error_info - read error status from dev and store it to info
+>>>    * @dev: pointer to the device expected to have a error record
+>>>    * @info: pointer to structure to store the error record
+>>> + * @link_healthy: link is healthy or not
+>>>    *
+>>>    * Return 1 on success, 0 on error.
+>>>    *
+>>>    * Note that @info is reused among all error devices. Clear fields properly.
+>>>    */
+>>> -int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
+>>> +int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
+>>> +                  bool link_healthy)
+>>>   {
+>>>       int type = pci_pcie_type(dev);
+>>>       int aer = dev->aer_cap;
+>>> @@ -1229,7 +1231,8 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
+>>>       } else if (type == PCI_EXP_TYPE_ROOT_PORT ||
+>>>              type == PCI_EXP_TYPE_RC_EC ||
+>>>              type == PCI_EXP_TYPE_DOWNSTREAM ||
+>>> -           info->severity == AER_NONFATAL) {
+>>> +           info->severity == AER_NONFATAL ||
+>>> +           (info->severity == AER_FATAL && link_healthy)) {
+>>>           /* Link is still healthy for IO reads */
+>>>           pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
+>>> @@ -1258,11 +1261,11 @@ static inline void aer_process_err_devices(struct aer_err_info *e_info)
+>>>       /* Report all before handle them, not to lost records by reset etc. */
+>>>       for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
+>>> -        if (aer_get_device_error_info(e_info->dev[i], e_info))
+>>> +        if (aer_get_device_error_info(e_info->dev[i], e_info, false))
+>>>               aer_print_error(e_info->dev[i], e_info);
+>>>       }
+>>
+>> Would it be reasonable to detect if the link is intact and set the aer_get_device_error_info()
+>> function's 'link_healthy' parameter accordingly? I was thinking the port upstream capability
+>> link status register could be used to indicate the link viability.
+>>
+>> Regards,
+>> Terry
+> 
+> Good idea. I think pciehp_check_link_active is a good implementation to check
+> link_healthy in aer_get_device_error_info().
+> 
+>    int pciehp_check_link_active(struct controller *ctrl)
+>    {
+>        struct pci_dev *pdev = ctrl_dev(ctrl);
+>        u16 lnk_status;
+>        int ret;
+>        ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
+>        if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
+>            return -ENODEV;
+>        ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
+>        ctrl_dbg(ctrl, "%s: lnk_status = %x\n", __func__, lnk_status);
+>        return ret;
+>    }
+> 
+> Thank you for valuable comments.
+> 
+> Best Regards
+> Shuai
 
-Applied to powerpc/next.
+Hi, Bowman,
 
-[1/1] powerpc-km82xx.c: replace of_node_put with __free improves cleanup
-      https://git.kernel.org/powerpc/c/4aa5cc1e0012f784bc7f637458e597564833b425
+After dive into the code details, I found that both dpc_reset_link() and
+aer_root_reset() use pci_bridge_wait_for_secondary_bus() to wait for secondary
+bus to be accessible. IMHO, pci_bridge_wait_for_secondary_bus() is better
+robustness than function like pciehp_check_link_active(). So I think
+reset_subordinates() is good boundary for delineating whether a link is
+accessible.
 
-cheers
+Besides, for DPC driver, the link status of upstream port, e.g, rootport, is
+inactive when DPC is triggered, and is recoverd to active until
+dpc_reset_link() success. But for AER driver, the link is active before and
+after aer_root_reset(). As a result, the AER status will be reported twice.
+
+Best Regards,
+Shuai
+
 
