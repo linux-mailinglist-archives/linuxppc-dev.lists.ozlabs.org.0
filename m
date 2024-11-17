@@ -1,55 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-3374-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3381-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604F69D039A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2024 13:26:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB4EF9D03B1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Nov 2024 13:27:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xrqj80hwXz3bkT;
-	Sun, 17 Nov 2024 23:25:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XrqjF0MnKz3bpn;
+	Sun, 17 Nov 2024 23:25:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731846331;
-	cv=none; b=gk/WAQKj5/XMacRxgHk5ADHlJbq3g3apuR2tTgj65yULisDqDEWxZC+6PX9ZDvgqKXIaAGjt8hg9glJIZpehAhpqBy7TydEnlqKVYn44p66M0CzskXUjjYe3zsgu9UDtwafcjDk0usLLlwVdWfl8v1+3oAv/7Geds3CVXsgEU3jDtHRpxjBJV98amSWNy/HAwWMeFH/NVjRvRctF3oBIZBWZff09gIk7F5DhvksrzRJqL/jyWvdIacmKtDs67bSPFv/61+dqsY01h2OBrUPBjawVzs/LcCMXhVA/DaG71NfOFzKatdxNPwTT3tKBXkx1970mqolPv/2VVDNMQpr6Zg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731846336;
+	cv=none; b=HnTwEPL+pCh5uQ6N7Xm39JUNdJNcEjJuaTf4/VtfQd3H+0YQTaL3xFpMkLLjE1RqxIir8TvKsbOZjsGx2eBXCN490iXA/n8yX5V5PLPLJq3ofI06Gu45HotHmw4SEOt2J7maL/OCxyHb7wtNvHrwfvrLZRhBwBmGLkSarhtXk0pojpWgjlX9ViIylwwcDMeIKBMbaY1pSM3ZuY1dPgyZ3q5xuAfVhAqRH+hzrh5194FvZaCwujw41GbSZKrnUwdfOAwapntKbtNsxC5yXKLbfo9CFfiAH2fi+K2sEDRHaPowaBq5+aGtpbXZ/mMYJlXqrZQt9ioI0526hgHyIVAzvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731846331; c=relaxed/relaxed;
-	bh=tIh/QNV7meNa8ZIOXp4JCVdE5EyBroYXF+febM+ZTBY=;
+	t=1731846336; c=relaxed/relaxed;
+	bh=ivoElLl6v01dXn3j88D2JzVuA8zDCUIbPPKgg72fH4U=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=DiHat6XRl7OhanBXNXDSI8DCwL+BdSji2fMXx7ftcObyr6Yb0U5M7XVbxj3culjKZ36rP5GNxKbzmQYqYH0WxHXQau2hK9uaFg7rcfi5ezCTyep1rqu6xJL5Gu/WbzCI0Fye+EeEjpuT7Dcb37JBexhD15Z92VG9BhaI2Ok9/xrSV1aYMjEiSMdYHoiBoG2S2RiQfxO9Kdp2kij07FMo/J0GZfrR3Sn3MHHgLrVSIpEjkQAvhUjplX6ZHnVrWAnYMMQEBMMIdXyiScwGtAP2rHjgI1KsLnXmQj17nC2zFs6f4c7gBySqCOBGbCWR7pbvpdnwTW9DU2O+d5LPUG3T9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DHjTIw83; dkim-atps=neutral
+	 MIME-Version:Content-Type; b=CTabwHvmjpCvFVXbTb9COwFH0PBG9K/aL1Gaq65WI7MrhK+eunEXapoeClqZHeTNKHUgAnsF/sOGbk/OMDZElAUGZEG7w4FIYQO1oAoAsU740y8YbYU7lT8PHTwjaQQktn5u5Zsd+4ZFB6CSh3tO5oaLcqJlkGIq8/RzKB4bZzPQ2Soz7PeFpqVfaDuuz8Eeb6lW4UX+1Zk2RaBOUyftb8LpaX05A7dJ5iRHuDkLmsRb7oQLxPHGPoOfvnUdIN7+XfakhBq2G0ev+lUaqd0g+FN8A8K3sWz3etEwMF5GQeXMH+OFai3Uh9yuuRncSvFElze8F5+m8y6i7fkrGZHeCA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jddM0Hic; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DHjTIw83;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jddM0Hic;
 	dkim-atps=neutral
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xrqj73TN9z3bhs
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2024 23:25:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XrqjC1cw1z3bnB
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Nov 2024 23:25:35 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1731846328;
-	bh=tIh/QNV7meNa8ZIOXp4JCVdE5EyBroYXF+febM+ZTBY=;
+	s=201909; t=1731846332;
+	bh=ivoElLl6v01dXn3j88D2JzVuA8zDCUIbPPKgg72fH4U=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=DHjTIw83VFAysYWEw7AgoPAe6hOt4XDQZOG2X63mE2qeumMvRDF2mUpHXtJUcRE8N
-	 R+ghXJqqRr6WH2hHJkynC/ievdh9h5KBPxgZC19TtzcVP4ksJiM5tQHlt8BRXAfIkA
-	 /WU2tEuRmzubxUWOWbdOH42Jfkvujqw4miYp8BSAWIPpqh1oQtGuoZkzc1f3cEZg5+
-	 F4EFQkUyasEXcfRfJrkMuLh1apvdcSWYtWLFfbT6VPis5dXaMih0CAUjOrOy43bu7l
-	 TrYPr8MkDEpwxy7zG6tZhKpgerwkVYXriBVTLniJ9jW9+RQAI3e9j7hbqRGvpoAKGI
-	 AQCjUIgARCGVA==
+	b=jddM0HicZ6glVWTVoexDcRGDtEPZfSdXC7PSUXrPxmgesfCZ2mwmnvfWGKtSBOGVE
+	 iXieeSBAr/q0k6Bz1u6q7Sl+d815QqpV9yXMhzWX4UlRIVOF51A3kQHz44ZAfFWhC6
+	 866nTk/LG/jkUUfdGNTEZbPe3tgAYV4aLpqY5YvZA2vyDy3xhK1AOkL1xpYhe998dx
+	 hi5LceFRxk8yPcizRFgj9lgIMC9zNr8Jlc47ExTwxayHgrCHKVLsvYPWymHw6djMqk
+	 /Zqc9VP5nVkoBikYSzX6kfE4pqaTZczuq+VWIoMn/vEEI+B3PP9V1nt0SeTZZ7kfoX
+	 oZjVswpgJPv/A==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xrqj4380Zz4xfJ;
-	Sun, 17 Nov 2024 23:25:28 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xrqj76vXHz4xfV;
+	Sun, 17 Nov 2024 23:25:31 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linux-pm@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, rafael@kernel.org, viresh.kumar@linaro.org
-In-Reply-To: <20241112085148.415574-1-mpe@ellerman.id.au>
-References: <20241112085148.415574-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] cpufreq: maple: Remove maple driver
-Message-Id: <173184539748.890800.8372516431978764964.b4-ty@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nathan Chancellor <nathan@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org
+In-Reply-To: <20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org>
+References: <20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org>
+Subject: Re: [PATCH] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
+Message-Id: <173184539742.890800.7357374459961481947.b4-ty@ellerman.id.au>
 Date: Sun, 17 Nov 2024 23:09:57 +1100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -70,23 +70,20 @@ X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 12 Nov 2024 19:51:48 +1100, Michael Ellerman wrote:
-> This driver is no longer buildable since the PPC_MAPLE platform was
-> removed, see commit 62f8f307c80e ("powerpc/64: Remove maple platform").
-> 
-> Remove the driver.
-> 
-> Note that the comment in the driver says it supports "SMU & 970FX
-> based G5 Macs", but that's not true, that comment was copied from
-> pmac64-cpufreq.c, which still exists and continues to support those
-> machines.
+On Wed, 30 Oct 2024 11:41:37 -0700, Nathan Chancellor wrote:
+> Under certain conditions, the 64-bit '-mstack-protector-guard' flags may
+> end up in the 32-bit vDSO flags, resulting in build failures due to the
+> structure of clang's argument parsing of the stack protector options,
+> which validates the arguments of the stack protector guard flags
+> unconditionally in the frontend, choking on the 64-bit values when
+> targeting 32-bit:
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] cpufreq: maple: Remove maple driver
-      https://git.kernel.org/powerpc/c/fae2987e67786a6358c0ef47189b12ff19e9543a
+[1/1] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
+      https://git.kernel.org/powerpc/c/d677ce521334d8f1f327cafc8b1b7854b0833158
 
 cheers
 
