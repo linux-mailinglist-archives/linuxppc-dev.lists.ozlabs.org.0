@@ -1,95 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-3402-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3403-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB909D0C99
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 10:51:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F9F9D0EC6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 11:42:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsNF72BP6z2y71;
-	Mon, 18 Nov 2024 20:51:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsPMQ4b3nz2y34;
+	Mon, 18 Nov 2024 21:42:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::131"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731923499;
-	cv=none; b=fzFLh+zPqX2SUi1ZV3oDO9gvv3Qcb3VCzbtsOG5cgmZJ1LGAaOYOg9+VGBbvPpyu9bndei6hyjTqH7srRzXr158y6WTUOt6Kv8ZrqTW7yKMhVlALQDNGWCjJv7LS28whquwuaigedENoOLp6Q5Tm0zPjSiiRKKvpOgsWP5XcX6z75KQUgMKGJMAX4wzEgdIeDh9CqxL3WkeDeWQ+ITdTFwjotjfQ1Ilq8wz7nEH5q7hNiBuaY593Hv7cV+pI3OrlXK9GQsCLS0+1TLXngmqKAzaVIy1JrdyVokAM+irbRAy2kRe/UWtBnb7uo495QVTW3rbJiRdogeAkQWly1lGyfg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=65.109.113.108
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731926530;
+	cv=none; b=eej85CppmR87jc8053tVYevYJGeb+ofxQIg81VynmtmNrQpYbbvwgsv9uFi87jYVn8O9mwZCpVM1t6L/0CMS8i9i5YkZziTWVVo+sm/Eb1fy/U5H0aoTGGSpXJ0E0yWxnVTukybWN8+bfxDL1kCORwh7nSlUvyJdPi5sPVnpljMllzeDpwixsO1BJSD0mRhv0CC8rVHkXtMZxzHJP7b+64VKHGSZhY5Vai1aaVXQGBzS1fP3FYAmL25ViEiJosETGqIoNjDbieeksKw3d9pPD4Xn6biErYqxhhJVmVqpoIoyAeZgScslGrWZNL1OLGQkgAPytFK8PNLn1CYE4Pb6RA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731923499; c=relaxed/relaxed;
-	bh=9GTB33TPyEs/YX3y0tXNN3wmTVS6LNkgjt3Ay0YqbHU=;
+	t=1731926530; c=relaxed/relaxed;
+	bh=DmWtgi2Qz0m6ZoT7qjh0PUC9+yoNEpuOT/5+gLqTlk0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BeHwcJviRozz/FGXmLxEyqfvVdFAJC/S0NVHaFw9Q+SxlI1JjYG0YoJoxUDqGSiX9G79pRULAWSWIHz+gGjPMs/VQ9r8+olxgnlUN3+LNAXSSwk31sRUU9pSB3/qxlJYHilp2EmX9fSwEFmN3kHFTW3kOIW5RD7AXcyWJEDu+UCquj+yBHt0+xIY2HQ+lmZTd3xcDIO17QZ3lsDt/YGTppLQ6bXW5TbgGLZY0BdfNyCZLvCRfHTbIZk+2KB/7CkLZ5VknVIoEvmoSlq2ezlgcK6mvwVQumGnZp5FFiXEbr7G5jhNMGFUhfeyPZXx8HFGmkQswqqPp9HRu1uQ80vOlg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=T8WRPi4+; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=g6l4YxiOes/G+SGQmns1ylGhIyqLdGsGLqnTLvuWphpa+6toCefvZW/WjSPIxOm43eh/LrEFotFtG/4bxASqTeEIIDsTz941qwM1C9GqU6Xzuknw/akSie2xl6nXRsCWCqyGub8k+JqohhzwML2NpSnr4moRYVnR+nneaFp/QiPAhHjjJs+bw9emKyKO4KKYMpPszszOZVeeNIBUj4la0ITVkiSA9AMtOBRTo5DbNAsJf1WZnA0BgNgXNlXOCyeEoQUBH1hCMKZHadpV2+vUKCAf6Fu1VF0H2TvuHP3zS9xf/myDiPYGSYeYUemf6Ryko1p+OupU48+z3AYQkR8/+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=JvWhmqmR; dkim-atps=neutral; spf=pass (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=T8WRPi4+;
+	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=JvWhmqmR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsNF21Lbqz2xy6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 20:51:32 +1100 (AEDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-53da353eb2eso2248659e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 01:51:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1731923489; x=1732528289; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9GTB33TPyEs/YX3y0tXNN3wmTVS6LNkgjt3Ay0YqbHU=;
-        b=T8WRPi4+ujS4cssWOUGQWcHasHT4BFsdFz92VvzA3icULpPzH0nLBiA6cMIlnSYMOg
-         vM/moz62ab+F2Ck0+TLvoaTQ0rLlhZyw2My3ql4LEslffMPKusn1qU+7oeP3zVO6ZA1n
-         lm8xZ7CjKEtk1cVxX3tfnkKYsE51gxLDLYhW8z4TidrOB88q7odFoZA7bD5EbyxaawjV
-         WEI1rrBR5j7Mt2dxXctcCCSQG7WagS+VdvNcQnkTZ58ppUZy33ScotHbZRPSbxcetFUD
-         A6OQeEg1O1DOQUUgPKJZv+89PsXJRcmaXZDXUwQvuj/d5HVm+Dd00ji/XMFWMmUuEDpx
-         9zfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731923489; x=1732528289;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9GTB33TPyEs/YX3y0tXNN3wmTVS6LNkgjt3Ay0YqbHU=;
-        b=xDZ93SGTbIhqfnQBolu/GzVCmjYaC3hwxMoH1c8HTC7GsnfTfHu4LWE1ZEbM4B6tIO
-         VYEW7SEjT5ca60NPfjkSs0LKqSQHGSnUL4xjpiJ0PJ/1ar5z0oR/f25bk15Trgzp1s1Y
-         o+JFzeQPot0cJNDk9PMu/sECVYnrvumOXYrQUzWFT0JcAnra3jjDocxEFx/E82VbI+zx
-         oIHZDEEgPw5bHU8A0aYNRCAZGaSQyf09SF+w8ktMojJKsF3lhwVdWvzh5zdJ7aRoUqp9
-         v6JerysTZWNjDYZrtLAouLps1siIvknfHUVDmQcktCkzzalSMhB4hcuaaVlb0zhnPL1u
-         t51w==
-X-Forwarded-Encrypted: i=1; AJvYcCVOp2TLOVb3wwRC4HyZZbK3nOkSm9V/Gs+QPWQ3maujzzHil9gbzBehriTF4RrxEZK0pAWftBD0eyIes6M=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyNpGLOJIg1j8DZ4Ptx3NFC4aa6EA69C+w44vZrIPwHC8sMHrrT
-	/lbm1AlOHOX6yRWcObe8nfzrdJN4IMxNbuLnKXUZbOyduC8uuK+tHND3x0VRyfw=
-X-Google-Smtp-Source: AGHT+IFAGUjndOgOu4hfcbEbyo+d40bHeTZfpu3+OXzaO4JvBg5zuhrDkKC8GbHnOfHVv82NwlCBjA==
-X-Received: by 2002:a05:6512:2248:b0:530:ab68:25c5 with SMTP id 2adb3069b0e04-53dab294790mr6474092e87.2.1731923488726;
-        Mon, 18 Nov 2024 01:51:28 -0800 (PST)
-Received: from localhost (109-81-88-120.rct.o2.cz. [109.81.88.120])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20e08af80sm520753166b.205.2024.11.18.01.51.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2024 01:51:28 -0800 (PST)
-Date: Mon, 18 Nov 2024 10:51:27 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Segher Boessenkool <segher@kernel.crashing.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	linuxppc-dev@lists.ozlabs.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mark Brown <broonie@kernel.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2] sched/membarrier: Fix redundant load of
- membarrier_state
-Message-ID: <ZzsOH7nO7okC9f4O@tiehlicka>
-References: <20241007053936.833392-1-nysal@linux.ibm.com>
- <20241029055133.121418-1-nysal@linux.ibm.com>
- <ZzsDEvJn-vauz9gE@tiehlicka>
- <20241118092517.GE39245@noisy.programming.kicks-ass.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsPMM57mLz2xmk
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 21:42:04 +1100 (AEDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2708040E019C;
+	Mon, 18 Nov 2024 10:41:59 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id OvAE2aXAax_E; Mon, 18 Nov 2024 10:41:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1731926513; bh=DmWtgi2Qz0m6ZoT7qjh0PUC9+yoNEpuOT/5+gLqTlk0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JvWhmqmRUL7hkytSCadEsftyQZKStLgnKxQ7agUehRPUm1ZpVWnixa4PPWp1SIqoe
+	 B0enESfQMM4tBv8OGr3oljiDEJy53Cput7Tbtpo5l/yTEOABbGS7lsX40nOSy78mGK
+	 uN0kaY126B8moeEx1Kd74aXQBfWrqZULBxXSJmSBS1T4XQwhnX17MBMiHfLy+w1ynD
+	 tk7kA0N+oLs6kJpgaVSP1Af169qh2I7ULbzp9bu6xvTzh+h/48BIdqnxwWT8k+6sET
+	 xpqjcnpnUrKE5vtHnoDTSbyVZONtyWW7D8zJpnZmmTHWbh/KiNv+MMvRGTCVQ9Zx/Z
+	 J5daFgDpW47r1bpgQQPSyduzz085tzUxHbLWXX7NAKwUbY0hrUnvd0zFLUK1AiRg8X
+	 rTm1iGsHtQsMyBztWeLmr2FSQgr1FZUZTmGDJfunx4IgtvVcJjwH12+05OAy3T+Srr
+	 cX7AGw5UVQPhXz2KTTn6TWzFHlIRIXbRVkc5wbh7/TvrKxJ+aND6IwipLlv25LlrnH
+	 jHHOMYePIE22wYsbcwEXa3F7LylXwFh8Tt07LFZBesr5abbc0KxkiLCwudeTg9XjAQ
+	 eGqnrrFfxj4NMxqUcqEiRoUAoel5a0PUXnFILzlBIairHJVl1TPu2mKq4K99nFb8GG
+	 Hej1E+d6sW5YH7KdeqVs6lQg=
+Received: from zn.tnic (pd9530b86.dip0.t-ipconnect.de [217.83.11.134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 165CA40E0163;
+	Mon, 18 Nov 2024 10:41:48 +0000 (UTC)
+Date: Mon, 18 Nov 2024 11:41:42 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, tony.luck@intel.com
+Subject: Re: [PATCH] EDAC/powerpc: Remove PPC_MAPLE drivers
+Message-ID: <20241118104142.GAZzsZ5vcY_Vv3GvY-@fat_crate.local>
+References: <20241112084134.411964-1-mpe@ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,25 +77,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241118092517.GE39245@noisy.programming.kicks-ass.net>
+In-Reply-To: <20241112084134.411964-1-mpe@ellerman.id.au>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon 18-11-24 10:25:17, Peter Zijlstra wrote:
-> On Mon, Nov 18, 2024 at 10:04:18AM +0100, Michal Hocko wrote:
-> > I do not see this patch staged in any tree (e.g. linux-next). Is this on
-> > its way to be merged?
+On Tue, Nov 12, 2024 at 07:41:34PM +1100, Michael Ellerman wrote:
+> These two drivers are only buildable for the powerpc "maple" platform
+> (CONFIG_PPC_MAPLE), which has now been removed, see
+> commit 62f8f307c80e ("powerpc/64: Remove maple platform").
 > 
-> I only now found it -- it doesn't look super urgent. I'll get it into a
-> git tree after -rc1.
+> Remove the drivers.
+> 
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> ---
+>  drivers/edac/Kconfig        |  18 --
+>  drivers/edac/Makefile       |   2 -
+>  drivers/edac/amd8111_edac.c | 596 ------------------------------------
+>  drivers/edac/amd8111_edac.h | 118 -------
+>  drivers/edac/amd8131_edac.c | 358 ----------------------
+>  drivers/edac/amd8131_edac.h | 107 -------
+>  6 files changed, 1199 deletions(-)
+>  delete mode 100644 drivers/edac/amd8111_edac.c
+>  delete mode 100644 drivers/edac/amd8111_edac.h
+>  delete mode 100644 drivers/edac/amd8131_edac.c
+>  delete mode 100644 drivers/edac/amd8131_edac.h
+> 
+> The removal commit is in the powerpc/next branch:
+>   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=next
+> 
+> I can take this via the powerpc tree if that's easiest, let me know.
 
-Thanks!
+Yes, please do. 
+
+I've been meaning to reply to you but then gazillion things interrupted me and
+... you know how it is. Sorry.
+
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+
+Thx.
 
 -- 
-Michal Hocko
-SUSE Labs
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
