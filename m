@@ -1,52 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-3401-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3402-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A319D0B96
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 10:25:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB909D0C99
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 10:51:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsMgQ01dWz2ygB;
-	Mon, 18 Nov 2024 20:25:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsNF72BP6z2y71;
+	Mon, 18 Nov 2024 20:51:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1:d65d:64ff:fe57:4e05"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731921953;
-	cv=none; b=kjy89tDqpOSJi2MZCAXUM7L3Mzvob5CmWs4qD5UBlRKU9JPfy7gYk8wutvOhrqI5Rr0xppPnbyho9/jhknk+IpB1YYs8Rc2HyQJssm4A/UnH0hv4o6m7AVmgk4D4Orjb0v4U5TLK0SmNRHMLn8yUMBrUq9rUllQ9vYIFPsSJYMdvwJZW87vxo/bKO+q4mGMtZdwytrR0kGwCgLXq3biG9zN3L3MIqAXLgzxhDdQciWEFlTpH1c3uGnZUs9AjUxtlzrhEZyeiZXhqkgFYHX84gji0n0pNhxjC6nM0VvIe0YqHQ0cdMNt2GhZUlHzJBb41t5P11tdocuB2lXkPJeqV1Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::131"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731923499;
+	cv=none; b=fzFLh+zPqX2SUi1ZV3oDO9gvv3Qcb3VCzbtsOG5cgmZJ1LGAaOYOg9+VGBbvPpyu9bndei6hyjTqH7srRzXr158y6WTUOt6Kv8ZrqTW7yKMhVlALQDNGWCjJv7LS28whquwuaigedENoOLp6Q5Tm0zPjSiiRKKvpOgsWP5XcX6z75KQUgMKGJMAX4wzEgdIeDh9CqxL3WkeDeWQ+ITdTFwjotjfQ1Ilq8wz7nEH5q7hNiBuaY593Hv7cV+pI3OrlXK9GQsCLS0+1TLXngmqKAzaVIy1JrdyVokAM+irbRAy2kRe/UWtBnb7uo495QVTW3rbJiRdogeAkQWly1lGyfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731921953; c=relaxed/relaxed;
-	bh=QZv9B88aiudPzp5KFIC/r8NmKWNQgmSFAM98pAwSItI=;
+	t=1731923499; c=relaxed/relaxed;
+	bh=9GTB33TPyEs/YX3y0tXNN3wmTVS6LNkgjt3Ay0YqbHU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZW6Q9NCUSck6+0gRBxrUslnn2k5jtaazamTeh8gisrmweIOmpU/xyFG45F2uKzj86k+MvBowcVYfNRrKYpcmODvxMgI/zCgeE1wvMTmufzb3mc7hZQmrbhUZG+hqx6c/xWniLk7RHke1k7WaWk2JhKE7CkF3/m0JzKp8KEPBO7WGsf1KYRkK40er6lMMFdNRZnWxPAQa0hZj9rOCqlxioRcAURRuMbCiyIB/tGilygOAnBC46JnOdylD+5+gTEdJ9oP0P1aN4CjyLgAtgQJjHxXG5BKuRnEBVQepTeJtwnckEGtixDO/ehI5JvIKEBFVPrsJPyTlmKuue8lHdEsFDw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=jATJIly7; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=BeHwcJviRozz/FGXmLxEyqfvVdFAJC/S0NVHaFw9Q+SxlI1JjYG0YoJoxUDqGSiX9G79pRULAWSWIHz+gGjPMs/VQ9r8+olxgnlUN3+LNAXSSwk31sRUU9pSB3/qxlJYHilp2EmX9fSwEFmN3kHFTW3kOIW5RD7AXcyWJEDu+UCquj+yBHt0+xIY2HQ+lmZTd3xcDIO17QZ3lsDt/YGTppLQ6bXW5TbgGLZY0BdfNyCZLvCRfHTbIZk+2KB/7CkLZ5VknVIoEvmoSlq2ezlgcK6mvwVQumGnZp5FFiXEbr7G5jhNMGFUhfeyPZXx8HFGmkQswqqPp9HRu1uQ80vOlg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=T8WRPi4+; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=jATJIly7;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=T8WRPi4+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsMgG5lrKz2yft
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 20:25:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QZv9B88aiudPzp5KFIC/r8NmKWNQgmSFAM98pAwSItI=; b=jATJIly71K9XLkVd42isb8BV28
-	Z0Sh/qK1Z7BJtWHTOQuJXHH+Aom5xYqXR7OLOB7/P4bR6OYK3w5QX4o63cGvDgrqk073aLn67cQsW
-	bjD8br0XSffBxCBn3WYcMacgCOZ9Se7QKExkYBIzNj4J26j/VYdWF0fKGDJv1MjAti4pnPfDXfeMf
-	SINasJGzO/LFTzTUXQh7D+wLoKXxVGT25qOeb/srHkoBam2b/z4NfzLNPbmCBeLsCGLpbfKQ8llB6
-	yhpAWkM4rmtb8c1e9tb7sx2qYwOR7RoSDsolvBI/sll0tIHtcVb/nylzONb4prHcMaJueai3/3Qhu
-	pNBaYF6A==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tCy0U-00000000CxD-25nF;
-	Mon, 18 Nov 2024 09:25:18 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 468F530049D; Mon, 18 Nov 2024 10:25:17 +0100 (CET)
-Date: Mon, 18 Nov 2024 10:25:17 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Michal Hocko <mhocko@suse.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsNF21Lbqz2xy6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 20:51:32 +1100 (AEDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-53da353eb2eso2248659e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 01:51:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1731923489; x=1732528289; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9GTB33TPyEs/YX3y0tXNN3wmTVS6LNkgjt3Ay0YqbHU=;
+        b=T8WRPi4+ujS4cssWOUGQWcHasHT4BFsdFz92VvzA3icULpPzH0nLBiA6cMIlnSYMOg
+         vM/moz62ab+F2Ck0+TLvoaTQ0rLlhZyw2My3ql4LEslffMPKusn1qU+7oeP3zVO6ZA1n
+         lm8xZ7CjKEtk1cVxX3tfnkKYsE51gxLDLYhW8z4TidrOB88q7odFoZA7bD5EbyxaawjV
+         WEI1rrBR5j7Mt2dxXctcCCSQG7WagS+VdvNcQnkTZ58ppUZy33ScotHbZRPSbxcetFUD
+         A6OQeEg1O1DOQUUgPKJZv+89PsXJRcmaXZDXUwQvuj/d5HVm+Dd00ji/XMFWMmUuEDpx
+         9zfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731923489; x=1732528289;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9GTB33TPyEs/YX3y0tXNN3wmTVS6LNkgjt3Ay0YqbHU=;
+        b=xDZ93SGTbIhqfnQBolu/GzVCmjYaC3hwxMoH1c8HTC7GsnfTfHu4LWE1ZEbM4B6tIO
+         VYEW7SEjT5ca60NPfjkSs0LKqSQHGSnUL4xjpiJ0PJ/1ar5z0oR/f25bk15Trgzp1s1Y
+         o+JFzeQPot0cJNDk9PMu/sECVYnrvumOXYrQUzWFT0JcAnra3jjDocxEFx/E82VbI+zx
+         oIHZDEEgPw5bHU8A0aYNRCAZGaSQyf09SF+w8ktMojJKsF3lhwVdWvzh5zdJ7aRoUqp9
+         v6JerysTZWNjDYZrtLAouLps1siIvknfHUVDmQcktCkzzalSMhB4hcuaaVlb0zhnPL1u
+         t51w==
+X-Forwarded-Encrypted: i=1; AJvYcCVOp2TLOVb3wwRC4HyZZbK3nOkSm9V/Gs+QPWQ3maujzzHil9gbzBehriTF4RrxEZK0pAWftBD0eyIes6M=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyNpGLOJIg1j8DZ4Ptx3NFC4aa6EA69C+w44vZrIPwHC8sMHrrT
+	/lbm1AlOHOX6yRWcObe8nfzrdJN4IMxNbuLnKXUZbOyduC8uuK+tHND3x0VRyfw=
+X-Google-Smtp-Source: AGHT+IFAGUjndOgOu4hfcbEbyo+d40bHeTZfpu3+OXzaO4JvBg5zuhrDkKC8GbHnOfHVv82NwlCBjA==
+X-Received: by 2002:a05:6512:2248:b0:530:ab68:25c5 with SMTP id 2adb3069b0e04-53dab294790mr6474092e87.2.1731923488726;
+        Mon, 18 Nov 2024 01:51:28 -0800 (PST)
+Received: from localhost (109-81-88-120.rct.o2.cz. [109.81.88.120])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20e08af80sm520753166b.205.2024.11.18.01.51.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2024 01:51:28 -0800 (PST)
+Date: Mon, 18 Nov 2024 10:51:27 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Michael Ellerman <mpe@ellerman.id.au>,
@@ -66,10 +85,11 @@ Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>,
 	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
 Subject: Re: [PATCH v2] sched/membarrier: Fix redundant load of
  membarrier_state
-Message-ID: <20241118092517.GE39245@noisy.programming.kicks-ass.net>
+Message-ID: <ZzsOH7nO7okC9f4O@tiehlicka>
 References: <20241007053936.833392-1-nysal@linux.ibm.com>
  <20241029055133.121418-1-nysal@linux.ibm.com>
  <ZzsDEvJn-vauz9gE@tiehlicka>
+ <20241118092517.GE39245@noisy.programming.kicks-ass.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,16 +104,23 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZzsDEvJn-vauz9gE@tiehlicka>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+In-Reply-To: <20241118092517.GE39245@noisy.programming.kicks-ass.net>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Nov 18, 2024 at 10:04:18AM +0100, Michal Hocko wrote:
-> I do not see this patch staged in any tree (e.g. linux-next). Is this on
-> its way to be merged?
+On Mon 18-11-24 10:25:17, Peter Zijlstra wrote:
+> On Mon, Nov 18, 2024 at 10:04:18AM +0100, Michal Hocko wrote:
+> > I do not see this patch staged in any tree (e.g. linux-next). Is this on
+> > its way to be merged?
+> 
+> I only now found it -- it doesn't look super urgent. I'll get it into a
+> git tree after -rc1.
 
-I only now found it -- it doesn't look super urgent. I'll get it into a
-git tree after -rc1.
+Thanks!
+
+-- 
+Michal Hocko
+SUSE Labs
 
