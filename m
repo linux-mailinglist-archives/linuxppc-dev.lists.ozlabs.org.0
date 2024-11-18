@@ -1,72 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-3394-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3395-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626979D07A8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 02:52:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E4C9D07F5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 03:49:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xs9bb3qW1z2y8X;
-	Mon, 18 Nov 2024 12:51:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsBsc2DZfz2yNc;
+	Mon, 18 Nov 2024 13:49:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731894715;
-	cv=none; b=PKroWupZ650J7QkVZ6FqBXNMzjHq63FPvD2DYBFXjDjmIAvuoAYRNEKXV7wUR5iLZwCgF3h2gld+g3ywrzps7JCP7r7nMArNWBZexVbWs2Mg+dOO/AZbJ/lUsxueuMKHFCB4dYO4ReusQp4FjFZHkRQrqVHAVfVTVU/w5n/GyOoPS9Ar4xExBrudQM0SMAKGrdHVLTmwLTUU+bV22IaJVzpzTV45HnUDbrdMxh/ht13KIrK6tJPu/2kNrdvZfrWCU82BOKWvwLEbCvpR3ni8SuUSTQ1k6IgoRijHqDbMFffpSpcjgukbZ5xdRMnSpN538SWS29lNE8TGvDUnYnerEg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=111.22.67.135
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731895667;
+	cv=none; b=DiosHoNAvpHqj1CB9vaAMIpYHz6+KJ2dSuH8DkK7Cf+U0TXfeY0wrKf6mXn+jR4trAgtd2x+SMqiCRg23+ijyNGui6g/dA5ZyFxtHW7fmJpgxxPF5TWMlANNbGgatirGp2vNAWRrKxO2e/98JNiCW3jVHnMXaNn7WKeCkQGMZDjaxSwyK7TOXu6We2byX8kkFygMB9jZaJdL3h+9WaokVNs+R2C6tdoehDZ2bSvjmL6emjxhJXlN9nzDNdoYA+t7abNC7NP4hR1QhBxzzCpYnkAluBJI6bqA9kaQTXWjcUIhpBhtvtniRBQRt2cuG0vvaZ+Ef64M5hevkULkO0NtBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731894715; c=relaxed/relaxed;
-	bh=unnrDmBTrCA+1kq/HlSAfNztkAPvUl3ST4fTWpbw4+o=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Ko8guEymqHlrkWurI+tLadC8cOEXoGl/RrRTZASL1IssqC/BoXnmDABkxpPTsG7T8iSnP6hmzXsH/tF+5kRLjpLT+QQBcQmIkGx8YMQYHMVdm6VrbNAYRDxZoCT+lqgn9Z0E20pP9xcBBsdqT30TTt8DuXfTlrIeocUXeampp48AWVI3oBKggYHsgsHEJ9RfhlFwMV4VZdAA4g0oiDgbUdVTAgRpr/t9WhTH5xg3uzWw36U3jpNazy1498gv7KAxaX9cIHpd6kXq8ywsH92ShH+qMVsVhQPPpkfNGFZqQte9IzOJkDvSPWHGM3hiCrGu3T52iDRdcf6B/+U0toa+lQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lEu9un6I; dkim-atps=neutral; spf=pass (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lEu9un6I;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xs9bX5Fmtz2xs4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 12:51:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731894713; x=1763430713;
-  h=date:from:to:cc:subject:message-id;
-  bh=XGeeG/Ak3To3cJBBDs8OGfcMMY6ic/YduNit+/Ka8Q0=;
-  b=lEu9un6IRW8eGbMk4xcbbNgAK2dKNso7rDkuzJPU0aWirRF80wL3oQJV
-   BWdzpBMcdgnqYFvvl5C1XJmJPc80phHpAMj/lTZwhTm35qnJS5UWDnJ67
-   1uMcEgAjz0c3kkS1VpSz8RmRgjwkejRuemXmxuXIzFysHh6EZdqlq0ati
-   JDuaUWttZ1o0MsRTQBYu0dFRlIxBFiIBJvlamWu0+8rgkwL8fIf+ZSj7j
-   jGXUbd0KgdRjw1Ow7rWwM8kvRzbRP7nB1itDsDZ/ZVWekeSuVneCsGsLo
-   p5reJmpvqTsVxa5hQGo1G5kV4ZPfppP8xw2y8/U7bmNqrH5Ucq7lT9jqZ
-   Q==;
-X-CSE-ConnectionGUID: X//Q+J8DRROpLIIfNqAdIw==
-X-CSE-MsgGUID: zhRiFP9vTMeVOIbzk3XAxQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="31684106"
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="31684106"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2024 17:51:46 -0800
-X-CSE-ConnectionGUID: vQq31aX1SZqUeLN6AtDsKA==
-X-CSE-MsgGUID: JoqsYsvMS5yxH+NHIXQlGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="93540490"
-Received: from lkp-server01.sh.intel.com (HELO 1e3cc1889ffb) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 17 Nov 2024 17:51:41 -0800
-Received: from kbuild by 1e3cc1889ffb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tCqvT-0002CJ-0K;
-	Mon, 18 Nov 2024 01:51:39 +0000
-Date: Mon, 18 Nov 2024 09:50:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:next] BUILD SUCCESS
- ba6d8efb1bd7318f173846a8f5730a54c93f3ff5
-Message-ID: <202411180930.287Rxprk-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+	t=1731895667; c=relaxed/relaxed;
+	bh=3c5kGtihoYjJWR2eZQhOUJs4NHrVsB0ajfcLsfp/Y2o=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=k2Ay30Mj8w7DA0SOOLsy7ik4v6hJ1CdDjiJkZwLguxcBV8x+ELEHt052PTwK8qcBSTDC6L9ZH4ULnT0MRfGKRB6HyCVYjyfxd/ER0DI958oiG+SU8Dlow4uafKPfoYx2FnxpLQy5zvQfDARkkjrXZ2nex5WFG9+B2H7N0yU9mMQymua+L8CPkg34Z4caJItIItkh+SfzOZ1xo0t24SMF+i1qx5R3p1/goew+sFGKWHVItJQw1Kj/xH2yki0ynNSB7lpVl0kilvaY6GBl8LAEvQCgDUX4N3gzsf4IIblNd6DwVx5uMjJMzfOU4knvCk/wt+gSEoCo1sZZ2gUXTTxodA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass (client-ip=111.22.67.135; helo=cmccmta2.chinamobile.com; envelope-from=zhujun2@cmss.chinamobile.com; receiver=lists.ozlabs.org) smtp.mailfrom=cmss.chinamobile.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cmss.chinamobile.com (client-ip=111.22.67.135; helo=cmccmta2.chinamobile.com; envelope-from=zhujun2@cmss.chinamobile.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 182 seconds by postgrey-1.37 at boromir; Mon, 18 Nov 2024 13:07:45 AEDT
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xs9xs3Gy9z30Vp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 13:07:45 +1100 (AEDT)
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee7673aa0b46bd-3b6da;
+	Mon, 18 Nov 2024 10:04:37 +0800 (CST)
+X-RM-TRANSID:2ee7673aa0b46bd-3b6da
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from ubuntu.localdomain (unknown[10.55.1.70])
+	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee1673aa0b4c81-a4d67;
+	Mon, 18 Nov 2024 10:04:37 +0800 (CST)
+X-RM-TRANSID:2ee1673aa0b4c81-a4d67
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org,
+	zhujun2@cmss.chinamobile.com
+Subject: [PATCH] macintosh: Fix spelling mistake "toogle" to "toggle"
+Date: Sun, 17 Nov 2024 18:04:34 -0800
+Message-Id: <20241118020434.10971-1-zhujun2@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -80,142 +57,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: ba6d8efb1bd7318f173846a8f5730a54c93f3ff5  Merge branch 'topic/ppc-kvm' into next
+There is a spelling mistake, Please fix it.
 
-elapsed time: 802m
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+---
+ drivers/macintosh/adbhid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-configs tested: 122
-configs skipped: 2
+diff --git a/drivers/macintosh/adbhid.c b/drivers/macintosh/adbhid.c
+index b2fe7a3dc471..943a7123786a 100644
+--- a/drivers/macintosh/adbhid.c
++++ b/drivers/macintosh/adbhid.c
+@@ -604,7 +604,7 @@ adbhid_buttons_input(unsigned char *data, int nb, int autopoll)
+ 
+ 			case 0x7f:
+ 			case 0xff:
+-				/* keypad overlay toogle */
++				/* keypad overlay toggle */
+ 				break;
+ 
+ 			default:
+-- 
+2.17.1
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    clang-20
-arc                              allmodconfig    clang-20
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    clang-20
-arc                        nsimosci_defconfig    clang-20
-arm                              allmodconfig    clang-20
-arm                               allnoconfig    clang-20
-arm                              allyesconfig    clang-20
-arm                       aspeed_g5_defconfig    clang-20
-arm                         axm55xx_defconfig    clang-20
-arm                          ep93xx_defconfig    clang-20
-arm64                            allmodconfig    clang-20
-arm64                             allnoconfig    gcc-14.2.0
-csky                              allnoconfig    gcc-14.2.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    clang-20
-hexagon                          allyesconfig    clang-20
-i386                             allmodconfig    clang-19
-i386                              allnoconfig    clang-19
-i386                             allyesconfig    clang-19
-i386        buildonly-randconfig-001-20241118    gcc-12
-i386        buildonly-randconfig-002-20241118    gcc-12
-i386        buildonly-randconfig-003-20241118    gcc-12
-i386        buildonly-randconfig-004-20241118    gcc-12
-i386        buildonly-randconfig-005-20241118    gcc-12
-i386        buildonly-randconfig-006-20241118    gcc-12
-i386                                defconfig    clang-19
-i386                  randconfig-001-20241118    gcc-12
-i386                  randconfig-002-20241118    gcc-12
-i386                  randconfig-003-20241118    gcc-12
-i386                  randconfig-004-20241118    gcc-12
-i386                  randconfig-005-20241118    gcc-12
-i386                  randconfig-006-20241118    gcc-12
-i386                  randconfig-011-20241118    gcc-12
-i386                  randconfig-012-20241118    gcc-12
-i386                  randconfig-013-20241118    gcc-12
-i386                  randconfig-014-20241118    gcc-12
-i386                  randconfig-015-20241118    gcc-12
-i386                  randconfig-016-20241118    gcc-12
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                       m5475evb_defconfig    clang-20
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-mips                         db1xxx_defconfig    clang-20
-mips                           ip27_defconfig    clang-20
-nios2                             allnoconfig    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-12
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    gcc-14.2.0
-powerpc                     ep8248e_defconfig    clang-20
-powerpc                    gamecube_defconfig    clang-20
-powerpc                    sam440ep_defconfig    clang-20
-powerpc                 xes_mpc85xx_defconfig    clang-20
-powerpc64                        alldefconfig    clang-20
-riscv                            allmodconfig    gcc-14.2.0
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    gcc-14.2.0
-riscv                               defconfig    gcc-12
-s390                             allmodconfig    gcc-14.2.0
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.2.0
-s390                                defconfig    gcc-12
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                                  defconfig    gcc-12
-sh                 kfr2r09-romimage_defconfig    clang-20
-sh                           se7750_defconfig    clang-20
-sh                   sh7770_generic_defconfig    clang-20
-sh                            shmin_defconfig    clang-20
-sparc                            allmodconfig    gcc-14.2.0
-sparc64                             defconfig    gcc-12
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-17
-um                               allyesconfig    clang-20
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20241118    gcc-12
-x86_64      buildonly-randconfig-002-20241118    gcc-12
-x86_64      buildonly-randconfig-003-20241118    gcc-12
-x86_64      buildonly-randconfig-004-20241118    gcc-12
-x86_64      buildonly-randconfig-005-20241118    gcc-12
-x86_64      buildonly-randconfig-006-20241118    gcc-12
-x86_64                              defconfig    clang-19
-x86_64                                  kexec    clang-19
-x86_64                randconfig-001-20241118    gcc-12
-x86_64                randconfig-002-20241118    gcc-12
-x86_64                randconfig-003-20241118    gcc-12
-x86_64                randconfig-004-20241118    gcc-12
-x86_64                randconfig-005-20241118    gcc-12
-x86_64                randconfig-006-20241118    gcc-12
-x86_64                randconfig-011-20241118    gcc-12
-x86_64                randconfig-012-20241118    gcc-12
-x86_64                randconfig-013-20241118    gcc-12
-x86_64                randconfig-014-20241118    gcc-12
-x86_64                randconfig-015-20241118    gcc-12
-x86_64                randconfig-016-20241118    gcc-12
-x86_64                randconfig-071-20241118    gcc-12
-x86_64                randconfig-072-20241118    gcc-12
-x86_64                randconfig-073-20241118    gcc-12
-x86_64                randconfig-074-20241118    gcc-12
-x86_64                randconfig-075-20241118    gcc-12
-x86_64                randconfig-076-20241118    gcc-12
-x86_64                               rhel-8.3    gcc-12
-xtensa                            allnoconfig    gcc-14.2.0
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
