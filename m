@@ -1,146 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-3398-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3399-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973889D0AD1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 09:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2F59D0B5C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 10:04:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsLML3jtvz2y64;
-	Mon, 18 Nov 2024 19:26:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsMBh65CBz2yN8;
+	Mon, 18 Nov 2024 20:04:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731918414;
-	cv=none; b=mo9ggl3oAibBhuUNtSQ4XKi5+BF/LFGZzFDYIqrbNDbbCdHNHBAyFOhPtP/JeTqjhqsNTXA7VAm0eJ1EwCNqrav1nTD/OyAXnmDADZ38BhATyK3tVjbdRNBK4bHsbmryhsjlhMT1NavG5vgJcP5k4eDbBxIsgnU+Zd9gcOk4NQh4EmLOG28fzJWgQq9/J3VEtb+TGqKT/kT+NcR4K/GL1fYv25YsMi2A9LT6hfzzw0jIYpJcxfPuy+lA8hbVIImwzToYirB2Ga6ScXrJBTf5VavsNZSZjs/qgM8JsnVOSgeIHk1fzE8rBLACYTvTPe4Cx1Ebu1apd55ePdwrmtm12A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731920668;
+	cv=none; b=HraNPf7C55XQaWuY4q+9Va3On5pp0QTK5BxvXLB0+q4cCjMvdIjRk64uZ/cXyWu4EtUAmY8KY/MRlgvRiYGxOb026WTOI/HXUDQI3k2bE78AXCBZoG8VBoFYD6Wd1fdhkuIvqyVxWdIO4QVxODeeve8Erat/I3p5sADyO5QFDRjn1lKud+w7YfQS3eq20hKBkvx/3hAqsX4bcQLCt77uUKt22F5nO+xNNkea695WzVK7hfovXQAIx0/YWTYUNMW38GsLn3hj9xI4rzLziGnMPGMfI/QqQK/GWj8ir0PnsPE0ttY4SshsPrS0u1x+wb9O1WtI3ae5MR02ycD5HekPxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731918414; c=relaxed/relaxed;
-	bh=pofVBIDpbmPXxKdXBZzlW6SKJ1mpQg5f+nyOC0P54ZU=;
+	t=1731920668; c=relaxed/relaxed;
+	bh=Ws/rbfiwFMNWy8k0tnCWfMeaJzWW6S4EceX0n9OoukE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QnH4OtokDD5C2pJZGH4+pgNTc1jbP+XVI31B99A5qprT7Rs+70Xkb8rx0x+1olFrK33UZOailEq+LCkLMrVT1n5toNGOy2+EJtxtJKqk/1jj3uTmfqNn/QqPUkx5l3yf20hNNI3VsyOpLBro497lfonCF2vxO/glG8jwkkRv1HZJFz50h8BR7o2hcU5X5K7Kcr0Qqth2okTagccb28f4bZZ6Rhjkmqh2O4jsNShEwfZvwMhfoOZBfKHKYaYsaMF7xAPXWm+AapFWVQ8b3jd81uqHbEmV2/y8GDhcyzZ9aznsZr88R8sr4MRuQEspYQHJjuDINtLPirqpsm+USG2XTQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pVJ5a4Sb; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=T2qeAazOyJDUNzL0WIgS+U1Bc08GUzbpnfvGTwJx1stYRIjypL0SXauL6nDdL9gXJxmmDCxbTix71tcBLEv7oUMJKVn/h1aHB9m+f//OsdqkV4M97lB5h7enppXi/UlXofuF76L1w7uZn2tJFcsGoijk8RFACGmJLw8zS4MFQvM0nyI0GU2Ikog7vLAvuzkrQlraF85I7InEszXzZpSzJW5T4hZHLlIjlOnQqNBgmhyngcoY3UkOuaUbixPdQ5/RsRgJkXdpe+gZoTwjKvS3qgY/g+ejvEhuG/pw3BdHGRpRlpxaRbeMBMA07LMxak02SIwMg5pAKfunWv8xMzphRA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SBaCu+6h; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pVJ5a4Sb;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SBaCu+6h;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsLMK1Dx2z2xy6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 19:26:52 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AHJiO3Y023687;
-	Mon, 18 Nov 2024 08:26:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=pofVBIDpbmPXxKdXBZzlW6SKJ1mpQg
-	5f+nyOC0P54ZU=; b=pVJ5a4SbiQLc7KmL6NMVUat1TeAb+E4P6v1BT086o1mEhk
-	asPz+d9pnH3oUetVu+XCwbjmIJgCChQ2Yg76ElBtpMc3MPIe4GEIJkdBOh3EDOTs
-	BshLlGoNMECAtRDAXjrNjk0/DJ4p9T1LW6K46OwdwtMNuLDXUx7tw7C0oS59z+J9
-	QShMh32WGNHKvTgEgpik3EK5hVK4TsghRPVpOZt4uDmXgH2LYgfrkGGFgYTal2qH
-	dz0ScnJgPbYohwDb0fe9yXNM0o6w8EzUNqyOgMmUN0w1gT6xXC0tgw+yBkjkz/Fh
-	q242Ut9KG7OxmdBC6tktol2tQuFTw331MM4YUGlg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xgtt0eh7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Nov 2024 08:26:15 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AI73j1E030931;
-	Mon, 18 Nov 2024 08:26:14 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42y63y27mu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Nov 2024 08:26:14 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4AI8QAR549479982
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Nov 2024 08:26:10 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD6AD20043;
-	Mon, 18 Nov 2024 08:26:10 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A867E20040;
-	Mon, 18 Nov 2024 08:26:06 +0000 (GMT)
-Received: from osiris (unknown [9.171.77.223])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 18 Nov 2024 08:26:06 +0000 (GMT)
-Date: Mon, 18 Nov 2024 09:26:05 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Russell King <linux@armlinux.org.uk>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>,
-        Oded Gabbay <ogabbay@kernel.org>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jeroen de Borst <jeroendb@google.com>,
-        Praveen Kaligineedi <pkaligineedi@google.com>,
-        Shailend Chand <shailend@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        James Smart <james.smart@broadcom.com>,
-        Dick Kennedy <dick.kennedy@broadcom.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
-        Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jack Wang <jinpu.wang@cloud.ionos.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Russell King <linux+etnaviv@armlinux.org.uk>,
-        Christian Gmeiner <christian.gmeiner@gmail.com>,
-        Louis Peens <louis.peens@corigine.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr,
-        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-        linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-mm@kvack.org,
-        linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
-        live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
-        etnaviv@lists.freedesktop.org, oss-drivers@corigine.com,
-        linuxppc-dev@lists.ozlabs.org,
-        Anna-Maria Behnsen <anna-maria@linutronix.de>
-Subject: Re: [PATCH v2 04/21] s390: kernel: Convert timeouts to use
- secs_to_jiffies()
-Message-ID: <20241118082605.17002-A-hca@linux.ibm.com>
-References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
- <20241115-converge-secs-to-jiffies-v2-4-911fb7595e79@linux.microsoft.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsMBf3GZcz2xrJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 20:04:24 +1100 (AEDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-aa1f73966a5so374469366b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 01:04:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1731920660; x=1732525460; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ws/rbfiwFMNWy8k0tnCWfMeaJzWW6S4EceX0n9OoukE=;
+        b=SBaCu+6hHoQwtL/SaA1YV5+x101s/0Khi66Z/gkCulbEQmZHXAfin0XdJ/dXJeM8hF
+         YdqXnbG51wlIRFuWvojav9xbaip9JE3R7mat4Jn7JahOXX21zwNZnVGUVsQ+v6BEyL1P
+         pKHktIBZfumKwzLbEJwRkGoDMwopFHMAmC10QI58GWrJoO411Ca5EexpNDzwxwcbNATU
+         wg4c/jvqhFjJqbQzOxoEeA5wRmSZSwbty9gZN4OjycBemj4FnWlHhC15g2/3owuAui85
+         NiNoDGJq81Y7xJn71S9svg18FGLhJe61kDxMad108m0KCVYRfkzlA0RVZNP8ZQ686B8i
+         r6/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731920660; x=1732525460;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ws/rbfiwFMNWy8k0tnCWfMeaJzWW6S4EceX0n9OoukE=;
+        b=c2PsHO+XzURBI5bLrBDnJNhlBqDIseyoaw6OYRb3fQLGQwW2f9u0NdIBf1LLZ5dkWG
+         66eIHNQ+QBK9QHPO19UKNJ5CuRv7gclESEQA+xG3uf6irNhbryEkb56U4xsFlzznbnnK
+         m365i4QYLKMeSHqoCgX9knnUKkPQArvjetgZnWiiXYZwfVkm2D/LBALNOMBvQwGfPF8h
+         rfnTc98RDy1S9DEsbGDfg1gADNdlOXgTc+aG7JtWciBG/tVorF/MlZ7frsWSJLchEEO5
+         4WXqP27/7lRllbmh/dPawJUlEMCCsQTehqyOwi2qCDIaK5jrhg4UV4G0DrNq6PSLOyC3
+         I6cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXA3Xga3N2BDoYeITogGXUH2pI5e6GT9RBsbPVz0nbZgaJZhJ26GE3r/j9RMNDkuHz4aN0iowSM0ajwsN4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxLDYOOm24idjVjEfXPZUq8Gw1SvtNJ5AyI8Mrdi8LWmytx5tJ4
+	CI5oD9cxI8jNbcR7wAcx/gbX9JKdR9ubdd6PFSmZXqucvIZRgWBvIyxDT3d+XkE=
+X-Google-Smtp-Source: AGHT+IHiDm/bz3WEh1enyRl0N1th54dk8RHN4GA3K1qzcDnriUz2+DDQ+dD96pBdIfYZ9dcNHYkGjA==
+X-Received: by 2002:a17:907:7284:b0:a9e:c263:29a7 with SMTP id a640c23a62f3a-aa483420a9amr1096106266b.23.1731920659889;
+        Mon, 18 Nov 2024 01:04:19 -0800 (PST)
+Received: from localhost (109-81-88-120.rct.o2.cz. [109.81.88.120])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20df50defsm513526566b.50.2024.11.18.01.04.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2024 01:04:19 -0800 (PST)
+Date: Mon, 18 Nov 2024 10:04:18 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: "Nysal Jan K.A." <nysal@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Peter Zijlstra <peterz@infradead.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mark Brown <broonie@kernel.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v2] sched/membarrier: Fix redundant load of
+ membarrier_state
+Message-ID: <ZzsDEvJn-vauz9gE@tiehlicka>
+References: <20241007053936.833392-1-nysal@linux.ibm.com>
+ <20241029055133.121418-1-nysal@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -155,58 +102,110 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241115-converge-secs-to-jiffies-v2-4-911fb7595e79@linux.microsoft.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: QBYvLy3JNa8evFseixOVfcUMyMppMmNG
-X-Proofpoint-ORIG-GUID: QBYvLy3JNa8evFseixOVfcUMyMppMmNG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 phishscore=0
- mlxscore=0 malwarescore=0 mlxlogscore=858 adultscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411180066
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <20241029055133.121418-1-nysal@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Nov 15, 2024 at 09:26:21PM +0000, Easwar Hariharan wrote:
-> Changes made with the following Coccinelle rules:
+I do not see this patch staged in any tree (e.g. linux-next). Is this on
+its way to be merged?
+
+Thanks!
+
+On Tue 29-10-24 11:21:28, Nysal Jan K.A. wrote:
+> On architectures where ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+> is not selected, sync_core_before_usermode() is a no-op.
+> In membarrier_mm_sync_core_before_usermode() the compiler does not
+> eliminate redundant branches and load of mm->membarrier_state
+> for this case as the atomic_read() cannot be optimized away.
 > 
-> @@ constant C; @@
+> Here's a snippet of the code generated for finish_task_switch() on powerpc
+> prior to this change:
 > 
-> - msecs_to_jiffies(C * 1000)
-> + secs_to_jiffies(C)
+> 1b786c:   ld      r26,2624(r30)   # mm = rq->prev_mm;
+> .......
+> 1b78c8:   cmpdi   cr7,r26,0
+> 1b78cc:   beq     cr7,1b78e4 <finish_task_switch+0xd0>
+> 1b78d0:   ld      r9,2312(r13)    # current
+> 1b78d4:   ld      r9,1888(r9)     # current->mm
+> 1b78d8:   cmpd    cr7,r26,r9
+> 1b78dc:   beq     cr7,1b7a70 <finish_task_switch+0x25c>
+> 1b78e0:   hwsync
+> 1b78e4:   cmplwi  cr7,r27,128
+> .......
+> 1b7a70:   lwz     r9,176(r26)     # atomic_read(&mm->membarrier_state)
+> 1b7a74:   b       1b78e0 <finish_task_switch+0xcc>
 > 
-> @@ constant C; @@
+> This was found while analyzing "perf c2c" reports on kernels prior
+> to commit c1753fd02a00 ("mm: move mm_count into its own cache line")
+> where mm_count was false sharing with membarrier_state.
 > 
-> - msecs_to_jiffies(C * MSEC_PER_SEC)
-> + secs_to_jiffies(C)
+> There is a minor improvement in the size of finish_task_switch().
+> The following are results from bloat-o-meter for ppc64le:
 > 
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> GCC 7.5.0
+> ---------
+> add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-32 (-32)
+> Function                                     old     new   delta
+> finish_task_switch                           884     852     -32
+> 
+> GCC 12.2.1
+> ----------
+> add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-32 (-32)
+> Function                                     old     new   delta
+> finish_task_switch.isra                      852     820     -32
+> 
+> LLVM 17.0.6
+> -----------
+> add/remove: 0/0 grow/shrink: 0/2 up/down: 0/-36 (-36)
+> Function                                     old     new   delta
+> rt_mutex_schedule                            120     104     -16
+> finish_task_switch                           792     772     -20
+> 
+> Results on aarch64:
+> 
+> GCC 14.1.1
+> ----------
+> add/remove: 0/2 grow/shrink: 1/1 up/down: 4/-60 (-56)
+> Function                                     old     new   delta
+> get_nohz_timer_target                        352     356      +4
+> e843419@0b02_0000d7e7_408                      8       -      -8
+> e843419@01bb_000021d2_868                      8       -      -8
+> finish_task_switch.isra                      592     548     -44
+> 
+> Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
 > ---
->  arch/s390/kernel/lgr.c      | 3 ++-
->  arch/s390/kernel/time.c     | 4 ++--
->  arch/s390/kernel/topology.c | 2 +-
->  3 files changed, 5 insertions(+), 4 deletions(-)
-
-...
-
-> diff --git a/arch/s390/kernel/lgr.c b/arch/s390/kernel/lgr.c
-> index 6652e54cf3db9fbdd8cfb06f8a0dc1d4c05ae7d7..68021cb38574b122bbe3d9f70e9168305360017b 100644
-> --- a/arch/s390/kernel/lgr.c
-> +++ b/arch/s390/kernel/lgr.c
-> @@ -166,7 +166,8 @@ static struct timer_list lgr_timer;
->   */
->  static void lgr_timer_set(void)
+> V1 -> V2:
+> - Add results for aarch64
+> - Add a comment describing the changes
+> ---
+>  include/linux/sched/mm.h | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+> index 928a626725e6..b13474825130 100644
+> --- a/include/linux/sched/mm.h
+> +++ b/include/linux/sched/mm.h
+> @@ -531,6 +531,13 @@ enum {
+>  
+>  static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
 >  {
-> -	mod_timer(&lgr_timer, jiffies + msecs_to_jiffies(LGR_TIMER_INTERVAL_SECS * MSEC_PER_SEC));
-> +	mod_timer(&lgr_timer,
-> +		  jiffies + secs_to_jiffies(LGR_TIMER_INTERVAL_SECS));
->  }
+> +	/*
+> +	 * The atomic_read() below prevents CSE. The following should
+> +	 * help the compiler generate more efficient code on architectures
+> +	 * where sync_core_before_usermode() is a no-op.
+> +	 */
+> +	if (!IS_ENABLED(CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE))
+> +		return;
+>  	if (current->mm != mm)
+>  		return;
+>  	if (likely(!(atomic_read(&mm->membarrier_state) &
+> -- 
+> 2.47.0
+> 
 
-Please don't add a new line break, especially not if the new line
-would be shorter than the old one.
+-- 
+Michal Hocko
+SUSE Labs
 
