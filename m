@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-3400-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3401-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155C09D0B86
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 10:21:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A319D0B96
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 10:25:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsMYz14k2z2y6G;
-	Mon, 18 Nov 2024 20:21:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsMgQ01dWz2ygB;
+	Mon, 18 Nov 2024 20:25:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.9
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731921671;
-	cv=none; b=Z0phOauTc9ZWn1zdnPl+CoeJ2EOZne4dReODezg0Y9ZMFggKipUvghvlRWLw6pUhMbiZhAVKevmgL6EYBkBVdkEEq8uvvXjMvyE3kUgOwIRu9zQRI8qZyGiLHuXGthJAwUL53D5wtGL+ackIvRSfdzs8I12dK+DCSE7PWxKmfMADSpzkWf20xrixjAfj+5t5dm6jASaHFbNK+0UirM3UNG5n17rWuAi6MMzqDCAzHgUmTNJ6sMldSymgDYMOLS5mrQfnh0aXTxt2VuCca+kEcfGeg+N2uc2Uf+xDQar5L4EdWYUUmzqzuQ5vANhr/6IU6+dJXpKZEDvO+AUHtyOfBQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1:d65d:64ff:fe57:4e05"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731921953;
+	cv=none; b=kjy89tDqpOSJi2MZCAXUM7L3Mzvob5CmWs4qD5UBlRKU9JPfy7gYk8wutvOhrqI5Rr0xppPnbyho9/jhknk+IpB1YYs8Rc2HyQJssm4A/UnH0hv4o6m7AVmgk4D4Orjb0v4U5TLK0SmNRHMLn8yUMBrUq9rUllQ9vYIFPsSJYMdvwJZW87vxo/bKO+q4mGMtZdwytrR0kGwCgLXq3biG9zN3L3MIqAXLgzxhDdQciWEFlTpH1c3uGnZUs9AjUxtlzrhEZyeiZXhqkgFYHX84gji0n0pNhxjC6nM0VvIe0YqHQ0cdMNt2GhZUlHzJBb41t5P11tdocuB2lXkPJeqV1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731921671; c=relaxed/relaxed;
-	bh=0hxmkkOYRfbQCNvCIuW4iYr0WQbENducYb441SJjF10=;
+	t=1731921953; c=relaxed/relaxed;
+	bh=QZv9B88aiudPzp5KFIC/r8NmKWNQgmSFAM98pAwSItI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ONLsVCFFlACdeYsok4R45Cijf2qbOFE9RaC3ETEZioSTyU48l7nCe8HBeiRb3Z43hxzIiopVjKtpKyPCBuUnl24XbykEDcLljt7CYTBkM3LxeLQk/KiIkLe1is5/fyD/Os7lkb5uWQJ29zlXzmvpur0GIjb4oGCAqzJXCK9hSVTMKBvv6AupRPNJLOwKX2ANFoOqJ+QsS3nqH4FhPVDkZye+7IJcpcGm6h5jakErgKEUit7zQxfnlEjxW/jKEde5+wejUz0+tfdc18SnrPGgVU3FcRNz63xkCP0Hplaoc/pPAolNQOthCH4y6CU1uYcn39AR7uclp7OjYa7wb/gRmA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=C7CdQKsY; dkim-atps=neutral; spf=none (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZW6Q9NCUSck6+0gRBxrUslnn2k5jtaazamTeh8gisrmweIOmpU/xyFG45F2uKzj86k+MvBowcVYfNRrKYpcmODvxMgI/zCgeE1wvMTmufzb3mc7hZQmrbhUZG+hqx6c/xWniLk7RHke1k7WaWk2JhKE7CkF3/m0JzKp8KEPBO7WGsf1KYRkK40er6lMMFdNRZnWxPAQa0hZj9rOCqlxioRcAURRuMbCiyIB/tGilygOAnBC46JnOdylD+5+gTEdJ9oP0P1aN4CjyLgAtgQJjHxXG5BKuRnEBVQepTeJtwnckEGtixDO/ehI5JvIKEBFVPrsJPyTlmKuue8lHdEsFDw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=jATJIly7; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=C7CdQKsY;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=jATJIly7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsMYq2P75z2y34
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 20:21:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731921664; x=1763457664;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ugfZnn5J96rAO7xJaylkbIGnNeAO2t/ZYiEJsCSX0/A=;
-  b=C7CdQKsYSwZUQ6/AkDdpA1JkMs4ue5sMfBe/1dzGl6ShcH9wg+zrsLTv
-   4kXH2FSjuSd15+SxL1x4CSj1mUObax0umnfk5yM9XR5+cYJCxG+56t4WO
-   JO5AAsqwY68LzsYge3hT1VzF7qbqOQ6fj42pHHzh/N6ZARJJVseFewjiu
-   fje/hiiTB7DC+K/sCl5aSj88eHil2dsHvCgtaQXAaMbdx/8nWUEZfRv9p
-   lWQ6WdSf9r20oCqmakoY/9ei8YQ4KLlf3a+TDZNMlgSFzrj8T+b01vqQQ
-   AtEMLpOcKLEvmUVtOflTj00wUV0xzWKrBgcS7Sw/8ozikgqDl/DIOda/y
-   Q==;
-X-CSE-ConnectionGUID: R5nrgXGJTR+53CTKkfjkIA==
-X-CSE-MsgGUID: 84tOxN7eScG0uzXotnXHtg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="54367161"
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="54367161"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 01:20:58 -0800
-X-CSE-ConnectionGUID: vyZTs5DpQiKdNdoeJy54xA==
-X-CSE-MsgGUID: ggMpVe6gQ8Wd/iuMyoVi+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="120022881"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 01:20:55 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tCxwC-0000000Fwtr-1EaC;
-	Mon, 18 Nov 2024 11:20:52 +0200
-Date: Mon, 18 Nov 2024 11:20:52 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsMgG5lrKz2yft
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 20:25:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QZv9B88aiudPzp5KFIC/r8NmKWNQgmSFAM98pAwSItI=; b=jATJIly71K9XLkVd42isb8BV28
+	Z0Sh/qK1Z7BJtWHTOQuJXHH+Aom5xYqXR7OLOB7/P4bR6OYK3w5QX4o63cGvDgrqk073aLn67cQsW
+	bjD8br0XSffBxCBn3WYcMacgCOZ9Se7QKExkYBIzNj4J26j/VYdWF0fKGDJv1MjAti4pnPfDXfeMf
+	SINasJGzO/LFTzTUXQh7D+wLoKXxVGT25qOeb/srHkoBam2b/z4NfzLNPbmCBeLsCGLpbfKQ8llB6
+	yhpAWkM4rmtb8c1e9tb7sx2qYwOR7RoSDsolvBI/sll0tIHtcVb/nylzONb4prHcMaJueai3/3Qhu
+	pNBaYF6A==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tCy0U-00000000CxD-25nF;
+	Mon, 18 Nov 2024 09:25:18 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 468F530049D; Mon, 18 Nov 2024 10:25:17 +0100 (CET)
+Date: Mon, 18 Nov 2024 10:25:17 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: Re: [PATCH v1 1/1] powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
-Message-ID: <ZzsG9EjzV82Crl2W@smile.fi.intel.com>
-References: <20241115133802.3919003-1-andriy.shevchenko@linux.intel.com>
- <5b44abcc-f629-4250-9edf-7f173b78172c@csgroup.eu>
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	linuxppc-dev@lists.ozlabs.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mark Brown <broonie@kernel.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH v2] sched/membarrier: Fix redundant load of
+ membarrier_state
+Message-ID: <20241118092517.GE39245@noisy.programming.kicks-ass.net>
+References: <20241007053936.833392-1-nysal@linux.ibm.com>
+ <20241029055133.121418-1-nysal@linux.ibm.com>
+ <ZzsDEvJn-vauz9gE@tiehlicka>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,50 +82,18 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5b44abcc-f629-4250-9edf-7f173b78172c@csgroup.eu>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.3 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
+In-Reply-To: <ZzsDEvJn-vauz9gE@tiehlicka>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, Nov 16, 2024 at 11:44:35AM +0100, Christophe Leroy wrote:
-> Le 15/11/2024 à 14:38, Andy Shevchenko a écrit :
-> > Remove legacy-of-mm-gpiochip.h header file, replace of_* functions
-> > and structs with appropriate alternatives.
-> 
-> Looks like you don't really have an alternative to
-> of_mm_gpiochip_add_data(), you are replacing one single line by 11 new ones,
-> and that is done twice (once for cpm1_gpiochip_add16(), once for
-> cpm1_gpiochip_add32()).
+On Mon, Nov 18, 2024 at 10:04:18AM +0100, Michal Hocko wrote:
+> I do not see this patch staged in any tree (e.g. linux-next). Is this on
+> its way to be merged?
 
-True, but that's the issue that we have of_specific API. If someone propose
-the common API for the agnostic approach,  it would be nice, but I am not
-the one. And TBH I do not see the advantage of it right now as almost every
-GPIO driver is using its own labeling schema (*). Note, that this patch also
-fixes a memory leak as a side effect.
-
-*) the legacy API is mostly used by PPC code, do you want that of_mm_* thingy
-to be moved to PPC specific code instead of killing it? Would be done this
-way as well.
-
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > ---
-> >   arch/powerpc/platforms/8xx/cpm1.c | 119 +++++++++++++++---------------
-> 
-> Does not build:
-
-Crap, I most likely built something else and not these files...
-I have carefully build-test this for v2.
-
-Note to myself: Never ever send the patches on Friday evenings! :-)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+I only now found it -- it doesn't look super urgent. I'll get it into a
+git tree after -rc1.
 
