@@ -1,35 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-3415-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3416-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4390D9D13F3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 16:05:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0739D179A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 19:08:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsWCY01k1z2yL0;
-	Tue, 19 Nov 2024 02:05:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsbFs5fqzz2xWT;
+	Tue, 19 Nov 2024 05:08:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731942344;
-	cv=none; b=g/dsOeaSz1SYQBqo7zVV+g0GBcDN+yGrNjf8tgJUuCqn6Rwb0wha8zNg92cW//SI01l8J1krJjPfUwXBxHYEosRRxQbBkVDFuOhSPVm9Ef8ECqthV5CM+lQQ/4JrvRjyoGEpXg18+fyZNRb4nqbAFrMAvW7EMekdE8CErsB0XYBTmhNNpgvGiAQCc534aqsCIOZK/NV+AmatlPXoTgTP+5PaotDyaHucNxzov7phnTCvsnHfl6opnoo5L1/7cjhIa2Biq7UT7gCyyRGF7F950rUwnlhj4J/BrcT3NfszJ9OtVedLQkNBR0u+z5uMnZL4An4cTMrP5O4O7UPqO51XAw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731953281;
+	cv=none; b=I0fNJpn0gxOwpAoyMPl7Pw7JfXzI6FzipCAaDxYnvFE2UGEdnLB3m8kh1U5hhEsAsJv5XsubCp7LZhLbAwycaXnPUb/fWvl/uhdoVvfmiJP05h6BfBtbztFeaI9sg4LFgWFKBHCoD8hNrCupeuIVqS9gqOAzWZgvAeHdfBlY6rRO3Mr/ZpzyILpJvTw4sQg758UwPuUZuNiP2f+A+kCM/KqVA1zIzjqU+6P2B+EMadRlz39YdaB1sWOTYyGsnje1Vb2i/xDQyD3at3ayf46abZQ7bjeDuIQbzcPIUVIJrfeANCZak6yRiH03P+uX/fFsDlA9GqW7sRKu1FUa4nOLGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731942344; c=relaxed/relaxed;
-	bh=lhJz2n820RfIKKRXmPJ+olZDv6ZE74OuixOiG3FK7gI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JKNjISzBgzlTAMIfGOFoIn0/Wgnsc/dGfF2btvbToLGNNVWZJvzubtlQRvYSpwwUrQ92Oxd7YMn37fxqYuNI2v4MwiC2lbdALoLf8eprcYJl1y9U/WaGBwhjv3EFKr5Cuip8EHaqRglFjpvK48dmfe+La4TtgtiDug0FbDMZ3cnVp5hFN7AnNDo9mVfPyXkAq9BjuUsFYO+hvzL3K7A3yS9KDhm7oOAFXn3dAP4LUmU2Gz9KXm0EGN4WadrhTggvmOTo39miB8OLwupN4zGHaATLGBntwtINPBDXdFVhP0UyjrFlwlmBt0aNpRU0Hkfb77fPGbL0m3AHg2+GH2+09Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dietmar.eggemann@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dietmar.eggemann@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsWCT6pXLz2yHs
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2024 02:05:40 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 685B611FB;
-	Mon, 18 Nov 2024 07:05:36 -0800 (PST)
-Received: from [192.168.178.6] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B3183F5A1;
-	Mon, 18 Nov 2024 07:05:01 -0800 (PST)
-Message-ID: <ab5d70ad-d4a4-4116-82c6-908b9e641ee6@arm.com>
-Date: Mon, 18 Nov 2024 16:04:53 +0100
+	t=1731953281; c=relaxed/relaxed;
+	bh=lP0Zntp+HRWENCbPjrc9G2lDoefH/1cMkwirwj5j8Pw=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Ox/25sC6TaGYRRyj/dZRO88M0wDenKvniFBJEQqPp35gwMI9rU+YqxcIypeNzJKkkONDzI7Hzxe9Yc1Upvv5TJ7PSdU49RF5Q2h7oOdsCNNoETbuHg6zHcgJ3c7FiZtBAjos116K6XfV3WodpLo2FX7/kkqNSni0W6pWk+kJ5a2oEgFG5mcba3t0kioMXlVmqxvI+uyIy8p3XPaIB4Rbq1F2Dn5zp+Eqi+W2022ItxPvzpGtBcrcJJxbLS6N+vk7lqe8CEvqu1aW+fRy4wv/XXaYYJeA3m2/4827MR9IzjU3OFG+qwIqjiTyHbwmRuNCU4PrvUrRC8wMwUAOL6eRcA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=U8YJ5MEB; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=U8YJ5MEB;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsbFr4H6xz2xGH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2024 05:08:00 +1100 (AEDT)
+Received: from [192.168.35.166] (c-73-118-245-227.hsd1.wa.comcast.net [73.118.245.227])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 3DD17206BCF9;
+	Mon, 18 Nov 2024 10:07:25 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3DD17206BCF9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1731953247;
+	bh=lP0Zntp+HRWENCbPjrc9G2lDoefH/1cMkwirwj5j8Pw=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=U8YJ5MEB+lC4gUMBqZ4Gz30eL5pByQSSZkvP1DxkMnTP1qlIes9QjQ3oHvl0/spjY
+	 zaV4G+9kqg2wB6l6cY05sRrhV/1+2NwT0Di3E3r4OqgFDSinGSRYQd2YjZAhmOdf7k
+	 pgtoi2CJWleSz5F2PF0YMgIK9D4gDdAFvwZB2ktQ=
+Message-ID: <4a3e6cfe-35ef-4865-8b43-c002679455f3@linux.microsoft.com>
+Date: Mon, 18 Nov 2024 10:07:24 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,104 +51,125 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/4] cpu/SMT: Provide a default
- topology_is_primary_thread()
-To: Yicong Yang <yangyicong@huawei.com>,
- Pierre Gondois <pierre.gondois@arm.com>
-Cc: yangyicong@hisilicon.com, linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
- bp@alien8.de, mingo@redhat.com, linux-arm-kernel@lists.infradead.org,
- mpe@ellerman.id.au, peterz@infradead.org, tglx@linutronix.de,
- sudeep.holla@arm.com, catalin.marinas@arm.com, will@kernel.org,
- linux-kernel@vger.kernel.org, morten.rasmussen@arm.com, msuchanek@suse.de,
- gregkh@linuxfoundation.org, rafael@kernel.org, jonathan.cameron@huawei.com,
- prime.zeng@hisilicon.com, linuxarm@huawei.com, xuwei5@huawei.com,
- guohanjun@huawei.com, dave.hansen@linux.intel.com
-References: <20241114141127.23232-1-yangyicong@huawei.com>
- <20241114141127.23232-2-yangyicong@huawei.com>
- <427bd639-33c3-47e4-9e83-68c428eb1a7d@arm.com>
- <3876e185-2fcc-25dd-e70d-93fdcbf8fc37@huawei.com>
-From: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+ Jozsef Kadlecsik <kadlec@netfilter.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>,
+ Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Russell King
+ <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>,
+ Oded Gabbay <ogabbay@kernel.org>, Lucas De Marchi
+ <lucas.demarchi@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jeroen de Borst <jeroendb@google.com>,
+ Praveen Kaligineedi <pkaligineedi@google.com>,
+ Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ James Smart <james.smart@broadcom.com>,
+ Dick Kennedy <dick.kennedy@broadcom.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann
+ <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>,
+ Ilya Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
+ Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Russell King <linux+etnaviv@armlinux.org.uk>,
+ Christian Gmeiner <christian.gmeiner@gmail.com>,
+ Louis Peens <louis.peens@corigine.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ eahariha@linux.microsoft.com,
+ "netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+ "coreteam@netfilter.org" <coreteam@netfilter.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "cocci@inria.fr" <cocci@inria.fr>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>,
+ "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+ "linux-rpi-kernel@lists.infradead.org"
+ <linux-rpi-kernel@lists.infradead.org>,
+ "ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>,
+ "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>,
+ "linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
+ "etnaviv@lists.freedesktop.org" <etnaviv@lists.freedesktop.org>,
+ "oss-drivers@corigine.com" <oss-drivers@corigine.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>
+Subject: Re: [PATCH v2 00/21] Converge on using secs_to_jiffies()
+To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <fb97b58c-4d77-43d1-88a0-d838d5030d3e@cs-soprasteria.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 Content-Language: en-US
-In-Reply-To: <3876e185-2fcc-25dd-e70d-93fdcbf8fc37@huawei.com>
+In-Reply-To: <fb97b58c-4d77-43d1-88a0-d838d5030d3e@cs-soprasteria.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 18/11/2024 11:50, Yicong Yang wrote:
-> On 2024/11/15 17:42, Pierre Gondois wrote:
->> Hello Yicong,
->>
->>
->> On 11/14/24 15:11, Yicong Yang wrote:
->>> From: Yicong Yang <yangyicong@hisilicon.com>
-
-[...]
-
->>>   diff --git a/include/linux/topology.h b/include/linux/topology.h
->>> index 52f5850730b3..b8e860276518 100644
->>> --- a/include/linux/topology.h
->>> +++ b/include/linux/topology.h
->>> @@ -240,6 +240,26 @@ static inline const struct cpumask *cpu_smt_mask(int cpu)
->>>   }
->>>   #endif
->>>   +#ifndef topology_is_primary_thread
->>> +
->>> +#define topology_is_primary_thread topology_is_primary_thread
->>> +
->>> +static inline bool topology_is_primary_thread(unsigned int cpu)
->>> +{
->>> +    /*
->>> +     * On SMT hotplug the primary thread of the SMT won't be disabled.
->>> +     * Architectures do have a special primary thread (e.g. x86) need
->>> +     * to override this function. Otherwise just make the first thread
->>> +     * in the SMT as the primary thread.
->>> +     *
->>> +     * The sibling cpumask of an offline CPU contains always the CPU
->>> +     * itself.
->>
->> As Thomas suggested, would it be possible to check it for other
->> architectures ?
->> For instance for loongarch at arch/loongarch/kernel/smp.c,
->> clear_cpu_sibling_map() seems to completely clear &cpu_sibling_map[cpu]
->> when a CPU is put offline. This would make topology_sibling_cpumask(cpu)
->> to be empty and cpu_bootable() return false if the CPU never booted before.
->>
+On 11/16/2024 2:23 AM, LEROY Christophe wrote:
 > 
-> cpu_bootable() only affects architectures select HOTPLUG_SMT, otherwise it'll always
-> return true. Since x86 and powerpc have their own illustration of primary thread and
-> have an override version of this funciton, arm64 is the only user now by this patchset.
-> We have this guarantee for arm64 and also for other architectures using arch_topology.c
-> (see clear_cpu_topology()). So if loogarch has a different implementation, they
-> should implement a topology_is_primary_thread() variant to support HOTPLUG_SMT.
+> 
+> Le 15/11/2024 à 22:26, Easwar Hariharan a écrit :
+>> [Vous ne recevez pas souvent de courriers de eahariha@linux.microsoft.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> This is a series that follows up on my previous series to introduce
+>> secs_to_jiffies() and convert a few initial users.[1] In the review for
+>> that series, Anna-Maria requested converting other users with
+>> Coccinelle. This is part 1 that converts users of msecs_to_jiffies()
+>> that use the multiply pattern of either of:
+>> - msecs_to_jiffies(N*1000), or
+>> - msecs_to_jiffies(N*MSEC_PER_SEC)
+> 
+> After applying this series on top of tip/timers/core tree, I still find
+> a lot of candidates to the conversion:
+> 
 
-I also stumbled over this sentence.
+Thanks for looking, that pattern of seconds-denominated
+msecs_to_jiffies() calls will be addressed in a later part. As mentioned
+in my reply to Anna-Maria[1], I'm not super-familiar with Coccinelle. I
+sent this out as part 1 as mentioned in the cover letter above to make
+incremental progress as much as I could. Julia has sent me a message
+with a rule that could possibly address the pattern you point out.
 
-drivers/base/arch_topology.c:
+I also see there are some instances in the grep results that appear to
+be expression * 1000 rather than constant * 1000. I'll address those in
+one of the later parts as well.
 
-void clear_cpu_topology(int cpu)                   (2)
-
-  ...
-  cpumask_set_cpu(cpu, &cpu_topo->thread_sibling)  (4)
-
-void __init reset_cpu_topology(void)               (1)
-
-  for_each_possible_cpu(cpu)
-
-    ...
-    clear_cpu_topology(cpu)                        (2)
-
-#if defined(CONFIG_ARM64) || defined(CONFIG_RISCV) (3)
-void __init init_cpu_topology(void)
-
-  reset_cpu_topology()                             (1)
-  ...
-
-Does this mean the default implementation relies on (4), i.e. is only
-valid for arm64 and riscv? (3)
-Do all the other archs then have to overwrite the default implementation
- (like x86 and powerpc) if they want to implement CONFIG_HOTPLUG_SMT?
-
-[...]
+Thanks,
+Easwar
 
