@@ -1,93 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-3399-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3400-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2F59D0B5C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 10:04:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 155C09D0B86
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 10:21:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsMBh65CBz2yN8;
-	Mon, 18 Nov 2024 20:04:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsMYz14k2z2y6G;
+	Mon, 18 Nov 2024 20:21:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731920668;
-	cv=none; b=HraNPf7C55XQaWuY4q+9Va3On5pp0QTK5BxvXLB0+q4cCjMvdIjRk64uZ/cXyWu4EtUAmY8KY/MRlgvRiYGxOb026WTOI/HXUDQI3k2bE78AXCBZoG8VBoFYD6Wd1fdhkuIvqyVxWdIO4QVxODeeve8Erat/I3p5sADyO5QFDRjn1lKud+w7YfQS3eq20hKBkvx/3hAqsX4bcQLCt77uUKt22F5nO+xNNkea695WzVK7hfovXQAIx0/YWTYUNMW38GsLn3hj9xI4rzLziGnMPGMfI/QqQK/GWj8ir0PnsPE0ttY4SshsPrS0u1x+wb9O1WtI3ae5MR02ycD5HekPxQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731921671;
+	cv=none; b=Z0phOauTc9ZWn1zdnPl+CoeJ2EOZne4dReODezg0Y9ZMFggKipUvghvlRWLw6pUhMbiZhAVKevmgL6EYBkBVdkEEq8uvvXjMvyE3kUgOwIRu9zQRI8qZyGiLHuXGthJAwUL53D5wtGL+ackIvRSfdzs8I12dK+DCSE7PWxKmfMADSpzkWf20xrixjAfj+5t5dm6jASaHFbNK+0UirM3UNG5n17rWuAi6MMzqDCAzHgUmTNJ6sMldSymgDYMOLS5mrQfnh0aXTxt2VuCca+kEcfGeg+N2uc2Uf+xDQar5L4EdWYUUmzqzuQ5vANhr/6IU6+dJXpKZEDvO+AUHtyOfBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731920668; c=relaxed/relaxed;
-	bh=Ws/rbfiwFMNWy8k0tnCWfMeaJzWW6S4EceX0n9OoukE=;
+	t=1731921671; c=relaxed/relaxed;
+	bh=0hxmkkOYRfbQCNvCIuW4iYr0WQbENducYb441SJjF10=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T2qeAazOyJDUNzL0WIgS+U1Bc08GUzbpnfvGTwJx1stYRIjypL0SXauL6nDdL9gXJxmmDCxbTix71tcBLEv7oUMJKVn/h1aHB9m+f//OsdqkV4M97lB5h7enppXi/UlXofuF76L1w7uZn2tJFcsGoijk8RFACGmJLw8zS4MFQvM0nyI0GU2Ikog7vLAvuzkrQlraF85I7InEszXzZpSzJW5T4hZHLlIjlOnQqNBgmhyngcoY3UkOuaUbixPdQ5/RsRgJkXdpe+gZoTwjKvS3qgY/g+ejvEhuG/pw3BdHGRpRlpxaRbeMBMA07LMxak02SIwMg5pAKfunWv8xMzphRA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SBaCu+6h; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ONLsVCFFlACdeYsok4R45Cijf2qbOFE9RaC3ETEZioSTyU48l7nCe8HBeiRb3Z43hxzIiopVjKtpKyPCBuUnl24XbykEDcLljt7CYTBkM3LxeLQk/KiIkLe1is5/fyD/Os7lkb5uWQJ29zlXzmvpur0GIjb4oGCAqzJXCK9hSVTMKBvv6AupRPNJLOwKX2ANFoOqJ+QsS3nqH4FhPVDkZye+7IJcpcGm6h5jakErgKEUit7zQxfnlEjxW/jKEde5+wejUz0+tfdc18SnrPGgVU3FcRNz63xkCP0Hplaoc/pPAolNQOthCH4y6CU1uYcn39AR7uclp7OjYa7wb/gRmA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=C7CdQKsY; dkim-atps=neutral; spf=none (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=SBaCu+6h;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=C7CdQKsY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=mhocko@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsMBf3GZcz2xrJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 20:04:24 +1100 (AEDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-aa1f73966a5so374469366b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 01:04:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1731920660; x=1732525460; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ws/rbfiwFMNWy8k0tnCWfMeaJzWW6S4EceX0n9OoukE=;
-        b=SBaCu+6hHoQwtL/SaA1YV5+x101s/0Khi66Z/gkCulbEQmZHXAfin0XdJ/dXJeM8hF
-         YdqXnbG51wlIRFuWvojav9xbaip9JE3R7mat4Jn7JahOXX21zwNZnVGUVsQ+v6BEyL1P
-         pKHktIBZfumKwzLbEJwRkGoDMwopFHMAmC10QI58GWrJoO411Ca5EexpNDzwxwcbNATU
-         wg4c/jvqhFjJqbQzOxoEeA5wRmSZSwbty9gZN4OjycBemj4FnWlHhC15g2/3owuAui85
-         NiNoDGJq81Y7xJn71S9svg18FGLhJe61kDxMad108m0KCVYRfkzlA0RVZNP8ZQ686B8i
-         r6/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731920660; x=1732525460;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ws/rbfiwFMNWy8k0tnCWfMeaJzWW6S4EceX0n9OoukE=;
-        b=c2PsHO+XzURBI5bLrBDnJNhlBqDIseyoaw6OYRb3fQLGQwW2f9u0NdIBf1LLZ5dkWG
-         66eIHNQ+QBK9QHPO19UKNJ5CuRv7gclESEQA+xG3uf6irNhbryEkb56U4xsFlzznbnnK
-         m365i4QYLKMeSHqoCgX9knnUKkPQArvjetgZnWiiXYZwfVkm2D/LBALNOMBvQwGfPF8h
-         rfnTc98RDy1S9DEsbGDfg1gADNdlOXgTc+aG7JtWciBG/tVorF/MlZ7frsWSJLchEEO5
-         4WXqP27/7lRllbmh/dPawJUlEMCCsQTehqyOwi2qCDIaK5jrhg4UV4G0DrNq6PSLOyC3
-         I6cw==
-X-Forwarded-Encrypted: i=1; AJvYcCXA3Xga3N2BDoYeITogGXUH2pI5e6GT9RBsbPVz0nbZgaJZhJ26GE3r/j9RMNDkuHz4aN0iowSM0ajwsN4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxLDYOOm24idjVjEfXPZUq8Gw1SvtNJ5AyI8Mrdi8LWmytx5tJ4
-	CI5oD9cxI8jNbcR7wAcx/gbX9JKdR9ubdd6PFSmZXqucvIZRgWBvIyxDT3d+XkE=
-X-Google-Smtp-Source: AGHT+IHiDm/bz3WEh1enyRl0N1th54dk8RHN4GA3K1qzcDnriUz2+DDQ+dD96pBdIfYZ9dcNHYkGjA==
-X-Received: by 2002:a17:907:7284:b0:a9e:c263:29a7 with SMTP id a640c23a62f3a-aa483420a9amr1096106266b.23.1731920659889;
-        Mon, 18 Nov 2024 01:04:19 -0800 (PST)
-Received: from localhost (109-81-88-120.rct.o2.cz. [109.81.88.120])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20df50defsm513526566b.50.2024.11.18.01.04.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2024 01:04:19 -0800 (PST)
-Date: Mon, 18 Nov 2024 10:04:18 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: "Nysal Jan K.A." <nysal@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsMYq2P75z2y34
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 20:21:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1731921664; x=1763457664;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ugfZnn5J96rAO7xJaylkbIGnNeAO2t/ZYiEJsCSX0/A=;
+  b=C7CdQKsYSwZUQ6/AkDdpA1JkMs4ue5sMfBe/1dzGl6ShcH9wg+zrsLTv
+   4kXH2FSjuSd15+SxL1x4CSj1mUObax0umnfk5yM9XR5+cYJCxG+56t4WO
+   JO5AAsqwY68LzsYge3hT1VzF7qbqOQ6fj42pHHzh/N6ZARJJVseFewjiu
+   fje/hiiTB7DC+K/sCl5aSj88eHil2dsHvCgtaQXAaMbdx/8nWUEZfRv9p
+   lWQ6WdSf9r20oCqmakoY/9ei8YQ4KLlf3a+TDZNMlgSFzrj8T+b01vqQQ
+   AtEMLpOcKLEvmUVtOflTj00wUV0xzWKrBgcS7Sw/8ozikgqDl/DIOda/y
+   Q==;
+X-CSE-ConnectionGUID: R5nrgXGJTR+53CTKkfjkIA==
+X-CSE-MsgGUID: 84tOxN7eScG0uzXotnXHtg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="54367161"
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
+   d="scan'208";a="54367161"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 01:20:58 -0800
+X-CSE-ConnectionGUID: vyZTs5DpQiKdNdoeJy54xA==
+X-CSE-MsgGUID: ggMpVe6gQ8Wd/iuMyoVi+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
+   d="scan'208";a="120022881"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 01:20:55 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tCxwC-0000000Fwtr-1EaC;
+	Mon, 18 Nov 2024 11:20:52 +0200
+Date: Mon, 18 Nov 2024 11:20:52 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Segher Boessenkool <segher@kernel.crashing.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Peter Zijlstra <peterz@infradead.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mark Brown <broonie@kernel.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2] sched/membarrier: Fix redundant load of
- membarrier_state
-Message-ID: <ZzsDEvJn-vauz9gE@tiehlicka>
-References: <20241007053936.833392-1-nysal@linux.ibm.com>
- <20241029055133.121418-1-nysal@linux.ibm.com>
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [PATCH v1 1/1] powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
+Message-ID: <ZzsG9EjzV82Crl2W@smile.fi.intel.com>
+References: <20241115133802.3919003-1-andriy.shevchenko@linux.intel.com>
+ <5b44abcc-f629-4250-9edf-7f173b78172c@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,112 +82,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20241029055133.121418-1-nysal@linux.ibm.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5b44abcc-f629-4250-9edf-7f173b78172c@csgroup.eu>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.3 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-I do not see this patch staged in any tree (e.g. linux-next). Is this on
-its way to be merged?
+On Sat, Nov 16, 2024 at 11:44:35AM +0100, Christophe Leroy wrote:
+> Le 15/11/2024 à 14:38, Andy Shevchenko a écrit :
+> > Remove legacy-of-mm-gpiochip.h header file, replace of_* functions
+> > and structs with appropriate alternatives.
+> 
+> Looks like you don't really have an alternative to
+> of_mm_gpiochip_add_data(), you are replacing one single line by 11 new ones,
+> and that is done twice (once for cpm1_gpiochip_add16(), once for
+> cpm1_gpiochip_add32()).
 
-Thanks!
+True, but that's the issue that we have of_specific API. If someone propose
+the common API for the agnostic approach,  it would be nice, but I am not
+the one. And TBH I do not see the advantage of it right now as almost every
+GPIO driver is using its own labeling schema (*). Note, that this patch also
+fixes a memory leak as a side effect.
 
-On Tue 29-10-24 11:21:28, Nysal Jan K.A. wrote:
-> On architectures where ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
-> is not selected, sync_core_before_usermode() is a no-op.
-> In membarrier_mm_sync_core_before_usermode() the compiler does not
-> eliminate redundant branches and load of mm->membarrier_state
-> for this case as the atomic_read() cannot be optimized away.
+*) the legacy API is mostly used by PPC code, do you want that of_mm_* thingy
+to be moved to PPC specific code instead of killing it? Would be done this
+way as well.
+
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > ---
+> >   arch/powerpc/platforms/8xx/cpm1.c | 119 +++++++++++++++---------------
 > 
-> Here's a snippet of the code generated for finish_task_switch() on powerpc
-> prior to this change:
-> 
-> 1b786c:   ld      r26,2624(r30)   # mm = rq->prev_mm;
-> .......
-> 1b78c8:   cmpdi   cr7,r26,0
-> 1b78cc:   beq     cr7,1b78e4 <finish_task_switch+0xd0>
-> 1b78d0:   ld      r9,2312(r13)    # current
-> 1b78d4:   ld      r9,1888(r9)     # current->mm
-> 1b78d8:   cmpd    cr7,r26,r9
-> 1b78dc:   beq     cr7,1b7a70 <finish_task_switch+0x25c>
-> 1b78e0:   hwsync
-> 1b78e4:   cmplwi  cr7,r27,128
-> .......
-> 1b7a70:   lwz     r9,176(r26)     # atomic_read(&mm->membarrier_state)
-> 1b7a74:   b       1b78e0 <finish_task_switch+0xcc>
-> 
-> This was found while analyzing "perf c2c" reports on kernels prior
-> to commit c1753fd02a00 ("mm: move mm_count into its own cache line")
-> where mm_count was false sharing with membarrier_state.
-> 
-> There is a minor improvement in the size of finish_task_switch().
-> The following are results from bloat-o-meter for ppc64le:
-> 
-> GCC 7.5.0
-> ---------
-> add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-32 (-32)
-> Function                                     old     new   delta
-> finish_task_switch                           884     852     -32
-> 
-> GCC 12.2.1
-> ----------
-> add/remove: 0/0 grow/shrink: 0/1 up/down: 0/-32 (-32)
-> Function                                     old     new   delta
-> finish_task_switch.isra                      852     820     -32
-> 
-> LLVM 17.0.6
-> -----------
-> add/remove: 0/0 grow/shrink: 0/2 up/down: 0/-36 (-36)
-> Function                                     old     new   delta
-> rt_mutex_schedule                            120     104     -16
-> finish_task_switch                           792     772     -20
-> 
-> Results on aarch64:
-> 
-> GCC 14.1.1
-> ----------
-> add/remove: 0/2 grow/shrink: 1/1 up/down: 4/-60 (-56)
-> Function                                     old     new   delta
-> get_nohz_timer_target                        352     356      +4
-> e843419@0b02_0000d7e7_408                      8       -      -8
-> e843419@01bb_000021d2_868                      8       -      -8
-> finish_task_switch.isra                      592     548     -44
-> 
-> Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-> ---
-> V1 -> V2:
-> - Add results for aarch64
-> - Add a comment describing the changes
-> ---
->  include/linux/sched/mm.h | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-> index 928a626725e6..b13474825130 100644
-> --- a/include/linux/sched/mm.h
-> +++ b/include/linux/sched/mm.h
-> @@ -531,6 +531,13 @@ enum {
->  
->  static inline void membarrier_mm_sync_core_before_usermode(struct mm_struct *mm)
->  {
-> +	/*
-> +	 * The atomic_read() below prevents CSE. The following should
-> +	 * help the compiler generate more efficient code on architectures
-> +	 * where sync_core_before_usermode() is a no-op.
-> +	 */
-> +	if (!IS_ENABLED(CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE))
-> +		return;
->  	if (current->mm != mm)
->  		return;
->  	if (likely(!(atomic_read(&mm->membarrier_state) &
-> -- 
-> 2.47.0
-> 
+> Does not build:
+
+Crap, I most likely built something else and not these files...
+I have carefully build-test this for v2.
+
+Note to myself: Never ever send the patches on Friday evenings! :-)
 
 -- 
-Michal Hocko
-SUSE Labs
+With Best Regards,
+Andy Shevchenko
+
+
 
