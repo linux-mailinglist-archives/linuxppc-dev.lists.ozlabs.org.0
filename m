@@ -1,43 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-3420-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3421-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545D19D17F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 19:19:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5239D17FF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 19:24:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsbW026VGz3bdK;
-	Tue, 19 Nov 2024 05:19:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsbdB4DCcz3bgy;
+	Tue, 19 Nov 2024 05:24:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731953964;
-	cv=none; b=OHt/A/vg0yDUVwmRcnNrl2vhX2EFbDr/l891h7CUjPcXfZuAksIcW02KAKjhkFD5mziWRXoySSuG3vNbJcCHTGCfvTTYasDd8+zGG9m5eiq2yf7tWvrCMvQE6cQh6EYIaJxY0RRkx7KThrRUfKqRVO60qxA89HkBlCY8wNZIx2yBzJQmy+Isg6mKkCo0QUhOmZVGIAU0sdr+E9YVoOHk9aysKfHgBfbXHb1ojceSADw91ZBYiBG6fHiQDwo3hZZN+rgMHBob/bAbap/BXnwnPo+YmenubEX4f91Qr9Pkd65PTwC4pSGMFhI0Q7HIOIh2ciHmbOpV0fBvTyyxRQnFTw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731954286;
+	cv=none; b=CE/I7giSNAVZ1MFh0BCw7Kc+O34QQ5pCChhrC2AEHgI7Enf6m6M8LsoiHLsbovRyWahqnk1DZU94Ea8JJTc8dhglfWd7c1//DqWft7UHbUpbnx/KORbh0q/GWK1U5vN1A1WoVzB+z2Gw3y7eXSBcd9KYLMwI9LosHN11EA5SXFOrx9hQSIU0Mtm1p9QBvbhwl1E5oqWNJha7jY7yD++WSFTtTR2eNdLbYX4YTAf2SXltDMqzhPaL+JZgML92HOrY1dAVkGCifcYXesIvZBZn/tpBMC778jMZw8XVzfaR8OyX6mtfNhy0v/mwjPfMDsTU3hWk01dxRAjhZdHUZeSOzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731953964; c=relaxed/relaxed;
-	bh=fIQzgF1WsNR1uKKNTq0/EQo7zmlio+cixqR17RrtuRg=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Mvbnuqtqtp0BwZphtNapiga6XW2YT3ERG4G3hEaiiu4cgW2IPoyytqGoebHbyy4KajXzV4cV1qRmwChC0f6M9zaKbnx6CSUDmiCUdKTCAXzxHA+ycQLugtw1ZMMgr4M7YwMKgST0ggCiyB/s7n2ietmAa4cWMf88uO+hyh3hQg/fA012rYIsCaCQZQdXND3JT87JrZH6MUyoNj0pKKAfbjCVBLIASNV4xpiTD80nfzcHQr3l0UvdL3JghwE2ySCi8+OCj7oqoDJhqIJFpmoT6Uq9DDpsYvEIOKydOJHYiB2O29s0TTuFK0TPelOxsGPHLQ1iuBDYibODiOqOromzsg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=AG9s/uyD; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=AG9s/uyD;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsbVz1ZfHz306l
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2024 05:19:23 +1100 (AEDT)
-Received: from [192.168.35.166] (c-73-118-245-227.hsd1.wa.comcast.net [73.118.245.227])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 7B6DB206BCF9;
-	Mon, 18 Nov 2024 10:18:49 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7B6DB206BCF9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1731953932;
-	bh=fIQzgF1WsNR1uKKNTq0/EQo7zmlio+cixqR17RrtuRg=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=AG9s/uyDx0OBII3cr4HUzEtCn4nG6edMY2UD6tMYQJ1OpbxvtlkXS/eCyyKzQSDkC
-	 KcdCHl5p58vf39EYGhD7mqQUrW1VKQADyz79vhjulvgZLmWmAZisUXU71InKFz7Poi
-	 T4lQlDCJsC2Y9ZlNmbnEUe8f/zo4dQilCRsXYjpY=
-Message-ID: <96f3b51b-c28c-4ea8-b61e-a4982196215f@linux.microsoft.com>
-Date: Mon, 18 Nov 2024 10:18:49 -0800
+	t=1731954286; c=relaxed/relaxed;
+	bh=zk38Xe/iH95eayJVebT/nkAzanSuabbOIFGgWA1qSMc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KC2WJT/REJu2Hm7O8bxufIzFN8DcavI1cMCrt6vWbXW5Iy74BtXxcqp4ALo/jN3K2QMmLapQc0cGFNhJeN94lraKzXLYE959tQ8SQCqlOxj235HqRKCoDVJuapyYOeBpj/BDsG5z0AJomQ+Vi6FuNo6E3Gi+hOVo7yyG4fz1Fv1EdO6VbIuXFS54kzs0jsmjOAFw/CrrECuazkYPIC5JHJUOfYlJIpC+id+9yFxy3OC3hXjJ+M3mhngMHUWlZzhGsxEQOPakm+OjQGx5F43Ld2KlI8+6y4KnMj7muz+mzgzHXtYC40hGJli0t39GEdrKITcYMZnXH3GGnt49hDf2qw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=5bsd=sn=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=5bsd=sn=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xsbd747Mtz3bgd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2024 05:24:43 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 293C15C54CA;
+	Mon, 18 Nov 2024 18:23:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4F3C4CECC;
+	Mon, 18 Nov 2024 18:24:30 +0000 (UTC)
+Date: Mon, 18 Nov 2024 13:25:01 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Luis Chamberlain
+ <mcgrof@kernel.org>, Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski
+ <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann
+ <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Brian Cain
+ <bcain@quicinc.com>, Catalin Marinas <catalin.marinas@arm.com>, Christoph
+ Hellwig <hch@infradead.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Dinh Nguyen <dinguyen@kernel.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Helge Deller
+ <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, John Paul
+ Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Kent Overstreet
+ <kent.overstreet@linux.dev>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Mark Rutland <mark.rutland@arm.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Matt Turner <mattst88@gmail.com>, Max Filippov
+ <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Simek
+ <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>, Richard
+ Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, Song Liu
+ <song@kernel.org>, Stafford Horne <shorne@gmail.com>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Uladzislau Rezki <urezki@gmail.com>,
+ Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+ bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v7 0/8] x86/module: use large ROX pages for text
+ allocations
+Message-ID: <20241118132501.4eddb46c@gandalf.local.home>
+In-Reply-To: <20241023162711.2579610-1-rppt@kernel.org>
+References: <20241023162711.2579610-1-rppt@kernel.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -50,139 +85,45 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
- eahariha@linux.microsoft.com, Pablo Neira Ayuso <pablo@netfilter.org>,
- Jozsef Kadlecsik <kadlec@netfilter.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>,
- Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>, Russell King
- <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>,
- Oded Gabbay <ogabbay@kernel.org>, Lucas De Marchi
- <lucas.demarchi@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jeroen de Borst <jeroendb@google.com>,
- Praveen Kaligineedi <pkaligineedi@google.com>,
- Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- James Smart <james.smart@broadcom.com>,
- Dick Kennedy <dick.kennedy@broadcom.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
- Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann
- <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>,
- Ilya Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
- Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Lucas Stach <l.stach@pengutronix.de>,
- Russell King <linux+etnaviv@armlinux.org.uk>,
- Christian Gmeiner <christian.gmeiner@gmail.com>,
- Louis Peens <louis.peens@corigine.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr,
- linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
- linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org, linux-mm@kvack.org,
- linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
- live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
- etnaviv@lists.freedesktop.org, oss-drivers@corigine.com,
- linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen <anna-maria@linutronix.de>
-Subject: Re: [PATCH v2 19/21] livepatch: Convert timeouts to secs_to_jiffies()
-To: Petr Mladek <pmladek@suse.com>
-References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
- <20241115-converge-secs-to-jiffies-v2-19-911fb7595e79@linux.microsoft.com>
- <718febc4-59ee-4701-ad62-8b7a8fa7a910@csgroup.eu>
- <Zzsfuuv3AVomkMxn@pathway.suse.cz>
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Content-Language: en-US
-In-Reply-To: <Zzsfuuv3AVomkMxn@pathway.suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 11/18/2024 3:06 AM, Petr Mladek wrote:
-> On Sat 2024-11-16 11:10:52, Christophe Leroy wrote:
->>
->>
->> Le 15/11/2024 à 22:26, Easwar Hariharan a écrit :
->>> [Vous ne recevez pas souvent de courriers de eahariha@linux.microsoft.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
->>>
->>> Changes made with the following Coccinelle rules:
->>>
->>> @@ constant C; @@
->>>
->>> - msecs_to_jiffies(C * 1000)
->>> + secs_to_jiffies(C)
->>>
->>> @@ constant C; @@
->>>
->>> - msecs_to_jiffies(C * MSEC_PER_SEC)
->>> + secs_to_jiffies(C)
->>>
->>> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
->>> ---
->>>   samples/livepatch/livepatch-callbacks-busymod.c |  2 +-
->>>   samples/livepatch/livepatch-shadow-fix1.c       |  2 +-
->>>   samples/livepatch/livepatch-shadow-mod.c        | 10 +++++-----
->>>   3 files changed, 7 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/samples/livepatch/livepatch-callbacks-busymod.c b/samples/livepatch/livepatch-callbacks-busymod.c
->>> index 378e2d40271a9717d09eff51d3d3612c679736fc..d0fd801a7c21b7d7939c29d83f9d993badcc9aba 100644
->>> --- a/samples/livepatch/livepatch-callbacks-busymod.c
->>> +++ b/samples/livepatch/livepatch-callbacks-busymod.c
->>> @@ -45,7 +45,7 @@ static int livepatch_callbacks_mod_init(void)
->>>   {
->>>          pr_info("%s\n", __func__);
->>>          schedule_delayed_work(&work,
->>> -               msecs_to_jiffies(1000 * 0));
->>> +               secs_to_jiffies(0));
->>
->> Using secs_to_jiffies() is pointless, 0 is universal, should become
->> schedule_delayed_work(&work, 0);
-> 
-> Yes, schedule_delayed_work(&work, 0) looks like the right solution.
-> 
-> Or even better, it seems that the delayed work might get replaced by
-> a normal workqueue work.
-> 
-> Anyway, I am working on a patchset which would remove this sample
-> module. There is no need to put much effort into the clean up
-> of this particular module. Do whatever is easiest for you.
-> 
-> Best Regards,
-> Petr
+On Wed, 23 Oct 2024 19:27:03 +0300
+Mike Rapoport <rppt@kernel.org> wrote:
 
-If we're removing the module, I'll drop it from the series. Just to
-clarify, do you mean to remove all of samples/livepatch/* or some
-particular file(s)?
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Hi,
+> 
+> This is an updated version of execmem ROX caches.
+> 
 
-Thanks,
-Easwar
+FYI, I booted a kernel before and after applying these patches with my
+change:
+
+  https://lore.kernel.org/20241017113105.1edfa943@gandalf.local.home
+
+Before these patches:
+
+ # cat /sys/kernel/tracing/dyn_ftrace_total_info
+57695 pages:231 groups: 9
+ftrace boot update time = 14733459 (ns)
+ftrace module total update time = 449016 (ns)
+
+After:
+
+ # cat /sys/kernel/tracing/dyn_ftrace_total_info
+57708 pages:231 groups: 9
+ftrace boot update time = 47195374 (ns)
+ftrace module total update time = 592080 (ns)
+
+Which caused boot time to slowdown by over 30ms. That may not seem like
+much, but we are very concerned about boot time and are fighting every ms
+we can get.
+
+-- Steve
 
