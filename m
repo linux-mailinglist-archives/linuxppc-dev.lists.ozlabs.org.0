@@ -1,52 +1,151 @@
-Return-Path: <linuxppc-dev+bounces-3405-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3406-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0889D0F23
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 12:03:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F519D0F63
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Nov 2024 12:15:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XsPqX33Zmz2xdg;
-	Mon, 18 Nov 2024 22:03:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XsQ5Q49C8z2xtt;
+	Mon, 18 Nov 2024 22:15:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731927784;
-	cv=none; b=dScvg1j/5blxfy5YjwCK6dbtJp5Scx7Y/0N+1FHBZ5Ohb75Zx6IWrm0pbUSzRWe9prUadGSawKaUh8O/7hcZiWfVG/7+ygJUjy1daY2fV1noVly2uHdgF4RMRvXsZ6PoO8ARoA2UppJXaOG/awQEFv2AOG2SBw8OidExH3nsr2e+JutsV188XsSf2VBqqt933pn1g7LdAjp9eDX6vjdQH3R1cVmQ2kCNZi3Y8yyKvdaHDkNXRVZ7mFDO52cC4HNgo+YvqkwGEfTpeAJARbOpWH9ETheJm5BubKSNDBouowMN9Gx4tWxKXvfF8QqJIO7tr1kgAt7LSO4qpmRSBoRwhA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::635"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731928506;
+	cv=none; b=BnKB/wkZkFOXnco+6c6T9jElSB+LEWfYqFbmtXPh6pzgcezyTfbaXJaWlkiy3MLTF/GyMSgI4bKGmX+feAfKXOgOUjShtx4FNRwn2Qfl5m1jxYZCJDaITTnJ5eWSFSwixj8JwZ5QtORb7eNZiSLL4LvgY+WdII16+Sf5a5UxjpovQR3JBZe5y58gxcZENTRC5SPqGONMmC+tAplvmi5/WqaS4uoyvGFH+Rd9ECQESTMamInnAVZxzcsnVwK5Aki+6g6cQViFTbzryax8WDZGELrGX56aDo0LXQGN2dRIusDHVPNusE+vfhzvGtdc8hdkSc9KNr27DtyfytQTJMyTAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731927784; c=relaxed/relaxed;
-	bh=dB7hpTmpMqYgEov0ujUMo3ydcYvLI5IkIgkcChU1Q7s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OSFe0yk8/FCkTXSse+FTaSwh+qOQ1/U+NE3fGEGPyjQe3pI0yCcy75dwFq+d6KPHcXsxiWB9gsQvh0IXEVHBc1lW81qup1sd1xpsRie3/wQUjDz3pKCeTNiowyTZTwGRJEVSJH2pyX7JakYftvGv6tclNHZYNwn93/dAOGNX8iivqgiXivMJPo7sXtTRQQB8nz5zIWGmjX+io88GpVOHRWsCDZ8JxN0ow88RGthFi3MOkEJWZc68S7Ytb6so1a7MeazfQC/ktJm1vkp5E4kzF5jRHUL4aCqRWBhnXF7YPQXOD8SKA2AkSSaRyz0tG1acDMI5BDMZL9xNyi3Io0ggXA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1731928506; c=relaxed/relaxed;
+	bh=Q4K7ZFgLQYJQlGAzpq8RK54g3EqKOomWWOR+yhsr1qw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IRj2t7AteVkXvbf/Dt16opEbGEwORXpPRmjYao1bxdUnAF7On/j9W7PBU3hOOjVnTah4wq30cWC0GljanAPWlWFS3epdJyfMXtJT8bQcImaS9zfu+gg2gcBcjtdLEPY7I9f8sQvljHRxm516xSXG65sOoFdmbBBeyb0//PMvyqHD6x1p4alUCEPtMhDTgQQLbqZaARg0xC8YcpBSglsM4Z/W0EYU9gKO72owUKZkRtP5qFb14ZqIMLqC5AAkr3C2+x9hV9WU8EcAYOrChs51fcLMc3yaIONiOa0AOVj0h29nJO1uvBFIm3u6yaQwtkMq+lMh0j24jCXuUa7QHxOPTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=KZ4VGnxK; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=KZ4VGnxK;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsPqR307Dz2xWZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 22:02:58 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4XsPqB6Lr7z9sSZ;
-	Mon, 18 Nov 2024 12:02:46 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Sd1BtRiIvj43; Mon, 18 Nov 2024 12:02:46 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4XsPqB5XPxz9rvV;
-	Mon, 18 Nov 2024 12:02:46 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A9BEA8B767;
-	Mon, 18 Nov 2024 12:02:46 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 4Amllp3f1lFq; Mon, 18 Nov 2024 12:02:46 +0100 (CET)
-Received: from [192.168.232.23] (PO27094.IDSI0.si.c-s.fr [192.168.232.23])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 58B098B763;
-	Mon, 18 Nov 2024 12:02:46 +0100 (CET)
-Message-ID: <124ab5ab-3bfd-4ad7-a75d-981da9c03423@csgroup.eu>
-Date: Mon, 18 Nov 2024 12:02:44 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XsQ5P1Mhvz2xy0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 22:15:02 +1100 (AEDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-a9ef275b980so500620866b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 03:15:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1731928499; x=1732533299; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Q4K7ZFgLQYJQlGAzpq8RK54g3EqKOomWWOR+yhsr1qw=;
+        b=KZ4VGnxKGmtHcxOK4AJ3rUjc6KW8orOsID1CfEBRXZpDelEYBPyUc6Bf8W3tPrX8c+
+         sY8oD6vERlCNfKkHQ2RzZn1DwLxLJFRwBXnplRKMZLFDl+aiqc+C1BkW/ViWZOdpvnxC
+         fWnPDpTr1ng3hu11UZY61lJEuY2pEFgi9SdfVZN+MANYKERqsuNpoSEMkMeEtNsv23Hr
+         nNZJQ79UfyNTXkL62+bx6VTyDYfgUlqgCEzsSDlIfrdjdw9PFc8pcOWHgaNl+evSOXou
+         9JUFjTe19uW7EddXzhzT8txeXN/xskvqCb4X0/ggeVBVZyZ2AXEcIshJgPz9tT3DUAbM
+         PDnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731928499; x=1732533299;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q4K7ZFgLQYJQlGAzpq8RK54g3EqKOomWWOR+yhsr1qw=;
+        b=GWjXSmkSaKdTMNoKsbUc5fbnAl0y7zCRP1BUTsWHd4Fcdvikq2VIRiNFMrQ1oETeRP
+         USU7y4hP9BbwAj4b9FguvHHltCP78P6DYH3qwRbs/PaUt64d/7Jqc4kizVyTErhqnnhO
+         AIeRSeB2UfANVliSB2sxGSDZ3nvNxJ6LuEhcQGypNTnajwoEC79IByFnmP3rKC3tpTG0
+         0Bg0mj0pjEIp+JzARtSs+YiofMGhjYTo2V48kUgnPmkDMY0PC0QyqNTecx29xrIVuNak
+         3wAXKFkIP1nBPQU1HUu2onO4neXxTMp5g+2NIHyGGDcG0gxdwEP8mxUDKQ/we184EcDT
+         pxyA==
+X-Forwarded-Encrypted: i=1; AJvYcCVlx8hU8/Hlu5cdLPm+74CSJjLI7yfW2FTb8UFyNRgaR6l544fEBbrPY2Ehm1At7WzGA+3jybgcjRXbHxk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yyen92kCCA14aMPtIwqmL7ZeJCJ4/i71DH9hJ0JiD37TG61VNTj
+	yxa4BZHp6hq7gDkMXdx6Imf+qIWrm4gAt2grJ50OcKSAJvD8y/KtZvFwEyVzod+jRlJuirFP/wF
+	RNaA=
+X-Google-Smtp-Source: AGHT+IEHvVmgRYFNhCs4UC7E5RjVk5JwGYVdnUZOYcUXsiEIWSohYFEZO8cTVp2lMrq4C8xPl0BQ1Q==
+X-Received: by 2002:a05:6000:18af:b0:37d:4ef1:1820 with SMTP id ffacd0b85a97d-38225a91e80mr10392779f8f.40.1731928002298;
+        Mon, 18 Nov 2024 03:06:42 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.50])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38242eef982sm4319340f8f.8.2024.11.18.03.06.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2024 03:06:41 -0800 (PST)
+Date: Mon, 18 Nov 2024 12:06:34 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ofir Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Shailend Chand <shailend@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	James Smart <james.smart@broadcom.com>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+	Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jack Wang <jinpu.wang@cloud.ionos.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
+	Joe Lawrence <joe.lawrence@redhat.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Russell King <linux+etnaviv@armlinux.org.uk>,
+	Christian Gmeiner <christian.gmeiner@gmail.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cocci@inria.fr, linux-arm-kernel@lists.infradead.org,
+	linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+	linux-mm@kvack.org, linux-bluetooth@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org,
+	ceph-devel@vger.kernel.org, live-patching@vger.kernel.org,
+	linux-sound@vger.kernel.org, etnaviv@lists.freedesktop.org,
+	oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>
+Subject: Re: [PATCH v2 19/21] livepatch: Convert timeouts to secs_to_jiffies()
+Message-ID: <Zzsfuuv3AVomkMxn@pathway.suse.cz>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <20241115-converge-secs-to-jiffies-v2-19-911fb7595e79@linux.microsoft.com>
+ <718febc4-59ee-4701-ad62-8b7a8fa7a910@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,70 +158,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
-References: <20241115133802.3919003-1-andriy.shevchenko@linux.intel.com>
- <5b44abcc-f629-4250-9edf-7f173b78172c@csgroup.eu>
- <ZzsG9EjzV82Crl2W@smile.fi.intel.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <ZzsG9EjzV82Crl2W@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <718febc4-59ee-4701-ad62-8b7a8fa7a910@csgroup.eu>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-Le 18/11/2024 Ã  10:20, Andy Shevchenko a Ã©critÂ :
-> On Sat, Nov 16, 2024 at 11:44:35AM +0100, Christophe Leroy wrote:
->> Le 15/11/2024 Ã  14:38, Andy Shevchenko a Ã©critÂ :
->>> Remove legacy-of-mm-gpiochip.h header file, replace of_* functions
->>> and structs with appropriate alternatives.
->>
->> Looks like you don't really have an alternative to
->> of_mm_gpiochip_add_data(), you are replacing one single line by 11 new ones,
->> and that is done twice (once for cpm1_gpiochip_add16(), once for
->> cpm1_gpiochip_add32()).
+On Sat 2024-11-16 11:10:52, Christophe Leroy wrote:
 > 
-> True, but that's the issue that we have of_specific API. If someone propose
-> the common API for the agnostic approach,  it would be nice, but I am not
-> the one. And TBH I do not see the advantage of it right now as almost every
-> GPIO driver is using its own labeling schema (*). Note, that this patch also
-> fixes a memory leak as a side effect.
-
-Can you explain that in the commit message instead of saying you use 
-appropriate alternatives that do not exist ?
-
-Don't hesitate to mention the memory leak it in the commit message as well.
-
 > 
-> *) the legacy API is mostly used by PPC code, do you want that of_mm_* thingy
-> to be moved to PPC specific code instead of killing it? Would be done this
-> way as well.
-
-No no, your change is ok for me, just need an accurate commit message.
-
+> Le 15/11/2024 à 22:26, Easwar Hariharan a écrit :
+> > [Vous ne recevez pas souvent de courriers de eahariha@linux.microsoft.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> > 
+> > Changes made with the following Coccinelle rules:
+> > 
+> > @@ constant C; @@
+> > 
+> > - msecs_to_jiffies(C * 1000)
+> > + secs_to_jiffies(C)
+> > 
+> > @@ constant C; @@
+> > 
+> > - msecs_to_jiffies(C * MSEC_PER_SEC)
+> > + secs_to_jiffies(C)
+> > 
+> > Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> > ---
+> >   samples/livepatch/livepatch-callbacks-busymod.c |  2 +-
+> >   samples/livepatch/livepatch-shadow-fix1.c       |  2 +-
+> >   samples/livepatch/livepatch-shadow-mod.c        | 10 +++++-----
+> >   3 files changed, 7 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/samples/livepatch/livepatch-callbacks-busymod.c b/samples/livepatch/livepatch-callbacks-busymod.c
+> > index 378e2d40271a9717d09eff51d3d3612c679736fc..d0fd801a7c21b7d7939c29d83f9d993badcc9aba 100644
+> > --- a/samples/livepatch/livepatch-callbacks-busymod.c
+> > +++ b/samples/livepatch/livepatch-callbacks-busymod.c
+> > @@ -45,7 +45,7 @@ static int livepatch_callbacks_mod_init(void)
+> >   {
+> >          pr_info("%s\n", __func__);
+> >          schedule_delayed_work(&work,
+> > -               msecs_to_jiffies(1000 * 0));
+> > +               secs_to_jiffies(0));
 > 
->>> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->>> ---
->>>    arch/powerpc/platforms/8xx/cpm1.c | 119 +++++++++++++++---------------
->>
->> Does not build:
-> 
-> Crap, I most likely built something else and not these files...
-> I have carefully build-test this for v2.
+> Using secs_to_jiffies() is pointless, 0 is universal, should become
+> schedule_delayed_work(&work, 0);
 
-Just use mpc885_ads_defconfig
+Yes, schedule_delayed_work(&work, 0) looks like the right solution.
 
-> 
-> Note to myself: Never ever send the patches on Friday evenings! :-)
-> 
+Or even better, it seems that the delayed work might get replaced by
+a normal workqueue work.
 
-Christophe
+Anyway, I am working on a patchset which would remove this sample
+module. There is no need to put much effort into the clean up
+of this particular module. Do whatever is easiest for you.
+
+Best Regards,
+Petr
 
