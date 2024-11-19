@@ -1,71 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-3436-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3437-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555B29D2490
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2024 12:06:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C169D25B8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2024 13:27:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xt1s21sR3z2yqB;
-	Tue, 19 Nov 2024 22:06:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xt3fy0TF3z2xGH;
+	Tue, 19 Nov 2024 23:27:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732012194;
-	cv=none; b=W9QBR+cAa3w8NU0pfFmrSqGBXAn5lONirt+LyO9G1aWnZihF8fTFEdm5r2jQRiTFiDWrNL1Knd0/nHgb+8c6/d7HQRy8WUuheG7C4LXYdUytl1aDS0H9labh0tZHg1aUpHVTQu1QwP3+5E/5r9BrMeKJ3SzP7PF04T+tYKZcNRwu/v5MSZT7Uf8+M7s4Vs/nFqotfASc8c2ZcWMdqzFHiXhCiPC9B5JxY38+WeZrJ0aevNaKAtXnndTqemp9D/XgevRDIGWQK6x49msf9xnEd60pOZqnD+GmqIWkxa04nI7+hnumOfmxfVcpiRSNOmTow23C04+kpoHWGKsDfB20LQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.190
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732019274;
+	cv=none; b=QtVM68hLoG748xAJISWWIrRaUB8DXLU4rSL8rh8gGVGSgr5pPG/LPGtG2N3mplpJC9IhraUbJvFiTecb9SzsqNXfsG5RZn7Q6RmGRnjFetAjpp1Qchb99jhiy4hfNF4w4/ZCJnOQECCm78lL0M5+9wNWaxBu/9sg9Rq+BjDNt603NI0A/ZJrnzLjGBKtufdXW+L3vpjpOzn0J49z9q9f9CsUZZk9rhHYaAm2j/+S6rIt2iTMynJwLJN/GGYSvW135MeA0FoAP2fBrU99EJQV6gM/rcxtkHNO6oeUkxeNB2MTy1CaLx0zL9k/4aNWL9/zxlxx5hxV5KXs/W/OoN/ZgA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732012194; c=relaxed/relaxed;
-	bh=wOw9MHV7KRt1eXKNGVgXOufOASCySN7RIHtVck5/tL4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=NemOVeUBBtAeiF8G/5WCM45NhYOfkPfJJl672rI7XNGBxG3OXuYvZcboMl6U+B+xdI6ZM/tMZmgxMlpIVvYAiuRTTsOOE6eR2IFpForsyRRKir1rkNSUKOuHFiEtLH/Kulfpsb4G4udMdDkw05eKz3/ZHIUgSemp3UtqOTZ9hJHtnyiCF2OOBqYbSrqBwONV+aAeqVIcpXYbON4Y1/ohCTm+gkNVbtTe3lwLot2kEBaYCMwY0EiEBJxUfzhcfmrXyqIKXhhXvEITpZQee96tQGDXtkms28CIDR7TkQZkU7ahWMN+I9VuYZbyCPtbgESIViYzMLlNm89XsHk6Z8zlEg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RNQJY+T5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=zhihang.shao.iscas@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RNQJY+T5;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=zhihang.shao.iscas@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1732019274; c=relaxed/relaxed;
+	bh=NzY5TtQm6Ue6u4zoUA9OEnl0DUpLjxzz4KUu1sghaI4=;
+	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=U+fseL8XwTARRGZZseQaFKUVZZxh1df90IbRBTlr1UEttY5ERf1il0q3PF9Pqcgq6xK3i1OHaI7G9jZ2WxcMP45KI409w00EXqvxZKujTnEanh7K36OAvVVqCr/B5nMDxZJ/p9hCNHgdC5YEaUyqAfXwWMPNiMsHQzI1XDGFkqnk4C1m+stvdZsk724urfeYPOeEaL6Vh/YPnZTIGrDhnKRjTPtEEacIPbWEyKP1RPPIR/02boCL/mgovZtBz8lo8iZ2TePc295Iran6Fr9tUNmGEsEAP+jn4zRGqIBLbBPLh0lD3bq9sChU3yOMigb1CLkibeEpy/OPPkfBzSBQvw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xt12n4Qhjz2yF0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2024 21:29:52 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-21262a191a5so15335ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2024 02:29:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732012189; x=1732616989; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wOw9MHV7KRt1eXKNGVgXOufOASCySN7RIHtVck5/tL4=;
-        b=RNQJY+T5uK4RGZWiZdcGQlq+/7X5pmJMIinWv7qc5NS2aj5490CZ7zxcw97SWaUhUZ
-         65va7GxLexsv2K/HLaMV63swOjEIySIJD1tjz1ktSpzKZL3e70qomC21J2Nr4ATu6AQp
-         VStzT04Cw8KHQtia0w21Ji4xrWTGMJbZk9l9ncSHe+wlKyKLgZCWOcnB9ZQ10EwVGQFr
-         ySdmMO4jDL2DI/woMncdA4NWyKc3G7cgAlpdn5BsdwfLMbYrWyG/gPIF0XhHRvQZHMTh
-         O6Wrfux+wG0cBIpwmkipAhPJPN0lYl97Mg2r7ekE2624Ntl0E7Gl/EBOOgAwrXvuUQgv
-         q6XQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732012189; x=1732616989;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wOw9MHV7KRt1eXKNGVgXOufOASCySN7RIHtVck5/tL4=;
-        b=BHyeRcbyi0noqbuZaUyiTBGqWvoRls45aGTvNIc2QyTwTxxjs6mUS2lkbqgTKOXA6u
-         uh4dPrG7BPDwkKQUHnhemWGY86o86aqBroKQaBbq1SSVf0fNBjFpNV38+jSpISFusDow
-         RrcCKiavl46rT/Rz47ZuU+x+l5nbK0tXpUQ83LwK96K8xsAjCCX6yxoF3zgCxRou+tbZ
-         pVbEne0zOh2kPKxqHRiyZMw+bdIhXAuV73m9fzSXTSjtRbUMWoEHz5/YVpX5SICjGiAZ
-         UHL9jXHxDCrKW3w/4gsSPUoVYU7avI+7gaaQyxcFDg+A9tIOKcZfBJMtMKKWflM/ge9m
-         kITQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqk0F0qSjHTL78mkDlNiq2DZugDuf4QsmcMutnwBcTNkY0oJbFCccfNuh+tclp6pth9o255WVX2DannS4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzqEwWRDZ0eijGRWJ2StKKnrkbSjrf1pYibGH9UFvSu+Az5RGd3
-	Td2hU4zmN87D89cT1iKHsQadKzSd0sK+eFkEz1UEfka/hVYOns32
-X-Google-Smtp-Source: AGHT+IGjPmgZGITjgIZAbFEZh1xtuft53899R6LA7gUtB/vv0OHvViNr8Z67ILi49wQx8T2CgbcBnQ==
-X-Received: by 2002:a17:902:cec5:b0:20c:ce9c:bbb0 with SMTP id d9443c01a7336-211d0c94220mr253936545ad.0.1732012189520;
-        Tue, 19 Nov 2024 02:29:49 -0800 (PST)
-Received: from [192.168.1.9] ([106.47.210.172])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f47adbsm71274335ad.223.2024.11.19.02.29.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Nov 2024 02:29:48 -0800 (PST)
-Message-ID: <72406e89-7dee-4063-ad8a-1d63ddc5bfe6@gmail.com>
-Date: Tue, 19 Nov 2024 18:29:45 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xt3fv2q2wz2y8c
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2024 23:27:45 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Xt3d26qkHz21kWm;
+	Tue, 19 Nov 2024 20:26:14 +0800 (CST)
+Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id 17D7014010C;
+	Tue, 19 Nov 2024 20:27:36 +0800 (CST)
+Received: from [10.67.121.177] (10.67.121.177) by
+ kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Tue, 19 Nov 2024 20:27:35 +0800
+CC: <yangyicong@hisilicon.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<x86@kernel.org>, <bp@alien8.de>, <mingo@redhat.com>,
+	<linux-arm-kernel@lists.infradead.org>, <mpe@ellerman.id.au>,
+	<peterz@infradead.org>, <tglx@linutronix.de>, <sudeep.holla@arm.com>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<morten.rasmussen@arm.com>, <msuchanek@suse.de>,
+	<gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
+	<linuxarm@huawei.com>, <xuwei5@huawei.com>, <guohanjun@huawei.com>,
+	<dave.hansen@linux.intel.com>
+Subject: Re: [PATCH v9 1/4] cpu/SMT: Provide a default
+ topology_is_primary_thread()
+To: Dietmar Eggemann <dietmar.eggemann@arm.com>, Pierre Gondois
+	<pierre.gondois@arm.com>
+References: <20241114141127.23232-1-yangyicong@huawei.com>
+ <20241114141127.23232-2-yangyicong@huawei.com>
+ <427bd639-33c3-47e4-9e83-68c428eb1a7d@arm.com>
+ <3876e185-2fcc-25dd-e70d-93fdcbf8fc37@huawei.com>
+ <ab5d70ad-d4a4-4116-82c6-908b9e641ee6@arm.com>
+From: Yicong Yang <yangyicong@huawei.com>
+Message-ID: <6d732b89-d3d4-7bd6-d60e-e8bea05d05cf@huawei.com>
+Date: Tue, 19 Nov 2024 20:27:34 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,140 +70,125 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Zhihang Shao <zhihang.shao.iscas@gmail.com>
-Subject: Re: [PATCH 00/11] Wire up CRC-T10DIF library functions to
- arch-optimized code
-To: Eric Biggers <ebiggers@kernel.org>, linux-kernel@vger.kernel.org
-Cc: linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
- Ard Biesheuvel <ardb@kernel.org>
-References: <20241117002244.105200-1-ebiggers@kernel.org>
-In-Reply-To: <20241117002244.105200-1-ebiggers@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <ab5d70ad-d4a4-4116-82c6-908b9e641ee6@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.121.177]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemd200014.china.huawei.com (7.221.188.8)
+X-Spam-Status: No, score=-4.9 required=5.0 tests=NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2024/11/17 8:22, Eric Biggers wrote:
+On 2024/11/18 23:04, Dietmar Eggemann wrote:
+> On 18/11/2024 11:50, Yicong Yang wrote:
+>> On 2024/11/15 17:42, Pierre Gondois wrote:
+>>> Hello Yicong,
+>>>
+>>>
+>>> On 11/14/24 15:11, Yicong Yang wrote:
+>>>> From: Yicong Yang <yangyicong@hisilicon.com>
+> 
+> [...]
+> 
+>>>>   diff --git a/include/linux/topology.h b/include/linux/topology.h
+>>>> index 52f5850730b3..b8e860276518 100644
+>>>> --- a/include/linux/topology.h
+>>>> +++ b/include/linux/topology.h
+>>>> @@ -240,6 +240,26 @@ static inline const struct cpumask *cpu_smt_mask(int cpu)
+>>>>   }
+>>>>   #endif
+>>>>   +#ifndef topology_is_primary_thread
+>>>> +
+>>>> +#define topology_is_primary_thread topology_is_primary_thread
+>>>> +
+>>>> +static inline bool topology_is_primary_thread(unsigned int cpu)
+>>>> +{
+>>>> +    /*
+>>>> +     * On SMT hotplug the primary thread of the SMT won't be disabled.
+>>>> +     * Architectures do have a special primary thread (e.g. x86) need
+>>>> +     * to override this function. Otherwise just make the first thread
+>>>> +     * in the SMT as the primary thread.
+>>>> +     *
+>>>> +     * The sibling cpumask of an offline CPU contains always the CPU
+>>>> +     * itself.
+>>>
+>>> As Thomas suggested, would it be possible to check it for other
+>>> architectures ?
+>>> For instance for loongarch at arch/loongarch/kernel/smp.c,
+>>> clear_cpu_sibling_map() seems to completely clear &cpu_sibling_map[cpu]
+>>> when a CPU is put offline. This would make topology_sibling_cpumask(cpu)
+>>> to be empty and cpu_bootable() return false if the CPU never booted before.
+>>>
+>>
+>> cpu_bootable() only affects architectures select HOTPLUG_SMT, otherwise it'll always
+>> return true. Since x86 and powerpc have their own illustration of primary thread and
+>> have an override version of this funciton, arm64 is the only user now by this patchset.
+>> We have this guarantee for arm64 and also for other architectures using arch_topology.c
+>> (see clear_cpu_topology()). So if loogarch has a different implementation, they
+>> should implement a topology_is_primary_thread() variant to support HOTPLUG_SMT.
+> 
+> I also stumbled over this sentence.
+> 
+> drivers/base/arch_topology.c:
+> 
+> void clear_cpu_topology(int cpu)                   (2)
+> 
+>   ...
+>   cpumask_set_cpu(cpu, &cpu_topo->thread_sibling)  (4)
+> 
+> void __init reset_cpu_topology(void)               (1)
+> 
+>   for_each_possible_cpu(cpu)
+> 
+>     ...
+>     clear_cpu_topology(cpu)                        (2)
+> 
+> #if defined(CONFIG_ARM64) || defined(CONFIG_RISCV) (3)
+> void __init init_cpu_topology(void)
+> 
+>   reset_cpu_topology()                             (1)
+>   ...
+> 
+> Does this mean the default implementation relies on (4), i.e. is only
+> valid for arm64 and riscv? (3)
+> Do all the other archs then have to overwrite the default implementation
+>  (like x86 and powerpc) if they want to implement CONFIG_HOTPLUG_SMT?
+> 
 
-This patchset is also available in git via:
+I think yes if they have problems with the default implementation. That's
+what used to be to support HOTPLUG_SMT before this, each arthitecture
+provides their own variant of topology_is_primary_thread.
 
-     git fetch 
-https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git 
-crc-t10dif-lib-v1
+The current approach may also work since cpu_bootable() will make all the
+CPUs boot at least once:
+static inline bool cpu_bootable(unsigned int cpu) {
+[...]
+	if (topology_is_primary_thread(cpu))
+		return true;
 
-This patchset updates the kernel's CRC-T10DIF library functions to be
-directly optimized for x86, arm, arm64, and powerpc without taking an
-unnecessary and inefficient detour through the crypto API.  It follows
-the same approach that I'm taking for CRC32 in the patchset
-https://lore.kernel.org/linux-crypto/20241103223154.136127-1-ebiggers@kernel.org
+	return !cpumask_test_cpu(cpu, &cpus_booted_once_mask); // True if not booted
+}
 
-This patchset also adds a CRC KUnit test suite that covers multiple CRC
-variants, and deletes some older ad-hoc tests that are obsoleted by it.
+The boot process will be like below. cpu_bootable() is checked twice:
+-> cpu_up()
+     cpu_bootable() (1)
+     [...]
+     cpuhp_bringup_ap()
+       [ archs usually update the sibling_mask in start_secondary() here ]
+       bringup_wait_for_ap_online()
+         if (!cpu_bootable(cpu)) (2)
+           return -ECANCELED // roll back and offline this CPU
 
-This patchset has several dependencies including my CRC32 patchset and
-patches queued in several trees for 6.13.  It can be retrieved from git
-using the command given above.  This is targeting 6.14.
+So an empty mask in (1) won't block the CPU going online. And the default
+topology_is_primary_thread() should work if sibling mask updated before
+the checking in (2). I hacked x86 to use the default topology_is_primary_thread
+and tested on a qemu vm and it seems also work (just for test since the
+primary thread should not always be the 1st thread in the core on x86,
+not quite sure).
 
-Eric Biggers (11):
-   lib/crc-t10dif: stop wrapping the crypto API
-   lib/crc-t10dif: add support for arch overrides
-   crypto: crct10dif - expose arch-optimized lib function
-   x86/crc-t10dif: expose CRC-T10DIF function through lib
-   arm/crc-t10dif: expose CRC-T10DIF function through lib
-   arm64/crc-t10dif: expose CRC-T10DIF function through lib
-   powerpc/crc-t10dif: expose CRC-T10DIF function through lib
-   lib/crc_kunit.c: add KUnit test suite for CRC library functions
-   lib/crc32test: delete obsolete crc32test.c
-   powerpc/crc: delete obsolete crc-vpmsum_test.c
-   MAINTAINERS: add entry for CRC library
+Thanks.
 
-  MAINTAINERS                                   |  11 +
-  arch/arm/Kconfig                              |   1 +
-  arch/arm/crypto/Kconfig                       |  11 -
-  arch/arm/crypto/Makefile                      |   2 -
-  arch/arm/crypto/crct10dif-ce-glue.c           | 124 ---
-  arch/arm/lib/Makefile                         |   3 +
-  .../crc-t10dif-core.S}                        |   0
-  arch/arm/lib/crc-t10dif-glue.c                |  77 ++
-  arch/arm64/Kconfig                            |   1 +
-  arch/arm64/configs/defconfig                  |   1 -
-  arch/arm64/crypto/Kconfig                     |  10 -
-  arch/arm64/crypto/Makefile                    |   3 -
-  arch/arm64/crypto/crct10dif-ce-glue.c         | 132 ---
-  arch/arm64/lib/Makefile                       |   3 +
-  .../crc-t10dif-core.S}                        |   0
-  arch/arm64/lib/crc-t10dif-glue.c              |  78 ++
-  arch/m68k/configs/amiga_defconfig             |   1 -
-  arch/m68k/configs/apollo_defconfig            |   1 -
-  arch/m68k/configs/atari_defconfig             |   1 -
-  arch/m68k/configs/bvme6000_defconfig          |   1 -
-  arch/m68k/configs/hp300_defconfig             |   1 -
-  arch/m68k/configs/mac_defconfig               |   1 -
-  arch/m68k/configs/multi_defconfig             |   1 -
-  arch/m68k/configs/mvme147_defconfig           |   1 -
-  arch/m68k/configs/mvme16x_defconfig           |   1 -
-  arch/m68k/configs/q40_defconfig               |   1 -
-  arch/m68k/configs/sun3_defconfig              |   1 -
-  arch/m68k/configs/sun3x_defconfig             |   1 -
-  arch/powerpc/Kconfig                          |   1 +
-  arch/powerpc/configs/powernv_defconfig        |   1 -
-  arch/powerpc/configs/ppc64_defconfig          |   2 -
-  arch/powerpc/crypto/Kconfig                   |  20 -
-  arch/powerpc/crypto/Makefile                  |   3 -
-  arch/powerpc/crypto/crc-vpmsum_test.c         | 133 ---
-  arch/powerpc/lib/Makefile                     |   3 +
-  .../crc-t10dif-glue.c}                        |  69 +-
-  .../{crypto => lib}/crct10dif-vpmsum_asm.S    |   2 +-
-  arch/s390/configs/debug_defconfig             |   1 -
-  arch/x86/Kconfig                              |   1 +
-  arch/x86/crypto/Kconfig                       |  10 -
-  arch/x86/crypto/Makefile                      |   3 -
-  arch/x86/crypto/crct10dif-pclmul_glue.c       | 143 ---
-  arch/x86/lib/Makefile                         |   3 +
-  arch/x86/lib/crc-t10dif-glue.c                |  51 ++
-  .../{crypto => lib}/crct10dif-pcl-asm_64.S    |   0
-  crypto/Kconfig                                |   1 +
-  crypto/Makefile                               |   3 +-
-  crypto/crct10dif_common.c                     |  82 --
-  crypto/crct10dif_generic.c                    |  82 +-
-  include/linux/crc-t10dif.h                    |  28 +-
-  lib/Kconfig                                   |  43 +-
-  lib/Kconfig.debug                             |  20 +
-  lib/Makefile                                  |   2 +-
-  lib/crc-t10dif.c                              | 156 +---
-  lib/crc32test.c                               | 852 ------------------
-  lib/crc_kunit.c                               | 428 +++++++++
-  .../testing/selftests/arm64/fp/kernel-test.c  |   3 +-
-  57 files changed, 867 insertions(+), 1748 deletions(-)
-  delete mode 100644 arch/arm/crypto/crct10dif-ce-glue.c
-  rename arch/arm/{crypto/crct10dif-ce-core.S => lib/crc-t10dif-core.S} 
-(100%)
-  create mode 100644 arch/arm/lib/crc-t10dif-glue.c
-  delete mode 100644 arch/arm64/crypto/crct10dif-ce-glue.c
-  rename arch/arm64/{crypto/crct10dif-ce-core.S => 
-lib/crc-t10dif-core.S} (100%)
-  create mode 100644 arch/arm64/lib/crc-t10dif-glue.c
-  delete mode 100644 arch/powerpc/crypto/crc-vpmsum_test.c
-  rename arch/powerpc/{crypto/crct10dif-vpmsum_glue.c => 
-lib/crc-t10dif-glue.c} (50%)
-  rename arch/powerpc/{crypto => lib}/crct10dif-vpmsum_asm.S (99%)
-  delete mode 100644 arch/x86/crypto/crct10dif-pclmul_glue.c
-  create mode 100644 arch/x86/lib/crc-t10dif-glue.c
-  rename arch/x86/{crypto => lib}/crct10dif-pcl-asm_64.S (100%)
-  delete mode 100644 crypto/crct10dif_common.c
-  delete mode 100644 lib/crc32test.c
-  create mode 100644 lib/crc_kunit.c
 
-Good job. It's great to see the code being simplified.
-
-I still want to submit an optimization patch about CRC-T10DIF for RISC-V.
-
-I don't know if it would be more appropriate for me to rewrite a patch 
-after your patch is officially applied.
-
-What do you think?
 
