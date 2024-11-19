@@ -1,60 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-3438-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3439-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5FE39D2CE4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2024 18:46:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA3F9D2D0F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2024 18:53:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XtBl02g52z2xy0;
-	Wed, 20 Nov 2024 04:46:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XtBtf6Bg9z2xyG;
+	Wed, 20 Nov 2024 04:53:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732038412;
-	cv=none; b=FCRTixNMk5BoDX+1oSfXq/whjZf+JD2jkbFoSgYfkWfu8hY3murDaj0Chf3cwGXlWYU3JrEd/hS3OI4KbOuVnKLLDPhgKOCbhZOJ36Ht9DspaS/jYHx9FnRwKy/8HijvhuF0nzpWy31irxCfpcbu0Vzl7Y1P5v5LRNmGhVbgxsYQOIhWIkUF2ZB5eAo48ZD4v31lIbAR5ReHGSBVPKD73++L0IoWxoh4jmoFwfjAWXS41oYGPcO+J9d/7pcTM9IYvTbAzjz4d4/Z6iRun3JaYcOIp8/l8j7TiZLlmXSlu2FtKiUjT6rdLEcT5Rlnca0HyNgwFhdKrrVzVREad2G5NQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732038810;
+	cv=none; b=eeIQg7C/B74JL+WG+XNySR80AscL7D2siA+k446PAeNfQg8zeGyvDvgroJKMXYQ23LT0BultN1rX/S58ecjEJtro+doAn138a1sydYmuyWcCA1toPNqi7Zo+f03PRZjpv3CsP0BIiINlWknqS3p78AyqRYFQefUlf/kBYtRXi3zhz709JRzv0kOwlKMa2Ljbo6OT+fIfY3JPnBRpDBzcdA/Upcl/6beSGEmFkNOZGA/Q2SObvJ8G87va0vtq0xbEAkNA2wau7YdURfvsnh8IdNh1N+1CFjhK+rC3WxqhLwpVglDjf/4gqA5kvtujDOxNFvfSG7N4LzYgFhYK9UI35A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732038412; c=relaxed/relaxed;
-	bh=AwPBMZwWY6jHnSKaBzPlAhC7dfxBZhFkz57ZZP2TaXA=;
+	t=1732038810; c=relaxed/relaxed;
+	bh=sr9L5/9uMLYoOCbtjpfQCh02kNZLNfjp7kspe4awzRQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AjmG8X2g0BhaA9ZVNtBtTLwmdGTUKWYpvlpXrNUNyqMb4qJuXSnz106GBut4aKRTdadK88/cbUzaFXnRoAKuEvwsnBU8gNqrzM233ZE6+ZHNiHs4o6HL3I9qQ+GUgkK+YmQVaknmFRP8PNUEGcP1+GbOmmG/CNlOFwFBSp2JBzFU1muJechq6H4v5V4TjGMwDqXdnUK9p28peQE4vlQPCvzi5r11mdv57wtWObdeZE45+sJ2sCNl7zWBMiik+LQ+lNLENnTXrmLOWLUe4OADFLrVH1Vc+Lkz+9KIlefcCsGZ0u1bgflqLeTKJeF6eQ/rxjRjsQL2vj5eJsCJF/iH8A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V2UCjFOf; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=hyiVv0NnnxacRoh5rvdp2M9ABFdDAx+nGq6ZNuultzzXgFdhohg4tuggSD4korGLfbZ1gQF8th8eKoDv0bj0XBOHsb7KPDd6Ynb+nF6KbpioR6MvmnJmN//EN42mDm/iQrlay40c/833u9gKOmVr/k6XjY/l92kr0hVL8RDW4e8geYWLLUPkZYfuwwirLZDV1cV6cH0zGwLEFFgTp0JVWfIvu1ep6om8KsmlkOnnObKqioggT/20E1cqEsHYA4b64iKTdWvJ8eNR+waCVRbV2HyIqYS09lqaoBkDAHaSc/4y9hzRCse11mOKfn74t2Vryv3X6pjNhMf3X9wsNhyV5w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dgq5vDPY; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V2UCjFOf;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dgq5vDPY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XtBkz2h7Hz2xxt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2024 04:46:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XtBtd7029z2xgX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Nov 2024 04:53:29 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4256C5C4B4D;
-	Tue, 19 Nov 2024 17:46:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF441C4CECF;
-	Tue, 19 Nov 2024 17:46:46 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id B0C5E5C57C9;
+	Tue, 19 Nov 2024 17:52:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A786C4CECF;
+	Tue, 19 Nov 2024 17:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732038407;
-	bh=cGtCgxtTHF3Jbl8CduYT2IKTHC6lkZmDimREyxkO6Bc=;
+	s=k20201202; t=1732038807;
+	bh=xHBKbFoZ07Ku7Y6Que2kbEg3CxhDB6sSiE/pmczIBCE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V2UCjFOf9RDujcsGXFkSgILPdDp2C8acwBMEtyau482WWnyiXTsgmeQk5nVGwjo1i
-	 610w9HbKzBJMpKfxwrf/myk3hq5iWjkdG2poBltU2rXucE7Xkk3rR59lH3G60wwYVt
-	 DoeV5kC3wKpi1dEUEWjZcuPKznWSEVjOlOyuVVQ43WKHAEaB8Qn4idItnNDyvR38YN
-	 XUlL2+henqEhFtNCJSmOZuhsMzCztdQLbZyaHXZFYBVc2I3L2Y/19wCfOFzdzAxiKD
-	 4kr/eGdcGRTVfAdDdOFDy7Fk89GN7FgH35PyStCaqETmgVhl0qGiTnX5ZP8h4g1uTi
-	 x2rH1JZld25Qw==
-Date: Tue, 19 Nov 2024 17:46:45 +0000
+	b=dgq5vDPYfQEAp9QcRlppUahsKWsHleIu2nooD2vWUTECini7qwskFf71OtQlAgHob
+	 VgwbxcfTrGcj6SaEE0IA3KEVSJVN8o4buBI87cUyTlsrNa829jFX3FU+5LZ4z9dhQq
+	 q6cDXdYeeLPq+875LdXusF+1Tdk/dUSpHerioqelqy+4g0QhpIBJX399a7cdJLXkZD
+	 6pgVXWvXdZzIwmUu3NbsF9WYzW1YemgHn9pcK3UbbCT0WEWvTXNFg7dC+guUY8i+xq
+	 PXnxAuCla2s+P3m8m0/Vmg800NCXq6a16c5ZNJy6umQgOI/GxDr2MKprgwfgns6Q7i
+	 /E/BHKcA5Fe2A==
+Date: Tue, 19 Nov 2024 17:53:25 +0000
 From: Eric Biggers <ebiggers@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
+To: Zhihang Shao <zhihang.shao.iscas@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
-	Zhihang Shao <zhihang.shao.iscas@gmail.com>
+	Ard Biesheuvel <ardb@kernel.org>
 Subject: Re: [PATCH 00/11] Wire up CRC-T10DIF library functions to
  arch-optimized code
-Message-ID: <20241119174645.GA3833976@google.com>
+Message-ID: <20241119175325.GB3833976@google.com>
 References: <20241117002244.105200-1-ebiggers@kernel.org>
- <CAMj1kXFA15AuT5wd0vMJ3X94uysvnGLy42FAQt8fxJsW31UdAg@mail.gmail.com>
+ <860a6acc-2c39-4eb1-8113-a3753f6531fc@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,36 +69,31 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXFA15AuT5wd0vMJ3X94uysvnGLy42FAQt8fxJsW31UdAg@mail.gmail.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+In-Reply-To: <860a6acc-2c39-4eb1-8113-a3753f6531fc@gmail.com>
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Nov 19, 2024 at 09:59:53AM +0100, Ard Biesheuvel wrote:
-> > Eric Biggers (11):
-> >   lib/crc-t10dif: stop wrapping the crypto API
-> >   lib/crc-t10dif: add support for arch overrides
-> >   crypto: crct10dif - expose arch-optimized lib function
-> >   x86/crc-t10dif: expose CRC-T10DIF function through lib
-> >   arm/crc-t10dif: expose CRC-T10DIF function through lib
-> >   arm64/crc-t10dif: expose CRC-T10DIF function through lib
-> >   powerpc/crc-t10dif: expose CRC-T10DIF function through lib
-> >   lib/crc_kunit.c: add KUnit test suite for CRC library functions
-> >   lib/crc32test: delete obsolete crc32test.c
-> >   powerpc/crc: delete obsolete crc-vpmsum_test.c
-> >   MAINTAINERS: add entry for CRC library
-> >
-> 
-> Nice work. The shash API glue was particularly nasty, so good riddance.
-> 
-> For the series,
-> 
-> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-> 
-> Happy to take a R: or M: as well, if you need the help.
+Hi Zhihang,
 
-Thanks Ard.  I will add an R: entry for you in MAINTAINERS.
+On Tue, Nov 19, 2024 at 06:05:58PM +0800, Zhihang Shao wrote:
+> 
+> I still want to submit an optimization patchabout CRC-T10DIFfor RISC-V.
+> 
+> I don't know if it would be more appropriate for me to rewrite a patch after
+> your patch is officially applied.
+> 
+> What do you think?
+
+Please go ahead and rebase your patch on top of this patchset, i.e. on top of
+the git branch I gave at the beginning of the cover letter.  You'll need to move
+your code into arch/riscv/lib/ and drop the shash stuff.  You can test it using
+the new KUnit test I added (CONFIG_CRC_KUNIT_TEST=y).
+
+After that I'll be glad to apply your patch when I apply this patchset for 6.14.
+
+Thanks!
 
 - Eric
 
