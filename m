@@ -1,68 +1,100 @@
-Return-Path: <linuxppc-dev+bounces-3425-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3426-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D1E9D1C1E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2024 01:09:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738979D1D5C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Nov 2024 02:33:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XslHN21f4z2ysW;
-	Tue, 19 Nov 2024 11:09:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xsn846vJlz2yPq;
+	Tue, 19 Nov 2024 12:33:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731974992;
-	cv=none; b=JRrTm5UCYmXrDAmhMzVlxJsRhCVujppKSMUaq2DI2DY4xmv9KsTFG91augV9CXlcSf4Y3wnSlQ295ooPjIyyGIdG0s4mdOlpk1VaH1plJTfY4Us+NFmQX0lgS9sPoZ2lfdvQ2CLm4RPSxOmRQnlouIK0unuCXRZ+YrC7u23dgP8uS984RGqynCHI6gyJje83Vd0/EV2lHmFT5TBckoHJXMI+cbGfqF9CH2kUXJ4/f5whvM7ZT71IEKvFP9nbsNbpoCEJQ35UO7UNPDzO+zUvWBD1RoD+3I9tiCsRlpwI3hYI2w4UQpu/1oKnVnWFoh5HzvDnoPTq5nEjqLgWH2f9ZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1731974992; c=relaxed/relaxed;
-	bh=2joQyxA/A/Ix50bwDrphRLZe1ZN4vLdUciNkknx5Y1w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aWj0kNPOhKbg3oAujWVRybsamU7ZAqr/N2zFJbpFZ2BWQ83RWDY9SGlEPzCA/pl7rOHI5IEbW7aZmBLIix2hIrybNjJNb5ov705zwUDR90+rwTnHjEZ7FVUwUAjTlUoqZiZ6Awsz7K5Ac5qYmmKJK0FDsAKnmj0UR1SVDoO36hZJxVYXxNLpiTKcc2JuICwWLdxzTYyvXlzfNNlOx8f3eg6ZKEQzeSDvnH1MBq/rkch7gdvO/Uzj8Rajtarj/4tzyI2+O2SFDO7OhutzNL9BbrVWQfSiQG15jKIWn+MfrSRNRHUjJLilJn1rrAXC1/LBGuue2jovz04juw1JIxX+mQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=sdju8xgM; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=mmaurer@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.165.32 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1731980020;
+	cv=pass; b=gEFAL+y2G6f8bvo5eipN2kIhzPW46BymssbBUYvWPvcasmfSl2doDreT1pMR5ZYVRp6LhIaS4h7eCrl+k1e7K11Rrb+2XeE1wjRthcM6/fGZAA1IbKplJ+BQ1GIkL1Z3EvbpIXOEdYBjNmVxLzriwH5l667LPzrFTS4m7rX+wBg/lmGO0gBcujFfA1+sK8d5qI0iEmz+FaTKl9vQ1d+/a+ofsG8FGn+oONqoNJpx9lFRIjAjaXswIslbeSEguOluHMm42kICDERurgzuKnhPoHQ7evW02Kvep45jBjlIFYR9OPNCfdaJ2U6I1C9IGEmN9VKZrjIu/9WMP1GENVbcHA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1731980020; c=relaxed/relaxed;
+	bh=2V7IUFZpaiUZTcFlT+FvASk52kV3GL8mFvu0iCN6Gq4=;
+	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
+	 Content-Type:MIME-Version; b=OGVOX+YTCD+f0qggjEtxt5z7sxJUFW3ySvVsrEzksHUmauQwZzQJ/TbxEI7qIuCbdOYPSqdrgq8FX2M+/qWucmxCJ3ddjgabdYFDtjbsdG6MBX/A48TKJWU2AFVvXqedvZJdGWHTe37Gp93/0w+BPUxrG/UEvp7KqHdrHa3p6O85Q8BokD/25aG5waST8vInYjeeWOOppe34SCyzpTBuOmpoSpvN8FA82xeHoUFHq7zu3VSTSiEyMIBFvF4kc18p8ZUvLh+8PGKdAIg4jWzHpkxsHDuILF1FkzxYobM0wKjKNemIyD+ybrRcljJhvv78DX6QMsGGvzhveadOHb06yg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=VkCFkHkE; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=X5R8+lH5; dkim-atps=neutral; spf=pass (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=sdju8xgM;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=VkCFkHkE;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=X5R8+lH5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=mmaurer@google.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=lists.ozlabs.org)
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XslHL4q7Fz2ysB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2024 11:09:49 +1100 (AEDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-5cfc264b8b6so4091a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Nov 2024 16:09:49 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xsn8312Sfz2yF6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Nov 2024 12:33:37 +1100 (AEDT)
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AJ1Ml6m019728;
+	Tue, 19 Nov 2024 01:33:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2023-11-20; bh=2V7IUFZpaiUZTcFlT+
+	FvASk52kV3GL8mFvu0iCN6Gq4=; b=VkCFkHkE6EVZ3LB15mZFyDWBm8dILJP/GS
+	8mhmyxFOIrrUM0pTxqd4jqHQMlHmVCyvod9HAleI0vq0Ki9RXAbngXEu3ybpG/hq
+	ahRxoaU82Sfzxq87g0SYUWpcWQuU3vojL1POvixQhr6eZ7ciYAwtoZSMlNCQjshK
+	iHsqFtg3UWlFfxuPY1miIS3ZyYzlBq+WASsU4b07QhdZ+5ZA38yxRxR4tz9th1DD
+	7JKW6QPCULxD7u5BhR4JDFZs3o16cWUqlgBFvpX0d+DqbO507fbzUXJVXjJ0YpQg
+	X4xQC5w2AyTRGdgYyxNEgLLtU4g2/k/88dS3vJzSLIdgTCwMgfmA==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42xjaa40t1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 Nov 2024 01:33:28 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4AIMrca7023316;
+	Tue, 19 Nov 2024 01:33:26 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2174.outbound.protection.outlook.com [104.47.56.174])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42xhu8946b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 Nov 2024 01:33:26 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nJRsdQdXRIyJvjGf3imyYkWct6UhER7TN2KacYhwVJEOZS/aVHuy1EA8BaUdbL/Q9L3H5EpJhxRg4Gbez8XPRV9I164MBwTxFiqoIE+pYHXeatWzt+sTVF3dmyYOwTtEpdeCchrnZcd0nXCjVPDGljTJG1v5QXKcZJNya1GvRJVwytAACXTUJqdy0AAZgsyTNDLPQ/mnVsocbzDAG/ESjMpyBYwj9lrUY1/6P/7JHEN1P/53Nt0iRcQTeANjs/QftFmGBTExI6tif0Av7Hs8sMwuhCQylvkh6rYYXjLPlEaQvgupqqxMeXYhCCpVk1WTMJQ6UWWXpPCUjRX3eaMsUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2V7IUFZpaiUZTcFlT+FvASk52kV3GL8mFvu0iCN6Gq4=;
+ b=HhZzuTR4YN4KSDVDl/Wz3MwAIOllsRdE8lYfgYl3W6GpualX8XEopHwTqk1kWcLq69l31dlqNFT6Svp0KCkJ7o5lLeU3B9e5bShPhPtj0xCyHZWNP62U65M+6BpN9GOVTkN4H5Yj+j/pgIfOeoEKqxHGtAWquhcoAwLTABN5Fm4CjbYC5yFL3UHVPs/coljQrzWhIXZ72yFD1lUPhBCNqsPXQULQ9V4BJqcGihIkN/gYjhuEqhiNHF0qz9mZp7e6lKlg0fAAzH2jS3kacTkjFedRgs8V1Dw6SFEdzj/GGttrfrLpasZRkNZuLDdb0Zir2ImhB2KdRnJEeoHdPa77jA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1731974985; x=1732579785; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2joQyxA/A/Ix50bwDrphRLZe1ZN4vLdUciNkknx5Y1w=;
-        b=sdju8xgM7Fb4eyWh6uSe/wS+hrLaNrepl8kDAHDzJhZRbaWMmhReylJsp81OmOvxf9
-         ekHBalzX8MskHPvbq4SjOr7vtIDi62lM0SsyMiKjRmhcp/20H1EhRkQeeRQBK4zPYIvI
-         8KeUHhT3kU6i2is0WWLtRVJHcgis5A/8fUYedW+H3RCKdUeqJd4SZx+AcrfGfDrb/lhx
-         fnYuti4c+Rwx6qAl0SkA0vYBfxVSJ4N+5YK3qrwfJruvjxcwAf4wIUnp8LCH4NfD4Tde
-         Fpd+jYSgjsDiqhd7L0Uqy0I1DiYwg91Htvko3WJTHkZVdkEmev/IM7VbJAEswPCJ2OMk
-         K6ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731974985; x=1732579785;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2joQyxA/A/Ix50bwDrphRLZe1ZN4vLdUciNkknx5Y1w=;
-        b=uzk8zcvKiEsUBKzqncwiRc/35FbPpHD3S1EnofmfGn41rMTL9VR7zz5rJGC6yXM0m8
-         vUUYKEaXYyh3uJLXCyPgvSQXHQxxUHpxj0Zf3KesLu0eM4Ycz0b2YTjNZaZq8UoVMRFz
-         p7y08VnnTq2iDlIxfBVwobkY2ZIp+YjPa3FvjV3RR2I5toa8qd3jabPgIyeUGUm6MZKy
-         14dQtgDOVgrzBGAKqLKA2fkDRxR5vGVdveLqNEZlTDplUsDQ0WADZ1y7y8C2Sx/huz96
-         NS07IZ8zGImIIXg6xb/tBBf2jjZF9YENKqRTow91W4Q3PFYNDEC9k9HobEPfGjAcARhY
-         FkCw==
-X-Forwarded-Encrypted: i=1; AJvYcCXOrRgyE6KCbSXqVvKQWvjsVelpFw+hf6sxytdx026gtx+OBNWZ035FzSpFLpl9IqUKM/tGRUF0LtPk2uU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxA8pjA0xSi7mxYf1TeegzI1fc2Sl7mArmd/cHgApmV+uDuUEst
-	k+Br65fduPstaeB2Z8VRlQrxa082+Rrhu2cx88XuYgG6s8xnr5Ik553YSzg/ORZZ7bDSJ4MMhv3
-	EE+nN3Ut6OtNOeUvw8ZB/thxrkdCgDWpjAmiH
-X-Gm-Gg: ASbGnctBtVAu9j/v98mQ957q2itz52Lr5asrQE9xtsVLDd8YBUR7eSkd8k6GsB4jMnx
-	NOe66U1mr7C9FrAzLRIOGxjwePxLbx/+Cevp/xszb50PyrWF/BbZeemp3NlTOtA==
-X-Google-Smtp-Source: AGHT+IGFkoWOhwex/vXz0phxng/cuRxB+IRiCctA7Y89o5ijfhkRJftBIN3eR6qiPieo/jVpc0lu+QpSWPIlthCtl3k=
-X-Received: by 2002:a05:6402:1351:b0:5cf:bd9a:41ec with SMTP id
- 4fb4d7f45d1cf-5cfdec244d3mr31183a12.2.1731974985273; Mon, 18 Nov 2024
- 16:09:45 -0800 (PST)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2V7IUFZpaiUZTcFlT+FvASk52kV3GL8mFvu0iCN6Gq4=;
+ b=X5R8+lH5Ufy5R/VwA6fG1h0H1YRFy7ZtzQfQBzhAAxqudP/CaZrYDWzj2pJVxEWtpVxvIs1YINvccujgI1BhAF8Dr6seblvt0XeNopyYdnjUIKrCRor7Ag245SKc4//I2h9iQtZdbA0VZ15WR9svU+GWsI+4X852Kgxo55nIBSo=
+Received: from SN6PR10MB2957.namprd10.prod.outlook.com (2603:10b6:805:cb::19)
+ by SA1PR10MB5821.namprd10.prod.outlook.com (2603:10b6:806:232::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.24; Tue, 19 Nov
+ 2024 01:33:14 +0000
+Received: from SN6PR10MB2957.namprd10.prod.outlook.com
+ ([fe80::72ff:b8f4:e34b:18c]) by SN6PR10MB2957.namprd10.prod.outlook.com
+ ([fe80::72ff:b8f4:e34b:18c%5]) with mapi id 15.20.8158.023; Tue, 19 Nov 2024
+ 01:33:14 +0000
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+        Zhihang Shao
+ <zhihang.shao.iscas@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH 00/11] Wire up CRC-T10DIF library functions to
+ arch-optimized code
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+In-Reply-To: <20241117002244.105200-1-ebiggers@kernel.org> (Eric Biggers's
+	message of "Sat, 16 Nov 2024 16:22:33 -0800")
+Organization: Oracle Corporation
+Message-ID: <yq1r078rp3y.fsf@ca-mkp.ca.oracle.com>
+References: <20241117002244.105200-1-ebiggers@kernel.org>
+Date: Mon, 18 Nov 2024 20:33:12 -0500
+Content-Type: text/plain
+X-ClientProxiedBy: BL1PR13CA0288.namprd13.prod.outlook.com
+ (2603:10b6:208:2bc::23) To SN6PR10MB2957.namprd10.prod.outlook.com
+ (2603:10b6:805:cb::19)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,113 +107,108 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241030-extended-modversions-v8-0-93acdef62ce8@google.com>
- <20241030-extended-modversions-v8-2-93acdef62ce8@google.com>
- <ZyNr--iMz_6Fj4yq@bombadil.infradead.org> <CAGSQo00F07viDHQkwBS8_1-THxJHYwx9VkS=TXC5rz3i8zSZSw@mail.gmail.com>
- <ZyVDv0mTm3Bgh1BR@bombadil.infradead.org> <CAGSQo02uDZ5QoRMPOn=3Fa9g5d+VPfKW-vmSsS2H+pOdPYCBFw@mail.gmail.com>
- <ZyrRYUD0K1f7SwWg@bombadil.infradead.org> <CAGSQo03+1WjUVj-iQ6zdOST6z=p+=OqS2Xk_c4ZUdHOsxa7g2w@mail.gmail.com>
- <Zy1BVXgnT72Jt_HE@bombadil.infradead.org> <Zzu-wfGqbuAm24yg@bombadil.infradead.org>
-In-Reply-To: <Zzu-wfGqbuAm24yg@bombadil.infradead.org>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Mon, 18 Nov 2024 16:09:34 -0800
-Message-ID: <CAGSQo033fha6tj7sU8se4kbNfYD_rm5sx6-hpF9s8SfcgWH3Tg@mail.gmail.com>
-Subject: Re: [PATCH v8 2/3] modpost: Produce extended MODVERSIONS information
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, Lucas De Marchi <lucas.de.marchi@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR10MB2957:EE_|SA1PR10MB5821:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9b84e1c-1fce-4c2a-283d-08dd083a22f8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?UjsiD43kqOmYfSytzdX1G4t5Hljq790ld6Sn/q8FaqXagBYRv080iLn1k6pY?=
+ =?us-ascii?Q?fSZgS/uZ8Fa4bMccIYAgPRIKTsnW9gPxSg4ERQtRNmZvtr1HXrY7GxuIGAgP?=
+ =?us-ascii?Q?ngcjSjzc8TFAA22dvu5cnwa+pGgfqJRJAUizlTn+knAJ/c9O1JNrxCSgVJND?=
+ =?us-ascii?Q?xQfDGs5nADoV+KnvyQ9XEEQOm/svtbxviRyGPQwMk4NvUJ5+1Y4KvfUdCNeg?=
+ =?us-ascii?Q?upxixhg0qhmLs6ZPFoAk8C4oTgSnO4nZ5moGKNzf5CQc0HWCKKMsfFc2CRXk?=
+ =?us-ascii?Q?oSp1sJzZwUZz3exFJhGzrNhfNpAmsErn6qt24NbOxZ6rXl1jBXU2hJ0or2vf?=
+ =?us-ascii?Q?N/bO4Mo9wg98JH94ApqCtM00viZjRIfFrnJkzhyzazgz8npZ6M1nhvJ4rS4d?=
+ =?us-ascii?Q?yW36mA3OfWqG72uLPL8o3AXHL/dVY+BllzlxBhVm5UvlxOHR8aHlJ2RUalWA?=
+ =?us-ascii?Q?lnc1+JP7dLLYqoI2j53rU4YGzFNB6YLrFwwVw+F2S6gtRWFc303sj7p4+IT5?=
+ =?us-ascii?Q?MXpAfRS5wpXpG1XkNbFkVdHC1JPVxcKsvF4/wXoNzyE/O64zL8aW5WcbGbdO?=
+ =?us-ascii?Q?dPtob1uCrpWdCv1YL2zmD4tE3tWOGvsDHB9s9AZzSMEvK5RULXYnOjN1ahz1?=
+ =?us-ascii?Q?UZ1NjhFDfzCxVrWAk+TT6+z5bmnJivfjr/5H8Iq8f4D9H9DPAkxIqnNJnWX2?=
+ =?us-ascii?Q?+Xg7Gvy7tpucnG1gbDCEpLoi8O2PbuQmZY+wJ21Sd9qCoL8WgtU+n4uXKhjX?=
+ =?us-ascii?Q?Y+V+SmwuxXyeEgkiBtJquikq9EvmjrEyhvOW60edExdtwkyit/JwFhEbPpdY?=
+ =?us-ascii?Q?aq1tZShe6dMjF9cvsJTHLaKhhc+pa/OXsUXKxiRHSqgHjuE201uEjMw3yD5e?=
+ =?us-ascii?Q?a7j4g3wtGTNxEuZEC3Ws9ErhqSWtA0NfuSY7Mvbe6q/GmqKXwP1xZ7Hq7jPl?=
+ =?us-ascii?Q?SHrjhblM0MlH7r5/XQOoij5RbL9ezC7SyfRRDmJHAqUeiSbacqAmUSjZeARX?=
+ =?us-ascii?Q?BirY1H8giOGWmVivoj1HsY710BQRq9aaCj1tNLoXRrZVRM8MHS4XEWch9NlS?=
+ =?us-ascii?Q?sEJPPsah0PIf3spZs6osvm6FFDJJ7jbJ2E27YasOV0epau5KDRZRzV6bSj3l?=
+ =?us-ascii?Q?POGv2q4owK9yEaYPe59ZL26ExKmsoVLEy9i9m3c66iszqMKpAmsJKvwwEmfV?=
+ =?us-ascii?Q?8afU6eMM4YmKNJxCkaVquVfJB1VO5mhbpVJZNmowy172trmxdeQ0c4Fu+HZf?=
+ =?us-ascii?Q?Cs319aIGhGGGf9KT4tCja4AOT39ci397+Rmkk4vw8l55RLJcuZNURlhyPq/O?=
+ =?us-ascii?Q?OM1bl/SNRpzBEvfZrrZk0lZ7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB2957.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?NCITHxryZFZ+FNKKRgQIIdnvE1s2hMYklmB5FheTtZxXxuYKnVfc6ckJT42j?=
+ =?us-ascii?Q?s2Mo0DApQJbKGAoFKIzBE804Tot1J/O3bM481UfipySOJE+Dz+TTzWE28QI/?=
+ =?us-ascii?Q?IhFLNVU0v2NHe1jMfn3kLkyn9UhQtJkxxBp9zLGdTeC0LKFa4lzwN9ZlIdHJ?=
+ =?us-ascii?Q?HdWWNEOIvoe9e47lkO93Uu4jX4c8bu517IOFB17avOGjkhijAUFcZmV42Itj?=
+ =?us-ascii?Q?cGMhBznGB07mNM7JtLjWC6xRyCpSeya8Geud6TgkTo5blN60XSxeafd/RSgJ?=
+ =?us-ascii?Q?hmGzIZsG+2hL9p7GJylGF5WN2fooZ1epECvynTXoC5LUK3TWmmGi3tQFu5qK?=
+ =?us-ascii?Q?VAOxQ5BIYEQ/WnnsVCOAngw3mVedp8Y0o7V0wBANPSCXRHZgwyuBbMeB1Da6?=
+ =?us-ascii?Q?dHUysDD3mWujt92SGBQM9gkntMvI7Jbm6P208WDT9Vu+k/ueqVi6W8ofrTEd?=
+ =?us-ascii?Q?qsJ6BkbUJua+4C4KCaeLHdHLDOSqTjpiyWSqvEZtPG3/jdBqaAsLXgWpRwYY?=
+ =?us-ascii?Q?EctjrPGAVZhxsovuXdIOoRSNkIOANRJvOF8lFegxTKZWEt+lrNHAGk9Z+y4B?=
+ =?us-ascii?Q?LR8ET/xITcOoMa+FtyEhddz0gaSjZLtR47q/pcHOaxAM1M6KPN3/IkC6Dqoc?=
+ =?us-ascii?Q?+OitCV0hNXQpD+1tGg1+JGGsVI68soidFt0/SJLd7u5+Ynw36QerkXtKARMl?=
+ =?us-ascii?Q?1ue0Oe7j6wc60J3aVvt4b4RFtfSzJo6qIS1FWGq/6W0ZOwswU2nFKO6KKS/n?=
+ =?us-ascii?Q?ljDESLGrO9CBorldQEBLFn+q9ny+Xsh1kKCIExecP7dSF8xAiJvRf6PP1Wb3?=
+ =?us-ascii?Q?6wMRcsjTjNo9rudE+ckEa3rheu2yvDymrbrJtBOUp6D+8wQVGrmQuFnErgln?=
+ =?us-ascii?Q?1UH/VTASSqOPObstod5xSs2DIUDOnUMlYdMZOnKk+r+9xm1rcsWMBSUGgJzD?=
+ =?us-ascii?Q?se/TC+k5btYnNNDsTDdJ+e3Qr6Wi2jgJhzYiXNKbFiPW4FhQCXwPzRNgRE+g?=
+ =?us-ascii?Q?YapNSNs9YjEAE7FxXD5BGHeXvJb9oi5W/4dVOvBQCuxU+sLflys6NlpWxz3G?=
+ =?us-ascii?Q?UqDmb6SX8sPP366cP2Vpz7WvRtwOmqh+hyZpxV+Xnztw0x1WG6a4B1AAWgs8?=
+ =?us-ascii?Q?uy3oo0Gb/oMxFOCxYXh3G0scGlPz4XuopCMkhsBu2M0L32Z9CJcidZh+NMzh?=
+ =?us-ascii?Q?v/VISbQiesyKej6tSisA2tdAW0nMUo7KBSyncsBFJVP7a7rDlaNZvxDcjhIM?=
+ =?us-ascii?Q?7ILvuV6r7cBrx62IHs/8Di5Kr7bAgMRfrwuCYDUtLrd9dDlcB8hAXb1DGYHh?=
+ =?us-ascii?Q?FFCWY97Yg5J1tnDAJVHSIl0xoYNf3Wycu2adHRUBBN63judaGJrHuIjYIR4Y?=
+ =?us-ascii?Q?2PmKDfmHk1OCVhnKomGabUMILqIyJn265cBea1nAAzLO7iT0EG+NaCUHqJmJ?=
+ =?us-ascii?Q?RA0dxatlJs5lYaOEEH1RVUR1IMHGvm2WEoYBQZT6RMzA2a1qt6T0yCRibf0r?=
+ =?us-ascii?Q?ID4ukSzhJ/t3ozBDgvjJkmCBRNyW2bJx/R6Uece15hQihlKzBe+tcFlQ/r4t?=
+ =?us-ascii?Q?sRN+oa/biXQ8PVLy7DHtUvKhtUZZoANSbsUQfb3iquHVBnyZnxGo2H7a58st?=
+ =?us-ascii?Q?Tg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	QfXEjr/HtVn5aWjwApFJfgCE36UPEk64mtq1Q+JXqSvmj2PJQID/OyKXOqYyeN+gtSj+eV/EYu6OhXXzOa0qS7i7KpPXzQZw5GZJTIIqoNEkZqKbMuMChJAm1D9Gif0QTLgkN9QOkzNsAnVD4Bw93XISWP/UokhcIQ5UJDax0MU5YHvALYgy0hgJpKi6Ct6r2ytxyWctjWinCGyZPtw4ojtzeAZVpSd4SRL4gVqsSPWE5X0MtpTArfZ8WW+7C00E6EAzqXqjyAsBMxVLetfIxiS405wUiE+35MegKJjxntqIdvCFqPyvVHmYKBDL1vCGrMhTxGG5Biq0AwWHznCMu3J1lN3/WlJ50MNsr2hiunxsrL7azLBVcUwoIOhVpvLPaDMhiPTLVwlpdbygRJB/rYt5umKaj6yIcshOzSDH8mwFg9Tdcm4h5YrfA4UhrKRxLEXhl2NRFXw85HlcbGNI5dbb2yq7lRbiM0+euCJFbmmLBJiUu+PXnxh/Y1OfX73wL6Q4kNp0wpOKMXQXXbwa2oX72D+bHvzQl1dK0zSI5FjSWf8keO4T6JUDPPFtHj+sY+Mz02wT00HHDeCkXUKjXdwIRg6kY6m0q5P2p2S0Edo=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9b84e1c-1fce-4c2a-283d-08dd083a22f8
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB2957.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2024 01:33:14.5385
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QR5WndWZ7luv2qMtt55VbKmiyjs+2sj3FP6r6240XlV7yxyRyWDQPz4LyrTHQn8jHKCaHyKAiBEi+UviIM1FrV+YRdYT15WbC2uq0YGr9pw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB5821
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-11-18_17,2024-11-18_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 suspectscore=0
+ phishscore=0 spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2411190012
+X-Proofpoint-ORIG-GUID: _6TPkSuXpUjTxD93D4-zAxofItC39OqX
+X-Proofpoint-GUID: _6TPkSuXpUjTxD93D4-zAxofItC39OqX
+X-Spam-Status: No, score=-0.9 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-> Thinking about this some more, if we're going down enabling a new
-> option, it seems to beg the question if the old *two* ksymtab sections
-> could just be folded into the a new one where the "gpl only" thing
-> becomes just one "column" as you call it. Reasons I ask, it seems like
-> we're duplicating symbol names on ksymtab and for modeversions. Could
-> you review this a bit?
 
- Short answer: We could do this, but I don't necessarily think it's a good idea.
+Eric,
 
-ksymtab and modversions aren't duplicating names even with this patch
-series - We have two different formats, one for importing symbols, and
-one for exporting them. `__ksymtab`, `__ksymtab_gpl`, and
-`__ksymtab_strings` are used to export symbols. `__versions` or the
-new `__version_ext_names` and `__version_ext_crcs` are used to import
-them. For this reason, in any given compilation unit, a string should
-only appear either in the ksymtab (providing it), or in versions
-(consuming it).
+> This patchset updates the kernel's CRC-T10DIF library functions to be
+> directly optimized for x86, arm, arm64, and powerpc without taking an
+> unnecessary and inefficient detour through the crypto API.
 
-There also isn't as much immediate technical need for that kind of
-rework of the ksymtab format - ksymtab uses a string table for their
-names, so the "long name support" that extended modversions provides
-to modversions is already present in ksymtab.
+LGTM. Always found it odd to have to use the crypto API for this.
 
-Combined, this means that there would be few technical benefits to
-this - the primary potential benefit I could see to something like
-this would be code complexity reduction, which is a bit of a matter of
-personal taste, and mine might not match others'.
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-However, we could do some things similar to what's going on here:
-A. We could try to unify versions and ksymtab (this seems most viable,
-but the change in meaning of this data structure has me wary)
-B. We could make ksymtab use columnar storage for more things - it
-already does so for CRCs, we could theoretically make any or all of
-licensing, namespaces, or symbol values columnar.
-
-With the caveat that I am not convinced this restructuring is worth
-the churn, the way I would do A would be:
-
-1. Add a field to the `kernel_symbol` that indicates whether the
-symbol is import/export (or possibly re-use `value` with a 0 value
-after linker resolution to mean "import" instead of export).
-2. Generate `kernel_symbol` entries for imported symbols, not just
-exported ones.
-3. Read `kcrctab` for import symbols to figure out what the expected
-crc value is when importing, rather than using versions.
-4. Stop generating/reading any of `__versions`, `__version_ext_names`,
-`__versions_ext_crcs`, etc.
-
-There are two downsides I can see to this:
-1. You cannot make this backwards compatible with existing `kmod`.
-(This was the argument given against just enlarging MODVERSIONS symbol
-names.)
-2. It's hard to be certain that we know about all users of `ksymtab`
-in order to ensure they all know the new convention around imported vs
-exported symbols.
-
-I think that B would actually make things worse because symbols always
-today always have a value, a namespace, a name, and a license. The
-only thing that's optional is the CRC, and that's already columnar.
-Making the other ones columnar would hurt locality. We'd still need
-the strtab sections, or we'd end up with many copies of each
-namespace, where today that should get deduped down by the linker.
-Columns are good for things that are extensions, optional, or variable
-length.
-
-If there are other reasons *for* doing this that I'm not aware of,
-what I'd do would be:
-1. Use the name as the primary index, same as modversions.
-2. Split each other piece into its own column, with a joint iterator.
-3. Convert license into a column, with an enum value (currently only
-fully exported or GPL).
-4. Replace places in the coe where a `struct kernel_symbol *` is used
-today with an iterator over the joint columns.
-
-Again, to reiterate, I *do not* think that B is a good idea. A might
-be, but the improvement seems sufficiently marginal to me that I don't
-know if it's worth the churn.
+-- 
+Martin K. Petersen	Oracle Linux Engineering
 
