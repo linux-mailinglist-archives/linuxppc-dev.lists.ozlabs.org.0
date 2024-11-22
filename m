@@ -1,78 +1,104 @@
-Return-Path: <linuxppc-dev+bounces-3463-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3464-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F59A9D56F3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2024 02:02:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFC69D5717
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Nov 2024 02:41:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XvcJm49tSz2xrv;
-	Fri, 22 Nov 2024 12:02:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xvd9r1vNGz2xpm;
+	Fri, 22 Nov 2024 12:41:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732237352;
-	cv=none; b=BnVhKr0o/A8C9wsQB6sRSd+umCRYIShOJhE/JJeyzMubS96GWRWyOLAR6/c3ql08rqJpEg67iwafoqN0cOEWZ0Mvn4eGRW0T6cADkQakzwx14B7mgWVfIR3Y4PphTeUtfElh0WpA8pos4sB1NCn1DP4x8Q3VT9L/MxpABAMmZQ5mgCVAM98kEzhsELt0yGa7iPDp1HQfNyAJOc7g0zVb5gNZqtDqi+nbmljJsZ7aOeVNUBPuXX8ZSMQW95r1WYTIm/pw6v8mh93tp7JqL9kIrjqXDMo00u1GbF3mgOAmQObPBg8QzdNbbsxXqTNlsA5D7rIBSD+P7u9OgGy5XHqfIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732237352; c=relaxed/relaxed;
-	bh=FDUaf5mQgLqX7fwS6brwxsKX3Lly2Xe2pTNHm3Zr32k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X4KUweSIUk6bwQZYnC+D/ycBfyWnHr1wrXKmC2EWReel4x89mTYU5Fu38xc5p4HvG1ULXZuAnFQAF2oWpIVhoh056wP3xgRhe8o4LyJJl0i9DB3xpdtp+om9iRIkBMq9FKnGemVE65dVynULwjCcijsoiMIAYnVeVOmZEwrhbYoejuIztrCZTT6ueV66QNEGmMCje2KHr8Qi9OkpyzVCW0TfX7m3HlCLEhR+QQ2RbTL6d0KL3OfrjMkXNFXjWiJsPBa9TXaC13srbUB79cn99FFReIinuvAE59fSi6FNy1VTpidOy9D25SAwk9aerOFPeREurM3IyGhgbvxBgsBYfA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=bRIXB5xm; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2412::60a" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732239696;
+	cv=pass; b=LdO4hrOxaVjjjbkmWC3i3nsmmxepF7QKtpBoETcpxGysRuAlX9hYTs2zP1P6tHsm9R/VeQ+WMQU0c0zq6cANXWNaTwAxWKd3gjv689A/bjYHGS8pk0vrTDRHrkeb/dlcxI2JR35bm1kuOLYCB/EGMCyqZwtrKXXnXom9IjqIpWtqZHl7KNA8Tpb7QGkNMk2JIT4s/7lCus8piLExwSF1BrIRSRJVDp1JhBZsVM81CWDxB9uFTpSDqKN8VV11nDaeK0KH7dabQZk0U58sVJvi81WAkMhCIeTB5ymzpEATsCE86/5t5olauAB1d0xfTP5JMhlQkgELr+u4kSC0DlKJHA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1732239696; c=relaxed/relaxed;
+	bh=hGyh0Mw+93+6MNfKJ7ksLUyrIRLTr9DxHq0U0ocX6Z8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=P4IIQaVhqQdWUy5BCrY+R9LaZu+NSUfqjpx97O3htz9sq63dBPEBAwT6mUqZ5NOxGKYCy8jR0AHdoxZoGQARc1nIOPn7L/BuqJj3blCI+oH1inrzYwrTGUIJfpBieIFUOKhFeL0ee4OFP+E0Xl+sZ0p26JPK12qxtAR88x7HbbLLn3f8I+K9lNdectQwOruUxe6cu4nHPTwa0OkI4Fb8z8HNPQFR2akvvbd3PZpxGMiERMhxT53Y7yjg0ShhmSqCiZTyBmsQEKmTIg5hitxDS8qyNqrnL0EnqZF4hL8Ue0/jAe6HYdZqnVEhPhH9eFUDumjEhhCtkVYRVMztuOTG6A==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=rlhkFlvo; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2412::60a; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=bRIXB5xm;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=rlhkFlvo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2412::60a; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2060a.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::60a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XvcJk06XCz2xWS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2024 12:02:29 +1100 (AEDT)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-5cfaeed515bso1983995a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2024 17:02:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1732237345; x=1732842145; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FDUaf5mQgLqX7fwS6brwxsKX3Lly2Xe2pTNHm3Zr32k=;
-        b=bRIXB5xmp7IDb76/t1FVuLI8rXHIFaSa/ji1ksk7zG+oGY83xtO5U6wyIeHd5Pgmpd
-         Ntrg/GIq8QpuP232BkOEFKCs9na68tLwm4EFVrAkcTztDasFglya8lJoNtJuBUIYUyN1
-         5CRKWYTpKDhnec28K3KJx442RmeVtBqeo+580=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732237345; x=1732842145;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FDUaf5mQgLqX7fwS6brwxsKX3Lly2Xe2pTNHm3Zr32k=;
-        b=lmLoB3BvIcp/+NDCAYMx6SKGadZdP9C0mehqSFNvRwoYlJjuSdmc/gykEhAKuEOSSo
-         Np5nmD2/rOv+q26Cg9M5ao+F9UNhmAuFCW6mN2DiHz8+G92Li+F6Bvu7w8j0sZASUmOK
-         lCFQddb8LwtOw132bZsEewnLLd8ow4A4Gzq7lVNuGDE+Hl2Eh+nAWOLbUtgPwbQS0mDZ
-         6//4nlOr3mJzWUXLuOam2FIjOXtaAuUtJa4b36bS2JMUQFj/KrbVTjKwdbN+zNFrxASD
-         5q6fTBxFYRNuViHFYRK0/f3Kk+NtsRo9aRzRRLVkWxl42f/dkUCWVAIQRPtNnd4pehAb
-         d+tg==
-X-Forwarded-Encrypted: i=1; AJvYcCUAitiNmX1DzKu7PF4UPep8KJijdxNHQvZ1M2dt3RvSzQd2hfv0brlAva4lmb8EJxm9D3xrMVsIf1jFlvk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywx51vSdQm1F+AaSBz1OiRjUUqIbI3XGuNJ+vcpmnRD7+AqRHan
-	Co19fmTA5DXy0LhfY2zDbExv03YDB3S6esojdAdI6YQikCe2WzxYjSdftUIlcUS8SdImRmzjaWw
-	qvKBnyg==
-X-Gm-Gg: ASbGncteJ6f4MvxzHXFgepJRja2e2w+kV0dSezHChfW+aTVbRS1qX7l6nzbZGa3DJWc
-	808bFsB9DgwvlGDnu+zZYTcDFbDXIPeNgaT/4MK1X0NHHgsf65QYdjtX54JVmO258h4ePEp0BBc
-	uS6UTkIhytCWsSeiTiqQTGptVG6fJxQB0pxAPf7l5qi+ssYLf+1kYyWax+RMrAVfLVcPFYQjkte
-	yzZlkGVRJ8QJmAq7sZ6wBxJbhqonGnSK//h8VlnKNk3reqWscsPyVFI4OAr9Z7kBSVPmvCcz2w4
-	+k0NLWjwvvh+C8aOX2Plsw/m
-X-Google-Smtp-Source: AGHT+IGSi1a2dzx+0sI+9/+BvyLqhFwescfv4HQ9eH9ONSXl3d05oUyV6/NtZK1KdRZznlYPc3XTGQ==
-X-Received: by 2002:a17:906:18a1:b0:a7a:9144:e23a with SMTP id a640c23a62f3a-aa509c073femr92766366b.43.1732237345376;
-        Thu, 21 Nov 2024 17:02:25 -0800 (PST)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa50b5b8b0asm30928166b.189.2024.11.21.17.02.23
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Nov 2024 17:02:24 -0800 (PST)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aa1f73966a5so248721766b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Nov 2024 17:02:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVI70taIZXhjd2JjoOEroL/cy6thORnq121QH9DywBK3pj0HekYwjb1jWzrebuTUG54nOcZpqqU/16Sb7g=@lists.ozlabs.org
-X-Received: by 2002:a17:907:7852:b0:a9a:a7fd:d840 with SMTP id
- a640c23a62f3a-aa509976333mr95234166b.1.1732237343540; Thu, 21 Nov 2024
- 17:02:23 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xvd9n6rqvz2xpf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Nov 2024 12:41:32 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L6uQxg7uycdxE1U8holbM2RlRnnvmisxJnBdZPZL4yzBxDosX8xDPARt4yO9WXHZsxLPcW2dh/orVscYrWqKlEkFVxubz3qj4+T/9V1S/IX0rMhgyE8GfKONeaBXOt4EKf7pCsLF+u99cG8VfMqkdQ88BNF2gkGWUNrcOIsMXuZxTqFyBYTjKakE8e0DLjZRB3FE5QZ8pGtmDNcRQjDiPvFz+KXTzgS9adHREuBWrR6oTFpHxiYrl02CEVY21OAsna325+KGjmA9QIGu4tj7AR/9lwS7yg7Ou+uwz84QkL650m6+TSEfmbvHbMQN6fhXGtepof72UBXI03xFsJILpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hGyh0Mw+93+6MNfKJ7ksLUyrIRLTr9DxHq0U0ocX6Z8=;
+ b=o7QXDEZkmpi/41icED1wGO3S9ThQZo+qzTtdtmemoVfDw45n2EmENcsQjWq9w6xAUhS9njuXYV8fFj6snjz3oDNX+EzPxXAaCPNPwlDNcfVQNkq1wKqeCArMOO3T4YKhUDBpHEoOCA66miSs3dWbDzLpZltVe1eyTojF0p7JHlabSuYKfM3m3p+Hvd2U+Z6vx690VW5m85Re/sAywRWovg8KF4G/LIIJlJqVCktDoQV/YNUwFzaD9qDOWKAA9FkYFzR6rvPvQQsS8vD6jzm3ZlOcQ4xmPRMmutm6SQ5naBtEcMso7afnXUJeeSv/ZlSx9xWRiWW136bAO8wFBM15/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hGyh0Mw+93+6MNfKJ7ksLUyrIRLTr9DxHq0U0ocX6Z8=;
+ b=rlhkFlvoa5mDlbq4xiRI1k7uE4OppAiYKwDNasR6yB+sDfJAjsrpv/NlckDci9pKIHEnj9GgCIBhqbY9jQ+gzpqqWmiHHCHHMUbtN8SrUgviqOF/h0nUAYOkRoIvEcQEpc4wXH32Ewp5gbRYQQW0B549jsXyzX/YbzvrbpQUA/62ca+TcYtnzES6TZBNim3v+FMeeUUNGmX7prTpgWmEuRYT6r959zdavjfFSIIOjJXaiV1lYtfbnFyUthWbQpSvAzNdD+p4HoGRsjxyWq1sK6Z/rQiYWUuvCrdvDVDIYbVlJB/VBK6InzxL2S3d0OwyBa83GIynryrBlgD2fSfVbg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ IA1PR12MB6305.namprd12.prod.outlook.com (2603:10b6:208:3e7::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.17; Fri, 22 Nov
+ 2024 01:41:08 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.8182.016; Fri, 22 Nov 2024
+ 01:41:06 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: dan.j.williams@intel.com,
+	linux-mm@kvack.org
+Cc: Alistair Popple <apopple@nvidia.com>,
+	lina@asahilina.net,
+	zhang.lyra@gmail.com,
+	gerald.schaefer@linux.ibm.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	logang@deltatee.com,
+	bhelgaas@google.com,
+	jack@suse.cz,
+	jgg@ziepe.ca,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	dave.hansen@linux.intel.com,
+	ira.weiny@intel.com,
+	willy@infradead.org,
+	djwong@kernel.org,
+	tytso@mit.edu,
+	linmiaohe@huawei.com,
+	david@redhat.com,
+	peterx@redhat.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	jhubbard@nvidia.com,
+	hch@lst.de,
+	david@fromorbit.com
+Subject: [PATCH v3 00/25] fs/dax: Fix ZONE_DEVICE page reference counts
+Date: Fri, 22 Nov 2024 12:40:21 +1100
+Message-ID: <cover.e1ebdd6cab9bde0d232c1810deacf0bae25e6707.1732239628.git-series.apopple@nvidia.com>
+X-Mailer: git-send-email 2.45.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SY5P300CA0059.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:1fe::19) To CY8PR12MB7705.namprd12.prod.outlook.com
+ (2603:10b6:930:84::9)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,126 +111,265 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <cover.1730166635.git.jpoimboe@kernel.org> <82cbb9983fef5ecf6f1cb33661e977172d40a7e6.1730166635.git.jpoimboe@kernel.org>
- <20241029032735.pw3bg64bpneqnfhk@treble.attlocal.net> <76bb85ceeb854e3ab68d87f846515306@AcuMS.aculab.com>
- <20241115230653.hfvzyf3aqqntgp63@jpoimboe> <CAHk-=wgLCzEwa=S4hZFGeOPjix-1_fDrsqR-QLaBcDM-fgkvhw@mail.gmail.com>
- <20241121214011.iiup2fdwsys7hhts@jpoimboe> <CAHk-=wigHm2J4LkUL1=y_H8zGwM0JsK2CrWyLNbz9fvXfbaBQA@mail.gmail.com>
- <20241122001223.t4uywacusrplpefq@jpoimboe>
-In-Reply-To: <20241122001223.t4uywacusrplpefq@jpoimboe>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 21 Nov 2024 17:02:06 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whm4fEYrzrrRrqEhELLFz2xNCMT9be+J0uiR_EwXwa0DA@mail.gmail.com>
-Message-ID: <CAHk-=whm4fEYrzrrRrqEhELLFz2xNCMT9be+J0uiR_EwXwa0DA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/6] x86/uaccess: Avoid barrier_nospec() in 64-bit __get_user()
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: David Laight <David.Laight@aculab.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Waiman Long <longman@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Andrew Cooper <andrew.cooper3@citrix.com>, 
-	Mark Rutland <mark.rutland@arm.com>, "Kirill A . Shutemov" <kirill@shutemov.name>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|IA1PR12MB6305:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0e38bec2-b049-4ca3-a5f9-08dd0a96bb86
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Ms9xSKHhDcUIi0VHQpC0nt3BpZVvFWC33OLYNo9wFua6r09bV/GAH3Mw51Yh?=
+ =?us-ascii?Q?ZLdioLoDYOJJpB1EKQqOvbX0qp+H1Kvv2YObpA6lmcUyfkOV2WlyJHJI72AR?=
+ =?us-ascii?Q?/KfCTZWTBBKXsCoJTHIT4bumK5jIIpzHqfpo11oFT3eAf9BueHBpiRuFbob9?=
+ =?us-ascii?Q?IHv3bPojm5rxb+/e/1gVJnZMrgl8lwur3/qtHtlCpGlzcOqzeHpYPCVGa5n4?=
+ =?us-ascii?Q?8Pu6Bx5YpWpL9xGHZPEv1Cfc7iIrQaCLPNJhgPsYw22lxQMRUVnBW5QZOY+B?=
+ =?us-ascii?Q?sCHj+qeBjvObPJc+blRJJ3Ff4BnOW1/b7jMAiWeIj/YeU+YzbDCh1e2L4hUy?=
+ =?us-ascii?Q?/dsExfa17/rhCEHGyHC+PWXtLa0x/nNMDD/0A179Wm94Xq4jAk90eWcyzvbh?=
+ =?us-ascii?Q?RNbOBEA++lm4XHMVYaegO4XFqrEIyWnVh9vZpfEL2mj5k13GQc9CFi0+gXUD?=
+ =?us-ascii?Q?c0eTdYKn+/8AsUiXfMzYXE2ZkUFuLple7PvHqrTTy6oBoCjOl5zLbijLnb8R?=
+ =?us-ascii?Q?mTLpY+0+n6ad81YZLma3nUxFj1Ckk6CO3PKcZtuHhQTCGqEEDWnELXmINdiF?=
+ =?us-ascii?Q?Qh3gLX2H1Rmy2D6AI7cFJHCJlU3FoJlrkVprPiu6p/bw6koZnp3ZHARtl8Ra?=
+ =?us-ascii?Q?13sH+XWuvXJBQA0m3dUwAhtPNTmApnduruJ2/yNJ9zs4iwvypfkF2fZQ2jVl?=
+ =?us-ascii?Q?uqclU4tzfjzc7B/do8rIMTMtWS1CbXEjtgKjJyEB5PIM26dN1MHMxXALqTyt?=
+ =?us-ascii?Q?6XHq0PuXupxB5IGcO74guXtaA5hT8Dr8KZPvyIYQWOkSEenPKhEwyX5Vg+D6?=
+ =?us-ascii?Q?+IFy0dbRN2tqGKYbNFCglQTVSimqvCzirhL7jORx/x9XN55OFaoiYXD0JN6G?=
+ =?us-ascii?Q?nMG+vhue/nQCto9XnHmSC4h4nfn7Rl6xO48+mBT5JZmz/+D1Ab/jFLn19+Fq?=
+ =?us-ascii?Q?0oUklZT2I7Y6l+0KJwKa243ePKmgKBBBnmOpB9SfyZUTOi9GH5/TZLVfIIwM?=
+ =?us-ascii?Q?1p/yl4HNMYNe8nay7A1UR+OJuMHlmg2eX6xbj+Hq5kAwIqHxpfXmgKqpa74L?=
+ =?us-ascii?Q?WcpK2wboqeDQSywB9D3LVuk+jC2/6rTy9WsJ3QIw+E75pV1GiasI3IBIrNiJ?=
+ =?us-ascii?Q?PWgbMNvywFnoQfEaXPc0bC6WKha5ka5vWx8plO4/1yuKni/jPxR5bS8jyt3B?=
+ =?us-ascii?Q?B9RrjkDuN0c28BiB2lO4pnWq4wC5QwjtCU9Sb2yuJCN1Vf3og1+KAe4YViXv?=
+ =?us-ascii?Q?3Epy+vbvtkqmqsdoY3yxbBp235+gMgFlmlHW3HQWbbuHTRg7jz71JbJCrEwI?=
+ =?us-ascii?Q?4zg44MFGb/G+7d7lOpaF6GkX?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?S2blqFmKDSdwQbaALuPCHjcwe0IAqDAuxcq0gqCCSUJVhmqTuKbJgV/qfIbI?=
+ =?us-ascii?Q?BHlA4ng98IbOJ1zmq84bfdS1wGIocbT+fACeNYHTQa6Yd82yioUYEqZbzO0a?=
+ =?us-ascii?Q?qsKD8z7KSVsUF3wE56lQqtwPeShxX35169on4Kffh1HqNEpSIHyYM2uaqA02?=
+ =?us-ascii?Q?Lqp3WL4mixYeLF1bw/5M+zXAqyT651yqMtTTJVXXeveNKj4dqV6xYNnNZyq/?=
+ =?us-ascii?Q?lQJbIvulc1cyryclZ9FaGcwnTtnIYDR0qkOwJ3yYLXpNX6+6SCAkJArVEO1e?=
+ =?us-ascii?Q?i8+Kc+DQ439O/38T3k/aczjFcIc3qMa05O++xhL5Mxr11qv789jvkv88nXCo?=
+ =?us-ascii?Q?SbTC3adOvMif9W5I51deU/k0OA1eG/aMsuKrVkutnXgtOoT3VTwPAMZ024vC?=
+ =?us-ascii?Q?/wGCRYC59xuFCFLdD0tvMKlff3fVyEUruGge2pD9brm6tvtaEjKRrW3KcO7L?=
+ =?us-ascii?Q?gvkVMfqhPh3CDr3DEPnSYCffN3jZUpxBJ3bWG8/O3yicA3Saiz6ciyAYsrfc?=
+ =?us-ascii?Q?76+UsVbo1IXKz8old8XFRsJmoAmfV9+7fqFJjhf9JbCG/9thl6DdkseTSbHH?=
+ =?us-ascii?Q?KyVNDYrlIAdSujTNrVp0iHlp4aEvzH5Jor9gfGg0jTYeanOh8RiL4vvLeRzU?=
+ =?us-ascii?Q?P6vwWsK6ozuM11LImMABZhgGfoFqW2G/jZVi1QTUdOORrsTWJfDWt1L4JtJw?=
+ =?us-ascii?Q?ljmcxImre7RF5EooRgFue9W8emfm9brs8mlJz2phXstw0BWp6PdPrFohXK+1?=
+ =?us-ascii?Q?wY7gA3sbRsNiP7TZh2ee26xyHHoB/Be5qlLp4AHNJfFK80jYRpS7RDh6nj5l?=
+ =?us-ascii?Q?ixeyRI6OSgQy9zVA2/cbHXgXsdQ+1dSnmMe8p3poKm9OSzbDYscLJEsZI8zz?=
+ =?us-ascii?Q?L1fNupzPMtcpqtlnVWvC6TSK5GCNanx/d/beXH/cU37KLwBqDjd9KP5Fj2ns?=
+ =?us-ascii?Q?zLfY3mYg1AeVa4sstpM9U2pEPqLXwp0/huZ6b0f46NcHPtmwVNmqrLLIp74v?=
+ =?us-ascii?Q?+iDtwT+0+jGpQiS+Nq03iXOyQNVH3YYmVOfJ8pMx8HH+r272D5xtyJWtLZth?=
+ =?us-ascii?Q?hC0o1Ktb1aBlOUdG/5CqgEgkCUa9AWF29MLrqjLIUocO6JfFlzSo+1I/Uy0o?=
+ =?us-ascii?Q?/EpG25eb9Ce7nJ1Qgvn7BKw01KFKApUYfycxa/8pbEw8QvdnR8h9HLEVWigu?=
+ =?us-ascii?Q?rpfzvf0PPwSI/yshAAX44YY4nK4v/VsYammTf5HwAJLVHfsGwiuzrp64a4Z2?=
+ =?us-ascii?Q?04pQkzVQxGXpgwEoSyx2zIt8hXRSx0VoHgJYvFkCNG+BdIjd1QCgOcTkKVsE?=
+ =?us-ascii?Q?yBhynu65C+rhGFDo9AVpWdy1T4RCghoTxeJFUxk3EhDgssV5l/isxmNIPVGx?=
+ =?us-ascii?Q?CWUBaK5CCKb6Ot5ZAPMRYVbbKppAlCD68FPlf0z9He2OQwNCaS5qA+H3uutY?=
+ =?us-ascii?Q?dtJtRHtRZq5sXvt3OZ9zloe6TeNIbvcUelR8pXDlrj6EFY4DnMeW2fvWpPLH?=
+ =?us-ascii?Q?Vu7RBJ5g548gC+DC6CtKbk08aYwK10gcD0uhPxhmZ9r3YWmEUK64LJWO6yj2?=
+ =?us-ascii?Q?0iWhimc+bvgQHfuxx7O8LuFcpYsOBZouJeYOoKpe?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e38bec2-b049-4ca3-a5f9-08dd0a96bb86
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7705.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2024 01:41:06.7367
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: saQ4sDPFbjlq6d9ct0mZYgV7KCZsAi5ukzL1eqxH/EH7DwE+ejFckg92c6iZz2QkLvhybTfo2OqCq/eY//wuSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6305
+X-Spam-Status: No, score=-0.5 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, 21 Nov 2024 at 16:12, Josh Poimboeuf <jpoimboe@kernel.org> wrote:
->
-> The asm looks good, but the C exploded a bit... why not just have an
-> inline get_user()?
+Main updates since v2:
 
-That was originally one of my goals for the "unsafe" ones - if done
-right, they'd be the proper building blocks for a get_user(), and we'd
-only really need one single good implementation.
+ - Rename the DAX specific dax_insert_XXX functions to vmf_insert_XXX
+   and have them pass the vmf struct.
 
-But it really does blow up the code size quite noticeably. The old
-sign-based thing wasn't quite so bad, and was one of the main reasons
-I really didn't like having to switch to the big constant thing, but
-with the constant, the "get_user()" part is basically 27 bytes per
-location.
+ - Seperate out the device DAX changes.
 
-The uninlined call is 5 bytes.
+ - Restore the page share mapping counting and associated warnings.
 
-(And both then have the error handling - the inlined one can use the
-asm goto to *maybe* make up for some of it because it avoids tests,
-but I suspect it ends up being pretty similar in the end).
+ - Rework truncate to require file-systems to have previously called
+   dax_break_layout() to remove the address space mapping for a
+   page. This found several bugs which are fixed by the first half of
+   the series. The motivation for this was initially to allow the FS
+   DAX page-cache mappings to hold a reference on the page.
 
-So I'm not really sure inlining makes sense - except if you have code
-that you've profiled.
+   However that turned out to be a dead-end (see the comments on patch
+   21), but it found several bugs and I think overall it is an
+   improvement so I have left it here.
 
-Part of the problem is that you can't really just make an inline
-function. You need to make one for each size. Which we've done, but it
-gets real messy real quick. I don't want to have yet another "switch
-(sizeof..)" thing.
+Device and FS DAX pages have always maintained their own page
+reference counts without following the normal rules for page reference
+counting. In particular pages are considered free when the refcount
+hits one rather than zero and refcounts are not added when mapping the
+page.
 
-Or you'd make it a macro (which makes dealing with different types
-easy), but then it would have to be a statement expression to return
-the error, and to take advantage of that exception handling error
-handling gets messed up real quick too.
+Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
+mechanism for allowing GUP to hold references on the page (see
+get_dev_pagemap). However there doesn't seem to be any reason why FS
+DAX pages need their own reference counting scheme.
 
-End result: the
+By treating the refcounts on these pages the same way as normal pages
+we can remove a lot of special checks. In particular pXd_trans_huge()
+becomes the same as pXd_leaf(), although I haven't made that change
+here. It also frees up a valuable SW define PTE bit on architectures
+that have devmap PTE bits defined.
 
-        if (can_do_masked_user_access())
-                from = masked_user_access_begin(from);
-        else if (!user_read_access_begin(from, sizeof(*from)))
-                goto enable_and_error;
+It also almost certainly allows further clean-up of the devmap managed
+functions, but I have left that as a future improvment. It also
+enables support for compound ZONE_DEVICE pages which is one of my
+primary motivators for doing this work.
 
-        unsafe_get_user(val, from, Efault);
-        user_access_end();
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
 
-pattern is very good for generating fine code, but it's rather nasty
-to encapsulate as one single macro somewhere. It really ends up having
-those two error cases: the one that just returns the error, and the
-one that has to do user_access_end().
+---
 
-[ Time passes ]
+Cc: lina@asahilina.net
+Cc: zhang.lyra@gmail.com
+Cc: gerald.schaefer@linux.ibm.com
+Cc: dan.j.williams@intel.com
+Cc: vishal.l.verma@intel.com
+Cc: dave.jiang@intel.com
+Cc: logang@deltatee.com
+Cc: bhelgaas@google.com
+Cc: jack@suse.cz
+Cc: jgg@ziepe.ca
+Cc: catalin.marinas@arm.com
+Cc: will@kernel.org
+Cc: mpe@ellerman.id.au
+Cc: npiggin@gmail.com
+Cc: dave.hansen@linux.intel.com
+Cc: ira.weiny@intel.com
+Cc: willy@infradead.org
+Cc: djwong@kernel.org
+Cc: tytso@mit.edu
+Cc: linmiaohe@huawei.com
+Cc: david@redhat.com
+Cc: peterx@redhat.com
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: nvdimm@lists.linux.dev
+Cc: linux-cxl@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-ext4@vger.kernel.org
+Cc: linux-xfs@vger.kernel.org
+Cc: jhubbard@nvidia.com
+Cc: hch@lst.de
+Cc: david@fromorbit.com
 
-Ugh. I tried it. It looks like this:
+Alistair Popple (25):
+  fuse: Fix dax truncate/punch_hole fault path
+  fs/dax: Return unmapped busy pages from dax_layout_busy_page_range()
+  fs/dax: Don't skip locked entries when scanning entries
+  fs/dax: Refactor wait for dax idle page
+  fs/dax: Create a common implementation to break DAX layouts
+  fs/dax: Always remove DAX page-cache entries when breaking layouts
+  fs/dax: Ensure all pages are idle prior to filesystem unmount
+  fs/dax: Remove PAGE_MAPPING_DAX_SHARED mapping flag
+  mm/gup.c: Remove redundant check for PCI P2PDMA page
+  pci/p2pdma: Don't initialise page refcount to one
+  mm: Allow compound zone device pages
+  mm/memory: Enhance insert_page_into_pte_locked() to create writable mappings
+  mm/memory: Add vmf_insert_page_mkwrite()
+  huge_memory: Allow mappings of PUD sized pages
+  huge_memory: Allow mappings of PMD sized pages
+  memremap: Add is_device_dax_page() and is_fsdax_page() helpers
+  gup: Don't allow FOLL_LONGTERM pinning of FS DAX pages
+  proc/task_mmu: Ignore ZONE_DEVICE pages
+  memcontrol-v1: Ignore ZONE_DEVICE pages
+  mm/mlock: Skip ZONE_DEVICE PMDs during mlock
+  fs/dax: Properly refcount fs dax pages
+  device/dax: Properly refcount device dax pages when mapping
+  mm: Remove pXX_devmap callers
+  mm: Remove devmap related functions and page table bits
+  Revert "riscv: mm: Add support for ZONE_DEVICE"
 
-#define inlined_get_user(res, ptr) ({                           \
-        __label__ fail2, fail1;                                 \
-        __auto_type __up = (ptr);                               \
-        int __ret = 0;                                          \
-        if (can_do_masked_user_access())                        \
-                __up = masked_user_access_begin(__up);          \
-        else if (!user_read_access_begin(__up, sizeof(*__up)))  \
-                goto fail1;                                     \
-        unsafe_get_user(res, ptr, fail2);                       \
-        user_access_end();                                      \
-        if (0) {                                                \
-fail2:  user_access_end();                                      \
-fail1:  __ret = -EFAULT;                                        \
-        }                                                       \
-        __ret; })
+ Documentation/mm/arch_pgtable_helpers.rst     |   6 +-
+ arch/arm64/Kconfig                            |   1 +-
+ arch/arm64/include/asm/pgtable-prot.h         |   1 +-
+ arch/arm64/include/asm/pgtable.h              |  24 +-
+ arch/powerpc/Kconfig                          |   1 +-
+ arch/powerpc/include/asm/book3s/64/hash-4k.h  |   6 +-
+ arch/powerpc/include/asm/book3s/64/hash-64k.h |   7 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |  52 +---
+ arch/powerpc/include/asm/book3s/64/radix.h    |  14 +-
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |   3 +-
+ arch/powerpc/mm/book3s64/pgtable.c            |   8 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |   5 +-
+ arch/powerpc/mm/pgtable.c                     |   2 +-
+ arch/riscv/Kconfig                            |   1 +-
+ arch/riscv/include/asm/pgtable-64.h           |  20 +-
+ arch/riscv/include/asm/pgtable-bits.h         |   1 +-
+ arch/riscv/include/asm/pgtable.h              |  17 +-
+ arch/x86/Kconfig                              |   1 +-
+ arch/x86/include/asm/pgtable.h                |  51 +---
+ arch/x86/include/asm/pgtable_types.h          |   5 +-
+ drivers/dax/device.c                          |  15 +-
+ drivers/gpu/drm/nouveau/nouveau_dmem.c        |   3 +-
+ drivers/nvdimm/pmem.c                         |   4 +-
+ drivers/pci/p2pdma.c                          |  19 +-
+ fs/dax.c                                      | 354 ++++++++++++++-----
+ fs/ext4/inode.c                               |  43 +--
+ fs/fuse/dax.c                                 |  35 +--
+ fs/fuse/virtio_fs.c                           |   3 +-
+ fs/proc/task_mmu.c                            |  18 +-
+ fs/userfaultfd.c                              |   2 +-
+ fs/xfs/xfs_inode.c                            |  40 +-
+ fs/xfs/xfs_inode.h                            |   3 +-
+ fs/xfs/xfs_super.c                            |  18 +-
+ include/linux/dax.h                           |  23 +-
+ include/linux/huge_mm.h                       |  22 +-
+ include/linux/memremap.h                      |  28 +-
+ include/linux/migrate.h                       |   4 +-
+ include/linux/mm.h                            |  40 +--
+ include/linux/mm_types.h                      |  14 +-
+ include/linux/mmzone.h                        |   8 +-
+ include/linux/page-flags.h                    |   6 +-
+ include/linux/pfn_t.h                         |  20 +-
+ include/linux/pgtable.h                       |  21 +-
+ include/linux/rmap.h                          |  15 +-
+ lib/test_hmm.c                                |   3 +-
+ mm/Kconfig                                    |   4 +-
+ mm/debug_vm_pgtable.c                         |  59 +---
+ mm/gup.c                                      | 176 +---------
+ mm/hmm.c                                      |  12 +-
+ mm/huge_memory.c                              | 233 ++++++++-----
+ mm/internal.h                                 |   2 +-
+ mm/khugepaged.c                               |   2 +-
+ mm/mapping_dirty_helpers.c                    |   4 +-
+ mm/memcontrol-v1.c                            |   2 +-
+ mm/memory-failure.c                           |   6 +-
+ mm/memory.c                                   | 126 ++++---
+ mm/memremap.c                                 |  59 +--
+ mm/migrate_device.c                           |   9 +-
+ mm/mlock.c                                    |   2 +-
+ mm/mm_init.c                                  |  23 +-
+ mm/mprotect.c                                 |   2 +-
+ mm/mremap.c                                   |   5 +-
+ mm/page_vma_mapped.c                          |   5 +-
+ mm/pagewalk.c                                 |   8 +-
+ mm/pgtable-generic.c                          |   7 +-
+ mm/rmap.c                                     |  49 +++-
+ mm/swap.c                                     |   2 +-
+ mm/truncate.c                                 |  12 +-
+ mm/userfaultfd.c                              |   5 +-
+ mm/vmscan.c                                   |   5 +-
+ 70 files changed, 886 insertions(+), 920 deletions(-)
 
-and maybe that works. It generated ok code in this case, where I did
-
-  int futex_get_value_locked(u32 *dest, u32 __user *from)
-  {
-        int ret;
-
-        pagefault_disable();
-        ret = inlined_get_user(*dest, from);
-        pagefault_enable();
-        return ret;
-  }
-
-but I'm not convinced it's better than open-coding it. We have some
-ugly macros in the kernel, but that may be one of the ugliest I've
-ever written.
-
-> > How would you speed it up?
->
-> I'm not sure if you saw the example code snippet I posted up-thread,
-> here it is below.
-
-Oh, ok, no I hadn't seen that one.
-
-Yeah, it looks like that would work. What a horrendous crock. But your
-point that it would find the nasty __get_user() cases is nicely made.
-
-             Linus
+base-commit: 81983758430957d9a5cb3333fe324fd70cf63e7e
+-- 
+git-series 0.9.1
 
