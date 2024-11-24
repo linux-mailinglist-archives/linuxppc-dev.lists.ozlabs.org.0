@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-3533-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3534-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6F19D71ED
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2024 14:56:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEE49D7201
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2024 14:57:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xx9NQ2sbcz2yF0;
-	Mon, 25 Nov 2024 00:56:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xx9Pt50V7z2yGY;
+	Mon, 25 Nov 2024 00:57:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732456566;
-	cv=none; b=T1yh17wjom8v9Nna+xbO5Egzq8E6dQwER2rR9gdJrFxGa/nG0ZIv45eejJZ5U6BlJs5Rga33zxgj+wnWgzv4g4n7N/gbadFeJJF3cAhJXdRAxuBavXOTcjtWeQKUM3NUrOQjoHDYzze2ROElfonSjVq27sGhPL0cT7wDWE6XblA2AVVmqymzLkpv8jL4GFAFia+1so7fEtEs7ItIdkXIjzEctdseBlJySgz4UmYpWQYqUugDEDMnwFHcSrrf9eQn9SOwHFeKOfCrwPrrP6xv9OQmm2FT/y+9bMwKD1ML9XjsHAJ7JQA7jMrBI7hjXrDRQAmsc0ODYDI+MlQAv1qwLQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732456642;
+	cv=none; b=fE2+bAS4d8JDjpqjod9S1/yzNCkzU67I4U6R7+gwlhSLDsx9VhsT9c7uN0oTOa1yY/f4GRfz3pfEFZzSgaDubrRahpGWf0E9vjtKigecrwOXrp2uxVfaUXiBwzcHCW1B58LFfMu/pylxTwHawGGTCCGuu3SOeLyYLkm0wT/jwkMkAzMGO/qUwW5YHXQEv8/z3iRKsAF1kDyVCXMJ3nFP+TssAsgNrx14Xbz44wABc3wAb9XLpF2eH9e1Y9iKnqHEiZPzuLhKH48RzQ+CIgnKigoLQfnBt6MY/xQiwJQWZu7qBBNAoVPfcLcklEDEmlARa28zDiry93GPXhs3zW4Vjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732456566; c=relaxed/relaxed;
+	t=1732456642; c=relaxed/relaxed;
 	bh=ctsLpoVO0HkiQMiEO29DzVJibaXZwkyBtNsvebcaHls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/cVMHWb0wRrFoTdDBhozwUjqFAFG5jtnw/3J7Fj/OqUi5Wf/qew5yxA89NT63iZLRdH9LI1xEucmVnJlVcIWQFLpo8CpkxBBpEl8+4CcWojwZySYhWVBHT171IK6H3QYiR6USObUumdMN4SW64NEAXm8NrSLq5ObxVIj+++SYagqQus/NdM47AUslA3bxIJcsVuv18Gxk0qtnCEDTHHqcAYxVeFCQ3dLe6tPVVhN8NYY9A7Pt2jc6a0zdrWLR3uPEUkHjkMGDmz5b/GnJEZjlNV/WINnsmav5WMISmzbwB5AHYAXHdSUbkO2dGuO7G5Mwx61kk+y3wTcy7dxJaDUw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dPxRmbQe; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=aQ/0UwRXoqwEaKbPhbR5n1iF3o+1yp+O4ZTaHjFqYBA8x40CKyswP0zOUNqhTPGbsB4wJApR05seI3293Wbml4aOhnsYFkG7r0Y6Bqy5F/fDMws9m6Eu/nhb/mZY9z6+7WaAqqA9yGAQQeLnK/Qi/FPpoZcMTpbQ9wy+b0r+TM6hhq0+zBsfgV5dtKeNLFdWxJwM2pf7dJQwmws+lVexP5t042OS71M3YPb4p4tiJQWo/csuBRrqlElWF5630ryLkX3eSKz4I1+vGQZ3AJYUaiqy/W9FayqcYourqeoZhLBftHo5VGpFQ1/XE2KCNnn5mk0PJOn6Vg6es2XyiSMogw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=q0EUxG8p; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dPxRmbQe;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=q0EUxG8p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xx9NP27TNz2xYs
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2024 00:56:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xx9Ps4Lr1z2yG9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2024 00:57:21 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id C0E3DA40D44;
-	Sun, 24 Nov 2024 13:54:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E04C4CECC;
-	Sun, 24 Nov 2024 13:56:00 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1092A5C4ABA;
+	Sun, 24 Nov 2024 13:56:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7169C4CECC;
+	Sun, 24 Nov 2024 13:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456562;
+	s=k20201202; t=1732456639;
 	bh=7kJxGYpq5B6gkcecesOBUZjReUx4nZbMinW6ZwXQQO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPxRmbQeTeXGAvb2v1PMzCrjW8ZMJFYVDJpcKwzmsHSmDEorwfL9VXKNT+m1pFQbs
-	 BHNYqjSR0wbG6FhNOxKN6WlM/9yYg0MXKeMNGGQDThckftK3NpaC3odXsIP5beUGjx
-	 omCRXRC2zLsyzqPBXg1PmWpt9Frjio0A5Vttq3VTaC2bvm5uu5qr8l9qGwohJXE5tj
-	 a6BvZKLbTL4C0hpV39o/tOdiBSzfDZIPBxI3+wXMT35RdYtDNSi2ucIlDWfoSYkQ9o
-	 xcxNpM7JDEVmSztUMSW/UZxUytfwfjV4OWRVwBFH3njFJpeUQsRYGSrEIli52hDKAL
-	 kvZ9gfDfdLeGw==
+	b=q0EUxG8piPrclZWVAoqpmjpjhiHP20D+D2R+LHeQZcCKs9Z0sYTGCPyG8li0rAvKu
+	 A99XLr/oD69Qtu7HutwdZ7OSxQ2BjiIpcxgYOYSXxtA3uDxajh7wtXSwoJdNoRKg03
+	 gC+8in/knjT8NXBwyI+mu6EHTa2z5P/JxbeMJ5ab8yYHRcb8EqF1M+feYCy5VHQo69
+	 BjmciJ8sPrcfySTWh/XD+yXYAM4iBiez0KzYhhVCf6um/5Y6AxA4gwubxMEPsDstSZ
+	 kMas5arQqK0QVHuUrtqZLb6zM8uVYzWD4YDMMjVf37SgTrn9cGjm2kDiVFMXeWgGrA
+	 PWS34ESYL5fLA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -58,12 +58,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	pabeni@redhat.com,
 	linuxppc-dev@lists.ozlabs.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 06/28] net: ethernet: fs_enet: Use %pa to format resource_size_t
-Date: Sun, 24 Nov 2024 08:55:06 -0500
-Message-ID: <20241124135549.3350700-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 04/21] net: ethernet: fs_enet: Use %pa to format resource_size_t
+Date: Sun, 24 Nov 2024 08:56:37 -0500
+Message-ID: <20241124135709.3351371-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241124135549.3350700-1-sashal@kernel.org>
-References: <20241124135549.3350700-1-sashal@kernel.org>
+In-Reply-To: <20241124135709.3351371-1-sashal@kernel.org>
+References: <20241124135709.3351371-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.286
+X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
