@@ -1,55 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-3526-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3527-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34479D6DB8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2024 11:30:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037E59D7081
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Nov 2024 14:35:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xx4q620xzz2xl5;
-	Sun, 24 Nov 2024 21:30:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xx8wQ0k60z2xQC;
+	Mon, 25 Nov 2024 00:35:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732444226;
-	cv=none; b=Dp4OHmbp/t2jK3eORhvqhee1l1hZ2+KfumtMu2ZLST6naqCp190Kg0pE/72BVzYzsY4f4vnzbtUersEiKGqwG46vDL4ri6xdC1fz7DVW85iYqiA4POWW+vptcEH0S3RYd+wGCcSdW93kSA3hpaepTnspq0WBQ4iu3fBfkr65FiQzdGoiAJG1m1z5TI3fD+jWFHvO1JZ3vmOOY8Q2BD28YTdnXgsrRWsclFAbVjq+uXONvCyKt+LftiEy4VdZBXr2Chy9Dk2/T2bsILmHvdcb+SuqBcdPan32p3RaqvWkYcWXycVay5srodSVfY1bZPaZ7bLI5IRDd+XDwyxUBRpENQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732455318;
+	cv=none; b=MuGkyHLl5zwNgRpUGPaqgrT+SljZ+Z2ybtULcpwIFwP41yMn3DNUwiXw5ekwnpixBAzBgnE9JnZNisdm6Wto09YVVc6zHkNwtMkYkbEu20sMGrQ+xTO0WqIBvPW0rvhult1mqCq1RW2ZjEczUIW3iPuklNS+9auU638CUY+2NKslpL0Gr+QOOuTVUdryyrrY22TvnFDCHZYGxhMjekcGj/Dwg5kGopWRGuei77oLQZ5SDAofQ9NFwOSf+TxCMAulDUm4ldjssdHjyMfc45yqTBdBYLPaYJQRW4HKXD6dRH6O2BT4zmSpYJVtQf6aDJtf+tvQijH6C2KXis02RTKXeA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732444226; c=relaxed/relaxed;
-	bh=sPRD00FdoMbZ/n35hTaA/kSHOm/Dnrk51VP0TcINavI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dlLuSvI5dn8uMdZjyLjC/o8J5eQm+ZghRiDlhBt/KxnRKYT8DRhIjuXWj7+k8BWuGHlLp1dLAqVpO6qI92HRxaAmDfKefUXKTTpC8xq/9vigIqNlOp9wvMK2o2ftPVB/pzW0iI8GaeT5X39hyYChAgzjtEtyWnGh1LWZ7iYwwuP/8vqrKn+acKhLDg+Ue/z8y0CaNMdeMUFv6cMwmMB073PgO1R8SkqEhbt/xRR0NMWq/DVauR4JOmlThaP+QPyqlxFvc56UJ/UrL3IKLHJQQmKCK77PJK08n1Tzjaa+FCXXo6exuTxAA6zJQCMFSx6CcILr8Pn/IAPtrQ6WBRhttQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SyIBlu/K; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1732455318; c=relaxed/relaxed;
+	bh=jbPCzvQLGbNQCoGm4+yvmk0pM/6ICbV2zGtXok06peU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kJO0pxOZ4oSkbZmNet/eSzPYSQks2cj76udusyuIj7U12zRjVzy/G2AVdy8bP39Kl5Z3YIolkBMlWtLZIHUtrsnCGO6edJwbRJSPZnX3KtJAh87Yo3rzb5ori1bGrmfwWMA/qEluH7eUTMpn1DULe/lurW3UEewWN2C/8j5EgYtVAQOckz8t4MkW11yUwMWMAe3NcGvy4gJOcPWPLxS/THXz+YSyHnuSpVnxoeyWXg2isUJr4yt75+Vxl5hA4zDgbMBTnSrrRPCiOF3Sq461ip/F1HH68tFY0BSVkjNYztzAVCHSzDCug8gOgB7Aeq3T5RGuDeqHg0I8PFHJFHtG3w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nj1xPNu8; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SyIBlu/K;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nj1xPNu8;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xx4q33dWLz2xbL
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Nov 2024 21:30:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1732444216;
-	bh=sPRD00FdoMbZ/n35hTaA/kSHOm/Dnrk51VP0TcINavI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SyIBlu/K3E9e7MBmBl3Bc8hsEcZEQ0ecvwznME+fEsLhCt2AMkcldJqVd7S3d0S7f
-	 twPiJY3/zvuAOepK0xtcrdCzC2EOy74kR2nCM6/Ksh6PbKcQ3LWEPBYu/JcIiVVa35
-	 te7mZ521WFEXEGHt8DVPpThFNp17Az0c3GPfDzlrhPJ2U7+TNHT833GOOV10FAuMVZ
-	 0zdK7Tf4T4o0wwxQPIdpNf8eWACz+oW6F+ziRrV+BBg83pV3taRfLaeEC3Vdd0YEKx
-	 ik2qj/DRSudLY3XZ3JSilm3WmG1o9CkShxYWWcpLhvr7gH1Qq3hW7rm0W42pRR+taH
-	 PZSueYG05pJIA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xx4pw59YTz4w2L;
-	Sun, 24 Nov 2024 21:30:16 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Cc: kjain@linux.ibm.com,
-	<linux-doc@vger.kernel.org>
-Subject: [PATCH] docs: ABI: sysfs-bus-event_source-devices-vpa-pmu: Fix htmldocs errors
-Date: Sun, 24 Nov 2024 21:30:06 +1100
-Message-ID: <20241124103006.2236073-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.47.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xx8wN4N84z2xJ8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2024 00:35:16 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 8A845A40A9D;
+	Sun, 24 Nov 2024 13:33:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACFCC4CED1;
+	Sun, 24 Nov 2024 13:35:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732455312;
+	bh=1LHa2pRAMrNOXu0nElPLF4jZa8Jqxsl0Gw0jNzupz0A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nj1xPNu8Z/MbUmrVX+0Ur6b1aFh1A2NVZTX4ndwf7UArDP80zttR3zyEUvNUdOj3L
+	 h/O0sJ8dEJrdI1pEUtvADxd1tvwXQJ2H2Rhs+MnSavXL2NtN+TjUY3AIRaID7B4TKj
+	 0jo234Rl38ZsYjwFJrf5AKGO2Taz+sxfkhvK53q2u+ACRkJpbweVsG9KpbtRHnJhoJ
+	 LSKAElAd8WKji9ZLBd0lCgOMgYHDctB0EznQi2X30Q/GzXK7q0KGR6PlGkqaW9ajy0
+	 Z8i63ImM90Bq7quPPH1K9O27HFxRM6r95aLD3oRqb70Ewm0EqAOav/ibVJSTZZak5j
+	 7kXd+W5psSN4w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Simon Horman <horms@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	pantelis.antoniou@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linuxppc-dev@lists.ozlabs.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 036/107] net: ethernet: fs_enet: Use %pa to format resource_size_t
+Date: Sun, 24 Nov 2024 08:28:56 -0500
+Message-ID: <20241124133301.3341829-36-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
+References: <20241124133301.3341829-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,55 +76,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Fix errors during `make htmldocs`, eg:
+From: Simon Horman <horms@kernel.org>
 
-  Documentation/ABI/testing/sysfs-bus-event_source-devices-vpa-pmu:2: ERROR: Unexpected indentation.
+[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
 
-Fixes: 4ae0b32ecee7 ("docs: ABI: sysfs-bus-event_source-devices-vpa-pmu: Document sysfs event format entries for vpa_pmu")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/all/20241120171302.2053439c@canb.auug.org.au/
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
+
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+
+Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+
+Flagged by gcc-14 as:
+
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+      |                                             ~^   ~~~~~~~~~
+      |                                              |      |
+      |                                              |      resource_size_t {aka long long unsigned int}
+      |                                              unsigned int
+      |                                             %llx
+
+No functional change intended.
+Compile tested only.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../sysfs-bus-event_source-devices-vpa-pmu        | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-event_source-devices-vpa-pmu b/Documentation/ABI/testing/sysfs-bus-event_source-devices-vpa-pmu
-index 8285263ff78d..a116aee9709a 100644
---- a/Documentation/ABI/testing/sysfs-bus-event_source-devices-vpa-pmu
-+++ b/Documentation/ABI/testing/sysfs-bus-event_source-devices-vpa-pmu
-@@ -8,17 +8,18 @@ Description:    Read-only. Attribute group to describe the magic bits
-                 Each attribute under this group defines a bit range of the
-                 perf_event_attr.config. Supported attribute are listed
-                 below::
--			event = "config:0-31" - event ID
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+index 2e210a0035584..249b482e32d3b 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+@@ -123,7 +123,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
+ 	 * we get is an int, and the odds of multiple bitbang mdio buses
+ 	 * is low enough that it's not worth going too crazy.
+ 	 */
+-	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
  
--		For example::
-+                  event = "config:0-31" - event ID
- 
--		  l1_to_l2_lat = "event=0x1"
-+                For example::
-+
-+                  l1_to_l2_lat = "event=0x1"
- 
- What:           /sys/bus/event_source/devices/vpa_pmu/events
- Date:           November 2024
- Contact:        Linux on PowerPC Developer List <linuxppc-dev@lists.ozlabs.org>
--Description:	Read-only. Attribute group to describe performance monitoring
-+Description:    Read-only. Attribute group to describe performance monitoring
-                 events for the Virtual Processor Area events. Each attribute
--		in this group describes a single performance monitoring event
--		supported by vpa_pmu. The name of the file is the name of
--		the event (See ABI/testing/sysfs-bus-event_source-devices-events).
-+                in this group describes a single performance monitoring event
-+                supported by vpa_pmu. The name of the file is the name of
-+                the event (See ABI/testing/sysfs-bus-event_source-devices-events).
+ 	data = of_get_property(np, "fsl,mdio-pin", &len);
+ 	if (!data || len != 4)
 -- 
-2.47.0
+2.43.0
 
 
