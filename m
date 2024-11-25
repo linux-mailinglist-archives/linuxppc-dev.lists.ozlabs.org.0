@@ -1,60 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-3538-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3541-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982039D791F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2024 00:34:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2E79D7AC2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2024 05:23:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XxQCJ6yHgz2yDl;
-	Mon, 25 Nov 2024 10:34:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XxXcq4BK5z2yYq;
+	Mon, 25 Nov 2024 15:23:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732491244;
-	cv=none; b=DhA219eCQdxMqg2p4RByuUc/h+vHzcVoDr0qegFtQroqGv1g3u3BUfquvxwvkJOdIUIiKj29CQtA8J85+ifFWYkR6CnWE6i+r1EAHlSZvt/SYiMa7Fj2bDOjll+0RTCS+Y0R4tkMUngEyYapCQge7ACY4Dyz+zptuCsc7zgFl2ggcJJUNtmCCEEbETWANu6x/gmYh/dKg25E2H4KsJrJV0W+UAEWcGTBiM5AGXJkQd3qCyMuiZEuWdiPZ6C8PRCXe1ZwTk37jfpoJAnzvM8sdXy0rTU2kxAIsxYRku2uAdFz5tizP7z4VW5q0Ne1xnrYKrsDz6cvozTlgudZTM5Yaw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732508587;
+	cv=none; b=U/p6bzKdTyKK54GIOsPTqn4edvr5MBAYKuZHRTXxk70IRlVnPEuMz1OeaKFwWjkD1RG1WLKN2z+d2RGQ6khoneW13Pkrx3U81bqj727x7eC02d3tq5zqqV5SV8XpPr+qGDteRJFUMjeRaudyP+rM79Diu7AiYwH0gqr+8afSXn3nJamYF66/q3dP33T408GPq/W6WAZCSvMLU9aZWeV+90jgKR2dYjRccGyxw9NbyxVCCzPZPmCysQ6fFVWGxFn5ogmxUYlFMxprfYcvB3knsioUK2Ae7E1tSbUxlXGBoVOT6MxvsUFR4r7iJGOo5fkLdwyxYsj/3L8OMcLhQFF2gQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732491244; c=relaxed/relaxed;
-	bh=3HZgDipoBDYjlrimLFeAzGIB/HpXZYSyIrDnhPg+UVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aDWRKOtUC3YIRXN0tDAF87PwFZ93zezzLwpv7DX/QC/EOXPHPVVf+2j/2gdi6kbnL1bPBompf7V+qxuweaFwH+z/I6X2Zam5bEFvVDAVgZPDAuVFYuUmLsfTdDTuf7fgCBvNjYBojRkZqtXIgoZx5mqxSjMJj3S6bmRmLBYcuMFA6ySa3ga1c1gtyl7nOHocS+33Th13aOw9rctIwbe6KN4yNnblzRj89OnSCr489+wilUCYj/yqeVzdxGaiH07qwJmIR71KEagmdO9Wk/4oGiC2lRNAaYhzQ3dtMdmK613f5Q6NTkj2whbqCjuNElNJ6S96NmwcBVrmz0Fd7pGIvQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Y2ZGqkIJ; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+	t=1732508587; c=relaxed/relaxed;
+	bh=4nU4MIX3xYAeJ0lJGXjBJOSSOxJkS/XKJUgGDVLl9bw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ACFGwer13xwH4qaWiIgFuHB8OKnqZ5wOpBuIrBWHCudpP1fT6l3gSFPoznQ4mMzRebr8NxaaGcgV4LADdZ2VQTknePRCrwH/uBtwNyTuXOr51NuWhXu5LGUOTgxgdyL9wl7/wjhf2LsRhqLCmoz4FOlSESmWlyaOzjKicPj3XiVyvm2K+ZibSeHYYKeE5yhDLKf6f1DQynB7JFVCDMZS3HFYvY374490XpNfCNHAK8H04KneCuw1Uq0R9DZJQo0rIRq1WUiZj3nEKHKOAbdz4N7qVzr+E51YsQhdzfrprbEmWTTvjC0040lsMZwWKDEimaZVKK892nNB08tvXb1LVQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mDdwdgYI; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Y2ZGqkIJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mDdwdgYI;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XxQCF4q4jz2xs4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2024 10:34:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1732491238;
-	bh=3HZgDipoBDYjlrimLFeAzGIB/HpXZYSyIrDnhPg+UVQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Y2ZGqkIJPobGRlc/ltIq3UFrdZNbJNUQ1D32IYYc+2P5f66hP/QPs6kSWZmdRZnAj
-	 l7iJA0prBuFnXLEHQ105uzhw3SC1s9QZ+NstXkKtjIcBiLk17LvBD1lytYAhw026Hv
-	 r6pR/CQHrTJew4MQQPMsrPTozkl8WXf9tA9qFzWMZuDjZl0g3W1y3jpcrhajp3pR+q
-	 G5qbBJ8NjOTfekwjZv1cnYUZ0NW6fDd1uItzJhJgq3/SwXo6k+DVqhI5gCJjNit6b0
-	 i6rRmNJQOSWEbyN15CjwNgktroiSr0xT3hNqmDAymTYaDWEzXBqPp5+c7MAuDWZfNo
-	 03C9z0xRAghcw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XxQCB10mLz4xdH;
-	Mon, 25 Nov 2024 10:33:58 +1100 (AEDT)
-Date: Mon, 25 Nov 2024 10:32:17 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>, Nathan Chancellor <nathan@kernel.org>
-Subject: Re: linux-next: manual merge of the powerpc tree with the kbuild
- tree
-Message-ID: <20241125103217.56a6eb0e@canb.auug.org.au>
-In-Reply-To: <20241113095228.4ac96776@canb.auug.org.au>
-References: <20241113095228.4ac96776@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XxXcm5TGtz2yJ5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2024 15:23:04 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AOKuqGF013001;
+	Mon, 25 Nov 2024 04:22:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=4nU4MIX3xYAeJ0lJGXjBJOSSOxJkS/XKJUgGDVLl9
+	bw=; b=mDdwdgYILdS6P+io7gbNLKX/ybaG/ONUCsts+aAXJ2sZV6cDkfJPUqccv
+	QY7e7IsY0OVypgYPh1ANGLwC4H+ZXm194WA+ZDqa42+bVE8Bu8Lk2dIoJPKl3wqI
+	EWoihYXK8M4WBNcVo290myIot13rIf/fsGuAfze5UtHAexjRVosZwx9JmEaxbnQV
+	q3AUCsmkrLsB/kYoeVDKInI8LZBmUCsn6GMzEtsJ/Ru3/4ak4bD8JqpVTJVBXFHW
+	9n6CsROTBgZGhASgx3aaIG+Fy12G4YrZBo4rcj6F8DA/I8nZ1B/wO9Dl/YgMqWnR
+	eLAjtdQTXqrLBz1u0xGZNNm0ZWgcQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4338d1x38v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Nov 2024 04:22:33 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4AP4MW2o025761;
+	Mon, 25 Nov 2024 04:22:33 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4338d1x38t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Nov 2024 04:22:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AOFrtLm009374;
+	Mon, 25 Nov 2024 04:22:32 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 433scrstb2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Nov 2024 04:22:32 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4AP4MS1652953510
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 25 Nov 2024 04:22:28 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A16C42004B;
+	Mon, 25 Nov 2024 04:22:28 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 760D720040;
+	Mon, 25 Nov 2024 04:22:26 +0000 (GMT)
+Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.in.ibm.com (unknown [9.109.215.252])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 25 Nov 2024 04:22:26 +0000 (GMT)
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+Cc: sshegde@linux.ibm.com, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        maddy@linux.ibm.com, bigeasy@linutronix.de, ankur.a.arora@oracle.com,
+        linux-kernel@vger.kernel.org, mark.rutland@arm.com,
+        vschneid@redhat.com, peterz@infradead.org
+Subject: [PATCH 0/3] powerpc: Enable dynamic preemption
+Date: Mon, 25 Nov 2024 09:52:09 +0530
+Message-ID: <20241125042212.1522315-1-sshegde@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,98 +91,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/dY9MbLJdb98co5AuDAiy8S5";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: P9TjpY9FJsgJI2meGKM--s2bRF6fHUHb
+X-Proofpoint-ORIG-GUID: 5ecB8bydt7EaE4rmFUbU1G60nig5UE6y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 mlxscore=0 suspectscore=0 phishscore=0 mlxlogscore=505
+ spamscore=0 clxscore=1015 adultscore=0 lowpriorityscore=0 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411250031
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
---Sig_/dY9MbLJdb98co5AuDAiy8S5
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Once the lazy preemption is supported, it makes sense to enable dynamic
+preemption. One can change the preemption model without changing the
+kernel. 
 
-Hi all,
+Overheads of dynamic preemption seems reasonable for some of the
+workloads. Tested with db2 database workload, unixbench, schbench
+and hackbench. Except hackbench pipe rest show similar numbers as
+without dynamic preemption specially for preempt=none. 
 
-On Wed, 13 Nov 2024 09:52:28 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
-wrote:
->
-> Today's linux-next merge of the powerpc tree got a conflict in:
->=20
->   arch/powerpc/Makefile
->=20
-> between commit:
->=20
->   de51342c5157 ("kbuild: add $(objtree)/ prefix to some in-kernel build a=
-rtifacts")
->=20
-> from the kbuild tree and commit:
->=20
->   bee08a9e6ab0 ("powerpc: Adjust adding stack protector flags to KBUILD_C=
-LAGS for clang")
->=20
-> from the powerpc tree.
->=20
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
->=20
->=20
-> diff --cc arch/powerpc/Makefile
-> index 321b596d2550,99af7953e844..000000000000
-> --- a/arch/powerpc/Makefile
-> +++ b/arch/powerpc/Makefile
-> @@@ -402,9 -403,11 +403,11 @@@ prepare: stack_protector_prepar
->   PHONY +=3D stack_protector_prepare
->   stack_protector_prepare: prepare0
->   ifdef CONFIG_PPC64
-> - 	$(eval KBUILD_CFLAGS +=3D -mstack-protector-guard-offset=3D$(shell awk=
- '{if ($$2 =3D=3D "PACA_CANARY") print $$3;}' $(objtree)/include/generated/=
-asm-offsets.h))
-> + 	$(eval KBUILD_CFLAGS +=3D -mstack-protector-guard=3Dtls -mstack-protec=
-tor-guard-reg=3Dr13 \
->  -				-mstack-protector-guard-offset=3D$(shell awk '{if ($$2 =3D=3D "PACA=
-_CANARY") print $$3;}' include/generated/asm-offsets.h))
-> ++				-mstack-protector-guard-offset=3D$(shell awk '{if ($$2 =3D=3D "PACA=
-_CANARY") print $$3;}' $(objtree)/include/generated/asm-offsets.h))
->   else
-> - 	$(eval KBUILD_CFLAGS +=3D -mstack-protector-guard-offset=3D$(shell awk=
- '{if ($$2 =3D=3D "TASK_CANARY") print $$3;}' $(objtree)/include/generated/=
-asm-offsets.h))
-> + 	$(eval KBUILD_CFLAGS +=3D -mstack-protector-guard=3Dtls -mstack-protec=
-tor-guard-reg=3Dr2 \
->  -				-mstack-protector-guard-offset=3D$(shell awk '{if ($$2 =3D=3D "TASK=
-_CANARY") print $$3;}' include/generated/asm-offsets.h))
-> ++				-mstack-protector-guard-offset=3D$(shell awk '{if ($$2 =3D=3D "TASK=
-_CANARY") print $$3;}' $(objtree)/include/generated/asm-offsets.h))
->   endif
->   endif
->  =20
+These patches *depend* on lazy preemption patches[1] to be applied
+first on tip/sched/core tree. 
 
-This is now a conflict between the kbuild tree and Linus' tree.
+The reason for arch/asm/preempt.h is to enable arch specific preempt
+enablements. Also, there is plan to move preempt count to paca for 64
+bit systems as idea was discussed in [2]
 
---=20
-Cheers,
-Stephen Rothwell
+[1] https://lore.kernel.org/all/20241116192306.88217-1-sshegde@linux.ibm.com/#t 
+[2] https://lore.kernel.org/all/14d4584d-a087-4674-9e2b-810e96078b3a@linux.ibm.com/ 
 
---Sig_/dY9MbLJdb98co5AuDAiy8S5
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Shrikanth Hegde (3):
+  powerpc: copy preempt.h into arch/include/asm
+  powerpc: support dynamic preemption
+  powerpc: print right preemption model in die
 
------BEGIN PGP SIGNATURE-----
+ arch/powerpc/Kconfig               |   1 +
+ arch/powerpc/include/asm/preempt.h | 101 +++++++++++++++++++++++++++++
+ arch/powerpc/kernel/interrupt.c    |   6 +-
+ arch/powerpc/kernel/traps.c        |   6 +-
+ arch/powerpc/lib/vmx-helper.c      |   2 +-
+ 5 files changed, 113 insertions(+), 3 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/preempt.h
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmdDt4EACgkQAVBC80lX
-0GxIRgf/ZYcl6Eoilt3oUwtsfmVx4S5ZuRc/BGXxz+C7amLovrnnvKd2soqIYk8d
-+iluP6iZPEAxqkoYSWwMoCqBrO+OLlQi/TY2S0f9Ig7M7TqcZG0qR+43FohW62hN
-usbJEFKHp1T+Oc3LCdxQArk9aAZJ0BI/vdypwRvZ+d+fQ+u2OLMNFmKJ6HOlNfL5
-bLdD2kMhRR85pIGcHMqfuDvb2aiePB0IKmilp4iRZkj3AEddl3+ArIoyCiKjqt3/
-XKSmoCBIXejzOq573z2PiKoJBEtRsSTJK2Nf1Vo9tffmzYcNaQfUbmdDj2nG1B8H
-nvRg6C76jMaRfB/NHco2+2++nLjncg==
-=Bz4k
------END PGP SIGNATURE-----
+-- 
+2.39.3
 
---Sig_/dY9MbLJdb98co5AuDAiy8S5--
 
