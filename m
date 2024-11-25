@@ -1,52 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-3545-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3546-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B279D7BEF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2024 08:27:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151219D82E0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Nov 2024 10:52:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xxcj74B11z2yYf;
-	Mon, 25 Nov 2024 18:27:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XxgwK1HDGz2y72;
+	Mon, 25 Nov 2024 20:52:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732519627;
-	cv=none; b=Z7PKEGy18x4WmSpIZ+H2B5z7VQbjB6lu4puGrGs2bwqO86gc1DSCI7ArzsO8yCcvNex/wzXprp0c9nP+ZuDXfPnRo4DKd5V6qZVDEIFZEAQH+BgCcg40IQyPSW7w6xOVJdb2g63H711iZUT8ySeicqT9SbxS/UjgddiXQAe6AhbDHVBMg6/r2Y48YK+sPaJOwmi6LPRTyifrJf8yU6IOlr8SJ1FTCFCnK9iL4OGwrObxct3+QE8pxuZjRicRE1e9Ctvn0Lm9ct0ff07ciYNEZoVZ4KGZ9NjWl9/qgieXoTBVeSi1SnAjdQ8U41EzHaxmFMr8VXIS4t6cWFROXNvrIg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732528321;
+	cv=none; b=haXoOYrQx1C2YV5ix0F2EQF8OWHeR0uU6DVR4c4mFsTLL5T2hT3e335aBLL0h//3lp+NVk6rD0H2vJuuFJ4x5IJ5nZegSsAdm95b+K7+nV/sDe995S4m4M6vCBOqg6nocqNONgmxVmSsPuMYIb+uqROXWxMQgtyyCh30Qox3/9RqnlyrCdFr1n5HE0XmBAOWDqtbBW+pmuWJq3qSTz6rZJWhMJ5LqKEYiuaB+AbgV3oMbuGbVA1H/Iz8cDwsFGSoM4eVY53HP7fxegMzL7LBdkL+2LcujKhbO4OMejjQ8EZMRLdeMFyKC1ILSOcrJp7oawI3fv0oRDn+I7GlkAzUmg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732519627; c=relaxed/relaxed;
-	bh=CekLY6TAN+2fLICxY17W/wDYBNEmemTtaf09cysFzS8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=imisjx3NZjxh7dqXhG40vFmD+5YuV9J98Z5YsL0HtHu+DLNV5gecZPpznacyEFnt2qfVk0gUwDXovv75vrDW6Rnt/rEDkUMMw5AAzZqFUTlh+vDW4CkvhB597LAZTIE0HMoYbaBjPPjRdHFhmUnsBFI63RmHQgdXYEZBp4lzp9/N+80r2Jwqrv6t8xsw7fwbDsa14mz+CGz06xDP+W29mY5Hu6Algb6mVlUVQJIwUE4NI5rvhLUVbxGexxTKy6IdOhN3kgDC8qc43NF+qRh2NFu5XhRc5SgIB3wvj5hF4SiKOf/+9Ryca/Y1ZPyBTjwJ1tVUWegc49uF0oT1nHYLBg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1732528321; c=relaxed/relaxed;
+	bh=xXQGNKC9g/gxVu2UclehtcajTzlHUR7Br/voSKreqhc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=UAbRY6QyfpsXSo5cUffn6ovUcQXXrKnqbXm2avvtoebiAAZkKwQK9lC9pAkemWqzfAguYNS+JBkKFdmXVqz3jDlm+YEfMk5QnErY1FF0T6pR/irWZ8gVuf12p6gRs+7g9MdGB1NqibZ4k2Hn8WpwW3ZZu5UfxhTjGw6ADEQIANL6lUJvCZnfBLEN4RJTgUERSsu8ojlRjH3G/tvSe+fQ+pJbD9fJkbwC7L+wgqSqVhjGwexGvnf7t5y8GZRwSTi69ORbRV5HRJqZSVK+Uj62/AGwb0ZLmu/ALw98vdCYdpmdqdE4EGqm9tEG1fBaNlc3Fw9qfyNrRCoiGHSp5f4vkQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FPReAO52; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FPReAO52;
+	dkim-atps=neutral
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xxcj55y1Cz2yXm
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2024 18:27:04 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Xxchz27g4z9sPd;
-	Mon, 25 Nov 2024 08:26:59 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id hPPde6qatPkl; Mon, 25 Nov 2024 08:26:59 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Xxchz1Mcqz9rvV;
-	Mon, 25 Nov 2024 08:26:59 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1EB568B764;
-	Mon, 25 Nov 2024 08:26:59 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id OlEhmccigwwc; Mon, 25 Nov 2024 08:26:59 +0100 (CET)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DBF518B763;
-	Mon, 25 Nov 2024 08:26:58 +0100 (CET)
-Message-ID: <563bccb3-d9eb-4001-8c3e-6021c507f636@csgroup.eu>
-Date: Mon, 25 Nov 2024 08:26:58 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XxgwH1rszz2y66
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Nov 2024 20:51:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1732528313;
+	bh=xXQGNKC9g/gxVu2UclehtcajTzlHUR7Br/voSKreqhc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=FPReAO52M8K8BxzdE6potA9MO88w945boEz40ZsO5Q56AgeXdZoYGBVRs8PYdAS45
+	 5tx/j8HuHZYirKCbFL7AvrenQAlbNWj11NttW9TxgEOU+8sUbCQBK0SnOnvEyV2YV4
+	 3d/gHTibFuBwZZlSjD4FWyCdScra+4NeQ5fgi9kKyQIaz5yXtte7zaL1GAV8EulKTc
+	 58tMqJmDP2O1MPaqYkXRXHbTQvWDcx+MCyZKT7oxs7OaJtC5nlqmliWjDXqbPRBNNo
+	 Wek/UR9WPBCqD+kkZIvoNYw2ZNYWs38hg3wYml8Gn6j3ZyWmm3+LRhWOXenm8tkcXN
+	 J4MZP461zq/6A==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xxgw83vlyz4xcr;
+	Mon, 25 Nov 2024 20:51:52 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: linux-edac@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com
+In-Reply-To: <20241112084134.411964-1-mpe@ellerman.id.au>
+References: <20241112084134.411964-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] EDAC/powerpc: Remove PPC_MAPLE drivers
+Message-Id: <173252811445.21628.11243334718451760345.b4-ty@ellerman.id.au>
+Date: Mon, 25 Nov 2024 20:48:34 +1100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,46 +63,27 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -next] powerpc/machdep: Remove duplicated include in svm.c
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Yang Li <yang.lee@linux.alibaba.com>, npiggin@gmail.com, naveen@kernel.org,
- maddy@linux.ibm.com, Christoph Hellwig <hch@lst.de>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Abaci Robot <abaci@linux.alibaba.com>
-References: <20241107010259.46308-1-yang.lee@linux.alibaba.com>
- <87msibcmeb.fsf@mpe.ellerman.id.au>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <87msibcmeb.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-Le 07/11/2024 à 12:29, Michael Ellerman a écrit :
-> Yang Li <yang.lee@linux.alibaba.com> writes:
->> The header files linux/mem_encrypt.h is included twice in svm.c,
->> so one inclusion of each can be removed.
->>
->> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
->> Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11750
->> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
->> ---
->>   arch/powerpc/platforms/pseries/svm.c | 1 -
->>   1 file changed, 1 deletion(-)
+On Tue, 12 Nov 2024 19:41:34 +1100, Michael Ellerman wrote:
+> These two drivers are only buildable for the powerpc "maple" platform
+> (CONFIG_PPC_MAPLE), which has now been removed, see
+> commit 62f8f307c80e ("powerpc/64: Remove maple platform").
 > 
-> The two includes only appear in linux-next, and they both come from
-> different trees. They are required in each tree to avoid breaking the
-> build.
+> Remove the drivers.
 > 
-> So no one can merge this patch until the two trees are merged into mainline.
 > 
+> [...]
 
-That's in linus tree now
+Applied to powerpc/next.
 
-Christophe
+[1/1] EDAC/powerpc: Remove PPC_MAPLE drivers
+      https://git.kernel.org/powerpc/c/3c592ce7991cdf03bc7d139d790ce58c82c5903b
+
+cheers
 
