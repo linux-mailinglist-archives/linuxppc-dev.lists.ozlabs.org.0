@@ -1,81 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-3563-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3564-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885D79D9164
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2024 06:34:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AFB9D928A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2024 08:36:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XyB893RYBz2yjJ;
-	Tue, 26 Nov 2024 16:34:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XyDsT3jmVz2ydW;
+	Tue, 26 Nov 2024 18:36:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2608::615" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732599241;
-	cv=pass; b=NHPJOWr0sOr4DKzpA51Et0Un7Of6Eh9q/EH/4D1lcMTsuCp+9X5tsGS1AKjkIVaWj7knoZv4ZZ7JMqUXj1mOJFF5sc8OexEfJHnPWMVlh97/hEBFMWZCT0GhbaO25ZWeLyt7aHsI2kne+rO4oGkXXxzgHk6GaT19qPDe0wmbPURdBMbQ4ZJ5BJxDxOP0A3TSpqT1auEYS4kURpwbNn/9dEJ/0VkvjS8GwmMVoNKkepJfX7TIbVq4bftLvbzuYZDKe/0g6H2DbjDcwGjPpMXY3aw2+ndhKfuD6I0KiPz1fT1mIudMIIEB/REEB3mpbLRnsAhdcDDoP+V2cpC28OHIPg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732599241; c=relaxed/relaxed;
-	bh=fKlp7jfKZr0CIv++v35q0PqUfQNFbhf0EeU8Viv7P1Y=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dQwzEgGSMCQa9nzw/5V5p5/oga3mDx7HPX2w28D3t5PSkIJlSaeC5F27QmCzsGGb9Xgx3D9b05tOxKbmaezCB8n+Hdb4uYyQSr/KI2D5nUVLdHkHPGX+WYlPVltO5sLmW4Q2J4w6tAY5Xnmx0NIFknVkC8kWPuTFgpQZ16mcaSrP/mMFBg7FhX4kSHNvGrthCCdG5CMCLvfut+h6VnmMHCP/TpqkxpcIeqeaJ8skdN3inRW8nD8FKaGBHmmGGzsz98h+Pnu6vzRpKsSt1bHgagHOJpxsmrVeu+412CjfbDkFDAloPI2aDoiFSGmd0NAwaI98AjBdI3y9nczUCmM8bQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=muW2Waco; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2608::615; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732606589;
+	cv=none; b=Nbryx+mURRJX8VuJS1tOq6zP2UJuV54ykZH1Di456RBYK3r1NXum+TTKOkZAb2+aUSlWtkqa/vberEm3dMM0KzSSyZ6FSVL57ybYne7fRYwWtREuhTn0zHB9UqPiQSjk9+EkmS/Vb2QBm7NJ0ZzGvTx6cXPIZ5pB+mVdxmYbGHHgde+5R5lTDh1zH1nhXfB+cHZzlooSwMV17/l6e8gArH9HijXA4AGbinhHsX6YZJpLV86F4mVJ7PuFcPRIXKNYA3W8pGuQ+nFQ7L+H/NK99NBJXNfj7AXDDiWQrDsSY/B1y2RowFWSTPu2Ln4TVAfVYK1zYj5fT94sxoEuGuLFCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1732606589; c=relaxed/relaxed;
+	bh=M8z2J59zroaFpFRWP3ZjoG0gtIi2tc/nd3q2FavnHd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TxpxQ6j/iojMKGPFjx1Vt9g2Q6MHvCMvXNTdHljcCeOqdNRRMF8j8lkzgVTRFFHlQzYVdqINjkxzoZKHdXJmweqXudfDRTpAkJQxBU6UuTpW8/fDGP2siRZ23ZbOgj+YBSss2XK/xkAhtXJ6ehTuKiEiBAmen/ge7clZLv7BrT0vKsd/seIbOKdTe4u0o4RbND0pF2W33tdaokK2hBsXncb+s9FwdY8fADDSk1AlQAvVSL271E0oH+MlpBy3J3Z48jGkhFcPHZJdd38wyYxwwbShAaCAb8xtgvxuSHjOwVVRGDT/rxixZznR+m7o3erb3f6zmFqv1kjBSfPulgLt6g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m+Iu/WqI; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=muW2Waco;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m+Iu/WqI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2608::615; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on20615.outbound.protection.outlook.com [IPv6:2a01:111:f403:2608::615])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XyB885QM4z2ykZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2024 16:34:00 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mf28WQY351+jziJ+U8X/f8xRbgOTAR2bRyibyNKaIT0V5zBMVL3fAapsx9kFc7VEB/0iBskqDPu/IpnI1t5TwQVuRcNwBIyn2RXpSbsRv1ui13iU39+5pTTx8RMha/qe2fZXNEY6Vm8H7C9AALEYPzSSz/QeNjqDYyZIpfi+SZsuUpwkN9CzIOEc28lS48Z7SzHsoHXkgpXQ0Hy3hcGn6oPe0bY3E/h94kZ99luJnebjOowXmEwK60cOunonAkr5LbHm6MMCkZLm/BQh+AVV+nGITGx7hhckH8CLzoEO0keeCF0HV8zIrcFEjHOhbogNDyk/hbCEgzNCWKi+4UBl1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fKlp7jfKZr0CIv++v35q0PqUfQNFbhf0EeU8Viv7P1Y=;
- b=zHoiOIdDtvjssEv8d6hAWlEXYJkWcrBBFNEBWKynuufdDn9MtatL7LdGjzXfecliW/1dA4kGoGujrgXFwzb978HLFauEIHptUNWKP7BboxkEz0nnppSlJ4VVhoApBkQbpI2mk02I91jb1Y3Qk7zSCNsxorKm+1Ae9hxn+9CBH7LI5f5EjjWOC+hTbuCVVhZbZtCq0ujyO4oYDiUixRnXn0YUnA5zB4dNPZtkRd5eSZKwDVZpbDE20gHzMa/ezsk5EwEV24AcpyDN6MqVl6e7u2boAo9oXZIex09WIrODrFPr7O06VlBp++9ZGrVKJYMERMrKnMYQ3ETIid0x6VPFvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fKlp7jfKZr0CIv++v35q0PqUfQNFbhf0EeU8Viv7P1Y=;
- b=muW2WacoQ8dn27T5+gTK6Pbk1enEx/+/ug8Y5krHgKzBjaeDSMxVSQ718QiIHkJL4/T2gLmmk3rparZMXUGd2c36HWo1a0pO8rConzeUrBD91UbhsLpf99NK5qQyaWGHtv5PpTuxsyYajLFLi/0YYL3bPHIL3HXVjPZeKQbR3TscFjHHbyp9Q17TsBOQ1olU9/4XOxDUHm3mmB7ayChMKKxE0h4WKoca/U5lWQD27W5XLH8tOztbHKGlJqthE904YcNBR9C0SrPRNHTxjWEWOcEn0nloIrgMqeKW/xWr9fw8UAM9is5RCO7P1+l/mETERhXJnS0v7+eJbwOaKMgpeQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
- by VI0PR04MB11071.eurprd04.prod.outlook.com (2603:10a6:800:262::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.19; Tue, 26 Nov
- 2024 05:33:40 +0000
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891%6]) with mapi id 15.20.8182.019; Tue, 26 Nov 2024
- 05:33:40 +0000
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] ASoC: fsl_spdif: change IFACE_PCM to IFACE_MIXER
-Date: Tue, 26 Nov 2024 13:32:54 +0800
-Message-Id: <20241126053254.3657344-3-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20241126053254.3657344-1-shengjiu.wang@nxp.com>
-References: <20241126053254.3657344-1-shengjiu.wang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2P153CA0011.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:140::14) To AM0PR04MB7044.eurprd04.prod.outlook.com
- (2603:10a6:208:191::20)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XyDsR4pP7z2xg8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2024 18:36:26 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AQ2R6ow020489;
+	Tue, 26 Nov 2024 07:36:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=M8z2J59zroaFpFRWP3ZjoG0gtIi2tc
+	/nd3q2FavnHd4=; b=m+Iu/WqI77HP8DFWAwrMjKyAPDauwOjUjv0ZOvEGfOJ7Dm
+	qbb4PetfbuHxnpBWIXCBiqH1wdQYn6MkhgDw7se8Ykp/lkrv82YlBzK0nqaV1Ov8
+	8XBK/lxi5z2XUb3fVIzNNJbXJPbBaG4L67ZDqCXSgAIkjUftc7eEW1AaPtfDtPnv
+	04O/JlNLtZ1KqCnUmCeR9GNakqwPsWM6lqPV67F7gAtJzaxqBnasvhO5UiR9GLpm
+	OFiTdaCi31RmRdIuujRVpmP3xNu2oz+js8wO3zwjvCfqmA7jkp1GBB3JVXZDoMye
+	lO+Me80wqCxxvvQQpm01gVPHWuqBxrZi5nTOKg3Q==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43386ncmk0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Nov 2024 07:36:16 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AQ4DuBx026384;
+	Tue, 26 Nov 2024 07:36:15 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 433v30uwkn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Nov 2024 07:36:15 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4AQ7aAlG65667416
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 Nov 2024 07:36:10 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 672662004B;
+	Tue, 26 Nov 2024 07:36:10 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A1372004E;
+	Tue, 26 Nov 2024 07:36:07 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.124.222.244])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 26 Nov 2024 07:36:06 +0000 (GMT)
+Date: Tue, 26 Nov 2024 13:06:00 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Kajol Jain <kjain@linux.ibm.com>
+Cc: mpe@ellerman.id.au, maddy@linux.ibm.com, atrajeev@linux.vnet.ibm.com,
+        disgoel@linux.ibm.com, hbathini@linux.ibm.com, adubey@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] powerpc/perf: Add perf interface to expose vpa
+ counters
+Message-ID: <bjzps4vzszpdys3pyao5zdghrmp4yur5ygckzupkj7ztcy22uq@g77rvavm5jjc>
+References: <20241118114114.208964-1-kjain@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,112 +85,340 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|VI0PR04MB11071:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c5e77a8-3052-4f60-29e1-08dd0ddbe26c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tbgONFerfsLKsf5O91xyvVg1Q1Dryld5s6bPjRAEXnz1jcsFrH6NpqLo0SJV?=
- =?us-ascii?Q?NLWnWZOuuaXh9AswrBBZPCDWllMlfOLCCLramjSvGdtPW0NxwZhoiYNp+NjG?=
- =?us-ascii?Q?eb4ye2v5Cn7Xit3kWLDK0yEpbgmy31LmWHkVQ9kBm7uUvGZZXQTwCTbl4Vh8?=
- =?us-ascii?Q?VoNGPa+UNPEOOF/kX3rMCHy2FI1EWZvpQzJ7jYx77OvsR/ipeeyglkakihiB?=
- =?us-ascii?Q?ywj+Gzk9uzSqmhDz0miB+qUheSeR55MlInAmqkEtKSNG3FAZNGrAbPsFdSv4?=
- =?us-ascii?Q?5TeBvw4MfEisCgypcwqdV/oduikzgFF3Ev0uQMreJtY2LbaZYcl4r9RDeYsX?=
- =?us-ascii?Q?plAKhRwHgeYMN8b52kxsPPSHlzKF/fxPagqrguY+fHrfERRDrYs+u2C8BbtV?=
- =?us-ascii?Q?nxQWNE5A3SlP2Dk1pEoaToUHmcz+1FxoYMw9RLSoYi0uE2wgcjE7ZpQbpyvi?=
- =?us-ascii?Q?/3KX7FqM78dS3G/tuUKwockTKZQ59JulqbHqT429V2irqj0MiXRSz5yJ/b30?=
- =?us-ascii?Q?M8y6QfSnDtEcQoTwR/EfY0zWk+/XrmlnYu4DiaNfgXxDFfmKZA9qYU8WIKev?=
- =?us-ascii?Q?EA9oWc+ASmtxV+gwFBJUFz0xfnHl9jCGZGMgek3X9CgTQuhpDtxkhiofsy+S?=
- =?us-ascii?Q?QJOkUhH5KNy+mF79caiYVeOk9cVVB0tcAUG6iiywQdE2320FM/MI43p6zP+c?=
- =?us-ascii?Q?OnLztMZThU+LIqxNczEDMM6bQSghymjJ8vUi2druTyZnEmBaEkERGQVajtd5?=
- =?us-ascii?Q?XJHyJjqVUDuxEFQGXyw44h6PNogOTBtExf6i+7S0fntpJ6H9vcPIfhSfwgsS?=
- =?us-ascii?Q?0aRvEr5IIcITFm38Yzmqeeb4hMnrHPp2rReDhOVTewj1QDw1gTqJSugLF0ma?=
- =?us-ascii?Q?Yc3NaCMv1pBoKDj++9JCQvH9s47vpJB79X/cHG2SdWnhMDY+3wSsKPNdUFvG?=
- =?us-ascii?Q?a1XD5I2d/9kX+SoVe6dm+35jMIDU2jcgA8G2eHfTMTJeXhhSJfmTW2Ur/OO3?=
- =?us-ascii?Q?MhXfKsyT7yac4+r+jfQ90ICk34JhBbp0XQT/S4yZLUd39aq8ft9SH1N/frA/?=
- =?us-ascii?Q?MVpv/4IQNnjZ4+i9eJcoqLo/ZW8wVC+xRu6UZBaljjXc4TMn1np28lfnyXUo?=
- =?us-ascii?Q?RW+wBWpqjeSDgnQuUc1Z/pfc4SMXyYeXLz2UTwy433+3OW7vgErANiquwJMh?=
- =?us-ascii?Q?IqNinS1DI94Foh+l3BSxHz1ht10vHj454wezqZ71JjQp6YIGpIgqKqPmBvSd?=
- =?us-ascii?Q?H6yNaZFJZ/9TmXm83WIturDm7U6R7ee3+L5eoGHbW2tj3pgFf+6auPgtQcLX?=
- =?us-ascii?Q?82ngq22IFhATFr23McmI+MZM+8u3OaXOVP6rDgUkqZnu+DVz5VMlms/7tsg3?=
- =?us-ascii?Q?hMXaoKxOxdFOXNAV7mXKJp69GyLfjrHZ7pyvq2NcVWfxUi06DBa+BnotDP/p?=
- =?us-ascii?Q?Ia+zf0P6FcA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vuO24OLpRnar9+fy7ALX8Z1if0hOI+QQdI+pwEUQaptecuHmEEmrBmBgycVJ?=
- =?us-ascii?Q?kovrucSd3dlyy8RRi4AAhhZTj9a6gLA9TqmQ7PZXHbt+aaGYC8Yp7IKEbyIq?=
- =?us-ascii?Q?djLMJ1m3UwLc0wJJhVMbovphCiUmjtcTBcVovqthQK5uOiRkxzcxDI9eJfpL?=
- =?us-ascii?Q?vhWsoegIXzovGZP1ZWS939RrTtTT0s5b+R0aMQHcEYnkldrZjrGf552i0gg8?=
- =?us-ascii?Q?PhRFTCPGmp2ebP1nX14zEiFzEOWUHJ9FsByJjiYN7TkCDsjUnlIMAOv3ILea?=
- =?us-ascii?Q?cSl40RoqCwwAQHDaBfM0MZZ4q1k20XQUpAruIR3wefHbDxo6nqrIbEsMVc/5?=
- =?us-ascii?Q?3QV+kwNv374kf7j1r7YlKzN9WuYD/gs3WMuy39XVeyHDYlNHhTYaIcqzziR/?=
- =?us-ascii?Q?ZPcCWHnziHR7aIJV0/5DnGuF0HPnYZStYXiWkiOS29eJ85VmUkZICLhs1zPb?=
- =?us-ascii?Q?1FLnNfWxM4qh7IilMY+fbC4/KzRaZYOeOGPtXxq68MRbU3DdH1ZO2s/pTbds?=
- =?us-ascii?Q?6i17fMlM2+yep+MRrerJwDNzX6Q2vC45XIDjmk0UeqLlAsRNz89udgv0KDkH?=
- =?us-ascii?Q?F890mkGqcxM/OSlxpTf8Ogg3nwdoc4zM1d7ZSa7Su/CGYoHs17KaqvKgJAD9?=
- =?us-ascii?Q?Tut0Tu2nmvFpvNpUoOa4lXq2gcwWpZWso5zVejN2qHIC9AbVWPS2uajQvWGK?=
- =?us-ascii?Q?OeGNkS9PMkcsjITxYgoCRMNxjDKoJbc+cRgBXgSVdlMCoHilBdCdAi4DRBi6?=
- =?us-ascii?Q?r60SmoAyOQZnNTWrqSH52305g1LIjnKj9Jts65qcHSdV1TmqNRuSMqove0yw?=
- =?us-ascii?Q?DX9sXnz3tYBg+f67vn+DgA754GSJVGzpXcsephj3xxjTkr9f167D0BHCoHru?=
- =?us-ascii?Q?zPwAJvSWjXYw0MWkpJ03rVOPQXsFgNd9zWM1EuoVfwGYQkExfjiq+5d520h2?=
- =?us-ascii?Q?uPX+Z2Pi1ecNhqu6yAm+QKUczuHmF4RAo459fwUa0CIdBgXUBipa1w24jSEo?=
- =?us-ascii?Q?+oXetlnvNUSXkTUFx1f2S8F85810FLP2yJRnqN1z9sQ7fMfiWlOmbQVqXdbl?=
- =?us-ascii?Q?MEzAnSR7vyge9NmFCIdomq3tlb7pQ9ouA/tyD0KRsf8du6W/9HvbIG+0R0St?=
- =?us-ascii?Q?UWTbx4c0nmHGMoWlMq3KsMr3FIykjcDygKBjuayd0x8INRK8RAnTnzRQh0+d?=
- =?us-ascii?Q?MFspfsHCQdFkA2nffUrn+z9tSJ/9P/fNAdws6P+JJJBxs9RYh+HZVrNerWVS?=
- =?us-ascii?Q?Olgf6rhzM9Z38IdhdSQJ6k9pYzGl4vWW+xxlMm/FlN/Eq1V4dWgkxfvWw5su?=
- =?us-ascii?Q?50QxiZWkBD4xTybQGUbBOL1IEjLBSUPAQZa9kHzPD7TwTtsaO/N1noEgBHC1?=
- =?us-ascii?Q?ISiEi2759FVF9uLJ7CrCbL56LN6oYSUiF3vZ3clBIzeKrATECGQiqGeCVAvT?=
- =?us-ascii?Q?ae1w0E3RDdBjRklp6qZnpAFZrwdSIJ+jdwnm1aJximlC/2xvSx9rtDAhiV4m?=
- =?us-ascii?Q?K5PR8xBKjvucdBOMIGQAuUbMEsg8L829Fwi4C9WK1O0iF1fvKpOWiarbTdcL?=
- =?us-ascii?Q?sOXGJT9H3iU2qBJFsMDYDOxSZ6lqQtFG8J1HivbF?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c5e77a8-3052-4f60-29e1-08dd0ddbe26c
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2024 05:33:40.5439
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WOTx0e/4IE6faME1ig5ziBROVQx+4C8/CVlaggmEu8e/KWob+FzQEMRh5iUAsGrNFz6kAkA6D3URFeCmQenj/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11071
-X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241118114114.208964-1-kjain@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4hPadUlcOOWEM_v9yO8x0RVA1XfH7aSo
+X-Proofpoint-ORIG-GUID: 4hPadUlcOOWEM_v9yO8x0RVA1XfH7aSo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ mlxlogscore=999 suspectscore=0 impostorscore=0 malwarescore=0 spamscore=0
+ clxscore=1015 adultscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411260059
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-As the snd_soc_card_get_kcontrol() is updated to use
-snd_ctl_find_id_mixer() in
-commit 897cc72b0837 ("ASoC: soc-card: Use
-snd_ctl_find_id_mixer() instead of open-coding")
-which make the iface fix to be IFACE_MIXER.
+On Mon, Nov 18, 2024 at 05:11:11PM +0530, Kajol Jain wrote:
+> To support performance measurement for KVM on PowerVM(KoP)
+> feature, PowerVM hypervisor has added couple of new software
+> counters in Virtual Process Area(VPA) of the partition.
+> 
+> Commit e1f288d2f9c69 ("KVM: PPC: Book3S HV nestedv2: Add
+> support for reading VPA counters for pseries guests")
+> have updated the paca fields with corresponding changes.
+> 
+> Proposed perf interface is to expose these new software
+> counters for monitoring of context switch latencies and
+> runtime aggregate. Perf interface driver is called
+> "vpa_pmu" and it has dependency on KVM and perf, hence
+> added new config called "VPA_PMU" which depends on
+> "CONFIG_KVM_BOOK3S_64_HV" and "CONFIG_HV_PERF_CTRS".
+> Since, kvm and kvm_host are currently compiled as built-in
+> modules, this perf interface takes the same path and
+> registered as a module.
+> 
+> vpa_pmu perf interface needs access to some of the kvm
+> functions and structures like kvmhv_get_l2_counters_status(),
+> hence kvm_book3s_64.h and kvm_ppc.h are included.
+> Below are the events added to monitor KoP:
+> 
+>   vpa_pmu/l1_to_l2_lat/
+>   vpa_pmu/l2_to_l1_lat/
+>   vpa_pmu/l2_runtime_agg/
+> 
+> and vpa_pmu driver supports only per-cpu monitoring with this patch.
+> Example usage:
+> 
+> [command]# perf stat -e vpa_pmu/l1_to_l2_lat/ -a -I 1000
+>      1.001017682            727,200      vpa_pmu/l1_to_l2_lat/
+>      2.003540491          1,118,824      vpa_pmu/l1_to_l2_lat/
+>      3.005699458          1,919,726      vpa_pmu/l1_to_l2_lat/
+>      4.007827011          2,364,630      vpa_pmu/l1_to_l2_lat/
+> 
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> Co-developed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> ---
+> Changelog:
+> 
+> v1 -> v2
+> - Rebase the patch on top of kvm typo fix patch:
+>   https://github.com/linuxppc/linux/commit/590d2f9347f7974d7954400e5d937672fd844a8b
+> - Fix the config check reported by kernel test robot:
+>   https://lore.kernel.org/oe-kbuild-all/202411171117.Eq9JtACb-lkp@intel.com/
+> 
+>  arch/powerpc/include/asm/kvm_book3s_64.h |   3 +
+>  arch/powerpc/kvm/book3s_hv.c             |  19 +++
+>  arch/powerpc/perf/Makefile               |   2 +
+>  arch/powerpc/perf/vpa-pmu.c              | 197 +++++++++++++++++++++++
+>  arch/powerpc/platforms/pseries/Kconfig   |  14 ++
+>  5 files changed, 235 insertions(+)
+>  create mode 100644 arch/powerpc/perf/vpa-pmu.c
+> 
+> diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/include/asm/kvm_book3s_64.h
+> index 11065313d4c1..f620e3126d68 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s_64.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s_64.h
+> @@ -688,6 +688,9 @@ int kvmhv_counters_tracepoint_regfunc(void);
+>  void kvmhv_counters_tracepoint_unregfunc(void);
+>  int kvmhv_get_l2_counters_status(void);
+>  void kvmhv_set_l2_counters_status(int cpu, bool status);
+> +u64 kvmhv_get_l1_to_l2_cs_time(void);
+> +u64 kvmhv_get_l2_to_l1_cs_time(void);
+> +u64 kvmhv_get_l2_runtime_agg(void);
+>  
+>  #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+>  
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index d575f7c7ab38..e618533dfc4b 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -4153,6 +4153,7 @@ void kvmhv_set_l2_counters_status(int cpu, bool status)
+>  	else
+>  		lppaca_of(cpu).l2_counters_enable = 0;
+>  }
+> +EXPORT_SYMBOL(kvmhv_set_l2_counters_status);
+>  
+>  int kvmhv_counters_tracepoint_regfunc(void)
+>  {
+> @@ -4192,6 +4193,24 @@ static void do_trace_nested_cs_time(struct kvm_vcpu *vcpu)
+>  	*l2_runtime_agg_ptr = l2_runtime_ns;
+>  }
+>  
+> +u64 kvmhv_get_l1_to_l2_cs_time(void)
+> +{
+> +	return tb_to_ns(be64_to_cpu(get_lppaca()->l1_to_l2_cs_tb));
+> +}
+> +EXPORT_SYMBOL(kvmhv_get_l1_to_l2_cs_time);
+> +
+> +u64 kvmhv_get_l2_to_l1_cs_time(void)
+> +{
+> +	return tb_to_ns(be64_to_cpu(get_lppaca()->l2_to_l1_cs_tb));
+> +}
+> +EXPORT_SYMBOL(kvmhv_get_l2_to_l1_cs_time);
+> +
+> +u64 kvmhv_get_l2_runtime_agg(void)
+> +{
+> +	return tb_to_ns(be64_to_cpu(get_lppaca()->l2_runtime_tb));
+> +}
+> +EXPORT_SYMBOL(kvmhv_get_l2_runtime_agg);
+> +
+>  #else
+>  int kvmhv_get_l2_counters_status(void)
+>  {
+> diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
+> index 4f53d0b97539..ac2cf58d62db 100644
+> --- a/arch/powerpc/perf/Makefile
+> +++ b/arch/powerpc/perf/Makefile
+> @@ -16,6 +16,8 @@ obj-$(CONFIG_FSL_EMB_PERF_EVENT_E500) += e500-pmu.o e6500-pmu.o
+>  
+>  obj-$(CONFIG_HV_PERF_CTRS) += hv-24x7.o hv-gpci.o hv-common.o
+>  
+> +obj-$(CONFIG_VPA_PMU) += vpa-pmu.o
 
-Fixes: 897cc72b0837 ("ASoC: soc-card: Use snd_ctl_find_id_mixer() instead of open-coding")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_spdif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Do we need a new config option for this? I see you need 2 dependencies
+for vpa_pmu, so can we do the following instead?
 
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index b6ff04f7138a..ee946e0d3f49 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -1204,7 +1204,7 @@ static struct snd_kcontrol_new fsl_spdif_ctrls[] = {
- 	},
- 	/* DPLL lock info get controller */
- 	{
--		.iface = SNDRV_CTL_ELEM_IFACE_PCM,
-+		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
- 		.name = RX_SAMPLE_RATE_KCONTROL,
- 		.access = SNDRV_CTL_ELEM_ACCESS_READ |
- 			SNDRV_CTL_ELEM_ACCESS_VOLATILE,
--- 
-2.34.1
+obj-$(CONFIG_KVM_BOOK3S_64_HV) += vpa-pmu.o
 
+and then in the init func of vpa_pmu, we can add the check for HV_PERF_CTRS
+
+static int __init pseries_vpa_pmu_init(void)
+{
+	<snip>
+
+	if (!firmware_has_feature(FW_FEATURE_LPAR) || is_kvm_guest() ||
+		!IS_ENABLED(CONFIG_HV_PERF_CTRS))
+		return -ENODEV;
+
+Thoughts?
+
+> +
+>  obj-$(CONFIG_PPC_8xx) += 8xx-pmu.o
+>  
+>  obj-$(CONFIG_PPC64)		+= $(obj64-y)
+> diff --git a/arch/powerpc/perf/vpa-pmu.c b/arch/powerpc/perf/vpa-pmu.c
+> new file mode 100644
+> index 000000000000..2c785eee2f71
+> --- /dev/null
+> +++ b/arch/powerpc/perf/vpa-pmu.c
+> @@ -0,0 +1,197 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Performance monitoring support for Virtual Processor Area(VPA) based counters
+> + *
+> + * Copyright (C) 2024 IBM Corporation
+> + */
+> +#define pr_fmt(fmt) "vpa_pmu: " fmt
+> +
+> +#include <linux/module.h>
+> +#include <linux/perf_event.h>
+> +#include <asm/kvm_ppc.h>
+> +#include <asm/kvm_book3s_64.h>
+> +
+> +#define MODULE_VERS "1.0"
+> +#define MODULE_NAME "pseries_vpa_pmu"
+> +
+> +#define EVENT(_name, _code)     enum{_name = _code}
+> +
+> +#define VPA_PMU_EVENT_VAR(_id)  event_attr_##_id
+> +#define VPA_PMU_EVENT_PTR(_id)  (&event_attr_##_id.attr.attr)
+> +
+> +static ssize_t vpa_pmu_events_sysfs_show(struct device *dev,
+> +				 struct device_attribute *attr, char *page)
+> +{
+> +	struct perf_pmu_events_attr *pmu_attr;
+> +
+> +	pmu_attr = container_of(attr, struct perf_pmu_events_attr, attr);
+> +
+> +	return sprintf(page, "event=0x%02llx\n", pmu_attr->id);
+> +}
+> +
+> +#define VPA_PMU_EVENT_ATTR(_name, _id)				\
+> +	PMU_EVENT_ATTR(_name, VPA_PMU_EVENT_VAR(_id), _id,	\
+> +			vpa_pmu_events_sysfs_show)
+> +
+> +EVENT(L1_TO_L2_CS_LAT,	0x1);
+> +EVENT(L2_TO_L1_CS_LAT,	0x2);
+> +EVENT(L2_RUNTIME_AGG,	0x3);
+> +
+> +VPA_PMU_EVENT_ATTR(l1_to_l2_lat,  L1_TO_L2_CS_LAT);
+> +VPA_PMU_EVENT_ATTR(l2_to_l1_lat,  L2_TO_L1_CS_LAT);
+> +VPA_PMU_EVENT_ATTR(l2_runtime_agg, L2_RUNTIME_AGG);
+> +
+> +static struct attribute *vpa_pmu_events_attr[] = {
+> +	VPA_PMU_EVENT_PTR(L1_TO_L2_CS_LAT),
+> +	VPA_PMU_EVENT_PTR(L2_TO_L1_CS_LAT),
+> +	VPA_PMU_EVENT_PTR(L2_RUNTIME_AGG),
+> +	NULL
+> +};
+> +
+> +static const struct attribute_group vpa_pmu_events_group = {
+> +	.name = "events",
+> +	.attrs = vpa_pmu_events_attr,
+> +};
+> +
+> +PMU_FORMAT_ATTR(event, "config:0-31");
+> +static struct attribute *vpa_pmu_format_attr[] = {
+> +	&format_attr_event.attr,
+> +	NULL,
+> +};
+> +
+> +static struct attribute_group vpa_pmu_format_group = {
+> +	.name = "format",
+> +	.attrs = vpa_pmu_format_attr,
+> +};
+> +
+> +static const struct attribute_group *vpa_pmu_attr_groups[] = {
+> +	&vpa_pmu_events_group,
+> +	&vpa_pmu_format_group,
+> +	NULL
+> +};
+> +
+> +static int vpa_pmu_event_init(struct perf_event *event)
+> +{
+> +	if (event->attr.type != event->pmu->type)
+> +		return -ENOENT;
+> +
+> +	/* it does not support event sampling mode */
+> +	if (is_sampling_event(event))
+> +		return -EOPNOTSUPP;
+> +
+> +	/* no branch sampling */
+> +	if (has_branch_stack(event))
+> +		return -EOPNOTSUPP;
+> +
+> +	/* Invalid event code */
+> +	if ((event->attr.config <= 0) || (event->attr.config > 3))
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+> +static unsigned long get_counter_data(struct perf_event *event)
+> +{
+> +	unsigned int config = event->attr.config;
+> +	u64 data;
+> +
+> +	switch (config) {
+> +	case L1_TO_L2_CS_LAT:
+> +		data = kvmhv_get_l1_to_l2_cs_time();
+> +		break;
+> +	case L2_TO_L1_CS_LAT:
+> +		data = kvmhv_get_l2_to_l1_cs_time();
+> +		break;
+> +	case L2_RUNTIME_AGG:
+> +		data = kvmhv_get_l2_runtime_agg();
+> +		break;
+> +	default:
+> +		data = 0;
+> +		break;
+> +	}
+> +
+> +	return data;
+> +}
+> +
+> +static int vpa_pmu_add(struct perf_event *event, int flags)
+> +{
+> +	u64 data;
+> +
+> +	kvmhv_set_l2_counters_status(
+> +			smp_processor_id(), true);
+> +
+> +	data = get_counter_data(event);
+> +	local64_set(&event->hw.prev_count, data);
+> +
+> +	return 0;
+> +}
+> +
+> +static void vpa_pmu_read(struct perf_event *event)
+> +{
+> +	u64 prev_data, new_data, final_data;
+> +
+> +	prev_data = local64_read(&event->hw.prev_count);
+> +	new_data = get_counter_data(event);
+> +	final_data = new_data - prev_data;
+> +
+> +	local64_add(final_data, &event->count);
+> +}
+> +
+> +static void vpa_pmu_del(struct perf_event *event, int flags)
+> +{
+> +	vpa_pmu_read(event);
+> +
+> +	/*
+> +	 * Disable vpa counter accumulation
+> +	 */
+> +	kvmhv_set_l2_counters_status(
+> +			smp_processor_id(), false);
+> +}
+> +
+
+This won't work well with the kvm_hv:kvmppc_vcpu_stats tracepoint.
+Consider the below scenario:
+
+1. I start recording data with the kvmppc_vcpu_stats tracepoint (with trace-cmd)
+and while the data is being recorded, I start using the vpa_pmu driver as well.
+2. I now stop the vpa_pmu driver. This disables the l2_counters_enable
+counter in lppaca. (The VPA flag can be disabled for 1 or more cpus
+depending on the pid/tid options specified)
+3. When I hit ctrl^c on the trace-cmd capture, I see partial data with
+'trace-cmd report'.
+
+To get around this, we can use the fact that the 'l2_counters_enable'
+flag in lppaca supports all non-zero values. So we can see if we can use
+that as a counter instead of just using 0/1 to enable/disable recording
+of data. This may need some brainstorming to get right.
+
+I see the patches have been pulled in already, but I think we need to
+consider the above points.
+
+Thanks,
+Gautam
 
