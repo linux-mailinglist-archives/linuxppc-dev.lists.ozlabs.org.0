@@ -1,52 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-3565-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3566-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83719D95CE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2024 11:49:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133BE9D95D3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Nov 2024 11:49:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XyK7k3clhz2yR3;
-	Tue, 26 Nov 2024 21:49:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XyK8g6m9Fz2yhn;
+	Tue, 26 Nov 2024 21:49:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732618146;
-	cv=none; b=liDvZ3v4VjqNP9sJuqt0EapLG5lwkNNGCZrspbR6F4cBQUFWblQAOzS0gWeT5cW0p+vZ0+89wkcWSBGEX2xPoKVtYdwRDuEDljLBpBPxRXsNr9ofz4SHEU6pA8EFYGTFzWE+JDU7jxY02jv65ryPf10TtVECm0qbLyZcLTXsXjOmYgnn9XLeGTun5+APzrTSXKd7YDraW/PAerbw36F0w7FWefHQxwQwrMmKThgiSWM08EiND3WmrsujH9Azk8ZxYZ3EMjnzvqN6ijTLkt7N17wiYcLqNbKoHBLGJA/CtgL9kU7e/q5pwkZj2aM6qaKqxQrTHNeCx01y2e2ZuAC3jA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732618195;
+	cv=none; b=UUqWrxMg4vZMECkOKqFvmh5pZZbUo1vo5ypd5fSNKd1eyf4OJ6K6CKVrRZLREcSYBH3M5epMayyqQ0xsZuG3IuCHpzaeqNYongK/FRxLRlBiMnunabkQclowUws0HJAAE9rHu+sIYL9N88El7JZ1i1d9CxpF72ix9aqJYW0Id2zlfpVd1uas4PuPtlSQqJBCTiKnBtV/iuHKWiZk8Zx+OoTUcWsPnij6CViW16pkTHYFvd3bzNERuJ8iZD26YLcNKNg9QrPhZOjpwqH3eKKfKgME2VFSMLyWqiDYDWtWsc5OJnzlxnL4h4XXEq6g11sZtqnjk2OyoyN8TR2CYSQvJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732618146; c=relaxed/relaxed;
-	bh=+7v82xUzdvYnHcIvKL8dYaTE80yGHcoa4VGSbnCss94=;
+	t=1732618195; c=relaxed/relaxed;
+	bh=6GPwsHhKNzij03aZtT85YVbnLVJABa78c08T28hT7N4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EoqJm7d6qWINii+WsJ/I+TNiqXAC6Y6+sVuRWkbb+2CUfBvyke+7nkpgiQmKDpGu+i/ADL+HDduj6JW13c+chj2Cdok4X88l4P1rHdtkZri09Pc9CUzuUur0K4FWnNm2BeS+rxS9ZrIJpyFVLKvHgAR0j9CJDYpSAF01xVlWlmj6G2RRWPfy4ZvLOd4Z8bzPlVpBKrqYCNMmnnV27CFlZEdjDHd9L52jTN0+KgBL8wGBJVzStzqiOMESOqQFNXLM822rcohNWlbt04kIKKtWRTquOkGCNBiUkRdJqVriPp6l3qIh5J++peyb+n6u9uL0ob+IbvpiJ1x+sapZONOFbQ==
+	 In-Reply-To:Content-Type; b=mwe4WcR1kZFc2O6q97tH5OMoo1mDs3NdqJjoUceyEnTrSgsfs6Gxz69eRRzzL0s0ZFv02PVlv1UDBBrEITK04xj9BxIad9vHAroU4DzheDJTq3xQo4ZLluGZ7VRuZaWu9QWLfNLkvj2kLaKVHzrOmWwrNV3EvHTyn8A1nAqtaDD6ZjctKVJhXsAjgHT8VJtOukdrNunzvrXb+4XneUXb5DyGDQNDYp+qV4OdV104Eun1QCDmDtPtcIliYLeRYpwyft7d9AHIZohZtDgFlAMGQ2Y/wCrReZXrlgVF+LIL1+16MtryYNQe3Q8LYyx82YxstSV+ekGTKuzME33jihoMKw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XyK7h6FkPz2yD6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2024 21:49:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XyK8g0GCxz2yXd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Nov 2024 21:49:54 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4XyK7Y4qw4z9sPd;
-	Tue, 26 Nov 2024 11:48:57 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4XyK8c19jCz9sRs;
+	Tue, 26 Nov 2024 11:49:52 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id YOztfx2qWO3B; Tue, 26 Nov 2024 11:48:57 +0100 (CET)
+	with ESMTP id gu8-tJzQN5bA; Tue, 26 Nov 2024 11:49:52 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4XyK7Y3tcbz9rvV;
-	Tue, 26 Nov 2024 11:48:57 +0100 (CET)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4XyK8c0CwJz9sRk;
+	Tue, 26 Nov 2024 11:49:52 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1E7D58B776;
-	Tue, 26 Nov 2024 11:48:57 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E98F38B776;
+	Tue, 26 Nov 2024 11:49:51 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id qDRZvgTGw4rj; Tue, 26 Nov 2024 11:48:57 +0100 (CET)
+	with ESMTP id fg-YBd2-eqnU; Tue, 26 Nov 2024 11:49:51 +0100 (CET)
 Received: from [192.168.232.206] (unknown [192.168.232.206])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 888E28B763;
-	Tue, 26 Nov 2024 11:48:55 +0100 (CET)
-Message-ID: <d169e57d-d0a8-4fe8-a44e-2f7a967b5121@csgroup.eu>
-Date: Tue, 26 Nov 2024 11:48:54 +0100
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 77A838B763;
+	Tue, 26 Nov 2024 11:49:50 +0100 (CET)
+Message-ID: <a96062bc-8bcc-4ca0-b24e-ea64f9ee6329@csgroup.eu>
+Date: Tue, 26 Nov 2024 11:49:49 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,17 +60,17 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] powerpc: support dynamic preemption
+Subject: Re: [PATCH 1/3] powerpc: copy preempt.h into arch/include/asm
 To: Shrikanth Hegde <sshegde@linux.ibm.com>, mpe@ellerman.id.au,
  linuxppc-dev@lists.ozlabs.org
 Cc: npiggin@gmail.com, maddy@linux.ibm.com, bigeasy@linutronix.de,
  ankur.a.arora@oracle.com, linux-kernel@vger.kernel.org,
  mark.rutland@arm.com, vschneid@redhat.com, peterz@infradead.org
 References: <20241125042212.1522315-1-sshegde@linux.ibm.com>
- <20241125042212.1522315-3-sshegde@linux.ibm.com>
+ <20241125042212.1522315-2-sshegde@linux.ibm.com>
 Content-Language: fr-FR
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20241125042212.1522315-3-sshegde@linux.ibm.com>
+In-Reply-To: <20241125042212.1522315-2-sshegde@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
@@ -80,112 +80,126 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
 Le 25/11/2024 à 05:22, Shrikanth Hegde a écrit :
-> Once the lazy preemption is supported, it would be desirable to change
-> the preemption models at runtime. So this change adds support for dynamic
-> preemption using DYNAMIC_KEY.
+> PowerPC uses asm-generic preempt definitions as of now.
+> Copy that into arch/asm so that arch specific changes can be done.
+> This would help the next patch for enabling dynamic preemption.
+
+I can't see any valid use in following patches. The only modification 
+you do to that file is in patch 2 and it is unused.
+
 > 
-> In irq-exit to kernel path, use preempt_model_preemptible for decision.
-> Other way would be using static key based decision. Keeping it
-> simpler since key based change didn't show performance improvement.
-> 
-> Tested lightly on Power10 LPAR. Performance numbers indicate that,
-> preempt=none(no dynamic) and preempt=none(dynamic) are similar.
-> Only hackbench pipe shows a regression. There is slight overhead of code
-> check if it is preemptible kernel. hackbench pipe is prone to such
-> patterns[1]
-> 
-> cat /sys/kernel/debug/sched/preempt
-> (none) voluntary full lazy
-> perf stat -e probe:__cond_resched -a sleep 1
->   Performance counter stats for 'system wide':
->               1,253      probe:__cond_resched
-> 
-> echo full > /sys/kernel/debug/sched/preempt
-> cat /sys/kernel/debug/sched/preempt
-> none voluntary (full) lazy
-> perf stat -e probe:__cond_resched -a sleep 1
->   Performance counter stats for 'system wide':
->                   0      probe:__cond_resched
-> 
-> echo lazy > /sys/kernel/debug/sched/preempt
-> cat /sys/kernel/debug/sched/preempt
-> none voluntary full (lazy)
-> perf stat -e probe:__cond_resched -a sleep 1
->   Performance counter stats for 'system wide':
->                   0      probe:__cond_resched
-> 
-> [1]: https://lore.kernel.org/all/1a973dda-c79e-4d95-935b-e4b93eb077b8@linux.ibm.com/
+> No functional changes intended.
 > 
 > Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 > ---
->   arch/powerpc/Kconfig               | 1 +
->   arch/powerpc/include/asm/preempt.h | 1 +
->   arch/powerpc/kernel/interrupt.c    | 6 +++++-
->   arch/powerpc/lib/vmx-helper.c      | 2 +-
->   4 files changed, 8 insertions(+), 2 deletions(-)
+>   arch/powerpc/include/asm/preempt.h | 100 +++++++++++++++++++++++++++++
+>   1 file changed, 100 insertions(+)
+>   create mode 100644 arch/powerpc/include/asm/preempt.h
 > 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 6d6bbd93abab..01c58f5258c9 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -270,6 +270,7 @@ config PPC
->   	select HAVE_PERF_EVENTS_NMI		if PPC64
->   	select HAVE_PERF_REGS
->   	select HAVE_PERF_USER_STACK_DUMP
-> +	select HAVE_PREEMPT_DYNAMIC_KEY
->   	select HAVE_RETHOOK			if KPROBES
->   	select HAVE_REGS_AND_STACK_ACCESS_API
->   	select HAVE_RELIABLE_STACKTRACE
 > diff --git a/arch/powerpc/include/asm/preempt.h b/arch/powerpc/include/asm/preempt.h
-> index 51f8f3881523..c0a19ff3f78c 100644
-> --- a/arch/powerpc/include/asm/preempt.h
+> new file mode 100644
+> index 000000000000..51f8f3881523
+> --- /dev/null
 > +++ b/arch/powerpc/include/asm/preempt.h
-> @@ -84,6 +84,7 @@ extern asmlinkage void preempt_schedule_notrace(void);
->   
->   #if defined(CONFIG_PREEMPT_DYNAMIC) && defined(CONFIG_HAVE_PREEMPT_DYNAMIC_KEY)
->   
-> +DECLARE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
->   void dynamic_preempt_schedule(void);
->   void dynamic_preempt_schedule_notrace(void);
->   #define __preempt_schedule()		dynamic_preempt_schedule()
-> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-> index 8f4acc55407b..0fb01019d7e0 100644
-> --- a/arch/powerpc/kernel/interrupt.c
-> +++ b/arch/powerpc/kernel/interrupt.c
-> @@ -38,6 +38,10 @@ static inline bool exit_must_hard_disable(void)
->   }
->   #endif
->   
-> +#ifdef CONFIG_PREEMPT_DYNAMIC
-> +DEFINE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
-> +#endif
-
-Why is that needed at all ? It isn't used.
-
+> @@ -0,0 +1,100 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __ASM_PREEMPT_H
+> +#define __ASM_PREEMPT_H
 > +
->   /*
->    * local irqs must be disabled. Returns false if the caller must re-enable
->    * them, check for new work, and try again.
-> @@ -396,7 +400,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
->   		/* Returning to a kernel context with local irqs enabled. */
->   		WARN_ON_ONCE(!(regs->msr & MSR_EE));
->   again:
-> -		if (IS_ENABLED(CONFIG_PREEMPTION)) {
-> +		if (preempt_model_preemptible()) {
->   			/* Return to preemptible kernel context */
->   			if (unlikely(read_thread_flags() & _TIF_NEED_RESCHED)) {
->   				if (preempt_count() == 0)
-> diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
-> index 58ed6bd613a6..7b069c832ce2 100644
-> --- a/arch/powerpc/lib/vmx-helper.c
-> +++ b/arch/powerpc/lib/vmx-helper.c
-> @@ -45,7 +45,7 @@ int exit_vmx_usercopy(void)
->   	 * set and we are preemptible. The hack here is to schedule a
->   	 * decrementer to fire here and reschedule for us if necessary.
->   	 */
-> -	if (IS_ENABLED(CONFIG_PREEMPTION) && need_resched())
-> +	if (preempt_model_preemptible() && need_resched())
->   		set_dec(1);
->   	return 0;
->   }
+> +#include <linux/thread_info.h>
+> +
+> +#define PREEMPT_ENABLED	(0)
+> +
+> +static __always_inline int preempt_count(void)
+> +{
+> +	return READ_ONCE(current_thread_info()->preempt_count);
+> +}
+> +
+> +static __always_inline volatile int *preempt_count_ptr(void)
+> +{
+> +	return &current_thread_info()->preempt_count;
+> +}
+> +
+> +static __always_inline void preempt_count_set(int pc)
+> +{
+> +	*preempt_count_ptr() = pc;
+> +}
+> +
+> +/*
+> + * must be macros to avoid header recursion hell
+> + */
+> +#define init_task_preempt_count(p) do { \
+> +	task_thread_info(p)->preempt_count = FORK_PREEMPT_COUNT; \
+> +} while (0)
+> +
+> +#define init_idle_preempt_count(p, cpu) do { \
+> +	task_thread_info(p)->preempt_count = PREEMPT_DISABLED; \
+> +} while (0)
+> +
+> +static __always_inline void set_preempt_need_resched(void)
+> +{
+> +}
+> +
+> +static __always_inline void clear_preempt_need_resched(void)
+> +{
+> +}
+> +
+> +static __always_inline bool test_preempt_need_resched(void)
+> +{
+> +	return false;
+> +}
+> +
+> +/*
+> + * The various preempt_count add/sub methods
+> + */
+> +
+> +static __always_inline void __preempt_count_add(int val)
+> +{
+> +	*preempt_count_ptr() += val;
+> +}
+> +
+> +static __always_inline void __preempt_count_sub(int val)
+> +{
+> +	*preempt_count_ptr() -= val;
+> +}
+> +
+> +static __always_inline bool __preempt_count_dec_and_test(void)
+> +{
+> +	/*
+> +	 * Because of load-store architectures cannot do per-cpu atomic
+> +	 * operations; we cannot use PREEMPT_NEED_RESCHED because it might get
+> +	 * lost.
+> +	 */
+> +	return !--*preempt_count_ptr() && tif_need_resched();
+> +}
+> +
+> +/*
+> + * Returns true when we need to resched and can (barring IRQ state).
+> + */
+> +static __always_inline bool should_resched(int preempt_offset)
+> +{
+> +	return unlikely(preempt_count() == preempt_offset &&
+> +			tif_need_resched());
+> +}
+> +
+> +#ifdef CONFIG_PREEMPTION
+> +extern asmlinkage void preempt_schedule(void);
+> +extern asmlinkage void preempt_schedule_notrace(void);
+> +
+> +#if defined(CONFIG_PREEMPT_DYNAMIC) && defined(CONFIG_HAVE_PREEMPT_DYNAMIC_KEY)
+> +
+> +void dynamic_preempt_schedule(void);
+> +void dynamic_preempt_schedule_notrace(void);
+> +#define __preempt_schedule()		dynamic_preempt_schedule()
+> +#define __preempt_schedule_notrace()	dynamic_preempt_schedule_notrace()
+> +
+> +#else /* !CONFIG_PREEMPT_DYNAMIC || !CONFIG_HAVE_PREEMPT_DYNAMIC_KEY*/
+> +
+> +#define __preempt_schedule() preempt_schedule()
+> +#define __preempt_schedule_notrace() preempt_schedule_notrace()
+> +
+> +#endif /* CONFIG_PREEMPT_DYNAMIC && CONFIG_HAVE_PREEMPT_DYNAMIC_KEY*/
+> +#endif /* CONFIG_PREEMPTION */
+> +
+> +#endif /* __ASM_PREEMPT_H */
 
