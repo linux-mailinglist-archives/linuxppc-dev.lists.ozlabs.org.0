@@ -1,113 +1,42 @@
-Return-Path: <linuxppc-dev+bounces-3588-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3590-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991A79DADE6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2024 20:32:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D439DAE61
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Nov 2024 21:13:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Xz8hy6G2Fz2y8p;
-	Thu, 28 Nov 2024 06:32:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xz9cd1Vdvz2xs0;
+	Thu, 28 Nov 2024 07:13:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732735938;
-	cv=none; b=mEE6rVC/7nkWInuH+1Zf5j1YZ17LMypQfZhvaUt09gFaMG1HD7txn7zIW8ofWcB17xW7I/vYFRtQT++p8A/0VJLlTKWgzoPVOrMABzcrld2ZnMzDx5s4rms7VnPi63Q2CFFGqe2KmHnd6TN9lv86De76SApu+E6WfuLi3y+VlXalmF/FdZ6iquwQvOkBMsxwgBAw8wCvXb+AJi6/9sqTO6PmYWWp5D3vV/UnatXmTen3AlewLnN73KbGL+/Yy2KR1EAaLXBjivu1h9pVWcJE/8oy0EX6+wc7iJZ0tL5fIpylB++9i1scJeDfkOMSrt88KHBu/z1xNXpFvgPA+u+BTA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732738417;
+	cv=none; b=gLkQgH847Q6qm42A35pgsfIOptHtpRGH1o784khraj3dxjzBztd9Lp/64FYnbQNCZ4JMiJUj19mRsq4LJp8Mxe/A0Ldz3mie9AwbcdjzccH6Bp8Ww212NYUW4xc8oh/F72zhPmlF4qC1W1+fXnZ/KuYiKrY8EvZ4AkcR+RL8eF7WjLGamU0rYSRH2Opub8pS2/N//52ZeleH07DAekW1T/9xBaP5alIqv9++dlAUxe9klh4wgKxOlS41wDZWzVQYWApDp7neyO7xMuP+/EBJtBwOpR8fNcPv2D2wkSe6iztzjh+K6ABJMP2RXFcD7eVXKJUvGIQTvvwZVc/SnnvVyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732735938; c=relaxed/relaxed;
-	bh=wYD9+WzWy/AtpAhh9/Y90J+SPB0CH5V5FKAn0rVlHi0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PbiEM/ZNHEvpGYzaFccZ7HDWB3k8ogKAnFpQ8zQhxebv70Mw9zpINzhYLE92RG4aiXjVge4WlsonviUUyxgGrWWFMMJiiEQdbtvX7SlcBCshc+EUEnNkLt/k2GVwP1l73LDYEqfp3tf8ZWbP/o4wlcbvfbTKPMOUwmsRjpsRnsPUHnmfujali0Jo72WJf1lxP2XXGpW8ebros/Xmdn1pDAJ2cKVRUq4vgoMStofb361ZcZ64hkT8rkbYdd7w1xgxiC0MD/CcGe7wl8t8KAiGXfLKlqtLZA1RGcwLxCvMUGv0IBX+dUBJHZNBttfhGalTVXOqye6ZWJYCZFnzPpv8xA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X2BtrIqN; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X2BtrIqN;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=maz@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Xz8hw5K3yz2xs0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2024 06:32:16 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 25421A439F3;
-	Wed, 27 Nov 2024 19:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD69C4CED2;
-	Wed, 27 Nov 2024 19:32:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732735930;
-	bh=xrciW+EMhZ5UEofbJw9NwB4YNk6WJ7ZsUg3ugalAKtY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X2BtrIqNGPOvV+49M5YnEnvMfq90m+ylhD7PzWNtlQWXRcWLiIC9o7ibIu7Z+6NCF
-	 kcXzlV4NXbHYexopnI8wyMqZtXl1aARG1Kv+1kHo2QdWtEH8r51A6kx0Z+b8YMEuGQ
-	 KkVWB5pfPFETZ3jygkOvTt1oTUJ7ox8ovqX6d1E+iA+5p2Dg3oRun7qGKNbz7lmsz9
-	 P2yGA8boYanYTYFxQR6QsePoSp98SjRizDnHD/Y6HoJ2E4HX1u+AiXq7pnGqhQjajY
-	 UFL0t9n5dlc0Yh9Rql7BGoHCScG0i7PhlQ+71XDRGrapyLXfaRB16QrJ7c3W0qJT2C
-	 zsuLVCEMA8n/A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tGNlf-00GLsr-Kw;
-	Wed, 27 Nov 2024 19:32:07 +0000
-Date: Wed, 27 Nov 2024 19:32:06 +0000
-Message-ID: <867c8ov5ft.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	devicetree@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cxl@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev,
-	nvdimm@lists.linux.dev,
-	sparclinux@vger.kernel.org,
-	x86@kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v4 24/26] arch_numa: switch over to numa_memblks
-In-Reply-To: <20240807064110.1003856-25-rppt@kernel.org>
-References: <20240807064110.1003856-1-rppt@kernel.org>
-	<20240807064110.1003856-25-rppt@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	t=1732738417; c=relaxed/relaxed;
+	bh=hGv3W/Ma2LfNkuoul/S2iSqH4wsA6106GvHp7/j8mmI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CtNHV0QVqa5DVvNmzi0E+tuGm3z0zRFSYYRXUPNTmHKel9On3rX5NEI/DRNm3DIB51FSjKEoJwtBKcwfQWh/8dcPsiAsNgBjatGcPw9hHJbUV3FYFkY24M2PmPQMh8kfXykA/bSPTJqQsg82vZsOWFUry7FPL/1WFlzp5tbAYYjufmRzg+tNE8s3pSbL3poeXQyehEOoIjNmLAbHZ5Z4Pw9uJWsp1uKbV9t9w6ZLCvMKtziooZvBWLVYjhNiImVacsfTDCjVYqfEq4it5vH05ujVqJ1RPGavgABKHd5Qu0lFfWkH36WZmNiUqi9f3/EJubS1+WT2F/Cs0A+51wFHTA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Xz9cZ47SXz2xQK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2024 07:13:34 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 4ARKAHQb021080;
+	Wed, 27 Nov 2024 14:10:17 -0600
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 4ARKAGvl021078;
+	Wed, 27 Nov 2024 14:10:16 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Wed, 27 Nov 2024 14:10:15 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        geert@linux-m68k.org, arnd@arndb.de
+Subject: Re: [RFC PATCH 01/10] powerpc/chrp: Remove CHRP support
+Message-ID: <20241127201015.GO29862@gate.crashing.org>
+References: <20241114131114.602234-1-mpe@ellerman.id.au> <20241114210418.GM29862@gate.crashing.org> <87mshm7ixu.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -119,90 +48,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: rppt@kernel.org, linux-kernel@vger.kernel.org, agordeev@linux.ibm.com, andreas@gaisler.com, akpm@linux-foundation.org, arnd@arndb.de, bp@alien8.de, catalin.marinas@arm.com, christophe.leroy@csgroup.eu, dan.j.williams@intel.com, dave.hansen@linux.intel.com, david@redhat.com, davem@davemloft.net, dave@stgolabs.net, gregkh@linuxfoundation.org, hca@linux.ibm.com, chenhuacai@kernel.org, mingo@redhat.com, jiaxun.yang@flygoat.com, glaubitz@physik.fu-berlin.de, jonathan.cameron@huawei.com, corbet@lwn.net, mpe@ellerman.id.au, palmer@dabbelt.com, rafael@kernel.org, robh@kernel.org, samuel.holland@sifive.com, tsbogend@alpha.franken.de, tglx@linutronix.de, gor@linux.ibm.com, will@kernel.org, ziy@nvidia.com, devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org, linux-s390@vger.k
- ernel.org, linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, nvdimm@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org, Jonathan.Cameron@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87mshm7ixu.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
+X-Spam-Status: No, score=-0.0 required=5.0 tests=SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Mike,
-
-Sorry for reviving a rather old thread.
-
-On Wed, 07 Aug 2024 07:41:08 +0100,
-Mike Rapoport <rppt@kernel.org> wrote:
+On Tue, Nov 26, 2024 at 02:49:49PM +1100, Michael Ellerman wrote:
+> Segher Boessenkool <segher@kernel.crashing.org> writes:
+> > On Fri, Nov 15, 2024 at 12:11:04AM +1100, Michael Ellerman wrote:
+> >> CHRP (Common Hardware Reference Platform) was a standard developed by
+> >> IBM & Apple for PowerPC-based systems.
+> >> 
+> >> The standard was used in the development of some machines but never
+> >> gained wide spread adoption.
+> >> 
+> >> The Linux CHRP code only supports a handful of machines, all 32-bit, eg.
+> >> IBM B50, bplan/Genesi Pegasos/Pegasos2, Total Impact briQ, and possibly
+> >> some from Motorola? No Apple machines should be affected.
+> >> 
+> >> All of those mentioned above are over or nearing 20 years old, and seem
+> >> to have no active users.
+> >
+> > This was used by all non-IBM 970 systems as well.  The last was SLOF on
+> > JS20 and JS21, about 20 years ago yes, and I doubt anyone uses it still
+> > (I don't).
 > 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Until now arch_numa was directly translating firmware NUMA information
-> to memblock.
-> 
-> Using numa_memblks as an intermediate step has a few advantages:
-> * alignment with more battle tested x86 implementation
-> * availability of NUMA emulation
-> * maintaining node information for not yet populated memory
-> 
-> Adjust a few places in numa_memblks to compile with 32-bit phys_addr_t
-> and replace current functionality related to numa_add_memblk() and
-> __node_distance() in arch_numa with the implementation based on
-> numa_memblks and add functions required by numa_emulation.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> [arm64 + CXL via QEMU]
-> Acked-by: Dan Williams <dan.j.williams@intel.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> ---
->  drivers/base/Kconfig       |   1 +
->  drivers/base/arch_numa.c   | 201 +++++++++++--------------------------
->  include/asm-generic/numa.h |   6 +-
->  mm/numa_memblks.c          |  17 ++--
->  4 files changed, 75 insertions(+), 150 deletions(-)
->
+> By "this" you mean the CHRP standard?
 
-[...]
+I mean the "maple" stuff, and the whole "chrp" thing in PowerPC Linux.
 
->  static int __init numa_register_nodes(void)
->  {
->  	int nid;
-> -	struct memblock_region *mblk;
-> -
-> -	/* Check that valid nid is set to memblks */
-> -	for_each_mem_region(mblk) {
-> -		int mblk_nid = memblock_get_region_node(mblk);
-> -		phys_addr_t start = mblk->base;
-> -		phys_addr_t end = mblk->base + mblk->size - 1;
-> -
-> -		if (mblk_nid == NUMA_NO_NODE || mblk_nid >= MAX_NUMNODES) {
-> -			pr_warn("Warning: invalid memblk node %d [mem %pap-%pap]\n",
-> -				mblk_nid, &start, &end);
-> -			return -EINVAL;
-> -		}
-> -	}
->  
+> At least in Linux the "CHRP" platform has always been 32-bit only AFAIK.
 
-This hunk has the unfortunate side effect of killing my ThunderX
-extremely early at boot time, as this sorry excuse for a machine
-really relies on the kernel recognising that whatever NUMA information
-the FW offers is BS.
+No?  I've written stuff for it for years :-)
 
-Reverting this hunk restores happiness (sort of).
+> My memory is that JS20/JS21 used the "maple" platform, which was a
+> 64-bit only bare-metal platform, possibly it was actually == CHRP, but
+> we didn't call it that in Linux.
 
-FWIW, I've posted a patch with such revert at [1].
+Well, it is what it is called in the Open Firmware device trees!
 
-Thanks,
+It has a root "device_type" property that starts with the string "chrp".
+But that really is only because Yaboot for some reason needs it to
+behave reasonably, heh.  (I didn't remember the details, but I still
+have the original SLOF open source release tarballs :-) )  So yeah it
+wasn't anything "chrp" in Linux itself, aha.
 
-	M.
+> But maybe I'm wrong, you were more involved than me back than, and it
+> was a long time ago :)
 
-[1] https://lore.kernel.org/r/20241127193000.3702637-1-maz@kernel.org
+Very long ago.  Sad to see it go, but the Git tree will never forget :-)
 
--- 
-Without deviation from the norm, progress is not possible.
+
+Segher
 
