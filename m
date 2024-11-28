@@ -1,78 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-3597-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3598-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5EE9DB6AC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2024 12:43:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9839DB7B4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Nov 2024 13:33:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4XzZFR2J6gz2y8V;
-	Thu, 28 Nov 2024 22:43:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4XzbLj1qYmz2yM6;
+	Thu, 28 Nov 2024 23:33:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::331"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732794203;
-	cv=none; b=ibnoEa18m+/Z4oIOxs9mBo+4KnmXAKqbeeFH+dEoiqm9gLKdVklS9jN7cMpphozY9ekfZ95XI1t3/4X+bgfEY61JZStAsO6vDgMblYu7Gzl7TKsD+DDsOcPr8VhTAB4jcFB6oRqoKfXkzaAyl+xIsou2WDm5NegI8eEsdmGyMt44wfvMV1yMdbPDyrRz9ROicGtReJMxjDvHkQCoJ3O2huM+8hLCaUg0isgIqWEFPBlPlp/IhxxeIAGqWD85tAyhOCr+zu5KMxYS8dSA/ca/mRLwTRVveAJ5qD8DaMqN2q8I7j09si8Zj3kZwo1KOnN+3eGTxNLGFTM+6acRV4Vwvg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732796943;
+	cv=none; b=mlaq3DM92zydOtdlTMPpKau0ethXy7sq/zDTWtubvrZZbbFW/ES1GYZjViP8CygrBrA162pu4dQRSMaZ32UMRKxB+smEfmwzieP2v8YTZZFlt2WE16BVam8mjQocysvcWZuIF/vh6cdDzyCLXWzVjtjTDvoo4f/iZXNiSKTtx5zRa2Px0rLi2ZOpR1jc9txbG3KD2lSd5OtUcRx5/b+U1EJBkXv5nriLsZ9LtHko3eTWrxg2urw8uoqOVRa/wFt55oE8HgtpEW6UyLcs3mqjp8ox0CkivxS+7Dt5ReIvrP8HKxpTVXnyW7eFyjbvrJ3Csz6ngT+TXrr0i7V/HmLD4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732794203; c=relaxed/relaxed;
-	bh=XLmDoPuQ18peT/hndI856uO41dAuVqmy/jkydI86Zhk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RIgB6j3Qrbxuc2Az8NngYs1wYHqsng5bMIT9tyh80PFOUPbvchX7mg+SQdGeJNxBPJNfV+nHYnquSIPOBdOqi5RjRWSZjoZHeWkmOQK1joKq6cGHKYQluEDiCcAank76TsfOjiwmj1hHO9optVcfQ3mIGk8aSNvZtSCPPrrNWUVr8f6KG2wZv/1j7Hare0UumiqiiEZhNeHSqeV07+MtIR1TO4s9JhYXyHwDShqFMBxVGI/hTFtOKGl0fmBrzjquysiXluBWAwEYCZldcCT6nmgPjyb14a5D6i55Z7hEMnVcT+V2TZQ3Pte4XeJRLvL3LyyOtT5bsDxArQmy316IOA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com; dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=QndMCnw5; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::331; helo=mail-wm1-x331.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org) smtp.mailfrom=baylibre.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+	t=1732796943; c=relaxed/relaxed;
+	bh=ZACMslqIaF7iVtmlx12c8LPoSlN7TzLegXngDuX2z78=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mK0ZHr41+8+stC+cQa8a7tXvRb3yhuXwNLtDGrbPnsozh5szRgoCP0A0i0oIsZ6Kx3/B2OLIXwi+osrejqQ1icp3esEhpx3/V7M/lQAcqREJycGl1MfoP8FLT5J1QJ4LDu9S2p0r5LGUZ7CCxKR+9pdKwqd7OBFs+MfmTlvgWa5PlYedsiXOM2ys+xrSjYdwfyIGgvqrSVGf5ljoIRRhumn6tTsgKZjPmCfWEr5bVDpQzcVdyT2cbewgIxOh6N9HCHM9re5VCEVorAmq6czSBef3y1MHR2E1Qz/WzyKvaiaN7yG8+9dBXKwF7yIPqXYYoa2HcTTaKKfpplf/ZKY9oQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SR+2143n; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cOwjQFRm; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=amarkuze@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=QndMCnw5;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SR+2143n;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cOwjQFRm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::331; helo=mail-wm1-x331.google.com; envelope-from=ukleinek@baylibre.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=amarkuze@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4XzZFN5Vncz2xk7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2024 22:43:18 +1100 (AEDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-434a2033562so6441415e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2024 03:43:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732794191; x=1733398991; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XLmDoPuQ18peT/hndI856uO41dAuVqmy/jkydI86Zhk=;
-        b=QndMCnw5BksX2UMdkUHVAy/k1J/Fs/BONvi3g0ylf8BOwxpozevOGjPV8gpq7LYIMP
-         i7WfF+A+TwkY4NLwlcaEuZV3rotlHG3dQb6OJMlSJDiLretiD6vA9igFE9y52GelRGjN
-         bYUjWxYHkCyFyKvQOngffkMh0DXW9RJKYlSU8aQbo5ujijeAK1Mr5rsSePnt7LV0+p99
-         dBk7evfehXo0j/kLa2cZNggoi57VbexuhUfEAR67fLmbUi/hrS6LalbBJGBl3UANOMrK
-         TZe+dpkF4hhY2hwMeCLwP/9vr9ErB6OCL8CJRLMMbJ/pHVO0zIDyBc+fjSKVmq8QPZB9
-         W1zQ==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4XzbG60f4qz2xy0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2024 23:28:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732796934;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZACMslqIaF7iVtmlx12c8LPoSlN7TzLegXngDuX2z78=;
+	b=SR+2143n/ny/c1ljGZjDnEADm/Ip4JnzZKHEGegX2fSpQuWWcE1/kNzNUvhvIvpffUaami
+	pQnV8KfkLGfnmwFF1tW7gB4vxoTu6M1GGF94HZMZeKWCvFMHdHksmJydcDHl7j7pLyw10t
+	usmZaRSuxFMIGWqNTbACv75cFVGLQL0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732796935;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZACMslqIaF7iVtmlx12c8LPoSlN7TzLegXngDuX2z78=;
+	b=cOwjQFRm7P+aINT5HWTReOP+pshjo9eZAcXUOpvAh9WrdyyhGdMpRFFdHFwywvzdbbmt1x
+	ZdkymhW31j/Vr/dzid0SboiqOEWMJs7Y+1CM2vY0BG1CUyvNkyloFYuNEfwtP78dw9Jxfn
+	ykl+N0msIK4gu9aBfOnakww5HgWD5I8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-f8mpnbr7NQe9FcY5BPxRzg-1; Thu, 28 Nov 2024 07:28:53 -0500
+X-MC-Unique: f8mpnbr7NQe9FcY5BPxRzg-1
+X-Mimecast-MFC-AGG-ID: f8mpnbr7NQe9FcY5BPxRzg
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385d7611ad3so48545f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Nov 2024 04:28:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732794191; x=1733398991;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XLmDoPuQ18peT/hndI856uO41dAuVqmy/jkydI86Zhk=;
-        b=Rz8KqHSOnJRRzIiJ8r4dMzrXP6mPs+Rk/JZh39UGciBi4OyS0rEpXmKU+BCCCa/k3t
-         OnRsCmsMh2v34nfo39yxVEwzFlY2bogz42nUsziGa9rMCJuGjU3RQonPdj4hto2NEuJq
-         Qke76M+XHMDMbd4vIUPjJdYFadci2zrR5OzghLnkL84RwWEkHpoDRpmlc9200nNlwOWi
-         gSGXLjOmnVBRTb2IJNIMX6/yeGDM18K6kKVrA8ITVs17xNhDYs7CAnXQtOmBOQWBG6+P
-         ZAx5KV+6fpn6JDONpS6PeIr7tb4Oeai25THXpi38uir9O+//udZ4j94Py06ZrXKSgHyj
-         sPnA==
-X-Gm-Message-State: AOJu0YzB73MxQautARGxxml3w9ceAzD4XX3YocaODQeryi4i/uhbJ1w8
-	55CM0tRYQEMXp+FBJLvSzgSz0GUutmDU2HttDG9lCRvq1Fd2Lf549BcvODYE2eQ=
-X-Gm-Gg: ASbGnctcHDqyses/4s7OwDYH72B1gBufNJB5H5AeWMtWj9LgWnYkABvR1qFk1gXp+h4
-	mJcAHMfhMJ8yG61u4z5lZ7ItcASjsA9fqL2b21bOzFhM89ptbGBmfLIat7MfslSrr+OyVgcMX6W
-	0Yb/G1Y7f9Ah9xeQgZZy+rxl7uhpIw/1sViCwq1zZ0FWCuuEbd1+z192vcnaaRBnNW3M4uvd6k0
-	9Px8njgnINDZCHjn/E2NA1idwcIS0yVp1MAdb/t8vHGbjfWUQv6Hx8=
-X-Google-Smtp-Source: AGHT+IFGCrTV3fkXgo4Knuc7JqzNxStEYWTG2YlU7JItHlfbF36hU71rjxx6nTGxuBOrZ2UkuQzUbw==
-X-Received: by 2002:a05:600c:3b07:b0:434:a4ae:13e0 with SMTP id 5b1f17b1804b1-434a9dd036amr66918465e9.18.1732794191367;
-        Thu, 28 Nov 2024 03:43:11 -0800 (PST)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa7644c3sm50809565e9.13.2024.11.28.03.43.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Nov 2024 03:43:11 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nick Bowler <nbowler@draconx.ca>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] macintosh: Switch back to struct platform_driver::remove()
-Date: Thu, 28 Nov 2024 12:42:53 +0100
-Message-ID: <20241128114253.776950-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.45.2
+        d=1e100.net; s=20230601; t=1732796932; x=1733401732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZACMslqIaF7iVtmlx12c8LPoSlN7TzLegXngDuX2z78=;
+        b=jsLp4ks1DPBKOl1RWIH8gm3MUW/B3ED9UN+8b1Wc+M9iNpDTtWn260BThpqn7d0sml
+         kQPGVraleRDLyZsHPfBi3FtYVFPLrrTrdBSn4gLpAqp7cLZvgukBmoMn7+3eADGvl54A
+         uD0wlcCt/DMyuzouBch/FcJBtINktrot9nbu8tqHMQo+iFk+x2gTlvSNrKtfjPPsZZlw
+         eMfqW77P8pxuSvtCq/UtMh0Dl8q8lo5GllLi92NSd5fp8cXO5QeKdjDvyXEXT5nzHx+f
+         esuqZ9o/FEEEOFsZL6cpPr+X5kKVlsrLg2sPI3lr4x/3yLWZ+q7b47XJI7hE9XOe6fz8
+         AmPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhLbDz3i1glfN/yP744vvpawLegx4c+ssmMsbNG9xaKl1FMtwBoqqqdr9MW3oE2ST/BCbssSNZoDIPCDI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxUlPyoftyol1cx3QUO9mXRM43iuzjsDcaXVEqsv5795vnsAP7F
+	mKymeDe3r9ux6fFlY7aVaQg7GVLY/yALGAgsJ6oIFvur4Uwb9uXdVuooy5+cZfv4Mxag6QnbdHL
+	FFSWm/cB8ZeTo12G60hwefdnDsv0QzvuqAW2k/mE5T/5tYxwVJEO9CKRmioVIwQS/RIjr9hwPQX
+	pLgzYR09DkChXAE34X7ISqNOuOc67HJ7rHvaZA2A==
+X-Gm-Gg: ASbGncuK/ARKD6JEb0HrGpLvSPdUgSORmQ8OqTNF6eb3kD3gaCiHpdktdymKE2ZSFxq
+	Z8ut4mtQ5d6Zq7RpqRYif7IhxSSoZmAk=
+X-Received: by 2002:a05:6000:18ac:b0:382:4a27:1319 with SMTP id ffacd0b85a97d-385c6eb5840mr5776158f8f.6.1732796932007;
+        Thu, 28 Nov 2024 04:28:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGGOqoP8tsZ6KQpRsoqtGa6KHF61EJ3NUmj3Aw3MlprtODTvHQ/TDY7uTpa3Nw0Vy2Is2RlK3QrcXMwzmVV8rU=
+X-Received: by 2002:a05:6000:18ac:b0:382:4a27:1319 with SMTP id
+ ffacd0b85a97d-385c6eb5840mr5776067f8f.6.1732796931576; Thu, 28 Nov 2024
+ 04:28:51 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,153 +94,115 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4925; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=tItLusgeUmbf8IGLZ4mX4+vAasma+cljc7lDNoyyk2Y=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnSFc+ak6lMqmCbkLiZPZmpgmycexJaXAdc3BGt +yLP/pvCtCJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ0hXPgAKCRCPgPtYfRL+ TrTvCACLqcZmHzFwKWU5iBkPjvzFw6P/GV8vH87fKUzqv3966abCuW2w92xzJi3bW1f632C0jRX YHWVRRMihQWLL/iDBKnt96U8OXpFoGwW6FFb3u2YmzP6L0lWAMWw+om5/OwIqp1e7wC7B0s/Bwd taU2MRQiXozzKr0nSegC+bd/BDpIwyB/rpKn93bvS1ebG/Br5VJohkJeU9pd4TULrsj2j9NtKFJ kznuwgE1MfQdcBB1+1sWCVgrX6ka7udiye0vH/7X4msGLLkpAGK0cD8KJOFdgBzjd/XGHNn7CmQ ErRcZqferP5e3gLtb7QpnEvaa2xsiBsx6pJNfeZBHu4ykmF9
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <20241115-converge-secs-to-jiffies-v2-18-911fb7595e79@linux.microsoft.com>
+In-Reply-To: <20241115-converge-secs-to-jiffies-v2-18-911fb7595e79@linux.microsoft.com>
+From: Alex Markuze <amarkuze@redhat.com>
+Date: Thu, 28 Nov 2024 14:28:40 +0200
+Message-ID: <CAO8a2SgQ-==SjhDFZpi2s3r9FUGA96jwuJL7kTDwE=Hw4UcgUg@mail.gmail.com>
+Subject: Re: [PATCH v2 18/21] ceph: Convert timeouts to secs_to_jiffies()
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
+	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Russell King <linux@armlinux.org.uk>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>, 
+	Oded Gabbay <ogabbay@kernel.org>, Lucas De Marchi <lucas.demarchi@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
+	Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	James Smart <james.smart@broadcom.com>, Dick Kennedy <dick.kennedy@broadcom.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+	Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann <marcel@holtmann.org>, 
+	Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>, 
+	Ilya Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>, 
+	Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>, 
+	Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Russell King <linux+etnaviv@armlinux.org.uk>, 
+	Christian Gmeiner <christian.gmeiner@gmail.com>, Louis Peens <louis.peens@corigine.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org, 
+	coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	cocci@inria.fr, linux-arm-kernel@lists.infradead.org, 
+	linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-block@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	linux-mm@kvack.org, linux-bluetooth@vger.kernel.org, 
+	linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, 
+	ceph-devel@vger.kernel.org, live-patching@vger.kernel.org, 
+	linux-sound@vger.kernel.org, etnaviv@lists.freedesktop.org, 
+	oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: WVBN_VxdxPxGE65vnNuOSAclVIuaGfUygSj8mIQf104_1732796932
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-return void") .remove() is (again) the right callback to implement for
-platform drivers.
+looks good
 
-Convert all platform drivers below drivers/macintosh to use .remove(),
-with the eventual goal to drop struct platform_driver::remove_new(). As
-.remove() and .remove_new() have the same prototypes, conversion is done
-by just changing the structure member name in the driver initializer.
-
-En passant make the alignment of the struct initializer in
-two drivers consistent.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-Hello,
-
-given the simplicity of the individual changes I do this all in a single
-patch. I you don't agree, please tell and I will happily split it.
-
-It's based on today's next, feel free to drop changes that result in a
-conflict when you come around to apply this. I'll care for the fallout
-at a later time then. (Having said that, if you use b4 am -3 and git am
--3, there should be hardly any conflict.)
-
-Best regards
-Uwe
-
- drivers/macintosh/therm_windtunnel.c | 2 +-
- drivers/macintosh/windfarm_pm112.c   | 2 +-
- drivers/macintosh/windfarm_pm121.c   | 2 +-
- drivers/macintosh/windfarm_pm72.c    | 6 +++---
- drivers/macintosh/windfarm_pm81.c    | 2 +-
- drivers/macintosh/windfarm_pm91.c    | 2 +-
- drivers/macintosh/windfarm_rm31.c    | 6 +++---
- 7 files changed, 11 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/macintosh/therm_windtunnel.c b/drivers/macintosh/therm_windtunnel.c
-index 2576a53f247e..0b2e08a1bee0 100644
---- a/drivers/macintosh/therm_windtunnel.c
-+++ b/drivers/macintosh/therm_windtunnel.c
-@@ -499,7 +499,7 @@ static struct platform_driver therm_of_driver = {
- 		.of_match_table = therm_of_match,
- 	},
- 	.probe		= therm_of_probe,
--	.remove_new	= therm_of_remove,
-+	.remove		= therm_of_remove,
- };
- 
- struct apple_thermal_info {
-diff --git a/drivers/macintosh/windfarm_pm112.c b/drivers/macintosh/windfarm_pm112.c
-index 876b4d8cbe37..5bd6d1ccf246 100644
---- a/drivers/macintosh/windfarm_pm112.c
-+++ b/drivers/macintosh/windfarm_pm112.c
-@@ -669,7 +669,7 @@ static void wf_pm112_remove(struct platform_device *dev)
- 
- static struct platform_driver wf_pm112_driver = {
- 	.probe = wf_pm112_probe,
--	.remove_new = wf_pm112_remove,
-+	.remove = wf_pm112_remove,
- 	.driver = {
- 		.name = "windfarm",
- 	},
-diff --git a/drivers/macintosh/windfarm_pm121.c b/drivers/macintosh/windfarm_pm121.c
-index cd45fbc4fe1c..660180c843a3 100644
---- a/drivers/macintosh/windfarm_pm121.c
-+++ b/drivers/macintosh/windfarm_pm121.c
-@@ -999,7 +999,7 @@ static void pm121_remove(struct platform_device *ddev)
- 
- static struct platform_driver pm121_driver = {
- 	.probe = pm121_probe,
--	.remove_new = pm121_remove,
-+	.remove = pm121_remove,
- 	.driver = {
- 		.name = "windfarm",
- 		.bus = &platform_bus_type,
-diff --git a/drivers/macintosh/windfarm_pm72.c b/drivers/macintosh/windfarm_pm72.c
-index 14fa1e9ac3e0..d207f13396ae 100644
---- a/drivers/macintosh/windfarm_pm72.c
-+++ b/drivers/macintosh/windfarm_pm72.c
-@@ -781,9 +781,9 @@ static void wf_pm72_remove(struct platform_device *dev)
- }
- 
- static struct platform_driver wf_pm72_driver = {
--	.probe	= wf_pm72_probe,
--	.remove_new = wf_pm72_remove,
--	.driver	= {
-+	.probe = wf_pm72_probe,
-+	.remove = wf_pm72_remove,
-+	.driver = {
- 		.name = "windfarm",
- 	},
- };
-diff --git a/drivers/macintosh/windfarm_pm81.c b/drivers/macintosh/windfarm_pm81.c
-index 404d2454e33d..ada97377e19e 100644
---- a/drivers/macintosh/windfarm_pm81.c
-+++ b/drivers/macintosh/windfarm_pm81.c
-@@ -765,7 +765,7 @@ static void wf_smu_remove(struct platform_device *ddev)
- 
- static struct platform_driver wf_smu_driver = {
- 	.probe = wf_smu_probe,
--	.remove_new = wf_smu_remove,
-+	.remove = wf_smu_remove,
- 	.driver = {
- 		.name = "windfarm",
- 	},
-diff --git a/drivers/macintosh/windfarm_pm91.c b/drivers/macintosh/windfarm_pm91.c
-index fba02a375435..108d7938e714 100644
---- a/drivers/macintosh/windfarm_pm91.c
-+++ b/drivers/macintosh/windfarm_pm91.c
-@@ -695,7 +695,7 @@ static void wf_smu_remove(struct platform_device *ddev)
- 
- static struct platform_driver wf_smu_driver = {
- 	.probe = wf_smu_probe,
--	.remove_new = wf_smu_remove,
-+	.remove = wf_smu_remove,
- 	.driver = {
- 		.name = "windfarm",
- 	},
-diff --git a/drivers/macintosh/windfarm_rm31.c b/drivers/macintosh/windfarm_rm31.c
-index dc8f2c7ef103..d76a70bf09c9 100644
---- a/drivers/macintosh/windfarm_rm31.c
-+++ b/drivers/macintosh/windfarm_rm31.c
-@@ -674,9 +674,9 @@ static void wf_rm31_remove(struct platform_device *dev)
- }
- 
- static struct platform_driver wf_rm31_driver = {
--	.probe	= wf_rm31_probe,
--	.remove_new = wf_rm31_remove,
--	.driver	= {
-+	.probe = wf_rm31_probe,
-+	.remove = wf_rm31_remove,
-+	.driver = {
- 		.name = "windfarm",
- 	},
- };
-
-base-commit: f486c8aa16b8172f63bddc70116a0c897a7f3f02
--- 
-2.45.2
+On Sat, Nov 16, 2024 at 12:32=E2=80=AFAM Easwar Hariharan
+<eahariha@linux.microsoft.com> wrote:
+>
+> Changes made with the following Coccinelle rules:
+>
+> @@ constant C; @@
+>
+> - msecs_to_jiffies(C * 1000)
+> + secs_to_jiffies(C)
+>
+> @@ constant C; @@
+>
+> - msecs_to_jiffies(C * MSEC_PER_SEC)
+> + secs_to_jiffies(C)
+>
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>  fs/ceph/quota.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/ceph/quota.c b/fs/ceph/quota.c
+> index 06ee397e0c3a6172592e62dba95cd267cfff0db1..d90eda19bcc4618f98bfed833=
+c10a6071cf2e2ac 100644
+> --- a/fs/ceph/quota.c
+> +++ b/fs/ceph/quota.c
+> @@ -166,7 +166,7 @@ static struct inode *lookup_quotarealm_inode(struct c=
+eph_mds_client *mdsc,
+>         if (IS_ERR(in)) {
+>                 doutc(cl, "Can't lookup inode %llx (err: %ld)\n", realm->=
+ino,
+>                       PTR_ERR(in));
+> -               qri->timeout =3D jiffies + msecs_to_jiffies(60 * 1000); /=
+* XXX */
+> +               qri->timeout =3D jiffies + secs_to_jiffies(60); /* XXX */
+>         } else {
+>                 qri->timeout =3D 0;
+>                 qri->inode =3D in;
+>
+> --
+> 2.34.1
+>
+>
 
 
