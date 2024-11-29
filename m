@@ -1,64 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-3613-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3614-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D892B9DE970
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2024 16:32:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EBA9DE9FB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2024 16:53:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y0HHH6YQhz2yVj;
-	Sat, 30 Nov 2024 02:32:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y0Hlf1D0bz2yjb;
+	Sat, 30 Nov 2024 02:53:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732894347;
-	cv=none; b=HD5anvHFtYeYJz919d9JP1iyQIkIvEe7YaAAZJdOWkVdbbUqTibPOoqgNzIXK7+YdO0gEcqi8GAjhYF2aCUwSQgePTLs7mrxuccpVyYEKXLLutBN/qNiVvMwq+j+xoICDRNG4Wj04RGex9ByH6QZzHmPy60fUMKOa/3xWh5dpjs4nCCmVmmbxqlReDvX1bgv8g7tCTImK2Z3cx/bAkb7QcIRIL/iT44WdMwwp4ME/vPet+Ub88kb92LcHtx4K/4Rf5hTMhwW/zdvSoDnebHBWT7g82HpkvCupcITopO+CnYmlDEyV2+QkKgOTolOIzb+Mp7ZnKvk+iLnixEK97Dw3w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732895614;
+	cv=none; b=M1D7ejvtkUTNUAsAAX3Rb/BnIXd7nAnVPEZhJEonorO5rLpF67uMRoX2/fc7oHDZ5FVajbdbCPCQG3cnT9QaWHZS8WTu4kME7ZyY+sFmOJ4yLC50gNGTxjpVbusjcSbvZtWlE1syNnIGBylJXPQP7BdBE+S6JWeQ8qJhCUSr+i8l6eCp06dAXK02KhEGdp/oJitaIJUhnzgUg6MADr/0IxFqGzge+WNZ68YQaMjTG/eNG91hG8UQmyufJZy85GQ5yUvgvT0Q5ZVxD+3uNnY1TjUEqz8t/KsmciAby8z2AKpfI0UQ2R3ED/q1LFYVrqQ3+B8/ovaSvNfFZlPhT4+hTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732894347; c=relaxed/relaxed;
-	bh=WK+tmQjJviWN034po+ErCk3pdq/V+v3ftHfK6kFNwDU=;
+	t=1732895614; c=relaxed/relaxed;
+	bh=DXyddUB8eJnWuEwivU7INwEW+4pYQy/GVcGWWNGuTHM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U29KwtV0Jx20K3jP24k+VsKhXfRdy1O06qkbAOCyNeRzNMLO2+iF15HfKxLWrhnWQcWSnOLLNRy7qnmgMGlXcTEPXMdtaGvWXjfmQPcABgj4XtwiULo4HRWoiHiZz7DNohtDs0ICzOpL9zVhAZ5dbZv3YsnChKuM/yvB80OMyZvLP6sb+MX715GmdqTpiUNn7PIMs9E18bgWTtW5k7AJPUDnmyMcXHTspQjtR5j3in2TdQKU6dr0q7xETShlgKMrduwR0FBc0CvnTMTU/03QT+vNDj9uNWsvRRIqxAYSN7cjcsFOiivto4iofXgPO/vF+zRbXsZ93ptCUtA+XyDXHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NSWLCLvr; dkim-atps=neutral; spf=pass (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=U50vyvQzGauI5ejkTCDSaGKqRpRnVhEpTCHGBQDv4aa/nhpUDa5aLgLHMT42y6zmXSjBRt5pLwpqY1bSlesdsAPzzMQCu3bNgqkLF0npix2tnTGzrxO+vBnothebNlxEi/fJYdQbc9apsKVII8pIUjIZzBK/K1W6qMqU15LckLzaYwk1SlWi3zEaXAIzh8rWwllUWaI7QZkqtfaL1pyRCZfETPT3gzbxwHBLmnpybiVGf0qm46r/xrfJNJWudLOEC1lKk3Phtf+a3dTjGdsXdvY9OFavWW7+k/QgUrPlPbyxY0A/Qw3YAOCvagAYmAvoRnqBZRJhoEwMnTavbYrpPg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Mw3vQX5j; dkim-atps=neutral; spf=pass (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NSWLCLvr;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Mw3vQX5j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y0HHG2Srsz2yGY
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2024 02:32:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y0HlZ3GKsz2yNJ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2024 02:53:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732894346; x=1764430346;
+  t=1732895611; x=1764431611;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=rkbZzzA3ETtb7DARkL0byEi+53OQmWiF70ykeRLY2+A=;
-  b=NSWLCLvrXIYxgNwOL//QcJ3Q7X4iXEITA4Zied3OHkimvEOZxmcuabet
-   6hfjhriROoh75sTSklMI93CBDpvXiUeQ36A7u9X1BDEH35zF+kaOVgTEL
-   WGwnzui0RXPJsRnxh4BBkCDfmDhCucFm1xr3mPW16bH4SLL93Z51/pa9N
-   2jO18fGymC5QmK9ck+7xRl7OpGPg6zuipNORhqHXSnXSSQgX5fmQZq757
-   Ro9FromACsX1NAnty9OP9gS7USl3gVs45QpEzQbsUUKLqrq4C4L1Fpssw
-   153YlfpqsbanZOUr40MK45BmFfZt+NAj5KxkaWlb7r9i3s3I+g3ZLrNW/
+  bh=X8kdzcem7IoN9L8/nNtQOwRxzQErlTl262LyjmQLTLs=;
+  b=Mw3vQX5jTbi6koSPWnTFbgedtbrsVuLDm9Jl7DZetZ0XJpzL3vPgzZMJ
+   9TAzZOjDR5jCG8Zgj3DAJ9FGqqb2+QA64+Ds8R+abS+xFZZ6y8jYBdSko
+   2FlQ/P/ltKjrIYxVALxexWCNiC1uoWiRjCIWkZ7WUCUrQiyJVrqa0QCTR
+   85k9StVwAvXQuZBpN0UEWfyL0bYlN62A4LVKFHuyYdf/n9Ao+Xk2ym6N9
+   o5BwxO//ETv0AYxRH1DQiDVx8SPKO+ltwPXOev/BGjzJeXj0RvU8IgN/s
+   ZUMzyncmA58l6i9A9dGN009x+moJX/EZJMubDYj5GBkP2KXSjC3L3bQ6V
    A==;
-X-CSE-ConnectionGUID: X6WM528DTyaKO/wXLWPOjg==
-X-CSE-MsgGUID: UgcfplmESQSGOUz6OrItGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="43750902"
+X-CSE-ConnectionGUID: NB54csQAS2S6nnitxnFR3w==
+X-CSE-MsgGUID: +GdQNAvOSfOIiVbNi8wrhg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="36802615"
 X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
-   d="scan'208";a="43750902"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 07:32:22 -0800
-X-CSE-ConnectionGUID: TP2DC5OKStOrFi14Qb1+Tw==
-X-CSE-MsgGUID: Iwcxm7VxR7a2TrXJFD7nLQ==
+   d="scan'208";a="36802615"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 07:53:25 -0800
+X-CSE-ConnectionGUID: 7//IIXS5QRGX+aRBQ6lUBQ==
+X-CSE-MsgGUID: tJhAP9U8QW+LzJR0JKxV6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
-   d="scan'208";a="92987224"
+X-IronPort-AV: E=Sophos;i="6.12,196,1728975600"; 
+   d="scan'208";a="96596770"
 Received: from lkp-server01.sh.intel.com (HELO 5e2646291792) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 29 Nov 2024 07:32:16 -0800
+  by fmviesa003.fm.intel.com with ESMTP; 29 Nov 2024 07:53:17 -0800
 Received: from kbuild by 5e2646291792 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1tH2yb-0000SX-16;
-	Fri, 29 Nov 2024 15:32:13 +0000
-Date: Fri, 29 Nov 2024 23:31:51 +0800
+	id 1tH3Ix-0000TX-0E;
+	Fri, 29 Nov 2024 15:53:15 +0000
+Date: Fri, 29 Nov 2024 23:53:07 +0800
 From: kernel test robot <lkp@intel.com>
 To: Eliav Farber <farbere@amazon.com>, linux@armlinux.org.uk,
 	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
@@ -71,10 +71,10 @@ To: Eliav Farber <farbere@amazon.com>, linux@armlinux.org.uk,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
 	kexec@lists.infradead.org
-Cc: oe-kbuild-all@lists.linux.dev, jonnyc@amazon.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, jonnyc@amazon.com
 Subject: Re: [PATCH v4 1/2] kexec: Consolidate
  machine_kexec_mask_interrupts() implementation
-Message-ID: <202411292359.4rjP3LuE-lkp@intel.com>
+Message-ID: <202411292312.KnEWhcVS-lkp@intel.com>
 References: <20241129113119.26669-2-farbere@amazon.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -110,158 +110,167 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Eliav-Farber/kexec-Consol
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
 patch link:    https://lore.kernel.org/r/20241129113119.26669-2-farbere%40amazon.com
 patch subject: [PATCH v4 1/2] kexec: Consolidate machine_kexec_mask_interrupts() implementation
-config: i386-buildonly-randconfig-003-20241129 (https://download.01.org/0day-ci/archive/20241129/202411292359.4rjP3LuE-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241129/202411292359.4rjP3LuE-lkp@intel.com/reproduce)
+config: i386-buildonly-randconfig-002-20241129 (https://download.01.org/0day-ci/archive/20241129/202411292312.KnEWhcVS-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241129/202411292312.KnEWhcVS-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411292359.4rjP3LuE-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411292312.KnEWhcVS-lkp@intel.com/
 
-All error/warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
+   In file included from kernel/kexec_core.c:9:
+   In file included from include/linux/btf.h:8:
+   In file included from include/linux/bpfptr.h:6:
+   In file included from include/linux/mm.h:2223:
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
    In file included from kernel/kexec_core.c:43:
->> include/linux/irqdesc.h:68:33: error: field 'irq_common_data' has incomplete type
+>> include/linux/irqdesc.h:68:25: error: field has incomplete type 'struct irq_common_data'
       68 |         struct irq_common_data  irq_common_data;
-         |                                 ^~~~~~~~~~~~~~~
->> include/linux/irqdesc.h:69:33: error: field 'irq_data' has incomplete type
+         |                                 ^
+   include/linux/irqdesc.h:68:9: note: forward declaration of 'struct irq_common_data'
+      68 |         struct irq_common_data  irq_common_data;
+         |                ^
+>> include/linux/irqdesc.h:69:19: error: field has incomplete type 'struct irq_data'
       69 |         struct irq_data         irq_data;
-         |                                 ^~~~~~~~
->> include/linux/irqdesc.h:71:9: error: unknown type name 'irq_flow_handler_t'
+         |                                 ^
+   include/linux/irqdesc.h:69:9: note: forward declaration of 'struct irq_data'
+      69 |         struct irq_data         irq_data;
+         |                ^
+   include/linux/irqdesc.h:71:2: error: unknown type name 'irq_flow_handler_t'; did you mean 'irq_handler_t'?
       71 |         irq_flow_handler_t      handle_irq;
          |         ^~~~~~~~~~~~~~~~~~
-   In file included from include/linux/list.h:5,
-                    from include/linux/smp.h:12,
-                    from include/linux/lockdep.h:14,
-                    from include/linux/spinlock.h:63,
-                    from include/linux/mmzone.h:8,
-                    from include/linux/gfp.h:7,
-                    from include/linux/mm.h:7,
-                    from include/linux/bpfptr.h:6,
-                    from include/linux/btf.h:8,
-                    from kernel/kexec_core.c:9:
-   include/linux/irqdesc.h: In function 'irq_data_to_desc':
->> include/linux/irqdesc.h:139:33: error: invalid use of undefined type 'struct irq_data'
+         |         irq_handler_t
+   include/linux/interrupt.h:104:23: note: 'irq_handler_t' declared here
+     104 | typedef irqreturn_t (*irq_handler_t)(int, void *);
+         |                       ^
+   In file included from kernel/kexec_core.c:43:
+>> include/linux/irqdesc.h:139:26: error: incomplete definition of type 'struct irq_data'
      139 |         return container_of(data->common, struct irq_desc, irq_common_data);
-         |                                 ^~
-   include/linux/container_of.h:19:33: note: in definition of macro 'container_of'
+         |                             ~~~~^
+   include/linux/container_of.h:19:26: note: expanded from macro 'container_of'
       19 |         void *__mptr = (void *)(ptr);                                   \
          |                                 ^~~
-   In file included from include/linux/init.h:5,
-                    from include/linux/printk.h:6,
-                    from include/asm-generic/bug.h:22,
-                    from arch/x86/include/asm/bug.h:99,
-                    from include/linux/bug.h:5,
-                    from include/linux/mmdebug.h:5,
-                    from include/linux/mm.h:6:
->> include/linux/irqdesc.h:139:33: error: invalid use of undefined type 'struct irq_data'
+   include/linux/irqdesc.h:69:9: note: forward declaration of 'struct irq_data'
+      69 |         struct irq_data         irq_data;
+         |                ^
+>> include/linux/irqdesc.h:139:26: error: incomplete definition of type 'struct irq_data'
      139 |         return container_of(data->common, struct irq_desc, irq_common_data);
-         |                                 ^~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:20:9: note: in expansion of macro 'static_assert'
+         |                             ~~~~^
+   include/linux/container_of.h:20:30: note: expanded from macro 'container_of'
       20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:20:23: note: in expansion of macro '__same_type'
-      20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/irqdesc.h:139:16: note: in expansion of macro 'container_of'
-     139 |         return container_of(data->common, struct irq_desc, irq_common_data);
-         |                ^~~~~~~~~~~~
->> include/linux/irqdesc.h:139:33: error: invalid use of undefined type 'struct irq_data'
-     139 |         return container_of(data->common, struct irq_desc, irq_common_data);
-         |                                 ^~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:20:9: note: in expansion of macro 'static_assert'
-      20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:21:23: note: in expansion of macro '__same_type'
-      21 |                       __same_type(*(ptr), void),                        \
-         |                       ^~~~~~~~~~~
-   include/linux/irqdesc.h:139:16: note: in expansion of macro 'container_of'
-     139 |         return container_of(data->common, struct irq_desc, irq_common_data);
-         |                ^~~~~~~~~~~~
-   include/linux/compiler_types.h:464:27: error: expression in static assertion is not an integer
+         |                                     ^~~
+   include/linux/compiler_types.h:464:63: note: expanded from macro '__same_type'
      464 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
+         |                                                               ^
+   include/linux/build_bug.h:77:50: note: expanded from macro 'static_assert'
+      77 | #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
+         |                                                  ^~~~
+   include/linux/build_bug.h:78:56: note: expanded from macro '__static_assert'
       78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
          |                                                        ^~~~
-   include/linux/container_of.h:20:9: note: in expansion of macro 'static_assert'
-      20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:20:23: note: in expansion of macro '__same_type'
-      20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   include/linux/irqdesc.h:139:16: note: in expansion of macro 'container_of'
+   include/linux/irqdesc.h:69:9: note: forward declaration of 'struct irq_data'
+      69 |         struct irq_data         irq_data;
+         |                ^
+>> include/linux/irqdesc.h:139:26: error: incomplete definition of type 'struct irq_data'
      139 |         return container_of(data->common, struct irq_desc, irq_common_data);
-         |                ^~~~~~~~~~~~
-   include/linux/irqdesc.h: In function 'generic_handle_irq_desc':
->> include/linux/irqdesc.h:173:9: error: called object is not a function or function pointer
+         |                             ~~~~^
+   include/linux/container_of.h:21:23: note: expanded from macro 'container_of'
+      21 |                       __same_type(*(ptr), void),                        \
+         |                                     ^~~
+   include/linux/compiler_types.h:464:63: note: expanded from macro '__same_type'
+     464 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
+         |                                                               ^
+   include/linux/build_bug.h:77:50: note: expanded from macro 'static_assert'
+      77 | #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
+         |                                                  ^~~~
+   include/linux/build_bug.h:78:56: note: expanded from macro '__static_assert'
+      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+         |                                                        ^~~~
+   include/linux/irqdesc.h:69:9: note: forward declaration of 'struct irq_data'
+      69 |         struct irq_data         irq_data;
+         |                ^
+>> include/linux/irqdesc.h:173:23: error: too few arguments to function call, expected 2, have 1
      173 |         desc->handle_irq(desc);
-         |         ^~~~
-   include/linux/irqdesc.h: At top level:
-   include/linux/irqdesc.h:208:43: error: unknown type name 'irq_flow_handler_t'; did you mean 'irq_handler_t'?
+         |         ~~~~~~~~~~~~~~~~     ^
+   include/linux/irqdesc.h:208:8: error: unknown type name 'irq_flow_handler_t'; did you mean 'irq_handler_t'?
      208 |                                           irq_flow_handler_t handler)
          |                                           ^~~~~~~~~~~~~~~~~~
          |                                           irq_handler_t
-   include/linux/irqdesc.h:230:34: error: unknown type name 'irq_flow_handler_t'; did you mean 'irq_handler_t'?
+   include/linux/interrupt.h:104:23: note: 'irq_handler_t' declared here
+     104 | typedef irqreturn_t (*irq_handler_t)(int, void *);
+         |                       ^
+   In file included from kernel/kexec_core.c:43:
+   include/linux/irqdesc.h:230:6: error: unknown type name 'irq_flow_handler_t'; did you mean 'irq_handler_t'?
      230 |                                  irq_flow_handler_t handler, const char *name)
          |                                  ^~~~~~~~~~~~~~~~~~
          |                                  irq_handler_t
-   include/linux/irqdesc.h: In function 'irq_balancing_disabled':
->> include/linux/irqdesc.h:243:42: error: 'IRQ_NO_BALANCING_MASK' undeclared (first use in this function); did you mean 'IRQF_NOBALANCING'?
+   include/linux/interrupt.h:104:23: note: 'irq_handler_t' declared here
+     104 | typedef irqreturn_t (*irq_handler_t)(int, void *);
+         |                       ^
+   In file included from kernel/kexec_core.c:43:
+   include/linux/irqdesc.h:236:6: error: incomplete definition of type 'struct irq_data'
+     236 |         data->chip = (struct irq_chip *)chip;
+         |         ~~~~^
+   include/linux/irqdesc.h:69:9: note: forward declaration of 'struct irq_data'
+      69 |         struct irq_data         irq_data;
+         |                ^
+>> include/linux/irqdesc.h:243:35: error: use of undeclared identifier 'IRQ_NO_BALANCING_MASK'
      243 |         return irq_check_status_bit(irq, IRQ_NO_BALANCING_MASK);
-         |                                          ^~~~~~~~~~~~~~~~~~~~~
-         |                                          IRQF_NOBALANCING
-   include/linux/irqdesc.h:243:42: note: each undeclared identifier is reported only once for each function it appears in
-   include/linux/irqdesc.h: In function 'irq_is_percpu':
->> include/linux/irqdesc.h:248:42: error: 'IRQ_PER_CPU' undeclared (first use in this function); did you mean 'IRQF_PERCPU'?
+         |                                          ^
+>> include/linux/irqdesc.h:248:35: error: use of undeclared identifier 'IRQ_PER_CPU'; did you mean 'MEM_PERCPU'?
      248 |         return irq_check_status_bit(irq, IRQ_PER_CPU);
          |                                          ^~~~~~~~~~~
-         |                                          IRQF_PERCPU
-   include/linux/irqdesc.h: In function 'irq_is_percpu_devid':
->> include/linux/irqdesc.h:253:42: error: 'IRQ_PER_CPU_DEVID' undeclared (first use in this function)
+         |                                          MEM_PERCPU
+   include/linux/bpf.h:650:2: note: 'MEM_PERCPU' declared here
+     650 |         MEM_PERCPU              = BIT(4 + BPF_BASE_TYPE_BITS),
+         |         ^
+   In file included from kernel/kexec_core.c:43:
+>> include/linux/irqdesc.h:253:35: error: use of undeclared identifier 'IRQ_PER_CPU_DEVID'
      253 |         return irq_check_status_bit(irq, IRQ_PER_CPU_DEVID);
-         |                                          ^~~~~~~~~~~~~~~~~
-   kernel/kexec_core.c: In function 'machine_kexec_mask_interrupts':
-   kernel/kexec_core.c:1098:38: error: invalid use of undefined type 'struct irq_chip'
+         |                                          ^
+   kernel/kexec_core.c:1098:24: error: incomplete definition of type 'struct irq_chip'
     1098 |                 if (check_eoi && chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
-         |                                      ^~
-   kernel/kexec_core.c:1098:51: error: implicit declaration of function 'irqd_irq_inprogress' [-Werror=implicit-function-declaration]
+         |                                  ~~~~^
+   include/linux/irqdesc.h:152:22: note: forward declaration of 'struct irq_chip'
+     152 | static inline struct irq_chip *irq_desc_get_chip(struct irq_desc *desc)
+         |                      ^
+   kernel/kexec_core.c:1098:37: error: call to undeclared function 'irqd_irq_inprogress'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
     1098 |                 if (check_eoi && chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
-         |                                                   ^~~~~~~~~~~~~~~~~~~
-   kernel/kexec_core.c:1099:29: error: invalid use of undefined type 'struct irq_chip'
+         |                                                   ^
+   kernel/kexec_core.c:1099:8: error: incomplete definition of type 'struct irq_chip'
     1099 |                         chip->irq_eoi(&desc->irq_data);
-         |                             ^~
-   kernel/kexec_core.c:1101:25: error: invalid use of undefined type 'struct irq_chip'
+         |                         ~~~~^
+   include/linux/irqdesc.h:152:22: note: forward declaration of 'struct irq_chip'
+     152 | static inline struct irq_chip *irq_desc_get_chip(struct irq_desc *desc)
+         |                      ^
+   kernel/kexec_core.c:1101:11: error: incomplete definition of type 'struct irq_chip'
     1101 |                 if (chip->irq_mask)
-         |                         ^~
-   kernel/kexec_core.c:1102:29: error: invalid use of undefined type 'struct irq_chip'
+         |                     ~~~~^
+   include/linux/irqdesc.h:152:22: note: forward declaration of 'struct irq_chip'
+     152 | static inline struct irq_chip *irq_desc_get_chip(struct irq_desc *desc)
+         |                      ^
+   kernel/kexec_core.c:1102:8: error: incomplete definition of type 'struct irq_chip'
     1102 |                         chip->irq_mask(&desc->irq_data);
-         |                             ^~
-   kernel/kexec_core.c:1104:25: error: invalid use of undefined type 'struct irq_chip'
+         |                         ~~~~^
+   include/linux/irqdesc.h:152:22: note: forward declaration of 'struct irq_chip'
+     152 | static inline struct irq_chip *irq_desc_get_chip(struct irq_desc *desc)
+         |                      ^
+   kernel/kexec_core.c:1104:11: error: incomplete definition of type 'struct irq_chip'
     1104 |                 if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
-         |                         ^~
-   kernel/kexec_core.c:1104:43: error: implicit declaration of function 'irqd_irq_disabled'; did you mean 'arch_irqs_disabled'? [-Werror=implicit-function-declaration]
-    1104 |                 if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
-         |                                           ^~~~~~~~~~~~~~~~~
-         |                                           arch_irqs_disabled
-   kernel/kexec_core.c:1105:29: error: invalid use of undefined type 'struct irq_chip'
-    1105 |                         chip->irq_disable(&desc->irq_data);
-         |                             ^~
-   include/linux/irqdesc.h: In function 'irq_desc_get_chip':
->> include/linux/irqdesc.h:155:1: warning: control reaches end of non-void function [-Wreturn-type]
-     155 | }
-         | ^
-   cc1: some warnings being treated as errors
+         |                     ~~~~^
+   include/linux/irqdesc.h:152:22: note: forward declaration of 'struct irq_chip'
+     152 | static inline struct irq_chip *irq_desc_get_chip(struct irq_desc *desc)
+         |                      ^
+   fatal error: too many errors emitted, stopping now [-ferror-limit=]
+   1 warning and 20 errors generated.
 
 
-vim +/irq_common_data +68 include/linux/irqdesc.h
+vim +68 include/linux/irqdesc.h
 
 86d2a2f51fbada Bitao Hu                  2024-04-11   31  
 e144710b302525 Thomas Gleixner           2010-10-01   32  /**
@@ -387,7 +396,7 @@ d9936bb3952a08 Thomas Gleixner           2011-03-11  151
 a0cd9ca2b907d7 Thomas Gleixner           2011-02-10  152  static inline struct irq_chip *irq_desc_get_chip(struct irq_desc *desc)
 a0cd9ca2b907d7 Thomas Gleixner           2011-02-10  153  {
 a0cd9ca2b907d7 Thomas Gleixner           2011-02-10  154  	return desc->irq_data.chip;
-a0cd9ca2b907d7 Thomas Gleixner           2011-02-10 @155  }
+a0cd9ca2b907d7 Thomas Gleixner           2011-02-10  155  }
 a0cd9ca2b907d7 Thomas Gleixner           2011-02-10  156  
 a0cd9ca2b907d7 Thomas Gleixner           2011-02-10  157  static inline void *irq_desc_get_chip_data(struct irq_desc *desc)
 a0cd9ca2b907d7 Thomas Gleixner           2011-02-10  158  {
@@ -468,7 +477,7 @@ bbc9d21fc0071c Thomas Gleixner           2015-06-23  232  	struct irq_desc *desc
 bbc9d21fc0071c Thomas Gleixner           2015-06-23  233  
 bbc9d21fc0071c Thomas Gleixner           2015-06-23  234  	desc->handle_irq = handler;
 bbc9d21fc0071c Thomas Gleixner           2015-06-23  235  	desc->name = name;
-ef6e5d61eb7a0a Michael Walle             2022-07-06  236  	data->chip = (struct irq_chip *)chip;
+ef6e5d61eb7a0a Michael Walle             2022-07-06 @236  	data->chip = (struct irq_chip *)chip;
 bbc9d21fc0071c Thomas Gleixner           2015-06-23  237  }
 bbc9d21fc0071c Thomas Gleixner           2015-06-23  238  
 fdd029630434b4 Thomas Gleixner           2020-12-10  239  bool irq_check_status_bit(unsigned int irq, unsigned int bitmask);
