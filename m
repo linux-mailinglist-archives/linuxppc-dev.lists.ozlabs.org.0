@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-3611-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3612-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2E39DE792
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2024 14:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF8E9DE798
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Nov 2024 14:32:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y0Db10HtNz2yLJ;
-	Sat, 30 Nov 2024 00:30:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y0Dcr3Fwhz2yZ7;
+	Sat, 30 Nov 2024 00:32:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732887052;
-	cv=none; b=FV6JBmBSitmnub9StLikEMn8vBpw/b0w7jcDTzR4zqRJkmGLLzz84048L/vlxYmjmSec/huNYxRnvPl0kNFgiNExRU7C2qd1Y+JR/Qpmj3qlE2QipIsUY50pWwRnqb0vnGYmh/9Hz2BD7tnt4KYxC1IXjhs4Z3snJCD0bgI9HujVqvF8b3+v73/xIPaJk91Jqsgx3ABX6gt1CoJ9DGK20c7S7AmwEhNPsiDmt/n6O/mqLDV5mR/6k8mJzwvwI9WKekuQCvL2OWj4mhw0Z0SYYWcRO61SbgOKYSrCiAegkQzesZQxXs+Y9dWJ55xpBF5aw+hLhxfwBru2cm21PdE6/Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1732887148;
+	cv=none; b=ZfEDzetooaD1fMSyvjFUo/nadLHSkUcX1b2Q8/aVZXXWn2GaKMn7lzyG/55gXPk/wd+b9Wb8fglWUDmGeMpkGPj58uIJ42vfpGqg1SsF78QXe5kU1PNsIx2h514oQbX39ks3Wt3PSjLsUgp7M9E5by0wBfDYrxHZbKY78xm2m6Qg7zQKmzPbFCvICITrAclUCsMK3dsxKuOG7hbf7d+Su3cWluT9o0FMONc0vlzGOH0KQTyddqgCh6/0wThCnQ1rjMX15RXiVF7PWiwBpORu+i9EnE7pfGCjzH/lDvLKEKEWv4PeHlN4zehhvQtscH+x8BHnPo+MWTMReTmYfcCzKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1732887052; c=relaxed/relaxed;
-	bh=icaSftmPoFs3oPqGohm7R/vQ0cSrUMEsdq65mpHvRVA=;
+	t=1732887148; c=relaxed/relaxed;
+	bh=1EHb2L56DDpjtwU/UFh8uioIw0HOZZ1rlPpTrDEs14Q=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Vh6GLbFRXVy8YR/IyUn/sP23PL6HU1Jkb/GLsmvqZ1vSRvnqQAfGVni3M99+AZ0Ap3CX6SagsJ8R/jG3VdZc1Vb6i5dS9DwSI8hsr/lglQF45aSSdusCKcAnhCYL+N3HyVoQUFZsaYyXPuc3fY+J/Y5c7k8qNg7hYs696+jzfZ4WYjIUdif8C9ypeYD9knpvgR/EuFSp61p7nlAi4DL2Im39yH6oeCBSOfiSjefKcRFu0wgOfgQ24R+6dkW7XDfJuDIYO1SBLpa8kIXO4jbw9LmEBBWQrkLv7fixqt0W8/HFCRGzFinD/3BYwJxzmG8jVfoCC2wGy+XjxgWq/hU2KQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YZd0bUlE; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=wrWncmeL; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 MIME-Version:Content-Type; b=LRTErrORDR5Bf+9UaQFUNWfQME+5rvkzlI3YNPwAzFJcmnoyaH4N0UJY401sfn2jloyp0t6L6f/wZW4gDVBMj7MCSYKnj9iTJLqiWpaBrxBhUwQc5YZG8s0eVXDPiP8DCLkNecVeZO4GJDBSukrkfIttNlXfB5H4d8g1DnbAKQ1pzx+n+yjoa0FExsCYgYdKLzOx7uFD8dz3OsnJt7C897GuLiefrikqJ5AMCKGOChZh+kX4xg/ISygJiJhPlzb9SHbuw61HCISdIuMw4VUP3rgUEB2FG+wA5sWcfygN0SaTMnjwnWKAslHhsubr+0anX0WkQ+LreQhrAu80V4NT0w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=kLDb/kGR; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=tzt4zpj9; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YZd0bUlE;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=wrWncmeL;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=kLDb/kGR;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=tzt4zpj9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y0DZw5WrLz2xbS
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2024 00:30:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y0Dcp6WXPz2xbS
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Nov 2024 00:32:26 +1100 (AEDT)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1732887041;
+	s=2020; t=1732887138;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=icaSftmPoFs3oPqGohm7R/vQ0cSrUMEsdq65mpHvRVA=;
-	b=YZd0bUlE0xZWKejtIH/8b1Xqio5SfbdWK/5fXWh1rcU+HTZHZqztwv5kJcUBmq52ppdrJy
-	1Ep4+fruQcQWa6mXw/p8/wsLzsNObq5sVcv+kWT0aSkor/PqAIo/AF1SvX8kussOXip9jW
-	H6sdGyfghjxb6Y3ZPxDxq2Zsq4wbPAx6Rg7A9IX3NMquMO61hFmKPU+wHyFSZHsGZB4706
-	parfYH3VpxhtyxyRSUbXKOzFpsOPMQbyXJeDVpuYL/lQkIA/k1Nw2c5rfjJznTWNfjY1ca
-	JSyIKNKyfdTbY8dtmOcn45qcazynk3AfLKl/TLDh1aj50MMzlJU/wBAxGVRaEA==
+	bh=1EHb2L56DDpjtwU/UFh8uioIw0HOZZ1rlPpTrDEs14Q=;
+	b=kLDb/kGRwiapc8IEHEJjX9JdZsSzN8BsAPa2RTHUSmua6pSEIlHIgFPZAriB/53oNtf7JZ
+	kb08bkLnlTRGxBCT6bQPVQNny0HqGd6tAYTMi9Ky0a0Gy7cSBBru647vBSJ2gbiGAnM8CL
+	K4CmqKSsKg+gcvEgc6iOJ6ErKbBM4liqw7b9gDPy6Rcf0GPoHN55zf7xb0QNa4jQbf2LNg
+	6Fsofl0Jz8ofxH91BOzO8OKVBTLnFc6gazkfCzTaMa9hSmcBXen8PnbIfJ9u7HsoethIoe
+	w/hDPRTTj2EFL4BE8Lv7tMlbcNS/RKZZ/3BUP/X0yf0KDF2mzupUN8apxs4v2g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1732887041;
+	s=2020e; t=1732887138;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=icaSftmPoFs3oPqGohm7R/vQ0cSrUMEsdq65mpHvRVA=;
-	b=wrWncmeLIabkTOlhwz7jViyBBp/tltQNLjqOmhFxdSu/hqrEOzPSlAZ4Wcir7LF0WMDQzx
-	JiqHMj25fRo9EECQ==
+	bh=1EHb2L56DDpjtwU/UFh8uioIw0HOZZ1rlPpTrDEs14Q=;
+	b=tzt4zpj9BspmJyWB94OMHjwpdw2hmq+t+5FW1SE8HuJJfHm+iH++4n4CuIEmA74V5vgaEl
+	zmueYz7U+7FFcBBg==
 To: Eliav Farber <farbere@amazon.com>, linux@armlinux.org.uk,
  catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
  npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
@@ -59,15 +59,15 @@ To: Eliav Farber <farbere@amazon.com>, linux@armlinux.org.uk,
  songshuaishuai@tinylab.org, takakura@valinux.co.jp,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- kexec@lists.infradead.org, Marc Zyngier <maz@kernel.org>
+ kexec@lists.infradead.org
 Cc: jonnyc@amazon.com
-Subject: Re: [PATCH v4 1/2] kexec: Consolidate
- machine_kexec_mask_interrupts() implementation
-In-Reply-To: <20241129113119.26669-2-farbere@amazon.com>
+Subject: Re: [PATCH v4 2/2] kexec: Prevent redundant IRQ masking by checking
+ state before shutdown
+In-Reply-To: <20241129113119.26669-3-farbere@amazon.com>
 References: <20241129113119.26669-1-farbere@amazon.com>
- <20241129113119.26669-2-farbere@amazon.com>
-Date: Fri, 29 Nov 2024 14:30:41 +0100
-Message-ID: <87zfliw4ji.ffs@tglx>
+ <20241129113119.26669-3-farbere@amazon.com>
+Date: Fri, 29 Nov 2024 14:32:17 +0100
+Message-ID: <87wmgmw4gu.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,75 +87,9 @@ X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 On Fri, Nov 29 2024 at 11:31, Eliav Farber wrote:
-> Move the machine_kexec_mask_interrupts function to a common location in
-> kernel/kexec_core.c, removing duplicate implementations from architecture
-> specific files (arch/arm, arch/arm64, arch/powerpc, and arch/riscv).
+>
+> This patch addresses the issue by:
 
-Can you please move this into kernel/irq/kexec.c?
+Again:  git grep 'This patch' Documentation/process/
 
-It's pure interrupt core internal code and there is no point to make
-core internal functions visible to random other code just because.
-
-> +void machine_kexec_mask_interrupts(void)
-> +{
-> +	unsigned int i;
-> +	struct irq_desc *desc;
-
-	struct irq_desc *desc;
-        unsigned int i;
-
-please
-
-> +	for_each_irq_desc(i, desc) {
-> +		struct irq_chip *chip;
-> +		int check_eoi = 1;
-> +
-> +		chip = irq_desc_get_chip(desc);
-> +		if (!chip)
-> +			continue;
-> +
-> +		if (IS_ENABLED(CONFIG_ARM64)) {
-
-This should not be CONFIG_ARM64. Add something like:
-
-config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
-	bool
-
-and select this from ARM64?
-
-> +			/*
-> +			 * First try to remove the active state. If this fails, try to EOI the
-> +			 * interrupt.
-
-This comment does not really explain what this is about. I know you
-copied it from the ARM64 implementation, but it should explain what this
-actually means. Something like:
-
-         First try to remove the active state from an interrupt which is
-         forwarded to a VM. If the interrupt is not forwarded, try to
-         EOI the interrupt.
-
-or something like that.
-
-> +			 */
-> +			check_eoi = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
-
-Looking deeper. This function actually cannot be called from this
-context. It does:
-
-          irq_get_desc_buslock(irq, &flags, 0);
-
-which means for any interrupt which has an actual buslock implementation
-it will end up in a sleepable function and deadlock in the worst case.
-
-Marc?
-
-> +		}
-> +
-> +		if (check_eoi && chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
-> +			chip->irq_eoi(&desc->irq_data);
-
-Thanks,
-
-        tglx
 
