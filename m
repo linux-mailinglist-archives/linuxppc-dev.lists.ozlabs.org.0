@@ -1,44 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-3685-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3686-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757F29E0B76
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 20:01:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD3E9E0C52
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 20:40:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2CmR2Gfhz2ypD;
-	Tue,  3 Dec 2024 06:00:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2Ddp6dn6z2yw9;
+	Tue,  3 Dec 2024 06:40:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733166055;
-	cv=none; b=cqxoxgrOYqK+v1qjR20uFU+j2uLI+SqlcFzigAFdUyTxp3IWpKgfG1Fw0v6OqiO5ohX0ccjqqWJBpbLwMK6mSjIm8Ep7YvPQbmOLnz21ZFi7TzsgekziPhM6VfDcePAOoGpWH4wZdTaArCZCUV3FaW8eo5KlEFQHDcel/PhsmP03Fd30O1XFQ2UExnd7v7BXO9mVY8utUdE9SWxzLf+zGEsAEBe78ePYqHGOuEGRssVNVgSV0jOUtlRGhY+qQDm6EE9/m2kyRMFpW+mD74wl8i9d2XzWSE8ZimwMmVlpKulEqI9ugyXdcmmC6pvQZK92QewamsJeOiN1OqoXucNzQg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733168414;
+	cv=none; b=VAp/q/gLbmiRZ4yccmLZEe1NGBINE8QX2yuMuVsaLiY3Ho+lvcvcViLB+lGrhGxUxGjYgl8IDI69PRFBZz6rKrP56TUSZ1rebJgC6WrJu0eED8T2w+cQtNKdpEBA2E5cJZv0RKbnj8bru6N06fzyxea5u4UlYFOE8JNrCBtuOsiY4sL6/3kPK0bWwmAhRFFglMh5YCaZUcs9HmdU/r1eSs0xyjyOBOohKS+Uf3mzoS4LDfcjnc02w7Ouz0KCTCCsIz74hSkG5/USJiw7al1eZxorF2gOBuUskPBIWhXTGlMNao1FxxEYFkAG+rUM/GxgMFyXNjPh1lMwSJXQqBW/Bg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733166055; c=relaxed/relaxed;
-	bh=d7Dg5ghuAbBEW1Nv3XDqRSx9A0xLUVIDsiHV3xpe5VI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=idUPz9ThT+8YPYH5ffLmzWwTiXBUkJMnGZz+p2LdpUnMy86hsTsA5mXcH4ywOV4SZzZ4Jhk/FwSD+OR2mhIq6YKbuj3GSsi0JWwZt41MFe46XVq7BMLjEzZ8oueIyWRtaM2g58O+dC+7FpL45fAcOIY7Of8Vgy5kTKHxenYxZOVitsifVzFWL4pJVCTPqCIreyriksMBc16nF49MrbgUN7Tf8AONXF0BqPrm8QoMVKe28kEO6yiD8JkyKVhO3UQxxIxRl+0Gs+YEDlvzS1JhLoJ4mHWgQMRICZw7mWFJfe2O688fLhcIUmSvuxuflP0wbWdcukAnCYAJCxeYczVXrQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=btGY7MOa; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=btGY7MOa;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+	t=1733168414; c=relaxed/relaxed;
+	bh=GxWx/ImMxijSEMW2+adxnLk8MtVXLFXdEHTKFu9A7Wc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JUlCkIEw/sa1Ngmarw1SDxcyHO5gR6H153w57QqZ+I7/TUS3EGrIYiHy6MMuhzOXvvRj1adCpgZINaieL7i91/2lP0mGgmX+1NfXKx4ydS0LTOIS6RT2+zmsB8xMmYDwsckfEgzHDmzcrvH79jlNtG8KfYNZBRyWmgJkaZXGCd9m0aq6qvvauo+Jn2TG/aCilDT0vhZU5JHPDdtxlt0wswv045g6u9IbGhxDH7wBHRXbpWlAnnJHEF+KiCvOD3oGipVr5FcsfG06SKPrWr+2W5SIkRxnWazYpLkO5DkCiZM1VbOAVmN1aUseQqDDLeU0E9H5XVYKlVIol5ZWfQUXoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=6pif=s3=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=6pif=s3=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2CmQ0fsLz2ysX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 06:00:54 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1733166038;
-	bh=6f4mNkpvqRUUeyyo/NJcoh7bQ9hdy8tWinO29V+C6p4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=btGY7MOaNEAELCcGQDyjd+njX9nVHFypYDtpB/GQKbJV1iIi5gtyX6lfQLN7FWOuO
-	 bRv+xU7gwx500gh/9MMVmfaAtXQQ8JGkfIy68gIH6SKOtmJKqw+r0n4opaFZwZlINv
-	 6+f7CdANi7p7PQi79BD4w4Iln7oPIuGuojs0Y12Y=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 02 Dec 2024 20:00:40 +0100
-Subject: [PATCH 5/5] scsi: arcmsr: Use BIN_ATTR_ADMIN_WO() for
- bin_attribute definitions
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2Ddm26VZz2yw2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 06:40:12 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 8E0C15C67FC;
+	Mon,  2 Dec 2024 19:39:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E62EC4CED1;
+	Mon,  2 Dec 2024 19:40:07 +0000 (UTC)
+Date: Mon, 2 Dec 2024 14:41:11 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, Masami
+ Hiramatsu <mhiramat@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, "Naveen N. Rao"
+ <naveen@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] selftests/ftrace: adjust offset for kprobe syntax
+ error test
+Message-ID: <20241202144111.75d1bb3b@gandalf.local.home>
+In-Reply-To: <20241129202621.721159-1-hbathini@linux.ibm.com>
+References: <20241129202621.721159-1-hbathini@linux.ibm.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,186 +56,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241202-sysfs-const-bin_attr-admin_wo-v1-5-f489116210bf@weissschuh.net>
-References: <20241202-sysfs-const-bin_attr-admin_wo-v1-0-f489116210bf@weissschuh.net>
-In-Reply-To: <20241202-sysfs-const-bin_attr-admin_wo-v1-0-f489116210bf@weissschuh.net>
-To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Tzung-Bi Shih <tzungbi@kernel.org>, Brian Norris <briannorris@chromium.org>, 
- Julius Werner <jwerner@chromium.org>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, chrome-platform@lists.linux.dev, 
- linux-scsi@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733166036; l=5414;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=6f4mNkpvqRUUeyyo/NJcoh7bQ9hdy8tWinO29V+C6p4=;
- b=X+0t7vXFXcE/fxGdmCbWy1dFY2LlFh9Er23M7zOt4ShPWbyx8SOdqDkvlV+lJJOf3qu+NW089
- pkVCKYBLt9UDGRGnD6yU5YvE+wYS5X+ZbLLkLjH9v7kC4Ht9hxJJQuG
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.8 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Using the macro saves some lines of code and prepares the attributes for
-the general constifications of struct bin_attributes.
+On Sat, 30 Nov 2024 01:56:21 +0530
+Hari Bathini <hbathini@linux.ibm.com> wrote:
 
-While at it also constify the callback parameters.
+> In 'NOFENTRY_ARGS' test case for syntax check, any offset X of
+> `vfs_read+X` except function entry offset (0) fits the criterion,
+> even if that offset is not at instruction boundary, as the parser
+> comes before probing. But with "ENDBR64" instruction on x86, offset
+> 4 is treated as function entry. So, X can't be 4 as well. Thus, 8
+> was used as offset for the test case. On 64-bit powerpc though, any
+> offset <= 16 can be considered function entry depending on build
+> configuration (see arch_kprobe_on_func_entry() for implementation
+> details). So, use `vfs_read+20` to accommodate that scenario too.
+> 
+> Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/scsi/arcmsr/arcmsr_attr.c | 73 ++++++++++++++-------------------------
- 1 file changed, 26 insertions(+), 47 deletions(-)
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-diff --git a/drivers/scsi/arcmsr/arcmsr_attr.c b/drivers/scsi/arcmsr/arcmsr_attr.c
-index baeb5e79569026f1af6612705689219bb4a7052f..af7750b551910b06254e443c25bebf323e29f162 100644
---- a/drivers/scsi/arcmsr/arcmsr_attr.c
-+++ b/drivers/scsi/arcmsr/arcmsr_attr.c
-@@ -58,11 +58,11 @@
- #include <scsi/scsi_transport.h>
- #include "arcmsr.h"
- 
--static ssize_t arcmsr_sysfs_iop_message_read(struct file *filp,
--					     struct kobject *kobj,
--					     struct bin_attribute *bin,
--					     char *buf, loff_t off,
--					     size_t count)
-+static ssize_t mu_read_read(struct file *filp,
-+			    struct kobject *kobj,
-+			    const struct bin_attribute *bin,
-+			    char *buf, loff_t off,
-+			    size_t count)
- {
- 	struct device *dev = container_of(kobj,struct device,kobj);
- 	struct Scsi_Host *host = class_to_shost(dev);
-@@ -105,11 +105,11 @@ static ssize_t arcmsr_sysfs_iop_message_read(struct file *filp,
- 	return allxfer_len;
- }
- 
--static ssize_t arcmsr_sysfs_iop_message_write(struct file *filp,
--					      struct kobject *kobj,
--					      struct bin_attribute *bin,
--					      char *buf, loff_t off,
--					      size_t count)
-+static ssize_t mu_write_write(struct file *filp,
-+			      struct kobject *kobj,
-+			      const struct bin_attribute *bin,
-+			      char *buf, loff_t off,
-+			      size_t count)
- {
- 	struct device *dev = container_of(kobj,struct device,kobj);
- 	struct Scsi_Host *host = class_to_shost(dev);
-@@ -153,11 +153,11 @@ static ssize_t arcmsr_sysfs_iop_message_write(struct file *filp,
- 	}
- }
- 
--static ssize_t arcmsr_sysfs_iop_message_clear(struct file *filp,
--					      struct kobject *kobj,
--					      struct bin_attribute *bin,
--					      char *buf, loff_t off,
--					      size_t count)
-+static ssize_t mu_clear_write(struct file *filp,
-+			      struct kobject *kobj,
-+			      const struct bin_attribute *bin,
-+			      char *buf, loff_t off,
-+			      size_t count)
- {
- 	struct device *dev = container_of(kobj,struct device,kobj);
- 	struct Scsi_Host *host = class_to_shost(dev);
-@@ -188,58 +188,37 @@ static ssize_t arcmsr_sysfs_iop_message_clear(struct file *filp,
- 	return 1;
- }
- 
--static const struct bin_attribute arcmsr_sysfs_message_read_attr = {
--	.attr = {
--		.name = "mu_read",
--		.mode = S_IRUSR ,
--	},
--	.size = ARCMSR_API_DATA_BUFLEN,
--	.read = arcmsr_sysfs_iop_message_read,
--};
-+static const BIN_ATTR_ADMIN_RO(mu_read, ARCMSR_API_DATA_BUFLEN);
- 
--static const struct bin_attribute arcmsr_sysfs_message_write_attr = {
--	.attr = {
--		.name = "mu_write",
--		.mode = S_IWUSR,
--	},
--	.size = ARCMSR_API_DATA_BUFLEN,
--	.write = arcmsr_sysfs_iop_message_write,
--};
-+static const BIN_ATTR_ADMIN_WO(mu_write, ARCMSR_API_DATA_BUFLEN);
- 
--static const struct bin_attribute arcmsr_sysfs_message_clear_attr = {
--	.attr = {
--		.name = "mu_clear",
--		.mode = S_IWUSR,
--	},
--	.size = 1,
--	.write = arcmsr_sysfs_iop_message_clear,
--};
-+static const BIN_ATTR_ADMIN_WO(mu_clear, 1);
- 
- int arcmsr_alloc_sysfs_attr(struct AdapterControlBlock *acb)
- {
- 	struct Scsi_Host *host = acb->host;
- 	int error;
- 
--	error = sysfs_create_bin_file(&host->shost_dev.kobj, &arcmsr_sysfs_message_read_attr);
-+	error = sysfs_create_bin_file(&host->shost_dev.kobj, &bin_attr_mu_read);
- 	if (error) {
- 		printk(KERN_ERR "arcmsr: alloc sysfs mu_read failed\n");
- 		goto error_bin_file_message_read;
- 	}
--	error = sysfs_create_bin_file(&host->shost_dev.kobj, &arcmsr_sysfs_message_write_attr);
-+	error = sysfs_create_bin_file(&host->shost_dev.kobj, &bin_attr_mu_write);
- 	if (error) {
- 		printk(KERN_ERR "arcmsr: alloc sysfs mu_write failed\n");
- 		goto error_bin_file_message_write;
- 	}
--	error = sysfs_create_bin_file(&host->shost_dev.kobj, &arcmsr_sysfs_message_clear_attr);
-+	error = sysfs_create_bin_file(&host->shost_dev.kobj, &bin_attr_mu_clear);
- 	if (error) {
- 		printk(KERN_ERR "arcmsr: alloc sysfs mu_clear failed\n");
- 		goto error_bin_file_message_clear;
- 	}
- 	return 0;
- error_bin_file_message_clear:
--	sysfs_remove_bin_file(&host->shost_dev.kobj, &arcmsr_sysfs_message_write_attr);
-+	sysfs_remove_bin_file(&host->shost_dev.kobj, &bin_attr_mu_write);
- error_bin_file_message_write:
--	sysfs_remove_bin_file(&host->shost_dev.kobj, &arcmsr_sysfs_message_read_attr);
-+	sysfs_remove_bin_file(&host->shost_dev.kobj, &bin_attr_mu_read);
- error_bin_file_message_read:
- 	return error;
- }
-@@ -248,9 +227,9 @@ void arcmsr_free_sysfs_attr(struct AdapterControlBlock *acb)
- {
- 	struct Scsi_Host *host = acb->host;
- 
--	sysfs_remove_bin_file(&host->shost_dev.kobj, &arcmsr_sysfs_message_clear_attr);
--	sysfs_remove_bin_file(&host->shost_dev.kobj, &arcmsr_sysfs_message_write_attr);
--	sysfs_remove_bin_file(&host->shost_dev.kobj, &arcmsr_sysfs_message_read_attr);
-+	sysfs_remove_bin_file(&host->shost_dev.kobj, &bin_attr_mu_clear);
-+	sysfs_remove_bin_file(&host->shost_dev.kobj, &bin_attr_mu_write);
-+	sysfs_remove_bin_file(&host->shost_dev.kobj, &bin_attr_mu_read);
- }
- 
- 
+Shuah,
 
--- 
-2.47.1
+Can you take this through your tree?
+
+Thanks,
+
+-- Steve
+
+> ---
+> 
+> Changes in v2:
+> * Use 20 as offset for all arches.
+> 
+> 
+>  .../selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc      | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
+> index a16c6a6f6055..8f1c58f0c239 100644
+> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
+> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
+> @@ -111,7 +111,7 @@ check_error 'p vfs_read $arg* ^$arg*'		# DOUBLE_ARGS
+>  if !grep -q 'kernel return probes support:' README; then
+>  check_error 'r vfs_read ^$arg*'			# NOFENTRY_ARGS
+>  fi
+> -check_error 'p vfs_read+8 ^$arg*'		# NOFENTRY_ARGS
+> +check_error 'p vfs_read+20 ^$arg*'		# NOFENTRY_ARGS
+>  check_error 'p vfs_read ^hoge'			# NO_BTFARG
+>  check_error 'p kfree ^$arg10'			# NO_BTFARG (exceed the number of parameters)
+>  check_error 'r kfree ^$retval'			# NO_RETVAL
 
 
