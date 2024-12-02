@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-3659-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3657-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F081E9DF883
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 02:22:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D33B9DF87D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 02:22:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y1mGC5j1Qz3029;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y1mGC0Ws8z2yyD;
 	Mon,  2 Dec 2024 12:21:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733102499;
-	cv=none; b=Yw+JLORZkMH/76H+I7yvwGJd3uHLED3zx3R70BY0YJ1+I5duzjBOVQewbZKSVblgfmbY874vxjH+9VbIps7fCD5I8rH5L1VBaZfPBOLPRHSKrWcZSRDt1yiOjaZVUkYM7uPxwjzb4A5Uvlz+2o78pLtdwoJ1bVRoAEf6ezLq+wukQybU9wRkB9SDy0Wx7XwbStsCXcRyjEVree6Ti0r+qN8V1lLMHddwJ2LiVneFH0v1I3yv0YPJW3CcNp2cNEE+vOzqaTbTZ/g6ppBHu0NI46Xj0pON9tul+3omO00eVgKhMrNK+N6JhbQ3aBW02fTJtNfbyWCdRbcbHlE5CmKTMw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733102498;
+	cv=none; b=liN1wyFflQw2SchLHfcybuJFqjsh3QYXRdjNPpfDhGj0EfGwQy4UfZUunxrDw8+3/vfBvWyYOlseBCrUI6le1hCA8xdJ5RXHKUbyhFusidU4vHP7BPCENpd410wlaIrAdVsyfCglwk61W7ZsOihadEpYvHgy0KHQwXHgKJTEKzyxzDQ9opuIxMvv7Z9Gezx+jdRkmT4uCi+ia8jayzsfMYKW1446wTF+FvfAAUdQErDF8La+BRlTH3m/9E/EnwUmR8GNHGml5bflEsN+Wihba7wL0mdhVqYYP2C+d9Chsb6dIq/2Qh0YWcqCgTgkhyCO7pA2cyNBixwd51NQwXMtpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733102499; c=relaxed/relaxed;
-	bh=dP9Q8WiKYK+Tv/oXOs7tjPJsNW6HTRNG6pcBPqFpMqI=;
+	t=1733102498; c=relaxed/relaxed;
+	bh=wqw32qv6NNAzFbqEMfxNd+2cUTIr7U7Wo7O4V8lcz5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxkCiNoNbkW8oMPjalhcjH5zGbxz63BcrG/bBr/1EYB0/CwonFylvjZVjRCiLsSAIhSz0HROoFQuSrUKi6SFjrae3EAthANR498oTw3CFiB/SWbpzZqtNbRDy2z6Jj6Rs9YEL4F/GxyVeh2r9Fju3ESsrasAhxUqK1sr7+jw6+PnjcmJWuaxvoDidcLvw0Fm6ubxOxNE1lgoEzu7P0NsIMdAmKesl+0V4W0ZrxjRCaycdm1IJr7rgj3/f/pNjkj4WVnoTF6Ei0hr14EUvo2KWABp4SNmpsmQ3NQ8MIuCOxWe5nQGDXMo+DSWHnmUb7+vrn5fAOcH01cKhCzsoed9bw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lp++4JFM; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=AzyLSKcyEvXULIZfMgLbBoKbuTOxKvDm3nI0V0UdF1Thtgsj8ADimm2ZrSDT6C4EYDcEHS13NjZxadpd+IY2eMvBTza4i3lCt9oQYV88nM/WR84xIYjDBjkaVpYts9M9bEO2O7HC4UF5sXJb1mizmmdc3SsxK472vTiW5R4GsMth0E9wL+5LuRvmRagCASStrrT8wv19F5Jt+QDe3E5L7+bBR5vgbpsEvAD1uNmCDjzWXMF7USrGPZq43TSHV8Rr/0OvwldlVUNFQYwEMdyVuqvsNSRT6JzjLP6wm2QPvQiZCF0rg2VOQL0tszqd7Jg2qBYwA+DYoOxZOnkTy9iA3w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mew14CNy; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lp++4JFM;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mew14CNy;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y1mG82gNkz2ymQ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 12:21:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y1mG85phDz2yng
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 12:21:36 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 8EAB9A40C3A;
-	Mon,  2 Dec 2024 01:19:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8991DC4CEDC;
+	by nyc.source.kernel.org (Postfix) with ESMTP id 0105BA40C51;
+	Mon,  2 Dec 2024 01:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3605C4CEE3;
 	Mon,  2 Dec 2024 01:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733102491;
-	bh=Dn8OPUmqXUFgSm05sfdBrF0SgZxvdAisWASqU8n0vXw=;
+	s=k20201202; t=1733102492;
+	bh=KUxurPuR7tri/rWwkEp1MLHm/TOAuwD8O1Sn0i1uUzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lp++4JFMLpH9I3j+N7X4mGk7IqNihJXyaZu8ZxseII6cgqU/oa/cZydjo8LsAZA1N
-	 Ncf9fvNYIv07qT7jj+WAJHn6aheiDtAYmCFHYNsDddnRfucJyWytkPhNgypU3yekoj
-	 jZnFC6NSqWH5T4RnVRG0G6W684Bs9zCyCsQ3alqDUffE989GndMjvLultW6liuFeZ6
-	 LGTdR2Gy+IybesqZswEm1OKj6xgou9Dmzrc6/lia+r+L3AyV7jumuH7g48i79Ygg/F
-	 F/E0DKnuu1FNZveiMF5Epqf06vY23um9/j6SBIQ7AwdcI+tVYWqxLwyUwIx2nnXlVh
-	 2UOrFtl+wevkA==
+	b=mew14CNy1lCNG18pX6nCOSSUkM7sygXeFSyi8VPEzxe0yG/lP4DT+LFSNqYSQxMuX
+	 5YhWQKvo9kdFy7jfWeRaMniXZoL9OzFPxmY9ovzXID0IKWZHzVmQio0O71xHl7S4xo
+	 nmtwrG5cg+yha+fcT2o1jO8G5NM/OosgTXW30Mr0bxe+uZnU1k9jZXex8oBObAmKBp
+	 fP0pN6NFW/CC8jEMKWDX63y7UEwISw8y4Pt8kB7SNJLnmFLf/0rBTS0ztTlM3EkJZ5
+	 ZGQUoS2SoQtEZyqDJ3yYGSCVbxe9iPu1hfdsQy4D7vBFFXM8GP/4reSAm9OnbDZuXb
+	 yMkp5GgBA1IQA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-arch@vger.kernel.org,
@@ -52,11 +52,10 @@ Cc: linux-arch@vger.kernel.org,
 	x86@kernel.org,
 	Zhihang Shao <zhihang.shao.iscas@gmail.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
-	Vinicius Peixoto <vpeixoto@lkcamp.dev>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH v2 08/12] lib/crc_kunit.c: add KUnit test suite for CRC library functions
-Date: Sun,  1 Dec 2024 17:20:52 -0800
-Message-ID: <20241202012056.209768-9-ebiggers@kernel.org>
+	Vinicius Peixoto <vpeixoto@lkcamp.dev>
+Subject: [PATCH v2 09/12] lib/crc16_kunit: delete obsolete crc16_kunit.c
+Date: Sun,  1 Dec 2024 17:20:53 -0800
+Message-ID: <20241202012056.209768-10-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241202012056.209768-1-ebiggers@kernel.org>
 References: <20241202012056.209768-1-ebiggers@kernel.org>
@@ -80,521 +79,220 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Add a KUnit test suite for the crc16, crc_t10dif, crc32_le, crc32_be,
-crc32c, and crc64_be library functions.  It avoids code duplication by
-sharing most logic among all CRC variants.  The test suite includes:
+This new test showed up in v6.13-rc1.  Delete it since it is being
+superseded by crc_kunit.c, which is more comprehensive (tests multiple
+CRC variants without duplicating code, includes a benchmark, etc.).
 
-- Differential fuzz test of each CRC function against a simple
-  bit-at-a-time reference implementation.
-- Test for CRC combination, when implemented by a CRC variant.
-- Optional benchmark of each CRC function with various data lengths.
-
-This is intended as a replacement for crc32test and crc16_kunit, as well
-as a new test for CRC variants which didn't previously have a test.
-
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Cc: Vinicius Peixoto <vpeixoto@lkcamp.dev>
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- lib/Kconfig.debug |  20 +++
- lib/Makefile      |   1 +
- lib/crc_kunit.c   | 435 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 456 insertions(+)
- create mode 100644 lib/crc_kunit.c
+ lib/Kconfig.debug |   9 ---
+ lib/Makefile      |   1 -
+ lib/crc16_kunit.c | 155 ----------------------------------------------
+ 3 files changed, 165 deletions(-)
+ delete mode 100644 lib/crc16_kunit.c
 
 diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index f3d723705879..d9b89dd3f6a0 100644
+index d9b89dd3f6a0..688dace36f36 100644
 --- a/lib/Kconfig.debug
 +++ b/lib/Kconfig.debug
-@@ -2836,10 +2836,30 @@ config HW_BREAKPOINT_KUNIT_TEST
+@@ -2876,19 +2876,10 @@ config USERCOPY_KUNIT_TEST
  	help
- 	  Tests for hw_breakpoint constraints accounting.
+ 	  This builds the "usercopy_kunit" module that runs sanity checks
+ 	  on the copy_to/from_user infrastructure, making sure basic
+ 	  user/kernel boundary testing is working.
  
- 	  If unsure, say N.
- 
-+config CRC_KUNIT_TEST
-+	tristate "KUnit tests for CRC functions" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	select CRC16
-+	select CRC_T10DIF
-+	select CRC32
-+	select CRC64
-+	help
-+	  Unit tests for the CRC library functions.
-+
-+	  This is intended to help people writing architecture-specific
-+	  optimized versions.  If unsure, say N.
-+
-+config CRC_BENCHMARK
-+	bool "Benchmark for the CRC functions"
-+	depends on CRC_KUNIT_TEST
-+	help
-+	  Include benchmarks in the KUnit test suite for the CRC functions.
-+
- config SIPHASH_KUNIT_TEST
- 	tristate "Perform selftest on siphash functions" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
- 	default KUNIT_ALL_TESTS
+-config CRC16_KUNIT_TEST
+-	tristate "KUnit tests for CRC16"
+-	depends on KUNIT
+-	default KUNIT_ALL_TESTS
+-	select CRC16
+-	help
+-	  Enable this option to run unit tests for the kernel's CRC16
+-	  implementation (<linux/crc16.h>).
+-
+ config TEST_UDELAY
+ 	tristate "udelay test driver"
  	help
+ 	  This builds the "udelay_test" module that helps to make sure
+ 	  that udelay() is working properly.
 diff --git a/lib/Makefile b/lib/Makefile
-index 6573163d24e4..ccd803d03e58 100644
+index ccd803d03e58..34f4d61e3cf7 100644
 --- a/lib/Makefile
 +++ b/lib/Makefile
-@@ -389,10 +389,11 @@ obj-$(CONFIG_STACKINIT_KUNIT_TEST) += stackinit_kunit.o
- CFLAGS_fortify_kunit.o += $(call cc-disable-warning, unsequenced)
- CFLAGS_fortify_kunit.o += $(call cc-disable-warning, stringop-overread)
- CFLAGS_fortify_kunit.o += $(call cc-disable-warning, stringop-truncation)
+@@ -392,11 +392,10 @@ CFLAGS_fortify_kunit.o += $(call cc-disable-warning, stringop-truncation)
  CFLAGS_fortify_kunit.o += $(DISABLE_STRUCTLEAK_PLUGIN)
  obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
-+obj-$(CONFIG_CRC_KUNIT_TEST) += crc_kunit.o
+ obj-$(CONFIG_CRC_KUNIT_TEST) += crc_kunit.o
  obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
  obj-$(CONFIG_USERCOPY_KUNIT_TEST) += usercopy_kunit.o
- obj-$(CONFIG_CRC16_KUNIT_TEST) += crc16_kunit.o
+-obj-$(CONFIG_CRC16_KUNIT_TEST) += crc16_kunit.o
  
  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
-diff --git a/lib/crc_kunit.c b/lib/crc_kunit.c
-new file mode 100644
-index 000000000000..6a61d4b5fd45
---- /dev/null
-+++ b/lib/crc_kunit.c
-@@ -0,0 +1,435 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Unit tests and benchmarks for the CRC library functions
-+ *
-+ * Copyright 2024 Google LLC
-+ *
-+ * Author: Eric Biggers <ebiggers@google.com>
-+ */
-+#include <kunit/test.h>
-+#include <linux/crc16.h>
-+#include <linux/crc-t10dif.h>
-+#include <linux/crc32.h>
-+#include <linux/crc32c.h>
-+#include <linux/crc64.h>
-+#include <linux/prandom.h>
-+#include <linux/vmalloc.h>
-+
-+#define CRC_KUNIT_SEED			42
-+#define CRC_KUNIT_MAX_LEN		16384
-+#define CRC_KUNIT_NUM_TEST_ITERS	1000
-+
-+static struct rnd_state rng;
-+static u8 *test_buffer;
-+static size_t test_buflen;
-+
-+/**
-+ * struct crc_variant - describes a CRC variant
-+ * @bits: Number of bits in the CRC, 1 <= @bits <= 64.
-+ * @le: true if it's a "little endian" CRC (reversed mapping between bits and
-+ *	polynomial coefficients in each byte), false if it's a "big endian" CRC
-+ *	(natural mapping between bits and polynomial coefficients in each byte)
-+ * @poly: The generator polynomial with the highest-order term omitted.
-+ *	  Bit-reversed if @le is true.
-+ * @func: The function to compute a CRC.  The type signature uses u64 so that it
-+ *	  can fit any CRC up to CRC-64.
-+ * @combine_func: Optional function to combine two CRCs.
-+ */
-+struct crc_variant {
-+	int bits;
-+	bool le;
-+	u64 poly;
-+	u64 (*func)(u64 crc, const u8 *p, size_t len);
-+	u64 (*combine_func)(u64 crc1, u64 crc2, size_t len2);
-+};
-+
-+static u32 rand32(void)
-+{
-+	return prandom_u32_state(&rng);
-+}
-+
-+static u64 rand64(void)
-+{
-+	u32 n = rand32();
-+
-+	return ((u64)n << 32) | rand32();
-+}
-+
-+static u64 crc_mask(const struct crc_variant *v)
-+{
-+	return (u64)-1 >> (64 - v->bits);
-+}
-+
-+/* Reference implementation of any CRC variant */
-+static u64 crc_ref(const struct crc_variant *v,
-+		   u64 crc, const u8 *p, size_t len)
-+{
-+	size_t i, j;
-+
-+	for (i = 0; i < len; i++) {
-+		for (j = 0; j < 8; j++) {
-+			if (v->le) {
-+				crc ^= (p[i] >> j) & 1;
-+				crc = (crc >> 1) ^ ((crc & 1) ? v->poly : 0);
-+			} else {
-+				crc ^= (u64)((p[i] >> (7 - j)) & 1) <<
-+				       (v->bits - 1);
-+				if (crc & (1ULL << (v->bits - 1)))
-+					crc = ((crc << 1) ^ v->poly) &
-+					      crc_mask(v);
-+				else
-+					crc <<= 1;
-+			}
-+		}
-+	}
-+	return crc;
-+}
-+
-+static int crc_suite_init(struct kunit_suite *suite)
-+{
-+	/*
-+	 * Allocate the test buffer using vmalloc() with a page-aligned length
-+	 * so that it is immediately followed by a guard page.  This allows
-+	 * buffer overreads to be detected, even in assembly code.
-+	 */
-+	test_buflen = round_up(CRC_KUNIT_MAX_LEN, PAGE_SIZE);
-+	test_buffer = vmalloc(test_buflen);
-+	if (!test_buffer)
-+		return -ENOMEM;
-+
-+	prandom_seed_state(&rng, CRC_KUNIT_SEED);
-+	prandom_bytes_state(&rng, test_buffer, test_buflen);
-+	return 0;
-+}
-+
-+static void crc_suite_exit(struct kunit_suite *suite)
-+{
-+	vfree(test_buffer);
-+	test_buffer = NULL;
-+}
-+
-+/* Generate a random initial CRC. */
-+static u64 generate_random_initial_crc(const struct crc_variant *v)
-+{
-+	switch (rand32() % 4) {
-+	case 0:
-+		return 0;
-+	case 1:
-+		return crc_mask(v); /* All 1 bits */
-+	default:
-+		return rand64() & crc_mask(v);
-+	}
-+}
-+
-+/* Generate a random length, preferring small lengths. */
-+static size_t generate_random_length(size_t max_length)
-+{
-+	size_t len;
-+
-+	switch (rand32() % 3) {
-+	case 0:
-+		len = rand32() % 128;
-+		break;
-+	case 1:
-+		len = rand32() % 3072;
-+		break;
-+	default:
-+		len = rand32();
-+		break;
-+	}
-+	return len % (max_length + 1);
-+}
-+
-+/* Test that v->func gives the same CRCs as a reference implementation. */
-+static void crc_main_test(struct kunit *test, const struct crc_variant *v)
-+{
-+	size_t i;
-+
-+	for (i = 0; i < CRC_KUNIT_NUM_TEST_ITERS; i++) {
-+		u64 init_crc, expected_crc, actual_crc;
-+		size_t len, offset;
-+		bool nosimd;
-+
-+		init_crc = generate_random_initial_crc(v);
-+		len = generate_random_length(CRC_KUNIT_MAX_LEN);
-+
-+		/* Generate a random offset. */
-+		if (rand32() % 2 == 0) {
-+			/* Use a random alignment mod 64 */
-+			offset = rand32() % 64;
-+			offset = min(offset, CRC_KUNIT_MAX_LEN - len);
-+		} else {
-+			/* Go up to the guard page, to catch buffer overreads */
-+			offset = test_buflen - len;
-+		}
-+
-+		if (rand32() % 8 == 0)
-+			/* Refresh the data occasionally. */
-+			prandom_bytes_state(&rng, &test_buffer[offset], len);
-+
-+		nosimd = rand32() % 8 == 0;
-+
-+		/*
-+		 * Compute the CRC, and verify that it equals the CRC computed
-+		 * by a simple bit-at-a-time reference implementation.
-+		 */
-+		expected_crc = crc_ref(v, init_crc, &test_buffer[offset], len);
-+		if (nosimd)
-+			local_irq_disable();
-+		actual_crc = v->func(init_crc, &test_buffer[offset], len);
-+		if (nosimd)
-+			local_irq_enable();
-+		KUNIT_EXPECT_EQ_MSG(test, expected_crc, actual_crc,
-+				    "Wrong result with len=%zu offset=%zu nosimd=%d",
-+				    len, offset, nosimd);
-+	}
-+}
-+
-+/* Test that CRC(concat(A, B)) == combine_CRCs(CRC(A), CRC(B), len(B)). */
-+static void crc_combine_test(struct kunit *test, const struct crc_variant *v)
-+{
-+	int i;
-+
-+	for (i = 0; i < 100; i++) {
-+		u64 init_crc = generate_random_initial_crc(v);
-+		size_t len1 = generate_random_length(CRC_KUNIT_MAX_LEN);
-+		size_t len2 = generate_random_length(CRC_KUNIT_MAX_LEN - len1);
-+		u64 crc1, crc2, expected_crc, actual_crc;
-+
-+		prandom_bytes_state(&rng, test_buffer, len1 + len2);
-+		crc1 = v->func(init_crc, test_buffer, len1);
-+		crc2 = v->func(0, &test_buffer[len1], len2);
-+		expected_crc = v->func(init_crc, test_buffer, len1 + len2);
-+		actual_crc = v->combine_func(crc1, crc2, len2);
-+		KUNIT_EXPECT_EQ_MSG(test, expected_crc, actual_crc,
-+				    "CRC combination gave wrong result with len1=%zu len2=%zu\n",
-+				    len1, len2);
-+	}
-+}
-+
-+static void crc_test(struct kunit *test, const struct crc_variant *v)
-+{
-+	crc_main_test(test, v);
-+	if (v->combine_func)
-+		crc_combine_test(test, v);
-+}
-+
-+static __always_inline void
-+crc_benchmark(struct kunit *test,
-+	      u64 (*crc_func)(u64 crc, const u8 *p, size_t len))
-+{
-+	static const size_t lens_to_test[] = {
-+		1, 16, 64, 127, 128, 200, 256, 511, 512, 1024, 3173, 4096, 16384,
-+	};
-+	size_t len, i, j, num_iters;
-+	/*
-+	 * Some of the CRC library functions are marked as __pure, so use
-+	 * volatile to ensure that all calls are really made as intended.
-+	 */
-+	volatile u64 crc = 0;
-+	u64 t;
-+
-+	if (!IS_ENABLED(CONFIG_CRC_BENCHMARK))
-+		kunit_skip(test, "not enabled");
-+
-+	/* warm-up */
-+	for (i = 0; i < 10000000; i += CRC_KUNIT_MAX_LEN)
-+		crc = crc_func(crc, test_buffer, CRC_KUNIT_MAX_LEN);
-+
-+	for (i = 0; i < ARRAY_SIZE(lens_to_test); i++) {
-+		len = lens_to_test[i];
-+		KUNIT_ASSERT_LE(test, len, CRC_KUNIT_MAX_LEN);
-+		num_iters = 10000000 / (len + 128);
-+		preempt_disable();
-+		t = ktime_get_ns();
-+		for (j = 0; j < num_iters; j++)
-+			crc = crc_func(crc, test_buffer, len);
-+		t = ktime_get_ns() - t;
-+		preempt_enable();
-+		kunit_info(test, "len=%zu: %llu MB/s\n",
-+			   len, div64_u64((u64)len * num_iters * 1000, t));
-+	}
-+}
-+
-+/* crc16 */
-+
-+static u64 crc16_wrapper(u64 crc, const u8 *p, size_t len)
-+{
-+	return crc16(crc, p, len);
-+}
-+
-+static const struct crc_variant crc_variant_crc16 = {
-+	.bits = 16,
-+	.le = true,
-+	.poly = 0xa001,
-+	.func = crc16_wrapper,
-+};
-+
-+static void crc16_test(struct kunit *test)
-+{
-+	crc_test(test, &crc_variant_crc16);
-+}
-+
-+static void crc16_benchmark(struct kunit *test)
-+{
-+	crc_benchmark(test, crc16_wrapper);
-+}
-+
-+/* crc_t10dif */
-+
-+static u64 crc_t10dif_wrapper(u64 crc, const u8 *p, size_t len)
-+{
-+	return crc_t10dif_update(crc, p, len);
-+}
-+
-+static const struct crc_variant crc_variant_crc_t10dif = {
-+	.bits = 16,
-+	.le = false,
-+	.poly = 0x8bb7,
-+	.func = crc_t10dif_wrapper,
-+};
-+
-+static void crc_t10dif_test(struct kunit *test)
-+{
-+	crc_test(test, &crc_variant_crc_t10dif);
-+}
-+
-+static void crc_t10dif_benchmark(struct kunit *test)
-+{
-+	crc_benchmark(test, crc_t10dif_wrapper);
-+}
-+
-+/* crc32_le */
-+
-+static u64 crc32_le_wrapper(u64 crc, const u8 *p, size_t len)
-+{
-+	return crc32_le(crc, p, len);
-+}
-+
-+static u64 crc32_le_combine_wrapper(u64 crc1, u64 crc2, size_t len2)
-+{
-+	return crc32_le_combine(crc1, crc2, len2);
-+}
-+
-+static const struct crc_variant crc_variant_crc32_le = {
-+	.bits = 32,
-+	.le = true,
-+	.poly = 0xedb88320,
-+	.func = crc32_le_wrapper,
-+	.combine_func = crc32_le_combine_wrapper,
-+};
-+
-+static void crc32_le_test(struct kunit *test)
-+{
-+	crc_test(test, &crc_variant_crc32_le);
-+}
-+
-+static void crc32_le_benchmark(struct kunit *test)
-+{
-+	crc_benchmark(test, crc32_le_wrapper);
-+}
-+
-+/* crc32_be */
-+
-+static u64 crc32_be_wrapper(u64 crc, const u8 *p, size_t len)
-+{
-+	return crc32_be(crc, p, len);
-+}
-+
-+static const struct crc_variant crc_variant_crc32_be = {
-+	.bits = 32,
-+	.le = false,
-+	.poly = 0x04c11db7,
-+	.func = crc32_be_wrapper,
-+};
-+
-+static void crc32_be_test(struct kunit *test)
-+{
-+	crc_test(test, &crc_variant_crc32_be);
-+}
-+
-+static void crc32_be_benchmark(struct kunit *test)
-+{
-+	crc_benchmark(test, crc32_be_wrapper);
-+}
-+
-+/* crc32c */
-+
-+static u64 crc32c_wrapper(u64 crc, const u8 *p, size_t len)
-+{
-+	return crc32c(crc, p, len);
-+}
-+
-+static u64 crc32c_combine_wrapper(u64 crc1, u64 crc2, size_t len2)
-+{
-+	return __crc32c_le_combine(crc1, crc2, len2);
-+}
-+
-+static const struct crc_variant crc_variant_crc32c = {
-+	.bits = 32,
-+	.le = true,
-+	.poly = 0x82f63b78,
-+	.func = crc32c_wrapper,
-+	.combine_func = crc32c_combine_wrapper,
-+};
-+
-+static void crc32c_test(struct kunit *test)
-+{
-+	crc_test(test, &crc_variant_crc32c);
-+}
-+
-+static void crc32c_benchmark(struct kunit *test)
-+{
-+	crc_benchmark(test, crc32c_wrapper);
-+}
-+
-+/* crc64_be */
-+
-+static u64 crc64_be_wrapper(u64 crc, const u8 *p, size_t len)
-+{
-+	return crc64_be(crc, p, len);
-+}
-+
-+static const struct crc_variant crc_variant_crc64_be = {
-+	.bits = 64,
-+	.le = false,
-+	.poly = 0x42f0e1eba9ea3693,
-+	.func = crc64_be_wrapper,
-+};
-+
-+static void crc64_be_test(struct kunit *test)
-+{
-+	crc_test(test, &crc_variant_crc64_be);
-+}
-+
-+static void crc64_be_benchmark(struct kunit *test)
-+{
-+	crc_benchmark(test, crc64_be_wrapper);
-+}
-+
-+static struct kunit_case crc_test_cases[] = {
-+	KUNIT_CASE(crc16_test),
-+	KUNIT_CASE(crc16_benchmark),
-+	KUNIT_CASE(crc_t10dif_test),
-+	KUNIT_CASE(crc_t10dif_benchmark),
-+	KUNIT_CASE(crc32_le_test),
-+	KUNIT_CASE(crc32_le_benchmark),
-+	KUNIT_CASE(crc32_be_test),
-+	KUNIT_CASE(crc32_be_benchmark),
-+	KUNIT_CASE(crc32c_test),
-+	KUNIT_CASE(crc32c_benchmark),
-+	KUNIT_CASE(crc64_be_test),
-+	KUNIT_CASE(crc64_be_benchmark),
-+	{},
-+};
-+
-+static struct kunit_suite crc_test_suite = {
-+	.name = "crc",
-+	.test_cases = crc_test_cases,
-+	.suite_init = crc_suite_init,
-+	.suite_exit = crc_suite_exit,
-+};
-+kunit_test_suite(crc_test_suite);
-+
-+MODULE_DESCRIPTION("Unit tests and benchmarks for the CRC library functions");
-+MODULE_LICENSE("GPL");
+ 
+ obj-$(CONFIG_FIRMWARE_TABLE) += fw_table.o
+ 
+diff --git a/lib/crc16_kunit.c b/lib/crc16_kunit.c
+deleted file mode 100644
+index 0918c98a96d2..000000000000
+--- a/lib/crc16_kunit.c
++++ /dev/null
+@@ -1,155 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- * KUnits tests for CRC16.
+- *
+- * Copyright (C) 2024, LKCAMP
+- * Author: Vinicius Peixoto <vpeixoto@lkcamp.dev>
+- * Author: Fabricio Gasperin <fgasperin@lkcamp.dev>
+- * Author: Enzo Bertoloti <ebertoloti@lkcamp.dev>
+- */
+-#include <kunit/test.h>
+-#include <linux/crc16.h>
+-#include <linux/prandom.h>
+-
+-#define CRC16_KUNIT_DATA_SIZE 4096
+-#define CRC16_KUNIT_TEST_SIZE 100
+-#define CRC16_KUNIT_SEED 0x12345678
+-
+-/**
+- * struct crc16_test - CRC16 test data
+- * @crc: initial input value to CRC16
+- * @start: Start index within the data buffer
+- * @length: Length of the data
+- */
+-static struct crc16_test {
+-	u16 crc;
+-	u16 start;
+-	u16 length;
+-} tests[CRC16_KUNIT_TEST_SIZE];
+-
+-u8 data[CRC16_KUNIT_DATA_SIZE];
+-
+-
+-/* Naive implementation of CRC16 for validation purposes */
+-static inline u16 _crc16_naive_byte(u16 crc, u8 data)
+-{
+-	u8 i = 0;
+-
+-	crc ^= (u16) data;
+-	for (i = 0; i < 8; i++) {
+-		if (crc & 0x01)
+-			crc = (crc >> 1) ^ 0xa001;
+-		else
+-			crc = crc >> 1;
+-	}
+-
+-	return crc;
+-}
+-
+-
+-static inline u16 _crc16_naive(u16 crc, u8 *buffer, size_t len)
+-{
+-	while (len--)
+-		crc = _crc16_naive_byte(crc, *buffer++);
+-	return crc;
+-}
+-
+-
+-/* Small helper for generating pseudorandom 16-bit data */
+-static inline u16 _rand16(void)
+-{
+-	static u32 rand = CRC16_KUNIT_SEED;
+-
+-	rand = next_pseudo_random32(rand);
+-	return rand & 0xFFFF;
+-}
+-
+-
+-static int crc16_init_test_data(struct kunit_suite *suite)
+-{
+-	size_t i;
+-
+-	/* Fill the data buffer with random bytes */
+-	for (i = 0; i < CRC16_KUNIT_DATA_SIZE; i++)
+-		data[i] = _rand16() & 0xFF;
+-
+-	/* Generate random test data while ensuring the random
+-	 * start + length values won't overflow the 4096-byte
+-	 * buffer (0x7FF * 2 = 0xFFE < 0x1000)
+-	 */
+-	for (size_t i = 0; i < CRC16_KUNIT_TEST_SIZE; i++) {
+-		tests[i].crc = _rand16();
+-		tests[i].start = _rand16() & 0x7FF;
+-		tests[i].length = _rand16() & 0x7FF;
+-	}
+-
+-	return 0;
+-}
+-
+-static void crc16_test_empty(struct kunit *test)
+-{
+-	u16 crc;
+-
+-	/* The result for empty data should be the same as the
+-	 * initial crc
+-	 */
+-	crc = crc16(0x00, data, 0);
+-	KUNIT_EXPECT_EQ(test, crc, 0);
+-	crc = crc16(0xFF, data, 0);
+-	KUNIT_EXPECT_EQ(test, crc, 0xFF);
+-}
+-
+-static void crc16_test_correctness(struct kunit *test)
+-{
+-	size_t i;
+-	u16 crc, crc_naive;
+-
+-	for (i = 0; i < CRC16_KUNIT_TEST_SIZE; i++) {
+-		/* Compare results with the naive crc16 implementation */
+-		crc = crc16(tests[i].crc, data + tests[i].start,
+-			    tests[i].length);
+-		crc_naive = _crc16_naive(tests[i].crc, data + tests[i].start,
+-					 tests[i].length);
+-		KUNIT_EXPECT_EQ(test, crc, crc_naive);
+-	}
+-}
+-
+-
+-static void crc16_test_combine(struct kunit *test)
+-{
+-	size_t i, j;
+-	u16 crc, crc_naive;
+-
+-	/* Make sure that combining two consecutive crc16 calculations
+-	 * yields the same result as calculating the crc16 for the whole thing
+-	 */
+-	for (i = 0; i < CRC16_KUNIT_TEST_SIZE; i++) {
+-		crc_naive = crc16(tests[i].crc, data + tests[i].start, tests[i].length);
+-		for (j = 0; j < tests[i].length; j++) {
+-			crc = crc16(tests[i].crc, data + tests[i].start, j);
+-			crc = crc16(crc, data + tests[i].start + j, tests[i].length - j);
+-			KUNIT_EXPECT_EQ(test, crc, crc_naive);
+-		}
+-	}
+-}
+-
+-
+-static struct kunit_case crc16_test_cases[] = {
+-	KUNIT_CASE(crc16_test_empty),
+-	KUNIT_CASE(crc16_test_combine),
+-	KUNIT_CASE(crc16_test_correctness),
+-	{},
+-};
+-
+-static struct kunit_suite crc16_test_suite = {
+-	.name = "crc16",
+-	.test_cases = crc16_test_cases,
+-	.suite_init = crc16_init_test_data,
+-};
+-kunit_test_suite(crc16_test_suite);
+-
+-MODULE_AUTHOR("Fabricio Gasperin <fgasperin@lkcamp.dev>");
+-MODULE_AUTHOR("Vinicius Peixoto <vpeixoto@lkcamp.dev>");
+-MODULE_AUTHOR("Enzo Bertoloti <ebertoloti@lkcamp.dev>");
+-MODULE_DESCRIPTION("Unit tests for crc16");
+-MODULE_LICENSE("GPL");
 -- 
 2.47.1
 
