@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-3651-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3652-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C312B9DF868
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 02:21:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B8E9DF86E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 02:21:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y1mG65w0Tz2yhR;
-	Mon,  2 Dec 2024 12:21:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y1mG74Yrmz2yVD;
+	Mon,  2 Dec 2024 12:21:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733102494;
-	cv=none; b=C+iMvWxrp+O+NKzMOyXNQWACsjBwufhoT9wbPpCGvzXFiTnp2GB3ZZwzhXInUJt1G30fp3rKM03j4JS7bTM/ZizkItz1wbiuqfPuULmKUTwzFw/uuZ9hqP4juOj0b13Y+NefOifGjzv+AXtfBsYjG7TaLTh0FamUCCumjWxx3yi2JLtQwOirbu6tqUnuIrj1zD2jEYsoV2HqGAYOc59RPzm9+GFBDhNZIaeBBHpsFn4RZamn6wXcxAn3+RUBOiJsWvauP+5AstV5GWozjrJIXjvhrOuIXCeDNKbzQwKFi6+sqOcFy7NM3dj+pB8Uh5+D09BIOCF6ehxAC2KA/tDH6A==
+	cv=none; b=dY0yqGzPoGF/HLZKIkI9UwdQ2t50FjUdPj7LoNkeeye2AxiEEWWkus6NkN4P8OgQZrrhQMXCLfMF9Il1X68kj2sXHROXeJlUWF7in+AmyQKmlpsxRRZ0OXxy5GzuixiLz8+znVA76n2kFd7j1XC38n/3U8HeLfuPFXm8tfNzrf1XO6HAXjUPRe2jVpGwnHXTCTNxk2GJsZodhEAz6wfzPpSjFq9x2+FQEKN4Mrrc8zYNo5Tp9r8dcBdgPSlNR9s5T68xN4OzWmZDwdjHoN8c58+wBoAHqon8zwhvFoLS9IaMfjq35C5Z2/6HvmD/aM64dBBmVDnt6Oh/toyygANZhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1733102494; c=relaxed/relaxed;
-	bh=ip5zHEkyUM7h2o++LoVpmSBFQRoTeMqChUEBfs6fBoU=;
+	bh=710RFBmGsjX2YG7fhFrhLJpisCuudrgWgQ6Gyze+LAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1xGrbz1gqgTAhj2ruyD76CngNi2yq7AC7CP3Kga+yViwyoGrMBU9mOiUsakkYVWx2Wi4md1h+j/OqR0jcQu2t4sy1pMQOPbYMYNsRfwYR4l0fuaAKQllbImUGE+IlUKI8KytlAyCDJc+yVGxmvF6xyxPmmv/f5EJ4eHij3P72qzSrRfvRIfmxMfeOGI9dnWhvxUchwseHdS1IRNGIduyletRXNdJobJtiKNmoS4maNaR4sCOGdmsrSrEjgNTf1cj1uspWS9qDmHJU04zunuVwxS9OYhX54BypyrmxfQ2XRKPZ6oa32Hyt/9wJJclTA7K7R/QZsjZmYrACC10zekCQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FPlVWXqS; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=avP5skMJ/ZQH2ToCnkMrXadeOV/85W9YT+LX3byQmIBX8nzm3m8LSGlqtIpUDOUARLWJBSLZ/F/yj1v7RAEsrSU3bUZ4se8xzvdqg9bqU3Es8eSVFiEztpGBNz/tg5yZiHPEi6/4B2gQ9qsKWNOMM60NUlvjNvOAdNRmcdg9L9uZED4OIMqKYoqo5nld1FXZTQ7OPTVlNH2OH83YlYUtyG5aRWvMnWj266X5mCqv2XBG+cuh43Hc3KndImcUrDbjEi2Zaf0G1+nF/CtB/TdG3bJAw14ZN8DxBDihwIMqJTUInG+vZlAa/Yu5bYkUr7cArE2thoBlTqtzy7jm3Ag00w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uai+Cmj9; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FPlVWXqS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uai+Cmj9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y1mG414Stz2yVd
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y1mG41BdCz2yVv
 	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 12:21:32 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 50C83A40C2E;
+	by nyc.source.kernel.org (Postfix) with ESMTP id 7FD21A40C31;
 	Mon,  2 Dec 2024 01:19:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE92C4CEDC;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81811C4CEE3;
 	Mon,  2 Dec 2024 01:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1733102489;
-	bh=DVKfdgkx+XQWnXd7S0Vc0JfNUBLYmfwnEAvdzQ4yAyk=;
+	bh=zOpYjUq7IQjKYIrBHyUZaVOUe0+fJqvMIlVQKF8tL0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FPlVWXqSkitqAzqYhZ2GDIeWs0qQ4N6kOao+XaK539fPu2WgSyqqKAjXzyRSCKiMX
-	 R13j+UAzuSqDFtPj+ykjxZQz1L+UsaMOfvu3G71McAVWhdhIQqB3n3uIcm49B2yzWE
-	 KUiPwbMfHNoK0U+ELSx7KLDkI+zYee5SkLXeyvDt09tJ0ws8Hs4l43ZR0SqxdqsVUl
-	 gJ9xelTxBnb8hVsnIkdqC/f+hh8QPGKTZNL4OW3GpUkjmdm49wxSoH2+7nURPOGn7w
-	 UY2axe7+UxRgGKpP7d4l3/h2ybImQnMDusQrrVdCZT3NoGyY1bsgPNj/3uz031TdD0
-	 3gCbpKqNl/1kA==
+	b=uai+Cmj9j4A5P2GS5WcQnAxocOeWsVEwvyY8SeucQw2OkVH3+H0ju+3XodE3WUhjm
+	 IetkN0BFtXZzJHJkKPm38BROhdzjnJvjZuVYNRz+oJi0J6p0EulS5ZZwtNZRZlW+JN
+	 YG6DKvPLc8JaIy9odQYgKTxJRIvsa3yRbyJ7t4POK/1jomC1TrH48M6UkYTYfEqWJN
+	 U+hIi40pO1eLq/Ux+3HDkDhigE4eo5RvPS8vFJrpsleYrm7Bm8UWy+FGd8ykUtigIT
+	 86HnhwIVcWZv7LwSRMVPNH1anQmBJw0pn5v7QyrdTNCXZQdif9jP8TPcHqCy1NYZgS
+	 lzwosfEA5MdKA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-arch@vger.kernel.org,
@@ -53,9 +53,9 @@ Cc: linux-arch@vger.kernel.org,
 	Zhihang Shao <zhihang.shao.iscas@gmail.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH v2 02/12] lib/crc-t10dif: add support for arch overrides
-Date: Sun,  1 Dec 2024 17:20:46 -0800
-Message-ID: <20241202012056.209768-3-ebiggers@kernel.org>
+Subject: [PATCH v2 03/12] crypto: crct10dif - expose arch-optimized lib function
+Date: Sun,  1 Dec 2024 17:20:47 -0800
+Message-ID: <20241202012056.209768-4-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241202012056.209768-1-ebiggers@kernel.org>
 References: <20241202012056.209768-1-ebiggers@kernel.org>
@@ -79,100 +79,168 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Following what was done for CRC32, add support for architecture-specific
-override of the CRC-T10DIF library.  This will allow the CRC-T10DIF
-library functions to access architecture-optimized code directly.
+Now that crc_t10dif_update() may be directly optimized for each
+architecture, make the shash driver for crct10dif register a
+crct10dif-$arch algorithm that uses it, instead of only
+crct10dif-generic which uses crc_t10dif_generic().
+
+The result is that architecture-optimized crct10dif will remain
+available through the shash API once the architectures implement
+crc_t10dif_arch() instead of the shash API.
 
 Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- include/linux/crc-t10dif.h | 12 ++++++++++++
- lib/Kconfig                | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+)
+ crypto/Makefile            |  1 +
+ crypto/crct10dif_generic.c | 82 +++++++++++++++++++++++++++++---------
+ 2 files changed, 65 insertions(+), 18 deletions(-)
 
-diff --git a/include/linux/crc-t10dif.h b/include/linux/crc-t10dif.h
-index 206ba2305483..16787c1cee21 100644
---- a/include/linux/crc-t10dif.h
-+++ b/include/linux/crc-t10dif.h
-@@ -5,18 +5,30 @@
- #include <linux/types.h>
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 0537df1719d3..ffd94c7f2643 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -156,10 +156,11 @@ obj-$(CONFIG_CRYPTO_MICHAEL_MIC) += michael_mic.o
+ obj-$(CONFIG_CRYPTO_CRC32C) += crc32c_generic.o
+ obj-$(CONFIG_CRYPTO_CRC32) += crc32_generic.o
+ CFLAGS_crc32c_generic.o += -DARCH=$(ARCH)
+ CFLAGS_crc32_generic.o += -DARCH=$(ARCH)
+ obj-$(CONFIG_CRYPTO_CRCT10DIF) += crct10dif_generic.o
++CFLAGS_crct10dif_generic.o += -DARCH=$(ARCH)
+ obj-$(CONFIG_CRYPTO_CRC64_ROCKSOFT) += crc64_rocksoft_generic.o
+ obj-$(CONFIG_CRYPTO_AUTHENC) += authenc.o authencesn.o
+ obj-$(CONFIG_CRYPTO_LZO) += lzo.o lzo-rle.o
+ obj-$(CONFIG_CRYPTO_LZ4) += lz4.o
+ obj-$(CONFIG_CRYPTO_LZ4HC) += lz4hc.o
+diff --git a/crypto/crct10dif_generic.c b/crypto/crct10dif_generic.c
+index e843982073bb..259cb01932cb 100644
+--- a/crypto/crct10dif_generic.c
++++ b/crypto/crct10dif_generic.c
+@@ -55,10 +55,19 @@ static int chksum_update(struct shash_desc *desc, const u8 *data,
  
- #define CRC_T10DIF_DIGEST_SIZE 2
- #define CRC_T10DIF_BLOCK_SIZE 1
- 
-+u16 crc_t10dif_arch(u16 crc, const u8 *p, size_t len);
- u16 crc_t10dif_generic(u16 crc, const u8 *p, size_t len);
- 
- static inline u16 crc_t10dif_update(u16 crc, const u8 *p, size_t len)
- {
-+	if (IS_ENABLED(CONFIG_CRC_T10DIF_ARCH))
-+		return crc_t10dif_arch(crc, p, len);
- 	return crc_t10dif_generic(crc, p, len);
+ 	ctx->crc = crc_t10dif_generic(ctx->crc, data, length);
+ 	return 0;
  }
  
- static inline u16 crc_t10dif(const u8 *p, size_t len)
- {
- 	return crc_t10dif_update(0, p, len);
- }
- 
-+#if IS_ENABLED(CONFIG_CRC_T10DIF_ARCH)
-+bool crc_t10dif_is_optimized(void);
-+#else
-+static inline bool crc_t10dif_is_optimized(void)
++static int chksum_update_arch(struct shash_desc *desc, const u8 *data,
++			      unsigned int length)
 +{
-+	return false;
++	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
++
++	ctx->crc = crc_t10dif_update(ctx->crc, data, length);
++	return 0;
 +}
-+#endif
 +
- #endif
-diff --git a/lib/Kconfig b/lib/Kconfig
-index be59f7cdf448..e52a38d8d783 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -159,10 +159,42 @@ config CRC_T10DIF
- 	help
- 	  This option is only needed if a module that's not in the
- 	  kernel tree needs to calculate CRC checks for use with the
- 	  SCSI data integrity subsystem.
+ static int chksum_final(struct shash_desc *desc, u8 *out)
+ {
+ 	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
  
-+config ARCH_HAS_CRC_T10DIF
-+	bool
+ 	*(__u16 *)out = ctx->crc;
+@@ -69,49 +78,86 @@ static int __chksum_finup(__u16 crc, const u8 *data, unsigned int len, u8 *out)
+ {
+ 	*(__u16 *)out = crc_t10dif_generic(crc, data, len);
+ 	return 0;
+ }
+ 
++static int __chksum_finup_arch(__u16 crc, const u8 *data, unsigned int len,
++			       u8 *out)
++{
++	*(__u16 *)out = crc_t10dif_update(crc, data, len);
++	return 0;
++}
 +
-+choice
-+	prompt "CRC-T10DIF implementation"
-+	depends on CRC_T10DIF
-+	default CRC_T10DIF_IMPL_ARCH if ARCH_HAS_CRC_T10DIF
-+	default CRC_T10DIF_IMPL_GENERIC if !ARCH_HAS_CRC_T10DIF
-+	help
-+	  This option allows you to override the default choice of CRC-T10DIF
-+	  implementation.
+ static int chksum_finup(struct shash_desc *desc, const u8 *data,
+ 			unsigned int len, u8 *out)
+ {
+ 	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
+ 
+ 	return __chksum_finup(ctx->crc, data, len, out);
+ }
+ 
++static int chksum_finup_arch(struct shash_desc *desc, const u8 *data,
++			     unsigned int len, u8 *out)
++{
++	struct chksum_desc_ctx *ctx = shash_desc_ctx(desc);
 +
-+config CRC_T10DIF_IMPL_ARCH
-+	bool "Architecture-optimized" if ARCH_HAS_CRC_T10DIF
-+	help
-+	  Use the optimized implementation of CRC-T10DIF for the selected
-+	  architecture.  It is recommended to keep this enabled, as it can
-+	  greatly improve CRC-T10DIF performance.
++	return __chksum_finup_arch(ctx->crc, data, len, out);
++}
 +
-+config CRC_T10DIF_IMPL_GENERIC
-+	bool "Generic implementation"
-+	help
-+	  Use the generic table-based implementation of CRC-T10DIF.  Selecting
-+	  this will reduce code size slightly but can greatly reduce CRC-T10DIF
-+	  performance.
+ static int chksum_digest(struct shash_desc *desc, const u8 *data,
+ 			 unsigned int length, u8 *out)
+ {
+ 	return __chksum_finup(0, data, length, out);
+ }
+ 
+-static struct shash_alg alg = {
+-	.digestsize		=	CRC_T10DIF_DIGEST_SIZE,
+-	.init		=	chksum_init,
+-	.update		=	chksum_update,
+-	.final		=	chksum_final,
+-	.finup		=	chksum_finup,
+-	.digest		=	chksum_digest,
+-	.descsize		=	sizeof(struct chksum_desc_ctx),
+-	.base			=	{
+-		.cra_name		=	"crct10dif",
+-		.cra_driver_name	=	"crct10dif-generic",
+-		.cra_priority		=	100,
+-		.cra_blocksize		=	CRC_T10DIF_BLOCK_SIZE,
+-		.cra_module		=	THIS_MODULE,
+-	}
+-};
++static int chksum_digest_arch(struct shash_desc *desc, const u8 *data,
++			      unsigned int length, u8 *out)
++{
++	return __chksum_finup_arch(0, data, length, out);
++}
 +
-+endchoice
++static struct shash_alg algs[] = {{
++	.digestsize		= CRC_T10DIF_DIGEST_SIZE,
++	.init			= chksum_init,
++	.update			= chksum_update,
++	.final			= chksum_final,
++	.finup			= chksum_finup,
++	.digest			= chksum_digest,
++	.descsize		= sizeof(struct chksum_desc_ctx),
++	.base.cra_name		= "crct10dif",
++	.base.cra_driver_name	= "crct10dif-generic",
++	.base.cra_priority	= 100,
++	.base.cra_blocksize	= CRC_T10DIF_BLOCK_SIZE,
++	.base.cra_module	= THIS_MODULE,
++}, {
++	.digestsize		= CRC_T10DIF_DIGEST_SIZE,
++	.init			= chksum_init,
++	.update			= chksum_update_arch,
++	.final			= chksum_final,
++	.finup			= chksum_finup_arch,
++	.digest			= chksum_digest_arch,
++	.descsize		= sizeof(struct chksum_desc_ctx),
++	.base.cra_name		= "crct10dif",
++	.base.cra_driver_name	= "crct10dif-" __stringify(ARCH),
++	.base.cra_priority	= 150,
++	.base.cra_blocksize	= CRC_T10DIF_BLOCK_SIZE,
++	.base.cra_module	= THIS_MODULE,
++}};
 +
-+config CRC_T10DIF_ARCH
-+	tristate
-+	default CRC_T10DIF if CRC_T10DIF_IMPL_ARCH
++static int num_algs;
+ 
+ static int __init crct10dif_mod_init(void)
+ {
+-	return crypto_register_shash(&alg);
++	/* register the arch flavor only if it differs from the generic one */
++	num_algs = 1 + crc_t10dif_is_optimized();
 +
- config CRC64_ROCKSOFT
- 	tristate "CRC calculation for the Rocksoft model CRC64"
- 	select CRC64
- 	select CRYPTO
- 	select CRYPTO_CRC64_ROCKSOFT
++	return crypto_register_shashes(algs, num_algs);
+ }
+ 
+ static void __exit crct10dif_mod_fini(void)
+ {
+-	crypto_unregister_shash(&alg);
++	crypto_unregister_shashes(algs, num_algs);
+ }
+ 
+ subsys_initcall(crct10dif_mod_init);
+ module_exit(crct10dif_mod_fini);
+ 
 -- 
 2.47.1
 
