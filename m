@@ -1,70 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-3670-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3671-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C51B9E02A5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 13:59:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B4DB9E02A7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 13:59:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y23kl3P7nz2yhn;
-	Mon,  2 Dec 2024 23:58:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y23kr4HDdz2yxM;
+	Mon,  2 Dec 2024 23:59:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733144335;
-	cv=none; b=YoHkhp4xVC5l+YHlDMcr1i65pmXpLS0+MnvhYc/45Kh0ZzyrNhAS0mv1hlYnN2XDGkqLx4vBoA7X63A44Jb8cAC+/3o9OqI8OccZLA1i9brD4oC2PaGg5WitVR5N9KM8vd2z96o3nXegv2A17uczjtcmPhMHt65Rxc9wp0Vvpvzo150bEYbFxeCZBUPfVlFjTviLGdDBIzLNze+jY0KLHyLLCI3NzIP5bwO6q4sT2g2B0iy6+1ttxJ+XRVvO0XW8+KYW+xuXhRzL+pfuaSui+PElq4BYYgdAMtUaXZLIfyLzHyg/gCMG1Zp/p4WXcYDRpM0g8e2zRZtTZizUs4vvyw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733144340;
+	cv=none; b=ZleLDbfghhv8kyC2y21g0YCfWdg4CZcz/coVWsyymlPV9Xj1LYFTlI6d4q3YC/GRa041w5xG5AU/zagbCyoN8iL8IRctvSRpSoRwnDDDYRZlJs/0FP169NY/dBQlC+wo3P777tBbwl5r9pLyQdydgZcPSlvuq4UwG9bTP3kVgmZDhYnkpJbT/PVPu5BCsHOOeSSxV0/LvEcgSxmgxlCVYlUhmlOBNOoHd9k0RYZZaCUqXy/ya7BAw4aGHMSWge7PQmqhhee4PQBze785sjrr8rCpLn0P1AE3gH3fn2P2kkRvGTIrtRr9zoACvYEIgsaLyxYzBzVKERDmX3LN2p99mg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733144335; c=relaxed/relaxed;
-	bh=8HP8ABYEm75mn1BmFryMatwFYZ4LLrOWgOCnAtcF7Tc=;
+	t=1733144340; c=relaxed/relaxed;
+	bh=xX/Q3/3Rp0ILyMXyKGOcZrJDDur/TZdwfSuBal5fAnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gFWI5Wd8NspiSfqQNf0o5iUxiXN0rDO1YHc7FqsIBC1FUJdld8VM+tAiMbRNgLNkt3Av83Ljnm/MKFd6XAjeVTvgdo/twUbvb8fVwYtjd8CgP2WywNvpwOzxNyq51f9blyuI28GKk3TSyiu7uADrcj9RZKBJzVIw7/MsYlvYiNWdvAe42MR59pntRqFi/eYGEExp+GUdmuG/6TN9W909MlWG/KFKXcJozpUZrq6NCZZN00wWHpH/8jSGcZV+xv1lKh7mksdC58GLM4DP8V2GzuD4SCuM+cr+0qzWpPJgHr3bAPQrx/kYMoBYyYZ8as2qeCfjHNWPl2shuFHzRpsEzA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WhwaO8Nt; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WhwaO8Nt; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version; b=Ze9YGgaQdgVP/ZDTkIljb3xYd5J7PQosixH0booOPuevPSOU69WuhBU5A4aIaQlCVBu6F1neXXOBthuQ90lD+f0degDvxzccXzYOuVMBnvuIqgXDBsYmhvS6h9+cTH67EKRorVluAVQvy7tGJfoLdHse4krVC4/oOJuoX92q5QPwqJur0OxtBvykRctyadnTt9Ll0sWz4QF2sS3fNZIsVk3WefXvTvrw+0XDMkl3kBZet4KSJDpXXAM7fQDKqbWxaGLrGxRXG/z47xdebLHBgFKPXyPDb9yziXCag04r+/WuXAkwMW8TKi2ZEnfLZjqy3OsGWPhVFA6rpdcWE8bufQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bh3LLWcY; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YI6pZfPr; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WhwaO8Nt;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WhwaO8Nt;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bh3LLWcY;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YI6pZfPr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y23kk2rs1z2xxr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 23:58:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y23kq3Ykcz2xxr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 23:58:59 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733144331;
+	s=mimecast20190719; t=1733144336;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8HP8ABYEm75mn1BmFryMatwFYZ4LLrOWgOCnAtcF7Tc=;
-	b=WhwaO8Nt7O296hlJBqQnPqU/8hFfSsIhw5SwMZhIpJHfDvDUnY1yqynGRr44rTWSPBfzhI
-	uJyxMQOKPugn+mkNOacpUTw1+GTIK369OKceYtBosTcPYTXv5M67miGrPgJxQuZeLFAp7F
-	Wrz4qdiaNotONIUWtHvacwtqXpBNgOE=
+	bh=xX/Q3/3Rp0ILyMXyKGOcZrJDDur/TZdwfSuBal5fAnM=;
+	b=Bh3LLWcYNVTs5OrrBM38+HjyjCdQ7bkDQzvBFlYrYsChjIjgGy3xeMFc1+eypnNsSYcn2t
+	DJYZZn/HHpfVzJVQ6QL+em2NHdLX2jh2ESKKysIPhJ2K17oB8x2mfDKIaJ36EFe9OFE4MI
+	qn0sB+JE4Y9IAQzQMyZIi2OcoHQIvE0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733144331;
+	s=mimecast20190719; t=1733144337;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8HP8ABYEm75mn1BmFryMatwFYZ4LLrOWgOCnAtcF7Tc=;
-	b=WhwaO8Nt7O296hlJBqQnPqU/8hFfSsIhw5SwMZhIpJHfDvDUnY1yqynGRr44rTWSPBfzhI
-	uJyxMQOKPugn+mkNOacpUTw1+GTIK369OKceYtBosTcPYTXv5M67miGrPgJxQuZeLFAp7F
-	Wrz4qdiaNotONIUWtHvacwtqXpBNgOE=
+	bh=xX/Q3/3Rp0ILyMXyKGOcZrJDDur/TZdwfSuBal5fAnM=;
+	b=YI6pZfPrY+asI6JvdxfDh2Pp7L6Q/At8QsvyTpUy2DKc96wvU5IdjBkzoU8hd6jDox7Vv9
+	+PByJOoA8WdMh1hD4BJRCCpwzJ9DpAqCIOPnflz60BaUcFF5EdLkyM/14+JTmsOzkjGnUr
+	ZoeBecOth6q3F1bL6hK7wLdlBJI4odc=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-542-2zDHXoRjPpyrImBN_4zy5g-1; Mon,
- 02 Dec 2024 07:58:47 -0500
-X-MC-Unique: 2zDHXoRjPpyrImBN_4zy5g-1
-X-Mimecast-MFC-AGG-ID: 2zDHXoRjPpyrImBN_4zy5g
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-hwR66AWaPNO_VM0dBSx8pQ-1; Mon,
+ 02 Dec 2024 07:58:51 -0500
+X-MC-Unique: hwR66AWaPNO_VM0dBSx8pQ-1
+X-Mimecast-MFC-AGG-ID: hwR66AWaPNO_VM0dBSx8pQ
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3121D1964CCE;
-	Mon,  2 Dec 2024 12:58:45 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9324B1964CDA;
+	Mon,  2 Dec 2024 12:58:49 +0000 (UTC)
 Received: from t14s.cit.tum.de (unknown [10.39.194.150])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EFAD6195605A;
-	Mon,  2 Dec 2024 12:58:40 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B055C195605A;
+	Mon,  2 Dec 2024 12:58:45 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -78,9 +78,9 @@ Cc: linux-mm@kvack.org,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Naveen N Rao <naveen@kernel.org>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH v1 5/6] mm/page_alloc: forward the gfp flags from alloc_contig_range() to post_alloc_hook()
-Date: Mon,  2 Dec 2024 13:58:11 +0100
-Message-ID: <20241202125812.561028-6-david@redhat.com>
+Subject: [PATCH v1 6/6] powernv/memtrace: use __GFP_ZERO with alloc_contig_pages()
+Date: Mon,  2 Dec 2024 13:58:12 +0100
+Message-ID: <20241202125812.561028-7-david@redhat.com>
 In-Reply-To: <20241202125812.561028-1-david@redhat.com>
 References: <20241202125812.561028-1-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -99,74 +99,73 @@ Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-In the __GFP_CONT case, we already pass the gfp_flags to
-prep_new_page()->post_alloc_hook(). However, in the !__GFP_CONT case, we
-essentially pass only hardcoded __GFP_MOVABLE to post_alloc_hook(),
-preventing some action modifiers from being effective..
-
-Let's pass our now properly adjusted gfp flags there as well.
-
-This way, we can now support __GFP_ZERO for alloc_contig_*().
-
-As a side effect, we now also support __GFP_SKIP_ZERO and__GFP_ZEROTAGS;
-but we'll keep the more special stuff (KASAN, NOLOCKDEP) disabled for
-now.
-
-It's worth nothing that with __GFP_ZERO, we might unnecessarily zero pages
-when we have to release part of our range using free_contig_range() again.
-This can be optimized in the future, if ever required; the caller we'll
-be converting (powernv/memtrace) next won't trigger this.
+alloc_contig_pages()->alloc_contig_range() now supports __GFP_ZERO,
+so let's use that instead to resolve our TODO.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- mm/page_alloc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/powernv/memtrace.c | 31 +++++------------------
+ 1 file changed, 6 insertions(+), 25 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 54594cc4f650..71d70bc0ad79 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6364,7 +6364,7 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
- 	return (ret < 0) ? ret : 0;
+diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
+index 877720c64515..4ac9808e55a4 100644
+--- a/arch/powerpc/platforms/powernv/memtrace.c
++++ b/arch/powerpc/platforms/powernv/memtrace.c
+@@ -88,26 +88,6 @@ static void flush_dcache_range_chunked(unsigned long start, unsigned long stop,
+ 	}
  }
  
--static void split_free_pages(struct list_head *list)
-+static void split_free_pages(struct list_head *list, gfp_t gfp_mask)
+-static void memtrace_clear_range(unsigned long start_pfn,
+-				 unsigned long nr_pages)
+-{
+-	unsigned long pfn;
+-
+-	/* As HIGHMEM does not apply, use clear_page() directly. */
+-	for (pfn = start_pfn; pfn < start_pfn + nr_pages; pfn++) {
+-		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
+-			cond_resched();
+-		clear_page(__va(PFN_PHYS(pfn)));
+-	}
+-	/*
+-	 * Before we go ahead and use this range as cache inhibited range
+-	 * flush the cache.
+-	 */
+-	flush_dcache_range_chunked((unsigned long)pfn_to_kaddr(start_pfn),
+-				   (unsigned long)pfn_to_kaddr(start_pfn + nr_pages),
+-				   FLUSH_CHUNK_SIZE);
+-}
+-
+ static u64 memtrace_alloc_node(u32 nid, u64 size)
  {
- 	int order;
- 
-@@ -6375,7 +6375,7 @@ static void split_free_pages(struct list_head *list)
- 		list_for_each_entry_safe(page, next, &list[order], lru) {
- 			int i;
- 
--			post_alloc_hook(page, order, __GFP_MOVABLE);
-+			post_alloc_hook(page, order, gfp_mask);
- 			set_page_refcounted(page);
- 			if (!order)
- 				continue;
-@@ -6393,7 +6393,8 @@ static void split_free_pages(struct list_head *list)
- static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
- {
- 	const gfp_t reclaim_mask = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
--	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
-+	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN |
-+				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO;
- 	const gfp_t cc_action_mask = __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
+ 	const unsigned long nr_pages = PHYS_PFN(size);
+@@ -119,17 +99,18 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
+ 	 * by alloc_contig_pages().
+ 	 */
+ 	page = alloc_contig_pages(nr_pages, GFP_KERNEL | __GFP_THISNODE |
+-				  __GFP_NOWARN, nid, NULL);
++				  __GFP_NOWARN | __GFP_ZERO, nid, NULL);
+ 	if (!page)
+ 		return 0;
+ 	start_pfn = page_to_pfn(page);
  
  	/*
-@@ -6541,7 +6542,7 @@ int alloc_contig_range_noprof(unsigned long start, unsigned long end,
- 	}
+-	 * Clear the range while we still have a linear mapping.
+-	 *
+-	 * TODO: use __GFP_ZERO with alloc_contig_pages() once supported.
++	 * Before we go ahead and use this range as cache inhibited range
++	 * flush the cache.
+ 	 */
+-	memtrace_clear_range(start_pfn, nr_pages);
++	flush_dcache_range_chunked((unsigned long)pfn_to_kaddr(start_pfn),
++				   (unsigned long)pfn_to_kaddr(start_pfn + nr_pages),
++				   FLUSH_CHUNK_SIZE);
  
- 	if (!(gfp_mask & __GFP_COMP)) {
--		split_free_pages(cc.freepages);
-+		split_free_pages(cc.freepages, gfp_mask);
- 
- 		/* Free head and tail (if any) */
- 		if (start != outer_start)
+ 	/*
+ 	 * Set pages PageOffline(), to indicate that nobody (e.g., hibernation,
 -- 
 2.47.1
 
