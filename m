@@ -1,88 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-3671-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3672-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B4DB9E02A7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 13:59:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 517839E0459
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 15:06:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y23kr4HDdz2yxM;
-	Mon,  2 Dec 2024 23:59:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y25DJ6Zxpz2xg3;
+	Tue,  3 Dec 2024 01:06:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733144340;
-	cv=none; b=ZleLDbfghhv8kyC2y21g0YCfWdg4CZcz/coVWsyymlPV9Xj1LYFTlI6d4q3YC/GRa041w5xG5AU/zagbCyoN8iL8IRctvSRpSoRwnDDDYRZlJs/0FP169NY/dBQlC+wo3P777tBbwl5r9pLyQdydgZcPSlvuq4UwG9bTP3kVgmZDhYnkpJbT/PVPu5BCsHOOeSSxV0/LvEcgSxmgxlCVYlUhmlOBNOoHd9k0RYZZaCUqXy/ya7BAw4aGHMSWge7PQmqhhee4PQBze785sjrr8rCpLn0P1AE3gH3fn2P2kkRvGTIrtRr9zoACvYEIgsaLyxYzBzVKERDmX3LN2p99mg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733148368;
+	cv=none; b=Wrl48gJ7sF7GLSrSxiS+8SQrZlCJfOFfgPIPFeM2MB2J7cn/UyOVsVOZVm0rNjZFF3G26mZaK7oM0CqKz7d99SyEKyPaUcZnpfr+wIpEYWrH2ZvAObAzPfy/XgaLv0sU1pWkLr+/hZnHob2Verb5Hw04QUV665GP2AwAbN0w86NgctNQvjoDhVeMwY+T5yTO1zSMDx4rzrfhike0BgHeINn1r9djviwiRHdEoKaEj+2AKEYMKr/21wqsxcxEMhrzv7Xw72YKYFQJzWIxcNhgAIqgVqhnpgFU3SyxEDoxpI9fiddcdDZ320KC3ZoVmPNNkJUiOrlpnsjMXQLHuCJdEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733144340; c=relaxed/relaxed;
-	bh=xX/Q3/3Rp0ILyMXyKGOcZrJDDur/TZdwfSuBal5fAnM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ze9YGgaQdgVP/ZDTkIljb3xYd5J7PQosixH0booOPuevPSOU69WuhBU5A4aIaQlCVBu6F1neXXOBthuQ90lD+f0degDvxzccXzYOuVMBnvuIqgXDBsYmhvS6h9+cTH67EKRorVluAVQvy7tGJfoLdHse4krVC4/oOJuoX92q5QPwqJur0OxtBvykRctyadnTt9Ll0sWz4QF2sS3fNZIsVk3WefXvTvrw+0XDMkl3kBZet4KSJDpXXAM7fQDKqbWxaGLrGxRXG/z47xdebLHBgFKPXyPDb9yziXCag04r+/WuXAkwMW8TKi2ZEnfLZjqy3OsGWPhVFA6rpdcWE8bufQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bh3LLWcY; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YI6pZfPr; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1733148368; c=relaxed/relaxed;
+	bh=STOv/zZNVc5lN2iOrksyKCSZc9jg0+HvTYnbwsToZxg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GHY9fVQIFIbExcr8BK3MhRq4+eqVTQ47xjyUPdlOlEF7rOKzYsHQ4CPuAjjTRhBe00TIBcHSQQlCFgSoszp4xsmq2+djlYaiqt12Fs2uvCs7wcJak9BhrFPVux4u2TuRJHV6GBPl6JWFNX6gG4JPMOBUbpcXgCZicte/LkXBHBvyPpm0JxSi5W9LaggxsVivZfH+b57fhD93cd/Sr331+uC9KqBy/ONbWq+tQuY1+BibWYTrzPfJcRlQlfssa8w/6XB5GuNok32ipLkpFyi1jjXg+6ga3m5qDQdcvQsrJy3YNsxfaPhkryHWf7rVrJ6mu9LHyR9wRjoZIo8hBSKbhg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B/T6nbrP; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bh3LLWcY;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YI6pZfPr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B/T6nbrP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y23kq3Ykcz2xxr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 23:58:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733144336;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xX/Q3/3Rp0ILyMXyKGOcZrJDDur/TZdwfSuBal5fAnM=;
-	b=Bh3LLWcYNVTs5OrrBM38+HjyjCdQ7bkDQzvBFlYrYsChjIjgGy3xeMFc1+eypnNsSYcn2t
-	DJYZZn/HHpfVzJVQ6QL+em2NHdLX2jh2ESKKysIPhJ2K17oB8x2mfDKIaJ36EFe9OFE4MI
-	qn0sB+JE4Y9IAQzQMyZIi2OcoHQIvE0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733144337;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xX/Q3/3Rp0ILyMXyKGOcZrJDDur/TZdwfSuBal5fAnM=;
-	b=YI6pZfPrY+asI6JvdxfDh2Pp7L6Q/At8QsvyTpUy2DKc96wvU5IdjBkzoU8hd6jDox7Vv9
-	+PByJOoA8WdMh1hD4BJRCCpwzJ9DpAqCIOPnflz60BaUcFF5EdLkyM/14+JTmsOzkjGnUr
-	ZoeBecOth6q3F1bL6hK7wLdlBJI4odc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-hwR66AWaPNO_VM0dBSx8pQ-1; Mon,
- 02 Dec 2024 07:58:51 -0500
-X-MC-Unique: hwR66AWaPNO_VM0dBSx8pQ-1
-X-Mimecast-MFC-AGG-ID: hwR66AWaPNO_VM0dBSx8pQ
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9324B1964CDA;
-	Mon,  2 Dec 2024 12:58:49 +0000 (UTC)
-Received: from t14s.cit.tum.de (unknown [10.39.194.150])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B055C195605A;
-	Mon,  2 Dec 2024 12:58:45 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Zi Yan <ziy@nvidia.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH v1 6/6] powernv/memtrace: use __GFP_ZERO with alloc_contig_pages()
-Date: Mon,  2 Dec 2024 13:58:12 +0100
-Message-ID: <20241202125812.561028-7-david@redhat.com>
-In-Reply-To: <20241202125812.561028-1-david@redhat.com>
-References: <20241202125812.561028-1-david@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y25DB64Sjz2xf2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 01:06:02 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B2BRMTf008503;
+	Mon, 2 Dec 2024 14:05:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=STOv/z
+	ZNVc5lN2iOrksyKCSZc9jg0+HvTYnbwsToZxg=; b=B/T6nbrPzV/+mPRoFIo2Aw
+	sJQJ1QDOYmO/WNkIHzitzUYZdlaBx65c9bYQOt9pr6OBAl8bxS4+SwDi83dxDJPl
+	6vXJOF+orUSENkZcirCf5k/7/HMw0hfllKZZJFsxQKVdLt/ND54qgn221mCY2C35
+	wNVaKV3zFCan9KVNjHcH15P5MeSwURLYxDNc3UXbdJBwp9yeigfDUupja7J1xE5F
+	s5x6xC7QXJy31ldpiym7TVQbZ0AHgvOHfn4rAa3dxaltKt+0lxasFwtAW9ALqdUO
+	k8aG/S29CNUNWfre6go8zHPPA/RXM2tEB0PZ7GY1Sm/FCiA9W68X6a6ko5Bbd4sA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 438kfgdk79-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Dec 2024 14:05:42 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B2DwnUb013298;
+	Mon, 2 Dec 2024 14:05:42 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 438kfgdk6w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Dec 2024 14:05:42 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B2DdVgb029512;
+	Mon, 2 Dec 2024 14:05:40 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 438ddy69qf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Dec 2024 14:05:40 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B2E5cdw33882626
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 2 Dec 2024 14:05:38 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B46FC20071;
+	Mon,  2 Dec 2024 14:05:38 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6293D2006E;
+	Mon,  2 Dec 2024 14:05:36 +0000 (GMT)
+Received: from [9.124.223.110] (unknown [9.124.223.110])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  2 Dec 2024 14:05:36 +0000 (GMT)
+Message-ID: <026ad776-a889-4213-8e0e-1da9065dc5ef@linux.ibm.com>
+Date: Mon, 2 Dec 2024 19:35:35 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,78 +85,203 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] powerpc: copy preempt.h into arch/include/asm
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org
+Cc: npiggin@gmail.com, maddy@linux.ibm.com, bigeasy@linutronix.de,
+        ankur.a.arora@oracle.com, linux-kernel@vger.kernel.org,
+        mark.rutland@arm.com, vschneid@redhat.com, peterz@infradead.org,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <20241125042212.1522315-1-sshegde@linux.ibm.com>
+ <20241125042212.1522315-2-sshegde@linux.ibm.com>
+ <b5c152a3-d459-4744-84ec-846153de1652@csgroup.eu>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <b5c152a3-d459-4744-84ec-846153de1652@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
-X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: x2HNJZwtANCojRXB-TRdEdwvabPOdSpU
+X-Proofpoint-GUID: qgBBeHP1TUnNBtJaQz1_yXfIg6df90lw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 clxscore=1015 malwarescore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 mlxlogscore=975 impostorscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412020121
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-alloc_contig_pages()->alloc_contig_range() now supports __GFP_ZERO,
-so let's use that instead to resolve our TODO.
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- arch/powerpc/platforms/powernv/memtrace.c | 31 +++++------------------
- 1 file changed, 6 insertions(+), 25 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
-index 877720c64515..4ac9808e55a4 100644
---- a/arch/powerpc/platforms/powernv/memtrace.c
-+++ b/arch/powerpc/platforms/powernv/memtrace.c
-@@ -88,26 +88,6 @@ static void flush_dcache_range_chunked(unsigned long start, unsigned long stop,
- 	}
- }
- 
--static void memtrace_clear_range(unsigned long start_pfn,
--				 unsigned long nr_pages)
--{
--	unsigned long pfn;
--
--	/* As HIGHMEM does not apply, use clear_page() directly. */
--	for (pfn = start_pfn; pfn < start_pfn + nr_pages; pfn++) {
--		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
--			cond_resched();
--		clear_page(__va(PFN_PHYS(pfn)));
--	}
--	/*
--	 * Before we go ahead and use this range as cache inhibited range
--	 * flush the cache.
--	 */
--	flush_dcache_range_chunked((unsigned long)pfn_to_kaddr(start_pfn),
--				   (unsigned long)pfn_to_kaddr(start_pfn + nr_pages),
--				   FLUSH_CHUNK_SIZE);
--}
--
- static u64 memtrace_alloc_node(u32 nid, u64 size)
- {
- 	const unsigned long nr_pages = PHYS_PFN(size);
-@@ -119,17 +99,18 @@ static u64 memtrace_alloc_node(u32 nid, u64 size)
- 	 * by alloc_contig_pages().
- 	 */
- 	page = alloc_contig_pages(nr_pages, GFP_KERNEL | __GFP_THISNODE |
--				  __GFP_NOWARN, nid, NULL);
-+				  __GFP_NOWARN | __GFP_ZERO, nid, NULL);
- 	if (!page)
- 		return 0;
- 	start_pfn = page_to_pfn(page);
- 
- 	/*
--	 * Clear the range while we still have a linear mapping.
--	 *
--	 * TODO: use __GFP_ZERO with alloc_contig_pages() once supported.
-+	 * Before we go ahead and use this range as cache inhibited range
-+	 * flush the cache.
- 	 */
--	memtrace_clear_range(start_pfn, nr_pages);
-+	flush_dcache_range_chunked((unsigned long)pfn_to_kaddr(start_pfn),
-+				   (unsigned long)pfn_to_kaddr(start_pfn + nr_pages),
-+				   FLUSH_CHUNK_SIZE);
- 
- 	/*
- 	 * Set pages PageOffline(), to indicate that nobody (e.g., hibernation,
--- 
-2.47.1
+On 11/27/24 12:07, Christophe Leroy wrote:
+> 
+> 
+> Le 25/11/2024 à 05:22, Shrikanth Hegde a écrit :
+>> PowerPC uses asm-generic preempt definitions as of now.
+>> Copy that into arch/asm so that arch specific changes can be done.
+>> This would help the next patch for enabling dynamic preemption.
+> 
+
+The reason I want the content instead was to allow future patches where 
+I thought of making preempt count per paca for ppc64 atleast. generic 
+code assumes it is per thread. If this change is to be done at that 
+point, that is fair too. I am okay with it.
+
+
+> Instead of copying all the content of asm-generic version, can you just 
+> create a receptacle for your new macros, that will include asm-generic/ 
+> preempt.h ?
+> 
+> Look at arch/powerpc/include/asm/percpu.h for exemple.
+>
+
+You mean something like below right?
+
+
+#ifndef __ASM_POWERPC_PREEMPT_H
+#define __ASM_POWERPC_PREEMPT_H
+
+#include <asm-generic/preempt.h>
+
+#if defined(CONFIG_PREEMPT_DYNAMIC) && 
+defined(CONFIG_HAVE_PREEMPT_DYNAMIC_KEY)
+DECLARE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
+#endif
+
+#endif /* __ASM_POWERPC_PREEMPT_H */
+
+
+
+>>
+>> No functional changes intended.
+>>
+>> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+>> ---
+>>   arch/powerpc/include/asm/preempt.h | 100 +++++++++++++++++++++++++++++
+>>   1 file changed, 100 insertions(+)
+>>   create mode 100644 arch/powerpc/include/asm/preempt.h
+>>
+>> diff --git a/arch/powerpc/include/asm/preempt.h b/arch/powerpc/ 
+>> include/asm/preempt.h
+>> new file mode 100644
+>> index 000000000000..51f8f3881523
+>> --- /dev/null
+>> +++ b/arch/powerpc/include/asm/preempt.h
+>> @@ -0,0 +1,100 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +#ifndef __ASM_PREEMPT_H
+>> +#define __ASM_PREEMPT_H
+> 
+> Should be __ASM_POWERPC_PREEMPT_H
+
+thanks for catching this.
+
+> 
+>> +
+>> +#include <linux/thread_info.h>
+>> +
+>> +#define PREEMPT_ENABLED    (0)
+>> +
+>> +static __always_inline int preempt_count(void)
+>> +{
+>> +    return READ_ONCE(current_thread_info()->preempt_count);
+>> +}
+>> +
+>> +static __always_inline volatile int *preempt_count_ptr(void)
+>> +{
+>> +    return &current_thread_info()->preempt_count;
+>> +}
+>> +
+>> +static __always_inline void preempt_count_set(int pc)
+>> +{
+>> +    *preempt_count_ptr() = pc;
+>> +}
+>> +
+>> +/*
+>> + * must be macros to avoid header recursion hell
+>> + */
+>> +#define init_task_preempt_count(p) do { \
+>> +    task_thread_info(p)->preempt_count = FORK_PREEMPT_COUNT; \
+>> +} while (0)
+>> +
+>> +#define init_idle_preempt_count(p, cpu) do { \
+>> +    task_thread_info(p)->preempt_count = PREEMPT_DISABLED; \
+>> +} while (0)
+>> +
+>> +static __always_inline void set_preempt_need_resched(void)
+>> +{
+>> +}
+>> +
+>> +static __always_inline void clear_preempt_need_resched(void)
+>> +{
+>> +}
+>> +
+>> +static __always_inline bool test_preempt_need_resched(void)
+>> +{
+>> +    return false;
+>> +}
+>> +
+>> +/*
+>> + * The various preempt_count add/sub methods
+>> + */
+>> +
+>> +static __always_inline void __preempt_count_add(int val)
+>> +{
+>> +    *preempt_count_ptr() += val;
+>> +}
+>> +
+>> +static __always_inline void __preempt_count_sub(int val)
+>> +{
+>> +    *preempt_count_ptr() -= val;
+>> +}
+>> +
+>> +static __always_inline bool __preempt_count_dec_and_test(void)
+>> +{
+>> +    /*
+>> +     * Because of load-store architectures cannot do per-cpu atomic
+>> +     * operations; we cannot use PREEMPT_NEED_RESCHED because it 
+>> might get
+>> +     * lost.
+>> +     */
+>> +    return !--*preempt_count_ptr() && tif_need_resched();
+>> +}
+>> +
+>> +/*
+>> + * Returns true when we need to resched and can (barring IRQ state).
+>> + */
+>> +static __always_inline bool should_resched(int preempt_offset)
+>> +{
+>> +    return unlikely(preempt_count() == preempt_offset &&
+>> +            tif_need_resched());
+>> +}
+>> +
+>> +#ifdef CONFIG_PREEMPTION
+>> +extern asmlinkage void preempt_schedule(void);
+>> +extern asmlinkage void preempt_schedule_notrace(void);
+>> +
+>> +#if defined(CONFIG_PREEMPT_DYNAMIC) && 
+>> defined(CONFIG_HAVE_PREEMPT_DYNAMIC_KEY)
+>> +
+>> +void dynamic_preempt_schedule(void);
+>> +void dynamic_preempt_schedule_notrace(void);
+>> +#define __preempt_schedule()        dynamic_preempt_schedule()
+>> +#define __preempt_schedule_notrace()    
+>> dynamic_preempt_schedule_notrace()
+>> +
+>> +#else /* !CONFIG_PREEMPT_DYNAMIC || !CONFIG_HAVE_PREEMPT_DYNAMIC_KEY*/
+>> +
+>> +#define __preempt_schedule() preempt_schedule()
+>> +#define __preempt_schedule_notrace() preempt_schedule_notrace()
+>> +
+>> +#endif /* CONFIG_PREEMPT_DYNAMIC && CONFIG_HAVE_PREEMPT_DYNAMIC_KEY*/
+>> +#endif /* CONFIG_PREEMPTION */
+>> +
+>> +#endif /* __ASM_PREEMPT_H */
 
 
