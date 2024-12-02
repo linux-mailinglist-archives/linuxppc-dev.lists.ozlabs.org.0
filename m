@@ -1,66 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-3664-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3667-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCD69DFBF6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 09:33:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2F69E02A0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 13:58:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y1xrh1M5lz2xy6;
-	Mon,  2 Dec 2024 19:33:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y23kR2rP2z2yLr;
+	Mon,  2 Dec 2024 23:58:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.217.53
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733128420;
-	cv=none; b=CuMzT5mZF24z3IGEIO5vyQWVMU5x2B+2wSu23NTzXZO+G6ab34uVigAWl5pgI1AWfUh1bMLPbNq2ylYtronIQRqmZchcIzAJU02HWE/3yoBLFZqjPeUPjJCVRluon9O0TRPxcnIKgXpTWIt1DQ6AiDJE14u3kaIWWrJ/J3NVIg9SpwYXAUs8+eBFLXCQdp5D1AOoGPrNKKPCi5q9sMZHmU4mUwDDSBCg/ikpHZiMBqt4H02kNXWabEasjCyjJ18/EjOfxCMVnGpKb6JH4xY6vaEgSK8BYxK8EiOmtr/cdjk6mds6by0pToq3jck6SONwF3yKKazriDCiNgeuEujBKw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733144319;
+	cv=none; b=GYSialbA2QYhBLh5cRq+vDH4JBnhwRyZNC6GUGWyeGi2LXGtTT6PMrABXSBlKl98Zj5FN+ZeiByGvXRN/ro970WWOAEgxIeIsWpel5TQrJ0JI4CRyvCrXNBQtFNv9Dp9O8zkWeNQOIB3l+aLtKjk2lS3fg1no/AlDUbPjA0X6eNGXIDXkwkZ5KWCAwZGsY1aXAO8LqVwcO1ShWfVfzu8ZhRiSNQs0ePXt0n9hs1ShiM3NkF7Q78icd7JAjnX2ulglHj1SBpKqxLjY02gfipOZVYxwkFpU4sajzfCrF6cNY5sDh4Gh0c/WDeAQWYIKdii8NAlgqImETCl52iPiru83w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733128420; c=relaxed/relaxed;
-	bh=u56ZXLj3zoJcwhJCVeWsy3FmczwJw23Uyl3fWwY/H5U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PMEWZSTovxPnNjLIYsSp4WDQLEawHJ9BFOJWvawJcEA0QgKlViCjIB3M0yWzQCn69SXitgzwPL0GXi/oreeZd7G5TTy4whcSs0/CW6vBsSwD/A6ovmiod263IjjdOf/hFKyL58WAhNv1DEfQIhlkJE4g0dxWQ8h4Xb3vM/LuhpiWd7hOwBBqUxI0fBbFipsfmA1prPpZgwrt2b+Dp1mXDJ62As3kdEjrDnkPG76rDyQzGV6SkZEy5ab1Walp/1fV0LdvHIlF0NNJ7yTzk8VdMTX5LyBU8I/2bcLU3GMN6do5R8tC3oHCEzio3qec/BHFoKIwj7NZucerUNCWwYXFqw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.217.53; helo=mail-vs1-f53.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.217.53; helo=mail-vs1-f53.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
+	t=1733144319; c=relaxed/relaxed;
+	bh=sUfFB5Sjd5S9qMX11BGcSRAtxQGHOOZYHnvQVZdcklA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j64+iWNgdvSukdVa1m0QpcIPCnnYg97pjXQ0sYmGwAgh17ACETbTSMxGvBLonkCizQnVxIV4oe1lpLPSVRe2PPlJHg8S2Ru/jGR8kRD/gv0MqAsfZYJ/YCbnQAvCUPWpEvsFKe6QstAjvnMxwAhBv974hIk1Pamn2NOpU9mVcRWV+AVaDwiMPWEFOde5uV91Q2LbydlBhdjsKAWLbFwbEq6mhkamnZcA0qbKZwVaqKqrTopjTBcX86oTqAE1zjrhAMhwmdGuoVJfG7LZBB5NUqHMwJveSL8IfHMII/on8G6Fm96IRFsTGhBZoTNV/AZJMVGrsKdYZaaLGTgrHABZcA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JqaOQvV7; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JqaOQvV7; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JqaOQvV7;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JqaOQvV7;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y1xrd3klHz2xnK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 19:33:35 +1100 (AEDT)
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-4af5ed9c8b4so874153137.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2024 00:33:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733128411; x=1733733211;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u56ZXLj3zoJcwhJCVeWsy3FmczwJw23Uyl3fWwY/H5U=;
-        b=BbyT4//ZhQzmtk6cLvaABsEhX/uJK8b287C62Rq28q4OrRvRRkjTR8r5v8JOduIXJT
-         L8GtpO7PA9V2shrohbpjUu5Y+qmP04323O8SCCF1keBws7w+04ztHJl/8dQf6VRy520q
-         Q9DNHhTELlev8rQeoE9AmsGVjpHql7kCNad9m+YguYGgAR6qQ4cr55P4di1DesUCij9W
-         tgdgz7aLdkR//4NADsYpzmsKJXcmGBmXStLEjMFyJH1uuCmVseOxKHjKKiUdI1hEmYqY
-         pI10BjqdyKyrmVN2Hq3hSBACMuzR/JNzvMhJgvX7v/U1vVHnWs+FxzdVRcye/cIqK6XB
-         OZvw==
-X-Forwarded-Encrypted: i=1; AJvYcCVkfOC365D1fwSH60A9YqHeWo4TBWEayfpn20gFf0OJJJGHsz+GCEbHWmQLg+7QAto6CsRFRKS3qxDKpPw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzoJirWKxSgKO6r5lYQuOcO09UX/VW2D1Vh77kpkbe82eGU1hAG
-	ARsPRHNL0aiDVEOcwVdyalVIYeRfDvGX73IA7mOUaMUEbayZXX1yr5TN0nn9
-X-Gm-Gg: ASbGncvo3m/cPGR0jo3zfxLwy6s9Xl0Srign2zi2jKhAXv8s2YOQl40v7Hw0Yj4XNrL
-	paClHTK59wNSSgI3ElnE8wFMTWGMHJL/oUfNxFpAIAM67ePu+6qZkxeDWjMcqc3o6zWOVKTJVn1
-	Z63ATKRNUs5sg8BiA/i9rcsKjeturNhtmY8KQoC08aPSihIqKeoRmG4CN4YV9zXQNqnNdyqdSWl
-	dH7h/EOiYidpZ2ccBBlGQTLMCzkfEd506Ih4BPUXdHTiR8VEtLmw1UMMFlmgeSa8x8l/DY77kpN
-	lPiOscCic6cn
-X-Google-Smtp-Source: AGHT+IEvpS3O4rEBWuP8lMEHA9aG5urDHP2XyQXYFFd49JXmpEXdyK+/TwM5nLlE5TIQi+HGjE2Tmw==
-X-Received: by 2002:a05:6102:e14:b0:4af:59ac:c9b4 with SMTP id ada2fe7eead31-4af59acca7bmr17205680137.2.1733128411425;
-        Mon, 02 Dec 2024 00:33:31 -0800 (PST)
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com. [209.85.217.50])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4af590e725esm1710705137.10.2024.12.02.00.33.30
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 00:33:31 -0800 (PST)
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4aed6fdf04fso928493137.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2024 00:33:30 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWsA2igBaed/fFCVzLFke8kv4HMRL9pe5NCkrMnm3lEmuXTdAPCJA/Zyb0amGx9iI2XDIYWQZQY6C3rJak=@lists.ozlabs.org
-X-Received: by 2002:a05:6102:954:b0:4a9:5d98:6c5f with SMTP id
- ada2fe7eead31-4af448f6d7dmr26891641137.5.1733128410739; Mon, 02 Dec 2024
- 00:33:30 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y23kN0z1Lz2xxr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 23:58:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733144308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sUfFB5Sjd5S9qMX11BGcSRAtxQGHOOZYHnvQVZdcklA=;
+	b=JqaOQvV7FXAaD2ImTB+MdSVKYDrEjUmSFjJxlv4AIKSGUDdi8019q2z25Qr2A3Pa6nFm5M
+	XCQriAPanNx+tQDvSP+72oEyBjLX5K9LRlsxrXrJsVES4XEOicMPLgSbHbSc2XvqvZG119
+	5U2w3kg4JJjKM97BRcGFS0hvzMq2gZE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733144308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sUfFB5Sjd5S9qMX11BGcSRAtxQGHOOZYHnvQVZdcklA=;
+	b=JqaOQvV7FXAaD2ImTB+MdSVKYDrEjUmSFjJxlv4AIKSGUDdi8019q2z25Qr2A3Pa6nFm5M
+	XCQriAPanNx+tQDvSP+72oEyBjLX5K9LRlsxrXrJsVES4XEOicMPLgSbHbSc2XvqvZG119
+	5U2w3kg4JJjKM97BRcGFS0hvzMq2gZE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-470-2CXO6SbxMjSM_j8vAM94cQ-1; Mon,
+ 02 Dec 2024 07:58:21 -0500
+X-MC-Unique: 2CXO6SbxMjSM_j8vAM94cQ-1
+X-Mimecast-MFC-AGG-ID: 2CXO6SbxMjSM_j8vAM94cQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2D83A1953951;
+	Mon,  2 Dec 2024 12:58:19 +0000 (UTC)
+Received: from t14s.cit.tum.de (unknown [10.39.194.150])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E7341195605A;
+	Mon,  2 Dec 2024 12:58:13 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Zi Yan <ziy@nvidia.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH v1 0/6] mm/page_alloc: gfp flags cleanups for alloc_contig_*()
+Date: Mon,  2 Dec 2024 13:58:06 +0100
+Message-ID: <20241202125812.561028-1-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,64 +90,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241202012056.209768-1-ebiggers@kernel.org> <20241202012056.209768-11-ebiggers@kernel.org>
-In-Reply-To: <20241202012056.209768-11-ebiggers@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 2 Dec 2024 09:33:18 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdV5rQggS9YHMJfU0gdhg6oFENTnPKp9Tbp3sJKgQdnMTA@mail.gmail.com>
-Message-ID: <CAMuHMdV5rQggS9YHMJfU0gdhg6oFENTnPKp9Tbp3sJKgQdnMTA@mail.gmail.com>
-Subject: Re: [PATCH v2 10/12] lib/crc32test: delete obsolete crc32test.c
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org, 
-	Zhihang Shao <zhihang.shao.iscas@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Vinicius Peixoto <vpeixoto@lkcamp.dev>, "Martin K. Petersen" <martin.petersen@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Dec 2, 2024 at 2:24=E2=80=AFAM Eric Biggers <ebiggers@kernel.org> w=
-rote:
-> From: Eric Biggers <ebiggers@google.com>
->
-> Delete crc32test.c, since it has been superseded by crc_kunit.c.
->
-> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-> Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-> Cc: Vinicius Peixoto <vpeixoto@lkcamp.dev>
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
->  arch/m68k/configs/amiga_defconfig    |   1 -
->  arch/m68k/configs/apollo_defconfig   |   1 -
->  arch/m68k/configs/atari_defconfig    |   1 -
->  arch/m68k/configs/bvme6000_defconfig |   1 -
->  arch/m68k/configs/hp300_defconfig    |   1 -
->  arch/m68k/configs/mac_defconfig      |   1 -
->  arch/m68k/configs/multi_defconfig    |   1 -
->  arch/m68k/configs/mvme147_defconfig  |   1 -
->  arch/m68k/configs/mvme16x_defconfig  |   1 -
->  arch/m68k/configs/q40_defconfig      |   1 -
->  arch/m68k/configs/sun3_defconfig     |   1 -
->  arch/m68k/configs/sun3x_defconfig    |   1 -
+Let's clean up the gfp flags handling, and support __GFP_ZERO, such that we
+can finally remove the TODO in memtrace code.
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
+I did some alloc_contig_*() testing with virtio-mem and hugetlb; I did not
+test powernv/memtrace -- I cross-compiled it, though.
 
-Gr{oetje,eeting}s,
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-                        Geert
+David Hildenbrand (6):
+  mm/page_isolation: don't pass gfp flags to isolate_single_pageblock()
+  mm/page_isolation: don't pass gfp flags to start_isolate_page_range()
+  mm/page_alloc: make __alloc_contig_migrate_range() static
+  mm/page_alloc: sort out the alloc_contig_range() gfp flags mess
+  mm/page_alloc: forward the gfp flags from alloc_contig_range() to
+    post_alloc_hook()
+  powernv/memtrace: use __GFP_ZERO with alloc_contig_pages()
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+ arch/powerpc/platforms/powernv/memtrace.c | 31 +++---------
+ include/linux/page-isolation.h            |  2 +-
+ mm/internal.h                             |  4 --
+ mm/memory_hotplug.c                       |  3 +-
+ mm/page_alloc.c                           | 62 +++++++++++++++++++----
+ mm/page_isolation.c                       | 12 ++---
+ 6 files changed, 63 insertions(+), 51 deletions(-)
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+-- 
+2.47.1
+
 
