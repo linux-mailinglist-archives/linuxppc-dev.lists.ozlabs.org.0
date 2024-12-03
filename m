@@ -1,96 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-3748-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3749-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482D59E2BA8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 20:07:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1519F9E2BDE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 20:19:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2qsy63h2z2xs0;
-	Wed,  4 Dec 2024 06:07:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2r776tjbz2yk6;
+	Wed,  4 Dec 2024 06:19:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733252870;
-	cv=none; b=nVG1rkp5dH6kB5Tctpe+sj1b6/TwSO1RYVk1+9TocNMRSzT8IDzua2NwGl+Hrl/ah1Xh733rKwnTn73fpGMQTeWcKOILNlABaGQzJksL9vDDlTTlY1ZnRrVXUcyLhR1aYCGM1XCgNdUQ/xRxvOj1NQl+sWUl7fBd0IfbaM0eyYv2pBfP9KwVFsPqsgy+j/PCBzguGk+VDtfS3l+Fi206nbAHBhHfe1UQZlKF1j8W+2jsErocv9NfEEWrtlfmCl2ziBQ7efuBippgcmPCC95uBXVCcoWFt1S7nxRMYHII2XZ73uGgs4btGUW4JItZpaVkZ6LEcl+pGWWWw6VKDPDzow==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733253555;
+	cv=none; b=KOSoV+1lraoqFY00D/SDeA5otlxm1mGFOk1BTq1EKE8k5t1CbWv/1T6FKJwoOJpG2QmxegapXETjdVRxiJC+XLG76hhcfoOaImX6rNvuHOo+YtkEk5n2/z/pKCAPM3JRCqlpIlVMfPy9PQTCKYVAkbR1weO2kmR8D98J9r9zICKK36inGS6Yyd4xlyylJpQoA/tJ1YF0PnlO1lc8bWKeQ6u1qBdQTFv4s22cBtCCL5GdTWMNiSfNvt5L8iZDP7mnzNFqB3icCo7wN2IOOfG0HheYuJIN4LbSMwUp18YiLfghx6qIfpF1c+Sq32PEGSe5Ov/nYSfB6Hs/NpkByKJAkg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733252870; c=relaxed/relaxed;
-	bh=qp8qIC8+SbNjtJ/vD3Mc/pgGXMGuySIroHQBH4DmWNM=;
+	t=1733253555; c=relaxed/relaxed;
+	bh=4HYWX4lY+1zgmP6GYTzg/DCn9ab+q4upkCeyneBu0NI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c3CW6RUL8Y/s4wD3WE+0cr1uKnO2RpXzhIPOUtmbPQuvl/LNou8uCKX+BemscuJ6ugFYNy3oJkdKs7xsFIFlv+3ZOZxYPf5I2oWjVvHcJDpcleWDkewlIvXh29BN9u6QpZvAMot9Dj2YL6PNmaZCqmAupMB0uA/E+5rfuaZzX1Gc3iYJ4Ng5jOMjvaqb4MIi8mapG2viMQkMME3KQSDVevmNT6joo4kijaX+siuM29X603NnVIExsZKSK5LEtG7wc7v32teHk+4z9HNboIhUbKQMftiUYXtiT58iRw3CDZe2l9CWdv8LSDqhIrGDabfFtEOUWIGV1vKZLjZ3/7dvrw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LGkwayjG; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U381YqVZ; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=QDN4B8+oK8UuAili6RIQulEDZPnpfD6j5OLVjVS8RDb5GsE9sh16yc5Gq9babxMOPyhyHiOkTCf5BocjJViFriARAJ1Q7itO2yV4NGqJ5x522G/beMooTwYfuPZsttVf2J3In3IBvtxvRjMoaPjf64bHnqBhWCo+hDqz1Z8GUKP4VdjhVyNxS1rk2H2vfQts0YAFWvF74xvz2IgQeenJduRbbbWNsQui/gG8YqjKKuX/R7hqEuGDoZneu2992+q2YqCp7sn0PAqi9PnUPrSzKVrde4cbdZAWRBvKisvkl6prPgDu1Orjd+wGAqfhWnOBikiodwmF4NXTY0Da4bGr2g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SnmbFfEP; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F4d5NbO+; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LGkwayjG;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U381YqVZ;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SnmbFfEP;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F4d5NbO+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2qsx2Lj9z2xBx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 06:07:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2r743VtCz2yhT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 06:19:11 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733252862;
+	s=mimecast20190719; t=1733253548;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qp8qIC8+SbNjtJ/vD3Mc/pgGXMGuySIroHQBH4DmWNM=;
-	b=LGkwayjGuOg2Z2NoHueqgt/bKvx3QSLrlRvrStVDQ/cNb+dKReSOmKv9NHmWTBF+mGo1g9
-	EE5kQvaj2fq4kQKHy67YNB6j4v9hqQ63C5A50S+jAqSGFiWnZiITXCanwT8QuTEznTthvX
-	JwnRee4G8ardhxfUm0//TiAomVUZvco=
+	bh=4HYWX4lY+1zgmP6GYTzg/DCn9ab+q4upkCeyneBu0NI=;
+	b=SnmbFfEPaltcmYu9k6nbL+NAQz+tu5y5IGNv2K6eMSR27jQ/UHU37FhGFT0o30neDRngOn
+	j1jZZWjrzA91dUJJbz45aFXysnGRjq5KIQXi45BPQCJWKWkfuAqY656uw11eW9wrUeNLIL
+	cFIElICbAIUclkFKm8jiJg8EWMUiUx0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733252863;
+	s=mimecast20190719; t=1733253549;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qp8qIC8+SbNjtJ/vD3Mc/pgGXMGuySIroHQBH4DmWNM=;
-	b=U381YqVZrJmSoQDYoOHwy2tuiZj0biMr1m2K1OTAogoMsKf+XrSHuRAEOYHc4WC8JHXw0F
-	bwihBm9Tpr+XhEa3586eZVsRSp295QU7+MU/+HKmemDp6MvhsXRByGzTBIfIy8Fhq8g8Vo
-	2q/d+go1JLvHSdTTD6GmXd9yx00rf3k=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=4HYWX4lY+1zgmP6GYTzg/DCn9ab+q4upkCeyneBu0NI=;
+	b=F4d5NbO+JpmQTuJuVUomPVf6kQ+vmZ0ewLYkckPU46vG7+reMRhjzop4Q1p0ayTHbtW0Bm
+	2HEtvImqhAsXV/GhEIQhofcUStF2s31y9TaxEO3o9JsgYjbDQYokKyavLc6TaN83c9V4TY
+	U5j4l4Ht7G4Oux5l/E54LfxvIckR3uo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-2tfT-6vTMIa9ZDKfXBDOLw-1; Tue, 03 Dec 2024 14:07:41 -0500
-X-MC-Unique: 2tfT-6vTMIa9ZDKfXBDOLw-1
-X-Mimecast-MFC-AGG-ID: 2tfT-6vTMIa9ZDKfXBDOLw
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-385dfa9b758so1857940f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 11:07:41 -0800 (PST)
+ us-mta-688-TNB7YYSRNZulNVh5QALxQA-1; Tue, 03 Dec 2024 14:19:07 -0500
+X-MC-Unique: TNB7YYSRNZulNVh5QALxQA-1
+X-Mimecast-MFC-AGG-ID: TNB7YYSRNZulNVh5QALxQA
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-434a04437cdso43537015e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 11:19:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733252860; x=1733857660;
+        d=1e100.net; s=20230601; t=1733253546; x=1733858346;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=qp8qIC8+SbNjtJ/vD3Mc/pgGXMGuySIroHQBH4DmWNM=;
-        b=MmXZ1KZsa2mc+fRAdoTimWtYeNkqZsEmZPT6Y1dox73fHMRKAgg51iY3xBkR58cwKo
-         bzDVGtfwXJgFlvV57XwtBw43bDdCd9zWH/3us97JWnDaQH7b+B93wKN1PdIyoq6kv7JN
-         nOn9ae1haivR+16ZQ22pvm/zqO1si74ohcTGjiEcu/dEBlu9ZejyveETGjLxIrKfwnWx
-         ZBnMk4+3bl01WcGttPLipMiak73Ty7F0pX13XNx6P0pxJTTOABEj7V+DguM6+DIIeYOU
-         VpY3u/X8yQRRk7wPpaFljvVkcvDYZyPLNS0OHE8YD0YiQoZ5kBtNbtQh+KzZcF6fcH8Z
-         d2dA==
-X-Forwarded-Encrypted: i=1; AJvYcCVVCJmVl/LwlpLVP3U7FDi4AecCKh45/0+v1KyArxexD/tEa7Qc7PZZjPYlg1QMwHmuGyn9s6B2UsyV6Iw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyF0BSj5ReQ2zqgmqjjgmHfGpukfXhmXqAc32AVgmD2aiW8Njdx
-	JEyjWzGx7CCe47X4aNfwmoWo9tDDBLWN6zFZFRqeO/rkAZKv56f2x3k4V3leZQGxXcF7VG06f5V
-	zjDgIYjvjFR58wwyO+BkGDh6QEGOxv9bWS8uD3sa+3Xh4Fb2Bj+pXF6b293pxs3g=
-X-Gm-Gg: ASbGnctVCnT7hrUohME9XRQlm5JvVvoVHbgkvTzHUfMWsxAZ/N/snmoDYby4rI2u63d
-	7WB8iFvMvjtJMeYOdyhQizAIZXln5h9FQjZSzywm/fpkllQXqo/51L01cybA4hgWbpkz0Cih6nB
-	B80Likw8VWHGErwF6DT2nZIdCsRW+jIWWA0eBEpsBYwCThYVzkTqIAiKej7CWsmrdl4f+4mfb5D
-	XY5iaPZmAjUTys1N9eusjQCKD1Qids9l+hAElHKnX9Ry60oAIL4d7O7meFx8TVL5P/eAb5zWmiF
-	iuRbWsUHX510AcXVn6dPW+rrsWcARb1ROI9pcGY1TL1JWvXgEwVCl3hod6QvcufSQ4fiN/Wwjm5
-	Hew==
-X-Received: by 2002:a05:600c:1c1d:b0:434:932b:a44c with SMTP id 5b1f17b1804b1-434d3fe339emr12878705e9.27.1733252860314;
-        Tue, 03 Dec 2024 11:07:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEzqV5rcPa1XB7yoDaMRtuRh1kpD7s5D32r4FS5ciVaVbd7QdQZuGmrecP2reRzXahF4Ztg4g==
-X-Received: by 2002:a05:600c:1c1d:b0:434:932b:a44c with SMTP id 5b1f17b1804b1-434d3fe339emr12878455e9.27.1733252859940;
-        Tue, 03 Dec 2024 11:07:39 -0800 (PST)
+        bh=4HYWX4lY+1zgmP6GYTzg/DCn9ab+q4upkCeyneBu0NI=;
+        b=ZdXYjdu/w+9RnBJrYTh83AN93cnhg1G8hG4XV31OyAhMR/6EPT5c+/RSZjunsrR8Ip
+         hTevw/KKqoAdslD/Lsoo7DK0DZV5RwcISLp9xa43SO6IFwehT37dH0dq/G/eEJ6041Q0
+         /rsDt53ahTi1lnExdrEHf56ge3SVPjj9e3Q5MFM7RaT4Hb1kx2WFKWYcpg7EoLQ9ENAG
+         1dMqUDvzobjW3K5mWg+2Z+rP+niMa7ucRC/dN50133ZL9EkAgBC8Weblxu4Z9l13sJPs
+         RUFfC9QqCVnPW3Wp7YHRlkUlE12gVVEjCtm8z0s7flV2BTjbrEJZSr47t7EMn2/TPs4i
+         ODuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ2CastgEixt9mhLPYeZsveKsbB/GQcGWFZCiqtmno8keNSTPwRm2FvBYlN/q1JcNP8ttT0L/1yLTZYhk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxmdwTwNMXnAvsHAusMwSc+rsrA6wP56ta6t2CT1Bagk+8wcIHA
+	5SDIV1tWs5bNks19E8Lsu2KT4S8X4ahgTqzY2B7zHftDItlQzEFTvgMPKZeM4FhtvhmndTZWx5V
+	/54erkwpv21ztEAgDfee3j6ok98xjnvujJRVcRWNwH7MmJk5On+EWAhISg32cHZE=
+X-Gm-Gg: ASbGnctPiidILyrjpii7DcifieMDM6zlG9G8VQs/YkWVHZlLlcPZilNkZ2ANwHeSNyU
+	7oo3zvfD0VvbOYRyckwSr2Ag6y7D2t3Zq4wV3yUGawNm+oBx8gQeU2N5KXGgQAnoG/eI8B6bKXJ
+	vN8Uo/my85iVInNGQKNx1IAL99H9kvveCXxAD0HIapxOlwv4v8WYgcQ1mKE1taPl17n30TMKF9l
+	38R+gehG/dqspj2ycxeq1iUU9B+HSLGdO0zgmE3r2W9WN8pBKeTNtkW98fMMTOXFOXRGYMPhHTl
+	fUPVYzaOMyLnjqVnp77nHVK30mtIDNHPwokR2CnzPTUZ/Jx5Vx+L6dkJRB6Gmf+Vg8WqdT0UXoa
+	azw==
+X-Received: by 2002:a05:600c:5125:b0:434:9da3:602b with SMTP id 5b1f17b1804b1-434d09affa9mr33331615e9.5.1733253546235;
+        Tue, 03 Dec 2024 11:19:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEhIUyp7FwdbibPnEWnU4E3YEQlfcnkhoAFOBhvJUKIYdte1NbCV16fBdAJsfpJijLKWBL2IA==
+X-Received: by 2002:a05:600c:5125:b0:434:9da3:602b with SMTP id 5b1f17b1804b1-434d09affa9mr33331445e9.5.1733253545832;
+        Tue, 03 Dec 2024 11:19:05 -0800 (PST)
 Received: from ?IPV6:2003:cb:c746:1b00:fd9e:c26c:c552:1de7? (p200300cbc7461b00fd9ec26cc5521de7.dip0.t-ipconnect.de. [2003:cb:c746:1b00:fd9e:c26c:c552:1de7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e13e8eadsm12068257f8f.28.2024.12.03.11.07.37
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa76b52bsm230954065e9.18.2024.12.03.11.19.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Dec 2024 11:07:38 -0800 (PST)
-Message-ID: <ae0b70e7-bc7f-4f43-82af-0e0c1a02f735@redhat.com>
-Date: Tue, 3 Dec 2024 20:07:36 +0100
+        Tue, 03 Dec 2024 11:19:04 -0800 (PST)
+Message-ID: <d736f1c0-343e-4031-88ba-3b33b73dbeba@redhat.com>
+Date: Tue, 3 Dec 2024 20:19:02 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,11 +106,11 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RESEND v2 4/6] mm/page_alloc: sort out the
  alloc_contig_range() gfp flags mess
-To: Zi Yan <ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
+To: Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
 References: <20241203094732.200195-1-david@redhat.com>
@@ -118,7 +118,6 @@ References: <20241203094732.200195-1-david@redhat.com>
  <feffbbe8-4176-48e8-b503-ef53d7914197@suse.cz>
  <96c92857-4850-4f85-9474-ac193c5ea48c@redhat.com>
  <04c1d28e-bbea-4499-9a6d-770f9ca53ba9@suse.cz>
- <498871B1-D26C-4934-8E89-C6C8ECE8872A@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -165,111 +164,115 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <498871B1-D26C-4934-8E89-C6C8ECE8872A@nvidia.com>
+In-Reply-To: <04c1d28e-bbea-4499-9a6d-770f9ca53ba9@suse.cz>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 2Yo4mV2cRJ_zBYQdzyGEJ1SKoaM5nRO3O2ZnN2vt31Y_1733252860
+X-Mimecast-MFC-PROC-ID: 8nMBVR5RQ5LP4Wd3eykwFGoiYBoJ-kSFb7HGkll2rho_1733253546
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 03.12.24 16:49, Zi Yan wrote:
-> On 3 Dec 2024, at 9:24, Vlastimil Babka wrote:
+On 03.12.24 15:24, Vlastimil Babka wrote:
+> On 12/3/24 15:12, David Hildenbrand wrote:
+>> On 03.12.24 14:55, Vlastimil Babka wrote:
+>>> On 12/3/24 10:47, David Hildenbrand wrote:
+>>>> It's all a bit complicated for alloc_contig_range(). For example, we don't
+>>>> support many flags, so let's start bailing out on unsupported
+>>>> ones -- ignoring the placement hints, as we are already given the range
+>>>> to allocate.
+>>>>
+>>>> While we currently set cc.gfp_mask, in __alloc_contig_migrate_range() we
+>>>> simply create yet another GFP mask whereby we ignore the reclaim flags
+>>>> specify by the caller. That looks very inconsistent.
+>>>>
+>>>> Let's clean it up, constructing the gfp flags used for
+>>>> compaction/migration exactly once. Update the documentation of the
+>>>> gfp_mask parameter for alloc_contig_range() and alloc_contig_pages().
+>>>>
+>>>> Acked-by: Zi Yan <ziy@nvidia.com>
+>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>>
+>>> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+>>>
+>>>> +	/*
+>>>> +	 * Flags to control page compaction/migration/reclaim, to free up our
+>>>> +	 * page range. Migratable pages are movable, __GFP_MOVABLE is implied
+>>>> +	 * for them.
+>>>> +	 *
+>>>> +	 * Traditionally we always had __GFP_HARDWALL|__GFP_RETRY_MAYFAIL set,
+>>>> +	 * keep doing that to not degrade callers.
+>>>> +	 */
+>>>
+>>> Wonder if we could revisit that eventually. Why limit migration targets by
+>>> cpuset via __GFP_HARDWALL if we were not called with __GFP_HARDWALL? And why
+>>> weaken the attempts with __GFP_RETRY_MAYFAIL if we didn't specify it?
+>>
+>> See below.
+>>
+>>>
+>>> Unless I'm missing something, cc->gfp is only checked for __GFP_FS and
+>>> __GFP_NOWARN in few places, so it's mostly migration_target_control the
+>>> callers could meaningfully influence.
+>>
+>> Note the fist change in the file, where we now use the mask instead of coming up
+>> with another one out of the blue. :)
 > 
->> On 12/3/24 15:12, David Hildenbrand wrote:
->>> On 03.12.24 14:55, Vlastimil Babka wrote:
->>>> On 12/3/24 10:47, David Hildenbrand wrote:
->>>>> It's all a bit complicated for alloc_contig_range(). For example, we don't
->>>>> support many flags, so let's start bailing out on unsupported
->>>>> ones -- ignoring the placement hints, as we are already given the range
->>>>> to allocate.
->>>>>
->>>>> While we currently set cc.gfp_mask, in __alloc_contig_migrate_range() we
->>>>> simply create yet another GFP mask whereby we ignore the reclaim flags
->>>>> specify by the caller. That looks very inconsistent.
->>>>>
->>>>> Let's clean it up, constructing the gfp flags used for
->>>>> compaction/migration exactly once. Update the documentation of the
->>>>> gfp_mask parameter for alloc_contig_range() and alloc_contig_pages().
->>>>>
->>>>> Acked-by: Zi Yan <ziy@nvidia.com>
->>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>>>
->>>> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
->>>>
->>>>> +	/*
->>>>> +	 * Flags to control page compaction/migration/reclaim, to free up our
->>>>> +	 * page range. Migratable pages are movable, __GFP_MOVABLE is implied
->>>>> +	 * for them.
->>>>> +	 *
->>>>> +	 * Traditionally we always had __GFP_HARDWALL|__GFP_RETRY_MAYFAIL set,
->>>>> +	 * keep doing that to not degrade callers.
->>>>> +	 */
->>>>
->>>> Wonder if we could revisit that eventually. Why limit migration targets by
->>>> cpuset via __GFP_HARDWALL if we were not called with __GFP_HARDWALL? And why
->>>> weaken the attempts with __GFP_RETRY_MAYFAIL if we didn't specify it?
->>>
->>> See below.
->>>
->>>>
->>>> Unless I'm missing something, cc->gfp is only checked for __GFP_FS and
->>>> __GFP_NOWARN in few places, so it's mostly migration_target_control the
->>>> callers could meaningfully influence.
->>>
->>> Note the fist change in the file, where we now use the mask instead of coming up
->>> with another one out of the blue. :)
->>
->> I know. What I wanted to say - cc->gfp is on its own only checked in few
->> places, but now since we also translate it to migration_target_control's
->> gfp_mask, it's mostly that part the caller might influence with the passed
->> flags. But we still impose own additions to it, limiting that influence.
->>
->>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>> index ce7589a4ec01..54594cc4f650 100644
->>> --- a/mm/page_alloc.c
->>> +++ b/mm/page_alloc.c
->>> @@ -6294,7 +6294,7 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
->>>    	int ret = 0;
->>>    	struct migration_target_control mtc = {
->>>    		.nid = zone_to_nid(cc->zone),
->>> -		.gfp_mask = GFP_USER | __GFP_MOVABLE | __GFP_RETRY_MAYFAIL,
->>> +		.gfp_mask = cc->gfp_mask,
->>>    		.reason = MR_CONTIG_RANGE,
->>>    	};
->>>
->>> GFP_USER contains __GFP_HARDWALL. I am not sure if that matters here, but
->>
->> Yeah wonder if GFP_USER was used specifically for that part, or just randomly :)
->>
->>> likely the thing we are assuming here is that we are migrating a page, and
->>> usually, these are user allocation (except maybe balloon and some other non-lru
->>> movable things).
->>
->> Yeah and user allocations obey cpuset and mempolicies etc. But these are
->> likely somebody elses allocations that were done according to their
->> policies. With our migration we might be actually violating those, which
->> probably can't be helped (is at least migration within the same node
->> preferred? hmm). But it doesn't seem to me that our caller's restrictions
->> (if those exist, would be enforced by __GFP_HARDWALL) are that relevant for
->> somebody else's pages?
+> I know. What I wanted to say - cc->gfp is on its own only checked in few
+> places, but now since we also translate it to migration_target_control's
+> gfp_mask, it's mostly that part the caller might influence with the passed
+> flags. But we still impose own additions to it, limiting that influence.
 > 
-> Yeah, I was wondering why current_gfp_context() is used to adjust gfp_mask,
-> since current context might not be relevant. But I see it is used in
-> the original code, so I did not ask. If current context is irrelevant w.r.t
-> the to-be-migrated pages, should current_gfp_context() part be removed?
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index ce7589a4ec01..54594cc4f650 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -6294,7 +6294,7 @@ static int __alloc_contig_migrate_range(struct compact_control *cc,
+>>    	int ret = 0;
+>>    	struct migration_target_control mtc = {
+>>    		.nid = zone_to_nid(cc->zone),
+>> -		.gfp_mask = GFP_USER | __GFP_MOVABLE | __GFP_RETRY_MAYFAIL,
+>> +		.gfp_mask = cc->gfp_mask,
+>>    		.reason = MR_CONTIG_RANGE,
+>>    	};
+>>
+>> GFP_USER contains __GFP_HARDWALL. I am not sure if that matters here, but
+> 
+> Yeah wonder if GFP_USER was used specifically for that part, or just randomly :)
+> 
+>> likely the thing we are assuming here is that we are migrating a page, and
+>> usually, these are user allocation (except maybe balloon and some other non-lru
+>> movable things).
+> 
+> Yeah and user allocations obey cpuset and mempolicies etc. But these are
+> likely somebody elses allocations that were done according to their
+> policies. With our migration we might be actually violating those, which
+> probably can't be helped (is at least migration within the same node
+> preferred? hmm).
 
-Please see how current_gfp_context() is only concerned (excluding the 
-__GFP_MOVABLE thing we unconditionally set ...) about reclaim flags. 
-This part make absolute sense to respect here.
+I would hope that we handle memory policies somehow (via VMAs? not 
+sure). cpuset? I have no idea.
 
-So that is something different than __GFP_HARDWALL that *we so far 
-unconditionally set* and is not a "reclaim" flag.
+But it doesn't seem to me that our caller's restrictions
+> (if those exist, would be enforced by __GFP_HARDWALL) are that relevant for
+> somebody else's pages?
+
+It was always set using "GFP_USER | __GFP_MOVABLE | 
+__GFP_RETRY_MAYFAIL", and I removed the same flag combination in #2 from 
+memory offline code, and we do have the exact same thing in 
+do_migrate_range() in mm/memory_hotplug.c.
+
+We should investigate if__GFP_HARDWALL is the right thing to use here, 
+and if we can get rid of that by switching to GFP_KERNEL in all these 
+places.
+
+I can look into it + send a follow-up patch.
+
+Thanks!
 
 -- 
 Cheers,
