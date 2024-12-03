@@ -1,69 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-3691-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3692-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89FD9E120E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 04:54:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 189159E1279
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 05:40:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2RbY5KpXz2yR3;
-	Tue,  3 Dec 2024 14:54:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2Sd43jXQz2yb9;
+	Tue,  3 Dec 2024 15:40:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733198041;
-	cv=none; b=GPwWclHvg4U0rj4guZEXJd8WPTmNznoeQsUYde7DT9Cb1MtexoMEJIzJGqresbE9bod0mRhsLRCTv1ADPRrJnEnMljZMTjenAiwjUuZf0II7xdXUPNR8XtISmHXfidbjTLnw5mVkfJdEjaHQkkk33strlgVF83lhM50BtIkQ5114H6Q7tA8Yi71Wzq5BnFZUATdTyoCnS8awm/6Jj8rGn3hrlLoywsoWvQoT8ZHEXhe1zwz23mIaZweiNLGz0yY3j2S0kdu0jx7xOrgvlTk7GO674LzsF7rIoUkiPZ2n/EbVQ3IQIrykA2Be26B8P51WmuzRpu1/ZI5NHMyBDgdHFQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733200824;
+	cv=none; b=dk+6o9iyBwxAjPOBCiuBGuJD66s4bId4EEAEQGk+QEiSqEvOm//YU8Eoy8fkpeIUJRhgI7+GD0FK6lpXjlI8t5TREh5n9akE6O6Qm6Ys6S2ECy6jH/Q7TzHSo9TV80D63gdun5+JVjRzcpVdtZRYVoaaohfwG2pQkD7/OVFGmaxaMzJ7k9eEwLLhYT8aVY0OC/69gnkG8RWmKzBppBB7G03iQPG5oZzq5q+lx5019mzAOA4xj4IsGMltZq9eNHk35czx0fJVDXD/SLKqGT8xTFlhko33Jmv6eF2pyerpKQC8QQMTGrqyEtw/zaofRBGnyvvwvZFohU6cuAQTke+Ckg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733198041; c=relaxed/relaxed;
-	bh=zQqUbmF1clmBdR2j9z40+gFSt387kXFIYgaoe3LL5fM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jvv9+ogWdaXSiKURMpPYCmJiImr3S8uBja2AoaEH8peejDxxlhJ5TkU36rToaGCy6WFBoAABaHZe3NMz1N/QcT7AZ+P+Eza2DIxYAbV8FJ+uulLNVBYe8bthR7QvSub2rGfjm7H1vmWQxWbIBFCUz/vJyF9XB9H2ydAWR8hjThCUXIS6RLkqdl8BkaOErmqsI76+2kGOrFBPMxKY7wd0WGVnZl3Bs0bE3wiKNbjqZXLGFoTEt06STPeVZpOHSXZCzTsaZUVqJRMgI5R3bwsjXrfeXMapECXsJvDP6c9vJR89ev6OEB3edL2Lmp4oL1y9ZnypKRyn5EZfYwol6gac4w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G0gotNSR; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1733200824; c=relaxed/relaxed;
+	bh=2l3ooX07ch+E8GdMnS6+X+NrpeLh/8QlFHRG29oKS+4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:Mime-Version; b=oIQr2fV86F6fIPp9ADJKMqXoougDY/3h7/4PdSv7DxyybJ5gC1IHa2K9O4oZ8EQHWK43+CP+m0jbBRqtJ48JcCJqXu4rGbzXHK1id2QiE5fMIwzlRrUcSZ2GA45CltRvr47HPVgrXp/Y4xgVNBLkifN8PUj27MJOv5LPI/Ab+MWUlLVJbUawhnzirP2LYPbdVzW5FHGLkBSMhhqyD4ubpNZ74Ve+funyhZm7GJ04rhfBbA3mA5rHNm38/8Fbie6pqipLZmLw+3JRpnlFxTbfEinOUCQUEHPLThEVN1cfvN/iQyvuOGp3nK2ldpwZ0VWVPOZVeuesty3BF1kHDvWEmQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E+xUbPi0; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G0gotNSR;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E+xUbPi0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2RbX3qW1z2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 14:54:00 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1F7745C6A61;
-	Tue,  3 Dec 2024 03:53:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8441AC4CECF;
-	Tue,  3 Dec 2024 03:53:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733198035;
-	bh=nKvcOkAgT9eGLo+1IwUFYryCnxBo3MpKhtpqtDuNVl8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0gotNSRONxMRV3ybu2QdEkE9nK/sNKtOf3PG1b5012GdQHoNtospa/lqZYwD5rPe
-	 /0tDnWHQfpsN7GWoEEFAAKM0byhFfPyUaQKaj9vOvceUZuAozwS3bT9uP9DysLc4zi
-	 HsIJqXpxDmRBkW7OXeH8/mMgDWThI4MV9t0JDb2qB7e1WlgnrLeKRJZijWtZczy2RD
-	 Ex9qhn7giClb+jMZlvE7rQeRiXBF7vCs1CfAiZercJhfash4D7zdO0qweR7dQtXBIg
-	 sWGmmkuUoav3BFp0ZcuhZsxDTB5mbxyyaCU2xeQ62+Y7GxygLBJ3lCcE65BPcVkCWR
-	 GN0S8lEEHAK5Q==
-From: Namhyung Kim <namhyung@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	linux-perf-users@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	x86@kernel.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org
-Subject: [PATCH 06/11] tools headers: Sync *xattrat syscall changes with the kernel sources
-Date: Mon,  2 Dec 2024 19:53:44 -0800
-Message-ID: <20241203035349.1901262-7-namhyung@kernel.org>
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-In-Reply-To: <20241203035349.1901262-1-namhyung@kernel.org>
-References: <20241203035349.1901262-1-namhyung@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2Sd230bCz2yS0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 15:40:21 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B32ETKN008143;
+	Tue, 3 Dec 2024 04:40:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=2l3ooX
+	07ch+E8GdMnS6+X+NrpeLh/8QlFHRG29oKS+4=; b=E+xUbPi0K/BeHQioAsDVWs
+	bn2bvkm9jeZ7+plREMCf6ZzVBXNcF9tZIMOxUExHxWTL95YdCj+/eknK1emk6q+M
+	CGGWX/dUe8BbEn88PjiNbDan7cq05ULxRHnYxGwS5qYBvc01ALqOwmIjEbwu2ZBT
+	67YPTBhh40FJwHUErVAkSRBPboItsox/msn/QOdqUsKnXiOf50INKaQ8F7MDUgON
+	8XiwjtFVDi1Of3Y0Jz8CDqSfEzf58m2hyAwC9GUhoevDBi06H8khBGfoDy4TPy2G
+	oyEE+9L4wpaOa2v3LyDZwzqaupwZAAkpGN+YSezCpuDgH6eIV/I24dPENYfzHagw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 438kfggt0v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Dec 2024 04:40:12 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B34eB1M004186;
+	Tue, 3 Dec 2024 04:40:11 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 438kfggt0q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Dec 2024 04:40:11 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B2GpLSx020500;
+	Tue, 3 Dec 2024 04:40:10 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 438d1s3gw4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Dec 2024 04:40:10 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B34e7Y246596452
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Dec 2024 04:40:07 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 69A5758052;
+	Tue,  3 Dec 2024 04:40:07 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 797CD58050;
+	Tue,  3 Dec 2024 04:40:06 +0000 (GMT)
+Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com (unknown [9.61.117.147])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Dec 2024 04:40:06 +0000 (GMT)
+Message-ID: <dc4e922325c2000cc90555d4fe936e57b779c935.camel@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries: Add papr-platform-dump character
+ driver for dump retrieval
+From: Haren Myneni <haren@linux.ibm.com>
+To: Michal =?ISO-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Cc: mahesh@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+        npiggin@gmail.com, maddy@linux.ibm.com, tyreld@linux.ibm.com,
+        hbabu@us.ibm.com
+Date: Mon, 02 Dec 2024 20:40:05 -0800
+In-Reply-To: <Z0biWRHqzcXvG7vm@kitsune.suse.cz>
+References: <20241124052040.239813-1-haren@linux.ibm.com>
+	 <jmjczbrkepk447u64usrr3mbx3nwei2ot7fbheu3yguyrtuo2o@dwmszh6ksbog>
+	 <8360c1d3c3d2ecd4bfaba6bf92b6b920672332eb.camel@linux.ibm.com>
+	 <Z0biWRHqzcXvG7vm@kitsune.suse.cz>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-26.el8_10) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,135 +98,260 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _KLL9HaahmR2qNNx8sPWx0-7LipeIYO9
+X-Proofpoint-GUID: jQxCdUXlePpnwvEyxNkiWNiUlUIqIo4w
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 clxscore=1015 malwarescore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 mlxlogscore=999 impostorscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412030036
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-To pick up the changes in this cset:
+On Wed, 2024-11-27 at 10:11 +0100, Michal Suchánek wrote:
+> On Tue, Nov 26, 2024 at 12:40:20PM -0800, Haren Myneni wrote:
+> > On Wed, 2024-11-27 at 00:42 +0530, Mahesh J Salgaonkar wrote:
+> > > On 2024-11-23 21:20:39 Sat, Haren Myneni wrote:
+> > > [...]
+> > > > +static ssize_t papr_platform_dump_handle_read(struct file
+> > > > *file,
+> > > > +		char __user *buf, size_t size, loff_t *off)
+> > > > +{
+> > > > +	struct ibm_platform_dump_params *params = file-
+> > > > >private_data;
+> > > > +	u64 total_bytes;
+> > > > +	s32 fwrc;
+> > > > +
+> > > > +	/*
+> > > > +	 * Dump already completed with the previous read calls.
+> > > > +	 * In case if the user space issues further reads,
+> > > > returns
+> > > > +	 * -EINVAL.
+> > > > +	 */
+> > > > +	if (!params->buf_length) {
+> > > > +		pr_warn_once("Platform dump completed for dump
+> > > > ID
+> > > > %llu\n",
+> > > > +			(u64) (((u64)params->dump_tag_hi << 32)
+> > > > |
+> > > > +				params->dump_tag_lo));
+> > > > +		return -EINVAL;
+> > > > +	}
+> > > > +
+> > > > +	if (size < SZ_1K) {
+> > > > +		pr_err_once("Buffer length should be minimum
+> > > > 1024
+> > > > bytes\n");
+> > > > +		return -EINVAL;
+> > > > +	}
+> > > > +
+> > > > +	/*
+> > > > +	 * The hypervisor returns status 0 if no more data
+> > > > available to
+> > > > +	 * download. Then expects the last RTAS call with NULL
+> > > > buffer
+> > > > +	 * to invalidate the dump which means dump will be
+> > > > freed in the
+> > > > +	 * hypervisor.
+> > > > +	 */
+> > > > +	if (params->status == RTAS_IBM_PLATFORM_DUMP_COMPLETE)
+> > > > {
+> > > > +		params->buf_length = 0;
+> > > > +		fwrc = rtas_ibm_platform_dump(params, 0, 0);
+> > > > +		/*
+> > > > +		 * Returns 0 (success) to the user space so
+> > > > that user
+> > > > +		 * space read stops.
+> > > 
+> > > Does this implicitly invalidates the dump irrespective of whether
+> > > userspace has requested or not ?
+> > 
+> > No, the RTAS call from the last read() will invalidate the dump.
+> > Expect
+> > the user space make the read() until returns 0 which means the last
+> > read() will return 0 after invalidate the dump. 
+> > 
+> > size_t read() 
+> > {
+> >    if (params->status == RTAS_IBM_PLATFORM_DUMP_COMPLETE) {
+> >            RTAS call to invalidate dump
+> >            return 0;
+> >    }
+> >    get the data from RTAS call
+> >    If the RTAS call return status is DUMP_COMPLETE
+> >              params->status = RTAS_IBM_PLATFORM_DUMP_COMPLETE
+> >    return bytes_written
+> > }
+> > 
+> > If the RTAS call returns DUMP_COMPLETE, the hypervisor expects one
+> > more
+> > RTAS call to invalidate the dump which is done as part of the last
+> > read()
+> > 
+> > > Copy-pasting bellow code snippet from librtas side patch posted
+> > > by
+> > > you to
+> > > librtas-devel mailing list:
+> > > + /*
+> > > + * rtas_platform_dump() is called with buf = NULL and length = 0
+> > > + * for "dump complete" RTAS call to invalidate dump.
+> > > + * For kernel interface, read() will be continued until the
+> > > + * return value = 0. Means kernel API will return this value
+> > > only
+> > > + * after issued "dump complete" call. So nothing to do further
+> > > + * for the last RTAS call.
+> > > + */
+> > > + if (buffer == NULL)
+> > > + return 0;
+> > > 
+> > > If I understand this correctly, it looks like calling
+> > > rtas_platform_dump() with buf = NULL and length = 0, now does
+> > > nothing.
+> > Following the same read() ABI - expects to make calls until returns
+> > size 0.
+> > 
+> > The current usage of rtas_platform_dump() in ppc64-
+> > diag/rtas_errd/extract_platdump.c
+> > 
+> > dump_complete = rtas_platform_dump(dump_tag, 0, dump_buf,
+> > DUMP_BUF_SZ,
+> >                                         &seq_next, &bytes);
+> > 
+> > while (dump_complete) {
+> > 
+> >    dump_complete = rtas_platform_dump(dump_tag, seq, dump_buf,
+> >  				DUMP_BUF_SZ, &seq_next, &bytes);
+> >                                 
+> > }
+> > 
+> > ret = rtas_platform_dump(dump_tag, seq, NULL, 0, 
+> >                                 &seq_next, &bytes);
+> > 
+> > we need to support both new and old interfaces and not changing the
+> > above code which uses librtas API.
+> > 
+> > So the new rtas_platform_dump() interface
+> > {
+> >  if the buffer == NULL 
+> >      return - nothing to do here. Dump is invalidated with the
+> > previous
+> > rtas_platform_dump()   
+> >  
+> >  size = read()
+> >  if size == 0 
+> >       dump complete and invalidate the dump
+> >       return 0
+> > 
+> >   return 1;
+> > }
+> 
+> No EOF?
 
-  6140be90ec70c39f ("fs/xattr: add *at family syscalls")
+read() returns size, 0 or < 0. Returns 0 is like EOF. 
 
-This addresses these perf build warnings:
+> 
+> So no standard file handling code can use this FD?
 
-  Warning: Kernel ABI header differences:
-    diff -u tools/include/uapi/asm-generic/unistd.h include/uapi/asm-generic/unistd.h
-    diff -u tools/perf/arch/x86/entry/syscalls/syscall_32.tbl arch/x86/entry/syscalls/syscall_32.tbl
-    diff -u tools/perf/arch/x86/entry/syscalls/syscall_64.tbl arch/x86/entry/syscalls/syscall_64.tbl
-    diff -u tools/perf/arch/powerpc/entry/syscalls/syscall.tbl arch/powerpc/kernel/syscalls/syscall.tbl
-    diff -u tools/perf/arch/s390/entry/syscalls/syscall.tbl arch/s390/kernel/syscalls/syscall.tbl
-    diff -u tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl arch/mips/kernel/syscalls/syscall_n64.tbl
+Yes, providing support for FD from ioctl for the following reasons:
 
-The arm64 changes are not included as it requires more changes in the
-tools.  It'll be worked for the later cycle.
+- get-vpd char driver is providing only for FD from ioctl. So thought
+of using same interface for platform-dump so that having consitent
+interface for all RTAS function char drivers. 
 
-Please see tools/include/uapi/README for further details.
+- file->private_data is assigned to miscdevice in misc_register and
+also assigned to some other miscdevice struct in driver specific code.
+So was thinking of not following semantics in the existing code if I
+private_data to save internal param struct.
 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Christian Brauner <brauner@kernel.org>
-CC: x86@kernel.org
-CC: linux-mips@vger.kernel.org
-CC: linuxppc-dev@lists.ozlabs.org
-CC: linux-s390@vger.kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
----
- tools/include/uapi/asm-generic/unistd.h             | 11 ++++++++++-
- tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl |  4 ++++
- tools/perf/arch/powerpc/entry/syscalls/syscall.tbl  |  4 ++++
- tools/perf/arch/s390/entry/syscalls/syscall.tbl     |  4 ++++
- tools/perf/arch/x86/entry/syscalls/syscall_32.tbl   |  4 ++++
- tools/perf/arch/x86/entry/syscalls/syscall_64.tbl   |  4 ++++
- 6 files changed, 30 insertions(+), 1 deletion(-)
+Please let me know if you prefer to use FD from open() for platform-
+dump read().
 
-diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
-index 5bf6148cac2b93e3..88dc393c2bca38c0 100644
---- a/tools/include/uapi/asm-generic/unistd.h
-+++ b/tools/include/uapi/asm-generic/unistd.h
-@@ -841,8 +841,17 @@ __SYSCALL(__NR_lsm_list_modules, sys_lsm_list_modules)
- #define __NR_mseal 462
- __SYSCALL(__NR_mseal, sys_mseal)
- 
-+#define __NR_setxattrat 463
-+__SYSCALL(__NR_setxattrat, sys_setxattrat)
-+#define __NR_getxattrat 464
-+__SYSCALL(__NR_getxattrat, sys_getxattrat)
-+#define __NR_listxattrat 465
-+__SYSCALL(__NR_listxattrat, sys_listxattrat)
-+#define __NR_removexattrat 466
-+__SYSCALL(__NR_removexattrat, sys_removexattrat)
-+
- #undef __NR_syscalls
--#define __NR_syscalls 463
-+#define __NR_syscalls 467
- 
- /*
-  * 32 bit systems traditionally used different
-diff --git a/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl b/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
-index 1464c6be6eb3c752..c844cd5cda620b28 100644
---- a/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
-+++ b/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
-@@ -377,3 +377,7 @@
- 460	n64	lsm_set_self_attr		sys_lsm_set_self_attr
- 461	n64	lsm_list_modules		sys_lsm_list_modules
- 462	n64	mseal				sys_mseal
-+463	n64	setxattrat			sys_setxattrat
-+464	n64	getxattrat			sys_getxattrat
-+465	n64	listxattrat			sys_listxattrat
-+466	n64	removexattrat			sys_removexattrat
-diff --git a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-index ebae8415dfbbab6f..d8b4ab78bef076bd 100644
---- a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-+++ b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-@@ -553,3 +553,7 @@
- 460	common	lsm_set_self_attr		sys_lsm_set_self_attr
- 461	common	lsm_list_modules		sys_lsm_list_modules
- 462	common	mseal				sys_mseal
-+463	common	setxattrat			sys_setxattrat
-+464	common	getxattrat			sys_getxattrat
-+465	common	listxattrat			sys_listxattrat
-+466	common	removexattrat			sys_removexattrat
-diff --git a/tools/perf/arch/s390/entry/syscalls/syscall.tbl b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
-index 01071182763e96ff..e9115b4d8b635b84 100644
---- a/tools/perf/arch/s390/entry/syscalls/syscall.tbl
-+++ b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
-@@ -465,3 +465,7 @@
- 460  common	lsm_set_self_attr	sys_lsm_set_self_attr		sys_lsm_set_self_attr
- 461  common	lsm_list_modules	sys_lsm_list_modules		sys_lsm_list_modules
- 462  common	mseal			sys_mseal			sys_mseal
-+463  common	setxattrat		sys_setxattrat			sys_setxattrat
-+464  common	getxattrat		sys_getxattrat			sys_getxattrat
-+465  common	listxattrat		sys_listxattrat			sys_listxattrat
-+466  common	removexattrat		sys_removexattrat		sys_removexattrat
-diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl
-index 534c74b14fab5117..4d0fb2fba7e208ae 100644
---- a/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl
-+++ b/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl
-@@ -468,3 +468,7 @@
- 460	i386	lsm_set_self_attr	sys_lsm_set_self_attr
- 461	i386	lsm_list_modules	sys_lsm_list_modules
- 462	i386	mseal 			sys_mseal
-+463	i386	setxattrat		sys_setxattrat
-+464	i386	getxattrat		sys_getxattrat
-+465	i386	listxattrat		sys_listxattrat
-+466	i386	removexattrat		sys_removexattrat
-diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-index 7093ee21c0d1c041..5eb708bff1c791de 100644
---- a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-+++ b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-@@ -386,6 +386,10 @@
- 460	common	lsm_set_self_attr	sys_lsm_set_self_attr
- 461	common	lsm_list_modules	sys_lsm_list_modules
- 462 	common  mseal			sys_mseal
-+463	common	setxattrat		sys_setxattrat
-+464	common	getxattrat		sys_getxattrat
-+465	common	listxattrat		sys_listxattrat
-+466	common	removexattrat		sys_removexattrat
- 
- #
- # Due to a historical design error, certain syscalls are numbered differently
--- 
-2.47.0.338.g60cca15819-goog
+> 
+> But also the size 0 read both indicates the EOF and invalidates the
+> dump, these should be separate.
+> 
+> Which differs from the hypervisor API that makes it impossible to
+> save
+> the dump without deleting it, and introduces a regression.
+
+The hypervisor API says to invalidate the dump after saving it. In the
+current interface it does - The user space makes the last read() (for
+return 0) after saving the complete dump. 
+
+All read() calls return size (> 0) == RTAS calls for dump
+read() expects return 0 == same RTAS invalidate dump
+
+So the only difference is if the user does not call to invalidate dump
+explicitly even though saved the dump, but we do not have the current
+usage, Only the extract-dump command is the only usage now and please
+note that this command is used for non-HMC manages system. It is not
+used on HMC managed system which has its own command gets the dump
+directly from the hypervisor.    
+
+> 
+> If you are doing IOCTLs anyway the invalidation could be an IOCTL. Or
+> you could really follow the RTAS ABI and only incalidate if the user
+> passes NULL and 0.
+
+I could use this ioctl interface to invalidate the dump.
+
+devfd = ioctl(fd ..) for dump ID
+read(devfd)
+ret = ioctl(devfd ...) to invalidate dump 
+
+I will make changes if you are OK with this interface
+
+> 
+> But more generally the previously added RTAS wrappers do not closely
+> follow the RTAS ABI, and do accumulation of read data in the kernel,
+> passing the whole buffer to userspace afterwards.
+> 
+> Why cannot it be done in this case?
+
+platform-dump RTAS returns more data unlike in get-vpd. In one case
+noticed 3G data which is not the ideal case to save in the kernel
+buffer within ioctl. 
+
+Also platform-dump RTAS function supports interleave calls for multiple
+dump IDs at the same time unlike in get-vpd case.
+
+> 
+> Even more generally if the dump IDs are stable these could be listed
+> in
+> some sysfs or debugfs directory, and provide standard file
+> operations,
+> including unlink() to remove the dump.
+
+dump IDs are not stable. The hypervisor can have several dumps with
+different IDs at the same time. so unlink() can not be used.
+
+> 
+> With the bonus that at least one of these filesystems has some
+> provisions for confidentiality lockdown. The implementation could use
+> that to make the dumps unavailable in confidentiality lockdown level
+> if
+> the dumps are considered confidential without reimplementing the
+> check.
+
+We are adding new driver (interfaces) to support lockdown. Otherwise
+the current usage is sufficient. But we could modify to restrict the
+interface for confidentiality lockdown in future if we have that
+restriction.
+
+Thanks
+Haren
+
+> 
+> Thanks
+> 
+> Michal
 
 
