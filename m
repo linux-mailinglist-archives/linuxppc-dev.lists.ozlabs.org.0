@@ -1,58 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-3690-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3691-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA1D9E0F13
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Dec 2024 23:56:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89FD9E120E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 04:54:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2K023PGyz2yHL;
-	Tue,  3 Dec 2024 09:56:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2RbY5KpXz2yR3;
+	Tue,  3 Dec 2024 14:54:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733180178;
-	cv=none; b=bE50uVm4YCJcU5Xxku83032bptlt3mTOjT+gmBIaUcZCS7OpoBma8SCMNd16nOd044dMf5ZAR0EZcXw/06CP2r0JshFsQXPk77uWl8x9MdW0YKZ8N8EoS8o3lSuranAYuBmcde5mbJsmf8uaVDjzRIvgkXsfGqx8dWQeTJr0fyhUYHZ9g9RVFCAHMce/4Wb/L/qx1i166/noBokSiwad0hKdUSn1gku91VLbtwZwugV9mMyKdBFXgeXkPeuDF+VqC5rCFoRKvtMMjmLqinuTRVHYdfl7p+ZTFVhQ+K6VPClE6DFLVPpYv1d8CyymwDgOs+sLHL5nRmLpBbj5PnY6mQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733198041;
+	cv=none; b=GPwWclHvg4U0rj4guZEXJd8WPTmNznoeQsUYde7DT9Cb1MtexoMEJIzJGqresbE9bod0mRhsLRCTv1ADPRrJnEnMljZMTjenAiwjUuZf0II7xdXUPNR8XtISmHXfidbjTLnw5mVkfJdEjaHQkkk33strlgVF83lhM50BtIkQ5114H6Q7tA8Yi71Wzq5BnFZUATdTyoCnS8awm/6Jj8rGn3hrlLoywsoWvQoT8ZHEXhe1zwz23mIaZweiNLGz0yY3j2S0kdu0jx7xOrgvlTk7GO674LzsF7rIoUkiPZ2n/EbVQ3IQIrykA2Be26B8P51WmuzRpu1/ZI5NHMyBDgdHFQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733180178; c=relaxed/relaxed;
-	bh=xAx3A7ve6q9wwo1QGJyUvWsLjGxUz9/VFlRD9VxAmFI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ks9JBZBPYkqNRbHeOeofHxdx+iacd0OWRL5dlE4itsZRkTXtRYyOke5AaJbKB6hcbFn3LHMRWTJXV26a/zsRHIknMUNhSmXY4/1McCIHjp5daO4PEjMpaEL2brQ9qnN+c08Y8xD4y+186go3Wnl1stdL3Dc3+c34AJQlJiBbGkIiDZNsnWVSB6cjdwNXOXO4RoBmXkSgndC9Bc6Vgv8YdPjX1sALz3P+fb7yhUMI2vs8neyeV14MbjvVGF5gucnA+nKz0+9X/wewxr477ksBIQ1YKuP0aRUO57Oset8/drgPJ1CnbSLrvEWvRiBX0ZG9CwMV8+a39nDsLzz7x5sGgw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r/5rJHri; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1733198041; c=relaxed/relaxed;
+	bh=zQqUbmF1clmBdR2j9z40+gFSt387kXFIYgaoe3LL5fM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Jvv9+ogWdaXSiKURMpPYCmJiImr3S8uBja2AoaEH8peejDxxlhJ5TkU36rToaGCy6WFBoAABaHZe3NMz1N/QcT7AZ+P+Eza2DIxYAbV8FJ+uulLNVBYe8bthR7QvSub2rGfjm7H1vmWQxWbIBFCUz/vJyF9XB9H2ydAWR8hjThCUXIS6RLkqdl8BkaOErmqsI76+2kGOrFBPMxKY7wd0WGVnZl3Bs0bE3wiKNbjqZXLGFoTEt06STPeVZpOHSXZCzTsaZUVqJRMgI5R3bwsjXrfeXMapECXsJvDP6c9vJR89ev6OEB3edL2Lmp4oL1y9ZnypKRyn5EZfYwol6gac4w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G0gotNSR; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r/5rJHri;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G0gotNSR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2Jzy4Pxzz2yFP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 09:56:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2RbX3qW1z2yLB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 14:54:00 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id B82C95C697E
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 22:55:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FC1C4CED6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Dec 2024 22:56:10 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1F7745C6A61;
+	Tue,  3 Dec 2024 03:53:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8441AC4CECF;
+	Tue,  3 Dec 2024 03:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733180170;
-	bh=C390/U3lQIPd9DTFWuMmUpP8GWQW0gL7hXO3NhmNEoc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=r/5rJHriXWguekh0f3N3wpCM6DHd8Febo2Z89o3XFa+sqg6Sc5mw1sdkIpBVPJIjP
-	 fPeVZSKVqzt8dAJTyzb+SX4+90hzsWu5mhWINAOB7Qu/gjF6dTj1FBtYmHFqsGZ3S6
-	 AyiMKR39vdB31rXhQwNq1ASmb3nY4MhLv2Lz/PFYZZqHHJDMs0wokItOiSEAzEAvXC
-	 EFZVQno86P0pHvhArboKTcZ+OKZjLD2/4WKaJoDGr2xcNQWEwGz3AlsD7OQFRnBdno
-	 kiT2j7Ry5pt86rVvFb/nf/4U52g+DMvRRZw3KKkjDdW6XADxUaKHN2ie/TmOqwAXXF
-	 vln9XWzgVCAZQ==
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e3984b1db09so3436958276.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Dec 2024 14:56:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXY/Euyl+mhIaSoKM02EULxb1OTOcfWfgVXuUifvNGudM1+vV8uIAtUKeJ2iMx1crvlFk626O7jIGbu3Nk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwpAzVtUFGDuOm0Co74dHQWUJe9CV1Jy3p/72tHc0Bczk5M1vva
-	AXKavCwmcvAQ4PwACmd16r8Yr0HoIUhEPHzv993ENmcVyVXHGfBUD89JlBryk0Xr7oHtqETwza4
-	ZEbaP4VppxTQAPZQiekRG/1u9LQ==
-X-Google-Smtp-Source: AGHT+IEqo9P4Zr3/vlhz9V+X1UM634ot9hRB2b4JJ5/kLZJov8aEvuWuPHXqi5ULgy6Qx9wsrwTqWQ6sVwGERMSPO/I=
-X-Received: by 2002:a05:6902:338a:b0:e38:87bf:8e65 with SMTP id
- 3f1490d57ef6-e39d35a8631mr282616276.0.1733180169551; Mon, 02 Dec 2024
- 14:56:09 -0800 (PST)
+	s=k20201202; t=1733198035;
+	bh=nKvcOkAgT9eGLo+1IwUFYryCnxBo3MpKhtpqtDuNVl8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G0gotNSRONxMRV3ybu2QdEkE9nK/sNKtOf3PG1b5012GdQHoNtospa/lqZYwD5rPe
+	 /0tDnWHQfpsN7GWoEEFAAKM0byhFfPyUaQKaj9vOvceUZuAozwS3bT9uP9DysLc4zi
+	 HsIJqXpxDmRBkW7OXeH8/mMgDWThI4MV9t0JDb2qB7e1WlgnrLeKRJZijWtZczy2RD
+	 Ex9qhn7giClb+jMZlvE7rQeRiXBF7vCs1CfAiZercJhfash4D7zdO0qweR7dQtXBIg
+	 sWGmmkuUoav3BFp0ZcuhZsxDTB5mbxyyaCU2xeQ62+Y7GxygLBJ3lCcE65BPcVkCWR
+	 GN0S8lEEHAK5Q==
+From: Namhyung Kim <namhyung@kernel.org>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linux-perf-users@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	x86@kernel.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org
+Subject: [PATCH 06/11] tools headers: Sync *xattrat syscall changes with the kernel sources
+Date: Mon,  2 Dec 2024 19:53:44 -0800
+Message-ID: <20241203035349.1901262-7-namhyung@kernel.org>
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+In-Reply-To: <20241203035349.1901262-1-namhyung@kernel.org>
+References: <20241203035349.1901262-1-namhyung@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,127 +76,134 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241106171028.3830266-1-robh@kernel.org> <87jzdfcm3l.fsf@mpe.ellerman.id.au>
- <87plmi7jjz.fsf@mpe.ellerman.id.au> <20241127214232.GQ29862@gate.crashing.org>
- <CAL_JsqKhp8bW66koP8JPSkXmrCjA+oQh6NZte_uphiLTC_=7Rw@mail.gmail.com> <20241202220434.GU29862@gate.crashing.org>
-In-Reply-To: <20241202220434.GU29862@gate.crashing.org>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 2 Dec 2024 16:55:58 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL5FHPNQWGdBEz9UpD7cq3We-czPV8OmwD=0w5Eu10=kA@mail.gmail.com>
-Message-ID: <CAL_JsqL5FHPNQWGdBEz9UpD7cq3We-czPV8OmwD=0w5Eu10=kA@mail.gmail.com>
-Subject: Re: [PATCH v2] of: WARN on deprecated #address-cells/#size-cells handling
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Saravana Kannan <saravanak@google.com>, 
-	linuxppc-dev@lists.ozlabs.org, Conor Dooley <conor@kernel.org>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Dec 2, 2024 at 4:09=E2=80=AFPM Segher Boessenkool
-<segher@kernel.crashing.org> wrote:
->
-> On Mon, Dec 02, 2024 at 08:18:22AM -0600, Rob Herring wrote:
-> > On Wed, Nov 27, 2024 at 3:47=E2=80=AFPM Segher Boessenkool
-> > <segher@kernel.crashing.org> wrote:
-> > > On Tue, Nov 26, 2024 at 02:36:32PM +1100, Michael Ellerman wrote:
-> > > > Michael Ellerman <mpe@ellerman.id.au> writes:
-> > > > > "Rob Herring (Arm)" <robh@kernel.org> writes:
-> > > > >> While OpenFirmware originally allowed walking parent nodes and d=
-efault
-> > > > >> root values for #address-cells and #size-cells, FDT has long req=
-uired
-> > > > >> explicit values. It's been a warning in dtc for the root node si=
-nce the
-> > > > >> beginning (2005) and for any parent node since 2007. Of course, =
-not all
-> > > > >> FDT uses dtc, but that should be the majority by far. The variou=
-s
-> > > > >> extracted OF devicetrees I have dating back to the 1990s (variou=
-s
-> > > > >> PowerMac, OLPC, PASemi Nemo) all have explicit root node propert=
-ies.
-> > > > >
-> > > > > I have various old device trees that have been given to me over t=
-he
-> > > > > years, and as far as I can tell they all have these properties (s=
-ome of
-> > > > > them are partial trees so it's hard to be 100% sure).
-> > > > >
-> > > > > So LGTM.
-> > > >
-> > > > Turns out I was wrong.
-> > > >
-> > > > The warning about #size-cells hits on some powermacs, possible fixu=
-p
-> > > > patch here:
-> > > >
-> > > >   https://lore.kernel.org/linuxppc-dev/20241126025710.591683-1-mpe@=
-ellerman.id.au/
-> > >
-> > > The Open Firmware specification is extremely clear that a "missing"
-> > > "#size-cells" property means this bus has the default value of 1.
-> >
-> > And the default for #address-cells is 2, but yet every architecture
-> > except Sparc has that wrong.
->
-> ?
->
-> Almost all architectures (that run Linux) use 64-bit addressing, both
-> 32-bit and 64-bit architectures.
+To pick up the changes in this cset:
 
-I'm just telling you what Linux uses for defaults for at least 20 years.
+  6140be90ec70c39f ("fs/xattr: add *at family syscalls")
 
-> > If I have a node without #size-cells, is the default of 1 used or do
-> > we check parent nodes? My read of the spec would be the former, but
-> > the kernel does the latter.
->
-> The former is correct.  The latter makes no sense at all!  The whole
-> point of the "bus" abstraction is that you get a new addressing domain
-> there.
+This addresses these perf build warnings:
 
-I agree, but that's what the kernel does (again, for 20+ years).
-Walking the parents is really what I want to get rid of here. My
-choices were drop that behavior and see who I break, or add a warning
-and see who notices. I went the nicer route of a warning.
+  Warning: Kernel ABI header differences:
+    diff -u tools/include/uapi/asm-generic/unistd.h include/uapi/asm-generic/unistd.h
+    diff -u tools/perf/arch/x86/entry/syscalls/syscall_32.tbl arch/x86/entry/syscalls/syscall_32.tbl
+    diff -u tools/perf/arch/x86/entry/syscalls/syscall_64.tbl arch/x86/entry/syscalls/syscall_64.tbl
+    diff -u tools/perf/arch/powerpc/entry/syscalls/syscall.tbl arch/powerpc/kernel/syscalls/syscall.tbl
+    diff -u tools/perf/arch/s390/entry/syscalls/syscall.tbl arch/s390/kernel/syscalls/syscall.tbl
+    diff -u tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl arch/mips/kernel/syscalls/syscall_n64.tbl
 
-> Yes, these days you numerically find it most often with PCI sub-domains,
-> but those are boring.  In most cases you *do* have different adressing
-> on your child busses, and even if the addressing is the same, addresses
-> on the child bus are not normally a subset of those on the parent bus.
->
-> > > https://www.openfirmware.info/data/docs/of1275.pdf (page 186).
-> > >
-> > > DTC or FDT might want to do things differently, but expecting decades
-> > > older stuff to conform to its ill-conceived unnecessarily super wordy
-> > > stuff is, well, not a plan that is likely to work very well :-)
-> >
-> > That is not the intention. The intention is to identify what doesn't
-> > conform and exclude those systems from this check (or apply a fixup if
-> > that works).
->
-> So *always* use the OF definition, at least on OF systems?  Where
-> everything is meant to conform, but conform to OF, not conform to this
-> "OF-like-but-very-different-in-crucial-spots" thing :-)
+The arm64 changes are not included as it requires more changes in the
+tools.  It'll be worked for the later cycle.
 
-I'm pretty sure there are OF systems that don't conform, so it is not
-that simple. There's this comment in of_irq_parse_raw() for example:
+Please see tools/include/uapi/README for further details.
 
-        /* Look for this #address-cells. We have to implement the old linux
-         * trick of looking for the parent here as some device-trees rely o=
-n it
-         */
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Christian Brauner <brauner@kernel.org>
+CC: x86@kernel.org
+CC: linux-mips@vger.kernel.org
+CC: linuxppc-dev@lists.ozlabs.org
+CC: linux-s390@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+---
+ tools/include/uapi/asm-generic/unistd.h             | 11 ++++++++++-
+ tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl |  4 ++++
+ tools/perf/arch/powerpc/entry/syscalls/syscall.tbl  |  4 ++++
+ tools/perf/arch/s390/entry/syscalls/syscall.tbl     |  4 ++++
+ tools/perf/arch/x86/entry/syscalls/syscall_32.tbl   |  4 ++++
+ tools/perf/arch/x86/entry/syscalls/syscall_64.tbl   |  4 ++++
+ 6 files changed, 30 insertions(+), 1 deletion(-)
 
-Maybe that's from some system long dropped and we don't need it
-anymore. I have no idea. That's what I'm trying to find out with this
-patch.
+diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
+index 5bf6148cac2b93e3..88dc393c2bca38c0 100644
+--- a/tools/include/uapi/asm-generic/unistd.h
++++ b/tools/include/uapi/asm-generic/unistd.h
+@@ -841,8 +841,17 @@ __SYSCALL(__NR_lsm_list_modules, sys_lsm_list_modules)
+ #define __NR_mseal 462
+ __SYSCALL(__NR_mseal, sys_mseal)
+ 
++#define __NR_setxattrat 463
++__SYSCALL(__NR_setxattrat, sys_setxattrat)
++#define __NR_getxattrat 464
++__SYSCALL(__NR_getxattrat, sys_getxattrat)
++#define __NR_listxattrat 465
++__SYSCALL(__NR_listxattrat, sys_listxattrat)
++#define __NR_removexattrat 466
++__SYSCALL(__NR_removexattrat, sys_removexattrat)
++
+ #undef __NR_syscalls
+-#define __NR_syscalls 463
++#define __NR_syscalls 467
+ 
+ /*
+  * 32 bit systems traditionally used different
+diff --git a/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl b/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
+index 1464c6be6eb3c752..c844cd5cda620b28 100644
+--- a/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
++++ b/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
+@@ -377,3 +377,7 @@
+ 460	n64	lsm_set_self_attr		sys_lsm_set_self_attr
+ 461	n64	lsm_list_modules		sys_lsm_list_modules
+ 462	n64	mseal				sys_mseal
++463	n64	setxattrat			sys_setxattrat
++464	n64	getxattrat			sys_getxattrat
++465	n64	listxattrat			sys_listxattrat
++466	n64	removexattrat			sys_removexattrat
+diff --git a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+index ebae8415dfbbab6f..d8b4ab78bef076bd 100644
+--- a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
+@@ -553,3 +553,7 @@
+ 460	common	lsm_set_self_attr		sys_lsm_set_self_attr
+ 461	common	lsm_list_modules		sys_lsm_list_modules
+ 462	common	mseal				sys_mseal
++463	common	setxattrat			sys_setxattrat
++464	common	getxattrat			sys_getxattrat
++465	common	listxattrat			sys_listxattrat
++466	common	removexattrat			sys_removexattrat
+diff --git a/tools/perf/arch/s390/entry/syscalls/syscall.tbl b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
+index 01071182763e96ff..e9115b4d8b635b84 100644
+--- a/tools/perf/arch/s390/entry/syscalls/syscall.tbl
++++ b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
+@@ -465,3 +465,7 @@
+ 460  common	lsm_set_self_attr	sys_lsm_set_self_attr		sys_lsm_set_self_attr
+ 461  common	lsm_list_modules	sys_lsm_list_modules		sys_lsm_list_modules
+ 462  common	mseal			sys_mseal			sys_mseal
++463  common	setxattrat		sys_setxattrat			sys_setxattrat
++464  common	getxattrat		sys_getxattrat			sys_getxattrat
++465  common	listxattrat		sys_listxattrat			sys_listxattrat
++466  common	removexattrat		sys_removexattrat		sys_removexattrat
+diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl
+index 534c74b14fab5117..4d0fb2fba7e208ae 100644
+--- a/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/tools/perf/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -468,3 +468,7 @@
+ 460	i386	lsm_set_self_attr	sys_lsm_set_self_attr
+ 461	i386	lsm_list_modules	sys_lsm_list_modules
+ 462	i386	mseal 			sys_mseal
++463	i386	setxattrat		sys_setxattrat
++464	i386	getxattrat		sys_getxattrat
++465	i386	listxattrat		sys_listxattrat
++466	i386	removexattrat		sys_removexattrat
+diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
+index 7093ee21c0d1c041..5eb708bff1c791de 100644
+--- a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -386,6 +386,10 @@
+ 460	common	lsm_set_self_attr	sys_lsm_set_self_attr
+ 461	common	lsm_list_modules	sys_lsm_list_modules
+ 462 	common  mseal			sys_mseal
++463	common	setxattrat		sys_setxattrat
++464	common	getxattrat		sys_getxattrat
++465	common	listxattrat		sys_listxattrat
++466	common	removexattrat		sys_removexattrat
+ 
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+-- 
+2.47.0.338.g60cca15819-goog
 
-We also don't really have a way to distinguish OF from FDT (where we'd
-need to). It is somewhat just by arch, but PPC always passes an FDT to
-the kernel for both FDT and OF systems.
-
-Rob
 
