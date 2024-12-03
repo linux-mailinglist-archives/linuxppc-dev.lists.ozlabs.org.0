@@ -1,81 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-3740-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3741-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C78F9E27A8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 17:37:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E5C9E280B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 17:49:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2mX30tbZz2yVT;
-	Wed,  4 Dec 2024 03:37:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2mpk3D86z30HH;
+	Wed,  4 Dec 2024 03:49:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733243827;
-	cv=none; b=jKRS5POkVTHRkY+tjg6KYR6dn6+3B1z+V1hsm+KRi4ZKxM+zV5vpuKrWIBovvIPbTlWNiJcPF2/WATPeQcH1V2AT0b57AeHqxCP+Hvm3v0okGqOCQm4MO5j+DpkIyhKKrRpb1iVPNSHMTflwkbl/Elur1J8uXyonPuwoja8KrEBDssakVFeMGU4khcWV/JvVCcSrAfptIVeGS6KrSiIKu3+aC/AtwONceLmdDUbCiumUwjZr0KJm392DzOStv/WzMvyVKyn91pY93NR28qy2TbHKzraqonm4uJohxYj7cf07i7v4SupAhyZGHv8HfacpgLts8th1RyP3wVhPwIOd0A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733244590;
+	cv=none; b=fIuRJ0bOBYK/al82TO+vfT7fdgspOhJH44PvjMBWYwj5dCkpNSQZl1IfPJURSyKzn31U00crEj+8mReKkoDNX0umC0bgIa0dc8yPrkRw4sFT6zvpx2J0xNMWOqy4CIFVrK6/gR3A73hGDoWMkxyW7mRaOYDVWpUpVKjXr4jnGlMHsAz5dCETCfNWxpHRCevxlA7HBsBdZfU1Bjaeb2SHiQpOta6tPtE95TE0MbweRhnagbBArgn6u4ow/LLDDLJ5Yq6kq2d4qC1eD1HmryNvv3N9kof+Bvh7p6xT3QJb7kdRZxCKjW/Zk3oBFbsvTuOXDh8VUdRKPF1IaO25MJp2RA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733243827; c=relaxed/relaxed;
-	bh=HxF1YtbxctjOgLe3e+5LAqOGqmoJ7n+8c9ePfvewlDs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Udx4Iw6C3+FN8eKOrlavllnqk39xEdxj24rnP9A3qiFRj85lHsG5Dwkz/5+ica1fBVSTD+ghwqWpbvJJEeuUSYiZC1N/IptlF8w9TtiNKkbyEl+bB1LR5JNB39rZI+LA5GWgZuivd8pBU78xCsSMbyWDyka1NXrs9gdvTHcvrOmySnkRUYgZwPeiEIsOdLF05/TY9ZQLVHJt3uooDDWenqRpQNw9yZLKvx0VzuSrgKtDRf/KL3dl/rjIA2lyp0I7sHbF3I1/xhOHqYLHnMIk4EVKsFHnR6LB6BdHrFmm1u8/s1vSfPYpa6v9JYYi4ZBCvqbiGeCHZY+2VmZNYSuGXw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ZFy87LnX; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=51K1fTOk; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1733244590; c=relaxed/relaxed;
+	bh=c8yKeFLr7GK2j1GC41CvEEkFDcayC545MbavQqa2ETY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gWO62xJjkOGSwVvaCwgDrvU3QXTAn+PkaapeuryMGZINXepyXd86hcByNhRh1vxB50ZTg7cU+KKcBd1O8yAEcFUQoHsXSyq9NseIpEp7FoWu3Pf4nF2uyn3F4t5oxPfjOqnq5QQ8eX6iRhSg1ogXH80NZ6y2SLx433kAWVf6os4ikNLjz0Q7Hl+Mp5+dCzCBoAaEXbiAG81LDxkdKxAbk9ai5SjnKzVobk+rySwPgJ+CKUsydUo3RYVGcqXl2v804lUcu1pqthNvYZQkg1Vy1V5JgJZkWATTLpKqXumGJ3LSc/IT2TFwQKRH/uwDmNwK+cqpG866m9aLnORFD0ECUg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uJo1JZl2; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ZFy87LnX;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=51K1fTOk;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uJo1JZl2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2mX13nrLz2yVG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 03:37:05 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733243819;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HxF1YtbxctjOgLe3e+5LAqOGqmoJ7n+8c9ePfvewlDs=;
-	b=ZFy87LnXgxMe5bIwTwB4SVdDCSlcxqDM5Dwg3iZ8DiJODrOVGAZoQBBdLtoXDjt7JG0wKP
-	mTN7fvMltxJ83iJSbYgKO8MderplffT0fOTfQB2/Wtntej162k8sEI5zkBAjxQi2zIHnl8
-	BxFPwripxKWqXWIELnCObC6BQbbFI8mURLp0hdAxRn8umpG/RD/LZ0fbGMRkbRKIvp6ddC
-	57glirNfQobi0tK8mH+8iNULQWU1v1HVw88nIrYfvKEwkDgKvrtvlvZOlafyDfnHl4x77X
-	Quw8iMqSljd30mOQ7x1HQpzooupKG8wmDhqSOvDvriiZLNSWQdTg8cuMFNk8ZQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733243819;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HxF1YtbxctjOgLe3e+5LAqOGqmoJ7n+8c9ePfvewlDs=;
-	b=51K1fTOkCTCXZgTFGRDR/uHKZh8KeFOlAsYai8RG5Iq9JQAuG5x/cvB3XaojGxxMqrjr49
-	ScBrmG+vuWWtr/Cg==
-To: "Farber, Eliav" <farbere@amazon.com>, "linux@armlinux.org.uk"
- <linux@armlinux.org.uk>, "catalin.marinas@arm.com"
- <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>, "npiggin@gmail.com"
- <npiggin@gmail.com>, "christophe.leroy@csgroup.eu"
- <christophe.leroy@csgroup.eu>, "naveen@kernel.org" <naveen@kernel.org>,
- "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "paul.walmsley@sifive.com"
- <paul.walmsley@sifive.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
- "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "bhe@redhat.com"
- <bhe@redhat.com>, "hbathini@linux.ibm.com" <hbathini@linux.ibm.com>,
- "sourabhjain@linux.ibm.com" <sourabhjain@linux.ibm.com>,
- "adityag@linux.ibm.com" <adityag@linux.ibm.com>,
- "songshuaishuai@tinylab.org" <songshuaishuai@tinylab.org>,
- "takakura@valinux.co.jp" <takakura@valinux.co.jp>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org"
- <linux-riscv@lists.infradead.org>
-Cc: "Chocron, Jonathan" <jonnyc@amazon.com>
-Subject: RE: [PATCH v5 1/2] kexec: Consolidate
- machine_kexec_mask_interrupts() implementation
-In-Reply-To: <077908c5f02545f0a9e02ae77cbd771c@amazon.com>
-References: <077908c5f02545f0a9e02ae77cbd771c@amazon.com>
-Date: Tue, 03 Dec 2024 17:36:59 +0100
-Message-ID: <87ed2ou3is.ffs@tglx>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2mph3Wp4z30DX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 03:49:48 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2E7925C5FD8;
+	Tue,  3 Dec 2024 16:49:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CEBC4CECF;
+	Tue,  3 Dec 2024 16:49:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733244583;
+	bh=1NqLuuLFwHm0v/yK7wKaDo26NhV34tP1XmqEcIsx8to=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uJo1JZl25KEUEqfUZcLBB/tMBA0DqTkqNW9sWubx4kv7Y3pfx/lt5a+4iT+XQL0W5
+	 Txc43BClWHT6BKKuL7HBYTCMYPXmMS7V/t6cmHshp7VtgQnN9cAbB0LHUZCswVGJdc
+	 DKHlIUuRyXVLaOQJbpL0q6rHr6D89fQVmdPLC61hw3lsn1M1x4dlSb+hV5S6sxRry3
+	 dSuHczvq1DBSm+SCu7n4Y6K0QiEcqdGQo5ECPrRLkbwAiPNPYrO0tVEOabwTXRvjEs
+	 3C1LyxcAoye0/25Q7rKK6tt5+i3LvrKa24QHpz300wIipXPYveiVEftvQvo6EzBScm
+	 u870mSPB8nrlg==
+Date: Tue, 3 Dec 2024 16:49:39 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Chen-Yu Tsai <wenst@chromium.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: soc: fsl: cpm_qe: Limit matching to nodes
+ with "fsl,qe"
+Message-ID: <20241203-egotistic-certainly-116f38bd39b6@spud>
+References: <20241202045757.39244-1-wenst@chromium.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,43 +69,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5+M0C7v+8zXCbXJ/"
+Content-Disposition: inline
+In-Reply-To: <20241202045757.39244-1-wenst@chromium.org>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Dec 03 2024 at 12:55, Eliav Farber wrote:
-> On 12/3/2024 1:04 PM, Thomas Gleixner wrote:
->>> +
->>> +config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
->>> +     bool "Clear forwarded VM interrupts during kexec"
->>
->> This should not be user selectable. Just keep it as:
->>
->> config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
->>         bool
->>
->> which defaults to 'n'. Just add a comment what this is about like it's
->> done with the other options in that file which are only selectable.
-> Question: Should this new configuration option be placed inside or
-> outside the following section:
-> ```
-> menu "IRQ subsystem"
->
->
-> endmenu
-> ```
-> In my patch, I have added the new configuration option at the end of
-> the file, outside the "IRQ subsystem" section.
 
-It does not really matter when the option is silent, but keeping it in
-the menu section as the others is the most intuitive IMO.
+--5+M0C7v+8zXCbXJ/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
+On Mon, Dec 02, 2024 at 12:57:55PM +0800, Chen-Yu Tsai wrote:
+> Otherwise the binding matches against random nodes with "simple-bus"
+> giving out all kinds of invalid warnings:
+>=20
+>     $ make CHECK_DTBS=3Dy mediatek/mt8188-evb.dtb
+>       SYNC    include/config/auto.conf.cmd
+>       UPD     include/config/kernel.release
+>       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>       DTC [C] arch/arm64/boot/dts/mediatek/mt8188-evb.dtb
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: compatible:0: 'fsl,=
+qe' was expected
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: compatible: ['simpl=
+e-bus'] is too short
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-controlle=
+r@c000000:compatible:0: 'fsl,qe-ic' was expected
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-controlle=
+r@c000000:reg: [[0, 201326592, 0, 262144], [0, 201588736, 0, 2097152]] is t=
+oo long
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-controlle=
+r@c000000:#interrupt-cells:0:0: 1 was expected
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-controlle=
+r@c000000: '#redistributor-regions', 'ppi-partitions' do not match any of t=
+he regexes: 'pinctrl-[0-9]+'
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: 'reg' is a required=
+ property
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: 'bus-frequency' is =
+a required property
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
 
-        tglx
+I'm curious why this is only coming up now, Rob applied this apparently
+in July.
 
+>=20
+> Fixes: ecbfc6ff94a2 ("dt-bindings: soc: fsl: cpm_qe: convert to yaml form=
+at")
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: <stable@vger.kernel.org> # v6.11+
+> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+> ---
+>  .../devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml        | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml=
+ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
+> index 89cdf5e1d0a8..9e07a2c4d05b 100644
+> --- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
+> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
+> @@ -21,6 +21,14 @@ description: |
+>    The description below applies to the qe of MPC8360 and
+>    more nodes and properties would be extended in the future.
+> =20
+> +select:
+> +  properties:
+> +    compatible:
+> +      contains:
+> +        const: fsl,qe
+> +  required:
+> +    - compatible
+> +
+>  properties:
+>    compatible:
+>      items:
+> --=20
+> 2.47.0.338.g60cca15819-goog
+>=20
 
+--5+M0C7v+8zXCbXJ/
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ082owAKCRB4tDGHoIJi
+0s0HAQDAWUaDFTMODECrGoMpk/JQ6X3sb4Uok6Yl2lbO7EaJUwEAkJy4Xvisf0FS
+fWsESM6zpR0CkagNmMJ9ezdGDBwYAAE=
+=ZvIG
+-----END PGP SIGNATURE-----
+
+--5+M0C7v+8zXCbXJ/--
 
