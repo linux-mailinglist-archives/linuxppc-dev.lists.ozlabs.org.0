@@ -1,49 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-3750-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3751-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702039E2C42
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 20:46:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6999C9E2C43
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 20:46:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2rkf01x8z30B3;
-	Wed,  4 Dec 2024 06:46:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2rkk4s1Bz30Qy;
+	Wed,  4 Dec 2024 06:46:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733255193;
-	cv=none; b=Zsm9T0KNPl6fqtHLBtqiTqgvk2j7F4UZ8ergaO29mUs8P3F/638nF3i42AAcmx1zChDwaOfkD3mU/xLnJ7GuqIu84HxqujeFHbt3lxQ7d5D0hAokjgO+MOnP6KNokwH6PSdwSQRKGUt71Utg/jWGtFkYKqEilNQZ+b/4BY2+kVdh6NZd4TltC4vrLdYO9Fp9qBWgvNtsNXU+vErKUB0vJHCTN5amSLMzTFGhnDbqi9+Y2hsksnSJUB66JbXUGkz4u5BWUneUpxLQVYnHuLroKy6c3j+O6fkCrCPbywmD771/vaV55aVmhGf6vChu7W6b5HbLs8HjhvYE19I2wagGWA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733255198;
+	cv=none; b=jpIRQMhSMG1KQAt4TCAn5gbcyPu+G1r7eLwsk15xgh8TAlRf6M56jJMJR+pbqGEdiXUydKSvc9SlfWRf/Q2cnXEPlzCZHzp9GJBxizm7R7wcwtRAvim6oT4vL7Hih2Tz0VKOaXy7tbqjBjLNHJ3kAPtl/bAC7OEnQJAxZbAzCL50EpsWJH6HteYVQldDQkPJ+urpUz4zM/8LK23VptWWdO8FOWQuLZpXoF/4BHzvmX41JruB/4tFKItqi5IfK5kwxENbi8Se780tSoqmT45Yxc0H0w5DW7BF5cE/29LAZ37RKQWcaBQAlZP/TREQbUJL706RHqFHfd1MQCK/Mh7Icg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733255193; c=relaxed/relaxed;
-	bh=79npd1aF/KTGlypXxm6vBi9nOaBJBfPBsOdeoSyKsxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XzLU0zzm6oysvIrIXgH7HRdUtfdjnkOcKRwXzG+AGe0ur9EO2TnNfZua79vd6m6W8HmMKA4t9rVPeMhUS0542GSo3DKXsuHsbWAAWvBqxtgxja7Nnvdvy7xi6yaPxVgPhyf1hcYMhZhQhX4wbhGiaRGFIIVjLK/Zh9PvoU88MhxYyVTphesj8b9Rw5r4nvO3idB/5TRrJiRCmLgSBrP4V5Wdrkg7nzSqhRQwTemcedwzp+ia9VsbFJ/jQrfwKylqiNkbuhH85uMQKOi6igdkswd64JfhWJZj21puITkkJIjd0x57jg6X3RgDIOEuti2QFdSETyeJUfg8Y34wAeEMkg==
+	t=1733255198; c=relaxed/relaxed;
+	bh=bsZY+wxPkbLZhEvhJbc0yKB/mjjJuhTg9lAuFRg+MrU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=I38Jqthdr9SgWZ215ca5cNe60puuxU/+CrclzBcY1m/Pa4TcWKKZ//iroaP6WKOMNcqiWKx1qCcCdBcnzASug2bVNTc4Rz4Xv3h1ZHM828W6ZyTSQ5pK9rfQfJifjjuzc7Om5wxw6xEMMv2Z3vPTcjJQBsvpGnCuPWjtTNZWOyLFPlLhHMG4d5V+pqJtyeSFaY7AaDuT4SHsw0n1wojwFWlL3iCFrbh50f+C/aChT3dHdk4XyxxpuyJxNPlGa7LKUKLyM7eV2KOHLxhnF4DtDDGrfQE+ZmiwuZAZkQfG0JpAUSl21piCWxxS57g4YG4xYQkE5DKYbnWjQNholWa6Yw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2rkc1dzjz2yGT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 06:46:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2rkk02JRz2yGT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 06:46:37 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Y2rkS3ybwz9stF;
-	Tue,  3 Dec 2024 20:46:24 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4Y2rkT2frSz9stG;
+	Tue,  3 Dec 2024 20:46:25 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id kjPAPZv7yfh5; Tue,  3 Dec 2024 20:46:24 +0100 (CET)
+	with ESMTP id UCG2vu4-nnmU; Tue,  3 Dec 2024 20:46:25 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Y2rkS34dCz9stD;
-	Tue,  3 Dec 2024 20:46:24 +0100 (CET)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Y2rkT1jk9z9stD;
+	Tue,  3 Dec 2024 20:46:25 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4FAB58B767;
-	Tue,  3 Dec 2024 20:46:24 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 212AB8B763;
+	Tue,  3 Dec 2024 20:46:25 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id rIwxW3CFzOGj; Tue,  3 Dec 2024 20:46:24 +0100 (CET)
+	with ESMTP id 7pxtHpRMStCP; Tue,  3 Dec 2024 20:46:25 +0100 (CET)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.232.97])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 83D368B763;
-	Tue,  3 Dec 2024 20:46:23 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 50EC78B76C;
+	Tue,  3 Dec 2024 20:46:24 +0100 (CET)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Shrikanth Hegde <sshegde@linux.ibm.com>,
 	Peter Zijlstra <peterz@infradead.org>,
@@ -64,10 +65,12 @@ To: Shrikanth Hegde <sshegde@linux.ibm.com>,
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 0/4] Implement inline static calls on PPC32 - v4
-Date: Tue,  3 Dec 2024 20:44:48 +0100
-Message-ID: <cover.1733245362.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v4 1/4] static_call_inline: Provide trampoline address when updating sites
+Date: Tue,  3 Dec 2024 20:44:49 +0100
+Message-ID: <5efe0cffc38d6f69b1ec13988a99f1acff551abf.1733245362.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <cover.1733245362.git.christophe.leroy@csgroup.eu>
+References: <cover.1733245362.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,50 +83,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733255162; l=1638; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=Jx62nYcMSTwvdKtKDQNerCZbsnNhCFz68IobPQVAdEA=; b=Vaz4d+v6txV/Q+bQM6mS4v2BNnSdLmi67e1D6FDiWHRGOLGgf/e+1G1Osrdd2/be5z+h07qO1 XoMzrV3t+WDBOTVvXC6nevltX7m2NOqd/ue3f+ZFR8JSDWnvI0Pw+pu
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733255162; l=1424; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=ayjJhvEnqmcVSyaBeb998Pk3PUd3CnrM4zKpciianxY=; b=02Xc17llbaI9+HAI9fOhqoUpXP83GAbmDUMspEMI0XYRDQgjtkrcMaERuxOP1mNS67iZtKewZ UgUC4pDJ0qpDkFH9z99XF7s8DNM0Zhc9ouFoi9BG6F7WIgo+TnQk8yj
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-This series implements inline static calls on PPC32.
+In preparation of support of inline static calls on powerpc, provide
+trampoline address when updating sites, so that when the destination
+function is too far for a direct function call, the call site is
+patched with a call to the trampoline.
 
-First patch adds to static_call core the ability to pass the
-trampoline address at the same time as the site address to
-arch_static_call_transform() so that it can fallback on branching to
-the trampoline when the site is too far (Max distance for direct
-branch is 32 Mbytes on powerpc).
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/x86/kernel/static_call.c | 2 +-
+ kernel/static_call_inline.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Second patch adds support for decoding all types of uncond branches.
-
-Third patch rearranges function arch_static_call_transform() to ease
-implementation of inline static call in following patch.
-
-Last patch implements inline static calls on PPC32: This is done by:
-- Put a 'bl' to the destination function ('b' if tail call)
-- Put a 'nop' when the destination function is NULL ('blr' if tail call)
-- Put a 'li r3,0' when the destination is the RET0 function and not
-a tail call.
-
-If the destination is too far (over the 32Mb limit), go via the
-trampoline thanks to patch 1.
-
-Christophe Leroy (4):
-  static_call_inline: Provide trampoline address when updating sites
-  objtool/powerpc: Add support for decoding all types of uncond branches
-  powerpc: Prepare arch_static_call_transform() for supporting inline
-    static calls
-  powerpc/static_call: Implement inline static calls
-
- arch/powerpc/Kconfig                   |  1 +
- arch/powerpc/include/asm/static_call.h |  2 +
- arch/powerpc/kernel/static_call.c      | 58 +++++++++++++++++++-------
- arch/x86/kernel/static_call.c          |  2 +-
- kernel/static_call_inline.c            |  2 +-
- tools/objtool/arch/powerpc/decode.c    |  8 +++-
- 6 files changed, 55 insertions(+), 18 deletions(-)
-
+diff --git a/arch/x86/kernel/static_call.c b/arch/x86/kernel/static_call.c
+index 4eefaac64c6c..00b2ea40cbef 100644
+--- a/arch/x86/kernel/static_call.c
++++ b/arch/x86/kernel/static_call.c
+@@ -158,7 +158,7 @@ void arch_static_call_transform(void *site, void *tramp, void *func, bool tail)
+ {
+ 	mutex_lock(&text_mutex);
+ 
+-	if (tramp) {
++	if (tramp && !site) {
+ 		__static_call_validate(tramp, true, true);
+ 		__static_call_transform(tramp, __sc_insn(!func, true), func, false);
+ 	}
+diff --git a/kernel/static_call_inline.c b/kernel/static_call_inline.c
+index 5259cda486d0..7fefbb3d8074 100644
+--- a/kernel/static_call_inline.c
++++ b/kernel/static_call_inline.c
+@@ -206,7 +206,7 @@ void __static_call_update(struct static_call_key *key, void *tramp, void *func)
+ 				continue;
+ 			}
+ 
+-			arch_static_call_transform(site_addr, NULL, func,
++			arch_static_call_transform(site_addr, tramp, func,
+ 						   static_call_is_tail(site));
+ 		}
+ 	}
 -- 
 2.47.0
 
