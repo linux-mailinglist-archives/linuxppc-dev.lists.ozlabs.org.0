@@ -1,89 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-3703-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3704-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90699E1829
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C199E1828
 	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 10:47:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2bRk0dX9z2y1W;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2bRk2RbVz2yDj;
 	Tue,  3 Dec 2024 20:47:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733219266;
-	cv=none; b=FLUZXoKBpcHGzw/yGTxt9G7XLmwr5UmvG16PMS4CtS/acFGj935Sz7ChEtKK2g8ADR+XZnzwiEMHisBg/ZIdOXwPrGkQbRVDXfpMjU8Z1B6asjjscCgzQqlzOluo+XgaNsH99QAZxt9/1eJ5wimdQ1lvwgi9DJzntvgYDXy9BxI5tL6nzb1iricP5N6YaIhyPvu+L4msH6sAEtauh67nZv/jmLt4b4LhI6ia2SMktqPUrez0vBzqEy9SpuDhbdIDCO+ECvJRnlsOEA6rXEp2ioFV8tf/6tMSQfDiMWOdAoNJoI8HMn/WZxAwi6fK5l8bAzdMsqhsEGGglvjWOfyqFQ==
+	cv=none; b=avPG8Ytybhbtj5PEVxXwVznwSDtXVdi3Su4chufzi/j2T7IgJQ1ipjy0AED4cp6w1qLppwoz49f5RBDyWAJKx52wX2ftdDcCENn/QdMR1nwOqQGBe6lldx23OVgL7YrnNm/beBIMIJBnESb9jqWJ+riSvepqsjpz7cKAzXznPck/XHFCXawsX7JvE+ayFyCPiVnJbr0y1CZTx7AsUh+EaEq9+TGRyvhaxrGiKvtiHzFQvEh1UjH+76gbSc9Hx9x5jkxkjkFfh5FtDYlGIoNcw7mdd3Wsi6qu3HN7E1+NVhJi9QCbAJICV/MQBR1qZ85tOAyeEeWVzDnJ0m8MZ2WMcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1733219266; c=relaxed/relaxed;
-	bh=I+WpaV6OWdi5kvpk6n/53fQFkDnKmQdF+vIgGPak5jU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=dAMCodJwq7UdN2T1z5L66QWDxDpQPdp7tA73U93eTN/CmGub2+IxiM1fga3CUn4SM4Vx96f20FTUNqqO5kywSUgUW1mvp52Rv5eQuOFPARTccBMar1eSim+/TlhDHIXNcKzTOXT3mC3LhbqEZBP3iVH6NMbHCqLOx/TdKZwvE2mwc8E3zx7vahv99AZfiU7Wuv1+x/b1jLSUFnUa0ep0mucjvpXk8plOS+B2nIy0vE89ly3jq0ZjEBOtajfeOa8MKQ2VCUE8+YEnL9SrnZ/phoS4WzaFtdKn7uexjpWCj3h5J84riGtXNncU5PA5ktoAXIggD/i6DhrVrvi+G0wsWw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VHg26Ek6; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VHg26Ek6; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	bh=adHjUEuwXA+ANkdOzZ/yc4IEWn5pdw/yGiEpqds38YQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=obmVzs3+fIIeq/8sCOlXjHSzzwTHrr3qDa1YaA2EQVockqFtak+cMrqN0TOnSt9LNsL4pqotDIH6X4lYaZCkV3kz1BoPRXGa11K9bo04CTtr45u/X0uXW9WV2+II9rxqbDF23VkFfTsvyjmrbHa9Y5PhH5sWCo1IoE+UjPIhID8y/sS3Lhr+QHz9crqq5bMhur0wNSaTuraQMakT3jKEzGSV4CML1t5SWgrl9XjLRfhEC1oN/LQFHzKDVE2OYbvvO1BW47lXjeQ60NOl5qDyT70KLtwMYNnPY7Gxr2ecxmDeEPjf08ifjT+weiVxlSCCpzzz3qnJ0fmHrMWP9WGH6g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EvfGAkHL; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EvfGAkHL; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VHg26Ek6;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VHg26Ek6;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EvfGAkHL;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EvfGAkHL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2bRg5YyFz2xfB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 20:47:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2bRj126Cz2xtp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 20:47:44 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733219258;
+	s=mimecast20190719; t=1733219262;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=I+WpaV6OWdi5kvpk6n/53fQFkDnKmQdF+vIgGPak5jU=;
-	b=VHg26Ek6cYMzZ2nMA3wtK824Ty8O5gqzQQsVY7GRrDlZip3ORdBm2HT349mD2ur6qjNZMz
-	V7gQfcYB5uRaJZVGENy3A8R2TT1FBbeCpYU4CFaorqoLYS6Z5rGuJtkdenF32oewjUaoUn
-	VoRb49QBHx51S95SwcU0DewzCdj/OJc=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=adHjUEuwXA+ANkdOzZ/yc4IEWn5pdw/yGiEpqds38YQ=;
+	b=EvfGAkHLlY92iKyCRaWecvpzN+kGHK5bQsXeHfSkfmMDzfWbQSV2n1eLxVAdCmoZ/AL6ig
+	O6GieysnZEv5DHxiiWYLs2EgVnidbE6RJ/gjviAeROG7YYlB3NC3L3VdkyNUZ3pAGdJz4I
+	KbnmJ/EG5EVhyVlUX2REHg8NHi2wXts=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733219258;
+	s=mimecast20190719; t=1733219262;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=I+WpaV6OWdi5kvpk6n/53fQFkDnKmQdF+vIgGPak5jU=;
-	b=VHg26Ek6cYMzZ2nMA3wtK824Ty8O5gqzQQsVY7GRrDlZip3ORdBm2HT349mD2ur6qjNZMz
-	V7gQfcYB5uRaJZVGENy3A8R2TT1FBbeCpYU4CFaorqoLYS6Z5rGuJtkdenF32oewjUaoUn
-	VoRb49QBHx51S95SwcU0DewzCdj/OJc=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=adHjUEuwXA+ANkdOzZ/yc4IEWn5pdw/yGiEpqds38YQ=;
+	b=EvfGAkHLlY92iKyCRaWecvpzN+kGHK5bQsXeHfSkfmMDzfWbQSV2n1eLxVAdCmoZ/AL6ig
+	O6GieysnZEv5DHxiiWYLs2EgVnidbE6RJ/gjviAeROG7YYlB3NC3L3VdkyNUZ3pAGdJz4I
+	KbnmJ/EG5EVhyVlUX2REHg8NHi2wXts=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-iEJT7FKCNe2qiQ7RFeyHzw-1; Tue, 03 Dec 2024 04:47:37 -0500
-X-MC-Unique: iEJT7FKCNe2qiQ7RFeyHzw-1
-X-Mimecast-MFC-AGG-ID: iEJT7FKCNe2qiQ7RFeyHzw
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2ffd18cf7c8so30883311fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 01:47:36 -0800 (PST)
+ us-mta-232-BXYoflxDO9C15XrEPfN75w-1; Tue, 03 Dec 2024 04:47:40 -0500
+X-MC-Unique: BXYoflxDO9C15XrEPfN75w-1
+X-Mimecast-MFC-AGG-ID: BXYoflxDO9C15XrEPfN75w
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43499388faaso37359885e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 01:47:40 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733219255; x=1733824055;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I+WpaV6OWdi5kvpk6n/53fQFkDnKmQdF+vIgGPak5jU=;
-        b=tNTTTuVqUfp8D0G2JcGRZj5tGWRN0Q6iUUfNRcRwEb+dHJo7hjc+sfQ16zd7DJz9W7
-         2/zUPcCPZRfDaUWiT1r6GxRKLQjJxuJRDDCRG39sf9hsDQX9fZze/bl7EB09kuQOeq2D
-         OyNEBD251Q/cr7qX5NERpQiWwh+/1zVWb7xi+vUMayEtpgUfPC7zsYaecVhNy4rbnLJ2
-         F5whnT+h5WeNFPp8JmPeSws+YF/OLtVK0+GxuOCCVBOG+rhR2R4S5UssphM/gxVZdGDc
-         TRKisAj1GDad/lhosaK9VXOoYVeo8nDoHu+n0H0GPvXTI4suvhBDzYUfIoZ6XAA49iHq
-         VACw==
-X-Forwarded-Encrypted: i=1; AJvYcCWBNL6xYdsCiB+EvQtOQJ7cok7O6QXgLOhkbY8aLCXE1P+Gw0gDiS5TZx42Y1K5j5AxdpDO12xz+W2Kl7k=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yxl70r7awXtwmRGjogxK/hq4mwVD1glFINNZyNDLbc9TA95G7GA
-	ZylL4VMLn3tGE+QEwYrgIBg7JVuaVCWV2/AVClBcB2npIUqH0ArbqYQRnLN3uZ5wGeZGj4KdDZQ
-	D/d7pNlVFmCTWSTjjCB1dBgfMe28RyiKuuNxTXPZNNbQo+As4TKDbhafWMflIPSI=
-X-Gm-Gg: ASbGncsAFFp0CTU3hcJFtgix11SI9s1N+V/QrUqyVHxkR2l8XzaAeh07hCdij3e3Z/E
-	F3Mo/z0osRblNYUFOlRepjX96QmAE74TIHv0LzZ3J04G1gqQGISVPntZNx+nO1rhv7JWfsGLPV4
-	8NjujzB/fv+FcniVfDk7pas0c+/v3Fx3C4N3bMIPJ4EdawllkGV95GSA2WHWEfjdRfuER3uVe0N
-	j6T8gZtH1dOUVhLlOmHU4PNQS9Y0RyOQA/XmpaD8hkYDFL5mdp6JpMTdBknT+XyfIpVZwaufnPb
-	v95exV4F8hsMBcsOuJnq4Kh1QKLEZCiixNc=
-X-Received: by 2002:a05:6512:3f1f:b0:53d:eefc:2b48 with SMTP id 2adb3069b0e04-53e12a01888mr1168018e87.33.1733219255514;
-        Tue, 03 Dec 2024 01:47:35 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG7ix1vCCH64WEfdTl8JuJR8R5JVe6DQ6ETyTqieE4HgQ8WDhb2jympdCPhJGy/Jq9uyRGFBg==
-X-Received: by 2002:a05:6512:3f1f:b0:53d:eefc:2b48 with SMTP id 2adb3069b0e04-53e12a01888mr1168001e87.33.1733219255133;
-        Tue, 03 Dec 2024 01:47:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733219259; x=1733824059;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=adHjUEuwXA+ANkdOzZ/yc4IEWn5pdw/yGiEpqds38YQ=;
+        b=u34RXco7tIgR5T8D4dAd/52DHHrLm8W4FxI60JfjoKf1aahTcalB6v3bKAFD0SnP/y
+         LJR9A00TCXFn9huc36/fe+b508abTzJmQr1w6QQo3wnkZDeaphd316TtM6lmkMk4VC/7
+         lECarHyitSvWrwVyQLzxG8LzZpD/H1Zrt2TynIF1LdB+YzAI9fbFJOVzY/tOfRuzemB3
+         NG57Qz0mGtWNsvY1IIkgyXibdUSnbmung3QCBYQ/4bSYJOFep59SfR3BXZwK1B8JmA/Y
+         rJ8pvfRCz+yTBiQI/zkedu/X/xy06lBUnmLJBqbYgzkorkTOBb3WoVNxVoYHP4ntYcGH
+         6lPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIxd3smb9ZxzddanrNP2/3mfAUTJS0aZ2EJ092i2Cax4JTsU0NkmXuwvZs2qjQLJOCgGUrjtJfPzAfzD4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz67mUmGsDBItwWfN1Dza32mJQAPXt/UAOkogizlRgcFkrBvYVa
+	qo5P52GYEqdT+9Z016mUj6zR+2ZEJ1OEcQuWoJd2+ly1mFAPS3LNBuDpTtqMkdG57fCFULYUuJe
+	hwP6qut6wyua/RDaaJUobkGACgmtRBqUrwXWeLorferp2JfxbvZ6UsRZ4HwALawE=
+X-Gm-Gg: ASbGncvDZvxNP2LjOXL0kdCi9jMeF4l7VnODUBZDQMLO90ZYb8ZPSi34uoKK40tQhEJ
+	w154YOLWpG8zM0GTv9JaMqxnCKRNkE/YlWg80xsKgVYqLHg50YczBlIvgVlUJ7T5RdCEYYJkTvO
+	wWhciJHyj2P+c7P6mL1zHXzkorJ3NTfU6r/LhoSIju9J5qsCOhD/vIfQxH8CvhosbJC0GWl8N6B
+	hThR30Aq+P5QBPPk5f8ekFWpfmoMHJXd9+cHFp36XTbNBIQczTbcx/pY+R+F6KDHFELxGylfI3f
+	8FhD2IDDysMVyuBYzoKMiQQvrBNk3l8jxRA=
+X-Received: by 2002:a05:600c:19d2:b0:434:9dfe:20e6 with SMTP id 5b1f17b1804b1-434d0a03be0mr13411235e9.23.1733219259534;
+        Tue, 03 Dec 2024 01:47:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGwdCbQ2+x4fQDn4t4+UDQwQ2YQY46+IOELCndGNvUKUKqg7eAlnbIgz+QXoKcPKq7fDw8IyQ==
+X-Received: by 2002:a05:600c:19d2:b0:434:9dfe:20e6 with SMTP id 5b1f17b1804b1-434d0a03be0mr13411005e9.23.1733219259183;
+        Tue, 03 Dec 2024 01:47:39 -0800 (PST)
 Received: from localhost (p200300cbc7461b00fd9ec26cc5521de7.dip0.t-ipconnect.de. [2003:cb:c746:1b00:fd9e:c26c:c552:1de7])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-434b0f7dccasm182037325e9.43.2024.12.03.01.47.33
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-434aa763aaesm213653525e9.14.2024.12.03.01.47.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Dec 2024 01:47:34 -0800 (PST)
+        Tue, 03 Dec 2024 01:47:37 -0800 (PST)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -97,10 +100,12 @@ Cc: linux-mm@kvack.org,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Naveen N Rao <naveen@kernel.org>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH RESEND v2 0/6] mm/page_alloc: gfp flags cleanups for alloc_contig_*()
-Date: Tue,  3 Dec 2024 10:47:26 +0100
-Message-ID: <20241203094732.200195-1-david@redhat.com>
+Subject: [PATCH RESEND v2 1/6] mm/page_isolation: don't pass gfp flags to isolate_single_pageblock()
+Date: Tue,  3 Dec 2024 10:47:27 +0100
+Message-ID: <20241203094732.200195-2-david@redhat.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241203094732.200195-1-david@redhat.com>
+References: <20241203094732.200195-1-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -114,59 +119,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: dRxYCfqg02W1hpXIfzSvaCFYMQBLgOrOpn-mdpUPBBc_1733219256
+X-Mimecast-MFC-PROC-ID: kea4jDY7FWWLwmcAYS2Z6kvfuCf0VwGcb_Db3y7vPgk_1733219259
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-For some reason v1 didn't make it to linux-mm; same with v2. Let's try
-a different SMTP server (gmail), maybe there are some issues with the
-RH one ...
+The flags are no longer used, we can stop passing them to
+isolate_single_pageblock().
 
-Let's clean up the gfp flags handling, and support __GFP_ZERO, such that we
-can finally remove the TODO in memtrace code.
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ mm/page_isolation.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-I did some alloc_contig_*() testing with virtio-mem and hugetlb; I did not
-test powernv/memtrace -- I cross-compiled it, though.
-
-v1 -> v2:
-* "mm/page_alloc: forward the gfp flags from alloc_contig_range() to
-   post_alloc_hook()"
- -> Fixup patch description
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-
-David Hildenbrand (6):
-  mm/page_isolation: don't pass gfp flags to isolate_single_pageblock()
-  mm/page_isolation: don't pass gfp flags to start_isolate_page_range()
-  mm/page_alloc: make __alloc_contig_migrate_range() static
-  mm/page_alloc: sort out the alloc_contig_range() gfp flags mess
-  mm/page_alloc: forward the gfp flags from alloc_contig_range() to
-    post_alloc_hook()
-  powernv/memtrace: use __GFP_ZERO with alloc_contig_pages()
-
- arch/powerpc/platforms/powernv/memtrace.c | 31 +++---------
- include/linux/page-isolation.h            |  2 +-
- mm/internal.h                             |  4 --
- mm/memory_hotplug.c                       |  3 +-
- mm/page_alloc.c                           | 62 +++++++++++++++++++----
- mm/page_isolation.c                       | 12 ++---
- 6 files changed, 63 insertions(+), 51 deletions(-)
-
-
-base-commit: 679694cdccaf75df589c2737f233954669a5f601
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index 7e04047977cf..e680d40d96de 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -286,7 +286,6 @@ __first_valid_page(unsigned long pfn, unsigned long nr_pages)
+  * within a free or in-use page.
+  * @boundary_pfn:		pageblock-aligned pfn that a page might cross
+  * @flags:			isolation flags
+- * @gfp_flags:			GFP flags used for migrating pages
+  * @isolate_before:	isolate the pageblock before the boundary_pfn
+  * @skip_isolation:	the flag to skip the pageblock isolation in second
+  *			isolate_single_pageblock()
+@@ -306,8 +305,7 @@ __first_valid_page(unsigned long pfn, unsigned long nr_pages)
+  * the in-use page then splitting the free page.
+  */
+ static int isolate_single_pageblock(unsigned long boundary_pfn, int flags,
+-			gfp_t gfp_flags, bool isolate_before, bool skip_isolation,
+-			int migratetype)
++		bool isolate_before, bool skip_isolation, int migratetype)
+ {
+ 	unsigned long start_pfn;
+ 	unsigned long isolate_pageblock;
+@@ -489,7 +487,7 @@ int start_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn,
+ 	bool skip_isolation = false;
+ 
+ 	/* isolate [isolate_start, isolate_start + pageblock_nr_pages) pageblock */
+-	ret = isolate_single_pageblock(isolate_start, flags, gfp_flags, false,
++	ret = isolate_single_pageblock(isolate_start, flags, false,
+ 			skip_isolation, migratetype);
+ 	if (ret)
+ 		return ret;
+@@ -498,7 +496,7 @@ int start_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn,
+ 		skip_isolation = true;
+ 
+ 	/* isolate [isolate_end - pageblock_nr_pages, isolate_end) pageblock */
+-	ret = isolate_single_pageblock(isolate_end, flags, gfp_flags, true,
++	ret = isolate_single_pageblock(isolate_end, flags, true,
+ 			skip_isolation, migratetype);
+ 	if (ret) {
+ 		unset_migratetype_isolate(pfn_to_page(isolate_start), migratetype);
 -- 
 2.47.1
 
