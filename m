@@ -1,52 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-3756-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3757-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B179E2C6B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 20:53:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC759E2E57
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 22:44:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2rv13Kflz30TS;
-	Wed,  4 Dec 2024 06:53:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2vLS72xfz2yDT;
+	Wed,  4 Dec 2024 08:44:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733255629;
-	cv=none; b=UMWg0YTbVFmN1/JR3kEgvmOqtxBtEFif+jGWrolByVjPyqktYGSUBjchSu2uaXAhGmiFgktLKS+hofkNCI/JqxeNn2H8YeziaQND3sZKZZm9yk822VHRkB9euZIRex90xooJNDBYJv1xVGoPAH7gStuqwCBnJPyRbPQDnPsUmRUl2yVvaEKdGOgcHnXuNrwAmPbO0OPbDEeKXbStihg/40VvwSwrzByzV8YBxIhxwh1g++qUmARGNA23z1yC9aQuU99sQAu/waz9Ct+L3DzdIb61bYDhcTv97FifZtH9OcqUONcvTV79/qy0SUfgGxddSD+65CcNW7MToyW5Fb5WxA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::533"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733262256;
+	cv=none; b=jyKZu059LkNiDAzxW4lrvYhOToo2XW78jZGgiq4wVfnl+IV+q1ufK7WADDODCbuEgSqvwRhXWJGpCvS3/R2UIjEM3FHkd4vmYahtSko7qjWqpdCBBj8gQEU7NpQhV7kFUTgvoYcQrotEliyzLiMkGL2zlWi0ghSvTEssChJkQ3z3Q4TnENmnRpm4FHwcxdwMS00p08I8GlCgV4iLCVWvQB+RSd7tTj9XOEQNjhjtQP3sDGcCQ85GnvwiT8gEDqmJmGTSMjM5iBw0IJXfMMegrVYIm8XrSRIMeVhrtzU5Y2WzkMIvwRnLqsa7lpu9pcSYnP6ASy+PAV2cvcnOyxdmPw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733255629; c=relaxed/relaxed;
-	bh=THc/iztjpFlr1d8A3msDx/mBMdujBeNYbnvmLxuZQeI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X7cBX91S2HltbsQ7CwVnWgLNp01OsilYZwwr00QzHU/Mte+CNXU9tEFOTqaJZyuAJp5REZ3cZDbufM76bN0q5czEwajNxrXKC1XwiO9/MSRAk8bLSP368sCHvj/dgFRic85p3s3F/Lxsev0avIXZWCsJ9fr4CetGf8IFieaotkJErbOmbxeI40sBNPAH35phKxacWz6c5/WTwXbpaqQOzo+TTPFUmJWryOaKUh1WRCbkmVAwTMNJZ2p3tB4jxWKmNPql+ciWXm1rQ6U2RY2C0q2gYPzOQqm65a+FR+DtDeG1x1CMqeI0GUhHaks3bSqvKk97jvtBKJT8x4QzBxwn/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1733262256; c=relaxed/relaxed;
+	bh=ljDKfb9sr4GSKbj8U3a57Eoz3AQHjiB8wr4Im39gx8U=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CfVWmu4DCu3zLJmSDTzGPqJuJ2YzyNreIkrMDBCvdCFeL1fmrXKuRCa/HEC6HtTgDr1AG2IAVb2FnzaBesduRUooTUKoo+U8u4fN+Swq9bSDxxEJQwMKmFgjNKHCcL4jKAUF/aHVV4bfR7r0ZnZiq5plibduZ7qWhX2tp8r5Brk0qIRigIufYPfAA+pq5dbbGoEosOPEZ7vmdCsMM9m0ZJ/CvlQf80NRS3v3BCwJg+e2HxMOHFy7SH9ktU6pXOFFUgq/vEN4+EkHip1hI0vx61SFC/8sbkc2Ldf5T7qfnEUzXCJ9l12q9wSNWuBBzkeeuNz0GG75EniFkm2gd3SZRA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QPjTdsy5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QPjTdsy5;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533; helo=mail-pg1-x533.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2rv02fXSz30TM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 06:53:48 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Y2rtx34wrz9stR;
-	Tue,  3 Dec 2024 20:53:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id zs1iyu-MUpRl; Tue,  3 Dec 2024 20:53:45 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Y2rtx1qpPz9stQ;
-	Tue,  3 Dec 2024 20:53:45 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 301298B767;
-	Tue,  3 Dec 2024 20:53:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 3-0Y2_s9E4jO; Tue,  3 Dec 2024 20:53:45 +0100 (CET)
-Received: from [192.168.232.97] (unknown [192.168.232.97])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 997728B763;
-	Tue,  3 Dec 2024 20:53:44 +0100 (CET)
-Message-ID: <d736a5cc-d976-49fd-9f86-0151d4b0a050@csgroup.eu>
-Date: Tue, 3 Dec 2024 20:53:44 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2vLQ3C88z2yDS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 08:44:13 +1100 (AEDT)
+Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-7fbd9be84bdso4692674a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 13:44:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733262249; x=1733867049; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ljDKfb9sr4GSKbj8U3a57Eoz3AQHjiB8wr4Im39gx8U=;
+        b=QPjTdsy5rpUgn47l7BAbGtATG9/MWHrQvkjRtuv7M+kfnGRBzLhlEEJkitUDFIlXsp
+         DWCMuZOqLUn7ODEhQV5yHD4WU1UvufwI7Y6m8u+tmRiuO530oODVGcrukDLW2DaX++4Z
+         BfC9P4/ek3+w/cQy+fE5I0MWIZi6PsszKs1lcD6HM6InAuVsWaQJf00bwpkvJ5E3SR+Z
+         /fBv26CG9i4Scd3V2RAv9P2UbX1lE4LXRNbPU5ys94BYX3g56Vw00xAfyvwQiDWwM5mN
+         qb6+aLaoCqoq1aodkeiwlbx4TngFvWDtfJw0w4QTZduewzSdBC1dy8qa4V8ReLMfOs9P
+         QG8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733262249; x=1733867049;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ljDKfb9sr4GSKbj8U3a57Eoz3AQHjiB8wr4Im39gx8U=;
+        b=I6M7VJFitFZ561EUqhT7udkdPzsUna/7Et1ItFUEQlzKO77qTG3gMYi++Kg8Yhzl+H
+         Loi/1YwxjYEVok/oc/4bQXSSYTaH3MCvuW8/SzKtYga4fk3ZW3TKAYbESyvrysZRtQQw
+         YraW+dJbm+HMrPvpcZjGcW/3i4B3CX+/cI2d00hR0Ik6LIVcPh7peR/j474lyiEuxZCE
+         OXrAch8tXrmOA5Cqk+gpEuOwnIYmfWLuprUVZ5wnMsvhDkEJFXI93BAzWriQx4U202Ru
+         F9oAD5oIDnsf0rP+5W23mGBsmh+o/u7T0Pdw1ExbWWIOzKg/1y17ZKSC0PIvR7TNwt7f
+         cxyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXrvKZTtGRgax4RnGQ6f0GQ4cFqUY1C1bCXhXOmtDbl6qRrBDywoxpHrDZLuR0UdNA0WB5Wcz0Td/dz6Qw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy1/s1cNOtrPo+dNz68/UMPbufS+Yfk0QLX1MwlNkB+lvA68R+2
+	w9SD4+GKsDgG2J78VbeqEvUzOlKSr6S1zbYKwB0W4r+yJ/+sm8Rd
+X-Gm-Gg: ASbGncvguaqKLRT849RN0qV1z4UuSu/s0zVMlh9aKtYWbyA/tOdex/9ay+CzkYLaDRf
+	i460XD2BLuglMRM3wSqdbHgKCWK4rMT7ucoiPqDGSOuKQx6xcA/V54ljtSh6bubBHuSR11sLzq3
+	cylmFfzOogWsqN4vehGW8JJynjfw2YTRW6xiO2K2XsDSvSqvjFMuHLjVLGaAU4/vIxY3Y/2mRQA
+	ZKes3G4xGE/kRlrbsJnNTu0u/1tU8zTs4zHFvvubYBKq1ZuOWEsyZwset/LDdNF8SFGYCAs7zL5
+	xIm92/pVyNzOGtKNfHg=
+X-Google-Smtp-Source: AGHT+IFkKVXpKdDqU1JOiYLT32y8HzR+6JWjbD0D1VlZfsvz/CBhh4C9EWoH2N5Ta4jbvXC4ggE9WA==
+X-Received: by 2002:a05:6a20:748e:b0:1e0:d380:fe61 with SMTP id adf61e73a8af0-1e165413554mr6036490637.45.1733262249004;
+        Tue, 03 Dec 2024 13:44:09 -0800 (PST)
+Received: from DESKTOP-DUKSS9G. (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fc9c2d3e28sm10242226a12.17.2024.12.03.13.44.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 13:44:08 -0800 (PST)
+Message-ID: <674f7ba8.630a0220.3641c.1437@mx.google.com>
+X-Google-Original-Message-ID: <Z097peujUb-WhU8f@DESKTOP-DUKSS9G.>
+Date: Tue, 3 Dec 2024 13:44:05 -0800
+From: Vishal Moola <vishal.moola@gmail.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [PATCH RESEND v2 1/6] mm/page_isolation: don't pass gfp flags to
+ isolate_single_pageblock()
+References: <20241203094732.200195-1-david@redhat.com>
+ <20241203094732.200195-2-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,94 +98,21 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] powerpc: support dynamic preemption
-To: Shrikanth Hegde <sshegde@linux.ibm.com>, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org
-Cc: npiggin@gmail.com, maddy@linux.ibm.com, bigeasy@linutronix.de,
- ankur.a.arora@oracle.com, linux-kernel@vger.kernel.org,
- mark.rutland@arm.com, vschneid@redhat.com, peterz@infradead.org
-References: <20241125042212.1522315-1-sshegde@linux.ibm.com>
- <20241125042212.1522315-3-sshegde@linux.ibm.com>
- <5089fd16-bc8c-4231-a89b-2658445e04b7@csgroup.eu>
- <ff4c586b-7be7-4c31-8b8c-5846ded486de@linux.ibm.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <ff4c586b-7be7-4c31-8b8c-5846ded486de@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241203094732.200195-2-david@redhat.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-Le 01/12/2024 à 20:45, Shrikanth Hegde a écrit :
+On Tue, Dec 03, 2024 at 10:47:27AM +0100, David Hildenbrand wrote:
+> The flags are no longer used, we can stop passing them to
+> isolate_single_pageblock().
 > 
-> 
-> On 11/27/24 12:14, Christophe Leroy wrote:
->>
->>
->> Le 25/11/2024 à 05:22, Shrikanth Hegde a écrit :
->>> Once the lazy preemption is supported, it would be desirable to change
->>> the preemption models at runtime. So this change adds support for 
->>> dynamic
->>> preemption using DYNAMIC_KEY.
->>>
->>> In irq-exit to kernel path, use preempt_model_preemptible for decision.
->>> Other way would be using static key based decision. Keeping it
->>> simpler since key based change didn't show performance improvement.
->>
->> What about static_call, wouldn't it improve performance ?
->>
->>>
->>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->>> index 6d6bbd93abab..01c58f5258c9 100644
->>> --- a/arch/powerpc/Kconfig
->>> +++ b/arch/powerpc/Kconfig
->>> @@ -270,6 +270,7 @@ config PPC
->>>       select HAVE_PERF_EVENTS_NMI        if PPC64
->>>       select HAVE_PERF_REGS
->>>       select HAVE_PERF_USER_STACK_DUMP
->>> +    select HAVE_PREEMPT_DYNAMIC_KEY
->>
->> Can you use HAVE_PREEPT_DYNAMIC_CALL instead ? That should be more 
->> performant.
->>
->> I know static calls are not in for PPC64 yet, you can restart from 
->> https://eur01.safelinks.protection.outlook.com/? 
->> url=http%3A%2F%2Fpatchwork.ozlabs.org%2Fproject%2Flinuxppc- 
->> dev%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C696bf56dcb544f3e49a408dd1240c477%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638686791595217076%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=iUwKXhmoU3YgqNI%2Bi7vwi%2Fz4obxMXD0au%2Fclo1m23ng%3D&reserved=0 cover/20221010002957.128276-1-bgray@linux.ibm.com/ and https:// github.com/linuxppc/issues/issues/416
->>
-> 
-> Thanks Christophe, I will take a look and understand.
-> 
-> May be stupid question, do the concerns of arm still valid for ppc64/ 
-> ppc32 out-line static calls?
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
 
-Not sure. Don't know what they call landing pad.
-
-Limited branch range is a limitation for sure, but whatever the method 
-when the called function is too far indirect call is required. And on 
-powerpc the max distance is 32 Mb which is quite big for a standard 
-kernel. Only modules should be concerned, but do we have scheduling code 
-in modules ?
-
-CFI I don't know.
-
-Anyway, I resurected the series I sent to implement inline static calls 
-on PPC32. I'm sure we can then amplify it to PPC64.
-
-
-> https://eur01.safelinks.protection.outlook.com/? 
-> url=https%3A%2F%2Flore.kernel.org%2Fall%2F20220214165216.2231574-6- 
-> mark.rutland%40arm.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C696bf56dcb544f3e49a408dd1240c477%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638686791595233955%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=8jT7JHp7HgNIwVEEL7gAI8JiDvCFDShI1eIeARWwbVo%3D&reserved=0
-> 
-> As I understood, that is the reason they went ahead with DYNAMIC_KEY.
-
-In their commit they have comparisons of assembly code. Can you do the 
-same for powerpc to get a better picture of what we are talking about ?
-
-
-Christophe
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
