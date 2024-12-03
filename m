@@ -1,92 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-3731-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3732-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624779E1F9E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 15:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C489E2124
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 16:08:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2jwl0LCDz30Bg;
-	Wed,  4 Dec 2024 01:39:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2kYP5BhZz302f;
+	Wed,  4 Dec 2024 02:08:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733236790;
-	cv=none; b=J2Ma8o5fevqep+NNlnbLvaX8RQ3AIGJNM9d94CGfl7eGEJPu+XqcXAQb0lYQj9S4aVhLaK06ASOHwssh7D9gUpZ7escSD6/wbC1VgSOKVIycB1+OK4P4X6Sbs8KgJrEktomwCDf/7sjIjRXk1H6A+wfjpitHNCKtxRhOBkFPhViZIyvmxg25iCGDpwDc6qmsm2PONCjsHMIoclPw4Qg2Q0hw9aWHqSuMnxwKCtZnhIa7I599c0WmbbiSNIrGeHpRHKBSi8bHE9zAJPbfGqSBQeI9laRVZHfb0MuTYoiX000cnGrtmcgtr3PkhQ+C1dSIaoULDJWIcud8Jf/Wl+3YMw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a02:1800:110:4::f00:10"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733238489;
+	cv=none; b=EwL839qeOWOQeTWOskm/DxPpMLqmCKx4TFuDLdM98Dt4X5thWrsLeM5x9UYH5YhN0BCza1x25PeGeScgafF3retuIoaM5ZPE1+K5RiH0H3XS0BW/L4Qb0Ka0ye7SJ5ZhyPFTaQL4baKAMCH3Hxb4jTNnUZBxliJK/x9cvnjMTaKyTQ4ypMscXlBlGwGwrfCPCc5TTWIk2mA0ONa1qPXBQplBPUphOn9OaI46jIEzoTg7tIfgZLuK/GcxnxcEz0gNxXprCBwdWhCYqXjpHXF5KsL28EjxuYk8lBfqmm1LMO/l0ZvuARC7c4H2e1Ksb+IDaZ9CiwK2SmkGUqWKZVvbVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733236790; c=relaxed/relaxed;
-	bh=lr3ksZI6LdpKDlNaXZve1Yy2t+rHyGnN7Z6NmVzlQ5M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cdFjyy0IndjNORV2oBjftcBa4yrWbAWb9RnTCK7rv2C6lOH4m31xP/m/RezAVoVhd0D7D6r1yjpiZyY6MO5TyrSjqVBbko9QDFUGPL+0Wwpsmi3t/jqFgBqgIvegurINDdacfOTX/8VGvvzefchSQmAy5ARDdKmtrBUL72N/vB8GjrrFHQ+8eIpdhWm+a1Z3O1daGY44Hr/KINr6WZQ8TRetZuZ2s3KCqqi0gsyojKyZIlPOToB9+WRZl+HssnIpqMb6TZKzlmGVPDiqIkF2aQX3nt26YLYCqMTAqIrmkkGVVJ2ZjYFKcFAkPSr+nLI19IOacAlmgEo2FUl7JIlwkw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=vq28cfdE; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XdwHkbb6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=vq28cfdE; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XdwHkbb6; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=vq28cfdE;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XdwHkbb6;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=vq28cfdE;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XdwHkbb6;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	t=1733238489; c=relaxed/relaxed;
+	bh=luZDP27H+ukejHCc8jl72dE9KYosuIQ4cxu02My31PQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=avyFoe6TJaIPHQKi1BKACMVOTC0Q0kMpjxotr9/A7OC2ZNhO5A/fu5OYYv1ys8Kb/AiBuSzQwCBAMF7InwV8jy+eUlZjB7okgYbkhJHSIPNmfdQWBGBzLEFaxSwPwnQPVUoSBV7eW9TKIJKw03s2kNc1qzVz/9PvTZmOEupgHVfqeO8rGAJnBRxCM3pv2lK8zEYYLuR6dlpL4UH4HijDVqWQBrMzURus488tQs8AnmC+UYXDpdsh9G/MfcdL6T021Dm5s3pr2X3e24SQEIgqYOvMBvRQkKRWQ1OYW+V6lz5fmi8t81s5yO5/D8bjn45SNaLpmgm9d8+2f5MlntGNJw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=pass (client-ip=2a02:1800:110:4::f00:10; helo=riemann.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org) smtp.helo=riemann.telenet-ops.be
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=glider.be
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=riemann.telenet-ops.be (client-ip=2a02:1800:110:4::f00:10; helo=riemann.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 316 seconds by postgrey-1.37 at boromir; Wed, 04 Dec 2024 02:08:07 AEDT
+Received: from riemann.telenet-ops.be (riemann.telenet-ops.be [IPv6:2a02:1800:110:4::f00:10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2jwj6hbKz302D
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 01:39:49 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 323A12115C;
-	Tue,  3 Dec 2024 14:39:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1733236787; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lr3ksZI6LdpKDlNaXZve1Yy2t+rHyGnN7Z6NmVzlQ5M=;
-	b=vq28cfdE9QpLZjJd9xKohuqguE5R+sMEoERq0/qtZNwMbM+iG3SnaQZPbkx+RgRgYloC+B
-	jLxvIBjrHdMEuJ89Qeh6opSQQl1W63LH9aUsyN3i/xgBDn54ryr1xjhbEUSUkS4+d6XMAJ
-	FbTgv4axm/q54dU+xobeI7/eFs7qaXA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1733236787;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lr3ksZI6LdpKDlNaXZve1Yy2t+rHyGnN7Z6NmVzlQ5M=;
-	b=XdwHkbb63uqIS1ACFyjUKQRV5Ecc5ixtvGlF8t+21xNlZ5ok2DtOZJzeY4Oi4eIy2fwLXb
-	MfZoldDy4zbT+aBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1733236787; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lr3ksZI6LdpKDlNaXZve1Yy2t+rHyGnN7Z6NmVzlQ5M=;
-	b=vq28cfdE9QpLZjJd9xKohuqguE5R+sMEoERq0/qtZNwMbM+iG3SnaQZPbkx+RgRgYloC+B
-	jLxvIBjrHdMEuJ89Qeh6opSQQl1W63LH9aUsyN3i/xgBDn54ryr1xjhbEUSUkS4+d6XMAJ
-	FbTgv4axm/q54dU+xobeI7/eFs7qaXA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1733236787;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lr3ksZI6LdpKDlNaXZve1Yy2t+rHyGnN7Z6NmVzlQ5M=;
-	b=XdwHkbb63uqIS1ACFyjUKQRV5Ecc5ixtvGlF8t+21xNlZ5ok2DtOZJzeY4Oi4eIy2fwLXb
-	MfZoldDy4zbT+aBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 13350139C2;
-	Tue,  3 Dec 2024 14:39:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2nscBDMYT2d2NwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 03 Dec 2024 14:39:47 +0000
-Message-ID: <7cd822c5-ca20-4d95-9751-c10f0ea98542@suse.cz>
-Date: Tue, 3 Dec 2024 15:39:46 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2kYM4Fmxz2xKd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 02:08:06 +1100 (AEDT)
+Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
+	by riemann.telenet-ops.be (Postfix) with ESMTPS id 4Y2kR346d7z4x645
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 16:02:39 +0100 (CET)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:829d:a1e7:5b32:5d8e])
+	by michel.telenet-ops.be with cmsmtp
+	id kF2Z2D00i3sLyzB06F2ZSS; Tue, 03 Dec 2024 16:02:39 +0100
+Received: from rox.of.borg ([192.168.97.57])
+	by ramsan.of.borg with esmtp (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1tIUQ5-000Cx8-Og;
+	Tue, 03 Dec 2024 16:02:33 +0100
+Received: from geert by rox.of.borg with local (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1tIUQ5-009WLQ-K9;
+	Tue, 03 Dec 2024 16:02:33 +0100
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	David Wang <00107082@163.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] genirq: Remove leading space from .irq_print_chip() callbacks
+Date: Tue,  3 Dec 2024 16:02:31 +0100
+Message-Id: <a779f3f44c24716d783d782c935be9fe4f410bff.1733238060.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,57 +71,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v2 6/6] powernv/memtrace: use __GFP_ZERO with
- alloc_contig_pages()
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
-References: <20241203094732.200195-1-david@redhat.com>
- <20241203094732.200195-7-david@redhat.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20241203094732.200195-7-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kvack.org,lists.ozlabs.org,linux-foundation.org,suse.de,nvidia.com,ellerman.id.au,gmail.com,csgroup.eu,kernel.org,linux.ibm.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.5 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 12/3/24 10:47, David Hildenbrand wrote:
-> alloc_contig_pages()->alloc_contig_range() now supports __GFP_ZERO,
-> so let's use that instead to resolve our TODO.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+The space separator was factored out from the multiple chip name prints,
+but several irq_chip.irq_print_chip() callbacks still print a leading
+space.  Remove the superfluous double spaces.
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: 9d9f204bdf7243bf ("genirq/proc: Add missing space separator back")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+Not even compile-tested...
+
+Feel free to fold this into the original, and fix the spelling
+s/previosuly/previously/ while at it.
+---
+ arch/powerpc/sysdev/fsl_msi.c          | 2 +-
+ drivers/bus/moxtet.c                   | 2 +-
+ drivers/irqchip/irq-partition-percpu.c | 2 +-
+ drivers/soc/qcom/smp2p.c               | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
+index 1aa0cb097c9c9d7c..7b9a5ea9cad9d3c7 100644
+--- a/arch/powerpc/sysdev/fsl_msi.c
++++ b/arch/powerpc/sysdev/fsl_msi.c
+@@ -75,7 +75,7 @@ static void fsl_msi_print_chip(struct irq_data *irqd, struct seq_file *p)
+ 	srs = (hwirq >> msi_data->srs_shift) & MSI_SRS_MASK;
+ 	cascade_virq = msi_data->cascade_array[srs]->virq;
+ 
+-	seq_printf(p, " fsl-msi-%d", cascade_virq);
++	seq_printf(p, "fsl-msi-%d", cascade_virq);
+ }
+ 
+ 
+diff --git a/drivers/bus/moxtet.c b/drivers/bus/moxtet.c
+index 6276551d79680e85..1e57ebfb76229aa0 100644
+--- a/drivers/bus/moxtet.c
++++ b/drivers/bus/moxtet.c
+@@ -657,7 +657,7 @@ static void moxtet_irq_print_chip(struct irq_data *d, struct seq_file *p)
+ 
+ 	id = moxtet->modules[pos->idx];
+ 
+-	seq_printf(p, " moxtet-%s.%i#%i", mox_module_name(id), pos->idx,
++	seq_printf(p, "moxtet-%s.%i#%i", mox_module_name(id), pos->idx,
+ 		   pos->bit);
+ }
+ 
+diff --git a/drivers/irqchip/irq-partition-percpu.c b/drivers/irqchip/irq-partition-percpu.c
+index 8e76d2913e6bebbf..4441ffe149ea0d96 100644
+--- a/drivers/irqchip/irq-partition-percpu.c
++++ b/drivers/irqchip/irq-partition-percpu.c
+@@ -98,7 +98,7 @@ static void partition_irq_print_chip(struct irq_data *d, struct seq_file *p)
+ 	struct irq_chip *chip = irq_desc_get_chip(part->chained_desc);
+ 	struct irq_data *data = irq_desc_get_irq_data(part->chained_desc);
+ 
+-	seq_printf(p, " %5s-%lu", chip->name, data->hwirq);
++	seq_printf(p, "%5s-%lu", chip->name, data->hwirq);
+ }
+ 
+ static struct irq_chip partition_irq_chip = {
+diff --git a/drivers/soc/qcom/smp2p.c b/drivers/soc/qcom/smp2p.c
+index 4783ab1adb8d953b..a3e88ced328a91f1 100644
+--- a/drivers/soc/qcom/smp2p.c
++++ b/drivers/soc/qcom/smp2p.c
+@@ -365,7 +365,7 @@ static void smp2p_irq_print_chip(struct irq_data *irqd, struct seq_file *p)
+ {
+ 	struct smp2p_entry *entry = irq_data_get_irq_chip_data(irqd);
+ 
+-	seq_printf(p, " %8s", dev_name(entry->smp2p->dev));
++	seq_printf(p, "%8s", dev_name(entry->smp2p->dev));
+ }
+ 
+ static struct irq_chip smp2p_irq_chip = {
+-- 
+2.34.1
 
 
