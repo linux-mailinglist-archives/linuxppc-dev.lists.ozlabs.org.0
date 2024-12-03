@@ -1,92 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-3692-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3693-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189159E1279
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 05:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A87579E15CA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 09:30:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2Sd43jXQz2yb9;
-	Tue,  3 Dec 2024 15:40:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2Yk20Vzmz2yS0;
+	Tue,  3 Dec 2024 19:30:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733200824;
-	cv=none; b=dk+6o9iyBwxAjPOBCiuBGuJD66s4bId4EEAEQGk+QEiSqEvOm//YU8Eoy8fkpeIUJRhgI7+GD0FK6lpXjlI8t5TREh5n9akE6O6Qm6Ys6S2ECy6jH/Q7TzHSo9TV80D63gdun5+JVjRzcpVdtZRYVoaaohfwG2pQkD7/OVFGmaxaMzJ7k9eEwLLhYT8aVY0OC/69gnkG8RWmKzBppBB7G03iQPG5oZzq5q+lx5019mzAOA4xj4IsGMltZq9eNHk35czx0fJVDXD/SLKqGT8xTFlhko33Jmv6eF2pyerpKQC8QQMTGrqyEtw/zaofRBGnyvvwvZFohU6cuAQTke+Ckg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733214602;
+	cv=none; b=k21Rz2PvZkNUMUzN/++LYkcPPgUSDk5oCRi1AD0loVSq2znLp0y14GmqsT9hcGwH/N22EcCB6Nh2tFvVEyl7hGDy1gpaq0bR0M3ieZ+8vjr4cOVdhvvgTLgIl8yBsd4eNGuXko5pgdqyRb1HSWyRywcHgi2t2sTlM7qad1IqgZYOvLGVxXKuaorRSTGkDqdsGcx80xynp5AC0nPs0uBpaVGtzJfP46JVdbATIA3jBV2vOZ6x3cF7UMkAkgB2qbMsfE5LT5jrVZbjHVTN+ZmqbulUUuQrYY/ZUWhXZhmZeLhbkNXxO6aNqQb42rI4Eo4oFHolOsBPFzYOYRx8ttEtqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733200824; c=relaxed/relaxed;
-	bh=2l3ooX07ch+E8GdMnS6+X+NrpeLh/8QlFHRG29oKS+4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Mime-Version; b=oIQr2fV86F6fIPp9ADJKMqXoougDY/3h7/4PdSv7DxyybJ5gC1IHa2K9O4oZ8EQHWK43+CP+m0jbBRqtJ48JcCJqXu4rGbzXHK1id2QiE5fMIwzlRrUcSZ2GA45CltRvr47HPVgrXp/Y4xgVNBLkifN8PUj27MJOv5LPI/Ab+MWUlLVJbUawhnzirP2LYPbdVzW5FHGLkBSMhhqyD4ubpNZ74Ve+funyhZm7GJ04rhfBbA3mA5rHNm38/8Fbie6pqipLZmLw+3JRpnlFxTbfEinOUCQUEHPLThEVN1cfvN/iQyvuOGp3nK2ldpwZ0VWVPOZVeuesty3BF1kHDvWEmQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E+xUbPi0; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1733214602; c=relaxed/relaxed;
+	bh=cL7v3oc5fMJ4viLddVGUsjohS5uWgp/SM7upP9Q9RVU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eeRaH6QsGaRLeFDMdorBkUVpcOh5mSJKtcgByYZuSfVEBk+hQDbJCb1Oid9lqszeUUabPZMlhk4o6EGrqiMrsp4bAZ7sxIUfypFsvOqwsisZj7QkPIYgbx5ay9yMTH5OmdI6W8FLePwDvhQ3nxfHeTNkjymlFMLKhPcHwL43QUIkgmHDUvwCBRKU+UacW9tT6/CIlmkoHbgKGt+rMwj2klYzK6vs7lCVysjyJ1qsHR5nsvuwfxRvl+jxfqI+EDIeRHx+CNrfX2x8Q7pDH7MgPHnq/EAUFYAtJE+53uFnPa5kGx5xm+fkkbkKmSt9Ak+cgmZ9doXitavmUJK+950+yQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZEPwTcb6; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dl6+jLq+; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E+xUbPi0;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZEPwTcb6;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dl6+jLq+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2Sd230bCz2yS0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 15:40:21 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B32ETKN008143;
-	Tue, 3 Dec 2024 04:40:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=2l3ooX
-	07ch+E8GdMnS6+X+NrpeLh/8QlFHRG29oKS+4=; b=E+xUbPi0K/BeHQioAsDVWs
-	bn2bvkm9jeZ7+plREMCf6ZzVBXNcF9tZIMOxUExHxWTL95YdCj+/eknK1emk6q+M
-	CGGWX/dUe8BbEn88PjiNbDan7cq05ULxRHnYxGwS5qYBvc01ALqOwmIjEbwu2ZBT
-	67YPTBhh40FJwHUErVAkSRBPboItsox/msn/QOdqUsKnXiOf50INKaQ8F7MDUgON
-	8XiwjtFVDi1Of3Y0Jz8CDqSfEzf58m2hyAwC9GUhoevDBi06H8khBGfoDy4TPy2G
-	oyEE+9L4wpaOa2v3LyDZwzqaupwZAAkpGN+YSezCpuDgH6eIV/I24dPENYfzHagw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 438kfggt0v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Dec 2024 04:40:12 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B34eB1M004186;
-	Tue, 3 Dec 2024 04:40:11 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 438kfggt0q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Dec 2024 04:40:11 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B2GpLSx020500;
-	Tue, 3 Dec 2024 04:40:10 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 438d1s3gw4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Dec 2024 04:40:10 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B34e7Y246596452
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Dec 2024 04:40:07 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 69A5758052;
-	Tue,  3 Dec 2024 04:40:07 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 797CD58050;
-	Tue,  3 Dec 2024 04:40:06 +0000 (GMT)
-Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com (unknown [9.61.117.147])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  3 Dec 2024 04:40:06 +0000 (GMT)
-Message-ID: <dc4e922325c2000cc90555d4fe936e57b779c935.camel@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries: Add papr-platform-dump character
- driver for dump retrieval
-From: Haren Myneni <haren@linux.ibm.com>
-To: Michal =?ISO-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-Cc: mahesh@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
-        npiggin@gmail.com, maddy@linux.ibm.com, tyreld@linux.ibm.com,
-        hbabu@us.ibm.com
-Date: Mon, 02 Dec 2024 20:40:05 -0800
-In-Reply-To: <Z0biWRHqzcXvG7vm@kitsune.suse.cz>
-References: <20241124052040.239813-1-haren@linux.ibm.com>
-	 <jmjczbrkepk447u64usrr3mbx3nwei2ot7fbheu3yguyrtuo2o@dwmszh6ksbog>
-	 <8360c1d3c3d2ecd4bfaba6bf92b6b920672332eb.camel@linux.ibm.com>
-	 <Z0biWRHqzcXvG7vm@kitsune.suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-26.el8_10) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2Yk04T1gz2xs7
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 19:29:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733214595;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cL7v3oc5fMJ4viLddVGUsjohS5uWgp/SM7upP9Q9RVU=;
+	b=ZEPwTcb6v50ILUBGIR94J8V8OY+Chh21FrL48wCFt8qAdkwcb/5eTkAcS19TjnrtuOSbof
+	d7no2ywG1k2dhaJhm15gw4MCsoU7GKX5D2rdItIkjhY/2Ri3IFFLQmh1cL82z+Qb+9eHP3
+	282FrJfCp65Fm5aOA81yWJZPRMN7cYc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733214596;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cL7v3oc5fMJ4viLddVGUsjohS5uWgp/SM7upP9Q9RVU=;
+	b=Dl6+jLq+obhHtbQ9Vb75jazAOt7YdMDUpn/VWNjAILBfcKfVkAQzwADLPYmv//jUtSNwod
+	eum4CgQde3Cz+Zdoy1kH7J0ktUjar5ggWwzC9C4crPxc/IVfIVVItYjCcdPBkua//HkXpT
+	tPTiLs0uIddXuR0AHbH5jfwJymOWAoI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-303-kJcD_EAbPeyVRUpdnC8LBw-1; Tue, 03 Dec 2024 03:29:52 -0500
+X-MC-Unique: kJcD_EAbPeyVRUpdnC8LBw-1
+X-Mimecast-MFC-AGG-ID: kJcD_EAbPeyVRUpdnC8LBw
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43498af79a6so28967105e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 00:29:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733214591; x=1733819391;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cL7v3oc5fMJ4viLddVGUsjohS5uWgp/SM7upP9Q9RVU=;
+        b=ZJVAsb2f7EuLvO8dm7/9NEhFZqwdls5Tw0FfV1wYaiQcPMlhWpuT8NwAfDg9bhDKfs
+         Um3Z1KKB9oSHF8+HP+GWHyLx4p6bwnzYejRriqZxTPvAj0WIE2bkDMjzRegcWZLDnCHr
+         6tprETvuoPoZ5FKvNNIjX6SPcLFcRFXkCfN3w85cPlgK/NdsME2FWvPA7nc5xn2Rai3R
+         TnvlmwXB1Umvca25+Yn1HcegFOfHRH9rF+taOb7r47lSxQeQV2n/bcAwqNX+VIOpj7Dn
+         8u8i61A8t7vWeHLL3Dh8MmiSL4+lZQ9u2F/Z1czobv6/g6Rp7gkXMGXWwcD2M+RUu3X2
+         lucA==
+X-Forwarded-Encrypted: i=1; AJvYcCUh5QxKpwKrJGbu8zOBGbw1vqygeaOt3EazGaZOTQmFkZ2jmCAu/n5d/Mn5d7NbwOIGYmzUQWafhzIIhwE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw5Qgq0V+lts4DtVt/stWi66eumxO4My02aFUh+DMKILhzqb8+Q
+	JqsEs9muCMsLinS4Uyf/QzCk/8XRi49Mj2tCCd+HwAxiL4sGDs8lJh+ipKMiT7BgJFfgDgaZvf8
+	mBN43WLcZYte843ialYVHDB5EB6kTpFL7Y6iNYJ6dqMGYc6WPXefu97rBUGn6++E=
+X-Gm-Gg: ASbGnctbtsBUgBRhBF6UEPGAWPkMnfOyFHfKV9QknUTUMX9SF60QyMnqXgm9xhMmwjd
+	E2bQex0qa75XWpPxXgDjXBasTu/1jVe7UFUDIcyocKcjNNLSfI0KOCnYoSV77XbOJ5ZT8BQmG5W
+	qPWzAlrbUa5UHPHLwLS78n7qD6isct66+kZl8KCF5KZjGfx+4t2EkUSGMhEJFI7ijfVZ/50m6/M
+	4jSfstBwudIGzygScf7Rfq1U8+WG4e6AWnMBCK8epB9KHoBPbqwVWYvn62sEWWIyQ1g4Khhquw5
+	NPnx4t9AGnw4500D4cKTBFzX0ZLDxSE17kuabruSoc0Ix8nv6EKGDWN/ksNTK00AtDK6o3HvExz
+	MTg==
+X-Received: by 2002:a05:600c:5593:b0:434:a33d:ba44 with SMTP id 5b1f17b1804b1-434afc44167mr187239955e9.15.1733214590833;
+        Tue, 03 Dec 2024 00:29:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWDIsqECcfy6rPlhtUK9y0qN4FnZDKURgqLcZP2VHBBvbbgteOyKLxNnJsZYkBuDbBUXDFYw==
+X-Received: by 2002:a05:600c:5593:b0:434:a33d:ba44 with SMTP id 5b1f17b1804b1-434afc44167mr187239765e9.15.1733214590500;
+        Tue, 03 Dec 2024 00:29:50 -0800 (PST)
+Received: from ?IPV6:2003:cb:c746:1b00:fd9e:c26c:c552:1de7? (p200300cbc7461b00fd9ec26cc5521de7.dip0.t-ipconnect.de. [2003:cb:c746:1b00:fd9e:c26c:c552:1de7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0dc99b3sm179813635e9.24.2024.12.03.00.29.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Dec 2024 00:29:50 -0800 (PST)
+Message-ID: <dd45ff45-8894-4502-a4ee-ca4cd927662b@redhat.com>
+Date: Tue, 3 Dec 2024 09:29:48 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,260 +102,107 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _KLL9HaahmR2qNNx8sPWx0-7LipeIYO9
-X-Proofpoint-GUID: jQxCdUXlePpnwvEyxNkiWNiUlUIqIo4w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 clxscore=1015 malwarescore=0 bulkscore=0 adultscore=0
- priorityscore=1501 mlxlogscore=999 impostorscore=0 phishscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412030036
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/6] mm/page_alloc: gfp flags cleanups for
+ alloc_contig_*()
+To: Zi Yan <ziy@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <20241202125812.561028-1-david@redhat.com>
+ <6CE8BCE0-BDBE-41BB-9998-D9165CF05A1F@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <6CE8BCE0-BDBE-41BB-9998-D9165CF05A1F@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: r-wJoxSM1DS8JSa4W8cX3clmYFUFGkHCRjRLRRjrJjc_1733214591
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 2024-11-27 at 10:11 +0100, Michal Suchánek wrote:
-> On Tue, Nov 26, 2024 at 12:40:20PM -0800, Haren Myneni wrote:
-> > On Wed, 2024-11-27 at 00:42 +0530, Mahesh J Salgaonkar wrote:
-> > > On 2024-11-23 21:20:39 Sat, Haren Myneni wrote:
-> > > [...]
-> > > > +static ssize_t papr_platform_dump_handle_read(struct file
-> > > > *file,
-> > > > +		char __user *buf, size_t size, loff_t *off)
-> > > > +{
-> > > > +	struct ibm_platform_dump_params *params = file-
-> > > > >private_data;
-> > > > +	u64 total_bytes;
-> > > > +	s32 fwrc;
-> > > > +
-> > > > +	/*
-> > > > +	 * Dump already completed with the previous read calls.
-> > > > +	 * In case if the user space issues further reads,
-> > > > returns
-> > > > +	 * -EINVAL.
-> > > > +	 */
-> > > > +	if (!params->buf_length) {
-> > > > +		pr_warn_once("Platform dump completed for dump
-> > > > ID
-> > > > %llu\n",
-> > > > +			(u64) (((u64)params->dump_tag_hi << 32)
-> > > > |
-> > > > +				params->dump_tag_lo));
-> > > > +		return -EINVAL;
-> > > > +	}
-> > > > +
-> > > > +	if (size < SZ_1K) {
-> > > > +		pr_err_once("Buffer length should be minimum
-> > > > 1024
-> > > > bytes\n");
-> > > > +		return -EINVAL;
-> > > > +	}
-> > > > +
-> > > > +	/*
-> > > > +	 * The hypervisor returns status 0 if no more data
-> > > > available to
-> > > > +	 * download. Then expects the last RTAS call with NULL
-> > > > buffer
-> > > > +	 * to invalidate the dump which means dump will be
-> > > > freed in the
-> > > > +	 * hypervisor.
-> > > > +	 */
-> > > > +	if (params->status == RTAS_IBM_PLATFORM_DUMP_COMPLETE)
-> > > > {
-> > > > +		params->buf_length = 0;
-> > > > +		fwrc = rtas_ibm_platform_dump(params, 0, 0);
-> > > > +		/*
-> > > > +		 * Returns 0 (success) to the user space so
-> > > > that user
-> > > > +		 * space read stops.
-> > > 
-> > > Does this implicitly invalidates the dump irrespective of whether
-> > > userspace has requested or not ?
-> > 
-> > No, the RTAS call from the last read() will invalidate the dump.
-> > Expect
-> > the user space make the read() until returns 0 which means the last
-> > read() will return 0 after invalidate the dump. 
-> > 
-> > size_t read() 
-> > {
-> >    if (params->status == RTAS_IBM_PLATFORM_DUMP_COMPLETE) {
-> >            RTAS call to invalidate dump
-> >            return 0;
-> >    }
-> >    get the data from RTAS call
-> >    If the RTAS call return status is DUMP_COMPLETE
-> >              params->status = RTAS_IBM_PLATFORM_DUMP_COMPLETE
-> >    return bytes_written
-> > }
-> > 
-> > If the RTAS call returns DUMP_COMPLETE, the hypervisor expects one
-> > more
-> > RTAS call to invalidate the dump which is done as part of the last
-> > read()
-> > 
-> > > Copy-pasting bellow code snippet from librtas side patch posted
-> > > by
-> > > you to
-> > > librtas-devel mailing list:
-> > > + /*
-> > > + * rtas_platform_dump() is called with buf = NULL and length = 0
-> > > + * for "dump complete" RTAS call to invalidate dump.
-> > > + * For kernel interface, read() will be continued until the
-> > > + * return value = 0. Means kernel API will return this value
-> > > only
-> > > + * after issued "dump complete" call. So nothing to do further
-> > > + * for the last RTAS call.
-> > > + */
-> > > + if (buffer == NULL)
-> > > + return 0;
-> > > 
-> > > If I understand this correctly, it looks like calling
-> > > rtas_platform_dump() with buf = NULL and length = 0, now does
-> > > nothing.
-> > Following the same read() ABI - expects to make calls until returns
-> > size 0.
-> > 
-> > The current usage of rtas_platform_dump() in ppc64-
-> > diag/rtas_errd/extract_platdump.c
-> > 
-> > dump_complete = rtas_platform_dump(dump_tag, 0, dump_buf,
-> > DUMP_BUF_SZ,
-> >                                         &seq_next, &bytes);
-> > 
-> > while (dump_complete) {
-> > 
-> >    dump_complete = rtas_platform_dump(dump_tag, seq, dump_buf,
-> >  				DUMP_BUF_SZ, &seq_next, &bytes);
-> >                                 
-> > }
-> > 
-> > ret = rtas_platform_dump(dump_tag, seq, NULL, 0, 
-> >                                 &seq_next, &bytes);
-> > 
-> > we need to support both new and old interfaces and not changing the
-> > above code which uses librtas API.
-> > 
-> > So the new rtas_platform_dump() interface
-> > {
-> >  if the buffer == NULL 
-> >      return - nothing to do here. Dump is invalidated with the
-> > previous
-> > rtas_platform_dump()   
-> >  
-> >  size = read()
-> >  if size == 0 
-> >       dump complete and invalidate the dump
-> >       return 0
-> > 
-> >   return 1;
-> > }
+On 02.12.24 23:07, Zi Yan wrote:
+> On 2 Dec 2024, at 7:58, David Hildenbrand wrote:
 > 
-> No EOF?
-
-read() returns size, 0 or < 0. Returns 0 is like EOF. 
-
+>> Let's clean up the gfp flags handling, and support __GFP_ZERO, such that we
+>> can finally remove the TODO in memtrace code.
+>>
+>> I did some alloc_contig_*() testing with virtio-mem and hugetlb; I did not
+>> test powernv/memtrace -- I cross-compiled it, though.
+>>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Oscar Salvador <osalvador@suse.de>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Cc: Naveen N Rao <naveen@kernel.org>
+>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 > 
-> So no standard file handling code can use this FD?
+> FYI, linux-mm does not get any of your emails: https://lore.kernel.org/linux-mm/ECFA727B-F542-42E5-BE32-F9FB27F5DCDB@nvidia.com/, but linux-kernel has them.
 
-Yes, providing support for FD from ioctl for the following reasons:
+Indeed, linuxppc seems to have them as well.
 
-- get-vpd char driver is providing only for FD from ioctl. So thought
-of using same interface for platform-dump so that having consitent
-interface for all RTAS function char drivers. 
+Guess I'll have to blame it on linux-mm, then ;)
 
-- file->private_data is assigned to miscdevice in misc_register and
-also assigned to some other miscdevice struct in driver specific code.
-So was thinking of not following semantics in the existing code if I
-private_data to save internal param struct.
+Let me resend with #5 patch description adjusted. Thanks for the review!
 
-Please let me know if you prefer to use FD from open() for platform-
-dump read().
+-- 
+Cheers,
 
-> 
-> But also the size 0 read both indicates the EOF and invalidates the
-> dump, these should be separate.
-> 
-> Which differs from the hypervisor API that makes it impossible to
-> save
-> the dump without deleting it, and introduces a regression.
-
-The hypervisor API says to invalidate the dump after saving it. In the
-current interface it does - The user space makes the last read() (for
-return 0) after saving the complete dump. 
-
-All read() calls return size (> 0) == RTAS calls for dump
-read() expects return 0 == same RTAS invalidate dump
-
-So the only difference is if the user does not call to invalidate dump
-explicitly even though saved the dump, but we do not have the current
-usage, Only the extract-dump command is the only usage now and please
-note that this command is used for non-HMC manages system. It is not
-used on HMC managed system which has its own command gets the dump
-directly from the hypervisor.    
-
-> 
-> If you are doing IOCTLs anyway the invalidation could be an IOCTL. Or
-> you could really follow the RTAS ABI and only incalidate if the user
-> passes NULL and 0.
-
-I could use this ioctl interface to invalidate the dump.
-
-devfd = ioctl(fd ..) for dump ID
-read(devfd)
-ret = ioctl(devfd ...) to invalidate dump 
-
-I will make changes if you are OK with this interface
-
-> 
-> But more generally the previously added RTAS wrappers do not closely
-> follow the RTAS ABI, and do accumulation of read data in the kernel,
-> passing the whole buffer to userspace afterwards.
-> 
-> Why cannot it be done in this case?
-
-platform-dump RTAS returns more data unlike in get-vpd. In one case
-noticed 3G data which is not the ideal case to save in the kernel
-buffer within ioctl. 
-
-Also platform-dump RTAS function supports interleave calls for multiple
-dump IDs at the same time unlike in get-vpd case.
-
-> 
-> Even more generally if the dump IDs are stable these could be listed
-> in
-> some sysfs or debugfs directory, and provide standard file
-> operations,
-> including unlink() to remove the dump.
-
-dump IDs are not stable. The hypervisor can have several dumps with
-different IDs at the same time. so unlink() can not be used.
-
-> 
-> With the bonus that at least one of these filesystems has some
-> provisions for confidentiality lockdown. The implementation could use
-> that to make the dumps unavailable in confidentiality lockdown level
-> if
-> the dumps are considered confidential without reimplementing the
-> check.
-
-We are adding new driver (interfaces) to support lockdown. Otherwise
-the current usage is sufficient. But we could modify to restrict the
-interface for confidentiality lockdown in future if we have that
-restriction.
-
-Thanks
-Haren
-
-> 
-> Thanks
-> 
-> Michal
+David / dhildenb
 
 
