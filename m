@@ -1,95 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-3722-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3725-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD389E1CD7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 13:56:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D70149E1DBF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 14:38:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2gcy2JRFz2yYs;
-	Tue,  3 Dec 2024 23:56:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2hYR3lgnz301T;
+	Wed,  4 Dec 2024 00:38:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=99.78.197.218
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733230562;
-	cv=none; b=M25iK9nOiybRVq1n6VqpEptDjK8Ek7C3FQd/gWDL5chgQuLaWELHVM2Be6Z7HQNbZX6abcqUBxYj7umeYlrkDNa4YuoWurgs6k32Hj8zKh2fG3e3KhP32zmC3UPEimIXju1MXDP4aOu6aqLiCJiZ4JrsIncqJxMovTVOQSGgJSYDXuGxGYgqRYI5Zm3+YDZv+Op2vUwBGyLJ9P1RE6TtG5Hz5vwTRscK2E7k7iQm3HGFETrqbzO39vz9JSK4K3CDI1Xa0VxDeIvtuigbBlR9qoPZwkhjy75j1SVfIdiEVipd1eG9Cq/twXwMQkAj6U18yk6yc5Oa+eAB/vd1MpwZ7A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733233083;
+	cv=none; b=R6n3RBgkeghgdsbMYgERU/7eERTjnbYbh4lrmi8h3bsVXcKvUAWy9/11WeCXk83Cis4Fs7uy8Q6X2EvFoZmxM/zRU0w1GqlcoS3XdlyV2/j2fZ1heQ34QCOVVa1yG+7qoyrnoadSLlfeXqPUj1t0mLup1OeV+RCNrMOxNi4L+fFjrXMqIwVN+mfmgQxBM1A/ohkP2Y77IL5aeW5Q1PaEKdhAE8pIr6wt5LK8ZMzr2B+SLRTL8TiIaQ1bYLmd3W+OsGE5uJ8R5tVFj9ziSemUql+KQlpV4jmjhxVxcx88l4QG+mZxFl2LLhtPs95NLJ2EjZ05yB0Ev/vdw6iV1hLzbw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733230562; c=relaxed/relaxed;
-	bh=zHt8L2Z6dJwqzsWV71weChOsU9eMWPerfPu1DOoxdJ8=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ko3M9V12ukz02N3zfqLNNwjLGe7ZftqYQDfli6alRnqG1yvagnPeE2uB1ZbCzIL1Dj9qGj7IRq0FqH9Rv2SVjOsJlLPvuEicYwesm5jzAORyVgaYhbB7fFdSgHXfSy6u1Hrz3bb78Fx/Yy2Oax+X99GW7YMSKe2fNPFXE3oMmGhk3cy/euF6bpcrT4rXuU3fVE8pZo3MDGecQWjWG7dIhZCFOEra/2VBSTpQIwsTTKRL8ysPyxJ/a4yRstndqLAYfpjrCtIx1kSpL7086zrkMPvWKGAil6horshSuUPqOIa+BUzXZKMaXx9UFeE/MAkCT8IMubTA6ONZKaKlGilhLg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=L4e/unjh; dkim-atps=neutral; spf=pass (client-ip=99.78.197.218; helo=smtp-fw-80007.amazon.com; envelope-from=prvs=0605a7a16=farbere@amazon.com; receiver=lists.ozlabs.org) smtp.mailfrom=amazon.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=L4e/unjh;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amazon.com (client-ip=99.78.197.218; helo=smtp-fw-80007.amazon.com; envelope-from=prvs=0605a7a16=farbere@amazon.com; receiver=lists.ozlabs.org)
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1733233083; c=relaxed/relaxed;
+	bh=21Tj0Vtrl++WyZ6wV5+oyun0i/cIREtxJghpq0bEQk0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qv8HAhrhZefsR7cCCIVVsoemPrKzliG2sWIjhP1AJ3LVN6eyYP2bJ7Dlghze0jJNWZn5CngxTQnUkh4cR89fQ3dGNX0A+isYbsWERpON50ecjATvXFg2bnSWtKe+x3ixdu/eKtlVZI00+AHQG/3fsNutq+GXloFPCDqACrZto/kZBe1p+bQSuPpPq9RbR/QFa2XVZSNigeayqxRDFjCNUVviwfQ5LCLtFuZw4sAko+feFEBGhZffBQyaBaZSu7dhFIS+qbOKAGrOX+3kdVPue0N2YtHQNlH2Feodn+XxWqh/4ZMNpDDcLZHc0MFyDMTVze8tcODqJuiqIEcb2LRpdg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 409 seconds by postgrey-1.37 at boromir; Wed, 04 Dec 2024 00:38:02 AEDT
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2gcw6pv6z2yM6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 23:55:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1733230562; x=1764766562;
-  h=from:to:cc:subject:date:message-id:
-   content-transfer-encoding:mime-version;
-  bh=zHt8L2Z6dJwqzsWV71weChOsU9eMWPerfPu1DOoxdJ8=;
-  b=L4e/unjhlCvocVtj+zwSGc9JN97dRHTya1WLNX2dTehSZNJrzBpQhvz4
-   6CJVOPa+jczjWDhAzYI15i9P/NGC4XpnXgwlTGFNunWDhjmTYAL1RSweE
-   oIO6N2+jcYi1JlyptQqwpBCN0nBlBPx1gW5KfvUDHC6C2XidJObR4/EQm
-   U=;
-X-IronPort-AV: E=Sophos;i="6.12,205,1728950400"; 
-   d="scan'208";a="357635905"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 12:55:55 +0000
-Received: from EX19MTAEUB001.ant.amazon.com [10.0.17.79:25389]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.32.206:2525] with esmtp (Farcaster)
- id 321ae853-bb47-4473-a697-0a3ceab94d46; Tue, 3 Dec 2024 12:55:53 +0000 (UTC)
-X-Farcaster-Flow-ID: 321ae853-bb47-4473-a697-0a3ceab94d46
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 3 Dec 2024 12:55:53 +0000
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Tue, 3 Dec 2024 12:55:53 +0000
-Received: from EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d]) by
- EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d%3]) with mapi id
- 15.02.1258.034; Tue, 3 Dec 2024 12:55:53 +0000
-From: "Farber, Eliav" <farbere@amazon.com>
-To: Thomas Gleixner <tglx@linutronix.de>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"will@kernel.org" <will@kernel.org>, "mpe@ellerman.id.au"
-	<mpe@ellerman.id.au>, "npiggin@gmail.com" <npiggin@gmail.com>,
-	"christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
-	"naveen@kernel.org" <naveen@kernel.org>, "maddy@linux.ibm.com"
-	<maddy@linux.ibm.com>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "aou@eecs.berkeley.edu"
-	<aou@eecs.berkeley.edu>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "bhe@redhat.com" <bhe@redhat.com>,
-	"hbathini@linux.ibm.com" <hbathini@linux.ibm.com>,
-	"sourabhjain@linux.ibm.com" <sourabhjain@linux.ibm.com>,
-	"adityag@linux.ibm.com" <adityag@linux.ibm.com>, "songshuaishuai@tinylab.org"
-	<songshuaishuai@tinylab.org>, "takakura@valinux.co.jp"
-	<takakura@valinux.co.jp>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org"
-	<linux-riscv@lists.infradead.org>
-CC: "Chocron, Jonathan" <jonnyc@amazon.com>
-Subject: RE: [PATCH v5 1/2] kexec: Consolidate machine_kexec_mask_interrupts()
- implementation
-Thread-Topic: [PATCH v5 1/2] kexec: Consolidate
- machine_kexec_mask_interrupts() implementation
-Thread-Index: AdtFgq6lXwncie71LkSE+iBNpljfQg==
-Date: Tue, 3 Dec 2024 12:55:52 +0000
-Message-ID: <077908c5f02545f0a9e02ae77cbd771c@amazon.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.85.143.174]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2hYQ1w9Qz2xJ5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 00:38:01 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 93A0D1F445;
+	Tue,  3 Dec 2024 13:31:03 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 781F513A15;
+	Tue,  3 Dec 2024 13:31:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HGbLHBcIT2cYIQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 03 Dec 2024 13:31:03 +0000
+Message-ID: <2e66a245-30d3-4765-95df-13d300de5d13@suse.cz>
+Date: Tue, 3 Dec 2024 14:31:03 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,32 +58,93 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-10.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2 1/6] mm/page_isolation: don't pass gfp flags to
+ isolate_single_pageblock()
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <20241203094732.200195-1-david@redhat.com>
+ <20241203094732.200195-2-david@redhat.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20241203094732.200195-2-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU]
+X-Spam-Score: -4.00
+X-Rspamd-Queue-Id: 93A0D1F445
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 12/3/2024 1:04 PM, Thomas Gleixner wrote:
->> +
->> +config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
->> +     bool "Clear forwarded VM interrupts during kexec"
->
-> This should not be user selectable. Just keep it as:
->
-> config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
->         bool
->
-> which defaults to 'n'. Just add a comment what this is about like it's
-> done with the other options in that file which are only selectable.
-Question: Should this new configuration option be placed inside or
-outside the following section:
-```
-menu "IRQ subsystem"
+On 12/3/24 10:47, David Hildenbrand wrote:
+> The flags are no longer used, we can stop passing them to
+> isolate_single_pageblock().
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-endmenu
-```
-In my patch, I have added the new configuration option at the end of
-the file, outside the "IRQ subsystem" section.
+> ---
+>  mm/page_isolation.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+> index 7e04047977cf..e680d40d96de 100644
+> --- a/mm/page_isolation.c
+> +++ b/mm/page_isolation.c
+> @@ -286,7 +286,6 @@ __first_valid_page(unsigned long pfn, unsigned long nr_pages)
+>   * within a free or in-use page.
+>   * @boundary_pfn:		pageblock-aligned pfn that a page might cross
+>   * @flags:			isolation flags
+> - * @gfp_flags:			GFP flags used for migrating pages
+>   * @isolate_before:	isolate the pageblock before the boundary_pfn
+>   * @skip_isolation:	the flag to skip the pageblock isolation in second
+>   *			isolate_single_pageblock()
+> @@ -306,8 +305,7 @@ __first_valid_page(unsigned long pfn, unsigned long nr_pages)
+>   * the in-use page then splitting the free page.
+>   */
+>  static int isolate_single_pageblock(unsigned long boundary_pfn, int flags,
+> -			gfp_t gfp_flags, bool isolate_before, bool skip_isolation,
+> -			int migratetype)
+> +		bool isolate_before, bool skip_isolation, int migratetype)
+>  {
+>  	unsigned long start_pfn;
+>  	unsigned long isolate_pageblock;
+> @@ -489,7 +487,7 @@ int start_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn,
+>  	bool skip_isolation = false;
+>  
+>  	/* isolate [isolate_start, isolate_start + pageblock_nr_pages) pageblock */
+> -	ret = isolate_single_pageblock(isolate_start, flags, gfp_flags, false,
+> +	ret = isolate_single_pageblock(isolate_start, flags, false,
+>  			skip_isolation, migratetype);
+>  	if (ret)
+>  		return ret;
+> @@ -498,7 +496,7 @@ int start_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn,
+>  		skip_isolation = true;
+>  
+>  	/* isolate [isolate_end - pageblock_nr_pages, isolate_end) pageblock */
+> -	ret = isolate_single_pageblock(isolate_end, flags, gfp_flags, true,
+> +	ret = isolate_single_pageblock(isolate_end, flags, true,
+>  			skip_isolation, migratetype);
+>  	if (ret) {
+>  		unset_migratetype_isolate(pfn_to_page(isolate_start), migratetype);
+
 
