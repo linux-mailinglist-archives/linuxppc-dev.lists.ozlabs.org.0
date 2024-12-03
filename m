@@ -1,46 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-3716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3719-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319AD9E1C79
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 13:44:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F4B9E1C84
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 13:44:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2gLk0Grzz30Gm;
-	Tue,  3 Dec 2024 23:43:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2gLl5rKLz308Z;
+	Tue,  3 Dec 2024 23:43:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8::224"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733229821;
-	cv=none; b=Ul3HIhSE+uwSfyLTumnuNPRr6G8RY+YB8aywzJXa+x+Cw4nUUKYeT2iiX5v3NlYPYa/SRgZRu39/IW9vlDRiQusI8kBpoaIFSjG1KuUdlWjlGMX+5Rc2fmccLlzMCKBCKgcpxEu9AJ+KG3iK+4AhLInkHN1mhICEBxG0OTQ3tdiDhp3/8WzxDjK7vZkYMCDp6PYQ5EhqdEgApVW4Lc5vlr5i9bMgZjl7etc14jeDJ/2EQQ5P6CCFf7Qu8Xv9Fz/T+vYb+zMtymdOkIOyEg2MkO3YHSHFFnWQU9F3xdpzo/fob4CanM9iLIMnHXaTS4AeFjbamu5fjOQ3C1P7EzQ5hA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733229823;
+	cv=none; b=CYiJy4i5iaHEMO5eRX/JXlzWjaGL7KEqEAhE0WPKpqXfPwc7WCu8uU9L3LcabTSMCTn3HvU/fiqYMDRXGivxnpZBkoqcfNGGjENNHICIBCJVbE1lkkPJ6JO6dymTuaqPhAABt4dp1ftsIlk9SWZujRWPz9dcMHtZEaMJ+v6rmal5ZpQaMvPlKjQxFr3wXWv02dMdKe0+ZvFcRARBkJpXYHE+5SsaNw9NU2Ud2qqt9MGBJZBWjhxlWUmFbgqQ2hCF/O63Gl4AvZ6cyr1MGYoqXA5oqfzlaQI9JCcRouOao3pXSeeSokizgrZjyvRSw2uQmppVzhMN1pRuX/KbXUQHhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733229821; c=relaxed/relaxed;
-	bh=F1u0eeuSX4cb30X89CwQx+qR/vfxpPZBdpfTfsUK6pI=;
+	t=1733229823; c=relaxed/relaxed;
+	bh=WBCqYYv3YXd5ENSbBD2+uchIXFYD+CKhJvuWxfPM7Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9bsNAkQearP0JmK96n/XX0AtEl8ZmmZNAU3nlKyNSkrUKZMAKhM6HqRs4+mZtZKm90Om0xbv7WmrO9uIa3jweHMOBTJawzovze8gHEwdYu/Mvsn3PhdTVYAxFNC4ACxhRLVf5TiHZS1kajvq47eblmgV9vxfYV7hglk+sFUG/uQhudB0IYFzPjPEryoCXdey4qFtWtugcrIhvyOKOY5imsRQiu5+UvM/o31oQ05SQcgDTlldlQ287CjotTl/Xad1FSNOC3XAenPIGswY3F83DlqVxS33A76GW30M066k6vPf0OJZMwlUrE5kLb6L9Fmo99pMDsiKnEMIJMCxYj80Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=VTeXo2Mj; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+	 MIME-Version; b=gih2o2jYdi3VVRqMnUjTqeGF7GuZrzzMeCHz/A+7xL8PsAmRNNtEY6NRDwWJb+cnxgmp5Y3G2LmNeQCg9W1qjP5Q930FiOEBYYoByoHPPW3L3s6/p1pY9MX/peJDE6siaK1Zar97eTlyAwU0gAlELMiy/RmGXZK9HOTiC+HvA0k9SxlXz/uO83wL8msjHQ6A1nGrwgqttKPreGorxJBNK+QvgrIBEn7VWahmnS4Q3QfudYD20Cpv/ZQ+xgZZ4tO37DX/N8xXjG9Gu7agi79jkdo+YcNghCYni4bCEWqOytECpxX00SLoAjSZpjaRVEDsmTyOBQH2R6dZd5XGLCVcbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=NWEUoUA5; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=VTeXo2Mj;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=NWEUoUA5;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224; helo=relay4-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2gLc6hYkz307f
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 23:43:36 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 11F4DE0010;
-	Tue,  3 Dec 2024 12:43:33 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2gLh74x8z304Z
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Dec 2024 23:43:40 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 27420E0014;
+	Tue,  3 Dec 2024 12:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733229814;
+	t=1733229815;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=F1u0eeuSX4cb30X89CwQx+qR/vfxpPZBdpfTfsUK6pI=;
-	b=VTeXo2MjeNeCnA0pgAtMBiOwjYEFVxDtbcCe2BCsPMaLaFqOSdUY8Wz4yogaefgoE2jgDJ
-	AN1yJKClixBIIe8kvN509H3cHhd1GgJ1xV8JcReqCbmrWKYr8SBTn5ZKSXbAwvI8HXlcWB
-	+0YJr92DeiSNMoZKvzaoHtV/g+8sdDmoEjXotPw3Uv0wFd75n/XIhfOd+0NagbIj6G/w1v
-	JoRB1rynTzEFDF+O3Nn+ClSchRLzxjLWvDr4pNHBO9VDEli3prTi9MoBKkkSUlM5ynEh0S
-	WMKQibomg5OWCuW7VTJyiYablk5g2ph2erdp09Fn+mXqNpeQlP62eiZZg6UhRA==
+	bh=WBCqYYv3YXd5ENSbBD2+uchIXFYD+CKhJvuWxfPM7Xk=;
+	b=NWEUoUA5RouWcr1xNFFyfJa84MrnUceEEs7jv6Dz3Mc72h3Vf0I2h4+H/uMA94Uqv7RtdS
+	eUq8zTe/FZfiA0ZPe35qpSKqW7WH2G/LCFR9dazxkxdB+UiwtV/9nZmmPoN8Gs52fnBRhF
+	KZFT2Q68jau98Q0k0Je3LF1MhiXV12e3s25Rn/arQtsffRLZqi4s5q0mYGMx6D83IriZ4S
+	68Vb3x+cxsUfXg+fDz8TpFJU6qvKFamyDz40mqo93h3p14geaz6Yo6LaA6EOUcbD1dPaJR
+	vY7VSsqUZDM67/hSP2oqSzHxvrqs50ZHbS+lGSoMaMhDGkHC68syLhyASj9teA==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -58,9 +58,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Herve Codina <herve.codina@bootlin.com>,
 	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH net-next v3 07/10] net: freescale: ucc_geth: Hardcode the preamble length to 7 bytes
-Date: Tue,  3 Dec 2024 13:43:18 +0100
-Message-ID: <20241203124323.155866-8-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v3 08/10] net: freescale: ucc_geth: Move the serdes configuration around
+Date: Tue,  3 Dec 2024 13:43:19 +0100
+Message-ID: <20241203124323.155866-9-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
 References: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
@@ -83,97 +83,130 @@ X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The preamble length can be configured in ucc_geth, however it just
-ends-up always being configured to 7 bytes, as nothing ever changes the
-default value of 7.
+The uec_configure_serdes() function deals with serialized linkmodes
+settings. It's used during the link bringup sequence. It is planned to
+be used during the phylink conversion for mac configuration, but it
+needs to me moved around in the process. To make the phylink port
+clearer, this commit moves the function without any feature change.
 
-Make that value the default value when the MACCFG2 register gets
-initialized, and remove the code to configure that value altogether.
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
 V3: No changes
 
- drivers/net/ethernet/freescale/ucc_geth.c | 21 ---------------------
- drivers/net/ethernet/freescale/ucc_geth.h |  4 ++--
- 2 files changed, 2 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/freescale/ucc_geth.c | 93 +++++++++++------------
+ 1 file changed, 46 insertions(+), 47 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 566f53e24d28..81aefe291d80 100644
+index 81aefe291d80..f6dd36dc03fe 100644
 --- a/drivers/net/ethernet/freescale/ucc_geth.c
 +++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -132,7 +132,6 @@ static const struct ucc_geth_info ugeth_primary_info = {
- 	.transmitFlowControl = 1,
- 	.maxGroupAddrInHash = 4,
- 	.maxIndAddrInHash = 4,
--	.prel = 7,
- 	.maxFrameLength = 1518+16, /* Add extra bytes for VLANs etc. */
- 	.minFrameLength = 64,
- 	.maxD1Length = 1520+16, /* Add extra bytes for VLANs etc. */
-@@ -1205,18 +1204,6 @@ static int init_mac_station_addr_regs(u8 address_byte_0,
- 	return 0;
+@@ -1512,6 +1512,52 @@ static void ugeth_activate(struct ucc_geth_private *ugeth)
+ 	__netdev_watchdog_up(ugeth->ndev);
  }
  
--static int init_preamble_length(u8 preamble_length,
--				u32 __iomem *maccfg2_register)
++/* Initialize TBI PHY interface for communicating with the
++ * SERDES lynx PHY on the chip.  We communicate with this PHY
++ * through the MDIO bus on each controller, treating it as a
++ * "normal" PHY at the address found in the UTBIPA register.  We assume
++ * that the UTBIPA register is valid.  Either the MDIO bus code will set
++ * it to a value that doesn't conflict with other PHYs on the bus, or the
++ * value doesn't matter, as there are no other PHYs on the bus.
++ */
++static void uec_configure_serdes(struct net_device *dev)
++{
++	struct ucc_geth_private *ugeth = netdev_priv(dev);
++	struct ucc_geth_info *ug_info = ugeth->ug_info;
++	struct phy_device *tbiphy;
++
++	if (!ug_info->tbi_node) {
++		dev_warn(&dev->dev, "SGMII mode requires that the device tree specify a tbi-handle\n");
++		return;
++	}
++
++	tbiphy = of_phy_find_device(ug_info->tbi_node);
++	if (!tbiphy) {
++		dev_err(&dev->dev, "error: Could not get TBI device\n");
++		return;
++	}
++
++	/*
++	 * If the link is already up, we must already be ok, and don't need to
++	 * configure and reset the TBI<->SerDes link.  Maybe U-Boot configured
++	 * everything for us?  Resetting it takes the link down and requires
++	 * several seconds for it to come back.
++	 */
++	if (phy_read(tbiphy, ENET_TBI_MII_SR) & TBISR_LSTATUS) {
++		put_device(&tbiphy->mdio.dev);
++		return;
++	}
++
++	/* Single clk mode, mii mode off(for serdes communication) */
++	phy_write(tbiphy, ENET_TBI_MII_ANA, TBIANA_SETTINGS);
++
++	phy_write(tbiphy, ENET_TBI_MII_TBICON, TBICON_CLK_SELECT);
++
++	phy_write(tbiphy, ENET_TBI_MII_CR, TBICR_SETTINGS);
++
++	put_device(&tbiphy->mdio.dev);
++}
++
+ static void ugeth_link_up(struct ucc_geth_private *ugeth,
+ 			  struct phy_device *phy,
+ 			  phy_interface_t interface, int speed, int duplex)
+@@ -1619,53 +1665,6 @@ static void adjust_link(struct net_device *dev)
+ 		ugeth_link_down(ugeth);
+ }
+ 
+-/* Initialize TBI PHY interface for communicating with the
+- * SERDES lynx PHY on the chip.  We communicate with this PHY
+- * through the MDIO bus on each controller, treating it as a
+- * "normal" PHY at the address found in the UTBIPA register.  We assume
+- * that the UTBIPA register is valid.  Either the MDIO bus code will set
+- * it to a value that doesn't conflict with other PHYs on the bus, or the
+- * value doesn't matter, as there are no other PHYs on the bus.
+- */
+-static void uec_configure_serdes(struct net_device *dev)
 -{
--	if ((preamble_length < 3) || (preamble_length > 7))
--		return -EINVAL;
+-	struct ucc_geth_private *ugeth = netdev_priv(dev);
+-	struct ucc_geth_info *ug_info = ugeth->ug_info;
+-	struct phy_device *tbiphy;
 -
--	clrsetbits_be32(maccfg2_register, MACCFG2_PREL_MASK,
--			preamble_length << MACCFG2_PREL_SHIFT);
--
--	return 0;
--}
--
- static int init_rx_parameters(int reject_broadcast,
- 			      int receive_short_frames,
- 			      int promiscuous, u32 __iomem *upsmr_register)
-@@ -1276,7 +1263,6 @@ static int adjust_enet_interface(struct ucc_geth_private *ugeth)
- 	struct ucc_geth_info *ug_info;
- 	struct ucc_geth __iomem *ug_regs;
- 	struct ucc_fast __iomem *uf_regs;
--	int ret_val;
- 	u32 upsmr, maccfg2;
- 	u16 value;
- 
-@@ -1352,13 +1338,6 @@ static int adjust_enet_interface(struct ucc_geth_private *ugeth)
- 		put_device(&tbiphy->mdio.dev);
- 	}
- 
--	ret_val = init_preamble_length(ug_info->prel, &ug_regs->maccfg2);
--	if (ret_val != 0) {
--		if (netif_msg_probe(ugeth))
--			pr_err("Preamble length must be between 3 and 7 inclusive\n");
--		return ret_val;
+-	if (!ug_info->tbi_node) {
+-		dev_warn(&dev->dev, "SGMII mode requires that the device "
+-			"tree specify a tbi-handle\n");
+-		return;
 -	}
 -
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethernet/freescale/ucc_geth.h
-index 2365b61c743a..dfb727327093 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.h
-+++ b/drivers/net/ethernet/freescale/ucc_geth.h
-@@ -921,7 +921,8 @@ struct ucc_geth_hardware_statistics {
- #define UCC_GETH_UPSMR_INIT                     UCC_GETH_UPSMR_RES1
- 
- #define UCC_GETH_MACCFG1_INIT                   0
--#define UCC_GETH_MACCFG2_INIT                   (MACCFG2_RESERVED_1)
-+#define UCC_GETH_MACCFG2_INIT                   (MACCFG2_RESERVED_1 | \
-+						 (7 << MACCFG2_PREL_SHIFT))
- 
- /* Ethernet Address Type. */
- enum enet_addr_type {
-@@ -1113,7 +1114,6 @@ struct ucc_geth_info {
- 	int transmitFlowControl;
- 	u8 maxGroupAddrInHash;
- 	u8 maxIndAddrInHash;
--	u8 prel;
- 	u16 maxFrameLength;
- 	u16 minFrameLength;
- 	u16 maxD1Length;
+-	tbiphy = of_phy_find_device(ug_info->tbi_node);
+-	if (!tbiphy) {
+-		dev_err(&dev->dev, "error: Could not get TBI device\n");
+-		return;
+-	}
+-
+-	/*
+-	 * If the link is already up, we must already be ok, and don't need to
+-	 * configure and reset the TBI<->SerDes link.  Maybe U-Boot configured
+-	 * everything for us?  Resetting it takes the link down and requires
+-	 * several seconds for it to come back.
+-	 */
+-	if (phy_read(tbiphy, ENET_TBI_MII_SR) & TBISR_LSTATUS) {
+-		put_device(&tbiphy->mdio.dev);
+-		return;
+-	}
+-
+-	/* Single clk mode, mii mode off(for serdes communication) */
+-	phy_write(tbiphy, ENET_TBI_MII_ANA, TBIANA_SETTINGS);
+-
+-	phy_write(tbiphy, ENET_TBI_MII_TBICON, TBICON_CLK_SELECT);
+-
+-	phy_write(tbiphy, ENET_TBI_MII_CR, TBICR_SETTINGS);
+-
+-	put_device(&tbiphy->mdio.dev);
+-}
+-
+ /* Configure the PHY for dev.
+  * returns 0 if success.  -1 if failure
+  */
 -- 
 2.47.0
 
