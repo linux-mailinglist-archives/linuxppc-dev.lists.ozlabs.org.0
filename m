@@ -1,88 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-3788-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3790-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D329E38AA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 12:22:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FA39E3909
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 12:41:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3FVf1BXvz30Wc;
-	Wed,  4 Dec 2024 22:22:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3Fw56Tk4z30WT;
+	Wed,  4 Dec 2024 22:41:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733311354;
-	cv=none; b=P///OPcFbIJVrHfIcyoH76wuuRjk4r33p2/yZZXCF6rhryzzh/q4x55XeRuy8ZvZ/mGiyuQHNswm/ClXn+chiMKDWWjGY2tDybT3+YCqEBwVl5BVuQ27LPDndFkwRDsWjsifJf9EDTRcSPNkx/TMp7HAWzgEdl5fE4s80aeC1MBoBDpQhwpPm3pF2ABUu92qIdHoeep8kDdbCwebqjgC3vivQFTrpidptn5Vv383aWiWHy9l9O99YDiBLEPJfujempiD7pMZ8czMbpwLvE3BufW1CKFs0EML59eRC7BmAmc7+mWlCOB3WjjPjtea9bZvUsk9632AN2mTO5gGuVU8Yg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=207.171.184.29
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733312469;
+	cv=none; b=ROOHnOX77c4RQR+sTcYTOSZcSdjHHHys22L0+rLDlJia+PwybVVEIHr/2UUQDB4yeV36CnqDxUe2rYih/wl43az1u1M6i8xqOk+ZQOH7rzV7cq8GHFwFmoFLADiiHZeULBQ96UGUI1JMCHelFNCWoPTQ7isAoBCXjxASjp1PlPce34BolGhhd7NAyi+TBixlhhrX7NxQ2tnxw8obZ+WWY9ur9xPkCe5u7HRpYMRtwHtHbYj13LoVvIhNkNBuMFKWSPFcARsWKQk6N/7vT14tuchiriCiDs7NpvUMoMP5ypilzhcSuVI2e5bJRJEqL7daWItSdb7M81lbHIRkZGus1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733311354; c=relaxed/relaxed;
-	bh=8TXxPCu7CbB/wPbZahVtAWP9y7IfzK6UIQ0ThrYc1FU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SFM56n/n20d+TTvQafe+T0BHK5ycl4XZBZUq410wAZRsNqxBB0cz+9YJb6EL68BHPIAWs8ZjLrSn/lyHbLflZrp1D0yWsMofbSk+znyJ+11WsMi0TM3ZB8s6vjZIMakq74mk5nljB0/w/oSgXPALJDsNz7jJ6fhP2FLdZY/vb0O93rjSLn1GQuqYiEIMJl13P1hD+TS2xZgkfBq7KiRMTmG3uRZEqH1Fq8WZ9APaKS/wKBs8JjiWKKipk4Z7J/fDymPyNN7ifKA41nZJjsWAZ7v9XNemF0reKAwbNWUXHNE8RUlCy840RX6fPE1DfevgV7X360mP8AcbIooXHUSKZw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ei10aPZ0; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1733312469; c=relaxed/relaxed;
+	bh=L3N4xnB4hpUkX70oEIl5ay7oOHjK5rWVH5VO26SBMRE=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=gypjPBHgpj9L0qk48N7Zv6mmgfOBNyFO2SR8Q4G/6gjsjE9+imcLf1AqPLu5+38Mln2S0ZzVeaCk1rbhSsl69iN+RqcdAXqAx2/+QbBDTyu2JcyP41DZppzrNA2xdtR4QKvdVQ4fCbj/bnH1rgGYKioWSKGcctuGyJ/ZDbUS/X2o32THh86Vj/5hGdALwxt8SYFFoLmoL6gFKQdk01xGSl9EYKbZCG1VlzdbCLwlet0G/3m6kMTW6PYkWMRyC5l8pSfoNHVY0+0i2vSatK7uMwt/CEMrAmpKMnuED7w7JSTP06hQ+VyeMnzOLC2QEos1jW+4H9GrJlmJaMyyBpclHw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=UO/tm47s; dkim-atps=neutral; spf=pass (client-ip=207.171.184.29; helo=smtp-fw-9102.amazon.com; envelope-from=prvs=061ca9da5=farbere@amazon.com; receiver=lists.ozlabs.org) smtp.mailfrom=amazon.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ei10aPZ0;
+	dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=UO/tm47s;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amazon.com (client-ip=207.171.184.29; helo=smtp-fw-9102.amazon.com; envelope-from=prvs=061ca9da5=farbere@amazon.com; receiver=lists.ozlabs.org)
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3FVc42zxz30WW
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 22:22:32 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B45bkis002005;
-	Wed, 4 Dec 2024 11:21:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=8TXxPCu7CbB/wPbZa
-	hVtAWP9y7IfzK6UIQ0ThrYc1FU=; b=ei10aPZ0W0EFNt4f5FDC7rDqcNZXS9d28
-	LN+C3t6zjjtLQyEX+OnungMDRQCgdgDyejRGtRx57LK06HsLk0sAI4A4XRk49Op5
-	op67h3mE1r1lxePPagj/i4p6OmthsWwawJVGkzl6vwUZTr7eIuAVRDBpdy6kMKOO
-	oy1oxVjHR8IYwLQEhDN/x2WLjgh3MDetZYiqUVPncqjlBD0Kf3hkg51hu2qwsSQj
-	+WxQaeAlAPAE2V7u/l+y3UWxGbTsnUcU34eeW9xovJmny6XuQFN+BVwAVTgVm4OH
-	P0MGXWRBhtjT/76pYV1J6JLG4HDP2Fhiee2vo6zqC9EdZYCbr3Fsg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 437r4pqba4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Dec 2024 11:21:58 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B4BLvqT025901;
-	Wed, 4 Dec 2024 11:21:57 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 437r4pqba2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Dec 2024 11:21:57 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B47PMD1005218;
-	Wed, 4 Dec 2024 11:21:56 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43a2kxk981-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Dec 2024 11:21:56 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B4BLqqN33751558
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Dec 2024 11:21:53 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D0B9620040;
-	Wed,  4 Dec 2024 11:21:52 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 222D320043;
-	Wed,  4 Dec 2024 11:21:52 +0000 (GMT)
-Received: from IBM-PW0CRK36.ibm.com (unknown [9.171.34.7])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  4 Dec 2024 11:21:52 +0000 (GMT)
-From: Tobias Huschle <huschle@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-        vschneid@redhat.com, linux-s390@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, sshegde@linux.ibm.com
-Subject: [RFC PATCH 2/2] s390/topology: Add initial implementation for selection of parked CPUs
-Date: Wed,  4 Dec 2024 12:21:49 +0100
-Message-Id: <20241204112149.25872-3-huschle@linux.ibm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241204112149.25872-1-huschle@linux.ibm.com>
-References: <20241204112149.25872-1-huschle@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3Fw04rKDz30RS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 22:41:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1733312466; x=1764848466;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=L3N4xnB4hpUkX70oEIl5ay7oOHjK5rWVH5VO26SBMRE=;
+  b=UO/tm47s00ne6mK89oZltuzCB5p6jjyEPHhHVvRgfuI29sftogbwKg3G
+   wpwlV6UvfJS3JsKr4zxAlg65kThmr5azehCDfE/XmDTY5q97IBfSbrnp5
+   QHlOpAMN7tk78+aXQG07OXu8AUgBJ9gqxWMx6a+mFKKYYOySROpk/yt59
+   4=;
+X-IronPort-AV: E=Sophos;i="6.12,207,1728950400"; 
+   d="scan'208";a="475378494"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 11:40:58 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [10.0.17.79:59262]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.10.207:2525] with esmtp (Farcaster)
+ id 52e49eb4-420c-4db9-a56f-779f9c594c75; Wed, 4 Dec 2024 11:40:55 +0000 (UTC)
+X-Farcaster-Flow-ID: 52e49eb4-420c-4db9-a56f-779f9c594c75
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Wed, 4 Dec 2024 11:40:55 +0000
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 4 Dec 2024 11:40:55 +0000
+Received: from EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d]) by
+ EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d%3]) with mapi id
+ 15.02.1258.034; Wed, 4 Dec 2024 11:40:55 +0000
+From: "Farber, Eliav" <farbere@amazon.com>
+To: Jiri Slaby <jirislaby@kernel.org>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>, "mpe@ellerman.id.au"
+	<mpe@ellerman.id.au>, "npiggin@gmail.com" <npiggin@gmail.com>,
+	"christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+	"naveen@kernel.org" <naveen@kernel.org>, "maddy@linux.ibm.com"
+	<maddy@linux.ibm.com>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "aou@eecs.berkeley.edu"
+	<aou@eecs.berkeley.edu>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "bhe@redhat.com"
+	<bhe@redhat.com>, "hbathini@linux.ibm.com" <hbathini@linux.ibm.com>,
+	"sourabhjain@linux.ibm.com" <sourabhjain@linux.ibm.com>,
+	"adityag@linux.ibm.com" <adityag@linux.ibm.com>, "songshuaishuai@tinylab.org"
+	<songshuaishuai@tinylab.org>, "takakura@valinux.co.jp"
+	<takakura@valinux.co.jp>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org"
+	<linux-riscv@lists.infradead.org>
+CC: "Chocron, Jonathan" <jonnyc@amazon.com>
+Subject: RE: [PATCH v5 1/2] kexec: Consolidate machine_kexec_mask_interrupts()
+ implementation
+Thread-Topic: [PATCH v5 1/2] kexec: Consolidate
+ machine_kexec_mask_interrupts() implementation
+Thread-Index: AdtGQRkhPCy0bAvuc0C5GQef/95iog==
+Date: Wed, 4 Dec 2024 11:40:55 +0000
+Message-ID: <4192766c8f02494a82db68f5732c6dd2@amazon.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.85.143.173]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,70 +102,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ai3BELS_AXObsiID58AEPu0QlJwGpV0y
-X-Proofpoint-ORIG-GUID: keLr_KqCpiQ-luBGJMQ9oUvmxrqS6eqe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 clxscore=1011 phishscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 bulkscore=0 mlxlogscore=929 adultscore=0
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2412040086
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-10.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-In this simplified example, vertical low CPUs are parked generally. 
-This will later be adjusted by making the parked state dependent 
-on the overall utilization on the underlying hypervisor.
-
-Vertical lows are always bound to the highest CPU IDs. This implies that
-the three types of vertically polarized CPUs are always clustered by ID.
-This has the following implications:
-- There can be scheduler domains consisting of only vertical highs
-- There can be scheduler domains consisting of only vertical lows
-
-Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
----
- arch/s390/include/asm/topology.h | 3 +++
- arch/s390/kernel/topology.c      | 5 +++++
- 2 files changed, 8 insertions(+)
-
-diff --git a/arch/s390/include/asm/topology.h b/arch/s390/include/asm/topology.h
-index cef06bffad80..e86afeccde35 100644
---- a/arch/s390/include/asm/topology.h
-+++ b/arch/s390/include/asm/topology.h
-@@ -99,6 +99,9 @@ static inline int numa_node_id(void)
- 
- #endif /* CONFIG_NUMA */
- 
-+#define arch_cpu_parked cpu_parked
-+int cpu_parked(int cpu);
-+
- #include <asm-generic/topology.h>
- 
- #endif /* _ASM_S390_TOPOLOGY_H */
-diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
-index 4f9c301a705b..1032b65da574 100644
---- a/arch/s390/kernel/topology.c
-+++ b/arch/s390/kernel/topology.c
-@@ -299,6 +299,11 @@ void store_topology(struct sysinfo_15_1_x *info)
- 	stsi(info, 15, 1, topology_mnest_limit());
- }
- 
-+int cpu_parked(int cpu)
-+{
-+	return smp_cpu_get_polarization(cpu) == POLARIZATION_VL;
-+}
-+
- static void __arch_update_dedicated_flag(void *arg)
- {
- 	if (topology_cpu_dedicated(smp_processor_id()))
--- 
-2.34.1
-
+T24gMTIvNC8yMDI0IDE6MDIgUE0sIEppcmkgU2xhYnkgd3JvdGU6DQo+PiArDQo+PiArY29uZmln
+IEdFTkVSSUNfSVJRX0tFWEVDX0NMRUFSX1ZNX0ZPUldBUkQNCj4+ICsgICAgIGJvb2wgIkNsZWFy
+IGZvcndhcmRlZCBWTSBpbnRlcnJ1cHRzIGR1cmluZyBrZXhlYyINCj4+ICsgICAgIGRlZmF1bHQg
+bg0KPj4gKyAgICAgaGVscA0KPj4gKyAgICAgICBXaGVuIGVuYWJsZWQsIHRoaXMgb3B0aW9uIGFs
+bG93cyB0aGUga2VybmVsIHRvIGNsZWFyIHRoZSBhY3RpdmUgc3RhdGUNCj4+ICsgICAgICAgb2Yg
+aW50ZXJydXB0cyB0aGF0IGFyZSBmb3J3YXJkZWQgdG8gdmlydHVhbCBtYWNoaW5lcyAoVk1zKSBk
+dXJpbmcgYQ0KPj4gKyAgICAgICBtYWNoaW5lIGtleGVjLiBGb3IgaW50ZXJydXB0cyB0aGF0IGFy
+ZSBub3QgZm9yd2FyZGVkLCBpZiBzdXBwb3J0ZWQsDQo+PiArICAgICAgIHRoZSBrZXJuZWwgd2ls
+bCBhdHRlbXB0IHRvIHRyaWdnZXIgYW4gRW5kIG9mIEludGVycnVwdCAoRU9JKS4NCj4NCj4gVGhp
+cyBjYXVnaHQgbXkgYXR0ZW50aW9uLiBJdCBsb29rcyBsaWtlIHlvdSB3YW50IHRvIGFsbG93IHBl
+b3BsZSB0b2dnbGluZyBpdD8gSSBiZWxpZXZlIG9ubHkgYXJjaCBjb2RlIHNob3VsZCB0dXJuIGl0
+IG9uIGFzIHlvdSBkbyBieSAic2VsZWN0Iiwgbm90IHVzZXJzLg0KDQpUaG9tYXMgR2xlaXhuZXIg
+aGFzIGFsc28gY29tbWVudGVkIGFib3V0IGl0Og0KIg0KVGhpcyBzaG91bGQgbm90IGJlIHVzZXIg
+c2VsZWN0YWJsZS4gSnVzdCBrZWVwIGl0IGFzOg0KDQpjb25maWcgR0VORVJJQ19JUlFfS0VYRUNf
+Q0xFQVJfVk1fRk9SV0FSRA0KICAgICAgICBib29sDQoNCndoaWNoIGRlZmF1bHRzIHRvICduJy4g
+SnVzdCBhZGQgYSBjb21tZW50IHdoYXQgdGhpcyBpcyBhYm91dCBsaWtlIGl0J3MgZG9uZSB3aXRo
+IHRoZSBvdGhlciBvcHRpb25zIGluIHRoYXQgZmlsZSB3aGljaCBhcmUgb25seSBzZWxlY3RhYmxl
+Lg0KIg0KDQpJIHdpbGwgZml4IGl0IGluIHY2Lg0KSSdtIGp1c3Qgd2FpdGluZyBmb3IgYSByZXBs
+eSBpZiB0aGUgbmV3IGNvbmZpZ3VyYXRpb24gb3B0aW9uIHNob3VsZCBiZQ0KcGxhY2VkIGluc2lk
+ZSBvciBhZnRlciB0aGUgZm9sbG93aW5nIHNlY3Rpb246DQpgYGANCm1lbnUgIklSUSBzdWJzeXN0
+ZW0iDQoNCmVuZG1lbnUNCmBgYA0KDQpUaGFua3MsIEVsaWF2DQo=
 
