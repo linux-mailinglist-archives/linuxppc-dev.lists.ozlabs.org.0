@@ -1,110 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-3784-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3785-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73579E3721
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 11:04:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A5B9E382C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 12:03:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3Cmj413Pz30Vy;
-	Wed,  4 Dec 2024 21:04:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3F4D5ybDz30Vm;
+	Wed,  4 Dec 2024 22:03:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733306677;
-	cv=none; b=KxhIYkWbwnQw6zMPTXniTfYn6RESqaE442HpbBcRtgS40qo0od7CWc3brTCK5z1OCFnPJVA1c4yxQ9IDmhtURIh7UoLzK8VQhISHQFA/2yKYfzdHkXzW3LxEXEh2kk8CVr55r4qCi4RfK95U/QEmR5NJz+K3oJ56wBlJ2yV9AF1eBsYR5XALRIL3jxF4Uo+jvKM7a8Kz1KpONiA+SXsLa/f1nEtGMnSgkbi7gxtWZZC5hmyxQwwY3qM6nyPdFTIBHcxh9qwIXrNr2a78lUj+6QaZVNTYm6MZnkqR3NQaHyMoSMVfbQITh4Ic2rO66VuCbja5tV/03fPoM7HBcyZb9Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733310188;
+	cv=none; b=AZyVyClUBvrZR4M0t81qQiCY1A6+jAUjYg7MVVCykZIxeD4JLH5VJeFuAiouIYh2bXxpcQcBcNBK0C6E4qBn9CQ35tFetWw1/GBf5MnFRoPFAO0HrZzdyumeVQ4lBV7ItSsbvv+UinVGXQFpnNkCvtSo2d9Ojnb4CX1U+L1Rukx4P6w8CsHviDNVJZdGO3yi06TSZe8vD+P1CGo3ZfLT5+9Z/N340wgXB4mABRijowu8iL8sApLxMr5QUWq25wCGtrG0b57pj9U2Q/EuuDyTi6588i137g6ZVrhyGyRnhz5A+O+ke3WDwV89Ou35ZFBD1BTcHdQFMY4B1zN/4Lj5Vg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733306677; c=relaxed/relaxed;
-	bh=Xy7OLEHT9rPxg4WvTixZV3fgQXGtfE/zFSKuC+qdFso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aIew/NvEQK7bT6A2289NKrNLZ/vt/n3kO9JOWJ7eLtsDueXDxy4pBjL+x8d/TeGTi+PuJ6JV0t1O/hO+VblKyBgzVpjaF3hP4Wd3ZoFm+BNR1rB0lO0VaSUpJwKJSneufGxM48wjVKtLe2USnu4lmSYGGM7qKdUs9es0M71aX2TmS09HSyySFqgR25Ozz9r+Buhik0USGM4M9f38Um17odD3kR8cNQ64wqD4NxevA+IeQN7rtboLGEFZwiwDYTvbzzKXNqmusJBV+umSx0HDX5lcT0MvEn6Qo+ERqz9h9VYl04wSfsSGx/we8YRiq4Gi3OSfDF3LaFrulOKZ3ZmJIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AUbPhStJ; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dkyMDhkV; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AUbPhStJ; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dkyMDhkV; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	t=1733310188; c=relaxed/relaxed;
+	bh=XrOmyGbo6peEvA/t3cBYlUIganUoIJapy+zrKdaxlBc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OZXYt7xYzmMpT6rAuRkeHTECzWF3DKNRy4NLKvyySHsLmdGH7cZA1nGxE+Y08R7FwKD67GCmumg8gLE0qlCz05KgPqG8KVfhc1X6b4hwrA5fgoegHV51P2WcPQ8V1I8dmio6eaG4wAn7VzWcj80q3+UO0N2rdAzQwzN7DZ5keWqvo6gVAPvbYSCvsFMgChBHp3Fdl+F0dFjALhQgrEMDr6hw74IcY0iqxLoBg7I0oxCN3Q1jKOmowvuZC+40uCAzOnVFxeywjDUXJL+kWm2fJSOfMySCq5ZEsAoktaT2DVeEnBMYl9jHsSC5O0YL1qS2wn75JoX+Il/SFsyoU7pQpw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uVflS47f; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AUbPhStJ;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dkyMDhkV;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AUbPhStJ;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=dkyMDhkV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uVflS47f;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=osalvador@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3Cmg1YtWz30Vb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 21:04:34 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C1E402115E;
-	Wed,  4 Dec 2024 10:04:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1733306670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xy7OLEHT9rPxg4WvTixZV3fgQXGtfE/zFSKuC+qdFso=;
-	b=AUbPhStJ9yLoo6V50DDcNOU42gZHOU/H3vOQfmxAS7nnzu3mUSgDU/5wbUoWW2ncTaNGpD
-	BbGdUg0waSbq+6zkHZ/ATIAUXIX7VCyiLnFz1o8url87wKJoiBaXhDJ8M1XRemRPlMPCbj
-	HGWj4jgvFngkJBE8qYMVi50PgwUkvFc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1733306670;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xy7OLEHT9rPxg4WvTixZV3fgQXGtfE/zFSKuC+qdFso=;
-	b=dkyMDhkVk9mDPsH6MkoIidfsFFWuhjQdK3ZtCKOSv3p4X1FupD0yvwe+1mxVzqnkchxQfY
-	TWUOPOj1YIi5flAQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1733306670; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xy7OLEHT9rPxg4WvTixZV3fgQXGtfE/zFSKuC+qdFso=;
-	b=AUbPhStJ9yLoo6V50DDcNOU42gZHOU/H3vOQfmxAS7nnzu3mUSgDU/5wbUoWW2ncTaNGpD
-	BbGdUg0waSbq+6zkHZ/ATIAUXIX7VCyiLnFz1o8url87wKJoiBaXhDJ8M1XRemRPlMPCbj
-	HGWj4jgvFngkJBE8qYMVi50PgwUkvFc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1733306670;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xy7OLEHT9rPxg4WvTixZV3fgQXGtfE/zFSKuC+qdFso=;
-	b=dkyMDhkVk9mDPsH6MkoIidfsFFWuhjQdK3ZtCKOSv3p4X1FupD0yvwe+1mxVzqnkchxQfY
-	TWUOPOj1YIi5flAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 20F8C1396E;
-	Wed,  4 Dec 2024 10:04:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id toxJBS4pUGfEdwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 04 Dec 2024 10:04:30 +0000
-Date: Wed, 4 Dec 2024 11:04:24 +0100
-From: Oscar Salvador <osalvador@suse.de>
-To: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: Re: [PATCH RESEND v2 4/6] mm/page_alloc: sort out the
- alloc_contig_range() gfp flags mess
-Message-ID: <Z1ApKEC-_OPPreun@localhost.localdomain>
-References: <20241203094732.200195-1-david@redhat.com>
- <20241203094732.200195-5-david@redhat.com>
- <feffbbe8-4176-48e8-b503-ef53d7914197@suse.cz>
- <96c92857-4850-4f85-9474-ac193c5ea48c@redhat.com>
- <04c1d28e-bbea-4499-9a6d-770f9ca53ba9@suse.cz>
- <d736f1c0-343e-4031-88ba-3b33b73dbeba@redhat.com>
- <Z1AaC5Hj2RV_5FDD@localhost.localdomain>
- <15096b27-6f27-45fc-8a8b-de781a9c42a5@suse.cz>
- <Z1AdotZfAJG-zVZX@localhost.localdomain>
- <cee06baa-8561-4be3-8f5c-ca453f58950b@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3F4B6ksCz30Mn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 22:03:06 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 2DB2EA40FE4;
+	Wed,  4 Dec 2024 11:01:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F400C4CED1;
+	Wed,  4 Dec 2024 11:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733310183;
+	bh=4cnHEcDYmozcESk7GBd1uaYiN1+jgyE+pJZbxMRSqoY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uVflS47f7S5u5l2lGTkW3sUJYXDuDS1Il0/qqXZD6tbSxxgIzmPUQbR1Y7DuOHYHt
+	 tMyH75aTVWV573tKmjqfr6HXYQk0YRz070eW2ciMXuni5aDBfbq37z86BbgyVon+Fj
+	 dxoSq2Oidt4poPbcA8GEagaJx81+o4gT0acXOswjFPmpWfol8SW2n6dpe2LeJZDIMZ
+	 JMWWjDoQ4HPeEM/iG7f6+efdiINvphNIl/urIBGvaTj9nSbPcOcn4n3/96R2g8cHPQ
+	 rgdtzOw7ADIy0LgJsnNgsaGV0IC0ZLuwCOnL4HLXAg03AY7kxrd1NQMrDtMRy3UB5W
+	 SfxDJodTVjZVw==
+Message-ID: <96cdb630-5c9e-4364-93fc-67f9ee34a403@kernel.org>
+Date: Wed, 4 Dec 2024 12:02:56 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -117,82 +57,109 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cee06baa-8561-4be3-8f5c-ca453f58950b@redhat.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.cz,vger.kernel.org,kvack.org,lists.ozlabs.org,linux-foundation.org,nvidia.com,ellerman.id.au,gmail.com,csgroup.eu,kernel.org,linux.ibm.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/2] kexec: Consolidate machine_kexec_mask_interrupts()
+ implementation
+To: Eliav Farber <farbere@amazon.com>, linux@armlinux.org.uk,
+ catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
+ maddy@linux.ibm.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, tglx@linutronix.de, akpm@linux-foundation.org,
+ bhe@redhat.com, hbathini@linux.ibm.com, sourabhjain@linux.ibm.com,
+ adityag@linux.ibm.com, songshuaishuai@tinylab.org, takakura@valinux.co.jp,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org
+Cc: jonnyc@amazon.com
+References: <20241130201143.48808-1-farbere@amazon.com>
+ <20241130201143.48808-2-farbere@amazon.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20241130201143.48808-2-farbere@amazon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Dec 04, 2024 at 10:28:39AM +0100, David Hildenbrand wrote:
-> On 04.12.24 10:15, Oscar Salvador wrote:
-> > On Wed, Dec 04, 2024 at 10:03:28AM +0100, Vlastimil Babka wrote:
-> > > On 12/4/24 09:59, Oscar Salvador wrote:
-> > > > On Tue, Dec 03, 2024 at 08:19:02PM +0100, David Hildenbrand wrote:
-> > > > > It was always set using "GFP_USER | __GFP_MOVABLE | __GFP_RETRY_MAYFAIL",
-> > > > > and I removed the same flag combination in #2 from memory offline code, and
-> > > > > we do have the exact same thing in do_migrate_range() in
-> > > > > mm/memory_hotplug.c.
-> > > > > 
-> > > > > We should investigate if__GFP_HARDWALL is the right thing to use here, and
-> > > > > if we can get rid of that by switching to GFP_KERNEL in all these places.
-> > > > 
-> > > > Why would not we want __GFP_HARDWALL set?
-> > > > Without it, we could potentially migrate the page to a node which is not
-> > > > part of the cpuset of the task that originally allocated it, thus violating the
-> > > > policy? Is not that a problem?
-> > > 
-> > > The task doing the alloc_contig_range() will likely not be the same task as
-> > > the one that originally allocated the page, so its policy would be
-> > > different, no? So even with __GFP_HARDWALL we might be already migrating
-> > > outside the original tasks's constraint? Am I missing something?
-> > 
-> > Yes, that is right, I thought we derive the policy from the old page
-> > somehow when migrating it, but reading the code does not seem to be the
-> > case.
-> > 
-> > Looking at prepare_alloc_pages(), if !ac->nodemask, which would be the
-> > case here, we would get the policy from the current task
-> > (alloc_contig_range()) when cpusets are enabled.
-> > 
-> > So yes, I am a bit puzzled why __GFP_HARDWALL was chosen in the first
-> > place.
+On 30. 11. 24, 21:11, Eliav Farber wrote:
+> Consolidate the machine_kexec_mask_interrupts implementation into a common
+> function located in a new file: kernel/irq/kexec.c. This removes duplicate
+> implementations from architecture-specific files in arch/arm, arch/arm64,
+> arch/powerpc, and arch/riscv, reducing code duplication and improving
+> maintainability.
 > 
-> I suspect because "GFP_USER" felt like the appropriate thing to do.
+> The new implementation retains architecture-specific behavior for
+> CONFIG_GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD, which was previously implemented
+> for ARM64. When enabled (currently for ARM64), it clears the active state
+> of interrupts forwarded to virtual machines (VMs) before handling other
+> interrupt masking operations.
+...
+> --- a/kernel/irq/Kconfig
+> +++ b/kernel/irq/Kconfig
+> @@ -154,3 +154,12 @@ config DEPRECATED_IRQ_CPU_ONOFFLINE
+>   	bool
+>   	depends on CAVIUM_OCTEON_SOC
+>   	default CAVIUM_OCTEON_SOC
+> +
+> +config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
+> +	bool "Clear forwarded VM interrupts during kexec"
+> +	default n
+> +	help
+> +	  When enabled, this option allows the kernel to clear the active state
+> +	  of interrupts that are forwarded to virtual machines (VMs) during a
+> +	  machine kexec. For interrupts that are not forwarded, if supported,
+> +	  the kernel will attempt to trigger an End of Interrupt (EOI).
 
-Looking back at when the whole contiguous allocator patchset was posted,
-it seems that it kinda copied what memory-offline code was doing, which
-was migrating pages with GFP_HIGHUSER_MOVABLE (hotremove_migrate_alloc()).
+This caught my attention. It looks like you want to allow people 
+toggling it? I believe only arch code should turn it on as you do by 
+"select", not users.
 
-Then, the HIGHMEM modifier was dropped due to HIGHMEM restrictions on
-some systems, ending up with GFP_USER.
-
-
+thanks,
 -- 
-Oscar Salvador
-SUSE Labs
+js
+suse labs
+
 
