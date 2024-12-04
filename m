@@ -1,81 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-3791-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3792-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8939E3C28
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 15:07:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 447D39E3C73
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 15:16:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3K8c4xfKz30Sy;
-	Thu,  5 Dec 2024 01:07:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3KMW0mJpz30Tk;
+	Thu,  5 Dec 2024 01:16:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733321232;
-	cv=none; b=kO2ANOhzBhCikX+HIRcYMfmOuFGukCGKGIb8EHGonXqOOMA6Ag1uWXszodKP8NNvVy4Qum1SpU4AHqJaJdS3VeY4MJZI9OhtFt/nuXhEjVu2b6AXxNFCwQ99gQ0zgVIIp6tfjsCT4luHVBd28UVsBlomx29vFVEb+f/SacT+aRPR2CTJMhaeDtyGVFTk18/tTk11atJGUPipzIpKGkv2irMXydy80XRqNREzIny/uYvgSiz9Ur2srf1OJqYv+p9JjHjeUHRaOXWuOuSc3B85vkn/JuA/ZLGkhSM2cHWRmsx3RLboauTBZaALsZCT7b7F+p5dM1/tVBFvjsHI1eTYfg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733321799;
+	cv=none; b=ob1eaLSLUx6qCp7ul5BM/Q8bSgWjH2X+U3yCxqoAkH7fnD0HRNnq8Ydk7xAZMxTRIBdZg2/tEsCgcOm/OgtYW/UKk1fBzyD5jEruSkCaiPuYvpiEhMquTvx18Ajrzlr01UBqpwewZHTwpDiJ9ARWCUNckwKAuPQ6YyUmyXoM40/uQYzwrWMkVcK+nQJMKMx/WT3zFgOtKIH7Su29MbMOXjgl3kXYxmMThU6PXCdC9m+WkJrm0Qk3WHUXhF0ydeKy/leFegmyYjB6QaEBf6CIke8hbAB3pswJRp9tdDepT+DpSnVvqnc7coBEqXZtjX5qAn8Y94ZgNWzo0gsBJrBX/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733321232; c=relaxed/relaxed;
-	bh=kWkk/8ptO3jP5MaPTjOlYG2ItxP4k7nMjgwEij57qUY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Lhb8h0FL2CE7QJ7feJg6UYGRgP7qoTOIrI8qzH09ePzMdASXCz/YueLSJvqt8BHtsa0QnngHuOILY/tE9dDrhtXUhbHa1KUpqsCC0JnYv2HJLimyGNq14lliYbhgeYL9pshuUHoazfN5y3+0sWwXeQAMKstxqznvWgekt3y0sMVVZ8UT4z4+4ImjLKMzHcbRZTrijguriwJCn+Ww55Rm81znnjaR/5sG9fNCWp39z1ds7oryUbC2b5jLqrOF6NOtjQ/6+nMQyFNhsqBI11rVqdOIycLBNeTKF4mD1d9moOxe4e79dcvv+r7/dFX5Anmb/WPnZ8WK0BQZtee4Z7BntQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=i59dpYrB; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=rFgraBJi; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=i59dpYrB;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=rFgraBJi;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3K8Z6Ndhz30Sx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 01:07:10 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733321225;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kWkk/8ptO3jP5MaPTjOlYG2ItxP4k7nMjgwEij57qUY=;
-	b=i59dpYrBRlLQ057IQD+T4m5M7lpO59XtNnXcllxm0azECg+mQR7gjCtSFJUzmntL7SJmZC
-	4zukglpfsCdmJGwx5Z+hqXxpE3cxg0WvdntaBx0ncQH5XXKwOiKOfpUz4wp6dwnEcuyFZ/
-	pMMZJjgzG12cBsHnukPaIOXcIcDUu692AOXGorBHtUdVj7L+d1KGhHi22yNm3CGcKUrCB0
-	gkwU+sLNF1XOqir7XWdgvQDjoXoGQIRVeFN7Fc2/mjoYWQb1llLLCrCFwAlesHqPT4owFy
-	K3ncjHzcFU6flsXJdmO1JgyzOgRl7iqLmMLdlbOb2k3kKRWzpQxuvnYrsx7w/Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733321225;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kWkk/8ptO3jP5MaPTjOlYG2ItxP4k7nMjgwEij57qUY=;
-	b=rFgraBJi5MaUfQcP6GbqNvYKx9OUvIAKMYmsXvtKehJIbs0vaEMLh1hGlf9zsExS+qw3zc
-	tvHpj9K2sTYvr1CA==
-To: "Farber, Eliav" <farbere@amazon.com>, Jiri Slaby <jirislaby@kernel.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "catalin.marinas@arm.com"
- <catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>, "npiggin@gmail.com"
- <npiggin@gmail.com>, "christophe.leroy@csgroup.eu"
- <christophe.leroy@csgroup.eu>, "naveen@kernel.org" <naveen@kernel.org>,
- "maddy@linux.ibm.com" <maddy@linux.ibm.com>, "paul.walmsley@sifive.com"
- <paul.walmsley@sifive.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
- "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "bhe@redhat.com"
- <bhe@redhat.com>, "hbathini@linux.ibm.com" <hbathini@linux.ibm.com>,
- "sourabhjain@linux.ibm.com" <sourabhjain@linux.ibm.com>,
- "adityag@linux.ibm.com" <adityag@linux.ibm.com>,
- "songshuaishuai@tinylab.org" <songshuaishuai@tinylab.org>,
- "takakura@valinux.co.jp" <takakura@valinux.co.jp>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org"
- <linux-riscv@lists.infradead.org>
-Cc: "Chocron, Jonathan" <jonnyc@amazon.com>
-Subject: RE: [PATCH v5 1/2] kexec: Consolidate
- machine_kexec_mask_interrupts() implementation
-In-Reply-To: <4192766c8f02494a82db68f5732c6dd2@amazon.com>
-References: <4192766c8f02494a82db68f5732c6dd2@amazon.com>
-Date: Wed, 04 Dec 2024 15:07:04 +0100
-Message-ID: <875xnzsfsn.ffs@tglx>
+	t=1733321799; c=relaxed/relaxed;
+	bh=iL4udhcYZijGOVW6eAYFdZXq8IZC3X/ZLuXpcLqVsEM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AUQsrYuAKFDpgJQziV0PdoBWyyCIdaYqJiA3HqVzCC9NDdr5R2Z3NT+UoJBgoQa19emYBX8gnNczsee4qDL+zO/rLpc73nJIR9IJ6yzFX5rdqSV/bE0a6cuuEIlxwH+iAQnki6asQmcP5FFllQmg55WX5w/alq7A4FX4Q4D1hsqD0Vk9KJU8kbwvEDTgkKL+m3t50LzYakJqH62q6QTp7STDpk5fjExYzxLZtAqeRAth1af/36y+ztuipUD0Ia5sLy0VUxGp95A4nPyZZtTkEicCgdPQ9X/dEi3MqH9VX8hZB+2qKNyMoqh/q/yFnoIW1FzIjIzfV74ApOkrAI+4Uw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3KMT2DQ1z30Sx
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 01:16:36 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 4B4E9ZrU015093;
+	Wed, 4 Dec 2024 08:09:35 -0600
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 4B4E9YNa015085;
+	Wed, 4 Dec 2024 08:09:34 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Wed, 4 Dec 2024 08:09:33 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>,
+        Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v4 2/4] objtool/powerpc: Add support for decoding all types of uncond branches
+Message-ID: <20241204140933.GV29862@gate.crashing.org>
+References: <cover.1733245362.git.christophe.leroy@csgroup.eu> <0ca71a4b0ac679ea52bd9fdd1f607195d72b499f.1733245362.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,16 +58,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ca71a4b0ac679ea52bd9fdd1f607195d72b499f.1733245362.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
+X-Spam-Status: No, score=-0.0 required=5.0 tests=SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Dec 04 2024 at 11:40, Eliav Farber wrote:
-> I'm just waiting for a reply if the new configuration option should be
-> placed inside or after the following section:
+On Tue, Dec 03, 2024 at 08:44:50PM +0100, Christophe Leroy wrote:
+> Add support for 'bla' instruction.
+> 
+> This is done by 'flagging' the address as an absolute address so that
+> arch_jump_destination() can calculate it as expected. Because code is
+> _always_ 4 bytes aligned, use bit 30 as flag.
 
-I think you got one yesterday :)
+The AA field already is there, so why not, eh :-)
+
+> Also add support for 'b' and 'ba' instructions. Objtool call them jumps.
+
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+Reviewed-by: Segher Boessenkool <segher@kewrnel.crashing.org>
+
+> --- a/tools/objtool/arch/powerpc/decode.c
+> +++ b/tools/objtool/arch/powerpc/decode.c
+> @@ -55,12 +55,15 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
+>  
+>  	switch (opcode) {
+>  	case 18: /* b[l][a] */
+> -		if ((ins & 3) == 1) /* bl */
+> +		if (ins & 1)	/* bl[a] */
+>  			typ = INSN_CALL;
+> +		else		/* b[a] */
+> +			typ = INSN_JUMP_UNCONDITIONAL;
+>  
+>  		imm = ins & 0x3fffffc;
+>  		if (imm & 0x2000000)
+>  			imm -= 0x4000000;
+> +		imm |= ins & 2;	/* AA flag */
+
+You could of course put that together with the 3fffffc thing, but you
+can leave that to the compiler as well :-)
+
+
+Segher
 
