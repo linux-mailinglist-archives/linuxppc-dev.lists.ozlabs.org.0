@@ -1,86 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-3799-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3800-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A789E4550
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 21:10:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C39B89E48EC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2024 00:28:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3TCF5t9kz301f;
-	Thu,  5 Dec 2024 07:10:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3YcJ13n6z30MM;
+	Thu,  5 Dec 2024 10:28:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733343001;
-	cv=none; b=J0JNm+qrDmVhSz3bRoQuE0tSvU0kPqywrs2a8T94RBj+NK2rn0CFXbRptZgUGMThcV8dwXld2i6LcdBppLkKKjrV+jgbA0OM5kE/5Iffs9UOQYeCiyvfB9GzTfawe5kFq7WHt9Ez30gTsGCWTh8NG7pRp0EY3n1n3re2w54t8evieAoy6imd9WskFjr8zgkeWdmxnXeYAqi7tsLNBm6SniePzwYpLpqRGuOsy3dfbjy75LkuVsLOkQZBUOPQ9AVWAYg8WnFo1yC+9Vn9WTsEc/o6xg6S/BGGr/IPUaaKaMgf1hgYhjRILrTFbamb2mzL0vMgVawgdJnBSq0CvS0gqQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733354912;
+	cv=none; b=lyoHFAK/xg9LpLe7CfMupZMrcgYysyRCHP25QRlIegPTmYSI0c6z4wfQVVcEyMpuYRkWwOE8fNrFdOAhw9IIGRAEaVltEhSm5UPABVxFvbPOtdoWcLCsXFqFhiqjtb/NH8p+Ej1n2gqHSkMpfSXpPGaFt5dQX8BS0gKEVqZDeXNl30iX8DMUuzChL1vVMvDZeUm5/rtuu75oaWh6BOw99GEA+E8lp86TvUbcAAxVlJgCoXv2uyccMk5//LHwSMAFhiUl63lDYQZaf9o4otAzWzlT1V9vHgq87DqnFJhJGKKtEIcKw6/f6eTD9vYAv846t9gBx1h7WsJdFqiYidCjKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733343001; c=relaxed/relaxed;
-	bh=/BwhslMYfbu9I4MdcABml5bIAoKPsGSafjmMg0Yp/eM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oDQWIhPMh3Sr05YwQxUkdoGW4204mMGPZjV57Jjr65mQOI2J9CcZmN1kOIbk0Z8OvoIB9x4nwvd4+UMb7/RCwtfdwRzQwsTyuIf5AzJgxKb4G2JZcFJBaMvTH2ecgYg+o1aF2UxAbcjkw8Acc9pA0pDpE0vcY2mxuwgA1kHvL2kFGfuHqX09HChNBe058/9+h8JZkA8RFag9DmfhwNELxAJeVHLHz6s7eby2JtDtSOFDMuOZfhx1kcECdbDcg4W8guMRHHwdQ1wp3nCwkZhSOzRTPaCjw0vrvVR/nfSygOF9mEV2pk1yRmKLgElRK60eKBiIhpFx1BjsIldX5rtcyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ECzdEU7m; dkim-atps=neutral; spf=pass (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1733354912; c=relaxed/relaxed;
+	bh=B2cUv/R58wCyu6833Nzz/d87AzeDZXrkCby2/9oTJyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eHnTgm/18uvSXM06av4P/cs3EW88hCIBTTvc5ZzM0ZrOuN9HOl7K0jgk+W4/MtdrWV2+mp6JT7xiGxZp1MZ+bLwd8Uo9K3rYt/kOu0ntr3RX8AxsDeRRTFiv8g8XZSzmrF13j9g4J2NfR9FS3WvHfXowXmLb43iDfFUh9DvROpfuX0MXKkdONkT5k7hmaUcIaKE3ZrVg/2BkUjQ0x31H46I+pvgDbC2NGNUAErf9p5objasQmuTsD6N/CN+E23hvuXyrk3TuZEhDEvoWp5rhKWD0R4+3ekKLm67QqN5HfwFbT5QS/mDpkpCGbnbeucaLEWfDheRMPHceemqAsyc3Pg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AhA8Ff3Q; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ECzdEU7m;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AhA8Ff3Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3TCC1TjMz2xnK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 07:09:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733342999; x=1764878999;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yF6HQtLwTtRXYBnNwEC0Rc8WBNM/f0oVnV8EAkCZNuc=;
-  b=ECzdEU7m1t1B6Ttrqsl2Dc/rRcXuDa2x+tS61FKa7MJ7eAdq1KCVIlEQ
-   ip2xd/mVZvIuKFYSmuszLagXiYninaELTsPHmQeuDJRlx5gttpSd4dZ6J
-   Q9rm4pdzQQaUi23nKKSnZLm3wr1NQ+O/2YGpRmgygB8nREAMoz7oMnAL1
-   /XFlYVTqFMduTThLGVOOpoCm2Bw2Ntpvs/4gRiawMpkymU+UUNAtKoZ2F
-   H0vBApnwhNVeCVw6J2v1NUPc0/iNRwmw4C8EGM/wKu14DRGd6Yg9v4jve
-   7XnVZQ2VVmF7M9egvrHyQOduafkNaSwEIU5UeseQTlTgdu8+VAITmpshs
-   w==;
-X-CSE-ConnectionGUID: IWT9/u6SQWKaptrDNDHc6Q==
-X-CSE-MsgGUID: O5KEutv7RhKaOLlpcDNoSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="45007402"
-X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
-   d="scan'208";a="45007402"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 12:09:53 -0800
-X-CSE-ConnectionGUID: hjKRbg0iTvuqQACuITIkjA==
-X-CSE-MsgGUID: pgsX1FHaTcq981ieRnU2wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
-   d="scan'208";a="124686798"
-Received: from lkp-server02.sh.intel.com (HELO 1f5a171d57e2) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 04 Dec 2024 12:09:49 -0800
-Received: from kbuild by 1f5a171d57e2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tIvgw-0003Rr-0U;
-	Wed, 04 Dec 2024 20:09:46 +0000
-Date: Thu, 5 Dec 2024 04:09:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v4 4/4] powerpc/static_call: Implement inline static calls
-Message-ID: <202412050317.rQGggDIb-lkp@intel.com>
-References: <3dbd0b2ba577c942729235d0211d04a406653d81.1733245362.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3YcG2Kdkz309W
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 10:28:30 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id C81BA5C716C;
+	Wed,  4 Dec 2024 23:27:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B224C4CECD;
+	Wed,  4 Dec 2024 23:28:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733354906;
+	bh=x8eRW3pEg73F7xpBjVgbALIemjr5m5Id5xmnK9233ao=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AhA8Ff3Q9A+ZXb3JrNF379WfrgXn3KkJ8ZQsQ7Jsrn3T4vCruOSlGRtVwcjj8rNf+
+	 aJ8GU6a2i0bNgxktwdytdiVw57vGwpMHjUtkdg8+TtAikYbQWiEd/5SPAtQPtWbORh
+	 I7OQHygRVzVtE5B6r9xhx+4obdjyStQPZx4xsRFjcBLUUw1Txaka2VBkjC72zTYC9Q
+	 g22TyWLQ7chCCSFfUnE7y8wHs1mHHEM3fLjT5Sznrr/dzbYYOW2zgL6oC8BkKAYGow
+	 mFpuDz5xFuFcFNwaw+vq823YeyAK14XIFsH1ud8edbluCD8tO8jKKRIar4XcKLOme2
+	 RI8zgd3Luf1Dw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Rob Herring <robh@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	aneesh.kumar@kernel.org,
+	jsavitz@redhat.com,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.12 15/15] powerpc/prom_init: Fixup missing powermac #size-cells
+Date: Wed,  4 Dec 2024 17:16:09 -0500
+Message-ID: <20241204221627.2247598-15-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241204221627.2247598-1-sashal@kernel.org>
+References: <20241204221627.2247598-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,50 +71,111 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3dbd0b2ba577c942729235d0211d04a406653d81.1733245362.git.christophe.leroy@csgroup.eu>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.1
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Christophe,
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-kernel test robot noticed the following build warnings:
+[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes linus/master v6.13-rc1 next-20241204]
-[cannot apply to tip/x86/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On some powermacs `escc` nodes are missing `#size-cells` properties,
+which is deprecated and now triggers a warning at boot since commit
+045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
+handling").
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christophe-Leroy/static_call_inline-Provide-trampoline-address-when-updating-sites/20241204-120612
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/3dbd0b2ba577c942729235d0211d04a406653d81.1733245362.git.christophe.leroy%40csgroup.eu
-patch subject: [PATCH v4 4/4] powerpc/static_call: Implement inline static calls
-config: powerpc-randconfig-r062-20241204 (https://download.01.org/0day-ci/archive/20241205/202412050317.rQGggDIb-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241205/202412050317.rQGggDIb-lkp@intel.com/reproduce)
+For example:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202412050317.rQGggDIb-lkp@intel.com/
+  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
+  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
+  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
+  ...
+  Call Trace:
+    of_bus_n_size_cells+0x98/0x108 (unreliable)
+    of_bus_default_count_cells+0x40/0x60
+    __of_get_address+0xc8/0x21c
+    __of_address_to_resource+0x5c/0x228
+    pmz_init_port+0x5c/0x2ec
+    pmz_probe.isra.0+0x144/0x1e4
+    pmz_console_init+0x10/0x48
+    console_init+0xcc/0x138
+    start_kernel+0x5c4/0x694
 
-All warnings (new ones prefixed by >>):
+As powermacs boot via prom_init it's possible to add the missing
+properties to the device tree during boot, avoiding the warning. Note
+that `escc-legacy` nodes are also missing `#size-cells` properties, but
+they are skipped by the macio driver, so leave them alone.
 
-   In file included from arch/powerpc/platforms/powermac/bootx_init.c:18:
-   In file included from arch/powerpc/include/asm/io.h:24:
-   In file included from include/linux/mm.h:2223:
-   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   1 warning generated.
->> arch/powerpc/platforms/powermac/bootx_init.o: warning: objtool: bootx_init+0x28: unannotated intra-function call
+Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index fbb68fc28ed3a..935568d68196d 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2932,7 +2932,7 @@ static void __init fixup_device_tree_chrp(void)
+ #endif
+ 
+ #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
+-static void __init fixup_device_tree_pmac(void)
++static void __init fixup_device_tree_pmac64(void)
+ {
+ 	phandle u3, i2c, mpic;
+ 	u32 u3_rev;
+@@ -2972,7 +2972,31 @@ static void __init fixup_device_tree_pmac(void)
+ 		     &parent, sizeof(parent));
+ }
+ #else
+-#define fixup_device_tree_pmac()
++#define fixup_device_tree_pmac64()
++#endif
++
++#ifdef CONFIG_PPC_PMAC
++static void __init fixup_device_tree_pmac(void)
++{
++	__be32 val = 1;
++	char type[8];
++	phandle node;
++
++	// Some pmacs are missing #size-cells on escc nodes
++	for (node = 0; prom_next_node(&node); ) {
++		type[0] = '\0';
++		prom_getprop(node, "device_type", type, sizeof(type));
++		if (prom_strcmp(type, "escc"))
++			continue;
++
++		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
++			continue;
++
++		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
++	}
++}
++#else
++static inline void fixup_device_tree_pmac(void) { }
+ #endif
+ 
+ #ifdef CONFIG_PPC_EFIKA
+@@ -3197,6 +3221,7 @@ static void __init fixup_device_tree(void)
+ 	fixup_device_tree_maple_memory_controller();
+ 	fixup_device_tree_chrp();
+ 	fixup_device_tree_pmac();
++	fixup_device_tree_pmac64();
+ 	fixup_device_tree_efika();
+ 	fixup_device_tree_pasemi();
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
