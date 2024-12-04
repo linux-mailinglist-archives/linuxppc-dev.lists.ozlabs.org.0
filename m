@@ -1,52 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-3792-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3794-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447D39E3C73
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 15:16:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E638A9E3C8E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 15:20:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3KMW0mJpz30Tk;
-	Thu,  5 Dec 2024 01:16:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3KRh73mgz30WM;
+	Thu,  5 Dec 2024 01:20:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733321799;
-	cv=none; b=ob1eaLSLUx6qCp7ul5BM/Q8bSgWjH2X+U3yCxqoAkH7fnD0HRNnq8Ydk7xAZMxTRIBdZg2/tEsCgcOm/OgtYW/UKk1fBzyD5jEruSkCaiPuYvpiEhMquTvx18Ajrzlr01UBqpwewZHTwpDiJ9ARWCUNckwKAuPQ6YyUmyXoM40/uQYzwrWMkVcK+nQJMKMx/WT3zFgOtKIH7Su29MbMOXjgl3kXYxmMThU6PXCdC9m+WkJrm0Qk3WHUXhF0ydeKy/leFegmyYjB6QaEBf6CIke8hbAB3pswJRp9tdDepT+DpSnVvqnc7coBEqXZtjX5qAn8Y94ZgNWzo0gsBJrBX/Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=52.119.213.152
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733322016;
+	cv=none; b=Q5YYl1fMoq9rQu28Yl75abkwrEd0a6aaVKczAiIxVrMSif+RjoppyRpnBF8axr/MDbRQWdunFrr12lVXaoLzyHnsde2OXTbeiN+zYUunICod/XyDaHl73y/uMDOgSOZmirCYk2J6y9zak2O24a0qgP4WI17c0icrfxGEpbyA/uHMGLXQJVvItOSidHufB56AUH5MbED+CzDVs54Z/3+R5TLuuV4RvPJybxQ9peM/TAgJmejVHLFP8eSf2pZyI/ArVl+vXieDVKM18SwLkDzu7Z/oYdlxlfiDTXcfy7LMBBY6gEbAw7XNrUCyg8StGbhe3GJ8sJj+WkX0lPMH1oV+Iw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733321799; c=relaxed/relaxed;
-	bh=iL4udhcYZijGOVW6eAYFdZXq8IZC3X/ZLuXpcLqVsEM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AUQsrYuAKFDpgJQziV0PdoBWyyCIdaYqJiA3HqVzCC9NDdr5R2Z3NT+UoJBgoQa19emYBX8gnNczsee4qDL+zO/rLpc73nJIR9IJ6yzFX5rdqSV/bE0a6cuuEIlxwH+iAQnki6asQmcP5FFllQmg55WX5w/alq7A4FX4Q4D1hsqD0Vk9KJU8kbwvEDTgkKL+m3t50LzYakJqH62q6QTp7STDpk5fjExYzxLZtAqeRAth1af/36y+ztuipUD0Ia5sLy0VUxGp95A4nPyZZtTkEicCgdPQ9X/dEi3MqH9VX8hZB+2qKNyMoqh/q/yFnoIW1FzIjIzfV74ApOkrAI+4Uw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3KMT2DQ1z30Sx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 01:16:36 +1100 (AEDT)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 4B4E9ZrU015093;
-	Wed, 4 Dec 2024 08:09:35 -0600
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 4B4E9YNa015085;
-	Wed, 4 Dec 2024 08:09:34 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Wed, 4 Dec 2024 08:09:33 -0600
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v4 2/4] objtool/powerpc: Add support for decoding all types of uncond branches
-Message-ID: <20241204140933.GV29862@gate.crashing.org>
-References: <cover.1733245362.git.christophe.leroy@csgroup.eu> <0ca71a4b0ac679ea52bd9fdd1f607195d72b499f.1733245362.git.christophe.leroy@csgroup.eu>
+	t=1733322016; c=relaxed/relaxed;
+	bh=zswYcgJLwrXZ5Noz0/+vVn+a499HuoexmUzvToEzvkM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PTNUedNxhHgr2XjajpWdwsaDeWzlf9UohKSiP2rvzJHB7cq0T5JvK+gnkxdTK0vEBMCcw+c1l7U7q/CQoEBiaELYKoTTEqR/EGmIZqsKo+RcFPJl8RSuSrgoPpoUuhbWT4JwK7oeVmOBilqFU77D/I1pBMa3BGfQ79aQYvUEKmnPkQPoV8fk2qVQMe3jDOKxKi2+Rp5JjOXmWuMIENyJ3Z7KYS2jLy3lVlHD9/IO7xEZFztddOdCdgTVywInGJhMfkpxOaGRxQtzuj92MX6fbHed0RfKReKP57VAvR7OZN+0og+12fvjLL0oeR+E1UlbCM/JTujvfUNtQesdqpJFzg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=NW2xKzi/; dkim-atps=neutral; spf=pass (client-ip=52.119.213.152; helo=smtp-fw-52003.amazon.com; envelope-from=prvs=061ca9da5=farbere@amazon.com; receiver=lists.ozlabs.org) smtp.mailfrom=amazon.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=NW2xKzi/;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amazon.com (client-ip=52.119.213.152; helo=smtp-fw-52003.amazon.com; envelope-from=prvs=061ca9da5=farbere@amazon.com; receiver=lists.ozlabs.org)
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3KRf5FQ0z30VY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 01:20:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1733322014; x=1764858014;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zswYcgJLwrXZ5Noz0/+vVn+a499HuoexmUzvToEzvkM=;
+  b=NW2xKzi/dwq1u//vHpia+s4UeFL9T+jd95g9jbParj+W5shXKlkXt2Jg
+   XmBo7zjiQEixnG8wganZyCgGzURNRRvgrkyyRGc0PyZ0dvXHuskOS1uAS
+   m63wUfTbUOq6okw468JVm1B3kPmVY3YViSALpz7M9ImFckinjrb0Hol9B
+   4=;
+X-IronPort-AV: E=Sophos;i="6.12,207,1728950400"; 
+   d="scan'208";a="46564984"
+Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.124.125.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 14:20:05 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.7.35:50901]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.190:2525] with esmtp (Farcaster)
+ id 609709e8-0189-4b6b-b1ef-da475ec79ee4; Wed, 4 Dec 2024 14:20:05 +0000 (UTC)
+X-Farcaster-Flow-ID: 609709e8-0189-4b6b-b1ef-da475ec79ee4
+Received: from EX19D013UWB003.ant.amazon.com (10.13.138.111) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 4 Dec 2024 14:20:04 +0000
+Received: from EX19MTAUEC002.ant.amazon.com (10.252.135.146) by
+ EX19D013UWB003.ant.amazon.com (10.13.138.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 4 Dec 2024 14:20:04 +0000
+Received: from email-imr-corp-prod-iad-all-1a-6ea42a62.us-east-1.amazon.com
+ (10.124.125.6) by mail-relay.amazon.com (10.252.135.146) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.34 via Frontend Transport; Wed, 4 Dec 2024 14:20:04 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com (dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com [172.19.116.181])
+	by email-imr-corp-prod-iad-all-1a-6ea42a62.us-east-1.amazon.com (Postfix) with ESMTP id DBF344066C;
+	Wed,  4 Dec 2024 14:20:03 +0000 (UTC)
+Received: by dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com (Postfix, from userid 14301484)
+	id 98F487591; Wed,  4 Dec 2024 14:20:03 +0000 (UTC)
+From: Eliav Farber <farbere@amazon.com>
+To: <linux@armlinux.org.uk>, <catalin.marinas@arm.com>, <will@kernel.org>,
+	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <christophe.leroy@csgroup.eu>,
+	<naveen@kernel.org>, <maddy@linux.ibm.com>, <paul.walmsley@sifive.com>,
+	<palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <tglx@linutronix.de>,
+	<akpm@linux-foundation.org>, <bhe@redhat.com>, <farbere@amazon.com>,
+	<hbathini@linux.ibm.com>, <sourabhjain@linux.ibm.com>,
+	<adityag@linux.ibm.com>, <songshuaishuai@tinylab.org>,
+	<takakura@valinux.co.jp>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-riscv@lists.infradead.org>
+CC: <jonnyc@amazon.com>
+Subject: [PATCH v6 0/2] Improve interrupt handling during machine kexec
+Date: Wed, 4 Dec 2024 14:20:01 +0000
+Message-ID: <20241204142003.32859-1-farbere@amazon.com>
+X-Mailer: git-send-email 2.40.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,50 +88,62 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0ca71a4b0ac679ea52bd9fdd1f607195d72b499f.1733245362.git.christophe.leroy@csgroup.eu>
-User-Agent: Mutt/1.4.2.3i
-X-Spam-Status: No, score=-0.0 required=5.0 tests=SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-10.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Dec 03, 2024 at 08:44:50PM +0100, Christophe Leroy wrote:
-> Add support for 'bla' instruction.
-> 
-> This is done by 'flagging' the address as an absolute address so that
-> arch_jump_destination() can calculate it as expected. Because code is
-> _always_ 4 bytes aligned, use bit 30 as flag.
+This patch series focuses on improving the machine_kexec_mask_interrupts()
+function by consolidating its implementation and optimizing its behavior to
+avoid redundant interrupt masking.
 
-The AA field already is there, so why not, eh :-)
+Patch Summary:
+[PATCH v6 1/2] Move machine_kexec_mask_interrupts() to kernel/irq/kexec.c,
+               removing duplicate architecture-specific implementations.
+[PATCH v6 2/2] Refine machine_kexec_mask_interrupts() to avoid re-masking
+               already-masked interrupts, resolving specific warnings
+               triggered in GPIO IRQ flows.
 
-> Also add support for 'b' and 'ba' instructions. Objtool call them jumps.
+Changes between v5 and v6:
+ - Change GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD to not be user selectable.
 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Changes between v4 and v5:
+ - The function machine_kexec_mask_interrupts() has been moved
+   from kernel/kexec_core.c to a new file kernel/irq/kexec.c.
+ - A new configuration option, GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD, has been
+   added.
+ - The parameters for the machine_kexec_mask_interrupts() function have
+   been defined in reverse Christmas Tree style.
+ - The comment explaining the call to irq_set_irqchip_state() has been
+   improved for clarity.
+ - The phrase 'This patch' has been removed from the commit message.
 
-Reviewed-by: Segher Boessenkool <segher@kewrnel.crashing.org>
+Changes between v3 and v4:
+ - Add missing <linux/irqdesc.h> and <linux/irq.h> includes.
 
-> --- a/tools/objtool/arch/powerpc/decode.c
-> +++ b/tools/objtool/arch/powerpc/decode.c
-> @@ -55,12 +55,15 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
->  
->  	switch (opcode) {
->  	case 18: /* b[l][a] */
-> -		if ((ins & 3) == 1) /* bl */
-> +		if (ins & 1)	/* bl[a] */
->  			typ = INSN_CALL;
-> +		else		/* b[a] */
-> +			typ = INSN_JUMP_UNCONDITIONAL;
->  
->  		imm = ins & 0x3fffffc;
->  		if (imm & 0x2000000)
->  			imm -= 0x4000000;
-> +		imm |= ins & 2;	/* AA flag */
+Eliav Farber (2):
+  kexec: Consolidate machine_kexec_mask_interrupts() implementation
+  kexec: Prevent redundant IRQ masking by checking state before shutdown
 
-You could of course put that together with the 3fffffc thing, but you
-can leave that to the compiler as well :-)
+ arch/arm/kernel/machine_kexec.c   | 23 --------------------
+ arch/arm64/Kconfig                |  1 +
+ arch/arm64/kernel/machine_kexec.c | 31 --------------------------
+ arch/powerpc/include/asm/kexec.h  |  1 -
+ arch/powerpc/kexec/core.c         | 22 -------------------
+ arch/powerpc/kexec/core_32.c      |  1 +
+ arch/riscv/kernel/machine_kexec.c | 23 --------------------
+ include/linux/irq.h               |  3 +++
+ kernel/irq/Kconfig                |  6 ++++++
+ kernel/irq/Makefile               |  2 +-
+ kernel/irq/kexec.c                | 36 +++++++++++++++++++++++++++++++
+ 11 files changed, 48 insertions(+), 101 deletions(-)
+ create mode 100644 kernel/irq/kexec.c
 
+-- 
+2.40.1
 
-Segher
 
