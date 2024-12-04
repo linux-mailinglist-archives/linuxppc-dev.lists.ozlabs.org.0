@@ -1,52 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-3761-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3762-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACBF9E30B4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 02:20:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2540D9E3101
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 02:59:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y307f6w2rz2yRP;
-	Wed,  4 Dec 2024 12:20:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y310f6X2Fz2ymH;
+	Wed,  4 Dec 2024 12:59:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733275214;
-	cv=none; b=aMWHjDZ4odGgZtDHdcT7dSXeFy0OLYoMlA5C5uDFN0cbTSZNbrc5R3SKrU/YaGxpwPGQXspSgHeow/q9+Mw/AWaDQdeNUggfWBRfoWrscIZ+jc7g+S/nV3A3yOaCejk+ZZqA52kOzkHOOynPi3R4xi/mZDSi5gDcwAic66aYNyOLytaDSA/AhmZv6YDZdJDWjrl7CoOodlwxkcr5WUGfXWgEjz9Q1dzDChuTsmeYKJKwe+JTlXFdJODb05XMNq4KhB+/2D53V3v/0N3HA059MSkEJb2GjnXpRiBEYyr0UsX+zAbthoXF7fzDNG6VN+SDmQ6livUVBdcRJZfKU9Zmng==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=156.67.10.101
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733277554;
+	cv=none; b=WdEu0lOZC8aSLVAQPB+2+aOUmoB5/Z3C9u5b5N31ecMZklieqme3ZbjWRwXYrRSApH30VoUXSntMwTQoPyoB8g2ddgXtpAwhuICoWRxqt9f3yIwAlyEtJD6gx71h7DdOxYwm7Kex9Sd4MdisAeNXNdmsp8zvnWVH3yjzBP5w0PMKX3BpMo174oHmzuSmZ4o92N+CiN9jojwfVAfoZ+xA+liDNwzZOZsMOUtZVOu6jmuLt9CamM2Dcv034bDxXatvLgLypD+KiVdvMNGUOjcbZvawyMzBA0oAG2Rw056ITIOjZtr8fCjcK9+G0583cyyx2Lq5zJ3tHljlMiLuRwDJmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733275214; c=relaxed/relaxed;
-	bh=PRu/6Qr31/VlXUVk5BP2fCYP7enzMvcZMZ0rZw5VHXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=di2TPGSOKm3Wo5bXCwEWjYnJ8dDXaNhYa+4hSEQxtxJhVGHluLaDBCVUboGddoxZPapLjJGD3pCcquYxW/bxN6xkFEBOuE4xBXMvsG5LziZkkBUp1+doeZUoMIfXTN6PutS78j04lyWwNncQS+k+zcSNDGpBc4WjN3vu7zJPPQrlMOOZ9FbCuFpSY395sDeMdbSPs+4NQvO4yft9T/gkbaOCBVmosj7uBsL8zYI5/KwwD73tSoq50O+aPeoLc48YokriOzOBzr8hot1svSXnrFWbVSjugII0GozG2djh2RX/gK9hOzfUK5dKvcjLv+F9Sam3u9vZOjwlaXj7rMI4Uw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=3i1i=s5=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=3i1i=s5=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	t=1733277554; c=relaxed/relaxed;
+	bh=4Gc5eRUdt6i47eRmmyZftOhvRJWmkHfc+4Lk40uszfU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WQqSEWf6JPfwjL4E5rrTQM2N3jtJP/S4PGa0xu4wsGxsYP7gzZexufGdb+7SImaXv03HVtODh2ST9Z8Yjmj0btEYfEEleEfIZg+sagMQanCmwCpz6sEWijfKGRMmdRHu7I9p21faXcC1KiT5kl9cTBfCECVwt6xFb9uQa0jOFKZvdXQb4rlsOZQ6k+9WkfktQJUu/xocIm7/e3OkCnFxyBKG3LvLBq2POmRQ0fiiYF6F0W1mUlQN8+7kgu8Hy4A/kQ5Peemimpp9YSezF3RQ+s6qwJYvGTx/fiZbt+lKL2ZluNWX3cAxr2KUiHS6wMGPBrgzmS2Sc11zgY0W1S5kaw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Pky3cQsb; dkim-atps=neutral; spf=pass (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org) smtp.mailfrom=lunn.ch
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=Pky3cQsb;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y307c1ZcSz2xvh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 12:20:12 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 4A619A41697;
-	Wed,  4 Dec 2024 01:18:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0817C4CEDC;
-	Wed,  4 Dec 2024 01:20:06 +0000 (UTC)
-Date: Tue, 3 Dec 2024 20:20:08 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, "Naveen N. Rao" <naveen@kernel.org>, linuxppc-dev
- <linuxppc-dev@lists.ozlabs.org>, linux-trace-kernel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/ftrace: adjust offset for kprobe syntax
- error test
-Message-ID: <20241203202008.1f30a266@gandalf.local.home>
-In-Reply-To: <fa1e747f-1823-4d20-86c0-b85a3b959952@linuxfoundation.org>
-References: <20241129202621.721159-1-hbathini@linux.ibm.com>
-	<20241202144111.75d1bb3b@gandalf.local.home>
-	<fa1e747f-1823-4d20-86c0-b85a3b959952@linuxfoundation.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y310c1wpjz2yYf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 12:59:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=4Gc5eRUdt6i47eRmmyZftOhvRJWmkHfc+4Lk40uszfU=; b=Pky3cQsb6N0D7N39MRKMYgnan4
+	3qv32+LdLkRz/XAqE7Tp4Dn5PrGFpqxAa2Y998SJZi8w8KRRZmTWUhB2zn8YaSThwkDuYggvSowof
+	CooDXXCavKYEBYa2KLUqx4Gj8ZNnq3VFPwrPL2uw1THrWl9EYMs+ICT5t1xyuU1Aehu4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tIefG-00F9bS-8D; Wed, 04 Dec 2024 02:58:54 +0100
+Date: Wed, 4 Dec 2024 02:58:54 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Simon Horman <horms@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next v3 04/10] net: freescale: ucc_geth: Fix WOL
+ configuration
+Message-ID: <179742dc-2df2-4d69-99ac-4951dc36aa71@lunn.ch>
+References: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
+ <20241203124323.155866-5-maxime.chevallier@bootlin.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,51 +69,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241203124323.155866-5-maxime.chevallier@bootlin.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 3 Dec 2024 18:01:06 -0700
-Shuah Khan <skhan@linuxfoundation.org> wrote:
-
-> On 12/2/24 12:41, Steven Rostedt wrote:
-> > On Sat, 30 Nov 2024 01:56:21 +0530
-> > Hari Bathini <hbathini@linux.ibm.com> wrote:
-> >   
-> >> In 'NOFENTRY_ARGS' test case for syntax check, any offset X of
-> >> `vfs_read+X` except function entry offset (0) fits the criterion,
-> >> even if that offset is not at instruction boundary, as the parser
-> >> comes before probing. But with "ENDBR64" instruction on x86, offset
-> >> 4 is treated as function entry. So, X can't be 4 as well. Thus, 8
-> >> was used as offset for the test case. On 64-bit powerpc though, any
-> >> offset <= 16 can be considered function entry depending on build
-> >> configuration (see arch_kprobe_on_func_entry() for implementation
-> >> details). So, use `vfs_read+20` to accommodate that scenario too.
-> >>
-> >> Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-> >> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>  
-> > 
-> > Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> > 
-> > Shuah,
-> > 
-> > Can you take this through your tree?  
+On Tue, Dec 03, 2024 at 01:43:15PM +0100, Maxime Chevallier wrote:
+> The get/set_wol ethtool ops rely on querying the PHY for its WoL
+> capabilities, checking for the presence of a PHY and a PHY interrupts
+> isn't enough. Address that by cleaning up the WoL configuration
+> sequence.
 > 
-> Yes I can take it. I do have question about whether this is
-> a fix - sounds like it is from the change log.
-> 
-> Clearly stating that it is a fix will help so it can be picked
-> up for stables.
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-I would say it's a fix, as the test currently fails in certain scenarios
-for powerpc.
+This at least looks sensible.
 
-You can add:
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Fixes: 4231f30fcc34a ("selftests/ftrace: Add BTF arguments test cases")
+I don't think we are going to get a perfect implementation until we
+move most of the logic into phylink. We need the MAC to declare a
+bitmap of what WoL options it supports. And we need the PHY to declare
+the same. And the core can then figure out which of the enabled WoL
+options the PHY should do, which the MAC should do, if the MAC can be
+powered off, etc.
 
--- Steve
+But i doubt that will get implemented any time soon.
+
+	Andrew
 
