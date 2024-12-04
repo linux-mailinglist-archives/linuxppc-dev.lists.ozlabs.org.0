@@ -1,62 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-3765-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3766-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2289E314A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 03:16:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D1989E317D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 03:39:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y31NB2c5gz30Tm;
-	Wed,  4 Dec 2024 13:16:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y31tX38R1z30V2;
+	Wed,  4 Dec 2024 13:39:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=156.67.10.101
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733278570;
-	cv=none; b=B+rO193eg4hs1TD9MzRx65kllLZ3D4elmh0P8I84mYRF/Q+IlbIeVLfBfOMijk1aRRefcdogdixVQZYPsnZCrnCBcD9BOWWzvUKvaU25wuwViOURPRrtn8tWu4VQKqhWLnBmYEKmsXoryo1hckLkbMrvZePxJjWl8AwDH4HWBZmkI8Lk3XUARCNMsOOvNWEIktSNX6m1VovQGgMKIxLRRdchOqAzr9urwzBBdE6nVTMU1lrRwTqtgAzlP+DqjYtFkRVx4cB3rRAekSjM61LYxou6VEbdRlomI8t2MoiIDv1KlFVHmmFxEKubGAHL0OI0Qb37/+qyHebsxOHW6dW49w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::129"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733279940;
+	cv=none; b=XTeww/ZmIwGcnOY/V9AWwRDhBzRfAOHk88Fardq4j9nHexhFxQbqa8O/u9K0mza4rwSQDw5GSkz943E/RVINt+yO8B02OJRPe9rtejn/visz05XCca/FW9IkaqbLV4/ApNJEcjUtxSnhA6yY1To2f16mZOf8Amf/dows3uCnwWZXVmPbKjyuydGd9IMuwLyVqknXCGDyPHIeMBh4mjj37/wllZzSa+9V6RYymrxeR3VxN1/dyO9zXO0lh+t7vPUtvedwjNxlRyaRtWRwhgMbQxqF8d7Rl6K3tqYUntc0vTA/1foMjhaeBmgfDKODYJ29O42Q5JAdXr9NOulSQWyUNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733278570; c=relaxed/relaxed;
-	bh=NoKIQzGC9lTfjHsqJVhywf18TYP1wUsxi/w7f9E14ng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EUBQLc0U0HRXbwtO2Zah7euh3J7n9qL9CzG8PobwwhJVfyG2WMxNpSBshn41CrS8B2f05MqiKM7Mnlv0wx2+z+AdfZgSskXElwqZIQ3vcr9JZMv50eSdBHQuokMyvMI62H4AvdNSPnL0t5uOmG+ESVOFebCFyqk9Pj/2dAQAcMgEfnBZx/eGHF28GYb+lCWJO/sFcvjItGwZ7n1CiE2cSDZLZ1ZvyLVTbF6uK2W+5biI6nZ+Mjxwb9xbsbymuwSxeOzRjj7ky91Kn3Pau3gXnjNuNvEmOYM73g3m/NpnFurn8VPYO3YwOyy5TMfQky6igu+JHt714SY9b3APNEr+gQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=aYbgezf7; dkim-atps=neutral; spf=pass (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org) smtp.mailfrom=lunn.ch
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+	t=1733279940; c=relaxed/relaxed;
+	bh=78THJIZs/MA15yj+ru7yg//2Ko53Pnaq+srDYQqZaEg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ek5HcJerIyU1zNQqk3ouhGa4V0o/eW3D2Ec8vEkFghOv3i4+1QKlmhF0XAvO9h2nN9NC0P7MbxbLjhLRoqY0OdeWVJd776wvQWiHN0u1h2XKn6sakOu4wFG6oEAAMiyzkWpJ/I285IXJ2qDpGxzyFb07p4ZJ3GKfqbJ206UxAiJJqibupdYAAjm4dECd8r2u2nG4P74XnNet+hD76sGu9qtxqZUgVO4gaT6gRscdyy0+BbHtdsiq2YO896/PGxbwG710y06CsYmnCIMH9zgeRCjOWwbQUCg85wXbQzgGP6S2s3/ex6bXnbSe2fI6pWsOGuP8hdJePT3xtR0HKf3QaQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org; dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=N2yGfQnT; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=wenst@chromium.org; receiver=lists.ozlabs.org) smtp.mailfrom=chromium.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=aYbgezf7;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=N2yGfQnT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch (client-ip=156.67.10.101; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch; receiver=lists.ozlabs.org)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=wenst@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y31N60Tv4z30Tk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 13:16:06 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=NoKIQzGC9lTfjHsqJVhywf18TYP1wUsxi/w7f9E14ng=; b=aYbgezf75Ce3d+ZwwsU1DyFV6y
-	ir5rUDyaTIyP+Zn5+XodO1yyP1rTPCw+NULoJu+p+sxgvcx4cYEv6BBzwF21mb/qw8nLlWi3hZ35N
-	Srs7wQYZP5HERCHPfrvg05Ov6onQ9z59E3/kb0SJstam2TFYaHMrv6h2dwPrIN9rsuIE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tIevg-00F9ho-Fz; Wed, 04 Dec 2024 03:15:52 +0100
-Date: Wed, 4 Dec 2024 03:15:52 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	Simon Horman <horms@kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v3 09/10] net: freescale: ucc_geth: Introduce a
- helper to check Reduced modes
-Message-ID: <ce002489-2a88-47e3-ba9a-926c3a71dea9@lunn.ch>
-References: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
- <20241203124323.155866-10-maxime.chevallier@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y31tV0cZ2z30V1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 13:38:56 +1100 (AEDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-53df1e0641fso6988954e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 18:38:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1733279932; x=1733884732; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=78THJIZs/MA15yj+ru7yg//2Ko53Pnaq+srDYQqZaEg=;
+        b=N2yGfQnTn45OBOvNBmsfyG0o02MmK5/VaMmGwbhn7sETrxu31xAyirLYeNPP/rxSXV
+         tSOF/1YxEyG80xi3u4aGeVtIz6VXPTLPvaPEcq0CxBPuFvsG5PEFMJwu/GoUOfSGFAtK
+         ToUwb9I+r7jieVowvtoJrG3muPBFkxiqCz2tE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733279932; x=1733884732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=78THJIZs/MA15yj+ru7yg//2Ko53Pnaq+srDYQqZaEg=;
+        b=g6fb07SONtUmdDCl6HM4rT/7qpSrP2qEscF3JSw+pL9N7kJ0aXWiSVR2EBwQnj3HOX
+         rW9Anx6FevEo7uMe2WCo01xdaTjK8tn5fQTN//TQ5KBoK5LurRCsUdeoS0UF9m6njeqD
+         FMKe6QgJHR7PgmRoAegjCN0hgNqVknbkinb1XUUnrcau2t1K5pfkaS75ObvOutVoSsQm
+         V9fVoDcIRioF0yThvcg3pbHAUg0XIgZd8UElfyAbAEjB9ExGwhjppoNYD7eYoFMH4jwe
+         KNFOnJ2uVegb2kY258mfLubyYNX5pCwsGHj/KU2EkXg31aKw3bgBMHgWthA/Jc9P5tCO
+         W5HQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHKnDr55WNstBmkQuEN6kpAirmgTCvvBFwLTELWoL6FMPniZwMa4z0PpzLOHgIvHVY3JiV+W9+dypE5aw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxCSJPAmJOXxxQM5b01a7RlBALFZvOykV3CTKg0jFJgAkJag+Jo
+	3MlATajOVPMjG9w5MX7QaUWmixsH4bhwfYNB7tuHrEt/U5Z5a3E7say4uOHHaK9f5OhxSzTTiPn
+	CY6GYrMpIu4IKDKbS7a7u3UPebVYuJUxpJSGI
+X-Gm-Gg: ASbGncvmj+yN/zNfICxu6dp3G26yXPZ1gJQw1H1gy7iho4LKHxAg2cctW63sfGHesn/
+	LZR63EaqrpnSIezpUcjeCZFYoFXnweBtAlgis2P0Ln7YAL8LRSOLH2CEEdR0=
+X-Google-Smtp-Source: AGHT+IHuw72icjrfxzdu36itc3o804934USQfay4OuNOvOLlQt8ZUuZrboi9UituymewJ75cgmh/8dMhPio3+m/+Hac=
+X-Received: by 2002:a05:6512:b19:b0:53d:eec6:4622 with SMTP id
+ 2adb3069b0e04-53e12a3523fmr2296114e87.48.1733279931341; Tue, 03 Dec 2024
+ 18:38:51 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,23 +73,104 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241203124323.155866-10-maxime.chevallier@bootlin.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+References: <20241202045757.39244-1-wenst@chromium.org> <20241203172026.GA1988559-robh@kernel.org>
+In-Reply-To: <20241203172026.GA1988559-robh@kernel.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Wed, 4 Dec 2024 10:38:40 +0800
+Message-ID: <CAGXv+5GPacXtcrxJVHUGuRWOSY+k5tn4kvwgu_nkjdQ6=srayQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: soc: fsl: cpm_qe: Limit matching to nodes
+ with "fsl,qe"
+To: Rob Herring <robh@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-> +static bool phy_interface_mode_is_reduced(phy_interface_t interface)
-> +{
-> +	return phy_interface_mode_is_rgmii(interface) ||
-> +	       interface == PHY_INTERFACE_MODE_RMII ||
-> +	       interface == PHY_INTERFACE_MODE_RTBI;
-> +}
+On Wed, Dec 4, 2024 at 1:20=E2=80=AFAM Rob Herring <robh@kernel.org> wrote:
+>
+> On Mon, Dec 02, 2024 at 12:57:55PM +0800, Chen-Yu Tsai wrote:
+> > Otherwise the binding matches against random nodes with "simple-bus"
+> > giving out all kinds of invalid warnings:
+> >
+> >     $ make CHECK_DTBS=3Dy mediatek/mt8188-evb.dtb
+> >       SYNC    include/config/auto.conf.cmd
+> >       UPD     include/config/kernel.release
+> >       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+> >       DTC [C] arch/arm64/boot/dts/mediatek/mt8188-evb.dtb
+> >     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: compatible:0: 'fs=
+l,qe' was expected
+> >           from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe=
+/fsl,qe.yaml#
+> >     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: compatible: ['sim=
+ple-bus'] is too short
+> >           from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe=
+/fsl,qe.yaml#
+> >     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-control=
+ler@c000000:compatible:0: 'fsl,qe-ic' was expected
+> >           from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe=
+/fsl,qe.yaml#
+> >     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-control=
+ler@c000000:reg: [[0, 201326592, 0, 262144], [0, 201588736, 0, 2097152]] is=
+ too long
+> >           from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe=
+/fsl,qe.yaml#
+> >     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-control=
+ler@c000000:#interrupt-cells:0:0: 1 was expected
+> >           from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe=
+/fsl,qe.yaml#
+> >     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-control=
+ler@c000000: '#redistributor-regions', 'ppi-partitions' do not match any of=
+ the regexes: 'pinctrl-[0-9]+'
+> >           from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe=
+/fsl,qe.yaml#
+> >     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: 'reg' is a requir=
+ed property
+> >           from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe=
+/fsl,qe.yaml#
+> >     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: 'bus-frequency' i=
+s a required property
+> >           from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe=
+/fsl,qe.yaml#
+> >
+> > Fixes: ecbfc6ff94a2 ("dt-bindings: soc: fsl: cpm_qe: convert to yaml fo=
+rmat")
+> > Cc: Frank Li <Frank.Li@nxp.com>
+> > Cc: <stable@vger.kernel.org> # v6.11+
+> > Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+> > ---
+> >  .../devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml        | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.ya=
+ml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
+> > index 89cdf5e1d0a8..9e07a2c4d05b 100644
+> > --- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
+> > +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
+> > @@ -21,6 +21,14 @@ description: |
+> >    The description below applies to the qe of MPC8360 and
+> >    more nodes and properties would be extended in the future.
+> >
+> > +select:
+> > +  properties:
+> > +    compatible:
+> > +      contains:
+> > +        const: fsl,qe
+> > +  required:
+> > +    - compatible
+>
+> Update your dtschema. The select is no longer necessary. dtbs_check will
+> also run 5x faster.
 
-I wounder if this is useful anywhere else? Did you take a look around
-other MAC drivers? Maybe this should be in phy.h?
+That did the trick. Thanks Rob!
 
-	Andrew
+And sorry for the noise.
+
+
+ChenYu
 
