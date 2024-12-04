@@ -1,51 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-3775-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3776-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF679E34C7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 09:02:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0679E3522
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 09:22:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y393G5TvPz30V0;
-	Wed,  4 Dec 2024 19:02:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y39WB2FLjz30Vd;
+	Wed,  4 Dec 2024 19:22:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=111.22.67.139
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733299322;
-	cv=none; b=biKkST1E7Kgw9aX2imYKPT0FgPKYjfcqF3g2KzndX73OF2KrkSc/DUerUQEOKJkWtIfTWU8mk5YrU/5895eSM4To9mpAP6px4pctwwePuSJFrkK+ubRAjigoJ6cKVsHVX727M4rDdH5sxydSA17ZgEVTKsv3qAJ/UZixWHT+2tiXErnrz1dvB6b+ayGJBc77FsWFYhvd5L8H80hW+NfR0BXakD2TwkYxp8VB4EEwag0rd9c8eKyPtWXWThGvhir6BmJ2w+7YK2xbA+sW19KUMawCx7QQXDR9bG82oPZPw4tuQKhhjgKa6GnVXM3fQBIC/UEbINpdq0CHCgGl/I2doQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.200
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733300566;
+	cv=none; b=XAF2i+mS82EnpsD4aS7YZrmg7e3yPt08jOjNWcHmgHMW3/Tcy8f3md5Zycx+T6wclgVa7jkebv2VmaJKH4A8b1+SuzZvF/ucUwp1Lp/c1y/mibjB0/67GYPiWVS4YeQt9nnECtbLlAJcQZXe93Pct2skxlh5KVXcWg4AYmzIIRzupwX9a3wPRy6X6McKnEkPMZjuZ1ztorDvQyXiN4Nay18UNkQ8fNdkZbR3i8OL8kEEe8nH07QHVJ05caKnZP53hs5wH7xt7VJP/SZLnUC2BV1MScrPuAVE7qp7LgPNBD4WRKXr5GfJuipGJYgQ3xzfrn8LL27PeDGFMrbwxlsM0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733299322; c=relaxed/relaxed;
-	bh=e7QQpN88z5pQawPUGWpbcdX9nWBwHBcE9/+sjfCOZBo=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=oH2Ywo4DjU8Pl0BqlXHujqeWX/PNQpK9tzteR8QC4cbNmp01QhqVnmVqNPJtCcweLSKlPA7tlZ4QJqmyJkulaGAwv0tqPXuqhG28dytXQ+kvMMUC39jjF0UHAvTfKj4c6r6iOt/8sbQnXGt9i4Yf8TeVFeT3Mmp0Me7kuCIpIuwQiSZg0bRabVadKYPhW0uSQCPRf+fVhjM0208pOfhNAUnUMXoP/D+PZ8L6RLCnMv1g3aVWGEss4dKCQaUyUyAwfDHdVkgrupP+yxD2i3NBDjnbYeIRd/2ppUihvEI0LWzhXfJhFoMhfxWRVN7g+UUoEcYZy53dd8fu+OI4PHrFCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass (client-ip=111.22.67.139; helo=cmccmta3.chinamobile.com; envelope-from=zhujun2@cmss.chinamobile.com; receiver=lists.ozlabs.org) smtp.mailfrom=cmss.chinamobile.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cmss.chinamobile.com (client-ip=111.22.67.139; helo=cmccmta3.chinamobile.com; envelope-from=zhujun2@cmss.chinamobile.com; receiver=lists.ozlabs.org)
-Received: from cmccmta3.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y39394SMQz30Tr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 19:01:55 +1100 (AEDT)
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee967500c700f6-d110e;
-	Wed, 04 Dec 2024 16:01:52 +0800 (CST)
-X-RM-TRANSID:2ee967500c700f6-d110e
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from ubuntu.localdomain (unknown[10.55.1.70])
-	by rmsmtp-syy-appsvr07-12007 (RichMail) with SMTP id 2ee767500c6e1f3-5ee0f;
-	Wed, 04 Dec 2024 16:01:51 +0800 (CST)
-X-RM-TRANSID:2ee767500c6e1f3-5ee0f
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
-To: shuah@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>
-Subject: [PATCH] selftests/powerpc: Fix typo in test-vphn.c
-Date: Wed,  4 Dec 2024 00:01:49 -0800
-Message-Id: <20241204080149.11759-1-zhujun2@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	t=1733300566; c=relaxed/relaxed;
+	bh=F1RIotwJy9sqXQwL5qTyXf76s+adD7eN65AFmUkxujw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QDij6EXqgCYeZxoTl5RZJDTnOzTXDcZM/dIg+C5GGvpPUd4j5nuapHe5c47iUybCpsAvHevzYDyuCuMjOPdNhDbfS244HTCuzXkCzgie3nATGRRbIpAmxrnHPt761MDUJYtXNnZVjNo2uyXJyZESRoJGH3VBUeu7ioW5R9XdmA6u079zTGZxAWxyo59xyPUaDpELmPRNvAwYXg20LsE5m7ImWnIJqAsJUmdtHD4MaDBEloxPRQbo6OEVbM8jgGk+XfrqdS0nISpeQ8xczQMdpLvd8/tUvxzn1IPpGfXt9gXOtBKKmgzBJwWY+t9h4wue74KtUk7DokZSZQl3DnLLJQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Zka3L9u9; dkim-atps=neutral; spf=pass (client-ip=217.70.183.200; helo=relay7-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=Zka3L9u9;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.200; helo=relay7-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 70749 seconds by postgrey-1.37 at boromir; Wed, 04 Dec 2024 19:22:44 AEDT
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y39W8183tz30VS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 19:22:41 +1100 (AEDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AC03E20004;
+	Wed,  4 Dec 2024 08:22:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1733300555;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F1RIotwJy9sqXQwL5qTyXf76s+adD7eN65AFmUkxujw=;
+	b=Zka3L9u9yi/YcYD5QweP2ZXtXKyh6ixJ+45+o1WWC4jNcqbyYglqucX4kVrxl/SgmBONQn
+	+CMoQNjyuQ2jL5e507DyCdXjVtCJb7o+UsmDqOYLPOKCc3ggKnjam3bhx5N8/Z+i5rtjoV
+	Dac8m/ylVEQWmQw+sXE6yKdNSjXOvo67jb+qJMy7DYPGfoBzFF57Lbm6VNZGPIqc2Lb5de
+	eKD+pTOXvAyAPxQCGfxNa/GwQd02aQJe9kLFY+toFGGf4WNARoN2UxdXWNowRHddFXz7Qh
+	4rt/FEV6UILiJRzwee84O8qIFPFD1TRuZPT5c7da+6Ys3q0pOmzX5MNlXwnyoA==
+Date: Wed, 4 Dec 2024 09:22:32 +0100
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
+ <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com, Simon Horman
+ <horms@kernel.org>, Herve Codina <herve.codina@bootlin.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next v3 09/10] net: freescale: ucc_geth: Introduce a
+ helper to check Reduced modes
+Message-ID: <20241204092232.02b8fb9a@fedora.home>
+In-Reply-To: <ce002489-2a88-47e3-ba9a-926c3a71dea9@lunn.ch>
+References: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
+	<20241203124323.155866-10-maxime.chevallier@bootlin.com>
+	<ce002489-2a88-47e3-ba9a-926c3a71dea9@lunn.ch>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,30 +73,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: maxime.chevallier@bootlin.com
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The word 'accross' is wrong, so fix it.
+Hello Andrew,
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
----
- tools/testing/selftests/powerpc/vphn/test-vphn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, 4 Dec 2024 03:15:52 +0100
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-diff --git a/tools/testing/selftests/powerpc/vphn/test-vphn.c b/tools/testing/selftests/powerpc/vphn/test-vphn.c
-index 81d3069ff..f348f5491 100644
---- a/tools/testing/selftests/powerpc/vphn/test-vphn.c
-+++ b/tools/testing/selftests/powerpc/vphn/test-vphn.c
-@@ -275,7 +275,7 @@ static struct test {
- 		}
- 	},
- 	{
--		/* Parse a 32-bit value split accross two consecutives 64-bit
-+		/* Parse a 32-bit value split across two consecutives 64-bit
- 		 * input values.
- 		 */
- 		"vphn: 16-bit value followed by 2 x 32-bit values",
--- 
-2.17.1
+> > +static bool phy_interface_mode_is_reduced(phy_interface_t interface)
+> > +{
+> > +	return phy_interface_mode_is_rgmii(interface) ||
+> > +	       interface == PHY_INTERFACE_MODE_RMII ||
+> > +	       interface == PHY_INTERFACE_MODE_RTBI;
+> > +}  
+> 
+> I wounder if this is useful anywhere else? Did you take a look around
+> other MAC drivers? Maybe this should be in phy.h?
 
+Yes I did consider it but it looks like ucc_geth is the only driver
+that has a configuration that applies to all R(MII/GMII/TBI) interfaces
+:/ I didn't even know about RTBI mode before looking at that driver and
+it does look like it's not supported by that many devices... I'd be
+happy to put that in phy.h but I think ucc_geth is going to be the sole
+user :)
 
+Thanks,
+
+Maxime
 
 
