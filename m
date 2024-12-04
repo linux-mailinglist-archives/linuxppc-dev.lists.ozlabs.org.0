@@ -1,91 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-3759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3760-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C729E9E2E5B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Dec 2024 22:45:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6BC9E309B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Dec 2024 02:01:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2vNC4tBgz2yFP;
-	Wed,  4 Dec 2024 08:45:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y2zjm4PHzz2yRF;
+	Wed,  4 Dec 2024 12:01:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733262347;
-	cv=none; b=PR48E5nOXDMKPApES79dkwHv/tUDnfJ//v5p6kgJpPon+neSXFKQ8SVr+6Vz2T3vRkAVL8Sbv4yaRFjkdpkOhNaf/OizqaSXlMwV+YiOs/xVOHLK4CnPkTeaynNZRufcSaYEyfcRIYu2vfimSlVbiWYbjerYRlOb//anUz92JsW5vK29BRUrNm5CnoBY2NbNAazVXX9pkFfX+LlotZ8AUMAhuN/UstwLwtoSNrEMsurQ2ft+hDx8ARk9bhnFs1KbMbUEhpPs6xbnreWpP2UzIfyWoPx6sYoL570SwCGqEhx2SduNRpIYv40AOfMYAQLhagHK2OCnt1yGuC34Q8VQbg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::d31"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733274076;
+	cv=none; b=meXXKLQFYezQlh4zLqGe/7Q0Ve1dYwOD9Y+zRn17jU/Tby08wJzuVMrzN6/zXodaTA2cu8zEScisHPcQwrhtwweL7ocbAz7rrrEgvvOjwlNrtuI/0NQcmrmtC4MZHShzJzCqTlcaZapAsMecP5vY81T7Wiz2Km6mCrXG/IH/OEghEHf6z3pl3/C+PfKl99HzvU5+Uw/JtYTFXsH1cZwPxNZYa4jxebSO4iie/pVEWl4X1Z7wHlE6XaDFPZkU/bybIP0HwiDjEfK4RguKfg8rGluNXFzSjgq1rtnb3vZ/gpvxMXonP/XaSD+UYYn2QUgIinPhWM8Pv1sCqPoAaYff5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733262347; c=relaxed/relaxed;
-	bh=qs8g8TfVrzMP3nfe0JT9vEzBGBKRI0HwFLAlhcTSKWg=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h+lx5z3D1pKCD6oL/qonE0MwTqH7hx/OtV6NLh3Ay35Jk4wXFhB05a+Ijyq6Blt46zyZTeGShQ+rgD4ikQdyZ4yA1zsHDnuCQ4lANDh0qf7kOkgOV2Hm0lyLurhIr1qtH0plmE6T8CM4SYDSS50onWKU8pO3raIHSbJBwVdNwN+1taLVfhDnwKR9vAKjEsM9UlLoy7rD/sVvt8lie7fx9B/z7q8Mw1IyuupkYDAl+V/HL3fVhxe6BcH0wTPQraYIx8bSprMTqHJJnLAdszxrv59hlXBGi1GFWNKX2oirI3mf5Poh42D0X8zR9/Dwf0MMTX79dOCU6xImNzck0cxj0g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=No2NWryl; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1733274076; c=relaxed/relaxed;
+	bh=NA+ElRETJKY5CqdJTdKRnj5fYbwfNKrJQ8Yc5F8bfeI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IFNDEgk3V8J8bRk0xW63PbGymk8p46UaeTC6/v4ahrILsg/M5CUTflCOae17AWD++9xKQEbLy7LmfzNYQlorqKNLIWlm/+PNLpU4FkeuhVgsTtJhWVx3dA38iPmkTzDjVtq3RS5NgAyRaPe8J8C+GrjZKr2WXEH9wmQyT0Li9o3cnBmkvl970/IiB8Md4IYUsH9itG3dqDgGwx92JXj7Z0q7IiTCmGgGWR1wypatvrzxIiyv1gArjTVMmHZEXFn83B2P1rMefKTPJ9xa06F9pyHv7RpxXEp4dErFOEVh69QNpyPxriqBFZIb2TSN99/HkOVKIptFmg8PKqvDFJfsBQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=SaKG4R+G; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::d31; helo=mail-io1-xd31.google.com; envelope-from=skhan@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=No2NWryl;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=SaKG4R+G;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d31; helo=mail-io1-xd31.google.com; envelope-from=skhan@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2vNB0n1Tz2yDS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 08:45:46 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-7251331e756so5792561b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 13:45:45 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y2zjj1l2pz2xxt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Dec 2024 12:01:12 +1100 (AEDT)
+Received: by mail-io1-xd31.google.com with SMTP id ca18e2360f4ac-84197c469cfso202088039f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Dec 2024 17:01:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733262343; x=1733867143; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=qs8g8TfVrzMP3nfe0JT9vEzBGBKRI0HwFLAlhcTSKWg=;
-        b=No2NWrylexIf4PG13NDKGcHTRYuKyY+1uo4PVHpTrU9Ra2DtZCWwF+MWqeTMB6/cp1
-         nAjxUlZqop17Ros2K3BY2pqeS4LiYIx+TorLtR3eeQthHJ3Id8xgMnUIMdoHhSbEughp
-         X+KdFf7kPFlQFHVtnhGf4OHqNV4KWK/J2xQh7Hgk56t5KAWEOvoq51pkMJ5/+lmV1ypD
-         rzsomE2Vg6LVCJN9wuPfDBbvIuHssu6jJSJE7yLepFkhOZMYvmGBS36OagTxUeldSjht
-         +Q5ZdUANUs7hQRFtT3GH3l8ueDzK/po5HyyVogefjlDlK+UfHKzb+L0mcMw7HrOnzB1b
-         JE2A==
+        d=linuxfoundation.org; s=google; t=1733274068; x=1733878868; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NA+ElRETJKY5CqdJTdKRnj5fYbwfNKrJQ8Yc5F8bfeI=;
+        b=SaKG4R+G1zs3iW1WFUi8KRxXSjqM5BeiFIRwDgWchCmmwkpaOu0sYuWeanXeZMUJIZ
+         XL+avDxBGnHwSPDsXIPzzQD2fhXNdgvoaQbreS26Wf4SPIpP6HFoeH4WAatadjMJ73zo
+         vAXsIYEtH2dzfypE3D4MnlUs1Q9VQbIN0zYtc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733262343; x=1733867143;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qs8g8TfVrzMP3nfe0JT9vEzBGBKRI0HwFLAlhcTSKWg=;
-        b=Bdyy0abWRNNo2AU+gjjpEIv+9ZVpIBigbI82CfK5tJBA4M6pTn0u/2OicMfGnIyQxA
-         xjzvTNBimhWHN1PSbNQjuz1i+yBYO1t7L08NyKJFpwjzyUnRqj7svWv6fu1+hYyzNw+r
-         zS34EYnQrsuvcqKjE2GwptrJZ/cMag6UCcu140JVD1zshEfQojeb2Lyjngqgr0CfxgwR
-         DpLDt3L4dHPvjstI2Zs/VTjjYA1GHkK1Aw8CUwUu31Fssyybsw9jUv+HwEDT5wPw7j76
-         PXDBKdi2zamnEHVBF8FE3tyYnWDJc9Q9fSdWK2uIT1iRcI3LPT0qYWWid5MZiwmrFJ4M
-         5bmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWwYzZx89Qh3IfevE45N4SXYAO5g3PBN2/X5oBFUAh9vj7U9AuIw26oDmiEIl1dTLR7JUjCXiBWj3/vFBQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwquRdy9jTe6QuQ6HvSgwB2CGRzuXyVfc+7ActJQfVqHeLsuGHQ
-	xsSuBA3CCJDjV05BhjWoM7V57DGgkCdJpkO3qTYnP1CDyTAoqBRy
-X-Gm-Gg: ASbGncvP1ltmvCkI4FvNQD4V2CPsgyUCGI8AyZyKtGadCi12cD6kiuJWOeGX3gAfn8p
-	DKTbvfwURVtdLlzmIQqpNJjT0hC5IevO3UQvVuIFQFuuu3bpcyYA72fYliJx+rW+7ksKHwq15D/
-	lyOO7RKK+/ysWl34d58kpA6Tnuc+0/VzizaxvgZr6CKcPGR0QmNbIDtsZ7bdhdcD9PrpM+c/wFw
-	cYIG00dFuJ7mDtUp3j5JNEjIpfO7G+Jg4rREaPfTDdLes0hkEQDG5toVdt2fM2//Yt1Z8cnLCk7
-	bzLf4h7xXEb9xaWzM5Q=
-X-Google-Smtp-Source: AGHT+IFH94IguKLdgVw+VaVbk0Dgd3wlsWzR0YzD34u1W6McikqACVjvflyQTMBVfkngrgHBYaF02w==
-X-Received: by 2002:a17:902:db0a:b0:212:51dc:3d51 with SMTP id d9443c01a7336-215bd200db3mr39103915ad.27.1733262343149;
-        Tue, 03 Dec 2024 13:45:43 -0800 (PST)
-Received: from DESKTOP-DUKSS9G. (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215bd2fd69dsm17513345ad.189.2024.12.03.13.45.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 13:45:42 -0800 (PST)
-Message-ID: <674f7c06.170a0220.348678.b687@mx.google.com>
-X-Google-Original-Message-ID: <Z098BOv87dnqnHHC@DESKTOP-DUKSS9G.>
-Date: Tue, 3 Dec 2024 13:45:40 -0800
-From: Vishal Moola <vishal.moola@gmail.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: Re: [PATCH RESEND v2 3/6] mm/page_alloc: make
- __alloc_contig_migrate_range() static
-References: <20241203094732.200195-1-david@redhat.com>
- <20241203094732.200195-4-david@redhat.com>
+        d=1e100.net; s=20230601; t=1733274068; x=1733878868;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NA+ElRETJKY5CqdJTdKRnj5fYbwfNKrJQ8Yc5F8bfeI=;
+        b=lYcXB95gFJuwCdL6tUAP+K4Ye1X6uCwZ/F3EWh33Sl64ouIhur3OYoAfSMlc7iZMsH
+         q9zmDyE2DqT/5/tPofkH8+b63xKfhJyZxBOeaRgIITmCQdx1QhuCWJPzFt4FeoKgIbEC
+         3HIwW8BGfhj6o1+hiFwrCKk2ZNx8jrgFfbpNxLpR0fdZc7cKRIA0zQAcPi3WhKSjAZjr
+         PYADIuoexzPeel2rgyW3nppzHFaEEAPcBzVJ2pVv//OeCMRNHtbPabvpEMdz9Yv2Cihv
+         OF6yE4NrXQmCOX89yhUDVMAFWZXVRSz3ubknqr49elTi+2kqy18bDRX3BhUb8v1akNsw
+         msyA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3KAlRCgJTEAOeATtfwiMivpACBHQJvr7/bc63UZvF2e9vAkOyb7srYU6R6nadQvr/RPaba1UZpCo9uJU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy8W0Jzgge6pyDTEh50NJ+lB/GcMb2si7YErxwr3De9bi2YNiRr
+	I1vgyw4kX2f4ceRwW3yDE9vVeIB173eImKck5dAG1OFnHYTeKWd0JUu7ZLVe05w=
+X-Gm-Gg: ASbGncvLHmxAOTyo6ycZs5eyFLw2feDSnEKbu4YtkzTyyTP+g8OsCvEabqcrDCIIj5P
+	vKiorh2KM4XiNAwBZsJznrmTWqd0Bl+cbbjtAbdxOSc0da6GBnfmoZ7QWuhUr9hyFnyIScx9EPl
+	reWLautmC6++1aQ2mg4hsKR8U3ZLBNECHqeHngJM6ekbt3Bpb391mX+9xn2yY7RhUGgM2kg2Ps9
+	KAG7J3K+INBXjznHrFTCTPOCZQMf+wNOiCHsCnWNxGCNRY/ncwOnuaB+pkq7A==
+X-Google-Smtp-Source: AGHT+IFa+Bd2NpYOHu6EHzfrniiaLxPU/ePwfT0m1+/YTPvjeHG3Isi7m4kg/5QlpdI+LxP5aHV9sA==
+X-Received: by 2002:a05:6e02:164f:b0:3a6:ac4e:264a with SMTP id e9e14a558f8ab-3a7f9a46431mr58360885ab.10.1733274067594;
+        Tue, 03 Dec 2024 17:01:07 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4e230e779e8sm2783394173.137.2024.12.03.17.01.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Dec 2024 17:01:06 -0800 (PST)
+Message-ID: <fa1e747f-1823-4d20-86c0-b85a3b959952@linuxfoundation.org>
+Date: Tue, 3 Dec 2024 18:01:06 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,19 +79,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241203094732.200195-4-david@redhat.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] selftests/ftrace: adjust offset for kprobe syntax
+ error test
+To: Steven Rostedt <rostedt@goodmis.org>,
+ Hari Bathini <hbathini@linux.ibm.com>
+Cc: Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+ Masami Hiramatsu <mhiramat@kernel.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Naveen N. Rao" <naveen@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20241129202621.721159-1-hbathini@linux.ibm.com>
+ <20241202144111.75d1bb3b@gandalf.local.home>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20241202144111.75d1bb3b@gandalf.local.home>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Dec 03, 2024 at 10:47:29AM +0100, David Hildenbrand wrote:
-> The single user is in page_alloc.c.
+On 12/2/24 12:41, Steven Rostedt wrote:
+> On Sat, 30 Nov 2024 01:56:21 +0530
+> Hari Bathini <hbathini@linux.ibm.com> wrote:
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> In 'NOFENTRY_ARGS' test case for syntax check, any offset X of
+>> `vfs_read+X` except function entry offset (0) fits the criterion,
+>> even if that offset is not at instruction boundary, as the parser
+>> comes before probing. But with "ENDBR64" instruction on x86, offset
+>> 4 is treated as function entry. So, X can't be 4 as well. Thus, 8
+>> was used as offset for the test case. On 64-bit powerpc though, any
+>> offset <= 16 can be considered function entry depending on build
+>> configuration (see arch_kprobe_on_func_entry() for implementation
+>> details). So, use `vfs_read+20` to accommodate that scenario too.
+>>
+>> Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> 
+> Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> 
+> Shuah,
+> 
+> Can you take this through your tree?
 
-Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Yes I can take it. I do have question about whether this is
+a fix - sounds like it is from the change log.
+
+Clearly stating that it is a fix will help so it can be picked
+up for stables.
+
+thanks,
+-- Shuah
 
