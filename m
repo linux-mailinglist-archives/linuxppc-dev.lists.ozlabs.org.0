@@ -1,72 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-3819-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3822-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56C79E5127
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2024 10:21:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBCB9E5308
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2024 11:54:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3pmf4Rmkz2ydW;
-	Thu,  5 Dec 2024 20:21:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3rqW17t1z2yNs;
+	Thu,  5 Dec 2024 21:54:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733390498;
-	cv=none; b=XE3l7CnHDb6it/pIfblVwLo544nrRctdR2eDPBzZ1Eq0b7B2/vZ3RRhgmN/BhKV+BAB7eJdavI/bloise9uTsRX2wsxFAIEBW77bKHJJyT8mPYQuHpR1Rd2I8St8eVgemU8DpsDw0w39QVpllinUa/eDn1O7fPevvJON8SfUs1VAQaaHSwF1AQiNf8LLOWtv8L9QZSeRGtEP4PU8Cmu+3L87aQfXrG6Cd7M1NtsNeus3JUkGyWLiyHXtiPiVx/vHmyxQ2WSHyQOHgHa9VpSt0ayUf1WEtHmEiLQPYZ3aUWGHrCQRhURJnif7xyo0rS9yj2anidLBc2+eTTZBR6j3VQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733393500;
+	cv=none; b=HAu3Sn1wKet7rlm6Tx+kfHhyaOdK65SudgDrdP5L1YjtO8Wei8D4WXcexpcOAH/raq70YYMGxD+xlvMNwtImb5DYurxD4FDmxVGmKhKcyS7LTAeNwc+5gcd0L5pJSBoLX0EVqG6xy7cjhAMUDVizbHbtz0vR1cjAOvPh4OauC7H907sPdRMDBjZiTe+Jt5AszEW4rBQ1VnPDlbHUqiezG/Gk8IfqpKx7l8Cb9XVTAQv2/XdQIkSli1AEG8nkwLvmKy40NrykDio8c0BWF11QcBKCn1P/dotez9Uom/YYpRWsdoKO4Td7Wl/Ub/yfPfQuJMgt0T79IOn1F892Eq1hHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733390498; c=relaxed/relaxed;
-	bh=NhIFRytJ7J6YcXrMQq6LGhGesQm6LgaQBIy4YaNok7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BPQtsdzfWOIl0Nv314fSU3LnjSKeQqzcjE6v8C3dvmx8hVSyDsZZvVytQ1mxm8um7N37bjLbaLsUcZrwqFwLpSF4Oooki236o42Zrz6QiJEwIUlyWTht+6biJjsXq0+coI6GJ2wTRr6CtsEFrzoPaOaJxVP153a+5c7rjyoWSCOA817jNoX4esP4WNJZ7V2XtNV4TJ1W7bavVnhq3SdlsjWKMHeIlDrUOOeZdwSC4nnuj5Ywp3niWZ46Rwnx0lFcY/sjc9JQGmogFcgBuKVN4fSbDn5wE8iuUC2D6uh354Sdb0ebRxCcQaxY3ZpBxKx0VdEp/WyRZeEiA+MALkVang==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bO+iAcht; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=tzungbi@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1733393500; c=relaxed/relaxed;
+	bh=0fGKn3URg7dNQUHHzyhwhgiGOLjZAj+7+Ns9W3X6Ndg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oN+zb58xL2hzgPCVKOBtKMUCibiKHPlycb5/ie0DJB++uwiGHVSoGNmMf4VAzu0W5TIdXUPrp1d9UFdwSoCcj88AomPv/lYZsaCvCXocLZuJOYeMaVKSTfNFyQXSh+Dvp9L7aY1Bzk4MoIGjdUAl0Iv9XwrpbKChmZUzDCyazh0oHx7wn99F4uLkniQjWMru/VRCF4nM/MCDxYOVDRgpwOBEH/lhFzcb0QL/85YOG1TisHEsQsLu/A67pXfQfUKKtVLVyLXjpV9ZftiTkYqpd+0ntDdvXH3zB7lb8ySF4ZqG7SbgfNom7GpUgfYpIqTM4bvYEYI6E8O1AxnMmbOlgw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m4jrmHAq; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=avnish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bO+iAcht;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m4jrmHAq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=tzungbi@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=avnish@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3pmd5lLTz2xs4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 20:21:37 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id F3B515C71ED;
-	Thu,  5 Dec 2024 09:20:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DA0C4CEDE;
-	Thu,  5 Dec 2024 09:21:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733390495;
-	bh=0NtFK3oCzvBSihoOheuwFu9KzJvVPyvwejVb22YMDX8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bO+iAchtJ2xcasBhdzF+wbKSTg19ybb/JAHkdXYvclcrjO0D4X8bJ3DeLNUn2bEFa
-	 77lJpJ0g3Pajml0kav68z3LlmOMFTdeTXhAtjxYw8F+oAacKePbD0UKw9UHzIMcqev
-	 TvabFo0KBg2gviCqTfvyVJSA7M+9v5w237FTHKikw8hH5q8K4tncW5uvC4zwyHnzys
-	 BtHac/HZX0UM+Kf69TC/JMuKcpkf83Lj3DCfPhTjX05rh/Eqn77fFYUts72J6jyaa8
-	 29bEH6HxVThRRTUJK7Rj24nbhs18WAgJ6WPlYn9cXFCYWYTBplwHLHRuLnes8eWfid
-	 QmTznu7igjaEA==
-Date: Thu, 5 Dec 2024 09:21:30 +0000
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Julius Werner <jwerner@chromium.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, chrome-platform@lists.linux.dev,
-	linux-scsi@vger.kernel.org
-Subject: Re: [PATCH 5/5] scsi: arcmsr: Use BIN_ATTR_ADMIN_WO() for
- bin_attribute definitions
-Message-ID: <Z1FwmmFEDKeEgNRO@google.com>
-References: <20241202-sysfs-const-bin_attr-admin_wo-v1-0-f489116210bf@weissschuh.net>
- <20241202-sysfs-const-bin_attr-admin_wo-v1-5-f489116210bf@weissschuh.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3qtL1fcsz2yFB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 21:11:37 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B59O1cC028221;
+	Thu, 5 Dec 2024 10:11:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=0fGKn3URg7dNQUHHzyhwhgiGOLjZAj+7+Ns9W3X6N
+	dg=; b=m4jrmHAqW4Vf+WWf847f112N3gI0gDvU6WDIxxJFqlHyyswhRCry60TqZ
+	jB+vfrhPle+FuSdWF850i9ufQ7P/AL8AQJ63/z0vdP2dXgQxvfWt0p1wGkWOEV+E
+	3brat+eVZH+whBmPHFnCkdJfxgwjdWaeKiXhPEGnXl+Ws0aNs8wWu7Wan5QZ0k92
+	9O5tOu5o+VWfR+IZXDXsXT/MHwujLmaGjV3C8hL5VvLX96MHj30aytp6QRBqx9Fw
+	0KF/xgpqKjHbvJDnGQFOc+kdEdPL3Em8cD2m56x6XGop3iHNED2OtxouKOYpKRIs
+	2RjAJsPN3wTjCDTn6VrhR+ol8W78A==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ax65u50h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Dec 2024 10:11:29 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B59uMJ8020564;
+	Thu, 5 Dec 2024 10:11:28 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 438d1shdmv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Dec 2024 10:11:28 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B5ABKN931392066
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 5 Dec 2024 10:11:21 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5852120065;
+	Thu,  5 Dec 2024 10:11:20 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E784920073;
+	Thu,  5 Dec 2024 10:11:18 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.152.67])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  5 Dec 2024 10:11:18 +0000 (GMT)
+From: Avnish Chouhan <avnish@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: mpe@ellerman.id.au, brking@linux.ibm.com, meghanaprakash@in.ibm.com,
+        sourabhjain@linux.ibm.com, maddy@linux.ibm.com,
+        Avnish Chouhan <avnish@linux.ibm.com>
+Subject: [PATCH] powerpc: increase MIN RMA size for CAS negotiation
+Date: Thu,  5 Dec 2024 15:40:45 +0530
+Message-ID: <20241205101045.27069-1-avnish@linux.ibm.com>
+X-Mailer: git-send-email 2.46.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,22 +83,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241202-sysfs-const-bin_attr-admin_wo-v1-5-f489116210bf@weissschuh.net>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0jdc-wj4s_GfqhAy4FWJ7WOFOkoX9b1g
+X-Proofpoint-GUID: 0jdc-wj4s_GfqhAy4FWJ7WOFOkoX9b1g
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 mlxlogscore=743 malwarescore=0 spamscore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1011 impostorscore=0
+ bulkscore=0 adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2412050070
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Dec 02, 2024 at 08:00:40PM +0100, Thomas Weiﬂschuh wrote:
-> Using the macro saves some lines of code and prepares the attributes for
-> the general constifications of struct bin_attributes.
-> 
-> While at it also constify the callback parameters.
-> 
-> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+Change RMA size from 512 MB to 768 MB which will result 
+in more RMA at boot time for PowerPC. When PowerPC LPAR use/uses vTPM,
+Secure Boot or FADump, the 512 MB RMA memory is not sufficient for 
+booting. With this 512 MB RMA, GRUB2 run out of memory and unable to 
+load the necessary. Sometimes even usage of CDROM which requires more
+memory for installation along with the options mentioned above troubles
+the boot memory and result in boot failures. Increasing the RMA size 
+will resolves multiple out of memory issues observed in PowerPC. 
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+
+Signed-off-by: Avnish Chouhan <avnish@linux.ibm.com>
+---
+ arch/powerpc/kernel/prom_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index fbb68fc28ed3..c42fd5a826c0 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -1061,7 +1061,7 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
+ 		.virt_base = cpu_to_be32(0xffffffff),
+ 		.virt_size = cpu_to_be32(0xffffffff),
+ 		.load_base = cpu_to_be32(0xffffffff),
+-		.min_rma = cpu_to_be32(512),		/* 512MB min RMA */
++		.min_rma = cpu_to_be32(768),		/* 768MB min RMA */
+ 		.min_load = cpu_to_be32(0xffffffff),	/* full client load */
+ 		.min_rma_percent = 0,	/* min RMA percentage of total RAM */
+ 		.max_pft_size = 48,	/* max log_2(hash table size) */
+-- 
+2.43.5
+
 
