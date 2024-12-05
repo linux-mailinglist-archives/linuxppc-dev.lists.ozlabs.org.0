@@ -1,68 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-3814-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3815-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFDF9E4E71
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2024 08:32:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66EFC9E511A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2024 10:20:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3mLy1T7Rz2xYw;
-	Thu,  5 Dec 2024 18:32:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3plc6qk7z2yK7;
+	Thu,  5 Dec 2024 20:20:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.201
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733383962;
-	cv=none; b=N6hqasHS0PopuN0flLbPMu6Y3Ts4MruteRqqrgyk7/63rESlfvzn7dmLaXRcQOrAxBODSrchg/vx9PEVwBNuiu8+jy16jP7hoCxVctMrZXZB2wTRGHn0hU6wLJLSNanqRSEQXGzp9DZ2vVp46PnNI7AAIkOs/hk/WAelqoDg97t2lk1qh2GZj6awGMLAWM2JH0qEV6VbmZF+bJiIbOQ3u27ZndMRF9jxp0oAo9T856nnv1IrlIASKzVAeXmlCXYH+p9aGkHi5CjbVW92P8LR32q6jf0bumabNaSTUWcEy7tams6pkF0/7fzSX1lx/fzT6nqVPM+bZhxklFkoDopXXg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733390444;
+	cv=none; b=ab3iDMR9R7w8a9IpJ0T95ACPQO5EJ3Elwll/JVcrdTVkGHQhp9C3KvAwXpfW8DHEJPES9hlPLzPeddn7fhaAoIGXgmUKeFKI1gcLULX22vS5F4tQ7hpn5mGO7w0h+28HeIW5K3EW7avP0Sbzrrg8MArJCoCEa0L8ry/6AWJc9fg9TAN7B33O3AzDg4xSejuSYAiBQ96u9aoOp93xlNskl4uVlbcHCep90h42HUZJ4wtAoNXu8RO4F/5aTzS0knErgRzfRtRjQMkT38Ep5QnWkGgXc2EojNyawagn1zKVLCByT2yRbZna1AbASsX7OVRzN64UUbuJM9soqhlg5Wihfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733383962; c=relaxed/relaxed;
-	bh=M0uLzqoQedwirIumfnvNOpR0fEO9z6ZDDUf+XyF2k1c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UvoHviTCvzv7HlPPtAAuse6VWnwkRtvxmX0sD4+33zj+21/D5XAViTaXDZ8nhRwWOgWC+x1to9sOwlV/lsIztqqQbh/uUY0ZKDAauKOFpo1QElmDoqyCBSbzjztEabdpol+lIRj90088CRct1pXT+eez8LnPy31qZ6vh9wlcI9krJw34dO89nQkCD9uqAbOrRiNzgromVemerL6hurY/rCwqHoLmfDcOqmtv5Xk1QcBLrzJT3Vh4kDCJkcXxtgPppxiOlLPwy8I9kspyb5gdwWrOWt1aAj5MApyIQWBUkJR/ZjYN7vY+bQA/k9QI6pdfCffhX+NFaCv+5n3yYd6guw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=nmZGsgMg; dkim-atps=neutral; spf=pass (client-ip=217.70.183.201; helo=relay8-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+	t=1733390444; c=relaxed/relaxed;
+	bh=mJd+LcZRky6I65akfu/kscTitlhBM7Z2lQwstDlwviM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XHi99PiwjjRgjtp+WaEX2lanyJAHpEwRliuOnZ6I4dAmfX/IMSAmB3NYQiQUrgBmciiTbgEi9EfE2g9MR8UNasN4exgmYbRqnNRbvt6CL0EuizRVeQh+78ZBWxAO/IJe/1Lv4quREDHvui6/0aL7VQfmj8K1UiurFl0YFTobuwK3ua/xIcxxFIUU0S4gvAg4W1nIJJCxacLfOVr+yK8X5bRGpYtYFrIxWYwoY609PAxgz5y8JPJY9BjWROFky+5UM2TLdKHYI5ePCYW8L9zQP/+kCKJeSl63ArPQ7ea6HDCL4VM3PmWZax14Zg+NAURHejEd8/bE+WriKKNxQkGL1g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eyjoR7Hv; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=tzungbi@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=nmZGsgMg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eyjoR7Hv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.201; helo=relay8-d.mail.gandi.net; envelope-from=maxime.chevallier@bootlin.com; receiver=lists.ozlabs.org)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=tzungbi@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3mLw1c4bz2xWt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 18:32:37 +1100 (AEDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C9EE81BF205;
-	Thu,  5 Dec 2024 07:32:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733383953;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M0uLzqoQedwirIumfnvNOpR0fEO9z6ZDDUf+XyF2k1c=;
-	b=nmZGsgMgcL7R2GwptET0jTVmXpIGp030DPZr91xtkvYkN7Cbhgn+5o+k/w1uiDcxUXRUBb
-	nQYNI5q+lXq8jiij00dhkF2LhqUP7QVd2YKMZYxDP+jOlVvf+XU3SqoZKb0Fe50G8cjOF8
-	atXyTQKUbVvykP+QLV+cQQHbv4M17sRbuYYn8S1GEko7Fz9Z1mwj1gVUtDJOhuvnQcAdau
-	cC38FReuOum3xlUvIBZOMB2WgEluDNL5/b3h2hddYkjpGg+JYIC7MzbKJqskeDLKgPL3pD
-	74VL6NsE+0FVZ511rYCjBY1CSWT6eDrAOt5MDAosKIoaPMTllGDHFJlXFguk7Q==
-Date: Thu, 5 Dec 2024 08:32:30 +0100
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com, Simon Horman
- <horms@kernel.org>, Herve Codina <herve.codina@bootlin.com>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v3 09/10] net: freescale: ucc_geth: Introduce a
- helper to check Reduced modes
-Message-ID: <20241205083230.2344d850@fedora.home>
-In-Reply-To: <49fbbbf8-ec21-41a6-b87e-0172d0a4a2b3@lunn.ch>
-References: <20241203124323.155866-1-maxime.chevallier@bootlin.com>
-	<20241203124323.155866-10-maxime.chevallier@bootlin.com>
-	<ce002489-2a88-47e3-ba9a-926c3a71dea9@lunn.ch>
-	<20241204092232.02b8fb9a@fedora.home>
-	<49fbbbf8-ec21-41a6-b87e-0172d0a4a2b3@lunn.ch>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3plY4kGjz2xs4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 20:20:41 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4F4875C722E;
+	Thu,  5 Dec 2024 09:19:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC96AC4CED1;
+	Thu,  5 Dec 2024 09:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733390438;
+	bh=QjLPaoFnOl8nQT0shBLP2oEUk6t3cO+Cr9MiwxrNv90=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eyjoR7Hvl58VxupQPMKipr4q/IRsG8OVhqhhDLhHOzE3PPmRHst2FDPTTYBPyHxuK
+	 9YPu9FHKegN1u3QsVfQON/ctQlWbl20Ax/DtT6KBgsvaiqDbdgszm2m8tkmQvxp/j6
+	 KttXSDrjW8lXJXusvIx0Z1eN51OoVMusSh8IXWnOmajNfnZaiHfqoWztzb37E7Wqfv
+	 F2iY+V6PBxFNpywM9ba5jqmoFCsCVFYASHJvk0QLe++6Chglo09h5/ETr0sBMnMQ8m
+	 YAQxGoH+qdMK1tfct7nTzvcxtevJ/DPYHwXPFAnVQF0ZpOYZ41OIgwst1LzyRqelMd
+	 l88ABA/G7o2cA==
+Date: Thu, 5 Dec 2024 09:20:33 +0000
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Julius Werner <jwerner@chromium.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, chrome-platform@lists.linux.dev,
+	linux-scsi@vger.kernel.org
+Subject: Re: [PATCH 1/5] sysfs: add macro BIN_ATTR_ADMIN_WO()
+Message-ID: <Z1FwYQFCK_eRkcRD@google.com>
+References: <20241202-sysfs-const-bin_attr-admin_wo-v1-0-f489116210bf@weissschuh.net>
+ <20241202-sysfs-const-bin_attr-admin_wo-v1-1-f489116210bf@weissschuh.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,44 +78,21 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: maxime.chevallier@bootlin.com
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241202-sysfs-const-bin_attr-admin_wo-v1-1-f489116210bf@weissschuh.net>
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 4 Dec 2024 16:41:33 +0100
-Andrew Lunn <andrew@lunn.ch> wrote:
-
-> On Wed, Dec 04, 2024 at 09:22:32AM +0100, Maxime Chevallier wrote:
-> > Hello Andrew,
-> > 
-> > On Wed, 4 Dec 2024 03:15:52 +0100
-> > Andrew Lunn <andrew@lunn.ch> wrote:
-> >   
-> > > > +static bool phy_interface_mode_is_reduced(phy_interface_t interface)
-> > > > +{
-> > > > +	return phy_interface_mode_is_rgmii(interface) ||
-> > > > +	       interface == PHY_INTERFACE_MODE_RMII ||
-> > > > +	       interface == PHY_INTERFACE_MODE_RTBI;
-> > > > +}    
-> > > 
-> > > I wounder if this is useful anywhere else? Did you take a look around
-> > > other MAC drivers? Maybe this should be in phy.h?  
-> > 
-> > Yes I did consider it but it looks like ucc_geth is the only driver
-> > that has a configuration that applies to all R(MII/GMII/TBI) interfaces  
+On Mon, Dec 02, 2024 at 08:00:36PM +0100, Thomas Weiﬂschuh wrote:
+> The macros BIN_ATTR_RO/BIN_ATTR_WO/BIN_ATTR_WR and
+> BIN_ATTR_ADMIN_RO/BIN_ATTR_ADMIN_RW already exist.
+> To complete the collection also add BIN_ATTR_ADMIN_WO.
 > 
-> O.K. What is important is you considered it. Thanks. Too many
-> developers are focus on just their driver and don't think about other
-> drivers and code reuse.
-> 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
 
-Thanks Andrew. I should have indicated that in the commit log or in the
-cover in the first place though, I'll make sure to do it next time.
-
-Maxime
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
 
