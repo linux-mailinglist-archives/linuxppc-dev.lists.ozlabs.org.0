@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-3830-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3832-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11A79E5D55
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2024 18:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 472459E5D5C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2024 18:36:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y41ky6hGCz300V;
-	Fri,  6 Dec 2024 04:35:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y41l25lH4z30Sv;
+	Fri,  6 Dec 2024 04:35:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733420154;
-	cv=none; b=nEK+02OTWkkRStWd4HmrE7c28ldDHHr/fTmVN3xD+Cj5d1DXoLdhiRV31dj6u1LWpYfBZOAYwE55qxz/0OXizyj/ea8S53JUQws29p7HOf7aX7JvE+3C/8qbwvhzuKxn7JERKe773UI+oK/TrackbJKp5NZ8zPrGoLVHnBGF3NTn8BaGiMmgj6sJOfRycffCwBFmpW7Dy2XyQQpL2LXVRpXTWx3IGMtYMFswyviPbzMPCC8IDIpT8zzJN26HMFnjdtEOkXJQjd3Eq4OahSY2q/I6WMbMqdeAb4gSUmkdMKqpyHvIok3wPEDwRtzy2HFxCvz+Sb3LbKeez+TPW+4I3g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733420158;
+	cv=none; b=VO7X8g1Y0CYtX3ye5UjIIO5GpiCSKxHhAPwVeLKEV6QrjH9ZcYy1rAWRMOuKT0q6Ti7vr3t+g2QEQaMnt8z2ZhhKbQqplsv2G484xDZLTbqCq0w3yA0jcfEUnRM84oTWUGxrdeBZKPC2u8vhryCRBcAWwE0LmpWXmJAlqPpL1Tcj7leZdDa5B2sFyyG4+XLEsn1+nucyIESKxrhI0J2PFx6beCTebymFhA2axzHT/EuDynjwehEEHw7jtQY/zcbMjBpNTHNz4OmFFF4bGvT9nr7mErjGtzjQz+8qan2bOO7aE1rBn4BCfipRxJhryg1jZUoLwocGDPfkfJq5iAaf3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733420154; c=relaxed/relaxed;
-	bh=V7yqIF0hpa70J1Es4osz7ul+iLI05ka3BCzLr2JD3+4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dQSEqjtCLng0FUvqIfqhPclArjntfquXqZ+6CH1FsFK3WfY1cShyIgVi/L22XxFRVHRI3QQ8G0mYMNqmN3OB8fGRztmmG0levhM4cxeCbaRpDl4SY4VSdB1SmK62jORqzoznLsG1WngMNPJjCkaFlEyZ3tELxtC9f33DOqqO93uAPHSjinsN3hGPLJTE8Vj0FI10aoAXKNCRw8vgQMEKgRt5eCWRIBuR8daUH1pSye36FcW7vXUUublfSyaWNJyryc3mDIXt5V/mhpOJA5p29iK9+zl3UqwVwfnczJtXvZkpsQO/DqmLAYOUaGjDf/D+qqdXMl34a5sL1YjcPXMiGA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=osaoXBUG; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	t=1733420158; c=relaxed/relaxed;
+	bh=jQl7PbCpEmVLxwpExhudqrT18v9lxMliD7l9b62ZdRE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fbce37SKL0Yp64IetE/T4ySTv+mgYSX+AFJLjd48nvgL/PupOQDiIKQFaDCdtPlURdEQbhrm363Gxalxpu6ya5HatRIPSg2hSqL4ZIlnFxD1ErY2NnDlTU25qh/u4B5yuBIbYjzcbpqXQ4mSSfEfBJWSeOx7gnxSZ8weNxrpBnivOzHWIQU1lBpjHu8uf2N7pnW72RyFbRW0aMtgQVh4iQ+k17aqgmTykiLP+X/NyuhChjxhVjqOf1aTZ6zNYWkqnGkOICU53Zl4CSnfNAL3TkdUTnGrczwmPXcGIik4nAhiBikebsQqzUez7mcwLEOi+HAp6Y9MQwYyVV+PzOv+Vw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=KG9tk7D3; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=osaoXBUG;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=KG9tk7D3;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y41km5D1Kz2yYd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2024 04:35:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y41km6ytvz30DL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Dec 2024 04:35:41 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1733420137;
-	bh=68WNMR27/Jh6Vy7PvAle7AaTWkBct2qgXVk12kHAaEY=;
-	h=From:Subject:Date:To:Cc:From;
-	b=osaoXBUGfRb46luXfjCGTPlnbK7q0cEYSDeeHPKe6F5/8fT1bXolzVbZEr743sp7n
-	 OYCOlxC/xSo+G3OjW0YG7pLTN295Pga9v2NcIMjRFaP+ZC6R3UrV8BOWJePkDk1HGc
-	 yOQXl/blyJageLhTjzhHwYNhUOVSru+iMXlM/kHE=
+	bh=yFTZIDT/d9HKSr1VCybVUXBQPCUX/YWCdCVUCfZE2/M=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=KG9tk7D3L7Uf0IUGoE1XT5UumEfJAlsFAfz8UVuSvsNm0D3SC3/fIgoGLxau2ZERH
+	 mWMESJy6PDE+efZVb10E62JK6JebxXhDp9abmp90ylpbE6ROZkzRiglTfiN2Fx/5k+
+	 W4pJX5dsjU6q3xn4Pjbdhsy3al2VGArAwS9ikGGY=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH 0/4] sysfs: constify bin_attribute argument of
+Date: Thu, 05 Dec 2024 18:35:13 +0100
+Subject: [PATCH 1/4] sysfs: constify bin_attribute argument of
  sysfs_bin_attr_simple_read()
-Date: Thu, 05 Dec 2024 18:35:12 +0100
-Message-Id: <20241205-sysfs-const-bin_attr-simple-v1-0-4a4e4ced71e3@weissschuh.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,10 +53,9 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAFDkUWcC/x3MwQpAQBAA0F/RnE3ZSSm/IondWaZY2tlE8u82x
- 3d5DyhHYYW2eCDyKSp7yDBlAXYZw8woLhuootoYItRbvaLdgyacJAxjShFVtmNlbGzl3ETeekO
- QhyOyl+vfu/59P/HJDYRtAAAA
-X-Change-ID: 20241122-sysfs-const-bin_attr-simple-7c0ddb2fcf12
+Message-Id: <20241205-sysfs-const-bin_attr-simple-v1-1-4a4e4ced71e3@weissschuh.net>
+References: <20241205-sysfs-const-bin_attr-simple-v1-0-4a4e4ced71e3@weissschuh.net>
+In-Reply-To: <20241205-sysfs-const-bin_attr-simple-v1-0-4a4e4ced71e3@weissschuh.net>
 To: Michael Ellerman <mpe@ellerman.id.au>, 
  Nicholas Piggin <npiggin@gmail.com>, 
  Christophe Leroy <christophe.leroy@csgroup.eu>, 
@@ -81,11 +80,11 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  bpf@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733420137; l=1170;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733420137; l=3142;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=68WNMR27/Jh6Vy7PvAle7AaTWkBct2qgXVk12kHAaEY=;
- b=T+PbqYnqnoXWLbF5FULrGKTEWzZ8sXpbVXoqId9h5bVMynN1gxzdjACjy9czZW5+/hfIaiOMY
- 927yDeHmNmiBbYl7QYj+NHuMWTZRXQl9ozjUUHoyQqHpqA28sdx295H
+ bh=yFTZIDT/d9HKSr1VCybVUXBQPCUX/YWCdCVUCfZE2/M=;
+ b=N6SLb2+eSyolUshM1oNp1SwAkyOJIwilUlfzAQ+W+1VNmN2Og70zO7PtWIR6lJLtiURIW0PKL
+ lP9vrvVVQB8C6d3iPwEht3v7ttdLR6Ohcbgt+23W8yn/BbmOnet1+/p
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -95,31 +94,79 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 Most users use this function through the BIN_ATTR_SIMPLE* macros,
 they can handle the switch transparently.
-
-This series is meant to be merged through the driver core tree.
+Also adapt the two non-macro users in the same change.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
-Thomas Weißschuh (4):
-      sysfs: constify bin_attribute argument of sysfs_bin_attr_simple_read()
-      platform/x86: wmi-bmof: Switch to sysfs_bin_attr_simple_read()
-      btf: Switch vmlinux BTF attribute to sysfs_bin_attr_simple_read()
-      btf: Switch module BTF attribute to sysfs_bin_attr_simple_read()
+ arch/powerpc/platforms/powernv/opal.c | 2 +-
+ fs/sysfs/file.c                       | 2 +-
+ include/linux/sysfs.h                 | 4 ++--
+ kernel/module/sysfs.c                 | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
- arch/powerpc/platforms/powernv/opal.c |  2 +-
- drivers/platform/x86/wmi-bmof.c       | 12 ++----------
- fs/sysfs/file.c                       |  2 +-
- include/linux/sysfs.h                 |  4 ++--
- kernel/bpf/btf.c                      | 15 ++-------------
- kernel/bpf/sysfs_btf.c                | 12 ++----------
- kernel/module/sysfs.c                 |  2 +-
- 7 files changed, 11 insertions(+), 38 deletions(-)
----
-base-commit: feffde684ac29a3b7aec82d2df850fbdbdee55e4
-change-id: 20241122-sysfs-const-bin_attr-simple-7c0ddb2fcf12
+diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+index 5d0f35bb917ebced8c741cd3af2c511949a1d2ef..013637e2b2a8e6a4ec6b93a520f8d5d9d3245467 100644
+--- a/arch/powerpc/platforms/powernv/opal.c
++++ b/arch/powerpc/platforms/powernv/opal.c
+@@ -818,7 +818,7 @@ static int opal_add_one_export(struct kobject *parent, const char *export_name,
+ 	sysfs_bin_attr_init(attr);
+ 	attr->attr.name = name;
+ 	attr->attr.mode = 0400;
+-	attr->read = sysfs_bin_attr_simple_read;
++	attr->read_new = sysfs_bin_attr_simple_read;
+ 	attr->private = __va(vals[0]);
+ 	attr->size = vals[1];
+ 
+diff --git a/fs/sysfs/file.c b/fs/sysfs/file.c
+index 785408861c01c89fc84c787848243a13c1338367..6931308876c4ac3b4c19878d5e1158ad8fe4f16f 100644
+--- a/fs/sysfs/file.c
++++ b/fs/sysfs/file.c
+@@ -817,7 +817,7 @@ EXPORT_SYMBOL_GPL(sysfs_emit_at);
+  * Returns number of bytes written to @buf.
+  */
+ ssize_t sysfs_bin_attr_simple_read(struct file *file, struct kobject *kobj,
+-				   struct bin_attribute *attr, char *buf,
++				   const struct bin_attribute *attr, char *buf,
+ 				   loff_t off, size_t count)
+ {
+ 	memcpy(buf, attr->private + off, count);
+diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+index 0f2fcd244523f050c5286f19d4fe1846506f9214..2205561159afdb57d0a250bb0439b28c01d9010e 100644
+--- a/include/linux/sysfs.h
++++ b/include/linux/sysfs.h
+@@ -511,7 +511,7 @@ __printf(3, 4)
+ int sysfs_emit_at(char *buf, int at, const char *fmt, ...);
+ 
+ ssize_t sysfs_bin_attr_simple_read(struct file *file, struct kobject *kobj,
+-				   struct bin_attribute *attr, char *buf,
++				   const struct bin_attribute *attr, char *buf,
+ 				   loff_t off, size_t count);
+ 
+ #else /* CONFIG_SYSFS */
+@@ -774,7 +774,7 @@ static inline int sysfs_emit_at(char *buf, int at, const char *fmt, ...)
+ 
+ static inline ssize_t sysfs_bin_attr_simple_read(struct file *file,
+ 						 struct kobject *kobj,
+-						 struct bin_attribute *attr,
++						 const struct bin_attribute *attr,
+ 						 char *buf, loff_t off,
+ 						 size_t count)
+ {
+diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
+index 456358e1fdc43e6b5b24f383bbefa37812971174..254017b58b645d4afcf6876d29bcc2e2113a8dc4 100644
+--- a/kernel/module/sysfs.c
++++ b/kernel/module/sysfs.c
+@@ -196,7 +196,7 @@ static int add_notes_attrs(struct module *mod, const struct load_info *info)
+ 			nattr->attr.mode = 0444;
+ 			nattr->size = info->sechdrs[i].sh_size;
+ 			nattr->private = (void *)info->sechdrs[i].sh_addr;
+-			nattr->read = sysfs_bin_attr_simple_read;
++			nattr->read_new = sysfs_bin_attr_simple_read;
+ 			++nattr;
+ 		}
+ 		++loaded;
 
-Best regards,
 -- 
-Thomas Weißschuh <linux@weissschuh.net>
+2.47.1
 
 
