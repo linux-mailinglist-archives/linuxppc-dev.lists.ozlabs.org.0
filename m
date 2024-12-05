@@ -1,64 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-3807-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3808-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B91B9E4917
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2024 00:31:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8ECD9E4B28
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Dec 2024 01:30:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3Ygp1Nv5z30TL;
-	Thu,  5 Dec 2024 10:31:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y3b022FzLz30TG;
+	Thu,  5 Dec 2024 11:30:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733355094;
-	cv=none; b=PQBJlQr4XWsc3jS+tiG9hA/dUlk3hUocm+EoKnwR/ODoiYbWeY9tMZnyZIYyqPU57mR5Dxnvp3LS6AXGlgdvMiaJQepL/yMUX5CHeJwlm1agqWW8+1sMqSLWr+fhP37ob3Hm1WNG4I99Furc4Uq5jaqwRiEkOpLkK3gX2b3LzzpI4oyaIg8VZQ1f9Zy74Ofu+FGtkeWgcydS0zBI+1xV1V8iG6gYrpGSCeVN168JCsz7sPk3LaezvI95ZcbiASAjOWA5Jr58l+9nPRCrZkrexuZogK+mUDJoQonS52TNMfJryXWsupK1UlYv8ByM5yNsNOtKf0KjG03tipbdZZH14A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733358642;
+	cv=none; b=ArF5IAZAtwlIz8ATv0TJi7z9X5Hp8+L+YZm/RuVZNT6hdPfxyeNfLohfdqxxbTvjFqgz4QzttThGOF3ELFIYOLFOTj+HJnkGBplkByqxKpPOxDZI8Jyl3G3ryXeb3T/fGBlrnF3xX1XSM880bgTmLwRsPhVLvF1C7V+eUfusfcFHr1HrA9+g1JruHmlIkFZsXtSF90cZox4XsIG53CEP4zWHWOgUurhav29cZMCBGe/UDzNkVBWBRZ5j3LkjM7fXC0Y0kjOSL8KMWQ/tDj/ERVdH9gdIynrbkKc9KjBhmuF/zE3Lj6uoE71Z+CT0R3dKgNbm23XpRCpx2REo/y5thQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733355094; c=relaxed/relaxed;
-	bh=aCK7pQH9MMOOAhaZ/c/vuccYyA7ea5M/YvZQjw+BQMc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyO61LSulc8nRKZmk0VEYTc7d1Ro6aKj+5L+cjKf6qS+E2ZxryCa7fta0R8lZzWObAizIqVj08GUaHL5h6KWXP9puRQbikSMoSdTGy/UnbHLGmFVnssQrNsmj9P5JC2Xu2A4MwzcFFz3xoTKvIoYdb+t4lFuamrq9PFCDSDaF8uC9Vjj4ahigICkDqyEpO0oicwCd9ne7jb6f6XCBYnrU3ZIU2c5NGkuGWd0eV7xMuNYuNS9fLz+heQWamIDN3CTkCCdvM34/RkTzGg3L37IO89QTIgy+V00ZUIn8OsMosAAJzi62a0/Z+7M4ZshYUMQUbyItQnaZxXdYEy12NsHfg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=akhXBz/Q; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1733358642; c=relaxed/relaxed;
+	bh=cx8AjVOF2supC5V2SOlqTps9GdiZUBi3ZTNgltdJ0dE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KICB8MBpZbxWH6qwwF/Zc8tcWtuXcETXV8C0P5L3EbpPv2gsNCV7ke5TSPli1cufRfeXU69hxgKY9nPgQnOidzYBuSuKw3evDw3WZdL3TDu7AePA0w7xVQrMFfGLgcbObjQlunfM3wzmDsyDFkWuNdRNevKPkli8i30C+uyHs7ny/cSovlVoUMVWRzKdm5GQI4hTnUi80Pyn49lpWVN9Xi6804Sw0Ty03uBe2+/khNuE55cSv6+8uRNQ5+6s3/MTiYzXvCokgCyrYiFcNQON1StPnjZpF9KvID2BMqLa64WwG2qgcjWlKlRl0WVLfTa3Pna4JlKohgX5z8rMvaKzrA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U0b+XS6w; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=akhXBz/Q;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U0b+XS6w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3Ygn1Ln7z309W
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 10:31:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y3b0111SGz2yhT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Dec 2024 11:30:41 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 898A15C6943;
-	Wed,  4 Dec 2024 23:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18529C4CED2;
-	Wed,  4 Dec 2024 23:31:30 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 8E725A41BEF;
+	Thu,  5 Dec 2024 00:28:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8FFC4CECD;
+	Thu,  5 Dec 2024 00:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733355091;
-	bh=IpvscR4FRk2N9TooPIqTQd7K/6N/z5+Gt8qd9x6Md8s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=akhXBz/Qb89W3kGsbFe1wEc2CNPWL6T65wgHzpAH4mf8OF8kHyNSDWJoofXE/7Bkv
-	 +DtlBJHohc2J+m2lOcgX6GmoB59gXFR/3ADCgcp+erjcnEwwkYRW931vqibZiseQ/3
-	 rsY+THmolVxTT+QIzRoAi+kHmbQd5Y+LwAGwba+iXYxopfhT3CpCtbBflzPfN5Cvj1
-	 OJ5Ka0iNpPk9/xFpw/TtolDtxK106rrPkkGPCHcNeQnASEs722wvYnpi4vk7T/9jCy
-	 RwZwx+iMpnSHEEZCQWlaEcRrVwkGPBn+ezCqVu9i4XY+8iE2+sTR6kzEueOXO0Z2+T
-	 JDhr0+IEl2PxQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Rob Herring <robh@kernel.org>,
+	s=k20201202; t=1733358638;
+	bh=/2sfueJmjtuNFdSJDAv70/lV2GSeIQBqxjwAlB5dnHU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U0b+XS6wBGTJTdoUB+zX5yCYC80xQg8mG1JECA6jtd/ZXQyr+wkFKnJpWr4Exsl3q
+	 PKUXHtJajUBEY4qoOn2lhqNOARzwLDGjRy42ZnHfelm66fsXvnBWhMn7kn7XHhCR9u
+	 zis+5iQfSgyOY+qra3sg65bwGSzqxyPKuTkP/ABRbdkStCVZeRpNSyYSgAsc2094iQ
+	 0Dojw17kSxZ02gPDQGiuLSkb/0s1hhbmFmrLSoW/9qiE3SckHm30ckc58xbfU202eY
+	 PHb3cNAnXcUsNvTparem6jFHAsV+hk5RMSyvv4yYodMVAFENmD0zSeGU+TnTv/pMsY
+	 tO4BV4HgQsr8Q==
+Date: Wed, 4 Dec 2024 16:30:36 -0800
+From: Namhyung Kim <namhyung@kernel.org>
+To: Atharva Tiwari <evepolonium@gmail.com>
+Cc: atharvatiwari1101@outlook.in, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jsavitz@redhat.com,
-	aneesh.kumar@kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 4.19 3/3] powerpc/prom_init: Fixup missing powermac #size-cells
-Date: Wed,  4 Dec 2024 17:20:03 -0500
-Message-ID: <20241204222006.2249186-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204222006.2249186-1-sashal@kernel.org>
-References: <20241204222006.2249186-1-sashal@kernel.org>
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Aditya Gupta <adityag@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>,
+	Eder Zulian <ezulian@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] fix: add safety check for OPTION_END and refactor code
+ for consistency
+Message-ID: <Z1D0LNfWcnPkWC3_@google.com>
+References: <20241129104401.5997-1-atharvatiwari1101@outlook.in>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,111 +72,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.324
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241129104401.5997-1-atharvatiwari1101@outlook.in>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+Hello,
 
-[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
+On Fri, Nov 29, 2024 at 04:13:53PM +0530, Atharva Tiwari wrote:
+> - Added a null check for 'o' before copying the last OPTION_END in options__order function to prevent potential uninitialized usage.
+> - Refactored the parse_long_opt function for improved readability by aligning function signature.
+> - Minor formatting fix to ensure consistency in the codebase.
+> - Updated the wrapper script for pseries architecture to handle 'notext' option in a more reliable way.
+> 
+> Signed-off-by: Atharva Tiwari <atharvatiwari1101@outlook.in>
+> ---
+>  arch/powerpc/boot/wrapper        |  1 +
+>  tools/lib/subcmd/parse-options.c | 10 +++++-----
+>  2 files changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+> index 1db60fe13802..d25ad8c622f4 100755
+> --- a/arch/powerpc/boot/wrapper
+> +++ b/arch/powerpc/boot/wrapper
+> @@ -267,6 +267,7 @@ pseries)
+>      link_address='0x4000000'
+>      if [ "$format" != "elf32ppc" ]; then
+>  	link_address=
+> +	notext='-z notext'
 
-On some powermacs `escc` nodes are missing `#size-cells` properties,
-which is deprecated and now triggers a warning at boot since commit
-045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
-handling").
+This is a completely differnt change and should be sent to powerpc devs
+separately.
 
-For example:
 
-  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
-  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
-  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
-  ...
-  Call Trace:
-    of_bus_n_size_cells+0x98/0x108 (unreliable)
-    of_bus_default_count_cells+0x40/0x60
-    __of_get_address+0xc8/0x21c
-    __of_address_to_resource+0x5c/0x228
-    pmz_init_port+0x5c/0x2ec
-    pmz_probe.isra.0+0x144/0x1e4
-    pmz_console_init+0x10/0x48
-    console_init+0xcc/0x138
-    start_kernel+0x5c4/0x694
+>  	pie=-pie
+>      fi
+>      make_space=n
+> diff --git a/tools/lib/subcmd/parse-options.c b/tools/lib/subcmd/parse-options.c
+> index 555d617c1f50..f85b642bc9aa 100644
+> --- a/tools/lib/subcmd/parse-options.c
+> +++ b/tools/lib/subcmd/parse-options.c
+> @@ -360,8 +360,7 @@ static int parse_short_opt(struct parse_opt_ctx_t *p, const struct option *optio
+>  	return -2;
+>  }
+>  
+> -static int parse_long_opt(struct parse_opt_ctx_t *p, const char *arg,
+> -                          const struct option *options)
+> +static int parse_long_opt(struct parse_opt_ctx_t *p, const char *arg, const struct option *options)
 
-As powermacs boot via prom_init it's possible to add the missing
-properties to the device tree during boot, avoiding the warning. Note
-that `escc-legacy` nodes are also missing `#size-cells` properties, but
-they are skipped by the macio driver, so leave them alone.
+Please don't change this unnecessarily.
 
-Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 29a8087a49010..7a92794309e31 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2742,7 +2742,7 @@ static void __init fixup_device_tree_chrp(void)
- #endif
- 
- #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
--static void __init fixup_device_tree_pmac(void)
-+static void __init fixup_device_tree_pmac64(void)
- {
- 	phandle u3, i2c, mpic;
- 	u32 u3_rev;
-@@ -2782,7 +2782,31 @@ static void __init fixup_device_tree_pmac(void)
- 		     &parent, sizeof(parent));
- }
- #else
--#define fixup_device_tree_pmac()
-+#define fixup_device_tree_pmac64()
-+#endif
-+
-+#ifdef CONFIG_PPC_PMAC
-+static void __init fixup_device_tree_pmac(void)
-+{
-+	__be32 val = 1;
-+	char type[8];
-+	phandle node;
-+
-+	// Some pmacs are missing #size-cells on escc nodes
-+	for (node = 0; prom_next_node(&node); ) {
-+		type[0] = '\0';
-+		prom_getprop(node, "device_type", type, sizeof(type));
-+		if (prom_strcmp(type, "escc"))
-+			continue;
-+
-+		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
-+			continue;
-+
-+		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
-+	}
-+}
-+#else
-+static inline void fixup_device_tree_pmac(void) { }
- #endif
- 
- #ifdef CONFIG_PPC_EFIKA
-@@ -3007,6 +3031,7 @@ static void __init fixup_device_tree(void)
- 	fixup_device_tree_maple_memory_controller();
- 	fixup_device_tree_chrp();
- 	fixup_device_tree_pmac();
-+	fixup_device_tree_pmac64();
- 	fixup_device_tree_efika();
- 	fixup_device_tree_pasemi();
- }
--- 
-2.43.0
+>  {
+>  	const char *arg_end = strchr(arg, '=');
+>  	const struct option *abbrev_option = NULL, *ambiguous_option = NULL;
+> @@ -828,9 +827,10 @@ static struct option *options__order(const struct option *opts)
+>  
+>  		nr_parent = nr_opts;
+>  	}
+> -	/* copy the last OPTION_END */
+> -	memcpy(&ordered[nr_opts], o, sizeof(*o));
+> -
+> +	/* Check whether o is  valid before using it to copy the last OPTION_END. */
+> +	if (o && o->type == OPTION_END) {
+> +		memcpy(&ordered[nr_opts], o, sizeof(*o));
+> +	}
 
+Do you any real problems with this?  I think the existing code assumes
+the last entry should be OPTION_END.  Otherwise it won't work well.
+
+Thanks,
+Namhyung
+
+
+>  	/* sort each option group individually */
+>  	for (opt = group = ordered; opt->type != OPTION_END; opt++) {
+>  		if (opt->type == OPTION_GROUP) {
+> -- 
+> 2.43.-1
+> 
 
